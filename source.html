@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2845 86f18488 2026-11-05 02:34"><head><meta charset="utf-8">
+<html lang="en" data-build="v2846 931b4090 2026-11-05 07:50"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2939,8 +2939,12 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .rcard .sub{font-size:13px;opacity:.72;position:relative;margin:0;color:var(--mid);font-weight:300}
 .rcard .w{position:absolute;right:14px;top:12px}
 .rnone{font-size:13.5px;color:var(--dim);padding:10px 0}
-.person{border-radius:var(--r-s);padding:15px 17px;background:var(--panel-2);
- border-left:3px solid var(--gold)}
+/* NO CARD AROUND THE SUMMARY BOX, 4 November. This was a gold edged card
+   carrying the person's name, and the name came off on his screenshot ("the
+   person already knows who they are"). What is left, the summary box, is a
+   box of its own, so a card around it was a box in a box with the coloured
+   edge he called "an old legacy design" on the Flow cards the same day. */
+.person{border-radius:var(--r-s)}
 .person h3{margin:0;font-size:20px;font-weight:600;letter-spacing:0}
 .prole{font-size:12.5px;color:var(--dim);margin-top:3px}
 .psay{font-size:14.5px;line-height:1.7;color:var(--mid);margin:11px 0 0;font-style:italic;font-weight:300}
@@ -3728,6 +3732,63 @@ body.punch .card{border-color:transparent}
 .stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
 .stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
+/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron, the
+   layer's mark and the door side by side, and what it is made of sits right
+   under it. No card, no coloured edge, his ruling on the old Flow cards. The
+   chevron is the section headers' own, .lsec-hd i above, so one mark means
+   open here and on the rail around it.
+
+   NO STEP PER LAYER, 5 November, his words on the first cut's shots: "give
+   me a linear layout. its too nested right now." Each layer was set in by
+   12 pixels, a staircase four steps deep. Every row now starts at the same
+   left edge, and depth is the layer mark in its own fixed column, .stk-lm,
+   the same width at every depth, so the bars at the bottom of a branch are
+   as wide as the bars at the top. A bar has no chevron, so .stk-gut holds
+   that column empty and its mark lines up with every mark above it. */
+.stk-tl{display:flex;justify-content:flex-end;margin:-2px 0 2px}
+.stk-all{min-height:var(--tap);padding:0 8px;border:0;background:transparent;color:var(--dim);
+ font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:var(--r-xs)}
+.stk-all:hover{color:var(--ink)}
+.stk-nr{display:flex;align-items:center;min-width:0}
+.stk-nr .stk-r{flex:1 1 auto;min-width:0}
+.stk-nm{overflow:hidden;text-overflow:ellipsis}
+.stk-x{flex:0 0 auto;width:var(--tap);min-height:var(--tap);display:inline-flex;align-items:center;justify-content:center;
+ border:0;background:transparent;color:var(--dim);cursor:pointer;border-radius:var(--r-xs);padding:0}
+.stk-x:hover{color:var(--ink);background:var(--panel-2)}
+.stk-x i{display:block;width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;
+ transform:translateY(-2px) rotate(45deg);transition:transform var(--t-element) var(--ease-out)}
+.stk-n.open>.stk-nr>.stk-x{color:var(--gold)}
+.stk-n.open>.stk-nr>.stk-x i{transform:translateY(2px) rotate(-135deg)}
+.stk-kids{padding-left:0}
+/* THE TIER'S WORD, round 3, ui/ui.js stkTier: the panel's own eyebrow, once
+   above each tier's rows in an open branch, starting at the mark column so
+   the word stands over the marks it names. No indent: the staircase stays
+   gone, and the word says the depth the step used to. */
+.stk-tier{display:block;margin:8px 0 0;padding:0 0 2px var(--tap)}
+.stk-tree>.stk-tier:first-child{margin-top:0}
+.stk-gut{flex:0 0 var(--tap);width:var(--tap)}
+.stk-lm{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--dim)}
+.stk-lm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+/* a child emotion's bar is rbPair, the Balance bar; on the Field's dock it
+   is laid out by .fdock .rb2, and here by the same rule */
+.stack .rb2{position:relative;display:block;flex:1 1 auto;width:100%;min-width:0;padding:4px 0 6px;
+ white-space:nowrap;text-align:left}
+/* the poles here are longer words than Balance's, Groundedness and
+   Anticipation, and at the dock's gap the centre figure sat against the
+   right pole's word and read as its figure: "100% Equanimity" for anger held
+   at 100. A wider gap keeps the figure with the line it stands on. */
+.stack .rb2-ln{gap:14px}
+/* and four layers down a pole's word is wider than its half of the bar, so
+   it shortens with an ellipsis inside its own half rather than running under
+   the figure; the full word is in the row's title and its spoken name */
+/* capped at its own half: a pole set to its end is sized to its words and
+   not to its column, so without the cap its word ran out of the half and
+   was cut from the front, "100%quanimity", once the linear layout's mark
+   column took the bar's width at 1600, 5 November */
+.stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
+.stack .rb2-n{min-width:0;flex:0 1 auto}
+.stk-b{padding:2px 6px}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -4301,6 +4362,20 @@ body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){disp
 /* #railtop left the rail for the Field's stage in round IT and is hidden off
    the Field by its own rule, so only #bRel is stepped aside here */
 body.tab-story #bRel{display:none}
+/* ---------- the Field's rail, 4 November ----------
+   His live reaction to this rail, on the Field: the Flow section's coloured
+   cards are "an old legacy design", the Running list is "also legacy.
+   Because this should show parent to children as a stack. Underneath the
+   summary", and neither Laws of Moral Integrity nor Run a release is wanted
+   on this panel. The cascade in Insight is what is running now, so the
+   four step aside on the Field, the way the Story's rail steps them aside,
+   and every other surface keeps them as they were: he ruled this panel and
+   no other. Hidden and not deleted, so the ids every renderer and the
+   release route still write to stay in the document. */
+body.tab-field .lsec[data-rail="right"][data-sec="flow"],
+body.tab-field .lsec[data-rail="right"][data-sec="running"],
+body.tab-field .lsec[data-rail="right"][data-sec="laws"],
+body.tab-field #bRel{display:none}
 /* five grouping buttons are wider than a rail, and a row that overflows with
    no affordance reads as a missing control, so it wraps. */
 .st-rail .ip-ctl{flex-wrap:wrap}
@@ -10015,8 +10090,14 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         the summary now. -->
 
 
+   <!-- INSIGHT, 4 November, renamed from Reading on his own screenshot
+        (DECISIONS.md, "The right rail's Reading panel"). The key stays you:
+        a key is identity, and the word is what a person reads. Under the
+        heading, the summary box and then the cascade, parent through
+        children, and nothing else: the Instruments row came off it the same
+        day, ui/ui.js says why. -->
    <div class="lsec open" data-rail="right" data-sec="you">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Reading</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
@@ -10026,7 +10107,6 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
     <div class="start" id="start"></div>
     <div class="person" id="person"></div>
      <div class="stack" id="stack"></div>
-     <div class="rows" id="rows"></div>
     </div>
    </div>
 
@@ -37981,7 +38061,13 @@ function rbPairSide(o){
  if(!o.read)return 0;
  var lr=Math.round(clamp(+o.L.v||0,0,100)), rr=100-lr;
  return lr>rr?-1:rr>lr?1:0;}
+/* A PAIR WHOSE MARK IS NOT A SHARE NAMES ITS OWN FIGURE. The stack's child
+   emotion bars place the mark by held less installed (stkFetBar, ui/ui.js),
+   so the leaning pole's v is a position and printing it would print a share
+   nobody holds. Such a pair hands over fig, the leaning pole's own amount,
+   already formatted. Every other pair leaves it out and prints as it did. */
 function rbPairFig(o){
+ if(o.fig!==undefined)return o.fig;
  if(!o.read)return '–';
  var sd=rbPairSide(o);
  return sd<0?rbVal(o.L,o.L.v):sd>0?rbVal(o.R,o.R.v):'50%';}
@@ -38243,6 +38329,20 @@ function crPat(p,size,o){o=o||{};
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
+   reaction to the pattern drill: the words must come "from the records", and
+   "built from 5 held addresses" is "a big no". A saboteur and a complex name
+   their family in hcx, a hyper complex is its family; the record is HCX_LIB's
+   d, the line that already prints on every hover of a hyper complex. An
+   overshoot family has no row there, and its sentence is the one compute()
+   gives the same family (engine/compute.js, FAMS), read the same way here
+   off FAM_POLE so the two cannot word it differently. */
+function patFam(o){
+ var nm=!o?'':o.kind==='hy'?o.nm:(o.hcx||''); if(!nm)return null;
+ var h=HCX_LIB.filter(function(x){return x.nm===nm;})[0];
+ if(h)return {nm:nm,d:h.d};
+ var base=Object.keys(FAM_POLE).filter(function(k){return FAM_POLE[k]===nm;})[0];
+ return base?{nm:nm,d:'the fix for '+base.toLowerCase()+', done past the point where it helps'}:null;}
 
 /* ============================================================
    CANVAS UTILITIES
@@ -71518,20 +71618,31 @@ function runDrill(o){
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
      +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
-  +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +(o.over
-   ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
-     +'will not shut, rather than will not open.'
-   : 'Built from <b>'+lv.length+'</b> held addresses across '+bs.join(', ')+'. It fires when '
-     +'those carry at once, and the output bends on the way out.')
-  /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS. This was two sentences, the first
-     defining the thing by what it is not and the second deferring its subject
-     by two words and then explaining itself with a which. Same length, one
-     gloss gone, and it starts on the noun. */
-  +(o.kind==='sup'?' A super-complex costs more than it looks like it should, '
-   +'because you cannot see it as separate from you.':'')
-  +(o.score?' Matched at <b>'+o.score+'%</b>'
-    +(o.exact?', every charge inside its range.':'.'):'')+'</p>'
+  /* HOW IT RUNS THROUGH YOU, FROM THE RECORD. 4 November, his live reaction
+     to this drill: "Where it says built from 5 held addresses. That's a big
+     no. We don't do that." It read "Built from N held addresses across
+     Heart, Sacral... It fires when those carry at once, and the output bends
+     on the way out", which is the engine describing its own arithmetic to the
+     person, and the overshot form opened on Jouissance, the word round 81
+     retired everywhere else. Now the paragraph is the family's own record
+     (patFam, ui/component.js): a complex and a hyper complex say their
+     family's line, a super complex the line of each hyper complex it joins,
+     with the house sentence on what a super complex costs. A saboteur says
+     nothing here, because its own card, kbSabBlock below, opens on what
+     happens, from SABCARD; an overshot one has no card and says its
+     family's line instead. The match score went with the address count:
+     both are how the engine found the pattern, not what the pattern does. */
+  +(function(){
+   var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+   var say='';
+   if(o.kind==='sup')say=(o.parts||[]).map(function(x){var f=patFam(x);
+     return f?esc(x.nm)+': '+esc(f.d)+'.':'';}).filter(Boolean).join(' ')
+    /* SUBJECT FIRST, ONE SENTENCE, NO GLOSS, as it was written for this
+       drill: same length as the two it replaced, and it starts on the noun. */
+    +' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.';
+   else if(o.kind!=='sab'||o.over){var f=patFam(o);
+    if(f)say=o.kind==='hy'?esc(cap(f.d))+'.':'Part of the '+esc(f.nm)+' family: '+esc(f.d)+'.';}
+   return say?'<div class="pm-eye">How it runs through you</div><p class="ad-p">'+say.trim()+'</p>':'';})()
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(opps.length
    ? 'It runs on '+fets.join(', ')+'. The coherent opposite is <b>'+opps.join(', ')+'</b>. '
@@ -71562,18 +71673,43 @@ function runDrill(o){
    var uncov=bs.filter(function(b){return covered.indexOf(b)<0;})
     .map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();});
    return h2+'<p class="ad-p">It runs at the '+esc(chAnd(uncov))+', where no mask is worn yet.</p>';})()
+  /* MADE OF IS THE RUNG BELOW, NOT THE ADDRESSES UNDER EVERYTHING. 4
+     November, his reaction: "the parent to children are not" right. A super
+     complex listed every address under its whole tree, so the drill skipped
+     the three layers the Insight cascade now shows between them. A
+     saboteur's children are its addresses and it lists them as before; every
+     higher rung lists its own parts, each a door into its own drill through
+     the stack's delegated handler (data-sk, ui/ui.js), so the drill walks
+     down the same tree the cascade does. */
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'
-  +lv.slice(0,8).map(addrRow).join('')
-  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>'
-  /* WHAT THIS RUNG ITSELF FEEDS, never shown here before. "Made of" above is
-     the downward direction (leaves(o), every reading already had); nothing
-     said what a saboteur, complex or hyper-complex feeds UP into, or blended
-     the two directions into one read. traceSummary(g,node), PR #158, built
-     and tested, reads exactly that off the same graph loopRead already
-     builds. ui/tracesummaryui.js, tsBlockHtml. */
-  +(typeof tsBlockHtml==='function'
-   ?tsBlockHtml({sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'}[o.kind],o.nm)
-   :'');
+  +(o.kind==='sab'
+   ?lv.slice(0,8).map(addrRow).join('')
+    +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')
+   :(function(){var rs=computeSeen();
+    var below={sup:'hys',hy:'cxs',cx:'sabs'}[o.kind];
+    return (o.parts||[]).map(function(x){
+     var si=(rs[below]||[]).map(function(y){return y.kind+':'+y.nm;}).indexOf(x.kind+':'+x.nm);
+     /* a rung the plan cannot see is printed but is not a door */
+     return si<0?'<div class="stk-r static"><span class="stk-l">'+crPat(x,'xs')+'<span class="stk-nm">'+esc(x.nm)+'</span></span></div>'
+      :'<button type="button" class="stk-r" data-sk="'+x.kind+'" data-si="'+si+'">'
+      +'<span class="stk-l">'+crPat(x,'xs')+'<span class="stk-nm">'+esc(x.nm+(x.over?', overshot':''))+'</span></span></button>';}).join('');})())
+  +'</div>';
+  /* WHAT THIS RUNG FEEDS, AND THE BLEND, CAME OFF THIS DRILL, 4 November.
+     Pull request 180 appended tsBlockHtml here: a Feeds up list and the
+     narrated paragraph from traceSummary. His live reaction to that screen
+     the same day: the selection "should be using the records", and "built
+     from 5 held addresses. That's a big no. We don't do that." The paragraph
+     read, on Gordon's first complex, "carries nothing further on file beyond
+     its own name and weight (a complex has no card of its own; by THE CHAIN
+     it is its own two saboteurs compounded...)" and closed on "This
+     paragraph narrates what the graph and the library already hold", in an
+     edged block he called "an old legacy design" on the Flow cards. And
+     Feeds up said a second time what the Insight box above it already says,
+     "It runs inside Predatory". So the drill ends on Made of. traceSummary
+     is not dropped: insightSay in ui/ui.js reads the stack it resolves and
+     quotes the records it finds, which is the job he gave the summary box.
+     tsBlockHtml itself is untouched; the address drill's blend in
+     nodeDrillHtml below is a different surface and is left as it landed. */
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
@@ -85859,15 +85995,156 @@ function railFold(){
    ============================================================ */
 /* The one line that is always on screen: coherence, the tier it names, and
    how much of the field is carrying. Everything else folds behind a label. */
-/* The stack. Under the reading, a row of tabs: the nine fetters, then the
-   saboteurs, complexes, hyper complexes and super complexes running now.
-   Every row shows both halves of its pole: the charge held on the left and
-   the coherent opposite installed on the right. A row is a door to the
-   drill. The stack was five count lines. */
+/* THE STACK, NESTED, 4 November. His own annotated screenshot, recorded in
+   DECISIONS.md under "The right rail's Reading panel": "if I select a super
+   complex... I'm getting the full cascade of how all those patterns are
+   working through me, as a construct. Further down, I can open up hyper
+   complex, and further down from that, I can open up complex. Or I can close
+   them all."
+
+   So the five tabs no longer swap five flat lists. A tab picks the layer the
+   cascade starts at, and every row in it opens onto what it is made of, one
+   layer down, all the way to the child emotions under each saboteur, which
+   are bars. Super opens onto its hyper complexes, a hyper complex onto its
+   complexes, a complex onto its two saboteurs, a saboteur onto the child
+   emotions its own addresses carry. The tree is compute()'s own: each rung's
+   parts are the rung below, the same objects (engine/compute.js), so nothing
+   here re-derives a parent. Each row opens and closes on its own, any number
+   stand open at once, and one control closes them all.
+
+   THE ROW IS STILL A DOOR. The name half is the button it always was,
+   data-sk and data-si into the same lists, answered by the one delegated
+   handler at the foot of this file, so a saboteur four layers down opens the
+   same drill it opens from its own tab. The chevron is a second button
+   beside it and only discloses, so a press never does two things.
+
+   NO COUNTS ON THE ROWS. His live reaction to a cascade on 4 November: "Where
+   it says built from 5 held addresses. That's a big no." A row says what it
+   is and opens onto what it is made of; how many of them there are is what
+   opening it shows. The "weight" and "opposite in" column words came off
+   with the flat lists they headed: a column cannot survive an indent, and the
+   opposite is the bars at the bottom of every branch.
+
+   ONE VISUAL LANGUAGE. A nested row is the rail's own stk-r row with its
+   ring, and nothing else: no card, no coloured edge. He called the coloured
+   edge cards in the Flow section "an old legacy design", in the same
+   reaction.
+
+   LINEAR, NOT A STAIRCASE, 5 November. The first cut set each layer in by a
+   step, and four layers down the rows had walked a fifth of the rail to the
+   right. His words on PR 182's shots: "give me a linear layout. its too
+   nested right now." So every row's left edge is the same at every depth,
+   and depth is said by one thing, the same on every row from Super to the
+   bars: the layer's own mark in a fixed column beside the chevron. The
+   marks are the tab strip's own (CHAINGLYPH, and the child emotions mark),
+   so a row four layers down carries the icon of the tab that lists its
+   kind, and the mark's tooltip says the layer in words. One concept, one
+   mark, and it costs the same width at every depth. */
+/* the child emotions layer's mark, the Child emotions tab's own, named once
+   so the tab and the cascade's bar rows draw one mark */
+var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+/* THE TIER, SAID IN WORDS, 5 November, round 3. His words on the linear
+   shots, with the three super complex rows struck: "Organize it by Super
+   Complex, Hyper Complex, Complex, Saboteur, etc." The mark alone made a
+   person already know the system to read the depth. So each tier is named
+   once, above its own rows, wherever a branch opens onto it (stkTier), and
+   the mark stays on every row for the quick scan.
+
+   THE WORDS. Singular, because the label names the tier and not a count.
+   Hyphenated, because the drill on this same rail says Hyper-Complex and
+   the summary box says a hyper-complex, and one concept takes one spelling
+   on one screen. Sentence case, the voice ruling, through the eyebrow's own
+   plain escape hatch, so the label is the eyebrow every other heading on
+   this panel is and does not read "Super-Complex". */
+var STK_LAYER={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur',fet:'Child emotion'};
+function stkTier(k){return '<div class="pm-eye plain stk-tier">'+esc(STK_LAYER[k])+'</div>';}
+/* ONE TIER'S ROWS, WITH ITS WORD WHERE THE TIER STARTS AND WHERE IT RESUMES.
+   Said once over a run of rows and not on every row. But a run can be broken:
+   open the first saboteur and its child emotion bars sit between it and the
+   next saboteur, and that next row would sit under "Child emotion" naming
+   it by the mark alone, the thing his note was about. So the word is said
+   again where the tier comes back after an open branch, and nowhere else. */
+function stkGroup(list,k,path,r,depth){
+ var h='', open=false;
+ (list||[]).forEach(function(x,i){
+  if(i===0||open)h+=stkTier(k);
+  h+=stkNode(x,path,r,depth);
+  open=!!STK_OPEN[path+'/'+x.kind+':'+x.nm];});
+ return h;}
+/* a layer's mark for a cascade row: a picture, so its word rides on it */
+function stkMark(k){
+ return '<span class="stk-lm" title="'+esc(STK_LAYER[k])+'" aria-hidden="true">'
+  +svgI('<path d="'+(k==='fet'?STK_FETGLYPH:CHAINGLYPH[k])+'"/>')+'</span>';}
 var STACK_TAB='fet';
-function poleOf(o){
- var lv=leaves(o), fs=[]; lv.forEach(function(n){if(n.cf&&fs.indexOf(n.cf)<0)fs.push(n.cf);});
- if(!fs.length)return 0; var t=0; fs.forEach(function(f){t+=(S.replace[f]||0);}); return t/fs.length;}
+/* the open rows, keyed by their path from the top of the cascade, so a row
+   opened under one parent is not opened under another, and a render, which
+   rebuilds every object, keeps what a person left open */
+var STK_OPEN={};
+var STK_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
+function stkSame(a,b){return !!(a&&b&&a.kind===b.kind&&a.nm===b.nm);}
+/* a saboteur's own children are the child emotions its addresses carry, in
+   CHILD's order, the same set runDrill names under The opposite */
+function stkFets(o){
+ var fs={}; leaves(o).forEach(function(n){if(n.cf)fs[n.cf]=1;});
+ return CHILD.map(function(c,ci){return fs[c.nm]?ci:-1;}).filter(function(ci){return ci>=0;});}
+/* every open-able row of a cascade, depth first, for close all and open all */
+function stkWalk(list,path,fn){
+ (list||[]).forEach(function(o){var k=path+'/'+o.kind+':'+o.nm; fn(k);
+  if(o.kind!=='sab')stkWalk(o.parts,k,fn);});}
+/* ONE CHILD EMOTION, AS A BAR. SW7 and his screenshot: the held pole and the
+   coherent opposite, both named and iconed inside the bar, a line at the
+   centre, the fill growing from it toward the lean. rbPair is the bar
+   Balance is drawn with (renderBal, below), so it is the same component and
+   not a second drawing of one idea.
+
+   THE LEAN IS THE DIFFERENCE, NOT THE SHARE. Balance's two figures are
+   shares of one whole, and a share would pin Fear held at 0.5 and Fear held
+   at 9 to the same end of the bar, both "100%". Held and installed are two
+   amounts on the same nought to ten, so the mark sits at the centre less
+   five points per unit of held over installed: held 9 with nothing installed
+   sits at 5, held 2 at 40, and the two even sits on the line. The figure
+   printed over the line is the leaning pole's own amount, held or
+   installed, through the registry, so the bar never prints a share it does
+   not mean. rbPair takes it as fig. */
+function stkFetBar(ci,depth){
+ var c=CHILD[ci], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0, read=v>0||p>0;
+ var lean=clamp(50+(v-p)*5,0,100), fv=fmtPct('charge',v), fp=fmtPct('installed',p);
+ var side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
+ var ic='<path d="'+c.ic+'"/>';
+ var spec={read:read, whole:true, fig:!read?'–':side>0?fp:fv,
+  L:{nm:c.nm,ic:ic,c:seatCol(c.seat),v:lean},
+  R:{nm:c.opp,ic:ic,c:'var(--accent)',v:100-lean}};
+ var sayN=function(k,x){var q=pct(k,x); return q>0?q+' per cent':'zero';};
+ var say=read?c.nm+' held '+sayN('charge',v)+', '+c.opp+' installed '+sayN('installed',p)+'.'
+  :'Not read yet.';
+ return '<button type="button" class="stk-r stk-b" data-fet="'+ci+'"'
+  +' aria-label="'+esc(c.nm+' and '+c.opp+'. '+say+' Opens the reading.')+'"'
+  +' title="'+esc(read?c.nm+' held '+fv+', '+c.opp+' installed '+fp:c.nm+', not read yet')+'">'
+  +rbPair('stkf'+depth+'-'+ci,spec)+'</button>';}
+function stkNode(o,path,r,depth){
+ var key=path+'/'+o.kind+':'+o.nm, open=!!STK_OPEN[key];
+ var si=(r[STK_LIST[o.kind]]||[]).indexOf(o);
+ var below={sup:'hy',hy:'cx',cx:'sab'}[o.kind];
+ var nm=o.nm+(o.over?', overshot':'');
+ var kids='';
+ if(open){
+  /* a bar has nothing under it, so its chevron column is empty and its
+     mark sits in the same column as every row above it */
+  if(o.kind==='sab')kids=stkTier('fet')+stkFets(o).map(function(ci){
+   return '<div class="stk-nr"><span class="stk-gut"></span>'+stkMark('fet')+stkFetBar(ci,depth+1)+'</div>';}).join('');
+  /* a layer under the plan is said as locked, the same panel its own tab
+     shows, and never as an empty branch */
+  else kids=lockSees(below)?stkGroup(o.parts,below,key,r,depth+1)
+   :lockPanelHtml(below,{brief:true});}
+ return '<div class="stk-n'+(open?' open':'')+'">'
+  +'<div class="stk-nr">'
+  +'<button type="button" class="stk-x" data-sx="'+esc(key)+'" aria-expanded="'+open+'"'
+   +' aria-label="'+esc((open?'Close ':'Open ')+'what '+o.nm+' is made of')+'"><i></i></button>'
+  +stkMark(o.kind)
+  +'<button type="button" class="stk-r'+(stkSame(S.pin,o)?' on':'')+'" data-sk="'+o.kind+'" data-si="'+si+'">'
+   +'<span class="stk-l">'+crPat(o,'xs')+'<span class="stk-nm">'+esc(nm)+'</span>'
+   +(o.unnamed?'<em>inferred</em>':'')+'</span></button></div>'
+  +(open?'<div class="stk-kids">'+kids+'</div>':'')+'</div>';}
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
  /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
@@ -85880,8 +86157,7 @@ function railStack(r){
  var TABS=[
   /* the key is 'fet' and stays 'fet': a key is identity and identity is
      never renamed here. The label is what a person reads and it moves. */
-  ['fet','Child emotions',CHILD.length,
-   'M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5'],
+  ['fet','Child emotions',CHILD.length,STK_FETGLYPH],
   /* the four tiers' marks are CHAINGLYPH in ui/component.js, shared with
      the glass bar's switches for the same four */
   ['sab','Saboteurs',r.sabs.length,CHAINGLYPH.sab],
@@ -85894,46 +86170,22 @@ function railStack(r){
    +svgI('<path d="'+t[3]+'"/>')
    +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
-  /* ONE WORD PER CONCEPT. This header said held and installed, the rail four
-     inches to the left said held and opposite, and the owner asked what either
-     of them meant. They are the two ends of one axis: the state you are
-     carrying, and the coherent quality on the other side of it. Held and
-     opposite, in both places, with the definition said once here rather than
-     left in a tooltip nothing on a phone can reach. */
-  /* AND THE DEFINITION IS OFF THE RAIL NOW. Round HS: "get rid of all this
-     like second or three third tier text ... we have overlays for all this
-     shit." A four line
-     legend sat above the nine rows on every tab. Each row is a door to its
-     axis's drill, and the drill says both ends and what fills each, so the
-     definition is one press away on a phone as well as a desk, and the rule
-     against a definition living only in a tooltip still holds. The two column
-     words stay, and the same two words are the drill's. */
-  h+='<div class="stk-hd"><span>held</span><span>opposite</span></div>';
-  h+=CHILD.map(function(c,ci){var v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
-   /* each axis carries its own glyph. canon.js has had one on every entry
-      since the port and nothing in the rails was drawing them. */
-   /* A ROW IS A DOOR NOW, which is what let the legend above come off. It was
-      a static row and the only place held and opposite were defined was the
-      legend, so the legend was cut only once each row opened runFetterDrill,
-      the axis's own drill, which says both halves and what fills each. */
-   return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    /* held and installed as percents, 17 October, percent phase 2: each ring
-       fills pct(kind) and prints fmtPct(kind), the registry's one formula */
-    +(function(fv,fp){return cr(c.seat,pct('charge',v)||0,{size:'xs',raw:fv,glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+(fv!==PCT_DASH?' held '+fv:', nothing held')})+esc(c.nm)+'</span>'
-    +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(fp!==PCT_DASH?' installed '+fp:', nothing installed')});}(fmtPct('charge',v),fmtPct('installed',p)))
-    +'</span></button>';}).join('');}
+  /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
+     screenshot. Each bar names both of its ends inside itself, so a column
+     word over them said the same thing a second time. Each row is still a
+     door to runFetterDrill, which says both halves and what fills each. */
+  h+=CHILD.map(function(c,ci){return stkFetBar(ci,0);}).join('');}
  else{
-  var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
-  h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
-  h+=list.length?list.map(function(o,i){var p=poleOf(o);
-   return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
-    +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+(function(fp){return cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
-      title:fp!==PCT_DASH?'Opposite installed '+fp:'Nothing installed'});}(fmtPct('installed',p)))+'</span></button>';}).join('')
-   :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
+  var list=r[STK_LIST[STACK_TAB]]||[];
+  if(list.length){
+   /* "Or I can close them all." One control, and it says what it will do:
+      close all while anything in this cascade stands open, open all when
+      nothing does. */
+   var any=false; stkWalk(list,'',function(k){if(STK_OPEN[k])any=true;});
+   h+='<div class="stk-tl"><button type="button" class="stk-all" data-sall="'+(any?'0':'1')+'">'
+    +(any?'Close all':'Open all')+'</button></div>'
+    +'<div class="stk-tree">'+stkGroup(list,STACK_TAB,'',r,0)+'</div>';}
+  else h+=lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB);}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
     plan is greyed and padlocked with its description, and its count is not
@@ -85942,6 +86194,84 @@ function railStack(r){
     the list never reads "nothing at this layer" about a layer it cannot see. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
   lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
+/* WHAT THE SUMMARY BOX SAYS ABOUT A SELECTED PATTERN. His words on the
+   screenshot: "a summary from the records, where Source AI is interpreting
+   the parent child stack of anything selected." So the box says three
+   things, each read off a record and never composed from the engine's
+   working: what the pattern is, its own record line, and what it runs
+   inside.
+
+   DRIVEN BY traceSummary, AND NOT ITS PARAGRAPH. traceSummary(g,node),
+   engine/tracesummary.js, landed on main through pull request 180 while
+   this was being built, and it is what resolves the stack here: the node's
+   own card, its real children and its real parents on the trace graph,
+   each with the record fields it carries (SABDEF's own sentence for a
+   saboteur, HCX_LIB's family line for a hyper complex). Its narrated
+   paragraph is not printed in this box. Read on Gordon on 4 November it
+   says "carries nothing further on file beyond its own name and weight (a
+   super complex has no card of its own; by THE CHAIN it is ...)" and closes
+   every reading on "This paragraph narrates what the graph and the library
+   already hold. It does not compute a score", which is the engine
+   describing itself to the person, the class he struck live the same day:
+   "Where it says built from 5 held addresses. That's a big no." The fields
+   it resolves are the records; the box quotes those, in the house's own
+   short sentences. The drill keeps the paragraph where PR 180 put it.
+
+     a saboteur      the sentence it runs, SABDEF.q, quoted
+     a complex       its two saboteurs' sentences, since a complex has no
+                     card and is exactly its two parts
+     a hyper complex its family line
+     a super complex each hyper complex's family line
+
+   A parent the graph names that this reading does not carry is left out:
+   the graph reads Psychopathy as a parent of the Predatory hyper complex,
+   and DESCENT's own header keeps that clinical name behind the dark read.
+   Where traceSummary is not loaded or cannot read the node, the same lines
+   come from compute()'s own tree and patFam, so the box never goes blank.
+
+   The selection is matched by kind and name, never by identity: render()
+   rebuilds every pattern, so the pin is an object from an earlier reading. */
+var TS_TYPE={sab:'saboteur',cx:'complex',hy:'hyper_complex',sup:'super_complex'};
+var TS_KIND={saboteur:'sab',complex:'cx',hyper_complex:'hy',super_complex:'sup'};
+function insightTrace(o){
+ if(typeof traceSummary!=='function'||typeof tsCurrentGraph!=='function'||typeof traceKey!=='function')return null;
+ try{var g=tsCurrentGraph(); if(!g)return null;
+  var res=traceSummary(g,traceKey(TS_TYPE[o.kind],o.nm)); return res&&res.ok?res:null;}
+ catch(e){return null;}}
+function insightSay(pin,r){
+ if(!pin||!STK_LIST[pin.kind])return '';
+ var o=(r[STK_LIST[pin.kind]]||[]).filter(function(x){return stkSame(x,pin);})[0];
+ if(!o)return '';
+ var KW={sab:'a saboteur',cx:'a complex',hy:'a hyper-complex',sup:'a super-complex'};
+ var cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1);};
+ var says=function(f){return f&&f.says?'“'+esc(f.says)+'”':'';};
+ var res=insightTrace(o);
+ var kids=res?res.children:null, ups=res?res.parents:null;
+ var h='<b style="font-weight:600;color:var(--ink)">'+esc(o.nm+(o.over?', overshot':''))+'</b>, '+KW[o.kind]+'.';
+ if(o.kind==='sab'){
+  var own=res&&res.node.card.found?res.node.card.fields:null;
+  /* the drill's own eyebrow for this record, The sentence it runs, kbSabBlock */
+  if(own&&own.says&&!o.over)h+=' The sentence it runs: '+says(own);
+  else{var f=patFam(o); if(f)h+=' Part of the '+esc(f.nm)+' family: '+esc(f.d)+'.';}}
+ else if(o.kind==='cx'){
+  var cs=(kids||[]).filter(function(k){return k.card&&k.card.found&&k.card.fields.says;});
+  if(cs.length)h+=cs.map(function(k){return ' '+esc(k.card.label)+': '+says(k.card.fields);}).join('');
+  else{var f2=patFam(o); if(f2)h+=' Part of the '+esc(f2.nm)+' family: '+esc(f2.d)+'.';}}
+ else if(o.kind==='hy'){
+  var fl=res&&res.node.card.found?res.node.card.fields.familyLine:(patFam(o)||{}).d;
+  if(fl)h+=' '+esc(cap(fl))+'.';}
+ else{
+  var ls=(kids||[]).filter(function(k){return k.card&&k.card.found&&k.card.fields.familyLine;})
+   .map(function(k){return ' '+esc(k.card.label)+': '+esc(k.card.fields.familyLine)+'.';});
+  if(!ls.length)ls=(o.parts||[]).map(function(x){var f=patFam(x); return f?' '+esc(x.nm)+': '+esc(f.d)+'.':'';});
+  h+=ls.join('');}
+ /* the parent: the graph's, kept to what this reading carries */
+ var up={sab:'cx',cx:'hy',hy:'sup'}[o.kind], par=null;
+ if(up){var mine=r[STK_LIST[up]]||[];
+  if(ups)par=ups.map(function(u){return mine.filter(function(x){return x.nm===u.id&&TS_KIND[u.type]===up;})[0];}).filter(Boolean)[0]||null;
+  if(!par)par=mine.filter(function(x){return (x.parts||[]).some(function(c){return stkSame(c,o);});})[0]||null;}
+ if(par)h+=' It runs inside '+esc(par.nm)+', '+KW[par.kind]+'.';
+ return h;}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -86352,72 +86682,31 @@ function render(){
     the gate read one sentence (body.html says why they are there) */
  [['rbgha','Where you lean'],['rbghb','How much']].forEach(function(h){var e=$(h[0]); if(!e)return;
   var say=rbSay(h[1]); e.setAttribute('data-tip',say); e.setAttribute('aria-label',h[1]+'. '+say);});
- /* who, and what is running hottest in them. */
+ /* the Insight card: the summary box, and the doors while nothing is read */
  (function(){
-  /* THE ARCHETYPES AND THE DOMAINS CAME OFF THIS CARD. Round IT in TASKS.md,
-     his words: "The archetypes, the domains, that's not what's important.
-     What is important is that we're tracking all the things that are the most
-     intense to a person. So this should be the top things running, almost
-     like the top highest three running, and then the highest ones running per
-     band. Since we're showing the animation of the tension and everything
-     else, it just makes sense that this reflects that."
+ /* THE INSIGHT CARD, 4 November, his annotated screenshot of this rail
+    (DECISIONS.md, "The right rail's Reading panel"). Three cuts and one
+    change of job, each struck on the screenshot:
 
-     Nothing is lost by the cut. Both lists are the left rail's own Awareness
-     section, whole, and they were a second copy of it here.
+    THE NAME CAME OFF. His words: "the person already knows who they are."
+    Round IT had put the person's first name here in place of You, and round
+    IX hung the summary window under it; the window stays and the name goes.
+    Summary's plate still prints the name, which he did not strike.
 
-     THE THINGS ARE ADDRESSES, BECAUSE THE TENSION IS DRAWN ON ADDRESSES. The
-     fringes in ui/wheel.js bend the ring at each of the 112 by its charge, and
-     hotTrack() is what says which way each one last moved. So the three rows
-     are the three heaviest addresses carrying any charge at all, and each one
-     says expanding, collapsing or steady off hotDir(), the word and the ink
-     Analytics already prints beside the same address in its Running hot list.
-     They are not cut at RUNHOT_AT, the fringes' own line at five: measured
-     across the roster, eight of fifteen profiles have nothing past five,
-     Marcus's heaviest is 2.5, and a card that goes blank for most people is
-     not tracking what is most intense to them. The badge carries the charge,
-     so past five reads on the ring itself.
+    BY WEIGHT AND BY ASSEMBLAGE POINT CAME OFF, and the Field block under them
+    (Carrying, Filled in, Heaviest, Most shut). His words this round: "we
+    don't do anything like gaining by weight, by assemblage point, field,
+    carrying, filled in, heaviest, most shut." The Field block was cut first
+    on 2 November (d5db0e55 on stackbuild, landed on main as 51cc72ea through
+    pull request 180); this cut takes the two lists above it. What is running is
+    the cascade under this card now, parent through children, and a second
+    list of the same patterns beside it is the flat list he struck in the same
+    reaction.
 
-     And one row per assemblage point, Root to Crown in BANDS order, the
-     heaviest address at each, so the card runs up the body the way the ring
-     does. A point carrying nothing prints no row: a list of none says nothing
-     held seven times. Each row opens runNodeDrill through the delegated .ad-r
-     handler further down this file, the one every address row uses. */
+    hotTrack still runs on every render. It was called here for the rows that
+    are gone, and Analytics and the wheel read the direction it records, so
+    the call is kept rather than left to whichever of them draws first. */
   if(typeof hotTrack==='function')hotTrack();
-  var lit=W.filter(function(n){return (+n.sq||0)>0;})
-   .sort(function(a,b){return b.sq-a.sq;});
-  /* EACH ROW SAYS WHICH IT IS. Round IX, his words: "create new labels that
-     reflect the content, like primary, secondary." The right of each row
-     printed the direction word, and on a record nobody has touched since it
-     was opened hotDir() says steady for all 112, so every screenshot of this
-     card read steady three times: a column that said nothing moved, which is
-     the list of none the comment above already refuses. The slot carries the
-     rank now. The direction is kept where it is information: an address that
-     moved on its last change still says which way, after the rank, in the
-     ink Analytics gives the same word.
-
-     PER ROW AND NOT AS THE TWO HEADINGS, which was the other reading of his
-     sentence, and it would print something false. Primary over these three and
-     Secondary over the list by point would call the second list lesser, and it
-     is not: it is the same addresses cut a second way, and on Marcus
-     Co-Dependency and False Love sit in both. */
-  var RANK=['Primary','Secondary','Tertiary'];
-  var top=lit.slice(0,3).map(function(n,i){
-   var d=typeof hotDir==='function'?hotDir(n):'steady';
-   return addrRow(n,{em:RANK[i]+(d==='steady'?'':', '+d),
-    ink:typeof anaHotInk==='function'?anaHotInk(d):null});}).join('');
-  var per=BANDS.map(function(b){
-   var n=lit.filter(function(x){return x.b===b;})[0];
-   return n?addrRow(n,{em:b,ink:seatCol(b)}):'';}).join('');
-  /* the rail's own empty sentence for a field with nothing charged, the one
-     the glass bar prints on its Stories circle, and nothing at all on an
-     unread field, where the doors above already say where to start */
-  /* "Top three" was a count, and the rows under it carry their rank now, so
-     the heading names the order instead, and the two headings read as one
-     list cut two ways: by weight, and by assemblage point. */
-  var run=r.unread?'':lit.length
-   ?'<div class="pm-eye" style="margin-top:14px">By weight</div><div class="ad-rows">'+top+'</div>'
-    +'<div class="pm-eye" style="margin-top:12px">'+unp('assemblage point','By assemblage point')+'</div><div class="ad-rows">'+per+'</div>'
-   :'<div class="pm-eye" style="margin-top:14px">By weight</div><p class="rnone">Nothing is carrying charge yet.</p>';
   /* WHERE TO START. Only while there is nothing to read, because a call to
      action that survives the action is furniture. Two doors and a line saying
      what each one is for, so nobody has to remember a term to find one. */
@@ -86432,105 +86721,51 @@ function render(){
       needs the same four and two sets of one id is a broken document. */
    st.hidden=false;
    st.innerHTML=startHTML();})();
-  /* THE PERSON'S NAME, NOT THE WORD YOU. Round IT, his words: "where it says
-     reading and then it says you: first off, change you to the person's
-     name." A worked example already printed its own name here. The person's
-     own record printed the literal You whatever they had called themselves in
-     Settings, which is where account.js writes CURP.name. The first word of
-     it, the way sumPlate on the Summary prints the same name over the same
-     reading, so the two surfaces call a person one thing. A record nobody has
-     named is still called You, because that is the name pNew gave it.
-     And a record the product named is not named either: this split "Web
-     reading" and printed Web, beside the plate printing the same, F3 of the
-     31 October walk. ownName, engine/schema.js, is the one list. */
-  var who=capName(p.you?(ownName(CURP&&CURP.name).split(/\s+/)[0]||'You'):p.nm);
-  /* THE AGE AND ROLE LINE IS GONE, ON HIS RULING. Round IX, his words: "get
-     rid of that 44 creative director. That's nonsense junk." It was the worked
-     example's own casting note, p.age and p.role, and it read nothing: a
-     person's own record never printed it at all. Summary's plate and the
-     profile picker are untouched, because he struck this card.
+  /* THE SUMMARY BOX, AND WHAT IT SAYS. His words on the screenshot: "this is
+     our summary field... it's giving you a summary from the records, where
+     Source AI is interpreting the parent child stack of anything selected."
+     So with a pattern selected in the cascade below, the box says that
+     pattern from its records, and what it runs inside (insightSay). With
+     nothing selected it keeps the band's own lived line, TIERDEF's energy,
+     which is what it said before: the band word in the band's colour, then
+     what the band costs day to day. Nothing while unread, where the doors
+     say where to start; while CQ is still filling there is no band to name,
+     so it says what is left, in the tier button's own sentence.
 
-     A SUMMARY WINDOW TAKES ITS PLACE, "underneath Marcus's name", and what it
-     says was not specified, so it is the band's own lived line and not new
-     copy. TIERDEF carries four lines per band. def is the one he struck off
-     this rail in round IT, toward is the instruction the compass drill
-     already gives in full, soma is the codex's register, and energy is what
-     the band is like to live in, which is the one line a summary of a person
-     owes that neither list under it says: they say where the charge is, this
-     says what it is costing day to day. The band word leads it in the band's
-     colour because a behaviour with no band named is a sentence about nobody,
-     and the band word with no behaviour is the judgement the voice rules
-     forbid. It is the tier button's door as well: a tap opens
-     runCompassDrill, which carries the definition and the direction the
-     window leaves out. Nothing while unread, where the doors say where to
-     start; and while CQ is still filling there is no band to name, so it
-     says what is left, in the same sentence the tier button's title uses. */
+     A press opens the drill for what the box is about: the selected
+     pattern's, or the compass drill for the band. */
   var tdw=r.unread?null:TIER_BY[r.tier];
+  var sel=r.unread?'':insightSay(S.pin,r);
   var win=r.unread?'':'<button type="button" id="psum" class="psum" '
-   +'style="display:block;width:100%;margin:10px 0 0;padding:10px 12px;text-align:left;'
+   +'style="display:block;width:100%;margin:0;padding:10px 12px;text-align:left;'
    +'font:inherit;font-size:13.5px;line-height:1.55;color:var(--mid);cursor:pointer;'
    +'background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s)">'
-   +(tdw?'<b style="font-weight:600;color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
+   +(sel?sel
+    :tdw?'<b style="font-weight:600;color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
       +esc(tdw.nm)+'.</b> '+esc(tdw.energy)
     :esc(tierBuilding()))
    +'</button>';
-  $('person').innerHTML='<h3>'+esc(who)+'</h3>'
-   +win
+  $('person').innerHTML=win
    /* THE EMPTY STATE OUTLIVED THE EMPTINESS. says was printed whenever it
       existed, and the blank persona's says is the words "Nothing has been
       entered yet". A person who then entered charge got a live reading beside
       a sentence swearing they had entered nothing. It is an empty state, so it
       goes when the state is not empty. */
-   +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'')
-   +run
-   /* THE FIELD EYEBROW AND ITS FOUR ROWS (Carrying/Filled in/Heaviest/Most
-      shut) ARE CUT, 2 November, his own words: "this is all nonsense, it's
-      all bullshit." They were counts with no behaviour sentence attached
-      (a dash four times is not a sentence, Round J13, the same ruling that
-      already cut this block from printing on an unread record, never
-      extended here to the read state). By weight / By assemblage point
-      above already rank the same addresses with real per-address content;
-      this block only repeated the job more thinly underneath it. */;
-  var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
+   +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'');
+  var ws=$('psum'); if(ws)ws.onclick=function(){
+   if(sel&&S.pin){runDrill(S.pin); return;}
+   S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
- /* SUPERSEDED ON 2 OCTOBER, CO-31. These once said "of 10" after every
-    figure, which answered "what is it out of" and made each line a mark out
-    of ten. A count against a total is a score at any scale. The figure stands
-    with its name, and the tooltip says what it measures. On an unread profile
-    each is a dash, because the defaults are not readings. */
- /* V21. Five words, and none of them defined anywhere on the screen. Each
-    line now carries a plain sentence on its title, true to compute.js, and
-    "pole in" is "pole", the word the Summary tile already uses for it. */
- /* AND EACH IS A PERCENT, 17 October, percent phase 2: integrity printed
-    4.9, pole 0.80 and overshoot 0.52, three precisions for figures the
-    registry bounds the same way (engine/pct.js, nought to ten). Each prints
-    fmtPct for its own kind now, and nought or an unread profile is the dash. */
- var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
- /* INTENTION, WIRED IN, 28 October. Ruled 25 September: what a person said
-    they would do against what they did, no charge read into it
-    (intentionRead, engine/ladder.js). Nothing was said in the last seven
-    days reads as unread, not as zero, the same way an unanswered law does
-    not read as a failing one: a blank week is not a broken promise. */
- var intent=intentionRead(CURP,Date.now());
- $('rows').innerHTML='<span class="k">Instruments</span><br>'
-  +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
-    'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
-  +ins('What you said you would do against what you did, the last seven days. No charge in it, only follow through.',
-    'intention <b>'+(intent.said?fmtPct('intention',intent.pct):PCT_DASH)+'</b>')
-  +ins('The same laws read seat by seat, up the body.',
-    'law reach <b>'+fmtPct('lawseat',r.It,{unread:r.unread})+'</b>')
-  /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
-     as an instrument label to a person who has never heard it, with no gloss
-     anywhere in the product. One word per concept, and the word has to say
-     what the thing does: JQ is the opposite driven past the point where it
-     serves. That is overshoot. The codex keeps its own word. */
-  +ins('How far the installed opposites outweigh the charge, on average, across your body.',
-    'pole <b>'+fmtPct('pole',r.poleMean,{unread:r.unread})+'</b>')
-  +ins('How far installed opposites have been pushed past the point where they help.',
-    'overshoot <b>'+fmtPct('overshoot',r.JQ,{unread:r.unread})+'</b>'
-    +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
-  +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
-    +'and deeper ones, bend it more.')+'">distortion <b>'+fmtPct('distortion',r.dist,{unread:r.unread})+'</b></span>';
+ /* THE INSTRUMENTS ROW CAME OFF THIS CARD, 4 November. His words, live, on
+    this panel: "Everything under instruments get rid of because we've got
+    that on the opposite side." Integrity, law reach, pole, overshoot and
+    distortion each print one press away on the Field's own left rail, in the
+    drills its rows open (runXYZDrill and runPoleDrill, ui/drills.js), so the
+    figures are not lost, only the second copy of them here. Intention, said
+    against done (intentionRead, engine/ladder.js), was printed only here; it
+    leaves the Field with the row, and the report that carried this change
+    says so. The CO-31 and percent phase 2 rulings that shaped the row are in
+    the history of this file. */
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
@@ -86819,6 +87054,19 @@ bindSend(authFeedback);
 document.addEventListener('click',function(e){
  var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
  if(st){STACK_TAB=st.getAttribute('data-st');railStack(computeSeen());return;}
+ /* THE CASCADE'S TWO CONTROLS, 4 November. A chevron opens or closes its
+    own row and nothing else; Close all and Open all walk the tab's whole
+    cascade. railStack rebuilds the markup, so the control pressed is found
+    again by its key and given the focus back: a keyboard that pressed a
+    chevron four layers down must not land at the top of the page. */
+ var sx=e.target.closest?e.target.closest('.stk-x[data-sx]'):null;
+ if(sx){var k=sx.getAttribute('data-sx'); STK_OPEN[k]=!STK_OPEN[k]; railStack(computeSeen());
+  var back=[].filter.call(document.querySelectorAll('#stack .stk-x[data-sx]'),function(b){return b.getAttribute('data-sx')===k;})[0];
+  if(back)back.focus(); return;}
+ var sa=e.target.closest?e.target.closest('.stk-all[data-sall]'):null;
+ if(sa){var on=sa.getAttribute('data-sall')==='1', rs=computeSeen();
+  stkWalk(rs[STK_LIST[STACK_TAB]]||[],'',function(k){if(on)STK_OPEN[k]=true; else delete STK_OPEN[k];});
+  railStack(rs); var ab=document.querySelector('#stack .stk-all'); if(ab)ab.focus(); return;}
  var fr=e.target.closest?e.target.closest('.stk-r[data-fet]'):null;
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
@@ -87057,5 +87305,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005755636"></div>
+<div id="eof" hidden data-len="005770581"></div>
 </body></html>
