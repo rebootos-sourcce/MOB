@@ -74,6 +74,14 @@ const READ=`(function(){
   if(!vis(b))return; var v=b.querySelector('.rb-v'); if(!v)return;
   out.push({kind:'bar',where:'.rbar '+(b.getAttribute('data-q')||'')+' '+((b.querySelector('.rb-n')||{}).textContent||''),
    fill:b.classList.contains('off')?0:parseFloat(b.getAttribute('data-w')),text:v.textContent.trim(),alarm:false});});
+ /* THE CASCADE'S ROWS ARE BARS SINCE SV18 (stkAmount, ui/ui.js), the rail's
+    amount bar inside the row's own button. They were .cr rings before and
+    this sweep read them as rings; a bar carries its fill as the width of its
+    .rb-f, so it is read off that, and the figure must still be the fill. */
+ document.querySelectorAll('.stk-am').forEach(function(b){
+  if(!vis(b))return; var v=b.querySelector('.rb-v'), f=b.querySelector('.rb-f'); if(!v||!f)return;
+  out.push({kind:'bar',where:'.stk-am '+((b.querySelector('.stk-nm')||{}).textContent||''),
+   fill:parseFloat(f.style.width),text:v.textContent.trim(),alarm:false});});
  return out;})()`;
 
 (async()=>{
@@ -94,7 +102,10 @@ const READ=`(function(){
    const tag=W+' '+(who||'blank')+': ';
    for(const [nm,k] of tabs){
     await page.evaluate(([who,k])=>{
-     const i=who?PEOPLE.findIndex(x=>x.nm===who):0; loadP(i<0?0:i); setTab(k); render();},[who,k]);
+     const i=who?PEOPLE.findIndex(x=>x.nm===who):0; loadP(i<0?0:i); setTab(k); render();
+     /* the glass bar arrives shut since SV18, so it is opened, as a person
+        does, or its pills would be off the page and out of the sweep */
+     if(typeof FB!=='undefined'&&FB&&FB.classList.contains('shut'))FB_TOG.click();},[who,k]);
     await page.waitForTimeout(260);
     const rows=await page.evaluate(READ);
     seen+=rows.length;
