@@ -24,6 +24,31 @@ done
 # and nothing before this threw to say so.
 python3 dupefunc.py $MODS || exit 1
 
+# THE JOINED SCRIPT MUST PARSE, NOT ONLY EACH MODULE.
+#
+# Every .js module lands in one <script>, so a name declared with const in two
+# modules passes `node --check` on each and is still a SyntaxError for the
+# whole app. The build used to print its all clear and write source.html, the
+# slim file and the packed file, and all three opened to an empty shell.
+# Compiled here in MANIFEST order as a classic script, which is how a browser
+# reads it, and the error is named by the module its line falls in. Nothing
+# runs: vm.Script compiles and stops.
+node - $MODS <<'JS' || exit 1
+const fs=require('fs'),vm=require('vm');
+const mods=process.argv.slice(2).filter(f=>f.endsWith('.js'));
+let src='',starts=[];
+for(const f of mods){starts.push([src.split('\n').length,f]);src+=fs.readFileSync(f,'utf8')+'\n';}
+try{new vm.Script(src,{filename:'joined'});}
+catch(e){
+  const m=/joined:(\d+)/.exec(e.stack||'');const line=m?+m[1]:0;
+  let at='an unknown module';
+  for(const [s,f] of starts) if(s<=line) at=f+' line '+(line-s+1);
+  console.error('the joined script does not parse: '+e.message+', at '+at);
+  process.exit(1);
+}
+console.log('the joined script parses, '+mods.length+' modules in MANIFEST order');
+JS
+
 # EVERY MODULE SAYS IT FINISHED.
 #
 # A build came back from the owner reporting that the script never reached the
