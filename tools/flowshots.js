@@ -64,6 +64,11 @@ const SEED=()=>{
  CURP.rituals.sort((a,b)=>Date.parse(a.t)-Date.parse(b.t));
  ritPlanPut(plans); pSave();
  RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null;
+ /* HISTORY IS A PRESS NOW, SV19/SV24: .rv-hist only exists in the document
+    while RIT.histOpen is true (acctSideHtml, ui/accountability.js). Shooting
+    it blind used to work because it was always on the page; it is not any
+    more, so the seed opens it the same way a real press would. */
+ RIT.histOpen=true;
  setTab(TAB.RITUAL); ritRender(); status('');};
 const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CURP.story={entries:[]};
  CURP.avatar=avatarBlank(); pSave(); setTab(TAB.RITUAL); ritRender(); status('');};
