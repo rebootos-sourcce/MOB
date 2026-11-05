@@ -19,8 +19,8 @@
 
      the goals      one card, Goals, three views of one set. Today is the
                     Active list (ritActiveBody, unchanged), three affirmations
-                    and three challenges. This week is a calendar week, Monday
-                    first, one row per active ritual, so a ritual set for
+                    and three challenges. This week is a calendar week, Sunday
+                    first since SV24, one row per active ritual, so a ritual set for
                     Tuesday, Thursday and Saturday is drawn on those three days
                     and nowhere else. This month is each ritual with where its
                     span ends, and the month's counts.
@@ -204,6 +204,25 @@ function ritSavedHtml(){
 
 /* ---------------- the day's affirmations and challenges ---------------- */
 function ritHash(s){var h=0; s=String(s); for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0; return (h>>>0).toString(36);}
+/* AN AVATAR LINE, SAID AS I AM, SV24. His ruling: "Affirmations are I am
+   statements." The two lines he pointed at, "Someone who stays steady in the
+   middle of it" and "Someone who picks a way and walks it", are Ana's own
+   avatar lines (RITEX_AV, engine/ritex.js), the answer to who she wants to
+   become, and all 29 of that table's lines open the same way, as a person
+   writing their own avatar would. The line is right where it is asked for,
+   and on the Ongoing goal card ("Your avatar wants to be"), so it is not
+   rewritten at its source. Here, where it is said as an affirmation, a line
+   that names who to be is said as being it: "I am " in front of their words,
+   and nothing of theirs changes. Only a line that opens on who, Someone,
+   Somebody, A or An, a person or the one, takes it, because any other
+   opening would not read as a sentence after I am; those, and a line that
+   already opens on I, are quoted as written. The said record stays keyed by
+   the line as written (ritHash(be)), so a tick from before this survives. */
+var RIT_IAM_RX=/^(someone|somebody|a|an|the one|the person|the kind of person)\b/i;
+function ritIAm(be){
+ be=String(be||'').trim();
+ if(!RIT_IAM_RX.test(be))return null;
+ return 'I am '+be.charAt(0).toLowerCase()+be.slice(1);}
 function ritAffirm(st){
  var out=[], seen={}, cfs={};
  var pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[];
@@ -211,7 +230,8 @@ function ritAffirm(st){
   var pr=pairs[i]; if(!pr||!pr.be)continue;
   var be=String(pr.be).trim().replace(/^"+|"+$/g,''); if(!be||seen[be])continue; seen[be]=1;
   var b=(pr.seat&&BANDS.indexOf(pr.seat)>=0)?pr.seat:((typeof readSeat==='function')?readSeat(pr.notbe||''):null);
-  out.push({id:'av:'+ritHash(be), line:be, b:b||'', own:true});}
+  var iam=ritIAm(be);
+  out.push({id:'av:'+ritHash(be), line:iam||be, b:b||'', own:!iam});}
  /* NO LINE UNDER AN AFFIRMATION, 4 November. Every card carried a second
     line saying where it came from: "Toward equanimity. You hold pride at the
     solar plexus, and it runs on anger.", or "Your own avatar line, at the
@@ -299,8 +319,14 @@ function ritChalHtml(st,M){
   return '<li class="rv-af1 rv-ch1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
    +'<button type="button" class="rv-log" data-act="did" data-id="'+esc(c.id)+'" aria-pressed="'+on+'" aria-label="'
    +(on?'Done today. Press to take it off':'Mark done today: '+esc(c.nm))+'">'+ritTickHtml(on,col)+'</button>'
-   +'<span class="rv-aft"><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
-   +'<span class="rv-afq">'+esc(c.act)+'</span><span class="rv-afs">'+esc(c.when)+'</span></span></li>';}).join('')+'</ul>';
+   /* WHEN A CHALLENGE APPLIES IS ON THE PRESS, SV19. It was a third line
+      under every challenge, "When accountability is required.", the third
+      tier text he struck everywhere else on this page this round. The name
+      and its voice stay, because the voice is what the name means (the
+      unpack rule), and the action stays, because it is the challenge. The
+      when rides in the one tooltip on the text. */
+   +'<span class="rv-aft"'+rvTip(c.nm,c.when)+'><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
+   +'<span class="rv-afq">'+esc(c.act)+'</span></span></li>';}).join('')+'</ul>';
  /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
     to, and it is no longer said. A line counted the rows aloud ("One pattern
     in your reading has a challenge, so one is shown. More come as your
@@ -319,7 +345,7 @@ function ritChalHtml(st,M){
    not read it as a calendar. The reason was its shape and not its place: it
    was a row per ritual and a square per day, which is a tracker's grid, and
    on a calendar the thing a person looks at is the day. So the day is the
-   column now, Monday first, and under each date are the rituals that day
+   column now, Sunday first since SV24, and under each date are the rituals that day
    carries, by name, in their seat's colour, done, set or missed. The switch
    between Today, This week and This month went with the grid: a week one
    press away behind a Today is the arrangement he said does not look like a
@@ -348,7 +374,7 @@ function ritDateOf(d){var off=new Date().getTimezoneOffset()*60000; return new D
 /* the furthest week back, as a negative count of weeks from this one */
 function ritWkMin(st){
  var rs=ritRecordStart(st); if(rs===null||rs>st.today)return 0;
- return -Math.round(((st.today-ritWd(st.today))-(rs-ritWd(rs)))/7);}
+ return -Math.round(((st.today-ritWc(st.today))-(rs-ritWc(rs)))/7);}
 /* one day's rituals, once each: the record can hold the same steps twice on a
    day, and a calendar names a ritual once on the day it carries it */
 function ritWeekDay(d,st){
@@ -359,7 +385,8 @@ function ritWeekDay(d,st){
 function ritWeekCalHtml(st){
  var today=st.today, lo=ritWkMin(st);
  RIT.wk=Math.max(lo,Math.min(RIT_WK_AHEAD,RIT.wk|0));
- var mon=today-ritWd(today)+7*RIT.wk, first=ritDateOf(mon), last=ritDateOf(mon+6);
+ /* the week opens on its Sunday, ritWc (ui/ritual.js), SV24 */
+ var sun=today-ritWc(today)+7*RIT.wk, first=ritDateOf(sun), last=ritDateOf(sun+6);
  var fmt=function(dt){return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});};
  var range=fmt(first)+' to '+fmt(last);
  var nav='<div class="rv-wkn">'
@@ -371,9 +398,9 @@ function ritWeekCalHtml(st){
   +(RIT.wk?'<button type="button" class="btn rv-wk0" data-act="wk" data-d="0">This week</button>':'')+'</div>';
  /* THE WEEK HOLDS TODAY or it does not, and only a week that holds it sets
     the other six back: on a week cycled away no day is the one to look at */
- var hasNow=today>=mon&&today<=mon+6;
+ var hasNow=today>=sun&&today<=sun+6;
  var days='<ol class="rv-wkg'+(hasNow?' rv-wkg-now':'')+'" aria-label="'+esc(range)+'">'+[0,1,2,3,4,5,6].map(function(i){
-  var d=mon+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
+  var d=sun+i, dt=ritDateOf(d), segs=ritWeekDay(d,st);
   /* MORE THAN THREE IS TWO AND A +N, never four squeezed into three slots:
      a day can carry rituals, and each is its own sash, so a heavy day would
      otherwise grow its cell and the grid would stop being a grid */
@@ -384,8 +411,19 @@ function ritWeekCalHtml(st){
       sentence: seven Nothing on this day lines would be the week's loudest
       text on the emptiest week */
    :'<span class="rv-wd0" aria-label="Nothing set">–</span>';
+  /* THE DAY ITSELF IS A PRESS, SV19, his words: "If I select a day of the
+     week, I don't [get what I expect]." Measured on main before this: a sash
+     opened its ritual's sheet and a heavy day's +N opened the day's list, but
+     the weekday and the date, the part a person reads as the day, were a span
+     and did nothing, and an empty day was a dash with nothing behind it. So
+     the head of every column is a button that opens that day in the sheet,
+     the same ritDayOpen the +N uses: every ritual on it, each opening its own
+     sheet, or Nothing set. It writes nothing, so it repaints nothing. */
+  var dnm=dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
   return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'">'
-   +'<span class="rv-wdh"'+(d===today?' aria-current="date"':'')+'><span>'+RIT_WDN[i]+'</span><b>'+dt.getDate()+'</b></span>'+list+'</li>';}).join('')+'</ol>';
+   +'<button type="button" class="rv-wdh" data-act="wday" data-d="'+d+'"'+(d===today?' aria-current="date"':'')
+   +' aria-label="'+esc(dnm+(segs.length?', '+segs.length+(segs.length===1?' ritual':' rituals'):', nothing set'))+'">'
+   +'<span>'+RIT_WDN[RIT_WCOL[i]]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
  return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
   /* Planned, the word the Record and the thirty days beside it use for the
      same state: the grid this replaced said Set, a second word for one thing
@@ -502,6 +540,7 @@ function ritSashSheet(s,d,st){
 function ritDaySheet(d,st){
  var segs=ritWeekDay(d,st);
  return '<div class="rv-sh"><div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">'+esc(ritDayName(d,st.today))+'</span></span></div>'
+  +(segs.length?'':'<p class="rv-empty">Nothing set.</p>')
   +'<ul class="rv-shl">'+segs.map(function(s,k){
    return '<li><button type="button" class="rv-shr" data-sh="sash" data-d="'+d+'" data-i="'+k+'" style="--c:'+s.col+'">'
     +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
@@ -599,22 +638,22 @@ function ritSpanCell(X,today,small){
  var day=ritDayName(X.d,today);
  return {c:c, bg:bg, tip:small?'':rvTip(day,said)+' aria-label="'+esc(day+'. '+said)+'"'};}
 function ritSpanGrid(S){
- var today=S.today, wide=S.n>62, pad=ritWd(S.t0), out='';
+ var today=S.today, wide=S.n>62, pad=ritWc(S.t0), out='';
  if(!wide){
   out='<div class="rv-scal" role="group" aria-label="'+esc(S.R.nm)+', a day to a square">'
-   +RIT_WD.map(function(w){return '<span class="rv-scw" aria-hidden="true">'+w+'</span>';}).join('');
+   +RIT_WCOL.map(function(w){return '<span class="rv-scw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('');
   S.days.forEach(function(X,i){var k=pad+i, Q=ritSpanCell(X,today,S.n>31), dt=ritDateOf(X.d);
    out+='<span class="rv-sc rv-sc-'+X.st+(X.d===today?' rv-now':'')+'" style="grid-row:'+(Math.floor(k/7)+2)+';grid-column:'+(k%7+1)
     +';--c:'+Q.c+Q.bg+'"'+(S.n>31?' aria-hidden="true"':Q.tip)+'><b>'+(dt.getDate()===1?dt.toLocaleDateString('en-GB',{month:'short'})+' ':'')+dt.getDate()+'</b></span>';});
   return out+'</div>';}
- /* a year is weeks as columns, Monday at the top, the way a wall planner
+ /* a year is weeks as columns, Sunday at the top (SV24), the way a wall planner
     folds a year onto one sheet. One picture and not 365 presses: the
     figures beside it are the read, and the grid is described once. */
  var cols=Math.floor((pad+S.n-1)/7)+1, mon='', lastM=-1;
  for(var w=0;w<cols;w++){var d=S.t0-pad+w*7, dt=ritDateOf(Math.max(d,S.t0));
   if(dt.getMonth()!==lastM){lastM=dt.getMonth(); mon+='<span class="rv-sym" style="grid-column:'+(w+2)+'">'+dt.toLocaleDateString('en-GB',{month:'short'})+'</span>';}}
  out='<div class="rv-syr" role="img" style="--cols:'+cols+'" aria-label="'+esc(S.R.nm+': '+acctDays(S.kept)+' kept and '+S.missed+' missed, a square a day, a column a week.')+'">'+mon
-  +['M','','W','','F','','S'].map(function(w,i){return '<span class="rv-syw" style="grid-row:'+(i+2)+'">'+w+'</span>';}).join('');
+  +['','M','','W','','F',''].map(function(w,i){return '<span class="rv-syw" style="grid-row:'+(i+2)+'">'+w+'</span>';}).join('');
  S.days.forEach(function(X,i){var k=pad+i, Q=ritSpanCell(X,today,true);
   out+='<i class="rv-sc rv-sc-'+X.st+(X.d===today?' rv-now':'')+'" style="grid-column:'+(Math.floor(k/7)+2)+';grid-row:'+(k%7+2)+';--c:'+Q.c+Q.bg+'"></i>';});
  return out+'</div>';}
@@ -628,11 +667,17 @@ function ritSuccessHtml(st,chain){
     pretend the record was empty there: those days are drawn as a blank of
     their own, said to be blank, and never counted as missed. */
  if(S.rs===null)note='<p class="rv-sparse">Nothing on your record yet. This fills in, a day at a time, as you keep rituals.</p>';
- else if(S.rs>S.t0)note='<p class="rv-sparse">Your record starts '+esc(String(ritDayName(S.rs,S.today)).replace(/^(Today|Yesterday)$/,function(m){return m.toLowerCase();}))
-  +'. The '+acctDays(S.rs-S.t0)+' of this span before that are drawn blank: there is nothing to read there, and none of them counts as missed.</p>';
+ /* A SPAN THAT REACHES BACK BEFORE THE RECORD said so in a paragraph, and
+    it is cut, SV19, on his ruling against third tier text: the days before
+    the record are drawn hatched, and the key under the grid names the hatch
+    Before your record, so the picture and its key already say it. None of
+    them is counted as missed, which is the honest part, and that is the
+    arithmetic in ritSpanRead and not a sentence. */
  var extra=[S.said?'Affirmations said on '+acctDays(S.said)+'.':'', S.did?'Challenges done '+S.did+(S.did===1?' time.':' times.'):'']
   .filter(Boolean).join(' ');
- var held=S.then===null?'<p class="rv-okf rv-shel">No reading from before this span, so there is nothing to set the held places against.</p>'
+ /* and with no reading before the span the line says nothing, SV19: a
+    sentence about a comparison that cannot be made is the third tier line */
+ var held=S.then===null?''
   :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
  var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by seat, '+esc(R.nm)+'</span><ul class="rv-sbars">'
@@ -664,7 +709,6 @@ function ritCalCss(){
   '.rv-af1.rv-on{border-color:color-mix(in srgb,var(--c) 60%,transparent)}',
   '.rv-aft{display:flex;flex-direction:column;gap:3px;flex:1 1 auto;min-width:0;padding:9px 12px 9px 2px}',
   '.rv-afq{font-size:15.5px;line-height:1.45;color:var(--ink)}',
-  '.rv-afs{font-size:13px;line-height:1.45;color:var(--mid)}',
   '.rv-chn{font-size:14px;font-weight:600;color:var(--c)}',
   '.rv-chn small{font-weight:400;color:var(--mid);font-size:13px}',
   '.rv-ch1 .rv-afq{font-size:15px}',
@@ -682,16 +726,34 @@ function ritCalCss(){
   '.rv-wkg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}',
   /* THE CELL IS FIXED, SV17: the date, then a body three sashes tall whether
      the day carries none, one or three, so seven cells are one grid */
+  /* THE DAY TAG IS INVERTED, SV24, his words: "Days of the week ... they're
+     not legible, make those tags at the very top stand out, same with the
+     date" and "instead of it being a lighter gray background, for each day
+     of the week, invert the color." Measured before this on Ana at 1600: the
+     cell was a one percent white wash over the card, about rgb(31,42,49), the
+     weekday --dim at 12 pixels, near 4.4 to 1 against it and under the 4.5
+     floor the --dim token itself was raised to meet, and the date --mid. So
+     the grey wash leaves the cell, and the head of each column becomes a
+     solid tag in --ink with --bg type, the same two tokens the page's text
+     and ground already are, the other way round: about 17 to 1 in Dark, and
+     the light themes invert themselves with no second rule. */
   '.rv-wd1{display:grid;grid-template-rows:auto calc(3 * 44px + 2 * 6px);gap:6px;min-width:0;padding:6px 5px 8px;border-radius:10px;',
-  ' background:color-mix(in srgb,var(--edge-2) 10%,transparent)}',
-  '.rv-wd1.rv-past{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 30%,transparent)}',
+  ' background:none}',
+  '.rv-wd1.rv-past{background:none;box-shadow:none}',
   /* today is ringed the way a wall calendar rings a day, round RB's rule for
      the grid this replaces, and its date sits in the accent chip */
   '.rv-wd1.rv-now{box-shadow:inset 0 0 0 1.5px var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent)}',
-  '.rv-wdh{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;color:var(--dim)}',
-  '.rv-wdh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
-  '.rv-wd1.rv-now .rv-wdh{color:var(--ink);font-weight:600}',
-  '.rv-wd1.rv-now .rv-wdh b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center}',
+  '.rv-wdh{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:100%;min-height:44px;padding:4px 0;',
+  ' border:0;border-radius:8px;background:var(--ink);font:inherit;font-size:13px;font-weight:600;color:var(--bg);cursor:pointer}',
+  '.rv-wdh:hover{background:color-mix(in srgb,var(--ink) 84%,var(--bg))}',
+  '.rv-wdh:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-wdh b{font-size:15px;font-weight:700;color:var(--bg);font-variant-numeric:tabular-nums}',
+  /* today keeps its two marks: the accent ring round the column, and now the
+     whole tag in the accent, where before only the date sat in an accent
+     chip. A chip inside a solid tag would be a fill on a fill. */
+  '.rv-wd1.rv-now .rv-wdh,.rv-wd1.rv-now .rv-wdh b{background:var(--accent);color:var(--on-accent)}',
+  '.rv-wd1.rv-now .rv-wdh:hover{background:color-mix(in srgb,var(--accent) 84%,var(--bg))}',
+  '.rv-wd1.rv-now .rv-wdh:hover b{background:none}',
   '.rv-wdl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}',
   '.rv-wdl>li{display:block;min-width:0}',
   /* the stagger, 6 pixels a sash, so three on a day read as a stack laid
@@ -721,11 +783,11 @@ function ritCalCss(){
   '.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:hover,.rv-wkg-now .rv-wd1:not(.rv-now) .rv-wch:focus-visible{opacity:1}',
   '.rv-wd0{align-self:center;justify-self:center;color:var(--dim);font-size:14px}',
   '@container (max-width:639px){.rv .rv-wkg{grid-template-columns:minmax(0,1fr);gap:5px}',
-  /* a row is one sash tall and padded, and today's date chip is drawn a
-     size smaller here: at 26 it made today's row three pixels taller than
-     the other six, measured, which is the uneven grid this round removes */
-  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
-  ' .rv .rv-wd1.rv-now .rv-wdh b{min-width:22px;height:22px}',
+  /* a row is one sash tall and padded. Today's date chip, which was drawn a
+     size smaller here because at 26 it made today's row three pixels taller
+     than the other six, went with SV24: the whole tag is today's mark now,
+     the same size as the other six. */
+  ' .rv .rv-wd1{box-sizing:border-box;height:56px;grid-template-rows:none;grid-template-columns:44px minmax(0,1fr);align-items:center;gap:10px;padding:6px 10px}',
   ' .rv .rv-wdh{flex-direction:column}',
   ' .rv .rv-wdl{flex-direction:row;height:44px}',
   ' .rv .rv-wdl>li{flex:1 1 0;max-width:120px;--o:0px}',
@@ -810,8 +872,15 @@ function ritCalCss(){
   '.rv-sgrec{margin:6px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.5;color:var(--mid)}',
   '.rv-sga{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}',
   '.rv-sga .btn{min-height:44px}',
-  '.rv-sga .btn.pri{flex:1 1 auto}',
+  /* Add to practice no longer grows to fill the row, SV19: grown, it pushed
+     Dismiss onto a second line of its own under the other two, measured at
+     1600 on every card, which was the misalignment he named */
   '.rv-sgq{background:none;border-color:transparent;color:var(--mid)}',
+  /* the three answers on one row, SV19: measured, the three summed to 305.4
+     pixels in a 306 pixel row at 1600, so Dismiss wrapped to a line of its
+     own. It is the quiet one, text only, so it gives back its padding and
+     sits at the row's right end, where a dismiss is looked for */
+  '.rv-sga .rv-sgq{padding-left:8px;padding-right:8px;margin-left:auto}',
   '.rv-sgq:hover{color:var(--ink)}',
   '.rv-sgfoot{display:flex;justify-content:flex-end;margin-top:8px}',
   '.rv-saved{--k:var(--accent)}',
@@ -828,6 +897,43 @@ function ritCalCss(){
   '.rv-cb-ahead{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 55%,transparent)}',
   '.rv-cb-ahead.rv-cb-set{background:color-mix(in srgb,var(--c) 10%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 60%,transparent)}',
   '.rv-cbp{aspect-ratio:1/1}',
-  '.rv-cbmo{margin:0 0 6px;text-align:center;font-size:13px;font-weight:600;color:var(--mid)}'
+  /* ---- FLAT COLOUR ON EVERY CARD, SV19 ----
+     His words: "I asked for more flat color on the cards." SV16 made the
+     Called for cards one opaque fill of their seat with nothing outlined, the
+     Punch lighting's idiom, and this carries the same treatment to every card
+     and row on the page that still had the older three: an outline in the
+     card's colour, a five percent wash, and an inset stripe or a bevel. Each
+     is now one opaque fill of its colour into the panel and no edge. Opaque
+     on purpose, as SV16 recorded, so the still layer behind the stage does
+     not show through and make a gradient of the card. State grammar is kept,
+     because it is information and not decoration: planned is still an
+     outline and missed is still dashed, on the week, the cubes and the key.
+     Last in the last sheet the page injects (ritCss, ritStageCss, then this),
+     so it wins at equal weight without an important. */
+  '.rv .rv-sec,.rvr .rv-sec{border-color:transparent;background:color-mix(in srgb,var(--k) 9%,var(--panel))}',
+  '.rv-c-ana .rv-fig,.rv-fig{border-color:transparent;background:color-mix(in srgb,var(--k) 14%,var(--panel))}',
+  '.rv-item,.rv-af1,.rv-ok1,.rv-kp1,.rv-hc,.rv-sv1{border-color:transparent;box-shadow:none;background:color-mix(in srgb,var(--c) 13%,var(--panel-2))}',
+  '.rv-item.rv-done,.rv-af1.rv-on{border-color:transparent;background:color-mix(in srgb,var(--c) 24%,var(--panel-2))}',
+  '.rv-why,.rv-nxm{border-color:transparent;background:color-mix(in srgb,var(--c) 14%,var(--panel))}',
+  '.rv-nxi{border:0;background:color-mix(in srgb,var(--c) 22%,var(--panel))}',
+  '.rv-cb-done,.rv-wch-done,.rv-sc-done{box-shadow:none}',
+  '.rv-key .rv-k-cube{box-shadow:none}',
+  '.rv-wd1.rv-past{box-shadow:none;background:none}',
+  '.rv-gone{background:color-mix(in srgb,var(--accent) 12%,var(--panel-2))}',
+  /* History, the right menu's one press, SV19: the More practices press's own
+     look, a full width row with its chevron, and its panel under it.
+     A BUTTON, SV24, his words: "For the history make it a button." It was
+     one, a button element, and it did not look like one: rit-more draws no
+     fill, a dashed edge and --dim type, and on this page a dashed edge is
+     how a missed day is drawn, so it read as an empty slot with a word in it.
+     It now wears .btn's own surface (shell/head.html): --panel-2, a solid
+     --edge, --ink type, the pill, and --sunk under a hover. No new look is
+     made for it. It keeps its width and its chevron, which carries open and
+     shut. Practices in the builder keeps the dashed row, because he asked
+     this of History only. */
+  '.rv-histt{margin:0 0 var(--rv-gap,14px);padding:9px 17px;background:var(--panel-2);border:1px solid var(--edge);border-style:solid;border-radius:999px;',
+  ' color:var(--ink);font-size:14px;font-weight:500}',
+  '.rv-histt:hover{background:var(--sunk);border-color:var(--edge-2);color:var(--ink)}',
+  '.rv-histp>.rv-sec:last-child{margin-bottom:0}'
  ].join('\n');
  document.head.appendChild(st);}
