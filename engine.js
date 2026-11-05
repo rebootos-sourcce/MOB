@@ -13197,13 +13197,20 @@ function saveProfile(p){
    ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
    called character, which the owner retired for it on 23 October. It stays
    ch, because it is on every history row a record already holds and a key
-   is identity; only the label a person reads beside it moved. */
+   is identity; only the label a person reads beside it moved.
+
+   ig IS INTEGRITY, r.Ig, 0 to 10, and it is what Summary's "Integrity over
+   time" graph plots. Until 5 November no row carried it and seriesRead read
+   jq in its place, which is the overshoot of installed opposites past 6: a
+   person with every law at 10 was drawn at nothing, and one with every law
+   at 2 who overshot their opposites was drawn at 44%. jq stays on the row
+   under its own name; ig is the second key beside it, not a rename. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
   dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
-  jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
+  jq:Math.round(r.JQ*100)/100, ig:Math.round(r.Ig*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm, lawNow:snapLaws()};}
 /* ============================================================
@@ -14372,6 +14379,14 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  /* INTEGRITY ON THE ROW (snapshot's ig). Not in the list above, because
+     that list fills an absent field with 0, and an absent ig is a row
+     written before integrity was recorded: filled, it would be drawn on the
+     integrity graph as integrity of nothing. Absent or null stays absent.
+     Present, it is 0 to 10 and refused by name otherwise, never clamped. */
+  if(x.ig!==undefined&&x.ig!==null){
+   var igv=vRange(errs,'history['+i+'].ig',x.ig,0,10);
+   if(igv!==null)q.ig=igv;}
   /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
      needed a line here and not only in snapshot(): every row is rebuilt from
      it, so a key snapshot() writes and this does not name survives until the
@@ -23044,7 +23059,10 @@ function seriesRead(p,spanKey,now){
   if(!s||typeof s.cq!=='number')continue;
   var ms=Date.parse(s.t);
   if(!(ms>=t0&&ms<=t1))continue;
-  pts.push({ms:ms, cq:s.cq, ig:(typeof s.jq==='number'?s.jq:null)});}
+  /* ig is the row's integrity, snapshot()'s ig, and never jq, the overshoot
+     figure, which it read until 5 November and which runs roughly opposite.
+     A row from before ig was recorded reads null, and sumIg leaves it out. */
+  pts.push({ms:ms, cq:s.cq, ig:(typeof s.ig==='number'?s.ig:null)});}
  pts.sort(function(a,b){return a.ms-b.ms;});
  /* WHAT THE SPAN CAN AND CANNOT SAY. Nothing at all is one state, one reading
     is a second, and two or more is a line. They read differently and a caller
