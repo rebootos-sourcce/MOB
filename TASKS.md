@@ -33975,3 +33975,31 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   onto main after the four PR merges; only generated build files
   clashed, rebuilt rather than picked a side. Still open: the five
   node-state words' boundaries, his call.
+
+- [x] **SV16 closed, 5 November. Ritual page, the centre is a week, PR
+  #184, draft.** The build started against stale state, thinking PR #183
+  was still open and stacked its branch on it; I retargeted #184 to
+  main once it landed, no content change, same diff. All six: a real
+  weekly calendar (Monday first, today ringed, each day's rituals by
+  name and state, back to the record's first week, forward four weeks,
+  a This week button, one phone row per day); New ritual opens straight
+  into the builder, no press, both tag rows gone (the left rail's
+  "Start from a tag" and the builder's own); the left cards flat-filled
+  in their seat colour, "2 minutes", "Add to practice", "Save"; heading
+  "Called for" and shelf "Saved" (narrative-director's ruling, carried
+  over from the question it couldn't ask itself); Ongoing goal and
+  Ritual to avatar moved into the right rail, under Accountability. One
+  real bug found and fixed along the way: Cancel used to leave When/
+  Where/How long filled in, invisible before because the builder used
+  to close on cancel; now that it stays open, it had to actually be
+  fixed. A new browser gate (FT34) walks every week the arrows reach and
+  checks each day's rituals against a list it computes itself from the
+  record, not from the page; both new checks were run against planted
+  defects first and caught them. Tests: engine 6899/0, functional
+  2970/0, flowtools 190/0, collide 398/0, design 193/0, funnel 760/0,
+  boot 29/0, landing 20/0, monitor clean, products clean, voice
+  objections identical to base. Two judgment calls flagged for him on
+  the PR: where exactly the two moved cards sit in the right rail (low,
+  after the whole Accountability block, a one-line change if he wants
+  them higher), and reading "flat solid color" as the card's own seat
+  colour rather than grey.
