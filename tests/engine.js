@@ -361,6 +361,34 @@ const snap=E.snapshot(prof);
  const got=vs.ok?vs.profile.history.map(x=>x.tier):[];
  ok(vs.ok&&got[0]==='Contracted'&&got[1]==='Severe'&&got[2]===null&&!!E.TIER_BY.Contracted&&!E.TIER_BY.Collapsed,
   'a history row written as Collapsed reads Contracted, the band it is, and nothing else moves, '+JSON.stringify(got));}
+/* THE INTEGRITY GRAPH PLOTS INTEGRITY, 5 November. seriesRead's ig is what
+   Summary draws under "Integrity over time", and it read jq, the overshoot of
+   installed opposites, so every law at 10 drew at 0 and every law at 2 with
+   the opposites overshot drew at 4.36, 44%. Both ends are held: the best case
+   reads its integrity and the worst reads low, and a row with no ig, which is
+   every row written before it was recorded, reads null and not 0. */
+{ const mk=(law,held,opp)=>{const p=E.blankProfile('ig'+law);
+  E.CHILD.forEach(c=>p.axes[c.nm]={held:held,opp:opp}); E.SINAMES.forEach(l=>p.laws[l]=law); return p;};
+ const now=Date.now(), at=ms=>new Date(now-ms).toISOString();
+ const sr=p=>{const rd=E.read(p), r=rd.reading, s=rd.snapshot;
+  const a=Object.assign({},s,{t:at(3600e3)}), b=Object.assign({},s,{t:at(60e3)});
+  return {Ig:r.Ig, JQ:r.JQ, pts:E.seriesRead({history:[a,b]},'day',now).pts};};
+ const best=sr(mk(10,2,0)), worst=sr(mk(2,0,10));
+ ok(best.pts.length===2&&best.pts.every(x=>x.ig===Math.round(best.Ig*100)/100)&&best.Ig>9.9,
+  'every law at 10: the integrity graph reads '+best.pts.map(x=>x.ig).join(',')+', integrity is '+best.Ig.toFixed(2));
+ ok(worst.pts.length===2&&worst.pts.every(x=>x.ig===Math.round(worst.Ig*100)/100&&x.ig<best.pts[0].ig)&&worst.JQ>1,
+  'every law at 2 with opposites overshot: the integrity graph reads '+worst.pts.map(x=>x.ig).join(',')
+  +', integrity is '+worst.Ig.toFixed(2)+', overshoot is '+worst.JQ.toFixed(2));
+ const old=E.seriesRead({history:[{t:at(60e3),cq:50,jq:3}]},'day',now).pts;
+ ok(old.length===1&&old[0].ig===null,'a row with no ig reads null on the integrity graph, got '+JSON.stringify(old));
+ /* and through the boundary: an absent ig stays absent rather than filled
+    with 0, and one out of range is refused by name, never clamped */
+ const base=JSON.parse(JSON.stringify(prof)), row=JSON.parse(JSON.stringify(snap));
+ const noIg=Object.assign({},row); delete noIg.ig;
+ const v1=E.validateProfile(Object.assign({},base,{history:[noIg]}));
+ const v2=E.validateProfile(Object.assign({},base,{history:[Object.assign({},row,{ig:11})]}));
+ ok(v1.ok&&!('ig' in v1.profile.history[0]),'a row with no ig gains one at the boundary');
+ ok(!v2.ok&&v2.errs.join(' ').indexOf('history[0].ig')>=0,'an ig of 11 is not refused by name: '+JSON.stringify(v2.errs));}
 ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
 ok(!('charge' in snap)&&!('law' in snap)&&!('laws' in snap),'snapshot holds no inputs');
 
