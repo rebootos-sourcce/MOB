@@ -73,14 +73,14 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 </header>
 <div class="sec"><div class="his">create a log of all the times I said I do not like this copy type. Create a database, sweep for it, and kill it. And add that to the style guide.</div>
 <div class="grid">
-<div class="tile"><div class="t">Objections logged</div><div class="v">30</div></div>
-<div class="tile"><div class="t">Quoted verbatim</div><div class="v">25</div></div>
-<div class="tile"><div class="t">Rules</div><div class="v">25</div></div>
+<div class="tile"><div class="t">Objections logged</div><div class="v">31</div></div>
+<div class="tile"><div class="t">Quoted verbatim</div><div class="v">26</div></div>
+<div class="tile"><div class="t">Rules</div><div class="v">26</div></div>
 <div class="tile"><div class="t">Not gateable</div><div class="v">13</div></div>
-<div class="tile"><div class="t">Findings now</div><div class="v">23</div></div>
+<div class="tile"><div class="t">Findings now</div><div class="v">17</div></div>
 <div class="tile"><div class="t">Stopping a build</div><div class="v">0</div></div>
 </div>
-<p class="meta">commit <i>8245e7f</i>, tree dirty &nbsp; database md5 <i>2be8e35238f8</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
+<p class="meta">commit <i>efe16897</i>, tree dirty &nbsp; database md5 <i>af4a330331a1</i><br>sweep <i>python3 .claude/skills/atuned-voice/check.py --objections</i></p>
 </div>
 <div class="sec"><h2>What the sweep found</h2>
 <p>One line per rule. A rule reading zero is a rule holding a class closed, which is what a gate is for.</p>
@@ -93,6 +93,7 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>serial-to-a-person</code></td><td data-k="refuses">A node serial or a stack integer in front of a person is the data model read out loud.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-15</td></tr>
 <tr><td data-k="rule"><code>two-months-free</code></td><td data-k="refuses">The offer is not two months free.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-25</td></tr>
 <tr><td data-k="rule"><code>section-explains-itself</code></td><td data-k="refuses">A paragraph under a heading whose only job is to explain what the section is, how to read it, or how to use it.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-27, CO-28, CO-16</td></tr>
+<tr><td data-k="rule"><code>invented-example-copy</code></td><td data-k="refuses">A placeholder, a default value or a sample answer in a field is never a whole invented sentence about a person, a scene or an action.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-32</td></tr>
 <tr><td data-k="rule"><code>figure-label</code></td><td data-k="refuses">A figure&#x27;s label is one word and carries no comma.</td><td data-k="found" class="num"><span class="pill clean">gated in check.py:figure label</span></td><td data-k="from" class="dim">CO-08</td></tr>
 <tr><td data-k="rule"><code>naked-number</code></td><td data-k="refuses">A number with no unit and no denominator.</td><td data-k="found" class="num"><span class="pill clean">gated in check.py:naked number</span></td><td data-k="from" class="dim">CO-06, CO-07</td></tr>
 <tr><td data-k="rule"><code>em-dash</code></td><td data-k="refuses">No em dashes anywhere, including commit messages and documentation.</td><td data-k="found" class="num"><span class="pill clean">gated in check.py:emdash</span></td><td data-k="from" class="dim">CO-19</td></tr>
@@ -106,35 +107,29 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <tr><td data-k="rule"><code>question-mark</code></td><td data-k="refuses">A document titled questions is a document of questions.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/questions.js</span></td><td data-k="from" class="dim">CO-12</td></tr>
 <tr><td data-k="rule"><code>plain-field-label</code></td><td data-k="refuses">A field is named for what goes in it and a button for what it does.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-26</td></tr>
 <tr><td data-k="rule"><code>abstract-word</code></td><td data-k="refuses">A word that is always an abstraction standing in for a plain one.</td><td data-k="found" class="num"><span class="pill clean">0</span></td><td data-k="from" class="dim">CO-29</td></tr>
-<tr><td data-k="rule"><code>bare-weight</code></td><td data-k="refuses">A weight printed on its own says nothing to either reader.</td><td data-k="found" class="num"><span class="pill flag">23</span></td><td data-k="from" class="dim">CO-30</td></tr>
+<tr><td data-k="rule"><code>bare-weight</code></td><td data-k="refuses">A weight printed on its own says nothing to either reader.</td><td data-k="found" class="num"><span class="pill flag">17</span></td><td data-k="from" class="dim">CO-30</td></tr>
 <tr><td data-k="rule"><code>percent-on-unread</code></td><td data-k="refuses">A percent sign, or per cent, on a surface whose profile is unread is a figure about the default, and a percent printed off zero is never a reading.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/copy-verify.py:percent-on-unread</span></td><td data-k="from" class="dim">CO-31</td></tr>
 <tr><td data-k="rule"><code>bare-number-on-unread</code></td><td data-k="refuses">A number standing alone on a surface whose profile is unread says a measured value where nothing was measured.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/copy-verify.py:bare-number-on-unread</span></td><td data-k="from" class="dim">CO-31</td></tr>
 <tr><td data-k="rule"><code>zero-as-dash</code></td><td data-k="refuses">A zero shown as a number where a dash belongs.</td><td data-k="found" class="num"><span class="pill clean">gated in tools/copy-verify.py:zero-as-dash</span></td><td data-k="from" class="dim">CO-31</td></tr>
 </table>
-<h3>bare-weight, 23 found</h3>
-<div class="hit"><span class="w">atuned_src/ui/analytics.js:148</span><span class="s">carrying, at a shadow weight of &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/analytics.js:379</span><span class="s">weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/component.js:790</span><span class="s">, weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/cone.js:2922</span><span class="s">, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/drills.js:297</span><span class="s">Charge held here &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/drills.js:500</span><span class="s">&lt;/b&gt;, shadow weight &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/fieldbar.js:177</span><span class="s">Ring and number: segment depth, SQ, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/fieldbar.js:180</span><span class="s">, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/imprints.js:77</span><span class="s">Charge left</span></div>
-<div class="hit"><span class="w">atuned_src/ui/imprints.js:260</span><span class="s">weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/knowledge.js:539</span><span class="s">, weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/knowledge.js:540</span><span class="s">, weight</span></div>
+<h3>bare-weight, 17 found</h3>
+<div class="hit"><span class="w">atuned_src/ui/component.js:1177</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/cone.js:3001</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/drills.js:393</span><span class="s">Charge held here &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/drills.js:692</span><span class="s">&lt;/b&gt;, shadow weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/imprints.js:92</span><span class="s">Charge left</span></div>
+<div class="hit"><span class="w">atuned_src/ui/imprints.js:277</span><span class="s">weight</span></div>
 <div class="hit"><span class="w">atuned_src/ui/map.js:942</span><span class="s">addresses, weight</span></div>
 <div class="hit"><span class="w">atuned_src/ui/map.js:2157</span><span class="s">at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/map.js:2732</span><span class="s">, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/map.js:3346</span><span class="s">, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/rings.js:1092</span><span class="s">Heaviest pattern. Weight</span></div>
-<div class="hit"><span class="w">atuned_src/ui/summary.js:271</span><span class="s">axis, at a weight of</span></div>
-<div class="hit"><span class="w">atuned_src/ui/summary.js:1057</span><span class="s">&lt;/b&gt;, at a weight of &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/ui.js:53</span><span class="s">&lt;hr&gt;charge held &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/ui.js:79</span><span class="s">&lt;br&gt;weight &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/ui.js:91</span><span class="s">weight &lt;b&gt;</span></div>
-<div class="hit"><span class="w">atuned_src/ui/ui.js:1484</span><span class="s">, weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/map.js:2759</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/map.js:3375</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/rings.js:1107</span><span class="s">Heaviest pattern. Weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/summary.js:276</span><span class="s">, at a weight of</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:61</span><span class="s">&lt;hr&gt;charge held &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:90</span><span class="s">&lt;br&gt;weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:102</span><span class="s">weight &lt;b&gt;</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:1730</span><span class="s">weight</span></div>
+<div class="hit"><span class="w">atuned_src/ui/ui.js:1793</span><span class="s">, weight</span></div>
 </div>
 <div class="sec"><h2>The log</h2>
 <p>Your wording, unsmoothed. Where an entry is not a quotation it says so on the line that says quoted, and says what the class was taken from instead.</p>
@@ -245,6 +240,10 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="his">I keep seeing this percent shit, the hardest carrying zero percent. I don&#x27;t want that. You have rules for this content. Use them. And earlier: I need you to verify that you have gone through the site because I have seen much stuff that doesn&#x27;t have the rules. Especially in the tooltips. And some of the info. And on the Field rail: Help me make sense of these: This is field carrying filled in heaviest most shut. What are you trying to tell me here? If it doesn&#x27;t make sense, cut it.</div>
 <p class="meta">where <i>round PL, task J13</i><br>when <i>2 October, in his words</i><br>quoted <i>verbatim</i><br>rules <i>count-against-total, percent-on-unread, bare-number-on-unread, zero-as-dash</i></p>
 <p class="dim">The rules existed and the product broke them, because the gate read the source and he reads the screen. The strings that broke them are built at run time or held in tables and shown by a stylesheet, so a literal sweep reported zero while the Field rail printed &quot;Heaviest Root 0.0&quot;. The answer is a second gate that reads the rendered page: tools/copy-walk.js and tools/copy-verify.py, with the counts in COPY-VERIFY.md. The Field rail block is not printed while the profile is unread, because the four doors above it already say nothing has been read.</p>
+<h3>CO-32. A field&#x27;s sample text written as a whole invented answer: after I put the kettle on, the chair by the window, and on the Avatar page a made up person&#x27;s day in each story box. A sample answer is a second voice on the screen, and it reads as an instruction to be that person.</h3>
+<div class="his">All that like third tier text you keep putting in, like after I put the kettle on, is fucking stupid, and I don&#x27;t know why I keep doing that. I wish it would stop. That&#x27;s about the 100th time I may have asked you to do that, and you&#x27;re still doing it. So figure out why you keep doing that in your code and stop it.</div>
+<p class="meta">where <i>round SV19, the Ritual page, red ink on the live page</i><br>when <i>5 November, in his words</i><br>quoted <i>verbatim</i><br>rules <i>invented-example-copy</i></p>
+<p class="dim">Why it kept coming back, found by Emmy and checked against the tree. The two strings were never cut because no gate ever read them. The house harvest drops any literal carrying = or a quote, which is every attribute; objection_hits strips tags before it matches, which deletes a placeholder written inside a whole input tag; and CO-27, section-explains-itself, is the shape of a paragraph under a heading, which a placeholder is not. Each round cut the visible text he struck and left the attribute, because the attribute is not text on a screenshot until the field is empty. The phrase came from the Gollwitzer and Sheeran citation quoted in DESIGN-firstrun.md and RETENTION-90DAY.md, where it is design rationale, and was copied into shipped copy. TASKS.md near round FO had noted it only as a grammar bug, When after I put the kettle on.</p>
 </div>
 <div class="sec"><h2>The strings that have to change</h2>
 <p>Old and new. The line is found by searching the file for the string, because four of these files were edited while this was being written.</p>
@@ -253,11 +252,11 @@ table.rules td[data-k=rule] code{white-space:nowrap}
 <div class="ba"><div class="k">old</div><div class="o">label:b.read?dir:&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">label:b.read?dir:&#x27;&#x27;</div></div>
 <p>The balance pill, and the last piece of the string the objection names. The structural half is landed and right: the pill draws a dash and the refusal moved out from between the two pole labels. The label is the part still to go. Not read yet is false on a field that has been read and is carrying under a mean of one on both sides, which is a real state the engine folds in with the empty one at compute.js:41. A label that can be false about the screen it sits on is worse than no label. The dash is the value, the absence needs no name, and the reason is one tap away in the drill.</p>
 <p class="dim">If an empty label draws an empty box, drop the key rather than passing a space.</p>
-<h3>atuned_src/ui/ui.js:983</h3>
+<h3>atuned_src/ui/ui.js, not found, may be fixed already</h3>
 <p class="meta">bucket <i>refusal</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">&#x27;Balance. Not read yet. Neither side reaches 1, so no direction is &#x27;</div><div class="k">new</div><div class="n">&#x27;Balance. Neither side reaches 1, so no direction is &#x27;</div></div>
 <p>The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not.</p>
-<h3>atuned_src/ui/drills.js:601</h3>
+<h3>atuned_src/ui/drills.js:805</h3>
 <p class="meta">bucket <i>value</i> &nbsp; rule <i>empty-state</i>, from <i>CO-09</i></p>
 <div class="ba"><div class="k">old</div><div class="o">+(!b.read?&#x27;not read yet&#x27;</div><div class="k">new</div><div class="n">+(!b.read?&#x27;no direction named&#x27;</div></div>
 <p>The drill&#x27;s headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it.</p>

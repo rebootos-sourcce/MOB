@@ -175,50 +175,40 @@ var AV_PIN='<path d="M9 3.5h6l-1 6 3.5 3.5h-11L10 9.5z"/><path d="M12 13v7.5"/>'
 var AV_CYC='<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>';
 /* THE PROMPTS, one set a seat, root to crown. Each asks for a thing that
    happened, in a body or a room, because that is what the sniffer can hear
-   and what a person can answer without thinking about it first. The two
-   example lines under each are placeholders in the fields, and every notbe
-   was run through readSeat before it went in: an example the instrument
-   cannot hear teaches a person the wrong thing on the first try, which is the
-   same reason the throat line above was checked. Four first drafts failed
-   that check and were rewritten: "my belly goes tight" read at the throat,
-   "my head goes foggy" read nowhere, and "none of it matters" read at the
-   sacral, because numb and empty are sacral words in the lexicon. */
+   and what a person can answer without thinking about it first.
+   THE TWO SAMPLE ANSWERS ARE GONE, SV19, CO-32. Each seat also carried a be
+   and a notbe, shown as the placeholders in its two story boxes: a made up
+   person's day, "My stomach knots up and I feel angry when my boss checks my
+   work." They were chosen with care, every notbe run through readSeat so the
+   sniffer could hear it, on the reasoning that an example it cannot hear
+   teaches the wrong thing. That reasoning is reversed here on his ruling
+   about the same shape on the Ritual page: "All that like third tier text you
+   keep putting in, like after I put the kettle on, is fucking stupid ... figure
+   out why you keep doing that in your code and stop it." A sample answer is a
+   second voice in the box. The question above the boxes, these asks, already
+   says what to write, and the boxes are empty. */
 var AV_ASK={
  Root:{ask:['Think of the last night you lay awake over money. What did your body do?',
   'When do you feel safe at home? Who are you on that day?',
-  'What happens in your body when a bill comes in?'],
-  be:'Someone who sleeps well and pays the bills on time.',
-  notbe:'I lie awake scared about money and my legs will not keep still.'},
+  'What happens in your body when a bill comes in?']},
  Sacral:{ask:['When did you last stop yourself making something? What did your belly do?',
   'What would you make if nobody was watching?',
-  'Think of a time you wanted something and said nothing. Where did you feel it?'],
-  be:'Someone who makes things and shows them.',
-  notbe:'When I show something I made, I feel exposed and I hide it.'},
+  'Think of a time you wanted something and said nothing. Where did you feel it?']},
  Solar:{ask:['Think of a hard day at work. Where did the pressure sit in your body?',
   'Who are you on a day you get the hard thing done?',
-  'What does your stomach do when someone checks your work?'],
-  be:'Someone who does the hard thing and stays steady.',
-  notbe:'My stomach knots up and I feel angry when my boss checks my work.'},
+  'What does your stomach do when someone checks your work?']},
  Heart:{ask:['Think of the last time someone close went quiet on you. What did your chest do?',
   'Who are you with the people you love, on a good day?',
-  'When did you last feel alone in a full room?'],
-  be:'Someone who stays close when it gets hard.',
-  notbe:'My chest aches and I feel lonely when my partner goes quiet.'},
+  'When did you last feel alone in a full room?']},
  Throat:{ask:['Think of the last time you held something back. What did your throat do?',
   'Who are you when you say the thing out loud in the room?',
-  'When did someone talk over you? What did you do next?'],
-  be:'A great public speaker. I stand up and the room hears me.',
-  notbe:'My throat is tight and I am afraid when I stand up in front of the board.'},
+  'When did someone talk over you? What did you do next?']},
  '3rd Eye':{ask:['Think of a choice you keep putting off. What happens when you go to make it?',
   'Who are you on a day you know which way to go?',
-  'When did you last change your mind three times in an hour?'],
-  be:'Someone who picks a way and walks it.',
-  notbe:'I keep replaying the choice and never make it.'},
+  'When did you last change your mind three times in an hour?']},
  Crown:{ask:['Finish this out loud: I am the kind of person who… What came out first?',
   'What would make this year feel worth it?',
-  'When did you last feel that none of it matters? What did your body do?'],
-  be:'Someone who knows what it is all for.',
-  notbe:'I feel disconnected, like my life has no purpose.'}};
+  'When did you last feel that none of it matters? What did your body do?']}};
 /* THE STORY BEHIND THE SYMBOL, APC's two sentences a seat, is cut, round KH:
    "way too much text all over the screen". The symbol carries the seat, and
    the Knowledge page still carries the prose for anyone who goes looking. */
@@ -970,14 +960,14 @@ function avTagStories(b,t){
 
 /* one box, in the journal's own two layers: the lit sentence behind, and a
    transparent textarea in front carrying the caret. The sub label that said
-   who each box was for is gone with the rest of the prose; the placeholder is
-   a sentence a person would write there, which says it better. */
+   who each box was for is gone with the rest of the prose, and the box has no
+   placeholder: the sample sentence that stood in it went, SV19, see AV_ASK. */
 function avBox(b,k,text){
- var A=AV_OF[b], ask=AV_ASK[b], rel=k==='notbe';
+ var A=AV_OF[b], rel=k==='notbe';
  return '<div class="avs-col"><div class="avs-lab"><b>'+(rel?'To release':'To embody')+'</b></div>'
   +'<div class="st-ed avs-ed"><div class="st-hl" data-avhl="'+k+'" aria-hidden="true">'+avHL(text)+'\n</div>'
   +'<textarea class="st-ta" data-avf="'+k+'" data-avs="'+b+'" maxlength="199" rows="3" spellcheck="false" '
-  +'aria-label="'+(rel?'To release':'To embody')+', '+A.nm+'" placeholder="'+esc(rel?ask.notbe:ask.be)+'">'
+  +'aria-label="'+(rel?'To release':'To embody')+', '+A.nm+'">'
   +esc(text)+'</textarea></div>'
   +'<div class="av-live" data-avlive="'+k+'" role="status" aria-live="polite">'
   +(rel?avLive(avHeard(text),{notbe:text}):avLiveBe(avDraft(b).notbe))+'</div></div>';}

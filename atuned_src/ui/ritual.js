@@ -1257,11 +1257,21 @@ function ritBuildHtml(c,nAct,unread){
     2006, ninety four studies, d 0.65: a plan that names a time and a place is
     acted on and a plan that names an intention is not. Both optional. The
     cap comes from the boundary, RIT_PLAN_MAX, and is not typed again here. */
+ /* NO PLACEHOLDER, SV19, CO-32. The two fields carried a made up person's
+    answer as their sample, a morning with a kettle in it and a chair by a
+    window, lifted from the Gollwitzer and Sheeran citation in
+    DESIGN-firstrun.md, where it is the rationale and not copy. He struck both
+    in red: "All that like third tier text you keep putting in, like after I
+    put the kettle on, is fucking stupid." It survived four rounds of cuts
+    because no gate read an attribute, so every cut took the text he struck
+    and left this. The labels, When and Where, say what goes in; the field is
+    empty. check.py --objections, invented-example-copy, now reads every
+    placeholder and value and fails a build on a sample answer. */
  out+='<div class="rv-plan">'
   +'<label class="rit-f"><span>When</span><input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX
-  +'" placeholder="after I put the kettle on" value="'+esc(RIT.when||'')+'"></label>'
+  +'" value="'+esc(RIT.when||'')+'"></label>'
   +'<label class="rit-f"><span>Where</span><input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX
-  +'" placeholder="the chair by the window" value="'+esc(RIT.where||'')+'"></label>'
+  +'" value="'+esc(RIT.where||'')+'"></label>'
   +(RIT.days<0&&RIT.edit?(function(){var q=ritPlans().filter(function(x){return x.id===RIT.edit;})[0];
     return q?'<p class="rv-left">'+ritLeft(q,ritToday0())+'</p>':'';})():'')
   +'<span class="rv-fl">How long</span><div class="rv-span" role="radiogroup" aria-label="How long">'
