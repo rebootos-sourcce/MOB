@@ -883,7 +883,34 @@ function railFold(){
 /* the child emotions layer's mark, the Child emotions tab's own, named once
    so the tab and the cascade's bar rows draw one mark */
 var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
-var STK_LAYER={sup:'Super complex',hy:'Hyper complex',cx:'Complex',sab:'Saboteur',fet:'Child emotion'};
+/* THE TIER, SAID IN WORDS, 5 November, round 3. His words on the linear
+   shots, with the three super complex rows struck: "Organize it by Super
+   Complex, Hyper Complex, Complex, Saboteur, etc." The mark alone made a
+   person already know the system to read the depth. So each tier is named
+   once, above its own rows, wherever a branch opens onto it (stkTier), and
+   the mark stays on every row for the quick scan.
+
+   THE WORDS. Singular, because the label names the tier and not a count.
+   Hyphenated, because the drill on this same rail says Hyper-Complex and
+   the summary box says a hyper-complex, and one concept takes one spelling
+   on one screen. Sentence case, the voice ruling, through the eyebrow's own
+   plain escape hatch, so the label is the eyebrow every other heading on
+   this panel is and does not read "Super-Complex". */
+var STK_LAYER={sup:'Super-complex',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur',fet:'Child emotion'};
+function stkTier(k){return '<div class="pm-eye plain stk-tier">'+esc(STK_LAYER[k])+'</div>';}
+/* ONE TIER'S ROWS, WITH ITS WORD WHERE THE TIER STARTS AND WHERE IT RESUMES.
+   Said once over a run of rows and not on every row. But a run can be broken:
+   open the first saboteur and its child emotion bars sit between it and the
+   next saboteur, and that next row would sit under "Child emotion" naming
+   it by the mark alone, the thing his note was about. So the word is said
+   again where the tier comes back after an open branch, and nowhere else. */
+function stkGroup(list,k,path,r,depth){
+ var h='', open=false;
+ (list||[]).forEach(function(x,i){
+  if(i===0||open)h+=stkTier(k);
+  h+=stkNode(x,path,r,depth);
+  open=!!STK_OPEN[path+'/'+x.kind+':'+x.nm];});
+ return h;}
 /* a layer's mark for a cascade row: a picture, so its word rides on it */
 function stkMark(k){
  return '<span class="stk-lm" title="'+esc(STK_LAYER[k])+'" aria-hidden="true">'
@@ -943,11 +970,11 @@ function stkNode(o,path,r,depth){
  if(open){
   /* a bar has nothing under it, so its chevron column is empty and its
      mark sits in the same column as every row above it */
-  if(o.kind==='sab')kids=stkFets(o).map(function(ci){
+  if(o.kind==='sab')kids=stkTier('fet')+stkFets(o).map(function(ci){
    return '<div class="stk-nr"><span class="stk-gut"></span>'+stkMark('fet')+stkFetBar(ci,depth+1)+'</div>';}).join('');
   /* a layer under the plan is said as locked, the same panel its own tab
      shows, and never as an empty branch */
-  else kids=lockSees(below)?(o.parts||[]).map(function(x){return stkNode(x,key,r,depth+1);}).join('')
+  else kids=lockSees(below)?stkGroup(o.parts,below,key,r,depth+1)
    :lockPanelHtml(below,{brief:true});}
  return '<div class="stk-n'+(open?' open':'')+'">'
   +'<div class="stk-nr">'
@@ -997,7 +1024,7 @@ function railStack(r){
    var any=false; stkWalk(list,'',function(k){if(STK_OPEN[k])any=true;});
    h+='<div class="stk-tl"><button type="button" class="stk-all" data-sall="'+(any?'0':'1')+'">'
     +(any?'Close all':'Open all')+'</button></div>'
-    +'<div class="stk-tree">'+list.map(function(o){return stkNode(o,'',r,0);}).join('')+'</div>';}
+    +'<div class="stk-tree">'+stkGroup(list,STACK_TAB,'',r,0)+'</div>';}
   else h+=lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB);}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the

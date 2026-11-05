@@ -3760,6 +3760,12 @@ body.punch .card{border-color:transparent}
 .stk-n.open>.stk-nr>.stk-x{color:var(--gold)}
 .stk-n.open>.stk-nr>.stk-x i{transform:translateY(2px) rotate(-135deg)}
 .stk-kids{padding-left:0}
+/* THE TIER'S WORD, round 3, ui/ui.js stkTier: the panel's own eyebrow, once
+   above each tier's rows in an open branch, starting at the mark column so
+   the word stands over the marks it names. No indent: the staircase stays
+   gone, and the word says the depth the step used to. */
+.stk-tier{display:block;margin:8px 0 0;padding:0 0 2px var(--tap)}
+.stk-tree>.stk-tier:first-child{margin-top:0}
 .stk-gut{flex:0 0 var(--tap);width:var(--tap)}
 .stk-lm{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--dim)}
 .stk-lm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
