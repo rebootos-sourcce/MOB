@@ -1417,8 +1417,10 @@ async function flowGate(browser,FILE,ok,booted){
   const tg=await pg.evaluate(async()=>{const b=()=>document.getElementById('ritall'), a=[b().textContent,b().getAttribute('aria-expanded')];
    b().click(); await new Promise(r=>setTimeout(r,150)); const z=[b().textContent,b().getAttribute('aria-expanded')];
    b().click(); await new Promise(r=>setTimeout(r,150)); return [a,z];});
-  ok(tg[0][0]==='More practices'&&tg[1][0]==='More practices'&&tg[0][1]==='false'&&tg[1][1]==='true',
-   'FT35: '+tag+'More practices keeps its label open and shut, and aria-expanded carries the state, '+JSON.stringify(tg));
+  /* SV24, his words: "just get rid of the word more". The label is
+     Practices, and it is still the one label open and shut */
+  ok(tg[0][0]==='Practices'&&tg[1][0]==='Practices'&&tg[0][1]==='false'&&tg[1][1]==='true',
+   'FT35: '+tag+'Practices keeps its label open and shut, and aria-expanded carries the state, '+JSON.stringify(tg));
   /* SV19, his words: "If I select a day of the week, I don't [get what I
      expect]." The weekday and date at the head of each column are a press
      now, and open that day in the sheet: every ritual on it, or Nothing set */
@@ -1445,7 +1447,7 @@ async function flowGate(browser,FILE,ok,booted){
     stacked:L.every((r,i)=>i===0||L[i-1].bottom<=r.top+1||L[i-1].top>r.top), called:/called for/i.test(document.getElementById('flowleft').querySelector('.rv-build').innerText)};
    RIT.all=false; ritRender(); return out;});
   ok(ls.n===ls.lib&&ls.n>0&&ls.oneCol&&ls.stacked&&!ls.called,
-   'FT35: '+tag+'More practices lists every practice the library offers one to a row, none side by side, and no tile says called for, '+JSON.stringify(ls));
+   'FT35: '+tag+'Practices lists every practice the library offers one to a row, none side by side, and no tile says called for, '+JSON.stringify(ls));
   }catch(e){ok(false,'FT35: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   ok(err.length===0,'FT35: '+tag+'no page errors, '+err.join(' | '));
   await pg.close();

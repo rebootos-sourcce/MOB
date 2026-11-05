@@ -333,7 +333,7 @@ function acctRotate(i){
    differ in reach and not in what they say, and two calendars of one read
    stacked in one rail was the page saying a thing twice. The glance stays;
    the history is the press. The press keeps one label and its chevron
-   carries the state, the More practices rule (UX rule 2). */
+   carries the state, the Practices press's rule (UX rule 2). */
 function acctSideHtml(st,arrive){
  var open=!!RIT.histOpen;
  return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)

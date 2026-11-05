@@ -1224,13 +1224,18 @@ function ritBuildHtml(c,nAct,unread){
     under the finger, and a slot keeps its label while the value carries the
     state (UX rule 2). Open and shut are aria-expanded, the attribute the
     Active list's rows and the Called for marks already carry, and the
-    chevron's turn, which is the attribute drawn. */
+    chevron's turn, which is the attribute drawn.
+    PRACTICES, NOT MORE PRACTICES, SV24, his words: "Where it says more
+    practices, just get rid of the word more." The press opens the whole
+    library, the called for one included, so Practices is also the truer
+    name. It is the one place the string is written: the button has no
+    aria-label or title of its own, so its name is this text. */
  out+='<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
-  +'<span>More practices</span>'+ritIc('down')+'</button>';
+  +'<span>Practices</span>'+ritIc('down')+'</button>';
  /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
     up to and a press moves it a minute at a time under ten and five at a
     time above, which is the size of the difference at each end. How often is
-    a week of seven presses, Monday first, with the two sets a person picks
+    a week of seven presses, Sunday first since SV24, with the two sets a person picks
     most as one press each: every day, and weekdays. One day is weekly. */
  var tm=RIT.tm||mins||1, on=RIT.on||[0,1,2,3,4,5,6], wk=on.join()==='0,1,2,3,4';
  out+='<div class="rv-row2">'
@@ -1238,13 +1243,20 @@ function ritBuildHtml(c,nAct,unread){
   +'<button type="button" class="rv-ib" data-act="tm" data-d="-1" aria-label="Shorter"'+(tm<=1?' disabled':'')+'>'+ritIc('minus')+'</button>'
   +'<b>'+tm+' min</b>'
   +'<button type="button" class="rv-ib" data-act="tm" data-d="1" aria-label="Longer"'+(tm>=RIT_TM_MAX?' disabled':'')+'>'+ritIc('plus')+'</button></div></div>'
-  +'<div class="rv-fld"><span class="rv-fl">How often</span><div class="rv-span rv-oft">'
+  /* NO HOW OFTEN LABEL, SV24, his words: "Get rid of the text that says how
+     often." The two presses under it say what they set, Every day and
+     Weekdays, and the seven days under those. The words leave the screen and
+     stay the group's accessible name, so a screen reader still hears what
+     the two presses are for. */
+  +'<div class="rv-fld rv-fld-oft"><div class="rv-span rv-oft" role="group" aria-label="How often">'
   +'<button type="button" class="rv-sp'+(!RIT.on?' rv-on':'')+'" data-act="often" data-v="all" aria-pressed="'+!RIT.on+'">Every day</button>'
   +'<button type="button" class="rv-sp'+(wk?' rv-on':'')+'" data-act="often" data-v="wk" aria-pressed="'+wk+'">Weekdays</button>'
   +'</div></div></div>'
   +'<div class="rv-wk" role="group" aria-label="Days">'
-  +RIT_WD.map(function(w,i){var p=on.indexOf(i)>=0;
-   return '<button type="button" class="rv-wkd'+(p?' rv-on':'')+'" data-act="wd" data-d="'+i+'" aria-pressed="'+p+'" aria-label="'+RIT_WDF[i]+'">'+w+'</button>';}).join('')
+  /* Sunday first like the calendars, and each press still writes the stored
+     weekday, Monday 0, so data-d is the weekday and not the column */
+  +RIT_WCOL.map(function(i){var p=on.indexOf(i)>=0;
+   return '<button type="button" class="rv-wkd'+(p?' rv-on':'')+'" data-act="wd" data-d="'+i+'" aria-pressed="'+p+'" aria-label="'+RIT_WDF[i]+'">'+RIT_WD[i]+'</button>';}).join('')
   +'</div>';
  /* THE IF THEN PLAN. Two fields, and they are the largest single item in the
     whole loop: 72 of 1000 at day thirty, measured. Gollwitzer and Sheeran
@@ -1906,6 +1918,23 @@ function ritCss(){
   '.rv-wk{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));gap:4px;margin-top:8px}',
   '.rv-wkd{min-height:44px;padding:0;border-radius:10px;border:1px solid var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
   '.rv-wkd.rv-on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--ink);font-weight:600}',
+  /* THE BUILDER ON TWO STEPS, SV24, his words: "The new ritual, tighten this
+     up." Measured on Ana at 1600 before this, top to bottom: 10, 10, 5, 10,
+     5, 8, 12 and then 20, 7, 10, 10, 12 pixels between the parts. Six values
+     for two jobs, so nothing read as belonging to anything. Now a label sits
+     4 over its control, the parts of one setting sit 8 apart, and one
+     setting sits 12 from the next. The plan's own rule keeps its 12 either
+     side. The fields are block siblings, so their margins collapse and the
+     larger of the two is the gap: Where's 8 under and How long's 12 over
+     make 12, which is the step between settings. */
+  '.rv-new .rv-fl{margin:0 0 4px}',
+  '.rv-new .rit-more{margin-top:8px}',
+  '.rv-new .rv-row2{gap:8px 16px;margin-top:12px;align-items:flex-end}',
+  '.rv-new .rv-wk{margin-top:8px}',
+  '.rv-new .rit-f{margin:0 0 8px}',
+  '.rv-new .rv-plan .rv-fl{margin-top:12px}',
+  '.rv-new .rv-plan .rv-span{margin-top:0}',
+  '.rv-new .rv-acts{margin-top:12px}',
   /* the timer on a row, and its three states: set, counting, time is up */
   '.rv-tmr{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;min-height:44px;min-width:44px;margin-right:6px;padding:0 12px;',
   ' border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;font-size:13.5px;',
