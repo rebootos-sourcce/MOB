@@ -33917,3 +33917,21 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   **Open, his call: where do the lines fall between open, impaired,
   moderately impaired, heavily impaired and blocked?** Nothing prints those
   words on a weight until that's ruled.
+
+- [x] **SW7 round 2, 5 November. Linear layout, same PR #182.** He looked at
+  round 1's cascade and sent back: "give me a linear layout, it's too
+  nested right now," a picture of the staircase. Fixed: every row, Super
+  through the child-emotion bars, starts at the same left edge regardless
+  of depth. Depth now shows as a fixed-width icon column next to each
+  row's open/close arrow, the same five icons the top tab bar already
+  uses for Child emotions/Saboteurs/Complexes/Hyper/Super, so a row's
+  layer is a glance, not a margin to count. Bars sit under the icon column
+  with no arrow of their own. One thing round 2 fixed along the way: a
+  bar's right-hand word was clipping at 1600 wide ("100%quanimity"); it
+  now truncates with its own ellipsis instead. Nothing else from round 1
+  moved. Tests: 36/0 real-click browser pass (the original 34 plus a new
+  check that every row in an open branch shares one left edge), engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, monitor
+  clean. Voice objections unchanged from main, still the 8 PR #181 words,
+  still zero new bare weights. Same open question as round 1: the five
+  node-state words' boundaries are still his to rule.
