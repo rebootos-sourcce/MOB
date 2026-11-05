@@ -44,11 +44,28 @@ const SEED=()=>{
   {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel rejected'}];
  CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
  /* ROUND QS: each avatar story's starting weight, kept the way the Avatar
-    page's own Save keeps it (avSideWrite, load0 = the row's load once the story
-    has landed), and before the release below, so the percent complete the
-    Ritual page now draws is the release's real movement and not a number
-    typed here */
- compute(); avSideWrite(e=>{avRows().forEach(x=>{if(x.gap)e.load0[avKey(x.pair)]=x.gap.load;});});
+    page's own Save keeps it: on the record itself, CURP.avatar.load0 keyed
+    by the pair's id (avatarui.js:2133, "on the record since round RB, S1,
+    against the pair's id"), and before the release below, so the percent
+    complete the Ritual page now draws is the release's real movement and
+    not a number typed here.
+
+    TWO BUGS, FOUND IN SEQUENCE. First, avState() reads load0 by x.pair.id
+    (avatarui.js, avClosure called with side.load0[x.pair.id]), never by
+    avKey(); this seed used to write under avKey(x.pair), a text key
+    nothing reads. Fixed, then re-measured, and overall still read 0.
+    Second, round RB itself moved load0 off the STORE-bound side table
+    (avSideWrite) and onto the record (CURP.avatar.load0) directly; writing
+    through avSideWrite, even keyed right, now lands somewhere avSide()
+    no longer reads at all. Third, the pairs this seed just created have no
+    id yet: ids are assigned lazily, by avatarFill() -> avatarEnsureIds(),
+    which avRows() (drills.js, avOf() with no fill) never calls. Calling
+    avatarFill() once first assigns the same deterministic id
+    (avatarPairId: a hash of be+notbe+seat) that avState()'s own later read
+    would compute, so writing by that id now and reading it later agree. */
+ avatarFill(CURP.avatar);
+ compute(); CURP.avatar.load0=CURP.avatar.load0||{};
+ avRows().forEach(x=>{if(x.gap)CURP.avatar.load0[x.pair.id]=x.gap.load;});
  /* one pass of the release's own arithmetic, and the reading it leaves */
  for(let k=0;k<2;k++){const q=relQueueOf(8); q.forEach(n=>relWrite(q,n,n.sq));}
  CURP.history.push(snapshot(CURP)); CURP.history[CURP.history.length-1].t=iso(today-3);
