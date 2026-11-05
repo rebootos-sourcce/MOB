@@ -405,13 +405,20 @@ function saveProfile(p){
    ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
    called character, which the owner retired for it on 23 October. It stays
    ch, because it is on every history row a record already holds and a key
-   is identity; only the label a person reads beside it moved. */
+   is identity; only the label a person reads beside it moved.
+
+   ig IS INTEGRITY, r.Ig, 0 to 10, and it is what Summary's "Integrity over
+   time" graph plots. Until 5 November no row carried it and seriesRead read
+   jq in its place, which is the overshoot of installed opposites past 6: a
+   person with every law at 10 was drawn at nothing, and one with every law
+   at 2 who overshot their opposites was drawn at 44%. jq stays on the row
+   under its own name; ig is the second key beside it, not a rename. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
   dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
-  jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
+  jq:Math.round(r.JQ*100)/100, ig:Math.round(r.Ig*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm, lawNow:snapLaws()};}
 /* ============================================================
@@ -579,7 +586,7 @@ function pStore(){
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
-  var v=validateProfile(raw[i]);
+  var v=validateProfile(raw[i],{stored:true});
   if(v.ok){ out.push(v.profile); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
@@ -1133,8 +1140,13 @@ function avatarFill(av){
   if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
  if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
  return avatarEnsureIds(av);}
-function validateProfile(o){
- var errs=[];
+/* ctx is optional. ctx.stored says the record is this device's own, read back
+   at boot or reopened from the list, and not an import: the summaries and the
+   journey then keep a date the device clock wrote ahead of today rather than
+   refusing the whole record over it (dlyValidate and journeyValidate say why).
+   Every other rule holds the same either way. */
+function validateProfile(o,ctx){
+ var errs=[], stored=!!(ctx&&ctx.stored);
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
@@ -1252,6 +1264,18 @@ function validateProfile(o){
       reads unresolved rather than being refused on the way in. */
    ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
+   /* DATE AND TIME HAVE A SHAPE, AND ONE THAT IS NOT IT IS REFUSED BY NAME.
+      These two were copied as any string, so a record link carrying markup
+      in the date ran it in the page, and a date of 2001-02-30 or 14/07/1988
+      was read as a sky for some other day or for none. The date and time
+      fields in Intake can only write these shapes or the empty string, so
+      this refuses nothing the app wrote. bornYMD and bornHM are in
+      engine/astro.js, the same checks birthJD reads by. */
+   var bd=o.who.born.date, bh=o.who.born.time;
+   if(typeof bd==='string'&&bd!==''&&!bornYMD(bd))
+    errs.push('who.born.date is not a real calendar day in year-month-day form');
+   if(typeof bh==='string'&&bh!==''&&!bornHM(bh))
+    errs.push('who.born.time is not a clock time between 00:00 and 23:59');
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
@@ -1580,6 +1604,14 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  /* INTEGRITY ON THE ROW (snapshot's ig). Not in the list above, because
+     that list fills an absent field with 0, and an absent ig is a row
+     written before integrity was recorded: filled, it would be drawn on the
+     integrity graph as integrity of nothing. Absent or null stays absent.
+     Present, it is 0 to 10 and refused by name otherwise, never clamped. */
+  if(x.ig!==undefined&&x.ig!==null){
+   var igv=vRange(errs,'history['+i+'].ig',x.ig,0,10);
+   if(igv!==null)q.ig=igv;}
   /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
      needed a line here and not only in snapshot(): every row is rebuilt from
      it, so a key snapshot() writes and this does not name survives until the
@@ -1635,14 +1667,14 @@ function validateProfile(o){
     record and pImport stays atomic. Missing or null is an older record and
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
-  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p), stored:stored});
  /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
     into the same errs, so one bad log line or one bad walk refuses the whole
     record and pImport stays atomic. It is not in the blank: a record that never
     walked the first run carries none and gains none here, so every such record
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
-  p.journey=journeyValidate(errs,o.journey,'journey');
+  p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -2176,9 +2208,12 @@ function meterFirst(p,key,label,at){
    PROFILES[0] fallback, never data. */
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
-var IMPORT_ERR=null;
-function pImport(txt){
- IMPORT_ERR=null;
+var IMPORT_ERR=null, IMPORT_COPY=false;
+/* keepId is for a caller that means to REPLACE the held record with the same
+   id and removes the older one itself straight after, which is the account
+   sync (ui/auth.js profileSyncImport). Every other caller leaves it out. */
+function pImport(txt,keepId){
+ IMPORT_ERR=null; IMPORT_COPY=false;
  /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
     record and pointed CURP at it, and left S.who naming the example, so the
     person's own record then read as somebody else's to every control that
@@ -2200,6 +2235,20 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* A RECORD WHOSE ID IS ALREADY HELD COMES IN AS A SEPARATE COPY. A saved
+    file loaded back while the original is still on the device, or the same
+    quiz link opened twice, carries an id this list already holds, and it was
+    pushed as it came. Every verb keyed by id (profFind, profOpen, profDelete,
+    the open pointer, the undo history) reaches only the first match, so the
+    copy could never be opened, and deleting the copy deleted the original
+    and the newer work on it, for good. So the copy gets a fresh id by the
+    blankProfile recipe and keeps its name and everything else, nothing held
+    is overwritten, and importCopied() says so for the host to tell the
+    person. */
+ if(!keepId&&PROFILES.some(function(q){ return q&&q.id===v.profile.id; })){
+  var fid; do{ fid='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  while(PROFILES.some(function(q){ return q&&q.id===fid; }));
+  v.profile.id=fid; IMPORT_COPY=true; }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
@@ -2211,6 +2260,9 @@ function pImport(txt){
  profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* true when the last load that landed was given a fresh id because its own
+   was already held, so the host can say it came in as a separate copy */
+function importCopied(){ return IMPORT_COPY; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
    The record link below is unpacked by the host, because the inflate is a
    browser stream and the engine never names its host. When that step fails

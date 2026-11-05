@@ -793,6 +793,31 @@ SUITES.freeze=function(E,ok,say){
  ok(E.dlyDay('nonsense')===null,'and a moment that is not a date is no day');
 };
 
+/* A DAY SEALED WHILE THE DEVICE CLOCK RAN AHEAD, read back at the next boot on
+   a corrected clock. dlySeal checks the day against the clock that wrote it, so
+   the write passes; the boot read used to refuse it, and one such day set the
+   whole record aside until the calendar caught up. Measured before the fix,
+   sealed at now plus two days: records loaded 0. This suite uses the real clock
+   on purpose, because the defect is two clocks disagreeing. */
+SUITES.clock=function(E,ok){
+ const w=world(E), ahead=new Date(Date.now()+3*DAY).toISOString();
+ E.pSave();
+ const o=E.dlyDayOpen(w.p,ahead,E.pSave);
+ ok((o.result==='frozen'||o.result==='silent')&&o.day&&o.day.d===E.dlyDay(ahead),
+  'a day opened with the clock three days ahead is sealed and saved: '+J({r:o.result,d:o.day&&o.day.d,why:o.why}));
+ /* the record is found by its id: other suites' records share this copy's list */
+ const back=E.pStore(), mine=back.find(x=>x.id===w.p.id);
+ ok(mine&&E.storeRefused().length===0,
+  'and the next boot, on the real clock, loads the record instead of refusing it: '+J({loaded:back.length,refused:E.storeRefused()}));
+ ok(mine&&mine.summaries.days.some(d=>d.d===E.dlyDay(ahead)),'and the day is kept, not dropped');
+ /* AN IMPORT STILL REFUSES IT. A record handed in from outside is not this
+    device's own write, so the boundary's one day of slack still holds there. */
+ const raw=JSON.parse(w.store[E.PKEY||'source.profiles']).find(x=>x&&x.id===w.p.id);
+ const imp=E.validateProfile(clone(raw));
+ ok(!imp.ok&&has(imp.errs,'after the day of this import'),'while an import of the same record is refused by name: '+J((imp.errs||[]).slice(0,1)));
+ ok(E.validateProfile(clone(raw),{stored:true}).ok,'and the stored read of it passes');
+};
+
 /* THE SIZE, MEASURED, ON A YEAR. It is slow beside the rest, so it runs once, on
    the clean copy, and no bite is aimed at it. */
 SUITES.size=function(E,ok,say){
@@ -864,7 +889,11 @@ const MUTANTS=[
  {suite:'freeze', what:'a failed save is reported as success',
   from:"if(typeof save==='function'&&!save()){", to:"if(false){"},
  {suite:'drawer', what:'the graph goes back to refusing a fetter as a pattern',
-  from:"if(m)return CHARGES.indexOf(m[1])>=0?null:id+' is not one of the nine fetters';", to:"if(m)return id+' is not an address number';"}];
+  from:"if(m)return CHARGES.indexOf(m[1])>=0?null:id+' is not one of the nine fetters';", to:"if(m)return id+' is not an address number';"},
+ {suite:'clock', what:'the stored read refuses a day the device clock sealed ahead',
+  from:"var now=ctx.stored?null:(ctx.now||new Date().toISOString())", to:"var now=(ctx.now||new Date().toISOString())"},
+ {suite:'clock', what:'the boot read validates as an import',
+  from:"validateProfile(raw[i],{stored:true})", to:"validateProfile(raw[i])"}];
 function load(src){
  const ctx={module:{exports:{}}, console:console};
  vm.createContext(ctx); vm.runInContext(src,ctx,{filename:'engine-copy.js'});

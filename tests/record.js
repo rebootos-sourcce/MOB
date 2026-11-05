@@ -80,15 +80,23 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
  console.log('\n=== L2. the next mark says what it takes, on the Compass and on the Ritual page ===');
  {const r=await ev(pg,()=>{
    var out={};
-   __rec([]); out.c0=__ld().next; out.g0=__txt(ritGoalHtml(ritRead()));
-   __rec([0]); out.c1=__ld().next; out.g1=__txt(ritGoalHtml(ritRead()));
+   __rec([]); out.c0=__ld().next; var h0=ritGoalHtml(ritRead()); out.g0=__txt(h0); out.t0=h0;
+   __rec([0]); out.c1=__ld().next; var h1=ritGoalHtml(ritRead()); out.g1=__txt(h1); out.t1=h1;
    return out;});
   ok(r.c0==='First run Mark one ritual done.','a blank record\'s Compass names the next mark and what it takes, got '+JSON.stringify(r.c0));
-  ok(/Next mark ?First run ?Mark one ritual done\./.test(r.g0||'')&&!/You marked/.test(r.g0||''),
-   'and so does the Ongoing goal, with nothing in the past tense, got '+JSON.stringify(r.g0&&r.g0.slice(-120)));
+  /* 4 November, round RB: the line under the next mark moved off the Ritual
+     page's visible text into the mark's own tooltip (rvTip), so the Ongoing
+     goal card now names the mark alone and carries what it takes one press
+     away, same sentence, same place `data-tip` always holds it. */
+  ok(/Next mark ?First run\b/.test(r.g0||'')&&!/Mark one ritual done\./.test(r.g0||'')&&!/You marked/.test(r.g0||''),
+   'and the Ongoing goal names the mark alone, nothing in the past tense, got '+JSON.stringify(r.g0&&r.g0.slice(-120)));
+  ok(/data-tip="Mark one ritual done\./.test(r.t0||''),
+   'and the Compass line it used to print inline is still there, one press away, got '+JSON.stringify((r.t0||'').match(/data-tip="[^"]*"/)));
   ok(/^Seven days Practise on seven days\./.test(r.c1||'')&&!/on the record/.test(r.c1||''),
    'after one day the next is Seven days and says what it takes, got '+JSON.stringify(r.c1));
-  ok(/Practise on seven days\./.test(r.g1||''),'on both surfaces');}
+  ok(/Next mark ?Seven days\b/.test(r.g1||'')&&!/Practise on seven days\./.test(r.g1||''),
+   'on the Ritual page too, the mark alone, no inline sentence');
+  ok(/data-tip="Practise on seven days\./.test(r.t1||''),'and the tooltip still carries it');}
 
  console.log('\n=== L1. Opened is addresses everywhere, and the marker distance says patterns ===');
  {const r=await ev(pg,()=>{

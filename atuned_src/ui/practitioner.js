@@ -346,6 +346,13 @@ function pracRead(p){
  CHARGES.forEach(function(c){oldCharge[c]=S.charge[c];oldReplace[c]=S.replace[c];});
  SINAMES.forEach(function(l){oldLaw[l]=S.law[l];oldUnset[l]=LAW_UNSET[l];oldSeed[l]=LAW_SEED[l];});
  var oldLawRec=LAW_REC;
+ /* the named address layer is read by compute beside the charge, so it is
+    swapped with the rest. It was not, and every client's loaded list carried
+    the addresses the open record's own stories named: Derek read 20 loaded
+    on a fresh page and 22 after one story on You. An example row carries no
+    layer, so a client is read on its own row's, which is none. */
+ var oldAddr=S.addr;
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -397,7 +404,7 @@ function pracRead(p){
  S.dom=oldDom;S.a1=oldA1;S.a2=oldA2;S.doms=oldDoms;S.arcs=oldArcs;S.roots=oldRoots;S.rec=oldRec;
  CHARGES.forEach(function(c){S.charge[c]=oldCharge[c];S.replace[c]=oldReplace[c];});
  SINAMES.forEach(function(l){S.law[l]=oldLaw[l];LAW_UNSET[l]=oldUnset[l];LAW_SEED[l]=oldSeed[l];});
- LAW_REC=oldLawRec;
+ LAW_REC=oldLawRec; S.addr=oldAddr;
  /* repair W and DOMAIN, which compute() just overwrote in place, before
     anything else in the app reads them again */
  buildSoul(); compute();

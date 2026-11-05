@@ -1472,7 +1472,10 @@ function renderIntake(){
      reporter it bound says what the press would do on the person's own */
   if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
   IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
-  iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+  /* the press reports its save like the other intake writes, so a refused
+     write is said and not left for a reload to discover, and the answer
+     stays on screen either way, the same as [data-ixb] above */
+  iqApply(CURP); pSave(); statusSaved(); syncLw(); renderIntake(); render();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
     both keep their place by the focus rule above. */
  var wb=document.getElementById('iqwho');
@@ -1552,9 +1555,13 @@ function renderIntake(){
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
  if(eb)eb.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
-  catch(e){eb.textContent=t.length+' bytes';}
-  setTimeout(function(){eb.textContent='Export';},1200);};}
+  /* the button and the line both wait for the clipboard's answer, for the
+     reason the account page's Export gives (ui/account.js, #acexp) */
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){eb.textContent='Copied';status('Profile copied to the clipboard.','ok');
+    setTimeout(function(){eb.textContent='Export';},1200);},
+   function(){eb.textContent='Not copied';status('Could not reach the clipboard. Nothing was copied.','fail');
+    setTimeout(function(){eb.textContent='Export';},2600);});};}
 /* THE ROW AND THE SEAL FOLLOW WHAT IS TYPED, in place. The form is open while
    it is being filled, and rewriting the host on every change would take focus
    from the next field, so the row's rings and the seal button are brought up
