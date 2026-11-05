@@ -5273,7 +5273,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
+  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Buddha/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Buddha" */
   /* a worked example saves nothing, so the panel offers no button. It also
      said so, "is a worked example, so nothing here is saved", and SV19 cut
      that line on his words: "Get rid of Ana is worked example, so nothing is
