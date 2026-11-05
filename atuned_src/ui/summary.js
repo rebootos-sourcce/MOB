@@ -283,9 +283,13 @@ function sumStory(r){
     :' No seat is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
-   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'. The law furthest shut is '
+   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
+   /* weakL is null until a law is answered: an unanswered law is a seed,
+      and naming a seed as the law furthest shut is a reading nobody gave */
+   +(r.weakL?' The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
-   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.'
+    :' No law is answered yet, so none is named as furthest shut.'));
  }else{
   /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
      shorthand that had also stopped being true: DQ counts the charge under

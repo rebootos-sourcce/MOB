@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2875 ff5b8297 2026-11-05 18:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v405 865ed91e 2026-11-05 18:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4203,35 +4203,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-rlfoot{margin-top:auto;padding-top:10px}
 /* the card's two fields, .rel-field, set to the column's left edge */
 .rel-fields.st-fields{justify-content:flex-start;margin:0}
-/* RUN SPEED AND PATTERNS ARE STEPPERS, 5 November, his words: "they look
-   generic. Give those a look a bit more designed." The Ritual page's Timer is
-   the model (.rv-stp, ui/ritual.js): one pill outlined in the second edge, a
-   minus, the figure in the number face, a plus. The two share the column
-   half and half, so they read as one row of settings and not two boxes that
-   happened to land side by side. .rel-field's own span and input rules are
-   undone inside the pill, because they were written for the bare box this
-   replaces: the span rule would set the pill in the eyebrow's 11 pixels and
-   the input rule would draw a box inside the pill. */
-.rel-fields.st-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.st-stpf{min-width:0}
-.rel-field .st-stp{display:flex;align-items:center;width:100%;min-height:var(--tap);
- border:1px solid var(--edge-2);border-radius:999px;font-size:inherit;font-weight:inherit;letter-spacing:0;color:var(--ink);
- transition:border-color var(--t-micro) var(--ease-out)}
-.rel-field .st-stp:focus-within{border-color:var(--accent)}
-.rel-field .st-stp input{flex:1 1 auto;min-width:0;width:100%;min-height:0;padding:0;border:0;background:transparent;
- color:var(--ink);font-family:var(--num);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
- text-align:center;-moz-appearance:textfield;appearance:textfield}
-.rel-field .st-stp input::-webkit-outer-spin-button,
-.rel-field .st-stp input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.rel-field .st-stp input:focus{outline:none}
-.st-sb{flex:0 0 auto;width:var(--tap);height:var(--tap);display:inline-flex;align-items:center;justify-content:center;
- padding:0;border:0;border-radius:999px;background:transparent;color:var(--mid);cursor:pointer;
- transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
-.st-sb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
-.st-sb:hover:not(:disabled){color:var(--ink);background:var(--panel-2)}
-.st-sb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.st-sb:disabled{opacity:.3;cursor:default}
-.rel-field .st-stp-off{opacity:.55}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
@@ -4371,18 +4342,12 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
    the way, so this carries none of the lift Chat and Dashboard were given
    (no fill, no border, no glow): it is a word and an icon at the foot of the
    panel, in the mid ink, and it reaches full ink on hover and while its box
-   is open. Still the full 44 pixel target, the floor tests/design.js holds.
-   AND THE WORD IS GONE, 5 November, his words: "just a keyboard icon." The
-   glyph sits centred in its own 44 pixel circle, and the negative margin that
-   lined the word up with the panel's text edge lines the circle up instead.
-   The circle's ground appears on hover and while the box is open, so the one
-   state the word used to carry by ink alone still shows on a bare glyph. */
-.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;justify-content:center;
- background:none;border:0;border-radius:999px;padding:0;margin-left:-10px;color:var(--mid);
- cursor:pointer;transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
-.st-type svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink);background:var(--panel-2)}
-.st-type:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+   is open. Still the full 44 pixel target, the floor tests/design.js holds. */
+.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;gap:7px;
+ background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
+ font-family:var(--sans);font-size:13px;cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
+.st-type svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
@@ -4468,46 +4433,17 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
-/* THE COLUMN IS A BODY, 5 November, see the ruling of that name in
-   ui/stdash.js. Each row is a grid: the seat's ring down the left, its name
-   and its figure on the first line, and a track the seat's colour fills
-   under the name. cr() is laid open with display:contents so its ring and
-   its pill land in the row's own grid, the figure at the row's end where the
-   eye finds a number, and its own pill ground gives way to the row's. The
-   spine is one hairline through the centres of the seven rings, shaded seat
-   to seat by --spine, which stDashLeft writes from seatCol. The md ring is
-   34 pixels, so the spine sits at 10 pixels of row padding plus 17. */
-.st-en-ls{position:relative;list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
-.st-en-ls::before{content:"";position:absolute;left:27px;top:26px;bottom:26px;width:2px;margin-left:-1px;
- border-radius:2px;background:var(--spine,var(--edge));opacity:.32;pointer-events:none}
-.st-en-r,.st-en-q{position:relative;display:grid;grid-template-columns:34px 1fr auto;
- grid-template-areas:"g n v" "g b b";column-gap:12px;row-gap:6px;align-items:center;
- min-height:52px;padding:8px 10px;border-radius:var(--r-s);font-size:14px;color:var(--ink);
- transition:background var(--t-micro) var(--ease-out)}
-.st-en-r .cr{display:contents}
-.st-en-r .cr .ring{grid-area:g;justify-self:center;border-radius:50%;background:var(--panel)}
-.st-en-r .cr .v{grid-area:v;justify-self:end;margin:0}
-.st-en-n{grid-area:n;min-width:0;font-weight:600;color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.st-en-bar{grid-area:b;display:block;height:4px;border-radius:4px;overflow:hidden;
- background:color-mix(in srgb,var(--c) 14%,transparent)}
-.st-en-bar i{display:block;height:100%;border-radius:4px;background:var(--c);
- transition:width var(--t-element) var(--ease-out)}
-.st-en-r:hover{background:color-mix(in srgb,var(--c) 7%,transparent)}
-/* the seat this story reaches hardest, on a ground of its own colour */
-.st-en-top{background:color-mix(in srgb,var(--c) 11%,transparent);
- box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 28%,transparent)}
-.st-en-top:hover{background:color-mix(in srgb,var(--c) 14%,transparent)}
-/* a seat this story did not reach keeps its place, quieter */
-.st-en-0 .st-en-n{color:color-mix(in srgb,var(--c) 70%,var(--mid))}
-/* the quiet map, before there is a story: the glyph in an outline, no arc
-   and no figure, so it cannot be read as seven zeros */
-.st-en-g{grid-area:g;justify-self:center;width:34px;height:34px;border-radius:50%;
- display:flex;align-items:center;justify-content:center;background:var(--panel);
- border:2px solid color-mix(in srgb,var(--c) 26%,transparent)}
-.st-en-g svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
-.st-en-q .st-en-n{grid-row:1 / 3;align-self:center;color:color-mix(in srgb,var(--c) 60%,var(--mid));font-weight:500}
-.st-en-q .st-en-bar{display:none}
-.st-lrail .st-none{margin:10px 10px 0;font-size:13px;line-height:1.5;color:var(--mid)}
+.st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
+.st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
+ border-bottom:1px solid var(--edge);font-size:14px;color:var(--ink)}
+.st-en-r:last-child{border-bottom:0}
+/* the ring's pill is as wide as its figure, a dash or 100%, so the ring takes
+   one width and the seven names start on one line, measured at 96 pixels for
+   100% at the sm size on both widths */
+.st-en-r .cr{flex:0 0 auto;min-width:96px}
+.st-en-r .st-en-n{flex:1 1 auto;min-width:0}
+.st-lrail .st-none{margin:6px 2px 0}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4811,15 +4747,6 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
 .src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
-/* a worked example's journal, stExampleThread in ui/storyui.js: the same
-   bubble, with the day it was written under it on the bubble's own side. The
-   column takes the bubble's 82 per cent so the bubble keeps its width. */
-.st-exm{display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:82%}
-.st-exm .src-bub{max-width:100%}
-.st-exd{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;padding:0 4px}
-.st-exth{margin-top:8px}
-/* the entry the Energy column reads, ringed in the accent off the panel */
-.st-exon .src-bub{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--accent)}
 /* every paragraph a bubble can hold reads at the bubble's own one size,
    never its old standalone size, whichever class built it */
 .src-bub .src-q,.src-bub .src-open,.src-bub .src-note{margin:0;max-width:none;
@@ -19699,7 +19626,16 @@ function undoState(){
     the empty field and takes the type off with it, and the card under the
     select never claims a seed the axes no longer hold. P0-5. */
  var sd=(typeof CURP!=='undefined'&&CURP)?(CURP.seed?JSON.parse(JSON.stringify(CURP.seed)):null):undefined;
+ /* AND THE NAMED ADDRESS LAYER IS AN INPUT TOO. Since 26 October a story
+    that names a body place adds weight at that address (S.addr, read by
+    compute beside the axis charge). This entry took the nine axes and not
+    the layer, so taking back a story put the axes back and left the words'
+    addresses carrying: measured on a blank profile, DQ 0 before the commit,
+    3.98 after, 0.204 after the undo, and 0.204 still after a reload because
+    the settle saves it to the record. Copied, because the layer is written
+    in place and a shared object would move with it. */
  return {charge:c, replace:o, law:l, work:wk, seed:sd,
+  addr:Object.assign({},S.addr||{}),
   doms:S.doms.slice(), arcs:S.arcs.slice(), roots:S.roots.slice(),
   dom:S.dom, a1:S.a1, a2:S.a2};}
 
@@ -19734,6 +19670,9 @@ function undoApply(s){
  if(s.work!=null&&typeof CURP!=='undefined'&&CURP)CURP.work=JSON.parse(JSON.stringify(s.work));
  /* and an entry taken before the seed rode with it leaves the seed alone */
  if(s.seed!==undefined&&typeof CURP!=='undefined'&&CURP)CURP.seed=s.seed?JSON.parse(JSON.stringify(s.seed)):null;
+ /* and an entry taken before the address layer rode with it leaves the layer
+    alone, which is what undo did for every entry until this */
+ if(s.addr&&typeof s.addr==='object')S.addr=Object.assign({},s.addr);
  S.doms=s.doms.slice(); S.arcs=s.arcs.slice(); S.roots=s.roots.slice();
  S.dom=s.dom; S.a1=s.a1; S.a2=s.a2;
  buildSoul();
@@ -20461,7 +20400,13 @@ function compute(){
  let darkB=BANDS[0],darkV=-1;
  BANDS.forEach(b=>{const gp=W.filter(n=>n.b===b),v=gp.reduce((a,n)=>a+n.sq,0)/gp.length;
   if(v>darkV){darkV=v;darkB=b;}});
- let weakL=SI[0];SI.forEach(l=>{if(S.law[l.nm]<S.law[weakL.nm])weakL=l;});
+ /* THE LAW FURTHEST SHUT is chosen only from laws the person answered. An
+    unanswered law sits in S.law at its seed, so a pick over all of SI named
+    a seed the moment every answered law was above it, or before any law was
+    answered at all, and Summary printed it as the person's most shut law.
+    That is a reading nobody gave. No law answered, no weakL: null, and the
+    surfaces that print it say so rather than name a seed. */
+ let weakL=null;SI.forEach(l=>{if(lawIn(l.nm)&&(!weakL||S.law[l.nm]<S.law[weakL.nm]))weakL=l;});
  /* THE TWO REAL AXES. Shape is where what is running points. Control is how
     far it has compounded, which is what conditioning is, and not whether the
     will is winning: at low coherence the will always loses, so measuring it
@@ -23834,13 +23779,20 @@ function saveProfile(p){
    ch IS THE SUPER COMPLEX COUNT, r.sups. The key is from when that rung was
    called character, which the owner retired for it on 23 October. It stays
    ch, because it is on every history row a record already holds and a key
-   is identity; only the label a person reads beside it moved. */
+   is identity; only the label a person reads beside it moved.
+
+   ig IS INTEGRITY, r.Ig, 0 to 10, and it is what Summary's "Integrity over
+   time" graph plots. Until 5 November no row carried it and seriesRead read
+   jq in its place, which is the overshoot of installed opposites past 6: a
+   person with every law at 10 was drawn at nothing, and one with every law
+   at 2 who overshot their opposites was drawn at 44%. jq stays on the row
+   under its own name; ig is the second key beside it, not a rename. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
   dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
-  jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
+  jq:Math.round(r.JQ*100)/100, ig:Math.round(r.Ig*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
   dark:r.darkB, tier:r.tier, arch:ARCH[r.pi].nm, lawNow:snapLaws()};}
 /* ============================================================
@@ -24008,7 +23960,7 @@ function pStore(){
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
-  var v=validateProfile(raw[i]);
+  var v=validateProfile(raw[i],{stored:true});
   if(v.ok){ out.push(v.profile); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
@@ -24562,8 +24514,13 @@ function avatarFill(av){
   if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
  if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
  return avatarEnsureIds(av);}
-function validateProfile(o){
- var errs=[];
+/* ctx is optional. ctx.stored says the record is this device's own, read back
+   at boot or reopened from the list, and not an import: the summaries and the
+   journey then keep a date the device clock wrote ahead of today rather than
+   refusing the whole record over it (dlyValidate and journeyValidate say why).
+   Every other rule holds the same either way. */
+function validateProfile(o,ctx){
+ var errs=[], stored=!!(ctx&&ctx.stored);
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
@@ -24681,6 +24638,18 @@ function validateProfile(o){
       reads unresolved rather than being refused on the way in. */
    ['date','time','place','zone'].forEach(function(k){
     if(typeof o.who.born[k]==='string')p.who.born[k]=o.who.born[k].slice(0,200);});
+   /* DATE AND TIME HAVE A SHAPE, AND ONE THAT IS NOT IT IS REFUSED BY NAME.
+      These two were copied as any string, so a record link carrying markup
+      in the date ran it in the page, and a date of 2001-02-30 or 14/07/1988
+      was read as a sky for some other day or for none. The date and time
+      fields in Intake can only write these shapes or the empty string, so
+      this refuses nothing the app wrote. bornYMD and bornHM are in
+      engine/astro.js, the same checks birthJD reads by. */
+   var bd=o.who.born.date, bh=o.who.born.time;
+   if(typeof bd==='string'&&bd!==''&&!bornYMD(bd))
+    errs.push('who.born.date is not a real calendar day in year-month-day form');
+   if(typeof bh==='string'&&bh!==''&&!bornHM(bh))
+    errs.push('who.born.time is not a clock time between 00:00 and 23:59');
    p.who.born.timeUnknown=!!o.who.born.timeUnknown;}}
  /* ui preferences. booleans only, and an older profile without them is filled
     from the blank rather than refused. */
@@ -25009,6 +24978,14 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  /* INTEGRITY ON THE ROW (snapshot's ig). Not in the list above, because
+     that list fills an absent field with 0, and an absent ig is a row
+     written before integrity was recorded: filled, it would be drawn on the
+     integrity graph as integrity of nothing. Absent or null stays absent.
+     Present, it is 0 to 10 and refused by name otherwise, never clamped. */
+  if(x.ig!==undefined&&x.ig!==null){
+   var igv=vRange(errs,'history['+i+'].ig',x.ig,0,10);
+   if(igv!==null)q.ig=igv;}
   /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
      needed a line here and not only in snapshot(): every row is rebuilt from
      it, so a key snapshot() writes and this does not name survives until the
@@ -25064,14 +25041,14 @@ function validateProfile(o){
     record and pImport stays atomic. Missing or null is an older record and
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
-  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p), stored:stored});
  /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
     into the same errs, so one bad log line or one bad walk refuses the whole
     record and pImport stays atomic. It is not in the blank: a record that never
     walked the first run carries none and gains none here, so every such record
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
-  p.journey=journeyValidate(errs,o.journey,'journey');
+  p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -25605,9 +25582,12 @@ function meterFirst(p,key,label,at){
    PROFILES[0] fallback, never data. */
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
-var IMPORT_ERR=null;
-function pImport(txt){
- IMPORT_ERR=null;
+var IMPORT_ERR=null, IMPORT_COPY=false;
+/* keepId is for a caller that means to REPLACE the held record with the same
+   id and removes the older one itself straight after, which is the account
+   sync (ui/auth.js profileSyncImport). Every other caller leaves it out. */
+function pImport(txt,keepId){
+ IMPORT_ERR=null; IMPORT_COPY=false;
  /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
     record and pointed CURP at it, and left S.who naming the example, so the
     person's own record then read as somebody else's to every control that
@@ -25629,6 +25609,20 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* A RECORD WHOSE ID IS ALREADY HELD COMES IN AS A SEPARATE COPY. A saved
+    file loaded back while the original is still on the device, or the same
+    quiz link opened twice, carries an id this list already holds, and it was
+    pushed as it came. Every verb keyed by id (profFind, profOpen, profDelete,
+    the open pointer, the undo history) reaches only the first match, so the
+    copy could never be opened, and deleting the copy deleted the original
+    and the newer work on it, for good. So the copy gets a fresh id by the
+    blankProfile recipe and keeps its name and everything else, nothing held
+    is overwritten, and importCopied() says so for the host to tell the
+    person. */
+ if(!keepId&&PROFILES.some(function(q){ return q&&q.id===v.profile.id; })){
+  var fid; do{ fid='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+  while(PROFILES.some(function(q){ return q&&q.id===fid; }));
+  v.profile.id=fid; IMPORT_COPY=true; }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
@@ -25640,6 +25634,9 @@ function pImport(txt){
  profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* true when the last load that landed was given a fresh id because its own
+   was already held, so the host can say it came in as a separate copy */
+function importCopied(){ return IMPORT_COPY; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
    The record link below is unpacked by the host, because the inflate is a
    browser stream and the engine never names its host. When that step fails
@@ -25791,10 +25788,12 @@ function jyInt(errs,path,v,lo,hi){
  return v;}
 /* A DATE THAT PARSES, AND IS NOT FROM THE FUTURE. A day of slack, because a
    phone's clock and a laptop's differ by minutes and a zone is not a fault, and
-   no more than that: a stamp a week ahead was written by something else. */
+   no more than that: a stamp a week ahead was written by something else.
+   A nowMs of null is the boot read of this device's own store
+   (journeyValidate, ctx.stored), where the date is checked but not the clock. */
 function jyDate(errs,path,t,nowMs){
  if(vDate(errs,path,t)===null)return null;
- if(new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
+ if(nowMs!==null&&new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
  return t;}
 
 /* ---------------- one log line ---------------- */
@@ -25914,9 +25913,18 @@ function jyWalk(errs,w,nowMs){
 /* ---------------- the boundary ---------------- */
 /* THE JOURNEY'S OWN BOUNDARY, into the same errs as every other part, so one bad
    field refuses the whole record and pImport stays atomic. ctx may carry the
-   clock a gate wants the dates read against. */
+   clock a gate wants the dates read against.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a stamp
+   ahead of the clock is kept and never refused. journeyLog and journeyWalk
+   check a new stamp against Date.now(), the same clock that wrote it, so a
+   line logged while the device clock ran ahead passed and was saved, and the
+   next boot on a corrected clock refused it and the whole record with it.
+   Measured, a line logged at now plus three days: loaded 0. A stamp this
+   build wrote is a clock error and not a forgery, the rule pracSoon
+   (engine/ladder.js) carries. An import keeps the check. */
 function journeyValidate(errs,o,path,ctx){
- var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
+ var P=journeyBlank(), c=ctx||{}, nowMs=c.stored?null:jyMs(c.now), base=path||'journey';
  if(o===undefined||o===null)return P;
  if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
  vKeys(errs,base,o,['v','walk','gift','log']);
@@ -32312,14 +32320,40 @@ function zonePoint(z){
 /* a birth record to a Julian Day in UT, and the offset that was applied.
    returns null when the record cannot support it, rather than guessing.
    d is the date, t the local clock time, p the place, z the time zone. */
+/* A BIRTH DATE IS A REAL DAY OR IT IS NOTHING. This read y, m and d off
+   any string and checked only that they were not zero, so 2001-02-30 was
+   handed to julianDay and rolled to 2 March, month 13 day 45 rolled into the
+   next year while the life path and the Chinese year still read the digits
+   as typed, and a date in day/month/year form read as no date at all and
+   then fell through to an invented sun and moon. A date is four digits, two
+   and two, and the day has to exist in that month of that year. Returns
+   [y,m,d] or null. No Date object, so the answer is the same in any host. */
+function bornYMD(s){
+ if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
+ var p=s.split('-'), y=+p[0], m=+p[1], d=+p[2];
+ if(y<1||m<1||m>12||d<1)return null;
+ var leap=(y%4===0&&y%100!==0)||y%400===0;
+ var dim=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31][m-1];
+ return d<=dim?[y,m,d]:null;}
+/* A clock time on a 24 hour face. 25:30 was read as a timed birth an hour
+   and a half into the next day and 99:99 four days later. Hours 0 to 23,
+   minutes 0 to 59, seconds allowed because a time field can carry them and
+   nothing here reads them. Returns [h,mi] or null. */
+function bornHM(s){
+ var q=typeof s==='string'&&/^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(s);
+ if(!q)return null;
+ var h=+q[1], mi=+q[2];
+ return (h<24&&mi<60)?[h,mi]:null;}
 function birthJD(bt){
  if(!bt||!bt.d)return null;
- var p=bt.d.split('-'), y=+p[0], m=+p[1], d=+p[2];
- if(!y||!m||!d)return null;
+ var ymd=bornYMD(bt.d); if(!ymd)return null;
+ var y=ymd[0], m=ymd[1], d=ymd[2];
  var pl=PLACE[bt.p]||null;
  var hrs=12, timed=false;               /* no time given, take local noon */
- if(bt.t&&/^\d{1,2}:\d{2}/.test(bt.t)){
-  var q=bt.t.split(':'); hrs=+q[0]+(+q[1])/60; timed=true;}
+ /* a time that is there and is not a clock time is refused, rather than
+    read as untimed: the person said when, and noon is not what they said */
+ if(bt.t){var hm=bornHM(bt.t); if(!hm)return null;
+  hrs=hm[0]+hm[1]/60; timed=true;}
  var off=pl?pl.tz:0, dst=false;
  if(pl&&pl.dst==='us')dst=usDST(y,m,d);
  if(pl&&pl.dst==='eu')dst=euDST(y,m,d);
@@ -32433,12 +32467,15 @@ function sunSign(d,bt){
  if(b){var i=atSpan(b,function(jd){return signOf(sunLon(jd));});
   if(i===null)return null;
   var z=ZSIGN[ZI[i]]; return {nm:z[2], el:z[3], mode:z[4]};}
- var p=d.split('-'), m=+p[1], day=+p[2];
+ /* a date that is not a day has no sun. This fell through the calendar
+    loop to Capricorn and printed it as settled. */
+ var ymd=bornYMD(d); if(!ymd)return null;
+ var m=ymd[1], day=ymd[2];
  for(var j=0;j<ZSIGN.length;j++){
   var a=ZSIGN[j], c=ZSIGN[(j+1)%12];
   if((m===a[0]&&day>=a[1])||(m===c[0]&&day<c[1]))
    return {nm:a[2], el:a[3], mode:a[4]};}
- return {nm:ZSIGN[11][2], el:ZSIGN[11][3], mode:ZSIGN[11][4]};}
+ return null;}
 
 /* The moon moves about thirteen degrees a day, so the birth time is not
    a refinement here, it is most of the answer. Without one the record is
@@ -32449,7 +32486,9 @@ function sunSign(d,bt){
    than whichever side Greenwich happened to put it on. On the same 5840
    births as the sun above that was 2777, close to half. */
 function moonSign(bt){
- var b=birthJD(bt); if(!b)return ZSIGN[0];
+ /* no readable birth is no moon. This returned ZSIGN[0], an Aquarius moon
+    for a record that had no date in it. */
+ var b=birthJD(bt); if(!b)return null;
  var i=atSpan(b,function(jd){return signOf(moonLon(jd));});
  return i===null?null:ZSIGN[ZI[i]];}
 
@@ -32473,6 +32512,9 @@ function risingSign(bt){
  var P=b.place, i=atSpan(b,function(jd){return signOf(ascendant(jd,P.lat,P.lon));});
  return i===null?null:ZSIGN[ZI[i]];}
 function lifePath(d){
+ /* a date that is not a day has no path. '14/07/1988' summed a slash and
+    printed Path NaN. */
+ if(!bornYMD(d))return null;
  var v=d.replace(/-/g,'').split('').reduce(function(a,c){return a+ +c;},0);
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
@@ -32484,6 +32526,8 @@ function chineseElement(y){ return CELEM[y%10]; }
    first of January hands the wrong animal to everyone born in the first
    five weeks of a year, which is about a tenth of all births. */
 function chineseYear(bt){
+ /* no day, no year: this returned NaN and the panel printed undefined */
+ if(!bornYMD(bt.d))return null;
  var y=+bt.d.split('-')[0], b=birthJD(bt);
  if(!b)return y;
  var lc=julianDay(y,2,4,0), guard=0;
@@ -32545,6 +32589,11 @@ function spiritual(name){
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
  if(!bt||!bt.d)return null;
+ /* A DATE THAT IS NOT A DAY IS NO BIRTH. The boundary refuses one on the
+    way in, and this holds for a record stored before it did: the panel
+    shows what it shows for no date, and never a sky, a year and a path read
+    off three different guesses at what the digits meant. */
+ if(!bornYMD(bt.d))return null;
  /* the sun and the moon are null for an unlocated birth whose window
     crosses a cusp, and every field hung off them is null with them, so a
     root or a mode is never derived from a sign that was not read. */
@@ -33721,7 +33770,10 @@ function seriesRead(p,spanKey,now){
   if(!s||typeof s.cq!=='number')continue;
   var ms=Date.parse(s.t);
   if(!(ms>=t0&&ms<=t1))continue;
-  pts.push({ms:ms, cq:s.cq, ig:(typeof s.jq==='number'?s.jq:null)});}
+  /* ig is the row's integrity, snapshot()'s ig, and never jq, the overshoot
+     figure, which it read until 5 November and which runs roughly opposite.
+     A row from before ig was recorded reads null, and sumIg leaves it out. */
+  pts.push({ms:ms, cq:s.cq, ig:(typeof s.ig==='number'?s.ig:null)});}
  pts.sort(function(a,b){return a.ms-b.ms;});
  /* WHAT THE SPAN CAN AND CANNOT SAY. Nothing at all is one state, one reading
     is a second, and two or more is a line. They read differently and a caller
@@ -34087,8 +34139,10 @@ function dlyDayValid(errs,path,x,names,now,seen){
  if(!dlyDateOk(x.d))errs.push(path+'.d is not a calendar day: '+JSON.stringify(x.d));
  else{
   /* one day of slack, because a person who crossed a date line is in the
-     document's own "context transfer" and a bank must survive the flight home */
-  var lim=dlyDay(Date.parse(now)+DAY_MS);
+     document's own "context transfer" and a bank must survive the flight home.
+     A now of null is the boot read of this device's own store (dlyValidate,
+     ctx.stored), where the check is skipped: see there for why. */
+  var lim=now===null?null:dlyDay(Date.parse(now)+DAY_MS);
   if(lim&&x.d>lim)errs.push(path+'.d is '+x.d+', after the day of this import');
   if(seen[x.d])errs.push(path+' repeats day '+x.d+', a sealed day is never replaced');
   seen[x.d]=1;}
@@ -34163,11 +34217,22 @@ function dlyEvValid(errs,path,x,i,days,state){
   else o.note='';}
  return errs.length>n0?null:o;}
 /* the whole bank, through every rule above. now is the moment of the import
-   and names is the person's own name, both from the caller, never read here. */
+   and names is the person's own name, both from the caller, never read here.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a day
+   dated after today is kept and never refused. dlySeal stamps a day with the
+   device clock and checks it against that same clock, so a day sealed while
+   the clock ran two days ahead passed and was saved, and the next boot, on a
+   corrected clock, refused it and with it the whole record: every story and
+   reading set aside until the calendar caught up. Measured, a day sealed at
+   now plus two days: records loaded 0. A date this build wrote is a clock
+   error and not a forgery, and refusing it sets the whole record aside over
+   one clock error, which is the rule pracSoon (engine/ladder.js) already
+   carries. An import is not this device's own write and keeps the check. */
 function dlyValidate(errs,o,base,ctx){
  var path=base||'summaries', S=dlyBlank();
  ctx=ctx||{};
- var now=ctx.now||new Date().toISOString(), names=ctx.names||[];
+ var now=ctx.stored?null:(ctx.now||new Date().toISOString()), names=ctx.names||[];
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return S;}
  dlyKeys(errs,path,o,['v','days','events']);
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v%1!==0||o.v>DLY_SCHEMA_V))
@@ -35275,7 +35340,9 @@ function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
  if(!p){PROF_ERR=['no profile with that id is on this device'];return null;}
- var v=validateProfile(JSON.parse(JSON.stringify(p)));
+ /* stored: this record is already on the device, so a date its own clock
+    wrote ahead does not lock the person out of switching to it */
+ var v=validateProfile(JSON.parse(JSON.stringify(p)),{stored:true});
  if(!v.ok){PROF_ERR=(v.errs||['it did not validate']).slice(0,3);return null;}
  if(p===CURP&&S.rec===p.id)return p;
  profHold();
@@ -36016,7 +36083,7 @@ if(typeof module!=='undefined'&&module.exports){
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
-                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, PLACE:PLACE,
+                  gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
@@ -36113,7 +36180,7 @@ if(typeof module!=='undefined'&&module.exports){
      otherwise a law set to exactly the seed reads as unanswered, which is
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET, SOUL_FROM:SOUL_FROM,
-                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError, importCopied:importCopied,
                   importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
@@ -50571,50 +50638,6 @@ function stMark(k,word,term,cls,tail){
  return '<div class="st-mk st-mk-'+k+(cls?' '+cls:'')+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ST_MARK[k]+'</svg>'
   +'<h3'+(a?' class="tipu"'+a:'')+'>'+esc(word)+'</h3>'+(tail||'')+'</div>';}
-/* ---- a worked example's journal, read only, 5 November ----
-   His words: "I'm loading up my profile examples and there's nothing under
-   Discover. There used to be fake records and a bunch of other stuff." And,
-   twice in the same message, the line that stood here: "Get rid of the text
-   that says a worked example shows every reading and runs nothing."
-
-   WHAT WAS MEASURED BEFORE THIS WAS WRITTEN. Every example carries a
-   journal: round QD (engine/exdepth.js, 2 October) seeded each one with
-   dated entries in its own words, replayed through the writers stCommit
-   uses, so CURP.story.entries is real and the Imprints page already groups
-   by it. Diane carries five, and her Archive ten. This page never drew one. Built from main on 15,
-   17, 27 and 31 October and opened on Diane, the centre column read only the
-   preview line on every build from 16 October, when show only landed, and
-   an empty box before that. What did leave the page is the Analytics
-   preview and Laws noticed folds under Release, read off those same
-   entries and cut on his word on 29 October, and the left menu, cut on 28
-   October. So nothing regressed in the data; the page had no place that
-   showed it, and the line he struck was the only thing in the column.
-
-   SO THE COLUMN SHOWS THE EXAMPLE'S OWN ENTRIES, as the person's own side of
-   the conversation, oldest first so the newest sits at the foot the way a
-   conversation's newest line does, each with the day it was written. Only
-   the person's side, because a seeded entry has no Source AI question
-   stored beside it and one is not invented here. The words are the
-   example's and are quoted, never the product speaking. Nothing here is a
-   control: there is no box, no Chat and no Commit, so the show only rule
-   (engine/showonly.js) holds without a sentence to announce it.
-
-   THE ENTRY THE ENERGY COLUMN READS IS MARKED, in the Full view, where that
-   column is on screen (stDashExEntry, ui/stdash.js): the newest entry the
-   words reached a seat in. Its bubble carries a ring, so the column and the
-   conversation visibly point at the same words, and aria-current says the
-   same to a screen reader. */
-function stExampleThread(){
- var ents=((CURP&&CURP.story&&CURP.story.entries)||[]).filter(function(e){return e&&e.text;})
-  .slice().sort(function(a,b){return String(a.t).localeCompare(String(b.t));});
- if(!ents.length)return '';
- var on=STV.dash&&typeof stDashExEntry==='function'?stDashExEntry():null;
- return '<ol class="src-th st-exth" id="stexth" aria-label="Journal">'+ents.map(function(e){
-   var d='',dt=new Date(e.t);
-   if(!isNaN(dt))try{d=dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}catch(x){d='';}
-   return '<li class="src-tn src-tn-me'+(e===on?' st-exon" aria-current="true':'')+'"><div class="st-exm"><div class="src-bub src-bub-me"><p class="src-me">'
-    +esc(e.text)+'</p></div>'+(d?'<time class="st-exd" datetime="'+esc(e.t)+'">'+esc(d)+'</time>':'')+'</div></li>';}).join('')
-  +'</ol>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -50632,9 +50655,7 @@ function stRender(){
     box, Talk, Record, Source AI's question and Commit are the one preview
     line in their place (showNote, ui/personas.js). It was a box that took a
     whole story and then refused it at Commit, which is a control that looks
-    like it works until the moment it does not. The box and the controls are
-    still not drawn; the preview line gave way to the example's own journal
-    on 5 November, see stExampleThread. */
+    like it works until the moment it does not. */
  var show=showOnly();
  var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
@@ -50667,26 +50688,6 @@ function stRender(){
       its place on the left; Dashboard keeps the right. stMark('j',...) is
       still the Discover door's own name elsewhere (TABDEF, the section
       itself), only this panel's own repeated word is cut. */
-   /* DASHBOARD AND CHAT CHANGED PLACES, 5 November, his words: "Swap the
-      dashboard and chat icons." Read as the two buttons, which is what he
-      calls them ("if I press it dashboard icon is lit up", 29 October), and
-      not as their two drawings: Chat already carries the microphone and
-      Dashboard the four squares, so trading the drawings would put a grid on
-      the button that starts the microphone. Which side each stood on was
-      never his: "Dashboard keeps the right" above is this file's own line.
-      Dashboard is drawn first now, so the keyboard reaches the two in the
-      order they are seen; nothing is wired by position.
-      AND IT STAYS ON A WORKED EXAMPLE, the same day. It was dropped with
-      Chat, so an example landed in Simple had no way to Imprints, Release or
-      Energy at all, which is the rest of "there's nothing under Discover."
-      Dashboard runs nothing, it only shows the panels beside the
-      conversation, so the show only rule has no claim on it. Chat starts
-      the microphone and stays off an example. */
-   +('<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
-   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
-   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>Dashboard</span></button>')
    +'<div class="st-hdbtns">'
    /* CHAT, THE ONLY CONTROL ON THE LEFT, round of 29 October, name changed a
       second time the same day: "the talk button, you're going to change to
@@ -50735,8 +50736,12 @@ function stRender(){
       shut beside the conversation, simple on landing, his words "when I
       land on this page it starts off in simple mode" and "if I press it
       dashboard icon is lit up." Bound below, as #stdash's onclick near the
-      foot of this function. It is drawn above, before Chat, see DASHBOARD
-      AND CHAT CHANGED PLACES. */
+      foot of this function. */
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -50777,7 +50782,7 @@ function stRender(){
      words both times were "get rid of those rainbow colours," and this is
      the one that was still there. srcComb() itself stays defined, in case a
      later screen wants it, only this call is cut. */
-  +(show?stExampleThread():'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
      a normal speech conversation has no reason to open (see stMic and
@@ -50885,18 +50890,13 @@ function stRender(){
       (STV.novoice), where closing it would hand the person back to a voice
       that cannot run, nor beside the crisis door's box, which keeps the one
       door it already has. The label stays the same open or shut, and
-      aria-expanded carries which.
-
-      THE KEYBOARD ALONE, 5 November, his words: "Change the 'type instead'
-      to just a keyboard icon." The words leave the screen and not the
-      button: they are its accessible name, so a screen reader still hears
-      "Type instead", and the title still says what a press does, on hover,
-      on a long press and on keyboard focus. The press is unchanged. */
+      aria-expanded carries which. */
    +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
-    :'<button type="button" class="st-type" id="sttype" aria-label="Type instead" aria-expanded="'+STV.typed+'" title="'
+    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" title="'
     +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
-    +'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">'
-    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg></button>')
+    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'
+    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg>'
+    +'<span>Type instead</span></button>')
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
@@ -50968,12 +50968,8 @@ function stRender(){
      its foot rather than inside either panel, lower right as marked. One
      #stapply, same id and wiring stRender's wire-up finds by id below; the
      !STV.dash and !STV.chat placements in .st-bar above still carry it
-     when this column itself is not on screen to carry it instead.
-     NOT ON A WORKED EXAMPLE, 5 November. Show only (16 October) draws no
-     Commit on an example, and this one slipped it because the Full view was
-     out of an example's reach: Dashboard was hidden there. Dashboard stays
-     on an example now, so the ruling is kept here too. */
-  +(STV.chat&&STV.dash&&!show?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+     when this column itself is not on screen to carry it instead. */
+  +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
   +'</div>'
   /* ---- the release column. It keeps the id its rail section had. ----
@@ -50990,9 +50986,6 @@ function stRender(){
      or the opener, and srcPaint writes it only when it changes. */
   +'<p class="src-say" id="srcsay" aria-live="polite"></p>';
  h.innerHTML=out;
- /* a worked example's journal opens on its newest entry, at the foot, where
-    a conversation's newest line always is */
- var exth=show&&document.getElementById('stexth'); if(exth)exth.scrollTop=exth.scrollHeight;
  /* THE LANES AND THE BARS OUTLIVE A RENDER. This emptied both, so every
     arrival at the tab and every redraw of the page faded all seven lanes in
     and grew every bar again from the floor: motion that said a word had
@@ -51194,24 +51187,9 @@ function stMarks(t,p){
   toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});});
  marks.toks=toks;
  return marks;}
-/* THE WORDS THIS PAGE READS, 5 November. The person's own, ST_TEXT and
-   ST_PARSED, everywhere but a worked example. On an example there are none
-   (show only, engine/showonly.js), and the Energy column now reads the
-   newest entry of the example's own journal that reached a seat
-   (stDashExEntry, ui/stdash.js), ringed in the thread. The chart, its seat
-   springs and the list read the same words through here, because this page
-   keeps one rule above the rest: the sentence, the chart and the list
-   cannot disagree, and a lit column beside an empty chart is exactly that.
-   Only what the page draws reads through here. What the page would keep,
-   the pending tag, Commit, stFound and the draft, still reads ST_PARSED
-   itself, so an example never claims a word is pending or committable. */
-function stPage(){
- if(typeof showOnly==='function'&&showOnly()&&typeof stDashExEntry==='function'){
-  var e=stDashExEntry(); return e?{t:e.text,p:stDashExRead(e.text)}:{t:'',p:null};}
- return {t:ST_TEXT,p:ST_PARSED};}
 function stRead(){
- var pg=stPage(), t=pg.t, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
- var marks=stMarks(t,pg.p);
+ var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* ============================================================
@@ -52776,7 +52754,7 @@ function stRailClear(){
 var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight'],['rung','Came back'],['charge','Charge']];
 var ST_BKEY={}; Object.keys(K2BAND).forEach(function(k){ST_BKEY[K2BAND[k]]=k;});
 function stLaneModel(){
- var p=stPage().p,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
+ var p=ST_PARSED,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
  ((heard&&heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;wds[s.band]=s.words;});
  var first={},cnt={};
  STR.marks.forEach(function(m){if(!m.bn)return;
@@ -53085,7 +53063,7 @@ function stHot(k){
           than copied a second time */
 var STSEAT={}; BANDS.forEach(function(b){STSEAT[b]={rd:0,rv:0,rdT:0,rg:0,rgv:0,rgT:0,bend:0,bv:0,ph:0,rise:0};});
 function stSeatT(){
- var p=stPage().p,rg={},snap=STV.view==='lanes';
+ var p=ST_PARSED,rg={},snap=STV.view==='lanes';
  ((STR.heard&&STR.heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;});
  BANDS.forEach(function(b){var o=STSEAT[b],k=ST_BKEY[b],t=p&&p.bands[k]?Math.min(10,p.bands[k]/3):0;
   if(t>o.rdT+0.01)o.rise=1.6; o.rdT=t; o.rgT=rg[b]||0;
@@ -53224,14 +53202,7 @@ function stDrawStrip(){
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
- /* NOTHING KEPT YET IS GONE, 5 November, his words: "Get rid of the text
-    that says nothing kept yet." It was the state above that the words kept
-    nothing, and it went the way the tag's fourth state went in round LO:
-    the tag prints nothing, which is how this tag already says there is
-    nothing to say, and the chart and the list beside it are empty in the
-    same breath. Pending and Committed each say a thing nothing else on the
-    panel says, so they stay. */
- e.textContent=n?n+' pending':(!ST_TEXT.trim()&&STV.lastFound.length?'Committed':'');
+ e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 /* THE CAPTION UNDER THE CHART IS GONE, round of 29 October, his words:
    "get rid of the text that says 29 words read to kept." stCtrPaint used
@@ -53254,9 +53225,8 @@ var ST_SEEN={};
 function stListPaint(){
  var hd=document.getElementById('stlshd'), box=document.getElementById('stimps'); if(!hd||!box)return;
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
- /* the person's own draft is not read onto a worked example's page; the
-    example's own entry is, the one the Energy column reads (stPage) */
- var p=stPage().p,n=p?p.imprints.length:0,o='';
+ /* the person's own draft is not read onto a worked example's page */
+ var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
  /* THE HEADING AND THE EMPTY-STATE SENTENCE ARE GONE, round of 29 October,
     his words: "get rid of the text pending imprints by seat... you have not
     written anything yet." The sort control above it still says which sort
@@ -53348,10 +53318,8 @@ function stVaultPaint(hd,box){
    WHICH ADDRESSES, in the order his chain reads. What was picked in the bank
    first, because picking there is how he said he chooses. Otherwise what this
    entry reaches, or the last committed one's, because the chain is journal,
-   imprint, release. Otherwise nothing: the three heaviest held were offered
-   here until 5 November, see stRelModel. Every ring starts selected,
-   because a person put each one there, and a tap takes it out of the run;
-   its name is its label.
+   imprint, release. Otherwise the three heaviest held. Every ring starts
+   selected and a tap takes it out of the run; its name is its label.
 
    PACE AND PATTERNS ARE THE CARD'S OWN TWO FIELDS, RUN.pace and RUN.dose,
    so a setting made here is the setting the run uses and there is one of
@@ -53372,45 +53340,8 @@ var ST_OFF={};
 /* the card's ceiling on times said, read off its own picks (REL_DOSES,
    ui/release.js, which loads after this file and is read only at a press) */
 function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
-/* ---- the two steppers, Run speed and Patterns, 5 November ----
-   WHERE A PRESS LANDS. Run speed moves a tenth at a time, the step its
-   input already carried. Patterns moves between the card's own picks,
-   REL_DOSES, with the field's floor of one below them, because those are
-   the doses the Release card itself offers and a press should land on one
-   the card would also have chosen; a value in between is still typed. */
-function stStepPicks(id){
- if(id==='strpace')return null;
- var mx=stDoseMax(), ps=[1].concat(typeof REL_DOSES!=='undefined'?REL_DOSES:[LINES_PER_CH]);
- return ps.filter(function(v,i){return v<=mx&&ps.indexOf(v)===i;}).sort(function(a,b){return a-b;});}
-function stStepHtml(id,label,min,max,step,val,less,more,shut){
- var dis=shut?' disabled':'';
- /* for= names the input, because the label's first control would otherwise
-    be the minus button and a screen reader would hear "Run speed, Slower" */
- return '<label class="rel-field st-stpf" for="'+id+'"><span>'+label+'</span>'
-  +'<span class="st-stp'+(shut?' st-stp-off':'')+'">'
-  +'<button type="button" class="st-sb" data-stp="'+id+'" data-d="-1" aria-label="'+less+'"'
-   +(shut||val<=min?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h11"/></svg></button>'
-  +'<input type="number" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"'+dis+'>'
-  +'<button type="button" class="st-sb" data-stp="'+id+'" data-d="1" aria-label="'+more+'"'
-   +(shut||val>=max?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h11M12 6.5v11"/></svg></button>'
-  +'</span></label>';}
-/* a press goes through the input's own onchange, so the clamp and the write
-   to RUN are the ones a typed value gets, and there is one of each */
-function stStepPress(id,d){
- var f=document.getElementById(id); if(!f||f.disabled)return;
- var v=+f.value, ps=stStepPicks(id), n;
- if(ps){n=d<0?ps.filter(function(x){return x<v;}).pop():ps.filter(function(x){return x>v;})[0];
-  if(n===undefined)n=d<0?ps[0]:ps[ps.length-1];}
- else n=Math.round((v+d*(+f.step||0.1))*10)/10;
- f.value=n; f.onchange&&f.onchange.call(f);}
-function stStepEnds(id){
- var f=document.getElementById(id); if(!f)return;
- var v=+f.value, w=f.closest('.st-stp'); if(!w)return;
- var bs=w.querySelectorAll('.st-sb');
- if(bs[0])bs[0].disabled=f.disabled||v<=+f.min;
- if(bs[1])bs[1].disabled=f.disabled||v>=+f.max;}
 function stRelModel(){
- var bySq=function(a,b){return b.sq-a.sq;};
+ var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
@@ -53426,23 +53357,9 @@ function stRelModel(){
     named one exists. Weight still orders what runs. An entry from before the
     split carries no .named and reads as it always did. */
  var cut=found.named||0;
- /* THE THREE HEAVIEST HELD ARE NO LONGER OFFERED ON ARRIVAL, 5 November, his
-    words: "When I land on the Discover page, there's three icons already
-    active in release, but there's no text, so that it starts off with a
-    bug." It is a bug and this was the line. With nothing picked and nothing
-    found, the panel filled itself with the field's three heaviest addresses,
-    and every ring starts selected, so a person who had done nothing on the
-    page met three pressed rings in seat colour with no name on screen and
-    nothing to say why. Round LO had already taken the panel's glow off that
-    same offer ("release should not start red. It should only become red
-    once you add things to it") and left the rings lit, which is the half he
-    is pointing at now. So the panel offers only what was added here, a pick
-    in the bank or what the words reached, and Release stays disabled until
-    there is one. The heaviest held are not lost as a route: the bank lists
-    them by weight, and the Release card on Flow keeps its own queue. */
  if(picked.length)take=picked.sort(bySq);
  else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
- else take=[];
+ else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
   fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
@@ -53460,32 +53377,16 @@ function stRelPanel(){
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
- /* A WORKED EXAMPLE DRAWS THE SAME PANEL, SHUT, 5 November. It used to drop
-    Run speed, Patterns and Release for the preview line (showNote), and he
-    struck that line twice in one message: "Get rid of the text that says a
-    worked example shows every reading and runs nothing." With the line gone
-    and the controls gone the panel was a heading over nothing, which is the
-    "nothing under Discover" he named in the same message. So the controls
-    are drawn and disabled, the rule engine/showonly.js keeps (an example
-    runs nothing) is held by the disabled state itself, and the reason is on
-    the button's title, in the shorter refusal V15 already ships. */
- var shut=showOnly();
  o+='</div><div class="st-rlfoot">'
-  +('<div class="rel-fields st-fields">'
+  /* pace and patterns set the run, so they go with it on a worked example */
+  +(showOnly()?'':'<div class="rel-fields st-fields">'
    /* PACE READ RUN SPEED ALREADY ON THE CARD, round LY, his words then:
       "run speed instead of pace." This panel never got that update; round
       of 29 October his words made it plain it still said Pace, so it now
       reads what the card already reads, the two kept in step the way
       Times said was kept in step with the card below. The field's id and
       RUN.pace are untouched, only the label moved. */
-   /* AND BOTH ARE STEPPERS, 5 November, his words: "Run speed and patterns,
-      those fields, they look generic. Give those a look a bit more
-      designed." They are the Ritual page's Timer now (rv-stp, ui/ritual.js):
-      one pill, a minus, the value, a plus, so the two places a person sets
-      an amount look like one control. The input stays inside it, with its
-      id, its bounds and its onchange, so a typed value still lands and every
-      gate that sets it by id still reaches it; stStepPress moves it. */
-   +stStepHtml('strpace','Run speed',0.5,2,0.1,RUN.pace,'Slower','Faster',shut)
+   +'<label class="rel-field"><span>Run speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
    /* PATTERNS, round of 29 October, overriding the 17 October ruling below
       kept for the record: his words then were that Times said is the
       card's own word for the allowance's real unit, not Patterns, because
@@ -53495,15 +53396,17 @@ function stRelPanel(){
       (ui/release.js) now read Patterns; a mismatch between the two was
       the thing the earlier rename existed to prevent, so both still
       agree, only on the opposite word. */
-   +stStepHtml('strdose','Patterns',1,stDoseMax(),1,RUN.dose,'Fewer','More',shut)
+   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
-  /* RELEASE, not Run release, round of 29 October, his words: "change run
-     release to just release." The card's own button (ui/release.js)
-     renamed the same way, same reason the fields above stay matched. */
-  +'<button type="button" class="st-go" id="strun"'+(M.sel.length&&!shut?'':' disabled')
-  +(shut?' title="Nothing is released on a worked example."':'')+'>Release</button></div>';
+  /* and on a worked example it is the preview line, ruled 16 October: the
+     rings above are the reading and stay, Run is the run and does not */
+  +(showOnly()?showNote('release','st-show')
+   /* RELEASE, not Run release, round of 29 October, his words: "change run
+      release to just release." The card's own button (ui/release.js)
+      renamed the same way, same reason the fields above stay matched. */
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Release</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.
@@ -53532,19 +53435,13 @@ function stRelPanel(){
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
- /* a typed value moves the steppers' ends too, so a minus at the floor is
-    never left pressable after the field was typed down to it */
- ['strpace','strdose'].forEach(function(id){var x=document.getElementById(id); if(!x)return;
-  var was=x.onchange; x.onchange=function(){was.call(this); stStepEnds(id);};});
- e.querySelectorAll('[data-stp]').forEach(function(b){b.onclick=function(){
-  stStepPress(b.getAttribute('data-stp'),+b.getAttribute('data-d'));};});
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
   RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
-     addresses: not a bank pick and not a draft still being typed, neither of
-     which came from one entry */
+     addresses: not a bank pick, not a draft still being typed, not the three
+     heaviest held, none of which came from one entry */
   relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};}
 
@@ -54348,12 +54245,7 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    Journal's Energy reads the story being written, never the whole record.
    The record's Energy is the Field's, on the Field's own left rail, and one
    word naming two readings in one place would be two truths on one screen;
-   the line under the heading is what keeps them apart. That line left the
-   screen on 5 November, his words: "Get rid of the text that says what this
-   story puts at each of the 7 seats." It is the heading's title now, which
-   the shell's tooltip opens on hover, a tap and keyboard focus, so the
-   meaning is one touch away and no longer printed (the unpack rule, round
-   PO: the meaning moves, it never vanishes).
+   the line under the heading is what keeps them apart.
 
    THE SCALE IS THE ONE THE PAGE ALREADY DRAWS. stSeatT in ui/storyui.js
    lifts each seat to min(10, bands/3), which is also the line in
@@ -54361,39 +54253,15 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    here and the seat's spring in the Journal's own chart read one number,
    and the percent printed is the ring's fill.
 
-   ALL SEVEN, ALWAYS, once there is a story. A seat this story has not reached
-   stays in its place with the dash cr() prints for nought, because a list
-   that drops the quiet seats reads as a body with fewer seats in it.
-
-   CROWN AT THE TOP NOW, 5 November, and it was Root first until then. The
-   Imprints chart stands beside this column in the Full view and has always
-   run Crown at the top down to Root, the way the seats sit in a standing
-   body, so the same seven seats ran in two opposite orders a few hundred
-   pixels apart on one screen. This column takes the chart's order, because
-   the column is now drawn as that body: see THE COLUMN IS A BODY below.
+   ALL SEVEN, ALWAYS, ROOT TO CROWN, once there is a story. A seat this story
+   has not reached stays in its place with the dash cr() prints for nought,
+   because a list that drops the quiet seats reads as a body with fewer seats
+   in it.
 
    SILENT WITH NO STORY. Nothing typed and nothing spoken is not seven zeros:
    a row of dashes on a story that does not exist yet is a reading the
    instrument did not take. So the section says what is absent, once, in the
-   wording the house keeps for this state, and draws no ring and no figure.
-   The seven seats still stand, as the quiet map the reading will land on:
-   each glyph in its seat's colour, its name, and an empty track. A map is
-   not a reading. It is what puts something in the column he said had
-   nothing in it, and it shows where the words will go before there are any.
-
-   THE COLUMN IS A BODY, 5 November, his words: "The left-hand menu I've
-   asked for multiple redesigns. On the left-hand side of the menu, and I
-   don't see anything there." It was seven bare rows, a small grey ring, a
-   dash in a pill and a name, the same at every seat. It is drawn now in the
-   language the Field's Insight rail ships (SW7, 4 November): the seat's own
-   glyph in its own ring, the name in the seat's colour, the figure in the
-   number face at the row's end, and under the name a track the seat's
-   colour fills to the same share the ring's arc shows. A thin spine runs
-   through the seven rings, shaded seat to seat, so the column reads as one
-   body standing up and not seven unrelated lines. The seat this story
-   reaches hardest sits on a ground of its own colour, so the one fact the
-   column exists to show is the first thing seen, with no word added. Every
-   colour is seatCol, so every lighting draws it with no rule of its own.
+   wording the house keeps for this state, and draws no ring.
 
    AND r.unread IS NOT WHAT SILENCES IT, which is the rule this page already
    keeps. r.unread is a claim about the record (engine/compute.js: nothing
@@ -54417,65 +54285,22 @@ function stDashLeft(){
     rather than drawn off them; stOwn, which render() runs first, puts the
     right words back and the next paint draws them. */
  if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
- var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:stDashExample();
- var seats=BANDS.slice().reverse();
- /* the spine's shading, seat to seat, top to foot, in this lighting's colours */
- var spine='linear-gradient(to bottom,'+seats.map(seatCol).join(',')+')';
+ var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
-  +'<h2 class="rblk" id="st-energy-h" title="What this story puts at each of the seven seats.">Energy</h2>';
+  +'<h2 class="rblk" id="st-energy-h">Energy</h2>'
+  +'<p class="st-en-sub">What this story puts at each of the seven '+unp('seat','seats')+'.</p>';
  if(!p){
-  o+='<ul class="st-en-ls st-en-quiet" style="--spine:'+spine+'" aria-hidden="true">'+seats.map(function(b){
-   return '<li class="st-en-q" style="--c:'+seatCol(b)+'"><span class="st-en-g"><svg viewBox="0 0 24 24">'
-    +(SEATGLYPH[b]||SEATGLYPH._)+'</svg></span><span class="st-en-n">'+esc(b)+'</span><span class="st-en-bar"></span></li>';}).join('')
-   +'</ul><p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
+  o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
-  var rows=seats.map(function(b){var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3);
-    return {b:b,v:v,f:fmtPct('atom',v),s:pct('atom',v)||0};});
-  var top=rows.reduce(function(m,r){return r.v>(m?m.v:0)?r:m;},null);
-  o+='<ul class="st-en-ls" id="st-energy-ls" style="--spine:'+spine+'">'+rows.map(function(r){
-   var t=r.b+(r.f!==PCT_DASH?', '+r.f+' from this story':', nothing from this story');
-   return '<li class="st-en-r'+(r===top?' st-en-top':'')+(r.f===PCT_DASH?' st-en-0':'')+'" data-seat="'+esc(r.b)
-    +'" style="--c:'+seatCol(r.b)+'" title="'+esc(t)+'">'
-    +cr(r.b,r.s,{size:'md',raw:r.f,hot:false,title:t})
-    +'<span class="st-en-n">'+unp('seat:'+r.b.toLowerCase(),r.b)+'</span>'
-    +'<span class="st-en-bar"><i style="width:'+Math.round(r.s)+'%"></i></span></li>';}).join('')
+  o+='<ul class="st-en-ls" id="st-energy-ls">'+BANDS.map(function(b){
+   var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
+   return '<li class="st-en-r" data-seat="'+esc(b)+'">'
+    +cr(b,pct('atom',v)||0,{size:'sm',raw:f,hot:false,
+      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')})
+    +'<span class="st-en-n">'+unp('seat:'+b.toLowerCase(),b)+'</span></li>';}).join('')
    +'</ul>';}
  o+='</section>';
  h.innerHTML=o;}
-/* ON A WORKED EXAMPLE, THE NEWEST ENTRY OF ITS OWN JOURNAL, 5 November. An
-   example has no words being written (show only, engine/showonly.js), so
-   this column read nothing on every example and said so, which is half of
-   "I'm loading up my profile examples and there's nothing under Discover."
-   The centre column now shows the example's journal (stExampleThread, in
-   ui/storyui.js), and the story this column reads on an example is one of
-   that thread's entries, read by the same parseStory the person's own words
-   go through. parseStory is pure over the text, so nothing is written.
-
-   WHICH ENTRY: THE NEWEST ONE THE WORDS REACHED A SEAT IN. The newest entry
-   outright was the first cut, and measured over every example it read a
-   dash at all seven seats on Sofia, Diane, Derek, Wren, Lance 85 and Lance
-   100, because their last entry names no charge (its stored bands are empty,
-   and parseStory agrees with every stored entry on every example). Seven
-   dashes beside a journal full of words is the empty column again. The whole
-   journal read as one story was the second option and it was refused: the
-   scale is per story, min(10, bands/3), so Diane's three Root entries
-   saturate it and two seats read 100%, which says nothing. So it is the
-   newest entry that reached a seat, and the thread marks that entry
-   (stDashExEntry, read by stExampleThread) so the column and the
-   conversation visibly point at the same words. Kept by the text, because
-   this paints on every refresh and the reading only changes when the entry
-   does. */
-var ST_DASH_EX={};
-function stDashExRead(t){return ST_DASH_EX[t]||(ST_DASH_EX[t]=parseStory(t));}
-function stDashExEntry(){
- if(typeof showOnly!=='function'||!showOnly())return null;
- var es=((typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[])
-  .filter(function(e){return e&&e.text;})
-  .sort(function(a,b){return String(b.t).localeCompare(String(a.t));});
- for(var i=0;i<es.length;i++){var bd=stDashExRead(es[i].text).bands||{};
-  if(Object.keys(bd).some(function(k){return bd[k]>0;}))return es[i];}
- return null;}
-function stDashExample(){var e=stDashExEntry(); return e?stDashExRead(e.text):null;}
 
 try{window.__at&&window.__at('ui/stdash.js');}catch(e){}
 /* ============================================================
@@ -54763,9 +54588,13 @@ function sumStory(r){
     :' No seat is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
-   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'. The law furthest shut is '
+   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
+   /* weakL is null until a law is answered: an unanswered law is a seed,
+      and naming a seed as the law furthest shut is a reading nobody gave */
+   +(r.weakL?' The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
-   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
+   +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.'
+    :' No law is answered yet, so none is named as furthest shut.'));
  }else{
   /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
      shorthand that had also stopped being true: DQ counts the charge under
@@ -60855,7 +60684,10 @@ function renderIntake(){
      reporter it bound says what the press would do on the person's own */
   if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
   IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
-  iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
+  /* the press reports its save like the other intake writes, so a refused
+     write is said and not left for a reload to discover, and the answer
+     stays on screen either way, the same as [data-ixb] above */
+  iqApply(CURP); pSave(); statusSaved(); syncLw(); renderIntake(); render();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
     both keep their place by the focus rule above. */
  var wb=document.getElementById('iqwho');
@@ -60935,9 +60767,13 @@ function renderIntake(){
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
  if(eb)eb.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
-  catch(e){eb.textContent=t.length+' bytes';}
-  setTimeout(function(){eb.textContent='Export';},1200);};}
+  /* the button and the line both wait for the clipboard's answer, for the
+     reason the account page's Export gives (ui/account.js, #acexp) */
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){eb.textContent='Copied';status('Profile copied to the clipboard.','ok');
+    setTimeout(function(){eb.textContent='Export';},1200);},
+   function(){eb.textContent='Not copied';status('Could not reach the clipboard. Nothing was copied.','fail');
+    setTimeout(function(){eb.textContent='Export';},2600);});};}
 /* THE ROW AND THE SEAL FOLLOW WHAT IS TYPED, in place. The form is open while
    it is being filled, and rewriting the host on every change would take focus
    from the next field, so the row's rings and the seal button are brought up
@@ -71070,9 +70906,12 @@ function coneRead(){
  /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
     one has the most room to rise. weakL is the first of the lowest, so a tie
     is said as a tie, and a field with every law level names none. */
- var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ /* weakL is null when no law is answered. The !r.complete return above
+    already keeps that out of here, and this guard keeps it out if that
+    return ever moves. */
+ var lo=r.weakL?S.law[r.weakL.nm]:0, hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
  var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
- var weak=(hi-lo<0.05)?''
+ var weak=(!r.weakL||hi-lo<0.05)?''
   :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
     :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
    +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '
@@ -76272,6 +76111,8 @@ function recordImportWire(p,after){
   var np=pImport(txt);
   if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
    impSay('Not loaded. '+e.join('. ')+'.',1); return; }
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
   recordLanded();
   /* a record put back answers a cleared store, ui/keep.js */
   if(typeof keepLanded==='function')keepLanded();
@@ -76284,7 +76125,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.');};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -76393,6 +76234,8 @@ function recordLinkBoot(){
       the field path axes.Fear.held into a name the record does not have */
    recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
    return null;}
+  /* read now, before the redraws below can run anything else */
+  var copied=importCopied();
   /* the record has landed and been saved by now, so a redraw that throws is a
      drawing fault and not a refused load, and the line still says it loaded */
   try{ recordLanded(); }
@@ -76407,7 +76250,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.'+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
@@ -76853,8 +76696,15 @@ function paintUndo(){
  function settle(msg){
   syncCh(); if(typeof syncLw==='function')syncLw();
   if(typeof syncSoul==='function')syncSoul();
-  saveYou(); if(typeof pSave==='function')pSave();
-  render(); paintUndo(); status(msg,'ok');}
+  /* AND IT SAYS WHETHER THE MOVE WAS SAVED. The save's answer was thrown
+     away and the line was always ok, so on a store that refused the write
+     the person read "Took back" and a reload brought the change back. */
+  saveYou(); var saved=(typeof pSave==='function')?pSave():true;
+  render(); paintUndo();
+  if(saved){status(msg,'ok');return;}
+  var st=(typeof saveState==='function')?saveState():{};
+  status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
@@ -77474,7 +77324,9 @@ function profileSyncPush(profile,version){
 }
 function profileSyncImport(remote,remoteVersion){
  var text=JSON.stringify(remote);
- var imported=pImport(text);
+ /* keepId: this is a replace of the same record, and the loop below removes
+    the older entry, so pImport must not give it a fresh id as a copy */
+ var imported=pImport(text,true);
  if(!imported)return {ok:false};
  var list=profiles();
  for(var i=list.length-1;i>=0;i--){
@@ -79346,9 +79198,15 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
+ /* THE CLIPBOARD ANSWERS LATER. writeText returns a promise, and this said
+    "copied" the moment it was asked, so a refused write (permission denied,
+    or the page not focused) read as a backup the person did not have, and the
+    rejection fell out as a page error. The line waits for the answer now. A
+    missing clipboard throws inside the promise and lands in the same refusal. */
  if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
-  try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
-  catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
+  new Promise(function(res){res(navigator.clipboard.writeText(t));}).then(
+   function(){status('Record copied to the clipboard.','ok');},
+   function(){status('Could not reach the clipboard. Nothing was copied.','fail');});};
  var dl=$('acdel');
  if(dl)dl.onclick=function(){accDelete();};
  /* the same importer the profile sheet draws, under its own ids, and the page
@@ -80703,6 +80561,13 @@ function pracRead(p){
  CHARGES.forEach(function(c){oldCharge[c]=S.charge[c];oldReplace[c]=S.replace[c];});
  SINAMES.forEach(function(l){oldLaw[l]=S.law[l];oldUnset[l]=LAW_UNSET[l];oldSeed[l]=LAW_SEED[l];});
  var oldLawRec=LAW_REC;
+ /* the named address layer is read by compute beside the charge, so it is
+    swapped with the rest. It was not, and every client's loaded list carried
+    the addresses the open record's own stories named: Derek read 20 loaded
+    on a fresh page and 22 after one story on You. An example row carries no
+    layer, so a client is read on its own row's, which is none. */
+ var oldAddr=S.addr;
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  S.dom=p.dom;S.a1=p.a1;S.a2=p.a2;
  S.doms=p.doms?p.doms.slice():[p.dom];
  S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
@@ -80754,7 +80619,7 @@ function pracRead(p){
  S.dom=oldDom;S.a1=oldA1;S.a2=oldA2;S.doms=oldDoms;S.arcs=oldArcs;S.roots=oldRoots;S.rec=oldRec;
  CHARGES.forEach(function(c){S.charge[c]=oldCharge[c];S.replace[c]=oldReplace[c];});
  SINAMES.forEach(function(l){S.law[l]=oldLaw[l];LAW_UNSET[l]=oldUnset[l];LAW_SEED[l]=oldSeed[l];});
- LAW_REC=oldLawRec;
+ LAW_REC=oldLawRec; S.addr=oldAddr;
  /* repair W and DOMAIN, which compute() just overwrote in place, before
     anything else in the app reads them again */
  buildSoul(); compute();
@@ -81530,7 +81395,9 @@ function renderSpirit(){
     sp.gk.gate+'.'+sp.gk.line,say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone))
   +hd('born','Born')
   +'<div class="sp-row static"><span class="sp-k">When</span><span class="sp-v">'
-  +sp.birth.d+'</span><span class="sp-x">'+sp.birth.t+'</span></div>'
+  /* escaped like the place below: both come from the record, and a record
+     can arrive by link or paste carrying markup the boundary did not write */
+  +esc(sp.birth.d)+'</span><span class="sp-x">'+esc(sp.birth.t||'')+'</span></div>'
   +'<div class="sp-row static"><span class="sp-k">Where</span><span class="sp-v">'
   +esc(sp.birth.p)+'</span><span class="sp-x">'+esc(sp.birth.z||'')+'</span></div>';
  el.querySelectorAll('[data-sp]').forEach(function(btn){
@@ -82152,6 +82019,10 @@ function mirrorYou(){
  Y.dom=S.dom;Y.a1=S.a1;Y.a2=S.a2;Y.doms=S.doms.slice();Y.arcs=S.arcs.slice();Y.roots=S.roots.slice();
  CHARGES.forEach(function(c){Y.c[c]=S.charge[c];});
  Y.rep={};CHARGES.forEach(function(c){Y.rep[c]=S.replace[c]||0;});
+ /* the named address layer rides with the charge, because loadP(0) reads it
+    back out of this row and an own record that lost it on a visit to a worked
+    example would lose what its stories named */
+ Y.addr=Object.assign({},S.addr||{});
  /* the original wrote Y.law here and lawsFor could never read it back. */
  Y.law={};SINAMES.forEach(function(l){Y.law[l]=S.law[l];});
  return true;}
@@ -82229,6 +82100,17 @@ function loadP(i){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
+ /* AND THE NAMED ADDRESS LAYER COMES FROM THE SAME ROW, or it stays behind.
+    S.addr is what a story that names a body place adds at that address
+    (engine/compute.js, 26 October), and this was the one S field loadP never
+    set. So a worked example opened after the person wrote a story was read
+    with the person's addresses on top of its own table and saved them onto
+    its scratch record: Derek on a fresh page DQ 26.221 and 20 loaded, after
+    one story on You DQ 26.475 and 22 loaded. No example row carries a layer,
+    so an example opens on none. The person's own row carries theirs because
+    mirrorYou copies it into PEOPLE[0] beside the charge, which is how the way
+    back through loadP(0) gets it back. */
+ S.addr=Object.assign({},(p.addr&&typeof p.addr==='object')?p.addr:{});
  /* THE CUSTOM PERSONA IS NOT A DEMO AND MUST NOT BE GIVEN LAW SCORES.
 
     lawsFor falls back to the seed for anybody with no table, and "You" is the
@@ -87863,5 +87745,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005809526"></div>
+<div id="eof" hidden data-len="005800606"></div>
 </body></html>

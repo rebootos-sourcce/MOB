@@ -361,6 +361,34 @@ const snap=E.snapshot(prof);
  const got=vs.ok?vs.profile.history.map(x=>x.tier):[];
  ok(vs.ok&&got[0]==='Contracted'&&got[1]==='Severe'&&got[2]===null&&!!E.TIER_BY.Contracted&&!E.TIER_BY.Collapsed,
   'a history row written as Collapsed reads Contracted, the band it is, and nothing else moves, '+JSON.stringify(got));}
+/* THE INTEGRITY GRAPH PLOTS INTEGRITY, 5 November. seriesRead's ig is what
+   Summary draws under "Integrity over time", and it read jq, the overshoot of
+   installed opposites, so every law at 10 drew at 0 and every law at 2 with
+   the opposites overshot drew at 4.36, 44%. Both ends are held: the best case
+   reads its integrity and the worst reads low, and a row with no ig, which is
+   every row written before it was recorded, reads null and not 0. */
+{ const mk=(law,held,opp)=>{const p=E.blankProfile('ig'+law);
+  E.CHILD.forEach(c=>p.axes[c.nm]={held:held,opp:opp}); E.SINAMES.forEach(l=>p.laws[l]=law); return p;};
+ const now=Date.now(), at=ms=>new Date(now-ms).toISOString();
+ const sr=p=>{const rd=E.read(p), r=rd.reading, s=rd.snapshot;
+  const a=Object.assign({},s,{t:at(3600e3)}), b=Object.assign({},s,{t:at(60e3)});
+  return {Ig:r.Ig, JQ:r.JQ, pts:E.seriesRead({history:[a,b]},'day',now).pts};};
+ const best=sr(mk(10,2,0)), worst=sr(mk(2,0,10));
+ ok(best.pts.length===2&&best.pts.every(x=>x.ig===Math.round(best.Ig*100)/100)&&best.Ig>9.9,
+  'every law at 10: the integrity graph reads '+best.pts.map(x=>x.ig).join(',')+', integrity is '+best.Ig.toFixed(2));
+ ok(worst.pts.length===2&&worst.pts.every(x=>x.ig===Math.round(worst.Ig*100)/100&&x.ig<best.pts[0].ig)&&worst.JQ>1,
+  'every law at 2 with opposites overshot: the integrity graph reads '+worst.pts.map(x=>x.ig).join(',')
+  +', integrity is '+worst.Ig.toFixed(2)+', overshoot is '+worst.JQ.toFixed(2));
+ const old=E.seriesRead({history:[{t:at(60e3),cq:50,jq:3}]},'day',now).pts;
+ ok(old.length===1&&old[0].ig===null,'a row with no ig reads null on the integrity graph, got '+JSON.stringify(old));
+ /* and through the boundary: an absent ig stays absent rather than filled
+    with 0, and one out of range is refused by name, never clamped */
+ const base=JSON.parse(JSON.stringify(prof)), row=JSON.parse(JSON.stringify(snap));
+ const noIg=Object.assign({},row); delete noIg.ig;
+ const v1=E.validateProfile(Object.assign({},base,{history:[noIg]}));
+ const v2=E.validateProfile(Object.assign({},base,{history:[Object.assign({},row,{ig:11})]}));
+ ok(v1.ok&&!('ig' in v1.profile.history[0]),'a row with no ig gains one at the boundary');
+ ok(!v2.ok&&v2.errs.join(' ').indexOf('history[0].ig')>=0,'an ig of 11 is not refused by name: '+JSON.stringify(v2.errs));}
 ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
 ok(!('charge' in snap)&&!('law' in snap)&&!('laws' in snap),'snapshot holds no inputs');
 
@@ -1107,6 +1135,48 @@ g('17 · the host seam');
  bindStore(()=>null,()=>{});          /* leave it as we found it */
 }
 
+g('17a · a record loaded back while it is still held');
+{
+ /* A saved file loaded back while the original is still on the device carries
+    an id the list already holds. It was pushed as it came, so two records
+    shared one id, every id-keyed verb reached only the first, and deleting
+    the copy deleted the original and the newer work on it. Measured before
+    the fix: the copy opened as the original, and deleting the copy left the
+    stale Fear 7 and lost the newer Fear 2. */
+ const mem={};
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ const keep=E.profiles().splice(0);
+ /* read through a guard, so a build without the reader fails by name here
+    rather than throwing out of the whole gate */
+ const copied=()=>typeof E.importCopied==='function'?E.importCopied():'missing';
+ const A=E.pNew('twice'); E.loadProfile(A);
+ E.S.charge.Fear=7; E.pSave();
+ const file=E.pExport();                  /* the saved file */
+ E.S.charge.Fear=2; E.pSave();            /* later work on the original */
+ const B=E.pImport(file);
+ ok(!!B,'the saved file loads back'+(B?'':', refused: '+JSON.stringify(E.importError())));
+ ok(!!B&&B.id!==A.id,'as a copy with an id of its own, A '+A.id+' copy '+(B&&B.id));
+ ok(!!B&&B.name===A.name,'and the copy keeps its name');
+ ok(copied()===true,'and the engine says it came in as a copy, so the host can say so');
+ ok(E.profiles().filter(p=>p.id===A.id).length===1,'so the list never holds one id twice');
+ E.profOpen(A.id);
+ const back=B&&E.profOpen(B.id);
+ ok(!!back&&back===B,'the copy can be opened from the list');
+ const d=B&&E.profDelete(B.id);
+ const left=E.profiles().map(p=>p.id+' Fear '+p.axes.Fear.held);
+ ok(!!d&&d.id===B.id&&E.profiles().length===1&&E.profiles()[0]===A&&A.axes.Fear.held===2,
+  'deleting the copy deletes the copy, and the original with its newer work stays: '+JSON.stringify(left));
+ /* the replace route keeps the id on purpose, ui/auth.js profileSyncImport,
+    which removes the older entry itself straight after */
+ const R=E.pImport(E.pExport(),true);
+ ok(!!R&&R.id===A.id&&copied()===false,'a caller that asks to keep the id still gets it');
+ /* a fresh id is not a copy and nothing is said */
+ const C=E.pImport(JSON.stringify(E.blankProfile('fresh')));
+ ok(!!C&&copied()===false,'a record whose id is not held is not called a copy');
+ E.profiles().splice(0,E.profiles().length,...keep);
+ E.bindStore(()=>null,()=>{});
+}
+
 g('18 · the path');
 {
  const {parseStory,scanStory,SEATXY,NERVEBR,LEX,PHRASES}=E;
@@ -1784,6 +1854,32 @@ g('18b \u00b7 undo');
  E.undoPop();
  ok(seeded>0&&CHARGES.every(c=>S.charge[c]===0)&&E.current().seed===null,
   'undoing a seed puts back the empty field and takes the type off with it, Fear '+seeded+' then '+S.charge.Fear);
+ E.undoClear();
+ /* A STORY IS UNDONE WITH THE ADDRESSES IT NAMED, 5 November. Since 26
+    October a story that names a body place adds weight at that address
+    (S.addr), and compute reads it beside the axis charge. The undo entry took
+    the axes and not that layer, so taking back a story left its addresses
+    carrying: measured through the app on a blank profile, DQ 0 before, 3.98
+    after the commit, 0.204 after the undo. The story names its places on
+    purpose, so the commit has a layer to take back, and the forward half is
+    held too because redo shares the same capture and restore. */
+ const recT=E.pImport(JSON.stringify(E.blankProfile('history story')));
+ ok(!!recT,'a fresh record to commit a story on');
+ const addr0=JSON.stringify(S.addr), dq0=compute().DQ;
+ const said='My chest goes tight and my throat closes when my boss shouts at me. I feel afraid and ashamed.';
+ E.undoPush('committing the story'); E.applyStory(said); E.applyStoryAddr(said);
+ const addr1=JSON.stringify(S.addr), dq1=compute().DQ;
+ ok(addr1!==addr0&&dq1>dq0,'the story named places, so the layer moved, '+addr0+' to '+addr1+', DQ '+dq0+' to '+dq1);
+ E.undoPop();
+ const dq2=compute().DQ;
+ ok(JSON.stringify(S.addr)===addr0&&Math.abs(dq2-dq0)<1e-9,
+  'undoing the story takes its addresses back with it, layer '+JSON.stringify(S.addr)+', DQ '+dq2+' against '+dq0);
+ E.redoPop();
+ ok(JSON.stringify(S.addr)===addr1&&Math.abs(compute().DQ-dq1)<1e-9,
+  'and redo puts them back, layer '+JSON.stringify(S.addr));
+ /* and back once more, because reset() below this does not touch the layer
+    and the next group reads an empty field */
+ E.undoPop();
  E.undoClear();
 }
 
@@ -4983,6 +5079,24 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    'all 63 in: complete, 21 answered, and a tier word, '+fin.tier);
   near(fin.CQ,SINAMES.reduce((a,l)=>a+p.laws[l],0)/210*100,1e-9,
    'and CQ is exactly the record\'s laws over 210');
+ }
+
+ /* THE LAW FURTHEST SHUT IS ONE THE PERSON ANSWERED. weakL was picked over
+    every law in S.law, where an unanswered law sits at its seed of 6, so it
+    named a seed whenever no law was answered or every answered law was above
+    6, and Summary printed that seed as the person's most shut law. Each case
+    below named an unanswered law before the fix. The known good case, every
+    law answered and one low, must still name that one. */
+ {
+  const wk=laws=>{const p=E.blankProfile('weak');Object.assign(p.laws,laws);E.loadProfile(p);return compute().weakL;};
+  const low=SINAMES[5];
+  const all=wk(Object.fromEntries(SINAMES.map(l=>[l,l===low?2:8])));
+  ok(all&&all.nm===low,'all laws answered, '+low+' at 2: weakL names it, named '+(all&&all.nm));
+  ok(wk({})===null,'no law answered: weakL is null, not a seed');
+  const part=wk(Object.fromEntries(SINAMES.slice(0,10).map(l=>[l,8])));
+  ok(part!==null&&E.lawIn(part.nm),'ten answered at 8: weakL is an answered law, named '+(part&&part.nm));
+  const most=wk(Object.fromEntries(SINAMES.slice(0,20).map(l=>[l,7])));
+  ok(most!==null&&SINAMES.slice(0,20).includes(most.nm),'twenty answered at 7, one not: weakL is one of the twenty, named '+(most&&most.nm));
  }
 
  /* AY1. A RELEASE NEVER LOWERS CQ AND NEVER MAKES ANYTHING WORSE. The live
@@ -10370,6 +10484,41 @@ g('RC · a code for every row of the ported registers, and the door reads each o
   const offAnimal=E.CODE_ANIMAL.map((r,k)=>[2020+k,r[1],E.spiritualOf({d:(2020+k)+'-06-15'}).chinese]).filter(x=>x[1]!==x[2]);
   ok(offAnimal.length===0,'the animal code for each year of a cycle is the animal the reading prints for a birth that June, off: '+JSON.stringify(offAnimal));
  }
+}
+
+/* ============================================================
+   THE BIRTH DATE AND TIME HAVE A SHAPE. validateProfile copied both as any
+   string under 200 characters, so a record link carried markup into the
+   page, and a date that is not a day was read anyway: 2001-02-30 rolled to
+   2 March, month 13 day 45 rolled into the next year while the path and the
+   animal read the digits as typed, and 14/07/1988 fell through to a
+   Capricorn sun, an Aquarius moon, Path NaN and the year undefined. A time
+   of 25:30 was read as a timed birth the next day. Refused by name at the
+   boundary, and null rather than a guess in the engine for a record stored
+   before the boundary checked.
+   ============================================================ */
+console.log('\nBORN · a birth date that is not a day is no birth');
+{
+ const bornIn=(d,t)=>{const o=JSON.parse(JSON.stringify(E.saveProfile(E.blankProfile('t'))));
+  o.who.born={date:d,time:t,place:'',zone:'Europe/London',timeUnknown:false};return E.validateProfile(o);};
+ const good=bornIn('1988-07-14','09:00'), blank=bornIn('',''), secs=bornIn('2000-02-29','23:59:30');
+ ok(good.ok&&blank.ok&&secs.ok,'a real day and clock time, the empty pair, and a leap day with seconds all pass: '
+  +JSON.stringify([good.errs,blank.errs,secs.errs]));
+ const badD=['2001-02-30','1990-13-45','1990-00-10','14/07/1988','1900-02-29','<img src=x onerror=1>','1988-7-14'];
+ const offD=badD.filter(d=>{const v=bornIn(d,'');return v.ok||!(v.errs||[]).some(e=>/^who\.born\.date /.test(e));});
+ ok(offD.length===0,'a date that is not a real day in year-month-day form is refused by name, let through: '+JSON.stringify(offD));
+ const badT=['25:30','99:99','12:60','<b>','9am'];
+ const offT=badT.filter(t=>{const v=bornIn('1988-07-14',t);return v.ok||!(v.errs||[]).some(e=>/^who\.born\.time /.test(e));});
+ ok(offT.length===0,'a time that is not on a 24 hour clock is refused by name, let through: '+JSON.stringify(offT));
+ /* the engine, for a record that never passes the boundary again */
+ const offE=badD.filter(d=>E.birthJD({d:d})!==null||E.spiritualOf({d:d,t:'09:00',z:'Europe/London'})!==null
+  ||E.sunSign(d,{d:d})!==null||E.lifePath(d)!==null||E.chineseYear({d:d})!==null);
+ ok(offE.length===0,'and the engine reads no julian day, sky, sun, path or year off one, read: '+JSON.stringify(offE));
+ ok(E.moonSign({d:'14/07/1988'})===null,'a moon with no readable birth is null, where it was an Aquarius moon');
+ ok(E.birthJD({d:'1988-07-14',t:'25:30'})===null&&E.birthJD({d:'1988-07-14',t:'23:59'})!==null,
+  'a time past 23:59 gives no julian day, where it was the next day read as timed');
+ const sp=E.spiritualOf({d:'1988-07-14'});
+ ok(sp&&sp.sun==='Cancer'&&sp.lp===11&&sp.chinese==='Dragon','and a real day still reads as it did, '+JSON.stringify(sp&&[sp.sun,sp.lp,sp.chinese]));
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

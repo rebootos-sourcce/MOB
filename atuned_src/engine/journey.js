@@ -77,10 +77,12 @@ function jyInt(errs,path,v,lo,hi){
  return v;}
 /* A DATE THAT PARSES, AND IS NOT FROM THE FUTURE. A day of slack, because a
    phone's clock and a laptop's differ by minutes and a zone is not a fault, and
-   no more than that: a stamp a week ahead was written by something else. */
+   no more than that: a stamp a week ahead was written by something else.
+   A nowMs of null is the boot read of this device's own store
+   (journeyValidate, ctx.stored), where the date is checked but not the clock. */
 function jyDate(errs,path,t,nowMs){
  if(vDate(errs,path,t)===null)return null;
- if(new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
+ if(nowMs!==null&&new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
  return t;}
 
 /* ---------------- one log line ---------------- */
@@ -200,9 +202,18 @@ function jyWalk(errs,w,nowMs){
 /* ---------------- the boundary ---------------- */
 /* THE JOURNEY'S OWN BOUNDARY, into the same errs as every other part, so one bad
    field refuses the whole record and pImport stays atomic. ctx may carry the
-   clock a gate wants the dates read against. */
+   clock a gate wants the dates read against.
+
+   ctx.stored IS THE BOOT READ OF THIS DEVICE'S OWN STORE, and there a stamp
+   ahead of the clock is kept and never refused. journeyLog and journeyWalk
+   check a new stamp against Date.now(), the same clock that wrote it, so a
+   line logged while the device clock ran ahead passed and was saved, and the
+   next boot on a corrected clock refused it and the whole record with it.
+   Measured, a line logged at now plus three days: loaded 0. A stamp this
+   build wrote is a clock error and not a forgery, the rule pracSoon
+   (engine/ladder.js) carries. An import keeps the check. */
 function journeyValidate(errs,o,path,ctx){
- var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
+ var P=journeyBlank(), c=ctx||{}, nowMs=c.stored?null:jyMs(c.now), base=path||'journey';
  if(o===undefined||o===null)return P;
  if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
  vKeys(errs,base,o,['v','walk','gift','log']);
