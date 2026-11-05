@@ -7821,6 +7821,15 @@ await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
 console.log('\n=== when voice cannot run, the Journal still takes words ===');
 await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
 
+/* TYPE INSTEAD, tests/typein.js, 4 November. His words: "We should probably
+   just add the typing panel, closed, to the bottom of the journal. And if a
+   person wants to use it, they can just use it." The same box voicefall.js
+   holds, opened on request on a browser where voice works, and never drawn
+   beside the forced box or the crisis door's. A file of its own so it can
+   run alone, called here so a full run holds it. */
+console.log('\n=== type instead, the box on request while voice works ===');
+await require('./typein.js').typeInGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

@@ -34,6 +34,7 @@ engine/compute.js
 engine/plan.js
 engine/avatar.js
 engine/trace.js
+engine/tracesummary.js
 engine/schema.js
 engine/journey.js
 engine/practice.js
@@ -91,6 +92,7 @@ ui/accountability.js
 ui/ritstage.js
 ui/ritcal.js
 ui/cone.js
+ui/tracesummaryui.js
 ui/drills.js
 ui/knowledge.js
 ui/record.js
