@@ -1706,6 +1706,14 @@ canvas#cv{display:block;grid-column:2;grid-row:3;width:100%;height:100%;
 /* the Field's alone. The stage hosts every surface, and three switches for a
    picture that is not there are three dead controls */
 body:not(.tab-field) .fview,body:not(.tab-field) .fzoom{display:none}
+/* THE WHEEL, FRAMES, DIAL SWITCH IS OFF, SV18, 5 November: "the other ways
+   of displaying the field, let's turn those off." One picture is not a
+   choice, so the switch is not on the page at any width, and fviewGet in
+   ui/rings.js always answers the wheel. The host stays, empty of meaning,
+   so fbFit's measure of it reads nothing and the bar takes the width. By its
+   id, because .fview already claims display for the glass, and design.js
+   holds one class to one claim on its geometry. */
+#fview{display:none}
 /* a rendition has no reading, so the one that is up carries a whole ring in
    the accent and a lifted disc, and the two that are not stay glass */
 .fview .fb-orb{--c:var(--accent)}
@@ -2361,6 +2369,14 @@ body:not(.tab-field) .acc{display:none}
  padding:0 16px 0 8px;margin:0}
 .pol2:hover svg{opacity:.85}
 body:not(.tab-field) .pol2{display:none}
+/* AND IT IS OFF THE FIELD AT EVERY WIDTH NOW, SV18, 5 November, struck with a
+   red X across the whole strip: "Get rid of the graphic on the center right."
+   The phone took it off on GF for the same reason it can go here: its two
+   ends, the halo and the pitchfork, are drawn inside the wheel's core by
+   solCore in ui/wheel.js and open the same two drills, so nothing it led to
+   is lost. renderPol2 still writes it, into a host nobody sees. By its id,
+   for the reason #fview is: .pol2 already claims its display above. */
+#pol2{display:none}
 .pol2 svg{display:block;height:100%;width:104px}
 .pol2-t{font-family:var(--num);font-size:10px;fill:var(--dim)}
 /* the two ends of the cone are doors, so they say so on hover */
@@ -2428,6 +2444,15 @@ body.rm .pm-sw,body.rm .pm-sw i{transition:none}
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 body:not(.tab-field) #railtop{display:none}
+/* OFF THE FIELD, SV18, 5 November, with Incoherent struck through in red:
+   "get rid of the graphic that says incoherent. We just want to keep the
+   accuracy." The corner was the coherence ring and the tier word as one
+   cell. The tier word and its meaning lead the right rail's Insight panel,
+   in its summary card, #psum in ui/ui.js, and a press on that card opens the
+   same runCompassDrill this corner's word did, so nothing it led to is lost.
+   railTop still writes it, so the ids every gate and crMotion reach for are
+   still in the document. */
+#railtop{display:none}
 /* it is a button now, and a button that carries a definition owes the tap
    floor like every other control. */
 .railtop .rt-t{font-size:14px;color:var(--ink);font-weight:500;
@@ -2630,6 +2655,11 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
    the section standing under the control, not to a fixed position, so the
    next section to lead this rail is the one that has to carry it next. */
 .lsec[data-sec=overlap] .lsec-hd{padding-right:52px}
+/* SV18, 5 November: Energetic summary is hidden on his words, "Just hide it",
+   so Root Energetics stands under the control again and takes the width back.
+   Hidden by its key and not by an attribute, because .lsec sets display. */
+.lsec[data-sec=overlap]{display:none}
+.lsec[data-sec=energetics] .lsec-hd{padding-right:52px}
 /* shut, the column is the control and nothing else. It keeps its panel, so
    the way back open is a thing on a surface rather than a button floating in
    the gutter, and the chevron turns to point the way the column will go. */
@@ -2928,6 +2958,52 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .sp-gi{width:16px;height:16px;margin-right:7px;vertical-align:-3px;color:var(--gold)}
 .sp-none{font-size:13.5px;color:var(--dim);line-height:1.7;padding:10px 0}
+/* ROOT ENERGETICS, AS THE RAIL'S OWN CIRCLES. SV18, 5 November, his words on
+   the live panel: "Icons, no text ... this design element looks nothing like
+   the left side of the menu, so this needs to be brought into the design
+   aesthetic." Every rule above lays out a three column row of words, which
+   nothing else on the left rail is. ui/personas.js, reTile, draws a reading
+   as the circle the Awareness line already draws a domain in, .aw-c: a ring
+   with the mark inside, 38 across inside the 44 target, the ring a hairline
+   and never a fill. A number rides in a pill at the lower right, the glass
+   bar's own grammar. These rules are under #spirit so they win over .sp-row
+   and .sp-hd above, which still carry the classes because the gates read a
+   reading by them; the rules above are left as they were for the refusal
+   and for any row the page still draws in the old shape. */
+#spirit .sp-sysrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:4px 0 10px}
+#spirit .sp-line{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--edge)}
+#spirit .sp-line[hidden]{display:none}
+#spirit .sp-lm{flex:0 0 16px;width:16px;height:16px;margin-top:14px;fill:none;stroke:var(--dim);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+#spirit .sp-tiles{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;flex:1 1 auto;min-width:0}
+#spirit .sp-tile,#spirit .sp-sys{position:relative;flex:0 0 auto;display:grid;place-items:center;
+ width:var(--tap);height:var(--tap);min-height:var(--tap);margin:0;padding:0;border:0;border-radius:50%;
+ background:transparent;color:var(--gold);font-family:var(--sans);cursor:pointer;grid-template-columns:none}
+#spirit .sp-tile::before,#spirit .sp-sys::before{content:"";position:absolute;inset:3px;border-radius:50%;
+ box-shadow:inset 0 0 0 1.6px color-mix(in srgb,var(--ink) 16%,transparent);
+ transition:box-shadow var(--t-micro) var(--ease-out)}
+#spirit .sp-tile:hover,#spirit .sp-sys:hover{background:transparent}
+#spirit .sp-tile:hover::before,#spirit .sp-tile:focus-visible::before,
+#spirit .sp-sys:hover::before,#spirit .sp-sys:focus-visible::before{box-shadow:inset 0 0 0 1.6px var(--gold)}
+#spirit .sp-tile:focus-visible,#spirit .sp-sys:focus-visible{outline:none}
+#spirit .sp-tg{display:grid;place-items:center;line-height:1}
+#spirit .sp-tile .sp-gi,#spirit .sp-sys .sp-hi{width:18px;height:18px;margin:0;vertical-align:0;color:currentColor}
+#spirit .sp-tile .sp-g{margin:0;font-size:19px;color:currentColor}
+#spirit .sp-tdash{font-family:var(--num);font-size:16px;color:var(--dim)}
+#spirit .sp-tile.static{cursor:help}
+#spirit .sp-tn{position:absolute;right:-5px;bottom:-3px;min-width:20px;padding:1px 5px;border-radius:999px;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:11px;font-weight:600;line-height:1.35;
+ color:var(--ink);background:var(--panel-2);box-shadow:0 0 0 1px var(--edge-2);text-align:center;white-space:nowrap}
+/* a system not chosen is drawn idle, and a chosen one closes its ring in
+   the accent, which is how the Awareness line marks a chosen domain */
+#spirit .sp-sys{color:var(--dim)}
+#spirit .sp-sys.on{color:var(--gold)}
+#spirit .sp-sys.on::before{box-shadow:inset 0 0 0 2px var(--gold)}
+#spirit .sp-born{margin-left:auto;color:var(--mid)}
+/* the words, kept for the spoken name and the gates, taken off the page the
+   way .rb-sub takes Flow's caption off: a 1px box with its edges clipped */
+#spirit .sp-said{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+ clip-path:inset(50%);white-space:nowrap}
 
 /* ---------- right rail ---------- */
 .rcard{border-radius:var(--r-s);padding:14px 16px;margin-bottom:9px;position:relative;
@@ -3789,6 +3865,21 @@ body.punch .card{border-color:transparent}
 .stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
 .stack .rb2-n{min-width:0;flex:0 1 auto}
 .stk-b{padding:2px 6px}
+/* A PATTERN'S ROW AS THE RAIL'S AMOUNT BAR, SV18, ui/ui.js stkAmount: the
+   line of words over the track, the way .rbar lays it out on the dock. The
+   dock's name column sizes to its word, which is right for "Vitality" and
+   wrong for "Heart Recoiler + Diffuse Hider", so here the name takes what is
+   left and shortens with an ellipsis, and the figure keeps its column. */
+.stk-r.stk-am{display:block;padding:5px 6px 7px}
+.stk-am .rb-row{grid-template-columns:minmax(0,1fr) auto}
+.stk-am .rb-n{min-width:0;overflow:hidden;white-space:nowrap}
+.stk-am .rb-v{grid-column:2;font-size:13px}
+.stk-am .rb-t{height:10px;margin-top:4px}
+/* THE INSIGHT CARD IS THE BAND WORD'S DOOR NOW, SV18. The Field's corner that
+   carried the tier word as a 44px button came off on his words, so #psum,
+   ui/ui.js, is where a person taps the word, and on a two line reading at
+   390 it measured 43px: one short of the floor every control here keeps. */
+.psum{min-height:var(--tap)}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}

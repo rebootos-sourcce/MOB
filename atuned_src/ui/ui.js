@@ -961,11 +961,35 @@ function stkFetBar(ci,depth){
   +' aria-label="'+esc(c.nm+' and '+c.opp+'. '+say+' Opens the reading.')+'"'
   +' title="'+esc(read?c.nm+' held '+fv+', '+c.opp+' installed '+fp:c.nm+', not read yet')+'">'
   +rbPair('stkf'+depth+'-'+ci,spec)+'</button>';}
+/* A PATTERN'S ROW IS THE RAIL'S BAR, SV18, 5 November. His words on the live
+   panel, after PR 182 shipped the cascade: "When I click on child emotions, I
+   see the bar. When I click on saboteurs, complexes, hypercomplexes, and
+   supercomplexes, I see the old element design. Which needs to be replaced."
+   The row was crPat, a ring with the weight in a pill, which is the Summary's
+   object and the one he means: the Child emotions tab under it is bars, and
+   so is every reading on the left rail.
+
+   An amount and not a pair. A child emotion is two poles and leans; a
+   saboteur, a complex and the two rungs above are one weight each, so the
+   bar is rbRow's, the level he picked for the left hand side on 30 October:
+   the name on the left, the figure on the right where the fill is heading,
+   one track under both filling from none at the left. The same classes, so
+   it is the same drawing, written inside this row's own button because
+   rbRow brings a button of its own and a button cannot hold a button. The
+   figure is crPat's, fmtPct('chain'), and the fill is pct('chain'), so the
+   number and the bar are one reading. The colour is the seat crPat already
+   took the ring's from, the first address the pattern is built on. */
+function stkAmount(o,nm,f){
+ var lv=leaves(o), b=(lv[0]||{}).b||'Heart', p=Math.max(0,Math.min(100,pct('chain',o.w)||0));
+ return '<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(nm)+'</span>'
+  +(o.unnamed?'<em>inferred</em>':'')+'</span><span class="rb-v">'+esc(f)+'</span></span>'
+  +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
+  +'<i class="rb-f" style="width:'+p.toFixed(2)+'%"></i></span>';}
 function stkNode(o,path,r,depth){
  var key=path+'/'+o.kind+':'+o.nm, open=!!STK_OPEN[key];
  var si=(r[STK_LIST[o.kind]]||[]).indexOf(o);
  var below={sup:'hy',hy:'cx',cx:'sab'}[o.kind];
- var nm=o.nm+(o.over?', overshot':'');
+ var nm=o.nm+(o.over?', overshot':''), f=fmtPct('chain',o.w);
  var kids='';
  if(open){
   /* a bar has nothing under it, so its chevron column is empty and its
@@ -981,9 +1005,10 @@ function stkNode(o,path,r,depth){
   +'<button type="button" class="stk-x" data-sx="'+esc(key)+'" aria-expanded="'+open+'"'
    +' aria-label="'+esc((open?'Close ':'Open ')+'what '+o.nm+' is made of')+'"><i></i></button>'
   +stkMark(o.kind)
-  +'<button type="button" class="stk-r'+(stkSame(S.pin,o)?' on':'')+'" data-sk="'+o.kind+'" data-si="'+si+'">'
-   +'<span class="stk-l">'+crPat(o,'xs')+'<span class="stk-nm">'+esc(nm)+'</span>'
-   +(o.unnamed?'<em>inferred</em>':'')+'</span></button></div>'
+  +'<button type="button" class="stk-r stk-am'+(stkSame(S.pin,o)?' on':'')+'" data-sk="'+o.kind+'" data-si="'+si+'"'
+   /* the full name, for a row whose name shortens; the figure is on the row */
+   +' title="'+esc(nm)+'">'
+   +stkAmount(o,nm,f)+'</button></div>'
   +(open?'<div class="stk-kids">'+kids+'</div>':'')+'</div>';}
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;

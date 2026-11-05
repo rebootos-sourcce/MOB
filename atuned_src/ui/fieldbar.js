@@ -249,10 +249,21 @@ function fbValues(r){
 /* ---- the hosts, which are in the markup so the bar cannot vanish with a
    failed script, and the pieces built into them once ---- */
 var FB=null, FB_PANEL=null, FB_MENU=null, FB_FOLD=null, FB_SAY=null, FB_ZOOM=null, FB_VIEW=null, FB_TOG=null;
+/* TWO CIRCLES CAME OFF THE BAR, SV18, 5 November. His words on the live Field,
+   over a screenshot with Assemblage points (54%) circled and Stories (12%)
+   crossed out: "There's a couple icons I want to remove." The switch comes
+   off the bar and off the folded panel, which is the same three clusters;
+   the layer does not. Both stay as the depth presets set them, every one on
+   from Blueprint, so the seven seats and the story threads still draw, and
+   the Depth menu still turns them off and on with the rest of a preset. The
+   key, the tooltip and FB_BYK all stay, so a press anywhere else that names
+   the layer still has its words. Whether he also wants the two drawn off
+   the picture is not in his words, and is asked on the round's report. */
+const FB_OFFBAR={seats:1,stories:1};
 function fbCluster(g,label){
  var c=document.createElement('div'); c.className='fb-grp';
  c.setAttribute('role','group'); c.setAttribute('aria-label',g.nm);
- FB_LAYERS.filter(function(l){return l.g===g.k;}).forEach(function(l){
+ FB_LAYERS.filter(function(l){return l.g===g.k&&!FB_OFFBAR[l.k];}).forEach(function(l){
   var b=fbOrb({k:l.k,nm:l.nm,ic:l.ic,tip:l.tip,label:label,val:true});
   b.addEventListener('click',function(){fbToggle(l.k);});
   c.appendChild(b);});
@@ -330,9 +341,18 @@ function fbSay(k){if(!FB_SAY)return;var l=FB_BYK[k],v=FB_VALS[k],on=layerOn(k);
     the host moved, and #fzoom carries the group's role and name itself. */
  FB_ZOOM=document.getElementById('fzoom');
  var end=document.createElement('div'); end.className='fb-grp';
- [['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){fieldZoomBy(1/1.25);}],
-  ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the picture does the same, and a drag moves it.',function(){fieldZoomBy(1.25);}],
-  ['zfit','Reframe',FB_IC.zfit,'Back to the whole picture. Or press F.',function(){fieldReframe();}]].forEach(function(z){
+ /* ZOOM IN AND ZOOM OUT CAME OFF, SV18, 5 November. His words, with both
+    struck through in red and the third left alone: "Turn off the zoom in,
+    zoom out. Just keep frame." The third is Reframe, the one this file
+    names for his own "hit the F key and have it reframe", so frame is this
+    circle and not the Frames picture, whose switch he struck the same day.
+    Only the two circles go. Scroll and pinch still zoom, which is what makes
+    Reframe worth keeping: it is the way back, and its pill still says how
+    far in you are. The two entries are kept, commented, so putting them
+    back is two lines. */
+ [/* ['zout','Zoom out',FB_IC.zout,'Move out. Or press minus.',function(){fieldZoomBy(1/1.25);}],
+     ['zin','Zoom in',FB_IC.zin,'Move in. Or press plus. Scrolling on the picture does the same, and a drag moves it.',function(){fieldZoomBy(1.25);}], */
+  ['zfit','Reframe',FB_IC.zfit,'Back to the whole picture. Scrolling on the picture moves in, and a drag moves it. Or press F.',function(){fieldReframe();}]].forEach(function(z){
   var b=fbOrb({k:z[0],nm:z[1],ic:z[2],tip:z[3],val:z[0]==='zfit'});
   b.addEventListener('click',function(e){e.stopPropagation();z[4]();});
   end.appendChild(b);});
@@ -460,9 +480,18 @@ function fbShutPaint(shut){
  if(!FB_COARSE)FB_TOG.setAttribute('data-tip-t',say);
  fbTip(FB_TOG,shut?'Opens the bar again, every layer as you left it.'
   :'Folds the bar into this one circle. Every layer stays as it was set.');}
+/* IT STARTS SHUT, EVERY TIME, SV18, 5 November. His words on the live Field:
+   "I want that top middle, the top menu in the center field left to start
+   closed," and before them, "I've asked multiple times for this screen to be
+   changed." The bar opened unless the store said shut, so it opened for
+   everybody who had never pressed it, and a store holding open from one
+   press on another day would have reopened it for him over this change. So
+   the store is not read and not written: the bar opens shut on every visit,
+   and a press holds for as long as the page is open. The key is left in the
+   store where a browser already has it, unread. */
 function fbShutWire(){
  if(!FB||!FB_TOG)return;
- var shut=false; try{shut=STORE.get('fbar')==='shut';}catch(e){}
+ var shut=true;
  fbShutPaint(shut);
  FB_TOG.onclick=function(e){e.stopPropagation();
   var now=!FB.classList.contains('shut');
@@ -470,7 +499,6 @@ function fbShutWire(){
      under nothing */
   if(now){fbOpenPanel(false);fbOpenMenu(false);}
   fbShutPaint(now);
-  try{STORE.set('fbar',now?'shut':'open');}catch(e2){}
   /* open again, the row is measured afresh: fbFit skips a shut bar, so the
      width it last cached may be from before a resize */
   if(!now){FB_FIT=-1;fbFit();}};}
