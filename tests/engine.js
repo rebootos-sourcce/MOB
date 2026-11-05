@@ -4985,6 +4985,24 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    'and CQ is exactly the record\'s laws over 210');
  }
 
+ /* THE LAW FURTHEST SHUT IS ONE THE PERSON ANSWERED. weakL was picked over
+    every law in S.law, where an unanswered law sits at its seed of 6, so it
+    named a seed whenever no law was answered or every answered law was above
+    6, and Summary printed that seed as the person's most shut law. Each case
+    below named an unanswered law before the fix. The known good case, every
+    law answered and one low, must still name that one. */
+ {
+  const wk=laws=>{const p=E.blankProfile('weak');Object.assign(p.laws,laws);E.loadProfile(p);return compute().weakL;};
+  const low=SINAMES[5];
+  const all=wk(Object.fromEntries(SINAMES.map(l=>[l,l===low?2:8])));
+  ok(all&&all.nm===low,'all laws answered, '+low+' at 2: weakL names it, named '+(all&&all.nm));
+  ok(wk({})===null,'no law answered: weakL is null, not a seed');
+  const part=wk(Object.fromEntries(SINAMES.slice(0,10).map(l=>[l,8])));
+  ok(part!==null&&E.lawIn(part.nm),'ten answered at 8: weakL is an answered law, named '+(part&&part.nm));
+  const most=wk(Object.fromEntries(SINAMES.slice(0,20).map(l=>[l,7])));
+  ok(most!==null&&SINAMES.slice(0,20).includes(most.nm),'twenty answered at 7, one not: weakL is one of the twenty, named '+(most&&most.nm));
+ }
+
  /* AY1. A RELEASE NEVER LOWERS CQ AND NEVER MAKES ANYTHING WORSE. The live
     formula lowered CQ on a release in 22 of 10,000 random fields (9f4c7e5),
     because an installed opposite past 6 raised JQ and JQ sat inside both
