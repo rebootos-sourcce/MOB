@@ -390,10 +390,17 @@ function sumBlueprint(){
  return '<div class="pm-eye">'+unp('blueprint','Blueprint')+'</div><div class="s-sel">'
   +'<span class="s-sel-r" style="--rc:'+(rootPlain(rootNow)||'var(--accent)')+'">'
   +unp(String(rootNow).toLowerCase(),rootNow)+'</span>'
+  /* EACH DOMAIN NAME IS A TIPU CARRIER, audit of 4 November, round PO's
+     unpack rule. This printed a native title, "Knowledge. living by working
+     things out", which tip.js falls back to and makes tap reachable, but it
+     was never the product's one meaning table and it never read the
+     domain's clear and distorted expression, only its own short tagline.
+     unpAttr pulls domain:<name> from engine/data/gloss.js instead, the same
+     table and the same carrier the root chip just above already uses. */
   +S.doms.map(function(di){var d=DOMAINS[di]; if(!d)return '';
-   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'" '
-    +'title="'+esc(d.nm+'. '+d.d)+'">'+svgI('<path d="'+d.ic+'"/>')
-    +'<span>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
+   return '<button type="button" class="s-dom" data-dom="'+di+'" style="--rc:'+rootPlain(d.r)+'">'
+    +svgI('<path d="'+d.ic+'"/>')
+    +'<span class="tipu"'+unpAttr(d.nm,'domain',d.nm)+'>'+esc(d.nm)+'</span></button>';}).join('')+'</div>';}
 function sumArch(r){
  /* the archetypes. these ARE measured: aff is a real proportion. */
  /* EVERY ARCHETYPE IN ITS OWN SEAT'S COLOUR. Ruled. Twelve named things were
