@@ -62,6 +62,50 @@ function stMark(k,word,term,cls,tail){
  return '<div class="st-mk st-mk-'+k+(cls?' '+cls:'')+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ST_MARK[k]+'</svg>'
   +'<h3'+(a?' class="tipu"'+a:'')+'>'+esc(word)+'</h3>'+(tail||'')+'</div>';}
+/* ---- a worked example's journal, read only, 5 November ----
+   His words: "I'm loading up my profile examples and there's nothing under
+   Discover. There used to be fake records and a bunch of other stuff." And,
+   twice in the same message, the line that stood here: "Get rid of the text
+   that says a worked example shows every reading and runs nothing."
+
+   WHAT WAS MEASURED BEFORE THIS WAS WRITTEN. Every example carries a
+   journal: round QD (engine/exdepth.js, 2 October) seeded each one with
+   dated entries in its own words, replayed through the writers stCommit
+   uses, so CURP.story.entries is real and the Imprints page already groups
+   by it. Diane carries five, and her Archive ten. This page never drew one. Built from main on 15,
+   17, 27 and 31 October and opened on Diane, the centre column read only the
+   preview line on every build from 16 October, when show only landed, and
+   an empty box before that. What did leave the page is the Analytics
+   preview and Laws noticed folds under Release, read off those same
+   entries and cut on his word on 29 October, and the left menu, cut on 28
+   October. So nothing regressed in the data; the page had no place that
+   showed it, and the line he struck was the only thing in the column.
+
+   SO THE COLUMN SHOWS THE EXAMPLE'S OWN ENTRIES, as the person's own side of
+   the conversation, oldest first so the newest sits at the foot the way a
+   conversation's newest line does, each with the day it was written. Only
+   the person's side, because a seeded entry has no Source AI question
+   stored beside it and one is not invented here. The words are the
+   example's and are quoted, never the product speaking. Nothing here is a
+   control: there is no box, no Chat and no Commit, so the show only rule
+   (engine/showonly.js) holds without a sentence to announce it.
+
+   THE ENTRY THE ENERGY COLUMN READS IS MARKED, in the Full view, where that
+   column is on screen (stDashExEntry, ui/stdash.js): the newest entry the
+   words reached a seat in. Its bubble carries a ring, so the column and the
+   conversation visibly point at the same words, and aria-current says the
+   same to a screen reader. */
+function stExampleThread(){
+ var ents=((CURP&&CURP.story&&CURP.story.entries)||[]).filter(function(e){return e&&e.text;})
+  .slice().sort(function(a,b){return String(a.t).localeCompare(String(b.t));});
+ if(!ents.length)return '';
+ var on=STV.dash&&typeof stDashExEntry==='function'?stDashExEntry():null;
+ return '<ol class="src-th st-exth" id="stexth" aria-label="Journal">'+ents.map(function(e){
+   var d='',dt=new Date(e.t);
+   if(!isNaN(dt))try{d=dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}catch(x){d='';}
+   return '<li class="src-tn src-tn-me'+(e===on?' st-exon" aria-current="true':'')+'"><div class="st-exm"><div class="src-bub src-bub-me"><p class="src-me">'
+    +esc(e.text)+'</p></div>'+(d?'<time class="st-exd" datetime="'+esc(e.t)+'">'+esc(d)+'</time>':'')+'</div></li>';}).join('')
+  +'</ol>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -79,7 +123,9 @@ function stRender(){
     box, Talk, Record, Source AI's question and Commit are the one preview
     line in their place (showNote, ui/personas.js). It was a box that took a
     whole story and then refused it at Commit, which is a control that looks
-    like it works until the moment it does not. */
+    like it works until the moment it does not. The box and the controls are
+    still not drawn; the preview line gave way to the example's own journal
+    on 5 November, see stExampleThread. */
  var show=showOnly();
  var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
@@ -112,6 +158,26 @@ function stRender(){
       its place on the left; Dashboard keeps the right. stMark('j',...) is
       still the Discover door's own name elsewhere (TABDEF, the section
       itself), only this panel's own repeated word is cut. */
+   /* DASHBOARD AND CHAT CHANGED PLACES, 5 November, his words: "Swap the
+      dashboard and chat icons." Read as the two buttons, which is what he
+      calls them ("if I press it dashboard icon is lit up", 29 October), and
+      not as their two drawings: Chat already carries the microphone and
+      Dashboard the four squares, so trading the drawings would put a grid on
+      the button that starts the microphone. Which side each stood on was
+      never his: "Dashboard keeps the right" above is this file's own line.
+      Dashboard is drawn first now, so the keyboard reaches the two in the
+      order they are seen; nothing is wired by position.
+      AND IT STAYS ON A WORKED EXAMPLE, the same day. It was dropped with
+      Chat, so an example landed in Simple had no way to Imprints, Release or
+      Energy at all, which is the rest of "there's nothing under Discover."
+      Dashboard runs nothing, it only shows the panels beside the
+      conversation, so the show only rule has no claim on it. Chat starts
+      the microphone and stays off an example. */
+   +('<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
+   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
+   +'<span>Dashboard</span></button>')
    +'<div class="st-hdbtns">'
    /* CHAT, THE ONLY CONTROL ON THE LEFT, round of 29 October, name changed a
       second time the same day: "the talk button, you're going to change to
@@ -160,12 +226,8 @@ function stRender(){
       shut beside the conversation, simple on landing, his words "when I
       land on this page it starts off in simple mode" and "if I press it
       dashboard icon is lit up." Bound below, as #stdash's onclick near the
-      foot of this function. */
-   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
-   +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
-   +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>Dashboard</span></button>')
+      foot of this function. It is drawn above, before Chat, see DASHBOARD
+      AND CHAT CHANGED PLACES. */
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -206,7 +268,7 @@ function stRender(){
      words both times were "get rid of those rainbow colours," and this is
      the one that was still there. srcComb() itself stays defined, in case a
      later screen wants it, only this call is cut. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  +(show?stExampleThread():'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
      a normal speech conversation has no reason to open (see stMic and
@@ -314,13 +376,18 @@ function stRender(){
       (STV.novoice), where closing it would hand the person back to a voice
       that cannot run, nor beside the crisis door's box, which keeps the one
       door it already has. The label stays the same open or shut, and
-      aria-expanded carries which. */
+      aria-expanded carries which.
+
+      THE KEYBOARD ALONE, 5 November, his words: "Change the 'type instead'
+      to just a keyboard icon." The words leave the screen and not the
+      button: they are its accessible name, so a screen reader still hears
+      "Type instead", and the title still says what a press does, on hover,
+      on a long press and on keyboard focus. The press is unchanged. */
    +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
-    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" title="'
+    :'<button type="button" class="st-type" id="sttype" aria-label="Type instead" aria-expanded="'+STV.typed+'" title="'
     +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
-    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'
-    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg>'
-    +'<span>Type instead</span></button>')
+    +'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">'
+    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg></button>')
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
@@ -392,8 +459,12 @@ function stRender(){
      its foot rather than inside either panel, lower right as marked. One
      #stapply, same id and wiring stRender's wire-up finds by id below; the
      !STV.dash and !STV.chat placements in .st-bar above still carry it
-     when this column itself is not on screen to carry it instead. */
-  +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
+     when this column itself is not on screen to carry it instead.
+     NOT ON A WORKED EXAMPLE, 5 November. Show only (16 October) draws no
+     Commit on an example, and this one slipped it because the Full view was
+     out of an example's reach: Dashboard was hidden there. Dashboard stays
+     on an example now, so the ruling is kept here too. */
+  +(STV.chat&&STV.dash&&!show?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
   +'</div>'
   /* ---- the release column. It keeps the id its rail section had. ----
@@ -410,6 +481,9 @@ function stRender(){
      or the opener, and srcPaint writes it only when it changes. */
   +'<p class="src-say" id="srcsay" aria-live="polite"></p>';
  h.innerHTML=out;
+ /* a worked example's journal opens on its newest entry, at the foot, where
+    a conversation's newest line always is */
+ var exth=show&&document.getElementById('stexth'); if(exth)exth.scrollTop=exth.scrollHeight;
  /* THE LANES AND THE BARS OUTLIVE A RENDER. This emptied both, so every
     arrival at the tab and every redraw of the page faded all seven lanes in
     and grew every bar again from the floor: motion that said a word had
@@ -611,9 +685,24 @@ function stMarks(t,p){
   toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});});
  marks.toks=toks;
  return marks;}
+/* THE WORDS THIS PAGE READS, 5 November. The person's own, ST_TEXT and
+   ST_PARSED, everywhere but a worked example. On an example there are none
+   (show only, engine/showonly.js), and the Energy column now reads the
+   newest entry of the example's own journal that reached a seat
+   (stDashExEntry, ui/stdash.js), ringed in the thread. The chart, its seat
+   springs and the list read the same words through here, because this page
+   keeps one rule above the rest: the sentence, the chart and the list
+   cannot disagree, and a lit column beside an empty chart is exactly that.
+   Only what the page draws reads through here. What the page would keep,
+   the pending tag, Commit, stFound and the draft, still reads ST_PARSED
+   itself, so an example never claims a word is pending or committable. */
+function stPage(){
+ if(typeof showOnly==='function'&&showOnly()&&typeof stDashExEntry==='function'){
+  var e=stDashExEntry(); return e?{t:e.text,p:stDashExRead(e.text)}:{t:'',p:null};}
+ return {t:ST_TEXT,p:ST_PARSED};}
 function stRead(){
- var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
- var marks=stMarks(t,ST_PARSED);
+ var pg=stPage(), t=pg.t, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var marks=stMarks(t,pg.p);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
 /* ============================================================
@@ -2178,7 +2267,7 @@ function stRailClear(){
 var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight'],['rung','Came back'],['charge','Charge']];
 var ST_BKEY={}; Object.keys(K2BAND).forEach(function(k){ST_BKEY[K2BAND[k]]=k;});
 function stLaneModel(){
- var p=ST_PARSED,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
+ var p=stPage().p,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
  ((heard&&heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;wds[s.band]=s.words;});
  var first={},cnt={};
  STR.marks.forEach(function(m){if(!m.bn)return;
@@ -2487,7 +2576,7 @@ function stHot(k){
           than copied a second time */
 var STSEAT={}; BANDS.forEach(function(b){STSEAT[b]={rd:0,rv:0,rdT:0,rg:0,rgv:0,rgT:0,bend:0,bv:0,ph:0,rise:0};});
 function stSeatT(){
- var p=ST_PARSED,rg={},snap=STV.view==='lanes';
+ var p=stPage().p,rg={},snap=STV.view==='lanes';
  ((STR.heard&&STR.heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;});
  BANDS.forEach(function(b){var o=STSEAT[b],k=ST_BKEY[b],t=p&&p.bands[k]?Math.min(10,p.bands[k]/3):0;
   if(t>o.rdT+0.01)o.rise=1.6; o.rdT=t; o.rgT=rg[b]||0;
@@ -2626,7 +2715,14 @@ function stDrawStrip(){
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
- e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
+ /* NOTHING KEPT YET IS GONE, 5 November, his words: "Get rid of the text
+    that says nothing kept yet." It was the state above that the words kept
+    nothing, and it went the way the tag's fourth state went in round LO:
+    the tag prints nothing, which is how this tag already says there is
+    nothing to say, and the chart and the list beside it are empty in the
+    same breath. Pending and Committed each say a thing nothing else on the
+    panel says, so they stay. */
+ e.textContent=n?n+' pending':(!ST_TEXT.trim()&&STV.lastFound.length?'Committed':'');
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 /* THE CAPTION UNDER THE CHART IS GONE, round of 29 October, his words:
    "get rid of the text that says 29 words read to kept." stCtrPaint used
@@ -2649,8 +2745,9 @@ var ST_SEEN={};
 function stListPaint(){
  var hd=document.getElementById('stlshd'), box=document.getElementById('stimps'); if(!hd||!box)return;
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
- /* the person's own draft is not read onto a worked example's page */
- var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
+ /* the person's own draft is not read onto a worked example's page; the
+    example's own entry is, the one the Energy column reads (stPage) */
+ var p=stPage().p,n=p?p.imprints.length:0,o='';
  /* THE HEADING AND THE EMPTY-STATE SENTENCE ARE GONE, round of 29 October,
     his words: "get rid of the text pending imprints by seat... you have not
     written anything yet." The sort control above it still says which sort
@@ -2742,8 +2839,10 @@ function stVaultPaint(hd,box){
    WHICH ADDRESSES, in the order his chain reads. What was picked in the bank
    first, because picking there is how he said he chooses. Otherwise what this
    entry reaches, or the last committed one's, because the chain is journal,
-   imprint, release. Otherwise the three heaviest held. Every ring starts
-   selected and a tap takes it out of the run; its name is its label.
+   imprint, release. Otherwise nothing: the three heaviest held were offered
+   here until 5 November, see stRelModel. Every ring starts selected,
+   because a person put each one there, and a tap takes it out of the run;
+   its name is its label.
 
    PACE AND PATTERNS ARE THE CARD'S OWN TWO FIELDS, RUN.pace and RUN.dose,
    so a setting made here is the setting the run uses and there is one of
@@ -2764,8 +2863,45 @@ var ST_OFF={};
 /* the card's ceiling on times said, read off its own picks (REL_DOSES,
    ui/release.js, which loads after this file and is read only at a press) */
 function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
+/* ---- the two steppers, Run speed and Patterns, 5 November ----
+   WHERE A PRESS LANDS. Run speed moves a tenth at a time, the step its
+   input already carried. Patterns moves between the card's own picks,
+   REL_DOSES, with the field's floor of one below them, because those are
+   the doses the Release card itself offers and a press should land on one
+   the card would also have chosen; a value in between is still typed. */
+function stStepPicks(id){
+ if(id==='strpace')return null;
+ var mx=stDoseMax(), ps=[1].concat(typeof REL_DOSES!=='undefined'?REL_DOSES:[LINES_PER_CH]);
+ return ps.filter(function(v,i){return v<=mx&&ps.indexOf(v)===i;}).sort(function(a,b){return a-b;});}
+function stStepHtml(id,label,min,max,step,val,less,more,shut){
+ var dis=shut?' disabled':'';
+ /* for= names the input, because the label's first control would otherwise
+    be the minus button and a screen reader would hear "Run speed, Slower" */
+ return '<label class="rel-field st-stpf" for="'+id+'"><span>'+label+'</span>'
+  +'<span class="st-stp'+(shut?' st-stp-off':'')+'">'
+  +'<button type="button" class="st-sb" data-stp="'+id+'" data-d="-1" aria-label="'+less+'"'
+   +(shut||val<=min?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h11"/></svg></button>'
+  +'<input type="number" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'"'+dis+'>'
+  +'<button type="button" class="st-sb" data-stp="'+id+'" data-d="1" aria-label="'+more+'"'
+   +(shut||val>=max?' disabled':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12h11M12 6.5v11"/></svg></button>'
+  +'</span></label>';}
+/* a press goes through the input's own onchange, so the clamp and the write
+   to RUN are the ones a typed value gets, and there is one of each */
+function stStepPress(id,d){
+ var f=document.getElementById(id); if(!f||f.disabled)return;
+ var v=+f.value, ps=stStepPicks(id), n;
+ if(ps){n=d<0?ps.filter(function(x){return x<v;}).pop():ps.filter(function(x){return x>v;})[0];
+  if(n===undefined)n=d<0?ps[0]:ps[ps.length-1];}
+ else n=Math.round((v+d*(+f.step||0.1))*10)/10;
+ f.value=n; f.onchange&&f.onchange.call(f);}
+function stStepEnds(id){
+ var f=document.getElementById(id); if(!f)return;
+ var v=+f.value, w=f.closest('.st-stp'); if(!w)return;
+ var bs=w.querySelectorAll('.st-sb');
+ if(bs[0])bs[0].disabled=f.disabled||v<=+f.min;
+ if(bs[1])bs[1].disabled=f.disabled||v>=+f.max;}
 function stRelModel(){
- var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
+ var bySq=function(a,b){return b.sq-a.sq;};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
@@ -2781,9 +2917,23 @@ function stRelModel(){
     named one exists. Weight still orders what runs. An entry from before the
     split carries no .named and reads as it always did. */
  var cut=found.named||0;
+ /* THE THREE HEAVIEST HELD ARE NO LONGER OFFERED ON ARRIVAL, 5 November, his
+    words: "When I land on the Discover page, there's three icons already
+    active in release, but there's no text, so that it starts off with a
+    bug." It is a bug and this was the line. With nothing picked and nothing
+    found, the panel filled itself with the field's three heaviest addresses,
+    and every ring starts selected, so a person who had done nothing on the
+    page met three pressed rings in seat colour with no name on screen and
+    nothing to say why. Round LO had already taken the panel's glow off that
+    same offer ("release should not start red. It should only become red
+    once you add things to it") and left the rings lit, which is the half he
+    is pointing at now. So the panel offers only what was added here, a pick
+    in the bank or what the words reached, and Release stays disabled until
+    there is one. The heaviest held are not lost as a route: the bank lists
+    them by weight, and the Release card on Flow keeps its own queue. */
  if(picked.length)take=picked.sort(bySq);
  else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
- else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
+ else take=[];
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
   fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
@@ -2801,16 +2951,32 @@ function stRelPanel(){
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
+ /* A WORKED EXAMPLE DRAWS THE SAME PANEL, SHUT, 5 November. It used to drop
+    Run speed, Patterns and Release for the preview line (showNote), and he
+    struck that line twice in one message: "Get rid of the text that says a
+    worked example shows every reading and runs nothing." With the line gone
+    and the controls gone the panel was a heading over nothing, which is the
+    "nothing under Discover" he named in the same message. So the controls
+    are drawn and disabled, the rule engine/showonly.js keeps (an example
+    runs nothing) is held by the disabled state itself, and the reason is on
+    the button's title, in the shorter refusal V15 already ships. */
+ var shut=showOnly();
  o+='</div><div class="st-rlfoot">'
-  /* pace and patterns set the run, so they go with it on a worked example */
-  +(showOnly()?'':'<div class="rel-fields st-fields">'
+  +('<div class="rel-fields st-fields">'
    /* PACE READ RUN SPEED ALREADY ON THE CARD, round LY, his words then:
       "run speed instead of pace." This panel never got that update; round
       of 29 October his words made it plain it still said Pace, so it now
       reads what the card already reads, the two kept in step the way
       Times said was kept in step with the card below. The field's id and
       RUN.pace are untouched, only the label moved. */
-   +'<label class="rel-field"><span>Run speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
+   /* AND BOTH ARE STEPPERS, 5 November, his words: "Run speed and patterns,
+      those fields, they look generic. Give those a look a bit more
+      designed." They are the Ritual page's Timer now (rv-stp, ui/ritual.js):
+      one pill, a minus, the value, a plus, so the two places a person sets
+      an amount look like one control. The input stays inside it, with its
+      id, its bounds and its onchange, so a typed value still lands and every
+      gate that sets it by id still reaches it; stStepPress moves it. */
+   +stStepHtml('strpace','Run speed',0.5,2,0.1,RUN.pace,'Slower','Faster',shut)
    /* PATTERNS, round of 29 October, overriding the 17 October ruling below
       kept for the record: his words then were that Times said is the
       card's own word for the allowance's real unit, not Patterns, because
@@ -2820,17 +2986,15 @@ function stRelPanel(){
       (ui/release.js) now read Patterns; a mismatch between the two was
       the thing the earlier rename existed to prevent, so both still
       agree, only on the opposite word. */
-   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
+   +stStepHtml('strdose','Patterns',1,stDoseMax(),1,RUN.dose,'Fewer','More',shut)
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
-  /* and on a worked example it is the preview line, ruled 16 October: the
-     rings above are the reading and stay, Run is the run and does not */
-  +(showOnly()?showNote('release','st-show')
-   /* RELEASE, not Run release, round of 29 October, his words: "change run
-      release to just release." The card's own button (ui/release.js)
-      renamed the same way, same reason the fields above stay matched. */
-   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Release</button>')+'</div>';
+  /* RELEASE, not Run release, round of 29 October, his words: "change run
+     release to just release." The card's own button (ui/release.js)
+     renamed the same way, same reason the fields above stay matched. */
+  +'<button type="button" class="st-go" id="strun"'+(M.sel.length&&!shut?'':' disabled')
+  +(shut?' title="Nothing is released on a worked example."':'')+'>Release</button></div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.
@@ -2859,13 +3023,19 @@ function stRelPanel(){
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
+ /* a typed value moves the steppers' ends too, so a minus at the floor is
+    never left pressable after the field was typed down to it */
+ ['strpace','strdose'].forEach(function(id){var x=document.getElementById(id); if(!x)return;
+  var was=x.onchange; x.onchange=function(){was.call(this); stStepEnds(id);};});
+ e.querySelectorAll('[data-stp]').forEach(function(b){b.onclick=function(){
+  stStepPress(b.getAttribute('data-stp'),+b.getAttribute('data-d'));};});
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
   RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
-     addresses: not a bank pick, not a draft still being typed, not the three
-     heaviest held, none of which came from one entry */
+     addresses: not a bank pick and not a draft still being typed, neither of
+     which came from one entry */
   relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};}
 

@@ -4294,6 +4294,35 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-rlfoot{margin-top:auto;padding-top:10px}
 /* the card's two fields, .rel-field, set to the column's left edge */
 .rel-fields.st-fields{justify-content:flex-start;margin:0}
+/* RUN SPEED AND PATTERNS ARE STEPPERS, 5 November, his words: "they look
+   generic. Give those a look a bit more designed." The Ritual page's Timer is
+   the model (.rv-stp, ui/ritual.js): one pill outlined in the second edge, a
+   minus, the figure in the number face, a plus. The two share the column
+   half and half, so they read as one row of settings and not two boxes that
+   happened to land side by side. .rel-field's own span and input rules are
+   undone inside the pill, because they were written for the bare box this
+   replaces: the span rule would set the pill in the eyebrow's 11 pixels and
+   the input rule would draw a box inside the pill. */
+.rel-fields.st-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.st-stpf{min-width:0}
+.rel-field .st-stp{display:flex;align-items:center;width:100%;min-height:var(--tap);
+ border:1px solid var(--edge-2);border-radius:999px;font-size:inherit;font-weight:inherit;letter-spacing:0;color:var(--ink);
+ transition:border-color var(--t-micro) var(--ease-out)}
+.rel-field .st-stp:focus-within{border-color:var(--accent)}
+.rel-field .st-stp input{flex:1 1 auto;min-width:0;width:100%;min-height:0;padding:0;border:0;background:transparent;
+ color:var(--ink);font-family:var(--num);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;
+ text-align:center;-moz-appearance:textfield;appearance:textfield}
+.rel-field .st-stp input::-webkit-outer-spin-button,
+.rel-field .st-stp input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.rel-field .st-stp input:focus{outline:none}
+.st-sb{flex:0 0 auto;width:var(--tap);height:var(--tap);display:inline-flex;align-items:center;justify-content:center;
+ padding:0;border:0;border-radius:999px;background:transparent;color:var(--mid);cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.st-sb svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.st-sb:hover:not(:disabled){color:var(--ink);background:var(--panel-2)}
+.st-sb:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.st-sb:disabled{opacity:.3;cursor:default}
+.rel-field .st-stp-off{opacity:.55}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
@@ -4433,12 +4462,18 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
    the way, so this carries none of the lift Chat and Dashboard were given
    (no fill, no border, no glow): it is a word and an icon at the foot of the
    panel, in the mid ink, and it reaches full ink on hover and while its box
-   is open. Still the full 44 pixel target, the floor tests/design.js holds. */
-.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;gap:7px;
- background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
- font-family:var(--sans);font-size:13px;cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
-.st-type svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
+   is open. Still the full 44 pixel target, the floor tests/design.js holds.
+   AND THE WORD IS GONE, 5 November, his words: "just a keyboard icon." The
+   glyph sits centred in its own 44 pixel circle, and the negative margin that
+   lined the word up with the panel's text edge lines the circle up instead.
+   The circle's ground appears on hover and while the box is open, so the one
+   state the word used to carry by ink alone still shows on a bare glyph. */
+.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;justify-content:center;
+ background:none;border:0;border-radius:999px;padding:0;margin-left:-10px;color:var(--mid);
+ cursor:pointer;transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.st-type svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink);background:var(--panel-2)}
+.st-type:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
@@ -4524,17 +4559,46 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
-.st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
-.st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-.st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
- border-bottom:1px solid var(--edge);font-size:14px;color:var(--ink)}
-.st-en-r:last-child{border-bottom:0}
-/* the ring's pill is as wide as its figure, a dash or 100%, so the ring takes
-   one width and the seven names start on one line, measured at 96 pixels for
-   100% at the sm size on both widths */
-.st-en-r .cr{flex:0 0 auto;min-width:96px}
-.st-en-r .st-en-n{flex:1 1 auto;min-width:0}
-.st-lrail .st-none{margin:6px 2px 0}
+/* THE COLUMN IS A BODY, 5 November, see the ruling of that name in
+   ui/stdash.js. Each row is a grid: the seat's ring down the left, its name
+   and its figure on the first line, and a track the seat's colour fills
+   under the name. cr() is laid open with display:contents so its ring and
+   its pill land in the row's own grid, the figure at the row's end where the
+   eye finds a number, and its own pill ground gives way to the row's. The
+   spine is one hairline through the centres of the seven rings, shaded seat
+   to seat by --spine, which stDashLeft writes from seatCol. The md ring is
+   34 pixels, so the spine sits at 10 pixels of row padding plus 17. */
+.st-en-ls{position:relative;list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.st-en-ls::before{content:"";position:absolute;left:27px;top:26px;bottom:26px;width:2px;margin-left:-1px;
+ border-radius:2px;background:var(--spine,var(--edge));opacity:.32;pointer-events:none}
+.st-en-r,.st-en-q{position:relative;display:grid;grid-template-columns:34px 1fr auto;
+ grid-template-areas:"g n v" "g b b";column-gap:12px;row-gap:6px;align-items:center;
+ min-height:52px;padding:8px 10px;border-radius:var(--r-s);font-size:14px;color:var(--ink);
+ transition:background var(--t-micro) var(--ease-out)}
+.st-en-r .cr{display:contents}
+.st-en-r .cr .ring{grid-area:g;justify-self:center;border-radius:50%;background:var(--panel)}
+.st-en-r .cr .v{grid-area:v;justify-self:end;margin:0}
+.st-en-n{grid-area:n;min-width:0;font-weight:600;color:var(--c);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-en-bar{grid-area:b;display:block;height:4px;border-radius:4px;overflow:hidden;
+ background:color-mix(in srgb,var(--c) 14%,transparent)}
+.st-en-bar i{display:block;height:100%;border-radius:4px;background:var(--c);
+ transition:width var(--t-element) var(--ease-out)}
+.st-en-r:hover{background:color-mix(in srgb,var(--c) 7%,transparent)}
+/* the seat this story reaches hardest, on a ground of its own colour */
+.st-en-top{background:color-mix(in srgb,var(--c) 11%,transparent);
+ box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 28%,transparent)}
+.st-en-top:hover{background:color-mix(in srgb,var(--c) 14%,transparent)}
+/* a seat this story did not reach keeps its place, quieter */
+.st-en-0 .st-en-n{color:color-mix(in srgb,var(--c) 70%,var(--mid))}
+/* the quiet map, before there is a story: the glyph in an outline, no arc
+   and no figure, so it cannot be read as seven zeros */
+.st-en-g{grid-area:g;justify-self:center;width:34px;height:34px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;background:var(--panel);
+ border:2px solid color-mix(in srgb,var(--c) 26%,transparent)}
+.st-en-g svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+.st-en-q .st-en-n{grid-row:1 / 3;align-self:center;color:color-mix(in srgb,var(--c) 60%,var(--mid));font-weight:500}
+.st-en-q .st-en-bar{display:none}
+.st-lrail .st-none{margin:10px 10px 0;font-size:13px;line-height:1.5;color:var(--mid)}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4838,6 +4902,15 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
 .src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
+/* a worked example's journal, stExampleThread in ui/storyui.js: the same
+   bubble, with the day it was written under it on the bubble's own side. The
+   column takes the bubble's 82 per cent so the bubble keeps its width. */
+.st-exm{display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:82%}
+.st-exm .src-bub{max-width:100%}
+.st-exd{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;padding:0 4px}
+.st-exth{margin-top:8px}
+/* the entry the Energy column reads, ringed in the accent off the panel */
+.st-exon .src-bub{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--accent)}
 /* every paragraph a bubble can hold reads at the bubble's own one size,
    never its old standalone size, whichever class built it */
 .src-bub .src-q,.src-bub .src-open,.src-bub .src-note{margin:0;max-width:none;

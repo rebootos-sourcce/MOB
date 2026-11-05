@@ -164,7 +164,9 @@ const FLOOR_CANVAS=60;
       section, so the rail watch above, which reads [data-rail] hosts, would
       never see it either. So the Journal is walked three ways by name: Simple,
       where the rail must be hidden and empty; Full with no story, where Energy
-      must say nothing is read and draw no ring; and Full with a story, where
+      must say nothing is read and draw no ring, or on a worked example draw
+      all seven seats off the example's own journal entry (5 November); and
+      Full with a story, where
       it must draw all seven seats and clear the floor. The story is put into
       the working text and painted directly, never committed or drafted, and
       the view is put back to Simple after. */
@@ -176,7 +178,11 @@ const FLOOR_CANVAS=60;
       shown:ls.display!=='none'&&lb.width>0&&lb.height>0&&sl.offsetParent!==null,
       left:sl.innerHTML.length, text:(sl.innerText||'').trim().length,
       rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
-      none:!!sl.querySelector('#st-energy-none')});};
+      none:!!sl.querySelector('#st-energy-none'),
+      /* whether the page has a reading of its own with no words typed: since
+         5 November a worked example reads the newest entry of its own
+         journal that reached a seat (stPage, ui/storyui.js) */
+      own:typeof stPage==='function'&&!!stPage().p});};
     const t0=ST_TEXT, p0=ST_PARSED;
     setTab(TAB.STORY); STV.dash=false; stRender(); await wait(); m('simple');
     STV.dash=true; ST_TEXT=''; ST_PARSED=null; stRender(); await wait(); m('full');
@@ -187,7 +193,7 @@ const FLOOR_CANVAS=60;
    jr.forEach(r=>{
     const bad=r.story<FLOOR
      ||(r.nm==='simple'&&(r.shown||r.left>0))
-     ||(r.nm==='full'&&(!r.shown||!r.none||r.rings>0))
+     ||(r.nm==='full'&&(!r.shown||(r.own?(r.none||r.rows!==7):(!r.none||r.rings>0))))
      ||(r.nm==='full story'&&(!r.shown||r.rows!==7||r.left<FLOOR));
     rows.push([wn,who,{simple:'jnl simple',full:'jnl full','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
      'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.rows+' seats'+(r.none?', nothing read yet':'')]);

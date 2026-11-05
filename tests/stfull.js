@@ -29,8 +29,9 @@
         column (28 October)
      2  Dashboard turns on Full: st-full, the left column back, #stleft the
         only thing in it but its fold
-     3  Energy is silent with no story: one line, no ring
-     4  with a story, all seven seats Root to Crown, each figure the 'atom'
+     3  Energy is silent with no story: one line, no ring, no figure, and
+        the seven seats standing as a quiet map (5 November)
+     4  with a story, all seven seats Crown to Root, each figure the 'atom'
         percent of min(10, bands/3), the dash where a seat is untouched, and
         the same number the Journal's own chart springs to (STSEAT)
      5  PHASE 0: in Full with chat on, the crisis door is reached by real
@@ -112,22 +113,34 @@ async function stFullGate(browser,FILE,ok,booted){
   const s2=await p.evaluate(()=>{const sl=document.getElementById('stleft');
    return {txt:ST_TEXT, none:!!sl.querySelector('#st-energy-none'), say:(sl.querySelector('#st-energy-none')||{}).textContent,
     rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
+    quiet:[...sl.querySelectorAll('.st-en-q .st-en-n')].map(e=>e.textContent), crown:BANDS.slice().reverse(),
+    figs:sl.querySelectorAll('.v,.st-en-bar i').length, sub:!!sl.querySelector('.st-en-sub'),
     head:(sl.querySelector('#st-energy-h')||{}).textContent};});
   ok(s2.txt.trim()===''&&s2.head==='Energy',at+'the rail opens on Energy, with no story written, '+JSON.stringify({txt:s2.txt,head:s2.head}));
-  ok(s2.none&&s2.rings===0&&s2.rows===0,at+'and says nothing is read yet, with no ring and no seat drawn, '+JSON.stringify(s2));
+  ok(s2.none&&s2.rings===0&&s2.rows===0&&s2.figs===0,at+'and says nothing is read yet, with no ring and no figure drawn, '+JSON.stringify(s2));
+  /* THE QUIET MAP, 5 November ("I don't see anything there"): the seven seats
+     stand before there is a story, Crown at the top, each a glyph and a name
+     and nothing a person could read as a figure */
+  ok(s2.quiet.join()===s2.crown.join(),at+'the seven seats stand as a quiet map, Crown to Root, got '+s2.quiet.join(','));
+  ok(!s2.sub,at+'and the line under the heading is gone, his words "get rid of the text that says what this story puts at each of the 7 seats"');
 
   /* 4. a story, all seven */
   const s3=await p.evaluate(t=>{
    ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh();
    const rows=[...document.querySelectorAll('#stleft .st-en-r')];
-   const want=BANDS.map(b=>{const v=Math.min(10,(ST_PARSED.bands[B2K[b]]||0)/3);return {b,v,f:fmtPct('atom',v)};});
-   return {seats:rows.map(r=>r.getAttribute('data-seat')), order:BANDS,
+   const want=BANDS.slice().reverse().map(b=>{const v=Math.min(10,(ST_PARSED.bands[B2K[b]]||0)/3);return {b,v,f:fmtPct('atom',v)};});
+   /* Crown at the top since 5 November, the order of the Imprints chart
+      beside it (ui/stdash.js, CROWN AT THE TOP NOW) */
+   return {seats:rows.map(r=>r.getAttribute('data-seat')), order:BANDS.slice().reverse(),
+    top:(document.querySelector('#stleft .st-en-top')||{getAttribute:()=>null}).getAttribute('data-seat'),
+    heaviest:want.reduce((m,x)=>x.v>(m?m.v:0)?x:m,null),
     got:rows.map(r=>(r.querySelector('.cr .v')||{}).textContent), want:want.map(x=>x.f),
     spring:want.every(x=>Math.abs(STSEAT[x.b].rdT-x.v)<1e-9),
     dash:want.filter(x=>x.f===PCT_DASH).length, lit:want.filter(x=>x.f!==PCT_DASH).length,
     tips:rows.every(r=>!!r.querySelector('.st-en-n .tipu[data-tip]')),
     none:!!document.querySelector('#st-energy-none')};},STORY);
-  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats Root to Crown, got '+s3.seats.join(','));
+  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats Crown to Root, got '+s3.seats.join(','));
+  ok(!!s3.heaviest&&s3.top===s3.heaviest.b,at+'and the seat the story reaches hardest is the one on its own ground, '+s3.top);
   ok(s3.got.join()===s3.want.join(),at+'each figure is the atom percent of min(10, bands/3), got '+s3.got.join(',')+' want '+s3.want.join(','));
   ok(s3.lit>0&&s3.dash>0,at+'a seat the story reached prints its percent and an untouched seat its dash, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
   ok(s3.spring,at+'and every ring reads the number the Journal\'s own chart springs to, STSEAT');
@@ -268,11 +281,16 @@ async function stFullGate(browser,FILE,ok,booted){
    rail:document.getElementById('stleft').innerHTML,
    rows:document.querySelectorAll('#stleft .st-en-r').length,
    none:!!document.getElementById('st-energy-none'),
+   /* the new person's own reading, which since 5 November is an example's
+      own ringed journal entry where it has one (stPage, ui/storyui.js) */
+   own:(()=>{const q=stPage().p; return q?BANDS.slice().reverse().map(x=>fmtPct('atom',Math.min(10,(q.bands[B2K[x]]||0)/3))).join(','):null;})(),
+   got:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(','),
    page:document.getElementById('story').textContent.indexOf(m)>=0,
    draft:(CURP&&CURP.story&&CURP.story.draft)||null,
    youDraft:(PROFILES[0]&&PROFILES[0].story&&PROFILES[0].story.draft)||null}),MARK);
   ok(b.who===+a.other&&b.text===''&&!b.parsed,at+'after the picker moves, the Journal holds none of the last person\'s words, '+JSON.stringify({who:b.who,text:b.text.slice(0,30),parsed:b.parsed}));
-  ok(b.rail!==a.rail&&b.rows===0&&b.none,at+'and the Energy rail is the new person\'s, silent, not the last person\'s seven seats, '+JSON.stringify({rows:b.rows,none:b.none}));
+  ok(b.rail!==a.rail&&(b.own===null?(b.rows===0&&b.none):(b.rows===7&&b.got===b.own&&b.got!==a.rows)),
+   at+'and the Energy rail is the new person\'s own, silent where it has no reading, never the last person\'s seven seats, '+JSON.stringify({rows:b.rows,none:b.none,own:b.own,got:b.got,last:a.rows}));
   /* the pending imprints (impGhosts) read ST_PARSED, held null above. They
      are not counted here: on Tomas the story's addresses are already live,
      so the count reads 0 with or without the leak and would pass for the
@@ -330,6 +348,76 @@ async function stFullGate(browser,FILE,ok,booted){
     const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
      n:e.getAnimations().length, rows:e.querySelectorAll('.st-en-r').length+(e.querySelector('#st-energy-none')?1:0)};});
    ok(!an.shut&&an.rows>0&&an.n===0,at+'reopening the fold runs no fade on the Energy rail, '+JSON.stringify(an));}
+
+  /* 11. DISCOVER, FROM HIS ANNOTATED SCREENSHOTS OF 5 NOVEMBER. Each check
+     is one sentence of his, and the first was checked against main before it
+     was trusted: on main the landing below draws three pressed rings and a
+     live Release, which is the bug in his words. */
+  /* a. "three icons already active in release, but there's no text". A
+     record that holds charge, a line said that names none, and the page
+     memory a reload forgets: the Release panel must be empty and shut. The
+     story is committed in this page's own browser context, which no other
+     gate reads. */
+  const land=await p.evaluate(async t=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   loadP(0); setTab(TAB.STORY); STV.dash=true; stRender();
+   for(let k=0;k<4;k++){ST_TEXT=t; ST_PARSED=parseStory(t); stCommit(); await wait(60);}
+   STV.lastFound=[]; STV.lastT=null; for(const k in IMP_PICK)delete IMP_PICK[k];
+   ST_TEXT='Can you hear me?'; ST_PARSED=parseStory(ST_TEXT); stRender(); await wait(120);
+   return {held:compute().loaded.filter(n=>n.cf).length, rings:document.querySelectorAll('#strel [data-rq]').length,
+    run:(document.getElementById('strun')||{}).disabled, tag:(document.getElementById('stpend')||{}).textContent,
+    kept:ST_PARSED?ST_PARSED.imprints.length:-1};},STORY);
+  ok(land.held>0,at+'the record holds charge before the landing, so the old offer would have drawn rings, '+land.held+' held');
+  ok(land.rings===0&&land.run===true,at+'and the Release panel lands with no ring pressed and Release shut, '+JSON.stringify(land));
+  /* b. "Get rid of the text that says nothing kept yet" */
+  ok(land.kept===0&&land.tag==='',at+'words that keep nothing leave the Imprints tag empty, got "'+land.tag+'"');
+  /* c. "Swap the dashboard and chat icons": Dashboard first, each keeping its own drawing */
+  const hd=await p.evaluate(()=>{const d=document.getElementById('stdash'), m=document.getElementById('stmic');
+   return {order:!!d&&!!m&&!!(d.compareDocumentPosition(m)&Node.DOCUMENT_POSITION_FOLLOWING),
+    left:d&&m?d.getBoundingClientRect().left<m.getBoundingClientRect().left:false,
+    grid:d?d.querySelectorAll('svg rect').length:0, mic:m?m.querySelectorAll('svg rect').length:0};});
+  ok(hd.order&&hd.left,at+'Dashboard stands before Chat, in the markup and on the screen, '+JSON.stringify(hd));
+  ok(hd.grid===4&&hd.mic===1,at+'and each keeps its own drawing, the four squares and the microphone, '+JSON.stringify(hd));
+  /* d. "Run speed and patterns ... give those a look a bit more designed":
+     steppers, pressed for real, landing on the card's own picks */
+  await p.evaluate(()=>{STV.focus='release'; ST_TEXT='My chest was tight and I felt scared.'; ST_PARSED=parseStory(ST_TEXT); stRender();
+   const d=document.getElementById('strdose'); d.value='1'; d.onchange.call(d);
+   document.getElementById('strel').scrollIntoView({block:'center'});});
+  const d0=await p.evaluate(()=>({dose:RUN.dose, less:document.querySelector('[data-stp="strdose"][data-d="-1"]').disabled}));
+  ok(d0.dose===1&&d0.less===true,at+'Patterns at its floor of one shuts its minus, '+JSON.stringify(d0));
+  await press(p,'[data-stp="strdose"][data-d="1"]',ok,at+'the Patterns plus');
+  const d1=await p.evaluate(()=>({dose:RUN.dose, field:+document.getElementById('strdose').value,
+   want:[1].concat(REL_DOSES).filter(v=>v>1).sort((a,b)=>a-b)[0], less:document.querySelector('[data-stp="strdose"][data-d="-1"]').disabled}));
+  ok(d1.dose===d1.want&&d1.field===d1.want&&d1.less===false,at+'a press on the plus lands on the card\'s next pick, through the field\'s own onchange, '+JSON.stringify(d1));
+  const pc0=await p.evaluate(()=>RUN.pace);
+  await press(p,'[data-stp="strpace"][data-d="1"]',ok,at+'the Run speed plus');
+  const pc1=await p.evaluate(()=>({pace:RUN.pace, speed:RUN.speed}));
+  ok(Math.abs(pc1.pace-Math.min(2,Math.round((pc0+0.1)*10)/10))<1e-9&&Math.abs(pc1.speed-2.2/pc1.pace)<1e-9,
+   at+'and Run speed moves a tenth, with the speed written to match, '+JSON.stringify({from:pc0,to:pc1}));
+  await p.evaluate(()=>{STV.focus='write'; ST_TEXT=''; ST_PARSED=null; stRender();});
+  /* e. "I'm loading up my profile examples and there's nothing under Discover":
+     the example's own journal, and the column, the chart and the list all
+     reading the one entry the thread rings */
+  const ex=await p.evaluate(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   /* the first example after the person's own record, read off PEOPLE at
+      run time and never named here */
+   const i=1;
+   loadP(i); setTab(TAB.STORY); STV.dash=true; stRender(); await wait(200);
+   const es=((CURP.story&&CURP.story.entries)||[]).filter(e=>e&&e.text), on=stDashExEntry();
+   const pp=on?parseStory(on.text):null;
+   const want=BANDS.map(b=>pp?Math.min(10,(pp.bands[B2K[b]]||0)/3):0);
+   return {nm:PEOPLE[i].nm, show:showOnly(), entries:es.length,
+    bubbles:document.querySelectorAll('#stexth .src-tn-me').length,
+    ringed:(document.querySelector('#stexth .st-exon .src-me')||{}).textContent||null, on:on?on.text:null,
+    note:!!document.querySelector('#story .show-note'),
+    lit:[...document.querySelectorAll('#stleft .st-en-r')].filter(r=>!r.classList.contains('st-en-0')).length,
+    spring:BANDS.every((b,k)=>Math.abs(STSEAT[b].rdT-want[k])<1e-9),
+    dash:!!document.getElementById('stdash'), mic:!!document.getElementById('stmic'),
+    pend:(document.getElementById('stpend')||{}).textContent, apply:!!document.querySelector('#stapply:not([disabled])')};});
+  ok(ex.show&&ex.entries>0&&ex.bubbles===ex.entries&&!ex.note,at+ex.nm+'\'s Discover shows every entry of its own journal and no preview line, '+JSON.stringify({entries:ex.entries,bubbles:ex.bubbles,note:ex.note}));
+  ok(!!ex.on&&ex.ringed===ex.on&&ex.lit>0,at+'the entry the Energy column reads is the one the thread rings, and the column is lit, '+JSON.stringify({on:ex.on,lit:ex.lit}));
+  ok(ex.spring,at+'and the Journal\'s chart springs to that same entry, so the column and the chart agree');
+  ok(ex.dash&&!ex.mic&&ex.pend===''&&!ex.apply,at+'Dashboard stays on an example, Chat does not, and nothing reads as pending or committable, '+JSON.stringify({dash:ex.dash,mic:ex.mic,pend:ex.pend,apply:ex.apply}));
+  await p.evaluate(()=>{loadP(0); STV.dash=false; setTab(TAB.STORY); render();});
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
   await p.close();}}

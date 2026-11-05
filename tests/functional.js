@@ -3268,8 +3268,12 @@ console.log('\n=== a worked example never reaches the person\'s own record ===')
   /* THE BOX IS NOT THERE ON AN EXAMPLE ANY MORE, ruled 16 October: a worked
      example is show only (engine/showonly.js), so the journal is the preview
      line and Commit is not drawn. The refusal is still the thing measured:
-     the press is the same stCommit the button called, made directly. */
-  o.stArmed=!document.getElementById('stapply')&&!!document.querySelector('#story .show-note');
+     the press is the same stCommit the button called, made directly. Since 5
+     November the preview line is gone from Discover on his word, and the
+     example's own journal stands where the box was (stExampleThread), so the
+     page is armed when there is no Commit and no box. */
+  o.stArmed=!document.getElementById('stapply')&&!document.getElementById('sttext')
+   &&!document.querySelector('#story .show-note');
   stCommit();
   o.stEntries=((exRec&&exRec.story&&exRec.story.entries)||[]).length-ent0;
   o.stWho=S.who; o.stExample=gi;
