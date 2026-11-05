@@ -33813,6 +33813,16 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
 
+- [ ] **SV16. Dispatched, 5 November. The Ritual page (Flow > Ritual), a real restructure, from his own annotated screenshot.** Six things, together, all on top of PR #183 (SV15) since that PR already carries the cuts and the seeded data this one builds on:
+  1. The center panel becomes a weekly calendar, all seven days, with a way to move to the next or previous week. Under it, each day shows which rituals are due that day.
+  2. The Accountability column on the right stays as it is today.
+  3. "New ritual" opens straight into its full, usable state. Not a collapsed card that needs another press first.
+  4. The "Start from a tag" row and its seven pills come off the New ritual flow. His words: "these tags at the bottom don't do anything because I'm creating the ritual, doesn't matter what I select as a tag."
+  5. The Suggested cards: flat solid background instead of the current one. "2 min a day" becomes "2 minutes". "Add to daily practice" becomes "Add to practice". "Save for later" becomes "Save". And the heading itself is wrong: "those aren't suggested, those are pulled from your ritual selectors, it's the stuff it picks up based off your story," so the heading needs a word that says that, not "Suggested".
+  6. Ongoing goal and Ritual to avatar move off the center panel onto the right rail, alongside Accountability.
+  His own words closing the ask: "running review of this twice, strategize your plan," read as two passes against his screenshot before anything is built, not one. Dispatched as its own branch and PR off `ritual-cuts-seed-2026-11-04`, so PR #183 stays reviewable on its own narrower scope.
+
+- [x] **SV15 closed, 4 November. Ritual page cuts and sample ritual seeding, PR #183, draft.** All six struck lines gone from Flow > Ritual: the page subtitle, "Your avatar has no stories yet.", the next-mark description (moved into that mark's own tooltip instead of deleted outright, so the meaning stays one press away), the Somatic Truth Check's repeated line (cut at its source so it's gone everywhere it printed), the Rituals-section line, and the affirmation sub-line (cut at the one shared template, which also removed its two other wordings). Seeded: Rosa, James and Gordon, the three reference profiles with no rituals, each got real ones; every reference profile got real avatar story pairs, since none had any, which is what left the ritual-to-avatar line and the affirmations empty before. Noted for him, not acted on: Summary still says "Next marker" where Ritual says "Next mark", one idea under two words. Tests: engine 6894/0, the Ritual page's own gate 181/0, functional 2961/0, monitor clean, products clean. Voice objections check reads identical to main.
 - [x] **SV14 closed, 4 November. The 8 voice-check-flagged law definitions rewritten, PR #181, draft.** His direct ask. The gate that actually stopped the build (`abstract-word`, CO-29) turned out to be a fixed word list, not the suffix pattern first assumed; corrected before writing anything. One word or clause changed per entry (operate, operating condition, operation, down/up-regulates, cognitive load, operating, operating frequency of, aperture), everything else of the book's own text left exactly as it was. Law names used as cross-references inside other laws' own definitions (Presence, Temperance, Curiosity, Creativity, Play, Flow) were correctly left alone, never flagged by the gate. `check.py --objections`: abstract-word 8 to 0. `tests/engine.js`: 6879/0. One side note for him: the root `index.html` still carries the old text; `tools/products.js` doesn't check it, not touched here.
 - [x] **SV13 closed, 4 November. The `stackbuild` salvage pull, PR #180, merged (`57f6223b`).** 10 of `stackbuild`'s 26 commits landed, risk-ascending, each rebuilt and gated on its own: the real parent/child trace summarizer (engine and UI halves), `traceDescendants`, the dead Field summary rows cut, the Root Energetics icon set, saboteurs' real opposite word (data half only), Flow going straight to Ritual, the real law definitions (not "Chapter 19"), the Analytics and Summary CSS and rewrite. His own direct review caught one real gap before merge: the funnel package (`funnel/dist/atuned-quiz.html`) was never rebuilt against the new engine, so it still carried the old law text; fixed and verified clean by `tools/products.js` before merging. `tests/engine.js`: 6879/0. Two genuinely unaddressed pieces remain on `stackbuild` (`ff83e74`, `3751bde`), and the 10-commit right-rail rework chain plus the saboteur UI half were deliberately left out, needing his own call before anyone revives them.
 
@@ -33887,3 +33897,41 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   `stackbuild`'s own rejected, entangled nested-tier commits are reference
   for the mechanics, not something to pull as-is. Dispatched as a fresh,
   properly scoped build against current main once the salvage pull lands.
+
+- [x] **SW7 closed. Built, PR #182, draft, held for his review.** All five
+  pieces above, plus every one of the voice check's bare-weight (CO-30)
+  findings inside this panel's own scope: the agent found that fixing them
+  needs a real node-state boundary it does not have yet, so it left every
+  weight bare rather than guess one, and the question below is what
+  unblocks that. Three calls it made against the ask, each with its reason
+  recorded on the PR: it kept `traceSummary()`'s own real parent/child
+  content in the summary box but dropped the paragraph's engine-talk
+  wrapper he rejected live; it moved Intention off this screen since it only
+  ever lived under Instruments, which he ruled cut; it added no bare
+  weights, 17 before and 17 after, same count as main. Tests: engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, locks 295/0,
+  stackname 18/0, funnel 760/0, boot 29/0, monitor clean, a 34/0 real-click
+  browser pass at both widths. The voice objections check fails the same
+  way it does on main (the 8 law-definition words PR #181 already fixes,
+  unmerged); not a regression here.
+  **Open, his call: where do the lines fall between open, impaired,
+  moderately impaired, heavily impaired and blocked?** Nothing prints those
+  words on a weight until that's ruled.
+
+- [x] **SW7 round 2, 5 November. Linear layout, same PR #182.** He looked at
+  round 1's cascade and sent back: "give me a linear layout, it's too
+  nested right now," a picture of the staircase. Fixed: every row, Super
+  through the child-emotion bars, starts at the same left edge regardless
+  of depth. Depth now shows as a fixed-width icon column next to each
+  row's open/close arrow, the same five icons the top tab bar already
+  uses for Child emotions/Saboteurs/Complexes/Hyper/Super, so a row's
+  layer is a glance, not a margin to count. Bars sit under the icon column
+  with no arrow of their own. One thing round 2 fixed along the way: a
+  bar's right-hand word was clipping at 1600 wide ("100%quanimity"); it
+  now truncates with its own ellipsis instead. Nothing else from round 1
+  moved. Tests: 36/0 real-click browser pass (the original 34 plus a new
+  check that every row in an open branch shares one left edge), engine
+  6,879/0, functional 2,959/0, collide 398/0, design 193/0, monitor
+  clean. Voice objections unchanged from main, still the 8 PR #181 words,
+  still zero new bare weights. Same open question as round 1: the five
+  node-state words' boundaries are still his to rule.
