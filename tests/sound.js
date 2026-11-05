@@ -1084,7 +1084,10 @@ async function atmGate(browser,FILE,ok,booted){
     own red marks on the Field screenshot (ui/fieldbar.js, FB_LAYERS). Proven
     here on Addresses instead, the bar's other Root-seated circle (ATM_SEAT.fb
     in ui/sound.js), so the same rise-on-fall-off-at-the-Root's-tone mechanism
-    stays covered by a circle that is still real. */
+    stays covered by a circle that is still real.
+    AND the glass bar arrives shut since SV18, his "start closed", so it is
+    opened first, the way a person actually reaches the circle. */
+ await pg.evaluate(()=>{ if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(200);
  const f1=await ov('#fbar [data-fb=addresses]');
  ok(f1.first&&f1.second&&f1.first.k===(f1.before==='true'?'overlay-off':'overlay-on')&&f1.second.k===(f1.before==='true'?'overlay-on':'overlay-off')
   &&f1.first.hz===hz.Root&&f1.second.hz===hz.Root,'the Field\'s Addresses circle rises going on and falls going off, at the Root\'s tone, '+JSON.stringify(f1));
@@ -1124,7 +1127,9 @@ async function atmGate(browser,FILE,ok,booted){
  /* ---------- hover, through the real pointer ---------- */
  const hv=async fn=>{ await fresh(); await pg.evaluate(()=>{ window.__h0=atmState().played; });
   await fn(); await pg.waitForTimeout(60); return pg.evaluate(()=>({n:atmState().played-window.__h0, row:atmState().row&&atmState().row.k})); };
- await pg.evaluate(()=>{ setTab(TAB.FIELD); }); await pg.waitForTimeout(400);
+ /* open, for the reason above: the fold checks just before this leave it as
+    they found it, which is shut on arrival */
+ await pg.evaluate(()=>{ setTab(TAB.FIELD); if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(400);
  const box=async sel=>{ const b=await (await pg.$(sel)).boundingBox(); return {x:b.x+b.width/2,y:b.y+b.height/2}; };
  /* a real circle, any one: the Decoherence circle this read is positional
     against is gone, 3 November, so this reads off Addresses instead. */

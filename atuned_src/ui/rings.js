@@ -73,10 +73,14 @@ var FVIEW='wheel';
    profile, because it is how this person likes to look and not a reading
    about them. A name this build does not know reads as the wheel, since a
    stored value outlives a renamed view and nothing must come back blank. */
-function fviewGet(){
- try{var v=STORE.get('fview')||'';
-  return FVIEWS.some(function(f){return f.k===v;})?v:'wheel';}
- catch(e){return 'wheel';}}
+/* AND NOW IT IS ALWAYS THE WHEEL, SV18, 5 November. His words, the switch in
+   the upper right with Frames struck through: "On the right-hand side, center
+   column, the other ways of displaying the field, let's turn those off." The
+   switch is off the page (head.html, .fview) and the store is not read, so a
+   person who last chose Frames or Dial does not open on a picture with no way
+   back from it. fviewSet and both renditions stay, and the gates still drive
+   them by name, so turning them back on is this function and one rule. */
+function fviewGet(){return 'wheel';}
 function fviewOn(){return FVIEW!=='wheel';}
 function fviewSet(k){
  if(!FVIEWS.some(function(f){return f.k===k;}))k='wheel';
