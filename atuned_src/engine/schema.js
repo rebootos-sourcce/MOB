@@ -579,7 +579,7 @@ function pStore(){
  if(!Array.isArray(raw)) return storeSetAside(String(txt),'it is not a list of profiles');
  var out=[];
  for(var i=0;i<raw.length;i++){
-  var v=validateProfile(raw[i]);
+  var v=validateProfile(raw[i],{stored:true});
   if(v.ok){ out.push(v.profile); }
   else {
    STORE_REFUSED.push({i:i, name:(raw[i]&&raw[i].name)||'unnamed',
@@ -1133,8 +1133,13 @@ function avatarFill(av){
   if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
  if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
  return avatarEnsureIds(av);}
-function validateProfile(o){
- var errs=[];
+/* ctx is optional. ctx.stored says the record is this device's own, read back
+   at boot or reopened from the list, and not an import: the summaries and the
+   journey then keep a date the device clock wrote ahead of today rather than
+   refusing the whole record over it (dlyValidate and journeyValidate say why).
+   Every other rule holds the same either way. */
+function validateProfile(o,ctx){
+ var errs=[], stored=!!(ctx&&ctx.stored);
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
  if(!NUM(o.v)||o.v<1||o.v>SCHEMA_V)errs.push('schema version '+o.v+' is not 1 to '+SCHEMA_V);
  var p=blankProfile(typeof o.name==='string'?o.name:'Imported');
@@ -1647,14 +1652,14 @@ function validateProfile(o){
     record and pImport stays atomic. Missing or null is an older record and
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
-  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+  p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p), stored:stored});
  /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
     into the same errs, so one bad log line or one bad walk refuses the whole
     record and pImport stays atomic. It is not in the blank: a record that never
     walked the first run carries none and gains none here, so every such record
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
-  p.journey=journeyValidate(errs,o.journey,'journey');
+  p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
