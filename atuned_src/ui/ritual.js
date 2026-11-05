@@ -1704,7 +1704,20 @@ function ritCss(){
   '.rv-h{font-size:15px;font-weight:600;color:var(--ink)}',
   '.rv-h2{display:block;margin:4px 0 6px}',
   '.rv-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}',
-  '.rv-sec{margin:0 0 18px;padding:14px;border:1px solid var(--edge);border-radius:14px;background:var(--panel)}',
+  /* ONE STEP BETWEEN CARDS, ON ALL THREE COLUMNS, SV24, his words: "In the
+     entire screen, make it symmetrical, make it evenly spaced." Measured on
+     Ana at 1600 before this: the three panels were already even, 400, 760
+     and 400 wide with 10 between them and every card inset 19 on both sides,
+     and the cards inside them were not. The rails stacked theirs 18 apart off
+     this margin, the centre's grid put 14 between its own, one empty grid
+     row (Keep or delete, absent on most profiles) put 27 above Success over
+     time, History stood 20 under the thirty days and flush on the Avatar
+     card, 0 pixels, and a column's head stood 12 or 14 over its first card.
+     So the page has one step, --rv-gap, and it is 14: the centre's gap and
+     the padding inside every card already, so a card's inside and the space
+     between cards are the same measure. */
+  '.rv,.rvr{--rv-gap:14px}',
+  '.rv-sec{margin:0 0 var(--rv-gap,14px);padding:14px;border:1px solid var(--edge);border-radius:14px;background:var(--panel)}',
   '.rv-empty{margin:4px 0;font-size:14px;color:var(--dim)}',
   '.rv-ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
   '.rv-nic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
@@ -1758,6 +1771,10 @@ function ritCss(){
      its own edge and its own heading, so the wrap only has to stop the last
      one hanging a margin off the foot of the rail */
   '.rvr-wrap>:last-child{margin-bottom:0}',
+  /* and the wrap keeps the step to the card after it, which it did not:
+     with History shut, History is the wrap's last child, the rule above took
+     its margin, and the Avatar card sat flush under it */
+  '.rvr-wrap:not(:last-child){margin-bottom:var(--rv-gap,14px)}',
   /* ---- colour, round LT: "I want color on this page to separate things,
      everything is gray." Each part takes one hue from tokens the product
      already carries and themes, as a ring before its heading, a wash behind

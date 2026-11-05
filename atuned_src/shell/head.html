@@ -6106,7 +6106,10 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 .rvr{container-type:inline-size;text-align:left}
 .rvr .rit-f{margin:7px 0}
 .rvr>:last-child{margin-bottom:0}
-.fl-hd{display:flex;flex-direction:column;gap:3px;margin:0 0 12px;padding:2px 52px 0 2px}
+/* 14 under a rail's head, SV24: the centre's page head stands 14 over its
+   first card and the rails stood 12, so the three first cards did not sit
+   the same distance under the three heads (--rv-gap, ui/ritual.js) */
+.fl-hd{display:flex;flex-direction:column;gap:3px;margin:0 0 14px;padding:2px 52px 0 2px}
 .fl-nm{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;color:var(--ink)}
 .fl-nm svg{width:20px;height:20px;fill:none;stroke:var(--sec-flow);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fl-says{font-size:13.5px;line-height:1.5;color:var(--mid)}

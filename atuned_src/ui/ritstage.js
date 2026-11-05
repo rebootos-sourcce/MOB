@@ -499,15 +499,17 @@ function ritStageCss(){
      under 640 of stage, in his order: top left, top right, middle, then the
      three that read and decide. Named areas, so the order on a phone and the
      slots on a desktop are one statement. */
-  '.rv-six{display:grid;gap:14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);',
   /* Did it work and Keep or delete are stacked, SV19, his "I want these
-     stacked", and every card on the stage is now one full row */
-  ' grid-template-areas:"wk wk" "act act" "goal goal" "ok ok" "keep keep" "ana ana";align-items:stretch}',
+     stacked", and every card on the stage is one full row.
+     A COLUMN AND NOT A GRID, SV24. Once every card was one full row the named
+     areas only restated the source order, and they cost a gap: Keep or
+     delete is drawn only when there is something to keep, and its empty row
+     still took both of its gaps, so 27 pixels stood above Success over time
+     where every other card stood 14. A flex column in the order the cards are
+     written (ritStageHtml) draws the same page, on both widths, and an
+     absent card leaves nothing. */
+  '.rv-six{display:flex;flex-direction:column;gap:var(--rv-gap,14px)}',
   '.rv-six>.rv-sec{margin:0;min-width:0}',
-  '.rv-six>.rv-week{grid-area:wk} .rv-six>.rv-act{grid-area:act}',
-  '.rv-six>.rv-c-goal{grid-area:goal} .rv-six>.rv-c-ok{grid-area:ok} .rv-six>.rv-c-keep{grid-area:keep} .rv-six>.rv-c-ana{grid-area:ana}',
-  '@container (max-width:639px){.rv .rv-six{grid-template-columns:minmax(0,1fr);',
-  ' grid-template-areas:"wk" "act" "goal" "ok" "keep" "ana"}}',
   /* each card takes one hue from the tokens the page already themes */
   '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)} .rv-c-ok{--k:var(--sec-play)}',
   '.rv-c-keep{--k:var(--sec-flow)} .rv-c-ana{--k:var(--sec-discover)}',

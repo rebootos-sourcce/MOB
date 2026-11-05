@@ -901,8 +901,19 @@ function ritCalCss(){
   '.rv-wd1.rv-past{box-shadow:none;background:none}',
   '.rv-gone{background:color-mix(in srgb,var(--accent) 12%,var(--panel-2))}',
   /* History, the right menu's one press, SV19: the More practices press's own
-     look, a full width row with its chevron, and its panel under it */
-  '.rv-histt{margin:0 0 12px}',
+     look, a full width row with its chevron, and its panel under it.
+     A BUTTON, SV24, his words: "For the history make it a button." It was
+     one, a button element, and it did not look like one: rit-more draws no
+     fill, a dashed edge and --dim type, and on this page a dashed edge is
+     how a missed day is drawn, so it read as an empty slot with a word in it.
+     It now wears .btn's own surface (shell/head.html): --panel-2, a solid
+     --edge, --ink type, the pill, and --sunk under a hover. No new look is
+     made for it. It keeps its width and its chevron, which carries open and
+     shut. Practices in the builder keeps the dashed row, because he asked
+     this of History only. */
+  '.rv-histt{margin:0 0 var(--rv-gap,14px);padding:9px 17px;background:var(--panel-2);border:1px solid var(--edge);border-style:solid;border-radius:999px;',
+  ' color:var(--ink);font-size:14px;font-weight:500}',
+  '.rv-histt:hover{background:var(--sunk);border-color:var(--edge-2);color:var(--ink)}',
   '.rv-histp>.rv-sec:last-child{margin-bottom:0}'
  ].join('\n');
  document.head.appendChild(st);}
