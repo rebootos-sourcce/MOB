@@ -1349,8 +1349,13 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       'QQ_42 does not name every law the engine carries, by its own name: ' + JSON.stringify(tb.next && tb.next.map(q => q.l)));
     await served.context().close();
 
+    /* every staged copy is removed at the end of the section: it carries
+       engine.js, and a gate run that leaves megabytes in /tmp on every pass
+       is how a shared box fills its disk. */
+    const staged = [];
     const stage = (tail) => {
       const T = fs.mkdtempSync(path.join(require('os').tmpdir(), 'funnel-table-'));
+      staged.push(T);
       fs.mkdirSync(path.join(T, 'funnel'));
       fs.readdirSync(DIR).filter(f => /\.(html|js|css)$/.test(f))
         .forEach(f => fs.copyFileSync(path.join(DIR, f), path.join(T, 'funnel', f)));
@@ -1407,6 +1412,7 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       await ctx.close();
     }
     console.log('  four planted tables, each refused by name');
+    staged.forEach(T => fs.rmSync(T, { recursive: true, force: true }));
   }
 
   /* ---------- the sendable build, if it has been made ---------- */
