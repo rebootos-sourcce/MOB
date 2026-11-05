@@ -167,6 +167,18 @@ right menu." Both cards are drawn into this column, after the Record and in
 that order, unchanged inside. After and not among: he ruled Accountability
 stays as it is, so its parts keep their order and place.
 
+SV19, 5 November, his words on the live page: "Get rid of the section that
+says marks. Get rid of the text that says 30-day loop ... Get rid of the
+missed section. Get rid of the history on the right-hand side. There should
+be a button and if I press it, it shows me the history on my right-hand
+menu ... Ongoing goals should be in the center." So the column at rest is the
+thirty days, headed by their month and not by Thirty day loop, a History
+press shut, and Avatar, the card that read Ritual to avatar ("just have
+avatar"). Done, Missed and the Marks shelf are not cards. History keeps one
+label, says open and shut in `aria-expanded`, and opens the rituals (headed
+Rituals) and the Record under itself in the same column. The Ongoing goal is
+in the centre (FT17). The streak is the head's first row (FT36).
+
 Gate: `tests/flowtools.js`, `FT6:`; `tools/monitor.js`, which walks every
 surface `TABDEF` names at both widths and exits non zero on an empty one;
 `tests/design.js`, whose tap floor sweep walks every `TABDEF` tab.
@@ -192,6 +204,15 @@ SV17, 5 November: a ritual's pill is a count now, the days kept (FT25),
 because the tracker's own rule above already said no percent on
 this page. What is due today is no longer a card in this column: it is
 today's column of the week (FT35), and the gate reads it there.
+
+SV19: the Missed card is gone, and with it the per ritual count over 14 days
+and its Edit. The one Missed figure is the streak strip's (FT36): a day in
+the thirty that a plan covered and on which nothing was marked done, which is
+exactly the dashed cubes under it, so the number and the picture cannot
+disagree. It replaced a count that called a day missed when any one ritual on
+it was missed, which put 10 in the strip beside Success over time's 7 for the
+same days. Kept rides on the streak's press beside Best. Edit is on the
+ritual's own row and in its sash's sheet.
 
 Gate: `tests/flowtools.js`, `FT7:`.
 
@@ -328,6 +349,13 @@ picks.
 SV16 made it five: the week across both columns at the top, Today under it
 where Goals was (the same rituals, affirmations and challenges, without the
 switch), then Did it work beside Keep or delete, Success over time last.
+
+SV19 made it one column: Week, Today, Ongoing goal, Did it work, Keep or
+delete, Success over time, every card full width and stacked. The Ongoing
+goal is back on his "Ongoing goals should be in the center", which reverses
+SV16's "move that to the right menu", on his current word. Did it work and
+Keep or delete are stacked on his "I want these stacked". Keep or delete is
+drawn only while a ritual is in its last three days, or to offer Put back.
 Ritual to avatar and Ongoing goal are in the right menu (FT6). The grid keeps
 the class `rv-six`, because the gates, the shot tool and the phone order find
 the stage by it. On a phone it is one column in that order.
@@ -391,6 +419,9 @@ read, so the cubes and the month cannot disagree; a done cube carries the seat
 colour of every ritual kept on it. The figures over the cubes are days kept,
 days missed and minutes in those thirty, never a rate. The cubes replace round
 QN's ring: one read, one drawing of it. Each cube's press says its day.
+
+SV19: the card is headed by its month or months, where Thirty day loop was,
+and the figures over the cubes moved to the streak strip (FT36).
 
 Gate: `tests/flowtools.js`, `FT21:`.
 
@@ -504,8 +535,8 @@ points and achievements TDD: First run reads a ritual marked done, Seven,
 Thirty and Ninety days read days practised and not a strict row, and Every
 track run and Came back are new. `markDays` dates each earned practice mark off
 the record. A mark whose day is in the thirty is pinned on that cube; every
-earned mark is on the shelf under the cubes, each with its meaning and its date
-on the press. Only earned marks: the next is the Ongoing goal card's, and the
+earned mark was on a shelf under the cubes until SV19, when he struck it: "Get
+rid of the section that says marks." The pins stay. Only earned marks: the next is the Ongoing goal card's, and the
 rest are never listed.
 
 Gate: `tests/flowtools.js`, `FT28:`.
@@ -668,7 +699,28 @@ runs; Delete. Due today went from the right column, and the three lines that
 told a person how to press a ring went from the page. More practices keeps
 one label and says open and shut in `aria-expanded`.
 
+SV19: the head of each day, its weekday and date, is a press at the tap
+floor that opens that day in the sheet, every ritual on it each opening its
+own sheet, or Nothing set. Opened, More practices lists every practice one
+to a row, the column's width, and no tile says called for.
+
 Gate: `tests/flowtools.js`, `FT35:`.
+
+### FT36. The streak is the top right of the page, and Accountability sits under it.
+
+SV19, 5 November, his words: "Where it says streak missed, make the symbolic
+icons, the streak should be in the upper right hand side. Move the streak to
+the upper right hand side and then accountability will be underneath that."
+The right menu's head carries the streak strip as its first row, above the
+name Accountability, on the row the fold control ends: Streak, Missed and
+Practised, each a mark (ring, not fill) and its figure with its unit, on one
+row at 1600 and at 390, each at least 44 tall. The word is the mark's
+accessible name and the tooltip's title and is never printed. Streak is the
+ladder's; Best and Kept ride on its press. Missed is FT7's. Practised is the
+ladder's minutes. A zero is the house dash. The strip replaces the Done card's
+180 pixel ring.
+
+Gate: `tests/flowtools.js`, `FT36:`.
 
 ## 5. Not built, and why
 
@@ -726,7 +778,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT35 | `tests/flowtools.js` |
+| FT1 to FT36 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

@@ -3770,7 +3770,11 @@ function recipeSteps(ritual,tier){
    (ui/ritcal.js, ritAffirm):
      first   the person's own avatar lines, the "who I want to be" half of
              each pair, newest first. These are theirs and are quoted, never
-             paraphrased. The avatar page already asks for one of them to be
+             paraphrased, with one exception since SV24 ("Affirmations are I
+             am statements"): a line written as who to become, "Someone who
+             picks a way and walks it", is said as I am that, "I am someone
+             who picks a way and walks it", by ritIAm in ui/ritcal.js. Two
+             words go in front and none of theirs change. The avatar page already asks for one of them to be
              said out loud once a day (its "Say it" rule), so this is the same
              act, offered on the Ritual page.
      then    one line per pattern held at four or more, heaviest first, read
@@ -3790,15 +3794,21 @@ function recipeSteps(ritual,tier){
    is CHILD's nm, so a renamed axis is a line that stops being found, which
    the flowtools gate (FT31) checks.
    ============================================================ */
+/* I AM STATEMENTS, SV24, his ruling: "Affirmations are I am statements."
+   Measured before this: seven of these nine opened on My, The, What or
+   There is, and only Anticipation opened on I am. Each line keeps its own
+   place in the body and its own posture, the reason above, and is said from
+   I am: the weight and the floor, open hands in the heat, the skin, the arms,
+   both feet, the chest, the shoulders. */
 var AFFIRM={
- 'Fear':'My weight is down. The floor holds it.',
- 'Anger':'The heat moves through. My hands stay open.',
- 'Shame':'I take up the space I am standing in.',
- 'Disgust':'What is here can stay here. My skin stays soft.',
- 'Apathy':'There is charge in my arms, and I can spend it.',
- 'Shock':'My feet are on the ground, and the ground is still.',
- 'Sad':'My chest is open. What I lost made room.',
- 'Surprise':'My shoulders are down. I can meet what comes.',
+ 'Fear':'I am down in my weight, and the floor holds it.',
+ 'Anger':'I am open handed while the heat moves through.',
+ 'Shame':'I am taking up the space I stand in.',
+ 'Disgust':'I am soft in my skin, and what is here can stay here.',
+ 'Apathy':'I am carrying charge in my arms, and I can spend it.',
+ 'Shock':'I am standing on still ground, with both feet down.',
+ 'Sad':'I am open in the chest. What I lost made room.',
+ 'Surprise':'I am loose in the shoulders, and I can meet what comes.',
  'Anticipation':'I am here, below the heart, on this breath.'};
 /* where a person with nothing held starts: the three axes nearest the ground,
    the same posture ritFor takes when nothing is read, the lightest place */

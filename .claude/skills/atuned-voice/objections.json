@@ -199,6 +199,21 @@
       "note": "The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file."
     },
     {
+      "id": "invented-example-copy",
+      "class": "value",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-32"
+      ],
+      "why": "A placeholder, a default value or a sample answer in a field is never a whole invented sentence about a person, a scene or an action. A field names the shape of the answer, in words that talk to the person, or it stays empty. The label beside the field already says what goes in it.",
+      "re": [],
+      "fail": "When [after I put the kettle on]  Where [the chair by the window]",
+      "fix": "When [ ]  Where [ ]",
+      "keeps": "A hint that names the shape of an answer and talks to the person is not this defect: What happened, and where you felt it. City, region. A line you keep. The exact place, in your words. A worked example's own record, shown as that example's data and never as a sample in a field, is quoted and not this either.",
+      "note": "READ BY ITS OWN READER, scan_examples in check.py, and not by a pattern in this list, because the strings it is for are attributes and tables the literal sweep cannot see. It reads every placeholder and value attribute raw, in the renderers and the static pages, and follows a placeholder built from a table, placeholder=esc(ask.notbe), to every notbe in the same file. A placeholder built from a function parameter cannot be followed and is printed as review with what to read, never passed as clean. The shape of an invented answer is read off the corpses: the first person (I, my, me, we), a scene with two definite nouns tied by a place word (the chair by the window), and the Avatar page's own opening, Someone who. A line that says you or your is caught only on the first person. Checked before it was trusted: a planted after I finish my coffee fails as a literal and as a table value, and every shape hint the product ships passes."
+    },
+    {
       "id": "figure-label",
       "class": "label",
       "severity": "stop",
@@ -918,6 +933,18 @@
         "zero-as-dash"
       ],
       "note": "The rules existed and the product broke them, because the gate read the source and he reads the screen. The strings that broke them are built at run time or held in tables and shown by a stylesheet, so a literal sweep reported zero while the Field rail printed \"Heaviest Root 0.0\". The answer is a second gate that reads the rendered page: tools/copy-walk.js and tools/copy-verify.py, with the counts in COPY-VERIFY.md. The Field rail block is not printed while the profile is unread, because the four doors above it already say nothing has been read."
+    },
+    {
+      "id": "CO-32",
+      "date": "5 November, in his words",
+      "where": "round SV19, the Ritual page, red ink on the live page",
+      "verbatim": true,
+      "words": "All that like third tier text you keep putting in, like after I put the kettle on, is fucking stupid, and I don't know why I keep doing that. I wish it would stop. That's about the 100th time I may have asked you to do that, and you're still doing it. So figure out why you keep doing that in your code and stop it.",
+      "objects": "A field's sample text written as a whole invented answer: after I put the kettle on, the chair by the window, and on the Avatar page a made up person's day in each story box. A sample answer is a second voice on the screen, and it reads as an instruction to be that person.",
+      "rules": [
+        "invented-example-copy"
+      ],
+      "note": "Why it kept coming back, found by Emmy and checked against the tree. The two strings were never cut because no gate ever read them. The house harvest drops any literal carrying = or a quote, which is every attribute; objection_hits strips tags before it matches, which deletes a placeholder written inside a whole input tag; and CO-27, section-explains-itself, is the shape of a paragraph under a heading, which a placeholder is not. Each round cut the visible text he struck and left the attribute, because the attribute is not text on a screenshot until the field is empty. The phrase came from the Gollwitzer and Sheeran citation quoted in DESIGN-firstrun.md and RETENTION-90DAY.md, where it is design rationale, and was copied into shipped copy. TASKS.md near round FO had noted it only as a grammar bug, When after I put the kettle on."
     }
   ],
   "handover": [
