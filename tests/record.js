@@ -68,14 +68,16 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
  console.log('\n=== L13. Best is the longest run with no gap, as the line under it says ===');
  {const r=await ev(pg,()=>{
    __rec([0,2,4,6,8,10,12]);
-   var L=ladderRead(CURP,Date.now()), e=document.createElement('div');
-   e.innerHTML=ritTodayHtml([],ritToday0(),L);
-   var figs=[].slice.call(e.querySelectorAll('.rv-fig')).map(function(f){return f.textContent.replace(/\s+/g,' ').trim();});
-   var d=document.createElement('div'); d.innerHTML=acctDoneHtml({act:[],today:ritToday0(),L:L});
-   return {figs:figs, run:L.streak.run, mean:(d.querySelector('.rv-mean')||{}).textContent||''};});
-  const best=(r.figs||[]).filter(f=>/Best$/.test(f))[0]||'';
+   /* SV19: the Done card and its three figures are gone, and Best rides on
+      the streak's press at the top of the right menu (acctStreakHtml), its
+      value in the figure line and its meaning in the sentence */
+   var L=ladderRead(CURP,Date.now()), st=ritRead(), e=document.createElement('div');
+   e.innerHTML=acctStreakHtml(st);
+   var k=e.querySelector('.acs-streak');
+   return {n:k?k.getAttribute('data-tip-n')||'':'', run:L.streak.run, mean:k?k.getAttribute('data-tip')||'':''};});
+  const best=((r.n||'').split(';').filter(f=>/^Best\|/.test(f))[0]||'');
   ok(/longest run with no gap/.test(r.mean||''),'the page defines Best as the longest run with no gap');
-  ok(best==='1 dayBest','so seven days, every other day, read Best 1 day, got '+JSON.stringify(best)+' beside a streak of '+r.run);}
+  ok(best==='Best|1 day','so seven days, every other day, read Best 1 day, got '+JSON.stringify(best)+' beside a streak of '+r.run);}
 
  console.log('\n=== L2. the next mark says what it takes, on the Compass and on the Ritual page ===');
  {const r=await ev(pg,()=>{

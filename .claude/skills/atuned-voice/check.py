@@ -833,6 +833,118 @@ def scan_objections(target, severities=('stop',)):
     return bad
 
 
+# AN INVENTED ANSWER IN A FIELD, CO-32. "after I put the kettle on" and "the
+# chair by the window" sat in the Ritual builder's two placeholders from the day
+# they were written until 5 November, through four rounds of cutting text off
+# that page, and no gate ever read them. Two reasons, and this reader answers
+# both. objection_hits strips tags before it matches, so a placeholder written
+# inside a whole <input ...> literal is deleted before any rule sees it. And the
+# Avatar page's two story boxes took theirs from a table, placeholder="'+esc(
+# rel?ask.notbe:ask.be)+'", so the literal the sweep reads holds no words at
+# all. So the attribute is read raw, and a placeholder built from an expression
+# is followed to the table key it names (ask.notbe reads every notbe:'...' in
+# the same file). One that cannot be followed, a function parameter, is
+# reported as review and named, never passed as clean.
+EX_ATTR = re.compile(r'\b(placeholder|value)\s*=\s*(\\?["\'])(.*?)\2', re.S)
+EX_DYN = re.compile(r"""placeholder\s*=\s*\\?["']\s*['"]\s*\+\s*([^+]{1,80}?)\s*\+\s*['"]""")
+# the shape of an invented answer, read off the corpses: the person speaking in
+# the first person (an answer, never a hint, because a hint talks to you); a
+# scene with two definite nouns tied by a place word, the chair by the window;
+# and the be line's own opening, Someone who. I is matched in its capital only,
+# the rest in any case, so My at the start of a line is caught too.
+EX_FIRST = re.compile(r"\bI(?:'m|'ve)?\b|(?i:\b(?:my|me|myself|we|our)\b)")
+EX_SCENE = re.compile(r'\bthe [a-z]+ (?:by|on|at|in|near|under|beside|next to|before|after) the [a-z]+\b', re.I)
+EX_SOMEONE = re.compile(r'^\s*(?:someone|a person|somebody) who\b', re.I)
+EX_YOU = re.compile(r'\b(?:you|your)\b', re.I)
+
+
+def example_fault(text):
+    """The part of a field's sample text that makes it an invented answer, or
+    None. A hint that talks to the person, "What happened, and where you felt
+    it.", names the shape of an answer and is never this, so a line carrying
+    you or your is only caught on the first person."""
+    t = re.sub(r'\s+', ' ', text.replace('\\n', ' ')).strip()
+    if not t or not re.search(r'[A-Za-z]{2}', t):
+        return None
+    m = EX_FIRST.search(t)
+    if m:
+        return 'first person, "%s"' % m.group(0)
+    if EX_YOU.search(t):
+        return None
+    m = EX_SCENE.search(t) or EX_SOMEONE.search(t)
+    if m:
+        return 'a scene, "%s"' % m.group(0).strip()
+    return None
+
+
+def _table_values(s, key):
+    """(line, text) for every key:'...' in a source, the values a data fed
+    placeholder can carry."""
+    out = []
+    for m in re.finditer(r'\b%s\s*:\s*(["\'])((?:\\.|(?!\1).)*)\1' % re.escape(key), s):
+        out.append((s[:m.start()].count('\n') + 1, m.group(2)))
+    return out
+
+
+def scan_examples(target):
+    """[(rule id, path, line, text, note, severity)] over one file or folder."""
+    out = []
+    if os.path.isdir(target):
+        for f in sorted(os.listdir(target)):
+            out += scan_examples(os.path.join(target, f))
+        return out
+    if not target.endswith(('.js', '.html')):
+        return out
+    try:
+        s = open(target, encoding='utf-8').read()
+    except OSError:
+        return out
+    # comments blanked and their newlines kept, so the rationale that quotes a
+    # corpse, the comment above the Ritual builder's fields among them, is not
+    # read as copy
+    s = re.sub(r'/\*.*?\*/', lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
+    s = re.sub(r'<!--.*?-->', lambda m: '\n' * m.group(0).count('\n'), s, flags=re.S)
+
+    def line(i):
+        return s[:i].count('\n') + 1
+    for m in EX_ATTR.finditer(s):
+        body = m.group(3)
+        if "'+" in body or '"+' in body or '${' in body:
+            continue
+        why = example_fault(body)
+        if why:
+            out.append(('invented-example-copy', target, line(m.start()), body,
+                        'FAILS: a %s holds an invented answer, %s.' % (m.group(1), why), 'stop'))
+    for m in EX_DYN.finditer(s):
+        expr = m.group(1).strip()
+        keys = sorted(set(re.findall(r'\.([A-Za-z_]\w*)\b', expr)))
+        # an expression that carries its own words, k==='bug'?'What you did,
+        # ...':'', is read for them, and that is a follow and not a review
+        own = [x[1] for x in re.findall(r"(['\"])((?:\\.|(?!\1).)*)\1", expr)
+               if re.search(r'[a-z] [a-z]', x[1])]
+        for v in own:
+            why = example_fault(v)
+            if why:
+                out.append(('invented-example-copy', target, line(m.start()), v,
+                            'FAILS: a placeholder holds an invented answer, %s.' % why, 'stop'))
+        if own:
+            continue
+        if not keys:
+            out.append(('invented-example-copy', target, line(m.start()), expr,
+                        'review: this placeholder is built from %s, which the gate cannot '
+                        'follow. Read what is passed in.' % expr, 'review'))
+            continue
+        for k in keys:
+            for ln, v in _table_values(s, k):
+                why = example_fault(v)
+                if why:
+                    out.append(('invented-example-copy', target, ln, v,
+                                'FAILS: the placeholder at line %d reads this through %s, '
+                                'and it is an invented answer, %s.' % (line(m.start()), expr, why),
+                                'stop'))
+    return out
+
+
 # built from its codepoint so this file does not itself contain one. The
 # ruling is no em dashes anywhere, and a gate that breaks the rule it enforces
 # is the tool lying about the thing it watches.
@@ -928,6 +1040,9 @@ def scan_literals(target):
                         % re.sub(r'<[^>]*>', '', m.group(1)).strip()))
     bad += scan_figures(target)
     bad += scan_objections(target)
+    # the field sample reader, CO-32. Only its stops fail a file; a review is
+    # printed by --objections, where it is named
+    bad += [f[:5] for f in scan_examples(target) if f[5] == 'stop']
     return bad
 
 
@@ -1069,9 +1184,17 @@ def report_objections(rt):
     db = objections()['db']
     rules = db.get('rules', [])
     found = {}
+    review = set()
     for c in CORPUS:
         for f in scan_objections(os.path.join(rt, c), ('stop', 'flag')):
             found.setdefault(f[0], []).append(f)
+        # CO-32 reads attributes and tables and not literals, so it has its own
+        # reader, scan_examples above. A review it cannot follow is printed
+        # with the rule and never counted as a stop.
+        for f in scan_examples(os.path.join(rt, c)):
+            found.setdefault(f[0], []).append(f[:5])
+            if f[5] != 'stop':
+                review.add((f[1], f[2]))
     print('HIS OBJECTIONS, SWEPT. Database: %s'
           % os.path.relpath(OBJ_FILE, rt))
     print('Log: COPY-OBJECTIONS.md. Corpus: %s' % ', '.join(CORPUS))
@@ -1090,8 +1213,10 @@ def report_objections(rt):
         for _, path, line, t, note in hits:
             print('      %s:%s' % (os.path.relpath(path, rt), line))
             print('          %s' % re.sub(r'\s+', ' ', t)[:120])
+            if (path, line) in review:
+                print('          %s' % note)
         if r['severity'] == 'stop':
-            stop += len(hits)
+            stop += len([h for h in hits if (h[1], h[2]) not in review])
     nc = not_copy_block([os.path.join(rt, c) for c in CORPUS])
     if nc:
         print('\n' + '\n'.join(nc))
