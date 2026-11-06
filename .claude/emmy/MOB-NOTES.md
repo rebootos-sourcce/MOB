@@ -46,3 +46,7 @@ Every reply Emmy writes, and every relay of her words to him, follows this:
 ## Standing rule: the personas decide, the owner reacts. Ruled 17 October.
 
 He is a reaction person. A question a persona can answer (look, copy, layout, product judgment) is answered by the persona and shown to him as a picture or a playable file. He is asked only about money, legal wording, safety consent, or facts only he can know. Full ruling in `DECISIONS.md`, "The personas decide, the owner reacts".
+
+## Brand messaging note, 6 November 2026
+
+His own words, describing a new multi-layer body view he asked for (torus field health, left/right chakra distortion, the auric field, the pain map, each its own ontological layer under a new "Play" area, separate from the body map): "you're playing at the different ontological layers, and you're able to see what's running, what needs healing. That's super fucking powerful." He asked that this line feed brand messaging. Flagging it here as raw material, not a finished line: the product lets a person look at themselves through several different true layers at once (energetic, nervous-system, somatic pain, the stories themselves) and see, plainly, what is active and what needs attention. Worth testing as a brand pillar once the feature itself is scoped (engineering seat is scoping it now, 6 November).
