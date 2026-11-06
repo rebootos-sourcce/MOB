@@ -507,10 +507,15 @@ function renderAcc(r){
     reason. The ring already holds a dash on an unread field, which is the
     value's one wording for not read yet, so a second line saying so under the
     word was the same state printed twice. */
+ /* ICON FIRST, LABEL SECOND, approved 2026-11-06, his words: "accuracy
+    flipped is cool." This reverses THE LABEL GOES TO THE LEFT OF THE FIGURE
+    above, and it is his to reverse the same way the scale ruling after it
+    was: the order he is ruling on now is the order that ships. The label's
+    own gap to the icon tightens 5px from the reorder mockup's own (10px,
+    une_field_round2/composite2.py) to 5px, .acc-l's margin-left below. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b></span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -525,6 +530,7 @@ function renderAcc(r){
      bare 58 beside the CQ percents around it */
   +cr('Crown',un?0:pct('accuracy',a.pct),{size:'orb',raw:fmtPct('accuracy',a.pct,{unread:un}),
     label:'Accuracy',hot:false})
+  +'<span class="acc-l"><b>Accuracy</b></span>'
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}

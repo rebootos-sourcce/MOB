@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2953 a0fc9d88 2026-11-06 04:56"><head><meta charset="utf-8">
+<html lang="en" data-build="v2957 27c436f8 2026-11-06 17:38"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -1456,7 +1456,30 @@ body.punch .tp{font-weight:600}
 .cr.orb .gl-t{font-size:12px}
 .cr.orb .v,.cr.hero .v{position:absolute;margin:0;text-align:center;
  background:color-mix(in srgb,var(--c) 30%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
-.cr.orb .v{left:28px;top:30px;height:17px;min-width:20px;padding:0 5px;font-size:11px;line-height:17px}
+.cr.orb .v{height:17px;min-width:20px;padding:0 5px;font-size:11px;line-height:17px}
+/* THE PILL CLIPPED ITS OWN RING, found 2026-11-06 fixing the real Accuracy
+   badge: left:28/top:30 sat the value pill mostly inside the 44px ring box,
+   printing "82%" across the ring's own stroke instead of beside it.
+   Two things both reach for "give the box more room" and both broke the
+   same real test, tests/functional.js's LR check, which reads #accbtn .cr's
+   own rect and levels it against the lowest zoom circle: padding on .cr.orb
+   grows its border box, and .acc-b's align-items:center then centres that
+   taller box, moving the ring itself; margin does the same, because flex
+   centring counts the margin box, not the border box getBoundingClientRect
+   reports. Either way the ring's own rendered position moves.
+   The fix touches only the horizontal axis, where .cr.orb has no cross-axis
+   role to disturb: padding-right reserves real room before the next flex
+   sibling (.acc-l) without any padding-top/bottom, so the box's height, and
+   so its centring, is untouched -- the ring stays exactly where it always
+   rendered. The pill clearing the ring vertically needs no reserved room at
+   all: nothing sits below the badge, so it overflows past the box's own
+   bottom edge for free (.acc has no overflow:hidden to catch it), the same
+   way it would have had to regardless of which axis carried the real
+   padding. left/top (not right/bottom) place it past the ring's own drawn
+   circle -- r16.5 centred in the 44px box, clear once both offsets clear
+   roughly 12px past centre on each axis together, measured, not assumed. */
+.cr.orb{padding:0 26px 0 0}
+.cr.orb .v{left:38px;top:37px}
 .cr.hero .gl-t{font-size:14px;letter-spacing:.02em}
 .cr.hero .v{left:44px;top:46px;height:28px;min-width:44px;padding:0 9px;
  font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
@@ -2320,8 +2343,14 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .acc{position:absolute;left:12px;bottom:9px;z-index:6;display:flex;align-items:center;
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
-.acc-b{display:flex;align-items:center;gap:8px;background:transparent;border:0;
- padding:0 0 0 14px;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+/* GAP TIGHTENED 5PX FROM THE REORDER MOCKUP, approved 2026-11-06: the icon
+   moved first and the label followed it (see the reorder comment above, in
+   personas.js), and the gap between them closes from the mockup's 10px
+   (une_field_round2/composite2.py) to 5px here. The 14px inset moved from
+   before the label (when it led) to after it, so the capsule still keeps
+   its original breathing room at its one open end. */
+.acc-b{display:flex;align-items:center;gap:5px;background:transparent;border:0;
+ padding:0 14px 0 0;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
 /* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
    words: "The accuracy pill is bigger than everything else. Make all of
    those uniform." Its ring and value pill were already the orb size, DQ's to
@@ -2350,8 +2379,8 @@ body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
 .acc-n em{font-style:normal;font-size:15px;opacity:.55;margin-left:7px}
-.acc-l{display:flex;flex-direction:column;align-items:flex-end;gap:2px;
- font-size:11px;font-weight:600;color:var(--dim);text-align:right}
+.acc-l{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+ font-size:11px;font-weight:600;color:var(--dim);text-align:left}
 .acc-l b{font-size:13px;font-weight:500;color:var(--mid);letter-spacing:.01em}
 .acc-l em{font-style:normal;font-size:11px;color:var(--dim);
  font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -3788,15 +3817,40 @@ body.punch .card{border-color:transparent}
    minimum of 44, and they render on every surface in the product, so one
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
+/* ICON-ONLY TAB ROW, approved 2026-11-06. The word moved to title/data-tip-t
+   (ui/ui.js railStack), tap reachable through TIP, ui/tip.js. The button
+   stays the full 44 tap floor; the icon centres inside it and the count
+   rides as .stk-n, a small pill at the icon's own lower-right corner, the
+   same "pill to the lower right" placement cr()'s orb already uses -- given
+   its own box via content-box padding so the pill sits clear of the glyph
+   instead of printing across it, the bug cr.orb carried into the real
+   Accuracy badge (see .cr.orb below). */
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ font-family:var(--sans);font-size:12px;cursor:pointer;
+ width:var(--tap);min-height:var(--tap);padding:0;display:inline-flex;
+ align-items:center;justify-content:center}
+.stk-ico{position:relative;display:inline-flex;box-sizing:content-box;padding:0 11px 8px 0}
+.stk-ring{display:flex;align-items:center;justify-content:center;width:26px;height:26px;
+ border-radius:50%}
+.stk-t svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
-.stk-t.on{background:transparent;color:var(--accent);font-weight:500}
-.stk-t.on b{color:var(--accent)}
+/* GATE 4, THE TYPE FLOOR: nothing under 11px in CSS pixels, product-wide. A
+   first pass at this pill set 9.5px and the design gate caught it before it
+   shipped -- the pill grew to fit 11px rather than the floor bending. */
+.stk-n{position:absolute;right:0;bottom:0;min-width:16px;height:15px;padding:0 4px;
+ border-radius:999px;background:var(--panel-2);font-family:var(--num);font-weight:500;
+ font-size:11px;line-height:15px;text-align:center;color:var(--dim)}
+/* SELECTED = A GLOW-RING, approved 2026-11-06, option B of three built and
+   shown: a ring of light around the icon, the panel kept dark rather than
+   filled or swapped to a flat highlight class. The ring sits on .stk-ring, a
+   circle of its own and not .stk-ico (whose box is padded off-square to make
+   room for .stk-n), so the halo stays a true circle on the mark and never an
+   oval dragged by the count pill's corner. */
+.stk-t.on{background:var(--sunk);color:var(--accent);font-weight:500}
+.stk-t.on .stk-ring{
+ box-shadow:0 0 0 1.5px var(--accent),0 0 9px 1.5px color-mix(in srgb,var(--accent) 60%,transparent)}
+.stk-t.on .stk-n{color:var(--accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
@@ -37511,8 +37565,13 @@ const CHAINGLYPH={
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
  cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
   +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
- hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
-  +'M19.6 7.6L4.4 16.4',
+ /* HY DID NOT NEST, approved 2026-11-06: the lattice above was the one mark
+    of the five that did not read as part of the same "ring in a ring"
+    family sup uses. Replaced with two concentric hexagons -- the same
+    nested-shell idea as sup, with angular facets so Hyper still reads as
+    its own tier rather than a smaller sup. */
+ hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
+  +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
 /* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
    TASKS.md, his words: "everything should have meaning, everything should
@@ -82232,10 +82291,15 @@ function renderAcc(r){
     reason. The ring already holds a dash on an unread field, which is the
     value's one wording for not read yet, so a second line saying so under the
     word was the same state printed twice. */
+ /* ICON FIRST, LABEL SECOND, approved 2026-11-06, his words: "accuracy
+    flipped is cool." This reverses THE LABEL GOES TO THE LEFT OF THE FIGURE
+    above, and it is his to reverse the same way the scale ruling after it
+    was: the order he is ruling on now is the order that ships. The label's
+    own gap to the icon tightens 5px from the reorder mockup's own (10px,
+    une_field_round2/composite2.py) to 5px, .acc-l's margin-left below. */
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b></span>'
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -82250,6 +82314,7 @@ function renderAcc(r){
      bare 58 beside the CQ percents around it */
   +cr('Crown',un?0:pct('accuracy',a.pct),{size:'orb',raw:fmtPct('accuracy',a.pct,{unread:un}),
     label:'Accuracy',hot:false})
+  +'<span class="acc-l"><b>Accuracy</b></span>'
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}
@@ -87076,7 +87141,13 @@ function railFold(){
    mark, and it costs the same width at every depth. */
 /* the child emotions layer's mark, the Child emotions tab's own, named once
    so the tab and the cascade's bar rows draw one mark */
-var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+/* THE MARK WAS A CAPSULE AND NOT A RING, found 2026-11-06 building the real
+   icon-only tab row: the path above draws a stadium (two straight sides,
+   round caps), not "one ring is a fetter" per the comment this sits under.
+   At 15px/1.6 stroke it is indistinguishable from the numeral 0 -- a real
+   shape bug, not a missing asset. Replaced with a true ring in the same
+   two-arc idiom CHAINGLYPH.cx already uses. */
+var STK_FETGLYPH='M12 7a5 5 0 110 10 5 5 0 010-10';
 /* THE TIER, SAID IN WORDS, 5 November, round 3. His words on the linear
    shots, with the three super complex rows struck: "Organize it by Super
    Complex, Hyper Complex, Complex, Saboteur, etc." The mark alone made a
@@ -87223,11 +87294,22 @@ function railStack(r){
   ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
   ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
   ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
+ /* ICON-ONLY, approved 2026-11-06: five words of label and a bare count ran
+    the row wide at every depth. The word moves off the default visible
+    surface and onto the one tooltip this product already has -- title
+    carries it, and TIP (ui/tip.js) makes title tap reachable on a phone,
+    the same mechanism every other icon-only control here already leans on.
+    data-tip-t repeats it so lockApply's locked-state aria-label (ui/lock.js)
+    still reads the real name once the row has no visible text to fall back
+    on. The count moves from an inline "label (3)" into a small pill at the
+    icon's own lower-right corner, .stk-n, rather than being dropped. */
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
+  var nm=esc(t[1]+(t[2]?', '+t[2]:''));
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
-   +svgI('<path d="'+t[3]+'"/>')
-   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+nm+'" data-tip-t="'+nm+'">'
+   +'<span class="stk-ico"><span class="stk-ring">'+svgI('<path d="'+t[3]+'"/>')+'</span>'
+   +(t[2]?'<b class="stk-n">'+t[2]+'</b>':'')+'</span>'
+   +'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
      screenshot. Each bar names both of its ends inside itself, so a column
@@ -87252,7 +87334,10 @@ function railStack(r){
     that was open when a plan lapsed is left open, on the lock's own panel, so
     the list never reads "nothing at this layer" about a layer it cannot see. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
+  /* icon-only now: the padlock rides the icon's own corner, o.corner, the
+     same placement cr()'s orb already uses, so it clears .stk-n at the
+     lower-right instead of fighting it for the same 44px button. */
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0],{at:'.stk-ico',corner:true});});}
 /* WHAT THE SUMMARY BOX SAYS ABOUT A SELECTED PATTERN. His words on the
    screenshot: "a summary from the records, where Source AI is interpreting
    the parent child stack of anything selected." So the box says three
@@ -88364,5 +88449,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005845233"></div>
+<div id="eof" hidden data-len="005851228"></div>
 </body></html>
