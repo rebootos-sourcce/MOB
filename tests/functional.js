@@ -1013,8 +1013,13 @@ const kb=await page.evaluate(()=>{
  loadP(PERSON('James')); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
  const rail=[...document.querySelectorAll('.lsec-hd span')].map(e=>e.textContent.trim());
+ /* ICON-ONLY STACK TABS, 2026-11-06: the tier tabs (.stk-t) carry their name
+    on title now, not in visible text (railStack, ui/ui.js) -- the count pill
+    is what textContent reads. Buttons that were never renamed here (Open
+    all/Close all) still have no title, so the fallback to textContent keeps
+    reading those exactly as before. */
  const stack=[...document.querySelectorAll('#stack button')]
-  .map(e=>e.textContent.trim().replace(/\s+/g,' '));
+  .map(e=>(e.getAttribute('title')||e.textContent).trim().replace(/\s+/g,' '));
  const text=document.body.innerText;
  return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,rail,stack,text,
   cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0,

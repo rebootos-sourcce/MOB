@@ -90,7 +90,15 @@ async function stackNameGate(browser,FILE,ok,booted){
    return {bar:b?b.getAttribute('aria-label'):null, tab:t?t.textContent.replace(/\s+/g,' ').trim():null,
     tabTip:t?t.getAttribute('title'):null};});
   ok(field.bar==='Super complexes','SN1: '+tag+'the Field bar\'s innermost switch is Super complexes, got '+JSON.stringify(field.bar));
-  ok((w<600&&field.tab===null)||(!!field.tab&&/^Super/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),
+  /* ICON-ONLY, 2026-11-06: the tab's own text moved off the visible surface
+     and onto its title (railStack, ui/ui.js), reachable through TIP the same
+     as every other icon-only control. field.tab is now just the count pill's
+     digit, so SN1 reads field.tabTip for the word this check actually cares
+     about -- the rung still has to say Super and never Character, it just
+     says it where a person now reaches it. field.tab is still checked for
+     "character" because a stray word belongs to no surface. */
+  ok((w<600&&field.tab===null)||(!!field.tabTip&&/^Super/.test(field.tabTip)
+    &&!/character/i.test((field.tab||'')+' '+field.tabTip)),
    'SN1: '+tag+'the stack\'s tab for the rung reads Super, got '+JSON.stringify(field));
 
   /* ---- SN1, a pattern drill on the rung ---- */

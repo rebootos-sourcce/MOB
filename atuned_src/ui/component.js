@@ -34,8 +34,13 @@ const CHAINGLYPH={
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
  cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
   +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
- hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
-  +'M19.6 7.6L4.4 16.4',
+ /* HY DID NOT NEST, approved 2026-11-06: the lattice above was the one mark
+    of the five that did not read as part of the same "ring in a ring"
+    family sup uses. Replaced with two concentric hexagons -- the same
+    nested-shell idea as sup, with angular facets so Hyper still reads as
+    its own tier rather than a smaller sup. */
+ hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
+  +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
 /* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
    TASKS.md, his words: "everything should have meaning, everything should

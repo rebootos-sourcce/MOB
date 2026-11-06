@@ -1456,7 +1456,30 @@ body.punch .tp{font-weight:600}
 .cr.orb .gl-t{font-size:12px}
 .cr.orb .v,.cr.hero .v{position:absolute;margin:0;text-align:center;
  background:color-mix(in srgb,var(--c) 30%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
-.cr.orb .v{left:28px;top:30px;height:17px;min-width:20px;padding:0 5px;font-size:11px;line-height:17px}
+.cr.orb .v{height:17px;min-width:20px;padding:0 5px;font-size:11px;line-height:17px}
+/* THE PILL CLIPPED ITS OWN RING, found 2026-11-06 fixing the real Accuracy
+   badge: left:28/top:30 sat the value pill mostly inside the 44px ring box,
+   printing "82%" across the ring's own stroke instead of beside it.
+   Two things both reach for "give the box more room" and both broke the
+   same real test, tests/functional.js's LR check, which reads #accbtn .cr's
+   own rect and levels it against the lowest zoom circle: padding on .cr.orb
+   grows its border box, and .acc-b's align-items:center then centres that
+   taller box, moving the ring itself; margin does the same, because flex
+   centring counts the margin box, not the border box getBoundingClientRect
+   reports. Either way the ring's own rendered position moves.
+   The fix touches only the horizontal axis, where .cr.orb has no cross-axis
+   role to disturb: padding-right reserves real room before the next flex
+   sibling (.acc-l) without any padding-top/bottom, so the box's height, and
+   so its centring, is untouched -- the ring stays exactly where it always
+   rendered. The pill clearing the ring vertically needs no reserved room at
+   all: nothing sits below the badge, so it overflows past the box's own
+   bottom edge for free (.acc has no overflow:hidden to catch it), the same
+   way it would have had to regardless of which axis carried the real
+   padding. left/top (not right/bottom) place it past the ring's own drawn
+   circle -- r16.5 centred in the 44px box, clear once both offsets clear
+   roughly 12px past centre on each axis together, measured, not assumed. */
+.cr.orb{padding:0 26px 0 0}
+.cr.orb .v{left:38px;top:37px}
 .cr.hero .gl-t{font-size:14px;letter-spacing:.02em}
 .cr.hero .v{left:44px;top:46px;height:28px;min-width:44px;padding:0 9px;
  font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.01em}
@@ -2320,8 +2343,14 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .acc{position:absolute;left:12px;bottom:9px;z-index:6;display:flex;align-items:center;
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
-.acc-b{display:flex;align-items:center;gap:8px;background:transparent;border:0;
- padding:0 0 0 14px;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+/* GAP TIGHTENED 5PX FROM THE REORDER MOCKUP, approved 2026-11-06: the icon
+   moved first and the label followed it (see the reorder comment above, in
+   personas.js), and the gap between them closes from the mockup's 10px
+   (une_field_round2/composite2.py) to 5px here. The 14px inset moved from
+   before the label (when it led) to after it, so the capsule still keeps
+   its original breathing room at its one open end. */
+.acc-b{display:flex;align-items:center;gap:5px;background:transparent;border:0;
+ padding:0 14px 0 0;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
 /* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
    words: "The accuracy pill is bigger than everything else. Make all of
    those uniform." Its ring and value pill were already the orb size, DQ's to
@@ -2350,8 +2379,8 @@ body:not(.tab-field) .acc{display:none}
 .acc-n{font-family:var(--num);font-size:34px;font-weight:400;line-height:1;color:var(--gold)}
 .acc-n small{font-size:16px;opacity:.6;margin-left:2px}
 .acc-n em{font-style:normal;font-size:15px;opacity:.55;margin-left:7px}
-.acc-l{display:flex;flex-direction:column;align-items:flex-end;gap:2px;
- font-size:11px;font-weight:600;color:var(--dim);text-align:right}
+.acc-l{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+ font-size:11px;font-weight:600;color:var(--dim);text-align:left}
 .acc-l b{font-size:13px;font-weight:500;color:var(--mid);letter-spacing:.01em}
 .acc-l em{font-style:normal;font-size:11px;color:var(--dim);
  font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -3788,15 +3817,40 @@ body.punch .card{border-color:transparent}
    minimum of 44, and they render on every surface in the product, so one
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
+/* ICON-ONLY TAB ROW, approved 2026-11-06. The word moved to title/data-tip-t
+   (ui/ui.js railStack), tap reachable through TIP, ui/tip.js. The button
+   stays the full 44 tap floor; the icon centres inside it and the count
+   rides as .stk-n, a small pill at the icon's own lower-right corner, the
+   same "pill to the lower right" placement cr()'s orb already uses -- given
+   its own box via content-box padding so the pill sits clear of the glyph
+   instead of printing across it, the bug cr.orb carried into the real
+   Accuracy badge (see .cr.orb below). */
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ font-family:var(--sans);font-size:12px;cursor:pointer;
+ width:var(--tap);min-height:var(--tap);padding:0;display:inline-flex;
+ align-items:center;justify-content:center}
+.stk-ico{position:relative;display:inline-flex;box-sizing:content-box;padding:0 11px 8px 0}
+.stk-ring{display:flex;align-items:center;justify-content:center;width:26px;height:26px;
+ border-radius:50%}
+.stk-t svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2.2;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
-.stk-t.on{background:transparent;color:var(--accent);font-weight:500}
-.stk-t.on b{color:var(--accent)}
+/* GATE 4, THE TYPE FLOOR: nothing under 11px in CSS pixels, product-wide. A
+   first pass at this pill set 9.5px and the design gate caught it before it
+   shipped -- the pill grew to fit 11px rather than the floor bending. */
+.stk-n{position:absolute;right:0;bottom:0;min-width:16px;height:15px;padding:0 4px;
+ border-radius:999px;background:var(--panel-2);font-family:var(--num);font-weight:500;
+ font-size:11px;line-height:15px;text-align:center;color:var(--dim)}
+/* SELECTED = A GLOW-RING, approved 2026-11-06, option B of three built and
+   shown: a ring of light around the icon, the panel kept dark rather than
+   filled or swapped to a flat highlight class. The ring sits on .stk-ring, a
+   circle of its own and not .stk-ico (whose box is padded off-square to make
+   room for .stk-n), so the halo stays a true circle on the mark and never an
+   oval dragged by the count pill's corner. */
+.stk-t.on{background:var(--sunk);color:var(--accent);font-weight:500}
+.stk-t.on .stk-ring{
+ box-shadow:0 0 0 1.5px var(--accent),0 0 9px 1.5px color-mix(in srgb,var(--accent) 60%,transparent)}
+.stk-t.on .stk-n{color:var(--accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;

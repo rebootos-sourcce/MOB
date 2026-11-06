@@ -882,7 +882,13 @@ function railFold(){
    mark, and it costs the same width at every depth. */
 /* the child emotions layer's mark, the Child emotions tab's own, named once
    so the tab and the cascade's bar rows draw one mark */
-var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+/* THE MARK WAS A CAPSULE AND NOT A RING, found 2026-11-06 building the real
+   icon-only tab row: the path above draws a stadium (two straight sides,
+   round caps), not "one ring is a fetter" per the comment this sits under.
+   At 15px/1.6 stroke it is indistinguishable from the numeral 0 -- a real
+   shape bug, not a missing asset. Replaced with a true ring in the same
+   two-arc idiom CHAINGLYPH.cx already uses. */
+var STK_FETGLYPH='M12 7a5 5 0 110 10 5 5 0 010-10';
 /* THE TIER, SAID IN WORDS, 5 November, round 3. His words on the linear
    shots, with the three super complex rows struck: "Organize it by Super
    Complex, Hyper Complex, Complex, Saboteur, etc." The mark alone made a
@@ -1029,11 +1035,22 @@ function railStack(r){
   ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
   ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
   ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
+ /* ICON-ONLY, approved 2026-11-06: five words of label and a bare count ran
+    the row wide at every depth. The word moves off the default visible
+    surface and onto the one tooltip this product already has -- title
+    carries it, and TIP (ui/tip.js) makes title tap reachable on a phone,
+    the same mechanism every other icon-only control here already leans on.
+    data-tip-t repeats it so lockApply's locked-state aria-label (ui/lock.js)
+    still reads the real name once the row has no visible text to fall back
+    on. The count moves from an inline "label (3)" into a small pill at the
+    icon's own lower-right corner, .stk-n, rather than being dropped. */
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
+  var nm=esc(t[1]+(t[2]?', '+t[2]:''));
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
-   +svgI('<path d="'+t[3]+'"/>')
-   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+nm+'" data-tip-t="'+nm+'">'
+   +'<span class="stk-ico"><span class="stk-ring">'+svgI('<path d="'+t[3]+'"/>')+'</span>'
+   +(t[2]?'<b class="stk-n">'+t[2]+'</b>':'')+'</span>'
+   +'</button>';}).join('')+'</div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
      screenshot. Each bar names both of its ends inside itself, so a column
@@ -1058,7 +1075,10 @@ function railStack(r){
     that was open when a plan lapsed is left open, on the lock's own panel, so
     the list never reads "nothing at this layer" about a layer it cannot see. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
+  /* icon-only now: the padlock rides the icon's own corner, o.corner, the
+     same placement cr()'s orb already uses, so it clears .stk-n at the
+     lower-right instead of fighting it for the same 44px button. */
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0],{at:'.stk-ico',corner:true});});}
 /* WHAT THE SUMMARY BOX SAYS ABOUT A SELECTED PATTERN. His words on the
    screenshot: "a summary from the records, where Source AI is interpreting
    the parent child stack of anything selected." So the box says three
