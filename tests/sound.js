@@ -1080,12 +1080,17 @@ async function atmGate(browser,FILE,ok,booted){
   const b=await row(); await pg.waitForTimeout(350);
   return {before:before, first:a, second:b};};
  const hz=await pg.evaluate(()=>({Root:seatHz('Root'),Sacral:seatHz('Sacral'),Crown:seatHz('Crown')}));
- /* the glass bar arrives shut since SV18, his "start closed", so its circles
-    are pressed after it is opened, the way a person reaches them */
+ /* THE DECOHERENCE CIRCLE THIS BLOCK USED TO PRESS IS GONE, 3 November, his
+    own red marks on the Field screenshot (ui/fieldbar.js, FB_LAYERS). Proven
+    here on Addresses instead, the bar's other Root-seated circle (ATM_SEAT.fb
+    in ui/sound.js), so the same rise-on-fall-off-at-the-Root's-tone mechanism
+    stays covered by a circle that is still real.
+    AND the glass bar arrives shut since SV18, his "start closed", so it is
+    opened first, the way a person actually reaches the circle. */
  await pg.evaluate(()=>{ if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(200);
- const f1=await ov('#fbar [data-fb=shadow]');
+ const f1=await ov('#fbar [data-fb=addresses]');
  ok(f1.first&&f1.second&&f1.first.k===(f1.before==='true'?'overlay-off':'overlay-on')&&f1.second.k===(f1.before==='true'?'overlay-on':'overlay-off')
-  &&f1.first.hz===hz.Root&&f1.second.hz===hz.Root,'the Field\'s Decoherence circle rises going on and falls going off, at the Root\'s tone, '+JSON.stringify(f1));
+  &&f1.first.hz===hz.Root&&f1.second.hz===hz.Root,'the Field\'s Addresses circle rises going on and falls going off, at the Root\'s tone, '+JSON.stringify(f1));
  const f2=await ov('#fbar [data-fb=laws]');
  ok(f2.first&&f2.second&&f2.first.hz===hz.Crown&&f2.second.hz===hz.Crown&&f2.first.k!==f2.second.k,'and the Laws circle at the Crown\'s, one concept one pitch, '+JSON.stringify(f2));
  await pg.evaluate(()=>{ setTab(TAB.ENERGY); }); await pg.waitForTimeout(900);
@@ -1126,7 +1131,9 @@ async function atmGate(browser,FILE,ok,booted){
     they found it, which is shut on arrival */
  await pg.evaluate(()=>{ setTab(TAB.FIELD); if(FB.classList.contains('shut'))FB_TOG.click(); }); await pg.waitForTimeout(400);
  const box=async sel=>{ const b=await (await pg.$(sel)).boundingBox(); return {x:b.x+b.width/2,y:b.y+b.height/2}; };
- const sh0=await box('#fbar [data-fb=shadow]');
+ /* a real circle, any one: the Decoherence circle this read is positional
+    against is gone, 3 November, so this reads off Addresses instead. */
+ const sh0=await box('#fbar [data-fb=addresses]');
  const one_=await hv(async()=>{ await pg.mouse.move(cc.x,cc.y); await pg.waitForTimeout(300); await pg.evaluate(()=>{ ATM_HOV=[]; ATM_AT=0; });
   await pg.mouse.move(sh0.x,sh0.y,{steps:3}); });
  ok(one_.n===1&&one_.row==='hover','a mouse arriving at a control ticks once, '+JSON.stringify(one_));

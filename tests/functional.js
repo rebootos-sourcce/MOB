@@ -6595,11 +6595,19 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* EVERY LAYER ON, which is the Blueprint preset. One set of switches on the
     glass bar drives all three pictures now, and the Field opens on
     Patterns, so the layers past it are off until someone turns them on;
-    what this holds is that every layer draws when it is on. */
+    what this holds is that every layer draws when it is on.
+
+    SEATS, SHADOW AND STORIES LEFT THE BAR'S OWN SWITCH ROW, 5 November, his
+    red marks on the Field screenshot. LAYADD (ui/wheel.js) still carries
+    them, so the pictures still draw them when they are on; only FB_LAYERS
+    (ui/fieldbar.js), the bar's own switch list, lost the three entries.
+    "want" is read off FB_LAYERS now, not LAYADD, so this checks the bar
+    against what it still offers rather than against the model underneath
+    it, which a regression that brings a switch back would still fail. */
  const drawn=async v=>{
   /* the bar opens shut since SV18, so it is opened with its own control to be
-     measured; the switches it carries are the model's less the two he took
-     off it, FB_OFFBAR in ui/fieldbar.js */
+     measured; the switches it carries are FB_LAYERS, the model's less the
+     three entries he took off it entirely */
   await fp.evaluate(v=>{loadP(PERSON('James'));setTab(TAB.FIELD);layPick(3);fviewSet(v);
    if(FB.classList.contains('shut'))FB_TOG.click();},v);
   await frame(fp);
@@ -6608,7 +6616,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
    return {svg:!!fr.querySelector('svg.frsvg'),cv:d('cv'),fbar:d('fbar'),frend:d('frend'),subbar:d('subbar'),
     w:fr.clientWidth,h:fr.clientHeight,
-    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).sort().join(','),
+    lays:lays.map(b=>b.getAttribute('data-fb')).sort().join(','),want:FB_LAYERS.map(l=>l.k).sort().join(','),
     layOn:lays.every(b=>b.getAttribute('aria-pressed')==='true'),
     laySizes:lays.map(b=>{const r=b.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)];}),
     counts:L.map(k=>[k,fr.querySelectorAll('.L-'+k+' [data-h], .L-'+k+' rect, .L-'+k+' path, .L-'+k+' circle').length]),
@@ -6623,7 +6631,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const o=await drawn(v);
   ok(o.svg&&o.frend==='block'&&o.cv==='none','"'+v+'" draws into the wheel\'s own cell and the canvas steps aside, '+o.w+' by '+o.h);
   ok(o.fbar==='flex'&&o.subbar==='none','"'+v+'" keeps the glass bar up over the picture, the same bar as the wheel\'s');
-  ok(o.lays===o.want&&o.layOn,'"'+v+'": the bar carries a switch for every layer the model has, all on, got '+o.lays);
+  ok(o.lays===o.want&&o.layOn,'"'+v+'": the bar carries a switch for every layer it still offers, all on, got '+o.lays);
   ok(o.laySizes.every(s=>s[0]>=44&&s[1]>=44),'"'+v+'": every layer clears the tap floor, '+JSON.stringify(o.laySizes.slice(0,3)));
   /* a worked example carries no story, so its stories layer is empty by right;
      the stories layer is held on a committed story further down */
@@ -7075,8 +7083,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     stretches whose range is the full zero to one when every seat passes
     everything and is rougher and smaller when they do not; the two dials sit
     in the block; the Awareness grids are folded to two lines on a first
-    visit; the word is Decoherence on the bar and on its circle; and nothing
-    of the menu is drawn on the stage. */
+    visit; the word was Decoherence on the bar and on its circle until 5
+    November, when his own red marks took that circle off the bar entirely,
+    held below as its absence rather than its name; and nothing of the menu
+    is drawn on the stage. */
  const om=await fp.evaluate(async()=>{
   loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
@@ -7112,7 +7122,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'OM, r1: a healthy chain\'s step ends at the top, and a heavy person\'s ends at what reaches the crown, '+JSON.stringify({healthy:om.healthyEnd,tomas:om.tomEnd,flow:+om.tomFlow.toFixed(2)}));
  ok(om.dials&&!om.oldSection,'OM, RB: orientation and balance sit in the block with the readings, their old section is gone, and so is the switch between two dial designs');
  ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
- ok(/^Decoherence/.test(om.shadowCircle||''),'OM: the circle it pairs with says Decoherence, '+om.shadowCircle);
+ ok(om.shadowCircle==='','OM: the Decoherence circle is gone from the bar, 5 November, his own mark on it, got '+JSON.stringify(om.shadowCircle));
  ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
  /* THE CHAIN KEY SAYS ONLY WHAT IS COMPUTED, round of 31 October. Its fifth
     row read "Archetype: the shape the whole pattern points toward" under a
@@ -7268,9 +7278,11 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* measured on this fresh page, because everything above has pressed the bar */
  const on=await fp.evaluate(()=>{const lays=[...document.querySelectorAll('#fbar .fb-full [data-fb]')];
   return {view:S.view,custom:LAYSET,off:lays.filter(b=>b.getAttribute('aria-pressed')!=='true').map(b=>b.getAttribute('data-fb')),
-   /* less the two circles SV18 took off the bar, FB_OFFBAR; their layers are
-      still on, which LAYSET null and view 3 already say */
-   n:lays.length,want:[].concat(...LAYADD).filter(k=>!FB_OFFBAR[k]).length};});
+   /* read against FB_LAYERS, not LAYADD: seats, shadow and stories left the
+      bar's own switch row entirely (his red marks, both rounds), though
+      LAYADD and the frames/dial pictures still carry and draw them when on,
+      which LAYSET null and view 3 already say */
+   n:lays.length,want:FB_LAYERS.length};});
  const fold2=await fp.evaluate(async()=>{const kept=document.body.classList.contains('lshut');
   document.getElementById('lfold').click(); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   return {kept,open:!document.body.classList.contains('lshut')&&!!document.getElementById('fdock').offsetParent,
@@ -7658,16 +7670,19 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
    esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
-   /* Assemblage points left the bar at SV18, FB_OFFBAR, so its name is read
-      off the table the bar draws from; Laws of Action is still a circle */
-   seats:FB_BYK.seats.nm,onbar:!!lay('seats'),gates:lay('gates').getAttribute('aria-label'),
+   /* SEATS LEFT THE BAR ENTIRELY, not a rename: the FB_LAYERS entry itself is
+      gone (fieldbar.js), so FB_BYK.seats no longer exists to read a name
+      off. Asserted here as its absence, not its name, so a regression that
+      brings the circle back under any label still fails this line. Gates
+      (Laws of Action) is still a circle and still named. */
+   seatsGone:!lay('seats')&&!FB_BYK.seats,gates:lay('gates').getAttribute('aria-label'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit to the Field at 1600 finds the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&!a.onbar&&a.gates==='Laws of Action'&&!a.stale.length,'the names are Assemblage points and Laws of Action, neither old word, and Assemblage points is off the bar, '+JSON.stringify([a.seats,a.onbar,a.gates,a.stale]));
+ ok(a.seatsGone&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Laws of Action, and Assemblage points is gone from the bar entirely, not renamed, '+JSON.stringify([a.seatsGone,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,

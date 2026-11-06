@@ -8882,6 +8882,20 @@ const W=[];BANDS.forEach(b=>SOM.filter(n=>n.b===b).forEach(n=>W.push(n)));
 W.forEach((n,i)=>{n.slot=i;n.ang=(i/108)*Math.PI*2-Math.PI/2;
  n.cf = ANTKEY.test(n.k)?'Anticipation' : SURPKEY.test(n.k)?'Surprise'
       : HEARTKEY.test(n.k)?'Sad' : (REROUTE[n.c]||null);});
+/* THE FETTERS GET A RING POSITION TOO, the real floor the chain runs on
+   (engine/trace.js: "a fetter is the classification several addresses
+   share... and carries no address-level content of its own"). Set once,
+   here, beside W's own .ang above and for the same reason: a stable
+   position computed from real data rather than redrawn every frame. Each
+   fetter sits at the mean angle of the real addresses it classifies
+   (n.cf===c.nm), so the wheel's new fetter ring sits where its own
+   addresses actually cluster, never at an arbitrary even spacing. kind is
+   set here and not in engine/data/canon.js, because canon.js is the ported
+   table (SNIFFER_SPEC's own) and this is wiring: the one property every
+   wheel bead needs so hitPress (ui/ui.js) can tell what it hit, the same
+   way a saboteur, complex, hyper or super complex already carries .kind. */
+CHILD.forEach(c=>{var parts=W.filter(n=>n.cf===c.nm);
+ c.kind='fet'; c.ang=parts.length?meanAng(parts.map(n=>n.ang)):-Math.PI/2;});
 const BY={};NODES.forEach(n=>BY[n.i]=n);
 const NAMED=new Set();SAB_LIB.forEach(s=>s.nids.forEach(i=>NAMED.add(i)));
 /* the six families are poled. collapsed on the left, overshot on the right.
