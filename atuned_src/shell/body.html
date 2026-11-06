@@ -790,6 +790,13 @@
        ui/knowledge.js. Enter takes the words there, to whichever deck holds
        the most of them. Shut, it is one circle; open, the field rolls out to
        its left and takes the cursor. ui/panels.js wires it. -->
+  <!-- CQ/DQ/SQ, MOVED OFF THE ANALYTICS PAGE, round LANCE2, his words on
+       the annotated screenshot: "move the CQDQSQ to the upper right-hand
+       menu. Right now it's eating up too much real estate in that center."
+       Empty everywhere but Analytics: ui/analytics.js's anaNavMet() fills
+       it and anaCss() shows it only on body.tab-analytics, so every other
+       tab's bar is exactly what it was. -->
+  <div class="nav-cqdq" id="navcqdq"></div>
   <div class="srch" id="srch">
    <input type="search" id="srchq" class="srch-q" placeholder="Search the codex"
     aria-label="Search the codex" autocomplete="off" enterkeyhint="search" tabindex="-1">

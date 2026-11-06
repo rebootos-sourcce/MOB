@@ -106,9 +106,32 @@ function anaCss(){
   '@media (min-width:1181px){body.tab-analytics .mid,body.lshut.tab-analytics .mid'
    +'{grid-template-columns:minmax(0,1fr) 336px}'
    +'body.rshut.tab-analytics .mid,body.lshut.rshut.tab-analytics .mid'
-   +'{grid-template-columns:minmax(0,1fr) 58px}}'
+   +'{grid-template-columns:minmax(0,1fr) 58px}}',
+  /* THE NAV SLOT, round LANCE2: #navcqdq (shell/body.html) sits in the top
+     bar beside search and profile and is empty markup everywhere but here,
+     so it only shows once this tab's own class is on body, the same rule
+     the line above already uses for the left rail. */
+  'body.tab-analytics .nav-cqdq{display:flex}'
  ].join('\n');
  document.head.appendChild(st);}
+/* THE HERO'S RINGS, MOVED HERE, round LANCE2 -- see anaRender for why. Same
+   three figures, same doors, drawn small for the bar they sit in now. */
+function anaNavMet(r){
+ var el=document.getElementById('navcqdq'); if(!el)return;
+ el.innerHTML=cr(ANA_MET.cq.seat,r.unread?0:pct('cq',r.CQ)||0,{size:'xs',text:'CQ',label:ANA_MET.cq.nm,
+    act:!r.unread,data:r.unread?'':'data-ana="met|cq"',raw:r.unread?'–':fmtPct('cq',r.CQ),
+    hot:false,color:r.unread?'var(--dim)':null})
+  +cr(ANA_MET.dq.seat,r.unread?0:pct('dq',r.DQ)||0,{size:'xs',text:'DQ',label:ANA_MET.dq.nm,
+    act:!r.unread,data:r.unread?'':'data-ana="met|dq"',raw:r.unread?'–':fmtPct('dq',r.DQ),
+    hot:false})
+  +cr(ANA_MET.lawsq.seat,(r.unread||r.lawSQ===null)?0:pct('lawsq',r.lawSQ)||0,{size:'xs',text:'SQ',
+    label:ANA_MET.lawsq.nm,act:!r.unread&&r.lawSQ!==null,
+    data:(!r.unread&&r.lawSQ!==null)?'data-ana="met|lawsq"':'',
+    raw:(r.unread||r.lawSQ===null)?'–':fmtPct('lawsq',r.lawSQ), hot:false});
+ /* the rings carry data-ana and the global click handler at the foot of
+    this file answers any [data-ana], wherever it sits in the document --
+    the nav bar did not need to be taught this, the handler already reads
+    the whole page */}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
  anaCss();
@@ -136,48 +159,45 @@ function anaRender(){
     anyway once, which is the exact failure the ruling about the opening
     screen exposed. The ring holds a dash and the arc holds nothing. Same
     rule as everywhere else: a percentage is never printed off a default. */
- /* THE HERO CARRIES CQ, DQ AND SQ, his words on the screenshot, 5 November:
-    "at the very top it went CQ DQ SQ. We're going to get rid of the text
-    underneath it." All three are compute()'s own figures (ANA_MET.cq/dq/
-    lawsq), the same registry anaTele already draws its tiles from below;
-    nothing here is a new number. Ruled earlier, component.js's own note on
-    cr(): "CQ, DQ, SQ is essentially an icon, make this a centre ring
-    element instead of a pill" -- the letters are the icon (o.text), so no
-    new glyph was drawn here. The explanatory paragraph and Identification
-    are gone, struck on the same screenshot; their real drills (met|cq,
-    met|dq, met|lawsq) stay reachable from the rings themselves. */
- out+='<div class="ab-hero ab-hero3">'
-  +cr(ANA_MET.cq.seat,r.unread?0:pct('cq',r.CQ)||0,{size:'lg',text:'CQ',label:ANA_MET.cq.nm,
-    act:!r.unread,data:r.unread?'':'data-ana="met|cq"',raw:r.unread?'\u2013':fmtPct('cq',r.CQ),
-    hot:false,color:r.unread?'var(--dim)':null})
-  +cr(ANA_MET.dq.seat,r.unread?0:pct('dq',r.DQ)||0,{size:'lg',text:'DQ',label:ANA_MET.dq.nm,
-    act:!r.unread,data:r.unread?'':'data-ana="met|dq"',raw:r.unread?'\u2013':fmtPct('dq',r.DQ),
-    hot:false})
-  +cr(ANA_MET.lawsq.seat,(r.unread||r.lawSQ===null)?0:pct('lawsq',r.lawSQ)||0,{size:'lg',text:'SQ',
-    label:ANA_MET.lawsq.nm,act:!r.unread&&r.lawSQ!==null,
-    data:(!r.unread&&r.lawSQ!==null)?'data-ana="met|lawsq"':'',
-    raw:(r.unread||r.lawSQ===null)?'\u2013':fmtPct('lawsq',r.lawSQ), hot:false})
-  +'</div><div class="ab-grid">';
+ /* THE HERO MOVED TO THE NAV, round LANCE2, his words on the new annotated
+    screenshot: "move the CQDQSQ to the upper right-hand menu. Right now
+    it's eating up too much real estate in that center." anaNavMet fills
+    #navcqdq (shell/body.html, beside search/profile); CSS shows that slot
+    only on body.tab-analytics (shell/head.html), the same scoped-class
+    technique anaCss() already uses for the left rail, so no other tab's
+    renderer has to know this exists. The rings keep every real figure and
+    door they had in the hero (met|cq, met|dq, met|lawsq); only where they
+    are drawn changed. */
+ anaNavMet(r);
+ /* THE GRID IS THREE COLUMNS NOW, round LANCE2, his words: "stack them
+    three on three... so it's three columns... the third column would be
+    all of the behaviors in any selected analytic node." Columns one and
+    two each stack three of the six bubble cards (a judgment call on which
+    three go together, not his own split): Masks/Domains/Archetypes read who
+    you are, What is running/The nine axes/The seven seats read what is
+    active right now. Column three is new -- anaSel3 below -- and fills the
+    space his arrows pointed into, empty beside The Seven Seats before this
+    round. */
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
     caption kept is the colour key on What is running, because four kinds
     share one chart and colour is the only thing telling them apart. Its tail,
     the bigger the mark, goes with the rest. */
- out+=(lockSees('mask')?anaField('Masks','',
+ var c1=(lockSees('mask')?anaField('Masks','',
   r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,f:fmtPct('weight',m.w),
    c:seatCol((m.bands||['Heart'])[0])};}),300,210)
   :'<div class="ab-f"><div class="pm-eye">Masks</div>'+lockPanelHtml('mask',{brief:true})+'</div>');
- out+=anaField('Domains','',
+ var c2=anaField('Domains','',
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','',
+ var c3=anaField('Archetypes','',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
    /* sized by the lean, which orders them; the figure is how fully each is
       expressed, ruled 16 October (engine/archexpr.js) */
    v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
- out+=(r.locked&&r.locked.length===SEE_ORDER.length
+ var c4=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
   ?'<div class="ab-f"><div class="pm-eye">What is running</div>'+lockPanelHtml('sab',{brief:true})+'</div>'
@@ -192,19 +212,18 @@ function anaRender(){
       percent never takes the alarm (DECISIONS.md, the default taken), and red
       here was also the key's colour for a super complex */
    return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
- out+=anaField('The nine axes','',
+ var c5=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','',
+ var c6=anaField('The seven seats','',
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
- out+='</div>';
- /* RUNNING HOT MOVED BELOW THE BUBBLES, 5 November, his words: "move all
-    of our analytic bubbles up... needs to be a fixed size all the time."
-    The bubbles are the first thing after CQ/DQ/SQ now; this text list
-    still exists, just after them instead of before. */
- out+=anaHot(r);
+ out+='<div class="ab-grid">'
+  +'<div class="ab-col">'+c1+c2+c3+'</div>'
+  +'<div class="ab-col">'+c4+c5+c6+'</div>'
+  +'<div class="ab-col ab-col3">'+anaSel3(r)+'</div>'
+  +'</div>';
  /* TELEMETRY, round RB, his words: "I want the analytics page to give me
     telemetry and have that telemetry broken out in as many dimensions as we
     can to see what's running and where." What follows is the engine's own
@@ -308,15 +327,38 @@ const ANA_HOT_ROWS=12;
    is drawn. Expanding is load arriving and reads at full ink. Steady is the
    absence of news and sits at the dim step. */
 function anaHotInk(d){return d==='collapsing'?seatCol('Heart'):(d==='steady'?'var(--dim)':'var(--ink)');}
-function anaHot(r){
- if(r.unread||typeof hotList!=='function')return '';
- var L=hotList(), t={expanding:0,collapsing:0,steady:0};
- L.forEach(function(n){t[hotDir(n)]++;});
- var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
- if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
-  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
- else s+=anaHotRows(L,t);
- return '<div class="ana-hot">'+s+'</div>';}
+/* RUNNING HOT MOVED INTO COLUMN THREE, round LANCE2, his annotated
+   screenshot crossed out the count paragraph this used to open with ("51
+   addresses are past five, where an address pulls..."). The rows underneath
+   it are real functional content, not prose, and anaSel3 below gives them
+   the space his arrows pointed into: the eyebrow names the list, and the
+   rows say the rest the way every other list on this page does. */
+function anaHotCol(r){
+ if(r.unread||typeof hotList!=='function')
+  return '<div class="pm-eye">Running hot</div><div class="ab-none">nothing read yet</div>';
+ var L=hotList();
+ var body=L.length?anaHotRowsOnly(L):'<p class="sum-p">No address is past five.</p>';
+ return '<div class="pm-eye">Running hot</div><div class="ana-hot">'+body+'</div>';}
+function anaHotRowsOnly(L){
+ return '<div class="ad-rows">'+L.slice(0,ANA_HOT_ROWS).map(function(n){var d=hotDir(n);
+   return '<button type="button" class="ad-r" data-addr="'+n.i+'" data-ana="addr|'+n.i+'" data-dir="'+d+'" '
+    +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
+    +'<span>'+esc(n.k)+'</span><em style="color:'+anaHotInk(d)+'" title="'+esc(ANA_DIRSAY[d]||'')+'">'+d+'</em></button>';}).join('')+'</div>'
+  +(L.length>ANA_HOT_ROWS?'<div class="pm-more">and '+(L.length-ANA_HOT_ROWS)+' more</div>':'');}
+/* COLUMN THREE ITSELF, round LANCE2, his words: "the third column would be
+   all of the behaviors in any selected analytic node. And then on the right
+   side, you would get all of it unpacked plus a summary." Nothing picked,
+   it holds Running hot, above. Picked, it holds the same unpacked card the
+   right rail's Selection panel builds (anaCard, anaDrill below), so a
+   person reading the page does not have to find the rail to see what a
+   bubble is made of -- the rail still carries its own copy for anyone who
+   has it open and the page scrolled past this card. */
+function anaSel3(r){
+ if(!ANA_PICK)return anaHotCol(r);
+ var h=anaCard(r,ANA_PICK);
+ if(h==null)h=anaHead('Not running now',anaStepName(ANA_PICK))
+  +'<p class="ad-p">Nothing by this name is on the reading as it stands now.</p>';
+ return '<div class="pm-eye">Selected</div>'+h;}
 var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
  collapsing:'Its charge fell on its last change.',
  steady:'It has not moved since this record was opened.'};
@@ -852,7 +894,12 @@ function anaRedraw(inRail){
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('[data-ana],[data-anacrumb]'):null;
  if(!t)return;
- var inPage=!!t.closest('#ana'), inDrill=!!t.closest('#rdrill');
+ /* #navcqdq (the nav bar, round LANCE2) counts as inPage too -- the rings
+    that used to sit inside #ana as the hero now sit in the bar beside
+    search and profile, and a press on them is still a page press, not a
+    rail press, so it starts a fresh trail the same way the hero always
+    did. */
+ var inPage=!!t.closest('#ana')||!!t.closest('#navcqdq'), inDrill=!!t.closest('#rdrill');
  if(!inPage&&!inDrill)return;
  if(t.hasAttribute('data-anacrumb')){
   var i=+t.getAttribute('data-anacrumb'); if(!ANA_TRAIL[i])return;
