@@ -893,13 +893,30 @@ article, no full sentence where a fragment says the same thing.
     FIX   Ritual
 
     FAIL  You wrote your first story.
-    FIX   First story written.
+    FIX   First story written
 
     FAIL  You ran your first ritual.
-    FIX   Ran first ritual.
+    FIX   Ran first ritual
 
     FAIL  You practised seven days in a row.
-    FIX   7-day streak.
+    FIX   7-day streak
+
+**Addendum, same day, later the same round.** A fragment this short carries no
+trailing period either. His words, back on the same mockup: "get rid of the
+periods on the achievements too. Congratulations, remove the period. Ran first
+ritual, remove the period. Same, remove the periods after first story written,
+etc." A period is a sentence's own punctuation; a fragment that is already not
+a sentence does not borrow one to look finished. This reaches every short label
+cut under this rule (a mark's line, a one-word or two-word heading like
+"Congratulations" with nothing after it), not only the achievement screen it
+was first said on. A line still built as a full clause, with its own subject
+and verb, keeps its period; only the fragment drops it.
+
+    FAIL  Congratulations.
+    FIX   Congratulations
+
+    FAIL  First story written.
+    FIX   First story written
 
 This is not V2 (never instruct) or V6 (one string, one bucket) repeated under a
 new number: those are about what a line does, this is about how many words it
