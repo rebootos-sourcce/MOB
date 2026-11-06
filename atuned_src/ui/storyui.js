@@ -316,11 +316,18 @@ function stRender(){
       door it already has. The label stays the same open or shut, and
       aria-expanded carries which. */
    +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
-    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" title="'
+    /* ICON ONLY, BIGGER, 6 November, his words on this exact screen:
+       "instead of type instead, just have the keyboard icon. Make it more
+       interesting looking, bigger." The visible label is gone; aria-label
+       carries the same words the title already did, so a screen reader
+       still hears "Type instead", per the same pattern PR #200 already
+       cut this label to an icon with on Discover. 15px to 22px, a heavier
+       stroke so it still reads at the larger size. */
+    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" aria-label="Type instead" title="'
     +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
-    +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'
-    +'<rect x="2.5" y="6" width="19" height="12" rx="2.2"/><path d="M6.5 10h1M10 10h1M13.5 10h1M17 10h.5M8 14h8"/></svg>'
-    +'<span>Type instead</span></button>')
+    +'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
+    +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
+    +'</button>')
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
     +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
@@ -485,8 +492,10 @@ function stRender(){
 /* DASHBOARD STARTS OFF, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real panels,
    not removed, only shut until Dashboard is pressed; see #stdash's onclick
-   at the foot of stRender. */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
+   at the foot of stRender.
+   THE SORT OPENS ON WEIGHT, 6 November, his words on this exact screen:
+   "for imprints, for a sort, just do it by weight." Was Seat. */
+var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
@@ -2617,16 +2626,21 @@ function stDrawStrip(){
    collected here", and as the empty chart beside it. On a phone that list
    is folded away behind List, and there the empty chart and the empty box
    with its placeholder still say it, the chart on the same line of sight
-   the tag sat on. The other three states
-   each say something only the tag says and they stay: how many are pending,
-   that the words kept nothing, and that the last entry was committed. The
-   span stays in place empty, because it is the spacer that holds the view
-   icons at the row's right edge (the Bank and the Vault moved to the
-   list's own header, round of 29 October, see the ruling at stRender). */
+   the tag sat on.
+   THE "N PENDING" STATE IS GONE TOO, 6 November, his words looking at this
+   exact screen: "it says imprints 11 pending, just get rid of the 11
+   pending, because that's bullshit." The pills under it already say there
+   is something there by being there, the same reasoning round of 29
+   October used to cut the pending count that used to repeat per seat
+   group below (still true, see the note at stListPaint). Two states are
+   left, and the span stays in place empty otherwise, because it is the
+   spacer that holds the view icons at the row's right edge (the Bank and
+   the Vault moved to the list's own header, round of 29 October, see the
+   ruling at stRender). */
 function stPendPaint(){
  var e=document.getElementById('stpend'); if(!e)return;
  var n=ST_PARSED?ST_PARSED.imprints.length:0;
- e.textContent=n?n+' pending':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
+ e.textContent=n?'':(ST_TEXT.trim()?'Nothing kept yet':(STV.lastFound.length?'Committed':''));
  var l=document.getElementById('stlist'); if(l)l.textContent=n?'List '+n:'List';}
 /* THE CAPTION UNDER THE CHART IS GONE, round of 29 October, his words:
    "get rid of the text that says 29 words read to kept." stCtrPaint used
@@ -2808,9 +2822,11 @@ function stRelPanel(){
       "run speed instead of pace." This panel never got that update; round
       of 29 October his words made it plain it still said Pace, so it now
       reads what the card already reads, the two kept in step the way
-      Times said was kept in step with the card below. The field's id and
-      RUN.pace are untouched, only the label moved. */
-   +'<label class="rel-field"><span>Run speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
+      Times said was kept in step with the card below.
+      RUN SPEED READS SPEED, 6 November, his words on this exact screen:
+      "get rid of the word run and just put speed." The field's id and
+      RUN.pace are untouched, only the label moved again. */
+   +'<label class="rel-field"><span>Speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
    /* PATTERNS, round of 29 October, overriding the 17 October ruling below
       kept for the record: his words then were that Times said is the
       card's own word for the allowance's real unit, not Patterns, because

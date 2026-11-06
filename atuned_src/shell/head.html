@@ -4431,13 +4431,19 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
 /* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
    typing panel, closed, to the bottom of the journal." Closed means out of
    the way, so this carries none of the lift Chat and Dashboard were given
-   (no fill, no border, no glow): it is a word and an icon at the foot of the
-   panel, in the mid ink, and it reaches full ink on hover and while its box
-   is open. Still the full 44 pixel target, the floor tests/design.js holds. */
-.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;gap:7px;
+   (no fill, no border, no glow): the icon alone, in the mid ink, and it
+   reaches full ink on hover and while its box is open. Still the full 44
+   pixel target, the floor tests/design.js holds.
+   ICON ONLY, BIGGER, 6 November, his words on this exact screen: "instead
+   of type instead, just have the keyboard icon. Make it more interesting
+   looking, bigger." The visible word is gone (aria-label carries it for a
+   screen reader), 15px to 22px, and the stroke widened to read at the
+   larger size, the same ratio PR #200 used cutting this label to an icon
+   on Discover. */
+.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;justify-content:center;
  background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
- font-family:var(--sans);font-size:13px;cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
-.st-type svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+ cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
+.st-type svg{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);

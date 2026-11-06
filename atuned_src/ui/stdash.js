@@ -67,10 +67,16 @@ function stDashLeft(){
     rather than drawn off them; stOwn, which render() runs first, puts the
     right words back and the next paint draws them. */
  if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
+ /* THE SUBTITLE IS GONE, 6 November, his words on this exact screen: "where
+    it says like what this story puts at each of the screen, get rid of
+    that bullshit." Ruled in place on 2 November (DECISIONS.md, "The
+    Journal's Full view gets a left menu and a right menu") for the reason
+    a reading needs to say which record it reads; that reason still holds,
+    it is just not told to the screen as a line under the heading any more.
+    aria-labelledby keeps the section announced as "Energy" alone. */
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
-  +'<h2 class="rblk" id="st-energy-h">Energy</h2>'
-  +'<p class="st-en-sub">What this story puts at each of the seven '+unp('seat','seats')+'.</p>';
+  +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
