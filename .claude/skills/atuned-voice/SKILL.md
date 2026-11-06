@@ -868,6 +868,45 @@ and `tools/unpack-walk.js` finds the terms nobody seeded. Whether a stranger
 understands the sentence is the same fact about the reader that V21 records, and
 it is not gateable.
 
+### V24. Secondary And Third Tier Text Is Cut, Not Shortened. The Line Under A Title Gets The Fewest Words That Still Say It.
+
+Ruled 6 November 2026, on the achievement mockup. His words: "let's start
+truncating some of the secondary texts or third tier text. Where it says bank,
+what you've written, toss it. If it's a subheader, it doesn't need secondary or
+third tier text. Underneath all of these titles... it says you wrote your first
+story, you ran your first ritual, you practiced seven days in a row. Truncate
+that, shortest words possible to describe... I want you to start approaching it
+like that from now on."
+
+Two different cuts, not one. A subheader that only restates what its own title
+already says loses its second line outright, nothing replaces it. A line that
+reports what happened (under a mark name, a reading, a result) keeps its job
+but loses every word that is not load bearing: no subject, no helper verb, no
+article, no full sentence where a fragment says the same thing.
+
+    FAIL  Bank
+          — what you've written
+    FIX   Bank
+
+    FAIL  Ritual
+          — what you've let go
+    FIX   Ritual
+
+    FAIL  You wrote your first story.
+    FIX   First story written.
+
+    FAIL  You ran your first ritual.
+    FIX   Ran first ritual.
+
+    FAIL  You practised seven days in a row.
+    FIX   7-day streak.
+
+This is not V2 (never instruct) or V6 (one string, one bucket) repeated under a
+new number: those are about what a line does, this is about how many words it
+is allowed once the job is already right. It also does not license cutting the
+meaning a term needs under V23; a symbol's unpacked sentence is not secondary
+text, it is the only place the meaning lives, and stays whole.
+
 ---
 
 ## 3b. His Objections, As A Database
