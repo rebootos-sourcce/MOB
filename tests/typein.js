@@ -86,7 +86,7 @@ const read=p=>p.evaluate(()=>{
   ty:ty?{exp:ty.getAttribute('aria-expanded'), w:Math.round(q.width), h:Math.round(q.height),
    seen:q.width>0&&q.height>0&&getComputedStyle(ty).visibility!=='hidden'&&q.bottom<=innerHeight*4,
    top:(()=>{ const e=document.elementFromPoint(q.left+q.width/2,q.top+q.height/2); return !!(e&&ty.contains(e)); })(),
-   text:ty.textContent.trim()}:null,
+   text:ty.textContent.trim(), ariaLabel:ty.getAttribute('aria-label')}:null,
   focus:document.activeElement&&document.activeElement.id,
   fields:document.querySelectorAll('#story textarea,#story input[type=text],#story [contenteditable=true]').length,
   status:(document.getElementById('status')||{}).textContent||'',
@@ -119,7 +119,7 @@ async function typeInGate(browser,FILE,ok,booted){
    const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
    const s0=await read(p);
    ok(s0.chat===true&&!s0.box&&s0.fields===0,at+'voice works: the Journal lands with chat on and no text field, '+JSON.stringify({chat:s0.chat,box:s0.box,fields:s0.fields}));
-   ok(s0.types===1&&s0.ty&&s0.ty.exp==='false'&&s0.ty.text==='Type instead',at+'and Type instead is there, closed, '+JSON.stringify(s0.ty));
+   ok(s0.types===1&&s0.ty&&s0.ty.exp==='false'&&s0.ty.ariaLabel==='Type instead',at+'and Type instead is there, closed, '+JSON.stringify(s0.ty));
    await p.evaluate(()=>{ const t=document.getElementById('sttype'); if(t)t.scrollIntoView({block:'center'}); });
    const sz=(await read(p)).ty;
    ok(sz&&sz.seen&&sz.top&&sz.w>=44&&sz.h>=44,at+'on screen, nothing over it, at the 44 pixel floor, '+JSON.stringify(sz));
