@@ -148,7 +148,7 @@ jobs:
       # tsc from the registry, an unrelated ancient shim. Installed by its real
       # name so node_modules/.bin/tsc exists. The deploy job below says more.
       - name: install typescript for the delivery build's comment stripper
-        run: npm install --no-audit --no-fund --no-save typescript
+        run: npm install --no-audit --no-fund --no-save typescript@5.9.3
       # Each gate tees its output here, and tools/floors.js reads it back.
       - name: make the gate log directory
         run: mkdir -p "$RUNNER_TEMP/gates"
@@ -255,7 +255,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - name: install typescript for the delivery build's comment stripper
-        run: npm install --no-audit --no-fund --no-save typescript
+        run: npm install --no-audit --no-fund --no-save typescript@5.9.3
       - name: install playwright 1.56.1 and its chromium
         run: |
           npm install -g --no-audit --no-fund playwright@1.56.1
@@ -361,7 +361,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - name: install typescript for the delivery build's comment stripper
-        run: npm install --no-audit --no-fund --no-save typescript
+        run: npm install --no-audit --no-fund --no-save typescript@5.9.3
       - name: install playwright 1.56.1 and its chromium
         run: |
           npm install -g --no-audit --no-fund playwright@1.56.1
@@ -620,7 +620,7 @@ jobs:
       # node_modules/.bin/tsc exists before slim.py ever asks for it.
       - name: install typescript for the delivery build's comment stripper
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
-        run: npm install --no-audit --no-fund --no-save typescript
+        run: npm install --no-audit --no-fund --no-save typescript@5.9.3
       - name: test funnel system
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: |
@@ -684,7 +684,7 @@ jobs:
           cp funnel/dist/atuned-funnel.html deploy/index.html
       - name: install wrangler
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
-        run: npm install --no-audit --no-fund wrangler@4
+        run: npm install --no-audit --no-fund wrangler@4.151.1
       # THE FEEDBACK WEBHOOK TRAVELS FROM GITHUB, 16 October. The owner keeps
       # his secrets on GitHub, and the relay (functions/feedback.js) reads
       # DISCORD_FEEDBACK_WEBHOOK from the Pages project, which until now only
