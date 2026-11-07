@@ -3555,14 +3555,42 @@ function relRender(){
  /* uiSet is the one writer for the profile's preferences, so this reports
     through statusSaved like the other switches do. A save that fails leaves
     the tone on for this visit and says it will not survive a reload, and both
-    halves of that are true. */
- if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};
+    halves of that are true.
+
+    TONE AND VOICE ARE THE RUN'S TWO SOUNDS, AND NEVER BOTH AT ONCE, his
+    words: "if it's on, we'll use our sound library... if off, it will be
+    voice only." Turning one on now turns the other off, through the same
+    exact path that switch already uses to turn itself off, so a tone
+    turned on stops a sentence already sounding exactly as a manual voice
+    toggle would, never a flag flipped while the old audio keeps playing
+    (CLAUDE.md: a control must never claim a state it has not reached).
+    Vibration is a third, separate channel (round JQ never named it) and
+    is untouched; turning tone off while vibration is on leaves vibration
+    as the only boundary cue, which is a real consequence of this pairing
+    and not a bug in it. Which of the two rows should still be drawn, one
+    collapsed control or two that react to each other as built here, is
+    open; this ships the two-row shape because it is the smaller, additive
+    change over what is already drawn. */
+ if((b=document.getElementById('reltone')))b.onclick=function(){
+  var on=!relToneOn();uiSet('tone',on);
+  if(on&&relVoiceWanted()){
+   uiSet('voice',false);RUN.studioLost=false;
+   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
+     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
+   if(live)relStep(); else {speakStop();relRender();}
+   return;}
+  relRender();};
  /* the voice, off or on mid line: the line starts again in the new state, so
     a voice turned on is heard at once and a voice turned off never finishes a
     sentence over silence. Turning it on asks again after a run gave up on it,
-    because the press is the person saying try it now. */
+    because the press is the person saying try it now. Turning it on also
+    turns tone off (above); relRender, called on every path below, already
+    calls relTone, which reads the now-false tone and stops the bed itself,
+    so nothing further is needed here for that half. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
-  uiSet('voice',!relVoiceWanted()); RUN.studioLost=false;
+  var on=!relVoiceWanted();uiSet('voice',on);
+  if(on)uiSet('tone',false);
+  RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceWanted())speakStop(); relRender();}};
