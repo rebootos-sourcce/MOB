@@ -1,0 +1,174 @@
+---
+name: atuned-anatomy
+description: How to make the 108 somatic address positions (54 per side) and their nerve/plexus names anatomically precise, sourced and cited rather than eyeballed, and how to trace real nerve paths between them. Load before touching atuned_src/engine/data/figure.js (ANAT), atuned_src/engine/data/nodes.js's address nerve names, atuned_src/ui/map.js's BMPROP table, or any task scoped to body-map anatomical accuracy.
+---
+
+# Anatomical precision for the 108 addresses
+
+This exists because the current table is not anatomically precise and the
+project's own audits already proved it, address by address. This file is the
+method for fixing that without inventing a second, competing set of rules,
+and the running log of what real source material has confirmed so far.
+
+## Where the 108 actually stand today. Read this before assuming anything is settled.
+
+`atuned_src/engine/data/figure.js` is `ANAT`, the engine's trusted placement
+table. Of the 108 somatic addresses:
+
+    80   have a derived coordinate: 32 from real brain-atlas centroids
+         (figure.js `h:`, Harvard-Oxford/Juelich/Neuromorphometrics, the
+         "second anatomy pass" BQ), 6 from vertebral spine levels (`v:`,
+         sourced in BI3a/BI3c), 41 from the two reference charts the owner
+         sent 26 September (`f:`, figure.js:62-67, re-derived from the chart
+         on every build by proto/anatomy-ref/measure.js, which fails the
+         build if a row has drifted), 1 (108, Ascension Column) explicitly
+         filed with no anatomy at all (figure.js:128, `at:'crown'`).
+    28   have NO coordinate in the engine. They live only in
+         atuned_src/ui/map.js:1443 as BMPROP, hand-researched guesses the
+         comment there calls "the older and more cautious claim," kept out
+         of ANAT on purpose. Moving a BMPROP row into ANAT is a ruling (it
+         means trusting the guess as measured fact), never a mechanical
+         port — map.js:46461-46464.
+
+Ruled 26 September (figure.js:38-46): "place everything as close as it can,
+precision but feel, roughly the right spot," and a plexus branches, so more
+than one address may share one real place. That ruling is why today's table
+is allowed to be approximate. This file's job is to replace "roughly" with
+"sourced," not to overturn the ruling that a shared place is fine.
+
+**The nerve NAMES are a separate, worse problem than the coordinates.**
+`atuned_src/engine/data/nodes.js`: every one of the 108 somatic rows has a
+non-null `n` (a specific nerve/plexus name) beside its seat label `b`. Three
+regional audits (TASKS.md, BI3a addresses 49-75, BI3b addresses 76-108,
+BI3c addresses 1-48) checked every one of those 108 names against real
+anatomical reference identifiers (UBERON, FMA, SNOMED CT, an NIH atlas) and
+found:
+
+    14    name no real structure at all (one more, 108, isn't anatomy in
+          any sense — found only on meditation pages)
+    ~20   are real but ambiguous between two or more structures
+    16    Root/Sacral addresses sit on only 7 real distinct structures
+          (heavy duplication)
+    3     exact duplicate pairs in Heart/Throat, plus 9 nested relationships
+    5/33  of the HEAD addresses are actually nerves; the rest are brain
+          tissue, one a vein, one nothing, though the table's own header
+          claims every address sits "at a named plexus or nerve"
+
+Three of the product's seven seat definitions are themselves anatomically
+self-contradicted (Root, Throat, Crown), not just individual rows inside
+them — the deeper problem sits above the row level. Full detail,
+address by address: TASKS.md, search `BI3a`, `BI3b`, `BI3c`. Seven open
+owner decisions are logged there too (Q1-Q7) and are not re-litigated here;
+this file is the sourcing method, not the ruling on what to rename, split,
+or merge.
+
+**Known trap:** `proto/body-map-spec/gen.js:56-61` — `HEADY` (front-to-back
+head depth) was computed once by the atlas pass and then dropped; the
+engine kept only 2 of the 3 coordinates that pass produced. Check before
+assuming a head placement is using everything that was actually measured.
+
+## The method: landmark + proportion, not a pixel
+
+The real precedent for "put a precise point on a flat body drawing" is not
+a general anatomy atlas alone — it's how acupuncture point atlases solve
+the exact same problem at a similar scale (WHO Standard Acupuncture Point
+Locations, ~361 bilateral points). Their method, and the one this project
+uses from here on:
+
+1. **A fixed bony landmark** you can always find (a joint, a process, a
+   named bone edge), never a screen pixel.
+2. **A proportional measurement** from that landmark (a fraction of the
+   distance to a second landmark), never an absolute unit — this is what
+   makes a point reproducible on a figure of any proportions.
+3. **A citation**: which real source, which plate or page, says so.
+
+This is also the mechanism `proto/anatomy-ref/measure.js` already enforces
+for the 41 `f:` rows — re-derives the figure coordinate from the source
+chart on every build. Any new source added under this skill should be
+checkable the same way: a human (or a gate) can trace a row back to the
+page and landmark it came from.
+
+**Nerve paths between addresses are a separate, harder step.** A straight
+line between two addresses is wrong; real nerves curve along a known
+course. A dermatome/nerve-distribution chart shows a nerve's TERRITORY, not
+its physical path — don't conflate the two. Tracing a real path needs a
+small number of guide points along the actual route, taken from the same
+source as the endpoints, drawn as a curve.
+
+## Four resolution tiers. Pick one before starting a pass, name which tier a change is in.
+
+    1  Eyeball        (today's state for 28 addresses, and some of the 80
+                       with wrong names). Free. Not defensible if challenged.
+    2  Landmark-sourced   Every point gets a named bony landmark, a
+                       measured fraction, and a citation to a real atlas
+                       page. Cheap (labor only). Makes every point
+                       defensible. THIS IS THE BASELINE — start here.
+    3  Cross-checked  Tier 2, plus each point checked against a second
+                       independent source (e.g. a dermatome chart), to
+                       catch cases where the simple proportional rule
+                       breaks on real anatomical variation.
+    4  Clinically reviewed   A licensed medical illustrator or anatomist
+                       signs off on the finished set. Real cost, real time.
+                       Budget this for only the handful of points most
+                       likely to be shown to a clinician or challenged
+                       publicly — never all 108 by default.
+
+## The six passes
+
+    1  Inventory        one list of all 108: current name, current
+                         coordinate status (ANAT vs BMPROP vs neither),
+                         flagged wrong/ambiguous/duplicate per the audits
+                         above. Mostly already done; keep it current.
+    2  Atlas lookup      by region (head/neck, shoulder/arm, trunk,
+                         abdomen/pelvis, leg — the book's own chapter
+                         split). For each address: real plate, landmark,
+                         proportional position, citation.
+    3  Convert to our    turn each landmark into x,y on OUR figure's own
+       figure            proportions (extend gen.js's h/v/f mechanism with
+                         a new sourced type; never hand-type a pixel).
+    4  Render and check  draw every updated point on our real front/back
+                         figure, compare side by side against the atlas
+                         plate. Catches points outside the body outline,
+                         wrong left/right mirroring, wrong overlaps.
+    5  Second-source     recheck each point against an independent source
+       cross-check       (tier 3). Skip only where you've deliberately
+                         chosen to stay at tier 2 for that address.
+    6  Nerve paths       once points are solid, trace the real curved path
+                         between addresses sharing a nerve trunk, from the
+                         same source as the endpoints.
+
+Six passes, five of them labor-only. That lands at tier 2-3. Tier 4 is a
+seventh, optional pass, budgeted narrowly if at all.
+
+## Source material log
+
+A running record of what's been confirmed from real sources, so the next
+session doesn't re-ask the same question or re-derive what's already found.
+
+**Color Atlas of Anatomy, Rohen/Yokochi/Lütjen-Drecoll, 7th edition**
+(Lippincott Williams & Wilkins / Wolters Kluwer, 2011; ISBN 9781582558561).
+Real, cadaver-photograph-based, 1,211 figures. Owned by Lance (Google
+Drive), copyrighted — use it to extract FACTS for our own coordinates,
+never copy its images, captions or text into this repo.
+
+Confirmed present, with real plates: cranial nerves at the base of the
+skull (book p.74-75), facial nerve/plexus of the face (p.76), cervical
+plexus and the start of the brachial plexus in neck dissections
+(p.85-199 range, per the first extraction pass). The book's own table of
+contents (p.13) places the DEDICATED Brachial Plexus plate at p.413, and
+Lumbosacral/Lumbar Plexus plates at p.470-475 — both still needed, not yet
+delivered as of the last file received (covers roughly p.1-270, head/neck/
+early trunk only; arm and leg nerve chapters are later in the book and
+still outstanding).
+
+Delivered in 3 files, 2026-11-07 ("Part one"): 90 pages each, real PDFs,
+readable directly with the Read tool's `pages` parameter (max 20
+pages/request). A fourth Drive-hosted copy of the whole book exists but
+can't be pulled whole: Drive download caps at 10MB against this book's
+43MB, and the text-extraction tool truncates partway through (stopped at
+its own page 199 of ~520, not a fixed book boundary).
+
+*(Extend this log, don't replace it, as more parts arrive or more pages
+get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
+own internal page index, which runs about 14 pages ahead of the printed
+number once front matter is counted.)*
