@@ -2394,7 +2394,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
    return compute();};
   const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
   const Pd=['Aggressor','Deflector','Skeptic','Manipulator'];
-  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Rigidity')).map(s=>s.nm);
+  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Unbending')).map(s=>s.nm);
   const runs=[];
   /* the roster read the way group 'the tier words' reads it, rd above */
   PEOPLE.forEach(p=>{Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
@@ -2408,7 +2408,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
    runs.push(['Grandiosity at '+ch,drive(G,ch,2)]);
    runs.push(['Predatory at '+ch,drive(Pd,ch,2)]);
    runs.push(['both at '+ch,drive(G.concat(Pd),ch,2)]);
-   runs.push(['both at '+ch+' under Collapse and Rigidity',drive(G.concat(Pd),ch,2,heavy)]);});
+   runs.push(['both at '+ch+' under Collapse and Unbending',drive(G.concat(Pd),ch,2,heavy)]);});
   /* a flat field with both families light: both hyper complexes form and
      sit under the gate, which is the field that holds the gate itself */
   {reset(5,0,2); Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
@@ -2510,7 +2510,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     shape is unreadable rather than benign. */
  ok(outwardShare([])===null,'an empty stack has no readable shape');
  ok(quadrant(null,0.9,20)===null,'and no shape at low coherence means no corner');
- ok(quadrant(outwardShare([{hcx:'Rigidity',w:9}]),1,20)===null,
+ ok(quadrant(outwardShare([{hcx:'Unbending',w:9}]),1,20)===null,
   'a stack aimed at nobody is not quietly promoted to the top corner');
  ok(darkRead(null,3).dark===false&&darkRead(null,3).mal===null,
   'and an unreadable shape is never dark, whatever the coherence');
@@ -2519,7 +2519,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
  ok(Math.abs(outwardShare([{hcx:'Predatory',w:5},{hcx:'Collapse',w:5}])-0.5)<1e-9,
   'and an even split is a half');
  /* a field made only of the neither families must not read as half malignant */
- ok(outwardShare([{hcx:'Rigidity',w:9},{hcx:'Dysregulation',w:9}])===null,
+ ok(outwardShare([{hcx:'Unbending',w:9},{hcx:'Dysregulation',w:9}])===null,
   'families that aim at nobody read as unreadable, not as benign');
  ok(!FAM_OUT.Collapse&&!FAM_IN.Predatory,'and the two lists never overlap');
  ok(GOV_ORG>0&&GOV_ORG<1&&GOV_MAL>0&&GOV_MAL<1,'both corners carry a named threshold');
@@ -9217,7 +9217,7 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
  const untranslated=Object.keys(TULA).filter(t=>!famOfSub(t));
  ok(untranslated.length===0,'every personality TULA names is one HCX_LIB translates, untranslated: '+JSON.stringify(untranslated));
  const tulaFam=nm=>[...new Set(Object.keys(TULA).filter(t=>TULA[t].indexOf(nm)>=0).map(famOfSub))];
- const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Rigidity',Imposter:'Collapse',Dramatizer:'Grandiosity',
+ const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Unbending',Imposter:'Collapse',Dramatizer:'Grandiosity',
   'People-Pleaser':'Collapse',Dreamer:'Grandiosity'};
  const SIBLING={Catastrophizer:'Worrywart',Overthinker:'Worrywart',Martyr:'Victim',Cynic:'Nihilist',
   Enabler:'Pleaser',Pleaser:'People-Pleaser'};
@@ -9236,7 +9236,7 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
  const offCameFam=famOff(asFam(CAMEFAM)).map(m=>m.split(' ')[0]);
  ok(JSON.stringify(offCameFam)===JSON.stringify(['Micromanager','Hyper-Vigilant','Judge','Avoider','Worrywart','Loner']),
   'the check catches the six families as they came, '+JSON.stringify(offCameFam));
- const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Rigidity',
+ const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Unbending',
   Avoider:'Collapse',Worrywart:'Collapse',Loner:'Collapse',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'}))
   .map(m=>m.split(' ')[0]);
  ok(JSON.stringify(leftBehind)===JSON.stringify(['Overthinker','Catastrophizer']),

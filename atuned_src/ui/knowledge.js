@@ -58,7 +58,7 @@ function glossBand(t){var h=glossHit(t); return (h&&h.b)||'3rd Eye';}
      "This should be mainly icon, percent you actually do it,
       and what it is associated with, like rigidity or collapse."
 
-   Rigidity and Collapse are not chakras. They are two of the six
+   Unbending and Collapse are not chakras. They are two of the six
    architectures a saboteur belongs to. So the fourth thing is the
    row's FAMILY, and the family's seat is the colour. For seven
    decks the family is a seat and the word is the seat's name,

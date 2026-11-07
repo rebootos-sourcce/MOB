@@ -132,7 +132,7 @@ const CODE_KINDS=[
    the same order today, and the gate holds the names, not the order, so a
    reorder of HCX_LIB moves nothing here. */
 const CODE_FAMILY=[['K1','Grandiosity','I'],['K2','Predatory','II'],['K3','Collapse','III'],
- ['K4','Rigidity','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
+ ['K4','Unbending','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
 
 /* [code, name, register it is filed in, its row in that register, R ruled by
    the owner or I inferred]. Generated from canon.json on 23 October. The
@@ -228,6 +228,7 @@ const CODE_ALIAS=[
  ['canon','structure','ADHD','X13',"clinical filing, internal only. canon.json files Scatter as ADHD. The book's clinical list has no ADHD"],
  /* families */
  ['any','family','Narcissism','K1',"the book names cluster I Narcissism (v192 line 4501), and SNIFFER_SPEC.md section 5 maps Grandiosity to cluster I, Narcissism"],
+ ['any','family','Rigidity','K4',"K4's name until the owner renamed it Unbending on 7 November, so a record or a lexicon row still naming the family Rigidity still resolves"],
  /* archetypes */
  ['any','archetype','Caretaker','AR04',"SNIFFER_SPEC.md section 4 and canon.json's jungian register name it Caretaker. ARCH, ARCH18, the app's ARCH12 and ARCH18 and canon.json's archetype register name it Caregiver, and none of those tables carries both"],
  /* emotions */

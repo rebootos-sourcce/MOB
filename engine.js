@@ -222,7 +222,7 @@ const SAB_LIB=[
     row and TULA's line read disgust and anger; the canon row decides here,
     and the disagreement between the owner's sources is left open. Rigidity,
     as it came: TULA, OCPD. */
- {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Rigidity"},
+ {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Unbending"},
  /* S05 Pleaser, apathy and fear, its fear band the higher, 3 to 8 against 3
     to 5. 5 Insecurity, belonging into dependency, "to gain acceptance", the
     fear of rejection SABAUTH names; 1 Fear, threat into avoidance, "when
@@ -251,7 +251,7 @@ const SAB_LIB=[
     Rigidity, moved from Dysregulation, which TULA does not name for it.
     TULA names two, OCPD for Rigidity and Anxiety disorders for Collapse;
     the header says why its behaviour decides for Rigidity. */
- {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Rigidity"},
+ {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Unbending"},
  /* S11 Judge, disgust, anger and apathy, its disgust band the highest. 37
     Judgment, its own name and SABAUTH's "othering"; 82 Projection, othering
     into blame, "someone is responsible for this"; 80 Dogma, belief into
@@ -331,7 +331,7 @@ const SAB_LIB=[
     "there is a right way"; 72 Speaking To Be Right and 68 Interrupting, the
     correction of others SABAUTH names. Two at the throat, where SNIFFER_SPEC
     seats the Creator it pairs with. Rigidity: TULA, OCPD. */
- {"nm":"Stickler","nids":[80,72,68],"hcx":"Rigidity"},
+ {"nm":"Stickler","nids":[80,72,68],"hcx":"Unbending"},
  /* S07 Hyper-Rational, shock and disgust, its disgust band the higher, so
     two disgust addresses and one shock. 74 Talking To Avoid Feeling,
     presence into avoidance, the "dismissal of emotions" SABAUTH names, the
@@ -483,7 +483,7 @@ const SAB_LIB=[
     OCPD, and its own drill names the state, the jaw, the shoulders and the
     diaphragm already locked: nothing allowed out of its cell, Rigidity's d.
     It stays. */
- {"nm":"Control Freak","nids":[45,41,78],"hcx":"Rigidity"}];
+ {"nm":"Control Freak","nids":[45,41,78],"hcx":"Unbending"}];
 /* THE CLINICAL NAMES ARE NOT SHOWN TO THE PERSON THEY ARE ABOUT.
 
    sub carries the diagnostic families these architectures correspond to, and
@@ -506,7 +506,7 @@ const SAB_LIB=[
    Six marks, each drawn as what the structure does to a shape under load, and
    a seat for the colour argued from where that architecture is held.
 
-   b is the seat and is for colour only. Rigidity clenches at the solar plexus,
+   b is the seat and is for colour only. Unbending clenches at the solar plexus,
    collapse drops to the root, grandiosity inflates at the throat, dysregulation
    oscillates at the sacral, predatory reaches from the third eye because it is
    calculated rather than felt, and dissociation leaves through the crown. */
@@ -521,10 +521,10 @@ const HCX_LIB=[
  {"nm":"Collapse","d":"the structure gives way downward and stays down","sub":"depression · BPD · anxiety","b":"Root",
   "ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},
  /* a grid with nothing allowed out of its cell. */
- {"nm":"Rigidity","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
+ {"nm":"Unbending","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
   "ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},
  /* an oscillation that overshoots at both ends. */
- {"nm":"Dysregulation","d":"the swing overshoots at both ends and never settles at the middle","sub":"bipolar · ADHD","b":"Sacral",
+ {"nm":"Dysregulation","d":"confident and not confident at once, and the toggle between the two is what traps you","sub":"bipolar · ADHD","b":"Sacral",
   "ic":"M3 12h3l2-7 3 14 3-11 2 4h5"},
  /* an outline with its middle gone. still a shape, nobody in it. */
  {"nm":"Dissociation","d":"the outline holds and there is nobody inside it","sub":"schizoid · withdrawal","b":"Crown",
@@ -2428,7 +2428,7 @@ function organisedShare(stack){
  return best;}
 /* Which families run at other people. Predatory and Grandiosity extract, and
    Mania is Collapse turned outward. Everything else lands on the person
-   carrying it. Rigidity and Dysregulation are neither, so they are counted in
+   carrying it. Unbending and Dysregulation are neither, so they are counted in
    the denominator and not in the numerator: a field made only of those is not
    malignant and must not read as half malignant. */
 const FAM_OUT={Predatory:1,Grandiosity:1,Mania:1};
@@ -4160,7 +4160,7 @@ var HCXCARD={
   practice:'Reduce the task to one safe, observable next step; identify available support; distinguish present constraints from global conclusions; seek professional care when distress is severe or persistent.',
   inverseName:'Supported Re-engagement',
   inverseDefinition:'An inferred counterpart emphasizing grounded support, small feasible actions, restored choice, and realistic hope without denying pain or constraints.'},
- rigidity:{
+ unbending:{
   behavior:'May appear as all-or-nothing standards, repeated insistence on one correct method, intolerance of ambiguity, or prioritizing control over adaptation.',
   triggerMechanism:'Possible triggers include uncertainty, perceived disorder, mistakes, or threat to predictability. These are hypotheses to test, not assumed causes.',
   livedExample:'A plan no longer fits the situation, but a person insists on following it because changing course feels unacceptable.',
@@ -5902,7 +5902,7 @@ const CODE_KINDS=[
    the same order today, and the gate holds the names, not the order, so a
    reorder of HCX_LIB moves nothing here. */
 const CODE_FAMILY=[['K1','Grandiosity','I'],['K2','Predatory','II'],['K3','Collapse','III'],
- ['K4','Rigidity','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
+ ['K4','Unbending','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
 
 /* [code, name, register it is filed in, its row in that register, R ruled by
    the owner or I inferred]. Generated from canon.json on 23 October. The
@@ -5998,6 +5998,7 @@ const CODE_ALIAS=[
  ['canon','structure','ADHD','X13',"clinical filing, internal only. canon.json files Scatter as ADHD. The book's clinical list has no ADHD"],
  /* families */
  ['any','family','Narcissism','K1',"the book names cluster I Narcissism (v192 line 4501), and SNIFFER_SPEC.md section 5 maps Grandiosity to cluster I, Narcissism"],
+ ['any','family','Rigidity','K4',"K4's name until the owner renamed it Unbending on 7 November, so a record or a lexicon row still naming the family Rigidity still resolves"],
  /* archetypes */
  ['any','archetype','Caretaker','AR04',"SNIFFER_SPEC.md section 4 and canon.json's jungian register name it Caretaker. ARCH, ARCH18, the app's ARCH12 and ARCH18 and canon.json's archetype register name it Caregiver, and none of those tables carries both"],
  /* emotions */
@@ -8398,11 +8399,11 @@ const BY={};NODES.forEach(n=>BY[n.i]=n);
 const NAMED=new Set();SAB_LIB.forEach(s=>s.nids.forEach(i=>NAMED.add(i)));
 /* the six families are poled. collapsed on the left, overshot on the right.
    the roster doubles at the family tier, not the saboteur tier. */
-const FAM_POLE={Dysregulation:'Numbness',Collapse:'Mania',Rigidity:'Indiscriminate',
+const FAM_POLE={Dysregulation:'Numbness',Collapse:'Mania',Unbending:'Indiscriminate',
  Predatory:'Enabling',Grandiosity:'Self-erasure',Dissociation:'Enmeshment'};
 const FAM_OF={Fear:'Dysregulation',Shock:'Dysregulation',Anticipation:'Dysregulation',
  Anger:'Predatory',Shame:'Collapse',Sad:'Collapse',Surprise:'Dysregulation',
- Disgust:'Rigidity',Apathy:'Dissociation'};
+ Disgust:'Unbending',Apathy:'Dissociation'};
 const GRAND=/PRIDE|SUPERIOR|ENTITLE|HUBRIS|ARROGAN|GRANDIOS|SPECIAL/i;
 const UNNAMED=[],PLACED=new Set();
 BANDS.forEach(b=>{const grp={};

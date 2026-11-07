@@ -780,7 +780,7 @@ function organisedShare(stack){
  return best;}
 /* Which families run at other people. Predatory and Grandiosity extract, and
    Mania is Collapse turned outward. Everything else lands on the person
-   carrying it. Rigidity and Dysregulation are neither, so they are counted in
+   carrying it. Unbending and Dysregulation are neither, so they are counted in
    the denominator and not in the numerator: a field made only of those is not
    malignant and must not read as half malignant. */
 const FAM_OUT={Predatory:1,Grandiosity:1,Mania:1};
