@@ -26,11 +26,11 @@ const BY={};NODES.forEach(n=>BY[n.i]=n);
 const NAMED=new Set();SAB_LIB.forEach(s=>s.nids.forEach(i=>NAMED.add(i)));
 /* the six families are poled. collapsed on the left, overshot on the right.
    the roster doubles at the family tier, not the saboteur tier. */
-const FAM_POLE={Dysregulation:'Numbness',Collapse:'Mania',Rigidity:'Indiscriminate',
+const FAM_POLE={Dysregulation:'Numbness',Collapse:'Mania',Unbending:'Indiscriminate',
  Predatory:'Enabling',Grandiosity:'Self-erasure',Dissociation:'Enmeshment'};
 const FAM_OF={Fear:'Dysregulation',Shock:'Dysregulation',Anticipation:'Dysregulation',
  Anger:'Predatory',Shame:'Collapse',Sad:'Collapse',Surprise:'Dysregulation',
- Disgust:'Rigidity',Apathy:'Dissociation'};
+ Disgust:'Unbending',Apathy:'Dissociation'};
 const GRAND=/PRIDE|SUPERIOR|ENTITLE|HUBRIS|ARROGAN|GRANDIOS|SPECIAL/i;
 const UNNAMED=[],PLACED=new Set();
 BANDS.forEach(b=>{const grp={};

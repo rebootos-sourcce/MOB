@@ -97,7 +97,7 @@ var HCXCARD={
   practice:'Reduce the task to one safe, observable next step; identify available support; distinguish present constraints from global conclusions; seek professional care when distress is severe or persistent.',
   inverseName:'Supported Re-engagement',
   inverseDefinition:'An inferred counterpart emphasizing grounded support, small feasible actions, restored choice, and realistic hope without denying pain or constraints.'},
- rigidity:{
+ unbending:{
   behavior:'May appear as all-or-nothing standards, repeated insistence on one correct method, intolerance of ambiguity, or prioritizing control over adaptation.',
   triggerMechanism:'Possible triggers include uncertainty, perceived disorder, mistakes, or threat to predictability. These are hypotheses to test, not assumed causes.',
   livedExample:'A plan no longer fits the situation, but a person insists on following it because changing course feels unacceptable.',

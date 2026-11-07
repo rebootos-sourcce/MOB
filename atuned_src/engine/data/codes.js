@@ -132,7 +132,7 @@ const CODE_KINDS=[
    the same order today, and the gate holds the names, not the order, so a
    reorder of HCX_LIB moves nothing here. */
 const CODE_FAMILY=[['K1','Grandiosity','I'],['K2','Predatory','II'],['K3','Collapse','III'],
- ['K4','Rigidity','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
+ ['K4','Unbending','IV'],['K5','Dysregulation','V'],['K6','Dissociation','VI']];
 
 /* [code, name, register it is filed in, its row in that register, R ruled by
    the owner or I inferred]. Generated from canon.json on 23 October. The
@@ -148,7 +148,7 @@ const CODE_STRUCT=[
  ["X06","Antisocial","complex",5,"R"],
  ["X07","Oscillation","complex",6,"R"],
  ["X08","Abandonment Reactivity","complex",7,"R"],
- ["X09","Rigidity","complex",8,"R"],
+ ["X09","Unbending","complex",8,"R"],
  ["X10","Attention Seeking","complex",9,"R"],
  ["X11","Threat Scanning","complex",10,"R"],
  ["X12","Collapse","complex",11,"R"],
@@ -171,7 +171,17 @@ const CODE_STRUCT=[
  ["X29","Malignant Grandiosity","hyper_complex",5,"I"],
  ["X30","Dark Triad","hyper_complex",6,"I"],
  ["X31","Persecutory Collapse","hyper_complex",7,"I"],
- ["X32","The Performer","hyper_complex",8,"I"]];
+ ["X32","The Performer","hyper_complex",8,"I"],
+ /* X33 AND X34, ADDED 7 NOVEMBER 2026. The ruling that every HCX_LIB family
+    can build up into a hyper complex of its own (26 October) gave Sociopathy
+    X25 for Predatory; Collapse and Unbending's own buildup entries reuse
+    their existing complex-tier codes (X12, X09), already named for the
+    family, so they needed nothing new. Dysregulation and Dissociation had
+    no structure code of any tier carrying their own name, so DESCENT's new
+    researched entries for them would not resolve without one. A new code,
+    never a renamed one, per this file's own rule above. */
+ ["X33","Dysregulation","hyper_complex",9,"R"],
+ ["X34","Dissociation","hyper_complex",10,"R"]];
 
 /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO CODES, X02 AND X06. canon.json
    gives both the same two saboteurs, Aggressor and Deflector, and tags both
@@ -215,12 +225,15 @@ const CODE_ALIAS=[
  /* saboteurs */
  ['any','saboteur','Controller','S02',"S02's name until the owner renamed it Micromanager on 18 October, finished at commit 41009c04. Shirzad Chamine, whose Positive Intelligence it comes from, calls it the Controller (SAB_PI_AS), and canon.json, the book (v192 line 4346) and the app's SAB33 still print it"],
  ['any','saboteur','Sceptic','S17',"the book's spelling of Skeptic, once, in its descent (v192 line 3088). Every other line of the book, canon.json, the app and MOB spell it Skeptic"],
+ /* own renames, kept finding the old name */
+ ['any','family','Rigidity','K4',"K4's name until the owner renamed it Unbending on 7 November 2026, his words: \"change rigidity to stubborn. Or unbending. Probably better.\" HCX_LIB's own d, sub and b fields for this family are unchanged"],
+ ['any','structure','Rigidity','X09',"X09's name until the owner renamed it Unbending on 7 November 2026, alongside the K4 family of the same name. canon.json still files the same complex as OCPD, see the OCPD alias row below"],
  /* structures, named otherwise than canon.json names them */
  ['any','structure','Narcissism','X04',"the book's descent (v192 line 3088) and the app's HYPER table give Narcissism the three saboteurs canon.json gives Narcissistic, Controller, Hyper-Achiever and Judge, and the book's four parts, entitlement, justification, comparison and judgment, are canon.json's own note on it. MOB's DESCENT files it a complex as canon.json does; the book calls it a hyper-complex (line 4315), which is why the code carries no tier"],
  /* clinical filings. Internal only: a code is never shown as a diagnosis */
  ['any','structure','Bipolar','X07',"clinical filing, internal only. canon.json files Oscillation as Bipolar in the March table, and the book's clinical list gives Bipolar the same three saboteurs (v192 line 3090)"],
  ['any','structure','BPD','X08',"clinical filing, internal only. canon.json files Abandonment Reactivity as BPD, and the book's clinical list gives BPD the same three saboteurs (v192 line 3090)"],
- ['any','structure','OCPD','X09',"clinical filing, internal only. canon.json files its Rigidity complex as OCPD, and the book's clinical list gives OCPD the same three saboteurs (v192 line 3090)"],
+ ['any','structure','OCPD','X09',"clinical filing, internal only. canon.json files its Unbending complex (named Rigidity before the owner's 7 November rename) as OCPD, and the book's clinical list gives OCPD the same three saboteurs (v192 line 3090)"],
  ['any','structure','Histrionic','X10',"clinical filing, internal only. canon.json files Attention Seeking as Histrionic, and the book's clinical list gives Histrionic the same three saboteurs (v192 line 3090)"],
  ['canon','structure','Anxiety Disorders','X11',"clinical filing, internal only. canon.json files Threat Scanning as Anxiety Disorders"],
  ['book','structure','Anxiety','X11',"clinical filing, internal only. The book's clinical list gives Anxiety the three saboteurs canon.json gives Threat Scanning (v192 line 3090)"],
@@ -285,7 +298,7 @@ const CODE_UNMAPPED=[
  ['book','structure','Borderline-Sociopath',"a link in the book's descent (v192 line 3088) that canon.json has no record of. Confirmed by reading the book directly, chapter 17: named only by effect, between Psychopathy and Megalomania, never given a saboteur or complex breakdown, so it is canon.json's open ruling 12, not a structure code"],
  ['app','structure','Bipolar Disorder',"the app's HYPER table, with Nonconformist where canon.json's Oscillation, filed as Bipolar, has Restless. Whether they are one record is not written anywhere"],
  ['app','structure','Borderline Personality Disorder',"the app's HYPER table, sharing no saboteur with canon.json's Abandonment Reactivity, filed as BPD. Whether they are one record is not written anywhere"],
- ['app','structure','Obsessive-Compulsive Disorder',"the app's HYPER table. canon.json files its Rigidity complex as OCPD, a different filing, with Stickler where this has Overthinker"],
+ ['app','structure','Obsessive-Compulsive Disorder',"the app's HYPER table. canon.json files its Unbending complex (named Rigidity before the owner's 7 November rename) as OCPD, a different filing, with Stickler where this has Overthinker"],
  ['app','structure','Antisocial Personality Disorder',"the app's HYPER table, with Nonconformist and Judge where canon.json's Antisocial has Deflector. Whether they are one record is not written anywhere"],
  ['app','structure','Schizoid Personality Disorder',"the app's HYPER table. No canon.json record carries the name"],
  ['app','structure','Histrionic Personality Disorder',"the app's HYPER table, with Pleaser and Escapist where canon.json's Attention Seeking, filed as Histrionic, has People-Pleaser and Dreamer. Whether they are one record is not written anywhere"],

@@ -222,7 +222,7 @@ const SAB_LIB=[
     row and TULA's line read disgust and anger; the canon row decides here,
     and the disagreement between the owner's sources is left open. Rigidity,
     as it came: TULA, OCPD. */
- {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Rigidity"},
+ {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Unbending"},
  /* S05 Pleaser, apathy and fear, its fear band the higher, 3 to 8 against 3
     to 5. 5 Insecurity, belonging into dependency, "to gain acceptance", the
     fear of rejection SABAUTH names; 1 Fear, threat into avoidance, "when
@@ -251,7 +251,7 @@ const SAB_LIB=[
     Rigidity, moved from Dysregulation, which TULA does not name for it.
     TULA names two, OCPD for Rigidity and Anxiety disorders for Collapse;
     the header says why its behaviour decides for Rigidity. */
- {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Rigidity"},
+ {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Unbending"},
  /* S11 Judge, disgust, anger and apathy, its disgust band the highest. 37
     Judgment, its own name and SABAUTH's "othering"; 82 Projection, othering
     into blame, "someone is responsible for this"; 80 Dogma, belief into
@@ -331,7 +331,7 @@ const SAB_LIB=[
     "there is a right way"; 72 Speaking To Be Right and 68 Interrupting, the
     correction of others SABAUTH names. Two at the throat, where SNIFFER_SPEC
     seats the Creator it pairs with. Rigidity: TULA, OCPD. */
- {"nm":"Stickler","nids":[80,72,68],"hcx":"Rigidity"},
+ {"nm":"Stickler","nids":[80,72,68],"hcx":"Unbending"},
  /* S07 Hyper-Rational, shock and disgust, its disgust band the higher, so
     two disgust addresses and one shock. 74 Talking To Avoid Feeling,
     presence into avoidance, the "dismissal of emotions" SABAUTH names, the
@@ -481,9 +481,9 @@ const SAB_LIB=[
     as Micromanager's Rigidity, and Micromanager is Grandiosity now by
     TULA's Narcissism. Its other half, Hyper-Vigilant, is Rigidity by TULA's
     OCPD, and its own drill names the state, the jaw, the shoulders and the
-    diaphragm already locked: nothing allowed out of its cell, Rigidity's d.
+    diaphragm already locked: nothing allowed out of its cell, Unbending's d.
     It stays. */
- {"nm":"Control Freak","nids":[45,41,78],"hcx":"Rigidity"}];
+ {"nm":"Control Freak","nids":[45,41,78],"hcx":"Unbending"}];
 /* THE CLINICAL NAMES ARE NOT SHOWN TO THE PERSON THEY ARE ABOUT.
 
    sub carries the diagnostic families these architectures correspond to, and
@@ -506,7 +506,7 @@ const SAB_LIB=[
    Six marks, each drawn as what the structure does to a shape under load, and
    a seat for the colour argued from where that architecture is held.
 
-   b is the seat and is for colour only. Rigidity clenches at the solar plexus,
+   b is the seat and is for colour only. Unbending clenches at the solar plexus,
    collapse drops to the root, grandiosity inflates at the throat, dysregulation
    oscillates at the sacral, predatory reaches from the third eye because it is
    calculated rather than felt, and dissociation leaves through the crown. */
@@ -520,8 +520,12 @@ const HCX_LIB=[
  /* a structure that has lost its top and is resting on the floor. */
  {"nm":"Collapse","d":"the structure gives way downward and stays down","sub":"depression · BPD · anxiety","b":"Root",
   "ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},
- /* a grid with nothing allowed out of its cell. */
- {"nm":"Rigidity","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
+ /* a grid with nothing allowed out of its cell. RENAMED FROM RIGIDITY, 7
+    November 2026, his words: "change rigidity to stubborn. Or unbending.
+    Probably better." Everything the family carries (d, sub, b, the shape
+    arithmetic) is unchanged; only nm and every hcx: tag pointing at it moved,
+    see CLAUDE.md. */
+ {"nm":"Unbending","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
   "ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},
  /* an oscillation that overshoots at both ends. */
  {"nm":"Dysregulation","d":"the swing overshoots at both ends and never settles at the middle","sub":"bipolar · ADHD","b":"Sacral",

@@ -2394,7 +2394,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
    return compute();};
   const G=['Micromanager','Hyper-Achiever','Judge','Dramatizer','Dreamer'];
   const Pd=['Aggressor','Deflector','Skeptic','Manipulator'];
-  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Rigidity')).map(s=>s.nm);
+  const heavy=E.ALL_SAB.filter(s=>!s.unnamed&&(s.hcx==='Collapse'||s.hcx==='Unbending')).map(s=>s.nm);
   const runs=[];
   /* the roster read the way group 'the tier words' reads it, rd above */
   PEOPLE.forEach(p=>{Object.keys(S.addr).forEach(k=>{delete S.addr[k];});
@@ -9217,7 +9217,7 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
  const untranslated=Object.keys(TULA).filter(t=>!famOfSub(t));
  ok(untranslated.length===0,'every personality TULA names is one HCX_LIB translates, untranslated: '+JSON.stringify(untranslated));
  const tulaFam=nm=>[...new Set(Object.keys(TULA).filter(t=>TULA[t].indexOf(nm)>=0).map(famOfSub))];
- const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Rigidity',Imposter:'Collapse',Dramatizer:'Grandiosity',
+ const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Unbending',Imposter:'Collapse',Dramatizer:'Grandiosity',
   'People-Pleaser':'Collapse',Dreamer:'Grandiosity'};
  const SIBLING={Catastrophizer:'Worrywart',Overthinker:'Worrywart',Martyr:'Victim',Cynic:'Nihilist',
   Enabler:'Pleaser',Pleaser:'People-Pleaser'};
@@ -9231,12 +9231,12 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
    if(!n.length&&SIBLING[s.nm]&&s.hcx!==by[SIBLING[s.nm]])out.push(s.nm+' '+s.hcx+', its sibling '+SIBLING[s.nm]+' '+by[SIBLING[s.nm]]);});
   return out;};
  const asFam=f=>SAB_LIB.map(s=>({nm:s.nm,nids:s.nids,hcx:f[s.nm]||s.hcx}));
- const CAMEFAM={Micromanager:'Rigidity',Judge:'Predatory','Hyper-Vigilant':'Dysregulation',Avoider:'Dissociation',
+ const CAMEFAM={Micromanager:'Unbending',Judge:'Predatory','Hyper-Vigilant':'Dysregulation',Avoider:'Dissociation',
   Worrywart:'Dysregulation',Loner:'Dissociation',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'};
  const offCameFam=famOff(asFam(CAMEFAM)).map(m=>m.split(' ')[0]);
  ok(JSON.stringify(offCameFam)===JSON.stringify(['Micromanager','Hyper-Vigilant','Judge','Avoider','Worrywart','Loner']),
   'the check catches the six families as they came, '+JSON.stringify(offCameFam));
- const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Rigidity',
+ const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Unbending',
   Avoider:'Collapse',Worrywart:'Collapse',Loner:'Collapse',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'}))
   .map(m=>m.split(' ')[0]);
  ok(JSON.stringify(leftBehind)===JSON.stringify(['Overthinker','Catastrophizer']),
