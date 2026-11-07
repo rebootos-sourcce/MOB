@@ -151,10 +151,53 @@ Real, cadaver-photograph-based, 1,211 figures. Owned by Lance (Google
 Drive), copyrighted — use it to extract FACTS for our own coordinates,
 never copy its images, captions or text into this repo.
 
-Confirmed present, with real plates: cranial nerves at the base of the
-skull (book p.74-75), facial nerve/plexus of the face (p.76), cervical
-plexus and the start of the brachial plexus in neck dissections
-(p.85-199 range, per the first extraction pass, head/neck/early trunk).
+**Head, neck and trunk, book p.1-256, fully indexed (2026-11-07, parts
+01-03).** Deduplicated findings, by address region this project uses:
+
+    p.31, 33-34   all 12 cranial nerves tabulated by their real skull
+                  exit foramen (optic canal, superior orbital fissure,
+                  foramen rotundum/ovale, internal acoustic meatus,
+                  jugular foramen, hypoglossal canal) -- the single best
+                  landmark-keyed reference for correcting Crown/3rd Eye,
+                  whose own audit (TASKS.md BI3b) found only 5 of 33 head
+                  addresses are actually nerves and the rest are brain
+                  tissue wrongly claimed as "a named plexus or nerve."
+                  Ten of the twelve cranial nerves attach at the
+                  brainstem, confirmed here, none at the crown -- this
+                  atlas plate is the citation that finding needed.
+    p.77-78       parotid plexus (facial nerve CN VII branches)
+    p.126         tympanic plexus
+    p.165         pharyngeal plexus
+    p.170-186     cervical and brachial plexus, built up over several
+                  plates to the richest single plexus plate in the whole
+                  book at p.186 (roots, cords, median/ulnar/
+                  musculocutaneous/thoracodorsal/long thoracic/
+                  suprascapular nerves), plus the sympathetic chain's
+                  stellate ganglion (p.185), ansa cervicalis (p.182),
+                  and two named SURFACE landmarks worth using directly:
+                  Erb's point (p.178) and the punctum nervosum (p.77,
+                  242), both already named points on skin, not
+                  dissection-only.
+    p.205         "Head's zones" -- a true dermatome/referred-pain map,
+                  torso segments C3-L2 on a skin silhouette
+    p.216-217     intercostal and thoraco-abdominal nerve roots
+                  (iliohypogastric L1, ilioinguinal L1, genitofemoral
+                  L1-L2) given as a clean root-level table, PLUS the
+                  atlas's own named surface reference lines (sternal,
+                  midclavicular, axillary lines; the transpyloric plane)
+                  -- exactly the landmark set the Root/Sacral/Solar
+                  addresses need, and those three seats are the ones
+                  TASKS.md (BI3c) found most duplicated and worst defined
+    p.226-242     back and nuchal region: cluneal nerves (L1-S3,
+                  landmarked to the iliac crest and coccyx), the
+                  suboccipital triangle (p.237, the key C1 deep landmark)
+
+Found as real plates, not just named in text: cervical, brachial, parotid,
+pharyngeal, tympanic and dental/alveolar plexuses, plus the solar/celiac
+plexus dissected at p.18 (not a dedicated plate, but real and labeled).
+**Not yet confirmed anywhere read: a dedicated cardiac plexus plate** --
+only individual cardiac branches/nerves are named in this range. Worth
+flagging if a Heart-seat address specifically needs it.
 
 **The two plates this file originally existed to find are now both
 confirmed, read, and cited** (2026-11-07, "Atlas_Retry_Part_5/6/7"):
@@ -200,12 +243,14 @@ Use this plate as the template for how every other address's citation
 should read.
 
 Delivered in 7 files total, 2026-11-07 ("Part one" = `Anatomy_Atlas_90pg_01/02/03.pdf`,
-covering book p.1-~270; "retry" batch = `Atlas_Retry_Part_5/6/7.pdf`,
+fully indexed through book p.256; "retry" batch = `Atlas_Retry_Part_5/6/7.pdf`,
 covering book p.347-532, including the index). All real PDFs, read
 directly with the Read tool's `pages` parameter (max 20 pages/request).
-Still not delivered: book p.~271-346 (the gap between the two batches —
+Still not delivered: book p.~257-346 (the gap between the two batches --
 likely thorax/abdomen viscera, not nerve-plexus territory based on the
-chapter order either side of it, but unconfirmed). A Drive-hosted copy of
+chapter order either side of it, but unconfirmed; this is also the most
+likely place a dedicated cardiac plexus plate would sit, which nothing
+read so far has confirmed). A Drive-hosted copy of
 the whole book exists but can't be pulled whole through this project's
 Drive access: download caps at 10MB against this book's 43MB, and the
 text-extraction tool truncates partway through (stopped at its own page
