@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nerve plexus harness</title>
+<style>
+:root{
+ --bg:#0b0c0e; --panel:#15171a; --panel2:#1b1e22; --line:#2a2d32; --text:#e9e8e4; --mute:#9a9ea5;
+ --gold:#DABF6A; --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A; --heart:#5FD5A6;
+ --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB; --field:#cfd2d8;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+body{min-height:100vh;}
+.wrap{display:grid;grid-template-columns:1fr 360px;grid-template-rows:auto 1fr;height:100vh;}
+.wrap>*{min-height:0;min-width:0;}
+header{grid-column:1/3;border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+header h1{font-size:15px;font-weight:600;margin:0;letter-spacing:.2px;}
+header .stamp{font-size:11px;color:var(--mute);}
+header .note{font-size:11px;color:var(--mute);flex-basis:100%;line-height:1.5;}
+.stage{position:relative;overflow:hidden;background:
+ radial-gradient(ellipse 70% 55% at 50% 38%,rgba(255,255,255,.05),transparent 70%),var(--bg);}
+.stage svg{width:100%;height:100%;display:block;}
+.toolbar{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:6px;
+ background:rgba(10,11,13,.72);border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+ font-size:11.5px;backdrop-filter:blur(6px);}
+.toolbar label{display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--mute);white-space:nowrap;}
+.toolbar label input{accent-color:var(--gold);}
+.toolbar .hd{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:4px 0 0;opacity:.7;}
+.legend{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;max-width:62%;}
+.legend button{border:1px solid var(--line);background:rgba(10,11,13,.72);color:var(--text);
+ border-radius:999px;padding:4px 10px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.legend button .sw{width:9px;height:9px;border-radius:50%;}
+.legend button.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;}
+.seatcap{position:absolute;right:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap;max-width:46%;justify-content:flex-end;}
+.seatcap button{border:1px solid var(--line);background:rgba(10,11,13,.6);color:var(--mute);
+ border-radius:999px;padding:3px 9px;font-size:10.5px;cursor:pointer;}
+.seatcap button.on{color:var(--text);border-color:currentColor;}
+.node-dot{cursor:pointer;}
+.node-dot circle.ring{fill:none;stroke-width:0;transition:stroke-width .15s;}
+.node-dot:hover circle.ring{stroke-width:.55;}
+.node-dot.sel circle.ring{stroke-width:.7;}
+.node-dot.sel circle.core{filter:url(#glow);}
+.pulse-dot{opacity:0;}
+.rail{border-left:1px solid var(--line);display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--panel);}
+.rail .search{padding:10px 12px;border-bottom:1px solid var(--line);}
+.rail .search input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:7px;
+ color:var(--text);padding:7px 9px;font-size:12.5px;}
+.rail .list{overflow:auto;flex:1 1 40%;border-bottom:1px solid var(--line);}
+.rail .seatgroup .hd{position:sticky;top:0;background:var(--panel);font-size:10.5px;letter-spacing:.08em;
+ text-transform:uppercase;padding:7px 12px 4px;color:var(--mute);}
+.rail .row{padding:4px 12px;font-size:12px;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text);}
+.rail .row:hover{background:var(--panel2);}
+.rail .row.sel{background:#232730;}
+.rail .row .dot{width:7px;height:7px;border-radius:50%;flex:none;}
+.rail .row .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rail .row .num{color:var(--mute);font-size:10.5px;}
+.detail{flex:1 1 60%;overflow:auto;padding:16px;}
+.detail .empty{color:var(--mute);font-size:12.5px;line-height:1.6;padding:8px 2px;}
+.d-tag{display:inline-block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+ padding:2px 8px;border-radius:999px;margin-bottom:8px;}
+.d-k{font-size:19px;font-weight:600;margin:0 0 2px;}
+.d-n{font-size:13px;color:var(--mute);margin:0 0 14px;}
+.d-row{margin-bottom:12px;}
+.d-row .lbl{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);margin-bottom:3px;}
+.d-row .val{font-size:13px;line-height:1.5;}
+.d-row .sub{font-size:11.5px;color:var(--mute);margin-top:2px;line-height:1.5;}
+.sabrow{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px;background:var(--panel2);}
+.sabrow .nm{font-size:12.5px;font-weight:600;}
+.sabrow .hcx{font-size:10.5px;color:var(--mute);margin-top:2px;}
+.sabrow .addrs{font-size:11px;color:var(--mute);margin-top:4px;}
+.sabrow .addrs b{color:var(--text);font-weight:500;}
+hr.sep{border:none;border-top:1px solid var(--line);margin:14px 0;}
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-thumb{background:#33363b;border-radius:5px;}
+@media (max-width:860px){
+ .wrap{grid-template-columns:1fr;grid-template-rows:auto 56vh 1fr;}
+ /* header still spans "1/3" from the desktop rule, which on a one-column
+    grid forces an implicit second column into being just to satisfy that
+    end line, and the stage and rail then auto-place side by side into it
+    instead of stacking into their own rows. One explicit column only. */
+ header{grid-column:1/2;}
+ .stage{grid-column:1;grid-row:2;}
+ .rail{grid-column:1;grid-row:3;border-left:none;border-top:1px solid var(--line);}
+ .seatcap{max-width:62%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header>
+  <h1>Nerve plexus harness</h1>
+  <span class="stamp">built 2026-11-07 off 65643e92 (tree dirty) · 112 addresses (108 somatic + 4 field) · 80 with a measured place, 28 seat-scattered · 72 traced nerve branches · 32 saboteurs · 6 hyper-complexes</span>
+  <span class="note">Research tool, not part of source.html. Draws the real 112-address library, the traced nerve branches and the hyper-complex groupings straight out of atuned_src/engine/data/{nodes,figure,nerves}.js, so what moves here is the actual data the product carries, not placeholder art. Built to see what a vector nerve-plexus map with click-to-inspect and charge animation could look like, before any of it goes into the app.</span>
+ </header>
+ <div class="stage" id="stage">
+  <div class="toolbar">
+   <div class="hd">Layers</div>
+   <label><input type="checkbox" id="optBranch" checked> Nerve branches (72 traced)</label>
+   <label><input type="checkbox" id="optSeat" checked> Seven seats</label>
+   <label><input type="checkbox" id="optAnim" checked> Animate charge flow</label>
+   <label><input type="checkbox" id="optField" checked> Field anchors (above/below)</label>
+   <div class="hd">Addresses</div>
+   <label><input type="checkbox" id="optMeasured" checked> Measured place (80)</label>
+   <label><input type="checkbox" id="optScatter" checked> Seat-scattered (28, unmeasured)</label>
+  </div>
+  <div class="seatcap" id="seatcap"></div>
+  <svg id="svg" viewBox="0 -14 100 128" preserveAspectRatio="xMidYMid meet">
+   <defs>
+    <filter id="glow" x="-150%" y="-150%" width="400%" height="400%">
+     <feGaussianBlur stdDeviation="1.1" result="b"/>
+     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="bodyClip"><path id="bodyClipPath" d=""/></clipPath>
+   </defs>
+   <g id="gBody"></g>
+   <g id="gBranch"></g>
+   <g id="gPulse"></g>
+   <g id="gSeat"></g>
+   <g id="gField"></g>
+   <g id="gNodes"></g>
+  </svg>
+  <div class="legend" id="hcxLegend"></div>
+ </div>
+ <div class="rail">
+  <div class="search"><input id="q" placeholder="Filter the 112 addresses by name, nerve or seat..."></div>
+  <div class="list" id="list"></div>
+  <div class="detail" id="detail"><div class="empty">Click any point on the figure, or a name on the list above, to open it here. Click a seat ring to see everything seated there. Click a hyper-complex chip at the bottom left of the figure to light up every address any saboteur of that family runs through.</div></div>
+ </div>
+</div>
+<script>
+/* ============================================================
+   DATA, extracted verbatim (bracket-depth parsed, not hand typed)
+   from the repository's own files, so this harness never drifts
+   from the thing it is trying to show. See the stamp in the header
+   for the commit this was pulled from.
+   ============================================================ */
+var NODES=[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
+var SAB_LIB=[
+ /* S02 Micromanager, fear and anger, its fear band the higher, so two fear
+    addresses and one anger. 4 Control, safety through force, "if I release
+    my grip"; 42 Rigidity, will into inflexibility, the fear response "running
+    so long it looks like a management style"; 36 Anger, power misused, the
+    "do-as-I-say mechanism" its definition layers in. It was 4, 36 and 50:
+    50 Resentment carries Anger, which gave anger two of three under a higher
+    fear band, and 50 stays the Victim's. The owner renamed Controller to
+    Micromanager on 18 October in canon.js. Grandiosity, moved from
+    Rigidity: TULA builds Narcissism from the Controller, the Hyper-Achiever
+    and the Judge, with Entitlement and Justification on top, and its own
+    definition says "Entitlement provides the justification". */
+ {"nm":"Micromanager","nids":[4,42,36],"hcx":"Grandiosity"},
+ /* S03 Victim, sadness, anger and apathy, its sadness band the highest. 6
+    Victimhood, agency into blame, "this keeps happening to me"; 44
+    Unworthiness, the self-loathing SABAUTH names, which carries Sad because
+    canon.js reads UNWORTH as a heart key; 50 Resentment at the heart, pain
+    held, the resentment TULA's line gives it beside sadness. It was 6, 50 and
+    3: 3 Guilt carries Shame, which its row does not key on. 54 Martyrdom,
+    which its definition names, is the Martyr's, and 44 keeps the two apart.
+    Collapse, as it came: TULA puts it in Bipolar, BPD and Depression, which
+    HCX_LIB translates as Dysregulation once and Collapse twice, and "this
+    keeps happening to me" is a structure given way and staying down,
+    Collapse's d. */
+ {"nm":"Victim","nids":[6,44,50],"hcx":"Collapse"},
+ /* S04 Perfectionist, disgust and anger, its disgust band the higher. TULA:
+    "driven by an aversion to imperfection". 37 Judgment, "imperfections in
+    self and others"; 84 Distortion, reality mis-seen, "it is not good enough
+    yet"; 97 Need To Be Special, identity into distinction, the "continuous
+    pressure to do better". It was 40, 37 and 45: 40 Perfectionism, its own
+    name, carries Fear and 45 Anxiety carries Anticipation. The node map's
+    Fear at 40 and SABAUTH's "fear of failure" read it as fear, where its
+    row and TULA's line read disgust and anger; the canon row decides here,
+    and the disagreement between the owner's sources is left open. Rigidity,
+    as it came: TULA, OCPD. */
+ {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Rigidity"},
+ /* S05 Pleaser, apathy and fear, its fear band the higher, 3 to 8 against 3
+    to 5. 5 Insecurity, belonging into dependency, "to gain acceptance", the
+    fear of rejection SABAUTH names; 1 Fear, threat into avoidance, "when
+    there is potential for disapproval"; 30 Guilt Of Pleasure, joy into self
+    denial, TULA's "sometimes neglecting personal needs". It was 66, 2 and 65,
+    all three Shame, and not one of them was on its own charges. 66 People
+    Pleasing is the most literal and stays People-Pleaser's, whose row
+    carries shame. Leaving 2 and 66 ends the pair it shared with Imposter.
+    Collapse, as it came: TULA names no family for it, and People-Pleaser,
+    the sibling that shares its name, is Collapse by TULA's BPD. */
+ {"nm":"Pleaser","nids":[5,1,30],"hcx":"Collapse"},
+ /* S06 Hyper-Achiever, apathy and fear, both bands centred at 6, so either
+    may take two. 40 Perfectionism, idealism into rigidity, the "fear of
+    being ordinary"; 17 Addiction, craving, the "workaholic", "overwork"; 24
+    Avoidance Of Pleasure, "when rest is available", refused. It was 33, 40
+    and 48: 33 Pride and 48 Superiority carry Anger, which its row does not
+    key on. Grandiosity, as it came: TULA, Narcissism. */
+ {"nm":"Hyper-Achiever","nids":[40,17,24],"hcx":"Grandiosity"},
+ /* S08 Hyper-Vigilant, fear and anger, its fear band the higher. 83 Paranoia
+    and 1 Fear are its SABAUTH word for word; 78 Distrust, for when "trust is
+    required". All three carry Fear; its anger is read by the band check,
+    which still has to find it in its band. It was 79, 1 and 82: 79
+    Hypervigilance, its own name, carries Anticipation, because canon.js
+    reads HYPERVIGIL as anticipation, and 82 Projection carries Disgust.
+    SABAUTH's third word, Panic, is 15 Panic, which carries Surprise.
+    Rigidity, moved from Dysregulation, which TULA does not name for it.
+    TULA names two, OCPD for Rigidity and Anxiety disorders for Collapse;
+    the header says why its behaviour decides for Rigidity. */
+ {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Rigidity"},
+ /* S11 Judge, disgust, anger and apathy, its disgust band the highest. 37
+    Judgment, its own name and SABAUTH's "othering"; 82 Projection, othering
+    into blame, "someone is responsible for this"; 80 Dogma, belief into
+    rigidity, "certainty without evidence". It was 37, 48 and 82: 48
+    Superiority carries Anger, which gave anger two of three under a higher
+    disgust band. Grandiosity, moved from Predatory: TULA builds Narcissism
+    from the Controller, the Hyper-Achiever and the Judge, and rests it on
+    the difference in value a judge sees between itself and the judged. */
+ {"nm":"Judge","nids":[37,82,80],"hcx":"Grandiosity"},
+ /* S33 Avoider, apathy and fear, its apathy band the higher. 1 Fear, threat
+    into avoidance, the "fear of confrontation"; 92 Spiritual Escapism,
+    presence into bypass, "not present for it"; 86 Idealism, fantasy into
+    denial of reality, SABAUTH's "delusion", "if I stay unaware". It was 1,
+    14 and 89: 89 Hubris carries Anger, and 14 Escapism is the Escapist's,
+    the line its own definition draws: "not fleeing discomfort the way the
+    Escapist does". Collapse, moved from Dissociation: TULA, Anxiety
+    disorders, "a tendency to avoid challenging situations", and HCX_LIB's
+    Collapse translates anxiety. */
+ {"nm":"Avoider","nids":[1,92,86],"hcx":"Collapse"},
+ /* S14 Worrywart, fear and sadness, its fear band the higher. 83 Paranoia,
+    narrative spinning, the "rehearsal of disaster", "worst-case scenarios";
+    7 Scarcity, resources into hoarding, the "illusion of preparedness"; 56
+    Closed Heart, vulnerability into armour, "worrying is preparation". It
+    was 45, 1 and 3: 45 Anxiety carries Anticipation and 3 Guilt carries
+    Shame. 1 Fear is its SABAUTH word and could not stay: beside 83 it is
+    Hyper-Vigilant's pair, beside 7 it is Catastrophizer's. Collapse, moved
+    from Dysregulation: TULA, Anxiety disorders, "excessive worry", and
+    HCX_LIB's Collapse translates anxiety. */
+ {"nm":"Worrywart","nids":[83,7,56],"hcx":"Collapse"},
+ /* S15 Loner, sadness and fear, its sadness band the higher. 53 Separation,
+    unity into isolation, "withdraws from contact"; 56 Closed Heart,
+    vulnerability into armour, SABAUTH's "fear of intimacy" and its
+    definition's "independence as defense"; 78 Distrust, SABAUTH's first
+    word. It was 55, 1 and 49: 49 Hatred carries Anger. 61 Rejection, the
+    "fear of rejection" its definition names, answers one phrase where 56
+    answers two, so 56 takes the place. Collapse, moved from Dissociation:
+    TULA, Depression, and HCX_LIB's Collapse translates depression. */
+ {"nm":"Loner","nids":[53,56,78],"hcx":"Collapse"},
+ /* S27 Nihilist, disgust and sadness, its disgust band the higher. 91
+    Nihilism, its own name, the "refusal of meaning"; 90 Spiritual Pride,
+    insight into superiority, the "contempt" SABAUTH names; 77 Cynicism,
+    clarity into dismissal, "despair worn as clarity". It was 91, 88 and 90:
+    88 Doubt Of God carries Anger, its Resentment label routed by REROUTE.
+    Collapse, as it came: TULA names no family for it, and its definition
+    removes "the foundation of meaning", the structure given way, which is
+    Collapse's d. */
+ {"nm":"Nihilist","nids":[91,90,77],"hcx":"Collapse"},
+ /* S21 Aggressor, anger and apathy, unchanged: all three carry Anger, its
+    higher band, and they are its SABAUTH in order, 36 Anger for aggression,
+    49 Hatred for cruelty, 38 Entitlement for self-importance. Predatory, as
+    it came: TULA, Antisocial. */
+ {"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},
+ /* S20 Imposter, shame and fear, its shame band the higher. 107
+    Self-Exclusion, belonging into disconnection, "they will find out I do
+    not belong here"; 2 Shame, SABAUTH's first word; 85 Doubt, intuition into
+    dismissal, the "discounting of evidence". It was 2, 45 and 66: 45 Anxiety
+    carries Anticipation, the "anticipation of exposure" SABAUTH names and
+    its row does not key on. 66 People Pleasing, the fraud it fears it is,
+    answers less closely than 85 and stays People-Pleaser's. Collapse, as it
+    came: TULA puts it in BPD and ADHD, Collapse and Dysregulation, and a
+    competence it believes "unearned and discoverable as fraud" is worth
+    giving way, Collapse's d, where nothing in it swings. */
+ {"nm":"Imposter","nids":[107,2,85],"hcx":"Collapse"},
+ /* S01 Negotiator, fear and apathy. 85 Doubt and 11 Resistance are the doubt
+    SABAUTH names and the pause its trigger names, change held off one more
+    day. 17 Addiction is "just this once", the momentary gratification TULA
+    names. Dysregulation: TULA names no family; intention and indulgence
+    swing and never settle, and fear is Dysregulation in FAM_OF. */
+ {"nm":"Negotiator","nids":[85,11,17],"hcx":"Dysregulation"},
+ /* S09 Restless, apathy and fear. 28 Infatuation, the new thing idealised;
+    17 Addiction, the next thrill TULA names; 92 Spiritual Escapism, "rarely
+    at peace with the current moment", presence bypassed. Its fear sits at 2
+    to 4 and is left to the range route. Dysregulation: TULA puts it in
+    Bipolar and ADHD, and HCX_LIB translates both as Dysregulation. */
+ {"nm":"Restless","nids":[28,17,92],"hcx":"Dysregulation"},
+ /* S10 Stickler, disgust and anger. 80 Dogma, belief held as rigidity,
+    "there is a right way"; 72 Speaking To Be Right and 68 Interrupting, the
+    correction of others SABAUTH names. Two at the throat, where SNIFFER_SPEC
+    seats the Creator it pairs with. Rigidity: TULA, OCPD. */
+ {"nm":"Stickler","nids":[80,72,68],"hcx":"Rigidity"},
+ /* S07 Hyper-Rational, shock and disgust, its disgust band the higher, so
+    two disgust addresses and one shock. 74 Talking To Avoid Feeling,
+    presence into avoidance, the "dismissal of emotions" SABAUTH names, the
+    "emotional concerns" it is impatient with, the "emotional input" that
+    triggers it; 84 Distortion, reality mis-seen, "if I can't explain it, it
+    isn't real"; 76 Delusion, truth into illusion, the same sentence from the
+    other side, what cannot be explained called unreal. On 22 October it was
+    81, 84 and 74, two shock under a higher disgust band, which the header
+    claimed no row did. One of the two shock addresses had to go: 74 answers
+    three of its phrases and 81 Overanalysis, "processes everything through
+    logic", one, and 81 stays the Skeptic's. Two at the third eye, the Sage's
+    seat. Dissociation: TULA names no family; the reasoned answer with nobody
+    feeling inside it is Dissociation's d, the outline that holds with nobody
+    in it. */
+ {"nm":"Hyper-Rational","nids":[74,84,76],"hcx":"Dissociation"},
+ /* S12 Deflector, shame and anger. 59 Blame, responsibility pushed outward,
+    "does not own"; 93 False Humility, the pretending SABAUTH names; 2 Shame,
+    worth rejected, "if they knew the real me they would leave". 70 Excuse
+    and 67 Lying are more literal and carry Disgust, which its row does not
+    key on. Predatory: TULA, Antisocial. */
+ {"nm":"Deflector","nids":[59,93,2],"hcx":"Predatory"},
+ /* S13 Dramatizer, shock and sadness. 32 Excess Emotion, drama into
+    flooding; 71 Stage Performing, the audience its trigger needs; 73 Manic
+    Expression, the exaggeration SABAUTH names. Grandiosity: TULA puts it in
+    Bipolar and Histrionic. HCX_LIB's Grandiosity translates histrionic, and
+    its d, the shape held bigger than it is, is what its card says it does:
+    you tell it bigger. */
+ {"nm":"Dramatizer","nids":[32,71,73],"hcx":"Grandiosity"},
+ /* S16 People-Pleaser, apathy and shame, its apathy band the higher, so two
+    apathy addresses and one shame. 66 People Pleasing, approval into
+    inauthenticity; 22 Shame Of Desire and 30 Guilt Of Pleasure, its own wants
+    suppressed and its own joy denied, the self erasure SABAUTH names.
+    Collapse: TULA puts it in BPD and Histrionic; Pleaser, its sibling, is
+    Collapse, and self erasure is the structure giving way. */
+ {"nm":"People-Pleaser","nids":[66,22,30],"hcx":"Collapse"},
+ /* S17 Skeptic, disgust and shock. 77 Cynicism, clarity into dismissal, the
+    pre-emptive doubt; 80 Dogma, the refusal to be moved; 81 Overanalysis,
+    clarity into paralysis. 78 Distrust is more literal and carries Fear.
+    All three at the third eye, the Sage's seat. Predatory: TULA,
+    Machiavellianism. */
+ {"nm":"Skeptic","nids":[77,80,81],"hcx":"Predatory"},
+ /* S18 Dreamer, apathy and sadness. 27 Fantasy and 86 Idealism, the retreat
+    into the possible and the denial of the actual; 108 Endless Seeking,
+    arrival that never comes, "someday". Grandiosity: TULA puts it in
+    Histrionic and ADHD; Grandiosity's d, the shape held bigger than it is
+    and the gap defended, is its trigger, the gap between the vision and the
+    current reality. */
+ {"nm":"Dreamer","nids":[27,86,108],"hcx":"Grandiosity"},
+ /* S19 Procrastinator, fear and sadness, its fear band the higher. SABAUTH
+    is avoidance, doubt and fear of failure: 85 Doubt; 40 Perfectionism, the
+    fear of failure, which the owner's TULA archetype notes say leads "to
+    procrastination or dissatisfaction with outcomes"; 10 Lethargy, momentum
+    into stagnation, the delay. Dysregulation: TULA names no family; the delay
+    and the rush at the deadline swing and never settle, and fear is
+    Dysregulation in FAM_OF. */
+ {"nm":"Procrastinator","nids":[85,40,10],"hcx":"Dysregulation"},
+ /* S22 Martyr, sadness, shame and apathy, one address each. 54 Martyrdom,
+    self sacrifice into guilt driven love; 3 Guilt, responsibility into
+    overcompensation, the over-giving; 30 Guilt Of Pleasure, its own joy
+    denied. 57 Manipulative Kindness and 50 Resentment fit the obligation and
+    the resentment and carry Anger, which its row does not key on. Collapse:
+    TULA names no family; SABDEF files martyrdom under Victim, which is
+    Collapse. */
+ {"nm":"Martyr","nids":[54,3,30],"hcx":"Collapse"},
+ /* S23 Cynic, disgust and sadness, its disgust band the higher, so two
+    disgust addresses and one sad. 77 Cynicism, its own name, the
+    "pre-emptive dismissal"; 76 Delusion, truth into illusion, "optimism is
+    naive", hope called an illusion; 13 Disconnection, presence into
+    numbness, SABAUTH's "lack of effort" and TULA's "safety of skepticism",
+    unimpressed and so safe from disappointment, as its card puts it. On 22
+    October it was 77, 98 and 13, two sad under a higher disgust band, and 98
+    is now the Pessimist's. Root and third eye: with 98 it loses the crown,
+    one of the two seats SNIFFER_SPEC gives the Orphan it pairs with.
+    Collapse: TULA names no family; Nihilist runs on the same two charges and
+    is Collapse. */
+ {"nm":"Cynic","nids":[77,76,13],"hcx":"Collapse"},
+ /* S24 Manipulator, anger and apathy. 25 Manipulation Through Emotion,
+    control by emotional blackmail; 57 Manipulative Kindness, transactional
+    giving; 43 Resentment, the grudge, which SNIFFER_SPEC rules is anger and
+    apathy held together, its own row. 64 Deceit and 75 Spiritual Language To
+    Manipulate sit at the throat where the canon seats its Magician and carry
+    Disgust, so they are left out. Predatory: TULA, Machiavellianism. */
+ {"nm":"Manipulator","nids":[25,57,43],"hcx":"Predatory"},
+ /* S25 Overthinker, fear and shame. 85 Doubt, intuition dismissed; 83
+    Paranoia, the narrative spinning a loop is; 46 Self-Judgment, the inner
+    war. 81 Overanalysis and 79 Hypervigilance name it outright and carry
+    Shock and Anticipation, which its row does not key on. Collapse, moved
+    from Dysregulation with its sibling: TULA names no family for it, and
+    the Worrywart, its nearest sibling, is Collapse now by TULA's Anxiety
+    disorders. Imposter, which runs on the same two charges, fear and
+    shame, is Collapse, and the Overthinker's SABAUTH opens on anxiety,
+    which HCX_LIB's Collapse translates. */
+ {"nm":"Overthinker","nids":[85,83,46],"hcx":"Collapse"},
+ /* S26 Escapist, apathy and fear, and the one row that does not lean the
+    way its bands do. Its fear band is the higher, 6 to 8 against apathy 4 to
+    6, and of the addresses carrying Fear only 1 Fear, threat into
+    avoidance, says what it does: TULA's "avoids dealing with issues", the
+    exit its definition takes from discomfort "before it resolves". A second
+    fear address would be one picked for its charge and not its words. So it
+    carries its fear once, beside 14 Escapism and 27 Fantasy, the
+    "overindulgence in fantasies" SABAUTH names. On 22 October it was 14, 27
+    and 18, all three apathy, which the header claimed no row did, and 18
+    Lust, SABAUTH's "sensual desire", is the address that gave way: set at
+    its own band positions over the sweep's 270 settings, the address route
+    names it in 80 with 1 and in 51 with 18. tests/engine.js, SL, holds it
+    as the one exception by name. Root and sacral, the seats SNIFFER_SPEC
+    gives the Explorer it pairs with. It shares 1 with Avoider and nothing
+    more, and 14, the line Avoider's definition draws between them, is its
+    own. Dissociation: TULA names no family for it. This note first leaned
+    on Avoider being Dissociation, and Avoider is Collapse now by TULA's
+    Anxiety disorders; but Avoider's own definition separates the two, so it
+    does not carry the Escapist with it. What decides is its own behaviour:
+    leaving before the feeling finishes is the outline left with nobody in
+    it, Dissociation's d, and HCX_LIB's Dissociation translates withdrawal. */
+ {"nm":"Escapist","nids":[14,27,1],"hcx":"Dissociation"},
+ /* S29 Pessimist, sadness and fear, its sadness band the higher. 91
+    Nihilism, the first word of its SABAUTH; 83 Paranoia, narrative spinning,
+    the case built "before they materialize"; 98 Unworthy Of God, divinity
+    into disbelief, SABAUTH's "hopelessness", "it will not work out". On 22
+    October it was 91, 83 and 56 and met every rule. Worrywart's re-grounding
+    needed 83 and 56 together and had nothing as close, and two rows may not
+    share two, so 56 Closed Heart went to Worrywart and 98 came free from the
+    Cynic. Collapse: TULA, Depression. */
+ {"nm":"Pessimist","nids":[91,83,98],"hcx":"Collapse"},
+ /* S30 Catastrophizer, fear and sadness. 1 Fear, instinct and threat; 7
+    Scarcity, resources, the threat to survival its definition jumps to; 16
+    Collapse, structure gone, "this will destroy everything". All three at the
+    root. Collapse, moved from Dysregulation with its sibling: TULA names no
+    family for it, SABDEF calls the Worrywart the same thing on a smaller
+    scale, and the Worrywart is Collapse now by TULA's Anxiety disorders. */
+ {"nm":"Catastrophizer","nids":[1,7,16],"hcx":"Collapse"},
+ /* S31 Enabler, apathy and shame, its shame band the higher, so two shame
+    addresses and one apathy, the reverse of People-Pleaser, whose charges are
+    the same two. 65 Self-Silencing, you see it and you do not say it; 31 Need
+    For Approval, identity held in the other; 17 Addiction, the overindulgence
+    SABAUTH names, backed up rather than named. 63 Need To Be Needed and 21
+    Co-Dependency name it outright and carry Disgust, which its row does not
+    key on. Collapse: TULA names no family; Pleaser, which SABDEF sets it
+    beside, is Collapse. */
+ {"nm":"Enabler","nids":[65,31,17],"hcx":"Collapse"},
+ /* S32 Control Freak, fear, anger and anticipation. 45 Anxiety at the
+    adrenal medulla, the sustained sympathetic activation its definition ends
+    on; 41 Force, control over flow; 78 Distrust, distrust of others' hands.
+    Of the two it is composed of it shares one address with Hyper-Vigilant,
+    78, since that row was re-grounded, and none with Micromanager.
+    Rigidity: TULA names no family for it. This note first gave the reason
+    as Micromanager's Rigidity, and Micromanager is Grandiosity now by
+    TULA's Narcissism. Its other half, Hyper-Vigilant, is Rigidity by TULA's
+    OCPD, and its own drill names the state, the jaw, the shoulders and the
+    diaphragm already locked: nothing allowed out of its cell, Rigidity's d.
+    It stays. */
+ {"nm":"Control Freak","nids":[45,41,78],"hcx":"Rigidity"}];
+var HCX_LIB=[
+ /* a shape blown past its own outline. */
+ {"nm":"Grandiosity","d":"the shape is held bigger than it is, and the gap is defended","sub":"narcissism · histrionic","b":"Throat",
+  "ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 7a5 5 0 100 10 5 5 0 100-10"},
+ /* a point, and the line that arrived at it from outside the frame. */
+ {"nm":"Predatory","d":"other people are read as terrain, and the move is made before it is felt","sub":"machiavellian · antisocial","b":"3rd Eye",
+  "ic":"M3 3l9 9 M12 12l9-9 M12 12v9 M8 21h8"},
+ /* a structure that has lost its top and is resting on the floor. */
+ {"nm":"Collapse","d":"the structure gives way downward and stays down","sub":"depression · BPD · anxiety","b":"Root",
+  "ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},
+ /* a grid with nothing allowed out of its cell. */
+ {"nm":"Rigidity","d":"nothing is allowed out of its cell, including you","sub":"OCPD · paranoia","b":"Solar",
+  "ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},
+ /* an oscillation that overshoots at both ends. */
+ {"nm":"Dysregulation","d":"the swing overshoots at both ends and never settles at the middle","sub":"bipolar · ADHD","b":"Sacral",
+  "ic":"M3 12h3l2-7 3 14 3-11 2 4h5"},
+ /* an outline with its middle gone. still a shape, nobody in it. */
+ {"nm":"Dissociation","d":"the outline holds and there is nobody inside it","sub":"schizoid · withdrawal","b":"Crown",
+  "ic":"M12 3a9 9 0 019 9 M21 12a9 9 0 01-9 9 M12 21a9 9 0 01-9-9 M3 12a9 9 0 019-9"}];
+var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C298.5 23.5 299.3 28.2 299 31C298.7 33.8 295.3 36.5 295 38C294.7 39.5 294.5 39.0 297 40C299.5 41.0 306.7 42.5 310 44C313.3 45.5 314.2 46.2 317 49C319.8 51.8 324.5 57.0 327 61C329.5 65.0 331.0 68.0 332 73C333.0 78.0 333.2 86.0 333 91C332.8 96.0 330.5 100.5 331 103C331.5 105.5 335.0 104.0 336 106C337.0 108.0 337.7 110.5 337 115C336.3 119.5 334.0 128.8 332 133C330.0 137.2 327.0 136.2 325 140C323.0 143.8 320.8 149.8 320 156C319.2 162.2 319.5 172.0 320 177C320.5 182.0 320.5 182.5 323 186C325.5 189.5 330.0 194.3 335 198C340.0 201.7 347.3 205.0 353 208C358.7 211.0 363.2 213.8 369 216C374.8 218.2 382.7 219.0 388 221C393.3 223.0 397.3 225.2 401 228C404.7 230.8 407.5 234.5 410 238C412.5 241.5 414.0 243.7 416 249C418.0 254.3 421.2 259.3 422 270C422.8 280.7 420.2 302.5 421 313C421.8 323.5 425.7 323.0 427 333C428.3 343.0 427.8 363.2 429 373C430.2 382.8 431.3 384.8 434 392C436.7 399.2 441.7 401.7 445 416C448.3 430.3 451.5 463.5 454 478C456.5 492.5 457.7 495.7 460 503C462.3 510.3 463.7 516.3 468 522C472.3 527.7 481.0 531.2 486 537C491.0 542.8 494.7 552.0 498 557C501.3 562.0 505.5 564.7 506 567C506.5 569.3 502.7 570.7 501 571C499.3 571.3 498.7 571.3 496 569C493.3 566.7 487.3 559.3 485 557C482.7 554.7 482.8 555.0 482 555C481.2 555.0 478.3 549.2 480 557C481.7 564.8 490.0 593.3 492 602C494.0 610.7 492.3 607.5 492 609C491.7 610.5 490.8 610.7 490 611C489.2 611.3 487.8 611.3 487 611C486.2 610.7 486.3 612.2 485 609C483.7 605.8 480.7 595.8 479 592C477.3 588.2 476.0 586.3 475 586C474.0 585.7 472.7 586.0 473 590C473.3 594.0 476.3 605.0 477 610C477.7 615.0 478.2 618.3 477 620C475.8 621.7 472.2 624.3 470 620C467.8 615.7 465.3 598.7 464 594C462.7 589.3 462.7 592.0 462 592C461.3 592.0 460.2 589.8 460 594C459.8 598.2 461.2 612.8 461 617C460.8 621.2 459.8 618.7 459 619C458.2 619.3 457.0 619.7 456 619C455.0 618.3 454.0 620.0 453 615C452.0 610.0 450.8 593.7 450 589C449.2 584.3 448.8 586.8 448 587C447.2 587.2 445.7 586.8 445 590C444.3 593.2 444.8 603.2 444 606C443.2 608.8 441.0 607.2 440 607C439.0 606.8 438.5 610.3 438 605C437.5 599.7 438.0 584.0 437 575C436.0 566.0 432.5 558.5 432 551C431.5 543.5 435.2 537.5 434 530C432.8 522.5 430.7 518.5 425 506C419.3 493.5 405.2 466.3 400 455C394.8 443.7 396.0 444.7 394 438C392.0 431.3 389.3 423.3 388 415C386.7 406.7 387.8 397.7 386 388C384.2 378.3 378.8 362.5 377 357C375.2 351.5 375.7 355.0 375 355C374.3 355.0 374.3 353.5 373 357C371.7 360.5 368.7 369.2 367 376C365.3 382.8 363.7 391.5 363 398C362.3 404.5 362.3 408.0 363 415C363.7 422.0 366.7 433.2 367 440C367.3 446.8 364.0 447.5 365 456C366.0 464.5 370.3 477.2 373 491C375.7 504.8 379.3 520.7 381 539C382.7 557.3 383.5 581.3 383 601C382.5 620.7 379.5 644.2 378 657C376.5 669.8 376.0 670.0 374 678C372.0 686.0 367.3 692.2 366 705C364.7 717.8 365.0 742.0 366 755C367.0 768.0 370.8 772.7 372 783C373.2 793.3 373.5 807.7 373 817C372.5 826.3 370.5 832.8 369 839C367.5 845.2 366.3 844.8 364 854C361.7 863.2 357.2 883.5 355 894C352.8 904.5 351.7 911.5 351 917C350.3 922.5 350.7 924.3 351 927C351.3 929.7 352.8 929.7 353 933C353.2 936.3 350.7 942.0 352 947C353.3 952.0 356.2 957.2 361 963C365.8 968.8 377.3 977.3 381 982C384.7 986.7 384.5 988.2 383 991C381.5 993.8 374.7 997.7 372 999C369.3 1000.3 368.5 998.5 367 999C365.5 999.5 364.8 1001.8 363 1002C361.2 1002.2 358.5 999.7 356 1000C353.5 1000.3 350.2 1003.5 348 1004C345.8 1004.5 344.3 1003.3 343 1003C341.7 1002.7 342.7 1004.3 340 1002C337.3 999.7 329.3 992.7 327 989C324.7 985.3 327.7 983.2 326 980C324.3 976.8 318.5 973.0 317 970C315.5 967.0 316.5 964.8 317 962C317.5 959.2 319.8 958.2 320 953C320.2 947.8 317.7 936.8 318 931C318.3 925.2 321.3 923.3 322 918C322.7 912.7 322.7 907.0 322 899C321.3 891.0 320.0 880.5 318 870C316.0 859.5 311.7 845.2 310 836C308.3 826.8 307.5 826.7 308 815C308.5 803.3 313.7 780.2 313 766C312.3 751.8 306.2 746.7 304 730C301.8 713.3 302.5 686.3 300 666C297.5 645.7 291.0 622.2 289 608C287.0 593.8 288.5 585.8 288 581C287.5 576.2 286.7 579.0 286 579C285.3 579.0 284.7 575.7 284 581C283.3 586.3 283.3 601.7 282 611C280.7 620.3 277.8 626.8 276 637C274.2 647.2 272.5 656.0 271 672C269.5 688.0 269.0 717.7 267 733C265.0 748.3 260.3 756.3 259 764C257.7 771.7 258.3 772.5 259 779C259.7 785.5 262.3 795.5 263 803C263.7 810.5 263.3 818.0 263 824C262.7 830.0 262.3 832.7 261 839C259.7 845.3 257.0 851.2 255 862C253.0 872.8 249.8 894.3 249 904C248.2 913.7 249.2 915.2 250 920C250.8 924.8 253.8 928.2 254 933C254.2 937.8 250.8 943.2 251 949C251.2 954.8 254.7 964.0 255 968C255.3 972.0 254.5 971.2 253 973C251.5 974.8 247.5 976.2 246 979C244.5 981.8 246.7 986.0 244 990C241.3 994.0 233.3 1000.7 230 1003C226.7 1005.3 225.8 1004.0 224 1004C222.2 1004.0 220.5 1003.7 219 1003C217.5 1002.3 216.0 1000.2 215 1000C214.0 999.8 214.2 1001.7 213 1002C211.8 1002.3 209.3 1002.5 208 1002C206.7 1001.5 206.3 999.5 205 999C203.7 998.5 201.3 999.5 200 999C198.7 998.5 198.0 996.5 197 996C196.0 995.5 195.3 996.8 194 996C192.7 995.2 189.7 993.2 189 991C188.3 988.8 186.3 987.7 190 983C193.7 978.3 206.8 967.5 211 963C215.2 958.5 213.5 958.8 215 956C216.5 953.2 219.5 949.2 220 946C220.5 942.8 217.8 940.2 218 937C218.2 933.8 221.3 934.7 221 927C220.7 919.3 219.7 909.0 216 891C212.3 873.0 201.8 835.8 199 819C196.2 802.2 198.0 800.0 199 790C200.0 780.0 204.0 773.5 205 759C206.0 744.5 206.5 717.7 205 703C203.5 688.3 198.7 687.0 196 671C193.3 655.0 190.0 628.2 189 607C188.0 585.8 188.3 563.8 190 544C191.7 524.2 196.3 501.7 199 488C201.7 474.3 205.0 471.0 206 462C207.0 453.0 204.5 443.0 205 434C205.5 425.0 208.7 415.7 209 408C209.3 400.3 208.7 396.5 207 388C205.3 379.5 200.7 362.5 199 357C197.3 351.5 197.7 355.0 197 355C196.3 355.0 196.7 352.5 195 357C193.3 361.5 189.0 372.0 187 382C185.0 392.0 184.8 406.8 183 417C181.2 427.2 178.7 435.0 176 443C173.3 451.0 171.5 455.5 167 465C162.5 474.5 153.8 489.5 149 500C144.2 510.5 139.7 518.5 138 528C136.3 537.5 139.5 549.5 139 557C138.5 564.5 135.7 566.7 135 573C134.3 579.3 135.3 589.5 135 595C134.7 600.5 134.0 604.0 133 606C132.0 608.0 130.2 607.5 129 607C127.8 606.5 126.5 606.3 126 603C125.5 599.7 126.3 590.0 126 587C125.7 584.0 124.8 584.2 124 585C123.2 585.8 121.8 587.2 121 592C120.2 596.8 119.7 609.7 119 614C118.3 618.3 118.3 617.3 117 618C115.7 618.7 112.2 619.5 111 618C109.8 616.5 109.8 613.3 110 609C110.2 604.7 112.0 595.2 112 592C112.0 588.8 110.7 590.0 110 590C109.3 590.0 109.2 587.7 108 592C106.8 596.3 104.3 611.2 103 616C101.7 620.8 101.2 620.2 100 621C98.8 621.8 97.0 621.5 96 621C95.0 620.5 93.7 622.7 94 618C94.3 613.3 97.3 597.8 98 593C98.7 588.2 98.3 590.0 98 589C97.7 588.0 97.8 583.7 96 587C94.2 590.3 88.8 605.0 87 609C85.2 613.0 85.8 610.7 85 611C84.2 611.3 83.0 611.7 82 611C81.0 610.3 78.0 613.0 79 607C80.0 601.0 86.0 583.3 88 575C90.0 566.7 90.8 560.3 91 557C91.2 553.7 91.2 553.3 89 555C86.8 556.7 80.7 564.5 78 567C75.3 569.5 74.3 569.3 73 570C71.7 570.7 71.2 571.3 70 571C68.8 570.7 63.7 573.3 66 568C68.3 562.7 77.5 547.0 84 539C90.5 531.0 100.5 525.8 105 520C109.5 514.2 108.5 513.5 111 504C113.5 494.5 118.2 473.7 120 463C121.8 452.3 121.0 447.3 122 440C123.0 432.7 124.7 424.7 126 419C127.3 413.3 128.0 410.8 130 406C132.0 401.2 135.8 395.7 138 390C140.2 384.3 142.0 380.7 143 372C144.0 363.3 143.3 346.3 144 338C144.7 329.7 145.8 326.5 147 322C148.2 317.5 150.7 315.5 151 311C151.3 306.5 149.3 301.0 149 295C148.7 289.0 148.0 282.5 149 275C150.0 267.5 153.2 255.8 155 250C156.8 244.2 157.2 243.8 160 240C162.8 236.2 168.5 230.0 172 227C175.5 224.0 174.8 224.3 181 222C187.2 219.7 200.3 216.7 209 213C217.7 209.3 226.5 204.3 233 200C239.5 195.7 244.8 191.3 248 187C251.2 182.7 251.3 179.0 252 174C252.7 169.0 252.7 161.3 252 157C251.3 152.7 248.8 150.8 248 148C247.2 145.2 248.3 142.3 247 140C245.7 137.7 242.0 138.0 240 134C238.0 130.0 235.8 120.5 235 116C234.2 111.5 234.0 109.3 235 107C236.0 104.7 240.3 104.0 241 102C241.7 100.0 239.2 100.0 239 95C238.8 90.0 239.2 77.5 240 72C240.8 66.5 242.2 65.3 244 62C245.8 58.7 248.3 54.8 251 52C253.7 49.2 255.8 47.3 260 45C264.2 42.7 273.8 40.3 276 38C278.2 35.7 273.5 33.0 273 31C272.5 29.0 272.7 27.7 273 26C273.3 24.3 273.7 22.5 275 21C276.3 19.5 279.8 17.8 281 17C282.2 16.2 280.5 16.2 282 16Z';
+var PMS=0.096960;
+var PMTX=22.3567;
+var PMTY=0.5262;
+var ANATHEAD={ytop:4.2, year:12.0, topZ:100.2, earZ:-48.0};
+var ANATSPINE=[[11.5,30.51],[19.5,40.21],[24,47.02],[30,53.55]];
+var ANAT=[
+ /* 3rd Eye. The chiasm is the brow line, which is where the seat's own text
+    puts it: between the eyebrows. */
+ {s:'Optic chiasm, and the optic nerves that meet in it', ids:[79,76], h:[[0.5,-19.4]]},
+ {s:'Lateral geniculate', ids:[83], h:[[24.8,-8.5],[-22.4,-9.4]]},
+ {s:'Visual cortex', ids:[82], h:[[-8.3,3.5],[14.0,3.6]]},
+ {s:'Optic radiation, the nearest real structure to cortical visual pathway',
+  ids:[85], h:[[-29.1,-0.3],[30.3,1.1]]},
+ {s:'Thalamus', ids:[87], h:[[11.1,7.0],[-10.2,6.7]]},
+ /* the pineal is measured as a region estimate. The epithalamus is the pineal
+    with the habenula and the posterior commissure, so all three stand here:
+    three addresses on one real place, the case the ruling names. */
+ {s:'Pineal region: pineal, epithalamus, posterior commissure', ids:[80,105,101], h:[[0.6,1.0]]},
+ /* the occipital nerve is a scalp nerve and no brain atlas holds it. It
+    rises at the back of the skull beside the inion, and Colin27 measures the
+    inion (Iz) at z -23.1. */
+ {s:'Occipital nerve, at the inion', ids:[84], h:[[0.0,-23.1]]},
+ /* Crown */
+ {s:'Top of the brain on the midline, under the superior sagittal sinus', ids:[107], h:[[2.0,77.0]]},
+ {s:'Parietal lobe', ids:[91], h:[[34.4,42.6],[-34.4,42.3]]},
+ {s:'Posterior cingulate', ids:[95], h:[[0.6,32.3]]},
+ {s:'Anterior cingulate', ids:[97], h:[[0.8,23.9]]},
+ {s:'Corpus callosum', ids:[88], h:[[1.3,17.0]]},
+ /* nested, per the research: prefrontal inside frontal inside the whole
+    cortex, and the neocortex is nearly all of it. Four names on one
+    structure share its two halves rather than landing on each other. */
+ {s:'Cerebral cortex, and the lobe and regions inside it', ids:[94,106,93,89],
+  h:[[30.6,15.1],[-30.3,14.8]]},
+ {s:'Default mode network, its core regions', ids:[99], h:[[-18.5,12.5],[21.2,14.8]]},
+ {s:'Temporal lobe', ids:[102], h:[[42.5,-20.0],[-41.8,-20.2]]},
+ {s:'Hippocampus', ids:[104], h:[[-25.4,-15.0],[27.0,-14.9]]},
+ /* measured as the ventral diencephalon, which holds the hypothalamus. The
+    supraoptic nucleus sits inside it, and the medial forebrain bundle runs
+    through its lateral part. */
+ {s:'Hypothalamus, with the supraoptic nucleus and the medial forebrain bundle',
+  ids:[103,86,100], h:[[0.2,-11.1]]},
+ /* axes are not places. Each sits at the middle of the two it names. */
+ {s:'Pineal to hypothalamus, the middle of the axis', ids:[90], h:[[0.4,-5.05]]},
+ {s:'Pineal to amygdala, the middle of the axis', ids:[98], h:[[-11.2,-8.55]]},
+ /* the brainstem, upper part the midbrain. The oculomotor nerve leaves the
+    midbrain and the dorsal raphe sits in it. The abducens and trigeminal
+    nerves leave the pons, inside the reticular formation's own span. */
+ {s:'Midbrain: dorsal raphe, oculomotor nerve', ids:[92,77], h:[[0.5,-16.5]]},
+ {s:'Brainstem: reticular formation, trigeminal and abducens nerves', ids:[96,81,78], h:[[0.6,-34.0]]},
+ /* Ascension Column is not anatomy (BQ). It stands where it is filed. */
+ {s:'No structure. Filed at the Crown', ids:[108], at:'crown'},
+ /* Torso. The six the passes sourced to a level. */
+ {s:'Cardiac plexus', ids:[49,55], v:[[11.5,0]]},
+ {s:'Celiac plexus', ids:[33,36], v:[[19.5,0]]},
+ {s:'Lumbar plexus, L1 to L4, beside the spine', ids:[1], v:[[21.5,2.2],[21.5,-2.2]]},
+ {s:'Coccygeal plexus, the tailbone', ids:[6], v:[[30,0]]},
+ /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
+    classical marma chart and a 112 node chart, with "as close as 1:1 as
+    possible". Measured before this (proto/anatomy-ref, 26 September): of 48
+    addresses the charts can speak for, 12 sat further than 6 percent of the
+    person's height from the chart's place for them, the worst 11.5 percent,
+    20 cm on a 175 cm person, because each was gathered round its seat with no
+    place of its own.
+    Every row here is an address a chart point stands for through anatomy, the
+    reason for each in proto/anatomy-ref/match.js, and nothing already placed
+    by the atlas or the spine moved: those measured on or near the charts. */
+ {s:'Hridaya: the heart\'s own nerves, pericardial, great cardiac, coronary',
+  ids:[53,62,63], c:['m.hridaya','112.sternal'], f:[[50,27.9]]},
+ {s:'Kakshadhara, the front of the armpit: the brachial plexus',
+  ids:[75], c:['m.kaksha','112.axilla'], f:[[41.39,26.54],[58.61,26.54]]},
+ {s:'Manya, the vocal cords: the vagus in the neck and the larynx\'s own nerves',
+  ids:[65,66,67,71], c:['112.manya'], f:[[48.6,19.41],[51.4,19.41]]},
+ {s:'Stanamula, the space between the ribs under the breast: the intercostal nerves',
+  ids:[54], c:['m.stanamula','112.breast'], f:[[44.98,31.03],[55.02,31.03]]},
+ {s:'Apastambha, the bronchi: the pulmonary plexus',
+  ids:[58], c:['m.apastambha'], f:[[47.73,21.28],[52.27,21.28]]},
+ {s:'Vitapa, the groin: the genitofemoral nerve',
+  ids:[18], c:['m.vitapa'], f:[[49,52.68],[51,52.68]]},
+ {s:'Apalapa, the side of the chest: the side branches of the intercostal nerves',
+  ids:[56], c:['m.apalapa'], f:[[42.06,29.69],[57.94,29.69]]},
+ {s:'Under the sternocleidomastoid: the cervical plexus',
+  ids:[64], c:['112.matrika'], f:[[48.94,20.87],[51.06,20.87]]},
+ /* the charts put the top of the shoulder about a unit outside this
+    figure's own, which slopes more; walked in to where a mark is on the body */
+ {s:'Amsa, the top of the shoulder on the trapezius: the accessory nerve',
+  ids:[69,73], c:['m.amsa','112.trapezius'], f:[[42.85,21.98],[57.15,21.98]]},
+ {s:'Brihati, beside the spine between the shoulder blades: thoracic nerves and ganglia',
+  ids:[50,59], c:['m.brihati','112.T4'], f:[[49.37,28.26],[50.63,28.26]]},
+ {s:'Parshvasandhi, the flank over the kidneys: renal and suprarenal plexuses, the adrenal',
+  ids:[38,39,43,45], c:['m.parshva','112.kidney'], f:[[45,42.5],[55,42.5]]},
+ {s:'Nabhi, the navel: the inferior mesenteric plexus', ids:[44], c:['m.nabhi','112.navel'], f:[[50,43.07]]},
+ {s:'Basti, above the pubic bone: the hypogastric plexuses, the pelvic splanchnic nerves that drive the bladder, the ganglia inside the plexus',
+  ids:[3,26,22,5,24,21,30,29], c:['m.basti','112.belly'], f:[[50,47.7]]},
+ {s:'Guda: the pudendal nerve and its perineal branch',
+  ids:[2,19,11,32], c:['m.guda'], f:[[50,53.93]]},
+ {s:'The pelvic floor: the nerve to it', ids:[12], c:['112.floor','m.guda'], f:[[50,52.28]]},
+ {s:'Kukundara, the dimples over the sacroiliac joints: the sacral plexus and its roots',
+  ids:[17,28,4,13], c:['m.kukundara','112.sacral'], f:[[47.49,49.33],[52.51,49.33]]},
+ /* the two charts put Katikataruna 12 percent of a height apart, one beside
+    the sacrum and one mid buttock; the classical chart is kept */
+ {s:'Katikataruna, the middle of the buttock: the sciatic and gluteal nerves',
+  ids:[14,9], c:['m.katika'], f:[[43.68,55.56],[56.32,55.56]]}];
+var NERVEBR=[{"s":"eye","p":[[29.89,51.99],[27.18,53.44],[29.17,50.54],[31.71,48.37],[32.43,45.47],[32.97,42.57],[33.34,39.68],[34.42,36.78],[35.51,33.88],[35.87,30.98],[36.6,28.08],[36.23,25.18],[36.96,22.29],[39.13,19.75],[42.03,18.66],[44.93,17.22],[46.56,14.68],[46.56,13.77]]},{"s":"heart","p":[[31.52,56.88],[31.71,59.06],[32.61,57.06],[33.15,55.25],[33.34,57.43],[34.24,56.52],[34.24,54.35],[34.6,52.17],[34.6,50.0],[35.51,47.83],[36.6,45.65],[37.68,43.48],[38.77,41.31],[39.31,39.13],[39.68,36.96],[40.22,34.78],[40.94,32.79]]},{"s":"crown","p":[[45.47,8.34],[45.29,7.07],[45.29,5.8],[45.65,4.54],[46.56,3.27],[47.83,2.54],[49.09,2.18],[50.36,2.18],[51.63,2.36],[52.9,2.91],[53.98,4.17],[54.53,5.44],[54.71,6.71],[54.53,7.98],[55.25,9.06],[55.07,10.33],[54.53,11.6],[53.98,11.78]]},{"s":"root","p":[[55.8,92.2],[55.07,91.66],[54.71,90.94],[54.53,90.21],[54.53,89.49],[54.53,88.76],[54.71,88.04],[54.71,87.31],[54.89,86.59],[54.89,85.86],[55.07,85.14],[55.25,84.42],[55.25,83.69],[55.25,82.97],[55.43,82.24],[55.43,81.52],[55.43,80.79],[55.43,80.07],[55.43,79.52]]},{"s":"root","p":[[43.66,73.55],[43.3,73.73],[43.12,74.45],[42.94,75.18],[42.57,75.9],[42.39,76.63],[42.39,77.35],[42.21,78.08],[42.21,78.8],[42.39,79.52],[42.39,80.25],[42.39,80.97],[42.57,81.7],[42.75,82.42],[42.75,83.15],[42.94,83.87],[43.12,84.6],[43.3,85.32],[43.3,85.68]]},{"s":"root","p":[[45.29,91.66],[45.29,90.94],[45.47,90.21],[45.47,89.49],[45.47,88.76],[45.29,88.04],[45.11,87.31],[45.11,86.59],[44.93,85.86],[44.75,85.14],[44.75,84.42],[44.57,83.69],[44.57,82.97],[44.38,82.24],[44.38,81.52],[44.38,80.79],[44.38,80.07],[44.2,79.71]]},{"s":"solar","p":[[34.97,47.83],[35.15,47.28],[35.51,46.74],[35.69,46.2],[36.05,45.65],[36.23,45.11],[36.42,44.57],[36.78,44.02],[36.96,43.48],[37.32,42.94],[37.5,42.39],[37.68,41.85],[37.86,41.31],[38.05,40.76],[38.23,40.22],[38.23,39.68],[38.41,39.13],[38.41,38.59],[38.41,38.05],[38.23,37.68]]},{"s":"solar","p":[[64.67,47.1],[64.49,46.56],[64.13,46.02],[63.95,45.47],[63.58,44.93],[63.4,44.38],[63.04,43.84],[62.86,43.3],[62.68,42.75],[62.32,42.21],[62.14,41.67],[61.95,41.12],[61.95,40.58],[61.77,40.04],[61.59,39.49],[61.59,38.95],[61.59,38.41],[61.41,38.05]]},{"s":"solar","p":[[33.7,49.82],[33.34,50.0],[33.15,49.46],[33.34,48.91],[33.52,48.37],[33.7,47.83],[34.06,47.28],[34.24,46.74],[34.42,46.2],[34.42,45.65],[34.6,45.11],[34.78,44.57],[34.97,44.02],[34.97,43.48],[35.15,42.94],[35.33,42.39],[35.33,41.85],[35.33,41.67]]},{"s":"solar","p":[[65.94,50.18],[66.48,50.18],[66.85,49.64],[66.66,49.09],[66.48,48.55],[66.12,48.01],[65.94,47.46],[65.76,46.92],[65.58,46.38],[65.4,45.83],[65.4,45.29],[65.22,44.75],[65.03,44.2],[64.85,43.66],[64.85,43.12],[64.67,42.57],[64.49,42.03],[64.49,41.85]]},{"s":"root","p":[[53.98,84.05],[53.98,84.42],[53.98,84.78],[53.98,85.14],[53.98,85.5],[53.98,85.86],[53.98,86.23],[53.98,86.59],[53.98,86.95],[53.98,87.31],[53.98,87.68],[53.98,88.04],[53.8,88.4],[53.8,88.76],[53.8,89.12],[53.8,89.49],[53.8,89.85],[53.62,90.21],[53.62,90.57],[53.62,90.94],[53.62,91.3],[53.44,91.66],[53.44,92.02],[53.44,92.02]]},{"s":"root","p":[[41.49,59.96],[41.49,59.6],[41.49,59.24],[41.49,58.88],[41.49,58.51],[41.49,58.15],[41.49,57.79],[41.49,57.43],[41.67,57.06],[41.67,56.7],[42.03,56.34],[42.03,55.98],[42.21,55.62],[42.39,55.25],[42.57,54.89],[42.75,54.53],[42.94,54.17],[43.12,53.8],[43.3,53.44],[43.48,53.08],[43.84,52.72],[44.02,52.35],[44.2,52.35]]},{"s":"root","p":[[58.51,59.96],[58.51,59.6],[58.51,59.24],[58.51,58.88],[58.51,58.51],[58.51,58.15],[58.51,57.79],[58.51,57.43],[58.33,57.06],[58.15,56.7],[57.97,56.34],[57.97,55.98],[57.79,55.62],[57.61,55.25],[57.43,54.89],[57.25,54.53],[57.06,54.17],[56.88,53.8],[56.52,53.44],[56.34,53.08],[56.16,52.72],[55.98,52.35],[55.8,52.35]]},{"s":"throat","p":[[63.4,31.52],[63.4,31.16],[63.4,30.8],[63.22,30.44],[63.04,30.08],[63.04,29.71],[62.86,29.35],[62.68,28.99],[62.5,28.63],[62.5,28.26],[62.32,27.9],[62.14,27.54],[61.95,27.18],[61.77,26.82],[61.59,26.45],[61.23,26.09],[61.05,25.73],[60.87,25.37],[60.51,25.0],[60.14,24.64],[59.96,24.46]]},{"s":"root","p":[[54.17,82.42],[54.17,82.06],[54.17,81.7],[54.17,81.34],[54.17,80.97],[54.17,80.61],[54.17,80.25],[54.17,79.89],[54.17,79.52],[54.35,79.16],[54.35,78.8],[54.35,78.44],[54.35,78.08],[54.35,77.71],[54.35,77.35],[54.35,76.99],[54.35,76.63],[54.17,76.26],[54.17,75.9],[54.17,75.54],[53.98,75.36]]},{"s":"root","p":[[57.61,80.61],[57.61,80.25],[57.61,79.89],[57.61,79.52],[57.61,79.16],[57.61,78.8],[57.61,78.44],[57.61,78.08],[57.61,77.71],[57.61,77.35],[57.61,76.99],[57.43,76.63],[57.43,76.26],[57.25,75.9],[57.25,75.54],[57.06,75.18],[56.88,74.82],[56.88,74.45],[56.7,74.09],[56.7,73.73],[56.7,73.73]]},{"s":"heart","p":[[55.07,34.6],[55.43,34.6],[55.8,34.24],[55.62,33.88],[55.25,33.52],[54.89,33.15],[54.53,32.79],[54.17,32.61],[53.8,32.43],[53.44,32.25],[53.08,32.07],[52.72,31.89],[52.35,31.71],[51.99,31.52],[51.63,31.34],[51.27,31.16],[50.91,30.98],[50.54,30.8],[50.54,30.8]]},{"s":"root","p":[[45.11,66.85],[44.93,66.48],[44.93,66.12],[45.11,65.76],[45.11,65.4],[45.11,65.03],[45.11,64.67],[45.11,64.31],[45.11,63.95],[45.11,63.58],[45.11,63.22],[45.11,62.86],[44.93,62.5],[44.93,62.14],[44.93,61.77],[44.75,61.41],[44.57,61.05],[44.57,61.05]]},{"s":"root","p":[[55.25,66.85],[55.07,66.48],[54.89,66.12],[54.89,65.76],[54.89,65.4],[54.89,65.03],[54.89,64.67],[54.89,64.31],[54.89,63.95],[54.89,63.58],[54.89,63.22],[54.89,62.86],[54.89,62.5],[55.07,62.14],[55.07,61.77],[55.07,61.41],[55.25,61.23]]},{"s":"root","p":[[57.43,80.97],[57.43,81.34],[57.43,81.7],[57.25,82.06],[57.25,82.42],[57.25,82.78],[57.06,83.15],[57.06,83.51],[56.88,83.87],[56.88,84.23],[56.7,84.6],[56.7,84.96],[56.7,85.32],[56.7,85.68],[56.52,86.05],[56.52,86.41],[56.52,86.59]]},{"s":"root","p":[[46.02,84.78],[46.02,84.96],[46.02,85.14],[46.02,85.32],[46.02,85.5],[46.02,85.68],[46.02,85.86],[46.02,86.05],[46.02,86.23],[46.02,86.41],[46.02,86.59],[46.02,86.77],[46.02,86.95],[46.02,87.13],[46.02,87.31],[46.02,87.49],[46.02,87.68],[46.02,87.86],[46.02,88.04],[46.02,88.22],[46.02,88.4],[46.02,88.58],[46.2,88.76],[46.2,88.94],[46.2,89.12],[46.2,89.31],[46.2,89.49],[46.2,89.67],[46.2,89.85],[46.2,90.03],[46.2,90.21],[46.2,90.21]]},{"s":"heart","p":[[55.62,36.78],[55.62,36.6],[55.43,36.42],[55.43,36.23],[55.25,36.05],[55.07,35.87],[55.07,35.69],[54.89,35.51],[54.71,35.33],[54.53,35.15],[54.35,34.97],[54.35,34.78],[54.17,34.6],[53.98,34.42],[53.8,34.24],[53.62,34.24],[53.44,34.06],[53.26,34.06],[53.08,33.88],[52.9,33.7],[52.72,33.7],[52.54,33.52],[52.35,33.52],[52.17,33.34],[51.99,33.34],[51.81,33.15],[51.63,33.15],[51.45,32.97],[51.27,32.97],[51.09,32.79],[51.09,32.79]]},{"s":"root","p":[[56.34,84.6],[56.34,84.42],[56.34,84.23],[56.34,84.05],[56.34,83.87],[56.34,83.69],[56.34,83.51],[56.34,83.33],[56.34,83.15],[56.34,82.97],[56.34,82.78],[56.34,82.6],[56.34,82.42],[56.34,82.24],[56.34,82.06],[56.34,81.88],[56.34,81.7],[56.34,81.52],[56.34,81.34],[56.34,81.15],[56.34,80.97],[56.34,80.79],[56.16,80.61],[56.16,80.43],[56.16,80.25],[56.16,80.07],[56.16,79.89],[56.16,79.71],[55.98,79.52],[55.8,79.34],[55.8,79.34]]},{"s":"sacral","p":[[42.03,51.09],[42.21,50.91],[42.39,50.72],[42.57,50.54],[42.75,50.36],[42.94,50.18],[43.12,50.0],[43.3,49.82],[43.3,49.64],[43.48,49.46],[43.66,49.28],[43.66,49.09],[43.84,48.91],[43.84,48.73],[44.02,48.55],[44.02,48.37],[44.02,48.19],[44.2,48.01],[44.2,47.83],[44.2,47.65],[44.2,47.46],[44.2,47.28],[44.38,47.1],[44.38,46.92],[44.38,46.74],[44.38,46.56],[44.38,46.38],[44.38,46.2],[44.2,46.02],[44.2,46.02]]},{"s":"root","p":[[54.35,73.18],[54.17,73.0],[53.98,72.82],[53.8,72.64],[53.62,72.46],[53.44,72.28],[53.44,72.1],[53.26,71.92],[53.26,71.74],[53.26,71.55],[53.08,71.37],[53.08,71.19],[53.08,71.01],[52.9,70.83],[52.9,70.65],[52.9,70.47],[52.9,70.29],[52.72,70.11],[52.72,69.92],[52.72,69.74],[52.72,69.56],[52.72,69.38],[52.54,69.2],[52.54,69.02],[52.54,68.84],[52.54,68.66],[52.35,68.48],[52.35,68.29],[52.35,68.11],[52.35,68.11]]},{"s":"solar","p":[[53.8,44.02],[53.8,43.84],[53.8,43.66],[53.8,43.48],[53.8,43.3],[53.62,43.12],[53.44,42.94],[53.44,42.75],[53.44,42.57],[53.44,42.39],[53.44,42.21],[53.26,42.03],[53.26,41.85],[53.08,41.67],[53.08,41.49],[52.9,41.31],[52.9,41.12],[52.72,40.94],[52.72,40.76],[52.54,40.58],[52.35,40.4],[52.35,40.22],[52.17,40.04],[51.99,39.86],[51.81,39.68],[51.63,39.68],[51.45,39.49],[51.45,39.31],[51.45,39.31]]},{"s":"throat","p":[[37.14,29.17],[37.14,28.99],[37.32,28.81],[37.32,28.63],[37.5,28.45],[37.5,28.26],[37.5,28.08],[37.68,27.9],[37.68,27.72],[37.86,27.54],[37.86,27.36],[38.05,27.18],[38.05,27.0],[38.23,26.82],[38.23,26.63],[38.41,26.45],[38.41,26.27],[38.59,26.09],[38.77,25.91],[38.95,25.73],[38.95,25.55],[39.13,25.37],[39.31,25.18],[39.49,25.0],[39.68,24.82],[39.86,24.64],[39.86,24.64]]},{"s":"heart","p":[[59.42,30.26],[59.42,30.08],[59.42,29.89],[59.42,29.71],[59.42,29.53],[59.42,29.35],[59.42,29.17],[59.42,28.99],[59.42,28.81],[59.42,28.63],[59.42,28.45],[59.42,28.26],[59.42,28.08],[59.42,27.9],[59.42,27.72],[59.42,27.54],[59.42,27.36],[59.42,27.18],[59.42,27.0],[59.42,26.82],[59.42,26.63],[59.42,26.45],[59.24,26.27],[59.24,26.09],[59.24,25.91],[59.06,25.73],[59.06,25.73]]},{"s":"root","p":[[71.55,56.7],[71.55,56.88],[71.55,57.06],[71.55,57.25],[71.74,57.43],[71.74,57.61],[71.55,57.79],[71.55,57.97],[71.37,58.15],[71.19,58.15],[71.01,57.97],[70.83,57.79],[70.83,57.61],[70.65,57.43],[70.65,57.25],[70.47,57.06],[70.47,56.88],[70.29,56.7],[70.29,56.52],[70.29,56.34],[70.11,56.16],[70.11,55.98],[70.11,55.8],[69.92,55.62],[69.92,55.43],[69.74,55.25],[69.74,55.25]]},{"s":"root","p":[[47.46,56.88],[47.46,56.7],[47.46,56.52],[47.46,56.34],[47.28,56.16],[47.28,55.98],[47.28,55.8],[47.1,55.62],[47.1,55.43],[47.1,55.25],[46.92,55.07],[46.92,54.89],[46.92,54.71],[46.74,54.53],[46.74,54.35],[46.56,54.17],[46.56,53.98],[46.56,53.8],[46.56,53.62],[46.38,53.44],[46.38,53.26],[46.38,53.08],[46.2,52.9],[46.2,52.72],[46.2,52.54],[46.02,52.35],[46.02,52.35]]},{"s":"solar","p":[[46.2,44.2],[46.2,44.02],[46.2,43.84],[46.02,43.66],[46.2,43.48],[46.2,43.3],[46.2,43.12],[46.38,42.94],[46.38,42.75],[46.38,42.57],[46.56,42.39],[46.56,42.21],[46.56,42.03],[46.74,41.85],[46.74,41.67],[46.92,41.49],[46.92,41.31],[47.1,41.12],[47.1,40.94],[47.28,40.76],[47.46,40.58],[47.46,40.4],[47.65,40.22],[47.83,40.04],[48.01,39.86],[48.01,39.86]]},{"s":"root","p":[[70.11,52.17],[70.29,52.35],[70.47,52.35],[70.29,52.54],[70.29,52.72],[70.29,52.9],[70.29,53.08],[70.29,53.26],[70.29,53.44],[70.29,53.62],[70.47,53.8],[70.47,53.98],[70.65,54.17],[70.65,54.35],[70.65,54.53],[70.83,54.71],[70.83,54.89],[71.01,55.07],[71.01,55.25],[71.01,55.43],[71.19,55.62],[71.19,55.8],[71.19,55.98],[71.37,56.16],[71.37,56.34],[71.37,56.34]]},{"s":"root","p":[[45.65,79.89],[45.65,79.71],[45.65,79.52],[45.65,79.34],[45.65,79.16],[45.65,78.98],[45.65,78.8],[45.65,78.62],[45.65,78.44],[45.65,78.26],[45.65,78.08],[45.65,77.89],[45.65,77.71],[45.65,77.53],[45.65,77.35],[45.65,77.17],[45.65,76.99],[45.65,76.81],[45.65,76.63],[45.65,76.45],[45.65,76.26],[45.65,76.08],[45.65,75.9],[45.83,75.72],[45.83,75.54],[45.83,75.54]]},{"s":"heart","p":[[40.58,30.08],[40.58,29.89],[40.58,29.71],[40.58,29.53],[40.58,29.35],[40.58,29.17],[40.58,28.99],[40.58,28.81],[40.58,28.63],[40.58,28.45],[40.58,28.26],[40.58,28.08],[40.58,27.9],[40.58,27.72],[40.58,27.54],[40.58,27.36],[40.58,27.18],[40.58,27.0],[40.58,26.82],[40.58,26.63],[40.58,26.45],[40.58,26.27],[40.58,26.09],[40.76,25.91],[40.76,25.91]]},{"s":"root","p":[[52.54,56.52],[52.54,56.34],[52.54,56.16],[52.72,55.98],[52.72,55.8],[52.72,55.62],[52.9,55.43],[52.9,55.25],[52.9,55.07],[53.08,54.89],[53.08,54.71],[53.26,54.53],[53.26,54.35],[53.26,54.17],[53.44,53.98],[53.44,53.8],[53.44,53.62],[53.62,53.44],[53.62,53.26],[53.62,53.08],[53.62,52.9],[53.8,52.72],[53.8,52.54],[53.8,52.35],[53.8,52.35]]},{"s":"throat","p":[[41.12,26.45],[41.12,26.27],[41.12,26.09],[40.94,25.91],[40.76,25.73],[40.76,25.55],[40.94,25.37],[40.94,25.18],[40.94,25.0],[40.94,24.82],[41.12,24.64],[41.12,24.46],[41.12,24.28],[41.31,24.1],[41.31,23.92],[41.49,23.74],[41.67,23.55],[41.85,23.37],[41.85,23.19],[42.03,23.01],[42.21,22.83],[42.39,22.65],[42.39,22.47],[42.39,22.47]]},{"s":"root","p":[[57.06,65.03],[57.06,64.85],[57.06,64.67],[57.06,64.49],[56.88,64.31],[56.88,64.13],[56.7,63.95],[56.7,63.77],[56.7,63.58],[56.52,63.4],[56.52,63.22],[56.34,63.04],[56.16,62.86],[56.16,62.68],[55.98,62.5],[55.98,62.32],[55.8,62.14],[55.8,61.95],[55.8,61.77],[55.62,61.59],[55.62,61.41],[55.62,61.23],[55.43,61.05],[55.43,61.05]]},{"s":"crown","p":[[46.2,11.42],[46.2,11.6],[46.02,11.78],[45.83,11.78],[45.65,11.78],[45.47,11.6],[45.29,11.42],[45.11,11.24],[45.11,11.06],[45.11,10.88],[44.93,10.69],[44.93,10.51],[44.93,10.33],[44.75,10.15],[44.75,9.97],[44.75,9.79],[44.75,9.61],[44.57,9.43],[44.57,9.25],[44.57,9.06],[44.57,8.88],[44.57,8.7],[44.57,8.7]]},{"s":"heart","p":[[54.35,29.35],[54.17,29.17],[53.98,28.99],[53.8,28.81],[53.62,28.81],[53.44,28.63],[53.26,28.63],[53.08,28.63],[52.9,28.45],[52.72,28.45],[52.54,28.45],[52.35,28.26],[52.17,28.26],[51.99,28.26],[51.81,28.26],[51.63,28.08],[51.45,28.08],[51.27,27.9],[51.09,27.9],[50.91,27.72],[50.72,27.72],[50.54,27.72],[50.54,27.72]]},{"s":"sacral","p":[[67.75,48.37],[67.75,48.55],[67.75,48.73],[67.93,48.91],[67.93,49.09],[68.11,49.28],[68.11,49.46],[68.29,49.64],[68.48,49.82],[68.66,49.82],[68.84,50.0],[69.02,50.0],[69.2,50.18],[69.38,50.18],[69.56,50.36],[69.74,50.36],[69.92,50.54],[70.11,50.72],[70.29,50.91],[70.47,51.09],[70.65,51.27],[70.83,51.45],[70.83,51.45]]},{"s":"crown","p":[[53.26,7.07],[53.26,7.25],[53.26,7.43],[53.26,7.62],[53.26,7.8],[53.44,7.98],[53.62,8.16],[53.62,8.34],[53.62,8.52],[53.62,8.7],[53.62,8.88],[53.8,9.06],[53.8,9.25],[53.8,9.43],[53.98,9.61],[53.98,9.79],[53.98,9.97],[53.98,10.15],[53.98,10.33],[53.8,10.51],[53.8,10.69],[53.8,10.69]]},{"s":"throat","p":[[38.05,24.28],[38.23,24.1],[38.41,23.92],[38.59,23.74],[38.77,23.55],[38.95,23.37],[39.13,23.19],[39.31,23.01],[39.49,22.83],[39.68,22.83],[39.86,22.65],[40.04,22.47],[40.22,22.47],[40.4,22.47],[40.58,22.29],[40.76,22.29],[40.94,22.29],[41.12,22.11],[41.31,22.11],[41.49,21.92],[41.67,21.92],[41.67,21.92]]},{"s":"root","p":[[55.98,86.95],[55.98,87.13],[55.98,87.31],[55.98,87.49],[55.98,87.68],[55.98,87.86],[56.16,88.04],[56.16,88.22],[56.16,88.4],[56.16,88.58],[56.16,88.76],[56.16,88.94],[56.16,89.12],[56.16,89.31],[56.16,89.49],[56.16,89.67],[56.16,89.85],[56.16,90.03],[56.16,90.21],[56.16,90.39],[56.16,90.57],[56.16,90.57]]},{"s":"throat","p":[[54.35,22.47],[54.17,22.47],[53.98,22.47],[53.8,22.29],[53.62,22.29],[53.44,22.11],[53.26,22.11],[53.08,22.11],[52.9,21.92],[52.72,21.92],[52.54,21.92],[52.35,21.92],[52.17,21.92],[51.99,21.92],[51.81,21.92],[51.63,21.92],[51.45,21.92],[51.27,21.74],[51.09,21.74],[50.91,21.56],[50.91,21.56]]},{"s":"throat","p":[[53.8,24.46],[53.62,24.28],[53.44,24.1],[53.44,23.92],[53.26,23.74],[53.08,23.55],[52.9,23.55],[52.72,23.55],[52.54,23.55],[52.35,23.55],[52.17,23.55],[51.99,23.55],[51.81,23.37],[51.63,23.37],[51.45,23.37],[51.27,23.19],[51.09,23.19],[50.91,23.01],[50.72,23.01],[50.54,22.83],[50.54,22.83]]},{"s":"heart","p":[[36.23,32.61],[36.23,32.79],[36.23,32.97],[36.23,33.15],[36.23,33.34],[36.23,33.52],[36.23,33.7],[36.23,33.88],[36.23,34.06],[36.23,34.24],[36.23,34.42],[36.23,34.6],[36.23,34.78],[36.23,34.97],[36.23,35.15],[36.23,35.33],[36.23,35.51],[36.23,35.69],[36.42,35.87],[36.42,35.87]]},{"s":"throat","p":[[54.89,20.84],[54.89,21.02],[54.89,21.2],[54.71,21.38],[54.53,21.2],[54.35,21.2],[54.17,21.02],[53.98,21.02],[53.8,20.84],[53.62,20.84],[53.44,20.84],[53.26,20.66],[53.08,20.66],[52.9,20.66],[52.72,20.48],[52.54,20.48],[52.35,20.48],[52.17,20.48],[52.17,20.48]]},{"s":"throat","p":[[58.88,26.45],[58.88,26.27],[58.88,26.09],[58.88,25.91],[58.88,25.73],[59.06,25.55],[59.06,25.37],[59.06,25.18],[58.88,25.0],[58.88,24.82],[58.88,24.64],[58.69,24.46],[58.69,24.28],[58.51,24.1],[58.51,23.92],[58.33,23.74],[58.33,23.55],[58.33,23.55]]},{"s":"solar","p":[[34.24,39.49],[34.24,39.31],[34.42,39.13],[34.42,38.95],[34.42,38.77],[34.6,38.59],[34.6,38.41],[34.78,38.23],[34.78,38.05],[34.97,37.86],[35.15,37.68],[35.15,37.5],[35.33,37.32],[35.51,37.14],[35.51,36.96],[35.69,36.78],[35.87,36.6],[35.87,36.6]]},{"s":"solar","p":[[49.82,40.94],[49.82,41.12],[49.64,41.31],[49.46,41.31],[49.28,41.12],[49.28,40.94],[49.46,40.76],[49.46,40.58],[49.64,40.4],[49.64,40.22],[49.64,40.04],[49.64,39.86],[49.64,39.68],[49.64,39.49],[49.64,39.31],[49.64,39.13],[49.64,38.95],[49.64,38.95]]},{"s":"sacral","p":[[45.83,50.18],[45.83,50.36],[45.83,50.54],[45.83,50.72],[45.83,50.91],[46.02,50.91],[46.2,50.72],[46.2,50.54],[46.2,50.36],[46.2,50.18],[46.2,50.0],[46.2,49.82],[46.2,49.64],[46.2,49.46],[46.02,49.28],[46.02,49.09],[46.02,48.91],[46.02,48.91]]},{"s":"sacral","p":[[48.19,51.09],[48.01,50.91],[47.83,50.72],[47.65,50.54],[47.46,50.36],[47.28,50.18],[47.28,50.0],[47.1,49.82],[46.92,49.64],[46.74,49.46],[46.74,49.28],[46.56,49.09],[46.56,48.91],[46.38,48.73],[46.38,48.55],[46.38,48.37],[46.38,48.19],[46.38,48.19]]},{"s":"root","p":[[45.83,80.43],[45.83,80.61],[45.83,80.79],[45.83,80.97],[45.83,81.15],[45.83,81.34],[45.83,81.52],[45.83,81.7],[45.83,81.88],[45.83,82.06],[45.83,82.24],[45.83,82.42],[45.83,82.6],[45.83,82.78],[45.83,82.97],[45.83,83.15],[45.83,83.33],[45.83,83.33]]},{"s":"heart","p":[[63.77,32.97],[63.77,33.15],[63.77,33.34],[63.77,33.52],[63.77,33.7],[63.77,33.88],[63.77,34.06],[63.77,34.24],[63.77,34.42],[63.77,34.6],[63.77,34.78],[63.77,34.97],[63.77,35.15],[63.77,35.33],[63.77,35.51],[63.77,35.69],[63.77,35.69]]},{"s":"crown","p":[[50.0,3.81],[50.0,3.99],[50.0,4.17],[50.0,4.35],[50.0,4.54],[50.0,4.72],[50.0,4.9],[50.0,5.08],[50.0,5.26],[50.0,5.44],[50.0,5.62],[50.0,5.8],[50.0,5.98],[50.0,6.17],[50.0,6.35],[50.0,6.35]]},{"s":"crown","p":[[51.09,6.71],[50.91,6.89],[50.72,7.07],[50.54,7.25],[50.54,7.43],[50.36,7.62],[50.36,7.8],[50.54,7.98],[50.72,7.8],[50.91,7.62],[51.09,7.62],[51.27,7.62],[51.45,7.43],[51.63,7.43],[51.81,7.43],[51.81,7.43]]},{"s":"eye","p":[[46.2,8.88],[46.2,9.06],[46.02,9.25],[46.02,9.43],[46.02,9.61],[46.02,9.79],[46.02,9.97],[46.02,10.15],[46.02,10.33],[46.02,10.51],[46.2,10.69],[46.2,10.88],[46.38,11.06],[46.56,11.24],[46.74,11.42],[46.74,11.42]]},{"s":"throat","p":[[60.32,22.83],[60.14,22.65],[59.96,22.47],[59.78,22.47],[59.6,22.47],[59.42,22.29],[59.24,22.29],[59.06,22.29],[58.88,22.11],[58.69,22.11],[58.51,21.92],[58.33,21.92],[58.15,21.74],[57.97,21.56],[57.79,21.56],[57.79,21.56]]},{"s":"solar","p":[[53.98,39.68],[53.98,39.86],[54.17,40.04],[54.17,40.22],[54.17,40.4],[54.17,40.58],[54.17,40.76],[54.17,40.94],[54.35,41.12],[54.53,41.31],[54.71,41.49],[54.89,41.67],[55.07,41.67],[55.25,41.67],[55.43,41.67],[55.43,41.67]]},{"s":"solar","p":[[65.94,44.2],[65.94,44.02],[65.94,43.84],[65.76,43.66],[65.76,43.48],[65.58,43.3],[65.58,43.12],[65.4,42.94],[65.4,42.75],[65.22,42.57],[65.22,42.39],[65.03,42.21],[65.03,42.03],[64.85,41.85],[64.67,41.67],[64.67,41.67]]},{"s":"sacral","p":[[51.45,46.38],[51.27,46.2],[51.09,46.02],[50.91,45.83],[50.72,45.65],[50.54,45.47],[50.36,45.29],[50.18,45.11],[50.18,44.93],[50.0,44.75],[50.0,44.57],[50.0,44.38],[50.0,44.2],[50.0,44.02],[50.0,43.84],[50.0,43.84]]},{"s":"root","p":[[43.66,82.06],[43.66,81.88],[43.66,81.7],[43.66,81.52],[43.66,81.34],[43.66,81.15],[43.66,80.97],[43.66,80.79],[43.66,80.61],[43.66,80.43],[43.84,80.25],[43.84,80.07],[43.84,79.89],[43.84,79.71],[44.02,79.52],[44.02,79.52]]},{"s":"eye","p":[[47.83,15.04],[47.83,15.22],[48.01,15.4],[48.19,15.22],[48.37,15.04],[48.19,14.86],[48.01,14.68],[47.83,14.5],[47.65,14.5],[47.46,14.32],[47.28,14.14],[47.1,13.95],[46.92,13.77],[46.74,13.59],[46.74,13.59]]},{"s":"heart","p":[[40.4,30.8],[40.4,30.98],[40.4,31.16],[40.4,31.34],[40.4,31.52],[40.4,31.71],[40.22,31.89],[40.22,32.07],[40.22,32.25],[40.22,32.43],[40.22,32.61],[40.04,32.79],[40.04,32.97],[40.04,33.15],[40.04,33.15]]},{"s":"heart","p":[[60.32,34.42],[60.32,34.6],[60.51,34.78],[60.51,34.97],[60.51,35.15],[60.69,35.33],[60.69,35.51],[60.69,35.69],[60.87,35.87],[60.87,36.05],[61.05,36.23],[61.05,36.42],[61.23,36.6],[61.41,36.78],[61.41,36.78]]},{"s":"heart","p":[[51.27,36.05],[51.27,36.23],[51.27,36.42],[51.09,36.6],[50.91,36.42],[50.72,36.23],[50.54,36.05],[50.36,35.87],[50.36,35.69],[50.36,35.51],[50.36,35.33],[50.18,35.15],[50.36,34.97],[50.36,34.78],[50.36,34.78]]},{"s":"solar","p":[[49.09,39.13],[49.28,38.95],[49.46,38.77],[49.64,38.59],[49.64,38.41],[49.46,38.23],[49.46,38.05],[49.64,37.86],[49.64,37.68],[49.64,37.5],[49.64,37.32],[49.64,37.14],[49.64,36.96],[49.64,36.78],[49.64,36.78]]},{"s":"solar","p":[[50.18,40.94],[50.36,41.12],[50.54,40.94],[50.54,40.76],[50.36,40.58],[50.36,40.4],[50.18,40.22],[50.18,40.04],[50.18,39.86],[50.18,39.68],[50.18,39.49],[50.18,39.31],[50.18,39.13],[50.18,38.95],[50.18,38.95]]},{"s":"sacral","p":[[44.75,50.91],[44.75,51.09],[44.75,51.27],[44.93,51.27],[45.11,51.09],[45.11,50.91],[45.11,50.72],[44.93,50.54],[44.93,50.36],[45.11,50.18],[45.11,50.0],[45.11,49.82],[45.11,49.64],[45.29,49.46],[45.29,49.46]]},{"s":"sacral","p":[[52.17,51.27],[52.17,51.09],[52.17,50.91],[52.17,50.72],[52.35,50.54],[52.54,50.36],[52.72,50.18],[52.72,50.0],[52.9,49.82],[53.08,49.64],[53.08,49.46],[53.26,49.28],[53.26,49.09],[53.44,48.91],[53.44,48.91]]},{"s":"root","p":[[53.8,75.72],[53.8,75.54],[53.8,75.36],[53.98,75.18],[53.8,75.0],[53.8,74.82],[53.8,74.63],[53.8,74.45],[53.8,74.27],[53.8,74.09],[53.8,73.91],[53.8,73.73],[53.8,73.55],[53.8,73.37],[53.8,73.37]]},{"s":"root","p":[[43.66,82.97],[43.66,83.15],[43.66,83.33],[43.66,83.51],[43.66,83.69],[43.66,83.87],[43.66,84.05],[43.66,84.23],[43.66,84.42],[43.66,84.6],[43.66,84.78],[43.66,84.96],[43.66,85.14],[43.66,85.32],[43.66,85.32]]}];
+var BANDS=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
+var PAL={'Root':'#D6524C','Sacral':'#D8924E','Solar':'#DABF6A','Heart':'#5FD5A6',
+ 'Throat':'#5EBBDB','3rd Eye':'#7D93E0','Crown':'#A77EDB'};
+var PMBANDS=[
+ {k:'crown', c:PAL.Crown,     nm:'Crown',     b:'Crown',  yp:4.98, r:9},
+ {k:'eye',   c:PAL['3rd Eye'],nm:'Third Eye', b:'3rd Eye',yp:10.57,r:8},
+ {k:'throat',c:PAL.Throat,    nm:'Throat',    b:'Throat', yp:20.91,r:9},
+ {k:'heart', c:PAL.Heart,     nm:'Heart',     b:'Heart',  yp:30.51,r:13},
+ {k:'solar', c:PAL.Solar,     nm:'Solar',     b:'Solar',  yp:40.21,r:11},
+ {k:'sacral',c:PAL.Sacral,    nm:'Sacral',    b:'Sacral', yp:47.02,r:10},
+ {k:'root',  c:PAL.Root,      nm:'Root',      b:'Root',   yp:53.55,r:12}];
+
+/* ============================================================
+   PLAIN MEANINGS. Every label on this page gets one line of plain
+   English beside it, the first time it is shown, per CLAUDE.md's
+   "unpack every symbol" rule. These are written for this harness
+   and are not copy pulled from the product.
+   ============================================================ */
+var CHARGE_DEF={
+ Fear:'the body bracing against a threat', Shame:'the self judged and found wanting',
+ Anger:'force rising to push back', Disgust:'a push to get distance from something',
+ Sadness:'a loss the body is still holding', Joy:'charge moving toward more of something',
+ Shock:'the system interrupted, faster than thought', Resentment:'anger held past the moment that caused it'};
+var SEAT_DEF={
+ Root:'base of the spine and pelvic floor, survival and belonging',
+ Sacral:'low belly, desire and pleasure',
+ Solar:'upper belly, personal power and will',
+ Heart:'chest, connection and grief',
+ Throat:'neck, voice and truth telling',
+ '3rd Eye':'between the brows, perception and belief',
+ Crown:'top of the head, meaning and the sense of something larger',
+ 'Field-Above':'a reach above the body the engine tracks as an anchor, not a nerve',
+ 'Field-Below':'a reach below the body the engine tracks as an anchor, not a nerve'};
+var HCX_NOTE='A hyper-complex (the engine also calls it a super-complex) is not one of the 112 addresses. '
+ +'It is a bigger pattern the engine assembles once three addresses in a saboteur light up together: one of '
+ +'six repeating shapes a person\'s whole field can take. The sub line below is the clinical family this '
+ +'shape corresponds to in the owner\'s own research notes; the product itself never shows that word to a '
+ +'person reading about themselves (see HCX_LIB\'s own header in nodes.js), so it is marked internal here.';
+
+/* ============================================================
+   GEOMETRY. 100 wide, 0 at the top of the head to just under 100
+   at the heel, the same box BODYPATH and the traced nerve branches
+   both already use. The placement math below is ported line for
+   line from the shipped renderer, atuned_src/ui/map.js (pmAnat),
+   so a measured address lands here exactly where it lands in the
+   product. The scatter for an unmeasured address is this harness's
+   own simplified stand in for atuned_src/ui/map.js's pmGather: same
+   spiral, no collision-with-the-silhouette check, because this is a
+   prototype for the visual idea and not the shipped instrument.
+   ============================================================ */
+var PMYP={}; PMBANDS.forEach(function(b){PMYP[b.k]=b.yp;});
+var B2K={'Root':'root','Sacral':'sacral','Solar':'solar','Heart':'heart','Throat':'throat','3rd Eye':'eye','Crown':'crown'};
+var K2B={}; Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
+var PMSPREAD=1.2, PMGAP=1.45, PMROAM=2.2;
+
+function pmAnat(){
+ var H=ANATHEAD, mm=(H.topZ-H.earZ)/(H.year-H.ytop), out={};
+ function spine(lv){
+  var R=ANATSPINE, i=0;
+  while(i<R.length-2&&lv>R[i+1][0])i++;
+  var a=R[i],b=R[i+1];
+  return a[1]+(lv-a[0])*(b[1]-a[1])/(b[0]-a[0]);}
+ ANAT.forEach(function(row){
+  var pts=row.h?row.h.map(function(p){return {x:50-p[0]/mm,y:H.ytop+(H.topZ-p[1])/mm};})
+   :row.v?row.v.map(function(p){return {x:50+p[1],y:spine(p[0])};})
+   :row.f?row.f.map(function(p){return {x:p[0],y:p[1]};})
+   :[{x:50,y:PMYP[row.at]}];
+  var at=pts.map(function(){return [];});
+  row.ids.forEach(function(id,j){at[j%pts.length].push(id);});
+  at.forEach(function(ids,pi){
+   var c=pts[pi], n=ids.length, a0=(n%2)?-Math.PI/2:((row.v||row.f)?-Math.PI/4:Math.PI);
+   ids.forEach(function(id,j){
+    var t=a0+j*2*Math.PI/n, r=(n>1)?PMSPREAD:0;
+    out[id]={x:c.x+Math.cos(t)*r, y:c.y+Math.sin(t)*r, hx:c.x, hy:c.y};});});});
+ var ids=Object.keys(out).sort(function(a,b){return a-b;});
+ for(var it=0;it<80;it++){
+  for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++){
+   var p=out[ids[i]],q=out[ids[j]],dx=q.x-p.x,dy=q.y-p.y,d=Math.sqrt(dx*dx+dy*dy);
+   if(d>=PMGAP)continue;
+   if(d<1e-6){var t0=(+ids[j])*2.399;dx=Math.cos(t0);dy=Math.sin(t0);d=1;}
+   var push=(PMGAP-d)/2/d;
+   p.x-=dx*push;p.y-=dy*push;q.x+=dx*push;q.y+=dy*push;}
+  ids.forEach(function(id){var m=out[id],ox=m.x-m.hx,oy=m.y-m.hy,o=Math.sqrt(ox*ox+oy*oy);
+   if(o>PMROAM){m.x=m.hx+ox*PMROAM/o;m.y=m.hy+oy*PMROAM/o;}});}
+ return out;}
+
+function pmGather(anat){
+ var out={}, taken=Object.keys(anat).map(function(id){return anat[id];});
+ var G={r0:3.15,step:0.92,sx:1.35,sy:0.72,gap:1.6}, by={};
+ NODES.forEach(function(n){
+  if(anat[n.i]||n.i>108)return;
+  var k=B2K[n.b]; if(!k)return;
+  (by[k]=by[k]||[]).push(n.i);});
+ Object.keys(by).forEach(function(k){
+  var ids=by[k].slice().sort(function(a,b){return a-b;}), j=0;
+  ids.forEach(function(id){
+   var placed=false;
+   for(;j<600;j++){
+    var r=Math.sqrt(G.r0*G.r0+G.step*G.step*j), t=j*2.39996;
+    var x=50+Math.cos(t)*r*G.sx, y=PMYP[k]+Math.sin(t)*r*G.sy, ok=true;
+    for(var i=0;i<taken.length;i++){var q=taken[i];
+     if((q.x-x)*(q.x-x)+(q.y-y)*(q.y-y)<G.gap*G.gap){ok=false;break;}}
+    if(ok){out[id]={x:x,y:y};taken.push(out[id]);j++;placed=true;break;}}
+   if(!placed)out[id]={x:50,y:PMYP[k]};});});
+ return out;}
+
+var FIELD_POS={109:{x:46.5,y:-9},110:{x:53.5,y:-5},111:{x:46.5,y:107},112:{x:53.5,y:103}};
+
+var ANAT_POS=pmAnat();
+var SCATTER_POS=pmGather(ANAT_POS);
+var POS=Object.assign({},ANAT_POS,SCATTER_POS,FIELD_POS);
+
+/* ============================================================
+   INDEX. Every node by id, every saboteur row a node sits in, and
+   the hyper-complex family that row belongs to, pre-joined once.
+   ============================================================ */
+var NODE_BY_ID={}; NODES.forEach(function(n){NODE_BY_ID[n.i]=n;});
+var HCX_BY_NAME={}; HCX_LIB.forEach(function(h){HCX_BY_NAME[h.nm]=h;});
+var SAB_BY_NODE={};
+SAB_LIB.forEach(function(row){
+ row.nids.forEach(function(id){(SAB_BY_NODE[id]=SAB_BY_NODE[id]||[]).push(row);});});
+var NODES_BY_HCX={};
+SAB_LIB.forEach(function(row){
+ (NODES_BY_HCX[row.hcx]=NODES_BY_HCX[row.hcx]||new Set());
+ row.nids.forEach(function(id){NODES_BY_HCX[row.hcx].add(id);});});
+
+function seatColor(b){return 'var(--'+(B2K[b]||'field')+')';}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+/* ============================================================
+   RENDER. One SVG, five stacked groups: body silhouette, nerve
+   branches, the travelling charge pulses, the seven seat rings,
+   the field anchors, then the 112 address markers on top so they
+   are always the thing a click lands on.
+   ============================================================ */
+var sel=null, selHcx=null;
+
+function bodyPathD(){return BODYPATH;}
+
+function drawBody(){
+ var g=document.getElementById('gBody');
+ g.innerHTML='<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
+  +'<path d="'+bodyPathD()+'" fill="rgba(170,172,180,.07)" stroke="rgba(220,222,230,.28)" '
+  +'stroke-width="1.6" vector-effect="non-scaling-stroke"/></g>';
+ document.getElementById('bodyClipPath').setAttribute('d',bodyPathD());
+ document.getElementById('bodyClipPath').setAttribute('transform',
+  'translate('+PMTX+','+PMTY+') scale('+PMS+')');
+}
+
+function branchColor(br){return seatColor(K2B[br.s]);}
+
+function drawBranches(on){
+ var g=document.getElementById('gBranch'), gp=document.getElementById('gPulse');
+ if(!on){g.innerHTML='';gp.innerHTML='';return;}
+ var hiSeat=sel?B2K[NODE_BY_ID[sel].b]:null;
+ var html='', pulse='';
+ NERVEBR.forEach(function(br,i){
+  var c=branchColor(br), isHi=hiSeat&&br.s===hiSeat;
+  var d='M'+br.p.map(function(q){return q[0]+','+q[1];}).join(' L');
+  html+='<path id="br'+i+'" d="'+d+'" fill="none" stroke="'+c+'" '
+   +'stroke-width="'+(isHi?0.55:0.3)+'" opacity="'+(isHi?0.85:0.30)+'" stroke-linecap="round"/>';
+  if(document.getElementById('optAnim').checked){
+   var dur=(5+ (i%7)*0.6).toFixed(2)+'s', delay=((i%11)*0.35).toFixed(2)+'s';
+   pulse+='<circle r="'+(isHi?0.85:0.55)+'" fill="'+c+'" opacity="'+(isHi?0.95:0.55)+'">'
+    +'<animateMotion dur="'+dur+'" begin="'+delay+'" repeatCount="indefinite" rotate="auto">'
+    +'<mpath href="#br'+i+'"/></animateMotion>'
+    +'<animate attributeName="opacity" values="0;'+(isHi?0.95:0.55)+';'+(isHi?0.95:0.55)+';0" '
+    +'keyTimes="0;0.08;0.92;1" dur="'+dur+'" begin="'+delay+'" repeatCount="indefinite"/>'
+    +'</circle>';}});
+ g.innerHTML=html; gp.innerHTML=pulse;}
+
+function drawSeats(on){
+ var g=document.getElementById('gSeat');
+ if(!on){g.innerHTML='';return;}
+ var html='';
+ PMBANDS.forEach(function(b){
+  var c=seatColor(b.k), on2=(sel&&B2K[NODE_BY_ID[sel].b]===b.k);
+  html+='<circle class="seat-hit" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'+(b.r/2.1).toFixed(2)
+   +'" fill="transparent" stroke="'+c+'" stroke-width="'+(on2?0.55:0.3)+'" '
+   +'opacity="'+(on2?0.95:0.42)+'" style="cursor:pointer"/>'
+   +'<text x="50" y="'+(b.yp-(b.r/2.1)-1.4).toFixed(2)+'" text-anchor="middle" '
+   +'style="font-size:2.1px;fill:'+c+';opacity:.75;pointer-events:none">'+esc(b.nm)+'</text>';});
+ g.innerHTML=html;
+ Array.prototype.forEach.call(g.querySelectorAll('.seat-hit'),function(el){
+  el.onclick=function(e){e.stopPropagation();openSeat(el.getAttribute('data-seat'));};});}
+
+function drawField(on){
+ var g=document.getElementById('gField');
+ if(!on){g.innerHTML='';return;}
+ var html='';
+ [109,110,111,112].forEach(function(id){
+  var p=POS[id], n=NODE_BY_ID[id];
+  html+='<line x1="50" y1="'+(id<111?2:98)+'" x2="'+p.x+'" y2="'+p.y+'" stroke="var(--field)" '
+   +'stroke-width=".18" opacity=".35" stroke-dasharray="1 1"/>';});
+ g.innerHTML=html;}
+
+function nodeOK(n){
+ if(n.i>108)return document.getElementById('optField').checked;
+ var measured=!!ANAT_POS[n.i];
+ return measured?document.getElementById('optMeasured').checked:document.getElementById('optScatter').checked;}
+
+function drawNodes(){
+ var g=document.getElementById('gNodes'), html='';
+ NODES.forEach(function(n){
+  if(!nodeOK(n))return;
+  var p=POS[n.i]; if(!p)return;
+  var c=seatColor(n.b), isSel=(sel===n.i);
+  var inHcx=selHcx&&NODES_BY_HCX[selHcx]&&NODES_BY_HCX[selHcx].has(n.i);
+  var r=n.i>108?1.05:0.78;
+  html+='<g class="node-dot'+(isSel?' sel':'')+'" data-id="'+n.i+'" transform="translate('+p.x.toFixed(2)+','+p.y.toFixed(2)+')">'
+   +(inHcx?'<circle class="ring" r="'+(r+1.1)+'" stroke="'+c+'" opacity=".9"/>':'')
+   +'<circle class="ring" r="'+(r+0.55)+'" stroke="'+c+'"/>'
+   +'<circle class="core" r="'+r+'" fill="'+c+'" opacity="'+(isSel?1:0.86)+'"/>'
+   +'</g>';});
+ g.innerHTML=html;
+ Array.prototype.forEach.call(g.querySelectorAll('.node-dot'),function(el){
+  el.onclick=function(e){e.stopPropagation();openNode(+el.getAttribute('data-id'));};});}
+
+function drawHcxLegend(){
+ var g=document.getElementById('hcxLegend'), html='';
+ HCX_LIB.forEach(function(h){
+  var c=seatColor(h.b);
+  html+='<button data-hcx="'+esc(h.nm)+'" class="'+(selHcx===h.nm?'on':'')+'">'
+   +'<span class="sw" style="background:'+c+'"></span>'+esc(h.nm)+'</button>';});
+ g.innerHTML=html;
+ Array.prototype.forEach.call(g.querySelectorAll('button'),function(b){
+  b.onclick=function(){selHcx=(selHcx===b.getAttribute('data-hcx'))?null:b.getAttribute('data-hcx');
+   if(selHcx)openHcx(selHcx); renderAll();};});}
+
+function render(){
+ drawBody();
+ drawBranches(document.getElementById('optBranch').checked);
+ drawSeats(document.getElementById('optSeat').checked);
+ drawField(document.getElementById('optField').checked);
+ drawNodes();}
+
+function renderAll(){render();drawHcxLegend();drawList();drawSeatCap();}
+
+/* ============================================================
+   THE RAIL. A searchable list of all 112, grouped by seat in the
+   same order the body reads top to bottom, and the detail panel
+   that opens on a click from either the list or the figure.
+   ============================================================ */
+var SEAT_ORDER=['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root','Field-Above','Field-Below'];
+
+function drawSeatCap(){
+ var g=document.getElementById('seatcap'), html='';
+ SEAT_ORDER.filter(function(b){return b!=='Field-Above'&&b!=='Field-Below';}).forEach(function(b){
+  var c=seatColor(b), count=NODES.filter(function(n){return n.b===b;}).length;
+  html+='<button data-b="'+esc(b)+'" style="color:'+c+'" class="">'+esc(b)+' '+count+'</button>';});
+ g.innerHTML=html;
+ Array.prototype.forEach.call(g.querySelectorAll('button'),function(btn){
+  btn.onclick=function(){openSeat(B2K[btn.getAttribute('data-b')]);};});}
+
+function drawList(){
+ var g=document.getElementById('list'), q=(document.getElementById('q').value||'').toLowerCase();
+ var html='';
+ SEAT_ORDER.forEach(function(b){
+  var rows=NODES.filter(function(n){return n.b===b;}).filter(function(n){
+   if(!q)return true;
+   return (n.k+' '+(n.n||'')+' '+b).toLowerCase().indexOf(q)>=0;});
+  if(!rows.length)return;
+  var c=seatColor(b);
+  html+='<div class="seatgroup"><div class="hd" style="color:'+c+'">'+esc(b)+'</div>';
+  rows.forEach(function(n){
+   html+='<div class="row'+(sel===n.i?' sel':'')+'" data-id="'+n.i+'">'
+    +'<span class="dot" style="background:'+c+'"></span>'
+    +'<span class="nm">'+esc(n.k)+'</span><span class="num">'+n.i+'</span></div>';});
+  html+='</div>';});
+ g.innerHTML=html||'<div class="empty" style="padding:12px">No match.</div>';
+ Array.prototype.forEach.call(g.querySelectorAll('.row'),function(el){
+  el.onclick=function(){openNode(+el.getAttribute('data-id'));};});}
+
+function sabRowsHtml(id){
+ var rows=SAB_BY_NODE[id];
+ if(!rows||!rows.length)return '<div class="d-row"><div class="val" style="color:var(--mute)">'
+  +'No saboteur in the library runs through this address. It carries its own charge on its own, with nothing '
+  +'compounding into a bigger pattern from here.</div></div>';
+ return rows.map(function(row){
+  var h=HCX_BY_NAME[row.hcx]||{};
+  var c=seatColor(h.b||'Root');
+  var addrs=row.nids.map(function(aid){
+   var a=NODE_BY_ID[aid]; return '<b>'+esc(a.k)+'</b>'+(aid===id?' (this one)':'');}).join(', ');
+  return '<div class="sabrow"><div class="nm">'+esc(row.nm)+'</div>'
+   +'<div class="hcx" style="color:'+c+'">hyper-complex: '+esc(row.hcx)
+   +' — "'+esc(h.d||'')+'"'+(h.sub?' <span style="opacity:.6">(internal: '+esc(h.sub)+')</span>':'')+'</div>'
+   +'<div class="addrs">built from: '+addrs+'</div></div>';}).join('');}
+
+function openNode(id){
+ sel=id; selHcx=null;
+ var n=NODE_BY_ID[id], c=seatColor(n.b), measured=!!ANAT_POS[id];
+ var d=document.getElementById('detail');
+ var place=n.i>108?'A field anchor: no nerve, held above or below the body as a reach rather than a tissue.'
+  :measured?'Placed from a real measured point (a brain atlas centroid, a vertebral level, or one of the two reference charts the owner supplied), not guessed.'
+  :'No measured place exists for this one yet, so it is honestly shown gathered at its seat rather than planted somewhere precise it has not earned. (atuned_src/engine/data/figure.js, the anatomy header, rules this out as a guess.)';
+ d.innerHTML=''
+  +'<span class="d-tag" style="background:'+c+'22;color:'+c+'">'+esc(n.b)+' · '+esc(SEAT_DEF[n.b]||'')+'</span>'
+  +'<h2 class="d-k">'+esc(n.k)+' <span style="color:var(--mute);font-weight:400;font-size:13px">#'+n.i+' of 112</span></h2>'
+  +'<div class="d-n">'+esc(n.n||'no named nerve, a field anchor')+(n.n?' — a plexus is a knot of nerves meeting in one place; a bare nerve is one named line. Either way, this is the physical thing the engine hangs this address on.':'')+'</div>'
+  +'<div class="d-row"><div class="lbl">What it governs</div><div class="val">'+esc(n.a)+'</div></div>'
+  +'<div class="d-row"><div class="lbl">Its distortion, under charge</div><div class="val">'+esc(n.d)+'</div></div>'
+  +'<div class="d-row"><div class="lbl">Charge most often tagged here</div><div class="val">'+(n.c?esc(n.c):'none assigned')
+  +'</div>'+(n.c?'<div class="sub">'+esc(CHARGE_DEF[n.c]||'')+'</div>':'')+'</div>'
+  +'<div class="d-row"><div class="lbl">Where this sits on the figure</div><div class="sub">'+place+'</div></div>'
+  +'<hr class="sep">'
+  +'<div class="d-row"><div class="lbl">Saboteurs built on this address</div><div class="sub" style="margin-bottom:8px">'+HCX_NOTE+'</div>'
+  +sabRowsHtml(id)+'</div>';
+ renderAll();}
+
+function openSeat(k){
+ sel=null; selHcx=null;
+ var b=K2B[k], c=seatColor(b);
+ var members=NODES.filter(function(n){return n.b===b;});
+ var d=document.getElementById('detail');
+ d.innerHTML=''
+  +'<span class="d-tag" style="background:'+c+'22;color:'+c+'">seat</span>'
+  +'<h2 class="d-k">'+esc(b)+'</h2>'
+  +'<div class="d-n">'+esc(SEAT_DEF[b]||'')+'</div>'
+  +'<div class="d-row"><div class="lbl">'+members.length+' addresses seated here</div><div class="val">'
+  +members.map(function(n){return esc(n.k);}).join(', ')+'</div></div>';
+ renderAll();}
+
+function openHcx(nm){
+ sel=null;
+ var h=HCX_BY_NAME[nm], c=seatColor(h.b);
+ var ids=Array.from(NODES_BY_HCX[nm]||[]).sort(function(a,b2){return a-b2;});
+ var rows=SAB_LIB.filter(function(r){return r.hcx===nm;});
+ var d=document.getElementById('detail');
+ d.innerHTML=''
+  +'<span class="d-tag" style="background:'+c+'22;color:'+c+'">hyper-complex</span>'
+  +'<h2 class="d-k">'+esc(nm)+'</h2>'
+  +'<div class="d-n">'+esc(h.d)+(h.sub?' <span style="opacity:.6">(internal correspondence, never shown to a person: '+esc(h.sub)+')</span>':'')+'</div>'
+  +'<div class="d-row"><div class="lbl">'+rows.length+' saboteurs in this family</div><div class="val">'
+  +rows.map(function(r){return esc(r.nm);}).join(', ')+'</div></div>'
+  +'<div class="d-row"><div class="lbl">'+ids.length+' addresses lit up on the figure</div><div class="val">'
+  +ids.map(function(id){return esc(NODE_BY_ID[id].k);}).join(', ')+'</div></div>';
+ renderAll();}
+
+/* ============================================================
+   WIRES.
+   ============================================================ */
+document.getElementById('q').addEventListener('input',drawList);
+['optBranch','optSeat','optAnim','optField','optMeasured','optScatter'].forEach(function(id){
+ document.getElementById(id).addEventListener('change',render);});
+document.getElementById('svg').addEventListener('click',function(){sel=null;selHcx=null;renderAll();
+ document.getElementById('detail').innerHTML='<div class="empty">Click any point on the figure, or a name on the list above, to open it here.</div>';});
+renderAll();
+</script>
+</body>
+</html>
