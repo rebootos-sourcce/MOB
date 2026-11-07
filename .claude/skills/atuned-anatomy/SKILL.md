@@ -154,19 +154,63 @@ never copy its images, captions or text into this repo.
 Confirmed present, with real plates: cranial nerves at the base of the
 skull (book p.74-75), facial nerve/plexus of the face (p.76), cervical
 plexus and the start of the brachial plexus in neck dissections
-(p.85-199 range, per the first extraction pass). The book's own table of
-contents (p.13) places the DEDICATED Brachial Plexus plate at p.413, and
-Lumbosacral/Lumbar Plexus plates at p.470-475 — both still needed, not yet
-delivered as of the last file received (covers roughly p.1-270, head/neck/
-early trunk only; arm and leg nerve chapters are later in the book and
-still outstanding).
+(p.85-199 range, per the first extraction pass, head/neck/early trunk).
 
-Delivered in 3 files, 2026-11-07 ("Part one"): 90 pages each, real PDFs,
-readable directly with the Read tool's `pages` parameter (max 20
-pages/request). A fourth Drive-hosted copy of the whole book exists but
-can't be pulled whole: Drive download caps at 10MB against this book's
-43MB, and the text-extraction tool truncates partway through (stopped at
-its own page 199 of ~520, not a fixed book boundary).
+**The two plates this file originally existed to find are now both
+confirmed, read, and cited** (2026-11-07, "Atlas_Retry_Part_5/6/7"):
+
+**Brachial Plexus — book p.413** (`Atlas_Retry_Part_5.pdf`, PDF-internal
+page 67; that file's printed range is 386-436, upper limb). Real cadaver
+dissection, clavicle and pectoral muscles partly removed: roots C5-T1,
+posterior/lateral/medial cords, and every terminal nerve (axillary,
+musculocutaneous, median, radial, ulnar) traced out, paired with a
+schematic that color-codes each cord against the scalenes/first
+rib/clavicle. Surrounding plates worth citing by address: p.399
+(radial/median/musculocutaneous/ulnar branch schematics), p.400
+(cutaneous-nerve-territory map of the whole arm, roots C4-T1 labeled
+directly on it), p.408-409 (the quadrangular and triangular spaces — the
+atlas's own named surgical landmarks for the axillary and radial nerves
+against teres major/minor and the triceps heads), p.416-418 (four
+successive depth layers at the elbow, landmarked off the medial
+epicondyle), p.431 (true axial cross-sections of the elbow and
+mid-forearm, each paired with its own MRI slice — the single best depth
+reference in the file).
+
+**Lumbosacral Plexus — book p.470-475** (`Atlas_Retry_Part_6.pdf`,
+PDF-internal pages 34-39; that file's printed range is 437-486, lower
+limb only, no upper-limb content). p.470 is the schematic overview
+(lumbar plexus L1-L4, sacral plexus L4-S4, pudendal plexus S2-S4,
+bracketed together as the lumbosacral plexus). p.471 is the real
+dissection, landmarked off the sacral promontory and pubic bone. p.475
+("Spinal Cord and Lumbar Plexus") landmarks the plexus origin against the
+posterior abdominal wall and gives a companion segmental-level schematic.
+p.476-477 ("Surface Anatomy of the Lower Limb") pair a real intact-leg
+surface photo with a dermatome map, landmarked off the iliac crest,
+popliteal fossa, malleoli and patella — exactly the surface/landmark
+pairing this skill's method calls for.
+
+**The clearest worked example of this skill's own method, already in the
+book — book p.482 (Gluteal Region).** The atlas draws the method itself:
+a triangle between the posterior superior iliac spine, the greater
+trochanter, and the ischial tuberosity, then states in its own words
+where the sciatic nerve crosses it — "between the middle and posterior
+third" of the tuberosity-to-trochanter line. That is a bony landmark plus
+a proportional fraction, cited to a real plate, with nothing invented.
+Use this plate as the template for how every other address's citation
+should read.
+
+Delivered in 7 files total, 2026-11-07 ("Part one" = `Anatomy_Atlas_90pg_01/02/03.pdf`,
+covering book p.1-~270; "retry" batch = `Atlas_Retry_Part_5/6/7.pdf`,
+covering book p.347-532, including the index). All real PDFs, read
+directly with the Read tool's `pages` parameter (max 20 pages/request).
+Still not delivered: book p.~271-346 (the gap between the two batches —
+likely thorax/abdomen viscera, not nerve-plexus territory based on the
+chapter order either side of it, but unconfirmed). A Drive-hosted copy of
+the whole book exists but can't be pulled whole through this project's
+Drive access: download caps at 10MB against this book's 43MB, and the
+text-extraction tool truncates partway through (stopped at its own page
+199 of ~520, not a fixed book boundary) — the direct file uploads above
+are the real working channel, not the Drive copy.
 
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
