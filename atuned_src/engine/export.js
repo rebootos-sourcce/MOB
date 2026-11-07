@@ -224,7 +224,7 @@ if(typeof module!=='undefined'&&module.exports){
      entry point a caller needs; the seven part builders are exported beside it
      because the gate asserts each part on its own and a part no test can reach
      is a part with no owner, which is the defect this layer exists to close. */
-                  sniffStory:sniffStory, sniffAxes:sniffAxes,
+                  sniffStory:sniffStory, sniffAxes:sniffAxes, bindAxes:bindAxes,
                   sniffSaboteurs:sniffSaboteurs, sniffLaws:sniffLaws,
                   sniffFlow:sniffFlow, sniffGates:sniffGates,
                   sniffDepth:sniffDepth, sniffOffer:sniffOffer,

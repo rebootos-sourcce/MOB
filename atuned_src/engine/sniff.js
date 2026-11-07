@@ -1767,6 +1767,66 @@ function sniffAxes(p){
    named:(cited[c]||[]).some(function(w){return w.indexOf('named')===0||w.indexOf('the text named')===0;})});});
  return out;}
 
+/* ---------- the bind · one fetter rising and falling over time ----------
+   His words, 7 November, corrected twice in the same breath. Not two states
+   held at once: a toggle across days. "Monday you wake up feeling superior,
+   the next day you feel inferior... confident... unconfident... that's how
+   you can tell." And where it lives: "the bind would be at the fetter
+   level."
+
+   WHY RE-READING OLD ENTRIES IS HONEST. The sniffer is pure: parseStory of
+   the same text gives the same imprints every time, which is the whole
+   reason atomIndex (ui/wheel.js) can re-walk every entry on demand with no
+   second copy of anything. This does the same walk, through sniffAxes
+   instead of imprints, because a fetter's shadow is what sniffAxes already
+   resolves per entry and bindAxes only has to watch it rise and fall.
+
+   WHAT IS A FACT AND WHAT IS THIS FUNCTION'S OWN READING. sniffAxes gives a
+   true per-entry shadow for each of the nine fetters: which entry spiked on
+   which fetter is not inferred here, it is read straight off the sniffer.
+   The coherent reading is different. sniffAxes's own comment says it plainly:
+   "the lexicon's coherent seat does not say WHICH axis a calm word answers,"
+   so it is one whole-text number, the same on every axis in that entry. Calling
+   a calm entry THE coherent answer to one particular fetter is this
+   function's own inference, not a second fact the sniffer states, and every
+   row below says so in its own because line rather than passing as read.
+
+   THRESHOLDS ARE UNTUNED. BIND_SHADOW_W and BIND_COH_W are a first floor on
+   each side, same shape as the loaded line SQ already uses (4) and the
+   overshoot line JQ already uses (where it begins). BIND_FLIPS is how many
+   real alternations, shadow then coherent then shadow again, count as a
+   toggle rather than one bad week. Nobody has ruled on any of the three. */
+var BIND_SHADOW_W=4, BIND_COH_W=3, BIND_FLIPS=2;
+function bindAxes(entries){
+ entries=Array.isArray(entries)?entries:[];
+ var rows=[];
+ entries.forEach(function(e,ei){
+  if(!e||typeof e.text!=='string'||!e.text)return;
+  var p,axes;
+  try{p=parseStory(e.text); axes=sniffAxes(p);}catch(err){return;}
+  rows.push({ei:ei,t:e.t,axes:axes});});
+ var out=[];
+ CHARGES.forEach(function(f){
+  var seq=[],flips=0,last=null;
+  rows.forEach(function(r){
+   var a=r.axes.filter(function(x){return x.axis===f;})[0]; if(!a)return;
+   /* shadow is read, never inferred. coherent-for-this-fetter is a reading:
+      the entry's own calm language was up while this one fetter's own shadow
+      was down, which is the closest this engine can honestly say today. */
+   var state=a.shadow>=BIND_SHADOW_W?'shadow'
+    :(a.coherent>=BIND_COH_W&&a.shadow<BIND_SHADOW_W/2)?'coherent':null;
+   if(!state)return;
+   seq.push({ei:r.ei,t:r.t,state:state,shadow:a.shadow,coherent:a.coherent});
+   if(last&&state!==last)flips++;
+   last=state;});
+  if(flips>=BIND_FLIPS)out.push({fetter:f,flips:flips,entries:seq,
+   because:'"'+f+'" rose past '+BIND_SHADOW_W+' in some entries and fell while calm '
+    +'language rose past '+BIND_COH_W+' in others, back and forth, '+flips+' time'
+    +(flips===1?'':'s')+'. the shadow side is read off the text; the coherent '
+    +'side is this reading’s own inference, not yet a fetter-specific fact '
+    +'the sniffer states.'});});
+ return out.sort(function(a,b){return b.flips-a.flips;});}
+
 /* ---------- saboteurs · ranked confidence, no boolean firing set ----------
    THERE IS NO FIRING THRESHOLD HERE AND THAT IS DELIBERATE. The first
    measurement of the ramp put it BEHIND a hard floor at 0.6 and it scored

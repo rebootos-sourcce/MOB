@@ -144,6 +144,7 @@ var UNPACK_BASE={
  /* THE CHAIN OF PATTERNS */
  'address':'An address is one exact place in your body where a pattern sits.',
  'charge':'Charge is survival energy stuck at one place in your body.',
+ 'bind':'A bind is a pattern that keeps flipping between a feeling and its opposite over time, instead of settling into either one.',
  'fetter':'A fetter is a named pattern that sits at one address and fires when something matches it.',
  'complex':'A complex is two saboteurs from the same family joined into one pattern.',
  'hyper complex':'A hyper complex forms when complexes of the same family run together, one ring further in than a complex.',

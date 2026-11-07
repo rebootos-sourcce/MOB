@@ -476,6 +476,27 @@ function sumSeats(){
     x.p.n,
     pct('seatload',x.load)||0, fmtPct('seatload',x.load), null,
     ' data-seat="'+esc(x.p.n)+'"');}).join('');}
+/* THE BIND. His words, 7 November, corrected twice: not two states held at
+   once, a toggle across days -- "Monday you wake up feeling superior, the
+   next day inferior... confident... unconfident... that's how you can
+   tell" -- read at the fetter level ("the bind would be at the fetter
+   level"). bindAxes (engine/sniff.js) walks the person's own entries in
+   order and watches one fetter's shadow rise and fall; CHILD's own opp
+   field names the real opposite it toggles against, so the line names
+   it, Fear and Trust, not "its opposite". Folded, same as Heaviest seats
+   just above it, because most readings carry none and an empty heading
+   would be one more thing on the screen saying nothing. */
+function sumBind(){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var binds; try{binds=(typeof bindAxes==='function')?bindAxes(ents):[];}catch(e){binds=[];}
+ if(!binds.length)return '';
+ return binds.map(function(x){
+  var ch=CHILD.filter(function(c){return c.nm===x.fetter;})[0];
+  var opp=ch?ch.opp:'its opposite';
+  return sumStructRow(x.fetter,
+   'Bind: toggles between '+x.fetter.toLowerCase()+' and '+opp.toLowerCase()+', '
+    +x.flips+' time'+(x.flips===1?'':'s')+' across what you’ve written',
+   ch?ch.seat:'Root', 0, String(x.flips), null, ' data-bind="'+esc(x.fetter)+'"');}).join('');}
 function sumChain(r){
  /* the chain. counts, never against a total. */
  /* ONLY THE RUNGS THE PLAN CAN SEE ARE COUNTED, and the first one it cannot is
@@ -1282,6 +1303,7 @@ function sumFull(r){
     +sumGlance(r,true)
     +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
     +sgFold('seats','Heaviest seats',sumSeats())
+    +sgFold('bind','Binds',sumBind())
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
