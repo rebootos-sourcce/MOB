@@ -54,22 +54,28 @@ var UNI_STYLE =
 ".uni-widget .canvas-wrap{position:relative;width:100%;max-width:640px;background:transparent;border:none;border-radius:0;overflow:visible}"+
 ".uni-widget canvas{display:block;width:100%;aspect-ratio:640/520}"+
 ".uni-widget [hidden]{display:none!important}"+
-/* round TE, caught by tests/design.js: every class the injected markup
-   carries needs a real rule, even one that only ever paints a hidden
-   element, so nothing here reads as a dead or typo'd class elsewhere in
-   the real app. These are the demo chrome's own rules, scoped under
-   .uni-widget instead of the standalone page's bare selectors, kept
-   faithful to uni-widget.html rather than invented fresh. */
+/* round TE, caught by tests/design.js, twice: first that every class the
+   injected markup carries needs a real rule even on a hidden element, so
+   nothing here reads as dead or typo'd elsewhere in the real app; then,
+   once these rules existed, that they carried the demo page's own
+   decorative choices (10px text, under this project's own 11px floor,
+   and text-transform:uppercase, against its "no all-caps UI copy" house
+   rule) straight across. The gate does not know these elements are
+   hidden and should not have to; it holds every class this file writes
+   to the same floor a visible one would meet. So this is NOT faithful to
+   uni-widget.html's own demo styling, by design: a minimum, compliant
+   rule for each class, never shown, rather than a copy of a decorative
+   choice this project already rules against. */
 ".uni-widget .coh-row{display:flex;justify-content:space-between;align-items:baseline}"+
-".uni-widget .coh-label{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase}"+
-".uni-widget .coh-zone{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase}"+
+".uni-widget .coh-label{font-size:11px;font-weight:700;letter-spacing:0.08em}"+
+".uni-widget .coh-zone{font-size:11px;font-weight:700;letter-spacing:0.08em}"+
 ".uni-widget .coh-val{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;min-width:2.8ch;text-align:right}"+
-".uni-widget .quotient-row{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center}"+
+".uni-widget .quotient-row{font-size:11px;font-weight:600;letter-spacing:0.04em;text-align:center}"+
 ".uni-widget .demo-row{display:flex;gap:10px}"+
-".uni-widget .demo-btn{flex:1;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;cursor:pointer}"+
+".uni-widget .demo-btn{flex:1;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;cursor:pointer}"+
 ".uni-widget .speak-area{width:100%;font-family:system-ui,-apple-system,sans-serif;font-size:13px;line-height:1.5;resize:none;outline:none}"+
-".uni-widget .shader-panel{font-family:ui-monospace,\"SF Mono\",Menlo,Consolas,monospace;font-size:10px;line-height:1.6;white-space:pre;overflow-x:auto}"+
-".uni-widget .desc-name{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase}"+
+".uni-widget .shader-panel{font-family:ui-monospace,\"SF Mono\",Menlo,Consolas,monospace;font-size:11px;line-height:1.6;white-space:pre;overflow-x:auto}"+
+".uni-widget .desc-name{font-size:11px;font-weight:700;letter-spacing:0.08em}"+
 ".uni-widget .desc-body{font-size:12px;line-height:1.6}";
 
 var UNI_HTML =
