@@ -897,7 +897,14 @@ function runSabDrill(s){
    for all nineteen. Four are under a different name in the engine, and the
    drill says both rather than picking one, because that ruling is not mine. */
 function runDomDrill(d){
- var k=KB_KEY(d.nm), def=DOMDEF[k], alt=KB_RENAME[k];
+ /* FOUR DOMAINS ARE A DIFFERENT KEY IN DOMDEF, 4 November. DOMAINS[] still
+    names Descent, Connection, Exchange and Restoration; DOMDEF is keyed by
+    the codex name KB_RENAME points each one to (sacrifice, love,
+    communication, healing), never by the old one. The lookup above found
+    def undefined for exactly these four and fell to the one line "what it
+    is" fallback, so the book's own clear/distorted text never printed for
+    them. def now also tries DOMDEF under the renamed key. */
+ var k=KB_KEY(d.nm), alt=KB_RENAME[k], def=DOMDEF[k]||(alt&&DOMDEF[KB_KEY(alt)]);
  var h='<div class="pm-eye">Blueprint domain</div>'
   +'<div class="ad-nm">'+esc(d.nm)+'</div>'
   +'<div class="ad-sub">'+esc(d.r)+' cluster'+(alt?', called '+esc(alt)+' in the codex':'')+'</div>';
