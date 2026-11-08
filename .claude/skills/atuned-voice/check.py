@@ -143,6 +143,19 @@ NOT_COPY = (
     ('DESCENT', ('[]', 'content', 'inferenceBasis'),
      'why each descent record is called source defined or inferred: a note '
      'about the record, not a line in it'),
+    ('DESCENT', ('[]', 'content', 'crosswalk'),
+     'how a record ties, or does not tie, into compute()\'s own chain: a '
+     'wiring note for whoever reviews it, not a line a person reads'),
+    ('DESCENT', ('[]', 'content', 'falsification'),
+     'the concrete signs that would argue against a record applying to a '
+     'specific person: a practitioner\'s checklist, not a line a person reads'),
+    ('DESCENT', ('[]', 'content', 'trustBoundary'),
+     'what consent, sight and revocation machinery a record would need before '
+     'anyone saw it, and that none of it exists yet: a boundary note for '
+     'whoever builds practitioner mode, not a line a person reads'),
+    ('DESCENT', ('[]', 'content', 'reviewStatus'),
+     'which research passes a record has been through and what is still open: '
+     'a status line for whoever reviews it next, not a line a person reads'),
 )
 NOT_COPY_READERS = ('atuned_src', 'funnel', 'marketing', 'functions')
 NOT_COPY_SKIP = ('dist', 'node_modules')
