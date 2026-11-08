@@ -160,16 +160,22 @@ function stDashChakraHealth(){
   +'</section>';
  return o;}
 
-/* THE 21 LAWS, grouped by seat (3 to 4 a seat, SI's own grouping) rather
+/* INTEGRITY, grouped by seat (3 to 4 a seat, SI's own grouping) rather
    than one flat list of 21 -- a compact left rail reading 21 ungrouped rows
    is not a reading a person can take in. Each law reads lawNow() off the
    current record (compute.js), same source CQ itself sums; a law never
    answered prints the dash, the same unread-is-not-zero rule the rest of
-   this file already keeps, never 21 laws read as 21 failing grades. */
+   this file already keeps, never 21 laws read as 21 failing grades.
+   CALLED INTEGRITY, NOT "THE 21 LAWS", 8 November, his words: "don't call
+   it the 21 laws, just call it integrity." The engine's own name for this
+   same arithmetic is already "moral integrity" (CLAUDE.md: "the book
+   calls this set the Laws of Spiritual Integrity; the owner ruled moral"),
+   so this is the product's own word, not a new one. The section still
+   reads the real 21 laws underneath; only the heading changes. */
 function stDashLaws(){
  if(typeof SI==='undefined'||typeof lawIn!=='function'||typeof lawNow!=='function')return '';
  var o='<section class="st-en st-si" id="st-laws" aria-labelledby="st-laws-h">'
-  +'<h2 class="rblk" id="st-laws-h">The 21 Laws</h2>';
+  +'<h2 class="rblk" id="st-laws-h">Integrity</h2>';
  o+=BANDS.map(function(b){
   var laws=SI.filter(function(l){return l.b===b;});
   if(!laws.length)return '';
