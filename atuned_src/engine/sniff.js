@@ -637,6 +637,40 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* ============================================================
+   WHO HANDED IT DOWN. See ORIGIN_VERB and ORIGIN_GENERIC in the lexicon for
+   the ruling this answers. Reads like sniffWho, after it, and only adds
+   origin and originWho to a hit sniffWho and sniffDeny already kept: a hit
+   already set aside, denied or about someone else, is left alone, because
+   this only tags what is already being counted as the writer's own.
+
+   A hit is handed down when its own sentence (wordsOf's c, the same unit
+   sniffDeny's clauseFloor cuts on) carries an ORIGIN_GENERIC phrase
+   anywhere at all, or carries a LEXKIN word straight followed by an
+   ORIGIN_VERB phrase. Both lists are closed text, found the way scanStory
+   finds every phrase, bounded by a leading and trailing space. */
+function originFrames(nm){
+ var src=nm.s, out=[];
+ ORIGIN_GENERIC.forEach(function(ph){
+  var at=src.indexOf(' '+ph+' ');
+  while(at>=0){out.push({at:at,who:'family'}); at=src.indexOf(' '+ph+' ',at+1);}});
+ LEXKIN.forEach(function(kw){
+  ORIGIN_VERB.forEach(function(v){
+   var ph='my '+kw+' '+v, at=src.indexOf(' '+ph+' ');
+   while(at>=0){out.push({at:at,who:kw}); at=src.indexOf(' '+ph+' ',at+1);}});});
+ return out;}
+function originOf(t,nm,hits){
+ var ws=null, byAt=null, frames=null;
+ hits.forEach(function(h){
+  if(h.neg||h.other||h.band==='coherent')return;
+  if(frames===null)frames=originFrames(nm);
+  if(!frames.length)return;
+  if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+  var i=byAt[h.at]; if(i===undefined)return;
+  var hit=frames.filter(function(f){
+   var j=byAt[f.at]; return j!==undefined&&ws[j].c===ws[i].c;})[0];
+  if(!hit)return;
+  h.origin='superego'; h.originAt=hit.at; h.originWho=hit.who;});}
 /* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
@@ -773,6 +807,9 @@ function scanStory(text){
  /* AND WHOSE IT IS, S2, see sniffWho above. After the denial, so a word said
     with a no is listed once, as denied. */
  sniffWho(text,nm,hits);
+ /* AND WHO HANDED IT DOWN. After who, so a hit already about someone else
+    is left to that reading and not also marked inherited. */
+ originOf(text,nm,hits);
  return hits;}
 /* ============================================================
    THE PATH.
@@ -1108,7 +1145,9 @@ function marksOf(t,p){
    fet:h.fet||null, coh:h.band==='coherent',
    neg:!!h.neg, negFrom:(h.neg&&h.negAt!=null&&nm.map[h.negAt+1]!=null)?nm.map[h.negAt+1]:null,
    other:!!h.other, unclear:!!h.unclear,
-   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null});});
+   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null,
+   origin:h.origin||null, originWho:h.originWho||null,
+   originFrom:(h.origin&&h.originAt!=null&&nm.map[h.originAt+1]!=null)?nm.map[h.originAt+1]:null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){

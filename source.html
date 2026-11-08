@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2971 b2fc6037 2026-11-08 01:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v2972 07642116 2026-11-08 07:05"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -18321,7 +18321,29 @@ var LEX={
     already built for exactly this register, low self worth and self doubt,
     solar plexus, Shame: ashamed, humiliated, stupid, worthless,
     embarrassed and guilty are already there. */
- insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame']};
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame'],
+ /* THE SAME MECHANIC, EXTENDED, not a new one. TASKS.md round RA (3 October)
+    and TA8, restated 8 November in his own words: "the sniffer needs to
+    sniff for limiters as well. A limiter are all the things that keep us
+    from doing things. Not performing well, not speaking well, not
+    communicating well. All the things where we say we're dumb, we're not
+    smart. I'm not as good as other people." Checked here before building
+    anything new, the way he asked: round SB/NO already built exactly this
+    mechanic for self worth, confidence, self respect and follow through,
+    at solar, Shame, right above. His new list is the same register, so it
+    is seated the same way and not a second table. */
+ 'im not smart':['solar',20,'Shame'],'i am not smart':['solar',20,'Shame'],
+ 'im not smart enough':['solar',22,'Shame'],'i am not smart enough':['solar',22,'Shame'],
+ 'im not as good as':['solar',20,'Shame'],'i am not as good as':['solar',20,'Shame'],
+ 'im not as good as other people':['solar',22,'Shame'],'i am not as good as other people':['solar',22,'Shame'],
+ 'im not good at this':['solar',18,'Shame'],'i am not good at this':['solar',18,'Shame'],
+ 'i cant do anything right':['solar',22,'Shame'],'i can not do anything right':['solar',22,'Shame'],
+ 'im bad at this':['solar',18,'Shame'],'i am bad at this':['solar',18,'Shame'],
+ 'i dont speak well':['solar',18,'Shame'],'i do not speak well':['solar',18,'Shame'],
+ 'i cant communicate well':['solar',18,'Shame'],'i can not communicate well':['solar',18,'Shame'],
+ 'im not performing well':['solar',16,'Shame'],'i am not performing well':['solar',16,'Shame'],
+ 'im so dumb':['solar',20,'Shame'],'i am so dumb':['solar',20,'Shame'],
+ 'im dumb':['solar',18,'Shame'],'i am dumb':['solar',18,'Shame']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -18971,6 +18993,29 @@ var LEXKIN=['mum','mom','mother','dad','father','husband','wife','son','daughter
  'sister','grandmother','grandfather','grandma','grandpa','nan','gran','partner','baby',
  'best friend','boyfriend','girlfriend','fiance','fiancee'];
 var LEXKIN_FRAMES={died:['my K passed'], loss:['lost my K'], grieving:['miss my K','missing my K']};
+
+/* THE INHERITANCE. TASKS.md round RA (3 October) and TA8, restated 8
+   November in his own words: "Between the ego and the archetypes is the
+   superego, which I currently define as the behaviors who are taught to
+   you outside of you by an adult... These are the generational, ancestral,
+   parental... Those need to be wired into the sniffer. They need to look
+   for the stories." engine/data/kb.js's own GLOSS already defines Superego
+   as "the stories and rules an adult handed down to you" and Ego as "the
+   mind stuck to the body", so this does not invent a new layer. It tags a
+   hit the scanner already found as handed down rather than self made.
+   Not a LEX or PHRASES row and not a new feeling: sniff.js's originOf reads
+   these two closed lists the way sniffWho reads WHO_SUBJ and WHO_OPEN.
+   ORIGIN_VERB fires straight after a LEXKIN word, "my mother always said".
+   ORIGIN_GENERIC fires with no named relative at all, "in my family", "the
+   way I was raised". Both lists are closed, the same discipline SRC_NEG and
+   WHO_* already use, so a false hit is a row to remove rather than a model
+   to retrain. */
+var ORIGIN_VERB=['taught me','always told me','used to tell me','always said','used to say',
+ 'showed me','modeled that','raised me to believe','always did that','believed that',
+ 'drilled into me','passed down to me','made sure i knew'];
+var ORIGIN_GENERIC=['in my family','runs in my family','generations of my family',
+ 'the way i was raised','how i was raised','growing up i was taught','growing up i learned',
+ 'thats just how i was raised','that is just how i was raised'];
 
 /* THE REFUSALS, read this before adding to the tables above. Each is a word
    that would have answered a line in the corpus and is refused because its
@@ -29586,6 +29631,40 @@ function sniffWho(t,nm,hits){
   h.other=true; h.whoAt=ws[r.k].at;
   h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
   if(r.unclear)h.unclear=true;});}
+/* ============================================================
+   WHO HANDED IT DOWN. See ORIGIN_VERB and ORIGIN_GENERIC in the lexicon for
+   the ruling this answers. Reads like sniffWho, after it, and only adds
+   origin and originWho to a hit sniffWho and sniffDeny already kept: a hit
+   already set aside, denied or about someone else, is left alone, because
+   this only tags what is already being counted as the writer's own.
+
+   A hit is handed down when its own sentence (wordsOf's c, the same unit
+   sniffDeny's clauseFloor cuts on) carries an ORIGIN_GENERIC phrase
+   anywhere at all, or carries a LEXKIN word straight followed by an
+   ORIGIN_VERB phrase. Both lists are closed text, found the way scanStory
+   finds every phrase, bounded by a leading and trailing space. */
+function originFrames(nm){
+ var src=nm.s, out=[];
+ ORIGIN_GENERIC.forEach(function(ph){
+  var at=src.indexOf(' '+ph+' ');
+  while(at>=0){out.push({at:at,who:'family'}); at=src.indexOf(' '+ph+' ',at+1);}});
+ LEXKIN.forEach(function(kw){
+  ORIGIN_VERB.forEach(function(v){
+   var ph='my '+kw+' '+v, at=src.indexOf(' '+ph+' ');
+   while(at>=0){out.push({at:at,who:kw}); at=src.indexOf(' '+ph+' ',at+1);}});});
+ return out;}
+function originOf(t,nm,hits){
+ var ws=null, byAt=null, frames=null;
+ hits.forEach(function(h){
+  if(h.neg||h.other||h.band==='coherent')return;
+  if(frames===null)frames=originFrames(nm);
+  if(!frames.length)return;
+  if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+  var i=byAt[h.at]; if(i===undefined)return;
+  var hit=frames.filter(function(f){
+   var j=byAt[f.at]; return j!==undefined&&ws[j].c===ws[i].c;})[0];
+  if(!hit)return;
+  h.origin='superego'; h.originAt=hit.at; h.originWho=hit.who;});}
 /* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
@@ -29722,6 +29801,9 @@ function scanStory(text){
  /* AND WHOSE IT IS, S2, see sniffWho above. After the denial, so a word said
     with a no is listed once, as denied. */
  sniffWho(text,nm,hits);
+ /* AND WHO HANDED IT DOWN. After who, so a hit already about someone else
+    is left to that reading and not also marked inherited. */
+ originOf(text,nm,hits);
  return hits;}
 /* ============================================================
    THE PATH.
@@ -30057,7 +30139,9 @@ function marksOf(t,p){
    fet:h.fet||null, coh:h.band==='coherent',
    neg:!!h.neg, negFrom:(h.neg&&h.negAt!=null&&nm.map[h.negAt+1]!=null)?nm.map[h.negAt+1]:null,
    other:!!h.other, unclear:!!h.unclear,
-   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null});});
+   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null,
+   origin:h.origin||null, originWho:h.originWho||null,
+   originFrom:(h.origin&&h.originAt!=null&&nm.map[h.originAt+1]!=null)?nm.map[h.originAt+1]:null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){
@@ -36745,6 +36829,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
                   LEXSYN:LEXSYN, LEXANT:LEXANT, LEXANT_FRAMES:LEXANT_FRAMES,
                   LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
+                  ORIGIN_VERB:ORIGIN_VERB, ORIGIN_GENERIC:ORIGIN_GENERIC, originOf:originOf,
                   lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
@@ -88727,5 +88812,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005967946"></div>
+<div id="eof" hidden data-len="005973482"></div>
 </body></html>

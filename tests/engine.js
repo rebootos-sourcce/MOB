@@ -8850,6 +8850,48 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
  ok((hn.denied||[]).length>0&&oth(hn).length===0,'a word said with a no is denied first and is not also listed as someone else\'s');
 }
 
+g('ORIGIN · a pattern framed as handed down by a parent is tagged superego, and a self made one is not');
+/* TASKS.md round RA (3 October) and TA8, restated 8 November in his own
+   words: the generational, ancestral, parental pattern needs to be wired
+   into the sniffer, which needs to look for the stories. originOf tags a
+   hit already kept by scanStory with origin:'superego' and originWho,
+   when its own sentence names who handed the pattern down; it invents
+   nothing a reviewer cannot read straight off the text. */
+{
+ const {parseStory,marksOf}=E;
+ const orig=t=>marksOf(t,parseStory(t)).filter(m=>m.origin);
+ const o1=orig('My mother always told me I was never good enough, and I still feel ashamed about it.');
+ ok(o1.length>=1&&o1.every(m=>m.origin==='superego'&&m.originWho==='mother'),
+  'a LEXKIN word straight followed by an origin verb tags its sentence\'s hits: '+JSON.stringify(o1));
+ const o2=orig('In my family we never talked about feelings, and I feel so alone right now.');
+ ok(o2.length===1&&o2[0].originWho==='family','a family word with no named relative tags "family": '+JSON.stringify(o2));
+ const o3=orig('My dad always said I was lazy and I feel furious about it.');
+ ok(o3.some(m=>m.originWho==='dad'),'a second LEXKIN word carries its own name: '+JSON.stringify(o3));
+ ok(orig('I was terrified at the meeting today.').length===0,'an ordinary sentence with no handed down frame tags nothing');
+ ok(orig('He was furious and I froze.').length===0,
+  'a hit already held as someone else\'s is left to that reading, not also tagged origin');
+ const o4=orig('I was not angry, my mother always told me I was too sensitive.');
+ ok(o4.every(m=>!m.neg),'a denied hit is left denied, not also tagged origin: '+JSON.stringify(o4));
+}
+
+g('LIMIT · a self limiting statement is the same Shame-at-solar mechanic round SB/NO already built, extended');
+/* Same round, his own words: "a limiter are all the things that keep us
+   from doing things... I'm not smart, I'm not as good as other people."
+   TASKS.md:32847 found this is not a new mechanism: round SB/NO already
+   seats self worth, confidence and self respect as Shame at solar, and his
+   new list is the same register. Checked here as LEX rows, exactly like
+   "no self worth" and "insecure" above them. */
+{
+ const {parseStory}=E;
+ const p1=parseStory('I am not smart enough to do this job and I feel so anxious.');
+ ok(p1.bands.solar>0&&p1.imprints.some(i=>i.fetter==='Shame'),
+  'a new limiter phrase reads Shame at the solar plexus, the same seat round SB/NO already uses: '+JSON.stringify(p1.bands));
+ const p2=parseStory('I am not as good as other people.');
+ ok(p2.bands.solar>0&&p2.imprints.some(i=>i.fetter==='Shame'),'a second new phrase reads the same way: '+JSON.stringify(p2.bands));
+ const p3=parseStory('I was terrified at the meeting today.');
+ ok(!(p3.imprints||[]).some(i=>i.fetter==='Shame'),'an ordinary sentence with no limiter phrase reads no Shame');
+}
+
 g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');
 /* REVIEW-sniffer-audit-2026-10-09.md, package S3, the audit's 13.1.10.
    sniffStory did sniffSaboteurs(axes).slice(0,SAB_SHOW): the domain layer

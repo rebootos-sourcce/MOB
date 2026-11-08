@@ -270,6 +270,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
                   LEXSYN:LEXSYN, LEXANT:LEXANT, LEXANT_FRAMES:LEXANT_FRAMES,
                   LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
+                  ORIGIN_VERB:ORIGIN_VERB, ORIGIN_GENERIC:ORIGIN_GENERIC, originOf:originOf,
                   lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,

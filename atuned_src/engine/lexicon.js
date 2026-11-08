@@ -208,7 +208,29 @@ var LEX={
     already built for exactly this register, low self worth and self doubt,
     solar plexus, Shame: ashamed, humiliated, stupid, worthless,
     embarrassed and guilty are already there. */
- insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame']};
+ insecure:['solar',22,'Shame'],insecurity:['solar',22,'Shame'],
+ /* THE SAME MECHANIC, EXTENDED, not a new one. TASKS.md round RA (3 October)
+    and TA8, restated 8 November in his own words: "the sniffer needs to
+    sniff for limiters as well. A limiter are all the things that keep us
+    from doing things. Not performing well, not speaking well, not
+    communicating well. All the things where we say we're dumb, we're not
+    smart. I'm not as good as other people." Checked here before building
+    anything new, the way he asked: round SB/NO already built exactly this
+    mechanic for self worth, confidence, self respect and follow through,
+    at solar, Shame, right above. His new list is the same register, so it
+    is seated the same way and not a second table. */
+ 'im not smart':['solar',20,'Shame'],'i am not smart':['solar',20,'Shame'],
+ 'im not smart enough':['solar',22,'Shame'],'i am not smart enough':['solar',22,'Shame'],
+ 'im not as good as':['solar',20,'Shame'],'i am not as good as':['solar',20,'Shame'],
+ 'im not as good as other people':['solar',22,'Shame'],'i am not as good as other people':['solar',22,'Shame'],
+ 'im not good at this':['solar',18,'Shame'],'i am not good at this':['solar',18,'Shame'],
+ 'i cant do anything right':['solar',22,'Shame'],'i can not do anything right':['solar',22,'Shame'],
+ 'im bad at this':['solar',18,'Shame'],'i am bad at this':['solar',18,'Shame'],
+ 'i dont speak well':['solar',18,'Shame'],'i do not speak well':['solar',18,'Shame'],
+ 'i cant communicate well':['solar',18,'Shame'],'i can not communicate well':['solar',18,'Shame'],
+ 'im not performing well':['solar',16,'Shame'],'i am not performing well':['solar',16,'Shame'],
+ 'im so dumb':['solar',20,'Shame'],'i am so dumb':['solar',20,'Shame'],
+ 'im dumb':['solar',18,'Shame'],'i am dumb':['solar',18,'Shame']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -858,6 +880,29 @@ var LEXKIN=['mum','mom','mother','dad','father','husband','wife','son','daughter
  'sister','grandmother','grandfather','grandma','grandpa','nan','gran','partner','baby',
  'best friend','boyfriend','girlfriend','fiance','fiancee'];
 var LEXKIN_FRAMES={died:['my K passed'], loss:['lost my K'], grieving:['miss my K','missing my K']};
+
+/* THE INHERITANCE. TASKS.md round RA (3 October) and TA8, restated 8
+   November in his own words: "Between the ego and the archetypes is the
+   superego, which I currently define as the behaviors who are taught to
+   you outside of you by an adult... These are the generational, ancestral,
+   parental... Those need to be wired into the sniffer. They need to look
+   for the stories." engine/data/kb.js's own GLOSS already defines Superego
+   as "the stories and rules an adult handed down to you" and Ego as "the
+   mind stuck to the body", so this does not invent a new layer. It tags a
+   hit the scanner already found as handed down rather than self made.
+   Not a LEX or PHRASES row and not a new feeling: sniff.js's originOf reads
+   these two closed lists the way sniffWho reads WHO_SUBJ and WHO_OPEN.
+   ORIGIN_VERB fires straight after a LEXKIN word, "my mother always said".
+   ORIGIN_GENERIC fires with no named relative at all, "in my family", "the
+   way I was raised". Both lists are closed, the same discipline SRC_NEG and
+   WHO_* already use, so a false hit is a row to remove rather than a model
+   to retrain. */
+var ORIGIN_VERB=['taught me','always told me','used to tell me','always said','used to say',
+ 'showed me','modeled that','raised me to believe','always did that','believed that',
+ 'drilled into me','passed down to me','made sure i knew'];
+var ORIGIN_GENERIC=['in my family','runs in my family','generations of my family',
+ 'the way i was raised','how i was raised','growing up i was taught','growing up i learned',
+ 'thats just how i was raised','that is just how i was raised'];
 
 /* THE REFUSALS, read this before adding to the tables above. Each is a word
    that would have answered a line in the corpus and is refused because its
