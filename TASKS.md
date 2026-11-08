@@ -34443,3 +34443,94 @@ headless harness: mounted, animates (5 distinct full-canvas samples over
 1.5s), survives a park/remount cycle with exactly one `.uni-widget` on the
 page afterward (no duplicate, no leak), and survives the Dashboard toggle's
 own `stRender()` re-run the same way.
+
+**Round TF continued, 8 November. Directive 7's remaining mechanical items,
+one isolated commit each, checked the same way every time: diff the item's
+branch against current `main` before touching anything, and when it is
+stale (every one of them was, 230 to 325 files each, weeks of real merged
+work in between, several of them one raw merge away from deleting Uni,
+the records registry, the origin sniffer or the bind), hand-extract only
+the genuinely new content rather than merge the branch.**
+
+- **Item 16, `1d9faba4`.** `fix/srcchat-repeated-final-flake`'s real fix
+  (replace `tests/srcchat.js`'s fixed `waitForTimeout` calls with a
+  `plays()` poll against `__aud.length`, and hold the voice route open in
+  the resend test so it can no longer race Source AI's own reply) isolated
+  to that one file, applied clean, `tests/srcchat.js` 89/0.
+- **Item 198, held, not merged.** `funnel-21law-wiring-2026-11-05`'s own
+  count-fix and its QQ_42-serving test are one inseparable change: the
+  floor raise (`funnel` 760 to 779) exists only because the gate now tests
+  serving his own 21-law table, which is the product decision Directive 10
+  already held back. Nothing merged.
+- **Item 12, nothing to merge.** `claude/unbending-rename-and-dysregulation-copy`
+  is a full snapshot from before the 7 November Unbending rename and before
+  Uni; every line it changes is already superseded, several in the other
+  direction, by what already shipped.
+- **Item 15, nothing to merge.** `hotfix/journal-energy-rail-profile-leak-2026-11-03`
+  is the historical record of a bug already fixed twice over on `main`:
+  `f6293199` (PR #173) and `ac3eb330` (PR #175, the SU1 follow-up that also
+  cleared the crisis line's own leftover state). Confirmed by reading
+  `stOwn()` in `storyui.js` directly.
+- **Item 14, `52a6022b`.** `fix/domain-drill-codex-names-2026-11-04`'s real
+  fix, one line in `runDomDrill` (`atuned_src/ui/drills.js`): `DOMAINS[]`
+  still names Descent, Connection, Exchange and Restoration; `DOMDEF` is
+  keyed by the codex name `KB_RENAME` points each one to, never the old
+  one, so the lookup found no definition for exactly those four and the
+  drill's Read clear / Read distorted text never printed for them. Fixed
+  by also trying `DOMDEF` under the renamed key. Verified directly: all
+  four now resolve (previously none did). `tests/engine.js` 7026/0.
+- **PR #153 and #155, `25a86df4`, both closed on GitHub.** Both branches'
+  real fixes (the `'hyper complex'` kind-mapping branch and `cluster`
+  field #153 added to `proto/knowledge/src/gen-data.js`'s `T.DESCENT`
+  block, and the `Machiavellianism` entry #155 added to
+  `HYPERCOMPLEX_AXIS_ROUTES`) hand-applied to current `main`. `compass.js`
+  has grown two more affected descent entries since either PR was written
+  (`Sociopathy`, and the 7 November `Unbending` rename), hitting the exact
+  gap #155 itself predicted; extended the same fix to both rather than
+  leave a known-shape regression standing. Verified by diffing
+  `validate-templates.js`'s full error list, not just the count: 18
+  errors before, 12 after, every removed line a miscast descent record's
+  `seat`/`sub` gap, nothing new added.
+- **PR #157, `9917694a`, closed on GitHub.** `feature/layer-observatory-on-trace-2026-10-29`'s
+  real logic (the `obs.js` diff, the new `build-trace.js`, the new
+  `tests/layer-observatory.js`) hand-applied; `chain.js` was not taken
+  from the branch at all, since its cached data was already a month stale
+  when the branch itself was written. Regenerated fresh by running
+  `build-trace.js` against today's real `engine.js` instead, after adding
+  the one line this needed, `FAM_POLE`, to `engine/export.js`'s contract
+  (the constant already existed in `core.js`; nothing before this could
+  reach it from Node). The observatory now reads every rung's real parts
+  off `trace.js`'s own `traceNeighbors()` graph in place of a hand-rolled,
+  slot-indexed adjacency that never reached a super complex.
+  `tests/layer-observatory.js` 45/0, `tests/trace.js` 432/0 unaffected,
+  `tests/engine.js` 7026/0.
+- **PR #158, closed on GitHub, no commit needed.** Already on `main`:
+  `atuned_src/engine/tracesummary.js` and `tests/tracesummary.js` both
+  exist, `traceSummary` is exported, and it is wired into `tests/engine.js`'s
+  own aggregate, which is green. Looks to have merged under a different
+  path (`b7b7b97e` carries this PR's own title).
+- **PR #159, closed on GitHub, no commit needed.** Deliberately superseded:
+  this file's own record above shows the branch was read first and not
+  reused as `sim/year/`'s base, because it used seven ICPs with no weights
+  and no show-up model and could not say who drops out, the actual ask.
+  `sim/year/` (10,000 people, the real 9 ICPs at their stated weights,
+  365 days, a show-up model, three adversarial reviews) already answers
+  it, on `main`, as `SIM-YEAR-10000.md`.
+- **PR #167, left open and untouched.** `ci(F14)` is explicitly a draft;
+  its own body says "this PR remains draft/unmerged" pending exact-head CI
+  and points to cross-AI log PR #165 for evidence and ownership. Not a
+  seat's call to merge or close.
+
+**Full gate run, this round:** `BUILD-engine.sh` host free, 972 exports
+after item 157's `FAM_POLE`. `BUILD.sh` clean, claims gate 110/0, no em
+dashes, div balance 0. `tests/engine.js` 7026/0 throughout (every item
+re-checked against it in sequence, no regression at any step).
+`tests/trace.js` 432/0. `tests/layer-observatory.js` 45/0. `tests/srcchat.js`
+89/0. Directive 7 is now closed out, item by item rather than by a count:
+16, 14, and 153/155 together (one commit, two PRs closed) and 157 each
+landed as a direct commit; 12 and 15 needed no commit, their real content
+already superseded by what shipped since; 158 and 159 needed no commit
+either and are closed on GitHub, the first already on `main` under a
+different commit, the second deliberately superseded by `sim/year/`; 198
+stays held on the product decision Directive 10 already named; 167 stays
+open and untouched, another process's own draft.
