@@ -3171,6 +3171,26 @@ level, under the one word per concept rule.
   rosters the book gives for itself, and deciding where the orphan term
   belongs, which is a finding for that file, not a build for this one.
 
+## Glass is shelved for look development, 1 November
+
+His words: "I think we'll keep the designs that we currently have in Engine. I
+think as far as our look development, pushing our look development further, I
+think we're going to abandon the glass style. It may come back in some other
+skin, but for now, I don't want to think about it. It's contaminating our
+execution."
+
+- **Shelved, not deleted.** No glass/frosted material (blur, translucency,
+  the material named in `atuned/docs/bibles/OWNER_RULINGS.md`'s art-direction
+  palette, "light, vector, glass") in any new look-development pass from this
+  date forward, across Field, Journal, or any other surface. It may return as
+  its own named skin later, by his word alone, not by a designer's default.
+- **What stands:** the designs already approved and in Engine keep their
+  current look; this ruling does not retroactively redesign anything already
+  shipped. It governs what comes next, not what already exists.
+- **Named trigger:** Journal's round-4 mock-up (the black panel, frosted
+  header treatment) is the specific instance he reacted to; the ruling is
+  broader than that one mock-up, covering the material itself, not one screen.
+
 ## The Journal's Full view gets a left menu and a right menu, 2 November
 
 His words: "use a left menu and the right menu." For the Journal's Full view only. Simple is unchanged.
