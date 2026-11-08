@@ -69,6 +69,7 @@ engine/archexpr.js
 engine/showonly.js
 ui/component.js
 ui/sound.js
+ui/uni.js
 ui/tip.js
 ui/lock.js
 ui/wheel.js

@@ -34310,3 +34310,85 @@ than one sitting, because every new point needs a real citation under this
 project's own rule against guessing, not a pixel moved by eye; low risk,
 since the atlas sourcing for the one plate that matters (brachial plexus,
 book p.413) is already done.
+
+## Round TE, 8 November. Uni, stage 1: a real build component, not a rewrite
+
+His words, asked directly: "thing for Uni. Review this. With the team.
+Strategize your plan." A four-pass team review (systems, information
+architecture, animation, technical) found the real, concrete gap behind
+the question: `atuned_src/ui/uni/uni-widget.html` is real and working, her
+CQ/DQ engine bug already fixed this session (`b2fc6037`), but she was
+never in `MANIFEST`, so nothing in the real app could point at her.
+
+**Stage 1, built and shipped tonight, the part the team's own plan named
+as needing no ruling first:**
+- `atuned_src/ui/uni.js`, a new file: her engine code (mouse tracking,
+  blink, the coherence colour system, the particle sphere, the external
+  `window.Uni` API) copied unchanged from `uni-widget.html`, past a small
+  injection block that builds her markup and a stylesheet scoped under
+  `.uni-widget` instead of the bare `:root`/`body`/`html` rules a
+  standalone demo page used. Nothing in her drawing code was rewritten.
+- `uniMount(target)`/`uniPark()`: one shared instance, moved between
+  screens by reparenting her canvas rather than building a copy per
+  screen (her particle count, about 6,250, makes a copy per screen
+  expensive, confirmed by the technical review).
+- `window.Uni.pause()`/`resume()`: her animation loop used to stop for
+  good when hidden and only restart on a real mouse hovering the canvas,
+  confirmed by direct read and then by a live test. Fixed at the one real
+  stop point inside her own frame loop (`atuned_src/ui/uni.js`, the
+  `frame(ts)` function) so the stop path always clears its own timer
+  baseline, the same way a different branch of that function already did
+  for its own case; pause/resume now mirror the mouseenter handler
+  exactly, without a mouse.
+- Listed in `MANIFEST` after `ui/sound.js`, before `ui/storyui.js` and
+  everything that will call her.
+
+**Verified, not assumed:** a real Playwright test mounted her into a
+container, confirmed she renders and animates (two screenshots differ),
+confirmed the external API still answers (`setCoherence`/`setDQ`/
+`setEmotion`/`react`/getters), confirmed `uniPark()` actually stops her
+redrawing (two canvas snapshots identical while parked, not just visually
+hidden), and confirmed remounting after a park resumes her animating
+rather than staying stuck, which is exactly the bug the pause/resume fix
+targets. Full gate run on the real build with her now in it:
+`tests/engine.js` 7026/0 (unaffected, she is UI not engine), the build
+pipeline clean (114 modules, no name collisions, div balance 0, no em
+dashes), claims gate 110/0, house voice gate clean, `tests/boot.js` 29/0
+(her load does not disturb boot timing), `tests/collide.js` 398/0,
+`tools/monitor.js` all surfaces render, `tests/funnel.js` 760/0, and a
+direct load of the real `source.html` confirms she boots parked and
+hidden with zero console errors.
+
+**`tests/design.js` caught a real miss, fixed before this commit, not
+after.** Its own class-to-CSS-rule check found 11 classes her injected
+markup uses (`coh-row`, `coh-label`, `coh-zone`, `coh-val`,
+`quotient-row`, `demo-row`, `demo-btn`, `speak-area`, `shader-panel`,
+`desc-name`, `desc-body`) with no rule in the trimmed stylesheet this
+file wrote, because they only ever paint a hidden element and the trim
+dropped them along with everything else that never renders. The gate
+does not care that an element is hidden; an orphaned class reads as dead
+or mistyped either way. Restored, scoped under `.uni-widget`, kept
+faithful to `uni-widget.html`'s own rules rather than invented fresh.
+Re-run clean after the fix. `tests/functional.js` was still running at
+commit time; its result follows separately and will be reported, not
+assumed.
+
+**Not done in this stage, named rather than silently deferred, per the
+team's own staged plan:** she does not yet respect prefers-reduced-motion.
+No screen calls `uniMount` yet, so she is built and parked but invisible
+everywhere, which is correct for stage 1 ("nothing you can see"). Stage 2
+is the Journal `#stsrc` mount (her colour from the saved CQ/DQ, her face
+from the live draft reading via `sniffStory`, a start/end callback added
+to `stSrcSpeak` so she can show speaking) and the commit-time reaction;
+both still to build. The team's own round LV reconciliation (a prior
+ruling kept "the Field's canvas" off the page someone is writing on) was
+read, not silently overridden: Uni is a different kind of visual than
+what that ruling rejected, and his own words placing her on the Journal
+("this is the character I'm talking to") are read as the resolution, to
+be written into the round LV comment and into `DECISIONS.md` when stage 2
+lands. The loading screen replacement (the real "spiral," found to be
+`atuned_src/shell/body.html:241`'s boot figure, drawn by
+`tools/bootgeo.js`) is later still, since the boot sheet runs on CSS
+alone before any script parses and must never be made to look finished
+over an app that has not actually booted, the same discipline this file's
+own boot-guard paragraph already states.
