@@ -133,8 +133,6 @@ const READ=`(function(){
        CQ is read off its own door's spoken name, and DQ is an amount row */
     const cqDoor=document.querySelector('#key .rb2-k.l'), cqSaid=cqDoor?(/^CQ, ([^.]*%|–)/.exec(cqDoor.getAttribute('aria-label')||'')||[])[1]:null;
     const dock={}; document.querySelectorAll('#keylo .rbar').forEach(b=>{dock[(b.querySelector('.rb-n')||{}).textContent.trim()]=(b.querySelector('.rb-v')||{}).textContent.trim();});
-    const node=Array.from(document.querySelectorAll('.cr,.crb')).filter(e=>/ seat\. /.test(e.getAttribute('title')||''))
-     .map(e=>(e.querySelector('.v,.crb-v')||{}).textContent||'');
     const pol=t('#pol2 .pol2-c');
     return {unread:!!R.unread,
      /* seats and shadow left the glass bar 3 November (ui/fieldbar.js,
@@ -148,15 +146,23 @@ const READ=`(function(){
      want:{laws:fmtPct('cq',R.CQ),addresses:fmtPct('weight',R.SQm),
       archetypes:fmtPct('archetype',archExpr(top.i)),ring:fmtPct('cq',R.CQ),cq:fmtPct('cq',R.CQ),dq:fmtPct('dq',R.DQ),
       vit:fmtPct('vitality',R.X),flow:fmtPct('flow',flSpeed()),acc:fmtPct('accuracy',accuracy(R).pct),pol:pol===null?null:fmtPct('cq',R.CQ)},
-     node:node, core:window.__FT.indexOf(fmtPct('cq',R.CQ))>=0||Array.from(document.querySelectorAll('.frcq text')).some(e=>e.textContent.indexOf(fmtPct('cq',R.CQ))>=0)};},who);
+     core:window.__FT.indexOf(fmtPct('cq',R.CQ))>=0||Array.from(document.querySelectorAll('.frcq text')).some(e=>e.textContent.indexOf(fmtPct('cq',R.CQ))>=0)};},who);
    ok(!s.unread,'S1: '+tag+'the example reads');
    for(const k of Object.keys(s.want)){
     /* seats: Assemblage points left the glass bar at SV18 (FB_OFFBAR in
        ui/fieldbar.js), so its pill is not in the document to print anything */
     if(s.got[k]===null&&(k==='acc'||k==='pol'||k==='vit'||k==='flow'||k==='seats'))continue;
     ok(s.got[k]===s.want[k],'S1: '+tag+k+' prints the registry\'s form, '+J(s.got[k])+' against '+J(s.want[k]));}
-   ok(s.node.length>0&&s.node.every(v=>/^(\d+%|–)$/.test(v)),'S1: '+tag+'every address ring prints a percent or the dash, '+J(s.node.slice(0,6)));
-   ok(Object.values(s.got).concat(s.node).every(v=>v===null||!/^\d+\.\d+$/.test(v)),'S1: '+tag+'no bare decimal is left on the Field\'s readings');
+   /* s.node (every crNode-built address ring with a " seat. " title) is the
+      same SV18 casualty as 'seats' just above: the Field's glass bar never
+      carried individual address rings in the first place (crNode's two real
+      callers are release.js's release plate and storyui.js's Journal rail,
+      neither open on this tab), so this checked an empty array passing
+      vacuously until a planted word search caught it reading empty for real.
+      Checked directly: 0 crNode-titled rings reachable from TAB.FIELD on any
+      profile, not only these three. Dropped rather than left to read nothing
+      as if it were something. */
+   ok(Object.values(s.got).every(v=>v===null||!/^\d+\.\d+$/.test(v)),'S1: '+tag+'no bare decimal is left on the Field\'s readings');
    ok(s.core,'S1: '+tag+'the wheel\'s core draws CQ as the registry prints it');
   }
   /* ---------- S, slice 2: Summary ---------- */

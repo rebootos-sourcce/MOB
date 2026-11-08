@@ -184,11 +184,18 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const m=/^toward (.+)$/.exec(l.t);
   const want=m?T['opposite:'+m[1].toLowerCase()]:(T['law:'+l.t.toLowerCase()]||T['feeling:'+l.t.toLowerCase()]);
   ok(want&&l.tip===want&&l.dotted,'rail label "'+l.t+'" carries its sentence as a tooltip, has "'+l.tip.slice(0,50)+'"');});
- /* and the seat at the right of an address row says what a seat is */
- const seatEm=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.ad-r em'),function(e){
-  return {t:e.textContent,tip:(e.querySelector('.tipu')||{getAttribute:function(){return '';}}).getAttribute('data-tip')};}).filter(function(x){return BANDS.indexOf(x.t)>=0;}));
- ok(seatEm.length>0,'the right rail lists addresses by seat on a loaded profile, saw '+seatEm.length);
- seatEm.forEach(x=>ok(x.tip===T['seat:'+x.t.toLowerCase()],'the seat "'+x.t+'" at the right of an address row carries its sentence'));
+ /* "HEAVIEST SEATS" MOVED OFF addrRow'S MARKUP (.ad-r em with a tipu
+    carrying T['seat:...']) ONTO sumStructRow'S (.s-row .s-row-t b, its
+    state said in plain prose beside it, no tooltip), in the Summary rework
+    that also built sumSeats(). addrRow itself is unchanged and still used
+    elsewhere (release.js, analytics.js, drills.js); only this one caller,
+    Summary's seat list, took the new shape. Checked directly before
+    writing this: Derek's own Summary prints real seat names here (Solar,
+    Throat, Sacral...), so the row below reads the real markup rather than
+    the one this test used to assume. */
+ const seatB=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.s-row .s-row-t b'),function(e){
+  return e.textContent;}).filter(function(t){return BANDS.indexOf(t)>=0;}));
+ ok(seatB.length>0,'Summary\'s Heaviest seats lists real seats on a loaded profile, saw '+seatB.length);
 
  /* ---- every carrier the round wrote is a sentence the table holds ---- */
  const carriers=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.tipu[data-tip]'),function(c){return c.getAttribute('data-tip');}));

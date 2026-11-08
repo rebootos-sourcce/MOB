@@ -315,14 +315,20 @@ require('./net.js').guardBrowser(browser);
       const ac = foreignIn(GRIEF, al);
       ok(!!al && ac.length === 0, 'Analytics names the feeling the heaviest address carries and no address: ' + JSON.stringify(al) + (ac.length ? ' ' + ac.join(', ') : ''));
       ok(await commit() && await commit(), 'two more grief entries commit');
-      const sum = await ps.evaluate(() => { setTab(TAB.SUMMARY); render();
-        const feel = CHARGES.map(c => { const w = ritCfWord(c); return w.charAt(0).toUpperCase() + w.slice(1); });
-        const cards = [...document.querySelectorAll('.s-out')].map(e => ({ eye: ((e.querySelector('.pm-eye') || {}).textContent || '').trim(),
-          nm: ((e.querySelector('.s-out-n') || {}).textContent || '').trim(), sub: ((e.querySelector('.s-out-s') || {}).textContent || '').trim() }));
-        return { feel, card: cards.filter(c => /^release this first$/i.test(c.eye))[0] || null }; });
-      const sc = sum.card ? foreignIn(GRIEF, sum.card.nm + ' ' + sum.card.sub) : ['no card'];
-      ok(!!sum.card && sc.length === 0 && sum.feel.indexOf(sum.card.nm) >= 0,
-        'Summary\'s first card names the feeling, not an address: ' + JSON.stringify(sum.card) + (sc.length ? ' ' + sc.join(', ') : ''));
+      /* THE "RELEASE THIS FIRST" CARD THIS BLOCK USED TO CHECK IS GONE
+         OUTRIGHT, ruled 3 November (summary.js:1258 carries the owner's own
+         words): the whole "What to do" column (Release this first, the
+         Protocol, Next marker) came off Summary's surface that day, replaced
+         by nothing on this screen; sumOutput() that built it still exists in
+         the file, unreachable, kept for tests/record.js and a future
+         release-focused surface, not this one. So Summary has no second
+         place that names the heaviest address's feeling any more; the
+         Analytics assertion above is this test's real coverage of that
+         behaviour now. Checked directly against the real DOM before cutting
+         this: three grief commits render zero `.s-out` elements on Summary,
+         confirmed, not assumed. */
+      const sumErrs = await ps.evaluate(() => { setTab(TAB.SUMMARY); render(); return true; });
+      ok(sumErrs, 'Summary renders after three grief entries with no thrown error');
       ok(!ps.errs.length, 'no page errors through the commits, Analytics and Summary: ' + ps.errs.join(' | '));
       await ps.cx.close();
     }
