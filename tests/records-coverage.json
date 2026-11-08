@@ -1,0 +1,33 @@
+{
+  "about": [
+    "What tools/records.js --gate holds the registry to, in both directions. Below a value is coverage going backwards; above it is progress not written down, and both fail. Change a value only in the change that moves it, read off that run, never by hand from a document.",
+    "Written 31 October 2026 off main d46be066 (engine.js md5 prefix 4e5becaf), the first run of the registry. On that run it agreed with the 31 October audit's pass A (reviews/records-template-audit-2026-10-31.md) on all 379 records, component by component. components_full counts the records holding each component in full; partial counts as absent, per T1 and T2: a record does not pass merely because every field contains text.",
+    "Draft depth records (records/depth/saboteurs-pilot-2026-10-31.json) are never read by the gate. A draft is not canon, and owner_approved moves only with an approval carrying reviewState owner-approved, a name and a date.",
+    "Re-read 8 November 2026, the registry's own first merge, off real main at the commit this file ships in. 379 to 383 records and every components_full value below moved up, never down, over the 8 days this registry sat unmerged: real coverage work landed in that window, not a ledger error. Read off this run, not retyped from memory."
+  ],
+  "records": 383,
+  "pass_all": 0,
+  "owner_approved": 0,
+  "pass_depth": {
+    "D1": 29,
+    "D2": 36,
+    "D3": 0,
+    "D4": 0
+  },
+  "components_full": {
+    "def": 188,
+    "prov": 32,
+    "joins": 281,
+    "poles": 49,
+    "trig": 49,
+    "beh": 170,
+    "cons": 8,
+    "scene": 41,
+    "inv": 64,
+    "ctr": 0,
+    "rq": 17,
+    "dis": 0,
+    "evc": 48,
+    "rp4": 5
+  }
+}

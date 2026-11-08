@@ -1,0 +1,290 @@
+{
+  "about": [
+    "PILOT DRAFT, PENDING THE OWNER'S REVIEW. NOT CANON. Nothing in atuned_src/ reads this file and tools/records.js --gate never reads it. It exists to show, on three real records, what a pass at the four depth template (reboot-os atuned/data/celestial/DEPTH_RESEARCH_STANDARD_V2.md, exemplar WATER_RAT_FOUR_DEPTH_PASSES.md) actually takes, and to time it.",
+    "Three named saboteurs, chosen because the category is the most exposed (31 of 33 land on the reference roster, 106 appearances) and closest to the template, so the pilot measures the cost of finishing a record and not of starting one: Hyper-Achiever S06 (6 appearances, the most of any named saboteur), Pleaser S05 (5) and Catastrophizer S30 (3, whose trigger the audit named as three words).",
+    "Grounded in the engine's own rows for each, quoted in pass 2: SABDEF in atuned_src/engine/data/kb.js, SABCARD in atuned_src/engine/data/sabcard.js, SAB_LIB and SAB33 (addresses and axis charges), NODES in atuned_src/engine/data/nodes.js. Nothing here changes an address, a charge or a join.",
+    "Every behaviour claim is an interpretive hypothesis, not a prediction or a diagnosis, and is labelled with T1's four evidence words. CITATIONS ARE FROM THE DRAFTING SEAT'S KNOWLEDGE AND WERE NOT RE-READ AGAINST THE TEXTS IN THIS SESSION, which had no library access. Each needs a source check before reviewState can move past draft. That check is part of the remaining cost, and is counted in the estimate.",
+    "Check it: node tools/records.js --drafts records/depth/saboteurs-pilot-2026-10-31.json --record sab:S06"
+  ],
+  "records": {
+    "sab:S06": {
+      "nm": "Hyper-Achiever",
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "Self-respect that has to be earned again every day through output. The person works, finishes and produces, and the work is real, but the reason underneath is that rest feels like losing standing. When nothing is being measured the time does not feel empty, it feels unsafe, so the next task is reached for before the last one has landed.",
+        "provenance": [
+          { "source": "Chamine, S. (2012). Positive Intelligence. Greenleaf Book Group. Hyper-Achiever is one of his ten named saboteurs.", "class": "practitioner-interpretation" },
+          { "source": "SABDEF S06, atuned_src/engine/data/kb.js: \"Dependent on constant performance for self-respect. Workaholic.\"", "class": "source-originated" }
+        ]
+      },
+      "d2": {
+        "opposite": "Steady effort. Works hard when the work asks for it and stops when it is done, and the stop costs nothing, because worth was never on the table. Output is something given, not something owed."
+      },
+      "d3": {
+        "trigger": "Unmeasured time. A gap opens: an evening with nothing due, a holiday, a project that shipped, praise that has already faded. The engine's own trigger: when performance is not being measured or when rest is available.",
+        "move": "Fills the gap with production. Opens the laptop, finds one more thing to finish, takes on the next goal before the last one is felt, and counts the day by what came out of it.",
+        "payoff": "For a moment the output reads as proof. The tension drops while the work is moving, and other people often reward it.",
+        "cost": "The proof wears off by evening, so the next day needs more of it. Rest stops restoring, relationships get the leftover hours, and the body runs on a gauge that never reads full.",
+        "scene": "Saturday morning, nothing scheduled. Within twenty minutes the person has cleared the inbox, started a side project and drafted next week's plan. A friend calls to ask about lunch and the answer is maybe later, there is one more thing. By evening a lot got done and the person cannot say what the day was for.",
+        "inversion": "Takes an hour that produces nothing, on purpose, and notices that worth is still there at the end of it. Then works again, from choice. The engine's own drill: rest without producing for one hour, no metrics.",
+        "counterexamples": [
+          { "kind": "healthy", "text": "A real deadline, a season of exams or a launch week, where long hours are what the situation needs and they stop when it ends. Hard work that stops cleanly is not this pattern." },
+          { "kind": "other-cause", "text": "Long hours driven by money, by a job that demands them, or by a caring load, where the person would rest if they could. The constraint is outside, not a need to earn standing." },
+          { "kind": "other-cause", "text": "Absorption in work the person loves, where time vanishes and the stop, when it comes, feels fine. Flow is not driven by worth and does not leave a debt by evening." }
+        ],
+        "neighbours": [
+          { "ref": "sab:S04", "distinction": "The Perfectionist will not let a thing be finished. The Hyper-Achiever finishes it and needs the next one." },
+          { "ref": "sab:S10", "distinction": "The Stickler holds the world to the right way. The Hyper-Achiever holds itself to more." }
+        ]
+      },
+      "d4": {
+        "recognition": [
+          "If your output did not prove anything about your worth, what would you choose to do next?",
+          "When did you last stop because the work was done, not because you ran out of energy?"
+        ],
+        "disconfirmers": [
+          "The person rests for a full day with nothing to show for it and reports the day as good, not as lost, and the feeling holds the next morning.",
+          "The hours drop when the outside demand drops, a deadline passes or a job changes, with no new goal reached for to replace them.",
+          "Praise or a missed target leaves the person's sense of standing about where it was, rather than lifting it or flattening it."
+        ],
+        "evidenceClass": { "d1": "practitioner-interpretation", "d2": "editorial-hypothesis", "d3": "editorial-hypothesis", "d4": "editorial-hypothesis" },
+        "researchPasses": [
+          {
+            "pass": "p1",
+            "title": "Identity and provenance",
+            "focus": "Where the name comes from and what it originally claimed.",
+            "finding": "Hyper-Achiever is one of the ten saboteurs Chamine names in Positive Intelligence, and SAB_PI carries it as one of the ten the product attributes to him. His description is performance as the basis of self-respect, with success that never lands. The engine keeps a shorter line, Dependent on constant performance for self-respect, Workaholic. The word workaholic is older and is not his: Oates coined it in 1971, and Spence and Robbins (1992) separated drive from enjoyment of work, which is the line the counterexamples above draw. That split matters. A workaholism score treats hours as the sign, and this record holds that hours are not the sign, the stop is.",
+            "sources": [
+              "Chamine, S. (2012). Positive Intelligence. Greenleaf Book Group.",
+              "Spence, J. T., & Robbins, A. S. (1992). Workaholism: Definition, measurement, and preliminary results. Journal of Personality Assessment, 58(1), 160-178.",
+              "SABDEF S06 and SAB_PI, atuned_src/engine/data/kb.js"
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p2",
+            "title": "Construction in the system",
+            "focus": "What the engine already says, by data, and what it does not.",
+            "finding": "SAB_LIB seats Hyper-Achiever at addresses 40 Perfectionism (Solar, mesenteric plexus, theme Idealism, distortion Rigidity), 17 Addiction (Sacral, sacral plexus, Craving and Obsession) and 24 Avoidance Of Pleasure (Sacral, pelvic nerve, Sensuality and Denial of life), in the Grandiosity family. SAB33 gives its two axes as apathy at 5 to 7 and fear at 4 to 8. Read together, the data already describes this record: a drive held up by fear, a numbness where rest should be, and pleasure refused. The record adds nothing to that wiring and stores no join; it names its own opposite, steady effort, where the engine borrows the axis's Vitality and Trust.",
+            "sources": [
+              "SAB_LIB and SAB33, atuned_src/engine/data/canon.js and nodes.js",
+              "NODES 40, 17 and 24, atuned_src/engine/data/nodes.js",
+              "HCX_LIB Grandiosity, the shape held bigger than it is, and the gap defended"
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p3",
+            "title": "Behaviour and mechanism",
+            "focus": "The stress loop, the payoff, the cost, and when the same behaviour is healthy.",
+            "finding": "The working loop: unmeasured time opens, standing feels at risk, the person produces, the tension drops while the output moves, the relief fades by evening, and the next gap needs more output than the last. Crocker and Wolfe's account of contingent self-worth fits the mechanism: when worth is staked on a domain, success lifts and failure drops it sharply, and the person keeps chasing the domain to hold level. That is a parallel from social psychology, not evidence about any one user. The healthy inversion is behavioural and small, an hour with nothing produced, because the hypothesis predicts the hour will feel unsafe first and neutral after.",
+            "sources": [
+              "Crocker, J., & Wolfe, C. T. (2001). Contingencies of self-worth. Psychological Review, 108(3), 593-623.",
+              "SABCARD S06 scene and drill, atuned_src/engine/data/sabcard.js"
+            ],
+            "evidence": "editorial-hypothesis"
+          },
+          {
+            "pass": "p4",
+            "title": "Crosswalk, falsification and trust boundary",
+            "focus": "What would show the record does not fit, and what the product may not do with it.",
+            "finding": "The record is a reflection lens, not a measure. It may be shown when the engine's own reading lands it, and it may ask the recognition questions, but nothing in it writes a charge, a coherence figure or a diagnosis. The disconfirmers are behavioural and checkable by the person: a full day of rest that reads as good, hours that fall when the demand falls, standing that does not move with praise. If any of these hold, the record should say it may not fit rather than call the evidence hidden striving. Hewitt and Flett's split of self-oriented from socially prescribed perfectionism is a caution here: the same hours can come from a need inside or a pressure outside, and only the person can say which.",
+            "sources": [
+              "Hewitt, P. L., & Flett, G. L. (1991). Perfectionism in the self and social contexts. Journal of Personality and Social Psychology, 60(3), 456-470.",
+              "DEPTH_RESEARCH_STANDARD_V2.md, reboot-os atuned/data/celestial, pass 4"
+            ],
+            "evidence": "editorial-hypothesis"
+          }
+        ]
+      }
+    },
+    "sab:S05": {
+      "nm": "Pleaser",
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "Acceptance bought indirectly, by helping, pleasing, rescuing or flattering, at the moment a plain no or a plain want would risk someone's disapproval. The help is real. What makes it this pattern is that it is offered in place of the person's own preference, which goes unsaid.",
+        "provenance": [
+          { "source": "Chamine, S. (2012). Positive Intelligence. Greenleaf Book Group. Pleaser is one of his ten named saboteurs.", "class": "practitioner-interpretation" },
+          { "source": "SABDEF S05, atuned_src/engine/data/kb.js: \"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.\"", "class": "source-originated" }
+        ]
+      },
+      "d2": {
+        "opposite": "Clean giving. Says what it wants once and lets it stand, and when it helps, it helps because it chose to, so the relationship can hold a no without anyone paying for it later."
+      },
+      "d3": {
+        "trigger": "A limit is needed and the limit could cost approval: a request the person does not want, a plan they disagree with, a friend who might be let down. The engine's own trigger: when there is potential for disapproval or when a boundary is needed.",
+        "move": "Helps instead of saying. Smooths it over, pays a compliment, takes the extra job, and agrees before the wish to refuse has finished forming.",
+        "payoff": "The room stays warm. Nobody is disappointed, and the person is thanked for being easy to have around.",
+        "cost": "The person's own preference goes unsaid again, resentment builds where nobody can see it, and the tiredness is the kind rest does not fix, because what drained it was the unsaid thing.",
+        "scene": "A colleague asks for help with a report on the evening the person had planned to see family. The answer is of course, before the colleague finishes the sentence. The person stays late, says it was no trouble, and on the drive home rehearses the no they did not say.",
+        "inversion": "States the preference or the limit once, with no apology attached, and stays in the room while the other person reacts. The engine's own drill: state a preference or limit once, do not explain or apologize.",
+        "counterexamples": [
+          { "kind": "healthy", "text": "Help given freely, where the person could have said no, knows it, and would choose the same again. Generosity that leaves no unsaid want behind it is not this pattern." },
+          { "kind": "other-cause", "text": "Going along because refusing is unsafe: an abusive partner, a manager who punishes, a setting where a no has real consequences. Compliance under threat is a response to the situation, not a bid for approval, and the record must not name it as the person's pattern." },
+          { "kind": "other-cause", "text": "Cultural or family norms of deference, where agreeing in public and saying the real view in private is the expected form, and the view does get said." }
+        ],
+        "neighbours": [
+          { "ref": "sab:S16", "distinction": "The People-Pleaser trades authenticity for approval in general. The Pleaser does it through acts, helping and rescuing, at the moment a limit is due." },
+          { "ref": "sab:S31", "distinction": "The Enabler backs up behaviour it knows is harmful. The Pleaser need not: what it gives up is its own want, not the other person's welfare." },
+          { "ref": "sab:S22", "distinction": "The Martyr gives in order to be owed. The Pleaser gives in order not to be disliked, and usually wants no credit for it." }
+        ]
+      },
+      "d4": {
+        "recognition": [
+          "What do you actually want here, and what do you fear might happen if you say it plainly?",
+          "When you last said yes, was there a no underneath it?"
+        ],
+        "disconfirmers": [
+          "The person says no to someone whose approval matters and reports no lasting worry about it, and the relationship carries on.",
+          "Asked what they wanted in a recent exchange, the person names a want that was in fact said out loud at the time.",
+          "The helping continues at the same level after the other person's approval is no longer at stake, for example after they have moved away."
+        ],
+        "evidenceClass": { "d1": "practitioner-interpretation", "d2": "editorial-hypothesis", "d3": "editorial-hypothesis", "d4": "editorial-hypothesis" },
+        "researchPasses": [
+          {
+            "pass": "p1",
+            "title": "Identity and provenance",
+            "focus": "Where the name comes from and its older roots.",
+            "finding": "Pleaser is one of the ten saboteurs in Chamine's Positive Intelligence and SAB_PI attributes it to him. His description is gaining acceptance and affection by helping, pleasing, rescuing or flattering, and losing sight of one's own needs. The shape is much older. Horney (1945) named moving toward people as one of three basic strategies against anxiety, compliance in exchange for safety and love. The engine also carries People-Pleaser, S16, a separate record with its own addresses, so this one must say what makes it distinct, which it does in its neighbours rather than by renaming either.",
+            "sources": [
+              "Chamine, S. (2012). Positive Intelligence. Greenleaf Book Group.",
+              "Horney, K. (1945). Our Inner Conflicts: A Constructive Theory of Neurosis. W. W. Norton.",
+              "SABDEF S05 and S16, atuned_src/engine/data/kb.js"
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p2",
+            "title": "Construction in the system",
+            "focus": "What the engine already wires, by data.",
+            "finding": "SAB_LIB seats Pleaser at addresses 5 Insecurity (Root, pelvic nerve, theme Belonging, distortion Dependency), 1 Fear (Root, lumbar plexus, Instinct and threat, Avoidance) and 30 Guilt Of Pleasure (Sacral, sacral outflow, Joy and Self-denial), in the Collapse family. SAB33 gives its axes as apathy at 3 to 5 and fear at 3 to 8. Two root addresses about belonging and threat, and one sacral address about denying the self its own pleasure, is a fair data portrait of the move: stay included, give up the want. The record adds no join. Its own opposite, clean giving, replaces the borrowed axis opposite.",
+            "sources": [
+              "SAB_LIB and SAB33, atuned_src/engine/data/canon.js and nodes.js",
+              "NODES 5, 1 and 30, atuned_src/engine/data/nodes.js",
+              "HCX_LIB Collapse, the structure gives way downward and stays down"
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p3",
+            "title": "Behaviour and mechanism",
+            "focus": "The stress loop and its payoff, and the practitioner account it resembles.",
+            "finding": "The working loop: a limit is due, disapproval looks possible, the person helps instead of saying, the room stays warm, the want goes unsaid, resentment and tiredness build, and the next limit feels riskier because so much has gone unsaid. Walker's practitioner account of the fawn response describes a similar move as a learned safety strategy, appeasing to avoid harm. That is a practitioner framing from trauma work and is cited as a parallel only: this record must not tell a person their helping is a trauma response. The inversion is one sentence said once, because the hypothesis predicts the fear peaks before the sentence and falls after it.",
+            "sources": [
+              "Walker, P. (2013). Complex PTSD: From Surviving to Thriving. Azure Coyote.",
+              "SABCARD S05 scene and drill, atuned_src/engine/data/sabcard.js"
+            ],
+            "evidence": "practitioner-interpretation"
+          },
+          {
+            "pass": "p4",
+            "title": "Crosswalk, falsification and trust boundary",
+            "focus": "What would show it does not fit, and the safety line it must hold.",
+            "finding": "The record is a lens for the person to test, not a finding about them. Its sharpest boundary is the second counterexample: compliance under threat looks like pleasing from outside and is not. If a story shows that a no would bring real harm, the record must not name the person's agreeing as their saboteur, and the product's existing safety route takes precedence. Beck's sociotropy, investment in being accepted by others, is a useful research parallel for the disconfirmers, which test whether the helping tracks approval or tracks choice. Nothing here writes a charge or a diagnosis.",
+            "sources": [
+              "Beck, A. T. (1983). Cognitive therapy of depression: New perspectives. In P. J. Clayton & J. E. Barrett (Eds.), Treatment of Depression: Old Controversies and New Approaches. Raven Press.",
+              "DEPTH_RESEARCH_STANDARD_V2.md, reboot-os atuned/data/celestial, pass 4"
+            ],
+            "evidence": "editorial-hypothesis"
+          }
+        ]
+      }
+    },
+    "sab:S30": {
+      "nm": "Catastrophizer",
+      "reviewState": "draft",
+      "ownerApproved": false,
+      "d1": {
+        "definition": "Jumps from an ordinary unknown to a threat to survival. A pending result or an unanswered message stops being open and becomes the end of everything, and the body reacts to the ending as if it had happened. The Worrywart runs the same move on a smaller scale; the Catastrophizer goes all the way.",
+        "provenance": [
+          { "source": "SABDEF S30, atuned_src/engine/data/kb.js: \"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale.\"", "class": "source-originated" },
+          { "source": "Ellis, A. (1962). Reason and Emotion in Psychotherapy. Lyle Stuart. The idea of awfulizing.", "class": "practitioner-interpretation" }
+        ]
+      },
+      "d2": {
+        "opposite": "Present tense. Describes where things actually stand right now, holds the unknown as unknown, and plans for the bad outcome only when there is something to do about it."
+      },
+      "d3": {
+        "trigger": "Something that matters is unresolved and the answer is out of the person's hands: a test result pending, a partner late and not answering, an email from a manager that just says can we talk. The engine's current trigger reads only any unresolved uncertainty, and this draft is the longer form of it.",
+        "move": "Runs the unknown forward to its worst end in seconds, then lives in that end. Rehearses the loss, the conversation, the aftermath, and feels the grief of it ahead of time.",
+        "payoff": "For a moment the person feels braced, as if picturing the worst means it cannot ambush them.",
+        "cost": "The body pays for a disaster that has not happened and usually never does: sleep, appetite, attention. And the next unknown arrives already loaded.",
+        "scene": "A message reads call me when you can, and nothing else. In the minute before calling back, the person has pictured a death, a firing and a break up, and their hands are cold. The call is about dinner plans. The cold hands take an hour to warm.",
+        "inversion": "Says out loud what is known right now, in the present tense, and names the part being imagined as imagined. The engine's own drill: describe the actual current situation without projection.",
+        "counterexamples": [
+          { "kind": "healthy", "text": "Thinking through the worst case on purpose, to plan for it, and then setting it down: a pilot's checklist, a will written, a hospital bag packed. Planning that ends is not this pattern." },
+          { "kind": "other-cause", "text": "A real and present danger, where the worst outcome is a likely one and fear is the correct reading of the facts. Accurate alarm is not catastrophizing." },
+          { "kind": "other-cause", "text": "A body already running high for another reason, illness, no sleep, a stimulant, where every unknown reads as threat because of the state and not the thought. The pattern is the state's, and it passes with the state." }
+        ],
+        "neighbours": [
+          { "ref": "sab:S14", "distinction": "The Worrywart runs worst cases continuously and calls it planning. The Catastrophizer makes one leap, from an ordinary unknown to a survival threat." },
+          { "ref": "sab:S08", "distinction": "The Hyper-Vigilant scans for danger before it appears. The Catastrophizer waits for an unknown and then finishes it in the worst way." },
+          { "ref": "sab:S29", "distinction": "The Pessimist argues against a good outcome. The Catastrophizer does not argue; it pictures the end and feels it." }
+        ]
+      },
+      "d4": {
+        "recognition": [
+          "What do you know right now, and what part of the outcome are you imagining?",
+          "The last time you pictured the worst, how did it actually turn out?"
+        ],
+        "disconfirmers": [
+          "Facing a real unknown that matters, the person holds it as open and sleeps on it, and the imagined ending does not take over the night.",
+          "The fears the person reports are proportionate when checked against what happened next, with the bad outcomes they feared mostly arriving.",
+          "The leaps appear only when the body is already depleted, after no sleep or during illness, and stop when that passes."
+        ],
+        "evidenceClass": { "d1": "source-originated", "d2": "editorial-hypothesis", "d3": "editorial-hypothesis", "d4": "editorial-hypothesis" },
+        "researchPasses": [
+          {
+            "pass": "p1",
+            "title": "Identity and provenance",
+            "focus": "Where the word and the idea come from, and what the engine claims for it.",
+            "finding": "Catastrophizer is not one of Chamine's ten, and SAB_PI correctly omits it; the engine's own note is ported from the codex. The idea is old in cognitive therapy. Ellis called it awfulizing, rating a bad event as the worst possible, and Beck (1976) listed catastrophizing among the cognitive distortions. The word now has a measured clinical use in pain research, the Pain Catastrophizing Scale of Sullivan and colleagues, which this record does not borrow: the product does not measure catastrophizing, and a person reading the record must not take it as a score.",
+            "sources": [
+              "Ellis, A. (1962). Reason and Emotion in Psychotherapy. Lyle Stuart.",
+              "Beck, A. T. (1976). Cognitive Therapy and the Emotional Disorders. International Universities Press.",
+              "Sullivan, M. J. L., Bishop, S. R., & Pivik, J. (1995). The Pain Catastrophizing Scale: Development and validation. Psychological Assessment, 7(4), 524-532."
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p2",
+            "title": "Construction in the system",
+            "focus": "What the engine already wires, by data.",
+            "finding": "SAB_LIB seats Catastrophizer at addresses 1 Fear (Root, lumbar plexus, Instinct and threat, Avoidance), 7 Scarcity (Root, iliac nerve branch, Resources and Hoarding) and 16 Collapse (Root, spinal cord base, Structure and Abandoning Self), all three at the root, in the Collapse family. SAB33 gives its axes as fear at 8 to 10 and sadness at 6 to 8, the highest fear band of the three pilot records. A survival-level leap seated wholly at the root, with grief second, matches the card's own scene of feeling the loss ahead of time. The record stores no join and names its own opposite, present tense, in place of the axis's Trust.",
+            "sources": [
+              "SAB_LIB and SAB33, atuned_src/engine/data/canon.js and nodes.js",
+              "NODES 1, 7 and 16, atuned_src/engine/data/nodes.js",
+              "SABCARD S30, atuned_src/engine/data/sabcard.js"
+            ],
+            "evidence": "source-originated"
+          },
+          {
+            "pass": "p3",
+            "title": "Behaviour and mechanism",
+            "focus": "The stress loop, and the research it resembles.",
+            "finding": "The working loop: an unknown that matters opens, it cannot be resolved now, the person runs it to its worst end, the body reacts to the end, the reaction is read as evidence the end is coming, and the next unknown arrives pre-loaded. Research on intolerance of uncertainty, Dugas and colleagues' model, describes a related engine: when not knowing is itself unbearable, the mind closes the gap with a conclusion, and a bad conclusion at least ends the not knowing. That is offered as a parallel only. The inversion keeps the gap open in plain present tense words, because the hypothesis predicts the body settles once the imagined part is named as imagined.",
+            "sources": [
+              "Dugas, M. J., Gagnon, F., Ladouceur, R., & Freeston, M. H. (1998). Generalized anxiety disorder: A preliminary test of a conceptual model. Behaviour Research and Therapy, 36(2), 215-226.",
+              "SABCARD S30 scene and drill, atuned_src/engine/data/sabcard.js"
+            ],
+            "evidence": "editorial-hypothesis"
+          },
+          {
+            "pass": "p4",
+            "title": "Crosswalk, falsification and trust boundary",
+            "focus": "What would show it does not fit, and what it may not claim.",
+            "finding": "The record is a lens, not a measure, and its trust boundary is the second counterexample: when the danger is real, alarm is accurate and the record must not call it a saboteur. The disconfirmers are checkable against the person's own history. If the bad outcomes they feared mostly arrived, the fear was calibrated and the record does not fit. If the leaps appear only when depleted, the pattern belongs to the state. One finding for the owner: the engine's current trigger, Any unresolved uncertainty, is three words and would match every person on every day, which makes it unfalsifiable as written. This draft's trigger narrows it to an unknown that matters and is out of the person's hands.",
+            "sources": [
+              "SABDEF S30 trigger field, atuned_src/engine/data/kb.js",
+              "reviews/records-template-audit-2026-10-31.md, named saboteurs, Catastrophizer's trigger",
+              "DEPTH_RESEARCH_STANDARD_V2.md, reboot-os atuned/data/celestial, pass 4"
+            ],
+            "evidence": "editorial-hypothesis"
+          }
+        ]
+      }
+    }
+  }
+}
