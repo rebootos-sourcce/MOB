@@ -34534,3 +34534,23 @@ either and are closed on GitHub, the first already on `main` under a
 different commit, the second deliberately superseded by `sim/year/`; 198
 stays held on the product decision Directive 10 already named; 167 stays
 open and untouched, another process's own draft.
+
+**Directive 8's visual bundle, Lance's own verdicts, 8 November.** Six PRs
+sent for his sign-off with real screenshots of each branch's own build
+(#149, #156, #162, #163, #171, #199). His review, direct from him:
+
+- **PR #149 (Celestial lens), PR #156 (Hero's Journey Board), PR #171
+  (Compass archetypes, stacked on #156): failed.** All three closed on
+  GitHub, his verdict in the closing comment.
+- **PR #163 (Source AI voice prototype): failed.** His words: "Source AI
+  is nothing like what I asked for, at all." Closed.
+- **PR #162 (the starting-gift onboarding card): held, not failed.** His
+  words: "wire that into the hold for that." Left open, not merged.
+  Flagged to the Reboot-OS mailbox (FLD-PAR-20261108-017) since it is real,
+  working code gated only on their migration 0018, and he asked
+  specifically that whoever is on the funnel there know it exists.
+- **PR #199 (Analytics bubbles above the fold): no verdict yet**, still
+  open, not part of this round's fails.
+
+Not re-litigated here: why each failed. Lance's own words are the record;
+nothing here invents a reason he did not give.
