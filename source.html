@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2994 acb92a89 2026-11-08 22:39"><head><meta charset="utf-8">
+<html lang="en" data-build="v2995 06d5a8f4 2026-11-08 23:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5070,8 +5070,15 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 @media (max-width:720px){.ab-main{grid-template-columns:1fr}}
 .ab-f{border:1px solid var(--edge);border-radius:var(--r);padding:10px 12px;background:var(--panel-2)}
 .ab-svg{width:100%;height:auto;display:block;margin:5px 0 3px}
-.ab-t{fill:var(--ink);font-family:var(--sans);font-weight:600}
-.ab-v{fill:var(--ink);font-family:var(--num);opacity:.6}
+/* THE ICON REPLACED THE WORD, THE PILL REPLACED THE FIGURE INSIDE THE
+   CIRCLE, 8 November: ".ab-t"/".ab-v" drew the bubble's own name and its
+   figure; analytics.js now draws a glyph and a pattern count in their
+   place, the figure moved to ".ab-pill" at the bubble's own lower right.
+   ".ab-n" keeps ".ab-v"'s own num face and dimmed weight, the same
+   reading a secondary figure already had on this page. */
+.ab-n{fill:var(--ink);font-family:var(--num);opacity:.6}
+.ab-pill rect{opacity:.92}
+.ab-pv{fill:var(--ink);font-family:var(--num);font-size:10.5px;font-weight:600}
 .ab-s{font-size:12.5px;color:var(--dim);line-height:1.55}
 .ab-none{font-size:13.5px;color:var(--dim);padding:30px 0;text-align:center}
 .ab-b{cursor:pointer}
@@ -5105,7 +5112,8 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
    the visual seat). A halo in the panel's own colour sits between the two,
    so the label is read against the ground it was chosen for on every
    lighting, whatever the disc underneath it is. */
-.ab-t,.ab-v{paint-order:stroke;stroke:var(--panel-2);stroke-width:3.2px;stroke-linejoin:round}
+.ab-n{paint-order:stroke;stroke:var(--panel-2);stroke-width:3.2px;stroke-linejoin:round}
+.ab-pv{paint-order:stroke;stroke:var(--panel-2);stroke-width:2.6px;stroke-linejoin:round}
 .ab-b:focus-visible{outline:none}
 .ab-b:focus-visible circle{stroke-width:2.8}
 /* EVERY PRESS ON THE PAGE IS A BUTTON, round RB, so each takes the button
@@ -20831,9 +20839,20 @@ function compute(){
     inSups:sups.some(s=>s.parts.indexOf(psyParts[0])>=0&&s.parts.indexOf(psyParts[1])>=0)}
   :null;
  /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ /* HELD IS ADDED, NOT w ITSELF, 8 November: his words on the Analytics
+    bubbles, "put the number of patterns in each category. So a person
+    would see, oh, I've got 500 child patterns, and it's dominating 60%
+    of my personality." seg.length (every address seated at this mask's
+    band or bands) is a structural constant, the same number for every
+    person who has this mask at all; it would pair a personal percent (w)
+    with a figure that never moves. held, the same sq>=4 test DQ and every
+    other "held" count on this page already uses, is the addresses at
+    those seats actually carrying something in this reading, so it moves
+    with the person the same way w does. */
  const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
-  return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
+  return {nm:m.nm,bands:m.b,ic:m.ic,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
+   held:seg.filter(n=>n.sq>=4).length,
    ang:meanAng(seg.map(n=>n.ang))};});
 
  const dist=clamp(sabs.length*.19+cxs.length*.55+hys.length*1.35+sups.length*2.4,0,10);
@@ -59295,158 +59314,73 @@ function anaField(title,sub,items,w,h){
       axis holding nothing read 0.3 and a domain read the constant 9.0 it is
       drawn at. Each caller now names the figure, f, the registry's percent
       or a count, and a bubble with no f (a domain, which is a selection and
-      not a measurement) prints none. */
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held'))))+'</title>'
+      not a measurement) prints none. A caller may also name n, a real count
+      of the patterns behind the bubble (see each anaField call below for
+      what n honestly counts there); a bubble with no n shows none, rather
+      than a count invented to fill the space. */
+   +'<title>'+esc(p.it.nm
+     +(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held')))
+     +(!UN&&p.it.n!=null?', '+p.it.n+' pattern'+(p.it.n===1?'':'s'):''))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="none" stroke="'+p.it.c+'" stroke-width="1.2" opacity=".85"/>';
-  if(!tiny){
-   var fs=Math.max(11,Math.min(14,p.r*0.30));
-   var room=Math.floor((p.r*1.7)/(fs*0.56));
-   /* A name cut to "Hyper-Ach\u2026" names nothing and still costs the ink.
-      A name that does not fit is dropped, and the bubble carries its value
-      instead. The full name is on hover and in the list beside the chart. */
-   var t=(p.it.nm.length<=room)?p.it.nm:'';
-   if(t){
-    s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
-    if(fit&&p.it.f!==undefined)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
+  /* THE WORD BECAME THE ICON, THE PERCENT BECAME A PILL, 8 November, his
+     words: "with the words, at the center of each let's have their icon
+     and move the percent into a pill into the lower right hand corner. And
+     then put the number of patterns in each category." A bubble cut its
+     own name to nothing when the word did not fit ("Hyper-Ach\u2026" names
+     nothing); a glyph at a fixed size never has that problem, so it draws
+     at the same !tiny floor the name used to need room for. Each caller
+     passes its own category's own real mark (MASKS/DOMAINS/ARCH/CHILD's
+     own ic, canon.js; CHAINGLYPH by kind; SEATGLYPH by band), never a
+     glyph invented here. The count (n) takes the spot the percent used to
+     print inside the bubble; the percent (f) moves to the corner pill. */
+  if(!tiny&&p.it.ic){
+   var isz=Math.max(10,Math.min(p.r*0.85,22));
+   /* THE ICON NEEDS ITS OWN GROUND, same reason the name and the figure
+      always did (see "THE BUBBLE LABELS ON THEIR OWN FILL" at the CSS
+      above): the bubble's fill is the mark's own seat colour, so a glyph
+      drawn in that same colour all but disappears on the biggest, most
+      saturated circles, the ones most worth reading. A small panel-toned
+      disc behind it is the halo the text used, in a shape that works for
+      an open-stroke glyph a text-only stroke halo cannot wrap. */
+   s+='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+(isz*0.62).toFixed(1)+'" fill="var(--panel-2)" opacity=".88"/>'
+    +'<g class="ab-ic" transform="translate('+(p.x-isz/2).toFixed(1)+' '+(p.y-isz/2).toFixed(1)+') scale('+(isz/24).toFixed(3)+')" '
+    +'fill="none" stroke="var(--ink)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    +(p.it.icRaw?p.it.ic:'<path d="'+p.it.ic+'"/>')+'</g>';
+   if(fit&&p.it.n!=null)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+isz/2+12).toFixed(1)+'" text-anchor="middle" '
+    +'class="ab-n" style="font-size:'+Math.max(10,p.r*0.19).toFixed(1)+'px">'+esc(String(p.it.n))+'</text>';}
+  if(fit&&p.it.f!==undefined){
+   var pv=UN?'\u2013':p.it.f, pw=Math.max(22,7+String(pv).length*6.6), ph=15;
+   var pcx=p.x+p.r*0.56, pcy=p.y+p.r*0.56;
+   s+='<g class="ab-pill" transform="translate('+(pcx-pw/2).toFixed(1)+' '+(pcy-ph/2).toFixed(1)+')">'
+    +'<rect width="'+pw.toFixed(1)+'" height="'+ph+'" rx="'+(ph/2)+'" fill="'+p.it.c+'"/>'
+    +'<text x="'+(pw/2).toFixed(1)+'" y="'+(ph/2+3.6).toFixed(1)+'" text-anchor="middle" class="ab-pv">'+esc(pv)+'</text></g>';}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
  var el=document.getElementById('ana'); if(!el)return;
  /* the reading this plan may see, ui/lock.js: the biggest thing compounding,
     the What is running chart and the masks chart are the tier's */
- var r=computeSeen(),H=anaHist(),prev=H.length>1?H[H.length-2]:null;
+ var r=computeSeen(),H=anaHist();
  var TIER={sup:PAL.Root,hy:PAL.Sacral,cx:PAL.Solar,sab:PAL.Throat};
  var seats=flSeats();
- var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
- var held=W.filter(function(n){return n.sq>=4;});
  var out='<div class="ana-wrap">';
- /* Every figure on this tab was bare except CQ, which carries a percent only
-    because cr() appends one. A number with no scale is not a reading, it is a
-    digit, and six of them sat here on six different scales. */
- var acc=accuracy(r);
+ /* THE HERO IS GONE, 8 November, his words: "remove the 50% and then the
+    coherence your energy oscillating panel, just get rid of all that."
+    The Coherence ring, the tier sentence and Identification are not lost
+    data, CQ is still the first tile in the Readings column (ANA_MET.cq,
+    anaStatTiles), so nothing this screen measures is gone, only the card
+    that spent a whole fold on restating it in prose before a person ever
+    reached a chart. */
  /* THIS SURFACE IS A DOOR OF ITS OWN AGAIN, round LV, unfolded from Summary
     on the same rule that put Games back on the bar: an integer never
     renumbers, so Analytics kept TAB.ANALYTICS and this renderer the whole
     time it had no door, and TABREAL no longer answers it with Summary. A
     tab in the bar is one click from a stranger who has entered nothing, the
     same reach it had while it rendered folded under Summary's own opening
-    screen, so the guard below still has to hold. The eyebrow already knew
-    how to say "not read yet" and the ring beside it printed 36 percent
-    anyway once, which is the exact failure the ruling about the opening
-    screen exposed. The ring holds a dash and the arc holds nothing. Same
-    rule as everywhere else: a percentage is never printed off a default. */
- out+='<div class="ab-hero">'
-  /* the ring opens coherence in the trail, round RB: the laws that make it,
-     weakest first */
-  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'Coherence',act:!r.unread,data:r.unread?'':'data-ana="met|cq"',
-    /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
-       anything past ninety, which is right for a charge and backwards for
-       every reading whose high end is the one a person is working toward. */
-    raw:r.unread?'\u2013':null, hot:false,
-    color:r.unread?'var(--dim)':null})
-  /* ONE SLOT, ONE LABEL. This read "Coherence, corrupt, 0 to 100" and it was
-     doing three jobs: naming the slot, printing the tier and stating the
-     range. The label changed identity with the data, which is the thing a
-     person has to re-parse every time the reading moves, and "0 to 100" is the
-     phrasing the owner struck: if you cannot use regular words to describe it,
-     do not describe it. The regular words for a coherence number are the tier
-     word itself, so the tier moves to the front of the reading where a value
-     belongs and the label stays put. */
-  +'<div><div class="pm-eye">Coherence</div>'
-  +'<div class="ab-say">'
-  +(r.unread?'Nothing has been entered, so none of this is measured yet. Every figure '
-    +'below is drawn from the '+unp('blueprint')+' you have selected and not from a reading.'
-   /* THE TIER WORD, which used to live in the label. It is the reading in
-      plain words and it goes first, because it is the one thing on this
-      surface a person reads before anything else.
-
-      It is attached and not left standing. "Corrupt." alone, bold, with a full
-      stop after it, is a band word with nothing on it, which is a judgement
-      and not a reading. The subject is the field, which is the right distance:
-      a person at level 3 who is defended reads a verdict in a bare label and
-      a measurement in a sentence about their field. */
-   /* and while CQ is still filling there is no word yet, so the sentence says
-      what is left rather than naming a band off laws nobody answered */
-   /* ROUND RG. The band word stood alone, bold, with nothing on it, which
-      is V9's judgement and not a reading. The tier's own first sentence
-      rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
-     :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
-   +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
-     /* "Nothing is compounding" is a claim about somebody's chain, and a plan
-        that cannot see the chain has no grounds to make it */
-     :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
-   /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
-   /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
-      which this product calls held; carrying is anything above nothing
-      (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
-      wrong for the number beside it. And the shadow is a share of all 112,
-      not a weight those held addresses make between them, so the sentence
-      no longer says they make it. The Shadow tile below says what it is. */
-   +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' held, and the shadow across all '+NODES.length+' reads <b>'+fmtPct('dq',r.DQ)+'</b>.'
-   /* Held above the line and carrying anything at all are two different facts
-      and this said the second when it only knew the first. A field with load
-      spread under the line reported "Nothing is carrying" beside a tier word
-      earned by that same load. It now says which of the two is true. */
-    /* the feeling and not the address's name, P0-3 of the inference audit:
-       words never name an address, and the address names are character
-       labels the node table chose. The place is left out with it, because
-       the place comes from the same table. */
-    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest address is carrying <b>'
-      +esc((typeof ritCfWord==='function')?ritCfWord(r.heaviest.cf):String(r.heaviest.cf||'').toLowerCase())
-      +'</b>.':'Nothing is carrying.'))
-   /* only against a row the same arithmetic wrote. A row from before 25
-      September holds It*Ig/Rz, and the gap to the laws over 210 is the
-      formula changing, not the person moving. */
-   /* a move that prints as 0.0 is no move, round RB: "CQ up 0.0" read as
-      a change and was a rounding. 16 October: and a move of 0.1 beside a
-      figure the page shows as a whole number is a decimal nobody can find on
-      the screen, which is the raw score the 14 October ruling took off every
-      daily surface. The change is said against the figure the person sees:
-      whole numbers, and "has not moved" until the shown figure has. */
-   /* AND IT IS SAID AS BEFORE AND AFTER, 17 October, percent phase 2: "CQ
-      up 3" was a move in a unit the person cannot see. pctMove reads both
-      ends off the registry, so "has not moved" is still the shown figure not
-      moving (engine/pct.js). */
-   +(prev&&prev.m===CQ_MODEL?(function(mv){return !mv?'':!mv.moved?' CQ has not moved since last session, at '+mv.to+'.'
-     :' CQ moved from '+mv.from+' to '+mv.to+' since last session.';}(pctMove('cq',prev.cq,r.CQ,{unread:r.unread}))):''))
-  +'</div>'
-  /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
-     KNOWS. The tolerance beside it does not. It printed "58% plus or minus
-     11" and then a line telling a person to compare their own movement
-     against that eleven, which is a lab readout and a conversion exercise.
-     Ruled: "100 plus minus 12, swing 11, that shit has to all go."
-
-     What the line owed was never the number, it was the warning. The
-     coverage facts underneath are what actually widen it, they are stated by
-     name, and they are the things a person can go and change. So the note
-     keeps the warning in plain words and drops the arithmetic.
-
-     AND THE EMPTY STATE IS SAID THE ONE WAY. This read "Nothing measured",
-     which is one of the five phrasings of one state the product was carrying,
-     and the copy seat's sweep names it. The wording is not read yet, as a
-     value, and "Nothing read yet, so what is absent" as a sentence. */
-  /* a press opens the identification drill that already exists
-     (ui/personas.js runAccDrill), round RB */
-  +'<div class="ab-acc"'+(r.unread?'':' data-ana="met|id" role="button" tabindex="0"')+'><span class="pm-eye">Identification</span>'
-  +'<b>'+fmtPct('accuracy',acc.pct,{unread:r.unread})+'</b>'
-  +'<span class="ab-note">'+(r.unread
-    ?'Nothing read yet. Write what happened and this fills in.'
-    /* the coverage as a fact and a remainder, not as a fraction of the person */
-    :acc.cov+' law'+(acc.cov===1?'':'s')+' measured'
-     +(acc.cov<21?', '+(21-acc.cov)+' still at the default':'')
-     /* held, round RB: accuracy() counts addresses at 4 or more */
-     +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
-     +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'
+    screen, so the guard below still has to hold. */
   /* THE THIRD COLUMN, 8 November, his words: "try to keep everything above
      the fold. So the third column will be all of the stat icons." .ab-main
      holds the bubble-chart grid and the reading tiles side by side instead
@@ -59455,26 +59389,48 @@ function anaRender(){
      Running hot moves to after this block: it is a real, useful list when
      an address is past five, and it earned no space at all above when
      nothing was (see anaHot). */
-  +'<div class="ab-main"><div class="ab-grid">';
+ out+='<div class="ab-main"><div class="ab-grid">';
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
     caption kept is the colour key on What is running, because four kinds
     share one chart and colour is the only thing telling them apart. Its tail,
     the bigger the mark, goes with the rest. */
+ /* EVERY BUBBLE'S ICON IS ITS CATEGORY'S OWN REAL MARK, NEVER ONE DRAWN
+    FOR THIS SCREEN, 8 November. Masks, Domains, Archetypes and the nine
+    axes already carry their own ic in canon.js; What is running borrows
+    CHAINGLYPH, the one mark this product already uses for a saboteur,
+    complex, hyper or super complex everywhere else (ui/fieldbar.js, the
+    Field's own rail); the seven seats borrow SEATGLYPH, the one mark
+    every seat already wears on the intake, Knowledge and the onboarding
+    card. No category invents a glyph only this chart would ever show. */
  out+=(lockSees('mask')?anaField('Masks','',
-  r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,f:fmtPct('weight',m.w),
+  r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,f:fmtPct('weight',m.w),n:m.held,ic:m.ic,
    c:seatCol((m.bands||['Heart'])[0])};}),300,210)
   :'<div class="ab-f"><div class="pm-eye">Masks</div>'+lockPanelHtml('mask',{brief:true})+'</div>');
+ /* DOMAINS CARRY NO COUNT, HONESTLY, 8 November. A domain is a chosen
+    identity category (the intake's own pick), never something fetters,
+    addresses or charge are tallied against anywhere in the engine
+    (checked directly before leaving this out, not assumed): DOMAIN[]'s
+    own closeness figure is a continuous shading weight, not a count of
+    a discrete set. Giving it a number here would be exactly the thing
+    this product rules against, an empty box decorated to look read. */
  out+=anaField('Domains','',
-  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
+  S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,ic:d.ic,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
-    .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
+    .map(function(d){return {k:'dom',nm:d.nm,v:2,ic:d.ic,c:rootPlain(d.r)};})),300,210);
  out+=anaField('Archetypes','',
-  (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
+  (r.aff||[]).map(function(a,i){var A=ARCH[i]||{};return {k:'arch',nm:A.nm||'',
    /* sized by the lean, which orders them; the figure is how fully each is
-      expressed, ruled 16 October (engine/archexpr.js) */
-   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
+      expressed, ruled 16 October (engine/archexpr.js). The count is the
+      real address nodes seated at this archetype's own band (the same
+      g.length charfield.js's seatField already computes and this screen
+      had never read); five bands carry two archetypes each (archexpr.js),
+      so those pairs share one true count rather than each inventing a
+      different one. */
+   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),
+   n:A.b?NODES.filter(function(nd){return nd.b===A.b;}).length:null,
+   ic:A.ic,c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
  out+=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
@@ -59488,15 +59444,30 @@ function anaRender(){
   [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
    /* the kind's own colour at every weight, 17 October: a bubble printing a
       percent never takes the alarm (DECISIONS.md, the default taken), and red
-      here was also the key's colour for a super complex */
-   return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
+      here was also the key's colour for a super complex. THE COUNT ONLY WHERE
+      IT MEANS SOMETHING, 8 November: o.parts is real at every kind, but a
+      complex's and a super complex's are always exactly a pair by
+      construction (compute.js builds both by slicing two at a time), so
+      printing "2" on every one of them is not a reading, it is the same
+      digit decorating every bubble of that kind. A saboteur's parts are its
+      real member addresses and a hyper complex's are its real member
+      complexes, both counts that actually move person to person, so only
+      those two kinds carry n. */
+   return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),
+    n:(o.kind==='sab'||o.kind==='hy')&&o.parts?o.parts.length:null,
+    ic:CHAINGLYPH[o.kind],c:TIER[o.kind]||PAL.Throat};}),300,210));
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
-   c:seatCol(c.seat)};}),300,210);
+   /* the real address count behind this axis, the same W.filter(cf) count
+      childFound() already uses for its own n (engine/compute.js), not
+      derived from S.charge, which is a weight and not a tally */
+   n:W.filter(function(nd){return nd.cf===c.nm;}).length,
+   ic:c.ic,c:seatCol(c.seat)};}),300,210);
  out+=anaField('The seven seats','',
-  /* a count of held addresses, so it prints as a count */
+  /* a count of held addresses, so it prints as a count already: the figure
+     IS the pattern count here, so it is not doubled into a second one */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
-   c:seatCol(K2B[s.p.k])};}),300,210);
+   ic:SEATGLYPH[K2B[s.p.k]]||SEATGLYPH._,icRaw:true,c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>'; /* closes .ab-grid */
  out+='<div class="ab-stats"><div class="pm-eye" style="margin-top:0">Readings</div>'
   +anaStatTiles(r)+'</div>';
@@ -60147,7 +60118,6 @@ function anaDrill(){
    the card, which is what the bubbles always did. A press on a card adds a
    step. A press on a step goes back to it. */
 function anaGo(k,nm,fromPage){
- if(k==='met'&&nm==='id'){ANA_PICK=null;ANA_TRAIL=[];if(typeof runAccDrill==='function')runAccDrill();return;}
  if(fromPage){
   var same=ANA_PICK&&ANA_PICK.k===k&&ANA_PICK.nm===nm&&!ANA_TRAIL.length;
   ANA_TRAIL=[]; ANA_PICK=same?null:{k:k,nm:nm};}
@@ -60160,9 +60130,19 @@ function anaGo(k,nm,fromPage){
    VIEW). A press made in the card is the other case it names: without this
    a row pressed near the foot of a long card left the new card's top a
    screen above. RD_INRAIL is that file's own seam, held for one drill. */
+/* A SELECTION ON ANALYTICS NOW ANSWERS IN SELECTION, 8 November, his
+   words: "when I select everything in my analytics, it will show up in
+   my summary panel on the right hand side." Before this, a press on the
+   Analytics tab only called anaRender, which redraws the overview and
+   marks the pressed bubble "on" but opens no card anywhere; every other
+   tab already called anaDrill to answer in the right rail's Selection
+   panel (#rdrill, shared with Summary, the Field and the rest). anaDrill
+   now always runs, so a press here opens the same real card in the same
+   real place a press anywhere else does; anaRender still also runs on
+   this tab so the pressed bubble's own highlight updates. */
 function anaRedraw(inRail){
  var was=RD_INRAIL; RD_INRAIL=!!inRail;
- try{if(S.tab===TAB.ANALYTICS)anaRender(); else anaDrill();}finally{RD_INRAIL=was;}}
+ try{anaDrill(); if(S.tab===TAB.ANALYTICS)anaRender();}finally{RD_INRAIL=was;}}
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('[data-ana],[data-anacrumb]'):null;
  if(!t)return;
@@ -91406,5 +91386,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006109533"></div>
+<div id="eof" hidden data-len="006108342"></div>
 </body></html>

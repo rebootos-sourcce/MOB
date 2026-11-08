@@ -199,23 +199,27 @@ const READ=`(function(){
    const s=await page.evaluate(async who=>{
     loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.ANALYTICS); render();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    const R=compute(), acc=accuracy(R), ana=document.getElementById('ana');
+    const R=compute(), ana=document.getElementById('ana');
     const t=ana?ana.innerText:'';
     const badges=ana?Array.from(ana.querySelectorAll('.crb .crb-v,.cr .v')).map(e=>e.textContent.trim()):[];
     const bubbles=ana?Array.from(ana.querySelectorAll('.ab-v')).map(e=>e.textContent.trim()):[];
-    const accFig=ana?((ana.querySelector('.ab-acc b')||{}).textContent||'').trim():null;
-    /* every one of the six readings opened as a card, so the trail's figures are read too */
+    /* every one of the ten readings opened as a card, so the trail's figures are read too */
     const cards=[];
     for(const k of Object.keys(ANA_MET)){const h=anaMetCard(R,k); if(h)cards.push(h.replace(/<[^>]+>/g,' '));}
     const rec=document.getElementById('rec');
     const recCells=rec?Array.from(rec.querySelectorAll('.rec-row')).map(x=>({k:(x.querySelector('.rec-k')||{}).textContent,
      a:(x.querySelector('.rec-a')||{}).textContent,b:(x.querySelector('.rec-b')||{}).textContent,d:(x.querySelector('.rec-d')||{}).textContent})):[];
-    return {unread:!!R.unread,badges,bubbles,accFig,accWant:fmtPct('accuracy',acc.pct),t,cards,recCells};},who);
+    return {unread:!!R.unread,badges,bubbles,t,cards,recCells};},who);
    ok(!s.unread&&s.badges.length>0,'S3: '+tag+'Analytics reads, with badges to check');
    const dec=v=>/^\d+\.\d+$/.test(v);
    ok(!s.badges.some(dec),'S3: '+tag+'no badge on Analytics prints a decimal, '+J(s.badges.filter(dec).slice(0,6)));
    ok(!s.bubbles.some(dec),'S3: '+tag+'no bubble prints a decimal or its size floor, '+J(s.bubbles.filter(dec).slice(0,6)));
-   ok(s.accFig===s.accWant,'S3: '+tag+'identification prints the registry\'s form, '+J(s.accFig)+' against '+J(s.accWant));
+   /* IDENTIFICATION'S OWN CHECK IS GONE WITH THE HERO IT LIVED IN, 8
+      November: ".ab-acc" was the Coherence hero card Lance had removed
+      whole ("remove the 50% and then the coherence your energy oscillating
+      panel, just get rid of all that"). The figure it checked is not lost,
+      CQ's own tile (ANA_MET.cq) still carries it and is still covered by
+      the cards loop above. */
    ok(!/\bCQ (?:up|down) \d/.test(s.t)&&!/ per cent\b/.test(s.t),'S3: '+tag+'no change in CQ is a signed move and no figure says per cent');
    const cardDec=s.cards.map(c=>(c.match(/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×))/g)||[])).reduce((a,b)=>a.concat(b),[]);
    ok(cardDec.length===0,'S3: '+tag+'the six reading cards print no decimal figure, '+J(cardDec.slice(0,6)));

@@ -1354,8 +1354,6 @@ const virgin=await blank.evaluate(()=>{
  profileSheet();
  o.profile=(document.getElementById('sheet-card').textContent||'').replace(/\s+/g,' ');
  sheetShut();
- setTab(TAB.ANALYTICS); anaRender();
- o.ana=(document.querySelector('.ab-hero .pm-eye')||{}).textContent||'';
  setTab(TAB.FIELD); render();
  /* the whole first screen, not only the surfaces I remembered to guard. The
     right rail was missed on the first pass and a screenshot caught it. This
@@ -1371,7 +1369,13 @@ ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been 
 ok(!/Incoherent|Corrupt|Severe|Contracted/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
-ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
+/* THE ANALYTICS HERO CHECK IS GONE WITH THE HERO, 8 November: the band-
+   word sentence it guarded against ("Your energy reads incoherent") was
+   the hero card alone, which Lance had removed whole. Every figure left
+   on Analytics (the stat tiles) already goes through fmtPct's own
+   {unread} dash, the same central guard CQ's own tile and every other
+   kind use, so there is no remaining place on that tab a band word for
+   an unread profile could print. */
 /* CHANGED 25 SEPTEMBER. This asserted a band word here. One held address
    still makes it a reading, but CQ is the laws alone and this person has
    answered none, so the word waits for all 21 and the slot says what is left
