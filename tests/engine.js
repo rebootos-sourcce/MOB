@@ -8888,6 +8888,12 @@ g('LIMIT · a self limiting statement is the same Shame-at-solar mechanic round 
   'a new limiter phrase reads Shame at the solar plexus, the same seat round SB/NO already uses: '+JSON.stringify(p1.bands));
  const p2=parseStory('I am not as good as other people.');
  ok(p2.bands.solar>0&&p2.imprints.some(i=>i.fetter==='Shame'),'a second new phrase reads the same way: '+JSON.stringify(p2.bands));
+ /* THE PAST TENSE, caught by the first left-rail design review, 8 November:
+    a pattern framed as handed down is told in the past tense ("I was"),
+    not the present ("I am"), and the table above missed it entirely. */
+ const p2b=parseStory('My mother always told me I was not smart enough.');
+ ok(p2b.bands.solar>0&&p2b.imprints.some(i=>i.fetter==='Shame'),
+  'the past tense scores the same as the present tense, not nothing: '+JSON.stringify(p2b.bands));
  const p3=parseStory('I was terrified at the meeting today.');
  ok(!(p3.imprints||[]).some(i=>i.fetter==='Shame'),'an ordinary sentence with no limiter phrase reads no Shame');
 }
