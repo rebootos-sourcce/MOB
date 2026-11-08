@@ -135,8 +135,16 @@ T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'ar
    Do not treat this small explicit descent as a complete complex registry. */
 T.DESCENT.forEach((d,i)=>add({
  id:'descent:'+d.nm,
- kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
+ /* 'hyper complex' (Machiavellianism's own kind, compass.js) matched
+    neither branch here and fell to 'hcx', the thin six-field shape, so
+    the record came out missing seat/sub every run. PR #153, 29 October. */
+ kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':(d.kind==='hyper complex'?'hypercomplex':'hcx')),
  nm:d.nm, seat:null, fam:'higher-order descent',
+ /* TEMPLATE_SCHEMAS.hypercomplex requires cluster; this block never set
+    it for any of the three DESCENT entries. Narcissism and Psychopathy's
+    own schemas (complex/supercomplex) do not require it, so only
+    Machiavellianism's record was actually incomplete on this account. */
+ cluster:'higher-order descent',
  def:clean(d.d), body:clean(d.d),
  inferred:!!d.content.inferred,
  inferenceBasis:d.content.inferenceBasis,
@@ -352,9 +360,28 @@ const HYPERCOMPLEX_AXIS_ROUTES={
  'Grandiosity':['Shame','Fear','Control','Insecurity'],
  'Predatory':['Fear','Control','Shame','Anger'],
  'Collapse':['Fear','Shame','Insecurity'],
+ /* 'Rigidity' stays: HYPERCOMPLEX_MODES above (this file's own separate
+    source list) still names this mode Rigidity by literal string, m.name,
+    unrenamed. 'Unbending' is added beside it, not instead of it: it is the
+    7 November 2026 rename (CLAUDE.md) as compass.js's DESCENT now spells
+    it, a different id (descent:Unbending vs hypercomplex:Rigidity) for
+    what the rename made one same family, same axes. Carrying PR #153's
+    fix into current main surfaces the same empty-routeAxes bug on this
+    descent: entry, which this map never covered under either name. */
  'Rigidity':['Control','Shame','Fear'],
+ 'Unbending':['Control','Shame','Fear'],
  'Dysregulation':['Fear','Anger','Shame'],
- 'Dissociation':['Fear','Shame','Insecurity']
+ 'Dissociation':['Fear','Shame','Insecurity'],
+ /* descent:Sociopathy declares fam:'Predatory' in compass.js (the same
+    name-only correspondence TASKS.md's pass D confirmed, never a
+    fabricated edge), so it takes Predatory's own route axes rather than
+    an invented set. */
+ 'Sociopathy':['Fear','Control','Shame','Anger'],
+ /* once PR #153's kind fix makes this record genuinely 'hypercomplex', it
+    is picked up here too; with no entry it fell to [] and overwrote the
+    real routeAxes COMPLEX_AXIS_ROUTES above already set for it. Same
+    value, so the two maps agree on this record. PR #155, 29 October. */
+ 'Machiavellianism':['Fear','Control','Shame']
 };
 E.filter(e=>e.kind==='hypercomplex').forEach(h=>{
  const routeAxes=HYPERCOMPLEX_AXIS_ROUTES[h.nm]||[];
