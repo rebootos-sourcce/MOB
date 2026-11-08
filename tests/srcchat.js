@@ -531,12 +531,21 @@ require('./net.js').guardBrowser(browser);
     await q.evaluate(() => { window.__aud = []; window.Audio = function (u) {
       const a = { src: u, onended: null, onerror: null, play() { __aud.push(a); return Promise.resolve(); }, pause() {} }; return a; }; });
     const end = () => q.evaluate(() => { const a = __aud[__aud.length - 1]; if (a && a.onended) a.onended(); });
-    await q.evaluate(() => stMic()); await q.waitForTimeout(300);
+    /* the line is fetched before it plays, so each look below waits for the
+       play itself and not a fixed 300 milliseconds: under load the reply's
+       fetch had not come back by then, nothing was held yet, and this read
+       live true over a correct build (3 November, 1 of 3 parallel runs).
+       play() is the stand-in above and stSrcSpeak calls it after stHush, so
+       a count of plays is the hold having started, never a guess at it. A
+       build that never speaks still fails: the wait gives up and the count
+       is read short. */
+    const plays = k => q.waitForFunction(k => __aud.length >= k, k, { timeout: 10000 }).catch(() => {});
+    await q.evaluate(() => stMic()); await plays(1);
     const g = await q.evaluate(() => ({ live: __mic.live(), listen: ST_LISTEN, playing: __aud.length }));
     await end(); await q.waitForTimeout(150);
     const g2 = await q.evaluate(() => __mic.live());
     ok(g.playing === 1 && !g.live && g.listen && g2, 'while the greeting plays the recording is held, and it runs again when the greeting ends: ' + JSON.stringify([g, g2]));
-    await q.evaluate(() => __mic.say('Can you hear me?')); await q.waitForTimeout(300);
+    await q.evaluate(() => __mic.say('Can you hear me?')); await plays(2);
     const mid = await q.evaluate(() => { const t0 = ST_TEXT, live = __mic.live();
       /* what a microphone would pick up off the speaker, delivered anyway */
       const r = __mic.FakeSR.made[__mic.FakeSR.made.length - 1];
@@ -572,14 +581,33 @@ require('./net.js').guardBrowser(browser);
     await q.cx.close();
   }
 
+  /* THIS CHECK RACED SOURCE AI'S VOICE, 3 November, and lost under load. It
+     resent a fixed 250 milliseconds after the first sentence, and by then
+     the reply to that sentence was usually being spoken: stHush had aborted
+     the recording, so again() delivered nothing and the check read one turn
+     (measured: 2 of 3 full runs failed at load average 26). When the voice
+     had already finished, a new recording had started with an empty list,
+     so index 0 was the new sentence, nothing was resent, and the check
+     passed with the guard deleted (measured on a build without the
+     ST_REC_DONE skip: passed 4 of 4 in that window). A longer sleep only
+     moves it from the first case to the second. So the voice is held here
+     until the check is done, which keeps the one recording that heard the
+     first sentence running, and the check asserts the resend really went
+     into it before it reads the result. */
   console.log('\n=== a sentence the browser resends is one turn, not two ===');
   {
     const q = await open(browser, 1600, 1000);
+    let release; const held = new Promise(r => { release = r; });
+    await q.cx.route(VOICE, async r => { await held; await r.fallback().catch(() => {}); });
     await say(q, 'Can you hear me?');
-    await q.evaluate(() => __mic.again('I said can you hear me?')); await q.waitForTimeout(250);
+    const rs = await q.evaluate(() => { const r = __mic.FakeSR.made[__mic.FakeSR.made.length - 1];
+      const before = r.results.length, hush = ST_HUSH;
+      return { sent: __mic.again('I said can you hear me?'), before, hush, made: __mic.FakeSR.made.length }; });
+    ok(rs.sent && rs.before === 1 && !rs.hush && rs.made === 1, 'the resend goes into the one recording that heard the first sentence, nothing held, nothing restarted: ' + JSON.stringify(rs));
+    await q.waitForFunction(() => SRC_CHAT.filter(r => r.w === 'me').length >= 2, null, { timeout: 5000 }).catch(() => {});
     const me = await q.evaluate(() => SRC_CHAT.filter(r => r.w === 'me').map(r => r.t));
     ok(JSON.stringify(me) === JSON.stringify(['Can you hear me?', 'I said can you hear me?']), 'a final delivered again from index 0 is not committed a second time: ' + JSON.stringify(me));
-    await q.cx.close();
+    release(); await q.cx.close();
   }
 
   console.log('\n=== pressing Talk again speaks the newest line, never the thread ===');
