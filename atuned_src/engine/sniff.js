@@ -670,7 +670,20 @@ function originOf(t,nm,hits){
   var hit=frames.filter(function(f){
    var j=byAt[f.at]; return j!==undefined&&ws[j].c===ws[i].c;})[0];
   if(!hit)return;
-  h.origin='superego'; h.originAt=hit.at; h.originWho=hit.who;});}
+  h.origin='superego'; h.originAt=hit.at; h.originWho=hit.who;
+  h.originCat=originCategory(hit.who);});}
+/* ANCESTRAL AND GENERATIONAL ARE ONE CATEGORY, not two, round TD, 8
+   November, his own words, asked directly whether they split: "Let's
+   combine ancestral and generational. They're the same thing." Two
+   categories, not four: parental, a parent who raised you, and ancestral,
+   everyone further back or further out, generational folded into it
+   rather than kept as its own row. A word this project has no cue for yet
+   (grandparent beyond the two already in LEXKIN, a great-grandparent, a
+   named ancestor) still reads ancestral, the wider of the two, rather than
+   reading nothing. */
+var ORIGIN_PARENTAL=['mum','mom','mother','dad','father'];
+function originCategory(who){
+ return ORIGIN_PARENTAL.indexOf(who)>=0?'parental':'ancestral';}
 /* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
@@ -1147,7 +1160,8 @@ function marksOf(t,p){
    other:!!h.other, unclear:!!h.unclear,
    whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null,
    origin:h.origin||null, originWho:h.originWho||null,
-   originFrom:(h.origin&&h.originAt!=null&&nm.map[h.originAt+1]!=null)?nm.map[h.originAt+1]:null});});
+   originFrom:(h.origin&&h.originAt!=null&&nm.map[h.originAt+1]!=null)?nm.map[h.originAt+1]:null,
+   originCat:h.originCat||null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){

@@ -146,6 +146,24 @@ var LEX={
  /* coherent. these subtract. */
  grateful:['coherent',-14],content:['coherent',-12],calm:['coherent',-12],
  steady:['coherent',-12],peaceful:['coherent',-14],settled:['coherent',-12],
+ /* THE HAPPY FAMILY, the other half of round PA/TC's feelings wheel, round
+    TD, 8 November. His own words, asked directly whether Happy should
+    score the way the painful families do: "Yeah, they should. The happy
+    word should." Held back in TC on the reading that a positive word might
+    not belong on the body at all; settled now, in the affirmative, and
+    read undiluted rather than softened, his own frame: "the 25 are part of
+    jouissance." Seated the same way grateful, content, calm, steady,
+    peaceful and settled already are, right above: coherent, a negative
+    amount, because a coherent reading subtracts rather than adds. */
+ thankful:['coherent',-14],joyful:['coherent',-14],hopeful:['coherent',-12],
+ optimistic:['coherent',-12],confident:['coherent',-12],proud:['coherent',-12],
+ successful:['coherent',-12],powerful:['coherent',-12],courageous:['coherent',-12],
+ creative:['coherent',-10],inspired:['coherent',-12],curious:['coherent',-10],
+ inquisitive:['coherent',-10],interested:['coherent',-10],playful:['coherent',-12],
+ free:['coherent',-12],accepted:['coherent',-12],respected:['coherent',-12],
+ valued:['coherent',-12],loving:['coherent',-14],trusting:['coherent',-12],
+ intimate:['coherent',-12],sensitive:['coherent',-10],aroused:['coherent',-10],
+ cheeky:['coherent',-10],
  /* THE SNIFFER FINDS THE LIMITER, round SB, his own job description for the
     mechanic: "if a person is describing their lack of value or self worth
     or confidence or self respect, they're downgrading their solar plexus.
@@ -306,12 +324,12 @@ var ADJ2CHG={
                          that confirmation exists would be the same
                          unruled guess the rest of this held-back list is
                          refusing to make.
-   the whole Happy
-   family                25 words, every one of them positive. Whether a
-                         positive word should land on the body at all, the
-                         way a painful one does, is his call and not made
-                         here.
-   All of the above are a TASKS.md item, not silently dropped. */
+   All of the above are a TASKS.md item, not silently dropped.
+
+   THE HAPPY FAMILY WAS HELD BACK HERE, and no longer is: round TD (8
+   November) ruled it should score, read above, right after the existing
+   coherent words. This paragraph keeps the record of the question asked
+   and answered rather than deleting it. */
 
 /* THE WHEEL FAMILY. The other half of his round PA words: "find the family
    of words, group it to the assemblage points." This is the grouping, read

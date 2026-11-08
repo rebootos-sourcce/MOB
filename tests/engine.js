@@ -8912,13 +8912,54 @@ g('WHEEL · the feelings wheel\'s painful words that fit an existing charge buck
   'inferior','weak','insignificant','vulnerable','fragile','indignant','infuriated','provoked',
   'aggressive','hostile','distant','withdrawn','critical','skeptical','dismissive','hesitant',
   'disappointed','victimized'].forEach(w=>ok(reads(w),'a wheel word with a clean existing bucket now reads: '+w));
+ /* the Happy family (playful, joyful here) was held back when this section
+    was first written and is not any more: round TD, 8 November, see the
+    coherent block in the lexicon right after grateful/content/calm. Kept
+    out of this held-back list rather than left to go stale here too. */
  ['sleepy','unfocussed','mad','violated','jealous','disapproving','judgmental','appalled',
-  'detestable','repelled','playful','joyful','shocked','excited']
+  'detestable','repelled','shocked','excited']
   .forEach(w=>ok(!reads(w),'a held-back word still reads nothing, on purpose, not forgotten: '+w));
  ok(WHEEL_FAMILY.threatened==='Fearful','the family table groups a word to its real wheel family');
  ok(Array.isArray(WHEEL_FAMILY.inferior)&&WHEEL_FAMILY.inferior.length===2,
   'a word the wheel itself lists under two families carries both, never one picked for it');
  ok(Object.keys(WHEEL_FAMILY).length===119,'the family table carries all 119 distinct words the real wheel names');
+}
+
+g('HAPPY · round TD, 8 November: the wheel\'s Happy family scores too, coherent, undiluted');
+/* His own words, asked directly: "Yeah, they should. The happy word
+   should." And on reading them at full strength rather than softened:
+   "the 25 are part of jouissance." Seated the same way grateful, content,
+   calm, steady, peaceful and settled already are: coherent, subtracting. */
+{
+ const {parseStory}=E;
+ ['thankful','joyful','hopeful','optimistic','confident','proud','successful','powerful',
+  'courageous','creative','inspired','curious','inquisitive','interested','playful','free',
+  'accepted','respected','valued','loving','trusting','intimate','sensitive','aroused','cheeky']
+  .forEach(w=>{
+   const p=parseStory('I feel '+w+' today.');
+   ok(p.hits.some(h=>h.band==='coherent'),'a Happy-family word reads coherent, not nothing: '+w);
+  });
+ ok(['grateful','content','calm','steady','peaceful','settled'].every(k=>E.LEX[k]&&E.LEX[k][0]==='coherent'),
+  'the original 6 coherent words are still seated, nothing lost in the edit');
+}
+
+g('ORIGIN CAT · round TD, 8 November: ancestral and generational are one category, parental is the other');
+/* His own words, asked directly whether they split: "Let\'s combine
+   ancestral and generational. They\'re the same thing." Two categories, not
+   four: a parent who raised you, and everyone and everything further back
+   or further out, folded into the one word "ancestral". */
+{
+ const {parseStory,marksOf,originCategory}=E;
+ ok(originCategory('mother')==='parental'&&originCategory('dad')==='parental',
+  'a parent is parental');
+ ok(originCategory('grandmother')==='ancestral'&&originCategory('family')==='ancestral',
+  'everyone further back or further out, generational folded in, is ancestral, not a third or fourth category');
+ const p1=parseStory('My mother always told me I was never good enough.');
+ const m1=marksOf('My mother always told me I was never good enough.',p1).filter(m=>m.origin);
+ ok(m1.length>0&&m1.every(m=>m.originCat==='parental'),'a mother-tagged hit carries the parental category end to end');
+ const p2=parseStory('In my family we never talked about feelings, and I feel so alone right now.');
+ const m2=marksOf('In my family we never talked about feelings, and I feel so alone right now.',p2).filter(m=>m.origin);
+ ok(m2.length>0&&m2.every(m=>m.originCat==='ancestral'),'a family-tagged hit with no named parent carries ancestral');
 }
 
 g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');

@@ -34278,3 +34278,35 @@ WHEEL). Full build pipeline clean.
 family score at all, and if so, the same way a painful word does or some
 other way. Everything else above is a team call already made and named,
 not a question.
+
+## Round TD, 8 November. Three direct answers: Happy scores, ancestral and generational are one, and the nerve/plexus cost question
+
+Asked directly, in order, and answered in the same order.
+
+**1. Should the Happy family score?** His words: "Yeah, they should. The
+happy word should. The 25 are part of jouissance." Added: all 25 Happy
+words, seated `coherent` (the same bucket `grateful`/`content`/`calm`/
+`steady`/`peaceful`/`settled` already use, subtracting rather than adding),
+read at full strength rather than softened, per his own framing. Round
+TC's held-back note on this family is marked closed in place, not deleted.
+
+**2. Ancestral and generational.** His words: "Let's combine ancestral and
+generational. They're the same thing." `sniff.js`'s new `originCategory()`
+reads two categories where the left-rail review found none: `parental`
+(mother, dad) and `ancestral` (everyone and everything further back or
+further out, grandparent words and the bare "family" frame folded into it,
+generational dropped as its own row). Wired onto every origin-tagged hit
+as `originCat`, through `marksOf`.
+
+7026 passed, 0 failed on `tests/engine.js` (new HAPPY and ORIGIN CAT
+sections). Full build pipeline clean.
+
+**3. The nerve/plexus accuracy cost, his own words asking for a real
+number rather than the word "scoped":** answered in chat, not here, since
+it is an estimate and not a ruling: no dollar cost unless clinical sign
+off is wanted (the anatomy skill's own tier 4, which it says to budget
+narrowly if at all); real but moderate time cost, multi session rather
+than one sitting, because every new point needs a real citation under this
+project's own rule against guessing, not a pixel moved by eye; low risk,
+since the atlas sourcing for the one plate that matters (brachial plexus,
+book p.413) is already done.
