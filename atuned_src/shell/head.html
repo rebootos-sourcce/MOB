@@ -4813,7 +4813,35 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
  .st-hd .st-talk{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
-.st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
+/* round TF: #stsrc (.st-pe) used to stretch to fill the whole panel here,
+   which is the ground Uni now stands on instead (see .st-uni below), so it
+   goes back to sizing on its own one line of text and #stuni takes the
+   flex:1 role it had. */
+/* round TF, caught by tests/collide.js on the real case it already exists
+   for: a real conversation thread, not a single line, the way Talk has
+   worked since 29 October (srcTurn, this file's own comments above). It
+   used to be capped only by accident, by stretching to fill the space Uni
+   now stands in instead (flex:1 1 auto): grown past that height it still
+   had nowhere to go but out, over whatever sat below it, with no cap or
+   scroll of its own either before this round or after. A real cap and a
+   scroll of its own, not a borrowed one, is the fix in both directions. */
+.st-chat .st-pe{flex:0 1 auto;max-height:55%;overflow-y:auto}
+/* round TF, caught by tests/collide.js: a flex item's own height floor is
+   its content's, never nought, unless told so. #stuni sized by its content
+   (her canvas, width:100% up to 640px wide, aspect-ratio 640/520 so 520px
+   tall at that width) and refused to shrink under it, so on a short screen
+   she pushed Commit and Type instead down and over, both real presses that
+   stopped landing where their own label still showed. min-height:0 on every
+   step between #stuni and the flex column it sits in (standard for an
+   overflow: hidden box inside a column that must be free to shrink) lets
+   her shrink instead, and the canvas is now sized by whichever of her own
+   height or 640px her column actually has, keeping her round rather than
+   letting her clip. */
+.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.st-chat .st-uni{flex:1 1 auto;min-height:0}
+.st-uni .uni-widget{width:auto;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
+.st-uni .uni-widget .canvas-wrap{width:auto;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
+.st-uni .uni-widget .canvas-wrap canvas{width:auto;height:100%;max-width:100%;max-height:100%}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire

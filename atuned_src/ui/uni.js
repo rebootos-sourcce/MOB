@@ -112,10 +112,17 @@ var UNI_HTML =
   '<input type="range" class="coh-slider" id="emoIntSlider" min="1" max="9" value="5" step="1">'+
   '<div class="demo-row"><button id="btn-shader" class="demo-btn">Shader</button></div>'+
  '</div>'+
- '<div class="speak-panel" hidden>'+
-  '<div class="coh-row"><span class="coh-label">Speak</span><span class="coh-zone" id="speakState">Calm</span></div>'+
-  '<textarea id="speakInput" class="speak-area" rows="2" maxlength="500"></textarea>'+
- '</div>'+
+ /* THE SPEAK BOX IS GONE, round TF, caught by tests/functional.js once she
+    actually mounted somewhere real: it was a textarea, and the Journal's own
+    house rule is no text field while voice is the only door in (29 October).
+    Hidden or not, it was still a real <textarea> in #story, and the gate
+    that holds that rule does not know or care that it was invisible. Nothing
+    in the real app ever wrote to it; window.Uni.speak(text) is the real,
+    programmatic door to the same pipeline this box fed by hand in the demo.
+    Its own label, #speakState, went with it for the same reason this file's
+    own fix two commits ago already named: a state name in this table reads
+    "ZONING OUT", which the house voice rule (no all-caps UI copy) does not
+    allow onto a real page, visible or not. */
  '<pre id="shaderPanel" class="shader-panel" hidden></pre>'+
  '<div class="desc" hidden><div class="desc-name">Uni</div><div class="desc-body"></div></div>'+
 '</div>';

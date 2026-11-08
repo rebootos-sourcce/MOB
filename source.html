@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2979 c849c3aa 2026-11-08 09:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v2980 377c166f 2026-11-08 17:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4813,7 +4813,35 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
  .st-hd .st-talk{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
  .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 .st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
-.st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
+/* round TF: #stsrc (.st-pe) used to stretch to fill the whole panel here,
+   which is the ground Uni now stands on instead (see .st-uni below), so it
+   goes back to sizing on its own one line of text and #stuni takes the
+   flex:1 role it had. */
+/* round TF, caught by tests/collide.js on the real case it already exists
+   for: a real conversation thread, not a single line, the way Talk has
+   worked since 29 October (srcTurn, this file's own comments above). It
+   used to be capped only by accident, by stretching to fill the space Uni
+   now stands in instead (flex:1 1 auto): grown past that height it still
+   had nowhere to go but out, over whatever sat below it, with no cap or
+   scroll of its own either before this round or after. A real cap and a
+   scroll of its own, not a borrowed one, is the fix in both directions. */
+.st-chat .st-pe{flex:0 1 auto;max-height:55%;overflow-y:auto}
+/* round TF, caught by tests/collide.js: a flex item's own height floor is
+   its content's, never nought, unless told so. #stuni sized by its content
+   (her canvas, width:100% up to 640px wide, aspect-ratio 640/520 so 520px
+   tall at that width) and refused to shrink under it, so on a short screen
+   she pushed Commit and Type instead down and over, both real presses that
+   stopped landing where their own label still showed. min-height:0 on every
+   step between #stuni and the flex column it sits in (standard for an
+   overflow: hidden box inside a column that must be free to shrink) lets
+   her shrink instead, and the canvas is now sized by whichever of her own
+   height or 640px her column actually has, keeping her round rather than
+   letting her clip. */
+.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.st-chat .st-uni{flex:1 1 auto;min-height:0}
+.st-uni .uni-widget{width:auto;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
+.st-uni .uni-widget .canvas-wrap{width:auto;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
+.st-uni .uni-widget .canvas-wrap canvas{width:auto;height:100%;max-width:100%;max-height:100%}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
@@ -41132,10 +41160,17 @@ var UNI_HTML =
   '<input type="range" class="coh-slider" id="emoIntSlider" min="1" max="9" value="5" step="1">'+
   '<div class="demo-row"><button id="btn-shader" class="demo-btn">Shader</button></div>'+
  '</div>'+
- '<div class="speak-panel" hidden>'+
-  '<div class="coh-row"><span class="coh-label">Speak</span><span class="coh-zone" id="speakState">Calm</span></div>'+
-  '<textarea id="speakInput" class="speak-area" rows="2" maxlength="500"></textarea>'+
- '</div>'+
+ /* THE SPEAK BOX IS GONE, round TF, caught by tests/functional.js once she
+    actually mounted somewhere real: it was a textarea, and the Journal's own
+    house rule is no text field while voice is the only door in (29 October).
+    Hidden or not, it was still a real <textarea> in #story, and the gate
+    that holds that rule does not know or care that it was invisible. Nothing
+    in the real app ever wrote to it; window.Uni.speak(text) is the real,
+    programmatic door to the same pipeline this box fed by hand in the demo.
+    Its own label, #speakState, went with it for the same reason this file's
+    own fix two commits ago already named: a state name in this table reads
+    "ZONING OUT", which the house voice rule (no all-caps UI copy) does not
+    allow onto a real page, visible or not. */
  '<pre id="shaderPanel" class="shader-panel" hidden></pre>'+
  '<div class="desc" hidden><div class="desc-name">Uni</div><div class="desc-body"></div></div>'+
 '</div>';
@@ -53908,6 +53943,17 @@ function stRender(){
      reader hears it grow the way a sighted ear does. */
   +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
     +esc(ST_LIVE||'Listening')+'</p>':'')
+  /* UNI STANDS WHERE THE EMPTY GROUND WAS, round TF. His words, asked
+     directly: "wire in Uni into the dashboards. Replace the dashboard
+     small with Uni." The ground under the question, #stsrc, stretches to
+     fill the whole panel in Chat mode (.st-chat .st-pe) and nothing ever
+     filled what it stretched into: a person looking at this screen saw a
+     question and a large empty black box under it. #stuni is a sibling of
+     #stsrc, not a child of it, because #stsrc's own innerHTML is rewritten
+     on every keystroke (srcLand/srcPaint above) and a mounted canvas living
+     inside that would be destroyed and rebuilt on every key. uniMount is
+     called once, after this whole panel lands, at the foot of stRender. */
+  +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
   +'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -54166,7 +54212,13 @@ function stRender(){
     would have been gone from a person who left in Full and came back. */
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
- srcChatWire();}
+ srcChatWire();
+ /* round TF: mount her fresh into the container this render just built, a
+    worked example gets none (show only, nothing she would react to is the
+    person's own), TAB.STORY's own leave in panels.js parks her. */
+ if(!show){var un=document.getElementById('stuni');
+  if(un&&typeof uniMount==='function')uniMount(un);}
+ else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
    THE PAGE'S OWN STATE. None of it is a reading: which way the lanes are
@@ -78842,7 +78894,11 @@ function setTab(i){
     once was. */
  if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
- if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
+ if(i===TAB.STORY)stRender();
+ else { if(typeof stRailClear==='function')stRailClear();
+  /* round TF: she only runs where she is seen, same rule pause/resume
+     already hold inside uni.js itself; leaving the Journal parks her. */
+  if(typeof uniPark==='function')uniPark(); }
  /* SUMMARY AND ANALYTICS EACH RENDER TO THEIR OWN DOOR, since round LV. This
     called both on entry to Summary, back when Analytics had no door of its
     own and rode in on Summary's arrival; now each tab renders only itself,
@@ -91271,5 +91327,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006100101"></div>
+<div id="eof" hidden data-len="006104115"></div>
 </body></html>

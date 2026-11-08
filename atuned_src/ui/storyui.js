@@ -216,6 +216,17 @@ function stRender(){
      reader hears it grow the way a sighted ear does. */
   +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
     +esc(ST_LIVE||'Listening')+'</p>':'')
+  /* UNI STANDS WHERE THE EMPTY GROUND WAS, round TF. His words, asked
+     directly: "wire in Uni into the dashboards. Replace the dashboard
+     small with Uni." The ground under the question, #stsrc, stretches to
+     fill the whole panel in Chat mode (.st-chat .st-pe) and nothing ever
+     filled what it stretched into: a person looking at this screen saw a
+     question and a large empty black box under it. #stuni is a sibling of
+     #stsrc, not a child of it, because #stsrc's own innerHTML is rewritten
+     on every keystroke (srcLand/srcPaint above) and a mounted canvas living
+     inside that would be destroyed and rebuilt on every key. uniMount is
+     called once, after this whole panel lands, at the foot of stRender. */
+  +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
   +'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -474,7 +485,13 @@ function stRender(){
     would have been gone from a person who left in Full and came back. */
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
- srcChatWire();}
+ srcChatWire();
+ /* round TF: mount her fresh into the container this render just built, a
+    worked example gets none (show only, nothing she would react to is the
+    person's own), TAB.STORY's own leave in panels.js parks her. */
+ if(!show){var un=document.getElementById('stuni');
+  if(un&&typeof uniMount==='function')uniMount(un);}
+ else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
    THE PAGE'S OWN STATE. None of it is a reading: which way the lanes are

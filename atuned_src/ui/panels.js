@@ -408,7 +408,11 @@ function setTab(i){
     once was. */
  if(i===TAB.PRACTITIONER&&typeof renderPrac==='function')renderPrac();
  if(i===TAB.GAMES){ if(!GAME)GAME='lg'; gmRender(); } else lgStop();
- if(i===TAB.STORY)stRender(); else if(typeof stRailClear==='function')stRailClear();
+ if(i===TAB.STORY)stRender();
+ else { if(typeof stRailClear==='function')stRailClear();
+  /* round TF: she only runs where she is seen, same rule pause/resume
+     already hold inside uni.js itself; leaving the Journal parks her. */
+  if(typeof uniPark==='function')uniPark(); }
  /* SUMMARY AND ANALYTICS EACH RENDER TO THEIR OWN DOOR, since round LV. This
     called both on entry to Summary, back when Analytics had no door of its
     own and rode in on Summary's arrival; now each tab renders only itself,

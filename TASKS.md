@@ -34392,3 +34392,54 @@ lands. The loading screen replacement (the real "spiral," found to be
 alone before any script parses and must never be made to look finished
 over an app that has not actually booted, the same discipline this file's
 own boot-guard paragraph already states.
+
+## Round TF, 8 November. Uni wired into the dashboards, two real bugs found and fixed
+
+His words, asked directly: "you're supposed to wire in Uni into the
+dashboards. And replace the dashboard small with Uni." Stage 2 of the
+stage-1 plumbing round TE built: `uniMount()` had a real call site built,
+but nothing called it.
+
+**What shipped.** `#stuni`, a new sibling of `#stsrc` inside the Journal's
+`.st-glow` panel (`atuned_src/ui/storyui.js`), is the real mount point: the
+empty ground `#stsrc` used to stretch into and never filled is where she
+now stands. `stRender()` calls `uniMount(#stuni)` once at the foot of every
+render while `!showOnly()`, and `panels.js`'s `setTab` calls `uniPark()` the
+moment the Journal is left, so she only runs where she is seen, the same
+rule her own `pause()`/`resume()` already held. Both the small (Chat) and
+the big (Dashboard) views are the same `#stjr` panel, so one wire covers
+both, exactly as asked.
+
+**Two real bugs found by the gates, not assumed fixed:**
+1. `tests/collide.js`, 12 failures. `#stsrc` had been stretching to fill the
+   panel only because nothing stood in the space it stretched into; moving
+   her there exposed that a real, growing multi-turn conversation thread had
+   no cap of its own and no scroll, so a long thread spilled over the
+   Commit/Type buttons below it. Fixed with a real cap and scroll on `#stsrc`
+   itself (`max-height:55%;overflow-y:auto` in `atuned_src/shell/head.html`),
+   not by borrowing the space Uni now needs. 398 passed, 0 failed after.
+2. `tests/functional.js`, 11 failures, all variants of "chat stays on and no
+   text field is drawn." Her own hidden demo chrome, carried unchanged from
+   round TE, included a real `<textarea>` (`#speakInput`) and an all-caps
+   state label (`#speakState`, one of its own values literally reads "ZONING
+   OUT") that the gate does not know or care are hidden, the same lesson
+   round TE's design-gate fix already stood on. Neither is used by the real
+   app, which calls `window.Uni.speak()` directly; both removed from
+   `UNI_HTML`. 3023 passed, 0 failed after.
+
+**Full gate run, this build:** `BUILD-engine.sh` host free, 971 exports.
+`BUILD.sh` clean, claims gate 110/0, no em dashes, div balance 0.
+`tests/engine.js` 7026/0 (unaffected, UI only). `tests/collide.js` 398/0.
+`tests/boot.js` 29/0. `tests/funnel.js` 760/0. `tests/functional.js`
+3023/0. `tests/design.js` 192 passed/1 failed, the one failure a release
+silent-run timing assertion unrelated to anything this round touched,
+reproduced identically before and after this round's changes (same
+numbers, same section), matching the same shared-machine timing-flake
+class this file's own earlier rounds have already named. House voice
+check: 0 stops; one pre-existing `invented-example-copy` review flag in
+files this round never touched (`atuned_src/ui/avatarui.js`,
+`funnel/quiz.html`, last changed 5 November). Verified live, not only in a
+headless harness: mounted, animates (5 distinct full-canvas samples over
+1.5s), survives a park/remount cycle with exactly one `.uni-widget` on the
+page afterward (no duplicate, no leak), and survives the Dashboard toggle's
+own `stRender()` re-run the same way.
