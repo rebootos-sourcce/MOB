@@ -222,7 +222,16 @@ function anaRender(){
      /* held, round RB: accuracy() counts addresses at 4 or more */
      +(acc.held?', '+acc.held+' address'+(acc.held===1?'':'es')+' held':'')
      +'. The needle has play in it, so a small move is not a reading.')+'</span></div>'
-  +'</div></div>'+anaHot(r)+'<div class="ab-grid">';
+  +'</div></div>'
+  /* THE THIRD COLUMN, 8 November, his words: "try to keep everything above
+     the fold. So the third column will be all of the stat icons." .ab-main
+     holds the bubble-chart grid and the reading tiles side by side instead
+     of stacked, so the tiles (used to sit under "Where it runs" and "The
+     chain", a full scroll down) are visible with the charts at a glance.
+     Running hot moves to after this block: it is a real, useful list when
+     an address is past five, and it earned no space at all above when
+     nothing was (see anaHot). */
+  +'<div class="ab-main"><div class="ab-grid">';
  /* HS SWEEP. Every chart here carried a caption under it saying how to read
     it: what the heading means and that a bigger mark is more. A bubble chart
     says bigger is more by being one, and the heading names the set. The one
@@ -264,7 +273,11 @@ function anaRender(){
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
- out+='</div>';
+ out+='</div>'; /* closes .ab-grid */
+ out+='<div class="ab-stats"><div class="pm-eye" style="margin-top:0">Readings</div>'
+  +anaStatTiles(r)+'</div>';
+ out+='</div>'; /* closes .ab-main */
+ out+=anaHot(r);
  /* TELEMETRY, round RB, his words: "I want the analytics page to give me
     telemetry and have that telemetry broken out in as many dimensions as we
     can to see what's running and where." What follows is the engine's own
@@ -372,10 +385,15 @@ function anaHot(r){
  if(r.unread||typeof hotList!=='function')return '';
  var L=hotList(), t={expanding:0,collapsing:0,steady:0};
  L.forEach(function(n){t[hotDir(n)]++;});
- var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>';
- if(!L.length)s+='<p class="sum-p">No address is past five. Past five an address pulls '
-  +'more than half as hard as it can, and the ring on the Field bends under it.</p>';
- else s+=anaHotRows(L,t);
+ /* NOTHING RUNNING HOT IS NOT A HEADING WORTH A SCREEN, 8 November, his own
+    cross-out on this exact block on a profile with nothing past five. The
+    house rule this already follows everywhere else (stdash.js: "a hidden
+    surface never sits in the document asserting a stale reading") covers
+    an empty one too: a section with nothing to report earns no space,
+    rather than a heading and a sentence that only says so. It still prints
+    in full once there is something running hot to report. */
+ if(!L.length)return '';
+ var s='<div class="pm-eye" style="margin-top:20px">Running hot</div>'+anaHotRows(L,t);
  return '<div class="ana-hot">'+s+'</div>';}
 var ANA_DIRSAY={expanding:'Its charge rose on its last change.',
  collapsing:'Its charge fell on its last change.',
@@ -755,7 +773,28 @@ var ANA_MET={
   fig:function(r){return anaPctFig('overshoot',r.JQ,r);}},
  pole:{nm:'Installed',seat:'Heart',txt:null,
   tip:'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
-  fig:function(r){return anaPctFig('pole',r.poleMean,r);}}};
+  fig:function(r){return anaPctFig('pole',r.poleMean,r);}},
+ /* THE ENERGETICS THREE, 8 November, his words: "do we need analytics for
+    the energetics panel? Vitality, radiance, awareness. Right, because
+    there are patterns that are pulling on that too." Nothing invented:
+    X, Y and Z are already compute()'s own figures (engine/compute.js) and
+    already render as bars on the Field's own instrument rail (ui/ui.js
+    rbRow, "Vitality"/"Awareness"/"Radiance"), this is the same arithmetic
+    reaching Analytics. Vitality keeps Solar's colour and Awareness the 3rd
+    Eye's, the same election ui.js made on his own words there ("Vitality to
+    me is energy. Energy is yellow. Awareness is Indigo"); Radiance has no
+    seat of its own, ui.js draws it "in light, not a seat's colour", so it
+    borrows Solar here too rather than this file inventing a colour he has
+    not ruled on. */
+ vitality:{nm:'Vitality',seat:'Solar',txt:null,
+  tip:'Vitality is how much energy you have left once apathy and the charge you carry have taken their share.',
+  fig:function(r){return anaPctFig('vitality',r.X,r);}},
+ awareness:{nm:'Awareness',seat:'3rd Eye',txt:null,
+  tip:'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
+  fig:function(r){return anaPctFig('awareness',r.Y,r);}},
+ radiance:{nm:'Radiance',seat:'Solar',txt:null,
+  tip:'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
+  fig:function(r){return r.unread?{p:0,raw:'–'}:anaPctFig('radiance',r.radiance,r);}}};
 function anaMetRow(r,k){
  var M=ANA_MET[k], f=M.fig(r);
  return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'
@@ -933,15 +972,25 @@ addEventListener('keydown',function(e){
    Nothing on an unread field, for the reason Running hot gives: the hero
    already says nothing is entered, and six dashes say it six more times.
    ============================================================ */
-function anaTele(r){
+/* THE STAT TILES, THE THIRD COLUMN, 8 November. His words: "try to keep
+   everything above the fold. So the third column will be all of the stat
+   icons." Pulled out of anaTele below so anaRender can stand it beside the
+   bubble cards instead of under them, which is what put it a scroll away
+   in the first place. The ten keys are every reading this file carries:
+   the seven CQ/DQ/SQ family it always had plus the energetics three ANA_MET
+   grew above. */
+var ANA_TILE_ORDER=['cq','dq','lawsq','pull','ex','jq','pole','vitality','awareness','radiance'];
+function anaStatTiles(r){
  if(r.unread)return '';
- var s='<div class="ana-tele"><div class="pm-eye" style="margin-top:20px">Readings</div>'
-  +'<div class="ana-tiles">'+['cq','dq','lawsq','pull','ex','jq','pole'].map(function(k){
+ return '<div class="ana-tiles">'+ANA_TILE_ORDER.map(function(k){
    var M=ANA_MET[k], f=M.fig(r);
    return '<button type="button" class="ana-tile" data-ana="met|'+k+'">'
     +cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,title:M.nm})
     +'<span class="ana-tile-l" data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span></button>';}).join('')
-  +'</div>';
+  +'</div>';}
+function anaTele(r){
+ if(r.unread)return '';
+ var s='<div class="ana-tele">';
  s+='<div class="pm-eye" style="margin-top:20px">Where it runs</div>'+anaGrid(r);
  s+='<div class="pm-eye" style="margin-top:20px">The chain</div>'+anaRungs(r);
  return s+'</div>';}

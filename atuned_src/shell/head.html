@@ -5059,6 +5059,15 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
    together since the svg is width:100% of the card at a fixed aspect ratio.
    Verified by measuring .ab-f and .ab-svg boxes live, not by eye. */
 .ab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+/* THE THIRD COLUMN, 8 November: his words at ui/analytics.js anaStatTiles
+   say why. .ab-main sets the bubble-chart grid and the reading tiles side
+   by side; .ab-stats is a fixed width so the tiles stay compact and the
+   charts keep the room. One column again under 720px, the same floor this
+   file already uses for a phone-width screen (.kb-rg, .lp-figs above), so
+   the sidebar does not crush the charts into nothing on a narrow one. */
+.ab-main{display:grid;grid-template-columns:1fr 260px;gap:8px;align-items:start}
+.ab-stats{border:1px solid var(--edge);border-radius:var(--r);padding:10px 12px;background:var(--panel-2)}
+@media (max-width:720px){.ab-main{grid-template-columns:1fr}}
 .ab-f{border:1px solid var(--edge);border-radius:var(--r);padding:10px 12px;background:var(--panel-2)}
 .ab-svg{width:100%;height:auto;display:block;margin:5px 0 3px}
 .ab-t{fill:var(--ink);font-family:var(--sans);font-weight:600}
