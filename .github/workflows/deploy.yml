@@ -308,6 +308,7 @@ jobs:
           - { gate: practitioner, timeout: 20, command: node tests/practitioner.js }
           - { gate: release-percent, timeout: 20, command: node tests/release-percent.js }
           - { gate: unpack, timeout: 20, command: node tests/unpack.js }
+          - { gate: layer-observatory, timeout: 20, command: node tests/layer-observatory.js }
           - { gate: recordlink, timeout: 20, command: node tests/recordlink.js }
           - { gate: golden, timeout: 20, command: node tests/golden.js }
           - { gate: valuefelt, timeout: 20, command: node tests/valuefelt.js }

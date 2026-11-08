@@ -184,32 +184,26 @@ require('./net.js').guardBrowser(b);
  ok(k.addr===112&&k.addrSeats.split(',').length===7,'a kind shows across all seven seats, all 112 addresses, '+k.addrSeats);
  ok(!k.fieldAfter&&!k.knowAfter,'opened on Knowledge it stays open there, and the Field is untouched');
 
- console.log('\n=== Summary: what to do beside the story ===');
+ console.log('\n=== Summary: renders after a real entry, the old what-to-do layout gone ===');
+ /* THIS WHOLE BLOCK USED TO CHECK THE "WHAT TO DO" COLUMN'S OWN LAYOUT
+    (.sg-todo between .sg-told and .sg-story, on a phone and at 1600), and it
+    threw outright, not merely failed: .sg-todo does not exist any more, so
+    .getBoundingClientRect() on a null querySelector result crashed the whole
+    process before S4 below, or the file's own final tally, ever ran. Same 3
+    November ruling as tests/sniffpage.js and tests/unpack.js (summary.js:1258):
+    the "What to do" column came off Summary outright, replaced by nothing on
+    this surface. Checked directly before cutting this: .sg-todo, .sg-told
+    are both gone from the real DOM now. Kept a minimal survives-check rather
+    than leaving this gate's only Summary coverage at zero. */
  const sm=await p.evaluate(async()=>{
   loadP(PEOPLE.findIndex(x=>x.nm==='Diane'));
   CURP.story.entries=[{t:new Date().toISOString(),text:'My chest aches and I feel lonely when my partner goes quiet.',imprints:1,bands:{}}];
   setTab(TAB.SUMMARY); render(); await new Promise(r=>setTimeout(r,100));
-  const lead=document.querySelector('#sumbody .sg-lead2'), o={};
-  o.side=!!(lead&&lead.querySelector('.sg-side>.sg-todo+.sg-drive'));
-  const todo=document.querySelector('#sumbody .sg-todo').getBoundingClientRect();
-  o.todoTop=Math.round(todo.top);
-  o.loopAfter=!!(lead&&lead.nextElementSibling&&lead.nextElementSibling.id==='sumloop');
-  return o;});
- ok(sm.side,'the right half of the lead row is what to do, then the drivers');
- ok(sm.todoTop<1000,'what to do is on the first screen at 1600 by 1000, at '+sm.todoTop);
- ok(sm.loopAfter,'and the patterns follow the lead row');
+  return {hasStory:!!document.querySelector('#sumbody .sg-story')};});
+ ok(sm.hasStory,'Summary renders the story card for a real entry');
  await p.setViewportSize({width:390,height:844}); await wait(400);
- const ph=await p.evaluate(()=>{
-  const r=s=>document.querySelector(s).getBoundingClientRect();
-  /* round RF: what you told it and the Reading are two cards, and on one
-     column what to do sits between them, so the action follows the person's
-     own words and no longer waits under the whole Reading */
-  return {told:r('#sumbody .sg-told').bottom, story:r('#sumbody .sg-story').top, storyEnd:r('#sumbody .sg-story').bottom,
-   todo:r('#sumbody .sg-todo').top, todoEnd:r('#sumbody .sg-todo').bottom, drive:r('#sumbody .sg-drive').top,
-   loop:document.getElementById('sumloop')?r('#sumloop').top:null, who:r('#sumbody .sg-who').bottom};});
- ok(ph.todo>=ph.told&&ph.todoEnd<=ph.story&&ph.storyEnd<=ph.drive,
-  'on a phone: their words, then what to do, then the Reading, then the drivers, '+JSON.stringify(ph));
- ok(ph.loop===null||ph.loop>ph.storyEnd,'and the patterns no longer jump above the story');
+ const ph=await p.evaluate(()=>({hasStory:!!document.querySelector('#sumbody .sg-story')}));
+ ok(ph.hasStory,'and still renders it at 390 wide');
 
  console.log('\n=== S4: the primary saboteur sits where its addresses are ===');
  /* SYSTEMS AUDIT SG-05, 24 October. The impact line printed the third column
