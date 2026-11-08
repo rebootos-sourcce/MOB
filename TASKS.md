@@ -34151,3 +34151,83 @@ Six draft PRs were each stuck behind a stale `main` (several merge rounds had pa
   **Not built, per the dispatch's own instruction.** The computation he wants (a dominant archetype from the quiz, shown in the left rail, feeding the cascade and Source AI) is a real, buildable design: the tally and leader already exist in `ixRead`, and it would mean a new stored field, a new left-rail read, and new downstream seams into the cascade and `sourceai.js`. What it cannot be is a quiet addition that leaves the "evidence, not a verdict" architecture standing unchanged underneath it, since the whole point of that architecture (per its own header) is that nothing here moves the reading. His call: does the new ruling supersede the round PQ/PV one outright (the quiz becomes load-bearing, and the gate pinning it inert needs to change with it, named rather than silently loosened), or does he want a second, clearly-labelled signal that sits beside the blueprint's `affinity()` without retiring the "evidence" framing for the quiz itself. TA9's own still-open axis question (live field vs. quarantined bag for the 9 child emotions) is the same fork in miniature and should probably be settled with this one, not separately.
 
 **PR #186 merged to main, 6 November, merge sha `52216d1`.** Fifth resync was doc-only (TA14, no code), so no real conflict to carry across. `gates-fast` and every `gates-browser` job green, confirmed job by job, not inferred from `mergeable_state`. One real blip, handled per the CI-red protocol rather than assumed away: `gates-browser (functional)` failed once on a sound-timing assertion unrelated to this PR's fieldbar/fetter diff ("fifty real presses... never more than 6 in any second (7)", off by one under shared-box load); re-ran it once, it came back green, confirming the flake rather than guessing. The `gates-report` failures (pct, sniffpage, gift, becoming, unpack) are the same pre-existing, non-blocking class documented all night. Deploy confirmed separately working: the prior push (TA14, doc-only) completed a real successful `deploy.yml` run, so the earlier worry about a stuck or perpetually-cancelled pipeline was push-cadence, not a broken gate. Three real merges live now (#201, #187, #186). #189, #198 and #200 remain held for his own review per their own PR bodies; each will need a real (not doc-only) resync next touch, since this merge carries actual code.
+
+## Round TB, 8 November. Left rail v1 scope, reviewed twice; nerve/plexus accuracy gap confirmed; release-page screen clarified
+
+His 8 November message carried the sniffer ruling (see TA8 above, shipped
+`aada488e`) plus a left-rail composition: Psyche Stack, Boundary, Field,
+Source AI (as Uni), the text field, Imprints, Release; an intensity curve
+per child emotion; the six axes; hide the 21 law pills; remove Earth,
+Water, Fire, Air naming; "review this twice."
+
+**Dispatched four design passes then two adversarial reviews. Both sent it
+back on real findings, not style notes, and the spec was corrected before
+anything here is called done:**
+
+1. **Uni is not in the build.** `atuned_src/ui/uni/uni-widget.html` is a
+   real, working file, but it is not in `MANIFEST`. A rail item built
+   against it today would point at nothing. Needs wiring into the build
+   before it can ship on any rail, left or otherwise.
+2. **Ten panels does not pass this project's own cognitive-load floor.**
+   Cut to a real v1: Uni (once wired), Energy (today's 7 seat rings,
+   unchanged name, "Field" renamed back since Field is already a tab),
+   Child emotions (9 pills, data ready, rail wiring not built), Psyche
+   Stack (`railStack` in `ui/ui.js`, pointed at the story being written
+   instead of the whole record), Release. Intensity curve, the live six
+   axes and Boundary go to the backlog: no reader exists for any of the
+   three yet, and an empty box is decoration pretending to be data.
+3. **A real bug found and fixed in the same round:** the limiter rows
+   `aada488e` added were present tense only ("I am not smart enough"), and
+   a pattern framed as handed down is told in the past tense almost by
+   definition ("my mother always told me I was not smart enough"), which
+   scored nothing. Fixed in `f2f9cb38`, same seats and weights, past tense
+   added alongside present.
+4. **Ring beats liquid fill for the pills**, on this project's own house
+   rule (icons are ring, not fill, Uni is the one named exception) and a
+   real readability problem with liquid (the label sits on two grounds at
+   once mid-fill, and no single text colour reads on both). One reviewer's
+   citation of a "liquid" quote at this file's line ~31542 was checked and
+   is unrelated (that quote is about the login page's background hue, not
+   pills); noted so the citation is not carried forward as if it applied.
+5. **The real open question, one only, per the 1 October round-PD rule:**
+   what separates ancestral from generational for the Patterns panel.
+   `originWho` (from `originOf`, `aada488e`) reports a kin word or
+   "family", not a category; mother/dad map to parental with no new rule
+   needed, but ancestral has no cue today and nothing tells generational
+   from ancestral apart. Boundary needs no ruling: it ships as an honest
+   "not computing yet" box.
+6. **The unmerged `feature/extended-dashboard-stdash` branch (`be67ae3a`,
+   Reboot-OS, not merged):** take its live 9-dimension Channel reading and
+   its seat-ring layout; drop its chakra radial pills (duplicate Energy),
+   its law-pill grouping (he ruled them hidden) and its Patterns stub
+   (superseded by `originOf`).
+
+**Separately, his own live question on the body map, same round: are the
+chakra points anatomically accurate, and where is the detail on biceps,
+triceps, forearm.** Checked directly, not assumed: `grep` across
+`engine/data/nodes.js` for brachial, radial, median, ulnar,
+musculocutaneous, bicep, tricep, forearm, elbow and axillary returns
+nothing. The 108 somatic addresses have zero coverage of the arm past the
+shoulder (two addresses: the accessory nerve at the trapezius, thoracic
+nerves between the shoulder blades); the lines the body map draws from
+shoulder to hand pass through no real intermediate address. This is not a
+labelling gap, it is a real coverage gap, and it is honestly inside the 26
+September ruling that the 108 are "roughly the right spot" rather than a
+full peripheral map. The sourcing already exists and does not need to be
+re-gathered: `.claude/skills/atuned-anatomy/SKILL.md`'s source log already
+cites the real brachial plexus plate (Rohen/Yokochi/Lütjen-Drecoll, book
+p.413, with the arm's cutaneous and depth plates at p.399-431) and the
+lumbosacral plexus (p.470-475) for the leg. Building real intermediate
+addresses or a denser nerve-path render from that sourcing is a scoped
+project, named but not started here, and the skill's own tier system
+(landmark-sourced is the baseline, clinically-reviewed is reserved for a
+narrow set) applies to it directly.
+
+**And a real misreading on this session's part, corrected:** a release
+screen screenshot sent to him was the Field tab's separate, older
+full-session release flow (`relBegin()`, reached from an address pin),
+not what he meant by "the release page." His real meaning, confirmed by
+rebuilding the real screen: the Release column that sits beside Imprints
+on the Journal's Dashboard view (`#strel`/`#stch` in `storyui.js`, opened
+via `stFocus('release')`). A real screenshot of that screen, after
+committing a real story, is the one now in hand.
