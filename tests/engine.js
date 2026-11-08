@@ -8898,6 +8898,29 @@ g('LIMIT · a self limiting statement is the same Shame-at-solar mechanic round 
  ok(!(p3.imprints||[]).some(i=>i.fetter==='Shame'),'an ordinary sentence with no limiter phrase reads no Shame');
 }
 
+g('WHEEL · the feelings wheel\'s painful words that fit an existing charge bucket now read, and the rest are named and held');
+/* TASKS.md round PA (1 October), his own words: "the sniffer needs to find
+   the family of words, group it to the assemblage points they relate to
+   and it's just sniff for those as well." Measured directly against
+   FEELINGS-WHEEL.md before adding anything: 75 of its 123 words read
+   nothing. Added only where an existing ADJ2CHG bucket was already an
+   unambiguous fit; everything else is named and held, not guessed. */
+{
+ const {parseStory,WHEEL_FAMILY}=E;
+ const reads=w=>{const p=parseStory('I feel '+w+' today.'); return (p.hits||[]).length>0;};
+ ['bored','apathetic','busy','pressured','rushed','threatened','persecuted','horrified',
+  'inferior','weak','insignificant','vulnerable','fragile','indignant','infuriated','provoked',
+  'aggressive','hostile','distant','withdrawn','critical','skeptical','dismissive','hesitant',
+  'disappointed','victimized'].forEach(w=>ok(reads(w),'a wheel word with a clean existing bucket now reads: '+w));
+ ['sleepy','unfocussed','mad','violated','jealous','disapproving','judgmental','appalled',
+  'detestable','repelled','playful','joyful','shocked','excited']
+  .forEach(w=>ok(!reads(w),'a held-back word still reads nothing, on purpose, not forgotten: '+w));
+ ok(WHEEL_FAMILY.threatened==='Fearful','the family table groups a word to its real wheel family');
+ ok(Array.isArray(WHEEL_FAMILY.inferior)&&WHEEL_FAMILY.inferior.length===2,
+  'a word the wheel itself lists under two families carries both, never one picked for it');
+ ok(Object.keys(WHEEL_FAMILY).length===119,'the family table carries all 119 distinct words the real wheel names');
+}
+
 g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');
 /* REVIEW-sniffer-audit-2026-10-09.md, package S3, the audit's 13.1.10.
    sniffStory did sniffSaboteurs(axes).slice(0,SAB_SHOW): the domain layer

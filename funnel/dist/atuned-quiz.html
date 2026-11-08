@@ -8176,7 +8176,97 @@ var ADJ2CHG={
  crushed:'sadness',hopeless:'sadness',defeated:'sadness',
  restless:'joy',craving:'joy',empty:'joy',hungry:'joy',
  addicted:'joy',distracted:'joy',obsessed:'joy',
- silent:'shame',dismissed:'shame'};
+ silent:'shame',dismissed:'shame',
+ /* THE FEELINGS WHEEL, round PA (1 October), his own words: "the sniffer
+    needs to find the family of words, group it to the assemblage points
+    they relate to and it's just sniff for those as well." FEELINGS-WHEEL.md
+    is the wheel he sent: seven families, 123 words. Measured directly
+    against this table before adding anything, the way he asked: 75 of the
+    123 read nothing. Added here only where an existing charge bucket is
+    already a clean, unambiguous fit, each word a plain synonym of a word
+    already in that bucket above. Nothing new is invented: no new seat, no
+    new charge name, no new number. */
+ bored:'apathy',apathetic:'apathy',
+ busy:'anxiety',pressured:'anxiety',rushed:'anxiety',
+ threatened:'fear',persecuted:'fear',horrified:'fear',
+ inferior:'shame',weak:'shame',insignificant:'shame',vulnerable:'shame',fragile:'shame',
+ indignant:'anger',infuriated:'anger',provoked:'anger',aggressive:'anger',hostile:'anger',
+ distant:'separation',withdrawn:'separation',
+ critical:'doubt',skeptical:'doubt',dismissive:'doubt',hesitant:'doubt',
+ disappointed:'sadness',victimized:'sadness'};
+/* AND WHAT IS HELD BACK, named rather than silently skipped, SNIFFER_SPEC's
+   own discipline against guessing a number nobody ruled:
+   sleepy, unfocussed    no existing charge bucket is a clean fit; could be
+                         exhaustion (not yet its own charge name here) or
+                         apathy, and guessing is the thing this file warns
+                         against.
+   mad                   already refused bare, LEXSYN_NO above: British
+                         "keen" collides with it. Needs the same "so mad",
+                         "mad at" framing the refusal already names.
+   violated, jealous     carry at least two readings each (violated: anger
+                         at a boundary crossed, or shame at having had no
+                         boundary; jealous: a craving/comparison register
+                         this table does not model), and neither reading is
+                         obviously the right one to pick alone.
+   disapproving,
+   judgmental, appalled,
+   detestable, repelled  these are about someone or something OTHER than
+                         the writer. Every existing bucket here reads what
+                         the writer feels in their own body; none of them
+                         is "what I think of someone else," and inventing
+                         one is a new charge this file does not get to add.
+   the whole Surprised
+   family                Shock and Surprise are both named in HARM
+                         (engine/data/kb.js's harmonic elements, E67/E68)
+                         as "somatic address and coherent pole pending
+                         confirmation." Seating wheel words there before
+                         that confirmation exists would be the same
+                         unruled guess the rest of this held-back list is
+                         refusing to make.
+   the whole Happy
+   family                25 words, every one of them positive. Whether a
+                         positive word should land on the body at all, the
+                         way a painful one does, is his call and not made
+                         here.
+   All of the above are a TASKS.md item, not silently dropped. */
+
+/* THE WHEEL FAMILY. The other half of his round PA words: "find the family
+   of words, group it to the assemblage points." This is the grouping, read
+   mechanically off FEELINGS-WHEEL.md's own table (a script, not typed by
+   hand, so there is no transcription to get wrong), every one of its 123
+   words against the primary family it sits under. It groups; it does not
+   score. A word here that is not also in ADJ2CHG or LEX is read for its
+   family and nothing else, until the held-back list above is settled. Four
+   words the wheel itself prints under two families (its own line 54-55)
+   carry an array here instead of a bare string, read as "may carry both,"
+   never both at once by this table's own say. */
+var WHEEL_FAMILY={
+ abandoned:"Sad", accepted:"Happy", aggressive:"Angry", amazed:"Surprised", annoyed:"Angry",
+ anxious:"Fearful", apathetic:"Bad", appalled:"Disgusted", aroused:"Happy", ashamed:"Sad",
+ astonished:"Surprised", awe:"Surprised", awful:"Disgusted", betrayed:"Angry", bitter:"Angry",
+ bored:"Bad", busy:"Bad", cheeky:"Happy", confident:"Happy", confused:"Surprised",
+ content:"Happy", courageous:"Happy", creative:"Happy", critical:"Angry", curious:"Happy",
+ depressed:"Sad", despair:"Sad", detestable:"Disgusted", disappointed:["Disgusted","Sad"],
+ disapproving:"Disgusted", disillusioned:"Surprised", dismayed:"Surprised", dismissive:"Angry",
+ disrespected:"Angry", distant:"Angry", eager:"Surprised", embarrassed:["Disgusted","Sad"],
+ empty:"Sad", energetic:"Surprised", excited:"Surprised", excluded:"Fearful", exposed:"Fearful",
+ fragile:"Sad", free:"Happy", frightened:"Fearful", frustrated:"Angry", furious:"Angry",
+ grief:"Sad", guilty:"Sad", helpless:"Fearful", hesitant:"Disgusted", hopeful:"Happy",
+ horrified:"Disgusted", hostile:"Angry", humiliated:"Angry", hurt:"Sad", inadequate:"Fearful",
+ indifferent:"Bad", indignant:"Angry", inferior:["Fearful","Sad"], infuriated:"Angry",
+ inquisitive:"Happy", insecure:"Fearful", insignificant:"Fearful", inspired:"Happy",
+ interested:"Happy", intimate:"Happy", isolated:"Sad", jealous:"Angry", joyful:"Happy",
+ judgmental:"Disgusted", 'let down':"Angry", lonely:"Sad", loving:"Happy", mad:"Angry",
+ nauseated:"Disgusted", nervous:"Fearful", numb:"Angry", optimistic:"Happy",
+ 'out of control':"Bad", overwhelmed:["Bad","Fearful"], peaceful:"Happy", perplexed:"Surprised",
+ persecuted:"Fearful", playful:"Happy", powerful:"Happy", powerless:"Sad", pressured:"Bad",
+ proud:"Happy", provoked:"Angry", rejected:"Fearful", remorseful:"Sad", repelled:"Disgusted",
+ resentful:"Angry", respected:"Happy", revolted:"Disgusted", ridiculed:"Angry", rushed:"Bad",
+ scared:"Fearful", sensitive:"Happy", shocked:"Surprised", skeptical:"Angry", sleepy:"Bad",
+ startled:"Surprised", stressed:"Bad", successful:"Happy", thankful:"Happy",
+ threatened:"Fearful", tired:"Bad", trusting:"Happy", unfocussed:"Bad", valued:"Happy",
+ victimized:"Sad", violated:"Angry", vulnerable:"Sad", weak:"Fearful", withdrawn:"Angry",
+ worried:"Fearful", worthless:"Fearful"};
 
 /* the idioms. an idiom outranks its own words, because a statement can carry
    no feeling word at all and still be a report. */
@@ -26405,7 +26495,7 @@ if(typeof module!=='undefined'&&module.exports){
                   TEACHER_RECIPES:TEACHER_RECIPES, RECIPE_STEPS:RECIPE_STEPS, recipeOf:recipeOf,
                   recipeRitual:recipeRitual, recipeSteps:recipeSteps,
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
-                  LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
+                  LEX:LEX, ADJ2CHG:ADJ2CHG, WHEEL_FAMILY:WHEEL_FAMILY, PHRASES:PHRASES, LEXPLAIN:LEXPLAIN, plainSpans:plainSpans, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
