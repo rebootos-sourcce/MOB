@@ -49,7 +49,7 @@ const DROOT=DOMAINS.map(d=>d.r), DCOL=DROOT.map(r=>ROOTC[r]);
 const RG=[[0,4],[5,9],[10,14],[15,18]];
 const isAff=(rw,c)=>AFFIN[DROOT[c]].indexOf(FNAME[rw])>=0;
 const LV=['fet','sab','cx','hy'], LVNAME=['Fetters','Saboteurs','Complexes','Hyper complexes'], LVLOW=['fetters','saboteurs','complexes','hyper complexes'];
-const LVSING=['fetter','saboteur','complex','hyper complex'];
+const LVSING=['fetter','saboteur','complex','hyper complex','super complex'];
 /* SIGHT, copied from engine/plan.js: which tier opens which rung, and the one sentence a lock says. FREE sees the fetters. */
 const SIGHT=[null,{need:'one',what:'Which saboteurs are running on your charge.'},{need:'two',what:'Where your saboteurs join into complexes.'},{need:'three',what:'Where your complexes join into hyper complexes.'}];
 const PLANRANK={free:0,one:1,two:2,three:3,four:3};
@@ -66,7 +66,12 @@ const S={who:WHO.some(w=>w[0]===Q.get('p'))?Q.get('p'):'Derek',view:LV.indexOf(Q
  mode:['lens','thread','scrub'].indexOf(Q.get('mode'))>=0?Q.get('mode'):'lens',plan:PLANRANK[Q.get('plan')]!=null?Q.get('plan'):'three',
  step:Q.get('step')!=null?clamp(+Q.get('step'),0,11):11,play:false,pin:null,hover:null,showAll:Q.get('all')==='1',t:0,
  hlk:null,P:null,C:null};
-const sees=l=>l===0||PLANRANK[S.plan]>=PLANRANK[SIGHT[l].need];
+/* SIGHT only names four rungs (free plus three tiers); a super complex, lvl 4, sits above all of them and is
+   gated the same as hyper complex, tier three, which the tiers copy already says includes it ("Adds saboteurs,
+   complexes and hyper complexes, and the character, the registers and the masks" -- openSheet(), below). Falling
+   back to SIGHT[3] is that same rule, not a new one, and keeps this safe to call with a level SIGHT has no row
+   for, which setPlan's pin check can do once a super complex is pinnable. */
+const sees=l=>l===0||PLANRANK[S.plan]>=PLANRANK[(SIGHT[l]||SIGHT[3]).need];
 if(!sees(S.view))S.view=0;
 const effStep=()=>S.mode==='scrub'?S.step:11;
 let NODES=new Map(), LINKS=new Map(), UP={}, DOWN={}, MODEL=null, DIRTY=true;
@@ -94,30 +99,52 @@ function rebuild(){
  /* fetters, always nine, in the matrix's row order */
  FNAME.forEach((nm,i)=>{const n=mkNode('f:'+nm,0);n.nm=nm;n.lab=nm;n.fi=i;n.col=FCOL[i];n.w=st.ch[i]||0;n.alive=true;
   n.slots=[];for(let s=0;s<cf.length;s++)if(cf[s]===nm&&st.q[s]>.02)n.slots.push(s);n.kids=[];});
+ /* NERVE/ADDRESS, THE BOTTOM RUNG, extending coverage below fetter. Not a node here (108 of them, one real ring
+    around the observatory already; see the file header, "the address tiles") and not drawn a second time, but a
+    real id in UP/DOWN so lineage() closes all the way to a real address rather than stopping at the fetter it
+    rolls up to. This one is canonical membership (NODES[].cf, trace.js's pattern associated_with pattern, known)
+    and so is not gated by plan: it is free-tier real the way the fetter ring itself is. */
+ for(let s=0;s<cf.length;s++){const f=cf[s]; if(f)addAdj('n:'+C0.addrId[s],'f:'+f);}
  const fi=nm=>FNAME.indexOf(nm);
  const slotsW=s=>s.reduce((a,x)=>a+st.q[x],0);
  /* scrub keeps every node that ever lights as a ghost, so the rows do not jump while the scrubber moves */
  if(S.mode==='scrub'){
   C0.steps.forEach(stp=>{
-   if(sees(1))stp.sab.forEach(s=>{const n=mkNode('s:'+s[0],1);if(!n.alive){n.ghost=true;n.nm=s[0];n.lab=s[0].replace(/ overshot$/,'');n.fam=s[3];n.over=!!s[2];n.col=famCol(s[3]);n.slots=s[4].slice();n.w=s[1];}});
-   if(sees(3))stp.hy.forEach(h=>{const n=mkNode('h:'+h[0],3);if(!n.alive){n.ghost=true;n.nm=h[0];n.lab=h[0];n.fam=h[0];n.over=!!h[2];n.col=famCol(h[0]);n.kids=h[3].map(x=>'c:'+x);n.w=h[1];}});});}
+   if(sees(1))stp.sab.forEach(s=>{const n=mkNode('s:'+s.nm,1);if(!n.alive){n.ghost=true;n.nm=s.nm;n.lab=s.nm.replace(/ overshot$/,'');n.fam=s.hcx;n.over=!!s.over;n.col=famCol(s.hcx);n.slots=s.parts.slice();n.w=s.w;}});
+   if(sees(3))stp.hy.forEach(h=>{const n=mkNode('h:'+h.nm,3);if(!n.alive){n.ghost=true;n.nm=h.nm;n.lab=h.nm;n.fam=h.nm;n.over=!!h.over;n.col=famCol(h.nm);n.kids=h.parts.map(x=>'c:'+x);n.w=h.w;}});});}
  /* scrub: keep at most as many ghost rows as the column can hold at a readable pitch, heaviest first */
  if(S.mode==='scrub'){const stg=document.getElementById('stage'),room=(GEO&&GEO.narrow)?44:Math.max(12,Math.floor(((stg?stg.clientHeight:740)-130)/17));
-  const live=new Set();if(sees(1))st.sab.forEach(x=>live.add('s:'+x[0]));
+  const live=new Set();if(sees(1))st.sab.forEach(x=>live.add('s:'+x.nm));
   const gh=[];NODES.forEach(n=>{if(n.lvl===1&&n.ghost&&!live.has(n.id))gh.push(n);});gh.sort((x,y)=>y.w-x.w);
   gh.forEach((n,i)=>{if(i>=Math.max(0,room-live.size))n.ghost=false;});}
- const sabSlots={},cxSlots={};
- if(sees(1))st.sab.forEach(s=>{const n=mkNode('s:'+s[0],1);n.ghost=false;n.alive=true;n.nm=s[0];n.lab=s[0].replace(/ overshot$/,'');n.fam=s[3];n.over=!!s[2];n.col=famCol(s[3]);n.w=s[1];
-  n.slots=s[4].slice();n.kids=[];sabSlots[s[0]]=n.slots;
-  const by={},cn={};let tot=0;s[4].forEach(x=>{const f=cf[x];if(f){by[f]=(by[f]||0)+st.q[x];cn[f]=(cn[f]||0)+(st.q[x]>.02?1:0);tot+=st.q[x];}});
+ /* THE REAL CHAIN. Every sab/cx/hy/sup entry here, and every address slot a saboteur carries, is read off a real
+    atuned_src/engine/trace.js traceFromRecord() graph by mockups/layer-observatory/build-trace.js, through its
+    own traceNeighbors()/tracePath(), not hand built in this file any more (round OY built fetter-saboteur links
+    from a slot-overlap heuristic over a frozen, since-drifted dump; that heuristic itself is kept below, because
+    trace.js's own chain has no fetter-to-saboteur edge to replace it with -- a saboteur's real parts are
+    addresses, never a fetter, THE CHAIN, trace.js -- but what it is fed is real now, not stale). */
+ const sabSlots={},cxSlots={},hySlots={};
+ if(sees(1))st.sab.forEach(s=>{const n=mkNode('s:'+s.nm,1);n.ghost=false;n.alive=true;n.nm=s.nm;n.lab=s.nm.replace(/ overshot$/,'');n.fam=s.hcx;n.over=!!s.over;n.col=famCol(s.hcx);n.w=s.w;
+  n.slots=s.parts.slice();n.kids=[];sabSlots[s.nm]=n.slots;
+  /* the real address parts, trace.js's own pattern supports saboteur, not the fetter aggregate below */
+  s.parts.forEach(x=>addAdj('n:'+C0.addrId[x],n.id));
+  const by={},cn={};let tot=0;s.parts.forEach(x=>{const f=cf[x];if(f){by[f]=(by[f]||0)+st.q[x];cn[f]=(cn[f]||0)+(st.q[x]>.02?1:0);tot+=st.q[x];}});
   const fs=Object.keys(by).filter(f=>by[f]>.04).sort((a,b)=>by[b]-by[a]);
   fs.forEach((f,ix)=>{const l=link('f:'+f,n.id,by[f]);l.n=cn[f];l.share=tot>0?by[f]/tot:0;l.main=ix===0;addAdj('f:'+f,n.id);n.kids.push('f:'+f);});});
- if(sees(2))st.cx.forEach(c=>{const n=mkNode('c:'+c[0],2);n.ghost=false;n.alive=true;n.nm=c[0];n.lab=c[0].replace(/ overshot/g,'');n.fam=c[3];n.over=!!c[2];n.col=famCol(c[3]);n.w=c[1];
-  n.kids=c[4].map(x=>'s:'+x);let u=[];c[4].forEach(x=>{(sabSlots[x]||[]).forEach(s=>{if(u.indexOf(s)<0)u.push(s);});});n.slots=u;cxSlots[c[0]]=u;
-  c[4].forEach(x=>{link('s:'+x,n.id,n.w);addAdj('s:'+x,n.id);});});
- if(sees(3))st.hy.forEach(h=>{const n=mkNode('h:'+h[0],3);n.ghost=false;n.alive=true;n.nm=h[0];n.lab=h[0];n.fam=h[0];n.over=!!h[2];n.col=famCol(h[0]);n.w=h[1];n.d=OB.families[h[0]];
-  n.kids=h[3].map(x=>'c:'+x);let u=[];h[3].forEach(x=>{(cxSlots[x]||[]).forEach(s=>{if(u.indexOf(s)<0)u.push(s);});});n.slots=u;
-  h[3].forEach(x=>{link('c:'+x,n.id,n.w);addAdj('c:'+x,n.id);});});
+ if(sees(2))st.cx.forEach(c=>{const n=mkNode('c:'+c.nm,2);n.ghost=false;n.alive=true;n.nm=c.nm;n.lab=c.nm.replace(/ overshot/g,'');n.fam=c.hcx;n.over=!!c.over;n.col=famCol(c.hcx);n.w=c.w;
+  n.kids=c.parts.map(x=>'s:'+x);let u=[];c.parts.forEach(x=>{(sabSlots[x]||[]).forEach(s=>{if(u.indexOf(s)<0)u.push(s);});});n.slots=u;cxSlots[c.nm]=u;
+  c.parts.forEach(x=>{link('s:'+x,n.id,n.w);addAdj('s:'+x,n.id);});});
+ if(sees(3))st.hy.forEach(h=>{const n=mkNode('h:'+h.nm,3);n.ghost=false;n.alive=true;n.nm=h.nm;n.lab=h.nm;n.fam=h.nm;n.over=!!h.over;n.col=famCol(h.nm);n.w=h.w;n.d=OB.families[h.nm];
+  n.kids=h.parts.map(x=>'c:'+x);let u=[];h.parts.forEach(x=>{(cxSlots[x]||[]).forEach(s=>{if(u.indexOf(s)<0)u.push(s);});});n.slots=u;hySlots[h.nm]=u;
+  h.parts.forEach(x=>{link('c:'+x,n.id,n.w);addAdj('c:'+x,n.id);});});
+ /* THE FIFTH RUNG, super complex, extending coverage above hyper complex, real and not drawn: the chain on the
+    right is four columns, fetters to hyper complexes, by design (file header above), and gets no fifth column
+    here. The node is still real: real weight, real parts, real lineage. It is reached through "Three strongest
+    chains" (chains(), below), which is how it stays pinnable without a ladder column, and drawChain's own node
+    loop excludes lvl 4 by name so a never-laid-out row cannot be drawn. */
+ if(sees(3))st.sup.forEach(u=>{const n=mkNode('u:'+u.nm,4);n.ghost=false;n.alive=true;n.nm=u.nm;n.lab=u.nm;n.fam=null;n.over=false;n.col=famCol(u.parts[0]);n.w=u.w;
+  n.kids=u.parts.map(x=>'h:'+x);let s=[];u.parts.forEach(x=>{(hySlots[x]||[]).forEach(sl=>{if(s.indexOf(sl)<0)s.push(sl);});});n.slots=s;
+  u.parts.forEach(x=>{addAdj('h:'+x,n.id);});});
  LINKS.forEach((l,k)=>{if(!l.alive&&l.la<.01)LINKS.delete(k);});
  NODES.forEach((n,k)=>{if(!n.alive&&!n.ghost&&n.a<.01)NODES.delete(k);});
  SLOTQ.fill(0);for(let s=0;s<cf.length;s++)SLOTQ[s]=cf[s]?st.q[s]:0;
@@ -426,8 +453,10 @@ function drawChain(ctx,g,t){
   ctx.beginPath();ctx.moveTo(xa,ya);ctx.bezierCurveTo(xa+dx*.52,ya,xb-dx*.52,yb,xb,yb);ctx.stroke();
   /* the Field's pulse: a short dash runs down the thread toward the core, the way a chain compounds. its speed is the thread's tension. */
   if(!REDUCED&&!LITE&&al>.05){ctx.beginPath();ctx.moveTo(xa,ya);ctx.bezierCurveTo(xa+dx*.52,ya,xb-dx*.52,yb,xb,yb);dashRun(ctx,wn,Math.min(1,al*1.6+.1),B.col,ya*.013+yb*.007);}});
- /* nodes */
- const all=[];NODES.forEach(n=>{if(n.a>.02||n.ghost)all.push(n);});
+ /* nodes. lvl 4, the super complex, is real (rebuild(), above) but has no column here (four columns, fetters to
+    hyper complexes, by file-header design) and so is excluded by name rather than drawn at an index L.colX does
+    not have. */
+ const all=[];NODES.forEach(n=>{if(n.lvl<=3&&(n.a>.02||n.ghost))all.push(n);});
  all.sort((a,b)=>a.hl-b.hl);
  all.forEach(n=>{
   const x=L.colX[n.lvl],w=L.cw,h=n.ph||24,y=n.y-h/2,idx=Math.max(0,n.idx||0);
@@ -610,7 +639,8 @@ function hoverHtml(id){const n=NODES.get(id);if(!n)return null;const C0=S.C;
   return '<b>'+esc(n.nm)+'</b>: charge '+n.w.toFixed(1)+'. '+n.slots.length+' addresses hold charge under it'+(ss.length?', heaviest '+esc(C0.addrName[ss[0]])+' at '+SLOTQ[ss[0]].toFixed(1):'')+'.'+(sees(1)?(nS?' '+nS+' saboteur'+(nS===1?'':'s')+' stand on it.':' No saboteur stands on it.'):'');}
  if(n.lvl===1){const nm=n.slots.slice(0,4).map(s=>C0.addrName[s]);return '<b>'+esc(n.lab)+'</b> ('+esc(n.fam)+'): weight '+n.w.toFixed(1)+'. Built from '+n.slots.length+' addresses: '+esc(nm.join(', '))+'.'+(n.over?' Overshot: the fix held past the point where it helps.':'');}
  if(n.lvl===2)return '<b>'+esc(n.lab)+'</b> ('+esc(n.fam)+'): weight '+n.w.toFixed(1)+'. Two saboteurs joined.';
- return '<b>'+esc(n.nm)+'</b>: weight '+n.w.toFixed(1)+', '+n.kids.length+' complexes. '+cap1(OB.families[n.nm]||'')+'.';}
+ if(n.lvl===3)return '<b>'+esc(n.nm)+'</b>: weight '+n.w.toFixed(1)+', '+n.kids.length+' complexes. '+cap1(OB.families[n.nm]||'')+'.';
+ return '<b>'+esc(n.nm)+'</b>: weight '+n.w.toFixed(1)+'. Pairs '+n.kids.length+' hyper complexes: '+esc(n.kids.map(k=>{const kn=NODES.get(k);return kn?kn.nm:k;}).join(' + '))+'.';}
 const cap1=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
 
 /* ------------------------------------------------------------------ the summary: plain words, only facts in the data */
@@ -669,7 +699,10 @@ function chains(){
   if(!cxs.length)mk([],s.id,s.id);
   cxs.forEach(c=>{const hs=(UP[c.id]||[]).map(id=>NODES.get(id)).filter(Boolean);
    if(!hs.length)mk([c],c.id,c.id);
-   hs.forEach(hy=>mk([c,hy],hy.id,c.id));});});
+   /* one rung further when a real super complex stands on this hyper complex, same pattern as cx -> hy above */
+   hs.forEach(hy=>{const us=(UP[hy.id]||[]).map(id=>NODES.get(id)).filter(Boolean);
+    if(!us.length)mk([c,hy],hy.id,c.id);
+    us.forEach(su=>mk([c,hy,su],su.id,c.id));});});});
  cand.sort((a,b)=>b.s-a.s);
  cand.forEach(c=>{if(out.length<3&&!used.has(c.key)&&!used.has(c.sid)){used.add(c.key);used.add(c.sid);out.push(c);}});
  return out;}
@@ -683,10 +716,13 @@ function threadCard(id){const n=NODES.get(id),C0=S.C,f=lineage(id);
   +(by(2).length?' It joins '+j(by(2).map(c=>esc(c.lab)))+(by(3).length?', which sits in the hyper complex '+names(by(3))+'.':', which has not compounded into a hyper complex.'):' It has not joined a complex: a complex needs two saboteurs of one family.')
   +(n.over?' It is overshot: the fix held past the point where it helps.':'');
  else if(n.lvl===2)t=esc(n.lab)+', weight '+f1(n.w)+'. It joins '+j(by(1).map(x=>esc(x.lab)))+', which stand on '+(by(0).length?names(by(0)):'no fetter')+'.'+(by(3).length?' It sits in the hyper complex '+names(by(3))+'.':' It has not compounded into a hyper complex.');
- else t=esc(n.nm)+', weight '+f1(n.w)+'. '+cap1(OB.families[n.nm]||'')+'. It holds '+by(2).length+' complexes, built from '+by(1).length+' saboteurs standing on '+by(0).length+' fetters.';
- return '<div class="k">Followed thread, '+LVSING[n.lvl]+'</div><h2>'+esc(n.lvl===3?n.nm:n.lab)+'</h2><p>'+t+'</p><hr class="sp">';}
+ else if(n.lvl===3)t=esc(n.nm)+', weight '+f1(n.w)+'. '+cap1(OB.families[n.nm]||'')+'. It holds '+by(2).length+' complexes, built from '+by(1).length+' saboteurs standing on '+by(0).length+' fetters.'
+  +(by(4).length?' It pairs into the super complex '+names(by(4))+'.':'');
+ else t=esc(n.nm)+', weight '+f1(n.w)+'. It pairs the hyper complex'+(by(3).length===1?'':'es')+' '+j(by(3).map(x=>esc(x.nm)))+', built from '+by(2).length+' complexes, '+by(1).length+' saboteurs and '+by(0).length+' fetters below them.';
+ return '<div class="k">Followed thread, '+LVSING[n.lvl]+'</div><h2>'+esc(n.lvl>=3?n.nm:n.lab)+'</h2><p>'+t+'</p><hr class="sp">';}
 function scrubCard(){const i=S.step,C0=S.C,cur=C0.steps[i],prev=i?C0.steps[i-1]:null;
- const ids=st=>{const o={};if(sees(1))st.sab.forEach(s=>o['s:'+s[0]]=s[0].replace(/ overshot$/,''));if(sees(2))st.cx.forEach(c=>o['c:'+c[0]]=c[0]);if(sees(3))st.hy.forEach(h=>o['h:'+h[0]]=h[0]);return o;};
+ const ids=st=>{const o={};if(sees(1))st.sab.forEach(s=>o['s:'+s.nm]=s.nm.replace(/ overshot$/,''));if(sees(2))st.cx.forEach(c=>o['c:'+c.nm]=c.nm);
+  if(sees(3)){st.hy.forEach(h=>o['h:'+h.nm]=h.nm);st.sup.forEach(u=>o['u:'+u.nm]=u.nm);}return o;};
  const a=ids(cur),b=prev?ids(prev):{};const nw=Object.keys(a).filter(k=>!(k in b)),gone=Object.keys(b).filter(k=>!(k in a));
  const ft=cur.ch.map((v,k)=>[FNAME[k],v,prev?prev.ch[k]:0]).filter(x=>x[1]>0&&x[2]<=0).map(x=>x[0]);
  let t='Entry '+(i+1)+' of 12. This history is a mock: the charge is scaled up on a fixed schedule and the engine runs on it, so the chain is real arithmetic over made-up input.';
@@ -705,7 +741,7 @@ function legendHtml(){
   +FNAME.map((n,i)=>'<li><i style="--c:'+FCOL[i]+'"></i>'+n+'</li>').join('')+'</ul>'
   +'<p style="margin:10px 0 6px;font-size:12px;color:var(--dim)">Saboteurs, complexes and hyper complexes take the colour of their family. A dashed ring is the overshot side of a family.</p>'
   +'<ul class="legend">'+['Collapse','Dysregulation','Rigidity','Predatory','Grandiosity','Dissociation'].map(f=>'<li><i style="--c:'+famCol(f)+'"></i>'+f+'</li>').join('')+'</ul>'
-  +'<p style="margin:10px 0 0;font-size:12px;color:var(--dim)">Real: the charges, the address SQ, the domain reach, the sky, every saboteur, complex and hyper complex and its weight. Mock: the history behind Scrub, the plan switch and the tiers sheet.</p></details>';}
+  +'<p style="margin:10px 0 0;font-size:12px;color:var(--dim)">Real: the charges, the address SQ, the domain reach, the sky, every saboteur, complex, hyper complex and super complex and its weight, and the real nerve/address each saboteur is built from. Mock: the history behind Scrub, the plan switch and the tiers sheet.</p></details>';}
 function syncUI(){
  document.querySelectorAll('.chip[data-n]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.n===S.who?'true':'false'));
  document.querySelectorAll('.chip[data-m]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===S.mode?'true':'false'));
@@ -744,6 +780,9 @@ window.OBSC={
  set:function(o){Object.assign(S,o);if(o.plan||o.view!=null){if(!sees(S.view))S.view=0;}rebuild();setDisp(true);syncUI();DIRTY=true;redraw();},
  person:function(n){setPerson(n,true,true);},mode:setMode,view:setView,plan:setPlan,step:function(i){setStep(i,true);},pin:function(id){S.pin=id;syncUI();redraw();},hover:function(id){S.hover=id;redraw();},
  nodes:function(){const o=[];NODES.forEach(n=>o.push({id:n.id,x:GEO?GEO.lad.colX[n.lvl]:0,y:n.y,a:n.a}));return o;},
+ /* test hooks only, added to verify the real chain against trace.js from outside the IUFE: lineage() and the
+    UP/DOWN maps it walks are otherwise private to this module. See tests/layer-observatory.js. */
+ lineage:function(id){return [...lineage(id)];}, up:function(){return UP;}, down:function(){return DOWN;},
  cost:function(){const a=cost.slice(),m=a.reduce((x,y)=>x+y,0)/Math.max(1,a.length),g=frameGap.slice(),so=a.slice().sort((x,y)=>x-y),md=so.length?so[so.length>>1]:0;return {scriptMs:+m.toFixed(2),medianMs:+md.toFixed(2),worstMs:+Math.max.apply(null,a.concat([0])).toFixed(2),frameGapMs:+(g.reduce((x,y)=>x+y,0)/Math.max(1,g.length)).toFixed(1),n:a.length};},
  resetCost:function(){cost=[];frameGap=[];},
  summary:function(){return document.getElementById('sum').innerText;},
