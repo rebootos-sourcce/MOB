@@ -206,7 +206,24 @@ function stRender(){
      words both times were "get rid of those rainbow colours," and this is
      the one that was still there. srcComb() itself stays defined, in case a
      later screen wants it, only this call is cut. */
-  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  +(show?showNote('story','st-show'):'<div class="st-glow">'
+  /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
+     direct: "swap the character in the text field, put the character on
+     top." She used to sit under the question, #stsrc, which put the
+     ground a person writes toward above her and left her as a tall box
+     filling whatever space was left (round TF: "wire in Uni into the
+     dashboards. Replace the dashboard small with Uni"). That round still
+     holds, the order it put her in does not: #stuni is first in the
+     markup now, #stsrc after it, so the character is what a person sees
+     first and the ground she answers on sits under her, the same relation
+     the Source AI mockup he sent draws (SOURCE_AI_V10_STORY_SIGNALS_LOCAL,
+     "Source AI" over the orb). #stuni is still a sibling of #stsrc and not
+     a child of it, because #stsrc's own innerHTML is rewritten on every
+     keystroke (srcLand/srcPaint above) and a mounted canvas living inside
+     that would be destroyed and rebuilt on every key. uniMount is called
+     once, after this whole panel lands, at the foot of stRender. */
+  +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
+  +'<div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
      a normal speech conversation has no reason to open (see stMic and
@@ -216,17 +233,6 @@ function stRender(){
      reader hears it grow the way a sighted ear does. */
   +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
     +esc(ST_LIVE||'Listening')+'</p>':'')
-  /* UNI STANDS WHERE THE EMPTY GROUND WAS, round TF. His words, asked
-     directly: "wire in Uni into the dashboards. Replace the dashboard
-     small with Uni." The ground under the question, #stsrc, stretches to
-     fill the whole panel in Chat mode (.st-chat .st-pe) and nothing ever
-     filled what it stretched into: a person looking at this screen saw a
-     question and a large empty black box under it. #stuni is a sibling of
-     #stsrc, not a child of it, because #stsrc's own innerHTML is rewritten
-     on every keystroke (srcLand/srcPaint above) and a mounted canvas living
-     inside that would be destroyed and rebuilt on every key. uniMount is
-     called once, after this whole panel lands, at the foot of stRender. */
-  +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
   +'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
