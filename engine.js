@@ -10088,9 +10088,20 @@ function compute(){
     inSups:sups.some(s=>s.parts.indexOf(psyParts[0])>=0&&s.parts.indexOf(psyParts[1])>=0)}
   :null;
  /* the five masks a reading is taken on. Professional is hidden, round NE. */
+ /* HELD IS ADDED, NOT w ITSELF, 8 November: his words on the Analytics
+    bubbles, "put the number of patterns in each category. So a person
+    would see, oh, I've got 500 child patterns, and it's dominating 60%
+    of my personality." seg.length (every address seated at this mask's
+    band or bands) is a structural constant, the same number for every
+    person who has this mask at all; it would pair a personal percent (w)
+    with a figure that never moves. held, the same sq>=4 test DQ and every
+    other "held" count on this page already uses, is the addresses at
+    those seats actually carrying something in this reading, so it moves
+    with the person the same way w does. */
  const maskRing=MASKS_READ.map(m=>{
   const seg=W.filter(n=>m.b.indexOf(n.b)>=0);
-  return {nm:m.nm,bands:m.b,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
+  return {nm:m.nm,bands:m.b,ic:m.ic,w:seg.reduce((a,n)=>a+n.sq,0)/seg.length,
+   held:seg.filter(n=>n.sq>=4).length,
    ang:meanAng(seg.map(n=>n.ang))};});
 
  const dist=clamp(sabs.length*.19+cxs.length*.55+hys.length*1.35+sups.length*2.4,0,10);
