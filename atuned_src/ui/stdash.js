@@ -54,6 +54,29 @@
    disagreement stRead exists to prevent ("the sentence, the chart and the
    list cannot disagree"). The Journal's own record reader, stAnaPaint's
    Running hot list, is the part that is gated on r.unread, and it still is. */
+/* THE PILL ROW: COLOUR ONLY, NO WORD, SORTED BY STRENGTH, 8 November. His
+   words: "On the left panel, I don't want the text. I only want the
+   color. And a pill, almost like a light. And I want them side by side,
+   arranged according to signal strength... Plus maybe the other four
+   right for person, mouse is over it, they can see what's being lit
+   up." Replaces the ring-plus-name list Energy, Assemblage Point and
+   Chakra Health each drew the same way. ALL SEVEN, ALWAYS still holds
+   (see the Energy comment above): a seat at nothing stays in the row,
+   dimmer, rather than dropping out of it, so "the other four" are the
+   ones still visible, just quieter. The seat's own name and reading are
+   not gone, they are what the hover says: cr()'s own title plumbing
+   already carries a name and a figure into a tooltip everywhere else in
+   this product, so this reuses that convention rather than inventing a
+   second one. Strength order, strongest first, is a plain numeric sort
+   on the same v every cr() ring used to fill its arc with; nothing about
+   the ordering is new, only the drawing is. */
+function stPillRow(id,items){
+ var sorted=items.slice().sort(function(a,b){return (b.v||0)-(a.v||0);});
+ return '<div class="st-pl-row" id="'+id+'">'+sorted.map(function(it){
+   var lit=(it.v||0)>0;
+   return '<span class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b)+'" tabindex="0" role="img" style="--c:'+it.c+'" '
+    +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'"></span>';}).join('')
+  +'</div>';}
 function stDashLeft(){
  var h=document.getElementById('stleft'); if(!h)return;
  /* ONLY ON THE JOURNAL, the guard stRender already keeps on st-full: stCommit
@@ -80,13 +103,10 @@ function stDashLeft(){
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
-  o+='<ul class="st-en-ls" id="st-energy-ls">'+BANDS.map(function(b){
+  o+=stPillRow('st-energy-ls',BANDS.map(function(b){
    var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
-   return '<li class="st-en-r" data-seat="'+esc(b)+'">'
-    +cr(b,pct('atom',v)||0,{size:'sm',raw:f,hot:false,
-      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')})
-    +'<span class="st-en-n">'+unp('seat:'+b.toLowerCase(),b)+'</span></li>';}).join('')
-   +'</ul>';}
+   return {v:v,b:b,c:seatCol(b),
+     title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')};}));}
  o+='</section>';
  o+=stDashAssemblage(p);
  o+=stDashChakraHealth();
@@ -109,13 +129,10 @@ function stDashAssemblage(p){
  if(!p){
   o+='<p class="st-none" id="st-ap-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
-  o+='<ul class="st-en-ls" id="st-ap-ls">'+BANDS.map(function(b){
+  o+=stPillRow('st-ap-ls',BANDS.map(function(b){
    var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
-   return '<li class="st-en-r" data-seat="'+esc(b)+'">'
-    +cr(b,pct('atom',v)||0,{size:'sm',raw:f,hot:false,
-      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')})
-    +'<span class="st-en-n">'+unp('seat:'+b.toLowerCase(),b)+'</span></li>';}).join('')
-   +'</ul>';}
+   return {v:v,b:b,c:seatCol(b),
+     title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')};}));}
  o+='</section>';
  return o;}
 
@@ -134,15 +151,13 @@ function stDashChakraHealth(){
  if(typeof SI==='undefined'||typeof lawIn!=='function'||typeof lawNow!=='function')return '';
  var o='<section class="st-en st-ch" id="st-chakra" aria-labelledby="st-chakra-h">'
   +'<h2 class="rblk" id="st-chakra-h">Chakra Health</h2>'
-  +'<ul class="st-en-ls" id="st-chakra-ls">'+BANDS.map(function(b){
+  +stPillRow('st-chakra-ls',BANDS.map(function(b){
    var laws=SI.filter(function(l){return l.b===b;}), answered=laws.filter(function(l){return lawIn(l.nm);});
    var v=answered.length?answered.reduce(function(a,l){return a+lawNow(l.nm);},0)/answered.length:null;
    var f=v==null?PCT_DASH:fmtPct('law',v);
-   return '<li class="st-en-r" data-seat="'+esc(b)+'">'
-    +cr(b,v==null?0:(pct('law',v)||0),{size:'sm',raw:f,hot:false,
-      title:b+(v==null?', no laws answered at this seat yet':', '+f+' across '+answered.length+' of '+laws.length+' laws answered at this seat')})
-    +'<span class="st-en-n">'+unp('seat:'+b.toLowerCase(),b)+'</span></li>';}).join('')
-   +'</ul></section>';
+   return {v:v||0,b:b,c:seatCol(b),
+     title:b+(v==null?', no laws answered at this seat yet':', '+f+' across '+answered.length+' of '+laws.length+' laws answered at this seat')};}))
+  +'</section>';
  return o;}
 
 /* THE 21 LAWS, grouped by seat (3 to 4 a seat, SI's own grouping) rather

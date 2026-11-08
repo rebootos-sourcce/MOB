@@ -108,30 +108,51 @@ async function stFullGate(browser,FILE,ok,booted){
    at+'the rail is #stleft and its fold and nothing of the Field\'s, got '+s1.shown.join(','));
   if(wn==='desktop')ok(/^302px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 302px 1fr, got '+s1.grid);
 
-  /* 3. silent with no story */
+  /* 3. silent with no story. ROUND, 8 November: the per-row ring-and-name
+     list (.st-en-r, .cr) became a colour-only pill row, his words "I don't
+     want the text. I only want the color. And a pill, almost like a
+     light." stPillRow draws nothing at all, not even an empty row div,
+     when stDashLeft has no story, the same "a hidden surface never sits
+     in the document asserting a stale reading" rule this rail already
+     kept, so the pill count here is checked the same way the old ring
+     count was. */
   const s2=await p.evaluate(()=>{const sl=document.getElementById('stleft');
    return {txt:ST_TEXT, none:!!sl.querySelector('#st-energy-none'), say:(sl.querySelector('#st-energy-none')||{}).textContent,
-    rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
+    pills:sl.querySelectorAll('#st-energy-ls .st-pl').length,
     head:(sl.querySelector('#st-energy-h')||{}).textContent};});
   ok(s2.txt.trim()===''&&s2.head==='Energy',at+'the rail opens on Energy, with no story written, '+JSON.stringify({txt:s2.txt,head:s2.head}));
-  ok(s2.none&&s2.rings===0&&s2.rows===0,at+'and says nothing is read yet, with no ring and no seat drawn, '+JSON.stringify(s2));
+  ok(s2.none&&s2.pills===0,at+'and says nothing is read yet, with no pill drawn, '+JSON.stringify(s2));
 
-  /* 4. a story, all seven */
+  /* 4. a story, all seven, as pills now. ORDER IS STRENGTH NOW, NOT ROOT TO
+     CROWN, his own instruction: "arranged according to signal strength."
+     So the check moves from an ordered sequence to a set (every band
+     present once, whatever order) and a separate, real check that the
+     order stPillRow actually drew is non-increasing by value. THE FIGURE
+     IS IN THE TITLE NOW, not a visible .cr .v: "I only want the color...
+     mouse is over it, they can see what's being lit up", so the hover
+     text is checked against the same fmtPct('atom',v) figure the old
+     visible text was. */
   const s3=await p.evaluate(t=>{
    ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh();
-   const rows=[...document.querySelectorAll('#stleft .st-en-r')];
+   const pills=[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')];
    const want=BANDS.map(b=>{const v=Math.min(10,(ST_PARSED.bands[B2K[b]]||0)/3);return {b,v,f:fmtPct('atom',v)};});
-   return {seats:rows.map(r=>r.getAttribute('data-seat')), order:BANDS,
-    got:rows.map(r=>(r.querySelector('.cr .v')||{}).textContent), want:want.map(x=>x.f),
+   const byband={}; want.forEach(x=>byband[x.b]=x);
+   const vals=pills.map(r=>byband[r.getAttribute('data-seat')].v);
+   return {seats:pills.map(r=>r.getAttribute('data-seat')).slice().sort(), order:BANDS.slice().sort(),
+    nonIncreasing:vals.every((v,i)=>i===0||vals[i-1]>=v),
+    titled:pills.every(r=>{var x=byband[r.getAttribute('data-seat')];
+     return x.f!==PCT_DASH?r.title.indexOf(x.f)>=0:r.title.indexOf('nothing from this story')>=0;}),
     spring:want.every(x=>Math.abs(STSEAT[x.b].rdT-x.v)<1e-9),
     dash:want.filter(x=>x.f===PCT_DASH).length, lit:want.filter(x=>x.f!==PCT_DASH).length,
-    tips:rows.every(r=>!!r.querySelector('.st-en-n .tipu[data-tip]')),
+    litClass:pills.filter(r=>r.classList.contains('lit')).length,
+    allTitled:pills.every(r=>!!r.title),
     none:!!document.querySelector('#st-energy-none')};},STORY);
-  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats Root to Crown, got '+s3.seats.join(','));
-  ok(s3.got.join()===s3.want.join(),at+'each figure is the atom percent of min(10, bands/3), got '+s3.got.join(',')+' want '+s3.want.join(','));
-  ok(s3.lit>0&&s3.dash>0,at+'a seat the story reached prints its percent and an untouched seat its dash, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
-  ok(s3.spring,at+'and every ring reads the number the Journal\'s own chart springs to, STSEAT');
-  ok(s3.tips&&!s3.none,at+'each seat name carries its own sentence, and the silent line is gone');
+  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats present, got '+s3.seats.join(','));
+  ok(s3.nonIncreasing,at+'and the pills run strongest first, by signal strength');
+  ok(s3.titled,at+'each figure is the atom percent of min(10, bands/3), in the pill\'s own hover');
+  ok(s3.lit>0&&s3.dash>0&&s3.litClass===s3.lit,at+'a seat the story reached lights its pill and an untouched seat stays dim, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
+  ok(s3.spring,at+'and every pill reads the number the Journal\'s own chart springs to, STSEAT');
+  ok(s3.allTitled&&!s3.none,at+'each pill carries its own hover sentence, and the silent line is gone');
 
   /* 5. PHASE 0. Full, chat on, the crisis door by real presses */
   await p.evaluate(()=>window.scrollTo(0,0));
@@ -208,7 +229,7 @@ async function stFullGate(browser,FILE,ok,booted){
    if(o.fieldShut)document.body.classList.add('lshut');
    setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,260));
    o.backFull=document.body.classList.contains('st-full'); o.backDash=STV.dash;
-   o.backRows=document.querySelectorAll('#stleft .st-en-r').length;
+   o.backRows=document.querySelectorAll('#stleft #st-energy-ls .st-pl').length;
    return o;});
   ok(!s4.offFull&&s4.offLeft===''&&s4.offRail==='none',at+'leaving the Journal clears the rail and the class, '+JSON.stringify(s4));
   ok(s4.fieldSec!=='none',at+'and the Field\'s left rail is the Field\'s again, '+s4.fieldSec);
@@ -260,13 +281,13 @@ async function stFullGate(browser,FILE,ok,booted){
    const other=[...document.querySelectorAll('#psel option')].map(o=>o.value).find(v=>v!=='0');
    return {other, who:S.who, full:document.body.classList.contains('st-full'),
     rail:document.getElementById('stleft').innerHTML,
-    rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')};},STORY);
-  ok(a.who===0&&a.full&&a.rows.split(',').length===7,at+'the switch is measured from You in Full with seven seats drawn, '+JSON.stringify({who:a.who,full:a.full,rows:a.rows}));
+    rows:[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')].map(e=>e.getAttribute('data-seat')+':'+e.title).join('|')};},STORY);
+  ok(a.who===0&&a.full&&a.rows.split('|').length===7,at+'the switch is measured from You in Full with seven seats drawn, '+JSON.stringify({who:a.who,full:a.full,rows:a.rows}));
   await p.selectOption('#psel',a.other,{force:true});
   await p.waitForTimeout(300);
   const b=await p.evaluate(m=>({who:S.who, text:ST_TEXT, parsed:!!ST_PARSED,
    rail:document.getElementById('stleft').innerHTML,
-   rows:document.querySelectorAll('#stleft .st-en-r').length,
+   rows:document.querySelectorAll('#stleft #st-energy-ls .st-pl').length,
    none:!!document.getElementById('st-energy-none'),
    page:document.getElementById('story').textContent.indexOf(m)>=0,
    draft:(CURP&&CURP.story&&CURP.story.draft)||null,
@@ -282,7 +303,7 @@ async function stFullGate(browser,FILE,ok,booted){
   await p.selectOption('#psel','0',{force:true});
   await p.waitForTimeout(300);
   const c=await p.evaluate(()=>({who:S.who, text:ST_TEXT,
-   rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')}));
+   rows:[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')].map(e=>e.getAttribute('data-seat')+':'+e.title).join('|')}));
   ok(c.who===0&&c.text===STORY&&c.rows===a.rows,at+'and back on You, the words and the same seven figures return, '+JSON.stringify({who:c.who,rows:c.rows,want:a.rows}));
   /* the last commit is a record's too: STV.lastT is what relPick credits a
      run to, so it may not survive into the next person's release */
@@ -328,7 +349,7 @@ async function stFullGate(browser,FILE,ok,booted){
    await press(p,'#lfold',ok,at+'the fold, open again');
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
-     n:e.getAnimations().length, rows:e.querySelectorAll('.st-en-r').length+(e.querySelector('#st-energy-none')?1:0)};});
+     n:e.getAnimations().length, rows:e.querySelectorAll('#st-energy-ls .st-pl').length+(e.querySelector('#st-energy-none')?1:0)};});
    ok(!an.shut&&an.rows>0&&an.n===0,at+'reopening the fold runs no fade on the Energy rail, '+JSON.stringify(an));}
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));

@@ -4540,6 +4540,19 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    100% at the sm size on both widths */
 .st-en-r .cr{flex:0 0 auto;min-width:96px}
 .st-en-r .st-en-n{flex:1 1 auto;min-width:0}
+/* THE PILL ROW, 8 November: colour only, no word, side by side, strongest
+   first (stPillRow, ui/stdash.js, sorts before this ever reaches the DOM,
+   so the row's own order is the signal-strength order and nothing here
+   re-sorts it). "Almost like a light": lit is the seat's own colour at
+   near full opacity with a soft glow in that same colour; the quiet seats
+   stay in the row, dim rather than gone, so hovering any of the seven,
+   lit or not, still finds it and its title still says what it is. */
+.st-pl-row{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 10px;align-items:center}
+.st-pl{display:block;width:26px;height:14px;border-radius:7px;background:var(--c);opacity:.22;
+ cursor:default;transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out)}
+.st-pl.lit{opacity:.95;box-shadow:0 0 9px 1px var(--c)}
+.st-pl:hover,.st-pl:focus-visible{opacity:1}
+.st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
@@ -4839,9 +4852,19 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    letting her clip. */
 .st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .st-chat .st-uni{flex:1 1 auto;min-height:0}
-.st-uni .uni-widget{width:auto;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-.st-uni .uni-widget .canvas-wrap{width:auto;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
-.st-uni .uni-widget .canvas-wrap canvas{width:auto;height:100%;max-width:100%;max-height:100%}
+/* HER GLOW FILLS THE EDGES, 8 November, his words on this exact panel: "with
+   Uni's glow, make sure it fills the edges." width:auto kept her at her own
+   640/520 aspect no matter how wide her column was, round TF's own fix for a
+   short screen clipping her top and bottom; it also left her narrower than
+   her column on any screen wider than that ratio, the flat black either side
+   of her in the glow panel. width:100% lets her fill the column's width as
+   well as its height, same overflow:hidden box, so round TF's own fix (never
+   taller than the column, never clipped) still holds; she is not always a
+   perfect circle now, a soft radial glow reads as one stretched as readily
+   as held to it. */
+.st-uni .uni-widget{width:100%;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
+.st-uni .uni-widget .canvas-wrap{width:100%;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
+.st-uni .uni-widget .canvas-wrap canvas{width:100%;height:100%;max-width:100%;max-height:100%}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire

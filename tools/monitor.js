@@ -170,12 +170,26 @@ const FLOOR_CANVAS=60;
       the view is put back to Simple after. */
    const jr=await p.evaluate(async()=>{
     const out=[], wait=()=>new Promise(r=>setTimeout(r,320));
+    /* SCOPED TO ENERGY ITSELF, 8 November. This file's own comment above
+       already named the intent, "Energy must say nothing is read and draw
+       no ring", but the count it read, sl.querySelectorAll('.cr'), was
+       every ring anywhere in #stleft, which coincidentally equalled
+       Energy's own count only because Energy was the rail's only section.
+       Assemblage Point, Chakra Health and the rest (ui/stdash.js) now
+       share the rail, and Chakra Health, Boundary and Channel read the
+       record rather than this draft, so they can carry real rings with
+       the draft empty, which is correct and is not what this check is
+       for. Scoped to #st-energy-ls so it means what its own comment says
+       again. Energy also moved from a ring list to a colour pill row
+       (stPillRow, "I only want the color... a pill, almost like a
+       light"), so the count is .st-pl, not .cr. */
     const m=(nm)=>{const st=document.getElementById('story'), sl=document.getElementById('stleft');
+     const el=document.getElementById('st-energy-ls');
      const sb=st.getBoundingClientRect(), lb=sl.getBoundingClientRect(), ls=getComputedStyle(sl);
      out.push({nm, story:(sb.width>0&&sb.height>0)?st.innerHTML.length:0,
       shown:ls.display!=='none'&&lb.width>0&&lb.height>0&&sl.offsetParent!==null,
       left:sl.innerHTML.length, text:(sl.innerText||'').trim().length,
-      rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
+      pills:el?el.querySelectorAll('.st-pl').length:0,
       none:!!sl.querySelector('#st-energy-none')});};
     const t0=ST_TEXT, p0=ST_PARSED;
     setTab(TAB.STORY); STV.dash=false; stRender(); await wait(); m('simple');
@@ -187,10 +201,10 @@ const FLOOR_CANVAS=60;
    jr.forEach(r=>{
     const bad=r.story<FLOOR
      ||(r.nm==='simple'&&(r.shown||r.left>0))
-     ||(r.nm==='full'&&(!r.shown||!r.none||r.rings>0))
-     ||(r.nm==='full story'&&(!r.shown||r.rows!==7||r.left<FLOOR));
+     ||(r.nm==='full'&&(!r.shown||!r.none||r.pills>0))
+     ||(r.nm==='full story'&&(!r.shown||r.pills!==7||r.left<FLOOR));
     rows.push([wn,who,{simple:'jnl simple',full:'jnl full','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
-     'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.rows+' seats'+(r.none?', nothing read yet':'')]);
+     'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.pills+' seats'+(r.none?', nothing read yet':'')]);
     if(bad)fails.push(wn+'/'+who+'/journal '+r.nm+' did not render as it should: '+JSON.stringify(r));});
    /* THE RELEASE IS NOT IN TABDEF, so this watch never saw it, and it is the
       one surface built to be heard (DESIGN-release.md section 7: "The release
