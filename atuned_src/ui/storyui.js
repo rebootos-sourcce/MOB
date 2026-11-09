@@ -1014,8 +1014,17 @@ function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
+ /* THE WORD DEPENDS ON WHICH #stapply IS IN THE DOCUMENT, 9 November. One
+    id, two mutually exclusive places it can render (STV.chat&&STV.dash's
+    own .st-lsbank in the bank row, reading "Bank"; every other state's
+    plain button in .st-bar, reading "Commit", see ui/storyui.js's own
+    stRender). This refresh runs on every keystroke, well after either
+    render chose its word, and used to reset it to "Commit" unconditionally
+    whichever button it found; now it reads the class that marks which one
+    it actually found rather than guessing. */
  if(ap){ap.disabled=!ST_PARSED;
-  ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
+  var apw=ap.classList.contains('st-lsbank')?'Bank':'Commit';
+  ap.textContent=apw+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stMaskPaint();
  stAsidePaint();

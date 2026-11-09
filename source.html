@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3001 7d3e8536 2026-11-09 05:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v3002 5db1931d 2026-11-09 05:49"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -55044,8 +55044,17 @@ function stRefresh(){
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
+ /* THE WORD DEPENDS ON WHICH #stapply IS IN THE DOCUMENT, 9 November. One
+    id, two mutually exclusive places it can render (STV.chat&&STV.dash's
+    own .st-lsbank in the bank row, reading "Bank"; every other state's
+    plain button in .st-bar, reading "Commit", see ui/storyui.js's own
+    stRender). This refresh runs on every keystroke, well after either
+    render chose its word, and used to reset it to "Commit" unconditionally
+    whichever button it found; now it reads the class that marks which one
+    it actually found rather than guessing. */
  if(ap){ap.disabled=!ST_PARSED;
-  ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
+  var apw=ap.classList.contains('st-lsbank')?'Bank':'Commit';
+  ap.textContent=apw+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stMaskPaint();
  stAsidePaint();
@@ -92197,5 +92206,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006159525"></div>
+<div id="eof" hidden data-len="006160143"></div>
 </body></html>
