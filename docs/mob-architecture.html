@@ -1,0 +1,1054 @@
+<title>MOB Data Architecture</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+/* Layout: sticky nav, single-scroll tabs, full-width on phone */
+:root {
+  --bg:       #0d0e10;
+  --surf:     #161718;
+  --surf2:    #1e2022;
+  --border:   #2a2b2e;
+  --fg:       #e4e5e7;
+  --dim:      #8a8b8e;
+  --mute:     #4a4b4e;
+  --red:      #e33b06;
+  --gold:     #c9a84c;
+  --green:    #3dba6c;
+  --blue:     #4a9eff;
+  --mono:     'JetBrains Mono', 'Fira Code', monospace;
+  --sans:     'Inter', system-ui, sans-serif;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--sans);font-size:14px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+}
+
+/* HEADER */
+.hdr{
+  border-bottom:1px solid var(--border);
+  padding:28px 0 20px;
+  display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap;
+}
+.hdr-left{flex:1;min-width:0}
+.hdr-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--red);margin-bottom:6px;
+}
+.hdr h1{font-size:22px;font-weight:600;letter-spacing:-.02em;text-wrap:balance}
+.hdr p{font-size:13px;color:var(--dim);margin-top:4px}
+.hdr-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  font-family:var(--mono);font-size:11px;padding:3px 8px;
+  border:1px solid var(--border);border-radius:3px;color:var(--dim);
+  white-space:nowrap;
+}
+.chip.gold{border-color:#5a4a20;color:var(--gold);background:#1a1508}
+.chip.red{border-color:#5a1a08;color:var(--red);background:#1a0a06}
+.chip.green{border-color:#1a4a2a;color:var(--green);background:#0a1a10}
+
+/* TABS */
+.tabs{
+  position:sticky;top:0;z-index:10;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  display:flex;gap:0;overflow-x:auto;
+  padding-left:max(0px,env(safe-area-inset-left,0px));
+  padding-right:max(0px,env(safe-area-inset-right,0px));
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+  padding:12px 18px;border:none;background:transparent;
+  color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:color .15s;
+}
+.tab:hover{color:var(--fg)}
+.tab.active{color:var(--fg);border-bottom-color:var(--red)}
+
+/* CONTENT */
+.tab-content{display:none;padding:28px 0 48px}
+.tab-content.active{display:block}
+
+h2{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:4px;text-wrap:balance}
+h3{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+   color:var(--gold);margin:28px 0 12px}
+h3:first-child{margin-top:0}
+p{color:var(--dim);max-width:68ch;line-height:1.65}
+p+p{margin-top:.75em}
+.lead{color:var(--fg);font-size:14px}
+
+/* GRID CARDS */
+.grid{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:600px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:400px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.gcard{background:var(--surf);padding:16px}
+.gcard .label{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.gcard .value{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.gcard .sub{font-size:12px;color:var(--dim);margin-top:3px}
+.gcard .value.red{color:var(--red)}
+.gcard .value.gold{color:var(--gold)}
+.gcard .value.green{color:var(--green)}
+.gcard .value.blue{color:var(--blue)}
+
+/* SERVICE TOPOLOGY */
+.topo{
+  display:grid;grid-template-columns:1fr auto 1fr auto 1fr;
+  gap:0;align-items:start;margin:20px 0;
+  overflow-x:auto;
+}
+.topo-col{display:flex;flex-direction:column;gap:8px}
+.topo-box{
+  background:var(--surf2);border:1px solid var(--border);
+  border-radius:4px;padding:10px 12px;
+}
+.topo-box .tb-title{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--fg);margin-bottom:3px}
+.topo-box .tb-items{font-size:11px;color:var(--dim);line-height:1.8}
+.topo-box .tb-items span{display:block}
+.topo-box.electron .tb-title{color:var(--blue)}
+.topo-box.cf .tb-title{color:var(--gold)}
+.topo-box.d1 .tb-title{color:var(--green)}
+.topo-box.ext .tb-title{color:var(--red)}
+.topo-arrow{
+  display:flex;align-items:center;justify-content:center;
+  padding:0 8px;color:var(--mute);font-size:18px;
+  align-self:stretch;padding-top:12px;
+}
+.topo-label{font-family:var(--mono);font-size:10px;color:var(--mute);text-align:center;margin-top:2px}
+.topo-col-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:8px;
+  border-bottom:1px solid var(--border);padding-bottom:6px;
+}
+
+/* SVG GRAPH */
+.graph-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:6px;background:var(--surf);padding:16px}
+.graph-wrap svg{display:block;min-width:600px;width:100%;max-width:900px;margin:0 auto}
+
+/* CODE BLOCKS */
+.code-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:4px;margin:12px 0}
+pre{
+  background:var(--surf);
+  font-family:var(--mono);font-size:12px;line-height:1.7;
+  padding:16px;white-space:pre;
+}
+.kw{color:#9d7af0}
+.ky{color:#4a9eff}
+.cm{color:var(--mute)}
+.str{color:var(--green)}
+.nm{color:var(--gold)}
+.op{color:var(--dim)}
+
+/* SCHEMA SECTION */
+.schema-group{margin-bottom:28px}
+.schema-group-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mute);margin-bottom:10px;display:flex;align-items:center;gap:10px;
+}
+.schema-group-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.table-name{color:var(--gold)}
+
+/* ALGO CARDS */
+.algo{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.algo-head{
+  background:var(--surf);padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.algo-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--red);color:#fff;
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.algo-title{font-weight:600;font-size:14px}
+.algo-meta{font-family:var(--mono);font-size:11px;color:var(--dim);margin-left:auto}
+.algo-body{background:var(--surf2);padding:16px}
+.algo-body p{font-size:13px;margin-bottom:10px}
+.algo-body .code-wrap{margin:0}
+
+/* PIPELINE */
+.pipe{position:relative;padding-left:28px}
+.pipe::before{content:'';position:absolute;left:9px;top:12px;bottom:12px;width:2px;background:var(--border)}
+.pipe-step{position:relative;margin-bottom:20px}
+.pipe-step::before{
+  content:'';position:absolute;left:-23px;top:12px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--surf2);border:2px solid var(--border);
+}
+.pipe-step.active::before{background:var(--red);border-color:var(--red)}
+.pipe-step .ps-head{
+  background:var(--surf);border:1px solid var(--border);border-radius:4px;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;
+}
+.pipe-step .ps-num{font-family:var(--mono);font-size:11px;color:var(--red);min-width:20px}
+.pipe-step .ps-title{font-weight:600;font-size:13px}
+.pipe-step .ps-db{font-family:var(--mono);font-size:11px;color:var(--gold);margin-left:auto}
+.pipe-step .ps-body{
+  border:1px solid var(--border);border-top:none;border-radius:0 0 4px 4px;
+  background:var(--surf2);padding:14px;
+}
+.pipe-step .ps-body p{font-size:13px;color:var(--dim)}
+.pipe-step .ps-body .code-wrap{margin-top:10px}
+
+/* ENDPOINT TABLE */
+.ep-table{width:100%;border-collapse:collapse;font-size:13px}
+.ep-table th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.ep-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.ep-table tr:last-child td{border-bottom:none}
+.ep-table td:first-child{font-family:var(--mono);font-size:12px;color:var(--gold);white-space:nowrap}
+.ep-table td:nth-child(2){font-family:var(--mono);font-size:11px;color:var(--blue)}
+.ep-table td:last-child{color:var(--dim);font-size:12px}
+.method{font-family:var(--mono);font-size:10px;padding:2px 5px;border-radius:2px;font-weight:600}
+.get{background:#0a1a2a;color:#4a9eff}
+.post{background:#1a2a0a;color:#3dba6c}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:24px 0}
+</style>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-eyebrow">MOB Recorder · System Design</div>
+    <h1>Integrated Architecture</h1>
+    <p class="lead">Cloudflare D1 · R2 · Workers · Intelligence layer · Transcript pipeline</p>
+  </div>
+  <div class="hdr-chips">
+    <span class="chip gold">D1 SQLite</span>
+    <span class="chip gold">9 tables</span>
+    <span class="chip green">6 algorithms</span>
+    <span class="chip red">fully offline</span>
+    <span class="chip">November 2026</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab active" data-tab="arch">Architecture</button>
+  <button class="tab" data-tab="graph">Entity Graph</button>
+  <button class="tab" data-tab="schema">D1 Schema</button>
+  <button class="tab" data-tab="intel">Intelligence</button>
+  <button class="tab" data-tab="pipeline">Pipeline</button>
+</nav>
+
+<!-- TAB: ARCHITECTURE -->
+<div id="arch" class="tab-content active">
+  <h2>System topology</h2>
+  <p class="lead">One Electron app, one Cloudflare account. Local for capture and processing; edge for persistence and distribution. No cloud dependency during recording.</p>
+
+  <br>
+  <div class="topo">
+    <!-- Col 1: Electron -->
+    <div class="topo-col">
+      <div class="topo-col-label">Electron App (local)</div>
+      <div class="topo-box electron">
+        <div class="tb-title">Camera mode</div>
+        <div class="tb-items">
+          <span>MediaRecorder + compositor</span>
+          <span>ARM → GO recording flow</span>
+          <span>Porcupine + Vosk voice</span>
+          <span>Silero VAD gate</span>
+        </div>
+      </div>
+      <div class="topo-box electron">
+        <div class="tb-title">Edit mode</div>
+        <div class="tb-items">
+          <span>Whisper.cpp sidecar</span>
+          <span>FFmpeg: trim, concat</span>
+          <span>Silence / filler detect</span>
+          <span>Caption preview</span>
+        </div>
+      </div>
+      <div class="topo-box electron">
+        <div class="tb-title">Production mode</div>
+        <div class="tb-items">
+          <span>FFmpeg: LUT · loudnorm</span>
+          <span>MediaPipe: blur / seg</span>
+          <span>HW encoder probe</span>
+          <span>AV1 / H.264 export</span>
+        </div>
+      </div>
+      <div class="topo-box electron">
+        <div class="tb-title">Distribution mode</div>
+        <div class="tb-items">
+          <span>Workers API client</span>
+          <span>OAuth PKCE loopback</span>
+          <span>Resumable uploader</span>
+          <span>Video Vault browser</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 -->
+    <div class="topo-arrow" style="flex-direction:column;gap:4px">
+      <span>→</span>
+      <div class="topo-label">HTTPS<br>REST</div>
+    </div>
+
+    <!-- Col 2: Workers API -->
+    <div class="topo-col">
+      <div class="topo-col-label">Cloudflare Workers (edge)</div>
+      <div class="topo-box cf">
+        <div class="tb-title">POST /recordings</div>
+        <div class="tb-items">
+          <span>Store metadata → D1</span>
+          <span>Upload video → R2</span>
+          <span>Return r2_key + id</span>
+        </div>
+      </div>
+      <div class="topo-box cf">
+        <div class="tb-title">POST /transcripts</div>
+        <div class="tb-items">
+          <span>Ingest Whisper JSON</span>
+          <span>Write words → D1</span>
+          <span>Trigger intelligence</span>
+        </div>
+      </div>
+      <div class="topo-box cf">
+        <div class="tb-title">POST /packages</div>
+        <div class="tb-items">
+          <span>Assemble from D1</span>
+          <span>Run hashtag extract</span>
+          <span>Return ready bundle</span>
+        </div>
+      </div>
+      <div class="topo-box cf">
+        <div class="tb-title">POST /distribute</div>
+        <div class="tb-items">
+          <span>Write distributions → D1</span>
+          <span>Queue upload job</span>
+          <span>Poll platform status</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 2 -->
+    <div class="topo-arrow" style="flex-direction:column;gap:4px">
+      <span>→</span>
+      <div class="topo-label">Binding</div>
+    </div>
+
+    <!-- Col 3: Cloudflare services -->
+    <div class="topo-col">
+      <div class="topo-col-label">Cloudflare Services</div>
+      <div class="topo-box d1">
+        <div class="tb-title">D1 (SQLite at edge)</div>
+        <div class="tb-items">
+          <span>recordings · clips</span>
+          <span>transcripts · words</span>
+          <span>segments · captions</span>
+          <span>metadata_tags</span>
+          <span>production_packages</span>
+          <span>distributions</span>
+        </div>
+      </div>
+      <div class="topo-box d1">
+        <div class="tb-title">R2 (object store)</div>
+        <div class="tb-items">
+          <span>recordings/{id}.mkv</span>
+          <span>clips/{id}.mp4</span>
+          <span>thumbs/{id}.jpg</span>
+          <span>$0.015/GB · 0 egress</span>
+        </div>
+      </div>
+      <div class="topo-box d1">
+        <div class="tb-title">KV (key-value)</div>
+        <div class="tb-items">
+          <span>oauth:youtube → token</span>
+          <span>oauth:tiktok → token</span>
+          <span>job:{id} → status</span>
+          <span>TTL: tokens 55min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <h3>Worker API endpoints</h3>
+  <div class="code-wrap">
+    <table class="ep-table">
+      <thead><tr><th>Endpoint</th><th>Method</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>/recordings</td><td><span class="method post">POST</span></td><td>Create recording record; upload video to R2; return id + r2_key</td></tr>
+        <tr><td>/recordings/:id</td><td><span class="method get">GET</span></td><td>Fetch recording metadata including transcript and package status</td></tr>
+        <tr><td>/transcripts</td><td><span class="method post">POST</span></td><td>Ingest Whisper JSON; write words table; trigger filler+silence detect</td></tr>
+        <tr><td>/transcripts/:id/captions</td><td><span class="method get">GET</span></td><td>Return generated captions as SRT or VTT string</td></tr>
+        <tr><td>/packages</td><td><span class="method post">POST</span></td><td>Build production package — title, description, hashtags, chapters</td></tr>
+        <tr><td>/packages/:id</td><td><span class="method get">GET</span></td><td>Return full distribution-ready metadata bundle</td></tr>
+        <tr><td>/distribute</td><td><span class="method post">POST</span></td><td>Create distribution record; enqueue upload job via KV queue</td></tr>
+        <tr><td>/distribute/:id</td><td><span class="method get">GET</span></td><td>Poll upload status; return platform_url when live</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+  <h3>Cloudflare D1 — why not Postgres, why not SQLite file</h3>
+  <p>D1 is SQLite at the Cloudflare edge — same SQL dialect, same driver API, zero ops. Workers bind to it natively (no connection pool, no TCP, no PGPASSWORD). The Electron app never touches D1 directly; it talks to Workers over HTTPS, which means the database is never exposed to the internet. Compared to PlanetScale or Supabase: no monthly seat cost, no VPC, no connection limits. The full 9-table schema runs at under 10ms per query in the Cloudflare London PoP.</p>
+
+  <div class="grid grid-4" style="margin-top:20px">
+    <div class="gcard"><div class="label">D1 storage</div><div class="value green">5 GB</div><div class="sub">free tier</div></div>
+    <div class="gcard"><div class="label">R2 egress</div><div class="value green">$0</div><div class="sub">zero egress fees</div></div>
+    <div class="gcard"><div class="label">Workers requests</div><div class="value green">10M/mo</div><div class="sub">free tier</div></div>
+    <div class="gcard"><div class="label">KV reads</div><div class="value green">100K/day</div><div class="sub">free tier</div></div>
+  </div>
+</div>
+
+<!-- TAB: ENTITY GRAPH -->
+<div id="graph" class="tab-content">
+  <h2>Entity relationship graph</h2>
+  <p class="lead">9 tables in 3 layers: recording layer (what was captured), transcript layer (what was said), distribution layer (where it goes). recordings is the root — every other table references it directly or through transcripts.</p>
+  <br>
+  <div class="graph-wrap">
+    <svg viewBox="0 0 860 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#4a4b4e"/>
+        </marker>
+        <marker id="arr-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#c9a84c"/>
+        </marker>
+      </defs>
+
+      <!-- Layer labels -->
+      <text x="14" y="22" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e" letter-spacing="0.1">RECORDING LAYER</text>
+      <text x="14" y="162" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e" letter-spacing="0.1">TRANSCRIPT LAYER</text>
+      <text x="14" y="302" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e" letter-spacing="0.1">DISTRIBUTION LAYER</text>
+
+      <!-- Layer bands -->
+      <rect x="0" y="28" width="860" height="110" rx="4" fill="#161718" opacity="0.6"/>
+      <rect x="0" y="168" width="860" height="110" rx="4" fill="#1e2022" opacity="0.5"/>
+      <rect x="0" y="308" width="860" height="100" rx="4" fill="#161718" opacity="0.6"/>
+
+      <!-- RECORDING LAYER nodes -->
+      <!-- recordings -->
+      <rect x="330" y="38" width="160" height="58" rx="4" fill="#1e2022" stroke="#c9a84c" stroke-width="1.5"/>
+      <text x="410" y="57" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#c9a84c" text-anchor="middle">recordings</text>
+      <text x="410" y="72" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">id · r2_key · codec</text>
+      <text x="410" y="86" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">duration_ms · status</text>
+
+      <!-- clips -->
+      <rect x="90" y="38" width="150" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="165" y="57" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e4e5e7" text-anchor="middle">clips</text>
+      <text x="165" y="72" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">recording_id · type</text>
+      <text x="165" y="86" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">start_ms · end_ms</text>
+
+      <!-- metadata_tags -->
+      <rect x="590" y="38" width="150" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="665" y="57" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e4e5e7" text-anchor="middle">metadata_tags</text>
+      <text x="665" y="72" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">recording_id · tag</text>
+      <text x="665" y="86" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">type · platform · score</text>
+
+      <!-- TRANSCRIPT LAYER nodes -->
+      <!-- transcripts -->
+      <rect x="330" y="178" width="160" height="58" rx="4" fill="#1e2022" stroke="#4a9eff" stroke-width="1.5"/>
+      <text x="410" y="197" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#4a9eff" text-anchor="middle">transcripts</text>
+      <text x="410" y="212" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">recording_id · model</text>
+      <text x="410" y="226" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">full_text · wpm_avg</text>
+
+      <!-- words -->
+      <rect x="90" y="178" width="150" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="165" y="197" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e4e5e7" text-anchor="middle">words</text>
+      <text x="165" y="212" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">transcript_id · word</text>
+      <text x="165" y="226" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">start_ms · is_filler</text>
+
+      <!-- segments -->
+      <rect x="590" y="178" width="150" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="665" y="197" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e4e5e7" text-anchor="middle">segments</text>
+      <text x="665" y="212" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">transcript_id · type</text>
+      <text x="665" y="226" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">wpm · energy · text</text>
+
+      <!-- DISTRIBUTION LAYER nodes -->
+      <!-- production_packages -->
+      <rect x="90" y="318" width="160" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="170" y="337" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="600" fill="#e4e5e7" text-anchor="middle">production_packages</text>
+      <text x="170" y="352" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">title · description</text>
+      <text x="170" y="366" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">hashtags · chapters</text>
+
+      <!-- captions -->
+      <rect x="330" y="318" width="150" height="58" rx="4" fill="#1e2022" stroke="#2a2b2e" stroke-width="1"/>
+      <text x="405" y="337" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e4e5e7" text-anchor="middle">captions</text>
+      <text x="405" y="352" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">transcript_id · seq</text>
+      <text x="405" y="366" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">start_ms · text · format</text>
+
+      <!-- distributions -->
+      <rect x="570" y="318" width="150" height="58" rx="4" fill="#1e2022" stroke="#e33b06" stroke-width="1.5"/>
+      <text x="645" y="337" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="600" fill="#e33b06" text-anchor="middle">distributions</text>
+      <text x="645" y="352" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">platform · status</text>
+      <text x="645" y="366" font-family="'JetBrains Mono',monospace" font-size="10" fill="#8a8b8e" text-anchor="middle">platform_url · pkg_id</text>
+
+      <!-- EDGES: recording layer → transcript layer -->
+      <!-- recordings → transcripts (1:1) -->
+      <line x1="410" y1="96" x2="410" y2="178" stroke="#4a9eff" stroke-width="1.5" marker-end="url(#arr-gold)" opacity="0.6"/>
+      <text x="416" y="140" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a9eff" opacity="0.7">1:1</text>
+
+      <!-- recordings → clips (1:N) -->
+      <line x1="330" y1="67" x2="240" y2="67" stroke="#4a4b4e" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="275" y="61" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e">1:N</text>
+
+      <!-- recordings → metadata_tags (1:N) -->
+      <line x1="490" y1="67" x2="590" y2="67" stroke="#4a4b4e" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="524" y="61" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e">1:N</text>
+
+      <!-- transcripts → words (1:N) -->
+      <line x1="330" y1="207" x2="240" y2="207" stroke="#4a4b4e" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="270" y="201" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e">1:N</text>
+
+      <!-- transcripts → segments (1:N) -->
+      <line x1="490" y1="207" x2="590" y2="207" stroke="#4a4b4e" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="524" y="201" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e">1:N</text>
+
+      <!-- transcript layer → distribution layer -->
+      <!-- transcripts → captions (1:N) -->
+      <path d="M410,236 L410,318" stroke="#4a4b4e" stroke-width="1" marker-end="url(#arr)"/>
+      <text x="416" y="280" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a4b4e">1:N</text>
+
+      <!-- recordings → production_packages via diagonal -->
+      <path d="M370,96 Q220,160 170,318" stroke="#4a4b4e" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+
+      <!-- production_packages → distributions -->
+      <line x1="250" y1="347" x2="570" y2="347" stroke="#e33b06" stroke-width="1" marker-end="url(#arr)" opacity="0.5"/>
+      <text x="395" y="341" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e33b06" opacity="0.6">1:N</text>
+
+      <!-- clips → distributions (diagonal) -->
+      <path d="M165,236 Q165,290 570,347" stroke="#4a4b4e" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+    </svg>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:20px">
+    <div class="gcard">
+      <div class="label" style="color:var(--gold)">Recording layer</div>
+      <div style="font-size:13px;color:var(--dim);margin-top:4px">recordings · clips · metadata_tags. The raw capture and its derived clips. All metadata stored before any AI processing.</div>
+    </div>
+    <div class="gcard">
+      <div class="label" style="color:var(--blue)">Transcript layer</div>
+      <div style="font-size:13px;color:var(--dim);margin-top:4px">transcripts · words · segments · captions. The intelligence lives here — 1 word row per token, energy scored per segment, caption lines ready for SRT export.</div>
+    </div>
+    <div class="gcard">
+      <div class="label" style="color:var(--red)">Distribution layer</div>
+      <div style="font-size:13px;color:var(--dim);margin-top:4px">production_packages · distributions. Assembled metadata bundles (title, description, hashtags, chapters) and one row per platform publish attempt.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: D1 SCHEMA -->
+<div id="schema" class="tab-content">
+  <h2>D1 schema — 9 tables, 3 layers</h2>
+  <p class="lead">Complete SQL for Cloudflare D1. All IDs are text with a type prefix (rec-, clip-, trx-) for readability in logs. Integer PKs only on high-volume per-word tables where text IDs would bloat the index.</p>
+
+  <div class="schema-group">
+    <div class="schema-group-label" style="color:var(--gold)">RECORDING LAYER</div>
+    <div class="code-wrap"><pre><span class="kw">CREATE TABLE</span> <span class="nm">recordings</span> (
+  id           <span class="ky">TEXT</span>     <span class="kw">PRIMARY KEY</span>,   <span class="cm">-- rec-{ts}-{6hex}</span>
+  path         <span class="ky">TEXT</span>,                   <span class="cm">-- local .mkv/.webm path</span>
+  thumb        <span class="ky">TEXT</span>,                   <span class="cm">-- local thumbnail path</span>
+  r2_key       <span class="ky">TEXT</span>,                   <span class="cm">-- R2 object key after upload</span>
+  r2_url       <span class="ky">TEXT</span>,                   <span class="cm">-- pre-signed share URL</span>
+  duration_ms  <span class="ky">INTEGER</span>,
+  codec        <span class="ky">TEXT</span>,                   <span class="cm">-- h264 | vp9 | av1</span>
+  resolution   <span class="ky">TEXT</span>,                   <span class="cm">-- 1920x1080</span>
+  fps          <span class="ky">INTEGER</span>,
+  size_bytes   <span class="ky">INTEGER</span>,
+  status       <span class="ky">TEXT</span>  <span class="kw">DEFAULT</span> <span class="str">'raw'</span>,  <span class="cm">-- raw | transcribing | ready | archived</span>
+  title        <span class="ky">TEXT</span>,
+  created_at   <span class="ky">TEXT</span>  <span class="kw">NOT NULL</span>         <span class="cm">-- ISO8601</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">clips</span> (
+  id           <span class="ky">TEXT</span>     <span class="kw">PRIMARY KEY</span>,   <span class="cm">-- clip-{ts}-{6hex}</span>
+  recording_id <span class="ky">TEXT</span>     <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  type         <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,      <span class="cm">-- full | highlight | segment | export</span>
+  label        <span class="ky">TEXT</span>,
+  start_ms     <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  end_ms       <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  path         <span class="ky">TEXT</span>,                   <span class="cm">-- local path post-export</span>
+  r2_key       <span class="ky">TEXT</span>,
+  codec        <span class="ky">TEXT</span>,
+  created_at   <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">metadata_tags</span> (
+  id           <span class="ky">INTEGER</span>  <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  recording_id <span class="ky">TEXT</span>     <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  tag          <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,      <span class="cm">-- #productivity</span>
+  type         <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,      <span class="cm">-- hashtag | topic | keyword</span>
+  platform     <span class="ky">TEXT</span>,                   <span class="cm">-- youtube | tiktok | linkedin | NULL=all</span>
+  score        <span class="ky">REAL</span>     <span class="kw">DEFAULT</span> 1.0   <span class="cm">-- TF relevance score 0–1</span>
+);</pre></div>
+  </div>
+
+  <div class="schema-group">
+    <div class="schema-group-label" style="color:var(--blue)">TRANSCRIPT LAYER</div>
+    <div class="code-wrap"><pre><span class="kw">CREATE TABLE</span> <span class="nm">transcripts</span> (
+  id           <span class="ky">TEXT</span>     <span class="kw">PRIMARY KEY</span>,   <span class="cm">-- trx-{ts}-{6hex}</span>
+  recording_id <span class="ky">TEXT</span>     <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  model        <span class="ky">TEXT</span>     <span class="kw">NOT NULL DEFAULT</span> <span class="str">'base.en'</span>,
+  language     <span class="ky">TEXT</span>     <span class="kw">DEFAULT</span> <span class="str">'en'</span>,
+  full_text    <span class="ky">TEXT</span>,                   <span class="cm">-- concatenated plain text for full-text ops</span>
+  word_count   <span class="ky">INTEGER</span>,
+  wpm_avg      <span class="ky">REAL</span>,                   <span class="cm">-- average words per minute</span>
+  created_at   <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">words</span> (
+  id           <span class="ky">INTEGER</span>  <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="ky">TEXT</span>    <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  word         <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,
+  start_ms     <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  end_ms       <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  confidence   <span class="ky">REAL</span>,                   <span class="cm">-- 0.0–1.0 from Whisper</span>
+  is_filler    <span class="ky">INTEGER</span>  <span class="kw">DEFAULT</span> 0,    <span class="cm">-- 1 = um/uh/like/you know</span>
+  is_silence   <span class="ky">INTEGER</span>  <span class="kw">DEFAULT</span> 0     <span class="cm">-- 1 = preceded by gap > threshold</span>
+);
+<span class="kw">CREATE INDEX</span> idx_words_trx    <span class="kw">ON</span> words(transcript_id);
+<span class="kw">CREATE INDEX</span> idx_words_start  <span class="kw">ON</span> words(transcript_id, start_ms);
+<span class="kw">CREATE INDEX</span> idx_words_filler <span class="kw">ON</span> words(transcript_id, is_filler);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">segments</span> (
+  id           <span class="ky">INTEGER</span>  <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="ky">TEXT</span>    <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  seq          <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,      <span class="cm">-- display order</span>
+  start_ms     <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  end_ms       <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  text         <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,
+  type         <span class="ky">TEXT</span>     <span class="kw">DEFAULT</span> <span class="str">'speech'</span>, <span class="cm">-- speech | silence | filler | retake</span>
+  wpm          <span class="ky">REAL</span>,                   <span class="cm">-- words/min in this segment</span>
+  energy       <span class="ky">REAL</span>     <span class="kw">DEFAULT</span> 0.0   <span class="cm">-- 0.0–1.0, used for highlight scoring</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">captions</span> (
+  id           <span class="ky">INTEGER</span>  <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="ky">TEXT</span>    <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  clip_id      <span class="ky">TEXT</span>     <span class="kw">REFERENCES</span> clips(id), <span class="cm">-- null = full recording captions</span>
+  seq          <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  start_ms     <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  end_ms       <span class="ky">INTEGER</span>  <span class="kw">NOT NULL</span>,
+  text         <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,      <span class="cm">-- max 42 chars/line, 2 lines, \n separated</span>
+  format       <span class="ky">TEXT</span>     <span class="kw">DEFAULT</span> <span class="str">'srt'</span>  <span class="cm">-- srt | vtt | ass</span>
+);</pre></div>
+  </div>
+
+  <div class="schema-group">
+    <div class="schema-group-label" style="color:var(--red)">DISTRIBUTION LAYER</div>
+    <div class="code-wrap"><pre><span class="kw">CREATE TABLE</span> <span class="nm">production_packages</span> (
+  id              <span class="ky">TEXT</span>  <span class="kw">PRIMARY KEY</span>,        <span class="cm">-- pkg-{ts}-{6hex}</span>
+  recording_id    <span class="ky">TEXT</span>  <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  clip_id         <span class="ky">TEXT</span>  <span class="kw">REFERENCES</span> clips(id), <span class="cm">-- null = full recording</span>
+  title           <span class="ky">TEXT</span>,                       <span class="cm">-- approved title</span>
+  title_variants  <span class="ky">TEXT</span>,                       <span class="cm">-- JSON: ["Hook title","SEO title","Conv title"]</span>
+  description     <span class="ky">TEXT</span>,                       <span class="cm">-- long-form (YouTube/LinkedIn)</span>
+  short_desc      <span class="ky">TEXT</span>,                       <span class="cm">-- 280 chars (TikTok/Twitter)</span>
+  hashtags_json   <span class="ky">TEXT</span>,                       <span class="cm">-- JSON: {"youtube":[],"tiktok":[],"all":[]}</span>
+  chapters_json   <span class="ky">TEXT</span>,                       <span class="cm">-- JSON: [{"ms":0,"title":"Intro"},...]</span>
+  generated_by    <span class="ky">TEXT</span>  <span class="kw">DEFAULT</span> <span class="str">'whisper'</span>,   <span class="cm">-- whisper | claude | manual</span>
+  created_at      <span class="ky">TEXT</span>  <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="nm">distributions</span> (
+  id           <span class="ky">TEXT</span>     <span class="kw">PRIMARY KEY</span>,   <span class="cm">-- dist-{ts}-{6hex}</span>
+  recording_id <span class="ky">TEXT</span>     <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  clip_id      <span class="ky">TEXT</span>     <span class="kw">REFERENCES</span> clips(id),
+  package_id   <span class="ky">TEXT</span>     <span class="kw">REFERENCES</span> production_packages(id),
+  platform     <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,      <span class="cm">-- r2 | youtube | tiktok | linkedin | twitter</span>
+  status       <span class="ky">TEXT</span>     <span class="kw">DEFAULT</span> <span class="str">'pending'</span>, <span class="cm">-- pending | uploading | live | failed</span>
+  platform_id  <span class="ky">TEXT</span>,                   <span class="cm">-- video ID on platform</span>
+  platform_url <span class="ky">TEXT</span>,
+  error_msg    <span class="ky">TEXT</span>,
+  created_at   <span class="ky">TEXT</span>     <span class="kw">NOT NULL</span>,
+  published_at <span class="ky">TEXT</span>
+);</pre></div>
+  </div>
+</div>
+
+<!-- TAB: INTELLIGENCE -->
+<div id="intel" class="tab-content">
+  <h2>Intelligence layer — 6 algorithms</h2>
+  <p class="lead">Every algorithm runs on data already in D1. No external model calls except the optional Claude API title/description step. All produce rows in existing tables — the intelligence is the data.</p>
+
+  <br>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">1</span>
+      <span class="algo-title">Filler word detection</span>
+      <span class="algo-meta">O(n) · writes: words.is_filler</span>
+    </div>
+    <div class="algo-body">
+      <p>Single pass over the words table. Filler list is a frozen set — lookup is O(1). Generates a cut list with 50ms pre/post padding so the edit doesn't clip the following consonant.</p>
+      <div class="code-wrap"><pre><span class="cm">// fillerDetect.js</span>
+<span class="kw">const</span> FILLERS = <span class="kw">new</span> Set([
+  <span class="str">'um'</span>, <span class="str">'uh'</span>, <span class="str">'uhh'</span>, <span class="str">'umm'</span>, <span class="str">'like'</span>,
+  <span class="str">'you know'</span>, <span class="str">'basically'</span>, <span class="str">'literally'</span>,
+  <span class="str">'right'</span>, <span class="str">'so'</span>, <span class="str">'actually'</span>, <span class="str">'i mean'</span>
+]);
+
+<span class="kw">function</span> detectFillers(words, PAD = 50) {
+  <span class="kw">const</span> cutList = [];
+  <span class="kw">for</span> (<span class="kw">const</span> w <span class="kw">of</span> words) {
+    <span class="kw">if</span> (FILLERS.has(w.word.toLowerCase())) {
+      w.is_filler = 1;
+      cutList.push({ start_ms: w.start_ms - PAD, end_ms: w.end_ms + PAD });
+    }
+  }
+  <span class="kw">return</span> cutList; <span class="cm">// merge overlapping ranges before applying</span>
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">2</span>
+      <span class="algo-title">Silence gap detection</span>
+      <span class="algo-meta">O(n) · writes: segments (type='silence')</span>
+    </div>
+    <div class="algo-body">
+      <p>Scans word-to-word gaps. Threshold is the user-configured pause slider (300 / 500 / 750ms). Produces silence segment rows with exact boundaries for multi-cut concat in FFmpeg.</p>
+      <div class="code-wrap"><pre><span class="kw">function</span> detectSilences(words, thresholdMs = 500) {
+  <span class="kw">const</span> silences = [];
+  <span class="kw">for</span> (<span class="kw">let</span> i = 1; i < words.length; i++) {
+    <span class="kw">const</span> gap = words[i].start_ms - words[i - 1].end_ms;
+    <span class="kw">if</span> (gap > thresholdMs) {
+      silences.push({
+        type: <span class="str">'silence'</span>,
+        start_ms: words[i - 1].end_ms,
+        end_ms:   words[i].start_ms,
+        text:     <span class="str">''</span>,
+        wpm:      0,
+        energy:   0
+      });
+    }
+  }
+  <span class="kw">return</span> silences;
+}
+<span class="cm">// INSERT INTO segments for each silence, then auto-cut removes them</span></pre></div>
+    </div>
+  </div>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">3</span>
+      <span class="algo-title">Energy scoring</span>
+      <span class="algo-meta">O(n) · writes: segments.energy</span>
+    </div>
+    <div class="algo-body">
+      <p>Scores each speech segment 0–1 from three factors: speech rate (fast = engaged), keyword density (domain words boost), and sentence length variance (rhythm variation = interesting). Segments above 0.65 are highlight candidates.</p>
+      <div class="code-wrap"><pre><span class="kw">function</span> scoreEnergy(segment, domainKeywords) {
+  <span class="kw">const</span> wpmNorm   = clamp((segment.wpm - 80) / (200 - 80), 0, 1);
+  <span class="kw">const</span> words     = segment.text.toLowerCase().split(<span class="str">/\s+/</span>);
+  <span class="kw">const</span> kwHits    = words.filter(w => domainKeywords.has(w)).length;
+  <span class="kw">const</span> kwNorm    = clamp(kwHits / 5, 0, 1);
+  <span class="kw">const</span> variance  = sentenceLenVariance(segment.text);  <span class="cm">// 0–1</span>
+
+  <span class="kw">return</span> 0.4 * wpmNorm + 0.3 * kwNorm + 0.3 * variance;
+}
+<span class="cm">// segments with energy > 0.65 → candidate highlight clips</span>
+<span class="cm">// contiguous high-energy window (30s+) → auto clip suggestion</span></pre></div>
+    </div>
+  </div>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">4</span>
+      <span class="algo-title">Caption line formation</span>
+      <span class="algo-meta">O(n) · writes: captions table · exports: .srt + .vtt</span>
+    </div>
+    <div class="algo-body">
+      <p>Greedy word grouping by sentence boundary (punctuation or 1500ms gap). Splits lines at the nearest word boundary below 42 characters. Enforces 1–7 second card duration. Produces SRT and VTT from the same rows.</p>
+      <div class="code-wrap"><pre><span class="kw">function</span> formCaptions(words, { maxChars=42, maxLines=2, minMs=1000, maxMs=7000 }) {
+  <span class="kw">const</span> cards = [];
+  <span class="kw">let</span> buf = [], bufStart = 0;
+
+  <span class="kw">for</span> (<span class="kw">let</span> i = 0; i < words.length; i++) {
+    buf.push(words[i]);
+    <span class="kw">const</span> text    = buf.map(w => w.word).join(<span class="str">' '</span>);
+    <span class="kw">const</span> dur     = words[i].end_ms - bufStart;
+    <span class="kw">const</span> boundary = /[.?!]$/.test(words[i].word)
+                   || (i+1 < words.length && words[i+1].start_ms - words[i].end_ms > 1500)
+                   || dur > maxMs;
+
+    <span class="kw">if</span> (boundary || i === words.length - 1) {
+      cards.push({
+        seq:      cards.length + 1,
+        start_ms: Math.max(bufStart, buf[0].start_ms),
+        end_ms:   Math.max(buf[0].start_ms + minMs, words[i].end_ms),
+        text:     wrapLines(text, maxChars, maxLines)
+      });
+      buf = []; bufStart = i+1 < words.length ? words[i+1].start_ms : 0;
+    }
+  }
+  <span class="kw">return</span> cards;
+}
+
+<span class="kw">function</span> toSRT(cards) {
+  <span class="kw">return</span> cards.map((c,i) =>
+    `${i+1}\n${msToSRT(c.start_ms)} --> ${msToSRT(c.end_ms)}\n${c.text}\n`
+  ).join(<span class="str">'\n'</span>);
+}</pre></div>
+    </div>
+  </div>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">5</span>
+      <span class="algo-title">Hashtag extraction — TF scoring</span>
+      <span class="algo-meta">O(n) · writes: metadata_tags per platform</span>
+    </div>
+    <div class="algo-body">
+      <p>Tokenizes full transcript, removes ~200 English stopwords, computes term frequency normalized by doc length. Applies platform-specific depth rules: YouTube gets 10 mixed-reach tags, TikTok gets 20 with broader coverage, LinkedIn gets 8 professional-vocabulary boosted.</p>
+      <div class="code-wrap"><pre><span class="kw">function</span> extractHashtags(fullText, platform) {
+  <span class="kw">const</span> tokens  = fullText.toLowerCase().match(<span class="str">/\b[a-z]{3,}\b/g</span>) ?? [];
+  <span class="kw">const</span> tf      = <span class="kw">new</span> Map();
+  tokens.forEach(t => { <span class="kw">if</span> (!STOPWORDS.has(t)) tf.set(t, (tf.get(t)||0)+1); });
+
+  <span class="kw">const</span> ranked = [...tf.entries()]
+    .sort((a,b) => b[1] - a[1])
+    .map(([word, count]) => ({ word, score: count / tokens.length }));
+
+  <span class="kw">const</span> limits = { youtube:10, tiktok:20, linkedin:8 };
+  <span class="kw">return</span> ranked
+    .slice(0, limits[platform] ?? 15)
+    .map(({ word, score }) => ({
+      tag:      <span class="str">'#'</span> + word,
+      type:     <span class="str">'hashtag'</span>,
+      platform,
+      score
+    }));
+}
+<span class="cm">// INSERT INTO metadata_tags for each platform separately</span>
+<span class="cm">// youtube: top 10 · tiktok: top 20 · linkedin: top 8 (+ PROFESSIONAL_BOOST set)</span></pre></div>
+    </div>
+  </div>
+
+  <div class="algo">
+    <div class="algo-head">
+      <span class="algo-num">6</span>
+      <span class="algo-title">Production package assembly</span>
+      <span class="algo-meta">D1 reads · writes: production_packages</span>
+    </div>
+    <div class="algo-body">
+      <p>Pulls captions, hashtags, and segment bookmarks from D1 to build a complete distribution-ready bundle. Title generation is local (keyword extraction from first 500 words) or Claude API (3 variants: curiosity hook, keyword-first SEO, conversational). Chapters are assembled from voice-command bookmark markers.</p>
+      <div class="code-wrap"><pre><span class="cm">// Worker: POST /packages</span>
+<span class="kw">async function</span> buildPackage(recordingId, db) {
+  <span class="kw">const</span> trx      = <span class="kw">await</span> db.first(<span class="str">'SELECT * FROM transcripts WHERE recording_id=?'</span>, recordingId);
+  <span class="kw">const</span> captions = <span class="kw">await</span> db.all(<span class="str">'SELECT * FROM captions WHERE transcript_id=? ORDER BY seq'</span>, trx.id);
+  <span class="kw">const</span> tags     = <span class="kw">await</span> db.all(<span class="str">'SELECT tag,platform FROM metadata_tags WHERE recording_id=?'</span>, recordingId);
+  <span class="kw">const</span> bookmarks= <span class="kw">await</span> db.all(<span class="str">'SELECT start_ms,label FROM segments WHERE transcript_id=? AND type="bookmark"'</span>, trx.id);
+
+  <span class="kw">const</span> hashtagsByPlatform = groupBy(tags, <span class="str">'platform'</span>);
+  <span class="kw">const</span> chapters = bookmarks.map(b => ({ ms: b.start_ms, title: b.label }));
+
+  <span class="kw">const</span> pkg = {
+    id:            <span class="str">'pkg-'</span> + Date.now().toString(36),
+    recording_id:  recordingId,
+    title:         extractTitle(trx.full_text),   <span class="cm">// local keyword heuristic</span>
+    title_variants: JSON.stringify([]),            <span class="cm">// populated by Claude API call if requested</span>
+    description:   buildDescription(captions, chapters),
+    short_desc:    trx.full_text.slice(0, 280),
+    hashtags_json: JSON.stringify(hashtagsByPlatform),
+    chapters_json: JSON.stringify(chapters),
+    generated_by:  <span class="str">'whisper'</span>,
+    created_at:    <span class="kw">new</span> Date().toISOString()
+  };
+  <span class="kw">await</span> db.run(<span class="str">'INSERT INTO production_packages VALUES (?,?,?,?,?,?,?,?,?,?)'</span>, ...Object.values(pkg));
+  <span class="kw">return</span> pkg;
+}</pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: PIPELINE -->
+<div id="pipeline" class="tab-content">
+  <h2>Transcript → distribution pipeline</h2>
+  <p class="lead">Every step writes to a specific table. The pipeline is incremental — each step can be re-run without re-running earlier ones. Voice commands trigger steps by name.</p>
+
+  <br>
+  <div class="pipe">
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">01</span>
+        <span class="ps-title">Record + finalize</span>
+        <span class="ps-db">→ recordings</span>
+      </div>
+      <div class="ps-body">
+        <p>MediaRecorder → FFmpeg remux to H.264/AAC .mp4. Thumbnail extracted at 0.5s via <code>ffmpeg -vframes 1</code>. Voice: <em>"Hey MOB start recording"</em> → <em>"Hey MOB done"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// INSERT INTO recordings</span>
+{ id: <span class="str">'rec-1t2u3v-a1b2c3'</span>, codec: <span class="str">'h264'</span>, status: <span class="str">'raw'</span>,
+  duration_ms: 423000, resolution: <span class="str">'1920x1080'</span>, created_at: <span class="str">'2026-11-09T14:30:00Z'</span> }</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">02</span>
+        <span class="ps-title">Whisper transcription</span>
+        <span class="ps-db">→ transcripts + words</span>
+      </div>
+      <div class="ps-body">
+        <p>Whisper.cpp sidecar with <code>--word-timestamps true --max-len 1</code>. Outputs JSON with per-word start/end/confidence. Runs locally while user is in Edit mode. POST to <code>/api/transcripts</code> when done. Voice: <em>"Hey MOB generate captions"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// Whisper JSON → D1 words table (~1 row per spoken word)</span>
+<span class="cm">// 10min recording @ 120wpm → ~1200 word rows</span>
+{ transcript_id: <span class="str">'trx-...'</span>, word: <span class="str">'recording'</span>, start_ms: 2340, end_ms: 2820, confidence: 0.97 }
+{ transcript_id: <span class="str">'trx-...'</span>, word: <span class="str">'um'</span>,        start_ms: 2850, end_ms: 3010, confidence: 0.91 }</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">03</span>
+        <span class="ps-title">Filler + silence detection</span>
+        <span class="ps-db">→ words.is_filler + segments</span>
+      </div>
+      <div class="ps-body">
+        <p>O(n) pass on words table. Filler words flagged in-place. Silence gaps produce segment rows. Both produce a <code>cut_list</code> JSON for Edit mode UI — user sees the proposed cuts before applying. Voice: <em>"Hey MOB remove filler words"</em> + <em>"Hey MOB trim silences"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// cut_list presented to user in Edit mode waveform view:</span>
+[
+  { type: <span class="str">'filler'</span>,  start_ms: 2800,  end_ms: 3060,  word: <span class="str">'um'</span> },
+  { type: <span class="str">'silence'</span>, start_ms: 14200, end_ms: 15800, gap_ms: 1600 },
+  <span class="cm">// ... typically 30–80 cuts per 10min recording</span>
+]</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">04</span>
+        <span class="ps-title">Segment grouping + energy scoring</span>
+        <span class="ps-db">→ segments (type='speech')</span>
+      </div>
+      <div class="ps-body">
+        <p>Words grouped into sentence-level segments by punctuation and 1500ms gap boundary. Each segment scored 0–1. High-energy windows (>0.65 sustained 30s+) surfaced as highlight clip candidates in the Edit mode sidebar.</p>
+        <div class="code-wrap"><pre><span class="cm">// High-energy segment example:</span>
+{ seq: 12, start_ms: 48000, end_ms: 72000, type: <span class="str">'speech'</span>,
+  text: <span class="str">'The whole point is that...'</span>, wpm: 162.4, energy: 0.78 }
+<span class="cm">// energy 0.78 → surfaced as "Best moment: 0:48–1:12" in sidebar</span></pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">05</span>
+        <span class="ps-title">Caption formation → SRT / VTT export</span>
+        <span class="ps-db">→ captions · writes: .srt + .vtt</span>
+      </div>
+      <div class="ps-body">
+        <p>Greedy word grouping into 42-char/2-line caption cards. Minimum 1s, maximum 7s per card. SRT and VTT written alongside the video file in the recording folder. Burned-in captions use FFmpeg <code>subtitles</code> filter on export. Voice: <em>"Hey MOB add captions"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// SRT output sample:</span>
+1
+00:00:02,340 --> 00:00:05,120
+The whole point of recording
+
+2
+00:00:05,140 --> 00:00:08,600
+this every day is the compound
+effect it creates.</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">06</span>
+        <span class="ps-title">Hashtag extraction by platform</span>
+        <span class="ps-db">→ metadata_tags</span>
+      </div>
+      <div class="ps-body">
+        <p>TF scoring on full transcript text. Three separate runs with platform-specific depth: YouTube 10, TikTok 20, LinkedIn 8. Stored per-platform so the Distribution mode can show the right set for each upload without regenerating.</p>
+        <div class="code-wrap"><pre><span class="cm">// metadata_tags rows written per platform:</span>
+{ recording_id: <span class="str">'rec-...'</span>, tag: <span class="str">'#productivity'</span>, type: <span class="str">'hashtag'</span>, platform: <span class="str">'youtube'</span>, score: 0.034 }
+{ recording_id: <span class="str">'rec-...'</span>, tag: <span class="str">'#contentcreator'</span>, type: <span class="str">'hashtag'</span>, platform: <span class="str">'tiktok'</span>, score: 0.021 }
+{ recording_id: <span class="str">'rec-...'</span>, tag: <span class="str">'#leadership'</span>, type: <span class="str">'hashtag'</span>, platform: <span class="str">'linkedin'</span>, score: 0.018 }</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">07</span>
+        <span class="ps-title">Production package assembly</span>
+        <span class="ps-db">→ production_packages</span>
+      </div>
+      <div class="ps-body">
+        <p>Pulls captions, hashtags, and voice-command bookmark markers from D1 to assemble the distribution bundle. Title generated locally from first-500-words keyword extraction. Optional: Claude API call for 3 title variants and long-form description. Voice: <em>"Hey MOB ready to publish"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// Production package — what Distribution mode shows:</span>
+{
+  title:         <span class="str">'Recording Systems That Compound'</span>,
+  title_variants: [
+    <span class="str">'Why Daily Recording Changes Everything After 90 Days'</span>,  <span class="cm">// curiosity hook</span>
+    <span class="str">'Daily Recording Habit: The Compound Effect Explained'</span>,  <span class="cm">// SEO-first</span>
+    <span class="str">'I record myself every day. Here is what happens.'</span>        <span class="cm">// conversational</span>
+  ],
+  hashtags: { youtube: [<span class="str">'#productivity'</span>,...], tiktok: [<span class="str">'#fyp'</span>,...] },
+  chapters: [{ ms:0, title:<span class="str">'Intro'</span> }, { ms:48000, title:<span class="str">'The compound effect'</span> }],
+  description:   <span class="str">'In this video I break down...\n\n## Key points\n- ...'</span>
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="pipe-step active">
+      <div class="ps-head">
+        <span class="ps-num">08</span>
+        <span class="ps-title">Distribute to platforms</span>
+        <span class="ps-db">→ distributions</span>
+      </div>
+      <div class="ps-body">
+        <p>One distributions row per platform per attempt. Worker enqueues the upload job, polls platform API for status, updates the row. R2 upload is first (pre-signed URL in clipboard). YouTube is a resumable upload in 8MB chunks. Voice: <em>"Hey MOB upload to YouTube"</em>.</p>
+        <div class="code-wrap"><pre><span class="cm">// Distribution status lifecycle:</span>
+<span class="str">'pending'</span>   → job created, queued
+<span class="str">'uploading'</span> → bytes in flight (R2: instant, YouTube: 2-8min for 1GB)
+<span class="str">'live'</span>      → platform_id and platform_url populated
+<span class="str">'failed'</span>    → error_msg populated; Worker retries 3x with backoff</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <h3>Full zero-click path (voice only)</h3>
+  <div class="code-wrap"><pre><span class="cm">// 15 voice commands, 1 OAuth consent (first YouTube use only)</span>
+
+<span class="str">"Hey MOB start recording"</span>  → Camera mode · MediaRecorder armed
+<span class="str">"Hey MOB cut that"</span>          → retake marker at current timestamp
+<span class="str">"Hey MOB done"</span>              → stop · FFmpeg finalize · → Edit mode
+<span class="str">"Hey MOB remove filler words"</span> → alg 1 · FFmpeg concat without um/uh
+<span class="str">"Hey MOB trim silences"</span>     → alg 2 · removes gaps > threshold
+<span class="str">"Hey MOB clean up audio"</span>    → arnndn + loudnorm two-pass
+<span class="str">"Hey MOB add captions"</span>      → alg 4 · .srt + .vtt written
+<span class="str">"Hey MOB ready to grade"</span>    → → Production mode
+<span class="str">"Hey MOB apply cinematic grade"</span> → LUT preset via FFmpeg lut3d
+<span class="str">"Hey MOB normalize audio"</span>   → EBU R128 final pass
+<span class="str">"Hey MOB export for youtube"</span> → H.264 + AAC + burnt captions
+<span class="str">"Hey MOB ready to publish"</span>  → alg 6 → package assembled → Distribution mode
+<span class="str">"Hey MOB upload to youtube"</span> → resumable upload · OAuth PKCE first time
+<span class="str">"Hey MOB copy share link"</span>   → R2 pre-signed URL → clipboard</pre></div>
+</div>
+
+<script>
+(function(){
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  function show(id) {
+    const target = id || 'arch';
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === target));
+    contents.forEach(c => c.classList.toggle('active', c.id === target));
+  }
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      location.hash = t.dataset.tab;
+      show(t.dataset.tab);
+    });
+  });
+
+  function applyHash() {
+    const h = location.hash.slice(1);
+    if (h && document.getElementById(h)) show(h);
+  }
+
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+})();
+</script>
