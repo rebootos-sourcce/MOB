@@ -10,6 +10,10 @@
     "start": "electron .",
     "dist": "electron-builder --win --publish never",
     "dist:portable": "electron-builder --win portable --publish never",
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:linux": "electron-builder --linux --publish never",
+    "dist:all": "electron-builder --win --mac --linux --publish never",
+    "release": "electron-builder --win --mac --linux --publish always",
     "check": "node --check src/main/main.js && node --check src/main/windows.js && node --check src/main/settings.js && node --check src/main/ffmpeg.js && node --check src/main/recording-files.js && node --check src/preload/preload.js && node --check src/shared/shapes.js",
     "smoke": "node scripts/smoke.js",
     "shot": "node scripts/shot.js"
@@ -25,22 +29,18 @@
       "package.json"
     ],
     "asarUnpack": [
-      "node_modules/ffmpeg-static/**"
+      "node_modules/ffmpeg-static/**",
+      "node_modules/@xenova/transformers/dist/**"
     ],
+    "publish": {
+      "provider": "github",
+      "owner": "rebootos-sourcce",
+      "repo": "MOB"
+    },
     "win": {
       "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
+        { "target": "nsis",     "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
       ],
       "signAndEditExecutable": false
     },
@@ -51,12 +51,42 @@
     },
     "portable": {
       "artifactName": "MOB-Recorder-${version}-portable.exe"
+    },
+    "mac": {
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ],
+      "category": "public.app-category.video",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "dmg": {
+      "artifactName": "MOB-Recorder-${version}-${arch}.dmg"
+    },
+    "linux": {
+      "target": [
+        { "target": "AppImage", "arch": ["x64"] },
+        { "target": "deb",      "arch": ["x64"] }
+      ],
+      "category": "Video"
+    },
+    "appImage": {
+      "artifactName": "MOB-Recorder-${version}.AppImage"
+    },
+    "deb": {
+      "artifactName": "MOB-Recorder-${version}.deb"
     }
   },
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8",
     "electron-rebuild": "^3.2.9"
+  },
+  "optionalDependencies": {
+    "electron-updater": "^6.3.9"
   },
   "dependencies": {
     "@xenova/transformers": "^2.17.2",

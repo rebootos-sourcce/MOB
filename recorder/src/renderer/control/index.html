@@ -156,6 +156,12 @@
             <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
             <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink panel while recording</span></label>
           </div>
+          <div class="field cf-sep"><span>Cloud</span><span id="cfStatusBadge" class="badge cf-badge">not configured</span></div>
+          <div class="cf-fields" id="cfFields">
+            <div class="field"><span>Worker URL</span><input id="cfWorkerUrl" class="text-input" type="url" placeholder="https://mob-recorder.*.workers.dev" spellcheck="false"></div>
+            <div class="field"><span>API Token</span><input id="cfApiToken" class="text-input" type="password" placeholder="Cloudflare API token" autocomplete="off"></div>
+            <div class="row" style="justify-content:flex-end;margin-top:4px"><button id="btnSaveCf" class="primary mini">Save</button></div>
+          </div>
         </div>
       </details>
 
@@ -266,6 +272,9 @@
         </section>
         <section class="card" id="distSection" hidden>
           <div class="card-head"><h2 id="distTitle">Ready to distribute</h2></div>
+          <div id="cfWarning" class="cf-warning" hidden>
+            ⚠ Cloud not configured — add your Worker URL and API Token in <strong>Output → Cloud</strong>.
+          </div>
           <div class="field"><span>Status</span><span id="distStatus" class="badge">pending</span></div>
           <div class="row edit-actions">
             <button id="btnDistUpload" class="primary">Upload to cloud</button>

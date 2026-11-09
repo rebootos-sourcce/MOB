@@ -243,4 +243,15 @@ body.compact #compactBar { display: flex; }
 .desc-text { font-size: 12px; line-height: 1.5; color: var(--muted); margin-top: 4px; }
 .chapters-list { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
 .chapter-item { font-size: 12px; padding: 3px 0; display: flex; gap: 10px; }
+
+/* ── Cloudflare config (Output card + Distribution tab) ───── */
+.text-input { background: var(--card-2); border: 1px solid var(--line); border-radius: 8px;
+  padding: 5px 8px; width: 100%; min-width: 0; font-size: 12px; color: var(--text); outline: none; }
+.text-input:focus { border-color: var(--accent); }
+.cf-sep { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line); }
+.cf-badge { font-size: 11px; }
+.cf-badge.ok { color: var(--green); border-color: #2f5c3a; background: #1c2a21; }
+.cf-fields { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+.cf-warning { background: #2a2200; border: 1px solid #5c4a00; color: #ffd489;
+  border-radius: 8px; padding: 9px 10px; font-size: 12px; }
 .chapter-item .ts { font-family: ui-monospace, monospace; color: var(--muted); min-width: 55px; }

@@ -8,6 +8,10 @@ const path = require('path');
 const { app } = require('electron');
 
 const DEFAULTS = {
+  cloudflare: {
+    workerUrl: null,   // e.g. https://mob-recorder.your-subdomain.workers.dev
+    apiToken:  null,   // set via UI or CLOUDFLARE_API_TOKEN env var
+  },
   bubble: {
     shape: 'circle',      // key from shared/shapes.js
     size: 240,            // shorter side in DIP

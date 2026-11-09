@@ -637,6 +637,21 @@ app.whenReady().then(async () => {
     });
   }
 
+  // Auto-update (electron-updater, optional dep — skipped in dev/smoke/shot)
+  if (app.isPackaged && !process.env.MOB_SMOKE && !process.env.MOB_SHOT) {
+    try {
+      const { autoUpdater } = require('electron-updater');
+      autoUpdater.autoDownload = true;
+      autoUpdater.autoInstallOnAppQuit = true;
+      autoUpdater.on('update-downloaded', () => {
+        sendControl('ui:update-ready', {});
+      });
+      // Check 30 s after startup, then every 4 h
+      setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 30_000);
+      setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
+    } catch (_) { /* electron-updater not installed in dev */ }
+  }
+
   // Ticker for the elapsed-time display.
   setInterval(() => { if (rec.state === 'recording' || rec.state === 'paused') publishState(); }, 500);
 });

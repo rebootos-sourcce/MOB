@@ -10,7 +10,8 @@ const LISTEN = new Set([
   'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown',
   'transcription:progress',
   'voice:listening',
-  'sync:progress'
+  'sync:progress',
+  'ui:update-ready'
 ]);
 
 contextBridge.exposeInMainWorld('api', {

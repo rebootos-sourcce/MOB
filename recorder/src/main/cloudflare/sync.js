@@ -15,17 +15,18 @@
 //   desktop --[HTTPS]--> Worker /queue       (enqueue distribution job)
 //   Worker  --[Queue]--> DistributionCoordinator DO (tracks progress, retries)
 
-const https  = require('https');
-const fs     = require('fs');
-const db     = require('../db/sqlite');
+const https    = require('https');
+const fs       = require('fs');
+const db       = require('../db/sqlite');
+const settings = require('../settings');
 const { getDeviceId } = require('../identity');
 
 function getWorkerUrl() {
-  return process.env.CLOUDFLARE_WORKER_URL || null;
+  return process.env.CLOUDFLARE_WORKER_URL || settings.get().cloudflare?.workerUrl || null;
 }
 
 function getApiToken() {
-  return process.env.CLOUDFLARE_API_TOKEN || null;
+  return process.env.CLOUDFLARE_API_TOKEN || settings.get().cloudflare?.apiToken || null;
 }
 
 /**

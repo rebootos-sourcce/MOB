@@ -458,6 +458,43 @@
     if (d) { settings.recording.saveDir = d; render(); }
   });
 
+  // ── Cloudflare config UI ──────────────────────────────────────
+  async function loadCfConfig() {
+    try {
+      const cfg = await window.api.invoke('cf:getConfig');
+      const badge = $('cfStatusBadge');
+      if (cfg.configured && cfg.tokenStored) {
+        badge.textContent = 'configured';
+        badge.classList.add('ok');
+        if (cfg.workerUrl) $('cfWorkerUrl').value = cfg.workerUrl;
+      } else if (cfg.configured) {
+        badge.textContent = 'token missing';
+        badge.classList.remove('ok');
+        if (cfg.workerUrl) $('cfWorkerUrl').value = cfg.workerUrl;
+      } else {
+        badge.textContent = 'not configured';
+        badge.classList.remove('ok');
+      }
+    } catch (_) {}
+  }
+  loadCfConfig();
+
+  $('outputCard').addEventListener('toggle', () => {
+    if ($('outputCard').open) loadCfConfig();
+  });
+
+  $('btnSaveCf').addEventListener('click', async () => {
+    const workerUrl = $('cfWorkerUrl').value.trim();
+    const apiToken  = $('cfApiToken').value.trim();
+    try {
+      await window.api.invoke('cf:setConfig', { workerUrl, apiToken });
+      $('cfApiToken').value = '';
+      await loadCfConfig();
+    } catch (err) {
+      alert('Failed to save Cloud config: ' + err.message);
+    }
+  });
+
   // ══════════════════════════════════════════════ recording
   $('btnRecord').addEventListener('click', () => {
     window.api.invoke(recState.state === 'idle' ? 'recording:start' : 'recording:stop');
@@ -863,6 +900,14 @@
 
   // ── Distribution tab ──────────────────────────────────────────
   async function loadDistributionTab() {
+    // Show warning if Cloudflare is not configured
+    try {
+      const cfg = await window.api.invoke('cf:getConfig');
+      $('cfWarning').hidden = cfg.configured && cfg.tokenStored;
+    } catch (_) {
+      $('cfWarning').hidden = false;
+    }
+
     await loadRecordingList('distRecordingList', async (id) => {
       const pkg  = await window.mob.db.query('packages:latest', [id]);
       const dist = pkg ? await window.mob.db.query('distributions:latest', [id]) : null;
