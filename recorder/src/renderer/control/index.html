@@ -24,6 +24,16 @@
       <button class="win close" id="btnClose" title="Quit">✕</button>
     </header>
 
+    <!-- ── Mode tab bar ──────────────────────────────────────── -->
+    <nav id="modeTabs">
+      <button class="tab active" data-tab="camera">Camera</button>
+      <button class="tab" data-tab="edit">Edit</button>
+      <button class="tab" data-tab="production">Production</button>
+      <button class="tab" data-tab="distribution">Distribution</button>
+    </nav>
+
+    <!-- ── Camera mode (original content) ────────────────────── -->
+    <div id="tab-camera" class="tab-panel active">
     <main>
       <!-- ── 1 · Check yourself ─────────────────────────────── -->
       <section class="card">
@@ -165,8 +175,9 @@
         </div>
       </div>
     </main>
+    </div><!-- end tab-camera -->
 
-    <!-- ── Sticky record bar ────────────────────────────────── -->
+    <!-- ── Sticky record bar (always visible) ─────────────────── -->
     <footer id="recBar">
       <button id="btnRecord" class="record-btn"><span class="ring"></span></button>
       <div class="rec-info">
@@ -181,6 +192,83 @@
       <span class="hint hk-hint" id="recHint">Ctrl+Shift+R</span>
     </footer>
   </div>
+
+    <!-- ── Edit mode ──────────────────────────────────────────── -->
+    <div id="tab-edit" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Recordings</h2></div>
+          <div id="editRecordingList" class="recording-list">
+            <div class="empty-hint">No recordings yet.</div>
+          </div>
+        </section>
+        <section class="card" id="editCutSection" hidden>
+          <div class="card-head">
+            <h2 id="editRecordingTitle">Recording</h2>
+            <span id="editDuration" class="hint"></span>
+          </div>
+          <div class="edit-actions row">
+            <button id="btnRemoveFillers" class="ghost">Remove fillers</button>
+            <button id="btnRemoveSilences" class="ghost">Remove silences</button>
+            <button id="btnTranscribe" class="primary">Transcribe</button>
+          </div>
+          <div id="editProgress" class="progress-row" hidden>
+            <div class="progress"><div id="editProgressBar" style="width:0%"></div></div>
+            <span id="editProgressLabel" class="hint"></span>
+          </div>
+          <div id="editTranscriptBox" class="transcript-box" hidden>
+            <p id="editTranscriptText"></p>
+          </div>
+          <div id="editTagBox" class="tag-box" hidden></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── Production mode ────────────────────────────────────── -->
+    <div id="tab-production" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Production packages</h2></div>
+          <div id="prodRecordingList" class="recording-list">
+            <div class="empty-hint">Select a transcribed recording.</div>
+          </div>
+        </section>
+        <section class="card" id="prodPackageSection" hidden>
+          <div class="card-head"><h2 id="prodTitle">Package</h2></div>
+          <div class="field"><span>Title</span><div id="prodTitleValue" class="mono"></div></div>
+          <div class="field"><span>Variants</span><div id="prodVariants" class="variants-list"></div></div>
+          <div class="field"><span>Description</span><div id="prodDesc" class="desc-text"></div></div>
+          <div class="field"><span>Hashtags</span><div id="prodHashtags" class="tag-box"></div></div>
+          <div class="field"><span>Chapters</span><div id="prodChapters" class="chapters-list"></div></div>
+          <div class="row edit-actions">
+            <button id="btnAssemble" class="primary">Generate package</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── Distribution mode ──────────────────────────────────── -->
+    <div id="tab-distribution" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Distribute</h2></div>
+          <div id="distRecordingList" class="recording-list">
+            <div class="empty-hint">Generate a production package first.</div>
+          </div>
+        </section>
+        <section class="card" id="distSection" hidden>
+          <div class="card-head"><h2 id="distTitle">Ready to distribute</h2></div>
+          <div class="field"><span>Status</span><span id="distStatus" class="badge">pending</span></div>
+          <div class="row edit-actions">
+            <button id="btnDistUpload" class="primary">Upload to cloud</button>
+          </div>
+          <div id="distProgress" class="progress-row" hidden>
+            <div class="progress"><div id="distProgressBar" style="width:0%"></div></div>
+            <span id="distProgressLabel" class="hint">Uploading…</span>
+          </div>
+        </section>
+      </main>
+    </div>
 
   <!-- Source picker overlay -->
   <div id="picker" hidden>

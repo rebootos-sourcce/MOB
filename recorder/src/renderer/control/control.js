@@ -628,3 +628,203 @@
   }
   init();
 })();
+
+// ── Four-mode tab bar ────────────────────────────────────────
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const fmtMs = (ms) => {
+    const s = Math.floor(ms / 1000);
+    const m = Math.floor(s / 60);
+    const h = Math.floor(m / 60);
+    return h ? `${h}:${String(m % 60).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`
+             : `${m}:${String(s % 60).padStart(2,'0')}`;
+  };
+
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => {
+        p.classList.remove('active');
+        p.hidden = !p.id.includes('camera');
+      });
+      btn.classList.add('active');
+      const panel = document.getElementById('tab-' + btn.dataset.tab);
+      if (panel) { panel.classList.add('active'); panel.hidden = false; }
+
+      if (btn.dataset.tab === 'edit')         loadEditTab();
+      if (btn.dataset.tab === 'production')   loadProductionTab();
+      if (btn.dataset.tab === 'distribution') loadDistributionTab();
+    });
+  });
+
+  // ── Shared state ─────────────────────────────────────────────
+  let selectedRecordingId = null;
+
+  async function loadRecordingList(containerId, onSelect) {
+    const list = $(containerId);
+    if (!list) return;
+    const rows = await window.mob.db.all(
+      'SELECT id, path, duration_ms, status, created_at FROM recordings ORDER BY created_at DESC LIMIT 50',
+      []
+    );
+    if (!rows.length) { list.innerHTML = '<div class="empty-hint">No recordings yet.</div>'; return; }
+    list.innerHTML = rows.map(r => {
+      const name = r.path.split(/[\\/]/).pop();
+      return `<div class="recording-item" data-id="${r.id}" title="${r.path}">
+        <span class="rec-name">${name}</span>
+        <span class="rec-dur">${fmtMs(r.duration_ms || 0)}</span>
+        <span class="badge" style="font-size:10px">${r.status || ''}</span>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.recording-item').forEach(item => {
+      item.addEventListener('click', () => {
+        list.querySelectorAll('.recording-item').forEach(x => x.classList.remove('selected'));
+        item.classList.add('selected');
+        selectedRecordingId = item.dataset.id;
+        if (onSelect) onSelect(item.dataset.id, rows.find(r => r.id === item.dataset.id));
+      });
+    });
+  }
+
+  // ── Edit tab ──────────────────────────────────────────────────
+  async function loadEditTab() {
+    await loadRecordingList('editRecordingList', (id, row) => {
+      const sec = $('editCutSection');
+      $('editRecordingTitle').textContent = (row.path || '').split(/[\\/]/).pop();
+      $('editDuration').textContent = fmtMs(row.duration_ms || 0);
+      sec.hidden = false;
+      $('editTranscriptBox').hidden = true;
+      $('editTagBox').hidden = true;
+    });
+
+    $('btnTranscribe').onclick = async () => {
+      if (!selectedRecordingId) return;
+      const row = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
+      if (!row) return;
+      $('editProgress').hidden = false;
+      $('btnTranscribe').disabled = true;
+      $('editProgressLabel').textContent = 'Loading model…';
+      try {
+        window.api.on('transcription:progress', (p) => {
+          $('editProgressBar').style.width = (p.pct || 0) + '%';
+          $('editProgressLabel').textContent = p.stage === 'loading_model' ? 'Loading Whisper…'
+            : p.stage === 'transcribing' ? 'Transcribing…'
+            : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
+        });
+        const result = await window.api.invoke('transcription:start', { recordingId: row.id, filePath: row.path });
+        const tx = await window.mob.db.get('SELECT full_text FROM transcripts WHERE id = ?', [result.transcriptId]);
+        if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; }
+        const tags = await window.mob.db.all('SELECT tag FROM metadata_tags WHERE recording_id = ? ORDER BY idf_score DESC', [row.id]);
+        $('editTagBox').innerHTML = tags.map(t => `<span class="tag">${t.tag}</span>`).join('');
+        $('editTagBox').hidden = false;
+        $('editProgressBar').style.width = '100%';
+        $('editProgressLabel').textContent = 'Done';
+      } catch (e) {
+        $('editProgressLabel').textContent = 'Error: ' + e.message;
+      } finally {
+        $('btnTranscribe').disabled = false;
+      }
+    };
+
+    $('btnRemoveFillers').onclick = async () => {
+      if (!selectedRecordingId) return;
+      const rec = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
+      const tx  = await window.mob.db.get('SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      if (!tx) { alert('Transcribe first.'); return; }
+      const fillers = await window.mob.db.all('SELECT start_ms, end_ms FROM words WHERE transcript_id = ? AND is_filler = 1', [tx.id]);
+      if (!fillers.length) { alert('No fillers detected.'); return; }
+      const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
+      await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
+      alert(`Applied ${cuts.length} filler cuts.`);
+    };
+
+    $('btnRemoveSilences').onclick = async () => {
+      if (!selectedRecordingId) return;
+      const rec = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
+      const tx  = await window.mob.db.get('SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      if (!tx) { alert('Transcribe first.'); return; }
+      // Silences are words with large gaps; use segments table
+      const segs = await window.mob.db.all(
+        "SELECT start_ms, end_ms FROM segments WHERE transcript_id = ? AND type = 'silence'", [tx.id]
+      );
+      if (!segs.length) { alert('No silences detected.'); return; }
+      const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
+      await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
+      alert(`Applied ${cuts.length} silence cuts.`);
+    };
+  }
+
+  // ── Production tab ────────────────────────────────────────────
+  async function loadProductionTab() {
+    await loadRecordingList('prodRecordingList', async (id) => {
+      $('prodPackageSection').hidden = false;
+      $('prodTitleValue').textContent = '';
+      $('prodVariants').innerHTML = '';
+      $('prodDesc').textContent = '';
+      $('prodHashtags').innerHTML = '';
+      $('prodChapters').innerHTML = '';
+      // Load existing package if any
+      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]);
+      if (pkg) renderPackage(pkg);
+    });
+
+    $('btnAssemble').onclick = async () => {
+      if (!selectedRecordingId) return;
+      $('btnAssemble').disabled = true;
+      try {
+        const result = await window.api.invoke('production:assemble', { recordingId: selectedRecordingId });
+        const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE id = ?', [result.packageId]);
+        if (pkg) renderPackage(pkg);
+      } catch (e) {
+        alert('Error: ' + e.message);
+      } finally {
+        $('btnAssemble').disabled = false;
+      }
+    };
+  }
+
+  function renderPackage(pkg) {
+    $('prodTitle').textContent = pkg.title || 'Package';
+    $('prodTitleValue').textContent = pkg.title || '';
+    const variants = JSON.parse(pkg.title_variants || '[]');
+    $('prodVariants').innerHTML = variants.map((v,i) => `<div class="variant-item">${i+1}. ${v}</div>`).join('');
+    $('prodDesc').textContent = pkg.description || '';
+    const tags = JSON.parse(pkg.hashtags_json || '[]');
+    $('prodHashtags').innerHTML = tags.map(t => `<span class="tag">${t.tag}</span>`).join('');
+    const chapters = JSON.parse(pkg.chapters_json || '[]');
+    $('prodChapters').innerHTML = chapters.map(c =>
+      `<div class="chapter-item"><span class="ts">${fmtMs(c.start_ms)}</span><span>${c.title}</span></div>`
+    ).join('');
+    $('prodPackageSection').hidden = false;
+  }
+
+  // ── Distribution tab ──────────────────────────────────────────
+  async function loadDistributionTab() {
+    await loadRecordingList('distRecordingList', async (id) => {
+      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]);
+      const dist = pkg ? await window.mob.db.get('SELECT * FROM distributions WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]) : null;
+      $('distSection').hidden = false;
+      $('distTitle').textContent = pkg ? pkg.title : 'No package yet';
+      $('distStatus').textContent = dist ? dist.status : (pkg ? 'ready' : 'needs package');
+    });
+
+    $('btnDistUpload').onclick = async () => {
+      if (!selectedRecordingId) { alert('Select a recording.'); return; }
+      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      if (!pkg) { alert('Generate a production package first.'); return; }
+      $('distProgress').hidden = false;
+      $('distProgressBar').style.width = '10%';
+      $('distProgressLabel').textContent = 'Preparing…';
+      // S8 (Cloudflare) will implement the actual upload; for now mark as queued
+      await window.mob.db.run(
+        `INSERT OR REPLACE INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)
+         VALUES (?, ?, ?, ?, 'cloud', 'queued', datetime('now'))`,
+        [crypto.randomUUID(), await window.mob.db.deviceId(), selectedRecordingId, pkg.id]
+      );
+      $('distProgressBar').style.width = '100%';
+      $('distStatus').textContent = 'queued';
+      $('distProgressLabel').textContent = 'Queued for upload (S8 Cloudflare sync)';
+    };
+  }
+})();
