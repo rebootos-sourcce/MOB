@@ -21,3 +21,14 @@ contextBridge.exposeInMainWorld('api', {
   },
   platform: process.platform
 });
+
+// MOB database bridge (ADR-001: local-first SQLite)
+contextBridge.exposeInMainWorld('mob', {
+  db: {
+    run:      (sql, params)  => ipcRenderer.invoke('db:run', sql, params),
+    get:      (sql, params)  => ipcRenderer.invoke('db:get', sql, params),
+    all:      (sql, params)  => ipcRenderer.invoke('db:all', sql, params),
+    exec:     (sql)          => ipcRenderer.invoke('db:exec', sql),
+    deviceId: ()             => ipcRenderer.invoke('db:deviceId'),
+  }
+});

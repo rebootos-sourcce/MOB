@@ -7,6 +7,11 @@ const { RawRecording, sweepOldRaw } = require('./recording-files');
 const windows = require('./windows');
 const Shapes = require('../shared/shapes');
 const EventEmitter = require('events');
+const dbHandlers = require('./ipc/db-handlers');
+const db = require('./db/sqlite');
+const { getDeviceId } = require('./identity');
+const { recordingKey } = require('./r2/key');
+const crypto = require('crypto');
 
 /** Internal event bus (used by the headless smoke test). */
 const bus = new EventEmitter();
@@ -333,6 +338,22 @@ function setCompact(on) {
   sendControl('ui:compact', !!on);
 }
 
+function persistRecordingRow(filePath, durationMs, format, codec) {
+  try {
+    const id = crypto.randomUUID();
+    const deviceId = getDeviceId();
+    const r2Key = recordingKey(id, format);
+    db.run(
+      `INSERT INTO recordings (id, device_id, path, duration_ms, codec, status, r2_key, created_at)
+       VALUES (?, ?, ?, ?, ?, 'ready', ?, datetime('now'))`,
+      [id, deviceId, filePath, durationMs, codec, r2Key]
+    );
+  } catch (e) {
+    // Non-fatal: recording saved to disk even if DB write fails
+    console.error('[mob] Failed to persist recording row:', e.message);
+  }
+}
+
 async function finalizeRecording(durationMs, rawVideoCodec) {
   const s = settings.get();
   const raw = rec.raw;
@@ -365,6 +386,7 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     rec.startedAt = 0;
     setCompact(false);
     publishState();
+    persistRecordingRow(result.output, durationMs, format, s.recording.codec);
     sendControl('finalize:done', { path: result.output, durationMs, format });
     bus.emit('finalized', { path: result.output, durationMs });
   } catch (err) {
@@ -380,6 +402,7 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
         rec.startedAt = 0;
         setCompact(false);
         publishState({ message: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
+        persistRecordingRow(result.output, durationMs, format, 'h264');
         sendControl('finalize:done', { path: result.output, durationMs, format, note: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
         bus.emit('finalized', { path: result.output, durationMs });
         return;
@@ -568,7 +591,11 @@ function registerShortcuts() {
   bind('CommandOrControl+Shift+H', toggleBubble);
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Initialize SQLite (ADR-001) and register IPC handlers before windows open.
+  await db.init();
+  dbHandlers.register();
+
   sweepOldRaw();
   const s = settings.get();
   rec.micEnabled = s.mic.enabled;
@@ -604,5 +631,5 @@ app.whenReady().then(() => {
 });
 
 app.on('second-instance', () => { if (control) { control.show(); control.focus(); } });
-app.on('before-quit', () => { app.__quitting = true; globalShortcut.unregisterAll(); });
+app.on('before-quit', () => { app.__quitting = true; globalShortcut.unregisterAll(); db.close(); });
 app.on('window-all-closed', () => app.quit());
