@@ -151,10 +151,16 @@ function stepSp(cur, vel, tgt, k, b, dt) {
 const _ca = document.getElementById('ca');
 let mxRaw=320, myRaw=260;
 let lastMouseMoveT=performance.now();
+/* where her 640x520 design space sits inside the canvas's real box, in CSS
+   pixels: scale k and the offsets. Set by the NOVA fit below; the identity
+   until it runs, which is exactly the old mapping for a 640:520 box. */
+const UNI_FIT={k:1,ox:0,oy:0,w:640,h:520};
 document.addEventListener('mousemove', e => {
   const r = _ca.getBoundingClientRect();
-  mxRaw = (e.clientX-r.left)*(640/r.width);
-  myRaw = (e.clientY-r.top)*(520/r.height);
+  if(!(r.width>0&&r.height>0)) return;
+  const sx=r.width/UNI_FIT.w, sy=r.height/UNI_FIT.h;
+  mxRaw = ((e.clientX-r.left)/sx-UNI_FIT.ox)/UNI_FIT.k;
+  myRaw = ((e.clientY-r.top)/sy-UNI_FIT.oy)/UNI_FIT.k;
   lastMouseMoveT=performance.now();
 });
 
@@ -314,6 +320,52 @@ const ZONES=[
   const W=640,H=520,CX=320,CY=252,R=136;
   const DPR=Math.max(1,Math.min(3,window.devicePixelRatio||1));
   if(DPR!==1){ cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); ctx.scale(DPR,DPR); }
+  /* HER GLOW FILLS WHATEVER BOX SHE IS GIVEN. 8 November, his words, the
+     third time of asking: "that glow, that scales with the character, I
+     said fill the fucking screen. I don't want to see the edge. I don't
+     want to see it clip ever. I just want that background color to fill
+     the entire background." Her bitmap was a fixed 640x520, so in any box
+     of another shape the page showed the bitmap's own rectangle, and a CSS
+     stretch of that bitmap (object-fit fill, the canvas default) only bent
+     her into an oval. Now the bitmap is always the size of the box she is
+     shown in, times DPR, and her 640x520 design space is fitted inside it
+     at one scale k, centred, exactly as a 640:520 picture contained in that
+     box would sit: she is the same size she was. Everything outside the
+     design space is real bitmap, painted by the background fill and the
+     glow (see bleedR in drawHarmonicRadiance), so there is no edge left to
+     see. A box of exactly 640:520 gives k=1 relative to it and no offset,
+     the old picture. The box is read through a ResizeObserver, never by
+     forcing layout inside her frame; a zero box (parked, hidden) is
+     ignored and the last fit kept. */
+  let boxW=W, boxH=H, fitK=1, fitX=0, fitY=0, boxDirty=true;
+  function applyFit(){
+    boxDirty=false;
+    const bw=Math.max(1,Math.round(boxW*DPR)), bh=Math.max(1,Math.round(boxH*DPR));
+    if(cv.width!==bw) cv.width=bw;
+    if(cv.height!==bh) cv.height=bh;
+    const cw=bw/DPR, ch=bh/DPR;
+    fitK=Math.min(cw/W,ch/H);
+    fitX=(cw-W*fitK)/2; fitY=(ch-H*fitK)/2;
+    UNI_FIT.k=fitK; UNI_FIT.ox=fitX; UNI_FIT.oy=fitY; UNI_FIT.w=cw; UNI_FIT.h=ch;
+  }
+  if(typeof ResizeObserver==='function'){
+    new ResizeObserver(es=>{
+      const r=es[es.length-1].contentRect;
+      if(!(r.width>0&&r.height>0)) return;
+      if(r.width!==boxW||r.height!==boxH){ boxW=r.width; boxH=r.height; boxDirty=true; }
+    }).observe(cv);
+  }
+  /* the design-space transform, set at the head of every frame and after
+     every resize (a resize resets the context), so nothing below has to
+     know the box is not 640x520 */
+  function designTransform(){ ctx.setTransform(DPR*fitK,0,0,DPR*fitK,DPR*fitX,DPR*fitY); }
+  /* how far out from her centre, in design units, the bitmap reaches at
+     its farthest corner */
+  function cornerReach(){
+    const x0=-fitX/fitK, y0=-fitY/fitK, x1=x0+cv.width/DPR/fitK, y1=y0+cv.height/DPR/fitK;
+    const dx=Math.max(CX-x0,x1-CX), dy=Math.max(CY-y0,y1-CY);
+    return Math.hypot(dx,dy);
+  }
 
   // Subtle dither -- a tiny tileable noise pattern drawn once per frame at
   // very low alpha, 'overlay' blended. Breaks up the 8-bit banding that
@@ -329,12 +381,45 @@ const ZONES=[
   }
   ditherCtx.putImageData(ditherImg,0,0);
   const ditherPattern=ctx.createPattern(ditherCv,'repeat');
+  /* PERF, round TG, 8 November, measured: the dither was the second most
+     expensive thing she drew, 11 to 20ms a frame at DPR 2 on software
+     raster, because a 64px pattern stretched by ctx.scale(DPR) is filtered
+     (bilinear) for every device pixel of the canvas, every frame, and only
+     then overlay blended. The noise it samples never changes, so it is
+     sampled once here, through the very same pattern, the same scale and
+     the same filtering, into a tile one pattern period wide in device
+     pixels, and each frame draws that tile at the identity transform, one
+     device pixel to one texel, where there is nothing left to filter. Same
+     samples, same overlay, same 0.025 alpha. A DPR whose period is not a
+     whole number of device pixels cannot tile exactly, and keeps the
+     original pattern path; so does DPR 1, where the pattern was never
+     stretched in the first place. */
+  const ditherTilePx=64*DPR;
+  let ditherFast=null;
+  if(DPR!==1 && Number.isInteger(ditherTilePx)){
+    const tcv=document.createElement('canvas');
+    tcv.width=ditherTilePx; tcv.height=ditherTilePx;
+    const tctx=tcv.getContext('2d');
+    tctx.scale(DPR,DPR);
+    tctx.fillStyle=tctx.createPattern(ditherCv,'repeat');
+    tctx.fillRect(0,0,64,64);
+    ditherFast=ctx.createPattern(tcv,'repeat');
+  }
   function drawDither(){
     ctx.save();
     ctx.globalCompositeOperation='overlay';
     ctx.globalAlpha=0.025;
-    ctx.fillStyle=ditherPattern;
-    ctx.fillRect(0,0,W,H);
+    if(ditherFast){
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.fillStyle=ditherFast;
+      ctx.fillRect(0,0,cv.width,cv.height);
+    } else {
+      /* the whole bitmap, not the design space, with the pattern at its
+         original DPR scale so its grain does not grow with the box */
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      ctx.fillStyle=ditherPattern;
+      ctx.fillRect(0,0,cv.width/DPR,cv.height/DPR);
+    }
     ctx.restore();
   }
 
@@ -1352,8 +1437,18 @@ const ZONES=[
     // the surrounding aura glow instead of staying confined to a thin ring
     const cgB=ctx.createConicGradient(HARM_START, CX, CY);
     for(const[f,col] of harmStops(100,70,inten*0.17)) cgB.addColorStop(f,col);
+    /* THE BLEED NEVER ENDS ON SCREEN, 8 November (see the fit at the top of
+       NOVA, his words). It was cut off hard at R*2.1, a flat 17% tint that
+       stopped dead in a visible circle, and that circle was taller than her
+       own canvas, so the canvas clipped it top and bottom: the edge and the
+       clip he kept seeing. Its outer edge now sits past the farthest corner
+       of whatever box she has, with room for the most she ever shrinks
+       (squash, fear and disgust together, about 0.78) and drifts (her hover,
+       under 15 units), so the tint runs to every edge. Inside R*2.1 nothing
+       changes. */
+    const bleedR=Math.max(R*2.1,(cornerReach()+20)/0.7);
     ctx.beginPath();
-    ctx.arc(CX,CY,R*2.1,0,Math.PI*2);
+    ctx.arc(CX,CY,bleedR,0,Math.PI*2);
     ctx.arc(CX,CY,R*0.70,0,Math.PI*2,true);
     ctx.fillStyle=cgB; ctx.fill('evenodd');
     // Outer band
@@ -1788,16 +1883,42 @@ const ZONES=[
   // ----------------------------------------------------------------
   // Frame loop
   // ----------------------------------------------------------------
+  /* ONE LOOP, NEVER TWO. PERF, round TG, 8 November, measured: from boot
+     she ran two loops at once, and every displayed frame was drawn twice.
+     The load schedules her first frame, the load parks her, and the app
+     opens on the Journal, whose render mounts her and calls resume() in
+     the same task, before that first frame has fired. resume() saw
+     lastTs===null and scheduled a second frame, and from then on each
+     loop rescheduled itself: two callbacks per tick, the second with
+     dt=0, repainting over the first. Measured in Chromium, that second
+     pass cost its whole script (3 to 4ms) and not its raster, because
+     Chromium's canvas recorder throws away a picture that a full clear
+     covers before it is ever rastered; another engine may raster both.
+     And the dt=0 pass was not inert: the viseme queue pops its next unit
+     the moment the last one ends, so under two loops every unit ended a
+     frame early and speech ran fast. Nothing in the app calls speak()
+     yet, so no screen a person sees today moves differently; when one
+     does, she now speaks at the timing her own code sets out. The idle
+     she shows now is pixel identical under one loop (measured, seeded,
+     fake clock, before against after). The round TE comment below
+     believed lastTs===null was a sufficient guard; it is not while a
+     frame is already queued. Every place that starts her now goes
+     through kick(), which only asks for a frame when none is queued. */
+  let frameQueued=false;
+  function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
+    frameQueued=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
        below (which would otherwise immediately overwrite the null it
        just set). Lets pause()/resume() (and the original mouseenter
-       restart) gate cleanly on lastTs===null without ever
-       double-scheduling a second concurrent loop. */
-    if(!cv.hidden){ requestAnimationFrame(frame); } else { lastTs=null; return; }
+       restart) gate cleanly on lastTs===null. */
+    if(!cv.hidden){ kick(); } else { lastTs=null; return; }
     if(lastTs===null){lastTs=ts;return;}
-    const dt=Math.min((ts-lastTs)/1000,0.05); lastTs=ts;
+    /* never negative: resume() stamps lastTs with performance.now(), which
+       can be later than the timestamp of the frame already queued when it
+       ran, and a negative step ran every spring and timer backwards. */
+    const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
     const t=ts/1000;
     const coh01=coherence/100;
     const p=getPalette(coh01);
@@ -2106,9 +2227,13 @@ const ZONES=[
     }
 
     // Render
-    ctx.clearRect(0,0,W,H);
+    if(boxDirty) applyFit();
+    // the background fills the whole bitmap, every pixel of her box
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
     ctx.fillStyle=_rgb(p.bg);
-    ctx.fillRect(0,0,W,H);
+    ctx.fillRect(0,0,cv.width,cv.height);
+    designTransform();
 
     // Round 2: per-state color signature, applied once per frame (not per
     // particle) on top of the coherence palette
@@ -2197,7 +2322,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
 
   // Events
   cv.addEventListener('click',()=>{showStats=!showStats;});
-  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();requestAnimationFrame(frame);}});
+  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();kick();}});
 
   let typeBuf='';
   let typeFlushTimer=null;
@@ -2222,7 +2347,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     });
   }
 
-  requestAnimationFrame(frame);
+  kick();
 
   // ---- External API, added for embedding (funnel / quiz / dashboard /
   // avatar). Every method below is a thin wrapper over the engine's own
@@ -2304,7 +2429,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
        uniMount/uniPark call these so a reparented, previously-hidden
        instance resumes without needing a real hover. */
     pause(){ cv.hidden=true; },
-    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); requestAnimationFrame(frame); } },
+    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); kick(); } },
   };
 })();
 

@@ -4837,11 +4837,26 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    her shrink instead, and the canvas is now sized by whichever of her own
    height or 640px her column actually has, keeping her round rather than
    letting her clip. */
-.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.st-chat .st-uni{flex:1 1 auto;min-height:0}
-.st-uni .uni-widget{width:auto;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-.st-uni .uni-widget .canvas-wrap{width:auto;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
-.st-uni .uni-widget .canvas-wrap canvas{width:auto;height:100%;max-width:100%;max-height:100%}
+/* HER BOX IS THE PANEL'S, AND HER GLOW FILLS IT, 8 November, his words,
+   third time of asking: "I said fill the fucking screen. I don't want to
+   see the edge. I don't want to see it clip ever." Two things made the
+   edge. Her canvas took its height from its own bitmap (a canvas's natural
+   size is its bitmap, in CSS pixels), so the panel she sat in was sized by
+   her and not the other way round: measured, the same 1600 wide window gave
+   her 640px at DPR 1 and 866px at DPR 2. And a 640x520 bitmap inside a box
+   of any other shape left the bitmap's own rectangle showing; stretching it
+   to the box (object-fit fill, the canvas default) bends her into an oval.
+   So the canvas is out of flow, inset 0, and fills exactly the box the
+   panel gives .st-uni; ui/uni.js sizes her bitmap to that box and fits her
+   inside it at her own proportions, the glow painted to every edge. In the
+   chat column .st-uni takes the room that is left (flex 1 1 0, its content
+   no longer has a say); anywhere else it keeps her own 640:520 shape. */
+.st-uni{width:100%;min-height:0;position:relative;display:block;overflow:hidden;aspect-ratio:640/520}
+.st-chat .st-uni{flex:1 1 0;min-height:0;aspect-ratio:auto}
+.st-uni .uni-widget{position:absolute;inset:0}
+.st-uni .uni-widget .page{position:absolute;inset:0}
+.st-uni .uni-widget .canvas-wrap{position:absolute;inset:0;width:auto;max-width:none}
+.st-uni .uni-widget .canvas-wrap canvas{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
