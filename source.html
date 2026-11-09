@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v10 819a3985 2026-11-09 14:48"><head><meta charset="utf-8">
+<html lang="en" data-build="v11 8ab5ea6e 2026-11-09 19:19"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -30418,6 +30418,50 @@ function parseStory(text){
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length,
   denied:denied, others:others};}
+
+/* UNI'S TRANSLATION LAYER, 9 November. Her vocabulary (ui/uni.js) is a
+   family -- one of nine real laws, under her own key names -- plus a rank 0
+   to 8, the word's own rank on that family's real nine-word ladder (0 the
+   mildest, 8 the most intense). parseStory's return gives neither shape
+   directly: named is a list of fetter names ordered by a hit COUNT, not an
+   intensity (two different words of the same weight both read 1, measured),
+   and nothing here scores one word of a fetter harder than another. The
+   real intensity this engine already carries sits elsewhere: bands, the
+   same per-seat scale pct.js's own vitality reads by dividing by 3 to get
+   0 to 10 (see seatField, engine/charfield.js).
+
+   WHICH END LEADS IS AN ENGINEERING DEFAULT, NOT A RULING. parseStory's own
+   path already carries this same open question for a different purpose --
+   pathOf sorts by susceptibility and takes the top, which assumes the block
+   sits at the highest charge, and its own comment says plainly "nobody
+   ruled that" (see kink/floor above). This function makes the same
+   assumption for the same unruled reason: the loudest seat in the story,
+   not the quietest, because that is what a person would say they wrote
+   about if asked. CLAUDE.md lists the kink/floor choice as "his, not
+   mine" -- if that is ruled either way, this reads the same two numbers
+   (bands, named) and only the line below marked DEFAULT changes.
+
+   JOY HAS NO SEAT HERE AND NEVER WILL FROM THIS FUNCTION. PATHSEAT's own
+   table places nothing for a coherent reading (joy:null); a coherent
+   reading has no charge to place. Whatever shows Uni joy reads CQ or a
+   finished release, never a parsed story -- joy is not in FET2UNI below on
+   purpose, not an oversight.
+
+   Returns null on nothing named. A caller must read that as "say nothing",
+   never as a family at rank 0: rank 0 is still a real word on a real
+   ladder ("Noticing", "Content"), and a blank story is not that -- the
+   same reason r.unread is its own state and not a reading of zero. */
+var FET2UNI={Anticipation:'anticipation',Fear:'fear',Anger:'anger',Shame:'shame',
+ Disgust:'disgust',Apathy:'apathy',Shock:'shock',Sad:'sadness',Surprise:'surprise'};
+function uniFromParsed(p){
+ if(!p||!p.named||!p.named.length)return null;
+ var fam=FET2UNI[p.named[0]]; if(!fam)return null;
+ var bands=p.bands||{}, maxBand=0;
+ Object.keys(bands).forEach(function(k){if(bands[k]>maxBand)maxBand=bands[k];});
+ /* DEFAULT: the loudest seat, reusing pct.js's own /3 reading of bands as
+    0 to 10, scaled onto Uni's 0-to-8 ladder. */
+ var rank=Math.round(clamp(maxBand/3,0,10)/10*8);
+ return {family:fam, rank:rank};}
 /* ============================================================
    THE MARKS. Every hit, placed back on the letters a person typed.
 
@@ -37109,7 +37153,7 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -41430,6 +41474,19 @@ let coherence = 100;
    and was never a real second dial; this file's old "Shadow (SQ)" slider
    was renamed to drive real DQ directly, 0-100, instead. */
 let dq = 0;
+/* THE BLANK PROFILE, 9 November. Round TE shipped her at coherence 100
+   and dq 0 forever, because nothing called a setter; the moment something
+   does, a stranger who has entered nothing would read as angelic white-gold,
+   a confident, coherent reading of a person the instrument has not met.
+   This is exactly the defect the house's own Discover ruling exists to
+   stop (CLAUDE.md: "a surface with no reading must not imply one"), and
+   compute()'s own comment makes the same call: "a stranger is still unread
+   rather than a person at zero." 0 would be the opposite lie, collapsed
+   dead red, a verdict of collapse on someone who carries no charge because
+   none has been read. unread sits outside the five-stop ladder on purpose:
+   achromatic, not a sixth colour on it, set and cleared only by the one
+   caller that knows r.unread, never guessed at in here. */
+let unread = false;
 
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
@@ -41459,6 +41516,13 @@ function getPalette(t01){
 }
 function _rgb(v){return`rgb(${v[0]},${v[1]},${v[2]})`;}
 function _rgba(v,a){return`rgba(${v[0]},${v[1]},${v[2]},${a})`;}
+
+/* THE UNREAD PALETTE. Flat, desaturated, no stop on the coherence ladder --
+   a claim of nothing is not a tenth colour, it is the absence of one. cr/m1/
+   m2/cl sit as a plain mid-grey so no hue reads as an answer; bg and ed stay
+   dark, matching every ladder stop's own dark ground and rim. */
+const UNI_UNREAD_PAL={cr:[196,196,198],m1:[150,150,153],m2:[ 96, 96, 99],
+ ed:[ 40, 40, 43],bg:[ 10, 10, 11],cl:[210,210,212]};
 
 // Coherence zones
 const ZONES=[
@@ -43146,8 +43210,15 @@ const ZONES=[
        ran, and a negative step ran every spring and timer backwards. */
     const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
     const t=ts/1000;
-    const coh01=coherence/100;
-    const p=getPalette(coh01);
+    /* UNREAD HOLDS coh01 AT A FLAT MID POINT, 9 November, not only the
+       palette. Every coherence-driven flourish below reads this same
+       number -- the crown halo past 0.92, the decoherence glow under 0.55,
+       the alert/zen face thresholds -- and a stranger showing any of those
+       would be the instrument claiming a measurement it has not taken.
+       0.5 sits inside every one of those bands' own neutral middle, so an
+       unread face is plain: no halo, no glow, no alert, no zen. */
+    const coh01=unread?0.5:coherence/100;
+    const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
 
     // Blend shapes
     bsT+=dt;
@@ -43601,6 +43672,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // n: 0-100. DQ -- the real total-shadow score, independent of CQ.
     setDQ(n){ dq = Math.max(0, Math.min(100, +n || 0)); },
     getDQ(){ return dq; },
+    // flag: true when the real caller's own r.unread says nobody has
+    // answered anything yet. See the unread declaration above for why
+    // this is a third state and not a value on the coherence dial.
+    setUnread(flag){ unread = !!flag; },
+    getUnread(){ return unread; },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
@@ -54546,7 +54622,7 @@ function stRender(){
     worked example gets none (show only, nothing she would react to is the
     person's own), TAB.STORY's own leave in panels.js parks her. */
  if(!show){var un=document.getElementById('stuni');
-  if(un&&typeof uniMount==='function')uniMount(un);}
+  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);}}
  else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
@@ -56125,6 +56201,39 @@ function srcIntentLand(v){
   var L=srcLedgerNow(), seat=(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
   if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
  return it;}
+/* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
+   turn landing here, the record moving under render(), and stRender
+   remounting her on a tab return or a dashboard toggle. One function and
+   one held snapshot mean a stale push from an old render can never land
+   over a fresh one, and nothing calls a setter twice for the same value --
+   setEmotion is a RETRIGGER (restarts her pose timer, spawns rings), not a
+   setter, measured in the systems review, so equal-value calls are not
+   merely wasted, they are a visible defect. */
+var UNI_LAST={unread:null,cq:null,dq:null,fam:null,rank:null};
+function uniApply(parsed){
+ if(typeof window==='undefined'||!window.Uni)return;
+ /* THE DOOR IS A DOOR AND NOT AN ALARM, carried here from the crisis
+    ruling (storyui.js's own entry-kept message, and engine/data/crisis.js):
+    "no modal, no sound, no red, no 'we noticed', and nothing escalates."
+    A face that visibly reacted the moment srcSafe tripped would be exactly
+    that escalation in a different channel, so every voluntary push below
+    (coherence, shadow, emotion) is skipped whole for this call. Her
+    involuntary channels, blink and breath, are not reached by any of this
+    and keep running regardless -- a held pose, not a frozen one. */
+ if(typeof srcSafe==='function'&&srcSafe(ST_TEXT))return;
+ var r=(typeof computeSeen==='function')?computeSeen():null;
+ if(r){
+  if(r.unread!==UNI_LAST.unread){
+   UNI_LAST.unread=r.unread;
+   if(window.Uni.setUnread)window.Uni.setUnread(!!r.unread);}
+  if(!r.unread){
+   if(UNI_LAST.cq!==r.CQ){UNI_LAST.cq=r.CQ; if(window.Uni.setCoherence)window.Uni.setCoherence(r.CQ);}
+   if(UNI_LAST.dq!==r.DQ){UNI_LAST.dq=r.DQ; if(window.Uni.setDQ)window.Uni.setDQ(r.DQ);}}}
+ var u=(parsed&&typeof uniFromParsed==='function')?uniFromParsed(parsed):null;
+ var fam=u?u.family:null, rank=u?u.rank:null;
+ if(fam&&(fam!==UNI_LAST.fam||rank!==UNI_LAST.rank)){
+  UNI_LAST.fam=fam; UNI_LAST.rank=rank;
+  if(window.Uni.setEmotion)window.Uni.setEmotion(fam,rank);}}
 function srcTurnCommit(v){
  v=String(v||'').trim(); if(!v)return false;
  var it=srcIntentLand(v);
@@ -56137,6 +56246,7 @@ function srcTurnCommit(v){
  if(it&&it.intent==='shift')SRC_FROM=a;
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
+ uniApply(ST_PARSED);
  return true;}
 /* SEND, the typed door onto srcTurnCommit. */
 function srcChatSend(){
@@ -92206,5 +92316,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006160141"></div>
+<div id="eof" hidden data-len="006167074"></div>
 </body></html>

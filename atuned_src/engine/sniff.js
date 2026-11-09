@@ -1113,6 +1113,50 @@ function parseStory(text){
   path:pathOf(hits),
   words:hits.filter(function(h){return h.kind!=='adj';}).length,
   denied:denied, others:others};}
+
+/* UNI'S TRANSLATION LAYER, 9 November. Her vocabulary (ui/uni.js) is a
+   family -- one of nine real laws, under her own key names -- plus a rank 0
+   to 8, the word's own rank on that family's real nine-word ladder (0 the
+   mildest, 8 the most intense). parseStory's return gives neither shape
+   directly: named is a list of fetter names ordered by a hit COUNT, not an
+   intensity (two different words of the same weight both read 1, measured),
+   and nothing here scores one word of a fetter harder than another. The
+   real intensity this engine already carries sits elsewhere: bands, the
+   same per-seat scale pct.js's own vitality reads by dividing by 3 to get
+   0 to 10 (see seatField, engine/charfield.js).
+
+   WHICH END LEADS IS AN ENGINEERING DEFAULT, NOT A RULING. parseStory's own
+   path already carries this same open question for a different purpose --
+   pathOf sorts by susceptibility and takes the top, which assumes the block
+   sits at the highest charge, and its own comment says plainly "nobody
+   ruled that" (see kink/floor above). This function makes the same
+   assumption for the same unruled reason: the loudest seat in the story,
+   not the quietest, because that is what a person would say they wrote
+   about if asked. CLAUDE.md lists the kink/floor choice as "his, not
+   mine" -- if that is ruled either way, this reads the same two numbers
+   (bands, named) and only the line below marked DEFAULT changes.
+
+   JOY HAS NO SEAT HERE AND NEVER WILL FROM THIS FUNCTION. PATHSEAT's own
+   table places nothing for a coherent reading (joy:null); a coherent
+   reading has no charge to place. Whatever shows Uni joy reads CQ or a
+   finished release, never a parsed story -- joy is not in FET2UNI below on
+   purpose, not an oversight.
+
+   Returns null on nothing named. A caller must read that as "say nothing",
+   never as a family at rank 0: rank 0 is still a real word on a real
+   ladder ("Noticing", "Content"), and a blank story is not that -- the
+   same reason r.unread is its own state and not a reading of zero. */
+var FET2UNI={Anticipation:'anticipation',Fear:'fear',Anger:'anger',Shame:'shame',
+ Disgust:'disgust',Apathy:'apathy',Shock:'shock',Sad:'sadness',Surprise:'surprise'};
+function uniFromParsed(p){
+ if(!p||!p.named||!p.named.length)return null;
+ var fam=FET2UNI[p.named[0]]; if(!fam)return null;
+ var bands=p.bands||{}, maxBand=0;
+ Object.keys(bands).forEach(function(k){if(bands[k]>maxBand)maxBand=bands[k];});
+ /* DEFAULT: the loudest seat, reusing pct.js's own /3 reading of bands as
+    0 to 10, scaled onto Uni's 0-to-8 ladder. */
+ var rank=Math.round(clamp(maxBand/3,0,10)/10*8);
+ return {family:fam, rank:rank};}
 /* ============================================================
    THE MARKS. Every hit, placed back on the letters a person typed.
 

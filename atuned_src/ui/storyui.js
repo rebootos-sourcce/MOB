@@ -516,7 +516,7 @@ function stRender(){
     worked example gets none (show only, nothing she would react to is the
     person's own), TAB.STORY's own leave in panels.js parks her. */
  if(!show){var un=document.getElementById('stuni');
-  if(un&&typeof uniMount==='function')uniMount(un);}
+  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);}}
  else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
@@ -2095,6 +2095,39 @@ function srcIntentLand(v){
   var L=srcLedgerNow(), seat=(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
   if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
  return it;}
+/* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
+   turn landing here, the record moving under render(), and stRender
+   remounting her on a tab return or a dashboard toggle. One function and
+   one held snapshot mean a stale push from an old render can never land
+   over a fresh one, and nothing calls a setter twice for the same value --
+   setEmotion is a RETRIGGER (restarts her pose timer, spawns rings), not a
+   setter, measured in the systems review, so equal-value calls are not
+   merely wasted, they are a visible defect. */
+var UNI_LAST={unread:null,cq:null,dq:null,fam:null,rank:null};
+function uniApply(parsed){
+ if(typeof window==='undefined'||!window.Uni)return;
+ /* THE DOOR IS A DOOR AND NOT AN ALARM, carried here from the crisis
+    ruling (storyui.js's own entry-kept message, and engine/data/crisis.js):
+    "no modal, no sound, no red, no 'we noticed', and nothing escalates."
+    A face that visibly reacted the moment srcSafe tripped would be exactly
+    that escalation in a different channel, so every voluntary push below
+    (coherence, shadow, emotion) is skipped whole for this call. Her
+    involuntary channels, blink and breath, are not reached by any of this
+    and keep running regardless -- a held pose, not a frozen one. */
+ if(typeof srcSafe==='function'&&srcSafe(ST_TEXT))return;
+ var r=(typeof computeSeen==='function')?computeSeen():null;
+ if(r){
+  if(r.unread!==UNI_LAST.unread){
+   UNI_LAST.unread=r.unread;
+   if(window.Uni.setUnread)window.Uni.setUnread(!!r.unread);}
+  if(!r.unread){
+   if(UNI_LAST.cq!==r.CQ){UNI_LAST.cq=r.CQ; if(window.Uni.setCoherence)window.Uni.setCoherence(r.CQ);}
+   if(UNI_LAST.dq!==r.DQ){UNI_LAST.dq=r.DQ; if(window.Uni.setDQ)window.Uni.setDQ(r.DQ);}}}
+ var u=(parsed&&typeof uniFromParsed==='function')?uniFromParsed(parsed):null;
+ var fam=u?u.family:null, rank=u?u.rank:null;
+ if(fam&&(fam!==UNI_LAST.fam||rank!==UNI_LAST.rank)){
+  UNI_LAST.fam=fam; UNI_LAST.rank=rank;
+  if(window.Uni.setEmotion)window.Uni.setEmotion(fam,rank);}}
 function srcTurnCommit(v){
  v=String(v||'').trim(); if(!v)return false;
  var it=srcIntentLand(v);
@@ -2107,6 +2140,7 @@ function srcTurnCommit(v){
  if(it&&it.intent==='shift')SRC_FROM=a;
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
+ uniApply(ST_PARSED);
  return true;}
 /* SEND, the typed door onto srcTurnCommit. */
 function srcChatSend(){

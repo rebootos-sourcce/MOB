@@ -4799,6 +4799,37 @@ g('33 · the sniffer contract, and the four guards that are testable');
  }
 }
 
+g('33b · uniFromParsed, the sniffer-to-Uni translation layer');
+/* THE ONLY GATE THIS TRANSLATION LAYER HAS, 9 November. ui/uni.js itself
+   has none, named as a real, open risk when she was wired: nothing in the
+   whole suite mentioned her before this. This is the half that is host
+   free and testable; the other half (does the real DOM call stay in step)
+   is tests/functional.js's job, not this file's. */
+{
+ ok(E.uniFromParsed(null)===null,'nothing parsed reads as nothing, never a family at rank 0');
+ ok(E.uniFromParsed({named:[]})===null,'nothing named reads as nothing too');
+ ok(E.uniFromParsed({named:['Nonsense']})===null,
+  'a fetter name not in the nine real laws is refused, not guessed at');
+ var u=E.uniFromParsed({named:['Anger','Shame'],bands:{solar:70,heart:24}});
+ ok(!!u&&u.family==='anger','the heaviest-weighted fetter leads, named[0], renamed to Uni\'s own key');
+ ok(u.rank===8,'bands/3 read against the 0-to-8 ladder, clamped at its own ceiling: '+JSON.stringify(u));
+ var lo=E.uniFromParsed({named:['Surprise'],bands:{crown:3}});
+ ok(!!lo&&lo.family==='surprise'&&lo.rank===1,
+  'a light touch reads low on the ladder rather than snapping to its ends: '+JSON.stringify(lo));
+ ok(E.uniFromParsed({named:['Sad'],bands:{heart:10}}).family==='sadness',
+  'the one real rename: engine Sad to Uni\'s own sadness key');
+ var allNine=['Anticipation','Fear','Anger','Shame','Disgust','Apathy','Shock','Sad','Surprise'];
+ var UNI_FAM=['joy','sadness','disgust','shock','fear','anger','shame','apathy','surprise','anticipation'];
+ allNine.forEach(function(f){
+  var r=E.uniFromParsed({named:[f],bands:{root:9}});
+  ok(!!r&&UNI_FAM.indexOf(r.family)>=0,
+   f+' maps to one of Uni\'s own ten family keys, got '+(r&&r.family));});
+ ok(UNI_FAM.indexOf('joy')>=0&&allNine.every(function(f){
+   return E.uniFromParsed({named:[f],bands:{root:9}}).family!=='joy';}),
+  'joy is one of Uni\'s real families and no path through this function ever reaches it: '+
+  'PATHSEAT places nothing for a coherent reading, so joy comes from CQ or a release, never a parsed story');
+}
+
 g('34 · every name the sniffer can emit as an address is in the 112 table');
 /* THE ROW EXISTS BECAUSE A READING NAMED A PLACE THE PRODUCT DOES NOT HAVE.
    sniffStory returned "Inferior Cardiac" on a panel profile and the 112 address

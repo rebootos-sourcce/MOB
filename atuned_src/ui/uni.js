@@ -204,6 +204,19 @@ let coherence = 100;
    and was never a real second dial; this file's old "Shadow (SQ)" slider
    was renamed to drive real DQ directly, 0-100, instead. */
 let dq = 0;
+/* THE BLANK PROFILE, 9 November. Round TE shipped her at coherence 100
+   and dq 0 forever, because nothing called a setter; the moment something
+   does, a stranger who has entered nothing would read as angelic white-gold,
+   a confident, coherent reading of a person the instrument has not met.
+   This is exactly the defect the house's own Discover ruling exists to
+   stop (CLAUDE.md: "a surface with no reading must not imply one"), and
+   compute()'s own comment makes the same call: "a stranger is still unread
+   rather than a person at zero." 0 would be the opposite lie, collapsed
+   dead red, a verdict of collapse on someone who carries no charge because
+   none has been read. unread sits outside the five-stop ladder on purpose:
+   achromatic, not a sixth colour on it, set and cleared only by the one
+   caller that knows r.unread, never guessed at in here. */
+let unread = false;
 
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
@@ -233,6 +246,13 @@ function getPalette(t01){
 }
 function _rgb(v){return`rgb(${v[0]},${v[1]},${v[2]})`;}
 function _rgba(v,a){return`rgba(${v[0]},${v[1]},${v[2]},${a})`;}
+
+/* THE UNREAD PALETTE. Flat, desaturated, no stop on the coherence ladder --
+   a claim of nothing is not a tenth colour, it is the absence of one. cr/m1/
+   m2/cl sit as a plain mid-grey so no hue reads as an answer; bg and ed stay
+   dark, matching every ladder stop's own dark ground and rim. */
+const UNI_UNREAD_PAL={cr:[196,196,198],m1:[150,150,153],m2:[ 96, 96, 99],
+ ed:[ 40, 40, 43],bg:[ 10, 10, 11],cl:[210,210,212]};
 
 // Coherence zones
 const ZONES=[
@@ -1920,8 +1940,15 @@ const ZONES=[
        ran, and a negative step ran every spring and timer backwards. */
     const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
     const t=ts/1000;
-    const coh01=coherence/100;
-    const p=getPalette(coh01);
+    /* UNREAD HOLDS coh01 AT A FLAT MID POINT, 9 November, not only the
+       palette. Every coherence-driven flourish below reads this same
+       number -- the crown halo past 0.92, the decoherence glow under 0.55,
+       the alert/zen face thresholds -- and a stranger showing any of those
+       would be the instrument claiming a measurement it has not taken.
+       0.5 sits inside every one of those bands' own neutral middle, so an
+       unread face is plain: no halo, no glow, no alert, no zen. */
+    const coh01=unread?0.5:coherence/100;
+    const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
 
     // Blend shapes
     bsT+=dt;
@@ -2375,6 +2402,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // n: 0-100. DQ -- the real total-shadow score, independent of CQ.
     setDQ(n){ dq = Math.max(0, Math.min(100, +n || 0)); },
     getDQ(){ return dq; },
+    // flag: true when the real caller's own r.unread says nobody has
+    // answered anything yet. See the unread declaration above for why
+    // this is a third state and not a value on the coherence dial.
+    setUnread(flag){ unread = !!flag; },
+    getUnread(){ return unread; },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
