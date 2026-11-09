@@ -35,15 +35,31 @@ async function assemblePackage({ recordingId, clipId = null }) {
   const durationMs = recording ? recording.duration_ms : 0;
 
   // Load EDL and remap word timestamps if cuts have been applied
+  // Fix #11: build a binary-search helper so remapTimestamp is O(log N) per word
   const edlEntries = loadEdl(recordingId);
-  const remappedWords = edlEntries.length
-    ? words.map(w => {
-        const remapped = remapTimestamp(edlEntries, w.start * 1000);
-        if (remapped === null) return null;
-        const dur = w.end - w.start;
-        return { ...w, start: remapped / 1000, end: (remapped + dur * 1000) / 1000 };
-      }).filter(Boolean)
-    : words;
+  let remappedWords;
+  if (edlEntries.length) {
+    // EDL is ordered by seq (source_start_ms ascending) — binary search for each word
+    function bsRemap(sourceMs) {
+      let lo = 0, hi = edlEntries.length - 1;
+      while (lo <= hi) {
+        const mid = (lo + hi) >>> 1;
+        const e = edlEntries[mid];
+        if (sourceMs < e.source_start_ms) { hi = mid - 1; }
+        else if (sourceMs > e.source_end_ms) { lo = mid + 1; }
+        else { return e.output_start_ms + (sourceMs - e.source_start_ms); }
+      }
+      return null;
+    }
+    remappedWords = words.map(w => {
+      const remapped = bsRemap(w.start * 1000);
+      if (remapped === null) return null;
+      const dur = w.end - w.start;
+      return { ...w, start: remapped / 1000, end: (remapped / 1000) + dur };
+    }).filter(Boolean);
+  } else {
+    remappedWords = words;
+  }
 
   // Generate metadata
   const fullText = transcript.full_text || '';

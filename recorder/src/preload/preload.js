@@ -26,12 +26,11 @@ contextBridge.exposeInMainWorld('api', {
 });
 
 // MOB database bridge (ADR-001: local-first SQLite)
+// Fix #1: named query/mutation API — renderer cannot send raw SQL.
 contextBridge.exposeInMainWorld('mob', {
   db: {
-    run:      (sql, params)  => ipcRenderer.invoke('db:run', sql, params),
-    get:      (sql, params)  => ipcRenderer.invoke('db:get', sql, params),
-    all:      (sql, params)  => ipcRenderer.invoke('db:all', sql, params),
-    exec:     (sql)          => ipcRenderer.invoke('db:exec', sql),
-    deviceId: ()             => ipcRenderer.invoke('db:deviceId'),
+    query:    (name, params)   => ipcRenderer.invoke('db:query', name, params),
+    mutate:   (name, payload)  => ipcRenderer.invoke('db:mutate', name, payload),
+    deviceId: ()               => ipcRenderer.invoke('db:deviceId'),
   }
 });

@@ -41,7 +41,12 @@ function formCaptions(words) {
       flush();
     }
 
-    group.push(w);
+    // Fix #22: a single token that still exceeds MAX_CHARS gets truncated so the
+    // caption never violates the display limit regardless of input.
+    const wordToAdd = overChars && !group.length
+      ? { ...w, word: w.word.slice(0, MAX_CHARS) }
+      : w;
+    group.push(wordToAdd);
 
     // Sentence boundary: flush after terminal punctuation
     const last = w.word.trim();

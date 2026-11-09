@@ -172,7 +172,7 @@ function finalize(input, output, opts, onProgress) {
  * @param {number} endMs   end of range in ms
  */
 function extractSegment(input, output, startMs, endMs) {
-  const { spawn } = require('child_process');
+  // Fix #24: use top-level spawn — no redundant require('child_process')
   const startSec = (startMs / 1000).toFixed(3);
   const durSec   = ((endMs - startMs) / 1000).toFixed(3);
   const args = [

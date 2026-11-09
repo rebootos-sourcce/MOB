@@ -50,9 +50,10 @@ async function getPresignedUrl(r2Key, mimeType) {
  * @param {string} presignedUrl
  * @param {function} [onProgress]  called with fraction 0-1
  */
-function uploadToR2(filePath, presignedUrl, onProgress) {
+// Fix #8: async stat — avoids blocking the Node.js event loop
+async function uploadToR2(filePath, presignedUrl, onProgress) {
+  const stat = await fs.promises.stat(filePath);
   return new Promise((resolve, reject) => {
-    const stat = fs.statSync(filePath);
     const fileStream = fs.createReadStream(filePath);
     let uploaded = 0;
 
@@ -100,6 +101,8 @@ async function enqueueDistribution(job) {
 
 /**
  * Full upload + enqueue flow for a distribution row.
+ * Fix #17: per-stage error recovery — on failure writes error_msg and resets
+ * status so a resume path is possible.
  * @param {string} distributionId
  * @param {function} [onProgress]
  */
@@ -110,31 +113,46 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   const rec = db.get('SELECT * FROM recordings WHERE id = ?', [dist.recording_id]);
   if (!rec) throw new Error('Recording not found');
 
+  function fail(status, err) {
+    db.run(
+      'UPDATE distributions SET status = ?, error_msg = ? WHERE id = ?',
+      [status, err.message, distributionId]
+    );
+    throw err;
+  }
+
   // Step 1: get pre-signed URL
   onProgress({ stage: 'presign', pct: 5 });
-  const { presignedUrl } = await getPresignedUrl(rec.r2_key, 'video/mp4');
+  let presignedUrl;
+  try {
+    ({ presignedUrl } = await getPresignedUrl(rec.r2_key, 'video/mp4'));
+  } catch (err) { fail('error_presign', err); }
 
   // Step 2: upload
-  db.run('UPDATE distributions SET status = ? WHERE id = ?', ['uploading', distributionId]);
+  db.run('UPDATE distributions SET status = ?, error_msg = NULL WHERE id = ?', ['uploading', distributionId]);
   onProgress({ stage: 'uploading', pct: 10 });
 
-  await uploadToR2(rec.path, presignedUrl, (frac) => {
-    onProgress({ stage: 'uploading', pct: Math.round(10 + frac * 80) });
-  });
+  try {
+    await uploadToR2(rec.path, presignedUrl, (frac) => {
+      onProgress({ stage: 'uploading', pct: Math.round(10 + frac * 80) });
+    });
+  } catch (err) { fail('error_upload', err); }
 
   db.run('UPDATE distributions SET status = ? WHERE id = ?', ['uploaded', distributionId]);
   onProgress({ stage: 'queuing', pct: 92 });
 
   // Step 3: enqueue
-  await enqueueDistribution({
-    distributionId,
-    recordingId: dist.recording_id,
-    r2Key: rec.r2_key,
-    packageId: dist.package_id,
-    platform: dist.platform,
-  });
+  try {
+    await enqueueDistribution({
+      distributionId,
+      recordingId: dist.recording_id,
+      r2Key: rec.r2_key,
+      packageId: dist.package_id,
+      platform: dist.platform,
+    });
+  } catch (err) { fail('error_queue', err); }
 
-  db.run('UPDATE distributions SET status = ? WHERE id = ?', ['queued', distributionId]);
+  db.run('UPDATE distributions SET status = ?, error_msg = NULL WHERE id = ?', ['queued', distributionId]);
   onProgress({ stage: 'done', pct: 100 });
 
   return { ok: true };

@@ -33,31 +33,39 @@ function applyCuts(recordingId, totalDurationMs, cuts) {
   }
 
   // Compute output positions and persist
+  // Fix #9: single transaction — avoids N+1 debounced persist cycles
   let outputCursor = 0;
   const entries = [];
 
-  // Clear existing EDL for this recording first (idempotent re-apply)
-  db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
+  db.exec('BEGIN');
+  try {
+    db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
 
-  for (let i = 0; i < kept.length; i++) {
-    const seg = kept[i];
-    const duration = seg.source_end_ms - seg.source_start_ms;
-    const entry = {
-      seq: i,
-      source_start_ms: seg.source_start_ms,
-      source_end_ms:   seg.source_end_ms,
-      output_start_ms: outputCursor,
-      output_end_ms:   outputCursor + duration,
-    };
-    entries.push(entry);
+    for (let i = 0; i < kept.length; i++) {
+      const seg = kept[i];
+      const duration = seg.source_end_ms - seg.source_start_ms;
+      const entry = {
+        seq: i,
+        source_start_ms: seg.source_start_ms,
+        source_end_ms:   seg.source_end_ms,
+        output_start_ms: outputCursor,
+        output_end_ms:   outputCursor + duration,
+      };
+      entries.push(entry);
 
-    db.run(
-      `INSERT INTO edl_entries (recording_id, seq, source_start_ms, source_end_ms, output_start_ms, output_end_ms)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [recordingId, entry.seq, entry.source_start_ms, entry.source_end_ms, entry.output_start_ms, entry.output_end_ms]
-    );
+      db.run(
+        `INSERT INTO edl_entries (recording_id, seq, source_start_ms, source_end_ms, output_start_ms, output_end_ms)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [recordingId, entry.seq, entry.source_start_ms, entry.source_end_ms, entry.output_start_ms, entry.output_end_ms]
+      );
 
-    outputCursor += duration;
+      outputCursor += duration;
+    }
+
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
   }
 
   return entries;

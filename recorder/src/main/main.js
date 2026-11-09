@@ -354,8 +354,9 @@ function persistRecordingRow(filePath, durationMs, format, codec) {
       [id, deviceId, filePath, durationMs, codec, r2Key]
     );
   } catch (e) {
-    // Non-fatal: recording saved to disk even if DB write fails
+    // Fix #25: surface DB failure to the renderer — recording is on disk but invisible in UI
     console.error('[mob] Failed to persist recording row:', e.message);
+    sendControl('finalize:error', { message: 'DB write failed — recording saved to: ' + filePath, rawPath: filePath });
   }
 }
 

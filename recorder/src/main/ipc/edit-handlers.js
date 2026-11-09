@@ -28,15 +28,20 @@ function register() {
   });
 
   // Create a clip: ffmpeg-extract [start_ms, end_ms] from source, write clips row.
-  ipcMain.handle('edit:createClip', async (_e, { recordingId, sourcePath, startMs, endMs, label, type }) => {
+  // Fix #18: ignore renderer-supplied sourcePath — look up the path from the DB
+  // to prevent path traversal via a compromised renderer process.
+  ipcMain.handle('edit:createClip', async (_e, { recordingId, startMs, endMs, label, type }) => {
+    const rec = db.get('SELECT path, codec FROM recordings WHERE id = ?', [recordingId]);
+    if (!rec || !rec.path) throw new Error('Recording not found: ' + recordingId);
+
     const ffmpeg = require('../ffmpeg');
     const id      = crypto.randomUUID();
-    const ext     = path.extname(sourcePath) || '.mp4';
+    const ext     = path.extname(rec.path) || '.mp4';
     const clipDir = path.join(app.getPath('userData'), 'clips');
     require('fs').mkdirSync(clipDir, { recursive: true });
     const clipPath = path.join(clipDir, `clip-${id}${ext}`);
 
-    await ffmpeg.extractSegment(sourcePath, clipPath, startMs, endMs);
+    await ffmpeg.extractSegment(rec.path, clipPath, startMs, endMs);
 
     const r2Key = `clip-${id}${ext}`;
     db.run(

@@ -6,23 +6,26 @@
 // States: IDLE -> LISTENING (after wake word) -> TRANSCRIBING (command spoken) -> IDLE
 // Commands: "start recording", "stop recording", "pause", "resume", "mute", "unmute"
 
-const COMMANDS = {
-  'start recording': 'recorder:go',
-  'stop recording':  'recorder:stop',
-  'stop':            'recorder:stop',
-  'pause':           'recorder:pause',
-  'resume':          'recorder:resume',
-  'mute':            'recorder:setMic',
-  'unmute':          'recorder:setMic',
-};
+// Fix #26: longer phrases first so "stop recording" and "unmute" match before
+// their prefixes ("stop", "mute") — entries are iterated in insertion order.
+const COMMANDS = [
+  ['start recording', 'recorder:go'],
+  ['stop recording',  'recorder:stop'],
+  ['pause',           'recorder:pause'],
+  ['resume',          'recorder:resume'],
+  ['unmute',          'recorder:setMic'],
+  ['mute',            'recorder:setMic'],
+  ['stop',            'recorder:stop'],
+];
 
-let _state    = 'IDLE';   // IDLE | LISTENING | TRANSCRIBING
+let _state       = 'IDLE';   // IDLE | LISTENING | TRANSCRIBING
 let _sendControl = null;
-let _porcupine = null;
-let _vosk     = null;
-let _enabled  = false;
+let _porcupine   = null;
+let _vosk        = null;
+let _enabled     = false;
+let _listenTimer = null; // Fix #16: track the listen-timeout so we can cancel it
 
-function getState() { return _state; }
+function getState()  { return _state; }
 function isEnabled() { return _enabled; }
 
 /**
@@ -32,11 +35,16 @@ function isEnabled() { return _enabled; }
 async function init(sendControl) {
   _sendControl = sendControl;
 
+  // Fix #15: guard against missing/empty API key before instantiating Porcupine
+  if (!process.env.PICOVOICE_API_KEY) {
+    console.log('[mob/voice] PICOVOICE_API_KEY not set — voice commands disabled');
+    return;
+  }
+
   try {
-    // Try loading @picovoice/porcupine-node (optional dep — may not be installed)
     const { Porcupine, BuiltinKeyword } = require('@picovoice/porcupine-node');
     _porcupine = new Porcupine(
-      process.env.PICOVOICE_API_KEY || '',
+      process.env.PICOVOICE_API_KEY,
       [BuiltinKeyword.HEY_GOOGLE], // placeholder — replace with custom "Hey MOB" model
       [0.5]
     );
@@ -75,14 +83,19 @@ function processAudio(frame) {
     if (keywordIndex >= 0 && _state === 'IDLE') {
       _state = 'LISTENING';
       if (_sendControl) _sendControl('voice:listening', {});
-      setTimeout(() => { if (_state === 'LISTENING') _state = 'IDLE'; }, 5000); // 5s timeout
+
+      // Fix #16: store timer reference so _matchCommand can cancel it
+      _listenTimer = setTimeout(() => {
+        _listenTimer = null;
+        if (_state === 'LISTENING') _state = 'IDLE';
+      }, 5000);
+
       return null;
     }
   } catch (_) { return null; }
 
   if (_state !== 'LISTENING') return null;
 
-  // Try Vosk recognition
   if (_vosk) {
     try {
       _vosk.acceptWaveform(Buffer.from(frame.buffer));
@@ -96,8 +109,10 @@ function processAudio(frame) {
 
 function _matchCommand(text) {
   const lower = text.toLowerCase().trim();
-  for (const [phrase, channel] of Object.entries(COMMANDS)) {
+  for (const [phrase, channel] of COMMANDS) {
     if (lower.includes(phrase)) {
+      // Fix #16: cancel the listen timeout before transitioning state
+      if (_listenTimer) { clearTimeout(_listenTimer); _listenTimer = null; }
       _state = 'IDLE';
       const payload = channel === 'recorder:setMic'
         ? { enabled: phrase === 'unmute' }
@@ -110,6 +125,7 @@ function _matchCommand(text) {
 }
 
 function stop() {
+  if (_listenTimer) { clearTimeout(_listenTimer); _listenTimer = null; }
   _state = 'IDLE';
   _enabled = false;
   try { if (_porcupine) { _porcupine.release(); _porcupine = null; } } catch (_) {}

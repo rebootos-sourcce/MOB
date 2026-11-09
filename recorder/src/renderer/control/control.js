@@ -664,19 +664,22 @@
   async function loadRecordingList(containerId, onSelect) {
     const list = $(containerId);
     if (!list) return;
-    const rows = await window.mob.db.all(
-      'SELECT id, path, duration_ms, status, created_at FROM recordings ORDER BY created_at DESC LIMIT 50',
-      []
-    );
+    // Fix #1: named query API; Fix #13: build DOM nodes — no dynamic innerHTML
+    const rows = await window.mob.db.query('recordings:list');
     if (!rows.length) { list.innerHTML = '<div class="empty-hint">No recordings yet.</div>'; return; }
-    list.innerHTML = rows.map(r => {
+    list.innerHTML = '';
+    rows.slice(0, 50).forEach(r => {
       const name = r.path.split(/[\\/]/).pop();
-      return `<div class="recording-item" data-id="${r.id}" title="${r.path}">
-        <span class="rec-name">${name}</span>
-        <span class="rec-dur">${fmtMs(r.duration_ms || 0)}</span>
-        <span class="badge" style="font-size:10px">${r.status || ''}</span>
-      </div>`;
-    }).join('');
+      const item = document.createElement('div');
+      item.className = 'recording-item';
+      item.dataset.id = r.id;
+      item.title = r.path;
+      const nameSpan = document.createElement('span'); nameSpan.className = 'rec-name'; nameSpan.textContent = name;
+      const durSpan  = document.createElement('span'); durSpan.className  = 'rec-dur';  durSpan.textContent  = fmtMs(r.duration_ms || 0);
+      const badge    = document.createElement('span'); badge.className    = 'badge';    badge.textContent    = r.status || ''; badge.style.fontSize = '10px';
+      item.append(nameSpan, durSpan, badge);
+      list.appendChild(item);
+    });
     list.querySelectorAll('.recording-item').forEach(item => {
       item.addEventListener('click', () => {
         list.querySelectorAll('.recording-item').forEach(x => x.classList.remove('selected'));
@@ -698,24 +701,29 @@
       $('editTagBox').hidden = true;
     });
 
+  // Fix #4: track listener so we can unsub before re-registering on each click
+  let _unsubTranscriptionProgress = null;
     $('btnTranscribe').onclick = async () => {
       if (!selectedRecordingId) return;
-      const row = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
+      // Fix #1: named query API
+      const row = await window.mob.db.query('recordings:get', [selectedRecordingId]);
       if (!row) return;
       $('editProgress').hidden = false;
       $('btnTranscribe').disabled = true;
       $('editProgressLabel').textContent = 'Loading model…';
       try {
-        window.api.on('transcription:progress', (p) => {
+        // Fix #4: cancel previous listener before attaching a new one
+        if (_unsubTranscriptionProgress) { _unsubTranscriptionProgress(); _unsubTranscriptionProgress = null; }
+        _unsubTranscriptionProgress = window.api.on('transcription:progress', (p) => {
           $('editProgressBar').style.width = (p.pct || 0) + '%';
           $('editProgressLabel').textContent = p.stage === 'loading_model' ? 'Loading Whisper…'
             : p.stage === 'transcribing' ? 'Transcribing…'
             : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
         });
         const result = await window.api.invoke('transcription:start', { recordingId: row.id, filePath: row.path });
-        const tx = await window.mob.db.get('SELECT full_text FROM transcripts WHERE id = ?', [result.transcriptId]);
+        const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; }
-        const tags = await window.mob.db.all('SELECT tag FROM metadata_tags WHERE recording_id = ? ORDER BY idf_score DESC', [row.id]);
+        const tags = await window.mob.db.query('tags:list', [row.id]);
         $('editTagBox').innerHTML = tags.map(t => `<span class="tag">${t.tag}</span>`).join('');
         $('editTagBox').hidden = false;
         $('editProgressBar').style.width = '100%';
@@ -729,10 +737,10 @@
 
     $('btnRemoveFillers').onclick = async () => {
       if (!selectedRecordingId) return;
-      const rec = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
-      const tx  = await window.mob.db.get('SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+      const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
       if (!tx) { alert('Transcribe first.'); return; }
-      const fillers = await window.mob.db.all('SELECT start_ms, end_ms FROM words WHERE transcript_id = ? AND is_filler = 1', [tx.id]);
+      const fillers = await window.mob.db.query('words:fillers', [tx.id]);
       if (!fillers.length) { alert('No fillers detected.'); return; }
       const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
       await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
@@ -741,13 +749,10 @@
 
     $('btnRemoveSilences').onclick = async () => {
       if (!selectedRecordingId) return;
-      const rec = await window.mob.db.get('SELECT * FROM recordings WHERE id = ?', [selectedRecordingId]);
-      const tx  = await window.mob.db.get('SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+      const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
       if (!tx) { alert('Transcribe first.'); return; }
-      // Silences are words with large gaps; use segments table
-      const segs = await window.mob.db.all(
-        "SELECT start_ms, end_ms FROM segments WHERE transcript_id = ? AND type = 'silence'", [tx.id]
-      );
+      const segs = await window.mob.db.query('segments:silences', [tx.id]);
       if (!segs.length) { alert('No silences detected.'); return; }
       const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
       await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
@@ -764,8 +769,7 @@
       $('prodDesc').textContent = '';
       $('prodHashtags').innerHTML = '';
       $('prodChapters').innerHTML = '';
-      // Load existing package if any
-      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]);
+      const pkg = await window.mob.db.query('packages:latest', [id]);
       if (pkg) renderPackage(pkg);
     });
 
@@ -774,7 +778,9 @@
       $('btnAssemble').disabled = true;
       try {
         const result = await window.api.invoke('production:assemble', { recordingId: selectedRecordingId });
-        const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE id = ?', [result.packageId]);
+        const pkg = result.packageId
+          ? await window.mob.db.query('packages:latest', [selectedRecordingId])
+          : null;
         if (pkg) renderPackage(pkg);
       } catch (e) {
         alert('Error: ' + e.message);
@@ -802,8 +808,8 @@
   // ── Distribution tab ──────────────────────────────────────────
   async function loadDistributionTab() {
     await loadRecordingList('distRecordingList', async (id) => {
-      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]);
-      const dist = pkg ? await window.mob.db.get('SELECT * FROM distributions WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [id]) : null;
+      const pkg  = await window.mob.db.query('packages:latest', [id]);
+      const dist = pkg ? await window.mob.db.query('distributions:latest', [id]) : null;
       $('distSection').hidden = false;
       $('distTitle').textContent = pkg ? pkg.title : 'No package yet';
       $('distStatus').textContent = dist ? dist.status : (pkg ? 'ready' : 'needs package');
@@ -811,7 +817,7 @@
 
     $('btnDistUpload').onclick = async () => {
       if (!selectedRecordingId) { alert('Select a recording.'); return; }
-      const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
+      const pkg = await window.mob.db.query('packages:latest', [selectedRecordingId]);
       if (!pkg) { alert('Generate a production package first.'); return; }
 
       $('distProgress').hidden = false;
@@ -819,13 +825,16 @@
       $('distProgressLabel').textContent = 'Preparing…';
       $('btnDistUpload').disabled = true;
 
-      const distributionId = crypto.randomUUID();
-      const deviceId = await window.mob.db.deviceId();
-      await window.mob.db.run(
-        `INSERT INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)
-         VALUES (?, ?, ?, ?, 'cloud', 'pending', datetime('now'))`,
-        [distributionId, deviceId, selectedRecordingId, pkg.id]
-      );
+      // Fix #21: UUID generation and DB insert happen in main process via sync:prepare
+      let distributionId;
+      try {
+        const prep = await window.api.invoke('sync:prepare', { recordingId: selectedRecordingId, packageId: pkg.id });
+        distributionId = prep.distributionId;
+      } catch (err) {
+        $('distProgressLabel').textContent = 'Prepare failed: ' + err.message;
+        $('btnDistUpload').disabled = false;
+        return;
+      }
 
       const unsubProgress = window.api.on('sync:progress', ({ stage, pct }) => {
         $('distProgressBar').style.width = pct + '%';

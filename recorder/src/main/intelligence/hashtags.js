@@ -39,7 +39,7 @@ function extractHashtags(text) {
 
   const tf = new Map();
   for (const w of rawWords) {
-    if (w.length < 4 || STOPWORDS.has(w)) continue;
+    if (w.length < 3 || STOPWORDS.has(w)) continue; // Fix #23: 3 allows api, ux, ml, ai
     tf.set(w, (tf.get(w) || 0) + 1);
   }
 

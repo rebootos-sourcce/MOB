@@ -5,6 +5,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const fsPromises = require('fs').promises;
 const { app } = require('electron');
 
 let SQL = null;      // sql.js module
@@ -44,20 +45,21 @@ function applySchema() {
 
 // ---------------------------------------------------------------- persistence
 
-function persist() {
+// Fix #7: async persist — no longer blocks the main thread on writeFileSync.
+async function persist() {
   if (!db || !dbPath) return;
   const data = db.export();
   const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(dbPath, Buffer.from(data));
+  await fsPromises.writeFile(dbPath, Buffer.from(data));
 }
 
 function schedulePersist() {
   dirty = true;
   if (saveTimer) return;
-  saveTimer = setTimeout(() => {
+  saveTimer = setTimeout(async () => {
     saveTimer = null;
-    if (dirty) { persist(); dirty = false; }
+    if (dirty) { dirty = false; await persist(); }
   }, 500);
 }
 
@@ -98,9 +100,9 @@ function exec(sql) {
   schedulePersist();
 }
 
-function close() {
+async function close() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
-  if (db) { persist(); db.close(); db = null; }
+  if (db) { await persist(); db.close(); db = null; }
 }
 
 function isReady() { return db !== null; }

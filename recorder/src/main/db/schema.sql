@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS edl_entries (
 
 CREATE TABLE IF NOT EXISTS transcripts (
   id           TEXT PRIMARY KEY,
-  recording_id TEXT NOT NULL REFERENCES recordings(id),
+  recording_id TEXT NOT NULL UNIQUE REFERENCES recordings(id),
   model        TEXT NOT NULL DEFAULT 'base.en',
   language     TEXT DEFAULT 'en',
   full_text    TEXT,
@@ -63,6 +63,8 @@ CREATE TABLE IF NOT EXISTS transcripts (
   wpm_avg      REAL,
   created_at   TEXT NOT NULL
 );
+-- Fix #19: enforce one active transcript per recording.
+-- transcription.js deletes the old transcript+words+segments before inserting.
 
 CREATE TABLE IF NOT EXISTS words (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,16 +89,8 @@ CREATE TABLE IF NOT EXISTS segments (
   energy        REAL DEFAULT 0.0
 );
 
-CREATE TABLE IF NOT EXISTS captions (
-  id            INTEGER PRIMARY KEY AUTOINCREMENT,
-  transcript_id TEXT NOT NULL REFERENCES transcripts(id),
-  clip_id       TEXT REFERENCES clips(id),
-  seq           INTEGER NOT NULL,
-  start_ms      INTEGER NOT NULL,
-  end_ms        INTEGER NOT NULL,
-  text          TEXT NOT NULL,
-  format        TEXT DEFAULT 'srt'
-);
+-- Fix #20: captions table removed — speech segments live in `segments` with type='speech',
+-- silence gaps with type='silence'. SRT/VTT export reads from segments.
 
 CREATE TABLE IF NOT EXISTS production_packages (
   id              TEXT PRIMARY KEY,
@@ -139,7 +133,7 @@ CREATE INDEX IF NOT EXISTS idx_words_trx       ON words(transcript_id);
 CREATE INDEX IF NOT EXISTS idx_words_start     ON words(transcript_id, start_ms);
 CREATE INDEX IF NOT EXISTS idx_words_filler    ON words(transcript_id, is_filler);
 CREATE INDEX IF NOT EXISTS idx_segments_trx    ON segments(transcript_id);
-CREATE INDEX IF NOT EXISTS idx_captions_trx    ON captions(transcript_id);
+-- idx_captions_trx removed (captions table dropped, Fix #20)
 CREATE INDEX IF NOT EXISTS idx_pkgs_rec        ON production_packages(recording_id);
 CREATE INDEX IF NOT EXISTS idx_dists_rec       ON distributions(recording_id);
 CREATE INDEX IF NOT EXISTS idx_dists_status    ON distributions(status);
