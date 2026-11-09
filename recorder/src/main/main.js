@@ -10,6 +10,7 @@ const EventEmitter = require('events');
 const dbHandlers = require('./ipc/db-handlers');
 const transcriptionHandlers = require('./ipc/transcription-handlers');
 const editHandlers = require('./ipc/edit-handlers');
+const productionHandlers = require('./ipc/production-handlers');
 const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
@@ -599,6 +600,7 @@ app.whenReady().then(async () => {
   dbHandlers.register();
   transcriptionHandlers.register(sendControl);
   editHandlers.register();
+  productionHandlers.register();
 
   sweepOldRaw();
   const s = settings.get();
