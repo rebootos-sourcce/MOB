@@ -164,4 +164,36 @@ function finalize(input, output, opts, onProgress) {
   });
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize };
+/**
+ * Extract a time range from a source file into a new file (stream copy, no re-encode).
+ * @param {string} input   source file path
+ * @param {string} output  destination file path
+ * @param {number} startMs start of range in ms
+ * @param {number} endMs   end of range in ms
+ */
+function extractSegment(input, output, startMs, endMs) {
+  const { spawn } = require('child_process');
+  const startSec = (startMs / 1000).toFixed(3);
+  const durSec   = ((endMs - startMs) / 1000).toFixed(3);
+  const args = [
+    '-y',
+    '-ss', startSec,
+    '-i', input,
+    '-t', durSec,
+    '-c', 'copy',
+    '-avoid_negative_ts', 'make_zero',
+    output
+  ];
+  return new Promise((resolve, reject) => {
+    const child = spawn(binaryPath(), args, { windowsHide: true });
+    let stderr = '';
+    child.stderr.on('data', d => { stderr += d.toString(); });
+    child.on('error', reject);
+    child.on('close', code => {
+      if (code === 0 && fs.existsSync(output)) resolve({ output });
+      else reject(new Error('ffmpeg extractSegment failed (code ' + code + '): ' + stderr.slice(-500)));
+    });
+  });
+}
+
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment };
