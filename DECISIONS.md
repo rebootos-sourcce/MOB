@@ -3428,3 +3428,16 @@ The nested cascade itself, directly under the summary box, is how "what's
 running" is shown; it does not also get a flat list duplicating the same
 patterns below it. **"Laws of Moral Integrity" comes off this panel.**
 **"Run a release" comes off this panel.** Neither belongs here.
+
+**The backlog and "Atüned, what's running" are updated every round, not on
+request. Ruled 9 November.** His words: "your job is to keep the backlog
+and what's running updated. Every round." TASKS.md and the dashboard
+artifact both move at the end of a round that changed anything, the same
+way a gate result does, not only when he asks to see them.
+
+**A merge-readiness signal is source-agnostic. Ruled the same round.** His
+words, on whether a ready branch or PR should show a signal to merge: "it
+doesn't matter where it comes from. If it's from another AI thread or
+whatever." The dashboard's signal is computed from the real, public state
+of each PR (open, not draft, green CI, a clean mergeable_state) regardless
+of which session or AI opened it, never only from this session's own work.
