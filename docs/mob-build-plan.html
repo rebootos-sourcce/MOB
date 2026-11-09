@@ -1,0 +1,1099 @@
+<title>MOB Build Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+:root {
+  --bg:    #0d0e10;
+  --bg2:   #161820;
+  --bg3:   #1d1f2a;
+  --bd:    #252835;
+  --fg:    #e4e6f0;
+  --fg2:   #8b90a8;
+  --fg3:   #50556a;
+  --red:   #e33b06;
+  --gold:  #c9a84c;
+  --green: #3db87a;
+  --blue:  #4b8ef0;
+  --purp:  #9b6df0;
+  --mono:  'JetBrains Mono', 'Cascadia Code', monospace;
+  --sans:  'Inter', system-ui, sans-serif;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100%;}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;z-index:10;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+.nav::-webkit-scrollbar{display:none;}
+.wm{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--red);text-transform:uppercase;padding:14px 16px 14px 0;white-space:nowrap;flex-shrink:0;border-right:1px solid var(--bd);margin-right:4px;}
+.nt{display:flex;align-items:center;gap:5px;padding:14px 14px;font-size:12px;font-weight:500;color:var(--fg3);cursor:pointer;border:none;background:none;white-space:nowrap;border-bottom:2px solid transparent;text-decoration:none;transition:color .15s,border-color .15s;}
+.nt:hover{color:var(--fg2);}
+.nt.on{color:var(--fg);border-bottom-color:var(--red);}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+.sec{display:none;max-width:900px;margin:0 auto;padding-block:48px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));}
+.sec.on{display:block;}
+
+.eyebrow{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.stitle{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px;text-wrap:balance;}
+.ssub{color:var(--fg2);font-size:15px;max-width:600px;margin-bottom:40px;}
+
+/* ADR */
+.adr{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;margin-bottom:20px;overflow:hidden;}
+.adr-h{display:flex;align-items:flex-start;gap:12px;padding:18px 22px;border-bottom:1px solid var(--bd);flex-wrap:wrap;}
+.adr-num{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:4px;padding:3px 7px;flex-shrink:0;margin-top:2px;}
+.adr-title{font-size:15px;font-weight:600;flex:1;min-width:0;}
+.badge{font-size:10px;font-family:var(--mono);letter-spacing:.06em;padding:3px 7px;border-radius:4px;flex-shrink:0;}
+.badge-ok{color:var(--green);background:rgba(61,184,122,.1);border:1px solid rgba(61,184,122,.2);}
+.adr-b{padding:18px 22px;display:grid;gap:14px;}
+.rl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin-bottom:5px;}
+.at{color:var(--fg2);font-size:13px;line-height:1.65;}
+.dec{color:var(--fg);font-size:13px;padding:11px 15px;background:rgba(227,59,6,.07);border-left:3px solid var(--red);border-radius:0 4px 4px 0;}
+
+/* Code */
+.cw{overflow-x:auto;background:var(--bg3);border:1px solid var(--bd);border-radius:6px;margin:14px 0;}
+.cw pre{font-family:var(--mono);font-size:12px;line-height:1.75;color:var(--fg2);padding:18px 22px;min-width:0;white-space:pre;}
+.cw pre .a{color:var(--green);}
+.cw pre .c{color:var(--gold);}
+.cw pre .r{color:var(--red);opacity:.7;}
+.cw pre .cm{color:var(--fg3);font-style:italic;}
+.cw pre .kw{color:#7eb2ff;}
+.cw pre .st{color:#98e0a0;}
+.cw pre .nm{color:#f0a060;}
+
+/* Sprint */
+.sc{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;margin-bottom:14px;overflow:hidden;}
+.sh{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid transparent;cursor:pointer;user-select:none;}
+.sh.open{border-bottom-color:var(--bd);}
+.snum{font-family:var(--mono);font-size:10px;font-weight:700;color:#fff;background:var(--red);border-radius:4px;padding:2px 8px;flex-shrink:0;}
+.snum.s0{background:var(--fg3);}
+.stit{font-size:14px;font-weight:600;flex:1;min-width:0;}
+.sdur{font-family:var(--mono);font-size:11px;color:var(--fg3);white-space:nowrap;}
+.sarr{font-family:var(--mono);font-size:12px;color:var(--fg3);transition:transform .2s;}
+.sh.open .sarr{transform:rotate(90deg);}
+.sb{padding:18px;display:none;}
+.sb.open{display:block;}
+.gi{display:flex;align-items:flex-start;gap:9px;padding:5px 0;font-size:12px;color:var(--fg2);border-bottom:1px solid rgba(37,40,53,.5);}
+.gi::before{content:'→';color:var(--red);font-family:var(--mono);font-size:10px;flex-shrink:0;margin-top:2px;}
+.files{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0;}
+.fc{font-family:var(--mono);font-size:10px;padding:2px 7px;background:rgba(75,142,240,.1);border:1px solid rgba(75,142,240,.2);border-radius:3px;color:var(--blue);}
+.aci{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--fg2);padding:3px 0;}
+.aci::before{content:'✓';color:var(--green);font-family:var(--mono);font-size:11px;flex-shrink:0;}
+
+/* Algo */
+.ac{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;margin-bottom:18px;overflow:hidden;}
+.ah{display:flex;align-items:center;gap:10px;padding:16px 22px;border-bottom:1px solid var(--bd);flex-wrap:wrap;}
+.an{font-size:14px;font-weight:600;flex:1;}
+.bc{font-family:var(--mono);font-size:10px;color:var(--red);background:rgba(227,59,6,.1);border:1px solid rgba(227,59,6,.2);padding:2px 7px;border-radius:3px;}
+.ab{padding:18px 22px;}
+.bi{display:flex;align-items:flex-start;gap:9px;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(37,40,53,.5);color:var(--fg2);}
+.bn{font-family:var(--mono);font-size:10px;color:var(--red);background:rgba(227,59,6,.1);padding:1px 5px;border-radius:3px;flex-shrink:0;margin-top:1px;}
+
+/* CF */
+.cfl{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:16px 0;}
+.cfb{padding:12px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:6px;}
+.cfb.new{border-color:rgba(61,184,122,.4);background:rgba(61,184,122,.04);}
+.cfb.fix{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04);}
+.cfb.del{opacity:.45;border-style:dashed;}
+.cbl{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.cfb.new .cbl{color:var(--green);}
+.cfb.del .cbl{color:var(--red);}
+.cbd{font-size:11px;color:var(--fg2);}
+
+h3{font-size:13px;font-weight:600;color:var(--fg);margin:18px 0 8px;}
+p{font-size:13px;color:var(--fg2);line-height:1.65;margin-bottom:10px;}
+ul{padding-left:16px;font-size:13px;color:var(--fg2);line-height:1.8;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+hr{border:none;border-top:1px solid var(--bd);margin:28px 0;}
+</style>
+
+<nav class="nav">
+  <span class="wm">MOB</span>
+  <a href="#plan"    class="nt on"><span class="dot" style="color:var(--gold)"></span>Decisions</a>
+  <a href="#schema"  class="nt"><span class="dot" style="color:var(--blue)"></span>Schema</a>
+  <a href="#algo"    class="nt"><span class="dot" style="color:var(--green)"></span>Algorithms</a>
+  <a href="#sprints" class="nt"><span class="dot" style="color:var(--red)"></span>Sprints</a>
+  <a href="#cf"      class="nt"><span class="dot" style="color:var(--purp)"></span>Cloudflare</a>
+</nav>
+
+<!-- ═══════════════════════════════ DECISIONS ═══════════════════════════════ -->
+<section id="plan" class="sec on">
+  <div class="eyebrow">Architecture Decision Records</div>
+  <div class="stitle">Five Decisions That Fix Everything</div>
+  <p class="ssub">Each ADR closes a category of bugs identified in the gap review. All are decided; none require further debate.</p>
+
+  <div class="adr">
+    <div class="adr-h">
+      <span class="adr-num">ADR-001</span>
+      <span class="adr-title">Local-First: SQLite in Electron is the Source of Truth</span>
+      <span class="badge badge-ok">DECIDED</span>
+    </div>
+    <div class="adr-b">
+      <div>
+        <div class="rl">Context</div>
+        <div class="at">The original architecture described intelligence algorithms running in Cloudflare Workers and D1 as the primary store. This directly contradicts the "fully offline" product promise, requires internet for every operation, and means multi-GB video uploads must route through a Worker (blocked by the 100MB body limit).</div>
+      </div>
+      <div>
+        <div class="rl">Decision</div>
+        <div class="dec">SQLite in the Electron main process is the sole source of truth. All six intelligence algorithms run locally in Node.js. D1, R2, and Queues are a sync and distribution layer only — optional, never blocking the core loop. A recording can reach production without any Cloudflare account.</div>
+      </div>
+      <div>
+        <div class="rl">Consequences</div>
+        <div class="at">Workers become thin API shims: auth, pre-signed URL generation, D1 replication writes, and Queue submissions. No algorithm logic crosses the network. R2 upload bypasses the Worker entirely via pre-signed URL. User data is never at risk if Cloudflare is down or the user is offline.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adr">
+    <div class="adr-h">
+      <span class="adr-num">ADR-002</span>
+      <span class="adr-title">EDL (Edit Decision List) as a First-Class Schema Concept</span>
+      <span class="badge badge-ok">DECIDED</span>
+    </div>
+    <div class="adr-b">
+      <div>
+        <div class="rl">Context</div>
+        <div class="at">When a user cuts a filler segment in Edit mode, the original recording timestamps survive but the exported clip has different timestamps. All downstream tables — captions, segments, chapters — reference the original recording timeline. After a cut, caption start_ms=12400 may now be caption start_ms=10900 in the export, breaking SRT files and YouTube chapter markers silently.</div>
+      </div>
+      <div>
+        <div class="rl">Decision</div>
+        <div class="dec">Add an edl_entries table recording which source ranges were kept and their remapped output positions. Provide a remapTimestamp(edlEntries, sourceMs) → outputMs function used by every table that generates export artifacts (captions, chapters, thumbnails).</div>
+      </div>
+      <div>
+        <div class="rl">Consequences</div>
+        <div class="at">SRT export, chapter JSON, and thumbnail selection all call remapTimestamp before writing positions. Cuts stack correctly: a second cut is applied to already-remapped output positions. The original words and segments rows are immutable; EDL entries describe the edit without destroying source data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adr">
+    <div class="adr-h">
+      <span class="adr-num">ADR-003</span>
+      <span class="adr-title">Device Identity + Ownership Column on All Root Tables</span>
+      <span class="badge badge-ok">DECIDED</span>
+    </div>
+    <div class="adr-b">
+      <div>
+        <div class="rl">Context</div>
+        <div class="at">No table has a user_id or device_id. When D1 is the sync target, any Worker request can read or overwrite any row. When multiple installations sync to the same D1 database, rows from different machines collide. The Worker has no way to scope queries or enforce ownership.</div>
+      </div>
+      <div>
+        <div class="rl">Decision</div>
+        <div class="dec">Generate a stable device_id (UUID v4) on first launch, stored in Electron's userData. Add device_id TEXT NOT NULL to recordings, distributions, and production_packages. Worker auth middleware validates a JWT whose sub claim equals the device_id. All D1 reads and writes are scoped to WHERE device_id = ?.</div>
+      </div>
+      <div>
+        <div class="rl">Consequences</div>
+        <div class="at">Multi-device use requires explicit sharing flow (out of scope for V1). Single-device use is fully isolated. Worker never touches another device's rows. Local SQLite does not enforce this (only one device writes to it), but the column is present for schema parity with D1.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adr">
+    <div class="adr-h">
+      <span class="adr-num">ADR-004</span>
+      <span class="adr-title">Cloudflare Queues + Durable Objects Replace KV for Distribution Jobs</span>
+      <span class="badge badge-ok">DECIDED</span>
+    </div>
+    <div class="adr-b">
+      <div>
+        <div class="rl">Context</div>
+        <div class="at">The original design used KV as an async job queue (KV.put(jobId, status)). KV has no queue semantics: no FIFO ordering, no retry, no dead-letter handling, no exactly-once delivery. A Worker reading from KV to process jobs is a polling anti-pattern. KV TTL-based cleanup is a source of silent data loss.</div>
+      </div>
+      <div>
+        <div class="rl">Decision</div>
+        <div class="dec">Use Cloudflare Queues for async distribution jobs (YouTube upload, TikTok submit, etc.). Use a Durable Object (DistributionCoordinator) to track per-distribution state machine: pending → uploading → processing → published. Add resume_session_uri TEXT to the distributions table so interrupted uploads resume rather than restart.</div>
+      </div>
+      <div>
+        <div class="rl">Consequences</div>
+        <div class="at">Queue consumer handles retries with exponential backoff automatically. The Durable Object holds the upload cursor so a 2GB video resumes from byte N, not byte 0. The distributions table becomes a read-only audit log of what the Durable Object decided.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="adr">
+    <div class="adr-h">
+      <span class="adr-num">ADR-005</span>
+      <span class="adr-title">Algorithm Correctness: Five Rules That Fix All Six Bugs</span>
+      <span class="badge badge-ok">DECIDED</span>
+    </div>
+    <div class="adr-b">
+      <div>
+        <div class="rl">Rules</div>
+        <div class="dec" style="font-size:12px;line-height:2;">
+          R1 — Filler pre-pad goes BEFORE the word (speaker hesitates before saying "um"), post-pad is ≤50ms<br>
+          R2 — start_ms is always max(0, computed_value) — never negative<br>
+          R3 — Overlapping filler/silence segments merge by extending the last segment's end_ms<br>
+          R4 — Caption overflow creates a new caption; it never merges with the next segment<br>
+          R5 — Hashtag extraction uses TF-IDF; raw TF is insufficient for multi-recording corpora
+        </div>
+      </div>
+      <div>
+        <div class="rl">Context</div>
+        <div class="at">These five rules address: negative timestamps when the first word is a filler, phantom gaps from bidirectional padding, duplicate captions from overflow merging into adjacent segments, and useless hashtags on short single recordings where every term has TF=1.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SCHEMA ═══════════════════════════════ -->
+<section id="schema" class="sec">
+  <div class="eyebrow">Corrected D1 + SQLite Schema</div>
+  <div class="stitle">Nine Tables, All Bugs Fixed</div>
+  <p class="ssub">Lines marked <span style="color:var(--green);font-family:var(--mono);font-size:12px;">+ green</span> are additions. <span style="color:var(--gold);font-family:var(--mono);font-size:12px;">~ gold</span> are changes from the original.</p>
+
+  <h3>Recording Layer</h3>
+  <div class="cw"><pre>
+<span class="kw">CREATE TABLE</span> recordings (
+  id          <span class="st">TEXT</span> <span class="kw">PRIMARY KEY</span>,        <span class="cm">-- rec-{ts}-{6hex}</span>
+  <span class="a">+ device_id  TEXT NOT NULL,              -- ADR-003: ownership</span>
+  path        <span class="st">TEXT</span>,
+  thumb       <span class="st">TEXT</span>,
+  <span class="c">~ r2_key     TEXT,                       -- was r2_url (never store expiring bearer)</span>
+  duration_ms <span class="st">INTEGER</span>,
+  codec       <span class="st">TEXT</span>, resolution <span class="st">TEXT</span>, fps <span class="st">INTEGER</span>, size_bytes <span class="st">INTEGER</span>,
+  status      <span class="st">TEXT</span> <span class="kw">DEFAULT</span> <span class="st">'raw'</span>,       <span class="cm">-- raw | transcribing | ready | archived</span>
+  title       <span class="st">TEXT</span>,
+  created_at  <span class="st">TEXT</span> <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> clips (
+  id           <span class="st">TEXT</span> <span class="kw">PRIMARY KEY</span>,
+  recording_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  type         <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,           <span class="cm">-- full | highlight | segment | export</span>
+  label        <span class="st">TEXT</span>,
+  start_ms     <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  end_ms       <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  path         <span class="st">TEXT</span>, r2_key <span class="st">TEXT</span>, codec <span class="st">TEXT</span>,
+  created_at   <span class="st">TEXT</span> <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> metadata_tags (
+  id           <span class="st">INTEGER</span> <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  recording_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  tag          <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,
+  type         <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,           <span class="cm">-- hashtag | topic | keyword</span>
+  platform     <span class="st">TEXT</span>,                     <span class="cm">-- youtube | tiktok | linkedin | NULL=all</span>
+  score        <span class="st">REAL</span> <span class="kw">DEFAULT</span> <span class="nm">1.0</span>,
+  <span class="a">+ idf_score   REAL DEFAULT 0.0            -- ADR-005: TF-IDF component</span>
+);
+</pre></div>
+
+  <h3>EDL — New Table (ADR-002)</h3>
+  <div class="cw"><pre>
+<span class="a">CREATE TABLE edl_entries (</span>
+<span class="a">  id              INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="a">  recording_id    TEXT NOT NULL REFERENCES recordings(id),</span>
+<span class="a">  clip_id         TEXT REFERENCES clips(id),  -- NULL = applies to full recording</span>
+<span class="a">  seq             INTEGER NOT NULL,            -- order of retained ranges</span>
+<span class="a">  source_start_ms INTEGER NOT NULL,            -- original recording timestamp</span>
+<span class="a">  source_end_ms   INTEGER NOT NULL,</span>
+<span class="a">  output_start_ms INTEGER NOT NULL,            -- remapped export timestamp</span>
+<span class="a">  output_end_ms   INTEGER NOT NULL</span>
+<span class="a">);</span>
+<span class="a">CREATE INDEX idx_edl_rec ON edl_entries(recording_id, seq);</span>
+<span class="a">CREATE INDEX idx_edl_clip ON edl_entries(clip_id, seq);</span>
+</pre></div>
+
+  <h3>Transcript Layer</h3>
+  <div class="cw"><pre>
+<span class="kw">CREATE TABLE</span> transcripts (
+  id           <span class="st">TEXT</span> <span class="kw">PRIMARY KEY</span>,
+  recording_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  model        <span class="st">TEXT</span> <span class="kw">NOT NULL DEFAULT</span> <span class="st">'base.en'</span>,
+  language     <span class="st">TEXT</span> <span class="kw">DEFAULT</span> <span class="st">'en'</span>,
+  full_text    <span class="st">TEXT</span>, word_count <span class="st">INTEGER</span>, wpm_avg <span class="st">REAL</span>,
+  created_at   <span class="st">TEXT</span> <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> words (
+  id            <span class="st">INTEGER</span> <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  word          <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,
+  start_ms      <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  end_ms        <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  confidence    <span class="st">REAL</span>,
+  is_filler     <span class="st">INTEGER</span> <span class="kw">DEFAULT</span> <span class="nm">0</span>,
+  is_silence    <span class="st">INTEGER</span> <span class="kw">DEFAULT</span> <span class="nm">0</span>
+);
+<span class="kw">CREATE INDEX</span> idx_words_trx    <span class="kw">ON</span> words(transcript_id);
+<span class="kw">CREATE INDEX</span> idx_words_start  <span class="kw">ON</span> words(transcript_id, start_ms);
+<span class="kw">CREATE INDEX</span> idx_words_filler <span class="kw">ON</span> words(transcript_id, is_filler);
+
+<span class="kw">CREATE TABLE</span> segments (
+  id            <span class="st">INTEGER</span> <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  seq           <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  start_ms      <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  end_ms        <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  text          <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,
+  <span class="c">~ type         TEXT DEFAULT 'speech',    -- speech | silence | filler | retake | bookmark</span>
+  wpm           <span class="st">REAL</span>,
+  energy        <span class="st">REAL</span> <span class="kw">DEFAULT</span> <span class="nm">0.0</span>
+);
+
+<span class="kw">CREATE TABLE</span> captions (
+  id            <span class="st">INTEGER</span> <span class="kw">PRIMARY KEY AUTOINCREMENT</span>,
+  transcript_id <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> transcripts(id),
+  clip_id       <span class="st">TEXT</span> <span class="kw">REFERENCES</span> clips(id),
+  seq           <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  start_ms      <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  end_ms        <span class="st">INTEGER</span> <span class="kw">NOT NULL</span>,
+  text          <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,
+  format        <span class="st">TEXT</span> <span class="kw">DEFAULT</span> <span class="st">'srt'</span>
+);
+</pre></div>
+
+  <h3>Distribution Layer</h3>
+  <div class="cw"><pre>
+<span class="kw">CREATE TABLE</span> production_packages (
+  id               <span class="st">TEXT</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="a">+ device_id        TEXT NOT NULL,</span>
+  recording_id     <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  clip_id          <span class="st">TEXT</span> <span class="kw">REFERENCES</span> clips(id),
+  title            <span class="st">TEXT</span>, title_variants <span class="st">TEXT</span>,
+  description      <span class="st">TEXT</span>, short_desc <span class="st">TEXT</span>,
+  hashtags_json    <span class="st">TEXT</span>, chapters_json <span class="st">TEXT</span>,
+  generated_by     <span class="st">TEXT</span> <span class="kw">DEFAULT</span> <span class="st">'whisper'</span>,
+  created_at       <span class="st">TEXT</span> <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> distributions (
+  id                  <span class="st">TEXT</span> <span class="kw">PRIMARY KEY</span>,
+  <span class="a">+ device_id           TEXT NOT NULL,</span>
+  recording_id        <span class="st">TEXT</span> <span class="kw">NOT NULL REFERENCES</span> recordings(id),
+  clip_id             <span class="st">TEXT</span> <span class="kw">REFERENCES</span> clips(id),
+  package_id          <span class="st">TEXT</span> <span class="kw">REFERENCES</span> production_packages(id),
+  platform            <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,  <span class="cm">-- r2 | youtube | tiktok | linkedin | twitter</span>
+  status              <span class="st">TEXT</span> <span class="kw">DEFAULT</span> <span class="st">'pending'</span>,
+  <span class="a">+ resume_session_uri  TEXT,              -- idempotent upload resume (ADR-004)</span>
+  platform_id         <span class="st">TEXT</span>, platform_url <span class="st">TEXT</span>, error_msg <span class="st">TEXT</span>,
+  created_at          <span class="st">TEXT</span> <span class="kw">NOT NULL</span>,
+  published_at        <span class="st">TEXT</span>
+);
+</pre></div>
+
+  <h3>EDL Remap Function (TypeScript)</h3>
+  <div class="cw"><pre>
+<span class="cm">/** Remap a source recording timestamp to its export position after cuts. */</span>
+<span class="kw">function</span> <span class="st">remapTimestamp</span>(edl: EdlEntry[], sourceMs: number): number | null {
+  <span class="kw">for</span> (const entry of edl) {
+    <span class="kw">if</span> (sourceMs >= entry.source_start_ms && sourceMs <= entry.source_end_ms) {
+      const offset = sourceMs - entry.source_start_ms;
+      <span class="kw">return</span> entry.output_start_ms + offset;
+    }
+  }
+  <span class="kw">return null</span>; <span class="cm">// sourceMs was cut out — caller decides how to handle</span>
+}
+
+<span class="cm">/** Rebuild EDL output positions after a new cut is applied. */</span>
+<span class="kw">function</span> <span class="st">applycut</span>(edl: EdlEntry[], cutStart: number, cutEnd: number): EdlEntry[] {
+  const result: EdlEntry[] = [];
+  let outputCursor = 0;
+
+  <span class="kw">for</span> (const entry of edl) {
+    <span class="cm">// Ranges that don't intersect the cut pass through</span>
+    if (entry.source_end_ms <= cutStart || entry.source_start_ms >= cutEnd) {
+      const duration = entry.source_end_ms - entry.source_start_ms;
+      result.push({ ...entry, output_start_ms: outputCursor, output_end_ms: outputCursor + duration });
+      outputCursor += duration;
+    } else {
+      <span class="cm">// Split: keep the part before the cut</span>
+      if (entry.source_start_ms < cutStart) {
+        const pre = cutStart - entry.source_start_ms;
+        result.push({ ...entry, source_end_ms: cutStart, output_start_ms: outputCursor, output_end_ms: outputCursor + pre });
+        outputCursor += pre;
+      }
+      <span class="cm">// Keep the part after the cut</span>
+      if (entry.source_end_ms > cutEnd) {
+        const post = entry.source_end_ms - cutEnd;
+        result.push({ ...entry, source_start_ms: cutEnd, output_start_ms: outputCursor, output_end_ms: outputCursor + post });
+        outputCursor += post;
+      }
+    }
+  }
+  return result;
+}
+</pre></div>
+</section>
+
+<!-- ═══════════════════════════════ ALGORITHMS ═══════════════════════════════ -->
+<section id="algo" class="sec">
+  <div class="eyebrow">Corrected Algorithm Specifications</div>
+  <div class="stitle">Six Algorithms, All Bugs Addressed</div>
+  <p class="ssub">Pseudocode is the spec. Implementation lives in <code style="font-family:var(--mono);font-size:12px;color:var(--blue);">main/intelligence/</code>.</p>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">1 — Filler Detection</span>
+      <span class="bc">4 bugs fixed</span>
+    </div>
+    <div class="ab">
+      <div class="rl" style="margin-top:0;">Bugs Fixed</div>
+      <div class="bi"><span class="bn">B1</span> Pre-pad was applied after the word — speaker hesitates BEFORE saying "um", not after</div>
+      <div class="bi"><span class="bn">B2</span> No guard against negative start_ms on first-word fillers</div>
+      <div class="bi"><span class="bn">B3</span> No overlap merge — sequential fillers produced a gap between adjacent padded regions</div>
+      <div class="bi" style="border-bottom:none;"><span class="bn">B4</span> Multi-word context phrases ("you know") can't be detected word-by-word without bigram pass</div>
+      <div class="cw"><pre>
+<span class="kw">const</span> FILLERS = new Set([<span class="st">'um','uh','hmm','uhh','umm','uh-huh','mhm'</span>]);
+<span class="kw">const</span> PRE_PAD  = <span class="nm">150</span>;   <span class="cm">// ms before filler (ADR-005 R1)</span>
+<span class="kw">const</span> POST_PAD = <span class="nm">50</span>;    <span class="cm">// ms after filler</span>
+
+<span class="kw">function</span> <span class="st">detectFillers</span>(words: Word[]): Segment[] {
+  const segs: Segment[] = [];
+
+  words.forEach(w => {
+    const tok = w.word.toLowerCase().replace(/[.,?!;:]+$/, '');
+    if (!FILLERS.has(tok)) return;
+
+    w.is_filler = 1;
+    const s = Math.max(<span class="nm">0</span>, w.start_ms - PRE_PAD);  <span class="cm">// ADR-005 R1, R2</span>
+    const e = w.end_ms + POST_PAD;
+
+    const last = segs.at(-<span class="nm">1</span>);
+    if (last && s <= last.end_ms) {
+      last.end_ms = Math.max(last.end_ms, e);          <span class="cm">// merge (ADR-005 R3)</span>
+    } else {
+      segs.push({ type: <span class="st">'filler'</span>, start_ms: s, end_ms: e, text: tok });
+    }
+  });
+
+  <span class="cm">// Bigram pass for context phrases ("you know", "i mean")</span>
+  <span class="kw">const</span> BIGRAM_FILLERS = new Set([<span class="st">'you know','i mean','you see','right so'</span>]);
+  <span class="kw">for</span> (let i = 0; i < words.length - 1; i++) {
+    const bigram = words[i].word.toLowerCase() + ' ' + words[i+1].word.toLowerCase();
+    if (BIGRAM_FILLERS.has(bigram)) {
+      words[i].is_filler = words[i+1].is_filler = 1;
+      const s = Math.max(0, words[i].start_ms - PRE_PAD);
+      const e = words[i+1].end_ms + POST_PAD;
+      const last = segs.at(-1);
+      if (last && s <= last.end_ms) last.end_ms = Math.max(last.end_ms, e);
+      else segs.push({ type: <span class="st">'filler'</span>, start_ms: s, end_ms: e, text: bigram });
+    }
+  }
+  return segs.sort((a,b) => a.start_ms - b.start_ms);
+}
+</pre></div>
+    </div>
+  </div>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">2 — Silence Detection</span>
+      <span class="bc">1 bug fixed</span>
+    </div>
+    <div class="ab">
+      <div class="bi"><span class="bn">B1</span> No gap-merge parameter — adjacent silences with a brief word bridge were left separate, producing stutter cuts in the edit view</div>
+      <div class="cw"><pre>
+<span class="kw">const</span> SILENCE_MIN_MS  = <span class="nm">500</span>;   <span class="cm">// configurable — shorter gaps ignored</span>
+<span class="kw">const</span> GAP_MERGE_MS    = <span class="nm">200</span>;   <span class="cm">// merge silences separated by ≤ this</span>
+
+<span class="kw">function</span> <span class="st">detectSilences</span>(words: Word[], minMs = SILENCE_MIN_MS): Segment[] {
+  const raw: Segment[] = [];
+  for (let i = 1; i < words.length; i++) {
+    const gap = words[i].start_ms - words[i-1].end_ms;
+    if (gap >= minMs)
+      raw.push({ type: 'silence', start_ms: words[i-1].end_ms, end_ms: words[i].start_ms, text: '' });
+  }
+  <span class="cm">// merge adjacent silences (ADR-005 R3)</span>
+  return raw.reduce((acc, s) => {
+    const last = acc.at(-1);
+    if (last && s.start_ms - last.end_ms <= GAP_MERGE_MS)
+      last.end_ms = s.end_ms;
+    else acc.push({ ...s });
+    return acc;
+  }, [] as Segment[]);
+}
+</pre></div>
+    </div>
+  </div>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">3 — Caption Formation</span>
+      <span class="bc">2 bugs fixed</span>
+    </div>
+    <div class="ab">
+      <div class="bi"><span class="bn">B1</span> Overflow merged into the following segment, producing captions that start mid-sentence</div>
+      <div class="bi" style="border-bottom:none;"><span class="bn">B2</span> No gap enforcement between adjacent captions — SRT readers reject captions with identical or reversed timestamps</div>
+      <div class="cw"><pre>
+<span class="kw">const</span> MAX_LINE   = <span class="nm">42</span>;   <span class="cm">-- chars per line (EBU-TT recommendation)</span>
+<span class="kw">const</span> MAX_LINES  = <span class="nm">2</span>;
+<span class="kw">const</span> MIN_GAP_MS = <span class="nm">83</span>;   <span class="cm">-- 2 frames @ 24fps</span>
+
+<span class="kw">function</span> <span class="st">formCaptions</span>(words: Word[]): Caption[] {
+  const caps: Caption[] = [];
+  let batch: Word[] = [], line = '', lines = 1;
+
+  const flush = () => {
+    if (!batch.length) return;
+    caps.push({ seq: caps.length+1, start_ms: batch[0].start_ms,
+                end_ms: batch.at(-1)!.end_ms,
+                text: batch.map(w => w.word).join(' '), format: 'srt' });
+    batch = []; line = ''; lines = 1;
+  };
+
+  for (const w of words) {
+    const test = line ? line + ' ' + w.word : w.word;
+    if (test.length > MAX_LINE) {
+      if (lines < MAX_LINES) { lines++; line = w.word; batch.push(w); }
+      else { flush(); line = w.word; batch = [w]; }   <span class="cm">-- ADR-005 R4: overflow = new caption</span>
+    } else { line = test; batch.push(w); }
+  }
+  flush();
+
+  <span class="cm">-- Enforce inter-caption gap (ADR-005 — no overlap)</span>
+  for (let i = 1; i < caps.length; i++) {
+    if (caps[i].start_ms - caps[i-1].end_ms < MIN_GAP_MS)
+      caps[i-1].end_ms = caps[i].start_ms - MIN_GAP_MS;
+  }
+  return caps;
+}
+</pre></div>
+    </div>
+  </div>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">4 — Hashtag Extraction (TF-IDF)</span>
+      <span class="bc">1 bug fixed</span>
+    </div>
+    <div class="ab">
+      <div class="bi" style="border-bottom:none;"><span class="bn">B1</span> Pure TF means every unique word scores identically on a single recording — IDF component needed to surface distinguishing terms across the corpus</div>
+      <div class="cw"><pre>
+<span class="kw">const</span> STOPS = new Set([<span class="st">'the','a','an','is','it','i','you','we','my',
+  'and','or','but','so','to','of','in','on','at','be','are','was','this'</span>]);
+<span class="kw">const</span> PLATFORM_CAPS = { youtube: <span class="nm">15</span>, tiktok: <span class="nm">5</span>, linkedin: <span class="nm">10</span>, twitter: <span class="nm">3</span> };
+
+<span class="kw">function</span> <span class="st">extractHashtags</span>(
+  transcript: Transcript, corpus: Transcript[], platform: string
+): string[] {
+  const tokens = transcript.full_text!
+    .toLowerCase().split(/\W+/)
+    .filter(t => t.length > 3 && !STOPS.has(t));
+
+  <span class="cm">// TF</span>
+  const tf: Record<string, number> = {};
+  tokens.forEach(t => tf[t] = (tf[t] ?? 0) + 1);
+
+  <span class="cm">// IDF — log(N / (1 + docs containing term))</span>
+  const N = corpus.length || 1;
+  const scores: Record<string, number> = {};
+  for (const [term, freq] of Object.entries(tf)) {
+    const df = corpus.filter(doc => doc.full_text?.includes(term)).length;
+    const idf = Math.log(N / (1 + df));
+    scores[term] = (freq / tokens.length) * idf;
+    <span class="cm">// save to metadata_tags.idf_score for caching</span>
+  }
+
+  <span class="cm">// Compound tags via bigram</span>
+  const bigrams: Record<string, number> = {};
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const b = tokens[i] + tokens[i+1];
+    bigrams[b] = (bigrams[b] ?? 0) + 1;
+  }
+
+  const top = Object.entries(scores).sort((a,b) => b[1]-a[1]).slice(0,12).map(([t]) => t);
+  const topBi = Object.entries(bigrams).filter(([,c]) => c > 1)
+                      .sort((a,b) => b[1]-a[1]).slice(0,5).map(([b]) => b);
+
+  const cap = PLATFORM_CAPS[platform] ?? 10;
+  return [...new Set([...top, ...topBi])].slice(0, cap).map(t => '#' + t.replace(/\s+/g,''));
+}
+</pre></div>
+    </div>
+  </div>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">5 — Energy Scoring</span>
+      <span class="bc">new spec</span>
+    </div>
+    <div class="ab">
+      <p style="margin-bottom:12px;">Assigns a 0.0–1.0 energy value to each segment using RMS amplitude from the decoded audio buffer. High-energy segments surface in the Edit mode as highlight candidates.</p>
+      <div class="cw"><pre>
+<span class="cm">/** audioFloat32: PCM samples from Web Audio decodeAudioData, range -1.0 to 1.0 */</span>
+<span class="kw">function</span> <span class="st">scoreSegmentEnergy</span>(
+  audioFloat32: Float32Array, sampleRate: number,
+  segment: Segment
+): number {
+  const start = Math.floor((segment.start_ms / 1000) * sampleRate);
+  const end   = Math.min(audioFloat32.length, Math.floor((segment.end_ms / 1000) * sampleRate));
+  if (end <= start) return 0;
+
+  let sum = 0;
+  for (let i = start; i < end; i++) sum += audioFloat32[i] * audioFloat32[i];
+  const rms = Math.sqrt(sum / (end - start));
+
+  <span class="cm">// Normalize: typical speech RMS ≈ 0.02–0.25 on normalized float</span>
+  return Math.min(1.0, rms / 0.25);
+}
+</pre></div>
+    </div>
+  </div>
+
+  <div class="ac">
+    <div class="ah">
+      <span class="an">6 — Production Package Assembly</span>
+      <span class="bc">1 fix (title API)</span>
+    </div>
+    <div class="ab">
+      <div class="bi" style="border-bottom:none;"><span class="bn">B1</span> Title generation made a Claude API call that is dead code — no API key is bundled. Title comes from the highest-energy segment's text, cleaned up locally.</div>
+      <div class="cw"><pre>
+<span class="kw">function</span> <span class="st">assemblePackage</span>(recording: Recording, transcript: Transcript,
+  segments: Segment[], captions: Caption[], hashtags: string[]): ProductionPackage {
+
+  <span class="cm">// Title: take text of the highest-energy non-filler segment, 60 char max</span>
+  const best = segments
+    .filter(s => s.type === 'speech' && s.energy > 0.5)
+    .sort((a,b) => b.energy - a.energy)[0];
+  const title = best ? best.text.substring(0, 60).trim() : (recording.title ?? 'Untitled');
+
+  <span class="cm">// Chapters: segments with energy > 0.6 and duration > 15s become chapter markers</span>
+  const chapters = segments
+    .filter(s => s.type === 'speech' && s.energy > 0.6
+              && (s.end_ms - s.start_ms) > 15000)
+    .map(s => ({ ms: s.start_ms, label: s.text.substring(0, 40) }));
+
+  return {
+    id: `pkg-${Date.now().toString(36)}-${crypto.randomUUID().slice(0,6)}`,
+    device_id: recording.device_id,
+    recording_id: recording.id,
+    title,
+    description: transcript.full_text?.substring(0, 500) ?? '',
+    hashtags_json: JSON.stringify(hashtags),
+    chapters_json: JSON.stringify(chapters),
+    generated_by: 'whisper',
+    created_at: new Date().toISOString(),
+  };
+}
+</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SPRINTS ═══════════════════════════════ -->
+<section id="sprints" class="sec">
+  <div class="eyebrow">Build Sequence</div>
+  <div class="stitle">Nine Sprints to Shipping</div>
+  <p class="ssub">Each sprint is atomic and testable. A sprint's acceptance criteria are the definition of done. Click a sprint to expand it.</p>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s0">
+      <span class="snum s0">S0</span>
+      <span class="stit">Architecture Decision Records</span>
+      <span class="sdur">1 day</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s0">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Commit ADRs 001-005 as docs/adr/ markdown files</div>
+      <div class="gi">Update mob-architecture.html to reflect local-first decision</div>
+      <div class="gi">No code changes — decisions only</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">docs/adr/001-local-first.md</span>
+        <span class="fc">docs/adr/002-edl.md</span>
+        <span class="fc">docs/adr/003-device-identity.md</span>
+        <span class="fc">docs/adr/004-queues.md</span>
+        <span class="fc">docs/adr/005-algorithm-correctness.md</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Each ADR has: context, decision, consequences sections</div>
+      <div class="aci">Architecture doc updated to remove "runs in Cloudflare Workers" from intelligence section</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s1">
+      <span class="snum">S1</span>
+      <span class="stit">Local Data Foundation</span>
+      <span class="sdur">3 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s1">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">SQLite module in Electron main process using better-sqlite3</div>
+      <div class="gi">Corrected schema (ADRs 002-003 columns) with migration runner</div>
+      <div class="gi">IPC bridge exposing db:insert, db:query, db:exec to renderer</div>
+      <div class="gi">Device ID generated on first launch, stored in userData/device.json</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/db/schema.sql</span>
+        <span class="fc">main/db/sqlite.js</span>
+        <span class="fc">main/db/migrations/001-initial.sql</span>
+        <span class="fc">main/db/migrations/002-edl.sql</span>
+        <span class="fc">main/ipc/db-handlers.js</span>
+        <span class="fc">main/identity.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">App opens with a fresh SQLite database in userData/mob.db</div>
+      <div class="aci">device.json exists on first launch with a stable UUID v4</div>
+      <div class="aci">Renderer can call window.mob.db.query('SELECT 1') and receive [{ '1': 1 }]</div>
+      <div class="aci">Running migrations twice is idempotent (no errors on re-run)</div>
+      <div class="aci">Schema has edl_entries table, device_id on recordings and distributions</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s2">
+      <span class="snum">S2</span>
+      <span class="stit">Recording Layer</span>
+      <span class="sdur">3 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s2">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">MediaRecorder start/stop with HW encoder probe (VideoToolbox → H.264 fallback)</div>
+      <div class="gi">Save recording row to SQLite on stop (id, path, duration_ms, device_id)</div>
+      <div class="gi">R2 key generation: rec-{id}.mp4 — stored in r2_key, NOT r2_url</div>
+      <div class="gi">Silero VAD gate prevents recording empty silence segments</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/recording/recorder.js</span>
+        <span class="fc">main/recording/encoder-probe.js</span>
+        <span class="fc">main/recording/vad-gate.js</span>
+        <span class="fc">main/r2/key.js</span>
+        <span class="fc">main/ipc/recording-handlers.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Recording a 10-second clip produces a valid .mp4 in userData/recordings/</div>
+      <div class="aci">recordings table has a row with correct duration_ms and device_id</div>
+      <div class="aci">r2_key is set, r2_url column does not exist in schema</div>
+      <div class="aci">HW encoder is used on Apple Silicon; software fallback on unsupported hardware</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s3">
+      <span class="snum">S3</span>
+      <span class="stit">Transcription Pipeline</span>
+      <span class="sdur">5 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s3">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Whisper base.en (148MB) loaded from userData/models/, progress events over IPC</div>
+      <div class="gi">Words → Segments → Captions pipeline executing in Node.js worker thread</div>
+      <div class="gi">Corrected filler detection (ADR-005: pre-pad, negative guard, merge)</div>
+      <div class="gi">Silence detection with gap-merge parameter</div>
+      <div class="gi">Caption formation with overflow-as-new-caption and MIN_GAP enforcement</div>
+      <div class="gi">Energy scoring per segment from decoded PCM buffer</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/transcription/whisper.js</span>
+        <span class="fc">main/transcription/pipeline.js</span>
+        <span class="fc">main/intelligence/filler.js</span>
+        <span class="fc">main/intelligence/silence.js</span>
+        <span class="fc">main/intelligence/captions.js</span>
+        <span class="fc">main/intelligence/energy.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Transcribing a 60-second recording populates words, segments, captions tables</div>
+      <div class="aci">Progress events fire at 10% intervals during transcription</div>
+      <div class="aci">Filler segments have start_ms ≥ 0</div>
+      <div class="aci">No two adjacent captions have overlapping timestamps</div>
+      <div class="aci">Every segment has an energy value between 0.0 and 1.0</div>
+      <div class="aci">Model file is downloaded once; subsequent launches skip download</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s4">
+      <span class="snum">S4</span>
+      <span class="stit">Edit Layer + EDL</span>
+      <span class="sdur">4 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s4">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Timeline cut gesture writes edl_entries rows and rebuilds output positions</div>
+      <div class="gi">remapTimestamp() used by SRT export and chapter generation</div>
+      <div class="gi">Clip row created from EDL — path set after ffmpeg extract finishes</div>
+      <div class="gi">Auto-cut: "Remove all fillers" and "Remove all silences > 1s" buttons</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/edit/edl.js</span>
+        <span class="fc">main/edit/clip-export.js</span>
+        <span class="fc">renderer/edit/timeline.js</span>
+        <span class="fc">renderer/edit/waveform.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Cutting 3 segments produces correct edl_entries seq 0,1,2 with output positions summing to total retained duration</div>
+      <div class="aci">SRT export uses remapped timestamps — captions are in sync with the exported clip</div>
+      <div class="aci">"Remove all fillers" cut reduces exported clip duration by the sum of filler segment durations</div>
+      <div class="aci">Undo (Ctrl+Z) restores the previous EDL state</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s5">
+      <span class="snum">S5</span>
+      <span class="stit">Intelligence Layer</span>
+      <span class="sdur">3 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s5">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">TF-IDF hashtag extraction with IDF component and bigram compound tags</div>
+      <div class="gi">Production package assembly (title from energy, chapters from energy+duration)</div>
+      <div class="gi">Platform formatters: YouTube (15 tags, 500-char desc), TikTok (5 tags), LinkedIn (10 tags)</div>
+      <div class="gi">Package stored in production_packages, hashtags in metadata_tags with idf_score</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/intelligence/hashtags.js</span>
+        <span class="fc">main/intelligence/packages.js</span>
+        <span class="fc">main/intelligence/chapters.js</span>
+        <span class="fc">main/intelligence/formatters.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Generating a package for a 5-minute recording produces ≤ 15 unique hashtags</div>
+      <div class="aci">Hashtags differ between two recordings on the same topic (IDF is working)</div>
+      <div class="aci">Chapter timestamps remap correctly through EDL (EDL integration verified)</div>
+      <div class="aci">idf_score is non-zero in metadata_tags rows</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s6">
+      <span class="snum">S6</span>
+      <span class="stit">Four-Mode UI</span>
+      <span class="sdur">5 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s6">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Tab bar: Camera → Edit → Production → Distribution (Premiere-style workspace switching)</div>
+      <div class="gi">Camera mode: recording controls, bubble window, timer</div>
+      <div class="gi">Edit mode: waveform + timeline, segment list, cut controls, SRT preview</div>
+      <div class="gi">Production mode: title/desc/hashtag editor, platform selector, package preview</div>
+      <div class="gi">Distribution mode: platform cards with status badges, publish queue</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">renderer/modes/camera.js</span>
+        <span class="fc">renderer/modes/edit.js</span>
+        <span class="fc">renderer/modes/production.js</span>
+        <span class="fc">renderer/modes/distribution.js</span>
+        <span class="fc">renderer/components/tab-bar.js</span>
+        <span class="fc">renderer/components/waveform.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Tab bar switches modes without page reload</div>
+      <div class="aci">Edit mode shows waveform with colored segment overlay (red=filler, grey=silence)</div>
+      <div class="aci">Production mode populates title/hashtags from the generated package</div>
+      <div class="aci">Distribution mode shows platform status: not connected / ready / uploading / published</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s7">
+      <span class="snum">S7</span>
+      <span class="stit">Voice Commands</span>
+      <span class="sdur">4 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s7">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Porcupine WASM wake word ("Hey MOB") with Silero VAD gate</div>
+      <div class="gi">Vosk WASM grammar recognition for 8 commands (start/stop/cut/mark/switch-mode)</div>
+      <div class="gi">Voice state machine: IDLE → LISTENING → (CAMERA/EDIT/PRODUCTION/DISTRIBUTION) + TRANSCRIBING</div>
+      <div class="gi">TRANSCRIBING state shows progress bar and blocks voice commands during Whisper run</div>
+      <div class="gi">5-second command timeout: auto-returns to IDLE if no command recognized</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">main/voice/wake-word.js</span>
+        <span class="fc">main/voice/recognizer.js</span>
+        <span class="fc">main/voice/state-machine.js</span>
+        <span class="fc">renderer/voice/indicator.js</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Saying "Hey MOB" transitions from IDLE to LISTENING (indicator turns amber)</div>
+      <div class="aci">Saying "Start recording" in LISTENING starts the recording</div>
+      <div class="aci">During transcription, voice commands are queued — not silently dropped</div>
+      <div class="aci">5-second silence after wake word returns to IDLE without crashing</div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sh" data-sprint="s8">
+      <span class="snum">S8</span>
+      <span class="stit">Cloudflare Sync + Distribution</span>
+      <span class="sdur">6 days</span>
+      <span class="sarr">▶</span>
+    </div>
+    <div class="sb" id="s8">
+      <div class="rl" style="margin-top:0;">Goals</div>
+      <div class="gi">Worker auth middleware: validates device JWT, scopes all queries by device_id</div>
+      <div class="gi">Pre-signed R2 URL endpoint — video upload bypasses Worker body limit</div>
+      <div class="gi">Cloudflare Queue consumer for distribution jobs (YouTube, TikTok, LinkedIn)</div>
+      <div class="gi">Durable Object (DistributionCoordinator) holding upload cursor + resume_session_uri</div>
+      <div class="gi">YouTube OAuth PKCE loopback server on localhost:4040</div>
+      <div class="gi">Distribution retry is idempotent: resume_session_uri from previous attempt used if present</div>
+      <div class="rl">Files</div>
+      <div class="files">
+        <span class="fc">workers/src/index.ts</span>
+        <span class="fc">workers/src/auth.ts</span>
+        <span class="fc">workers/src/routes/presigned.ts</span>
+        <span class="fc">workers/src/routes/recordings.ts</span>
+        <span class="fc">workers/src/queue-consumer.ts</span>
+        <span class="fc">workers/src/durable/coordinator.ts</span>
+        <span class="fc">main/distribution/youtube.js</span>
+        <span class="fc">main/distribution/tiktok.js</span>
+        <span class="fc">workers/schema.sql</span>
+      </div>
+      <div class="rl">Acceptance Criteria</div>
+      <div class="aci">Uploading a 500MB recording to R2 succeeds via pre-signed URL without touching the Worker body</div>
+      <div class="aci">An interrupted YouTube upload resumes from the byte cursor, not from byte 0</div>
+      <div class="aci">A Worker request with an invalid JWT returns 401</div>
+      <div class="aci">A Worker request with a valid JWT for device-A cannot read device-B recordings</div>
+      <div class="aci">Submitting the same distribution job twice produces one platform_id, not two uploads</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CLOUDFLARE ═══════════════════════════════ -->
+<section id="cf" class="sec">
+  <div class="eyebrow">Cloudflare Layer</div>
+  <div class="stitle">Sync, Storage, Distribution</div>
+  <p class="ssub">Cloudflare is optional sync and distribution — never the primary store. Workers are thin; heavy logic runs locally.</p>
+
+  <h3>Service Map — What Changed</h3>
+  <div class="cfl">
+    <div class="cfb new"><div class="cbl">D1 Database</div><div class="cbd">Mirror of local SQLite. Writes are replicated after local commit. Never blocking.</div></div>
+    <div class="cfb new"><div class="cbl">R2 Object Store</div><div class="cbd">Video files only. Upload via pre-signed URL — Worker never receives the body.</div></div>
+    <div class="cfb new"><div class="cbl">Queues</div><div class="cbd">Distribution jobs. FIFO + retry. Replaces KV polling anti-pattern.</div></div>
+    <div class="cfb new"><div class="cbl">Durable Object</div><div class="cbd">DistributionCoordinator holds upload cursor + state machine per distribution ID.</div></div>
+    <div class="cfb fix"><div class="cbl">Workers API</div><div class="cbd">Auth middleware added. Routes: /presigned, /recordings, /sync, /jobs.</div></div>
+    <div class="cfb del"><div class="cbl">KV (removed)</div><div class="cbd">Was used as job queue. KV has no queue semantics. Deleted entirely.</div></div>
+  </div>
+
+  <h3>Worker Auth Middleware</h3>
+  <div class="cw"><pre>
+<span class="cm">// workers/src/auth.ts</span>
+<span class="kw">import</span> { SignJWT, jwtVerify } <span class="kw">from</span> <span class="st">'jose'</span>;
+
+<span class="kw">export async function</span> <span class="st">authMiddleware</span>(req: Request, env: Env): Promise&lt;string | Response&gt; {
+  const header = req.headers.get(<span class="st">'Authorization'</span>) ?? <span class="st">''</span>;
+  if (!header.startsWith(<span class="st">'Bearer '</span>)) return new Response(<span class="st">'Unauthorized'</span>, { status: <span class="nm">401</span> });
+  try {
+    const { payload } = await jwtVerify(
+      header.slice(<span class="nm">7</span>),
+      new TextEncoder().encode(env.JWT_SECRET)
+    );
+    return payload.sub as string;  <span class="cm">// device_id</span>
+  } catch { return new Response(<span class="st">'Forbidden'</span>, { status: <span class="nm">403</span> }); }
+}
+</pre></div>
+
+  <h3>Pre-Signed R2 Upload Route</h3>
+  <div class="cw"><pre>
+<span class="cm">// POST /api/presigned  — returns a URL the client uploads directly to R2</span>
+<span class="kw">export async function</span> <span class="st">handlePresigned</span>(req: Request, env: Env): Promise&lt;Response&gt; {
+  const deviceId = await authMiddleware(req, env);
+  if (deviceId instanceof Response) return deviceId;
+
+  const { recording_id, content_type, size_bytes } = await req.json() as any;
+  const key = `recordings/${deviceId}/${recording_id}.mp4`;
+
+  const presignedUrl = await env.R2_BUCKET.createMultipartUpload(key);
+  <span class="cm">// Return the R2 key (stored in recordings.r2_key) + upload URL</span>
+  return Response.json({ r2_key: key, upload_url: presignedUrl.uploadId });
+}
+</pre></div>
+
+  <h3>Queue Consumer + Durable Object</h3>
+  <div class="cw"><pre>
+<span class="cm">// workers/src/queue-consumer.ts</span>
+<span class="kw">export default</span> {
+  <span class="kw">async</span> <span class="st">queue</span>(batch: MessageBatch&lt;DistributionJob&gt;, env: Env) {
+    for (const msg of batch.messages) {
+      const { distribution_id, device_id, platform } = msg.body;
+
+      const id = env.COORDINATOR.idFromName(distribution_id);
+      const stub = env.COORDINATOR.get(id);
+
+      const result = await stub.fetch(<span class="st">'http://do/process'</span>, {
+        method: <span class="st">'POST'</span>,
+        body: JSON.stringify(msg.body),
+      });
+
+      if (!result.ok) {
+        msg.retry({ delaySeconds: <span class="nm">60</span> });  <span class="cm">// exponential backoff via Queue</span>
+      } else {
+        msg.ack();
+      }
+    }
+  }
+};
+
+<span class="cm">// workers/src/durable/coordinator.ts</span>
+<span class="kw">export class</span> DistributionCoordinator implements DurableObject {
+  state: { status: string; cursor: number; resume_uri?: string } = { status: <span class="st">'pending'</span>, cursor: <span class="nm">0</span> };
+
+  <span class="kw">async</span> <span class="st">fetch</span>(req: Request) {
+    const job = await req.json() as DistributionJob;
+
+    if (this.state.status === <span class="st">'published'</span>) {
+      return Response.json({ ok: true, idempotent: true });  <span class="cm">// no duplicate upload</span>
+    }
+
+    this.state.status = <span class="st">'uploading'</span>;
+
+    <span class="cm">// Resumable upload: use existing resume_uri if present</span>
+    const uploadUri = this.state.resume_uri
+      ?? await initiatePlatformUpload(job.platform, job.r2_key);
+    this.state.resume_uri = uploadUri;
+
+    const { bytes_uploaded } = await resumeUpload(uploadUri, job.r2_key, this.state.cursor);
+    this.state.cursor = bytes_uploaded;
+
+    if (bytes_uploaded >= job.size_bytes) {
+      this.state.status = <span class="st">'published'</span>;
+    }
+
+    return Response.json({ ok: true, cursor: this.state.cursor, status: this.state.status });
+  }
+}
+</pre></div>
+
+  <h3>D1 Schema (Cloudflare Mirror)</h3>
+  <p>Identical to the local SQLite schema above, with one addition:</p>
+  <div class="cw"><pre>
+<span class="cm">-- All tables include device_id — Worker always queries with WHERE device_id = ?</span>
+<span class="cm">-- Additional sync metadata:</span>
+<span class="a">ALTER TABLE recordings ADD COLUMN synced_at TEXT;  -- last D1 sync timestamp</span>
+<span class="a">ALTER TABLE recordings ADD COLUMN sync_ver INTEGER DEFAULT 0;  -- optimistic lock</span>
+
+<span class="cm">-- D1 never stores pre-signed URLs — only r2_key</span>
+<span class="cm">-- Workers generate pre-signed URLs on demand via R2.createPresignedUrl(key, {expiresIn: 3600})</span>
+</pre></div>
+
+  <h3>Dependency Summary</h3>
+  <div class="cfl">
+    <div class="cfb"><div class="cbl">S8 blocks on</div><div class="cbd">S1 (device_id), S2 (r2_key), S3 (transcripts exist to sync)</div></div>
+    <div class="cfb"><div class="cbl">S4 blocks on</div><div class="cbd">S1 (SQLite), S3 (words/segments to cut)</div></div>
+    <div class="cfb"><div class="cbl">S5 blocks on</div><div class="cbd">S3 (captions, segments), S4 (EDL for chapters)</div></div>
+    <div class="cfb"><div class="cbl">S6 blocks on</div><div class="cbd">S3 (transcription data), S5 (packages)</div></div>
+    <div class="cfb"><div class="cbl">S7 blocks on</div><div class="cbd">S6 (mode switching), S3 (TRANSCRIBING state)</div></div>
+    <div class="cfb"><div class="cbl">Parallelizable</div><div class="cbd">S2 and S3 can proceed in parallel after S1 ships</div></div>
+  </div>
+</section>
+
+<script>
+function route() {
+  const h = location.hash.slice(1) || 'plan';
+  document.querySelectorAll('.sec').forEach(s => s.classList.toggle('on', s.id === h));
+  document.querySelectorAll('.nt').forEach(t => {
+    t.classList.toggle('on', t.getAttribute('href') === '#' + h);
+  });
+}
+window.addEventListener('hashchange', route);
+route();
+
+document.querySelectorAll('.sh').forEach(sh => {
+  sh.addEventListener('click', () => {
+    sh.classList.toggle('open');
+    const id = sh.dataset.sprint;
+    document.getElementById(id)?.classList.toggle('open');
+  });
+});
+</script>
