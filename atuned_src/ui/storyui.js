@@ -119,28 +119,25 @@ function stRender(){
       srcThread). Still the same control that starts or stops the
       microphone (stMic); the word changed, not the wiring. The clock and
       the dot are unchanged. */
-   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
-   +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
+   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" aria-label="'
+   +(ST_LISTEN?'Listening':'Talk')+'" title="'
+   +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
      :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   /* "CHAT" BACK TO "TALK", 9 November, his words, reversing his own round
-      of 29 October ruling ("the talk button, you're going to change to
-      chat"): "change the word chat to talk." Kept here with its date the
-      way every rename on this control already is, since he changed it
-      once before and may again. */
-   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
-   /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
-      recording is." mm:ss, in the button itself so it reads as one control
-      rather than two things to track, and gone the moment recording is,
-      never left standing at a number that stopped being true. stFrame ticks
-      it every frame it is on screen, see below; this is only its first
-      paint, at whatever stmicElapsed() already reads the instant the render
-      that shows it runs. */
-   +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
-     +stMicFmt(stMicElapsed())+'</span>':'')
+   /* THE WORD AND THE CLOCK ARE BOTH GONE, 9 November, his words on this
+      exact screen: "I want a talk icon on the left. No words... we don't
+      need a timer for how long it's for, get rid of that." The label the
+      button carried ("Talk"/"Listening", 29 October through 9 November,
+      more than once renamed) and the mm:ss clock (round LV, "I want the
+      time showing how long my recording is") both move to aria-label and
+      title above; a screen reader still hears exactly what it did, a
+      sighted eye reads only the icon and the dot. stmicElapsed/stMicFmt
+      stay defined and reachable (stMicTick still ticks #stmictime if that
+      id is ever reintroduced elsewhere), only this button's own two lines
+      are cut. */
    +'</button>')
    /* THE DOT IS GONE, round of 29 October, his words: "the chat icon still
       looks really boring, get rid of the blue dot next to it." .src-live
@@ -171,12 +168,16 @@ function stRender(){
       are unchanged, STV.dash still decides what it does; only the word a
       person reads flips with the state it is already in, the same way
       this button's own .on class already does. */
-   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="'
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" aria-label="'
+    +(STV.dash?'Minimize':'Dashboard')+'" title="'
     +(STV.dash?'Minimize, back to the conversation alone':'Show Imprints and Release beside the conversation')+'">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
    +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>'+(STV.dash?'Minimize':'Dashboard')+'</span></button>')
+   /* ICON ONLY, 9 November, his words: "I don't want the word dashboard,
+      I just want the icon." Same pattern as Talk beside it: the word moves
+      to aria-label and title, nothing a screen reader hears changes. */
+   +'</button>')
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -280,9 +281,38 @@ function stRender(){
      (srcTurnCommit, stMic). srcChatSend(), SRC_CDRAFT and srcChatWire()
      stay defined, reachable only from the legacy !STV.chat box below,
      which this build never renders outside a test forcing that state. */
-  +(STV.chat?'':'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
+  /* THE KEYBOARD IS A PANEL NOW AND NOT A SWAP, 9 November. His words: "the
+     keyboard starts off closed, and it does not move the screen... fix
+     Uni's height and fix the keyboard height." It used to render on
+     !STV.chat alone, and STV.chat went false from more than the keyboard
+     icon: the crisis flow sets it directly (crisisTalk, ui/crisis.js), and
+     tests/srcchat.js's own round-trip check does too, straight at STV.chat,
+     never touching STV.typed, and still expects the box. So the condition
+     stays !STV.chat, widened rather than replaced: !STV.chat||STV.typed.
+     Every existing door that set STV.chat false to reach this box still
+     does; the keyboard icon is a second, independent door onto the same
+     box, through STV.typed, which stType (below) now owns alone. Pressing
+     it no longer touches STV.chat at all, so the thread and Uni stay
+     exactly as they were; before this fix it still flipped STV.chat off
+     too, which is the reflow he is naming, Uni and the thread swapped out
+     for this box. tests/srcchat.js's "Record is there from the start, with
+     no toggle and no write box" check is what holds the box absent on
+     ordinary arrival (STV.chat true, STV.typed false, neither door open),
+     unchanged by this. Uni no longer needing the box's absence to keep her
+     own size (her #stflow.st-simple .st-chat .st-uni rule above is a fixed
+     height now, not flex-shared) is what makes a conditionally rendered
+     box safe to reintroduce here: it can still come and go in the DOM,
+     nothing else moves when it does. */
+  /* ONLY THE KEYBOARD'S OWN DOOR GETS THE COMPACT HEIGHT. The crisis flow
+     reaches this same box through !STV.chat alone, STV.typed untouched,
+     and a person talking through a crisis needs the room the box always
+     had (min-height:260px), never a 128px strip sized for a mini-view
+     keyboard. The 'open' class (and the shell's compact CSS keyed on it)
+     is only added when STV.typed is what opened it, so the crisis box's
+     own size is exactly what it was before this round. */
+  +((!STV.chat||STV.typed)?'<div class="st-ed'+(STV.typed?' open':'')+'"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
     +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
-    +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>')
+    +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>':'')
   /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
      QR. His own story arrived with whole words turned to stars by the speech
      service and nothing on the page said so. The sentence and the rule are
@@ -356,9 +386,19 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
     +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
     +'</button>')
+   /* AN ARROW, NOT THE WORD, 9 November, his words on this exact screen:
+      "replace the commit button with an arrow." aria-label carries
+      "Commit" so nothing a screen reader hears changes; the count, when
+      there is one, stays as a small badge the same way the Archive
+      button beside it already carries one (#stvn above), rather than
+      vanishing with the word. */
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
-    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>')
+    +'<button class="btn pri st-send" id="stapply" aria-label="Commit'
+    +(p&&p.imprints.length?', '+p.imprints.length+' imprints':'')+'"'+(p?'':' disabled')+'>'
+    +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">'
+    +'<path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+    +(p&&p.imprints.length?'<b class="st-sendn">'+p.imprints.length+'</b>':'')
+    +'</button>')
   +'</div>')+'</div></div>'
   /* ---- the read column: the instrument, the list, then Commit ----
      SWAPPED BACK, round of 29 October, second pass. The round before this
@@ -1683,7 +1723,18 @@ function srcPaint(){
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
  var cur=null, fresh=false;
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); fresh=srcChatNote(cur);
+ /* NOT WHILE THE BOX IS OPEN, 9 November. srcChatSync reads the whole of
+    ST_TEXT and treats everything past its last known row as one new turn,
+    which is right once, on a finished sentence, and wrong on every key: a
+    box open for STV.typed repaints on each keystroke (stRefresh, this
+    function's own caller), so a sentence typed one letter at a time synced
+    one row per letter, measured as SRC_CHAT turning "My jaw was tight all
+    morning." into twenty eight single character rows. The box still shows
+    the words as they are typed, the thread above still paints (cur, fresh
+    and o below are untouched), only the one write that promotes them into
+    the thread waits for the box to actually close, which stType does by
+    calling this same function once, by name, before it renders. */
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!STV.typed)srcChatSync(); fresh=srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
  /* SAFE, TALKING: THE PERSON'S OWN WORDS STAY ON THE PAGE, 3 November. The
     conversation became the Journal's only state on 28 October, and the
@@ -3552,13 +3603,26 @@ function stVoiceCant(msg){
    already speaking is let finish: ST_WANT_LISTEN false is what stops stHush
    starting the recording again once it ends, and srcPaint speaks no new
    reply while nobody is listening for it. */
+/* STV.chat NO LONGER MOVES HERE, 9 November. It used to flip false to open
+   the box and true to close it, which is the reflow his round named: the
+   whole conversation thread and Uni left while the box stood in their
+   place. STV.chat stays exactly as it already was (true, in real use,
+   always); only STV.typed moves, and the box's own open/shut is the
+   #stflow.st-simple .st-ed CSS rule reading it, additive beside the
+   thread rather than a replacement for it. */
 function stType(){
- if(STV.typed){ STV.typed=false; STV.chat=true; stRender();
+ /* THE DEFERRED SYNC LANDS HERE, 9 November. srcPaint stops calling
+    srcChatSync while STV.typed (see the gate there, same date), so the
+    words typed into the box are not yet the person's turn in the thread;
+    closing the box is what makes them one, in a single row covering the
+    whole of what was typed, the way tests/typein.js's own item 4 always
+    read it. */
+ if(STV.typed){ STV.typed=false; srcChatSync(); stRender();
   var b=document.getElementById('sttype'); if(b)b.focus(); return; }
  ST_WANT_LISTEN=false;
  if(ST_REC&&ST_LISTEN){ try{ ST_REC.stop(); }catch(e){} }
  ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
- STV.typed=true; STV.chat=false; STV.focus='write'; stRender();
+ STV.typed=true; STV.focus='write'; stRender();
  var ta=document.getElementById('sttext');
  if(ta){ ta.focus(); var n=ta.value.length; try{ ta.setSelectionRange(n,n); }catch(e){} }}
 function stMic(){

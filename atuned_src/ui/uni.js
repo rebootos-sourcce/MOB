@@ -218,6 +218,26 @@ let dq = 0;
    caller that knows r.unread, never guessed at in here. */
 let unread = false;
 
+/* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
+   red, the background is also kind of a cloudy dark red that subtly
+   animates... when Uni is [another colour] the screen fills with its
+   background colour." Two custom properties on :root, read by the mini
+   Journal's own CSS (#stflow.st-simple #stjr.st-chat), not written every
+   frame: only when the rounded rgb triples actually change, since a style
+   write the layout does not depend on still costs a style recalc for
+   nothing if nothing moved. core is the vivid tone (p.cr), edge the
+   darkest (p.ed); the gradient between them is what reads as "cloudy",
+   never a flat fill. */
+let ambLastCore=null, ambLastEdge=null;
+function _rgbTriple(v){return v[0]+','+v[1]+','+v[2];}
+function ambPaint(p){
+ var core=_rgbTriple(p.cr), edge=_rgbTriple(p.ed);
+ if(core===ambLastCore&&edge===ambLastEdge)return;
+ ambLastCore=core; ambLastEdge=edge;
+ var r=document.documentElement.style;
+ r.setProperty('--uni-amb-core',core);
+ r.setProperty('--uni-amb-edge',edge);}
+
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
   // coh 0.00 -- collapsed dead red
@@ -1949,6 +1969,7 @@ const ZONES=[
        unread face is plain: no halo, no glow, no alert, no zen. */
     const coh01=unread?0.5:coherence/100;
     const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
+    ambPaint(p);
 
     // Blend shapes
     bsT+=dt;

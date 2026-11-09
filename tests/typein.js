@@ -152,7 +152,14 @@ async function typeInGate(browser,FILE,ok,booted){
    await p.waitForTimeout(300);
    const s2=await read(p);
    ok(!s2.listen&&!s2.recOn,at+'Type instead stops listening, and the recogniser is off, '+JSON.stringify({listen:s2.listen,recOn:s2.recOn}));
-   ok(s2.chat===false&&s2.typed&&!s2.novoice&&s2.boxSeen,at+'and the box is on screen, opened by choice and not forced, '+JSON.stringify({chat:s2.chat,typed:s2.typed,novoice:s2.novoice,box:s2.boxSeen}));
+   /* STV.chat stays true here, 9 November: the ruling that moved the box to
+      an addition beside the thread rather than a replacement of it (see
+      ui/storyui.js, stType) means Chat's own view never leaves while Type
+      instead opens by choice. Only STV.typed says the box is the one open
+      for it; chat===false is still real, but only on the forced doors this
+      gate holds elsewhere (novoice, the crisis door), neither of which this
+      is. */
+   ok(s2.chat===true&&s2.typed&&!s2.novoice&&s2.boxSeen,at+'and the box is on screen, opened by choice and not forced, '+JSON.stringify({chat:s2.chat,typed:s2.typed,novoice:s2.novoice,box:s2.boxSeen}));
    ok(s2.text.indexOf(SAID)>=0&&s2.text.indexOf(SAYING)>=0,at+'and both sentences are in it, the one still being said kept and not dropped, '+JSON.stringify(s2.text));
    ok(s2.focus==='sttext',at+'and the box has the focus after the recogniser\'s own end, '+s2.focus);
    ok(s2.boxes===1&&s2.commits===1&&s2.types===1&&s2.ty.exp==='true',at+'one box, one Commit, and Type instead reads open, '+JSON.stringify({boxes:s2.boxes,commits:s2.commits,types:s2.types,exp:s2.ty&&s2.ty.exp}));

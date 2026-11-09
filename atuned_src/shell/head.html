@@ -67,6 +67,12 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     ruling and not a contrast one, and this changes no hue. */
  --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* WRITTEN LIVE BY ui/uni.js's ambPaint, round of 9 November; these two
+    fallbacks are what shows before she has painted even once (the first
+    frame, or a worked example that never mounts her). Dim and neutral on
+    purpose, the same reasoning as her own unread palette: nothing she has
+    not actually read yet. */
+ --uni-amb-core:60,56,52; --uni-amb-edge:10,9,8;
  /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
     marking the second tier of the information architecture: every eyebrow,
     every key label, every explanatory subline. Measured at 3.70 to 1 on
@@ -733,6 +739,20 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  background:var(--hot,#c0392b);color:#fff;font:600 11px/16px var(--sans);font-style:normal;text-align:center}
 .msg-b i[hidden]{display:none}
 body.rm .msgdock{transition:none}
+/* NOT A SECOND CHAT BUBBLE, 9 November. His words, on this exact screen:
+   "if you look at the very bottom, middle, it's doing a chat bubble, that
+   doesn't belong in the mini." This is #status's own dock (body.html),
+   shared by the whole app, so its mechanism stays exactly as it is, per
+   this project's own rule that a write which can fail always reports
+   through it; only its shape changes, and only on the mini Journal
+   (:has() so this reads the real live DOM, not a class this file would
+   otherwise have to keep in sync by hand). A floating rounded pill the
+   width of its own text, centred over a screen already full of rounded
+   bubbles, is what read as one more of them; a flat bar close to the
+   width of the column it sits over does not. */
+body.tab-story:has(#stflow.st-simple) .msgdock{
+ width:min(900px,calc(100% - 24px));max-width:none;border-radius:var(--r-s);
+ box-shadow:0 4px 16px rgba(0,0,0,.26)}
 /* THE LOG, a small list over the dock, newest at the bottom the way a log
    reads, last fifty, scrolling inside itself. Rows are text and never
    controls, so nothing in it needs a tap floor but the close. */
@@ -4157,6 +4177,36 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
+/* THE SCREEN BREATHES WITH HER, 9 November. His words: "I also want its
+   background gradient colour... when Uni is dark red, the background is
+   also kind of a cloudy dark red that subtly animates... the screen fills
+   with its background colour." This panel (#stjr.st-chat, the mini
+   view's whole journal card) is where that fills, overriding .st-pan's
+   own flat --sunk for this one card; a radial, not a flat wash, is what
+   reads as "cloudy" rather than a paint swap, and the two stops are her
+   own live core and edge tones (ui/uni.js's ambPaint), never a colour
+   this file invents. Scoped to #stflow.st-simple so the full Dashboard
+   view keeps its plain dark panel, which he has not asked changed yet.
+   The drift is in background-position, cheap for the compositor and
+   small enough (two percentage points) to read as subtle and not as a
+   second animation competing with her own. */
+#stflow.st-simple #stjr.st-chat{
+ background:radial-gradient(130% 110% at 50% 18%,
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 46%,var(--sunk)) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 60%,var(--sunk)) 55%,
+   var(--sunk) 100%);
+ background-size:132% 132%;
+ animation:uniAmbDrift 17s ease-in-out infinite;
+ /* TOKENS ARE LAW. --t-context (420ms) is the longest of the house's four
+    named durations and the only one of the four tests/design.js's own
+    "motion is named" check would pass here; a hand-picked 1.2s failed it
+    as a stray fifth duration nothing else in the product uses. */
+ transition:background var(--t-context) var(--ease-out)}
+@keyframes uniAmbDrift{0%,100%{background-position:50% 38%}50%{background-position:53% 45%}}
+body.quiet #stflow.st-simple #stjr.st-chat,body.rm #stflow.st-simple #stjr.st-chat{
+ animation:none;background-position:50% 40%}
+@media (prefers-reduced-motion:reduce){
+ #stflow.st-simple #stjr.st-chat{animation:none;background-position:50% 40%}}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
@@ -4381,17 +4431,26 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    corner radius every plain button carries, more weight on the word, and a
    glow in the accent that sits on the control at rest and not only on
    press, so it reads as a control worth noticing before a hand reaches it. */
-.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
- background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-weight:600;
- border-radius:999px;padding:8px 18px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
- box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),
-  0 2px 10px color-mix(in srgb,var(--accent) 22%,transparent);
+/* ICON ONLY, NO GREY PILL, 9 November. His words: "I want a talk icon on
+   the left, no words... I don't want the word dashboard, I just want the
+   icon... I don't want any gray on the mini screen." The word that used to
+   sit beside the icon is gone from the markup (aria-label carries it now),
+   so the wide pill padding built for icon-plus-word goes with it, and the
+   flat panel-2 fill (a grey in every lighting but Snow) goes too: at rest
+   this is a bare icon, the glow ring below the only thing marking it as a
+   control. Listening still fills solid alarm red and Dashboard-open solid
+   accent, both real state and neither one grey; see .st-mic.on and
+   .st-dash.on below, unchanged. */
+.st-mic,.st-dash{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
+ justify-content:center;gap:6px;background:none;border:0;color:var(--ink);font-weight:600;
+ border-radius:50%;padding:0 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
   transform var(--t-micro) var(--ease-out)}
 .st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-mic:hover,.st-dash:hover{color:var(--ink);border-color:var(--mid);transform:translateY(-1px);
+.st-mic:hover,.st-dash:hover{color:var(--ink);transform:translateY(-1px);
  box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
 /* Dashboard filled when it is open, the same accent-on-accent pairing the
    Commit button already carries, so "on" reads as on and not just outlined */
@@ -4502,6 +4561,16 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
 .st-mask[hidden]{display:none}
 .st-ct{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--dim)}
+/* AN ARROW, NOT THE WORD, 9 November. See #stapply in ui/storyui.js for
+   the ruling; .btn.pri already carries the filled accent look Commit had,
+   this only takes it down to a round icon tap target the same size as
+   Talk and the keyboard icon beside it, so the row reads as one family of
+   controls. The count, when there is one, sits as a small badge rather
+   than standing in for the label the arrow now carries. */
+.st-send{width:var(--tap);height:var(--tap);padding:0;border-radius:50%;position:relative}
+.st-sendn{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;
+ border-radius:8px;background:var(--on-accent);color:var(--accent);font:600 10.5px/16px var(--sans);
+ font-style:normal;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 /* ---------- the Story's rail, GO in TASKS.md ----------
    The imprints and the release live in the right rail on the Story and
    nowhere else. The rail's other sections step aside there, except Selection,
@@ -5002,6 +5071,35 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    no longer has a say); anywhere else it keeps her own 640:520 shape. */
 .st-uni{width:100%;min-height:0;position:relative;display:block;overflow:hidden;aspect-ratio:640/520}
 .st-chat .st-uni{flex:1 1 0;min-height:0;aspect-ratio:auto}
+/* SHE IS THE HERO, FIXED, 9 November. His words: "I want Uni to be front
+   and center in a fixed location. This is our hero... fix Uni's height
+   and fix the keyboard height, but make sure the screen is symmetrical
+   and even." flex:1 1 0 let her grow and shrink with whatever else the
+   column held (the thread above her own cap, the keyboard panel below);
+   a fixed height means neither can move her, and #stflow.st-simple's own
+   id beats .st-chat .st-uni's class-only specificity, so this wins over
+   it without touching that rule for the full Dashboard view, which he
+   has not asked for yet. */
+#stflow.st-simple .st-chat .st-uni{flex:none;height:min(50vh,420px)}
+/* THE KEYBOARD IS A FIXED STRIP, NOT A SWAP, same round. tests/srcchat.js
+   holds #sttext absent from the DOM until the keyboard is actually
+   pressed (see the ruling in ui/storyui.js), so this is still a
+   conditionally-rendered div and not a permanently-present one toggled by
+   class alone; what changes is that nothing else in the column has a say
+   in its height any more (Uni's own rule above is fixed, not flex-shared
+   with it), so its own one fixed height is the only thing that moves when
+   it appears. An animation, not a transition, is what can still play on
+   an element that only exists for part of its life: a transition needs
+   the element present at both the old and new value, an animation runs
+   the moment a matching element lands in the DOM. */
+#stflow.st-simple .st-ed.open{height:128px;margin-top:10px;overflow:hidden;
+ animation:stEdIn var(--t-element) var(--ease-out)}
+#stflow.st-simple .st-ed .st-ta,#stflow.st-simple .st-ed .st-hl{min-height:0;height:100%;
+ padding:12px 14px;font-size:15px;line-height:1.5}
+@keyframes stEdIn{from{opacity:0;transform:scaleY(.88);transform-origin:top}
+ to{opacity:1;transform:scaleY(1)}}
+body.rm #stflow.st-simple .st-ed.open,body.quiet #stflow.st-simple .st-ed.open{animation:none}
+@media (prefers-reduced-motion:reduce){#stflow.st-simple .st-ed.open{animation:none}}
 .st-uni .uni-widget{position:absolute;inset:0}
 .st-uni .uni-widget .page{position:absolute;inset:0}
 .st-uni .uni-widget .canvas-wrap{position:absolute;inset:0;width:auto;max-width:none}
@@ -5033,6 +5131,13 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
  font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
 .src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
+/* NO GREY ON THE MINI SCREEN, 9 November, his words, read together with
+   the ambient fill above: a flat --sunk bubble sat neutral against a now
+   coloured ground and read as the one grey thing left on it. A hint of
+   her own edge tone mixed in keeps it dark and legible, never a loud
+   tint, and it moves with her the same way the ground behind it does. */
+#stflow.st-simple #stjr.st-chat .src-bub-src{
+ background:color-mix(in srgb,rgb(var(--uni-amb-edge)) 22%,var(--sunk))}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
 .src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
