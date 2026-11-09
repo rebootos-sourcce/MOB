@@ -367,20 +367,23 @@ function stRender(){
      touched by stListPaint, so the icons are a fixture of the panel and
      not of the list. Same lesson .st-chd already stood on: an element a
      renderer owns is not also a shelf for something else to sit on. */
-  +'<div class="st-colr">'
-  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
-      for the phone, where .st-ls folds away outside read focus (see the
-      rule at .st-open below), and its one job is to bring that panel back
-      into view; a door inside the panel it opens cannot be pressed once
-      that panel is the one thing hidden. #stch stays visible at every
-      focus, so the door stands here. */
-   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
-   /* the key probe is never shown. The canvas cannot read a custom property,
-      so the chart reads the lighting's ink and dim off these two computed
-      colours, which is the one answer that follows every lighting. */
-   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div></div>'
+  /* ---- the chart left this column entirely, 9 November. ----
+     His words: "the imprints detector, which takes up the top half of
+     that column, now moves to the lower left... near the lower left
+     bottom of the left rail." #stch no longer builds here; stImpDetHtml
+     and stImpDetMount below build and place it, and ui/stdash.js's own
+     rail gives it a host above the Boundary/Compass pair. What stays in
+     this flow, the list and Commit, moves in with the release column,
+     his own next sentence: "the imprints themselves... shows up to the
+     bank. From there, the user can commit those patterns to the bank or
+     select a 100 to run immediately. And the release." So .st-colr is
+     gone; .st-colx carries both, and keeps the id its rail section had
+     for the release half. ANALYTICS PREVIEW AND LAWS NOTICED stay gone
+     from it too, round of 29 October, his words: "get rid of the
+     analytics preview button... get rid of the laws notice that."
+     stAnaHtml() and stLawHtml() stay defined, only the calls here are
+     cut; nothing else in the product reached them through this column. */
+  +'<div class="st-colx">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
@@ -419,14 +422,11 @@ function stRender(){
      when this column itself is not on screen to carry it instead. */
   +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
+  +'<div class="st-rl" id="strel" aria-label="Release"></div>'
   +'</div>'
-  /* ---- the release column. It keeps the id its rail section had. ----
-     ANALYTICS PREVIEW AND LAWS NOTICED ARE GONE FROM THIS COLUMN, round of
-     29 October, his words: "get rid of the analytics preview button... get
-     rid of the laws notice that." stAnaHtml() and stLawHtml() stay defined,
-     only the calls here are cut; nothing else in the product reached them
-     through this column. */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div></div>'
+  /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
+     moment in the 9 November edit that folded .st-colr's own closing div
+     into .st-colx's, caught by BUILD.sh's own div-balance check. */
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -520,6 +520,42 @@ function stRender(){
    "for imprints, for a sort, just do it by weight." Was Seat. */
 var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false};
+/* THE IMPRINTS DETECTOR, PORTED TO THE LEFT RAIL, 9 November. His words:
+   "the imprints detector, which takes up the top half of that column,
+   now moves to the lower left... near the lower left bottom of the left
+   rail." This is the one piece of the old .st-colr that still needs its
+   own markup built here (the chart's wiring, stSize/stRelayout/stFrame/
+   stWire, all stay in this file): ui/stdash.js's rail cannot build a
+   canvas that has to keep the springs this file already keeps running
+   in STC, and should not have to know how.
+
+   WHY A MOUNT FUNCTION AND NOT A STRING, the way the rest of the rail
+   works. ui/stdash.js's own left rail is rebuilt whole, h.innerHTML=o,
+   on every keystroke (stDashLeft, called through stPaintAll below, same
+   as stRefresh's path on every character typed). A plain string placed
+   in that rebuild would tear the canvas out and rebuild it fresh each
+   time, and this one carries real state a fresh node does not: a
+   ResizeObserver (stWire, below), two pointer listeners, and the lane
+   springs' own continuity depends on stFrame finding the same connected
+   canvas across frames, not a new one appearing every keystroke. So
+   stdash.js's rail carries only an empty slot, #st-impdet-host, and
+   this function either builds #stch into it once or, every other time,
+   moves the one already live there with appendChild, which relocates a
+   node in the document without destroying it: same canvas, same
+   listeners, same observer, new parent. */
+function stImpDetHtml(){
+ return '<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
+  +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+  +stViewHtml()+'</div>'
+  /* the key probe is never shown. The canvas cannot read a custom property,
+     so the chart reads the lighting's ink and dim off these two computed
+     colours, which is the one answer that follows every lighting. */
+  +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div></div>';}
+function stImpDetMount(){
+ var host=document.getElementById('st-impdet-host'); if(!host)return;
+ var ex=document.getElementById('stch');
+ if(ex){ if(ex.parentNode!==host)host.appendChild(ex); }
+ else{ host.insertAdjacentHTML('beforeend',stImpDetHtml()); stSize(); }}
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */

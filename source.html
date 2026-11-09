@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2999 73bb2775 2026-11-09 01:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v3000 d63587ee 2026-11-09 01:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4125,20 +4125,24 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    lighting and a panel colour on a panel is invisible on four of the seven.
    ============================================================ */
 .st-flow{display:flex;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
-.st-colw,.st-colr,.st-colx{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
+/* .st-colr IS GONE, 9 November. His words: "the imprints now column
+   becomes now the full bank column." .st-colx (ui/storyui.js keeps its
+   id, the release column's own) takes the flex ratio .st-colr used to
+   carry, rather than the fixed 300px it had when it was release alone,
+   since it now also carries the list the old .st-colr held. */
+.st-colw,.st-colx{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
  transition:flex var(--t-context) var(--ease-out)}
 .st-colw{flex:1.5 1 0}
-.st-colr{flex:1 1 0}
-.st-colx{flex:0 0 300px}
+.st-colx{flex:1 1 0}
 .st-flow[data-focus="read"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
+.st-flow[data-focus="read"] .st-colx{flex:1.55 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+.st-flow[data-focus="release"] .st-colx{flex:1.8 1 0}
 /* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real
    panels, not removed, only shut until Dashboard opens them (STV.dash,
    ui/storyui.js). The Journal takes the width they would have used. */
-.st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
+.st-flow.st-simple .st-colx{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
@@ -4164,7 +4168,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    list's heading over Commit's top. Scrolling here keeps every row inside
    the panel and reachable by the panel's own scrollbar; with room to spare
    nothing scrolls and nothing moves. */
-.st-ls{flex:1 1 0;overflow-x:hidden;overflow-y:auto}
+/* A FLOOR UNDER THE HEADER ITSELF, 9 November. round-2-November's own fix
+   above made #stls scroll as a whole so a short window could not spill
+   its sort row onto Commit; it never had to guard the header's own
+   height before, because #stls had the old .st-colr column mostly to
+   itself. Sharing .st-colx with #strel since the imprints/bank merge
+   lets flex shrink #stls below its icon row plus its own sort row,
+   which clips the bottom of that row instead of scrolling to it,
+   caught the same way the spill was: tests/collide.js, a short window.
+   180px is the icon row and three wrapped sort lines, measured, with
+   room over; .st-lsb's own scroll (below) still takes whatever height
+   is left for the rows under it. */
+.st-ls{flex:1 1 0;min-height:180px;overflow-x:hidden;overflow-y:auto}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
@@ -4594,6 +4609,15 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    calls stPillRow like every other section, so the 21 laws share the one
    square tile already styled above (.st-pl) rather than keeping a second,
    round, ring-filled shape alongside it. */
+/* THE IMPRINTS DETECTOR'S NEW HOME, 9 November. #st-impdet-host (empty in
+   ui/stdash.js's own markup, filled by stImpDetMount, ui/storyui.js) is a
+   plain block, not the flex column .st-ch's min-height:50% and flex:0 0
+   auto were written for (.st-colr, gone). Its chart keeps that still,
+   it only loses the percentage height that had nothing to resolve
+   against; a fixed floor here does the same job, sized for a 302px
+   column instead of the wider one it used to sit in. */
+#st-impdet-host .st-ch{min-height:0;margin-bottom:10px}
+#st-impdet-host .st-cvw{min-height:132px;max-height:190px}
 /* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
    "these all need to look like they're together... make sure it's all
    symmetrical." Equal width, equal top, same svg proportions set in
@@ -6418,7 +6442,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     80 pixels under the first screen. These are the pixels that bought it
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
- .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
+ .st-flow>*,.st-colw>*{flex:0 0 auto!important}
  /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
     Release hidden (st-simple, the Dashboard toggle, round of 29 October),
     the Journal is the only child left in this column flow, and flex:0 0
@@ -6428,7 +6452,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     own "actually rendered on a phone" check against #story caught it. A
     floor the other two columns used to supply by sitting beside it. */
  .st-flow.st-simple .st-pan.st-jr{min-height:60vh}
- .st-colw,.st-colr,.st-colx{gap:8px}
+ .st-colw,.st-colx{gap:8px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}
@@ -54317,20 +54341,23 @@ function stRender(){
      touched by stListPaint, so the icons are a fixture of the panel and
      not of the list. Same lesson .st-chd already stood on: an element a
      renderer owns is not also a shelf for something else to sit on. */
-  +'<div class="st-colr">'
-  +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-   /* THE LIST DOOR STAYS HERE, NOT WITH THE BANK AND THE ARCHIVE. It exists
-      for the phone, where .st-ls folds away outside read focus (see the
-      rule at .st-open below), and its one job is to bring that panel back
-      into view; a door inside the panel it opens cannot be pressed once
-      that panel is the one thing hidden. #stch stays visible at every
-      focus, so the door stands here. */
-   +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
-   +'<button type="button" class="btn st-open" id="stlist">List</button>'+stViewHtml()+'</div>'
-   /* the key probe is never shown. The canvas cannot read a custom property,
-      so the chart reads the lighting's ink and dim off these two computed
-      colours, which is the one answer that follows every lighting. */
-   +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div></div>'
+  /* ---- the chart left this column entirely, 9 November. ----
+     His words: "the imprints detector, which takes up the top half of
+     that column, now moves to the lower left... near the lower left
+     bottom of the left rail." #stch no longer builds here; stImpDetHtml
+     and stImpDetMount below build and place it, and ui/stdash.js's own
+     rail gives it a host above the Boundary/Compass pair. What stays in
+     this flow, the list and Commit, moves in with the release column,
+     his own next sentence: "the imprints themselves... shows up to the
+     bank. From there, the user can commit those patterns to the bank or
+     select a 100 to run immediately. And the release." So .st-colr is
+     gone; .st-colx carries both, and keeps the id its rail section had
+     for the release half. ANALYTICS PREVIEW AND LAWS NOTICED stay gone
+     from it too, round of 29 October, his words: "get rid of the
+     analytics preview button... get rid of the laws notice that."
+     stAnaHtml() and stLawHtml() stay defined, only the calls here are
+     cut; nothing else in the product reached them through this column. */
+  +'<div class="st-colx">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
@@ -54369,14 +54396,11 @@ function stRender(){
      when this column itself is not on screen to carry it instead. */
   +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
+  +'<div class="st-rl" id="strel" aria-label="Release"></div>'
   +'</div>'
-  /* ---- the release column. It keeps the id its rail section had. ----
-     ANALYTICS PREVIEW AND LAWS NOTICED ARE GONE FROM THIS COLUMN, round of
-     29 October, his words: "get rid of the analytics preview button... get
-     rid of the laws notice that." stAnaHtml() and stLawHtml() stay defined,
-     only the calls here are cut; nothing else in the product reached them
-     through this column. */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div></div>'
+  /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
+     moment in the 9 November edit that folded .st-colr's own closing div
+     into .st-colx's, caught by BUILD.sh's own div-balance check. */
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -54470,6 +54494,42 @@ function stRender(){
    "for imprints, for a sort, just do it by weight." Was Seat. */
 var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
  unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false};
+/* THE IMPRINTS DETECTOR, PORTED TO THE LEFT RAIL, 9 November. His words:
+   "the imprints detector, which takes up the top half of that column,
+   now moves to the lower left... near the lower left bottom of the left
+   rail." This is the one piece of the old .st-colr that still needs its
+   own markup built here (the chart's wiring, stSize/stRelayout/stFrame/
+   stWire, all stay in this file): ui/stdash.js's rail cannot build a
+   canvas that has to keep the springs this file already keeps running
+   in STC, and should not have to know how.
+
+   WHY A MOUNT FUNCTION AND NOT A STRING, the way the rest of the rail
+   works. ui/stdash.js's own left rail is rebuilt whole, h.innerHTML=o,
+   on every keystroke (stDashLeft, called through stPaintAll below, same
+   as stRefresh's path on every character typed). A plain string placed
+   in that rebuild would tear the canvas out and rebuild it fresh each
+   time, and this one carries real state a fresh node does not: a
+   ResizeObserver (stWire, below), two pointer listeners, and the lane
+   springs' own continuity depends on stFrame finding the same connected
+   canvas across frames, not a new one appearing every keystroke. So
+   stdash.js's rail carries only an empty slot, #st-impdet-host, and
+   this function either builds #stch into it once or, every other time,
+   moves the one already live there with appendChild, which relocates a
+   node in the document without destroying it: same canvas, same
+   listeners, same observer, new parent. */
+function stImpDetHtml(){
+ return '<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
+  +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+  +stViewHtml()+'</div>'
+  /* the key probe is never shown. The canvas cannot read a custom property,
+     so the chart reads the lighting's ink and dim off these two computed
+     colours, which is the one answer that follows every lighting. */
+  +'<div class="st-cvw" id="stcvw"><canvas id="stcv" aria-hidden="true"></canvas><i class="st-cvk"></i></div></div>';}
+function stImpDetMount(){
+ var host=document.getElementById('st-impdet-host'); if(!host)return;
+ var ex=document.getElementById('stch');
+ if(ex){ if(ex.parentNode!==host)host.appendChild(ex); }
+ else{ host.insertAdjacentHTML('beforeend',stImpDetHtml()); stSize(); }}
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -57805,13 +57865,21 @@ function stDashLeft(){
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
+ /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
+    detector... moves to the lower left or near the lower left bottom of
+    the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
+    called below once this innerHTML write has landed, either builds the
+    chart into it once or moves the one already live there, which is why
+    this div carries nothing of its own. */
+ o+='<div id="st-impdet-host"></div>';
  /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
     all need to look like they're together... make sure it's all
     symmetrical." Same row, same width each, same svg proportions (both
     170 tall), rather than two sections stacked at whatever height their
     own content happened to need. */
  o+='<div class="st-pair">'+stDashBoundary()+stDashCompass()+'</div>';
- h.innerHTML=o;}
+ h.innerHTML=o;
+ if(typeof stImpDetMount==='function')stImpDetMount();}
 
 /* CHILD EMOTIONS, THE SAME NINE, READ OFF THIS STORY, 8 November. Round
    TB's own words named this the real missing piece: "Child emotions (9
@@ -92022,5 +92090,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006148478"></div>
+<div id="eof" hidden data-len="006152846"></div>
 </body></html>

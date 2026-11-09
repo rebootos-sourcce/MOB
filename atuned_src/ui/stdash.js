@@ -174,13 +174,21 @@ function stDashLeft(){
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
+ /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
+    detector... moves to the lower left or near the lower left bottom of
+    the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
+    called below once this innerHTML write has landed, either builds the
+    chart into it once or moves the one already live there, which is why
+    this div carries nothing of its own. */
+ o+='<div id="st-impdet-host"></div>';
  /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
     all need to look like they're together... make sure it's all
     symmetrical." Same row, same width each, same svg proportions (both
     170 tall), rather than two sections stacked at whatever height their
     own content happened to need. */
  o+='<div class="st-pair">'+stDashBoundary()+stDashCompass()+'</div>';
- h.innerHTML=o;}
+ h.innerHTML=o;
+ if(typeof stImpDetMount==='function')stImpDetMount();}
 
 /* CHILD EMOTIONS, THE SAME NINE, READ OFF THIS STORY, 8 November. Round
    TB's own words named this the real missing piece: "Child emotions (9

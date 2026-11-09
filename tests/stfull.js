@@ -97,7 +97,10 @@ async function stFullGate(browser,FILE,ok,booted){
    const b=lc.getBoundingClientRect(), r=sl.getBoundingClientRect();
    const shown=[...lp.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||e.className);
    return {dash:STV.dash, chat:STV.chat, full:document.body.classList.contains('st-full'),
-    simple:!!document.querySelector('#stflow.st-simple'), cols:!!document.querySelector('#stflow .st-colr'),
+    /* .st-colr is gone, 9 November: the imprints list and Release share
+       .st-colx now (ui/storyui.js), so that is the one extra column
+       Dashboard mode brings in beside the chat. */
+    simple:!!document.querySelector('#stflow.st-simple'), cols:!!document.querySelector('#stflow .st-colx'),
     lcol:getComputedStyle(lc).display, lw:Math.round(b.width), rw:Math.round(r.width), rh:Math.round(r.height),
     shut:document.body.classList.contains('lshut'), shown,
     grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};});
