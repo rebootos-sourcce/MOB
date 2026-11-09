@@ -8,6 +8,7 @@ const windows = require('./windows');
 const Shapes = require('../shared/shapes');
 const EventEmitter = require('events');
 const dbHandlers = require('./ipc/db-handlers');
+const transcriptionHandlers = require('./ipc/transcription-handlers');
 const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
@@ -595,6 +596,7 @@ app.whenReady().then(async () => {
   // Initialize SQLite (ADR-001) and register IPC handlers before windows open.
   await db.init();
   dbHandlers.register();
+  transcriptionHandlers.register(sendControl);
 
   sweepOldRaw();
   const s = settings.get();
