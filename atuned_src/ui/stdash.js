@@ -35,39 +35,53 @@
    rule Summary keeps.
    ============================================================ */
 
-/* THE PILL ROW: COLOUR ONLY, NO WORD, SORTED BY STRENGTH, 8 November. His
-   words: "On the left panel, I don't want the text. I only want the
-   color. And a pill, almost like a light. And I want them side by side,
-   arranged according to signal strength... Plus maybe the other four
-   right for person, mouse is over it, they can see what's being lit
-   up." One row of colour pills, strongest first. A seat or category at
-   nothing stays in the row, dimmer, rather than dropping out of it, so
-   "the other four" (or eight) are the ones still visible, just quieter.
-   The name and the reading are not gone, they are what the hover says:
-   cr()'s own title plumbing already carries a name and a figure into a
-   tooltip everywhere else in this product, so this reuses that
-   convention rather than inventing a second one.
+/* THE TILE ROW: SQUARE, DARK, AND IT LIGHTS UP AS YOU TALK, 9 November,
+   corrected the same night. His first words asked for a round "pill,
+   almost like a light." His next, after seeing four mockups built on
+   that and rejecting all four ("None of these"), gave the real shape
+   directly: "I want them like square, but with slight beveled edges.
+   And the symbol in the middle of it. And it's mostly dark, but when a
+   person starts to speak, it begins, it lights up and activates which
+   one is lit up. And the more they talk, the brighter it gets." Square
+   with a cut corner (CSS clip-path, a true bevel, not a rounded corner),
+   dark at rest, the icon always there, and a continuous glow driven by
+   one CSS custom property, --b, 0 to 1, rather than the old binary
+   lit/dim class: nothing here steps, everything here is a dial.
 
-   REAL BUTTONS, WITH THEIR ICONS, 9 November, his words: "those buttons
-   don't work. They get their icons." A light that answers nothing is a
-   light bulb, not a control, and this product's own rule is that every
-   element carrying data opens a drill (ui/drills.js). So the pill is now
-   a <button>, which gets a working click and a working Enter and Space
-   for free rather than a second keydown handler reinventing what a
-   button already does. The icon is drawn inside it from the same glyph
-   tables the rest of this product already keys by seat or by kind
-   (SEATGLYPH, CHILD's own .ic, CHAINGLYPH), nothing invented here only
-   reused, stroked rather than filled, the house rule for every icon
-   ("ring, not fill"). data-stdrill carries where the click goes, read by
-   the one listener below; it is not data-ana, because two of the four
-   rows below open a card no existing kind of anaCard answers, and
-   writing a kind this file does not own into analytics.js's own key
-   would be the wrong file claiming the right to add one. */
+   LIVE AS SHE TYPES, NOT A SEPARATE WIRE. "When a person starts to
+   speak, it begins" is already true of this whole rail and was before
+   this round: ST_TEXT's own oninput handler (ui/storyui.js) calls
+   stRefresh on every keystroke, which already calls stDashLeft through
+   stPaintAll, so the tiles already repaint on every character typed or
+   dictated. Nothing new had to be wired for that half of his words.
+
+   AND THE MORE THEY REPEAT CERTAIN STORIES, his words, is the other
+   half, and it is a second real number, not an invented one: srcPrior
+   (engine/sourceai.js) already counts, for a committed record, how many
+   earlier entries landed at each seat, the same count Source AI's own
+   "is it back today?" question already reads. A seat, feeling or law's
+   brightness is a blend of what today's words say (stShare, 0 to 1) and
+   how often that seat has come back before (stRecur, 0 to 1), where the
+   data genuinely keys to one seat; where it does not (Patterns' two
+   categories, the six VERP gates, the four Psyche Stack tiers), only
+   stShare drives it, said plainly at each call site rather than faked. */
+function stSeatRecur(){
+ if(typeof srcPrior!=='function')return {};
+ return srcPrior((CURP&&CURP.story&&CURP.story.entries)||[]);}
+/* story-share and seat-recurrence blended into one 0-1 dial. 0.65/0.35 is
+   a judgement call, not a ruling: today's words lead, the pattern of
+   return adds to it rather than taking over. recurN is the real count
+   srcPrior gives (prior entries landed at this seat), scaled 5 and up
+   to full; a seat that has come back five separate times reads as fully
+   its own pattern, not only today's charge. */
+function stBright(share,recurN){
+ var s=Math.max(0,Math.min(1,share||0)), r=Math.max(0,Math.min(1,(recurN||0)/5));
+ return Math.max(0,Math.min(1,s*0.65+r*0.35));}
 function stPillRow(id,items){
  var sorted=items.slice().sort(function(a,b){return (b.v||0)-(a.v||0);});
  return '<div class="st-pl-row" id="'+id+'">'+sorted.map(function(it){
-   var lit=(it.v||0)>0;
-   return '<button type="button" class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b||it.k||'')+'" data-stdrill="'+esc((it.k||'')+'|'+(it.b||''))+'" style="--c:'+it.c+'" '
+   var br=Math.max(0,Math.min(1,it.str!=null?it.str:((it.v||0)>0?1:0)));
+   return '<button type="button" class="st-pl" data-seat="'+esc(it.b||it.k||'')+'" data-stdrill="'+esc((it.k||'')+'|'+(it.b||''))+'" style="--c:'+it.c+';--b:'+br.toFixed(3)+'" '
     +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'">'
     +(it.ic?'<svg viewBox="0 0 24 24" aria-hidden="true">'+it.ic+'</svg>':'')
     +'</button>';}).join('')
@@ -138,15 +152,22 @@ function stDashLeft(){
     right words back and the next paint draws them. */
  if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ /* THE SEAT RECURRENCE, READ ONCE PER PAINT, 9 November, his own answer
+    when asked whether this should cross from the draft to the record:
+    "all 7 tiles read recurrence." srcPrior (engine/sourceai.js) counts
+    real prior committed entries landed per seat; stBright blends it with
+    today's words, 65/35, below. */
+ var rec=stSeatRecur();
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+stAccent(BANDS.map(seatCol))+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
   o+=stPillRow('st-energy-ls',BANDS.map(function(b){
-   var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
-   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,
-     title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')};}));}
+   var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v), rn=rec[B2K[b]]||0;
+   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,str:stBright(v/10,rn),
+     title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')
+      +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));}
  o+='</section>';
  o+=stDashChildEmotions(p);
  o+=stDashPatterns(p);
@@ -183,14 +204,15 @@ function stDashChildEmotions(p){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
   o+='</section>';
   return o;}
- var byChild={};
+ var byChild={}, rec=stSeatRecur();
  CHILD.forEach(function(c){byChild[c.nm]=0;});
  Object.keys(p.charges||{}).forEach(function(k){
   var f=CHG2FET[k]; if(f&&byChild[f]!==undefined)byChild[f]+=p.charges[k];});
  o+=stPillRow('st-childem-ls',CHILD.map(function(c){
-  var n=byChild[c.nm]||0;
-  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',
-    title:c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
+  var n=byChild[c.nm]||0, rn=rec[B2K[c.seat]]||0;
+  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:stBright(n/4,rn),
+    title:c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
+     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
  o+='</section>';
  return o;}
 
@@ -222,18 +244,24 @@ function stDashPatterns(p){
   o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
   o+='</section>';
   return o;}
- var n={parental:0,ancestral:0};
+ var n={parental:0,ancestral:0}, rec=stSeatRecur();
  (p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
  /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
     lines, nothing filled: parental as one figure standing over a smaller
     one, ancestral as a line handed down through three generations. */
  var PATIC={parental:'<path d="M9 20v-2a3 3 0 013-3 3 3 0 013 3v2M12 11a2.2 2.2 0 100-4.4 2.2 2.2 0 000 4.4M5.5 20v-1.4a2 2 0 012-2 2 2 0 011.6.8M18.5 20v-1.4a2 2 0 00-2-2 2 2 0 00-1.6.8M6.3 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3M17.7 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3"/>',
   ancestral:'<circle cx="12" cy="4.6" r="1.8"/><path d="M12 6.4v3.4M12 9.8l-5 5M12 9.8l5 5"/><circle cx="7" cy="17.4" r="1.8"/><circle cx="17" cy="17.4" r="1.8"/>'};
- var CAT=[['parental','Parental',seatCol('Heart')],['ancestral','Ancestral',seatCol('Root')]];
+ /* PATTERNS HAS NO SEAT OF ITS OWN TO READ RECURRENCE OFF, so this reuses
+    the same borrowed seat the colour above already borrows (Heart for
+    parental, Root for ancestral, "a judgement call, not a ruling"),
+    rather than leave recurrence out where his answer ("all 7 tiles")
+    asked for it everywhere. */
+ var CAT=[['parental','Parental',seatCol('Heart'),'Heart'],['ancestral','Ancestral',seatCol('Root'),'Root']];
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
-   var v=n[c[0]];
-   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],
-     title:c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')};}));
+   var v=n[c[0]], rn=rec[B2K[c[3]]]||0;
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:stBright(Math.min(1,v/4),rn),
+     title:c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
  o+='</section>';
  return o;}
 /* THE PATTERNS DRILL. Every word this story read as handed down, in the
@@ -286,7 +314,7 @@ function stOpenPattern(cat){
    sentence in a story. That is a real decision and his to make, named
    here rather than guessed at. */
 function stDashIntegrity(p){
- if(typeof SI==='undefined'||typeof cr!=='function')return '';
+ if(typeof SI==='undefined')return '';
  var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
   +stAccent(SI.map(function(l){return seatCol(l.b);}))+'>'
   +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
@@ -294,15 +322,20 @@ function stDashIntegrity(p){
   o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
   o+='</section>';
   return o;}
- var hits=(typeof sniffLaws==='function')?sniffLaws(ST_TEXT):[], by={};
+ var hits=(typeof sniffLaws==='function')?sniffLaws(ST_TEXT):[], by={}, rec=stSeatRecur();
  hits.forEach(function(x){ if(!by[x.law]||x.score>by[x.law].score)by[x.law]=x; });
- o+='<div class="st-law-g" id="st-integrity-ls">'+SI.map(function(l){
-   var x=by[l.nm], v=x?x.score:0, pc=pct('law',v)||0;
-   return cr(l.b,pc,{size:'xs',glyph:'<path d="'+l.ic+'"/>',
-     raw:x?fmtPct('law',v):PCT_DASH,
-     title:l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story'),
-     act:true,data:'data-stdrill="law|'+esc(l.nm)+'"'});}).join('')
-  +'</div></section>';
+ /* ONE TILE LANGUAGE, NOT TWO, 9 November. This drew cr()'s own filling
+    ring at first; once his real spec for the row landed (square,
+    beveled, dark, continuous), keeping a second, round, ring-filled
+    shape for only this section would have been exactly the mismatch
+    his own rejection of the four mockups was about. SI's score is
+    already 0 to 10, the same scale stBright already takes. */
+ o+=stPillRow('st-integrity-ls',SI.map(function(l){
+   var x=by[l.nm], v=x?x.score:0, rn=rec[B2K[l.b]]||0;
+   return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:stBright(v/10,rn),
+     title:l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
+ o+='</section>';
  return o;}
 
 /* THE SIX AXES, THE LAWS OF ACTION, BACK ON THE RAIL, 9 November, his
@@ -332,10 +365,18 @@ function stDashVerp(p){
   o+='</section>';
   return o;}
  var s=verpScan(ST_TEXT);
+ /* VERP HAS NO SEAT TO READ srcPrior OFF EITHER, but it has its own real
+    running total: VERPMIX (engine/verp.js) already adds every commit's
+    verpApply straight into one counter per gate, for as long as the
+    record exists, which is a real measure of how often this gate keeps
+    coming back, not a borrowed one. */
+ var mix=(typeof VERPMIX!=='undefined')?VERPMIX:{};
  o+=stPillRow('st-verp-ls',VERP.map(function(v){
-   var n=s.hits[v.k]||0;
+   var n=s.hits[v.k]||0, rn=mix[v.k]||0;
    return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:GATEGLYPH[v.k],
-     title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
+     str:stBright(Math.min(1,n/4),rn),
+     title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
+      +(rn?', run '+rn+' time'+(rn===1?'':'s')+' on your record':'')};}));
  o+='</section>';
  return o;}
 /* THE SIX AXES DRILL. No existing anaCard kind answers one gate by name
@@ -391,9 +432,14 @@ function stDashPsycheStack(){
  if(r.unread){
   o+='<p class="st-none" id="st-psyche-none">Nothing recorded yet, so no pattern holds anything from this record.</p>';}
  else{
+  /* NO SEPARATE RECURRENCE TERM HERE, by design and not an oversight:
+     every other section blends today's words with how often the record
+     has shown the same thing before; this section already reads the
+     whole record (computeSeen(), not the draft), so what the other six
+     add as a second number is already the whole of what this one reads. */
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
    var n=(k[2]||[]).length;
-   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:CHAINGLYPH[k[0]],
+   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:CHAINGLYPH[k[0]],str:Math.min(1,n/4),
      title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
  o+='</section>';
  return o;}

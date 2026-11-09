@@ -144,13 +144,16 @@ async function stFullGate(browser,FILE,ok,booted){
      return x.f!==PCT_DASH?r.title.indexOf(x.f)>=0:r.title.indexOf('nothing from this story')>=0;}),
     spring:want.every(x=>Math.abs(STSEAT[x.b].rdT-x.v)<1e-9),
     dash:want.filter(x=>x.f===PCT_DASH).length, lit:want.filter(x=>x.f!==PCT_DASH).length,
-    litClass:pills.filter(r=>r.classList.contains('lit')).length,
+    /* NO MORE .lit CLASS, 9 November: the pill's brightness is a dial now
+       (--b, 0 to 1, stBright in ui/stdash.js), not a switch, so "lit" is
+       read off that dial rather than a class that no longer exists. */
+    brightClass:pills.filter(r=>parseFloat(r.style.getPropertyValue('--b'))>0.05).length,
     allTitled:pills.every(r=>!!r.title),
     none:!!document.querySelector('#st-energy-none')};},STORY);
   ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats present, got '+s3.seats.join(','));
   ok(s3.nonIncreasing,at+'and the pills run strongest first, by signal strength');
   ok(s3.titled,at+'each figure is the atom percent of min(10, bands/3), in the pill\'s own hover');
-  ok(s3.lit>0&&s3.dash>0&&s3.litClass===s3.lit,at+'a seat the story reached lights its pill and an untouched seat stays dim, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
+  ok(s3.lit>0&&s3.dash>0&&s3.brightClass===s3.lit,at+'a seat the story reached lights its pill and an untouched seat stays dim, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
   ok(s3.spring,at+'and every pill reads the number the Journal\'s own chart springs to, STSEAT');
   ok(s3.allTitled&&!s3.none,at+'each pill carries its own hover sentence, and the silent line is gone');
 

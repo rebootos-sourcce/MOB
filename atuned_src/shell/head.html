@@ -4558,44 +4558,42 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    100% at the sm size on both widths */
 .st-en-r .cr{flex:0 0 auto;min-width:96px}
 .st-en-r .st-en-n{flex:1 1 auto;min-width:0}
-/* THE PILL ROW, 8 November: colour only, no word, side by side, strongest
+/* THE TILE ROW, 8 November then rebuilt 9 November. Side by side, strongest
    first (stPillRow, ui/stdash.js, sorts before this ever reaches the DOM,
    so the row's own order is the signal-strength order and nothing here
-   re-sorts it). "Almost like a light": lit is the seat's own colour at
-   near full opacity with a soft glow in that same colour; the quiet seats
-   stay in the row, dim rather than gone, so hovering any of the seven,
-   lit or not, still finds it and its title still says what it is. */
-.st-pl-row{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 10px;align-items:center}
-/* THE LIGHT, NOW A BUTTON WITH ITS OWN ICON, 9 November. Round rather than
-   the earlier bar, because a bar 26 by 14 has no room for a mark inside
-   it; round keeps "almost like a light" (it still only glows, never
-   speaks, when lit) while giving the icon a frame to sit in. The icon is
-   stroked, never filled (ring, not fill), in the pill's own colour while
-   dim and in a plain light stroke once lit, where the colour is already
-   loud enough to carry the glow on its own. */
-.st-pl{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
- border-radius:999px;border:none;padding:0;background:var(--c);opacity:.20;cursor:pointer;
- transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out),transform .1s var(--ease-out)}
-.st-pl svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;
- stroke-linejoin:round;opacity:.92;pointer-events:none}
-.st-pl:not(.lit) svg{stroke:var(--c);opacity:.6}
-.st-pl.lit{opacity:.95;box-shadow:0 0 9px 1px var(--c)}
-.st-pl:hover,.st-pl:focus-visible{opacity:1;transform:scale(1.08)}
+   re-sorts it). */
+.st-pl-row{display:flex;flex-wrap:wrap;gap:6px;padding:4px 2px 10px;align-items:center}
+/* SQUARE, BEVELLED, DARK, AND IT DIALS UP RATHER THAN SWITCHES, 9 November,
+   replacing the round light this same rail shipped hours earlier. Four
+   independent mockups all kept the round/ring shape; his answer on seeing
+   them was "None of these," then his own spec: "I want them like square,
+   but with slight beveled edges. And the symbol in the middle of it. And
+   it's mostly dark, but when a person starts to speak, it begins, it
+   lights up... the more they talk, the brighter it gets." The corner cut
+   is a real bevel (clip-path), not a rounded corner. --b, 0 to 1, written
+   per button by ui/stdash.js's stPillRow, is the one dial everything here
+   reads: background tints from --sunk (the product's own darkest token)
+   toward the tile's own colour, the glow grows with it, and the icon's
+   own opacity rises with it, so nothing here is a lit/dim switch any
+   more, it is one continuous value turning up. */
+.st-pl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+ border:none;padding:0;cursor:pointer;background:color-mix(in srgb,var(--c) calc(6% + var(--b)*36%),var(--sunk));
+ clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px);
+ box-shadow:0 0 calc(var(--b)*14px) calc(var(--b)*2px) color-mix(in srgb,var(--c) calc(var(--b)*85%),transparent);
+ transition:background .25s var(--ease-out),box-shadow .25s var(--ease-out),transform .1s var(--ease-out)}
+/* THE SYMBOL STAYS, ring not fill, the house rule for every icon: a
+   stroked glyph, never a silhouette, so it reads at this size whatever
+   the tile beneath it is doing. */
+.st-pl svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round;opacity:calc(.35 + var(--b)*.65);pointer-events:none}
+.st-pl:hover,.st-pl:focus-visible{transform:scale(1.08)}
 .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
-/* INTEGRITY, THE 21 LAWS AS BUCKETS, 9 November, his words: "re-add the 21
-   law pills, but no more pills... use the symbol icons... see their
-   buckets filling." cr() is the one ring this product already fills by
-   value, so 21 of them, smallest size, wrap into rows rather than one
-   line forcing the rail wider than its column. */
-.st-law-g{display:flex;flex-wrap:wrap;gap:6px 8px;padding:4px 2px 10px}
-.st-law-g .cr{flex:0 0 auto}
-/* NO PRINTED PERCENT HERE, 9 November, his words on this rail: "no more...
-   mini third-tier text. I don't like that. It doesn't belong there. This
-   is pure visual information." cr()'s own number stays reachable on
-   hover (its title), the same convention every pill above already keeps;
-   only the ring, which is the bucket, and the icon stay on the page. */
-.st-law-g .cr .v{display:none}
+/* INTEGRITY'S OWN cr()-RING BUCKET AND ITS .st-law-g WRAPPER ARE GONE, 9
+   November, the same round his real tile spec landed: stDashIntegrity now
+   calls stPillRow like every other section, so the 21 laws share the one
+   square tile already styled above (.st-pl) rather than keeping a second,
+   round, ring-filled shape alongside it. */
 /* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
    "these all need to look like they're together... make sure it's all
    symmetrical." Equal width, equal top, same svg proportions set in
