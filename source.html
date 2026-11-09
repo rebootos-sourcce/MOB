@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2997 ad655411 2026-11-09 00:01"><head><meta charset="utf-8">
+<html lang="en" data-build="v2998 c048d83a 2026-11-09 00:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4530,6 +4530,24 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
+/* EVERY SECTION ITS OWN CARD, 9 November, his words: "give them different
+   backgrounds so it looks like they stand out... I want each segment
+   divided." Each of the six sections already shares one class, .st-en, so
+   one rule lifts all six off the rail's own background at once rather
+   than naming them one at a time; the gap between cards (margin, not a
+   drawn line) is the divider, the same convention .lsec already keeps
+   lower on this same rail. var(--panel-2) is the product's own one card
+   surface (.sum-card, .ana-tile, .card), not a colour invented for this
+   rail. */
+.st-lrail .st-en{position:relative;overflow:hidden;background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:var(--r-s);padding:13px 14px 12px;margin-bottom:10px}
+.st-lrail .st-en:last-child{margin-bottom:0}
+.st-lrail .st-en>.rblk{margin-top:0}
+/* THE ACCENT BAR, drawn only where ui/stdash.js hands this section a
+   gradient of its own row's real colours (--ac); a section with none
+   (Psyche stack, Boundary, Compass) gets no bar rather than a grey one
+   standing for nothing. */
+.st-lrail .st-en[style*="--ac"]::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac)}
 .st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
 .st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
@@ -4548,23 +4566,52 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    stay in the row, dim rather than gone, so hovering any of the seven,
    lit or not, still finds it and its title still says what it is. */
 .st-pl-row{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 10px;align-items:center}
-.st-pl{display:block;width:26px;height:14px;border-radius:7px;background:var(--c);opacity:.22;
- cursor:default;transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out)}
+/* THE LIGHT, NOW A BUTTON WITH ITS OWN ICON, 9 November. Round rather than
+   the earlier bar, because a bar 26 by 14 has no room for a mark inside
+   it; round keeps "almost like a light" (it still only glows, never
+   speaks, when lit) while giving the icon a frame to sit in. The icon is
+   stroked, never filled (ring, not fill), in the pill's own colour while
+   dim and in a plain light stroke once lit, where the colour is already
+   loud enough to carry the glow on its own. */
+.st-pl{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
+ border-radius:999px;border:none;padding:0;background:var(--c);opacity:.20;cursor:pointer;
+ transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out),transform .1s var(--ease-out)}
+.st-pl svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;opacity:.92;pointer-events:none}
+.st-pl:not(.lit) svg{stroke:var(--c);opacity:.6}
 .st-pl.lit{opacity:.95;box-shadow:0 0 9px 1px var(--c)}
-.st-pl:hover,.st-pl:focus-visible{opacity:1}
+.st-pl:hover,.st-pl:focus-visible{opacity:1;transform:scale(1.08)}
 .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
+/* INTEGRITY, THE 21 LAWS AS BUCKETS, 9 November, his words: "re-add the 21
+   law pills, but no more pills... use the symbol icons... see their
+   buckets filling." cr() is the one ring this product already fills by
+   value, so 21 of them, smallest size, wrap into rows rather than one
+   line forcing the rail wider than its column. */
+.st-law-g{display:flex;flex-wrap:wrap;gap:6px 8px;padding:4px 2px 10px}
+.st-law-g .cr{flex:0 0 auto}
+/* NO PRINTED PERCENT HERE, 9 November, his words on this rail: "no more...
+   mini third-tier text. I don't like that. It doesn't belong there. This
+   is pure visual information." cr()'s own number stays reachable on
+   hover (its title), the same convention every pill above already keeps;
+   only the ring, which is the bucket, and the icon stay on the page. */
+.st-law-g .cr .v{display:none}
 /* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
    "these all need to look like they're together... make sure it's all
    symmetrical." Equal width, equal top, same svg proportions set in
    ui/stdash.js (both viewBox height 170), so neither card reads taller
    or wider than the other regardless of its own content. */
 .st-pair{display:flex;gap:8px;align-items:stretch}
-.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .st-bnd-svg,.st-cps-svg{width:100%;max-width:170px;height:auto;display:block;margin:2px auto 0}
-.st-cps-say{display:flex;justify-content:center;gap:14px;margin-top:4px;font-family:var(--num);
- font-size:13px;color:var(--mid)}
-.st-cps-say span{cursor:default}
+/* CQ ABOVE, DQ BELOW, 9 November, his words: "put CQ, DQ at the top and
+   the bottom." Each is now the figure's own cap, not a caption printed
+   once under both; same type, same colour, so the two read as one pair
+   split across the arrow they belong to rather than two different marks. */
+.st-cps-top,.st-cps-bot{text-align:center;margin:0;font-family:var(--num);font-size:13px;
+ color:var(--mid);cursor:default}
+.st-cps-top{margin-bottom:2px}
+.st-cps-bot{margin-top:2px}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4861,21 +4908,26 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    her shrink instead, and the canvas is now sized by whichever of her own
    height or 640px her column actually has, keeping her round rather than
    letting her clip. */
-.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.st-chat .st-uni{flex:1 1 auto;min-height:0}
-/* HER GLOW FILLS THE EDGES, 8 November, his words on this exact panel: "with
-   Uni's glow, make sure it fills the edges." width:auto kept her at her own
-   640/520 aspect no matter how wide her column was, round TF's own fix for a
-   short screen clipping her top and bottom; it also left her narrower than
-   her column on any screen wider than that ratio, the flat black either side
-   of her in the glow panel. width:100% lets her fill the column's width as
-   well as its height, same overflow:hidden box, so round TF's own fix (never
-   taller than the column, never clipped) still holds; she is not always a
-   perfect circle now, a soft radial glow reads as one stretched as readily
-   as held to it. */
-.st-uni .uni-widget{width:100%;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-.st-uni .uni-widget .canvas-wrap{width:100%;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
-.st-uni .uni-widget .canvas-wrap canvas{width:100%;height:100%;max-width:100%;max-height:100%}
+/* HER BOX IS THE PANEL'S, AND HER GLOW FILLS IT, 8 November, his words,
+   third time of asking: "I said fill the fucking screen. I don't want to
+   see the edge. I don't want to see it clip ever." Two things made the
+   edge. Her canvas took its height from its own bitmap (a canvas's natural
+   size is its bitmap, in CSS pixels), so the panel she sat in was sized by
+   her and not the other way round: measured, the same 1600 wide window gave
+   her 640px at DPR 1 and 866px at DPR 2. And a 640x520 bitmap inside a box
+   of any other shape left the bitmap's own rectangle showing; stretching it
+   to the box (object-fit fill, the canvas default) bends her into an oval.
+   So the canvas is out of flow, inset 0, and fills exactly the box the
+   panel gives .st-uni; ui/uni.js sizes her bitmap to that box and fits her
+   inside it at her own proportions, the glow painted to every edge. In the
+   chat column .st-uni takes the room that is left (flex 1 1 0, its content
+   no longer has a say); anywhere else it keeps her own 640:520 shape. */
+.st-uni{width:100%;min-height:0;position:relative;display:block;overflow:hidden;aspect-ratio:640/520}
+.st-chat .st-uni{flex:1 1 0;min-height:0;aspect-ratio:auto}
+.st-uni .uni-widget{position:absolute;inset:0}
+.st-uni .uni-widget .page{position:absolute;inset:0}
+.st-uni .uni-widget .canvas-wrap{position:absolute;inset:0;width:auto;max-width:none}
+.st-uni .uni-widget .canvas-wrap canvas{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
@@ -41247,10 +41299,16 @@ function stepSp(cur, vel, tgt, k, b, dt) {
 const _ca = document.getElementById('ca');
 let mxRaw=320, myRaw=260;
 let lastMouseMoveT=performance.now();
+/* where her 640x520 design space sits inside the canvas's real box, in CSS
+   pixels: scale k and the offsets. Set by the NOVA fit below; the identity
+   until it runs, which is exactly the old mapping for a 640:520 box. */
+const UNI_FIT={k:1,ox:0,oy:0,w:640,h:520};
 document.addEventListener('mousemove', e => {
   const r = _ca.getBoundingClientRect();
-  mxRaw = (e.clientX-r.left)*(640/r.width);
-  myRaw = (e.clientY-r.top)*(520/r.height);
+  if(!(r.width>0&&r.height>0)) return;
+  const sx=r.width/UNI_FIT.w, sy=r.height/UNI_FIT.h;
+  mxRaw = ((e.clientX-r.left)/sx-UNI_FIT.ox)/UNI_FIT.k;
+  myRaw = ((e.clientY-r.top)/sy-UNI_FIT.oy)/UNI_FIT.k;
   lastMouseMoveT=performance.now();
 });
 
@@ -41410,6 +41468,52 @@ const ZONES=[
   const W=640,H=520,CX=320,CY=252,R=136;
   const DPR=Math.max(1,Math.min(3,window.devicePixelRatio||1));
   if(DPR!==1){ cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); ctx.scale(DPR,DPR); }
+  /* HER GLOW FILLS WHATEVER BOX SHE IS GIVEN. 8 November, his words, the
+     third time of asking: "that glow, that scales with the character, I
+     said fill the fucking screen. I don't want to see the edge. I don't
+     want to see it clip ever. I just want that background color to fill
+     the entire background." Her bitmap was a fixed 640x520, so in any box
+     of another shape the page showed the bitmap's own rectangle, and a CSS
+     stretch of that bitmap (object-fit fill, the canvas default) only bent
+     her into an oval. Now the bitmap is always the size of the box she is
+     shown in, times DPR, and her 640x520 design space is fitted inside it
+     at one scale k, centred, exactly as a 640:520 picture contained in that
+     box would sit: she is the same size she was. Everything outside the
+     design space is real bitmap, painted by the background fill and the
+     glow (see bleedR in drawHarmonicRadiance), so there is no edge left to
+     see. A box of exactly 640:520 gives k=1 relative to it and no offset,
+     the old picture. The box is read through a ResizeObserver, never by
+     forcing layout inside her frame; a zero box (parked, hidden) is
+     ignored and the last fit kept. */
+  let boxW=W, boxH=H, fitK=1, fitX=0, fitY=0, boxDirty=true;
+  function applyFit(){
+    boxDirty=false;
+    const bw=Math.max(1,Math.round(boxW*DPR)), bh=Math.max(1,Math.round(boxH*DPR));
+    if(cv.width!==bw) cv.width=bw;
+    if(cv.height!==bh) cv.height=bh;
+    const cw=bw/DPR, ch=bh/DPR;
+    fitK=Math.min(cw/W,ch/H);
+    fitX=(cw-W*fitK)/2; fitY=(ch-H*fitK)/2;
+    UNI_FIT.k=fitK; UNI_FIT.ox=fitX; UNI_FIT.oy=fitY; UNI_FIT.w=cw; UNI_FIT.h=ch;
+  }
+  if(typeof ResizeObserver==='function'){
+    new ResizeObserver(es=>{
+      const r=es[es.length-1].contentRect;
+      if(!(r.width>0&&r.height>0)) return;
+      if(r.width!==boxW||r.height!==boxH){ boxW=r.width; boxH=r.height; boxDirty=true; }
+    }).observe(cv);
+  }
+  /* the design-space transform, set at the head of every frame and after
+     every resize (a resize resets the context), so nothing below has to
+     know the box is not 640x520 */
+  function designTransform(){ ctx.setTransform(DPR*fitK,0,0,DPR*fitK,DPR*fitX,DPR*fitY); }
+  /* how far out from her centre, in design units, the bitmap reaches at
+     its farthest corner */
+  function cornerReach(){
+    const x0=-fitX/fitK, y0=-fitY/fitK, x1=x0+cv.width/DPR/fitK, y1=y0+cv.height/DPR/fitK;
+    const dx=Math.max(CX-x0,x1-CX), dy=Math.max(CY-y0,y1-CY);
+    return Math.hypot(dx,dy);
+  }
 
   // Subtle dither -- a tiny tileable noise pattern drawn once per frame at
   // very low alpha, 'overlay' blended. Breaks up the 8-bit banding that
@@ -41425,12 +41529,45 @@ const ZONES=[
   }
   ditherCtx.putImageData(ditherImg,0,0);
   const ditherPattern=ctx.createPattern(ditherCv,'repeat');
+  /* PERF, round TG, 8 November, measured: the dither was the second most
+     expensive thing she drew, 11 to 20ms a frame at DPR 2 on software
+     raster, because a 64px pattern stretched by ctx.scale(DPR) is filtered
+     (bilinear) for every device pixel of the canvas, every frame, and only
+     then overlay blended. The noise it samples never changes, so it is
+     sampled once here, through the very same pattern, the same scale and
+     the same filtering, into a tile one pattern period wide in device
+     pixels, and each frame draws that tile at the identity transform, one
+     device pixel to one texel, where there is nothing left to filter. Same
+     samples, same overlay, same 0.025 alpha. A DPR whose period is not a
+     whole number of device pixels cannot tile exactly, and keeps the
+     original pattern path; so does DPR 1, where the pattern was never
+     stretched in the first place. */
+  const ditherTilePx=64*DPR;
+  let ditherFast=null;
+  if(DPR!==1 && Number.isInteger(ditherTilePx)){
+    const tcv=document.createElement('canvas');
+    tcv.width=ditherTilePx; tcv.height=ditherTilePx;
+    const tctx=tcv.getContext('2d');
+    tctx.scale(DPR,DPR);
+    tctx.fillStyle=tctx.createPattern(ditherCv,'repeat');
+    tctx.fillRect(0,0,64,64);
+    ditherFast=ctx.createPattern(tcv,'repeat');
+  }
   function drawDither(){
     ctx.save();
     ctx.globalCompositeOperation='overlay';
     ctx.globalAlpha=0.025;
-    ctx.fillStyle=ditherPattern;
-    ctx.fillRect(0,0,W,H);
+    if(ditherFast){
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.fillStyle=ditherFast;
+      ctx.fillRect(0,0,cv.width,cv.height);
+    } else {
+      /* the whole bitmap, not the design space, with the pattern at its
+         original DPR scale so its grain does not grow with the box */
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      ctx.fillStyle=ditherPattern;
+      ctx.fillRect(0,0,cv.width/DPR,cv.height/DPR);
+    }
     ctx.restore();
   }
 
@@ -42448,8 +42585,18 @@ const ZONES=[
     // the surrounding aura glow instead of staying confined to a thin ring
     const cgB=ctx.createConicGradient(HARM_START, CX, CY);
     for(const[f,col] of harmStops(100,70,inten*0.17)) cgB.addColorStop(f,col);
+    /* THE BLEED NEVER ENDS ON SCREEN, 8 November (see the fit at the top of
+       NOVA, his words). It was cut off hard at R*2.1, a flat 17% tint that
+       stopped dead in a visible circle, and that circle was taller than her
+       own canvas, so the canvas clipped it top and bottom: the edge and the
+       clip he kept seeing. Its outer edge now sits past the farthest corner
+       of whatever box she has, with room for the most she ever shrinks
+       (squash, fear and disgust together, about 0.78) and drifts (her hover,
+       under 15 units), so the tint runs to every edge. Inside R*2.1 nothing
+       changes. */
+    const bleedR=Math.max(R*2.1,(cornerReach()+20)/0.7);
     ctx.beginPath();
-    ctx.arc(CX,CY,R*2.1,0,Math.PI*2);
+    ctx.arc(CX,CY,bleedR,0,Math.PI*2);
     ctx.arc(CX,CY,R*0.70,0,Math.PI*2,true);
     ctx.fillStyle=cgB; ctx.fill('evenodd');
     // Outer band
@@ -42884,16 +43031,42 @@ const ZONES=[
   // ----------------------------------------------------------------
   // Frame loop
   // ----------------------------------------------------------------
+  /* ONE LOOP, NEVER TWO. PERF, round TG, 8 November, measured: from boot
+     she ran two loops at once, and every displayed frame was drawn twice.
+     The load schedules her first frame, the load parks her, and the app
+     opens on the Journal, whose render mounts her and calls resume() in
+     the same task, before that first frame has fired. resume() saw
+     lastTs===null and scheduled a second frame, and from then on each
+     loop rescheduled itself: two callbacks per tick, the second with
+     dt=0, repainting over the first. Measured in Chromium, that second
+     pass cost its whole script (3 to 4ms) and not its raster, because
+     Chromium's canvas recorder throws away a picture that a full clear
+     covers before it is ever rastered; another engine may raster both.
+     And the dt=0 pass was not inert: the viseme queue pops its next unit
+     the moment the last one ends, so under two loops every unit ended a
+     frame early and speech ran fast. Nothing in the app calls speak()
+     yet, so no screen a person sees today moves differently; when one
+     does, she now speaks at the timing her own code sets out. The idle
+     she shows now is pixel identical under one loop (measured, seeded,
+     fake clock, before against after). The round TE comment below
+     believed lastTs===null was a sufficient guard; it is not while a
+     frame is already queued. Every place that starts her now goes
+     through kick(), which only asks for a frame when none is queued. */
+  let frameQueued=false;
+  function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
+    frameQueued=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
        below (which would otherwise immediately overwrite the null it
        just set). Lets pause()/resume() (and the original mouseenter
-       restart) gate cleanly on lastTs===null without ever
-       double-scheduling a second concurrent loop. */
-    if(!cv.hidden){ requestAnimationFrame(frame); } else { lastTs=null; return; }
+       restart) gate cleanly on lastTs===null. */
+    if(!cv.hidden){ kick(); } else { lastTs=null; return; }
     if(lastTs===null){lastTs=ts;return;}
-    const dt=Math.min((ts-lastTs)/1000,0.05); lastTs=ts;
+    /* never negative: resume() stamps lastTs with performance.now(), which
+       can be later than the timestamp of the frame already queued when it
+       ran, and a negative step ran every spring and timer backwards. */
+    const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
     const t=ts/1000;
     const coh01=coherence/100;
     const p=getPalette(coh01);
@@ -43202,9 +43375,13 @@ const ZONES=[
     }
 
     // Render
-    ctx.clearRect(0,0,W,H);
+    if(boxDirty) applyFit();
+    // the background fills the whole bitmap, every pixel of her box
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
     ctx.fillStyle=_rgb(p.bg);
-    ctx.fillRect(0,0,W,H);
+    ctx.fillRect(0,0,cv.width,cv.height);
+    designTransform();
 
     // Round 2: per-state color signature, applied once per frame (not per
     // particle) on top of the coherence palette
@@ -43293,7 +43470,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
 
   // Events
   cv.addEventListener('click',()=>{showStats=!showStats;});
-  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();requestAnimationFrame(frame);}});
+  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();kick();}});
 
   let typeBuf='';
   let typeFlushTimer=null;
@@ -43318,7 +43495,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     });
   }
 
-  requestAnimationFrame(frame);
+  kick();
 
   // ---- External API, added for embedding (funnel / quiz / dashboard /
   // avatar). Every method below is a thin wrapper over the engine's own
@@ -43400,7 +43577,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
        uniMount/uniPark call these so a reparented, previously-hidden
        instance resumes without needing a real hover. */
     pause(){ cv.hidden=true; },
-    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); requestAnimationFrame(frame); } },
+    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); kick(); } },
   };
 })();
 
@@ -57502,14 +57679,61 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    The name and the reading are not gone, they are what the hover says:
    cr()'s own title plumbing already carries a name and a figure into a
    tooltip everywhere else in this product, so this reuses that
-   convention rather than inventing a second one. */
+   convention rather than inventing a second one.
+
+   REAL BUTTONS, WITH THEIR ICONS, 9 November, his words: "those buttons
+   don't work. They get their icons." A light that answers nothing is a
+   light bulb, not a control, and this product's own rule is that every
+   element carrying data opens a drill (ui/drills.js). So the pill is now
+   a <button>, which gets a working click and a working Enter and Space
+   for free rather than a second keydown handler reinventing what a
+   button already does. The icon is drawn inside it from the same glyph
+   tables the rest of this product already keys by seat or by kind
+   (SEATGLYPH, CHILD's own .ic, CHAINGLYPH), nothing invented here only
+   reused, stroked rather than filled, the house rule for every icon
+   ("ring, not fill"). data-stdrill carries where the click goes, read by
+   the one listener below; it is not data-ana, because two of the four
+   rows below open a card no existing kind of anaCard answers, and
+   writing a kind this file does not own into analytics.js's own key
+   would be the wrong file claiming the right to add one. */
 function stPillRow(id,items){
  var sorted=items.slice().sort(function(a,b){return (b.v||0)-(a.v||0);});
  return '<div class="st-pl-row" id="'+id+'">'+sorted.map(function(it){
    var lit=(it.v||0)>0;
-   return '<span class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b||it.k||'')+'" tabindex="0" role="img" style="--c:'+it.c+'" '
-    +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'"></span>';}).join('')
+   return '<button type="button" class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b||it.k||'')+'" data-stdrill="'+esc((it.k||'')+'|'+(it.b||''))+'" style="--c:'+it.c+'" '
+    +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'">'
+    +(it.ic?'<svg viewBox="0 0 24 24" aria-hidden="true">'+it.ic+'</svg>':'')
+    +'</button>';}).join('')
   +'</div>';}
+/* THE ONE LISTENER FOR ALL FOUR ROWS. Energy and Emotions open a real card
+   this product already has (a seat, ui/analytics.js anaSeatCard; a child
+   feeling, which that file's own anaCard answers under its "axis" kind,
+   anaAxisCard), through anaGo, the one door every other bubble in this
+   product already walks through, so the trail, the crumbs and the close
+   control behave exactly as they do from Analytics. Patterns and Psyche
+   Stack have no existing card for "every word handed down as parental" or
+   "every saboteur running", so their own two openers below build the card
+   and hand it to rdShell directly, the same direct call mapshelf.js and
+   other callers already make for a drill with no anaCard kind of its own. */
+/* THE ARTISTIC DIRECTION ON ENERGY, EMOTIONS AND PATTERNS, 9 November, his
+   words: "energy, emotion, pattern, like have them artistic direction
+   here." A bare heading over a row of pills has nothing of its own, so
+   each of these three carries a thin bar in the real colours the row
+   under it is about to draw, in that row's own order, strongest first
+   where the row has a reading and the section's plain BANDS/CHILD/CAT
+   order where it does not: a preview of the row, not a decoration with no
+   job (the rule this project already keeps, see component.js). Nothing is
+   invented, the three colours (or seven, or nine) are seatCol's own. */
+function stAccent(cols){
+ return cols.length?' style="--ac:linear-gradient(90deg,'+cols.join(',')+')"':'';}
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('#stleft [data-stdrill]'):null;
+ if(!t)return;
+ var v=t.getAttribute('data-stdrill'), at=v.indexOf('|'), k=v.slice(0,at), nm=v.slice(at+1);
+ if((k==='seat'||k==='axis'||k==='law')&&typeof anaGo==='function'){anaGo(k,nm,true);return;}
+ if(k==='pat'){stOpenPattern(nm);return;}
+ if(k==='verp'){stOpenVerp(nm);return;}
+ if(k==='psy'){stOpenPsyche(nm);return;}});
 
 /* ENERGY, READ OFF THIS STORY. The decision recorded with the ruling: the
    Journal's Energy reads the story being written, never the whole record.
@@ -57547,18 +57771,20 @@ function stDashLeft(){
     right words back and the next paint draws them. */
  if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
- var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
+ var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+stAccent(BANDS.map(seatCol))+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
   o+=stPillRow('st-energy-ls',BANDS.map(function(b){
    var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
-   return {v:v,b:b,c:seatCol(b),
+   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,
      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')};}));}
  o+='</section>';
  o+=stDashChildEmotions(p);
  o+=stDashPatterns(p);
+ o+=stDashIntegrity(p);
+ o+=stDashVerp(p);
  o+=stDashPsycheStack();
  /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
     all need to look like they're together... make sure it's all
@@ -57584,7 +57810,7 @@ function stDashChildEmotions(p){
     stay (an id is identity, never renamed for a label change, the same
     rule TAB integers keep), the nine feelings underneath are still CHILD's
     own nine, only the word a person reads changes. */
- var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h">'
+ var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+stAccent(CHILD.map(function(c){return seatCol(c.seat);}))+'>'
   +'<h2 class="rblk" id="st-childem-h">Emotions</h2>';
  if(!p||typeof CHG2FET==='undefined'){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
@@ -57596,7 +57822,7 @@ function stDashChildEmotions(p){
   var f=CHG2FET[k]; if(f&&byChild[f]!==undefined)byChild[f]+=p.charges[k];});
  o+=stPillRow('st-childem-ls',CHILD.map(function(c){
   var n=byChild[c.nm]||0;
-  return {v:n,b:c.nm,c:seatCol(c.seat),
+  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',
     title:c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
  o+='</section>';
  return o;}
@@ -57623,7 +57849,7 @@ function stDashChildEmotions(p){
    Heart for parental (closest relation) and Root for ancestral (furthest
    back), reusing seat colours already in the palette -- his to overrule. */
 function stDashPatterns(p){
- var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h">'
+ var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+stAccent([seatCol('Heart'),seatCol('Root')])+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
  if(!p){
   o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
@@ -57631,13 +57857,133 @@ function stDashPatterns(p){
   return o;}
  var n={parental:0,ancestral:0};
  (p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
+ /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
+    lines, nothing filled: parental as one figure standing over a smaller
+    one, ancestral as a line handed down through three generations. */
+ var PATIC={parental:'<path d="M9 20v-2a3 3 0 013-3 3 3 0 013 3v2M12 11a2.2 2.2 0 100-4.4 2.2 2.2 0 000 4.4M5.5 20v-1.4a2 2 0 012-2 2 2 0 011.6.8M18.5 20v-1.4a2 2 0 00-2-2 2 2 0 00-1.6.8M6.3 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3M17.7 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3"/>',
+  ancestral:'<circle cx="12" cy="4.6" r="1.8"/><path d="M12 6.4v3.4M12 9.8l-5 5M12 9.8l5 5"/><circle cx="7" cy="17.4" r="1.8"/><circle cx="17" cy="17.4" r="1.8"/>'};
  var CAT=[['parental','Parental',seatCol('Heart')],['ancestral','Ancestral',seatCol('Root')]];
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
    var v=n[c[0]];
-   return {v:v,b:c[0],c:c[2],
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],
      title:c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')};}));
  o+='</section>';
  return o;}
+/* THE PATTERNS DRILL. Every word this story read as handed down, in the
+   one panel every other drill opens, built here rather than through
+   anaGo because no existing anaCard kind answers "parental" or
+   "ancestral": those are this file's own two real categories
+   (originCategory, engine/sniff.js), not one of analytics.js's own. */
+function stOpenPattern(cat){
+ var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ var lab=cat==='parental'?'Parental':'Ancestral';
+ var hits=p?(p.hits||[]).filter(function(h){return h.originCat===cat;}):[];
+ var h=anaHead('Patterns',lab,'words in this story handed down as '+lab.toLowerCase());
+ if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' in this story yet.</p>';}
+ else{h+='<div class="ad-rows">'+hits.slice(0,12).map(function(x){
+   var f=x.fet||x.charge||'';
+   return '<div class="pm-r"><span>'+esc(x.t||'')+'</span><em>'+esc(x.who?'from '+x.who:'')+'</em>'
+    +(f?'<b>'+esc(f)+'</b>':'')+'</div>';}).join('')+'</div>';}
+ rdShell(h);}
+
+/* INTEGRITY, THE 21 LAWS, BACK AND NOT AS PILLS, 9 November. Round TB's
+   own ruling hid the law grid (TASKS.md, "Lance ruled them hidden"); his
+   own words tonight bring it back on a different shape: "re-add the 21
+   law pills, but no more pills. We're going to use the symbol icons...
+   you can see their buckets filling." Two real, already built pieces,
+   neither invented for this: SI (engine/data/canon.js) already carries a
+   drawn icon for every one of the 21 laws, "each a physical metaphor
+   drawn as an open stroke in a 24 box, never a fill"; and cr(), the ring
+   badge the rest of this product already uses for a law
+   (ui/analytics.js's own law rows on a seat card), already draws a
+   filling arc round a glyph, which is the bucket. So this is cr() at its
+   smallest size, one per law, SI's own icon and seat colour, nothing
+   this file invented.
+
+   DRAFT SCOPED, THE SAME SILENCE AS ENERGY, Emotions and Patterns above:
+   this reads the words not yet committed, through sniffLaws
+   (engine/sniff.js), which already turns free text into a law name, a
+   direction and a score and was built, checked directly before use, and
+   never once wired into anything in this product until this line. Same
+   rule as its three siblings: nothing typed draws no buckets at all; a
+   story typed draws all 21, the quiet ones empty rather than missing.
+
+   WHAT THIS DOES NOT DO. His own third sentence, "that's what gets
+   committed to the bank," asks for a second thing this pass does not
+   build: stCommit (ui/storyui.js) already carries every other sniffer
+   it reads (applyStory, applyStoryAddr, verpApply, leanApply) into the
+   record on commit, and sniffLaws is not in that list, so nothing here
+   writes to p.laws or S.law yet. Writing it would mean deciding how a
+   law already measured by the intake (p.laws, a person's own direct
+   answer) is reconciled with the same law read a second way, off a
+   sentence in a story. That is a real decision and his to make, named
+   here rather than guessed at. */
+function stDashIntegrity(p){
+ if(typeof SI==='undefined'||typeof cr!=='function')return '';
+ var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
+  +stAccent(SI.map(function(l){return seatCol(l.b);}))+'>'
+  +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
+ if(!p){
+  o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
+  o+='</section>';
+  return o;}
+ var hits=(typeof sniffLaws==='function')?sniffLaws(ST_TEXT):[], by={};
+ hits.forEach(function(x){ if(!by[x.law]||x.score>by[x.law].score)by[x.law]=x; });
+ o+='<div class="st-law-g" id="st-integrity-ls">'+SI.map(function(l){
+   var x=by[l.nm], v=x?x.score:0, pc=pct('law',v)||0;
+   return cr(l.b,pc,{size:'xs',glyph:'<path d="'+l.ic+'"/>',
+     raw:x?fmtPct('law',v):PCT_DASH,
+     title:l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story'),
+     act:true,data:'data-stdrill="law|'+esc(l.nm)+'"'});}).join('')
+  +'</div></section>';
+ return o;}
+
+/* THE SIX AXES, THE LAWS OF ACTION, BACK ON THE RAIL, 9 November, his
+   words: "don't forget to add the 6 action axes to that left menu."
+   Round 110 in TASKS.md built this once already and it was lost when the
+   rail's real scope was corrected back to its agreed three sections; his
+   own words tonight put it back as a fourth. VERP (engine/verp.js) is six
+   gates, three right action and three wrong (aware, detach, intent;
+   ignore, attach, averse), each with its own real icon (GATEGLYPH,
+   canon.js, "the six gate glyphs... stroked") and its own real colour,
+   the same split the action drill and the dial's collar already draw a
+   gate in: higher seatCol('Heart'), lower seatCol('Root')
+   (ui/drills.js:598, ui/rings.js:722), nothing new chosen here.
+
+   DRAFT SCOPED, THE SAME SILENCE, verpScan(text) (engine/verp.js) is the
+   live reader stCommit already calls on commit (verpApply); this calls
+   its read-only half, verpScan, directly on ST_TEXT, same convention as
+   every pill row above it: nothing typed draws nothing, a story typed
+   draws all six, the quiet ones dim rather than missing. */
+function stDashVerp(p){
+ if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
+ var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
+  +stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+  +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
+ if(!p){
+  o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
+  o+='</section>';
+  return o;}
+ var s=verpScan(ST_TEXT);
+ o+=stPillRow('st-verp-ls',VERP.map(function(v){
+   var n=s.hits[v.k]||0;
+   return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:GATEGLYPH[v.k],
+     title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
+ o+='</section>';
+ return o;}
+/* THE SIX AXES DRILL. No existing anaCard kind answers one gate by name
+   (the Field's own action drill opens off a press on its dial, a
+   different host), so this reads VERP's own line for the gate, the same
+   sentence the action drill already quotes, and the record's own share
+   of it from verpRead() (engine/verp.js), real and already computed,
+   never a second number invented for this card. */
+function stOpenVerp(k){
+ var v=(typeof VERP!=='undefined'?VERP:[]).filter(function(x){return x.k===k;})[0]; if(!v)return;
+ var read=(typeof verpRead==='function')?verpRead().filter(function(x){return x.k===k;})[0]:null;
+ var h=anaHead('Law of action',v.nm,v.side==='higher'?'right action':'wrong action');
+ h+='<p class="ad-p">"'+esc(v.d)+'"</p>';
+ h+='<p class="ad-p">'+(read&&read.n?'Read '+anaN(read.n)+' time'+(read.n===1?'':'s')+' on your record, '+read.pct+'% of every gate it runs.':'Nothing recorded on your record yet.')+'</p>';
+ rdShell(h);}
 
 /* PSYCHE STACK, THE REAL SUMMARY, NOT A DUPLICATE OF IT, 8 November. Round
    TB's own words: "Psyche Stack (`railStack` in ui/ui.js, pointed at the
@@ -57664,18 +58010,43 @@ function stDashPsycheStack(){
  var r=computeSeen();
  var TIER={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root};
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
- var any=KIND.some(function(k){return k[2]&&k[2].length;});
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
-  +'<h2 class="rblk" id="st-psyche-h">Psyche Stack</h2>';
- if(r.unread||!any){
+  +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
+ /* ALWAYS THE PILLS, ONLY TEXT ON AN UNREAD RECORD, 9 November, corrected
+    the same night: this used to fall back to a whole sentence the moment
+    every tier was empty, which is the one section on this rail that did
+    not hold the rule its own three siblings above already keep (a seat or
+    a feeling at nothing stays a dim pill in the row, never a sentence).
+    His own complaint named the result exactly: "right now you get the
+    Psyche stack with a bunch of text. I don't want that there." The
+    sentence now means what r.unread already means everywhere else on
+    this page, nothing entered anywhere, and nothing short of that. */
+ if(r.unread){
   o+='<p class="st-none" id="st-psyche-none">Nothing recorded yet, so no pattern holds anything from this record.</p>';}
  else{
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
    var n=(k[2]||[]).length;
-   return {v:n,b:k[0],c:TIER[k[0]],
+   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:CHAINGLYPH[k[0]],
      title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
  o+='</section>';
  return o;}
+/* THE PSYCHE STACK DRILL. Every chain of one tier, in the same card shape
+   and the same rows (anaPatRows) the right rail's own Insight panel and
+   every analytics bubble already draw a chain in, built here directly
+   because no single anaCard kind answers "every saboteur" the way it
+   answers one saboteur by name; a press on a row inside this card still
+   opens that one chain's own real card, through the same global listener
+   (its data-ana, written by anaPatRow, fires inside #rdrill exactly as it
+   does inside #ana). */
+function stOpenPsyche(kind){
+ if(typeof computeSeen!=='function')return;
+ var r=computeSeen();
+ var NAME={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes',sup:'Super complexes'};
+ var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
+ var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
+ var h=anaHead('Psyche stack',lab);
+ h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
+ rdShell(h);}
 
 /* BOUNDARY, THE PURPOSE MAP, NOT THE SIX GATES, 9 November. Corrected the
    same night: the six VERP gates (aware/detach/intent/ignore/attach/
@@ -57710,8 +58081,11 @@ function stDashBoundary(){
    +'<title>'+esc(t)+'</title></circle>';};
  var ring=function(angs){return '<polygon points="'+angs.map(function(a){var p=pt(a);return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' ')
   +'" fill="none" stroke="var(--edge-2)" stroke-width="1.3" stroke-dasharray="1.5 5" stroke-linecap="round"/>';};
- var o='<section class="st-en st-bnd" id="st-boundary" aria-labelledby="st-boundary-h">'
-  +'<h2 class="rblk" id="st-boundary-h">Boundary</h2>'
+ /* THE TITLE IS GONE, 9 November, his words: "get rid of the title.
+    Boundary and compass." The name is still here, only moved to
+    aria-label: a screen reader still hears what this is, a sighted
+    person reads the figure itself rather than a word above it. */
+ var o='<section class="st-en st-bnd" id="st-boundary" aria-label="Boundary">'
   +'<svg viewBox="0 0 170 170" class="st-bnd-svg" aria-hidden="true">'
   +ring(soulAng)+ring(egoAng)
   +soulAng.map(function(a,i){return dot(a,soulCol,pu.soul&&pu.soul[i],i,'Soul');}).join('')
@@ -57744,8 +58118,12 @@ function stDashCompass(){
   return '<polygon points="'+[
     [cx-sw,yBase],[cx-sw,yShoulder],[cx-hw,yShoulder],[cx,yTip],[cx+hw,yShoulder],[cx+sw,yShoulder],[cx+sw,yBase]
    ].map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ')+'" fill="'+col+'"/>';};
- var o='<section class="st-en st-cps" id="st-compass" aria-labelledby="st-compass-h">'
-  +'<h2 class="rblk" id="st-compass-h">Compass</h2>'
+ /* THE TITLE IS GONE AND CQ/DQ MOVE TO EITHER END, 9 November, his words:
+    "put CQ, DQ at the top and the bottom." They read as the figure's own
+    two poles now, CQ over the upward arrow and DQ under the downward one,
+    rather than a caption printed once below both. */
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
+  +'<p class="st-cps-top" title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
   +'<stop offset="0%" stop-color="'+GOLD+'" stop-opacity=".28"/><stop offset="100%" stop-color="'+GOLD+'" stop-opacity="0"/></radialGradient>'
@@ -57754,8 +58132,7 @@ function stDashCompass(){
   +arrow(Math.min(maxLen,(cq/100)*maxLen),true,seatCol('Heart'))
   +arrow(Math.min(maxLen,(dq/100)*maxLen),false,'var(--dim)')
   +'</svg>'
-  +'<p class="st-cps-say"><span title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</span>'
-  +'<span title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</span></p>'
+  +'<p class="st-cps-bot" title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
   +'</section>';
  return o;}
 
@@ -91601,5 +91978,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006121459"></div>
+<div id="eof" hidden data-len="006145249"></div>
 </body></html>

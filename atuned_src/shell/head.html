@@ -4530,6 +4530,24 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
+/* EVERY SECTION ITS OWN CARD, 9 November, his words: "give them different
+   backgrounds so it looks like they stand out... I want each segment
+   divided." Each of the six sections already shares one class, .st-en, so
+   one rule lifts all six off the rail's own background at once rather
+   than naming them one at a time; the gap between cards (margin, not a
+   drawn line) is the divider, the same convention .lsec already keeps
+   lower on this same rail. var(--panel-2) is the product's own one card
+   surface (.sum-card, .ana-tile, .card), not a colour invented for this
+   rail. */
+.st-lrail .st-en{position:relative;overflow:hidden;background:var(--panel-2);
+ border:1px solid var(--edge);border-radius:var(--r-s);padding:13px 14px 12px;margin-bottom:10px}
+.st-lrail .st-en:last-child{margin-bottom:0}
+.st-lrail .st-en>.rblk{margin-top:0}
+/* THE ACCENT BAR, drawn only where ui/stdash.js hands this section a
+   gradient of its own row's real colours (--ac); a section with none
+   (Psyche stack, Boundary, Compass) gets no bar rather than a grey one
+   standing for nothing. */
+.st-lrail .st-en[style*="--ac"]::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac)}
 .st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
 .st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
@@ -4548,23 +4566,52 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    stay in the row, dim rather than gone, so hovering any of the seven,
    lit or not, still finds it and its title still says what it is. */
 .st-pl-row{display:flex;flex-wrap:wrap;gap:8px;padding:4px 2px 10px;align-items:center}
-.st-pl{display:block;width:26px;height:14px;border-radius:7px;background:var(--c);opacity:.22;
- cursor:default;transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out)}
+/* THE LIGHT, NOW A BUTTON WITH ITS OWN ICON, 9 November. Round rather than
+   the earlier bar, because a bar 26 by 14 has no room for a mark inside
+   it; round keeps "almost like a light" (it still only glows, never
+   speaks, when lit) while giving the icon a frame to sit in. The icon is
+   stroked, never filled (ring, not fill), in the pill's own colour while
+   dim and in a plain light stroke once lit, where the colour is already
+   loud enough to carry the glow on its own. */
+.st-pl{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
+ border-radius:999px;border:none;padding:0;background:var(--c);opacity:.20;cursor:pointer;
+ transition:opacity .15s var(--ease-out),box-shadow .15s var(--ease-out),transform .1s var(--ease-out)}
+.st-pl svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;opacity:.92;pointer-events:none}
+.st-pl:not(.lit) svg{stroke:var(--c);opacity:.6}
 .st-pl.lit{opacity:.95;box-shadow:0 0 9px 1px var(--c)}
-.st-pl:hover,.st-pl:focus-visible{opacity:1}
+.st-pl:hover,.st-pl:focus-visible{opacity:1;transform:scale(1.08)}
 .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
+/* INTEGRITY, THE 21 LAWS AS BUCKETS, 9 November, his words: "re-add the 21
+   law pills, but no more pills... use the symbol icons... see their
+   buckets filling." cr() is the one ring this product already fills by
+   value, so 21 of them, smallest size, wrap into rows rather than one
+   line forcing the rail wider than its column. */
+.st-law-g{display:flex;flex-wrap:wrap;gap:6px 8px;padding:4px 2px 10px}
+.st-law-g .cr{flex:0 0 auto}
+/* NO PRINTED PERCENT HERE, 9 November, his words on this rail: "no more...
+   mini third-tier text. I don't like that. It doesn't belong there. This
+   is pure visual information." cr()'s own number stays reachable on
+   hover (its title), the same convention every pill above already keeps;
+   only the ring, which is the bucket, and the icon stay on the page. */
+.st-law-g .cr .v{display:none}
 /* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
    "these all need to look like they're together... make sure it's all
    symmetrical." Equal width, equal top, same svg proportions set in
    ui/stdash.js (both viewBox height 170), so neither card reads taller
    or wider than the other regardless of its own content. */
 .st-pair{display:flex;gap:8px;align-items:stretch}
-.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .st-bnd-svg,.st-cps-svg{width:100%;max-width:170px;height:auto;display:block;margin:2px auto 0}
-.st-cps-say{display:flex;justify-content:center;gap:14px;margin-top:4px;font-family:var(--num);
- font-size:13px;color:var(--mid)}
-.st-cps-say span{cursor:default}
+/* CQ ABOVE, DQ BELOW, 9 November, his words: "put CQ, DQ at the top and
+   the bottom." Each is now the figure's own cap, not a caption printed
+   once under both; same type, same colour, so the two read as one pair
+   split across the arrow they belong to rather than two different marks. */
+.st-cps-top,.st-cps-bot{text-align:center;margin:0;font-family:var(--num);font-size:13px;
+ color:var(--mid);cursor:default}
+.st-cps-top{margin-bottom:2px}
+.st-cps-bot{margin-top:2px}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4861,21 +4908,26 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    her shrink instead, and the canvas is now sized by whichever of her own
    height or 640px her column actually has, keeping her round rather than
    letting her clip. */
-.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.st-chat .st-uni{flex:1 1 auto;min-height:0}
-/* HER GLOW FILLS THE EDGES, 8 November, his words on this exact panel: "with
-   Uni's glow, make sure it fills the edges." width:auto kept her at her own
-   640/520 aspect no matter how wide her column was, round TF's own fix for a
-   short screen clipping her top and bottom; it also left her narrower than
-   her column on any screen wider than that ratio, the flat black either side
-   of her in the glow panel. width:100% lets her fill the column's width as
-   well as its height, same overflow:hidden box, so round TF's own fix (never
-   taller than the column, never clipped) still holds; she is not always a
-   perfect circle now, a soft radial glow reads as one stretched as readily
-   as held to it. */
-.st-uni .uni-widget{width:100%;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-.st-uni .uni-widget .canvas-wrap{width:100%;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
-.st-uni .uni-widget .canvas-wrap canvas{width:100%;height:100%;max-width:100%;max-height:100%}
+/* HER BOX IS THE PANEL'S, AND HER GLOW FILLS IT, 8 November, his words,
+   third time of asking: "I said fill the fucking screen. I don't want to
+   see the edge. I don't want to see it clip ever." Two things made the
+   edge. Her canvas took its height from its own bitmap (a canvas's natural
+   size is its bitmap, in CSS pixels), so the panel she sat in was sized by
+   her and not the other way round: measured, the same 1600 wide window gave
+   her 640px at DPR 1 and 866px at DPR 2. And a 640x520 bitmap inside a box
+   of any other shape left the bitmap's own rectangle showing; stretching it
+   to the box (object-fit fill, the canvas default) bends her into an oval.
+   So the canvas is out of flow, inset 0, and fills exactly the box the
+   panel gives .st-uni; ui/uni.js sizes her bitmap to that box and fits her
+   inside it at her own proportions, the glow painted to every edge. In the
+   chat column .st-uni takes the room that is left (flex 1 1 0, its content
+   no longer has a say); anywhere else it keeps her own 640:520 shape. */
+.st-uni{width:100%;min-height:0;position:relative;display:block;overflow:hidden;aspect-ratio:640/520}
+.st-chat .st-uni{flex:1 1 0;min-height:0;aspect-ratio:auto}
+.st-uni .uni-widget{position:absolute;inset:0}
+.st-uni .uni-widget .page{position:absolute;inset:0}
+.st-uni .uni-widget .canvas-wrap{position:absolute;inset:0;width:auto;max-width:none}
+.st-uni .uni-widget .canvas-wrap canvas{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire

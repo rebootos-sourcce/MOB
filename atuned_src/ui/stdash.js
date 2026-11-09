@@ -46,14 +46,61 @@
    The name and the reading are not gone, they are what the hover says:
    cr()'s own title plumbing already carries a name and a figure into a
    tooltip everywhere else in this product, so this reuses that
-   convention rather than inventing a second one. */
+   convention rather than inventing a second one.
+
+   REAL BUTTONS, WITH THEIR ICONS, 9 November, his words: "those buttons
+   don't work. They get their icons." A light that answers nothing is a
+   light bulb, not a control, and this product's own rule is that every
+   element carrying data opens a drill (ui/drills.js). So the pill is now
+   a <button>, which gets a working click and a working Enter and Space
+   for free rather than a second keydown handler reinventing what a
+   button already does. The icon is drawn inside it from the same glyph
+   tables the rest of this product already keys by seat or by kind
+   (SEATGLYPH, CHILD's own .ic, CHAINGLYPH), nothing invented here only
+   reused, stroked rather than filled, the house rule for every icon
+   ("ring, not fill"). data-stdrill carries where the click goes, read by
+   the one listener below; it is not data-ana, because two of the four
+   rows below open a card no existing kind of anaCard answers, and
+   writing a kind this file does not own into analytics.js's own key
+   would be the wrong file claiming the right to add one. */
 function stPillRow(id,items){
  var sorted=items.slice().sort(function(a,b){return (b.v||0)-(a.v||0);});
  return '<div class="st-pl-row" id="'+id+'">'+sorted.map(function(it){
    var lit=(it.v||0)>0;
-   return '<span class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b||it.k||'')+'" tabindex="0" role="img" style="--c:'+it.c+'" '
-    +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'"></span>';}).join('')
+   return '<button type="button" class="st-pl'+(lit?' lit':'')+'" data-seat="'+esc(it.b||it.k||'')+'" data-stdrill="'+esc((it.k||'')+'|'+(it.b||''))+'" style="--c:'+it.c+'" '
+    +'aria-label="'+esc(it.title)+'" title="'+esc(it.title)+'">'
+    +(it.ic?'<svg viewBox="0 0 24 24" aria-hidden="true">'+it.ic+'</svg>':'')
+    +'</button>';}).join('')
   +'</div>';}
+/* THE ONE LISTENER FOR ALL FOUR ROWS. Energy and Emotions open a real card
+   this product already has (a seat, ui/analytics.js anaSeatCard; a child
+   feeling, which that file's own anaCard answers under its "axis" kind,
+   anaAxisCard), through anaGo, the one door every other bubble in this
+   product already walks through, so the trail, the crumbs and the close
+   control behave exactly as they do from Analytics. Patterns and Psyche
+   Stack have no existing card for "every word handed down as parental" or
+   "every saboteur running", so their own two openers below build the card
+   and hand it to rdShell directly, the same direct call mapshelf.js and
+   other callers already make for a drill with no anaCard kind of its own. */
+/* THE ARTISTIC DIRECTION ON ENERGY, EMOTIONS AND PATTERNS, 9 November, his
+   words: "energy, emotion, pattern, like have them artistic direction
+   here." A bare heading over a row of pills has nothing of its own, so
+   each of these three carries a thin bar in the real colours the row
+   under it is about to draw, in that row's own order, strongest first
+   where the row has a reading and the section's plain BANDS/CHILD/CAT
+   order where it does not: a preview of the row, not a decoration with no
+   job (the rule this project already keeps, see component.js). Nothing is
+   invented, the three colours (or seven, or nine) are seatCol's own. */
+function stAccent(cols){
+ return cols.length?' style="--ac:linear-gradient(90deg,'+cols.join(',')+')"':'';}
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('#stleft [data-stdrill]'):null;
+ if(!t)return;
+ var v=t.getAttribute('data-stdrill'), at=v.indexOf('|'), k=v.slice(0,at), nm=v.slice(at+1);
+ if((k==='seat'||k==='axis'||k==='law')&&typeof anaGo==='function'){anaGo(k,nm,true);return;}
+ if(k==='pat'){stOpenPattern(nm);return;}
+ if(k==='verp'){stOpenVerp(nm);return;}
+ if(k==='psy'){stOpenPsyche(nm);return;}});
 
 /* ENERGY, READ OFF THIS STORY. The decision recorded with the ruling: the
    Journal's Energy reads the story being written, never the whole record.
@@ -91,18 +138,20 @@ function stDashLeft(){
     right words back and the next paint draws them. */
  if(!stMine()){ if(h.innerHTML)h.innerHTML=''; return; }
  var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
- var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h">'
+ var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+stAccent(BANDS.map(seatCol))+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
  else{
   o+=stPillRow('st-energy-ls',BANDS.map(function(b){
    var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v);
-   return {v:v,b:b,c:seatCol(b),
+   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,
      title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')};}));}
  o+='</section>';
  o+=stDashChildEmotions(p);
  o+=stDashPatterns(p);
+ o+=stDashIntegrity(p);
+ o+=stDashVerp(p);
  o+=stDashPsycheStack();
  /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
     all need to look like they're together... make sure it's all
@@ -128,7 +177,7 @@ function stDashChildEmotions(p){
     stay (an id is identity, never renamed for a label change, the same
     rule TAB integers keep), the nine feelings underneath are still CHILD's
     own nine, only the word a person reads changes. */
- var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h">'
+ var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+stAccent(CHILD.map(function(c){return seatCol(c.seat);}))+'>'
   +'<h2 class="rblk" id="st-childem-h">Emotions</h2>';
  if(!p||typeof CHG2FET==='undefined'){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
@@ -140,7 +189,7 @@ function stDashChildEmotions(p){
   var f=CHG2FET[k]; if(f&&byChild[f]!==undefined)byChild[f]+=p.charges[k];});
  o+=stPillRow('st-childem-ls',CHILD.map(function(c){
   var n=byChild[c.nm]||0;
-  return {v:n,b:c.nm,c:seatCol(c.seat),
+  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',
     title:c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
  o+='</section>';
  return o;}
@@ -167,7 +216,7 @@ function stDashChildEmotions(p){
    Heart for parental (closest relation) and Root for ancestral (furthest
    back), reusing seat colours already in the palette -- his to overrule. */
 function stDashPatterns(p){
- var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h">'
+ var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+stAccent([seatCol('Heart'),seatCol('Root')])+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
  if(!p){
   o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
@@ -175,13 +224,133 @@ function stDashPatterns(p){
   return o;}
  var n={parental:0,ancestral:0};
  (p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
+ /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
+    lines, nothing filled: parental as one figure standing over a smaller
+    one, ancestral as a line handed down through three generations. */
+ var PATIC={parental:'<path d="M9 20v-2a3 3 0 013-3 3 3 0 013 3v2M12 11a2.2 2.2 0 100-4.4 2.2 2.2 0 000 4.4M5.5 20v-1.4a2 2 0 012-2 2 2 0 011.6.8M18.5 20v-1.4a2 2 0 00-2-2 2 2 0 00-1.6.8M6.3 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3M17.7 13.6a1.5 1.5 0 100-3 1.5 1.5 0 000 3"/>',
+  ancestral:'<circle cx="12" cy="4.6" r="1.8"/><path d="M12 6.4v3.4M12 9.8l-5 5M12 9.8l5 5"/><circle cx="7" cy="17.4" r="1.8"/><circle cx="17" cy="17.4" r="1.8"/>'};
  var CAT=[['parental','Parental',seatCol('Heart')],['ancestral','Ancestral',seatCol('Root')]];
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
    var v=n[c[0]];
-   return {v:v,b:c[0],c:c[2],
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],
      title:c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')};}));
  o+='</section>';
  return o;}
+/* THE PATTERNS DRILL. Every word this story read as handed down, in the
+   one panel every other drill opens, built here rather than through
+   anaGo because no existing anaCard kind answers "parental" or
+   "ancestral": those are this file's own two real categories
+   (originCategory, engine/sniff.js), not one of analytics.js's own. */
+function stOpenPattern(cat){
+ var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ var lab=cat==='parental'?'Parental':'Ancestral';
+ var hits=p?(p.hits||[]).filter(function(h){return h.originCat===cat;}):[];
+ var h=anaHead('Patterns',lab,'words in this story handed down as '+lab.toLowerCase());
+ if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' in this story yet.</p>';}
+ else{h+='<div class="ad-rows">'+hits.slice(0,12).map(function(x){
+   var f=x.fet||x.charge||'';
+   return '<div class="pm-r"><span>'+esc(x.t||'')+'</span><em>'+esc(x.who?'from '+x.who:'')+'</em>'
+    +(f?'<b>'+esc(f)+'</b>':'')+'</div>';}).join('')+'</div>';}
+ rdShell(h);}
+
+/* INTEGRITY, THE 21 LAWS, BACK AND NOT AS PILLS, 9 November. Round TB's
+   own ruling hid the law grid (TASKS.md, "Lance ruled them hidden"); his
+   own words tonight bring it back on a different shape: "re-add the 21
+   law pills, but no more pills. We're going to use the symbol icons...
+   you can see their buckets filling." Two real, already built pieces,
+   neither invented for this: SI (engine/data/canon.js) already carries a
+   drawn icon for every one of the 21 laws, "each a physical metaphor
+   drawn as an open stroke in a 24 box, never a fill"; and cr(), the ring
+   badge the rest of this product already uses for a law
+   (ui/analytics.js's own law rows on a seat card), already draws a
+   filling arc round a glyph, which is the bucket. So this is cr() at its
+   smallest size, one per law, SI's own icon and seat colour, nothing
+   this file invented.
+
+   DRAFT SCOPED, THE SAME SILENCE AS ENERGY, Emotions and Patterns above:
+   this reads the words not yet committed, through sniffLaws
+   (engine/sniff.js), which already turns free text into a law name, a
+   direction and a score and was built, checked directly before use, and
+   never once wired into anything in this product until this line. Same
+   rule as its three siblings: nothing typed draws no buckets at all; a
+   story typed draws all 21, the quiet ones empty rather than missing.
+
+   WHAT THIS DOES NOT DO. His own third sentence, "that's what gets
+   committed to the bank," asks for a second thing this pass does not
+   build: stCommit (ui/storyui.js) already carries every other sniffer
+   it reads (applyStory, applyStoryAddr, verpApply, leanApply) into the
+   record on commit, and sniffLaws is not in that list, so nothing here
+   writes to p.laws or S.law yet. Writing it would mean deciding how a
+   law already measured by the intake (p.laws, a person's own direct
+   answer) is reconciled with the same law read a second way, off a
+   sentence in a story. That is a real decision and his to make, named
+   here rather than guessed at. */
+function stDashIntegrity(p){
+ if(typeof SI==='undefined'||typeof cr!=='function')return '';
+ var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
+  +stAccent(SI.map(function(l){return seatCol(l.b);}))+'>'
+  +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
+ if(!p){
+  o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
+  o+='</section>';
+  return o;}
+ var hits=(typeof sniffLaws==='function')?sniffLaws(ST_TEXT):[], by={};
+ hits.forEach(function(x){ if(!by[x.law]||x.score>by[x.law].score)by[x.law]=x; });
+ o+='<div class="st-law-g" id="st-integrity-ls">'+SI.map(function(l){
+   var x=by[l.nm], v=x?x.score:0, pc=pct('law',v)||0;
+   return cr(l.b,pc,{size:'xs',glyph:'<path d="'+l.ic+'"/>',
+     raw:x?fmtPct('law',v):PCT_DASH,
+     title:l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story'),
+     act:true,data:'data-stdrill="law|'+esc(l.nm)+'"'});}).join('')
+  +'</div></section>';
+ return o;}
+
+/* THE SIX AXES, THE LAWS OF ACTION, BACK ON THE RAIL, 9 November, his
+   words: "don't forget to add the 6 action axes to that left menu."
+   Round 110 in TASKS.md built this once already and it was lost when the
+   rail's real scope was corrected back to its agreed three sections; his
+   own words tonight put it back as a fourth. VERP (engine/verp.js) is six
+   gates, three right action and three wrong (aware, detach, intent;
+   ignore, attach, averse), each with its own real icon (GATEGLYPH,
+   canon.js, "the six gate glyphs... stroked") and its own real colour,
+   the same split the action drill and the dial's collar already draw a
+   gate in: higher seatCol('Heart'), lower seatCol('Root')
+   (ui/drills.js:598, ui/rings.js:722), nothing new chosen here.
+
+   DRAFT SCOPED, THE SAME SILENCE, verpScan(text) (engine/verp.js) is the
+   live reader stCommit already calls on commit (verpApply); this calls
+   its read-only half, verpScan, directly on ST_TEXT, same convention as
+   every pill row above it: nothing typed draws nothing, a story typed
+   draws all six, the quiet ones dim rather than missing. */
+function stDashVerp(p){
+ if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
+ var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
+  +stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+  +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
+ if(!p){
+  o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
+  o+='</section>';
+  return o;}
+ var s=verpScan(ST_TEXT);
+ o+=stPillRow('st-verp-ls',VERP.map(function(v){
+   var n=s.hits[v.k]||0;
+   return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:GATEGLYPH[v.k],
+     title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')};}));
+ o+='</section>';
+ return o;}
+/* THE SIX AXES DRILL. No existing anaCard kind answers one gate by name
+   (the Field's own action drill opens off a press on its dial, a
+   different host), so this reads VERP's own line for the gate, the same
+   sentence the action drill already quotes, and the record's own share
+   of it from verpRead() (engine/verp.js), real and already computed,
+   never a second number invented for this card. */
+function stOpenVerp(k){
+ var v=(typeof VERP!=='undefined'?VERP:[]).filter(function(x){return x.k===k;})[0]; if(!v)return;
+ var read=(typeof verpRead==='function')?verpRead().filter(function(x){return x.k===k;})[0]:null;
+ var h=anaHead('Law of action',v.nm,v.side==='higher'?'right action':'wrong action');
+ h+='<p class="ad-p">"'+esc(v.d)+'"</p>';
+ h+='<p class="ad-p">'+(read&&read.n?'Read '+anaN(read.n)+' time'+(read.n===1?'':'s')+' on your record, '+read.pct+'% of every gate it runs.':'Nothing recorded on your record yet.')+'</p>';
+ rdShell(h);}
 
 /* PSYCHE STACK, THE REAL SUMMARY, NOT A DUPLICATE OF IT, 8 November. Round
    TB's own words: "Psyche Stack (`railStack` in ui/ui.js, pointed at the
@@ -208,18 +377,43 @@ function stDashPsycheStack(){
  var r=computeSeen();
  var TIER={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root};
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
- var any=KIND.some(function(k){return k[2]&&k[2].length;});
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
-  +'<h2 class="rblk" id="st-psyche-h">Psyche Stack</h2>';
- if(r.unread||!any){
+  +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
+ /* ALWAYS THE PILLS, ONLY TEXT ON AN UNREAD RECORD, 9 November, corrected
+    the same night: this used to fall back to a whole sentence the moment
+    every tier was empty, which is the one section on this rail that did
+    not hold the rule its own three siblings above already keep (a seat or
+    a feeling at nothing stays a dim pill in the row, never a sentence).
+    His own complaint named the result exactly: "right now you get the
+    Psyche stack with a bunch of text. I don't want that there." The
+    sentence now means what r.unread already means everywhere else on
+    this page, nothing entered anywhere, and nothing short of that. */
+ if(r.unread){
   o+='<p class="st-none" id="st-psyche-none">Nothing recorded yet, so no pattern holds anything from this record.</p>';}
  else{
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
    var n=(k[2]||[]).length;
-   return {v:n,b:k[0],c:TIER[k[0]],
+   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:CHAINGLYPH[k[0]],
      title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
  o+='</section>';
  return o;}
+/* THE PSYCHE STACK DRILL. Every chain of one tier, in the same card shape
+   and the same rows (anaPatRows) the right rail's own Insight panel and
+   every analytics bubble already draw a chain in, built here directly
+   because no single anaCard kind answers "every saboteur" the way it
+   answers one saboteur by name; a press on a row inside this card still
+   opens that one chain's own real card, through the same global listener
+   (its data-ana, written by anaPatRow, fires inside #rdrill exactly as it
+   does inside #ana). */
+function stOpenPsyche(kind){
+ if(typeof computeSeen!=='function')return;
+ var r=computeSeen();
+ var NAME={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes',sup:'Super complexes'};
+ var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
+ var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
+ var h=anaHead('Psyche stack',lab);
+ h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
+ rdShell(h);}
 
 /* BOUNDARY, THE PURPOSE MAP, NOT THE SIX GATES, 9 November. Corrected the
    same night: the six VERP gates (aware/detach/intent/ignore/attach/
@@ -254,8 +448,11 @@ function stDashBoundary(){
    +'<title>'+esc(t)+'</title></circle>';};
  var ring=function(angs){return '<polygon points="'+angs.map(function(a){var p=pt(a);return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' ')
   +'" fill="none" stroke="var(--edge-2)" stroke-width="1.3" stroke-dasharray="1.5 5" stroke-linecap="round"/>';};
- var o='<section class="st-en st-bnd" id="st-boundary" aria-labelledby="st-boundary-h">'
-  +'<h2 class="rblk" id="st-boundary-h">Boundary</h2>'
+ /* THE TITLE IS GONE, 9 November, his words: "get rid of the title.
+    Boundary and compass." The name is still here, only moved to
+    aria-label: a screen reader still hears what this is, a sighted
+    person reads the figure itself rather than a word above it. */
+ var o='<section class="st-en st-bnd" id="st-boundary" aria-label="Boundary">'
   +'<svg viewBox="0 0 170 170" class="st-bnd-svg" aria-hidden="true">'
   +ring(soulAng)+ring(egoAng)
   +soulAng.map(function(a,i){return dot(a,soulCol,pu.soul&&pu.soul[i],i,'Soul');}).join('')
@@ -288,8 +485,12 @@ function stDashCompass(){
   return '<polygon points="'+[
     [cx-sw,yBase],[cx-sw,yShoulder],[cx-hw,yShoulder],[cx,yTip],[cx+hw,yShoulder],[cx+sw,yShoulder],[cx+sw,yBase]
    ].map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ')+'" fill="'+col+'"/>';};
- var o='<section class="st-en st-cps" id="st-compass" aria-labelledby="st-compass-h">'
-  +'<h2 class="rblk" id="st-compass-h">Compass</h2>'
+ /* THE TITLE IS GONE AND CQ/DQ MOVE TO EITHER END, 9 November, his words:
+    "put CQ, DQ at the top and the bottom." They read as the figure's own
+    two poles now, CQ over the upward arrow and DQ under the downward one,
+    rather than a caption printed once below both. */
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
+  +'<p class="st-cps-top" title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
   +'<stop offset="0%" stop-color="'+GOLD+'" stop-opacity=".28"/><stop offset="100%" stop-color="'+GOLD+'" stop-opacity="0"/></radialGradient>'
@@ -298,7 +499,6 @@ function stDashCompass(){
   +arrow(Math.min(maxLen,(cq/100)*maxLen),true,seatCol('Heart'))
   +arrow(Math.min(maxLen,(dq/100)*maxLen),false,'var(--dim)')
   +'</svg>'
-  +'<p class="st-cps-say"><span title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</span>'
-  +'<span title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</span></p>'
+  +'<p class="st-cps-bot" title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
   +'</section>';
  return o;}
