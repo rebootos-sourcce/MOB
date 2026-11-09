@@ -625,7 +625,63 @@
     openMeter(true);
     startMeter();
     loadSources();
+
+    // ── voice commands ────────────────────────────────────────────────────
+    initVoice();
   }
+
+  // ── voice UI ─────────────────────────────────────────────────────────────
+  let voiceEnabled = false;
+
+  function setVoiceUI(listening, label, cmd) {
+    const pulse = $('voicePulse');
+    const lbl   = $('voiceLabel');
+    const cmdEl = $('voiceCmd');
+    if (!pulse) return;
+    pulse.classList.toggle('listening', !!listening);
+    lbl.textContent = label;
+    if (cmd) {
+      cmdEl.textContent = cmd;
+      cmdEl.hidden = false;
+      setTimeout(() => { cmdEl.hidden = true; }, 3000);
+    }
+    const btn = $('btnVoice');
+    if (btn) btn.classList.toggle('active', voiceEnabled);
+  }
+
+  async function initVoice() {
+    try {
+      const { enabled } = await window.api.invoke('voice:init');
+      voiceEnabled = !!enabled;
+      setVoiceUI(false, voiceEnabled ? 'voice ready' : 'voice off', null);
+    } catch (_) {
+      // voice module not available — silently leave indicator grey
+    }
+
+    window.api.on('voice:listening', (listening) => {
+      setVoiceUI(listening, listening ? 'listening…' : 'voice ready', null);
+    });
+
+    const btnVoice = $('btnVoice');
+    if (btnVoice) {
+      btnVoice.addEventListener('click', async () => {
+        try {
+          if (voiceEnabled) {
+            await window.api.invoke('voice:stop');
+            voiceEnabled = false;
+            setVoiceUI(false, 'voice off', null);
+          } else {
+            const { enabled } = await window.api.invoke('voice:init');
+            voiceEnabled = !!enabled;
+            setVoiceUI(false, voiceEnabled ? 'voice ready' : 'voice off', null);
+          }
+        } catch (err) {
+          setVoiceUI(false, 'voice error', null);
+        }
+      });
+    }
+  }
+
   init();
 })();
 

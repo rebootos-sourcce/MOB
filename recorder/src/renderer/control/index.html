@@ -80,6 +80,14 @@
           <button id="btnMic" class="icon-btn" title="Mute / unmute (Ctrl+Shift+M)">On</button>
         </div>
 
+        <!-- voice command indicator -->
+        <div class="dev-row voice-row">
+          <span class="voice-pulse" id="voicePulse" title="Voice command status"></span>
+          <span id="voiceLabel" class="hint">voice off</span>
+          <span id="voiceCmd" class="mono voice-cmd-hint" hidden></span>
+          <button id="btnVoice" class="icon-btn voice-btn" title="Enable / disable voice commands">🎤</button>
+        </div>
+
         <div class="meter-row">
           <canvas id="meter" height="16"></canvas>
           <span id="meterDb" class="mono hint">–∞</span>
