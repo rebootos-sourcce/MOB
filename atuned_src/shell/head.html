@@ -4554,6 +4554,17 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
 .st-pl:hover,.st-pl:focus-visible{opacity:1}
 .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
+/* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
+   "these all need to look like they're together... make sure it's all
+   symmetrical." Equal width, equal top, same svg proportions set in
+   ui/stdash.js (both viewBox height 170), so neither card reads taller
+   or wider than the other regardless of its own content. */
+.st-pair{display:flex;gap:8px;align-items:stretch}
+.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.st-bnd-svg,.st-cps-svg{width:100%;max-width:170px;height:auto;display:block;margin:2px auto 0}
+.st-cps-say{display:flex;justify-content:center;gap:14px;margin-top:4px;font-family:var(--num);
+ font-size:13px;color:var(--mid)}
+.st-cps-say span{cursor:default}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
