@@ -6,6 +6,9 @@
  * be absent, which the recorder tolerates), stops after a few seconds,
  * finalizes to MP4 and exits 0 on success. Renderer console output is
  * mirrored to stdout so errors in the UI windows are visible in CI logs.
+ *
+ * Full pipeline (MOB_SMOKE_FULL=1): also runs transcription, assembles a
+ * production package, and verifies DB row integrity.
  */
 const fs = require('fs');
 const path = require('path');
@@ -60,7 +63,7 @@ function install(api) {
   bus.on('perf', (st) => log('PERF', JSON.stringify(st)));
   let stopAt = 0;
   bus.on('state', (st) => { if (st.state === 'finalizing' && !stopAt) stopAt = Date.now(); });
-  bus.on('finalized', ({ path: p, durationMs }) => {
+  bus.on('finalized', async ({ path: p, durationMs, recordingId }) => {
     clearTimeout(deadline);
     const size = fs.statSync(p).size;
     log(`finalized ${p} (${size} bytes, ${durationMs} ms)`);
@@ -72,7 +75,59 @@ function install(api) {
     if (i('countdown') >= 0 && i('arming') >= 0 && i('arming') > i('countdown')) {
       return fail('devices armed AFTER countdown — first words would be lost');
     }
-    app.exit(0);
+
+    if (!process.env.MOB_SMOKE_FULL) return app.exit(0);
+
+    // ── Full pipeline test ───────────────────────────────────────────────────
+    log('MOB_SMOKE_FULL: starting full pipeline test');
+    try {
+      const db = require('./db/sqlite');
+      const { transcribe } = require('./transcription');
+      const { assemblePackage } = require('./production');
+
+      // 1. Verify recordings row exists
+      const rid = recordingId || db.get(
+        "SELECT id FROM recordings ORDER BY created_at DESC LIMIT 1"
+      )?.id;
+      if (!rid) return fail('full pipeline: no recordings row found');
+      log('pipeline: recordingId =', rid);
+
+      // 2. Transcription
+      log('pipeline: transcribing…');
+      const { transcriptId, words: wordCount } = await transcribe({
+        recordingId: rid, filePath: p,
+        onProgress: ({ stage, pct }) => log(`pipeline: ${stage} ${pct}%`),
+      });
+      log(`pipeline: transcript ${transcriptId} — ${wordCount} words`);
+
+      const txRow = db.get('SELECT id FROM transcripts WHERE id = ?', [transcriptId]);
+      if (!txRow) return fail('full pipeline: transcripts row missing after transcribe()');
+
+      const dbWords = db.get('SELECT COUNT(*) AS n FROM words WHERE transcript_id = ?', [transcriptId]);
+      log(`pipeline: words in DB = ${dbWords?.n}`);
+      // A short 4-second recording may produce zero words — that's fine; just check the row exists.
+
+      // 3. Production package assembly
+      log('pipeline: assembling production package…');
+      const { packageId } = await assemblePackage({ recordingId: rid });
+      log('pipeline: packageId =', packageId);
+
+      const pkgRow = db.get('SELECT id FROM production_packages WHERE id = ?', [packageId]);
+      if (!pkgRow) return fail('full pipeline: production_packages row missing after assemblePackage()');
+
+      // 4. FK integrity: package must reference a valid recording
+      const pkgRec = db.get(
+        'SELECT p.id FROM production_packages p JOIN recordings r ON p.recording_id = r.id WHERE p.id = ?',
+        [packageId]
+      );
+      if (!pkgRec) return fail('full pipeline: FK violation — production_packages.recording_id references missing recording');
+
+      log('pipeline: all checks passed ✓');
+      app.exit(0);
+    } catch (err) {
+      fail('full pipeline: ' + err.message);
+    }
+    // ── End full pipeline test ───────────────────────────────────────────────
   });
   bus.on('finalize-error', (e) => fail('finalize: ' + e.message));
 }
