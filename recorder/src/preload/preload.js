@@ -8,7 +8,9 @@ const LISTEN = new Set([
   'recorder:setMic', 'recorder:updateOverlay',
   'recording:state', 'finalize:progress', 'finalize:done', 'finalize:error',
   'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown',
-  'transcription:progress'
+  'transcription:progress',
+  'voice:listening',
+  'sync:progress'
 ]);
 
 contextBridge.exposeInMainWorld('api', {

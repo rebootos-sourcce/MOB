@@ -813,18 +813,42 @@
       if (!selectedRecordingId) { alert('Select a recording.'); return; }
       const pkg = await window.mob.db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [selectedRecordingId]);
       if (!pkg) { alert('Generate a production package first.'); return; }
+
       $('distProgress').hidden = false;
-      $('distProgressBar').style.width = '10%';
+      $('distProgressBar').style.width = '5%';
       $('distProgressLabel').textContent = 'Preparing…';
-      // S8 (Cloudflare) will implement the actual upload; for now mark as queued
+      $('btnDistUpload').disabled = true;
+
+      const distributionId = crypto.randomUUID();
+      const deviceId = await window.mob.db.deviceId();
       await window.mob.db.run(
-        `INSERT OR REPLACE INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)
-         VALUES (?, ?, ?, ?, 'cloud', 'queued', datetime('now'))`,
-        [crypto.randomUUID(), await window.mob.db.deviceId(), selectedRecordingId, pkg.id]
+        `INSERT INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)
+         VALUES (?, ?, ?, ?, 'cloud', 'pending', datetime('now'))`,
+        [distributionId, deviceId, selectedRecordingId, pkg.id]
       );
-      $('distProgressBar').style.width = '100%';
-      $('distStatus').textContent = 'queued';
-      $('distProgressLabel').textContent = 'Queued for upload (S8 Cloudflare sync)';
+
+      const unsubProgress = window.api.on('sync:progress', ({ stage, pct }) => {
+        $('distProgressBar').style.width = pct + '%';
+        const labels = { presign: 'Requesting upload URL…', uploading: 'Uploading…', queuing: 'Queueing…', done: 'Done' };
+        $('distProgressLabel').textContent = labels[stage] || stage;
+        if (stage === 'done') {
+          $('distStatus').textContent = 'queued';
+          $('btnDistUpload').disabled = false;
+          unsubProgress();
+        }
+      });
+
+      try {
+        await window.api.invoke('sync:distribution', { distributionId });
+        $('distProgressBar').style.width = '100%';
+        $('distStatus').textContent = 'queued';
+        $('distProgressLabel').textContent = 'Upload complete';
+      } catch (err) {
+        $('distProgressLabel').textContent = 'Upload failed: ' + err.message;
+        $('distStatus').textContent = 'error';
+        $('btnDistUpload').disabled = false;
+        unsubProgress();
+      }
     };
   }
 })();

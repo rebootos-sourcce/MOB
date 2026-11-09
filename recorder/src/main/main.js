@@ -11,6 +11,8 @@ const dbHandlers = require('./ipc/db-handlers');
 const transcriptionHandlers = require('./ipc/transcription-handlers');
 const editHandlers = require('./ipc/edit-handlers');
 const productionHandlers = require('./ipc/production-handlers');
+const voiceHandlers = require('./ipc/voice-handlers');
+const syncHandlers  = require('./ipc/sync-handlers');
 const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
@@ -601,6 +603,8 @@ app.whenReady().then(async () => {
   transcriptionHandlers.register(sendControl);
   editHandlers.register();
   productionHandlers.register();
+  voiceHandlers.register(sendControl);
+  syncHandlers.register(sendControl);
 
   sweepOldRaw();
   const s = settings.get();
