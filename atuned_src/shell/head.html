@@ -4147,8 +4147,14 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
+/* DARK, THE SAME DARK AS THE TEXT FIELD, 9 November: see the ruling at
+   .st-lrail .st-en below, which this panel's own ground now matches too.
+   .st-pan is the journal entry's own wrapper (#stjr) as well as the
+   imprints panels (.st-ls, .st-ch below), so one change here is every
+   panel his words named: "make all the panel areas, even where the
+   buttons are, dark." */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
- background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
+ background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
 .st-ch{flex:0 0 auto;min-height:50%}
@@ -4231,8 +4237,21 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    the chart's own canvas already sits on (.st-cvw), so the row reads as a
    held panel and stays the correct ink on the two paper lightings rather
    than a black square sitting wrong on a white page. */
-.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+/* LEFT, NOT RIGHT, 9 November, his words: "move the bank and the vault
+   icons to the left-hand side of that menu bar." flex-end pinned them to
+   the far right when they were this row's only children; flex-start is
+   their natural rest position now, and .st-lsbank's own margin-left:auto
+   below is what pushes Bank to the right end when it joins them. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-height:var(--tap);
  margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
+/* COMMIT MOVED INTO THIS ROW AND READS BANK, 9 November: see the ruling
+   at ui/storyui.js's own ".st-lsico" ("BANK AND VAULT ON THE LEFT"). The
+   auto margin is the whole move: Bank/Vault keep the row's natural flow
+   on the left and this is the one child that eats the row's spare width
+   instead of sharing it, landing at the far right the way Commit used to
+   sit at the top of #strel in its old, separate position below the icon
+   row. */
+.st-lsbank{margin-left:auto}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -4287,11 +4306,19 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* ---- the release, lit from within by the heaviest address it will run ----
    Round HX, design B, which he did not strike. The glow is the selected seat
    and its brightness is how heavy that address is, both set by storyui.js. */
-.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;border-radius:var(--r-s);
+/* THE SAME DARK GROUND AS THE TEXT FIELD UNDER THE GLOW, 9 November: see
+   the ruling at .st-lrail .st-en above. The two radial gradients are the
+   selected seat's own lighting (stRelPanel, ui/storyui.js) and stay; only
+   the flat base they sit on moves from a 3% ink wash to var(--sunk).
+   A FLOOR THE TEXT FIELD'S OWN HEIGHT, same night, his words: "I want the
+   release and the text field are the same height." 260px is .st-ta/.st-hl's
+   own min-height (below), so neither card reads shorter than the other
+   with nothing in it yet. */
+.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px;border-radius:var(--r-s);
  padding:14px 16px;--glow:var(--accent);
  background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
-  color-mix(in srgb,var(--ink) 3%,transparent);
+  var(--sunk);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
@@ -4307,6 +4334,13 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-rq[aria-pressed="false"]{opacity:.35}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .st-rlfoot{margin-top:auto;padding-top:10px}
+/* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
+   ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
+   .rel-sws, which only exists once relCss() has run and carries that
+   function's own document-wide --rc @property registration as a side
+   effect; this card's toggle needs neither. accTog's own classes
+   (.ac-row, .ac-tog, .ac-sw, below) already carry the switch itself. */
+.st-relsws{margin:10px 0 0}
 /* the card's two fields, .rel-field, set to the column's left edge */
 .rel-fields.st-fields{justify-content:flex-start;margin:0}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
@@ -4442,7 +4476,10 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
   inset 0 -2px 0 var(--c)}
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
-.st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* MORE AIR ABOVE THIS ROW, 9 November, his words: "more space between the
+   text and the buttons. It's way too tight, dude." 11px read as the box's
+   own border practically touching Type instead and Commit/Bank under it. */
+.st-bar{display:flex;align-items:center;gap:10px;margin-top:20px}
 /* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
    typing panel, closed, to the bottom of the journal." Closed means out of
    the way, so this carries none of the lift Chat and Dashboard were given
@@ -4551,18 +4588,26 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    one rule lifts all six off the rail's own background at once rather
    than naming them one at a time; the gap between cards (margin, not a
    drawn line) is the divider, the same convention .lsec already keeps
-   lower on this same rail. var(--panel-2) is the product's own one card
-   surface (.sum-card, .ana-tile, .card), not a colour invented for this
-   rail. */
-.st-lrail .st-en{position:relative;overflow:hidden;background:var(--panel-2);
+   lower on this same rail.
+
+   DARK, THE SAME DARK AS THE TEXT FIELD, same night, his words: "I want
+   their backgrounds also dark, whatever that hex color is of the text
+   field... make all the panel areas, even where the buttons are, dark."
+   var(--panel-2) read as a grey standing beside the journal's own sunk
+   ground, not a card beside it; var(--sunk) is that exact ground
+   (.st-hl's own background, the highlighted text field behind the
+   textarea), so every card here, the imprints panel (.st-pan, below)
+   and the release card (.st-rl, below) now share the one dark the text
+   field already carries. */
+.st-lrail .st-en{position:relative;overflow:hidden;background:var(--sunk);
  border:1px solid var(--edge);border-radius:var(--r-s);padding:13px 14px 12px;margin-bottom:10px}
 .st-lrail .st-en:last-child{margin-bottom:0}
 .st-lrail .st-en>.rblk{margin-top:0}
-/* THE ACCENT BAR, drawn only where ui/stdash.js hands this section a
-   gradient of its own row's real colours (--ac); a section with none
-   (Psyche stack, Boundary, Compass) gets no bar rather than a grey one
-   standing for nothing. */
-.st-lrail .st-en[style*="--ac"]::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac)}
+/* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His
+   words on seeing it: "I don't like that rainbow bar... just get rid of
+   it." ui/stdash.js's stAccent and every call to it are gone too; this
+   rule painted a gradient off a --ac style attribute nothing writes any
+   more. */
 .st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
 .st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
@@ -4577,7 +4622,18 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    first (stPillRow, ui/stdash.js, sorts before this ever reaches the DOM,
    so the row's own order is the signal-strength order and nothing here
    re-sorts it). */
-.st-pl-row{display:flex;flex-wrap:wrap;gap:6px;padding:4px 2px 10px;align-items:center}
+/* MORE SPACE BETWEEN THEM, 9 November, his words: "I want those pills to
+   be a little bit more space between them all." 6px read as touching at
+   this tile's own size. */
+.st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 10px;align-items:center}
+/* PATTERNS' TWO FILL THE ROW'S OWN WIDTH, 9 November, his words looking at
+   this exact section: "when it says patterns, I don't understand that...
+   make those larger so they fit the width of that menu." Patterns is the
+   one row with only two tiles (parental, ancestral, stDashPatterns in
+   ui/stdash.js), where a fixed small square reads as an unfinished corner
+   rather than the row's own two answers; flex:1 1 0 only here, nowhere
+   else in this rail, splits the row evenly between exactly the two. */
+.st-pat .st-pl-row .st-pl{flex:1 1 0;width:auto;height:44px}
 /* SQUARE, BEVELLED, DARK, AND IT DIALS UP RATHER THAN SWITCHES, 9 November,
    replacing the round light this same rail shipped hours earlier. Four
    independent mockups all kept the round/ring shape; his answer on seeing

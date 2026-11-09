@@ -121,12 +121,17 @@ function stRender(){
       the dot are unchanged. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Chat by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+     :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Listening':'Chat')+'</span>'
+   /* "CHAT" BACK TO "TALK", 9 November, his words, reversing his own round
+      of 29 October ruling ("the talk button, you're going to change to
+      chat"): "change the word chat to talk." Kept here with its date the
+      way every rename on this control already is, since he changed it
+      once before and may again. */
+   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -161,11 +166,17 @@ function stRender(){
       land on this page it starts off in simple mode" and "if I press it
       dashboard icon is lit up." Bound below, as #stdash's onclick near the
       foot of this function. */
-   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   /* "MINIMIZE" ONCE IT IS OPEN, 9 November, his words: "change the word
+      dashboard when it's full to minimize." The control and its wiring
+      are unchanged, STV.dash still decides what it does; only the word a
+      person reads flips with the state it is already in, the same way
+      this button's own .on class already does. */
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="'
+    +(STV.dash?'Minimize, back to the conversation alone':'Show Imprints and Release beside the conversation')+'">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
    +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>Dashboard</span></button>')
+   +'<span>'+(STV.dash?'Minimize':'Dashboard')+'</span></button>')
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -385,6 +396,16 @@ function stRender(){
      cut; nothing else in the product reached them through this column. */
   +'<div class="st-colx">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
+   /* BANK AND VAULT ON THE LEFT, COMMIT ON THE RIGHT, 9 November, his
+      words: "move the bank and the vault icons to the left-hand side of
+      that menu bar, and then move the commit button to the upper
+      right-hand corner of that menu bar, and change the word commit to
+      bank." One row now holds all three: the two icon buttons keep their
+      left-hand place (.st-lsico's own default flex order), and #stapply
+      joins them with margin-left:auto (shell/head.html) to land at the
+      row's far right, the "upper right-hand corner" of this card's own
+      top. It keeps the id stRender's wire-up and stPaintAll's disabled
+      state already find it by; only its row and its word moved. */
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
@@ -404,6 +425,14 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
+   /* "COMMIT" READS "BANK" HERE, his word for the action, not only the
+      place: putting an imprint away is banking it. #stapply stays the
+      one id this column's wiring and stPaintAll's disabled state find;
+      the !STV.dash and !STV.chat button in .st-bar above (a different
+      element, same id, mutually exclusive with this one) keeps the word
+      "Commit", since this rename is for this card specifically. */
+   +(STV.chat&&STV.dash?'<button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
+    +'Bank'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>':'')
    +'</div>'
    /* SORT MOVED INTO THE BANK, round of 29 October, his words: "sort,
       weight, charge, etc., belongs in the bank menu." It sorts the list
@@ -413,15 +442,6 @@ function stRender(){
       by id wherever it stands. */
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
-  /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
-     earlier ruling "the commit button should be on the bank": the bank is
-     this whole column now, not one panel inside it, so Commit stands at
-     its foot rather than inside either panel, lower right as marked. One
-     #stapply, same id and wiring stRender's wire-up finds by id below; the
-     !STV.dash and !STV.chat placements in .st-bar above still carry it
-     when this column itself is not on screen to carry it instead. */
-  +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
   +'<div class="st-rl" id="strel" aria-label="Release"></div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
@@ -544,8 +564,15 @@ var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:
    node in the document without destroying it: same canvas, same
    listeners, same observer, new parent. */
 function stImpDetHtml(){
+ /* THE WORD IS GONE, 9 November, his words: "just get rid of the word
+    imprints up entirely." stMark was the icon-plus-word eyebrow; the
+    section's own aria-label ("Imprints, as read") still carries the name
+    for a screen reader, so nothing here loses its name, only its visible
+    caption. #stpend (the pending count) and the view toggle stay: both
+    are real controls, not a label repeating what the figure already
+    shows. */
  return '<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-  +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+  +'<div class="st-chd"><span class="st-tag" id="stpend"></span>'
   +stViewHtml()+'</div>'
   /* the key probe is never shown. The canvas cannot read a custom property,
      so the chart reads the lighting's ink and dim off these two computed
@@ -2874,6 +2901,28 @@ function stRelPanel(){
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
+ /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
+    binaural audio toggle not on the release?" Only the full run screen
+    (ui/release.js's own #rel, relSws) carried it; this reads and sets the
+    same tone through the same relToneOn/uiSet pair the run itself plays,
+    so setting it here before a run begins is the one switch read early,
+    not a second one. A SEPARATE ID, strtone and not reltone: #rel sits in
+    the document whether or not a run has begun (shell/body.html), so both
+    switches can exist at once and a shared id would collide.
+
+    ITS OWN WRAPPER CLASS, NOT release.js's .rel-sws. That class's rule
+    only exists once relCss() has run, and relCss also registers --rc as
+    a typed @property (its own "<color>" syntax block), which is a
+    document-wide registration, not scoped to release.js's own markup:
+    calling it from here, before any release run, made the Field dock's
+    unrelated --rc/--lc custom properties (ui/ui.js, ui/component.js, a
+    plain string swap, never meant to be colour-typed) start reading back
+    browser-normalized rgb() instead of the literal hex seatCol hands
+    them, which is exactly the regression tests/railmenu.js's RM2 caught.
+    .st-relsws (shell/head.html) is a plain, always-present rule with no
+    such side effect. */
+ if(typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
+  o+='<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>';
  o+='</div><div class="st-rlfoot">'
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
@@ -2934,6 +2983,14 @@ function stRelPanel(){
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
+ /* the same never-both-at-once rule release.js's own #reltone keeps: tone
+    on turns voice off, read through the same relVoiceWanted/uiSet pair. */
+ if((f=document.getElementById('strtone')))f.onclick=function(){
+  if(typeof relToneOn!=='function'||typeof uiSet!=='function')return;
+  var on=!relToneOn(); uiSet('tone',on);
+  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
+  if(typeof relRender==='function')relRender();
+  stRelPanel();};
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;

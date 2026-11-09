@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3000 d63587ee 2026-11-09 01:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v3001 7d3e8536 2026-11-09 05:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4147,8 +4147,14 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
+/* DARK, THE SAME DARK AS THE TEXT FIELD, 9 November: see the ruling at
+   .st-lrail .st-en below, which this panel's own ground now matches too.
+   .st-pan is the journal entry's own wrapper (#stjr) as well as the
+   imprints panels (.st-ls, .st-ch below), so one change here is every
+   panel his words named: "make all the panel areas, even where the
+   buttons are, dark." */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
- background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
+ background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
 .st-ch{flex:0 0 auto;min-height:50%}
@@ -4231,8 +4237,21 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    the chart's own canvas already sits on (.st-cvw), so the row reads as a
    held panel and stays the correct ink on the two paper lightings rather
    than a black square sitting wrong on a white page. */
-.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+/* LEFT, NOT RIGHT, 9 November, his words: "move the bank and the vault
+   icons to the left-hand side of that menu bar." flex-end pinned them to
+   the far right when they were this row's only children; flex-start is
+   their natural rest position now, and .st-lsbank's own margin-left:auto
+   below is what pushes Bank to the right end when it joins them. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-height:var(--tap);
  margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
+/* COMMIT MOVED INTO THIS ROW AND READS BANK, 9 November: see the ruling
+   at ui/storyui.js's own ".st-lsico" ("BANK AND VAULT ON THE LEFT"). The
+   auto margin is the whole move: Bank/Vault keep the row's natural flow
+   on the left and this is the one child that eats the row's spare width
+   instead of sharing it, landing at the far right the way Commit used to
+   sit at the top of #strel in its old, separate position below the icon
+   row. */
+.st-lsbank{margin-left:auto}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -4287,11 +4306,19 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* ---- the release, lit from within by the heaviest address it will run ----
    Round HX, design B, which he did not strike. The glow is the selected seat
    and its brightness is how heavy that address is, both set by storyui.js. */
-.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;border-radius:var(--r-s);
+/* THE SAME DARK GROUND AS THE TEXT FIELD UNDER THE GLOW, 9 November: see
+   the ruling at .st-lrail .st-en above. The two radial gradients are the
+   selected seat's own lighting (stRelPanel, ui/storyui.js) and stay; only
+   the flat base they sit on moves from a 3% ink wash to var(--sunk).
+   A FLOOR THE TEXT FIELD'S OWN HEIGHT, same night, his words: "I want the
+   release and the text field are the same height." 260px is .st-ta/.st-hl's
+   own min-height (below), so neither card reads shorter than the other
+   with nothing in it yet. */
+.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px;border-radius:var(--r-s);
  padding:14px 16px;--glow:var(--accent);
  background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
-  color-mix(in srgb,var(--ink) 3%,transparent);
+  var(--sunk);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
@@ -4307,6 +4334,13 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-rq[aria-pressed="false"]{opacity:.35}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .st-rlfoot{margin-top:auto;padding-top:10px}
+/* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
+   ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
+   .rel-sws, which only exists once relCss() has run and carries that
+   function's own document-wide --rc @property registration as a side
+   effect; this card's toggle needs neither. accTog's own classes
+   (.ac-row, .ac-tog, .ac-sw, below) already carry the switch itself. */
+.st-relsws{margin:10px 0 0}
 /* the card's two fields, .rel-field, set to the column's left edge */
 .rel-fields.st-fields{justify-content:flex-start;margin:0}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
@@ -4442,7 +4476,10 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
   inset 0 -2px 0 var(--c)}
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
-.st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* MORE AIR ABOVE THIS ROW, 9 November, his words: "more space between the
+   text and the buttons. It's way too tight, dude." 11px read as the box's
+   own border practically touching Type instead and Commit/Bank under it. */
+.st-bar{display:flex;align-items:center;gap:10px;margin-top:20px}
 /* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
    typing panel, closed, to the bottom of the journal." Closed means out of
    the way, so this carries none of the lift Chat and Dashboard were given
@@ -4551,18 +4588,26 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    one rule lifts all six off the rail's own background at once rather
    than naming them one at a time; the gap between cards (margin, not a
    drawn line) is the divider, the same convention .lsec already keeps
-   lower on this same rail. var(--panel-2) is the product's own one card
-   surface (.sum-card, .ana-tile, .card), not a colour invented for this
-   rail. */
-.st-lrail .st-en{position:relative;overflow:hidden;background:var(--panel-2);
+   lower on this same rail.
+
+   DARK, THE SAME DARK AS THE TEXT FIELD, same night, his words: "I want
+   their backgrounds also dark, whatever that hex color is of the text
+   field... make all the panel areas, even where the buttons are, dark."
+   var(--panel-2) read as a grey standing beside the journal's own sunk
+   ground, not a card beside it; var(--sunk) is that exact ground
+   (.st-hl's own background, the highlighted text field behind the
+   textarea), so every card here, the imprints panel (.st-pan, below)
+   and the release card (.st-rl, below) now share the one dark the text
+   field already carries. */
+.st-lrail .st-en{position:relative;overflow:hidden;background:var(--sunk);
  border:1px solid var(--edge);border-radius:var(--r-s);padding:13px 14px 12px;margin-bottom:10px}
 .st-lrail .st-en:last-child{margin-bottom:0}
 .st-lrail .st-en>.rblk{margin-top:0}
-/* THE ACCENT BAR, drawn only where ui/stdash.js hands this section a
-   gradient of its own row's real colours (--ac); a section with none
-   (Psyche stack, Boundary, Compass) gets no bar rather than a grey one
-   standing for nothing. */
-.st-lrail .st-en[style*="--ac"]::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ac)}
+/* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His
+   words on seeing it: "I don't like that rainbow bar... just get rid of
+   it." ui/stdash.js's stAccent and every call to it are gone too; this
+   rule painted a gradient off a --ac style attribute nothing writes any
+   more. */
 .st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
 .st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
@@ -4577,7 +4622,18 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    first (stPillRow, ui/stdash.js, sorts before this ever reaches the DOM,
    so the row's own order is the signal-strength order and nothing here
    re-sorts it). */
-.st-pl-row{display:flex;flex-wrap:wrap;gap:6px;padding:4px 2px 10px;align-items:center}
+/* MORE SPACE BETWEEN THEM, 9 November, his words: "I want those pills to
+   be a little bit more space between them all." 6px read as touching at
+   this tile's own size. */
+.st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 10px;align-items:center}
+/* PATTERNS' TWO FILL THE ROW'S OWN WIDTH, 9 November, his words looking at
+   this exact section: "when it says patterns, I don't understand that...
+   make those larger so they fit the width of that menu." Patterns is the
+   one row with only two tiles (parental, ancestral, stDashPatterns in
+   ui/stdash.js), where a fixed small square reads as an unfinished corner
+   rather than the row's own two answers; flex:1 1 0 only here, nowhere
+   else in this rail, splits the row evenly between exactly the two. */
+.st-pat .st-pl-row .st-pl{flex:1 1 0;width:auto;height:44px}
 /* SQUARE, BEVELLED, DARK, AND IT DIALS UP RATHER THAN SWITCHES, 9 November,
    replacing the round light this same rail shipped hours earlier. Four
    independent mockups all kept the round/ring shape; his answer on seeing
@@ -54095,12 +54151,17 @@ function stRender(){
       the dot are unchanged. */
    +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Chat by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
+     :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
    +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
-   +'<span>'+(ST_LISTEN?'Listening':'Chat')+'</span>'
+   /* "CHAT" BACK TO "TALK", 9 November, his words, reversing his own round
+      of 29 October ruling ("the talk button, you're going to change to
+      chat"): "change the word chat to talk." Kept here with its date the
+      way every rename on this control already is, since he changed it
+      once before and may again. */
+   +'<span>'+(ST_LISTEN?'Listening':'Talk')+'</span>'
    /* THE CLOCK, ROUND LV. His words: "I want the time showing how long my
       recording is." mm:ss, in the button itself so it reads as one control
       rather than two things to track, and gone the moment recording is,
@@ -54135,11 +54196,17 @@ function stRender(){
       land on this page it starts off in simple mode" and "if I press it
       dashboard icon is lit up." Bound below, as #stdash's onclick near the
       foot of this function. */
-   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="Show Imprints and Release beside the conversation">'
+   /* "MINIMIZE" ONCE IT IS OPEN, 9 November, his words: "change the word
+      dashboard when it's full to minimize." The control and its wiring
+      are unchanged, STV.dash still decides what it does; only the word a
+      person reads flips with the state it is already in, the same way
+      this button's own .on class already does. */
+   +(show?'':'<button class="st-dash'+(STV.dash?' on':'')+'" id="stdash" type="button" title="'
+    +(STV.dash?'Minimize, back to the conversation alone':'Show Imprints and Release beside the conversation')+'">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
    +'<rect x="3.5" y="3.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.4"/>'
    +'<rect x="3.5" y="13.5" width="7" height="7" rx="1.4"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.4"/></svg>'
-   +'<span>Dashboard</span></button>')
+   +'<span>'+(STV.dash?'Minimize':'Dashboard')+'</span></button>')
    +'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
@@ -54359,6 +54426,16 @@ function stRender(){
      cut; nothing else in the product reached them through this column. */
   +'<div class="st-colx">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
+   /* BANK AND VAULT ON THE LEFT, COMMIT ON THE RIGHT, 9 November, his
+      words: "move the bank and the vault icons to the left-hand side of
+      that menu bar, and then move the commit button to the upper
+      right-hand corner of that menu bar, and change the word commit to
+      bank." One row now holds all three: the two icon buttons keep their
+      left-hand place (.st-lsico's own default flex order), and #stapply
+      joins them with margin-left:auto (shell/head.html) to land at the
+      row's far right, the "upper right-hand corner" of this card's own
+      top. It keeps the id stRender's wire-up and stPaintAll's disabled
+      state already find it by; only its row and its word moved. */
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
@@ -54378,6 +54455,14 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
+   /* "COMMIT" READS "BANK" HERE, his word for the action, not only the
+      place: putting an imprint away is banking it. #stapply stays the
+      one id this column's wiring and stPaintAll's disabled state find;
+      the !STV.dash and !STV.chat button in .st-bar above (a different
+      element, same id, mutually exclusive with this one) keeps the word
+      "Commit", since this rename is for this card specifically. */
+   +(STV.chat&&STV.dash?'<button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
+    +'Bank'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>':'')
    +'</div>'
    /* SORT MOVED INTO THE BANK, round of 29 October, his words: "sort,
       weight, charge, etc., belongs in the bank menu." It sorts the list
@@ -54387,15 +54472,6 @@ function stRender(){
       by id wherever it stands. */
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
-  /* COMMIT, AT THE FOOT OF THE COLUMN, round of 29 October, on top of the
-     earlier ruling "the commit button should be on the bank": the bank is
-     this whole column now, not one panel inside it, so Commit stands at
-     its foot rather than inside either panel, lower right as marked. One
-     #stapply, same id and wiring stRender's wire-up finds by id below; the
-     !STV.dash and !STV.chat placements in .st-bar above still carry it
-     when this column itself is not on screen to carry it instead. */
-  +(STV.chat&&STV.dash?'<div class="st-rft"><button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
-    +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
   +'<div class="st-rl" id="strel" aria-label="Release"></div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
@@ -54518,8 +54594,15 @@ var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:
    node in the document without destroying it: same canvas, same
    listeners, same observer, new parent. */
 function stImpDetHtml(){
+ /* THE WORD IS GONE, 9 November, his words: "just get rid of the word
+    imprints up entirely." stMark was the icon-plus-word eyebrow; the
+    section's own aria-label ("Imprints, as read") still carries the name
+    for a screen reader, so nothing here loses its name, only its visible
+    caption. #stpend (the pending count) and the view toggle stay: both
+    are real controls, not a label repeating what the figure already
+    shows. */
  return '<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
-  +'<div class="st-chd">'+stMark('i','Imprints','imprint')+'<span class="st-tag" id="stpend"></span>'
+  +'<div class="st-chd"><span class="st-tag" id="stpend"></span>'
   +stViewHtml()+'</div>'
   /* the key probe is never shown. The canvas cannot read a custom property,
      so the chart reads the lighting's ink and dim off these two computed
@@ -56848,6 +56931,28 @@ function stRelPanel(){
    return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
+ /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
+    binaural audio toggle not on the release?" Only the full run screen
+    (ui/release.js's own #rel, relSws) carried it; this reads and sets the
+    same tone through the same relToneOn/uiSet pair the run itself plays,
+    so setting it here before a run begins is the one switch read early,
+    not a second one. A SEPARATE ID, strtone and not reltone: #rel sits in
+    the document whether or not a run has begun (shell/body.html), so both
+    switches can exist at once and a shared id would collide.
+
+    ITS OWN WRAPPER CLASS, NOT release.js's .rel-sws. That class's rule
+    only exists once relCss() has run, and relCss also registers --rc as
+    a typed @property (its own "<color>" syntax block), which is a
+    document-wide registration, not scoped to release.js's own markup:
+    calling it from here, before any release run, made the Field dock's
+    unrelated --rc/--lc custom properties (ui/ui.js, ui/component.js, a
+    plain string swap, never meant to be colour-typed) start reading back
+    browser-normalized rgb() instead of the literal hex seatCol hands
+    them, which is exactly the regression tests/railmenu.js's RM2 caught.
+    .st-relsws (shell/head.html) is a plain, always-present rule with no
+    such side effect. */
+ if(typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
+  o+='<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>';
  o+='</div><div class="st-rlfoot">'
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
@@ -56908,6 +57013,14 @@ function stRelPanel(){
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
+ /* the same never-both-at-once rule release.js's own #reltone keeps: tone
+    on turns voice off, read through the same relVoiceWanted/uiSet pair. */
+ if((f=document.getElementById('strtone')))f.onclick=function(){
+  if(typeof relToneOn!=='function'||typeof uiSet!=='function')return;
+  var on=!relToneOn(); uiSet('tone',on);
+  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
+  if(typeof relRender==='function')relRender();
+  stRelPanel();};
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
@@ -57787,17 +57900,11 @@ function stPillRow(id,items){
    "every saboteur running", so their own two openers below build the card
    and hand it to rdShell directly, the same direct call mapshelf.js and
    other callers already make for a drill with no anaCard kind of its own. */
-/* THE ARTISTIC DIRECTION ON ENERGY, EMOTIONS AND PATTERNS, 9 November, his
-   words: "energy, emotion, pattern, like have them artistic direction
-   here." A bare heading over a row of pills has nothing of its own, so
-   each of these three carries a thin bar in the real colours the row
-   under it is about to draw, in that row's own order, strongest first
-   where the row has a reading and the section's plain BANDS/CHILD/CAT
-   order where it does not: a preview of the row, not a decoration with no
-   job (the rule this project already keeps, see component.js). Nothing is
-   invented, the three colours (or seven, or nine) are seatCol's own. */
-function stAccent(cols){
- return cols.length?' style="--ac:linear-gradient(90deg,'+cols.join(',')+')"':'';}
+/* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His words
+   on seeing it: "I don't like that rainbow bar. Get rid of that... just
+   get rid of it." stAccent used to hand each section a gradient style
+   attribute (--ac); every call site below now passes nothing and the CSS
+   rule that painted it is gone from shell/head.html. */
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('#stleft [data-stdrill]'):null;
  if(!t)return;
@@ -57849,7 +57956,7 @@ function stDashLeft(){
     real prior committed entries landed per seat; stBright blends it with
     today's words, 65/35, below. */
  var rec=stSeatRecur();
- var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+stAccent(BANDS.map(seatCol))+'>'
+ var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
@@ -57897,7 +58004,7 @@ function stDashChildEmotions(p){
     stay (an id is identity, never renamed for a label change, the same
     rule TAB integers keep), the nine feelings underneath are still CHILD's
     own nine, only the word a person reads changes. */
- var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+stAccent(CHILD.map(function(c){return seatCol(c.seat);}))+'>'
+ var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+'>'
   +'<h2 class="rblk" id="st-childem-h">Emotions</h2>';
  if(!p||typeof CHG2FET==='undefined'){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
@@ -57937,7 +58044,7 @@ function stDashChildEmotions(p){
    Heart for parental (closest relation) and Root for ancestral (furthest
    back), reusing seat colours already in the palette -- his to overrule. */
 function stDashPatterns(p){
- var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+ var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
  if(!p){
   o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
@@ -58015,7 +58122,7 @@ function stOpenPattern(cat){
 function stDashIntegrity(p){
  if(typeof SI==='undefined')return '';
  var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
-  +stAccent(SI.map(function(l){return seatCol(l.b);}))+'>'
+  +'>'
   +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
  if(!p){
   o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
@@ -58057,7 +58164,7 @@ function stDashIntegrity(p){
 function stDashVerp(p){
  if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
  var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
-  +stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+  +'>'
   +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
  if(!p){
   o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
@@ -92090,5 +92197,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006152846"></div>
+<div id="eof" hidden data-len="006159525"></div>
 </body></html>

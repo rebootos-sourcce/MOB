@@ -96,17 +96,11 @@ function stPillRow(id,items){
    "every saboteur running", so their own two openers below build the card
    and hand it to rdShell directly, the same direct call mapshelf.js and
    other callers already make for a drill with no anaCard kind of its own. */
-/* THE ARTISTIC DIRECTION ON ENERGY, EMOTIONS AND PATTERNS, 9 November, his
-   words: "energy, emotion, pattern, like have them artistic direction
-   here." A bare heading over a row of pills has nothing of its own, so
-   each of these three carries a thin bar in the real colours the row
-   under it is about to draw, in that row's own order, strongest first
-   where the row has a reading and the section's plain BANDS/CHILD/CAT
-   order where it does not: a preview of the row, not a decoration with no
-   job (the rule this project already keeps, see component.js). Nothing is
-   invented, the three colours (or seven, or nine) are seatCol's own. */
-function stAccent(cols){
- return cols.length?' style="--ac:linear-gradient(90deg,'+cols.join(',')+')"':'';}
+/* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His words
+   on seeing it: "I don't like that rainbow bar. Get rid of that... just
+   get rid of it." stAccent used to hand each section a gradient style
+   attribute (--ac); every call site below now passes nothing and the CSS
+   rule that painted it is gone from shell/head.html. */
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('#stleft [data-stdrill]'):null;
  if(!t)return;
@@ -158,7 +152,7 @@ function stDashLeft(){
     real prior committed entries landed per seat; stBright blends it with
     today's words, 65/35, below. */
  var rec=stSeatRecur();
- var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+stAccent(BANDS.map(seatCol))+'>'
+ var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
  if(!p){
   o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
@@ -206,7 +200,7 @@ function stDashChildEmotions(p){
     stay (an id is identity, never renamed for a label change, the same
     rule TAB integers keep), the nine feelings underneath are still CHILD's
     own nine, only the word a person reads changes. */
- var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+stAccent(CHILD.map(function(c){return seatCol(c.seat);}))+'>'
+ var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+'>'
   +'<h2 class="rblk" id="st-childem-h">Emotions</h2>';
  if(!p||typeof CHG2FET==='undefined'){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
@@ -246,7 +240,7 @@ function stDashChildEmotions(p){
    Heart for parental (closest relation) and Root for ancestral (furthest
    back), reusing seat colours already in the palette -- his to overrule. */
 function stDashPatterns(p){
- var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+ var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
  if(!p){
   o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
@@ -324,7 +318,7 @@ function stOpenPattern(cat){
 function stDashIntegrity(p){
  if(typeof SI==='undefined')return '';
  var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
-  +stAccent(SI.map(function(l){return seatCol(l.b);}))+'>'
+  +'>'
   +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
  if(!p){
   o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
@@ -366,7 +360,7 @@ function stDashIntegrity(p){
 function stDashVerp(p){
  if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
  var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
-  +stAccent([seatCol('Heart'),seatCol('Root')])+'>'
+  +'>'
   +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
  if(!p){
   o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
