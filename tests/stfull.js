@@ -97,10 +97,12 @@ async function stFullGate(browser,FILE,ok,booted){
    const b=lc.getBoundingClientRect(), r=sl.getBoundingClientRect();
    const shown=[...lp.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||e.className);
    return {dash:STV.dash, chat:STV.chat, full:document.body.classList.contains('st-full'),
-    /* .st-colr is gone, 9 November: the imprints list and Release share
-       .st-colx now (ui/storyui.js), so that is the one extra column
-       Dashboard mode brings in beside the chat. */
-    simple:!!document.querySelector('#stflow.st-simple'), cols:!!document.querySelector('#stflow .st-colx'),
+    /* .st-colx split in two, 10 November: Imprints/Bank is .st-colb and
+       Release is .st-colz now (ui/storyui.js), his own four-column
+       mock-up round, so those are the two extra columns Dashboard mode
+       brings in beside the chat, not the one .st-colx used to be. */
+    simple:!!document.querySelector('#stflow.st-simple'),
+    cols:!!document.querySelector('#stflow .st-colb')&&!!document.querySelector('#stflow .st-colz'),
     lcol:getComputedStyle(lc).display, lw:Math.round(b.width), rw:Math.round(r.width), rh:Math.round(r.height),
     shut:document.body.classList.contains('lshut'), shown,
     grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};});

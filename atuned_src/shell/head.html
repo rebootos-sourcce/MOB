@@ -4150,20 +4150,75 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    id, the release column's own) takes the flex ratio .st-colr used to
    carry, rather than the fixed 300px it had when it was release alone,
    since it now also carries the list the old .st-colr held. */
-.st-colw,.st-colx{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
+/* THREE COLUMNS, NOT TWO, 10 November, his words: "I want to do a mock-up
+   with the imprints as a third column, release as a fourth column...
+   Bank is something very important, so we want to see this filling up,
+   so I think it's important that it's its own column... make the uni
+   column and the imprint columns 2 and 3 the same width." .st-colx
+   (Uni's own flex ratio, carried over from when it shared this rule)
+   splits into .st-colb (the bank, ui/storyui.js) and .st-colz (Release),
+   .st-colw and .st-colb matched, .st-colz narrower: the 460/460/280
+   ratio he approved in the mock-up, kept as a proportion rather than a
+   pixel count so it still holds at widths the mock-up never measured.
+   The read/release focus shift below is the same mechanic the old two
+   column rule held, carried onto whichever of the three now owns that
+   attention, not dropped with the column it used to share. */
+.st-colw,.st-colb,.st-colz{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
  transition:flex var(--t-context) var(--ease-out)}
-.st-colw{flex:1.5 1 0}
-.st-colx{flex:1 1 0}
+.st-colw{flex:1.64 1 0}
+.st-colb{flex:1.64 1 0}
+.st-colz{flex:1 1 0}
 .st-flow[data-focus="read"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="read"] .st-colx{flex:1.55 1 0}
+.st-flow[data-focus="read"] .st-colb{flex:2.2 1 0}
+.st-flow[data-focus="read"] .st-colz{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colx{flex:1.8 1 0}
+.st-flow[data-focus="release"] .st-colb{flex:1 1 0}
+.st-flow[data-focus="release"] .st-colz{flex:1.8 1 0}
 /* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real
    panels, not removed, only shut until Dashboard opens them (STV.dash,
    ui/storyui.js). The Journal takes the width they would have used. */
-.st-flow.st-simple .st-colx{display:none}
+.st-flow.st-simple .st-colb,.st-flow.st-simple .st-colz{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+/* AND THE SECOND ROW NEVER REACHES THE MINI VIEW EITHER, same round,
+   same reasoning: Compass, Boundary, Body, Field and Avatar are a
+   Dashboard-only idea, his own words scoping them there ("when I hit
+   the dashboard button..."), so the mini Journal he is still reviewing
+   separately stays exactly as it was. */
+.st-flow.st-simple .st-2row{display:none}
+/* THE MINI PICTURES. One label, one small drawing, one optional line of
+   real numbers under it; never a second shade of panel inside a panel,
+   so five of these beside each other read as one row and not five
+   boxes. */
+.st-2row{display:flex;gap:12px;flex:0 0 auto}
+/* AVATAR ALONE IS HALF RELEASE'S WIDTH, 10 November, his correction: "half
+   the size of the release... leave it empty" beside it. The other four
+   mini pictures pair up and split their own column evenly; Avatar has no
+   partner, so without this it would read as the one picture twice the
+   size of the rest for no reason tied to what it shows. */
+.st-2row-1{display:block;width:50%}
+.st-2row .st-mini{flex:1 1 0;min-width:0}
+.st-mini{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:10px 12px;display:flex;flex-direction:column;height:200px}
+/* SENTENCE CASE, NO ALL CAPS UI COPY, the house voice ruling, CLAUDE.md:
+   caught here by tests/design.js's own "no all-caps UI copy" check
+   ("transform:Compass | transform:Boundary") before this shipped.
+   text-transform:uppercase is gone; weight and letter-spacing alone mark
+   this as a label, the same way .rblk (the rail's own section heading)
+   already does with neither capitalisation nor an invented second style. */
+.st-mini-lb{font-size:11px;font-weight:600;color:var(--dim);
+ letter-spacing:.02em;margin-bottom:6px}
+.st-mini-vis{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
+/* width/height:100%, not max-: an <svg> with no width/height attribute of
+   its own (every one of the five mini pictures, viewBox alone) renders at
+   its intrinsic 300x150 regardless of a max- cap in some engines, which is
+   exactly what pushed Body's own caption line below this card's own
+   bottom edge, measured by screenshotting #stbody alone. A definite box,
+   with preserveAspectRatio's own default doing the letterboxing, cannot
+   overflow it. */
+.st-mini-vis svg{width:100%;height:100%}
+.st-mini-cap{font-size:11.5px;color:var(--mid);text-align:center;margin-top:4px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
@@ -6613,7 +6668,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     own "actually rendered on a phone" check against #story caught it. A
     floor the other two columns used to supply by sitting beside it. */
  .st-flow.st-simple .st-pan.st-jr{min-height:60vh}
- .st-colw,.st-colx{gap:8px}
+ .st-colw,.st-colb,.st-colz{gap:8px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}

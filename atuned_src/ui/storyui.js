@@ -62,6 +62,121 @@ function stMark(k,word,term,cls,tail){
  return '<div class="st-mk st-mk-'+k+(cls?' '+cls:'')+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true">'+ST_MARK[k]+'</svg>'
   +'<h3'+(a?' class="tipu"'+a:'')+'>'+esc(word)+'</h3>'+(tail||'')+'</div>';}
+/* ============================================================
+   THE FIVE MINI PICTURES, 10 November. Round of the four-column
+   Dashboard: "I want to do a mock-up with the imprints as a third
+   column, release as a fourth column... Bank is something very
+   important, so we want to see this filling up... make the uni column
+   and the imprint columns 2 and 3 the same width." Approved, then
+   widened the same round to a second row under each of those three
+   columns, his words: "we want our boundary and compass 2D
+   representations of those systems," and under imprints a Body and a
+   Field, under Release an Avatar.
+
+   NONE OF THESE ARE THE REAL TAB. Compass (ui/cone.js), Field
+   (ui/wheel.js), Body (ui/map.js) and Character (ui/character.js,
+   avatarui.js) are each one singleton canvas tied to one element by id,
+   holding shared zoom, pan and animation state (CONE, AURA_K, CHV). A
+   second live instance here would fight the real tab's own, or go
+   blank the moment both exist. So each of these draws once from
+   compute()'s own reading, as a small read-only picture: no zoom, no
+   pan, no loop of its own, redrawn only when stRender runs, same as
+   every other static piece of this page.
+
+   "BOUNDARY" WAS ASKED AND ANSWERED, not guessed. The name was already
+   taken: boundaryCount() (engine/avatar.js) is the purpose hexagon, how
+   many of a person's own stated commitments are actually kept, six
+   sides of five each. An earlier task's own wording ("Remove
+   Boundary/Compass headings, reposition CQ/DQ") read like it meant
+   CQ/DQ; asked directly, it is the hexagon. CQ's own home among these
+   five is Field, whose real tab already reads its headline off the
+   same number (ui/wheel.js:508). */
+/* the seven seats' own colour tokens, named once so a MIRROR axis or a
+   body address can be coloured by its seat without guessing a string */
+var SEATCOL={Root:'--root',Sacral:'--sacral',Solar:'--solar',Heart:'--heart',
+ Throat:'--throat',Eye:'--eye','Third Eye':'--eye',Crown:'--crown'};
+function stMiniShell(id,label,inner){
+ return '<div class="st-mini" id="'+id+'" aria-label="'+esc(label)+'">'
+  +'<div class="st-mini-lb">'+esc(label)+'</div>'+inner+'</div>';}
+/* COMPASS, the sixteen MIRROR axes (engine/data/compass.js) as spokes from
+   the centre; coneMirPos (ui/cone.js) is the real tab's own per-axis read,
+   0 to 100 or null unanswered, reused rather than re-derived. */
+function stMiniCompass(r){
+ var un=r.unread, pts='';
+ MIRROR.forEach(function(m,i){
+  var v=un?50:coneMirPos(m);
+  var a=(i/MIRROR.length)*Math.PI*2-Math.PI/2;
+  var rad=10+(v/100)*42, x=60+Math.cos(a)*rad, y=60+Math.sin(a)*rad;
+  var col=un?'var(--dim)':'var('+(SEATCOL[m.seat]||'--dim')+')';
+  pts+='<line x1="60" y1="60" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+col+'" stroke-opacity=".4"/>'
+   +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.3" fill="'+col+'"/>';});
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'
+  +'<circle cx="60" cy="60" r="52" fill="none" stroke="var(--edge)"/>'+pts
+  +'<circle cx="60" cy="60" r="2.4" fill="var(--ink)"/></svg></div>';}
+/* BOUNDARY, the purpose hexagon. Each of the six sides (PUR_SIDES,
+   engine/avatar.js) lit by how many of its five slots (PUR_PER_SIDE) are
+   filled, the same filter boundaryCount runs, so the picture and the
+   number it carries never disagree. Not gated on r.unread: a purpose
+   nobody has opened yet is honestly 0 of 30, not a story left unread. */
+function stMiniBoundary(){
+ var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu), segs='';
+ PUR_SIDES.forEach(function(s,i){
+  var a=((pu.sides&&pu.sides[s])||[]).filter(function(x){return x&&String(x).trim();});
+  var frac=Math.min(a.length,PUR_PER_SIDE)/PUR_PER_SIDE;
+  var a0=(i/PUR_SIDES.length)*Math.PI*2-Math.PI/2, a1=((i+1)/PUR_SIDES.length)*Math.PI*2-Math.PI/2;
+  var x0=(60+Math.cos(a0)*50).toFixed(1), y0=(60+Math.sin(a0)*50).toFixed(1);
+  var x1=(60+Math.cos(a1)*50).toFixed(1), y1=(60+Math.sin(a1)*50).toFixed(1);
+  segs+='<path d="M60 60L'+x0+' '+y0+'A50 50 0 0 1 '+x1+' '+y1+'Z" fill="var(--throat)" '
+   +'fill-opacity="'+(0.12+frac*0.6).toFixed(2)+'" stroke="var(--edge-2)"/>';});
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'+segs
+  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)">'+bc.filled+'/'+bc.of+'</text></svg></div>';}
+/* BODY, the heaviest of what compute() already calls carrying: the top
+   address (r.heaviest), the band it sits in (r.darkB) and every address
+   holding anything at all (r.carrying.length). No address-by-address
+   detail here, that is the real Body tab's job; this is one glance at
+   where the charge is sitting now. */
+function stMiniBody(r){
+ var un=r.unread, hot=un?null:r.darkB;
+ var dot=function(seat,x,y){
+  var on=hot===seat, col=un?'var(--dim)':'var('+(SEATCOL[seat]||'--dim')+')';
+  return '<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="'+col+'" stroke="none" opacity="'+(on?1:.5)+'"/>';};
+ var svg='<svg viewBox="0 0 70 120" aria-hidden="true" fill="none" stroke="var(--edge-2)" stroke-width="2">'
+  +'<circle cx="35" cy="14" r="10"/><path d="M35 24v46M35 34h-18M35 34h18M35 70l-14 36M35 70l14 36"/>'
+  +dot('Throat',35,34)+dot('Heart',35,48)+dot('Solar',35,58)+dot('Sacral',35,66)+dot('Root',35,72)+'</svg>';
+ var cap=un?'–':(r.carrying.length+' carrying'+(r.heaviest?', '+esc(hot)+' '+r.darkV.toFixed(1):''));
+ return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
+/* FIELD, the same headline the real tab reads, r.CQ, as a filled ring, the
+   fill a percent equal to the number beside it (the same rule the Summary
+   gate already holds the app to). Coloured through --uni-amb-core, the
+   same live custom property ambPaint (ui/uni.js) already writes onto
+   the document from her own palette; getPalette itself is private to
+   her module's own closure and unreachable from here, so this reads
+   the one value she already publishes rather than a second colour
+   invented in this file. */
+function stMiniField(r){
+ var un=r.unread, cq=un?0:clamp(r.CQ,0,100);
+ var col='rgb(var(--uni-amb-core))';
+ var C=2*Math.PI*46, frac=un?0:cq/100;
+ var svg='<svg viewBox="0 0 120 120" aria-hidden="true">'
+  +'<circle cx="60" cy="60" r="46" fill="none" stroke="var(--edge)" stroke-width="9"/>'
+  +'<circle cx="60" cy="60" r="46" fill="none" stroke="'+col+'" stroke-width="9" stroke-linecap="round" '
+  +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 60 60)"/>'
+  +'<text x="60" y="66" text-anchor="middle" font-size="18" fill="var(--ink)">'+(un?'–':Math.round(cq)+'%')+'</text></svg>';
+ return '<div class="st-mini-vis">'+svg+'</div>';}
+/* AVATAR, the character's own current mask (r.mask, the same field
+   ui/character.js reads) in its own colour (CHC.maskCols,
+   ui/character.js), or Uni's own published coherence colour
+   (--uni-amb-core, see stMiniField above) when nothing is worn right
+   now; never a guess at what the real torus is doing. */
+function stMiniAvatar(r){
+ var un=r.unread, m=r.mask?maskOf(r.mask):null;
+ var col=m?CHC.maskCols(m)[0]:'rgb(var(--uni-amb-core))';
+ var cap=un?'–':(r.mask?'Wearing '+r.mask:'No mask read yet');
+ var svg='<svg viewBox="0 0 100 120" aria-hidden="true" fill="none" stroke="'+col+'" stroke-width="2">'
+  +'<circle cx="50" cy="38" r="26"/><path d="M14 112c0-24 16-40 36-40s36 16 36 40"/>'
+  +'<circle cx="42" cy="36" r="2.6" fill="var(--ink)" stroke="none"/>'
+  +'<circle cx="58" cy="36" r="2.6" fill="var(--ink)" stroke="none"/></svg>';
+ return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+esc(cap)+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -73,6 +188,11 @@ function stRender(){
  document.body.classList.toggle('st-full',!!STV.dash&&S.tab===TAB.STORY);
  stOwn(); stDraftBack();
  var p=ST_PARSED;
+ /* THE FIVE MINI PICTURES READ THIS, 10 November. One compute() for
+    Compass, Boundary, Body, Field and Avatar below, the same reading
+    every other panel on this page already reads off, not a sixth call
+    for a sixth picture. */
+ var r=compute();
  /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
     bank, its vault and its imprints are the reading and all of them stay.
     The journal is where a person's own words are read, so on an example the
@@ -399,7 +519,14 @@ function stRender(){
     +'<path d="M5 12h14M13 6l6 6-6 6"/></svg>'
     +(p&&p.imprints.length?'<b class="st-sendn">'+p.imprints.length+'</b>':'')
     +'</button>')
-  +'</div>')+'</div></div>'
+  +'</div>')+'</div>'
+  /* THE SECOND ROW UNDER UNI, 10 November: Compass and Boundary, his own
+     pairing. Hidden on the mini view by CSS (#stflow.st-simple), the same
+     way .st-colb/.st-colz are below, not by leaving it out of the
+     string: one render path, one place a reader of this file looks. */
+  +'<div class="st-2row">'+stMiniShell('stcompass','Compass',stMiniCompass(r))
+   +stMiniShell('stboundary','Boundary',stMiniBoundary())+'</div>'
+  +'</div>'
   /* ---- the read column: the instrument, the list, then Commit ----
      SWAPPED BACK, round of 29 October, second pass. The round before this
      one put the list above the chart; looking at it built, his ruling
@@ -434,7 +561,15 @@ function stRender(){
      analytics preview button... get rid of the laws notice that."
      stAnaHtml() and stLawHtml() stay defined, only the calls here are
      cut; nothing else in the product reached them through this column. */
-  +'<div class="st-colx">'
+  /* .st-colx SPLITS IN TWO, 10 November, his words: "I want to do a
+     mock-up with the imprints as a third column, release as a fourth
+     column... make the uni column and the imprint columns 2 and 3 the
+     same width." .st-colb carries the list alone now (the old .st-colr
+     name stays retired, see the ruling at .st-colx above, so this is a
+     new name and not that one back); .st-colz is Release's own column,
+     narrower, width and both set in shell/head.html's flex rules and
+     not here. */
+  +'<div class="st-colb">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
    /* BANK AND VAULT ON THE LEFT, COMMIT ON THE RIGHT, 9 November, his
       words: "move the bank and the vault icons to the left-hand side of
@@ -482,7 +617,17 @@ function stRender(){
       by id wherever it stands. */
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
    +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
+  /* BODY AND FIELD, under the bank, his pairing. Same stMiniShell every
+     other mini picture here uses, same compute() reading. */
+  +'<div class="st-2row">'+stMiniShell('stbody','Body',stMiniBody(r))
+   +stMiniShell('stfield','Field',stMiniField(r))+'</div>'
+  +'</div>'
+  +'<div class="st-colz">'
   +'<div class="st-rl" id="strel" aria-label="Release"></div>'
+  /* AVATAR, under Release, alone: his fifth picture, one per column
+     this round, three columns, five pictures, Avatar the only one
+     without a partner beside it. */
+  +'<div class="st-2row st-2row-1">'+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
