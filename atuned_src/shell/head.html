@@ -4714,9 +4714,21 @@ body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
    width of #stjr's own column (#stsrc's own fit-content rule, just
    above, already does that part in the hero view only; this is its
    Dashboard twin). */
+/* A REAL BOX, SIZED WHERE HE DREW IT, 10 November. His own annotated
+   screenshot circled this exact spot on the Dashboard and drew a box
+   roughly the width of Uni's own picture above it and several lines
+   tall, his words: "the text field... precisely where I want it... this
+   should be the user input only." The 46ch cap read as barely a third of
+   that, a few words wide, and 4.8em (about three lines) meant a real
+   story's own words scrolled out of view behind the one-line aside note
+   the instant it ran past the box (srcPaint's own scrollTop=scrollHeight,
+   "newest stays in view," now has far more height to work with before it
+   ever needs to). Matched to the column, not a character count: 90% of
+   #stjr's own width, the same measure the hero view's note box already
+   reads off, so his words have the width his drawing gave them. */
 body.tab-story.st-full #stsrc{width:-moz-fit-content;width:fit-content;
- max-width:min(46ch,90%);margin:0 auto}
-body.tab-story.st-full .src-mine{max-height:4.8em;overflow-y:auto;
+ max-width:90%;margin:0 auto}
+body.tab-story.st-full .src-mine{max-height:12em;overflow-y:auto;
  overflow-x:hidden;scrollbar-width:none}
 body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 /* THE SET ASIDE SENTENCE, INSIDE THE ONE BOX NOW, NOT A SECOND ONE, 10
@@ -4966,8 +4978,24 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
    to sit beside Patterns instead, it needs none of that top gap, the
    row's own 14px gap between fields already does that job. */
 .rel-fields .st-relsws{margin:0}
-/* the card's two fields, .rel-field, set to the column's left edge */
-.rel-fields.st-fields{justify-content:flex-start;margin:0}
+/* A GRID, NOT A WRAPPING ROW, 10 November, his words a second time: "make
+   sure the buttons are symmetrical... the binaural audio button, I want
+   next to the patterns." flex-wrap put Speed and Patterns on one line and
+   dropped the toggle to a second line starting back at the column's own
+   left edge, under Speed, the moment this card narrowed enough that the
+   three no longer fit side by side (measured at the card's own real
+   width: Speed and Patterns alone already use nearly the whole row,
+   leaving nowhere near enough for a switch with its own label). "Next to
+   the patterns" is a position, not a promise that three items of three
+   different widths always fit one line, so this is a real two column
+   grid instead: Speed top left, Patterns top right, the toggle on its
+   own row underneath but pinned to the right edge, directly under
+   Patterns, where "next to" and "symmetrical" are both still true
+   regardless of how narrow the card gets. */
+.rel-fields.st-fields{display:grid;grid-template-columns:1fr 1fr;justify-content:flex-start;margin:0}
+.rel-fields.st-fields .rel-field:nth-child(1){grid-column:1}
+.rel-fields.st-fields .rel-field:nth-child(2){grid-column:2}
+.rel-fields.st-fields .st-relsws{grid-column:1/3;justify-self:end;margin-top:10px}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}

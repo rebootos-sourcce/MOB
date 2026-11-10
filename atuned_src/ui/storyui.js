@@ -3263,7 +3263,17 @@ function stRelModel(){
  var cut=found.named||0;
  if(picked.length)take=picked.sort(bySq);
  else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
- else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
+ /* THE THIRD TIER IS GONE, 10 November, his words looking at the live
+    panel: "there's three icons that start there. There should be
+    nothing." With nothing picked and nothing in the live story, this used
+    to fall back to the whole record's own heaviest three addresses ever
+    carried, an always-on "what would release right now" preview wearing
+    the same real address names a genuine selection shows. The row reads
+    as the person's own nothing-yet state, not as a feature, the same rule
+    every other section on this page already keeps, so the fallback is cut
+    outright rather than gated: take stays empty, and stRelPanel's own
+    if(!M.take.length) guard, already written, already does the rest. */
+ else take=[];
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
   fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
