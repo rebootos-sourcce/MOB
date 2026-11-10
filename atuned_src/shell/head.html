@@ -4324,11 +4324,58 @@ body.quiet #stjr,body.rm #stjr{animation:none;background-position:50% 40%}
    own 132% size and the animation's own 3-degree swing ever reach, so no
    phase of the drift uncovers a hard edge either. */
 body.tab-story.st-full #stjr{
- border-radius:0;background-color:transparent;
+ /* FILLED, NOT EMPTY, 10 November. His words, a screenshot of exactly this
+    panel scribbled over almost edge to edge: "the area behind Uni is
+    black. I've just now coloured it in." Fading to transparent (below,
+    before this fix) killed the hard box from the round before, but with
+    background-color also transparent there was nothing under the fade at
+    all past 70%, so the ground he is pointing at was never --sunk, it was
+    whatever sits behind #stjr, which reads the same flat black as the
+    page around it. var(--sunk) at the last stop keeps the same soft,
+    centred light and still reads as her glow, not a box (nothing here
+    regained a hard edge), but the ground it fades onto now actually has a
+    tone, the same dark every other panel in this product is built on. */
+ border-radius:0;background-color:var(--sunk);
  background-image:radial-gradient(closest-side at 50% 40%,
    color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
-   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,transparent) 40%,
-   transparent 70%)}
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,var(--sunk)) 45%,
+   var(--sunk) 100%);
+ /* BREATHING ROOM, same words, same round. .st-pan's own 14px/16px (its
+    base rule, above) was built for a panel that is mostly text; this one
+    is mostly her. */
+ padding:32px 28px}
+/* HER OWN BOX STOPPED GROWING TO FILL WHATEVER WAS LEFT, same round, his
+   words: "the whole design needs to be symmetrical." .st-chat .st-uni's
+   flex:1 1 0 (below) let her column stretch to every pixel #stsrc's own
+   content did not use, which on an empty record is almost all of it: she
+   sat near the top of a box several times her own height, and the text
+   zone inherited whatever was left over at the very bottom, uneven on
+   every side. A fixed height, the same number the hero view already
+   uses, plus centring the pair as one block in the space #stjr actually
+   has, gives equal room above her, equal room below the text zone, and a
+   true middle between the two instead of one swallowing the other's
+   share. */
+/* A CAP, NOT A FLOOR, caught by collide.js at 1600x700: a fixed height
+   here does not shrink the way flex:1 1 0 with min-height:0 (the base
+   rule, below) always did, so on a short window #stmic/#stdash (.st-hd,
+   in flow above .st-glow) stayed in place while her own canvas, now
+   forced to 42vh regardless of how little room #stjr actually had, grew
+   over them. max-height keeps the same flex:1 1 0/min-height:0 shrink
+   behaviour (nothing above this breaks), only ever capping her growth
+   on a window tall enough to spare it. */
+body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+body.tab-story.st-full .st-chat .st-glow{flex:1 1 auto;justify-content:center}
+/* A PINSTRIPE ROUND THE TEXT ZONE ONLY, same round, his own words: "have a
+   little pinstripe line around the area that's for text." Thin and the
+   same hairline every divider on this rail already draws (var(--edge)),
+   never the thick coloured accent .st-pe's base rule puts on its left edge
+   alone (built for the two-way thread this panel no longer shows); the
+   shorthand resets all four sides to one even line, so the zone her words
+   sit in reads as its own marked place without reading as a box the way a
+   filled card or a thick border would. The travelling light (.st-pe::before
+   /::after, its own absolutely positioned pseudo, not drawn from this
+   border) is untouched by the change. */
+body.tab-story.st-full #stsrc{border:1px solid var(--edge)}
 /* THE GLOW MOVES TO THE STAGE ITSELF, ON THE HERO VIEW ONLY, 10 November.
    His words, marking a screenshot: "I don't want any gray to the left or
    right. I want the black background to fill the entire thing, and I want
@@ -4415,16 +4462,33 @@ body.tab-story:not(.st-full) #stage::before{
     to the brightest the art director's own floor allows (46%/32% mix,
     a size wide enough to light most of the stage) rather than near it,
     which painted a flat warm wash over nearly the whole screen, exactly
-    the "box" in a new shape. Both numbers come down together: mixed at
-    a sixth to a twelfth of what they were, sized to wrap her own circle
-    and fall to var(--bg) well inside the stage rather than past its
-    edge, centred on 50% 50%, where #stjr's own justify-content now
-    actually holds her. */
+    the "box" in a new shape. Both numbers came down together that round,
+    mixed at a sixth to a twelfth of what they were, sized to wrap her own
+    circle and fall to var(--bg) well inside the stage rather than past
+    its edge.
+
+    THAT "WELL INSIDE THE STAGE" IS ITS OWN BOX, 10 November, found by
+    sampling the actual pixels across a real 2000px window at his own
+    screenshot's width, not by eye: flat, unmoving background from the
+    edge to 27.5% in on both sides, a sharp rise over about 150px, lit
+    middle, same sharp fall back to flat on the other side. A gradient
+    that reaches its last colour stop and then sits at that exact colour
+    for hundreds of flat pixels reads as a seam at the stop, because nothing
+    about the colour either side of it is still changing; the eye finds the
+    one place the slope breaks. 46% 50% (below, before this fix) reached
+    its own 100% stop, measured, at 45% of the stage's own half width, so
+    on anything wider than her own fixed-size figure most of the stage sat
+    in that flat, seamed band. Scaled up by the same ratio that measurement
+    gave (roughly 2.5x, to clear it with real margin rather than land back
+    on the same edge at a slightly wider window), the last stop now falls
+    past the stage's own edge at every width this product ships, so the
+    colour is still changing, however slightly, everywhere the eye can
+    reach, and there is nowhere left for a seam to sit. */
  background:
-  radial-gradient(42% 46% at 50% 50%,
+  radial-gradient(105% 115% at 50% 50%,
     color-mix(in oklch,var(--seat,transparent) calc(var(--seat-w,0)*10%),transparent) 0%,
     transparent 75%),
-  radial-gradient(46% 50% at 50% 50%,
+  radial-gradient(115% 125% at 50% 50%,
     color-mix(in oklch,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
     color-mix(in oklch,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
     var(--bg) 100%);
