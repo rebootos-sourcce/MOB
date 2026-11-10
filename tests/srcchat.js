@@ -49,21 +49,34 @@ const booted = async p => {
   await p.waitForTimeout(120); };
 const shot = async (p, nm) => { if (SHOTS) { await p.mouse.move(1, 1); await p.waitForTimeout(1800); await p.screenshot({ path: path.join(SHOTS, nm) }); console.log('  shot  ' + nm); } };
 
-/* the thread as a person sees it, and the state behind it. box and pressed
-   read for what is no longer there (#sttext, #sttalk): on arrival and
-   through the whole run both must read absent, since the plain box and its
-   toggle only exist during a crisis now, never in this file's own flow.
-   THE REPLY LINE IS GONE TOO, round of 29 October: #stcin and #stcsend
-   stood for typing a reply by hand, and voice is the only door a turn
-   comes through now (srcTurnCommit, stMic in ui/storyui.js). mic reads for
-   the one door that is left. */
+/* THE STATE BEHIND THE CONVERSATION, NOT A THREAD ON SCREEN, 10 November.
+   His words, repeated past counting and finally landed on the Dashboard
+   too: "we don't need 2-way talk anymore... it's just the user's input."
+   srcPaint (ui/storyui.js) still runs every turn exactly as it did, the
+   same srcTurn, the same srcLog row, the same SRC_CHAT writes, the same
+   spoken reply; only the markup changed, from a two sided thread to one
+   div, .src-mine, holding the person's own words and nothing of Source
+   AI's. So rows/now/pastWords are rebuilt here from SRC_CHAT itself, the
+   record every one of those features actually reads, rather than from a
+   bubble this build no longer draws. box and pressed read for what is no
+   longer there (#sttext, #sttalk): on arrival and through the whole run
+   both must read absent, since the plain box and its toggle only exist
+   during a crisis now, never in this file's own flow. THE REPLY LINE IS
+   GONE TOO, round of 29 October: #stcin and #stcsend stood for typing a
+   reply by hand, and voice is the only door a turn comes through now
+   (srcTurnCommit, stMic in ui/storyui.js). mic reads for the one door
+   that is left. */
 const look = p => p.evaluate(() => {
-  const rows = [...document.querySelectorAll('#stsrc .src-tn')];
+  let lastSrc = -1; SRC_CHAT.forEach((r, i) => { if (r.w === 'src') lastSrc = i; });
+  const rows = SRC_CHAT.map((r, i) => ({
+    cls: r.w === 'me' ? 'src-tn-me' : (i === lastSrc ? 'src-tn-now' : 'src-tn-past'),
+    say: r.w === 'me' ? ST_TEXT.slice(r.a, r.b) : r.q
+  }));
   return {
     text: ST_TEXT,
-    rows: rows.map(li => ({ cls: li.className.replace('src-tn ', ''), say: li.textContent.trim() })),
-    now: rows.filter(li => li.classList.contains('src-tn-now')).length,
-    pastWords: rows.filter(li => li.classList.contains('src-tn-past')).map(li => li.textContent.trim()).filter(Boolean),
+    rows,
+    now: rows.filter(r => r.cls === 'src-tn-now').length,
+    pastWords: rows.filter(r => r.cls === 'src-tn-past').map(r => r.say.trim()).filter(Boolean),
     asks: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).length,
     /* ROUND SK: every ask on the thread and whether it passes the ten
        checks of engine/qcheck.js, read in the page against the page's own
@@ -72,23 +85,31 @@ const look = p => p.evaluate(() => {
     vet: SRC_VET ? { ok: SRC_VET.ok, q: SRC_VET.q, tried: SRC_VET.tried.length } : null,
     top: STR.heard && STR.heard.top ? { seat: STR.heard.top.seat, m: STR.heard.top.mentions, n: STR.heard.top.negated, rung: STR.heard.top.rung } : null,
     move: srcTurn(STR.heard, { typed: !!ST_TEXT.trim(), passed: SRC_PASSED }).move,
-    pass: !!document.getElementById('srcpass'),
     box: !!document.getElementById('sttext'), mic: !!document.getElementById('stmic'),
     toggle: !!document.getElementById('sttalk'),
-    /* THE DAISY CHAIN IS GONE, round of 29 October: no node, no wire, no
-       pulse, a bubble each side instead (see the ruling at srcThread in
-       ui/storyui.js). wires reads for the old markup being truly gone;
-       meSide and srcSide read which edge each row's bubble actually sits
-       on, geometry and not a guess from a class name. */
-    wires: document.querySelectorAll('#stsrc .src-tw, #stsrc .src-nd, #stsrc .src-puls').length,
-    meSide: [...document.querySelectorAll('#stsrc .src-tn-me .src-bub')].map(b => {
-      const r = b.getBoundingClientRect(), p = b.closest('.src-th').getBoundingClientRect();
-      return (p.right - r.right) < (r.left - p.left); }),
-    srcSide: [...document.querySelectorAll('#stsrc .src-tn-now .src-bub, #stsrc .src-tn-past .src-bub')].map(b => {
-      const r = b.getBoundingClientRect(), p = b.closest('.src-th').getBoundingClientRect();
-      return (r.left - p.left) < (p.right - r.right); }),
+    /* NO TWO-WAY CHAT ON THE PAGE AT ALL, 10 November: sourceOnScreen reads
+       for every shape Source AI's own voice used to draw (a bubble, a
+       standing question, an earlier turn) and must always read zero now,
+       in either view. mineText reads the one thing #stsrc holds instead,
+       the person's own current words, with no bubble, no border and no
+       fill (see .src-mine, atuned_src/shell/head.html). */
+    sourceOnScreen: document.querySelectorAll('#stsrc .src-bub, #stsrc .src-tn, #stsrc .src-q, #stsrc .src-open, .src-th').length,
+    mineText: (document.querySelector('.src-mine .src-me') || {}).textContent || null,
     said: (document.getElementById('srcsay') || {}).textContent || ''
   };
+});
+/* THE DOOR THAT USED TO BE A BUTTON, 10 November. #srcpass never lands in
+   the DOM any more (srcPaint's own markup is .src-mine alone, plus the
+   crisis row on a safe turn): the two lines its onclick used to run are
+   reproduced here exactly, against the live page's own current turn, so
+   "press Move on" still means what it always meant and not a hand wave at
+   SRC_PASSED. Saying the words still does the same thing too, tested on
+   its own in "the person says what they want from the conversation" below. */
+const movedOn = p => p.evaluate(() => {
+  const turn = srcTurn(STR.heard, { typed: !!ST_TEXT.trim(), passed: SRC_PASSED });
+  SRC_PASSED = true;
+  SRC_LOG.forEach(r => { if (r.k === turn.why && r.seat === turn.seat) r.moved = true; });
+  srcPaint();
 });
 /* A TURN NOW LANDS BY VOICE ONLY, round of 29 October. No real microphone
    here: a stand-in SpeechRecognition, the exact shape stMic reads a sentence
@@ -227,7 +248,7 @@ require('./net.js').guardBrowser(browser);
   ok(b.top && b.top.seat && b.top.m === 1 && b.top.n === 0, 'the first turn\'s "not" stops at the turn: afraid heard once, not negated, ' + JSON.stringify(b.top));
   const alone = await p.evaluate(() => { const h = srcHear('afraid all night.', null).top; return h && { seat: h.seat, rung: h.rung }; });
   ok(alone && b.top.seat === alone.seat && b.top.rung === alone.rung, 'and it reads what the reply reads alone, ' + JSON.stringify(alone));
-  ok(c.move === 'ask' && c.pass && c.top.rung >= 7, 'the seat coming back across turns is asked about, rung ' + (c.top && c.top.rung));
+  ok(c.move === 'ask' && c.top.rung >= 7, 'the seat coming back across turns is asked about, rung ' + (c.top && c.top.rung));
   ok(c.said && c.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf(c.said) === 0, 'the screen reader line carries the live turn: ' + JSON.stringify(c.said.slice(0, 70)));
   ok(d.now === 1 && d.pastWords.length > 0 && d.pastWords.every(Boolean), 'a text window, not a ring: every earlier Source AI turn still reads in full, ' + d.pastWords.length + ' with words');
   /* ROUND SK. This read d.asks === 1, "an answer to the ask does not ask
@@ -251,15 +272,14 @@ require('./net.js').guardBrowser(browser);
   ok(reVet.every(f => !f.length), 'every ask on the thread still passes points one to seven against the whole entry: ' + JSON.stringify(reVet));
   const me = d.rows.filter(x => x.cls === 'src-tn-me').map(x => x.say);
   ok(me.join('|') === 'I did not sleep|afraid all night.|Still afraid when he called.|I am afraid of what he says next.', 'every reply stands in the thread in the person\'s words');
-  ok(d.wires === 0, 'the daisy chain is gone: no node, no wire, no pulse in the markup, ' + d.wires + ' found');
-  ok(d.meSide.length && d.meSide.every(Boolean), 'every reply sits on the right, a bubble each: ' + JSON.stringify(d.meSide));
-  ok(d.srcSide.length && d.srcSide.every(Boolean), 'every Source AI turn sits on the left, a bubble each: ' + JSON.stringify(d.srcSide));
+  ok(d.sourceOnScreen === 0, 'no two-way chat on screen: not a bubble, not a thread, not a standing question, ' + d.sourceOnScreen + ' found');
+  ok(d.mineText && d.mineText.indexOf('I am afraid of what he says next.') >= 0, 'the person\'s own last words are what stands on screen, and nothing of Source AI\'s: ' + JSON.stringify(d.mineText));
   await shot(p, 'talk-1600-ask.png');
 
   /* move on, and a reply after it */
-  await p.click('#srcpass'); await p.waitForTimeout(250);
+  await movedOn(p);
   const e = await look(p);
-  ok(e.move === 'pass' && e.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf('Cool.') === 0 && !e.pass, 'Move on says "Cool." and the ask folds to its ring');
+  ok(e.move === 'pass' && e.rows.filter(x => x.cls === 'src-tn-now')[0].say.indexOf('Cool.') === 0, 'Move on says "Cool." and the ask folds to its ring');
   await say(p, 'Afraid, afraid, afraid.');
   const f = await look(p);
   /* 31 October. This read "after Move on it says nothing more, however much
@@ -270,7 +290,7 @@ require('./net.js').guardBrowser(browser);
      however much more it hears". Asks, not says. So the turn is answered,
      once, and the answer is not a question. */
   const fNew = f.rows.filter(x => x.cls !== 'src-tn-me').slice(e.rows.filter(x => x.cls !== 'src-tn-me').length);
-  ok(f.move === 'pass' && fNew.length === 1 && fNew[0].say.indexOf('?') < 0 && !f.pass,
+  ok(f.move === 'pass' && fNew.length === 1 && fNew[0].say.indexOf('?') < 0,
     'after Move on it asks nothing more, however much more it hears, and the turn is still answered: ' + JSON.stringify(fNew));
   await shot(p, 'talk-1600-pass.png');
   if (SHOTS) {
@@ -309,7 +329,7 @@ require('./net.js').guardBrowser(browser);
     await q.waitForTimeout(200);
     await q.fill('#sttext', g.x.text.split('\nThen I left.')[0].split('\nAfraid, afraid')[0]);
     await q.waitForTimeout(300);
-    await q.click('#srcpass'); await q.waitForTimeout(150);
+    await movedOn(q);
     await q.fill('#sttext', g.x.text); await q.waitForTimeout(300);
     await q.click('#stapply'); await q.waitForTimeout(600);
     const box = await q.evaluate(() => { const es = CURP.story.entries; return es[es.length - 1].asked; });
@@ -404,9 +424,13 @@ require('./net.js').guardBrowser(browser);
      own words and nothing else.
      ============================================================ */
   const srcRows = p => p.evaluate(() => SRC_CHAT.filter(r => r.w === 'src').map(r => r.q));
-  const shown = p => p.evaluate(() => document.querySelectorAll('#stsrc .src-tn-now, #stsrc .src-tn-past').length);
+  /* "shown" was the thread's own row count; the thread is gone, so this
+     reads the one record every turn still lands in, the same one srcRows
+     reads, which is what "shown" always stood for once the actual bubble
+     stopped being the point of the check. */
+  const shown = p => p.evaluate(() => SRC_CHAT.filter(r => r.w === 'src').length);
   /* says each line, and reads after each one what came back, on the record
-     the thread keeps and on the screen */
+     Source AI keeps and speaks, never on screen any more */
   const run = async (p, lines) => {
     const out = [];
     for (const t of lines) {
@@ -628,7 +652,7 @@ require('./net.js').guardBrowser(browser);
     const q = await open(browser, 390, 844, { reducedMotion: 'reduce' });
     await talk(q);
     const z = await look(q);
-    ok(z.wires === 0, 'the daisy chain is gone at 390 too, nothing left for reduced motion to quiet: ' + z.wires + ' found');
+    ok(z.sourceOnScreen === 0, 'no two-way chat at 390 either: ' + z.sourceOnScreen + ' found');
     const fit = await q.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: innerWidth }));
     ok(fit.sw <= fit.w, 'no sideways scroll at 390: ' + fit.sw + ' of ' + fit.w);
     /* Talk is gone, round of 28 October, and the reply line and its send are

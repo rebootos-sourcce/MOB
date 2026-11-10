@@ -4305,6 +4305,30 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 body.quiet #stjr,body.rm #stjr{animation:none;background-position:50% 40%}
 @media (prefers-reduced-motion:reduce){
  #stjr{animation:none;background-position:50% 40%}}
+/* THE SAME BOX, IN THE DASHBOARD, 10 November. His words, pointed at the
+   Dashboard specifically, not the hero: "you see that red in the background
+   around that black border around Uni? Get rid of the fucking black
+   border." Nothing here draws an actual border line: #stjr{border:0} above
+   already beats .st-pan's 1px edge on specificity. The box is the glow's
+   own hard rectangular cutoff instead, the same root cause as the hero
+   complaint, just never fixed here because the hero fix above only
+   touches :not(.st-full). #stjr's default radial is 130% by 110% inside a
+   132% background-size box, so at the panel's own side edges the gradient
+   is barely a third of the way through its fade and still reads as solid
+   red tint, and its last stop lands on var(--sunk), a near black, right
+   where that tint finally gives way, which is the ring he is pointing at.
+   closest-side keys the radius to #stjr's own box instead of an arbitrary
+   percent of it, and fading to transparent, not --sunk, lets the panel's
+   own ground show through at the edge instead of a darker ring sitting on
+   top of it. 70% leaves two fifths of the radius past where the drift's
+   own 132% size and the animation's own 3-degree swing ever reach, so no
+   phase of the drift uncovers a hard edge either. */
+body.tab-story.st-full #stjr{
+ border-radius:0;background-color:transparent;
+ background-image:radial-gradient(closest-side at 50% 40%,
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,transparent) 40%,
+   transparent 70%)}
 /* THE GLOW MOVES TO THE STAGE ITSELF, ON THE HERO VIEW ONLY, 10 November.
    His words, marking a screenshot: "I don't want any gray to the left or
    right. I want the black background to fill the entire thing, and I want
@@ -4351,11 +4375,40 @@ body.quiet #stjr,body.rm #stjr{animation:none;background-position:50% 40%}
    ("motion is named") reads transitionDuration and not animation-duration
    and would not have caught a bare 23s either way. */
 body.tab-story:not(.st-full) #stage{
+ /* EDGE TO EDGE, NOT CENTRED AT ITS OWN CONTENT WIDTH, 10 November. #story
+    (id #story, class .iq) is "display:flex!important;align-items:center;
+    justify-content:center" (above, the rule after it toggles display). .iq
+    itself sets flex-direction:column, which that rule never resets, so
+    align-items is the CROSS axis here, horizontal, and centred rather than
+    stretched. #stage is a grid with no width of its own, so on a screen
+    wider than its own three-lane content it sized to that content and sat
+    centred in #story's box, #story's own ground showing either side of it,
+    which is the grey he keeps pointing at. width:100% gives it an explicit
+    cross size, which wins over align-items:center the way an explicit size
+    always wins over a stretch default, without touching #story's own
+    centring for anything else that still wants it. */
+ width:100%;
  background:var(--bg);border-color:transparent;
  -webkit-backdrop-filter:none;backdrop-filter:none;
  isolation:isolate;overflow:hidden}
 body.tab-story:not(.st-full) #stage::before{
- content:'';position:absolute;inset:-16%;z-index:0;pointer-events:none;
+ /* BEHIND HER WORDS TOO, NOT JUST HER FIGURE, 10 November. #stjr went
+    position:static two rulings up (so #stmic/#stdash could pin to #stage's
+    own corners instead of #stjr's narrower column), which moved #stjr and
+    everything non-positioned inside it, #stsrc among them, out of the
+    positioned stacking bucket #stage::before sits in (z-index:0, painted
+    in tree order among #stage's other positioned descendants) and into
+    the plain in-flow bucket that paints BEFORE any positioned z-index:0
+    layer, whatever the markup order. #stuni never showed this: .st-uni
+    is itself position:relative, so it stayed in the positioned bucket and
+    kept painting over the glow the way it always had. #stsrc has no
+    position of its own, so her words rendered, measured by sampling the
+    actual pixels, with real text nodes and a real 16px size and color,
+    while the glow painted over them a layer later. z-index:-1 moves the
+    glow to the stacking order's one bucket that is unambiguously behind
+    every in-flow descendant regardless of position, so it reads where it
+    always was meant to, behind her, and now behind her words too. */
+ content:'';position:absolute;inset:-16%;z-index:-1;pointer-events:none;
  /* IT EMANATES FROM HER, NOT THE ROOM, 10 November, his words straight:
     "you see that the glow comes from him. It emanates from him. There
     is no box." The first build of this wash read the other way, close
@@ -4451,6 +4504,39 @@ body.tab-story:not(.st-full) #stjr .st-glow{justify-content:center}
    with no height anything needs, since nothing of it still displays. */
 body.tab-story:not(.st-full) #stmic{position:absolute;top:20px;left:20px;z-index:2}
 body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-index:2}
+/* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
+   past counting: "no two-way chat... just the user's input," and in the
+   same round, pointed at a bordered box, "there is no box." storyui.js's
+   srcPaint() builds .src-mine only in this view, in place of the thread or
+   the standing question; it never holds a .src-bub (that shape carries a
+   fill, and .src-bub-src a 1px edge too, the exact box his words ruled out,
+   only drawn around a reply bubble instead of a card). Capped near three
+   lines (1.6 line-height times three) and scrolled to its own bottom by
+   storyui.js on every paint, so the newest words stay in view and older
+   ones scroll up out of it, the way a caption track does, never a transcript
+   that grows forever down the screen. Centred under her the way #stjr's own
+   justify-content already centres her: an auto margin on a flex child, here
+   the cross axis, absorbs the spare width either side of it. */
+/* THE CARD ITSELF, NOT JUST HER WORDS INSIDE IT, 10 November, his words,
+   looking at this exact box: "your text box is way too big. And taking
+   up way too much real estate." .st-pe (#stsrc's own class) carries its
+   own background, left accent bar and padding, sized to #stjr's full
+   900px column, the way it always was for the Dashboard's own two-way
+   thread; .src-mine inside it was already capped at 46ch, but the card
+   around it was not, so the dark, accent-barred box still read as one
+   wide bar the width of the screen. width:fit-content plus auto margins
+   shrinks the card itself to its one line of content and centres it,
+   matching .src-mine's own width exactly; the accent bar and background
+   stay, since that is the one thing he has called a text bubble and not
+   a box ("it's just a text bubble", the same round, about the Dashboard). */
+body.tab-story:not(.st-full) #stsrc{width:-moz-fit-content;width:fit-content;
+ max-width:calc(46ch + 32px);margin:0 auto}
+body.tab-story:not(.st-full) .src-mine{max-width:46ch;max-height:4.8em;
+ overflow-y:auto;overflow-x:hidden;margin:16px auto 0;text-align:center;
+ scrollbar-width:none}
+body.tab-story:not(.st-full) .src-mine::-webkit-scrollbar{display:none}
+body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
+ color:var(--mid)}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
@@ -4895,6 +4981,14 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
+/* TIGHTER, SO THE WHOLE RAIL FITS WITHOUT A SCROLL, 10 November, his words:
+   "make sure everything in that left-hand bar is above the fold. I don't
+   want to be able to scroll." Six sections of chrome (this heading's own
+   padding plus .st-en's) outweighed every tile in them; the tiles were
+   already the right side of the WCAG 2.2 24px pointer floor, so they are
+   not the lever here. Longhand top/bottom only, so .rblk's own 52px of
+   right padding for the fold control (just above) is never touched. */
+.st-lrail .rblk{padding-top:0;padding-bottom:4px}
 /* EVERY SECTION ITS OWN CARD, 9 November, his words: "give them different
    backgrounds so it looks like they stand out... I want each segment
    divided." Each of the six sections already shares one class, .st-en, so
@@ -4919,7 +5013,7 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    hairline rather than a repeated card. */
 .st-lrail{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:2px 14px}
-.st-lrail .st-en{position:relative;overflow:hidden;padding:13px 0 12px;
+.st-lrail .st-en{position:relative;overflow:hidden;padding:6px 0;
  border-top:1px solid var(--edge)}
 .st-lrail .st-en:first-child{border-top:0}
 .st-lrail .st-en>.rblk{margin-top:0}
@@ -4945,7 +5039,7 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
 /* MORE SPACE BETWEEN THEM, 9 November, his words: "I want those pills to
    be a little bit more space between them all." 6px read as touching at
    this tile's own size. */
-.st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 10px;align-items:center}
+.st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 6px;align-items:center}
 /* NO ROW ENDS SHORT, 10 November, his words: "we should never have one
    icon, one row that's not even... even if you have to make the icon
    smaller so they fit." flex-wrap let the browser pick the break, which
@@ -5009,8 +5103,8 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    it only loses the percentage height that had nothing to resolve
    against; a fixed floor here does the same job, sized for a 302px
    column instead of the wider one it used to sit in. */
-#st-impdet-host .st-ch{min-height:0;margin-bottom:10px}
-#st-impdet-host .st-cvw{min-height:132px;max-height:190px}
+#st-impdet-host .st-ch{min-height:0;margin-bottom:6px}
+#st-impdet-host .st-cvw{min-height:88px;max-height:120px;margin-top:4px}
 /* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
    "these all need to look like they're together... make sure it's all
    symmetrical." Equal width, equal top, same svg proportions set in
@@ -5360,7 +5454,14 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    an element that only exists for part of its life: a transition needs
    the element present at both the old and new value, an animation runs
    the moment a matching element lands in the DOM. */
-#stflow.st-simple .st-ed.open{height:128px;margin-top:10px;overflow:hidden;
+/* NARROW TO MATCH THE BUBBLE ABOVE IT, same complaint, same screenshot:
+   the keyboard panel spanned #stjr's own full 900px column too, reading
+   as a second oversized bar directly under the first one. Centred at
+   the same width as #stsrc's own shrunk card just above, so typing and
+   her last words line up as one narrow column under her instead of two
+   full width bars. */
+#stflow.st-simple .st-ed.open{height:128px;min-height:0;margin:10px auto 0;
+ max-width:calc(46ch + 32px);
  animation:stEdIn var(--t-element) var(--ease-out)}
 #stflow.st-simple .st-ed .st-ta,#stflow.st-simple .st-ed .st-hl{min-height:0;height:100%;
  padding:12px 14px;font-size:15px;line-height:1.5}

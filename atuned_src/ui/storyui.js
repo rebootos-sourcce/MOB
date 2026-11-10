@@ -1994,9 +1994,33 @@ function srcPaint(){
  var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
  SRC_SAFE_UP=turn.move==='safe';
  if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
+ /* NO TWO-WAY CHAT, ANYWHERE, 10 November, his words, given over and
+    over, most recently pointed straight at the Dashboard: "we don't need
+    2-way talk anymore... it's just the user's input. Or the user can put
+    text." First built for the hero view alone; widened to the Dashboard
+    the same night once he said the words looking at it, not the hero.
+    Everything above still ran unchanged, the same turn, the same srcLog
+    row, the same SRC_CHAT writes and the same spoken reply (stSrcSpeak
+    above and below both read cur/safeSay, neither o), so what an entry
+    keeps at Commit is identical to before; only the markup painted here,
+    last, over whatever o the code above built, changed. Nothing reads
+    #stsrc's own markup back (verified directly in srcTurn, srcSaidBefore,
+    srcConvText and stSrcSpeak's own srcSayNow route, all of which read
+    SRC_CHAT and ST_TEXT, never the panel), and nothing in the Dashboard
+    (stdash.js) reads it either, so this is safe in both views alike. The
+    safe row is the one thing kept rather than replaced: it is the crisis
+    door, already built above, and the person's own words stand ahead of
+    it the way srcThreadSafe used to keep them ahead of it, never swapped
+    out by it. */
+ var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p></div>':'';
+ o=mineHtml;
+ if(turn.move==='safe')
+  o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
+   +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
- if(cur||safeTh)srcWire(h);
+ srcLock(h);
+ var mn=h.querySelector('.src-mine'); if(mn)mn.scrollTop=mn.scrollHeight;
  srcHearing(h);
  /* EVERY NEW TURN SOURCE AI TAKES IS SAID OUT LOUD while Talk is on, 31
     October. stSrcSpeak had one caller, the Talk press, so the greeting was
