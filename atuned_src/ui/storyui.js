@@ -2639,7 +2639,18 @@ function stRailClear(){
      charge      lanes are the charge each imprint carries, not the seat: the
                  Imprints page's own Charge grouping, with its symbol
    ============================================================ */
-var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight'],['rung','Came back'],['charge','Charge']];
+/* CHARGE AND CAME BACK ARE GONE, 10 November, his words: "get rid of
+   charge, because I think charge and weight is the same thing. Get rid
+   of came back." Charge is not actually weight (it regroups the lanes by
+   fetter instead of ordering them by seat, stLaneModel's own
+   STV.sort==='charge' branch below), but the two sorts read alike enough
+   on screen that his call stands as given. STV.sort starts at 'weight'
+   (declared below) and only ever changes from a button click here, so
+   dropping these two from the row leaves nothing able to reach either
+   state again; the branches that still exist for them (stLaneModel,
+   stOpenPattern and the rest) are reachable by nothing and are left
+   alone rather than torn out blind. */
+var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight']];
 var ST_BKEY={}; Object.keys(K2BAND).forEach(function(k){ST_BKEY[K2BAND[k]]=k;});
 function stLaneModel(){
  var p=ST_PARSED,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;

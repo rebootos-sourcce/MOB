@@ -168,6 +168,7 @@ function stDashLeft(){
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
+ o+=stDashMasks();
  /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
     detector... moves to the lower left or near the lower left bottom of
     the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
@@ -383,7 +384,7 @@ function stDashVerp(p){
  var mix=(typeof VERPMIX!=='undefined')?VERPMIX:{};
  o+=stPillRow('st-verp-ls',VERP.map(function(v){
    var n=s.hits[v.k]||0, rn=mix[v.k]||0;
-   return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:GATEGLYPH[v.k],
+   return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:'<path d="'+GATEGLYPH[v.k]+'"/>',
      str:stBright(Math.min(1,n/4),rn),
      title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
       +(rn?', run '+rn+' time'+(rn===1?'':'s')+' on your record':'')};}));
@@ -449,8 +450,41 @@ function stDashPsycheStack(){
      add as a second number is already the whole of what this one reads. */
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
    var n=(k[2]||[]).length;
-   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:CHAINGLYPH[k[0]],str:Math.min(1,n/4),
+   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:'<path d="'+CHAINGLYPH[k[0]]+'"/>',str:Math.min(1,n/4),
      title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
+ o+='</section>';
+ return o;}
+/* MASKS, ON THE LEFT RAIL ITSELF, 10 November, his words: "add the masks."
+   The scoring is stMiniMasks's own (ui/storyui.js), the same five
+   MASKS_READ entries (engine/data/canon.js) weighed by the mean of
+   r.carrying's charge at the seats each mask sits over; this reads the
+   whole record the same way Psyche Stack above does (computeSeen()), not
+   the unsent draft. The mini widget beside Avatar keeps its own top four,
+   space being the reason; this section has room for the real five, in
+   score order, each with its name printed under it rather than only on
+   hover, the unpack-every-symbol rule a bare icon already failed once
+   tonight on the Release rings. */
+function stDashMasks(){
+ if(typeof computeSeen!=='function'||typeof MASKS_READ==='undefined')return '';
+ var r=computeSeen();
+ var o='<section class="st-en st-mks" id="st-masks" aria-labelledby="st-masks-h">'
+  +'<h2 class="rblk" id="st-masks-h">Masks</h2>';
+ if(r.unread){
+  o+='<p class="st-none" id="st-masks-none">Nothing recorded yet, so no mask reads anything from this record.</p>';}
+ else{
+  var bySeat={};
+  r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
+  var scored=MASKS_READ.map(function(m){
+   var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
+    return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
+   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
+   return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
+  o+='<div class="st-mks-row" id="st-masks-ls">'+scored.map(function(s){
+   var col=CHC.maskCols(s.m)[0];
+   return '<div class="st-mks-t" style="--c:'+col+'">'
+    +'<div class="st-mks-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>'
+    +'<p class="st-mks-lb">'+esc(s.m.nm)+'</p></div>';}).join('')
+   +'</div>';}
  o+='</section>';
  return o;}
 /* THE PSYCHE STACK DRILL. Every chain of one tier, in the same card shape
