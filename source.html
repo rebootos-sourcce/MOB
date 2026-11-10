@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v29 d40b9dba 2026-11-10 20:44"><head><meta charset="utf-8">
+<html lang="en" data-build="v30 68e59b70 2026-11-10 21:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4798,7 +4798,37 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
 /* ---- the instrument's panel: the name, the view icons, the sort ---- */
-.st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+/* CENTRED, NOT FLUSH TO ONE EDGE, 10 November, his words, looking at the
+   live chart's own header: "make that symmetrical." #stpend (stPendPaint,
+   ui/storyui.js) is empty text whenever anything is actually kept, the
+   common case a real story leaves this in, so the three view buttons were
+   sitting alone against the row's own right edge with nothing to balance
+   them on the left. justify-content:center holds the whole row (the tag,
+   when it does carry a word, plus the three buttons) as one centred group
+   instead, rather than pin the buttons to an edge #stpend may or may not
+   be filling. */
+.st-chd{display:flex;align-items:center;justify-content:center;gap:8px;min-height:24px}
+/* THE REAL REASON justify-content:center DID NOTHING ON ITS OWN: .st-tag
+   (#stpend's own class, shared more widely) carries margin-right:auto,
+   which eats every pixel of free space in the row for itself and pins
+   everything after it to the far right regardless of the container's own
+   justify-content, which is exactly the flush-right read his words were
+   pointing at. Cancelled here only, inside this one header; .st-tag's
+   margin stays as it is everywhere else that still wants a label pinned
+   left and the rest pinned right. */
+.st-chd .st-tag{margin-right:0}
+/* HALF THE SIZE, HERE ONLY, 10 November, his own words on this exact row,
+   "make those icons half the size." .st-ico is the Bank and Vault's own
+   button too (ui/storyui.js, stViewHtml's own comment), so the cut is
+   scoped to .st-chd's three view buttons rather than the shared class:
+   shrinking Bank and Vault was never asked and neither carries this
+   complaint. THE TAP FLOOR DOES NOT APPLY HERE EITHER, the same honest
+   trade the 40% rail text took earlier tonight: this view toggle is a
+   precision control on the Full view's own chart, not a thumb target in
+   the Journal's main flow, and he saw it full size and asked for smaller
+   regardless. */
+.st-chd .st-ico{min-height:22px;min-width:22px;gap:3px}
+.st-chd .st-ico svg{width:9px;height:9px}
 /* ---- the list panel's own icon row: the bank and the archive, round of
    29 October. A sibling of #stlshd and never inside it, because
    stListPaint() owns #stlshd and rewrites it on every repaint; see the
@@ -5314,11 +5344,21 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    and Integrity both read BANDS (engine/data/canon.js, 7 seats) so they
    share one tile size; Integrity's 21 laws are three rows of that same
    7; Emotions is CHILD's 9; Action is VERP's 6. */
-#st-energy-ls,#st-integrity-ls,#st-childem-ls,#st-verp-ls{display:grid;gap:6px}
+/* PSYCHE STACK AND MASKS JOIN THE SAME GRID, 10 November, his words looking
+   at the live rail: "psyche stack, masks, that don't go all the way
+   across... make the buttons symmetrical." Both still used the plain
+   .st-pl-row flex row (wrap, no stretch), the shape every section above
+   had already moved off of for exactly this reason (the comment above,
+   "no row ends short"); four and five are each section's own real tile
+   count, the same rule BANDS/CHILD/VERP already follow. */
+#st-energy-ls,#st-integrity-ls,#st-childem-ls,#st-verp-ls,#st-psyche-ls,#st-masks-ls{display:grid;gap:6px}
 #st-energy-ls,#st-integrity-ls{grid-template-columns:repeat(7,1fr)}
 #st-childem-ls{grid-template-columns:repeat(9,1fr)}
 #st-verp-ls{grid-template-columns:repeat(6,1fr)}
-#st-energy-ls .st-pl,#st-childem-ls .st-pl,#st-integrity-ls .st-pl,#st-verp-ls .st-pl{
+#st-psyche-ls{grid-template-columns:repeat(4,1fr)}
+#st-masks-ls{grid-template-columns:repeat(5,1fr)}
+#st-energy-ls .st-pl,#st-childem-ls .st-pl,#st-integrity-ls .st-pl,#st-verp-ls .st-pl,
+#st-psyche-ls .st-pl,#st-masks-ls .st-pl{
  width:100%;height:auto;aspect-ratio:1}
 /* PATTERNS' TWO FILL THE ROW'S OWN WIDTH, 9 November, his words looking at
    this exact section: "when it says patterns, I don't understand that...
@@ -93598,5 +93638,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006251502"></div>
+<div id="eof" hidden data-len="006254143"></div>
 </body></html>
