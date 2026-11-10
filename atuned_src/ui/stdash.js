@@ -105,7 +105,7 @@ addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('#stleft [data-stdrill]'):null;
  if(!t)return;
  var v=t.getAttribute('data-stdrill'), at=v.indexOf('|'), k=v.slice(0,at), nm=v.slice(at+1);
- if((k==='seat'||k==='axis'||k==='law')&&typeof anaGo==='function'){anaGo(k,nm,true);return;}
+ if((k==='seat'||k==='axis'||k==='law'||k==='mask')&&typeof anaGo==='function'){anaGo(k,nm,true);return;}
  if(k==='pat'){stOpenPattern(nm);return;}
  if(k==='verp'){stOpenVerp(nm);return;}
  if(k==='psy'){stOpenPsyche(nm);return;}});
@@ -459,11 +459,22 @@ function stDashPsycheStack(){
    MASKS_READ entries (engine/data/canon.js) weighed by the mean of
    r.carrying's charge at the seats each mask sits over; this reads the
    whole record the same way Psyche Stack above does (computeSeen()), not
-   the unsent draft. The mini widget beside Avatar keeps its own top four,
-   space being the reason; this section has room for the real five, in
-   score order, each with its name printed under it rather than only on
-   hover, the unpack-every-symbol rule a bare icon already failed once
-   tonight on the Release rings. */
+   the unsent draft.
+
+   ONE TILE LANGUAGE, NOT TWO, THE SAME LESSON INTEGRITY ALREADY LEARNED,
+   overridden the same night: this used to print each mask's own row
+   (.st-mks-t/.st-mks-i/.st-mks-lb), a name always visible under a bigger
+   icon, for the unpack-every-symbol rule. Two real defects, not a style
+   choice: those three classes carried no CSS anywhere in this file, so
+   the icon painted at the SVG element's own unstyled default size, a
+   giant black shape with no colour and no clip-path, not a small lit
+   tile at all; and his own later words, looking at the live rail, ruled
+   the row itself out before the bug was ever found -- "same with the
+   psyche stack, I just want the same functionality as emotions,
+   patterns, integrity... these are also buttons that light up." Masks
+   now calls stPillRow like every other section, the name carried in
+   title/aria-label the same way a seat or a law already is, nothing
+   printed as standing text. */
 function stDashMasks(){
  if(typeof computeSeen!=='function'||typeof MASKS_READ==='undefined')return '';
  var r=computeSeen();
@@ -479,12 +490,10 @@ function stDashMasks(){
     return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
    var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
    return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
-  o+='<div class="st-mks-row" id="st-masks-ls">'+scored.map(function(s){
-   var col=CHC.maskCols(s.m)[0];
-   return '<div class="st-mks-t" style="--c:'+col+'">'
-    +'<div class="st-mks-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>'
-    +'<p class="st-mks-lb">'+esc(s.m.nm)+'</p></div>';}).join('')
-   +'</div>';}
+  o+=stPillRow('st-masks-ls',scored.map(function(s){
+   var col=CHC.maskCols(s.m)[0], pct=fmtPct('atom',s.v);
+   return {v:s.v,b:s.m.nm,c:col,k:'mask',ic:'<path d="'+s.m.ic+'"/>',str:Math.min(1,s.v/10),
+     title:s.m.nm+(pct!==PCT_DASH?', '+pct+' of this record':', nothing from this record')};}));}
  o+='</section>';
  return o;}
 /* THE PSYCHE STACK DRILL. Every chain of one tier, in the same card shape
