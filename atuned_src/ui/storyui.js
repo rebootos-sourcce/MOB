@@ -1949,12 +1949,12 @@ function srcPaint(){
   o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
-    the asking, and the reason for a release is still true. */
+    the asking, and the reason for a release is still true. srcThread below
+    still takes it as its own fifth argument; #srcwhy, the div this used to
+    build, never survives to h.innerHTML now (the mine-only override further
+    down replaces o outright), confirmed dead by reading the whole function,
+    10 November, so only the markup that built it is gone, not the value. */
  var why=(turn.move==='open'||turn.move==='safe')?'':srcWhy(heard);
- /* an id and no class: the shell carries no rule for it, and the design gate
-    fails a class with no rule. Found by its id, the way the house finds a host. */
- if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
-  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
  /* TALKING, THE SAME MOVE IS DRAWN AS A THREAD. Everything above still ran:
     the same turn, the same question, and the same srcLog row for an ask, so
     what the entry keeps at commit is identical whichever way it was shown.
@@ -2012,7 +2012,21 @@ function srcPaint(){
     door, already built above, and the person's own words stand ahead of
     it the way srcThreadSafe used to keep them ahead of it, never swapped
     out by it. */
- var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p></div>':'';
+ /* ONE BOX, NOT TWO, 10 November. His words, on a real screenshot: "Under
+    Uni, you've got two text fields... delete the text field directly
+    under Uni. You're going to move its properties where it's detecting
+    the patterns into the text field beneath that one." The upper box was
+    this one, .src-mine; the lower, correctly sized one he means is
+    #staside (stAsideSay/stAsidePaint, a few hundred lines up), the set
+    aside line that already sits under the writing box elsewhere on this
+    page and says the same "is not counted, because..." sentence on its
+    own, by its own stRefresh call. Read here instead of rebuilding it,
+    so there is exactly one sentence of truth for it; #staside itself is
+    hidden wherever this box shows (head.html), so the words never print
+    twice. */
+ var asideSentence=stAsideSay();
+ var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p>'
+  +(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+'</div>':'';
  o=mineHtml;
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
@@ -3251,10 +3265,18 @@ function stRelPanel(){
     that says nothing is held above the line yet." Run release still carries
     its own disabled state with nothing to release; this panel is simply
     blank above it until there is. */
+ /* UNPACK EVERY SYMBOL, CLAUDE.md's own ruling, 10 November: he looked at
+    these three rings and asked outright, "I don't understand what those
+    are there for, what they do." They already carried their real name in
+    a title attribute, which only a mouse hover ever shows; a phone, and
+    apparently a person not hovering, saw three bare rings. The name now
+    prints under each one, the same way a term of art gets its meaning
+    beside it everywhere else in this product. */
  if(!M.take.length){}
  else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
-   return '<button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
-    +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
+   return '<div class="st-rq-wrap"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
+    +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
+    +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
   +'</div>';
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
     binaural audio toggle not on the release?" Only the full run screen
@@ -3276,10 +3298,17 @@ function stRelPanel(){
     them, which is exactly the regression tests/railmenu.js's RM2 caught.
     .st-relsws (shell/head.html) is a plain, always-present rule with no
     such side effect. */
- if(typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
-  o+='<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>';
  o+='</div><div class="st-rlfoot">'
-  /* pace and patterns set the run, so they go with it on a worked example */
+  /* pace and patterns set the run, so they go with it on a worked example.
+     THE BINAURAL TOGGLE MOVES INTO THIS SAME ROW, 10 November, his words:
+     "the binaural audio button, you're going to move to the lower right
+     next to the number of patterns," said twice in the one round. It was
+     a sibling row above this one, built that way only because it needed
+     to exist whether or not Speed/Patterns were drawn (bedCan() is its
+     own, separate gate from showOnly()); moving it inside rel-fields ties
+     its visibility to theirs too, which reads as one setting group doing
+     one job (how the run plays) rather than a regression, since nothing
+     here is a run control a worked example could act on anyway. */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
    /* PACE READ RUN SPEED ALREADY ON THE CARD, round LY, his words then:
       "run speed instead of pace." This panel never got that update; round
@@ -3300,6 +3329,8 @@ function stRelPanel(){
       the thing the earlier rename existed to prevent, so both still
       agree, only on the opposite word. */
    +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
+   +((typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
+    ?'<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */

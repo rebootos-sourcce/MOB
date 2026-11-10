@@ -4222,7 +4222,13 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
  stroke-linecap:round;stroke-linejoin:round}
 .st-2row .st-mini{flex:1 1 0;min-width:0}
-.st-mini{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);
+/* --sunk, NOT --panel, 10 November. His words: "add black backgrounds to
+   the other five buttons that we have at the bottom as well." These five
+   (Compass, Boundary, Body, Field, Avatar, stMiniShell in storyui.js, the
+   only place .st-mini is built) were the one surface left on --panel,
+   the product's ordinary card grey, while every other Dashboard panel
+   (the text box, the imprints list, Release) already reads --sunk. */
+.st-mini{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:10px 12px;display:flex;flex-direction:column;height:200px}
 /* SENTENCE CASE, NO ALL CAPS UI COPY, the house voice ruling, CLAUDE.md:
    caught here by tests/design.js's own "no all-caps UI copy" check
@@ -4601,6 +4607,30 @@ body.tab-story:not(.st-full) .src-mine{max-width:46ch;max-height:4.8em;
 body.tab-story:not(.st-full) .src-mine::-webkit-scrollbar{display:none}
 body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
  color:var(--mid)}
+/* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
+   above was already kept to a few lines; the Dashboard's .src-mine had no
+   cap of its own, so on a real story it grew to the full height of
+   whatever was written, at the column's full width, which is the "way
+   too big" complaint reaching here too. Same shape of fix, same numbers:
+   a few lines, scrolled, centred under her rather than stretched the
+   width of #stjr's own column (#stsrc's own fit-content rule, just
+   above, already does that part in the hero view only; this is its
+   Dashboard twin). */
+body.tab-story.st-full #stsrc{width:-moz-fit-content;width:fit-content;
+ max-width:min(46ch,90%);margin:0 auto}
+body.tab-story.st-full .src-mine{max-height:4.8em;overflow-y:auto;
+ overflow-x:hidden;scrollbar-width:none}
+body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
+/* THE SET ASIDE SENTENCE, INSIDE THE ONE BOX NOW, NOT A SECOND ONE, 10
+   November. srcPaint (storyui.js) reads the same stAsideSay() #staside
+   already read and prints it inside .src-mine; #staside itself goes
+   quiet here so the one sentence never prints twice. A hairline, not a
+   card: no background, no padding of its own, the thing he called a box
+   when #staside's own .st-mask styling (sunk ground, accent bar, its own
+   padding) was still in play here. */
+#staside{display:none}
+.src-aside{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--edge);
+ color:var(--dim);font-size:13px;line-height:1.4}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
@@ -4758,7 +4788,16 @@ body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
    release and the text field are the same height." 260px is .st-ta/.st-hl's
    own min-height (below), so neither card reads shorter than the other
    with nothing in it yet. */
-.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px;border-radius:var(--r-s);
+/* 310, NOT 260, 10 November. Caught by collide.js at 1280x600: moving the
+   binaural toggle into .rel-fields (ui/storyui.js's stRelPanel, same
+   round) can wrap that row to a second line at a narrow Release column,
+   and .st-rlmid's own shrink (flex:1 1 auto;min-height:0, below) only
+   absorbs so much before .st-rlfoot's own content, the Release button
+   included, is pushed past this panel's floor into whatever sits below
+   it. 260 was calibrated for a two-line footer; the real floor for three
+   fields, measured at this exact failing width, is nearer 300, so 310
+   keeps real margin rather than landing back on the same edge. */
+.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:310px;border-radius:var(--r-s);
  padding:14px 16px;--glow:var(--accent);
  background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
@@ -4777,6 +4816,14 @@ body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
  transition:opacity var(--t-element) var(--ease-out)}
 .st-rq[aria-pressed="false"]{opacity:.35}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* THE NAME, PRINTED, NOT ONLY A HOVER TITLE, 10 November, CLAUDE.md's own
+   "unpack every symbol" ruling: a ring with no visible word beside it is
+   exactly the failing case that rule names. */
+.st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+/* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
+   whole point of printing the name is that it can be read. */
+.st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
+ overflow-wrap:break-word;max-width:100%}
 .st-rlfoot{margin-top:auto;padding-top:10px}
 /* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
    ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
@@ -4785,6 +4832,12 @@ body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
    effect; this card's toggle needs neither. accTog's own classes
    (.ac-row, .ac-tog, .ac-sw, below) already carry the switch itself. */
 .st-relsws{margin:10px 0 0}
+/* FLUSH IN THE ROW, NOT OFFSET BY THE MARGIN ABOVE, 10 November: that
+   margin was built for .st-relsws as its own row, standing above
+   Speed/Patterns; moved inside .rel-fields (ui/storyui.js's stRelPanel)
+   to sit beside Patterns instead, it needs none of that top gap, the
+   row's own 14px gap between fields already does that job. */
+.rel-fields .st-relsws{margin:0}
 /* the card's two fields, .rel-field, set to the column's left edge */
 .rel-fields.st-fields{justify-content:flex-start;margin:0}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
@@ -5038,7 +5091,29 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
  body.tab-story.st-full:not(.st-bank) .mid{grid-template-columns:302px 1fr}
  body.tab-story.st-full.st-bank .mid{grid-template-columns:302px 1fr 336px}
  body.tab-story.st-full.lshut:not(.st-bank) .mid{grid-template-columns:58px 1fr}
- body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}}
+ body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}
+ /* ONE PANEL, NOT FOUR BOXES ON TWO GREYS, 10 November. His words: "the
+    left-hand panel, fill that black in to all the way to the bottom...
+    there's a seam between the left panel and the center column, remove
+    that seam... everything should be symmetrical, fill and filled in,
+    feel like a panel." Three real, separate causes, found by reading the
+    actual tokens rather than guessing: #lpanel is .glass.panel, var
+    (--panel), the product's card grey, and only as tall as .st-lrail's
+    own six sections, so its own grey showed below the last one; the
+    "seam" is five things stacked (lpanel's own padding, an edge, the
+    grid's own 10px gap, #stage's own edge, #story's own padding), none
+    of them a border anyone drew on purpose; and the five mini panels
+    below (Compass through Avatar, .st-mini) are the one surface left on
+    --panel while every other panel here, the text box, the imprints
+    list, Release, already reads --sunk. :not(.lshut), because the
+    folded 58px rail keeps its own small padding, untouched. */
+ body.tab-story.st-full:not(.lshut) #lpanel{padding:0;background:var(--sunk)}
+ body.tab-story.st-full .st-lrail{flex:1 0 auto;border:0;border-radius:0}
+ body.tab-story.st-full .mid{column-gap:0}
+ body.tab-story.st-full #lpanel{border-right:0;border-radius:var(--r) 0 0 var(--r)}
+ body.tab-story.st-full #stage{border-left:0;border-radius:0 var(--r) var(--r) 0}
+ body.tab-story.st-full #story{padding-left:0}
+ body.tab-story.st-full.st-bank #rcol{margin-left:10px}}
 /* the rail itself. Its heading is the rail's block heading (.rblk), the one
    the Field's left rail already sets Energy in, and it keeps its right end
    clear of the column's fold control, which sits over the head of #lpanel
