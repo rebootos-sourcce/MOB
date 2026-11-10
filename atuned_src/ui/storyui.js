@@ -169,14 +169,47 @@ function stMiniField(r){
    (--uni-amb-core, see stMiniField above) when nothing is worn right
    now; never a guess at what the real torus is doing. */
 function stMiniAvatar(r){
- var un=r.unread, m=r.mask?maskOf(r.mask):null;
- var col=m?CHC.maskCols(m)[0]:'rgb(var(--uni-amb-core))';
- var cap=un?'–':(r.mask?'Wearing '+r.mask:'No mask read yet');
+ /* r.mask IS AN OBJECT, NOT A NAME, caught the first time this ran in a
+    real browser against a profile that actually triggered one: it is
+    whichever of sups/hys/cxs/sabs sits first (engine/compute.js), each
+    its own shape with its own .nm, never a MASKS_READ name maskOf could
+    look up. maskOf(r.mask) always came back null; the caption printed
+    "Wearing [object Object]". There is no real link from that ladder to
+    MASKS_READ's five, so this reads only r.mask.nm for the words and
+    falls back to her own coherence colour exactly as before. */
+ var un=r.unread, nm=r.mask&&r.mask.nm;
+ var col='rgb(var(--uni-amb-core))';
+ var cap=un?'–':(nm?'Wearing '+nm:'No mask read yet');
  var svg='<svg viewBox="0 0 100 120" aria-hidden="true" fill="none" stroke="'+col+'" stroke-width="2">'
   +'<circle cx="50" cy="38" r="26"/><path d="M14 112c0-24 16-40 36-40s36 16 36 40"/>'
   +'<circle cx="42" cy="36" r="2.6" fill="var(--ink)" stroke="none"/>'
   +'<circle cx="58" cy="36" r="2.6" fill="var(--ink)" stroke="none"/></svg>';
  return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+esc(cap)+'</div>';}
+/* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
+   still have this blank space to its right. What I want you to do is
+   move the avatar to the right and then add the masks. Add four
+   masks." MASKS_READ (engine/data/canon.js) names five, each tied to
+   the seats it sits over (m.b); this scores each by the mean weight
+   r.carrying already gives those seats (the same figure darkB/darkV
+   read it from in compute.js, not a second arithmetic invented here)
+   and shows the top four, strongest first, rather than a fixed four
+   that may say nothing about this person's own reading. */
+function stMiniMasks(r){
+ var un=r.unread;
+ if(un||typeof MASKS_READ==='undefined')
+  return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
+ var bySeat={};
+ r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
+ var scored=MASKS_READ.map(function(m){
+  var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
+   return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
+  var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
+  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;}).slice(0,4);
+ var tiles=scored.map(function(s){
+  var col=CHC.maskCols(s.m)[0];
+  return '<div class="st-mask4-t" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('');
+ return '<div class="st-mask4" aria-label="Masks">'+tiles+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -201,10 +234,31 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
+ /* THE ONLY TWO ICONS, AT REST, 10 November. His words, naming exactly
+    what the hero view may show: "the talk icon... the dashboard... these
+    are the only icons on the screen. Everything else is conversational
+    between me and Uni." Source AI's own question line and the keyboard
+    plus commit bar are what read as a text chat and a third control to
+    him; they still exist and still work (the crisis door is untouched,
+    below), they are only hidden by CSS, shell/head.html's own
+    body.tab-story:not(.st-full) #stjr.st-rest rules, while nothing is
+    actually happening. The moment any of the four below is true, a
+    person is already past "at rest" and into the conversation itself,
+    so the ordinary UI is exactly what belongs back on screen. */
+ /* AND AT REST MEANS NOTHING HAS BEEN SAID YET, caught by tests/sound.js's
+    own real-browser round: a voice turn lands (srcTurnCommit, above,
+    which writes ST_TEXT) and the person then presses the real Commit
+    button to write it, exactly the one door "everything else is
+    conversational between me and Uni" describes. !ST_TEXT is that
+    fourth condition: the instant a turn has landed, or a person typed,
+    this is no longer rest, it is the conversation he named, and the
+    ordinary controls (Commit among them) are what belong back on
+    screen for it. */
+ var heroRest=!STV.dash&&!STV.typed&&!ST_LISTEN&&!STV.crisis&&!ST_TEXT;
  var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
-  +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
+  +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+(heroRest?' st-rest':'')+'" id="stjr">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
@@ -244,9 +298,16 @@ function stRender(){
    +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
      :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
-   +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
+   /* AN ACTUAL TALK BUBBLE, 10 November, his words: "the talk icon is an
+      actual talk bubble icon." The capsule-and-stand microphone glyph
+      that stood here read as a recording control, not as talk, and he
+      had already asked for a bubble once before (9 November, "I want a
+      talk icon on the left"), answered with the mic glyph below it
+      instead: this is the actual shape, not a second pass at the same
+      one. Ring, not fill, the house's own icon rule: a stroked bubble
+      with its tail, no capsule. */
+   +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<path d="M6 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.6l-3.4 2.8a.6.6 0 0 1-1-.46V15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg>'
    /* THE WORD AND THE CLOCK ARE BOTH GONE, 9 November, his words on this
       exact screen: "I want a talk icon on the left. No words... we don't
       need a timer for how long it's for, get rid of that." The label the
@@ -627,7 +688,7 @@ function stRender(){
   /* AVATAR, under Release, alone: his fifth picture, one per column
      this round, three columns, five pictures, Avatar the only one
      without a partner beside it. */
-  +'<div class="st-2row st-2row-1">'+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
+  +'<div class="st-2row st-2row-1">'+stMiniMasks(r)+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -675,7 +736,26 @@ function stRender(){
     ruling at .st-bar above) and there is nothing left for it to send. */
  if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
- if(mic)mic.onclick=stMic;
+ /* ONE ICON CARRIES BOTH DOORS, 10 November. His words, naming the hero
+    view's only two icons, the talk bubble and Dashboard: "I do want the
+    ability to type in case I want to. But that is minimized when I
+    start," with no third icon for it (his own answer, asked straight,
+    to "how should someone open the type box if the keyboard icon is not
+    one of the two icons" -- "fold into the talk bubble"). A tap still
+    talks (stMic, unchanged). A press held past stHoldMs opens the same
+    box stType already owns, never both: held._open marks that this
+    press already decided, so the click a held pointerup still fires in
+    every browser does not also call stMic and start listening on top of
+    the box that press just opened. */
+ if(mic){
+  mic.onclick=function(e){ if(held._open){ held._open=false; e.preventDefault(); return; } stMic(); };
+  var held={t:null,_open:false}, stHoldMs=480;
+  var holdGo=function(){ held.t=setTimeout(function(){ held.t=null; held._open=true; stType(); },stHoldMs); };
+  var holdStop=function(){ if(held.t){ clearTimeout(held.t); held.t=null; } };
+  mic.addEventListener('pointerdown',holdGo);
+  mic.addEventListener('pointerup',holdStop);
+  mic.addEventListener('pointerleave',holdStop);
+  mic.addEventListener('pointercancel',holdStop);}
  var ty=document.getElementById('sttype');
  if(ty)ty.onclick=stType;
  /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
@@ -1210,6 +1290,18 @@ function stRefresh(){
  if(ap){ap.disabled=!ST_PARSED;
   var apw=ap.classList.contains('st-lsbank')?'Bank':'Commit';
   ap.textContent=apw+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
+ /* THE HERO VIEW LEAVES REST THE MOMENT A TURN LANDS, same reason the
+    word above is read live rather than guessed: srcTurnCommit calls
+    this, not a full stRender, every time a spoken sentence finalises
+    (ui/storyui.js's own ST_REC.onresult), and heroRest (stRender's own
+    flag) would otherwise sit stale at the old, textless render until
+    something else happened to re-render the whole flow. Caught by
+    tests/sound.js's real-browser round: a turn landed, and the real
+    Commit button it then pressed was still hidden from before the
+    turn existed. Mirrors stRender's own heroRest exactly; the only
+    thing this adds is that it also runs here, live. */
+ var jr=document.getElementById('stjr');
+ if(jr)jr.classList.toggle('st-rest',!STV.dash&&!STV.typed&&!ST_LISTEN&&!STV.crisis&&!ST_TEXT);
  stRead();
  stMaskPaint();
  stAsidePaint();

@@ -175,12 +175,16 @@ function stDashLeft(){
     chart into it once or moves the one already live there, which is why
     this div carries nothing of its own. */
  o+='<div id="st-impdet-host"></div>';
- /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
-    all need to look like they're together... make sure it's all
-    symmetrical." Same row, same width each, same svg proportions (both
-    170 tall), rather than two sections stacked at whatever height their
-    own content happened to need. */
- o+='<div class="st-pair">'+stDashBoundary()+stDashCompass()+'</div>';
+ /* THE BOUNDARY/COMPASS PAIR IS GONE FROM HERE, 10 November, his words:
+    "remove boundary and compass from the left menu." The purpose
+    hexagon stDashBoundary drew and the CQ/DQ arrow gauge stDashCompass
+    drew now duplicate real work this round built elsewhere: the
+    Dashboard's own Compass and Boundary mini pictures under Uni's
+    column (ui/storyui.js's stMiniCompass/stMiniBoundary), and Field's
+    mini picture under Imprints/Bank for the same CQ this gauge read.
+    Both functions stay defined, reachable, in case a later screen
+    still wants either shape; only this call and the pairing wrapper
+    around it are cut. */
  h.innerHTML=o;
  if(typeof stImpDetMount==='function')stImpDetMount();}
 
@@ -361,7 +365,11 @@ function stDashVerp(p){
  if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
  var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
   +'>'
-  +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
+  /* "ACTION", NOT "LAWS OF ACTION", 10 November, his words: "change word
+     laws of actions to action." The id keeps its own name (st-verp-h,
+     identity, never renamed for a label alone); only the word a person
+     reads shortens. */
+  +'<h2 class="rblk" id="st-verp-h">Action</h2>';
  if(!p){
   o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
   o+='</section>';

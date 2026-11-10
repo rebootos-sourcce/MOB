@@ -217,6 +217,9 @@ let dq = 0;
    achromatic, not a sixth colour on it, set and cleared only by the one
    caller that knows r.unread, never guessed at in here. */
 let unread = false;
+/* uniBgTransparent, 10 November: set once at uniMount, read every frame
+   by the render loop below. See the note at uniMount's own assignment. */
+let uniBgTransparent = false;
 
 /* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
    red, the background is also kind of a cloudy dark red that subtly
@@ -228,15 +231,36 @@ let unread = false;
    nothing if nothing moved. core is the vivid tone (p.cr), edge the
    darkest (p.ed); the gradient between them is what reads as "cloudy",
    never a flat fill. */
-let ambLastCore=null, ambLastEdge=null;
+let ambLastCore=null, ambLastEdge=null, ambLastRate=null;
 function _rgbTriple(v){return v[0]+','+v[1]+','+v[2];}
-function ambPaint(p){
+function ambPaint(p,coh01){
  var core=_rgbTriple(p.cr), edge=_rgbTriple(p.ed);
- if(core===ambLastCore&&edge===ambLastEdge)return;
- ambLastCore=core; ambLastEdge=edge;
- var r=document.documentElement.style;
- r.setProperty('--uni-amb-core',core);
- r.setProperty('--uni-amb-edge',edge);}
+ if(core!==ambLastCore||edge!==ambLastEdge){
+  ambLastCore=core; ambLastEdge=edge;
+  var r=document.documentElement.style;
+  r.setProperty('--uni-amb-core',core);
+  r.setProperty('--uni-amb-edge',edge);}
+ /* THE CLOUD SETTLES AS SHE DOES, 10 November. His words: "because we're
+    uniform as a character, becomes more coherent" [the hero stage's
+    cloud drift, shell/head.html's #stage::before, should calm as her
+    coherence rises]. The Web Animations API's playback rate, not
+    animation-duration: rewriting a running animation's own duration
+    rescales its local time against the new one, which reads as a
+    visible jump, where a rate change eases the tempo smoothly (the
+    note beside #stage::before's animation rule says the same). coh01
+    is the same 0 to 1 coherence the caller already read off coherence
+    (or the unread flat 0.5) to build the palette, passed through
+    rather than recomputed. Rounded to a tenth so ordinary CQ jitter
+    does not call updatePlaybackRate every tick for nothing. */
+ var rate=Math.round((1.45-0.9*(coh01||0))*10)/10;
+ if(rate!==ambLastRate){
+  ambLastRate=rate;
+  try{
+   var stage=document.getElementById('stage');
+   if(stage&&stage.getAnimations){
+    stage.getAnimations({subtree:true}).forEach(function(a){
+     if(a.animationName==='uniCloudDrift')a.updatePlaybackRate(rate);});}
+  }catch(e){}}}
 
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
@@ -385,6 +409,21 @@ const ZONES=[
     if(cv.height!==bh) cv.height=bh;
     const cw=bw/DPR, ch=bh/DPR;
     fitK=Math.min(cw/W,ch/H);
+    /* NO FRAME ROUND HER, PART THREE, 10 November. "The glow painted to
+       every edge" (the note on .st-uni, shell/head.html) is what this
+       scale was built to do everywhere else: touch the box on its
+       tighter axis, by design, so nothing of her own canvas stood empty
+       on an ordinary screen with no wash behind it. In the hero view
+       there now is one (#stage, above), and her own aura, rim, and
+       decoherence glow all draw relative to this same fitK, in design-
+       space units, so every one of them still reached the real canvas
+       edge and still clipped there, capping the aura's own radius alone
+       (tried first, logged above) was never going to reach the rest.
+       Scaling fitK down here gives her real, undrawn margin on every
+       side, in canvas pixels no code has to find and cap one at a time,
+       for every effect at once: nothing stands this close to the edge
+       any more, so nothing has an edge to show. */
+    if(typeof uniBgTransparent!=='undefined'&&uniBgTransparent) fitK*=0.6;
     fitX=(cw-W*fitK)/2; fitY=(ch-H*fitK)/2;
     UNI_FIT.k=fitK; UNI_FIT.ox=fitX; UNI_FIT.oy=fitY; UNI_FIT.w=cw; UNI_FIT.h=ch;
   }
@@ -446,6 +485,7 @@ const ZONES=[
     ditherFast=ctx.createPattern(tcv,'repeat');
   }
   function drawDither(){
+    if(uniBgTransparent)return;
     ctx.save();
     ctx.globalCompositeOperation='overlay';
     ctx.globalAlpha=0.025;
@@ -1969,7 +2009,7 @@ const ZONES=[
        unread face is plain: no halo, no glow, no alert, no zen. */
     const coh01=unread?0.5:coherence/100;
     const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
-    ambPaint(p);
+    ambPaint(p,coh01);
 
     // Blend shapes
     bsT+=dt;
@@ -2276,11 +2316,16 @@ const ZONES=[
 
     // Render
     if(boxDirty) applyFit();
-    // the background fills the whole bitmap, every pixel of her box
+    // the background fills the whole bitmap, every pixel of her box,
+    // except in the hero view, where uniMount already found nothing of
+    // her own should stand between the shared page glow and her face
+    // (see uniMount's own note)
     ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0,0,cv.width,cv.height);
-    ctx.fillStyle=_rgb(p.bg);
-    ctx.fillRect(0,0,cv.width,cv.height);
+    if(!uniBgTransparent){
+      ctx.fillStyle=_rgb(p.bg);
+      ctx.fillRect(0,0,cv.width,cv.height);
+    }
     designTransform();
 
     // Round 2: per-state color signature, applied once per frame (not per
@@ -2428,6 +2473,12 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // this is a third state and not a value on the coherence dial.
     setUnread(flag){ unread = !!flag; },
     getUnread(){ return unread; },
+    // NO FRAME ROUND HER, 10 November: see uniMount's own note. uniMount
+    // lives outside this closure (one shared instance moved between
+    // screens, "STAGE 1 continued" below), so it cannot reach
+    // uniBgTransparent directly, the same reason setUnread exists beside
+    // this rather than letting an outside caller touch `unread` itself.
+    setBgTransparent(flag){ uniBgTransparent = !!flag; },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
@@ -2494,6 +2545,21 @@ function uniMount(target){
  if(!target)return false;
  uniHost.hidden=false;
  target.appendChild(uniHost);
+ /* NO FRAME ROUND HER, 10 November: his words, "I do not want a frame
+    around Uni in full mode." Her own canvas filled every pixel of its
+    box with p.bg (the frame() loop, below "the background fills the
+    whole bitmap, every pixel of her box"), opaque, which was the one
+    colour wash that existed before tonight; #stage's own cloud (above,
+    shell/head.html) is the wash now, and a second, flat, hard-edged
+    one painted under her own feet is exactly the frame he means, a
+    crisp rectangle where the glow outside it is soft. Read once, at
+    mount, off the target this same call already receives: the hero
+    view is the one place #stuni lands inside #stflow.st-simple; every
+    other mount (Dashboard included) keeps her own fill exactly as it
+    was, since nothing stands behind her there the way #stage now does
+    here. */
+ if(window.Uni&&window.Uni.setBgTransparent)
+  window.Uni.setBgTransparent(target.closest&&target.closest('#stflow.st-simple'));
  if(window.Uni&&window.Uni.resume)window.Uni.resume();
  return true;
 }

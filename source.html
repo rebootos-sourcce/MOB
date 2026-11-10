@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v17 71649262 2026-11-10 01:27"><head><meta charset="utf-8">
+<html lang="en" data-build="v18 15e0f968 2026-11-10 03:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -193,6 +193,11 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     tests/design.js reads transitions and not keyframes, so a loop typed
     straight into a rule goes unchecked by it. */
  --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* --t-drift, 10 November: the hero stage's cloud (head.html's own
+    uniCloudDrift, beside #stage::before) needs tens of seconds, not
+    the fractions of one the other four name, so it is its own token
+    rather than a bare number typed into that one rule. */
+ --t-drift:23s;
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -2666,6 +2671,15 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
  background:transparent;color:var(--mid);cursor:pointer;
  transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
+/* GONE ON THE JOURNAL ONLY, 10 November, his words: "the left menu, get
+   rid of that close menu." #lfold is shared: the Field, Compass, Flow
+   and Knowledge columns all fold through this same control
+   (ui/ui.js's colFold), so it is hidden here rather than deleted, and
+   only where body.tab-story is set. colShut() itself never reads a
+   stored shut answer for the Journal's own key now (ui/ui.js), so
+   hiding the one door to it does not strand a person who shut it
+   before this round. */
+body.tab-story .lfold{display:none}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
 /* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
@@ -4191,12 +4205,22 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    so five of these beside each other read as one row and not five
    boxes. */
 .st-2row{display:flex;gap:12px;flex:0 0 auto}
-/* AVATAR ALONE IS HALF RELEASE'S WIDTH, 10 November, his correction: "half
-   the size of the release... leave it empty" beside it. The other four
-   mini pictures pair up and split their own column evenly; Avatar has no
-   partner, so without this it would read as the one picture twice the
-   size of the rest for no reason tied to what it shows. */
-.st-2row-1{display:block;width:50%}
+/* AVATAR MOVES TO THE RIGHT, THE MASKS TAKE THE LEFT, 10 November, his
+   second correction: "you still have this blank space to its right...
+   move the avatar to the right and then add the masks." Avatar was
+   half Release's width, left-aligned, the other half empty; that half
+   now holds the four mask tiles, and Avatar sits at the row's own end
+   so the two read as one deliberate row rather than one picture with
+   dead space beside it. */
+.st-2row-1{display:flex;align-items:stretch}
+.st-2row-1 .st-mask4{flex:1 1 0;min-width:0;display:flex;align-items:center;
+ justify-content:center;gap:8px}
+.st-2row-1 #stavatar{flex:0 0 50%}
+.st-mask4-t{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+ justify-content:center;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
+ border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
+.st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
 .st-2row .st-mini{flex:1 1 0;min-width:0}
 .st-mini{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:10px 12px;display:flex;flex-direction:column;height:200px}
@@ -4232,23 +4256,43 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
-/* THE SCREEN BREATHES WITH HER, 9 November. His words: "I also want its
-   background gradient colour... when Uni is dark red, the background is
-   also kind of a cloudy dark red that subtly animates... the screen fills
-   with its background colour." This panel (#stjr.st-chat, the mini
-   view's whole journal card) is where that fills, overriding .st-pan's
-   own flat --sunk for this one card; a radial, not a flat wash, is what
-   reads as "cloudy" rather than a paint swap, and the two stops are her
-   own live core and edge tones (ui/uni.js's ambPaint), never a colour
-   this file invents. Scoped to #stflow.st-simple so the full Dashboard
-   view keeps its plain dark panel, which he has not asked changed yet.
-   The drift is in background-position, cheap for the compositor and
-   small enough (two percentage points) to read as subtle and not as a
+/* THE SCREEN BREATHES WITH HER, 9 November, WIDENED TO DASHBOARD 10
+   November. His words, 9 November: "I also want its background
+   gradient colour... when Uni is dark red, the background is also kind
+   of a cloudy dark red that subtly animates... the screen fills with
+   its background colour." His words, 10 November, looking at the
+   Dashboard: "when I click on dashboard, Uni is in that weird black,
+   like red box again. So it should fill this, the black background
+   should fill the screen, and then the background itself should be
+   the energy colour that Uni's throwing off." Scoped to
+   #stflow.st-simple at first, on purpose, because the Dashboard view
+   was out of scope that round; it is not now, so the qualifier is
+   gone. #stjr alone is the right scope: STV.chat is false only on the
+   forced-box and crisis doors (stVoiceCant, crisisTalk), neither of
+   which this rule should skip, and #stjr exists in both views alike.
+   A radial, not a flat wash, is what reads as "cloudy" rather than a
+   paint swap, and the two stops are her own live core and edge tones
+   (ui/uni.js's ambPaint), never a colour this file invents. The drift
+   is in background-position, cheap for the compositor and small
+   enough (two percentage points) to read as subtle and not as a
    second animation competing with her own. */
-#stflow.st-simple #stjr.st-chat{
+#stjr{
+ /* AND NO BORDER DRAWING A BOX ROUND THE GLOW, his own earlier, repeated
+    word for this exact look ("weird black, like red box... it should
+    fill this"). .st-pan's own 1px edge is right for every other panel,
+    which does not carry a full-bleed colour behind it; this one does,
+    and a border on top of a glow is the box he means. */
+ border:0;
+ /* THE GLOW FADES OUTWARD, NOT IN, 10 November: his words, pointing at a
+    visible warm ring round a darker centre, "it should be black... if
+    that's its glow, you have its alpha inverted." It was: the 55% stop
+    mixed in MORE of its tone (60%) than the 0% stop at the core did
+    (46%), so the rim read brighter than the centre, which is a frame,
+    not a glow. The two numbers are swapped, nothing else; the core and
+    edge tones are still her own live ones (ui/uni.js's ambPaint). */
  background:radial-gradient(130% 110% at 50% 18%,
-   color-mix(in srgb,rgb(var(--uni-amb-core)) 46%,var(--sunk)) 0%,
-   color-mix(in srgb,rgb(var(--uni-amb-edge)) 60%,var(--sunk)) 55%,
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 46%,var(--sunk)) 55%,
    var(--sunk) 100%);
  background-size:132% 132%;
  animation:uniAmbDrift 17s ease-in-out infinite;
@@ -4258,10 +4302,155 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
     as a stray fifth duration nothing else in the product uses. */
  transition:background var(--t-context) var(--ease-out)}
 @keyframes uniAmbDrift{0%,100%{background-position:50% 38%}50%{background-position:53% 45%}}
-body.quiet #stflow.st-simple #stjr.st-chat,body.rm #stflow.st-simple #stjr.st-chat{
- animation:none;background-position:50% 40%}
+body.quiet #stjr,body.rm #stjr{animation:none;background-position:50% 40%}
 @media (prefers-reduced-motion:reduce){
- #stflow.st-simple #stjr.st-chat{animation:none;background-position:50% 40%}}
+ #stjr{animation:none;background-position:50% 40%}}
+/* THE GLOW MOVES TO THE STAGE ITSELF, ON THE HERO VIEW ONLY, 10 November.
+   His words, marking a screenshot: "I don't want any gray to the left or
+   right. I want the black background to fill the entire thing, and I want
+   its glow to be on top of that." #stjr above is capped at 900px and
+   centred by .st-flow.st-simple .st-colw (this file), inside #stage, which
+   every tab shares and which a plain .glass{background:var(--panel)} rule
+   (above) tints the panel grey the owner was pointing at. #stage carries
+   an id, which outranks every .stage class rule that colours it per theme
+   or per tab (body.lumen/.glasswhite/.flat/.tab-field etc, all above), so
+   this needs no !important and touches no other tab: body.tab-story is
+   never true on them, and st-full is storyui.js's own class for the
+   Dashboard, set at stRender()'s own "document.body.classList.toggle(
+   'st-full', ...)" (ui/storyui.js), so :not(.st-full) is the hero view and
+   only the hero view. The Dashboard keeps #stjr's own glow above exactly
+   as it was; .st-colw is not capped there (no max-width rule applies
+   outside .st-simple), so it already fills its own column and never showed
+   this grey. var(--bg), not a bare black: Snow, Glasswhite and Lumen are
+   light themes, and a literal #000 would paint a hole in those rather than
+   match the page the way it does in Dark, Punch, Glass and Flat.
+
+   THE CHAKRA IS A HUE, NEVER THE BRIGHTNESS, his separate ruling the same
+   round: "make sure Uni's background color is an overlay of also the
+   chakra color." --seat and --seat-w (ui/ui.js, set on body every render,
+   already the whole mechanism Punch tints its own tokens with, above) are
+   the heaviest body seat's colour and how hard it reads, 0 to 1. Mixed in
+   at a mid teens to thirties percent against transparent, under her own
+   amb-core/edge layer and never inside it, so a severe Root reading warms
+   her gold without ever outshouting it; oklch, not srgb, because mixing a
+   saturated green or red straight into her red-to-gold scale in srgb reads
+   as mud, not a tint. Both custom properties default (the var()'s second
+   argument) to nothing, since only body.punch ever sets --seat in CSS and
+   every other theme would otherwise invalidate the whole declaration
+   before the first render() runs its JS and writes one.
+
+   SUBTLE, AND A CLOUD, his words again: "it's glow is very subtle overlay
+   on top of the black, but it has a subtle cloud animation." A single flat
+   radial reads as a spotlight; the chakra layer and her own layer are two
+   separate shapes, off-centre from each other, so where they overlap
+   drifts as they move. The drift animates transform, not background-
+   position: background-position repaints the whole stage every frame,
+   transform runs on the compositor, and this box is far bigger than
+   #stjr's old 900px was. --t-drift (below, beside --t-breath) is a fifth
+   named duration, honestly added rather than hand-picked, since gate 12
+   ("motion is named") reads transitionDuration and not animation-duration
+   and would not have caught a bare 23s either way. */
+body.tab-story:not(.st-full) #stage{
+ background:var(--bg);border-color:transparent;
+ -webkit-backdrop-filter:none;backdrop-filter:none;
+ isolation:isolate;overflow:hidden}
+body.tab-story:not(.st-full) #stage::before{
+ content:'';position:absolute;inset:-16%;z-index:0;pointer-events:none;
+ /* IT EMANATES FROM HER, NOT THE ROOM, 10 November, his words straight:
+    "you see that the glow comes from him. It emanates from him. There
+    is no box." The first build of this wash read the other way, close
+    to the brightest the art director's own floor allows (46%/32% mix,
+    a size wide enough to light most of the stage) rather than near it,
+    which painted a flat warm wash over nearly the whole screen, exactly
+    the "box" in a new shape. Both numbers come down together: mixed at
+    a sixth to a twelfth of what they were, sized to wrap her own circle
+    and fall to var(--bg) well inside the stage rather than past its
+    edge, centred on 50% 50%, where #stjr's own justify-content now
+    actually holds her. */
+ background:
+  radial-gradient(42% 46% at 50% 50%,
+    color-mix(in oklch,var(--seat,transparent) calc(var(--seat-w,0)*10%),transparent) 0%,
+    transparent 75%),
+  radial-gradient(46% 50% at 50% 50%,
+    color-mix(in oklch,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
+    color-mix(in oklch,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
+    var(--bg) 100%);
+ transition:background var(--t-context) var(--ease-out);
+ /* CALMER AS SHE READS MORE COHERENT, same round: "because we're uniform
+    as a character, becomes more coherent" [the motion should settle as
+    coherence rises]. Speed, not duration, carries that: ui/uni.js's
+    ambPaint() calls updatePlaybackRate() on this animation directly
+    (the Web Animations API), which eases the tempo without jumping its
+    position the way rewriting animation-duration live would (a running
+    animation's local time rescales against its duration the moment the
+    duration changes, which reads as a visible skip). --t-drift is the
+    rate this plays at before any reading has set a rate at all. */
+ animation:uniCloudDrift var(--t-drift) var(--ease-breath) infinite alternate}
+@keyframes uniCloudDrift{
+ 0%{transform:translate(0,0) scale(1)}
+ 100%{transform:translate(2.5%,-2%) scale(1.035)}}
+body.quiet.tab-story:not(.st-full) #stage::before,
+body.rm.tab-story:not(.st-full) #stage::before{animation:none}
+@media (prefers-reduced-motion:reduce){
+ body.tab-story:not(.st-full) #stage::before{animation:none}}
+/* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
+   paints twice: once behind her (above) and once again in the box she
+   sits in. */
+body.tab-story:not(.st-full) #stjr{background:none;animation:none}
+/* NO FRAME ROUND HER AT ALL, NOT EVEN THE PADDED CARD, 10 November. His
+   words, this time with "next time you're fired" behind them, so read
+   exactly: "I do not want a frame around Uni in full mode... these are
+   the only icons on the screen [the talk bubble, left corner, and
+   Dashboard, upper right]. Everything else is conversational between me
+   and Uni." .st-pan's own padding and position:relative (above) are
+   what made #stjr read as a card even once its background went, and a
+   positioned ancestor is also why #stmic/#stdash below could only have
+   pinned to #stjr's own 900px column, not the true screen corners: a
+   position:static ancestor is not a containing block, so an absolute
+   child of it looks further up the tree, to #stage, which is the frame
+   he means and already position:relative (above). */
+/* CENTERED, NOT STACKED AT THE TOP, same words, asked many times over:
+   "why is the character not centered." .st-pan is a flex column with no
+   justify-content of its own (flex-start, the default), so .st-glow
+   (fixed height, flex:0 0 auto, above) stacked at #stjr's own top edge
+   and left every pixel of the row below it, once the bar and the prompt
+   line went to display:none, standing empty. Centering the column is
+   centering her, since she is the one child left with any height once
+   this view is at rest. */
+body.tab-story:not(.st-full) #stjr{position:static;padding:0;justify-content:center}
+/* THE PROMPT LINE AND THE KEYBOARD/COMMIT BAR READ AS A TEXT CHAT AND A
+   THIRD ICON, which is exactly what he ruled out; .st-rest is storyui.js's
+   own stRender() flag, true only while nothing is actually happening
+   (not typing, not listening, no crisis, Dashboard shut). The crisis bar
+   (.st-bar-crx) is named out of this on purpose: CLAUDE.md's own rule
+   that the door to help is never hidden does not bend for a layout he
+   has not seen yet. */
+body.tab-story:not(.st-full) #stjr.st-rest #stsrc,
+body.tab-story:not(.st-full) #stjr.st-rest .st-bar:not(.st-bar-crx){display:none}
+/* THE HALO IS #stsrc's OWN, AND GOES QUIET WITH IT. .st-glow::before (the
+   "passing light and the scan" round, above) bleeds a few pixels past
+   Source AI's small prompt box; .st-chat .st-glow is flex:1 1 auto and
+   grows to fill #stjr whether or not #stsrc is there to decorate, so
+   once #stsrc is hidden the halo is scaled up over an 800-plus pixel box
+   instead of the compact one it was built for, which is its own share
+   of the wash Lance was pointing at. Hidden alongside the thing it
+   decorates, nothing else about it changes. */
+body.tab-story:not(.st-full) #stjr.st-rest .st-glow::before{display:none}
+/* AND WHAT IS LEFT, #stuni ALONE, CENTRES IN THE ROOM #stsrc LEFT.
+   .st-glow is itself a flex column (.st-chat .st-glow, above) with no
+   justify-content of its own, so her fixed-height box (#stflow.st-simple
+   .st-chat .st-uni, above) stacked at .st-glow's own top and the rest of
+   that now-tall column stood empty beneath her, which is the real reason
+   she read as sitting high rather than centred: #stjr's own
+   justify-content (above) has nothing to centre once .st-glow already
+   fills all of #stjr's height. */
+body.tab-story:not(.st-full) #stjr .st-glow{justify-content:center}
+/* THE TWO ICONS SIT AT THE STAGE'S OWN CORNERS, never the narrower
+   column's. .st-hd stays a flex row in the markup (nothing moved there),
+   only its two children leave that row's flow; the row itself is left
+   with no height anything needs, since nothing of it still displays. */
+body.tab-story:not(.st-full) #stmic{position:absolute;top:20px;left:20px;z-index:2}
+body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-index:2}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
@@ -4723,9 +4912,16 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    textarea), so every card here, the imprints panel (.st-pan, below)
    and the release card (.st-rl, below) now share the one dark the text
    field already carries. */
-.st-lrail .st-en{position:relative;overflow:hidden;background:var(--sunk);
- border:1px solid var(--edge);border-radius:var(--r-s);padding:13px 14px 12px;margin-bottom:10px}
-.st-lrail .st-en:last-child{margin-bottom:0}
+/* ONE PANEL, NOT SIX, 10 November, his words: "merge that left menu into
+   the full panel." Each section (.st-en) carried its own --sunk ground
+   and 1px edge before; .st-lrail now carries that ground once, for the
+   whole rail, and each section is a band inside it, divided by a
+   hairline rather than a repeated card. */
+.st-lrail{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:2px 14px}
+.st-lrail .st-en{position:relative;overflow:hidden;padding:13px 0 12px;
+ border-top:1px solid var(--edge)}
+.st-lrail .st-en:first-child{border-top:0}
 .st-lrail .st-en>.rblk{margin-top:0}
 /* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His
    words on seeing it: "I don't like that rainbow bar... just get rid of
@@ -4750,6 +4946,23 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    be a little bit more space between them all." 6px read as touching at
    this tile's own size. */
 .st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 10px;align-items:center}
+/* NO ROW ENDS SHORT, 10 November, his words: "we should never have one
+   icon, one row that's not even... even if you have to make the icon
+   smaller so they fit." flex-wrap let the browser pick the break, which
+   is exactly what left Energy's seven tiles reading four-then-three and
+   Emotions' nine reading six-then-three. A grid with the section's own
+   real count as its column count has nowhere to wrap to: one row, every
+   time, the tile shrinking to fit rather than the row growing a second
+   line. Counts are each section's own real total, not a guess: Energy
+   and Integrity both read BANDS (engine/data/canon.js, 7 seats) so they
+   share one tile size; Integrity's 21 laws are three rows of that same
+   7; Emotions is CHILD's 9; Action is VERP's 6. */
+#st-energy-ls,#st-integrity-ls,#st-childem-ls,#st-verp-ls{display:grid;gap:6px}
+#st-energy-ls,#st-integrity-ls{grid-template-columns:repeat(7,1fr)}
+#st-childem-ls{grid-template-columns:repeat(9,1fr)}
+#st-verp-ls{grid-template-columns:repeat(6,1fr)}
+#st-energy-ls .st-pl,#st-childem-ls .st-pl,#st-integrity-ls .st-pl,#st-verp-ls .st-pl{
+ width:100%;height:auto;aspect-ratio:1}
 /* PATTERNS' TWO FILL THE ROW'S OWN WIDTH, 9 November, his words looking at
    this exact section: "when it says patterns, I don't understand that...
    make those larger so they fit the width of that menu." Patterns is the
@@ -5186,12 +5399,13 @@ body.rm #stflow.st-simple .st-ed.open,body.quiet #stflow.st-simple .st-ed.open{a
 .src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
  font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
 .src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
-/* NO GREY ON THE MINI SCREEN, 9 November, his words, read together with
-   the ambient fill above: a flat --sunk bubble sat neutral against a now
-   coloured ground and read as the one grey thing left on it. A hint of
-   her own edge tone mixed in keeps it dark and legible, never a loud
-   tint, and it moves with her the same way the ground behind it does. */
-#stflow.st-simple #stjr.st-chat .src-bub-src{
+/* NO GREY WHEREVER THE GROUND FILLS WITH HER, 9 November then widened
+   10 November with the ambient fill above: a flat --sunk bubble sat
+   neutral against a now coloured ground and read as the one grey
+   thing left on it. A hint of her own edge tone mixed in keeps it
+   dark and legible, never a loud tint, and it moves with her the same
+   way the ground behind it does, in the Dashboard view now too. */
+#stjr .src-bub-src{
  background:color-mix(in srgb,rgb(var(--uni-amb-edge)) 22%,var(--sunk))}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
@@ -41647,6 +41861,9 @@ let dq = 0;
    achromatic, not a sixth colour on it, set and cleared only by the one
    caller that knows r.unread, never guessed at in here. */
 let unread = false;
+/* uniBgTransparent, 10 November: set once at uniMount, read every frame
+   by the render loop below. See the note at uniMount's own assignment. */
+let uniBgTransparent = false;
 
 /* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
    red, the background is also kind of a cloudy dark red that subtly
@@ -41658,15 +41875,36 @@ let unread = false;
    nothing if nothing moved. core is the vivid tone (p.cr), edge the
    darkest (p.ed); the gradient between them is what reads as "cloudy",
    never a flat fill. */
-let ambLastCore=null, ambLastEdge=null;
+let ambLastCore=null, ambLastEdge=null, ambLastRate=null;
 function _rgbTriple(v){return v[0]+','+v[1]+','+v[2];}
-function ambPaint(p){
+function ambPaint(p,coh01){
  var core=_rgbTriple(p.cr), edge=_rgbTriple(p.ed);
- if(core===ambLastCore&&edge===ambLastEdge)return;
- ambLastCore=core; ambLastEdge=edge;
- var r=document.documentElement.style;
- r.setProperty('--uni-amb-core',core);
- r.setProperty('--uni-amb-edge',edge);}
+ if(core!==ambLastCore||edge!==ambLastEdge){
+  ambLastCore=core; ambLastEdge=edge;
+  var r=document.documentElement.style;
+  r.setProperty('--uni-amb-core',core);
+  r.setProperty('--uni-amb-edge',edge);}
+ /* THE CLOUD SETTLES AS SHE DOES, 10 November. His words: "because we're
+    uniform as a character, becomes more coherent" [the hero stage's
+    cloud drift, shell/head.html's #stage::before, should calm as her
+    coherence rises]. The Web Animations API's playback rate, not
+    animation-duration: rewriting a running animation's own duration
+    rescales its local time against the new one, which reads as a
+    visible jump, where a rate change eases the tempo smoothly (the
+    note beside #stage::before's animation rule says the same). coh01
+    is the same 0 to 1 coherence the caller already read off coherence
+    (or the unread flat 0.5) to build the palette, passed through
+    rather than recomputed. Rounded to a tenth so ordinary CQ jitter
+    does not call updatePlaybackRate every tick for nothing. */
+ var rate=Math.round((1.45-0.9*(coh01||0))*10)/10;
+ if(rate!==ambLastRate){
+  ambLastRate=rate;
+  try{
+   var stage=document.getElementById('stage');
+   if(stage&&stage.getAnimations){
+    stage.getAnimations({subtree:true}).forEach(function(a){
+     if(a.animationName==='uniCloudDrift')a.updatePlaybackRate(rate);});}
+  }catch(e){}}}
 
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
@@ -41815,6 +42053,21 @@ const ZONES=[
     if(cv.height!==bh) cv.height=bh;
     const cw=bw/DPR, ch=bh/DPR;
     fitK=Math.min(cw/W,ch/H);
+    /* NO FRAME ROUND HER, PART THREE, 10 November. "The glow painted to
+       every edge" (the note on .st-uni, shell/head.html) is what this
+       scale was built to do everywhere else: touch the box on its
+       tighter axis, by design, so nothing of her own canvas stood empty
+       on an ordinary screen with no wash behind it. In the hero view
+       there now is one (#stage, above), and her own aura, rim, and
+       decoherence glow all draw relative to this same fitK, in design-
+       space units, so every one of them still reached the real canvas
+       edge and still clipped there, capping the aura's own radius alone
+       (tried first, logged above) was never going to reach the rest.
+       Scaling fitK down here gives her real, undrawn margin on every
+       side, in canvas pixels no code has to find and cap one at a time,
+       for every effect at once: nothing stands this close to the edge
+       any more, so nothing has an edge to show. */
+    if(typeof uniBgTransparent!=='undefined'&&uniBgTransparent) fitK*=0.6;
     fitX=(cw-W*fitK)/2; fitY=(ch-H*fitK)/2;
     UNI_FIT.k=fitK; UNI_FIT.ox=fitX; UNI_FIT.oy=fitY; UNI_FIT.w=cw; UNI_FIT.h=ch;
   }
@@ -41876,6 +42129,7 @@ const ZONES=[
     ditherFast=ctx.createPattern(tcv,'repeat');
   }
   function drawDither(){
+    if(uniBgTransparent)return;
     ctx.save();
     ctx.globalCompositeOperation='overlay';
     ctx.globalAlpha=0.025;
@@ -43399,7 +43653,7 @@ const ZONES=[
        unread face is plain: no halo, no glow, no alert, no zen. */
     const coh01=unread?0.5:coherence/100;
     const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
-    ambPaint(p);
+    ambPaint(p,coh01);
 
     // Blend shapes
     bsT+=dt;
@@ -43706,11 +43960,16 @@ const ZONES=[
 
     // Render
     if(boxDirty) applyFit();
-    // the background fills the whole bitmap, every pixel of her box
+    // the background fills the whole bitmap, every pixel of her box,
+    // except in the hero view, where uniMount already found nothing of
+    // her own should stand between the shared page glow and her face
+    // (see uniMount's own note)
     ctx.setTransform(1,0,0,1,0,0);
     ctx.clearRect(0,0,cv.width,cv.height);
-    ctx.fillStyle=_rgb(p.bg);
-    ctx.fillRect(0,0,cv.width,cv.height);
+    if(!uniBgTransparent){
+      ctx.fillStyle=_rgb(p.bg);
+      ctx.fillRect(0,0,cv.width,cv.height);
+    }
     designTransform();
 
     // Round 2: per-state color signature, applied once per frame (not per
@@ -43858,6 +44117,12 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // this is a third state and not a value on the coherence dial.
     setUnread(flag){ unread = !!flag; },
     getUnread(){ return unread; },
+    // NO FRAME ROUND HER, 10 November: see uniMount's own note. uniMount
+    // lives outside this closure (one shared instance moved between
+    // screens, "STAGE 1 continued" below), so it cannot reach
+    // uniBgTransparent directly, the same reason setUnread exists beside
+    // this rather than letting an outside caller touch `unread` itself.
+    setBgTransparent(flag){ uniBgTransparent = !!flag; },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
@@ -43924,6 +44189,21 @@ function uniMount(target){
  if(!target)return false;
  uniHost.hidden=false;
  target.appendChild(uniHost);
+ /* NO FRAME ROUND HER, 10 November: his words, "I do not want a frame
+    around Uni in full mode." Her own canvas filled every pixel of its
+    box with p.bg (the frame() loop, below "the background fills the
+    whole bitmap, every pixel of her box"), opaque, which was the one
+    colour wash that existed before tonight; #stage's own cloud (above,
+    shell/head.html) is the wash now, and a second, flat, hard-edged
+    one painted under her own feet is exactly the frame he means, a
+    crisp rectangle where the glow outside it is soft. Read once, at
+    mount, off the target this same call already receives: the hero
+    view is the one place #stuni lands inside #stflow.st-simple; every
+    other mount (Dashboard included) keeps her own fill exactly as it
+    was, since nothing stands behind her there the way #stage now does
+    here. */
+ if(window.Uni&&window.Uni.setBgTransparent)
+  window.Uni.setBgTransparent(target.closest&&target.closest('#stflow.st-simple'));
  if(window.Uni&&window.Uni.resume)window.Uni.resume();
  return true;
 }
@@ -54456,14 +54736,47 @@ function stMiniField(r){
    (--uni-amb-core, see stMiniField above) when nothing is worn right
    now; never a guess at what the real torus is doing. */
 function stMiniAvatar(r){
- var un=r.unread, m=r.mask?maskOf(r.mask):null;
- var col=m?CHC.maskCols(m)[0]:'rgb(var(--uni-amb-core))';
- var cap=un?'–':(r.mask?'Wearing '+r.mask:'No mask read yet');
+ /* r.mask IS AN OBJECT, NOT A NAME, caught the first time this ran in a
+    real browser against a profile that actually triggered one: it is
+    whichever of sups/hys/cxs/sabs sits first (engine/compute.js), each
+    its own shape with its own .nm, never a MASKS_READ name maskOf could
+    look up. maskOf(r.mask) always came back null; the caption printed
+    "Wearing [object Object]". There is no real link from that ladder to
+    MASKS_READ's five, so this reads only r.mask.nm for the words and
+    falls back to her own coherence colour exactly as before. */
+ var un=r.unread, nm=r.mask&&r.mask.nm;
+ var col='rgb(var(--uni-amb-core))';
+ var cap=un?'–':(nm?'Wearing '+nm:'No mask read yet');
  var svg='<svg viewBox="0 0 100 120" aria-hidden="true" fill="none" stroke="'+col+'" stroke-width="2">'
   +'<circle cx="50" cy="38" r="26"/><path d="M14 112c0-24 16-40 36-40s36 16 36 40"/>'
   +'<circle cx="42" cy="36" r="2.6" fill="var(--ink)" stroke="none"/>'
   +'<circle cx="58" cy="36" r="2.6" fill="var(--ink)" stroke="none"/></svg>';
  return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+esc(cap)+'</div>';}
+/* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
+   still have this blank space to its right. What I want you to do is
+   move the avatar to the right and then add the masks. Add four
+   masks." MASKS_READ (engine/data/canon.js) names five, each tied to
+   the seats it sits over (m.b); this scores each by the mean weight
+   r.carrying already gives those seats (the same figure darkB/darkV
+   read it from in compute.js, not a second arithmetic invented here)
+   and shows the top four, strongest first, rather than a fixed four
+   that may say nothing about this person's own reading. */
+function stMiniMasks(r){
+ var un=r.unread;
+ if(un||typeof MASKS_READ==='undefined')
+  return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
+ var bySeat={};
+ r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
+ var scored=MASKS_READ.map(function(m){
+  var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
+   return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
+  var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
+  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;}).slice(0,4);
+ var tiles=scored.map(function(s){
+  var col=CHC.maskCols(s.m)[0];
+  return '<div class="st-mask4-t" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('');
+ return '<div class="st-mask4" aria-label="Masks">'+tiles+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -54488,10 +54801,31 @@ function stRender(){
     whole story and then refused it at Commit, which is a control that looks
     like it works until the moment it does not. */
  var show=showOnly();
+ /* THE ONLY TWO ICONS, AT REST, 10 November. His words, naming exactly
+    what the hero view may show: "the talk icon... the dashboard... these
+    are the only icons on the screen. Everything else is conversational
+    between me and Uni." Source AI's own question line and the keyboard
+    plus commit bar are what read as a text chat and a third control to
+    him; they still exist and still work (the crisis door is untouched,
+    below), they are only hidden by CSS, shell/head.html's own
+    body.tab-story:not(.st-full) #stjr.st-rest rules, while nothing is
+    actually happening. The moment any of the four below is true, a
+    person is already past "at rest" and into the conversation itself,
+    so the ordinary UI is exactly what belongs back on screen. */
+ /* AND AT REST MEANS NOTHING HAS BEEN SAID YET, caught by tests/sound.js's
+    own real-browser round: a voice turn lands (srcTurnCommit, above,
+    which writes ST_TEXT) and the person then presses the real Commit
+    button to write it, exactly the one door "everything else is
+    conversational between me and Uni" describes. !ST_TEXT is that
+    fourth condition: the instant a turn has landed, or a person typed,
+    this is no longer rest, it is the conversation he named, and the
+    ordinary controls (Commit among them) are what belong back on
+    screen for it. */
+ var heroRest=!STV.dash&&!STV.typed&&!ST_LISTEN&&!STV.crisis&&!ST_TEXT;
  var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
-  +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
+  +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+(heroRest?' st-rest':'')+'" id="stjr">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
@@ -54531,9 +54865,16 @@ function stRender(){
    +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
      :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
    +'<span class="st-dot"></span>'
-   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
-   +'<rect x="9" y="3" width="6" height="11" rx="3"/>'
-   +'<path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg>'
+   /* AN ACTUAL TALK BUBBLE, 10 November, his words: "the talk icon is an
+      actual talk bubble icon." The capsule-and-stand microphone glyph
+      that stood here read as a recording control, not as talk, and he
+      had already asked for a bubble once before (9 November, "I want a
+      talk icon on the left"), answered with the mic glyph below it
+      instead: this is the actual shape, not a second pass at the same
+      one. Ring, not fill, the house's own icon rule: a stroked bubble
+      with its tail, no capsule. */
+   +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
+   +'<path d="M6 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.6l-3.4 2.8a.6.6 0 0 1-1-.46V15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg>'
    /* THE WORD AND THE CLOCK ARE BOTH GONE, 9 November, his words on this
       exact screen: "I want a talk icon on the left. No words... we don't
       need a timer for how long it's for, get rid of that." The label the
@@ -54914,7 +55255,7 @@ function stRender(){
   /* AVATAR, under Release, alone: his fifth picture, one per column
      this round, three columns, five pictures, Avatar the only one
      without a partner beside it. */
-  +'<div class="st-2row st-2row-1">'+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
+  +'<div class="st-2row st-2row-1">'+stMiniMasks(r)+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -54962,7 +55303,26 @@ function stRender(){
     ruling at .st-bar above) and there is nothing left for it to send. */
  if(ap)ap.onclick=stCommit;
  var mic=document.getElementById('stmic');
- if(mic)mic.onclick=stMic;
+ /* ONE ICON CARRIES BOTH DOORS, 10 November. His words, naming the hero
+    view's only two icons, the talk bubble and Dashboard: "I do want the
+    ability to type in case I want to. But that is minimized when I
+    start," with no third icon for it (his own answer, asked straight,
+    to "how should someone open the type box if the keyboard icon is not
+    one of the two icons" -- "fold into the talk bubble"). A tap still
+    talks (stMic, unchanged). A press held past stHoldMs opens the same
+    box stType already owns, never both: held._open marks that this
+    press already decided, so the click a held pointerup still fires in
+    every browser does not also call stMic and start listening on top of
+    the box that press just opened. */
+ if(mic){
+  mic.onclick=function(e){ if(held._open){ held._open=false; e.preventDefault(); return; } stMic(); };
+  var held={t:null,_open:false}, stHoldMs=480;
+  var holdGo=function(){ held.t=setTimeout(function(){ held.t=null; held._open=true; stType(); },stHoldMs); };
+  var holdStop=function(){ if(held.t){ clearTimeout(held.t); held.t=null; } };
+  mic.addEventListener('pointerdown',holdGo);
+  mic.addEventListener('pointerup',holdStop);
+  mic.addEventListener('pointerleave',holdStop);
+  mic.addEventListener('pointercancel',holdStop);}
  var ty=document.getElementById('sttype');
  if(ty)ty.onclick=stType;
  /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
@@ -55497,6 +55857,18 @@ function stRefresh(){
  if(ap){ap.disabled=!ST_PARSED;
   var apw=ap.classList.contains('st-lsbank')?'Bank':'Commit';
   ap.textContent=apw+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
+ /* THE HERO VIEW LEAVES REST THE MOMENT A TURN LANDS, same reason the
+    word above is read live rather than guessed: srcTurnCommit calls
+    this, not a full stRender, every time a spoken sentence finalises
+    (ui/storyui.js's own ST_REC.onresult), and heroRest (stRender's own
+    flag) would otherwise sit stale at the old, textless render until
+    something else happened to re-render the whole flow. Caught by
+    tests/sound.js's real-browser round: a turn landed, and the real
+    Commit button it then pressed was still hidden from before the
+    turn existed. Mirrors stRender's own heroRest exactly; the only
+    thing this adds is that it also runs here, live. */
+ var jr=document.getElementById('stjr');
+ if(jr)jr.classList.toggle('st-rest',!STV.dash&&!STV.typed&&!ST_LISTEN&&!STV.crisis&&!ST_TEXT);
  stRead();
  stMaskPaint();
  stAsidePaint();
@@ -58488,12 +58860,16 @@ function stDashLeft(){
     chart into it once or moves the one already live there, which is why
     this div carries nothing of its own. */
  o+='<div id="st-impdet-host"></div>';
- /* BOUNDARY AND THE COMPASS SIT AS ONE PAIR, 9 November, his words: "these
-    all need to look like they're together... make sure it's all
-    symmetrical." Same row, same width each, same svg proportions (both
-    170 tall), rather than two sections stacked at whatever height their
-    own content happened to need. */
- o+='<div class="st-pair">'+stDashBoundary()+stDashCompass()+'</div>';
+ /* THE BOUNDARY/COMPASS PAIR IS GONE FROM HERE, 10 November, his words:
+    "remove boundary and compass from the left menu." The purpose
+    hexagon stDashBoundary drew and the CQ/DQ arrow gauge stDashCompass
+    drew now duplicate real work this round built elsewhere: the
+    Dashboard's own Compass and Boundary mini pictures under Uni's
+    column (ui/storyui.js's stMiniCompass/stMiniBoundary), and Field's
+    mini picture under Imprints/Bank for the same CQ this gauge read.
+    Both functions stay defined, reachable, in case a later screen
+    still wants either shape; only this call and the pairing wrapper
+    around it are cut. */
  h.innerHTML=o;
  if(typeof stImpDetMount==='function')stImpDetMount();}
 
@@ -58674,7 +59050,11 @@ function stDashVerp(p){
  if(typeof VERP==='undefined'||typeof verpScan!=='function')return '';
  var o='<section class="st-en st-verp" id="st-verp" aria-labelledby="st-verp-h"'
   +'>'
-  +'<h2 class="rblk" id="st-verp-h">Laws of action</h2>';
+  /* "ACTION", NOT "LAWS OF ACTION", 10 November, his words: "change word
+     laws of actions to action." The id keeps its own name (st-verp-h,
+     identity, never renamed for a label alone); only the word a person
+     reads shortens. */
+  +'<h2 class="rblk" id="st-verp-h">Action</h2>';
  if(!p){
   o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
   o+='</section>';
@@ -90142,7 +90522,16 @@ var DEV_SKIP=false;
    switch and that button are gone, which answers the question this
    paragraph used to leave open, which of the two a stranger meets: the
    onboarding, and only the onboarding. */
-var DEV_PLAY_ONBOARDING=true;
+/* HELD OFF, 10 November, his words: "that page that says this is you
+   and it's okay... that's going away and being replaced by what I'm
+   working on in another thread. So let's hide this for now. The login
+   we still need." The door (login.js's own DEV_SKIP/loginBoot) is
+   untouched; only the sheet loginEnter() would have opened behind it
+   is held off, by the one switch this paragraph already names. The
+   onboarding sequence (ui/onboard.js) is not removed, since he is
+   replacing it rather than retiring the idea, and the switch flips
+   back the moment the new one lands. */
+var DEV_PLAY_ONBOARDING=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and
    shuffled, so every suggestion actually contains a lower case letter,
@@ -91307,6 +91696,14 @@ function colShut(){
     the menu the surface is for, and shut at every width on Knowledge */
  var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
+ /* THE JOURNAL'S OWN RAIL NEVER FOLDS, 10 November, his words: "the left
+    menu, get rid of that close menu... merge that left menu into the
+    full panel." Its fold control is hidden now (.lfold, shell/head.html,
+    body.tab-story), so a person who shut it before this round, with the
+    control still live, would be stuck shut with no way back: the one
+    real reason a stored answer is skipped here and nowhere else below.
+    Every other surface's own stored fold still reads normally. */
+ if(k==='lcols')return false;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }
@@ -92706,5 +93103,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006192831"></div>
+<div id="eof" hidden data-len="006218409"></div>
 </body></html>

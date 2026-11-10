@@ -109,8 +109,13 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(s1.dash&&s1.chat&&s1.full&&!s1.simple&&s1.cols,at+'Dashboard turns on Full with chat still on, '+JSON.stringify({dash:s1.dash,chat:s1.chat,full:s1.full,simple:s1.simple}));
   ok(s1.lcol==='flex'&&s1.rw>0&&s1.rh>0,at+'and the left column is back with the rail in it, '+JSON.stringify({lcol:s1.lcol,lw:s1.lw,rw:s1.rw,rh:s1.rh}));
   ok(!s1.shut,at+'the Journal\'s left column arrives open in Full');
-  ok(s1.shown.length===2&&s1.shown.indexOf('stleft')>=0&&s1.shown.indexOf('lfold')>=0,
-   at+'the rail is #stleft and its fold and nothing of the Field\'s, got '+s1.shown.join(','));
+  /* NO FOLD HERE ANY MORE, 10 November, his words: "the left menu, get
+     rid of that close menu... merge that left menu into the full
+     panel." .lfold is hidden on the Journal now (shell/head.html,
+     body.tab-story .lfold), so #lpanel's own shown list is #stleft
+     alone, not #stleft and its fold. */
+  ok(s1.shown.length===1&&s1.shown.indexOf('stleft')>=0,
+   at+'the rail is #stleft alone, its fold gone and nothing of the Field\'s, got '+s1.shown.join(','));
   if(wn==='desktop')ok(/^302px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 302px 1fr, got '+s1.grid);
 
   /* 3. silent with no story. ROUND, 8 November: the per-row ring-and-name
@@ -243,25 +248,29 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(s4.fieldSec!=='none',at+'and the Field\'s left rail is the Field\'s again, '+s4.fieldSec);
   ok(s4.backFull&&s4.backDash&&s4.backRows===7,at+'coming back in Full draws the class and all seven seats again, '+JSON.stringify(s4));
 
-  /* 8. the fold key, beside the stage only */
+  /* 8. NO FOLD ON THE JOURNAL ANY MORE, 10 November. His words: "the left
+     menu, get rid of that close menu... merge that left menu into the full
+     panel." #lfold is display:none on body.tab-story (shell/head.html) and
+     colShut() hard codes false for 'lcols' (ui/ui.js), so the Journal's
+     rail can never be shut and there is no fold key here to press any
+     more. What this item checked before, that folding the Journal's own
+     rail left the Field's lcol key alone, no longer applies, there is
+     nothing of the Journal's left to fold. What still holds is checked
+     here instead: the rail stays open through a round trip to the Field
+     and back, and never writes to lcols. */
   if(wn==='desktop'){
-   const k0=await p.evaluate(()=>({lcol:STORE.get('lcol'),lcols:STORE.get('lcols')}));
-   await press(p,'#lfold',ok,at+'the Journal\'s fold');
-   await p.waitForTimeout(160);
-   const k1=await p.evaluate(async()=>{const o={shut:document.body.classList.contains('lshut'),
-     lcols:STORE.get('lcols'),lcol:STORE.get('lcol'),grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};
+   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols'),
+     fold:getComputedStyle(document.getElementById('lfold')).display}));
+   ok(k0.fold==='none',at+'the Journal has no fold key to press, '+JSON.stringify(k0));
+   const k1=await p.evaluate(async()=>{const o={shut:document.body.classList.contains('lshut')};
     setTab(TAB.FIELD); render(); await new Promise(r=>setTimeout(r,200));
     o.fieldShut=document.body.classList.contains('lshut');
     setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
     o.backShut=document.body.classList.contains('lshut');
+    o.lcols=STORE.get('lcols');
     return o;});
-   ok(k1.shut&&k1.lcols==='shut'&&k1.lcol===k0.lcol&&/^58px /.test(k1.grid),
-    at+'folding the Journal writes lcols and leaves the Field\'s lcol alone, '+JSON.stringify({k0,k1}));
-   /* the Field's own answer: what its key holds, or with nothing held, shut
-      beside the stage (GO in TASKS.md, "the field left panel starts closed") */
-   const fieldWant=k0.lcol?k0.lcol==='shut':true;
-   ok(k1.fieldShut===fieldWant&&k1.backShut,at+'and the Field keeps its own fold while the Journal keeps its own, '+JSON.stringify(k1));
-   await press(p,'#lfold',ok,at+'the Journal\'s fold, open again');}
+   ok(!k1.shut&&!k1.backShut&&k1.lcols===k0.lcols,
+    at+'the Journal\'s rail stays open through the Field and back, and writes nothing to lcols, '+JSON.stringify({k0,k1}));}
 
   /* 9. Dashboard again is Simple */
   await p.evaluate(()=>window.scrollTo(0,0));
@@ -348,17 +357,17 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(e2.line===e0.line&&e2.reach>0,at+'and its own words trip the line and the door on it, '+JSON.stringify(e2));
   await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
-  /* the fold opening again does not fade the rail in, the rule rmVisible
-     already keeps for first sight (ui/railmotion.js, railOpened) */
+  /* NO FOLD ON THE JOURNAL ANY MORE, 10 November, see the note at item 8
+     above. The reopen fade this checked (rmVisible, ui/railmotion.js,
+     railOpened) fires on #lfold's press, which does not exist here any
+     more. What is still true, and worth holding: the rail sits open with
+     no fade running at all, nothing left to fold or reopen. */
   if(wn==='desktop'){
    await p.waitForTimeout(300);
-   await press(p,'#lfold',ok,at+'the fold, shut, for the reopen fade');
-   await p.waitForTimeout(200);
-   await press(p,'#lfold',ok,at+'the fold, open again');
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
      n:e.getAnimations().length, rows:e.querySelectorAll('#st-energy-ls .st-pl').length+(e.querySelector('#st-energy-none')?1:0)};});
-   ok(!an.shut&&an.rows>0&&an.n===0,at+'reopening the fold runs no fade on the Energy rail, '+JSON.stringify(an));}
+   ok(!an.shut&&an.rows>0&&an.n===0,at+'the Journal\'s rail sits open with no fade running, '+JSON.stringify(an));}
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
   await p.close();}}

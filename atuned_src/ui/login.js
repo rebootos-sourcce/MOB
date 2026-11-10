@@ -92,7 +92,16 @@ var DEV_SKIP=false;
    switch and that button are gone, which answers the question this
    paragraph used to leave open, which of the two a stranger meets: the
    onboarding, and only the onboarding. */
-var DEV_PLAY_ONBOARDING=true;
+/* HELD OFF, 10 November, his words: "that page that says this is you
+   and it's okay... that's going away and being replaced by what I'm
+   working on in another thread. So let's hide this for now. The login
+   we still need." The door (login.js's own DEV_SKIP/loginBoot) is
+   untouched; only the sheet loginEnter() would have opened behind it
+   is held off, by the one switch this paragraph already names. The
+   onboarding sequence (ui/onboard.js) is not removed, since he is
+   replacing it rather than retiring the idea, and the switch flips
+   back the moment the new one lands. */
+var DEV_PLAY_ONBOARDING=false;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and
    shuffled, so every suggestion actually contains a lower case letter,

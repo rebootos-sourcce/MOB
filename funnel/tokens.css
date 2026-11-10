@@ -3,7 +3,7 @@
    app's own stylesheet. The funnel and the app have to look like one
    product, and a palette copied by hand is correct on the day it is copied
    and wrong afterwards. Change a value in head.html and run the tool.
-   51 tokens. */
+   52 tokens. */
 :root{
  /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
 
@@ -144,6 +144,11 @@
     tests/design.js reads transitions and not keyframes, so a loop typed
     straight into a rule goes unchecked by it. */
  --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* --t-drift, 10 November: the hero stage's cloud (head.html's own
+    uniCloudDrift, beside #stage::before) needs tens of seconds, not
+    the fractions of one the other four name, so it is its own token
+    rather than a bare number typed into that one rule. */
+ --t-drift:23s;
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
