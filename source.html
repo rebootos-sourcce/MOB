@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v33 f729140a 2026-11-10 22:48"><head><meta charset="utf-8">
+<html lang="en" data-build="v34 5322f38c 2026-11-10 23:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4211,16 +4211,35 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* THE KEYBOARD AND COMMIT ESCAPE THE 900PX READING COLUMN, 10 November,
    his words: "move the text keyboard icon to the center bottom screen,
    move the commit icon to the right side of the screen." Both still sit
-   in .st-bar for their own spacing and state logic; position:fixed is
-   what actually anchors them to the screen's own edges rather than the
-   capped column's, since nothing else in this rule changes their markup
-   or their wiring, only where they land. The crisis door's own button in
+   in .st-bar for their own spacing and state logic; position:fixed was
+   what anchored them to the screen's own edges rather than the capped
+   column's, since nothing else in this rule changed their markup or
+   their wiring, only where they land. The crisis door's own button in
    this same bar (#st-crxbar) is untouched, rare state, not part of this
    ask. */
 .st-flow.st-simple .st-bar{min-height:var(--tap)}
-.st-flow.st-simple .st-bar #sttype{position:fixed;left:50%;bottom:24px;
- transform:translateX(-50%);margin:0;z-index:5}
 .st-flow.st-simple .st-bar #stapply{position:fixed;right:24px;bottom:24px;margin:0;z-index:5}
+/* ONE RULE, NOT TWO, FOR THE KEYBOARD, 10 November, his own correction the
+   same night: "center the keyboard icon, under Uni," looking at the Full
+   Dashboard, where this icon had no rule of its own at all and sat at
+   .st-bar's own left edge (plain flow, the bug his words caught), while
+   the mini view above already had one anchored to the whole screen. Two
+   screens, two different answers to "where is the keyboard," is the
+   thing his earlier words this round ruled out outright: "it should be
+   one system, it shouldn't be reading two systems at all." #stjr is the
+   one container both views already share, and Uni (#stuni) is already
+   centred inside it in both, screen-fixed in the mini view only because
+   #stjr there sits inside the 900px capped reading column above and a
+   fixed screen-centre was the nearest available approximation at the
+   time; now that the real ask is "under Uni" and not "centre of whatever
+   the viewport happens to be," anchoring to #stjr directly is the more
+   exact match in both views, not merely the same two answers written
+   once: #stjr is already position:relative, already full stage width in
+   the mini view and already the narrower stage column in the Full
+   Dashboard, and Uni's own horizontal centre is #stjr's, so this one
+   rule lands the icon under her either way. */
+#stjr .st-bar #sttype{position:absolute;left:50%;bottom:24px;
+ transform:translateX(-50%);margin:0;z-index:5}
 /* AND THE SECOND ROW NEVER REACHES THE MINI VIEW EITHER, same round,
    same reasoning: Compass, Boundary, Body, Field and Avatar are a
    Dashboard-only idea, his own words scoping them there ("when I hit
@@ -4978,24 +4997,28 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
    to sit beside Patterns instead, it needs none of that top gap, the
    row's own 14px gap between fields already does that job. */
 .rel-fields .st-relsws{margin:0}
-/* A GRID, NOT A WRAPPING ROW, 10 November, his words a second time: "make
-   sure the buttons are symmetrical... the binaural audio button, I want
-   next to the patterns." flex-wrap put Speed and Patterns on one line and
-   dropped the toggle to a second line starting back at the column's own
-   left edge, under Speed, the moment this card narrowed enough that the
-   three no longer fit side by side (measured at the card's own real
-   width: Speed and Patterns alone already use nearly the whole row,
-   leaving nowhere near enough for a switch with its own label). "Next to
-   the patterns" is a position, not a promise that three items of three
-   different widths always fit one line, so this is a real two column
-   grid instead: Speed top left, Patterns top right, the toggle on its
-   own row underneath but pinned to the right edge, directly under
-   Patterns, where "next to" and "symmetrical" are both still true
-   regardless of how narrow the card gets. */
-.rel-fields.st-fields{display:grid;grid-template-columns:1fr 1fr;justify-content:flex-start;margin:0}
-.rel-fields.st-fields .rel-field:nth-child(1){grid-column:1}
-.rel-fields.st-fields .rel-field:nth-child(2){grid-column:2}
-.rel-fields.st-fields .st-relsws{grid-column:1/3;justify-self:end;margin-top:10px}
+/* ONE LINE, NOT A GRID, 10 November, overridden the same night by his own
+   direct correction: "the binaural audio is on the same horizontal line
+   as speed and patterns." A first pass here put it on its own row under
+   Patterns, reading "next to" as a position rather than literally
+   side-by-side; his second pass ruled that out outright. The three truly
+   did not fit one line at this card's own measured width (Speed and
+   Patterns alone measured close to the full row), so the fields shrink
+   to make room rather than the toggle wrap: the inputs drop their 96px
+   floor (a one-to-three digit number needs nowhere near that), and the
+   toggle sheds .ac-row's own list-row chrome (its 56px list-item height,
+   15px side padding and bottom rule, all built for a tall standalone
+   settings page, never meant for an inline row beside two number fields)
+   down to just the switch itself, its name carried in the label's own
+   title/aria-label the way the rest of this rail already carries a
+   name, never a second copy of text standing in the row. */
+.rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
+.rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
+.rel-fields.st-fields .st-relsws{flex:0 0 auto}
+.rel-fields.st-fields .st-relsws .ac-row{min-height:0;padding:0;border-bottom:0;gap:0;
+ justify-content:center}
+.rel-fields.st-fields .st-relsws .ac-rl{position:absolute;width:1px;height:1px;
+ padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
@@ -58372,7 +58395,15 @@ function stRelPanel(){
       agree, only on the opposite word. */
    +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
    +((typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
-    ?'<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
+    /* title HERE, ON THE WRAPPER, 10 November: the standing-up switch now
+       hides its own visible label (head.html's own rule, same round) to
+       fit the one-line row his words asked for, the same move every pill
+       on this rail already makes (a name in title/aria-label, never
+       printed beside the control). accTog's button already carries the
+       name to a screen reader through its own aria-label; this is the
+       mouse's equivalent, since the hidden span can print no native
+       tooltip of its own once it is off screen. */
+    ?'<div class="st-relsws" title="Binaural tone">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
@@ -93676,5 +93707,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006256806"></div>
+<div id="eof" hidden data-len="006258945"></div>
 </body></html>

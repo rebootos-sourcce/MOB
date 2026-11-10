@@ -3351,7 +3351,15 @@ function stRelPanel(){
       agree, only on the opposite word. */
    +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
    +((typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
-    ?'<div class="st-relsws">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
+    /* title HERE, ON THE WRAPPER, 10 November: the standing-up switch now
+       hides its own visible label (head.html's own rule, same round) to
+       fit the one-line row his words asked for, the same move every pill
+       on this rail already makes (a name in title/aria-label, never
+       printed beside the control). accTog's button already carries the
+       name to a screen reader through its own aria-label; this is the
+       mouse's equivalent, since the hidden span can print no native
+       tooltip of its own once it is off screen. */
+    ?'<div class="st-relsws" title="Binaural tone">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */

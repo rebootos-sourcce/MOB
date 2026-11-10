@@ -34621,3 +34621,24 @@ read off anything real.
 check: 0 stops. `tests/functional.js` 3025/0, confirmed after a restart with
 a longer timeout (the first attempt was killed by this environment's own
 15-minute background limit, not a real failure).
+
+**#151, flagged for a QA pass not yet run, 10 November.** His own words:
+"review this link, the other QA wired a bunch of stuff in... we're not doing
+QA pass yet, just make sure that's on our status board." A separate,
+standalone prototype artifact, `https://claude.ai/artifact/8bQXAphBcGsAhAqbVFs9FJ`,
+titled "Nova -- Eye Study": its own single-file particle-sphere character
+study, not a file in this repo. It carries a coherence-to-color palette (five
+stops, collapsed red to coherent white-gold), a Preston Blair viseme set with
+real text-to-phoneme lip sync and co-articulation weighting, 8 canon emotion
+families each with a real 9-word intensity ladder (joy/sadness/disgust/
+shock/fear/anger/shame/apathy) plus two reasoned-not-sourced additions
+(surprise/anticipation, flagged as such in its own comments), a chakra-pulse
+word trigger list keyed to real `canon.json` fetter names, and an
+"atuned.world intro sequence" overlay (wordmark, umlaut dots, subtitle)
+layered on top of the same canvas. Worth noting for whoever runs the pass:
+it carries the identical dither block (64x64 noise tile, `overlay` blend,
+alpha 0.025) this round found in `ui/uni.js` while chasing the "character
+shading is completely broken" report, so the two are close enough kin that
+a real review should check whether this artifact's own rendering has the
+same grain or not, as a second data point. Not touched, not integrated,
+not reviewed line by line, per his own instruction.
