@@ -915,14 +915,31 @@
   // ── Edit tab ──────────────────────────────────────────────────
   let _unsubTranscriptionProgress = null;
   async function loadEditTab() {
-    await loadRecordingList('editRecordingList', (id, row) => {
+    await loadRecordingList('editRecordingList', async (id, row) => {
       const sec = $('editCutSection');
       $('editRecordingTitle').textContent = (row.path || '').split(/[\\/]/).pop();
       $('editDuration').textContent = fmtMs(row.duration_ms || 0);
       sec.hidden = false;
       $('editTranscriptBox').hidden = true;
       $('editTagBox').hidden = true;
+      $('editExportRow') && ($('editExportRow').hidden = true);
       if (row && row.path) loadWaveform(row.path);
+      // Auto-load existing transcript if one is already in the DB
+      try {
+        const tx = await window.mob.db.query('transcripts:latest', [id]);
+        if (tx) {
+          $('editTranscriptText').textContent = tx.full_text || '';
+          $('editTranscriptBox').hidden = false;
+          $('editExportRow') && ($('editExportRow').hidden = false);
+        }
+        const tags = await window.mob.db.query('tags:list', [id]);
+        if (tags && tags.length) {
+          const tagBox = $('editTagBox');
+          tagBox.textContent = '';
+          tags.forEach(t => { const s = document.createElement('span'); s.className = 'tag'; s.textContent = t.tag; tagBox.appendChild(s); });
+          $('editTagBox').hidden = false;
+        }
+      } catch (_) { /* no transcript yet — user will click Transcribe */ }
     });
     $('btnTranscribe').onclick = async () => {
       if (!selectedRecordingId) return;
@@ -941,7 +958,7 @@
             : p.stage === 'transcribing' ? 'Transcribing…'
             : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
         });
-        const result = await window.api.invoke('transcription:start', { recordingId: row.id });
+        const result = await window.api.invoke('transcription:start', { recordingId: row.id, force: true });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; $('editExportRow').hidden = false; }
         const tags = await window.mob.db.query('tags:list', [row.id]);
