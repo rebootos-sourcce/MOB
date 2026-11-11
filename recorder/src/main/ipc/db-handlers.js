@@ -67,7 +67,9 @@ const MUTATIONS = {
       [
         edited_title        ?? null,
         edited_description  ?? null,
-        edited_hashtags_json != null ? JSON.stringify(edited_hashtags_json) : null,
+        edited_hashtags_json != null
+          ? (typeof edited_hashtags_json === 'string' ? edited_hashtags_json : JSON.stringify(edited_hashtags_json))
+          : null,
         id,
       ]
     );

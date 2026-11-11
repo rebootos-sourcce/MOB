@@ -11,13 +11,12 @@
 function generateVariants(pkg) {
   const title = pkg.edited_title || pkg.titleVariants?.[0] || pkg.title || 'Recording';
   const description = pkg.edited_description || pkg.description || '';
-  const rawHashtags = pkg.edited_hashtags_json
-    ? JSON.parse(pkg.edited_hashtags_json)
-    : (pkg.hashtags_json ? JSON.parse(pkg.hashtags_json) : []);
+  function tryParse(s) { try { return s ? JSON.parse(s) : null; } catch { return null; } }
+  const rawHashtags = tryParse(pkg.edited_hashtags_json) ?? tryParse(pkg.hashtags_json) ?? [];
   const tags = Array.isArray(rawHashtags)
     ? rawHashtags.map(h => (typeof h === 'string' ? h : h.tag)).filter(Boolean)
     : [];
-  const chapters = pkg.chapters_json ? JSON.parse(pkg.chapters_json) : [];
+  const chapters = tryParse(pkg.chapters_json) ?? [];
 
   return {
     youtube:  buildYoutube(title, description, tags, chapters),

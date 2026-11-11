@@ -2,8 +2,8 @@
 // Schema migration runner for sql.js (in-memory WASM SQLite).
 // Since sql.js uses IF NOT EXISTS for all tables, we use schema_version
 // to track and apply ALTER TABLE upgrades safely.
-
-const db = require('./sqlite');
+// NOTE: db is required lazily inside runMigrations() to break the circular
+// dependency with sqlite.js (sqlite→migrate→sqlite at module-load time).
 
 const MIGRATIONS = [
   {
@@ -29,6 +29,7 @@ const MIGRATIONS = [
 ];
 
 function runMigrations() {
+  const db = require('./sqlite'); // lazy — avoids circular dep at module-load time
   const row = db.get('SELECT MAX(version) AS v FROM schema_version');
   const current = (row && row.v != null) ? row.v : 0;
 
