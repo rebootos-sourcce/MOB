@@ -504,13 +504,25 @@ function stDashMasks(){
    opens that one chain's own real card, through the same global listener
    (its data-ana, written by anaPatRow, fires inside #rdrill exactly as it
    does inside #ana). */
+/* UNPACK EVERY SYMBOL, HERE TOO, 11 November. Task #80: this card named
+   "Complexes"/"Hyper complexes"/"Super complexes" and never said what any
+   of the three meant, the one card in this rail built outside anaChainCard
+   and so the only one that never read the real glossary 13 other files
+   already do (engine/data/kb.js's GLOSS, read through engine/data/gloss.js's
+   unpackOf). Each singular term below is a real top-level key in that
+   table, confirmed by reading it directly. anaHead's own sub slot is
+   printed raw and always visible, the same subtitle line Patterns and Law
+   of action already use above, so this reads on a screenshot or a phone
+   with no pointer, not only on hover. */
 function stOpenPsyche(kind){
  if(typeof computeSeen!=='function')return;
  var r=computeSeen();
  var NAME={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes',sup:'Super complexes'};
+ var TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
- var h=anaHead('Psyche stack',lab);
+ var def=typeof unpackOf==='function'?unpackOf(TERM[kind]||kind):'';
+ var h=anaHead('Psyche stack',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
 
