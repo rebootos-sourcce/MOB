@@ -8,7 +8,7 @@ const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { extractHashtags } = require('./intelligence/hashtags');
 const { detectChapters } = require('./intelligence/energy');
-const { remapTimestamp, loadEdl } = require('./edl');
+const { loadEdl } = require('./edl');
 const { generateVariants } = require('./intelligence/variants');
 
 /**
