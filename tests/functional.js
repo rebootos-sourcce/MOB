@@ -3441,8 +3441,12 @@ const pmn=await page.evaluate(async()=>{
  /* Discord feedback joined at 3 October; Join our Discord is a row only once
     COMMUNITY_INVITE holds a real invite, so it is read off commInvite and not
     assumed either way. Is this a crisis? joined at 16 October, after the
-    log and before Settings (ui/crisis.js) */
- o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Is this a crisis?','Settings']);
+    log and before Settings (ui/crisis.js); removed 11 November, his ruling,
+    "if you can't fix it in 1 batch, turn it off in 1 batch" (the row was its
+    own static markup in ui/account.js calling crisisOpen() directly, caught
+    by tests/onboarding2.js still finding it after crisisBtn/crisisReachBtn/
+    crisisFloor alone were zeroed out). */
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();
@@ -7857,12 +7861,12 @@ console.log('\n=== the left menu: r1, two families on one grammar, every word wi
 await require('./railmenu.js').railMenuGate(browser,FILE,ok,booted);
 
 /* THE JOURNAL'S FULL VIEW, tests/stfull.js, 2 November. His words: "use a
-   left menu and the right menu." Its first job is the precondition the plan
-   put ahead of everything else: in Full, with chat on, the crisis door is
-   still reached by real presses and the three numbers are on screen. Then
-   the left rail's Energy, the fold's own key, and Simple left as it was. A
-   file of its own so it can run alone, called here so a full run holds it. */
-console.log('\n=== the Journal\'s Full view, and the crisis door inside it ===');
+   left menu and the right menu." The crisis door this file's own name still
+   names is gone, removed 11 November, his ruling; Phase 0 now checks its
+   absence instead of real presses reaching it. Then the left rail's Energy,
+   the fold's own key, and Simple left as it was. A file of its own so it
+   can run alone, called here so a full run holds it. */
+console.log('\n=== the Journal\'s Full view ===');
 await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
 
 /* WHEN VOICE CANNOT RUN, tests/voicefall.js, 3 November. A browser with no

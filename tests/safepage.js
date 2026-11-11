@@ -113,14 +113,29 @@ const say = async (p, t) => {
   await p.waitForTimeout(350); return r; };
 const T = 'I keep thinking about killing myself. I have been hurting myself again.';
 const Q = 'I walked to the shop on Tuesday and bought some bread.';
-/* the page as a person sees it */
+/* the page as a person sees it. REMOVED, 11 November, his ruling: the
+   door itself (crisisReachBtn, atuned_src/ui/crisis.js) now prints
+   nothing, so door is always null and reach always 0; the line, #stsafe's
+   own <p>, is storyui.js's own markup and is untouched, so it is read the
+   same way it always was. */
 const look = p => p.evaluate(() => {
   const s = document.getElementById('stsafe'), src = document.getElementById('stsrc');
   const line = s && s.querySelector('p'), door = s && s.querySelector('[data-crisis]');
   const r = door && door.getBoundingClientRect();
   const rel = document.getElementById('strel');
+  /* THE LINE'S OWN VISIBILITY, checked directly, 11 November, now that the
+     door beside it is gone: with no door left, this line is the only
+     thing left on the hero view carrying the safety information at all,
+     and nothing before tonight ever measured its own box, only its text
+     (readable even on a display:none element). Added the same round that
+     found the CSS exception keeping #stsrc visible here (shell/head.html)
+     was written for the door, not the line, and is still needed for the
+     line alone now the door's gone. */
+  const lr = line && line.getBoundingClientRect();
   return {
     line: line ? line.textContent : null,
+    lineSeen: line ? (lr.width > 0 && lr.height > 0 && getComputedStyle(line).visibility !== 'hidden'
+      && lr.top >= 0 && lr.bottom <= innerHeight) : null,
     door: door ? { k: door.getAttribute('data-crisis'), t: door.textContent, inView: r.top >= 0 && r.bottom <= innerHeight, h: r.height } : null,
     reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
     ink: line ? getComputedStyle(line).color : null,
@@ -151,9 +166,10 @@ const look = p => p.evaluate(() => {
     await type(p, T);
     const s = await look(p);
     ok(s.line === SAY.entry, 'the line is Emmy\'s, word for word' + at + ': ' + JSON.stringify(s.line));
-    ok(!!s.door && s.door.k === 'reachnow' && s.door.t === SAY.reach && s.reach === 1,
-      'one door, ' + JSON.stringify(SAY.reach) + ', and no second one on the page' + at + ': ' + JSON.stringify(s.door) + ', ' + s.reach + ' on the page');
-    ok(!!s.door && s.door.inView && s.door.h >= 44, 'the door is on the first screen and at the 44 pixel floor' + at + ': ' + JSON.stringify(s.door));
+    ok(s.lineSeen === true, 'and it is actually on screen, not merely in the DOM, the only thing left carrying this now the door is gone' + at);
+    /* REMOVED, 11 November: crisisReachBtn (atuned_src/ui/crisis.js) prints
+       nothing now, so the line stands alone, with no door beside it. */
+    ok(!s.door && s.reach === 0, 'no crisis door beside the line, removed 11 November' + at + ': ' + JSON.stringify(s.door) + ', ' + s.reach + ' on the page');
     ok(!s.why && !s.pass && !s.qbtn && !s.ask, 'no why, no Move on, no question and no question buttons' + at + ': ' + JSON.stringify({ why: s.why, pass: s.pass, qbtn: s.qbtn, ask: s.ask }));
     ok(!/Why there|Both land|lands at/.test(s.page), 'no "why there" anywhere on the page' + at);
     ok(s.marks === 0, 'no word in the entry is lit as a feeling' + at + ', ' + s.marks + ' lit');
@@ -165,11 +181,9 @@ const look = p => p.evaluate(() => {
     ok(!!s.line && s.line === s.line.replace(/\b[A-Z]{2,}\b/g, '') && !/notic|detect|warning|alert|risk|we /i.test(s.line),
       'no capitals, and no "we noticed", "detected", "warning" or "risk"' + at);
     ok(s.said === SAY.entry, 'a screen reader hears the same line, once, through the polite live region' + at);
-    await p.click('#stsafe [data-crisis="reachnow"]'); await p.waitForTimeout(250);
-    const pan = await p.evaluate(() => { const c = document.getElementById('crisis');
-      return { open: !!c && !c.hidden, view: CRISIS.view, lines: c ? c.querySelectorAll('[data-crisisline]').length : 0 }; });
-    ok(pan.open && pan.view === 'reach' && pan.lines === 3, 'the door opens the panel straight on the three numbers' + at + ': ' + JSON.stringify(pan));
-    await p.keyboard.press('Escape'); await p.waitForTimeout(150);
+    /* REMOVED, 11 November: there is no door left to press and no panel
+       left to open; #crisis is never created at all now. */
+    ok(await p.evaluate(() => !document.getElementById('crisis')), 'no panel host exists, nothing has ever created one' + at);
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-typing-' + w + '.png') }).catch(() => {});
 
     console.log('\n=== 1, 4 · Commit keeps the words, moves nothing, makes no sound' + at + ' ===');
@@ -272,21 +286,26 @@ const look = p => p.evaluate(() => {
     const p = await open(browser, 390, 844);
     await type(p, 'I never feel safe at home. He threatened to kill me.');
     const s = await look(p);
-    ok(s.line === SAY.entry && s.reach === 1 && !s.ask && s.marks === 0 && s.commit === 'Commit',
-      '"I never feel safe at home" gets the line and the door, and no release or question: ' + JSON.stringify({ line: !!s.line, commit: s.commit }));
+    ok(s.line === SAY.entry && s.reach === 0 && !s.ask && s.marks === 0 && s.commit === 'Commit',
+      '"I never feel safe at home" gets the line, no door (removed 11 November), and no release or question: ' + JSON.stringify({ line: !!s.line, commit: s.commit }));
     await p.cx.close();
   }
 
-  console.log('\n=== 2 · after Talk it through there is still one door ===');
+  console.log('\n=== 2 · in crisis mode too, there is still no door, removed 11 November ===');
   {
+    /* STV.crisis is set directly here, as the test always has: nothing in
+       the product can set it any more since crisisTalk() (ui/crisis.js) is
+       only ever reached from the panel's own "talk" button, which nothing
+       prints. Kept anyway to prove the safe-match line still stands alone
+       even in this state, not only in the ordinary one above. */
     const p = await open(browser, 1600, 1000);
     await p.evaluate(() => { STV.chat = false; STV.crisis = true; stRender(); });
     await p.waitForTimeout(200);
     const was = (await look(p)).reach;
     await type(p, T);
     const s = await look(p);
-    ok(s.line === SAY.entry && !s.door && s.reach === was && was > 0,
-      'the line comes alone and adds no door: the box\'s own Reach someone now is it, ' + was + ' before and ' + s.reach + ' after');
+    ok(s.line === SAY.entry && !s.door && s.reach === 0 && was === 0,
+      'the line stands alone, no door before or after' + JSON.stringify({ was, reach: s.reach }));
     await p.cx.close();
   }
 
@@ -322,7 +341,7 @@ const look = p => p.evaluate(() => {
       marks: document.querySelectorAll('#stsrc mark').length,
       asks: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).length,
       said: (document.getElementById('srcsay') || {}).textContent || '' }));
-    ok(s.chat && s.line === SAY.entry && s.reach === 1, 'in the conversation, the line in Emmy\'s words and one door' + at + ': ' + JSON.stringify({ line: s.line, reach: s.reach }));
+    ok(s.chat && s.line === SAY.entry && s.reach === 0, 'in the conversation, the line in Emmy\'s words, no door (removed 11 November)' + at + ': ' + JSON.stringify({ line: s.line, reach: s.reach }));
     ok(s.mine === [first, 'I keep thinking about killing myself.'].join('\n'),
       'and the person\'s own words stay on the page, both turns, one block, nothing of Source AI\'s' + at + ': ' + JSON.stringify(s.mine));
     ok(s.live === 0 && !s.pass && !s.why && s.asks === 0 && s.marks === 0, 'no reply, no question, no Move on, no why, no lit word' + at + ': ' + JSON.stringify(s));
@@ -341,18 +360,16 @@ const look = p => p.evaluate(() => {
     ok(en.host && en.lit === 0, 'in the Full view the Energy rail puts nothing at any seat from these words' + at + ': ' + JSON.stringify(en));
     ok(en.line === SAY.entry, 'and the line stands there too' + at);
     p.net.length = 0;
-    /* HELD, 11 NOVEMBER, TASKS.md #138. #stapply measures visible by every
-       computed-style and bounding-rect check (confirmed directly, isolated,
-       against this exact sequence) yet Playwright's own real click still
-       times out here, in Full Dashboard, right after a crisis turn spoken
-       through the recogniser: something between the mic path and the
-       Dashboard repaint leaves a frame on top of it at the instant of the
-       click that a style probe taken a moment later does not see. Not the
-       same bug as the one this file's first section found and this round
-       fixed (the crisis door itself, #stsafe collapsing to zero height):
-       that one is confirmed fixed, passing clean at both widths, above.
-       This one is narrower, not yet root caused, and reported rather than
-       patched blind under tonight's deploy deadline. */
+    /* HELD, 11 NOVEMBER, TASKS.md #138, re-checked after the crisis door's
+       own removal (crisisReachBtn now returns ''). The timeout this held
+       was never about the button itself; it was a repaint race between the
+       mic path and the Dashboard, confirmed unrelated to the door's own
+       zero-height bug this file's first section found and fixed. The door
+       is gone from #stsafe now, but the row and its line still render, so
+       this is left in place rather than assumed fixed, and the real run
+       below says which way it goes: if it still times out, #138 stands; if
+       it does not, strike #138 as resolved by removal once this has run
+       clean twice. */
     let clicked = true;
     try { await p.click('#stapply', { timeout: 5000 }); } catch (e) { clicked = false; }
     if (!clicked) {
@@ -389,10 +406,10 @@ const look = p => p.evaluate(() => {
       live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
       pass: !!document.getElementById('srcpass') }));
     ok(sh.from > 0, 'the probe moves the subject: SRC_FROM is past the words' + at + ': ' + sh.from);
-    ok(sh.line === SAY.entry && sh.reach === 1 && sh.mine === sh.text
+    ok(sh.line === SAY.entry && sh.reach === 0 && sh.mine === sh.text
       && sh.mine === [first, 'I keep thinking about killing myself.', 'Can we talk about something else?'].join('\n')
       && sh.live === 0 && !sh.pass,
-      'and the line and one door stay, all three turns on the page, one block, no reply in their place' + at + ': ' + JSON.stringify(sh));
+      'and the line stays, no door (removed 11 November), all three turns on the page, one block, no reply in their place' + at + ': ' + JSON.stringify(sh));
     ok(q.voice.length === qv, 'and the line is not said again on the turn after it' + at + ': ' + JSON.stringify(q.voice.slice(qv)));
     /* Talk pressed again speaks what is on screen, the line, never an older question */
     await q.evaluate(() => { stMic(); }); await q.waitForTimeout(250);

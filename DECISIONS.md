@@ -3496,3 +3496,88 @@ above is unchanged and unreversed by any of this.
 **Reversible.** Putting the per-turn voice back, if he ever rules for it,
 is one line in `srcPaint`. Nothing in `engine/sourceai.js`, `evidence.js`
 or `qcheck.js` was touched or retired.
+
+## Responsibility and Accountability, what each word owns. Ruled 11 November.
+
+His words, verbatim: "Responsible for means it is yours to own. Accountable
+for means it is yours to watch. And tend to. You're responsible for the
+words you speak, and accountable for the actions that follow."
+
+**What this fixes, found the same night.** `engine/data/kb.js`'s own HARM
+table, 76 entries, the only one of the three content tables this product
+uses for "what does this mean" (the other two are GLOSS, the general term
+table, and `unpackOf`'s own per-law line built from the intake question
+stem). A direct script check of all 76 found exactly one blank: E43,
+Responsibility, had no `d` field at all, the literal thing a card showed as
+"No meaning on file yet." `TASKS.md` already named this exact gap. E40,
+Accountability, already carried the real split, sourced before tonight:
+"Responsibility is ownership of your own field, the patterns and the
+charge. Accountability is ownership of cause and consequence in the shared
+world." His words tonight say the same thing in his own voice and settle
+which law owns which half. E43 now reads: "Ownership of your own field,
+the patterns and the charge, claimed before anyone else is touched by it.
+Paired with Accountability (E40): responsibility is what you own,
+accountability is what you watch and answer for once it reaches the shared
+world. You are responsible for the words you speak, accountable for the
+actions that follow them." Sourced from E40's own existing line and his
+words above, nothing invented.
+
+**The book's own defect this resolves, for product purposes only.**
+`.claude/skills/mob-canon/SKILL.md` section 3.3: the manuscript's Chapter
+10, Laws 34 (Responsibility) and 35 (Accountability), print the identical
+upward-pole sentence word for word. The book is not being corrected in
+place; this ruling settles what the product says, the same way the
+Spiritual/Moral Integrity naming split was settled rather than merged.
+
+**What is now verified, not assumed.** All 76 HARM entries carry a real
+`d` field, checked by a script that parses the table and lists any entry
+missing one, not by reading it. That covers all 21 Laws of Moral Integrity
+(SI) and the full 48-law "universal laws" roster from the book (nature,
+human nature, spiritual integrity, expression) plus the emotion, measure
+and meta rows HARM also carries. Zero missing. The status board carries
+this count so it stays visible rather than typed once and left to go
+stale, the same discipline CLAUDE.md already holds the gate counts to.
+
+**What is still open, and is not this.** The HARM `d` field is one
+sentence, the same depth every other entry gets. His ask to "go four
+layers deep to get to the meaning and the mechanic" on each of the 21 and
+the universal laws, surface meaning, the distinction from its neighbors,
+the real engine mechanic that reads it (the sniffer cue table, the intake
+question, the formula it feeds), and its physical/embodied cost, is a real
+new content tier, not built tonight past this one law as the worked
+example. Scoped as a backlog item rather than claimed done; see TASKS.md.
+
+## The 12 archetypes, self-reported then adjusted by the story. Ruled 11 November.
+
+His words, verbatim: "The 12 archetypes do feed the existing system. It
+helps identify where a person is leaning and the strength that they align
+to that. It's self-reporting of their archetypes, and then as they input
+their story over time, the reality of those numbers adjust."
+
+This answers TASKS.md's own open fork, SV26/TA9: the quiz's twelve
+archetype answers are not a one-time narrative label and not a second,
+parallel scoring system. They set the starting per-archetype percentage
+by self-report, the same shape `affinity()` (`engine/core.js:560-564`,
+`compute.js:688-690`) already computes and already feeds live into the
+left rail, Analytics, the drills, the rings and the wheel through `pi`/`si`.
+What moves after that is the person's own story: as they write, the
+percentages move away from the self-reported starting point toward what
+their own words actually show. Not built tonight; the wiring (feed the
+quiz into `affinity()` as its starting value rather than a second table,
+then let story input re-weight it the same way the engine already re-weighs
+charge from a story) is scoped as a task rather than guessed at further.
+
+## The funnel's score passes into the account, as starting information. Ruled 11 November.
+
+His words, verbatim: "It gets saved to the account. It's a starting
+information for the account. So the funnel gets the information that user
+creates the account, their score summary gets passed into the data of
+their account."
+
+Read as: when a person who took the funnel quiz creates an account, the
+quiz's score summary (their starting law/archetype/coherence numbers) is
+not thrown away and is not re-asked; it is written into the new account's
+own record as its starting state. This is the second network seam the fork
+to accounts already named (`CLAUDE.md`, "the app gains network at exactly
+one seam, fetching a record at sign in"), the funnel-to-account handoff
+half of it, not yet built. Scoped as a task.

@@ -31,7 +31,8 @@
         this card at round IG and the review would have put back
      6  the empty card: Rerun these first, filled, at the tap floor, and it
         runs on the one press and spends nothing; Close; See the tiers last and
-        small; the day new ones arrive; the crisis door; the story kept
+        small; the day new ones arrive; no crisis door (removed 11 November);
+        the story kept
      7  the plan sheet's line for a paid tier at nought
      8  one word per concept: the release card counts lines, not patterns
 
@@ -304,7 +305,10 @@ async function shot(page, name, W) {
       ok(e.go === false, 'there is no Run release to press for a run that cannot open anything');
       ok(e.note === 'This week\'s new patterns are all opened. Everything you have opened still runs, free, as often as you like. New ones arrive on ' + e.day + '.'
         && !!e.day, 'it says what still runs, and the day new ones arrive: "' + e.note + '"');
-      ok(e.crx && e.crxH >= 44, 'the crisis door is on the card, ' + Math.round(e.crxH) + 'px');
+      /* REMOVED, 11 November: his ruling, "if you can't fix it in 1 batch,
+         turn it off in 1 batch." crisisBtn (atuned_src/ui/crisis.js)
+         returns '' unconditionally now, so the card's own door is gone. */
+      ok(!e.crx, 'no crisis door on the card, removed 11 November');
       await shot(page, 'allowance-empty', W);
       const run = await ev(page, () => {
         var u0 = CURP.meter.unique.length;
