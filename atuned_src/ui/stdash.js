@@ -329,7 +329,14 @@ function stDashIntegrity(p){
   o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
   o+='</section>';
   return o;}
- var hits=(typeof sniffLaws==='function')?sniffLaws(ST_TEXT):[], by={}, rec=stSeatRecur();
+ /* NOTHING OFF AN ENTRY srcSafe STOPS, the same rule every other reader of
+    ST_TEXT already follows (stFound, ui/storyui.js:1059; verpApply,
+    engine/verp.js:387; srcTurn, engine/sourceai.js:219): a tile lighting
+    off a crisis entry's own words would be the escalation storyui.js:2438
+    already rules out in a different channel. Missing here until 11
+    November, task #132's item 8, because this reader called sniffLaws
+    straight on ST_TEXT with no stop in front of it at all. */
+ var hits=(typeof sniffLaws==='function'&&!(typeof srcSafe==='function'&&srcSafe(ST_TEXT)))?sniffLaws(ST_TEXT):[], by={}, rec=stSeatRecur();
  hits.forEach(function(x){ if(!by[x.law]||x.score>by[x.law].score)by[x.law]=x; });
  /* ONE TILE LANGUAGE, NOT TWO, 9 November. This drew cr()'s own filling
     ring at first; once his real spec for the row landed (square,

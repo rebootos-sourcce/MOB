@@ -4627,14 +4627,14 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(c2&&c2.direction==='other','and in the other direction on indifference');
   ok(c2&&c2.violation==='Indifference','with the other direction\'s violation string');
   /* all four of them, and every one carries two entries in the cue table */
-  ['Compassion','Humility','Generosity','Ownership'].forEach(l=>{
+  ['Compassion','Humility','Generosity','Accountability'].forEach(l=>{
    const n=LAWCUE.filter(r=>r[1]===l).length;
    ok(n===2,l+' is keyed in both directions, '+n+' cue sets');});
   /* and the single poled ones are not accidentally doubled */
   const dbl=[];
   const seen={};
   LAWCUE.forEach(r=>{seen[r[1]]=(seen[r[1]]||0)+1;});
-  Object.keys(seen).forEach(l=>{if(seen[l]>1&&['Compassion','Humility','Generosity','Ownership'].indexOf(l)<0)dbl.push(l);});
+  Object.keys(seen).forEach(l=>{if(seen[l]>1&&['Compassion','Humility','Generosity','Accountability'].indexOf(l)<0)dbl.push(l);});
   ok(dbl.length===0,'and no single poled law is keyed twice'+(dbl.length?': '+dbl.join(', '):''));
  }
  /* NEGATION. Inherited from verp.js rather than reinvented, and asserted,
@@ -4658,7 +4658,7 @@ g('33 · the sniffer contract, and the four guards that are testable');
     an admission when both strings are in the table. */
  {
   const o=sniffLaws('it was not my fault at all');
-  ok(!o.some(l=>l.law==='Ownership'&&l.direction==='self'),
+  ok(!o.some(l=>l.law==='Accountability'&&l.direction==='self'),
    'a denial of self blame does not fire the self direction');
  }
  /* WHOSE ACT, P0-4 of the inference audit, 23 October. This path had no
@@ -4676,7 +4676,7 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(laws('I hid it from everyone.').indexOf('Transparency')>=0&&laws('I kept it from her because I was scared.').indexOf('Transparency')>=0,
    'and the writer\'s own concealment still reads Transparency');
   ok(laws('I haven’t lied to anyone.').indexOf('Truth')<0,'a curly apostrophe from a phone keeps its no, '+laws('I haven’t lied to anyone.'));
-  ok(laws('others have it worse and i do not matter and it is all my fault').indexOf('Ownership')>=0,
+  ok(laws('others have it worse and i do not matter and it is all my fault').indexOf('Accountability')>=0,
    'a be with no participle after it is not a passive, so "it is all my fault" stays the writer\'s');
  }
 
@@ -4752,15 +4752,100 @@ g('33 · the sniffer contract, and the four guards that are testable');
  /* ---- THE COVERAGE REPORT, because an average hides a hole ---- */
  {
   const c=lawCoverage();
-  ok(c.laws===21,'all 21 laws are keyed, '+c.laws);
+  ok(c.laws===22,'22 rows in the cue table, the 21 laws plus Wisdom kept on its own element, '+c.laws);
   ok(c.bidirectional.length===4,'four are keyed in both directions, '+c.bidirectional.join(', '));
   ok(c.nature===0&&c.human===0,
    'nature and human nature are reported as zero coverage rather than omitted');
   ok(c.missing.length===4,'and the four files the spec says to load are named as missing');
+  /* THE SHAPE CHECK, so laws===22 can never again be the whole story on its
+     own, which is how a prior pass counted twenty one rows and called the
+     product's real 21 laws covered while two of them, Responsibility and
+     Accountability, had no row at all and Ownership and Wisdom, neither a
+     real law, filled two rows in their place. lawsMissing names a real law
+     with no row to find it by; lawsExtra names a kept row that is not one
+     of the 21 (Wisdom, re-keyed to its own element and never shown, on
+     purpose). */
+  ok(c.lawsMissing.length===0,'and every one of the 21 real laws has a row, '+JSON.stringify(c.lawsMissing));
+  ok(c.lawsExtra.length===1&&c.lawsExtra[0]==='Wisdom',
+   'and the only row that is not one of the 21 is Wisdom, kept on its own element on purpose, '+JSON.stringify(c.lawsExtra));
   ok(c.expression===5&&c.expressionAbsent===5,
    'five of the ten expression elements are keyed and the other five are reported absent');
   ok(c.circlesKeyed<c.circles,
    'and not every circle is keyed, '+c.circlesKeyed+' of '+c.circles);
+ }
+ /* ---- TASK #132, THE FROZEN SET, 11 November. Written from the locked
+    plan before the word lists landed, and run against the real sentences
+    rather than trusted on the table alone: the first draft of lawContract
+    and of the harm gate both passed a design review and both still failed
+    one of these, which is the reason this block exists at all. `laws(s)`
+    is the SINAMES-filtered reading, exactly what a tile can show. ---- */
+ {
+  const laws=s=>sniffLaws(s).filter(l=>SINAMES.indexOf(l.law)>=0).map(l=>l.law);
+  /* MUST READ Accountability */
+  [
+   'I blamed it on my brother even though I broke it.',
+   'I never owned up to breaking the server.',
+   "I didn't own up when the manager asked.",
+   'I let her take the blame for the missing money.',
+   'I passed the buck again when the client called.',
+   'It was not my fault, I only yelled because they were late.'
+  ].forEach(s=>ok(laws(s).indexOf('Accountability')>=0,'Accountability reads on "'+s+'", got '+laws(s)));
+  /* MUST READ Responsibility */
+  [
+   'I keep waiting for someone else to fix me.',
+   "That's just how I am and they can deal with it.",
+   'I keep blaming my parents for how I spend money.',
+   "I still haven't dealt with my temper."
+  ].forEach(s=>ok(laws(s).indexOf('Responsibility')>=0,'Responsibility reads on "'+s+'", got '+laws(s)));
+  /* MUST READ THE NAMED LAW, contractions and the narrowed cues */
+  [["I didn't tell my wife about the debt.",'Transparency'],
+   ["I couldn't settle after the call.",'Equanimity'],
+   ["I can't let go of how it ended.",'Detachment'],
+   ["I'll never forgive my father for that.",'Forgiveness'],
+   ['I made her cry on purpose.','Non-Harm']
+  ].forEach(([s,l])=>ok(laws(s).indexOf(l)>=0,l+' reads on "'+s+'", got '+laws(s)));
+  ok(parseStory("My mum always told me I wasn't smart enough.").imprints
+     .some(im=>im.fetter==='Shame'&&im.band==='Solar'),
+   'and the contracted limiter seats at the solar plexus as Shame');
+  /* MUST READ NO LAW */
+  [
+   /* other people's acts, and taking accountability, is not deflecting it */
+   'She blamed it on the weather.','My dad passed the buck.',
+   'He never owned up to anything.','I owned up straight away.',
+   "She didn't tell him.","We couldn't stop him, he lied to the police.",
+   /* harm accounts and reported speech, the one error this gate cannot afford */
+   'I had no choice, he locked the door.',
+   'I was told it was all my fault and I believed I deserved this.',
+   'She told me it was all my fault when I was six.',
+   'I did nothing wrong, he hit me.',
+   'They started it, I was nine and they were fourteen.',
+   /* survival acts, now behind the same gate as row 40's own inward cues */
+   'I hid in the cupboard when he came home.',
+   'I said nothing because he would hit me.',
+   /* boundaries and ordinary phrases the words alone could be mistaken for */
+   'Her feelings are not my responsibility anymore.',
+   'I dropped the ball in the second half.',
+   "That's just how I am in the mornings, slow.",
+   'I made an excuse to leave the party early because I was tired.',
+   'Waiting for someone to fix the boiler.',
+   /* ordinary sentences, the false positives task #132 was opened on */
+   "I can't wait to see my sister.",'One more week until the holiday.',
+   'I cleaned up the mess in the kitchen.','My side of the bed is by the window.',
+   'Only if you want to.','I am rehearsing for the play.',
+   'I took the dog somewhere else for a walk.','The bank asked for collateral.',
+   'I hid it under the tree for her birthday surprise.','I lied down for a nap.',
+   'That film made me cry.','Because they were closed, we went to the other cafe.'
+  ].forEach(s=>ok(laws(s).length===0,'no law reads on "'+s+'", got '+laws(s)));
+  /* THE ONE PROBE. A gated cue that still misfires behind the gate is
+     dropped rather than tuned around, the plan's own rule, already applied
+     once above to 'they started it' and to the apology cues. */
+  ok(laws('I never apologised for leaving a job I hated.').length===0,
+   'not apologising for a choice that cost nobody else stays dark, got '+
+   laws('I never apologised for leaving a job I hated.'));
+  /* SHAPE, so a future row rename or re-key cannot silently drift again */
+  ok(lawCoverage().lawsMissing.length===0&&
+     lawCoverage().lawsExtra.length===1&&lawCoverage().lawsExtra[0]==='Wisdom',
+   'every real law has a row and the only extra one is Wisdom, on purpose');
  }
  /* ---- DEPTH REFUSES TO GUESS ---- */
  {

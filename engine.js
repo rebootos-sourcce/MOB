@@ -7218,15 +7218,44 @@ function leanCount(){
  LEANCH.forEach(function(c){n+=LEANLEX[c.k].length;});
  Object.keys(LEANFRAME).forEach(function(s){n+=LEANFRAME[s].length;});
  return n;}
+/* CONTRACTIONS, ON THE CUE SIDE ONLY, same reason and same rule as
+   engine/sniff.js's lawContract: leanNorm (below) keeps apostrophes, unlike
+   lawNorm, so the generated form is spelled the way a person actually
+   types it ("didn't") rather than the apostrophe-free form that reader
+   strips to. Measured: 29 of 29 LEANLEX/LEANFRAME phrases missed their own
+   contracted form before this. */
+var LEAN_CONTRACT=[
+ ['did not',"didn't"],['do not',"don't"],['does not',"doesn't"],['could not',"couldn't"],
+ ['cannot',"can't"],['was not',"wasn't"],['were not',"weren't"],['have not',"haven't"],
+ ['has not',"hasn't"],['had not',"hadn't"],['will not',"won't"],['would not',"wouldn't"],
+ ['is not',"isn't"],['i am',"i'm"],['that is',"that's"],['it is',"it's"]];
+/* EVERY APPLICABLE FORM, NOT THE FIRST ONE IN THE TABLE. The same bug as
+   sniff.js's lawContract, found there first by running a real sentence
+   ("that is just how i am and" has two contractible phrases and the
+   first-match-wins version always picked "i am", never "that is", so a
+   phrase needing only the first one contracted could never be produced).
+   No LEANLEX/LEANFRAME phrase is known to carry two right now, but the
+   mechanism is shared and ported together, so it is fixed together rather
+   than left correct by accident on one side and wrong on the other. */
+function leanContract(p){
+ var out=[];
+ for(var i=0;i<LEAN_CONTRACT.length;i++){
+  var full=LEAN_CONTRACT[i][0];
+  if(p.indexOf(full)>=0){
+   var v=p.split(full).join(LEAN_CONTRACT[i][1]);
+   if(out.indexOf(v)<0)out.push(v);}}
+ return out;}
 function leanKeys(){
  var n=leanCount();
  if(LEANKEYS&&LEANKEYN===n) return LEANKEYS;
  LEANKEYN=n;
  var rows=[];
  LEANCH.forEach(function(c){LEANLEX[c.k].forEach(function(p){
-  rows.push({p:p,k:c.k,fr:null});});});
+  rows.push({p:p,k:c.k,fr:null});
+  leanContract(p).forEach(function(k){rows.push({p:k,k:c.k,fr:null});});});});
  Object.keys(LEANFRAME).forEach(function(side){LEANFRAME[side].forEach(function(p){
-  rows.push({p:p,k:null,fr:side});});});
+  rows.push({p:p,k:null,fr:side});
+  leanContract(p).forEach(function(k){rows.push({p:k,k:null,fr:side});});});});
  rows.sort(function(a,b){return b.p.length-a.p.length;});
  LEANKEYS=rows; return rows;}
 
@@ -7674,7 +7703,16 @@ var LEX={
  'i was not as good as':['solar',20,'Shame'],'i was not as good as other people':['solar',22,'Shame'],
  'i was not good at this':['solar',18,'Shame'],'i was not good enough':['solar',22,'Shame'],
  'i was bad at this':['solar',18,'Shame'],'i was not performing well':['solar',16,'Shame'],
- 'i was so dumb':['solar',20,'Shame'],'i was dumb':['solar',18,'Shame']};
+ 'i was so dumb':['solar',20,'Shame'],'i was dumb':['solar',18,'Shame'],
+ /* THE CONTRACTED FORM, 11 November. The seven rows above only typed out
+    in full: "I wasn't smart enough" scored nothing, "I was not smart
+    enough" scored 22. Same seats, same weights, "wasnt" in place of "was
+    not", the same reason the past tense rows above exist: a person
+    writing their own words contracts "was not" far more often than not. */
+ 'i wasnt smart':['solar',20,'Shame'],'i wasnt smart enough':['solar',22,'Shame'],
+ 'i wasnt as good as':['solar',20,'Shame'],'i wasnt as good as other people':['solar',22,'Shame'],
+ 'i wasnt good at this':['solar',18,'Shame'],'i wasnt good enough':['solar',22,'Shame'],
+ 'i wasnt performing well':['solar',16,'Shame']};
 var ADJ2CHG={
  nervous:'anxiety',anxious:'anxiety',tense:'anxiety',
  unheard:'silence',voiceless:'silence',choked:'silence',swallowed:'silence',
@@ -8600,7 +8638,7 @@ function lexSyn(places){
    THE FOUR BIDIRECTIONAL LAWS ARE KEYED IN BOTH DIRECTIONS, on the spec's own
    warning: "a sniffer that only looks for the obvious pole will miss half of
    them, self-abandonment reads as virtue in a journal." Compassion, Humility,
-   Generosity and Ownership each carry two cue sets and the output names which
+   Generosity and Accountability each carry two cue sets and the output names which
    direction fired. A law read in the wrong direction is worse than a law not
    read, because the product would praise the thing it is meant to surface.
 
@@ -8615,16 +8653,21 @@ var LAW_SELF='self', LAW_OTHER='other', LAW_ONE='single';
    so the output contract can emit it and so a renumbering is a visible diff. */
 var LAWCUE=[
  [29,'Truth',           LAW_ONE,  ['lied','i lied','told them i','made it up','not the whole truth',
-                                   'i said i had','pretended i','covered for','deceived','a white lie']],
+                                   'i said i had','pretended i','covered for','deceived','a white lie',
+                                   'lied to her','lied to him','lied to them','lied about']],
  [30,'Transparency',    LAW_ONE,  ['did not tell','kept it from','they do not know','behind their back',
-                                   'nobody knows i','hid it','i hid','concealed','kept quiet about']],
- [31,'Unity',           LAW_ONE,  ['us and them','those people','not one of us','they are all',
-                                   'people like that','my side','cut them off','nothing to do with me']],
+                                   'nobody knows i','concealed','kept quiet about',
+                                   'hid it from','i hid it from','covered my tracks']],
+ [31,'Unity',           LAW_ONE,  ['us and them','those people','not one of us',
+                                   'people like that','cut them off','nothing to do with me',
+                                   'took sides against','picked a side against']],
  [32,'Awareness',       LAW_ONE,  ['before i knew it','i just reacted','snapped at','lost it with',
                                    'came out of nowhere','without thinking','i was triggered']],
- [33,'Presence',        LAW_ONE,  ['going over it','kept replaying','rehearsing','could not be there',
-                                   'somewhere else','i was not there','in my head the whole']],
- [34,'Equanimity',      LAW_ONE,  ['depends on whether','only if','ruined the whole','set me off',
+ [33,'Presence',        LAW_ONE,  ['going over it','kept replaying','could not be there',
+                                   'i was not there','in my head the whole',
+                                   'my mind was somewhere else','my head was somewhere else',
+                                   'kept rehearsing','rehearsing what i would say']],
+ [34,'Equanimity',      LAW_ONE,  ['depends on whether','ruined the whole','set me off',
                                    'threw me','could not settle','on edge all']],
  /* BIDIRECTIONAL. the spec: "Indifference OR self-abandonment, withheld in
     either direction." withheld outward is indifference, withheld inward is
@@ -8634,25 +8677,77 @@ var LAWCUE=[
  [35,'Compassion',      LAW_SELF, ['i should be able to','no right to feel','others have it worse',
                                    'i do not matter','put myself last','i will manage','no time for myself']],
  [36,'Forgiveness',     LAW_ONE,  ['will never forgive','still owe me','after what they did','i want them to',
-                                   'holding it against','have not forgotten','they will pay']],
- [37,'Courage',         LAW_ONE,  ['put it off','did not bring it up','said nothing','walked away from',
+                                   'holding it against','have not forgotten','they will pay',
+                                   /* "I'll never forgive" normalises to "ill never forgive"
+                                      (lawNorm drops apostrophes), which the generic
+                                      contraction list above refuses to produce on
+                                      purpose (bare "ill" collides with illness). Three
+                                      words bound to "forgive" never make that
+                                      collision, so it is named here instead. */
+                                   'ill never forgive']],
+ /* 'said nothing' MOVED TO THE GATED TABLE BELOW, 11 November, task #132's
+    item 4, found the same way as the Accountability false fires: run the
+    real sentence first. "I said nothing because he would hit me" is a
+    survival account, not an avoidance, and an ungated cue cannot tell the
+    two apart by the words alone any more than row 40's own ungated cues
+    could. */
+ [37,'Courage',         LAW_ONE,  ['put it off','did not bring it up','walked away from',
                                    'changed the subject','could not face','kept avoiding','never said']],
- [38,'Temperance',      LAW_ONE,  ['one more','again last night','more than i meant','could not stop at',
+ [38,'Temperance',      LAW_ONE,  ['just one more','one more drink','one more glass','one more bet',
+                                   'again last night','more than i meant','could not stop at',
                                    'takes more now','every night this week','went overboard']],
  [39,'Duty',            LAW_ONE,  ['said i would and','let them down','did not show up','broke my word',
                                    'promised and','backed out','went back on']],
- /* BIDIRECTIONAL. the spec: "Victimhood inward, justification outward. One
-    move, two directions." */
- [40,'Ownership',       LAW_OTHER,['made me','not my fault','because they','if they had not',
-                                   'had no choice','forced me','anyone would have']],
- [40,'Ownership',       LAW_SELF, ['all my fault','i ruined','i always do this','everything is my',
+ /* BIDIRECTIONAL, 40 ACCOUNTABILITY ONLY: this element was keyed as
+    'Ownership' until 11 November, which is not one of the product's 21
+    laws (SI, engine/data/canon.js); Accountability is, and HARM (engine/
+    data/kb.js) gives this same element number the same text under that
+    name: "Accountability is ownership of cause and consequence in the
+    shared world." The spec's own line stays: "Victimhood inward,
+    justification outward. One move, two directions." The outward cues
+    below are ungated, each phrase naming who acted and that it was wrong
+    on its own; a second table, LAWCUE_GATED, carries the phrases that read
+    as deflection only once the harm/reported-speech gate (sniffLaws)
+    confirms nobody else's account is in the same entry. */
+ [40,'Accountability',  LAW_OTHER,['blamed it on','put the blame on','shifted the blame','passed the blame',
+                                   'passed the buck','pointed the finger at','pinned the blame on',
+                                   'made excuses when','made excuses for what i','made excuses instead of',
+                                   'never owned up','did not own up','never admitted it','would not admit it',
+                                   'would not admit i','never admitted i',
+                                   'let them take the blame','let him take the blame','let her take the blame',
+                                   'let them take the fall','let him take the fall','let her take the fall',
+                                   'even though i did it','even though it was me']],
+ [40,'Accountability',  LAW_SELF, ['all my fault','i ruined','i always do this','everything is my',
                                    'i am the problem','i deserve this','no good at anything']],
  [41,'Justice',         LAW_ONE,  ['they got away with','not fair that','wanted them punished',
                                    'looked the other way','turned a blind eye','let it slide because']],
  [42,'Non-Harm',        LAW_ONE,  ['i humiliated','made them cry','said it to hurt','wanted it to sting',
-                                   'did not care who got','collateral','i lashed out at']],
- [43,'Wisdom',          LAW_ONE,  ['sounded right','told myself that','easier to believe','convinced myself',
+                                   'did not care who got','i lashed out at','made her cry','made him cry']],
+ /* RE-KEYED TO 72, 11 November, its real number in HARM (E72 Wisdom). 43
+    now belongs to Responsibility, a real SI law this file carried no row
+    for at all; Wisdom is not one of the 21 (SI), so it stays unshown
+    exactly as it always has, by the same SINAMES filter, element number
+    aside. Cues untouched. */
+ [72,'Wisdom',          LAW_ONE,  ['sounded right','told myself that','easier to believe','convinced myself',
                                    'justified it','knew better and','a good story about']],
+ /* NEW, 11 November, task #132. The canon gives this element no text of
+    its own (HARM's E43 entry is blank); the default here, pending the
+    owner's ruling (see CLAUDE.md), reads it off E40's own line, "ownership
+    of your own field, the patterns and the charge": not a single act owned
+    or disowned, but the pattern itself, left for someone else to carry.
+    Every cue names something that belongs to the writer, never an act
+    against another person, which is what keeps this row apart from 40. */
+ [43,'Responsibility',  LAW_ONE,  ['waiting for someone to fix me','waiting for someone else to fix me',
+                                   'waiting for someone to fix my','waiting for someone else to fix my',
+                                   'waiting for someone to sort out my','waiting for someone else to sort out my',
+                                   'expected my partner to fix how i','expected him to fix how i',
+                                   'expected her to fix how i','expected them to fix how i',
+                                   'it is his job to make me','it is her job to make me','it is their job to make me',
+                                   'keep blaming my childhood','keep blaming my parents','keep blaming my mum',
+                                   'keep blaming my mom','keep blaming my dad',
+                                   'never dealt with my','still have not dealt with my',
+                                   'that is just how i am and','that is just how i am so','that is just who i am and',
+                                   'just how i am take it or leave it']],
  /* BIDIRECTIONAL. the spec: "Pride and grandiosity, OR the inverse
     self-abasement." */
  [44,'Humility',        LAW_OTHER,['nobody else could','above all this','they should be grateful',
@@ -8665,14 +8760,58 @@ var LAWCUE=[
                                    'entitled to','my share first']],
  [45,'Generosity',      LAW_SELF, ['could not accept','refused the help','did not let them',
                                    'i do not need anyone','turned down the offer']],
- [46,'Detachment',      LAW_ONE,  ['has to go my way','cannot let go of','kept checking',
+ [46,'Detachment',      LAW_ONE,  ['has to go my way','cannot let go of',
+                                   'kept checking his phone','kept checking her phone','kept checking their phone',
+                                   'kept checking whether they','kept checking if they',
                                    'needed it to be','could not let them','clinging to','fixated on']],
- [47,'Patience',        LAW_ONE,  ['right now','cannot wait','forced it','pushed it through',
+ [47,'Patience',        LAW_ONE,  ['forced it','pushed it through',
                                    'should have happened by','sick of waiting','made it happen faster']],
- [48,'Aesthetic Beauty',LAW_ONE,  ['the mess','piles of','noise the whole','cluttered','could not think in',
-                                   'chaos in here']],
+ [48,'Aesthetic Beauty',LAW_ONE,  ['living in a mess','piles of it everywhere','noise the whole','cluttered',
+                                   'could not think in','chaos in here']],
  [49,'Nature',          LAW_ONE,  ['have not been outside','screens all','under strip lights',
                                    'no daylight','four walls','not seen the sky']]];
+
+/* THE GATED TABLE, 11 November, task #132. Same shape as LAWCUE, [e,law,
+   direction,[cues]], but sniffLaws never counts a hit from here on its own:
+   each one also has to clear the harm/reported-speech gate (lawGateOpen,
+   below), because every phrase in it is the EXACT wording a real harm
+   account or somebody else's own words would also produce. "Not my fault,
+   I only yelled because they were late" is a deflection; "I had no choice,
+   he locked the door" and "I was told it was all my fault" are not, and a
+   matcher with no gate cannot tell them apart by the words alone. A missed
+   deflection costs nothing this product cannot absorb; calling a survivor
+   the cause is the one error it cannot. */
+/* 'they started it' DROPPED, 11 November, found behind the gate rather than
+   guessed at: "They started it, I was nine and they were fourteen" still
+   fired Accountability. The gate's own harm check reuses LEANFRAME.other
+   (verp.js), a closed phrase list, and no phrase there names a child's own
+   age against another child's, so this one sentence had nothing to close
+   the gate on. The plan's own rule for a cue that still misfires behind
+   the gate is to drop it rather than build a second mechanism around one
+   sentence, the same choice made below for the apology cues on the "never
+   apologised for leaving a job" probe. */
+/* THE APOLOGY CUES, DROPPED, the plan's own probe: "I never apologised for
+   leaving a job I hated" must stay dark, and the gate has nothing to close
+   on (no harm, nobody else's reported words), so 'never apologised' fired
+   behind it. Not apologising for a choice that hurt nobody but the writer
+   is not a deflection of accountability, and the gate cannot tell that
+   case apart from the one the cue was written for, so the cue is dropped
+   rather than tuned around, same ruling as 'they started it' above. */
+var LAWCUE_GATED=[
+ [40,'Accountability',  LAW_OTHER,['not my fault','anyone would have','forced me','if they had not',
+                                   'i did nothing wrong','i did not do anything wrong',
+                                   'the rest is on them']],
+ /* 'said nothing', out of Courage's own ungated row above, same cue, same
+    gate: "I said nothing because he would hit me" must clear the harm
+    check before it reads as an avoidance. */
+ [37,'Courage',         LAW_ONE,  ['said nothing']]];
+/* A MATCH HERE TAKES ITS PLACE IN THE SENTENCE AND IS THEN THROWN AWAY, the
+   same rule verp.js's LEANOUT runs on a different table. "I lied down for
+   a nap" matches the bare 'lied' cue on Truth (29 above); 'lied' has to
+   stay bare to catch "I lied to my boss" with no object, so the sentence
+   that follows it is excluded by name instead of narrowing the cue that
+   serves it. */
+var LAWCANCEL=['lied down','lie down'];
 
 /* THE FIVE EXPRESSION SHADOWS the spec names as high value for journal text:
    Flow to Block, Curiosity to Apathy, Play to Rigidity, Purpose to
@@ -8741,8 +8880,25 @@ function lawCoverage(){
   laws[r[1]]=(laws[r[1]]||0)+r[3].length;
   if(r[2]!==LAW_ONE)bidir[r[1]]=(bidir[r[1]]||0)+1;});
  var thin=Object.keys(laws).filter(function(l){return laws[l]<6;});
+ /* THE GATE USED TO COUNT ITSELF AND CALL IT WHOLE, 11 November. laws:21
+    meant twenty one rows in LAWCUE, not twenty one of the product's own 21
+    (SINAMES, engine/data/canon.js). Ownership and Wisdom filled two of
+    those rows while Responsibility and Accountability, both real SINAMES
+    entries, had none, so this returned laws:21 the whole time task #132 was
+    open. lawsMissing names a real law with no row to find it by; lawsExtra
+    names a row whose name is not one of the 21 at all (Wisdom stays one on
+    purpose, re-keyed to its own element number and never shown, so it
+    belongs here every time and is not a defect). Named apart from the
+    `missing` field below, which this function already used for something
+    else entirely (the spec files this whole pass has no access to); the
+    same word for two different things on one object is exactly the kind
+    of silent collision this repository keeps finding the expensive way. */
+ var rowNames=Object.keys(laws),
+  lawsMissing=(typeof SINAMES!=='undefined'?SINAMES:[]).filter(function(l){return rowNames.indexOf(l)<0;}),
+  lawsExtra=rowNames.filter(function(l){return (typeof SINAMES==='undefined')||SINAMES.indexOf(l)<0;});
  return {laws:Object.keys(laws).length, cues:Object.keys(laws).reduce(function(a,l){return a+laws[l];},0),
   bidirectional:Object.keys(bidir).sort(), thin:thin.sort(),
+  lawsMissing:lawsMissing.sort(), lawsExtra:lawsExtra.sort(),
   expression:EXPRCUE.length, expressionAbsent:5,
   circles:DANTECUE.length, circlesKeyed:DANTECUE.filter(function(c){return c[3].length;}).length,
   nature:0, human:0,
@@ -20136,11 +20292,48 @@ function lawNegated(src,at){
   if(LAW_NEG.indexOf(pre[i])>=0)return true;
   n++;}
  return false;}
+/* CONTRACTIONS, ON THE CUE SIDE ONLY, 11 November. A cue written in full
+   ("did not tell") never matched a person's own contracted words ("didn't
+   tell"): measured on every cue this table carries, 29 of 29 missed their
+   own contracted form. The fix widens what the CUE can match, never what
+   the TEXT says. Expanding the input text instead would shift word
+   alignment and let lawWriter (below) misattribute another person's own
+   act to the writer, the same failure LEANOUT (verp.js) already records
+   for a different table over a different mistake. Two or more words only,
+   so this never produces "ill" from "i will": that one word collides with
+   illness and stays out on purpose, which is why it is not in the list
+   below at all rather than filtered after the fact. */
+var LAW_CONTRACT=[
+ ['did not','didnt'],['do not','dont'],['does not','doesnt'],['could not','couldnt'],
+ ['cannot','cant'],['was not','wasnt'],['were not','werent'],['have not','havent'],
+ ['has not','hasnt'],['had not','hadnt'],['will not','wont'],['would not','wouldnt'],
+ ['is not','isnt'],['i am','im'],['that is','thats'],['it is','its']];
+/* EVERY APPLICABLE FORM, NOT THE FIRST ONE IN THE TABLE, found the same way
+   #164's release bug was found, by running the real sentence rather than
+   reading the code and assuming it. "that is just how i am and" carries two
+   contractible phrases, "that is" and "i am", and the first draft of this
+   function returned on whichever one it found first scanning the table in
+   order, "i am", so the only variant it ever produced was "that is just how
+   im and": the one correct for a sentence that never existed. The real
+   sentence, "That's just how I am and they can deal with it", left only
+   "that is" contracted, so that is the variant that had to exist and did
+   not. Returning every single-substitution variant, one per table entry
+   that matches, fixes it without guessing which one a given cue needs. */
+function lawContract(c){
+ var bare=c.replace(/'/g,''), out=[];
+ for(var i=0;i<LAW_CONTRACT.length;i++){
+  var full=LAW_CONTRACT[i][0];
+  if(bare.indexOf(full)>=0){
+   var v=bare.split(full).join(LAW_CONTRACT[i][1]);
+   if(out.indexOf(v)<0)out.push(v);}}
+ return out;}
 /* every cue from every row, longest first, bounded by spaces, a longer match
    blocking the shorter ones inside it. returns one entry per surviving hit. */
 function lawMatch(src,rows,cueAt){
  var all=[];
- rows.forEach(function(r,ri){r[cueAt].forEach(function(c){all.push({c:c,ri:ri});});});
+ rows.forEach(function(r,ri){r[cueAt].forEach(function(c){
+  all.push({c:c,ri:ri});
+  lawContract(c).forEach(function(k){all.push({c:k,ri:ri});});});});
  all.sort(function(a,b){return b.c.length-a.c.length;});
  var taken=[], out=[];
  all.forEach(function(x){
@@ -20435,9 +20628,68 @@ function lawWriter(t,src){
   if(k>0&&ws[k-1].c===ws[k].c&&LAW_BE.indexOf(ws[k-1].w)>=0&&lawPassive(ws[k].w))return false;
   var a=lawActor(t,ws,k);
   return a==='me'||a==='none';};}
+/* THE HARM AND REPORTED-SPEECH GATE, 11 November, task #132. Every cue in
+   LAWCUE_GATED is the exact wording a real harm account, or somebody
+   else's own reported words, would also produce: "not my fault, I only
+   yelled because they were late" is a deflection, "I had no choice, he
+   locked the door" is a harm account, "she told me it was all my fault"
+   is somebody else's words placed in the writer's mouth. Reuses verp.js's
+   own LEANFRAME.other list (through leanKeys, which already carries its
+   contracted forms) rather than building a second harm table: a matched
+   harm marker anywhere in the entry closes the gate for the whole entry,
+   on the same asymmetry verp.js's own comment states for a different
+   table, "a false positive on the lack side is the one error this product
+   cannot afford". The reported-speech list is short and specific on
+   purpose: these name someone else as the one who spoke, which LAWCUE's
+   own lawWriter (above) cannot see, because a cue like "all my fault"
+   carries its own first-person word ("my") and lawWriter's first check
+   returns true on that alone, before it ever looks at who is speaking
+   around it.
+
+   DOES NOT GO THROUGH leanScan, ON PURPOSE, found by running the real
+   sentence rather than trusting the first draft: "I did nothing wrong, he
+   hit me." and "They started it, I was nine and they were fourteen." both
+   fired Accountability outward, which is calling the harmed person the
+   cause, the one error this gate exists to stop. leanScan runs every hit
+   through leanNegated, a three word look back that stops only at a full
+   stop, question mark, semicolon, colon or line break, never a comma; a
+   comma is not that boundary on purpose elsewhere in this file (verp.js's
+   own sentence-boundary fix, the ND entry in CLAUDE.md, names the same
+   choice), so "nothing" inside "did nothing wrong" sits three words
+   before "hit me" across the comma and voids it as if it had never been
+   written. Correct for leanScan's own job, which is reporting what the
+   writer admitted; wrong for a gate whose only question is whether a harm
+   phrase appears anywhere in the entry at all, negated or not, which the
+   comment above already promised and the first draft did not keep. */
+function lawHarmPresent(t){
+ var src=leanNorm(t), rows=leanKeys();
+ for(var i=0;i<rows.length;i++){
+  if(rows[i].fr==='other'&&src.indexOf(' '+rows[i].p+' ')>=0)return true;}
+ return false;}
+var LAW_REPORTED=['told me','was told','said it was','kept telling me','she said','he said','they said'];
+function lawGateOpen(t){
+ if(lawHarmPresent(t))return false;
+ var low=' '+String(t||'').toLowerCase().replace(/['‘’]/g,'')+' ';
+ for(var i=0;i<LAW_REPORTED.length;i++){
+  if(low.indexOf(' '+LAW_REPORTED[i]+' ')>=0)return false;}
+ return true;}
+/* A MATCH HERE TAKES ITS PLACE IN THE SENTENCE AND IS THEN THROWN AWAY,
+   LAWCANCEL's own doc comment names why; this is the one row whose hits
+   never reach `by` below, on purpose, kept in the same lawMatch call as
+   Truth's own 'lied' cue so the existing longest-match-blocks-shorter rule
+   reserves "lied down"'s span before the bare 'lied' cue can claim it. */
+var LAWCANCEL_ROW=[-1,'__cancel__',LAW_ONE,LAWCANCEL];
 function sniffLaws(text){
  var t=String(text||'').replace(/[‘’]/g,"'");
- var src=lawNorm(t), hits=lawMatch(src,LAWCUE,3).filter(lawWriter(t,src)), by={};
+ var src=lawNorm(t);
+ var writer=lawWriter(t,src);
+ var hits=lawMatch(src,LAWCUE.concat([LAWCANCEL_ROW]),3)
+  .filter(function(h){return h.row[1]!=='__cancel__';}).filter(writer);
+ var gateOpen=lawGateOpen(t);
+ hits=hits.filter(function(h){
+  return !(h.row[1]==='Accountability'&&h.row[2]===LAW_SELF)||gateOpen;});
+ if(gateOpen)hits=hits.concat(lawMatch(src,LAWCUE_GATED,3).filter(writer));
+ var by={};
  hits.forEach(function(h){
   var r=h.row, key=r[0]+'|'+r[2];
   if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
@@ -20462,7 +20714,8 @@ var LAWVIO={
  Compassion:{other:'Indifference', self:'Self-abandonment'},
  Forgiveness:{single:'Resentment'}, Courage:{single:'Avoidance'},
  Temperance:{single:'Overindulgence'}, Duty:{single:'Betrayal'},
- Ownership:{other:'Justification outward', self:'Victimhood inward'},
+ Accountability:{other:'Justification outward', self:'Victimhood inward'},
+ Responsibility:{single:'Disowning'},
  Justice:{single:'Corruption'}, 'Non-Harm':{single:'Cruelty and carelessness'},
  Wisdom:{single:'Folly and sophistry'},
  Humility:{other:'Pride and grandiosity', self:'Self-abasement'},

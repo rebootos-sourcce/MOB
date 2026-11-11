@@ -441,15 +441,44 @@ function leanCount(){
  LEANCH.forEach(function(c){n+=LEANLEX[c.k].length;});
  Object.keys(LEANFRAME).forEach(function(s){n+=LEANFRAME[s].length;});
  return n;}
+/* CONTRACTIONS, ON THE CUE SIDE ONLY, same reason and same rule as
+   engine/sniff.js's lawContract: leanNorm (below) keeps apostrophes, unlike
+   lawNorm, so the generated form is spelled the way a person actually
+   types it ("didn't") rather than the apostrophe-free form that reader
+   strips to. Measured: 29 of 29 LEANLEX/LEANFRAME phrases missed their own
+   contracted form before this. */
+var LEAN_CONTRACT=[
+ ['did not',"didn't"],['do not',"don't"],['does not',"doesn't"],['could not',"couldn't"],
+ ['cannot',"can't"],['was not',"wasn't"],['were not',"weren't"],['have not',"haven't"],
+ ['has not',"hasn't"],['had not',"hadn't"],['will not',"won't"],['would not',"wouldn't"],
+ ['is not',"isn't"],['i am',"i'm"],['that is',"that's"],['it is',"it's"]];
+/* EVERY APPLICABLE FORM, NOT THE FIRST ONE IN THE TABLE. The same bug as
+   sniff.js's lawContract, found there first by running a real sentence
+   ("that is just how i am and" has two contractible phrases and the
+   first-match-wins version always picked "i am", never "that is", so a
+   phrase needing only the first one contracted could never be produced).
+   No LEANLEX/LEANFRAME phrase is known to carry two right now, but the
+   mechanism is shared and ported together, so it is fixed together rather
+   than left correct by accident on one side and wrong on the other. */
+function leanContract(p){
+ var out=[];
+ for(var i=0;i<LEAN_CONTRACT.length;i++){
+  var full=LEAN_CONTRACT[i][0];
+  if(p.indexOf(full)>=0){
+   var v=p.split(full).join(LEAN_CONTRACT[i][1]);
+   if(out.indexOf(v)<0)out.push(v);}}
+ return out;}
 function leanKeys(){
  var n=leanCount();
  if(LEANKEYS&&LEANKEYN===n) return LEANKEYS;
  LEANKEYN=n;
  var rows=[];
  LEANCH.forEach(function(c){LEANLEX[c.k].forEach(function(p){
-  rows.push({p:p,k:c.k,fr:null});});});
+  rows.push({p:p,k:c.k,fr:null});
+  leanContract(p).forEach(function(k){rows.push({p:k,k:c.k,fr:null});});});});
  Object.keys(LEANFRAME).forEach(function(side){LEANFRAME[side].forEach(function(p){
-  rows.push({p:p,k:null,fr:side});});});
+  rows.push({p:p,k:null,fr:side});
+  leanContract(p).forEach(function(k){rows.push({p:k,k:null,fr:side});});});});
  rows.sort(function(a,b){return b.p.length-a.p.length;});
  LEANKEYS=rows; return rows;}
 

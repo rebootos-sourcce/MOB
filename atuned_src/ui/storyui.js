@@ -3600,17 +3600,17 @@ function stAnaPaint(){
    in PLAN.md as the deliberate next piece rather than guessed at with an
    unfitted magnitude.
 
-   A REAL GAP, FOUND WHILE WIRING THIS IN AND NOT BEFORE. DECISIONS.md
-   settled this product's own 21 laws as SI (engine/data/canon.js) with
-   Responsibility and Accountability where the book, SNIFFER_SPEC.md and
-   the sniffer's own cue tables (LAWCUE, LAWVIO, engine/lexicon.js and
-   engine/sniff.js) still carry Wisdom and Ownership. The two names were
-   never reconciled. A hit on either is filtered out below rather than shown
-   against a law this product does not have, and Responsibility and
-   Accountability are left with no cue words to read a violation from at
-   all. Named rather than patched with invented wording, since writing the
-   cue phrases a real violation of either would sound like is a voice
-   decision on its own and not a side effect of wiring a panel in. */
+   A REAL GAP, FOUND WHILE WIRING THIS IN, AND CLOSED 11 November (task
+   #132). DECISIONS.md settled this product's own 21 laws as SI
+   (engine/data/canon.js) with Responsibility and Accountability where the
+   sniffer's own cue tables (LAWCUE, LAWVIO, engine/lexicon.js and
+   engine/sniff.js) used to carry Wisdom and Ownership instead, so a real
+   hit on either law read nothing. Row 40 is Accountability now, row 43 is
+   a new Responsibility row, and Wisdom stays keyed but re-numbered to its
+   own element, 72, which is not one of the 21 and so still never shows.
+   The filter below still guards the case: a cue-table name outside SINAMES
+   is never shown against a law this product does not have, which is why
+   Wisdom's own hits still never reach here. */
 var ST_LAW_TOP=3;
 /* ONE PLAIN CLAUSE PER VIOLATION, so the word never stands alone (V23). Not
    the spec's own phrasing, which runs to abstractions a ten year old has
@@ -3641,7 +3641,10 @@ var ST_LAWSAY={
  Attachment:'needing it to go exactly one way',
  'Forcing or scattering':'pushing before its time, or giving up on it too soon',
  Chaos:'noise piling on noise until nothing settled',
- 'Synthetic departure':'pulled further from what your body actually needs'};
+ 'Synthetic departure':'pulled further from what your body actually needs',
+ 'Justification outward':'putting your part of it onto someone else',
+ 'Victimhood inward':'carrying all of it yourself, including the parts that were never yours',
+ Disowning:'treating your own pattern as something only someone else should fix'};
 var STLW={key:null,wins:null,gate:null};
 function stLawWins(){
  var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];

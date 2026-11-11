@@ -1757,11 +1757,48 @@ function lawNegated(src,at){
   if(LAW_NEG.indexOf(pre[i])>=0)return true;
   n++;}
  return false;}
+/* CONTRACTIONS, ON THE CUE SIDE ONLY, 11 November. A cue written in full
+   ("did not tell") never matched a person's own contracted words ("didn't
+   tell"): measured on every cue this table carries, 29 of 29 missed their
+   own contracted form. The fix widens what the CUE can match, never what
+   the TEXT says. Expanding the input text instead would shift word
+   alignment and let lawWriter (below) misattribute another person's own
+   act to the writer, the same failure LEANOUT (verp.js) already records
+   for a different table over a different mistake. Two or more words only,
+   so this never produces "ill" from "i will": that one word collides with
+   illness and stays out on purpose, which is why it is not in the list
+   below at all rather than filtered after the fact. */
+var LAW_CONTRACT=[
+ ['did not','didnt'],['do not','dont'],['does not','doesnt'],['could not','couldnt'],
+ ['cannot','cant'],['was not','wasnt'],['were not','werent'],['have not','havent'],
+ ['has not','hasnt'],['had not','hadnt'],['will not','wont'],['would not','wouldnt'],
+ ['is not','isnt'],['i am','im'],['that is','thats'],['it is','its']];
+/* EVERY APPLICABLE FORM, NOT THE FIRST ONE IN THE TABLE, found the same way
+   #164's release bug was found, by running the real sentence rather than
+   reading the code and assuming it. "that is just how i am and" carries two
+   contractible phrases, "that is" and "i am", and the first draft of this
+   function returned on whichever one it found first scanning the table in
+   order, "i am", so the only variant it ever produced was "that is just how
+   im and": the one correct for a sentence that never existed. The real
+   sentence, "That's just how I am and they can deal with it", left only
+   "that is" contracted, so that is the variant that had to exist and did
+   not. Returning every single-substitution variant, one per table entry
+   that matches, fixes it without guessing which one a given cue needs. */
+function lawContract(c){
+ var bare=c.replace(/'/g,''), out=[];
+ for(var i=0;i<LAW_CONTRACT.length;i++){
+  var full=LAW_CONTRACT[i][0];
+  if(bare.indexOf(full)>=0){
+   var v=bare.split(full).join(LAW_CONTRACT[i][1]);
+   if(out.indexOf(v)<0)out.push(v);}}
+ return out;}
 /* every cue from every row, longest first, bounded by spaces, a longer match
    blocking the shorter ones inside it. returns one entry per surviving hit. */
 function lawMatch(src,rows,cueAt){
  var all=[];
- rows.forEach(function(r,ri){r[cueAt].forEach(function(c){all.push({c:c,ri:ri});});});
+ rows.forEach(function(r,ri){r[cueAt].forEach(function(c){
+  all.push({c:c,ri:ri});
+  lawContract(c).forEach(function(k){all.push({c:k,ri:ri});});});});
  all.sort(function(a,b){return b.c.length-a.c.length;});
  var taken=[], out=[];
  all.forEach(function(x){
@@ -2056,9 +2093,68 @@ function lawWriter(t,src){
   if(k>0&&ws[k-1].c===ws[k].c&&LAW_BE.indexOf(ws[k-1].w)>=0&&lawPassive(ws[k].w))return false;
   var a=lawActor(t,ws,k);
   return a==='me'||a==='none';};}
+/* THE HARM AND REPORTED-SPEECH GATE, 11 November, task #132. Every cue in
+   LAWCUE_GATED is the exact wording a real harm account, or somebody
+   else's own reported words, would also produce: "not my fault, I only
+   yelled because they were late" is a deflection, "I had no choice, he
+   locked the door" is a harm account, "she told me it was all my fault"
+   is somebody else's words placed in the writer's mouth. Reuses verp.js's
+   own LEANFRAME.other list (through leanKeys, which already carries its
+   contracted forms) rather than building a second harm table: a matched
+   harm marker anywhere in the entry closes the gate for the whole entry,
+   on the same asymmetry verp.js's own comment states for a different
+   table, "a false positive on the lack side is the one error this product
+   cannot afford". The reported-speech list is short and specific on
+   purpose: these name someone else as the one who spoke, which LAWCUE's
+   own lawWriter (above) cannot see, because a cue like "all my fault"
+   carries its own first-person word ("my") and lawWriter's first check
+   returns true on that alone, before it ever looks at who is speaking
+   around it.
+
+   DOES NOT GO THROUGH leanScan, ON PURPOSE, found by running the real
+   sentence rather than trusting the first draft: "I did nothing wrong, he
+   hit me." and "They started it, I was nine and they were fourteen." both
+   fired Accountability outward, which is calling the harmed person the
+   cause, the one error this gate exists to stop. leanScan runs every hit
+   through leanNegated, a three word look back that stops only at a full
+   stop, question mark, semicolon, colon or line break, never a comma; a
+   comma is not that boundary on purpose elsewhere in this file (verp.js's
+   own sentence-boundary fix, the ND entry in CLAUDE.md, names the same
+   choice), so "nothing" inside "did nothing wrong" sits three words
+   before "hit me" across the comma and voids it as if it had never been
+   written. Correct for leanScan's own job, which is reporting what the
+   writer admitted; wrong for a gate whose only question is whether a harm
+   phrase appears anywhere in the entry at all, negated or not, which the
+   comment above already promised and the first draft did not keep. */
+function lawHarmPresent(t){
+ var src=leanNorm(t), rows=leanKeys();
+ for(var i=0;i<rows.length;i++){
+  if(rows[i].fr==='other'&&src.indexOf(' '+rows[i].p+' ')>=0)return true;}
+ return false;}
+var LAW_REPORTED=['told me','was told','said it was','kept telling me','she said','he said','they said'];
+function lawGateOpen(t){
+ if(lawHarmPresent(t))return false;
+ var low=' '+String(t||'').toLowerCase().replace(/['‘’]/g,'')+' ';
+ for(var i=0;i<LAW_REPORTED.length;i++){
+  if(low.indexOf(' '+LAW_REPORTED[i]+' ')>=0)return false;}
+ return true;}
+/* A MATCH HERE TAKES ITS PLACE IN THE SENTENCE AND IS THEN THROWN AWAY,
+   LAWCANCEL's own doc comment names why; this is the one row whose hits
+   never reach `by` below, on purpose, kept in the same lawMatch call as
+   Truth's own 'lied' cue so the existing longest-match-blocks-shorter rule
+   reserves "lied down"'s span before the bare 'lied' cue can claim it. */
+var LAWCANCEL_ROW=[-1,'__cancel__',LAW_ONE,LAWCANCEL];
 function sniffLaws(text){
  var t=String(text||'').replace(/[‘’]/g,"'");
- var src=lawNorm(t), hits=lawMatch(src,LAWCUE,3).filter(lawWriter(t,src)), by={};
+ var src=lawNorm(t);
+ var writer=lawWriter(t,src);
+ var hits=lawMatch(src,LAWCUE.concat([LAWCANCEL_ROW]),3)
+  .filter(function(h){return h.row[1]!=='__cancel__';}).filter(writer);
+ var gateOpen=lawGateOpen(t);
+ hits=hits.filter(function(h){
+  return !(h.row[1]==='Accountability'&&h.row[2]===LAW_SELF)||gateOpen;});
+ if(gateOpen)hits=hits.concat(lawMatch(src,LAWCUE_GATED,3).filter(writer));
+ var by={};
  hits.forEach(function(h){
   var r=h.row, key=r[0]+'|'+r[2];
   if(!by[key])by[key]={e:r[0],law:r[1],direction:r[2],n:0,cues:[]};
@@ -2083,7 +2179,8 @@ var LAWVIO={
  Compassion:{other:'Indifference', self:'Self-abandonment'},
  Forgiveness:{single:'Resentment'}, Courage:{single:'Avoidance'},
  Temperance:{single:'Overindulgence'}, Duty:{single:'Betrayal'},
- Ownership:{other:'Justification outward', self:'Victimhood inward'},
+ Accountability:{other:'Justification outward', self:'Victimhood inward'},
+ Responsibility:{single:'Disowning'},
  Justice:{single:'Corruption'}, 'Non-Harm':{single:'Cruelty and carelessness'},
  Wisdom:{single:'Folly and sophistry'},
  Humility:{other:'Pride and grandiosity', self:'Self-abasement'},
