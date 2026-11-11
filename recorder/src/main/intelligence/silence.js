@@ -29,6 +29,18 @@ function detectSilences(words, totalDurationMs) {
     }
   }
 
+  // Detect trailing silence after the last word
+  if (totalDurationMs > 0) {
+    const lastEndMs = Math.round(words[words.length - 1].end * 1000);
+    const trailingMs = totalDurationMs - lastEndMs;
+    if (trailingMs >= MIN_SILENCE_MS) {
+      gaps.push({
+        start_ms: lastEndMs + KEEP_LEAD_MS,
+        end_ms:   totalDurationMs
+      });
+    }
+  }
+
   return gaps.filter(g => g.end_ms > g.start_ms);
 }
 

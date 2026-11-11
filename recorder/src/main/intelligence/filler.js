@@ -2,9 +2,9 @@
 // ADR-005: Filler word detection with corrected pre-pad placement.
 // Returns array of {start_ms, end_ms} silence/filler segments to remove.
 
+// Whisper emits individual words, so only single-token fillers match.
 const FILLERS = new Set([
-  'um', 'uh', 'er', 'ah', 'like', 'you know', 'i mean',
-  'basically', 'literally', 'actually', 'so', 'well', 'right'
+  'um', 'uh', 'er', 'ah', 'like', 'basically', 'literally', 'actually', 'so', 'well', 'right'
 ]);
 
 const PRE_PAD_MS  = 150; // pad BEFORE the filler (corrected from post-pad bug in prior design)
