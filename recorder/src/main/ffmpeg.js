@@ -115,7 +115,9 @@ function buildArgs(input, output, opts) {
     if (format === 'mp4') args.push('-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart');
     else args.push('-c:a', 'copy');
   } else if (format === 'webm') {
-    args.push('-c', 'copy');
+    // Intermediate has a non-VP8/VP9 codec (H264 in WebM — unusual but possible
+    // if the platform lacks VP9 support); transcode to VP9 to stay spec-compliant.
+    args.push('-c:v', 'libvpx-vp9', '-crf', '30', '-b:v', '0', '-c:a', 'copy');
   } else {
     const c = CODECS[codec] || CODECS.h264;
     args.push(...c.args(quality || 'high'));
