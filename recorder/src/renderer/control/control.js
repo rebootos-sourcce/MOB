@@ -1039,8 +1039,8 @@
     if (descEdit) descEdit.textContent = pkg.edited_description || pkg.description || '';
     if (tagsEdit) {
       const editedTags = pkg.edited_hashtags_json
-        ? JSON.parse(pkg.edited_hashtags_json).map(t => '#' + t).join(' ')
-        : tags.map(t => '#' + (typeof t === 'string' ? t : t.tag)).join(' ');
+        ? JSON.parse(pkg.edited_hashtags_json).map(t => '#' + t.replace(/^#/, '')).join(' ')
+        : tags.map(t => (typeof t === 'string' ? t : t.tag)).join(' ');
       tagsEdit.textContent = editedTags;
     }
     // Platform variants
@@ -1077,9 +1077,9 @@
     });
 
     $('btnDistUpload').onclick = async () => {
-      if (!selectedRecordingId) { alert('Select a recording.'); return; }
+      if (!selectedRecordingId) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Select a recording first.'; return; }
       const pkg = await window.mob.db.query('packages:latest', [selectedRecordingId]);
-      if (!pkg) { alert('Generate a production package first.'); return; }
+      if (!pkg) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Generate a production package first.'; return; }
 
       $('distProgress').hidden = false;
       $('distProgressBar').style.width = '5%';
