@@ -135,7 +135,7 @@ td:first-child{color:var(--ink);font-weight:600}
    app's own stylesheet. The funnel and the app have to look like one
    product, and a palette copied by hand is correct on the day it is copied
    and wrong afterwards. Change a value in head.html and run the tool.
-   49 tokens. */
+   52 tokens. */
 :root{
  /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
 
@@ -150,6 +150,12 @@ td:first-child{color:var(--ink);font-weight:600}
     ruling and not a contrast one, and this changes no hue. */
  --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* WRITTEN LIVE BY ui/uni.js's ambPaint, round of 9 November; these two
+    fallbacks are what shows before she has painted even once (the first
+    frame, or a worked example that never mounts her). Dim and neutral on
+    purpose, the same reasoning as her own unread palette: nothing she has
+    not actually read yet. */
+ --uni-amb-core:60,56,52; --uni-amb-edge:10,9,8;
  /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
     marking the second tier of the information architecture: every eyebrow,
     every key label, every explanatory subline. Measured at 3.70 to 1 on
@@ -270,6 +276,11 @@ td:first-child{color:var(--ink);font-weight:600}
     tests/design.js reads transitions and not keyframes, so a loop typed
     straight into a rule goes unchecked by it. */
  --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* --t-drift, 10 November: the hero stage's cloud (head.html's own
+    uniCloudDrift, beside #stage::before) needs tens of seconds, not
+    the fractions of one the other four name, so it is its own token
+    rather than a bare number typed into that one rule. */
+ --t-drift:23s;
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
