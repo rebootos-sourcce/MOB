@@ -31,7 +31,8 @@
     "asarUnpack": [
       "node_modules/ffmpeg-static/**",
       "node_modules/@xenova/transformers/dist/**",
-      "node_modules/sql.js/dist/**"
+      "node_modules/sql.js/dist/**",
+      "node_modules/onnxruntime-node/**"
     ],
     "publish": {
       "provider": "github",
