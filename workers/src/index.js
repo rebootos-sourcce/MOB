@@ -51,7 +51,7 @@ export default {
 
 // ── /presign ──────────────────────────────────────────────────────────────────
 async function handlePresign(request, env, url) {
-  const { key, mimeType = 'video/mp4', deviceId } = await request.json();
+  const { key, mimeType = 'video/mp4' } = await request.json();
   if (!key) return json({ error: 'key required' }, 400);
 
   const ttl = Number(env.UPLOAD_TOKEN_TTL_SECONDS || 3600);
@@ -93,20 +93,18 @@ async function handleQueue(request, env) {
     return json({ error: 'distributionId, recordingId, r2Key required' }, 400);
   }
 
-  // Create / resume DistributionCoordinator DO
-  const id  = env.COORDINATOR.idFromName(distributionId);
+  const id   = env.COORDINATOR.idFromName(distributionId);
   const stub = env.COORDINATOR.get(id);
+
+  // Init is idempotent — safe to retry; a resumed DO returns its current status.
   await stub.fetch(new Request('https://do/init', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ distributionId, recordingId, r2Key, packageId, platform, deviceId }),
   }));
 
-  // Kick off post-upload processing (non-blocking — Worker will handle in DO)
-  const doId = env.COORDINATOR.idFromName(distributionId);
-  const doStub = env.COORDINATOR.get(doId);
-  // Fire-and-forget: mark as queued
-  const _ = doStub.fetch(new Request('https://do/progress', {
+  // Advance to 'queued'; await so failures surface to the caller.
+  await stub.fetch(new Request('https://do/progress', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status: 'queued' }),
