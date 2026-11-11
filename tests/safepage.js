@@ -123,8 +123,19 @@ const look = p => p.evaluate(() => {
   const line = s && s.querySelector('p'), door = s && s.querySelector('[data-crisis]');
   const r = door && door.getBoundingClientRect();
   const rel = document.getElementById('strel');
+  /* THE LINE'S OWN VISIBILITY, checked directly, 11 November, now that the
+     door beside it is gone: with no door left, this line is the only
+     thing left on the hero view carrying the safety information at all,
+     and nothing before tonight ever measured its own box, only its text
+     (readable even on a display:none element). Added the same round that
+     found the CSS exception keeping #stsrc visible here (shell/head.html)
+     was written for the door, not the line, and is still needed for the
+     line alone now the door's gone. */
+  const lr = line && line.getBoundingClientRect();
   return {
     line: line ? line.textContent : null,
+    lineSeen: line ? (lr.width > 0 && lr.height > 0 && getComputedStyle(line).visibility !== 'hidden'
+      && lr.top >= 0 && lr.bottom <= innerHeight) : null,
     door: door ? { k: door.getAttribute('data-crisis'), t: door.textContent, inView: r.top >= 0 && r.bottom <= innerHeight, h: r.height } : null,
     reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
     ink: line ? getComputedStyle(line).color : null,
@@ -155,6 +166,7 @@ const look = p => p.evaluate(() => {
     await type(p, T);
     const s = await look(p);
     ok(s.line === SAY.entry, 'the line is Emmy\'s, word for word' + at + ': ' + JSON.stringify(s.line));
+    ok(s.lineSeen === true, 'and it is actually on screen, not merely in the DOM, the only thing left carrying this now the door is gone' + at);
     /* REMOVED, 11 November: crisisReachBtn (atuned_src/ui/crisis.js) prints
        nothing now, so the line stands alone, with no door beside it. */
     ok(!s.door && s.reach === 0, 'no crisis door beside the line, removed 11 November' + at + ': ' + JSON.stringify(s.door) + ', ' + s.reach + ' on the page');
