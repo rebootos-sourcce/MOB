@@ -8852,27 +8852,95 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
-.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
- box-shadow:0 14px 34px -12px color-mix(in srgb,var(--accent) 60%,transparent)}
+.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
 .obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
  rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
 .obx .btn.pri:hover::after{translate:2px 0}
-.obx .btn.pri:disabled{box-shadow:none}
-.obx .btn[data-ob=back]{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
-.obx .btn[data-ob=back]:hover{color:var(--ink);background:transparent}
-.obx .btn[data-ob=back]::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
+.obx .btn.ob-back{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
+.obx .btn.ob-back:hover{color:var(--ink);background:transparent}
+.obx .btn.ob-back::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
  border-bottom:1.5px solid currentColor;border-left:1.5px solid currentColor;rotate:45deg;translate:0 -1px}
 /* the chips, at the size of a choice and not of a setting */
 .obx .ob-seats{gap:10px;margin:24px 0 8px}
-.obx .ob-seat{min-height:48px;padding:8px 18px;border-radius:999px;font-size:15px;color:var(--ink);
- background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent);
- transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out),
-  translate var(--t-micro) var(--ease-out)}
-.obx .ob-seat:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);
- border-color:color-mix(in srgb,var(--ink) 30%,transparent);translate:0 -1px}
 .obx .ob-seats-mk .ob-seat{padding:6px 18px 6px 8px}
 .obx .ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:18px}
 .obx .ob-mk-s{width:32px;height:32px}
+/* THE REDESIGN, 11 November: this screen's own pill buttons and glow-shadow
+   primary, replaced to carry the same square-beveled, continuous-brightness
+   tile language the Journal rail shipped tonight (stdash.js's .st-pl),
+   argued and locked by the art director round that owns this file's own
+   note above it: a bevel means pressable (an answer or an action), a round
+   shape means the instrument or a way out (the ring, the step dots, crisis,
+   the corner Not now), no bevel and no slab means information. See the
+   locked spec for why: clip-path cuts off both box-shadow and the focus
+   ring, so neither exists on these controls anymore, and the fill cannot
+   rise (no @property --b existed anywhere before this round) so it was
+   always an instant snap, never the rise the rail's own comment claimed. */
+@property --b{syntax:'<number>';inherits:true;initial-value:0}
+.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){
+ --cut:8px;--k:var(--c,var(--accent));--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));
+ position:relative;display:inline-flex;align-items:center;justify-content:center;text-align:center;
+ border:0;border-radius:0;box-shadow:none;translate:none;
+ background-color:var(--sunk);
+ background-image:linear-gradient(to top,var(--bf) 0 calc(var(--b)*100%),transparent calc(var(--b)*100%) 100%);
+ clip-path:polygon(var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut));
+ transition:--b .28s var(--ease-out),color .14s linear .14s,scale .1s var(--ease-out)}
+.obx .ob-seat::before,.obx .ob-as>.ob-a::before,.obx .btn:not(.ob-back)::before{
+ content:'';position:absolute;inset:0;pointer-events:none;
+ background:color-mix(in srgb,var(--k) calc(var(--b)*100%),var(--edge-2));
+ clip-path:polygon(evenodd,
+  var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut),var(--cut) 0,
+  calc(var(--cut) + .41px) 1px,1px calc(var(--cut) + .41px),1px calc(100% - var(--cut) - .41px),calc(var(--cut) + .41px) calc(100% - 1px),calc(100% - var(--cut) - .41px) calc(100% - 1px),calc(100% - 1px) calc(100% - var(--cut) - .41px),calc(100% - 1px) calc(var(--cut) + .41px),calc(100% - var(--cut) - .41px) 1px,calc(var(--cut) + .41px) 1px)}
+.obx .ob-seat,.obx .ob-as>.ob-a{color:var(--mid)}
+.obx .btn:not(.ob-back){color:var(--ink);font-weight:500}
+.obx .ob-seat:not(.on):hover,.obx .ob-as>.ob-a:not(.on):hover,.obx .btn:not(.ob-back):not(.pri):hover{--b:.15;color:var(--ink)}
+.obx .ob-seat.on,.obx .ob-seat:active,.obx .ob-as>.ob-a.on,.obx .ob-as>.ob-a:active{--b:1;color:var(--ink);font-weight:600}
+.obx .btn:not(.ob-back):active{scale:.97}
+.obx .btn.pri{--b:1;--bf:var(--k);color:var(--on-accent)}
+.obx .btn.pri:disabled{--b:0;--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));color:var(--dim);opacity:1;cursor:default;filter:none}
+.obx .ob-seat:focus-visible,.obx .ob-as>.ob-a:focus-visible,.obx .btn:not(.ob-back):focus-visible{
+ outline:2px solid var(--k);outline-offset:calc(1px - var(--cut))}
+.obx .btn.pri:not(:disabled):focus-visible{outline-color:var(--on-accent)}
+body.punch .obx .ob-seat,body.punch .obx .ob-as>.ob-a,body.punch .obx .btn:not(.ob-back){--bf:var(--k);background-color:var(--panel-2)}
+body.punch .obx .ob-seat::before,body.punch .obx .ob-as>.ob-a::before,body.punch .obx .btn:not(.ob-back)::before{display:none}
+body.punch .obx .ob-seat.on,body.punch .obx .ob-as>.ob-a.on{color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){transition:none}}
+/* Ask and Feel chips carry no seat colour (engine/data/onboarding.js: "a
+   feeling is not one place in the body"), so --k falls back to --accent for
+   them; Body's chips set --c inline per seat and tint their own tile. */
+.obx .ob-seat{min-height:48px;padding:8px 18px;font-size:15px}
+.obx .ob-seats-mk .ob-mk-dk{fill:none}
+/* Ask: a grid, so 12 chips never end on a short row (the owner's 10
+   November rail ruling: "we should never have one icon, one row that's not
+   even"). */
+.obx .ob-seats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:900px){.obx .ob-seats{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1200px){.obx .ob-seats{grid-template-columns:repeat(4,1fr)}}
+/* Feel: 3 columns always, Not sure breaks the grid instead of joining it as
+   a seventh feeling (it is a different kind of answer). */
+.obx .ob-seats-ns{grid-template-columns:repeat(3,1fr)}
+.obx .ob-seats-ns>.ob-seat:last-child{grid-column:1/-1}
+/* Body: a vertical list under 1200px, crown at the top, Not sure at the
+   bottom, standing like the body it names. At 1200px and wider, the rail's
+   own seven-column Energy row, Not sure spanning the full width beneath. */
+.obx .ob-seats-mk{display:flex;flex-direction:column-reverse;gap:8px}
+.obx .ob-seats-mk>.ob-seat:last-child{order:-1}
+.obx .ob-seats-mk .ob-seat{justify-content:flex-start;gap:12px;padding:6px 18px 6px 8px}
+@media(min-width:1200px){
+ .obx .ob-seats-mk{display:grid;grid-template-columns:repeat(7,1fr)}
+ .obx .ob-seats-mk>.ob-seat:last-child{order:0;grid-column:1/-1;min-height:48px;padding:6px 18px}
+ .obx .ob-seats-mk .ob-seat{flex-direction:column;justify-content:center;gap:6px;min-height:88px;padding:10px 4px 8px;font-size:13px}}
+/* Mirror: Yes/Not me as a word-chip pair, not an icon tile; Not me stays
+   neutral so a "no" never reads as lit in the seat's own colour, which
+   would read as a yes. */
+.obx .ob-as{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:288px}
+.obx .ob-as>.ob-a{--cut:6px;min-height:var(--tap);font-size:14px}
+.obx .ob-as>.ob-a:nth-child(2){--c:var(--mid)}
+/* static information never gets the pressable bevel: Settle's plan items
+   and the end card's rows lose their grey slab instead of gaining one. */
+.obx .ob-plan{gap:10px 22px}
+.obx .ob-plan-i{background:none;border:0;border-radius:0;padding:7px 0}
+.obx .ob-g{background:var(--sunk)}
 .obx .ob-f textarea{font-size:19px;line-height:1.55;padding:18px 20px;min-height:168px;border-radius:16px;
  background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
 .obx .ob-loopw{grid-template-columns:150px 1fr;gap:30px;margin:28px 0 14px}

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v42 17fe3e32 2026-11-11 03:02"><head><meta charset="utf-8">
+<html lang="en" data-build="v44 a6b3e8a0 2026-11-11 07:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -8852,27 +8852,95 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
-.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
- box-shadow:0 14px 34px -12px color-mix(in srgb,var(--accent) 60%,transparent)}
+.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
 .obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
  rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
 .obx .btn.pri:hover::after{translate:2px 0}
-.obx .btn.pri:disabled{box-shadow:none}
-.obx .btn[data-ob=back]{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
-.obx .btn[data-ob=back]:hover{color:var(--ink);background:transparent}
-.obx .btn[data-ob=back]::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
+.obx .btn.ob-back{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
+.obx .btn.ob-back:hover{color:var(--ink);background:transparent}
+.obx .btn.ob-back::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
  border-bottom:1.5px solid currentColor;border-left:1.5px solid currentColor;rotate:45deg;translate:0 -1px}
 /* the chips, at the size of a choice and not of a setting */
 .obx .ob-seats{gap:10px;margin:24px 0 8px}
-.obx .ob-seat{min-height:48px;padding:8px 18px;border-radius:999px;font-size:15px;color:var(--ink);
- background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent);
- transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out),
-  translate var(--t-micro) var(--ease-out)}
-.obx .ob-seat:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);
- border-color:color-mix(in srgb,var(--ink) 30%,transparent);translate:0 -1px}
 .obx .ob-seats-mk .ob-seat{padding:6px 18px 6px 8px}
 .obx .ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:18px}
 .obx .ob-mk-s{width:32px;height:32px}
+/* THE REDESIGN, 11 November: this screen's own pill buttons and glow-shadow
+   primary, replaced to carry the same square-beveled, continuous-brightness
+   tile language the Journal rail shipped tonight (stdash.js's .st-pl),
+   argued and locked by the art director round that owns this file's own
+   note above it: a bevel means pressable (an answer or an action), a round
+   shape means the instrument or a way out (the ring, the step dots, crisis,
+   the corner Not now), no bevel and no slab means information. See the
+   locked spec for why: clip-path cuts off both box-shadow and the focus
+   ring, so neither exists on these controls anymore, and the fill cannot
+   rise (no @property --b existed anywhere before this round) so it was
+   always an instant snap, never the rise the rail's own comment claimed. */
+@property --b{syntax:'<number>';inherits:true;initial-value:0}
+.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){
+ --cut:8px;--k:var(--c,var(--accent));--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));
+ position:relative;display:inline-flex;align-items:center;justify-content:center;text-align:center;
+ border:0;border-radius:0;box-shadow:none;translate:none;
+ background-color:var(--sunk);
+ background-image:linear-gradient(to top,var(--bf) 0 calc(var(--b)*100%),transparent calc(var(--b)*100%) 100%);
+ clip-path:polygon(var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut));
+ transition:--b .28s var(--ease-out),color .14s linear .14s,scale .1s var(--ease-out)}
+.obx .ob-seat::before,.obx .ob-as>.ob-a::before,.obx .btn:not(.ob-back)::before{
+ content:'';position:absolute;inset:0;pointer-events:none;
+ background:color-mix(in srgb,var(--k) calc(var(--b)*100%),var(--edge-2));
+ clip-path:polygon(evenodd,
+  var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut),var(--cut) 0,
+  calc(var(--cut) + .41px) 1px,1px calc(var(--cut) + .41px),1px calc(100% - var(--cut) - .41px),calc(var(--cut) + .41px) calc(100% - 1px),calc(100% - var(--cut) - .41px) calc(100% - 1px),calc(100% - 1px) calc(100% - var(--cut) - .41px),calc(100% - 1px) calc(var(--cut) + .41px),calc(100% - var(--cut) - .41px) 1px,calc(var(--cut) + .41px) 1px)}
+.obx .ob-seat,.obx .ob-as>.ob-a{color:var(--mid)}
+.obx .btn:not(.ob-back){color:var(--ink);font-weight:500}
+.obx .ob-seat:not(.on):hover,.obx .ob-as>.ob-a:not(.on):hover,.obx .btn:not(.ob-back):not(.pri):hover{--b:.15;color:var(--ink)}
+.obx .ob-seat.on,.obx .ob-seat:active,.obx .ob-as>.ob-a.on,.obx .ob-as>.ob-a:active{--b:1;color:var(--ink);font-weight:600}
+.obx .btn:not(.ob-back):active{scale:.97}
+.obx .btn.pri{--b:1;--bf:var(--k);color:var(--on-accent)}
+.obx .btn.pri:disabled{--b:0;--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));color:var(--dim);opacity:1;cursor:default;filter:none}
+.obx .ob-seat:focus-visible,.obx .ob-as>.ob-a:focus-visible,.obx .btn:not(.ob-back):focus-visible{
+ outline:2px solid var(--k);outline-offset:calc(1px - var(--cut))}
+.obx .btn.pri:not(:disabled):focus-visible{outline-color:var(--on-accent)}
+body.punch .obx .ob-seat,body.punch .obx .ob-as>.ob-a,body.punch .obx .btn:not(.ob-back){--bf:var(--k);background-color:var(--panel-2)}
+body.punch .obx .ob-seat::before,body.punch .obx .ob-as>.ob-a::before,body.punch .obx .btn:not(.ob-back)::before{display:none}
+body.punch .obx .ob-seat.on,body.punch .obx .ob-as>.ob-a.on{color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){transition:none}}
+/* Ask and Feel chips carry no seat colour (engine/data/onboarding.js: "a
+   feeling is not one place in the body"), so --k falls back to --accent for
+   them; Body's chips set --c inline per seat and tint their own tile. */
+.obx .ob-seat{min-height:48px;padding:8px 18px;font-size:15px}
+.obx .ob-seats-mk .ob-mk-dk{fill:none}
+/* Ask: a grid, so 12 chips never end on a short row (the owner's 10
+   November rail ruling: "we should never have one icon, one row that's not
+   even"). */
+.obx .ob-seats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:900px){.obx .ob-seats{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1200px){.obx .ob-seats{grid-template-columns:repeat(4,1fr)}}
+/* Feel: 3 columns always, Not sure breaks the grid instead of joining it as
+   a seventh feeling (it is a different kind of answer). */
+.obx .ob-seats-ns{grid-template-columns:repeat(3,1fr)}
+.obx .ob-seats-ns>.ob-seat:last-child{grid-column:1/-1}
+/* Body: a vertical list under 1200px, crown at the top, Not sure at the
+   bottom, standing like the body it names. At 1200px and wider, the rail's
+   own seven-column Energy row, Not sure spanning the full width beneath. */
+.obx .ob-seats-mk{display:flex;flex-direction:column-reverse;gap:8px}
+.obx .ob-seats-mk>.ob-seat:last-child{order:-1}
+.obx .ob-seats-mk .ob-seat{justify-content:flex-start;gap:12px;padding:6px 18px 6px 8px}
+@media(min-width:1200px){
+ .obx .ob-seats-mk{display:grid;grid-template-columns:repeat(7,1fr)}
+ .obx .ob-seats-mk>.ob-seat:last-child{order:0;grid-column:1/-1;min-height:48px;padding:6px 18px}
+ .obx .ob-seats-mk .ob-seat{flex-direction:column;justify-content:center;gap:6px;min-height:88px;padding:10px 4px 8px;font-size:13px}}
+/* Mirror: Yes/Not me as a word-chip pair, not an icon tile; Not me stays
+   neutral so a "no" never reads as lit in the seat's own colour, which
+   would read as a yes. */
+.obx .ob-as{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:288px}
+.obx .ob-as>.ob-a{--cut:6px;min-height:var(--tap);font-size:14px}
+.obx .ob-as>.ob-a:nth-child(2){--c:var(--mid)}
+/* static information never gets the pressable bevel: Settle's plan items
+   and the end card's rows lose their grey slab instead of gaining one. */
+.obx .ob-plan{gap:10px 22px}
+.obx .ob-plan-i{background:none;border:0;border-radius:0;padding:7px 0}
+.obx .ob-g{background:var(--sunk)}
 .obx .ob-f textarea{font-size:19px;line-height:1.55;padding:18px 20px;min-height:168px;border-radius:16px;
  background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
 .obx .ob-loopw{grid-template-columns:150px 1fr;gap:30px;margin:28px 0 14px}
@@ -43768,25 +43836,44 @@ const ZONES=[
     g3.addColorStop(1,  _rgba(p.cl, 0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.90,0,Math.PI*2); ctx.fillStyle=g3; ctx.fill();
     ctx.restore();
-    // Pass 4: white-hot core (screen blend -- simulates sensor overexposure)
+    // Pass 4: hot core (screen blend -- simulates sensor overexposure). The
+    // centre stop used to be pure white, which stacked with the pupil
+    // highlight's own white catchlight into three white layers in the eyes
+    // -- the "bug eye" look the owner flagged. Tinted toward the character's
+    // own live hue instead, so the glow core reads as that character's light
+    // rather than a flat white sensor dot.
     ctx.save();
     ctx.globalCompositeOperation='screen';
     const g4=ctx.createRadialGradient(sx,sy,0,sx,sy,r*0.42);
-    g4.addColorStop(0, `rgba(255,255,255,${(0.92*ba).toFixed(2)})`);
+    g4.addColorStop(0, _rgba(colorMix(p.cr,[255,255,255],0.6),0.85*ba));
     g4.addColorStop(0.4,_rgba(p.cr,0.55*ba));
     g4.addColorStop(1,  _rgba(p.cr,0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.42,0,Math.PI*2); ctx.fillStyle=g4; ctx.fill();
     ctx.restore();
   }
 
-  // Dims the particle field under an orb so it reads as a distinct light, not noise
+  // Dims the particle field under an orb so it reads as a distinct light, not
+  // noise. On an opaque mount this multiplies a gray disc over the particle
+  // field. On a transparent mount (the hero view) there is no particle field
+  // under it, only the page behind the canvas, so the same multiply paints a
+  // visible gray plate with a bright rim instead -- the two white "ball
+  // bearing" discs the owner flagged. destination-out punches the same
+  // darkening shape out of the canvas's own alpha instead, which clears the
+  // space without painting anything over whatever is behind the page.
   function clearOrbSpace(sx,sy,r){
     ctx.save();
-    ctx.globalCompositeOperation='multiply';
     const cg=ctx.createRadialGradient(sx,sy,0,sx,sy,r*2.8);
-    cg.addColorStop(0,   'rgba(118,118,128,0.50)');
-    cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
-    cg.addColorStop(1,   'rgba(255,255,255,1)');
+    if(uniBgTransparent){
+      ctx.globalCompositeOperation='destination-out';
+      cg.addColorStop(0,   'rgba(0,0,0,0.27)');
+      cg.addColorStop(0.5, 'rgba(0,0,0,0.30)');
+      cg.addColorStop(1,   'rgba(0,0,0,0)');
+    }else{
+      ctx.globalCompositeOperation='multiply';
+      cg.addColorStop(0,   'rgba(118,118,128,0.50)');
+      cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
+      cg.addColorStop(1,   'rgba(255,255,255,1)');
+    }
     ctx.beginPath(); ctx.arc(sx,sy,r*2.8,0,Math.PI*2);
     ctx.fillStyle=cg; ctx.fill();
     ctx.restore();
@@ -43809,11 +43896,16 @@ const ZONES=[
     const outerY=baseY-pinch*eyeRadius*0.12;
     const midY=baseY-(pinch<0?-pinch*eyeRadius*0.55:-pinch*eyeRadius*0.20);
     ctx.save();
-    ctx.globalCompositeOperation='screen';
+    // A dark line drawn with 'screen' lightens toward nothing, which is why
+    // this brow read as invisible however present its own alpha math says it
+    // is. 'multiply' darkens on an opaque mount; on the transparent hero
+    // mount there is nothing under the canvas to multiply against, so
+    // destination-out carves the same shape out of the canvas's own alpha.
+    ctx.globalCompositeOperation=uniBgTransparent?'destination-out':'multiply';
     ctx.beginPath();
     ctx.moveTo(innerX,innerY);
     ctx.quadraticCurveTo(ex,midY,outerX,outerY);
-    ctx.strokeStyle=`rgba(42,40,37,${al.toFixed(3)})`;
+    ctx.strokeStyle=_rgba(p.ed,al);
     ctx.lineWidth=eyeRadius*0.231;
     ctx.lineCap='round';
     ctx.stroke();
@@ -43827,7 +43919,7 @@ const ZONES=[
     if(alpha<0.03||r<0.5) return;
     const px=sx+ox, py=sy+oy;
     const ba=Math.min(1,bright*alpha);
-    const gray=[118,116,114], fire=[255,120,24];
+    const gray=colorMix(p.cr,[118,116,114],0.5), fire=[255,120,24];
     const fc=[0,1,2].map(i=>Math.round(gray[i]+(fire[i]-gray[i])*coh01));
     // The pupil -- a soft colored glow, fire-orange "passion", more vivid
     // the more coherent the character is
@@ -43835,7 +43927,7 @@ const ZONES=[
     ctx.globalCompositeOperation='screen';
     const rr=r*0.46*1.2;
     const g=ctx.createRadialGradient(px,py,0,px,py,rr);
-    g.addColorStop(0,    `rgba(255,255,255,${Math.min(1,0.85*1.2*ba).toFixed(2)})`);
+    g.addColorStop(0,    _rgba(colorMix(p.cr,[255,255,255],0.55),Math.min(1,0.85*ba)));
     g.addColorStop(0.40, `rgba(${fc[0]},${fc[1]},${fc[2]},${Math.min(1,0.75*1.2*ba).toFixed(2)})`);
     g.addColorStop(1,    `rgba(${fc[0]},${fc[1]},${fc[2]},0)`);
     ctx.beginPath(); ctx.arc(px,py,rr,0,Math.PI*2);
@@ -43864,16 +43956,18 @@ const ZONES=[
     ctx.restore();
     // Owner: "keep the eye highlight square with rounded edges" -- a
     // rounded-rect catchlight instead of a circle, a deliberately more
-    // graphic/designed specular shape
+    // graphic/designed specular shape. Tinted toward the character's own
+    // live hue (was pure white) so it reads as a glint on a lit face rather
+    // than a flat white sensor dot stacked on the equally-white pupil core.
     ctx.save();
     ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=Math.min(1,0.95*ba);
-    ctx.fillStyle='rgb(255,255,255)';
+    ctx.globalAlpha=Math.min(1,0.82*ba);
+    ctx.fillStyle=_rgb(colorMix(p.cr,[255,255,255],0.65));
     ctx.beginPath();
     if(ctx.roundRect) ctx.roundRect(hx-hlR,hy-hlR,hlR*2,hlR*2,hlR*0.34);
     else ctx.rect(hx-hlR,hy-hlR,hlR*2,hlR*2);
     ctx.fill();
-    ctx.globalAlpha=Math.min(0.45,0.32*ba);
+    ctx.globalAlpha=Math.min(0.24,0.18*ba);
     ctx.beginPath(); ctx.arc(hx,hy,hlR*1.7,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
@@ -43922,6 +44016,10 @@ const ZONES=[
   function drawEyelid(ex,ey,eyeRadius,closedAmt,p){
     if(closedAmt<0.04) return;
     ctx.save();
+    // p.bg paints opaque on the transparent hero mount, leaving a dark blot
+    // where the page behind the canvas should show through on a blink.
+    // destination-out erases to the canvas's own transparency instead.
+    if(uniBgTransparent) ctx.globalCompositeOperation='destination-out';
     ctx.globalAlpha=Math.min(0.90,closedAmt*0.95);
     const g=ctx.createRadialGradient(ex,ey,0,ex,ey,eyeRadius*1.15);
     g.addColorStop(0,  _rgb(p.bg));
@@ -43976,15 +44074,37 @@ const ZONES=[
     // separate case needed.
     // Owner: "add a little tint of saturated orange and gold in the eyes"
     const pEye={...p, cr:colorMix(p.cr,[255,165,40],0.24), m1:colorMix(p.m1,[255,165,40],0.24), cl:colorMix(p.cl,[255,150,25],0.24)};
+    // A soft, unclipped spill of the eye's own light onto the face around
+    // it, 'lighter' blend so it only ever adds. Without this the eye reads
+    // as a lit object sitting on a face that itself stays flat and unlit --
+    // the detached-ball-bearing look. Drawn before the clipped glow below,
+    // outside eyeShapeClip's boundary on purpose: a real light spills past
+    // the shape that casts it.
+    {
+      const baL=Math.min(1,eyeB*eyeAl), rrL=eyeR*pL*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgL=ctx.createRadialGradient(ELx,ELy,0,ELx,ELy,rrL);
+      sgL.addColorStop(0,   _rgba(pEye.m1,0.10*baL));
+      sgL.addColorStop(0.35,_rgba(pEye.m1,0.035*baL));
+      sgL.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ELx,ELy,rrL,0,Math.PI*2); ctx.fillStyle=sgL; ctx.fill(); ctx.restore();
+      const baR=Math.min(1,eyeB*0.88*eyeAl), rrR=eyeR*pR*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgR=ctx.createRadialGradient(ERx,ERy,0,ERx,ERy,rrR);
+      sgR.addColorStop(0,   _rgba(pEye.m1,0.10*baR));
+      sgR.addColorStop(0.35,_rgba(pEye.m1,0.035*baR));
+      sgR.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ERx,ERy,rrR,0,Math.PI*2); ctx.fillStyle=sgR; ctx.fill(); ctx.restore();
+    }
     ctx.save();
     eyeShapeClip(ELx,ELy,eyeR*pL,lidDroopC,cheekSquint,+1);
     bokehOrb(ELx,ELy, eyeR*pL, eyeB, eyeAl, pEye);
-    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.save();
     eyeShapeClip(ERx,ERy,eyeR*pR,lidDroopC,cheekSquint,-1);
     bokehOrb(ERx,ERy, eyeR*pR, eyeB*0.88, eyeAl, pEye);
-    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.restore();
     drawEyelid(ELx,ELy,eyeR*pL,closed,p);
@@ -44042,12 +44162,21 @@ const ZONES=[
       ctx.translate(MXp2,MYp2); ctx.rotate(asymAngle); ctx.scale(mWScale,mHScale); ctx.translate(-MXp2,-MYp2);
       bokehOrb(MXp2,MYp2, mR, mBright, Math.min(1,mOpen*4.0+energy*0.6+speechPulse*0.8), p);
       // A touch of shading along the underside -- gives the mouth a little
-      // dimension instead of reading as a flat glowing disc
+      // dimension instead of reading as a flat glowing disc. Same
+      // transparent-mount correction as clearOrbSpace above: destination-out
+      // at the equivalent darkening (0.93*(1-210/255) = 0.164) instead of a
+      // multiply plate that paints a visible disc on a transparent canvas.
       ctx.save();
-      ctx.globalCompositeOperation='multiply';
       const shG=ctx.createRadialGradient(MXp2,MYp2+mR*0.55,0,MXp2,MYp2+mR*0.55,mR*1.3);
-      shG.addColorStop(0,'rgba(210,210,215,0.93)');
-      shG.addColorStop(1,'rgba(255,255,255,1)');
+      if(uniBgTransparent){
+        ctx.globalCompositeOperation='destination-out';
+        shG.addColorStop(0,'rgba(0,0,0,0.16)');
+        shG.addColorStop(1,'rgba(0,0,0,0)');
+      }else{
+        ctx.globalCompositeOperation='multiply';
+        shG.addColorStop(0,'rgba(210,210,215,0.93)');
+        shG.addColorStop(1,'rgba(255,255,255,1)');
+      }
       ctx.beginPath(); ctx.arc(MXp2,MYp2+mR*0.55,mR*1.3,0,Math.PI*2);
       ctx.fillStyle=shG; ctx.fill();
       ctx.restore();
@@ -90150,7 +90279,8 @@ function obRailAt(h,s,n,nm){
    brightest thing on the screen and pulled the eye off the question." Same
    fix, same values, so the two surfaces press the same way. */
 function obChips(items,attr,sel,withNotSure){
- return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')+'">'
+ return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')
+  +(withNotSure&&!items.some(function(x){return x.b;})?' ob-seats-ns':'')+'">'
   +items.map(function(x,i){
    var c=x.b?' style="--c:'+seatCol(x.b)+'"':'';
    return '<button type="button" class="ob-seat'+(sel===i?' on':'')+'"'+c
@@ -90257,7 +90387,7 @@ function obRender(){
    +'It asks how you actually act, not how you want to act. Answer what you want, in any order, '
    +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
    '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===2){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
@@ -90279,13 +90409,13 @@ function obRender(){
    +'<p class="ob-p ob-dim">Four parts, and the fourth goes back to the first. '
    +'You are about to walk one turn of it.</p>',
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===3){
   out=obCard('Feel','What are you feeling?',
    '<p class="ob-p ob-dim">Take a second.</p>'
    +obChips(OB_FEELS,'obfeel',OB.feel,true),
-   '<button type="button" class="btn" data-ob="back">Back</button>');
+   '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===4){
   /* THE BODY IS ON THE SCREEN NOW, round QG, and that is a defect fixed and
@@ -90316,7 +90446,7 @@ function obRender(){
    +obChips(OB_PLACES,'obplace',OB.place,true)
    +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
      +esc(obSeatMean(pb.b))+'</p>':''),
-   '<button type="button" class="btn" data-ob="back">Back</button>');
+   '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===5){
   /* STORY. THE ONE REAL THING. This is the exact line J0 names in the
@@ -90338,7 +90468,7 @@ function obRender(){
       and never ruled, and the brief's button rule flagged it. Skip was the
       word the Day One tutorial used for the same act. */
    +'<button type="button" class="btn" data-ob="storyskip">Skip</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===6){
   out=obMirrorCard();
@@ -90604,7 +90734,7 @@ function obMirrorCard(){
    +'Nothing is kept until you press it.</p>':'');
  return obCard('Mirror',OB.fixReads.length?'Here is what I heard now.':'Here is what I heard.',
   body,'<button type="button" class="btn pri" data-ob="mirrorcommit">'+(OB.text?'Commit':'Continue')+'</button>'
-  +'<button type="button" class="btn" data-ob="back">Back</button>');}
+  +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');}
 
 /* ---- correct: a correction is read for real, through parseStory, and adds
    what it read to this card as rows of their own, each with its own Yes and
@@ -90894,12 +91024,17 @@ addEventListener('click',function(e){
      (TDD section 10, "immediately after selecting the starting point") */
   if(ground&&OB.rec){ obJy('ground_selected',ground.k);
    var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
+  /* obGhost copies this card for the exit fade before the next step's own
+     render ever runs, so the picked chip has to carry its own lit state
+     right here, not wait for obRender's next pass, or the ghost leaves the
+     screen looking like nothing was chosen. */
+  pk.classList.add('on');
   OB.step=2; obRender(); return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
- if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
+ if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); fe.classList.add('on'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
- if(pl){ OB.place=+pl.getAttribute('data-obplace'); OB.step=5; obRender(); return; }
+ if(pl){ OB.place=+pl.getAttribute('data-obplace'); pl.classList.add('on'); OB.step=5; obRender(); return; }
  var an=t.closest?t.closest('[data-obans]'):null;
  if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
   /* a second press on the pressed answer takes it back to unanswered */
@@ -91175,16 +91310,17 @@ var DEV_SKIP=false;
    switch and that button are gone, which answers the question this
    paragraph used to leave open, which of the two a stranger meets: the
    onboarding, and only the onboarding. */
-/* HELD OFF, 10 November, his words: "that page that says this is you
-   and it's okay... that's going away and being replaced by what I'm
-   working on in another thread. So let's hide this for now. The login
-   we still need." The door (login.js's own DEV_SKIP/loginBoot) is
-   untouched; only the sheet loginEnter() would have opened behind it
-   is held off, by the one switch this paragraph already names. The
-   onboarding sequence (ui/onboard.js) is not removed, since he is
-   replacing it rather than retiring the idea, and the switch flips
-   back the moment the new one lands. */
-var DEV_PLAY_ONBOARDING=false;
+/* BACK ON, 11 November. The 10 November hold above never got the
+   replacement it was waiting on; instead the owner asked for this same
+   sequence restyled to match that night's Journal rail/Dashboard round
+   (square beveled tiles, continuous-brightness fill, no pill buttons) and
+   wired back in, his own words: "go ahead and rebuild it and wire it in,
+   I'll see how it works during the flow when I test it, then we'll
+   determine whether to keep it." That restyle shipped the same round this
+   switch flipped (atuned_src/shell/head.html's .obx tile rules, this
+   file's own onboard.js markup). Flip it back off, the 10 November way,
+   if a real replacement supersedes it instead. */
+var DEV_PLAY_ONBOARDING=true;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and
    shuffled, so every suggestion actually contains a lower case letter,
@@ -93756,5 +93892,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006262368"></div>
+<div id="eof" hidden data-len="006272123"></div>
 </body></html>

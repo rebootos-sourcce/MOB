@@ -1640,25 +1640,44 @@ const ZONES=[
     g3.addColorStop(1,  _rgba(p.cl, 0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.90,0,Math.PI*2); ctx.fillStyle=g3; ctx.fill();
     ctx.restore();
-    // Pass 4: white-hot core (screen blend -- simulates sensor overexposure)
+    // Pass 4: hot core (screen blend -- simulates sensor overexposure). The
+    // centre stop used to be pure white, which stacked with the pupil
+    // highlight's own white catchlight into three white layers in the eyes
+    // -- the "bug eye" look the owner flagged. Tinted toward the character's
+    // own live hue instead, so the glow core reads as that character's light
+    // rather than a flat white sensor dot.
     ctx.save();
     ctx.globalCompositeOperation='screen';
     const g4=ctx.createRadialGradient(sx,sy,0,sx,sy,r*0.42);
-    g4.addColorStop(0, `rgba(255,255,255,${(0.92*ba).toFixed(2)})`);
+    g4.addColorStop(0, _rgba(colorMix(p.cr,[255,255,255],0.6),0.85*ba));
     g4.addColorStop(0.4,_rgba(p.cr,0.55*ba));
     g4.addColorStop(1,  _rgba(p.cr,0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.42,0,Math.PI*2); ctx.fillStyle=g4; ctx.fill();
     ctx.restore();
   }
 
-  // Dims the particle field under an orb so it reads as a distinct light, not noise
+  // Dims the particle field under an orb so it reads as a distinct light, not
+  // noise. On an opaque mount this multiplies a gray disc over the particle
+  // field. On a transparent mount (the hero view) there is no particle field
+  // under it, only the page behind the canvas, so the same multiply paints a
+  // visible gray plate with a bright rim instead -- the two white "ball
+  // bearing" discs the owner flagged. destination-out punches the same
+  // darkening shape out of the canvas's own alpha instead, which clears the
+  // space without painting anything over whatever is behind the page.
   function clearOrbSpace(sx,sy,r){
     ctx.save();
-    ctx.globalCompositeOperation='multiply';
     const cg=ctx.createRadialGradient(sx,sy,0,sx,sy,r*2.8);
-    cg.addColorStop(0,   'rgba(118,118,128,0.50)');
-    cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
-    cg.addColorStop(1,   'rgba(255,255,255,1)');
+    if(uniBgTransparent){
+      ctx.globalCompositeOperation='destination-out';
+      cg.addColorStop(0,   'rgba(0,0,0,0.27)');
+      cg.addColorStop(0.5, 'rgba(0,0,0,0.30)');
+      cg.addColorStop(1,   'rgba(0,0,0,0)');
+    }else{
+      ctx.globalCompositeOperation='multiply';
+      cg.addColorStop(0,   'rgba(118,118,128,0.50)');
+      cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
+      cg.addColorStop(1,   'rgba(255,255,255,1)');
+    }
     ctx.beginPath(); ctx.arc(sx,sy,r*2.8,0,Math.PI*2);
     ctx.fillStyle=cg; ctx.fill();
     ctx.restore();
@@ -1681,11 +1700,16 @@ const ZONES=[
     const outerY=baseY-pinch*eyeRadius*0.12;
     const midY=baseY-(pinch<0?-pinch*eyeRadius*0.55:-pinch*eyeRadius*0.20);
     ctx.save();
-    ctx.globalCompositeOperation='screen';
+    // A dark line drawn with 'screen' lightens toward nothing, which is why
+    // this brow read as invisible however present its own alpha math says it
+    // is. 'multiply' darkens on an opaque mount; on the transparent hero
+    // mount there is nothing under the canvas to multiply against, so
+    // destination-out carves the same shape out of the canvas's own alpha.
+    ctx.globalCompositeOperation=uniBgTransparent?'destination-out':'multiply';
     ctx.beginPath();
     ctx.moveTo(innerX,innerY);
     ctx.quadraticCurveTo(ex,midY,outerX,outerY);
-    ctx.strokeStyle=`rgba(42,40,37,${al.toFixed(3)})`;
+    ctx.strokeStyle=_rgba(p.ed,al);
     ctx.lineWidth=eyeRadius*0.231;
     ctx.lineCap='round';
     ctx.stroke();
@@ -1699,7 +1723,7 @@ const ZONES=[
     if(alpha<0.03||r<0.5) return;
     const px=sx+ox, py=sy+oy;
     const ba=Math.min(1,bright*alpha);
-    const gray=[118,116,114], fire=[255,120,24];
+    const gray=colorMix(p.cr,[118,116,114],0.5), fire=[255,120,24];
     const fc=[0,1,2].map(i=>Math.round(gray[i]+(fire[i]-gray[i])*coh01));
     // The pupil -- a soft colored glow, fire-orange "passion", more vivid
     // the more coherent the character is
@@ -1707,7 +1731,7 @@ const ZONES=[
     ctx.globalCompositeOperation='screen';
     const rr=r*0.46*1.2;
     const g=ctx.createRadialGradient(px,py,0,px,py,rr);
-    g.addColorStop(0,    `rgba(255,255,255,${Math.min(1,0.85*1.2*ba).toFixed(2)})`);
+    g.addColorStop(0,    _rgba(colorMix(p.cr,[255,255,255],0.55),Math.min(1,0.85*ba)));
     g.addColorStop(0.40, `rgba(${fc[0]},${fc[1]},${fc[2]},${Math.min(1,0.75*1.2*ba).toFixed(2)})`);
     g.addColorStop(1,    `rgba(${fc[0]},${fc[1]},${fc[2]},0)`);
     ctx.beginPath(); ctx.arc(px,py,rr,0,Math.PI*2);
@@ -1736,16 +1760,18 @@ const ZONES=[
     ctx.restore();
     // Owner: "keep the eye highlight square with rounded edges" -- a
     // rounded-rect catchlight instead of a circle, a deliberately more
-    // graphic/designed specular shape
+    // graphic/designed specular shape. Tinted toward the character's own
+    // live hue (was pure white) so it reads as a glint on a lit face rather
+    // than a flat white sensor dot stacked on the equally-white pupil core.
     ctx.save();
     ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=Math.min(1,0.95*ba);
-    ctx.fillStyle='rgb(255,255,255)';
+    ctx.globalAlpha=Math.min(1,0.82*ba);
+    ctx.fillStyle=_rgb(colorMix(p.cr,[255,255,255],0.65));
     ctx.beginPath();
     if(ctx.roundRect) ctx.roundRect(hx-hlR,hy-hlR,hlR*2,hlR*2,hlR*0.34);
     else ctx.rect(hx-hlR,hy-hlR,hlR*2,hlR*2);
     ctx.fill();
-    ctx.globalAlpha=Math.min(0.45,0.32*ba);
+    ctx.globalAlpha=Math.min(0.24,0.18*ba);
     ctx.beginPath(); ctx.arc(hx,hy,hlR*1.7,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
@@ -1794,6 +1820,10 @@ const ZONES=[
   function drawEyelid(ex,ey,eyeRadius,closedAmt,p){
     if(closedAmt<0.04) return;
     ctx.save();
+    // p.bg paints opaque on the transparent hero mount, leaving a dark blot
+    // where the page behind the canvas should show through on a blink.
+    // destination-out erases to the canvas's own transparency instead.
+    if(uniBgTransparent) ctx.globalCompositeOperation='destination-out';
     ctx.globalAlpha=Math.min(0.90,closedAmt*0.95);
     const g=ctx.createRadialGradient(ex,ey,0,ex,ey,eyeRadius*1.15);
     g.addColorStop(0,  _rgb(p.bg));
@@ -1848,15 +1878,37 @@ const ZONES=[
     // separate case needed.
     // Owner: "add a little tint of saturated orange and gold in the eyes"
     const pEye={...p, cr:colorMix(p.cr,[255,165,40],0.24), m1:colorMix(p.m1,[255,165,40],0.24), cl:colorMix(p.cl,[255,150,25],0.24)};
+    // A soft, unclipped spill of the eye's own light onto the face around
+    // it, 'lighter' blend so it only ever adds. Without this the eye reads
+    // as a lit object sitting on a face that itself stays flat and unlit --
+    // the detached-ball-bearing look. Drawn before the clipped glow below,
+    // outside eyeShapeClip's boundary on purpose: a real light spills past
+    // the shape that casts it.
+    {
+      const baL=Math.min(1,eyeB*eyeAl), rrL=eyeR*pL*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgL=ctx.createRadialGradient(ELx,ELy,0,ELx,ELy,rrL);
+      sgL.addColorStop(0,   _rgba(pEye.m1,0.10*baL));
+      sgL.addColorStop(0.35,_rgba(pEye.m1,0.035*baL));
+      sgL.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ELx,ELy,rrL,0,Math.PI*2); ctx.fillStyle=sgL; ctx.fill(); ctx.restore();
+      const baR=Math.min(1,eyeB*0.88*eyeAl), rrR=eyeR*pR*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgR=ctx.createRadialGradient(ERx,ERy,0,ERx,ERy,rrR);
+      sgR.addColorStop(0,   _rgba(pEye.m1,0.10*baR));
+      sgR.addColorStop(0.35,_rgba(pEye.m1,0.035*baR));
+      sgR.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ERx,ERy,rrR,0,Math.PI*2); ctx.fillStyle=sgR; ctx.fill(); ctx.restore();
+    }
     ctx.save();
     eyeShapeClip(ELx,ELy,eyeR*pL,lidDroopC,cheekSquint,+1);
     bokehOrb(ELx,ELy, eyeR*pL, eyeB, eyeAl, pEye);
-    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.save();
     eyeShapeClip(ERx,ERy,eyeR*pR,lidDroopC,cheekSquint,-1);
     bokehOrb(ERx,ERy, eyeR*pR, eyeB*0.88, eyeAl, pEye);
-    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.restore();
     drawEyelid(ELx,ELy,eyeR*pL,closed,p);
@@ -1914,12 +1966,21 @@ const ZONES=[
       ctx.translate(MXp2,MYp2); ctx.rotate(asymAngle); ctx.scale(mWScale,mHScale); ctx.translate(-MXp2,-MYp2);
       bokehOrb(MXp2,MYp2, mR, mBright, Math.min(1,mOpen*4.0+energy*0.6+speechPulse*0.8), p);
       // A touch of shading along the underside -- gives the mouth a little
-      // dimension instead of reading as a flat glowing disc
+      // dimension instead of reading as a flat glowing disc. Same
+      // transparent-mount correction as clearOrbSpace above: destination-out
+      // at the equivalent darkening (0.93*(1-210/255) = 0.164) instead of a
+      // multiply plate that paints a visible disc on a transparent canvas.
       ctx.save();
-      ctx.globalCompositeOperation='multiply';
       const shG=ctx.createRadialGradient(MXp2,MYp2+mR*0.55,0,MXp2,MYp2+mR*0.55,mR*1.3);
-      shG.addColorStop(0,'rgba(210,210,215,0.93)');
-      shG.addColorStop(1,'rgba(255,255,255,1)');
+      if(uniBgTransparent){
+        ctx.globalCompositeOperation='destination-out';
+        shG.addColorStop(0,'rgba(0,0,0,0.16)');
+        shG.addColorStop(1,'rgba(0,0,0,0)');
+      }else{
+        ctx.globalCompositeOperation='multiply';
+        shG.addColorStop(0,'rgba(210,210,215,0.93)');
+        shG.addColorStop(1,'rgba(255,255,255,1)');
+      }
       ctx.beginPath(); ctx.arc(MXp2,MYp2+mR*0.55,mR*1.3,0,Math.PI*2);
       ctx.fillStyle=shG; ctx.fill();
       ctx.restore();

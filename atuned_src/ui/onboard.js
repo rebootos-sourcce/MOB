@@ -954,7 +954,8 @@ function obRailAt(h,s,n,nm){
    brightest thing on the screen and pulled the eye off the question." Same
    fix, same values, so the two surfaces press the same way. */
 function obChips(items,attr,sel,withNotSure){
- return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')+'">'
+ return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')
+  +(withNotSure&&!items.some(function(x){return x.b;})?' ob-seats-ns':'')+'">'
   +items.map(function(x,i){
    var c=x.b?' style="--c:'+seatCol(x.b)+'"':'';
    return '<button type="button" class="ob-seat'+(sel===i?' on':'')+'"'+c
@@ -1061,7 +1062,7 @@ function obRender(){
    +'It asks how you actually act, not how you want to act. Answer what you want, in any order, '
    +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
    '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===2){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
@@ -1083,13 +1084,13 @@ function obRender(){
    +'<p class="ob-p ob-dim">Four parts, and the fourth goes back to the first. '
    +'You are about to walk one turn of it.</p>',
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===3){
   out=obCard('Feel','What are you feeling?',
    '<p class="ob-p ob-dim">Take a second.</p>'
    +obChips(OB_FEELS,'obfeel',OB.feel,true),
-   '<button type="button" class="btn" data-ob="back">Back</button>');
+   '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===4){
   /* THE BODY IS ON THE SCREEN NOW, round QG, and that is a defect fixed and
@@ -1120,7 +1121,7 @@ function obRender(){
    +obChips(OB_PLACES,'obplace',OB.place,true)
    +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
      +esc(obSeatMean(pb.b))+'</p>':''),
-   '<button type="button" class="btn" data-ob="back">Back</button>');
+   '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===5){
   /* STORY. THE ONE REAL THING. This is the exact line J0 names in the
@@ -1142,7 +1143,7 @@ function obRender(){
       and never ruled, and the brief's button rule flagged it. Skip was the
       word the Day One tutorial used for the same act. */
    +'<button type="button" class="btn" data-ob="storyskip">Skip</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+   +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
  else if(s===6){
   out=obMirrorCard();
@@ -1408,7 +1409,7 @@ function obMirrorCard(){
    +'Nothing is kept until you press it.</p>':'');
  return obCard('Mirror',OB.fixReads.length?'Here is what I heard now.':'Here is what I heard.',
   body,'<button type="button" class="btn pri" data-ob="mirrorcommit">'+(OB.text?'Commit':'Continue')+'</button>'
-  +'<button type="button" class="btn" data-ob="back">Back</button>');}
+  +'<button type="button" class="btn ob-back" data-ob="back">Back</button>');}
 
 /* ---- correct: a correction is read for real, through parseStory, and adds
    what it read to this card as rows of their own, each with its own Yes and
@@ -1698,12 +1699,17 @@ addEventListener('click',function(e){
      (TDD section 10, "immediately after selecting the starting point") */
   if(ground&&OB.rec){ obJy('ground_selected',ground.k);
    var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
+  /* obGhost copies this card for the exit fade before the next step's own
+     render ever runs, so the picked chip has to carry its own lit state
+     right here, not wait for obRender's next pass, or the ghost leaves the
+     screen looking like nothing was chosen. */
+  pk.classList.add('on');
   OB.step=2; obRender(); return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
- if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
+ if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); fe.classList.add('on'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
- if(pl){ OB.place=+pl.getAttribute('data-obplace'); OB.step=5; obRender(); return; }
+ if(pl){ OB.place=+pl.getAttribute('data-obplace'); pl.classList.add('on'); OB.step=5; obRender(); return; }
  var an=t.closest?t.closest('[data-obans]'):null;
  if(an){ var ni=+an.getAttribute('data-obi'), v=an.getAttribute('data-obans');
   /* a second press on the pressed answer takes it back to unanswered */
