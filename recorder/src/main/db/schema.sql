@@ -2,6 +2,12 @@
 -- Local-first (ADR-001): this is the source of truth; D1 is sync-only.
 -- device_id on root tables (ADR-003); edl_entries (ADR-002); r2_key not r2_url.
 
+-- Schema versioning table (for migrate.js)
+CREATE TABLE IF NOT EXISTS schema_version (
+  version    INTEGER PRIMARY KEY,
+  applied_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS recordings (
   id           TEXT PRIMARY KEY,
   device_id    TEXT NOT NULL,
@@ -101,10 +107,14 @@ CREATE TABLE IF NOT EXISTS production_packages (
   title_variants  TEXT,
   description     TEXT,
   short_desc      TEXT,
-  hashtags_json   TEXT,
-  chapters_json   TEXT,
-  generated_by    TEXT DEFAULT 'whisper',
-  created_at      TEXT NOT NULL
+  hashtags_json        TEXT,
+  chapters_json        TEXT,
+  generated_by         TEXT DEFAULT 'whisper',
+  edited_title         TEXT,
+  edited_description   TEXT,
+  edited_hashtags_json TEXT,
+  variants_json        TEXT,
+  created_at           TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS distributions (

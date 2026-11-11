@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const fsPromises = require('fs').promises;
 const { app } = require('electron');
+const { runMigrations } = require('./migrate');
 
 let SQL = null;      // sql.js module
 let db = null;       // sql.js Database instance
@@ -33,6 +34,7 @@ async function init(customPath) {
   }
 
   applySchema();
+  runMigrations();
   return db;
 }
 
@@ -60,7 +62,7 @@ function schedulePersist() {
   saveTimer = setTimeout(async () => {
     saveTimer = null;
     if (dirty) { dirty = false; await persist(); }
-  }, 500);
+  }, 1000);
 }
 
 // ---------------------------------------------------------------- public API
@@ -100,6 +102,12 @@ function exec(sql) {
   schedulePersist();
 }
 
+async function flush() {
+  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+  dirty = false;
+  await persist();
+}
+
 async function close() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
   if (db) { await persist(); db.close(); db = null; }
@@ -107,4 +115,4 @@ async function close() {
 
 function isReady() { return db !== null; }
 
-module.exports = { init, run, get, all, exec, persist, close, isReady };
+module.exports = { init, run, get, all, exec, persist, flush, close, isReady };
