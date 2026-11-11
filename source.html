@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v16 534a3572 2026-11-11 20:02"><head><meta charset="utf-8">
+<html lang="en" data-build="v21 0bd2c8c9 2026-11-11 21:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4714,19 +4714,26 @@ body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-ind
    it to check the Full Dashboard view instead of this one, rather than
    stand as a stale assertion for a requirement that no longer applies
    here. */
-/* EXCEPT THE DOOR TO HELP, 11 November. srcPaint (ui/storyui.js) nests the
-   crisis-safe row (#stsafe, the line and crisisReachBtn) straight inside
-   #stsrc on the move that opens it, the same way #stsrc carries every
-   other move's own markup. This rule's own comment above already names the
-   principle for a narrower case two selectors up (.st-bar-crx carved out of
-   .st-rest's hide), but this wider one, added the same night to cap the box
-   at every hero state and not only at rest, carried no such exception, so
-   a person in crisis on the hero view lost the one door out along with the
-   box it happened to be sitting in: measured directly, #stsafe's own button
-   renders with a real bounding rect of zero height, in view by position but
-   not by size, unclickable. tests/safepage.js's own 44 pixel floor check
-   caught it the moment a correctly built source.html was actually gated
-   against, tonight. */
+/* EXCEPT THE SAFETY LINE, 11 November, STILL LIVE AFTER THE DOOR'S OWN
+   REMOVAL. srcPaint (ui/storyui.js) nests the crisis-safe row (#stsafe)
+   straight inside #stsrc on the move that opens it, the same way #stsrc
+   carries every other move's own markup. This exception was first written
+   the same night for a different reason (crisisReachBtn, the door beside
+   the line, measured with a real bounding rect of zero height and
+   unclickable without it); that button is gone now, his later ruling,
+   "if you can't fix it in 1 batch, turn it off in 1 batch" (crisisReachBtn
+   in atuned_src/ui/crisis.js returns '' unconditionally). But #stsafe's own
+   <p>, the line itself ("It is saved. If you want a person now, 988
+   answers..."), is storyui.js's own markup and was never gated by that
+   function, so it still prints here on every safety match, and still needs
+   this exception to not be swept into display:none with the rest of the
+   hero box: it is now the only thing left on this surface carrying the
+   safety information at all. Checked against removing this rule outright,
+   which the round's own removal handshake assumed was now dead and asked
+   for: tests/safepage.js's own line assertions keep passing either way
+   (textContent is readable on a hidden element), so that assumption would
+   have shipped a silent regression no gate here catches; left in place
+   instead, on the stricter reading. */
 body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)){display:none}
 /* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
    above was already kept to a few lines; the Dashboard's .src-mine had no
@@ -94266,5 +94273,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006297620"></div>
+<div id="eof" hidden data-len="006298121"></div>
 </body></html>
