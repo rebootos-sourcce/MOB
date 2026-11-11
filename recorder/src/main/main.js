@@ -562,6 +562,10 @@ ipcMain.handle('app:restart', () => { app.relaunch(); app.exit(0); });
 
 ipcMain.handle('waveform:load', async (_e, filePath) => {
   const fsP = require('fs').promises;
+  const allowedBase = path.resolve(app.getPath('userData')) + path.sep;
+  if (!filePath || !path.resolve(filePath).startsWith(allowedBase)) {
+    throw new Error('waveform:load: path outside userData');
+  }
   try {
     const buf = await fsP.readFile(filePath);
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);

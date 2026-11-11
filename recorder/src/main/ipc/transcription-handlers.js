@@ -11,8 +11,13 @@ let _isRunning = false; // Fix #6: concurrency guard
 function register(sendControl) {
   _sendControl = sendControl;
 
-  ipcMain.handle('transcription:start', async (_e, { recordingId, filePath }) => {
-    if (!recordingId || !filePath) throw new Error('recordingId and filePath required');
+  ipcMain.handle('transcription:start', async (_e, { recordingId }) => {
+    if (!recordingId) throw new Error('recordingId required');
+
+    const db = require('../db/sqlite');
+    const rec = db.get('SELECT path FROM recordings WHERE id = ?', [recordingId]);
+    if (!rec || !rec.path) throw new Error('Recording not found: ' + recordingId);
+    const filePath = rec.path;
 
     // Fix #6: prevent concurrent transcriptions that would corrupt DB
     if (_isRunning) throw new Error('Transcription already in progress');
