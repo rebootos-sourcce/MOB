@@ -944,6 +944,8 @@
       } catch (e) {
         $('editProgressLabel').textContent = 'Error: ' + e.message;
       } finally {
+        // Clean up listener whether transcription succeeded or failed.
+        if (_unsubTranscriptionProgress) { _unsubTranscriptionProgress(); _unsubTranscriptionProgress = null; }
         $('btnTranscribe').disabled = false;
       }
     };
@@ -952,24 +954,24 @@
       if (!selectedRecordingId) return;
       const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
       const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
-      if (!tx) { alert('Transcribe first.'); return; }
+      if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
       const fillers = await window.mob.db.query('words:fillers', [tx.id]);
-      if (!fillers.length) { alert('No fillers detected.'); return; }
+      if (!fillers.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No fillers detected.'; return; }
       const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
       await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-      alert(`Applied ${cuts.length} filler cuts.`);
+      $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} filler cuts.`;
     };
 
     $('btnRemoveSilences').onclick = async () => {
       if (!selectedRecordingId) return;
       const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
       const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
-      if (!tx) { alert('Transcribe first.'); return; }
+      if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
       const segs = await window.mob.db.query('segments:silences', [tx.id]);
-      if (!segs.length) { alert('No silences detected.'); return; }
+      if (!segs.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No silences detected.'; return; }
       const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
       await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-      alert(`Applied ${cuts.length} silence cuts.`);
+      $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts.`;
     };
   }
 
@@ -989,6 +991,7 @@
     $('btnAssemble').onclick = async () => {
       if (!selectedRecordingId) return;
       $('btnAssemble').disabled = true;
+      $('btnAssemble').textContent = 'Generating…';
       try {
         const result = await window.api.invoke('production:assemble', { recordingId: selectedRecordingId });
         const pkg = result.packageId
@@ -996,9 +999,16 @@
           : null;
         if (pkg) renderPackage(pkg);
       } catch (e) {
-        alert('Error: ' + e.message);
+        const errEl = document.createElement('div');
+        errEl.className = 'hint';
+        errEl.style.color = '#f87171';
+        errEl.style.marginTop = '4px';
+        errEl.textContent = 'Error: ' + e.message;
+        $('btnAssemble').insertAdjacentElement('afterend', errEl);
+        setTimeout(() => errEl.remove(), 6000);
       } finally {
         $('btnAssemble').disabled = false;
+        $('btnAssemble').textContent = 'Generate package';
       }
     };
   }
@@ -1103,6 +1113,7 @@
         $('distProgressBar').style.width = '100%';
         $('distStatus').textContent = 'queued';
         $('distProgressLabel').textContent = 'Upload complete';
+        unsubProgress();
       } catch (err) {
         $('distProgressLabel').textContent = 'Upload failed: ' + err.message;
         $('distStatus').textContent = 'error';

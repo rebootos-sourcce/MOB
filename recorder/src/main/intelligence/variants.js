@@ -36,7 +36,7 @@ function buildYoutube(title, description, tags, chapters) {
       const mins = Math.floor(c.start_ms / 60000);
       const secs = Math.floor((c.start_ms % 60000) / 1000);
       const ts = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      return `${ts} ${c.label || 'Chapter'}`;
+      return `${ts} ${c.title || c.label || 'Chapter'}`;
     }).join('\n');
   }
 
@@ -65,7 +65,7 @@ function buildLinkedIn(title, description, tags, chapters) {
 
   let keyPoints = '';
   if (chapters.length >= 2) {
-    keyPoints = '\n\nKey topics:\n' + chapters.slice(0, 5).map(c => `• ${c.label || 'Topic'}`).join('\n');
+    keyPoints = '\n\nKey topics:\n' + chapters.slice(0, 5).map(c => `• ${c.title || c.label || 'Topic'}`).join('\n');
   }
 
   const liTags = tags.filter(t => t.length > 3).slice(0, 5).map(t => '#' + t.replace(/^#/, '')).join(' ');
