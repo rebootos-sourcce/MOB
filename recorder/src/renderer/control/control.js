@@ -813,7 +813,7 @@
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => {
         p.classList.remove('active');
-        p.hidden = !p.id.includes('camera');
+        p.hidden = true;
       });
       btn.classList.add('active');
       const panel = document.getElementById('tab-' + btn.dataset.tab);
@@ -903,6 +903,7 @@
   }
 
   // ── Edit tab ──────────────────────────────────────────────────
+  let _unsubTranscriptionProgress = null;
   async function loadEditTab() {
     await loadRecordingList('editRecordingList', (id, row) => {
       const sec = $('editCutSection');
@@ -913,9 +914,6 @@
       $('editTagBox').hidden = true;
       if (row && row.path) loadWaveform(row.path);
     });
-
-  // Fix #4: track listener so we can unsub before re-registering on each click
-  let _unsubTranscriptionProgress = null;
     $('btnTranscribe').onclick = async () => {
       if (!selectedRecordingId) return;
       // Fix #1: named query API
@@ -937,7 +935,9 @@
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; }
         const tags = await window.mob.db.query('tags:list', [row.id]);
-        $('editTagBox').innerHTML = tags.map(t => `<span class="tag">${t.tag}</span>`).join('');
+        const tagBox = $('editTagBox');
+        tagBox.textContent = '';
+        tags.forEach(t => { const s = document.createElement('span'); s.className = 'tag'; s.textContent = t.tag; tagBox.appendChild(s); });
         $('editTagBox').hidden = false;
         $('editProgressBar').style.width = '100%';
         $('editProgressLabel').textContent = 'Done';
@@ -1008,14 +1008,15 @@
     $('prodTitle').textContent = pkg.title || 'Package';
     $('prodTitleValue').textContent = pkg.title || '';
     const variants = JSON.parse(pkg.title_variants || '[]');
-    $('prodVariants').innerHTML = variants.map((v,i) => `<div class="variant-item">${i+1}. ${v}</div>`).join('');
+    const varEl = $('prodVariants'); varEl.textContent = '';
+    variants.forEach((v, i) => { const d = document.createElement('div'); d.className = 'variant-item'; d.textContent = `${i+1}. ${v}`; varEl.appendChild(d); });
     $('prodDesc').textContent = pkg.description || '';
     const tags = JSON.parse(pkg.hashtags_json || '[]');
-    $('prodHashtags').innerHTML = tags.map(t => `<span class="tag">${typeof t === 'string' ? t : t.tag}</span>`).join('');
+    const tagEl = $('prodHashtags'); tagEl.textContent = '';
+    tags.forEach(t => { const s = document.createElement('span'); s.className = 'tag'; s.textContent = typeof t === 'string' ? t : t.tag; tagEl.appendChild(s); });
     const chapters = JSON.parse(pkg.chapters_json || '[]');
-    $('prodChapters').innerHTML = chapters.map(c =>
-      `<div class="chapter-item"><span class="ts">${fmtMs(c.start_ms)}</span><span>${c.title}</span></div>`
-    ).join('');
+    const chapEl = $('prodChapters'); chapEl.textContent = '';
+    chapters.forEach(c => { const d = document.createElement('div'); d.className = 'chapter-item'; const ts = document.createElement('span'); ts.className = 'ts'; ts.textContent = fmtMs(c.start_ms); const ti = document.createElement('span'); ti.textContent = c.title; d.append(ts, ti); chapEl.appendChild(d); });
     // Populate editable fields
     const titleEdit = $('prodTitleEdit');
     const descEdit  = $('prodDescEdit');
