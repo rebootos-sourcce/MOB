@@ -4714,7 +4714,20 @@ body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-ind
    it to check the Full Dashboard view instead of this one, rather than
    stand as a stale assertion for a requirement that no longer applies
    here. */
-body.tab-story:not(.st-full) #stsrc{display:none}
+/* EXCEPT THE DOOR TO HELP, 11 November. srcPaint (ui/storyui.js) nests the
+   crisis-safe row (#stsafe, the line and crisisReachBtn) straight inside
+   #stsrc on the move that opens it, the same way #stsrc carries every
+   other move's own markup. This rule's own comment above already names the
+   principle for a narrower case two selectors up (.st-bar-crx carved out of
+   .st-rest's hide), but this wider one, added the same night to cap the box
+   at every hero state and not only at rest, carried no such exception, so
+   a person in crisis on the hero view lost the one door out along with the
+   box it happened to be sitting in: measured directly, #stsafe's own button
+   renders with a real bounding rect of zero height, in view by position but
+   not by size, unclickable. tests/safepage.js's own 44 pixel floor check
+   caught it the moment a correctly built source.html was actually gated
+   against, tonight. */
+body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)){display:none}
 /* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
    above was already kept to a few lines; the Dashboard's .src-mine had no
    cap of its own, so on a real story it grew to the full height of

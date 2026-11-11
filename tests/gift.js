@@ -278,5 +278,11 @@ async function arrive(browser,payload,W,H){
   ok(err.length===0,tag+'no page errors, '+err.slice(0,2).join(' | '));
   await cx.close();}
  await browser.close();
- console.log('\n===== '+PASS+' passed, '+FAIL+' failed'+(HELD?', '+HELD+' held':'')+' =====');
+ /* THE STANDARD LINE, UNCHANGED. tools/floors.js's own parser only
+    recognises "===== N passed, N failed =====" (and the engine/boot/
+    functional variant with ", N expected red"); a HELD count folded into
+    this exact line read as no summary at all, the same silent-looking
+    failure a truncated log gives, and floors.js called the run cut off.
+    HELD lines print on their own above, the same place CLAIMS GATE's do. */
+ console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
  process.exit(FAIL?1:0);})().catch(e=>{ console.log('  FAIL the gate threw: '+e.stack); process.exit(1); });
