@@ -14,6 +14,33 @@ const { extractHashtags } = require('./intelligence/hashtags');
 // Cache the pipeline so it isn't re-loaded on every transcription
 let _whisperPipeline = null;
 
+/**
+ * Check whether the Whisper model files are cached locally.
+ * Returns { cached: boolean, sizeBytes: number, path: string }
+ */
+function checkModelCached() {
+  try {
+    const fs = require('fs');
+    const { app } = require('electron');
+    const cacheDir = path.join(app.getPath('userData'), 'models');
+    // Xenova caches under models/Xenova/whisper-base.en/
+    const modelDir = path.join(cacheDir, 'Xenova', 'whisper-base.en');
+    if (!fs.existsSync(modelDir)) return { cached: false, sizeBytes: 0, path: modelDir };
+    let totalBytes = 0;
+    function sumDir(dir) {
+      for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, f.name);
+        if (f.isDirectory()) sumDir(full);
+        else totalBytes += fs.statSync(full).size;
+      }
+    }
+    sumDir(modelDir);
+    return { cached: totalBytes > 1_000_000, sizeBytes: totalBytes, path: modelDir };
+  } catch (_) {
+    return { cached: false, sizeBytes: 0, path: '' };
+  }
+}
+
 async function loadWhisper(onProgress) {
   if (_whisperPipeline) return _whisperPipeline;
 
@@ -26,8 +53,18 @@ async function loadWhisper(onProgress) {
   _whisperPipeline = await pipeline('automatic-speech-recognition', 'Xenova/whisper-base.en', {
     dtype: 'q8',
     progress_callback: (p) => {
-      if (onProgress && p.status === 'progress') {
-        onProgress({ stage: 'loading_model', pct: Math.round(p.progress || 0) });
+      if (!onProgress) return;
+      if (p.status === 'progress') {
+        const pct = Math.round(p.progress || 0);
+        const stage = p.loaded && p.total && p.total > 1_000_000
+          ? 'downloading_model'
+          : 'loading_model';
+        const extra = (p.loaded && p.total)
+          ? { bytesLoaded: p.loaded, bytesTotal: p.total }
+          : {};
+        onProgress({ stage, pct, ...extra });
+      } else if (p.status === 'ready') {
+        onProgress({ stage: 'model_ready', pct: 100 });
       }
     }
   });
@@ -46,9 +83,19 @@ async function loadWhisper(onProgress) {
  * @returns {Promise<{transcriptId:string, words:number, tags:number}>}
  */
 async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
+  // Report model cache status so UI can show correct message
+  const cacheStatus = checkModelCached();
+  onProgress({
+    stage: cacheStatus.cached ? 'loading_model' : 'downloading_model',
+    pct: 0,
+    cached: cacheStatus.cached,
+    bytesTotal: cacheStatus.cached ? cacheStatus.sizeBytes : 150_000_000,
+  });
+
   const pipe = await loadWhisper(onProgress);
 
-  onProgress({ stage: 'transcribing', pct: 0 });
+  const _transcribeStart = Date.now();
+  onProgress({ stage: 'transcribing', pct: 0, elapsedMs: 0 });
 
   // Fix #5: word_timestamps: true — get actual per-word timestamps instead of
   // 30-second chunk boundaries. Required for all downstream intelligence algorithms.
@@ -60,7 +107,7 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
     task: 'transcribe',
   });
 
-  onProgress({ stage: 'transcribing', pct: 100 });
+  onProgress({ stage: 'transcribing', pct: 100, elapsedMs: Date.now() - _transcribeStart });
 
   const fullText = result.text || '';
 
@@ -175,4 +222,4 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   return { transcriptId, words: words.length, tags: hashtags.length };
 }
 
-module.exports = { transcribe, loadWhisper };
+module.exports = { transcribe, loadWhisper, checkModelCached };

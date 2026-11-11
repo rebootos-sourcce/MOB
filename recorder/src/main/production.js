@@ -9,6 +9,7 @@ const { getDeviceId } = require('./identity');
 const { extractHashtags } = require('./intelligence/hashtags');
 const { detectChapters } = require('./intelligence/energy');
 const { remapTimestamp, loadEdl } = require('./edl');
+const { generateVariants } = require('./intelligence/variants');
 
 /**
  * Assemble a production package for a recording.
@@ -103,6 +104,30 @@ async function assemblePackage({ recordingId, clipId = null }) {
       JSON.stringify(chapters),
     ]
   );
+
+  // Generate platform variants and store them (non-blocking)
+  try {
+    const pkg = db.get('SELECT * FROM production_packages WHERE id = ?', [packageId]);
+    if (pkg) {
+      const pkgData = {
+        title: pkg.title_variants
+          ? JSON.parse(pkg.title_variants)?.[0]
+          : (recording ? recording.title : ''),
+        titleVariants: pkg.title_variants ? JSON.parse(pkg.title_variants) : [],
+        description: pkg.description,
+        hashtags_json: pkg.hashtags_json,
+        chapters_json: pkg.chapters_json,
+        fullText: transcript.full_text || '',
+      };
+      const variants = generateVariants(pkgData);
+      db.run(
+        'UPDATE production_packages SET variants_json = ? WHERE id = ?',
+        [JSON.stringify(variants), packageId]
+      );
+    }
+  } catch (varErr) {
+    console.error('[production] variant generation error:', varErr.message);
+  }
 
   return { packageId, title, hashtags, chapters };
 }
