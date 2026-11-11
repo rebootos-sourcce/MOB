@@ -931,7 +931,7 @@
             : p.stage === 'transcribing' ? 'Transcribing…'
             : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
         });
-        const result = await window.api.invoke('transcription:start', { recordingId: row.id, filePath: row.path });
+        const result = await window.api.invoke('transcription:start', { recordingId: row.id });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; }
         const tags = await window.mob.db.query('tags:list', [row.id]);
