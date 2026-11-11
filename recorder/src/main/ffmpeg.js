@@ -13,10 +13,10 @@ const { spawn, execFile } = require('child_process');
 const fs = require('fs');
 
 function binaryPath() {
-  let p = require('ffmpeg-static');
+  const p = require('ffmpeg-static');
+  if (!p) throw new Error('ffmpeg-static binary not found');
   // Inside a packaged app the binary lives in app.asar.unpacked.
-  if (p && p.includes('app.asar')) p = p.replace('app.asar', 'app.asar.unpacked');
-  return p;
+  return p.replace(/app\.asar(?=[/\\])/g, 'app.asar.unpacked');
 }
 
 /**

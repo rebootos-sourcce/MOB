@@ -20,6 +20,7 @@ const COMMANDS = [
 
 let _state       = 'IDLE';   // IDLE | LISTENING | TRANSCRIBING
 let _sendControl = null;
+let _callbacks   = {};  // main-process recording callbacks
 let _porcupine   = null;
 let _vosk        = null;
 let _enabled     = false;
@@ -31,9 +32,11 @@ function isEnabled() { return _enabled; }
 /**
  * Initialize voice commands. Silently no-ops if native libraries aren't available.
  * @param {function} sendControl   main.js sendControl(channel, payload)
+ * @param {object}   callbacks     { startRecording, stopRecording, togglePause, setMic }
  */
-async function init(sendControl) {
+async function init(sendControl, callbacks) {
   _sendControl = sendControl;
+  _callbacks   = callbacks || {};
 
   // Fix #15: guard against missing/empty API key before instantiating Porcupine
   if (!process.env.PICOVOICE_API_KEY) {
@@ -117,6 +120,12 @@ function _matchCommand(text) {
       const payload = channel === 'recorder:setMic'
         ? { enabled: phrase === 'unmute' }
         : {};
+      // Dispatch directly to main-process recording functions so the command
+      // actually takes effect, then notify the renderer for UI feedback.
+      if (channel === 'recorder:go'     && _callbacks.startRecording) _callbacks.startRecording();
+      else if (channel === 'recorder:stop'   && _callbacks.stopRecording)  _callbacks.stopRecording();
+      else if ((channel === 'recorder:pause' || channel === 'recorder:resume') && _callbacks.togglePause) _callbacks.togglePause();
+      else if (channel === 'recorder:setMic' && _callbacks.setMic) _callbacks.setMic(payload.enabled);
       if (_sendControl) _sendControl(channel, payload);
       return phrase;
     }

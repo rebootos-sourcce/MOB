@@ -62,7 +62,7 @@ class RawRecording {
     await this.end();
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     const res = await ffmpeg.finalize(this.path, outputPath, opts, onProgress);
-    try { fs.unlinkSync(this.path); } catch (_) { /* keep raw if unlink fails */ }
+    fs.promises.unlink(this.path).catch(() => { /* keep raw if unlink fails */ });
     return res;
   }
 }

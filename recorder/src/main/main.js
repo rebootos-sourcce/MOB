@@ -354,9 +354,10 @@ function persistRecordingRow(filePath, durationMs, format, codec) {
       [id, deviceId, filePath, durationMs, codec, r2Key]
     );
   } catch (e) {
-    // Fix #25: surface DB failure to the renderer — recording is on disk but invisible in UI
+    // The file IS saved — only the DB row write failed. Send a non-fatal warning
+    // rather than finalize:error so the user isn't told the save failed.
     console.error('[mob] Failed to persist recording row:', e.message);
-    sendControl('finalize:error', { message: 'DB write failed — recording saved to: ' + filePath, rawPath: filePath });
+    sendControl('finalize:done', { path: filePath, dbWarning: 'Recording saved but not indexed: ' + e.message });
   }
 }
 
@@ -616,7 +617,7 @@ app.whenReady().then(async () => {
   transcriptionHandlers.register(sendControl);
   editHandlers.register();
   productionHandlers.register();
-  voiceHandlers.register(sendControl);
+  voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic });
   syncHandlers.register(sendControl);
 
   sweepOldRaw();
@@ -666,6 +667,11 @@ app.whenReady().then(async () => {
 
   // Ticker for the elapsed-time display.
   setInterval(() => { if (rec.state === 'recording' || rec.state === 'paused') publishState(); }, 500);
+}).catch(err => {
+  // Fatal startup error — show a human-readable dialog before quitting so the
+  // user isn't left with a silent crash and no window.
+  dialog.showErrorBox('MOB Recorder failed to start', String(err));
+  app.quit();
 });
 
 app.on('second-instance', () => { if (control) { control.show(); control.focus(); } });
