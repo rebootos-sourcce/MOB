@@ -562,10 +562,15 @@ ipcMain.handle('app:restart', () => { app.relaunch(); app.exit(0); });
 
 ipcMain.handle('waveform:load', async (_e, filePath) => {
   const fsP = require('fs').promises;
+  if (!filePath) throw new Error('waveform:load: no path');
+  // Allow userData (raw recordings) or any path already persisted in the DB
   const allowedBase = path.resolve(app.getPath('userData')) + path.sep;
-  if (!filePath || !path.resolve(filePath).startsWith(allowedBase)) {
-    throw new Error('waveform:load: path outside userData');
-  }
+  const inUserData = path.resolve(filePath).startsWith(allowedBase);
+  const inDb = inUserData ? true : (() => {
+    const row = db.get('SELECT id FROM recordings WHERE path = ?', [filePath]);
+    return !!row;
+  })();
+  if (!inDb) throw new Error('waveform:load: path not in recordings');
   try {
     const buf = await fsP.readFile(filePath);
     return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
