@@ -595,6 +595,50 @@ ipcMain.handle('waveform:load', async (_e, filePath) => {
   }
 });
 
+function toSrtTime(ms) {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const f = ms % 1000;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(f).padStart(3,'0')}`;
+}
+function toVttTime(ms) { return toSrtTime(ms).replace(',', '.'); }
+
+ipcMain.handle('captions:export', async (_e, { recordingId, format = 'srt' }) => {
+  const transcript = db.get(
+    'SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1',
+    [recordingId]
+  );
+  if (!transcript) throw new Error('No transcript for recording ' + recordingId);
+  const segs = db.all(
+    "SELECT start_ms, end_ms, text FROM segments WHERE transcript_id = ? AND type = 'speech' ORDER BY seq",
+    [transcript.id]
+  );
+  if (!segs.length) throw new Error('No caption segments found');
+
+  let content;
+  if (format === 'vtt') {
+    const body = segs.map(seg => `${toVttTime(seg.start_ms)} --> ${toVttTime(seg.end_ms)}\n${seg.text}`).join('\n\n');
+    content = 'WEBVTT\n\n' + body + '\n';
+  } else {
+    content = segs.map((seg, i) =>
+      `${i + 1}\n${toSrtTime(seg.start_ms)} --> ${toSrtTime(seg.end_ms)}\n${seg.text}\n`
+    ).join('\n');
+  }
+
+  const rec = db.get('SELECT path FROM recordings WHERE id = ?', [recordingId]);
+  const base = rec && rec.path ? path.basename(rec.path, path.extname(rec.path)) : 'captions';
+  const { canceled, filePath } = await dialog.showSaveDialog(control, {
+    defaultPath: base + '.' + format,
+    filters: format === 'vtt'
+      ? [{ name: 'WebVTT', extensions: ['vtt'] }]
+      : [{ name: 'SubRip', extensions: ['srt'] }],
+  });
+  if (canceled || !filePath) return { ok: false };
+  require('fs').writeFileSync(filePath, content, 'utf8');
+  return { ok: true, path: filePath };
+});
+
 ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => {
   const row = db.get('SELECT id, path FROM recordings WHERE id = ?', [recordingId]);
   if (!row) return { ok: false, error: 'Not found' };

@@ -941,7 +941,7 @@
         });
         const result = await window.api.invoke('transcription:start', { recordingId: row.id });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
-        if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; }
+        if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; $('editExportRow').hidden = false; }
         const tags = await window.mob.db.query('tags:list', [row.id]);
         const tagBox = $('editTagBox');
         tagBox.textContent = '';
@@ -956,6 +956,17 @@
         if (_unsubTranscriptionProgress) { _unsubTranscriptionProgress(); _unsubTranscriptionProgress = null; }
         $('btnTranscribe').disabled = false;
       }
+    };
+
+    $('btnExportSrt').onclick = async () => {
+      if (!selectedRecordingId) return;
+      try { await window.api.invoke('captions:export', { recordingId: selectedRecordingId, format: 'srt' }); }
+      catch (e) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Export failed: ' + e.message; }
+    };
+    $('btnExportVtt').onclick = async () => {
+      if (!selectedRecordingId) return;
+      try { await window.api.invoke('captions:export', { recordingId: selectedRecordingId, format: 'vtt' }); }
+      catch (e) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Export failed: ' + e.message; }
     };
 
     $('btnRemoveFillers').onclick = async () => {
