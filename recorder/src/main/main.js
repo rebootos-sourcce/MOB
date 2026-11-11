@@ -507,7 +507,16 @@ function handleBubbleResize(ev) {
 
 // ---------------------------------------------------------------- IPC
 
-ipcMain.handle('settings:get', () => settings.get());
+// Strip the Cloudflare API token before sending settings to any renderer.
+// cf:getConfig is the designated channel — it returns tokenStored: boolean.
+function safeSettings(s) {
+  if (!s || !s.cloudflare || !s.cloudflare.apiToken) return s;
+  const cf = Object.assign({}, s.cloudflare);
+  delete cf.apiToken;
+  return Object.assign({}, s, { cloudflare: cf });
+}
+
+ipcMain.handle('settings:get', () => safeSettings(settings.get()));
 ipcMain.handle('settings:set', (_e, patch) => settings.set(patch));
 ipcMain.handle('state:get', () => ({
   state: rec.state, micEnabled: rec.micEnabled, elapsedMs: elapsedMs(), message: rec.message,
@@ -607,7 +616,7 @@ ipcMain.on('recorder:done', (_e, msg) => { if (msg.perf) bus.emit('perf', msg.pe
 // ---------------------------------------------------------------- lifecycle
 
 settings.onChange((all, patch) => {
-  broadcast('settings:changed', all);
+  broadcast('settings:changed', safeSettings(all));
   applyBubbleSettings(patch);
 });
 
