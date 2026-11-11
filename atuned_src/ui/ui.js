@@ -771,6 +771,14 @@ function colShut(){
     the menu the surface is for, and shut at every width on Knowledge */
  var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
+ /* THE JOURNAL'S OWN RAIL NEVER FOLDS, 10 November, his words: "the left
+    menu, get rid of that close menu... merge that left menu into the
+    full panel." Its fold control is hidden now (.lfold, shell/head.html,
+    body.tab-story), so a person who shut it before this round, with the
+    control still live, would be stuck shut with no way back: the one
+    real reason a stored answer is skipped here and nowhere else below.
+    Every other surface's own stored fold still reads normally. */
+ if(k==='lcols')return false;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }

@@ -102,13 +102,33 @@ async function open(browser,w,h,inits,FILE,booted){
  await p.evaluate(async()=>{ loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,320)); });
  return p;}
 
-/* the control sits at the foot of the panel, which on a phone is below the
-   first screen: brought into view the way a thumb would scroll to it, and
-   then pressed for real */
+/* ONE ICON CARRIES BOTH DOORS, 10 November: his words, naming the hero
+   view's only two icons, the talk bubble and Dashboard, with no third
+   for typing, answered straight when asked how one opens the box
+   without a visible keyboard icon: "fold into the talk bubble." #sttype
+   (ui/storyui.js's own stWire) is still exactly the control this file
+   has held all along, read by every assertion below through its own
+   aria-expanded and the box it opens; only how a person's own press
+   reaches stType() changed, a tap still talks (stMic, unchanged) and a
+   press held past stHoldMs (ui/storyui.js) opens the same box this
+   whole file is checking. So this presses and holds #stmic, for real,
+   rather than clicking #sttype, which is display:none at rest in the
+   hero view (shell/head.html's own body.tab-story:not(.st-full)
+   #stjr.st-rest .st-bar) and would fail "a control that is covered or
+   off the screen fails by name" for a reason that has nothing to do
+   with whether stType() itself still works. */
 async function pressType(p,ok,what){
- await p.evaluate(()=>{ const t=document.getElementById('sttype'); if(t)t.scrollIntoView({block:'center'}); });
+ await p.evaluate(()=>{ const t=document.getElementById('stmic'); if(t)t.scrollIntoView({block:'center'}); });
  await p.waitForTimeout(60);
- return press(p,'#sttype',ok,what);}
+ try{
+  const box=await p.locator('#stmic').boundingBox();
+  if(!box){ ok(false,what+': #stmic has no box to press and hold'); return false; }
+  await p.mouse.move(box.x+box.width/2,box.y+box.height/2);
+  await p.mouse.down();
+  await p.waitForTimeout(560);
+  await p.mouse.up();
+  return true;
+ }catch(e){ ok(false,what+': #stmic could not be pressed and held, '+String(e.message).split('\n')[0]); return false; }}
 
 async function typeInGate(browser,FILE,ok,booted){
  for(const [w,h,wn] of WIDTHS){
@@ -120,9 +140,18 @@ async function typeInGate(browser,FILE,ok,booted){
    const s0=await read(p);
    ok(s0.chat===true&&!s0.box&&s0.fields===0,at+'voice works: the Journal lands with chat on and no text field, '+JSON.stringify({chat:s0.chat,box:s0.box,fields:s0.fields}));
    ok(s0.types===1&&s0.ty&&s0.ty.exp==='false'&&s0.ty.ariaLabel==='Type instead',at+'and Type instead is there, closed, '+JSON.stringify(s0.ty));
-   await p.evaluate(()=>{ const t=document.getElementById('sttype'); if(t)t.scrollIntoView({block:'center'}); });
+   /* NOT ON SCREEN OF ITS OWN ANY MORE, AT REST, 10 November: his ruling
+      that the hero view carries exactly two icons, the talk bubble and
+      Dashboard, with Type instead folded into the talk bubble's own
+      long press rather than a third on screen beside them (see
+      pressType's own note). The control is still real, in the document,
+      at the same 44px floor did it ever show (shell/head.html's own
+      .st-type rule is untouched); #stjr's own .st-rest class is what
+      hides it, and that class clears the moment Chat starts listening,
+      a turn lands, or the box opens by the held press, each checked
+      further down this same file. */
    const sz=(await read(p)).ty;
-   ok(sz&&sz.seen&&sz.top&&sz.w>=44&&sz.h>=44,at+'on screen, nothing over it, at the 44 pixel floor, '+JSON.stringify(sz));
+   ok(sz&&!sz.seen,at+'off screen at rest, folded into the talk bubble\'s own held press, '+JSON.stringify(sz));
 
    await press(p,'#stmic',ok,at+'Chat');
    /* Chat asks for Source AI's greeting out loud, and its hold drops what
@@ -152,7 +181,14 @@ async function typeInGate(browser,FILE,ok,booted){
    await p.waitForTimeout(300);
    const s2=await read(p);
    ok(!s2.listen&&!s2.recOn,at+'Type instead stops listening, and the recogniser is off, '+JSON.stringify({listen:s2.listen,recOn:s2.recOn}));
-   ok(s2.chat===false&&s2.typed&&!s2.novoice&&s2.boxSeen,at+'and the box is on screen, opened by choice and not forced, '+JSON.stringify({chat:s2.chat,typed:s2.typed,novoice:s2.novoice,box:s2.boxSeen}));
+   /* STV.chat stays true here, 9 November: the ruling that moved the box to
+      an addition beside the thread rather than a replacement of it (see
+      ui/storyui.js, stType) means Chat's own view never leaves while Type
+      instead opens by choice. Only STV.typed says the box is the one open
+      for it; chat===false is still real, but only on the forced doors this
+      gate holds elsewhere (novoice, the crisis door), neither of which this
+      is. */
+   ok(s2.chat===true&&s2.typed&&!s2.novoice&&s2.boxSeen,at+'and the box is on screen, opened by choice and not forced, '+JSON.stringify({chat:s2.chat,typed:s2.typed,novoice:s2.novoice,box:s2.boxSeen}));
    ok(s2.text.indexOf(SAID)>=0&&s2.text.indexOf(SAYING)>=0,at+'and both sentences are in it, the one still being said kept and not dropped, '+JSON.stringify(s2.text));
    ok(s2.focus==='sttext',at+'and the box has the focus after the recogniser\'s own end, '+s2.focus);
    ok(s2.boxes===1&&s2.commits===1&&s2.types===1&&s2.ty.exp==='true',at+'one box, one Commit, and Type instead reads open, '+JSON.stringify({boxes:s2.boxes,commits:s2.commits,types:s2.types,exp:s2.ty&&s2.ty.exp}));

@@ -505,6 +505,16 @@ function relPick(nodeIds,from){
  RUN.heavy={};RUN.look=false;RUN.books={};
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
  RUN.resShown=false; RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
+ /* BUG #164: a release run against the entry the Story page's own panel is
+    still offering closes that offer, so coming back to a blank page never
+    shows an already-released entry's addresses again. Keyed to the entry
+    (RUN.storyT===STV.lastT), not to this call happening at all, because a
+    release that reruns an older entry (the rerun path below) or one that
+    runs through onboarding's own bridge (ui/onboard.js's relPick(ids,
+    {mini:true,story_t:OB.commit.t}), which never touches ui/storyui.js's
+    #strun handler) must still close the SAME flag if it happens to match
+    the entry still open there. */
+ if(RUN.storyT&&typeof STV!=='undefined'&&RUN.storyT===STV.lastT)STV.lastOpen=false;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
  RUN.plan=relPlan(); RUN.queue=relReached(RUN.pick,RUN.plan);
  /* the setup carousel opens on its first group, and on stories when any of

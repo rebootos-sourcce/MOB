@@ -54,6 +54,14 @@ async function quizLink(browser, file, w, h, nm) {
     href: document.getElementById('tolink').href,
     door: document.getElementById('toapp').href,
     json: recordJSON(),
+    /* scored() itself, read before saveProfile ever touches it, so a test can
+       tell the quiz's own arithmetic apart from whatever the record-building
+       step did to it afterward. Caught a real bug this way: saveProfile reads
+       the engine's shared working state, not its own argument, so a record
+       built from a scored() the quiz never loaded into that state came back
+       with saveProfile's defaults in it, not what the person actually scored. */
+    scoredLaws: scored().p.laws,
+    scoredAxes: scored().p.axes,
     say: (document.getElementById('linksay') || {}).textContent || '',
     tag: document.getElementById('tolink').tagName
   }));
@@ -217,7 +225,14 @@ require('./net.js').guardBrowser(browser);
       '@' + w + ': as one new record, ' + r.before.names.length + ' before, ' + r.st.names.length + ' after');
     const want = JSON.parse(q.json);
     ok(r.rec === JSON.stringify({ laws: want.laws, axes: want.axes }),
-      '@' + w + ': the laws and charges the app holds are the ones the quiz scored');
+      '@' + w + ': the laws and charges the app holds are the ones the record carried');
+    /* THE REAL CHECK. want.laws/want.axes above come from the record's own
+       JSON, which is exactly what a bug in building that record would also
+       corrupt, so the assertion above would pass even if the record never
+       held the quiz's real answers. This compares against scored() directly,
+       the quiz's own arithmetic, read before anything downstream can touch it. */
+    ok(r.rec === JSON.stringify({ laws: q.scoredLaws, axes: q.scoredAxes }),
+      '@' + w + ': and they are what the quiz actually scored, not some other record-building default');
     const ln = r.line || {};
     ok(/^Loaded Web reading from the link\. Nothing else was touched\.$/.test(ln.shown || '') && ln.lifted && !ln.shownKind,
       '@' + w + ': status() says so on screen once the boot sheet has lifted, showed ' + JSON.stringify(ln.shown));

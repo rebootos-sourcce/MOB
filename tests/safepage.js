@@ -308,15 +308,18 @@ const look = p => p.evaluate(() => {
       chat: STV.chat,
       line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
       reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
-      me: [...document.querySelectorAll('#stsrc .src-bub-me')].map(e => e.textContent),
+      /* NO TWO-WAY CHAT, ANYWHERE, 10 November: #stsrc holds one div now,
+         .src-mine, the whole entry's own words as ST_TEXT itself reads
+         them, never a bubble per turn. mine reads that one block. */
+      mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null,
       live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
       pass: !!document.getElementById('srcpass'), why: !!document.getElementById('srcwhy'),
       marks: document.querySelectorAll('#stsrc mark').length,
       asks: SRC_CHAT.filter(r => r.key && r.key.indexOf('ask|') === 0).length,
       said: (document.getElementById('srcsay') || {}).textContent || '' }));
     ok(s.chat && s.line === SAY.entry && s.reach === 1, 'in the conversation, the line in Emmy\'s words and one door' + at + ': ' + JSON.stringify({ line: s.line, reach: s.reach }));
-    ok(JSON.stringify(s.me) === JSON.stringify([first, 'I keep thinking about killing myself.']),
-      'and the person\'s own words stay on the page, both turns' + at + ': ' + JSON.stringify(s.me));
+    ok(s.mine === [first, 'I keep thinking about killing myself.'].join('\n'),
+      'and the person\'s own words stay on the page, both turns, one block, nothing of Source AI\'s' + at + ': ' + JSON.stringify(s.mine));
     ok(s.live === 0 && !s.pass && !s.why && s.asks === 0 && s.marks === 0, 'no reply, no question, no Move on, no why, no lit word' + at + ': ' + JSON.stringify(s));
     /* SAID OUT LOUD, the owner's ruling of 3 November: the line, once, in its
        own words, through the voice route every reply uses (net.js answers it,
@@ -343,8 +346,8 @@ const look = p => p.evaluate(() => {
     await p.evaluate(() => { STV.dash = false; stRender(); }); await p.waitForTimeout(200);
     await say(p, 'I was scared and my chest went tight.'); await p.waitForTimeout(300);
     const nx = await p.evaluate(() => ({ line: (document.querySelector('#stsafe p') || {}).textContent || null,
-      me: document.querySelectorAll('#stsrc .src-bub-me').length }));
-    ok(nx.line === null && nx.me === 1, 'the next entry starts and the line goes' + at + ': ' + JSON.stringify(nx));
+      mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null }));
+    ok(nx.line === null && nx.mine === 'I was scared and my chest went tight.', 'the next entry starts and the line goes' + at + ': ' + JSON.stringify(nx));
     ok(!p.errs.length, 'no page errors' + at + ': ' + p.errs.join(' | '));
     await p.cx.close();
 
@@ -359,12 +362,14 @@ const look = p => p.evaluate(() => {
     const sh = await q.evaluate(() => ({ from: SRC_FROM,
       line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
       reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
-      me: document.querySelectorAll('#stsrc .src-bub-me').length,
+      mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null, text: ST_TEXT,
       live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
       pass: !!document.getElementById('srcpass') }));
     ok(sh.from > 0, 'the probe moves the subject: SRC_FROM is past the words' + at + ': ' + sh.from);
-    ok(sh.line === SAY.entry && sh.reach === 1 && sh.me === 3 && sh.live === 0 && !sh.pass,
-      'and the line and one door stay, all three turns on the page, no reply in their place' + at + ': ' + JSON.stringify(sh));
+    ok(sh.line === SAY.entry && sh.reach === 1 && sh.mine === sh.text
+      && sh.mine === [first, 'I keep thinking about killing myself.', 'Can we talk about something else?'].join('\n')
+      && sh.live === 0 && !sh.pass,
+      'and the line and one door stay, all three turns on the page, one block, no reply in their place' + at + ': ' + JSON.stringify(sh));
     ok(q.voice.length === qv, 'and the line is not said again on the turn after it' + at + ': ' + JSON.stringify(q.voice.slice(qv)));
     /* Talk pressed again speaks what is on screen, the line, never an older question */
     await q.evaluate(() => { stMic(); }); await q.waitForTimeout(250);

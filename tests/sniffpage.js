@@ -353,18 +353,38 @@ require('./net.js').guardBrowser(browser);
   console.log('\n=== S5 · what was read and not counted is said on the Story page, with its meaning beside it ===');
   for (const [w, h] of [[1600, 1000], [390, 844]]) {
     const p = await open(browser, w, h);
+    /* THE NOTE MOVED TO THE EXPANDED VIEW, 10 November, his words on a real
+       screenshot of the mini view's own copy of this box, scribbled out
+       entirely: "remove that text field or hide that text field from the
+       mini dashboard. It only belongs in the expanded one." #stsrc is
+       display:none there now, no exception, so this check follows the
+       requirement to where it actually lives, the Full Dashboard
+       (STV.dash), rather than stand as a stale assertion against a view
+       that no longer carries the feature. */
+    await p.evaluate(() => { STV.dash = true; stRender(); });
     const T = 'I was not angry. He is furious. You feel so alone. I was scared.';
     await type(p, T);
     const look = () => p.evaluate(() => {
       const e = document.getElementById('staside'), r = e ? e.getBoundingClientRect() : null;
+      /* THE SENTENCE MOVED INTO #stsrc'S OWN BOX, 10 November: his words,
+         "delete the text field directly under Uni... move its properties
+         where it's detecting the patterns into the text field beneath
+         that one." #staside itself stays in the DOM (stAsideSay/
+         stAsidePaint still run it every refresh) but is display:none now,
+         always, by design; .src-aside, inside #stsrc, prints the same
+         engine sentence instead, in the one merged box. The note still
+         has to be drawn somewhere real, just not there any more. */
+      const a = document.querySelector('.src-aside'), ar = a ? a.getBoundingClientRect() : null;
       return { text: e ? e.textContent : null, hidden: e ? e.hidden : null, w: r ? r.width : 0, h: r ? r.height : 0,
         role: e ? e.getAttribute('role') : null, engine: asideSay(asideOf(ST_TEXT, ST_PARSED)),
+        asideText: a ? a.textContent : null, asideW: ar ? ar.width : 0, asideH: ar ? ar.height : 0,
         sw: document.documentElement.scrollWidth, vw: innerWidth };
     });
     const s = await look();
-    ok(s.text !== null && !s.hidden && s.w > 0 && s.h > 0 && s.role === 'note',
-      '@' + w + ': the note is on the Story page, drawn, as a note: ' + JSON.stringify({ hidden: s.hidden, w: s.w, h: s.h, role: s.role }));
+    ok(s.text !== null && s.role === 'note' && s.asideText !== null && s.asideW > 0 && s.asideH > 0,
+      '@' + w + ': the note is on the Story page, drawn, in the merged box under Uni: ' + JSON.stringify({ asideW: s.asideW, asideH: s.asideH, role: s.role }));
     ok(s.text === s.engine && s.engine.length > 0, '@' + w + ': it is the engine\'s own sentence, one copy for every surface');
+    ok(s.asideText === s.engine, '@' + w + ': the merged box under Uni carries the exact same sentence, not a second copy of its own');
     ok(/“not angry” is not counted, because you said no to it\./.test(s.text),
       '@' + w + ': the word said with a no, in the person\'s letters, with what not counted means beside it');
     ok(/“He is furious” is not counted, because it is about someone else\. Write how it landed on you/.test(s.text),
@@ -376,6 +396,7 @@ require('./net.js').guardBrowser(browser);
     await type(p, 'I was scared.');
     const q = await look();
     ok(q.hidden === true && q.text === '', '@' + w + ': with nothing set aside the note is gone, not an empty box');
+    ok(q.asideText === null, '@' + w + ': and the merged box drops it too, not an empty line left standing');
     ok(!p.errs.length, '@' + w + ': no page errors: ' + p.errs.join(' | '));
     await p.cx.close();
   }

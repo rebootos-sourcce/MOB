@@ -97,41 +97,75 @@ async function stFullGate(browser,FILE,ok,booted){
    const b=lc.getBoundingClientRect(), r=sl.getBoundingClientRect();
    const shown=[...lp.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||e.className);
    return {dash:STV.dash, chat:STV.chat, full:document.body.classList.contains('st-full'),
-    simple:!!document.querySelector('#stflow.st-simple'), cols:!!document.querySelector('#stflow .st-colr'),
+    /* .st-colx split in two, 10 November: Imprints/Bank is .st-colb and
+       Release is .st-colz now (ui/storyui.js), his own four-column
+       mock-up round, so those are the two extra columns Dashboard mode
+       brings in beside the chat, not the one .st-colx used to be. */
+    simple:!!document.querySelector('#stflow.st-simple'),
+    cols:!!document.querySelector('#stflow .st-colb')&&!!document.querySelector('#stflow .st-colz'),
     lcol:getComputedStyle(lc).display, lw:Math.round(b.width), rw:Math.round(r.width), rh:Math.round(r.height),
     shut:document.body.classList.contains('lshut'), shown,
     grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};});
   ok(s1.dash&&s1.chat&&s1.full&&!s1.simple&&s1.cols,at+'Dashboard turns on Full with chat still on, '+JSON.stringify({dash:s1.dash,chat:s1.chat,full:s1.full,simple:s1.simple}));
   ok(s1.lcol==='flex'&&s1.rw>0&&s1.rh>0,at+'and the left column is back with the rail in it, '+JSON.stringify({lcol:s1.lcol,lw:s1.lw,rw:s1.rw,rh:s1.rh}));
   ok(!s1.shut,at+'the Journal\'s left column arrives open in Full');
-  ok(s1.shown.length===2&&s1.shown.indexOf('stleft')>=0&&s1.shown.indexOf('lfold')>=0,
-   at+'the rail is #stleft and its fold and nothing of the Field\'s, got '+s1.shown.join(','));
+  /* NO FOLD HERE ANY MORE, 10 November, his words: "the left menu, get
+     rid of that close menu... merge that left menu into the full
+     panel." .lfold is hidden on the Journal now (shell/head.html,
+     body.tab-story .lfold), so #lpanel's own shown list is #stleft
+     alone, not #stleft and its fold. */
+  ok(s1.shown.length===1&&s1.shown.indexOf('stleft')>=0,
+   at+'the rail is #stleft alone, its fold gone and nothing of the Field\'s, got '+s1.shown.join(','));
   if(wn==='desktop')ok(/^302px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 302px 1fr, got '+s1.grid);
 
-  /* 3. silent with no story */
+  /* 3. silent with no story. ROUND, 8 November: the per-row ring-and-name
+     list (.st-en-r, .cr) became a colour-only pill row, his words "I don't
+     want the text. I only want the color. And a pill, almost like a
+     light." stPillRow draws nothing at all, not even an empty row div,
+     when stDashLeft has no story, the same "a hidden surface never sits
+     in the document asserting a stale reading" rule this rail already
+     kept, so the pill count here is checked the same way the old ring
+     count was. */
   const s2=await p.evaluate(()=>{const sl=document.getElementById('stleft');
    return {txt:ST_TEXT, none:!!sl.querySelector('#st-energy-none'), say:(sl.querySelector('#st-energy-none')||{}).textContent,
-    rings:sl.querySelectorAll('.cr').length, rows:sl.querySelectorAll('.st-en-r').length,
+    pills:sl.querySelectorAll('#st-energy-ls .st-pl').length,
     head:(sl.querySelector('#st-energy-h')||{}).textContent};});
   ok(s2.txt.trim()===''&&s2.head==='Energy',at+'the rail opens on Energy, with no story written, '+JSON.stringify({txt:s2.txt,head:s2.head}));
-  ok(s2.none&&s2.rings===0&&s2.rows===0,at+'and says nothing is read yet, with no ring and no seat drawn, '+JSON.stringify(s2));
+  ok(s2.none&&s2.pills===0,at+'and says nothing is read yet, with no pill drawn, '+JSON.stringify(s2));
 
-  /* 4. a story, all seven */
+  /* 4. a story, all seven, as pills now. ORDER IS STRENGTH NOW, NOT ROOT TO
+     CROWN, his own instruction: "arranged according to signal strength."
+     So the check moves from an ordered sequence to a set (every band
+     present once, whatever order) and a separate, real check that the
+     order stPillRow actually drew is non-increasing by value. THE FIGURE
+     IS IN THE TITLE NOW, not a visible .cr .v: "I only want the color...
+     mouse is over it, they can see what's being lit up", so the hover
+     text is checked against the same fmtPct('atom',v) figure the old
+     visible text was. */
   const s3=await p.evaluate(t=>{
    ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh();
-   const rows=[...document.querySelectorAll('#stleft .st-en-r')];
+   const pills=[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')];
    const want=BANDS.map(b=>{const v=Math.min(10,(ST_PARSED.bands[B2K[b]]||0)/3);return {b,v,f:fmtPct('atom',v)};});
-   return {seats:rows.map(r=>r.getAttribute('data-seat')), order:BANDS,
-    got:rows.map(r=>(r.querySelector('.cr .v')||{}).textContent), want:want.map(x=>x.f),
+   const byband={}; want.forEach(x=>byband[x.b]=x);
+   const vals=pills.map(r=>byband[r.getAttribute('data-seat')].v);
+   return {seats:pills.map(r=>r.getAttribute('data-seat')).slice().sort(), order:BANDS.slice().sort(),
+    nonIncreasing:vals.every((v,i)=>i===0||vals[i-1]>=v),
+    titled:pills.every(r=>{var x=byband[r.getAttribute('data-seat')];
+     return x.f!==PCT_DASH?r.title.indexOf(x.f)>=0:r.title.indexOf('nothing from this story')>=0;}),
     spring:want.every(x=>Math.abs(STSEAT[x.b].rdT-x.v)<1e-9),
     dash:want.filter(x=>x.f===PCT_DASH).length, lit:want.filter(x=>x.f!==PCT_DASH).length,
-    tips:rows.every(r=>!!r.querySelector('.st-en-n .tipu[data-tip]')),
+    /* NO MORE .lit CLASS, 9 November: the pill's brightness is a dial now
+       (--b, 0 to 1, stBright in ui/stdash.js), not a switch, so "lit" is
+       read off that dial rather than a class that no longer exists. */
+    brightClass:pills.filter(r=>parseFloat(r.style.getPropertyValue('--b'))>0.05).length,
+    allTitled:pills.every(r=>!!r.title),
     none:!!document.querySelector('#st-energy-none')};},STORY);
-  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats Root to Crown, got '+s3.seats.join(','));
-  ok(s3.got.join()===s3.want.join(),at+'each figure is the atom percent of min(10, bands/3), got '+s3.got.join(',')+' want '+s3.want.join(','));
-  ok(s3.lit>0&&s3.dash>0,at+'a seat the story reached prints its percent and an untouched seat its dash, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
-  ok(s3.spring,at+'and every ring reads the number the Journal\'s own chart springs to, STSEAT');
-  ok(s3.tips&&!s3.none,at+'each seat name carries its own sentence, and the silent line is gone');
+  ok(s3.seats.join()===s3.order.join(),at+'with a story, all seven seats present, got '+s3.seats.join(','));
+  ok(s3.nonIncreasing,at+'and the pills run strongest first, by signal strength');
+  ok(s3.titled,at+'each figure is the atom percent of min(10, bands/3), in the pill\'s own hover');
+  ok(s3.lit>0&&s3.dash>0&&s3.brightClass===s3.lit,at+'a seat the story reached lights its pill and an untouched seat stays dim, and stays, '+s3.lit+' lit, '+s3.dash+' dashed');
+  ok(s3.spring,at+'and every pill reads the number the Journal\'s own chart springs to, STSEAT');
+  ok(s3.allTitled&&!s3.none,at+'each pill carries its own hover sentence, and the silent line is gone');
 
   /* 5. PHASE 0. Full, chat on, the crisis door by real presses */
   await p.evaluate(()=>window.scrollTo(0,0));
@@ -208,31 +242,35 @@ async function stFullGate(browser,FILE,ok,booted){
    if(o.fieldShut)document.body.classList.add('lshut');
    setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,260));
    o.backFull=document.body.classList.contains('st-full'); o.backDash=STV.dash;
-   o.backRows=document.querySelectorAll('#stleft .st-en-r').length;
+   o.backRows=document.querySelectorAll('#stleft #st-energy-ls .st-pl').length;
    return o;});
   ok(!s4.offFull&&s4.offLeft===''&&s4.offRail==='none',at+'leaving the Journal clears the rail and the class, '+JSON.stringify(s4));
   ok(s4.fieldSec!=='none',at+'and the Field\'s left rail is the Field\'s again, '+s4.fieldSec);
   ok(s4.backFull&&s4.backDash&&s4.backRows===7,at+'coming back in Full draws the class and all seven seats again, '+JSON.stringify(s4));
 
-  /* 8. the fold key, beside the stage only */
+  /* 8. NO FOLD ON THE JOURNAL ANY MORE, 10 November. His words: "the left
+     menu, get rid of that close menu... merge that left menu into the full
+     panel." #lfold is display:none on body.tab-story (shell/head.html) and
+     colShut() hard codes false for 'lcols' (ui/ui.js), so the Journal's
+     rail can never be shut and there is no fold key here to press any
+     more. What this item checked before, that folding the Journal's own
+     rail left the Field's lcol key alone, no longer applies, there is
+     nothing of the Journal's left to fold. What still holds is checked
+     here instead: the rail stays open through a round trip to the Field
+     and back, and never writes to lcols. */
   if(wn==='desktop'){
-   const k0=await p.evaluate(()=>({lcol:STORE.get('lcol'),lcols:STORE.get('lcols')}));
-   await press(p,'#lfold',ok,at+'the Journal\'s fold');
-   await p.waitForTimeout(160);
-   const k1=await p.evaluate(async()=>{const o={shut:document.body.classList.contains('lshut'),
-     lcols:STORE.get('lcols'),lcol:STORE.get('lcol'),grid:getComputedStyle(document.querySelector('.mid')).gridTemplateColumns};
+   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols'),
+     fold:getComputedStyle(document.getElementById('lfold')).display}));
+   ok(k0.fold==='none',at+'the Journal has no fold key to press, '+JSON.stringify(k0));
+   const k1=await p.evaluate(async()=>{const o={shut:document.body.classList.contains('lshut')};
     setTab(TAB.FIELD); render(); await new Promise(r=>setTimeout(r,200));
     o.fieldShut=document.body.classList.contains('lshut');
     setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
     o.backShut=document.body.classList.contains('lshut');
+    o.lcols=STORE.get('lcols');
     return o;});
-   ok(k1.shut&&k1.lcols==='shut'&&k1.lcol===k0.lcol&&/^58px /.test(k1.grid),
-    at+'folding the Journal writes lcols and leaves the Field\'s lcol alone, '+JSON.stringify({k0,k1}));
-   /* the Field's own answer: what its key holds, or with nothing held, shut
-      beside the stage (GO in TASKS.md, "the field left panel starts closed") */
-   const fieldWant=k0.lcol?k0.lcol==='shut':true;
-   ok(k1.fieldShut===fieldWant&&k1.backShut,at+'and the Field keeps its own fold while the Journal keeps its own, '+JSON.stringify(k1));
-   await press(p,'#lfold',ok,at+'the Journal\'s fold, open again');}
+   ok(!k1.shut&&!k1.backShut&&k1.lcols===k0.lcols,
+    at+'the Journal\'s rail stays open through the Field and back, and writes nothing to lcols, '+JSON.stringify({k0,k1}));}
 
   /* 9. Dashboard again is Simple */
   await p.evaluate(()=>window.scrollTo(0,0));
@@ -260,13 +298,13 @@ async function stFullGate(browser,FILE,ok,booted){
    const other=[...document.querySelectorAll('#psel option')].map(o=>o.value).find(v=>v!=='0');
    return {other, who:S.who, full:document.body.classList.contains('st-full'),
     rail:document.getElementById('stleft').innerHTML,
-    rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')};},STORY);
-  ok(a.who===0&&a.full&&a.rows.split(',').length===7,at+'the switch is measured from You in Full with seven seats drawn, '+JSON.stringify({who:a.who,full:a.full,rows:a.rows}));
+    rows:[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')].map(e=>e.getAttribute('data-seat')+':'+e.title).join('|')};},STORY);
+  ok(a.who===0&&a.full&&a.rows.split('|').length===7,at+'the switch is measured from You in Full with seven seats drawn, '+JSON.stringify({who:a.who,full:a.full,rows:a.rows}));
   await p.selectOption('#psel',a.other,{force:true});
   await p.waitForTimeout(300);
   const b=await p.evaluate(m=>({who:S.who, text:ST_TEXT, parsed:!!ST_PARSED,
    rail:document.getElementById('stleft').innerHTML,
-   rows:document.querySelectorAll('#stleft .st-en-r').length,
+   rows:document.querySelectorAll('#stleft #st-energy-ls .st-pl').length,
    none:!!document.getElementById('st-energy-none'),
    page:document.getElementById('story').textContent.indexOf(m)>=0,
    draft:(CURP&&CURP.story&&CURP.story.draft)||null,
@@ -282,7 +320,7 @@ async function stFullGate(browser,FILE,ok,booted){
   await p.selectOption('#psel','0',{force:true});
   await p.waitForTimeout(300);
   const c=await p.evaluate(()=>({who:S.who, text:ST_TEXT,
-   rows:[...document.querySelectorAll('#stleft .st-en-r .cr .v')].map(e=>e.textContent).join(',')}));
+   rows:[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')].map(e=>e.getAttribute('data-seat')+':'+e.title).join('|')}));
   ok(c.who===0&&c.text===STORY&&c.rows===a.rows,at+'and back on You, the words and the same seven figures return, '+JSON.stringify({who:c.who,rows:c.rows,want:a.rows}));
   /* the last commit is a record's too: STV.lastT is what relPick credits a
      run to, so it may not survive into the next person's release */
@@ -291,6 +329,33 @@ async function stFullGate(browser,FILE,ok,booted){
    s.dispatchEvent(new Event('change')); await new Promise(r=>setTimeout(r,200));
    return {before:k, lastT:STV.lastT, found:STV.lastFound.length};});
   ok(d.before.lastT!==null&&d.lastT===null&&d.found===0,at+'a commit\'s found imprints and its time do not carry to the next person, '+JSON.stringify(d));
+  /* BUG #164: found!==STV.lastFound alone cannot tell "just committed, not
+     yet released" from "already released, or never coming back to it", since
+     stCommit stores the exact same object in both cases. The release panel
+     must offer what was just written, and must stop offering it the moment
+     a release actually runs against that entry, from any door. */
+  await p.evaluate(async t=>{loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
+   ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'My chest went tight and my stomach dropped when he yelled.');
+  const f0=await p.evaluate(()=>({take:stRelModel().take.length, open:STV.lastOpen}));
+  ok(f0.take>0&&f0.open===true,at+'right after Commit, the release panel offers what was just written, '+JSON.stringify(f0));
+  const f1=await p.evaluate(()=>{var ids=stRelModel().take.map(function(n){return n.i;});
+   relPick(ids,{story_t:STV.lastT}); var r={take:stRelModel().take.length, open:STV.lastOpen}; relClose(); return r;});
+  ok(f1.take===0&&f1.open===false,at+'and once that entry has been released, the offer closes, '+JSON.stringify(f1));
+  await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'My jaw was tight all morning and my shoulders would not drop.');
+  const f2=await p.evaluate(()=>{var ids=stRelModel().take.map(function(n){return n.i;});
+   relPick(ids,{mini:true,story_t:STV.lastT}); relClose(); stRelPanel();
+   return {take:stRelModel().take.length, open:STV.lastOpen, rq:document.querySelectorAll('#strel [data-rq]').length};});
+  ok(f2.take===0&&f2.open===false&&f2.rq===0,at+'and the same holds for a release run through onboarding\'s own mini shape, '+JSON.stringify(f2));
+  await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'A third entry, committed and never released.');
+  await p.selectOption('#psel',a.other,{force:true});
+  await p.waitForTimeout(300);
+  await p.selectOption('#psel','0',{force:true});
+  await p.waitForTimeout(300);
+  const f3=await p.evaluate(()=>({take:stRelModel().take.length}));
+  ok(f3.take===0,at+'and switching who owns the record, then back, closes an unreleased entry\'s offer too, '+JSON.stringify(f3));
   /* NOR DOES THE SAFE LINE, 4 November. stCommit keeps STV.safeSaid up so
      the line stands once the box empties (stSafe), and stOwn did not clear
      it: a safety commit on one record, a switch, and the next record was
@@ -319,17 +384,17 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(e2.line===e0.line&&e2.reach>0,at+'and its own words trip the line and the door on it, '+JSON.stringify(e2));
   await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
-  /* the fold opening again does not fade the rail in, the rule rmVisible
-     already keeps for first sight (ui/railmotion.js, railOpened) */
+  /* NO FOLD ON THE JOURNAL ANY MORE, 10 November, see the note at item 8
+     above. The reopen fade this checked (rmVisible, ui/railmotion.js,
+     railOpened) fires on #lfold's press, which does not exist here any
+     more. What is still true, and worth holding: the rail sits open with
+     no fade running at all, nothing left to fold or reopen. */
   if(wn==='desktop'){
    await p.waitForTimeout(300);
-   await press(p,'#lfold',ok,at+'the fold, shut, for the reopen fade');
-   await p.waitForTimeout(200);
-   await press(p,'#lfold',ok,at+'the fold, open again');
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
-     n:e.getAnimations().length, rows:e.querySelectorAll('.st-en-r').length+(e.querySelector('#st-energy-none')?1:0)};});
-   ok(!an.shut&&an.rows>0&&an.n===0,at+'reopening the fold runs no fade on the Energy rail, '+JSON.stringify(an));}
+     n:e.getAnimations().length, rows:e.querySelectorAll('#st-energy-ls .st-pl').length+(e.querySelector('#st-energy-none')?1:0)};});
+   ok(!an.shut&&an.rows>0&&an.n===0,at+'the Journal\'s rail sits open with no fade running, '+JSON.stringify(an));}
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
   await p.close();}}

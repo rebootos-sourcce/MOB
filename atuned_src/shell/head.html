@@ -67,6 +67,12 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     ruling and not a contrast one, and this changes no hue. */
  --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
  --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* WRITTEN LIVE BY ui/uni.js's ambPaint, round of 9 November; these two
+    fallbacks are what shows before she has painted even once (the first
+    frame, or a worked example that never mounts her). Dim and neutral on
+    purpose, the same reasoning as her own unread palette: nothing she has
+    not actually read yet. */
+ --uni-amb-core:60,56,52; --uni-amb-edge:10,9,8;
  /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
     marking the second tier of the information architecture: every eyebrow,
     every key label, every explanatory subline. Measured at 3.70 to 1 on
@@ -187,6 +193,11 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     tests/design.js reads transitions and not keyframes, so a loop typed
     straight into a rule goes unchecked by it. */
  --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* --t-drift, 10 November: the hero stage's cloud (head.html's own
+    uniCloudDrift, beside #stage::before) needs tens of seconds, not
+    the fractions of one the other four name, so it is its own token
+    rather than a bare number typed into that one rule. */
+ --t-drift:23s;
  /* the spacing scale. three steps. 6 between things in one control, 10
     between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
     doing one of those three jobs with no reason stated, so they read as
@@ -733,6 +744,20 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
  background:var(--hot,#c0392b);color:#fff;font:600 11px/16px var(--sans);font-style:normal;text-align:center}
 .msg-b i[hidden]{display:none}
 body.rm .msgdock{transition:none}
+/* NOT A SECOND CHAT BUBBLE, 9 November. His words, on this exact screen:
+   "if you look at the very bottom, middle, it's doing a chat bubble, that
+   doesn't belong in the mini." This is #status's own dock (body.html),
+   shared by the whole app, so its mechanism stays exactly as it is, per
+   this project's own rule that a write which can fail always reports
+   through it; only its shape changes, and only on the mini Journal
+   (:has() so this reads the real live DOM, not a class this file would
+   otherwise have to keep in sync by hand). A floating rounded pill the
+   width of its own text, centred over a screen already full of rounded
+   bubbles, is what read as one more of them; a flat bar close to the
+   width of the column it sits over does not. */
+body.tab-story:has(#stflow.st-simple) .msgdock{
+ width:min(900px,calc(100% - 24px));max-width:none;border-radius:var(--r-s);
+ box-shadow:0 4px 16px rgba(0,0,0,.26)}
 /* THE LOG, a small list over the dock, newest at the bottom the way a log
    reads, last fifty, scrolling inside itself. Rows are text and never
    controls, so nothing in it needs a tap floor but the close. */
@@ -1277,6 +1302,20 @@ body:not(.hassub) .subbar{display:none}
    the top. It is empty space below everything, which is the price, and it is
    only visible at the very bottom of the rail. */
 .panel.sc::after{content:"";display:block;height:88vh;flex:0 0 auto}
+/* THE TAIL IS FOR A RAIL THAT SCROLLS ITSELF, same reasoning as the
+   narrow-width override below, a different reason to want it gone: his
+   words tonight, "remove the scroll bar on the left rail, we should no
+   longer be able to scroll, the entire design should fit on the
+   screen." The Journal's own rail is not meant to scroll at all, at any
+   width, so the 88vh room a pressed header needs to reach the top of an
+   internally scrolling rail has nothing to do here either, the same way
+   it has nothing to do below 1181px. Measured directly: without it the
+   rail's real content is shorter than the space #lpanel actually has at
+   1600x1000 (821px of content in 911px of room); the narrow heights the
+   team's own mockups are still working remain theirs to answer, not
+   solved by removing a spacer that was never part of this rail's own
+   count. */
+body.tab-story.st-full #lpanel.panel.sc::after{display:none}
 .panel.sc::-webkit-scrollbar{width:6px}
 .panel.sc::-webkit-scrollbar-thumb{background:var(--edge-2);border-radius:3px}
 
@@ -2646,6 +2685,15 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
  background:transparent;color:var(--mid);cursor:pointer;
  transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
+/* GONE ON THE JOURNAL ONLY, 10 November, his words: "the left menu, get
+   rid of that close menu." #lfold is shared: the Field, Compass, Flow
+   and Knowledge columns all fold through this same control
+   (ui/ui.js's colFold), so it is hidden here rather than deleted, and
+   only where body.tab-story is set. colShut() itself never reads a
+   stored shut answer for the Journal's own key now (ui/ui.js), so
+   hiding the one door to it does not strand a person who shut it
+   before this round. */
+body.tab-story .lfold{display:none}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
 /* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
@@ -4125,28 +4173,590 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    lighting and a panel colour on a panel is invisible on four of the seven.
    ============================================================ */
 .st-flow{display:flex;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
-.st-colw,.st-colr,.st-colx{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
+/* .st-colr IS GONE, 9 November. His words: "the imprints now column
+   becomes now the full bank column." .st-colx (ui/storyui.js keeps its
+   id, the release column's own) takes the flex ratio .st-colr used to
+   carry, rather than the fixed 300px it had when it was release alone,
+   since it now also carries the list the old .st-colr held. */
+/* THREE COLUMNS, NOT TWO, 10 November, his words: "I want to do a mock-up
+   with the imprints as a third column, release as a fourth column...
+   Bank is something very important, so we want to see this filling up,
+   so I think it's important that it's its own column... make the uni
+   column and the imprint columns 2 and 3 the same width." .st-colx
+   (Uni's own flex ratio, carried over from when it shared this rule)
+   splits into .st-colb (the bank, ui/storyui.js) and .st-colz (Release),
+   .st-colw and .st-colb matched, .st-colz narrower: the 460/460/280
+   ratio he approved in the mock-up, kept as a proportion rather than a
+   pixel count so it still holds at widths the mock-up never measured.
+   The read/release focus shift below is the same mechanic the old two
+   column rule held, carried onto whichever of the three now owns that
+   attention, not dropped with the column it used to share. */
+.st-colw,.st-colb,.st-colz{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
  transition:flex var(--t-context) var(--ease-out)}
-.st-colw{flex:1.5 1 0}
-.st-colr{flex:1 1 0}
-.st-colx{flex:0 0 300px}
+.st-colw{flex:1.64 1 0}
+.st-colb{flex:1.64 1 0}
+.st-colz{flex:1 1 0}
 .st-flow[data-focus="read"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="read"] .st-colr{flex:1.55 1 0}
+.st-flow[data-focus="read"] .st-colb{flex:2.2 1 0}
+.st-flow[data-focus="read"] .st-colz{flex:1 1 0}
 .st-flow[data-focus="release"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colx{flex:0 0 430px}
+.st-flow[data-focus="release"] .st-colb{flex:1 1 0}
+.st-flow[data-focus="release"] .st-colz{flex:1.8 1 0}
 /* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real
    panels, not removed, only shut until Dashboard opens them (STV.dash,
    ui/storyui.js). The Journal takes the width they would have used. */
-.st-flow.st-simple .st-colr,.st-flow.st-simple .st-colx{display:none}
+.st-flow.st-simple .st-colb,.st-flow.st-simple .st-colz{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+/* THE KEYBOARD AND COMMIT ESCAPE THE 900PX READING COLUMN, 10 November,
+   his words: "move the text keyboard icon to the center bottom screen,
+   move the commit icon to the right side of the screen." Both still sit
+   in .st-bar for their own spacing and state logic; position:fixed was
+   what anchored them to the screen's own edges rather than the capped
+   column's, since nothing else in this rule changed their markup or
+   their wiring, only where they land. The crisis door's own button in
+   this same bar (#st-crxbar) is untouched, rare state, not part of this
+   ask. */
+.st-flow.st-simple .st-bar{min-height:var(--tap)}
+.st-flow.st-simple .st-bar #stapply{position:fixed;right:24px;bottom:24px;margin:0;z-index:5}
+/* ONE RULE, NOT TWO, FOR THE KEYBOARD, 10 November, his own correction the
+   same night: "center the keyboard icon, under Uni," looking at the Full
+   Dashboard, where this icon had no rule of its own at all and sat at
+   .st-bar's own left edge (plain flow, the bug his words caught), while
+   the mini view above already had one anchored to the whole screen. Two
+   screens, two different answers to "where is the keyboard," is the
+   thing his earlier words this round ruled out outright: "it should be
+   one system, it shouldn't be reading two systems at all." #stjr is the
+   one container both views already share, and Uni (#stuni) is already
+   centred inside it in both, screen-fixed in the mini view only because
+   #stjr there sits inside the 900px capped reading column above and a
+   fixed screen-centre was the nearest available approximation at the
+   time; now that the real ask is "under Uni" and not "centre of whatever
+   the viewport happens to be," anchoring to #stjr directly is the more
+   exact match in both views, not merely the same two answers written
+   once: #stjr is already position:relative, already full stage width in
+   the mini view and already the narrower stage column in the Full
+   Dashboard, and Uni's own horizontal centre is #stjr's, so this one
+   rule lands the icon under her either way. */
+#stjr .st-bar #sttype{position:absolute;left:50%;bottom:24px;
+ transform:translateX(-50%);margin:0;z-index:5}
+/* AND THE SECOND ROW NEVER REACHES THE MINI VIEW EITHER, same round,
+   same reasoning: Compass, Boundary, Body, Field and Avatar are a
+   Dashboard-only idea, his own words scoping them there ("when I hit
+   the dashboard button..."), so the mini Journal he is still reviewing
+   separately stays exactly as it was. */
+.st-flow.st-simple .st-2row{display:none}
+/* THE MINI PICTURES. One label, one small drawing, one optional line of
+   real numbers under it; never a second shade of panel inside a panel,
+   so five of these beside each other read as one row and not five
+   boxes. */
+.st-2row{display:flex;gap:12px;flex:0 0 auto}
+/* AVATAR MOVES TO THE RIGHT, THE MASKS TAKE THE LEFT, 10 November, his
+   second correction: "you still have this blank space to its right...
+   move the avatar to the right and then add the masks." Avatar was
+   half Release's width, left-aligned, the other half empty; that half
+   now holds the four mask tiles, and Avatar sits at the row's own end
+   so the two read as one deliberate row rather than one picture with
+   dead space beside it. */
+.st-2row-1{display:flex;align-items:stretch}
+.st-2row-1 .st-mask4{flex:1 1 0;min-width:0;display:flex;align-items:center;
+ justify-content:center;gap:8px}
+.st-2row-1 #stavatar{flex:0 0 50%}
+.st-mask4-t{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+ justify-content:center;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
+ border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
+.st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+/* THE RAIL'S OWN MASKS SECTION, same tile as .st-mask4-t above, the real
+   five rather than the mini panel's top four, and a name under each: a
+   bare icon with a name on hover alone, not printed, is the Release
+   rings' own mistake from earlier tonight. */
+/* GRID, NOT A FLEX ROW, so five tiles that do not fit one line at this
+   width wrap to a real second line (3 then 2) instead of each shrinking
+   until "Preteen" and "Ideological" had to break mid word to fit. */
+.st-mk-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));
+ gap:6px 4px;padding:4px 0 2px}
+.st-mk-t{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.st-mk-i{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+ justify-content:center;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
+ border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
+.st-mk-i svg{width:16px;height:16px;fill:none;stroke:var(--c);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.st-mk-lb{font-size:10.5px;line-height:1.2;color:var(--mid);text-align:center;
+ margin:0;overflow-wrap:break-word;max-width:100%}
+.st-2row .st-mini{flex:1 1 0;min-width:0}
+/* --sunk, NOT --panel, 10 November. His words: "add black backgrounds to
+   the other five buttons that we have at the bottom as well." These five
+   (Compass, Boundary, Body, Field, Avatar, stMiniShell in storyui.js, the
+   only place .st-mini is built) were the one surface left on --panel,
+   the product's ordinary card grey, while every other Dashboard panel
+   (the text box, the imprints list, Release) already reads --sunk. */
+.st-mini{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:10px 12px;display:flex;flex-direction:column;height:200px}
+/* SENTENCE CASE, NO ALL CAPS UI COPY, the house voice ruling, CLAUDE.md:
+   caught here by tests/design.js's own "no all-caps UI copy" check
+   ("transform:Compass | transform:Boundary") before this shipped.
+   text-transform:uppercase is gone; weight and letter-spacing alone mark
+   this as a label, the same way .rblk (the rail's own section heading)
+   already does with neither capitalisation nor an invented second style. */
+.st-mini-lb{font-size:11px;font-weight:600;color:var(--dim);
+ letter-spacing:.02em;margin-bottom:6px}
+.st-mini-vis{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
+/* width/height:100%, not max-: an <svg> with no width/height attribute of
+   its own (every one of the five mini pictures, viewBox alone) renders at
+   its intrinsic 300x150 regardless of a max- cap in some engines, which is
+   exactly what pushed Body's own caption line below this card's own
+   bottom edge, measured by screenshotting #stbody alone. A definite box,
+   with preserveAspectRatio's own default doing the letterboxing, cannot
+   overflow it. */
+.st-mini-vis svg{width:100%;height:100%}
+.st-mini-cap{font-size:11.5px;color:var(--mid);text-align:center;margin-top:4px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
+/* DARK, THE SAME DARK AS THE TEXT FIELD, 9 November: see the ruling at
+   .st-lrail .st-en below, which this panel's own ground now matches too.
+   .st-pan is the journal entry's own wrapper (#stjr) as well as the
+   imprints panels (.st-ls, .st-ch below), so one change here is every
+   panel his words named: "make all the panel areas, even where the
+   buttons are, dark." */
 .st-pan{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;
- background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
+ background:var(--sunk);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
+/* THE SCREEN BREATHES WITH HER, 9 November, WIDENED TO DASHBOARD 10
+   November. His words, 9 November: "I also want its background
+   gradient colour... when Uni is dark red, the background is also kind
+   of a cloudy dark red that subtly animates... the screen fills with
+   its background colour." His words, 10 November, looking at the
+   Dashboard: "when I click on dashboard, Uni is in that weird black,
+   like red box again. So it should fill this, the black background
+   should fill the screen, and then the background itself should be
+   the energy colour that Uni's throwing off." Scoped to
+   #stflow.st-simple at first, on purpose, because the Dashboard view
+   was out of scope that round; it is not now, so the qualifier is
+   gone. #stjr alone is the right scope: STV.chat is false only on the
+   forced-box and crisis doors (stVoiceCant, crisisTalk), neither of
+   which this rule should skip, and #stjr exists in both views alike.
+   A radial, not a flat wash, is what reads as "cloudy" rather than a
+   paint swap, and the two stops are her own live core and edge tones
+   (ui/uni.js's ambPaint), never a colour this file invents. The drift
+   is in background-position, cheap for the compositor and small
+   enough (two percentage points) to read as subtle and not as a
+   second animation competing with her own. */
+#stjr{
+ /* AND NO BORDER DRAWING A BOX ROUND THE GLOW, his own earlier, repeated
+    word for this exact look ("weird black, like red box... it should
+    fill this"). .st-pan's own 1px edge is right for every other panel,
+    which does not carry a full-bleed colour behind it; this one does,
+    and a border on top of a glow is the box he means. */
+ border:0;
+ /* THE GLOW FADES OUTWARD, NOT IN, 10 November: his words, pointing at a
+    visible warm ring round a darker centre, "it should be black... if
+    that's its glow, you have its alpha inverted." It was: the 55% stop
+    mixed in MORE of its tone (60%) than the 0% stop at the core did
+    (46%), so the rim read brighter than the centre, which is a frame,
+    not a glow. The two numbers are swapped, nothing else; the core and
+    edge tones are still her own live ones (ui/uni.js's ambPaint). */
+ /* THIS RULE'S OWN BACKGROUND NEVER PAINTS ON THE HERO VIEW, found while
+    chasing his "shading is completely broken" report, 10 November: round
+    #144 moved the ambient wash off #stjr onto #stage::before (full
+    bleed, behind her words too, see that rule's own comment) and quieted
+    #stjr's copy on purpose (body.tab-story:not(.st-full) #stjr{
+    background:none}, below) so the wash never painted twice. Editing the
+    gradient here, confirmed directly against the computed style, changes
+    nothing a person sees on this view; the box he was circling was
+    .st-glow::before, the Source AI halo, left on after #stsrc was hidden
+    (see "NOT ONLY AT REST" below), not this rule. Left as the
+    Dashboard's own background still, since .st-full never mutes it. */
+ background:radial-gradient(130% 110% at 50% 18%,
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 46%,var(--sunk)) 55%,
+   var(--sunk) 100%);
+ background-size:132% 132%;
+ animation:uniAmbDrift 17s ease-in-out infinite;
+ /* TOKENS ARE LAW. --t-context (420ms) is the longest of the house's four
+    named durations and the only one of the four tests/design.js's own
+    "motion is named" check would pass here; a hand-picked 1.2s failed it
+    as a stray fifth duration nothing else in the product uses. */
+ transition:background var(--t-context) var(--ease-out)}
+@keyframes uniAmbDrift{0%,100%{background-position:50% 38%}50%{background-position:53% 45%}}
+body.quiet #stjr,body.rm #stjr{animation:none;background-position:50% 40%}
+@media (prefers-reduced-motion:reduce){
+ #stjr{animation:none;background-position:50% 40%}}
+/* THE SAME BOX, IN THE DASHBOARD, 10 November. His words, pointed at the
+   Dashboard specifically, not the hero: "you see that red in the background
+   around that black border around Uni? Get rid of the fucking black
+   border." Nothing here draws an actual border line: #stjr{border:0} above
+   already beats .st-pan's 1px edge on specificity. The box is the glow's
+   own hard rectangular cutoff instead, the same root cause as the hero
+   complaint, just never fixed here because the hero fix above only
+   touches :not(.st-full). #stjr's default radial is 130% by 110% inside a
+   132% background-size box, so at the panel's own side edges the gradient
+   is barely a third of the way through its fade and still reads as solid
+   red tint, and its last stop lands on var(--sunk), a near black, right
+   where that tint finally gives way, which is the ring he is pointing at.
+   closest-side keys the radius to #stjr's own box instead of an arbitrary
+   percent of it, and fading to transparent, not --sunk, lets the panel's
+   own ground show through at the edge instead of a darker ring sitting on
+   top of it. 70% leaves two fifths of the radius past where the drift's
+   own 132% size and the animation's own 3-degree swing ever reach, so no
+   phase of the drift uncovers a hard edge either. */
+body.tab-story.st-full #stjr{
+ /* FILLED, NOT EMPTY, 10 November. His words, a screenshot of exactly this
+    panel scribbled over almost edge to edge: "the area behind Uni is
+    black. I've just now coloured it in." Fading to transparent (below,
+    before this fix) killed the hard box from the round before, but with
+    background-color also transparent there was nothing under the fade at
+    all past 70%, so the ground he is pointing at was never --sunk, it was
+    whatever sits behind #stjr, which reads the same flat black as the
+    page around it. var(--sunk) at the last stop keeps the same soft,
+    centred light and still reads as her glow, not a box (nothing here
+    regained a hard edge), but the ground it fades onto now actually has a
+    tone, the same dark every other panel in this product is built on. */
+ border-radius:0;background-color:var(--sunk);
+ background-image:radial-gradient(closest-side at 50% 40%,
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,var(--sunk)) 45%,
+   var(--sunk) 100%);
+ /* BREATHING ROOM, same words, same round. .st-pan's own 14px/16px (its
+    base rule, above) was built for a panel that is mostly text; this one
+    is mostly her. */
+ padding:32px 28px}
+/* HER OWN BOX STOPPED GROWING TO FILL WHATEVER WAS LEFT, same round, his
+   words: "the whole design needs to be symmetrical." .st-chat .st-uni's
+   flex:1 1 0 (below) let her column stretch to every pixel #stsrc's own
+   content did not use, which on an empty record is almost all of it: she
+   sat near the top of a box several times her own height, and the text
+   zone inherited whatever was left over at the very bottom, uneven on
+   every side. A fixed height, the same number the hero view already
+   uses, plus centring the pair as one block in the space #stjr actually
+   has, gives equal room above her, equal room below the text zone, and a
+   true middle between the two instead of one swallowing the other's
+   share. */
+/* A CAP, NOT A FLOOR, caught by collide.js at 1600x700: a fixed height
+   here does not shrink the way flex:1 1 0 with min-height:0 (the base
+   rule, below) always did, so on a short window #stmic/#stdash (.st-hd,
+   in flow above .st-glow) stayed in place while her own canvas, now
+   forced to 42vh regardless of how little room #stjr actually had, grew
+   over them. max-height keeps the same flex:1 1 0/min-height:0 shrink
+   behaviour (nothing above this breaks), only ever capping her growth
+   on a window tall enough to spare it. */
+body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
+   words the same night the box above was hidden on the mini view: "I do
+   need to be able to see the text, so I need the height of that area
+   moved to the bottom of that area." Centring the Uni-plus-text pair
+   (justify-content:center, the ruling two sections up) put equal empty
+   space above her and below the text zone; flex-end keeps that same
+   pair, only moves the empty space to sit above the whole block instead
+   of splitting it, which is what puts the text zone itself flush with
+   #stjr's own bottom edge. */
+body.tab-story.st-full .st-chat .st-glow{flex:1 1 auto;justify-content:flex-end}
+/* A PINSTRIPE ROUND THE TEXT ZONE ONLY, same round, his own words: "have a
+   little pinstripe line around the area that's for text." Thin and the
+   same hairline every divider on this rail already draws (var(--edge)),
+   never the thick coloured accent .st-pe's base rule puts on its left edge
+   alone (built for the two-way thread this panel no longer shows); the
+   shorthand resets all four sides to one even line, so the zone her words
+   sit in reads as its own marked place without reading as a box the way a
+   filled card or a thick border would. The travelling light (.st-pe::before
+   /::after, its own absolutely positioned pseudo, not drawn from this
+   border) is untouched by the change. */
+body.tab-story.st-full #stsrc{border:1px solid var(--edge)}
+/* THE GLOW MOVES TO THE STAGE ITSELF, ON THE HERO VIEW ONLY, 10 November.
+   His words, marking a screenshot: "I don't want any gray to the left or
+   right. I want the black background to fill the entire thing, and I want
+   its glow to be on top of that." #stjr above is capped at 900px and
+   centred by .st-flow.st-simple .st-colw (this file), inside #stage, which
+   every tab shares and which a plain .glass{background:var(--panel)} rule
+   (above) tints the panel grey the owner was pointing at. #stage carries
+   an id, which outranks every .stage class rule that colours it per theme
+   or per tab (body.lumen/.glasswhite/.flat/.tab-field etc, all above), so
+   this needs no !important and touches no other tab: body.tab-story is
+   never true on them, and st-full is storyui.js's own class for the
+   Dashboard, set at stRender()'s own "document.body.classList.toggle(
+   'st-full', ...)" (ui/storyui.js), so :not(.st-full) is the hero view and
+   only the hero view. The Dashboard keeps #stjr's own glow above exactly
+   as it was; .st-colw is not capped there (no max-width rule applies
+   outside .st-simple), so it already fills its own column and never showed
+   this grey. var(--bg), not a bare black: Snow, Glasswhite and Lumen are
+   light themes, and a literal #000 would paint a hole in those rather than
+   match the page the way it does in Dark, Punch, Glass and Flat.
+
+   THE CHAKRA IS A HUE, NEVER THE BRIGHTNESS, his separate ruling the same
+   round: "make sure Uni's background color is an overlay of also the
+   chakra color." --seat and --seat-w (ui/ui.js, set on body every render,
+   already the whole mechanism Punch tints its own tokens with, above) are
+   the heaviest body seat's colour and how hard it reads, 0 to 1. Mixed in
+   at a mid teens to thirties percent against transparent, under her own
+   amb-core/edge layer and never inside it, so a severe Root reading warms
+   her gold without ever outshouting it; oklch, not srgb, because mixing a
+   saturated green or red straight into her red-to-gold scale in srgb reads
+   as mud, not a tint. Both custom properties default (the var()'s second
+   argument) to nothing, since only body.punch ever sets --seat in CSS and
+   every other theme would otherwise invalidate the whole declaration
+   before the first render() runs its JS and writes one.
+
+   SUBTLE, AND A CLOUD, his words again: "it's glow is very subtle overlay
+   on top of the black, but it has a subtle cloud animation." A single flat
+   radial reads as a spotlight; the chakra layer and her own layer are two
+   separate shapes, off-centre from each other, so where they overlap
+   drifts as they move. The drift animates transform, not background-
+   position: background-position repaints the whole stage every frame,
+   transform runs on the compositor, and this box is far bigger than
+   #stjr's old 900px was. --t-drift (below, beside --t-breath) is a fifth
+   named duration, honestly added rather than hand-picked, since gate 12
+   ("motion is named") reads transitionDuration and not animation-duration
+   and would not have caught a bare 23s either way. */
+body.tab-story:not(.st-full) #stage{
+ /* EDGE TO EDGE, NOT CENTRED AT ITS OWN CONTENT WIDTH, 10 November. #story
+    (id #story, class .iq) is "display:flex!important;align-items:center;
+    justify-content:center" (above, the rule after it toggles display). .iq
+    itself sets flex-direction:column, which that rule never resets, so
+    align-items is the CROSS axis here, horizontal, and centred rather than
+    stretched. #stage is a grid with no width of its own, so on a screen
+    wider than its own three-lane content it sized to that content and sat
+    centred in #story's box, #story's own ground showing either side of it,
+    which is the grey he keeps pointing at. width:100% gives it an explicit
+    cross size, which wins over align-items:center the way an explicit size
+    always wins over a stretch default, without touching #story's own
+    centring for anything else that still wants it. */
+ width:100%;
+ background:var(--bg);border-color:transparent;
+ -webkit-backdrop-filter:none;backdrop-filter:none;
+ isolation:isolate;overflow:hidden}
+body.tab-story:not(.st-full) #stage::before{
+ /* BEHIND HER WORDS TOO, NOT JUST HER FIGURE, 10 November. #stjr went
+    position:static two rulings up (so #stmic/#stdash could pin to #stage's
+    own corners instead of #stjr's narrower column), which moved #stjr and
+    everything non-positioned inside it, #stsrc among them, out of the
+    positioned stacking bucket #stage::before sits in (z-index:0, painted
+    in tree order among #stage's other positioned descendants) and into
+    the plain in-flow bucket that paints BEFORE any positioned z-index:0
+    layer, whatever the markup order. #stuni never showed this: .st-uni
+    is itself position:relative, so it stayed in the positioned bucket and
+    kept painting over the glow the way it always had. #stsrc has no
+    position of its own, so her words rendered, measured by sampling the
+    actual pixels, with real text nodes and a real 16px size and color,
+    while the glow painted over them a layer later. z-index:-1 moves the
+    glow to the stacking order's one bucket that is unambiguously behind
+    every in-flow descendant regardless of position, so it reads where it
+    always was meant to, behind her, and now behind her words too. */
+ content:'';position:absolute;inset:-16%;z-index:-1;pointer-events:none;
+ /* IT EMANATES FROM HER, NOT THE ROOM, 10 November, his words straight:
+    "you see that the glow comes from him. It emanates from him. There
+    is no box." The first build of this wash read the other way, close
+    to the brightest the art director's own floor allows (46%/32% mix,
+    a size wide enough to light most of the stage) rather than near it,
+    which painted a flat warm wash over nearly the whole screen, exactly
+    the "box" in a new shape. Both numbers came down together that round,
+    mixed at a sixth to a twelfth of what they were, sized to wrap her own
+    circle and fall to var(--bg) well inside the stage rather than past
+    its edge.
+
+    THAT "WELL INSIDE THE STAGE" IS ITS OWN BOX, 10 November, found by
+    sampling the actual pixels across a real 2000px window at his own
+    screenshot's width, not by eye: flat, unmoving background from the
+    edge to 27.5% in on both sides, a sharp rise over about 150px, lit
+    middle, same sharp fall back to flat on the other side. A gradient
+    that reaches its last colour stop and then sits at that exact colour
+    for hundreds of flat pixels reads as a seam at the stop, because nothing
+    about the colour either side of it is still changing; the eye finds the
+    one place the slope breaks. 46% 50% (below, before this fix) reached
+    its own 100% stop, measured, at 45% of the stage's own half width, so
+    on anything wider than her own fixed-size figure most of the stage sat
+    in that flat, seamed band. Scaled up by the same ratio that measurement
+    gave (roughly 2.5x, to clear it with real margin rather than land back
+    on the same edge at a slightly wider window), the last stop now falls
+    past the stage's own edge at every width this product ships, so the
+    colour is still changing, however slightly, everywhere the eye can
+    reach, and there is nowhere left for a seam to sit. */
+ background:
+  radial-gradient(105% 115% at 50% 50%,
+    color-mix(in oklch,var(--seat,transparent) calc(var(--seat-w,0)*10%),transparent) 0%,
+    transparent 75%),
+  radial-gradient(115% 125% at 50% 50%,
+    color-mix(in oklch,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
+    color-mix(in oklch,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
+    var(--bg) 100%);
+ transition:background var(--t-context) var(--ease-out);
+ /* CALMER AS SHE READS MORE COHERENT, same round: "because we're uniform
+    as a character, becomes more coherent" [the motion should settle as
+    coherence rises]. Speed, not duration, carries that: ui/uni.js's
+    ambPaint() calls updatePlaybackRate() on this animation directly
+    (the Web Animations API), which eases the tempo without jumping its
+    position the way rewriting animation-duration live would (a running
+    animation's local time rescales against its duration the moment the
+    duration changes, which reads as a visible skip). --t-drift is the
+    rate this plays at before any reading has set a rate at all. */
+ animation:uniCloudDrift var(--t-drift) var(--ease-breath) infinite alternate}
+@keyframes uniCloudDrift{
+ 0%{transform:translate(0,0) scale(1)}
+ 100%{transform:translate(2.5%,-2%) scale(1.035)}}
+body.quiet.tab-story:not(.st-full) #stage::before,
+body.rm.tab-story:not(.st-full) #stage::before{animation:none}
+@media (prefers-reduced-motion:reduce){
+ body.tab-story:not(.st-full) #stage::before{animation:none}}
+/* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
+   paints twice: once behind her (above) and once again in the box she
+   sits in. */
+body.tab-story:not(.st-full) #stjr{background:none;animation:none}
+/* NO FRAME ROUND HER AT ALL, NOT EVEN THE PADDED CARD, 10 November. His
+   words, this time with "next time you're fired" behind them, so read
+   exactly: "I do not want a frame around Uni in full mode... these are
+   the only icons on the screen [the talk bubble, left corner, and
+   Dashboard, upper right]. Everything else is conversational between me
+   and Uni." .st-pan's own padding and position:relative (above) are
+   what made #stjr read as a card even once its background went, and a
+   positioned ancestor is also why #stmic/#stdash below could only have
+   pinned to #stjr's own 900px column, not the true screen corners: a
+   position:static ancestor is not a containing block, so an absolute
+   child of it looks further up the tree, to #stage, which is the frame
+   he means and already position:relative (above). */
+/* CENTERED, NOT STACKED AT THE TOP, same words, asked many times over:
+   "why is the character not centered." .st-pan is a flex column with no
+   justify-content of its own (flex-start, the default), so .st-glow
+   (fixed height, flex:0 0 auto, above) stacked at #stjr's own top edge
+   and left every pixel of the row below it, once the bar and the prompt
+   line went to display:none, standing empty. Centering the column is
+   centering her, since she is the one child left with any height once
+   this view is at rest. */
+body.tab-story:not(.st-full) #stjr{position:static;padding:0;justify-content:center}
+/* THE PROMPT LINE AND THE KEYBOARD/COMMIT BAR READ AS A TEXT CHAT AND A
+   THIRD ICON, which is exactly what he ruled out; .st-rest is storyui.js's
+   own stRender() flag, true only while nothing is actually happening
+   (not typing, not listening, no crisis, Dashboard shut). The crisis bar
+   (.st-bar-crx) is named out of this on purpose: CLAUDE.md's own rule
+   that the door to help is never hidden does not bend for a layout he
+   has not seen yet. */
+body.tab-story:not(.st-full) #stjr.st-rest #stsrc,
+body.tab-story:not(.st-full) #stjr.st-rest .st-bar:not(.st-bar-crx){display:none}
+/* THE HALO IS #stsrc's OWN, AND GOES QUIET WITH IT. .st-glow::before (the
+   "passing light and the scan" round, above) bleeds a few pixels past
+   Source AI's small prompt box; .st-chat .st-glow is flex:1 1 auto and
+   grows to fill #stjr whether or not #stsrc is there to decorate, so
+   once #stsrc is hidden the halo is scaled up over an 800-plus pixel box
+   instead of the compact one it was built for, which is its own share
+   of the wash Lance was pointing at. Hidden alongside the thing it
+   decorates, nothing else about it changes.
+   NOT ONLY AT REST, 10 November. #stsrc is now hidden on every hero state
+   (body.tab-story:not(.st-full) #stsrc, below), so once a person had typed
+   anything and #stjr left .st-rest, this halo came back over the whole
+   900 by 790 pixel column with nothing to decorate: the lighter, rounded
+   box with a soft accent blob in its top left corner that he reported as
+   "the shading is completely broken" and "a border that needs to be
+   removed". It follows #stsrc's own scope now, so the two cannot drift
+   apart again. */
+body.tab-story:not(.st-full) #stjr .st-glow::before{display:none}
+/* AND WHAT IS LEFT, #stuni ALONE, CENTRES IN THE ROOM #stsrc LEFT.
+   .st-glow is itself a flex column (.st-chat .st-glow, above) with no
+   justify-content of its own, so her fixed-height box (#stflow.st-simple
+   .st-chat .st-uni, above) stacked at .st-glow's own top and the rest of
+   that now-tall column stood empty beneath her, which is the real reason
+   she read as sitting high rather than centred: #stjr's own
+   justify-content (above) has nothing to centre once .st-glow already
+   fills all of #stjr's height. */
+body.tab-story:not(.st-full) #stjr .st-glow{justify-content:center}
+/* THE TWO ICONS SIT AT THE STAGE'S OWN CORNERS, never the narrower
+   column's. .st-hd stays a flex row in the markup (nothing moved there),
+   only its two children leave that row's flow; the row itself is left
+   with no height anything needs, since nothing of it still displays. */
+body.tab-story:not(.st-full) #stmic{position:absolute;top:20px;left:20px;z-index:2}
+body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-index:2}
+/* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
+   past counting: "no two-way chat... just the user's input," and in the
+   same round, pointed at a bordered box, "there is no box." storyui.js's
+   srcPaint() builds .src-mine only in this view, in place of the thread or
+   the standing question; it never holds a .src-bub (that shape carries a
+   fill, and .src-bub-src a 1px edge too, the exact box his words ruled out,
+   only drawn around a reply bubble instead of a card). Capped near three
+   lines (1.6 line-height times three) and scrolled to its own bottom by
+   storyui.js on every paint, so the newest words stay in view and older
+   ones scroll up out of it, the way a caption track does, never a transcript
+   that grows forever down the screen. Centred under her the way #stjr's own
+   justify-content already centres her: an auto margin on a flex child, here
+   the cross axis, absorbs the spare width either side of it. */
+/* THE CARD ITSELF, NOT JUST HER WORDS INSIDE IT, 10 November, his words,
+   looking at this exact box: "your text box is way too big. And taking
+   up way too much real estate." .st-pe (#stsrc's own class) carries its
+   own background, left accent bar and padding, sized to #stjr's full
+   900px column, the way it always was for the Dashboard's own two-way
+   thread; .src-mine inside it was already capped at 46ch, but the card
+   around it was not, so the dark, accent-barred box still read as one
+   wide bar the width of the screen. width:fit-content plus auto margins
+   shrinks the card itself to its one line of content and centres it,
+   matching .src-mine's own width exactly; the accent bar and background
+   stay, since that is the one thing he has called a text bubble and not
+   a box ("it's just a text bubble", the same round, about the Dashboard).
+
+   OVERRIDDEN, same night: "that looks like it's a speech bubble. I told
+   you those do not exist on the screen. We're no longer doing Uni's
+   speech, so just hide that entirely." A hidden element's own width and
+   margin are moot, so the sizing rule above is replaced outright rather
+   than kept unused beside this one. The Dashboard's own copy of this
+   box, a separate rule (body.tab-story.st-full #stsrc below), is
+   untouched, his own words scoping this to the mini dashboard only.
+
+   OVERRIDDEN AGAIN, SAME NIGHT. The in-between step kept #stsrc out of
+   display:none so .src-aside, what the S5 sniffer audit requires the
+   Story page say about a word read and not counted, could still print
+   (srcPaint, ui/storyui.js) with the card itself stripped to a hairline
+   around it. He then drew a black scribble over the whole thing,
+   including that note, on a real screenshot of this exact view, and
+   said it outright: "remove that text field or hide that text field from
+   the mini dashboard. It only belongs in the expanded one." The Full
+   Dashboard's own copy of this box already carries the note correctly
+   (the Dashboard rule below, sized and verified earlier tonight), so his
+   ruling does not lose the feature, it moves where it lives: display:none
+   again, no exception, and tests/sniffpage.js's own S5 check moves with
+   it to check the Full Dashboard view instead of this one, rather than
+   stand as a stale assertion for a requirement that no longer applies
+   here. */
+body.tab-story:not(.st-full) #stsrc{display:none}
+/* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
+   above was already kept to a few lines; the Dashboard's .src-mine had no
+   cap of its own, so on a real story it grew to the full height of
+   whatever was written, at the column's full width, which is the "way
+   too big" complaint reaching here too. Same shape of fix, same numbers:
+   a few lines, scrolled, centred under her rather than stretched the
+   width of #stjr's own column (#stsrc's own fit-content rule, just
+   above, already does that part in the hero view only; this is its
+   Dashboard twin). */
+/* A REAL BOX, SIZED WHERE HE DREW IT, 10 November. His own annotated
+   screenshot circled this exact spot on the Dashboard and drew a box
+   roughly the width of Uni's own picture above it and several lines
+   tall, his words: "the text field... precisely where I want it... this
+   should be the user input only." The 46ch cap read as barely a third of
+   that, a few words wide, and 4.8em (about three lines) meant a real
+   story's own words scrolled out of view behind the one-line aside note
+   the instant it ran past the box (srcPaint's own scrollTop=scrollHeight,
+   "newest stays in view," now has far more height to work with before it
+   ever needs to). Matched to the column, not a character count: 90% of
+   #stjr's own width, the same measure the hero view's note box already
+   reads off, so his words have the width his drawing gave them. */
+body.tab-story.st-full #stsrc{width:-moz-fit-content;width:fit-content;
+ max-width:90%;margin:0 auto}
+body.tab-story.st-full .src-mine{max-height:12em;overflow-y:auto;
+ overflow-x:hidden;scrollbar-width:none}
+body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
+/* THE SET ASIDE SENTENCE, INSIDE THE ONE BOX NOW, NOT A SECOND ONE, 10
+   November. srcPaint (storyui.js) reads the same stAsideSay() #staside
+   already read and prints it inside .src-mine; #staside itself goes
+   quiet here so the one sentence never prints twice. A hairline, not a
+   card: no background, no padding of its own, the thing he called a box
+   when #staside's own .st-mask styling (sunk ground, accent bar, its own
+   padding) was still in play here. */
+#staside{display:none}
+.src-aside{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--edge);
+ color:var(--dim);font-size:13px;line-height:1.4}
+/* THE CONTENT CHAIN LINE, 11 November, srcChainLine (storyui.js). Sits
+   under the person's own marked words, never above them: it reports what
+   their words became, never asks anything of them. Lighter than body text,
+   on the same quiet ground .src-aside already uses, so it reads as a
+   status line and not a second thing competing with their own words. */
+.src-chain{margin:4px 0 0;color:var(--mid);font-size:13px;line-height:1.4}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
@@ -4164,7 +4774,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    list's heading over Commit's top. Scrolling here keeps every row inside
    the panel and reachable by the panel's own scrollbar; with room to spare
    nothing scrolls and nothing moves. */
-.st-ls{flex:1 1 0;overflow-x:hidden;overflow-y:auto}
+/* A FLOOR UNDER THE HEADER ITSELF, 9 November. round-2-November's own fix
+   above made #stls scroll as a whole so a short window could not spill
+   its sort row onto Commit; it never had to guard the header's own
+   height before, because #stls had the old .st-colr column mostly to
+   itself. Sharing .st-colx with #strel since the imprints/bank merge
+   lets flex shrink #stls below its icon row plus its own sort row,
+   which clips the bottom of that row instead of scrolling to it,
+   caught the same way the spill was: tests/collide.js, a short window.
+   180px is the icon row and three wrapped sort lines, measured, with
+   room over; .st-lsb's own scroll (below) still takes whatever height
+   is left for the rows under it. */
+.st-ls{flex:1 1 0;min-height:180px;overflow-x:hidden;overflow-y:auto}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
@@ -4205,7 +4826,37 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mk-r h3{font-weight:400;letter-spacing:.11em}
 .st-mk-r svg{stroke:var(--glow,var(--accent))}
 /* ---- the instrument's panel: the name, the view icons, the sort ---- */
-.st-chd{display:flex;align-items:center;gap:8px;min-height:24px}
+/* CENTRED, NOT FLUSH TO ONE EDGE, 10 November, his words, looking at the
+   live chart's own header: "make that symmetrical." #stpend (stPendPaint,
+   ui/storyui.js) is empty text whenever anything is actually kept, the
+   common case a real story leaves this in, so the three view buttons were
+   sitting alone against the row's own right edge with nothing to balance
+   them on the left. justify-content:center holds the whole row (the tag,
+   when it does carry a word, plus the three buttons) as one centred group
+   instead, rather than pin the buttons to an edge #stpend may or may not
+   be filling. */
+.st-chd{display:flex;align-items:center;justify-content:center;gap:8px;min-height:24px}
+/* THE REAL REASON justify-content:center DID NOTHING ON ITS OWN: .st-tag
+   (#stpend's own class, shared more widely) carries margin-right:auto,
+   which eats every pixel of free space in the row for itself and pins
+   everything after it to the far right regardless of the container's own
+   justify-content, which is exactly the flush-right read his words were
+   pointing at. Cancelled here only, inside this one header; .st-tag's
+   margin stays as it is everywhere else that still wants a label pinned
+   left and the rest pinned right. */
+.st-chd .st-tag{margin-right:0}
+/* HALF THE SIZE, HERE ONLY, 10 November, his own words on this exact row,
+   "make those icons half the size." .st-ico is the Bank and Vault's own
+   button too (ui/storyui.js, stViewHtml's own comment), so the cut is
+   scoped to .st-chd's three view buttons rather than the shared class:
+   shrinking Bank and Vault was never asked and neither carries this
+   complaint. THE TAP FLOOR DOES NOT APPLY HERE EITHER, the same honest
+   trade the 40% rail text took earlier tonight: this view toggle is a
+   precision control on the Full view's own chart, not a thumb target in
+   the Journal's main flow, and he saw it full size and asked for smaller
+   regardless. */
+.st-chd .st-ico{min-height:22px;min-width:22px;gap:3px}
+.st-chd .st-ico svg{width:9px;height:9px}
 /* ---- the list panel's own icon row: the bank and the archive, round of
    29 October. A sibling of #stlshd and never inside it, because
    stListPaint() owns #stlshd and rewrites it on every repaint; see the
@@ -4216,8 +4867,21 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    the chart's own canvas already sits on (.st-cvw), so the row reads as a
    held panel and stays the correct ink on the two paper lightings rather
    than a black square sitting wrong on a white page. */
-.st-lsico{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:var(--tap);
+/* LEFT, NOT RIGHT, 9 November, his words: "move the bank and the vault
+   icons to the left-hand side of that menu bar." flex-end pinned them to
+   the far right when they were this row's only children; flex-start is
+   their natural rest position now, and .st-lsbank's own margin-left:auto
+   below is what pushes Bank to the right end when it joins them. */
+.st-lsico{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-height:var(--tap);
  margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
+/* COMMIT MOVED INTO THIS ROW AND READS BANK, 9 November: see the ruling
+   at ui/storyui.js's own ".st-lsico" ("BANK AND VAULT ON THE LEFT"). The
+   auto margin is the whole move: Bank/Vault keep the row's natural flow
+   on the left and this is the one child that eats the row's spare width
+   instead of sharing it, landing at the far right the way Commit used to
+   sit at the top of #strel in its old, separate position below the icon
+   row. */
+.st-lsbank{margin-left:auto}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -4272,11 +4936,28 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* ---- the release, lit from within by the heaviest address it will run ----
    Round HX, design B, which he did not strike. The glow is the selected seat
    and its brightness is how heavy that address is, both set by storyui.js. */
-.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;border-radius:var(--r-s);
+/* THE SAME DARK GROUND AS THE TEXT FIELD UNDER THE GLOW, 9 November: see
+   the ruling at .st-lrail .st-en above. The two radial gradients are the
+   selected seat's own lighting (stRelPanel, ui/storyui.js) and stay; only
+   the flat base they sit on moves from a 3% ink wash to var(--sunk).
+   A FLOOR THE TEXT FIELD'S OWN HEIGHT, same night, his words: "I want the
+   release and the text field are the same height." 260px is .st-ta/.st-hl's
+   own min-height (below), so neither card reads shorter than the other
+   with nothing in it yet. */
+/* 310, NOT 260, 10 November. Caught by collide.js at 1280x600: moving the
+   binaural toggle into .rel-fields (ui/storyui.js's stRelPanel, same
+   round) can wrap that row to a second line at a narrow Release column,
+   and .st-rlmid's own shrink (flex:1 1 auto;min-height:0, below) only
+   absorbs so much before .st-rlfoot's own content, the Release button
+   included, is pushed past this panel's floor into whatever sits below
+   it. 260 was calibrated for a two-line footer; the real floor for three
+   fields, measured at this exact failing width, is nearer 300, so 310
+   keeps real margin rather than landing back on the same edge. */
+.st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:310px;border-radius:var(--r-s);
  padding:14px 16px;--glow:var(--accent);
  background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
-  color-mix(in srgb,var(--ink) 3%,transparent);
+  var(--sunk);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
@@ -4291,9 +4972,66 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  transition:opacity var(--t-element) var(--ease-out)}
 .st-rq[aria-pressed="false"]{opacity:.35}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* THE NAME, PRINTED, NOT ONLY A HOVER TITLE, 10 November, CLAUDE.md's own
+   "unpack every symbol" ruling: a ring with no visible word beside it is
+   exactly the failing case that rule names. */
+.st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+/* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
+   whole point of printing the name is that it can be read. */
+.st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
+ overflow-wrap:break-word;max-width:100%}
 .st-rlfoot{margin-top:auto;padding-top:10px}
-/* the card's two fields, .rel-field, set to the column's left edge */
-.rel-fields.st-fields{justify-content:flex-start;margin:0}
+/* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
+   ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
+   .rel-sws, which only exists once relCss() has run and carries that
+   function's own document-wide --rc @property registration as a side
+   effect; this card's toggle needs neither. accTog's own classes
+   (.ac-row, .ac-tog, .ac-sw, below) already carry the switch itself. */
+.st-relsws{margin:10px 0 0}
+/* FLUSH IN THE ROW, NOT OFFSET BY THE MARGIN ABOVE, 10 November: that
+   margin was built for .st-relsws as its own row, standing above
+   Speed/Patterns; moved inside .rel-fields (ui/storyui.js's stRelPanel)
+   to sit beside Patterns instead, it needs none of that top gap, the
+   row's own 14px gap between fields already does that job. */
+.rel-fields .st-relsws{margin:0}
+/* ONE LINE, NOT A GRID, 10 November, overridden the same night by his own
+   direct correction: "the binaural audio is on the same horizontal line
+   as speed and patterns." A first pass here put it on its own row under
+   Patterns, reading "next to" as a position rather than literally
+   side-by-side; his second pass ruled that out outright. The three truly
+   did not fit one line at this card's own measured width (Speed and
+   Patterns alone measured close to the full row), so the fields shrink
+   to make room rather than the toggle wrap: the inputs drop their 96px
+   floor (a one-to-three digit number needs nowhere near that), and the
+   toggle sheds .ac-row's own list-row chrome (its 56px list-item height,
+   15px side padding and bottom rule, all built for a tall standalone
+   settings page, never meant for an inline row beside two number fields)
+   down to just the switch itself, its name carried in the label's own
+   title/aria-label the way the rest of this rail already carries a
+   name, never a second copy of text standing in the row. */
+.rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
+.rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
+.rel-fields.st-fields .st-relsws{flex:0 0 auto}
+/* THE WORD STAYS, OVERRIDDEN THE SAME NIGHT, his words straight after
+   seeing it hidden: "where's the text that says audio? Or binaural?
+   Above the switch." Hiding the label matched this rail's own pill
+   convention (a name in a tooltip, not standing text) but he wants this
+   one control to read the same way Speed and Patterns do beside it, a
+   short caption above the control rather than a tooltip on it. .ac-row
+   turns into the same column shape .rel-field already is (label on top,
+   control under, centred) instead of accTog's own side-by-side row, and
+   the label itself is cut to "Audio" here only: accTog's full "Binaural
+   tone" still carries the complete name to a screen reader through its
+   own aria-label, and still prints in full wherever else accTog is
+   called; only the word painted in this one compact spot is shorter,
+   the same way "Imprints" and "Archive" already go icon-only elsewhere
+   on this card without losing their real name. */
+.rel-fields.st-fields .st-relsws .ac-row{min-height:0;padding:0;border-bottom:0;gap:6px;
+ flex-direction:column;align-items:center}
+.rel-fields.st-fields .st-relsws .ac-rl{font-weight:600;letter-spacing:.06em;
+ color:var(--dim);font-size:0}
+.rel-fields.st-fields .st-relsws .ac-rl::before{content:"Audio";font-size:11px}
+.rel-fields.st-fields .st-relsws .ac-rl em{display:none}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
@@ -4332,17 +5070,26 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    corner radius every plain button carries, more weight on the word, and a
    glow in the accent that sits on the control at rest and not only on
    press, so it reads as a control worth noticing before a hand reaches it. */
-.st-mic,.st-dash{min-height:var(--tap);display:inline-flex;align-items:center;gap:8px;
- background:var(--panel-2);border:1px solid var(--edge);color:var(--ink);font-weight:600;
- border-radius:999px;padding:8px 18px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
- box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent),
-  0 2px 10px color-mix(in srgb,var(--accent) 22%,transparent);
+/* ICON ONLY, NO GREY PILL, 9 November. His words: "I want a talk icon on
+   the left, no words... I don't want the word dashboard, I just want the
+   icon... I don't want any gray on the mini screen." The word that used to
+   sit beside the icon is gone from the markup (aria-label carries it now),
+   so the wide pill padding built for icon-plus-word goes with it, and the
+   flat panel-2 fill (a grey in every lighting but Snow) goes too: at rest
+   this is a bare icon, the glow ring below the only thing marking it as a
+   control. Listening still fills solid alarm red and Dashboard-open solid
+   accent, both real state and neither one grey; see .st-mic.on and
+   .st-dash.on below, unchanged. */
+.st-mic,.st-dash{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
+ justify-content:center;gap:6px;background:none;border:0;color:var(--ink);font-weight:600;
+ border-radius:50%;padding:0 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
+ box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
   transform var(--t-micro) var(--ease-out)}
 .st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-mic:hover,.st-dash:hover{color:var(--ink);border-color:var(--mid);transform:translateY(-1px);
+.st-mic:hover,.st-dash:hover{color:var(--ink);transform:translateY(-1px);
  box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
 /* Dashboard filled when it is open, the same accent-on-accent pairing the
    Commit button already carries, so "on" reads as on and not just outlined */
@@ -4427,7 +5174,10 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
   inset 0 -2px 0 var(--c)}
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
-.st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* MORE AIR ABOVE THIS ROW, 9 November, his words: "more space between the
+   text and the buttons. It's way too tight, dude." 11px read as the box's
+   own border practically touching Type instead and Commit/Bank under it. */
+.st-bar{display:flex;align-items:center;gap:10px;margin-top:20px}
 /* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
    typing panel, closed, to the bottom of the journal." Closed means out of
    the way, so this carries none of the lift Chat and Dashboard were given
@@ -4450,6 +5200,16 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
 .st-mask[hidden]{display:none}
 .st-ct{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--dim)}
+/* AN ARROW, NOT THE WORD, 9 November. See #stapply in ui/storyui.js for
+   the ruling; .btn.pri already carries the filled accent look Commit had,
+   this only takes it down to a round icon tap target the same size as
+   Talk and the keyboard icon beside it, so the row reads as one family of
+   controls. The count, when there is one, sits as a small badge rather
+   than standing in for the label the arrow now carries. */
+.st-send{width:var(--tap);height:var(--tap);padding:0;border-radius:50%;position:relative}
+.st-sendn{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;
+ border-radius:8px;background:var(--on-accent);color:var(--accent);font:600 10.5px/16px var(--sans);
+ font-style:normal;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 /* ---------- the Story's rail, GO in TASKS.md ----------
    The imprints and the release live in the right rail on the Story and
    nowhere else. The rail's other sections step aside there, except Selection,
@@ -4523,13 +5283,102 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
  body.tab-story.st-full:not(.st-bank) .mid{grid-template-columns:302px 1fr}
  body.tab-story.st-full.st-bank .mid{grid-template-columns:302px 1fr 336px}
  body.tab-story.st-full.lshut:not(.st-bank) .mid{grid-template-columns:58px 1fr}
- body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}}
+ body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}
+ /* ONE PANEL, NOT FOUR BOXES ON TWO GREYS, 10 November. His words: "the
+    left-hand panel, fill that black in to all the way to the bottom...
+    there's a seam between the left panel and the center column, remove
+    that seam... everything should be symmetrical, fill and filled in,
+    feel like a panel." Three real, separate causes, found by reading the
+    actual tokens rather than guessing: #lpanel is .glass.panel, var
+    (--panel), the product's card grey, and only as tall as .st-lrail's
+    own six sections, so its own grey showed below the last one; the
+    "seam" is five things stacked (lpanel's own padding, an edge, the
+    grid's own 10px gap, #stage's own edge, #story's own padding), none
+    of them a border anyone drew on purpose; and the five mini panels
+    below (Compass through Avatar, .st-mini) are the one surface left on
+    --panel while every other panel here, the text box, the imprints
+    list, Release, already reads --sunk. :not(.lshut), because the
+    folded 58px rail keeps its own small padding, untouched. */
+ body.tab-story.st-full:not(.lshut) #lpanel{padding:0;background:var(--sunk)}
+ body.tab-story.st-full .st-lrail{flex:1 0 auto;border:0;border-radius:0}
+ body.tab-story.st-full .mid{column-gap:0}
+ body.tab-story.st-full #lpanel{border-right:0;border-radius:var(--r) 0 0 var(--r)}
+ body.tab-story.st-full #stage{border-left:0;border-radius:0 var(--r) var(--r) 0}
+ body.tab-story.st-full #story{padding-left:0}
+ body.tab-story.st-full.st-bank #rcol{margin-left:10px}}
 /* the rail itself. Its heading is the rail's block heading (.rblk), the one
    the Field's left rail already sets Energy in, and it keeps its right end
    clear of the column's fold control, which sits over the head of #lpanel
    (.lfold, absolute, 52 pixels with its margin). Every value is an existing
    token, so every lighting draws it with no rule of its own. */
 .st-lrail .rblk{padding-right:52px}
+/* TIGHTER, SO THE WHOLE RAIL FITS WITHOUT A SCROLL, 10 November, his words:
+   "make sure everything in that left-hand bar is above the fold. I don't
+   want to be able to scroll." Six sections of chrome (this heading's own
+   padding plus .st-en's) outweighed every tile in them; the tiles were
+   already the right side of the WCAG 2.2 24px pointer floor, so they are
+   not the lever here. Longhand top/bottom only, so .rblk's own 52px of
+   right padding for the fold control (just above) is never touched. */
+.st-lrail .rblk{padding-top:0;padding-bottom:4px}
+/* EVERY SECTION ITS OWN CARD, 9 November, his words: "give them different
+   backgrounds so it looks like they stand out... I want each segment
+   divided." Each of the six sections already shares one class, .st-en, so
+   one rule lifts all six off the rail's own background at once rather
+   than naming them one at a time; the gap between cards (margin, not a
+   drawn line) is the divider, the same convention .lsec already keeps
+   lower on this same rail.
+
+   DARK, THE SAME DARK AS THE TEXT FIELD, same night, his words: "I want
+   their backgrounds also dark, whatever that hex color is of the text
+   field... make all the panel areas, even where the buttons are, dark."
+   var(--panel-2) read as a grey standing beside the journal's own sunk
+   ground, not a card beside it; var(--sunk) is that exact ground
+   (.st-hl's own background, the highlighted text field behind the
+   textarea), so every card here, the imprints panel (.st-pan, below)
+   and the release card (.st-rl, below) now share the one dark the text
+   field already carries. */
+/* ONE PANEL, NOT SIX, 10 November, his words: "merge that left menu into
+   the full panel." Each section (.st-en) carried its own --sunk ground
+   and 1px edge before; .st-lrail now carries that ground once, for the
+   whole rail, and each section is a band inside it, divided by a
+   hairline rather than a repeated card. */
+.st-lrail{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
+ padding:2px 14px}
+/* 40% GRAY FOR NOW, 10 November, his words: "all the white text is far too
+   bright. Let's do 40% gray for now." The rail's one bright text is its
+   six (now seven) section headings, .rblk, which read color:var(--ink)
+   from that class's own base rule, used elsewhere (the Field's own rail)
+   too, so that base rule is not the one to touch.
+
+   NOT A SECOND --ink, A SECOND --ink TRIED TWICE AND FAILED TWICE, caught
+   by a real screenshot both times, not by reasoning about it harder:
+   first .st-lrail{--ink: ... var(--ink) ...}, then (moving the same
+   declaration to #lpanel, .st-lrail's real parent, thinking the self
+   reference needed only a different element) body.tab-story.st-full
+   #lpanel{--ink: ... var(--ink) ...}. Checked directly in an isolated
+   two-line page: a selector that both reads and writes --ink, on any
+   element, computes as the guaranteed-invalid value, full stop; which
+   element declares it is not the variable that matters, the property
+   name is. var(--ink) inside a --ink: declaration always means this
+   element's own --ink, including the declaration being written, so nothing
+   ever reads the inherited value underneath it.
+   THE FIX NEVER TOUCHES --ink AT ALL. color and --ink are different
+   properties, so a color: declaration that reads var(--ink) is not
+   self-referential merely for sitting near one. Scoped to the rail, it
+   overrides .rblk's own color:var(--ink) with the mixed value directly,
+   and --ink itself is never reassigned anywhere, so every other reader
+   of --ink in this rail (there are none; .st-none already reads --dim)
+   keeps the real theme ink. */
+.st-lrail .rblk{color:color-mix(in srgb,var(--ink) 40%,black 60%)}
+.st-lrail .st-en{position:relative;overflow:hidden;padding:6px 0;
+ border-top:1px solid var(--edge)}
+.st-lrail .st-en:first-child{border-top:0}
+.st-lrail .st-en>.rblk{margin-top:0}
+/* THE ACCENT BAR IS GONE, 9 November, the same night it shipped. His
+   words on seeing it: "I don't like that rainbow bar... just get rid of
+   it." ui/stdash.js's stAccent and every call to it are gone too; this
+   rule painted a gradient off a --ac style attribute nothing writes any
+   more. */
 .st-en-sub{margin:4px 2px 10px;font-size:13px;line-height:1.5;color:var(--mid)}
 .st-en-ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
 .st-en-r{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 6px;
@@ -4540,7 +5389,117 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    100% at the sm size on both widths */
 .st-en-r .cr{flex:0 0 auto;min-width:96px}
 .st-en-r .st-en-n{flex:1 1 auto;min-width:0}
+/* THE TILE ROW, 8 November then rebuilt 9 November. Side by side, strongest
+   first (stPillRow, ui/stdash.js, sorts before this ever reaches the DOM,
+   so the row's own order is the signal-strength order and nothing here
+   re-sorts it). */
+/* MORE SPACE BETWEEN THEM, 9 November, his words: "I want those pills to
+   be a little bit more space between them all." 6px read as touching at
+   this tile's own size. */
+.st-pl-row{display:flex;flex-wrap:wrap;gap:10px;padding:4px 2px 6px;align-items:center}
+/* NO ROW ENDS SHORT, 10 November, his words: "we should never have one
+   icon, one row that's not even... even if you have to make the icon
+   smaller so they fit." flex-wrap let the browser pick the break, which
+   is exactly what left Energy's seven tiles reading four-then-three and
+   Emotions' nine reading six-then-three. A grid with the section's own
+   real count as its column count has nowhere to wrap to: one row, every
+   time, the tile shrinking to fit rather than the row growing a second
+   line. Counts are each section's own real total, not a guess: Energy
+   and Integrity both read BANDS (engine/data/canon.js, 7 seats) so they
+   share one tile size; Integrity's 21 laws are three rows of that same
+   7; Emotions is CHILD's 9; Action is VERP's 6. */
+/* PSYCHE STACK AND MASKS JOIN THE SAME GRID, 10 November, his words looking
+   at the live rail: "psyche stack, masks, that don't go all the way
+   across... make the buttons symmetrical." Both still used the plain
+   .st-pl-row flex row (wrap, no stretch), the shape every section above
+   had already moved off of for exactly this reason (the comment above,
+   "no row ends short"); four and five are each section's own real tile
+   count, the same rule BANDS/CHILD/VERP already follow. */
+#st-energy-ls,#st-integrity-ls,#st-childem-ls,#st-verp-ls,#st-psyche-ls,#st-masks-ls{display:grid;gap:6px}
+#st-energy-ls,#st-integrity-ls{grid-template-columns:repeat(7,1fr)}
+#st-childem-ls{grid-template-columns:repeat(9,1fr)}
+#st-verp-ls{grid-template-columns:repeat(6,1fr)}
+#st-psyche-ls{grid-template-columns:repeat(4,1fr)}
+#st-masks-ls{grid-template-columns:repeat(5,1fr)}
+#st-energy-ls .st-pl,#st-childem-ls .st-pl,#st-integrity-ls .st-pl,#st-verp-ls .st-pl,
+#st-psyche-ls .st-pl,#st-masks-ls .st-pl{
+ width:100%;height:auto;aspect-ratio:1}
+/* PATTERNS' TWO FILL THE ROW'S OWN WIDTH, 9 November, his words looking at
+   this exact section: "when it says patterns, I don't understand that...
+   make those larger so they fit the width of that menu." Patterns is the
+   one row with only two tiles (parental, ancestral, stDashPatterns in
+   ui/stdash.js), where a fixed small square reads as an unfinished corner
+   rather than the row's own two answers; flex:1 1 0 only here, nowhere
+   else in this rail, splits the row evenly between exactly the two. */
+.st-pat .st-pl-row .st-pl{flex:1 1 0;width:auto;height:44px}
+/* SQUARE, BEVELLED, DARK, AND IT DIALS UP RATHER THAN SWITCHES, 9 November,
+   replacing the round light this same rail shipped hours earlier. Four
+   independent mockups all kept the round/ring shape; his answer on seeing
+   them was "None of these," then his own spec: "I want them like square,
+   but with slight beveled edges. And the symbol in the middle of it. And
+   it's mostly dark, but when a person starts to speak, it begins, it
+   lights up... the more they talk, the brighter it gets." The corner cut
+   is a real bevel (clip-path), not a rounded corner. --b, 0 to 1, written
+   per button by ui/stdash.js's stPillRow, is the one dial everything here
+   reads: background tints from --sunk (the product's own darkest token)
+   toward the tile's own colour, the glow grows with it, and the icon's
+   own opacity rises with it, so nothing here is a lit/dim switch any
+   more, it is one continuous value turning up. */
+/* OFF UNTIL THE STORY LIGHTS THEM, AND THEY FILL FROM THE BOTTOM, 10
+   November, his words: "we want to see them off in an off state, and
+   then as persons telling their story they light up, they fill up from
+   bottom to top." The old rule mixed in a flat 6% of the seat's own
+   colour even at rest (--b:0), so nothing ever read as truly off; this
+   one holds the tile at --sunk, no tint, until --b is above nothing.
+   The fill itself is a hard-edged stop, not a second gradient fading at
+   its own edge: background-image sits ON TOP of the flat --sunk
+   background-color, coloured from 0 to var(--b) of the tile's own
+   height and transparent above that line, so the two meet at one sharp
+   edge the eye reads as a level, the way a gauge fills, not a wash. */
+.st-pl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+ border:none;padding:0;cursor:pointer;background-color:var(--sunk);
+ background-image:linear-gradient(to top,var(--c) 0 calc(var(--b)*100%),transparent calc(var(--b)*100%) 100%);
+ clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px);
+ box-shadow:0 0 calc(var(--b)*14px) calc(var(--b)*2px) color-mix(in srgb,var(--c) calc(var(--b)*85%),transparent);
+ transition:background-image .4s var(--ease-out),box-shadow .25s var(--ease-out),transform .1s var(--ease-out)}
+/* THE SYMBOL STAYS, ring not fill, the house rule for every icon: a
+   stroked glyph, never a silhouette, so it reads at this size whatever
+   the tile beneath it is doing. */
+.st-pl svg{width:14px;height:14px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round;opacity:calc(.35 + var(--b)*.65);pointer-events:none}
+.st-pl:hover,.st-pl:focus-visible{transform:scale(1.08)}
+.st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
 .st-lrail .st-none{margin:6px 2px 0}
+/* INTEGRITY'S OWN cr()-RING BUCKET AND ITS .st-law-g WRAPPER ARE GONE, 9
+   November, the same round his real tile spec landed: stDashIntegrity now
+   calls stPillRow like every other section, so the 21 laws share the one
+   square tile already styled above (.st-pl) rather than keeping a second,
+   round, ring-filled shape alongside it. */
+/* THE IMPRINTS DETECTOR'S NEW HOME, 9 November. #st-impdet-host (empty in
+   ui/stdash.js's own markup, filled by stImpDetMount, ui/storyui.js) is a
+   plain block, not the flex column .st-ch's min-height:50% and flex:0 0
+   auto were written for (.st-colr, gone). Its chart keeps that still,
+   it only loses the percentage height that had nothing to resolve
+   against; a fixed floor here does the same job, sized for a 302px
+   column instead of the wider one it used to sit in. */
+#st-impdet-host .st-ch{min-height:0;margin-bottom:6px}
+#st-impdet-host .st-cvw{min-height:88px;max-height:120px;margin-top:4px}
+/* BOUNDARY AND THE COMPASS, ONE SYMMETRICAL PAIR, 9 November, his words:
+   "these all need to look like they're together... make sure it's all
+   symmetrical." Equal width, equal top, same svg proportions set in
+   ui/stdash.js (both viewBox height 170), so neither card reads taller
+   or wider than the other regardless of its own content. */
+.st-pair{display:flex;gap:8px;align-items:stretch}
+.st-pair>section{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.st-bnd-svg,.st-cps-svg{width:100%;max-width:170px;height:auto;display:block;margin:2px auto 0}
+/* CQ ABOVE, DQ BELOW, 9 November, his words: "put CQ, DQ at the top and
+   the bottom." Each is now the figure's own cap, not a caption printed
+   once under both; same type, same colour, so the two read as one pair
+   split across the arrow they belong to rather than two different marks. */
+.st-cps-top,.st-cps-bot{text-align:center;margin:0;font-family:var(--num);font-size:13px;
+ color:var(--mid);cursor:default}
+.st-cps-top{margin-bottom:2px}
+.st-cps-bot{margin-top:2px}
 /* ---------- the Summary's rail is today's summary, ui/daily.js ----------
    The same step aside as the Story's: on the Summary the rail carries Today
    and Selection, and Today is shown nowhere else. A silent day (nothing read
@@ -4837,11 +5796,62 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
    her shrink instead, and the canvas is now sized by whichever of her own
    height or 640px her column actually has, keeping her round rather than
    letting her clip. */
-.st-uni{width:100%;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.st-chat .st-uni{flex:1 1 auto;min-height:0}
-.st-uni .uni-widget{width:auto;height:100%;max-width:100%;min-height:0;display:flex;align-items:center;justify-content:center}
-.st-uni .uni-widget .canvas-wrap{width:auto;height:100%;max-width:100%;max-height:100%;margin-inline:auto}
-.st-uni .uni-widget .canvas-wrap canvas{width:auto;height:100%;max-width:100%;max-height:100%}
+/* HER BOX IS THE PANEL'S, AND HER GLOW FILLS IT, 8 November, his words,
+   third time of asking: "I said fill the fucking screen. I don't want to
+   see the edge. I don't want to see it clip ever." Two things made the
+   edge. Her canvas took its height from its own bitmap (a canvas's natural
+   size is its bitmap, in CSS pixels), so the panel she sat in was sized by
+   her and not the other way round: measured, the same 1600 wide window gave
+   her 640px at DPR 1 and 866px at DPR 2. And a 640x520 bitmap inside a box
+   of any other shape left the bitmap's own rectangle showing; stretching it
+   to the box (object-fit fill, the canvas default) bends her into an oval.
+   So the canvas is out of flow, inset 0, and fills exactly the box the
+   panel gives .st-uni; ui/uni.js sizes her bitmap to that box and fits her
+   inside it at her own proportions, the glow painted to every edge. In the
+   chat column .st-uni takes the room that is left (flex 1 1 0, its content
+   no longer has a say); anywhere else it keeps her own 640:520 shape. */
+.st-uni{width:100%;min-height:0;position:relative;display:block;overflow:hidden;aspect-ratio:640/520}
+.st-chat .st-uni{flex:1 1 0;min-height:0;aspect-ratio:auto}
+/* SHE IS THE HERO, FIXED, 9 November. His words: "I want Uni to be front
+   and center in a fixed location. This is our hero... fix Uni's height
+   and fix the keyboard height, but make sure the screen is symmetrical
+   and even." flex:1 1 0 let her grow and shrink with whatever else the
+   column held (the thread above her own cap, the keyboard panel below);
+   a fixed height means neither can move her, and #stflow.st-simple's own
+   id beats .st-chat .st-uni's class-only specificity, so this wins over
+   it without touching that rule for the full Dashboard view, which he
+   has not asked for yet. */
+#stflow.st-simple .st-chat .st-uni{flex:none;height:min(50vh,420px)}
+/* THE KEYBOARD IS A FIXED STRIP, NOT A SWAP, same round. tests/srcchat.js
+   holds #sttext absent from the DOM until the keyboard is actually
+   pressed (see the ruling in ui/storyui.js), so this is still a
+   conditionally-rendered div and not a permanently-present one toggled by
+   class alone; what changes is that nothing else in the column has a say
+   in its height any more (Uni's own rule above is fixed, not flex-shared
+   with it), so its own one fixed height is the only thing that moves when
+   it appears. An animation, not a transition, is what can still play on
+   an element that only exists for part of its life: a transition needs
+   the element present at both the old and new value, an animation runs
+   the moment a matching element lands in the DOM. */
+/* NARROW TO MATCH THE BUBBLE ABOVE IT, same complaint, same screenshot:
+   the keyboard panel spanned #stjr's own full 900px column too, reading
+   as a second oversized bar directly under the first one. Centred at
+   the same width as #stsrc's own shrunk card just above, so typing and
+   her last words line up as one narrow column under her instead of two
+   full width bars. */
+#stflow.st-simple .st-ed.open{height:128px;min-height:0;margin:10px auto 0;
+ max-width:calc(46ch + 32px);
+ animation:stEdIn var(--t-element) var(--ease-out)}
+#stflow.st-simple .st-ed .st-ta,#stflow.st-simple .st-ed .st-hl{min-height:0;height:100%;
+ padding:12px 14px;font-size:15px;line-height:1.5}
+@keyframes stEdIn{from{opacity:0;transform:scaleY(.88);transform-origin:top}
+ to{opacity:1;transform:scaleY(1)}}
+body.rm #stflow.st-simple .st-ed.open,body.quiet #stflow.st-simple .st-ed.open{animation:none}
+@media (prefers-reduced-motion:reduce){#stflow.st-simple .st-ed.open{animation:none}}
+.st-uni .uni-widget{position:absolute;inset:0}
+.st-uni .uni-widget .page{position:absolute;inset:0}
+.st-uni .uni-widget .canvas-wrap{position:absolute;inset:0;width:auto;max-width:none}
+.st-uni .uni-widget .canvas-wrap canvas{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto}
 .src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 8px 0;
  list-style:none}
 /* A TEXT WINDOW, round of 29 October, his words on seeing the ring and wire
@@ -4869,6 +5879,14 @@ body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-bub{max-width:82%;border-radius:var(--r-s);padding:10px 14px;
  font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:400}
 .src-bub-src{background:var(--sunk);border:1px solid var(--edge);color:var(--ink)}
+/* NO GREY WHEREVER THE GROUND FILLS WITH HER, 9 November then widened
+   10 November with the ambient fill above: a flat --sunk bubble sat
+   neutral against a now coloured ground and read as the one grey
+   thing left on it. A hint of her own edge tone mixed in keeps it
+   dark and legible, never a loud tint, and it moves with her the same
+   way the ground behind it does, in the Dashboard view now too. */
+#stjr .src-bub-src{
+ background:color-mix(in srgb,rgb(var(--uni-amb-edge)) 22%,var(--sunk))}
 .src-bub-past{opacity:.82}
 .src-bub-me{background:var(--accent);color:var(--on-accent)}
 .src-me{margin:0;color:inherit;white-space:pre-wrap;overflow-wrap:break-word}
@@ -6334,7 +7352,7 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     80 pixels under the first screen. These are the pixels that bought it
     back, and none of them is a tap target. */
  .st-flow{flex-direction:column;height:auto;gap:8px}
- .st-flow>*,.st-colr>*,.st-colw>*{flex:0 0 auto!important}
+ .st-flow>*,.st-colw>*{flex:0 0 auto!important}
  /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
     Release hidden (st-simple, the Dashboard toggle, round of 29 October),
     the Journal is the only child left in this column flow, and flex:0 0
@@ -6344,7 +7362,17 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     own "actually rendered on a phone" check against #story caught it. A
     floor the other two columns used to supply by sitting beside it. */
  .st-flow.st-simple .st-pan.st-jr{min-height:60vh}
- .st-colw,.st-colr,.st-colx{gap:8px}
+ /* A REAL WIDTH, NOT WHATEVER ITS CHILDREN ADDED UP TO, found chasing a
+    regression the keyboard/commit fix above caused: .flex:0 0 auto two
+    rules up turns off growth on every axis a column flex context has,
+    which for .st-flow's own children is height, not width, so .st-colw
+    was already sized off its own content's width here, narrower than
+    the stage even before tonight (168 of 354px, measured). Pulling the
+    keyboard and commit buttons out to position:fixed left nothing to
+    size off, and the column collapsed to 0. width:100% stops it relying
+    on shrink to fit at all, on a phone or any width this rule reaches. */
+ .st-flow.st-simple .st-colw{width:100%}
+ .st-colw,.st-colb,.st-colz{gap:8px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}
@@ -7830,27 +8858,95 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
-.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
- box-shadow:0 14px 34px -12px color-mix(in srgb,var(--accent) 60%,transparent)}
+.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
 .obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
  rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
 .obx .btn.pri:hover::after{translate:2px 0}
-.obx .btn.pri:disabled{box-shadow:none}
-.obx .btn[data-ob=back]{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
-.obx .btn[data-ob=back]:hover{color:var(--ink);background:transparent}
-.obx .btn[data-ob=back]::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
+.obx .btn.ob-back{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
+.obx .btn.ob-back:hover{color:var(--ink);background:transparent}
+.obx .btn.ob-back::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
  border-bottom:1.5px solid currentColor;border-left:1.5px solid currentColor;rotate:45deg;translate:0 -1px}
 /* the chips, at the size of a choice and not of a setting */
 .obx .ob-seats{gap:10px;margin:24px 0 8px}
-.obx .ob-seat{min-height:48px;padding:8px 18px;border-radius:999px;font-size:15px;color:var(--ink);
- background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent);
- transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out),
-  translate var(--t-micro) var(--ease-out)}
-.obx .ob-seat:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);
- border-color:color-mix(in srgb,var(--ink) 30%,transparent);translate:0 -1px}
 .obx .ob-seats-mk .ob-seat{padding:6px 18px 6px 8px}
 .obx .ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:18px}
 .obx .ob-mk-s{width:32px;height:32px}
+/* THE REDESIGN, 11 November: this screen's own pill buttons and glow-shadow
+   primary, replaced to carry the same square-beveled, continuous-brightness
+   tile language the Journal rail shipped tonight (stdash.js's .st-pl),
+   argued and locked by the art director round that owns this file's own
+   note above it: a bevel means pressable (an answer or an action), a round
+   shape means the instrument or a way out (the ring, the step dots, crisis,
+   the corner Not now), no bevel and no slab means information. See the
+   locked spec for why: clip-path cuts off both box-shadow and the focus
+   ring, so neither exists on these controls anymore, and the fill cannot
+   rise (no @property --b existed anywhere before this round) so it was
+   always an instant snap, never the rise the rail's own comment claimed. */
+@property --b{syntax:'<number>';inherits:true;initial-value:0}
+.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){
+ --cut:8px;--k:var(--c,var(--accent));--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));
+ position:relative;display:inline-flex;align-items:center;justify-content:center;text-align:center;
+ border:0;border-radius:0;box-shadow:none;translate:none;
+ background-color:var(--sunk);
+ background-image:linear-gradient(to top,var(--bf) 0 calc(var(--b)*100%),transparent calc(var(--b)*100%) 100%);
+ clip-path:polygon(var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut));
+ transition:--b .28s var(--ease-out),color .14s linear .14s,scale .1s var(--ease-out)}
+.obx .ob-seat::before,.obx .ob-as>.ob-a::before,.obx .btn:not(.ob-back)::before{
+ content:'';position:absolute;inset:0;pointer-events:none;
+ background:color-mix(in srgb,var(--k) calc(var(--b)*100%),var(--edge-2));
+ clip-path:polygon(evenodd,
+  var(--cut) 0,calc(100% - var(--cut)) 0,100% var(--cut),100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,var(--cut) 100%,0 calc(100% - var(--cut)),0 var(--cut),var(--cut) 0,
+  calc(var(--cut) + .41px) 1px,1px calc(var(--cut) + .41px),1px calc(100% - var(--cut) - .41px),calc(var(--cut) + .41px) calc(100% - 1px),calc(100% - var(--cut) - .41px) calc(100% - 1px),calc(100% - 1px) calc(100% - var(--cut) - .41px),calc(100% - 1px) calc(var(--cut) + .41px),calc(100% - var(--cut) - .41px) 1px,calc(var(--cut) + .41px) 1px)}
+.obx .ob-seat,.obx .ob-as>.ob-a{color:var(--mid)}
+.obx .btn:not(.ob-back){color:var(--ink);font-weight:500}
+.obx .ob-seat:not(.on):hover,.obx .ob-as>.ob-a:not(.on):hover,.obx .btn:not(.ob-back):not(.pri):hover{--b:.15;color:var(--ink)}
+.obx .ob-seat.on,.obx .ob-seat:active,.obx .ob-as>.ob-a.on,.obx .ob-as>.ob-a:active{--b:1;color:var(--ink);font-weight:600}
+.obx .btn:not(.ob-back):active{scale:.97}
+.obx .btn.pri{--b:1;--bf:var(--k);color:var(--on-accent)}
+.obx .btn.pri:disabled{--b:0;--bf:color-mix(in srgb,var(--k) 22%,var(--sunk));color:var(--dim);opacity:1;cursor:default;filter:none}
+.obx .ob-seat:focus-visible,.obx .ob-as>.ob-a:focus-visible,.obx .btn:not(.ob-back):focus-visible{
+ outline:2px solid var(--k);outline-offset:calc(1px - var(--cut))}
+.obx .btn.pri:not(:disabled):focus-visible{outline-color:var(--on-accent)}
+body.punch .obx .ob-seat,body.punch .obx .ob-as>.ob-a,body.punch .obx .btn:not(.ob-back){--bf:var(--k);background-color:var(--panel-2)}
+body.punch .obx .ob-seat::before,body.punch .obx .ob-as>.ob-a::before,body.punch .obx .btn:not(.ob-back)::before{display:none}
+body.punch .obx .ob-seat.on,body.punch .obx .ob-as>.ob-a.on{color:var(--on-accent)}
+@media (prefers-reduced-motion:reduce){.obx .ob-seat,.obx .ob-as>.ob-a,.obx .btn:not(.ob-back){transition:none}}
+/* Ask and Feel chips carry no seat colour (engine/data/onboarding.js: "a
+   feeling is not one place in the body"), so --k falls back to --accent for
+   them; Body's chips set --c inline per seat and tint their own tile. */
+.obx .ob-seat{min-height:48px;padding:8px 18px;font-size:15px}
+.obx .ob-seats-mk .ob-mk-dk{fill:none}
+/* Ask: a grid, so 12 chips never end on a short row (the owner's 10
+   November rail ruling: "we should never have one icon, one row that's not
+   even"). */
+.obx .ob-seats{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:900px){.obx .ob-seats{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1200px){.obx .ob-seats{grid-template-columns:repeat(4,1fr)}}
+/* Feel: 3 columns always, Not sure breaks the grid instead of joining it as
+   a seventh feeling (it is a different kind of answer). */
+.obx .ob-seats-ns{grid-template-columns:repeat(3,1fr)}
+.obx .ob-seats-ns>.ob-seat:last-child{grid-column:1/-1}
+/* Body: a vertical list under 1200px, crown at the top, Not sure at the
+   bottom, standing like the body it names. At 1200px and wider, the rail's
+   own seven-column Energy row, Not sure spanning the full width beneath. */
+.obx .ob-seats-mk{display:flex;flex-direction:column-reverse;gap:8px}
+.obx .ob-seats-mk>.ob-seat:last-child{order:-1}
+.obx .ob-seats-mk .ob-seat{justify-content:flex-start;gap:12px;padding:6px 18px 6px 8px}
+@media(min-width:1200px){
+ .obx .ob-seats-mk{display:grid;grid-template-columns:repeat(7,1fr)}
+ .obx .ob-seats-mk>.ob-seat:last-child{order:0;grid-column:1/-1;min-height:48px;padding:6px 18px}
+ .obx .ob-seats-mk .ob-seat{flex-direction:column;justify-content:center;gap:6px;min-height:88px;padding:10px 4px 8px;font-size:13px}}
+/* Mirror: Yes/Not me as a word-chip pair, not an icon tile; Not me stays
+   neutral so a "no" never reads as lit in the seat's own colour, which
+   would read as a yes. */
+.obx .ob-as{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:288px}
+.obx .ob-as>.ob-a{--cut:6px;min-height:var(--tap);font-size:14px}
+.obx .ob-as>.ob-a:nth-child(2){--c:var(--mid)}
+/* static information never gets the pressable bevel: Settle's plan items
+   and the end card's rows lose their grey slab instead of gaining one. */
+.obx .ob-plan{gap:10px 22px}
+.obx .ob-plan-i{background:none;border:0;border-radius:0;padding:7px 0}
+.obx .ob-g{background:var(--sunk)}
 .obx .ob-f textarea{font-size:19px;line-height:1.55;padding:18px 20px;min-height:168px;border-radius:16px;
  background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
 .obx .ob-loopw{grid-template-columns:150px 1fr;gap:30px;margin:28px 0 14px}

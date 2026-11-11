@@ -92,6 +92,16 @@ var DEV_SKIP=false;
    switch and that button are gone, which answers the question this
    paragraph used to leave open, which of the two a stranger meets: the
    onboarding, and only the onboarding. */
+/* BACK ON, 11 November. The 10 November hold above never got the
+   replacement it was waiting on; instead the owner asked for this same
+   sequence restyled to match that night's Journal rail/Dashboard round
+   (square beveled tiles, continuous-brightness fill, no pill buttons) and
+   wired back in, his own words: "go ahead and rebuild it and wire it in,
+   I'll see how it works during the flow when I test it, then we'll
+   determine whether to keep it." That restyle shipped the same round this
+   switch flipped (atuned_src/shell/head.html's .obx tile rules, this
+   file's own onboard.js markup). Flip it back off, the 10 November way,
+   if a real replacement supersedes it instead. */
 var DEV_PLAY_ONBOARDING=true;
 /* A PASSWORD SUGGESTION IS A LOCAL ONE. Sixteen characters, one from
    each of four sets, the rest filled from all four combined and

@@ -160,7 +160,7 @@ console.log('  unstyled classes:',cssMiss.length?cssMiss.join(', '):'none');
 console.log('\n=== 4 · type floor. nothing under 11px in CSS pixels. ===');
 const small=await page.evaluate(()=>{
  const out={};
- /* ONE EXCEPTION, NAMED, AND IT IS NOT A LOOPHOLE.
+ /* TWO EXCEPTIONS, NAMED, AND NEITHER IS A LOOPHOLE.
 
     The floor exists because a string a person has to read in order to use the
     product must be readable. A wordmark subtitle is not that: it is identity,
@@ -169,14 +169,29 @@ const small=await page.evaluate(()=>{
     and this records the carve out rather than quietly lowering the floor for
     everything.
 
-    It is the only exception and it is by class, so the next thing that wants
-    to be small has to come and argue here. */
+    The first is by class, so the next thing that wants to be small has to
+    come and argue here. */
  const EXEMPT=['bs'];
+ /* THE SECOND IS NOT SMALL, IT IS REPLACED, 11 November. The Release panel's
+    compact binaural switch (shell/head.html's .rel-fields.st-fields
+    .st-relsws .ac-rl) paints "Audio" over accTog's own "Binaural tone" with a
+    ::before, the same way "Imprints" and "Archive" already go icon-only
+    elsewhere on this card without losing their real name; font-size:0 is how
+    the real string is kept off the real string's own text node while the
+    substitute, painted by a pseudo-element with its own explicit font-size,
+    stays legible. That is not a person failing to read tiny text, it is a
+    person never meant to see this exact string at all, read instead through
+    the control's own aria-label. Scoped to the one real selector that causes
+    it, never to the bare .ac-rl class: that class is a real, 14px, fully
+    visible label everywhere else on the Account page, and exempting it by
+    name would blind this gate to a real regression there. */
+ const HIDDEN_BY_SUBSTITUTE='.rel-fields.st-fields .st-relsws .ac-rl';
  document.querySelectorAll('*').forEach(e=>{
   if(e.closest('svg'))return;                    // svg text scales with viewBox
   const t=(e.textContent||'').trim();
   if(!t||e.children.length)return;
   if(EXEMPT.some(c=>e.classList.contains(c)))return;
+  if(e.matches(HIDDEN_BY_SUBSTITUTE))return;
   const fs=parseFloat(getComputedStyle(e).fontSize);
   if(fs<11){const k=e.className+' @'+fs+'px';out[k]=(out[k]||0)+1;}});
  return out;});

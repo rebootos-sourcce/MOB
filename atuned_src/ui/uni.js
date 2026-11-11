@@ -151,10 +151,16 @@ function stepSp(cur, vel, tgt, k, b, dt) {
 const _ca = document.getElementById('ca');
 let mxRaw=320, myRaw=260;
 let lastMouseMoveT=performance.now();
+/* where her 640x520 design space sits inside the canvas's real box, in CSS
+   pixels: scale k and the offsets. Set by the NOVA fit below; the identity
+   until it runs, which is exactly the old mapping for a 640:520 box. */
+const UNI_FIT={k:1,ox:0,oy:0,w:640,h:520};
 document.addEventListener('mousemove', e => {
   const r = _ca.getBoundingClientRect();
-  mxRaw = (e.clientX-r.left)*(640/r.width);
-  myRaw = (e.clientY-r.top)*(520/r.height);
+  if(!(r.width>0&&r.height>0)) return;
+  const sx=r.width/UNI_FIT.w, sy=r.height/UNI_FIT.h;
+  mxRaw = ((e.clientX-r.left)/sx-UNI_FIT.ox)/UNI_FIT.k;
+  myRaw = ((e.clientY-r.top)/sy-UNI_FIT.oy)/UNI_FIT.k;
   lastMouseMoveT=performance.now();
 });
 
@@ -198,6 +204,63 @@ let coherence = 100;
    and was never a real second dial; this file's old "Shadow (SQ)" slider
    was renamed to drive real DQ directly, 0-100, instead. */
 let dq = 0;
+/* THE BLANK PROFILE, 9 November. Round TE shipped her at coherence 100
+   and dq 0 forever, because nothing called a setter; the moment something
+   does, a stranger who has entered nothing would read as angelic white-gold,
+   a confident, coherent reading of a person the instrument has not met.
+   This is exactly the defect the house's own Discover ruling exists to
+   stop (CLAUDE.md: "a surface with no reading must not imply one"), and
+   compute()'s own comment makes the same call: "a stranger is still unread
+   rather than a person at zero." 0 would be the opposite lie, collapsed
+   dead red, a verdict of collapse on someone who carries no charge because
+   none has been read. unread sits outside the five-stop ladder on purpose:
+   achromatic, not a sixth colour on it, set and cleared only by the one
+   caller that knows r.unread, never guessed at in here. */
+let unread = false;
+/* uniBgTransparent, 10 November: set once at uniMount, read every frame
+   by the render loop below. See the note at uniMount's own assignment. */
+let uniBgTransparent = false;
+
+/* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
+   red, the background is also kind of a cloudy dark red that subtly
+   animates... when Uni is [another colour] the screen fills with its
+   background colour." Two custom properties on :root, read by the mini
+   Journal's own CSS (#stflow.st-simple #stjr.st-chat), not written every
+   frame: only when the rounded rgb triples actually change, since a style
+   write the layout does not depend on still costs a style recalc for
+   nothing if nothing moved. core is the vivid tone (p.cr), edge the
+   darkest (p.ed); the gradient between them is what reads as "cloudy",
+   never a flat fill. */
+let ambLastCore=null, ambLastEdge=null, ambLastRate=null;
+function _rgbTriple(v){return v[0]+','+v[1]+','+v[2];}
+function ambPaint(p,coh01){
+ var core=_rgbTriple(p.cr), edge=_rgbTriple(p.ed);
+ if(core!==ambLastCore||edge!==ambLastEdge){
+  ambLastCore=core; ambLastEdge=edge;
+  var r=document.documentElement.style;
+  r.setProperty('--uni-amb-core',core);
+  r.setProperty('--uni-amb-edge',edge);}
+ /* THE CLOUD SETTLES AS SHE DOES, 10 November. His words: "because we're
+    uniform as a character, becomes more coherent" [the hero stage's
+    cloud drift, shell/head.html's #stage::before, should calm as her
+    coherence rises]. The Web Animations API's playback rate, not
+    animation-duration: rewriting a running animation's own duration
+    rescales its local time against the new one, which reads as a
+    visible jump, where a rate change eases the tempo smoothly (the
+    note beside #stage::before's animation rule says the same). coh01
+    is the same 0 to 1 coherence the caller already read off coherence
+    (or the unread flat 0.5) to build the palette, passed through
+    rather than recomputed. Rounded to a tenth so ordinary CQ jitter
+    does not call updatePlaybackRate every tick for nothing. */
+ var rate=Math.round((1.45-0.9*(coh01||0))*10)/10;
+ if(rate!==ambLastRate){
+  ambLastRate=rate;
+  try{
+   var stage=document.getElementById('stage');
+   if(stage&&stage.getAnimations){
+    stage.getAnimations({subtree:true}).forEach(function(a){
+     if(a.animationName==='uniCloudDrift')a.updatePlaybackRate(rate);});}
+  }catch(e){}}}
 
 // Five-stop palette: dead -> low -> oscillation -> building -> coherent
 const CPAL = [
@@ -227,6 +290,13 @@ function getPalette(t01){
 }
 function _rgb(v){return`rgb(${v[0]},${v[1]},${v[2]})`;}
 function _rgba(v,a){return`rgba(${v[0]},${v[1]},${v[2]},${a})`;}
+
+/* THE UNREAD PALETTE. Flat, desaturated, no stop on the coherence ladder --
+   a claim of nothing is not a tenth colour, it is the absence of one. cr/m1/
+   m2/cl sit as a plain mid-grey so no hue reads as an answer; bg and ed stay
+   dark, matching every ladder stop's own dark ground and rim. */
+const UNI_UNREAD_PAL={cr:[196,196,198],m1:[150,150,153],m2:[ 96, 96, 99],
+ ed:[ 40, 40, 43],bg:[ 10, 10, 11],cl:[210,210,212]};
 
 // Coherence zones
 const ZONES=[
@@ -314,6 +384,67 @@ const ZONES=[
   const W=640,H=520,CX=320,CY=252,R=136;
   const DPR=Math.max(1,Math.min(3,window.devicePixelRatio||1));
   if(DPR!==1){ cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); ctx.scale(DPR,DPR); }
+  /* HER GLOW FILLS WHATEVER BOX SHE IS GIVEN. 8 November, his words, the
+     third time of asking: "that glow, that scales with the character, I
+     said fill the fucking screen. I don't want to see the edge. I don't
+     want to see it clip ever. I just want that background color to fill
+     the entire background." Her bitmap was a fixed 640x520, so in any box
+     of another shape the page showed the bitmap's own rectangle, and a CSS
+     stretch of that bitmap (object-fit fill, the canvas default) only bent
+     her into an oval. Now the bitmap is always the size of the box she is
+     shown in, times DPR, and her 640x520 design space is fitted inside it
+     at one scale k, centred, exactly as a 640:520 picture contained in that
+     box would sit: she is the same size she was. Everything outside the
+     design space is real bitmap, painted by the background fill and the
+     glow (see bleedR in drawHarmonicRadiance), so there is no edge left to
+     see. A box of exactly 640:520 gives k=1 relative to it and no offset,
+     the old picture. The box is read through a ResizeObserver, never by
+     forcing layout inside her frame; a zero box (parked, hidden) is
+     ignored and the last fit kept. */
+  let boxW=W, boxH=H, fitK=1, fitX=0, fitY=0, boxDirty=true;
+  function applyFit(){
+    boxDirty=false;
+    const bw=Math.max(1,Math.round(boxW*DPR)), bh=Math.max(1,Math.round(boxH*DPR));
+    if(cv.width!==bw) cv.width=bw;
+    if(cv.height!==bh) cv.height=bh;
+    const cw=bw/DPR, ch=bh/DPR;
+    fitK=Math.min(cw/W,ch/H);
+    /* NO FRAME ROUND HER, PART THREE, 10 November. "The glow painted to
+       every edge" (the note on .st-uni, shell/head.html) is what this
+       scale was built to do everywhere else: touch the box on its
+       tighter axis, by design, so nothing of her own canvas stood empty
+       on an ordinary screen with no wash behind it. In the hero view
+       there now is one (#stage, above), and her own aura, rim, and
+       decoherence glow all draw relative to this same fitK, in design-
+       space units, so every one of them still reached the real canvas
+       edge and still clipped there, capping the aura's own radius alone
+       (tried first, logged above) was never going to reach the rest.
+       Scaling fitK down here gives her real, undrawn margin on every
+       side, in canvas pixels no code has to find and cap one at a time,
+       for every effect at once: nothing stands this close to the edge
+       any more, so nothing has an edge to show. */
+    if(typeof uniBgTransparent!=='undefined'&&uniBgTransparent) fitK*=0.6;
+    fitX=(cw-W*fitK)/2; fitY=(ch-H*fitK)/2;
+    UNI_FIT.k=fitK; UNI_FIT.ox=fitX; UNI_FIT.oy=fitY; UNI_FIT.w=cw; UNI_FIT.h=ch;
+  }
+  if(typeof ResizeObserver==='function'){
+    new ResizeObserver(es=>{
+      const r=es[es.length-1].contentRect;
+      if(!(r.width>0&&r.height>0)) return;
+      if(r.width!==boxW||r.height!==boxH){ boxW=r.width; boxH=r.height; boxDirty=true; }
+    }).observe(cv);
+  }
+  /* the design-space transform, set at the head of every frame and after
+     every resize (a resize resets the context), so nothing below has to
+     know the box is not 640x520 */
+  function designTransform(){ ctx.setTransform(DPR*fitK,0,0,DPR*fitK,DPR*fitX,DPR*fitY); }
+  /* how far out from her centre, in design units, the bitmap reaches at
+     its farthest corner */
+  function cornerReach(){
+    const x0=-fitX/fitK, y0=-fitY/fitK, x1=x0+cv.width/DPR/fitK, y1=y0+cv.height/DPR/fitK;
+    const dx=Math.max(CX-x0,x1-CX), dy=Math.max(CY-y0,y1-CY);
+    return Math.hypot(dx,dy);
+  }
 
   // Subtle dither -- a tiny tileable noise pattern drawn once per frame at
   // very low alpha, 'overlay' blended. Breaks up the 8-bit banding that
@@ -329,12 +460,46 @@ const ZONES=[
   }
   ditherCtx.putImageData(ditherImg,0,0);
   const ditherPattern=ctx.createPattern(ditherCv,'repeat');
+  /* PERF, round TG, 8 November, measured: the dither was the second most
+     expensive thing she drew, 11 to 20ms a frame at DPR 2 on software
+     raster, because a 64px pattern stretched by ctx.scale(DPR) is filtered
+     (bilinear) for every device pixel of the canvas, every frame, and only
+     then overlay blended. The noise it samples never changes, so it is
+     sampled once here, through the very same pattern, the same scale and
+     the same filtering, into a tile one pattern period wide in device
+     pixels, and each frame draws that tile at the identity transform, one
+     device pixel to one texel, where there is nothing left to filter. Same
+     samples, same overlay, same 0.025 alpha. A DPR whose period is not a
+     whole number of device pixels cannot tile exactly, and keeps the
+     original pattern path; so does DPR 1, where the pattern was never
+     stretched in the first place. */
+  const ditherTilePx=64*DPR;
+  let ditherFast=null;
+  if(DPR!==1 && Number.isInteger(ditherTilePx)){
+    const tcv=document.createElement('canvas');
+    tcv.width=ditherTilePx; tcv.height=ditherTilePx;
+    const tctx=tcv.getContext('2d');
+    tctx.scale(DPR,DPR);
+    tctx.fillStyle=tctx.createPattern(ditherCv,'repeat');
+    tctx.fillRect(0,0,64,64);
+    ditherFast=ctx.createPattern(tcv,'repeat');
+  }
   function drawDither(){
+    if(uniBgTransparent)return;
     ctx.save();
     ctx.globalCompositeOperation='overlay';
     ctx.globalAlpha=0.025;
-    ctx.fillStyle=ditherPattern;
-    ctx.fillRect(0,0,W,H);
+    if(ditherFast){
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.fillStyle=ditherFast;
+      ctx.fillRect(0,0,cv.width,cv.height);
+    } else {
+      /* the whole bitmap, not the design space, with the pattern at its
+         original DPR scale so its grain does not grow with the box */
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      ctx.fillStyle=ditherPattern;
+      ctx.fillRect(0,0,cv.width/DPR,cv.height/DPR);
+    }
     ctx.restore();
   }
 
@@ -1232,6 +1397,20 @@ const ZONES=[
     // Coherent = clean and sparse; decoherent = full and chaotic -- at
     // CQ 100 roughly half the particles are culled, at CQ 0 all of them show
     const particleVisFrac=1-coh01*0.50;
+    /* THE SPECKLE AT SMALL SIZE, 11 November. Her particle radii are design
+       space numbers, drawn through designTransform's DPR*fitK scale, so a
+       small box (the Full Dashboard's ~417x380, against the hero view's
+       ~900x420) renders the dimmest tier's already-small dots at under a
+       device pixel across, which a browser cannot anti-alias, only alias.
+       Checked against the handoff package's own canonical build first: it
+       has no equivalent floor because its canvas never shrinks past 640px
+       wide, so there was nothing to port here, only a real gap the small
+       dashboard box opens that the canonical file never hits. A floor in
+       device pixels, converted back to a design space radius so it still
+       passes through the same transform, keeps a dot from shrinking past
+       the point a screen can still render it as a soft dot. */
+    const _uniDpr=Math.max(1,Math.min(3,window.devicePixelRatio||1));
+    const minSz=1.6/(_uniDpr*UNI_FIT.k);
     for(let i=0;i<N_P;i++){
       if(pCullThresh[i]>particleVisFrac){ pA[i]=-1; continue; }
       const th=pTheta[i]+rotY+headYaw;
@@ -1285,7 +1464,7 @@ const ZONES=[
       let any=false;
       for(let i=0;i<N_P;i++){
         if(pA[i]<tier.lo||pA[i]>=tier.hi) continue;
-        const sz=pSz[i];
+        const sz=Math.max(pSz[i],minSz);
         ctx.moveTo(pSx[i]+sz,pSy[i]);
         ctx.arc(pSx[i],pSy[i],sz,0,Math.PI*2);
         any=true;
@@ -1352,8 +1531,18 @@ const ZONES=[
     // the surrounding aura glow instead of staying confined to a thin ring
     const cgB=ctx.createConicGradient(HARM_START, CX, CY);
     for(const[f,col] of harmStops(100,70,inten*0.17)) cgB.addColorStop(f,col);
+    /* THE BLEED NEVER ENDS ON SCREEN, 8 November (see the fit at the top of
+       NOVA, his words). It was cut off hard at R*2.1, a flat 17% tint that
+       stopped dead in a visible circle, and that circle was taller than her
+       own canvas, so the canvas clipped it top and bottom: the edge and the
+       clip he kept seeing. Its outer edge now sits past the farthest corner
+       of whatever box she has, with room for the most she ever shrinks
+       (squash, fear and disgust together, about 0.78) and drifts (her hover,
+       under 15 units), so the tint runs to every edge. Inside R*2.1 nothing
+       changes. */
+    const bleedR=Math.max(R*2.1,(cornerReach()+20)/0.7);
     ctx.beginPath();
-    ctx.arc(CX,CY,R*2.1,0,Math.PI*2);
+    ctx.arc(CX,CY,bleedR,0,Math.PI*2);
     ctx.arc(CX,CY,R*0.70,0,Math.PI*2,true);
     ctx.fillStyle=cgB; ctx.fill('evenodd');
     // Outer band
@@ -1451,25 +1640,44 @@ const ZONES=[
     g3.addColorStop(1,  _rgba(p.cl, 0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.90,0,Math.PI*2); ctx.fillStyle=g3; ctx.fill();
     ctx.restore();
-    // Pass 4: white-hot core (screen blend -- simulates sensor overexposure)
+    // Pass 4: hot core (screen blend -- simulates sensor overexposure). The
+    // centre stop used to be pure white, which stacked with the pupil
+    // highlight's own white catchlight into three white layers in the eyes
+    // -- the "bug eye" look the owner flagged. Tinted toward the character's
+    // own live hue instead, so the glow core reads as that character's light
+    // rather than a flat white sensor dot.
     ctx.save();
     ctx.globalCompositeOperation='screen';
     const g4=ctx.createRadialGradient(sx,sy,0,sx,sy,r*0.42);
-    g4.addColorStop(0, `rgba(255,255,255,${(0.92*ba).toFixed(2)})`);
+    g4.addColorStop(0, _rgba(colorMix(p.cr,[255,255,255],0.6),0.85*ba));
     g4.addColorStop(0.4,_rgba(p.cr,0.55*ba));
     g4.addColorStop(1,  _rgba(p.cr,0));
     ctx.beginPath(); ctx.arc(sx,sy,r*0.42,0,Math.PI*2); ctx.fillStyle=g4; ctx.fill();
     ctx.restore();
   }
 
-  // Dims the particle field under an orb so it reads as a distinct light, not noise
+  // Dims the particle field under an orb so it reads as a distinct light, not
+  // noise. On an opaque mount this multiplies a gray disc over the particle
+  // field. On a transparent mount (the hero view) there is no particle field
+  // under it, only the page behind the canvas, so the same multiply paints a
+  // visible gray plate with a bright rim instead -- the two white "ball
+  // bearing" discs the owner flagged. destination-out punches the same
+  // darkening shape out of the canvas's own alpha instead, which clears the
+  // space without painting anything over whatever is behind the page.
   function clearOrbSpace(sx,sy,r){
     ctx.save();
-    ctx.globalCompositeOperation='multiply';
     const cg=ctx.createRadialGradient(sx,sy,0,sx,sy,r*2.8);
-    cg.addColorStop(0,   'rgba(118,118,128,0.50)');
-    cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
-    cg.addColorStop(1,   'rgba(255,255,255,1)');
+    if(uniBgTransparent){
+      ctx.globalCompositeOperation='destination-out';
+      cg.addColorStop(0,   'rgba(0,0,0,0.27)');
+      cg.addColorStop(0.5, 'rgba(0,0,0,0.30)');
+      cg.addColorStop(1,   'rgba(0,0,0,0)');
+    }else{
+      ctx.globalCompositeOperation='multiply';
+      cg.addColorStop(0,   'rgba(118,118,128,0.50)');
+      cg.addColorStop(0.5, 'rgba(148,148,157,0.72)');
+      cg.addColorStop(1,   'rgba(255,255,255,1)');
+    }
     ctx.beginPath(); ctx.arc(sx,sy,r*2.8,0,Math.PI*2);
     ctx.fillStyle=cg; ctx.fill();
     ctx.restore();
@@ -1492,11 +1700,16 @@ const ZONES=[
     const outerY=baseY-pinch*eyeRadius*0.12;
     const midY=baseY-(pinch<0?-pinch*eyeRadius*0.55:-pinch*eyeRadius*0.20);
     ctx.save();
-    ctx.globalCompositeOperation='screen';
+    // A dark line drawn with 'screen' lightens toward nothing, which is why
+    // this brow read as invisible however present its own alpha math says it
+    // is. 'multiply' darkens on an opaque mount; on the transparent hero
+    // mount there is nothing under the canvas to multiply against, so
+    // destination-out carves the same shape out of the canvas's own alpha.
+    ctx.globalCompositeOperation=uniBgTransparent?'destination-out':'multiply';
     ctx.beginPath();
     ctx.moveTo(innerX,innerY);
     ctx.quadraticCurveTo(ex,midY,outerX,outerY);
-    ctx.strokeStyle=`rgba(42,40,37,${al.toFixed(3)})`;
+    ctx.strokeStyle=_rgba(p.ed,al);
     ctx.lineWidth=eyeRadius*0.231;
     ctx.lineCap='round';
     ctx.stroke();
@@ -1510,7 +1723,7 @@ const ZONES=[
     if(alpha<0.03||r<0.5) return;
     const px=sx+ox, py=sy+oy;
     const ba=Math.min(1,bright*alpha);
-    const gray=[118,116,114], fire=[255,120,24];
+    const gray=colorMix(p.cr,[118,116,114],0.5), fire=[255,120,24];
     const fc=[0,1,2].map(i=>Math.round(gray[i]+(fire[i]-gray[i])*coh01));
     // The pupil -- a soft colored glow, fire-orange "passion", more vivid
     // the more coherent the character is
@@ -1518,7 +1731,7 @@ const ZONES=[
     ctx.globalCompositeOperation='screen';
     const rr=r*0.46*1.2;
     const g=ctx.createRadialGradient(px,py,0,px,py,rr);
-    g.addColorStop(0,    `rgba(255,255,255,${Math.min(1,0.85*1.2*ba).toFixed(2)})`);
+    g.addColorStop(0,    _rgba(colorMix(p.cr,[255,255,255],0.55),Math.min(1,0.85*ba)));
     g.addColorStop(0.40, `rgba(${fc[0]},${fc[1]},${fc[2]},${Math.min(1,0.75*1.2*ba).toFixed(2)})`);
     g.addColorStop(1,    `rgba(${fc[0]},${fc[1]},${fc[2]},0)`);
     ctx.beginPath(); ctx.arc(px,py,rr,0,Math.PI*2);
@@ -1547,16 +1760,18 @@ const ZONES=[
     ctx.restore();
     // Owner: "keep the eye highlight square with rounded edges" -- a
     // rounded-rect catchlight instead of a circle, a deliberately more
-    // graphic/designed specular shape
+    // graphic/designed specular shape. Tinted toward the character's own
+    // live hue (was pure white) so it reads as a glint on a lit face rather
+    // than a flat white sensor dot stacked on the equally-white pupil core.
     ctx.save();
     ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=Math.min(1,0.95*ba);
-    ctx.fillStyle='rgb(255,255,255)';
+    ctx.globalAlpha=Math.min(1,0.82*ba);
+    ctx.fillStyle=_rgb(colorMix(p.cr,[255,255,255],0.65));
     ctx.beginPath();
     if(ctx.roundRect) ctx.roundRect(hx-hlR,hy-hlR,hlR*2,hlR*2,hlR*0.34);
     else ctx.rect(hx-hlR,hy-hlR,hlR*2,hlR*2);
     ctx.fill();
-    ctx.globalAlpha=Math.min(0.45,0.32*ba);
+    ctx.globalAlpha=Math.min(0.24,0.18*ba);
     ctx.beginPath(); ctx.arc(hx,hy,hlR*1.7,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
@@ -1605,6 +1820,10 @@ const ZONES=[
   function drawEyelid(ex,ey,eyeRadius,closedAmt,p){
     if(closedAmt<0.04) return;
     ctx.save();
+    // p.bg paints opaque on the transparent hero mount, leaving a dark blot
+    // where the page behind the canvas should show through on a blink.
+    // destination-out erases to the canvas's own transparency instead.
+    if(uniBgTransparent) ctx.globalCompositeOperation='destination-out';
     ctx.globalAlpha=Math.min(0.90,closedAmt*0.95);
     const g=ctx.createRadialGradient(ex,ey,0,ex,ey,eyeRadius*1.15);
     g.addColorStop(0,  _rgb(p.bg));
@@ -1659,15 +1878,37 @@ const ZONES=[
     // separate case needed.
     // Owner: "add a little tint of saturated orange and gold in the eyes"
     const pEye={...p, cr:colorMix(p.cr,[255,165,40],0.24), m1:colorMix(p.m1,[255,165,40],0.24), cl:colorMix(p.cl,[255,150,25],0.24)};
+    // A soft, unclipped spill of the eye's own light onto the face around
+    // it, 'lighter' blend so it only ever adds. Without this the eye reads
+    // as a lit object sitting on a face that itself stays flat and unlit --
+    // the detached-ball-bearing look. Drawn before the clipped glow below,
+    // outside eyeShapeClip's boundary on purpose: a real light spills past
+    // the shape that casts it.
+    {
+      const baL=Math.min(1,eyeB*eyeAl), rrL=eyeR*pL*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgL=ctx.createRadialGradient(ELx,ELy,0,ELx,ELy,rrL);
+      sgL.addColorStop(0,   _rgba(pEye.m1,0.10*baL));
+      sgL.addColorStop(0.35,_rgba(pEye.m1,0.035*baL));
+      sgL.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ELx,ELy,rrL,0,Math.PI*2); ctx.fillStyle=sgL; ctx.fill(); ctx.restore();
+      const baR=Math.min(1,eyeB*0.88*eyeAl), rrR=eyeR*pR*3.2;
+      ctx.save(); ctx.globalCompositeOperation='lighter';
+      const sgR=ctx.createRadialGradient(ERx,ERy,0,ERx,ERy,rrR);
+      sgR.addColorStop(0,   _rgba(pEye.m1,0.10*baR));
+      sgR.addColorStop(0.35,_rgba(pEye.m1,0.035*baR));
+      sgR.addColorStop(1,   _rgba(pEye.m1,0));
+      ctx.beginPath(); ctx.arc(ERx,ERy,rrR,0,Math.PI*2); ctx.fillStyle=sgR; ctx.fill(); ctx.restore();
+    }
     ctx.save();
     eyeShapeClip(ELx,ELy,eyeR*pL,lidDroopC,cheekSquint,+1);
     bokehOrb(ELx,ELy, eyeR*pL, eyeB, eyeAl, pEye);
-    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ELx,ELy,eyeR*pL,eyeB,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.save();
     eyeShapeClip(ERx,ERy,eyeR*pR,lidDroopC,cheekSquint,-1);
     bokehOrb(ERx,ERy, eyeR*pR, eyeB*0.88, eyeAl, pEye);
-    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,p);
+    drawPupilHighlight(ERx,ERy,eyeR*pR,eyeB*0.88,eyeAl,pupOx,pupOy,coh01,pEye);
     ctx.restore();
     ctx.restore();
     drawEyelid(ELx,ELy,eyeR*pL,closed,p);
@@ -1725,12 +1966,21 @@ const ZONES=[
       ctx.translate(MXp2,MYp2); ctx.rotate(asymAngle); ctx.scale(mWScale,mHScale); ctx.translate(-MXp2,-MYp2);
       bokehOrb(MXp2,MYp2, mR, mBright, Math.min(1,mOpen*4.0+energy*0.6+speechPulse*0.8), p);
       // A touch of shading along the underside -- gives the mouth a little
-      // dimension instead of reading as a flat glowing disc
+      // dimension instead of reading as a flat glowing disc. Same
+      // transparent-mount correction as clearOrbSpace above: destination-out
+      // at the equivalent darkening (0.93*(1-210/255) = 0.164) instead of a
+      // multiply plate that paints a visible disc on a transparent canvas.
       ctx.save();
-      ctx.globalCompositeOperation='multiply';
       const shG=ctx.createRadialGradient(MXp2,MYp2+mR*0.55,0,MXp2,MYp2+mR*0.55,mR*1.3);
-      shG.addColorStop(0,'rgba(210,210,215,0.93)');
-      shG.addColorStop(1,'rgba(255,255,255,1)');
+      if(uniBgTransparent){
+        ctx.globalCompositeOperation='destination-out';
+        shG.addColorStop(0,'rgba(0,0,0,0.16)');
+        shG.addColorStop(1,'rgba(0,0,0,0)');
+      }else{
+        ctx.globalCompositeOperation='multiply';
+        shG.addColorStop(0,'rgba(210,210,215,0.93)');
+        shG.addColorStop(1,'rgba(255,255,255,1)');
+      }
       ctx.beginPath(); ctx.arc(MXp2,MYp2+mR*0.55,mR*1.3,0,Math.PI*2);
       ctx.fillStyle=shG; ctx.fill();
       ctx.restore();
@@ -1788,19 +2038,53 @@ const ZONES=[
   // ----------------------------------------------------------------
   // Frame loop
   // ----------------------------------------------------------------
+  /* ONE LOOP, NEVER TWO. PERF, round TG, 8 November, measured: from boot
+     she ran two loops at once, and every displayed frame was drawn twice.
+     The load schedules her first frame, the load parks her, and the app
+     opens on the Journal, whose render mounts her and calls resume() in
+     the same task, before that first frame has fired. resume() saw
+     lastTs===null and scheduled a second frame, and from then on each
+     loop rescheduled itself: two callbacks per tick, the second with
+     dt=0, repainting over the first. Measured in Chromium, that second
+     pass cost its whole script (3 to 4ms) and not its raster, because
+     Chromium's canvas recorder throws away a picture that a full clear
+     covers before it is ever rastered; another engine may raster both.
+     And the dt=0 pass was not inert: the viseme queue pops its next unit
+     the moment the last one ends, so under two loops every unit ended a
+     frame early and speech ran fast. Nothing in the app calls speak()
+     yet, so no screen a person sees today moves differently; when one
+     does, she now speaks at the timing her own code sets out. The idle
+     she shows now is pixel identical under one loop (measured, seeded,
+     fake clock, before against after). The round TE comment below
+     believed lastTs===null was a sufficient guard; it is not while a
+     frame is already queued. Every place that starts her now goes
+     through kick(), which only asks for a frame when none is queued. */
+  let frameQueued=false;
+  function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
+    frameQueued=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
        below (which would otherwise immediately overwrite the null it
        just set). Lets pause()/resume() (and the original mouseenter
-       restart) gate cleanly on lastTs===null without ever
-       double-scheduling a second concurrent loop. */
-    if(!cv.hidden){ requestAnimationFrame(frame); } else { lastTs=null; return; }
+       restart) gate cleanly on lastTs===null. */
+    if(!cv.hidden){ kick(); } else { lastTs=null; return; }
     if(lastTs===null){lastTs=ts;return;}
-    const dt=Math.min((ts-lastTs)/1000,0.05); lastTs=ts;
+    /* never negative: resume() stamps lastTs with performance.now(), which
+       can be later than the timestamp of the frame already queued when it
+       ran, and a negative step ran every spring and timer backwards. */
+    const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
     const t=ts/1000;
-    const coh01=coherence/100;
-    const p=getPalette(coh01);
+    /* UNREAD HOLDS coh01 AT A FLAT MID POINT, 9 November, not only the
+       palette. Every coherence-driven flourish below reads this same
+       number -- the crown halo past 0.92, the decoherence glow under 0.55,
+       the alert/zen face thresholds -- and a stranger showing any of those
+       would be the instrument claiming a measurement it has not taken.
+       0.5 sits inside every one of those bands' own neutral middle, so an
+       unread face is plain: no halo, no glow, no alert, no zen. */
+    const coh01=unread?0.5:coherence/100;
+    const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
+    ambPaint(p,coh01);
 
     // Blend shapes
     bsT+=dt;
@@ -2106,9 +2390,18 @@ const ZONES=[
     }
 
     // Render
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle=_rgb(p.bg);
-    ctx.fillRect(0,0,W,H);
+    if(boxDirty) applyFit();
+    // the background fills the whole bitmap, every pixel of her box,
+    // except in the hero view, where uniMount already found nothing of
+    // her own should stand between the shared page glow and her face
+    // (see uniMount's own note)
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,cv.width,cv.height);
+    if(!uniBgTransparent){
+      ctx.fillStyle=_rgb(p.bg);
+      ctx.fillRect(0,0,cv.width,cv.height);
+    }
+    designTransform();
 
     // Round 2: per-state color signature, applied once per frame (not per
     // particle) on top of the coherence palette
@@ -2197,7 +2490,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
 
   // Events
   cv.addEventListener('click',()=>{showStats=!showStats;});
-  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();requestAnimationFrame(frame);}});
+  cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();kick();}});
 
   let typeBuf='';
   let typeFlushTimer=null;
@@ -2222,7 +2515,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     });
   }
 
-  requestAnimationFrame(frame);
+  kick();
 
   // ---- External API, added for embedding (funnel / quiz / dashboard /
   // avatar). Every method below is a thin wrapper over the engine's own
@@ -2250,6 +2543,17 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // n: 0-100. DQ -- the real total-shadow score, independent of CQ.
     setDQ(n){ dq = Math.max(0, Math.min(100, +n || 0)); },
     getDQ(){ return dq; },
+    // flag: true when the real caller's own r.unread says nobody has
+    // answered anything yet. See the unread declaration above for why
+    // this is a third state and not a value on the coherence dial.
+    setUnread(flag){ unread = !!flag; },
+    getUnread(){ return unread; },
+    // NO FRAME ROUND HER, 10 November: see uniMount's own note. uniMount
+    // lives outside this closure (one shared instance moved between
+    // screens, "STAGE 1 continued" below), so it cannot reach
+    // uniBgTransparent directly, the same reason setUnread exists beside
+    // this rather than letting an outside caller touch `unread` itself.
+    setBgTransparent(flag){ uniBgTransparent = !!flag; },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
@@ -2304,7 +2608,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
        uniMount/uniPark call these so a reparented, previously-hidden
        instance resumes without needing a real hover. */
     pause(){ cv.hidden=true; },
-    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); requestAnimationFrame(frame); } },
+    resume(){ cv.hidden=false; if(lastTs===null){ lastTs=performance.now(); kick(); } },
   };
 })();
 
@@ -2316,6 +2620,21 @@ function uniMount(target){
  if(!target)return false;
  uniHost.hidden=false;
  target.appendChild(uniHost);
+ /* NO FRAME ROUND HER, 10 November: his words, "I do not want a frame
+    around Uni in full mode." Her own canvas filled every pixel of its
+    box with p.bg (the frame() loop, below "the background fills the
+    whole bitmap, every pixel of her box"), opaque, which was the one
+    colour wash that existed before tonight; #stage's own cloud (above,
+    shell/head.html) is the wash now, and a second, flat, hard-edged
+    one painted under her own feet is exactly the frame he means, a
+    crisp rectangle where the glow outside it is soft. Read once, at
+    mount, off the target this same call already receives: the hero
+    view is the one place #stuni lands inside #stflow.st-simple; every
+    other mount (Dashboard included) keeps her own fill exactly as it
+    was, since nothing stands behind her there the way #stage now does
+    here. */
+ if(window.Uni&&window.Uni.setBgTransparent)
+  window.Uni.setBgTransparent(target.closest&&target.closest('#stflow.st-simple'));
  if(window.Uni&&window.Uni.resume)window.Uni.resume();
  return true;
 }

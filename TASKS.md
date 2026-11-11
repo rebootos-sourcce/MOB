@@ -34554,3 +34554,91 @@ sent for his sign-off with real screenshots of each branch's own build
 
 Not re-litigated here: why each failed. Lance's own words are the record;
 nothing here invents a reason he did not give.
+
+## Round TG, 9 November. Uni's data wiring closed; a front-to-back architecture
+review found 5 real gaps, filed below rather than left in a report.
+
+**Directive 2 from round TF only wired the mount point.** `uniMount()` had a
+caller; nothing fed her the real numbers. Closed tonight: `uniFromParsed()`
+(`engine/sniff.js`), a new translation layer reading `parseStory()`'s
+`named`/`bands` output into Uni's own family+rank vocabulary, exported through
+`export.js`, and `uniApply()` (`ui/storyui.js`), the single owner of every call
+into `window.Uni`'s setters, guarded by `srcSafe()` so a crisis turn never
+drives her react. `ui/uni.js` gained a third visual state, grey/neutral
+(`unread`), for the blank "You" profile, so an unanswered intake record no
+longer reads as a false, confident coherence number. Kink/floor (which seat
+leads when several are charged) is read as the loudest seat by raw band value,
+and the 0-to-8 intensity rank is `bands/3` scaled onto her ladder; both are
+named in the code as engineering defaults, not his ruling, same as this file's
+own convention for every other undecided default. `tests/engine.js` 7043/0 (up
+from TF's 7026, the 17 new assertions for this translation layer, group 33b).
+
+**A front-to-back architecture review, 28 agents, mapped then adversarially
+tried to break every claimed gap.** 20 claims made, 14 survived a second pass
+built to refute them, 6 did not (a stale "no disclosure on the funnel's first
+data collection" claim, a "function is dead code" claim refuted by 5 real
+tests exercising it, and three more, detailed in the review's own synthesis).
+One of the 8 mapping agents returned garbage instead of reviewing the build
+gates/test-coverage layer, so that layer was not actually looked at tonight,
+flagged here rather than silently counted as checked. The 5 that survived and
+rank by real impact, now filed as tasks #132-136 rather than left as prose:
+
+- **#132.** 2 of the 21 integrity laws, Responsibility and Accountability,
+  are keyed in the sniffer's word list to their pre-rename names (Ownership,
+  Wisdom), so a story can never register either violation. Mechanical fix,
+  picking the right trigger words is the voice/content call this file already
+  flags separately.
+- **#133.** 4 buttons and a card header still say "Open Energetics," the
+  tab's name before it was renamed to "Avatar." Visible to a stranger on the
+  funnel's own first-run intake path. Mechanical sweep.
+- **#134.** The Character page's torus still bends on a guessed default, not
+  the person's real answers, despite a stale comment claiming this was fixed
+  a month ago. A real, honest function for it already exists in the engine
+  with zero callers.
+- **#135.** "Build a ritual" after a release has no wiring to auto-check-off
+  that ritual when the pattern recurs.
+- **#136.** Daily Summary's "what to try" prompt can only ever suggest
+  reviewing the avatar, never an actual ritual, though the real
+  ritual-suggestion engine is already live elsewhere.
+
+Also confirmed, lower stakes, not filed as separate tasks: 8 dead saboteur
+names with no path to ever display; one stale comment overselling a safety
+property not currently reachable; the sniffer's "what to offer next" output
+mostly uncalled, which this file already ruled deliberate and deferred past
+alpha in September; 3 of 4 trace-graph edit helpers with zero callers, the
+real path reimplementing the same checks inline instead.
+
+**No "MVP alpha" scope or completion percentage exists anywhere in this file
+or `DECISIONS.md`.** Checked directly before anyone quoted one: the phrase
+only ever appears scoping individual items in or out (`J0` ruled out of
+alpha, `W3`/`W5` tagged P0 for alpha, `V3` tagged P0 his). Any percentage
+reported for "MVP alpha complete" without this note would be invented, not
+read off anything real.
+
+**Full gate run, this round:** `tests/engine.js` 7043/0. `tests/collide.js`
+398/0. `tests/funnel.js` 760/0. `tests/boot.js` 29/0. `tests/design.js`
+193/0. `node tools/monitor.js`: all surfaces render. House voice objections
+check: 0 stops. `tests/functional.js` 3025/0, confirmed after a restart with
+a longer timeout (the first attempt was killed by this environment's own
+15-minute background limit, not a real failure).
+
+**#151, flagged for a QA pass not yet run, 10 November.** His own words:
+"review this link, the other QA wired a bunch of stuff in... we're not doing
+QA pass yet, just make sure that's on our status board." A separate,
+standalone prototype artifact, `https://claude.ai/artifact/8bQXAphBcGsAhAqbVFs9FJ`,
+titled "Nova -- Eye Study": its own single-file particle-sphere character
+study, not a file in this repo. It carries a coherence-to-color palette (five
+stops, collapsed red to coherent white-gold), a Preston Blair viseme set with
+real text-to-phoneme lip sync and co-articulation weighting, 8 canon emotion
+families each with a real 9-word intensity ladder (joy/sadness/disgust/
+shock/fear/anger/shame/apathy) plus two reasoned-not-sourced additions
+(surprise/anticipation, flagged as such in its own comments), a chakra-pulse
+word trigger list keyed to real `canon.json` fetter names, and an
+"atuned.world intro sequence" overlay (wordmark, umlaut dots, subtitle)
+layered on top of the same canvas. Worth noting for whoever runs the pass:
+it carries the identical dither block (64x64 noise tile, `overlay` blend,
+alpha 0.025) this round found in `ui/uni.js` while chasing the "character
+shading is completely broken" report, so the two are close enough kin that
+a real review should check whether this artifact's own rendering has the
+same grain or not, as a second data point. Not touched, not integrated,
+not reviewed line by line, per his own instruction.
