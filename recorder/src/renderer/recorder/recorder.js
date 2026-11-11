@@ -418,6 +418,9 @@
         writeQueue = writeQueue.then(async () => {
           const buf = new Uint8Array(await blob.arrayBuffer());
           window.api.send('recorder:chunk', buf);
+        }).catch(err => {
+          // Keep the queue alive so stop/done can still fire correctly.
+          log('chunk write failed:', err.message);
         });
       };
       mediaRecorder.onerror = (e) => {

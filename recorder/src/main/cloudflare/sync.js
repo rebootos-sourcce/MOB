@@ -49,10 +49,11 @@ async function getPresignedUrl(r2Key, mimeType) {
  * Updates distributions.status = 'uploading' -> 'uploaded'.
  * @param {string} filePath
  * @param {string} presignedUrl
+ * @param {string} mimeType
  * @param {function} [onProgress]  called with fraction 0-1
  */
 // Fix #8: async stat — avoids blocking the Node.js event loop
-async function uploadToR2(filePath, presignedUrl, onProgress) {
+async function uploadToR2(filePath, presignedUrl, mimeType, onProgress) {
   const stat = await fs.promises.stat(filePath);
   return new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(filePath);
@@ -70,7 +71,7 @@ async function uploadToR2(filePath, presignedUrl, onProgress) {
       method: 'PUT',
       headers: {
         'Content-Length': stat.size,
-        'Content-Type': 'video/mp4',
+        'Content-Type': mimeType,
       }
     };
 
@@ -123,10 +124,11 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   }
 
   // Step 1: get pre-signed URL
+  const mimeType = rec.r2_key && rec.r2_key.endsWith('.webm') ? 'video/webm' : 'video/mp4';
   onProgress({ stage: 'presign', pct: 5 });
   let presignedUrl;
   try {
-    ({ presignedUrl } = await getPresignedUrl(rec.r2_key, 'video/mp4'));
+    ({ presignedUrl } = await getPresignedUrl(rec.r2_key, mimeType));
   } catch (err) { fail('error_presign', err); }
 
   // Step 2: upload
@@ -134,7 +136,7 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   onProgress({ stage: 'uploading', pct: 10 });
 
   try {
-    await uploadToR2(rec.path, presignedUrl, (frac) => {
+    await uploadToR2(rec.path, presignedUrl, mimeType, (frac) => {
       onProgress({ stage: 'uploading', pct: Math.round(10 + frac * 80) });
     });
   } catch (err) { fail('error_upload', err); }
