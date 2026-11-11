@@ -38,7 +38,19 @@
 var CRISIS={open:false, view:'ask', back:null};
 /* the button, for every surface that carries it. cls is the surface's own
    placement; the words are CRISIS_SAY's, so every door says the same thing. */
+/* REMOVED, 11 November, his ruling: "if you can't fix it in 1 batch, turn it
+   off in 1 batch. I don't care about it enough to have it be an issue
+   blocking and wasting my credits for months." The three print functions
+   below (crisisBtn, crisisReachBtn, crisisFloor) are the only way any of
+   their nine call sites puts crisis UI on screen (the file header above
+   still describes what that UI was); each now returns '' unconditionally,
+   first line, so nothing prints a door anywhere. Their own markup stays
+   below, dead and unreached, rather than deleted, the same way the rest of
+   this file, crisisOpen/crisisShut/crisisTalk/the click and keydown
+   listeners, stays in place: nothing left calls any of it meaningfully, so
+   leaving it inert is the whole change, not a half measure. */
 function crisisBtn(cls){
+ return '';
  return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
 /* UNDER THE FLOOR BAND'S DIRECTION, 16 October, from the review of these
@@ -54,9 +66,13 @@ function crisisBtn(cls){
    again and the panel opens on the numbers. The words are the panel's own
    choice, CRISIS_SAY.reach, so the door and the panel say the same thing. */
 function crisisReachBtn(cls){
+ /* removed, 11 November; see crisisBtn's own note above */
+ return '';
  return '<button type="button" class="btn crx-reach'+(cls?' '+cls:'')+'" data-crisis="reachnow" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
 function crisisFloor(t){
+ /* removed, 11 November; see crisisBtn's own note above */
+ return '';
  return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
 /* ONE SCREEN, TWO VIEWS. ask is his two lines, the line that says where Talk
    it through goes and that no person reads it, and the two choices; reach is
