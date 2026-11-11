@@ -626,8 +626,8 @@ ipcMain.handle('captions:export', async (_e, { recordingId, format = 'srt' }) =>
     ).join('\n');
   }
 
-  const rec = db.get('SELECT path FROM recordings WHERE id = ?', [recordingId]);
-  const base = rec && rec.path ? path.basename(rec.path, path.extname(rec.path)) : 'captions';
+  const recRow = db.get('SELECT path FROM recordings WHERE id = ?', [recordingId]);
+  const base = recRow && recRow.path ? path.basename(recRow.path, path.extname(recRow.path)) : 'captions';
   const { canceled, filePath } = await dialog.showSaveDialog(control, {
     defaultPath: base + '.' + format,
     filters: format === 'vtt'
