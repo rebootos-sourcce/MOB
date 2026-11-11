@@ -2600,6 +2600,21 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // A quick reaction poke (anticipation dip + stretch), not a sustained
     // emotion -- same call the "react" demo button used.
     react(strength){ triggerReaction(strength||1, null, (strength||1)*0.4); },
+    // ADDED 11 November, for the Uni boot intro (ui/panels.js's bootUni).
+    // x,y: fractions of R, the same design-space eye-travel radius frame()
+    // already uses at line ~2241 (mouseX=(mxRaw-CX)*0.036 and its mirror
+    // for y) -- so x=0.6 means the same "glance right" a real cursor
+    // sitting 0.6R off centre would produce, and the existing spring does
+    // all the easing, exactly as it does for a real mousemove. Pass null
+    // (one argument) to let go: nothing further is forced, so she holds
+    // wherever the last real target left her until a real mousemove, or
+    // another setGaze, moves it again.
+    setGaze(x,y){
+      if(x===null) return;
+      mxRaw = CX + (+x||0)*R;
+      myRaw = CY + (+y||0)*R;
+      lastMouseMoveT = performance.now();
+    },
     // Runs real text through the same viseme/word-trigger pipeline the
     // speak box used (mouth visemes, and any EMO_WORD_TRIGGERS match).
     speak(text){ enqueueText(String(text||'')); },

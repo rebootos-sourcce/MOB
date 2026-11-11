@@ -145,7 +145,7 @@
 (function(){
  try{
   var root=document.documentElement;
-  var OK=null, ACT=null, RETIME=null, HELD=null, TAKEN=false, HELDFADE=null;
+  var OK=null, ACT=null, RETIME=null, HELD=null, TAKEN=false, HELDFADE=null, ENHANCE=null;
   var fadeOf=function(el){
    try{var a=el.getAnimations();
     for(var i=0;i<a.length;i++)if(a[i].animationName==='bootOut')return a[i];}catch(e){}
@@ -224,9 +224,14 @@
      if(performance.now()<h.s0+d)h.f.startTime=h.s0;
      else{h.f.currentTime=d; h.f.play();}}catch(x){}}
    if(ACT&&HELD){var p=HELD; HELD=null; act(p);}
-   else if(RETIME){try{RETIME();}catch(x){}}};
+   else{
+    /* UNI, ADDED 11 November. A held skip wins: it is acted on above instead,
+       never both. Otherwise the enhancement mounts here, once, exactly where
+       RETIME already runs, wrapped the same way. */
+    if(!HELD&&ENHANCE){try{ENHANCE();}catch(x){}}
+    if(RETIME){try{RETIME();}catch(x){}}}};
   try{new MutationObserver(ready).observe(root,{attributes:true,attributeFilter:['data-boot']});}catch(e){}
-  window.__bootPress=function(skip,retime){ACT=skip; RETIME=retime||null; ready();};
+  window.__bootPress=function(skip,retime,enhance){ACT=skip; RETIME=retime||null; ENHANCE=enhance||null; ready();};
  }catch(e){}
 })();
 </script>
@@ -380,6 +385,11 @@
    <div class="bx-wave bx-echo" style="--wb:1.25;background:conic-gradient(from 0deg,rgb(191,104,148) 0deg,#D6524C 26.67deg,#D8924E 80.00deg,#DABF6A 133.33deg,#5FD5A6 185.00deg,#5EBBDB 230.00deg,#7D93E0 270.00deg,#A77EDB 325.00deg,rgb(191,104,148) 360deg);-webkit-mask:radial-gradient(closest-side,transparent 85.60%,rgba(0,0,0,.28) 89.20%,rgba(0,0,0,.34) 91.52%,#000 91.84%,#000 93.76%,rgba(0,0,0,.34) 94.08%,rgba(0,0,0,.28) 96.40%,transparent 100%);mask:radial-gradient(closest-side,transparent 85.60%,rgba(0,0,0,.28) 89.20%,rgba(0,0,0,.34) 91.52%,#000 91.84%,#000 93.76%,rgba(0,0,0,.34) 94.08%,rgba(0,0,0,.28) 96.40%,transparent 100%)"></div>
    <div class="bx-lens"></div>
   </div>
+  <!-- UNI, ADDED 11 November. Empty unless ui/panels.js's bootUni mounts
+       into it, which only happens once a script is confirmed running and
+       the person has not asked for reduced motion; the CSS figure just
+       above is the unconditional default and stays exactly as it was. -->
+  <div id="bootuni"></div>
  </div>
  <!-- BOOT FIGURE END -->
  <!-- POWERED BY SOURCE OS, ON THE INTRO CARD. Ruled, and the card is the

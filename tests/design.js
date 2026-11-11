@@ -608,10 +608,13 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
  ok(!!fl,'the sheet carries its own fade, and it has started');
  if(fl)ok(fl.floor>=fl.end&&fl.floor<=fl.end+500,'the removal floor sits just past the fade\'s own end, floor at '
    +Math.round(fl.floor)+'ms against the fade ending at '+Math.round(fl.end)+'ms');
- /* THE SEQUENCE IS FIVE SECONDS NOW, with two beats of black at each end on
-    the owner's ruling, so this waits past the end of it rather than past the
-    end of the old one. Measured: booted at 5317ms and the node gone with it. */
- await p6.waitForTimeout(5800);
+ /* THE SEQUENCE IS SEVEN SECONDS NOW, 11 November, the owner's own "keep it
+    at 7 for now" over the Uni-driven boot, so this waits past the end of it
+    rather than past the end of the five second one it replaced. The fade
+    itself is read dynamically above (fl.end) and needs no change here; only
+    this fixed wait has to outlast it. Measured: fade due near 7112ms, node
+    gone with it soon after. */
+ await p6.waitForTimeout(8200);
  const late=await p6.evaluate(()=>({gone:!document.getElementById('boot'),
    booted:document.body.classList.contains('booted')}));
  ok(late.gone,'the boot is removed from the document, not just faded');
