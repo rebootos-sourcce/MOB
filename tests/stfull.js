@@ -1,5 +1,9 @@
 /* ============================================================
-   THE JOURNAL'S FULL VIEW, AND THE CRISIS DOOR INSIDE IT.
+   THE JOURNAL'S FULL VIEW. THE CRISIS DOOR ONCE LIVED INSIDE IT; REMOVED
+   11 NOVEMBER, his ruling, "if you can't fix it in 1 batch, turn it off
+   in 1 batch." crisisBtn/crisisReachBtn (atuned_src/ui/crisis.js) print
+   nothing now; Phase 0 and item 6 below check absence where they used to
+   check real pointer presses reached the door.
    node tests/stfull.js, and called from tests/functional.js so a full run
    holds it through the same code.
 
@@ -8,15 +12,6 @@
    STV.dash, ui/storyui.js writes body.st-full from it, the shell gives #lcol
    back to the Journal carrying #stleft and nothing else, and ui/stdash.js
    paints Energy into it off this story's parseStory bands.
-
-   THE PRECONDITION, AND WHY IT IS FIRST. The Full view puts the microphone
-   and the conversation at the centre of the Journal, and chat is always on
-   (STV.chat, 28 October). The Journal's own crisis doors, the line and the
-   two Reach someone now buttons, render only under STV.crisis&&!STV.chat,
-   so with chat on the page itself carries none. Nothing about the Full view
-   may ship until a person in it can still reach the numbers. This holds the
-   voluntary door only: there is still no automatic reading of what a person
-   writes, and tests/onboarding2.js still asserts that.
 
    EVERY PRESS IS A REAL POINTER PRESS. Playwright's click refuses a target
    that is hidden, off the screen, moving, or covered by something else at
@@ -33,12 +28,11 @@
      4  with a story, all seven seats Root to Crown, each figure the 'atom'
         percent of min(10, bands/3), the dash where a seat is untouched, and
         the same number the Journal's own chart springs to (STSEAT)
-     5  PHASE 0: in Full with chat on, the crisis door is reached by real
-        presses, profile button, Is this a crisis?, Reach someone now, and the
-        three numbers are on screen and pressable; closing it leaves the
-        person in Full with chat on
-     6  and Talk it through, pressed from Full, lands in the Journal with its
-        own two Reach someone now doors on screen and working
+     5  PHASE 0: in Full with chat on, no crisis door anywhere, not on the
+        page and not in the profile menu, and no panel host exists
+     6  and switching the profile leaves no safety line and no door on a
+        record that never wrote one (the door check here is now always
+        absence; the line itself still moves correctly)
      7  leaving the tab clears the rail and the class; coming back in Full
         draws both again
      8  the Journal's fold is its own key, and folding it moves nothing on the
@@ -167,63 +161,28 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(s3.spring,at+'and every pill reads the number the Journal\'s own chart springs to, STSEAT');
   ok(s3.allTitled&&!s3.none,at+'each pill carries its own hover sentence, and the silent line is gone');
 
-  /* 5. PHASE 0. Full, chat on, the crisis door by real presses */
+  /* 5 and 6. REMOVED, 11 November: his ruling, "if you can't fix it in 1
+     batch, turn it off in 1 batch." crisisBtn/crisisReachBtn (atuned_src/
+     ui/crisis.js) return '' unconditionally now, so neither the profile
+     menu's own row nor the Journal's own two doors print; #crisis is
+     never created since crisisOpen() (called only from those gone
+     buttons) never runs. This used to walk the door open by real presses,
+     the panel's three numbers, each pressable, Talk it through from Full,
+     and both Reach someone now doors it used to leave on screen; none of
+     that is reachable any more, so this checks absence instead. Checked
+     against the build before the removal, where this fails on finding
+     the door. */
   await p.evaluate(()=>window.scrollTo(0,0));
   const pre=await p.evaluate(()=>({chat:STV.chat,dash:STV.dash,full:document.body.classList.contains('st-full'),
    own:[...document.querySelectorAll('#story [data-crisis]')].length}));
-  ok(pre.chat&&pre.dash&&pre.full,at+'Phase 0 is measured in Full with chat on, '+JSON.stringify(pre));
-  let reached=false;
-  if(await press(p,'#profbtn',ok,at+'Phase 0, the profile button')
-   &&await press(p,'#profmenu [data-pmcrisis]',ok,at+'Phase 0, Is this a crisis? in the profile menu')){
-   await p.waitForTimeout(120);
-   const ask=await p.evaluate(()=>{const c=document.getElementById('crisis');
-    return {open:!!c&&!c.hidden&&CRISIS.open, view:CRISIS.view, role:c&&c.querySelector('[role=dialog]')?'dialog':''};});
-   ok(ask.open&&ask.view==='ask'&&ask.role==='dialog',at+'Phase 0, the crisis panel opens over the Full Journal, '+JSON.stringify(ask));
-   if(await press(p,'#crisis [data-crisis="reach"]',ok,at+'Phase 0, Reach someone now')){
-    await p.waitForTimeout(120);
-    const nums=await p.evaluate(()=>[...document.querySelectorAll('#crisis [data-crisisline]')].map(li=>({
-     k:li.getAttribute('data-crisisline'), go:[...li.querySelectorAll('a[href]')].map(a=>a.getAttribute('href'))})));
-    ok(nums.map(n=>n.k).join()==='988,741741,911'&&nums.every(n=>n.go.length>0),
-     at+'Phase 0, the three numbers are on screen, '+JSON.stringify(nums));
-    /* each number pressable: hovered, which runs the same actionability
-       checks a click does, without dialling anything */
-    let all=true;
-    for(const sel of ['#crisis a[href="tel:988"]','#crisis a[href^="sms:741741"]','#crisis a[href="tel:911"]']){
-     try{ await p.hover(sel,{timeout:4000}); }catch(e){ all=false; ok(false,at+'Phase 0, '+sel+' is not pressable, '+String(e.message).split('\n')[0]); }}
-    ok(all,at+'Phase 0, Call 988, Text 741741 and Call 911 are each reachable by a pointer');
-    reached=all;}
-   await press(p,'#crisis [data-crisis="close"]',ok,at+'Phase 0, Close');
-   await p.waitForTimeout(120);
-   const post=await p.evaluate(()=>({open:CRISIS.open,chat:STV.chat,dash:STV.dash,full:document.body.classList.contains('st-full'),tab:S.tab===TAB.STORY}));
-   ok(!post.open&&post.chat&&post.dash&&post.full&&post.tab,at+'Phase 0, closing the panel leaves the person in the Full Journal with chat on, '+JSON.stringify(post));}
-  ok(reached,at+'PHASE 0: the crisis door is reachable in the Full Journal with chat on');
-
-  /* 6. Talk it through from Full: the Journal's own doors */
-  await p.evaluate(()=>window.scrollTo(0,0));
-  if(await press(p,'#profbtn',ok,at+'Talk it through, the profile button')
-   &&await press(p,'#profmenu [data-pmcrisis]',ok,at+'Talk it through, the menu row')
-   &&await press(p,'#crisis [data-crisis="talk"]',ok,at+'Talk it through')){
-   await p.waitForTimeout(260);
-   const tk=await p.evaluate(()=>({crisis:STV.crisis,chat:STV.chat,dash:STV.dash,full:document.body.classList.contains('st-full'),
-    line:!!document.getElementById('stcrisis'), doors:document.querySelectorAll('#story [data-crisis="reachnow"]').length}));
-   ok(tk.crisis&&!tk.chat&&tk.dash&&tk.full,at+'Talk it through from Full stays in Full, in the written box, '+JSON.stringify(tk));
-   ok(tk.line&&tk.doors===2,at+'and the Journal carries its line and both Reach someone now doors, '+JSON.stringify(tk));
-   /* ONE DOOR ON A PHONE, ruled 16 October (shell/head.html, "ONE DOOR ON A
-      PHONE"): at 640 and under the foot door is hidden on purpose and the one
-      by the line stays. This gate's first cut pressed both at 390 and failed
-      on the ruling, not on the product, so the phone holds the ruling
-      instead: the foot door is not shown, and the line's door is pressed. */
-   if(wn==='phone'){
-    const bar=await p.evaluate(()=>{const e=document.querySelector('#story .st-crxbar');return e?getComputedStyle(e).display:'missing';});
-    ok(bar==='none',at+'one door on a phone, the 16 October ruling: the foot door is hidden, got '+bar);}
-   for(const sel of wn==='phone'?['#story .st-crxline']:['#story .st-crxline','#story .st-crxbar']){
-    if(await press(p,sel,ok,at+'the Journal\'s own door')){
-     await p.waitForTimeout(120);
-     const v=await p.evaluate(()=>({open:CRISIS.open,view:CRISIS.view,n:document.querySelectorAll('#crisis [data-crisisline]').length}));
-     ok(v.open&&v.view==='reach'&&v.n===3,at+sel+' opens straight on the three numbers, '+JSON.stringify(v));
-     await press(p,'#crisis [data-crisis="close"]',ok,at+'Close');
-     await p.waitForTimeout(100);}}
-   await p.evaluate(()=>{STV.crisis=false; STV.chat=true; stRender();});}
+  ok(pre.chat&&pre.dash&&pre.full,at+'measured in Full with chat on, '+JSON.stringify(pre));
+  ok(pre.own===0,at+'no crisis door anywhere in the Full Journal, '+pre.own+' found');
+  await press(p,'#profbtn',ok,at+'the profile button');
+  const row=await p.evaluate(()=>!document.querySelector('#profmenu [data-pmcrisis]'));
+  ok(row,at+'no crisis row in the profile menu');
+  await p.keyboard.press('Escape'); await p.waitForTimeout(120);
+  const host=await p.evaluate(()=>!document.getElementById('crisis'));
+  ok(host,at+'no panel host exists, nothing has ever created one');
 
   /* 7. leaving clears, returning redraws */
   const s4=await p.evaluate(async()=>{const o={};
@@ -373,7 +332,7 @@ async function stFullGate(browser,FILE,ok,booted){
    ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
    stCommit(); await new Promise(r=>setTimeout(r,250));},SAFE);
   const e0=await seen();
-  ok(e0.safeSaid&&e0.line&&e0.reach>0&&e0.talk===e0.line,at+'a safety commit keeps the line and its door standing on the record that wrote it, '+JSON.stringify(e0));
+  ok(e0.safeSaid&&e0.line&&e0.reach===0&&e0.talk===e0.line,at+'a safety commit keeps the line standing on the record that wrote it, no door (removed 11 November), '+JSON.stringify(e0));
   await p.evaluate(async()=>{pNew('Safe switch'); loadProfile(CURP); IQ_OPEN=null; IQ_SEAT=null; IQ_ARCH=null;
    syncCh(); syncLw(); syncSoul(); renderIntake(); render(); await new Promise(r=>setTimeout(r,250));});
   const e1=await seen();
@@ -381,7 +340,7 @@ async function stFullGate(browser,FILE,ok,booted){
    at+'after a switch the next record is shown no safe line and no door, and Talk would not say the line, for words it never wrote, '+JSON.stringify(e1));
   await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));},SAFE);
   const e2=await seen();
-  ok(e2.line===e0.line&&e2.reach>0,at+'and its own words trip the line and the door on it, '+JSON.stringify(e2));
+  ok(e2.line===e0.line&&e2.reach===0,at+'and its own words trip the line, still no door, '+JSON.stringify(e2));
   await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
   /* NO FOLD ON THE JOURNAL ANY MORE, 10 November, see the note at item 8

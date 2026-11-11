@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v13 663ed3e0 2026-11-11 18:46"><head><meta charset="utf-8">
+<html lang="en" data-build="v16 534a3572 2026-11-11 20:02"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -85709,15 +85709,13 @@ function profMenu(){
   +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
   +'<span>Message log</span></button>'
-  /* IS THIS A CRISIS, after the first run, 16 October. The welcome carries
-     the button and is met once, so the same press has to be somewhere a
-     person can still reach on any day, and the menu on every screen's top bar
-     is that place. The same words and the same panel, ui/crisis.js; the ring
-     is a closed circle with a mark through its centre, stroked, never filled. */
-  +'<button type="button" role="menuitem" class="pm-it" data-pmcrisis="1">'
-  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'
-  +'<path d="M12 7.5v5.5M12 16.2v.3"/></svg></span>'
-  +'<span>'+esc(CRISIS_SAY.open)+'</span></button>'
+  /* REMOVED, 11 November, his ruling: "if you can't fix it in 1 batch, turn
+     it off in 1 batch." Unlike the other six places this door stood, this
+     row was its own static markup calling crisisOpen() directly rather than
+     printed by crisisBtn, so zeroing out crisisBtn/crisisReachBtn/
+     crisisFloor in ui/crisis.js did not reach it; caught by a real test
+     still finding the row after that change, tests/onboarding2.js. profMenu
+     below already no-ops cleanly when it finds no [data-pmcrisis] row. */
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -89562,7 +89560,19 @@ try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
 var CRISIS={open:false, view:'ask', back:null};
 /* the button, for every surface that carries it. cls is the surface's own
    placement; the words are CRISIS_SAY's, so every door says the same thing. */
+/* REMOVED, 11 November, his ruling: "if you can't fix it in 1 batch, turn it
+   off in 1 batch. I don't care about it enough to have it be an issue
+   blocking and wasting my credits for months." The three print functions
+   below (crisisBtn, crisisReachBtn, crisisFloor) are the only way any of
+   their nine call sites puts crisis UI on screen (the file header above
+   still describes what that UI was); each now returns '' unconditionally,
+   first line, so nothing prints a door anywhere. Their own markup stays
+   below, dead and unreached, rather than deleted, the same way the rest of
+   this file, crisisOpen/crisisShut/crisisTalk/the click and keydown
+   listeners, stays in place: nothing left calls any of it meaningfully, so
+   leaving it inert is the whole change, not a half measure. */
 function crisisBtn(cls){
+ return '';
  return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
 /* UNDER THE FLOOR BAND'S DIRECTION, 16 October, from the review of these
@@ -89578,9 +89588,13 @@ function crisisBtn(cls){
    again and the panel opens on the numbers. The words are the panel's own
    choice, CRISIS_SAY.reach, so the door and the panel say the same thing. */
 function crisisReachBtn(cls){
+ /* removed, 11 November; see crisisBtn's own note above */
+ return '';
  return '<button type="button" class="btn crx-reach'+(cls?' '+cls:'')+'" data-crisis="reachnow" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
 function crisisFloor(t){
+ /* removed, 11 November; see crisisBtn's own note above */
+ return '';
  return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
 /* ONE SCREEN, TWO VIEWS. ask is his two lines, the line that says where Talk
    it through goes and that no person reads it, and the two choices; reach is
@@ -94252,5 +94266,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006296809"></div>
+<div id="eof" hidden data-len="006297620"></div>
 </body></html>

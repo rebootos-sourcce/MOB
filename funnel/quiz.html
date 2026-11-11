@@ -338,7 +338,11 @@ button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);
   <!-- THE SEVEN BAND RING. It is filled by RING.set out of the engine's own
        band loads, so it cannot disagree with the reading underneath it. -->
   <div class="ringwrap" id="ringtop"></div>
-  <button type="button" class="crxq" id="crxq" aria-haspopup="dialog">Is this a crisis?</button>
+  <!-- REMOVED, 11 November, his ruling (see atuned_src/ui/crisis.js's own
+       note, which this file's crisis panel below is a copy of): "if you
+       can't fix it in 1 batch, turn it off in 1 batch." crxOpen() below is
+       now a no-op, so the button would have nothing to do; the panel
+       functions stay in place, dead and unreached, rather than deleted. -->
  </div>
  <div id="app"></div>
 </div>
@@ -1596,7 +1600,13 @@ function crxHost(){
 function crxPaint(){ var h=crxHost(); h.innerHTML=crxCard();
  Array.prototype.forEach.call(h.querySelectorAll('[data-crxgo]'),function(a){ a.setAttribute('href',a.getAttribute('data-crxgo')); });
  var f=document.getElementById('crxqh'); if(f)f.focus({preventScroll:true}); }
-function crxOpen(){ CRX.back=document.activeElement||null; CRX.open=true; CRX.view='ask'; crxHost().hidden=false; crxPaint(); }
+function crxOpen(){
+ /* REMOVED, 11 November; see crisis.js's own note. This is the single
+    gatekeeper for the whole panel: CRX.talk (the crxq-row door below) only
+    ever becomes true from inside it, so this one no-op also removes the
+    reachnow row with no other change needed. */
+ return;
+ CRX.back=document.activeElement||null; CRX.open=true; CRX.view='ask'; crxHost().hidden=false; crxPaint(); }
 function crxShut(keep){
  var h=document.getElementById('crxqp'); CRX.open=false; CRX.view='ask';
  if(h){ h.hidden=true; h.innerHTML=''; }
