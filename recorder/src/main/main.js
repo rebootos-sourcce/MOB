@@ -675,5 +675,11 @@ app.whenReady().then(async () => {
 });
 
 app.on('second-instance', () => { if (control) { control.show(); control.focus(); } });
-app.on('before-quit', () => { app.__quitting = true; globalShortcut.unregisterAll(); db.close(); });
+app.on('before-quit', (e) => {
+  if (app.__quitting) return;
+  e.preventDefault();
+  app.__quitting = true;
+  globalShortcut.unregisterAll();
+  db.close().catch(() => {}).finally(() => app.quit());
+});
 app.on('window-all-closed', () => app.quit());
