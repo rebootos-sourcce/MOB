@@ -524,7 +524,7 @@ function safeSettings(s) {
 }
 
 ipcMain.handle('settings:get', () => safeSettings(settings.get()));
-ipcMain.handle('settings:set', (_e, patch) => settings.set(patch));
+ipcMain.handle('settings:set', (_e, patch) => safeSettings(settings.set(patch)));
 ipcMain.handle('state:get', () => ({
   state: rec.state, micEnabled: rec.micEnabled, elapsedMs: elapsedMs(), message: rec.message,
   bubbleVisible: settings.get().bubble.visible

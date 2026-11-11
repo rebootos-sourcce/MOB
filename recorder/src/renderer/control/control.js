@@ -491,7 +491,9 @@
       $('cfApiToken').value = '';
       await loadCfConfig();
     } catch (err) {
-      alert('Failed to save Cloud config: ' + err.message);
+      const badge = $('cfStatusBadge');
+      badge.textContent = 'save failed: ' + err.message;
+      badge.classList.remove('ok');
     }
   });
 
