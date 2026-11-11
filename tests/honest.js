@@ -125,11 +125,25 @@ require('./net.js').guardBrowser(browser);
 
   console.log('\n-- a release with a store that refuses --');
   await p.evaluate(SHRINK);
+  /* A FRESH COMMIT, NOT THE PRIOR SECTION'S RELOADED ONE. Since bug #164 (11
+     November) and the third tier's removal (10 November, his words: "there's
+     three icons that start there. There should be nothing."), the release
+     panel shows nothing after a reload with no live draft open: stFound()'s
+     fromLast flag needs found===STV.lastFound, and STV does not survive a
+     reload. So #strun comes up disabled here unless this section commits its
+     own entry first, the way a real person reaches Release: type, commit,
+     then run it, all in one sitting. */
+  await send(p, STORY); await p.waitForTimeout(500);
+  await press(p, '#stapply'); await p.waitForTimeout(500);
   const rec0 = own(await saved(p)) || {};
   const axes0 = JSON.stringify(rec0.axes || null), meter0 = JSON.stringify(rec0.meter || null), hist0 = (rec0.history || []).length;
   await refuse(p, true); await clearLog(p);
-  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); }); await p.waitForTimeout(300);
-  await p.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
+  /* #strun's own click handler (ui/storyui.js) opens the setup panel and
+     presses #relgo itself, synchronously, so the dose field never sits on
+     screen long enough for a later press to change it. Set RUN.dose directly,
+     in the gap between that click returning and its first timer firing. */
+  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
+  await p.evaluate(() => { RUN.dose = 1; });
   const done = await p.waitForFunction(() => typeof RUN !== 'undefined' && RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 90000 }).then(() => true, () => false);
   ok(done, 'the release runs to its end');
   await p.waitForTimeout(600);
@@ -167,8 +181,13 @@ require('./net.js').guardBrowser(browser);
   console.log('\n-- the answer to What changed, refused --');
   await clearLog(p);
   await story(p);
-  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); }); await p.waitForTimeout(300);
-  await p.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
+  /* same reason as the section above: a fresh commit, since the previous
+     section's own reload (verifying the rollback) left nothing live to
+     release. */
+  await send(p, STORY); await p.waitForTimeout(500);
+  await press(p, '#stapply'); await p.waitForTimeout(500);
+  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); });
+  await p.evaluate(() => { RUN.dose = 1; });
   const done2 = await p.waitForFunction(() => typeof RUN !== 'undefined' && RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 90000 }).then(() => true, () => false);
   const run2 = await p.evaluate(() => { const g = document.getElementById('strun');
     return { phase: RUN.phase, saved: RUN.saved, queue: (RUN.queue || []).length, open: RUN.open, tab: S.tab,
