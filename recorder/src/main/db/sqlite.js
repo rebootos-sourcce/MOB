@@ -21,7 +21,14 @@ async function init(customPath) {
   if (db) return db;
 
   const initSqlJs = require('sql.js');
-  SQL = await initSqlJs();
+  SQL = await initSqlJs({
+    locateFile: (filename) => {
+      // WASM must live on the real filesystem (not inside the asar archive).
+      // In production the asarUnpack rule copies sql.js/dist/* to app.asar.unpacked.
+      const base = path.join(__dirname, '..', '..', '..', 'node_modules', 'sql.js', 'dist', filename);
+      return base.replace('app.asar' + path.sep, 'app.asar.unpacked' + path.sep);
+    },
+  });
 
   dbPath = customPath || path.join(app.getPath('userData'), 'mob.db');
 
