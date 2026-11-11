@@ -329,6 +329,33 @@ async function stFullGate(browser,FILE,ok,booted){
    s.dispatchEvent(new Event('change')); await new Promise(r=>setTimeout(r,200));
    return {before:k, lastT:STV.lastT, found:STV.lastFound.length};});
   ok(d.before.lastT!==null&&d.lastT===null&&d.found===0,at+'a commit\'s found imprints and its time do not carry to the next person, '+JSON.stringify(d));
+  /* BUG #164: found!==STV.lastFound alone cannot tell "just committed, not
+     yet released" from "already released, or never coming back to it", since
+     stCommit stores the exact same object in both cases. The release panel
+     must offer what was just written, and must stop offering it the moment
+     a release actually runs against that entry, from any door. */
+  await p.evaluate(async t=>{loadP(0); setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
+   ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'My chest went tight and my stomach dropped when he yelled.');
+  const f0=await p.evaluate(()=>({take:stRelModel().take.length, open:STV.lastOpen}));
+  ok(f0.take>0&&f0.open===true,at+'right after Commit, the release panel offers what was just written, '+JSON.stringify(f0));
+  const f1=await p.evaluate(()=>{var ids=stRelModel().take.map(function(n){return n.i;});
+   relPick(ids,{story_t:STV.lastT}); var r={take:stRelModel().take.length, open:STV.lastOpen}; relClose(); return r;});
+  ok(f1.take===0&&f1.open===false,at+'and once that entry has been released, the offer closes, '+JSON.stringify(f1));
+  await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'My jaw was tight all morning and my shoulders would not drop.');
+  const f2=await p.evaluate(()=>{var ids=stRelModel().take.map(function(n){return n.i;});
+   relPick(ids,{mini:true,story_t:STV.lastT}); relClose(); stRelPanel();
+   return {take:stRelModel().take.length, open:STV.lastOpen, rq:document.querySelectorAll('#strel [data-rq]').length};});
+  ok(f2.take===0&&f2.open===false&&f2.rq===0,at+'and the same holds for a release run through onboarding\'s own mini shape, '+JSON.stringify(f2));
+  await p.evaluate(async t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stRefresh(); stRender(); await new Promise(r=>setTimeout(r,200));
+   stCommit(); await new Promise(r=>setTimeout(r,250));},'A third entry, committed and never released.');
+  await p.selectOption('#psel',a.other,{force:true});
+  await p.waitForTimeout(300);
+  await p.selectOption('#psel','0',{force:true});
+  await p.waitForTimeout(300);
+  const f3=await p.evaluate(()=>({take:stRelModel().take.length}));
+  ok(f3.take===0,at+'and switching who owns the record, then back, closes an unreleased entry\'s offer too, '+JSON.stringify(f3));
   /* NOR DOES THE SAFE LINE, 4 November. stCommit keeps STV.safeSaid up so
      the line stands once the box empties (stSafe), and stOwn did not clear
      it: a safety commit on one record, a switch, and the next record was

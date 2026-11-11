@@ -804,7 +804,7 @@ function stRender(){
    THE SORT OPENS ON WEIGHT, 6 November, his words on this exact screen:
    "for imprints, for a sort, just do it by weight." Was Seat. */
 var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false,lastOpen:false};
 /* THE IMPRINTS DETECTOR, PORTED TO THE LEFT RAIL, 9 November. His words:
    "the imprints detector, which takes up the top half of that column,
    now moves to the lower left... near the lower left bottom of the left
@@ -1138,7 +1138,7 @@ function stCommit(){
     throws away, and the words are the one thing here that cannot be made
     again. A press on the same words asks the browser again, see again above. */
  if(!saved){
-  STV.lastFound=kept; STV.lastT=entT;
+  STV.lastFound=kept; STV.lastT=entT; STV.lastOpen=!!kept.length;
   toYou();syncCh();if(typeof stRender==='function')stRender();render();
   status('This browser would not save. The entry is on this page and not on your record. '
    +'Your words are still in the box, so copy them before you reload.','fail');
@@ -1146,7 +1146,7 @@ function stCommit(){
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
- ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;
+ ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
  /* the line stays where it was once the box empties, see stSafe */
  STV.safeSaid=safe;
  /* the release takes the room on a desktop. On a phone it stays the bar
@@ -1267,7 +1267,7 @@ function stOwn(){
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
  ST_OWN=cur;
  ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
- STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false;
+ STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
  return true;}
 
@@ -3275,8 +3275,21 @@ function stRelModel(){
     genuine live parse (a new array, every time something is typed) apart
     from the recycled one stFound() hands back on empty input; the model
     already computed this distinction for its own fromLast flag and
-    simply never gated take on it. */
- var live=found.length&&found!==STV.lastFound;
+    simply never gated take on it.
+
+    BUT found!==STV.lastFound ALSO READS FALSE RIGHT AFTER A COMMIT, 11
+    November, bug #164. stCommit stores the just-committed entry's own
+    addresses as STV.lastFound (the line this comment already names), then
+    sends the person straight to this same release panel -- which is the
+    product's own intended flow, "commit, then the release offers what you
+    just wrote." found===STV.lastFound in BOTH that moment and the stale
+    one above; object identity alone cannot tell "just committed, not yet
+    released" from "released already, or never coming back to it". The
+    difference is STV.lastOpen, set true by stCommit and stOwn's own reset,
+    cleared the moment relPick actually runs a release against this same
+    entry (ui/release.js), so "stale" now means specifically "closed",
+    never merely "not the newest object". */
+ var live=found.length&&(found!==STV.lastFound||STV.lastOpen===true);
  if(picked.length)take=picked.sort(bySq);
  else if(live)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  /* THE THIRD TIER IS GONE, 10 November, his words looking at the live
