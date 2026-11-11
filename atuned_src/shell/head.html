@@ -4699,31 +4699,22 @@ body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-ind
    box, a separate rule (body.tab-story.st-full #stsrc below), is
    untouched, his own words scoping this to the mini dashboard only.
 
-   THE BOX IS GONE, NOT THE NOTE INSIDE IT. #stsrc itself cannot go
-   display:none: .src-aside, what the S5 sniffer audit requires the Story
-   page say about a word read and not counted, prints inside it
-   (srcPaint, ui/storyui.js), and a hidden ancestor hides that note along
-   with the card he was pointing at, which tests/sniffpage.js caught: the
-   note stopped drawing at all on the mini view. So the card is stripped
-   to nothing instead, the accent bar, background, padding and its own
-   travelling light and scan pseudo elements all off, and .src-me, her
-   words echoed back, goes display:none with it, which is the "speech
-   bubble" he named; .src-aside is a hairline already (margin, one top
-   border, no background of its own, round LU), so once .src-me beside it
-   is gone there is no box left to see, only the one line saying what the
-   words did not count and why. */
-body.tab-story:not(.st-full) #stsrc{display:block;border-left:0;border-radius:0;
- background:none;padding:0}
-body.tab-story:not(.st-full) #stsrc::before,
-body.tab-story:not(.st-full) #stsrc::after{display:none}
-body.tab-story:not(.st-full) .src-me{display:none}
-body.tab-story:not(.st-full) .src-mine .src-aside{border-top:0;padding-top:0;margin-top:16px}
-/* THE HEIGHT CAP AND SCROLL WERE .src-me's OWN, the echoed words this round
-   hides. .src-aside is one short sentence, never the length a story's own
-   words run to, so with .src-me gone nothing here still needs a scrollbar. */
-body.tab-story:not(.st-full) .src-mine{max-width:46ch;margin:16px auto 0;text-align:center}
-body.tab-story:not(.st-full) .src-mine .src-me{font-size:16px;line-height:1.6;
- color:var(--mid)}
+   OVERRIDDEN AGAIN, SAME NIGHT. The in-between step kept #stsrc out of
+   display:none so .src-aside, what the S5 sniffer audit requires the
+   Story page say about a word read and not counted, could still print
+   (srcPaint, ui/storyui.js) with the card itself stripped to a hairline
+   around it. He then drew a black scribble over the whole thing,
+   including that note, on a real screenshot of this exact view, and
+   said it outright: "remove that text field or hide that text field from
+   the mini dashboard. It only belongs in the expanded one." The Full
+   Dashboard's own copy of this box already carries the note correctly
+   (the Dashboard rule below, sized and verified earlier tonight), so his
+   ruling does not lose the feature, it moves where it lives: display:none
+   again, no exception, and tests/sniffpage.js's own S5 check moves with
+   it to check the Full Dashboard view instead of this one, rather than
+   stand as a stale assertion for a requirement that no longer applies
+   here. */
+body.tab-story:not(.st-full) #stsrc{display:none}
 /* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
    above was already kept to a few lines; the Dashboard's .src-mine had no
    cap of its own, so on a real story it grew to the full height of
@@ -5015,10 +5006,26 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 .rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
 .rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
 .rel-fields.st-fields .st-relsws{flex:0 0 auto}
-.rel-fields.st-fields .st-relsws .ac-row{min-height:0;padding:0;border-bottom:0;gap:0;
- justify-content:center}
-.rel-fields.st-fields .st-relsws .ac-rl{position:absolute;width:1px;height:1px;
- padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* THE WORD STAYS, OVERRIDDEN THE SAME NIGHT, his words straight after
+   seeing it hidden: "where's the text that says audio? Or binaural?
+   Above the switch." Hiding the label matched this rail's own pill
+   convention (a name in a tooltip, not standing text) but he wants this
+   one control to read the same way Speed and Patterns do beside it, a
+   short caption above the control rather than a tooltip on it. .ac-row
+   turns into the same column shape .rel-field already is (label on top,
+   control under, centred) instead of accTog's own side-by-side row, and
+   the label itself is cut to "Audio" here only: accTog's full "Binaural
+   tone" still carries the complete name to a screen reader through its
+   own aria-label, and still prints in full wherever else accTog is
+   called; only the word painted in this one compact spot is shorter,
+   the same way "Imprints" and "Archive" already go icon-only elsewhere
+   on this card without losing their real name. */
+.rel-fields.st-fields .st-relsws .ac-row{min-height:0;padding:0;border-bottom:0;gap:6px;
+ flex-direction:column;align-items:center}
+.rel-fields.st-fields .st-relsws .ac-rl{font-size:11px;font-weight:600;letter-spacing:.06em;
+ color:var(--dim);font-size:0}
+.rel-fields.st-fields .st-relsws .ac-rl::before{content:"Audio";font-size:11px}
+.rel-fields.st-fields .st-relsws .ac-rl em{display:none}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}

@@ -3261,8 +3261,24 @@ function stRelModel(){
     named one exists. Weight still orders what runs. An entry from before the
     split carries no .named and reads as it always did. */
  var cut=found.named||0;
+ /* A STALE LAST ENTRY IS NOT A LIVE PREVIEW, 10 November, found by the
+    team reviewing his repeated "there's three icons, there's no persona
+    loaded" complaint after the first, confirmed fix (the third tier,
+    below) did not account for everything he was seeing. stFound() itself
+    falls back to STV.lastFound the moment nothing is typed (its own
+    return found.length?found:STV.lastFound), so a person who has
+    committed anything, ever, sees that commit's own real addresses here
+    on every return to a blank page, forever, with no story open and
+    nothing picked. That is the actual "no persona loaded, still three
+    icons" he kept reporting, not the live-draft preview this tier is
+    meant to be. found!==STV.lastFound is the one test that tells a
+    genuine live parse (a new array, every time something is typed) apart
+    from the recycled one stFound() hands back on empty input; the model
+    already computed this distinction for its own fromLast flag and
+    simply never gated take on it. */
+ var live=found.length&&found!==STV.lastFound;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
+ else if(live)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  /* THE THIRD TIER IS GONE, 10 November, his words looking at the live
     panel: "there's three icons that start there. There should be
     nothing." With nothing picked and nothing in the live story, this used
@@ -3275,7 +3291,7 @@ function stRelModel(){
     if(!M.take.length) guard, already written, already does the rest. */
  else take=[];
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
-  added:!!(picked.length||found.length),
+  added:!!(picked.length||live),
   fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;

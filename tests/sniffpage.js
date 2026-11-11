@@ -353,6 +353,15 @@ require('./net.js').guardBrowser(browser);
   console.log('\n=== S5 · what was read and not counted is said on the Story page, with its meaning beside it ===');
   for (const [w, h] of [[1600, 1000], [390, 844]]) {
     const p = await open(browser, w, h);
+    /* THE NOTE MOVED TO THE EXPANDED VIEW, 10 November, his words on a real
+       screenshot of the mini view's own copy of this box, scribbled out
+       entirely: "remove that text field or hide that text field from the
+       mini dashboard. It only belongs in the expanded one." #stsrc is
+       display:none there now, no exception, so this check follows the
+       requirement to where it actually lives, the Full Dashboard
+       (STV.dash), rather than stand as a stale assertion against a view
+       that no longer carries the feature. */
+    await p.evaluate(() => { STV.dash = true; stRender(); });
     const T = 'I was not angry. He is furious. You feel so alone. I was scared.';
     await type(p, T);
     const look = () => p.evaluate(() => {
