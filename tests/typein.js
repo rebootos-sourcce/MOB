@@ -161,18 +161,19 @@ async function typeInGate(browser,FILE,ok,booted){
    try{ await p.waitForFunction(()=>ST_HUSH,null,{timeout:5000});
     await p.waitForFunction(()=>!ST_HUSH&&ST_REC_ON&&ST_LISTEN,null,{timeout:5000}); }
    catch(e){ ok(false,at+'the greeting plays and the recording runs again after it, '+String(e.message).split('\n')[0]); }
-   /* the first sentence lands and Source AI answers it out loud, which
-      holds the recording (stHush); the second is said once the hold lets
-      go and the recording is running again, which is the order a real
-      conversation keeps */
+   /* NO TWO-WAY CHAT, 11 November: an ordinary turn no longer gets a
+      spoken reply (the per-turn stSrcSpeak call is gone, see DECISIONS.md,
+      "no two-way chat, anywhere, including the voice"), so nothing holds
+      the recording for it any more. This used to wait for stHush to fire
+      and then clear, which a correct build now never does for a plain
+      turn; polled over a window rather than a fixed tick, so a hush that
+      fires late and clears fast still gets caught. */
    await p.evaluate(a=>{ const r=window.SpeechRecognition.made; r[r.length-1].say(a,true); },SAID);
-   /* the hold starts when the reply's audio arrives, which is after the
-      turn lands, so waiting only for it to be off passed before it began:
-      measured, the second sentence was then dropped by the hold's own
-      abort, which is right for the page and wrong for the test */
-   try{ await p.waitForFunction(()=>ST_HUSH,null,{timeout:5000});
-    await p.waitForFunction(()=>!ST_HUSH&&ST_REC_ON&&ST_LISTEN,null,{timeout:5000}); }
-   catch(e){ ok(false,at+'the recording runs again after Source AI\'s reply, '+String(e.message).split('\n')[0]); }
+   const held=await p.evaluate(()=>new Promise(res=>{
+    var everHush=false,t0=Date.now();
+    var iv=setInterval(function(){ if(ST_HUSH)everHush=true;
+     if(Date.now()-t0>500){ clearInterval(iv); res({everHush:everHush,recOn:ST_REC_ON,listen:ST_LISTEN}); } },30); }));
+   ok(!held.everHush&&held.recOn&&held.listen,at+'an ordinary turn never holds the recording, there is no voice reply to wait on, '+JSON.stringify(held));
    await p.evaluate(b=>{ const r=window.SpeechRecognition.made; r[r.length-1].say(b,false); },SAYING);
    await p.waitForTimeout(200);
    const s1=await read(p);
