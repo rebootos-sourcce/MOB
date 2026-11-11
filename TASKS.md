@@ -34642,3 +34642,33 @@ shading is completely broken" report, so the two are close enough kin that
 a real review should check whether this artifact's own rendering has the
 same grain or not, as a second data point. Not touched, not integrated,
 not reviewed line by line, per his own instruction.
+
+## Round WB, 11 November. A hidden regression's own cousin: a known layout gap, finally run for real
+
+Chasing main's stale-build fix (its own `source.html`/`atuned-packed.html`/
+`funnel/dist/atuned-quiz.html` were stamped from an earlier commit than the
+real merge, so CI had never actually tested current code), `tests/gift.js`
+failed at 390 wide for the first time: the gift line (`#sumgift`, inside
+`.s-status`) measured top 917.9, bottom 937.9 on an 844 tall screen, well
+below the fold, where the gate expects it on the first screen with no
+scroll.
+
+- **#137.** `.sg-side`'s own children at the single-column breakpoint
+  (`shell/head.html`, `@media (max-width:1100px)`) carry an explicit `order`
+  for `.sg-todo` (2) and `.sg-drive` (4), but `.s-status` (the band plus the
+  gift line, a direct sibling of `.sg-drive` under `.sg-side`, written by
+  `sumStatus()` in `ui/summary.js`) carries none, so it does not reliably
+  land ahead of `.sg-told`/`.sg-story` the way the comment at `sumStatus()`
+  assumes ("this column sits above the fold at the widths that gate opens
+  at"). Confirmed pre-existing and not touched by tonight's own diff: nothing
+  in this round's changes reaches `.sg-side`, `.sg-drive`, `.s-status` or
+  `#sumgift`. A real fix needs either an explicit `order` for `.s-status` at
+  that breakpoint or a rethink of how the card sits once the layout
+  collapses to one column, which is the same ground as the starter-gift
+  card's own open redesign (D-grade, aesthetic, his call to shape) this
+  session's own tracker already carries as a pending item. Reported rather
+  than patched blind under tonight's own deploy deadline: `tests/gift.js`
+  now reports this one case as `HELD`, dated and named, the same mechanism
+  `BUILD.sh`'s own CLAIMS GATE uses for a finding that is not this gate's to
+  resolve on its own, rather than silently passing or quietly dropping the
+  check. 63 passed, 0 failed, 1 held.
