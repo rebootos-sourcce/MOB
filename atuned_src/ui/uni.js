@@ -1397,6 +1397,20 @@ const ZONES=[
     // Coherent = clean and sparse; decoherent = full and chaotic -- at
     // CQ 100 roughly half the particles are culled, at CQ 0 all of them show
     const particleVisFrac=1-coh01*0.50;
+    /* THE SPECKLE AT SMALL SIZE, 11 November. Her particle radii are design
+       space numbers, drawn through designTransform's DPR*fitK scale, so a
+       small box (the Full Dashboard's ~417x380, against the hero view's
+       ~900x420) renders the dimmest tier's already-small dots at under a
+       device pixel across, which a browser cannot anti-alias, only alias.
+       Checked against the handoff package's own canonical build first: it
+       has no equivalent floor because its canvas never shrinks past 640px
+       wide, so there was nothing to port here, only a real gap the small
+       dashboard box opens that the canonical file never hits. A floor in
+       device pixels, converted back to a design space radius so it still
+       passes through the same transform, keeps a dot from shrinking past
+       the point a screen can still render it as a soft dot. */
+    const _uniDpr=Math.max(1,Math.min(3,window.devicePixelRatio||1));
+    const minSz=1.6/(_uniDpr*UNI_FIT.k);
     for(let i=0;i<N_P;i++){
       if(pCullThresh[i]>particleVisFrac){ pA[i]=-1; continue; }
       const th=pTheta[i]+rotY+headYaw;
@@ -1450,7 +1464,7 @@ const ZONES=[
       let any=false;
       for(let i=0;i<N_P;i++){
         if(pA[i]<tier.lo||pA[i]>=tier.hi) continue;
-        const sz=pSz[i];
+        const sz=Math.max(pSz[i],minSz);
         ctx.moveTo(pSx[i]+sz,pSy[i]);
         ctx.arc(pSx[i],pSy[i],sz,0,Math.PI*2);
         any=true;
