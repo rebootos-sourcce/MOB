@@ -431,14 +431,11 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const p=await c.newPage();
   await p.goto('file://'+path.join(DIST,f),{waitUntil:'load'}); await p.waitForTimeout(500);
   hold('funnel','funnel/'+wn+'/'+f,await p.evaluate(harvest,null),PAGE_NEED[f]||null);
-  /* the quiz's copy of the crisis panel, held to the same sentences */
-  if(await p.$('#crxq')){
-   await p.click('#crxq'); await p.waitForTimeout(150);
-   hold('funnel','funnel/'+wn+'/'+f+':crisis:ask',await p.evaluate(harvest,'#crxqp'),'crisis-quizask');
-   await p.click('#crxqp [data-crx="reach"]'); await p.waitForTimeout(150);
-   hold('funnel','funnel/'+wn+'/'+f+':crisis',await p.evaluate(harvest,'#crxqp'),'crisis');
-   await p.keyboard.press('Escape'); await p.waitForTimeout(100);}
-  else if(f==='atuned-quiz.html')fail('funnel/'+wn+'/'+f,'missing the crisis button');
+  /* the quiz's own copy of the crisis panel, held to the same sentences while
+     it existed; removed 11 November with the rest of the door, his ruling
+     ("if you can't fix it in 1 batch, turn it off in 1 batch"), crxOpen is
+     now a no-op and #crxq no longer renders, so there is nothing left here
+     to open or harvest. */
   const states=await p.evaluate(()=>{if(typeof render!=='function'||typeof STATE==='undefined')return [];
    var s=[], re=/STATE==='(\w+)'/g, m; while((m=re.exec(String(render))))s.push(m[1]);
    s.push('read'); return s.filter(function(x,i){return s.indexOf(x)===i;});});
