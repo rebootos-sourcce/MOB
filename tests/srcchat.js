@@ -53,10 +53,12 @@ const shot = async (p, nm) => { if (SHOTS) { await p.mouse.move(1, 1); await p.w
    His words, repeated past counting and finally landed on the Dashboard
    too: "we don't need 2-way talk anymore... it's just the user's input."
    srcPaint (ui/storyui.js) still runs every turn exactly as it did, the
-   same srcTurn, the same srcLog row, the same SRC_CHAT writes, the same
-   spoken reply; only the markup changed, from a two sided thread to one
-   div, .src-mine, holding the person's own words and nothing of Source
-   AI's. So rows/now/pastWords are rebuilt here from SRC_CHAT itself, the
+   same srcTurn, the same srcLog row, the same SRC_CHAT writes; only the
+   markup changed, from a two sided thread to one div, .src-mine, holding
+   the person's own words and nothing of Source AI's. THE SPOKEN REPLY DID
+   NOT STOP THE SAME NIGHT, a real regression found and fixed 11 November:
+   see the note above "ONE RECORDING, A WHOLE CONVERSATION" below. So
+   rows/now/pastWords are rebuilt here from SRC_CHAT itself, the
    record every one of those features actually reads, rather than from a
    bubble this build no longer draws. box and pressed read for what is no
    longer there (#sttext, #sttalk): on arrival and through the whole run
@@ -418,10 +420,19 @@ require('./net.js').guardBrowser(browser);
      so a second turn of the same kind drew nothing; the voice spoke only
      the greeting; and nothing that was not a feeling word had a reply of
      its own. Each transcript it took is run here, through the one door a
-     spoken sentence takes, and held to three things: every turn the person
-     says gets exactly one new Source AI turn, no Source AI turn is word for
-     word the one before it, and every new one is sent to the voice in its
-     own words and nothing else.
+     spoken sentence takes, and held to two things: every turn the person
+     says gets exactly one new Source AI turn, and no Source AI turn is
+     word for word the one before it.
+
+     THE THIRD THING THIS BLOCK USED TO HOLD, "every new one is sent to the
+     voice in its own words," STOPPED BEING TRUE ON PURPOSE, 11 November.
+     The per-turn speak call read every templated reply aloud even after
+     the 10 November ruling took it off the screen, found by the Source AI
+     round's own team diagnosis: a person who could no longer see a reply
+     could still hear one. Removed. The only lines ever spoken now are the
+     greeting and the crisis safety line (3 November, unchanged, scoped to
+     itself alone); see "Source AI's own voice is never heard as his next
+     turn" below, which holds that line's own case.
      ============================================================ */
   const srcRows = p => p.evaluate(() => SRC_CHAT.filter(r => r.w === 'src').map(r => r.q));
   /* "shown" was the thread's own row count; the thread is gone, so this
@@ -488,9 +499,14 @@ require('./net.js').guardBrowser(browser);
     ok(out.every(x => x.rows.every(r => !/Nothing placed yet/.test(r))), 'a check that it can hear him is answered as one, never with the instrument\'s status line: ' + brief(out));
     ok(/hear you/i.test(out[0].rows[0] || '') && /hear you/i.test(out[1].rows[0] || ''), 'and both "can you hear me" turns are told it hears him: ' + JSON.stringify([out[0].rows[0], out[1].rows[0]]));
     await q.waitForTimeout(300);
-    const spoke = out.map(x => x.rows[0]);
     ok(q.voice[0] === inst.greet, 'Talk greets out loud with the opener and nothing else: ' + JSON.stringify(q.voice[0]));
-    ok(JSON.stringify(q.voice.slice(1)) === JSON.stringify(spoke), 'and every reply after it is spoken, each in its own words, in order: ' + JSON.stringify(q.voice));
+    /* NOT SPOKEN, 11 November, the Source AI round's own locked plan, item
+       2: the 10 November no-two-way-chat ruling took Source AI's reply off
+       the screen but the per-turn speak call kept reading it aloud, so a
+       person who could not see a reply could still hear one. Found by the
+       round's own team diagnosis, fixed by deleting that call. The greeting
+       above is now the only thing a whole conversation ever speaks. */
+    ok(q.voice.length === 1, 'and no reply after it is spoken, only the greeting: ' + JSON.stringify(q.voice));
     ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
     await q.cx.close();
   }
@@ -502,7 +518,7 @@ require('./net.js').guardBrowser(browser);
     const rows = await srcRows(q);
     ok(oneEach(out) && noRepeat(rows), k + ': one new Source AI turn a turn, never the one before it again: ' + brief(out));
     await q.waitForTimeout(300);
-    ok(JSON.stringify(q.voice.slice(1)) === JSON.stringify(out.map(x => x.rows[0])), k + ': and each one is spoken in its own words: ' + q.voice.length + ' voice lines');
+    ok(q.voice.length === 1, k + ': and nothing after the greeting is spoken: ' + q.voice.length + ' voice lines');
     if (k === 'hi') ok(out.every(x => x.rows.every(r => !/Nothing placed yet/.test(r))), 'hi: a greeting, a question to Source AI and a check are each answered, never with the status line: ' + brief(out));
     if (k === 'vent') ok(out.slice(2).every(x => x.rows.every(r => r.indexOf('?') < 0)), 'vent: once he asks to vent, every turn is listened to and nothing is asked: ' + brief(out));
     ok(!q.errs.length, k + ': no page errors: ' + q.errs.join(' | '));
@@ -569,18 +585,24 @@ require('./net.js').guardBrowser(browser);
     await end(); await q.waitForTimeout(150);
     const g2 = await q.evaluate(() => __mic.live());
     ok(g.playing === 1 && !g.live && g.listen && g2, 'while the greeting plays the recording is held, and it runs again when the greeting ends: ' + JSON.stringify([g, g2]));
-    await q.evaluate(() => __mic.say('Can you hear me?')); await plays(2);
+    /* THE ONE REPLY STILL SPOKEN, 11 November. An ordinary turn no longer
+       speaks anything (the per-turn speak call is gone, see above), so
+       this uses the one case that still does: the crisis safety line,
+       3 November's own ruling, untouched by tonight's fix and scoped to
+       itself alone. 'I want to die' is the same positive trigger phrase
+       tests/engine.js already holds this gate's TRIP list to. */
+    await q.evaluate(() => __mic.say('I want to die')); await plays(2);
     const mid = await q.evaluate(() => { const t0 = ST_TEXT, live = __mic.live();
       /* what a microphone would pick up off the speaker, delivered anyway */
       const r = __mic.FakeSR.made[__mic.FakeSR.made.length - 1];
       if (r.onresult) r.onresult({ resultIndex: 0, results: { 0: { 0: { transcript: 'Yes, I hear you.' }, isFinal: true, length: 1 }, length: 1 } });
       return { live, same: ST_TEXT === t0, text: ST_TEXT, playing: __aud.length }; });
-    ok(mid.playing === 2 && !mid.live && mid.same, 'while a reply plays the recording is held, and anything delivered in it is not filed as his turn: ' + JSON.stringify(mid));
+    ok(mid.playing === 2 && !mid.live && mid.same, 'while the safety line plays the recording is held, and anything delivered in it is not filed as his turn: ' + JSON.stringify(mid));
     await end(); await q.waitForTimeout(150);
     const back = await q.evaluate(() => ({ live: __mic.live(), heard: __mic.say('Hello?') }));
     await q.waitForTimeout(150);
     const me = await q.evaluate(() => SRC_CHAT.filter(r => r.w === 'me').map(r => r.t));
-    ok(back.live && back.heard && JSON.stringify(me) === JSON.stringify(['Can you hear me?', 'Hello?']), 'and when it finishes he is heard again: ' + JSON.stringify(me));
+    ok(back.live && back.heard && JSON.stringify(me) === JSON.stringify(['I want to die', 'Hello?']), 'and when it finishes he is heard again: ' + JSON.stringify(me));
     ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
     await q.cx.close();
   }
@@ -634,16 +656,22 @@ require('./net.js').guardBrowser(browser);
     release(); await q.cx.close();
   }
 
-  console.log('\n=== pressing Talk again speaks the newest line, never the thread ===');
+  console.log('\n=== pressing Talk again still only ever greets, never the thread ===');
   {
+    /* RENAMED, 11 November. This used to prove the second press spoke the
+       newest templated question (srcSayNow's own fallback read the last
+       SRC_CHAT row). That fallback is gone the same reason the per-turn
+       speak call is: the 10 November ruling means no templated line is
+       ever spoken, first press or second. srcSayNow now always falls
+       through to the greeting. */
     const q = await open(browser, 1600, 1000);
     await run(q, ['I am afraid of losing my job.', 'I am so afraid, my boss keeps cutting my hours.']);
+    const greet = await q.evaluate(() => srcOpen());
     await q.evaluate(() => stMic()); await q.waitForTimeout(150);
     const n0 = q.voice.length;
     await q.evaluate(() => stMic()); await q.waitForTimeout(300);
-    const now = (await srcRows(q)).pop();
     const sent = q.voice.slice(n0);
-    ok(sent.length === 1 && sent[0] === now && !/Move on|Answer below|I am afraid/.test(sent[0]), 'the second press greets with the newest Source AI line alone: ' + JSON.stringify(sent));
+    ok(sent.length === 1 && sent[0] === greet, 'the second press speaks the greeting again, never a question: ' + JSON.stringify(sent));
     await q.cx.close();
   }
 

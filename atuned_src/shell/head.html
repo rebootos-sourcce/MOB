@@ -4751,6 +4751,12 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 #staside{display:none}
 .src-aside{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--edge);
  color:var(--dim);font-size:13px;line-height:1.4}
+/* THE CONTENT CHAIN LINE, 11 November, srcChainLine (storyui.js). Sits
+   under the person's own marked words, never above them: it reports what
+   their words became, never asks anything of them. Lighter than body text,
+   on the same quiet ground .src-aside already uses, so it reads as a
+   status line and not a second thing competing with their own words. */
+.src-chain{margin:4px 0 0;color:var(--mid);font-size:13px;line-height:1.4}
 .st-ch{flex:0 0 auto;min-height:50%}
 /* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
    WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px

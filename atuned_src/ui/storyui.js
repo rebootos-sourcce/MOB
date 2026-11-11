@@ -572,10 +572,21 @@ function stRender(){
       "Commit" so nothing a screen reader hears changes; the count, when
       there is one, stays as a small badge the same way the Archive
       button beside it already carries one (#stvn above), rather than
-      vanishing with the word. */
+      vanishing with the word.
+
+      THE BADGE NAMES ITSELF NOW, 11 November, the UNPACK rule (2 October,
+      "a label, symbol, sign or number never stands alone"), found on a
+      real screenshot: a sighted person saw only a bare number beside an
+      arrow, with no visible word for what it counted. aria-label already
+      carried the meaning but only to a screen reader; title is the same
+      sentence as a real tooltip, which unpack.js's own rule already
+      accepts ("the term is inside a carrier whose tooltip is that
+      sentence") for a term in the table, so the same shape is used here
+      for a count. */
    +(STV.chat&&STV.dash?'':'<span class="st-ct" aria-hidden="true"></span>'
     +'<button class="btn pri st-send" id="stapply" aria-label="Commit'
-    +(p&&p.imprints.length?', '+p.imprints.length+' imprints':'')+'"'+(p?'':' disabled')+'>'
+    +(p&&p.imprints.length?', '+p.imprints.length+' imprints':'')+'" title="Commit'
+    +(p&&p.imprints.length?', '+p.imprints.length+' imprints found in your words':'')+'"'+(p?'':' disabled')+'>'
     +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">'
     +'<path d="M5 12h14M13 6l6 6-6 6"/></svg>'
     +(p&&p.imprints.length?'<b class="st-sendn">'+p.imprints.length+'</b>':'')
@@ -1986,11 +1997,13 @@ function srcPaint(){
  /* AND THE LINE IS SAID OUT LOUD, owner's ruling of 3 November, his words:
     "Source AI can speak the crisis safety line out loud. We want to take off
     the no sound rules. Since we're now using voice speech to speech." Scoped
-    to this line alone. It goes through stSrcSpeak, the call every reply
-    below goes through, on the same rule: only while Talk is on, and once,
-    when the line first takes the reply's place, never on a repaint of it
-    and never again when Commit keeps it standing. Its own words and nothing
-    else, the words on the screen. Still nothing is added to SRC_CHAT. */
+    to this line alone, and since 11 November the ONLY reply this page ever
+    speaks (the per-turn speak call below it used to run on every reply too;
+    see the next comment for why that stopped). Only while Talk is on, and
+    once, when the line first takes the reply's place, never on a repaint of
+    it and never again when Commit keeps it standing. Its own words and
+    nothing else, the words on the screen. Still nothing is added to
+    SRC_CHAT. */
  var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
  SRC_SAFE_UP=turn.move==='safe';
  if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
@@ -1999,10 +2012,15 @@ function srcPaint(){
     2-way talk anymore... it's just the user's input. Or the user can put
     text." First built for the hero view alone; widened to the Dashboard
     the same night once he said the words looking at it, not the hero.
-    Everything above still ran unchanged, the same turn, the same srcLog
-    row, the same SRC_CHAT writes and the same spoken reply (stSrcSpeak
-    above and below both read cur/safeSay, neither o), so what an entry
-    keeps at Commit is identical to before; only the markup painted here,
+
+    THAT RULING WAS ONLY HALF BUILT UNTIL 11 November. Everything above
+    still runs unchanged, the same turn, the same srcLog row, the same
+    SRC_CHAT writes, so what an entry keeps at Commit is identical to
+    before; but the per-turn spoken reply did NOT stop the same night the
+    markup did; see the removed call a few lines down, where a templated
+    question was still read aloud by voice after the screen had gone quiet
+    about it, found during the Source AI round's own team diagnosis. The
+    screen went one way and the speaker stayed two way; only the markup
     last, over whatever o the code above built, changed. Nothing reads
     #stsrc's own markup back (verified directly in srcTurn, srcSaidBefore,
     srcConvText and stSrcSpeak's own srcSayNow route, all of which read
@@ -2026,7 +2044,7 @@ function srcPaint(){
     twice. */
  var asideSentence=stAsideSay();
  var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p>'
-  +(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+'</div>':'';
+  +(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine()+'</div>':'';
  o=mineHtml;
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
@@ -2036,16 +2054,17 @@ function srcPaint(){
  srcLock(h);
  var mn=h.querySelector('.src-mine'); if(mn)mn.scrollTop=mn.scrollHeight;
  srcHearing(h);
- /* EVERY NEW TURN SOURCE AI TAKES IS SAID OUT LOUD while Talk is on, 31
-    October. stSrcSpeak had one caller, the Talk press, so the greeting was
-    the only line he ever heard, and on a screen where voice is the only
-    way in he spoke, heard nothing, and said it again. Only a row
-    srcChatNote added is spoken, never a repaint of one already there, and
-    its own words, cur.q. While Talk is off nothing is spoken, the same
-    rule the greeting already keeps: the voice belongs to the spoken
-    conversation, and a reply nobody is listening for is a bill for
-    nothing. */
- if(fresh&&ST_WANT_LISTEN)stSrcSpeak(cur.q);
+ /* NO LONGER SAID OUT LOUD, 11 November, the Source AI round's locked plan,
+    item 2. This line used to speak every new templated question while
+    Talk was on (built 31 October, for the screen where voice was the only
+    way in). The 10 November no-two-way-chat ruling ("we don't need 2-way
+    talk anymore... it's just the user's input") took Source AI's words off
+    the screen but this call kept speaking them, so a person who could not
+    see a reply could still hear one: the screen went one-way and the
+    speaker stayed two-way. Removed so the ruling is actually whole: the
+    only lines Source AI ever speaks now are the greeting (stMicToggle,
+    the Talk press) and the crisis safety line (safeNew above), neither of
+    them templated questions. */
  /* the dot used to be rebuilt here on every key and put back on the beat.
     Since round QB it lives in the Journal row, which a key never rewrites,
     so it is locked once a render with the halo, and again when it lets go,
@@ -2545,6 +2564,32 @@ function srcMeHtml(from,to){
    +esc(ST_TEXT.slice(start,m.e))+'</mark>';
   last=m.e;});
  return out+esc(ST_TEXT.slice(last,to));}
+/* THE CONTENT CHAIN, SHOWN RATHER THAN SAID, 11 November, the Source AI
+   round's own locked plan, item 4. His 30 October words, round SL: "This
+   is really about the person's story. So it should capture their story
+   and show what the sniffer is finding within the story." Prints only
+   product words, imprint and release, their meaning read once from GLOSS
+   (engine/data/gloss.js) through unpackOf, never retyped, beside the
+   person's own longest marked span of this entry: never a body place, an
+   address, a fetter, a saboteur or an archetype, the same naming ruling
+   (27 September) every other line on this page already keeps. Reads
+   STR.marks, the same marks srcMeHtml already draws, so a word is never
+   read twice by two different rules; a negated mark (m.neg) or one about
+   someone else (m.oth) is excluded, the same test srcMeHtml's own strike
+   -through and set-aside drawing already makes. */
+function srcChainSpan(){
+ var best=null;
+ STR.marks.forEach(function(m){
+  if(m.neg||m.oth)return;
+  if(!best||(m.e-m.s)>(best.e-best.s))best=m;});
+ return best;}
+function srcChainLine(){
+ if(stSafe()||!ST_TEXT.trim())return '';
+ var m=srcChainSpan(); if(!m)return '';
+ var o='<p class="src-chain">Your words: “'+esc(ST_TEXT.slice(m.s,m.e))+'”. Kept as an imprint: '
+  +esc(unpackOf('imprint'))+'</p>';
+ if(stFound().length)o+='<p class="src-chain">Ready to release. '+esc(unpackOf('release'))+'</p>';
+ return o;}
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
@@ -4148,10 +4193,20 @@ var SRC_VOICE={seq:0, el:null, url:'', t:0};
 var SRC_VOICE_MAX=30000;
 function srcSayNow(){
  /* the safe line, while it stands in the reply's place: the line spoken is
-    the line on screen, so pressing Talk never reads an earlier question */
+    the line on screen, so pressing Talk never reads an earlier question.
+
+    NEVER THE LAST TEMPLATED QUESTION, 11 November, the Source AI round's
+    own locked plan, item 2. This used to fall back to the last row SRC_CHAT
+    held, so a second press of Talk mid-conversation spoke that templated
+    line even after the per-turn speak call (storyui.js, srcPaint) was
+    removed to carry out the 10 November no-two-way-chat ruling: the
+    screen had gone quiet but a second Talk press still made Source AI
+    sound like it was still asking. The ruling is "no two-way chat,
+    anywhere", not "no two-way chat on the first press", so this always
+    falls through to the greeting now. The crisis safety line above is
+    the one ruled exception and is untouched. */
  if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
- var q=''; SRC_CHAT.forEach(function(r){if(r.w==='src'&&r.q)q=r.q;});
- return q||srcOpen();}
+ return srcOpen();}
 function srcVoiceStop(){
  clearTimeout(SRC_VOICE.t);
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}

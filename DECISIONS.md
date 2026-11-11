@@ -3441,3 +3441,58 @@ doesn't matter where it comes from. If it's from another AI thread or
 whatever." The dashboard's signal is computed from the real, public state
 of each PR (open, not draft, green CI, a clean mergeable_state) regardless
 of which session or AI opened it, never only from this session's own work.
+
+## No two-way chat, anywhere, including the voice. Ruled 10 November, built whole 11 November
+
+His words, given over and over and most recently pointed straight at the
+Dashboard: "we don't need 2-way talk anymore... it's just the user's input.
+Or the user can put text." This was never written down in this file before,
+only in a comment in `ui/storyui.js`, and the comment overstated how far it
+had actually landed.
+
+**What 10 November's own build did.** Source AI's templated reply stopped
+printing on screen: `srcPaint` paints only the person's own words (`.src-mine`)
+now, never a Source AI line, in the Journal's Full view and the Dashboard
+alike. The engine underneath (`engine/sourceai.js`, `engine/evidence.js`,
+`engine/qcheck.js`) kept running exactly as before: the same turn, the same
+`srcLog` row, the same `SRC_CHAT` writes, so what an entry keeps at Commit
+never changed.
+
+**What it did not do, found 11 November, a real regression and not a design
+choice.** The per-turn reply kept being spoken by voice (`stSrcSpeak(cur.q)`
+in `srcPaint`) every time Talk was on, and a second press of Talk mid
+conversation re-spoke the last templated question too (`srcSayNow`'s own
+fallback). So a person who could no longer see a reply could still hear
+one: the screen went one way and the speaker stayed two way, and what
+Source AI said out loud was unchanged from before the ruling. Both calls
+are removed. The only lines Source AI speaks now are the greeting (the
+Talk press, unruled, unchanged) and the crisis safety line (3 November's
+own ruling, unchanged, scoped to that line alone and still spoken).
+
+**Why this was found now and not sooner.** PR #163, "Source AI voice
+prototype," was shown to him on 8 November with real screenshots and
+rejected outright: "Source AI is nothing like what I asked for, at all."
+No reason was given beyond that, and none is invented here; `TASKS.md`'s
+own Directive 8 entry already says so. A nine-person team strategize
+(5 independent directors reproducing the real conversation, 3 cross
+checking their work, one locking a plan) was run before any further Source
+AI build, specifically to find what a rebuild should actually fix rather
+than guess. What it found was this gap: the 10 November ruling had been
+only half carried out, so a person still heard an interviewer even after
+the screen stopped looking like one. Whether this alone explains "nothing
+like what I asked for" cannot be said; the team could not get PR #163's
+own build back to compare against, and no reason beyond his quoted words
+exists anywhere in the repo. It is the one concrete, verified gap found,
+and closing it is this round's whole scope.
+
+**Also built the same round, the content chain, his own words at round SL,
+30 October: "capture their story and show what the sniffer is finding
+within the story."** A line now prints under the person's own words after
+a turn, naming only product words (imprint, release) with their meaning
+read once from `engine/data/gloss.js` through `unpackOf`, never a body
+place, an address, a fetter, a saboteur or an archetype: the naming ruling
+above is unchanged and unreversed by any of this.
+
+**Reversible.** Putting the per-turn voice back, if he ever rules for it,
+is one line in `srcPaint`. Nothing in `engine/sourceai.js`, `evidence.js`
+or `qcheck.js` was touched or retired.
