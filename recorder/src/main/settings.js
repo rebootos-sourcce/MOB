@@ -36,6 +36,9 @@ const DEFAULTS = {
     saveDir: null,        // null = ~/Videos/MOB Recorder
     askWhereToSave: false,
     compactWhileRecording: true
+  },
+  window: {
+    x: null, y: null, width: null, height: null
   }
 };
 

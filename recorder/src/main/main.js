@@ -159,6 +159,13 @@ function persistBubblePosition() {
   settings.set({ bubble: { x: b.x, y: b.y } });
 }
 
+function persistControlPosition() {
+  if (!control || control.isDestroyed()) return;
+  if (rec.state === 'recording' || rec.state === 'paused' || rec.state === 'countdown') return;
+  const b = control.getBounds();
+  settings.set({ window: { x: b.x, y: b.y, width: b.width, height: b.height } });
+}
+
 async function listSources() {
   const sources = await desktopCapturer.getSources({
     types: ['screen', 'window'],
@@ -664,6 +671,23 @@ app.whenReady().then(async () => {
   rec.micEnabled = s.mic.enabled;
 
   control = windows.createControlWindow();
+  // Restore saved window position (clamped to available screen area)
+  const ws = s.window;
+  if (ws && ws.x != null && ws.y != null) {
+    const displays = screen.getAllDisplays();
+    const onScreen = displays.some(d => {
+      const wa = d.workArea;
+      return ws.x >= wa.x && ws.x < wa.x + wa.width && ws.y >= wa.y && ws.y < wa.y + wa.height;
+    });
+    if (onScreen) {
+      control.setBounds({
+        x: ws.x, y: ws.y,
+        width:  Math.max(380, ws.width  || 412),
+        height: Math.max(480, ws.height || 680),
+      });
+    }
+  }
+
   bubble = windows.createBubbleWindow(s);
   // recorder is created lazily by ensureRecorder() on the first take.
 
@@ -672,6 +696,8 @@ app.whenReady().then(async () => {
   bubble.on('resize', pushOverlay);
   bubble.on('close', (e) => { if (!app.__quitting) { e.preventDefault(); bubble.hide(); settings.set({ bubble: { visible: false } }); } });
 
+  control.on('moved', persistControlPosition);
+  control.on('resized', persistControlPosition);
   control.on('closed', () => { app.__quitting = true; app.quit(); });
   registerShortcuts();
 
