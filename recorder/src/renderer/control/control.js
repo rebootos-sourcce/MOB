@@ -722,6 +722,80 @@
   init();
 })();
 
+// ── Update banner + transcription progress (top-level, runs after DOM ready) ──
+(function () {
+  // Update notification banner
+  window.api.on('ui:update-ready', () => {
+    const banner = document.getElementById('updateBanner');
+    if (banner) banner.hidden = false;
+  });
+  const btnRestart = document.getElementById('btnRestartUpdate');
+  if (btnRestart) {
+    btnRestart.addEventListener('click', () => {
+      window.api.invoke('app:restart').catch(() => {});
+    });
+  }
+
+  // Transcription progress (new detailed bar, reuses transcription:progress channel)
+  window.api.on('transcription:progress', (data) => {
+    const bar  = document.getElementById('transcribeProgressBar');
+    const lbl  = document.getElementById('transcribeProgressLabel');
+    const pct  = document.getElementById('transcribeProgressPct');
+    const fill = document.getElementById('transcribeProgressFill');
+    if (!bar) return;
+    bar.hidden = false;
+    if (data.stage === 'downloading_model') {
+      lbl.textContent = data.cached === false ? 'Downloading Whisper model (~150 MB)…' : 'Loading model…';
+    } else if (data.stage === 'loading_model') {
+      lbl.textContent = 'Loading Whisper model…';
+    } else if (data.stage === 'transcribing') {
+      lbl.textContent = 'Transcribing…' + (data.elapsedMs ? ` (${Math.round(data.elapsedMs / 1000)}s)` : '');
+    } else if (data.stage === 'done' || data.stage === 'model_ready') {
+      setTimeout(() => { bar.hidden = true; }, 1500);
+    }
+    if (data.pct != null) {
+      pct.textContent = data.pct + '%';
+      fill.style.width = data.pct + '%';
+    }
+  });
+
+  // Copy buttons (delegated)
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    const targetId = btn.dataset.target;
+    const el = targetId ? document.getElementById(targetId) : null;
+    if (!el) return;
+    const text = el.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.classList.add('copied');
+      setTimeout(() => btn.classList.remove('copied'), 1500);
+    } catch (_) {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    }
+  });
+
+  // Copy All button
+  const btnCopyAll = document.getElementById('btnCopyAll');
+  if (btnCopyAll) {
+    btnCopyAll.addEventListener('click', async () => {
+      const title = document.getElementById('prodTitleEdit')?.textContent?.trim() || '';
+      const desc  = document.getElementById('prodDescEdit')?.textContent?.trim()  || '';
+      const tags  = document.getElementById('prodHashtagsEdit')?.textContent?.trim() || '';
+      const all   = [title, desc, tags].filter(Boolean).join('\n\n');
+      try {
+        await navigator.clipboard.writeText(all);
+        btnCopyAll.textContent = 'Copied!';
+        setTimeout(() => { btnCopyAll.textContent = 'Copy All'; }, 1500);
+      } catch (_) {}
+    });
+  }
+})();
+
 // ── Four-mode tab bar ────────────────────────────────────────
 (function () {
   const $ = (id) => document.getElementById(id);
@@ -753,6 +827,51 @@
 
   // ── Shared state ─────────────────────────────────────────────
   let selectedRecordingId = null;
+  let _currentPkgId = null;
+
+  // Save production metadata edits on blur (capture phase)
+  document.addEventListener('blur', async (e) => {
+    const el = e.target.closest('.prod-editable');
+    if (!el || !_currentPkgId) return;
+    const field = el.dataset.field;
+    if (!field) return;
+    const value = el.textContent.trim() || null;
+    const payload = { id: _currentPkgId, edited_title: null, edited_description: null, edited_hashtags_json: null };
+    if (field === 'edited_hashtags_json') {
+      payload.edited_hashtags_json = value ? value.split(/\s+/).map(t => t.replace(/^#/, '')) : null;
+    } else {
+      payload[field] = value;
+    }
+    try {
+      await window.mob.db.mutate('packages:update', payload);
+    } catch (err) {
+      console.warn('[control] failed to save edit:', err.message);
+    }
+  }, true);
+
+  // Waveform
+  let _waveform = null;
+  function initWaveform() {
+    const canvas = $('waveformCanvas');
+    if (!canvas || _waveform) return;
+    if (typeof WaveformRenderer !== 'undefined') {
+      _waveform = new WaveformRenderer(canvas);
+    }
+  }
+  async function loadWaveform(recordingPath) {
+    if (!recordingPath) return;
+    const wrap = $('waveformWrap');
+    if (!_waveform) initWaveform();
+    if (!_waveform) return;
+    if (wrap) wrap.hidden = false;
+    try {
+      const buf = await window.api.invoke('waveform:load', recordingPath);
+      if (typeof _waveform.loadArrayBuffer === 'function') await _waveform.loadArrayBuffer(buf);
+    } catch (err) {
+      console.warn('[waveform] load failed:', err.message);
+      if (wrap) wrap.hidden = true;
+    }
+  }
 
   async function loadRecordingList(containerId, onSelect) {
     const list = $(containerId);
@@ -792,6 +911,7 @@
       sec.hidden = false;
       $('editTranscriptBox').hidden = true;
       $('editTagBox').hidden = true;
+      if (row && row.path) loadWaveform(row.path);
     });
 
   // Fix #4: track listener so we can unsub before re-registering on each click
@@ -884,17 +1004,46 @@
   }
 
   function renderPackage(pkg) {
+    _currentPkgId = pkg.id || null;
     $('prodTitle').textContent = pkg.title || 'Package';
     $('prodTitleValue').textContent = pkg.title || '';
     const variants = JSON.parse(pkg.title_variants || '[]');
     $('prodVariants').innerHTML = variants.map((v,i) => `<div class="variant-item">${i+1}. ${v}</div>`).join('');
     $('prodDesc').textContent = pkg.description || '';
     const tags = JSON.parse(pkg.hashtags_json || '[]');
-    $('prodHashtags').innerHTML = tags.map(t => `<span class="tag">${t.tag}</span>`).join('');
+    $('prodHashtags').innerHTML = tags.map(t => `<span class="tag">${typeof t === 'string' ? t : t.tag}</span>`).join('');
     const chapters = JSON.parse(pkg.chapters_json || '[]');
     $('prodChapters').innerHTML = chapters.map(c =>
       `<div class="chapter-item"><span class="ts">${fmtMs(c.start_ms)}</span><span>${c.title}</span></div>`
     ).join('');
+    // Populate editable fields
+    const titleEdit = $('prodTitleEdit');
+    const descEdit  = $('prodDescEdit');
+    const tagsEdit  = $('prodHashtagsEdit');
+    if (titleEdit) {
+      titleEdit.textContent = pkg.edited_title ||
+        (pkg.title_variants ? (JSON.parse(pkg.title_variants)[0] || '') : '') ||
+        pkg.title || '';
+    }
+    if (descEdit) descEdit.textContent = pkg.edited_description || pkg.description || '';
+    if (tagsEdit) {
+      const editedTags = pkg.edited_hashtags_json
+        ? JSON.parse(pkg.edited_hashtags_json).map(t => '#' + t).join(' ')
+        : tags.map(t => '#' + (typeof t === 'string' ? t : t.tag)).join(' ');
+      tagsEdit.textContent = editedTags;
+    }
+    // Platform variants
+    try {
+      if (pkg.variants_json) {
+        const v = JSON.parse(pkg.variants_json);
+        const ytEl = $('varYoutube');
+        const ttEl = $('varTiktok');
+        const liEl = $('varLinkedin');
+        if (ytEl && v.youtube) ytEl.textContent = v.youtube.title + (v.youtube.description ? '\n\n' + v.youtube.description.slice(0, 300) + '…' : '');
+        if (ttEl && v.tiktok)  ttEl.textContent = v.tiktok.caption || '';
+        if (liEl && v.linkedin) liEl.textContent = (v.linkedin.headline || '') + (v.linkedin.body ? '\n\n' + v.linkedin.body.slice(0, 300) + '…' : '');
+      }
+    } catch (_) {}
     $('prodPackageSection').hidden = false;
   }
 

@@ -44,6 +44,8 @@ const QUERIES = {
   // production_packages
   'packages:latest': ([recording_id]) =>
     db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [recording_id]),
+  'packages:withVariants': ([recording_id]) =>
+    db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [recording_id]),
 
   // distributions
   'distributions:latest': ([recording_id]) =>
@@ -57,6 +59,20 @@ const QUERIES = {
 // ── named write operations ──────────────────────────────────────────────────
 
 const MUTATIONS = {
+  'packages:update': ({ id, edited_title, edited_description, edited_hashtags_json }) => {
+    db.run(
+      `UPDATE production_packages
+       SET edited_title = ?, edited_description = ?, edited_hashtags_json = ?
+       WHERE id = ?`,
+      [
+        edited_title        ?? null,
+        edited_description  ?? null,
+        edited_hashtags_json != null ? JSON.stringify(edited_hashtags_json) : null,
+        id,
+      ]
+    );
+    return { ok: true };
+  },
   'distributions:insert': ({ id, device_id, recording_id, package_id, platform, status }) => {
     db.run(
       `INSERT INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)

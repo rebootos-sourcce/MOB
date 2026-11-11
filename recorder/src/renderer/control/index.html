@@ -6,6 +6,13 @@
   <link rel="stylesheet" href="control.css">
 </head>
 <body>
+  <!-- Update notification banner -->
+  <div id="updateBanner" hidden style="background:#1a2d10;border-bottom:1px solid #2d5020;padding:8px 16px;display:flex;align-items:center;gap:10px;font-size:12px;color:#86efac;">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+    <span>Update downloaded — restart to install</span>
+    <button id="btnRestartUpdate" style="margin-left:auto;background:#22c55e;color:#000;border:none;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;">Restart</button>
+  </div>
+
   <!-- Compact bar shown while recording -->
   <div id="compactBar">
     <span class="dot" id="cDot"></span>
@@ -230,6 +237,18 @@
             <div class="progress"><div id="editProgressBar" style="width:0%"></div></div>
             <span id="editProgressLabel" class="hint"></span>
           </div>
+          <div id="transcribeProgressBar" hidden style="padding:8px 0 4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span id="transcribeProgressLabel" style="font-size:11px;font-family:monospace;color:#64748b;">Transcribing…</span>
+              <span id="transcribeProgressPct" style="font-size:11px;font-family:monospace;color:#94a3b8;">0%</span>
+            </div>
+            <div style="height:4px;background:#1b2235;border-radius:2px;overflow:hidden;">
+              <div id="transcribeProgressFill" style="height:100%;background:#4f8cff;border-radius:2px;transition:width 300ms;width:0%"></div>
+            </div>
+          </div>
+          <div id="waveformWrap" hidden style="padding:4px 0 8px;">
+            <canvas id="waveformCanvas" style="width:100%;height:64px;border-radius:6px;cursor:pointer;display:block;"></canvas>
+          </div>
           <div id="editTranscriptBox" class="transcript-box" hidden>
             <p id="editTranscriptText"></p>
           </div>
@@ -249,12 +268,64 @@
         </section>
         <section class="card" id="prodPackageSection" hidden>
           <div class="card-head"><h2 id="prodTitle">Package</h2></div>
-          <div class="field"><span>Title</span><div id="prodTitleValue" class="mono"></div></div>
           <div class="field"><span>Variants</span><div id="prodVariants" class="variants-list"></div></div>
-          <div class="field"><span>Description</span><div id="prodDesc" class="desc-text"></div></div>
-          <div class="field"><span>Hashtags</span><div id="prodHashtags" class="tag-box"></div></div>
+          <!-- Editable title -->
+          <div id="prodTitleWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Title</span>
+              <button class="copy-btn" data-target="prodTitleEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div id="prodTitleEdit" class="prod-editable" contenteditable="true" data-field="edited_title" placeholder="No title yet…"></div>
+          </div>
+          <!-- Editable description -->
+          <div id="prodDescWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Description</span>
+              <button class="copy-btn" data-target="prodDescEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div id="prodDescEdit" class="prod-editable prod-desc" contenteditable="true" data-field="edited_description" placeholder="No description yet…"></div>
+          </div>
+          <!-- Editable hashtags -->
+          <div id="prodHashtagsWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Hashtags</span>
+              <button class="copy-btn" data-target="prodHashtagsEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+            </div>
+            <div id="prodHashtagsEdit" class="prod-editable" contenteditable="true" data-field="edited_hashtags_json" placeholder="No hashtags yet…"></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;">
+            <button id="btnCopyAll" class="secondary mini" style="flex:1">Copy All</button>
+          </div>
+          <!-- Legacy read-only fields (kept for compatibility) -->
+          <div class="field" hidden><span>Title (raw)</span><div id="prodTitleValue" class="mono"></div></div>
+          <div class="field" hidden><span>Description (raw)</span><div id="prodDesc" class="desc-text"></div></div>
+          <div class="field" hidden><span>Hashtags (raw)</span><div id="prodHashtags" class="tag-box"></div></div>
           <div class="field"><span>Chapters</span><div id="prodChapters" class="chapters-list"></div></div>
-          <div class="row edit-actions">
+          <!-- Platform variants -->
+          <details id="variantsDetails" style="margin-top:4px;">
+            <summary style="font-size:10px;color:#4b5878;cursor:pointer;font-family:monospace;letter-spacing:.07em;text-transform:uppercase;list-style:none;">Platform Variants</summary>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
+              <div class="variant-block" data-platform="youtube">
+                <div class="variant-label">YouTube</div>
+                <div class="variant-content" id="varYoutube"></div>
+              </div>
+              <div class="variant-block" data-platform="tiktok">
+                <div class="variant-label">TikTok</div>
+                <div class="variant-content" id="varTiktok"></div>
+              </div>
+              <div class="variant-block" data-platform="linkedin">
+                <div class="variant-label">LinkedIn</div>
+                <div class="variant-content" id="varLinkedin"></div>
+              </div>
+            </div>
+          </details>
+          <div class="row edit-actions" style="margin-top:8px;">
             <button id="btnAssemble" class="primary">Generate package</button>
           </div>
         </section>
@@ -307,6 +378,7 @@
 
   <script src="../../shared/shapes.js"></script>
   <script src="../../shared/material.js"></script>
+  <script src="waveform.js"></script>
   <script src="control.js"></script>
 </body>
 </html>

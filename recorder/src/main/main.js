@@ -557,6 +557,18 @@ ipcMain.handle('shell:showItemInFolder', (_e, p) => shell.showItemInFolder(p));
 ipcMain.handle('window:minimize', () => control && control.minimize());
 ipcMain.handle('window:close', () => app.quit());
 
+ipcMain.handle('app:restart', () => { app.relaunch(); app.exit(0); });
+
+ipcMain.handle('waveform:load', async (_e, filePath) => {
+  const fsP = require('fs').promises;
+  try {
+    const buf = await fsP.readFile(filePath);
+    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+  } catch (err) {
+    throw new Error('waveform:load failed: ' + err.message);
+  }
+});
+
 // From the hidden recorder window
 ipcMain.on('recorder:chunk', (_e, chunk) => { if (rec.raw) rec.raw.append(chunk); });
 ipcMain.on('recorder:state', (_e, msg) => {
