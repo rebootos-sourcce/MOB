@@ -1530,6 +1530,119 @@ function helpSheet(){
    Reduced motion has no animation to end on, so that case is handled by the
    timer rather than by the event. The timer is the floor in every case, so a
    dropped animationend never leaves the sheet up. */
+/* ---- UNI'S BOOT, ADDED 11 November ----
+
+   "Keep it at 7 for now." The CSS figure above (atuned_src/shell/body.html,
+   atuned_src/shell/head.html) is the unconditional default: with no script,
+   or under prefers-reduced-motion, it is the only thing that ever plays,
+   exactly as it did before tonight. bootUni is the script-driven
+   enhancement that takes over from it once a script is confirmed running,
+   called once from shell/body.html's own ready() as the third argument to
+   __bootPress, below. The choreography itself (the gaze, the colour climb,
+   the flare, when she leaves) is the motion director's spec, round GZ.
+
+   THE CLOCK IS THE SHEET'S OWN FADE, NOT A NEW TIMER. bootUniT reads t off
+   the same bootOut animation shell/body.html already pauses and resumes for
+   HELDFADE, so if a slow start up holds the sheet, Uni holds with it,
+   wherever she was, and resumes from that same frame rather than jumping.
+   The +6760 cancels the fade's own 6.76s delay when --hold is 0, so t runs
+   her own fixed 0 to 7.00 regardless of how far --hold (still open, see
+   shell/head.html) extends the sheet beyond that. */
+var BOOT_UNI_RAF=0, BOOT_UNI_STATE=null;
+/* a minimal cubic-bezier(x1,y1,x2,y2) solver, Newton's method on the curve's
+   own parameter, because setCoherence is not a CSS property and no keyframe
+   can ease it for us. Named once below rather than solved at every call. */
+function bootEase(x1,y1,x2,y2,x){
+ if(x<=0)return 0; if(x>=1)return 1;
+ var t=x;
+ for(var i=0;i<8;i++){
+  var it=1-t, bx=3*it*it*t*x1+3*it*t*t*x2+t*t*t-x;
+  if(Math.abs(bx)<1e-4)break;
+  var d=3*it*it*x1+6*it*t*(x2-x1)+3*t*t*(1-x2);
+  if(Math.abs(d)<1e-6)break;
+  t-=bx/d;}
+ var it2=1-t; return 3*it2*it2*t*y1+3*it2*t*t*y2+t*t*t;}
+var BOOT_UNI_EASE=function(p){return bootEase(.45,0,.55,1,p);};
+function bootUniT(fade){
+ try{var ct=fade.currentTime, d=fade.effect.getComputedTiming().delay;
+  if(ct==null)return 0;
+  return (ct-d+6760)/1000;}catch(e){return 0;}}
+/* THE SKIP, AT ANY t. Called ahead of the existing ACT path (the skip just
+   below), in the exact order the spec gives, so pressing skip mid gaze or
+   mid flare snaps to the same 7.00 end state the sequence would have
+   reached on its own: cancel the clock, release the gaze, let the flare
+   expire, land coherence and DQ at rest, drop her out with no transition,
+   pause her loop, hand her back to whatever mounts her next. Safe to call
+   even when she was never mounted (reduced motion, or this ran before she
+   could be): every step below is independently guarded. */
+function bootUniEnd(){
+ try{if(BOOT_UNI_RAF)cancelAnimationFrame(BOOT_UNI_RAF);}catch(e){}
+ BOOT_UNI_RAF=0;
+ try{if(window.Uni)window.Uni.setGaze(null);}catch(e){}
+ try{if(window.Uni)window.Uni.setEmotionIntensity('joy',0);}catch(e){}
+ try{if(window.Uni)window.Uni.setCoherence(100);}catch(e){}
+ try{if(window.Uni)window.Uni.setDQ(70);}catch(e){}
+ try{var host=document.getElementById('bootuni');
+  if(host){host.style.transition='none'; host.style.opacity='0';}}catch(e){}
+ try{if(window.Uni&&window.Uni.pause)window.Uni.pause();}catch(e){}
+ try{if(typeof uniPark==='function')uniPark();}catch(e){}
+ if(BOOT_UNI_STATE)BOOT_UNI_STATE.done=true;
+ BOOT_UNI_STATE=null;}
+/* THE ENHANCEMENT ITSELF. Mounts Uni into #bootuni (shell/body.html) and
+   drives her off the boot clock above, one rAF per frame, each step a
+   one-shot flag so a dropped frame under load still fires every beat it
+   crossed rather than none of them. Reduced motion is checked first and
+   bails before anything mounts, which leaves .bx-uni unset and the CSS
+   figure exactly as it always was; tests/boot.js's own reduced-motion rule
+   and the "animation:none!important" it reads already cover that path. */
+function bootUni(){
+ try{if((typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
+ var el=document.getElementById('boot'); if(!el)return;
+ var fade=null;
+ try{fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];}catch(e){}
+ if(!fade)return;
+ var host=document.getElementById('bootuni');
+ if(!host||typeof window.Uni==='undefined'||typeof uniMount!=='function')return;
+ el.classList.add('bx-uni');
+ uniMount(host);
+ /* uniMount itself only turns her fill transparent inside the hero view's
+    own #stflow.st-simple (its own comment explains why: nothing stands
+    behind her anywhere else). The boot has its own wash immediately behind
+    this host (.bx-wash, kept visible once .bx-fig is hidden above), so this
+    is the same case and gets the same override, or her canvas paints a flat
+    rectangle over that wash. */
+ try{window.Uni.setBgTransparent(true);}catch(e){}
+ try{window.Uni.setUnread(false); window.Uni.setCoherence(30); window.Uni.setDQ(70);}catch(e){}
+ var st={g1:false,g2:false,g3:false,g4:false,climbDone:false,flared:false,
+   joyOff:false,leaving:false,paused:false,done:false};
+ BOOT_UNI_STATE=st;
+ /* hands her back the moment the sheet is truly gone, whether the sequence
+    ran to its own end or the fade was cut short some other way; bootUniEnd
+    above already does this on a skip, so the two never race for the same
+    uniPark call in any ordering that matters to a caller after it. */
+ el.addEventListener('animationend',function onEnd(e){
+  if(e.target!==el||e.animationName!=='bootOut')return;
+  el.removeEventListener('animationend',onEnd);
+  try{if(typeof uniPark==='function')uniPark();}catch(x){}});
+ var tick=function(){
+  if(st.done)return;
+  var t=bootUniT(fade);
+  if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
+  if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}
+  if(!st.g3&&t>=1.75){st.g3=true; try{window.Uni.setGaze(0,0);}catch(e){}}
+  if(!st.g4&&t>=2.10){st.g4=true; try{window.Uni.setGaze(null);}catch(e){}}
+  if(t>=2.10&&t<4.70){
+   var p=(t-2.10)/2.6; if(p<0)p=0; if(p>1)p=1;
+   try{window.Uni.setCoherence(30+70*BOOT_UNI_EASE(p));}catch(e){}
+  }else if(t>=4.70&&!st.climbDone){st.climbDone=true; try{window.Uni.setCoherence(100);}catch(e){}}
+  if(!st.flared&&t>=4.70){st.flared=true;
+   try{window.Uni.react(1.5); window.Uni.setEmotionIntensity('joy',10);}catch(e){}}
+  if(!st.joyOff&&t>=5.90){st.joyOff=true; try{window.Uni.setEmotionIntensity('joy',0);}catch(e){}}
+  if(!st.leaving&&t>=6.10){st.leaving=true; host.classList.add('bx-uni-out');}
+  if(!st.paused&&t>=6.62){st.paused=true; try{window.Uni.pause();}catch(e){}}
+  if(t<7.3){BOOT_UNI_RAF=requestAnimationFrame(tick);}
+  else{st.done=true; BOOT_UNI_RAF=0;}};
+ BOOT_UNI_RAF=requestAnimationFrame(tick);}
 /* when the floor below will remove the sheet, on the page's own clock,
    published for design gate 11, which holds it to the sheet's own fade */
 var BOOT_FLOOR_AT=0;
@@ -1621,11 +1734,14 @@ var BOOT_FLOOR_AT=0;
     other skip, so a listener on the button itself would never see it; the
     capture says whether the press was on it, and the flag is set here. */
  var skip=function(p){ if(gone)return;
+  /* UNI, ADDED 11 November. Ahead of everything else a skip does, at any
+     point in the 7 seconds, so she is never caught mid gaze or mid flare. */
+  bootUniEnd();
   if(p&&p.dev&&typeof DEV_SKIP!=='undefined'){ DEV_SKIP=true;
    if(typeof loginClose==='function'&&typeof LOGIN!=='undefined'&&LOGIN.open)loginClose(); }
   el.style.transition='opacity .18s cubic-bezier(.4,0,1,1)';
   el.style.opacity='0'; lift(); setTimeout(clear,190); };
- if(typeof __bootPress==='function')__bootPress(skip,function(){try{retime();}catch(e){}});
+ if(typeof __bootPress==='function')__bootPress(skip,function(){try{retime();}catch(e){}},bootUni);
  var rm=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches;
  if(rm)clear();})();
 
