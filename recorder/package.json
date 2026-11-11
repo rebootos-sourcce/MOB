@@ -40,7 +40,7 @@
     "win": {
       "target": [
         {
-          "target": "zip",
+          "target": "portable",
           "arch": [
             "x64"
           ]
