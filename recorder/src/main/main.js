@@ -588,6 +588,27 @@ ipcMain.handle('waveform:load', async (_e, filePath) => {
   }
 });
 
+ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => {
+  const row = db.get('SELECT id, path FROM recordings WHERE id = ?', [recordingId]);
+  if (!row) return { ok: false, error: 'Not found' };
+  const transcript = db.get('SELECT id FROM transcripts WHERE recording_id = ?', [recordingId]);
+  if (transcript) {
+    db.run('DELETE FROM words WHERE transcript_id = ?', [transcript.id]);
+    db.run('DELETE FROM segments WHERE transcript_id = ?', [transcript.id]);
+  }
+  db.run('DELETE FROM distributions WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM production_packages WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM metadata_tags WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM transcripts WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM clips WHERE recording_id = ?', [recordingId]);
+  db.run('DELETE FROM recordings WHERE id = ?', [recordingId]);
+  if (deleteFile && row.path) {
+    try { require('fs').unlinkSync(row.path); } catch (_) {}
+  }
+  return { ok: true };
+});
+
 // From the hidden recorder window
 ipcMain.on('recorder:chunk', (_e, chunk) => { if (rec.raw) rec.raw.append(chunk); });
 ipcMain.on('recorder:state', (_e, msg) => {

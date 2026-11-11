@@ -889,7 +889,15 @@
       const nameSpan = document.createElement('span'); nameSpan.className = 'rec-name'; nameSpan.textContent = name;
       const durSpan  = document.createElement('span'); durSpan.className  = 'rec-dur';  durSpan.textContent  = fmtMs(r.duration_ms || 0);
       const badge    = document.createElement('span'); badge.className    = 'badge';    badge.textContent    = r.status || ''; badge.style.fontSize = '10px';
-      item.append(nameSpan, durSpan, badge);
+      const delBtn   = document.createElement('button'); delBtn.className = 'ghost rec-del'; delBtn.textContent = '✕'; delBtn.title = 'Delete recording';
+      delBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (!window.confirm('Delete this recording and remove the file from disk?\nThis cannot be undone.')) return;
+        await window.api.invoke('recording:delete', { recordingId: r.id, deleteFile: true });
+        if (selectedRecordingId === r.id) { selectedRecordingId = null; }
+        await loadRecordingList(containerId, onSelect);
+      });
+      item.append(nameSpan, durSpan, badge, delBtn);
       list.appendChild(item);
     });
     list.querySelectorAll('.recording-item').forEach(item => {
