@@ -26,6 +26,14 @@ const MIGRATIONS = [
         d.exec("ALTER TABLE production_packages ADD COLUMN variants_json TEXT");
     },
   },
+  {
+    version: 3,
+    // v3 = add missing FK indexes (schema.sql covers new installs; migration covers upgrades)
+    up(d) {
+      d.exec("CREATE INDEX IF NOT EXISTS idx_pkgs_clip ON production_packages(clip_id)");
+      d.exec("CREATE INDEX IF NOT EXISTS idx_dists_pkg ON distributions(package_id)");
+    },
+  },
 ];
 
 function runMigrations() {

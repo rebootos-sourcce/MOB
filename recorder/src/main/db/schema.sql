@@ -145,5 +145,7 @@ CREATE INDEX IF NOT EXISTS idx_words_filler    ON words(transcript_id, is_filler
 CREATE INDEX IF NOT EXISTS idx_segments_trx    ON segments(transcript_id);
 -- idx_captions_trx removed (captions table dropped, Fix #20)
 CREATE INDEX IF NOT EXISTS idx_pkgs_rec        ON production_packages(recording_id);
+CREATE INDEX IF NOT EXISTS idx_pkgs_clip       ON production_packages(clip_id);
 CREATE INDEX IF NOT EXISTS idx_dists_rec       ON distributions(recording_id);
+CREATE INDEX IF NOT EXISTS idx_dists_pkg       ON distributions(package_id);
 CREATE INDEX IF NOT EXISTS idx_dists_status    ON distributions(status);
