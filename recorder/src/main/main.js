@@ -791,7 +791,7 @@ ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => 
     db.run('DELETE FROM recordings WHERE id = ?', [recordingId]);
     db.exec('COMMIT');
   } catch (err) {
-    db.exec('ROLLBACK');
+    try { db.exec('ROLLBACK'); } catch (_) { /* transaction already gone */ }
     throw err;
   }
 

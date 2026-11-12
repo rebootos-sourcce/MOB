@@ -76,7 +76,11 @@ function applyCuts(recordingId, totalDurationMs, cuts) {
 
     db.exec('COMMIT');
   } catch (err) {
-    db.exec('ROLLBACK');
+    // Some SQLite errors (e.g. SQLITE_FULL, SQLITE_NOMEM) auto-rollback the
+    // transaction themselves; an explicit ROLLBACK on top of that throws
+    // "cannot rollback - no transaction is active" and replaces the real
+    // error with that one. Swallow it and always surface the original.
+    try { db.exec('ROLLBACK'); } catch (_) { /* transaction already gone */ }
     throw err;
   }
 
@@ -148,7 +152,7 @@ function undoLastCut(recordingId) {
     }
     db.exec('COMMIT');
   } catch (err) {
-    db.exec('ROLLBACK');
+    try { db.exec('ROLLBACK'); } catch (_) { /* transaction already gone */ }
     throw err;
   }
   return prevEntries;
