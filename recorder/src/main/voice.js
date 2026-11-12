@@ -31,6 +31,18 @@ function isEnabled() { return _enabled; }
 
 /**
  * Initialize voice commands. Silently no-ops if native libraries aren't available.
+ *
+ * Task #72: this used to hard-require PICOVOICE_API_KEY before even
+ * attempting Vosk, which meant voice commands were completely unreachable
+ * for anyone without a Picovoice account — even though Vosk itself is free,
+ * offline, open-source, and needs no key at all. Porcupine (wake word) and
+ * Vosk (command recognition) are now tried independently: Vosk-only gives
+ * continuous command recognition with no "Hey MOB" wake word (see the
+ * processAudio() branch below), which is the only mode most users without a
+ * Picovoice key will ever reach; adding a key layers proper wake-word
+ * gating on top. _enabled reflects whichever combination is actually
+ * available, not just the Porcupine case.
+ *
  * @param {function} sendControl   main.js sendControl(channel, payload)
  * @param {object}   callbacks     { startRecording, stopRecording, togglePause, setMic }
  */
@@ -38,24 +50,21 @@ async function init(sendControl, callbacks) {
   _sendControl = sendControl;
   _callbacks   = callbacks || {};
 
-  // Fix #15: guard against missing/empty API key before instantiating Porcupine
-  if (!process.env.PICOVOICE_API_KEY) {
-    console.log('[mob/voice] PICOVOICE_API_KEY not set — voice commands disabled');
-    return;
-  }
-
-  try {
-    const { Porcupine, BuiltinKeyword } = require('@picovoice/porcupine-node');
-    _porcupine = new Porcupine(
-      process.env.PICOVOICE_API_KEY,
-      [BuiltinKeyword.HEY_GOOGLE], // placeholder — replace with custom "Hey MOB" model
-      [0.5]
-    );
-    _enabled = true;
-    console.log('[mob/voice] Porcupine loaded');
-  } catch (_) {
-    console.log('[mob/voice] Porcupine not available — voice commands disabled');
-    return;
+  if (process.env.PICOVOICE_API_KEY) {
+    try {
+      const { Porcupine, BuiltinKeyword } = require('@picovoice/porcupine-node');
+      _porcupine = new Porcupine(
+        process.env.PICOVOICE_API_KEY,
+        [BuiltinKeyword.HEY_GOOGLE], // placeholder — replace with custom "Hey MOB" model
+        [0.5]
+      );
+      console.log('[mob/voice] Porcupine loaded (wake-word gating enabled)');
+    } catch (_) {
+      _porcupine = null;
+      console.log('[mob/voice] Porcupine not available — continuing without wake-word gating');
+    }
+  } else {
+    console.log('[mob/voice] PICOVOICE_API_KEY not set — no wake-word gating; trying Vosk-only mode');
   }
 
   try {
@@ -68,9 +77,22 @@ async function init(sendControl, callbacks) {
       const model = new vosk.Model(modelPath);
       _vosk = new vosk.Recognizer({ model, sampleRate: 16000 });
       console.log('[mob/voice] Vosk loaded');
+    } else {
+      console.log('[mob/voice] Vosk installed but no model at ' + modelPath + ' — voice commands disabled');
     }
   } catch (_) {
-    console.log('[mob/voice] Vosk not available — will use keyword-only recognition');
+    console.log('[mob/voice] Vosk not available — voice commands disabled');
+  }
+
+  // Reachable in two independent shapes: Porcupine+Vosk (wake word, then a
+  // command) or Vosk alone (every utterance is checked against COMMANDS,
+  // no wake word — see processAudio()). Porcupine with no Vosk model is NOT
+  // enabled: a wake word that can never recognize a command afterward isn't
+  // a working feature.
+  _enabled = !!_vosk;
+  if (!_enabled && _porcupine) {
+    try { _porcupine.release(); } catch (_) { /* ignore */ }
+    _porcupine = null;
   }
 }
 
@@ -79,7 +101,17 @@ async function init(sendControl, callbacks) {
  * Returns the dispatched command string, or null.
  */
 function processAudio(frame) {
-  if (!_enabled || !_porcupine) return null;
+  if (!_enabled || !_vosk) return null;
+
+  // No Porcupine (no Picovoice key, or it failed to load): there's no wake
+  // word to gate on, so every committed Vosk utterance is checked against
+  // COMMANDS directly. Trade-off, not a bug — accepted deliberately in
+  // init()'s own comment: this is the only mode reachable without a
+  // Picovoice account, at the cost of needing to actually say a command
+  // phrase rather than idle chatter (ordinary conversation not matching any
+  // COMMANDS entry is simply ignored by _matchCommand's lookup, same as
+  // today's wake-word path once past the keyword).
+  if (!_porcupine) return _processVoskFrame(frame);
 
   try {
     const keywordIndex = _porcupine.process(frame);
@@ -98,23 +130,23 @@ function processAudio(frame) {
   } catch (_) { return null; }
 
   if (_state !== 'LISTENING') return null;
+  return _processVoskFrame(frame);
+}
 
-  if (_vosk) {
-    try {
-      // acceptWaveform() returns true once Vosk has detected the end of an
-      // utterance (a pause). This used to always read partialResult(), which
-      // updates on every frame as speech is still being recognized — so an
-      // unstable interim guess could dispatch an irreversible action (e.g.
-      // stopping a take) before the user finished the sentence. Only the
-      // committed final result is matched now; partials are discarded.
-      const isFinal = _vosk.acceptWaveform(Buffer.from(frame.buffer));
-      if (isFinal) {
-        const final = JSON.parse(_vosk.result());
-        if (final.text) return _matchCommand(final.text);
-      }
-    } catch (_) {}
-  }
-
+function _processVoskFrame(frame) {
+  try {
+    // acceptWaveform() returns true once Vosk has detected the end of an
+    // utterance (a pause). This used to always read partialResult(), which
+    // updates on every frame as speech is still being recognized — so an
+    // unstable interim guess could dispatch an irreversible action (e.g.
+    // stopping a take) before the user finished the sentence. Only the
+    // committed final result is matched now; partials are discarded.
+    const isFinal = _vosk.acceptWaveform(Buffer.from(frame.buffer));
+    if (isFinal) {
+      const final = JSON.parse(_vosk.result());
+      if (final.text) return _matchCommand(final.text);
+    }
+  } catch (_) { /* ignore — treated as silence/unrecognized */ }
   return null;
 }
 

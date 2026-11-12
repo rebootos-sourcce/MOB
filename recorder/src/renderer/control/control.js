@@ -240,6 +240,39 @@
   // ══════════════════════════════════════════════ mic meter
   let meterStream = null, meterDevice = undefined, analyser = null, audioCtx = null, meterData = null, peakHold = 0;
 
+  // Task #72: voice.js's processAudio() needs real 16kHz Int16 frames to do
+  // anything at all — before this, voice:init()/voice:frame existed on the
+  // main-process side with nothing in the renderer ever calling voice:frame,
+  // so voice commands were unreachable regardless of Porcupine/Vosk
+  // availability. Reuses the SAME mic stream already open for the level
+  // meter below (one getUserMedia call, two taps on its source node) rather
+  // than opening a second, separate mic stream just for this.
+  let voiceProcessor = null, voiceCarry = new Float32Array(0);
+
+  function ensureVoiceProcessor(sourceNode) {
+    if (voiceProcessor) { try { sourceNode.connect(voiceProcessor); } catch (_) {} return; }
+    // ScriptProcessorNode is deprecated but needs no separate worklet module
+    // file/registration step, matching this project's no-bundler, plain-
+    // <script> renderer setup. 4096 samples is a safe buffer size across
+    // browsers; Pcm.pcmFramer's own carry handling is what actually produces
+    // clean, fixed 512-sample frames regardless of this node's chunk size.
+    voiceProcessor = audioCtx.createScriptProcessor(4096, 1, 1);
+    voiceProcessor.onaudioprocess = (e) => {
+      if (!voiceEnabled) return;
+      const { frames, carry } = Pcm.pcmFramer(e.inputBuffer.getChannelData(0), audioCtx.sampleRate, voiceCarry);
+      voiceCarry = carry;
+      for (const frame of frames) window.api.invoke('voice:frame', frame).catch(() => {});
+    };
+    // A zero-gain sink keeps this node part of a live audio graph (required
+    // for onaudioprocess to fire in every browser) without the mic being
+    // audibly played back through the speakers.
+    const sink = audioCtx.createGain();
+    sink.gain.value = 0;
+    voiceProcessor.connect(sink);
+    sink.connect(audioCtx.destination);
+    sourceNode.connect(voiceProcessor);
+  }
+
   async function openMeter(force) {
     const id = settings.mic.deviceId;
     if (!force && id === meterDevice && meterStream) return;
@@ -256,7 +289,10 @@
       analyser = audioCtx.createAnalyser();
       analyser.fftSize = 1024;
       analyser.smoothingTimeConstant = 0.55;
-      audioCtx.createMediaStreamSource(meterStream).connect(analyser);
+      const micSource = audioCtx.createMediaStreamSource(meterStream);
+      micSource.connect(analyser);
+      voiceCarry = new Float32Array(0); // a new stream resets any in-flight partial frame
+      ensureVoiceProcessor(micSource);
       meterData = new Float32Array(analyser.fftSize);
       refreshDevices();
     } catch (err) {

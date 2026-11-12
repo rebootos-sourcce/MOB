@@ -31,6 +31,7 @@ const commonRules = {
 const rendererGlobals = {
   Shapes: 'readonly',
   Material: 'readonly',
+  Pcm: 'readonly',
   module: 'readonly',
   require: 'readonly',
 };
