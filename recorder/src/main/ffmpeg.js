@@ -70,6 +70,25 @@ const CODECS = {
     encoder: 'h264_amf',
     args: (q) => ['-c:v', 'h264_amf', '-quality', 'quality', '-rc', 'cqp', '-qp_i', { high: 18, balanced: 22, small: 26 }[q],
       '-qp_p', { high: 20, balanced: 24, small: 28 }[q], '-pix_fmt', 'yuv420p']
+  },
+  // Task #71: every Mac (Apple Silicon and Intel alike) has VideoToolbox —
+  // there is no "no GPU" case here the way there is for nvenc/qsv/amf, so
+  // this is the one hardware encoder this app can default to rather than
+  // just offer. -q:v is VideoToolbox's own quality scale (roughly 1-100,
+  // higher is better) rather than a bitrate target like the other three
+  // hardware encoders use, because unlike them it doesn't expose a
+  // meaningful CRF-equivalent constant-quality bitrate mode through ffmpeg.
+  h264_videotoolbox: {
+    label: 'H.264 · Apple hardware (fast)',
+    encoder: 'h264_videotoolbox',
+    args: (q) => ['-c:v', 'h264_videotoolbox', '-q:v', { high: 65, balanced: 50, small: 35 }[q],
+      '-pix_fmt', 'yuv420p', '-profile:v', 'high']
+  },
+  hevc_videotoolbox: {
+    label: 'H.265 · Apple hardware (fast, smaller)',
+    encoder: 'hevc_videotoolbox',
+    args: (q) => ['-c:v', 'hevc_videotoolbox', '-q:v', { high: 65, balanced: 50, small: 35 }[q],
+      '-pix_fmt', 'yuv420p', '-tag:v', 'hvc1']
   }
 };
 

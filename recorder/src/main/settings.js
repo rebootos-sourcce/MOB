@@ -31,7 +31,12 @@ const DEFAULTS = {
     maxHeight: 1080,      // 720, 1080, or 0 for native
     countdown: 3,         // seconds, 0 to disable
     format: 'mp4',        // 'mp4' | 'webm'
-    codec: 'h264',        // see main/ffmpeg.js CODECS
+    // Task #71: every Mac has VideoToolbox hardware encoding with no "no
+    // GPU" fallback case the way nvenc/qsv/amf have — codecOptions()'s own
+    // real-test-encode probe (task #57) still decides what's actually
+    // offered/available, this only picks which one a fresh install starts
+    // pre-selected to. See main/ffmpeg.js CODECS.
+    codec: process.platform === 'darwin' ? 'h264_videotoolbox' : 'h264',
     quality: 'high',      // 'high' | 'balanced' | 'small'
     saveDir: null,        // null = ~/Videos/MOB Recorder
     askWhereToSave: false,

@@ -57,6 +57,34 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      # Task #71: VideoToolbox is only real on macOS — proves ffmpeg-static's
+      # mac binary actually has it compiled in, not just that CODECS lists
+      # it. codecOptions()/availableEncoders() (task #57) still decide at
+      # runtime whether to actually offer it; this only checks the binary.
+      - name: Check ffmpeg has VideoToolbox compiled in (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: |
+          node -e "console.log(require('ffmpeg-static'))" | xargs -I{} {} -hide_banner -encoders 2>/dev/null | grep -i videotoolbox
+          echo "VideoToolbox encoders confirmed present in this ffmpeg build."
+
+      # Task #71: a real recording, finalized with h264_videotoolbox on
+      # real Apple hardware (GitHub's macos-latest runners are Apple
+      # Silicon) — not just a unit-level encoder probe. Mirrors the
+      # existing Windows smoke-test step in build-recorder.yml.
+      - name: Smoke test with VideoToolbox encoder (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: npm run smoke
+        timeout-minutes: 3
+        env:
+          MOB_SMOKE_CODEC: h264_videotoolbox
+
+      - name: Smoke test with HEVC VideoToolbox encoder (macOS only)
+        if: matrix.os == 'macos-latest'
+        run: npm run smoke
+        timeout-minutes: 3
+        env:
+          MOB_SMOKE_CODEC: hevc_videotoolbox
+
       - name: Build (${{ matrix.dist-script }})
         run: npm run ${{ matrix.dist-script }}
         env:
