@@ -203,7 +203,8 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   const page=await ctx.newPage();
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE,{waitUntil:'load'}); await booted(page);
-  await page.waitForSelector('#loginb-skip',{timeout:8000}); await page.click('#loginb-skip'); await page.waitForTimeout(300);
+  await page.waitForSelector('#loginb-go',{timeout:8000});
+  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(300);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
   await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);

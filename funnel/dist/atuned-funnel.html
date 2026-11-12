@@ -4472,12 +4472,22 @@ const ZONES=[
     const ba=Math.min(1,bright*alpha);
     ctx.save();
     ctx.globalCompositeOperation='lighter';
-    // Pass 1: very wide faint bloom (creates the environmental light spill)
+    /* Pass 1: very wide faint bloom (creates the environmental light spill).
+       Skipped on a transparent mount, 12 November: there is no surrounding
+       surface for the spill to diffuse into, so at r*4.2 this wash reached
+       past the canvas's own edge on every side, additive ('lighter') the
+       whole way, and read as the canvas's own rectangle lighting up behind
+       her, worst exactly when bright/alpha (ba) peaked during a reaction --
+       "the entire square sprite," the owner's own words for it. The three
+       tighter passes below stay: each is well inside the canvas even for
+       the largest real orb and are the actual orb shape, not a spill. */
+    if(!uniBgTransparent){
     const g1=ctx.createRadialGradient(sx,sy,0,sx,sy,r*4.2);
     g1.addColorStop(0,  _rgba(p.m1,0.07*ba));
     g1.addColorStop(0.3,_rgba(p.m1,0.03*ba));
     g1.addColorStop(1,  _rgba(p.m1,0));
     ctx.beginPath(); ctx.arc(sx,sy,r*4.2,0,Math.PI*2); ctx.fillStyle=g1; ctx.fill();
+    }
     // Pass 2: mid bloom (the main soft orb shape -- matches reference)
     const g2=ctx.createRadialGradient(sx,sy,0,sx,sy,r*2.0);
     g2.addColorStop(0,  _rgba(p.cl, 0.30*ba));
@@ -5294,6 +5304,20 @@ const ZONES=[
     // top-to-bottom squeeze, anger's upward stretch and shame's downward
     // squash all ride vignetteScaleY distinctly from vignetteScale's X axis
     ctx.translate(CX,CY); ctx.rotate(headRoll); ctx.scale((1-squash*0.55)*vignetteScale,(1+squash)*vignetteScaleY); ctx.translate(-CX,-CY);
+    /* THE HARD FLOOR UNDER EVERY BLOOM PASS, 12 November. On a transparent
+       mount there is no surface behind her for a glow to diffuse into, so
+       any pass that reaches past this radius -- bokehOrb's wide spill was
+       one, caught and narrowed above, but the frame draws a dozen of these
+       across drawAura/drawRim/drawHarmonicRadiance/drawSpeechRings and a
+       next one added here would just repeat the same mistake -- paints the
+       canvas's own rectangle instead of her glow, worst exactly when she is
+       brightest: "the entire square sprite," the owner's own words for it.
+       Clipping to a circle comfortably past her largest legitimate glow
+       (the old bokehOrb spill reached R*4.2; everything that remains tops
+       out under R*2.6) makes that failure mode structurally impossible
+       from here on, whichever pass causes the next one. Restored by the
+       ctx.restore() this whole block already runs under. */
+    if(uniBgTransparent){ ctx.beginPath(); ctx.arc(CX,CY,R*3,0,Math.PI*2); ctx.clip(); }
     drawDecoherenceGlow(coh01,t);
     drawAura(coh01,pT);
     drawParticles(t,coh01,pT);
@@ -5487,6 +5511,21 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // Runs real text through the same viseme/word-trigger pipeline the
     // speak box used (mouth visemes, and any EMO_WORD_TRIGGERS match).
     speak(text){ enqueueText(String(text||'')); },
+    // Task #138: a callable entry point for the chakra-pulse visual, for
+    // callers that already know which seat fired (a sniffer hit, a Journal
+    // event) rather than typed text for scanForImprint to search. Same
+    // spawnChakraPulse() the text-scan trigger above already uses, so the
+    // visual is identical either way -- this just skips the word match.
+    // tag: one of the CHAKRA_COLORS keys below.
+    pulseChakra(tag){
+      if(!CHAKRA_COLORS[tag]) return false;
+      spawnChakraPulse(tag);
+      return true;
+    },
+    // The real seat tags pulseChakra()/CHAKRA_COLORS accept, for a caller
+    // that wants to validate before calling rather than read the false
+    // return.
+    chakraTags(){ return Object.keys(CHAKRA_COLORS); },
     /* STAGE 1, round TE: mirrors the canvas's own mouseenter handler
        above, the only place this loop ever restarted itself before.
        uniMount/uniPark call these so a reparented, previously-hidden

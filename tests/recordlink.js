@@ -286,7 +286,7 @@ require('./net.js').guardBrowser(browser);
     const nm = await pg.evaluate(() => RECORD_LINK ? RECORD_LINK.then(p => p ? p.name : null) : 'no step');
     const line = await said(pg) || {};
     const st = await appState(pg);
-    const door = await pg.waitForSelector('#loginb-skip', { state: 'visible', timeout: 15000 }).then(() => true, () => false);
+    const door = await pg.waitForSelector('#loginb-go', { state: 'visible', timeout: 15000 }).then(() => true, () => false);
     ok(nm === 'Web reading' && st.curName === 'Web reading', 'the record loads under the door, ' + JSON.stringify(st.curName));
     ok(door, 'and the door still stands, so the link is not a way round it');
     ok(/^Loaded Web reading from the link/.test(line.card || ''),

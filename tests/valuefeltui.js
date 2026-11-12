@@ -66,7 +66,7 @@ async function doorHolds(browser, file) {
   await pg.evaluate(seed(3, 0, 0.1));
   await pg.goto('file://' + file, { waitUntil: 'load' });
   await booted(pg);
-  const door = await pg.waitForSelector('#loginb-skip', { state: 'visible', timeout: 15000 }).then(() => true, () => false);
+  const door = await pg.waitForSelector('#loginb-go', { state: 'visible', timeout: 15000 }).then(() => true, () => false);
   const came = await waitSheet(pg, 6000);
   await cx.close();
   return { door, came };

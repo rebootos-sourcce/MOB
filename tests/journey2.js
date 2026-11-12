@@ -97,10 +97,13 @@ for(const [W,H] of WIDTHS){
  const shot=async(name)=>{ if(!SHOTS)return; try{ await page.waitForTimeout(2600); await page.screenshot({path:path.join(SHOTS,W+'-'+name+'.png')}); }catch(e){} };
  const placeholders=async(where)=>{const s=await st(); ok(!PLACEHOLDER.test(s.card),tag+where+' carries no placeholder word: '
   +((s.card.match(PLACEHOLDER)||[''])[0]));};
- /* THROUGH THE DOOR, as a guest, which is the request-free way in. A reload
-    meets the door again, so every reload comes back through it. */
+ /* THROUGH THE DOOR, the way the app's own dev harness does: Guest is gone,
+    12 November, the owner's own instruction, and this gate is not the one
+    testing login (tests/boot.js and tests/functional.js hold that). A
+    reload meets the door again, so every reload comes back through it. */
  const door=async()=>{await booted(page);
-  const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}};
+  const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
+  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(350);}};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
  /* FROM WHEREVER THE SHEET IS, ON TO A STEP, the way a person would press it.
     Used after a reload that did not resume, so the walk can go on and every
@@ -324,7 +327,8 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
   catch(e){return page.evaluate(s=>{const b=document.querySelector(s); if(b){b.click(); return true;} return false;},sel);}};
  const rec=()=>page.evaluate(()=>(typeof CURP!=='undefined'&&CURP&&CURP.journey)?JSON.parse(JSON.stringify(CURP.journey)):null);
  const door=async()=>{await booted(page);
-  if(await page.$('#loginb-skip')){await click('#loginb-skip'); await page.waitForTimeout(350);}};
+  const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
+  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(350);}};
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  const made=await page.evaluate(story=>{
   const lg=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});

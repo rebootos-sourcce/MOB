@@ -65,7 +65,7 @@ const readAll=PROBE=>{
   const c=await b.newContext({viewport:{width:w,height:h},isMobile:w<600,hasTouch:w<600});
   const p=await c.newPage();
   await p.goto(FILE,{waitUntil:'load'}); await booted(p);
-  await p.waitForSelector('#loginb-skip',{timeout:8000});
+  await p.waitForSelector('#loginb-go',{timeout:8000});
   await p.waitForTimeout(500);
   await p.screenshot({path:path.join(fdir,'0000-door.jpg'),type:'jpeg',quality:86});
   /* freeze the page the instant the stage is built, then seek */
@@ -86,7 +86,7 @@ const readAll=PROBE=>{
     rows.push(Object.assign({phase:ph,t},await probe()));
     await p.screenshot({path:path.join(fdir,ph+'-'+String(t).padStart(5,'0')+'.jpg'),type:'jpeg',quality:86});}
    await p.evaluate(()=>window.__A.forEach(([a])=>{try{a.playbackRate=1;}catch(e){}}));};
-  await run('1-arrive',"document.getElementById('loginb-skip').click();",ARRIVE,REST);
+  await run('1-arrive',"loginClose(); if(typeof loginEnter==='function')loginEnter();",ARRIVE,REST);
   await p.waitForTimeout(600);
   await run('3-comein',"document.querySelector('.obx-slot [data-ob=next]').click();",LEAVE,0);
   const keys=['phase','t'].concat(PROBE.map(x=>x[0]));
@@ -100,8 +100,8 @@ const readAll=PROBE=>{
     recordVideo:{dir:vdir,size:{width:Math.round(w/2)*2>1280?1280:w,height:Math.round(h*(w>1280?1280/w:1)/2)*2}}});
    const p2=await c2.newPage();
    await p2.goto(FILE,{waitUntil:'load'}); await booted(p2);
-   await p2.waitForSelector('#loginb-skip',{timeout:8000}); await p2.waitForTimeout(600);
-   await p2.click('#loginb-skip'); await p2.waitForTimeout(6500);
+   await p2.waitForSelector('#loginb-go',{timeout:8000}); await p2.waitForTimeout(600);
+   await p2.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await p2.waitForTimeout(6500);
    await p2.click('.obx-slot [data-ob=next]'); await p2.waitForTimeout(1800);
    const v=p2.video(); await p2.close(); await c2.close();
    fs.renameSync(await v.path(),path.join(OUT,'walk-'+w+'.webm'));

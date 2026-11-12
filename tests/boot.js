@@ -208,7 +208,17 @@ async function pressAt(p,a,pageMs,touch){
 const settled=async p=>{try{await p.waitForFunction(()=>!document.getElementById('boot'),null,{timeout:15000});}catch(e){}
  await sleep(400);
  return p.evaluate(()=>({press:window.__press,gone:!document.getElementById('boot'),
-  door:typeof LOGIN!=='undefined'?LOGIN.open:null,tab:typeof S!=='undefined'&&S?S.tab:null}));};
+  door:typeof LOGIN!=='undefined'?LOGIN.open:null,tab:typeof S!=='undefined'&&S?S.tab:null,
+  /* THE DOOR'S OWN ERROR LINE, 12 November. Guest is gone (the owner's own
+     instruction), and with it the one control that closed the door without
+     a network round trip -- nothing else here can, Log in and Create account
+     both call the real server and this gate mocks no route but voice
+     (tests/net.js). So a press that reaches Log in with the card still blank
+     is proven landed the same way a press on Guest used to prove it: the
+     field validation that runs before any request, synchronous, local,
+     named here rather than guessed at (ui/auth.js authFieldsWhy). The door
+     itself staying open is now expected on a landed press, not a failure. */
+  msg:(function(){var m=document.getElementById('loginmsg');return m?m.textContent:'';})()}));};
 
 let BASE='';
 (async()=>{
@@ -387,10 +397,17 @@ let BASE='';
        +'ms into the sheet\'s '+Math.round(a.fade.end-a.fade.begin)+'ms fade reaches the app'
        +(landed(r,a)?'':', and it did not: it was eaten as a skip with nothing left to skip'));}
      finally{await ctx.close();}});
-    await release('/raw.html','raw, the door at 1600, Guest','#loginb-skip',null,r=>r.door===false);
-    await release('/packed.html','packed, the door at 1600, Guest','#loginb-skip',null,r=>r.door===false);
+    /* Guest is gone, 12 November, the owner's own instruction. Log in is now
+       the only control under this press, and it never closes the door on an
+       empty card (it has nothing to send). So the proof a press reached the
+       app is the same proof it always was for a submit with nothing typed:
+       the synchronous field check in ui/auth.js (authFieldsWhy) writes a
+       line into #loginmsg before any network call, no mock needed. */
+    const msgLanded=r=>!!(r.msg&&r.msg.length);
+    await release('/raw.html','raw, the door at 1600, Log in','#loginb-go',null,msgLanded);
+    await release('/packed.html','packed, the door at 1600, Log in','#loginb-go',null,msgLanded);
     await release('/raw.html?dev=1','raw, the navigation at 1600','TAB',null,(r,a)=>r.tab===a.k);
-    await release('/raw.html','raw, the door at 390 by touch, Guest','#loginb-skip',{w:390,h:844,touch:true},r=>r.door===false);
+    await release('/raw.html','raw, the door at 390 by touch, Log in','#loginb-go',{w:390,h:844,touch:true},msgLanded);
 
     /* AND JUST AFTER IT HAS GONE FROM VIEW, WITH THE PAGE BUSY. The fade's
        frames are the heaviest of the session, because the Field's entrance
@@ -402,7 +419,7 @@ let BASE='';
        always the case the old capture got wrong. */
     await block('raw, busy page',async()=>{const {ctx,p}=await pressPage(b,'/raw.html');
      try{await booted(p);
-      const a=await arm(p,'#loginb-skip');
+      const a=await arm(p,'#loginb-go');
       if(!a.fade){ok(false,'raw, busy page: the start up finished after the sheet had already gone, so the press cannot be placed');return;}
       if(a.now>=a.fade.begin){ok(false,'raw, busy page: the start up finished after the fade began, so the press cannot be placed');}
       else{const off=Date.now()-a.now;
@@ -412,17 +429,21 @@ let BASE='';
        await p.mouse.click(a.x,a.y,{delay:60});
        await busy;
        const r=await settled(p);
-       ok(r.press!=null&&r.press>=a.fade.end&&r.door===false,'raw, the door at 1600, Guest, with the page busy: a press '
+       ok(r.press!=null&&r.press>=a.fade.end&&r.msg&&r.msg.length,'raw, the door at 1600, Log in, with the page busy: a press '
         +Math.round(r.press-a.fade.end)+'ms after the sheet was invisible reaches the app'
-        +(r.door===false?'':', and it did not: it was eaten as a skip over an app in view'));}}
+        +((r.msg&&r.msg.length)?'':', and it did not: it was eaten as a skip over an app in view'));}}
      finally{await ctx.close();}});
 
     /* AND THE RULING STANDS. A press while the overture is still standing is
        the skip and only the skip: it does not also press what is under it.
-       Guest is under this press; the door must still be there after it. */
+       Log in is under this press now that Guest is gone; the door must still
+       be there after it, and the card must still be blank: a press that
+       landed on Log in with nothing typed would leave its own line in
+       #loginmsg (see msgLanded above), so an empty #loginmsg is also proof
+       the press never reached the card. */
     await block('raw, the overture',async()=>{const {ctx,p}=await pressPage(b,'/raw.html');
      try{await booted(p);
-      const a=await arm(p,'#loginb-skip');
+      const a=await arm(p,'#loginb-go');
       if(!a.fade){ok(false,'raw, the overture: the start up finished after the sheet had already gone, so nothing can be pressed inside it');return;}
       /* THE TOOL FIRST. While the instrument starts, the fade's own start
          time is held back, and FADE reads the overture's zero off the
@@ -433,10 +454,12 @@ let BASE='';
       if(a.now+300>a.fade.begin-1000){ok(false,'raw, the overture: the start up finished too late to press inside the overture');}
       else{await pressAt(p,a,a.now+300,false); await sleep(700);
        const r=await p.evaluate(()=>({press:window.__press,gone:!document.getElementById('boot'),
-        now:performance.now(),door:typeof LOGIN!=='undefined'?LOGIN.open:null}));
+        now:performance.now(),door:typeof LOGIN!=='undefined'?LOGIN.open:null,
+        msg:(function(){var m=document.getElementById('loginmsg');return m?m.textContent:'';})()}));
        ok(r.press!=null&&r.press<a.fade.begin&&r.gone&&r.now<a.fade.begin,'raw, the overture: a press '
         +Math.round(a.fade.begin-r.press)+'ms before the fade was due is the skip, and the sheet left at once');
-       ok(r.door===true,'and it did not also press the app: Guest was under it and the door is still standing');}}
+       ok(r.door===true&&!r.msg,'and it did not also press the app: Log in was under it, the door is still standing and the card is still blank'
+        +(r.door===true?'':', and the door is not standing')+(r.msg?', and the card already carries \''+r.msg+'\'':''));}}
      finally{await ctx.close();}});
    }finally{await b.close();}}
  }catch(e){ fail++; console.log('  FAIL the gate itself threw: '+(e&&e.message)); }

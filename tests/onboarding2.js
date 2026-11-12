@@ -106,10 +106,12 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
  /* THE REAL DOOR. No ?dev=1: this is the login card ui/login.js draws on a
-    first visit, and Guest is the one way past it that makes no network
-    request, the same request-free path a person with no account takes. */
- await page.waitForSelector('#loginb-skip',{timeout:8000});
- await page.click('#loginb-skip');
+    first visit. Guest is gone, 12 November, the owner's own instruction,
+    and this gate is not the one testing login itself (tests/boot.js and
+    tests/functional.js hold that), so it closes the door the same way the
+    app's own dev harness does rather than drive a real sign in here. */
+ await page.waitForSelector('#loginb-go',{timeout:8000});
+ await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();});
  await page.waitForTimeout(300);
  const opened=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
  ok(opened,'a fresh profile meets the onboarding sheet behind the real door');
@@ -411,8 +413,8 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   .map(e=>({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t})));
  ok(vback.length>0&&JSON.stringify(vback)===JSON.stringify(said.ev.map(e=>({m:e.m,v:e.v,p:e.p,s:e.s}))),
   'every answer comes back after the reload, linked to the same addresses and entry: '+vback.length);
- await page.waitForSelector('#loginb-skip',{timeout:8000}).catch(()=>{});
- if(await page.$('#loginb-skip'))await page.click('#loginb-skip');
+ await page.waitForSelector('#loginb-go',{timeout:8000}).catch(()=>{});
+ await page.evaluate(()=>{if(typeof LOGIN!=='undefined'&&LOGIN.open){loginClose(); if(typeof loginEnter==='function')loginEnter();}});
  await page.waitForTimeout(300);
  /* and the next visit opens that end card, never the welcome again (F13) */
  const replay=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:OB.step,end:OB_END}));
@@ -846,8 +848,8 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
     button could not be shown to have displaced anything on it, follow
     Reach someone now and Talk it through, and check the way back from the
     Story page; none of that is reachable any more, so this checks absence
-    everywhere the button used to be instead. The login card's three ways
-    in and the first run's own card content and step flow are exercised
+    everywhere the button used to be instead. The login card's two ways
+    in (Guest removed 12 November) and the first run's own card content and step flow are exercised
     elsewhere in this file without a crisis assertion riding along, so
     dropping the word-for-word re-read here loses no real coverage.
     Checked against the build before the removal, where this fails on
@@ -857,7 +859,7 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   const page=await browser.newPage({viewport:{width:w,height:h}});
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE,{waitUntil:'load'}); await booted(page);
-  await page.waitForSelector('#loginb-skip',{timeout:8000});
+  await page.waitForSelector('#loginb-go',{timeout:8000});
   await page.waitForTimeout(400);
   const none=sel=>page.evaluate(sel=>!document.querySelector(sel),sel);
 
@@ -865,10 +867,10 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(await none('#login [data-crisis]'),'no crisis door on the login card'+at);
   ok(await none('#crisis'),'and no panel host has ever been created'+at);
   const acts=await page.evaluate(()=>[...document.querySelectorAll('#login .ob-acts .btn')].map(b=>b.textContent));
-  ok(JSON.stringify(acts)==='["Log in","Create account","Guest"]','its three ways in are unchanged'+at+', '+JSON.stringify(acts));
+  ok(JSON.stringify(acts)==='["Log in","Create account"]','its two ways in are unchanged, Guest removed'+at+', '+JSON.stringify(acts));
 
   /* the first run's stage, every step, and the Story page it can reach */
-  await page.click('#loginb-skip'); await page.waitForTimeout(500);
+  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(500);
   ok(await none('#ob [data-crisis]')&&await none('#ob .obx-crx'),'no crisis door anywhere on the first run\'s stage'+at);
   const arrive=await page.evaluate(()=>({h:(document.querySelector('#ob .ob-card .ob-h')||{}).textContent,
    acts:[...document.querySelectorAll('#ob .ob-card .ob-acts .btn')].map(b=>b.textContent)}));

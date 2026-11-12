@@ -155,23 +155,22 @@ function loginCard(mail){
   +'<p class="login-msg" id="loginmsg"></p>'
   +(landed
    ?'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-new">Create account</button>'
-    +'<button type="button" class="btn" id="loginb-go">Log in</button>'
-    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+    +'<button type="button" class="btn" id="loginb-go">Log in</button></div>'
    :'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-    +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>')
+    +'<button type="button" class="btn" id="loginb-new">Create account</button></div>')
   /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
-     button, under the three ways in and never in front of them, so it is
-     always there and never the thing a person has to read past. The panel and
-     the reason it is its own layer are in ui/crisis.js. */
+     button, under the two ways in (Guest removed 12 November, the owner's
+     own instruction) and never in front of them, so it is always there and
+     never the thing a person has to read past. The panel and the reason it
+     is its own layer are in ui/crisis.js. */
   +'<p class="crx-line">'+crisisBtn()+'</p>'
   /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
      account, so the two pages that say what an account sends and keeps are
      linked here (legalLink, ui/account.js). It is the card's foot and sits
-     under the crisis button, never between it and the three ways in: there
+     under the crisis button, never between it and the two ways in: there
      it would put two links ahead of the button in the tab order and a line
      of text above it on a phone, and the button is the one control a person
-     in trouble should reach with the fewest presses after the three.
+     in trouble should reach with the fewest presses after them.
      tests/onboarding2.js holds the button on the first screen at 390. */
   +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
   +' before you make an account.</p>'
@@ -306,8 +305,6 @@ function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
  var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
- var sk=document.getElementById('loginb-skip');
- if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');

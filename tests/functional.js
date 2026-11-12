@@ -3831,8 +3831,8 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   const msg=()=>{const m=document.getElementById('loginmsg');return m?[m.textContent,m.getAttribute('data-kind')]:null;};
   loginOpen();
   o.cardFields=!!(document.getElementById('loginmail')&&document.getElementById('loginpass')
-   &&document.getElementById('loginb-go')&&document.getElementById('loginb-new')
-   &&document.getElementById('loginb-skip'))&&!document.getElementById('loginuser');
+   &&document.getElementById('loginb-go')&&document.getElementById('loginb-new'))
+   &&!document.getElementById('loginuser');
   AUTH_API='http://127.0.0.1:1';
   document.getElementById('loginmail').value='probe@example.invalid';
   document.getElementById('loginpass').value='right-password-1';
@@ -3855,8 +3855,6 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   DEV_SKIP=false; loginBoot(); o.bootSkipped=!LOGIN.open; DEV_SKIP=true;
   await idle(); await wait(200);
   authForget();
-  loginOpen(); document.getElementById('loginb-skip').click();
-  o.skip=!LOGIN.open&&held()==='';
   /* MANAGE BILLING, through the seam checkout already uses. Pressed on the
      real button for both refusals, because the press goes PLAN_HOST, then
      authPlanPortal, then status. The yes is read off authPlanPortal itself,
@@ -3962,7 +3960,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.stale==='ended'&&o.staleHeld===''&&/^Signed out\./.test(o.staleSaid[0])&&o.staleSaid[1]==='fail',
   'a session the server does not know is ended at boot and says so, got '+JSON.stringify(o.staleSaid));
  ok(o.offCheck==='unchecked'&&o.offCheckHeld,'a boot with no network keeps the session, because offline is not signed out');
- ok(o.cardFields,'the login card carries email, password, Log in, Create account and a way through without one, and no username');
+ ok(o.cardFields,'the login card carries email, password, Log in and Create account, and no username');
  ok(o.cardOff&&o.cardOff[0]===reach&&o.cardOff[1]==='fail'&&o.cardStillOpen,
   'the card shows the failure itself, since it covers the status line, and stays open, got '+JSON.stringify(o.cardOff));
  ok(o.resetCarried==='probe@example.invalid'&&o.backCarried==='probe@example.invalid','the email is carried to the reset card and back');
@@ -3972,7 +3970,6 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.cardWrong&&o.cardWrong[0]==='No account matches that email and password.','the card shows a refusal, got '+JSON.stringify(o.cardWrong));
  ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
  ok(o.bootSkipped,'a person already signed in is not shown the door');
- ok(o.skip,'Guest goes through and holds nothing');
  /* Manage billing used to answer "not built yet. Email support" on every
     press. It goes to /v1/billing/portal now, through ui/auth.js. */
  ok(/^Sign in first\./.test(o.manOut[0])&&o.manOut[1]==='fail'

@@ -83,8 +83,10 @@ async function arrive(browser,payload,W,H){
  await pg.goto('file://'+SRC+'#r='+payload,{waitUntil:'load'});
  await pg.waitForFunction(()=>typeof isBooted==='function'&&isBooted(),null,{timeout:30000});
  await pg.waitForTimeout(800);
- /* past the door the way a person goes, with no account */
- if(await pg.$('#loginb-skip'))await pg.click('#loginb-skip');
+ /* past the door, the same close the owner's own dev harness uses: Guest
+    is gone (12 November, his own instruction), and this gate never tests
+    login itself, only what is past it */
+ await pg.evaluate(()=>{if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function'){loginClose(); if(typeof loginEnter==='function')loginEnter();}});
  await pg.waitForTimeout(500);
  await pg.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:6000}).catch(()=>{});
  await pg.waitForTimeout(800);

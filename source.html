@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v52 e2f70b68 2026-11-12 19:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v53 8cc19a0b 2026-11-12 21:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -7794,6 +7794,18 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    timed in panels.js against the same bootOut fade everything else here
    reads off. */
 .boot.bx-uni .bx-fig{display:none}
+/* AND THE OLD WASH GOES WITH IT, 12 November, the owner's own direct
+   instruction: "take out the old animation, keep the uni animation."
+   .bx-wash below was built as .bx-fig's own backdrop and was carried over
+   unchanged when Uni was added as a second, alternate figure -- so a
+   person who gets the Uni path still saw the OLD figure's ambient wash
+   animating behind the NEW one, the second "login animation" he flagged.
+   Hidden here the same way .bx-fig itself is, immediately above. Uni's own
+   canvas is the only thing standing in for a backdrop now, which is safe
+   now that frame()'s own clip (uni.js, the one right after drawDecoherenceGlow)
+   keeps her glow inside a circle no transparent mount's canvas rectangle
+   can show through. */
+.boot.bx-uni .bx-wash{display:none}
 #bootuni{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
  opacity:1;transition:opacity .52s cubic-bezier(.4,0,1,1)}
 #bootuni.bx-uni-out{opacity:0}
@@ -92602,23 +92614,22 @@ function loginCard(mail){
   +'<p class="login-msg" id="loginmsg"></p>'
   +(landed
    ?'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-new">Create account</button>'
-    +'<button type="button" class="btn" id="loginb-go">Log in</button>'
-    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+    +'<button type="button" class="btn" id="loginb-go">Log in</button></div>'
    :'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-    +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>')
+    +'<button type="button" class="btn" id="loginb-new">Create account</button></div>')
   /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
-     button, under the three ways in and never in front of them, so it is
-     always there and never the thing a person has to read past. The panel and
-     the reason it is its own layer are in ui/crisis.js. */
+     button, under the two ways in (Guest removed 12 November, the owner's
+     own instruction) and never in front of them, so it is always there and
+     never the thing a person has to read past. The panel and the reason it
+     is its own layer are in ui/crisis.js. */
   +'<p class="crx-line">'+crisisBtn()+'</p>'
   /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
      account, so the two pages that say what an account sends and keeps are
      linked here (legalLink, ui/account.js). It is the card's foot and sits
-     under the crisis button, never between it and the three ways in: there
+     under the crisis button, never between it and the two ways in: there
      it would put two links ahead of the button in the tab order and a line
      of text above it on a phone, and the button is the one control a person
-     in trouble should reach with the fewest presses after the three.
+     in trouble should reach with the fewest presses after them.
      tests/onboarding2.js holds the button on the first screen at 390. */
   +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
   +' before you make an account.</p>'
@@ -92753,8 +92764,6 @@ function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
  var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
- var sk=document.getElementById('loginb-skip');
- if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');
@@ -95152,5 +95161,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006351127"></div>
+<div id="eof" hidden data-len="006351721"></div>
 </body></html>
