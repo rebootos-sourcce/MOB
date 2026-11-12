@@ -42,33 +42,52 @@ const ok = (c, m) => { n++; if (!c) fails.push(m); console.log((c ? '  ok    ' :
 const booted = pg => pg.waitForFunction(() => typeof isBooted === 'function' && isBooted(), null, { timeout: 30000 });
 const shot = async (pg, nm) => { if (SHOTS) { await pg.screenshot({ path: path.join(SHOTS, nm) }); console.log('  shot  ' + nm); } };
 
-/* a real set of answers: every question answered, spread across the scale */
+/* a real set of answers: every question answered, spread across the scale.
+   THE QUIZ IS THE 59 QUESTION ONE, 12 November: it opens on an intro
+   (#introStart), holds its answers in state.answers (0 to 10, by QUESTIONS
+   index), builds its results with goToResults(), which sets RESULTS, and
+   arms the link on #toapp-record from the results screen's own CTA tile. The
+   old QQ/A/STATE/#tolink surface went with the old quiz. */
 async function quizLink(browser, file, w, h, nm) {
   const cx = await browser.newContext({ viewport: { width: w, height: h } });
   const pg = await cx.newPage();
   const errs = []; pg.on('pageerror', e => errs.push(String(e && e.message || e)));
   await pg.goto('file://' + file, { waitUntil: 'load' });
-  await pg.evaluate(() => { A = {}; QQ.forEach((q, i) => { A[i] = (i * 7 + 3) % 5; }); save(); STATE = 'door'; render(); });
-  await pg.waitForSelector('#tolink[data-ready="1"]', { timeout: 10000 });
+  await pg.click('#introStart');
+  /* the door's own address is the anchor's href before the packing lands on
+     it, so it is read in the same breath as goToResults(), ahead of the
+     asynchronous arm */
+  const door = await pg.evaluate(() => {
+    for (var i = 0; i < QUESTIONS.length; i++) state.answers[i] = (i * 7 + 3) % 11;
+    goToResults();
+    return document.getElementById('toapp-record').href;
+  });
+  await pg.waitForSelector('#toapp-record[data-ready="1"]', { timeout: 10000 });
   const o = await pg.evaluate(() => ({
-    href: document.getElementById('tolink').href,
-    door: document.getElementById('toapp').href,
-    json: recordJSON(),
-    /* scored() itself, read before saveProfile ever touches it, so a test can
-       tell the quiz's own arithmetic apart from whatever the record-building
-       step did to it afterward. Caught a real bug this way: saveProfile reads
+    href: document.getElementById('toapp-record').href,
+    json: recordJSON(RESULTS),
+    /* quizRecord(RESULTS) itself, the quiz's own arithmetic written onto a
+       fresh profile, read apart from the JSON the link carries, so a test can
+       tell what the quiz scored from whatever the record-building step did
+       to it afterward. Caught a real bug this way twice: saveProfile reads
        the engine's shared working state, not its own argument, so a record
-       built from a scored() the quiz never loaded into that state came back
-       with saveProfile's defaults in it, not what the person actually scored. */
-    scoredLaws: scored().p.laws,
-    scoredAxes: scored().p.axes,
-    say: (document.getElementById('linksay') || {}).textContent || '',
-    tag: document.getElementById('tolink').tagName
+       passed through it on a page that never loaded it into that state came
+       back with saveProfile's zero defaults in it, not what the person
+       actually scored. The 11 November quiz had exactly that (recordJSON
+       wrapped quizRecord in saveProfile) and p.axes and p.soul.arcs arrived
+       in the app as zeros; recordJSON serialises quizRecord directly now. */
+    scoredLaws: quizRecord(RESULTS).laws,
+    scoredAxes: quizRecord(RESULTS).axes,
+    scoredArcs: quizRecord(RESULTS).soul.arcs,
+    say: (document.querySelector('.tile.cta') || {}).textContent || '',
+    note: (document.getElementById('recnote') || {}).textContent || '',
+    tag: document.getElementById('toapp-record').tagName
   }));
+  o.door = door;
   if (nm) {
-    /* the door from its heading, under the sticky bar, so the shot shows the
-       control with the words that explain it */
-    await pg.evaluate(() => { const d = document.querySelector('.door'); scrollTo(0, d.getBoundingClientRect().top + scrollY - 120); });
+    /* the CTA tile from its heading, so the shot shows the control with the
+       words that explain it */
+    await pg.evaluate(() => { const d = document.querySelector('.tile.cta'); scrollTo(0, d.getBoundingClientRect().top + scrollY - 120); });
     await shot(pg, nm);
   }
   o.errs = errs;
@@ -128,7 +147,7 @@ async function loadCase(browser, file, payload, w, h, nm) {
   const r = await openLink(pg, withPayload(file, payload, true));
   /* the reading, computed by the app off the record it now holds */
   r.cq = await pg.evaluate(() => Math.round(compute().CQ));
-  r.rec = await pg.evaluate(() => JSON.stringify({ laws: CURP.laws, axes: CURP.axes }));
+  r.rec = await pg.evaluate(() => JSON.stringify({ laws: CURP.laws, axes: CURP.axes, arcs: CURP.soul && CURP.soul.arcs }));
   if (nm) { await pg.waitForTimeout(600); await shot(pg, nm); }
   /* and a reload does not load it a second time */
   await pg.reload({ waitUntil: 'load' }); await booted(pg);
@@ -175,24 +194,34 @@ require('./net.js').guardBrowser(browser);
   const payload = q.href.split('#r=')[1];
   const back = E.linkUnwrap(payload);
   const text = back ? zlib.gunzipSync(Buffer.from(back)).toString('utf8') : '';
-  /* recordJSON mints a new id and time on each call, so the file a person
-     saves and the link differ there and must agree everywhere else */
-  const bare = t => { try { const o = JSON.parse(t); ['id', 'created', 'updated'].forEach(k => delete o[k]); return JSON.stringify(o); } catch (e) { return 'unreadable'; } };
+  /* recordJSON mints a new id and time on each call, and the two self-report
+     seeds stamp their own time (p.archSeed.at, p.sabSeed.at, engine/archseed.js
+     and engine/sabseed.js), so the file a person saves and the link differ
+     there and must agree everywhere else */
+  const strip = o => { ['id', 'created', 'updated'].forEach(k => delete o[k]);
+    ['archSeed', 'sabSeed'].forEach(k => { if (o[k] && typeof o[k] === 'object') delete o[k].at; }); return o; };
+  const bare = t => { try { return JSON.stringify(strip(JSON.parse(t))); } catch (e) { return 'unreadable'; } };
   ok(text.length > 500 && bare(text) === bare(q.json),
-    'and it carries the record recordJSON gives the file, ' + text.length + ' bytes, apart from its own id and time');
+    'and it carries the record recordJSON gives the file, ' + text.length + ' bytes, apart from its own id and times');
   console.log('  record ' + q.json.length + ' bytes as JSON, link ' + q.href.length
     + ' characters, of which ' + payload.length + ' are the record');
   ok(q.href.length < 4000, 'the whole link stays short enough for any browser and any messenger, '
     + q.href.length + ' characters');
-  ok(/# mark/.test(q.say) && /never sends/.test(q.say) && /clears it/.test(q.say),
-    'the line beside it says, in plain words, where the record travels and that it is cleared');
-  /* not the same bytes: every record is minted with its own id and time, so
+  /* THE WORDS BESIDE THE CONTROL, 12 November: the old quiz's #linksay line
+     ("after the # mark", "never sends", "clears it") went with the old door.
+     The new CTA tile carries the one claim that still stands beside the
+     control, that the record stays on this device; the note under it
+     (#recnote) is empty once the link is armed and only speaks when the
+     packing is slow or impossible (recordLinkArm, funnel/quiz.html). That the
+     app clears the address is held below, on the app, where it happens. */
+  ok(/nothing leaves this browser/.test(q.say) && q.note === '',
+    'the tile beside it says, in plain words, that the record stays on this device, and the note under the armed link is silent');
+  /* not the same bytes: every record is minted with its own id and times, so
      two packings of one set of answers differ there and nowhere else */
   {
-    const unpack = h => JSON.parse(zlib.gunzipSync(Buffer.from(E.linkUnwrap(h.split('#r=')[1]))).toString('utf8'));
+    const unpack = h => strip(JSON.parse(zlib.gunzipSync(Buffer.from(E.linkUnwrap(h.split('#r=')[1]))).toString('utf8')));
     const a = unpack(q.href), b = unpack(q390.href);
-    ['id', 'created', 'updated'].forEach(k => { delete a[k]; delete b[k]; });
-    ok(JSON.stringify(a) === JSON.stringify(b), 'the same answers make the same record at 390, apart from its own id and time');
+    ok(JSON.stringify(a) === JSON.stringify(b), 'the same answers make the same record at 390, apart from its own id and times');
   }
   ok(q.errs.length === 0 && q390.errs.length === 0, 'the quiz threw nothing: ' + q.errs.concat(q390.errs).slice(0, 2).join(' | '));
 
@@ -224,14 +253,16 @@ require('./net.js').guardBrowser(browser);
     ok(r.st.names.length === r.before.names.length + 1,
       '@' + w + ': as one new record, ' + r.before.names.length + ' before, ' + r.st.names.length + ' after');
     const want = JSON.parse(q.json);
-    ok(r.rec === JSON.stringify({ laws: want.laws, axes: want.axes }),
-      '@' + w + ': the laws and charges the app holds are the ones the record carried');
-    /* THE REAL CHECK. want.laws/want.axes above come from the record's own
-       JSON, which is exactly what a bug in building that record would also
-       corrupt, so the assertion above would pass even if the record never
-       held the quiz's real answers. This compares against scored() directly,
-       the quiz's own arithmetic, read before anything downstream can touch it. */
-    ok(r.rec === JSON.stringify({ laws: q.scoredLaws, axes: q.scoredAxes }),
+    ok(r.rec === JSON.stringify({ laws: want.laws, axes: want.axes, arcs: want.soul.arcs }),
+      '@' + w + ': the laws, charges and archetype pick the app holds are the ones the record carried');
+    /* THE REAL CHECK. want.laws/want.axes/want.soul.arcs above come from the
+       record's own JSON, which is exactly what a bug in building that record
+       would also corrupt, so the assertion above would pass even if the
+       record never held the quiz's real answers. This compares against
+       quizRecord(RESULTS) directly, the quiz's own arithmetic, read before
+       anything downstream can touch it. The axes and the archetype pick are
+       the two fields the saveProfile bug of 11 November zeroed. */
+    ok(r.rec === JSON.stringify({ laws: q.scoredLaws, axes: q.scoredAxes, arcs: q.scoredArcs }),
       '@' + w + ': and they are what the quiz actually scored, not some other record-building default');
     const ln = r.line || {};
     ok(/^Loaded Web reading from the link\. Nothing else was touched\.$/.test(ln.shown || '') && ln.lifted && !ln.shownKind,
@@ -332,14 +363,16 @@ require('./net.js').guardBrowser(browser);
     await cx.addInitScript(() => { delete window.CompressionStream; });
     const pg = await cx.newPage();
     await pg.goto('file://' + QUIZ, { waitUntil: 'load' });
-    await pg.evaluate(() => { A = {}; QQ.forEach((q, i) => { A[i] = 2; }); save(); STATE = 'door'; render(); });
-    await pg.waitForFunction(() => /cannot pack/.test((document.getElementById('dlnote') || {}).textContent || ''), null, { timeout: 8000 }).catch(() => {});
+    await pg.click('#introStart');
+    await pg.evaluate(() => { for (var i = 0; i < QUESTIONS.length; i++) state.answers[i] = 2; goToResults(); });
+    /* recordLinkArm (funnel/quiz.html): the packing rejects without the
+       stream, the link is hidden and #recnote points at the JSON download */
+    await pg.waitForFunction(() => /cannot pack/.test((document.getElementById('recnote') || {}).textContent || ''), null, { timeout: 8000 }).catch(() => {});
     const o = await pg.evaluate(() => ({
-      shown: !!document.getElementById('tolink').getClientRects().length,
-      say: !!document.getElementById('linksay').getClientRects().length,
-      note: document.getElementById('dlnote').textContent, save: !!document.getElementById('dl').getClientRects().length }));
-    ok(!o.shown && !o.say && o.save && /Save it instead/.test(o.note),
-      'the quiz hides the link and its line and points at Save, said ' + JSON.stringify(o.note));
+      shown: !!document.getElementById('toapp-record').getClientRects().length,
+      note: document.getElementById('recnote').textContent, save: !!document.getElementById('dl-json').getClientRects().length }));
+    ok(!o.shown && o.save && /Download it as JSON instead/.test(o.note),
+      'the quiz hides the link and points at the JSON download, said ' + JSON.stringify(o.note));
     await cx.close();
     /* the app: no DecompressionStream, so a good link cannot be unpacked */
     const cx2 = await browser.newContext({ viewport: { width: 1600, height: 1000 } });

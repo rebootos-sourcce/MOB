@@ -5,16 +5,17 @@
 
    REVIEW-sniffer-audit-2026-10-09.md, packages S1 to S5. tests/engine.js
    holds the reader headless. This holds what only a page can show: that the
-   Story page and the quiz draw, count and say exactly what the engine
-   counted, and say nothing the engine did not.
+   Story page draws, counts and says exactly what the engine counted, and
+   says nothing the engine did not. (The quiz was held here too, until the
+   11 November quiz took its story box away; the note above S2 says what
+   went.)
 
      S1  a word said with a no. The struck mark on the Story page is the
-         engine's denied list, the counter's numbers are the engine's, the
-         list never claims a seat was charged by a denied word alone, and
-         the quiz never says it counted one.
+         engine's denied list, the counter's numbers are the engine's, and
+         the list never claims a seat was charged by a denied word alone.
      S2  a charge word about someone else. The page draws exactly the
-         engine's others as set aside and not struck, the counter names
-         them, and the quiz makes no card of them and shows them back.
+         engine's others as set aside and not struck, and the counter names
+         them.
      S4  no surface that prints an address read from a story says the
          person said or named it, or quotes it as their word, unless the
          story holds it.
@@ -33,7 +34,6 @@ const { chromium } = require('playwright');
 const ROOT = path.join(__dirname, '..');
 /* ?dev=1 meets the instrument and not the login sheet, as functional.js does */
 const FILE = 'file://' + path.resolve(process.env.ATUNED_FILE || path.join(ROOT, 'source.html')) + '?dev=1';
-const QUIZ = 'file://' + path.join(ROOT, 'funnel', 'quiz.html');
 
 let n = 0; const fails = [];
 const ok = (c, m) => { n++; if (!c) fails.push(m); console.log((c ? '  ok    ' : '  FAIL  ') + m); };
@@ -132,25 +132,15 @@ require('./net.js').guardBrowser(browser);
     await p.cx.close();
   }
 
-  console.log('\n=== S1 · the quiz never says it counted a word said with a no ===');
-  {
-    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
-    const q = await cx.newPage(); const errs = [];
-    q.on('pageerror', e => errs.push(String(e && e.message || e)));
-    await q.goto(QUIZ, { waitUntil: 'load' });
-    const r = await q.evaluate(() => {
-      const t = 'I was not scared to call my mother. My chest went tight and I felt ashamed.';
-      const ps = parseStory(t), h = storyLit(ps, t, read(scored().p).reading);
-      const box = document.createElement('div'); box.innerHTML = h;
-      return { html: h, text: box.textContent,
-        words: [...box.querySelectorAll('.sab .sl')].map(e => e.textContent).filter(x => /^Your words:/.test(x)) };
-    });
-    ok(r.words.length > 0 && r.words.every(w => !/scared/.test(w)), 'no card quotes the denied word as one of the words it read: ' + JSON.stringify(r.words));
-    ok(!/counts a word that comes after a no/.test(r.text), 'and no sentence says the reader counted it anyway');
-    ok(/“not scared”/.test(r.text), 'the denied words are still shown back, in the person\'s own letters');
-    ok(!errs.length, 'no page errors on the quiz: ' + errs.join(' | '));
-    await cx.close();
-  }
+  /* THE QUIZ'S STORY BOX IS GONE, 12 November. S1, S2 and S4 each read the
+     quiz page too, through its own storyLit() cards (the old quiz took a
+     story and drew sniffer cards under it). The 11 November quiz is 59
+     scale questions with no story input and no cards, and funnel/quiz.html
+     defines none of parseStory, storyLit, read or scored, so those three
+     quiz halves (four checks here, three in S2, one per story in S4) read
+     nothing and went, the same way the Day One tutorial's checks went on
+     23 October below. The Story page halves, where the reader still draws
+     on a screen, stay. */
 
   console.log('\n=== S2 · someone else\'s charge is set aside on the page, and said so ===');
   {
@@ -169,22 +159,7 @@ require('./net.js').guardBrowser(browser);
     ok(d.commit === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify(d.commit));
     ok(!p.errs.length, 'no page errors on the Story page: ' + p.errs.join(' | '));
     await p.cx.close();
-
-    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
-    const q = await cx.newPage(); const errs = [];
-    q.on('pageerror', e => errs.push(String(e && e.message || e)));
-    await q.goto(QUIZ, { waitUntil: 'load' });
-    const r = await q.evaluate(() => {
-      const t = 'He was furious with me. I felt ashamed.';
-      const ps = parseStory(t), h = storyLit(ps, t, read(scored().p).reading);
-      const box = document.createElement('div'); box.innerHTML = h;
-      return { text: box.textContent, cards: [...box.querySelectorAll('.sab[data-card]')].map(c => c.getAttribute('data-card')),
-        words: [...box.querySelectorAll('.sab .sl')].map(e => e.textContent).filter(x => /^Your words:/.test(x)) };
-    });
-    ok(r.cards.indexOf('Anger') < 0 && r.words.every(w => !/furious/.test(w)), 'the quiz makes no card of his anger and quotes it on none: ' + JSON.stringify(r));
-    ok(/“He was furious”/.test(r.text), 'and it shows his words back, in the person\'s own letters, as not counted');
-    ok(!errs.length, 'no page errors on the quiz: ' + errs.join(' | '));
-    await cx.close();
+    /* the quiz half of S2 went 12 November, see the note above S2 */
   }
 
   console.log('\n=== S4 · no screen says the person said or named an address they did not ===');
@@ -338,16 +313,10 @@ require('./net.js').guardBrowser(browser);
        its own, until that sequence was removed on 23 October. Both cards
        went with it, and so did the chain check, which read nothing else. */
 
-    /* the quiz's story cards */
-    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
-    const qz = await cx.newPage(); await qz.goto(QUIZ, { waitUntil: 'load' });
-    for (const t of STORIES) {
-      const txt = await qz.evaluate(tt => { const ps = parseStory(tt), h = storyLit(ps, tt, read(scored().p).reading);
-        const box = document.createElement('div'); box.innerHTML = h; return box.textContent; }, t);
-      const e = judge(ADDR, t, txt, []);
-      ok(e.length === 0, 'quiz story cards, ' + JSON.stringify(t) + ': ' + (e.join('; ') || 'clean'));
-    }
-    await cx.close();
+    /* the quiz's story cards were judged here too, one check per story in
+       STORIES, until the quiz lost its story box on 11 November (the note
+       above S2); nothing on the quiz prints an address read from a story
+       any more, so there is nothing for this rule to read there */
   }
 
   console.log('\n=== S5 · what was read and not counted is said on the Story page, with its meaning beside it ===');
