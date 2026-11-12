@@ -1,0 +1,31 @@
+name: Check MOB Recorder Worker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/quirky-pasteur-cpog96', 'main']
+    paths: ['workers/**', '.github/workflows/build-workers.yml']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # No deploy step here on purpose: wrangler deploy needs real Cloudflare
+      # credentials and an account-scoped KV/R2/Queue setup this repo's CI
+      # doesn't have (and deploying the Worker is explicitly out of scope —
+      # see docs/adr/004-queues-durable-objects.md). This only catches a
+      # syntax error before it reaches a real deploy, which previously
+      # nothing in CI did for this directory at all.
+      - name: Syntax check
+        run: |
+          set -euo pipefail
+          find src -name '*.js' -print0 | xargs -0 -n1 node --check
