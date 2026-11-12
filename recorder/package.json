@@ -14,7 +14,8 @@
     "dist:linux": "electron-builder --linux --publish never",
     "dist:all": "electron-builder --win --mac --linux --publish never",
     "release": "electron-builder --win --mac --linux --publish always",
-    "check": "node --check src/main/main.js && node --check src/main/windows.js && node --check src/main/settings.js && node --check src/main/ffmpeg.js && node --check src/main/recording-files.js && node --check src/preload/preload.js && node --check src/shared/shapes.js",
+    "check": "node scripts/check-syntax.js",
+    "test": "node --test",
     "smoke": "node scripts/smoke.js",
     "shot": "node scripts/shot.js"
   },
