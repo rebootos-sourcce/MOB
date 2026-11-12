@@ -127,6 +127,38 @@ test('voice: Porcupine + Vosk requires the wake word before a command is matched
   voice.stop();
 });
 
+test('voice: Vosk-only mode drops chapter/retake markers and gates them to recording/paused state', async (t) => {
+  installMocks();
+  t.after(restoreMocks);
+  delete process.env.PICOVOICE_API_KEY;
+  const existsOrig = fs.existsSync;
+  fs.existsSync = () => true;
+  t.after(() => { fs.existsSync = existsOrig; });
+
+  const voice = freshVoice();
+  const dropped = [];
+  let state = 'idle';
+  await voice.init(() => {}, { dropMarker: (type) => dropped.push(type), getRecordingState: () => state });
+
+  // Not recording yet — a misheard "chapter here" must not drop anything.
+  voskScript = { isFinal: true, text: 'chapter here' };
+  assert.equal(voice.processAudio(new Int16Array(512)), null);
+  assert.deepEqual(dropped, []);
+
+  state = 'recording';
+  voskScript = { isFinal: true, text: 'chapter here' };
+  assert.equal(voice.processAudio(new Int16Array(512)), 'chapter here');
+  assert.deepEqual(dropped, ['chapter']);
+
+  for (const phrase of ['scratch that', 'new take', 'cut that']) {
+    voskScript = { isFinal: true, text: phrase };
+    assert.equal(voice.processAudio(new Int16Array(512)), phrase);
+  }
+  assert.deepEqual(dropped, ['chapter', 'retake', 'retake', 'retake']);
+
+  voice.stop();
+});
+
 test('voice: Porcupine with no Vosk model available stays fully disabled', async (t) => {
   installMocks();
   t.after(restoreMocks);

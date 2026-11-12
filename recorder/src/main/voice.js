@@ -4,18 +4,33 @@
 // Falls back gracefully when native libraries are unavailable (proxy-restricted build env).
 //
 // States: IDLE -> LISTENING (after wake word) -> TRANSCRIBING (command spoken) -> IDLE
-// Commands: "start recording", "stop recording", "pause", "resume", "mute", "unmute"
+// Commands: "start recording", "stop recording"/"done", "pause", "resume",
+// "mute", "unmute", "chapter here", "cut that"/"new take"/"scratch that"
 
 // Fix #26: longer phrases first so "stop recording" and "unmute" match before
 // their prefixes ("stop", "mute") — entries are iterated in insertion order.
+//
+// Task #55: the RECORDING-tier slice of docs/mob-recorder-tdd.html:1764-1796's
+// full vocabulary table (mode-scoped IDLE/RECORDING/EDITING/GRADING/
+// DISTRIBUTING grammar; this file only implements the IDLE+RECORDING tiers
+// so far — see that task's own notes for what EDITING/GRADING/DISTRIBUTING
+// still needs and why it isn't here yet). "cut that"/"new take"/
+// "scratch that" are the spec's three synonyms for the same retake-boundary
+// marker dropMarker() already supports; "chapter here" is its chapter
+// counterpart; "done" is the spec's shorter synonym for "stop recording".
 const COMMANDS = [
   ['start recording', 'recorder:go'],
   ['stop recording',  'recorder:stop'],
+  ['chapter here',    'recorder:markChapter'],
+  ['scratch that',    'recorder:markRetake'],
+  ['new take',        'recorder:markRetake'],
+  ['cut that',        'recorder:markRetake'],
   ['pause',           'recorder:pause'],
   ['resume',          'recorder:resume'],
   ['unmute',          'recorder:setMic'],
   ['mute',            'recorder:setMic'],
   ['stop',            'recorder:stop'],
+  ['done',            'recorder:stop'],
 ];
 
 let _state       = 'IDLE';   // IDLE | LISTENING | TRANSCRIBING
@@ -170,6 +185,11 @@ function _matchCommand(text) {
       channel === 'recorder:resume' ? currentState === 'paused' :
       channel === 'recorder:go'     ? (currentState == null || currentState === 'idle') :
       channel === 'recorder:stop'   ? (currentState == null || currentState !== 'idle') :
+      // dropMarker() itself already rejects a marker outside recording/paused
+      // (see main.js) — gated here too so a misheard "chapter here" during
+      // IDLE doesn't even attempt the call, same as every other channel here.
+      (channel === 'recorder:markChapter' || channel === 'recorder:markRetake')
+        ? (currentState === 'recording' || currentState === 'paused') :
       true; // mute/unmute have no state dependency
 
     // Fix #16: cancel the listen timeout before transitioning state
@@ -186,6 +206,8 @@ function _matchCommand(text) {
     else if (channel === 'recorder:stop'   && _callbacks.stopRecording)  _callbacks.stopRecording();
     else if ((channel === 'recorder:pause' || channel === 'recorder:resume') && _callbacks.togglePause) _callbacks.togglePause();
     else if (channel === 'recorder:setMic' && _callbacks.setMic) _callbacks.setMic(payload.enabled);
+    else if (channel === 'recorder:markChapter' && _callbacks.dropMarker) _callbacks.dropMarker('chapter');
+    else if (channel === 'recorder:markRetake'  && _callbacks.dropMarker) _callbacks.dropMarker('retake');
     if (_sendControl) _sendControl(channel, payload);
     return phrase;
   }

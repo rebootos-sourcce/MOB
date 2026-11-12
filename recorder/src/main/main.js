@@ -1212,7 +1212,7 @@ app.whenReady().then(async () => {
   transcriptionHandlers.register(sendControl);
   editHandlers.register(sendControl);
   productionHandlers.register();
-  voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic, getRecordingState: () => rec.state });
+  voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic, dropMarker, getRecordingState: () => rec.state });
   syncHandlers.register(sendControl);
 
   // #69: app.getVersion() was never called anywhere — no build a bug report
