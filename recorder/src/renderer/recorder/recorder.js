@@ -157,7 +157,13 @@
 
   /** Where the bubble lands on the canvas, in canvas pixels. */
   function overlayRect() {
-    if (!overlay || !overlay.visible || !camVideo) return null;
+    // Only the overlay's own visibility/bounds matter here; whether the
+    // camera source itself is ready is checked by the caller (drawFrame)
+    // against camSrc, which covers both the VideoFrame and <video> fallback
+    // paths. Gating on camVideo specifically meant this always returned null
+    // on the primary (non-fallback) path, since camVideo is only ever
+    // assigned inside the useFallback branch — so the bubble was never drawn.
+    if (!overlay || !overlay.visible) return null;
     const b = overlay.bounds;
     if (displayBounds) {
       const sx = canvas.width / displayBounds.width;

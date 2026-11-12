@@ -838,7 +838,9 @@
     const field = el.dataset.field;
     if (!field) return;
     const value = el.textContent.trim() || null;
-    const payload = { id: _currentPkgId, edited_title: null, edited_description: null, edited_hashtags_json: null };
+    // Only the field that just blurred goes in the payload — sending the
+    // other two edited_* keys as null here is what used to wipe them.
+    const payload = { id: _currentPkgId };
     if (field === 'edited_hashtags_json') {
       payload.edited_hashtags_json = value ? value.split(/\s+/).map(t => t.replace(/^#/, '')) : null;
     } else {

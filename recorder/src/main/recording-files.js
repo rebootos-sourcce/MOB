@@ -30,30 +30,64 @@ class RawRecording {
     this.closed = null;
     this.stalled = false;
     this.stalls = 0;
-    this.stream.on('drain', () => { this.stalled = false; });
+    this.writeError = null;
+    // Chunks queued while the stream is backlogged, so append() can apply
+    // real back pressure instead of handing everything straight to
+    // stream.write() and letting Node buffer an unbounded overflow in
+    // main-process memory.
+    this._pending = [];
+    this.stream.on('drain', () => {
+      this.stalled = false;
+      // Replay whatever queued up while we were waiting for drain.
+      while (this._pending.length && this.stream.write(this._pending[0])) {
+        this._pending.shift();
+      }
+      if (this._pending.length) this.stalled = true;
+    });
+    // A disk-full or broken-handle error on this stream had no listener at
+    // all, which meant it threw as an unhandled error and crashed the whole
+    // main process mid-recording instead of surfacing "disk full" and
+    // letting the take be recovered from what was written so far.
+    this.stream.on('error', (err) => {
+      this.writeError = err;
+      // Unblock anything awaiting end() so finalize() doesn't hang forever
+      // on a stream that can no longer emit 'finish'.
+      if (this.closed === null) this.closed = Promise.resolve();
+    });
   }
   /**
-   * Returns false when the disk is not keeping up. The return value of
-   * write() used to be discarded, so on a slow or nearly-full drive Node
-   * buffered the entire overflow in main-process memory instead of applying
-   * back pressure, which turns a slow disk into a memory incident.
+   * Returns false when the disk is not keeping up. append() now queues
+   * instead of handing overflow straight to stream.write(): a chunk is
+   * only written once the stream has drained past whatever is ahead of it,
+   * so memory use is bounded by the queue rather than growing without limit
+   * on a slow or nearly-full drive.
    */
   append(buffer) {
-    if (this.closed) return true;
-    this.bytes += buffer.length;
-    const ok = this.stream.write(Buffer.from(buffer));
-    if (!ok && !this.stalled) { this.stalled = true; this.stalls++; }
+    if (this.closed || this.writeError) return true;
+    const buf = Buffer.from(buffer);
+    this.bytes += buf.length;
+    if (this.stalled) {
+      this._pending.push(buf);
+      return false;
+    }
+    const ok = this.stream.write(buf);
+    if (!ok) { this.stalled = true; this.stalls++; }
     return ok;
   }
   end() {
     if (!this.closed) {
-      this.closed = new Promise((resolve) => this.stream.end(resolve));
+      this.closed = new Promise((resolve) => {
+        if (this.writeError) { resolve(); return; }
+        this.stream.end(resolve);
+      });
     }
     return this.closed;
   }
   /** Default output file name for this take. */
   /** True when the disk has fallen behind and memory is filling. */
   get backlogged() { return this.stalled; }
+  /** Set to the underlying Error once the write stream has failed. */
+  get hadError() { return this.writeError; }
 
   suggestedName(format) {
     return `Recording ${stamp(this.startedAt)}.${format}`;

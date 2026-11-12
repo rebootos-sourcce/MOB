@@ -217,6 +217,11 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
     throw err;
   }
 
+  // Durability: the 1s debounce in sqlite.js is fine for routine writes, but
+  // this transaction is the one place minutes of transcription work land —
+  // force it to disk now rather than leaving it to the next scheduled save.
+  await db.flush();
+
   onProgress({ stage: 'done', pct: 100 });
 
   return { transcriptId, words: words.length, tags: hashtags.length };

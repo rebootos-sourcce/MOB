@@ -14,6 +14,9 @@ let db = null;       // sql.js Database instance
 let dbPath = null;
 let saveTimer = null;
 let dirty = false;
+// Serializes every persist() so a debounced write and a shutdown write can
+// never run concurrently and interleave their truncating writes onto dbPath.
+let persistChain = Promise.resolve();
 
 // ---------------------------------------------------------------- init
 
@@ -40,35 +43,60 @@ async function init(customPath) {
     db = new SQL.Database();
   }
 
-  applySchema();
+  await applySchema();
   runMigrations();
   return db;
 }
 
-function applySchema() {
+async function applySchema() {
   const schemaPath = path.join(__dirname, 'schema.sql');
   const sql = fs.readFileSync(schemaPath, 'utf8');
   db.run(sql);
-  persist();
+  await persist();
 }
 
 // ---------------------------------------------------------------- persistence
 
 // Fix #7: async persist — no longer blocks the main thread on writeFileSync.
-async function persist() {
+// Fix: write to a temp file and rename into place instead of truncating
+// dbPath directly. writeFile(dbPath) destroys the last-known-good database
+// before the new bytes land; a crash or power loss mid-write left mob.db
+// truncated with no way to recover. rename() on the same filesystem is
+// atomic, so dbPath always holds either the old complete file or the new
+// complete file, never a partial one.
+async function persistNow() {
   if (!db || !dbPath) return;
   const data = db.export();
   const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  await fsPromises.writeFile(dbPath, Buffer.from(data));
+  const tmpPath = dbPath + '.tmp-' + process.pid;
+  await fsPromises.writeFile(tmpPath, Buffer.from(data));
+  await fsPromises.rename(tmpPath, dbPath);
+}
+
+// Fix: serialize every persist behind one chain. The debounce timer and an
+// explicit flush()/close() used to call persistNow() independently, so a
+// quit arriving just after the timer fired could run two concurrent
+// export+write passes against the same path — two different-length exports
+// racing their renames, leaving dbPath as a hybrid of neither. Every call
+// now waits for the previous one to finish (success or failure) before its
+// own export is taken, and a failed step never breaks the chain for the
+// next caller.
+function persist() {
+  const result = persistChain.then(persistNow, persistNow);
+  persistChain = result.catch(() => {});
+  return result;
 }
 
 function schedulePersist() {
   dirty = true;
   if (saveTimer) return;
-  saveTimer = setTimeout(async () => {
+  saveTimer = setTimeout(() => {
     saveTimer = null;
-    if (dirty) { dirty = false; await persist(); }
+    if (dirty) {
+      dirty = false;
+      persist().catch((err) => console.error('[mob] DB persist failed:', err.message));
+    }
   }, 1000);
 }
 

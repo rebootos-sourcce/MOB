@@ -59,20 +59,31 @@ const QUERIES = {
 // ── named write operations ──────────────────────────────────────────────────
 
 const MUTATIONS = {
-  'packages:update': ({ id, edited_title, edited_description, edited_hashtags_json }) => {
-    db.run(
-      `UPDATE production_packages
-       SET edited_title = ?, edited_description = ?, edited_hashtags_json = ?
-       WHERE id = ?`,
-      [
-        edited_title        ?? null,
-        edited_description  ?? null,
-        edited_hashtags_json != null
-          ? (typeof edited_hashtags_json === 'string' ? edited_hashtags_json : JSON.stringify(edited_hashtags_json))
-          : null,
-        id,
-      ]
-    );
+  // Only columns actually present in the payload are written. The caller
+  // used to always send all three edited_* keys (null for the two the user
+  // wasn't touching), which meant every save overwrote the other two fields
+  // with NULL. Column names here are a fixed, hardcoded allowlist — never
+  // renderer-controlled — so this stays clear of raw SQL from the renderer.
+  'packages:update': (payload) => {
+    const { id } = payload;
+    const sets = [];
+    const vals = [];
+    if ('edited_title' in payload) {
+      sets.push('edited_title = ?');
+      vals.push(payload.edited_title ?? null);
+    }
+    if ('edited_description' in payload) {
+      sets.push('edited_description = ?');
+      vals.push(payload.edited_description ?? null);
+    }
+    if ('edited_hashtags_json' in payload) {
+      const v = payload.edited_hashtags_json;
+      sets.push('edited_hashtags_json = ?');
+      vals.push(v != null ? (typeof v === 'string' ? v : JSON.stringify(v)) : null);
+    }
+    if (sets.length) {
+      db.run(`UPDATE production_packages SET ${sets.join(', ')} WHERE id = ?`, [...vals, id]);
+    }
     return { ok: true };
   },
   'distributions:insert': ({ id, device_id, recording_id, package_id, platform, status }) => {

@@ -350,6 +350,11 @@ function setCompact(on) {
   sendControl('ui:compact', !!on);
 }
 
+// Returns a warning string on failure, or null on success. The caller folds
+// this into the single finalize:done it sends — this used to send its own
+// finalize:done on failure and the caller sent a second one right after,
+// so the second always clobbered the first and the warning never reached
+// the user even though it was built correctly.
 function persistRecordingRow(filePath, durationMs, format, codec) {
   try {
     const id = crypto.randomUUID();
@@ -360,11 +365,13 @@ function persistRecordingRow(filePath, durationMs, format, codec) {
        VALUES (?, ?, ?, ?, ?, 'ready', ?, datetime('now'))`,
       [id, deviceId, filePath, durationMs, codec, r2Key]
     );
+    return null;
   } catch (e) {
-    // The file IS saved — only the DB row write failed. Send a non-fatal warning
-    // rather than finalize:error so the user isn't told the save failed.
+    // The file IS saved — only the DB row write failed. Return a non-fatal
+    // warning rather than treating this as finalize:error, so the user
+    // isn't told the save failed when the video is actually fine on disk.
     console.error('[mob] Failed to persist recording row:', e.message);
-    sendControl('finalize:done', { path: filePath, dbWarning: 'Recording saved but not indexed: ' + e.message });
+    return 'Recording saved but not indexed: ' + e.message;
   }
 }
 
@@ -400,8 +407,13 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     rec.startedAt = 0;
     setCompact(false);
     publishState();
-    persistRecordingRow(result.output, durationMs, format, s.recording.codec);
-    sendControl('finalize:done', { path: result.output, durationMs, format });
+    const dbWarning = persistRecordingRow(result.output, durationMs, format, s.recording.codec);
+    // Durability: this INSERT is the only record a finished take exists.
+    // Force it to disk now rather than leaving it to the 1s debounce — a
+    // crash or forced quit inside that window otherwise leaves a complete
+    // video file with no row, invisible to the app forever.
+    await db.flush();
+    sendControl('finalize:done', { path: result.output, durationMs, format, dbWarning });
     bus.emit('finalized', { path: result.output, durationMs });
   } catch (err) {
     // Hardware encoder missing/failing? Retry once with libx264.
@@ -416,8 +428,9 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
         rec.startedAt = 0;
         setCompact(false);
         publishState({ message: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
-        persistRecordingRow(result.output, durationMs, format, 'h264');
-        sendControl('finalize:done', { path: result.output, durationMs, format, note: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
+        const dbWarning = persistRecordingRow(result.output, durationMs, format, 'h264');
+        await db.flush();
+        sendControl('finalize:done', { path: result.output, durationMs, format, note: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.`, dbWarning });
         bus.emit('finalized', { path: result.output, durationMs });
         return;
       } catch (err2) {
@@ -661,7 +674,18 @@ ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => 
 });
 
 // From the hidden recorder window
-ipcMain.on('recorder:chunk', (_e, chunk) => { if (rec.raw) rec.raw.append(chunk); });
+ipcMain.on('recorder:chunk', (_e, chunk) => {
+  if (!rec.raw) return;
+  rec.raw.append(chunk);
+  // A disk error (most commonly disk-full) used to have no listener on the
+  // write stream at all, so it threw unhandled and crashed the main process.
+  // Now it's caught and surfaced here: stop the take immediately rather than
+  // keep silently dropping every subsequent chunk until the user notices.
+  if (rec.raw.hadError && rec.state !== 'finalizing') {
+    rec.message = 'Recording stopped: disk write failed (' + rec.raw.hadError.message + ')';
+    stopRecording();
+  }
+});
 ipcMain.on('recorder:state', (_e, msg) => {
   if (msg.warnings) rec.warnings = msg.warnings;
   if (msg.state === 'armed' && rec.state === 'arming') {
@@ -742,7 +766,15 @@ app.whenReady().then(async () => {
 
   control.on('moved', persistControlPosition);
   control.on('resized', persistControlPosition);
-  control.on('closed', () => { app.__quitting = true; app.quit(); });
+  // Don't set __quitting here — that flag is before-quit's own guard against
+  // re-entering itself after it has already started closing the DB. Setting
+  // it in advance made before-quit's `if (app.__quitting) return` fire
+  // immediately, skipping db.close() entirely on the most common quit path
+  // (closing the control window). app.quit() below triggers before-quit on
+  // its own, which sets the flag, closes the DB, then calls app.quit() again
+  // — that second call is what this handler's old early flag was meant to
+  // allow through, and before-quit already does that itself.
+  control.on('closed', () => { app.quit(); });
   registerShortcuts();
 
   if (process.env.MOB_SHOT) {
@@ -789,6 +821,10 @@ app.on('before-quit', (e) => {
   e.preventDefault();
   app.__quitting = true;
   globalShortcut.unregisterAll();
-  db.close().catch(() => {}).finally(() => app.quit());
+  // A live take's raw stream used to be abandoned mid-write on quit. end()
+  // flushes and closes the file handle so the raw recording is at least
+  // intact on disk, even though this exit skips transcoding/indexing it.
+  const endRaw = rec.raw ? rec.raw.end().catch(() => {}) : Promise.resolve();
+  endRaw.then(() => db.close()).catch(() => {}).finally(() => app.quit());
 });
 app.on('window-all-closed', () => app.quit());
