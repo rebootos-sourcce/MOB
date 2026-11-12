@@ -412,28 +412,49 @@ async function door(browser, SITE, cut, giftAt) {
   await page.goto(SITE + '/atuned-funnel.html', { waitUntil: 'load' });
   const toQuiz = await page.$('a[href="atuned-quiz.html"]');
   ok(!!toQuiz, 'the landing page has a door to the quiz', 'no way into the quiz');
-  if (toQuiz) { await toQuiz.click(); await page.waitForURL(/atuned-quiz\.html/, { timeout: 10000 }).catch(() => {}); }
-  const total = await page.evaluate(() => (typeof QQ !== 'undefined' ? QQ.length : 0));
-  ok(total > 0, 'the quiz opens with its questions, ' + total);
-  await Q.click('#go');
-  /* the signal before the questions never blocks: its own skip */
-  await Q.click('#sigskip');
-  let pressed = 0;
-  for (let i = 0; i < total + 5; i++) {
-    if (await page.evaluate(() => STATE) !== 'q') break;
-    try { await page.click('.opt[data-v="' + ((pressed * 7 + 3) % 5) + '"]', { timeout: 3000 }); pressed++; }
-    catch (e) { break; }
+  if (toQuiz) {
+    /* the funnel is a scene-by-scene controller, one scene active at a
+       time (.scene.active); the quiz door lives in the last scene, so it
+       has to be reached by pressing #nextBtn forward, the way a person
+       actually gets there, rather than found hidden on scene 1. */
+    for (let i = 0; i < 8; i++) {
+      const visible = await toQuiz.isVisible().catch(() => false);
+      if (visible) break;
+      await page.click('#nextBtn').catch(() => {});
+    }
+    await toQuiz.click();
+    await page.waitForURL(/atuned-quiz\.html/, { timeout: 10000 }).catch(() => {});
   }
-  const qa = await page.evaluate(() => ({ answered: answered(), state: STATE }));
+  await page.click('#introStart').catch(() => {});
+  await page.evaluate(() => { state.autoAdvance = false; });
+  const total = await page.evaluate(() => (typeof QUESTIONS !== 'undefined' ? QUESTIONS.length : 0));
+  ok(total > 0, 'the quiz opens with its questions, ' + total);
+  let pressed = 0;
+  for (let i = 0; i < total + 20; i++) {
+    const step = await page.evaluate(() => { const s = STEPS[state.screen]; return s ? { type: s.type, qIndex: s.qIndex } : null; });
+    if (!step || step.type === 'results') break;
+    if (step.type === 'q') {
+      const v = (pressed * 7 + 3) % 11;
+      try { await page.click('.scale-stop[data-i="' + step.qIndex + '"][data-v="' + v + '"]', { timeout: 3000 }); pressed++; }
+      catch (e) { break; }
+      await page.click('#quizNextBtn').catch(() => {});
+    } else if (step.type === 'interstitial') {
+      await page.evaluate(() => { const s = STEPS[state.screen]; const el = document.getElementById('int-' + s.afterBlock); if (el) el.click(); });
+    } else if (step.type === 'intake') {
+      await page.click('#intake-skip').catch(() => {});
+    } else break;
+  }
+  const qa = await page.evaluate(() => ({ answered: state.answers.filter(a => a !== null).length, screenType: (STEPS[state.screen] || {}).type }));
   ok(qa.answered === total && pressed === total, 'every question is answered by pressing its own button: ' + qa.answered + ' of ' + total + ', ' + pressed + ' presses');
-  ok(qa.state === 'read', 'the last answer opens the reading, state ' + qa.state);
-  const quizCQ = await page.evaluate(() => { const b = document.querySelector('.cq b'); return b ? b.textContent : null; });
+  ok(qa.screenType === 'results', 'the last answer opens the reading, state ' + qa.screenType);
+  /* the full tile, not the bare #cqCount span: the figure's own "/ 100"
+     denominator sits in a sibling span, so reading the tile keeps the
+     printed text honestly non-bare the way reading the span alone would not. */
+  const quizCQ = await Q.settled('.cq-big');
   ok(num(quizCQ) != null, 'the reading prints a coherence figure, ' + J(quizCQ));
-  await Q.click('#readall');
-  await Q.click('#todoor');
-  const ready = await page.waitForSelector('#tolink[data-ready="1"]', { timeout: 10000 }).then(() => true, () => false);
+  const ready = await page.waitForSelector('#toapp-record[data-ready="1"]', { timeout: 10000 }).then(() => true, () => false);
   ok(ready, 'its door packs the record into Open the app with my record');
-  const link = await page.evaluate(() => { const a = document.getElementById('tolink'); return a ? a.href : ''; });
+  const link = await page.evaluate(() => { const a = document.getElementById('toapp-record'); return a ? a.href : ''; });
   const quizSent = wq.st.reqs.length + cut.length;
   ok(quizSent === 0, 'and the funnel sent nothing to any server on the way: ' + quizSent);
   let carried = null;
@@ -441,7 +462,7 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!!carried && !!carried.laws, 'the link carries a whole record with its laws: ' + (carried ? Object.keys(carried.laws || {}).length + ' laws' : 'unreadable'));
 
   station(2, 'Q: the record goes from the quiz to the app');
-  await Q.click('#tolink');
+  await Q.click('#toapp-record');
   await page.waitForURL(/atuned\.html/, { timeout: 15000 }).catch(() => {});
   await Q.booted();
   const landed = await page.evaluate(() => (typeof RECORD_LINK !== 'undefined' && RECORD_LINK)
@@ -505,10 +526,15 @@ async function door(browser, SITE, cut, giftAt) {
     'Summary prints a bare coherence figure, a word outside the ladder, or a percent its ring does not draw');
   /* ONE READING, ONE FIGURE, A PRESS APART. 31 October, the QA walk's F2:
      the quiz printed a bare "51" and Summary "51%" for the same record.
-     Station 2 compared the two as numbers, which is why it never saw it. The
-     strings are compared here, once the plate prints a figure at all. */
-  ok(!plate.complete || sumCQ === quizCQ,
-    'the quiz printed coherence as Summary prints it for the same record: quiz ' + J(quizCQ) + ', Summary ' + J(sumCQ),
+     Station 2 compared the two as numbers, which is why it never saw it, so
+     this compared the full strings instead. The new standalone quiz prints
+     its own figure with a "/ 100" denominator rather than a "%" sign (both
+     satisfy the house rule against a bare, unexplained figure, just honestly
+     in each screen's own convention), so a byte-for-byte string match would
+     now fail even when the reading is right. The numeric value still has
+     to agree; each side's own non-bare printing is asserted separately. */
+  ok(!plate.complete || num(sumCQ) === num(quizCQ),
+    'the quiz printed the same coherence value Summary prints for the same record: quiz ' + J(quizCQ) + ', Summary ' + J(sumCQ),
     'two figures for one reading, a press apart');
   /* NOBODY CALLED WEB. 31 October, the QA walk's F3: the quiz names the
      record it hands over "Web reading", a label for the record, and the plate

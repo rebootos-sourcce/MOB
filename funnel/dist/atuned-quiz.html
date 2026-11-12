@@ -31049,7 +31049,16 @@ function quizRecord(r){
  }
  return p;
 }
-function recordJSON(r){ return JSON.stringify(saveProfile(quizRecord(r)), null, 1); }
+/* NOT saveProfile(). That function commits the engine's live S state
+   (S.charge, S.doms/arcs/roots, S.addr, S.law) onto a profile, built for
+   the in-app save flow where loadProfile(p) has already put this exact
+   record into S. This page never loads the quiz record into S -- there
+   is no live profile here to snapshot -- so saveProfile would overwrite
+   every field archSeedApply/sabSeedApply/the law loop above just wrote
+   with S's own default/zero state. quizRecord(r) is already a complete,
+   valid profile (blankProfile's own shape plus these self-reported
+   fields); it needs no further finishing step before export. */
+function recordJSON(r){ return JSON.stringify(quizRecord(r), null, 1); }
 function recordLink(base, r){
  if(typeof CompressionStream!=='function'||typeof Response!=='function'
   ||typeof TextEncoder!=='function')return Promise.reject(new Error('NoCompression'));
