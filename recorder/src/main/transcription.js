@@ -11,8 +11,14 @@ const { detectSilences } = require('./intelligence/silence');
 const { formCaptions } = require('./intelligence/captions');
 const { extractHashtags } = require('./intelligence/hashtags');
 
-// Cache the pipeline so it isn't re-loaded on every transcription
+// Cache the pipeline so it isn't re-loaded on every transcription.
+// _whisperPipelinePromise caches the IN-FLIGHT load, not just the resolved
+// result — loadWhisper() used to check only the resolved value, so two
+// transcriptions starting close together (e.g. a second recording's "Edit"
+// tab opened while the first is still loading the model) both saw null and
+// both triggered a full ~150MB pipeline load in parallel.
 let _whisperPipeline = null;
+let _whisperPipelinePromise = null;
 
 /**
  * Check whether the Whisper model files are cached locally.
@@ -43,6 +49,7 @@ function checkModelCached() {
 
 async function loadWhisper(onProgress) {
   if (_whisperPipeline) return _whisperPipeline;
+  if (_whisperPipelinePromise) return _whisperPipelinePromise;
 
   const { pipeline, env } = require('@xenova/transformers');
   const { app } = require('electron');
@@ -50,7 +57,7 @@ async function loadWhisper(onProgress) {
 
   if (onProgress) onProgress({ stage: 'loading_model', pct: 0 });
 
-  _whisperPipeline = await pipeline('automatic-speech-recognition', 'Xenova/whisper-base.en', {
+  _whisperPipelinePromise = pipeline('automatic-speech-recognition', 'Xenova/whisper-base.en', {
     dtype: 'q8',
     progress_callback: (p) => {
       if (!onProgress) return;
@@ -67,10 +74,18 @@ async function loadWhisper(onProgress) {
         onProgress({ stage: 'model_ready', pct: 100 });
       }
     }
+  }).then((p) => {
+    _whisperPipeline = p;
+    _whisperPipelinePromise = null;
+    return p;
+  }).catch((err) => {
+    _whisperPipelinePromise = null; // allow a later call to retry
+    throw err;
   });
 
+  const result = await _whisperPipelinePromise;
   if (onProgress) onProgress({ stage: 'loading_model', pct: 100 });
-  return _whisperPipeline;
+  return result;
 }
 
 /**
@@ -94,6 +109,21 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
 
   const pipe = await loadWhisper(onProgress);
 
+  // Fetched early (used to be read only after transcribing finished) so it
+  // can also drive a real progress estimate below, instead of the bar
+  // jumping straight from 0% to 100% with nothing in between for however
+  // long the recording takes to process.
+  const rec = db.get('SELECT duration_ms FROM recordings WHERE id = ?', [recordingId]);
+  const totalDurationMs = rec ? (rec.duration_ms || 0) : 0;
+
+  const CHUNK_LENGTH_S = 30;
+  const STRIDE_LENGTH_S = 5;
+  const jumpS = CHUNK_LENGTH_S - 2 * STRIDE_LENGTH_S; // seconds of new audio consumed per chunk
+  const estimatedChunks = totalDurationMs > 0
+    ? Math.max(1, Math.ceil((totalDurationMs / 1000) / jumpS))
+    : 0;
+  let chunksDone = 0;
+
   const _transcribeStart = Date.now();
   onProgress({ stage: 'transcribing', pct: 0, elapsedMs: 0 });
 
@@ -101,10 +131,19 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   // 30-second chunk boundaries. Required for all downstream intelligence algorithms.
   const result = await pipe(filePath, {
     return_timestamps: 'word',
-    chunk_length_s: 30,
-    stride_length_s: 5,
+    chunk_length_s: CHUNK_LENGTH_S,
+    stride_length_s: STRIDE_LENGTH_S,
     language: 'english',
     task: 'transcribe',
+    // Fires once per ~20s of audio actually processed — real granularity
+    // instead of a single jump from 0% to 100% at the very end.
+    chunk_callback: () => {
+      chunksDone++;
+      const pct = estimatedChunks > 0
+        ? Math.min(99, Math.round((chunksDone / estimatedChunks) * 100))
+        : Math.min(99, chunksDone * 10);
+      onProgress({ stage: 'transcribing', pct, elapsedMs: Date.now() - _transcribeStart });
+    },
   });
 
   onProgress({ stage: 'transcribing', pct: 100, elapsedMs: Date.now() - _transcribeStart });
@@ -114,19 +153,33 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   // With return_timestamps:'word', result.chunks contains word-level entries
   // Each chunk: { text: string, timestamp: [startSec, endSec] }
   const chunks = result.chunks || [];
+  // Whisper's long-form chunking (30s windows, 5s stride) routinely emits
+  // [start, null] for the last word of a chunk, and can emit words slightly
+  // out of order or overlapping across a stride seam. A null end used to
+  // collapse to 0, producing a word with a large start_ms and end_ms=0 —
+  // detectSilences then read the gap to the next word as spanning most of
+  // the recording, so "Remove silences" cut real speech. Every downstream
+  // consumer (silence/energy/EDL) also assumes sorted, non-overlapping words.
   const words = chunks
-    .map(c => ({
-      word:  c.text,
-      start: Array.isArray(c.timestamp) ? (c.timestamp[0] ?? 0) : 0,
-      end:   Array.isArray(c.timestamp) ? (c.timestamp[1] ?? 0) : 0,
-    }))
-    .filter(w => w.word.trim());
+    .map(c => {
+      const t = Array.isArray(c.timestamp) ? c.timestamp : [0, 0];
+      const start = t[0] ?? 0;
+      const end = Math.max(t[1] ?? start, start);
+      return { word: c.text, start, end };
+    })
+    .filter(w => w.word.trim())
+    .sort((a, b) => a.start - b.start)
+    .reduce((acc, w) => {
+      const prevEnd = acc.length ? acc[acc.length - 1].end : 0;
+      const start = Math.max(w.start, prevEnd);
+      acc.push({ word: w.word, start, end: Math.max(w.end, start) });
+      return acc;
+    }, []);
 
   onProgress({ stage: 'analyzing', pct: 10 });
 
-  // Fix #3: load actual recording duration for trailing-silence detection
-  const rec = db.get('SELECT duration_ms FROM recordings WHERE id = ?', [recordingId]);
-  const totalDurationMs = rec ? (rec.duration_ms || 0) : 0;
+  // totalDurationMs was already loaded above (needed earlier for the chunk
+  // progress estimate); reused here for trailing-silence detection.
 
   // Run intelligence algorithms
   const fillerSegs  = detectFillers(words);
@@ -137,7 +190,12 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   onProgress({ stage: 'analyzing', pct: 80 });
 
   // Fix #14: build a Set of filler word indices instead of O(N×M) .some() per word
-  const fillerIntervals = fillerSegs.map(f => ({ lo: f.start_ms - 200, hi: f.end_ms + 200 }));
+  // filler.js already pads each hit (PRE_PAD_MS/POST_PAD_MS) before returning
+  // segments — the extra ±200ms here was stacking a SECOND pad on top of that
+  // one, widening the effective marking window to 350ms before / 250ms after
+  // each filler. At normal speech cadence that reliably swallowed the
+  // preceding word too.
+  const fillerIntervals = fillerSegs.map(f => ({ lo: f.start_ms, hi: f.end_ms }));
   function isFiller(w) {
     const ms = w.start * 1000;
     // Filler intervals are sorted by start; use a simple scan (small N in practice)

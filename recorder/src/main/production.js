@@ -8,7 +8,7 @@ const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { extractHashtags } = require('./intelligence/hashtags');
 const { detectChapters } = require('./intelligence/energy');
-const { loadEdl } = require('./edl');
+const { loadEdl, remapTimestamp } = require('./edl');
 const { generateVariants } = require('./intelligence/variants');
 
 /**
@@ -35,37 +35,35 @@ async function assemblePackage({ recordingId, clipId = null }) {
   const recording = db.get('SELECT * FROM recordings WHERE id = ?', [recordingId]);
   const durationMs = recording ? recording.duration_ms : 0;
 
-  // Load EDL and remap word timestamps if cuts have been applied
-  // Fix #11: build a binary-search helper so remapTimestamp is O(log N) per word
+  // Load EDL and remap word timestamps if cuts have been applied. Uses the
+  // one shared remapTimestamp from edl.js — this used to reimplement its own
+  // binary search with slightly different boundary semantics, which meant
+  // the two could disagree on a timestamp sitting exactly on an adjacent-cut
+  // boundary. A linear scan is plenty fast here: edlEntries is bounded by
+  // how many cuts a user made, not by recording length.
   const edlEntries = loadEdl(recordingId);
   let remappedWords;
+  let outputDurationMs;
   if (edlEntries.length) {
-    // EDL is ordered by seq (source_start_ms ascending) — binary search for each word
-    function bsRemap(sourceMs) {
-      let lo = 0, hi = edlEntries.length - 1;
-      while (lo <= hi) {
-        const mid = (lo + hi) >>> 1;
-        const e = edlEntries[mid];
-        if (sourceMs < e.source_start_ms) { hi = mid - 1; }
-        else if (sourceMs > e.source_end_ms) { lo = mid + 1; }
-        else { return e.output_start_ms + (sourceMs - e.source_start_ms); }
-      }
-      return null;
-    }
     remappedWords = words.map(w => {
-      const remapped = bsRemap(w.start * 1000);
+      const remapped = remapTimestamp(edlEntries, w.start * 1000);
       if (remapped === null) return null;
       const dur = w.end - w.start;
       return { ...w, start: remapped / 1000, end: (remapped / 1000) + dur };
     }).filter(Boolean);
+    // Chapters must be timed against the EDITED (output) duration, not the
+    // source recording's duration — otherwise a 10-minute source cut to
+    // 6 minutes can get chapter boundaries past the end of the actual file.
+    outputDurationMs = edlEntries[edlEntries.length - 1].output_end_ms;
   } else {
     remappedWords = words;
+    outputDurationMs = durationMs;
   }
 
   // Generate metadata
   const fullText = transcript.full_text || '';
   const hashtags  = extractHashtags(fullText);
-  const chapters  = detectChapters(remappedWords, durationMs);
+  const chapters  = detectChapters(remappedWords, outputDurationMs);
 
   // Title: use first sentence of transcript, truncated
   const firstSentence = (fullText.split(/[.!?]/)[0] || '').trim().slice(0, 80);

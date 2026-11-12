@@ -16,6 +16,7 @@ const syncHandlers  = require('./ipc/sync-handlers');
 const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
+const { loadEdl, remapTimestamp } = require('./edl');
 const crypto = require('crypto');
 
 /** Internal event bus (used by the headless smoke test). */
@@ -34,7 +35,7 @@ let bubble = null;
 let recorder = null;
 let recorderReady = null;   // resolves once the recorder window has loaded
 
-/** Recording state machine: idle -> countdown -> recording <-> paused -> finalizing -> idle */
+/** Recording state machine: idle -> arming -> countdown -> recording <-> paused -> finalizing -> idle */
 const rec = {
   state: 'idle',
   raw: null,
@@ -83,8 +84,33 @@ function ensureRecorder() {
       reject(new Error(`recorder window failed to load: ${code} ${desc}`));
     });
   });
-  recorder.on('closed', () => { recorderReady = null; recorder = null; });
+  // There was no handler for this anywhere outside the test harness. A
+  // renderer crash during recording/stop used to leave the state machine
+  // stuck in its current state forever — start/stop/pause all guard on
+  // rec.state and became permanent no-ops until the app was restarted.
+  recorder.webContents.on('render-process-gone', (_e, details) => {
+    console.error('[mob] recorder window renderer gone:', details.reason);
+    recoverFromRecorderLoss('Recording engine crashed (' + details.reason + '). Please try again.');
+  });
+  recorder.on('closed', () => {
+    recorderReady = null;
+    recorder = null;
+    if (!app.__quitting && rec.state !== 'idle') {
+      recoverFromRecorderLoss('Recording engine window closed unexpectedly.');
+    }
+  });
   return recorderReady;
+}
+
+/** Resets the state machine after the recorder window dies or hangs mid-take. */
+function recoverFromRecorderLoss(message) {
+  if (finalizeTimeoutTimer) { clearTimeout(finalizeTimeoutTimer); finalizeTimeoutTimer = null; }
+  if (rec.raw) { try { rec.raw.end(); } catch (_) {} rec.raw = null; }
+  rec.state = 'idle';
+  rec.startedAt = 0;
+  rec.message = message;
+  setCompact(false);
+  publishState();
 }
 
 // Test harnesses attach console/crash listeners to every window; a lazily
@@ -123,6 +149,24 @@ function overlayPayload() {
     visible: s.bubble.visible,
     border: s.bubble.border
   };
+}
+
+let finalizeTimeoutTimer = null;
+const FINALIZE_TIMEOUT_MS = 10 * 60 * 1000; // generous — a long recording genuinely takes a while to encode
+
+/**
+ * Bounds a promise so a hung ffmpeg/encode step can't strand the UI in
+ * 'finalizing' forever. `onTimeout`, when given, actually kills the
+ * underlying process (via an AbortSignal at the call site) — without it,
+ * timing out here only abandons the promise while ffmpeg keeps running
+ * and writing to the output file in the background.
+ */
+function withTimeout(promise, ms, message, onTimeout) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => { if (onTimeout) onTimeout(); reject(new Error(message)); }, ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 let overlayTimer = null;
@@ -292,11 +336,26 @@ function stopRecording() {
     rec.state = 'idle';
     broadcast('ui:countdown', 0);
     sendRecorder('recorder:stop');
-    if (rec.raw) { rec.raw.end(); rec.raw = null; }
+    // Nothing has been written yet at this point — go() (and therefore the
+    // first chunk) hasn't run — so the raw file is empty and safe to remove
+    // immediately instead of leaving an orphan for the 2-day sweep.
+    if (rec.raw) {
+      const rawPath = rec.raw.path;
+      rec.raw.end().then(() => require('fs').promises.unlink(rawPath)).catch(() => {});
+      rec.raw = null;
+    }
     publishState();
     return;
   }
   if (rec.state !== 'recording' && rec.state !== 'paused') return;
+  // Stopping directly from 'paused' used to skip folding the open pause
+  // interval into pausedTotal (elapsedMs()'s pausedNow term only applies in
+  // the 'paused' state, which this leaves immediately) — the elapsed time
+  // shown during finalizing would jump by the length of the last pause.
+  if (rec.state === 'paused' && rec.pausedAt) {
+    rec.pausedTotal += Date.now() - rec.pausedAt;
+    rec.pausedAt = 0;
+  }
   rec.state = 'finalizing';
   publishState({ progress: 0 });
   sendRecorder('recorder:stop');
@@ -350,14 +409,14 @@ function setCompact(on) {
   sendControl('ui:compact', !!on);
 }
 
-// Returns a warning string on failure, or null on success. The caller folds
-// this into the single finalize:done it sends — this used to send its own
-// finalize:done on failure and the caller sent a second one right after,
-// so the second always clobbered the first and the warning never reached
-// the user even though it was built correctly.
+// Returns { id, warning }. warning is non-null on failure, null on success.
+// The caller folds warning into the single finalize:done it sends — this
+// used to send its own finalize:done on failure and the caller sent a
+// second one right after, so the second always clobbered the first and the
+// warning never reached the user even though it was built correctly.
 function persistRecordingRow(filePath, durationMs, format, codec) {
+  const id = crypto.randomUUID();
   try {
-    const id = crypto.randomUUID();
     const deviceId = getDeviceId();
     const r2Key = recordingKey(id, format);
     db.run(
@@ -365,14 +424,33 @@ function persistRecordingRow(filePath, durationMs, format, codec) {
        VALUES (?, ?, ?, ?, ?, 'ready', ?, datetime('now'))`,
       [id, deviceId, filePath, durationMs, codec, r2Key]
     );
-    return null;
+    return { id, warning: null };
   } catch (e) {
     // The file IS saved — only the DB row write failed. Return a non-fatal
     // warning rather than treating this as finalize:error, so the user
     // isn't told the save failed when the video is actually fine on disk.
     console.error('[mob] Failed to persist recording row:', e.message);
-    return 'Recording saved but not indexed: ' + e.message;
+    return { id, warning: 'Recording saved but not indexed: ' + e.message };
   }
+}
+
+/**
+ * The recordings.thumb column and the UI's thumbnail slot both existed with
+ * nothing ever writing it. Runs after finalize (fire-and-forget — thumbnail
+ * generation shouldn't delay telling the user the save succeeded).
+ */
+function generateThumbnailFor(recordingId, videoPath) {
+  const thumbDir = path.join(app.getPath('userData'), 'thumbs');
+  try { require('fs').mkdirSync(thumbDir, { recursive: true }); } catch (_) {}
+  const thumbPath = path.join(thumbDir, recordingId + '.jpg');
+  ffmpeg.extractThumbnail(videoPath, thumbPath, 0.5)
+    .then(() => {
+      db.run('UPDATE recordings SET thumb = ? WHERE id = ?', [thumbPath, recordingId]);
+      sendControl('recording:thumbReady', { recordingId, thumb: thumbPath });
+    })
+    .catch((err) => {
+      console.error('[mob] thumbnail generation failed for', recordingId, ':', err.message);
+    });
 }
 
 async function finalizeRecording(durationMs, rawVideoCodec) {
@@ -394,20 +472,26 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     if (!res.canceled && res.filePath) outputPath = res.filePath;
   }
 
+  const finalizeAbort = new AbortController();
   try {
-    const result = await raw.finalize(outputPath, {
-      format,
-      codec: s.recording.codec,
-      quality: s.recording.quality,
-      fps: s.recording.fps,
-      durationMs,
-      rawVideoCodec
-    }, (p) => sendControl('finalize:progress', p));
+    const result = await withTimeout(
+      raw.finalize(outputPath, {
+        format,
+        codec: s.recording.codec,
+        quality: s.recording.quality,
+        fps: s.recording.fps,
+        durationMs,
+        rawVideoCodec
+      }, (p) => sendControl('finalize:progress', p), finalizeAbort.signal),
+      FINALIZE_TIMEOUT_MS,
+      'Finalize timed out — the encoder may be stuck.',
+      () => finalizeAbort.abort()
+    );
     rec.state = 'idle';
     rec.startedAt = 0;
     setCompact(false);
     publishState();
-    const dbWarning = persistRecordingRow(result.output, durationMs, format, s.recording.codec);
+    const { id: newRecId, warning: dbWarning } = persistRecordingRow(result.output, durationMs, format, s.recording.codec);
     // Durability: this INSERT is the only record a finished take exists.
     // Force it to disk now rather than leaving it to the 1s debounce — a
     // crash or forced quit inside that window otherwise leaves a complete
@@ -415,23 +499,31 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     await db.flush();
     sendControl('finalize:done', { path: result.output, durationMs, format, dbWarning });
     bus.emit('finalized', { path: result.output, durationMs });
+    if (!dbWarning) generateThumbnailFor(newRecId, result.output);
   } catch (err) {
     // Hardware encoder missing/failing? Retry once with libx264.
     if (format === 'mp4' && s.recording.codec !== 'h264') {
       try {
         const retryRaw = raw; // raw file still exists because finalize failed before unlink
-        const result = await ffmpeg.finalize(retryRaw.path, outputPath, {
-          format, codec: 'h264', quality: s.recording.quality, fps: s.recording.fps, durationMs, rawVideoCodec
-        }, (p) => sendControl('finalize:progress', p));
+        const retryAbort = new AbortController();
+        const result = await withTimeout(
+          ffmpeg.finalize(retryRaw.path, outputPath, {
+            format, codec: 'h264', quality: s.recording.quality, fps: s.recording.fps, durationMs, rawVideoCodec
+          }, (p) => sendControl('finalize:progress', p), retryAbort.signal),
+          FINALIZE_TIMEOUT_MS,
+          'Finalize timed out — the encoder may be stuck.',
+          () => retryAbort.abort()
+        );
         try { require('fs').unlinkSync(retryRaw.path); } catch (_) { /* ignore */ }
         rec.state = 'idle';
         rec.startedAt = 0;
         setCompact(false);
         publishState({ message: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
-        const dbWarning = persistRecordingRow(result.output, durationMs, format, 'h264');
+        const { id: retryRecId, warning: dbWarning } = persistRecordingRow(result.output, durationMs, format, 'h264');
         await db.flush();
         sendControl('finalize:done', { path: result.output, durationMs, format, note: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.`, dbWarning });
         bus.emit('finalized', { path: result.output, durationMs });
+        if (!dbWarning) generateThumbnailFor(retryRecId, result.output);
         return;
       } catch (err2) {
         err = err2;
@@ -609,6 +701,9 @@ ipcMain.handle('waveform:load', async (_e, filePath) => {
 });
 
 function toSrtTime(ms) {
+  // A NaN or negative value (e.g. from a bad EDL remap) used to produce an
+  // unplayable "NaN:NaN:NaN,NaN" cue instead of a clamped, valid timestamp.
+  ms = Number.isFinite(ms) && ms > 0 ? Math.round(ms) : 0;
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
   const s = Math.floor((ms % 60000) / 1000);
@@ -629,12 +724,30 @@ ipcMain.handle('captions:export', async (_e, { recordingId, format = 'srt' }) =>
   );
   if (!segs.length) throw new Error('No caption segments found');
 
+  // Remap through the EDL so exported captions match what the user actually
+  // cut, not the original recording. remapTimestamp() returns null for a
+  // timestamp inside a cut; a segment whose start maps to null was removed
+  // entirely and is dropped, and an end that lands inside a cut is pulled
+  // back to just before it (sourceMs - 1) so a partially-cut segment is
+  // clipped to what survived rather than thrown away outright.
+  const edlEntries = loadEdl(recordingId);
+  const remapped = edlEntries.length
+    ? segs.map(seg => {
+        const start = remapTimestamp(edlEntries, seg.start_ms);
+        if (start === null) return null;
+        let end = remapTimestamp(edlEntries, Math.max(seg.start_ms, seg.end_ms - 1));
+        if (end === null) end = start + 1;
+        return { start_ms: start, end_ms: Math.max(start + 1, end), text: seg.text };
+      }).filter(Boolean)
+    : segs;
+  if (!remapped.length) throw new Error('All caption segments fall inside cuts for this recording');
+
   let content;
   if (format === 'vtt') {
-    const body = segs.map(seg => `${toVttTime(seg.start_ms)} --> ${toVttTime(seg.end_ms)}\n${seg.text}`).join('\n\n');
+    const body = remapped.map(seg => `${toVttTime(seg.start_ms)} --> ${toVttTime(seg.end_ms)}\n${seg.text}`).join('\n\n');
     content = 'WEBVTT\n\n' + body + '\n';
   } else {
-    content = segs.map((seg, i) =>
+    content = remapped.map((seg, i) =>
       `${i + 1}\n${toSrtTime(seg.start_ms)} --> ${toSrtTime(seg.end_ms)}\n${seg.text}\n`
     ).join('\n');
   }
@@ -653,22 +766,37 @@ ipcMain.handle('captions:export', async (_e, { recordingId, format = 'srt' }) =>
 });
 
 ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => {
-  const row = db.get('SELECT id, path FROM recordings WHERE id = ?', [recordingId]);
+  const row = db.get('SELECT id, path, thumb FROM recordings WHERE id = ?', [recordingId]);
   if (!row) return { ok: false, error: 'Not found' };
-  const transcript = db.get('SELECT id FROM transcripts WHERE recording_id = ?', [recordingId]);
-  if (transcript) {
-    db.run('DELETE FROM words WHERE transcript_id = ?', [transcript.id]);
-    db.run('DELETE FROM segments WHERE transcript_id = ?', [transcript.id]);
+
+  // These nine DELETEs used to run with no transaction, unlike edl.applyCuts
+  // and transcription's write — a throw mid-sequence (or a crash) could
+  // leave the recording row gone while words/segments/clips survived, and
+  // every cleanup path keys off recording_id, so nothing would ever find
+  // those rows again.
+  db.exec('BEGIN');
+  try {
+    const transcript = db.get('SELECT id FROM transcripts WHERE recording_id = ?', [recordingId]);
+    if (transcript) {
+      db.run('DELETE FROM words WHERE transcript_id = ?', [transcript.id]);
+      db.run('DELETE FROM segments WHERE transcript_id = ?', [transcript.id]);
+    }
+    db.run('DELETE FROM distributions WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM production_packages WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM metadata_tags WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM transcripts WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM clips WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM recordings WHERE id = ?', [recordingId]);
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
   }
-  db.run('DELETE FROM distributions WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM production_packages WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM metadata_tags WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM transcripts WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM clips WHERE recording_id = ?', [recordingId]);
-  db.run('DELETE FROM recordings WHERE id = ?', [recordingId]);
-  if (deleteFile && row.path) {
-    try { require('fs').unlinkSync(row.path); } catch (_) {}
+
+  if (deleteFile) {
+    if (row.path) { try { require('fs').unlinkSync(row.path); } catch (_) {} }
+    if (row.thumb) { try { require('fs').unlinkSync(row.thumb); } catch (_) {} }
   }
   return { ok: true };
 });
@@ -731,7 +859,7 @@ app.whenReady().then(async () => {
   transcriptionHandlers.register(sendControl);
   editHandlers.register();
   productionHandlers.register();
-  voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic });
+  voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic, getRecordingState: () => rec.state });
   syncHandlers.register(sendControl);
 
   sweepOldRaw();
@@ -824,6 +952,10 @@ app.on('before-quit', (e) => {
   // A live take's raw stream used to be abandoned mid-write on quit. end()
   // flushes and closes the file handle so the raw recording is at least
   // intact on disk, even though this exit skips transcoding/indexing it.
+  // ffmpeg.killAll() stops any in-flight encode too — previously an
+  // untracked ffmpeg process kept running after quit with no job object
+  // (on Windows) to clean it up, still writing to its output file.
+  ffmpeg.killAll();
   const endRaw = rec.raw ? rec.raw.end().catch(() => {}) : Promise.resolve();
   endRaw.then(() => db.close()).catch(() => {}).finally(() => app.quit());
 });

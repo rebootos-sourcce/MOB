@@ -6,6 +6,7 @@
 const MAX_WORDS       = 10;
 const MAX_DURATION_MS = 5000;
 const MAX_CHARS       = 80;
+const MIN_DURATION_MS = 1000; // spec'd minimum cue duration (mob-build-plan.html:521)
 
 /**
  * @param {Array<{word:string, start:number, end:number}>} words
@@ -54,6 +55,22 @@ function formCaptions(words) {
   }
 
   flush();
+
+  // Whisper can emit a zero- or near-zero-duration token (common on short
+  // interjections), which produced an unplayable "00:00:03,000 --> 00:00:03,000"
+  // cue. Stretch any caption under the spec'd minimum, but never past the next
+  // caption's start — that would instead create the overlap this also guards
+  // against, which strict SRT/VTT players render as stacked text.
+  for (let i = 0; i < captions.length; i++) {
+    const cap = captions[i];
+    const nextStart = i + 1 < captions.length ? captions[i + 1].start_ms : Infinity;
+    if (cap.end_ms - cap.start_ms < MIN_DURATION_MS) {
+      cap.end_ms = Math.min(cap.start_ms + MIN_DURATION_MS, nextStart);
+    }
+    if (cap.end_ms > nextStart) cap.end_ms = nextStart;
+    if (cap.end_ms <= cap.start_ms) cap.end_ms = cap.start_ms + 1;
+  }
+
   return captions;
 }
 

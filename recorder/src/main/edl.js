@@ -80,8 +80,20 @@ function applyCuts(recordingId, totalDurationMs, cuts) {
  * @returns {number|null}
  */
 function remapTimestamp(edlEntries, sourceMs) {
-  for (const entry of edlEntries) {
-    if (sourceMs >= entry.source_start_ms && sourceMs <= entry.source_end_ms) {
+  // The upper bound is exclusive except on the last entry. applyCuts() can
+  // emit adjacent kept segments (a zero-length cut between them), so a
+  // timestamp sitting exactly on the shared boundary would otherwise match
+  // two entries at once — this was the source of a second, independent
+  // remap implementation (production.js) disagreeing with this one on
+  // exactly that input. Exclusive-except-last makes the match unambiguous
+  // while still mapping the recording's final millisecond correctly.
+  for (let i = 0; i < edlEntries.length; i++) {
+    const entry = edlEntries[i];
+    const isLast = i === edlEntries.length - 1;
+    const inRange = isLast
+      ? sourceMs >= entry.source_start_ms && sourceMs <= entry.source_end_ms
+      : sourceMs >= entry.source_start_ms && sourceMs <  entry.source_end_ms;
+    if (inRange) {
       const offset = sourceMs - entry.source_start_ms;
       return Math.max(0, entry.output_start_ms + offset);
     }

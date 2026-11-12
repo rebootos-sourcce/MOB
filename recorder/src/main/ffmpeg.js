@@ -77,12 +77,18 @@ function availableEncoders() {
   if (encoderCache) return Promise.resolve(encoderCache);
   return new Promise((resolve) => {
     execFile(binaryPath(), ['-hide_banner', '-encoders'], { maxBuffer: 4 * 1024 * 1024 }, (err, stdout) => {
+      if (err || !stdout) {
+        // A transient failure here used to cache an EMPTY set for the whole
+        // session — every codec greyed out in the UI with no way to retry
+        // short of restarting the app. Resolve empty for just this call;
+        // only a genuine success is memoized below.
+        resolve(new Set());
+        return;
+      }
       const found = new Set();
-      if (!err && stdout) {
-        for (const line of stdout.split('\n')) {
-          const m = line.match(/^\s*[VAS][F.][S.][X.][B.][D.]\s+(\S+)/);
-          if (m) found.add(m[1]);
-        }
+      for (const line of stdout.split('\n')) {
+        const m = line.match(/^\s*[VAS][F.][S.][X.][B.][D.]\s+(\S+)/);
+        if (m) found.add(m[1]);
       }
       encoderCache = found;
       resolve(found);
@@ -134,16 +140,42 @@ function isCopy(opts) {
     (opts.format === 'webm' && ['vp9', 'vp8'].includes(opts.rawVideoCodec));
 }
 
+// Every spawned ffmpeg child is tracked here so it can be killed on a
+// finalize timeout or app quit — previously nothing tracked these at all,
+// so a wedged encode ran forever with no way to cancel it, and quitting
+// mid-finalize orphaned the process (no job object on Windows) still
+// writing to the output file.
+const activeChildren = new Set();
+
+/** Kills every currently-running ffmpeg child process. */
+function killAll() {
+  for (const child of activeChildren) {
+    try { child.kill('SIGKILL'); } catch (_) { /* already gone */ }
+  }
+  activeChildren.clear();
+}
+
 /**
  * Runs the finalize step. `durationMs` is the recorded length (known by the
  * recorder; the raw WebM has no duration header), used to compute progress.
+ * @param {AbortSignal} [signal]  aborting kills the ffmpeg child immediately
  */
-function finalize(input, output, opts, onProgress) {
+function finalize(input, output, opts, onProgress, signal) {
   return new Promise((resolve, reject) => {
     const args = buildArgs(input, output, opts);
     const child = spawn(binaryPath(), args, { windowsHide: true });
+    activeChildren.add(child);
     let stderr = '';
     let buf = '';
+    let abortedByCaller = false;
+
+    const onAbort = () => { abortedByCaller = true; try { child.kill('SIGKILL'); } catch (_) {} };
+    if (signal) {
+      if (signal.aborted) onAbort();
+      else signal.addEventListener('abort', onAbort, { once: true });
+    }
+    const cleanup = () => { activeChildren.delete(child); if (signal) signal.removeEventListener('abort', onAbort); };
+
     child.stdout.on('data', (d) => {
       buf += d.toString();
       let idx;
@@ -158,8 +190,10 @@ function finalize(input, output, opts, onProgress) {
       }
     });
     child.stderr.on('data', (d) => { stderr += d.toString(); if (stderr.length > 200000) stderr = stderr.slice(-100000); });
-    child.on('error', reject);
+    child.on('error', (err) => { cleanup(); reject(err); });
     child.on('close', (code) => {
+      cleanup();
+      if (abortedByCaller) { reject(new Error('ffmpeg finalize aborted (timeout or app quit)')); return; }
       if (code === 0 && fs.existsSync(output)) resolve({ output, args });
       else reject(new Error('ffmpeg exited with code ' + code + '\n' + stderr.split('\n').slice(-15).join('\n')));
     });
@@ -167,35 +201,62 @@ function finalize(input, output, opts, onProgress) {
 }
 
 /**
- * Extract a time range from a source file into a new file (stream copy, no re-encode).
+ * Extract a time range from a source file into a new file.
+ *
+ * Re-encodes rather than stream-copying. -ss before -i with -c copy (the
+ * previous approach) is input-side seeking, which snaps to the nearest
+ * preceding keyframe — with libx264 defaults that's up to ~8s early at
+ * 30fps, so any EDL-derived clip boundary came out silently wrong. Output-
+ * side seeking (-ss after -i) with a real encode is frame-accurate; clips
+ * are short, so the extra encode time is a fine trade for correctness.
+ *
  * @param {string} input   source file path
  * @param {string} output  destination file path
  * @param {number} startMs start of range in ms
  * @param {number} endMs   end of range in ms
  */
 function extractSegment(input, output, startMs, endMs) {
-  // Fix #24: use top-level spawn — no redundant require('child_process')
   const startSec = (startMs / 1000).toFixed(3);
   const durSec   = ((endMs - startMs) / 1000).toFixed(3);
   const args = [
     '-y',
-    '-ss', startSec,
     '-i', input,
+    '-ss', startSec,
     '-t', durSec,
-    '-c', 'copy',
+    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p',
+    '-c:a', 'aac', '-b:a', '160k',
     '-avoid_negative_ts', 'make_zero',
     output
   ];
   return new Promise((resolve, reject) => {
     const child = spawn(binaryPath(), args, { windowsHide: true });
+    activeChildren.add(child);
     let stderr = '';
     child.stderr.on('data', d => { stderr += d.toString(); });
-    child.on('error', reject);
+    child.on('error', (err) => { activeChildren.delete(child); reject(err); });
     child.on('close', code => {
+      activeChildren.delete(child);
       if (code === 0 && fs.existsSync(output)) resolve({ output });
       else reject(new Error('ffmpeg extractSegment failed (code ' + code + '): ' + stderr.slice(-500)));
     });
   });
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment };
+/** Extract a single JPEG thumbnail from a video at the given offset (seconds). */
+function extractThumbnail(input, output, atSec = 0.5) {
+  const args = ['-y', '-ss', String(atSec), '-i', input, '-vframes', '1', '-vf', 'scale=320:-1', output];
+  return new Promise((resolve, reject) => {
+    const child = spawn(binaryPath(), args, { windowsHide: true });
+    activeChildren.add(child);
+    let stderr = '';
+    child.stderr.on('data', d => { stderr += d.toString(); });
+    child.on('error', (err) => { activeChildren.delete(child); reject(err); });
+    child.on('close', code => {
+      activeChildren.delete(child);
+      if (code === 0 && fs.existsSync(output)) resolve({ output });
+      else reject(new Error('ffmpeg extractThumbnail failed (code ' + code + '): ' + stderr.slice(-500)));
+    });
+  });
+}
+
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, killAll };

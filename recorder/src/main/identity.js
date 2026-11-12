@@ -21,13 +21,25 @@ function getDeviceId() {
         _deviceId = id;
         return _deviceId;
       }
-    } catch (_) { /* fall through to generate */ }
+      throw new Error('device.json has no valid id');
+    } catch (err) {
+      // Minting a replacement here orphans every existing row's device_id —
+      // recordings, production_packages and distributions all still carry
+      // the old one, and it's unrecoverable once overwritten. Back the bad
+      // file up and say so loudly instead of silently swallowing it (the
+      // non-atomic write below used to make a crash during first-run write
+      // enough to trigger this).
+      try { fs.copyFileSync(p, p + '.corrupt-' + Date.now()); } catch (_) {}
+      console.error('[mob] device.json was unreadable or invalid — generating a new device ID; the old file was backed up alongside it. Error:', err.message);
+    }
   }
 
   _deviceId = crypto.randomUUID();
   const dir = path.dirname(p);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(p, JSON.stringify({ id: _deviceId, created_at: new Date().toISOString() }));
+  const tmp = p + '.tmp-' + process.pid;
+  fs.writeFileSync(tmp, JSON.stringify({ id: _deviceId, created_at: new Date().toISOString() }));
+  fs.renameSync(tmp, p);
   return _deviceId;
 }
 

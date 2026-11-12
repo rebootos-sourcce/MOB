@@ -101,9 +101,17 @@ function processAudio(frame) {
 
   if (_vosk) {
     try {
-      _vosk.acceptWaveform(Buffer.from(frame.buffer));
-      const partial = JSON.parse(_vosk.partialResult());
-      if (partial.partial) return _matchCommand(partial.partial);
+      // acceptWaveform() returns true once Vosk has detected the end of an
+      // utterance (a pause). This used to always read partialResult(), which
+      // updates on every frame as speech is still being recognized — so an
+      // unstable interim guess could dispatch an irreversible action (e.g.
+      // stopping a take) before the user finished the sentence. Only the
+      // committed final result is matched now; partials are discarded.
+      const isFinal = _vosk.acceptWaveform(Buffer.from(frame.buffer));
+      if (isFinal) {
+        const final = JSON.parse(_vosk.result());
+        if (final.text) return _matchCommand(final.text);
+      }
     } catch (_) {}
   }
 
@@ -113,22 +121,41 @@ function processAudio(frame) {
 function _matchCommand(text) {
   const lower = text.toLowerCase().trim();
   for (const [phrase, channel] of COMMANDS) {
-    if (lower.includes(phrase)) {
-      // Fix #16: cancel the listen timeout before transitioning state
-      if (_listenTimer) { clearTimeout(_listenTimer); _listenTimer = null; }
-      _state = 'IDLE';
-      const payload = channel === 'recorder:setMic'
-        ? { enabled: phrase === 'unmute' }
-        : {};
-      // Dispatch directly to main-process recording functions so the command
-      // actually takes effect, then notify the renderer for UI feedback.
-      if (channel === 'recorder:go'     && _callbacks.startRecording) _callbacks.startRecording();
-      else if (channel === 'recorder:stop'   && _callbacks.stopRecording)  _callbacks.stopRecording();
-      else if ((channel === 'recorder:pause' || channel === 'recorder:resume') && _callbacks.togglePause) _callbacks.togglePause();
-      else if (channel === 'recorder:setMic' && _callbacks.setMic) _callbacks.setMic(payload.enabled);
-      if (_sendControl) _sendControl(channel, payload);
-      return phrase;
-    }
+    if (!lower.includes(phrase)) continue;
+
+    const currentState = _callbacks.getRecordingState ? _callbacks.getRecordingState() : null;
+    // 'pause' and 'resume' both drive the same togglePause() toggle in the
+    // main process, so dispatching on either phrase without checking state
+    // could do the opposite of what was said: "resume" while actively
+    // recording would PAUSE it, and "pause" while already paused would
+    // RESUME it. Likewise "start" only makes sense from idle and "stop"
+    // only while live — a misheard phrase in the wrong state is now a
+    // no-op instead of firing an action nobody asked for. currentState is
+    // null when main.js didn't supply getRecordingState (defensive default:
+    // don't block anything we can't actually verify).
+    const stateOk =
+      channel === 'recorder:pause'  ? currentState === 'recording' :
+      channel === 'recorder:resume' ? currentState === 'paused' :
+      channel === 'recorder:go'     ? (currentState == null || currentState === 'idle') :
+      channel === 'recorder:stop'   ? (currentState == null || currentState !== 'idle') :
+      true; // mute/unmute have no state dependency
+
+    // Fix #16: cancel the listen timeout before transitioning state
+    if (_listenTimer) { clearTimeout(_listenTimer); _listenTimer = null; }
+    _state = 'IDLE';
+    if (!stateOk) return null;
+
+    const payload = channel === 'recorder:setMic'
+      ? { enabled: phrase === 'unmute' }
+      : {};
+    // Dispatch directly to main-process recording functions so the command
+    // actually takes effect, then notify the renderer for UI feedback.
+    if (channel === 'recorder:go'     && _callbacks.startRecording) _callbacks.startRecording();
+    else if (channel === 'recorder:stop'   && _callbacks.stopRecording)  _callbacks.stopRecording();
+    else if ((channel === 'recorder:pause' || channel === 'recorder:resume') && _callbacks.togglePause) _callbacks.togglePause();
+    else if (channel === 'recorder:setMic' && _callbacks.setMic) _callbacks.setMic(payload.enabled);
+    if (_sendControl) _sendControl(channel, payload);
+    return phrase;
   }
   return null;
 }

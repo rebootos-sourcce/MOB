@@ -633,6 +633,7 @@
   });
 
   async function init() {
+   try {
     [settings, shapes] = await Promise.all([
       window.api.invoke('settings:get'),
       window.api.invoke('shapes:list')
@@ -667,6 +668,14 @@
 
     // ── voice commands ────────────────────────────────────────────────────
     initVoice();
+   } catch (err) {
+    // Neither startup invoke had a .catch() before — a rejection here (main
+    // process not ready, IPC error) meant render() never ran and the panel
+    // stayed permanently blank with nothing telling the user why.
+    console.error('[control] init failed:', err);
+    const status = $('statusLine');
+    if (status) status.textContent = 'Failed to start: ' + err.message;
+   }
   }
 
   // ── voice UI ─────────────────────────────────────────────────────────────
@@ -890,6 +899,17 @@
       item.className = 'recording-item';
       item.dataset.id = r.id;
       item.title = r.path;
+      // recordings.thumb existed in the schema with nothing ever writing it;
+      // main.js now generates one after finalize and broadcasts
+      // recording:thumbReady — the listener below patches it in live.
+      if (r.thumb) {
+        const thumb = document.createElement('img');
+        thumb.className = 'rec-thumb';
+        thumb.style.cssText = 'width:40px;height:24px;object-fit:cover;border-radius:4px;flex:none;margin-right:6px;background:#000';
+        thumb.src = 'file://' + r.thumb;
+        thumb.onerror = () => thumb.remove();
+        item.appendChild(thumb);
+      }
       const nameSpan = document.createElement('span'); nameSpan.className = 'rec-name'; nameSpan.textContent = name;
       const durSpan  = document.createElement('span'); durSpan.className  = 'rec-dur';  durSpan.textContent  = fmtMs(r.duration_ms || 0);
       const badge    = document.createElement('span'); badge.className    = 'badge';    badge.textContent    = r.status || ''; badge.style.fontSize = '10px';
@@ -992,26 +1012,36 @@
 
     $('btnRemoveFillers').onclick = async () => {
       if (!selectedRecordingId) return;
-      const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
-      const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
-      if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
-      const fillers = await window.mob.db.query('words:fillers', [tx.id]);
-      if (!fillers.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No fillers detected.'; return; }
-      const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
-      await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-      $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} filler cuts.`;
+      try {
+        const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+        if (!rec) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Recording no longer exists.'; return; }
+        const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
+        if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
+        const fillers = await window.mob.db.query('words:fillers', [tx.id]);
+        if (!fillers.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No fillers detected.'; return; }
+        const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
+        await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} filler cuts.`;
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
     };
 
     $('btnRemoveSilences').onclick = async () => {
       if (!selectedRecordingId) return;
-      const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
-      const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
-      if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
-      const segs = await window.mob.db.query('segments:silences', [tx.id]);
-      if (!segs.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No silences detected.'; return; }
-      const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
-      await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-      $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts.`;
+      try {
+        const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+        if (!rec) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Recording no longer exists.'; return; }
+        const tx  = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
+        if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
+        const segs = await window.mob.db.query('segments:silences', [tx.id]);
+        if (!segs.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No silences detected.'; return; }
+        const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
+        await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts.`;
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
     };
   }
 
@@ -1054,6 +1084,21 @@
   }
 
   function renderPackage(pkg) {
+    // Three of these JSON.parse calls used to be unguarded (a fourth,
+    // variants_json below, already was). Malformed JSON in any column threw
+    // before prodPackageSection ever unhid, leaving the whole tab silently
+    // blank with no indication anything was wrong.
+    try {
+      renderPackageInner(pkg);
+    } catch (err) {
+      console.error('[control] renderPackage failed:', err.message);
+      $('prodPackageSection').hidden = false;
+      $('prodTitle').textContent = 'Error loading package';
+      $('prodDesc').textContent = 'This production package has corrupted data: ' + err.message;
+    }
+  }
+
+  function renderPackageInner(pkg) {
     _currentPkgId = pkg.id || null;
     $('prodTitle').textContent = pkg.title || 'Package';
     $('prodTitleValue').textContent = pkg.title || '';
@@ -1099,11 +1144,25 @@
   }
 
   // ── Distribution tab ──────────────────────────────────────────
+  // Maps the raw DB status (and sync.js's per-stage error_msg, which existed
+  // in the row already but was never shown) to something a user can read —
+  // they used to just see internal strings like "pending" and "queued" with
+  // no indication an upload had actually failed or why.
+  function distStatusLabel(status, errorMsg) {
+    if (status && status.startsWith('error')) return 'Error: ' + (errorMsg || status);
+    const labels = {
+      pending: 'Preparing…', uploading: 'Uploading…', uploaded: 'Uploaded', queued: 'Queued for distribution',
+    };
+    return labels[status] || status || 'Unknown';
+  }
+
   async function loadDistributionTab() {
     // Show warning if Cloudflare is not configured
+    let cfConfigured = false;
     try {
       const cfg = await window.api.invoke('cf:getConfig');
-      $('cfWarning').hidden = cfg.configured && cfg.tokenStored;
+      cfConfigured = !!(cfg.configured && cfg.tokenStored);
+      $('cfWarning').hidden = cfConfigured;
     } catch (_) {
       $('cfWarning').hidden = false;
     }
@@ -1113,7 +1172,11 @@
       const dist = pkg ? await window.mob.db.query('distributions:latest', [id]) : null;
       $('distSection').hidden = false;
       $('distTitle').textContent = pkg ? pkg.title : 'No package yet';
-      $('distStatus').textContent = dist ? dist.status : (pkg ? 'ready' : 'needs package');
+      $('distStatus').textContent =
+        !cfConfigured ? 'Not connected' :
+        !pkg ? 'Needs package' :
+        !dist ? 'Ready to upload' :
+        distStatusLabel(dist.status, dist.error_msg);
     });
 
     $('btnDistUpload').onclick = async () => {
@@ -1151,15 +1214,31 @@
       try {
         await window.api.invoke('sync:distribution', { distributionId });
         $('distProgressBar').style.width = '100%';
-        $('distStatus').textContent = 'queued';
+        $('distStatus').textContent = 'Queued for distribution';
         $('distProgressLabel').textContent = 'Upload complete';
         unsubProgress();
       } catch (err) {
         $('distProgressLabel').textContent = 'Upload failed: ' + err.message;
-        $('distStatus').textContent = 'error';
-        $('btnDistUpload').disabled = false;
+        $('distStatus').textContent = 'Error: ' + err.message;
         unsubProgress();
+      } finally {
+        // The 'done' sync:progress event normally re-enables this already,
+        // but that's a separate IPC event the button's own success/failure
+        // path shouldn't depend on arriving — if it's ever missed, the
+        // button used to stay disabled forever.
+        $('btnDistUpload').disabled = false;
       }
     };
   }
+
+  // A thumbnail finishes generating asynchronously after finalize — reload
+  // whichever list tab is currently visible so it picks up the new image
+  // without the user having to switch tabs and back.
+  window.api.on('recording:thumbReady', () => {
+    const activePanel = document.querySelector('.tab-panel.active');
+    if (!activePanel) return;
+    if (activePanel.id === 'tab-edit')         loadEditTab();
+    else if (activePanel.id === 'tab-production')   loadProductionTab();
+    else if (activePanel.id === 'tab-distribution') loadDistributionTab();
+  });
 })();

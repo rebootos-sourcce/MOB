@@ -63,6 +63,7 @@
   const frames = { screen: null, cam: null };  // latest VideoFrame per source
   const readers = [];
   let running = false;
+  let arming = false;        // re-entrancy guard for arm()
   let useFallback = false;   // no MediaStreamTrackProcessor: repaint every tick
   let targetFormat = 'mp4';  // drives the intermediate codec choice
   let quality = 'high';
@@ -106,8 +107,20 @@
     document.body.appendChild(v);
     v.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0.01;pointer-events:none';
     return new Promise((resolve, reject) => {
-      v.onloadedmetadata = () => v.play().then(() => resolve(v)).catch(reject);
-      v.onerror = () => reject(new Error('video element failed'));
+      // A track that opens but never produces metadata used to hang arm()
+      // forever with no error and no recorder:state sent — the UI stuck on
+      // "arming" until restart. A timeout bounds it, and every rejection
+      // path now removes the element so a failed arm doesn't leave an
+      // orphaned <video> holding a live stream.
+      const timer = setTimeout(() => {
+        v.remove();
+        reject(new Error('camera/screen video element timed out waiting for metadata'));
+      }, 8000);
+      v.onloadedmetadata = () => {
+        clearTimeout(timer);
+        v.play().then(() => resolve(v)).catch((err) => { v.remove(); reject(err); });
+      };
+      v.onerror = () => { clearTimeout(timer); v.remove(); reject(new Error('video element failed')); };
     });
   }
 
@@ -143,11 +156,22 @@
     }
 
     try {
+      // Browser AGC/noise-suppression/echo-cancellation were baked into
+      // every recording with no way to remove them after the fact. Capture
+      // clean and let any processing happen deliberately in the ffmpeg
+      // audio chain instead. channelCount:2/sampleRate:48000 matches spec.
       micStream = await navigator.mediaDevices.getUserMedia({
         video: false,
-        audio: Object.assign({ echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }, deviceConstraint(opts.micDeviceId))
+        audio: Object.assign({
+          echoCancellation: false, noiseSuppression: false, autoGainControl: false,
+          sampleRate: 48000, channelCount: 2
+        }, deviceConstraint(opts.micDeviceId))
       });
       micStream.getAudioTracks().forEach((t) => { t.enabled = !!opts.micEnabled; });
+      const micSettings = micStream.getAudioTracks()[0]?.getSettings?.() || {};
+      if (micSettings.sampleRate && micSettings.sampleRate < 44100) {
+        warnings.push(`Mic running at ${micSettings.sampleRate}Hz (likely a Bluetooth headset) — audio quality may suffer.`);
+      }
     } catch (err) {
       log('mic unavailable:', err.message, '— recording without audio');
       micStream = null;
@@ -288,7 +312,17 @@
       try {
         for (;;) {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) {
+            // Track ended — most commonly the camera being unplugged mid-take.
+            // The last captured frame used to stay in `frames[slot]` and get
+            // redrawn for the rest of the recording (a frozen bubble) with no
+            // indication anything had changed. Clear it instead.
+            const prev = frames[slot];
+            frames[slot] = null;
+            if (prev) prev.close();
+            dirty = true;
+            break;
+          }
           if (!running) { value.close(); break; }
           const prev = frames[slot];
           frames[slot] = value;
@@ -342,6 +376,16 @@
    * finish before the countdown runs or the first words of the take are lost.
    */
   async function arm(opts) {
+    if (arming) {
+      // A second arm() while the first is still awaiting openStreams() used
+      // to run cleanup() mid-flight, stopping arm #1's already-assigned
+      // streams out from under it. Arm #1 would then throw on a now-null
+      // stream, which called cleanup() again and tore down arm #2's
+      // in-flight streams too — both takes ended up dead.
+      log('arm() already in progress — ignoring duplicate call');
+      return;
+    }
+    arming = true;
     cleanup();
     fps = opts.fps || 30;
     overlay = opts.overlay;
@@ -400,12 +444,22 @@
       if (err.name === 'NotReadableError') message = 'Device is busy or unreadable. Is another app using the camera or screen?';
       window.api.send('recorder:state', { state: 'error', message });
       cleanup();
+    } finally {
+      arming = false;
     }
   }
 
   /** Phase 2: begin encoding. Devices are already open, so this is instant. */
   function go() {
     if (!armed || !canvas) return;
+    if (mediaRecorder) {
+      // A duplicate recorder:go (e.g. a replayed IPC message) used to build
+      // a SECOND MediaRecorder over the same armed stream — both fired
+      // ondataavailable, and both chunk streams interleaved into the same
+      // raw file, corrupting the container.
+      log('go() called while already recording — ignoring duplicate call');
+      return;
+    }
     try {
       // With a matching intermediate the finalize step is a remux, so this
       // bitrate is the delivered quality, not a throwaway intermediate. Screen
@@ -460,10 +514,18 @@
   window.api.on('recorder:arm', arm);
   window.api.on('recorder:go', go);
   window.api.on('recorder:stop', () => {
-    if (!mediaRecorder) return;
+    if (!mediaRecorder) {
+      // Cancelled during arming/countdown — go() never ran, so there's no
+      // MediaRecorder to stop here. This used to just return, leaving the
+      // screen/camera/mic streams open (camera light stays on) and the
+      // compositor running indefinitely until the next arm() happened to
+      // clean it up.
+      if (armed) cleanup();
+      return;
+    }
     if (mediaRecorder.state === 'paused') { pausedTotal += Date.now() - pausedAt; pausedAt = 0; }
     if (timer) { clearInterval(timer); timer = null; }
-    try { mediaRecorder.stop(); } catch (err) { log('stop failed', err.message); window.api.send('recorder:done', { durationMs: elapsed() }); cleanup(); }
+    try { mediaRecorder.stop(); } catch (err) { log('stop failed', err.message); window.api.send('recorder:done', { durationMs: elapsed(), rawVideoCodec }); cleanup(); }
   });
   window.api.on('recorder:pause', () => {
     if (mediaRecorder && mediaRecorder.state === 'recording') {

@@ -24,8 +24,22 @@ function register(sendControl) {
   // Save CF config from renderer settings UI (token stored in settings.json)
   ipcMain.handle('cf:setConfig', (_e, { workerUrl, apiToken }) => {
     const patch = {};
-    if (typeof workerUrl === 'string') patch.workerUrl = workerUrl.trim() || null;
-    if (typeof apiToken  === 'string') patch.apiToken  = apiToken.trim()  || null;
+    if (typeof workerUrl === 'string') {
+      const trimmed = workerUrl.trim();
+      if (trimmed) {
+        let parsed;
+        try { parsed = new URL(trimmed); } catch (_) { throw new Error('Worker URL is not a valid URL'); }
+        if (parsed.protocol !== 'https:') throw new Error('Worker URL must use https://');
+      }
+      patch.workerUrl = trimmed || null;
+    }
+    // Only touch apiToken when a non-empty value was actually sent. The
+    // renderer clears its token field after every successful save, so a
+    // later save that only edits the worker URL used to resend an empty
+    // string here and silently wipe the previously stored token.
+    if (typeof apiToken === 'string' && apiToken.trim()) {
+      patch.apiToken = apiToken.trim();
+    }
     settings.set({ cloudflare: patch });
     return { ok: true };
   });
@@ -33,6 +47,14 @@ function register(sendControl) {
   // Create a distribution row and return its ID to the renderer.
   ipcMain.handle('sync:prepare', (_e, { recordingId, packageId }) => {
     if (!recordingId || !packageId) throw new Error('recordingId and packageId required');
+    // Without this, a stale or mistyped ID silently created a distribution
+    // row pointing at nothing, which then sat 'pending' forever.
+    if (!db.get('SELECT id FROM recordings WHERE id = ?', [recordingId])) {
+      throw new Error('Recording not found: ' + recordingId);
+    }
+    if (!db.get('SELECT id FROM production_packages WHERE id = ?', [packageId])) {
+      throw new Error('Production package not found: ' + packageId);
+    }
     const id = crypto.randomUUID();
     const deviceId = getDeviceId();
     db.run(

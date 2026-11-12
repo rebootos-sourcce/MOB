@@ -60,7 +60,21 @@ function merge(base, patch) {
 function load() {
   if (cache) return cache;
   let stored = {};
-  try { stored = JSON.parse(fs.readFileSync(file(), 'utf8')); } catch (_) { /* first run */ }
+  try {
+    stored = JSON.parse(fs.readFileSync(file(), 'utf8'));
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      // The file exists but failed to parse (e.g. a crash mid-write before
+      // the atomic write below existed). This used to silently fall back to
+      // DEFAULTS with no sign anything was lost — including the Cloudflare
+      // worker URL/token, the save directory, and window/bubble geometry.
+      // Back it up instead of discarding it.
+      try {
+        fs.copyFileSync(file(), file() + '.corrupt-' + Date.now());
+        console.error('[mob] settings.json was corrupt and has been reset to defaults; the bad file was backed up alongside it:', err.message);
+      } catch (_) { /* best effort */ }
+    }
+  }
   cache = merge(DEFAULTS, stored);
   if (!cache.recording.saveDir) {
     cache.recording.saveDir = path.join(app.getPath('videos'), 'MOB Recorder');
@@ -73,8 +87,14 @@ function get() { return load(); }
 function set(patch) {
   cache = merge(load(), patch);
   try {
-    fs.mkdirSync(path.dirname(file()), { recursive: true });
-    fs.writeFileSync(file(), JSON.stringify(cache, null, 2));
+    const target = file();
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    // Temp file + rename instead of writing target directly — writeFileSync
+    // truncates before the new bytes land, so a crash mid-write left a
+    // half-written, unparseable settings.json.
+    const tmp = target + '.tmp-' + process.pid;
+    fs.writeFileSync(tmp, JSON.stringify(cache, null, 2));
+    fs.renameSync(tmp, target);
   } catch (err) {
     console.error('settings: failed to write', err);
   }

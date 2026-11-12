@@ -39,7 +39,7 @@ function extractHashtags(text) {
 
   const tf = new Map();
   for (const w of rawWords) {
-    if (w.length < 3 || STOPWORDS.has(w)) continue; // Fix #23: 3 allows api, ux, ml, ai
+    if (w.length < 2 || STOPWORDS.has(w)) continue; // allows 2-letter terms: ai, ml, ux (the old `< 3` rejected all of them despite the comment claiming otherwise)
     tf.set(w, (tf.get(w) || 0) + 1);
   }
 
@@ -48,11 +48,15 @@ function extractHashtags(text) {
     const tfScore  = count / docLen;
     const idf      = IDF_OVERRIDES[word] ?? DEFAULT_IDF;
     const score    = tfScore * idf;
-    scored.push({ tag: '#' + word, score: Math.round(score * 10000) / 10000 });
+    scored.push({ tag: '#' + word, score }); // raw score — round only for display, after sorting
   }
 
+  // Sorting used to run on an already-rounded score, so a long transcript
+  // (large docLen) collapsed most candidates to the same rounded value and
+  // ties fell back to Map insertion order — tags became "said earliest"
+  // rather than most informative.
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, TOP_N);
+  return scored.slice(0, TOP_N).map(s => ({ tag: s.tag, score: Math.round(s.score * 10000) / 10000 }));
 }
 
 module.exports = { extractHashtags };

@@ -6,7 +6,7 @@ const LISTEN = new Set([
   'settings:changed',
   'recorder:arm', 'recorder:go', 'recorder:perfOn', 'recorder:stop', 'recorder:pause', 'recorder:resume',
   'recorder:setMic', 'recorder:updateOverlay',
-  'recording:state', 'finalize:progress', 'finalize:done', 'finalize:error',
+  'recording:state', 'finalize:progress', 'finalize:done', 'finalize:error', 'recording:thumbReady',
   'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown',
   'transcription:progress',
   'voice:listening',

@@ -42,9 +42,9 @@ const QUERIES = {
     db.all('SELECT * FROM edl_entries WHERE recording_id = ? ORDER BY seq', [recording_id]),
 
   // production_packages
+  // packages:withVariants used to duplicate this query byte-for-byte and
+  // was never called from the renderer — removed rather than kept in sync.
   'packages:latest': ([recording_id]) =>
-    db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [recording_id]),
-  'packages:withVariants': ([recording_id]) =>
     db.get('SELECT * FROM production_packages WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [recording_id]),
 
   // distributions
@@ -58,6 +58,11 @@ const QUERIES = {
 
 // ── named write operations ──────────────────────────────────────────────────
 
+// distributions:insert used to live here as a mutation the renderer could
+// call directly with an arbitrary id/device_id — unused (sync-handlers.js's
+// sync:prepare is the real, server-side path that generates both), and
+// letting a renderer-supplied device_id into a write is exactly the kind of
+// thing ADR-003's device-identity model exists to prevent. Removed.
 const MUTATIONS = {
   // Only columns actually present in the payload are written. The caller
   // used to always send all three edited_* keys (null for the two the user
@@ -84,14 +89,6 @@ const MUTATIONS = {
     if (sets.length) {
       db.run(`UPDATE production_packages SET ${sets.join(', ')} WHERE id = ?`, [...vals, id]);
     }
-    return { ok: true };
-  },
-  'distributions:insert': ({ id, device_id, recording_id, package_id, platform, status }) => {
-    db.run(
-      `INSERT INTO distributions (id, device_id, recording_id, package_id, platform, status, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
-      [id, device_id, recording_id, package_id, platform || 'cloud', status || 'pending']
-    );
     return { ok: true };
   },
 };

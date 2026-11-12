@@ -92,10 +92,10 @@ class RawRecording {
   suggestedName(format) {
     return `Recording ${stamp(this.startedAt)}.${format}`;
   }
-  async finalize(outputPath, opts, onProgress) {
+  async finalize(outputPath, opts, onProgress, signal) {
     await this.end();
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-    const res = await ffmpeg.finalize(this.path, outputPath, opts, onProgress);
+    const res = await ffmpeg.finalize(this.path, outputPath, opts, onProgress, signal);
     fs.promises.unlink(this.path).catch(() => { /* keep raw if unlink fails */ });
     return res;
   }

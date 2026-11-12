@@ -3,8 +3,14 @@
 // Returns array of {start_ms, end_ms} silence/filler segments to remove.
 
 // Whisper emits individual words, so only single-token fillers match.
+// Trimmed to actual filler sounds per spec (docs/mob-build-plan.html:437).
+// The previous list included ordinary words — like, basically, literally,
+// actually, so, well, right — that are real speech far more often than
+// they're fillers ("turn right", "that's right", "went well", comparative
+// "like"), and combined with the padding below were cutting real words.
+// 'uhhuh' is 'uh-huh' after the hyphen-stripping normalization below.
 const FILLERS = new Set([
-  'um', 'uh', 'er', 'ah', 'like', 'basically', 'literally', 'actually', 'so', 'well', 'right'
+  'um', 'uh', 'er', 'ah', 'hmm', 'uhh', 'umm', 'mhm', 'uhhuh'
 ]);
 
 const PRE_PAD_MS  = 150; // pad BEFORE the filler (corrected from post-pad bug in prior design)

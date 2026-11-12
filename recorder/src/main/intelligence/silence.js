@@ -16,6 +16,19 @@ function detectSilences(words, totalDurationMs) {
 
   const gaps = [];
 
+  // Leading silence: the gap from the very start of the recording to the
+  // first word. The loop below starts at i=1 and only ever looks at gaps
+  // BETWEEN words, so this — the single commonest case (hit record, settle
+  // in, start talking a few seconds later) — was never detected at all,
+  // even though trailing silence (below) was.
+  const firstStartMs = Math.round(words[0].start * 1000);
+  if (firstStartMs >= MIN_SILENCE_MS) {
+    gaps.push({
+      start_ms: 0,
+      end_ms: Math.max(0, firstStartMs - KEEP_TRAIL_MS)
+    });
+  }
+
   for (let i = 1; i < words.length; i++) {
     const gapStartMs = Math.round(words[i - 1].end   * 1000);
     const gapEndMs   = Math.round(words[i].start * 1000);
