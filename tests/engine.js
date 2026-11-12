@@ -10822,5 +10822,22 @@ console.log('\nSAB SEED · the 11 November ruling: the 20 self-reported saboteur
  ok(!q.sabSeed&&CHARGES.every(c=>q.axes[c].held===0),'not said puts every one of the nine back to the blank and drops the seed');
 }
 
+console.log('\nFUNNELQ · the funnel/quiz\'s 59 self-report statements, recounted off the real data rather than quoted');
+{
+ const {FUNNELQ,FUNNELQ_BLOCKS,SI,VERP,ARCH,SAB_SELFNAMES,sabSelfStatement}=E;
+ ok(FUNNELQ.length===59,'21 laws + 6 gates + 12 archetypes + 20 saboteurs is 59, got '+FUNNELQ.length
+  +' -- V19\'s own meta description said 58, its own BLOCK_DEFS assertion said 59; this is the real count, read off the data');
+ ok(FUNNELQ_BLOCKS.map(b=>b.items.length).join(',')==='21,6,12,20','blocks sized 21,6,12,20 in that order, got '
+  +FUNNELQ_BLOCKS.map(b=>b.items.length).join(','));
+ ok(FUNNELQ.every(q=>typeof q.st==='string'&&q.st.length>0),'every one of the 59 carries a real statement, none blank');
+ ok(FUNNELQ.filter(q=>q.sec==='law').length===SI.length,'one statement per law, no more, no fewer');
+ ok(FUNNELQ.filter(q=>q.sec==='gate').every((q,i)=>q.st===VERP[i].d),
+  'the six gate statements are VERP\'s own .d field, read, not retyped');
+ ok(FUNNELQ.filter(q=>q.sec==='arch').length===ARCH.length,'one statement per archetype, no more, no fewer');
+ ok(FUNNELQ.filter(q=>q.sec==='sab').every(q=>q.st===sabSelfStatement(q.nm)),
+  'every saboteur statement is sabSelfStatement()\'s own live read of SABDEF.q, not a second copy');
+ ok(SAB_SELFNAMES.length===20&&FUNNELQ.filter(q=>q.sec==='sab').length===20,'twenty saboteur questions, matching SAB_SELFNAMES');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
