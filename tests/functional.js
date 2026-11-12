@@ -1433,6 +1433,25 @@ ok(un.shown&&/committing the story/.test(un.label),
 ok(un.restored,'undo restores the field exactly');
 ok(un.hiddenAgain,'and hides itself again when the stack empties');
 
+console.log('\n=== Uni: the chakra pulse has a callable entry point (#138) ===');
+/* Task #138. scanForImprint/spawnChakraPulse already fire the chakra pulse
+   off a text match (CHAKRA_WORD_TRIGGERS); this is the callable half for a
+   caller that already knows the seat (a sniffer hit, a Journal event) and
+   has no sentence to scan. window.Uni exists at load regardless of which
+   tab is open or whether she is mounted anywhere, so no setTab/mount is
+   needed here. */
+const cp=await page.evaluate(()=>({
+ hasApi:typeof window.Uni.pulseChakra==='function'&&typeof window.Uni.chakraTags==='function',
+ tags:window.Uni.chakraTags(),
+ goodReal:window.Uni.pulseChakra('heart'),
+ badFake:window.Uni.pulseChakra('not_a_real_seat'),
+}));
+ok(cp.hasApi,'window.Uni exposes pulseChakra and chakraTags');
+ok(Array.isArray(cp.tags)&&cp.tags.includes('heart')&&cp.tags.includes('root')&&cp.tags.includes('crown'),
+ 'chakraTags() names the real seats, got '+JSON.stringify(cp.tags));
+ok(cp.goodReal===true,'pulseChakra fires on a real seat tag');
+ok(cp.badFake===false,'and refuses a tag that is not one of the real seats');
+
 console.log('\n=== a label never appears without what it owes ===');
 /* The owner's ruling. A word like Severe with nothing attached is a judgement.
    The same word with a definition, the behaviour and the direction is a

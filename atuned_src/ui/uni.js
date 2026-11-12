@@ -2648,6 +2648,21 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // Runs real text through the same viseme/word-trigger pipeline the
     // speak box used (mouth visemes, and any EMO_WORD_TRIGGERS match).
     speak(text){ enqueueText(String(text||'')); },
+    // Task #138: a callable entry point for the chakra-pulse visual, for
+    // callers that already know which seat fired (a sniffer hit, a Journal
+    // event) rather than typed text for scanForImprint to search. Same
+    // spawnChakraPulse() the text-scan trigger above already uses, so the
+    // visual is identical either way -- this just skips the word match.
+    // tag: one of the CHAKRA_COLORS keys below.
+    pulseChakra(tag){
+      if(!CHAKRA_COLORS[tag]) return false;
+      spawnChakraPulse(tag);
+      return true;
+    },
+    // The real seat tags pulseChakra()/CHAKRA_COLORS accept, for a caller
+    // that wants to validate before calling rather than read the false
+    // return.
+    chakraTags(){ return Object.keys(CHAKRA_COLORS); },
     /* STAGE 1, round TE: mirrors the canvas's own mouseenter handler
        above, the only place this loop ever restarted itself before.
        uniMount/uniPark call these so a reparented, previously-hidden

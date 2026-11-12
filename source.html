@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v49 1f5ec288 2026-11-12 15:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v50 aba7ee1e 2026-11-12 17:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -45730,6 +45730,21 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // Runs real text through the same viseme/word-trigger pipeline the
     // speak box used (mouth visemes, and any EMO_WORD_TRIGGERS match).
     speak(text){ enqueueText(String(text||'')); },
+    // Task #138: a callable entry point for the chakra-pulse visual, for
+    // callers that already know which seat fired (a sniffer hit, a Journal
+    // event) rather than typed text for scanForImprint to search. Same
+    // spawnChakraPulse() the text-scan trigger above already uses, so the
+    // visual is identical either way -- this just skips the word match.
+    // tag: one of the CHAKRA_COLORS keys below.
+    pulseChakra(tag){
+      if(!CHAKRA_COLORS[tag]) return false;
+      spawnChakraPulse(tag);
+      return true;
+    },
+    // The real seat tags pulseChakra()/CHAKRA_COLORS accept, for a caller
+    // that wants to validate before calling rather than read the false
+    // return.
+    chakraTags(){ return Object.keys(CHAKRA_COLORS); },
     /* STAGE 1, round TE: mirrors the canvas's own mouseenter handler
        above, the only place this loop ever restarted itself before.
        uniMount/uniPark call these so a reparented, previously-hidden
@@ -95113,5 +95128,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006348685"></div>
+<div id="eof" hidden data-len="006349443"></div>
 </body></html>
