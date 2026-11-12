@@ -83,9 +83,10 @@ async function payloadFromQuiz(browser) {
   const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const pg = await cx.newPage();
   await pg.goto('file://' + QUIZ, { waitUntil: 'load' });
-  await pg.evaluate(() => { A = {}; QQ.forEach((q, i) => { A[i] = (i * 7 + 3) % 5; }); save(); STATE = 'door'; render(); });
-  await pg.waitForSelector('#tolink[data-ready="1"]', { timeout: 10000 });
-  const href = await pg.evaluate(() => document.getElementById('tolink').href);
+  await pg.click('#introStart');
+  await pg.evaluate(() => { for (var i = 0; i < QUESTIONS.length; i++) { state.answers[i] = (i * 7 + 3) % 11; } goToResults(); });
+  await pg.waitForSelector('#toapp-record[data-ready="1"]', { timeout: 10000 });
+  const href = await pg.evaluate(() => document.getElementById('toapp-record').href);
   await cx.close();
   return href.split('#r=')[1];
 }
