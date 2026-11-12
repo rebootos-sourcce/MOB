@@ -990,6 +990,18 @@
       fill.style.width = data.pct + '%';
     }
   });
+  // Task #38: see transcription.js — this only interrupts between chunks
+  // (the current ~20s chunk still has to finish), so the button stays
+  // enabled rather than immediately hiding; the next chunk_callback catches
+  // it and the usual 'done'-style bar hide follows from the rejected
+  // transcription:start promise's own catch block below.
+  document.getElementById('btnCancelTranscribe').addEventListener('click', async () => {
+    const btn = document.getElementById('btnCancelTranscribe');
+    btn.disabled = true;
+    btn.textContent = 'Stopping…';
+    try { await window.api.invoke('transcription:cancel'); }
+    finally { btn.disabled = false; btn.textContent = 'Cancel'; }
+  });
 
   // Copy buttons (delegated)
   document.addEventListener('click', async (e) => {
@@ -1533,7 +1545,18 @@
         $('editProgressBar').style.width = '100%';
         $('editProgressLabel').textContent = 'Done';
       } catch (e) {
-        $('editProgressLabel').textContent = 'Error: ' + e.message;
+        // Task #38: a canceled transcription rejects rather than resolving,
+        // so the detailed #transcribeProgressBar (driven by its own
+        // transcription:progress listener above, which never sees a
+        // terminal "done" for a rejected run) would otherwise stay stuck on
+        // its last "Transcribing… Ns" text forever.
+        const canceled = e.message && e.message.includes('Transcription canceled');
+        $('editProgressLabel').textContent = canceled ? 'Transcription canceled.' : 'Error: ' + e.message;
+        const detailBar = document.getElementById('transcribeProgressBar');
+        if (detailBar) {
+          document.getElementById('transcribeProgressLabel').textContent = canceled ? 'Canceled' : 'Failed';
+          setTimeout(() => { detailBar.hidden = true; }, 1500);
+        }
       } finally {
         // Clean up listener whether transcription succeeded or failed.
         if (_unsubTranscriptionProgress) { _unsubTranscriptionProgress(); _unsubTranscriptionProgress = null; }

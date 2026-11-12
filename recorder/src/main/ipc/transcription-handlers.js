@@ -3,7 +3,7 @@
 // renderer invokes 'transcription:start' → main runs Whisper → fires progress events.
 
 const { ipcMain } = require('electron');
-const { transcribe } = require('../transcription');
+const { transcribe, cancelTranscription } = require('../transcription');
 
 let _sendControl = null;
 let _isRunning = false; // Fix #6: concurrency guard
@@ -45,6 +45,17 @@ function register(sendControl) {
     } finally {
       _isRunning = false;
     }
+  });
+
+  // Task #38: see transcription.js's own comment on why this only
+  // interrupts between chunks, not instantly — not a no-op while nothing
+  // is running, so a stray late click can't accidentally cancel a LATER
+  // transcription that starts right after this one's own finally{} clears
+  // _isRunning.
+  ipcMain.handle('transcription:cancel', () => {
+    if (!_isRunning) return { ok: false, reason: 'not running' };
+    cancelTranscription();
+    return { ok: true };
   });
 }
 

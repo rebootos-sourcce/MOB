@@ -321,9 +321,15 @@
             <span id="editProgressLabel" class="hint"></span>
           </div>
           <div id="transcribeProgressBar" hidden style="padding:8px 0 4px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
               <span id="transcribeProgressLabel" style="font-size:11px;font-family:monospace;color:#64748b;">Transcribing…</span>
-              <span id="transcribeProgressPct" style="font-size:11px;font-family:monospace;color:#94a3b8;">0%</span>
+              <span style="display:flex;align-items:center;gap:8px;">
+                <span id="transcribeProgressPct" style="font-size:11px;font-family:monospace;color:#94a3b8;">0%</span>
+                <!-- Task #38: cancel between chunks — transformers.js's pipeline() has
+                     no abort signal of its own; chunk_callback throwing is the one
+                     interruption point it actually has (see transcription.js). -->
+                <button id="btnCancelTranscribe" class="ghost mini" title="Stop after the current chunk finishes">Cancel</button>
+              </span>
             </div>
             <div style="height:4px;background:#1b2235;border-radius:2px;overflow:hidden;">
               <div id="transcribeProgressFill" style="height:100%;background:#4f8cff;border-radius:2px;transition:width 300ms;width:0%"></div>

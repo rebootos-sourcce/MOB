@@ -46,6 +46,25 @@ function buildFakeTranscriptResult() {
 let _whisperPipeline = null;
 let _whisperPipelinePromise = null;
 
+// Task #38: transformers.js's pipeline() call exposes no AbortSignal of its
+// own — checked its real source (node_modules/@xenova/transformers/src/
+// pipelines.js _call_whisper()): chunk_callback is invoked synchronously,
+// in a plain `for` loop, after each ~20s chunk's generate() call and
+// BEFORE the loop moves on to the next chunk — with no try/catch around
+// that call inside the library. A chunk_callback that throws propagates
+// straight out of pipe(), which transcribe()'s own existing try/catch (via
+// transcription-handlers.js's caller) already has to handle for real
+// errors anyway. That makes "stop before the next chunk" a genuine
+// cancellation point — not instant (the current chunk's generate() still
+// has to finish), but real: no further chunks run, and nothing downstream
+// of pipe() ever executes, so no partial transcript gets written.
+class TranscriptionCancelledError extends Error {
+  constructor() { super('Transcription canceled'); this.name = 'TranscriptionCancelledError'; }
+}
+let _cancelRequested = false;
+/** Requests that the in-flight transcribe() call stop before its next chunk. */
+function cancelTranscription() { _cancelRequested = true; }
+
 /**
  * Check whether the Whisper model files are cached locally.
  * Returns { cached: boolean, sizeBytes: number, path: string }
@@ -125,6 +144,7 @@ async function loadWhisper(onProgress) {
  */
 async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   let result;
+  _cancelRequested = false; // a stale cancel from a previous take must not abort this one
 
   // Fetched here (used to be read only after transcribing finished) so it
   // can also drive a real progress estimate below, instead of the bar
@@ -148,6 +168,12 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
       bytesTotal: cacheStatus.cached ? cacheStatus.sizeBytes : 150_000_000,
     });
 
+    // Not cancellable here: _whisperPipelinePromise is the SHARED, cached
+    // model load (the whole point of task #38's earlier fix) — rejecting it
+    // for one caller's cancel request would also fail it for any other
+    // concurrent transcribe() call relying on that same load. Cancellation
+    // only applies to this call's own pipe() invocation below, via
+    // chunk_callback.
     const pipe = await loadWhisper(onProgress);
 
     const CHUNK_LENGTH_S = 30;
@@ -172,6 +198,7 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
       // Fires once per ~20s of audio actually processed — real granularity
       // instead of a single jump from 0% to 100% at the very end.
       chunk_callback: () => {
+        if (_cancelRequested) throw new TranscriptionCancelledError();
         chunksDone++;
         const pct = estimatedChunks > 0
           ? Math.min(99, Math.round((chunksDone / estimatedChunks) * 100))
@@ -369,4 +396,4 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   return { transcriptId, words: words.length, tags: hashtags.length };
 }
 
-module.exports = { transcribe, loadWhisper, checkModelCached };
+module.exports = { transcribe, loadWhisper, checkModelCached, cancelTranscription };
