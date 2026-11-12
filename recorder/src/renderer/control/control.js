@@ -1381,6 +1381,36 @@
       }
     };
 
+    // #50: one-click "Studio Sound" — compress, loudness-normalize to the
+    // spec'd -16 LUFS (dual_mono, since this app records mono), and limit.
+    // Unlike Render/Undo above, this has nothing to do with the EDL and
+    // works on any recording with audio, so it's not gated behind having
+    // applied cuts.
+    $('btnStudioSound').onclick = async () => {
+      if (!selectedRecordingId) return;
+      const targetId = selectedRecordingId;
+      const unsub = window.api.on('edit:renderProgress', (p) => {
+        if (p.recordingId !== targetId) return;
+        $('editProgressBar').style.width = p.pct + '%';
+      });
+      $('editProgress').hidden = false;
+      $('editProgressBar').style.width = '0%';
+      $('editProgressLabel').textContent = 'Processing audio…';
+      $('btnStudioSound').disabled = true;
+      try {
+        const result = await window.api.invoke('edit:studioSound', { recordingId: targetId });
+        $('editProgressBar').style.width = '100%';
+        $('editProgressLabel').textContent = 'Studio Sound applied: ' + result.path.split(/[\\/]/).pop() +
+          (result.denoised ? '' : ' (denoise skipped — no noise model installed)');
+        await loadEditTab();
+      } catch (err) {
+        $('editProgressLabel').textContent = 'Studio Sound failed: ' + err.message;
+      } finally {
+        unsub();
+        $('btnStudioSound').disabled = false;
+      }
+    };
+
     $('btnUndoCut').onclick = async () => {
       if (!selectedRecordingId) return;
       try {

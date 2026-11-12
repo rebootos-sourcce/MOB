@@ -117,6 +117,36 @@ function register(sendControl) {
 
     return { ok: true, recordingId: newId, path: outputPath };
   });
+
+  // #50: one-click "Studio Sound" (TDD:1313-1317) — ffmpeg.js had no audio
+  // filter chain at all before this. Registered as a NEW sibling recording,
+  // same pattern as edit:renderOutput, so the original audio is never lost.
+  ipcMain.handle('edit:studioSound', async (event, { recordingId }) => {
+    const rec = db.get('SELECT path, title, duration_ms FROM recordings WHERE id = ?', [recordingId]);
+    if (!rec || !rec.path) throw new Error('Recording not found: ' + recordingId);
+
+    const ffmpeg = require('../ffmpeg');
+    const ext = (path.extname(rec.path).replace(/^\./, '') || 'mp4');
+    const format = ext === 'webm' ? 'webm' : 'mp4';
+    const base = rec.path.slice(0, rec.path.length - path.extname(rec.path).length);
+    const outputPath = `${base}-studio.${format}`;
+
+    const result = await ffmpeg.applyStudioSound(rec.path, outputPath, (elapsedMs) => {
+      if (sendControl && rec.duration_ms) {
+        sendControl('edit:renderProgress', { recordingId, pct: Math.round(Math.min(1, elapsedMs / rec.duration_ms) * 100) });
+      }
+    });
+
+    const newId = crypto.randomUUID();
+    db.run(
+      `INSERT INTO recordings (id, device_id, path, duration_ms, codec, status, r2_key, title, created_at)
+       VALUES (?, ?, ?, ?, 'h264', 'ready', ?, ?, datetime('now'))`,
+      [newId, getDeviceId(), outputPath, rec.duration_ms, recordingKey(newId, format), (rec.title || path.basename(rec.path)) + ' (studio sound)']
+    );
+    await db.flush();
+
+    return { ok: true, recordingId: newId, path: outputPath, denoised: result.denoised };
+  });
 }
 
 module.exports = { register };

@@ -221,6 +221,94 @@ function finalize(input, output, opts, onProgress, signal) {
   });
 }
 
+// "Studio Sound" (TDD:770-776, 1313-1317): acompressor -> loudnorm(I=-16,
+// dual_mono=true) -> alimiter. dual_mono matters specifically for this app:
+// it records mono (task #42), and TDD:768 warns that omitting dual_mono
+// causes a 3dB loudness error on mono sources — loudnorm's own docs confirm
+// the same thing, since EBU R128 was written assuming stereo.
+//
+// The spec also wants arnndn (RNN noise reduction) first in the chain, but
+// arnndn refuses to even initialize without an external model file (`m=`) —
+// confirmed directly against the bundled ffmpeg build — and no model ships
+// with ffmpeg-static or this app. Rather than wire up a filter guaranteed to
+// fail, or silently drop it with no sign anything was skipped, it's included
+// only when a model file is actually found at denoiseModelPath; otherwise
+// the chain runs without it and callers can tell which happened via the
+// returned `denoised` flag. The other three filters already deliver the
+// loudness-normalization value this task is centrally about.
+function studioSoundFilterChain(denoiseModelPath) {
+  const chain = [];
+  let denoised = false;
+  if (denoiseModelPath && fs.existsSync(denoiseModelPath)) {
+    chain.push(`arnndn=m='${denoiseModelPath.replace(/'/g, "'\\''")}'`);
+    denoised = true;
+  }
+  chain.push('acompressor', 'loudnorm=I=-16:TP=-1.5:dual_mono=true', 'alimiter');
+  return { filter: chain.join(','), denoised };
+}
+
+/**
+ * Runs the Studio Sound audio chain over a file's audio track, copying the
+ * video stream through untouched (this never changes picture or duration).
+ * @param {string} input
+ * @param {string} output   extension decides the container's audio codec
+ *                          (AAC for mp4, Opus for webm — AAC is not legal
+ *                          inside WebM)
+ * @param {function} [onProgress]  called with elapsed ms processed
+ * @param {AbortSignal} [signal]
+ * @param {string} [denoiseModelPath]  optional arnndn model file
+ * @returns {Promise<{output:string, denoised:boolean}>}
+ */
+function applyStudioSound(input, output, onProgress, signal, denoiseModelPath) {
+  const format = path.extname(output).replace(/^\./, '').toLowerCase() === 'webm' ? 'webm' : 'mp4';
+  const { filter, denoised } = studioSoundFilterChain(denoiseModelPath);
+  const audioArgs = format === 'webm'
+    ? ['-c:a', 'libopus', '-b:a', '160k']
+    : ['-c:a', 'aac', '-b:a', '160k', '-ar', '48000'];
+
+  return new Promise((resolve, reject) => {
+    const args = [
+      '-hide_banner', '-y', '-i', input,
+      '-c:v', 'copy',
+      '-af', filter,
+      ...audioArgs,
+      '-progress', 'pipe:1', '-nostats',
+      output,
+    ];
+    const child = spawn(binaryPath(), args, { windowsHide: true });
+    activeChildren.add(child);
+    let stderr = '';
+    let buf = '';
+    let abortedByCaller = false;
+
+    const onAbort = () => { abortedByCaller = true; try { child.kill('SIGKILL'); } catch (_) {} };
+    if (signal) {
+      if (signal.aborted) onAbort();
+      else signal.addEventListener('abort', onAbort, { once: true });
+    }
+    const cleanup = () => { activeChildren.delete(child); if (signal) signal.removeEventListener('abort', onAbort); };
+
+    child.stdout.on('data', (d) => {
+      buf += d.toString();
+      let idx;
+      while ((idx = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, idx).trim();
+        buf = buf.slice(idx + 1);
+        const m = line.match(/^out_time_ms=(\d+)/) || line.match(/^out_time_us=(\d+)/);
+        if (m && onProgress) onProgress(Number(m[1]) / 1000); // microseconds -> ms
+      }
+    });
+    child.stderr.on('data', (d) => { stderr += d.toString(); if (stderr.length > 200000) stderr = stderr.slice(-100000); });
+    child.on('error', (err) => { cleanup(); reject(err); });
+    child.on('close', (code) => {
+      cleanup();
+      if (abortedByCaller) { reject(new Error('Studio Sound aborted')); return; }
+      if (code === 0 && fs.existsSync(output)) resolve({ output, denoised });
+      else reject(new Error('ffmpeg Studio Sound failed (code ' + code + '): ' + stderr.split('\n').slice(-15).join('\n')));
+    });
+  });
+}
+
 /**
  * Extract a time range from a source file into a new file.
  *
@@ -401,4 +489,4 @@ async function renderEdl(input, output, segments, onProgress) {
   }
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, extractPeaks, renderEdl, killAll, probeDuration };
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, extractPeaks, renderEdl, killAll, probeDuration, applyStudioSound };
