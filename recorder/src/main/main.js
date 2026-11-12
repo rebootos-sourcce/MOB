@@ -693,7 +693,12 @@ function safeSettings(s) {
 }
 
 ipcMain.handle('settings:get', () => safeSettings(settings.get()));
-ipcMain.handle('settings:set', (_e, patch) => safeSettings(settings.set(patch)));
+ipcMain.handle('settings:set', (_e, patch) => {
+  const result = safeSettings(settings.set(patch));
+  if (patch.hotkeys) registerShortcuts();
+  return result;
+});
+ipcMain.handle('hotkeys:getConflicts', () => registerShortcuts());
 ipcMain.handle('state:get', () => ({
   state: rec.state, micEnabled: rec.micEnabled, elapsedMs: elapsedMs(), message: rec.message,
   bubbleVisible: settings.get().bubble.visible
@@ -918,12 +923,39 @@ settings.onChange((all, patch) => {
   applyBubbleSettings(patch);
 });
 
+// #59: hotkeys were four accelerators hardcoded here with no way to rebind
+// them, and a conflict with another app's global shortcut only
+// console.warn'd — completely invisible to the user, who just saw the
+// hotkey silently do nothing. Now reads from settings (rebindable in the
+// UI) and reports which bindings failed so the renderer can show a real
+// warning instead of nothing happening.
+const HOTKEY_ACTIONS = {
+  toggleRecording: () => (rec.state === 'idle' ? startRecording() : stopRecording()),
+  togglePause: () => togglePause(),
+  toggleMic: () => setMic(!rec.micEnabled),
+  toggleBubble: () => toggleBubble(),
+};
+const HOTKEY_LABELS = {
+  toggleRecording: 'Start / stop recording',
+  togglePause: 'Pause / resume',
+  toggleMic: 'Mute / unmute mic',
+  toggleBubble: 'Hide / show bubble',
+};
+
 function registerShortcuts() {
-  const bind = (acc, fn) => { if (!globalShortcut.register(acc, fn)) console.warn('shortcut taken:', acc); };
-  bind('CommandOrControl+Shift+R', () => (rec.state === 'idle' ? startRecording() : stopRecording()));
-  bind('CommandOrControl+Shift+P', togglePause);
-  bind('CommandOrControl+Shift+M', () => setMic(!rec.micEnabled));
-  bind('CommandOrControl+Shift+H', toggleBubble);
+  globalShortcut.unregisterAll();
+  const hk = settings.get().hotkeys || {};
+  const failed = [];
+  for (const [key, fn] of Object.entries(HOTKEY_ACTIONS)) {
+    const accel = hk[key];
+    if (!accel) continue; // empty binding = intentionally unbound
+    if (!globalShortcut.register(accel, fn)) {
+      logger.warn(`hotkey conflict: ${accel} (${HOTKEY_LABELS[key]}) is already bound by another app`);
+      failed.push({ key, accel, label: HOTKEY_LABELS[key] });
+    }
+  }
+  sendControl('hotkeys:conflicts', failed);
+  return failed;
 }
 
 app.whenReady().then(async () => {

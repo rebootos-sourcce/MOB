@@ -45,6 +45,24 @@ const DEFAULTS = {
     // default 500) but never implemented — silence.js hardcoded the cutoff
     // with no way for a user to tune it for their speaking cadence.
     silenceThresholdMs: 500
+  },
+  ui: {
+    // #59: a new user has no reason to know Edit needs a transcript first,
+    // or that Production needs Edit's transcript, or what Distribution
+    // needs configured — each tab just silently no-ops until its
+    // prerequisite exists. Shown once; the Camera tab has a dismiss button
+    // that flips this.
+    seenModesIntro: false
+  },
+  // #59: these four bindings were hardcoded in main.js with no way to
+  // rebind them, and a conflict with another app's shortcut only
+  // console.warn'd — invisible to the user, who just saw the hotkey do
+  // nothing. Accelerator strings in Electron's own format.
+  hotkeys: {
+    toggleRecording: 'CommandOrControl+Shift+R',
+    togglePause: 'CommandOrControl+Shift+P',
+    toggleMic: 'CommandOrControl+Shift+M',
+    toggleBubble: 'CommandOrControl+Shift+H',
   }
 };
 

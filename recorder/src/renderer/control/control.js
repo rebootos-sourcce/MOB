@@ -704,9 +704,77 @@
   window.api.on('settings:changed', (s) => { settings = s; render(); openPreview(false); openMeter(false); });
 
   // ══════════════════════════════════════════════ render
+  function renderHotkeys() {
+    if (!settings || !settings.hotkeys) return;
+    document.querySelectorAll('.hk-accel').forEach((btn) => {
+      if (btn.classList.contains('capturing')) return; // don't clobber mid-capture
+      btn.textContent = settings.hotkeys[btn.dataset.key] || '(unbound)';
+    });
+  }
+
+  function applyHotkeyConflicts(conflicts) {
+    document.querySelectorAll('.hk').forEach((row) => row.classList.remove('conflict'));
+    const warn = $('hotkeyWarning');
+    if (!conflicts || !conflicts.length) { warn.hidden = true; return; }
+    conflicts.forEach((c) => {
+      const row = document.querySelector(`.hk[data-hotkey="${c.key}"]`);
+      if (row) row.classList.add('conflict');
+    });
+    warn.hidden = false;
+    warn.textContent = '⚠ ' + conflicts.map((c) => `${c.accel} (${c.label}) is already bound by another app`).join('; ');
+  }
+
+  // #59: a conflict with another app's global shortcut used to only
+  // console.warn — the hotkey just silently did nothing. Surfaced here
+  // instead, both on load and whenever a rebind changes what's registered.
+  window.api.invoke('hotkeys:getConflicts').then(applyHotkeyConflicts).catch(() => {});
+  window.api.on('hotkeys:conflicts', applyHotkeyConflicts);
+
+  // Click-to-rebind: press the new key combo, Esc cancels. Only one capture
+  // at a time (starting a new one cancels any other in progress).
+  function keyToAccelerator(e) {
+    if (['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) return null; // modifier alone — keep waiting
+    if (/^[a-zA-Z]$/.test(e.key)) return e.key.toUpperCase();
+    if (/^[0-9]$/.test(e.key)) return e.key;
+    if (/^F([1-9]|1[0-9]|2[0-4])$/.test(e.key)) return e.key;
+    const named = { ' ': 'Space', ArrowUp: 'Up', ArrowDown: 'Down', ArrowLeft: 'Left', ArrowRight: 'Right', Enter: 'Return', Escape: 'Escape', Tab: 'Tab', Backspace: 'Backspace', Delete: 'Delete' };
+    return named[e.key] || null;
+  }
+  document.querySelectorAll('.hk-accel').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('capturing')) return;
+      document.querySelectorAll('.hk-accel.capturing').forEach((b) => { b.classList.remove('capturing'); renderHotkeys(); });
+      btn.classList.add('capturing');
+      btn.textContent = 'Press keys… (Esc to cancel)';
+      const cleanup = () => { window.removeEventListener('keydown', onKeydown, true); btn.classList.remove('capturing'); };
+      const onKeydown = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key === 'Escape') { cleanup(); renderHotkeys(); return; }
+        const main = keyToAccelerator(e);
+        if (!main) return; // pure modifier — keep listening for the real key
+        const parts = [];
+        if (e.ctrlKey || e.metaKey) parts.push('CommandOrControl');
+        if (e.shiftKey) parts.push('Shift');
+        if (e.altKey) parts.push('Alt');
+        parts.push(main);
+        cleanup();
+        window.api.invoke('settings:set', { hotkeys: { [btn.dataset.key]: parts.join('+') } });
+      };
+      window.addEventListener('keydown', onKeydown, true);
+    });
+  });
+
+  $('btnDismissModesIntro').addEventListener('click', () => {
+    $('modesIntro').hidden = true;
+    window.api.invoke('settings:set', { ui: { seenModesIntro: true } });
+  });
+
   function render() {
     if (!settings || !shapes) return;
     renderSegs.forEach((f) => f());
+    renderHotkeys();
+    $('modesIntro').hidden = !!(settings.ui && settings.ui.seenModesIntro);
     const mp4 = settings.recording.format === 'mp4';
     $('codecField').hidden = !mp4;
     $('qualityField').hidden = !mp4;
@@ -925,6 +993,26 @@
     return h ? `${h}:${String(m % 60).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`
              : `${m}:${String(s % 60).padStart(2,'0')}`;
   };
+
+  // #59: each tab's empty state used to just silently no-op or error until
+  // its prerequisite existed — this is what lets a prerequisite message
+  // ("Transcribe this recording first") actually take the user there and
+  // have the same recording already selected, instead of just naming the
+  // other tab and leaving them to re-find it.
+  async function jumpToTab(tabName, recordingId) {
+    const btn = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    if (btn) btn.click(); // runs the existing tab-switch handler below (clears selection, loads the list)
+    const listId = { edit: 'editRecordingList', production: 'prodRecordingList', distribution: 'distRecordingList' }[tabName];
+    // loadEditTab/loadProductionTab/loadDistributionTab (triggered by the
+    // click above) run un-awaited, so the row may not exist yet on the
+    // first check — a local DB query is near-instant, but a few retries
+    // keep this robust without an arbitrary fixed delay.
+    for (let i = 0; i < 10; i++) {
+      const row = document.querySelector(`#${listId} .recording-item[data-id="${recordingId}"]`);
+      if (row) { row.click(); return; }
+      await new Promise((r) => setTimeout(r, 30));
+    }
+  }
 
   // Tab switching
   document.querySelectorAll('.tab').forEach(btn => {
@@ -1590,6 +1678,18 @@
   // ── Production tab ────────────────────────────────────────────
   async function loadProductionTab() {
     await loadRecordingList('prodRecordingList', async (id) => {
+      // #59: selecting an untranscribed recording used to just show a blank
+      // "Package" section with nothing to look at until the user clicked
+      // Generate and hit an error — this states the actual prerequisite and
+      // offers the step that satisfies it.
+      const tx = await window.mob.db.query('transcripts:latest', [id]).catch(() => null);
+      if (!tx) {
+        $('prodPackageSection').hidden = true;
+        $('prodNeedsTranscript').hidden = false;
+        $('prodNeedsTranscript').dataset.recordingId = id;
+        return;
+      }
+      $('prodNeedsTranscript').hidden = true;
       $('prodPackageSection').hidden = false;
       $('prodTitleValue').textContent = '';
       $('prodVariants').innerHTML = '';
@@ -1599,6 +1699,11 @@
       const pkg = await window.mob.db.query('packages:latest', [id]);
       if (pkg) renderPackage(pkg);
     });
+
+    $('btnGoTranscribe').onclick = () => {
+      const id = $('prodNeedsTranscript').dataset.recordingId;
+      if (id) jumpToTab('edit', id);
+    };
 
     $('btnAssemble').onclick = async () => {
       if (!selectedRecordingId) return;
@@ -1779,7 +1884,16 @@
         !pkg ? 'Needs package' :
         !dist ? 'Ready to upload' :
         distStatusLabel(dist.status, dist.error_msg);
+      // #59: "Needs package" used to be a dead end — this offers the step
+      // (Production) that satisfies it, with the same recording selected.
+      $('btnGoProduction').hidden = !!pkg;
+      $('btnGoProduction').dataset.recordingId = id;
     });
+
+    $('btnGoProduction').onclick = () => {
+      const id = $('btnGoProduction').dataset.recordingId;
+      if (id) jumpToTab('production', id);
+    };
 
     $('btnDistUpload').onclick = async () => {
       if (!selectedRecordingId) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Select a recording first.'; return; }

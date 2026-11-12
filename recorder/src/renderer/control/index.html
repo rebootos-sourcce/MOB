@@ -36,6 +36,23 @@
     <!-- ── Camera mode (original content) ────────────────────── -->
     <div id="tab-camera" class="tab-panel active">
     <main>
+      <!-- #59: a new user has no reason to know Edit needs a transcript
+           first, Production needs Edit's transcript, or what Distribution
+           needs configured — shown once, dismissible. -->
+      <section class="card" id="modesIntro" hidden>
+        <div class="card-head"><h2>Four modes, in order</h2></div>
+        <p class="hint" style="line-height:1.5;">
+          <strong>Camera</strong> records. <strong>Edit</strong> transcribes it and lets you
+          remove fillers/silences, trim, and clean up the audio. <strong>Production</strong>
+          generates a title, description, hashtags and chapters from Edit's transcript.
+          <strong>Distribution</strong> uploads the result (needs a Cloudflare Worker
+          configured under Output → Cloud). Each tab needs the one before it — Edit needs a
+          recording, Production needs Edit's transcript, Distribution needs a Production
+          package.
+        </p>
+        <button id="btnDismissModesIntro" class="ghost mini">Got it</button>
+      </section>
+
       <!-- ── 1 · Check yourself ─────────────────────────────── -->
       <section class="card">
         <div class="card-head">
@@ -180,12 +197,13 @@
 
       <!-- ── Hotkeys ────────────────────────────────────────── -->
       <details class="card">
-        <summary><h2>Hotkeys</h2><span class="hint">Ctrl+Shift+…</span></summary>
-        <div class="details-body">
-          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>R</kbd><span>Start / stop</span></div>
-          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd><span>Pause / resume</span></div>
-          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd><span>Mute / unmute</span></div>
-          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>H</kbd><span>Hide / show bubble</span></div>
+        <summary><h2>Hotkeys</h2><span class="hint">Click one to rebind</span></summary>
+        <div class="details-body" id="hotkeysBody">
+          <div class="hk" data-hotkey="toggleRecording"><span class="hk-label">Start / stop recording</span><button class="ghost mini hk-accel" data-key="toggleRecording"></button></div>
+          <div class="hk" data-hotkey="togglePause"><span class="hk-label">Pause / resume</span><button class="ghost mini hk-accel" data-key="togglePause"></button></div>
+          <div class="hk" data-hotkey="toggleMic"><span class="hk-label">Mute / unmute mic</span><button class="ghost mini hk-accel" data-key="toggleMic"></button></div>
+          <div class="hk" data-hotkey="toggleBubble"><span class="hk-label">Hide / show bubble</span><button class="ghost mini hk-accel" data-key="toggleBubble"></button></div>
+          <div id="hotkeyWarning" class="cf-warning" hidden></div>
         </div>
       </details>
 
@@ -316,6 +334,13 @@
             <div class="empty-hint">Select a transcribed recording.</div>
           </div>
         </section>
+        <section class="card" id="prodNeedsTranscript" hidden>
+          <div class="empty-hint" style="padding:8px 0;">
+            This recording has no transcript yet. Production generates a title, description,
+            hashtags and chapters from the transcript — transcribe it in Edit first.
+          </div>
+          <button id="btnGoTranscribe" class="primary mini">Go to Edit &amp; transcribe</button>
+        </section>
         <section class="card" id="prodPackageSection" hidden>
           <div class="card-head"><h2 id="prodTitle">Package</h2></div>
           <div class="field"><span>Variants</span><div id="prodVariants" class="variants-list"></div></div>
@@ -407,6 +432,7 @@
           <div class="field"><span>Status</span><span id="distStatus" class="badge">pending</span></div>
           <div class="row edit-actions">
             <button id="btnDistUpload" class="primary">Upload to cloud</button>
+            <button id="btnGoProduction" class="ghost" hidden>Go to Production</button>
           </div>
           <div id="distProgress" class="progress-row" hidden>
             <div class="progress"><div id="distProgressBar" style="width:0%"></div></div>
