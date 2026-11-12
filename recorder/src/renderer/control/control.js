@@ -482,6 +482,67 @@
     }
   });
 
+  // #75: no way to get data out, back it up, or move it to another machine
+  // — mob.db holds everything that isn't the video file itself, as one
+  // sql.js file with no second copy.
+  $('btnShowDataFolder').addEventListener('click', async () => {
+    try {
+      const dir = await window.api.invoke('app:getUserDataPath');
+      await window.api.invoke('shell:openPath', dir);
+    } catch (err) {
+      $('backupStatus').textContent = 'Error: ' + err.message;
+    }
+  });
+
+  $('btnBackupNow').addEventListener('click', async () => {
+    const btn = $('btnBackupNow');
+    const status = $('backupStatus');
+    btn.disabled = true;
+    status.textContent = 'Backing up…';
+    try {
+      const result = await window.api.invoke('db:backupNow');
+      status.textContent = result.ok ? 'Backed up to ' + result.path.split(/[\\/]/).pop() : 'Backup failed.';
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $('btnExportLibrary').addEventListener('click', async () => {
+    const btn = $('btnExportLibrary');
+    const status = $('backupStatus');
+    btn.disabled = true;
+    status.textContent = 'Exporting…';
+    try {
+      const result = await window.api.invoke('library:exportAll');
+      status.textContent = result.ok ? 'Exported to ' + result.path.split(/[\\/]/).pop() : 'Export canceled.';
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $('btnImportLibrary').addEventListener('click', async () => {
+    const btn = $('btnImportLibrary');
+    const status = $('backupStatus');
+    btn.disabled = true;
+    status.textContent = 'Importing…';
+    try {
+      const result = await window.api.invoke('library:importBundle');
+      if (!result.ok) { status.textContent = 'Import canceled.'; return; }
+      const added = result.inserted.recordings || 0;
+      status.textContent = `Imported ${added} recording${added === 1 ? '' : 's'}` +
+        (Object.values(result.skipped).some(n => n > 0) ? ' (some rows already existed and were skipped).' : '.');
+      window.dispatchEvent(new CustomEvent('mob:library-changed'));
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // ── Cloudflare config UI ──────────────────────────────────────
   async function loadCfConfig() {
     try {
@@ -1067,6 +1128,23 @@
       });
       const durSpan  = document.createElement('span'); durSpan.className  = 'rec-dur';  durSpan.textContent  = fmtMs(r.duration_ms || 0);
       const badge    = document.createElement('span'); badge.className    = 'badge';    badge.textContent    = r.status || ''; badge.style.fontSize = '10px';
+      // #75: exports this recording's full derived data (transcript, words,
+      // segments, EDL, production package) as JSON next to the video file —
+      // the per-recording counterpart to the whole-library export in Output
+      // settings.
+      const exportBtn = document.createElement('button'); exportBtn.className = 'ghost rec-del'; exportBtn.textContent = '⇩'; exportBtn.title = 'Export this recording’s data as JSON';
+      exportBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        exportBtn.disabled = true;
+        try {
+          const result = await window.api.invoke('library:exportRecording', { recordingId: r.id });
+          exportBtn.title = 'Exported: ' + result.path.split(/[\\/]/).pop();
+        } catch (err) {
+          exportBtn.title = 'Export failed: ' + err.message;
+        } finally {
+          exportBtn.disabled = false;
+        }
+      });
       const delBtn   = document.createElement('button'); delBtn.className = 'ghost rec-del'; delBtn.textContent = '✕'; delBtn.title = 'Delete recording';
       delBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
@@ -1078,7 +1156,7 @@
         if (selectedRecordingId === r.id) { clearSelectedRecording(); }
         await loadRecordingList(containerId, onSelect);
       });
-      item.append(nameSpan, durSpan, badge, delBtn);
+      item.append(nameSpan, durSpan, badge, exportBtn, delBtn);
       list.appendChild(item);
     });
     list.querySelectorAll('.recording-item').forEach(item => {

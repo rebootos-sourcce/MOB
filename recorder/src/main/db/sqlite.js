@@ -113,6 +113,69 @@ function backupBeforeMigration(label) {
   }
 }
 
+function getDbPath() { return dbPath; }
+
+// Task #75: the cheapest insurance against the corruption scenario tasks
+// #20/#66 exist for — mob.db is a single sql.js file written non-atomically
+// (well, atomically per-write now, but still one file, one copy). Kept in
+// their own backups/ directory next to mob.db, separate from the ad-hoc
+// .corrupt-*/.pre-migration-* sibling files those other fixes write, since
+// this is a managed, retained set rather than a one-off recovery artifact.
+function backupNow(reason = 'manual') {
+  if (!db || !dbPath) return null;
+  try {
+    const backupDir = path.join(path.dirname(dbPath), 'backups');
+    fs.mkdirSync(backupDir, { recursive: true });
+    const data = db.export();
+    const backupPath = path.join(backupDir, `mob-backup-${reason}-${Date.now()}.db`);
+    fs.writeFileSync(backupPath, Buffer.from(data));
+    return backupPath;
+  } catch (err) {
+    console.error('[mob] backupNow failed:', err.message);
+    return null;
+  }
+}
+
+/** Keeps only the newest `keep` backups of each reason, deleting the rest. */
+function pruneBackups(keep = 10) {
+  if (!dbPath) return;
+  const backupDir = path.join(path.dirname(dbPath), 'backups');
+  let entries;
+  try { entries = fs.readdirSync(backupDir); } catch (_) { return; }
+  const byReason = new Map();
+  for (const name of entries) {
+    const m = name.match(/^mob-backup-([a-z]+)-(\d+)\.db$/);
+    if (!m) continue;
+    const reason = m[1];
+    if (!byReason.has(reason)) byReason.set(reason, []);
+    byReason.get(reason).push({ name, ts: Number(m[2]) });
+  }
+  for (const files of byReason.values()) {
+    files.sort((a, b) => b.ts - a.ts);
+    for (const f of files.slice(keep)) {
+      try { fs.unlinkSync(path.join(backupDir, f.name)); } catch (_) { /* best effort */ }
+    }
+  }
+}
+
+/** Lists existing backups, newest first, for the UI. */
+function listBackups() {
+  if (!dbPath) return [];
+  const backupDir = path.join(path.dirname(dbPath), 'backups');
+  let entries;
+  try { entries = fs.readdirSync(backupDir); } catch (_) { return []; }
+  return entries
+    .filter(name => /^mob-backup-[a-z]+-\d+\.db$/.test(name))
+    .map(name => {
+      const full = path.join(backupDir, name);
+      let size = 0;
+      try { size = fs.statSync(full).size; } catch (_) {}
+      const ts = Number(name.match(/-(\d+)\.db$/)[1]);
+      return { name, path: full, createdAt: new Date(ts).toISOString(), sizeBytes: size };
+    })
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
 async function applySchema() {
   const schemaPath = path.join(__dirname, 'schema.sql');
   const sql = fs.readFileSync(schemaPath, 'utf8');
@@ -215,4 +278,4 @@ async function close() {
 
 function isReady() { return db !== null; }
 
-module.exports = { init, run, get, all, exec, persist, flush, close, isReady, getLastRecovery, backupBeforeMigration };
+module.exports = { init, run, get, all, exec, persist, flush, close, isReady, getLastRecovery, backupBeforeMigration, getDbPath, backupNow, pruneBackups, listBackups };

@@ -156,6 +156,15 @@
           <div class="field"><span>Library</span>
             <div class="save-row"><span id="reconcileStatus" class="hint"></span><button id="btnReconcile" class="ghost">Scan for missing recordings</button></div>
           </div>
+          <div class="field"><span>Data &amp; backups</span>
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <button id="btnShowDataFolder" class="ghost mini">Show data folder</button>
+              <button id="btnBackupNow" class="ghost mini">Back up now</button>
+              <button id="btnExportLibrary" class="ghost mini">Export library…</button>
+              <button id="btnImportLibrary" class="ghost mini">Import…</button>
+            </div>
+            <div id="backupStatus" class="hint" style="margin-top:4px;"></div>
+          </div>
           <div class="toggles">
             <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
             <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink panel while recording</span></label>

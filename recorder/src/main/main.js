@@ -15,6 +15,7 @@ const voiceHandlers = require('./ipc/voice-handlers');
 const syncHandlers  = require('./ipc/sync-handlers');
 const db = require('./db/sqlite');
 const { reconcileOrphanedRecordings } = require('./db/reconcile');
+const portability = require('./db/portability');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
 const { loadEdl, remapTimestamp } = require('./edl');
@@ -930,6 +931,19 @@ app.whenReady().then(async () => {
       buttons: ['Continue'],
     });
   }
+
+  // #75: automatic rolling backup, at most once per 24h so normal repeated
+  // launches during a work session don't spam the backups/ directory. The
+  // manual "Back up now" button (Output settings) bypasses this cooldown.
+  try {
+    const backups = db.listBackups().filter(b => b.name.includes('-auto-'));
+    const lastAutoMs = backups.length ? new Date(backups[0].createdAt).getTime() : 0;
+    if (Date.now() - lastAutoMs > 24 * 60 * 60 * 1000) {
+      db.backupNow('auto');
+      db.pruneBackups(10);
+    }
+  } catch (err) { logger.warn('automatic backup failed: ' + err.message); }
+
   dbHandlers.register();
   // Manual "scan for missing recordings" (Output → Library in the UI) —
   // the same reconciliation, usable any time a recording is known to exist
@@ -939,6 +953,62 @@ app.whenReady().then(async () => {
     const result = await reconcileOrphanedRecordings();
     return { scanned: result.scanned, adoptedCount: result.adopted.length };
   });
+
+  // #75: no way to get data out, back it up, or move it to a new machine.
+  // mob.db holds everything that isn't the video file itself, and it's a
+  // single sql.js file with no second copy — this is both the backup
+  // format and the migration path.
+  ipcMain.handle('library:exportAll', async (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const res = await dialog.showSaveDialog(win, {
+      title: 'Export entire library',
+      defaultPath: `mob-library-export-${new Date().toISOString().slice(0, 10)}.json`,
+      filters: [{ name: 'JSON', extensions: ['json'] }],
+    });
+    if (res.canceled || !res.filePath) return { ok: false };
+    require('fs').writeFileSync(res.filePath, JSON.stringify(portability.exportAll(), null, 2), 'utf8');
+    return { ok: true, path: res.filePath };
+  });
+
+  ipcMain.handle('library:exportRecording', (_e, { recordingId }) => {
+    const rec = db.get('SELECT path FROM recordings WHERE id = ?', [recordingId]);
+    if (!rec) throw new Error('Recording not found: ' + recordingId);
+    const bundle = portability.exportRecording(recordingId);
+    const outPath = rec.path
+      ? rec.path.slice(0, rec.path.length - path.extname(rec.path).length) + '.mob-export.json'
+      : path.join(app.getPath('userData'), recordingId + '.mob-export.json');
+    require('fs').writeFileSync(outPath, JSON.stringify(bundle, null, 2), 'utf8');
+    return { ok: true, path: outPath };
+  });
+
+  ipcMain.handle('library:importBundle', async (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const res = await dialog.showOpenDialog(win, {
+      title: 'Import MOB export',
+      filters: [{ name: 'JSON', extensions: ['json'] }],
+      properties: ['openFile'],
+    });
+    if (res.canceled || !res.filePaths.length) return { ok: false };
+    let bundle;
+    try {
+      bundle = JSON.parse(require('fs').readFileSync(res.filePaths[0], 'utf8'));
+    } catch (err) {
+      throw new Error('Could not read that file as a MOB export: ' + err.message);
+    }
+    const result = portability.importBundle(bundle);
+    await db.flush();
+    return { ok: true, ...result };
+  });
+
+  // Manual backup, plus the automatic one below (app start, at most once/24h).
+  ipcMain.handle('db:backupNow', () => {
+    const p = db.backupNow('manual');
+    db.pruneBackups(10);
+    return p ? { ok: true, path: p } : { ok: false };
+  });
+  ipcMain.handle('db:listBackups', () => db.listBackups());
+  ipcMain.handle('app:getUserDataPath', () => app.getPath('userData'));
+
   transcriptionHandlers.register(sendControl);
   editHandlers.register(sendControl);
   productionHandlers.register();
