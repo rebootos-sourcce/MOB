@@ -41,8 +41,11 @@ css  = (here/'tokens.css').read_text(encoding='utf-8')
 # first cut of this script looked for engine.js in the wrong place twice.
 eng  = (here/'engine.js') if (here/'engine.js').exists() else pathlib.Path('../engine.js')
 eng  = eng.read_text(encoding='utf-8')
-qs   = (here/'questions.js').read_text(encoding='utf-8')
-ring = (here/'ring.js').read_text(encoding='utf-8')
+# THE REAL UNI, atuned_src/ui/uni.js, inlined into index.html the same way
+# engine.js is inlined into quiz.html below: so the funnel never carries a
+# second, staler copy of her engine (CLAUDE.md, "never the embedded copy").
+uni  = (here/'uni.js') if (here/'uni.js').exists() else pathlib.Path('../atuned_src/ui/uni.js')
+uni  = uni.read_text(encoding='utf-8')
 
 # THE DOOR HAS TO POINT AT THE FILE HE ACTUALLY HAS. Every page links to its
 # siblings by source name. In dist they are called atuned-something, because a
@@ -71,9 +74,8 @@ SRC = sorted(p.name for p in here.glob('*.html'))
 missing = [s for s in SRC if s not in OUT]
 assert not missing, 'no dist name for '+repr(missing)+': add it to OUT'
 
-SCRIPTS = {'quiz.html': [('<script src="../engine.js"></script>', eng,  'engine.js'),
-                         ('<script src="questions.js"></script>', qs,   'questions.js'),
-                         ('<script src="ring.js"></script>',      ring, 'ring.js')]}
+SCRIPTS = {'quiz.html':  [('<script src="../engine.js"></script>', eng, 'engine.js')],
+           'index.html': [('<script src="../atuned_src/ui/uni.js"></script>', uni, 'uni.js')]}
 
 built = {}
 for src in SRC:

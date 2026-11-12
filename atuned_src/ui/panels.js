@@ -1194,6 +1194,10 @@ function recordLinkInflate(bytes){
  },function(){ return importRefuse('the link is damaged or cut short, so it could not be unpacked'); });}
 /* the boot step. Returns the promise so a gate can wait on the real result
    rather than on a timer. */
+/* Set once, true only for the exact landing the paragraph above
+   describes, and read (and cleared) exactly once, by ui/login.js's
+   loginSubmit, whichever runs first. */
+var RECORD_LINK_LANDED=false;
 function recordLinkBoot(){
  var got=recordLinkTake(); if(!got)return null;
  var bytes=linkUnwrap(got.text);
@@ -1219,7 +1223,21 @@ function recordLinkBoot(){
   /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
      first thing a person sees is their own reading and the gift's line. The
      app opens on Discover otherwise, since 23 October. See tabLandFirst. */
-  try{ tabLandFirst(); }catch(e){}
+  var landedNow=false;
+  try{ landedNow=!!tabLandFirst(); }catch(e){}
+  /* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md,
+     "The funnel/quiz replacement's exact scope, and where login lands").
+     His words, final: "When the user creates a login, it lands on the
+     simple dashboard." That is a deliberate override of the first-arrival
+     rule directly above, for this one flow only: a person who arrived
+     through a record link, on a device that had genuinely never landed
+     before (landedNow, not just "a link happened to be present" -- a
+     resend of an old link to an already-landed device is not a first
+     arrival and does not get the override). ui/login.js's loginSubmit
+     reads this flag once, on its own next successful sign in or account
+     creation, and clears it either way, so it can never fire twice and
+     never reaches a login that has nothing to do with this landing. */
+  if(landedNow)RECORD_LINK_LANDED=true;
   /* A quiz-imported record skips onboarding, which is otherwise the first
      caller of the anonymous first-visit session. Start that same session
      here, after a record has actually landed. authFunnelStart sends only a

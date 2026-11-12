@@ -10749,5 +10749,95 @@ console.log('\nBORN · a birth date that is not a day is no birth');
  ok(sp&&sp.sun==='Cancer'&&sp.lp===11&&sp.chinese==='Dragon','and a real day still reads as it did, '+JSON.stringify(sp&&[sp.sun,sp.lp,sp.chinese]));
 }
 
+console.log('\nARCH SEED · the 11 November ruling: a 12-item self-report seeds S.arcs the same way a hand pick already does');
+{
+ const {blankProfile,archSelfValid,archSeedEmpty,archSeedApply,archSeedClear,archSeedShare,ARCH}=E;
+ ok(ARCH.length===12,'ARCH carries twelve, so the self-report is twelve strengths, got '+ARCH.length);
+ const bad=[new Array(11).fill(.5), new Array(12).fill(1.4), 'nope', null];
+ ok(bad.every(v=>!archSelfValid(v)),'a wrong length, an out-of-range value or a non-array is refused, not clamped');
+ const good=new Array(12).fill(0); good[2]=.9; good[5]=.7; good[0]=.5; good[9]=.4;
+ ok(archSelfValid(good),'twelve values each 0 to 1 is valid');
+ const p=blankProfile('archseed');
+ ok(archSeedEmpty(p),'a fresh blueprint, still at the schema default, is empty');
+ const r=archSeedApply(p,good);
+ ok(!!r&&JSON.stringify(p.soul.arcs)===JSON.stringify([2,5,0,9]),
+  'ranked strongest first, capped at four, the same width a hand pick in panels.js is capped at: got '+JSON.stringify(p.soul.arcs));
+ ok(archSeedShare(p)===1,'untouched since the seed, the share is 1, got '+archSeedShare(p));
+ ok(archSeedEmpty(p),'right after seeding, the pick still reads as empty in the "untouched since written" sense, so retaking the quiz re-seeds instead of refusing');
+ ok(archSeedApply(p,good)!==null,'retaking the quiz from an untouched seed re-seeds rather than refusing');
+ p.soul.arcs=[7,1]; /* a hand pick in panels.js, same shape */
+ ok(archSeedShare(p)===0,'a hand pick since the seed brings the share to 0, got '+archSeedShare(p));
+ ok(archSeedApply(p,good)===null,'and a seed never overwrites a blueprint the person has since picked by hand');
+ const q=blankProfile('archseed2'); archSeedApply(q,good); archSeedClear(q);
+ ok(!q.archSeed&&JSON.stringify(q.soul.arcs)==='[0,1]','not said puts the pick back to the schema default and drops the seed');
+ const r2=blankProfile('archseed3'); r2.soul.arcs=[3,4]; archSeedApply(r2,good);
+ ok(r2.archSeed===null||r2.archSeed===undefined,'a blueprint already hand-picked before any quiz is never silently seeded over');
+}
+
+console.log('\nSAB SEED · the 11 November ruling: the 20 self-reported saboteurs write the real S.charge sab33Detect() already reads');
+{
+ const {blankProfile,sabSelfValid,sabSeedAxes,sabSeedEmpty,sabSeedApply,sabSeedClear,sabSeedShare,
+  SAB_SELFNAMES,SAB33_BY,KB_KEY,CHARGES,sab33Detect,loadProfile}=E;
+ ok(SAB_SELFNAMES.length===20,'twenty verified names, got '+SAB_SELFNAMES.length);
+ const unknown=SAB_SELFNAMES.filter(nm=>!SAB33_BY[KB_KEY(nm)]);
+ ok(unknown.length===0,'every one of the twenty is a real SAB33 row by identity, not assumed, missing '+JSON.stringify(unknown));
+ ok(!sabSelfValid({Judge:1.4})&&!sabSelfValid({Snowflake:.5})&&!sabSelfValid('nope'),
+  'an out-of-range strength, a name outside the twenty, or a non-object is refused');
+ ok(sabSelfValid({Judge:.8,Avoider:0}),'names from the twenty with strengths 0 to 1 are valid, a 0 included');
+ /* Judge pulls fear 4..6 / shame 6..8 / anger (checked against the real row,
+    not assumed -- read it back rather than hard-code a second copy). */
+ const judgeRow=SAB33_BY[KB_KEY('Judge')];
+ const ax=sabSeedAxes({Judge:1});
+ judgeRow[1].forEach(part=>{
+  const c={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+   shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'}[part[0]];
+  near(ax[c],(part[1]+part[2])/2,0.05,'Judge alone at full strength lands its own row\'s own band midpoint on '+c);});
+ const untouched=CHARGES.filter(c=>!judgeRow[1].some(part=>{
+  const k={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
+   shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation',anxiety:'Anticipation'}[part[0]];
+  return k===c;}));
+ ok(untouched.every(c=>ax[c]===0),'an axis Judge\'s own row never names stays at the blank, not a guessed value');
+ /* two selected rows sharing an axis blend, they do not clobber: Micromanager
+    wants fear 7-10 (mid 8.5), Negotiator wants fear 4-6 (mid 5), equal
+    strength should land near the mean of the two midpoints. */
+ const both=sabSeedAxes({Micromanager:1,Negotiator:1});
+ near(both.Fear,(8.5+5)/2,0.1,'two selected rows sharing an axis take the weighted mean, never the max or one overwriting the other');
+ const p=blankProfile('sabseed');
+ ok(sabSeedEmpty(p),'a fresh profile\'s nine charges are empty');
+ const r=sabSeedApply(p,{Judge:1,Micromanager:.5});
+ ok(!!r&&r.names.indexOf('Judge')>=0&&r.names.indexOf('Micromanager')>=0,'both selected names are recorded on the seed');
+ ok(sabSeedShare(p)===1,'untouched since seeding, the share is 1, got '+sabSeedShare(p));
+ ok(sabSeedEmpty(p),'right after seeding, the nine charges still read as empty in the "untouched since written" sense, so retaking the quiz re-seeds instead of refusing, the same rule seedApply uses for the four-letter type');
+ ok(sabSeedApply(p,{Pleaser:1})!==null,'retaking the quiz re-seeds from an untouched seed rather than refusing');
+ /* the engine's own detection, not a second table: once seeded, sab33Detect()
+    reads the same S.charge this file wrote, through ordinary loadProfile. */
+ sabSeedApply(p,{Judge:1,Micromanager:.5});
+ loadProfile(p);
+ const names=sab33Detect().map(d=>d.nm);
+ ok(names.indexOf('Judge')>=0,'sab33Detect() names Judge off the charge this self-report wrote, with no second code path, named: '+JSON.stringify(names));
+ p.axes.Fear.held=0.1; /* a story has since moved the field: the person's, not the seed's */
+ ok(!sabSeedEmpty(p),'once a story has moved any of the nine, the field reads as held and no longer empty');
+ ok(sabSeedApply(p,{Cynic:1})===null,'and a later self-report never overwrites charge a story has since moved');
+ const q=blankProfile('sabseed2'); sabSeedApply(q,{Judge:1}); sabSeedClear(q);
+ ok(!q.sabSeed&&CHARGES.every(c=>q.axes[c].held===0),'not said puts every one of the nine back to the blank and drops the seed');
+}
+
+console.log('\nFUNNELQ · the funnel/quiz\'s 59 self-report statements, recounted off the real data rather than quoted');
+{
+ const {FUNNELQ,FUNNELQ_BLOCKS,SI,VERP,ARCH,SAB_SELFNAMES,sabSelfStatement}=E;
+ ok(FUNNELQ.length===59,'21 laws + 6 gates + 12 archetypes + 20 saboteurs is 59, got '+FUNNELQ.length
+  +' -- V19\'s own meta description said 58, its own BLOCK_DEFS assertion said 59; this is the real count, read off the data');
+ ok(FUNNELQ_BLOCKS.map(b=>b.items.length).join(',')==='21,6,12,20','blocks sized 21,6,12,20 in that order, got '
+  +FUNNELQ_BLOCKS.map(b=>b.items.length).join(','));
+ ok(FUNNELQ.every(q=>typeof q.st==='string'&&q.st.length>0),'every one of the 59 carries a real statement, none blank');
+ ok(FUNNELQ.filter(q=>q.sec==='law').length===SI.length,'one statement per law, no more, no fewer');
+ ok(FUNNELQ.filter(q=>q.sec==='gate').every((q,i)=>q.st===VERP[i].d),
+  'the six gate statements are VERP\'s own .d field, read, not retyped');
+ ok(FUNNELQ.filter(q=>q.sec==='arch').length===ARCH.length,'one statement per archetype, no more, no fewer');
+ ok(FUNNELQ.filter(q=>q.sec==='sab').every(q=>q.st===sabSelfStatement(q.nm)),
+  'every saboteur statement is sabSelfStatement()\'s own live read of SABDEF.q, not a second copy');
+ ok(SAB_SELFNAMES.length===20&&FUNNELQ.filter(q=>q.sec==='sab').length===20,'twenty saboteur questions, matching SAB_SELFNAMES');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

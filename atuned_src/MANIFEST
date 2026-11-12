@@ -67,6 +67,9 @@ engine/rise.js
 engine/ritex.js
 engine/archexpr.js
 engine/showonly.js
+engine/archseed.js
+engine/sabseed.js
+engine/data/funnelquiz.js
 ui/component.js
 ui/sound.js
 ui/uni.js
