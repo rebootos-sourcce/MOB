@@ -1006,8 +1006,46 @@
   function updateTrimUI() {
     $('trimInLabel').textContent = 'In: ' + fmtMs(_trimInMs || 0);
     $('trimOutLabel').textContent = _trimOutMs != null ? 'Out: ' + fmtMs(_trimOutMs) : 'Out: —';
-    $('btnTrim').hidden = !(_trimInMs != null && _trimOutMs != null && _trimOutMs > _trimInMs);
+    const hasSelection = _trimInMs != null && _trimOutMs != null && _trimOutMs > _trimInMs;
+    $('btnTrim').hidden = !hasSelection;
+    $('btnCreateClip').hidden = !hasSelection;
     renderAllRegions();
+  }
+
+  // edit:createClip / clips:list / ffmpeg.extractSegment all existed with no
+  // renderer caller — the production variants (TikTok caption, LinkedIn
+  // headline) are built to describe a short clip, but there was no way to
+  // actually produce one. Reuses the same in/out marks as Trim, but extracts
+  // a standalone file alongside the recording instead of editing its EDL.
+  async function refreshClipList(recordingId) {
+    const list = $('clipList');
+    if (!list) return;
+    let clips = [];
+    try { clips = await window.mob.db.query('clips:list', [recordingId]); } catch (_) {}
+    if (!clips.length) {
+      list.innerHTML = '<div class="empty-hint">No clips yet — set in/out points and click Create clip.</div>';
+      return;
+    }
+    list.innerHTML = '';
+    clips.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'recording-item';
+      const label = document.createElement('span');
+      label.textContent = (c.label || 'Clip') + ' · ' + fmtMs(c.end_ms - c.start_ms);
+      const playBtn = document.createElement('button');
+      playBtn.className = 'ghost mini';
+      playBtn.textContent = 'Play';
+      playBtn.onclick = () => {
+        const video = $('editPreviewVideo');
+        if (!video || !c.path) return;
+        video.src = 'file://' + c.path;
+        video.hidden = false;
+        video.play().catch(() => {});
+      };
+      row.appendChild(label);
+      row.appendChild(playBtn);
+      list.appendChild(row);
+    });
   }
 
   async function loadEditTab() {
@@ -1036,6 +1074,7 @@
       $('editTagBox').hidden = true;
       $('editExportRow') && ($('editExportRow').hidden = true);
       refreshEditCutSummary(id);
+      refreshClipList(id);
       // Clear stale regions/trim-selection from whatever was selected before.
       _detectedRegions = []; _trimInMs = null; _trimOutMs = null; updateTrimUI();
       if (row && row.path) loadWaveform(row.path);
@@ -1233,6 +1272,27 @@
         $('editProgressLabel').textContent = 'Trim applied. Click "Render edited video" to save it to a file.';
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
+    };
+    $('btnCreateClip').onclick = async () => {
+      if (!selectedRecordingId || _trimInMs == null || _trimOutMs == null) return;
+      const btn = $('btnCreateClip');
+      btn.disabled = true;
+      try {
+        await window.api.invoke('edit:createClip', {
+          recordingId: selectedRecordingId,
+          startMs: _trimInMs,
+          endMs: _trimOutMs,
+          label: 'Clip ' + fmtMs(_trimInMs) + '–' + fmtMs(_trimOutMs),
+          type: 'clip',
+        });
+        await refreshClipList(selectedRecordingId);
+        $('editProgress').hidden = false;
+        $('editProgressLabel').textContent = 'Clip created.';
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      } finally {
+        btn.disabled = false;
       }
     };
   }

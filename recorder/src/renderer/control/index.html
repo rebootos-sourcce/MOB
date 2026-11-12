@@ -248,6 +248,7 @@
             <button id="btnMarkOut" class="ghost mini">Set out point</button>
             <span id="trimOutLabel" class="hint">Out: —</span>
             <button id="btnTrim" class="ghost mini" hidden>Trim to selection</button>
+            <button id="btnCreateClip" class="ghost mini" hidden>Create clip</button>
           </div>
           <div class="row" style="margin-top:6px;gap:8px;align-items:center;">
             <span id="editCutSummary" class="hint"></span>
@@ -279,6 +280,10 @@
             <button id="btnExportVtt" class="ghost mini">Export VTT</button>
           </div>
           <div id="editTagBox" class="tag-box" hidden></div>
+          <div id="clipListWrap" style="margin-top:10px;">
+            <div class="hint" style="margin-bottom:4px;">Clips</div>
+            <div id="clipList" class="recording-list"><div class="empty-hint">No clips yet — set in/out points and click Create clip.</div></div>
+          </div>
         </section>
       </main>
     </div>
