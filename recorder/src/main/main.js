@@ -857,7 +857,7 @@ app.whenReady().then(async () => {
   await db.init();
   dbHandlers.register();
   transcriptionHandlers.register(sendControl);
-  editHandlers.register();
+  editHandlers.register(sendControl);
   productionHandlers.register();
   voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic, getRecordingState: () => rec.state });
   syncHandlers.register(sendControl);

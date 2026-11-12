@@ -11,6 +11,8 @@
  */
 const { spawn, execFile } = require('child_process');
 const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
 function binaryPath() {
   const p = require('ffmpeg-static');
@@ -259,4 +261,73 @@ function extractThumbnail(input, output, atSec = 0.5) {
   });
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, killAll };
+/**
+ * Renders the KEPT (non-cut) ranges of a source video into a single output
+ * file, in source order — this is the piece that was entirely missing:
+ * applyCuts() only ever wrote edl_entries rows, and nothing turned that
+ * into an actual edited file. "Remove fillers" reported success while the
+ * video on disk never changed.
+ *
+ * Each kept range is extracted with the same accurate re-encode as
+ * extractSegment (output-side seek, not a keyframe-snapped stream copy),
+ * then the parts are joined with ffmpeg's concat demuxer. Because every
+ * part was encoded with identical settings, the join is a stream copy —
+ * no second re-encode, no quality loss, no re-introduced keyframe drift.
+ *
+ * @param {string} input
+ * @param {string} output
+ * @param {Array<{source_start_ms:number, source_end_ms:number}>} segments  kept ranges, source order
+ * @param {function} [onProgress]  fraction 0-1
+ */
+async function renderEdl(input, output, segments, onProgress) {
+  if (!segments.length) throw new Error('No kept segments to render — everything was cut');
+
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mob-edl-'));
+  const partPaths = [];
+  try {
+    const totalMs = segments.reduce((s, seg) => s + Math.max(0, seg.source_end_ms - seg.source_start_ms), 0) || 1;
+    let doneMs = 0;
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      const partPath = path.join(tmpDir, `part-${String(i).padStart(4, '0')}.mp4`);
+      await extractSegment(input, partPath, seg.source_start_ms, seg.source_end_ms);
+      partPaths.push(partPath);
+      doneMs += (seg.source_end_ms - seg.source_start_ms);
+      if (onProgress) onProgress(Math.min(0.95, doneMs / totalMs));
+    }
+
+    if (partPaths.length === 1) {
+      fs.copyFileSync(partPaths[0], output);
+    } else {
+      const listPath = path.join(tmpDir, 'list.txt');
+      // ffmpeg's concat-demuxer list format: each line `file '<path>'`,
+      // with embedded single quotes escaped as '\''.
+      const listContent = partPaths.map(p => `file '${p.replace(/'/g, "'\\''")}'`).join('\n');
+      fs.writeFileSync(listPath, listContent);
+      await new Promise((resolve, reject) => {
+        const args = ['-y', '-f', 'concat', '-safe', '0', '-i', listPath, '-c', 'copy', output];
+        const child = spawn(binaryPath(), args, { windowsHide: true });
+        activeChildren.add(child);
+        let stderr = '';
+        child.stderr.on('data', d => { stderr += d.toString(); });
+        child.on('error', (err) => { activeChildren.delete(child); reject(err); });
+        child.on('close', (code) => {
+          activeChildren.delete(child);
+          if (code === 0 && fs.existsSync(output)) resolve();
+          else reject(new Error('ffmpeg concat failed (code ' + code + '): ' + stderr.slice(-500)));
+        });
+      });
+    }
+    if (onProgress) onProgress(1);
+    return { output };
+  } finally {
+    // rmSync(recursive) rather than deleting tracked files one by one and
+    // rmdirSync-ing what's left — the list.txt written above isn't in
+    // partPaths, so the old per-file cleanup left it behind and rmdirSync
+    // then failed silently on a non-empty directory, orphaning a temp dir
+    // on every single render.
+    try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch (_) { /* best effort */ }
+  }
+}
+
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, renderEdl, killAll };

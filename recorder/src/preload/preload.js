@@ -9,6 +9,7 @@ const LISTEN = new Set([
   'recording:state', 'finalize:progress', 'finalize:done', 'finalize:error', 'recording:thumbReady',
   'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown',
   'transcription:progress',
+  'edit:renderProgress',
   'voice:listening',
   'sync:progress',
   'ui:update-ready'

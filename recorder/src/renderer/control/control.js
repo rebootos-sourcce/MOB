@@ -936,6 +936,26 @@
 
   // ── Edit tab ──────────────────────────────────────────────────
   let _unsubTranscriptionProgress = null;
+
+  // applyCuts only ever wrote edl_entries rows with nothing to show for it —
+  // this is what makes that state visible and gives the user a way to
+  // actually turn it into a file (see btnRenderEdit below).
+  async function refreshEditCutSummary(recordingId) {
+    let entries = [];
+    try { entries = await window.mob.db.query('edl:list', [recordingId]); } catch (_) {}
+    const n = entries.length;
+    const summary = $('editCutSummary');
+    const btn = $('btnRenderEdit');
+    if (!summary || !btn) return;
+    if (n > 0) {
+      summary.textContent = `${n} segment${n === 1 ? '' : 's'} kept after cuts — not yet rendered to a file.`;
+      btn.hidden = false;
+    } else {
+      summary.textContent = '';
+      btn.hidden = true;
+    }
+  }
+
   async function loadEditTab() {
     await loadRecordingList('editRecordingList', async (id, row) => {
       const sec = $('editCutSection');
@@ -945,6 +965,7 @@
       $('editTranscriptBox').hidden = true;
       $('editTagBox').hidden = true;
       $('editExportRow') && ($('editExportRow').hidden = true);
+      refreshEditCutSummary(id);
       if (row && row.path) loadWaveform(row.path);
       // Auto-load existing transcript if one is already in the DB
       try {
@@ -1021,7 +1042,8 @@
         if (!fillers.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No fillers detected.'; return; }
         const cuts = fillers.map(f => ({ start_ms: f.start_ms, end_ms: f.end_ms }));
         await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} filler cuts.`;
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} filler cuts. Render below to save it to a file.`;
+        refreshEditCutSummary(selectedRecordingId);
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
       }
@@ -1038,9 +1060,37 @@
         if (!segs.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No silences detected.'; return; }
         const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
         await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
-        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts.`;
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts. Render below to save it to a file.`;
+        refreshEditCutSummary(selectedRecordingId);
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
+    };
+
+    // Turns the applied cuts into an actual edited video file — this is the
+    // step that was completely missing. Registers the result as a new
+    // sibling recording rather than overwriting the original.
+    $('btnRenderEdit').onclick = async () => {
+      if (!selectedRecordingId) return;
+      const targetId = selectedRecordingId;
+      const unsub = window.api.on('edit:renderProgress', (p) => {
+        if (p.recordingId !== targetId) return;
+        $('editProgressBar').style.width = p.pct + '%';
+      });
+      $('editProgress').hidden = false;
+      $('editProgressBar').style.width = '0%';
+      $('editProgressLabel').textContent = 'Rendering edited video…';
+      $('btnRenderEdit').disabled = true;
+      try {
+        const result = await window.api.invoke('edit:renderOutput', { recordingId: targetId });
+        $('editProgressBar').style.width = '100%';
+        $('editProgressLabel').textContent = 'Rendered: ' + result.path.split(/[\\/]/).pop();
+        await loadEditTab();
+      } catch (err) {
+        $('editProgressLabel').textContent = 'Render failed: ' + err.message;
+      } finally {
+        unsub();
+        $('btnRenderEdit').disabled = false;
       }
     };
   }

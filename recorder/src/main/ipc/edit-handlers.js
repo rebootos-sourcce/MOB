@@ -7,9 +7,10 @@ const crypto = require('crypto');
 const { app } = require('electron');
 const db = require('../db/sqlite');
 const { applyCuts, remapTimestamp, loadEdl } = require('../edl');
-const { clipKey } = require('../r2/key');
+const { clipKey, recordingKey } = require('../r2/key');
+const { getDeviceId } = require('../identity');
 
-function register() {
+function register(sendControl) {
   // Apply a set of timeline cuts to a recording; returns updated EDL entries.
   ipcMain.handle('edit:applyCuts', (_e, { recordingId, totalDurationMs, cuts }) => {
     // These values flow straight into cut math with no validation before
@@ -71,6 +72,41 @@ function register() {
     );
 
     return { id, path: clipPath, r2Key };
+  });
+
+  // Render the recording's EDL cuts to an actual output file. Until this
+  // existed, applyCuts only ever wrote edl_entries rows — "Remove fillers"
+  // reported success and the video on disk never changed. The result is
+  // registered as a NEW sibling recording (not an overwrite), so the
+  // original is preserved and the edit can be redone differently.
+  ipcMain.handle('edit:renderOutput', async (event, { recordingId }) => {
+    const rec = db.get('SELECT path, title FROM recordings WHERE id = ?', [recordingId]);
+    if (!rec || !rec.path) throw new Error('Recording not found: ' + recordingId);
+
+    const entries = loadEdl(recordingId);
+    if (!entries.length) throw new Error('No edits to render — apply cuts first');
+
+    const ffmpeg = require('../ffmpeg');
+    const ext = (path.extname(rec.path).replace(/^\./, '') || 'mp4');
+    const format = ext === 'webm' ? 'webm' : 'mp4';
+    const base = rec.path.slice(0, rec.path.length - path.extname(rec.path).length);
+    const outputPath = `${base}-edited.${format}`;
+
+    const segments = entries.map(e => ({ source_start_ms: e.source_start_ms, source_end_ms: e.source_end_ms }));
+    await ffmpeg.renderEdl(rec.path, outputPath, segments, (frac) => {
+      if (sendControl) sendControl('edit:renderProgress', { recordingId, pct: Math.round(frac * 100) });
+    });
+
+    const newId = crypto.randomUUID();
+    const outputDurationMs = entries[entries.length - 1].output_end_ms;
+    db.run(
+      `INSERT INTO recordings (id, device_id, path, duration_ms, codec, status, r2_key, title, created_at)
+       VALUES (?, ?, ?, ?, 'h264', 'ready', ?, ?, datetime('now'))`,
+      [newId, getDeviceId(), outputPath, outputDurationMs, recordingKey(newId, format), (rec.title || path.basename(rec.path)) + ' (edited)']
+    );
+    await db.flush();
+
+    return { ok: true, recordingId: newId, path: outputPath };
   });
 }
 
