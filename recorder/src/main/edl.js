@@ -2,7 +2,6 @@
 // ADR-002: Edit Decision List (EDL) — timeline cuts and timestamp remapping.
 // Manages edl_entries rows; provides remapTimestamp() for caption/chapter sync.
 
-const crypto = require('crypto');
 const db = require('./db/sqlite');
 
 // Full undo history per recording, kept in main-process memory (not

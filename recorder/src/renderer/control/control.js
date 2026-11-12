@@ -1493,7 +1493,7 @@
             : p.stage === 'transcribing' ? 'Transcribing…'
             : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
         });
-        const result = await window.api.invoke('transcription:start', { recordingId: row.id, force: true });
+        await window.api.invoke('transcription:start', { recordingId: row.id, force: true });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) {
           $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; $('editExportRow').hidden = false;

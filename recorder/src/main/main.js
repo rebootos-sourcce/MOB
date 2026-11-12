@@ -601,7 +601,12 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     sendControl('finalize:done', { path: result.output, durationMs, format, dbWarning });
     bus.emit('finalized', { path: result.output, durationMs });
     if (!dbWarning) generateThumbnailFor(newRecId, result.output);
-  } catch (err) {
+  } catch (caughtErr) {
+    // A plain local, not the exception parameter itself — the retry below
+    // needs to replace it with the retry's own failure on top of the
+    // original, which reassigning a catch binding directly (no-ex-assign)
+    // works but obscures.
+    let err = caughtErr;
     // Hardware encoder missing/failing? Retry once with libx264.
     if (format === 'mp4' && s.recording.codec !== 'h264') {
       try {

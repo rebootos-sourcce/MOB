@@ -1,0 +1,70 @@
+name: Build MOB Recorder (macOS + Linux, verification only)
+
+# Task #68: package.json declares mac (dmg + zip) and linux (AppImage + deb)
+# build targets that have never actually been built once in CI — only the
+# Windows portable EXE has a real, exercised pipeline. This workflow proves
+# the other two targets actually build on real hosts; it does not publish a
+# release (unsigned mac builds aren't notarized, and this repo has no
+# Apple Developer credentials to sign with). See build-recorder.yml for the
+# Windows build that does publish.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/quirky-pasteur-cpog96', 'main']
+    paths: ['recorder/**', '.github/workflows/build-recorder-cross-platform.yml']
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            dist-script: dist:mac
+            artifact-name: MOB-Recorder-macos
+            artifact-glob: |
+              recorder/dist/*.dmg
+              recorder/dist/*.zip
+          - os: ubuntu-latest
+            dist-script: dist:linux
+            artifact-name: MOB-Recorder-linux
+            artifact-glob: |
+              recorder/dist/*.AppImage
+              recorder/dist/*.deb
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: recorder
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: recorder/package-lock.json
+
+      - name: Install
+        run: npm ci --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Syntax check
+        run: npm run check
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build (${{ matrix.dist-script }})
+        run: npm run ${{ matrix.dist-script }}
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.artifact-glob }}
+          if-no-files-found: error
+          retention-days: 7

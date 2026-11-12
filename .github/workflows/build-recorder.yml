@@ -25,8 +25,17 @@ jobs:
           cache: npm
           cache-dependency-path: recorder/package-lock.json
 
+      # #68: --no-audit was hiding `npm ci`'s own audit summary from every CI
+      # run. Dropping it doesn't fail the build — npm ci/install don't exit
+      # non-zero over advisories on their own (verified: 24 known advisories,
+      # mostly in electron-builder's own toolchain plus Electron itself being
+      # on an older pinned version, exit code 0) — it just means an advisory
+      # actually shows up in the log instead of being silently swallowed.
       - name: Install
-        run: npm ci --no-audit --no-fund
+        run: npm ci --no-fund
+
+      - name: Lint
+        run: npm run lint
 
       - name: Syntax check
         run: npm run check
