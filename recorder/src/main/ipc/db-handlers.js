@@ -109,6 +109,11 @@ const QUERIES = {
   // distributions
   'distributions:latest': ([recording_id]) =>
     db.get('SELECT * FROM distributions WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1', [recording_id]),
+  // #54: every attempt, not just the newest — distributions:latest alone
+  // made every prior try (including orphaned 'pending' rows a crashed or
+  // abandoned upload leaves behind) permanently invisible.
+  'distributions:list': ([recording_id]) =>
+    db.all('SELECT * FROM distributions WHERE recording_id = ? ORDER BY created_at DESC', [recording_id]),
 
   // clips
   'clips:list': ([recording_id]) =>

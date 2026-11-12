@@ -1895,8 +1895,143 @@
     if (status && status.startsWith('error')) return 'Error: ' + (errorMsg || status);
     const labels = {
       pending: 'Preparing…', uploading: 'Uploading…', uploaded: 'Uploaded', queued: 'Queued for distribution',
+      canceled: 'Canceled',
     };
     return labels[status] || status || 'Unknown';
+  }
+  function distBadgeClass(status) {
+    if (status && status.startsWith('error')) return 'bad';
+    if (status === 'queued') return 'ok';
+    if (status === 'canceled') return 'warn';
+    return '';
+  }
+  // SQLite's datetime('now') is UTC with no 'Z' and a space instead of 'T' —
+  // parsed as-is, Date treats it as local time and every timestamp in the
+  // history list is off by the system's UTC offset.
+  function fmtDistTime(sqliteUtc) {
+    if (!sqliteUtc) return '';
+    const d = new Date(sqliteUtc.replace(' ', 'T') + 'Z');
+    return isNaN(d.getTime()) ? sqliteUtc : d.toLocaleString();
+  }
+
+  // Task #54: one distributionId can be "in progress" at a time from this
+  // renderer's point of view (the main process's `inFlight` map could in
+  // theory track more, but nothing in this UI starts a second one while the
+  // first is still running — btnDistUpload and every Retry button disable
+  // during a run). Drives which history row shows a Cancel button.
+  let activeDistributionId = null;
+
+  // Shared by the "Upload to cloud" button (after sync:prepare creates a
+  // fresh row) and every history row's "Retry" button (which skips prepare
+  // entirely and calls this on the SAME distributionId) — previously this
+  // whole progress-wiring block was duplicated, and the duplicate Retry path
+  // would have disagreed with Upload's about single mistakes fixed here.
+  async function runDistribution(distributionId) {
+    activeDistributionId = distributionId;
+    $('distProgress').hidden = false;
+    $('distProgressBar').style.width = '5%';
+    $('distProgressLabel').textContent = 'Preparing…';
+    $('btnDistUpload').disabled = true;
+    await renderDistHistory(selectedRecordingId); // show the Cancel button on this row now
+
+    const unsubProgress = window.api.on('sync:progress', (p) => {
+      if (p.distributionId !== distributionId) return;
+      $('distProgressBar').style.width = p.pct + '%';
+      const labels = { presign: 'Requesting upload URL…', uploading: 'Uploading…', queuing: 'Queueing…', done: 'Done' };
+      $('distProgressLabel').textContent = labels[p.stage] || p.stage;
+    });
+
+    try {
+      await window.api.invoke('sync:distribution', { distributionId });
+      $('distProgressBar').style.width = '100%';
+      $('distStatus').textContent = 'Queued for distribution';
+      $('distProgressLabel').textContent = 'Upload complete';
+    } catch (err) {
+      // Don't sniff err.message for "was this a cancel" — Electron's IPC
+      // error serialization doesn't reliably preserve AbortError's name or
+      // exact wording across the renderer/main boundary. sync.js's fail()
+      // already wrote the authoritative answer to the row itself.
+      const row = await window.mob.db.query('distributions:latest', [selectedRecordingId]).catch(() => null);
+      const canceled = row && row.id === distributionId && row.status === 'canceled';
+      $('distProgressLabel').textContent = canceled ? 'Canceled.' : 'Upload failed: ' + err.message;
+      $('distStatus').textContent = canceled ? 'Canceled' : 'Error: ' + err.message;
+    } finally {
+      unsubProgress();
+      activeDistributionId = null;
+      $('btnDistUpload').disabled = false;
+      await renderDistHistory(selectedRecordingId);
+    }
+  }
+
+  async function renderDistHistory(recordingId) {
+    const list = $('distHistoryList');
+    if (!recordingId) { list.textContent = ''; return; }
+    const rows = await window.mob.db.query('distributions:list', [recordingId]);
+    list.textContent = '';
+    if (!rows.length) {
+      const hint = document.createElement('div');
+      hint.className = 'empty-hint';
+      hint.textContent = 'No upload attempts yet.';
+      list.appendChild(hint);
+      return;
+    }
+    for (const row of rows) {
+      const inFlight = row.id === activeDistributionId;
+      // 'pending': an orphaned row from sync:prepare that never got as far
+      // as calling sync:distribution (e.g. the app closed in between) — the
+      // exact "stuck" case task #54 calls out. Retry on it just means
+      // actually starting the upload sync:distribution never got to run.
+      const canRetry = !inFlight && (row.status.startsWith('error') || row.status === 'canceled' || row.status === 'pending');
+      const canDelete = !inFlight && row.status !== 'queued';
+
+      const item = document.createElement('div');
+      item.className = 'recording-item';
+      item.style.cursor = 'default';
+
+      const label = document.createElement('span');
+      label.className = 'rec-name';
+      label.textContent = fmtDistTime(row.created_at) + (row.error_msg ? ' — ' + row.error_msg : '');
+
+      const badge = document.createElement('span');
+      badge.className = 'badge' + (distBadgeClass(inFlight ? 'uploading' : row.status) ? ' ' + distBadgeClass(inFlight ? 'uploading' : row.status) : '');
+      badge.textContent = inFlight ? 'In progress' : distStatusLabel(row.status, row.error_msg).replace(/^Error: .*/, 'Error');
+
+      item.appendChild(label);
+      item.appendChild(badge);
+
+      if (inFlight) {
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'ghost mini';
+        cancelBtn.textContent = 'Cancel';
+        cancelBtn.onclick = async (e) => {
+          e.stopPropagation();
+          cancelBtn.disabled = true;
+          try { await window.api.invoke('sync:cancel', { distributionId: row.id }); }
+          catch (err) { cancelBtn.disabled = false; }
+        };
+        item.appendChild(cancelBtn);
+      }
+      if (canRetry) {
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'ghost mini';
+        retryBtn.textContent = 'Retry';
+        retryBtn.onclick = (e) => { e.stopPropagation(); runDistribution(row.id); };
+        item.appendChild(retryBtn);
+      }
+      if (canDelete) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'ghost mini';
+        delBtn.textContent = 'Remove';
+        delBtn.title = 'Remove this attempt from the history list';
+        delBtn.onclick = async (e) => {
+          e.stopPropagation();
+          try { await window.api.invoke('distributions:delete', { distributionId: row.id }); renderDistHistory(recordingId); }
+          catch (err) { /* already logged main-process side */ }
+        };
+        item.appendChild(delBtn);
+      }
+      list.appendChild(item);
+    }
   }
 
   async function loadDistributionTab() {
@@ -1924,6 +2059,8 @@
       // (Production) that satisfies it, with the same recording selected.
       $('btnGoProduction').hidden = !!pkg;
       $('btnGoProduction').dataset.recordingId = id;
+      // #54: every prior attempt, not just the newest.
+      await renderDistHistory(id);
     });
 
     $('btnGoProduction').onclick = () => {
@@ -1936,50 +2073,17 @@
       const pkg = await window.mob.db.query('packages:latest', [selectedRecordingId]);
       if (!pkg) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Generate a production package first.'; return; }
 
-      $('distProgress').hidden = false;
-      $('distProgressBar').style.width = '5%';
-      $('distProgressLabel').textContent = 'Preparing…';
-      $('btnDistUpload').disabled = true;
-
       // Fix #21: UUID generation and DB insert happen in main process via sync:prepare
       let distributionId;
       try {
         const prep = await window.api.invoke('sync:prepare', { recordingId: selectedRecordingId, packageId: pkg.id });
         distributionId = prep.distributionId;
       } catch (err) {
+        $('distProgress').hidden = false;
         $('distProgressLabel').textContent = 'Prepare failed: ' + err.message;
-        $('btnDistUpload').disabled = false;
         return;
       }
-
-      const unsubProgress = window.api.on('sync:progress', ({ stage, pct }) => {
-        $('distProgressBar').style.width = pct + '%';
-        const labels = { presign: 'Requesting upload URL…', uploading: 'Uploading…', queuing: 'Queueing…', done: 'Done' };
-        $('distProgressLabel').textContent = labels[stage] || stage;
-        if (stage === 'done') {
-          $('distStatus').textContent = 'queued';
-          $('btnDistUpload').disabled = false;
-          unsubProgress();
-        }
-      });
-
-      try {
-        await window.api.invoke('sync:distribution', { distributionId });
-        $('distProgressBar').style.width = '100%';
-        $('distStatus').textContent = 'Queued for distribution';
-        $('distProgressLabel').textContent = 'Upload complete';
-        unsubProgress();
-      } catch (err) {
-        $('distProgressLabel').textContent = 'Upload failed: ' + err.message;
-        $('distStatus').textContent = 'Error: ' + err.message;
-        unsubProgress();
-      } finally {
-        // The 'done' sync:progress event normally re-enables this already,
-        // but that's a separate IPC event the button's own success/failure
-        // path shouldn't depend on arriving — if it's ever missed, the
-        // button used to stay disabled forever.
-        $('btnDistUpload').disabled = false;
-      }
+      await runDistribution(distributionId);
     };
   }
 

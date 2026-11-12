@@ -10,6 +10,10 @@ const settings = require('../settings');
 const { getDeviceId } = require('../identity');
 const { syncDistribution } = require('../cloudflare/sync');
 
+// Task #54: tracks the AbortController for every in-flight sync so
+// sync:cancel can actually interrupt it — distributionId -> AbortController.
+const inFlight = new Map();
+
 function register(sendControl) {
   // Read CF config (workerUrl only — never send apiToken to renderer)
   ipcMain.handle('cf:getConfig', () => {
@@ -65,10 +69,39 @@ function register(sendControl) {
     return { distributionId: id };
   });
 
+  // Reused for the initial upload AND for retry — syncDistribution() makes
+  // no assumption about the row's starting status, so retry just means
+  // calling this again with the SAME distributionId instead of sync:prepare
+  // inserting a new row (task #54's "reuse the existing row" requirement).
   ipcMain.handle('sync:distribution', async (_e, { distributionId }) => {
-    return syncDistribution(distributionId, (p) => {
-      if (sendControl) sendControl('sync:progress', { distributionId, ...p });
-    });
+    if (inFlight.has(distributionId)) throw new Error('This distribution is already in progress.');
+    const controller = new AbortController();
+    inFlight.set(distributionId, controller);
+    try {
+      return await syncDistribution(distributionId, (p) => {
+        if (sendControl) sendControl('sync:progress', { distributionId, ...p });
+      }, controller.signal);
+    } finally {
+      inFlight.delete(distributionId);
+    }
+  });
+
+  // Task #54: abort an in-flight upload. uploadToR2/jsonPost both thread the
+  // signal into the underlying https.request, so this actually tears down
+  // the socket rather than just no-opping the UI's progress bar.
+  ipcMain.handle('sync:cancel', (_e, { distributionId }) => {
+    const controller = inFlight.get(distributionId);
+    if (!controller) return { ok: false, reason: 'not in progress' };
+    controller.abort();
+    return { ok: true };
+  });
+
+  ipcMain.handle('distributions:delete', (_e, { distributionId }) => {
+    const dist = db.get('SELECT status FROM distributions WHERE id = ?', [distributionId]);
+    if (!dist) return { ok: true }; // already gone
+    if (inFlight.has(distributionId)) throw new Error('Cancel the upload before deleting it.');
+    db.run('DELETE FROM distributions WHERE id = ?', [distributionId]);
+    return { ok: true };
   });
 }
 

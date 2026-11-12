@@ -35,13 +35,13 @@ function getApiToken() {
  * @param {string} mimeType
  * @returns {Promise<{presignedUrl: string, expiresAt: string}>}
  */
-async function getPresignedUrl(r2Key, mimeType) {
+async function getPresignedUrl(r2Key, mimeType, signal) {
   const baseUrl = getWorkerUrl();
   const token   = getApiToken();
   if (!baseUrl || !token) throw new Error('Cloudflare not configured (CLOUDFLARE_WORKER_URL / CLOUDFLARE_API_TOKEN missing)');
 
   const body = JSON.stringify({ key: r2Key, mimeType, deviceId: getDeviceId() });
-  return jsonPost(`${baseUrl}/presign`, body, token);
+  return jsonPost(`${baseUrl}/presign`, body, token, signal);
 }
 
 /**
@@ -51,9 +51,11 @@ async function getPresignedUrl(r2Key, mimeType) {
  * @param {string} presignedUrl
  * @param {string} mimeType
  * @param {function} [onProgress]  called with fraction 0-1
+ * @param {AbortSignal} [signal]   task #54: cancel an upload in flight
  */
 // Fix #8: async stat — avoids blocking the Node.js event loop
-async function uploadToR2(filePath, presignedUrl, mimeType, onProgress) {
+async function uploadToR2(filePath, presignedUrl, mimeType, onProgress, signal) {
+  if (signal && signal.aborted) throw new DOMException('Upload canceled', 'AbortError');
   const stat = await fs.promises.stat(filePath);
   return new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(filePath);
@@ -63,16 +65,23 @@ async function uploadToR2(filePath, presignedUrl, mimeType, onProgress) {
       uploaded += chunk.length;
       if (onProgress) onProgress(uploaded / stat.size);
     });
+    // The request's own `signal` option aborts the socket, but a stream
+    // already piping into it needs its own close or it leaks a read handle
+    // on the (now pointless) local file.
+    fileStream.on('error', () => {}); // destroy() below triggers this; already handled via req's abort
+    if (signal) signal.addEventListener('abort', () => fileStream.destroy(), { once: true });
 
     const url = new URL(presignedUrl);
     const options = {
       hostname: url.hostname,
+      port: url.port || 443, // a presigned URL with a non-default port used to connect to :443 anyway
       path: url.pathname + url.search,
       method: 'PUT',
       headers: {
         'Content-Length': stat.size,
         'Content-Type': mimeType,
-      }
+      },
+      signal,
     };
 
     const req = https.request(options, (res) => {
@@ -83,7 +92,7 @@ async function uploadToR2(filePath, presignedUrl, mimeType, onProgress) {
         else reject(new Error(`R2 upload failed: HTTP ${res.statusCode} — ${body.slice(0, 200)}`));
       });
     });
-    req.on('error', reject);
+    req.on('error', reject); // signal abort surfaces here as an AbortError
     fileStream.pipe(req);
   });
 }
@@ -92,23 +101,28 @@ async function uploadToR2(filePath, presignedUrl, mimeType, onProgress) {
  * Enqueue a distribution job via the Worker -> Queue -> DO pipeline.
  * @param {object} job  { distributionId, recordingId, r2Key, packageId, platform }
  */
-async function enqueueDistribution(job) {
+async function enqueueDistribution(job, signal) {
   const baseUrl = getWorkerUrl();
   const token   = getApiToken();
   if (!baseUrl || !token) throw new Error('Cloudflare not configured');
 
   const body = JSON.stringify({ ...job, deviceId: getDeviceId() });
-  return jsonPost(`${baseUrl}/queue`, body, token);
+  return jsonPost(`${baseUrl}/queue`, body, token, signal);
 }
 
 /**
  * Full upload + enqueue flow for a distribution row.
  * Fix #17: per-stage error recovery — on failure writes error_msg and resets
  * status so a resume path is possible.
+ * Task #54: reused as-is for retry (the caller just passes the SAME
+ * distributionId again — nothing here assumes a fresh 'pending' row, so no
+ * separate "retry" codepath/row was needed) and for cancel, via an
+ * AbortSignal threaded through every network call.
  * @param {string} distributionId
  * @param {function} [onProgress]
+ * @param {AbortSignal} [signal]
  */
-async function syncDistribution(distributionId, onProgress = () => {}) {
+async function syncDistribution(distributionId, onProgress = () => {}, signal) {
   const dist = db.get('SELECT * FROM distributions WHERE id = ?', [distributionId]);
   if (!dist) throw new Error('Distribution not found: ' + distributionId);
 
@@ -116,9 +130,13 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   if (!rec) throw new Error('Recording not found');
 
   function fail(status, err) {
+    // A canceled upload isn't a failure to surface as "error_upload" with a
+    // scary AbortError message — it's the user's own request, and retrying
+    // it should look exactly like retrying any other interrupted attempt.
+    const isAbort = err.name === 'AbortError' || (signal && signal.aborted);
     db.run(
       'UPDATE distributions SET status = ?, error_msg = ? WHERE id = ?',
-      [status, err.message, distributionId]
+      [isAbort ? 'canceled' : status, isAbort ? null : err.message, distributionId]
     );
     throw err;
   }
@@ -128,7 +146,7 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   onProgress({ stage: 'presign', pct: 5 });
   let presignedUrl;
   try {
-    ({ presignedUrl } = await getPresignedUrl(rec.r2_key, mimeType));
+    ({ presignedUrl } = await getPresignedUrl(rec.r2_key, mimeType, signal));
   } catch (err) { fail('error_presign', err); }
 
   // Step 2: upload
@@ -138,7 +156,7 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
   try {
     await uploadToR2(rec.path, presignedUrl, mimeType, (frac) => {
       onProgress({ stage: 'uploading', pct: Math.round(10 + frac * 80) });
-    });
+    }, signal);
   } catch (err) { fail('error_upload', err); }
 
   db.run('UPDATE distributions SET status = ? WHERE id = ?', ['uploaded', distributionId]);
@@ -152,7 +170,7 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
       r2Key: rec.r2_key,
       packageId: dist.package_id,
       platform: dist.platform,
-    });
+    }, signal);
   } catch (err) { fail('error_queue', err); }
 
   db.run('UPDATE distributions SET status = ?, error_msg = NULL WHERE id = ?', ['queued', distributionId]);
@@ -163,11 +181,13 @@ async function syncDistribution(distributionId, onProgress = () => {}) {
 
 // ── helpers ───────────────────────────────────────────────────
 
-function jsonPost(url, body, token) {
+function jsonPost(url, body, token, signal) {
   return new Promise((resolve, reject) => {
+    if (signal && signal.aborted) return reject(new DOMException('Canceled', 'AbortError'));
     const parsed = new URL(url);
     const options = {
       hostname: parsed.hostname,
+      port: parsed.port || 443, // same latent bug as uploadToR2's options — a non-default port used to connect to :443 anyway
       path: parsed.pathname + parsed.search,
       method: 'POST',
       headers: {
@@ -175,6 +195,7 @@ function jsonPost(url, body, token) {
         'Content-Length': Buffer.byteLength(body),
         'Authorization': `Bearer ${token}`,
       },
+      signal,
     };
     const req = https.request(options, (res) => {
       let data = '';
