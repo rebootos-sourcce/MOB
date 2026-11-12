@@ -3604,6 +3604,39 @@ how the two blend as a story arrives) is scoped as a task for whoever builds
 the funnel/quiz replacement, the same way the archetype wiring above was
 scoped rather than guessed at further.
 
+## The funnel/quiz replacement's exact scope, and where login lands. Ruled 11-12 November.
+
+His words, verbatim, repeated twice the same night, final: "When the user
+creates a login, it lands on the simple dashboard." And separately, direct
+and final: "Get my funnel up, get my quiz up, make sure it gives a summary
+page, make sure there's a login page, make sure the login page goes to the
+dashboard. There's some other secondary stage tutorial type thing in there.
+Rip that out. If I didn't mention it, it doesn't belong."
+
+Read as four real rulings:
+1. **The funnel and the quiz ship**, the approved content (the uploaded
+   `ATUNED_Experience_V19.html` and the two rulings directly above this one)
+   is what gets built, not re-opened for further scope debate.
+2. **The quiz ends on a real summary/results page** -- already in V19's own
+   structure (CQ score, archetype/saboteur reading, celestial+numerology
+   tile, CTA) -- confirm it is actually wired to the real engine output
+   (`archSeedApply`/`sabSeedApply`/the real tables), not a static mock.
+3. **A login page is part of this flow**, and its real destination on
+   success is the Journal/Discover tab (`TAB.STORY`) **in its dashboard
+   view** (`STV.dash`/the hero "Dashboard" state this session built and
+   fixed earlier tonight), not `TAB.SUMMARY`. This is a real, explicit
+   override of the 9 October first-arrival ruling (`tabLandFirst()`,
+   `atuned_src/ui/panels.js:172`, which lands a first-time arrival on
+   `TAB.SUMMARY`): for a person who arrives through THIS flow specifically
+   (funnel -> quiz -> login), the dashboard is the first thing they see
+   instead. The general first-arrival rule is otherwise untouched for
+   every other door into the app (a returning device, a direct link,
+   onboarding closing with no funnel involved).
+4. **V19's "how it works" stage is cut entirely.** He never asked for an
+   explanatory/tutorial stage; its own 26-beat educational content does
+   not belong in what ships. Build the funnel, the quiz, the summary page
+   and the login page it was asked for -- nothing it was not.
+
 ## The funnel's score passes into the account, as starting information. Ruled 11 November.
 
 His words, verbatim: "It gets saved to the account. It's a starting
