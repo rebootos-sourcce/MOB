@@ -30781,11 +30781,25 @@ function buildResults(){
  var el = document.getElementById('results');
  el.innerHTML = resultsHTML(RESULTS);
  wireResultsInteractions(RESULTS);
- runRevealAnimation(RESULTS.adjustedCQ);
+ runRevealAnimation(RESULTS.rawCQ);
 }
 
-/* counts #cqCount up to the real adjusted CQ. Honors reduced motion by
-   setting the final value immediately instead of animating to it. */
+/* counts #cqCount up to rawCQ, 12 November: this screen used to count up to
+   adjustedCQ (raw times 0.815) and call that the person's reading, while the
+   real app, after the exact same record is imported, computes CQ straight
+   from the raw law scores with no such discount anywhere in compute.js. One
+   person, one record, two numbers. The 18.5% correction was never a real,
+   written ruling (checked DECISIONS.md, CLAUDE.md, TASKS.md: none exists);
+   funnel/quiz.html's own prior copy claimed it was "this product's own
+   ruling," which was not true. Showing rawCQ here makes this screen agree
+   with the one real CQ formula the house already has, rather than
+   inventing a second one. adjustedCQ is still computed below (RESULTS,
+   recordJSON) in case the owner later rules a self-enhancement correction
+   belongs in the product -- if so it belongs in compute.js, applied the
+   same way everywhere a person's own answers produce their CQ, not as a
+   quiz-page-only discount a different screen never sees. Honors reduced
+   motion by setting the final value immediately instead of animating to
+   it. */
 function runRevealAnimation(targetCQ){
  var el = document.getElementById('cqCount');
  if(!el) return;
@@ -30806,12 +30820,12 @@ function runRevealAnimation(targetCQ){
 function esc(s){ return String(s==null?'':s); }
 
 function reflectCopy(r){
- var p1 = '<p><b>What the number means.</b> Your raw coherence reading is <b>'+r.rawCQ+'</b>, the sum of your 21 Law-of-Integrity '+
+ var p1 = '<p><b>What the number means.</b> Your coherence reading, <b>'+r.rawCQ+'</b>, is the sum of your 21 Law-of-Integrity '+
   'answers (any "does not apply" counted as 0) divided by 210 and multiplied by 100'+(r.answered21<21?', with '+r.answered21+' of 21 actually answered':'')+'. '+
-  'The number shown as your reading is the <b>adjusted</b> figure, <b>'+r.adjustedCQ+'</b>: raw times (1 minus 0.185). That 18.5% is not a penalty on you '+
-  'specifically, it is this product’s own ruling, set at the midpoint of a real, large self-enhancement-bias effect (Zell, Strickhouser, Sedikides '+
-  '&amp; Krizan, 2020, <i>Psychological Bulletin</i> 146(2), pooled across roughly 950,000 participants) -- the well-documented tendency for a self-report '+
-  'to run a little flattering of itself, applied here as a flat correction rather than a personalized measurement.</p>';
+  'This is one self-report, on one day, on 59 questions. A large, real body of research (Zell, Strickhouser, Sedikides '+
+  '&amp; Krizan, 2020, <i>Psychological Bulletin</i> 146(2), pooled across roughly 950,000 participants) finds that a self-report like this one tends '+
+  'to run a little flattering of itself. This product does not correct for that yet -- the number above is exactly what your 21 answers add up to, '+
+  'nothing added and nothing taken away.</p>';
 
  var p2;
  if(r.lowest && r.top){
@@ -30940,11 +30954,11 @@ function fullReadingPanel(r){
 
  return '<div class="full-panel" id="fullPanel">'+
   '<h4>The math, in full</h4>'+
-  '<p class="honest">raw = sum of 21 Law-of-Integrity answers (does-not-apply counted as 0, reverse-scored laws corrected to 10 minus the raw answer before summing) / 210 &times; 100, rounded.<br>'+
-  'adjusted = raw &times; (1 &minus; 0.185), rounded.</p>'+
+  '<p class="honest">raw = sum of 21 Law-of-Integrity answers (does-not-apply counted as 0, reverse-scored laws corrected to 10 minus the raw answer before summing) / 210 &times; 100, rounded. This is the number shown above, and the one the app computes from this same record.<br>'+
+  'adjusted = raw &times; (1 &minus; 0.185), rounded. Not shown above, not applied anywhere in this product yet: a possible self-enhancement-bias discount, not a ruled one.</p>'+
   '<table><tr><th>Figure</th><th>Value</th></tr>'+
-  '<tr><td>Raw CQ</td><td class="mono">'+r.rawCQ+'</td></tr>'+
-  '<tr><td>Adjusted CQ</td><td class="mono">'+r.adjustedCQ+'</td></tr>'+
+  '<tr><td>CQ (shown above)</td><td class="mono">'+r.rawCQ+'</td></tr>'+
+  '<tr><td>CQ with an unruled 18.5% self-report discount</td><td class="mono">'+r.adjustedCQ+'</td></tr>'+
   '<tr><td>Integrity questions answered</td><td class="mono">'+r.answered21+' / 21</td></tr>'+
   '<tr><td>Mean corrected law score</td><td class="mono">'+lawAvg+' / 10</td></tr>'+
   '<tr><td>Mean archetype score</td><td class="mono">'+archAvg+' / 10</td></tr>'+
@@ -30981,14 +30995,7 @@ function resultsHTML(r){
  '<div class="reflect">'+
   '<div class="reflect-main">'+
    '<div class="kicker">Reported Coherence</div>'+
-   '<div class="adj-sub">Adjusted</div>'+
    '<div class="cq-big"><span id="cqCount">0</span><span class="cq-unit"> / 100</span></div>'+
-   '<button class="raw-toggle" id="rawToggle">Show the raw number &amp; why it differs</button>'+
-   '<div class="raw-panel" id="rawPanel">'+
-    'Raw coherence (unadjusted): <b>'+r.rawCQ+'</b>. The adjusted figure above applies a flat 18.5% reduction, this product’s own ruling, '+
-    'set at the midpoint of the pooled self-enhancement-bias effect reported by Zell, Strickhouser, Sedikides &amp; Krizan (2020, <i>Psychological '+
-    'Bulletin</i> 146/2), across roughly 950,000 participants. It is not a personalized correction, it is the same flat multiplier for every reading.'+
-   '</div>'+
    '<div class="reflect-copy">'+reflectCopy(r)+'</div>'+
   '</div>'+
  '</div>'+
@@ -31089,9 +31096,6 @@ function recordLinkArm(a, r){
 function wireResultsInteractions(r){
  var toapp = document.getElementById('toapp-record');
  if(toapp) recordLinkArm(toapp, r);
- document.getElementById('rawToggle').addEventListener('click', function(){
-  document.getElementById('rawPanel').classList.toggle('open');
- });
  document.getElementById('fullToggle').addEventListener('click', function(e){
   var p = document.getElementById('fullPanel');
   p.classList.toggle('open');
