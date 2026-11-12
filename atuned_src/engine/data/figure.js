@@ -57,7 +57,8 @@ var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C
        addresses of a row are dealt across its points in order.
    v   the torso. [vertebral level, offset from the midline in figure units],
        C1 counted 1 through the tailbone at 30, as the first and third passes
-       sourced them (BI3a, BI3c).
+       sourced them (BI3a, BI3c), or as the atlas the owner sent gives the
+       level, with its printed page beside the row.
    at  a seat's own centre, for an address with no anatomy to place.
    f   a place on one of the two reference charts the owner sent on 26
        September, carried onto this figure. [x, y] in figure units, the
@@ -86,8 +87,11 @@ var ANAT=[
  {s:'Optic chiasm, and the optic nerves that meet in it', ids:[79,76], h:[[0.5,-19.4]]},
  {s:'Lateral geniculate', ids:[83], h:[[24.8,-8.5],[-22.4,-9.4]]},
  {s:'Visual cortex', ids:[82], h:[[-8.3,3.5],[14.0,3.6]]},
- {s:'Optic radiation, the nearest real structure to cortical visual pathway',
-  ids:[85], h:[[-29.1,-0.3],[30.3,1.1]]},
+ /* 85 was filed as "cortical visual pathway" and is named the optic radiation
+    in nodes.js since 12 November, which is what this row always measured:
+    Rohen 7e p.137 labels it running from the lateral geniculate to the
+    visual cortex, the two rows either side of this one. */
+ {s:'Optic radiation', ids:[85], h:[[-29.1,-0.3],[30.3,1.1]]},
  {s:'Thalamus', ids:[87], h:[[11.1,7.0],[-10.2,6.7]]},
  /* the pineal is measured as a region estimate. The epithalamus is the pineal
     with the habenula and the posterior commissure, so all three stand here:
@@ -126,11 +130,24 @@ var ANAT=[
  {s:'Brainstem: reticular formation, trigeminal and abducens nerves', ids:[96,81,78], h:[[0.6,-34.0]]},
  /* Ascension Column is not anatomy (BQ). It stands where it is filed. */
  {s:'No structure. Filed at the Crown', ids:[108], at:'crown'},
- /* Torso. The six the passes sourced to a level. */
+ /* Torso. The addresses sourced to a vertebral level, by the passes and,
+    since 12 November, by the atlas. */
  {s:'Cardiac plexus', ids:[49,55], v:[[11.5,0]]},
  {s:'Celiac plexus', ids:[33,36], v:[[19.5,0]]},
+ /* the level is the atlas's: Rohen 7e p.470 gives the lumbar plexus as L1 to
+    L4, and 21.5 is the middle of 20 and 23. The 2.2 either side of the
+    midline is not from the atlas. */
  {s:'Lumbar plexus, L1 to L4, beside the spine', ids:[1], v:[[21.5,2.2],[21.5,-2.2]]},
  {s:'Coccygeal plexus, the tailbone', ids:[6], v:[[30,0]]},
+ /* 16 stood in map.js BMPROP, gathered round the Root seat on this page, as
+    "spinal cord base" at L1 to L2. Rohen 7e p.233, the adult median section,
+    places the conus medullaris, the end of the cord, at the level of L1, and
+    p.230 and p.475 show it at the top of the cauda equina. L1 is 20 on this
+    count, on the midline, so nothing here is a typed figure unit. It is a
+    Root address the atlas puts above the Sacral marker, as the lumbar plexus
+    above it already is: that is the Root seat's own contradiction (TASKS.md
+    Q1) drawn where it is, not a placement error. */
+ {s:'Conus medullaris, the end of the spinal cord, at L1', ids:[16], v:[[20,0]]},
  /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
     classical marma chart and a 112 node chart, with "as close as 1:1 as
     possible". Measured before this (proto/anatomy-ref, 26 September): of 48

@@ -4982,6 +4982,38 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
 .st-rlhd{flex:0 0 auto}
+/* THE SUMMARY PANEL, 12 November. His words: dark black, a touch darker than
+   the app's own panel gray, reading as part of the design but as its own
+   unique display area -- Source AI's output. var(--sunk) is the token this
+   product already uses for exactly that read (.st-rl, Release, above, is
+   built on it too), so this panel is recognisably the same family rather
+   than a one-off colour; it skips .st-rl's glow gradient on purpose, so the
+   two stay visually distinct from each other at a glance. Fixed height, its
+   own scroll, so it never grows the page under whatever else is open. */
+.smp{flex:0 0 auto;margin-top:14px;height:320px;display:flex;flex-direction:column;
+ border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.03);overflow:hidden}
+.smp-hd{flex:0 0 auto;display:flex;align-items:center;gap:8px 10px;padding:12px 14px;
+ border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.smp-hdname{font-weight:600;color:var(--ink);flex:1 1 120px;min-width:0;
+ font-size:.92rem;line-height:1.25}
+.smp-relall{flex:1 1 100%;font-size:.82rem;padding:.4em .8em;order:3}
+.smp-tree{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;
+ scrollbar-color:var(--edge-2) transparent;padding:8px 14px}
+.smp-row{display:flex;align-items:center;min-height:var(--tap)}
+.smp-kids{margin-left:18px;border-left:1px solid var(--edge);padding-left:2px}
+.smp-rel{display:flex;align-items:center;gap:8px;background:none;border:0;
+ color:var(--mid);padding:4px 6px;border-radius:var(--r-xs);cursor:pointer;
+ min-height:var(--tap);text-align:left;width:100%}
+.smp-rel:hover,.smp-rel:focus-visible{background:var(--panel-2);color:var(--ink)}
+.smp-nm{font-size:.92rem}
+.smp-imphd{flex:0 0 auto;padding:8px 14px 2px;font-size:.78rem;color:var(--dim);
+ border-top:1px solid var(--edge)}
+.smp-imps{flex:0 0 auto;max-height:84px;overflow:auto;padding:0 14px 10px;
+ display:flex;flex-wrap:wrap;gap:6px}
+.smp-imp{background:var(--panel-2);color:var(--mid);border-radius:999px;
+ padding:3px 10px;font-size:.78rem}
+.smp-note{flex:0 0 auto;color:var(--dim);font-size:.82rem;padding:0 14px 10px}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
 /* the selection as its rings and nothing else, the card's cut. Each ring is
    a toggle at the tap floor; out of the run it steps back rather than going,

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v53 8cc19a0b 2026-11-12 21:15"><head><meta charset="utf-8">
+<html lang="en" data-build="v55 bbace447 2026-11-12 22:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4982,6 +4982,38 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
 .st-rlhd{flex:0 0 auto}
+/* THE SUMMARY PANEL, 12 November. His words: dark black, a touch darker than
+   the app's own panel gray, reading as part of the design but as its own
+   unique display area -- Source AI's output. var(--sunk) is the token this
+   product already uses for exactly that read (.st-rl, Release, above, is
+   built on it too), so this panel is recognisably the same family rather
+   than a one-off colour; it skips .st-rl's glow gradient on purpose, so the
+   two stay visually distinct from each other at a glance. Fixed height, its
+   own scroll, so it never grows the page under whatever else is open. */
+.smp{flex:0 0 auto;margin-top:14px;height:320px;display:flex;flex-direction:column;
+ border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge-2);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.03);overflow:hidden}
+.smp-hd{flex:0 0 auto;display:flex;align-items:center;gap:8px 10px;padding:12px 14px;
+ border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.smp-hdname{font-weight:600;color:var(--ink);flex:1 1 120px;min-width:0;
+ font-size:.92rem;line-height:1.25}
+.smp-relall{flex:1 1 100%;font-size:.82rem;padding:.4em .8em;order:3}
+.smp-tree{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;
+ scrollbar-color:var(--edge-2) transparent;padding:8px 14px}
+.smp-row{display:flex;align-items:center;min-height:var(--tap)}
+.smp-kids{margin-left:18px;border-left:1px solid var(--edge);padding-left:2px}
+.smp-rel{display:flex;align-items:center;gap:8px;background:none;border:0;
+ color:var(--mid);padding:4px 6px;border-radius:var(--r-xs);cursor:pointer;
+ min-height:var(--tap);text-align:left;width:100%}
+.smp-rel:hover,.smp-rel:focus-visible{background:var(--panel-2);color:var(--ink)}
+.smp-nm{font-size:.92rem}
+.smp-imphd{flex:0 0 auto;padding:8px 14px 2px;font-size:.78rem;color:var(--dim);
+ border-top:1px solid var(--edge)}
+.smp-imps{flex:0 0 auto;max-height:84px;overflow:auto;padding:0 14px 10px;
+ display:flex;flex-wrap:wrap;gap:6px}
+.smp-imp{background:var(--panel-2);color:var(--mid);border-radius:999px;
+ padding:3px 10px;font-size:.78rem}
+.smp-note{flex:0 0 auto;color:var(--dim);font-size:.82rem;padding:0 14px 10px}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
 /* the selection as its rings and nothing else, the card's cut. Each ring is
    a toggle at the tap floor; out of the run it steps back rather than going,
@@ -11843,9 +11875,20 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
 /* ============================================================
    THE 112 ADDRESSES. 108 somatic, seated at a named plexus or
    nerve, plus 4 field anchors above and below the body.
+
+   FOUR n NAMES WERE CORRECTED ON 12 NOVEMBER, 16, 28, 46 and 85. Each named
+   no real structure (TASKS.md BI3b, BI3c, and proto/anatomy-check's
+   NOSTRUCT), and for each the atlas the owner sent (Rohen, Yokochi and
+   Lutjen-Drecoll, Color Atlas of Anatomy, 7th edition, cited by its printed
+   page) labels exactly one real structure where the old name pointed. The
+   comment after each row gives the old name and the page. Only n moved: k,
+   b and the charge are the same, so no reading moves. The other non
+   structures stay as they were, because each has two candidates, or a
+   candidate another address already holds, or none in the atlas: renaming
+   those is the owner's Q2, Q3 and Q4 in TASKS.md, not a sourcing gap.
    ============================================================ */
 const NODES=
-[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
+[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Conus Medullaris","a":"Structure","d":"Abandoning Self","c":"Sadness"}/* was "Spinal Cord Base", no structure by that name (BI3c). Rohen 7e p.230 and p.475 label the cord's end the conus medullaris, and p.233 seats it at L1 in the adult */,{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbosacral Trunk","a":"Projection","d":"Idealization","c":"Joy"}/* was "Lumbar-Sacral Overlap", a fact (the two plexuses share L4) and not a structure (BI3c). Rohen 7e p.471 labels the lumbosacral trunk running down past the sacral promontory into the sacral plexus, and p.470 brackets the two, L1 to L4 and L4 to S4 */,{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Anterior Cutaneous Branches of Thoraco-abdominal Nerves","a":"Inner war","d":"Invalidation","c":"Shame"}/* was "Epigastric Branches", and epigastric names arteries and veins, not nerves (BI3c). Rohen 7e p.214 and p.216 label the thoraco-abdominal (lower intercostal) nerves and their anterior cutaneous branches in the abdominal wall, and p.217 draws the epigastric region they reach */,{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Optic Radiation","a":"Intuition","d":"Dismissal","c":"Fear"}/* was "Cortical Visual Pathway", a phrase and not a named structure (BI3b). Rohen 7e p.137 dissects the visual pathway and labels the optic radiation as its stretch from the lateral geniculate body (83) to the visual cortex (82) */,{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 /* ============================================================
    SAB_LIB · each named saboteur's three addresses and its family.
 
@@ -12436,7 +12479,8 @@ var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C
        addresses of a row are dealt across its points in order.
    v   the torso. [vertebral level, offset from the midline in figure units],
        C1 counted 1 through the tailbone at 30, as the first and third passes
-       sourced them (BI3a, BI3c).
+       sourced them (BI3a, BI3c), or as the atlas the owner sent gives the
+       level, with its printed page beside the row.
    at  a seat's own centre, for an address with no anatomy to place.
    f   a place on one of the two reference charts the owner sent on 26
        September, carried onto this figure. [x, y] in figure units, the
@@ -12465,8 +12509,11 @@ var ANAT=[
  {s:'Optic chiasm, and the optic nerves that meet in it', ids:[79,76], h:[[0.5,-19.4]]},
  {s:'Lateral geniculate', ids:[83], h:[[24.8,-8.5],[-22.4,-9.4]]},
  {s:'Visual cortex', ids:[82], h:[[-8.3,3.5],[14.0,3.6]]},
- {s:'Optic radiation, the nearest real structure to cortical visual pathway',
-  ids:[85], h:[[-29.1,-0.3],[30.3,1.1]]},
+ /* 85 was filed as "cortical visual pathway" and is named the optic radiation
+    in nodes.js since 12 November, which is what this row always measured:
+    Rohen 7e p.137 labels it running from the lateral geniculate to the
+    visual cortex, the two rows either side of this one. */
+ {s:'Optic radiation', ids:[85], h:[[-29.1,-0.3],[30.3,1.1]]},
  {s:'Thalamus', ids:[87], h:[[11.1,7.0],[-10.2,6.7]]},
  /* the pineal is measured as a region estimate. The epithalamus is the pineal
     with the habenula and the posterior commissure, so all three stand here:
@@ -12505,11 +12552,24 @@ var ANAT=[
  {s:'Brainstem: reticular formation, trigeminal and abducens nerves', ids:[96,81,78], h:[[0.6,-34.0]]},
  /* Ascension Column is not anatomy (BQ). It stands where it is filed. */
  {s:'No structure. Filed at the Crown', ids:[108], at:'crown'},
- /* Torso. The six the passes sourced to a level. */
+ /* Torso. The addresses sourced to a vertebral level, by the passes and,
+    since 12 November, by the atlas. */
  {s:'Cardiac plexus', ids:[49,55], v:[[11.5,0]]},
  {s:'Celiac plexus', ids:[33,36], v:[[19.5,0]]},
+ /* the level is the atlas's: Rohen 7e p.470 gives the lumbar plexus as L1 to
+    L4, and 21.5 is the middle of 20 and 23. The 2.2 either side of the
+    midline is not from the atlas. */
  {s:'Lumbar plexus, L1 to L4, beside the spine', ids:[1], v:[[21.5,2.2],[21.5,-2.2]]},
  {s:'Coccygeal plexus, the tailbone', ids:[6], v:[[30,0]]},
+ /* 16 stood in map.js BMPROP, gathered round the Root seat on this page, as
+    "spinal cord base" at L1 to L2. Rohen 7e p.233, the adult median section,
+    places the conus medullaris, the end of the cord, at the level of L1, and
+    p.230 and p.475 show it at the top of the cauda equina. L1 is 20 on this
+    count, on the midline, so nothing here is a typed figure unit. It is a
+    Root address the atlas puts above the Sacral marker, as the lumbar plexus
+    above it already is: that is the Root seat's own contradiction (TASKS.md
+    Q1) drawn where it is, not a placement error. */
+ {s:'Conus medullaris, the end of the spinal cord, at L1', ids:[16], v:[[20,0]]},
  /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
     classical marma chart and a 112 node chart, with "as close as 1:1 as
     possible". Measured before this (proto/anatomy-ref, 26 September): of 48
@@ -51779,19 +51839,24 @@ var BMPART=[
    its key, because the route and pain tables are keyed on it, but the set
    it stands in already says which side it is, so on the screen it is "Head". */
 function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){return c.toUpperCase();});}
-/* THE 28 ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
+/* THE ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
    Proposed on 27 September (FW, proto/fw/pages/fetters.html, each row sourced
    there) and drawn by the prototype he approved exactly as a measured place
    is drawn. They are not in ANAT, which is the engine's and is ruled data, so
    they stand here and only this map reads them: the seven layers above still
    gather these addresses round their seat (pmGather), which is the older and
-   more cautious claim. Moving them into ANAT is a ruling, not a port. */
+   more cautious claim. Moving them into ANAT is a ruling, not a port.
+   That ruling came for 16 on 12 November, the owner's "get ours to alignment
+   with the professional", and only where the atlas he sent gives the level
+   itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
+   here as well would draw it twice. This heading counted them, 28, and the
+   count is gone for the reason CLAUDE.md gives: BMPROP's length is the
+   answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
  {ids:[8],pts:[[50,45.2]],s:"Cauda equina, the L2 to S1 roots in the lumbar cistern"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
- {ids:[16],pts:[[50,41.7]],s:"Spinal cord base, the conus medullaris at L1 to L2"},
  {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
  {ids:[25],pts:[[48.6,49.6],[51.4,49.6]],s:"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},
  {ids:[27],pts:[[48.4,50.4],[51.6,50.4]],s:"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},
@@ -51802,7 +51867,7 @@ var BMPROP=[
  {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
- {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Epigastric branches of T7 to T9, under the xiphoid"},
+ {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
  {ids:[47],pts:[[45.2,37]],s:"Hepatic branch of the anterior vagal trunk, to the liver"},
  {ids:[48],pts:[[46.6,38.8]],s:"Hepatic plexus, along the hepatic artery"},
  {ids:[51],pts:[[48.8,28.6],[51.2,28.6]],s:"The two vagus nerves in the thorax, beside the oesophagus"},
@@ -56876,6 +56941,19 @@ function stRender(){
      this round, three columns, five pictures, Avatar the only one
      without a partner beside it. */
   +'<div class="st-2row st-2row-1">'+stMiniMasks(r)+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
+  /* SOURCE AI'S OUTPUT AREA, 12 November, his words after "at least 10
+     times over the last month or two": select a parent (the same
+     S.pin the stack rail already sets) and see everything under it,
+     parent to the bottom of the real chain, impressions underneath,
+     release wired at every rung. Printed only when something is
+     picked; a hidden surface never sits in the document asserting a
+     stale reading, the rule Summary already keeps elsewhere. Placed
+     inside .st-colz, under Release and Avatar, a plain flex column
+     (confirmed before writing this), not a sibling of .st-flow's own
+     grid: a first attempt placed it after .st-flow closed and it
+     floated loose, overlapping the left rail instead of stacking
+     under anything, caught by a screenshot before this ever shipped. */
+  +(typeof summaryPanelHtml==='function'?summaryPanelHtml():'')
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -56887,6 +56965,7 @@ function stRender(){
      or the opener, and srcPaint writes it only when it changes. */
   +'<p class="src-say" id="srcsay" aria-live="polite"></p>';
  h.innerHTML=out;
+ if(typeof summaryPanelWire==='function')summaryPanelWire(h);
  /* THE LANES AND THE BARS OUTLIVE A RENDER. This emptied both, so every
     arrival at the tab and every redraw of the page faded all seven lanes in
     and grew every bar again from the floor: motion that said a word had
@@ -80720,6 +80799,83 @@ function runNumDrill(k){
 try{window.__at&&window.__at('ui/drills.js');}catch(e){}
 
 /* ============================================================
+   THE SUMMARY PANEL. His own words, round after round, named by him
+   as asked for "at least 10 times over the last month or two": select
+   a parent and see everything under it, parent to the teacher, all
+   the way down, with the impressions underneath and a release wired
+   at every rung. Clarified 12 November: dark, slightly darker than
+   the app's own panel gray, reading as an element of the design but
+   its own unique display area, and it sits where Source AI gives its
+   output.
+
+   NOT A NEW WALK. leaves() (component.js:1178) already recurses any
+   chain node's .parts all the way to raw addresses; release.js,
+   analytics.js, map.js and imprints.js already trust it for exactly
+   that. drills.js's "Made of" only ever showed the one rung directly
+   below a selection (his own 4 November ruling, drills.js line 238).
+   This panel is the first surface to print every rung of that same
+   walk at once rather than one click at a time, built on the same
+   trusted .parts recursion, not a second one.
+
+   "TEACHER" HAS NO MATCH IN THE CHAIN. Checked before building this:
+   engine/trace.js's real cascade is nerve -> address -> fetter ->
+   saboteur -> complex -> hyper-complex -> super-complex, and stops
+   there. "Teacher" (DESIGN-teachers.md) is a Compass construct, never
+   wired to this cascade. This panel goes exactly as far as the real
+   data goes: addresses. Connecting an actual teacher record onto the
+   end of it is separate, unbuilt, cross-module work, named here so it
+   is never silently assumed done by a panel that merely renders deep.
+
+   SELECTION IS THE EXISTING ONE. "Select your parent" is S.pin, set by
+   the same .stk-r[data-sk] press that already opens runDrill (ui.js,
+   the stack/cascade rail). This panel does not invent a second way to
+   pick a node; it answers the same pick a second way, alongside the
+   one-rung drill, not instead of it. */
+function smpKey(o){return o.kind+':'+o.nm;}
+function smpFind(key){
+ var rs=computeSeen(), found=null;
+ ['sabs','cxs','hys','sups'].forEach(function(k){(rs[k]||[]).forEach(function(x){if(smpKey(x)===key)found=x;});});
+ return found;}
+function smpTreeRow(o,depth){
+ if(!o)return '';
+ if(!o.parts)return addrRow(o);
+ var kids=(o.parts||[]).map(function(x){return smpTreeRow(x,depth+1);}).join('');
+ return '<div class="smp-row" style="--d:'+depth+'">'
+  +'<button type="button" class="smp-rel" data-smprel="'+esc(smpKey(o))+'" title="Release everything under '+esc(o.nm)+'">'
+  +crPat(o,'xs')+'<span class="smp-nm">'+esc(o.nm)+'</span></button></div>'
+  +'<div class="smp-kids">'+kids+'</div>';}
+/* IMPRESSIONS UNDERNEATH, filtered to this node's own addresses. Same
+   data impRender already draws from (ST_PARSED.imprints), not a
+   second imprint source. */
+function smpImpressionsHtml(o){
+ if(typeof ST_PARSED==='undefined'||!ST_PARSED||!ST_PARSED.imprints)return '<p class="smp-note">No impressions recorded here yet.</p>';
+ var ids={}; leaves(o).forEach(function(n){ids[n.i]=1;});
+ var rows=ST_PARSED.imprints.filter(function(im){return ids[im.i];});
+ if(!rows.length)return '<p class="smp-note">No impressions recorded here yet.</p>';
+ return '<div class="smp-imps">'+rows.map(function(im){
+  return '<div class="smp-imp">'+esc(im.nm||im.b||'')+'</div>';}).join('')+'</div>';}
+function summaryPanelHtml(){
+ if(!S.pin)return '';
+ var o=S.pin, ids=leaves(o).map(function(n){return n.i;});
+ return '<div class="smp" id="smppanel" aria-label="Summary, '+esc(o.nm)+'">'
+  +'<div class="smp-hd">'+crPat(o,'sm')+'<span class="smp-hdname">'+esc(o.nm)+'</span>'
+  +'<button type="button" class="btn pri smp-relall" id="smprelall">Release all '+ids.length+'</button></div>'
+  +'<div class="smp-tree">'+smpTreeRow(o,0)+'</div>'
+  +'<div class="smp-imphd">Impressions</div>'
+  +smpImpressionsHtml(o)
+  +'</div>';}
+function summaryPanelWire(h){
+ var all=h.querySelector('#smprelall');
+ if(all)all.onclick=function(){
+  if(!S.pin||typeof relPick!=='function')return;
+  relPick(leaves(S.pin).map(function(n){return n.i;}));};
+ h.querySelectorAll('[data-smprel]').forEach(function(b){b.onclick=function(){
+  var found=smpFind(b.getAttribute('data-smprel'));
+  if(found&&typeof relPick==='function')relPick(leaves(found).map(function(n){return n.i;}));};});}
+
+try{window.__at&&window.__at('ui/summarypanel.js');}catch(e){}
+
+/* ============================================================
    THE KNOWLEDGE BASE. Everything the instrument knows, in one
    place, searchable, and every row a door to the same drill the
    wheel opens. Nothing here is a second copy of the data: it
@@ -95161,5 +95317,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006351721"></div>
+<div id="eof" hidden data-len="006362484"></div>
 </body></html>

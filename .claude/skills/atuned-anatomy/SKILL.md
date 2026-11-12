@@ -257,6 +257,21 @@ text-extraction tool truncates partway through (stopped at its own page
 199 of ~520, not a fixed book boundary) — the direct file uploads above
 are the real working channel, not the Drive copy.
 
+**Used, 2026-11-12: four names corrected, one address placed.** Read
+directly off the PDFs (text layer, plus the plate images for p.233 and
+p.471): p.137 labels the optic radiation between the lateral geniculate
+body and the visual cortex (85, was "Cortical Visual Pathway"); p.233's
+adult median section puts the conus medullaris at L1, with p.230 and p.475
+showing it (16, was "Spinal Cord Base", and moved from BMPROP into ANAT as
+`v:[[20,0]]`); p.471 labels the lumbosacral trunk running past the sacral
+promontory into the sacral plexus (28, was "Lumbar-Sacral Overlap");
+p.214 and p.216 label the thoraco-abdominal nerves and their anterior
+cutaneous branches, p.217 the epigastric region (46, was "Epigastric
+Branches"). p.470 confirms ANAT's lumbar plexus level, L1 to L4. Not found
+in any page read: the nerve to levator ani (12), the nerve to subclavius
+(74), a stated vertebral span for the cauda equina (8). `measure.js`
+re-derives only `f:` rows; nothing yet holds a `v:` row to its page.
+
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
 own internal page index, which runs about 14 pages ahead of the printed

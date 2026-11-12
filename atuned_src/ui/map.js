@@ -1433,19 +1433,24 @@ var BMPART=[
    its key, because the route and pain tables are keyed on it, but the set
    it stands in already says which side it is, so on the screen it is "Head". */
 function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){return c.toUpperCase();});}
-/* THE 28 ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
+/* THE ADDRESSES NOBODY HAS MEASURED, WHERE STANDARD ANATOMY PUTS THEM.
    Proposed on 27 September (FW, proto/fw/pages/fetters.html, each row sourced
    there) and drawn by the prototype he approved exactly as a measured place
    is drawn. They are not in ANAT, which is the engine's and is ruled data, so
    they stand here and only this map reads them: the seven layers above still
    gather these addresses round their seat (pmGather), which is the older and
-   more cautious claim. Moving them into ANAT is a ruling, not a port. */
+   more cautious claim. Moving them into ANAT is a ruling, not a port.
+   That ruling came for 16 on 12 November, the owner's "get ours to alignment
+   with the professional", and only where the atlas he sent gives the level
+   itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
+   here as well would draw it twice. This heading counted them, 28, and the
+   count is gone for the reason CLAUDE.md gives: BMPROP's length is the
+   answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
  {ids:[8],pts:[[50,45.2]],s:"Cauda equina, the L2 to S1 roots in the lumbar cistern"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
- {ids:[16],pts:[[50,41.7]],s:"Spinal cord base, the conus medullaris at L1 to L2"},
  {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
  {ids:[25],pts:[[48.6,49.6],[51.4,49.6]],s:"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},
  {ids:[27],pts:[[48.4,50.4],[51.6,50.4]],s:"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},
@@ -1456,7 +1461,7 @@ var BMPROP=[
  {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
- {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Epigastric branches of T7 to T9, under the xiphoid"},
+ {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
  {ids:[47],pts:[[45.2,37]],s:"Hepatic branch of the anterior vagal trunk, to the liver"},
  {ids:[48],pts:[[46.6,38.8]],s:"Hepatic plexus, along the hepatic artery"},
  {ids:[51],pts:[[48.8,28.6],[51.2,28.6]],s:"The two vagus nerves in the thorax, beside the oesophagus"},

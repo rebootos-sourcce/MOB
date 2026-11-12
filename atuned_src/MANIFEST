@@ -98,6 +98,7 @@ ui/ritcal.js
 ui/cone.js
 ui/tracesummaryui.js
 ui/drills.js
+ui/summarypanel.js
 ui/knowledge.js
 ui/record.js
 ui/games.js

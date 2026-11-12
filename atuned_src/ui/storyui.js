@@ -700,6 +700,19 @@ function stRender(){
      this round, three columns, five pictures, Avatar the only one
      without a partner beside it. */
   +'<div class="st-2row st-2row-1">'+stMiniMasks(r)+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
+  /* SOURCE AI'S OUTPUT AREA, 12 November, his words after "at least 10
+     times over the last month or two": select a parent (the same
+     S.pin the stack rail already sets) and see everything under it,
+     parent to the bottom of the real chain, impressions underneath,
+     release wired at every rung. Printed only when something is
+     picked; a hidden surface never sits in the document asserting a
+     stale reading, the rule Summary already keeps elsewhere. Placed
+     inside .st-colz, under Release and Avatar, a plain flex column
+     (confirmed before writing this), not a sibling of .st-flow's own
+     grid: a first attempt placed it after .st-flow closed and it
+     floated loose, overlapping the left rail instead of stacking
+     under anything, caught by a screenshot before this ever shipped. */
+  +(typeof summaryPanelHtml==='function'?summaryPanelHtml():'')
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -711,6 +724,7 @@ function stRender(){
      or the opener, and srcPaint writes it only when it changes. */
   +'<p class="src-say" id="srcsay" aria-live="polite"></p>';
  h.innerHTML=out;
+ if(typeof summaryPanelWire==='function')summaryPanelWire(h);
  /* THE LANES AND THE BARS OUTLIVE A RENDER. This emptied both, so every
     arrival at the tab and every redraw of the page faded all seven lanes in
     and grew every bar again from the floor: motion that said a word had
