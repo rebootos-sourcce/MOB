@@ -159,6 +159,103 @@ test('voice: Vosk-only mode drops chapter/retake markers and gates them to recor
   voice.stop();
 });
 
+test('voice: EDITING-tier commands dispatch voice:editorCommand with the real channel, scoped to the edit tab', async (t) => {
+  installMocks();
+  t.after(restoreMocks);
+  delete process.env.PICOVOICE_API_KEY;
+  const existsOrig = fs.existsSync;
+  fs.existsSync = () => true;
+  t.after(() => { fs.existsSync = existsOrig; });
+
+  const voice = freshVoice();
+  const sent = [];
+  await voice.init((channel, payload) => sent.push({ channel, payload }), { getRecordingState: () => 'idle' });
+  voice.setTab('edit');
+
+  voskScript = { isFinal: true, text: 'remove filler words' };
+  assert.equal(voice.processAudio(new Int16Array(512)), 'remove filler words');
+  assert.deepEqual(sent.pop(), { channel: 'voice:editorCommand', payload: { channel: 'edit:removeFillers' } });
+
+  voskScript = { isFinal: true, text: 'start recording' };
+  assert.equal(voice.processAudio(new Int16Array(512)), null, '"start recording" is an IDLE-tier phrase, not EDITING — must not match here');
+
+  voice.stop();
+});
+
+test('voice: GRADING and DISTRIBUTING tiers are scoped to their own tabs', async (t) => {
+  installMocks();
+  t.after(restoreMocks);
+  delete process.env.PICOVOICE_API_KEY;
+  const existsOrig = fs.existsSync;
+  fs.existsSync = () => true;
+  t.after(() => { fs.existsSync = existsOrig; });
+
+  const voice = freshVoice();
+  const sent = [];
+  await voice.init((channel, payload) => sent.push({ channel, payload }), { getRecordingState: () => 'idle' });
+
+  voice.setTab('production');
+  voskScript = { isFinal: true, text: 'export for youtube' };
+  assert.equal(voice.processAudio(new Int16Array(512)), 'export for youtube');
+  assert.deepEqual(sent.pop(), { channel: 'voice:editorCommand', payload: { channel: 'production:exportFiles' } });
+
+  voskScript = { isFinal: true, text: 'upload to youtube' };
+  assert.equal(voice.processAudio(new Int16Array(512)), null, '"upload to youtube" is DISTRIBUTING-tier, not reachable from the production tab');
+
+  voice.setTab('distribution');
+  voskScript = { isFinal: true, text: 'upload to tiktok' };
+  assert.equal(voice.processAudio(new Int16Array(512)), 'upload to tiktok');
+  assert.deepEqual(sent.pop(), { channel: 'voice:editorCommand', payload: { channel: 'distribution:upload' } },
+    '"upload to tiktok" reuses the one real generic upload action, same as "upload to youtube"');
+
+  voice.stop();
+});
+
+test('voice: an actual recording in progress always wins over a stale tab', async (t) => {
+  installMocks();
+  t.after(restoreMocks);
+  delete process.env.PICOVOICE_API_KEY;
+  const existsOrig = fs.existsSync;
+  fs.existsSync = () => true;
+  t.after(() => { fs.existsSync = existsOrig; });
+
+  const voice = freshVoice();
+  const dropped = [];
+  await voice.init(() => {}, { dropMarker: (type) => dropped.push(type), getRecordingState: () => 'recording' });
+  // The Edit tab was left selected (e.g. from before this take started) —
+  // RECORDING_COMMANDS must still be the active grammar, not EDITING_COMMANDS.
+  voice.setTab('edit');
+
+  voskScript = { isFinal: true, text: 'chapter here' };
+  assert.equal(voice.processAudio(new Int16Array(512)), 'chapter here');
+  assert.deepEqual(dropped, ['chapter']);
+
+  voice.stop();
+});
+
+test('voice: commands heard during a transcription queue and replay once it finishes', async (t) => {
+  installMocks();
+  t.after(restoreMocks);
+  delete process.env.PICOVOICE_API_KEY;
+  const existsOrig = fs.existsSync;
+  fs.existsSync = () => true;
+  t.after(() => { fs.existsSync = existsOrig; });
+
+  const voice = freshVoice();
+  let started = 0;
+  await voice.init(() => {}, { startRecording: () => { started++; }, getRecordingState: () => 'idle' });
+
+  voice.setTranscribing(true);
+  voskScript = { isFinal: true, text: 'start recording' };
+  assert.equal(voice.processAudio(new Int16Array(512)), null, 'queued, not dispatched, while transcribing');
+  assert.equal(started, 0);
+
+  voice.setTranscribing(false);
+  assert.equal(started, 1, 'the queued command should replay once transcribing clears');
+
+  voice.stop();
+});
+
 test('voice: Porcupine with no Vosk model available stays fully disabled', async (t) => {
   installMocks();
   t.after(restoreMocks);

@@ -1123,6 +1123,10 @@
       // of these tabs must not silently carry over into another.
       clearSelectedRecording();
 
+      // Task #55: tells voice.js which mode-scoped grammar applies now —
+      // see that file's own top comment.
+      window.api.invoke('voice:setTab', btn.dataset.tab).catch(() => {});
+
       if (btn.dataset.tab === 'edit')         loadEditTab();
       if (btn.dataset.tab === 'production')   loadProductionTab();
       if (btn.dataset.tab === 'distribution') loadDistributionTab();
@@ -1141,6 +1145,14 @@
   // switch and every delete makes each tab's selection genuinely its own.
   let selectedRecordingId = null;
   let _currentPkgId = null;
+
+  // Task #55: the EDITING/GRADING/DISTRIBUTING functions below are each
+  // defined inside loadEditTab()/loadProductionTab()/loadDistributionTab(),
+  // same as the onclick handlers they're extracted from — this object is
+  // what the voice:editorCommand listener near the bottom of this IIFE
+  // calls through, since it's registered once and those tab-load functions
+  // (re-)populate it each time their tab loads.
+  const _voiceActions = {};
 
   function clearSelectedRecording() {
     selectedRecordingId = null;
@@ -1567,6 +1579,9 @@
             : p.stage === 'transcribing' ? 'Transcribing…'
             : p.stage === 'analyzing' ? 'Analyzing…' : 'Done';
         });
+        // Task #55 (S7 acceptance, build-plan:911): voice.js queues commands
+        // heard while this is true instead of dropping or misfiring them.
+        window.api.invoke('voice:setTranscribing', true).catch(() => {});
         await window.api.invoke('transcription:start', { recordingId: row.id, force: true });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
         if (tx) {
@@ -1596,6 +1611,7 @@
       } finally {
         // Clean up listener whether transcription succeeded or failed.
         if (_unsubTranscriptionProgress) { _unsubTranscriptionProgress(); _unsubTranscriptionProgress = null; }
+        window.api.invoke('voice:setTranscribing', false).catch(() => {});
         $('btnTranscribe').disabled = false;
       }
     };
@@ -1610,8 +1626,27 @@
       try { await window.api.invoke('captions:export', { recordingId: selectedRecordingId, format: 'vtt' }); }
       catch (e) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Export failed: ' + e.message; }
     };
+    // Task #55: "add captions" voice command — the spec's own description
+    // ("Whisper JSON -> SRT + VTT sidecar files") is exactly both exports
+    // above, run together, which is what this calls.
+    async function addCaptions() {
+      if (!selectedRecordingId) return;
+      try {
+        await Promise.all([
+          window.api.invoke('captions:export', { recordingId: selectedRecordingId, format: 'srt' }),
+          window.api.invoke('captions:export', { recordingId: selectedRecordingId, format: 'vtt' }),
+        ]);
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Captions exported (SRT + VTT).';
+      } catch (e) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Export failed: ' + e.message;
+      }
+    }
+    _voiceActions.addCaptions = addCaptions;
 
-    $('btnRemoveFillers').onclick = async () => {
+    // Task #55: extracted to named functions (previously inline in onclick)
+    // so voice.js's EDITING-tier commands ("remove filler words" etc.) can
+    // call the exact same code the buttons do, instead of duplicating it.
+    async function removeFillerWords() {
       if (!selectedRecordingId) return;
       try {
         const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
@@ -1627,9 +1662,11 @@
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
       }
-    };
+    }
+    $('btnRemoveFillers').onclick = removeFillerWords;
+    _voiceActions.removeFillerWords = removeFillerWords;
 
-    $('btnRemoveSilences').onclick = async () => {
+    async function trimSilences() {
       if (!selectedRecordingId) return;
       try {
         const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
@@ -1645,7 +1682,9 @@
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
       }
-    };
+    }
+    $('btnRemoveSilences').onclick = trimSilences;
+    _voiceActions.trimSilences = trimSilences;
 
     // Task #56: "Scratch that" — mob-recorder-tdd.html's own spec is "AI
     // presents the section to cut with one-click confirm", not a silent
@@ -1711,7 +1750,11 @@
     // Unlike Render/Undo above, this has nothing to do with the EDL and
     // works on any recording with audio, so it's not gated behind having
     // applied cuts.
-    $('btnStudioSound').onclick = async () => {
+    // Task #55: this is also what "clean up audio" (EDITING) and "normalize
+    // audio" (GRADING) both voice-dispatch to — this app has one real
+    // audio-processing pass (compress + loudnorm, task #50), not two
+    // separate ones for an editing stage vs. a later grading stage.
+    async function cleanUpAudio() {
       if (!selectedRecordingId) return;
       const targetId = selectedRecordingId;
       const unsub = window.api.on('edit:renderProgress', (p) => {
@@ -1734,7 +1777,9 @@
         unsub();
         $('btnStudioSound').disabled = false;
       }
-    };
+    }
+    $('btnStudioSound').onclick = cleanUpAudio;
+    _voiceActions.cleanUpAudio = cleanUpAudio;
 
     $('btnUndoCut').onclick = async () => {
       if (!selectedRecordingId) return;
@@ -1809,6 +1854,49 @@
         btn.disabled = false;
       }
     };
+
+    // Task #55: "make a clip" voice command. btnCreateClip above needs
+    // manual in/out marks (task #60) — the spec's description for this one
+    // ("Energy-peak scoring -> 15-60s clip suggestion") is a genuinely
+    // different, automatic path: pick the single highest-energy speech
+    // segment (task #51's per-segment scoring, already stored on every
+    // segments row) and widen it symmetrically into a 15-60s window,
+    // clamped to the recording's own bounds, then create a clip from that —
+    // no manual marks needed.
+    async function makeClip() {
+      if (!selectedRecordingId) return;
+      try {
+        const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+        if (!rec) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Recording no longer exists.'; return; }
+        const tx = await window.mob.db.query('transcripts:latest', [selectedRecordingId]);
+        if (!tx) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Transcribe first.'; return; }
+        const segs = await window.mob.db.query('segments:list', [tx.id]);
+        const speech = (segs || []).filter(s => s.type === 'speech');
+        if (!speech.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No speech segments to suggest a clip from.'; return; }
+        const best = speech.reduce((a, b) => (b.energy > a.energy ? b : a), speech[0]);
+        const MIN_MS = 15000, MAX_MS = 60000;
+        let startMs = best.start_ms, endMs = best.end_ms;
+        if (endMs - startMs < MIN_MS) {
+          const pad = (MIN_MS - (endMs - startMs)) / 2;
+          startMs = Math.max(0, startMs - pad);
+          endMs = Math.min(rec.duration_ms, endMs + pad);
+        }
+        if (endMs - startMs > MAX_MS) endMs = startMs + MAX_MS;
+        endMs = Math.min(endMs, rec.duration_ms);
+        startMs = Math.max(0, Math.min(startMs, endMs - 1000));
+        await window.api.invoke('edit:createClip', {
+          recordingId: selectedRecordingId, startMs, endMs,
+          label: 'Clip ' + fmtMs(startMs) + '–' + fmtMs(endMs),
+          type: 'clip',
+        });
+        await refreshClipList(selectedRecordingId);
+        $('editProgress').hidden = false;
+        $('editProgressLabel').textContent = 'Clip created from the highest-energy segment.';
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
+    }
+    _voiceActions.makeClip = makeClip;
   }
 
   // ── Production tab ────────────────────────────────────────────
@@ -1888,7 +1976,11 @@
       };
     });
 
-    $('btnExportFiles').onclick = async () => {
+    // Task #55: "export for youtube" voice command (GRADING tier) — the
+    // closest real match: this app has no separate H.264/AAC render pass,
+    // only this package-files export (metadata JSON + a youtube-oriented
+    // text file).
+    async function exportForYoutube() {
       if (!_currentPkgId) { $('exportStatus').textContent = 'Generate a package first.'; return; }
       const btn = $('btnExportFiles');
       const status = $('exportStatus');
@@ -1904,7 +1996,9 @@
       } finally {
         btn.disabled = false;
       }
-    };
+    }
+    $('btnExportFiles').onclick = exportForYoutube;
+    _voiceActions.exportForYoutube = exportForYoutube;
   }
 
   function renderPackage(pkg) {
@@ -2168,7 +2262,11 @@
       if (id) jumpToTab('production', id);
     };
 
-    $('btnDistUpload').onclick = async () => {
+    // Task #55: "upload to youtube"/"upload to tiktok" both voice-dispatch
+    // here — there's only one real, generic cloud-upload path (no platform
+    // picker exists in this UI at all), documented in DISTRIBUTING_COMMANDS'
+    // own comment rather than silently presenting two distinct real actions.
+    async function uploadToCloud() {
       if (!selectedRecordingId) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Select a recording first.'; return; }
       const pkg = await window.mob.db.query('packages:latest', [selectedRecordingId]);
       if (!pkg) { $('distProgress').hidden = false; $('distProgressLabel').textContent = 'Generate a production package first.'; return; }
@@ -2184,7 +2282,9 @@
         return;
       }
       await runDistribution(distributionId);
-    };
+    }
+    $('btnDistUpload').onclick = uploadToCloud;
+    _voiceActions.uploadToCloud = uploadToCloud;
   }
 
   // Ctrl/Cmd+Z undoes the last applied cut while the Edit tab is active —
@@ -2224,6 +2324,28 @@
     if (activePanel.id === 'tab-edit')         loadEditTab();
     else if (activePanel.id === 'tab-production')   loadProductionTab();
     else if (activePanel.id === 'tab-distribution') loadDistributionTab();
+  });
+
+  // Task #55: voice.js's EDITING/GRADING/DISTRIBUTING commands dispatch
+  // here instead of calling a main-process callback directly, since acting
+  // on "whichever recording/package is open in this tab" needs state only
+  // this renderer has (selectedRecordingId/_currentPkgId) — see voice.js's
+  // own top comment. mode:* channels are tab transitions, handled directly
+  // with jumpToTab (defined above in this same IIFE); every other channel
+  // reuses a real button's own function, via _voiceActions.
+  window.api.on('voice:editorCommand', ({ channel }) => {
+    if (channel === 'mode:toProduction') { if (selectedRecordingId) jumpToTab('production', selectedRecordingId); return; }
+    if (channel === 'mode:toDistribution') { if (selectedRecordingId) jumpToTab('distribution', selectedRecordingId); return; }
+    const fn = {
+      'edit:removeFillers':        _voiceActions.removeFillerWords,
+      'edit:trimSilences':         _voiceActions.trimSilences,
+      'edit:cleanAudio':           _voiceActions.cleanUpAudio,
+      'edit:addCaptions':          _voiceActions.addCaptions,
+      'edit:makeClip':             _voiceActions.makeClip,
+      'production:exportFiles':    _voiceActions.exportForYoutube,
+      'distribution:upload':       _voiceActions.uploadToCloud,
+    }[channel];
+    if (fn) fn();
   });
 })();
 

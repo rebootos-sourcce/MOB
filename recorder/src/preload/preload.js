@@ -10,7 +10,7 @@ const LISTEN = new Set([
   'bubble:resizing', 'bubble:menuBlocked', 'ui:compact', 'ui:countdown',
   'transcription:progress',
   'edit:renderProgress',
-  'voice:listening',
+  'voice:listening', 'voice:editorCommand',
   'sync:progress',
   'recorder:micLevel',
   'hotkeys:conflicts'
