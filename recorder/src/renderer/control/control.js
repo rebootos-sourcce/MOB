@@ -917,15 +917,95 @@
     }
   }
 
+  // #52: per-container search/sort state for the (shared) recording list.
+  // One Map entry per containerId (editRecordingList/prodRecordingList/
+  // distRecordingList) so each tab's list keeps its own search/sort choice
+  // across reloads (tab switches, thumbnail-ready refreshes, deletes).
+  const _libraryState = new Map();
+  function getLibraryState(containerId) {
+    if (!_libraryState.has(containerId)) _libraryState.set(containerId, { sort: 'date-desc', search: '' });
+    return _libraryState.get(containerId);
+  }
+
+  // Builds the search/sort toolbar once per container and reuses it on
+  // every later loadRecordingList() call for the same container — at 50+
+  // recordings the flat list was already unusable for finding anything,
+  // with no search, sort, filter, or rename (recordings.title existed in
+  // the schema and was never written by any UI).
+  function ensureLibraryToolbar(containerId, list, state, onReload) {
+    const toolbarId = containerId + 'Toolbar';
+    let toolbar = $(toolbarId);
+    if (toolbar) return;
+    toolbar = document.createElement('div');
+    toolbar.id = toolbarId;
+    toolbar.className = 'row';
+    toolbar.style.cssText = 'gap:6px;margin-bottom:8px;align-items:center;';
+
+    const search = document.createElement('input');
+    search.type = 'search';
+    search.className = 'text-input';
+    search.placeholder = 'Search title, filename, or transcript…';
+    search.style.flex = '1';
+    search.value = state.search;
+
+    const sort = document.createElement('select');
+    [
+      ['date-desc', 'Newest first'],
+      ['date-asc', 'Oldest first'],
+      ['dur-desc', 'Longest first'],
+      ['dur-asc', 'Shortest first'],
+    ].forEach(([v, label]) => {
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = label;
+      sort.appendChild(opt);
+    });
+    sort.value = state.sort;
+
+    let debounceTimer = null;
+    search.addEventListener('input', () => {
+      state.search = search.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(onReload, 250);
+    });
+    sort.addEventListener('change', () => { state.sort = sort.value; onReload(); });
+
+    toolbar.append(search, sort);
+    list.parentNode.insertBefore(toolbar, list);
+  }
+
   async function loadRecordingList(containerId, onSelect) {
     const list = $(containerId);
     if (!list) return;
+    const state = getLibraryState(containerId);
+    ensureLibraryToolbar(containerId, list, state, () => loadRecordingList(containerId, onSelect));
+
     // Fix #1: named query API; Fix #13: build DOM nodes — no dynamic innerHTML
-    const rows = await window.mob.db.query('recordings:list');
-    if (!rows.length) { list.innerHTML = '<div class="empty-hint">No recordings yet.</div>'; return; }
+    let rows = await window.mob.db.query('recordings:list');
+
+    const term = state.search.trim();
+    if (term) {
+      try {
+        const matches = await window.mob.db.query('recordings:search', [term]);
+        const matchIds = new Set(matches.map(m => m.id));
+        rows = rows.filter(r => matchIds.has(r.id));
+      } catch (_) { /* search query failed — fall back to the unfiltered list */ }
+    }
+
+    // recordings:list is already ORDER BY created_at DESC — only re-sort
+    // when the user picked something else, to avoid a needless re-sort of
+    // an already-correctly-ordered list on the common default path.
+    if (state.sort === 'date-asc') rows = rows.slice().reverse();
+    else if (state.sort === 'dur-desc') rows = rows.slice().sort((a, b) => (b.duration_ms || 0) - (a.duration_ms || 0));
+    else if (state.sort === 'dur-asc') rows = rows.slice().sort((a, b) => (a.duration_ms || 0) - (b.duration_ms || 0));
+
+    if (!rows.length) {
+      list.innerHTML = `<div class="empty-hint">${term ? 'No recordings match your search.' : 'No recordings yet.'}</div>`;
+      return;
+    }
     list.innerHTML = '';
     rows.slice(0, 50).forEach(r => {
       const name = r.path.split(/[\\/]/).pop();
+      const displayName = (r.title && r.title.trim()) || name;
       const item = document.createElement('div');
       item.className = 'recording-item';
       item.dataset.id = r.id;
@@ -941,7 +1021,38 @@
         thumb.onerror = () => thumb.remove();
         item.appendChild(thumb);
       }
-      const nameSpan = document.createElement('span'); nameSpan.className = 'rec-name'; nameSpan.textContent = name;
+      const nameSpan = document.createElement('span'); nameSpan.className = 'rec-name'; nameSpan.textContent = displayName;
+      nameSpan.title = 'Double-click to rename';
+      // #52: rename — recordings.title had no writer anywhere in the app.
+      nameSpan.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'text-input';
+        input.value = displayName;
+        input.style.flex = '1';
+        let settled = false;
+        const commit = async () => {
+          if (settled) return;
+          settled = true;
+          const newTitle = input.value.trim();
+          input.replaceWith(nameSpan);
+          if (newTitle && newTitle !== displayName) {
+            try {
+              await window.mob.db.mutate('recordings:rename', { id: r.id, title: newTitle });
+              nameSpan.textContent = newTitle;
+            } catch (_) { /* leave the old name shown on failure */ }
+          }
+        };
+        input.addEventListener('keydown', (ke) => {
+          if (ke.key === 'Enter') input.blur();
+          else if (ke.key === 'Escape') { input.value = displayName; input.blur(); }
+        });
+        input.addEventListener('blur', commit, { once: true });
+        nameSpan.replaceWith(input);
+        input.focus();
+        input.select();
+      });
       const durSpan  = document.createElement('span'); durSpan.className  = 'rec-dur';  durSpan.textContent  = fmtMs(r.duration_ms || 0);
       const badge    = document.createElement('span'); badge.className    = 'badge';    badge.textContent    = r.status || ''; badge.style.fontSize = '10px';
       const delBtn   = document.createElement('button'); delBtn.className = 'ghost rec-del'; delBtn.textContent = '✕'; delBtn.title = 'Delete recording';

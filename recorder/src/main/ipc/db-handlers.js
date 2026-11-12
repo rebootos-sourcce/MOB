@@ -16,6 +16,22 @@ const QUERIES = {
     db.all('SELECT id, device_id, path, thumb, r2_key, duration_ms, codec, status, title, created_at FROM recordings ORDER BY created_at DESC'),
   'recordings:get': ([id]) =>
     db.get('SELECT * FROM recordings WHERE id = ?', [id]),
+  // #52: library search — matches on title, filename, or transcript text.
+  // LIKE over the existing columns rather than an FTS5 virtual table: sql.js's
+  // WASM build isn't guaranteed to ship the FTS5 extension, and at the
+  // dataset size this app actually accumulates per user, a substring scan
+  // over a few hundred rows costs nothing worth building a new table for.
+  'recordings:search': ([term]) => {
+    const t = '%' + String(term || '').toLowerCase() + '%';
+    return db.all(
+      `SELECT DISTINCT r.id FROM recordings r
+       LEFT JOIN transcripts t ON t.recording_id = r.id
+       WHERE LOWER(COALESCE(r.title, '')) LIKE ?
+          OR LOWER(r.path) LIKE ?
+          OR LOWER(COALESCE(t.full_text, '')) LIKE ?`,
+      [t, t, t]
+    );
+  },
 
   // transcripts
   'transcripts:latest': ([recording_id]) =>
@@ -90,6 +106,18 @@ const MUTATIONS = {
       db.run(`UPDATE production_packages SET ${sets.join(', ')} WHERE id = ?`, [...vals, id]);
     }
     return { ok: true };
+  },
+
+  // #52: user-set recording title (nothing ever wrote this column before —
+  // the list only ever showed the raw filename).
+  'recordings:rename': (payload) => {
+    const { id, title } = payload;
+    if (!id || !db.get('SELECT id FROM recordings WHERE id = ?', [id])) {
+      throw new Error('Recording not found: ' + id);
+    }
+    const t = title == null ? null : String(title).trim().slice(0, 200) || null;
+    db.run('UPDATE recordings SET title = ? WHERE id = ?', [t, id]);
+    return { ok: true, title: t };
   },
 };
 
