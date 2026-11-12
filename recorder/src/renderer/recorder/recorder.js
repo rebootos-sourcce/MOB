@@ -40,7 +40,15 @@
     };
   }
   window.api.on('recorder:perfOn', () => { perf.on = true; perf.wall0 = performance.now(); });
-  const log = (...a) => { const line = a.map(String).join(' '); logEl.textContent = (logEl.textContent + '\n' + line).split('\n').slice(-40).join('\n'); console.log(...a); };
+  // #69: this used to write only into a hidden DOM element in a window the
+  // user never sees — relayed over IPC now so it lands in the same
+  // persisted log file as everything else in the main process.
+  const log = (...a) => {
+    const line = a.map(String).join(' ');
+    logEl.textContent = (logEl.textContent + '\n' + line).split('\n').slice(-40).join('\n');
+    console.log(...a);
+    try { window.api.send('log:recorder', line); } catch (_) {}
+  };
 
   let screenStream = null, camStream = null, micStream = null;
   let screenVideo = null, camVideo = null;

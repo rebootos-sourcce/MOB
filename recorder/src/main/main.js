@@ -19,6 +19,7 @@ const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
 const { loadEdl, remapTimestamp } = require('./edl');
 const crypto = require('crypto');
+const logger = require('./logger');
 
 /** Internal event bus (used by the headless smoke test). */
 const bus = new EventEmitter();
@@ -27,6 +28,50 @@ const bus = new EventEmitter();
 if (process.env.MOB_SHOT || process.env.MOB_SMOKE) {
   app.setPath('userData', require('path').join(app.getPath('temp'), 'mob-recorder-testprofile-' + process.pid));
 }
+
+// #69: console.* in a packaged app goes nowhere — every existing
+// console.error/warn call across the main process (identity.js, settings.js,
+// production.js, this file) already describes a real failure but none of it
+// was ever written anywhere a user could find after the fact. Wrapping the
+// two functions once, here, turns all of them into persisted log lines with
+// no per-call-site changes; logger.write() itself no-ops safely before
+// logger.init() runs (below, once app.getPath('userData') is available).
+const _origConsoleError = console.error.bind(console);
+const _origConsoleWarn  = console.warn.bind(console);
+console.error = (...args) => { _origConsoleError(...args); logger.error(args.map(String).join(' ')); };
+console.warn  = (...args) => { _origConsoleWarn(...args);  logger.warn(args.map(String).join(' ')); };
+
+// Minimum viable crash reporting (task #69): an uncaught exception or
+// rejection in the main process used to vanish with the process — nothing
+// else in this file handles them. Logged, not swallowed into a silent exit:
+// Electron's own default (print to stderr and often keep running in an
+// undefined state) is worse than knowing it happened.
+process.on('uncaughtException', (err) => {
+  logger.error('uncaughtException: ' + (err && err.stack || err));
+});
+process.on('unhandledRejection', (reason) => {
+  logger.error('unhandledRejection: ' + (reason && reason.stack || reason));
+});
+
+// #69: every ipcMain.handle call anywhere in the app (db-handlers.js,
+// edit-handlers.js, sync-handlers.js, transcription-handlers.js, ...) is
+// wrapped once, here, before any of those modules register their handlers
+// below. A thrown error already propagates back to the renderer as a
+// rejected invoke() promise; this additionally logs the channel name and
+// message — which, for an ffmpeg-backed handler like edit:studioSound or
+// edit:renderOutput, already contains the ffmpeg stderr tail (ffmpeg.js's
+// own reject() messages embed it), so this one wrapper covers both the
+// "IPC errors" and "ffmpeg stderr tails" parts of the task with no changes
+// to ffmpeg.js or any individual handler file.
+const _origIpcHandle = ipcMain.handle.bind(ipcMain);
+ipcMain.handle = (channel, listener) => _origIpcHandle(channel, async (...args) => {
+  try {
+    return await listener(...args);
+  } catch (err) {
+    logger.error('IPC "' + channel + '" failed: ' + (err && err.message || err));
+    throw err;
+  }
+});
 
 if (!app.requestSingleInstanceLock()) app.quit();
 app.setAppUserModelId('com.mob.recorder');
@@ -855,6 +900,9 @@ function registerShortcuts() {
 }
 
 app.whenReady().then(async () => {
+  logger.init(app.getPath('userData'));
+  logger.info('app ready — version ' + app.getVersion() + ', platform ' + process.platform + ' ' + process.arch);
+
   // Initialize SQLite (ADR-001) and register IPC handlers before windows open.
   await db.init();
   // A corrupt mob.db used to throw straight out of init(), landing in the
@@ -898,6 +946,42 @@ app.whenReady().then(async () => {
   productionHandlers.register();
   voiceHandlers.register(sendControl, { startRecording, stopRecording, togglePause, setMic, getRecordingState: () => rec.state });
   syncHandlers.register(sendControl);
+
+  // #69: app.getVersion() was never called anywhere — no build a bug report
+  // could name. Shown in the UI (Hotkeys card) via this query.
+  ipcMain.handle('app:getVersion', () => app.getVersion());
+
+  // Relays the recorder window's own log() lines (previously written only
+  // into a hidden DOM element in a window the user never sees) into the
+  // same persisted log as everything else.
+  ipcMain.on('log:recorder', (_e, line) => { logger.info('[recorder] ' + line); });
+
+  // "Copy diagnostics" (task #69, item 4): turns a future "it isn't
+  // working" into something answerable in one message instead of a whole
+  // debugging session. Never includes the Cloudflare token itself — same
+  // redaction cf:getConfig already uses.
+  ipcMain.handle('diagnostics:bundle', async () => {
+    const os = require('os');
+    const s = settings.get();
+    let encoders = [];
+    try { encoders = [...(await ffmpeg.availableEncoders())]; } catch (_) { /* best effort */ }
+    const lines = [
+      'MOB Recorder diagnostics',
+      '  App version: ' + app.getVersion(),
+      '  Electron: ' + process.versions.electron + '  Chrome: ' + process.versions.chrome + '  Node: ' + process.versions.node,
+      '  Platform: ' + process.platform + ' ' + process.arch + ' (' + os.release() + ')',
+      '  Recording state: ' + rec.state,
+      '  Available hardware/software encoders: ' + (encoders.join(', ') || 'none detected'),
+      '  Settings (token redacted): ' + JSON.stringify({
+        ...s,
+        cloudflare: { workerUrl: s.cloudflare.workerUrl, apiToken: s.cloudflare.apiToken ? '[set]' : null },
+      }),
+      '',
+      '--- last log lines (' + (logger.getLogPath() || 'no log file') + ') ---',
+      logger.tail(200),
+    ];
+    return lines.join('\n');
+  });
 
   sweepOldRaw();
   const s = settings.get();

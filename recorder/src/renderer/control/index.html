@@ -186,6 +186,17 @@
         </div>
       </details>
 
+      <!-- ── Diagnostics ────────────────────────────────────── -->
+      <details class="card">
+        <summary><h2>Diagnostics</h2><span id="appVersion" class="hint"></span></summary>
+        <div class="details-body">
+          <div class="row" style="justify-content:space-between;align-items:center;">
+            <span class="hint">Copies version, platform, encoder support, settings (token redacted), and recent log lines.</span>
+            <button id="btnCopyDiagnostics" class="ghost mini">Copy diagnostics</button>
+          </div>
+        </div>
+      </details>
+
       <!-- messages + saved card live at the end of the scroll area -->
       <div id="warnBanner" class="warn-banner" hidden></div>
       <div id="message" class="message" hidden></div>

@@ -1771,3 +1771,28 @@
     else if (activePanel.id === 'tab-distribution') loadDistributionTab();
   });
 })();
+
+// ── Diagnostics (task #69) ──────────────────────────────────────
+// app.getVersion() was never called anywhere in the UI — no build a bug
+// report could name. "Copy diagnostics" bundles version/platform/encoder
+// support/settings(redacted)/recent log lines into one clipboard paste,
+// turning a future "it isn't working" into something answerable in one
+// message instead of a whole debugging session.
+(function () {
+  const $ = (id) => document.getElementById(id);
+  window.api.invoke('app:getVersion').then(v => { $('appVersion').textContent = 'v' + v; }).catch(() => {});
+
+  $('btnCopyDiagnostics').addEventListener('click', async () => {
+    const btn = $('btnCopyDiagnostics');
+    btn.disabled = true;
+    try {
+      const text = await window.api.invoke('diagnostics:bundle');
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+    } catch (err) {
+      btn.textContent = 'Failed: ' + err.message;
+    } finally {
+      setTimeout(() => { btn.textContent = 'Copy diagnostics'; btn.disabled = false; }, 2000);
+    }
+  });
+})();
