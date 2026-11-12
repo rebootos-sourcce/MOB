@@ -830,6 +830,10 @@
       const panel = document.getElementById('tab-' + btn.dataset.tab);
       if (panel) { panel.classList.add('active'); panel.hidden = false; }
 
+      // See clearSelectedRecording's comment above: a selection made in one
+      // of these tabs must not silently carry over into another.
+      clearSelectedRecording();
+
       if (btn.dataset.tab === 'edit')         loadEditTab();
       if (btn.dataset.tab === 'production')   loadProductionTab();
       if (btn.dataset.tab === 'distribution') loadDistributionTab();
@@ -837,8 +841,25 @@
   });
 
   // ── Shared state ─────────────────────────────────────────────
+  // selectedRecordingId is shared across the edit/production/distribution
+  // tabs (one variable, three recording lists). Left alone, selecting a
+  // recording in one tab and then switching to another with nothing
+  // clicked there yet meant that tab's action buttons silently acted on
+  // whatever was selected elsewhere — e.g. select recording A in Edit,
+  // switch to Distribution with no row clicked, hit Upload, and it
+  // uploads A instead of saying "select a recording first." Clearing the
+  // selection (and hiding every tab's stale detail panel) on every tab
+  // switch and every delete makes each tab's selection genuinely its own.
   let selectedRecordingId = null;
   let _currentPkgId = null;
+
+  function clearSelectedRecording() {
+    selectedRecordingId = null;
+    ['editCutSection', 'prodPackageSection', 'distSection'].forEach(id => {
+      const el = $(id);
+      if (el) el.hidden = true;
+    });
+  }
 
   // Save production metadata edits on blur (capture phase)
   document.addEventListener('blur', async (e) => {
@@ -928,7 +949,10 @@
         e.stopPropagation();
         if (!window.confirm('Delete this recording and remove the file from disk?\nThis cannot be undone.')) return;
         await window.api.invoke('recording:delete', { recordingId: r.id, deleteFile: true });
-        if (selectedRecordingId === r.id) { selectedRecordingId = null; }
+        // Null out the id AND hide every tab's detail panel — otherwise a
+        // panel left open elsewhere (not just this list's own) keeps
+        // showing the just-deleted recording's stale title/transcript/etc.
+        if (selectedRecordingId === r.id) { clearSelectedRecording(); }
         await loadRecordingList(containerId, onSelect);
       });
       item.append(nameSpan, durSpan, badge, delBtn);
