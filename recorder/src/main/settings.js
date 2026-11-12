@@ -35,7 +35,11 @@ const DEFAULTS = {
     quality: 'high',      // 'high' | 'balanced' | 'small'
     saveDir: null,        // null = ~/Videos/MOB Recorder
     askWhereToSave: false,
-    compactWhileRecording: true
+    compactWhileRecording: true,
+    // Task #62: 'screenCam' (default — screen + bubble camera), 'camOnly'
+    // (full-frame camera, no screen) or 'audioOnly' (mic only, podcast/
+    // voiceover use case). Region capture isn't built yet — see task #62.
+    captureMode: 'screenCam'
   },
   window: {
     x: null, y: null, width: null, height: null

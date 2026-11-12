@@ -469,7 +469,22 @@
       seg.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b.dataset.v === v));
     };
   }
+  // Task #62: the source picker only makes sense in screenCam mode — cam-
+  // only and audio-only capture no desktop source at all.
+  const renderCaptureModeSeg = bindSeg('captureModeSeg', () => settings.recording.captureMode || 'screenCam', (v) => save({ recording: { captureMode: v } }));
+  function renderCaptureModeVisibility() {
+    const mode = (settings.recording.captureMode) || 'screenCam';
+    $('sourceCard').hidden = mode !== 'screenCam';
+    const hints = {
+      camOnly: 'Full-frame camera, no screen — the camera is required for this mode.',
+      audioOnly: 'Microphone only — no camera or screen is captured. Needs a mic.',
+    };
+    $('captureModeHint').hidden = !hints[mode];
+    $('captureModeHint').textContent = hints[mode] || '';
+  }
   const renderSegs = [
+    renderCaptureModeSeg,
+    renderCaptureModeVisibility,
     bindSeg('formatSeg', () => settings.recording.format, (v) => save({ recording: { format: v } })),
     bindSeg('qualitySeg', () => settings.recording.quality, (v) => save({ recording: { quality: v } })),
     bindSeg('resSeg', () => settings.recording.maxHeight, (v) => save({ recording: { maxHeight: Number(v) } })),

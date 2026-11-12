@@ -42,7 +42,9 @@ function install(api) {
     log('all windows loaded');
     settings.set({
       recording: { saveDir: outDir, fps: Number(process.env.MOB_SMOKE_FPS || 30),
-        maxHeight: Number(process.env.MOB_SMOKE_H || 720), countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: process.env.MOB_SMOKE_FORMAT || 'mp4', codec: process.env.MOB_SMOKE_CODEC || 'h264', quality: 'balanced', askWhereToSave: false },
+        maxHeight: Number(process.env.MOB_SMOKE_H || 720), countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: process.env.MOB_SMOKE_FORMAT || 'mp4', codec: process.env.MOB_SMOKE_CODEC || 'h264', quality: 'balanced', askWhereToSave: false,
+        // Task #62: lets this same smoke harness exercise camOnly/audioOnly.
+        captureMode: process.env.MOB_SMOKE_CAPTURE_MODE || 'screenCam' },
       bubble: { visible: true, border: true, shape: process.env.MOB_SMOKE_SHAPE || 'circle' }
     });
     setTimeout(() => { log('starting recording'); startRecording(); }, 1500);

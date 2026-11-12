@@ -333,13 +333,21 @@ function displayBoundsFor(source) {
 async function startRecording() {
   if (rec.state !== 'idle') return;
   const s = settings.get();
-  let source;
-  try {
-    source = await resolveSource();
-  } catch (err) {
-    rec.message = err.message;
-    publishState();
-    return;
+  const captureMode = s.recording.captureMode || 'screenCam';
+  // Task #62: camOnly/audioOnly capture no desktop source at all —
+  // resolveSource() requires a screen to exist and throws otherwise, which
+  // is correct for the default mode but would wrongly block every take in
+  // these two (e.g. a laptop with no screen-capture permission granted yet,
+  // but a perfectly good camera).
+  let source = null;
+  if (captureMode === 'screenCam') {
+    try {
+      source = await resolveSource();
+    } catch (err) {
+      rec.message = err.message;
+      publishState();
+      return;
+    }
   }
 
   rec.state = 'arming';
@@ -368,9 +376,10 @@ async function startRecording() {
   // the countdown hits zero, the user starts talking, and the encoder is not
   // running yet.
   sendRecorder('recorder:arm', {
-    sourceId: source.id,
-    sourceKind: source.kind,
-    displayBounds: displayBoundsFor(source),
+    captureMode,
+    sourceId: source && source.id,
+    sourceKind: source && source.kind,
+    displayBounds: source ? displayBoundsFor(source) : null,
     overlay: overlayPayload(),
     cameraDeviceId: s.camera.deviceId,
     cameraHint: Math.max(160, s.bubble.size),

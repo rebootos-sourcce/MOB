@@ -139,6 +139,15 @@
       <!-- ── 3 · What to record ─────────────────────────────── -->
       <section class="card">
         <div class="card-head"><h2><span class="step">3</span> What to record</h2></div>
+        <!-- Task #62: screen + camera (default), camera only (no screen),
+             or audio only (podcast/voiceover — no video source at all). -->
+        <div class="field"><span>Mode</span>
+          <div class="seg" id="captureModeSeg">
+            <button data-v="screenCam">Screen + Camera</button>
+            <button data-v="camOnly">Camera only</button>
+            <button data-v="audioOnly">Audio only</button>
+          </div>
+        </div>
         <div class="source-card" id="sourceCard">
           <img id="sourceThumb" alt="">
           <div class="source-meta">
@@ -147,6 +156,7 @@
           </div>
           <button id="btnChangeSource" class="ghost">Change</button>
         </div>
+        <div class="hint" id="captureModeHint" hidden></div>
       </section>
 
       <!-- ── 4 · Output (collapsed by default) ──────────────── -->

@@ -79,6 +79,9 @@
   let rawVideoCodec = 'unknown';
   let warnings = [];         // device problems worth telling the user about
   let fps = 30;
+  // Task #62: 'screenCam' (default, unchanged behavior) | 'camOnly' |
+  // 'audioOnly'. Set once per arm() from opts.captureMode.
+  let captureMode = 'screenCam';
   // #58, part 2: the control panel's meter used to open its OWN getUserMedia
   // call, reflecting a different stream with different processing than the
   // one actually encoded — doubly so once task #42 turned off browser AGC/
@@ -145,30 +148,68 @@
   }
 
   async function openStreams(opts) {
-    screenStream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        mandatory: {
-          chromeMediaSource: 'desktop',
-          chromeMediaSourceId: opts.sourceId,
-          maxFrameRate: opts.fps
-        }
-      }
-    });
+    const mode = opts.captureMode || 'screenCam';
 
-    try {
-      // The camera is drawn into a bubble a few hundred pixels across, so
-      // capturing 720p and downscaling it every frame is wasted decode and
-      // scale work. Ask for roughly 2x the bubble's longest side.
-      const want = Math.max(480, Math.min(1280, Math.round((opts.cameraHint || 480) * 2 / 16) * 16));
+    // Task #62: screenCam is the only mode that captures the desktop at all.
+    if (mode === 'screenCam') {
+      screenStream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            chromeMediaSourceId: opts.sourceId,
+            maxFrameRate: opts.fps
+          }
+        }
+      });
+    }
+
+    // camOnly has nothing to fall back to if the camera fails — unlike
+    // screenCam, where a missing camera is just a warning (the screen is
+    // still there), this has to be a hard arm() failure.
+    if (mode === 'camOnly') {
+      // The camera is drawn full-frame in this mode, so ask for a real
+      // recording resolution rather than screenCam's bubble-sized hint.
       camStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
-        video: Object.assign({ width: { ideal: want }, height: { ideal: Math.round(want * 9 / 16) }, frameRate: { ideal: 30 } }, deviceConstraint(opts.cameraDeviceId))
+        video: Object.assign({ width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30 } }, deviceConstraint(opts.cameraDeviceId))
       });
-    } catch (err) {
-      log('camera unavailable:', err.message, '— recording screen only');
-      camStream = null;
-      warnings.push('No camera in this recording — ' + err.name);
+    } else if (mode === 'screenCam') {
+      try {
+        // The camera is drawn into a bubble a few hundred pixels across, so
+        // capturing 720p and downscaling it every frame is wasted decode and
+        // scale work. Ask for roughly 2x the bubble's longest side.
+        const want = Math.max(480, Math.min(1280, Math.round((opts.cameraHint || 480) * 2 / 16) * 16));
+        camStream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: Object.assign({ width: { ideal: want }, height: { ideal: Math.round(want * 9 / 16) }, frameRate: { ideal: 30 } }, deviceConstraint(opts.cameraDeviceId))
+        });
+      } catch (err) {
+        log('camera unavailable:', err.message, '— recording screen only');
+        camStream = null;
+        warnings.push('No camera in this recording — ' + err.name);
+      }
+    }
+    // audioOnly opens neither screen nor camera.
+
+    // audioOnly has nothing to record at all without a mic, so that case
+    // skips the try/catch below and lets a mic failure abort arm() — same
+    // reasoning as camOnly's camera above.
+    if (mode === 'audioOnly') {
+      micStream = await navigator.mediaDevices.getUserMedia({
+        video: false,
+        audio: Object.assign({
+          echoCancellation: false, noiseSuppression: false, autoGainControl: false,
+          sampleRate: 48000, channelCount: 2
+        }, deviceConstraint(opts.micDeviceId))
+      });
+      micStream.getAudioTracks().forEach((t) => { t.enabled = !!opts.micEnabled; });
+      const micSettings = micStream.getAudioTracks()[0]?.getSettings?.() || {};
+      if (micSettings.sampleRate && micSettings.sampleRate < 44100) {
+        warnings.push(`Mic running at ${micSettings.sampleRate}Hz (likely a Bluetooth headset) — audio quality may suffer.`);
+      }
+      startMicMeter();
+      return;
     }
 
     try {
@@ -262,13 +303,51 @@
 
   function drawFrame() {
     if (!ctx) return;
+    const now = performance.now();
+
+    // Task #62: audioOnly has no camera or screen frame — just a placeholder
+    // card, redrawn every KEEPALIVE_MS tick with the elapsed time. It has to
+    // actually redraw each time, not just push the SAME canvas via
+    // requestFrame() repeatedly: canvas capture in this Electron/Chromium
+    // build only emits a new video frame when the canvas content actually
+    // changes between captures — calling requestFrame() on an unchanged
+    // canvas silently produced exactly ONE real frame for the entire take,
+    // confirmed by decoding the raw MKV directly (16 requestFrame() calls,
+    // 1 real frame) before this fix (16 calls, 16 real frames after).
+    if (captureMode === 'audioOnly') {
+      if (!dirty && now - lastPush < KEEPALIVE_MS) { perfEnd(false); return; }
+      perfStart();
+      ctx.fillStyle = '#14161c';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#8a93a6';
+      ctx.font = Math.round(canvas.height * 0.08) + 'px -apple-system, "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('Audio recording · ' + Math.floor(elapsed() / 1000) + 's', canvas.width / 2, canvas.height / 2);
+      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
+      dirty = false; lastPush = now; perfEnd(true);
+      return;
+    }
+
+    // camOnly: the camera fills the whole canvas (no bubble, no screen).
+    if (captureMode === 'camOnly') {
+      const camSrc = frames.cam || camVideo;
+      if (!camSrc || !srcW(camSrc)) { perfEnd(false); return; }
+      if (!useFallback && !dirty && now - lastPush < KEEPALIVE_MS) { perfEnd(false); return; }
+      perfStart();
+      drawCover(camSrc, 0, 0, canvas.width, canvas.height, overlay && overlay.mirror, overlay && overlay.flipV);
+      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
+      dirty = false; lastPush = now; perfEnd(true);
+      return;
+    }
+
+    // screenCam (default): screen full-frame, camera clipped into the bubble.
     const screenSrc = frames.screen || screenVideo;
     const camSrc = frames.cam || camVideo;
     if (!screenSrc) return;
 
     // Skip entirely when no source produced a new frame and the stream was
     // fed recently. A static screen costs nothing instead of full budget.
-    const now = performance.now();
     if (!useFallback && !dirty && now - lastPush < KEEPALIVE_MS) { perfEnd(false); return; }
     perfStart();
 
@@ -454,11 +533,28 @@
     targetFormat = opts.targetFormat || 'mp4';
     quality = opts.quality || 'high';
     wantsTranscode = !!opts.wantsTranscode;
+    captureMode = opts.captureMode || 'screenCam';
     try {
       await openStreams(opts);
 
-      const st = screenStream.getVideoTracks()[0].getSettings();
-      const sw = st.width || 1920, sh = st.height || 1080;
+      // Task #62: canvas size comes from whichever source actually drives
+      // the picture — the screen in screenCam (unchanged), the camera's own
+      // resolution in camOnly (there's no screen to size against), and a
+      // small fixed placeholder canvas in audioOnly (nothing is drawn but a
+      // static card — MediaRecorder still needs SOME video track to produce
+      // a valid container, and that's what keeps the rest of the app's
+      // pipeline — finalize, transcribe, EDL, production — working
+      // unmodified on an audio-only take).
+      let sw, sh;
+      if (captureMode === 'camOnly') {
+        const st = camStream.getVideoTracks()[0].getSettings();
+        sw = st.width || 1280; sh = st.height || 720;
+      } else if (captureMode === 'audioOnly') {
+        sw = 640; sh = 360;
+      } else {
+        const st = screenStream.getVideoTracks()[0].getSettings();
+        sw = st.width || 1920; sh = st.height || 1080;
+      }
       let scale = 1;
       if (opts.maxHeight && sh > opts.maxHeight) scale = opts.maxHeight / sh;
       canvas = document.createElement('canvas');
@@ -476,13 +572,13 @@
       if (micStream) micStream.getAudioTracks().forEach((t) => armed.addTrack(t));
 
       running = true;
-      pump(screenStream.getVideoTracks()[0], 'screen');
+      if (screenStream) pump(screenStream.getVideoTracks()[0], 'screen');
       if (camStream) pump(camStream.getVideoTracks()[0], 'cam');
 
       // No track processor on this build: fall back to <video> elements read
       // on the timer, which is what the original code did.
       if (useFallback) {
-        screenVideo = await makeVideo(screenStream);
+        if (screenStream) screenVideo = await makeVideo(screenStream);
         if (camStream) camVideo = await makeVideo(camStream);
       }
 
