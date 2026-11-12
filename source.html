@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v33 59260ae0 2026-11-12 01:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v34 356539aa 2026-11-12 04:46"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -83068,6 +83068,10 @@ function recordLinkInflate(bytes){
  },function(){ return importRefuse('the link is damaged or cut short, so it could not be unpacked'); });}
 /* the boot step. Returns the promise so a gate can wait on the real result
    rather than on a timer. */
+/* Set once, true only for the exact landing the paragraph above
+   describes, and read (and cleared) exactly once, by ui/login.js's
+   loginSubmit, whichever runs first. */
+var RECORD_LINK_LANDED=false;
 function recordLinkBoot(){
  var got=recordLinkTake(); if(!got)return null;
  var bytes=linkUnwrap(got.text);
@@ -83093,7 +83097,21 @@ function recordLinkBoot(){
   /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
      first thing a person sees is their own reading and the gift's line. The
      app opens on Discover otherwise, since 23 October. See tabLandFirst. */
-  try{ tabLandFirst(); }catch(e){}
+  var landedNow=false;
+  try{ landedNow=!!tabLandFirst(); }catch(e){}
+  /* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md,
+     "The funnel/quiz replacement's exact scope, and where login lands").
+     His words, final: "When the user creates a login, it lands on the
+     simple dashboard." That is a deliberate override of the first-arrival
+     rule directly above, for this one flow only: a person who arrived
+     through a record link, on a device that had genuinely never landed
+     before (landedNow, not just "a link happened to be present" -- a
+     resend of an old link to an already-landed device is not a first
+     arrival and does not get the override). ui/login.js's loginSubmit
+     reads this flag once, on its own next successful sign in or account
+     creation, and clears it either way, so it can never fire twice and
+     never reaches a login that has nothing to do with this landing. */
+  if(landedNow)RECORD_LINK_LANDED=true;
   /* A quiz-imported record skips onboarding, which is otherwise the first
      caller of the anonymous first-visit session. Start that same session
      here, after a record has actually landed. authFunnelStart sends only a
@@ -92443,7 +92461,7 @@ function loginNewSave(){
   if(h)h.innerHTML=loginNewDoneCard(r.who);
   status(r.say,r.kept?'ok':'fail');
   var on=document.getElementById('loginb-on');
-  if(on){ on.onclick=function(){ loginClose(); loginEnter(); }; on.focus(); } });}
+  if(on){ on.onclick=function(){ loginClose(); if(loginDashOverride())return; loginEnter(); }; on.focus(); } });}
 /* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
    result goes through, and it is the live region a screen reader hears; but
    the status line sits in the top bar, under this card, which covers the
@@ -92520,6 +92538,20 @@ function loginClose(){
    control may never do. On a no, the card keeps what was typed, so the fix is
    one field and not two. */
 function loginGo(){ loginSubmit('signin'); }
+/* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md).
+   RECORD_LINK_LANDED (ui/panels.js recordLinkBoot) is true only once, for
+   the one device landing the funnel's own record link just produced; read
+   here and cleared the moment it is read, on whichever of signin or
+   signup succeeds first, so a later, ordinary sign in from Account never
+   meets it again and every other door into the app lands exactly as it
+   did before this ruling. */
+function loginDashOverride(){
+ if(typeof RECORD_LINK_LANDED==='undefined'||!RECORD_LINK_LANDED)return false;
+ RECORD_LINK_LANDED=false;
+ if(typeof setTab==='function')setTab(TAB.STORY);
+ if(typeof STV!=='undefined')STV.dash=true;
+ if(typeof render==='function')render();
+ return true;}
 function loginSubmit(route){
  if(LOGIN.busy)return;
  var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
@@ -92528,7 +92560,9 @@ function loginSubmit(route){
  authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
   LOGIN.busy=false; loginBusy(false);
   if(!r.ok){ loginSay(r.say,'fail'); return; }
-  loginClose(); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
+  loginClose(); status(r.say,r.kept?'ok':'fail');
+  if(loginDashOverride())return;
+  loginEnter(); });}
 /* The forgotten password, with the one sentence authForgot returns for an
    address with an account and for one without. 'ok', not 'fail', on the
    status line: the request landed, which is all this press can know. */
@@ -94869,5 +94903,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006333634"></div>
+<div id="eof" hidden data-len="006335596"></div>
 </body></html>

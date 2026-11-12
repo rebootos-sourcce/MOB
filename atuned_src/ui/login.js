@@ -248,7 +248,7 @@ function loginNewSave(){
   if(h)h.innerHTML=loginNewDoneCard(r.who);
   status(r.say,r.kept?'ok':'fail');
   var on=document.getElementById('loginb-on');
-  if(on){ on.onclick=function(){ loginClose(); loginEnter(); }; on.focus(); } });}
+  if(on){ on.onclick=function(){ loginClose(); if(loginDashOverride())return; loginEnter(); }; on.focus(); } });}
 /* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
    result goes through, and it is the live region a screen reader hears; but
    the status line sits in the top bar, under this card, which covers the
@@ -325,6 +325,20 @@ function loginClose(){
    control may never do. On a no, the card keeps what was typed, so the fix is
    one field and not two. */
 function loginGo(){ loginSubmit('signin'); }
+/* THE FUNNEL/QUIZ LOGIN OVERRIDE, ruled 11-12 November (DECISIONS.md).
+   RECORD_LINK_LANDED (ui/panels.js recordLinkBoot) is true only once, for
+   the one device landing the funnel's own record link just produced; read
+   here and cleared the moment it is read, on whichever of signin or
+   signup succeeds first, so a later, ordinary sign in from Account never
+   meets it again and every other door into the app lands exactly as it
+   did before this ruling. */
+function loginDashOverride(){
+ if(typeof RECORD_LINK_LANDED==='undefined'||!RECORD_LINK_LANDED)return false;
+ RECORD_LINK_LANDED=false;
+ if(typeof setTab==='function')setTab(TAB.STORY);
+ if(typeof STV!=='undefined')STV.dash=true;
+ if(typeof render==='function')render();
+ return true;}
 function loginSubmit(route){
  if(LOGIN.busy)return;
  var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
@@ -333,7 +347,9 @@ function loginSubmit(route){
  authEnter(route,m?m.value.trim():'',p?p.value:'').then(function(r){
   LOGIN.busy=false; loginBusy(false);
   if(!r.ok){ loginSay(r.say,'fail'); return; }
-  loginClose(); status(r.say,r.kept?'ok':'fail'); loginEnter(); });}
+  loginClose(); status(r.say,r.kept?'ok':'fail');
+  if(loginDashOverride())return;
+  loginEnter(); });}
 /* The forgotten password, with the one sentence authForgot returns for an
    address with an account and for one without. 'ok', not 'fail', on the
    status line: the request landed, which is all this press can know. */

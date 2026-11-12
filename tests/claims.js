@@ -95,11 +95,14 @@ const ok = (c, m) => { if (c) PASS++; else { FAIL++; console.log('  FAIL  ' + m)
 
 /* ---------------- HELD. His words, waiting on his ruling. ---------------- */
 const WAITS = 'WAITING-ON-YOU.md item 12; reviews/MASTER-BMT-AUDIT.md Step 5, D1';
-const HELD = [
-  { text: 'When it is low the circuit leaks, and the leak is what promotes mental, physical and spiritual disease.', rules: ['cause'],
-    whose: 'His. TASKS.md QZ3: "A low CQ promotes mental, physical and spiritual disease."',
-    where: 'funnel/quiz.html, the reading' }
-];
+/* THE HOLD ON funnel/quiz.html's OWN LINE IS GONE WITH THE PAGE IT HELD
+   FOR. The 11-12 November funnel/quiz replacement (DECISIONS.md) retired
+   that quiz.html's reading screen entirely; the new one (funnel/
+   quiz.html, built from the approved ATUNED_Experience_V19.html) never
+   wrote this line, so the hold is bookkeeping for a sentence that no
+   longer ships anywhere, not a live exception, and this gate asks for it
+   to be deleted on exactly that finding rather than carried forever. */
+const HELD = [];
 HELD.forEach(h => { h.key = R.norm(h.text); h.seen = []; });
 
 /* ---------------- THE READER ---------------- */
