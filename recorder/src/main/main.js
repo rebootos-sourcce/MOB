@@ -682,7 +682,6 @@ ipcMain.handle('window:close', () => app.quit());
 ipcMain.handle('app:restart', () => { app.relaunch(); app.exit(0); });
 
 ipcMain.handle('waveform:load', async (_e, filePath) => {
-  const fsP = require('fs').promises;
   if (!filePath) throw new Error('waveform:load: no path');
   // Allow userData (raw recordings) or any path already persisted in the DB
   const allowedBase = path.resolve(app.getPath('userData')) + path.sep;
@@ -693,8 +692,10 @@ ipcMain.handle('waveform:load', async (_e, filePath) => {
   })();
   if (!inDb) throw new Error('waveform:load: path not in recordings');
   try {
-    const buf = await fsP.readFile(filePath);
-    return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+    // Decode server-side and return a small peaks array instead of reading
+    // the whole video file into memory and shipping it over IPC for the
+    // renderer to decode with Web Audio — see ffmpeg.extractPeaks.
+    return await ffmpeg.extractPeaks(filePath, 1000);
   } catch (err) {
     throw new Error('waveform:load failed: ' + err.message);
   }

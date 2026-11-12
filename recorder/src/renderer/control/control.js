@@ -878,8 +878,8 @@
     if (!_waveform) return;
     if (wrap) wrap.hidden = false;
     try {
-      const buf = await window.api.invoke('waveform:load', recordingPath);
-      if (typeof _waveform.loadArrayBuffer === 'function') await _waveform.loadArrayBuffer(buf);
+      const { peaks, durationMs } = await window.api.invoke('waveform:load', recordingPath);
+      if (typeof _waveform.loadPeaks === 'function') _waveform.loadPeaks(peaks, durationMs);
     } catch (err) {
       console.warn('[waveform] load failed:', err.message);
       if (wrap) wrap.hidden = true;

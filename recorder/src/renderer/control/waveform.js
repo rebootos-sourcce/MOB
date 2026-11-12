@@ -25,18 +25,17 @@ class WaveformRenderer {
     });
   }
 
-  async loadArrayBuffer(buffer) {
-    if (!buffer || buffer.byteLength === 0) return;
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const decoded  = await audioCtx.decodeAudioData(buffer.slice(0));
-      audioCtx.close();
-      this._duration = decoded.duration * 1000;
-      this._peaks    = this._extractPeaks(decoded, 1000);
-      this._render();
-    } catch (err) {
-      console.warn('[WaveformRenderer] decode failed:', err.message);
-    }
+  /**
+   * Peaks are now computed server-side (ffmpeg.extractPeaks, via the
+   * waveform:load IPC handler) instead of decoding the whole file here with
+   * Web Audio — this used to require shipping an entire video file's bytes
+   * across IPC just to show a waveform overview.
+   */
+  loadPeaks(peaks, durationMs) {
+    if (!peaks || !peaks.length) return;
+    this._duration = durationMs;
+    this._peaks = Float32Array.from(peaks);
+    this._render();
   }
 
   setRegions(regions) {
@@ -85,24 +84,6 @@ class WaveformRenderer {
     this._canvas.style.height = h + 'px';
     this._ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { w, h };
-  }
-
-  _extractPeaks(audioBuffer, numPeaks) {
-    const channel   = audioBuffer.getChannelData(0);
-    const blockSize = Math.floor(channel.length / numPeaks);
-    const peaks     = new Float32Array(numPeaks);
-    for (let i = 0; i < numPeaks; i++) {
-      let max = 0;
-      const offset = i * blockSize;
-      for (let j = 0; j < blockSize; j++) {
-        const v = Math.abs(channel[offset + j] || 0);
-        if (v > max) max = v;
-      }
-      peaks[i] = max;
-    }
-    const globalMax = peaks.reduce((m, v) => Math.max(m, v), 0.001);
-    for (let i = 0; i < numPeaks; i++) peaks[i] /= globalMax;
-    return peaks;
   }
 
   _render() {

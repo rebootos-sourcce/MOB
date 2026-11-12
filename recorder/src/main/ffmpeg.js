@@ -244,6 +244,58 @@ function extractSegment(input, output, startMs, endMs) {
   });
 }
 
+/**
+ * Decode a video/audio file's audio track to raw mono PCM and downsample it
+ * server-side into a small peaks array. waveform:load used to read the
+ * ENTIRE video file into main-process memory and ship it over IPC for the
+ * renderer to decode with Web Audio — a one-hour recording is 1GB+, and
+ * selecting it in the Edit tab was a completely ordinary action. At 8kHz
+ * mono the intermediate PCM buffer for even a 4-hour recording is well
+ * under 250MB, and only `numPeaks` floats ever cross the IPC boundary.
+ * @param {string} input
+ * @param {number} [numPeaks]
+ * @returns {Promise<{peaks:number[], durationMs:number}>}
+ */
+function extractPeaks(input, numPeaks = 1000) {
+  const SAMPLE_RATE = 8000; // plenty for a visual overview waveform
+  const args = ['-i', input, '-vn', '-ac', '1', '-ar', String(SAMPLE_RATE), '-f', 's16le', 'pipe:1'];
+  return new Promise((resolve, reject) => {
+    const child = spawn(binaryPath(), args, { windowsHide: true });
+    activeChildren.add(child);
+    const chunks = [];
+    let stderr = '';
+    child.stdout.on('data', (d) => chunks.push(d));
+    child.stderr.on('data', (d) => { stderr += d.toString(); if (stderr.length > 200000) stderr = stderr.slice(-100000); });
+    child.on('error', (err) => { activeChildren.delete(child); reject(err); });
+    child.on('close', (code) => {
+      activeChildren.delete(child);
+      if (code !== 0) { reject(new Error('ffmpeg extractPeaks failed (code ' + code + '): ' + stderr.slice(-500))); return; }
+      const buf = Buffer.concat(chunks);
+      const sampleCount = Math.floor(buf.length / 2); // 16-bit samples
+      if (sampleCount === 0) { resolve({ peaks: [], durationMs: 0 }); return; }
+      const durationMs = Math.round((sampleCount / SAMPLE_RATE) * 1000);
+      const blockSize = Math.max(1, Math.floor(sampleCount / numPeaks));
+      const peaks = [];
+      for (let i = 0; i < numPeaks && i * blockSize < sampleCount; i++) {
+        const start = i * blockSize;
+        const end = Math.min(sampleCount, start + blockSize);
+        let max = 0;
+        for (let j = start; j < end; j++) {
+          const sample = Math.abs(buf.readInt16LE(j * 2)) / 32768;
+          if (sample > max) max = sample;
+        }
+        peaks.push(max);
+      }
+      // Normalize against this clip's own loudest point (matching the old
+      // renderer-side behavior) so a quiet recording still fills the
+      // waveform display instead of drawing as a flat, barely-visible line.
+      const globalMax = peaks.reduce((m, v) => Math.max(m, v), 0.001);
+      for (let i = 0; i < peaks.length; i++) peaks[i] /= globalMax;
+      resolve({ peaks, durationMs });
+    });
+  });
+}
+
 /** Extract a single JPEG thumbnail from a video at the given offset (seconds). */
 function extractThumbnail(input, output, atSec = 0.5) {
   const args = ['-y', '-ss', String(atSec), '-i', input, '-vframes', '1', '-vf', 'scale=320:-1', output];
@@ -330,4 +382,4 @@ async function renderEdl(input, output, segments, onProgress) {
   }
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, renderEdl, killAll };
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, extractPeaks, renderEdl, killAll };
