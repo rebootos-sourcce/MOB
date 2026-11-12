@@ -91,6 +91,16 @@
   .wm .wmdot{color:var(--accent)}
 
   /* ---------- footer ---------- */
+  /* THE PAGE LINKS, MOVED HERE, 12 November. They used to be a bare <nav>
+     appended after the funnel's own fixed, full-viewport stage -- the only
+     thing left in the document's normal flow, so it rendered at the very
+     top of the page, under the fixed header. Measured: the nav's own box
+     sat at x:0 y:0 at both 1600 and 390 wide, the same y:0-48 band as the
+     wordmark, and at 390 "About" landed directly on top of it (x:33-86
+     against the wordmark's x:34-113). Nesting the real links inside this
+     already-fixed-to-the-bottom footer, as a second row below the
+     keyboard hint, puts them where the fixed layout already has room for
+     them, at every width. */
   footer.hint{
     position:fixed;
     bottom:0;
@@ -98,18 +108,27 @@
     right:0;
     z-index:55;
     display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:14px 0 10px;
+    pointer-events:none;
+  }
+  footer.hint .hintrow{
+    display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:20px 34px;
-    pointer-events:none;
+    padding:0 34px;
   }
   footer.hint .left{}
   footer.hint .right{
-    
+
     letter-spacing:.22em;
     font-size:.62rem;
     color:var(--text-faint);
   }
+  /* the hint names a key a touch screen does not have */
+  @media (max-width:880px){ footer.hint .right{display:none} }
+  footer.hint nav{pointer-events:auto}
 
   /* ---------- scene shell ---------- */
   .scenes{
@@ -1319,6 +1338,24 @@ main{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%
 .screen.active:has(.q-body){max-width:1340px}
 @keyframes viewin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){ .screen.active{animation:none} }
+/* EVERY SCENE ANIMATION, NOT JUST THE ENTRANCE, 12 November. The rule above
+   only ever covered .screen.active (a selector this page does not use --
+   its own scenes are .scene, not .screen) and the question icons below.
+   Every real animated element in this page's own six scenes -- the field
+   bloom and dash (.pulse/.travelDash/.glowBreathe/.nodeJitter), the
+   sequenced points (.s2seq1-5), the alert pulse and bolt (.pill-ping/
+   .s2bolt), the three background swipes and nine location pops in scene 3,
+   the five stage beats and five backgrounds in scene 4, the heat bloom and
+   three backgrounds in scene 5, and the five lock stages, the pain growth
+   and the nerve redden/clear in scene 6 -- ran forever regardless of this
+   setting. Frozen at the end of one cycle rather than animation:none, which
+   would hold a mid-loop element at whatever frame it happened to be on. */
+@media (prefers-reduced-motion:reduce){
+  #scenes *, #scenes *::before, #scenes *::after{
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+  }
+}
 
 /* question screen: statement on the left, a symbol standing for the thing
    itself on the right -- never a word naming its category (task spec:
@@ -1666,8 +1703,11 @@ footer.bottom{display:flex;justify-content:space-between;align-items:center;padd
   </header>
 
   <footer class="hint">
-    <span class="left"></span>
-    <span class="right">&larr; &rarr; Navigate</span>
+    <div class="hintrow">
+      <span class="left"></span>
+      <span class="right">&larr; &rarr; Navigate</span>
+    </div>
+    <nav aria-label="More pages" style="position:relative;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:0 16px;font-family:inherit;font-size:13px"><a href="about.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">About</a><a href="faq.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">FAQ</a><a href="buy.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Tiers</a><a href="privacy.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Privacy</a><a href="terms.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Terms</a><a href="consumer-health-data.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Consumer health data</a></nav>
   </footer>
 
   <div class="edge-nav prev">
@@ -2667,6 +2707,5 @@ footer.bottom{display:flex;justify-content:space-between;align-items:center;padd
   }
 })();
 </script>
-<nav aria-label="More pages" style="position:relative;z-index:5;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;padding:4px 16px;font-family:inherit;font-size:13px"><a href="about.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">About</a><a href="faq.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">FAQ</a><a href="buy.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Tiers</a><a href="privacy.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Privacy</a><a href="terms.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Terms</a><a href="consumer-health-data.html" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:inherit;opacity:.65;text-decoration:none">Consumer health data</a></nav>
 </body>
 </html>
