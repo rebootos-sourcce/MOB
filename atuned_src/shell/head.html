@@ -7794,6 +7794,18 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
    timed in panels.js against the same bootOut fade everything else here
    reads off. */
 .boot.bx-uni .bx-fig{display:none}
+/* AND THE OLD WASH GOES WITH IT, 12 November, the owner's own direct
+   instruction: "take out the old animation, keep the uni animation."
+   .bx-wash below was built as .bx-fig's own backdrop and was carried over
+   unchanged when Uni was added as a second, alternate figure -- so a
+   person who gets the Uni path still saw the OLD figure's ambient wash
+   animating behind the NEW one, the second "login animation" he flagged.
+   Hidden here the same way .bx-fig itself is, immediately above. Uni's own
+   canvas is the only thing standing in for a backdrop now, which is safe
+   now that frame()'s own clip (uni.js, the one right after drawDecoherenceGlow)
+   keeps her glow inside a circle no transparent mount's canvas rectangle
+   can show through. */
+.boot.bx-uni .bx-wash{display:none}
 #bootuni{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
  opacity:1;transition:opacity .52s cubic-bezier(.4,0,1,1)}
 #bootuni.bx-uni-out{opacity:0}
