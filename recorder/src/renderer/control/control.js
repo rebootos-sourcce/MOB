@@ -1011,6 +1011,22 @@
   }
 
   async function loadEditTab() {
+    // Spec-default 500ms, previously hardcoded with no way for a user to
+    // tune it for their speaking cadence. Takes effect on the next
+    // Transcribe — silence is detected once, at transcription time, and
+    // stored, same as fillers.
+    const sthSel = $('silenceThresholdSelect');
+    if (sthSel && !sthSel.dataset.bound) {
+      sthSel.dataset.bound = '1';
+      try {
+        const s = await window.api.invoke('settings:get');
+        sthSel.value = String((s.edit && s.edit.silenceThresholdMs) || 500);
+      } catch (_) {}
+      sthSel.addEventListener('change', (e) => {
+        window.api.invoke('settings:set', { edit: { silenceThresholdMs: Number(e.target.value) } });
+      });
+    }
+
     await loadRecordingList('editRecordingList', async (id, row) => {
       const sec = $('editCutSection');
       $('editRecordingTitle').textContent = (row.path || '').split(/[\\/]/).pop();

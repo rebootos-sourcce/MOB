@@ -39,6 +39,12 @@ const DEFAULTS = {
   },
   window: {
     x: null, y: null, width: null, height: null
+  },
+  edit: {
+    // Marked "resolved" in the spec (labeled slider, 300/500/750ms stops,
+    // default 500) but never implemented — silence.js hardcoded the cutoff
+    // with no way for a user to tune it for their speaking cadence.
+    silenceThresholdMs: 500
   }
 };
 

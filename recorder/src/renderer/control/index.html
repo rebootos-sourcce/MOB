@@ -233,6 +233,15 @@
             <button id="btnRemoveSilences" class="ghost">Remove silences</button>
             <button id="btnTranscribe" class="primary">Transcribe</button>
           </div>
+          <label class="hint" style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            Silence threshold
+            <select id="silenceThresholdSelect">
+              <option value="300">300ms</option>
+              <option value="500">500ms</option>
+              <option value="750">750ms</option>
+            </select>
+            <span style="opacity:.7;">(applies on next Transcribe)</span>
+          </label>
           <div class="row" style="margin-top:6px;gap:6px;align-items:center;flex-wrap:wrap;">
             <button id="btnMarkIn" class="ghost mini">Set in point</button>
             <span id="trimInLabel" class="hint">In: 0:00</span>

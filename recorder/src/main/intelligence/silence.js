@@ -1,17 +1,21 @@
 'use strict';
 // ADR-005: Silence gap detection between transcript words.
-// Gaps longer than MIN_SILENCE_MS are returned as removal candidates.
+// Gaps longer than the threshold are returned as removal candidates.
 
-const MIN_SILENCE_MS = 800;
+// Spec default (docs/mob-recorder-tdd.html resolved decision Q4: a labeled
+// slider with 300/500/750ms stops, default 500) — callers can override via
+// the minSilenceMs parameter; see settings.edit.silenceThresholdMs.
+const DEFAULT_MIN_SILENCE_MS = 500;
 const KEEP_LEAD_MS   = 100; // keep a little natural pause at the start of a gap
 const KEEP_TRAIL_MS  = 50;
 
 /**
  * @param {Array<{word:string, start:number, end:number}>} words
  * @param {number} totalDurationMs  total recording length
+ * @param {number} [minSilenceMs]  gaps shorter than this are kept as natural pauses
  * @returns {Array<{start_ms:number, end_ms:number}>}
  */
-function detectSilences(words, totalDurationMs) {
+function detectSilences(words, totalDurationMs, minSilenceMs = DEFAULT_MIN_SILENCE_MS) {
   if (!words.length) return [];
 
   const gaps = [];
@@ -22,7 +26,7 @@ function detectSilences(words, totalDurationMs) {
   // in, start talking a few seconds later) — was never detected at all,
   // even though trailing silence (below) was.
   const firstStartMs = Math.round(words[0].start * 1000);
-  if (firstStartMs >= MIN_SILENCE_MS) {
+  if (firstStartMs >= minSilenceMs) {
     gaps.push({
       start_ms: 0,
       end_ms: Math.max(0, firstStartMs - KEEP_TRAIL_MS)
@@ -34,7 +38,7 @@ function detectSilences(words, totalDurationMs) {
     const gapEndMs   = Math.round(words[i].start * 1000);
     const gapMs      = gapEndMs - gapStartMs;
 
-    if (gapMs >= MIN_SILENCE_MS) {
+    if (gapMs >= minSilenceMs) {
       gaps.push({
         start_ms: Math.max(0, gapStartMs + KEEP_LEAD_MS),
         end_ms:   Math.max(0, gapEndMs   - KEEP_TRAIL_MS)
@@ -46,7 +50,7 @@ function detectSilences(words, totalDurationMs) {
   if (totalDurationMs > 0) {
     const lastEndMs = Math.round(words[words.length - 1].end * 1000);
     const trailingMs = totalDurationMs - lastEndMs;
-    if (trailingMs >= MIN_SILENCE_MS) {
+    if (trailingMs >= minSilenceMs) {
       gaps.push({
         start_ms: lastEndMs + KEEP_LEAD_MS,
         end_ms:   totalDurationMs

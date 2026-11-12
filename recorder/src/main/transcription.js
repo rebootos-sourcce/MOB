@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const db = require('./db/sqlite');
 const { detectFillers } = require('./intelligence/filler');
 const { detectSilences } = require('./intelligence/silence');
+const settings = require('./settings');
 const { formCaptions } = require('./intelligence/captions');
 const { extractHashtags } = require('./intelligence/hashtags');
 
@@ -183,7 +184,8 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
 
   // Run intelligence algorithms
   const fillerSegs  = detectFillers(words);
-  const silenceSegs = detectSilences(words, totalDurationMs);
+  const silenceThresholdMs = settings.get().edit.silenceThresholdMs;
+  const silenceSegs = detectSilences(words, totalDurationMs, silenceThresholdMs);
   const captions    = formCaptions(words);
   const hashtags    = extractHashtags(fullText);
 
