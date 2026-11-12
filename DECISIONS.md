@@ -3567,6 +3567,43 @@ quiz into `affinity()` as its starting value rather than a second table,
 then let story input re-weight it the same way the engine already re-weighs
 charge from a story) is scoped as a task rather than guessed at further.
 
+## The 20 self-reported saboteurs feed the real SAB33 detection, same shape as the archetypes. Ruled 11 November.
+
+His words, verbatim, when asked directly whether the new quiz's 20 saboteur
+self-report questions should write into the existing 33-saboteur table the
+rest of the app already reads from, or something else: "Let's lay the
+saboteurs in for now. What they do is they give us anchors. All of it gives
+us anchors. It just depends on which way we choose to come at it from. The
+saboteurs are more recognizable by people. I think that's the point of it.
+People can admit when they're people-pleasing but they just need to be
+shown it." Asked to confirm this holds even though it may need revisiting:
+"I don't disagree with you. I may have to change that after the alpha. So
+just for now, this is for the [alpha]."
+
+Read as: self-report and the engine's own story-driven detection
+(`sab33Detect()`, `atuned_src/engine/core.js:615`, matching a story's charge
+against `SAB33`'s own ranges, `engine/core.js:592`/`atuned_src/engine/data/
+canon.js`) are two directions into the same anchor, not two systems. This is
+the same shape as the archetype ruling directly above: self-report seeds the
+real value for a named saboteur, re-weighted by story input over time the
+same way `sab33Detect()` already re-weighs from a story. It stands only
+because the match is a real one, not assumed: every one of the new quiz's 20
+self-report saboteur names (Judge, Avoider, Micromanager, Hyper-Achiever,
+Hyper-Rational, Hyper-Vigilant, Pleaser, Restless, Stickler, Victim,
+Negotiator, Control Freak, Imposter, Overthinker, Perfectionist, Aggressor,
+Worrywart, Martyr, Cynic, Deflector) is an exact, verbatim name match to one
+of the 33 rows in `SAB33` (`atuned_src/engine/data/canon.js`, lines 42-75) --
+no invented label, no reconciliation needed, confirmed directly against the
+real table rather than assumed. The other 13 of the 33 stay story-inferred
+only, same as today, since the quiz asks about these 20 and not the rest.
+Ruled alpha-scoped on his own word, not locked in: a decision to change this
+after the alpha is his to make, not a reason to withhold it now. Not built
+in this entry; the real wiring (where the self-reported value is stored
+alongside or inside whatever `sab33Detect()`'s own per-saboteur state is, and
+how the two blend as a story arrives) is scoped as a task for whoever builds
+the funnel/quiz replacement, the same way the archetype wiring above was
+scoped rather than guessed at further.
+
 ## The funnel's score passes into the account, as starting information. Ruled 11 November.
 
 His words, verbatim: "It gets saved to the account. It's a starting
