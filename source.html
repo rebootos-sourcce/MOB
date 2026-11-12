@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v44 0929fa9c 2026-11-12 12:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v45 e1b0391b 2026-11-12 12:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -45000,15 +45000,26 @@ const ZONES=[
      frame is already queued. Every place that starts her now goes
      through kick(), which only asks for a frame when none is queued. */
   let frameQueued=false;
+  /* STILL, 12 November: true once a frame has drawn with rbStill() already
+     true, so the loop asks for exactly one more frame after motion is
+     turned off (drawing wherever she already was, not snapping to a
+     fixed pose) and then stops asking, rather than requesting a frame
+     every tick forever just to do nothing in it -- the review's own
+     finding, and the same cost the "ONE LOOP, NEVER TWO" note above
+     measured for a second idle loop. Cleared the moment motion is
+     allowed again, so a toggle back on restarts cleanly. */
+  let settledStill=false;
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
+    const still=rbStill();
+    if(!still) settledStill=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
        below (which would otherwise immediately overwrite the null it
        just set). Lets pause()/resume() (and the original mouseenter
        restart) gate cleanly on lastTs===null. */
-    if(!cv.hidden){ kick(); } else { lastTs=null; return; }
+    if(!cv.hidden && !(still&&settledStill)){ kick(); } else { lastTs=null; return; }
     if(lastTs===null){lastTs=ts;return;}
     /* never negative: resume() stamps lastTs with performance.now(), which
        can be later than the timestamp of the frame already queued when it
@@ -45388,6 +45399,7 @@ const ZONES=[
     updateShaderPanel();
 
     if(cv.hidden){lastTs=null;}
+    if(still) settledStill=true;
   }
 
   // "Expose the shader" -- there's no literal GLSL here (this is Canvas 2D),
@@ -45431,6 +45443,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
   // Events
   cv.addEventListener('click',()=>{showStats=!showStats;});
   cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();kick();}});
+  /* motion turned back on after the still-settle above stopped the loop:
+     the same restart the mouseenter listener already does, fired by the
+     one thing that can make rbStill() go false again mid-session. */
+  new MutationObserver(()=>{ if(!cv.hidden&&!rbStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
+    .observe(document.body,{attributes:true,attributeFilter:['class']});
 
   let typeBuf='';
   let typeFlushTimer=null;
@@ -94903,5 +94920,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006335560"></div>
+<div id="eof" hidden data-len="006336661"></div>
 </body></html>

@@ -2060,15 +2060,26 @@ const ZONES=[
      frame is already queued. Every place that starts her now goes
      through kick(), which only asks for a frame when none is queued. */
   let frameQueued=false;
+  /* STILL, 12 November: true once a frame has drawn with rbStill() already
+     true, so the loop asks for exactly one more frame after motion is
+     turned off (drawing wherever she already was, not snapping to a
+     fixed pose) and then stops asking, rather than requesting a frame
+     every tick forever just to do nothing in it -- the review's own
+     finding, and the same cost the "ONE LOOP, NEVER TWO" note above
+     measured for a second idle loop. Cleared the moment motion is
+     allowed again, so a toggle back on restarts cleanly. */
+  let settledStill=false;
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
+    const still=rbStill();
+    if(!still) settledStill=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
        below (which would otherwise immediately overwrite the null it
        just set). Lets pause()/resume() (and the original mouseenter
        restart) gate cleanly on lastTs===null. */
-    if(!cv.hidden){ kick(); } else { lastTs=null; return; }
+    if(!cv.hidden && !(still&&settledStill)){ kick(); } else { lastTs=null; return; }
     if(lastTs===null){lastTs=ts;return;}
     /* never negative: resume() stamps lastTs with performance.now(), which
        can be later than the timestamp of the frame already queued when it
@@ -2448,6 +2459,7 @@ const ZONES=[
     updateShaderPanel();
 
     if(cv.hidden){lastTs=null;}
+    if(still) settledStill=true;
   }
 
   // "Expose the shader" -- there's no literal GLSL here (this is Canvas 2D),
@@ -2491,6 +2503,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
   // Events
   cv.addEventListener('click',()=>{showStats=!showStats;});
   cv.addEventListener('mouseenter',()=>{if(lastTs===null){lastTs=performance.now();kick();}});
+  /* motion turned back on after the still-settle above stopped the loop:
+     the same restart the mouseenter listener already does, fired by the
+     one thing that can make rbStill() go false again mid-session. */
+  new MutationObserver(()=>{ if(!cv.hidden&&!rbStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
+    .observe(document.body,{attributes:true,attributeFilter:['class']});
 
   let typeBuf='';
   let typeFlushTimer=null;
