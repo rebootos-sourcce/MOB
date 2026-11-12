@@ -11,8 +11,7 @@ const LISTEN = new Set([
   'transcription:progress',
   'edit:renderProgress',
   'voice:listening',
-  'sync:progress',
-  'ui:update-ready'
+  'sync:progress'
 ]);
 
 contextBridge.exposeInMainWorld('api', {

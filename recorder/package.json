@@ -51,11 +51,6 @@
       ],
       "signAndEditExecutable": false
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "artifactName": "MOB-Recorder-${version}-setup.exe"
-    },
     "portable": {
       "artifactName": "MOB-Recorder-${version}-portable.exe"
     },

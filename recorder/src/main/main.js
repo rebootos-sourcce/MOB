@@ -725,8 +725,6 @@ ipcMain.handle('shell:showItemInFolder', (_e, p) => shell.showItemInFolder(p));
 ipcMain.handle('window:minimize', () => control && control.minimize());
 ipcMain.handle('window:close', () => app.quit());
 
-ipcMain.handle('app:restart', () => { app.relaunch(); app.exit(0); });
-
 ipcMain.handle('waveform:load', async (_e, filePath) => {
   if (!filePath) throw new Error('waveform:load: no path');
   // Allow userData (raw recordings) or any path already persisted in the DB
@@ -1040,20 +1038,16 @@ app.whenReady().then(async () => {
     });
   }
 
-  // Auto-update (electron-updater, optional dep — skipped in dev/smoke/shot)
-  if (app.isPackaged && !process.env.MOB_SMOKE && !process.env.MOB_SHOT) {
-    try {
-      const { autoUpdater } = require('electron-updater');
-      autoUpdater.autoDownload = true;
-      autoUpdater.autoInstallOnAppQuit = true;
-      autoUpdater.on('update-downloaded', () => {
-        sendControl('ui:update-ready', {});
-      });
-      // Check 30 s after startup, then every 4 h
-      setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 30_000);
-      setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 4 * 60 * 60 * 1000);
-    } catch (_) { /* electron-updater not installed in dev */ }
-  }
+  // #67: auto-update was wired up but could never actually fire — dist/
+  // release never publishes a latest.yml feed, the release tag format
+  // doesn't match what electron-updater's GitHub provider expects, and the
+  // only Windows build target (portable) can't be updated by electron-
+  // updater at all even if a feed existed. Rather than leave a "Restart to
+  // update" banner wired to a check that always 404s (silently, since the
+  // old code caught and dropped it), the whole chain — this block, the
+  // banner, app:restart, electron-updater itself — has been removed.
+  // Revisit if the release pipeline in task #67 is ever built out for real
+  // (nsis target actually enabled, feed published, tag format aligned).
 
   // Ticker for the elapsed-time display.
   setInterval(() => { if (rec.state === 'recording' || rec.state === 'paused') publishState(); }, 500);

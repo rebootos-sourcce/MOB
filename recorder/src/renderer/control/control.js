@@ -757,20 +757,8 @@
   init();
 })();
 
-// ── Update banner + transcription progress (top-level, runs after DOM ready) ──
+// ── Transcription progress (top-level, runs after DOM ready) ──
 (function () {
-  // Update notification banner
-  window.api.on('ui:update-ready', () => {
-    const banner = document.getElementById('updateBanner');
-    if (banner) banner.hidden = false;
-  });
-  const btnRestart = document.getElementById('btnRestartUpdate');
-  if (btnRestart) {
-    btnRestart.addEventListener('click', () => {
-      window.api.invoke('app:restart').catch(() => {});
-    });
-  }
-
   // Transcription progress (new detailed bar, reuses transcription:progress channel)
   window.api.on('transcription:progress', (data) => {
     const bar  = document.getElementById('transcribeProgressBar');

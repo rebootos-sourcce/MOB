@@ -34,7 +34,7 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      - name: Build installer + portable EXE
+      - name: Build portable EXE
         run: npm run dist
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
@@ -70,7 +70,7 @@ jobs:
             Windows 10/11 64-bit.
 
             **Download `MOB-Recorder-${{ steps.ver.outputs.version }}-portable.exe`** below and double-click it. No install needed.
-            (`-setup.exe` is the installer version if you'd rather have a Start-menu entry.)
+            (There is no separate installer build — only this portable EXE is produced.)
 
             The file is unsigned, so Windows SmartScreen will say "Windows protected your PC" the first time.
             Click **More info → Run anyway**.
