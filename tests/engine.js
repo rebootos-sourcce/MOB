@@ -10774,6 +10774,81 @@ console.log('\nARCH SEED · the 11 November ruling: a 12-item self-report seeds 
  ok(r2.archSeed===null||r2.archSeed===undefined,'a blueprint already hand-picked before any quiz is never silently seeded over');
 }
 
+console.log('\nARCH SELF · TA9: the twelve self-reported strengths are the starting value affinity() returns');
+{
+ const {blankProfile,archSeedApply,validateProfile,loadProfile,compute,affinity,applyStory,traceWithSoul,
+  S,ARCH,CHARGES,IX_BLOCKS,ixSet}=E;
+ const same=(a,b)=>a.length===b.length&&a.every((x,i)=>Math.abs(x-b[i])<1e-12);
+ /* the blueprint's own answer for a soul, read off a record with no self report */
+ const blue=arcs=>{const b=blankProfile('blue'); b.soul.arcs=arcs.slice(); loadProfile(b); return affinity();};
+ const vals=[.9,.1,.2,.3,.4,.5,.6,.7,.8,.15,.25,.35], mx=Math.max(...vals), want=vals.map(v=>v/mx);
+ const seeded=blankProfile('self'); archSeedApply(seeded,vals);
+
+ /* the quiz's route: the record crosses the boundary before it is loaded */
+ const v=validateProfile(JSON.parse(JSON.stringify(seeded)));
+ ok(v.ok&&v.profile.archSeed&&same(v.profile.archSeed.vals,vals)&&JSON.stringify(v.profile.archSeed.order)===JSON.stringify(seeded.archSeed.order),
+  'the boundary keeps the twelve strengths and the pick they wrote, where it dropped them with ok true, got '+JSON.stringify(v.profile&&v.profile.archSeed));
+ const q=v.profile; loadProfile(q);
+ const af=affinity();
+ ok(same(af,want),'with no story, affinity() is the self report against its strongest, got '+af.map(x=>x.toFixed(3)).join(' '));
+ ok(Math.abs(af[1]-.1/.9)<1e-12&&af[11]<af[6],
+  ARCH[1].nm+' self-reported at .1 reads '+af[1].toFixed(2)+', where the ranked pick alone gave .61, and '+ARCH[11].nm
+  +' at .35 reads below '+ARCH[6].nm+' at .6, where it read above it');
+ const r=compute();
+ ok(r.pi===0&&r.si===8&&same(r.aff,want),
+  'compute() carries it as aff, and names the first and second from it: '+ARCH[r.pi].nm+', '+ARCH[r.si].nm);
+
+ /* THE STORY TERM IS NOT BUILT, and this pins that so it changes by name. The
+    only story signal the engine has for an archetype is its seat's charge,
+    and archexpr.js's 16 October ruling gives that to expression and keeps it
+    out of affinity(). Which way a story should move the lean is the owner's
+    (engine/archseed.js). Whoever builds it changes this assertion. */
+ const before=CHARGES.reduce((a,c)=>a+S.charge[c],0);
+ applyStory('I was terrified and ashamed. My chest went tight and I could not speak. I hate how small I felt.');
+ const after=CHARGES.reduce((a,c)=>a+S.charge[c],0);
+ ok(after>before&&same(affinity(),want),
+  'a story moves the charge, '+before.toFixed(2)+' to '+after.toFixed(2)+', and does not yet move the starting value: the story term is an open ruling');
+
+ /* a hand pick since is the person's, and the blueprint answers again */
+ loadProfile(q); S.arcs=[7,1]; E.buildSoul();
+ ok(same(affinity(),blue([7,1])),'a hand pick since the seed hands affinity() back to the blueprint');
+
+ /* identity, not coincidence */
+ loadProfile(q); S.rec='scratch-row';
+ ok(same(affinity(),blue(q.soul.arcs))&&!same(blue(q.soul.arcs),want),
+  'when S is moved to another record, as loadP and the practitioner view do, the self report is nobody\'s');
+ const plain=blankProfile('plain'); plain.soul.arcs=q.soul.arcs.slice(); loadProfile(plain);
+ ok(same(affinity(),blue(q.soul.arcs)),'and a record with the same pick and no self report reads its blueprint, not the last record\'s self report');
+ loadProfile(plain);
+ const inside=traceWithSoul(q,()=>affinity());
+ ok(same(inside,want)&&same(affinity(),blue(q.soul.arcs)),
+  'traceWithSoul reads a record\'s self report with its soul for the borrow and gives S back without it');
+
+ /* nothing said is no self report */
+ const z=blankProfile('zero'); archSeedApply(z,new Array(12).fill(0)); loadProfile(z);
+ ok(same(affinity(),blue(z.soul.arcs)),'twelve zeros, an empty quiz, leave the blueprint answering rather than naming '+ARCH[0].nm+' first on nothing');
+
+ /* refused by name, never repaired */
+ const bad=(seed,word)=>{const b=blankProfile('bad'); b.archSeed=seed;
+  const w=validateProfile(JSON.parse(JSON.stringify(b)));
+  return !w.ok&&(w.errs||[]).some(e=>e.indexOf(word)>=0);};
+ ok(bad({vals:new Array(11).fill(.5),order:[0]},'archSeed.vals')&&bad({vals:new Array(12).fill(1.5),order:[0]},'archSeed.vals'),
+  'eleven strengths, or a strength past 1, refuses the import by name');
+ ok(bad({vals:vals,order:[0,0]},'archSeed.order')&&bad({vals:vals,order:[12]},'archSeed.order')&&bad({vals:vals,order:[]},'archSeed.order')
+  &&bad({vals:vals,order:[0,1,2,3,4]},'archSeed.order')&&bad('x','archSeed')&&bad({vals:vals,order:[0],at:5},'archSeed.at'),
+  'a repeated, unknown, empty or five wide pick, a stamp that is not a date, or a seed that is not an object, refuses the import by name');
+ const nul=blankProfile('nul'); nul.archSeed=null;
+ ok(validateProfile(JSON.parse(JSON.stringify(nul))).ok,'a record the quiz never seeded loads as it did');
+
+ /* the other quiz stays evidence: the intake's own archetype block moves no affinity */
+ [seeded,blankProfile('ixplain')].forEach((p0,k)=>{
+  const ip=JSON.parse(JSON.stringify(p0)); loadProfile(ip); const a0=affinity();
+  IX_BLOCKS.filter(b=>b.id==='arch').forEach(b=>b.rows.forEach(rw=>ixSet(ip,'arch',rw.k,10)));
+  loadProfile(ip);
+  ok(same(affinity(),a0),'answering every intake archetype question moves no affinity, '+(k?'without':'with')+' a self report');});
+ loadProfile(blankProfile('reset'));
+}
+
 console.log('\nSAB SEED · the 11 November ruling: the 20 self-reported saboteurs write the real S.charge sab33Detect() already reads');
 {
  const {blankProfile,sabSelfValid,sabSeedAxes,sabSeedEmpty,sabSeedApply,sabSeedClear,sabSeedShare,

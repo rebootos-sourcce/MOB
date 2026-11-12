@@ -334,6 +334,8 @@ if(typeof module!=='undefined'&&module.exports){
                   traceNeighbors:traceNeighbors, traceDescendants:traceDescendants, tracePath:tracePath, traceOrphans:traceOrphans,
                   traceCycles:traceCycles, validateTrace:validateTrace, traceApply:traceApply,
                   traceFromRecord:traceFromRecord, traceStoryIds:traceStoryIds, traceRitualIds:traceRitualIds,
+                  /* so the gate can watch the self report travel with the soul it borrows */
+                  traceWithSoul:traceWithSoul,
   /* the parent/child blend summarizer, engine/tracesummary.js: a sibling
      file, never a block inside trace.js itself, see its own header */
                   traceSummary:traceSummary,

@@ -513,7 +513,16 @@ const S={dom:0,doms:[0],arcs:[0,1],roots:[],a1:0,a2:1,charge:{},law:{},
     field and not persisted, but it is the only thing that can tell two of the
     person's own records apart, because both of them are who 0. loadProfile
     writes it and saveYou reads it. See the note at the end of loadProfile. */
- rec:null};
+ rec:null,
+ /* archSelf: the twelve archetype strengths the record's own self report
+    gave, {rec, vals, order}, or null. Keyed by rec for the reason rec exists:
+    loadP and the practitioner view fill S from a row that carries no self
+    report and move rec to a scratch record, so a self report left here from
+    the person's own record reads as nobody's on those routes instead of
+    leaking onto a persona whose pick happens to match it. Written by
+    loadProfile and traceWithSoul through archSelfLoad (engine/archseed.js),
+    read by affinity() below. */
+ archSelf:null};
 /* A stranger's first load used to seed every axis at 3, which produced CQ 36
    and the word Incoherent in the largest type on screen, beside a panel that
    correctly said nothing was held. The interval was never the problem. The
@@ -571,7 +580,25 @@ function buildSoul(){
 /* 19 does not divide 360 evenly, so the domain arc is 18.947 degrees and the
    overlap against the 30 degree archetype arcs is computed, not snapped. */
 const DARC=360/19;
-function affinity(){const a=new Array(12).fill(0);
+/* THE SELF REPORT IS THE STARTING VALUE, ruled 11 November (DECISIONS.md, "The
+   12 archetypes, self-reported then adjusted by the story"). The first wiring
+   only ranked the twelve answers into S.arcs and let the domain overlap below
+   run on the top four, which threw the strengths away: measured on a self
+   report of Warrior .9, Sage .1 and the Innocent .35, this returned Sage .61
+   and put the Innocent at .71, above a Ruler the person had put at .60. So
+   while the record in hand carries a self report and the pick is still the
+   one that self report wrote, the twelve strengths are the answer, against
+   the strongest like everything else this returns. A hand pick since then is
+   the person's (archSeedShare, engine/archseed.js) and the blueprint answers
+   again. A self report of nothing at all is no self report: the quiz writes 0
+   for an archetype not answered, and twelve zeros would otherwise name Warrior
+   first on no evidence. */
+function affinity(){
+ const A=S.archSelf;
+ if(A&&A.rec===S.rec&&A.order.length===S.arcs.length&&A.order.every((v,i)=>v===S.arcs[i])){
+  const mx=Math.max(...A.vals);
+  if(mx>0)return A.vals.map(v=>v/mx);}
+ const a=new Array(12).fill(0);
  for(let d=0;d<19;d++){const d0=d*DARC,d1=d0+DARC;
   for(let j=0;j<12;j++){const a0=j*30,a1=a0+30;
    a[j]+=DOMAIN[d]*(Math.max(0,Math.min(d1,a1)-Math.max(d0,a0))/DARC);}}

@@ -935,14 +935,19 @@ function traceRitualIds(p){ return traceTimeIds(p&&p.rituals); }
 function traceWithSoul(p,fn){
  var soul=(p&&p.soul&&typeof p.soul==='object')?p.soul:{};
  var keep={doms:S.doms, arcs:S.arcs, roots:S.roots, dom:S.dom, a1:S.a1, a2:S.a2,
-  D:DOMAIN, susc:W.map(function(n){return n.susc;})};
+  D:DOMAIN, susc:W.map(function(n){return n.susc;}), self:S.archSelf};
  try{
   S.doms=(Array.isArray(soul.doms)&&soul.doms.length?soul.doms:[0]).slice();
   S.arcs=(Array.isArray(soul.arcs)&&soul.arcs.length?soul.arcs:[0,1]).slice();
   S.roots=(Array.isArray(soul.roots)?soul.roots:[]).slice();
+  /* the self report travels with the soul it seeded (engine/archseed.js).
+     Bound to S.rec, which this borrow does not move, or affinity() reads the
+     record in S's self report against p's soul whenever the two picks agree. */
+  S.archSelf=archSelfLoad(p,S.rec);
   buildSoul(); suscAll();
   return fn();}
  finally{
+  S.archSelf=keep.self;
   S.doms=keep.doms; S.arcs=keep.arcs; S.roots=keep.roots;
   S.dom=keep.dom; S.a1=keep.a1; S.a2=keep.a2; DOMAIN=keep.D;
   W.forEach(function(n,i){n.susc=keep.susc[i];});}}

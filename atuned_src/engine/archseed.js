@@ -12,14 +12,20 @@
    this file existed was S.arcs, up to four hand-picked archetype indices,
    weighted by the order they were picked in (buildSoul(), core.js:566).
    A twelve-item self-report is the same shape at higher resolution: a
-   strength per archetype instead of a short, ordered pick list. So this
-   file does not touch affinity(), buildSoul() or compute() at all. It
-   turns twelve self-reported strengths into the ranked S.arcs list those
-   functions already read, the same list panels.js already writes by hand
-   (panels.js:831-838) one click at a time, and lets the existing
-   arithmetic run unchanged on it. Port, do not rebuild.
+   strength per archetype instead of a short, ordered pick list. This file
+   first turned the twelve into the ranked S.arcs list alone and left
+   affinity() to run its domain overlap on the top four, which is not the
+   same shape at higher resolution, it is the low resolution shape: the
+   strengths were thrown away and a Sage self-reported at .1 came back at
+   .61. It still writes the ranked list, the same list panels.js writes by
+   hand (panels.js:831-838), so pi, si, the wheel and every caller that
+   reads S.arcs see a pick of the usual width. And the twelve strengths go
+   into working state through archSelfLoad below, and affinity() (core.js)
+   returns them as its starting value while that pick is still the seed's.
+   No second table and no second score: the one function every surface
+   already reads returns the self report.
 
-   WHAT MOVES AFTER THAT IS ALREADY BUILT, AND IS NOT THIS FILE. archExpr()
+   WHAT MOVES AFTER THAT IS NOT YET WIRED INTO affinity(). archExpr()
    (archexpr.js) is the figure the ruling describes moving: "you may start
    off at 100%. And over time, watch it diminish... as you go through your
    recipes, watch it rise." It reads seatField(), which moves only as a
@@ -29,6 +35,12 @@
    it already adjusts a hand pick's. There is no separate re-weighting
    formula to invent here; the ruling's "the reality of those numbers
    adjust" is archExpr() reading seatField(), already shipped 16 October.
+   That is this file's first author's reading, and it leaves affinity()
+   itself still: no story moves the starting value above. Whether the
+   story should move it, and by what, is open and is the owner's, because
+   the only story signal the engine has for an archetype is its seat's
+   charge, and archexpr.js's own 16 October ruling assigns that signal to
+   expression and keeps it out of affinity() by name. Not guessed here.
 
    WRITES ONLY ONCE, THE SAME DISCIPLINE AS seedApply (engine/seed.js). A
    self-report answered honestly and then overwritten by a later screen's
@@ -108,6 +120,39 @@ function archSeedShare(p){
  for(var i=0;i<seed.length;i++)if(now[i]!==seed[i])return 0;
  return 1;}
 
+/* THE SELF REPORT INTO WORKING STATE, for affinity() (core.js). rec is the
+   record the soul in S now belongs to: loadProfile passes the record's own
+   id, and traceWithSoul (trace.js) passes S.rec, because it borrows S for p's
+   soul without moving rec and p's self report is the one that goes with that
+   soul for the length of the borrow. A copy, so a later edit to the record
+   cannot reach into S without a load, the same as S.arcs. */
+function archSelfLoad(p,rec){
+ var a=p&&p.archSeed;
+ if(!a||!archSelfValid(a.vals)||!Array.isArray(a.order))return null;
+ return {rec:rec==null?null:rec, vals:a.vals.slice(), order:a.order.slice()};}
+
+/* THE BOUNDARY'S CHECK, for validateProfile (schema.js). The seed rode the
+   quiz's #r= link and validateProfile, which builds its result from the
+   blank and copies only the fields it names, did not name it: measured, a
+   record carrying archSeed came out of the boundary ok true with archSeed
+   undefined, so every quiz arrival lost its twelve strengths at pImport and
+   kept only the ranked list. That is the SG-09 failure the axes check in
+   schema.js records, one level up. So it is named, and a malformed one is
+   refused by name and never repaired: an order that is not up to four
+   distinct archetypes, or strengths that archSelfValid refuses. Returns the
+   list of what is wrong, empty when it is sound. */
+function archSeedValid(a){
+ var errs=[];
+ if(!a||typeof a!=='object'||Array.isArray(a))return ['archSeed is not an object'];
+ if(!archSelfValid(a.vals))errs.push('archSeed.vals is not '+ARCH.length+' strengths from 0 to 1');
+ var o=a.order;
+ if(!Array.isArray(o)||o.length<1||o.length>4
+  ||!o.every(function(v,i){return Number.isInteger(v)&&v>=0&&v<ARCH.length&&o.indexOf(v)===i;}))
+  errs.push('archSeed.order is not one to four distinct archetypes');
+ if(a.at!==undefined&&typeof a.at!=='string')errs.push('archSeed.at is not a date');
+ return errs;}
+
 if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{archSelfValid:archSelfValid, archSeedEmpty:archSeedEmpty,
-  archSeedApply:archSeedApply, archSeedClear:archSeedClear, archSeedShare:archSeedShare});}
+  archSeedApply:archSeedApply, archSeedClear:archSeedClear, archSeedShare:archSeedShare,
+  archSelfLoad:archSelfLoad, archSeedValid:archSeedValid});}

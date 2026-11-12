@@ -293,6 +293,9 @@ function loadProfile(p){
  ixFill(p);
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
+ /* and the self report that seeded the pick, or none, every load, so a
+    record without one never reads the last record's (core.js, S.archSelf) */
+ S.archSelf=archSelfLoad(p,p.id||null);
  /* a missing axis is an axis nobody entered, so it opens at the blank and
     not at the 3 this used to type, which read a record with axes:{} as a
     person carrying on all nine (AXIS_BLANK, above) */
@@ -1224,6 +1227,16 @@ function validateProfile(o,ctx){
   else if(SOUL_FROM.indexOf(o.soul.from)<0)
    errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
   else p.soul.from=o.soul.from;}
+ /* THE ARCHETYPE SELF REPORT goes with the soul it seeded. It was not named
+    here, so the quiz's twelve strengths came off every record at this line
+    with ok true and only the ranked pick they wrote survived (archSeedValid,
+    engine/archseed.js, has the measurement). Null or absent is a record the
+    quiz never seeded. */
+ if(o.archSeed!==undefined&&o.archSeed!==null){
+  var ase=archSeedValid(o.archSeed);
+  if(ase.length)ase.forEach(function(e){errs.push(e);});
+  else p.archSeed={at:typeof o.archSeed.at==='string'?o.archSeed.at:new Date().toISOString(),
+   vals:o.archSeed.vals.slice(), order:o.archSeed.order.slice()};}
  /* THE SABOTEUR SELF REPORT, the same gap TASKS.md's TA9 work found on
     its own fork, archSeed: not named here, so the quiz's twenty
     self-reported saboteurs wrote real charge onto the nine axes above
