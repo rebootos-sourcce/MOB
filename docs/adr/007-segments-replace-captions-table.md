@@ -16,3 +16,7 @@ Drop the `captions` table. Speech content lives in `segments` with `type = 'spee
 One fewer table, one fewer write path to keep in sync with the transcript. The tradeoff: `segments.type` was specified (per the build-plan schema) to also carry `'filler' | 'retake' | 'bookmark'` values for future use (chapter markers, retake cuts) — none of those are written today, only `'speech'` and `'silence'`. If/when bookmark markers or retake cuts are built (see the deferred-features note), they have a natural home in this same table rather than a new one, which is one more argument for this collapse having been the right call.
 
 No `format` column exists on `segments` (the dropped `captions` table's `format TEXT DEFAULT 'srt'`) — format is a property of the *export*, chosen at export time by `captions:export`'s caller, not stored per row. This is correct: the same segment timeline can produce both an SRT and a VTT file without needing two rows.
+
+## Update (task #56: bookmark/retake markers)
+
+The prediction above — that `segments.type = 'retake' | 'bookmark'` would be the natural home for these — turned out wrong once actually built. `segments` rows require a `transcript_id` (`NOT NULL`, FK to `transcripts`), but a marker is dropped *live*, during recording, before any transcript exists and independent of whether the recording is ever transcribed at all. Task #56 added a separate `markers` table instead (`recording_id`, `type`, `at_ms`), keyed only by the recording. See `recorder/src/main/db/schema.sql`'s own comment on that table for the full reasoning.

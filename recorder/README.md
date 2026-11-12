@@ -201,7 +201,9 @@ recorder/
 See `../docs/adr/` for the design decisions behind the main process (local-first SQLite,
 why sql.js instead of a native binding, the EDL model, device identity, Cloudflare
 Queues, the intelligence algorithms' correctness rules, why segments replaced a separate
-captions table, and why transcription runs in-process rather than a worker thread).
+captions table, and why transcription runs in-process rather than a worker thread) — and
+ADR-009 for the full list of spec'd features deliberately not built here, each with its
+citation, so a feature on that list doesn't need re-discovering as a gap.
 
 ## Testing
 
@@ -234,6 +236,11 @@ against a throwaway settings profile, so they never inherit your real configurat
 Linux wrap any of them with `xvfb-run`.
 
 ## Known limitations
+
+Real bugs and unfinished corners below. For the much longer list of spec'd features
+deliberately *not* built (platform publishing beyond R2, Twitter/X, Instagram, AV1
+export, LUT grading, speaker diarization, and more — each with why), see
+`../docs/adr/009-deferred-feature-set.md`.
 
 - **System audio** (sound playing on your PC) is not captured. Mic only for now.
 - When recording a **single window** rather than a display, the bubble is pinned to the
