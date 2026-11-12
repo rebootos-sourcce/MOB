@@ -75,7 +75,17 @@ ipcMain.handle = (channel, listener) => _origIpcHandle(channel, async (...args) 
   }
 });
 
-if (!app.requestSingleInstanceLock()) app.quit();
+// app.quit() is async — it does NOT stop this script from running on. Without
+// the process.exit() below, a losing second instance (e.g. the portable .exe
+// double-clicked twice while nothing visible has appeared yet) would fall
+// through and run the ENTIRE rest of this file — IPC handlers, DB init, even
+// createControlWindow() — racing its own pending quit, which tears the
+// half-built window down again before it's ever shown. That's a "process is
+// running, no window anywhere" bug by design, not a fluke.
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
 app.setAppUserModelId('com.mob.recorder');
 
 let control = null;
@@ -1329,6 +1339,28 @@ app.whenReady().then(async () => {
 });
 
 app.on('second-instance', () => { if (control) { control.show(); control.focus(); } });
+
+// Real-hardware safety net: a GPU-driver crash on the user's actual machine
+// (vs. CI's software-rendered runner) kills the control window's renderer
+// without ever touching the uncaughtException/unhandledRejection handlers
+// above — those only cover the main process. Previously this produced
+// exactly the same "process alive, nothing visible" report with nothing in
+// the log to explain why. Logged always; shown to the user only for the
+// window that's supposed to be their only visible surface, since a silent
+// reload is indistinguishable from the original bug.
+app.on('render-process-gone', (_e, webContents, details) => {
+  logger.error('render-process-gone: ' + JSON.stringify(details));
+  if (control && !control.isDestroyed() && webContents === control.webContents) {
+    dialog.showErrorBox(
+      'MOB Recorder display crashed',
+      `The app window stopped responding (${details.reason}) and had to be reloaded.\n\nIf this keeps happening, try updating your graphics driver.`
+    );
+    control.reload();
+  }
+});
+app.on('child-process-gone', (_e, details) => {
+  logger.error('child-process-gone: ' + JSON.stringify(details));
+});
 app.on('before-quit', (e) => {
   if (app.__quitting) return;
   e.preventDefault();
