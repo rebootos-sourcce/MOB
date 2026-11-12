@@ -38,8 +38,14 @@ const DEFAULTS = {
     compactWhileRecording: true,
     // Task #62: 'screenCam' (default — screen + bubble camera), 'camOnly'
     // (full-frame camera, no screen) or 'audioOnly' (mic only, podcast/
-    // voiceover use case). Region capture isn't built yet — see task #62.
-    captureMode: 'screenCam'
+    // voiceover use case). Task #77 adds 'region' (a cropped rect of a
+    // screen, no bubble camera).
+    captureMode: 'screenCam',
+    // Task #77: { x, y, width, height } in DIP, relative to the ORIGIN of
+    // the display named by settings.source.displayId — not absolute screen
+    // coordinates. Set by main.js's region:pick handler; null until the
+    // user has picked a region at least once.
+    region: null
   },
   window: {
     x: null, y: null, width: null, height: null

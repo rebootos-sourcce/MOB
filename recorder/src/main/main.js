@@ -5,6 +5,7 @@ const settings = require('./settings');
 const ffmpeg = require('./ffmpeg');
 const { RawRecording, sweepOldRaw } = require('./recording-files');
 const windows = require('./windows');
+const { clampRegionToDisplay } = require('./region');
 const Shapes = require('../shared/shapes');
 const EventEmitter = require('events');
 const dbHandlers = require('./ipc/db-handlers');
@@ -339,8 +340,10 @@ async function startRecording() {
   // is correct for the default mode but would wrongly block every take in
   // these two (e.g. a laptop with no screen-capture permission granted yet,
   // but a perfectly good camera).
+  // Task #77: region needs a real screen source too (it crops a sub-rect of
+  // one), so it shares screenCam's resolveSource() call.
   let source = null;
-  if (captureMode === 'screenCam') {
+  if (captureMode === 'screenCam' || captureMode === 'region') {
     try {
       source = await resolveSource();
     } catch (err) {
@@ -348,6 +351,11 @@ async function startRecording() {
       publishState();
       return;
     }
+  }
+  if (captureMode === 'region' && !s.recording.region) {
+    rec.message = 'No region selected yet — use "Select region" below.';
+    publishState();
+    return;
   }
 
   rec.state = 'arming';
@@ -380,6 +388,7 @@ async function startRecording() {
     sourceId: source && source.id,
     sourceKind: source && source.kind,
     displayBounds: source ? displayBoundsFor(source) : null,
+    region: captureMode === 'region' ? s.recording.region : null,
     overlay: overlayPayload(),
     cameraDeviceId: s.camera.deviceId,
     cameraHint: Math.max(160, s.bubble.size),
@@ -748,6 +757,65 @@ ipcMain.handle('state:get', () => ({
   bubbleVisible: settings.get().bubble.visible
 }));
 ipcMain.handle('sources:list', () => listSources());
+// Task #77: region capture. Opens a transparent, always-on-top overlay
+// spanning every display, lets the user drag a rectangle, and resolves with
+// the absolute DIP rect plus the screen source it landed on — storing that
+// screen as settings.source is what lets resolveSource()/startRecording()'s
+// existing screenCam resolution path work unmodified for region mode too;
+// only the crop in recorder.js's drawFrame() is new.
+let regionPicker = null;
+ipcMain.handle('region:pick', async () => {
+  if (regionPicker && !regionPicker.isDestroyed()) return { ok: false, reason: 'already picking' };
+  const pickerBounds = windows.regionPickerBounds();
+  return new Promise((resolve) => {
+    regionPicker = windows.createRegionPickerWindow();
+    let settled = false;
+    const onCancelled = () => finish({ ok: false, reason: 'cancelled' });
+    const onSelected = (_e, localRect) => handleSelected(localRect);
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      // ipcMain.once auto-removes whichever of these two actually fired, but
+      // not the other one — without this, a pick that resolves via the
+      // window's 'closed' event (no message sent) leaks a listener on every
+      // call, and over enough region picks the stale ones start firing
+      // against an already-settled (harmless) or, worse, a FUTURE pick's
+      // promise.
+      ipcMain.removeListener('region:cancelled', onCancelled);
+      ipcMain.removeListener('region:selected', onSelected);
+      if (regionPicker && !regionPicker.isDestroyed()) regionPicker.close();
+      regionPicker = null;
+      resolve(result);
+    };
+    ipcMain.once('region:cancelled', onCancelled);
+    ipcMain.once('region:selected', onSelected);
+    async function handleSelected(localRect) {
+      // The overlay's own bounds are the origin for its mouse coordinates —
+      // regionPickerBounds() is the union of every display, not any one
+      // display's own origin, so this is NOT the same as displayBoundsFor().
+      const absRect = {
+        x: pickerBounds.x + localRect.x,
+        y: pickerBounds.y + localRect.y,
+        width: localRect.width,
+        height: localRect.height,
+      };
+      const centerPoint = { x: Math.round(absRect.x + absRect.width / 2), y: Math.round(absRect.y + absRect.height / 2) };
+      const display = screen.getDisplayNearestPoint(centerPoint);
+      // Clamp to the matched display — a drag that spilled onto a second
+      // monitor still has to crop from exactly one desktop-capture stream.
+      const relRect = clampRegionToDisplay(absRect, display);
+      const all = await listSources();
+      const screenSource = all.find((s) => s.kind === 'screen' && String(s.displayId) === String(display.id));
+      if (!screenSource) { finish({ ok: false, reason: 'no matching screen source' }); return; }
+      settings.set({
+        source: { id: screenSource.id, name: screenSource.name, kind: 'screen', displayId: screenSource.displayId },
+        recording: { region: relRect }
+      });
+      finish({ ok: true, region: relRect, displayName: screenSource.name });
+    }
+    regionPicker.on('closed', () => finish({ ok: false, reason: 'window closed' }));
+  });
+});
 ipcMain.handle('codecs:list', () => ffmpeg.codecOptions());
 ipcMain.handle('shapes:list', () => ({ order: Shapes.ORDER, labels: Object.fromEntries(Shapes.ORDER.map((k) => [k, Shapes.SHAPES[k].label])), sizes: Shapes.SIZES }));
 ipcMain.handle('recording:start', () => startRecording());

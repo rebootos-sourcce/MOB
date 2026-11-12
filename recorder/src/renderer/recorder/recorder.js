@@ -82,6 +82,13 @@
   // Task #62: 'screenCam' (default, unchanged behavior) | 'camOnly' |
   // 'audioOnly'. Set once per arm() from opts.captureMode.
   let captureMode = 'screenCam';
+  // Task #77: the selected crop rect (DIP, relative to the captured
+  // display's own origin — same convention overlayRect() uses for
+  // displayBounds) plus the screen stream's actual captured pixel
+  // resolution, needed together to scale that DIP rect into pixel
+  // coordinates inside the live screen video frame.
+  let region = null;
+  let screenCapturePx = null;
   // #58, part 2: the control panel's meter used to open its OWN getUserMedia
   // call, reflecting a different stream with different processing than the
   // one actually encoded — doubly so once task #42 turned off browser AGC/
@@ -107,6 +114,7 @@
     while (readers.length) { try { readers.pop().cancel(); } catch (_) { /* already gone */ } }
     for (const k of Object.keys(frames)) { if (frames[k]) { frames[k].close(); frames[k] = null; } }
     useFallback = false;
+    region = null; screenCapturePx = null;
     stopTracks(screenStream); stopTracks(camStream); stopTracks(micStream); stopTracks(canvasStream);
     screenStream = camStream = micStream = canvasStream = null;
     if (screenVideo) { screenVideo.__watching = false; screenVideo.srcObject = null; screenVideo.remove(); screenVideo = null; }
@@ -150,8 +158,10 @@
   async function openStreams(opts) {
     const mode = opts.captureMode || 'screenCam';
 
-    // Task #62: screenCam is the only mode that captures the desktop at all.
-    if (mode === 'screenCam') {
+    // Task #62/#77: screenCam and region both capture the desktop (region
+    // crops a sub-rect of it in drawFrame() — the capture itself is the
+    // whole display, same as screenCam).
+    if (mode === 'screenCam' || mode === 'region') {
       screenStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
@@ -167,6 +177,9 @@
     // camOnly has nothing to fall back to if the camera fails — unlike
     // screenCam, where a missing camera is just a warning (the screen is
     // still there), this has to be a hard arm() failure.
+    // region doesn't open a camera at all — drawFrame() never composites
+    // one in region mode (see its own comment), so there's nothing to do
+    // with the stream if it opened.
     if (mode === 'camOnly') {
       // The camera is drawn full-frame in this mode, so ask for a real
       // recording resolution rather than screenCam's bubble-sized hint.
@@ -336,6 +349,29 @@
       if (!useFallback && !dirty && now - lastPush < KEEPALIVE_MS) { perfEnd(false); return; }
       perfStart();
       drawCover(camSrc, 0, 0, canvas.width, canvas.height, overlay && overlay.mirror, overlay && overlay.flipV);
+      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
+      dirty = false; lastPush = now; perfEnd(true);
+      return;
+    }
+
+    // Task #77: region crops a sub-rect of the screen capture into the
+    // (region-sized) canvas. No camera bubble here — the user is
+    // deliberately excluding part of their screen, and the bubble's own
+    // overlayRect() math is defined relative to the FULL display, not this
+    // crop, so compositing it in would need its own re-anchoring; left out
+    // rather than drawn in the wrong place.
+    if (captureMode === 'region' && region && screenCapturePx && displayBounds) {
+      const screenSrc = frames.screen || screenVideo;
+      if (!screenSrc || !srcW(screenSrc)) { perfEnd(false); return; }
+      if (!useFallback && !dirty && now - lastPush < KEEPALIVE_MS) { perfEnd(false); return; }
+      perfStart();
+      // DIP -> captured-stream-pixel scale, same idea as overlayRect()'s own
+      // sx/sy, but against the region's rect instead of the bubble's.
+      const sx = screenCapturePx.width / displayBounds.width;
+      const sy = screenCapturePx.height / displayBounds.height;
+      const srcX = region.x * sx, srcY = region.y * sy;
+      const srcW2 = region.width * sx, srcH2 = region.height * sy;
+      ctx.drawImage(screenSrc, srcX, srcY, srcW2, srcH2, 0, 0, canvas.width, canvas.height);
       if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
       dirty = false; lastPush = now; perfEnd(true);
       return;
@@ -534,23 +570,29 @@
     quality = opts.quality || 'high';
     wantsTranscode = !!opts.wantsTranscode;
     captureMode = opts.captureMode || 'screenCam';
+    region = captureMode === 'region' ? opts.region : null;
     try {
       await openStreams(opts);
 
-      // Task #62: canvas size comes from whichever source actually drives
-      // the picture — the screen in screenCam (unchanged), the camera's own
-      // resolution in camOnly (there's no screen to size against), and a
-      // small fixed placeholder canvas in audioOnly (nothing is drawn but a
-      // static card — MediaRecorder still needs SOME video track to produce
-      // a valid container, and that's what keeps the rest of the app's
-      // pipeline — finalize, transcribe, EDL, production — working
-      // unmodified on an audio-only take).
+      // Task #62/#77: canvas size comes from whichever source actually
+      // drives the picture — the screen in screenCam (unchanged), the
+      // region's own DIP size in region mode (cropped from the screen, not
+      // the full display), the camera's own resolution in camOnly (there's
+      // no screen to size against), and a small fixed placeholder canvas in
+      // audioOnly (nothing is drawn but a static card — MediaRecorder still
+      // needs SOME video track to produce a valid container, and that's
+      // what keeps the rest of the app's pipeline — finalize, transcribe,
+      // EDL, production — working unmodified on an audio-only take).
       let sw, sh;
       if (captureMode === 'camOnly') {
         const st = camStream.getVideoTracks()[0].getSettings();
         sw = st.width || 1280; sh = st.height || 720;
       } else if (captureMode === 'audioOnly') {
         sw = 640; sh = 360;
+      } else if (captureMode === 'region' && region) {
+        const st = screenStream.getVideoTracks()[0].getSettings();
+        screenCapturePx = { width: st.width || 1920, height: st.height || 1080 };
+        sw = region.width; sh = region.height;
       } else {
         const st = screenStream.getVideoTracks()[0].getSettings();
         sw = st.width || 1920; sh = st.height || 1080;

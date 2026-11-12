@@ -469,19 +469,45 @@
       seg.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b.dataset.v === v));
     };
   }
-  // Task #62: the source picker only makes sense in screenCam mode — cam-
-  // only and audio-only capture no desktop source at all.
+  // Task #62/#77: the source picker only makes sense in screenCam mode —
+  // cam-only and audio-only capture no desktop source at all, and region
+  // has its own picker (a drag-to-select overlay, not a thumbnail grid).
   const renderCaptureModeSeg = bindSeg('captureModeSeg', () => settings.recording.captureMode || 'screenCam', (v) => save({ recording: { captureMode: v } }));
   function renderCaptureModeVisibility() {
     const mode = (settings.recording.captureMode) || 'screenCam';
     $('sourceCard').hidden = mode !== 'screenCam';
+    $('regionCard').hidden = mode !== 'region';
+    if (mode === 'region') {
+      const r = settings.recording.region;
+      $('regionName').textContent = r ? `${r.width} × ${r.height}` : 'No region selected';
+      $('regionDetail').textContent = r
+        ? `On ${settings.source.name || 'a screen'} — click "Select region" to change it.`
+        : 'Click "Select region" and drag on your screen.';
+    }
     const hints = {
       camOnly: 'Full-frame camera, no screen — the camera is required for this mode.',
       audioOnly: 'Microphone only — no camera or screen is captured. Needs a mic.',
+      region: 'A cropped rect of a screen — no camera bubble is composited in this mode.',
     };
     $('captureModeHint').hidden = !hints[mode];
     $('captureModeHint').textContent = hints[mode] || '';
   }
+  $('btnPickRegion').addEventListener('click', async () => {
+    $('btnPickRegion').disabled = true;
+    $('regionDetail').textContent = 'Drag on your screen to select a region… (Esc to cancel)';
+    try {
+      // main.js's region:pick handler calls settings.set() before this
+      // promise resolves, which broadcasts settings:changed to this window
+      // and re-renders on success on its own — this render() is for the
+      // failure path (cancelled, no match), restoring the hint text.
+      await window.api.invoke('region:pick');
+      render();
+    } catch (err) {
+      $('regionDetail').textContent = 'Region picker failed: ' + err.message;
+    } finally {
+      $('btnPickRegion').disabled = false;
+    }
+  });
   const renderSegs = [
     renderCaptureModeSeg,
     renderCaptureModeVisibility,

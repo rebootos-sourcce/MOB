@@ -40,11 +40,31 @@ function install(api) {
   const onLoaded = async () => {
     if (++loaded < Object.keys(wins).length) return;
     log('all windows loaded');
+    const captureMode = process.env.MOB_SMOKE_CAPTURE_MODE || 'screenCam';
+    // Task #77: a fixed, small region near the display's origin — safe
+    // regardless of the Xvfb virtual display's actual resolution, and lets
+    // resolveSource()'s existing "no source configured yet -> pick the
+    // primary display" fallback pick the screen, same as every other mode
+    // here — no need to replicate listSources()' display-matching logic
+    // just for this smoke path.
     settings.set({
-      recording: { saveDir: outDir, fps: Number(process.env.MOB_SMOKE_FPS || 30),
-        maxHeight: Number(process.env.MOB_SMOKE_H || 720), countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: process.env.MOB_SMOKE_FORMAT || 'mp4', codec: process.env.MOB_SMOKE_CODEC || 'h264', quality: 'balanced', askWhereToSave: false,
-        // Task #62: lets this same smoke harness exercise camOnly/audioOnly.
-        captureMode: process.env.MOB_SMOKE_CAPTURE_MODE || 'screenCam' },
+      recording: Object.assign(
+        { saveDir: outDir, fps: Number(process.env.MOB_SMOKE_FPS || 30),
+          maxHeight: Number(process.env.MOB_SMOKE_H || 720), countdown: Number(process.env.MOB_SMOKE_COUNTDOWN || 0), format: process.env.MOB_SMOKE_FORMAT || 'mp4', codec: process.env.MOB_SMOKE_CODEC || 'h264', quality: 'balanced', askWhereToSave: false,
+          // Task #62/#77: lets this same smoke harness exercise camOnly/
+          // audioOnly/region.
+          captureMode },
+        // A fixed, small region near the display's origin — safe regardless
+        // of the Xvfb virtual display's actual resolution, and lets
+        // resolveSource()'s existing "no source configured yet -> pick the
+        // primary display" fallback pick the screen, same as every other
+        // mode here — no need to replicate listSources()' display-matching
+        // logic just for this smoke path. Only included in the patch when
+        // actually testing region mode — settings.set()'s merge writes
+        // whatever key is present, undefined included, so an omitted key is
+        // not the same as an explicit `region: undefined`.
+        captureMode === 'region' ? { region: { x: 20, y: 20, width: 320, height: 240 } } : {}
+      ),
       bubble: { visible: true, border: true, shape: process.env.MOB_SMOKE_SHAPE || 'circle' }
     });
     setTimeout(() => { log('starting recording'); startRecording(); }, 1500);

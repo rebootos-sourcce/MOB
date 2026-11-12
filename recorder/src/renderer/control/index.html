@@ -139,13 +139,15 @@
       <!-- ── 3 · What to record ─────────────────────────────── -->
       <section class="card">
         <div class="card-head"><h2><span class="step">3</span> What to record</h2></div>
-        <!-- Task #62: screen + camera (default), camera only (no screen),
-             or audio only (podcast/voiceover — no video source at all). -->
+        <!-- Task #62/#77: screen + camera (default), camera only (no
+             screen), audio only (podcast/voiceover — no video source at
+             all), or a cropped region of a screen. -->
         <div class="field"><span>Mode</span>
           <div class="seg" id="captureModeSeg">
             <button data-v="screenCam">Screen + Camera</button>
             <button data-v="camOnly">Camera only</button>
             <button data-v="audioOnly">Audio only</button>
+            <button data-v="region">Region</button>
           </div>
         </div>
         <div class="source-card" id="sourceCard">
@@ -155,6 +157,13 @@
             <div class="hint" id="sourceKind">Full screen</div>
           </div>
           <button id="btnChangeSource" class="ghost">Change</button>
+        </div>
+        <div class="source-card" id="regionCard" hidden>
+          <div class="source-meta">
+            <div id="regionName">No region selected</div>
+            <div class="hint" id="regionDetail">Click "Select region" and drag on your screen.</div>
+          </div>
+          <button id="btnPickRegion" class="ghost">Select region</button>
         </div>
         <div class="hint" id="captureModeHint" hidden></div>
       </section>

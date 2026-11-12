@@ -101,6 +101,49 @@ function createBubbleWindow(settings) {
   return win;
 }
 
+/**
+ * Task #77: region capture. Spans the union of every connected display (not
+ * just the primary one) so a drag can start on any monitor, transparent and
+ * always-on-top so it sits over whatever the user is looking at, like a
+ * native OS region-capture crosshair. The window's own bounds become the
+ * origin region-picker.js's mouse coordinates are relative to — main.js's
+ * region:pick handler adds that offset back to get absolute DIP coordinates
+ * before matching them against a specific display.
+ */
+function regionPickerBounds() {
+  const displays = screen.getAllDisplays();
+  const minX = Math.min(...displays.map(d => d.bounds.x));
+  const minY = Math.min(...displays.map(d => d.bounds.y));
+  const maxX = Math.max(...displays.map(d => d.bounds.x + d.bounds.width));
+  const maxY = Math.max(...displays.map(d => d.bounds.y + d.bounds.height));
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+}
+
+function createRegionPickerWindow() {
+  const bounds = regionPickerBounds();
+  const win = new BrowserWindow({
+    ...bounds,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    movable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    skipTaskbar: true,
+    hasShadow: false,
+    alwaysOnTop: true,
+    focusable: true,
+    title: 'Select region',
+    webPreferences: { preload: PRELOAD, contextIsolation: true, nodeIntegration: false }
+  });
+  win.setAlwaysOnTop(true, 'screen-saver');
+  win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  win.setMenuBarVisibility(false);
+  win.loadFile(R('region-picker', 'index.html'));
+  return win;
+}
+
 function createRecorderWindow() {
   const win = new BrowserWindow({
     width: 640,
@@ -112,4 +155,4 @@ function createRecorderWindow() {
   return win;
 }
 
-module.exports = { createControlWindow, createBubbleWindow, createRecorderWindow, bubbleBoundsFor, clampToDisplays, CONTROL_SIZE, COMPACT_SIZE };
+module.exports = { createControlWindow, createBubbleWindow, createRecorderWindow, createRegionPickerWindow, regionPickerBounds, bubbleBoundsFor, clampToDisplays, CONTROL_SIZE, COMPACT_SIZE };
