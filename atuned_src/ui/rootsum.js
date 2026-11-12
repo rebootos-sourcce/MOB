@@ -125,7 +125,7 @@ function renderRootSum(){
      the route. The sentences on how the four systems meet described the
      panel, with no birth data and again with it, and are gone from both. */
   h+='<p class="rs-lead">No birth data yet.</p>'
-   +'<button class="btn rs-go" type="button">Open Energetics</button>';}
+   +'<button class="btn rs-go" type="button">Avatar</button>';}
  if(R.shown.length){
   /* WHERE THEY MEET, not where they agree, because most meetings are light
      and a heading that promised agreement over three light overlaps would be

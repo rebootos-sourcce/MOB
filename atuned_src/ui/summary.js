@@ -895,7 +895,7 @@ function sumBorn(B){
  var sp=B.sp, R=B.R, rows='', more=[];
  if(!sp)return sgStage(1,'Born',
   '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
-  +'<button type="button" class="btn s-oact" data-sout="iq">Open Energetics</button>');
+  +'<button type="button" class="btn s-oact" data-sout="iq">Avatar</button>');
  /* ROUND PO. The stage says what a birth reading is before it reads one, and
     the root names the sign it came from and the element it came through. The
     old line, "Earth, fixed. Builds and holds.", described the root with two

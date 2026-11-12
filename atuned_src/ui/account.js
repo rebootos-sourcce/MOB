@@ -174,7 +174,7 @@ function accAccount(){
  h+=accGroup('Identity',
    accRow('Name',nm||'not entered')
    +accRow('Born',born||'not entered')
-   +accAct('Change it','acgoiq',{btn:'Open Energetics'}));
+   +accAct('Change it','acgoiq',{btn:'Avatar'}));
  /* "There is only ever one editor for a field" was the engineering rule
     printed under the button that already says where to change it. */
  /* REPLAYABLE, AND IT LIVES IN THE PROFILE. Ruled: "the tutorial lives in the

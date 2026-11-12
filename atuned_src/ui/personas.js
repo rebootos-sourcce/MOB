@@ -69,7 +69,7 @@ function renderSpirit(){
      on the page, so it lands on the sealed card and its edit control. */
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
    +'rising, the year animal, life path and the gene key.</div>'
-   +'<button class="btn" type="button" id="spgo">Open Energetics</button>'
+   +'<button class="btn" type="button" id="spgo">Avatar</button>'
    /* a name is not a birth date, so the name's own numbers still read */
    +spNumRows(p.nm,false);
   spNumWire(el);

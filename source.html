@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v43 26809828 2026-11-12 12:06"><head><meta charset="utf-8">
+<html lang="en" data-build="v44 0929fa9c 2026-11-12 12:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -61761,7 +61761,7 @@ function sumBorn(B){
  var sp=B.sp, R=B.R, rows='', more=[];
  if(!sp)return sgStage(1,'Born',
   '<p class="sg-note">No birth data on file. Date, time and place would put it in.</p>'
-  +'<button type="button" class="btn s-oact" data-sout="iq">Open Energetics</button>');
+  +'<button type="button" class="btn s-oact" data-sout="iq">Avatar</button>');
  /* ROUND PO. The stage says what a birth reading is before it reads one, and
     the root names the sign it came from and the element it came through. The
     old line, "Earth, fixed. Builds and holds.", described the root with two
@@ -85602,7 +85602,7 @@ function accAccount(){
  h+=accGroup('Identity',
    accRow('Name',nm||'not entered')
    +accRow('Born',born||'not entered')
-   +accAct('Change it','acgoiq',{btn:'Open Energetics'}));
+   +accAct('Change it','acgoiq',{btn:'Avatar'}));
  /* "There is only ever one editor for a field" was the engineering rule
     printed under the button that already says where to change it. */
  /* REPLAYABLE, AND IT LIVES IN THE PROFILE. Ruled: "the tutorial lives in the
@@ -88277,7 +88277,7 @@ function renderSpirit(){
      on the page, so it lands on the sealed card and its edit control. */
   el.innerHTML='<div class="sp-none">No birth data. Date, time and place unlock sun, moon, '
    +'rising, the year animal, life path and the gene key.</div>'
-   +'<button class="btn" type="button" id="spgo">Open Energetics</button>'
+   +'<button class="btn" type="button" id="spgo">Avatar</button>'
    /* a name is not a birth date, so the name's own numbers still read */
    +spNumRows(p.nm,false);
   spNumWire(el);
@@ -89514,7 +89514,7 @@ function renderRootSum(){
      the route. The sentences on how the four systems meet described the
      panel, with no birth data and again with it, and are gone from both. */
   h+='<p class="rs-lead">No birth data yet.</p>'
-   +'<button class="btn rs-go" type="button">Open Energetics</button>';}
+   +'<button class="btn rs-go" type="button">Avatar</button>';}
  if(R.shown.length){
   /* WHERE THEY MEET, not where they agree, because most meetings are light
      and a heading that promised agreement over three light overlaps would be
@@ -94903,5 +94903,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006335596"></div>
+<div id="eof" hidden data-len="006335560"></div>
 </body></html>
