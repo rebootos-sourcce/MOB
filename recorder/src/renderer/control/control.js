@@ -968,20 +968,42 @@
 
   // The waveform already implements colored region overlays — nothing ever
   // called setRegions(). This is what the S6 design calls for directly:
-  // red for detected fillers, grey for detected silences, over the waveform.
-  async function refreshWaveformRegions(transcriptId) {
+  // red for detected fillers, grey for detected silences, over the
+  // waveform. _detectedRegions and the manual trim selection (blue, see
+  // btnMarkIn/btnMarkOut below) are tracked separately and merged in
+  // renderAllRegions() since setRegions() replaces the whole set each call.
+  let _detectedRegions = [];
+  let _trimInMs = null, _trimOutMs = null;
+
+  function renderAllRegions() {
     if (!_waveform) return;
-    if (!transcriptId) { _waveform.setRegions([]); return; }
+    const regions = _detectedRegions.slice();
+    if (_trimInMs != null && _trimOutMs != null && _trimOutMs > _trimInMs) {
+      regions.push({ startMs: _trimInMs, endMs: _trimOutMs, color: 'rgba(59,130,246,0.25)' });
+    }
+    _waveform.setRegions(regions);
+  }
+
+  async function refreshWaveformRegions(transcriptId) {
+    if (!transcriptId) { _detectedRegions = []; renderAllRegions(); return; }
     try {
       const [fillers, silences] = await Promise.all([
         window.mob.db.query('words:fillers', [transcriptId]),
         window.mob.db.query('segments:silences', [transcriptId]),
       ]);
-      _waveform.setRegions([
+      _detectedRegions = [
         ...fillers.map(f => ({ startMs: f.start_ms, endMs: f.end_ms, color: 'rgba(239,68,68,0.35)' })),
         ...silences.map(s => ({ startMs: s.start_ms, endMs: s.end_ms, color: 'rgba(148,163,184,0.35)' })),
-      ]);
-    } catch (_) { _waveform.setRegions([]); }
+      ];
+    } catch (_) { _detectedRegions = []; }
+    renderAllRegions();
+  }
+
+  function updateTrimUI() {
+    $('trimInLabel').textContent = 'In: ' + fmtMs(_trimInMs || 0);
+    $('trimOutLabel').textContent = _trimOutMs != null ? 'Out: ' + fmtMs(_trimOutMs) : 'Out: —';
+    $('btnTrim').hidden = !(_trimInMs != null && _trimOutMs != null && _trimOutMs > _trimInMs);
+    renderAllRegions();
   }
 
   async function loadEditTab() {
@@ -994,7 +1016,8 @@
       $('editTagBox').hidden = true;
       $('editExportRow') && ($('editExportRow').hidden = true);
       refreshEditCutSummary(id);
-      if (_waveform) _waveform.setRegions([]); // clear stale regions from a previous selection
+      // Clear stale regions/trim-selection from whatever was selected before.
+      _detectedRegions = []; _trimInMs = null; _trimOutMs = null; updateTrimUI();
       if (row && row.path) loadWaveform(row.path);
       // The only video element in the whole app was the live camera preview
       // — reviewing a take meant leaving the app entirely via shell:openPath.
@@ -1137,6 +1160,48 @@
       } finally {
         unsub();
         $('btnRenderEdit').disabled = false;
+      }
+    };
+
+    // Manual trim: mark an in/out point from the player's current position,
+    // then turn "everything outside the selection" into ordinary EDL cuts —
+    // reusing the same applyCuts + render pipeline the auto-detected cuts
+    // use, rather than building a second cut mechanism. There was previously
+    // no way to manually trim at all, e.g. to cut the first few seconds off
+    // a take, only the two auto-detect buttons above.
+    $('btnMarkIn').onclick = () => {
+      const video = $('editPreviewVideo');
+      if (!video || video.hidden) return;
+      _trimInMs = Math.round(video.currentTime * 1000);
+      if (_trimOutMs != null && _trimOutMs <= _trimInMs) _trimOutMs = null;
+      updateTrimUI();
+    };
+    $('btnMarkOut').onclick = () => {
+      const video = $('editPreviewVideo');
+      if (!video || video.hidden) return;
+      _trimOutMs = Math.round(video.currentTime * 1000);
+      if (_trimInMs != null && _trimOutMs <= _trimInMs) _trimInMs = null;
+      updateTrimUI();
+    };
+    $('btnTrim').onclick = async () => {
+      if (!selectedRecordingId || _trimInMs == null || _trimOutMs == null) return;
+      try {
+        const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+        if (!rec) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Recording no longer exists.'; return; }
+        const totalMs = rec.duration_ms;
+        const cuts = [];
+        if (_trimInMs > 0) cuts.push({ start_ms: 0, end_ms: _trimInMs });
+        if (_trimOutMs < totalMs) cuts.push({ start_ms: _trimOutMs, end_ms: totalMs });
+        if (!cuts.length) {
+          $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Selection is the whole recording — nothing to trim.';
+          return;
+        }
+        await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: totalMs, cuts });
+        refreshEditCutSummary(selectedRecordingId);
+        $('editProgress').hidden = false;
+        $('editProgressLabel').textContent = 'Trim applied. Click "Render edited video" to save it to a file.';
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
       }
     };
   }

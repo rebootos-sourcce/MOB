@@ -233,6 +233,13 @@
             <button id="btnRemoveSilences" class="ghost">Remove silences</button>
             <button id="btnTranscribe" class="primary">Transcribe</button>
           </div>
+          <div class="row" style="margin-top:6px;gap:6px;align-items:center;flex-wrap:wrap;">
+            <button id="btnMarkIn" class="ghost mini">Set in point</button>
+            <span id="trimInLabel" class="hint">In: 0:00</span>
+            <button id="btnMarkOut" class="ghost mini">Set out point</button>
+            <span id="trimOutLabel" class="hint">Out: —</span>
+            <button id="btnTrim" class="ghost mini" hidden>Trim to selection</button>
+          </div>
           <div class="row" style="margin-top:6px;gap:8px;align-items:center;">
             <span id="editCutSummary" class="hint"></span>
             <button id="btnRenderEdit" class="primary mini" hidden>Render edited video</button>
