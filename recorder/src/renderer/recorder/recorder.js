@@ -79,6 +79,13 @@
   let rawVideoCodec = 'unknown';
   let warnings = [];         // device problems worth telling the user about
   let fps = 30;
+  // #58, part 2: the control panel's meter used to open its OWN getUserMedia
+  // call, reflecting a different stream with different processing than the
+  // one actually encoded — doubly so once task #42 turned off browser AGC/
+  // noise suppression here, which the control panel's separate stream never
+  // had turned off. This analyser runs on the real micStream and relays a
+  // level reading over IPC instead.
+  let micMeterCtx = null, micMeterAnalyser = null, micMeterData = null, micMeterTimer = null;
 
   function elapsed() {
     if (!startedAt) return 0;
@@ -91,6 +98,7 @@
     if (timer) { clearInterval(timer); timer = null; }
     warnings = [];
     running = false;
+    stopMicMeter();
     // VideoFrames hold GPU/decoder memory until closed; leaking them across
     // takes is how a long session runs the machine out of video memory.
     while (readers.length) { try { readers.pop().cancel(); } catch (_) { /* already gone */ } }
@@ -180,6 +188,7 @@
       if (micSettings.sampleRate && micSettings.sampleRate < 44100) {
         warnings.push(`Mic running at ${micSettings.sampleRate}Hz (likely a Bluetooth headset) — audio quality may suffer.`);
       }
+      startMicMeter();
     } catch (err) {
       log('mic unavailable:', err.message, '— recording without audio');
       micStream = null;
@@ -293,6 +302,42 @@
     perfEnd(true);
   }
 
+  /** Runs an analyser on the real micStream and relays its level at 15Hz —
+   * see the micMeterCtx declaration above for why this exists. */
+  function startMicMeter() {
+    if (!micStream || !micStream.getAudioTracks().length) return;
+    try {
+      micMeterCtx = new AudioContext();
+      // This window is hidden and never gets a user gesture, which is
+      // exactly the condition autoplay policies suspend an AudioContext
+      // for — left unresumed, the analyser would silently read all zeros
+      // forever instead of throwing, which is a much worse failure mode
+      // than just not building the meter at all.
+      if (micMeterCtx.state === 'suspended') micMeterCtx.resume();
+      micMeterAnalyser = micMeterCtx.createAnalyser();
+      micMeterAnalyser.fftSize = 1024;
+      micMeterAnalyser.smoothingTimeConstant = 0.55;
+      micMeterCtx.createMediaStreamSource(micStream).connect(micMeterAnalyser);
+      micMeterData = new Float32Array(micMeterAnalyser.fftSize);
+    } catch (err) {
+      log('mic meter unavailable:', err.message);
+      return;
+    }
+    micMeterTimer = setInterval(() => {
+      micMeterAnalyser.getFloatTimeDomainData(micMeterData);
+      let sum = 0;
+      for (let i = 0; i < micMeterData.length; i++) sum += micMeterData[i] * micMeterData[i];
+      const rms = Math.sqrt(sum / micMeterData.length);
+      const db = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
+      window.api.send('recorder:micLevel', { db });
+    }, 1000 / 15);
+  }
+  function stopMicMeter() {
+    if (micMeterTimer) { clearInterval(micMeterTimer); micMeterTimer = null; }
+    if (micMeterCtx) { try { micMeterCtx.close(); } catch (_) {} micMeterCtx = null; }
+    micMeterAnalyser = null; micMeterData = null;
+  }
+
   /**
    * Pulls frames straight off a MediaStreamTrack.
    *
@@ -329,6 +374,14 @@
             frames[slot] = null;
             if (prev) prev.close();
             dirty = true;
+            // #58, part 3: this used to only clear the frame — the warning
+            // array was snapshotted into recorder:state at arm and at stop,
+            // so a device lost mid-take said nothing until the recording
+            // already ended. Push it now and send it immediately rather
+            // than waiting for the next state-transition message.
+            const label = slot === 'cam' ? 'Camera' : slot === 'screen' ? 'Screen/window' : slot;
+            warnings.push(`${label} disconnected during recording.`);
+            window.api.send('recorder:state', { warnings: warnings.slice() });
             break;
           }
           if (!running) { value.close(); break; }

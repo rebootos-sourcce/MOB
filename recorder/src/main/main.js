@@ -165,15 +165,32 @@ function recoverFromRecorderLoss(message) {
 let attachTestHooks = () => {};
 function setTestHookAttacher(fn) { attachTestHooks = fn; }
 
+// #58, part 1: a full disk crashes the main process mid-take (task #19) —
+// RawRecording already tracks this.bytes, and nothing ever told the user
+// how much had been written or that free space was running low until the
+// crash itself did. 500MB is generous for the few seconds it takes someone
+// to notice the warning and stop.
+const LOW_DISK_BYTES = 500 * 1024 * 1024;
+
 function publishState(extra) {
   const s = settings.get();
+  let bytes = null, freeBytes = null, lowDisk = false;
+  if (rec.raw) {
+    bytes = rec.raw.bytes;
+    try {
+      const st = require('fs').statfsSync(s.recording.saveDir);
+      freeBytes = st.bavail * st.bsize;
+      lowDisk = freeBytes < LOW_DISK_BYTES;
+    } catch (_) { /* statfs unsupported for this path/platform — skip rather than crash the state publish */ }
+  }
   const payload = Object.assign({
     state: rec.state,
     micEnabled: rec.micEnabled,
     elapsedMs: elapsedMs(),
     message: rec.message,
     warnings: rec.warnings,
-    bubbleVisible: s.bubble.visible
+    bubbleVisible: s.bubble.visible,
+    bytes, freeBytes, lowDisk,
   }, extra || {});
   sendControl('recording:state', payload);
   bus.emit('state', payload);
@@ -861,7 +878,14 @@ ipcMain.on('recorder:chunk', (_e, chunk) => {
   }
 });
 ipcMain.on('recorder:state', (_e, msg) => {
-  if (msg.warnings) rec.warnings = msg.warnings;
+  if (msg.warnings) {
+    rec.warnings = msg.warnings;
+    // #58, part 3: a warnings-only message (e.g. a device disconnecting
+    // mid-take) carries no `state` key, so none of the branches below would
+    // otherwise publish it — it would just sit until the next scheduled
+    // tick. Surface it immediately instead.
+    if (!msg.state) publishState();
+  }
   if (msg.state === 'armed' && rec.state === 'arming') {
     runCountdownAndGo();
     publishState({ canvas: msg.canvas });
@@ -882,6 +906,10 @@ ipcMain.on('recorder:state', (_e, msg) => {
   }
 });
 ipcMain.on('recorder:done', (_e, msg) => { if (msg.perf) bus.emit('perf', msg.perf); finalizeRecording(msg.durationMs, msg.rawVideoCodec); });
+// #58, part 2: relays the level analyser running on the real micStream (the
+// recorder window, hidden) to the control window's meter — plain
+// passthrough, no state kept here.
+ipcMain.on('recorder:micLevel', (_e, data) => { sendControl('recorder:micLevel', data); });
 
 // ---------------------------------------------------------------- lifecycle
 

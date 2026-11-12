@@ -26,6 +26,12 @@
     const h = Math.floor(s / 3600);
     return (h ? p(h) + ':' : '') + p(Math.floor((s % 3600) / 60)) + ':' + p(s % 60);
   };
+  const fmtBytes = (n) => {
+    if (n == null) return '';
+    if (n < 1024 * 1024) return Math.round(n / 1024) + ' KB';
+    if (n < 1024 * 1024 * 1024) return (n / (1024 * 1024)).toFixed(1) + ' MB';
+    return (n / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+  };
 
   async function save(patch) { settings = await window.api.invoke('settings:set', patch); render(); }
 
@@ -278,16 +284,33 @@
     return !($('picker') && !$('picker').hidden);
   }
 
+  // #58, part 2: the meter used to always read its own separate getUserMedia
+  // stream, which never reflected what was actually being encoded (doubly
+  // so once task #42 turned off AGC/noise-suppression in the recorder but
+  // not in this preview-only stream). While a take is actually live, this
+  // relayed level — from an analyser on the real micStream, in the recorder
+  // window — takes over; the local preview analyser is still what runs the
+  // rest of the time (idle, picking a device, arming).
+  let remoteMicDb = null, remoteMicAt = 0;
+  window.api.on('recorder:micLevel', (data) => { remoteMicDb = data.db; remoteMicAt = Date.now(); });
+
   function drawMeter() {
     if (!meterShouldRun()) return;
-    let rms = 0;
-    if (analyser) {
-      analyser.getFloatTimeDomainData(meterData);
-      let sum = 0;
-      for (let i = 0; i < meterData.length; i++) sum += meterData[i] * meterData[i];
-      rms = Math.sqrt(sum / meterData.length);
+    const live = recState && ['arming', 'countdown', 'recording', 'paused'].includes(recState.state);
+    const useRemote = live && (Date.now() - remoteMicAt) < 1000;
+    let db;
+    if (useRemote) {
+      db = remoteMicDb;
+    } else {
+      let rms = 0;
+      if (analyser) {
+        analyser.getFloatTimeDomainData(meterData);
+        let sum = 0;
+        for (let i = 0; i < meterData.length; i++) sum += meterData[i] * meterData[i];
+        rms = Math.sqrt(sum / meterData.length);
+      }
+      db = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
     }
-    const db = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
     const level = Math.max(0, Math.min(1, (db + 60) / 60)); // -60 dB … 0 dB
     peakHold = Math.max(level, peakHold - 0.036);           // ~0.7/s at 20 Hz
     const muted = !settings || !settings.mic.enabled;
@@ -614,6 +637,10 @@
     $('timer').hidden = !live;
     $('timer').textContent = fmtTime(recState.elapsedMs || 0);
     $('cTimer').textContent = fmtTime(recState.elapsedMs || 0);
+    // #58: the user previously had no idea how big the file was getting or
+    // that a full disk was coming until it crashed the main process mid-take.
+    $('fileSize').hidden = !live || recState.bytes == null;
+    $('fileSize').textContent = recState.bytes != null ? fmtBytes(recState.bytes) + ' written' : '';
     $('recActions').hidden = !live;
     $('recHint').hidden = live || st === 'finalizing' || starting;
     $('finalizeBox').hidden = st !== 'finalizing';
@@ -628,7 +655,15 @@
     $('message').textContent = recState.message || '';
     // Device problems used to be logged into a hidden window and never shown,
     // so a take could finish with no camera or no audio and nothing said so.
-    const warns = recState.warnings || [];
+    // The low-disk warning comes from the main process (main.js's
+    // publishState), not the recorder window, so it's merged in here rather
+    // than overwriting — recState.warnings gets wholesale-replaced every
+    // time the recorder sends its own update (main.js:ipcMain.on
+    // 'recorder:state'), which would otherwise wipe this out.
+    const warns = (recState.warnings || []).slice();
+    if (recState.lowDisk) {
+      warns.unshift(`Low disk space (${fmtBytes(recState.freeBytes)} free) — the recording may fail if it runs out.`);
+    }
     $('warnBanner').hidden = warns.length === 0;
     $('warnBanner').textContent = warns.join('\n');
 

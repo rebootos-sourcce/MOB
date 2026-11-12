@@ -11,7 +11,8 @@ const LISTEN = new Set([
   'transcription:progress',
   'edit:renderProgress',
   'voice:listening',
-  'sync:progress'
+  'sync:progress',
+  'recorder:micLevel'
 ]);
 
 contextBridge.exposeInMainWorld('api', {
