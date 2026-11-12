@@ -63,11 +63,36 @@ async function assemblePackage({ recordingId, clipId = null }) {
   // Generate metadata
   const fullText = transcript.full_text || '';
   const hashtags  = extractHashtags(fullText);
+  // Chapter boundaries still come from the word-density valley detector
+  // (detectChapters), not segments.energy directly: the build-plan's
+  // chapter rule (energy > 0.6 AND duration > 15s) assumes paragraph-sized
+  // segments, but this schema's segments are caption-line-sized (a few
+  // seconds each) — virtually none would ever pass a 15s duration gate.
   const chapters  = detectChapters(remappedWords, outputDurationMs);
 
-  // Title: use first sentence of transcript, truncated
+  // #51: title picks the highest-energy real speech segment (build-plan
+  // spec: energy > 0.5, 60 chars max) instead of just the transcript's
+  // first sentence — a caption-sized segment is exactly the right size for
+  // this, unlike the chapter rule above. Segment timestamps are remapped
+  // through the EDL first so a cut segment can't win the title.
+  const speechSegments = db.all(
+    'SELECT start_ms, text, energy FROM segments WHERE transcript_id = ? AND type = ? ORDER BY seq',
+    [transcript.id, 'speech']
+  );
+  const liveSegments = edlEntries.length
+    ? speechSegments
+        .map(s => {
+          const remappedStart = remapTimestamp(edlEntries, s.start_ms);
+          return remappedStart === null ? null : { ...s, start_ms: remappedStart };
+        })
+        .filter(Boolean)
+    : speechSegments;
+  const bestSegment = liveSegments
+    .filter(s => s.energy > 0.5 && s.text && s.text.trim())
+    .sort((a, b) => b.energy - a.energy)[0];
+
   const firstSentence = (fullText.split(/[.!?]/)[0] || '').trim().slice(0, 80);
-  const title = firstSentence || 'Recording';
+  const title = (bestSegment ? bestSegment.text.trim().slice(0, 60) : '') || firstSentence || 'Recording';
 
   // Title variants (3 options)
   const titleVariants = [

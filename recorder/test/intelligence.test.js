@@ -10,7 +10,7 @@ const { detectFillers } = require('../src/main/intelligence/filler');
 const { detectSilences } = require('../src/main/intelligence/silence');
 const { formCaptions } = require('../src/main/intelligence/captions');
 const { extractHashtags } = require('../src/main/intelligence/hashtags');
-const { scoreWindow, detectChapters } = require('../src/main/intelligence/energy');
+const { scoreWindow, detectChapters, scoreSegmentEnergy } = require('../src/main/intelligence/energy');
 
 test('detectFillers: only flags real filler sounds, not ordinary words', () => {
   const words = [
@@ -144,4 +144,32 @@ test('detectChapters: monotone word density produces no spurious boundaries', ()
   for (let i = 1; i < chapters.length; i++) {
     assert.ok(chapters[i].start_ms - chapters[i - 1].start_ms >= 60000);
   }
+});
+
+test('scoreSegmentEnergy: energy always lands in [0,1] — the S3 acceptance criterion', () => {
+  const cases = [
+    scoreSegmentEnergy('um', 0, 400),                              // near-empty, near-zero duration
+    scoreSegmentEnergy('the quick brown fox jumps over the lazy dog, repeatedly and with great enthusiasm', 0, 1500),
+    scoreSegmentEnergy('a a a a a a a a a a a a a a a a a a a a', 0, 20000), // slow, uniform word length
+    scoreSegmentEnergy('', 0, 1000),                                // empty text
+  ];
+  for (const { energy, wpm } of cases) {
+    assert.ok(energy >= 0 && energy <= 1, `energy ${energy} out of [0,1]`);
+    assert.ok(wpm >= 0, `wpm ${wpm} should never be negative`);
+  }
+});
+
+test('scoreSegmentEnergy: faster speech scores higher than slower speech, all else equal', () => {
+  const text = 'this is a reasonably normal length sentence for a caption segment';
+  const fast = scoreSegmentEnergy(text, 0, 2000);  // ~11 words / 2s = 330 wpm
+  const slow = scoreSegmentEnergy(text, 0, 10000); // ~11 words / 10s = 66 wpm
+  assert.ok(fast.wpm > slow.wpm);
+  assert.ok(fast.energy >= slow.energy);
+});
+
+test('scoreSegmentEnergy: domain keyword hits raise the score over an identical segment without them', () => {
+  const text = 'we discussed the database and the api design today';
+  const withKeywords = scoreSegmentEnergy(text, 0, 4000, new Set(['database', 'api', 'design']));
+  const withoutKeywords = scoreSegmentEnergy(text, 0, 4000, new Set());
+  assert.ok(withKeywords.energy > withoutKeywords.energy);
 });

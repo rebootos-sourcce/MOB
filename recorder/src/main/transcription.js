@@ -11,6 +11,7 @@ const { detectSilences } = require('./intelligence/silence');
 const settings = require('./settings');
 const { formCaptions } = require('./intelligence/captions');
 const { extractHashtags } = require('./intelligence/hashtags');
+const { scoreSegmentEnergy } = require('./intelligence/energy');
 
 // Cache the pipeline so it isn't re-loaded on every transcription.
 // _whisperPipelinePromise caches the IN-FLIGHT load, not just the resolved
@@ -189,6 +190,19 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   const captions    = formCaptions(words);
   const hashtags    = extractHashtags(fullText);
 
+  // #51: per-segment energy/wpm (architecture.html formula — see energy.js
+  // for why, and why domainKeywords comes from this recording's own
+  // hashtags rather than a fixed vocabulary nobody configured).
+  const domainKeywords = new Set(hashtags.map(h => h.tag.replace(/^#/, '')));
+  let totalSpeechWords = 0, totalSpeechMs = 0;
+  const captionScores = captions.map(cap => {
+    const scored = scoreSegmentEnergy(cap.text, cap.start_ms, cap.end_ms, domainKeywords);
+    totalSpeechWords += (cap.text || '').trim().split(/\s+/).filter(Boolean).length;
+    totalSpeechMs += Math.max(cap.end_ms - cap.start_ms, 0);
+    return scored;
+  });
+  const wpmAvg = totalSpeechMs > 0 ? Math.round(totalSpeechWords / (totalSpeechMs / 60000)) : 0;
+
   onProgress({ stage: 'analyzing', pct: 80 });
 
   // Fix #14: build a Set of filler word indices instead of O(N×M) .some() per word
@@ -223,9 +237,9 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
     db.run('DELETE FROM metadata_tags WHERE recording_id = ?', [recordingId]);
 
     db.run(
-      `INSERT INTO transcripts (id, recording_id, full_text, word_count, language, created_at)
-       VALUES (?, ?, ?, ?, 'en', datetime('now'))`,
-      [transcriptId, recordingId, fullText.trim(), words.length]
+      `INSERT INTO transcripts (id, recording_id, full_text, word_count, wpm_avg, language, created_at)
+       VALUES (?, ?, ?, ?, ?, 'en', datetime('now'))`,
+      [transcriptId, recordingId, fullText.trim(), words.length, wpmAvg]
     );
 
     for (const w of words) {
@@ -254,10 +268,11 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
     // Caption segments (speech)
     for (let i = 0; i < captions.length; i++) {
       const cap = captions[i];
+      const { wpm, energy } = captionScores[i];
       db.run(
-        `INSERT INTO segments (transcript_id, seq, start_ms, end_ms, text, type)
-         VALUES (?, ?, ?, ?, ?, 'speech')`,
-        [transcriptId, i, cap.start_ms, cap.end_ms, cap.text]
+        `INSERT INTO segments (transcript_id, seq, start_ms, end_ms, text, type, wpm, energy)
+         VALUES (?, ?, ?, ?, ?, 'speech', ?, ?)`,
+        [transcriptId, i, cap.start_ms, cap.end_ms, cap.text, wpm, energy]
       );
     }
 
