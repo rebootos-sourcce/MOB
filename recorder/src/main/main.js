@@ -91,7 +91,11 @@ const rec = {
   pausedAt: 0,
   micEnabled: true,
   message: '',
-  warnings: []
+  warnings: [],
+  // Task #56: markers dropped live (chapter / retake) — collected here
+  // because no recordings row exists yet to attach them to; persisted to
+  // the markers table once finalize gives this take a real recording_id.
+  markers: []
 };
 
 // ---------------------------------------------------------------- helpers
@@ -156,6 +160,7 @@ function recoverFromRecorderLoss(message) {
   rec.state = 'idle';
   rec.startedAt = 0;
   rec.message = message;
+  rec.markers = []; // the take is lost entirely — nothing to attach these to
   setCompact(false);
   publishState();
 }
@@ -340,6 +345,7 @@ async function startRecording() {
   rec.state = 'arming';
   rec.message = '';
   rec.warnings = [];
+  rec.markers = [];
   publishState();
 
   try {
@@ -498,6 +504,27 @@ function persistRecordingRow(filePath, durationMs, format, codec) {
   }
 }
 
+// Task #56: rec.markers only exists in main-process memory until a take is
+// finalized and gets a real recording_id (see rec.markers' own comment).
+// Called once right after persistRecordingRow() on every finalize path —
+// success and the H.264 retry — then the in-memory buffer is drained so a
+// second finalize (there isn't one today, but nothing enforces that) can't
+// double-insert the same markers against a different recording_id.
+function persistMarkers(recordingId) {
+  if (!rec.markers.length) return;
+  for (const m of rec.markers) {
+    try {
+      db.run(
+        `INSERT INTO markers (recording_id, type, at_ms, created_at) VALUES (?, ?, ?, datetime('now'))`,
+        [recordingId, m.type, m.atMs]
+      );
+    } catch (e) {
+      console.error('[mob] Failed to persist marker:', e.message);
+    }
+  }
+  rec.markers = [];
+}
+
 /**
  * The recordings.thumb column and the UI's thumbnail slot both existed with
  * nothing ever writing it. Runs after finalize (fire-and-forget — thumbnail
@@ -556,6 +583,7 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     setCompact(false);
     publishState();
     const { id: newRecId, warning: dbWarning } = persistRecordingRow(result.output, durationMs, format, s.recording.codec);
+    persistMarkers(newRecId);
     // Durability: this INSERT is the only record a finished take exists.
     // Force it to disk now rather than leaving it to the 1s debounce — a
     // crash or forced quit inside that window otherwise leaves a complete
@@ -584,6 +612,7 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
         setCompact(false);
         publishState({ message: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.` });
         const { id: retryRecId, warning: dbWarning } = persistRecordingRow(result.output, durationMs, format, 'h264');
+        persistMarkers(retryRecId);
         await db.flush();
         sendControl('finalize:done', { path: result.output, durationMs, format, note: `Encoder "${s.recording.codec}" failed, saved with H.264 instead.`, dbWarning });
         bus.emit('finalized', { path: result.output, durationMs });
@@ -597,6 +626,7 @@ async function finalizeRecording(durationMs, rawVideoCodec) {
     rec.startedAt = 0;
     setCompact(false);
     rec.message = 'Saving failed: ' + err.message + `\nRaw recording kept at: ${raw.path}`;
+    rec.markers = []; // finalize failed with no recording_id to attach them to
     publishState();
     sendControl('finalize:error', { message: err.message, rawPath: raw.path });
     bus.emit('finalize-error', err);
@@ -709,6 +739,26 @@ ipcMain.handle('shapes:list', () => ({ order: Shapes.ORDER, labels: Object.fromE
 ipcMain.handle('recording:start', () => startRecording());
 ipcMain.handle('recording:stop', () => stopRecording());
 ipcMain.handle('recording:togglePause', () => togglePause());
+// Task #56: "chapter here" / "scratch that" markers. Live, during
+// recording, so timestamped against elapsedMs() — no recordings row exists
+// yet to attach them to (see rec.markers' own comment above); collected
+// here and persisted once finalize gives this take a real recording_id.
+// Shared by the IPC handler (compact-bar buttons) and the global hotkeys below.
+function dropMarker(type) {
+  if (rec.state !== 'recording' && rec.state !== 'paused') return { ok: false, reason: 'not recording' };
+  if (type !== 'chapter' && type !== 'retake') return { ok: false, reason: 'unknown marker type: ' + type };
+  const atMs = elapsedMs();
+  rec.markers.push({ type, atMs });
+  // One-shot confirmation via publishState's extra-payload override, not a
+  // rec.message assignment — rec.message is the STICKY status (device loss,
+  // low disk, failure reasons) that's meant to still read correctly after
+  // the take ends. Writing straight to it left "Retake marked at 00:00:03"
+  // showing as the idle-state message once the take finished, well past
+  // when it meant anything.
+  publishState({ message: (type === 'chapter' ? 'Chapter marker dropped at ' : 'Retake marked at ') + toSrtTime(atMs).slice(0, 8) });
+  return { ok: true, atMs };
+}
+ipcMain.handle('recording:dropMarker', (_e, { type }) => dropMarker(type));
 ipcMain.handle('mic:set', (_e, on) => setMic(on));
 ipcMain.handle('bubble:toggle', () => toggleBubble());
 ipcMain.handle('bubble:contextMenu', () => showBubbleMenu());
@@ -906,6 +956,7 @@ ipcMain.on('recorder:state', (_e, msg) => {
     rec.startedAt = 0;
     rec.message = msg.message || 'Recording failed.';
     if (rec.raw) { rec.raw.end(); rec.raw = null; }
+    rec.markers = []; // the take is lost entirely — nothing to attach these to
     setCompact(false);
     publishState();
   }
@@ -934,12 +985,19 @@ const HOTKEY_ACTIONS = {
   togglePause: () => togglePause(),
   toggleMic: () => setMic(!rec.micEnabled),
   toggleBubble: () => toggleBubble(),
+  // Task #56: unbound by default (no DEFAULTS entry in settings.js) — these
+  // only do anything once the user assigns an accelerator in the Hotkeys
+  // card, same as any other optional binding.
+  dropChapterMarker: () => dropMarker('chapter'),
+  dropRetakeMarker: () => dropMarker('retake'),
 };
 const HOTKEY_LABELS = {
   toggleRecording: 'Start / stop recording',
   togglePause: 'Pause / resume',
   toggleMic: 'Mute / unmute mic',
   toggleBubble: 'Hide / show bubble',
+  dropChapterMarker: 'Drop chapter marker',
+  dropRetakeMarker: 'Mark retake ("scratch that")',
 };
 
 function registerShortcuts() {
@@ -1163,7 +1221,7 @@ app.whenReady().then(async () => {
 
   if (process.env.MOB_SMOKE) {
     require('./smoke').install({
-      bus, settings, startRecording, stopRecording, setTestHookAttacher,
+      bus, settings, startRecording, stopRecording, setTestHookAttacher, dropMarker,
       getWindows: () => ({ control, bubble })
     });
   }

@@ -613,6 +613,10 @@
   $('cStop').addEventListener('click', () => window.api.invoke('recording:stop'));
   $('btnPause').addEventListener('click', () => window.api.invoke('recording:togglePause'));
   $('cPause').addEventListener('click', () => window.api.invoke('recording:togglePause'));
+  // Task #56: live markers. dropMarker() in main.js sets recState.message to
+  // confirm the drop ("Chapter marker dropped at…") — no extra UI needed here.
+  $('cChapter').addEventListener('click', () => window.api.invoke('recording:dropMarker', { type: 'chapter' }));
+  $('cRetake').addEventListener('click', () => window.api.invoke('recording:dropMarker', { type: 'retake' }));
   $('btnMin').addEventListener('click', () => window.api.invoke('window:minimize'));
   $('btnClose').addEventListener('click', () => window.api.invoke('window:close'));
   $('btnDismissSaved').addEventListener('click', () => { $('savedCard').hidden = true; });
@@ -1537,6 +1541,38 @@
         const cuts = segs.map(s => ({ start_ms: s.start_ms, end_ms: s.end_ms }));
         await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
         $('editProgress').hidden = false; $('editProgressLabel').textContent = `Applied ${cuts.length} silence cuts. Render below to save it to a file.`;
+        refreshEditCutSummary(selectedRecordingId);
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;
+      }
+    };
+
+    // Task #56: "Scratch that" — mob-recorder-tdd.html's own spec is "AI
+    // presents the section to cut with one-click confirm", not a silent
+    // automatic cut. markers:retakeCuts computes the suggested [start,end]
+    // for each retake marker (the speech right before it); this button is
+    // the one-click confirm, applying every suggestion it got at once —
+    // same one-shot semantics "Remove fillers"/"Remove silences" above
+    // already have (each call replaces the EDL's cut list, it doesn't merge
+    // with the others).
+    $('btnCutRetakes').onclick = async () => {
+      if (!selectedRecordingId) return;
+      try {
+        const rec = await window.mob.db.query('recordings:get', [selectedRecordingId]);
+        if (!rec) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Recording no longer exists.'; return; }
+        const rows = await window.mob.db.query('markers:retakeCuts', [selectedRecordingId]);
+        if (!rows.length) { $('editProgress').hidden = false; $('editProgressLabel').textContent = 'No retake markers were dropped during this take.'; return; }
+        const cuts = rows.map(r => r.suggestion).filter(Boolean);
+        if (!cuts.length) {
+          $('editProgress').hidden = false;
+          $('editProgressLabel').textContent = 'Nothing to cut — transcribe first, or every retake marker had nothing before it.';
+          return;
+        }
+        await window.api.invoke('edit:applyCuts', { recordingId: selectedRecordingId, totalDurationMs: rec.duration_ms, cuts });
+        const skipped = rows.length - cuts.length;
+        $('editProgress').hidden = false;
+        $('editProgressLabel').textContent = `Applied ${cuts.length} retake cut${cuts.length === 1 ? '' : 's'}.` +
+          (skipped ? ` (${skipped} skipped — nothing to cut before them.)` : '') + ' Render below to save it to a file.';
         refreshEditCutSummary(selectedRecordingId);
       } catch (err) {
         $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Error: ' + err.message;

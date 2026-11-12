@@ -14,6 +14,8 @@
     <button id="cPause" class="icon" title="Pause / resume (Ctrl+Shift+P)">⏸</button>
     <button id="cMic" class="icon" title="Mute / unmute (Ctrl+Shift+M)">🎙</button>
     <canvas id="cMeter" width="60" height="14"></canvas>
+    <button id="cChapter" class="icon" title="Drop chapter marker">🔖</button>
+    <button id="cRetake" class="icon" title='Mark retake ("scratch that")'>↺</button>
     <button id="cStop" class="stop" title="Stop (Ctrl+Shift+R)">■ Stop</button>
   </div>
 
@@ -203,6 +205,8 @@
           <div class="hk" data-hotkey="togglePause"><span class="hk-label">Pause / resume</span><button class="ghost mini hk-accel" data-key="togglePause"></button></div>
           <div class="hk" data-hotkey="toggleMic"><span class="hk-label">Mute / unmute mic</span><button class="ghost mini hk-accel" data-key="toggleMic"></button></div>
           <div class="hk" data-hotkey="toggleBubble"><span class="hk-label">Hide / show bubble</span><button class="ghost mini hk-accel" data-key="toggleBubble"></button></div>
+          <div class="hk" data-hotkey="dropChapterMarker"><span class="hk-label">Drop chapter marker</span><button class="ghost mini hk-accel" data-key="dropChapterMarker"></button></div>
+          <div class="hk" data-hotkey="dropRetakeMarker"><span class="hk-label">Mark retake ("scratch that")</span><button class="ghost mini hk-accel" data-key="dropRetakeMarker"></button></div>
           <div id="hotkeyWarning" class="cf-warning" hidden></div>
         </div>
       </details>
@@ -267,6 +271,7 @@
           <div class="edit-actions row">
             <button id="btnRemoveFillers" class="ghost">Remove fillers</button>
             <button id="btnRemoveSilences" class="ghost">Remove silences</button>
+            <button id="btnCutRetakes" class="ghost" title='Cut the take spoken right before each "scratch that" marker'>Cut retakes</button>
             <button id="btnStudioSound" class="ghost" title="Compress, normalize to -16 LUFS, and limit the audio track">Studio Sound</button>
             <button id="btnTranscribe" class="primary">Transcribe</button>
           </div>

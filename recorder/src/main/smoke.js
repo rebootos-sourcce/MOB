@@ -15,7 +15,7 @@ const path = require('path');
 const { app } = require('electron');
 
 function install(api) {
-  const { bus, settings, startRecording, stopRecording, getWindows, setTestHookAttacher } = api;
+  const { bus, settings, startRecording, stopRecording, getWindows, setTestHookAttacher, dropMarker } = api;
   const outDir = process.env.MOB_SMOKE_DIR || path.join(app.getPath('temp'), 'mob-recorder-smoke');
   fs.mkdirSync(outDir, { recursive: true });
   const log = (...a) => console.log('[smoke]', ...a);
@@ -56,6 +56,14 @@ function install(api) {
     if (st.state === 'recording' && !stopped) {
       stopped = true;
       log('recording started', JSON.stringify(st.canvas || {}));
+      // Task #56: exercise marker drop during a real take — dropMarker()
+      // requires state 'recording'/'paused', so this is the one window
+      // where that's actually true.
+      if (dropMarker) {
+        const chapterResult = dropMarker('chapter');
+        const retakeResult = dropMarker('retake');
+        log('dropped markers', JSON.stringify({ chapterResult, retakeResult }));
+      }
       setTimeout(() => { log('stopping'); stopRecording(); }, 4000);
     }
     if (st.state === 'idle' && st.message) fail(st.message);
@@ -92,6 +100,16 @@ function install(api) {
       if (!rid) return fail('full pipeline: no recordings row found');
       log('pipeline: recordingId =', rid);
 
+      // 1b. Task #56: the chapter + retake markers dropped mid-take above
+      // should have survived finalize() and landed on this recording_id.
+      if (dropMarker) {
+        const markerRows = db.all('SELECT type, at_ms FROM markers WHERE recording_id = ? ORDER BY at_ms', [rid]);
+        log('pipeline: markers persisted =', JSON.stringify(markerRows));
+        if (markerRows.length !== 2 || !markerRows.some(m => m.type === 'chapter') || !markerRows.some(m => m.type === 'retake')) {
+          return fail('full pipeline: expected 1 chapter + 1 retake marker on recording ' + rid + ', got ' + JSON.stringify(markerRows));
+        }
+      }
+
       // 2. Transcription
       log('pipeline: transcribing…');
       const { transcriptId, words: wordCount } = await transcribe({
@@ -112,8 +130,29 @@ function install(api) {
       const { packageId } = await assemblePackage({ recordingId: rid });
       log('pipeline: packageId =', packageId);
 
-      const pkgRow = db.get('SELECT id FROM production_packages WHERE id = ?', [packageId]);
+      const pkgRow = db.get('SELECT id, chapters_json FROM production_packages WHERE id = ?', [packageId]);
       if (!pkgRow) return fail('full pipeline: production_packages row missing after assemblePackage()');
+
+      // 3b. Task #56: the chapter marker dropped mid-take should have won
+      // over detectChapters()'s word-density guess — no EDL cuts were
+      // applied in this run, so the marker's at_ms should pass through
+      // production.js's remap step unchanged and appear verbatim.
+      if (dropMarker) {
+        const chapterMarker = db.get("SELECT at_ms FROM markers WHERE recording_id = ? AND type = 'chapter'", [rid]);
+        const chapters = JSON.parse(pkgRow.chapters_json || '[]');
+        log('pipeline: chapters_json =', JSON.stringify(chapters));
+        if (!chapters.some(c => c.start_ms === chapterMarker.at_ms)) {
+          return fail('full pipeline: chapter marker at ' + chapterMarker.at_ms + 'ms did not appear in chapters_json: ' + JSON.stringify(chapters));
+        }
+        // markers:retakeCuts logic (db-handlers.js) shouldn't throw on a real
+        // transcript, whether or not the suggestion ends up non-null for
+        // this particular (very short) take.
+        const retakeMarker = db.get("SELECT at_ms FROM markers WHERE recording_id = ? AND type = 'retake'", [rid]);
+        const segs = db.all("SELECT * FROM segments WHERE transcript_id = ? AND type = 'speech' ORDER BY start_ms", [transcriptId]);
+        const before = segs.filter(s => s.end_ms <= retakeMarker.at_ms);
+        const seg = segs.find(s => s.start_ms <= retakeMarker.at_ms && retakeMarker.at_ms <= s.end_ms) || before[before.length - 1] || null;
+        log('pipeline: retake marker at', retakeMarker.at_ms, 'ms — preceding segment:', JSON.stringify(seg));
+      }
 
       // 4. FK integrity: package must reference a valid recording
       const pkgRec = db.get(

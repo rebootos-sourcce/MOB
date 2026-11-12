@@ -63,6 +63,11 @@ const DEFAULTS = {
     togglePause: 'CommandOrControl+Shift+P',
     toggleMic: 'CommandOrControl+Shift+M',
     toggleBubble: 'CommandOrControl+Shift+H',
+    // Task #56: left unbound by default — a global accelerator claimed with
+    // no warning on an app that's recording continuously is more likely to
+    // steal a shortcut the user wanted for something else than to get used.
+    dropChapterMarker: '',
+    dropRetakeMarker: '',
   }
 };
 

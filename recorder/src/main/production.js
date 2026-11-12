@@ -67,12 +67,33 @@ function buildPackageData(recordingId) {
     [recordingId]
   ).map(r => r.full_text || '');
   const hashtags = extractHashtags(fullText, buildCorpusStats(corpusDocs));
-  // Chapter boundaries still come from the word-density valley detector
+  // Chapter boundaries default to the word-density valley detector
   // (detectChapters), not segments.energy directly: the build-plan's
   // chapter rule (energy > 0.6 AND duration > 15s) assumes paragraph-sized
   // segments, but this schema's segments are caption-line-sized (a few
   // seconds each) — virtually none would ever pass a 15s duration gate.
-  const chapters = detectChapters(remappedWords, outputDurationMs);
+  //
+  // Task #56: an explicit "chapter here" marker is a stronger signal than
+  // that guess, so it wins when present. Markers are timestamped in SOURCE
+  // position (dropped live, before any cuts exist) — remap each through the
+  // EDL the same way the words above were remapped, dropping any marker
+  // whose moment was itself cut out. If every marker lands in a cut span,
+  // fall back to the auto-detector rather than returning no chapters at all.
+  const chapterMarkers = db.all(
+    "SELECT at_ms FROM markers WHERE recording_id = ? AND type = 'chapter' ORDER BY at_ms",
+    [recordingId]
+  );
+  let chapters = null;
+  if (chapterMarkers.length) {
+    chapters = chapterMarkers
+      .map((m, idx) => {
+        const ms = edlEntries.length ? remapTimestamp(edlEntries, m.at_ms) : m.at_ms;
+        return ms === null ? null : { start_ms: ms, title: idx === 0 ? 'Introduction' : `Part ${idx + 1}`, score: 1.0 };
+      })
+      .filter(Boolean);
+    if (!chapters.length) chapters = null;
+  }
+  if (!chapters) chapters = detectChapters(remappedWords, outputDurationMs);
 
   // #51: title picks the highest-energy real speech segment (build-plan
   // spec: energy > 0.5, 60 chars max) instead of just the transcript's

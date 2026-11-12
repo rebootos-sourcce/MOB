@@ -98,6 +98,21 @@ CREATE TABLE IF NOT EXISTS segments (
 -- Fix #20: captions table removed — speech segments live in `segments` with type='speech',
 -- silence gaps with type='silence'. SRT/VTT export reads from segments.
 
+-- Task #56: live-recording markers ("chapter here" / "scratch that").
+-- segments.type is spec'd to include 'retake'/'bookmark', but segments rows
+-- require a transcript_id (NOT NULL, FK to transcripts) — markers are
+-- dropped live, during recording, before any transcript exists. This table
+-- has no such dependency: it's keyed by recording_id alone, filled in once
+-- the recording is finalized and a real recording_id exists, independent of
+-- whether or when that recording is ever transcribed.
+CREATE TABLE IF NOT EXISTS markers (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  recording_id TEXT NOT NULL REFERENCES recordings(id),
+  type         TEXT NOT NULL,      -- 'chapter' | 'retake'
+  at_ms        INTEGER NOT NULL,   -- position in the recording when dropped
+  created_at   TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS production_packages (
   id              TEXT PRIMARY KEY,
   device_id       TEXT NOT NULL,
@@ -149,3 +164,4 @@ CREATE INDEX IF NOT EXISTS idx_pkgs_clip       ON production_packages(clip_id);
 CREATE INDEX IF NOT EXISTS idx_dists_rec       ON distributions(recording_id);
 CREATE INDEX IF NOT EXISTS idx_dists_pkg       ON distributions(package_id);
 CREATE INDEX IF NOT EXISTS idx_dists_status    ON distributions(status);
+CREATE INDEX IF NOT EXISTS idx_markers_rec     ON markers(recording_id, at_ms);

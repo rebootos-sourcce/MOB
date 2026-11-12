@@ -61,6 +61,45 @@ const QUERIES = {
   'edl:list': ([recording_id]) =>
     db.all('SELECT * FROM edl_entries WHERE recording_id = ? ORDER BY seq', [recording_id]),
 
+  // markers (task #56)
+  'markers:list': ([recording_id]) =>
+    db.all('SELECT * FROM markers WHERE recording_id = ? ORDER BY at_ms', [recording_id]),
+  // "Scratch that": the TDD (mob-recorder-tdd.html:990) spec is "AI presents
+  // the section to cut with one-click confirm" — not a silent automatic cut.
+  // This computes that suggestion rather than applying anything: for each
+  // retake marker, the speech segment the speaker had just said when they
+  // dropped it (the one containing at_ms, or failing that the last one that
+  // ended before it), clamped so overlapping retakes only reach back to the
+  // previous retake marker and never re-cut an earlier, already-confirmed
+  // take. Returns null suggestions (with the bare marker) before a
+  // transcript exists — there are no segments to search yet.
+  'markers:retakeCuts': ([recording_id]) => {
+    const markers = db.all(
+      "SELECT * FROM markers WHERE recording_id = ? AND type = 'retake' ORDER BY at_ms",
+      [recording_id]
+    );
+    if (!markers.length) return [];
+    const tx = db.get(
+      'SELECT id FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1',
+      [recording_id]
+    );
+    if (!tx) return markers.map((marker) => ({ marker, suggestion: null }));
+    const segments = db.all(
+      "SELECT * FROM segments WHERE transcript_id = ? AND type = 'speech' ORDER BY start_ms",
+      [tx.id]
+    );
+    return markers.map((marker, i) => {
+      const floorMs = i > 0 ? markers[i - 1].at_ms : 0;
+      let seg = segments.find((s) => s.start_ms <= marker.at_ms && marker.at_ms <= s.end_ms);
+      if (!seg) {
+        const before = segments.filter((s) => s.end_ms <= marker.at_ms);
+        seg = before[before.length - 1] || null;
+      }
+      const startMs = Math.max(floorMs, seg ? seg.start_ms : marker.at_ms);
+      return { marker, suggestion: startMs < marker.at_ms ? { start_ms: startMs, end_ms: marker.at_ms } : null };
+    });
+  },
+
   // production_packages
   // packages:withVariants used to duplicate this query byte-for-byte and
   // was never called from the renderer — removed rather than kept in sync.
