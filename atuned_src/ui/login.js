@@ -123,11 +123,22 @@ function loginSuggestPassword(){
 /* The email a person typed is carried between the two cards, so going to the
    forgotten password and back does not make them type it a second time. */
 function loginCard(mail){
- return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Log in">'
+ /* A QUIZ-LINK ARRIVAL SEES CREATE ACCOUNT FIRST, 12 November. His own
+    flag for this exact landing (RECORD_LINK_LANDED, set by
+    recordLinkBoot() above, read and cleared once by loginDashOverride()
+    below) stays true for as long as this door is open, since it only
+    clears on the next successful sign in or sign up -- so it is safe to
+    read here, at render time, without racing the override that reads it
+    later. A person who was just promised an account has no password yet;
+    showing Log in as the default asked them to solve a problem they do
+    not have. An ordinary arrival, with no such landing, still opens on
+    Log in. */
+ var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED);
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="'+(landed?'Create account':'Log in')+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
   +'<span class="pm-eye">Welcome</span>'
-  +'<h2 class="ob-h">Log in</h2>'
+  +'<h2 class="ob-h">'+(landed?'Create account':'Log in')+'</h2>'
   +'<form id="loginform" novalidate>'
   +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
   +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
@@ -142,9 +153,13 @@ function loginCard(mail){
   +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
   +'</form>'
   +'<p class="login-msg" id="loginmsg"></p>'
-  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-  +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  +(landed
+   ?'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-new">Create account</button>'
+    +'<button type="button" class="btn" id="loginb-go">Log in</button>'
+    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+   :'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
+    +'<button type="button" class="btn" id="loginb-new">Create account</button>'
+    +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>')
   /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
      button, under the three ways in and never in front of them, so it is
      always there and never the thing a person has to read past. The panel and
