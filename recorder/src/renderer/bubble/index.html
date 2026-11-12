@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Camera</title>
+  <link rel="stylesheet" href="bubble.css">
+</head>
+<body>
+  <!-- #frame is the ring: it is filled white and clipped to the shape.
+       #inner is inset by the ring width and clipped to the same shape at its
+       own smaller size, so the border follows ANY outline, polygons included. -->
+  <div id="frame">
+    <div id="inner">
+      <video id="cam" autoplay muted playsinline></video>
+      <div id="noCam" hidden>No camera</div>
+    </div>
+    <div id="rec" hidden></div>
+    <div id="countdown" hidden></div>
+  </div>
+  <div id="grip" title="Drag to resize"></div>
+  <div id="menuHint" hidden>Menu is hidden while recording</div>
+  <script src="../../shared/shapes.js"></script>
+  <script src="../../shared/material.js"></script>
+  <script src="bubble.js"></script>
+</body>
+</html>

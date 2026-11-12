@@ -1,0 +1,432 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MOB Recorder</title>
+  <link rel="stylesheet" href="control.css">
+</head>
+<body>
+
+  <!-- Compact bar shown while recording -->
+  <div id="compactBar">
+    <span class="dot" id="cDot"></span>
+    <span id="cTimer" class="mono">00:00</span>
+    <button id="cPause" class="icon" title="Pause / resume (Ctrl+Shift+P)">⏸</button>
+    <button id="cMic" class="icon" title="Mute / unmute (Ctrl+Shift+M)">🎙</button>
+    <canvas id="cMeter" width="60" height="14"></canvas>
+    <button id="cStop" class="stop" title="Stop (Ctrl+Shift+R)">■ Stop</button>
+  </div>
+
+  <div id="full">
+    <header id="titlebar">
+      <span class="brand">MOB Recorder</span>
+      <span class="spacer"></span>
+      <button class="win" id="btnMin" title="Minimize">–</button>
+      <button class="win close" id="btnClose" title="Quit">✕</button>
+    </header>
+
+    <!-- ── Mode tab bar ──────────────────────────────────────── -->
+    <nav id="modeTabs">
+      <button class="tab active" data-tab="camera">Camera</button>
+      <button class="tab" data-tab="edit">Edit</button>
+      <button class="tab" data-tab="production">Production</button>
+      <button class="tab" data-tab="distribution">Distribution</button>
+    </nav>
+
+    <!-- ── Camera mode (original content) ────────────────────── -->
+    <div id="tab-camera" class="tab-panel active">
+    <main>
+      <!-- ── 1 · Check yourself ─────────────────────────────── -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step">1</span> Check yourself</h2>
+          <button id="btnRescan" class="mini" title="Re-scan cameras and microphones">↻</button>
+          <span id="readyBadge" class="badge">checking…</span>
+        </div>
+
+        <div id="permBanner" class="perm-banner" hidden>
+          <div id="permText"></div>
+          <div class="row">
+            <button id="permOpenCam" class="primary" hidden>Open camera settings</button>
+            <button id="permOpenMic" class="primary" hidden>Open mic settings</button>
+            <button id="permRetry" class="ghost">Retry</button>
+          </div>
+        </div>
+
+        <div class="preview-wrap">
+          <div id="previewShape">
+            <div id="previewInner">
+              <video id="preview" autoplay muted playsinline></video>
+            </div>
+          </div>
+          <!-- Sits over the whole preview box, not inside the clipped shape,
+               so the message stays readable whatever the bubble shape is. -->
+          <div id="previewEmpty">
+            <div id="previewEmptyText">No camera</div>
+            <button id="previewAction" class="ghost mini-action" hidden></button>
+          </div>
+          <span id="previewInfo" class="res-badge" hidden></span>
+        </div>
+
+        <div class="dev-row">
+          <span class="dev-ico" title="Camera">📷</span>
+          <select id="camSelect" title="Which camera to use"></select>
+          <button id="btnFlipH" class="icon-btn" title="Mirror left–right">⇄</button>
+          <button id="btnFlipV" class="icon-btn" title="Flip upside down">⇅</button>
+        </div>
+
+        <div class="dev-row">
+          <span class="dev-ico" title="Microphone">🎙</span>
+          <select id="micSelect" title="Which microphone to use"></select>
+          <button id="btnMic" class="icon-btn" title="Mute / unmute (Ctrl+Shift+M)">On</button>
+        </div>
+
+        <!-- voice command indicator -->
+        <div class="dev-row voice-row">
+          <span class="voice-pulse" id="voicePulse" title="Voice command status"></span>
+          <span id="voiceLabel" class="hint">voice off</span>
+          <span id="voiceCmd" class="mono voice-cmd-hint" hidden></span>
+          <button id="btnVoice" class="icon-btn voice-btn" title="Enable / disable voice commands">🎤</button>
+        </div>
+
+        <div class="meter-row">
+          <canvas id="meter" height="16"></canvas>
+          <span id="meterDb" class="mono hint">–∞</span>
+        </div>
+        <div class="hint">Talk — the bar should move. Bluetooth headsets appear here once paired.</div>
+      </section>
+
+      <!-- ── 2 · Bubble look ────────────────────────────────── -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step">2</span> Bubble look</h2>
+          <label class="switch" title="Show or hide the floating camera bubble (Ctrl+Shift+H)">
+            <input type="checkbox" id="tVisible"><span>Show</span>
+          </label>
+        </div>
+        <div id="shapeRow" class="chips shape-chips"></div>
+        <div class="size-row">
+          <div id="sizeChips" class="chips"></div>
+          <input type="range" id="sizeSlider" min="96" max="720" step="2" title="Bubble size">
+          <span id="sizeVal" class="mono hint"></span>
+        </div>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="tBorder"><span>Border ring</span></label>
+          <label class="toggle" title="Keeps the live bubble out of the recording so your camera only appears once. Needs Windows 10 2004+."><input type="checkbox" id="tExclude"><span>Hide bubble from capture</span></label>
+        </div>
+        <div class="hint">Drag the bubble anywhere, or right-click it for these options.</div>
+      </section>
+
+      <!-- ── 3 · What to record ─────────────────────────────── -->
+      <section class="card">
+        <div class="card-head"><h2><span class="step">3</span> What to record</h2></div>
+        <div class="source-card" id="sourceCard">
+          <img id="sourceThumb" alt="">
+          <div class="source-meta">
+            <div id="sourceName">Primary display</div>
+            <div class="hint" id="sourceKind">Full screen</div>
+          </div>
+          <button id="btnChangeSource" class="ghost">Change</button>
+        </div>
+      </section>
+
+      <!-- ── 4 · Output (collapsed by default) ──────────────── -->
+      <details class="card" id="outputCard">
+        <summary><h2><span class="step">4</span> Output</h2><span id="outputSummary" class="hint"></span></summary>
+        <div class="details-body">
+          <div class="field"><span>Format</span>
+            <div class="seg" id="formatSeg"><button data-v="mp4">MP4</button><button data-v="webm">WebM</button></div>
+          </div>
+          <label class="field" id="codecField"><span>Codec</span><select id="codecSelect"></select></label>
+          <div class="field" id="qualityField"><span>Quality</span>
+            <div class="seg" id="qualitySeg"><button data-v="high">High</button><button data-v="balanced">Balanced</button><button data-v="small">Small</button></div>
+          </div>
+          <div class="field"><span>Size</span>
+            <div class="seg" id="resSeg"><button data-v="720">720p</button><button data-v="1080">1080p</button><button data-v="0">Native</button></div>
+          </div>
+          <div class="field"><span>Frame rate</span>
+            <div class="seg" id="fpsSeg"><button data-v="30">30</button><button data-v="60">60</button></div>
+          </div>
+          <div class="field"><span>Countdown</span>
+            <div class="seg" id="cdSeg"><button data-v="0">Off</button><button data-v="3">3s</button><button data-v="5">5s</button></div>
+          </div>
+          <div class="field"><span>Save to</span>
+            <div class="save-row"><span id="saveDir" class="mono hint ellipsis"></span><button id="btnSaveDir" class="ghost">Change</button></div>
+          </div>
+          <div class="field"><span>Library</span>
+            <div class="save-row"><span id="reconcileStatus" class="hint"></span><button id="btnReconcile" class="ghost">Scan for missing recordings</button></div>
+          </div>
+          <div class="toggles">
+            <label class="toggle"><input type="checkbox" id="tAsk"><span>Ask where to save each time</span></label>
+            <label class="toggle"><input type="checkbox" id="tCompact"><span>Shrink panel while recording</span></label>
+          </div>
+          <div class="field cf-sep"><span>Cloud</span><span id="cfStatusBadge" class="badge cf-badge">not configured</span></div>
+          <div class="cf-fields" id="cfFields">
+            <div class="field"><span>Worker URL</span><input id="cfWorkerUrl" class="text-input" type="url" placeholder="https://mob-recorder.*.workers.dev" spellcheck="false"></div>
+            <div class="field"><span>API Token</span><input id="cfApiToken" class="text-input" type="password" placeholder="Cloudflare API token" autocomplete="off"></div>
+            <div class="row" style="justify-content:flex-end;margin-top:4px"><button id="btnSaveCf" class="primary mini">Save</button></div>
+          </div>
+        </div>
+      </details>
+
+      <!-- ── Hotkeys ────────────────────────────────────────── -->
+      <details class="card">
+        <summary><h2>Hotkeys</h2><span class="hint">Ctrl+Shift+…</span></summary>
+        <div class="details-body">
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>R</kbd><span>Start / stop</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd><span>Pause / resume</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>M</kbd><span>Mute / unmute</span></div>
+          <div class="hk"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>H</kbd><span>Hide / show bubble</span></div>
+        </div>
+      </details>
+
+      <!-- ── Diagnostics ────────────────────────────────────── -->
+      <details class="card">
+        <summary><h2>Diagnostics</h2><span id="appVersion" class="hint"></span></summary>
+        <div class="details-body">
+          <div class="row" style="justify-content:space-between;align-items:center;">
+            <span class="hint">Copies version, platform, encoder support, settings (token redacted), and recent log lines.</span>
+            <button id="btnCopyDiagnostics" class="ghost mini">Copy diagnostics</button>
+          </div>
+        </div>
+      </details>
+
+      <!-- messages + saved card live at the end of the scroll area -->
+      <div id="warnBanner" class="warn-banner" hidden></div>
+      <div id="message" class="message" hidden></div>
+      <div id="savedCard" class="saved" hidden>
+        <div class="saved-title">✓ Saved</div>
+        <div id="savedPath" class="saved-path mono"></div>
+        <div class="row">
+          <button id="btnOpenFile" class="primary">Open</button>
+          <button id="btnShowFolder" class="ghost">Show in folder</button>
+          <button id="btnDismissSaved" class="ghost" title="Dismiss">✕</button>
+        </div>
+      </div>
+    </main>
+    </div><!-- end tab-camera -->
+
+    <!-- ── Sticky record bar (always visible) ─────────────────── -->
+    <footer id="recBar">
+      <button id="btnRecord" class="record-btn"><span class="ring"></span></button>
+      <div class="rec-info">
+        <div id="statusLine">Ready</div>
+        <div id="timer" class="mono" hidden>00:00</div>
+        <div class="progress" id="finalizeBox" hidden><div id="finalizeBar"></div></div>
+      </div>
+      <div class="rec-actions" id="recActions" hidden>
+        <button id="btnPause" class="ghost">Pause</button>
+        <button id="btnStop" class="danger">Stop</button>
+      </div>
+      <span class="hint hk-hint" id="recHint">Ctrl+Shift+R</span>
+    </footer>
+  </div>
+
+    <!-- ── Edit mode ──────────────────────────────────────────── -->
+    <div id="tab-edit" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Recordings</h2></div>
+          <div id="editRecordingList" class="recording-list">
+            <div class="empty-hint">No recordings yet.</div>
+          </div>
+        </section>
+        <section class="card" id="editCutSection" hidden>
+          <div class="card-head">
+            <h2 id="editRecordingTitle">Recording</h2>
+            <span id="editDuration" class="hint"></span>
+          </div>
+          <div class="edit-actions row">
+            <button id="btnRemoveFillers" class="ghost">Remove fillers</button>
+            <button id="btnRemoveSilences" class="ghost">Remove silences</button>
+            <button id="btnStudioSound" class="ghost" title="Compress, normalize to -16 LUFS, and limit the audio track">Studio Sound</button>
+            <button id="btnTranscribe" class="primary">Transcribe</button>
+          </div>
+          <label class="hint" style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            Silence threshold
+            <select id="silenceThresholdSelect">
+              <option value="300">300ms</option>
+              <option value="500">500ms</option>
+              <option value="750">750ms</option>
+            </select>
+            <span style="opacity:.7;">(applies on next Transcribe)</span>
+          </label>
+          <div class="row" style="margin-top:6px;gap:6px;align-items:center;flex-wrap:wrap;">
+            <button id="btnMarkIn" class="ghost mini">Set in point</button>
+            <span id="trimInLabel" class="hint">In: 0:00</span>
+            <button id="btnMarkOut" class="ghost mini">Set out point</button>
+            <span id="trimOutLabel" class="hint">Out: —</span>
+            <button id="btnTrim" class="ghost mini" hidden>Trim to selection</button>
+            <button id="btnCreateClip" class="ghost mini" hidden>Create clip</button>
+          </div>
+          <div class="row" style="margin-top:6px;gap:8px;align-items:center;">
+            <span id="editCutSummary" class="hint"></span>
+            <button id="btnUndoCut" class="ghost mini" hidden>Undo (Ctrl+Z)</button>
+            <button id="btnRenderEdit" class="primary mini" hidden>Render edited video</button>
+          </div>
+          <div id="editProgress" class="progress-row" hidden>
+            <div class="progress"><div id="editProgressBar" style="width:0%"></div></div>
+            <span id="editProgressLabel" class="hint"></span>
+          </div>
+          <div id="transcribeProgressBar" hidden style="padding:8px 0 4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span id="transcribeProgressLabel" style="font-size:11px;font-family:monospace;color:#64748b;">Transcribing…</span>
+              <span id="transcribeProgressPct" style="font-size:11px;font-family:monospace;color:#94a3b8;">0%</span>
+            </div>
+            <div style="height:4px;background:#1b2235;border-radius:2px;overflow:hidden;">
+              <div id="transcribeProgressFill" style="height:100%;background:#4f8cff;border-radius:2px;transition:width 300ms;width:0%"></div>
+            </div>
+          </div>
+          <video id="editPreviewVideo" controls hidden style="width:100%;max-height:280px;background:#000;border-radius:6px;display:block;margin-bottom:4px;"></video>
+          <div id="waveformWrap" hidden style="padding:4px 0 8px;">
+            <canvas id="waveformCanvas" style="width:100%;height:64px;border-radius:6px;cursor:pointer;display:block;"></canvas>
+          </div>
+          <div id="editTranscriptBox" class="transcript-box" hidden>
+            <p id="editTranscriptText"></p>
+          </div>
+          <div id="editExportRow" class="row" hidden style="gap:6px;margin-top:4px;">
+            <button id="btnExportSrt" class="ghost mini">Export SRT</button>
+            <button id="btnExportVtt" class="ghost mini">Export VTT</button>
+          </div>
+          <div id="editTagBox" class="tag-box" hidden></div>
+          <div id="clipListWrap" style="margin-top:10px;">
+            <div class="hint" style="margin-bottom:4px;">Clips</div>
+            <div id="clipList" class="recording-list"><div class="empty-hint">No clips yet — set in/out points and click Create clip.</div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── Production mode ────────────────────────────────────── -->
+    <div id="tab-production" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Production packages</h2></div>
+          <div id="prodRecordingList" class="recording-list">
+            <div class="empty-hint">Select a transcribed recording.</div>
+          </div>
+        </section>
+        <section class="card" id="prodPackageSection" hidden>
+          <div class="card-head"><h2 id="prodTitle">Package</h2></div>
+          <div class="field"><span>Variants</span><div id="prodVariants" class="variants-list"></div></div>
+          <!-- Editable title -->
+          <div id="prodTitleWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Title</span>
+              <button class="copy-btn" data-target="prodTitleEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="copy-btn regen-btn" data-regen-field="title" title="Regenerate just the title">↻</button>
+            </div>
+            <div id="prodTitleEdit" class="prod-editable" contenteditable="true" data-field="edited_title" placeholder="No title yet…"></div>
+          </div>
+          <!-- Editable description -->
+          <div id="prodDescWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Description</span>
+              <button class="copy-btn" data-target="prodDescEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="copy-btn regen-btn" data-regen-field="description" title="Regenerate just the description">↻</button>
+            </div>
+            <div id="prodDescEdit" class="prod-editable prod-desc" contenteditable="true" data-field="edited_description" placeholder="No description yet…"></div>
+          </div>
+          <!-- Editable hashtags -->
+          <div id="prodHashtagsWrap" class="prod-field-wrap">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#4b5878;font-family:monospace;">Hashtags</span>
+              <button class="copy-btn" data-target="prodHashtagsEdit" title="Copy">
+                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="copy-btn regen-btn" data-regen-field="hashtags" title="Regenerate just the hashtags">↻</button>
+            </div>
+            <div id="prodHashtagsEdit" class="prod-editable" contenteditable="true" data-field="edited_hashtags_json" placeholder="No hashtags yet…"></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;">
+            <button id="btnCopyAll" class="secondary mini" style="flex:1">Copy All</button>
+          </div>
+          <!-- Legacy read-only fields (kept for compatibility) -->
+          <div class="field" hidden><span>Title (raw)</span><div id="prodTitleValue" class="mono"></div></div>
+          <div class="field" hidden><span>Description (raw)</span><div id="prodDesc" class="desc-text"></div></div>
+          <div class="field" hidden><span>Hashtags (raw)</span><div id="prodHashtags" class="tag-box"></div></div>
+          <div class="field">
+            <span style="display:flex;align-items:center;gap:6px;">Chapters<button class="copy-btn regen-btn" data-regen-field="chapters" title="Regenerate just the chapters">↻</button></span>
+            <div id="prodChapters" class="chapters-list"></div>
+          </div>
+          <!-- Platform variants -->
+          <details id="variantsDetails" style="margin-top:4px;">
+            <summary style="font-size:10px;color:#4b5878;cursor:pointer;font-family:monospace;letter-spacing:.07em;text-transform:uppercase;list-style:none;">Platform Variants</summary>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
+              <div class="variant-block" data-platform="youtube">
+                <div class="variant-label">YouTube</div>
+                <div class="variant-content" id="varYoutube"></div>
+              </div>
+              <div class="variant-block" data-platform="tiktok">
+                <div class="variant-label">TikTok</div>
+                <div class="variant-content" id="varTiktok"></div>
+              </div>
+              <div class="variant-block" data-platform="linkedin">
+                <div class="variant-label">LinkedIn</div>
+                <div class="variant-content" id="varLinkedin"></div>
+              </div>
+            </div>
+          </details>
+          <div class="row edit-actions" style="margin-top:8px;gap:6px;">
+            <button id="btnAssemble" class="primary">Generate package</button>
+            <button id="btnExportFiles" class="secondary">Export files…</button>
+          </div>
+          <div id="exportStatus" class="hint" style="margin-top:4px;"></div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ── Distribution mode ──────────────────────────────────── -->
+    <div id="tab-distribution" class="tab-panel" hidden>
+      <main class="tab-main">
+        <section class="card">
+          <div class="card-head"><h2>Distribute</h2></div>
+          <div id="distRecordingList" class="recording-list">
+            <div class="empty-hint">Generate a production package first.</div>
+          </div>
+        </section>
+        <section class="card" id="distSection" hidden>
+          <div class="card-head"><h2 id="distTitle">Ready to distribute</h2></div>
+          <div id="cfWarning" class="cf-warning" hidden>
+            ⚠ Cloud not configured — add your Worker URL and API Token in <strong>Output → Cloud</strong>.
+          </div>
+          <div class="field"><span>Status</span><span id="distStatus" class="badge">pending</span></div>
+          <div class="row edit-actions">
+            <button id="btnDistUpload" class="primary">Upload to cloud</button>
+          </div>
+          <div id="distProgress" class="progress-row" hidden>
+            <div class="progress"><div id="distProgressBar" style="width:0%"></div></div>
+            <span id="distProgressLabel" class="hint">Uploading…</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+  <!-- Source picker overlay -->
+  <div id="picker" hidden>
+    <div class="picker-head">
+      <span>Choose what to record</span>
+      <span class="spacer"></span>
+      <button id="pickerRefresh" class="ghost">Refresh</button>
+      <button id="pickerClose" class="ghost">✕</button>
+    </div>
+    <div class="picker-body">
+      <h3>Screens</h3>
+      <div id="pickScreens" class="grid"></div>
+      <h3>Windows</h3>
+      <div id="pickWindows" class="grid"></div>
+    </div>
+  </div>
+
+  <div id="countdown" hidden></div>
+
+  <script src="../../shared/shapes.js"></script>
+  <script src="../../shared/material.js"></script>
+  <script src="waveform.js"></script>
+  <script src="control.js"></script>
+</body>
+</html>

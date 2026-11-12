@@ -1,0 +1,1853 @@
+<title>MOB Recorder — Production Suite TDD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap">
+
+<style>
+/* Layout: single-column document, anchored left-rail nav on desktop */
+:root {
+  --bg:       #0d0e10;
+  --bg2:      #13151a;
+  --bg3:      #1c1f26;
+  --border:   rgba(255,255,255,0.08);
+  --fg:       #e8e3da;
+  --fg2:      #9a9289;
+  --fg3:      #5c5650;
+  --red:      #e33b06;
+  --gold:     #c9a84c;
+  --gold2:    #9d7c1f;
+  --amber:    #f0c060;
+  --green:    #3db87a;
+  --blue:     #4a9eff;
+  --ff-head:  'Inter', system-ui, sans-serif;
+  --ff-body:  'Inter', system-ui, sans-serif;
+  --ff-mono:  'DM Mono', monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:     #f4f1ec;
+    --bg2:    #eae6de;
+    --bg3:    #ddd8cc;
+    --border: rgba(0,0,0,0.1);
+    --fg:     #1a1714;
+    --fg2:    #5c534a;
+    --fg3:    #9a8f84;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg:     #f4f1ec;
+  --bg2:    #eae6de;
+  --bg3:    #ddd8cc;
+  --border: rgba(0,0,0,0.1);
+  --fg:     #1a1714;
+  --fg2:    #5c534a;
+  --fg3:    #9a8f84;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-body);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left,0px));
+  padding-right: max(16px, env(safe-area-inset-right,0px));
+  padding-block: 0;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (max-width: 720px) {
+  .shell { grid-template-columns: 1fr; }
+  .nav { display: none; }
+}
+
+/* ── HEADER ── */
+header {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.header-left {}
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.wordmark-icon {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.wordmark-icon svg { width: 16px; height: 16px; }
+.wordmark-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.doc-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  line-height: 1.2;
+}
+.doc-title span { color: var(--gold); }
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.chip {
+  font-size: 11px;
+  font-family: var(--ff-mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--fg2);
+  border: 1px solid var(--border);
+}
+.chip.red { background: rgba(227,59,6,0.15); color: var(--red); border-color: rgba(227,59,6,0.3); }
+.chip.gold { background: rgba(201,168,76,0.12); color: var(--gold); border-color: rgba(201,168,76,0.25); }
+
+/* ── NAV ── */
+.nav {
+  padding-top: 28px;
+  padding-right: 24px;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+.nav-section {
+  margin-bottom: 20px;
+}
+.nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 6px;
+}
+.nav a {
+  display: block;
+  font-size: 12px;
+  color: var(--fg2);
+  text-decoration: none;
+  padding: 3px 0;
+  border-left: 2px solid transparent;
+  padding-left: 8px;
+  margin-left: -8px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.nav a:hover { color: var(--fg); border-color: var(--gold); }
+.nav a.active { color: var(--gold); border-color: var(--gold); }
+
+/* ── MAIN CONTENT ── */
+main {
+  padding: 28px 0 60px 32px;
+  min-width: 0;
+}
+@media (max-width: 720px) {
+  main { padding-left: 0; }
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 52px;
+  scroll-margin-top: 24px;
+}
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 8px;
+}
+.section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 16px;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+.section p {
+  color: var(--fg2);
+  margin-bottom: 12px;
+  max-width: 68ch;
+  font-size: 13.5px;
+}
+.section p strong { color: var(--fg); font-weight: 500; }
+
+/* ── RULE ── */
+hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+/* ── OVERVIEW CARDS ── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  margin-bottom: 4px;
+}
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+.stat-value.red { color: var(--red); }
+.stat-value.gold { color: var(--gold); }
+.stat-value.green { color: var(--green); }
+.stat-sub {
+  font-size: 11px;
+  color: var(--fg3);
+  margin-top: 2px;
+}
+
+/* ── GAP TABLE ── */
+.gap-table-wrap { overflow-x: auto; }
+table.gap {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+table.gap th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+table.gap td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--fg2);
+  vertical-align: top;
+}
+table.gap tr:hover td { background: rgba(255,255,255,0.02); }
+table.gap td.feature-name { color: var(--fg); font-weight: 500; }
+table.gap td.cat {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--fg3);
+  white-space: nowrap;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--ff-mono);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.status.exists   { background: rgba(61,184,122,0.12); color: var(--green); }
+.status.missing  { background: rgba(227,59,6,0.12);   color: var(--red);   }
+.status.partial  { background: rgba(201,168,76,0.12); color: var(--gold);  }
+
+.pri {
+  display: inline-block;
+  font-size: 11px;
+  font-family: var(--ff-mono);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.pri.p0 { background: rgba(227,59,6,0.15); color: var(--red); }
+.pri.p1 { background: rgba(240,192,96,0.12); color: var(--amber); }
+.pri.p2 { background: rgba(74,158,255,0.12); color: var(--blue); }
+.pri.p3 { background: var(--bg3); color: var(--fg3); }
+
+/* ── MODULE CARDS ── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.module-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.module-card.phase-1 { border-left: 3px solid var(--red); }
+.module-card.phase-2 { border-left: 3px solid var(--gold); }
+.module-card.phase-3 { border-left: 3px solid var(--blue); }
+.module-card.phase-4 { border-left: 3px solid var(--green); }
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.module-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.module-phase {
+  font-size: 10px;
+  font-family: var(--ff-mono);
+  color: var(--fg3);
+  white-space: nowrap;
+}
+.module-desc {
+  font-size: 12.5px;
+  color: var(--fg2);
+  line-height: 1.5;
+}
+.module-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.tag {
+  font-size: 10.5px;
+  font-family: var(--ff-mono);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--bg3);
+  color: var(--fg3);
+  border: 1px solid var(--border);
+}
+.tag.red   { background: rgba(227,59,6,0.1);   color: var(--red);   border-color: rgba(227,59,6,0.2);   }
+.tag.gold  { background: rgba(201,168,76,0.1);  color: var(--gold);  border-color: rgba(201,168,76,0.2);  }
+.tag.blue  { background: rgba(74,158,255,0.1);  color: var(--blue);  border-color: rgba(74,158,255,0.2);  }
+.tag.green { background: rgba(61,184,122,0.1);  color: var(--green); border-color: rgba(61,184,122,0.2);  }
+
+/* ── CODE BLOCK ── */
+pre {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  color: var(--fg);
+  overflow-x: auto;
+  line-height: 1.55;
+  margin: 10px 0 16px;
+}
+code { font-family: var(--ff-mono); font-size: 12px; }
+p code, li code {
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--gold);
+  font-size: 12px;
+}
+
+/* ── LISTS ── */
+ul.spec, ol.spec {
+  padding-left: 20px;
+  color: var(--fg2);
+  font-size: 13px;
+  line-height: 1.65;
+}
+ul.spec li, ol.spec li {
+  margin-bottom: 5px;
+}
+ul.spec li strong, ol.spec li strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* ── MATRIX ── */
+.matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+.matrix-quadrant {
+  background: var(--bg2);
+  padding: 20px;
+  min-height: 160px;
+}
+.matrix-quadrant h4 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.matrix-quadrant h4.h { color: var(--red); }
+.matrix-quadrant h4.m { color: var(--amber); }
+.matrix-quadrant h4.l { color: var(--blue); }
+.matrix-quadrant h4.b { color: var(--fg3); }
+.matrix-quadrant ul {
+  list-style: none;
+  padding: 0;
+}
+.matrix-quadrant ul li {
+  font-size: 12px;
+  color: var(--fg2);
+  padding: 3px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.matrix-quadrant ul li::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--fg3);
+  flex-shrink: 0;
+}
+.matrix-axis-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+.matrix-axis-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg3);
+  padding: 6px;
+  background: var(--bg3);
+}
+
+/* ── ARCH DIAGRAM ── */
+.arch-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.arch-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.arch-node {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap;
+}
+.arch-node.exists { border-color: rgba(61,184,122,0.3); color: var(--green); }
+.arch-node.new    { border-color: rgba(201,168,76,0.4); color: var(--gold); border-style: dashed; }
+.arch-arrow {
+  font-size: 14px;
+  color: var(--fg3);
+  flex-shrink: 0;
+}
+.arch-label {
+  font-size: 10px;
+  color: var(--fg3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+}
+.timeline-item.active::before { background: var(--gold); border-color: var(--gold); }
+.timeline-item.done::before   { background: var(--green); border-color: var(--green); }
+.timeline-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+.timeline-item p {
+  font-size: 12.5px;
+  color: var(--fg2);
+  margin: 0;
+  max-width: none;
+}
+
+/* ── OPEN QUESTIONS ── */
+.question-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+.question-block h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 6px;
+}
+.question-block p {
+  font-size: 12.5px;
+  color: var(--fg2);
+  margin: 0;
+  max-width: none;
+}
+.question-block .options {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.opt {
+  font-size: 11.5px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--fg2);
+  background: var(--bg3);
+}
+
+/* ── SCROLL ACTIVE NAV ── */
+</style>
+
+<div class="shell">
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="wordmark">
+      <div class="wordmark-icon">
+        <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="4" fill="white"/><circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.5"/></svg>
+      </div>
+      <span class="wordmark-text">MOB Recorder</span>
+    </div>
+    <div class="doc-title">Production Suite <span>TDD v1</span></div>
+  </div>
+  <div class="header-meta">
+    <span class="chip">Build 8 baseline</span>
+    <span class="chip gold">Electron 33 · FFmpeg 6</span>
+    <span class="chip red">November 2026</span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <a href="#summary">Executive Summary</a>
+    <a href="#gap">Loom Gap Analysis</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Architecture</div>
+    <a href="#arch">Current State</a>
+    <a href="#modules">Module Roadmap</a>
+    <a href="#matrix">Priority Matrix</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Technical Specs</div>
+    <a href="#audio">Audio Fix (P0)</a>
+    <a href="#vault">Video Vault</a>
+    <a href="#edit">Edit Suite</a>
+    <a href="#ai">AI Pipeline</a>
+    <a href="#grade">Color Grade</a>
+    <a href="#codecs">Codec Modernization</a>
+    <a href="#social">Social Publish</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Competitive</div>
+    <a href="#open">Architecture + Decisions</a>
+    <a href="#descript">Descript Analysis</a>
+    <a href="#voice">Voice Commands</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- EXECUTIVE SUMMARY -->
+<section class="section" id="summary">
+  <div class="section-eyebrow">01 — Executive Summary</div>
+  <h2>What we have. What we're building.</h2>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Current Build</div>
+      <div class="stat-value gold">8</div>
+      <div class="stat-sub">Portable .exe, Windows 10+</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Composite Latency</div>
+      <div class="stat-value green">11.1ms</div>
+      <div class="stat-sub">mean · p95 22.4ms</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Save Time</div>
+      <div class="stat-value green">0.048×</div>
+      <div class="stat-sub">realtime via remux</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Loom Features</div>
+      <div class="stat-value red">~8%</div>
+      <div class="stat-sub">parity estimate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Loom Gap Items</div>
+      <div class="stat-value red">42</div>
+      <div class="stat-sub">tracked below</div>
+    </div>
+  </div>
+
+  <p>MOB Recorder is a performant recording kernel. Build 8 optimized the compositor, encoding pipeline, and idle cost to production-grade numbers. What it lacks is everything after the record button: editing, grading, sharing, and the library that ties it together.</p>
+  <p>This document maps the gap, specifies each module needed to close it, and assigns implementation priority. The vision is a <strong>Record → Edit → Color Grade → Post</strong> pipeline in a single Windows executable, with AI-assisted editing and direct social publishing.</p>
+  <p>The architecture stays the same: one Electron app, one file, no cloud dependency except at the publish step.</p>
+</section>
+
+<hr>
+
+<!-- LOOM GAP ANALYSIS -->
+<section class="section" id="gap">
+  <div class="section-eyebrow">02 — Competitive Analysis</div>
+  <h2>Loom feature gap</h2>
+  <p>Loom is the market reference for async video messaging. The table below maps every significant Loom feature to our current state and assigns a build priority.</p>
+
+  <div class="gap-table-wrap">
+    <table class="gap">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Category</th>
+          <th>MOB Status</th>
+          <th>Priority</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Recording -->
+        <tr><td class="feature-name">Screen capture</td><td class="cat">Recording</td><td><span class="status exists">✓ Exists</span></td><td><span class="pri p3">P3</span></td><td>Full screen, window, region</td></tr>
+        <tr><td class="feature-name">Camera overlay</td><td class="cat">Recording</td><td><span class="status exists">✓ Exists</span></td><td><span class="pri p3">P3</span></td><td>7 shapes, drag, resize, mirror</td></tr>
+        <tr><td class="feature-name">Cam-only mode</td><td class="cat">Recording</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Remove screen, full-frame cam</td></tr>
+        <tr><td class="feature-name">Audio-only mode</td><td class="cat">Recording</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Podcast/voiceover use case</td></tr>
+        <tr><td class="feature-name">Countdown timer</td><td class="cat">Recording</td><td><span class="status exists">✓ Exists</span></td><td><span class="pri p3">P3</span></td><td>3-second, configurable needed</td></tr>
+        <tr><td class="feature-name">Pause / resume</td><td class="cat">Recording</td><td><span class="status exists">✓ Exists</span></td><td><span class="pri p3">P3</span></td><td>Working</td></tr>
+
+        <!-- Camera -->
+        <tr><td class="feature-name">Background blur</td><td class="cat">Camera</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>MediaPipe WASM selfie segmentation</td></tr>
+        <tr><td class="feature-name">Virtual background</td><td class="cat">Camera</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Requires seg mask + image composite</td></tr>
+        <tr><td class="feature-name">Camera preview test</td><td class="cat">Camera</td><td><span class="status partial">~ Partial</span></td><td><span class="pri p1">P1</span></td><td>Panel has preview; no dedicated "test" mode</td></tr>
+        <tr><td class="feature-name">Multi-cam select</td><td class="cat">Camera</td><td><span class="status partial">~ Partial</span></td><td><span class="pri p1">P1</span></td><td>Dropdown exists; better UX needed</td></tr>
+        <tr><td class="feature-name">Portrait lighting</td><td class="cat">Camera</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p3">P3</span></td><td>WebGL brightness/contrast shader</td></tr>
+        <tr><td class="feature-name">Face-track zoom</td><td class="cat">Camera</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>MediaPipe face landmark + canvas crop</td></tr>
+
+        <!-- Audio -->
+        <tr><td class="feature-name">Clean audio capture</td><td class="cat">Audio</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p0">P0</span></td><td>AGC/NS/AEC are ON — must be turned off for recording</td></tr>
+        <tr><td class="feature-name">Loudness normalization</td><td class="cat">Audio</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p0">P0</span></td><td>-16 LUFS, dual_mono=true (3dB correction)</td></tr>
+        <tr><td class="feature-name">Noise reduction</td><td class="cat">Audio</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>FFmpeg arnndn (RNN denoiser)</td></tr>
+        <tr><td class="feature-name">BT headset warning</td><td class="cat">Audio</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td">HFP/SCO drops to 8kHz; detect and warn</td></tr>
+        <tr><td class="feature-name">Mic meter (accurate)</td><td class="cat">Audio</td><td><span class="status partial">~ Partial</span></td><td><span class="pri p1">P1</span></td><td>Meter reads separate stream; must read recording stream</td></tr>
+
+        <!-- Editing -->
+        <tr><td class="feature-name">Trim start/end</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p0">P0</span></td><td>FFmpeg -ss / -to, range scrubber UI</td></tr>
+        <tr><td class="feature-name">Cut / splice</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Multi-segment cut, FFmpeg concat</td></tr>
+        <tr><td class="feature-name">Filler word removal</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Whisper timestamps → FFmpeg silence cut</td></tr>
+        <tr><td class="feature-name">Silence/pause trim</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>FFmpeg silencedetect → auto jump-cut</td></tr>
+        <tr><td class="feature-name">Stitch clips</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Concat filter, timeline UI</td></tr>
+        <tr><td class="feature-name">Drawing/annotation</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Canvas overlay, pen/arrow/highlight tools</td></tr>
+        <tr><td class="feature-name">"Scratch that" retake</td><td class="cat">Editing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Audio cue marker; AI finds and cuts prior segment</td></tr>
+
+        <!-- AI -->
+        <tr><td class="feature-name">Auto-title</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>LLM summarize transcript → title</td></tr>
+        <tr><td class="feature-name">Auto-description</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>LLM summarize for social post copy</td></tr>
+        <tr><td class="feature-name">AI pause trimmer</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Silence VAD + configurable threshold</td></tr>
+        <tr><td class="feature-name">Transcript generation</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Whisper.cpp WASM, word-level timestamps</td></tr>
+        <tr><td class="feature-name">Transcript-based edit</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Delete words in transcript = cut video</td></tr>
+        <tr><td class="feature-name">BG noise suppress</td><td class="cat">AI</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>FFmpeg arnndn or RNNoise sidecar</td></tr>
+
+        <!-- Sharing -->
+        <tr><td class="feature-name">Local save</td><td class="cat">Sharing</td><td><span class="status exists">✓ Exists</span></td><td><span class="pri p3">P3</span></td><td>MP4 + WebM</td></tr>
+        <tr><td class="feature-name">YouTube direct upload</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>YouTube Data API v3, OAuth2 PKCE</td></tr>
+        <tr><td class="feature-name">Twitter/X video post</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>X API v2 chunked media upload</td></tr>
+        <tr><td class="feature-name">LinkedIn video</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>LinkedIn Video API</td></tr>
+        <tr><td class="feature-name">TikTok direct post</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>TikTok Developer API (draft-only on free tier)</td></tr>
+        <tr><td class="feature-name">Copy shareable link</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p1">P1</span></td><td>Upload to R2/S3 → clipboard URL</td></tr>
+        <tr><td class="feature-name">Embed code</td><td class="cat">Sharing</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p3">P3</span></td><td>iFrame snippet from cloud URL</td></tr>
+
+        <!-- Library -->
+        <tr><td class="feature-name">Video library / vault</td><td class="cat">Library</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p0">P0</span></td><td>Grid view, hover-to-loop, metadata</td></tr>
+        <tr><td class="feature-name">Thumbnail generation</td><td class="cat">Library</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p0">P0</span></td><td>FFmpeg -ss 0 -vframes 1</td></tr>
+        <tr><td class="feature-name">Recording analytics</td><td class="cat">Library</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p3">P3</span></td><td>Requires cloud (views, heatmap)</td></tr>
+        <tr><td class="feature-name">Search/filter recordings</td><td class="cat">Library</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>Search by transcript text, date, duration</td></tr>
+
+        <!-- Color -->
+        <tr><td class="feature-name">LUT / color grade</td><td class="cat">Grade</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>FFmpeg lut3d, .cube file browser</td></tr>
+        <tr><td class="feature-name">Brightness/contrast</td><td class="cat">Grade</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>FFmpeg eq filter</td></tr>
+        <tr><td class="feature-name">Real-time LUT preview</td><td class="cat">Grade</td><td><span class="status missing">✗ Missing</span></td><td><span class="pri p2">P2</span></td><td>WebGL2 3D texture lookup in compositor</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr>
+
+<!-- ARCHITECTURE -->
+<section class="section" id="arch">
+  <div class="section-eyebrow">03 — Architecture</div>
+  <h2>Current state → production suite</h2>
+
+  <h3>Existing 3-window architecture (Build 8)</h3>
+  <div class="arch-block">
+    <div class="arch-label">Main Process (Node)</div>
+    <div class="arch-row">
+      <div class="arch-node exists">main.js</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node exists">ffmpeg.js</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node exists">recording-files.js</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node exists">settings.js</div>
+    </div>
+    <div class="arch-label">Renderer Windows</div>
+    <div class="arch-row">
+      <div class="arch-node exists">Control Panel (412×680)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node exists">Bubble (always-on-top)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node exists">Recorder Engine (hidden)</div>
+    </div>
+  </div>
+
+  <h3>Proposed additions</h3>
+  <div class="arch-block">
+    <div class="arch-label">New Windows / Processes</div>
+    <div class="arch-row">
+      <div class="arch-node new">Video Vault (4th window)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">Editor Window (5th)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">Whisper sidecar (Node child_process)</div>
+    </div>
+    <div class="arch-label">New Main-Process Modules</div>
+    <div class="arch-row">
+      <div class="arch-node new">vault.js (index, metadata, thumbnails)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">social.js (OAuth, upload)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">ai-edit.js (VAD, silence, transcript)</div>
+    </div>
+    <div class="arch-label">FFmpeg Pipeline Additions</div>
+    <div class="arch-row">
+      <div class="arch-node new">arnndn (RNN denoiser)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">loudnorm (EBU R128)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">lut3d (.cube grading)</div>
+      <div class="arch-arrow">+</div>
+      <div class="arch-node new">silencedetect (AI edit)</div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- MODULE ROADMAP -->
+<section class="section" id="modules">
+  <div class="section-eyebrow">04 — Module Roadmap</div>
+  <h2>What gets built, in order</h2>
+
+  <div class="module-grid">
+    <div class="module-card phase-1">
+      <div class="module-header">
+        <div class="module-name">Audio Chain Fix</div>
+        <div class="module-phase">Phase 1 · P0</div>
+      </div>
+      <div class="module-desc">Turn off browser AGC, NS, AEC on capture. Pipe recording stream to meter. Apply -16 LUFS normalization with dual_mono=true in FFmpeg post.</div>
+      <div class="module-tech">
+        <span class="tag red">P0 Defect</span>
+        <span class="tag">getUserMedia constraints</span>
+        <span class="tag">loudnorm</span>
+        <span class="tag">dual_mono</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-1">
+      <div class="module-header">
+        <div class="module-name">Video Vault</div>
+        <div class="module-phase">Phase 1 · P0</div>
+      </div>
+      <div class="module-desc">New window: grid of saved recordings. Thumbnail from first frame. Hover plays a 2-second loop. Metadata row: duration, codec, file size, date. Quick actions: open, edit, share, delete.</div>
+      <div class="module-tech">
+        <span class="tag red">P0 New</span>
+        <span class="tag">4th BrowserWindow</span>
+        <span class="tag">FFmpeg thumbnail</span>
+        <span class="tag">vault.js</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-1">
+      <div class="module-header">
+        <div class="module-name">Trim Tool</div>
+        <div class="module-phase">Phase 1 · P0</div>
+      </div>
+      <div class="module-desc">Start/end handle scrubber on waveform. Set in/out points, preview, then render. FFmpeg -ss / -to remux — fast when no transcode needed.</div>
+      <div class="module-tech">
+        <span class="tag red">P0 New</span>
+        <span class="tag">Canvas waveform</span>
+        <span class="tag">-ss -to</span>
+        <span class="tag">stream copy</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-1">
+      <div class="module-header">
+        <div class="module-name">Hardware Encoder</div>
+        <div class="module-phase">Phase 1 · P1</div>
+      </div>
+      <div class="module-desc">Probe for QSV (Intel), NVENC (NVIDIA), AMF (AMD) at startup. Auto-select the fastest available. 3-5x encoding speed on most Windows machines.</div>
+      <div class="module-tech">
+        <span class="tag gold">P1</span>
+        <span class="tag">h264_qsv</span>
+        <span class="tag">h264_nvenc</span>
+        <span class="tag">h264_amf</span>
+        <span class="tag">probe on boot</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-2">
+      <div class="module-header">
+        <div class="module-name">AI Pause Trimmer</div>
+        <div class="module-phase">Phase 2 · P1</div>
+      </div>
+      <div class="module-desc">Detect silence gaps &gt;500ms with FFmpeg silencedetect. Present a list of cuts. One-click apply removes all pauses. Configurable threshold.</div>
+      <div class="module-tech">
+        <span class="tag gold">P1</span>
+        <span class="tag">silencedetect</span>
+        <span class="tag">concat filter</span>
+        <span class="tag">VAD threshold</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-2">
+      <div class="module-header">
+        <div class="module-name">Transcript Engine</div>
+        <div class="module-phase">Phase 2 · P1</div>
+      </div>
+      <div class="module-desc">Whisper.cpp as a Node child_process sidecar (whisper-node or @xenova/transformers). Word-level timestamps. SRT / VTT export. Powers filler-word removal and auto-titles.</div>
+      <div class="module-tech">
+        <span class="tag gold">P1</span>
+        <span class="tag">whisper.cpp</span>
+        <span class="tag">Node sidecar</span>
+        <span class="tag">word timestamps</span>
+        <span class="tag">SRT export</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-2">
+      <div class="module-header">
+        <div class="module-name">Noise Reduction</div>
+        <div class="module-phase">Phase 2 · P1</div>
+      </div>
+      <div class="module-desc">Post-processing: FFmpeg arnndn (RNN speech denoiser) + deesser + alimiter broadcast voice chain. Applied during save, not real-time.</div>
+      <div class="module-tech">
+        <span class="tag gold">P1</span>
+        <span class="tag">arnndn</span>
+        <span class="tag">deesser</span>
+        <span class="tag">alimiter</span>
+        <span class="tag">acompressor</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-2">
+      <div class="module-header">
+        <div class="module-name">Background Blur</div>
+        <div class="module-phase">Phase 2 · P1</div>
+      </div>
+      <div class="module-desc">MediaPipe selfie segmentation WASM in the recorder compositor. Create a mask per frame, blur background before compositing camera onto canvas. No GPU required.</div>
+      <div class="module-tech">
+        <span class="tag gold">P1</span>
+        <span class="tag">MediaPipe WASM</span>
+        <span class="tag">Canvas mask</span>
+        <span class="tag">blur()</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-3">
+      <div class="module-header">
+        <div class="module-name">Social Publish</div>
+        <div class="module-phase">Phase 3 · P1–P2</div>
+      </div>
+      <div class="module-desc">YouTube (P1 — largest reach, best API). Twitter/X, LinkedIn, TikTok (P2). OAuth2 PKCE via Electron custom protocol. Tokens persisted in system keychain via node-keytar.</div>
+      <div class="module-tech">
+        <span class="tag blue">P1–P2</span>
+        <span class="tag">OAuth2 PKCE</span>
+        <span class="tag">node-keytar</span>
+        <span class="tag">mob-recorder://</span>
+        <span class="tag">YouTube v3</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-3">
+      <div class="module-header">
+        <div class="module-name">LUT / Color Grade</div>
+        <div class="module-phase">Phase 3 · P2</div>
+      </div>
+      <div class="module-desc">.cube file browser. Real-time WebGL2 3D LUT preview in compositor. Applied in FFmpeg lut3d at save. Ship 6 cinematic LUTs with the app. Brightness/contrast sliders via FFmpeg eq.</div>
+      <div class="module-tech">
+        <span class="tag blue">P2</span>
+        <span class="tag">lut3d</span>
+        <span class="tag">WebGL2 texture</span>
+        <span class="tag">.cube parser</span>
+        <span class="tag">FFmpeg eq</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-3">
+      <div class="module-header">
+        <div class="module-name">"Scratch That" Retake</div>
+        <div class="module-phase">Phase 3 · P1</div>
+      </div>
+      <div class="module-desc">Keyboard shortcut inserts a retake marker during recording. After stop, Whisper transcript finds the marker's phrase. AI presents the section to cut with one-click confirm.</div>
+      <div class="module-tech">
+        <span class="tag blue">P1</span>
+        <span class="tag">hotkey marker</span>
+        <span class="tag">Whisper search</span>
+        <span class="tag">FFmpeg cut</span>
+      </div>
+    </div>
+
+    <div class="module-card phase-4">
+      <div class="module-header">
+        <div class="module-name">Transcript-Based Edit</div>
+        <div class="module-phase">Phase 4 · P2</div>
+      </div>
+      <div class="module-desc">Show transcript text with word-level timestamps. User deletes words/phrases in the transcript text editor. Changes map back to video cuts automatically via Whisper timestamps.</div>
+      <div class="module-tech">
+        <span class="tag green">P2</span>
+        <span class="tag">word map</span>
+        <span class="tag">contenteditable</span>
+        <span class="tag">FFmpeg concat</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- PRIORITY MATRIX -->
+<section class="section" id="matrix">
+  <div class="section-eyebrow">05 — Priority Matrix</div>
+  <h2>Impact vs effort</h2>
+  <p>Build order: top-left first. Everything in the top-right is a quick win that ships alongside high-impact work.</p>
+
+  <div class="matrix-axis-labels">
+    <div class="matrix-axis-label">High Impact</div>
+    <div class="matrix-axis-label">High Impact</div>
+  </div>
+  <div class="matrix">
+    <div class="matrix-quadrant">
+      <h4 class="h">High Impact · High Effort</h4>
+      <ul>
+        <li>Video Vault (full library UI)</li>
+        <li>AI Pause Trimmer</li>
+        <li>Transcript Engine (Whisper)</li>
+        <li>Social Publish (YouTube)</li>
+        <li>Transcript-Based Editing</li>
+      </ul>
+    </div>
+    <div class="matrix-quadrant">
+      <h4 class="m">High Impact · Low Effort</h4>
+      <ul>
+        <li>Audio Chain Fix (AGC off + loudnorm)</li>
+        <li>Mic meter on recording stream</li>
+        <li>Hardware encoder selection</li>
+        <li>Thumbnail generation (FFmpeg -vframes 1)</li>
+        <li>Bluetooth headset warning</li>
+      </ul>
+    </div>
+    <div class="matrix-quadrant">
+      <h4 class="l">Low Impact · High Effort</h4>
+      <ul>
+        <li>Transcript-based edit UI</li>
+        <li>WebGL2 real-time LUT preview</li>
+        <li>Face-tracking zoom</li>
+        <li>Stitch / multi-clip timeline</li>
+        <li>Analytics (requires cloud)</li>
+      </ul>
+    </div>
+    <div class="matrix-quadrant">
+      <h4 class="b">Low Impact · Low Effort</h4>
+      <ul>
+        <li>Brightness/contrast sliders</li>
+        <li>SRT/VTT export from transcript</li>
+        <li>Copy shareable link</li>
+        <li>Cam-only recording mode</li>
+      </ul>
+    </div>
+  </div>
+  <div class="matrix-axis-labels" style="margin-top:2px;margin-bottom:0">
+    <div class="matrix-axis-label">Low Impact</div>
+    <div class="matrix-axis-label">Low Impact</div>
+  </div>
+</section>
+
+<hr>
+
+<!-- AUDIO FIX -->
+<section class="section" id="audio">
+  <div class="section-eyebrow">06 — Technical Spec · Audio</div>
+  <h2>Audio chain fix — P0 defects</h2>
+  <p>Three confirmed defects in the current audio path, all in <code>src/renderer/recorder/recorder.js</code>.</p>
+
+  <h3>Fix 1 — Disable browser audio processing</h3>
+  <p>The <code>getUserMedia</code> call currently uses browser defaults. All three processing stages must be explicitly disabled for recording.</p>
+<pre>// recorder.js — getUserMedia constraints
+const audioConstraints = {
+  echoCancellation: false,    // was: true (default)
+  noiseSuppression: false,    // was: true (default)
+  autoGainControl:  false,    // was: true (default)
+  sampleRate:       48000,
+  channelCount:     2,
+};
+navigator.mediaDevices.getUserMedia({ audio: audioConstraints, video: false })</pre>
+
+  <h3>Fix 2 — Meter on recording stream, not preview</h3>
+  <p>Current meter reads a separate <code>getUserMedia</code> call. It must analyse the same track that feeds the <code>MediaRecorder</code>.</p>
+<pre>// After arm() opens the mic track:
+const analyser = audioCtx.createAnalyser();
+audioCtx.createMediaStreamSource(micStream).connect(analyser);
+// Pass analyser to control panel via IPC</pre>
+
+  <h3>Fix 3 — Loudness normalization in ffmpeg.js</h3>
+  <p>Add two passes to <code>ffmpeg.js</code>. The <code>dual_mono=true</code> flag is mandatory — omitting it causes a 3dB level error on mono microphone sources in stereo tracks.</p>
+<pre>// ffmpeg.js — loudnorm pass (add to audio filter chain)
+const audioFilters = [
+  'arnndn=m=sh.rnnn',          // RNN denoiser (bundled model)
+  'acompressor=threshold=-18dB:ratio=4:attack=5:release=50',
+  'loudnorm=I=-16:TP=-1.5:LRA=11:dual_mono=true',
+  'alimiter=level_in=1:level_out=1:limit=0.95:attack=5:release=50',
+].join(',');</pre>
+
+  <h3>Fix 4 — Bluetooth headset warning</h3>
+  <p>When a BT device enters HFP/SCO mode (mic active), sample rate drops to 8 kHz (CVSD) or 16 kHz (mSBC). Detect this via <code>MediaTrackSettings.sampleRate</code> after track opens and warn the user before they start recording.</p>
+<pre>const settings = micTrack.getSettings();
+if (settings.sampleRate && settings.sampleRate < 44100) {
+  warnings.push(`Bluetooth mic is in call mode (${settings.sampleRate/1000}kHz). Audio quality will be low. Consider switching to wired.`);
+}</pre>
+</section>
+
+<hr>
+
+<!-- VIDEO VAULT -->
+<section class="section" id="vault">
+  <div class="section-eyebrow">07 — Technical Spec · Library</div>
+  <h2>Video Vault</h2>
+  <p>A new BrowserWindow, opened from the control panel "My Recordings" button. Shows every MP4 and WebM in the configured save folder. Persistent index in <code>vault.json</code> next to the save folder.</p>
+
+  <h3>Layout</h3>
+  <ul class="spec">
+    <li><strong>Grid view:</strong> 3-column responsive grid. Card = thumbnail + filename + duration + date chip.</li>
+    <li><strong>Hover-to-loop:</strong> On <code>mouseenter</code>, extract 2 seconds around the 10% mark (action is usually there) using <code>&lt;video&gt;</code> with <code>currentTime</code> scrubbing. Play muted loop on hover.</li>
+    <li><strong>Click:</strong> Open in system player (<code>shell.openPath</code>).</li>
+    <li><strong>Quick actions:</strong> Rename, Edit (opens Editor window), Copy path, Share, Delete.</li>
+    <li><strong>Metadata row:</strong> Duration · Codec · Resolution · File size · Recorded date.</li>
+  </ul>
+
+  <h3>Thumbnail generation</h3>
+<pre>// vault.js — generate thumbnail on save
+// Called from main.js after recording completes
+async function generateThumb(videoPath, thumbPath) {
+  const args = [
+    '-ss', '0.5',         // grab at 0.5s
+    '-i', videoPath,
+    '-vframes', '1',
+    '-vf', 'scale=320:-1',
+    '-q:v', '2',
+    thumbPath
+  ];
+  await runFfmpeg(args);
+}</pre>
+
+  <h3>Index file schema</h3>
+<pre>// vault.json (lives in save folder)
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "rec-1731234567-abc",
+      "path": "C:/Users/.../MOB Recordings/2026-11-09_14-30.mp4",
+      "thumb": "C:/Users/.../MOB Recordings/.thumbs/rec-1731234567-abc.jpg",
+      "duration": 142.3,
+      "codec": "h264",
+      "resolution": "1920x1080",
+      "size": 42378240,
+      "created": "2026-11-09T14:30:00Z",
+      "title": null,
+      "transcript": null
+    }
+  ]
+}</pre>
+</section>
+
+<hr>
+
+<!-- EDIT SUITE -->
+<section class="section" id="edit">
+  <div class="section-eyebrow">08 — Technical Spec · Editor</div>
+  <h2>Edit suite</h2>
+  <p>5th BrowserWindow, opened from Vault or post-recording. Single-track waveform + video preview. Non-destructive: edits produce a new output file, source is never touched.</p>
+
+  <h3>Waveform renderer</h3>
+  <p>FFmpeg <code>showwavespic</code> filter generates a waveform PNG once. Displayed in a Canvas. Trim handles are absolutely positioned div elements with drag handlers. Scrubber is a hidden <code>&lt;video&gt;</code> element synced to handle position.</p>
+
+  <h3>Trim pipeline</h3>
+<pre>// In ffmpeg.js — trim (stream copy, near-instant)
+async function trim(inputPath, outputPath, startSec, endSec) {
+  return runFfmpeg([
+    '-ss', startSec.toFixed(3),
+    '-i', inputPath,
+    '-to', (endSec - startSec).toFixed(3),
+    '-c', 'copy',          // stream copy = no re-encode
+    '-avoid_negative_ts', 'make_zero',
+    outputPath
+  ]);
+}</pre>
+
+  <h3>Multi-cut / "Scratch That" pipeline</h3>
+<pre>// Build a concat filter from an array of [start, end] keep segments
+function buildConcat(segments) {
+  const parts = segments.map((seg, i) =>
+    `-ss ${seg[0]} -to ${seg[1]} -i ${INPUT} -map ${i}:v -map ${i}:a`
+  );
+  return [...parts, `-filter_complex concat=n=${segments.length}:v=1:a=1`];
+}</pre>
+</section>
+
+<hr>
+
+<!-- AI PIPELINE -->
+<section class="section" id="ai">
+  <div class="section-eyebrow">09 — Technical Spec · AI</div>
+  <h2>AI pipeline</h2>
+
+  <h3>Silence / pause detection</h3>
+  <p>FFmpeg <code>silencedetect</code> filter parses audio for gaps above a threshold. Output is stderr text that maps to timestamps. No ML required for this step.</p>
+<pre>// ai-edit.js
+async function detectSilences(videoPath, { noise='-50dB', duration=0.5 } = {}) {
+  const stderr = await runFfmpegCapture([
+    '-i', videoPath,
+    '-af', `silencedetect=noise=${noise}:duration=${duration}`,
+    '-f', 'null', '-'
+  ]);
+  // parse: "silence_start: 12.34\n silence_end: 13.78 | silence_duration: 1.44"
+  const starts = [...stderr.matchAll(/silence_start: (\d+\.?\d*)/g)].map(m => +m[1]);
+  const ends   = [...stderr.matchAll(/silence_end: (\d+\.?\d*)/g)].map(m => +m[1]);
+  return starts.map((s,i) => ({ start: s, end: ends[i] }));
+}</pre>
+
+  <h3>Whisper.cpp transcript sidecar</h3>
+  <p>Whisper runs as a <code>child_process</code> from <code>whisper-node</code> npm package (bundles a prebuilt binary). Takes audio extracted from the recording. Returns word-level JSON timestamps.</p>
+<pre>// ai-edit.js — transcript
+const { whisper } = require('whisper-node');
+
+async function transcribe(videoPath) {
+  // 1. Extract mono 16kHz WAV (Whisper's native format)
+  const wavPath = videoPath.replace(/\.\w+$/, '.wav');
+  await runFfmpeg(['-i', videoPath, '-ar', '16000', '-ac', '1', '-f', 'wav', wavPath]);
+
+  // 2. Run Whisper (ggml-base.en model, ~150MB bundled)
+  const result = await whisper(wavPath, {
+    modelName:    'base.en',
+    whisperOptions: { word_timestamps: true }
+  });
+  return result; // [{ start, end, text, words: [{word, start, end}] }]
+}</pre>
+
+  <h3>Auto pause-trim using silence map</h3>
+<pre>function buildKeepSegments(duration, silences, minGap=0.5) {
+  const cuts = [];
+  let cursor = 0;
+  for (const s of silences) {
+    if (s.end - s.start >= minGap) {
+      cuts.push([cursor, s.start]);   // keep this segment
+      cursor = s.end;
+    }
+  }
+  cuts.push([cursor, duration]);
+  return cuts.filter(([a,b]) => b - a > 0.1);
+}</pre>
+</section>
+
+<hr>
+
+<!-- COLOR GRADE -->
+<section class="section" id="grade">
+  <div class="section-eyebrow">10 — Technical Spec · Grade</div>
+  <h2>Color grade</h2>
+
+  <h3>.cube LUT format</h3>
+  <p>Standard 3D LUT format. FFmpeg's <code>lut3d</code> filter accepts it natively. File is a 33×33×33 or 64×64×64 grid of RGB output values for every input RGB.</p>
+<pre># ffmpeg.js — apply LUT
+buildArgs({ lut: '/path/to/cinematic.cube' }) {
+  // Add to video filter chain:
+  'lut3d=/path/to/cinematic.cube:interp=trilinear'
+}</pre>
+
+  <h3>Real-time LUT preview (compositor)</h3>
+  <p>Upload the .cube data as a WebGL2 <code>TEXTURE_3D</code> in the recorder's canvas compositor. Apply as a fragment shader lookup on each composite frame before recording begins. This gives real-time graded preview in the bubble.</p>
+<pre>// WebGL2 fragment shader snippet
+uniform sampler3D uLUT;
+vec3 applyLUT(vec3 color) {
+  vec3 scale = vec3((LUT_SIZE - 1.0) / LUT_SIZE);
+  vec3 offset = vec3(0.5 / LUT_SIZE);
+  return texture(uLUT, color * scale + offset).rgb;
+}</pre>
+
+  <h3>Bundled LUT pack</h3>
+  <p>Ship 6 cinematic LUTs with the installer (Creative Commons licensed): Warm Cinematic, Cool Desaturated, Film Fade, Punchy Contrast, Muted Earth, Monochrome. Each under 500KB as a 33³ .cube.</p>
+</section>
+
+<hr>
+
+<!-- CODEC MODERNIZATION -->
+<section class="section" id="codecs">
+  <div class="section-eyebrow">11 — Technical Spec · Codecs</div>
+  <h2>Codec modernization</h2>
+
+  <h3>Hardware encoder selection</h3>
+  <p>Probe at startup by attempting a 1-second test encode with each encoder. First one that succeeds becomes the default for the session.</p>
+<pre>// main.js — boot probe (runs once, ~200ms total)
+const HW_ENCODERS = ['h264_qsv', 'h264_nvenc', 'h264_amf'];
+
+async function probeHardwareEncoder() {
+  for (const enc of HW_ENCODERS) {
+    try {
+      await runFfmpeg([
+        '-f', 'lavfi', '-i', 'nullsrc=s=1280x720:r=30:d=1',
+        '-c:v', enc, '-f', 'null', '-'
+      ], { timeout: 3000 });
+      return enc;
+    } catch {}
+  }
+  return 'libx264';  // software fallback
+}</pre>
+
+  <h3>AV1 road map</h3>
+  <ul class="spec">
+    <li><strong>libsvtav1:</strong> Fastest AV1 encoder. ~30% smaller files than H.264 at same quality. Available in ffmpeg-static 6+. Use for export, not intermediate.</li>
+    <li><strong>av1_nvenc:</strong> RTX 30+ series only. Checks same probe loop.</li>
+    <li><strong>Intermediate:</strong> Keep H.264/VP9 as intermediate. AV1 for final export only — encoding latency too high for real-time composite.</li>
+    <li><strong>WebCodecs:</strong> Available in Electron 33 (Chromium 130+). <code>VideoEncoder</code> API is stable. Can replace <code>MediaRecorder</code> for precise frame control. Deferred — requires a rewrite of recorder.js and is not needed for Build 9.</li>
+  </ul>
+
+  <h3>Recommended presets by quality tier</h3>
+<pre>// ffmpeg.js — encoding presets
+const PRESETS = {
+  fast:    { preset: 'veryfast', crf: 25 },   // small files, quick
+  balanced:{ preset: 'medium',   crf: 23 },   // default
+  quality: { preset: 'slow',     crf: 18 },   // archive / master
+};</pre>
+  <p>Note: <code>slow</code> is <strong>only</strong> for archival export — 2× encode time for minimal visible gain on screen content. Never used as the recording intermediate.</p>
+</section>
+
+<hr>
+
+<!-- SOCIAL PUBLISH -->
+<section class="section" id="social">
+  <div class="section-eyebrow">12 — Technical Spec · Social</div>
+  <h2>Social publish pipeline</h2>
+
+  <h3>OAuth2 from Electron (all platforms)</h3>
+  <p>Register a custom protocol in main.js: <code>mob-recorder://oauth</code>. Open the platform auth URL in the system browser. When the platform redirects to <code>mob-recorder://oauth?code=...</code>, Electron catches it via <code>app.setAsDefaultProtocolClient</code>. No local web server needed.</p>
+<pre>// main.js — OAuth protocol handler
+app.setAsDefaultProtocolClient('mob-recorder');
+app.on('open-url', (event, url) => {
+  const { searchParams } = new URL(url);
+  const code = searchParams.get('code');
+  exchangeCodeForTokens(code);
+});
+// Token storage
+const keytar = require('keytar');
+await keytar.setPassword('mob-recorder', platform, JSON.stringify(tokens));</pre>
+
+  <h3>Platform specifics</h3>
+  <div class="gap-table-wrap">
+    <table class="gap">
+      <thead>
+        <tr><th>Platform</th><th>API</th><th>Max File</th><th>Desktop OAuth</th><th>Feasibility</th><th>Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="feature-name">YouTube</td><td>Data API v3 · resumable upload</td><td>256GB / 12h</td><td>PKCE ✓ custom scheme</td><td><span class="status exists">Excellent</span></td><td><span class="pri p1">P1</span></td></tr>
+        <tr><td class="feature-name">LinkedIn</td><td>Video API · personal + company</td><td>5GB / 15m</td><td>PKCE ✓</td><td><span class="status exists">Good</span></td><td><span class="pri p2">P2</span></td></tr>
+        <tr><td class="feature-name">Twitter/X</td><td>v2 media upload chunked</td><td>512MB / 2:20 (free)</td><td>PKCE ✓</td><td><span class="status partial">Moderate</span></td><td><span class="pri p2">P2</span></td></tr>
+        <tr><td class="feature-name">TikTok</td><td>Developer API v2</td><td>4GB</td><td>PKCE ✓ (draft-only on free)</td><td><span class="status partial">Limited</span></td><td><span class="pri p2">P2</span></td></tr>
+        <tr><td class="feature-name">Instagram</td><td>Meta Graph API Reels</td><td>Requires business acct</td><td>Requires Meta app approval</td><td><span class="status missing">Hard</span></td><td><span class="pri p3">P3</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Minimum viable sharing (fastest path)</h3>
+  <p>Upload MP4 to Cloudflare R2 (or S3). Copy a CDN URL to clipboard. No OAuth, no platform, one API call. Can ship in Phase 1 alongside Vault as a "Copy link" button.</p>
+<pre>// social.js — R2 upload (AWS SDK compatible)
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const client = new S3Client({ endpoint: R2_ENDPOINT, region: 'auto', credentials });
+await client.send(new PutObjectCommand({
+  Bucket: 'mob-recordings',
+  Key:    `${uuid()}.mp4`,
+  Body:   fs.createReadStream(videoPath),
+  ContentType: 'video/mp4',
+}));
+// Returns: https://cdn.mob.to/abc123.mp4</pre>
+</section>
+
+<hr>
+
+<!-- OPEN QUESTIONS -->
+<section class="section" id="open">
+  <div class="section-eyebrow">13 — Architecture + Decisions</div>
+  <h2>Four-mode architecture</h2>
+  <p>The app works like Premiere: distinct workspaces for each phase of the production pipeline. One button switches mode. The AI layer runs underneath all four.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0">
+    <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--red);border-radius:8px;padding:16px">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--red);letter-spacing:.08em;margin-bottom:8px">MODE 1</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px">Camera</div>
+      <div style="font-size:12px;color:var(--fg2);line-height:1.5">Device selection, countdown, record/pause/stop, live mic meter, camera bubble, region selector. Everything that happens before the recording exists.</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--fg3)">AI: VAD indicator · retake marker hotkey</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:8px;padding:16px">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--gold);letter-spacing:.08em;margin-bottom:8px">MODE 2</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px">Edit</div>
+      <div style="font-size:12px;color:var(--fg2);line-height:1.5">Waveform trim, in/out handles, multi-cut concat, silence removal slider, transcript view, filler word removal, stitch multiple clips.</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--fg3)">AI: auto-silence trim · Whisper transcript · filler removal</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:8px;padding:16px">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--blue);letter-spacing:.08em;margin-bottom:8px">MODE 3</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px">Production</div>
+      <div style="font-size:12px;color:var(--fg2);line-height:1.5">LUT browser + grade, background blur, noise reduction, loudness normalization, codec/resolution picker, hardware encoder probe.</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--fg3)">AI: auto-loudnorm · suggested LUT by content type</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-top:3px solid var(--green);border-radius:8px;padding:16px">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--green);letter-spacing:.08em;margin-bottom:8px">MODE 4</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:8px">Distribution</div>
+      <div style="font-size:12px;color:var(--fg2);line-height:1.5">Video Vault library, R2 shareable link, YouTube direct upload, LinkedIn, TikTok Inbox, SRT export, transcript copy.</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--fg3)">AI: auto-title from transcript · platform optimization</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:32px">Resolved decisions</h2>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q1 — Cloud hosting → Cloudflare R2</h4>
+    <p>Zero egress fees. Files stored at $0.015/GB. Upload via <code>@aws-sdk/lib-storage</code> (R2 is S3-compatible). Pre-signed URL copied to clipboard. Ships as the first Distribution feature — no OAuth, no platform review, one API call. Prerequisite for Instagram (which only accepts public HTTPS URLs, not binary uploads).</p>
+  </div>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q2 — Whisper model → base.en (148MB bundled)</h4>
+    <p>Recommended tier: 2–4× more accurate than tiny.en at screen-recording speech. Ships inside the .exe. Real-time factor ~0.1–0.3× (a 10-minute recording transcribes in 60–180 seconds on CPU). Enables word-level timestamps → filler removal → SRT export → transcript-based editing.</p>
+  </div>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q3 — Social platforms → no paid APIs</h4>
+    <p>Build order: R2 shareable link → YouTube → LinkedIn → TikTok Inbox mode → Facebook Pages. Twitter/X deferred (requires $100/month API access; surface only after owner decides to absorb the cost). Instagram deferred (90-second cap kills most screen recordings; personal accounts have zero API access).</p>
+  </div>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q4 — Pause threshold → user-configurable slider, three presets</h4>
+    <p>UI ships a labeled slider with three named stops so the owner can feel the difference on real recordings before committing to a default.</p>
+    <div class="options">
+      <span class="opt" style="border-color:var(--gold)">300ms — tight edit, broadcast pace</span>
+      <span class="opt" style="border-color:var(--gold)">500ms — Loom default, natural speech</span>
+      <span class="opt" style="border-color:var(--gold)">750ms — relaxed, keeps breathing room</span>
+    </div>
+    <p style="margin-top:8px;font-size:12px;color:var(--fg2)">Default on first open: 500ms. Persisted per user. The slider live-previews which pauses would be cut before applying.</p>
+  </div>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q5 — Save folder → %USERPROFILE%\Videos\MOB Recordings</h4>
+    <p>Created on first save if it does not exist. User can change it in settings. Vault index (vault.json) lives in the same folder.</p>
+  </div>
+
+  <div class="question-block" style="border-left-color:var(--green)">
+    <h4>✅ Q6 — Vault hover-loop → native &lt;video&gt; scrub</h4>
+    <p>Set <code>video.currentTime</code> to 10% mark on mouseenter, play for 3 seconds, reset on mouseleave. Zero extra file, no GIF. CPU cost: negligible (H.264 decode on hardware).</p>
+  </div>
+</section>
+
+<!-- DESCRIPT ANALYSIS -->
+<section class="section" id="descript">
+  <div class="section-eyebrow">14 — Descript Competitive Analysis</div>
+  <h2>Descript vs MOB: automation gap</h2>
+
+  <p>Descript's core paradigm: <strong>the transcript IS the timeline</strong>. Delete words from the transcript → video cuts itself. That single idea ships 65 features. MOB's core advantage: a native recording kernel with hardware-accelerated compositing Descript doesn't have. The strategy is to match Descript's auto-edit automation while keeping our recording quality edge.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Descript Features</div>
+      <div class="stat-value gold">65</div>
+      <div class="stat-sub">catalogued</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">MOB Parity</div>
+      <div class="stat-value red">~11%</div>
+      <div class="stat-sub">~7 full · 2 partial</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">AI Powering Descript</div>
+      <div class="stat-value gold">Underlord</div>
+      <div class="stat-sub">plain-English edit commands</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Our AI Tier</div>
+      <div class="stat-value gold">base.en</div>
+      <div class="stat-sub">Whisper · offline · 148MB</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:2rem;margin-bottom:1rem">Critical automation gaps (fully-auto or one-click in Descript)</h3>
+  <table class="feature-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Descript tier</th>
+        <th>MOB status</th>
+        <th>Build target</th>
+        <th>Implementation path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feature-name">Live transcription during recording</td>
+        <td><span class="chip green" style="font-size:11px">Fully auto</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 10</span></td>
+        <td>Whisper.cpp streaming via chunked PCM pipe; word-level timestamps</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Studio Sound AI noise removal</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 9</span></td>
+        <td>arnndn model (<code>sh.rnnn</code>) in FFmpeg audio chain; zero latency on export</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Filler word removal (um/uh/like)</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 10</span></td>
+        <td>Whisper word timestamps → regex match filler list → cut segments with 50ms padding</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Auto captions from transcript</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 10</span></td>
+        <td>Whisper JSON → SRT/VTT → FFmpeg <code>subtitles</code> filter or burnt-in via <code>ass</code></td>
+      </tr>
+      <tr>
+        <td class="feature-name">Auto silence/pause removal</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 10</span></td>
+        <td><code>silencedetect=n=-50dB:d=0.5:mono=true</code> → segment list → user-confirmed multi-cut</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Speaker diarization</td>
+        <td><span class="chip green" style="font-size:11px">Fully auto</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 11</span></td>
+        <td>pyannote-audio or whispering via CLI sidecar; labels speakers in transcript JSON</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Eye contact correction</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 12</span></td>
+        <td>MediaPipe face landmark → gaze vector → warp iris toward camera center; GPU required</td>
+      </tr>
+      <tr>
+        <td class="feature-name">AI Green Screen</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 11</span></td>
+        <td>MediaPipe Tasks segmentation (<code>selfie_multiclass_256x256.tflite</code>) → custom BG composite</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Social media clip generation (15–60s)</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 12</span></td>
+        <td>Transcript energy peaks → candidate windows → user-pick or Whisper summary scoring</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Show notes generation</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 12</span></td>
+        <td>Whisper transcript → Claude API summarize → markdown notes written to sidecar .md file</td>
+      </tr>
+      <tr>
+        <td class="feature-name">YouTube description generation</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p2">P2 · Build 12</span></td>
+        <td>Same transcript → title + description + tags; prefilled before YouTube upload dialog</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Rough-cut automation (Underlord)</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p3">P3 · Build 13</span></td>
+        <td>Plain-English instruction → Claude API → structured cut list → apply to timeline</td>
+      </tr>
+      <tr>
+        <td class="feature-name">SRT / VTT subtitle export</td>
+        <td><span class="chip gold" style="font-size:11px">One-click</span></td>
+        <td><span class="status missing">✗ Missing</span></td>
+        <td><span class="pri p1">P1 · Build 10</span></td>
+        <td>Whisper JSON → <code>assembleSubtitles()</code> → write .srt + .vtt alongside video</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:2rem;margin-bottom:1rem">MOB's recording-quality advantages over Descript</h3>
+  <ul>
+    <li><strong>Hardware compositor.</strong> <code>MediaStreamTrackProcessor</code> at 11ms mean / 22ms p95. Descript captures via system screen recorder — no camera shape compositing, no hardware encoder probe.</li>
+    <li><strong>7 camera shapes + drag/resize.</strong> Descript has a fixed circular overlay. We ship rectangle, circle, pill, diamond, hexagon, triangle, full-frame.</li>
+    <li><strong>HW encoder probe.</strong> nvenc / qsv / amf auto-selected. Descript exports only H.264/AAC via CPU.</li>
+    <li><strong>EBU R128 two-pass loudnorm.</strong> Measured pass + linear correction. Descript's Studio Sound is perceptual only.</li>
+    <li><strong>No subscription.</strong> Descript is $12–$24/seat/month. MOB is a one-time local exe.</li>
+  </ul>
+
+  <h3 style="margin-top:2rem;margin-bottom:1rem">Automation build sequence (Builds 9–12)</h3>
+  <div class="timeline" style="margin-top:1rem">
+    <div class="timeline-item active">
+      <h4>Build 9 — Noise removal + audio chain</h4>
+      <p>arnndn noise removal, AGC/noiseSuppression/echoCancellation all disabled, BT HFP warning, mic meter on recording stream, EBU R128 two-pass loudnorm on export. First Studio Sound equivalent.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 10 — Transcript + auto-edit</h4>
+      <p>Whisper base.en sidecar, word-level timestamps, SRT/VTT export, silence/pause detector with 300/500/750ms slider, filler word removal (um/uh/like), one-click auto-trim preview.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 11 — Visual AI</h4>
+      <p>Background blur + AI Green Screen (MediaPipe Tasks), LUT browser (6 presets), speaker diarization, face-track zoom probe.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 12 — Smart distribution</h4>
+      <p>Clip generator (15–60s), show notes + YouTube description from transcript, eye contact correction, full publish pipeline (R2 → YouTube → LinkedIn → TikTok Inbox).</p>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- VOICE COMMANDS -->
+<section class="section" id="voice">
+  <div class="section-eyebrow">16 — Voice Command Architecture</div>
+  <h2>Fully automated pipeline via voice</h2>
+
+  <p>Drive the full pipeline — record → auto-edit → grade → export — without touching the mouse. Two-tier offline stack: Porcupine WASM for wake word detection, Vosk WASM for grammar-constrained command recognition. No native module rebuilds, no cloud API calls, no mic data leaves the machine.</p>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Wake word latency</div>
+      <div class="stat-value green">30–50ms</div>
+      <div class="stat-sub">Porcupine WASM</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Command latency</div>
+      <div class="stat-value green">100–200ms</div>
+      <div class="stat-sub">Vosk grammar-constrained</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">CPU — wake idle</div>
+      <div class="stat-value green">~1%</div>
+      <div class="stat-sub">continuous background listen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">CPU — command window</div>
+      <div class="stat-value gold">2–4%</div>
+      <div class="stat-sub">3s window peak</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">False positives</div>
+      <div class="stat-value gold">~1/10h</div>
+      <div class="stat-sub">office ambient audio</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">New packages</div>
+      <div class="stat-value green">2</div>
+      <div class="stat-sub">porcupine-web + vosk-browser</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">Recognition stack</h3>
+  <table class="feature-table">
+    <thead>
+      <tr><th>Tier</th><th>Package</th><th>Version</th><th>Job</th><th>License</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feature-name">Wake word</td>
+        <td><code>@picovoice/porcupine-web</code></td>
+        <td>3.0.6</td>
+        <td>Detects "Hey MOB" before passing audio to Vosk. 30–50ms latency, ~1% CPU continuous. Custom .ppn file generated at console.picovoice.ai with 25 voice samples.</td>
+        <td>Commercial (Picovoice)</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Command recognition</td>
+        <td><code>vosk-browser</code></td>
+        <td>0.0.8</td>
+        <td>Grammar-constrained phrase list per mode (5 phrases IDLE → 12 phrases EDITING). Runs in a Web Worker in the hidden BrowserWindow renderer. Model: <code>vosk-model-small-en-us-0.15</code> (~40MB, bundled). Apache 2.0.</td>
+        <td>Apache 2.0</td>
+      </tr>
+      <tr>
+        <td class="feature-name">VAD gate</td>
+        <td>Silero VAD</td>
+        <td>already in app</td>
+        <td>Gates audio into Vosk — only passes speech frames. Cuts effective Vosk CPU in half. Runs before Porcupine listener too.</td>
+        <td>MIT</td>
+      </tr>
+      <tr>
+        <td class="feature-name">Post-processing</td>
+        <td>Whisper.cpp sidecar</td>
+        <td>already in app</td>
+        <td>Filler word detection (word-level timestamps), SRT/VTT generation, transcript export. Not real-time (500ms–2s), accuracy-first for edit commands.</td>
+        <td>MIT</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:1rem;padding:0.75rem 1rem;background:var(--code-bg);border-left:3px solid var(--gold);border-radius:4px;font-size:13px"><strong>Fallback (no Porcupine license):</strong> Add "hey mob" to the Vosk grammar. Wake latency rises to 150–250ms, false positive rate ~1/4h. One-line change in <code>grammar.js</code>. Everything else identical.</p>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">Architecture: hidden BrowserWindow renderer</h3>
+  <p><code>getUserMedia</code> works naturally in Chromium. Silero VAD, Porcupine, and Vosk all run as Web Workers in a hidden BrowserWindow renderer — no PortAudio, no native module rebuild on each Electron version bump. The renderer posts detected commands to the main process via IPC; the main process dispatches to the appropriate pipeline handler.</p>
+  <div class="code-block"><pre><code>// Electron main process — voice IPC bridge
+const voiceWin = new BrowserWindow({ show: false, webPreferences: { nodeIntegration: true } });
+voiceWin.loadFile('voice-engine.html');
+
+ipcMain.on('voice:command', (_, { state, command }) => {
+  CommandDispatcher.dispatch(state, command);  // routes to FFmpeg / recorder / vault
+});
+
+// voice-engine.html renderer
+// Porcupine Web Worker → detects "Hey MOB" wake word
+// Vosk Web Worker (grammar mode) → recognizes command phrase within 3s window
+// AudioWorklet → captures mic PCM and feeds both workers
+// On match: ipcRenderer.send('voice:command', { state, command })</code></pre></div>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">State machine</h3>
+  <p>Grammar re-initializes on state transition (~40ms). "Stop" only in grammar during RECORDING. Each LISTENING_* sub-state times out after 3 seconds if no command matches.</p>
+  <table class="feature-table">
+    <thead>
+      <tr><th>State</th><th>Grammar size</th><th>Transitions on</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="feature-name">IDLE</td><td>5 phrases</td><td>"start recording" → RECORDING</td></tr>
+      <tr><td class="feature-name">LISTENING_RECORDING</td><td>7 phrases</td><td>"done" / "stop recording" → EDITING · "pause" ⇄ "resume" · "cut that" / "new take" / "chapter here" / "highlight this"</td></tr>
+      <tr><td class="feature-name">LISTENING_EDITING</td><td>12 phrases</td><td>"remove filler words" / "trim silences" / "clean audio" / "add captions" / "make a clip" / "ready to grade" → GRADING</td></tr>
+      <tr><td class="feature-name">LISTENING_GRADING</td><td>6 phrases</td><td>"apply cinematic grade" / "apply clean grade" / "normalize audio" / "export for youtube" → DISTRIBUTING</td></tr>
+      <tr><td class="feature-name">LISTENING_DISTRIBUTING</td><td>4 phrases</td><td>"upload to youtube" / "copy share link" / "upload to tiktok" / "done"</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">Voice feedback rules</h3>
+  <ul>
+    <li><strong>No audio during RECORDING.</strong> Any chime is captured by the mic and enters the final file. RECORDING state: visual-only feedback (floating toast, bottom-right, 1.2s fade).</li>
+    <li><strong>All other states:</strong> four pre-recorded audio clips, embedded as base64 data URIs (no disk-read latency): <em>wake</em>, <em>confirm</em>, <em>working</em>, <em>done/fail</em>.</li>
+    <li><strong>Toast content:</strong> command text + current state + action triggered. Disappears 1.2s after appear.</li>
+  </ul>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">Full zero-click pipeline</h3>
+  <p>After the first YouTube OAuth consent (one-time, stored via <code>safeStorage.encryptString</code>), every subsequent run is hands-free:</p>
+  <div class="code-block"><pre><code>"Hey MOB start recording"
+→ [record — speak naturally]
+→ "Hey MOB cut that"         // marks retake boundary
+→ "Hey MOB done"             // stops recording, opens Edit mode
+→ "Hey MOB remove filler words"  // Whisper timestamps → FFmpeg concat
+→ "Hey MOB trim silences"    // silencedetect → auto-cut
+→ "Hey MOB clean up audio"   // arnndn + loudnorm two-pass
+→ "Hey MOB add captions"     // Whisper → SRT/VTT sidecar
+→ "Hey MOB ready to grade"
+→ "Hey MOB apply cinematic grade"  // LUT preset
+→ "Hey MOB normalize audio"  // EBU R128 final pass
+→ "Hey MOB export for youtube"
+→ "Hey MOB ready to publish"
+→ "Hey MOB upload to youtube"  // resumable upload, no OAuth prompt after first
+→ "Hey MOB copy share link"  // R2 pre-signed URL → clipboard</code></pre></div>
+  <p>Only mandatory mouse interaction: YouTube OAuth consent window on first use only.</p>
+
+  <h3 style="margin-top:2rem;margin-bottom:0.75rem">Full command vocabulary (by mode)</h3>
+  <table class="feature-table">
+    <thead>
+      <tr>
+        <th>Command phrase</th>
+        <th>Mode</th>
+        <th>What it triggers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="feature-name">"start recording"</td><td>Idle</td><td>Arms devices + countdown + MediaRecorder start</td></tr>
+      <tr><td class="feature-name">"pause" / "resume"</td><td>Camera</td><td>MediaRecorder pause/resume; mic meter continues; visual-only toast</td></tr>
+      <tr><td class="feature-name">"cut that"</td><td>Camera</td><td>Marks last 5s as retake candidate (confirmed in Edit)</td></tr>
+      <tr><td class="feature-name">"new take" / "scratch that"</td><td>Camera</td><td>Same as "cut that" — retake boundary in timeline</td></tr>
+      <tr><td class="feature-name">"chapter here"</td><td>Camera</td><td>Inserts named chapter marker at current timestamp</td></tr>
+      <tr><td class="feature-name">"highlight this"</td><td>Camera</td><td>Tags current timestamp range for clip extraction</td></tr>
+      <tr><td class="feature-name">"done" / "stop recording"</td><td>Camera</td><td>Stops MediaRecorder → FFmpeg finalize → opens Edit mode</td></tr>
+      <tr><td class="feature-name">"remove filler words"</td><td>Edit</td><td>Whisper word timestamps → regex filler list → FFmpeg concat with 50ms pad</td></tr>
+      <tr><td class="feature-name">"trim silences"</td><td>Edit</td><td>silencedetect -50dB/0.5s → segment list → multi-cut concat</td></tr>
+      <tr><td class="feature-name">"clean up audio" / "clean audio"</td><td>Edit</td><td>arnndn + acompressor + loudnorm chain export</td></tr>
+      <tr><td class="feature-name">"add captions"</td><td>Edit</td><td>Whisper JSON → SRT + VTT sidecar files</td></tr>
+      <tr><td class="feature-name">"make a clip"</td><td>Edit</td><td>Energy-peak scoring → 15–60s clip suggestion</td></tr>
+      <tr><td class="feature-name">"ready to grade"</td><td>Edit → Production</td><td>Transitions state machine to GRADING, opens Production mode</td></tr>
+      <tr><td class="feature-name">"apply cinematic grade"</td><td>Production</td><td>Applies bundled cinematic LUT via FFmpeg lut3d</td></tr>
+      <tr><td class="feature-name">"apply clean grade"</td><td>Production</td><td>Applies neutral clean LUT (subtle grade)</td></tr>
+      <tr><td class="feature-name">"normalize audio"</td><td>Production</td><td>EBU R128 two-pass loudnorm final pass</td></tr>
+      <tr><td class="feature-name">"export for youtube"</td><td>Production</td><td>H.264 + AAC, 1080p, loudnorm, burnt-in SRT if captions generated</td></tr>
+      <tr><td class="feature-name">"ready to publish"</td><td>Production → Distribution</td><td>Transitions to DISTRIBUTING, opens Distribution mode</td></tr>
+      <tr><td class="feature-name">"upload to youtube"</td><td>Distribution</td><td>Resumable upload; OAuth PKCE loopback first time only</td></tr>
+      <tr><td class="feature-name">"upload to tiktok"</td><td>Distribution</td><td>TikTok Inbox upload (no app review required)</td></tr>
+      <tr><td class="feature-name">"copy share link"</td><td>Distribution</td><td>R2 pre-signed URL → clipboard</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- TIMELINE -->
+<section class="section" id="timeline">
+  <div class="section-eyebrow">15 — Build Sequence</div>
+  <h2>Recommended build order</h2>
+
+  <div class="timeline">
+    <div class="timeline-item done">
+      <h4>Build 8 (complete)</h4>
+      <p>Compositor, encoding, idle optimization. p95 composite 22.4ms. Near-instant save via remux.</p>
+    </div>
+    <div class="timeline-item active">
+      <h4>Build 9 — Foundation fixes + Vault</h4>
+      <p>Audio chain fix (AGC off, loudnorm, dual_mono). Mic meter on recording stream. BT warning. Hardware encoder probe. Video Vault window with thumbnails and hover-loop. Trim tool (start/end handles).</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 10 — AI Edit</h4>
+      <p>Whisper.cpp sidecar. Transcript generation + SRT export. Silence/pause detector. Auto pause-trim with one-click apply. "Scratch That" retake marker.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 11 — Grade + Blur</h4>
+      <p>LUT browser with 6 bundled presets. FFmpeg lut3d apply. Background blur (MediaPipe WASM). Noise reduction (arnndn + voice chain).</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 12 — Publish</h4>
+      <p>Distribution mode UI. R2 shareable link (1–2 days, no OAuth). YouTube resumable upload + PKCE loopback OAuth + keytar token storage. LinkedIn register/PUT/poll. TikTok Inbox mode. Twitter/X and Instagram deferred (cost or platform restrictions).</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Build 13+ — Advanced</h4>
+      <p>Transcript-based text editing. AV1 export. Face-tracking zoom. Multi-clip timeline. Instagram/TikTok (pending platform requirements).</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+// Active nav highlighting on scroll
+const sections = document.querySelectorAll('.section');
+const links = document.querySelectorAll('.nav a');
+
+function updateNav() {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY + 80 >= s.offsetTop) current = s.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+</script>
