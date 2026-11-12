@@ -12,6 +12,11 @@ const Shapes = require('../shared/shapes');
 
 const PRELOAD = path.join(__dirname, '..', 'preload', 'preload.js');
 const R = (...p) => path.join(__dirname, '..', 'renderer', ...p);
+// #76: package.json's build.icon covers packaged installs; this is what an
+// unpackaged dev run shows instead of the generic Electron logo on Windows
+// and Linux taskbars (macOS dev-run Dock icon still falls back to
+// Electron's own — not worth app.dock.setIcon() for a dev-only cosmetic).
+const APP_ICON = path.join(__dirname, '..', '..', 'build', 'icon.png');
 
 const CONTROL_SIZE = { width: 412, height: 680 };
 const COMPACT_SIZE = { width: 320, height: 60 };
@@ -26,6 +31,7 @@ function createControlWindow() {
     resizable: true,
     backgroundColor: '#14161a',
     title: 'MOB Recorder',
+    icon: APP_ICON,
     // The panel may throttle in the background; it has nothing to keep alive
     // when it is not on screen. The bubble and the recorder must not throttle,
     // because they keep rendering while another app has focus.

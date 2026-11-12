@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b9dff"/>
+      <stop offset="1" stop-color="#3c6fd6"/>
+    </linearGradient>
+  </defs>
+  <!-- backdrop -->
+  <rect x="0" y="0" width="1024" height="1024" rx="192" fill="url(#bg)"/>
+  <!-- screen (the "Loom-style screen" half of the product) -->
+  <rect x="160" y="248" width="560" height="400" rx="40" fill="#0f1420"/>
+  <rect x="208" y="296" width="464" height="304" rx="16" fill="#eaf1ff"/>
+  <!-- camera bubble overlay, bottom-right of the screen, exactly like the app's own bubble -->
+  <circle cx="730" cy="730" r="190" fill="#0f1420"/>
+  <circle cx="730" cy="730" r="158" fill="#eaf1ff"/>
+  <!-- record dot -->
+  <circle cx="730" cy="730" r="62" fill="#ef4444"/>
+</svg>

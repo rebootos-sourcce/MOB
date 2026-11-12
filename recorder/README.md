@@ -3,9 +3,22 @@
 A local, Loom-style screen recorder for Windows. It records your screen with your
 webcam floating on top in a shape you choose (circle, rounded square, pill, hexagon…),
 captures your microphone, and saves a finished **MP4 (H.264)** or **WebM** to disk.
-Nothing is uploaded anywhere.
+Nothing is uploaded anywhere unless you explicitly configure Cloudflare sync.
 
-Built with Electron. Everything runs on your laptop.
+Built with Electron. Everything runs on your laptop. The app has four modes, one tab each:
+
+- **Camera** — record. Everything below this line in this README is Camera mode.
+- **Edit** — transcribe a recording (local Whisper, via `@xenova/transformers`), remove
+  detected filler words and silences, trim with in/out handles, create standalone clips,
+  run the "Studio Sound" audio chain, and render your cuts to an actual output file.
+- **Production** — generate a title, description, hashtags and chapter markers from the
+  transcript, regenerate any one of those fields without touching the others, and export
+  a JSON file plus a YouTube-ready description with the chapter list baked in.
+- **Distribution** — upload a recording and its production package to Cloudflare R2
+  (optional; only active once you set a Worker URL and API token under Output → Cloud).
+
+Edit requires a transcript, Production requires Edit's transcript, Distribution requires
+a Production package — each tab's "Select a recording" list only shows what's ready for it.
 
 ## What it does
 
@@ -160,34 +173,65 @@ recorder/
 ├── package.json
 ├── scripts/
 │   ├── smoke.js                  # headless end-to-end recording self-test
-│   └── shot.js                   # window screenshot capture for layout review
+│   ├── shot.js                   # window screenshot capture for layout review
+│   └── check-syntax.js           # recursive node --check over src/
+├── test/                         # node:test unit tests (npm test)
 └── src/
     ├── main/
     │   ├── main.js               # app lifecycle, recording state machine, IPC, hotkeys
     │   ├── windows.js            # creates the control / bubble / recorder windows
     │   ├── settings.js           # JSON settings store (<userData>/settings.json)
-    │   ├── ffmpeg.js             # encoder presets and the finalize step
+    │   ├── ffmpeg.js             # encoder presets, finalize, Studio Sound audio chain
     │   ├── recording-files.js    # streams chunks to disk, hands off to ffmpeg
+    │   ├── logger.js             # rolling log file at <userData>/logs/mob.log
+    │   ├── transcription.js      # Whisper pipeline (ADR-008); MOB_FAKE_TRANSCRIPT fixture
+    │   ├── edl.js / production.js / identity.js / ...
+    │   ├── db/                   # sql.js-backed SQLite (ADR-001, ADR-006) + migrations
+    │   ├── intelligence/         # filler/silence/caption/hashtag/energy algorithms
+    │   ├── ipc/                  # one file per IPC surface (db, edit, production, sync, voice)
     │   └── smoke.js              # self-test, loaded only with MOB_SMOKE=1
     ├── preload/preload.js        # narrow contextBridge API for renderers
     ├── shared/shapes.js          # one shape definition → CSS clip-path + canvas path
     └── renderer/
-        ├── control/              # the panel UI
+        ├── control/              # the panel UI — all four modes
         ├── bubble/               # floating camera preview
         └── recorder/             # compositor + MediaRecorder engine
 ```
 
+See `../docs/adr/` for the design decisions behind the main process (local-first SQLite,
+why sql.js instead of a native binding, the EDL model, device identity, Cloudflare
+Queues, the intelligence algorithms' correctness rules, why segments replaced a separate
+captions table, and why transcription runs in-process rather than a worker thread).
+
 ## Testing
 
-`npm run smoke` launches the app with synthetic camera/mic devices, records the screen
-for 4 seconds, finalizes to MP4, and exits 0 on success. `MOB_SMOKE_SHAPE=hexagon`
+`npm run check` syntax-checks every file under `src/`. `npm test` runs the unit test
+suite (`node --test` — zero extra dependencies) over the pure algorithm modules in
+`src/main/intelligence/` plus the EDL/shapes/key helpers: filler/silence detection,
+caption formation, hashtag TF-IDF, energy scoring, EDL timestamp remapping. These need
+no Electron, DB, or filesystem and run in well under a second.
+
+`npm run smoke` launches the real app with synthetic camera/mic devices, records the
+screen for 4 seconds, finalizes to MP4, and exits 0 on success. `MOB_SMOKE_SHAPE=hexagon`
 records with a given bubble shape so the overlay can be checked.
+
+Set `MOB_SMOKE_FULL=1` alongside `MOB_SMOKE=1` to also exercise Edit and Production:
+transcribe the recording, assemble a package, and verify the resulting DB rows. On its
+own this would download the ~150MB Whisper model on every run; also set
+`MOB_FAKE_TRANSCRIPT=1` to skip that and feed a small canned word list through the exact
+same downstream pipeline (filler/silence/caption/hashtag/energy detection, every DB
+write) instead — the full pipeline then runs in a couple of seconds with no model
+download, which is what CI does:
+
+```powershell
+$env:MOB_SMOKE_FULL=1; $env:MOB_FAKE_TRANSCRIPT=1; npm run smoke
+```
 
 `npm run shot` captures PNGs of the control panel and bubble for layout review.
 `MOB_SHOT_STATES=output,compact,shapes,perm` adds variants, and `MOB_NO_FAKE=1` drops
-the synthetic devices so the no-camera error states render. Both harnesses run against a
-throwaway settings profile, so they never inherit your real configuration. On Linux
-wrap either with `xvfb-run`.
+the synthetic devices so the no-camera error states render. All three harnesses run
+against a throwaway settings profile, so they never inherit your real configuration. On
+Linux wrap any of them with `xvfb-run`.
 
 ## Known limitations
 
@@ -197,6 +241,14 @@ wrap either with `xvfb-run`.
   that window sits relative to the bubble.
 - Bubble dragged onto a monitor that isn't being recorded simply won't appear in the video.
 - Camera background blur / virtual background is not implemented yet.
+- Voice commands exist (`src/main/voice.js`) but are not reachable in practice — the wake
+  word is a placeholder and recognition needs an API key with nothing to set it to.
+- Distribution uploads to R2 but doesn't publish anywhere or return a shareable link; see
+  `docs/adr/` and the task board for the current state of the Cloudflare Worker side.
+
+If something breaks, use the **Diagnostics** card (bottom of the Camera tab) to copy
+version, platform, encoder support, and recent log lines in one click — the underlying
+log file lives at `<userData>/logs/mob.log`.
 
 ## Roadmap ideas
 

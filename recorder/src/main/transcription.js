@@ -13,6 +13,30 @@ const { formCaptions } = require('./intelligence/captions');
 const { extractHashtags, buildCorpusStats } = require('./intelligence/hashtags');
 const { scoreSegmentEnergy } = require('./intelligence/energy');
 
+// #76: reaching Edit/Production/Distribution required a real recording AND
+// a ~150MB Whisper model download — the entire intelligence pipeline was
+// painful to exercise locally and never exercised in CI at all. When
+// MOB_FAKE_TRANSCRIPT is set, transcribe() below skips loadWhisper()/pipe()
+// entirely and feeds this canned word list through every downstream step
+// (filler/silence/caption/hashtag/energy detection, all the DB writes)
+// completely unchanged — it's a stand-in for Whisper's own output shape,
+// not a shortcut that skips real code.
+function buildFakeTranscriptResult() {
+  const FAKE_WORDS = [
+    ['Welcome', 0.0, 0.3], ['to', 0.3, 0.4], ['this', 0.4, 0.6], ['demo', 0.6, 0.9],
+    ['recording', 0.9, 1.4], ['um', 1.5, 1.7], ['about', 1.8, 2.0], ['database', 2.0, 2.5],
+    ['design', 2.5, 2.9], ['and', 2.9, 3.0], ['api', 3.0, 3.3], ['performance', 3.3, 3.9],
+    // gap (3.9 -> 6.0) so detectSilences has something real to find
+    ['So', 6.0, 6.2], ['uh', 6.2, 6.4], ['let', 6.4, 6.5], ['us', 6.5, 6.6], ['talk', 6.6, 6.8],
+    ['about', 6.8, 7.0], ['testing', 7.0, 7.5], ['strategy', 7.5, 8.1], ['and', 8.1, 8.2],
+    ['deployment', 8.2, 8.8], ['next', 8.8, 9.1],
+  ];
+  return {
+    text: FAKE_WORDS.map(w => w[0]).join(' ') + '.',
+    chunks: FAKE_WORDS.map(([text, start, end]) => ({ text, timestamp: [start, end] })),
+  };
+}
+
 // Cache the pipeline so it isn't re-loaded on every transcription.
 // _whisperPipelinePromise caches the IN-FLIGHT load, not just the resolved
 // result — loadWhisper() used to check only the resolved value, so two
@@ -100,55 +124,64 @@ async function loadWhisper(onProgress) {
  * @returns {Promise<{transcriptId:string, words:number, tags:number}>}
  */
 async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
-  // Report model cache status so UI can show correct message
-  const cacheStatus = checkModelCached();
-  onProgress({
-    stage: cacheStatus.cached ? 'loading_model' : 'downloading_model',
-    pct: 0,
-    cached: cacheStatus.cached,
-    bytesTotal: cacheStatus.cached ? cacheStatus.sizeBytes : 150_000_000,
-  });
+  let result;
 
-  const pipe = await loadWhisper(onProgress);
-
-  // Fetched early (used to be read only after transcribing finished) so it
+  // Fetched here (used to be read only after transcribing finished) so it
   // can also drive a real progress estimate below, instead of the bar
   // jumping straight from 0% to 100% with nothing in between for however
-  // long the recording takes to process.
+  // long the recording takes to process; also reused further down for
+  // trailing-silence detection, in both the real and fake-transcript paths.
   const rec = db.get('SELECT duration_ms FROM recordings WHERE id = ?', [recordingId]);
   const totalDurationMs = rec ? (rec.duration_ms || 0) : 0;
 
-  const CHUNK_LENGTH_S = 30;
-  const STRIDE_LENGTH_S = 5;
-  const jumpS = CHUNK_LENGTH_S - 2 * STRIDE_LENGTH_S; // seconds of new audio consumed per chunk
-  const estimatedChunks = totalDurationMs > 0
-    ? Math.max(1, Math.ceil((totalDurationMs / 1000) / jumpS))
-    : 0;
-  let chunksDone = 0;
+  if (process.env.MOB_FAKE_TRANSCRIPT) {
+    onProgress({ stage: 'loading_model', pct: 100, cached: true });
+    onProgress({ stage: 'transcribing', pct: 100, elapsedMs: 0 });
+    result = buildFakeTranscriptResult();
+  } else {
+    // Report model cache status so UI can show correct message
+    const cacheStatus = checkModelCached();
+    onProgress({
+      stage: cacheStatus.cached ? 'loading_model' : 'downloading_model',
+      pct: 0,
+      cached: cacheStatus.cached,
+      bytesTotal: cacheStatus.cached ? cacheStatus.sizeBytes : 150_000_000,
+    });
 
-  const _transcribeStart = Date.now();
-  onProgress({ stage: 'transcribing', pct: 0, elapsedMs: 0 });
+    const pipe = await loadWhisper(onProgress);
 
-  // Fix #5: word_timestamps: true — get actual per-word timestamps instead of
-  // 30-second chunk boundaries. Required for all downstream intelligence algorithms.
-  const result = await pipe(filePath, {
-    return_timestamps: 'word',
-    chunk_length_s: CHUNK_LENGTH_S,
-    stride_length_s: STRIDE_LENGTH_S,
-    language: 'english',
-    task: 'transcribe',
-    // Fires once per ~20s of audio actually processed — real granularity
-    // instead of a single jump from 0% to 100% at the very end.
-    chunk_callback: () => {
-      chunksDone++;
-      const pct = estimatedChunks > 0
-        ? Math.min(99, Math.round((chunksDone / estimatedChunks) * 100))
-        : Math.min(99, chunksDone * 10);
-      onProgress({ stage: 'transcribing', pct, elapsedMs: Date.now() - _transcribeStart });
-    },
-  });
+    const CHUNK_LENGTH_S = 30;
+    const STRIDE_LENGTH_S = 5;
+    const jumpS = CHUNK_LENGTH_S - 2 * STRIDE_LENGTH_S; // seconds of new audio consumed per chunk
+    const estimatedChunks = totalDurationMs > 0
+      ? Math.max(1, Math.ceil((totalDurationMs / 1000) / jumpS))
+      : 0;
+    let chunksDone = 0;
 
-  onProgress({ stage: 'transcribing', pct: 100, elapsedMs: Date.now() - _transcribeStart });
+    const _transcribeStart = Date.now();
+    onProgress({ stage: 'transcribing', pct: 0, elapsedMs: 0 });
+
+    // Fix #5: word_timestamps: true — get actual per-word timestamps instead of
+    // 30-second chunk boundaries. Required for all downstream intelligence algorithms.
+    result = await pipe(filePath, {
+      return_timestamps: 'word',
+      chunk_length_s: CHUNK_LENGTH_S,
+      stride_length_s: STRIDE_LENGTH_S,
+      language: 'english',
+      task: 'transcribe',
+      // Fires once per ~20s of audio actually processed — real granularity
+      // instead of a single jump from 0% to 100% at the very end.
+      chunk_callback: () => {
+        chunksDone++;
+        const pct = estimatedChunks > 0
+          ? Math.min(99, Math.round((chunksDone / estimatedChunks) * 100))
+          : Math.min(99, chunksDone * 10);
+        onProgress({ stage: 'transcribing', pct, elapsedMs: Date.now() - _transcribeStart });
+      },
+    });
+
+    onProgress({ stage: 'transcribing', pct: 100, elapsedMs: Date.now() - _transcribeStart });
+  }
 
   const fullText = result.text || '';
 

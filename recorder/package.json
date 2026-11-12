@@ -22,6 +22,7 @@
   "build": {
     "appId": "com.mob.recorder",
     "productName": "MOB Recorder",
+    "icon": "build/icon.png",
     "directories": {
       "output": "dist"
     },
@@ -106,8 +107,7 @@
   },
   "devDependencies": {
     "electron": "^33.2.0",
-    "electron-builder": "^25.1.8",
-    "electron-rebuild": "^3.2.9"
+    "electron-builder": "^25.1.8"
   },
   "optionalDependencies": {
     "electron-updater": "^6.3.9"

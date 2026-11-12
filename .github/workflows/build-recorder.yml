@@ -34,6 +34,17 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      # #76: MOB_FAKE_TRANSCRIPT makes the full pipeline (record -> finalize
+      # -> transcribe -> assemble a production package) runnable in a couple
+      # seconds with no ~150MB Whisper model download — previously this path
+      # was never exercised in CI at all because of that cost.
+      - name: Smoke test (full pipeline)
+        run: npm run smoke
+        timeout-minutes: 3
+        env:
+          MOB_SMOKE_FULL: "1"
+          MOB_FAKE_TRANSCRIPT: "1"
+
       - name: Build portable EXE
         run: npm run dist
         env:
