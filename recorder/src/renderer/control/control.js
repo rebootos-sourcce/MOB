@@ -956,6 +956,24 @@
     }
   }
 
+  // The waveform already implements colored region overlays — nothing ever
+  // called setRegions(). This is what the S6 design calls for directly:
+  // red for detected fillers, grey for detected silences, over the waveform.
+  async function refreshWaveformRegions(transcriptId) {
+    if (!_waveform) return;
+    if (!transcriptId) { _waveform.setRegions([]); return; }
+    try {
+      const [fillers, silences] = await Promise.all([
+        window.mob.db.query('words:fillers', [transcriptId]),
+        window.mob.db.query('segments:silences', [transcriptId]),
+      ]);
+      _waveform.setRegions([
+        ...fillers.map(f => ({ startMs: f.start_ms, endMs: f.end_ms, color: 'rgba(239,68,68,0.35)' })),
+        ...silences.map(s => ({ startMs: s.start_ms, endMs: s.end_ms, color: 'rgba(148,163,184,0.35)' })),
+      ]);
+    } catch (_) { _waveform.setRegions([]); }
+  }
+
   async function loadEditTab() {
     await loadRecordingList('editRecordingList', async (id, row) => {
       const sec = $('editCutSection');
@@ -966,6 +984,7 @@
       $('editTagBox').hidden = true;
       $('editExportRow') && ($('editExportRow').hidden = true);
       refreshEditCutSummary(id);
+      if (_waveform) _waveform.setRegions([]); // clear stale regions from a previous selection
       if (row && row.path) loadWaveform(row.path);
       // Auto-load existing transcript if one is already in the DB
       try {
@@ -974,6 +993,7 @@
           $('editTranscriptText').textContent = tx.full_text || '';
           $('editTranscriptBox').hidden = false;
           $('editExportRow') && ($('editExportRow').hidden = false);
+          refreshWaveformRegions(tx.id);
         }
         const tags = await window.mob.db.query('tags:list', [id]);
         if (tags && tags.length) {
@@ -1003,7 +1023,10 @@
         });
         const result = await window.api.invoke('transcription:start', { recordingId: row.id, force: true });
         const tx = await window.mob.db.query('transcripts:latest', [row.id]);
-        if (tx) { $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; $('editExportRow').hidden = false; }
+        if (tx) {
+          $('editTranscriptText').textContent = tx.full_text; $('editTranscriptBox').hidden = false; $('editExportRow').hidden = false;
+          refreshWaveformRegions(tx.id);
+        }
         const tags = await window.mob.db.query('tags:list', [row.id]);
         const tagBox = $('editTagBox');
         tagBox.textContent = '';
