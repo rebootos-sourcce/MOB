@@ -12,9 +12,32 @@ on:
   workflow_dispatch:
   push:
     branches: ['claude/quirky-pasteur-cpog96', 'main']
-    paths: ['recorder/**', '.github/workflows/build-recorder-cross-platform.yml']
+    paths: ['recorder/**', 'workers/**', '.github/workflows/build-recorder-cross-platform.yml']
 
 jobs:
+  # Task #61: workers/ had zero CI coverage (and zero tests at all) before
+  # this — a separate job, not part of the recorder matrix above, since
+  # it's an independent package with its own dependencies and no native
+  # build step. No package-lock.json exists yet for it, hence `npm install`
+  # here rather than `npm ci` (which requires one).
+  test-workers:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: workers
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install
+        run: npm install --no-fund
+
+      - name: Unit tests
+        run: npm test
+
   build:
     strategy:
       fail-fast: false
