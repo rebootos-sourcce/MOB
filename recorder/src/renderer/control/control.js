@@ -869,6 +869,16 @@
     if (!canvas || _waveform) return;
     if (typeof WaveformRenderer !== 'undefined') {
       _waveform = new WaveformRenderer(canvas);
+      // The waveform already emitted a 'seek' event on click — nothing was
+      // listening, since there was no in-app player to seek. Registered
+      // once here (not per-recording-select) since _waveform persists
+      // across selections and .on() has no dedup.
+      _waveform.on('seek', ({ ms }) => {
+        const video = $('editPreviewVideo');
+        if (video && !video.hidden && isFinite(video.duration)) {
+          video.currentTime = Math.max(0, ms / 1000);
+        }
+      });
     }
   }
   async function loadWaveform(recordingPath) {
@@ -986,6 +996,19 @@
       refreshEditCutSummary(id);
       if (_waveform) _waveform.setRegions([]); // clear stale regions from a previous selection
       if (row && row.path) loadWaveform(row.path);
+      // The only video element in the whole app was the live camera preview
+      // — reviewing a take meant leaving the app entirely via shell:openPath.
+      const video = $('editPreviewVideo');
+      if (video) {
+        if (row && row.path) {
+          video.src = 'file://' + row.path;
+          video.hidden = false;
+          video.ontimeupdate = () => { if (_waveform) _waveform.setPlayhead(video.currentTime * 1000); };
+        } else {
+          video.hidden = true;
+          video.removeAttribute('src');
+        }
+      }
       // Auto-load existing transcript if one is already in the DB
       try {
         const tx = await window.mob.db.query('transcripts:latest', [id]);
