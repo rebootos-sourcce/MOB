@@ -28,6 +28,10 @@ new_classes = ["DistributionCoordinator"]
 ENVIRONMENT    = "production"
 # UPLOAD_TOKEN_TTL_SECONDS: how long a presigned upload URL stays valid
 UPLOAD_TOKEN_TTL_SECONDS = "3600"
+# SHARE_LINK_TTL_SECONDS: how long a shareable download link (task #48,
+# POST /presign-download) stays valid. Defaults to 7 days in index.js if
+# unset — set here only to change that default.
+SHARE_LINK_TTL_SECONDS = "604800"
 
 # ── Secrets (set via `wrangler secret put <NAME>`) ───────────────────────────
 # JWT_SIGNING_SECRET    — HS256 signing key for device-scoped auth tokens
@@ -35,4 +39,7 @@ UPLOAD_TOKEN_TTL_SECONDS = "3600"
 #                         device's own token lifecycle today, same as the
 #                         CLOUDFLARE_API_TOKEN it replaces — see auth.js's own
 #                         top comment for the real, honest limit that remains.
-# UPLOAD_SIGNING_SECRET  — HMAC key for time-limited upload URLs
+# UPLOAD_SIGNING_SECRET  — HMAC key for time-limited upload URLs AND
+#                         shareable download links (task #48) — the
+#                         `download:` prefix on the signed message keeps
+#                         the two token types from being interchangeable.

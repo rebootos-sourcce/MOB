@@ -17,12 +17,35 @@ class FakeStorage {
   async put(key, value) { this.map.set(key, value); }
 }
 
+// Stands in for R2Bucket's own put()/get() shape closely enough to drive
+// handleUpload/handleDownload for real, not a stub of their behavior.
+class FakeBucket {
+  constructor() { this.objects = new Map(); }
+  async put(key, body, opts = {}) {
+    const buf = await new Response(body).arrayBuffer();
+    const contentType = (opts.httpMetadata && opts.httpMetadata.contentType) || 'application/octet-stream';
+    const etag = 'fake-etag-' + key;
+    this.objects.set(key, { buf, contentType, etag });
+    return { etag, size: buf.byteLength };
+  }
+  async get(key) {
+    const obj = this.objects.get(key);
+    if (!obj) return null;
+    return {
+      body: new Response(obj.buf).body,
+      httpEtag: obj.etag,
+      writeHttpMetadata(headers) { headers.set('content-type', obj.contentType); },
+    };
+  }
+}
+
 function makeEnv() {
   const instances = new Map();
   return {
     JWT_SIGNING_SECRET: SECRET,
     UPLOAD_SIGNING_SECRET: 'upload-secret',
     UPLOAD_TOKEN_TTL_SECONDS: '3600',
+    MOB_BUCKET: new FakeBucket(),
     COORDINATOR: {
       idFromName(name) { return name; },
       get(id) {
@@ -130,4 +153,88 @@ test('checkDeviceAuth: missing JWT_SIGNING_SECRET fails closed, not open', async
   const token = await signDeviceToken('device-a', SECRET);
   const res = await authedRequest(env, '/presign', { method: 'POST', body: { key: 'x' }, token });
   assert.equal(res.status, 503);
+});
+
+// ── Task #48: shareable link (/presign-download + /download) ───────────────
+
+test('shareable link: upload a real object, then presign-download and fetch it back — full round trip', async () => {
+  const env = makeEnv();
+
+  // Upload for real, through handleUpload, not by poking FakeBucket directly.
+  const presignRes = await authedRequest(env, '/presign', { method: 'POST', body: { key: 'rec-share.mp4' } });
+  const { presignedUrl } = await presignRes.json();
+  const uploadRes = await worker.fetch(new Request(presignedUrl, {
+    method: 'PUT', headers: { 'Content-Type': 'video/mp4' }, body: 'fake-video-bytes',
+  }), env, {});
+  assert.equal(uploadRes.status, 200);
+
+  // Now get a shareable download link for the same key.
+  const shareRes = await authedRequest(env, '/presign-download', { method: 'POST', body: { key: 'rec-share.mp4' } });
+  assert.equal(shareRes.status, 200);
+  const { downloadUrl } = await shareRes.json();
+  assert.ok(downloadUrl.includes('/download/rec-share.mp4'));
+
+  // The link itself needs no Bearer token — it's handed to someone else.
+  const downloadRes = await worker.fetch(new Request(downloadUrl), env, {});
+  assert.equal(downloadRes.status, 200);
+  assert.equal(await downloadRes.text(), 'fake-video-bytes');
+  assert.equal(downloadRes.headers.get('content-type'), 'video/mp4');
+});
+
+test('shareable link: a tampered (but not yet expired) exp fails signature verification', async () => {
+  const env = makeEnv();
+  await env.MOB_BUCKET.put('rec-x.mp4', 'bytes');
+  const shareRes = await authedRequest(env, '/presign-download', { method: 'POST', body: { key: 'rec-x.mp4' } });
+  const { downloadUrl } = await shareRes.json();
+  const tampered = new URL(downloadUrl);
+  // Extend the link's own life by rewriting exp — still in the future, so
+  // this only passes if the handler fails to catch that the signature was
+  // computed for a DIFFERENT exp.
+  const originalExp = Number(tampered.searchParams.get('exp'));
+  tampered.searchParams.set('exp', String(originalExp + 999999));
+  const res = await worker.fetch(new Request(tampered.toString()), env, {});
+  assert.equal(res.status, 403);
+});
+
+test('shareable link: a correctly-signed but already-expired link is rejected with 410, not 403', async () => {
+  const env = makeEnv();
+  env.SHARE_LINK_TTL_SECONDS = '-1'; // already expired the instant it's signed
+  await env.MOB_BUCKET.put('rec-z.mp4', 'bytes');
+  const shareRes = await authedRequest(env, '/presign-download', { method: 'POST', body: { key: 'rec-z.mp4' } });
+  const { downloadUrl } = await shareRes.json();
+  const res = await worker.fetch(new Request(downloadUrl), env, {});
+  assert.equal(res.status, 410);
+});
+
+test('shareable link: a tampered key in the URL is rejected (signature covers the key, not just exp)', async () => {
+  const env = makeEnv();
+  await env.MOB_BUCKET.put('rec-real.mp4', 'real-bytes');
+  await env.MOB_BUCKET.put('rec-other.mp4', 'other-bytes');
+  const shareRes = await authedRequest(env, '/presign-download', { method: 'POST', body: { key: 'rec-real.mp4' } });
+  const { downloadUrl } = await shareRes.json();
+  const tampered = downloadUrl.replace('rec-real.mp4', 'rec-other.mp4');
+  const res = await worker.fetch(new Request(tampered), env, {});
+  assert.equal(res.status, 403);
+});
+
+test('shareable link: an upload token cannot be reused as a download token for the same key/exp', async () => {
+  const env = makeEnv();
+  await env.MOB_BUCKET.put('rec-y.mp4', 'bytes');
+  const presignRes = await authedRequest(env, '/presign', { method: 'POST', body: { key: 'rec-y.mp4' } });
+  const { presignedUrl } = await presignRes.json();
+  // presignedUrl is an /upload/... URL; splice its sig/exp onto a /download/... path.
+  const uploadUrl = new URL(presignedUrl);
+  const forgedDownload = new URL(uploadUrl.origin + '/download/' + encodeURIComponent('rec-y.mp4'));
+  forgedDownload.searchParams.set('sig', uploadUrl.searchParams.get('sig'));
+  forgedDownload.searchParams.set('exp', uploadUrl.searchParams.get('exp'));
+  const res = await worker.fetch(new Request(forgedDownload.toString()), env, {});
+  assert.equal(res.status, 403);
+});
+
+test('shareable link: downloading a key that was never uploaded is a 404, not a crash', async () => {
+  const env = makeEnv();
+  const shareRes = await authedRequest(env, '/presign-download', { method: 'POST', body: { key: 'never-uploaded.mp4' } });
+  const { downloadUrl } = await shareRes.json();
+  const res = await worker.fetch(new Request(downloadUrl), env, {});
+  assert.equal(res.status, 404);
 });

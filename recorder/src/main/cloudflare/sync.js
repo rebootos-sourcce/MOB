@@ -106,6 +106,22 @@ async function uploadToR2(filePath, presignedUrl, mimeType, onProgress, signal) 
 }
 
 /**
+ * Task #48: request a long-lived shareable download link for an already-
+ * uploaded object, from the Worker's /presign-download endpoint.
+ * @param {string} r2Key
+ * @returns {Promise<{downloadUrl: string, expiresAt: string}>}
+ */
+async function getShareableLink(r2Key, signal) {
+  const baseUrl = getWorkerUrl();
+  const secret  = getApiToken();
+  if (!baseUrl || !secret) throw new Error('Cloudflare not configured (CLOUDFLARE_WORKER_URL / CLOUDFLARE_API_TOKEN missing)');
+
+  const deviceId = getDeviceId();
+  const body = JSON.stringify({ key: r2Key });
+  return jsonPost(`${baseUrl}/presign-download`, body, signDeviceToken(deviceId, secret), signal);
+}
+
+/**
  * Enqueue a distribution job via the Worker -> Queue -> DO pipeline.
  * @param {object} job  { distributionId, recordingId, r2Key, packageId, platform }
  */
@@ -183,6 +199,20 @@ async function syncDistribution(distributionId, onProgress = () => {}, signal) {
   } catch (err) { fail('error_queue', err); }
 
   db.run('UPDATE distributions SET status = ?, error_msg = NULL WHERE id = ?', ['queued', distributionId]);
+
+  // Step 4: shareable link (task #48). Deliberately NOT wrapped in fail()
+  // — the upload and queue above are the part that actually matters, and
+  // did succeed; a hiccup generating the share link shouldn't retroactively
+  // mark a genuinely successful distribution as errored. platform_url
+  // simply stays null and the Distribution tab shows no link yet.
+  onProgress({ stage: 'sharelink', pct: 96 });
+  try {
+    const { downloadUrl } = await getShareableLink(rec.r2_key, signal);
+    db.run('UPDATE distributions SET platform_url = ? WHERE id = ?', [downloadUrl, distributionId]);
+  } catch (err) {
+    if (err.name !== 'AbortError') console.error('[sync] share link failed (upload itself succeeded):', err.message);
+  }
+
   onProgress({ stage: 'done', pct: 100 });
 
   return { ok: true };

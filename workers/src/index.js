@@ -2,7 +2,8 @@
 // MOB Recorder — Cloudflare Worker
 //
 // Endpoints (all require Authorization: Bearer <device-scoped JWT — see
-// auth.js, ADR-003>, except /upload which carries its own HMAC signature):
+// auth.js, ADR-003>, except /upload and /download which carry their own
+// HMAC signature):
 //   POST /presign   { key, mimeType, deviceId }
 //     → { presignedUrl }   (time-limited HMAC-signed URL to this Worker)
 //     deviceId must match the token's own sub claim — see checkDeviceAuth.
@@ -20,6 +21,20 @@
 //     Only the device that created this job (the deviceId stored on its
 //     own DO, from /queue's /init call) can read its status — a token for
 //     a different device gets 403, not another device's job metadata.
+//
+//   POST /presign-download   { key }
+//     → { downloadUrl, expiresAt }   (task #48: the shareable link)
+//     Task #48/ADR: no public R2 bucket exposure and no separate CDN —
+//     that's a Cloudflare dashboard decision this sandbox has no account
+//     to make. This instead extends the Worker's EXISTING signed-URL
+//     pattern (the same mechanism /presign already uses for uploads) to
+//     downloads: a long-lived, HMAC-signed GET link through this Worker.
+//
+//   GET  /download/<r2Key>?sig=<hmac>&exp=<ts>
+//     → streams the R2 object
+//     (no Bearer needed — URL carries its own HMAC signature, same as
+//     /upload; this is literally the link a device hands to someone else
+//     to share, so it can't require that other person's own auth token)
 
 import { verifyDeviceToken } from './auth.js';
 
@@ -33,18 +48,23 @@ export default {
     if (method === 'OPTIONS') return cors(new Response(null, { status: 204 }));
 
     try {
-      // ── Upload (no Bearer — HMAC in query string) ────────────────────────
+      // ── Upload / download (no Bearer — HMAC in query string) ─────────────
       if (method === 'PUT' && url.pathname.startsWith('/upload/')) {
         const r2Key = decodeURIComponent(url.pathname.slice('/upload/'.length));
         return handleUpload(request, env, url, r2Key);
+      }
+      if (method === 'GET' && url.pathname.startsWith('/download/')) {
+        const r2Key = decodeURIComponent(url.pathname.slice('/download/'.length));
+        return handleDownload(env, url, r2Key);
       }
 
       // ── All other endpoints require a device-scoped JWT ──────────────────
       const auth = await checkDeviceAuth(request, env);
       if (auth instanceof Response) return cors(auth);
 
-      if (method === 'POST' && url.pathname === '/presign')   return cors(await handlePresign(request, env, url, auth));
-      if (method === 'POST' && url.pathname === '/queue')     return cors(await handleQueue(request, env, auth));
+      if (method === 'POST' && url.pathname === '/presign')          return cors(await handlePresign(request, env, url, auth));
+      if (method === 'POST' && url.pathname === '/presign-download') return cors(await handlePresignDownload(request, env, url));
+      if (method === 'POST' && url.pathname === '/queue')            return cors(await handleQueue(request, env, auth));
       if (method === 'GET'  && url.pathname.startsWith('/status/')) {
         const id = url.pathname.slice('/status/'.length);
         return cors(await handleStatus(env, id, auth));
@@ -94,6 +114,49 @@ async function handleUpload(request, env, url, r2Key) {
   });
 
   return cors(json({ ok: true, r2Key, etag: object.etag, bytes: object.size }));
+}
+
+// ── /presign-download ─────────────────────────────────────────────────────────
+// Task #48: the shareable link. Signs a long-lived GET token for the SAME
+// object /upload wrote — the `download:` prefix keeps this signature
+// namespace-separate from /presign's own `${key}:${exp}` upload-token
+// message, so an upload token for a given key+exp can never double as a
+// valid download token (or vice versa) even though both derive from the
+// same UPLOAD_SIGNING_SECRET.
+async function handlePresignDownload(request, env, url) {
+  const { key } = await request.json();
+  if (!key) return json({ error: 'key required' }, 400);
+
+  const ttl = Number(env.SHARE_LINK_TTL_SECONDS || 7 * 24 * 3600); // 7 days
+  const exp = Date.now() + ttl * 1000;
+  const sig = await hmacSign(`download:${key}:${exp}`, env.UPLOAD_SIGNING_SECRET);
+
+  const downloadUrl = new URL(url.origin);
+  downloadUrl.pathname = '/download/' + encodeURIComponent(key);
+  downloadUrl.searchParams.set('sig', sig);
+  downloadUrl.searchParams.set('exp', String(exp));
+
+  return json({ downloadUrl: downloadUrl.toString(), r2Key: key, expiresAt: new Date(exp).toISOString() });
+}
+
+// ── /download/:r2Key ──────────────────────────────────────────────────────────
+async function handleDownload(env, url, r2Key) {
+  const sig = url.searchParams.get('sig');
+  const exp = url.searchParams.get('exp');
+  if (!sig || !exp) return cors(json({ error: 'missing sig/exp' }, 400));
+
+  if (Date.now() > Number(exp)) return cors(json({ error: 'download link expired' }, 410));
+
+  const valid = await hmacVerify(`download:${r2Key}:${exp}`, sig, env.UPLOAD_SIGNING_SECRET);
+  if (!valid) return cors(json({ error: 'invalid download link' }, 403));
+
+  const object = await env.MOB_BUCKET.get(r2Key);
+  if (!object) return cors(json({ error: 'not found' }, 404));
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  headers.set('etag', object.httpEtag);
+  return cors(new Response(object.body, { headers }));
 }
 
 // ── /queue ────────────────────────────────────────────────────────────────────

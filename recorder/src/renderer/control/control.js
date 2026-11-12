@@ -2131,7 +2131,7 @@
     const unsubProgress = window.api.on('sync:progress', (p) => {
       if (p.distributionId !== distributionId) return;
       $('distProgressBar').style.width = p.pct + '%';
-      const labels = { presign: 'Requesting upload URL…', uploading: 'Uploading…', queuing: 'Queueing…', done: 'Done' };
+      const labels = { presign: 'Requesting upload URL…', uploading: 'Uploading…', queuing: 'Queueing…', sharelink: 'Generating share link…', done: 'Done' };
       $('distProgressLabel').textContent = labels[p.stage] || p.stage;
     });
 
@@ -2211,6 +2211,25 @@
         retryBtn.textContent = 'Retry';
         retryBtn.onclick = (e) => { e.stopPropagation(); runDistribution(row.id); };
         item.appendChild(retryBtn);
+      }
+      // Task #48: shareable link — set once syncDistribution's own share-
+      // link step (sync.js) succeeds. Deliberately not shown as a failure
+      // state if it's missing on an otherwise-queued row: that step is
+      // best-effort and doesn't fail the distribution (see sync.js's own
+      // comment on why), so "no link yet" here is a true, not broken, state.
+      if (row.platform_url) {
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'ghost mini';
+        copyBtn.textContent = 'Copy link';
+        copyBtn.onclick = async (e) => {
+          e.stopPropagation();
+          try {
+            await navigator.clipboard.writeText(row.platform_url);
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = 'Copy link'; }, 1500);
+          } catch (_) { /* clipboard unavailable — nothing else to fall back to for a button with no backing text node */ }
+        };
+        item.appendChild(copyBtn);
       }
       if (canDelete) {
         const delBtn = document.createElement('button');
