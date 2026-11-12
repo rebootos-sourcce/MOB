@@ -734,12 +734,18 @@ function anaRungCard(r,nm){
    did, and overshoot and installed stop printing a decimal over a fill ten
    times its size. */
 function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
+/* CQ AND DQ ARE THE GLOSSARY'S, task #80. Both tips were typed here and
+   said each figure a second way beside the sentence engine/data/gloss.js
+   already gives it, which is the one table every other CQ and DQ tooltip
+   reads. A getter, so the table is asked when the tile is drawn and not
+   when this file loads. The five below have no entry in that table, so
+   they keep their own words: a content gap, not a wiring one. */
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
-  tip:'CQ is your coherence number, built only from your answers on the laws.',
+  get tip(){return unpackOf('cq');},
   fig:function(r){return anaPctFig('cq',r.CQ,r);}},
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
-  tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
+  get tip(){return unpackOf('dq');},
   fig:function(r){return anaPctFig('dq',r.DQ,r);}},
  lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
   tip:'SQ is what your own law answers alone imply about shadow, CQ\'s own complement. It is not Shadow (DQ): DQ moves when you release what you actually carry, SQ only moves when a law answer changes.',

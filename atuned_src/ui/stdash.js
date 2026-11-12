@@ -431,6 +431,14 @@ function stOpenVerp(k){
    CHAINGLYPH/TIER's own, the same mark and tone analytics.js's "What is
    running" bubbles already use for these four kinds, one mark per
    concept rather than a second one invented here. */
+/* THE FOUR TIERS' OWN GLOSSARY KEYS, read by the tiles below and by the
+   drill they open (stOpenPsyche), so the tooltip on a tile and the subtitle
+   on its card are one sentence out of one table and cannot drift apart.
+   Each is a real key in engine/data/gloss.js's unpackAll, which is where
+   GLOSS (engine/data/kb.js) reaches every short tooltip; tests/engine.js
+   group GW holds that all four resolve. */
+var STPSY_TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
+function stPsyMean(kind){return typeof unpackOf==='function'?unpackOf(STPSY_TERM[kind]||kind):'';}
 function stDashPsycheStack(){
  if(typeof computeSeen!=='function')return '';
  var r=computeSeen();
@@ -455,10 +463,15 @@ function stDashPsycheStack(){
      has shown the same thing before; this section already reads the
      whole record (computeSeen(), not the draft), so what the other six
      add as a second number is already the whole of what this one reads. */
+  /* UNPACK EVERY SYMBOL ON THE TILE TOO, task #80. The drill this tile
+     opens already said what the tier means (task #160); the tile itself
+     named the tier and a count and nothing else, so on hover or a long
+     press "Hyper complexes, 2 running" was a term with no meaning beside
+     it. The meaning follows the count, the same sentence the card prints. */
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
-   var n=(k[2]||[]).length;
+   var n=(k[2]||[]).length, mean=stPsyMean(k[0]);
    return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:'<path d="'+CHAINGLYPH[k[0]]+'"/>',str:Math.min(1,n/4),
-     title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
+     title:k[1]+(n>0?', '+n+' running':', nothing running')+'.'+(mean?' '+mean:'')};}));}
  o+='</section>';
  return o;}
 /* MASKS, ON THE LEFT RAIL ITSELF, 10 November, his words: "add the masks."
@@ -525,10 +538,9 @@ function stOpenPsyche(kind){
  if(typeof computeSeen!=='function')return;
  var r=computeSeen();
  var NAME={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes',sup:'Super complexes'};
- var TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
- var def=typeof unpackOf==='function'?unpackOf(TERM[kind]||kind):'';
+ var def=stPsyMean(kind);
  var h=anaHead('Psyche stack',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
@@ -607,8 +619,13 @@ function stDashCompass(){
     "put CQ, DQ at the top and the bottom." They read as the figure's own
     two poles now, CQ over the upward arrow and DQ under the downward one,
     rather than a caption printed once below both. */
+ /* CQ AND DQ SAY THE GLOSSARY'S SENTENCE, task #80. These two titles were
+    typed here, the second naming the flat address total the
+    28 October ruling retired. unpackOf reads the one table every other CQ
+    and DQ tooltip already reads. Not drawn on the rail since 10 November
+    (see stDashLeft), kept right for whichever screen calls it next. */
  var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
-  +'<p class="st-cps-top" title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
+  +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
   +'<stop offset="0%" stop-color="'+GOLD+'" stop-opacity=".28"/><stop offset="100%" stop-color="'+GOLD+'" stop-opacity="0"/></radialGradient>'
@@ -617,6 +634,6 @@ function stDashCompass(){
   +arrow(Math.min(maxLen,(cq/100)*maxLen),true,seatCol('Heart'))
   +arrow(Math.min(maxLen,(dq/100)*maxLen),false,'var(--dim)')
   +'</svg>'
-  +'<p class="st-cps-bot" title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
+  +'<p class="st-cps-bot" title="'+esc(unpackOf('dq'))+'">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
   +'</section>';
  return o;}

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v47 15a3b201 2026-11-12 14:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v48 8f8235e3 2026-11-12 15:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -17323,8 +17323,16 @@ function unpackAll(){
     and until now it answered only on the Knowledge page's own search, never
     at the place a reading actually uses one of its words. Filled in last and
     only where no more specific table above already holds the key, so a real
-    collision, none exist today, is won by the table that knows the context
-    rather than by load order.
+    collision is won by the table that knows the context rather than by load
+    order.
+
+    COLLISIONS DO EXIST, and this paragraph said none did. Checked 12
+    November: a set of GLOSS words already have a sentence in UNPACK_BASE
+    above, so the tooltip says that table's wording and not GLOSS's. Most
+    say the same thing twice; a few do not, and which wording is canon is
+    the owner's call, not this file's. tests/engine.js group GW names every
+    one off the run, so a new collision is a named difference rather than a
+    silent one. The count is not typed here.
 
     ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
     Daily Summary card, because this table is held to a stricter contract
@@ -26513,6 +26521,20 @@ function validateProfile(o,ctx){
   else if(SOUL_FROM.indexOf(o.soul.from)<0)
    errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
   else p.soul.from=o.soul.from;}
+ /* THE SABOTEUR SELF REPORT, the same gap TASKS.md's TA9 work found on
+    its own fork, archSeed: not named here, so the quiz's twenty
+    self-reported saboteurs wrote real charge onto the nine axes above
+    (which this boundary already carries) but the record of what seeded
+    it, which sabSeedShare and a retake's sabSeedEmpty both read against,
+    was dropped on every import with ok true. sabSeedShare then always
+    read 0 after a quiz-link arrival, and retaking the quiz looked like a
+    first-ever answer rather than a re-seed. Null or absent is a record
+    the quiz never seeded, not an error. */
+ if(o.sabSeed!==undefined&&o.sabSeed!==null){
+  var sse=sabSeedValid(o.sabSeed);
+  if(sse.length)sse.forEach(function(e){errs.push(e);});
+  else p.sabSeed={at:typeof o.sabSeed.at==='string'?o.sabSeed.at:new Date().toISOString(),
+   names:o.sabSeed.names.slice(), axes:Object.assign({},o.sabSeed.axes)};}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a
@@ -39792,13 +39814,41 @@ function sabSeedShare(p){
  if(seeded+moved<=0)return 0;
  return Math.round(seeded/(seeded+moved)*100)/100;}
 
+/* THE BOUNDARY CHECK, schema.js's validateProfile, the same role
+   archSeedValid (engine/archseed.js) plays for the archetype self
+   report. p.sabSeed never reached that boundary at all: the charge
+   sabSeedApply writes onto p.axes[c].held is carried, but the record of
+   what seeded it, which sabSeedShare and a retake's sabSeedEmpty both
+   read, was dropped on every quiz-link import with ok true, so
+   sabSeedShare always read 0 after one and a retake looked like a
+   first-ever answer. Returns the errors found, empty when the shape is
+   sound; null or absent is a record the quiz never seeded, not an
+   error. */
+function sabSeedValid(o){
+ var errs=[];
+ if(!o||typeof o!=='object'){errs.push('sabSeed is not an object');return errs;}
+ if(typeof o.at!=='string')errs.push('sabSeed.at is not a string');
+ if(!Array.isArray(o.names))errs.push('sabSeed.names is not an array');
+ else o.names.forEach(function(nm){
+  if(SAB_SELFNAMES.indexOf(nm)<0)errs.push('sabSeed.names holds '+JSON.stringify(nm)+', not one of SAB_SELFNAMES');});
+ if(!o.axes||typeof o.axes!=='object')errs.push('sabSeed.axes is not an object');
+ else{
+  Object.keys(o.axes).forEach(function(k){
+   if(CHARGES.indexOf(k)<0)errs.push('sabSeed.axes may not carry '+k);});
+  CHARGES.forEach(function(c){
+   var v=o.axes[c];
+   if(v===undefined)return;
+   if(typeof v!=='number'||!isFinite(v)||v<0||v>10)errs.push('sabSeed.axes.'+c+' is out of range');});}
+ return errs;}
+
 if(typeof module!=='undefined'&&module.exports){
  /* SAB33_BY and KB_KEY are core.js's and kb.js's own (core.js:592, kb.js:15);
     export.js's own list (engine/export.js) carries KB_KEY but not SAB33_BY,
     so this file re-states it rather than ask every caller to rebuild it. */
  Object.assign(module.exports,{SAB_SELFNAMES:SAB_SELFNAMES, sabSelfValid:sabSelfValid,
   sabSeedAxes:sabSeedAxes, sabSeedEmpty:sabSeedEmpty, sabSeedApply:sabSeedApply,
-  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, SAB33_BY:SAB33_BY});}
+  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, sabSeedValid:sabSeedValid,
+  SAB33_BY:SAB33_BY});}
 
 try{window.__at&&window.__at('engine/sabseed.js');}catch(e){}
 /* ============================================================
@@ -60703,6 +60753,14 @@ function stOpenVerp(k){
    CHAINGLYPH/TIER's own, the same mark and tone analytics.js's "What is
    running" bubbles already use for these four kinds, one mark per
    concept rather than a second one invented here. */
+/* THE FOUR TIERS' OWN GLOSSARY KEYS, read by the tiles below and by the
+   drill they open (stOpenPsyche), so the tooltip on a tile and the subtitle
+   on its card are one sentence out of one table and cannot drift apart.
+   Each is a real key in engine/data/gloss.js's unpackAll, which is where
+   GLOSS (engine/data/kb.js) reaches every short tooltip; tests/engine.js
+   group GW holds that all four resolve. */
+var STPSY_TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
+function stPsyMean(kind){return typeof unpackOf==='function'?unpackOf(STPSY_TERM[kind]||kind):'';}
 function stDashPsycheStack(){
  if(typeof computeSeen!=='function')return '';
  var r=computeSeen();
@@ -60727,10 +60785,15 @@ function stDashPsycheStack(){
      has shown the same thing before; this section already reads the
      whole record (computeSeen(), not the draft), so what the other six
      add as a second number is already the whole of what this one reads. */
+  /* UNPACK EVERY SYMBOL ON THE TILE TOO, task #80. The drill this tile
+     opens already said what the tier means (task #160); the tile itself
+     named the tier and a count and nothing else, so on hover or a long
+     press "Hyper complexes, 2 running" was a term with no meaning beside
+     it. The meaning follows the count, the same sentence the card prints. */
   o+=stPillRow('st-psyche-ls',KIND.map(function(k){
-   var n=(k[2]||[]).length;
+   var n=(k[2]||[]).length, mean=stPsyMean(k[0]);
    return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:'<path d="'+CHAINGLYPH[k[0]]+'"/>',str:Math.min(1,n/4),
-     title:k[1]+(n>0?', '+n+' running':', nothing running')};}));}
+     title:k[1]+(n>0?', '+n+' running':', nothing running')+'.'+(mean?' '+mean:'')};}));}
  o+='</section>';
  return o;}
 /* MASKS, ON THE LEFT RAIL ITSELF, 10 November, his words: "add the masks."
@@ -60797,10 +60860,9 @@ function stOpenPsyche(kind){
  if(typeof computeSeen!=='function')return;
  var r=computeSeen();
  var NAME={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes',sup:'Super complexes'};
- var TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
- var def=typeof unpackOf==='function'?unpackOf(TERM[kind]||kind):'';
+ var def=stPsyMean(kind);
  var h=anaHead('Psyche stack',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
@@ -60879,8 +60941,13 @@ function stDashCompass(){
     "put CQ, DQ at the top and the bottom." They read as the figure's own
     two poles now, CQ over the upward arrow and DQ under the downward one,
     rather than a caption printed once below both. */
+ /* CQ AND DQ SAY THE GLOSSARY'S SENTENCE, task #80. These two titles were
+    typed here, the second naming the flat address total the
+    28 October ruling retired. unpackOf reads the one table every other CQ
+    and DQ tooltip already reads. Not drawn on the rail since 10 November
+    (see stDashLeft), kept right for whichever screen calls it next. */
  var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
-  +'<p class="st-cps-top" title="Coherence, how well your 21 laws of moral integrity hold">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
+  +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
   +'<stop offset="0%" stop-color="'+GOLD+'" stop-opacity=".28"/><stop offset="100%" stop-color="'+GOLD+'" stop-opacity="0"/></radialGradient>'
@@ -60889,7 +60956,7 @@ function stDashCompass(){
   +arrow(Math.min(maxLen,(cq/100)*maxLen),true,seatCol('Heart'))
   +arrow(Math.min(maxLen,(dq/100)*maxLen),false,'var(--dim)')
   +'</svg>'
-  +'<p class="st-cps-bot" title="Shadow, the charge still carried across all 112 addresses">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
+  +'<p class="st-cps-bot" title="'+esc(unpackOf('dq'))+'">DQ '+(r.unread?PCT_DASH:Math.round(dq))+'</p>'
   +'</section>';
  return o;}
 
@@ -63336,12 +63403,18 @@ function anaRungCard(r,nm){
    did, and overshoot and installed stop printing a decimal over a fill ten
    times its size. */
 function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
+/* CQ AND DQ ARE THE GLOSSARY'S, task #80. Both tips were typed here and
+   said each figure a second way beside the sentence engine/data/gloss.js
+   already gives it, which is the one table every other CQ and DQ tooltip
+   reads. A getter, so the table is asked when the tile is drawn and not
+   when this file loads. The five below have no entry in that table, so
+   they keep their own words: a content gap, not a wiring one. */
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
-  tip:'CQ is your coherence number, built only from your answers on the laws.',
+  get tip(){return unpackOf('cq');},
   fig:function(r){return anaPctFig('cq',r.CQ,r);}},
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
-  tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
+  get tip(){return unpackOf('dq');},
   fig:function(r){return anaPctFig('dq',r.DQ,r);}},
  lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
   tip:'SQ is what your own law answers alone imply about shadow, CQ\'s own complement. It is not Shadow (DQ): DQ moves when you release what you actually carry, SQ only moves when a law answer changes.',
@@ -94948,5 +95021,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006338469"></div>
+<div id="eof" hidden data-len="006342835"></div>
 </body></html>

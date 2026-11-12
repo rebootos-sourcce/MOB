@@ -433,8 +433,16 @@ function unpackAll(){
     and until now it answered only on the Knowledge page's own search, never
     at the place a reading actually uses one of its words. Filled in last and
     only where no more specific table above already holds the key, so a real
-    collision, none exist today, is won by the table that knows the context
-    rather than by load order.
+    collision is won by the table that knows the context rather than by load
+    order.
+
+    COLLISIONS DO EXIST, and this paragraph said none did. Checked 12
+    November: a set of GLOSS words already have a sentence in UNPACK_BASE
+    above, so the tooltip says that table's wording and not GLOSS's. Most
+    say the same thing twice; a few do not, and which wording is canon is
+    the owner's call, not this file's. tests/engine.js group GW names every
+    one off the run, so a new collision is a named difference rather than a
+    silent one. The count is not typed here.
 
     ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
     Daily Summary card, because this table is held to a stricter contract

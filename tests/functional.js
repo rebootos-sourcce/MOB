@@ -7903,6 +7903,39 @@ await require('./addrlayer.js').addrLayerGate(browser,FILE,ok,booted);
 console.log('\n=== a control says what happened to the save ===');
 await require('./honeststatus.js').honestStatusGate(browser,FILE,ok,booted);
 
+/* GW, task #80, 12 November. The Psyche stack tiles named a tier and a count
+   and never said what the tier is; the Analytics CQ and DQ tiles and the
+   rail Compass typed their own sentence for each figure, the Compass's as a
+   flat 112. Each now asks unpackOf, the one table GLOSS reaches a tooltip
+   through. Held on the page, on a loaded record, against the table itself,
+   so the check cannot pass on a sentence the page typed. tests/engine.js
+   group GW holds the engine half. */
+console.log('\n=== GW: the glossary reaches the Psyche stack, Analytics and Compass tooltips ===');
+{
+ const gw=await page.evaluate(async()=>{
+  loadP(PERSON('Gordon')); setTab(TAB.STORY); STV.dash=true; render();
+  if(typeof stDashLeft==='function')stDashLeft();
+  await new Promise(r=>setTimeout(r,120));
+  const tiles=[...document.querySelectorAll('#st-psyche-ls .st-pl')].map(b=>({k:(b.getAttribute('data-stdrill')||'').split('|')[1],
+   t:b.getAttribute('title')||'',a:b.getAttribute('aria-label')||''}));
+  const TERM={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
+  const want={}; Object.keys(TERM).forEach(k=>{want[k]=unpackOf(TERM[k]);});
+  stOpenPsyche('hy'); await new Promise(r=>setTimeout(r,60));
+  const card=(document.getElementById('rdrill')||{}).textContent||'';
+  const r=compute(), tele=document.createElement('div'); tele.innerHTML=anaTele(r);
+  const tip=k=>{const b=tele.querySelector('[data-ana="met|'+k+'"] .ana-tile-l'); return b?b.getAttribute('data-tip'):null;};
+  const cps=document.createElement('div'); cps.innerHTML=stDashCompass();
+  return {tiles,want,card,cq:tip('cq'),dq:tip('dq'),ucq:unpackOf('cq'),udq:unpackOf('dq'),
+   ctop:(cps.querySelector('.st-cps-top')||{}).title,cbot:(cps.querySelector('.st-cps-bot')||{}).title};});
+ ok(gw.tiles.length===4,'GW: the Psyche stack draws its four tiles on a loaded record, got '+gw.tiles.length);
+ ok(gw.tiles.length===4&&gw.tiles.every(x=>gw.want[x.k]&&x.t.indexOf(gw.want[x.k])>=0&&x.a===x.t),
+  'GW: each Psyche stack tile\'s tooltip and spoken name carry the glossary\'s sentence for its tier, '+JSON.stringify(gw.tiles.map(x=>x.t)));
+ ok(gw.want.hy&&gw.card.indexOf(gw.want.hy)>=0,'GW: and the card the tile opens says the same sentence, read from the same key');
+ ok(gw.cq===gw.ucq&&gw.dq===gw.udq&&!!gw.ucq&&!!gw.udq,'GW: the Analytics CQ and DQ tiles say the glossary\'s sentence, '+JSON.stringify([gw.cq,gw.dq]));
+ ok(gw.ctop===gw.ucq&&gw.cbot===gw.udq&&!/\b112\b/.test(gw.cbot||''),'GW: the Compass\'s CQ and DQ titles are the glossary\'s, and no flat 112, '+JSON.stringify([gw.ctop,gw.cbot]));
+ await page.evaluate(()=>{if(typeof rdClose==='function')rdClose();STV.dash=false;loadP(0);render();});
+}
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

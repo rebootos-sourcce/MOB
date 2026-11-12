@@ -10822,6 +10822,34 @@ console.log('\nSAB SEED · the 11 November ruling: the 20 self-reported saboteur
  ok(!q.sabSeed&&CHARGES.every(c=>q.axes[c].held===0),'not said puts every one of the nine back to the blank and drops the seed');
 }
 
+console.log('\nSAB SEED BOUNDARY · the quiz-link import carries sabSeed through, not just the charge it wrote');
+/* validateProfile never named sabSeed, so it reached this boundary with ok
+   true and lost it, the same gap TA9's work found and fixed for archSeed.
+   p.axes carried the charge the self-report wrote, already, so this was
+   silent: sabSeedShare(p) always read 0 after a quiz-link import, and a
+   retake's sabSeedEmpty(p) saw charge it did not recognise as its own seed
+   and refused to re-seed, both wrong against a record the quiz genuinely
+   seeded. */
+{
+ const {blankProfile,sabSeedApply,sabSeedShare,sabSeedValid,saveProfile,validateProfile,loadProfile}=E;
+ const p=blankProfile('sabseed-boundary'); sabSeedApply(p,{Judge:1,Micromanager:.5});
+ const sent=JSON.parse(JSON.stringify(saveProfile(p)));
+ const v=validateProfile(sent);
+ ok(v.ok,'a profile carrying a real sabSeed still validates, got '+JSON.stringify(v.errs));
+ ok(!!v.profile.sabSeed&&v.profile.sabSeed.names.indexOf('Judge')>=0,
+  'sabSeed itself survives the boundary, not only the charge it already wrote onto axes, got '+JSON.stringify(v.profile.sabSeed));
+ loadProfile(v.profile);
+ near(sabSeedShare(v.profile),1,0.01,'sabSeedShare reads the real share after the boundary, not the 0 a dropped sabSeed used to force, got '+sabSeedShare(v.profile));
+ ok(validateProfile(Object.assign({},sent,{sabSeed:null})).ok,'sabSeed:null is a record the quiz never seeded, not an error');
+ ok(validateProfile(Object.assign({},sent,{sabSeed:{at:sent.sabSeed.at,names:['Snowflake'],axes:sent.sabSeed.axes}})).ok===false,
+  'a name outside SAB_SELFNAMES in sabSeed.names is refused by name, not silently dropped');
+ ok(validateProfile(Object.assign({},sent,{sabSeed:{at:sent.sabSeed.at,names:sent.sabSeed.names,axes:Object.assign({},sent.sabSeed.axes,{Fear:99})}})).ok===false,
+  'an out-of-range sabSeed.axes value is refused by name');
+ ok(validateProfile(Object.assign({},sent,{sabSeed:{at:sent.sabSeed.at,names:sent.sabSeed.names,axes:Object.assign({},sent.sabSeed.axes,{notAnAxis:1})}})).ok===false,
+  'a key sabSeed.axes does not carry is refused by name');
+ ok(sabSeedValid(sent.sabSeed).length===0,'sabSeedValid itself reads a real sabSeed as sound with no errors');
+}
+
 console.log('\nFUNNELQ · the funnel/quiz\'s 59 self-report statements, recounted off the real data rather than quoted');
 {
  const {FUNNELQ,FUNNELQ_BLOCKS,SI,VERP,ARCH,SAB_SELFNAMES,sabSelfStatement}=E;
@@ -10837,6 +10865,54 @@ console.log('\nFUNNELQ · the funnel/quiz\'s 59 self-report statements, recounte
  ok(FUNNELQ.filter(q=>q.sec==='sab').every(q=>q.st===sabSelfStatement(q.nm)),
   'every saboteur statement is sabSelfStatement()\'s own live read of SABDEF.q, not a second copy');
  ok(SAB_SELFNAMES.length===20&&FUNNELQ.filter(q=>q.sec==='sab').length===20,'twenty saboteur questions, matching SAB_SELFNAMES');
+}
+
+console.log('\nGW · the glossary reaches every tooltip it should, task #80');
+/* Task #80 wired the Psyche stack tiles, the Analytics CQ and DQ tiles and
+   the rail Compass's two titles to unpackOf, the one table GLOSS reaches a
+   tooltip through, in place of sentences typed into each renderer. This
+   group holds the engine half: every key those surfaces ask for resolves,
+   and the census of where each GLOSS word's tooltip comes from is a named
+   list, so a GLOSS word that starts saying something else, or stops saying
+   anything, is a diff somebody acknowledges. The page half is in
+   tests/functional.js, "GW". No count is typed: the lists are names. */
+{
+ const {GLOSS,unpackAll,unpackOf}=E;
+ const T=unpackAll();
+ ['saboteur','complex','hyper complex','super complex','cq','dq'].forEach(k=>
+  ok(typeof unpackOf(k)==='string'&&unpackOf(k).length>=12,'the tooltip key '+JSON.stringify(k)+' resolves to a sentence, got '+JSON.stringify(unpackOf(k))));
+ ok(!/\b112\b/.test(unpackOf('dq'))&&!/\b112\b/.test(unpackOf('cq')),
+  'neither CQ nor DQ\'s tooltip opens on a flat 112, the 28 October ruling');
+ /* THE CENSUS. A GLOSS word's tooltip is its own first sentence, or a more
+    specific table's sentence for the same word, or nothing because its
+    first sentence fails the one-sentence contract (group PO). */
+ const first=g=>String(g.d||'').split('. ')[0].replace(/\.+$/,'')+'.';
+ const own=[], other=[], none=[];
+ GLOSS.forEach(g=>{const v=T[g.t.toLowerCase()];
+  (v===undefined?none:(v===first(g)?own:other)).push(g.t);});
+ ok(own.length+other.length+none.length===GLOSS.length,'every GLOSS word is counted once, '+GLOSS.length);
+ /* acknowledged 12 November. Changing either list is a decision: a word
+    moving into OTHER means a second wording now answers for it. */
+ const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Integrity','Mask','Plexus','Release','Saboteur'];
+ const NONE=['Chakra','Memory'];
+ ok(JSON.stringify(other.slice().sort())===JSON.stringify(OTHER.slice().sort()),
+  'the GLOSS words whose tooltip is another table\'s wording are the acknowledged list, got '+JSON.stringify(other));
+ ok(JSON.stringify(none.slice().sort())===JSON.stringify(NONE.slice().sort()),
+  'the GLOSS words with no tooltip at all are the acknowledged list, got '+JSON.stringify(none));
+ /* AND THE RENDERERS ASK RATHER THAN TYPE. Read off the source, because the
+    engine bundle carries no renderer: the sentences these surfaces used to
+    type are gone, and the table is asked in their place. */
+ const fs=require('fs'), path=require('path'), src=f=>fs.readFileSync(path.join(__dirname,'..','atuned_src','ui',f),'utf8');
+ const ana=src('analytics.js'), sd=src('stdash.js');
+ ok(ana.indexOf("CQ is your coherence number, built only")<0&&ana.indexOf("Shadow is all the charge left")<0
+  &&/get tip\(\)\{return unpackOf\('cq'\);\}/.test(ana)&&/get tip\(\)\{return unpackOf\('dq'\);\}/.test(ana),
+  'the Analytics CQ and DQ tiles read their tip from the glossary, no typed copy left');
+ ok(sd.indexOf('across all 112 addresses')<0&&sd.indexOf('how well your 21 laws of moral integrity hold')<0
+  &&/unpackOf\('cq'\)/.test(sd)&&/unpackOf\('dq'\)/.test(sd),
+  'the rail Compass\'s CQ and DQ titles read the glossary, and the flat 112 is gone');
+ ok(/var STPSY_TERM=\{sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'\}/.test(sd)
+  &&(sd.match(/stPsyMean\(/g)||[]).length>=3,
+  'the Psyche stack tiles and the card they open read one key table, defined once and used by both');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

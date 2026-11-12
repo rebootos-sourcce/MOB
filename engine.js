@@ -5459,8 +5459,16 @@ function unpackAll(){
     and until now it answered only on the Knowledge page's own search, never
     at the place a reading actually uses one of its words. Filled in last and
     only where no more specific table above already holds the key, so a real
-    collision, none exist today, is won by the table that knows the context
-    rather than by load order.
+    collision is won by the table that knows the context rather than by load
+    order.
+
+    COLLISIONS DO EXIST, and this paragraph said none did. Checked 12
+    November: a set of GLOSS words already have a sentence in UNPACK_BASE
+    above, so the tooltip says that table's wording and not GLOSS's. Most
+    say the same thing twice; a few do not, and which wording is canon is
+    the owner's call, not this file's. tests/engine.js group GW names every
+    one off the run, so a new collision is a named difference rather than a
+    silent one. The count is not typed here.
 
     ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
     Daily Summary card, because this table is held to a stricter contract
@@ -14615,6 +14623,20 @@ function validateProfile(o,ctx){
   else if(SOUL_FROM.indexOf(o.soul.from)<0)
    errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
   else p.soul.from=o.soul.from;}
+ /* THE SABOTEUR SELF REPORT, the same gap TASKS.md's TA9 work found on
+    its own fork, archSeed: not named here, so the quiz's twenty
+    self-reported saboteurs wrote real charge onto the nine axes above
+    (which this boundary already carries) but the record of what seeded
+    it, which sabSeedShare and a retake's sabSeedEmpty both read against,
+    was dropped on every import with ok true. sabSeedShare then always
+    read 0 after a quiz-link arrival, and retaking the quiz looked like a
+    first-ever answer rather than a re-seed. Null or absent is a record
+    the quiz never seeded, not an error. */
+ if(o.sabSeed!==undefined&&o.sabSeed!==null){
+  var sse=sabSeedValid(o.sabSeed);
+  if(sse.length)sse.forEach(function(e){errs.push(e);});
+  else p.sabSeed={at:typeof o.sabSeed.at==='string'?o.sabSeed.at:new Date().toISOString(),
+   names:o.sabSeed.names.slice(), axes:Object.assign({},o.sabSeed.axes)};}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a
@@ -27828,13 +27850,41 @@ function sabSeedShare(p){
  if(seeded+moved<=0)return 0;
  return Math.round(seeded/(seeded+moved)*100)/100;}
 
+/* THE BOUNDARY CHECK, schema.js's validateProfile, the same role
+   archSeedValid (engine/archseed.js) plays for the archetype self
+   report. p.sabSeed never reached that boundary at all: the charge
+   sabSeedApply writes onto p.axes[c].held is carried, but the record of
+   what seeded it, which sabSeedShare and a retake's sabSeedEmpty both
+   read, was dropped on every quiz-link import with ok true, so
+   sabSeedShare always read 0 after one and a retake looked like a
+   first-ever answer. Returns the errors found, empty when the shape is
+   sound; null or absent is a record the quiz never seeded, not an
+   error. */
+function sabSeedValid(o){
+ var errs=[];
+ if(!o||typeof o!=='object'){errs.push('sabSeed is not an object');return errs;}
+ if(typeof o.at!=='string')errs.push('sabSeed.at is not a string');
+ if(!Array.isArray(o.names))errs.push('sabSeed.names is not an array');
+ else o.names.forEach(function(nm){
+  if(SAB_SELFNAMES.indexOf(nm)<0)errs.push('sabSeed.names holds '+JSON.stringify(nm)+', not one of SAB_SELFNAMES');});
+ if(!o.axes||typeof o.axes!=='object')errs.push('sabSeed.axes is not an object');
+ else{
+  Object.keys(o.axes).forEach(function(k){
+   if(CHARGES.indexOf(k)<0)errs.push('sabSeed.axes may not carry '+k);});
+  CHARGES.forEach(function(c){
+   var v=o.axes[c];
+   if(v===undefined)return;
+   if(typeof v!=='number'||!isFinite(v)||v<0||v>10)errs.push('sabSeed.axes.'+c+' is out of range');});}
+ return errs;}
+
 if(typeof module!=='undefined'&&module.exports){
  /* SAB33_BY and KB_KEY are core.js's and kb.js's own (core.js:592, kb.js:15);
     export.js's own list (engine/export.js) carries KB_KEY but not SAB33_BY,
     so this file re-states it rather than ask every caller to rebuild it. */
  Object.assign(module.exports,{SAB_SELFNAMES:SAB_SELFNAMES, sabSelfValid:sabSelfValid,
   sabSeedAxes:sabSeedAxes, sabSeedEmpty:sabSeedEmpty, sabSeedApply:sabSeedApply,
-  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, SAB33_BY:SAB33_BY});}
+  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, sabSeedValid:sabSeedValid,
+  SAB33_BY:SAB33_BY});}
 /* ============================================================
    THE FUNNEL/QUIZ SELF-REPORT STATEMENTS. The pre-account quiz asks one
    first-person statement per law, per archetype and per self-reported

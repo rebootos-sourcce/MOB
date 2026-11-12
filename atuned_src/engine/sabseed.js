@@ -175,10 +175,38 @@ function sabSeedShare(p){
  if(seeded+moved<=0)return 0;
  return Math.round(seeded/(seeded+moved)*100)/100;}
 
+/* THE BOUNDARY CHECK, schema.js's validateProfile, the same role
+   archSeedValid (engine/archseed.js) plays for the archetype self
+   report. p.sabSeed never reached that boundary at all: the charge
+   sabSeedApply writes onto p.axes[c].held is carried, but the record of
+   what seeded it, which sabSeedShare and a retake's sabSeedEmpty both
+   read, was dropped on every quiz-link import with ok true, so
+   sabSeedShare always read 0 after one and a retake looked like a
+   first-ever answer. Returns the errors found, empty when the shape is
+   sound; null or absent is a record the quiz never seeded, not an
+   error. */
+function sabSeedValid(o){
+ var errs=[];
+ if(!o||typeof o!=='object'){errs.push('sabSeed is not an object');return errs;}
+ if(typeof o.at!=='string')errs.push('sabSeed.at is not a string');
+ if(!Array.isArray(o.names))errs.push('sabSeed.names is not an array');
+ else o.names.forEach(function(nm){
+  if(SAB_SELFNAMES.indexOf(nm)<0)errs.push('sabSeed.names holds '+JSON.stringify(nm)+', not one of SAB_SELFNAMES');});
+ if(!o.axes||typeof o.axes!=='object')errs.push('sabSeed.axes is not an object');
+ else{
+  Object.keys(o.axes).forEach(function(k){
+   if(CHARGES.indexOf(k)<0)errs.push('sabSeed.axes may not carry '+k);});
+  CHARGES.forEach(function(c){
+   var v=o.axes[c];
+   if(v===undefined)return;
+   if(typeof v!=='number'||!isFinite(v)||v<0||v>10)errs.push('sabSeed.axes.'+c+' is out of range');});}
+ return errs;}
+
 if(typeof module!=='undefined'&&module.exports){
  /* SAB33_BY and KB_KEY are core.js's and kb.js's own (core.js:592, kb.js:15);
     export.js's own list (engine/export.js) carries KB_KEY but not SAB33_BY,
     so this file re-states it rather than ask every caller to rebuild it. */
  Object.assign(module.exports,{SAB_SELFNAMES:SAB_SELFNAMES, sabSelfValid:sabSelfValid,
   sabSeedAxes:sabSeedAxes, sabSeedEmpty:sabSeedEmpty, sabSeedApply:sabSeedApply,
-  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, SAB33_BY:SAB33_BY});}
+  sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, sabSeedValid:sabSeedValid,
+  SAB33_BY:SAB33_BY});}

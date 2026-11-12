@@ -1224,6 +1224,20 @@ function validateProfile(o,ctx){
   else if(SOUL_FROM.indexOf(o.soul.from)<0)
    errs.push('soul.from is '+JSON.stringify(o.soul.from)+', which is not one of '+SOUL_FROM.join(', '));
   else p.soul.from=o.soul.from;}
+ /* THE SABOTEUR SELF REPORT, the same gap TASKS.md's TA9 work found on
+    its own fork, archSeed: not named here, so the quiz's twenty
+    self-reported saboteurs wrote real charge onto the nine axes above
+    (which this boundary already carries) but the record of what seeded
+    it, which sabSeedShare and a retake's sabSeedEmpty both read against,
+    was dropped on every import with ok true. sabSeedShare then always
+    read 0 after a quiz-link arrival, and retaking the quiz looked like a
+    first-ever answer rather than a re-seed. Null or absent is a record
+    the quiz never seeded, not an error. */
+ if(o.sabSeed!==undefined&&o.sabSeed!==null){
+  var sse=sabSeedValid(o.sabSeed);
+  if(sse.length)sse.forEach(function(e){errs.push(e);});
+  else p.sabSeed={at:typeof o.sabSeed.at==='string'?o.sabSeed.at:new Date().toISOString(),
+   names:o.sabSeed.names.slice(), axes:Object.assign({},o.sabSeed.axes)};}
  /* gate evidence. counts of sentences, so any non negative integer. A key
     beside the two bags, or inside one, that this build does not count is
     refused by name, SG-09: canon.json spells the third gate Intentional, and a
