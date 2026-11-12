@@ -63,7 +63,7 @@
      9  that control packs a real local profile (archSeedApply for the 12
         self-reported archetypes, sabSeedApply for the 20 self-reported
         saboteurs, both read back off the packed record rather than assumed)
-        into a #r= link onto ../atuned.html, the one importer
+        into a #r= link onto ../source.html, the one importer
         (recordLinkBoot(), ui/panels.js) that route has had since round QZ.
 
    And the one piece of this that reaches into the app itself:
@@ -365,9 +365,8 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     ok(rec.lawsWritten === shape.laws, '@' + w + ': ' + rec.lawsWritten + ' of ' + shape.laws + ' laws written onto p.laws');
 
     /* THE HANDOFF LINK: packed with the real engine\'s linkWrap + gzip, the
-       same route (#r= onto ../atuned.html, the name the funnel's own built
-       pages and the deploy step both use for the app -- see deploy.yml's
-       own comment and CLAUDE.md's handover rule) recordLinkBoot() already
+       same route (#r= onto ../source.html, which funnel/BUILD-single.sh
+       rewrites to atuned.html in dist, APP there) recordLinkBoot() already
        reads.
        Pressing it arms the link asynchronously (recordLinkArm); this waits
        for aria-disabled to clear rather than a fixed timer. */
@@ -382,7 +381,7 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
       return a && a.getAttribute('data-ready') === '1';
     }, null, { timeout: 8000 });
     const href = await page.getAttribute('#toapp-record', 'href');
-    ok(/\/atuned\.html#r=/.test(href), '@' + w + ': Create your account packed "' + (href || '').slice(0, 60) + '", not a #r= link onto atuned.html');
+    ok(/\/source\.html#r=/.test(href), '@' + w + ': Create your account packed "' + (href || '').slice(0, 60) + '", not a #r= link onto source.html');
     ok(errs.length === 0, '@' + w + ': ' + errs.length + ' error(s) across the whole walk: ' + errs.slice(0, 3).join(' | '));
     ok(reqs.length === 0, '@' + w + ': ' + reqs.length + ' outbound request(s) across the whole walk: ' + reqs.slice(0, 3).join(' '));
     await ctx.close();
@@ -411,7 +410,7 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     await qpage.waitForFunction(() => document.getElementById('toapp-record').getAttribute('data-ready') === '1', null, { timeout: 8000 });
     const link = await qpage.getAttribute('#toapp-record', 'href');
     await qctx.close();
-    ok(/\/atuned\.html#r=/.test(link || ''), 'could not build a real #r= link from the quiz to test the app with: ' + (link||'').slice(0,80));
+    ok(/\/source\.html#r=/.test(link || ''), 'could not build a real #r= link from the quiz to test the app with: ' + (link||'').slice(0,80));
 
     const hash = (link || '').split('#')[1] || '';
     const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
