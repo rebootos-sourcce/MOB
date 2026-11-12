@@ -379,6 +379,19 @@ const ZONES=[
 // NOVA  (cinematic particle sphere)
 // =========================================================================
 (function(){
+  /* UNI_STILL, 12 November: a reduced-motion check that works standalone.
+     This file is inlined alone into the funnel's index.html (see
+     funnel/BUILD-single.sh, "never the embedded copy"), which never loads
+     atuned_src/ui/component.js, so rbStill() does not exist there. Inside
+     the real app rbStill() is the authoritative check (it also reads the
+     in-app Settings "quiet"/"rm" toggle), so this calls it when present
+     and only falls back to the OS-level media query standalone, where
+     there is no such toggle to also read. */
+  function uniStill(){
+    if(typeof rbStill==='function') return rbStill();
+    try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    catch(e){ return false; }
+  }
   const cv = document.getElementById('ca');
   const ctx = cv.getContext('2d');
   const W=640,H=520,CX=320,CY=252,R=136;
@@ -2072,7 +2085,7 @@ const ZONES=[
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
-    const still=rbStill();
+    const still=uniStill();
     if(!still) settledStill=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
@@ -2506,7 +2519,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
   /* motion turned back on after the still-settle above stopped the loop:
      the same restart the mouseenter listener already does, fired by the
      one thing that can make rbStill() go false again mid-session. */
-  new MutationObserver(()=>{ if(!cv.hidden&&!rbStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
+  new MutationObserver(()=>{ if(!cv.hidden&&!uniStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
     .observe(document.body,{attributes:true,attributeFilter:['class']});
 
   let typeBuf='';

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v46 0a3ff2fa 2026-11-12 12:41"><head><meta charset="utf-8">
+<html lang="en" data-build="v47 15a3b201 2026-11-12 14:43"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -43319,6 +43319,19 @@ const ZONES=[
 // NOVA  (cinematic particle sphere)
 // =========================================================================
 (function(){
+  /* UNI_STILL, 12 November: a reduced-motion check that works standalone.
+     This file is inlined alone into the funnel's index.html (see
+     funnel/BUILD-single.sh, "never the embedded copy"), which never loads
+     atuned_src/ui/component.js, so rbStill() does not exist there. Inside
+     the real app rbStill() is the authoritative check (it also reads the
+     in-app Settings "quiet"/"rm" toggle), so this calls it when present
+     and only falls back to the OS-level media query standalone, where
+     there is no such toggle to also read. */
+  function uniStill(){
+    if(typeof rbStill==='function') return rbStill();
+    try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    catch(e){ return false; }
+  }
   const cv = document.getElementById('ca');
   const ctx = cv.getContext('2d');
   const W=640,H=520,CX=320,CY=252,R=136;
@@ -45012,7 +45025,7 @@ const ZONES=[
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
-    const still=rbStill();
+    const still=uniStill();
     if(!still) settledStill=false;
     /* round TE: the stop path now always clears lastTs and returns in
        the same tick, rather than falling through to the baseline check
@@ -45446,7 +45459,7 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
   /* motion turned back on after the still-settle above stopped the loop:
      the same restart the mouseenter listener already does, fired by the
      one thing that can make rbStill() go false again mid-session. */
-  new MutationObserver(()=>{ if(!cv.hidden&&!rbStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
+  new MutationObserver(()=>{ if(!cv.hidden&&!uniStill()&&lastTs===null){ lastTs=performance.now(); kick(); } })
     .observe(document.body,{attributes:true,attributeFilter:['class']});
 
   let typeBuf='';
@@ -94935,5 +94948,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006337727"></div>
+<div id="eof" hidden data-len="006338469"></div>
 </body></html>
