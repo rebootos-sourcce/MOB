@@ -1492,6 +1492,47 @@
         $('btnAssemble').textContent = 'Generate package';
       }
     };
+
+    // #53: per-field regenerate — btnAssemble above still fully replaces
+    // the package (a new row, every field), but these update ONE column
+    // group on the existing row so fixing a bad title doesn't cost every
+    // other field's manual edit.
+    $('prodPackageSection').querySelectorAll('.regen-btn').forEach(btn => {
+      btn.onclick = async (e) => {
+        e.stopPropagation();
+        if (!_currentPkgId) return;
+        const field = btn.dataset.regenField;
+        btn.classList.add('spinning');
+        btn.disabled = true;
+        try {
+          const pkg = await window.api.invoke('production:regenerateField', { packageId: _currentPkgId, field });
+          renderPackage(pkg);
+        } catch (err) {
+          console.error('[control] regenerate field failed:', err.message);
+        } finally {
+          btn.classList.remove('spinning');
+          btn.disabled = false;
+        }
+      };
+    });
+
+    $('btnExportFiles').onclick = async () => {
+      if (!_currentPkgId) { $('exportStatus').textContent = 'Generate a package first.'; return; }
+      const btn = $('btnExportFiles');
+      const status = $('exportStatus');
+      btn.disabled = true;
+      status.textContent = 'Exporting…';
+      try {
+        const result = await window.api.invoke('production:exportFiles', { packageId: _currentPkgId });
+        status.textContent = result.ok
+          ? `Exported ${result.jsonPath.split(/[\\/]/).pop()} and ${result.youtubePath.split(/[\\/]/).pop()}.`
+          : 'Export canceled.';
+      } catch (err) {
+        status.textContent = 'Export failed: ' + err.message;
+      } finally {
+        btn.disabled = false;
+      }
+    };
   }
 
   function renderPackage(pkg) {
@@ -1515,7 +1556,26 @@
     $('prodTitleValue').textContent = pkg.title || '';
     const variants = JSON.parse(pkg.title_variants || '[]');
     const varEl = $('prodVariants'); varEl.textContent = '';
-    variants.forEach((v, i) => { const d = document.createElement('div'); d.className = 'variant-item'; d.textContent = `${i+1}. ${v}`; varEl.appendChild(d); });
+    const effectiveTitle = pkg.edited_title || variants[0] || pkg.title || '';
+    // #53: title variants were rendered read-only with no way to pick one —
+    // click promotes it to the actual title (edited_title), the same
+    // column the Title field itself edits, so the rest of the app
+    // (exports, variant generation) just sees a normal title change.
+    variants.forEach((v, i) => {
+      const d = document.createElement('div');
+      d.className = 'variant-item' + (v === effectiveTitle ? ' promoted' : '');
+      d.textContent = `${i + 1}. ${v}`;
+      d.title = 'Click to use as the title';
+      d.addEventListener('click', async () => {
+        if (!_currentPkgId) return;
+        await window.mob.db.mutate('packages:update', { id: _currentPkgId, edited_title: v });
+        const titleEdit = $('prodTitleEdit');
+        if (titleEdit) titleEdit.textContent = v;
+        varEl.querySelectorAll('.variant-item').forEach(el => el.classList.remove('promoted'));
+        d.classList.add('promoted');
+      });
+      varEl.appendChild(d);
+    });
     $('prodDesc').textContent = pkg.description || '';
     const tags = JSON.parse(pkg.hashtags_json || '[]');
     const tagEl = $('prodHashtags'); tagEl.textContent = '';

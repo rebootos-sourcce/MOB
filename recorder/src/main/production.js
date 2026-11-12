@@ -6,27 +6,23 @@
 const crypto = require('crypto');
 const db = require('./db/sqlite');
 const { getDeviceId } = require('./identity');
-const { extractHashtags } = require('./intelligence/hashtags');
+const { extractHashtags, buildCorpusStats } = require('./intelligence/hashtags');
 const { detectChapters } = require('./intelligence/energy');
 const { loadEdl, remapTimestamp } = require('./edl');
 const { generateVariants } = require('./intelligence/variants');
 
 /**
- * Assemble a production package for a recording.
- * @param {object} opts
- * @param {string} opts.recordingId
- * @param {string} [opts.clipId]       optional clip override
- * @returns {Promise<{packageId:string}>}
+ * Computes every generated field for a recording's production package
+ * without writing anything — shared by assemblePackage() (full regenerate,
+ * new row) and regeneratePackageField() (one field, existing row).
  */
-async function assemblePackage({ recordingId, clipId = null }) {
-  // Load transcript
+function buildPackageData(recordingId) {
   const transcript = db.get(
     'SELECT * FROM transcripts WHERE recording_id = ? ORDER BY created_at DESC LIMIT 1',
     [recordingId]
   );
   if (!transcript) throw new Error('No transcript found for recording ' + recordingId);
 
-  // Load words for energy/chapter analysis
   const words = db.all(
     'SELECT word, start_ms / 1000.0 AS start, end_ms / 1000.0 AS end FROM words WHERE transcript_id = ? ORDER BY start_ms',
     [transcript.id]
@@ -62,13 +58,21 @@ async function assemblePackage({ recordingId, clipId = null }) {
 
   // Generate metadata
   const fullText = transcript.full_text || '';
-  const hashtags  = extractHashtags(fullText);
+  // #53: real corpus IDF from every other recording's transcript, same as
+  // transcription.js's own metadata_tags pass — this package's
+  // hashtags_json should rank terms the same honest way, not by a fixed
+  // per-word table with no corpus at all.
+  const corpusDocs = db.all(
+    'SELECT full_text FROM transcripts WHERE recording_id != ?',
+    [recordingId]
+  ).map(r => r.full_text || '');
+  const hashtags = extractHashtags(fullText, buildCorpusStats(corpusDocs));
   // Chapter boundaries still come from the word-density valley detector
   // (detectChapters), not segments.energy directly: the build-plan's
   // chapter rule (energy > 0.6 AND duration > 15s) assumes paragraph-sized
   // segments, but this schema's segments are caption-line-sized (a few
   // seconds each) — virtually none would ever pass a 15s duration gate.
-  const chapters  = detectChapters(remappedWords, outputDurationMs);
+  const chapters = detectChapters(remappedWords, outputDurationMs);
 
   // #51: title picks the highest-energy real speech segment (build-plan
   // spec: energy > 0.5, 60 chars max) instead of just the transcript's
@@ -94,17 +98,28 @@ async function assemblePackage({ recordingId, clipId = null }) {
   const firstSentence = (fullText.split(/[.!?]/)[0] || '').trim().slice(0, 80);
   const title = (bestSegment ? bestSegment.text.trim().slice(0, 60) : '') || firstSentence || 'Recording';
 
-  // Title variants (3 options)
   const titleVariants = [
     title,
     title.replace(/^(so|well|okay|um|uh),?\s*/i, '').trim() || title,
     hashtags.slice(0, 3).map(t => t.tag).join(' ') || title,
   ].filter((v, i, a) => a.indexOf(v) === i); // dedupe
 
-  // Short description: first two sentences
   const sentences = fullText.split(/[.!?]/).filter(s => s.trim().length > 10);
   const shortDesc = sentences.slice(0, 2).join('. ').trim().slice(0, 200);
   const description = sentences.slice(0, 5).join('. ').trim().slice(0, 500);
+
+  return { recording, transcript, title, titleVariants, description, shortDesc, hashtags, chapters, fullText };
+}
+
+/**
+ * Assemble a production package for a recording.
+ * @param {object} opts
+ * @param {string} opts.recordingId
+ * @param {string} [opts.clipId]       optional clip override
+ * @returns {Promise<{packageId:string}>}
+ */
+async function assemblePackage({ recordingId, clipId = null }) {
+  const data = buildPackageData(recordingId);
 
   const packageId = crypto.randomUUID();
   const deviceId  = getDeviceId();
@@ -119,12 +134,12 @@ async function assemblePackage({ recordingId, clipId = null }) {
       deviceId,
       recordingId,
       clipId,
-      title,
-      JSON.stringify(titleVariants),
-      description,
-      shortDesc,
-      JSON.stringify(hashtags),
-      JSON.stringify(chapters),
+      data.title,
+      JSON.stringify(data.titleVariants),
+      data.description,
+      data.shortDesc,
+      JSON.stringify(data.hashtags),
+      JSON.stringify(data.chapters),
     ]
   );
 
@@ -135,12 +150,12 @@ async function assemblePackage({ recordingId, clipId = null }) {
       const pkgData = {
         title: pkg.title_variants
           ? JSON.parse(pkg.title_variants)?.[0]
-          : (recording ? recording.title : ''),
+          : (data.recording ? data.recording.title : ''),
         titleVariants: pkg.title_variants ? JSON.parse(pkg.title_variants) : [],
         description: pkg.description,
         hashtags_json: pkg.hashtags_json,
         chapters_json: pkg.chapters_json,
-        fullText: transcript.full_text || '',
+        fullText: data.fullText,
       };
       const variants = generateVariants(pkgData);
       db.run(
@@ -152,7 +167,40 @@ async function assemblePackage({ recordingId, clipId = null }) {
     console.error('[production] variant generation error:', varErr.message);
   }
 
-  return { packageId, title, hashtags, chapters };
+  return { packageId, title: data.title, hashtags: data.hashtags, chapters: data.chapters };
 }
 
-module.exports = { assemblePackage };
+// #53: btnAssemble used to regenerate the ENTIRE package on every click —
+// one bad title meant regenerating everything and losing manual edits to
+// every other field (made worse by the sibling-column clobber task #22
+// fixed). Each of these updates ONE column group on the EXISTING package
+// row, leaving every other field (generated or manually edited) untouched.
+const REGEN_FIELDS = {
+  title: (data) => ({ title: data.title, title_variants: JSON.stringify(data.titleVariants) }),
+  description: (data) => ({ description: data.description, short_desc: data.shortDesc }),
+  hashtags: (data) => ({ hashtags_json: JSON.stringify(data.hashtags) }),
+  chapters: (data) => ({ chapters_json: JSON.stringify(data.chapters) }),
+};
+// A field just regenerated by explicit request should actually show the
+// new value, not stay masked by a stale manual edit of the SAME field —
+// other fields' edited_* are never touched here.
+const EDITED_COLUMN_TO_CLEAR = { title: 'edited_title', description: 'edited_description', hashtags: 'edited_hashtags_json' };
+
+async function regeneratePackageField(packageId, field) {
+  const pkg = db.get('SELECT * FROM production_packages WHERE id = ?', [packageId]);
+  if (!pkg) throw new Error('Package not found: ' + packageId);
+  const buildUpdates = REGEN_FIELDS[field];
+  if (!buildUpdates) throw new Error('Unknown regenerate field: ' + field);
+
+  const data = buildPackageData(pkg.recording_id);
+  const updates = buildUpdates(data);
+
+  const sets = Object.keys(updates).map(k => `${k} = ?`);
+  const vals = Object.values(updates);
+  if (EDITED_COLUMN_TO_CLEAR[field]) sets.push(`${EDITED_COLUMN_TO_CLEAR[field]} = NULL`);
+
+  db.run(`UPDATE production_packages SET ${sets.join(', ')} WHERE id = ?`, [...vals, packageId]);
+  return db.get('SELECT * FROM production_packages WHERE id = ?', [packageId]);
+}
+
+module.exports = { assemblePackage, regeneratePackageField };

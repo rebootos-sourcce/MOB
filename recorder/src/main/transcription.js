@@ -10,7 +10,7 @@ const { detectFillers } = require('./intelligence/filler');
 const { detectSilences } = require('./intelligence/silence');
 const settings = require('./settings');
 const { formCaptions } = require('./intelligence/captions');
-const { extractHashtags } = require('./intelligence/hashtags');
+const { extractHashtags, buildCorpusStats } = require('./intelligence/hashtags');
 const { scoreSegmentEnergy } = require('./intelligence/energy');
 
 // Cache the pipeline so it isn't re-loaded on every transcription.
@@ -188,7 +188,16 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
   const silenceThresholdMs = settings.get().edit.silenceThresholdMs;
   const silenceSegs = detectSilences(words, totalDurationMs, silenceThresholdMs);
   const captions    = formCaptions(words);
-  const hashtags    = extractHashtags(fullText);
+  // #53: real document-frequency IDF from every OTHER transcript already in
+  // the library (excluding this recording's own prior transcript, if this
+  // is a re-transcribe — it hasn't been deleted yet at this point in the
+  // function, and counting it would be comparing this document to itself).
+  const corpusDocs = db.all(
+    'SELECT full_text FROM transcripts WHERE recording_id != ?',
+    [recordingId]
+  ).map(r => r.full_text || '');
+  const hashtagCorpus = buildCorpusStats(corpusDocs);
+  const hashtags    = extractHashtags(fullText, hashtagCorpus);
 
   // #51: per-segment energy/wpm (architecture.html formula — see energy.js
   // for why, and why domainKeywords comes from this recording's own
@@ -257,12 +266,37 @@ async function transcribe({ recordingId, filePath, onProgress = () => {} }) {
       );
     }
 
-    for (const tag of hashtags) {
+    // #53: idf_score used to be tag.score passed twice — non-zero, so it
+    // technically satisfied "idf_score is non-zero", but it was never a
+    // real IDF value. extractHashtags() now returns a real per-tag idf
+    // (see hashtags.js) computed from the other transcripts already in the
+    // library, so this writes what the column name says.
+    //
+    // The default (platform-less) row set is the general top-7 used
+    // wherever the app shows "the" hashtags for a recording (production
+    // package display, domainKeywords for energy scoring). Per-platform
+    // row sets use the SAME ranked candidate pool (extractHashtags already
+    // returns up to 15, the largest count below) sliced to each platform's
+    // own count — two specs disagree on the exact numbers (build-plan:565
+    // vs architecture:813); picked build-plan's, since most of this
+    // session's other spec-vs-spec calls already deferred to it.
+    const GENERAL_TAG_COUNT = 7;
+    const PLATFORM_TAG_COUNTS = { youtube: 15, tiktok: 5, linkedin: 10 };
+    for (const tag of hashtags.slice(0, GENERAL_TAG_COUNT)) {
       db.run(
         `INSERT INTO metadata_tags (recording_id, tag, type, score, idf_score)
          VALUES (?, ?, 'hashtag', ?, ?)`,
-        [recordingId, tag.tag, tag.score, tag.score]
+        [recordingId, tag.tag, tag.score, tag.idf]
       );
+    }
+    for (const [platform, count] of Object.entries(PLATFORM_TAG_COUNTS)) {
+      for (const tag of hashtags.slice(0, count)) {
+        db.run(
+          `INSERT INTO metadata_tags (recording_id, tag, type, platform, score, idf_score)
+           VALUES (?, ?, 'hashtag', ?, ?, ?)`,
+          [recordingId, tag.tag, platform, tag.score, tag.idf]
+        );
+      }
     }
 
     // Caption segments (speech)

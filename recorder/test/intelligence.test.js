@@ -9,7 +9,7 @@ const assert = require('node:assert/strict');
 const { detectFillers } = require('../src/main/intelligence/filler');
 const { detectSilences } = require('../src/main/intelligence/silence');
 const { formCaptions } = require('../src/main/intelligence/captions');
-const { extractHashtags } = require('../src/main/intelligence/hashtags');
+const { extractHashtags, buildCorpusStats } = require('../src/main/intelligence/hashtags');
 const { scoreWindow, detectChapters, scoreSegmentEnergy } = require('../src/main/intelligence/energy');
 
 test('detectFillers: only flags real filler sounds, not ordinary words', () => {
@@ -112,6 +112,52 @@ test('extractHashtags: sorts by raw score, not post-rounding ties', () => {
 
 test('extractHashtags: empty text returns empty array', () => {
   assert.deepEqual(extractHashtags(''), []);
+});
+
+test('extractHashtags: real corpus IDF differentiates two recordings on the same topic', () => {
+  // Both recordings talk about "database" a lot — but recording A is
+  // otherwise about react, and recording B about python. A real IDF pass
+  // should down-weight "database" (common to both) relative to each
+  // recording's own distinctive term, which a fake/no-op IDF cannot do
+  // since it weights every word in a document identically.
+  const textA = 'database database database react react react query query';
+  const textB = 'database database database python python python query query';
+
+  const corpus = buildCorpusStats([textA, textB]); // each is "the other" document for the other's extraction
+  const tagsA = extractHashtags(textA, corpus).map(t => t.tag);
+  const tagsB = extractHashtags(textB, corpus).map(t => t.tag);
+
+  assert.ok(tagsA.includes('#react'), 'recording A should surface its distinctive term');
+  assert.ok(tagsB.includes('#python'), 'recording B should surface its distinctive term');
+  assert.notDeepEqual(tagsA, tagsB, 'two recordings sharing a common term must not produce identical hashtag sets');
+
+  // "database" appears in both documents ("database" tf is equal in both,
+  // and corpus-wide it's in every doc) so a real IDF must rank it BELOW
+  // each recording's own word that appears nowhere else in the corpus.
+  const dbRankA = tagsA.indexOf('#database');
+  const reactRankA = tagsA.indexOf('#react');
+  assert.ok(reactRankA < dbRankA, '"react" (unique to A) should outrank "database" (common to both)');
+});
+
+test('extractHashtags: idf is a real per-tag value, not the score duplicated', () => {
+  const corpus = buildCorpusStats(['completely unrelated other content here']);
+  const tags = extractHashtags('react react react database', corpus);
+  for (const t of tags) {
+    assert.notEqual(t.idf, t.score, 'idf must not equal score — that was the fake-idf bug (same number written twice)');
+    assert.ok(t.idf >= 1, 'smoothed idf is always >= 1');
+  }
+});
+
+test('extractHashtags: a repeated two-word phrase becomes a bigram tag', () => {
+  const text = 'we talked about machine learning today, machine learning is the whole point of this project';
+  const tags = extractHashtags(text).map(t => t.tag);
+  assert.ok(tags.includes('#machinelearning'), `expected a bigram tag, got: ${tags.join(', ')}`);
+});
+
+test('extractHashtags: a two-word phrase said only once does not become a bigram tag', () => {
+  const text = 'machine learning is interesting but we only said that combination one time in this text';
+  const tags = extractHashtags(text).map(t => t.tag);
+  assert.ok(!tags.includes('#machinelearning'), 'a non-repeated phrase should not be promoted to a compound tag');
 });
 
 test('scoreWindow: empty window returns 0', () => {

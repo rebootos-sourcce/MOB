@@ -50,8 +50,12 @@ const QUERIES = {
     db.all("SELECT * FROM segments WHERE transcript_id = ? AND type = 'silence' ORDER BY seq", [transcript_id]),
 
   // metadata_tags
+  // #53: rows now include per-platform sets (platform = 'youtube' | 'tiktok'
+  // | 'linkedin') alongside the general set (platform IS NULL) — this is
+  // the general display query, so it stays scoped to the general set; a
+  // platform-specific query can be added once a UI actually picks a platform.
   'tags:list': ([recording_id]) =>
-    db.all('SELECT * FROM metadata_tags WHERE recording_id = ?', [recording_id]),
+    db.all('SELECT * FROM metadata_tags WHERE recording_id = ? AND platform IS NULL', [recording_id]),
 
   // edl
   'edl:list': ([recording_id]) =>
