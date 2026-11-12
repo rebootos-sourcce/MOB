@@ -92,29 +92,77 @@ function probeDuration(filePath) {
   });
 }
 
-let encoderCache = null;
-/** Returns the set of encoder names this ffmpeg build supports. */
-function availableEncoders() {
-  if (encoderCache) return Promise.resolve(encoderCache);
+/** Parses `ffmpeg -encoders` — what this build was COMPILED with, not what
+ * actually works on this machine. Used only as a cheap prefilter below, so
+ * a hardware encoder this ffmpeg build never heard of isn't even test-
+ * encoded. */
+function compiledEncoders() {
   return new Promise((resolve) => {
     execFile(binaryPath(), ['-hide_banner', '-encoders'], { maxBuffer: 4 * 1024 * 1024 }, (err, stdout) => {
-      if (err || !stdout) {
-        // A transient failure here used to cache an EMPTY set for the whole
-        // session — every codec greyed out in the UI with no way to retry
-        // short of restarting the app. Resolve empty for just this call;
-        // only a genuine success is memoized below.
-        resolve(new Set());
-        return;
-      }
+      if (err || !stdout) { resolve(new Set()); return; }
       const found = new Set();
       for (const line of stdout.split('\n')) {
         const m = line.match(/^\s*[VAS][F.][S.][X.][B.][D.]\s+(\S+)/);
         if (m) found.add(m[1]);
       }
-      encoderCache = found;
       resolve(found);
     });
   });
+}
+
+// TDD:1012-1026: a 1-second test encode per candidate, not a text parse of
+// what ffmpeg was compiled with. A listed-but-broken nvenc (no GPU, wrong
+// driver, device busy) used to be offered in the UI, get chosen, and fail
+// at the end of a real recording — the worst possible moment, caught only
+// by main.js's libx264 retry after the user already waited through the
+// failure. 5s is generous for 3 tiny frames; a wedged driver gets killed
+// rather than hanging the whole probe.
+function testEncode(encoderName) {
+  return new Promise((resolve) => {
+    const args = [
+      '-hide_banner', '-y',
+      '-f', 'lavfi', '-i', 'testsrc=duration=1:size=320x240:rate=5',
+      '-frames:v', '3',
+      '-c:v', encoderName,
+      '-f', 'null', '-',
+    ];
+    let settled = false;
+    const finish = (ok) => { if (!settled) { settled = true; resolve(ok); } };
+    let child;
+    try {
+      child = spawn(binaryPath(), args, { windowsHide: true });
+    } catch (_) { finish(false); return; }
+    const timer = setTimeout(() => { try { child.kill('SIGKILL'); } catch (_) {} finish(false); }, 5000);
+    child.on('error', () => { clearTimeout(timer); finish(false); });
+    child.on('close', (code) => { clearTimeout(timer); finish(code === 0); });
+  });
+}
+
+let encoderCache = null;
+let encoderProbeInFlight = null;
+/** Returns the set of encoder names that actually produce output on this machine. */
+function availableEncoders() {
+  if (encoderCache) return Promise.resolve(encoderCache);
+  // Fix #32, preserved: a probe failure or "nothing works" result must
+  // never be memoized as the permanent answer for the whole session — only
+  // a genuinely non-empty result is cached. Concurrent callers (codecs:list
+  // firing from the UI while diagnostics:bundle also asks) share the one
+  // in-flight probe instead of each running their own full test-encode pass.
+  if (encoderProbeInFlight) return encoderProbeInFlight;
+  const probe = (async () => {
+    const compiled = await compiledEncoders();
+    const candidates = [...new Set(Object.values(CODECS).map(c => c.encoder))].filter(enc => compiled.has(enc));
+    const results = await Promise.all(candidates.map(async (enc) => [enc, await testEncode(enc)]));
+    const working = new Set(results.filter(([, ok]) => ok).map(([enc]) => enc));
+    if (working.size > 0) encoderCache = working;
+    return working;
+  })();
+  encoderProbeInFlight = probe;
+  // Cleared once settled (success or failure) so a later call after a
+  // transient empty result starts a fresh probe instead of reusing a stale
+  // in-flight promise forever.
+  probe.finally(() => { encoderProbeInFlight = null; });
+  return probe;
 }
 
 /** Codec choices with an `available` flag so the UI can grey out missing ones. */
