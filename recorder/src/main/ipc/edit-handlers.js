@@ -6,7 +6,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { app } = require('electron');
 const db = require('../db/sqlite');
-const { applyCuts, remapTimestamp, loadEdl } = require('../edl');
+const { applyCuts, remapTimestamp, loadEdl, canUndo, undoLastCut } = require('../edl');
 const { clipKey, recordingKey } = require('../r2/key');
 const { getDeviceId } = require('../identity');
 
@@ -38,6 +38,15 @@ function register(sendControl) {
   ipcMain.handle('edit:loadEdl', (_e, { recordingId }) => {
     return loadEdl(recordingId);
   });
+
+  // Undo the most recent applyCuts() for a recording. Repeated calls walk
+  // back through the full history to the original uncut state — there was
+  // no way to reverse a cut at all before this.
+  ipcMain.handle('edit:undo', (_e, { recordingId }) => {
+    const entries = undoLastCut(recordingId);
+    return { ok: true, entries };
+  });
+  ipcMain.handle('edit:canUndo', (_e, { recordingId }) => ({ canUndo: canUndo(recordingId) }));
 
   // Remap a source timestamp through the loaded EDL.
   ipcMain.handle('edit:remapTimestamp', (_e, { recordingId, sourceMs }) => {

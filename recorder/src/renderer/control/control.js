@@ -964,6 +964,10 @@
       summary.textContent = '';
       btn.hidden = true;
     }
+    try {
+      const { canUndo } = await window.api.invoke('edit:canUndo', { recordingId });
+      $('btnUndoCut').hidden = !canUndo;
+    } catch (_) { $('btnUndoCut').hidden = true; }
   }
 
   // The waveform already implements colored region overlays — nothing ever
@@ -1160,6 +1164,17 @@
       } finally {
         unsub();
         $('btnRenderEdit').disabled = false;
+      }
+    };
+
+    $('btnUndoCut').onclick = async () => {
+      if (!selectedRecordingId) return;
+      try {
+        await window.api.invoke('edit:undo', { recordingId: selectedRecordingId });
+        refreshEditCutSummary(selectedRecordingId);
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Undid last cut.';
+      } catch (err) {
+        $('editProgress').hidden = false; $('editProgressLabel').textContent = 'Undo failed: ' + err.message;
       }
     };
 
@@ -1391,6 +1406,23 @@
       }
     };
   }
+
+  // Ctrl/Cmd+Z undoes the last applied cut while the Edit tab is active —
+  // the spec's stated acceptance criterion for S4, previously unimplemented.
+  // Skipped while focus is in an editable element so native text-undo
+  // still works there (e.g. the production metadata fields).
+  document.addEventListener('keydown', async (e) => {
+    if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'z') return;
+    const tag = (e.target && e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
+    const activePanel = document.querySelector('.tab-panel.active');
+    if (!activePanel || activePanel.id !== 'tab-edit' || !selectedRecordingId) return;
+    e.preventDefault();
+    try {
+      await window.api.invoke('edit:undo', { recordingId: selectedRecordingId });
+      refreshEditCutSummary(selectedRecordingId);
+    } catch (_) { /* nothing to undo */ }
+  });
 
   // A thumbnail finishes generating asynchronously after finalize — reload
   // whichever list tab is currently visible so it picks up the new image

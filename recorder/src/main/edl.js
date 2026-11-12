@@ -5,6 +5,14 @@
 const crypto = require('crypto');
 const db = require('./db/sqlite');
 
+// Full undo history per recording, kept in main-process memory (not
+// persisted — an app restart clearing it is the same tradeoff every normal
+// app's undo history makes). Every applyCuts() pushes a snapshot of the EDL
+// as it stood before that call, so repeated Ctrl+Z walks all the way back
+// to the original uncut state. applyCuts() used to DELETE the previous
+// state with no way back at all.
+const _undoStacks = new Map(); // recordingId -> array of previous edl_entries snapshots
+
 /**
  * Apply a list of cuts to a recording. Each cut removes a [start_ms, end_ms] range.
  * Writes edl_entries rows with correct output_start_ms / output_end_ms offsets.
@@ -15,6 +23,10 @@ const db = require('./db/sqlite');
  * @returns {Array<{seq,source_start_ms,source_end_ms,output_start_ms,output_end_ms}>} kept segments
  */
 function applyCuts(recordingId, totalDurationMs, cuts) {
+  const prevEntries = db.all('SELECT * FROM edl_entries WHERE recording_id = ? ORDER BY seq', [recordingId]);
+  if (!_undoStacks.has(recordingId)) _undoStacks.set(recordingId, []);
+  _undoStacks.get(recordingId).push(prevEntries);
+
   // Sort and merge overlapping cuts
   const merged = mergeCuts(cuts);
 
@@ -113,6 +125,35 @@ function loadEdl(recordingId) {
   );
 }
 
+function canUndo(recordingId) {
+  const stack = _undoStacks.get(recordingId);
+  return !!(stack && stack.length);
+}
+
+/** Restores the EDL to the state it was in before the most recent applyCuts() call. */
+function undoLastCut(recordingId) {
+  const stack = _undoStacks.get(recordingId);
+  if (!stack || !stack.length) throw new Error('Nothing to undo');
+  const prevEntries = stack.pop();
+
+  db.exec('BEGIN');
+  try {
+    db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
+    for (const entry of prevEntries) {
+      db.run(
+        `INSERT INTO edl_entries (recording_id, seq, source_start_ms, source_end_ms, output_start_ms, output_end_ms, clip_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [recordingId, entry.seq, entry.source_start_ms, entry.source_end_ms, entry.output_start_ms, entry.output_end_ms, entry.clip_id ?? null]
+      );
+    }
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+  return prevEntries;
+}
+
 function mergeCuts(cuts) {
   if (!cuts.length) return [];
   const sorted = [...cuts].sort((a, b) => a.start_ms - b.start_ms);
@@ -128,4 +169,4 @@ function mergeCuts(cuts) {
   return out;
 }
 
-module.exports = { applyCuts, remapTimestamp, loadEdl };
+module.exports = { applyCuts, remapTimestamp, loadEdl, canUndo, undoLastCut };
