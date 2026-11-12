@@ -5,7 +5,10 @@
 //
 // Setup required (not built in proxy-restricted env):
 //   1. CLOUDFLARE_WORKER_URL in env or settings
-//   2. CLOUDFLARE_API_TOKEN with R2 + Worker + Queues permissions
+//   2. CLOUDFLARE_API_TOKEN — the shared secret this device signs its own
+//      device-scoped JWT with (deviceAuth.js) before every request; the
+//      Worker verifies that JWT (workers/src/auth.js, ADR-003), not this
+//      raw value directly anymore
 //   3. Deploy workers/dist-coordinator.js to Cloudflare Workers
 //
 // Architecture:
@@ -20,6 +23,7 @@ const fs       = require('fs');
 const db       = require('../db/sqlite');
 const settings = require('../settings');
 const { getDeviceId } = require('../identity');
+const { signDeviceToken } = require('./deviceAuth');
 
 function getWorkerUrl() {
   return process.env.CLOUDFLARE_WORKER_URL || settings.get().cloudflare?.workerUrl || null;
@@ -37,11 +41,15 @@ function getApiToken() {
  */
 async function getPresignedUrl(r2Key, mimeType, signal) {
   const baseUrl = getWorkerUrl();
-  const token   = getApiToken();
-  if (!baseUrl || !token) throw new Error('Cloudflare not configured (CLOUDFLARE_WORKER_URL / CLOUDFLARE_API_TOKEN missing)');
+  const secret  = getApiToken();
+  if (!baseUrl || !secret) throw new Error('Cloudflare not configured (CLOUDFLARE_WORKER_URL / CLOUDFLARE_API_TOKEN missing)');
 
-  const body = JSON.stringify({ key: r2Key, mimeType, deviceId: getDeviceId() });
-  return jsonPost(`${baseUrl}/presign`, body, token, signal);
+  const deviceId = getDeviceId();
+  const body = JSON.stringify({ key: r2Key, mimeType, deviceId });
+  // Task #61: the Worker now verifies a device-scoped JWT (ADR-003), not
+  // the raw shared secret as a static Bearer value — signDeviceToken signs
+  // it with that same secret.
+  return jsonPost(`${baseUrl}/presign`, body, signDeviceToken(deviceId, secret), signal);
 }
 
 /**
@@ -103,11 +111,12 @@ async function uploadToR2(filePath, presignedUrl, mimeType, onProgress, signal) 
  */
 async function enqueueDistribution(job, signal) {
   const baseUrl = getWorkerUrl();
-  const token   = getApiToken();
-  if (!baseUrl || !token) throw new Error('Cloudflare not configured');
+  const secret  = getApiToken();
+  if (!baseUrl || !secret) throw new Error('Cloudflare not configured');
 
-  const body = JSON.stringify({ ...job, deviceId: getDeviceId() });
-  return jsonPost(`${baseUrl}/queue`, body, token, signal);
+  const deviceId = getDeviceId();
+  const body = JSON.stringify({ ...job, deviceId });
+  return jsonPost(`${baseUrl}/queue`, body, signDeviceToken(deviceId, secret), signal);
 }
 
 /**
@@ -181,7 +190,9 @@ async function syncDistribution(distributionId, onProgress = () => {}, signal) {
 
 // ── helpers ───────────────────────────────────────────────────
 
-function jsonPost(url, body, token, signal) {
+// `bearerToken` is a signed device JWT (deviceAuth.js), not the raw shared
+// secret — see this file's callers.
+function jsonPost(url, body, bearerToken, signal) {
   return new Promise((resolve, reject) => {
     if (signal && signal.aborted) return reject(new DOMException('Canceled', 'AbortError'));
     const parsed = new URL(url);
@@ -193,7 +204,7 @@ function jsonPost(url, body, token, signal) {
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(body),
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${bearerToken}`,
       },
       signal,
     };

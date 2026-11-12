@@ -21,23 +21,7 @@ npx wrangler login
 
 Your browser opens. Approve access. Close the tab when done.
 
-## 2. Create the KV namespace
-
-```
-npx wrangler kv namespace create "MOB_KV"
-npx wrangler kv namespace create "MOB_KV" --preview
-```
-
-Each command prints an `id`. Copy both and paste them into `wrangler.toml`:
-
-```toml
-[[kv_namespaces]]
-binding     = "MOB_KV"
-id          = "PASTE_PRODUCTION_ID_HERE"
-preview_id  = "PASTE_PREVIEW_ID_HERE"
-```
-
-## 3. Create the R2 bucket
+## 2. Create the R2 bucket
 
 ```
 npx wrangler r2 bucket create mob-recordings
@@ -45,22 +29,28 @@ npx wrangler r2 bucket create mob-recordings
 
 No ID to copy — the binding name `MOB_BUCKET` in `wrangler.toml` already maps to it.
 
-## 4. Set secrets
+## 3. Set secrets
 
 Secrets are never stored in `wrangler.toml`. Set them once:
 
 ```
-npx wrangler secret put CLOUDFLARE_API_TOKEN
-# Paste your Cloudflare API token (Permissions: Workers Scripts:Edit, R2:Edit, Durable Objects:Edit)
-
-npx wrangler secret put UPLOAD_SIGNING_SECRET
+npx wrangler secret put JWT_SIGNING_SECRET
 # Paste any long random string, e.g.:
 #   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+# This is the SAME value the desktop app's Output → Cloud "API Token"
+# field holds — the app signs a device-scoped JWT with it (ADR-003,
+# recorder/src/main/cloudflare/deviceAuth.js) and the Worker verifies that
+# JWT with the same secret (workers/src/auth.js). It is still one shared
+# secret, not a per-device one — see auth.js's own top comment for exactly
+# what that does and doesn't protect against.
+
+npx wrangler secret put UPLOAD_SIGNING_SECRET
+# Paste a DIFFERENT long random string (same generation command works) —
+# this one signs the time-limited R2 upload URLs and must not be the same
+# value as JWT_SIGNING_SECRET.
 ```
 
-Keep `UPLOAD_SIGNING_SECRET` private — it signs the time-limited upload URLs.
-
-## 5. Deploy
+## 4. Deploy
 
 ```
 npx wrangler deploy
@@ -71,17 +61,28 @@ Output includes your worker URL, e.g.:
 https://mob-recorder.<your-subdomain>.workers.dev
 ```
 
-## 6. Test
+## 5. Test
+
+The Worker now verifies a signed JWT, not a raw Bearer token, so testing
+with curl needs an actual signed token rather than pasting the secret
+directly:
 
 ```bash
 export WORKER_URL="https://mob-recorder.<your-subdomain>.workers.dev"
-export TOKEN="<the CLOUDFLARE_API_TOKEN you set above>"
+export SECRET="<the JWT_SIGNING_SECRET you set above>"
+
+# Run from the workers/ directory — signs a short-lived test token with
+# the same function auth.js verifies with.
+TOKEN=$(node --input-type=module -e "
+import { signDeviceToken } from './src/auth.js';
+console.log(await signDeviceToken('test-device', process.env.SECRET));
+")
 
 # Should return a presigned upload URL
 curl -s -X POST "$WORKER_URL/presign" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"key":"test-rec-001.mp4","mimeType":"video/mp4","deviceId":"test"}' | jq .
+  -d '{"key":"test-rec-001.mp4","mimeType":"video/mp4","deviceId":"test-device"}' | jq .
 ```
 
 Expected response:
@@ -93,11 +94,13 @@ Expected response:
 }
 ```
 
-## 7. Configure the desktop app
+## 6. Configure the desktop app
 
 Open MOB Recorder → Output → Cloud. Enter:
-- **Worker URL**: the URL from step 5
-- **API Token**: the `CLOUDFLARE_API_TOKEN` value from step 4
+- **Worker URL**: the URL from step 4
+- **API Token**: the `JWT_SIGNING_SECRET` value from step 3 — the app
+  signs its own device JWT with this value on every request; it is never
+  sent as-is.
 
 Or set environment variables before launching:
 ```

@@ -1,9 +1,11 @@
 'use strict';
 // MOB Recorder — Cloudflare Worker
 //
-// Endpoints (all require Authorization: Bearer <CLOUDFLARE_API_TOKEN>):
+// Endpoints (all require Authorization: Bearer <device-scoped JWT — see
+// auth.js, ADR-003>, except /upload which carries its own HMAC signature):
 //   POST /presign   { key, mimeType, deviceId }
 //     → { presignedUrl }   (time-limited HMAC-signed URL to this Worker)
+//     deviceId must match the token's own sub claim — see checkDeviceAuth.
 //
 //   PUT  /upload/<r2Key>?sig=<hmac>&exp=<ts>
 //     → { ok, r2Key, etag, bytes }
@@ -11,9 +13,15 @@
 //
 //   POST /queue     { distributionId, recordingId, r2Key, packageId, platform, deviceId }
 //     → { ok, distributionId }
+//     deviceId must match the token's own sub claim.
 //
 //   GET  /status/:id
 //     → { status, r2Key, bytesUploaded, … }
+//     Only the device that created this job (the deviceId stored on its
+//     own DO, from /queue's /init call) can read its status — a token for
+//     a different device gets 403, not another device's job metadata.
+
+import { verifyDeviceToken } from './auth.js';
 
 export { DistributionCoordinator } from './coordinator.js';
 
@@ -31,15 +39,15 @@ export default {
         return handleUpload(request, env, url, r2Key);
       }
 
-      // ── All other endpoints require Bearer auth ──────────────────────────
-      const authErr = checkBearer(request, env);
-      if (authErr) return cors(authErr);
+      // ── All other endpoints require a device-scoped JWT ──────────────────
+      const auth = await checkDeviceAuth(request, env);
+      if (auth instanceof Response) return cors(auth);
 
-      if (method === 'POST' && url.pathname === '/presign')   return cors(await handlePresign(request, env, url));
-      if (method === 'POST' && url.pathname === '/queue')     return cors(await handleQueue(request, env));
+      if (method === 'POST' && url.pathname === '/presign')   return cors(await handlePresign(request, env, url, auth));
+      if (method === 'POST' && url.pathname === '/queue')     return cors(await handleQueue(request, env, auth));
       if (method === 'GET'  && url.pathname.startsWith('/status/')) {
         const id = url.pathname.slice('/status/'.length);
-        return cors(await handleStatus(env, id));
+        return cors(await handleStatus(env, id, auth));
       }
 
       return cors(json({ error: 'not found' }, 404));
@@ -50,9 +58,13 @@ export default {
 };
 
 // ── /presign ──────────────────────────────────────────────────────────────────
-async function handlePresign(request, env, url) {
-  const { key, mimeType = 'video/mp4' } = await request.json();
+async function handlePresign(request, env, url, auth) {
+  const { key, mimeType = 'video/mp4', deviceId } = await request.json();
   if (!key) return json({ error: 'key required' }, 400);
+  // ADR-003: deviceId used to be accepted from the body and forwarded with
+  // no check at all (the top comment even documented it as a field without
+  // this file ever reading it). Now it must match the verified token.
+  if (deviceId && deviceId !== auth.deviceId) return json({ error: 'deviceId does not match token' }, 403);
 
   const ttl = Number(env.UPLOAD_TOKEN_TTL_SECONDS || 3600);
   const exp = Date.now() + ttl * 1000;
@@ -85,22 +97,26 @@ async function handleUpload(request, env, url, r2Key) {
 }
 
 // ── /queue ────────────────────────────────────────────────────────────────────
-async function handleQueue(request, env) {
+async function handleQueue(request, env, auth) {
   const job = await request.json();
   const { distributionId, recordingId, r2Key, packageId, platform = 'cloud', deviceId } = job;
 
   if (!distributionId || !recordingId || !r2Key) {
     return json({ error: 'distributionId, recordingId, r2Key required' }, 400);
   }
+  if (deviceId && deviceId !== auth.deviceId) return json({ error: 'deviceId does not match token' }, 403);
 
   const id   = env.COORDINATOR.idFromName(distributionId);
   const stub = env.COORDINATOR.get(id);
 
-  // Init is idempotent — safe to retry; a resumed DO returns its current status.
+  // Init is idempotent — safe to retry; a resumed DO returns its current
+  // status. The DO stores the VERIFIED deviceId (auth.deviceId), not
+  // whatever the body claimed — handleStatus's own device check below is
+  // only as good as what actually got stored here.
   await stub.fetch(new Request('https://do/init', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ distributionId, recordingId, r2Key, packageId, platform, deviceId }),
+    body: JSON.stringify({ distributionId, recordingId, r2Key, packageId, platform, deviceId: auth.deviceId }),
   }));
 
   // Advance to 'queued'; await so failures surface to the caller.
@@ -114,24 +130,39 @@ async function handleQueue(request, env) {
 }
 
 // ── /status/:id ───────────────────────────────────────────────────────────────
-async function handleStatus(env, distributionId) {
+async function handleStatus(env, distributionId, auth) {
   if (!distributionId) return json({ error: 'id required' }, 400);
   const id   = env.COORDINATOR.idFromName(distributionId);
   const stub = env.COORDINATOR.get(id);
   const res  = await stub.fetch(new Request('https://do/state'));
-  return new Response(res.body, {
-    status: res.status,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const body = await res.json();
+  // ADR-003: this used to return any distributionId's full metadata
+  // (recordingId, r2Key, platform, …) to anyone holding the one shared
+  // Bearer secret, regardless of which device created it. deviceId is
+  // absent (unknown status, per coordinator.js's #handleState default)
+  // only for a distributionId nothing has ever /queue'd — that's a 404,
+  // not an authorization decision this device gets to make.
+  if (body.deviceId == null) return json(body, res.status);
+  if (body.deviceId !== auth.deviceId) return json({ error: 'not found' }, 404);
+  return json(body, res.status);
 }
 
 // ── auth ──────────────────────────────────────────────────────────────────────
-function checkBearer(request, env) {
-  const auth = request.headers.get('Authorization') || '';
-  const token = env.CLOUDFLARE_API_TOKEN;
-  if (!token) return json({ error: 'worker not configured (missing CLOUDFLARE_API_TOKEN secret)' }, 503);
-  if (auth !== `Bearer ${token}`) return json({ error: 'unauthorized' }, 401);
-  return null;
+// Task #61 / ADR-003: was a static CLOUDFLARE_API_TOKEN Bearer compare with
+// no structure and no per-device scoping at all. Returns { deviceId } on
+// success, or a Response to return directly on failure (so fetch()'s
+// caller can tell the two apart with `instanceof Response`, since a valid
+// auth result and an error response are both plain objects otherwise).
+async function checkDeviceAuth(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const match = authHeader.match(/^Bearer (.+)$/);
+  if (!match) return json({ error: 'unauthorized' }, 401);
+  if (!env.JWT_SIGNING_SECRET) return json({ error: 'worker not configured (missing JWT_SIGNING_SECRET secret)' }, 503);
+  try {
+    return await verifyDeviceToken(match[1], env.JWT_SIGNING_SECRET);
+  } catch (err) {
+    return json({ error: 'unauthorized: ' + err.message }, 401);
+  }
 }
 
 // ── HMAC helpers (Web Crypto) ─────────────────────────────────────────────────

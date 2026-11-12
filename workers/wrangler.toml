@@ -17,11 +17,11 @@ class_name = "DistributionCoordinator"
 tag         = "v1"
 new_classes = ["DistributionCoordinator"]
 
-# ── KV (job metadata / dedup) ────────────────────────────────────────────────
-[[kv_namespaces]]
-binding  = "MOB_KV"
-id       = "REPLACE_WITH_KV_ID"
-preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+# Task #61: ADR-004 (Queues + Durable Objects over KV) already decided this
+# binding shouldn't exist — nothing in src/ ever referenced MOB_KV, and its
+# REPLACE_WITH_KV_ID/REPLACE_WITH_KV_PREVIEW_ID placeholders blocked
+# `wrangler deploy` until someone filled in IDs for a KV namespace the code
+# never reads or writes. Removed rather than filled in.
 
 # ── Non-secret config ────────────────────────────────────────────────────────
 [vars]
@@ -30,5 +30,9 @@ ENVIRONMENT    = "production"
 UPLOAD_TOKEN_TTL_SECONDS = "3600"
 
 # ── Secrets (set via `wrangler secret put <NAME>`) ───────────────────────────
-# CLOUDFLARE_API_TOKEN   — shared secret; desktop app sends as Bearer token
+# JWT_SIGNING_SECRET    — HS256 signing key for device-scoped auth tokens
+#                         (ADR-003, workers/src/auth.js). Shared across this
+#                         device's own token lifecycle today, same as the
+#                         CLOUDFLARE_API_TOKEN it replaces — see auth.js's own
+#                         top comment for the real, honest limit that remains.
 # UPLOAD_SIGNING_SECRET  — HMAC key for time-limited upload URLs
