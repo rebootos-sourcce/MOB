@@ -458,6 +458,30 @@
     if (d) { settings.recording.saveDir = d; render(); }
   });
 
+  // #66: recordings.title/duration_ms/thumb aside, a video file can exist
+  // on disk with no `recordings` row at all (a dropped write, or a restored
+  // save folder) — this is the only way it gets back into the library.
+  $('btnReconcile').addEventListener('click', async () => {
+    const btn = $('btnReconcile');
+    const status = $('reconcileStatus');
+    btn.disabled = true;
+    status.textContent = 'Scanning…';
+    try {
+      const { scanned, adoptedCount } = await window.api.invoke('library:reconcile');
+      status.textContent = adoptedCount
+        ? `Found ${adoptedCount} missing recording${adoptedCount === 1 ? '' : 's'} (of ${scanned} scanned).`
+        : `No missing recordings found (${scanned} scanned).`;
+      // loadEditTab/loadProductionTab/loadDistributionTab live in a
+      // different IIFE (the tab-bar one below) — not reachable from here
+      // directly, so ask it to refresh via a DOM event instead.
+      if (adoptedCount) window.dispatchEvent(new CustomEvent('mob:library-changed'));
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // ── Cloudflare config UI ──────────────────────────────────────
   async function loadCfConfig() {
     try {
@@ -1639,6 +1663,17 @@
   // whichever list tab is currently visible so it picks up the new image
   // without the user having to switch tabs and back.
   window.api.on('recording:thumbReady', () => {
+    const activePanel = document.querySelector('.tab-panel.active');
+    if (!activePanel) return;
+    if (activePanel.id === 'tab-edit')         loadEditTab();
+    else if (activePanel.id === 'tab-production')   loadProductionTab();
+    else if (activePanel.id === 'tab-distribution') loadDistributionTab();
+  });
+
+  // #66: the Output card's "Scan for missing recordings" button (a
+  // different IIFE) adopted at least one orphaned file — refresh whichever
+  // list is visible the same way the thumbnail-ready handler above does.
+  window.addEventListener('mob:library-changed', () => {
     const activePanel = document.querySelector('.tab-panel.active');
     if (!activePanel) return;
     if (activePanel.id === 'tab-edit')         loadEditTab();

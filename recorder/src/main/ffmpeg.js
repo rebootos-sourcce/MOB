@@ -73,6 +73,25 @@ const CODECS = {
   }
 };
 
+/**
+ * Probes a media file's duration in milliseconds by parsing ffmpeg's own
+ * stderr banner. No ffprobe binary is bundled (ffmpeg-static ships only
+ * ffmpeg), so `ffmpeg -i <file>` with no output — which always "fails"
+ * since nothing was asked of it — is the only duration probe available;
+ * the Duration line lands on stderr regardless of that exit code.
+ * Resolves null if the file isn't readable as media at all.
+ */
+function probeDuration(filePath) {
+  return new Promise((resolve) => {
+    execFile(binaryPath(), ['-hide_banner', '-i', filePath], { maxBuffer: 4 * 1024 * 1024 }, (_err, _stdout, stderr) => {
+      const m = /Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/.exec(stderr || '');
+      if (!m) { resolve(null); return; }
+      const ms = (Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3])) * 1000;
+      resolve(Math.round(ms));
+    });
+  });
+}
+
 let encoderCache = null;
 /** Returns the set of encoder names this ffmpeg build supports. */
 function availableEncoders() {
@@ -382,4 +401,4 @@ async function renderEdl(input, output, segments, onProgress) {
   }
 }
 
-module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, extractPeaks, renderEdl, killAll };
+module.exports = { binaryPath, CODECS, codecOptions, availableEncoders, buildArgs, isCopy, finalize, extractSegment, extractThumbnail, extractPeaks, renderEdl, killAll, probeDuration };

@@ -44,6 +44,10 @@ function runMigrations() {
   const pending = MIGRATIONS.filter(m => m.version > current);
   if (pending.length === 0) return;
 
+  // Back up once for the whole pending batch, before any of them run —
+  // see backupBeforeMigration's own comment for why.
+  db.backupBeforeMigration(pending[pending.length - 1].version);
+
   for (const m of pending) {
     m.up(db);
     db.run(

@@ -14,6 +14,7 @@ const productionHandlers = require('./ipc/production-handlers');
 const voiceHandlers = require('./ipc/voice-handlers');
 const syncHandlers  = require('./ipc/sync-handlers');
 const db = require('./db/sqlite');
+const { reconcileOrphanedRecordings } = require('./db/reconcile');
 const { getDeviceId } = require('./identity');
 const { recordingKey } = require('./r2/key');
 const { loadEdl, remapTimestamp } = require('./edl');
@@ -856,7 +857,42 @@ function registerShortcuts() {
 app.whenReady().then(async () => {
   // Initialize SQLite (ADR-001) and register IPC handlers before windows open.
   await db.init();
+  // A corrupt mob.db used to throw straight out of init(), landing in the
+  // catch below: an error dialog, then app.quit() — on every subsequent
+  // launch, forever, with no way back in. sqlite.js now quarantines a bad
+  // file and starts fresh instead of throwing; tell the user plainly
+  // rather than silently handing them an empty library.
+  const recovery = db.getLastRecovery();
+  if (recovery) {
+    // The fresh DB has zero rows, but the actual video files on disk are
+    // untouched — scanning the save directory now is the only way the
+    // user gets their library back after this, so do it before telling
+    // them anything, and report how much came back.
+    let adoptedCount = 0;
+    try {
+      const result = await reconcileOrphanedRecordings();
+      adoptedCount = result.adopted.length;
+    } catch (_) { /* best effort — the dialog below still tells the truth either way */ }
+    dialog.showMessageBoxSync({
+      type: 'warning',
+      title: 'MOB Recorder database was reset',
+      message: 'Your recording library could not be opened and has been reset to start fresh.' +
+        (adoptedCount ? ` ${adoptedCount} existing recording${adoptedCount === 1 ? '' : 's'} found on disk ${adoptedCount === 1 ? 'was' : 'were'} re-added automatically.` : ''),
+      detail: recovery.quarantinePath
+        ? `The damaged file was kept here, in case it can be recovered:\n${recovery.quarantinePath}\n\nDetails: ${recovery.error}`
+        : `The damaged file could not even be backed up. Details: ${recovery.error}`,
+      buttons: ['Continue'],
+    });
+  }
   dbHandlers.register();
+  // Manual "scan for missing recordings" (Output → Library in the UI) —
+  // the same reconciliation, usable any time a recording is known to exist
+  // on disk but is missing from the library (e.g. after the shutdown gap
+  // task #21 fixed, or restoring a save folder from a backup).
+  ipcMain.handle('library:reconcile', async () => {
+    const result = await reconcileOrphanedRecordings();
+    return { scanned: result.scanned, adoptedCount: result.adopted.length };
+  });
   transcriptionHandlers.register(sendControl);
   editHandlers.register(sendControl);
   productionHandlers.register();

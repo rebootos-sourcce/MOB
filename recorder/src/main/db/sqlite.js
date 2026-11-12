@@ -14,6 +14,10 @@ let db = null;       // sql.js Database instance
 let dbPath = null;
 let saveTimer = null;
 let dirty = false;
+// Set by init() when mob.db failed to open/validate and was quarantined —
+// main.js reads this right after awaiting init() to tell the user what
+// happened instead of continuing in silence with a brand-new empty DB.
+let lastRecovery = null;
 // Serializes every persist() so a debounced write and a shutdown write can
 // never run concurrently and interleave their truncating writes onto dbPath.
 let persistChain = Promise.resolve();
@@ -34,18 +38,79 @@ async function init(customPath) {
   });
 
   dbPath = customPath || path.join(app.getPath('userData'), 'mob.db');
+  lastRecovery = null;
 
-  // Load existing database or create empty one
+  // Load existing database or create empty one. Given the non-atomic
+  // persist this app used to do (now fixed, but old corrupt files can
+  // still be sitting on disk from before that fix, and a corrupt file is
+  // reachable again from any failure persistNow()'s rename can't cover —
+  // e.g. a damaged filesystem), a bad mob.db used to throw straight out of
+  // init(), which main.js caught by showing an error dialog and quitting —
+  // on every subsequent launch, forever, with no repair path at all.
   if (fs.existsSync(dbPath)) {
     const data = fs.readFileSync(dbPath);
-    db = new SQL.Database(data);
-  } else {
-    db = new SQL.Database();
+    try {
+      db = new SQL.Database(data);
+      // new SQL.Database() only parses the header well enough to open — a
+      // file truncated or damaged mid-page can still "open" and then throw
+      // (or silently return wrong data) the first time a query touches the
+      // damaged page. Run a real integrity check now, once, rather than at
+      // some unpredictable later read.
+      const result = db.exec('PRAGMA integrity_check');
+      const verdict = result[0] && result[0].values[0] && result[0].values[0][0];
+      if (verdict !== 'ok') throw new Error('integrity_check reported: ' + verdict);
+    } catch (err) {
+      db = null;
+      lastRecovery = quarantineCorruptFile(dbPath, err);
+    }
   }
+  if (!db) db = new SQL.Database();
 
   await applySchema();
   runMigrations();
   return db;
+}
+
+// Backs up the bad file next to itself (never discards it) and lets the
+// caller start fresh at the same path. Matches settings.js/identity.js's
+// own corrupt-file convention (.corrupt-<timestamp>, copied not moved, so
+// a failure here never destroys the one copy of the user's data).
+function quarantineCorruptFile(badPath, err) {
+  let quarantinePath = null;
+  try {
+    quarantinePath = badPath + '.corrupt-' + Date.now();
+    fs.copyFileSync(badPath, quarantinePath);
+  } catch (copyErr) {
+    quarantinePath = null;
+  }
+  console.error(
+    '[mob] mob.db failed to open/validate and has been reset to a fresh, empty database;' +
+    (quarantinePath ? ' the bad file was backed up to ' + quarantinePath : ' backing up the bad file also failed') +
+    ':', err.message
+  );
+  return { quarantinePath, error: err.message };
+}
+
+function getLastRecovery() { return lastRecovery; }
+
+// Part 3 of task #66: migrate.js is forward-only with no down-migrations,
+// and a crash mid-migration would otherwise land directly on the (atomic,
+// but still the one copy of the) persisted DB with no way back to the
+// pre-migration state. Exports the CURRENT in-memory state rather than
+// copying dbPath on disk — applySchema() always persists before
+// runMigrations() is called, so the two are in sync at this point, but
+// exporting in-memory state directly doesn't depend on that staying true.
+function backupBeforeMigration(label) {
+  if (!db || !dbPath) return null;
+  try {
+    const data = db.export();
+    const backupPath = `${dbPath}.pre-migration-v${label}-${Date.now()}`;
+    fs.writeFileSync(backupPath, Buffer.from(data));
+    return backupPath;
+  } catch (err) {
+    console.error('[mob] failed to back up DB before migration:', err.message);
+    return null;
+  }
 }
 
 async function applySchema() {
@@ -150,4 +215,4 @@ async function close() {
 
 function isReady() { return db !== null; }
 
-module.exports = { init, run, get, all, exec, persist, flush, close, isReady };
+module.exports = { init, run, get, all, exec, persist, flush, close, isReady, getLastRecovery, backupBeforeMigration };
