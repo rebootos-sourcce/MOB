@@ -31,12 +31,19 @@ const DEFAULTS = {
     maxHeight: 1080,      // 720, 1080, or 0 for native
     countdown: 3,         // seconds, 0 to disable
     format: 'mp4',        // 'mp4' | 'webm'
-    // Task #71: every Mac has VideoToolbox hardware encoding with no "no
-    // GPU" fallback case the way nvenc/qsv/amf have — codecOptions()'s own
-    // real-test-encode probe (task #57) still decides what's actually
-    // offered/available, this only picks which one a fresh install starts
-    // pre-selected to. See main/ffmpeg.js CODECS.
-    codec: process.platform === 'darwin' ? 'h264_videotoolbox' : 'h264',
+    // Task #71: NOT platform-aware. ffmpeg-static's actual macOS binary
+    // (verified on real Apple Silicon CI hardware, not assumed) has no
+    // VideoToolbox encoders compiled in at all, so defaulting fresh Mac
+    // installs to h264_videotoolbox would make every first recording
+    // silently fail finalize() and retry on libx264 (main.js's existing
+    // hardware-encoder-failed fallback) — correct behavior, but a pointless
+    // failed attempt and a scary "Encoder ... failed" message on every
+    // single take. h264_videotoolbox/hevc_videotoolbox stay in
+    // ffmpeg.js's CODECS and the Output settings codec picker, correctly
+    // shown as unavailable there by codecOptions()'s real-test-encode probe
+    // (task #57) — ready to actually offer themselves the moment a future
+    // ffmpeg-static build adds support, with no code change needed here.
+    codec: 'h264',
     quality: 'high',      // 'high' | 'balanced' | 'small'
     saveDir: null,        // null = ~/Videos/MOB Recorder
     askWhereToSave: false,

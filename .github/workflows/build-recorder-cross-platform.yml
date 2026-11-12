@@ -57,33 +57,26 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      # Task #71: VideoToolbox is only real on macOS — proves ffmpeg-static's
-      # mac binary actually has it compiled in, not just that CODECS lists
-      # it. codecOptions()/availableEncoders() (task #57) still decide at
-      # runtime whether to actually offer it; this only checks the binary.
-      - name: Check ffmpeg has VideoToolbox compiled in (macOS only)
-        if: matrix.os == 'macos-latest'
-        run: |
-          node -e "console.log(require('ffmpeg-static'))" | xargs -I{} {} -hide_banner -encoders 2>/dev/null | grep -i videotoolbox
-          echo "VideoToolbox encoders confirmed present in this ffmpeg build."
-
-      # Task #71: a real recording, finalized with h264_videotoolbox on
-      # real Apple hardware (GitHub's macos-latest runners are Apple
-      # Silicon) — not just a unit-level encoder probe. Mirrors the
-      # existing Windows smoke-test step in build-recorder.yml.
-      - name: Smoke test with VideoToolbox encoder (macOS only)
+      # Task #71: this real macOS runner is what disproved the original
+      # assumption here — ffmpeg-static's mac binary has NO VideoToolbox
+      # encoders compiled in (a "Check ffmpeg has VideoToolbox compiled in"
+      # step and two MOB_SMOKE_CODEC=h264_videotoolbox/hevc_videotoolbox
+      # smoke runs used to live here, asserting the opposite; this run is
+      # what caught that they were wrong). Real hardware encoding isn't
+      # available through this app's actual ffmpeg dependency on macOS
+      # today, so settings.js no longer defaults to it and there's nothing
+      # VideoToolbox-specific left to verify here. Instead, prove the
+      # degradation path a user with a stale h264_videotoolbox-codec
+      # setting (e.g. from before this fix) would hit still produces a
+      # valid recording via main.js's existing hardware-encoder-failed
+      # fallback to libx264 — for real, on the same hardware that showed
+      # the hardware path itself doesn't exist.
+      - name: Smoke test falls back to libx264 when the requested codec is unavailable (macOS only)
         if: matrix.os == 'macos-latest'
         run: npm run smoke
         timeout-minutes: 3
         env:
           MOB_SMOKE_CODEC: h264_videotoolbox
-
-      - name: Smoke test with HEVC VideoToolbox encoder (macOS only)
-        if: matrix.os == 'macos-latest'
-        run: npm run smoke
-        timeout-minutes: 3
-        env:
-          MOB_SMOKE_CODEC: hevc_videotoolbox
 
       - name: Build (${{ matrix.dist-script }})
         run: npm run ${{ matrix.dist-script }}
