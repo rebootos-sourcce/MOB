@@ -303,7 +303,9 @@ tables(E,ok){
  ok(E.JOURNEY_DOORS.join()==='onboarding,tutorial','and two doors into it');
  ok(E.GIFT_N===100,'the gift is a hundred');
  /* the claim's two lists name every key a walked record has, between them */
- const keys=Object.keys(E.blankProfile('k')).concat(['journey']), S=E.JOURNEY_CLAIM_SEND, N=E.JOURNEY_CLAIM_NEVER;
+ /* relhit, like journey, is not in the blank: a record gains it on its first
+    release (engine/relhit.js), so it is added here the same way */
+ const keys=Object.keys(E.blankProfile('k')).concat(['journey','relhit']), S=E.JOURNEY_CLAIM_SEND, N=E.JOURNEY_CLAIM_NEVER;
  ok(keys.every(k=>S.indexOf(k)>=0||N.indexOf(k)>=0),
   'every top level key of the record is ruled in or out of a claim: '+keys.filter(k=>S.indexOf(k)<0&&N.indexOf(k)<0).join());
  ok(S.concat(N).every(k=>keys.indexOf(k)>=0),'and a claim names no key the record does not have: '+S.concat(N).filter(k=>keys.indexOf(k)<0).join());

@@ -37,6 +37,7 @@ engine/trace.js
 engine/tracesummary.js
 engine/schema.js
 engine/journey.js
+engine/relhit.js
 engine/practice.js
 engine/valuefelt.js
 engine/loop.js

@@ -1148,6 +1148,15 @@ function relSecond(){
    on it. The super complex is left out because he named three
    tiers and not four. Kept as names and numbers, never as the live
    objects, which the next compute() rewrites.
+
+   REACH, NOT HIT, 13 November. Each row's count was a field called hit, and
+   it was the number of the pattern's addresses the run's queue passed
+   through: a pattern became a "hit" because the run happened to reach it.
+   The owner's 21 October clarification rules that "Executing a release does
+   not prove that the candidate was a hit", so the field is called what it
+   measures, reach, and a hit is only ever the person's own press, written
+   and counted by engine/relhit.js (relHitPress below). fam is kept on each
+   row so the press can name the pattern by the same id the log uses.
    ============================================================ */
 function relHits(r){
  var ids={}, H={sab:[],cx:[],hy:[]};
@@ -1156,29 +1165,60 @@ function relHits(r){
   var seen={};
   ((r&&r[t[1]])||[]).forEach(function(o){
    if(!o||o.over||seen[o.nm])return;
-   var lv=leaves(o), hit=lv.filter(function(n){return ids[n.i];}).length;
-   if(!hit)return; seen[o.nm]=1;
-   H[t[0]].push({nm:o.nm,hit:hit,of:lv.length,b:(lv[0]||{}).b||'Heart'});});
+   var lv=leaves(o), reach=lv.filter(function(n){return ids[n.i];}).length;
+   if(!reach)return; seen[o.nm]=1;
+   H[t[0]].push({fam:t[0],nm:o.nm,reach:reach,of:lv.length,b:(lv[0]||{}).b||'Heart'});});
   /* the ones this run reached furthest into first, and on a tie the larger
      share of its own addresses */
-  H[t[0]].sort(function(a,b){return b.hit-a.hit||b.hit/b.of-a.hit/a.of;});});
+  H[t[0]].sort(function(a,b){return b.reach-a.reach||b.reach/b.of-a.reach/a.of;});});
  return H;}
+/* THE THREE PRESSES, and only on a run whose execution is on the record.
+   relHitSession answers null for a release the store refused, because the
+   execute line went with the restored record, and then no control is drawn:
+   a press there would be refused, and a control that cannot land is a claim.
+   The state is read off the log every draw, so a reload, a rerender or a
+   card reopened shows what the record holds and never what the card last
+   thought. */
+var RELHIT_SAY={hold:'Hold', hit:'Hit', reject:'Not a hit'};
+function relHitLive(){
+ if(!RUN.saved||!RUN.id||!CURP||typeof relHitSession!=='function')return null;
+ return relHitSession(CURP,RUN.id);}
+function relHitSeg(id,nm,state){
+ return '<span class="seg" role="group" aria-label="'+esc(nm)+', did it land">'
+  +['hit','hold','reject'].map(function(c){
+   return '<button type="button" data-relhit="'+esc(id)+'" data-relcmd="'+c+'" aria-pressed="'
+    +(RELHIT_CMDS[c]===state)+'">'+RELHIT_SAY[c]+'</button>';}).join('')+'</span>';}
+/* the record's count, the one relHitCount reads off the log, never this card's */
+function relHitSay(){
+ var c=(CURP&&typeof relHitCount==='function')?relHitCount(CURP):{hits:0,patterns:0};
+ if(!c.hits)return 'No hits marked on your record yet.';
+ return c.hits+(c.hits===1?' hit':' hits')+' marked on your record, on '
+  +c.patterns+(c.patterns===1?' pattern.':' patterns.');}
 function relHitRows(H){
  if(!H)return '';
  var NM={sab:'Saboteurs',cx:'Complexes',hy:'Hyper complexes'};
  var ks=['sab','cx','hy'].filter(function(k){return H[k].length;});
  if(!ks.length)return '<div class="pm-eye">In this run</div>'
   +'<div class="rel-sub">No saboteur, complex or hyper complex was running through these addresses.</div>';
- return '<div class="pm-eye">In this run</div>'+ks.map(function(k){
+ var ses=relHitLive(), st={};
+ if(ses)ses.items.forEach(function(x){st[x.id]=x.state;});
+ return '<div class="pm-eye">In this run</div>'
+  +(ses?'<div class="rel-sub">Reaching a pattern is not a hit. Mark Hit where you felt this release land. '
+   +'Hold keeps it for another pass. Not a hit sets it aside, and your record still keeps it. Only a hit you mark is counted.</div>'
+   +'<div class="rel-sub" id="relhitn" aria-live="polite">'+relHitSay()+'</div>':'')
+  +ks.map(function(k){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
-    return '<div class="rel-row">'
-     +crBadge(x.b,x.hit/Math.max(1,x.of)*100,{size:'sm',raw:String(x.hit),
+    var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
+    return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
+     +(on?' data-relrow="'+esc(id)+'"':'')+'>'
+     +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+x.hit+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
-     +'<span>'+esc(x.nm)+'</span><em>'+x.hit+' of '+x.of+(x.of===1?' address':' addresses')+'</em></div>';}).join('')
+       title:x.nm+', '+x.reach+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
+     +'<span>'+esc(x.nm)+'</span><em>'+x.reach+' of '+x.of+(x.of===1?' address':' addresses')+'</em>'
+     +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
 /* HOW MUCH OF THE PLAN WAS TRULY SAID, as a count of plan entries from the
    front. An entry counts once one of its passes has been said, which is the
@@ -1296,6 +1336,53 @@ function relAskSkip(){
  if(!RUN.ask||RUN.said||RUN.skip)return;
  RUN.skip=true;
  if(RUN.open&&RUN.phase==='done')relRender();}
+/* ============================================================
+   HIT, HOLD, NOT A HIT. The one host writer for engine/relhit.js.
+
+   ONE EVENT ID PER PRESS, made here at the press and never at a draw, so a
+   redraw, a reload or a reopened card cannot mint a decision, and the engine
+   answers a press it has already taken as a duplicate that writes nothing.
+   A press that would leave the item where it is writes nothing either.
+
+   SAVED OR PUT BACK. A decision the store refused is taken back off the log
+   in memory, so the next unrelated save cannot persist a hit the person was
+   told was not kept, which is the class relCoolDown's restore closes for
+   the release itself. The card then shows the state the record holds.
+
+   Painted in place and not by relRender: the cooldown may still be being
+   said, and a redraw moves the list under the thumb, which is why Heavy
+   does the same.
+   ============================================================ */
+function relHitEv(){
+ try{if(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')return 'rh_'+crypto.randomUUID();}
+ catch(e){}
+ return 'rh_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);}
+function relHitPress(pat,cmd,ev){
+ if(!CURP||!RUN.saved||!RUN.id||typeof relHitDecide!=='function')return false;
+ var before=null;
+ try{before=CURP.relhit?JSON.stringify(CURP.relhit):null;}catch(e){before=null;}
+ var r=relHitDecide(CURP,{ev:ev||relHitEv(),sid:RUN.id,pat:pat,cmd:cmd,mode:'control',raw:cmd,conf:null});
+ if(!r.ok){
+  if(typeof status==='function')status('That mark was not kept. '+r.why,'fail');
+  relHitPaint(); return false;}
+ if(r.dup||r.noop){relHitPaint(); return true;}
+ if(!pSave()){
+  if(before===null)delete CURP.relhit; else CURP.relhit=JSON.parse(before);
+  if(typeof status==='function')
+   status('This browser would not save. Your mark is not on your record.','fail');
+  relHitPaint(); return false;}
+ relHitPaint();
+ return true;}
+/* every row's three buttons and the count, off the record */
+function relHitPaint(){
+ var h=document.getElementById('rel'); if(!h)return;
+ var ses=relHitLive(), st={};
+ if(ses)ses.items.forEach(function(x){st[x.id]=x.state;});
+ h.querySelectorAll('[data-relhit]').forEach(function(b){
+  b.setAttribute('aria-pressed',String(RELHIT_CMDS[b.getAttribute('data-relcmd')]===st[b.getAttribute('data-relhit')]));});
+ h.querySelectorAll('[data-relrow]').forEach(function(r){
+  r.classList.toggle('rel-rh-off',st[r.getAttribute('data-relrow')]==='rejected');});
+ var n=document.getElementById('relhitn'); if(n)n.textContent=relHitSay();}
 function relCoolDown(){
  if(RUN.done)return;
  /* Until the one durable write succeeds, treat every release mutation as
@@ -1492,6 +1579,19 @@ function relCoolDown(){
     meter, the lines and the field back. Said here, in the words relAnswer
     gives the answer on the same card, because the run did happen and is on
     the card, and it is not on the record. */
+ /* THE RUN'S EXECUTION GOES ON THE HIT LOG IN THIS SAVE AND NO OTHER, with
+    the patterns its card will present (relHitExecute, engine/relhit.js). It
+    is a fact about the session and never a judgment of any pattern: nothing
+    is counted until the person presses Hit. In the same write as the release
+    so a refused save restores the record without it, and no press can then
+    be judged against a release the record does not hold. */
+ RUN.hitx=null;
+ if(CURP&&RUN.id&&RUN.queue.length&&typeof relHitExecute==='function'){
+  var _pats=[]; ['sab','cx','hy'].forEach(function(k){
+   ((RUN.hits&&RUN.hits[k])||[]).forEach(function(x){_pats.push({fam:k,nm:x.nm});});});
+  RUN.hitx=relHitExecute(CURP,RUN.id,_pats);
+  if(!RUN.hitx.ok&&typeof status==='function')
+   status('The patterns this release reached could not be offered for marking. '+RUN.hitx.why,'fail');}
  /* THE RELEASE AND ITS HISTORY ARE ONE SAVE. pSave followed by pSnap used
     two writes and ignored the second result, so the record could say the run
     saved when its snapshot had not. pSaveSnap stages both and writes once. */
@@ -2356,6 +2456,10 @@ function relCss(){
   '.rel-res .rel-ask{width:100%;text-align:center}.rel-res .rel-ask .seg{justify-content:center}',
   '.rel-res .rel-ask .rel-act{justify-content:center}',
   '.rel-rs-d .rel-log{text-align:left}',
+  /* the hit controls sit on their own line under the pattern, so the row's
+     three columns keep their widths at 390 */
+  '.rel-row.rel-rh .seg{grid-column:1/-1;justify-self:start}',
+  '.rel-row.rel-rh-off>span,.rel-row.rel-rh-off>em{opacity:.55}',
   /* A MARK EARNED LANDS LAST AND LANDS ONCE: after the headline has settled,
      out of rest with one overshoot, the landing curve. It is shown only when
      the ladder reads a mark it did not read before the run, so it is rare,
@@ -3555,6 +3659,9 @@ function relRender(){
  h.querySelectorAll('[data-relsaid]').forEach(function(el){el.onclick=function(){
   relAnswer(this.getAttribute('data-relsaid'));};});
  h.querySelectorAll('[data-relskip]').forEach(function(el){el.onclick=relAskSkip;});
+ /* HIT, HOLD, NOT A HIT, one press each, through relHitPress */
+ h.querySelectorAll('[data-relhit]').forEach(function(el){el.onclick=function(){
+  relHitPress(this.getAttribute('data-relhit'),this.getAttribute('data-relcmd'));};});
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){

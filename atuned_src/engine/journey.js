@@ -450,7 +450,9 @@ function journeyMade(p){
    later cannot cross by default: the gate fails until somebody puts it in one
    list or the other. The analytic and summary data cross, and so does the
    story, text included, on round OX's words ("all the data from their input
-   gets passed over").
+   gets passed over"). relhit, the release hit log (engine/relhit.js), is the
+   person's own input under that ruling and crosses with it; it holds ids,
+   names from the engine's tables and the three command words, never text.
 
    BIRTH DATA NEVER CROSSES, and with it the name: `who` holds the name parts,
    the sex and the birth moment, and DECISIONS.md rules the name never leaves
@@ -462,7 +464,7 @@ function journeyMade(p){
    which builds a fresh object, so what is returned shares nothing with the live
    profile and a caller that edits the packet cannot move the person's data. */
 var JOURNEY_CLAIM_SEND=['soul','axes','addr','laws','seed','intake','work','gates','story',
- 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey'];
+ 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey','relhit'];
 var JOURNEY_CLAIM_NEVER=['v','id','name','created','updated','who','ui','plan'];
 var JOURNEY_CLAIM_V=1;
 function journeyClaim(record,now){
