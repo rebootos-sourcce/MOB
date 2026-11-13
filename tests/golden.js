@@ -486,6 +486,13 @@ async function door(browser, SITE, cut, giftAt) {
   station(3, 'Q: Create account, at the door');
   await page.fill('#loginmail', MAILQ).catch(() => {});
   await page.fill('#loginpass', PW).catch(() => {});
+  /* FIRST PRESS SWITCHES THE CARD, SECOND PRESS SENDS IT, 13 November
+     (atuned_src/ui/login.js's own loginWire): the fix for "Create account
+     doesn't do anything" made the first press on an untouched card the "I
+     want an account" signal rather than a submit, so a second press is now
+     the real way this door is opened. Every #loginb-new site in this file
+     presses it twice for that reason. */
+  await Q.click('#loginb-new');
   await Q.click('#loginb-new');
   await page.waitForFunction(() => typeof LOGIN !== 'undefined' && !LOGIN.open, null, { timeout: 15000 }).catch(() => {});
   const made = await Q.waitSaid(/Account created\. Signed in as /, 6000);
@@ -1076,6 +1083,8 @@ async function door(browser, SITE, cut, giftAt) {
   station(10, 'O: Create account at the door, and the first visit joins the account');
   await po2.fill('#loginmail', MAILO).catch(() => {});
   await po2.fill('#loginpass', PW).catch(() => {});
+  /* FIRST PRESS SWITCHES, SECOND SENDS, 13 November - see station 3's own note. */
+  await O.click('#loginb-new');
   await O.click('#loginb-new');
   await po2.waitForFunction(() => typeof LOGIN !== 'undefined' && !LOGIN.open, null, { timeout: 15000 }).catch(() => {});
   ok(!!await O.waitSaid(/Account created\. Signed in as /, 6000), 'the press says the account is made and who is signed in');
@@ -1189,6 +1198,8 @@ async function door(browser, SITE, cut, giftAt) {
     await O2.booted();
     await O2.page.fill('#loginmail', 'gift.at.create@example.com').catch(() => {});
     await O2.page.fill('#loginpass', PW).catch(() => {});
+    /* FIRST PRESS SWITCHES, SECOND SENDS, 13 November - see station 3's own note. */
+    await O2.click('#loginb-new');
     await O2.click('#loginb-new');
     await O2.page.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 15000 }).catch(() => {});
     await O2.page.waitForTimeout(800);
@@ -1222,6 +1233,8 @@ async function door(browser, SITE, cut, giftAt) {
     await pf.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 30000 }).catch(() => {});
     await pf.fill('#loginmail', 'file.copy@example.com').catch(() => {});
     await pf.fill('#loginpass', PW).catch(() => {});
+    /* FIRST PRESS SWITCHES, SECOND SENDS, 13 November - see station 3's own note. */
+    await pf.click('#loginb-new', { timeout: 3000 }).catch(() => {});
     await pf.click('#loginb-new', { timeout: 3000 }).catch(() => {});
     await pf.waitForFunction(() => { const m = document.getElementById('loginmsg');
       return !(typeof LOGIN !== 'undefined' && LOGIN.open) || (m && m.textContent && !/^Creating/.test(m.textContent)); }, null, { timeout: 20000 }).catch(() => {});

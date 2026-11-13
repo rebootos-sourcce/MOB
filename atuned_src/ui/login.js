@@ -315,11 +315,23 @@ function loginWire(h){
      "I want an account" signal, so it earns the same heading and field
      order a quiz-link arrival gets, with whatever email was already
      typed carried across, rather than submitting a blank card and
-     reading as a button that does nothing. */
+     reading as a button that does nothing.
+
+     THE PASSWORD HAS TO SURVIVE THE SWITCH TOO, 13 November, a real
+     second bug caught by tests/golden.js: loginCard(mail) only ever took
+     the email, so the re-render this branch calls left the password
+     field blank, and the second press this fix exists for then
+     submitted an empty password and still failed to make an account,
+     typing works. Read before the re-render, the input element itself
+     does not survive it, and set on the new one straight after, since
+     loginCard has no parameter for it and a typed password does not
+     belong baked into an HTML string the way the email already is. */
   if(!LOGIN.signup){
-   var m=document.getElementById('loginmail');
+   var m=document.getElementById('loginmail'), p=document.getElementById('loginpass');
+   var pv=p?p.value:'';
    LOGIN.signup=true;
    h.innerHTML=loginCard(m?m.value.trim():''); loginWire(h);
+   var p2=document.getElementById('loginpass'); if(p2&&pv)p2.value=pv;
    return;}
   loginSubmit('signup'); };
  var form=document.getElementById('loginform');
