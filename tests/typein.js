@@ -26,8 +26,10 @@
      2  Chat, a sentence said and one still being said, then Type instead:
         listening stops, both sentences are in the box, the box has the
         focus, the recogniser is off, and there is one box and one Commit
-     3  keys typed reach the reading, and Commit keeps the entry and shuts
-        the box: chat is back on and the control is closed again
+     3  keys typed reach the reading, the arrow on Commit and its count
+        badge survive those keys with the accessible name in step, and
+        Commit keeps the entry and shuts the box: chat is back on and the
+        control is closed again
      4  pressed again with words in it, the box shuts, the words stay in the
         entry and come back as the person's own turn in the thread
      5  Chat pressed from the open box goes back to the conversation: it
@@ -91,6 +93,17 @@ const read=p=>p.evaluate(()=>{
   fields:document.querySelectorAll('#story textarea,#story input[type=text],#story [contenteditable=true]').length,
   status:(document.getElementById('status')||{}).textContent||'',
   text:ST_TEXT, parsed:!!ST_PARSED,
+  imprints:ST_PARSED?ST_PARSED.imprints.length:0,
+  /* COMMIT IS AN ARROW AND A BADGE, NOT A WORD, his 9 November ruling
+     ("replace the commit button with an arrow"): the inline svg stRender
+     builds, a .st-sendn element carrying the count when there is one, and
+     the sentence in aria-label that says what the count is. Read as four
+     separate things so a refresh that destroys any one of them fails by
+     name. */
+  send:(()=>{ const b=document.getElementById('stapply'); if(!b)return null;
+   const n=b.querySelector('.st-sendn');
+   return {arrow:b.querySelectorAll('svg').length, word:/commit/i.test(b.textContent),
+    badge:n?n.textContent:null, name:b.getAttribute('aria-label')}; })(),
   recOn:!!(rec&&rec.length&&rec[rec.length-1].on),
   me:SRC_CHAT.filter(x=>x.w==='me').map(x=>x.t),
   entries:((CURP&&CURP.story&&CURP.story.entries)||[]).length};});
@@ -199,6 +212,23 @@ async function typeInGate(browser,FILE,ok,booted){
    await p.waitForTimeout(250);
    const s3=await read(p);
    ok(s3.text.endsWith(SAYING+TYPED)&&s3.parsed,at+'keys typed land at the end of the entry and reach the reading, '+JSON.stringify({text:s3.text,parsed:s3.parsed}));
+   /* THE ARROW AND THE BADGE SURVIVE THE KEYS, 13 November. stRefresh, the
+      path every keystroke takes, set ap.textContent on the button it found,
+      and textContent replaces every child node: each character typed threw
+      away the arrow stRender builds and the .st-sendn badge with it, and
+      wrote the word "Commit" back into the round button his 9 November
+      ruling had taken the word off. Reproduced in real Chromium on the
+      built file before the fix, with the box opened exactly as case 6 below
+      opens it: the button's own innerHTML went from <svg ...></svg><b
+      class="st-sendn">8</b> to the string "Commit 8", with zero svg
+      elements left in it. Held here because this is the gate that types
+      real keys. The count is read off the run, never typed in: the badge
+      and the name are compared against the reading's own imprints. */
+   const want=s3.imprints
+    ?{arrow:1,word:false,badge:String(s3.imprints),name:'Commit, '+s3.imprints+' imprints'}
+    :{arrow:1,word:false,badge:null,name:'Commit'};
+   ok(JSON.stringify(s3.send)===JSON.stringify(want),
+    at+'the arrow and its count badge survive the keys, with the name in step, '+JSON.stringify({got:s3.send,want:want}));
    await press(p,'#stapply',ok,at+'Commit');
    await p.waitForTimeout(400);
    const s4=await read(p);
