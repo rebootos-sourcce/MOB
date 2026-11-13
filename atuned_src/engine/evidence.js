@@ -380,7 +380,23 @@ var EV_PLACEABLE=['confirmed','corrected'];
    actually used, "I want to talk about my brother instead", names the new
    subject inside the request, so a turn holding both "talk about" and
    "instead" is a shift too: SRC_SHIFT_PAIR, each pair a phrase and the word
-   that has to follow it. */
+   that has to follow it.
+
+   "WHAT DO YOU MEAN" IS A QUESTION ABOUT SOURCE AI'S LAST LINE, 13 November,
+   TASKS.md SK2. The package, 02 section 5: "If caller says 'what do you
+   mean,' restate softly", and its G3 gate: "when user asks 'what do you
+   mean' paraphrase softly". Reproduced on the page before this: after
+   "You wrote “afraid” twice. What did you do?", the turn "What do you
+   mean?" heard no intent and no act, the family question was marked asked,
+   and the next turn was a different question, "What happens next?", which
+   is the question funnel the package's dialogue rules out. clarify reads
+   it, last in the order, so a turn that also says no or asks to stop is
+   that first. Short turns only, the way reject is read, because "she said
+   what do you mean and walked out" is a story. And no negation guard, the
+   way srcAct has none: "No, what do you mean?" still asks what was meant,
+   and "dont understand the question" carries its own no. Every phrase is
+   about Source AI's own line, so a bare "I don't understand" is left out:
+   "I don't understand why he left" is grief, not a request to restate. */
 var SRC_INTENT={
  shift:['change the subject','change of subject','talk about something else','talk about something different',
   'something else to talk about','different subject','different topic','new subject','new topic',
@@ -392,20 +408,23 @@ var SRC_INTENT={
   'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
   'you are wrong'],
  vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
-  'just want to get it out','just need to get it out','just want to talk','just listen']};
-var SRC_INTENT_ORDER=['shift','move_on','reject','vent'];
+  'just want to get it out','just need to get it out','just want to talk','just listen'],
+ clarify:['what do you mean','what does that mean','what does this mean','what are you asking',
+  'what was the question','not sure what you mean','dont know what you mean','dont understand the question',
+  'dont understand what you mean','dont get the question','dont get what you mean','say that again']};
+var SRC_INTENT_ORDER=['shift','move_on','reject','vent','clarify'];
 var SRC_INTENT_SHORT=12;
 var SRC_SHIFT_PAIR=[['talk about','instead']];
 function srcIntent(turn){
  var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
  if(!words)return null;
  for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
-  if(k==='reject'&&words>SRC_INTENT_SHORT)continue;
+  if((k==='reject'||k==='clarify')&&words>SRC_INTENT_SHORT)continue;
   for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
    if(at<0)continue;
    /* the phrases that carry their own no are read as said; the others are
-      set aside when a no stands before them */
-   if(!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
+      set aside when a no stands before them, except clarify's, above */
+   if(k!=='clarify'&&!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
    return {intent:k, cue:list[j]};}
   if(k==='shift')for(var q=0;q<SRC_SHIFT_PAIR.length;q++){var a=s.indexOf(' '+SRC_SHIFT_PAIR[q][0]+' ');
    if(a>=0&&!srcNegated(s,a+1)&&s.indexOf(' '+SRC_SHIFT_PAIR[q][1]+' ',a)>a)

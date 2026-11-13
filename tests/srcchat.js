@@ -409,6 +409,33 @@ require('./net.js').guardBrowser(browser);
       'asking to vent is listened to and asked nothing, even when a seat comes back, a turn answered each time: ' + JSON.stringify(vn.rows));
     ok(!q.errs.length, 'no page errors in those runs: ' + q.errs.join(' | '));
     await q.cx.close();
+    /* 13 November, TASKS.md SK2, the package's "If caller says 'what do you
+       mean,' restate softly". Reproduced on the build before this: after
+       "What did you do?", "What do you mean?" was answered with a different
+       family question, "What happens next?". Checked against that build
+       before it was added: the first two of these fail there. */
+    q = await open(browser, 1600, 1000);
+    await asking(q); const asked = await row(q);
+    await q.evaluate(t => srcTurnCommit(t), 'What do you mean?'); await q.waitForTimeout(120);
+    const cl = await q.evaluate(() => ({ r: SRC_CHAT.filter(x => x.w === 'src').pop(), line: 'What part keeps coming back for you?' }));
+    ok(/^ask\|/.test(asked.key) && cl.r.q === cl.line && cl.r.key === 'act|clarify',
+      '"what do you mean" after a question is answered with the package\'s soft restate, not the next question: ' + JSON.stringify([asked.q, cl.r.q]));
+    await q.evaluate(t => srcTurnCommit(t), 'The part where he left.'); await q.waitForTimeout(120);
+    await q.evaluate(t => srcTurnCommit(t), 'What do you mean?'); await q.waitForTimeout(120);
+    const c2 = await q.evaluate(() => SRC_CHAT.filter(x => x.w === 'src').map(x => x.q));
+    ok(c2.filter(x => x === cl.line).length === 1 && c2[c2.length - 1].indexOf('?') < 0,
+      'asked again, it is not given the same restate twice, and says what Source AI does, asking nothing: ' + JSON.stringify(c2.slice(-3)));
+    ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
+    await q.cx.close();
+    q = await open(browser, 1600, 1000);
+    await q.evaluate(t => srcTurnCommit(t), 'What do you mean?'); await q.waitForTimeout(120);
+    await q.evaluate(t => srcTurnCommit(t), 'I just want to vent'); await q.waitForTimeout(80);
+    await q.evaluate(t => srcTurnCommit(t), 'What do you mean?'); await q.waitForTimeout(120);
+    const c3 = await q.evaluate(() => ({ rows: SRC_CHAT.filter(x => x.w === 'src').map(x => x.q), line: 'What part keeps coming back for you?' }));
+    ok(c3.rows.length === 4 && c3.rows.slice(1).every(x => x !== c3.line && x.indexOf('?') < 0),
+      'with nothing of theirs said back yet, or while venting, it says what Source AI does and asks nothing: ' + JSON.stringify(c3.rows));
+    ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
+    await q.cx.close();
   }
 
   /* ============================================================
