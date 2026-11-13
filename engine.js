@@ -12,9 +12,16 @@
    structures stay as they were, because each has two candidates, or a
    candidate another address already holds, or none in the atlas: renaming
    those is the owner's Q2, Q3 and Q4 in TASKS.md, not a sourcing gap.
+   56 was one of those left, on 12 November, and should not have been: its
+   one candidate was the branch its own ANAT row already draws (Apalapa, the
+   side branches of the intercostal nerves), held by no other address, and
+   the atlas labels it on three plates. Corrected 13 November by the same
+   rule, its comment after the row. It is a branch of 54's intercostal
+   nerves, the nesting of Q4, which is the same relation 46 already stands
+   in and is the owner's to rule, not this table's.
    ============================================================ */
 const NODES=
-[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Conus Medullaris","a":"Structure","d":"Abandoning Self","c":"Sadness"}/* was "Spinal Cord Base", no structure by that name (BI3c). Rohen 7e p.230 and p.475 label the cord's end the conus medullaris, and p.233 seats it at L1 in the adult */,{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbosacral Trunk","a":"Projection","d":"Idealization","c":"Joy"}/* was "Lumbar-Sacral Overlap", a fact (the two plexuses share L4) and not a structure (BI3c). Rohen 7e p.471 labels the lumbosacral trunk running down past the sacral promontory into the sacral plexus, and p.470 brackets the two, L1 to L4 and L4 to S4 */,{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Anterior Cutaneous Branches of Thoraco-abdominal Nerves","a":"Inner war","d":"Invalidation","c":"Shame"}/* was "Epigastric Branches", and epigastric names arteries and veins, not nerves (BI3c). Rohen 7e p.214 and p.216 label the thoraco-abdominal (lower intercostal) nerves and their anterior cutaneous branches in the abdominal wall, and p.217 draws the epigastric region they reach */,{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Optic Radiation","a":"Intuition","d":"Dismissal","c":"Fear"}/* was "Cortical Visual Pathway", a phrase and not a named structure (BI3b). Rohen 7e p.137 dissects the visual pathway and labels the optic radiation as its stretch from the lateral geniculate body (83) to the visual cortex (82) */,{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
+[{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Conus Medullaris","a":"Structure","d":"Abandoning Self","c":"Sadness"}/* was "Spinal Cord Base", no structure by that name (BI3c). Rohen 7e p.230 and p.475 label the cord's end the conus medullaris, and p.233 seats it at L1 in the adult */,{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbosacral Trunk","a":"Projection","d":"Idealization","c":"Joy"}/* was "Lumbar-Sacral Overlap", a fact (the two plexuses share L4) and not a structure (BI3c). Rohen 7e p.471 labels the lumbosacral trunk running down past the sacral promontory into the sacral plexus, and p.470 brackets the two, L1 to L4 and L4 to S4 */,{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Anterior Cutaneous Branches of Thoraco-abdominal Nerves","a":"Inner war","d":"Invalidation","c":"Shame"}/* was "Epigastric Branches", and epigastric names arteries and veins, not nerves (BI3c). Rohen 7e p.214 and p.216 label the thoraco-abdominal (lower intercostal) nerves and their anterior cutaneous branches in the abdominal wall, and p.217 draws the epigastric region they reach */,{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Lateral Cutaneous Branches of Intercostal Nerves","a":"Vulnerability","d":"Armor","c":"Sadness"}/* was "Costal Branches", which no nerve is called, and the lateral costal branch is an artery (BI3a). Rohen 7e p.207 (thoracic wall, anterior aspect, item 22) and p.214 (thoracic and abdominal walls, items 18 and 32) label the lateral cutaneous branches of the intercostal nerves on the side of the chest, and p.400 draws their skin territory beside the arm */,{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Optic Radiation","a":"Intuition","d":"Dismissal","c":"Fear"}/* was "Cortical Visual Pathway", a phrase and not a named structure (BI3b). Rohen 7e p.137 dissects the visual pathway and labels the optic radiation as its stretch from the lateral geniculate body (83) to the visual cortex (82) */,{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
 /* ============================================================
    SAB_LIB · each named saboteur's three addresses and its family.
 
@@ -15172,6 +15179,15 @@ function validateProfile(o,ctx){
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
   p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
+ /* THE RELEASE HIT LOG, through its own boundary (relHitValidate, engine/
+    relhit.js), the same way and for the same reason as the journey. Without
+    this line the key was not refused, it was dropped: validateProfile builds
+    from the blank and copies what it names, so every hit a person marked
+    vanished at the next boot's read of the store and the card said it was
+    kept. Not in the blank, so a record that never ran a release reads back
+    exactly as it went in. */
+ if(o.relhit!==undefined&&o.relhit!==null)
+  p.relhit=relHitValidate(errs,o.relhit,'relhit',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -16282,7 +16298,9 @@ function journeyMade(p){
    later cannot cross by default: the gate fails until somebody puts it in one
    list or the other. The analytic and summary data cross, and so does the
    story, text included, on round OX's words ("all the data from their input
-   gets passed over").
+   gets passed over"). relhit, the release hit log (engine/relhit.js), is the
+   person's own input under that ruling and crosses with it; it holds ids,
+   names from the engine's tables and the three command words, never text.
 
    BIRTH DATA NEVER CROSSES, and with it the name: `who` holds the name parts,
    the sex and the birth moment, and DECISIONS.md rules the name never leaves
@@ -16294,7 +16312,7 @@ function journeyMade(p){
    which builds a fresh object, so what is returned shares nothing with the live
    profile and a caller that edits the packet cannot move the person's data. */
 var JOURNEY_CLAIM_SEND=['soul','axes','addr','laws','seed','intake','work','gates','story',
- 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey'];
+ 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey','relhit'];
 var JOURNEY_CLAIM_NEVER=['v','id','name','created','updated','who','ui','plan'];
 var JOURNEY_CLAIM_V=1;
 function journeyClaim(record,now){
@@ -16383,6 +16401,289 @@ function releaseVerifyAt(P,addr){
  return ev.filter(function(e){return e&&e.metric===RV_METRIC&&e.pattern_id===id;})
   .map(function(e){return {value:e.value, at:e.timestamp, story_t:e.story_t||null};})
   .sort(function(a,b){return String(a.at)<String(b.at)?-1:String(a.at)>String(b.at)?1:0;});}
+/* ============================================================
+   RELEASE HIT FEEDBACK. Which patterns a person said a release actually
+   landed on, kept as an append only log of their own decisions.
+
+   THE DEFECT THIS EXISTS FOR. The finished release card listed every
+   saboteur, complex and hyper complex the run's addresses reached, built by
+   relHits in ui/release.js, and the field each row carried was called hit.
+   Nothing asked the person anything: a pattern was a "hit" because the run
+   happened to pass through one of its addresses. The 31 October status
+   review recorded it as criterion 7, not met: "relHits counts the addresses
+   a run reached, which is not a hit the person confirmed." The owner's 21
+   October clarification (docs/ATUNED_CQ_DQ_SQ_RELEASE_HIT_FEEDBACK_ADDENDUM
+   _v1.md, section 4) rules the other way: "Executing a release does not
+   prove that the candidate was a hit", and "Accumulate only explicit
+   user-confirmed hits".
+
+   SO EXECUTION AND JUDGMENT ARE TWO DIFFERENT THINGS ON THE LOG.
+     execute   one per release session, written in the same save as the
+               release itself, naming the patterns the card then presents.
+               It is the session's fact, never a judgment of any pattern.
+     decide    one per press, naming the session, the pattern, the command,
+               the state before and the state after.
+   An item's judgment is one of RELHIT_STATES and starts at shown, which is
+   what a pattern presented by an executed session is until the person says
+   something. hold, hit and reject move it to held, confirmed and rejected.
+   Only confirmed is ever counted, and the count is read off the log every
+   time and never stored, because a stored total and the log it totals are
+   two answers to one question and they drift.
+
+   A DUPLICATE IS A NO OP, NEVER A SECOND COUNT. Three separate guards, so a
+   replay cannot get past by any one route:
+     1. every event carries its own id, and an id already on the log is
+        answered as a duplicate and writes nothing. A press delivered twice,
+        or a retry after a save the caller could not confirm, is that case.
+     2. a command that would leave the item where it already is writes
+        nothing, so a second Hit press with a fresh id is not a second hit.
+     3. the count is of items whose current state is confirmed, one per
+        session and pattern, so even a log that held two hit events in a row
+        for one item would read as one.
+   A page refresh replays nothing at all: the log is read, never re-run.
+
+   REMOVAL KEEPS THE EVIDENCE. Not a hit moves the item off the active list
+   and is itself an event, so the presentation, any earlier hit and the
+   rejection all stay on the log. A judgment may be changed afterwards and
+   the change is another event; nothing is ever rewritten or deleted.
+
+   A HIT MOVES NO NUMBER. Nothing here touches the charge, the laws, CQ, DQ,
+   SQ, the meter or the work. The addendum rules that a hit feedback event
+   must not "silently alter CQ/DQ/SQ/stored charge", and the gate holds it.
+
+   VOICE IS NOT HERE YET, on purpose. The addendum's voice commands are the
+   next item and depend on this one. The event already carries modality, raw
+   command and confidence so that item adds a modality and its floor rather
+   than a new shape; today the only modality is a visible control, whose raw
+   command is its own key and whose confidence is null.
+
+   HOST FREE. No document, no store, no clock it was not handed except as
+   the default. Every writer takes the record and either changes it whole or
+   refuses by name and changes nothing, the way journeyLog does.
+
+   NO SCHEMA_V BUMP. Additive, like the journey: a record that never ran a
+   release carries no relhit and gains none, and v1 and v2 records still
+   load. It has its own version, RELHIT_V.
+   ============================================================ */
+
+const RELHIT_V=1;
+/* the judgment an item can hold. shown is never written: it is what an item
+   presented by an executed session reads as before any decision. */
+const RELHIT_STATES=['shown','held','confirmed','rejected'];
+/* the three commands the addendum names, HOLD, RELEASE/HIT and DELETE/NOT A
+   HIT, under one word each, and where each one leaves the item. "release" is
+   deliberately not a command word here: the addendum warns that "release
+   this pattern" as a session action and "this was a hit" as feedback must
+   not be confusable, and the session action is the run itself. */
+const RELHIT_CMDS={hold:'held', hit:'confirmed', reject:'rejected'};
+/* visible controls only, until the voice item lands */
+const RELHIT_MODES=['control'];
+const RELHIT_KINDS=['execute','decide'];
+/* the families a pattern can come from, the three relHits presents */
+const RELHIT_FAM=['sab','cx','hy'];
+/* a busy person runs a release a day and judges a handful of patterns on
+   each; this is years of that, and full is refused by name and never
+   truncated, which is the journey log's rule */
+const RELHIT_LOG_MAX=6000;
+const RELHIT_PATS_MAX=128;
+
+var RH_EV=/^[A-Za-z0-9_\-]{8,80}$/;
+var RH_SID=/^[A-Za-z0-9_\-]{8,80}$/;
+var RH_PAT=/^(sab|cx|hy):[a-z0-9_]{1,64}$/;
+/* a pattern's name as the engine's own tables spell it: "Control Freak",
+   "Micromanager + Hyper-Achiever". Closed to those characters so no free text
+   can ride in under it. */
+var RH_NM=/^[A-Za-z][A-Za-z0-9 ,'+\/\-]{0,79}$/;
+
+function relHitBlank(){return {v:RELHIT_V, log:[]};}
+
+/* ONE ID PER PATTERN, from its family and its name. The name alone is not
+   unique across families in principle, and a display name with spaces is not
+   a key, so the id is the family and the name folded to lower case words. */
+function relHitPat(fam,nm){
+ if(RELHIT_FAM.indexOf(fam)<0||typeof nm!=='string')return null;
+ var s=nm.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,64);
+ return s?fam+':'+s:null;}
+
+/* ---------------- one log line, the boundary's own check ---------------- */
+var RH_KEYS={execute:['seq','ev','kind','at','sid','pats'],
+ decide:['seq','ev','kind','at','sid','pat','cmd','mode','raw','conf','from','to']};
+function rhLine(errs,x,i,nowMs){
+ var path='relhit.log['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ if(RELHIT_KINDS.indexOf(x.kind)<0){errs.push(path+'.kind is not execute or decide'); return null;}
+ var n=errs.length;
+ vKeys(errs,path,x,RH_KEYS[x.kind]);
+ /* worded apart from jyLog's line on purpose: tests/journey.js breaks that
+    one by its exact text, and two copies made its mutant ambiguous */
+ if(x.seq!==i+1)errs.push(path+'.seq is not the next number on the hit log');
+ if(typeof x.ev!=='string'||!RH_EV.test(x.ev))errs.push(path+'.ev is not an event id');
+ if(typeof x.sid!=='string'||!RH_SID.test(x.sid))errs.push(path+'.sid is not a release session id');
+ jyDate(errs,path+'.at',x.at,nowMs);
+ if(x.kind==='execute'){
+  if(!Array.isArray(x.pats))errs.push(path+'.pats is not a list');
+  else if(x.pats.length>RELHIT_PATS_MAX)errs.push(path+'.pats holds '+x.pats.length+', more than '+RELHIT_PATS_MAX);
+  else x.pats.forEach(function(q,j){
+   var pp=path+'.pats['+j+']';
+   if(!q||typeof q!=='object'||Array.isArray(q)){errs.push(pp+' is not an object'); return;}
+   vKeys(errs,pp,q,['id','nm']);
+   if(typeof q.id!=='string'||!RH_PAT.test(q.id))errs.push(pp+'.id is not a pattern id');
+   if(typeof q.nm!=='string'||!RH_NM.test(q.nm))errs.push(pp+'.nm is not a pattern name');});
+  if(errs.length>n)return null;
+  return {seq:x.seq, ev:x.ev, kind:'execute', at:x.at, sid:x.sid,
+   pats:x.pats.map(function(q){return {id:q.id, nm:q.nm};})};}
+ if(typeof x.pat!=='string'||!RH_PAT.test(x.pat))errs.push(path+'.pat is not a pattern id');
+ if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,x.cmd))errs.push(path+'.cmd is not hold, hit or reject');
+ if(RELHIT_MODES.indexOf(x.mode)<0)errs.push(path+'.mode is not a modality this build records');
+ /* a control's raw command is its own key, so a control line can never carry
+    words; the voice item will widen this for its own modality only */
+ if(x.mode==='control'&&x.raw!==x.cmd)errs.push(path+'.raw is not the control\'s own command');
+ if(x.conf!==null&&!(NUM(x.conf)&&x.conf>=0&&x.conf<=1))errs.push(path+'.conf is not null or 0 to 1');
+ if(RELHIT_STATES.indexOf(x.from)<0)errs.push(path+'.from is not a state');
+ if(RELHIT_CMDS[x.cmd]!==x.to)errs.push(path+'.to is not where '+String(x.cmd).slice(0,20)+' leaves an item');
+ if(errs.length>n)return null;
+ return {seq:x.seq, ev:x.ev, kind:'decide', at:x.at, sid:x.sid, pat:x.pat, cmd:x.cmd,
+  mode:x.mode, raw:x.raw, conf:x.conf, from:x.from, to:x.to};}
+
+/* THE LOG REPLAYED, the one reader every other function goes through. It is
+   also the consistency check: a decide line must name a session executed
+   earlier on the log and a pattern that session presented, and its from must
+   be the state the replay has the item in. A log that fails any of these was
+   not written by this file, and the boundary refuses it by name rather than
+   counting a hit nobody can account for. */
+function rhReplay(log,errs){
+ var ses={}, seen={}, order=[];
+ (log||[]).forEach(function(e,i){
+  if(!e)return;
+  var path='relhit.log['+i+']';
+  if(seen[e.ev]){if(errs)errs.push(path+'.ev repeats an event id already on the log'); return;}
+  seen[e.ev]=1;
+  if(e.kind==='execute'){
+   if(ses[e.sid]){if(errs)errs.push(path+' executes release '+e.sid+' a second time'); return;}
+   var it={}, ids=[];
+   e.pats.forEach(function(q){if(!it[q.id]){it[q.id]={id:q.id, nm:q.nm, state:'shown', events:0}; ids.push(q.id);}});
+   ses[e.sid]={sid:e.sid, at:e.at, items:it, ids:ids}; order.push(e.sid); return;}
+  var s=ses[e.sid];
+  if(!s){if(errs)errs.push(path+' decides on release '+e.sid+', which is not executed earlier on the log'); return;}
+  var x=s.items[e.pat];
+  if(!x){if(errs)errs.push(path+' decides on '+e.pat+', which release '+e.sid+' did not present'); return;}
+  if(x.state!==e.from){if(errs)errs.push(path+'.from is '+e.from+' and the item was '+x.state); return;}
+  x.state=e.to; x.events++;});
+ return {ses:ses, order:order, seen:seen};}
+
+/* THE BOUNDARY. Missing or null is an older record, or one that never ran a
+   release since this landed, and reads as the blank. A nowMs of null is the
+   boot read of this device's own store, where a date is checked but not the
+   clock, for the reason journeyValidate gives. */
+function relHitValidate(errs,o,path,ctx){
+ var P=relHitBlank(), c=ctx||{}, base=path||'relhit', nowMs=(c.stored===true)?null:jyMs(c.now);
+ if(o===undefined||o===null)return P;
+ if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
+ vKeys(errs,base,o,['v','log']);
+ if(o.v!==undefined&&o.v!==RELHIT_V)
+  errs.push(base+'.v is '+JSON.stringify(o.v)+', not a release hit version this build reads ('+RELHIT_V+')');
+ if(o.log!==undefined&&o.log!==null){
+  if(!Array.isArray(o.log))errs.push(base+'.log is not a list');
+  else if(o.log.length>RELHIT_LOG_MAX)
+   errs.push(base+'.log is full: '+o.log.length+' entries, and the cap is '+RELHIT_LOG_MAX);
+  else{
+   var n=errs.length;
+   P.log=o.log.map(function(x,i){return rhLine(errs,x,i,nowMs);}).filter(Boolean);
+   if(errs.length===n)rhReplay(P.log,errs);}}
+ return P;}
+
+function rhOf(p){
+ return (p&&p.relhit&&typeof p.relhit==='object'&&Array.isArray(p.relhit.log))?p.relhit:null;}
+function rhEnsure(p){
+ if(!rhOf(p))p.relhit=relHitBlank();
+ return p.relhit;}
+/* WRITE ONE LINE WHOLE OR NOTHING. The line goes through the boundary's own
+   check and the whole log through the replay with it, so a line this function
+   writes is a line the next boot will load. */
+function rhAppend(p,x,now){
+ var R=rhEnsure(p);
+ if(R.log.length>=RELHIT_LOG_MAX)
+  return {ok:false, why:'relhit.log is full: '+R.log.length+' entries, and the cap is '+RELHIT_LOG_MAX};
+ var errs=[], e=rhLine(errs,Object.assign({seq:R.log.length+1, at:jyAt(now)},x),R.log.length,Date.now());
+ if(!errs.length)rhReplay(R.log.concat([e]),errs);
+ if(errs.length)return {ok:false, why:errs[0]};
+ R.log.push(e);
+ return {ok:true, event:e};}
+
+/* ---------------- the writers ---------------- */
+/* THE RELEASE RAN, AND THESE ARE THE PATTERNS ITS CARD WILL PRESENT. Called
+   by the host in the same save as the release, so a release the store refused
+   leaves no execute line and nothing can be judged against it. Once per
+   session: a second call for the same session is answered as a duplicate and
+   writes nothing, so the run's own retry path cannot present twice.
+   pats is [{fam, nm}], straight off relHits. */
+function relHitExecute(p,sid,pats,now){
+ if(!p)return {ok:false, why:'no record'};
+ if(typeof sid!=='string'||!RH_SID.test(sid))return {ok:false, why:'a release session id is needed'};
+ var R=rhOf(p);
+ if(R&&R.log.some(function(e){return e.kind==='execute'&&e.sid===sid;}))return {ok:true, dup:true};
+ var seen={}, out=[];
+ (pats||[]).forEach(function(q){
+  var id=q&&relHitPat(q.fam,q.nm);
+  if(id&&!seen[id]){seen[id]=1; out.push({id:id, nm:q.nm});}});
+ return rhAppend(p,{ev:'x_'+sid, kind:'execute', sid:sid, pats:out},now);}
+
+/* ONE DECISION. a = {ev, sid, pat, cmd, mode, raw, conf}. Returns
+     {ok:true, dup:true}               this event id is already on the log
+     {ok:true, noop:true, state}       the item is already where cmd leaves it
+     {ok:true, event, state}           written
+     {ok:false, why}                   refused by name, nothing changed
+   A refusal is never a silent no op: a session the record does not hold, a
+   pattern the session did not present, or a command that is not one of the
+   three is said, so a stale card cannot pretend a press landed. */
+function relHitDecide(p,a,now){
+ if(!p)return {ok:false, why:'no record'};
+ a=a||{};
+ if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,a.cmd))
+  return {ok:false, why:'a decision is hold, hit or reject, not '+JSON.stringify(a.cmd)};
+ var R=rhOf(p), log=R?R.log:[];
+ if(typeof a.ev==='string'&&log.some(function(e){return e.ev===a.ev;}))return {ok:true, dup:true};
+ var rp=rhReplay(log,null), s=rp.ses[a.sid];
+ if(!s)return {ok:false, why:'release '+String(a.sid).slice(0,80)+' is not on this record'};
+ var x=s.items[a.pat];
+ if(!x)return {ok:false, why:String(a.pat).slice(0,80)+' was not presented by this release'};
+ var to=RELHIT_CMDS[a.cmd];
+ if(x.state===to)return {ok:true, noop:true, state:to};
+ var mode=a.mode||'control';
+ var r=rhAppend(p,{ev:a.ev, kind:'decide', sid:a.sid, pat:a.pat, cmd:a.cmd, mode:mode,
+  raw:a.raw===undefined?a.cmd:a.raw, conf:a.conf===undefined?null:a.conf, from:x.state, to:to},now);
+ if(!r.ok)return r;
+ return {ok:true, event:r.event, state:to};}
+
+/* ---------------- the readers ---------------- */
+/* ONE SESSION AS ITS CARD SHOWS IT, or null when the record never executed
+   it. items are in the order the card presented them. */
+function relHitSession(p,sid){
+ var R=rhOf(p); if(!R)return null;
+ var s=rhReplay(R.log,null).ses[sid]; if(!s)return null;
+ return {sid:s.sid, at:s.at, executed:true,
+  items:s.ids.map(function(id){var x=s.items[id]; return {id:id, nm:x.nm, state:x.state};})};}
+function relHitState(p,sid,pat){
+ var s=relHitSession(p,sid); if(!s)return null;
+ for(var i=0;i<s.items.length;i++)if(s.items[i].id===pat)return s.items[i].state;
+ return null;}
+/* THE COUNT, the only one. hits is how many presented items, one per session
+   and pattern, the person has marked a hit and not since changed; patterns is
+   how many different patterns that covers; by is per pattern. A release that
+   ran and was never judged adds a session and no hit. */
+function relHitCount(p){
+ var R=rhOf(p), out={hits:0, patterns:0, sessions:0, held:0, rejected:0, by:{}};
+ if(!R)return out;
+ var rp=rhReplay(R.log,null);
+ rp.order.forEach(function(sid){
+  var s=rp.ses[sid]; out.sessions++;
+  s.ids.forEach(function(id){
+   var st=s.items[id].state;
+   if(st==='confirmed'){out.hits++; out.by[id]=(out.by[id]||0)+1;}
+   else if(st==='held')out.held++;
+   else if(st==='rejected')out.rejected++;});});
+ out.patterns=Object.keys(out.by).length;
+ return out;}
 
 /* ============================================================
    PRACTICE. The P0 domain of the Practice TDD
@@ -21906,7 +22207,23 @@ var EV_PLACEABLE=['confirmed','corrected'];
    actually used, "I want to talk about my brother instead", names the new
    subject inside the request, so a turn holding both "talk about" and
    "instead" is a shift too: SRC_SHIFT_PAIR, each pair a phrase and the word
-   that has to follow it. */
+   that has to follow it.
+
+   "WHAT DO YOU MEAN" IS A QUESTION ABOUT SOURCE AI'S LAST LINE, 13 November,
+   TASKS.md SK2. The package, 02 section 5: "If caller says 'what do you
+   mean,' restate softly", and its G3 gate: "when user asks 'what do you
+   mean' paraphrase softly". Reproduced on the page before this: after
+   "You wrote “afraid” twice. What did you do?", the turn "What do you
+   mean?" heard no intent and no act, the family question was marked asked,
+   and the next turn was a different question, "What happens next?", which
+   is the question funnel the package's dialogue rules out. clarify reads
+   it, last in the order, so a turn that also says no or asks to stop is
+   that first. Short turns only, the way reject is read, because "she said
+   what do you mean and walked out" is a story. And no negation guard, the
+   way srcAct has none: "No, what do you mean?" still asks what was meant,
+   and "dont understand the question" carries its own no. Every phrase is
+   about Source AI's own line, so a bare "I don't understand" is left out:
+   "I don't understand why he left" is grief, not a request to restate. */
 var SRC_INTENT={
  shift:['change the subject','change of subject','talk about something else','talk about something different',
   'something else to talk about','different subject','different topic','new subject','new topic',
@@ -21918,20 +22235,23 @@ var SRC_INTENT={
   'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
   'you are wrong'],
  vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
-  'just want to get it out','just need to get it out','just want to talk','just listen']};
-var SRC_INTENT_ORDER=['shift','move_on','reject','vent'];
+  'just want to get it out','just need to get it out','just want to talk','just listen'],
+ clarify:['what do you mean','what does that mean','what does this mean','what are you asking',
+  'what was the question','not sure what you mean','dont know what you mean','dont understand the question',
+  'dont understand what you mean','dont get the question','dont get what you mean','say that again']};
+var SRC_INTENT_ORDER=['shift','move_on','reject','vent','clarify'];
 var SRC_INTENT_SHORT=12;
 var SRC_SHIFT_PAIR=[['talk about','instead']];
 function srcIntent(turn){
  var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
  if(!words)return null;
  for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
-  if(k==='reject'&&words>SRC_INTENT_SHORT)continue;
+  if((k==='reject'||k==='clarify')&&words>SRC_INTENT_SHORT)continue;
   for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
    if(at<0)continue;
    /* the phrases that carry their own no are read as said; the others are
-      set aside when a no stands before them */
-   if(!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
+      set aside when a no stands before them, except clarify's, above */
+   if(k!=='clarify'&&!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
    return {intent:k, cue:list[j]};}
   if(k==='shift')for(var q=0;q<SRC_SHIFT_PAIR.length;q++){var a=s.indexOf(' '+SRC_SHIFT_PAIR[q][0]+' ');
    if(a>=0&&!srcNegated(s,a+1)&&s.indexOf(' '+SRC_SHIFT_PAIR[q][1]+' ',a)>a)
@@ -22337,6 +22657,34 @@ function srcFamilyCands(lead,target){
  var pre=String(lead||'').trim();
  return SRC_FAMILY.map(function(f){
   return {q:(pre?pre+' ':'')+f.q, base:f.q, dim:f.dim, family:f.family, need:f.need||'', target:target||null};});}
+/* THE SOFT RESTATE, the package's CLARIFY turned round, 13 November, TASKS.md
+   SK2. The family above holds clarification back because nothing here can
+   read what is unclear in the person's words. The other direction needs no
+   reading at all: a person who asks "what do you mean" has said, in words,
+   that Source AI's own line was unclear (srcIntent's clarify, engine/
+   evidence.js). The package gives the answer, 06_DIALOGUE_TDD.md, after
+   "What do you mean?": "What part keeps coming back for you?" [Do not ask
+   for a detailed evidence inventory or repeat the entire user's speech.]
+   So it is that line, word for word, and nothing written here.
+
+   It is not a SRC_FAMILY line on purpose. srcChoose draws from the family
+   on any ask, and this may only ever be said straight after the person
+   asked what was meant; need 'asked' is that, and it is the only thing that
+   separates it from the family's own 'unclear', which point 10 stops.
+
+   IT GOES THROUGH ALL TEN POINTS LIKE ANY QUESTION. Measured before it was
+   wired: on "I was afraid all night. Still afraid. What do you mean?" it
+   passes as written about the thread. Point 7's QC_AGAIN holds "keep
+   coming" and not "keeps coming", which is why it passes, and that is right
+   rather than lucky: it asks which part keeps coming back, it does not say
+   a seat came back, and the place words point 7 guards are not in it. When
+   it fails, a second "what do you mean" after it among them (point 10, a
+   repeat), the caller says what Source AI does instead, never a family
+   question nobody asked for. Pure. */
+var SRC_RESTATE={family:'clarification', need:'asked', dim:null, q:'What part keeps coming back for you?'};
+function srcRestate(ctx,target){
+ return srcVet({q:SRC_RESTATE.q, base:SRC_RESTATE.q, family:SRC_RESTATE.family, need:SRC_RESTATE.need,
+  dim:SRC_RESTATE.dim, target:target||null},ctx);}
 /* A LINE THAT SAYS AND DOES NOT ASK, section 23's Mirror and Name. Three of
    the ten points are about any line Source AI says, not only a question: the
    quotes are the person's (3), nothing is diagnosed (6), and no claim is
@@ -26447,6 +26795,7 @@ if(typeof module!=='undefined'&&module.exports){
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
                  srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
+                 SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -26821,6 +27170,13 @@ if(typeof module!=='undefined'&&module.exports){
                   journeyGiftIssue:journeyGiftIssue, journeyMade:journeyMade,
                   journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
+  /* the release hit log, engine/relhit.js: its tables, its boundary, its two
+     writers and the one count */
+                  RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
+                  RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+                  relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
+                  relHitExecute:relHitExecute, relHitDecide:relHitDecide,
+                  relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
   /* the codes, engine/codes.js and engine/data/codes.js: one fixed code per
      thing the engine names and the door every label goes through. The
