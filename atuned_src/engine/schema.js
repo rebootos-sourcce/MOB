@@ -1702,6 +1702,15 @@ function validateProfile(o,ctx){
     reads back exactly as it went in. */
  if(o.journey!==undefined&&o.journey!==null)
   p.journey=journeyValidate(errs,o.journey,'journey',{stored:stored});
+ /* THE RELEASE HIT LOG, through its own boundary (relHitValidate, engine/
+    relhit.js), the same way and for the same reason as the journey. Without
+    this line the key was not refused, it was dropped: validateProfile builds
+    from the blank and copies what it names, so every hit a person marked
+    vanished at the next boot's read of the store and the card said it was
+    kept. Not in the blank, so a record that never ran a release reads back
+    exactly as it went in. */
+ if(o.relhit!==undefined&&o.relhit!==null)
+  p.relhit=relHitValidate(errs,o.relhit,'relhit',{stored:stored});
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has

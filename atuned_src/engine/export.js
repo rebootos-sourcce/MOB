@@ -409,6 +409,13 @@ if(typeof module!=='undefined'&&module.exports){
                   journeyGiftIssue:journeyGiftIssue, journeyMade:journeyMade,
                   journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
+  /* the release hit log, engine/relhit.js: its tables, its boundary, its two
+     writers and the one count */
+                  RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
+                  RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+                  relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
+                  relHitExecute:relHitExecute, relHitDecide:relHitDecide,
+                  relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
   /* the codes, engine/codes.js and engine/data/codes.js: one fixed code per
      thing the engine names and the door every label goes through. The

@@ -196,6 +196,86 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       ok(errs.length === 0, 'no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
       await ctx.close();
     }
+
+    /* 8. ONLY A PRESS OF HIT IS A HIT, 13 November. The owner's 21 October
+       clarification, docs/ATUNED_CQ_DQ_SQ_RELEASE_HIT_FEEDBACK_ADDENDUM_v1.md
+       section 4: "Executing a release does not prove that the candidate was a
+       hit", "Retries and replay are idempotent". Before this the results
+       listed every pattern the run reached and nothing asked the person, so
+       on the build from before it there are no controls to press and every
+       check below that presses one fails. engine/relhit.js holds the rules
+       headless (tests/relhit.js); this holds them through the real card. */
+    console.log('\n=== 8. only a press of Hit is a hit, and a replay counts nothing twice, at ' + W + ' ===');
+    {
+      const { ctx, page, errs } = await open();
+      /* A FIELD WITH PATTERNS RUNNING. The grief story alone on a blank record
+         runs no saboteur, complex or hyper complex, measured: the card then
+         says so and presents nothing to mark, which is correct and holds
+         nothing here. So the nine axes are charged and saved first, and the
+         run is picked by hand on the first saboteur's own addresses. */
+      const pick = await ev(page, () => {
+        REL_WORD_S = 0.0004; REL_GAP_S = 0.001; REL_HEAD_S = 0; REL_FRAME_S = 0;
+        CURP.ui.voice = false; CURP.ui.tone = false;
+        CHARGES.forEach(function (c) { S.charge[c] = 7; }); pSave();
+        var sab = (compute().sabs || []).filter(function (o) { return !o.over; })[0];
+        var ids = sab ? leaves(sab).map(function (n) { return n.i; }).slice(0, 3) : [];
+        relPick(ids, null);
+        var d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); }
+        return { sab: sab ? sab.nm : null, ids: ids };
+      });
+      ok(pick && pick.sab && pick.ids.length > 0, '8. a charged field has a saboteur to run on: ' + J(pick));
+      await page.click('#relgo');
+      await page.waitForFunction(() => RUN.phase === 'done', null, { timeout: 180000 }).catch(() => { });
+      await ev(page, () => { var b = document.getElementById('relrest'); if (b) b.click(); });
+      await page.waitForFunction(() => document.querySelector('#rel [data-relhit]'), null, { timeout: 20000 }).catch(() => { });
+      const s0 = await ev(page, () => {
+        var s = relHitSession(CURP, RUN.id), r = compute();
+        return { saved: RUN.saved, items: s ? s.items.length : -1, states: s ? s.items.map(function (x) { return x.state; }) : [],
+          hits: relHitCount(CURP).hits, btn: document.querySelectorAll('#rel [data-relhit]').length,
+          pressed: document.querySelectorAll('#rel [data-relhit][aria-pressed="true"]').length,
+          n: (document.getElementById('relhitn') || {}).textContent || null, cq: r.CQ, dq: r.DQ, log: CURP.relhit ? CURP.relhit.log.length : 0 };
+      });
+      ok(s0.saved && s0.items > 0 && s0.states.every(x => x === 'shown'), '8. a release that ran presents its patterns as shown, none as a hit: ' + J({ items: s0.items, states: s0.states.slice(0, 4) }));
+      ok(s0.hits === 0 && s0.log === 1, '8. and the record counts no hit for the run itself, one execute line: ' + J({ hits: s0.hits, log: s0.log }));
+      ok(s0.btn === s0.items * 3 && s0.pressed === 0, '8. each presented pattern has Hit, Hold and Not a hit, none pressed: ' + J({ btn: s0.btn, items: s0.items }));
+      ok(/^No hits marked/.test(s0.n || ''), '8. the card says no hits are marked: ' + J(s0.n));
+      /* the first pattern's Hit, through the real control, twice */
+      const first = await ev(page, () => { var b = document.querySelector('#rel [data-relhit][data-relcmd="hit"]'); return b ? b.getAttribute('data-relhit') : null; });
+      if (typeof first !== 'string') { ok(false, '8. there is a Hit control to press: ' + J(first)); await ctx.close(); continue; }
+      await page.click('#rel [data-relhit="' + first + '"][data-relcmd="hit"]');
+      const s1 = await ev(page, p => ({ hits: relHitCount(CURP).hits, st: relHitState(CURP, RUN.id, p), log: CURP.relhit.log.length,
+        pressed: (document.querySelector('#rel [data-relhit="' + p + '"][data-relcmd="hit"]') || {}).getAttribute('aria-pressed'),
+        n: (document.getElementById('relhitn') || {}).textContent || null }), first);
+      ok(s1.hits === 1 && s1.st === 'confirmed' && s1.pressed === 'true', '8. a press of Hit is one confirmed hit, shown pressed: ' + J(s1));
+      ok(/^1 hit marked on your record/.test(s1.n || ''), '8. and the card\'s count reads the record: ' + J(s1.n));
+      await page.click('#rel [data-relhit="' + first + '"][data-relcmd="hit"]');
+      const s2 = await ev(page, () => ({ hits: relHitCount(CURP).hits, log: CURP.relhit.log.length }));
+      ok(s2.hits === 1 && s2.log === s1.log, '8. a second press of Hit writes nothing and counts nothing: ' + J({ before: s1.log, after: s2.log }));
+      /* the same event delivered twice, the retry case */
+      const s3 = await ev(page, p => { var n0 = CURP.relhit.log.length;
+        var a = relHitPress(p, 'hold', 'rh_gate_replay_0001'), n1 = CURP.relhit.log.length;
+        var b = relHitPress(p, 'hold', 'rh_gate_replay_0001'), n2 = CURP.relhit.log.length;
+        relHitPress(p, 'hit', 'rh_gate_replay_0002');
+        return { a: a, b: b, n0: n0, n1: n1, n2: n2, hits: relHitCount(CURP).hits }; }, first);
+      ok(s3.a && s3.b && s3.n1 === s3.n0 + 1 && s3.n2 === s3.n1 && s3.hits === 1, '8. one event id delivered twice is written once: ' + J(s3));
+      /* Not a hit on another pattern sets it aside and counts nothing */
+      const second = await ev(page, p => { var b = [].slice.call(document.querySelectorAll('#rel [data-relhit][data-relcmd="reject"]')).filter(function (x) { return x.getAttribute('data-relhit') !== p; })[0];
+        return b ? b.getAttribute('data-relhit') : null; }, first);
+      if (second) {
+        await page.click('#rel [data-relhit="' + second + '"][data-relcmd="reject"]');
+        const s4 = await ev(page, p => ({ hits: relHitCount(CURP).hits, st: relHitState(CURP, RUN.id, p),
+          off: !!document.querySelector('#rel [data-relrow="' + p + '"].rel-rh-off') }), second);
+        ok(s4.hits === 1 && s4.st === 'rejected' && s4.off, '8. Not a hit sets the pattern aside and counts nothing: ' + J(s4));
+      }
+      const s5 = await ev(page, () => { var r = compute(); return { cq: r.CQ, dq: r.DQ, log: CURP.relhit.log.slice() }; });
+      ok(s5.cq === s0.cq && s5.dq === s0.dq, '8. no mark moves CQ or DQ: ' + J({ cq: [s0.cq, s5.cq], dq: [s0.dq, s5.dq] }));
+      await ev(page, () => { var c = document.getElementById('relclose'); if (c) c.click(); });
+      await page.reload({ waitUntil: 'load' }); await booted(page);
+      const back = await ev(page, () => ({ hits: relHitCount(CURP).hits, log: CURP.relhit ? CURP.relhit.log : null }));
+      ok(back.hits === 1 && J(back.log) === J(s5.log), '8. a reload reads the same one hit and the same log: ' + J({ hits: back.hits, log: back.log && back.log.length, was: s5.log.length }));
+      ok(errs.length === 0, '8. no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
+      await ctx.close();
+    }
   }
   await browser.close();
   done();

@@ -7687,6 +7687,10 @@ require('./daily.js')(E,ok,g,console.log);
    this engine and then on broken copies of it, and report through this file's
    ok and g. */
 require('./journey.js')(E,ok,g,console.log);
+/* the release hit log, engine/relhit.js: only a press of Hit is a hit, a
+   replay counts nothing twice, and a hit moves no number. Same posture as the
+   journey's: its suites run here and then on broken copies of the engine. */
+require('./relhit.js')(E,ok,g);
 /* THE TWO NEW DOMAINS MEET. practiceTraceIntents is what the practice build says
    about itself and traceApply is what the graph takes in, built apart by two
    hands. A practice built through the one door, its intents applied to a fresh
