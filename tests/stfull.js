@@ -24,7 +24,9 @@
         column (28 October)
      2  Dashboard turns on Full: st-full, the left column back, #stleft the
         only thing in it but its fold
-     3  Energy is silent with no story: one line, no ring
+     3  Energy draws all seven seats with no story too, icon only, every
+        one at rest brightness, 13 November's reversal of the no-pill
+        silence a sentence used to hold here
      4  with a story, all seven seats Root to Crown, each figure the 'atom'
         percent of min(10, bands/3), the dash where a seat is untouched, and
         the same number the Journal's own chart springs to (STSEAT)
@@ -112,20 +114,26 @@ async function stFullGate(browser,FILE,ok,booted){
    at+'the rail is #stleft alone, its fold gone and nothing of the Field\'s, got '+s1.shown.join(','));
   if(wn==='desktop')ok(/^302px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 302px 1fr, got '+s1.grid);
 
-  /* 3. silent with no story. ROUND, 8 November: the per-row ring-and-name
-     list (.st-en-r, .cr) became a colour-only pill row, his words "I don't
-     want the text. I only want the color. And a pill, almost like a
-     light." stPillRow draws nothing at all, not even an empty row div,
-     when stDashLeft has no story, the same "a hidden surface never sits
-     in the document asserting a stale reading" rule this rail already
-     kept, so the pill count here is checked the same way the old ring
-     count was. */
+  /* 3. ALL SEVEN, UNLIT, WITH NO STORY TOO, 13 November, reversing the 8
+     November round just below: that round's own words, "I don't want the
+     text. I only want the color. And a pill, almost like a light," first
+     landed as no pill at all with no story, a whole sentence instead,
+     "a hidden surface never sits in the document asserting a stale
+     reading." His newest words asked for the opposite of the sentence
+     half of that: "when nothing is loaded, I don't want to see this much
+     text. I just want to see the icons and the panels unlit." stPillRow
+     now always draws all seven, at their own rest brightness (--b, 0)
+     when there is nothing to light, which is the tile's own resting look
+     (see the header note at the top of ui/stdash.js) and not a reading
+     the instrument did not take, since no number is printed either way. */
   const s2=await p.evaluate(()=>{const sl=document.getElementById('stleft');
-   return {txt:ST_TEXT, none:!!sl.querySelector('#st-energy-none'), say:(sl.querySelector('#st-energy-none')||{}).textContent,
-    pills:sl.querySelectorAll('#st-energy-ls .st-pl').length,
+   const pills=[...sl.querySelectorAll('#st-energy-ls .st-pl')];
+   return {txt:ST_TEXT, none:!!sl.querySelector('#st-energy-none'),
+    pillCount:pills.length,
+    allDim:pills.every(function(r){return parseFloat(r.style.getPropertyValue('--b'))<=0.001;}),
     head:(sl.querySelector('#st-energy-h')||{}).textContent};});
   ok(s2.txt.trim()===''&&s2.head==='Energy',at+'the rail opens on Energy, with no story written, '+JSON.stringify({txt:s2.txt,head:s2.head}));
-  ok(s2.none&&s2.pills===0,at+'and says nothing is read yet, with no pill drawn, '+JSON.stringify(s2));
+  ok(!s2.none&&s2.pillCount===7&&s2.allDim,at+'and draws all seven seats as unlit icons, never a sentence, '+JSON.stringify(s2));
 
   /* 4. a story, all seven, as pills now. ORDER IS STRENGTH NOW, NOT ROOT TO
      CROWN, his own instruction: "arranged according to signal strength."
@@ -264,12 +272,12 @@ async function stFullGate(browser,FILE,ok,booted){
   const b=await p.evaluate(m=>({who:S.who, text:ST_TEXT, parsed:!!ST_PARSED,
    rail:document.getElementById('stleft').innerHTML,
    rows:document.querySelectorAll('#stleft #st-energy-ls .st-pl').length,
-   none:!!document.getElementById('st-energy-none'),
+   allDim:[...document.querySelectorAll('#stleft #st-energy-ls .st-pl')].every(function(r){return parseFloat(r.style.getPropertyValue('--b'))<=0.001;}),
    page:document.getElementById('story').textContent.indexOf(m)>=0,
    draft:(CURP&&CURP.story&&CURP.story.draft)||null,
    youDraft:(PROFILES[0]&&PROFILES[0].story&&PROFILES[0].story.draft)||null}),MARK);
   ok(b.who===+a.other&&b.text===''&&!b.parsed,at+'after the picker moves, the Journal holds none of the last person\'s words, '+JSON.stringify({who:b.who,text:b.text.slice(0,30),parsed:b.parsed}));
-  ok(b.rail!==a.rail&&b.rows===0&&b.none,at+'and the Energy rail is the new person\'s, silent, not the last person\'s seven seats, '+JSON.stringify({rows:b.rows,none:b.none}));
+  ok(b.rail!==a.rail&&b.rows===7&&b.allDim,at+'and the Energy rail is the new person\'s, all seven unlit, not the last person\'s seven lit seats, '+JSON.stringify({rows:b.rows,allDim:b.allDim}));
   /* the pending imprints (impGhosts) read ST_PARSED, held null above. They
      are not counted here: on Tomas the story's addresses are already live,
      so the count reads 0 with or without the leak and would pass for the
@@ -352,7 +360,7 @@ async function stFullGate(browser,FILE,ok,booted){
    await p.waitForTimeout(300);
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const e=document.getElementById('stleft'); return {shut:document.body.classList.contains('lshut'),
-     n:e.getAnimations().length, rows:e.querySelectorAll('#st-energy-ls .st-pl').length+(e.querySelector('#st-energy-none')?1:0)};});
+     n:e.getAnimations().length, rows:e.querySelectorAll('#st-energy-ls .st-pl').length};});
    ok(!an.shut&&an.rows>0&&an.n===0,at+'the Journal\'s rail sits open with no fade running, '+JSON.stringify(an));}
 
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));

@@ -452,14 +452,19 @@ require('./net.js').guardBrowser(browser);
      word for word the one before it.
 
      THE THIRD THING THIS BLOCK USED TO HOLD, "every new one is sent to the
-     voice in its own words," STOPPED BEING TRUE ON PURPOSE, 11 November.
-     The per-turn speak call read every templated reply aloud even after
+     voice in its own words," stopped being true on purpose on 11 November
+     (the per-turn speak call read every templated reply aloud even after
      the 10 November ruling took it off the screen, found by the Source AI
-     round's own team diagnosis: a person who could no longer see a reply
-     could still hear one. Removed. The only lines ever spoken now are the
+     round's own team diagnosis, and was removed) and IS TRUE AGAIN, 13
+     November, his words: "it needs to do speech to speech, text to
+     speech. It needs to do them all." The call is back (storyui.js,
+     srcPaint), gated on the same fresh signal srcChatNote already gives
+     this block's own one-new-turn check, so every new Source AI turn is
+     now sent to the voice the same way it lands on the record, checked
+     below against q.voice directly rather than just its count. The
      greeting and the crisis safety line (3 November, unchanged, scoped to
-     itself alone); see "Source AI's own voice is never heard as his next
-     turn" below, which holds that line's own case.
+     itself alone, see "Source AI's own voice is never heard as his next
+     turn" below) are still the two lines spoken outside a turn.
      ============================================================ */
   const srcRows = p => p.evaluate(() => SRC_CHAT.filter(r => r.w === 'src').map(r => r.q));
   /* "shown" was the thread's own row count; the thread is gone, so this
@@ -527,13 +532,13 @@ require('./net.js').guardBrowser(browser);
     ok(/hear you/i.test(out[0].rows[0] || '') && /hear you/i.test(out[1].rows[0] || ''), 'and both "can you hear me" turns are told it hears him: ' + JSON.stringify([out[0].rows[0], out[1].rows[0]]));
     await q.waitForTimeout(300);
     ok(q.voice[0] === inst.greet, 'Talk greets out loud with the opener and nothing else: ' + JSON.stringify(q.voice[0]));
-    /* NOT SPOKEN, 11 November, the Source AI round's own locked plan, item
-       2: the 10 November no-two-way-chat ruling took Source AI's reply off
-       the screen but the per-turn speak call kept reading it aloud, so a
-       person who could not see a reply could still hear one. Found by the
-       round's own team diagnosis, fixed by deleting that call. The greeting
-       above is now the only thing a whole conversation ever speaks. */
-    ok(q.voice.length === 1, 'and no reply after it is spoken, only the greeting: ' + JSON.stringify(q.voice));
+    /* SPOKEN AGAIN, 13 November: see this block's own header. One voice
+       line per turn, in order, after the greeting, each exactly the line
+       that landed on the record for it, read off out itself rather than
+       a count typed here. */
+    ok(q.voice.length === TR.hear.length + 1, 'the greeting plus one reply spoken per turn: ' + JSON.stringify(q.voice));
+    ok(JSON.stringify(q.voice.slice(1)) === JSON.stringify(out.flatMap(x => x.rows)),
+      'and each one is the line that actually landed on the record for its turn, in order: ' + JSON.stringify({ voice: q.voice.slice(1), rows: out.flatMap(x => x.rows) }));
     ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
     await q.cx.close();
   }
@@ -545,7 +550,9 @@ require('./net.js').guardBrowser(browser);
     const rows = await srcRows(q);
     ok(oneEach(out) && noRepeat(rows), k + ': one new Source AI turn a turn, never the one before it again: ' + brief(out));
     await q.waitForTimeout(300);
-    ok(q.voice.length === 1, k + ': and nothing after the greeting is spoken: ' + q.voice.length + ' voice lines');
+    ok(q.voice.length === TR[k].length + 1, k + ': the greeting plus one reply spoken per turn: ' + q.voice.length + ' voice lines');
+    ok(JSON.stringify(q.voice.slice(1)) === JSON.stringify(out.flatMap(x => x.rows)),
+      k + ': and each one is the line that actually landed on the record for its turn, in order');
     if (k === 'hi') ok(out.every(x => x.rows.every(r => !/Nothing placed yet/.test(r))), 'hi: a greeting, a question to Source AI and a check are each answered, never with the status line: ' + brief(out));
     if (k === 'vent') ok(out.slice(2).every(x => x.rows.every(r => r.indexOf('?') < 0)), 'vent: once he asks to vent, every turn is listened to and nothing is asked: ' + brief(out));
     ok(!q.errs.length, k + ': no page errors: ' + q.errs.join(' | '));

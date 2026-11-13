@@ -4172,7 +4172,12 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    than given a panel colour, because the stage already is one on every
    lighting and a panel colour on a panel is invisible on four of the seven.
    ============================================================ */
-.st-flow{display:flex;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
+/* FLEX-WRAP ADDED, 13 November, for .st-mini6 below: a fourth child with
+   flex-basis 100% wraps onto its own row under the three columns rather
+   than squeezing in as a fourth narrow one beside them. The three
+   columns themselves are unaffected, none of their own flex rules name
+   a basis that would let them wrap on their own. */
+.st-flow{display:flex;flex-wrap:wrap;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
 /* .st-colr IS GONE, 9 November. His words: "the imprints now column
    becomes now the full bank column." .st-colx (ui/storyui.js keeps its
    id, the release column's own) takes the flex ratio .st-colr used to
@@ -4240,31 +4245,43 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    rule lands the icon under her either way. */
 #stjr .st-bar #sttype{position:absolute;left:50%;bottom:24px;
  transform:translateX(-50%);margin:0;z-index:5}
-/* AND THE SECOND ROW NEVER REACHES THE MINI VIEW EITHER, same round,
-   same reasoning: Compass, Boundary, Body, Field and Avatar are a
+/* AND THE SIX MINI PICTURES NEVER REACH THE MINI VIEW EITHER, same round,
+   same reasoning: Compass, Boundary, Body, Field, Avatar and Masks are a
    Dashboard-only idea, his own words scoping them there ("when I hit
    the dashboard button..."), so the mini Journal he is still reviewing
-   separately stays exactly as it was. */
-.st-flow.st-simple .st-2row{display:none}
-/* THE MINI PICTURES. One label, one small drawing, one optional line of
-   real numbers under it; never a second shade of panel inside a panel,
-   so five of these beside each other read as one row and not five
-   boxes. */
-.st-2row{display:flex;gap:12px;flex:0 0 auto}
-/* AVATAR MOVES TO THE RIGHT, THE MASKS TAKE THE LEFT, 10 November, his
-   second correction: "you still have this blank space to its right...
-   move the avatar to the right and then add the masks." Avatar was
-   half Release's width, left-aligned, the other half empty; that half
-   now holds the four mask tiles, and Avatar sits at the row's own end
-   so the two read as one deliberate row rather than one picture with
-   dead space beside it. */
-.st-2row-1{display:flex;align-items:stretch}
-.st-2row-1 .st-mask4{flex:1 1 0;min-width:0;display:flex;align-items:center;
- justify-content:center;gap:8px}
-.st-2row-1 #stavatar{flex:0 0 50%}
+   separately stays exactly as it was. RENAMED FROM .st-2row, 13
+   November, when all six moved into one real row, .st-mini6, below. */
+.st-flow.st-simple .st-mini6{display:none}
+/* THE SIX MINI PICTURES, ONE REAL ROW, 13 November, see the long
+   comment in storyui.js where this div is built. One label, one small
+   drawing, one optional line of real numbers under it; never a second
+   shade of panel inside a panel, so six of these beside each other read
+   as one row and not six boxes. flex-basis 100% is what makes .st-flow
+   wrap this onto its own line under the three columns above. */
+.st-mini6{display:flex;flex:1 0 100%;gap:12px}
+.st-mini6 .st-mini{flex:1 1 0;min-width:0}
+/* THE MASK TILES, INSIDE THEIR OWN .st-mini-vis NOW rather than a
+   .st-2row-1 half-row shared with Avatar: a plain centred flex column,
+   the top mask's own labelled row above up to three runner-up dots,
+   with the full tile's own width to sit in instead of half of
+   Release's. */
+.st-mini-vis .st-mask4{display:flex;flex-direction:column;justify-content:center;gap:10px;width:100%}
+/* THE TOP MASK'S OWN ROW, 13 November: the one mask this card now names
+   outright, icon, name and percent, all standing text, no hover needed.
+   --c is each mask's own CHC.maskCols colour, set inline same as the
+   tiles below it. */
+.st-mask-top{display:flex;align-items:center;gap:8px}
+.st-mask-nm{font-size:12px;font-weight:600;color:var(--ink);flex:1 1 0;min-width:0;
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-mask-pc{font-size:11px;color:var(--c);flex:0 0 auto}
+.st-mask-runners{display:flex;align-items:center;gap:6px}
 .st-mask4-t{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
- justify-content:center;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
+ justify-content:center;flex:0 0 auto;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
  border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
+/* THE RUNNER-UP TILES READ SMALLER, so the one labelled mask is plainly
+   the card's own headline and the rest plainly secondary. */
+.st-mask4-t.sm{width:26px;height:26px}
+.st-mask4-t.sm svg{width:13px;height:13px}
 .st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
  stroke-linecap:round;stroke-linejoin:round}
 /* THE RAIL'S OWN MASKS SECTION, same tile as .st-mask4-t above, the real
@@ -4284,11 +4301,11 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  stroke-linecap:round;stroke-linejoin:round}
 .st-mk-lb{font-size:10.5px;line-height:1.2;color:var(--mid);text-align:center;
  margin:0;overflow-wrap:break-word;max-width:100%}
-.st-2row .st-mini{flex:1 1 0;min-width:0}
 /* --sunk, NOT --panel, 10 November. His words: "add black backgrounds to
-   the other five buttons that we have at the bottom as well." These five
-   (Compass, Boundary, Body, Field, Avatar, stMiniShell in storyui.js, the
-   only place .st-mini is built) were the one surface left on --panel,
+   the other five buttons that we have at the bottom as well." These six
+   (Compass, Boundary, Body, Field, Avatar, Masks since 13 November,
+   stMiniShell in storyui.js, the only place .st-mini is built) were the
+   one surface left on --panel,
    the product's ordinary card grey, while every other Dashboard panel
    (the text box, the imprints list, Release) already reads --sunk. */
 .st-mini{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
@@ -4303,7 +4320,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  letter-spacing:.02em;margin-bottom:6px}
 .st-mini-vis{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
 /* width/height:100%, not max-: an <svg> with no width/height attribute of
-   its own (every one of the five mini pictures, viewBox alone) renders at
+   its own (every one of the six mini pictures, viewBox alone) renders at
    its intrinsic 300x150 regardless of a max- cap in some engines, which is
    exactly what pushed Body's own caption line below this card's own
    bottom edge, measured by screenshotting #stbody alone. A definite box,
@@ -4805,7 +4822,18 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
    180px is the icon row and three wrapped sort lines, measured, with
    room over; .st-lsb's own scroll (below) still takes whatever height
    is left for the rows under it. */
-.st-ls{flex:1 1 0;min-height:180px;overflow-x:hidden;overflow-y:auto}
+.st-ls{flex:1 1 0;min-height:180px}
+/* THE SCROLL BOUNDARY MOVED HERE, 13 November, off .st-ls itself, so the
+   bank row (below) can sit pinned under it instead of being the last
+   row a long list scrolls past. Same overflow this panel always had,
+   just scoped to the part of it that should actually scroll. */
+.st-ls-scroll{flex:1 1 0;min-height:0;overflow-x:hidden;overflow-y:auto;display:flex;flex-direction:column}
+/* THE BANK BUTTON'S NEW ROW, 13 November, his words on a screenshot:
+   "the bank button moved to the lower right of that column just
+   opposite the release button." flex:0 0 auto keeps it its own fixed
+   height under the scrolling list above; justify-content:flex-end is
+   the "lower right" itself. */
+.st-lsbankrow{flex:0 0 auto;display:flex;justify-content:flex-end;padding-top:8px}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
@@ -4890,18 +4918,15 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 /* LEFT, NOT RIGHT, 9 November, his words: "move the bank and the vault
    icons to the left-hand side of that menu bar." flex-end pinned them to
    the far right when they were this row's only children; flex-start is
-   their natural rest position now, and .st-lsbank's own margin-left:auto
-   below is what pushes Bank to the right end when it joins them. */
+   their natural rest position now. Bank itself moved out of this row
+   entirely on 13 November, see .st-lsbankrow above: Imprints and Archive
+   are the only two children here now. */
 .st-lsico{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-height:var(--tap);
  margin-bottom:6px;padding:6px 8px;border-radius:var(--r-xs);background:var(--sunk)}
-/* COMMIT MOVED INTO THIS ROW AND READS BANK, 9 November: see the ruling
-   at ui/storyui.js's own ".st-lsico" ("BANK AND VAULT ON THE LEFT"). The
-   auto margin is the whole move: Bank/Vault keep the row's natural flow
-   on the left and this is the one child that eats the row's spare width
-   instead of sharing it, landing at the far right the way Commit used to
-   sit at the top of #strel in its old, separate position below the icon
-   row. */
-.st-lsbank{margin-left:auto}
+/* BANK'S OWN BUTTON STYLE, kept separate from its row (.st-lsbankrow,
+   13 November, above) so a margin rule is not doing a layout rule's
+   job. */
+.st-lsbank{}
 /* ---- Commit, at the foot of the whole read column, round of 29 October ---- */
 .st-rft{display:flex;justify-content:flex-end;flex:0 0 auto}
 .st-ico{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);min-width:var(--tap);
@@ -5348,8 +5373,8 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
     own six sections, so its own grey showed below the last one; the
     "seam" is five things stacked (lpanel's own padding, an edge, the
     grid's own 10px gap, #stage's own edge, #story's own padding), none
-    of them a border anyone drew on purpose; and the five mini panels
-    below (Compass through Avatar, .st-mini) are the one surface left on
+    of them a border anyone drew on purpose; and the six mini panels
+    below (Compass through Masks, .st-mini) are the one surface left on
     --panel while every other panel here, the text box, the imprints
     list, Release, already reads --sunk. :not(.lshut), because the
     folded 58px rail keeps its own small padding, untouched. */
@@ -7405,7 +7430,14 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     audio goes. Measured at 390 by 844 with the prototype's spacing, Run sat
     80 pixels under the first screen. These are the pixels that bought it
     back, and none of them is a tap target. */
- .st-flow{flex-direction:column;height:auto;gap:8px}
+ /* NOWRAP, 13 November: .st-flow gained flex-wrap:wrap (above) so .st-mini6
+    can drop onto its own row on a wide screen. In column direction, wrap
+    means a second COLUMN of content once the first runs out of vertical
+    room, which on a phone's own short, scrollable stack is every time:
+    the three columns and .st-mini6 all together, side by side, running
+    off the right edge of the screen. nowrap keeps this the single top to
+    bottom stack it always was. */
+ .st-flow{flex-direction:column;flex-wrap:nowrap;height:auto;gap:8px}
  .st-flow>*,.st-colw>*{flex:0 0 auto!important}
  /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
     Release hidden (st-simple, the Dashboard toggle, round of 29 October),
@@ -7427,6 +7459,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     on shrink to fit at all, on a phone or any width this rule reaches. */
  .st-flow.st-simple .st-colw{width:100%}
  .st-colw,.st-colb,.st-colz{gap:8px}
+ /* SIX IN A ROW FITS 1600, NOT 390. Six equal flex children at phone
+    width would squeeze each mini picture under 60px, so this wraps them
+    into whatever number of rows the screen actually has room for (2
+    across at phone width, measured), the same real-second-line approach
+    .st-mk-row already takes for the rail's five mask tiles. */
+ .st-mini6{flex-wrap:wrap}
+ .st-mini6 .st-mini{flex:1 1 140px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}

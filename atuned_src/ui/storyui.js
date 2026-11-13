@@ -93,48 +93,110 @@ function stMark(k,word,term,cls,tail){
    same number (ui/wheel.js:508). */
 /* the seven seats' own colour tokens, named once so a MIRROR axis or a
    body address can be coloured by its seat without guessing a string */
+/* '3RD EYE' HAD NO KEY, found 13 November reviewing the mini widgets: MIRROR
+   (engine/data/compass.js)'s own Perception axis and ARCH's own Magician
+   entry (engine/data/canon.js) both use seat:'3rd Eye' verbatim, the exact
+   string every other address-bearing table in this product uses, while this
+   table only ever carried 'Eye' and 'Third Eye'. Every SEATCOL[m.seat] call
+   for either of those two real entries silently fell back to --dim, a real
+   color bug independent of any redesign, not just a gap in these new mini
+   pictures. */
 var SEATCOL={Root:'--root',Sacral:'--sacral',Solar:'--solar',Heart:'--heart',
- Throat:'--throat',Eye:'--eye','Third Eye':'--eye',Crown:'--crown'};
+ Throat:'--throat',Eye:'--eye','Third Eye':'--eye','3rd Eye':'--eye',Crown:'--crown'};
 function stMiniShell(id,label,inner){
  return '<div class="st-mini" id="'+id+'" aria-label="'+esc(label)+'">'
   +'<div class="st-mini-lb">'+esc(label)+'</div>'+inner+'</div>';}
-/* COMPASS, the sixteen MIRROR axes (engine/data/compass.js) as spokes from
-   the centre; coneMirPos (ui/cone.js) is the real tab's own per-axis read,
-   0 to 100 or null unanswered, reused rather than re-derived. */
+/* COMPASS, the eight MIRROR axes (engine/data/compass.js, its own header:
+   "THE EIGHT MIRROR PAIRS") as spokes from the centre; coneMirPos (ui/cone.js)
+   is the real tab's own per-axis read, 0 to 100 or null unanswered, reused
+   rather than re-derived. CORRECTED, 13 November: this comment said sixteen
+   for as long as anyone reading it could check, and the real array has
+   eight.
+
+   THE MOST PROMINENT FACT, ruled 13 November after three rounds of team
+   review (art direction, UI/UX, AI/algorithms, then the creative and
+   technical directors twice more): a glance at this widget used to answer
+   nothing, eight equal spokes with no reading beside them. Now the one axis
+   sitting furthest from its own midpoint is found in the same loop that
+   already draws every spoke, no second pass over coneMirPos, and is the
+   only one left at full strength; the rest dim to a quarter. The caption
+   names it in plain words, the axis and which pole it leans toward as up or
+   dn, never a pole's own proper name (Lucifer, Set, Moses): a bare mythic
+   name on a 240 by 200 card has no room for the meaning line CLAUDE.md's
+   unpack-every-symbol rule would require beside it, so the card stays
+   honest about what it can actually explain at this size. */
 function stMiniCompass(r){
- var un=r.unread, pts='';
+ var un=r.unread;
+ var vals=MIRROR.map(function(m){return un?null:coneMirPos(m);});
+ var extreme=-1, extremeDist=-1;
+ vals.forEach(function(v,i){if(v!=null){var d=Math.abs(v-50); if(d>extremeDist){extremeDist=d; extreme=i;}}});
+ var pts='';
  MIRROR.forEach(function(m,i){
-  var v=un?50:coneMirPos(m);
+  var v=vals[i]==null?50:vals[i];
   var a=(i/MIRROR.length)*Math.PI*2-Math.PI/2;
   var rad=10+(v/100)*42, x=60+Math.cos(a)*rad, y=60+Math.sin(a)*rad;
+  var hot=!un&&i===extreme;
   var col=un?'var(--dim)':'var('+(SEATCOL[m.seat]||'--dim')+')';
-  pts+='<line x1="60" y1="60" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+col+'" stroke-opacity=".4"/>'
-   +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.3" fill="'+col+'"/>';});
+  var op=un?.4:(hot?1:.25);
+  pts+='<line x1="60" y1="60" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1)+'"/>'
+   +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(hot?3.2:2.3)+'" fill="'+col+'" fill-opacity="'+op+'"/>';});
+ var cap='–';
+ if(!un&&extreme>=0){var m=MIRROR[extreme]; cap=esc(m.q+', toward '+(vals[extreme]>=50?'up':'dn'));}
  return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'
   +'<circle cx="60" cy="60" r="52" fill="none" stroke="var(--edge)"/>'+pts
-  +'<circle cx="60" cy="60" r="2.4" fill="var(--ink)"/></svg></div>';}
+  +'<circle cx="60" cy="60" r="2.4" fill="var(--ink)"/></svg></div><div class="st-mini-cap">'+cap+'</div>';}
 /* BOUNDARY, the purpose hexagon. Each of the six sides (PUR_SIDES,
    engine/avatar.js) lit by how many of its five slots (PUR_PER_SIDE) are
    filled, the same filter boundaryCount runs, so the picture and the
    number it carries never disagree. Not gated on r.unread: a purpose
-   nobody has opened yet is honestly 0 of 30, not a story left unread. */
+   nobody has opened yet is honestly 0 of 30, not a story left unread.
+
+   THE THINNEST SIDE, ruled 13 November, the same review round as Compass
+   above: boundaryCount(pu).thin already names every side under its cap,
+   but in PUR_SIDES' own fixed array order, not sorted by how thin, so
+   thin[0] is not reliably the weakest one. This tracks the real minimum
+   count in the same per-side loop that already draws each wedge, no
+   second call into boundaryCount. */
 function stMiniBoundary(){
- var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu), segs='';
- PUR_SIDES.forEach(function(s,i){
+ var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu);
+ var counts=PUR_SIDES.map(function(s){
   var a=((pu.sides&&pu.sides[s])||[]).filter(function(x){return x&&String(x).trim();});
-  var frac=Math.min(a.length,PUR_PER_SIDE)/PUR_PER_SIDE;
+  return Math.min(a.length,PUR_PER_SIDE);});
+ var minCount=Math.min.apply(null,counts), minIdx=counts.indexOf(minCount);
+ var segs='';
+ PUR_SIDES.forEach(function(s,i){
+  var frac=counts[i]/PUR_PER_SIDE;
   var a0=(i/PUR_SIDES.length)*Math.PI*2-Math.PI/2, a1=((i+1)/PUR_SIDES.length)*Math.PI*2-Math.PI/2;
   var x0=(60+Math.cos(a0)*50).toFixed(1), y0=(60+Math.sin(a0)*50).toFixed(1);
   var x1=(60+Math.cos(a1)*50).toFixed(1), y1=(60+Math.sin(a1)*50).toFixed(1);
+  var hot=i===minIdx&&minCount<PUR_PER_SIDE;
   segs+='<path d="M60 60L'+x0+' '+y0+'A50 50 0 0 1 '+x1+' '+y1+'Z" fill="var(--throat)" '
-   +'fill-opacity="'+(0.12+frac*0.6).toFixed(2)+'" stroke="var(--edge-2)"/>';});
+   +'fill-opacity="'+(0.12+frac*0.6).toFixed(2)+'" stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-width="'+(hot?2:1)+'"/>';});
+ var cap=minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held';
  return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'+segs
-  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)">'+bc.filled+'/'+bc.of+'</text></svg></div>';}
+  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)">'+bc.filled+'/'+bc.of+'</text></svg></div>'
+  +'<div class="st-mini-cap">'+esc(cap)+'</div>';}
 /* BODY, the heaviest of what compute() already calls carrying: the top
    address (r.heaviest), the band it sits in (r.darkB) and every address
    holding anything at all (r.carrying.length). No address-by-address
    detail here, that is the real Body tab's job; this is one glance at
-   where the charge is sitting now. */
+   where the charge is sitting now.
+
+   TWO SEATS NEVER RENDERED, found 13 November in team review: BANDS
+   (engine/data/canon.js) is seven seats, Root through Crown, but this
+   svg only ever placed a dot for five of them. A reading whose heaviest
+   seat was 3rd Eye or Crown was named in the caption and shown nowhere
+   on the figure. Both are added here, at the forehead and the top of
+   the head.
+
+   THE SHARPEST FACT, ruled the same round: the caption used to print
+   the aggregate carrying count and the heaviest SEAT's own mean. One
+   line has no room for both an aggregate and an address, and the
+   owner's own instruction was the single most prominent fact, so this
+   now names the single heaviest ADDRESS (r.heaviest, one level more
+   specific than the seat mean) and its own charge, the same
+   _Unnamed fallback ui/cone.js already uses rather than a second
+   naming rule. */
 function stMiniBody(r){
  var un=r.unread, hot=un?null:r.darkB;
  var dot=function(seat,x,y){
@@ -142,49 +204,72 @@ function stMiniBody(r){
   return '<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="'+col+'" stroke="none" opacity="'+(on?1:.5)+'"/>';};
  var svg='<svg viewBox="0 0 70 120" aria-hidden="true" fill="none" stroke="var(--edge-2)" stroke-width="2">'
   +'<circle cx="35" cy="14" r="10"/><path d="M35 24v46M35 34h-18M35 34h18M35 70l-14 36M35 70l14 36"/>'
+  +dot('Crown',35,4)+dot('3rd Eye',35,10)
   +dot('Throat',35,34)+dot('Heart',35,48)+dot('Solar',35,58)+dot('Sacral',35,66)+dot('Root',35,72)+'</svg>';
- var cap=un?'–':(r.carrying.length+' carrying'+(r.heaviest?', '+esc(hot)+' '+r.darkV.toFixed(1):''));
+ var cap='–';
+ if(!un&&r.heaviest){
+  var nm=/_Unnamed$/.test(r.heaviest.k)?'An address with no name yet':r.heaviest.k;
+  cap=esc(nm)+', '+r.heaviest.sq.toFixed(1);
+ } else if(!un){ cap='Nothing carrying'; }
  return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
 /* FIELD, the same headline the real tab reads, r.CQ, as a filled ring, the
    fill a percent equal to the number beside it (the same rule the Summary
-   gate already holds the app to). Coloured through --uni-amb-core, the
-   same live custom property ambPaint (ui/uni.js) already writes onto
-   the document from her own palette; getPalette itself is private to
-   her module's own closure and unreachable from here, so this reads
-   the one value she already publishes rather than a second colour
-   invented in this file. */
+   gate already holds the app to).
+
+   THE RING'S COLOUR MOVES WITH CQ NOW, ruled 13 November: it used to paint
+   every reading in the same flat --uni-amb-core regardless of score, a
+   92 and a 14 looked identical. cqRamp (ui/wheel.js) is the exact ramp
+   the real Field's own centre disc already resolves its colour through
+   (alarm red at the floor, toward white at the crown), reused here at
+   ring scale rather than a second colour law invented for this card.
+   r.tier (compute.js, already tierOf(CQ).nm, null until the intake is
+   complete) names the band under the percent; never computed fresh off
+   cq here, and never shown on an unread or incomplete reading, so a
+   blank profile is never silently handed a tier name that was never
+   earned. */
 function stMiniField(r){
  var un=r.unread, cq=un?0:clamp(r.CQ,0,100);
- var col='rgb(var(--uni-amb-core))';
+ var rgb=un?null:cqRamp(cq);
+ var col=rgb?('rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')'):'var(--edge)';
+ var tierNm=(!un&&r.tier)?esc(r.tier):'';
  var C=2*Math.PI*46, frac=un?0:cq/100;
  var svg='<svg viewBox="0 0 120 120" aria-hidden="true">'
   +'<circle cx="60" cy="60" r="46" fill="none" stroke="var(--edge)" stroke-width="9"/>'
   +'<circle cx="60" cy="60" r="46" fill="none" stroke="'+col+'" stroke-width="9" stroke-linecap="round" '
   +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 60 60)"/>'
-  +'<text x="60" y="66" text-anchor="middle" font-size="18" fill="var(--ink)">'+(un?'–':Math.round(cq)+'%')+'</text></svg>';
+  +'<text x="60" y="58" text-anchor="middle" font-size="18" fill="var(--ink)">'+(un?'–':Math.round(cq)+'%')+'</text>'
+  +(tierNm?'<text x="60" y="76" text-anchor="middle" font-size="10" fill="'+col+'">'+tierNm+'</text>':'')
+  +'</svg>';
  return '<div class="st-mini-vis">'+svg+'</div>';}
-/* AVATAR, the character's own current mask (r.mask, the same field
-   ui/character.js reads) in its own colour (CHC.maskCols,
-   ui/character.js), or Uni's own published coherence colour
-   (--uni-amb-core, see stMiniField above) when nothing is worn right
-   now; never a guess at what the real torus is doing. */
+/* AVATAR, THE REAL ARCHETYPE NOW, ruled 13 November after team review
+   found the widget was reading the wrong layer. r.mask (sups[0]||hys[0]||
+   cxs[0]||sabs[0], compute.js) is a saboteur/complex/hyper-complex/super-
+   complex from the adversarial chain, the exact same family the Masks
+   widget already covers below; it has no link to the twelve ARCH
+   archetypes a card titled "Avatar" is actually about, and the previous
+   build of this function caught that the hard way: r.mask is an object,
+   not a name, and the first real profile to trigger one printed the
+   caption "Wearing [object Object]".
+
+   r.pi (compute.js, the strongest index into r.aff=affinity()) is the
+   real number the Avatar/Character page's own torus already treats as
+   the person's primary archetype (avatarui.js's own avArchEmbodied).
+   ARCH[r.pi] (engine/data/canon.js) gives its name, its seat (for colour,
+   via the SEATCOL fix above) and its own icon path, drawn ring only, the
+   house rule this product already keeps for every archetype glyph: never
+   filled. No percent anywhere on this card: the owner's own ruling, round
+   JP, already took archetype share off the page entirely ("you either
+   embody it or you don't"), so a progress arc here would reverse a
+   standing decision, not just invent a number. */
 function stMiniAvatar(r){
- /* r.mask IS AN OBJECT, NOT A NAME, caught the first time this ran in a
-    real browser against a profile that actually triggered one: it is
-    whichever of sups/hys/cxs/sabs sits first (engine/compute.js), each
-    its own shape with its own .nm, never a MASKS_READ name maskOf could
-    look up. maskOf(r.mask) always came back null; the caption printed
-    "Wearing [object Object]". There is no real link from that ladder to
-    MASKS_READ's five, so this reads only r.mask.nm for the words and
-    falls back to her own coherence colour exactly as before. */
- var un=r.unread, nm=r.mask&&r.mask.nm;
- var col='rgb(var(--uni-amb-core))';
- var cap=un?'–':(nm?'Wearing '+nm:'No mask read yet');
- var svg='<svg viewBox="0 0 100 120" aria-hidden="true" fill="none" stroke="'+col+'" stroke-width="2">'
-  +'<circle cx="50" cy="38" r="26"/><path d="M14 112c0-24 16-40 36-40s36 16 36 40"/>'
-  +'<circle cx="42" cy="36" r="2.6" fill="var(--ink)" stroke="none"/>'
-  +'<circle cx="58" cy="36" r="2.6" fill="var(--ink)" stroke="none"/></svg>';
- return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+esc(cap)+'</div>';}
+ var un=r.unread, arch=(!un&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
+ var col=arch?('var('+(SEATCOL[arch.b]||'--dim')+')'):'var(--dim)';
+ var cap=un?'–':(arch?esc(arch.nm):'–');
+ var svg='<svg viewBox="0 0 100 120" aria-hidden="true">'
+  +'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>'
+  +(arch?'<g transform="translate(50,55) scale(1.6) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>':'')
+  +'</svg>';
+ return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
 /* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
    still have this blank space to its right. What I want you to do is
    move the avatar to the right and then add the masks. Add four
@@ -193,7 +278,21 @@ function stMiniAvatar(r){
    r.carrying already gives those seats (the same figure darkB/darkV
    read it from in compute.js, not a second arithmetic invented here)
    and shows the top four, strongest first, rather than a fixed four
-   that may say nothing about this person's own reading. */
+   that may say nothing about this person's own reading.
+
+   THE TOP MASK NOW SAYS ITS OWN NAME AND WEIGHT, ruled 13 November,
+   team review: every tile here used to carry its name and nothing
+   else, in a title attribute nobody sees without hovering, so a glance
+   at this card answered nothing. fmtPct('atom', score) is the exact
+   formatter ui/stdash.js's own rail section already calls on this same
+   score (checked directly: the rail's own pill row is icon, colour and
+   brightness only, name and percent hover-only there too, so this is
+   not copying a visible label off the rail, it is the first surface in
+   the product built to print one standing); reused here rather than a
+   second formatter. Only the single top-scored mask gets the full
+   labelled row; up to three runners-up stay exactly as before, small
+   unlabelled tiles, title on hover, clearly secondary to the one named
+   fact this card now actually states. */
 function stMiniMasks(r){
  var un=r.unread;
  if(un||typeof MASKS_READ==='undefined')
@@ -205,11 +304,17 @@ function stMiniMasks(r){
    return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
   return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;}).slice(0,4);
- var tiles=scored.map(function(s){
-  var col=CHC.maskCols(s.m)[0];
-  return '<div class="st-mask4-t" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('');
- return '<div class="st-mask4" aria-label="Masks">'+tiles+'</div>';}
+ if(!scored.length) return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
+ var top=scored[0], runners=scored.slice(1);
+ var topCol=CHC.maskCols(top.m)[0];
+ var topRow='<div class="st-mask-top" style="--c:'+topCol+'">'
+  +'<div class="st-mask4-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+top.m.ic+'"/></svg></div>'
+  +'<span class="st-mask-nm">'+esc(top.m.nm)+'</span><span class="st-mask-pc">'+fmtPct('atom',top.v)+'</span></div>';
+ var runnerRow=runners.length?'<div class="st-mask-runners">'+runners.map(function(s){
+   var col=CHC.maskCols(s.m)[0];
+   return '<div class="st-mask4-t sm" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('')+'</div>':'';
+ return '<div class="st-mask4" aria-label="Masks">'+topRow+runnerRow+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -592,12 +697,9 @@ function stRender(){
     +(p&&p.imprints.length?'<b class="st-sendn">'+p.imprints.length+'</b>':'')
     +'</button>')
   +'</div>')+'</div>'
-  /* THE SECOND ROW UNDER UNI, 10 November: Compass and Boundary, his own
-     pairing. Hidden on the mini view by CSS (#stflow.st-simple), the same
-     way .st-colb/.st-colz are below, not by leaving it out of the
-     string: one render path, one place a reader of this file looks. */
-  +'<div class="st-2row">'+stMiniShell('stcompass','Compass',stMiniCompass(r))
-   +stMiniShell('stboundary','Boundary',stMiniBoundary())+'</div>'
+  /* COMPASS AND BOUNDARY MOVED OUT, 13 November: see .st-mini6 below,
+     where all six mini pictures now sit in one real bottom row instead
+     of three narrow pairs squeezed into three unequal columns. */
   +'</div>'
   /* ---- the read column: the instrument, the list, then Commit ----
      SWAPPED BACK, round of 29 October, second pass. The round before this
@@ -643,16 +745,28 @@ function stRender(){
      not here. */
   +'<div class="st-colb">'
   +'<div class="st-pan st-ls" id="stls" aria-label="Imprints, listed">'
-   /* BANK AND VAULT ON THE LEFT, COMMIT ON THE RIGHT, 9 November, his
-      words: "move the bank and the vault icons to the left-hand side of
-      that menu bar, and then move the commit button to the upper
-      right-hand corner of that menu bar, and change the word commit to
-      bank." One row now holds all three: the two icon buttons keep their
-      left-hand place (.st-lsico's own default flex order), and #stapply
-      joins them with margin-left:auto (shell/head.html) to land at the
-      row's far right, the "upper right-hand corner" of this card's own
-      top. It keeps the id stRender's wire-up and stPaintAll's disabled
-      state already find it by; only its row and its word moved. */
+   /* BANK AND VAULT ON THE LEFT, round of 9 November, his words: "move
+      the bank and the vault icons to the left-hand side of that menu
+      bar." Still true, this row carries only the two icon buttons now.
+      MOVED DOWN, 13 November, a correction of that same round's second
+      half ("move the commit button to the upper right-hand corner"):
+      his words this time, on a real screenshot, "the bank button moved
+      to the lower right of that column just opposite the release
+      button." Release's own button sits at the bottom of its column
+      (ui/release.js), so #stapply moves to the bottom of this one too,
+      after the list rather than above it, to read as the same kind of
+      control in the same kind of place. Still the one id this column's
+      wiring and stPaintAll's disabled state find it by; only its row
+      moved. */
+   /* .ST-LS-SCROLL IS THE NEW SCROLL BOUNDARY, 13 November, so the bank
+      row below can sit pinned at the panel's own bottom instead of
+      being the last thing a long list scrolls past. .st-ls itself used
+      to carry overflow-y:auto directly (shell/head.html), which meant
+      everything in this panel, icons included, scrolled as one block;
+      that rule moves onto this wrapper, and .st-ls goes back to being a
+      plain flex column holding this scrollable half and the fixed bank
+      row under it. */
+   +'<div class="st-ls-scroll">'
    +'<div class="st-lsico">'
    /* THE BANK AND THE VAULT, round IG, his words: "We need to be able to see
       the bank as an icon, which goes to the main imprints page. And the
@@ -672,14 +786,6 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v14H4zM7 18.5v2M17 18.5v2"/>'
     +'<circle cx="12" cy="11.5" r="3.6"/><path d="M12 7.9v1.2M12 13.9v1.2"/></svg>'
     +'<span class="st-lb">Archive</span><b id="stvn">\u2013</b></button>'
-   /* "COMMIT" READS "BANK" HERE, his word for the action, not only the
-      place: putting an imprint away is banking it. #stapply stays the
-      one id this column's wiring and stPaintAll's disabled state find;
-      the !STV.dash and !STV.chat button in .st-bar above (a different
-      element, same id, mutually exclusive with this one) keeps the word
-      "Commit", since this rename is for this card specifically. */
-   +(STV.chat&&STV.dash?'<button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
-    +'Bank'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>':'')
    +'</div>'
    /* SORT MOVED INTO THE BANK, round of 29 October, his words: "sort,
       weight, charge, etc., belongs in the bank menu." It sorts the list
@@ -688,18 +794,30 @@ function stRender(){
       rather than the chart's. Same id, same wiring, stSortPaint finds it
       by id wherever it stands. */
    +'<div class="st-sort" id="stsort" role="group" aria-label="Sort imprints by"></div>'
-   +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div></div>'
-  /* BODY AND FIELD, under the bank, his pairing. Same stMiniShell every
-     other mini picture here uses, same compute() reading. */
-  +'<div class="st-2row">'+stMiniShell('stbody','Body',stMiniBody(r))
-   +stMiniShell('stfield','Field',stMiniField(r))+'</div>'
+   +'<div class="st-lshd" id="stlshd"></div><div class="st-lsb" id="stimps"></div>'
+   +'</div>'
+   /* "COMMIT" READS "BANK" HERE, his word for the action, not only the
+      place: putting an imprint away is banking it. #stapply stays the
+      one id this column's wiring and stPaintAll's disabled state find;
+      the !STV.dash and !STV.chat button in .st-bar above (a different
+      element, same id, mutually exclusive with this one) keeps the word
+      "Commit", since this rename is for this card specifically. Bottom
+      right of this panel, pinned under .st-ls-scroll rather than
+      inside it, 13 November, see the note on .st-lsico above. */
+   +(STV.chat&&STV.dash?'<div class="st-lsbankrow"><button type="button" class="btn pri st-lsbank" id="stapply"'+(p?'':' disabled')+'>'
+    +'Bank'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button></div>':'')
+   +'</div>'
+  /* BODY AND FIELD MOVED OUT, 13 November, same reason and same place as
+     Compass and Boundary above: .st-mini6, below. */
   +'</div>'
   +'<div class="st-colz">'
+  /* RULED 13 November, his words on a screenshot: "this should all be
+     release." Avatar and Masks (the .st-2row-1 pair that used to live
+     here) moved to .st-mini6 with their other four; .st-colz carries
+     nothing else now, so the space they leave is Release's to grow
+     into, the way #strel's own flex rules already size it against
+     whatever its column holds. */
   +'<div class="st-rl" id="strel" aria-label="Release"></div>'
-  /* AVATAR, under Release, alone: his fifth picture, one per column
-     this round, three columns, five pictures, Avatar the only one
-     without a partner beside it. */
-  +'<div class="st-2row st-2row-1">'+stMiniMasks(r)+stMiniShell('stavatar','Avatar',stMiniAvatar(r))+'</div>'
   /* SOURCE AI'S OUTPUT AREA, 12 November, his words after "at least 10
      times over the last month or two": select a parent (the same
      S.pin the stack rail already sets) and see everything under it,
@@ -713,6 +831,36 @@ function stRender(){
      floated loose, overlapping the left rail instead of stacking
      under anything, caught by a screenshot before this ever shipped. */
   +(typeof summaryPanelHtml==='function'?summaryPanelHtml():'')
+  +'</div>'
+  /* THE SIX MINI PICTURES, ONE REAL ROW, ruled 13 November on a real
+     screenshot: "there's 6 widget locations, those are sacrosanct."
+     Compass, Boundary, Body and Field used to sit as three separate
+     pairs at the bottom of three columns of very unequal width (colw
+     and colb about 1.64 fr each, colz about 1 fr), so Avatar and Masks,
+     stuck in colz alongside Release, rendered visibly smaller than the
+     other four and read as cramped, close to the "almost blank" Masks
+     complaint logged against this same widget. A FOURTH CHILD OF
+     .ST-FLOW ITSELF, not a sibling placed after it closes: the comment
+     on summaryPanelHtml just above already named that exact mistake
+     once, a floating overlap caught by a screenshot before it shipped,
+     and this avoids it by staying inside the same flex container
+     Compass/Boundary/Body/Field's own column used to end in, with
+     flex-wrap added to .st-flow (shell/head.html) so a fourth item
+     wraps onto its own full-width row below the three columns rather
+     than squeezing beside them. All six are the same stMiniShell every
+     other mini picture already uses, so they are the same size as each
+     other here for the first time. Masks alone had no shell before
+     (stMiniMasks returned a bare .st-mask4 row, no label), so it gets
+     one now, titled like its five neighbours; its own look (currently
+     four small coloured circles with no names or weights printed) is
+     untouched and is a separate task, not folded into a layout move. */
+  +'<div class="st-mini6" id="stmini6">'
+   +stMiniShell('stcompass','Compass',stMiniCompass(r))
+   +stMiniShell('stboundary','Boundary',stMiniBoundary())
+   +stMiniShell('stbody','Body',stMiniBody(r))
+   +stMiniShell('stfield','Field',stMiniField(r))
+   +stMiniShell('stavatar','Avatar',stMiniAvatar(r))
+   +stMiniShell('stmasks','Masks','<div class="st-mini-vis">'+stMiniMasks(r)+'</div>')
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -807,11 +955,35 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
- /* round TF: mount her fresh into the container this render just built, a
-    worked example gets none (show only, nothing she would react to is the
-    person's own), TAB.STORY's own leave in panels.js parks her. */
- if(!show){var un=document.getElementById('stuni');
-  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
+ stUniSync();}
+/* MOUNT OR PARK HER, THE ONE PLACE THIS PAGE DECIDES IT, round TF plus 13
+   November. A worked example gets none (show only, nothing she would react
+   to is the person's own), TAB.STORY's own leave in panels.js parks her.
+   AND NOT ON NOTHING EITHER, 13 November, his words: "if a person is
+   loaded up, uni should be there. If there's nothing, no persona loaded
+   up, uni should not be there." Reproduced before this fix: the person's
+   own blank profile, nothing typed, nothing in the record, still mounted
+   her full size, lit and animating, over an instrument reading nothing.
+   "Loaded up" is read the same way the rail reads it (STV's own gate on
+   ST_TEXT, p in stdash.js): words in the box right now, the one real
+   signal this page already has for "there is something she would react
+   to," the same thing uniApply hands her below.
+   CALLED FROM stPaintAll TOO, not only stRender, so she appears the
+   moment the first word lands rather than waiting for a tab leave and
+   return: every other tile on this page already reacts to a keystroke
+   through stPaintAll (the comment on stDashLeft's own call there names
+   the same thing), and a character who only catches up on a later full
+   repaint would read as a second, slower instrument disagreeing with the
+   first. #stuni itself is never rewritten by stPaintAll, only by stRender
+   (see the placement note above its markup), so toggling what is mounted
+   inside it here is safe between one full repaint and the next. */
+function stUniSync(){
+ if(typeof document==='undefined')return;
+ var un=document.getElementById('stuni'); if(!un)return;
+ var show=typeof showOnly==='function'&&showOnly();
+ var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim());
+ if(!show&&loaded){
+  if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
       same off switch the boot uses, 12 November. */
    try{window.Uni.setFollow(false);}catch(e){}}}
@@ -1395,7 +1567,8 @@ function stPaintAll(){
  /* the Full view's left rail reads the same ST_PARSED as everything above,
     here, so a key typed or a turn landed by voice moves it with the chart
     (stRefresh reaches this too, not only stRender). ui/stdash.js. */
- if(typeof stDashLeft==='function')stDashLeft();}
+ if(typeof stDashLeft==='function')stDashLeft();
+ stUniSync();}
 /* THE FIELD MOVED UNDER THE PAGE. render() calls this on the Story, because
    a release that finishes, an undo, or a profile change all change what is
    held, what the release column offers and what the vault holds, and none of
@@ -2035,6 +2208,26 @@ function srcPaint(){
     the thread waits for the box to actually close, which stType does by
     calling this same function once, by name, before it renders. */
  if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!STV.typed)srcChatSync(); fresh=srcChatNote(cur);
+  /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
+     November, his words: "it needs to do speech to speech, text to
+     speech. It needs to do them all." The 10 November ruling only ever
+     asked for the two-way CHAT MARKUP gone (srcThread below is
+     untouched, one bubble a turn, same as always); the per-turn SPEAK
+     call that used to sit here was a casualty the 11 November pass
+     caught alongside it, never named by the ruling itself.
+     fresh is already exactly the signal this needs, by its own comment
+     above srcChatNote: true only for a row Source AI has not said yet,
+     false for the opener (Talk greets on its own, the stSrcSpeak call at
+     the mic-start press) and false for a mid-sentence repaint of a row
+     still being typed, since its key only changes again once the box
+     closes, the same guard srcChatSync just above already needs for the
+     same reason. ST_WANT_LISTEN is carried over from the crisis line's
+     own call just below: a person who has never pressed Talk still
+     hears nothing. Covers both halves he asked for: a spoken turn lands
+     through ST_REC.onresult, one commit per utterance, so fresh flips
+     once per thing said; a typed turn lands the moment the keyboard box
+     closes and STV.typed goes false again, never on a key before that. */
+  if(fresh&&ST_WANT_LISTEN&&!STV.typed)stSrcSpeak(cur.q);
   o=srcThread(turn,heard,cur,acts,why);}
  /* SAFE, TALKING: THE PERSON'S OWN WORDS STAY ON THE PAGE, 3 November. The
     conversation became the Journal's only state on 28 October, and the
@@ -2049,13 +2242,13 @@ function srcPaint(){
  /* AND THE LINE IS SAID OUT LOUD, owner's ruling of 3 November, his words:
     "Source AI can speak the crisis safety line out loud. We want to take off
     the no sound rules. Since we're now using voice speech to speech." Scoped
-    to this line alone, and since 11 November the ONLY reply this page ever
-    speaks (the per-turn speak call below it used to run on every reply too;
-    see the next comment for why that stopped). Only while Talk is on, and
-    once, when the line first takes the reply's place, never on a repaint of
-    it and never again when Commit keeps it standing. Its own words and
-    nothing else, the words on the screen. Still nothing is added to
-    SRC_CHAT. */
+    to this line alone from 11 to 13 November, while it was the only reply
+    this page spoke; the per-turn call above has spoken every other reply
+    again since 13 November, see its own comment for why. Only while Talk is
+    on, and once, when the line first takes the reply's place, never on a
+    repaint of it and never again when Commit keeps it standing. Its own
+    words and nothing else, the words on the screen. Still nothing is added
+    to SRC_CHAT. */
  var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
  SRC_SAFE_UP=turn.move==='safe';
  if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
@@ -2081,7 +2274,17 @@ function srcPaint(){
     safe row is the one thing kept rather than replaced: it is the crisis
     door, already built above, and the person's own words stand ahead of
     it the way srcThreadSafe used to keep them ahead of it, never swapped
-    out by it. */
+    out by it.
+
+    REVERSED, 13 November, the speaking half only. His words: "it needs to
+    do speech to speech, text to speech. It needs to do them all." The
+    per-turn SPEAK call is back, just above where this comment block's own
+    first paragraph says it used to sit, built on the same fresh signal
+    this file already carried for exactly that purpose. The markup half of
+    this ruling is untouched: still one bubble a turn, still nothing reads
+    #stsrc's own markup back, still no two-way CHAT WINDOW anywhere. Only
+    the speaking half of "no two-way" is gone; the screen stayed one way,
+    the speaker is two way again. */
  /* ONE BOX, NOT TWO, 10 November. His words, on a real screenshot: "Under
     Uni, you've got two text fields... delete the text field directly
     under Uni. You're going to move its properties where it's detecting

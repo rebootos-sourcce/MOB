@@ -55,20 +55,25 @@ function smpImpressionsHtml(o){
  if(!rows.length)return '<p class="smp-note">No impressions recorded here yet.</p>';
  return '<div class="smp-imps">'+rows.map(function(im){
   return '<div class="smp-imp">'+esc(im.nm||im.b||'')+'</div>';}).join('')+'</div>';}
-/* THE EMPTY STATE, 12 November, caught by his own words: "I don't see
-   any of the widgets." With nothing pinned this panel printed nothing
-   at all, so the Dashboard looked unchanged even after it shipped. A
-   hidden surface is one thing; a surface that is simply blank, with no
-   sign it is there, is a different defect this project has a name for
-   (never hide a control with no visible sign of it). One line, same
-   dark panel, same fixed spot, so the space never looks like nothing
-   was built there. */
+/* THE EMPTY STATE IS GONE, 13 November, reversing 12 November's own fix
+   on his newest words: "the release should extend all the way down to
+   the widgets. You have a panel in between that does nothing. Get rid
+   of it." The 12 November box existed so the space never looked like
+   nothing was built there; now that this panel sits beside the six
+   widgets below it rather than alone, an empty box in between is the
+   thing he is naming, not a hidden surface with no sign of itself. With
+   nothing pinned this panel now prints nothing at all, and #strel's own
+   flex:1 1 auto (shell/head.html) grows Release to fill the column, so
+   Release reaches the widget row below rather than stopping 320 pixels
+   short of it. summaryPanelEmptyHtml stays defined, in case a later
+   round wants its own empty-state language back for a different reason;
+   only this call site stopped reaching for it. */
 function summaryPanelEmptyHtml(){
  return '<div class="smp smp-empty" id="smppanel" aria-label="Summary, nothing selected">'
   +'<p class="smp-note smp-emptynote">Pick a complex or saboteur on the left to see everything under it, down to its addresses, with a release ready at every rung.</p>'
   +'</div>';}
 function summaryPanelHtml(){
- if(!S.pin)return summaryPanelEmptyHtml();
+ if(!S.pin)return '';
  var o=S.pin, ids=leaves(o).map(function(n){return n.i;});
  return '<div class="smp" id="smppanel" aria-label="Summary, '+esc(o.nm)+'">'
   +'<div class="smp-hd">'+crPat(o,'sm')+'<span class="smp-hdname">'+esc(o.nm)+'</span>'

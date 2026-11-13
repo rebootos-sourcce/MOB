@@ -174,19 +174,20 @@ async function typeInGate(browser,FILE,ok,booted){
    try{ await p.waitForFunction(()=>ST_HUSH,null,{timeout:5000});
     await p.waitForFunction(()=>!ST_HUSH&&ST_REC_ON&&ST_LISTEN,null,{timeout:5000}); }
    catch(e){ ok(false,at+'the greeting plays and the recording runs again after it, '+String(e.message).split('\n')[0]); }
-   /* NO TWO-WAY CHAT, 11 November: an ordinary turn no longer gets a
-      spoken reply (the per-turn stSrcSpeak call is gone, see DECISIONS.md,
-      "no two-way chat, anywhere, including the voice"), so nothing holds
-      the recording for it any more. This used to wait for stHush to fire
-      and then clear, which a correct build now never does for a plain
-      turn; polled over a window rather than a fixed tick, so a hush that
-      fires late and clears fast still gets caught. */
+   /* EVERY REPLY SPOKEN AGAIN, 13 November, reversing 11 November: his
+      words, "it needs to do speech to speech, text to speech. It needs
+      to do them all." An ordinary turn now holds the recording the same
+      way the greeting above does, for the same reason, while Source AI
+      speaks its reply (storyui.js, srcPaint, the fresh-gated stSrcSpeak
+      call). Waited out the same way: hush starts, then clears and
+      listening resumes, rather than polled over a fixed window for an
+      absence. */
    await p.evaluate(a=>{ const r=window.SpeechRecognition.made; r[r.length-1].say(a,true); },SAID);
-   const held=await p.evaluate(()=>new Promise(res=>{
-    var everHush=false,t0=Date.now();
-    var iv=setInterval(function(){ if(ST_HUSH)everHush=true;
-     if(Date.now()-t0>500){ clearInterval(iv); res({everHush:everHush,recOn:ST_REC_ON,listen:ST_LISTEN}); } },30); }));
-   ok(!held.everHush&&held.recOn&&held.listen,at+'an ordinary turn never holds the recording, there is no voice reply to wait on, '+JSON.stringify(held));
+   try{ await p.waitForFunction(()=>ST_HUSH,null,{timeout:5000});
+    await p.waitForFunction(()=>!ST_HUSH&&ST_REC_ON&&ST_LISTEN,null,{timeout:5000}); }
+   catch(e){ ok(false,at+'an ordinary turn\'s reply plays and the recording runs again after it, '+String(e.message).split('\n')[0]); }
+   const held=await p.evaluate(()=>({recOn:ST_REC_ON,listen:ST_LISTEN}));
+   ok(held.recOn&&held.listen,at+'and the recording is running again once the reply has played, '+JSON.stringify(held));
    await p.evaluate(b=>{ const r=window.SpeechRecognition.made; r[r.length-1].say(b,false); },SAYING);
    await p.waitForTimeout(200);
    const s1=await read(p);

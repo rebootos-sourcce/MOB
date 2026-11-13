@@ -154,14 +154,20 @@ function stDashLeft(){
  var rec=stSeatRecur();
  var o='<section class="st-en" id="st-energy" aria-labelledby="st-energy-h"'+'>'
   +'<h2 class="rblk" id="st-energy-h">Energy</h2>';
- if(!p){
-  o+='<p class="st-none" id="st-energy-none">Nothing read yet, so no seat holds anything from this story.</p>';}
- else{
-  o+=stPillRow('st-energy-ls',BANDS.map(function(b){
-   var raw=p.bands[B2K[b]]||0, v=Math.min(10,raw/3), f=fmtPct('atom',v), rn=rec[B2K[b]]||0;
-   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,str:stBright(v/10,rn),
-     title:b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')
-      +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));}
+ /* UNLIT, NOT TEXT, WITH NO STORY, 13 November, his words: "when nothing
+    is loaded, I don't want to see this much text. I just want to see the
+    icons and the panels unlit." This still keeps the rule above it drew
+    the line to protect, never a reading the instrument did not take:
+    with no story the tile's own brightness dial (--b, 0 to 1, "mostly
+    dark... lights up as you talk," the tile row's own header comment)
+    sits at its already-defined rest position, 0, which is the control's
+    resting look and not a measured zero. The icon and the seat's colour
+    still show; only a number or a share never does. */
+ o+=stPillRow('st-energy-ls',BANDS.map(function(b){
+   var raw=p?(p.bands[B2K[b]]||0):0, v=p?Math.min(10,raw/3):0, f=p?fmtPct('atom',v):PCT_DASH, rn=p?(rec[B2K[b]]||0):0;
+   return {v:v,b:b,c:seatCol(b),k:'seat',ic:SEATGLYPH[b]||SEATGLYPH._,str:p?stBright(v/10,rn):0,
+     title:p?(b+(f!==PCT_DASH?', '+f+' from this story':', nothing from this story')
+      +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
  o+=stDashPatterns(p);
@@ -207,19 +213,22 @@ function stDashChildEmotions(p){
     own nine, only the word a person reads changes. */
  var o='<section class="st-en st-ce" id="st-childem" aria-labelledby="st-childem-h"'+'>'
   +'<h2 class="rblk" id="st-childem-h">Emotions</h2>';
- if(!p||typeof CHG2FET==='undefined'){
+ if(typeof CHG2FET==='undefined'){
   o+='<p class="st-none" id="st-childem-none">Nothing read yet, so no feeling holds anything from this story.</p>';
   o+='</section>';
   return o;}
  var byChild={}, rec=stSeatRecur();
  CHILD.forEach(function(c){byChild[c.nm]=0;});
- Object.keys(p.charges||{}).forEach(function(k){
+ if(p)Object.keys(p.charges||{}).forEach(function(k){
   var f=CHG2FET[k]; if(f&&byChild[f]!==undefined)byChild[f]+=p.charges[k];});
+ /* UNLIT, NOT TEXT, WITH NO STORY. Same rule as Energy above: the pill
+    always draws, --b sits at its own rest position with no story, and
+    nothing is printed as a count or a share. */
  o+=stPillRow('st-childem-ls',CHILD.map(function(c){
-  var n=byChild[c.nm]||0, rn=rec[B2K[c.seat]]||0;
-  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:stBright(n/4,rn),
-    title:c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
-     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
+  var n=p?(byChild[c.nm]||0):0, rn=p?(rec[B2K[c.seat]]||0):0;
+  return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:p?stBright(n/4,rn):0,
+    title:p?(c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
+     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -247,12 +256,8 @@ function stDashChildEmotions(p){
 function stDashPatterns(p){
  var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
- if(!p){
-  o+='<p class="st-none" id="st-patterns-none">Nothing read yet, so no pattern holds anything from this story.</p>';
-  o+='</section>';
-  return o;}
  var n={parental:0,ancestral:0}, rec=stSeatRecur();
- (p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
+ if(p)(p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
  /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
     lines, nothing filled: parental as one figure standing over a smaller
     one, ancestral as a line handed down through three generations. */
@@ -264,11 +269,12 @@ function stDashPatterns(p){
     rather than leave recurrence out where his answer ("all 7 tiles")
     asked for it everywhere. */
  var CAT=[['parental','Parental',seatCol('Heart'),'Heart'],['ancestral','Ancestral',seatCol('Root'),'Root']];
+ /* UNLIT, NOT TEXT, WITH NO STORY. Same rule as Energy above. */
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
-   var v=n[c[0]], rn=rec[B2K[c[3]]]||0;
-   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:stBright(Math.min(1,v/4),rn),
-     title:c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
+   var v=p?n[c[0]]:0, rn=p?(rec[B2K[c[3]]]||0):0;
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:p?stBright(Math.min(1,v/4),rn):0,
+     title:p?(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c[1]+', nothing read yet')};}));
  o+='</section>';
  return o;}
 /* THE PATTERNS DRILL. Every word this story read as handed down, in the
@@ -325,10 +331,6 @@ function stDashIntegrity(p){
  var o='<section class="st-en st-law" id="st-integrity" aria-labelledby="st-integrity-h"'
   +'>'
   +'<h2 class="rblk" id="st-integrity-h">Integrity</h2>';
- if(!p){
-  o+='<p class="st-none" id="st-integrity-none">Nothing read yet, so no law holds anything from this story.</p>';
-  o+='</section>';
-  return o;}
  /* NOTHING OFF AN ENTRY srcSafe STOPS, the same rule every other reader of
     ST_TEXT already follows (stFound, ui/storyui.js:1059; verpApply,
     engine/verp.js:387; srcTurn, engine/sourceai.js:219): a tile lighting
@@ -336,19 +338,20 @@ function stDashIntegrity(p){
     already rules out in a different channel. Missing here until 11
     November, task #132's item 8, because this reader called sniffLaws
     straight on ST_TEXT with no stop in front of it at all. */
- var hits=(typeof sniffLaws==='function'&&!(typeof srcSafe==='function'&&srcSafe(ST_TEXT)))?sniffLaws(ST_TEXT):[], by={}, rec=stSeatRecur();
+ var hits=(p&&typeof sniffLaws==='function'&&!(typeof srcSafe==='function'&&srcSafe(ST_TEXT)))?sniffLaws(ST_TEXT):[], by={}, rec=stSeatRecur();
  hits.forEach(function(x){ if(!by[x.law]||x.score>by[x.law].score)by[x.law]=x; });
  /* ONE TILE LANGUAGE, NOT TWO, 9 November. This drew cr()'s own filling
     ring at first; once his real spec for the row landed (square,
     beveled, dark, continuous), keeping a second, round, ring-filled
     shape for only this section would have been exactly the mismatch
     his own rejection of the four mockups was about. SI's score is
-    already 0 to 10, the same scale stBright already takes. */
+    already 0 to 10, the same scale stBright already takes.
+    UNLIT, NOT TEXT, WITH NO STORY, 13 November: same rule as Energy. */
  o+=stPillRow('st-integrity-ls',SI.map(function(l){
-   var x=by[l.nm], v=x?x.score:0, rn=rec[B2K[l.b]]||0;
-   return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:stBright(v/10,rn),
-     title:l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')};}));
+   var x=by[l.nm], v=x?x.score:0, rn=p?(rec[B2K[l.b]]||0):0;
+   return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:p?stBright(v/10,rn):0,
+     title:p?(l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -378,23 +381,23 @@ function stDashVerp(p){
      identity, never renamed for a label alone); only the word a person
      reads shortens. */
   +'<h2 class="rblk" id="st-verp-h">Action</h2>';
- if(!p){
-  o+='<p class="st-none" id="st-verp-none">Nothing read yet, so no gate holds anything from this story.</p>';
-  o+='</section>';
-  return o;}
- var s=verpScan(ST_TEXT);
+ var s=p?verpScan(ST_TEXT):{hits:{}};
  /* VERP HAS NO SEAT TO READ srcPrior OFF EITHER, but it has its own real
     running total: VERPMIX (engine/verp.js) already adds every commit's
     verpApply straight into one counter per gate, for as long as the
     record exists, which is a real measure of how often this gate keeps
-    coming back, not a borrowed one. */
+    coming back, not a borrowed one.
+    UNLIT, NOT TEXT, WITH NO STORY, 13 November: same rule as Energy,
+    including the running total above, which is a record fact and not
+    this draft's, so it is held back from the tile the same as the rest
+    while nothing is typed. */
  var mix=(typeof VERPMIX!=='undefined')?VERPMIX:{};
  o+=stPillRow('st-verp-ls',VERP.map(function(v){
-   var n=s.hits[v.k]||0, rn=mix[v.k]||0;
+   var n=p?(s.hits[v.k]||0):0, rn=p?(mix[v.k]||0):0;
    return {v:n,b:v.k,c:v.side==='higher'?seatCol('Heart'):seatCol('Root'),k:'verp',ic:'<path d="'+GATEGLYPH[v.k]+'"/>',
-     str:stBright(Math.min(1,n/4),rn),
-     title:v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
-      +(rn?', run '+rn+' time'+(rn===1?'':'s')+' on your record':'')};}));
+     str:p?stBright(Math.min(1,n/4),rn):0,
+     title:p?(v.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
+      +(rn?', run '+rn+' time'+(rn===1?'':'s')+' on your record':'')):(v.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 /* THE SIX AXES DRILL. No existing anaCard kind answers one gate by name
@@ -446,32 +449,32 @@ function stDashPsycheStack(){
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
   +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
- /* ALWAYS THE PILLS, ONLY TEXT ON AN UNREAD RECORD, 9 November, corrected
-    the same night: this used to fall back to a whole sentence the moment
-    every tier was empty, which is the one section on this rail that did
-    not hold the rule its own three siblings above already keep (a seat or
-    a feeling at nothing stays a dim pill in the row, never a sentence).
-    His own complaint named the result exactly: "right now you get the
-    Psyche stack with a bunch of text. I don't want that there." The
-    sentence now means what r.unread already means everywhere else on
-    this page, nothing entered anywhere, and nothing short of that. */
- if(r.unread){
-  o+='<p class="st-none" id="st-psyche-none">Nothing recorded yet, so no pattern holds anything from this record.</p>';}
- else{
-  /* NO SEPARATE RECURRENCE TERM HERE, by design and not an oversight:
-     every other section blends today's words with how often the record
-     has shown the same thing before; this section already reads the
-     whole record (computeSeen(), not the draft), so what the other six
-     add as a second number is already the whole of what this one reads. */
-  /* UNPACK EVERY SYMBOL ON THE TILE TOO, task #80. The drill this tile
-     opens already said what the tier means (task #160); the tile itself
-     named the tier and a count and nothing else, so on hover or a long
-     press "Hyper complexes, 2 running" was a term with no meaning beside
-     it. The meaning follows the count, the same sentence the card prints. */
-  o+=stPillRow('st-psyche-ls',KIND.map(function(k){
-   var n=(k[2]||[]).length, mean=stPsyMean(k[0]);
-   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:'<path d="'+CHAINGLYPH[k[0]]+'"/>',str:Math.min(1,n/4),
-     title:k[1]+(n>0?', '+n+' running':', nothing running')+'.'+(mean?' '+mean:'')};}));}
+ /* ALWAYS THE PILLS, NEVER TEXT, 9 November and again 13 November. This
+    used to fall back to a whole sentence the moment every tier was
+    empty, which is the one section on this rail that did not hold the
+    rule its own siblings keep (a seat or a feeling at nothing stays a
+    dim pill in the row, never a sentence). First fix, 9 November: "right
+    now you get the Psyche stack with a bunch of text. I don't want that
+    there," corrected to a sentence only on a wholly unread record.
+    Second fix, 13 November, his wider words this round: "I just want to
+    see the icons and the panels unlit." An unread record now draws the
+    same four tiles at their own rest brightness, 0, rather than a second
+    sentence; nothing about r.unread earns different treatment than any
+    other tile with nothing to show.
+    NO SEPARATE RECURRENCE TERM HERE, by design and not an oversight:
+    every other section blends today's words with how often the record
+    has shown the same thing before; this section already reads the
+    whole record (computeSeen(), not the draft), so what the other six
+    add as a second number is already the whole of what this one reads.
+    UNPACK EVERY SYMBOL ON THE TILE TOO, task #80. The drill this tile
+    opens already said what the tier means (task #160); the tile itself
+    named the tier and a count and nothing else, so on hover or a long
+    press "Hyper complexes, 2 running" was a term with no meaning beside
+    it. The meaning follows the count, the same sentence the card prints. */
+ o+=stPillRow('st-psyche-ls',KIND.map(function(k){
+   var n=r.unread?0:(k[2]||[]).length, mean=stPsyMean(k[0]);
+   return {v:n,b:k[0],c:TIER[k[0]],k:'psy',ic:'<path d="'+CHAINGLYPH[k[0]]+'"/>',str:r.unread?0:Math.min(1,n/4),
+     title:r.unread?(k[1]+', nothing recorded yet'):(k[1]+(n>0?', '+n+' running':', nothing running')+'.'+(mean?' '+mean:''))};}));
  o+='</section>';
  return o;}
 /* MASKS, ON THE LEFT RAIL ITSELF, 10 November, his words: "add the masks."
@@ -500,20 +503,21 @@ function stDashMasks(){
  var r=computeSeen();
  var o='<section class="st-en st-mks" id="st-masks" aria-labelledby="st-masks-h">'
   +'<h2 class="rblk" id="st-masks-h">Masks</h2>';
- if(r.unread){
-  o+='<p class="st-none" id="st-masks-none">Nothing recorded yet, so no mask reads anything from this record.</p>';}
- else{
-  var bySeat={};
-  r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
-  var scored=MASKS_READ.map(function(m){
-   var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
-    return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
-   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
-   return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
-  o+=stPillRow('st-masks-ls',scored.map(function(s){
-   var col=CHC.maskCols(s.m)[0], pct=fmtPct('atom',s.v);
-   return {v:s.v,b:s.m.nm,c:col,k:'mask',ic:'<path d="'+s.m.ic+'"/>',str:Math.min(1,s.v/10),
-     title:s.m.nm+(pct!==PCT_DASH?', '+pct+' of this record':', nothing from this record')};}));}
+ /* ALWAYS THE PILLS, NEVER TEXT, 13 November: same correction as Psyche
+    stack just above it, for the same reason. An unread record carries no
+    bySeat charge, so every mask's own score already comes out 0 below;
+    this only changes what the tile says on hover, never what it draws. */
+ var bySeat={};
+ r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
+ var scored=MASKS_READ.map(function(m){
+  var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
+   return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
+  var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
+  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
+ o+=stPillRow('st-masks-ls',scored.map(function(s){
+  var col=CHC.maskCols(s.m)[0], pct=r.unread?PCT_DASH:fmtPct('atom',s.v);
+  return {v:r.unread?0:s.v,b:s.m.nm,c:col,k:'mask',ic:'<path d="'+s.m.ic+'"/>',str:r.unread?0:Math.min(1,s.v/10),
+    title:r.unread?(s.m.nm+', nothing recorded yet'):(s.m.nm+(pct!==PCT_DASH?', '+pct+' of this record':', nothing from this record'))};}));
  o+='</section>';
  return o;}
 /* THE PSYCHE STACK DRILL. Every chain of one tier, in the same card shape
