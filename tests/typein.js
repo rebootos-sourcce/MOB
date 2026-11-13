@@ -125,7 +125,7 @@ async function pressType(p,ok,what){
   if(!box){ ok(false,what+': #stmic has no box to press and hold'); return false; }
   await p.mouse.move(box.x+box.width/2,box.y+box.height/2);
   await p.mouse.down();
-  await p.waitForTimeout(560);
+  await p.waitForTimeout(780);
   await p.mouse.up();
   return true;
  }catch(e){ ok(false,what+': #stmic could not be pressed and held, '+String(e.message).split('\n')[0]); return false; }}

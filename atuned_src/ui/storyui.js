@@ -774,7 +774,12 @@ function stRender(){
     the box that press just opened. */
  if(mic){
   mic.onclick=function(e){ if(held._open){ held._open=false; e.preventDefault(); return; } stMic(); };
-  var held={t:null,_open:false}, stHoldMs=480;
+  /* RAISED FROM 480, 12 November: his own words, "when I hit talk... a
+     text field opens up". 480ms is close enough to an ordinary press
+     (a slow click, a touchscreen tap) that the box opened on presses
+     meant as a tap. The fold-into-the-bubble ruling itself (10 November,
+     quoted above) stands; only the timing moved. */
+  var held={t:null,_open:false}, stHoldMs=700;
   var holdGo=function(){ held.t=setTimeout(function(){ held.t=null; held._open=true; stType(); },stHoldMs); };
   var holdStop=function(){ if(held.t){ clearTimeout(held.t); held.t=null; } };
   mic.addEventListener('pointerdown',holdGo);
@@ -806,7 +811,10 @@ function stRender(){
     worked example gets none (show only, nothing she would react to is the
     person's own), TAB.STORY's own leave in panels.js parks her. */
  if(!show){var un=document.getElementById('stuni');
-  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);}}
+  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
+   /* his words, "off... also off of the conversation screens" -- the
+      same off switch the boot uses, 12 November. */
+   try{window.Uni.setFollow(false);}catch(e){}}}
  else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
@@ -3990,7 +3998,11 @@ function stMicStartFail(err){
    "could not speak that line" where the line saying typing works should be. */
 function stVoiceCant(msg){
  ST_LISTEN=false; ST_LISTEN_T0=null; ST_WANT_LISTEN=false;
- SRC_VOICE.seq++; srcVoiceStop(); ST_HUSH=false;
+ /* MUTE THE FAILURE LINE, DO NOT KILL THE GREETING, 12 November. See the
+    note at stSrcSpeak's own muteFail read: a microphone failure is an
+    input problem, not a reason to throw away an output request that may
+    still succeed. */
+ SRC_VOICE.muteFail=true; ST_HUSH=false;
  /* typed goes because the box is the forced one now: Type instead is not
     drawn beside it, and its Close would hand the person back to a voice
     that cannot run */
@@ -4152,11 +4164,12 @@ function stMic(){
   /* aborted while Source AI speaks is the pause itself, not a failure */
   if(code==='aborted'&&ST_HUSH)return;
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
-  /* the recording is over, so the greeting it asked for is dropped: measured
-     3 November, the greeting's own failure line ("could not speak that line")
-     landed after this error's line and wrote over it, so a person was told
-     the voice failed and not that the microphone did */
-  SRC_VOICE.seq++; srcVoiceStop(); ST_HUSH=false;
+  /* the recording failed, so its own failure line must not land on top of
+     the one this error already wrote (measured 3 November: "could not
+     speak that line" overwrote "no microphone found"). The greeting
+     itself is a different request and is no longer dropped with it, 12
+     November -- see stSrcSpeak's own muteFail note. */
+  SRC_VOICE.muteFail=true; ST_HUSH=false;
   if(ST_CANT_HEAR[code]){ stVoiceCant(stMicLine(code)+' Typing works.'); return; }
   stRender();
   if(code==='not-allowed'){ stMicRefused(); return; }
@@ -4200,7 +4213,7 @@ function stMic(){
    spoken. The diagnosis asks for that pause to be measured on real
    speakers before it is trusted, and it has not been: this is measured on
    the stand-in in tests/srcchat.js only. */
-var SRC_VOICE={seq:0, el:null, url:'', t:0};
+var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false};
 /* the longest a line may hold the recording. A reply is a sentence or two,
    well under ten seconds spoken; an audio element that never reports its
    end must not leave the person unheard for the rest of the conversation. */
@@ -4232,12 +4245,35 @@ function stSrcSpeak(line){
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
  var seq=++SRC_VOICE.seq;
+ /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
+    "the voice is not hooked up." A microphone failure used to bump
+    SRC_VOICE.seq itself, so this call's own resolution read as stale and
+    was thrown away silently, success included -- a greeting that would
+    have played was killed by an unrelated input failure. The only real
+    problem that fix was guarding against was the 3 November race: a
+    late failure line overwriting the "Typing works" line already on
+    screen. muteFail is that guard, narrowed to just the failure
+    message, so a success still plays and only a genuinely stale failure
+    stays quiet.
+
+    READ AT RESOLUTION, NOT AT THE CALL, a real bug reproduced 13
+    November against tests/voicefall.js's own cases 9-11 and 14: reading
+    SRC_VOICE.muteFail here, before authVoice even goes out, captures
+    whatever it was at the call's start, which is always false (the
+    microphone has not failed yet). The mic's own error arrives tens of
+    milliseconds later and sets the flag for a stale .then() that already
+    closed over the old, false value, so the "could not speak that line"
+    message still overwrote the real error's line every time. Each place
+    below that acts on muteFail now reads it fresh, right where it is
+    used, and clears it there. */
  authVoice(text,'frame').then(function(r){
   if(seq!==SRC_VOICE.seq)return;
   if(!r||!r.ok){
-   status('Source AI could not speak that line. '+
+   var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
+   if(!muteFail)status('Source AI could not speak that line. '+
     (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
    return;}
+  SRC_VOICE.muteFail=false;
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
@@ -4247,18 +4283,16 @@ function stSrcSpeak(line){
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
-  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November. A microphone
-     error drops the greeting (SRC_VOICE.seq++ and srcVoiceStop, in
-     ST_REC.onerror), and the pause() in srcVoiceStop makes the browser
-     reject this play() with AbortError. That rejection landed after the
-     error's own line and wrote this one over it: measured on the
-     permission refused case, "Recording needs microphone permission" at
-     6880ms, then this line at 6884ms. So the same number that drops a late
-     answer drops a late refusal, and a line that is no longer the one
-     playing says nothing. A refusal for the line still playing is the
-     browser's, and is still said. */
+  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November, and still true
+     13 November: a microphone error arriving while this line plays sets
+     muteFail (ST_REC.onerror) and shows its own line first; that same
+     flag, read fresh here rather than closed over, is what keeps this
+     catch from writing "blocked playing it" over a refusal that is still
+     the real line on screen. A refusal for a line nothing else said
+     anything about is still said. */
   if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
-   done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+   done(); var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
+   if(!muteFail)status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
  });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:

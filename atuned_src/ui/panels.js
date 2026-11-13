@@ -1593,6 +1593,26 @@ function bootUniT(fade){
    pause her loop, hand her back to whatever mounts her next. Safe to call
    even when she was never mounted (reduced motion, or this ran before she
    could be): every step below is independently guarded. */
+/* THE HAND BACK, 12 November, a real bug his own words caught: "I just
+   landed on the first page to chat, and Uni didn't start up right
+   away." Both places the boot used to let go of her (a clean finish and
+   a skip) called uniPark() unconditionally, which only hides her and
+   moves her into document.body. That is correct when the Journal is not
+   the tab underneath, but on the real first-arrival path it is: TABHOME
+   is TAB.STORY, so the boot finishes directly over the Journal, and
+   nothing after uniPark() ever mounted her back into #stuni. She sat
+   parked until the next tab change or Dashboard press called stRender()
+   for an unrelated reason, measured at over 15s with nothing forcing an
+   earlier one. The fix checks the same thing stRender() itself already
+   checks (storyui.js, the mount right after stOwn()/stDraftBack()) and
+   does it here too, rather than hand her back blind and hope something
+   else mounts her a moment later. */
+function uniHandBack(){
+ var un=(typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY)?document.getElementById('stuni'):null;
+ if(un&&typeof uniMount==='function'){
+  uniMount(un);
+  try{if(typeof uniApply==='function'&&typeof ST_PARSED!=='undefined')uniApply(ST_PARSED);}catch(e){}
+ } else if(typeof uniPark==='function')uniPark();}
 function bootUniEnd(){
  try{if(BOOT_UNI_RAF)cancelAnimationFrame(BOOT_UNI_RAF);}catch(e){}
  BOOT_UNI_RAF=0;
@@ -1603,7 +1623,7 @@ function bootUniEnd(){
  try{var host=document.getElementById('bootuni');
   if(host){host.style.transition='none'; host.style.opacity='0';}}catch(e){}
  try{if(window.Uni&&window.Uni.pause)window.Uni.pause();}catch(e){}
- try{if(typeof uniPark==='function')uniPark();}catch(e){}
+ try{uniHandBack();}catch(e){}
  if(BOOT_UNI_STATE)BOOT_UNI_STATE.done=true;
  BOOT_UNI_STATE=null;}
 /* THE ENHANCEMENT ITSELF. Mounts Uni into #bootuni (shell/body.html) and
@@ -1623,6 +1643,12 @@ function bootUni(){
  if(!host||typeof window.Uni==='undefined'||typeof uniMount!=='function')return;
  el.classList.add('bx-uni');
  uniMount(host);
+ /* THE EYES STAY ON THE SCRIPT, 12 November: his words, "take off the
+    follow mouse animation... off the login for certain." The boot
+    already drives her gaze itself (setGaze below, the rehearsed glances);
+    a stranger's mouse racing across the login door has no reason to be
+    the thing moving her eyes too. */
+ try{window.Uni.setFollow(false);}catch(e){}
  /* uniMount itself only turns her fill transparent inside the hero view's
     own #stflow.st-simple (its own comment explains why: nothing stands
     behind her anywhere else). The boot has its own wash immediately behind
@@ -1641,7 +1667,7 @@ function bootUni(){
  el.addEventListener('animationend',function onEnd(e){
   if(e.target!==el||e.animationName!=='bootOut')return;
   el.removeEventListener('animationend',onEnd);
-  try{if(typeof uniPark==='function')uniPark();}catch(x){}});
+  try{uniHandBack();}catch(x){}});
  var tick=function(){
   if(st.done)return;
   var t=bootUniT(fade);

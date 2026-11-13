@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v55 bbace447 2026-11-12 22:21"><head><meta charset="utf-8">
+<html lang="en" data-build="v56 6f330b7b 2026-11-13 01:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5014,6 +5014,8 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
 .smp-imp{background:var(--panel-2);color:var(--mid);border-radius:999px;
  padding:3px 10px;font-size:.78rem}
 .smp-note{flex:0 0 auto;color:var(--dim);font-size:.82rem;padding:0 14px 10px}
+.smp-empty{align-items:center;justify-content:center}
+.smp-emptynote{flex:0 0 auto;padding:0 24px;text-align:center;max-width:32em}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
 /* the selection as its rings and nothing else, the card's cut. Each ring is
    a toggle at the tap floor; out of the run it steps back rather than going,
@@ -43310,6 +43312,7 @@ let lastMouseMoveT=performance.now();
    until it runs, which is exactly the old mapping for a 640:520 box. */
 const UNI_FIT={k:1,ox:0,oy:0,w:640,h:520};
 document.addEventListener('mousemove', e => {
+  if(!follow) return;
   const r = _ca.getBoundingClientRect();
   if(!(r.width>0&&r.height>0)) return;
   const sx=r.width/UNI_FIT.w, sy=r.height/UNI_FIT.h;
@@ -43374,6 +43377,18 @@ let unread = false;
 /* uniBgTransparent, 10 November: set once at uniMount, read every frame
    by the render loop below. See the note at uniMount's own assignment. */
 let uniBgTransparent = false;
+/* follow, 12 November: his words, "take off the follow mouse animation,
+   off the login for certain, but also off of the conversation screens."
+   Measured first: the gaze target (mxRaw/myRaw below, clamped to +-5) was
+   also a real defect on its own, pinning at the clamp past about one face
+   radius from centre and taking roughly 8s to recentre against the ruled
+   4s, because the clamp hides most of the return. setFollow(false) is
+   both the off switch he asked for and the fix for that stuck state: it
+   stops the listener from moving the stored target at all and recentres
+   it immediately, rather than leaving her parked on whatever corner the
+   mouse last reached. setGaze (the intro's own scripted glances) is a
+   different path and is untouched, so the boot's rehearsed look stays. */
+let follow = true;
 
 /* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
    red, the background is also kind of a cloudy dark red that subtly
@@ -45246,6 +45261,34 @@ const ZONES=[
      measured for a second idle loop. Cleared the moment motion is
      allowed again, so a toggle back on restarts cleanly. */
   let settledStill=false;
+  /* THIRTY FRAMES A SECOND, SAME LOOK, 12 November. His words: "We need to
+     get Uni operating at 30 frames per second. That's its target. Same
+     look." Measured first, in Chromium on her real Journal mount: she
+     painted at 55 fps on a 59 Hz display and 85 fps with the display
+     limit lifted, so she ran at whatever the screen offered, and every
+     paint costs about 2 ms of script plus the raster of 6,250 particles.
+
+     The loop still asks for every display frame, so pause, resume, hover
+     and the still-settle behave exactly as before; only the paint is
+     gated. uniPaintDue is a fixed 33.3 ms schedule rather than "33 ms since
+     the last paint", so a 144 Hz or 75 Hz screen still averages 30 rather
+     than rounding down to 28.8 or 25; UNI_PAINT_TOL lets a vsync that lands
+     a hair early still count, and a stall resyncs instead of bursting.
+
+     And the motion is stepped as it was at 60, not in one 33 ms leap. Her
+     springs (stepSp) are explicit Euler and her blink is a phase machine
+     whose phases are 58, 15 and 73 ms long, so one 33 ms step per paint
+     integrates a measurably different curve and holds each blink phase
+     for a whole extra frame. UNI_SUB caps each simulation step at a
+     sixtieth of a second, so a paint at 30 runs the same two steps a
+     60 Hz screen ran, and the frame she draws is the one she drew before
+     at that same instant. The old clamp of 50 ms per paint becomes 100 ms,
+     because one paint now covers twice the time; a stall longer than that
+     still freezes rather than leaps, as before. The simulation body inside
+     the substep loop is not re-indented, on purpose, to keep this diff
+     readable beside the other work in this file. */
+  const UNI_PAINT_MS=1000/30, UNI_PAINT_TOL=4, UNI_SUB=1/60;
+  let uniPaintDue=0;
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
@@ -45257,11 +45300,18 @@ const ZONES=[
        just set). Lets pause()/resume() (and the original mouseenter
        restart) gate cleanly on lastTs===null. */
     if(!cv.hidden && !(still&&settledStill)){ kick(); } else { lastTs=null; return; }
-    if(lastTs===null){lastTs=ts;return;}
+    if(lastTs===null){lastTs=ts;uniPaintDue=ts+UNI_PAINT_MS;return;}
+    /* the 30 fps gate (see THIRTY FRAMES A SECOND above): a tick before the
+       next paint is due draws nothing and leaves lastTs alone, so the next
+       paint's step covers all the real time since the last one. */
+    if(ts<uniPaintDue-UNI_PAINT_TOL) return;
+    uniPaintDue=(ts-uniPaintDue>UNI_PAINT_MS)?ts+UNI_PAINT_MS:uniPaintDue+UNI_PAINT_MS;
     /* never negative: resume() stamps lastTs with performance.now(), which
        can be later than the timestamp of the frame already queued when it
        ran, and a negative step ran every spring and timer backwards. */
-    const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
+    const span=Math.max(0,Math.min((ts-lastTs)/1000,0.1));
+    const nSub=Math.max(1,Math.ceil(span/UNI_SUB-1e-6));
+    const dt=span/nSub, tsPaint=ts; lastTs=ts;
     const t=ts/1000;
     /* UNREAD HOLDS coh01 AT A FLAT MID POINT, 9 November, not only the
        palette. Every coherence-driven flourish below reads this same
@@ -45273,6 +45323,15 @@ const ZONES=[
     const coh01=unread?0.5:coherence/100;
     const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
     ambPaint(p,coh01);
+
+    /* the substep loop (see THIRTY FRAMES A SECOND above). Each pass sees
+       its own instant: ts and t shadow the paint's, so every sin(t*...)
+       and the idle timer read the moment that step stands for, and the
+       last pass lands exactly on the paint. closed is the one value the
+       draw below needs from in here. */
+    let closed=0;
+    for(let si=1;si<=nSub;si++){
+    const ts=tsPaint-(nSub-si)*dt*1000, t=ts/1000;
 
     // Blend shapes
     bsT+=dt;
@@ -45451,7 +45510,7 @@ const ZONES=[
     [headRoll,headRollV]=stepSp(headRoll,headRollV,hx*0.09*headActive,16,8.0,dt);
 
     // Blink
-    const closed=stepBlink(blink,dt);
+    closed=stepBlink(blink,dt);
     if(prevClosed>=0.95&&closed<0.95) blinkCount++;
     prevClosed=closed;
 
@@ -45576,6 +45635,7 @@ const ZONES=[
       pTheta[i]+=(pDrift[i]*latFactor+eddy)*eF*dt;
       pPhi[i]=pPhi0[i]+Math.sin(t*pPhiFreq[i]+pPhiPh[i])*pPhiAmp[i];
     }
+    } // end of the substep loop
 
     // Render
     if(boxDirty) applyFit();
@@ -45762,6 +45822,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // uniBgTransparent directly, the same reason setUnread exists beside
     // this rather than letting an outside caller touch `unread` itself.
     setBgTransparent(flag){ uniBgTransparent = !!flag; },
+    // flag: false stops her eyes tracking the mouse (the login boot and
+    // the Journal both call this off, 12 November) and snaps the stored
+    // target back to centre immediately, rather than leaving her pinned
+    // on wherever the mouse last reached. true turns tracking back on.
+    setFollow(flag){ follow = !!flag; if(!follow){ mxRaw=320; myRaw=260; } },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
@@ -57015,7 +57080,12 @@ function stRender(){
     the box that press just opened. */
  if(mic){
   mic.onclick=function(e){ if(held._open){ held._open=false; e.preventDefault(); return; } stMic(); };
-  var held={t:null,_open:false}, stHoldMs=480;
+  /* RAISED FROM 480, 12 November: his own words, "when I hit talk... a
+     text field opens up". 480ms is close enough to an ordinary press
+     (a slow click, a touchscreen tap) that the box opened on presses
+     meant as a tap. The fold-into-the-bubble ruling itself (10 November,
+     quoted above) stands; only the timing moved. */
+  var held={t:null,_open:false}, stHoldMs=700;
   var holdGo=function(){ held.t=setTimeout(function(){ held.t=null; held._open=true; stType(); },stHoldMs); };
   var holdStop=function(){ if(held.t){ clearTimeout(held.t); held.t=null; } };
   mic.addEventListener('pointerdown',holdGo);
@@ -57047,7 +57117,10 @@ function stRender(){
     worked example gets none (show only, nothing she would react to is the
     person's own), TAB.STORY's own leave in panels.js parks her. */
  if(!show){var un=document.getElementById('stuni');
-  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);}}
+  if(un&&typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
+   /* his words, "off... also off of the conversation screens" -- the
+      same off switch the boot uses, 12 November. */
+   try{window.Uni.setFollow(false);}catch(e){}}}
  else if(typeof uniPark==='function')uniPark();}
 
 /* ============================================================
@@ -60231,7 +60304,11 @@ function stMicStartFail(err){
    "could not speak that line" where the line saying typing works should be. */
 function stVoiceCant(msg){
  ST_LISTEN=false; ST_LISTEN_T0=null; ST_WANT_LISTEN=false;
- SRC_VOICE.seq++; srcVoiceStop(); ST_HUSH=false;
+ /* MUTE THE FAILURE LINE, DO NOT KILL THE GREETING, 12 November. See the
+    note at stSrcSpeak's own muteFail read: a microphone failure is an
+    input problem, not a reason to throw away an output request that may
+    still succeed. */
+ SRC_VOICE.muteFail=true; ST_HUSH=false;
  /* typed goes because the box is the forced one now: Type instead is not
     drawn beside it, and its Close would hand the person back to a voice
     that cannot run */
@@ -60393,11 +60470,12 @@ function stMic(){
   /* aborted while Source AI speaks is the pause itself, not a failure */
   if(code==='aborted'&&ST_HUSH)return;
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
-  /* the recording is over, so the greeting it asked for is dropped: measured
-     3 November, the greeting's own failure line ("could not speak that line")
-     landed after this error's line and wrote over it, so a person was told
-     the voice failed and not that the microphone did */
-  SRC_VOICE.seq++; srcVoiceStop(); ST_HUSH=false;
+  /* the recording failed, so its own failure line must not land on top of
+     the one this error already wrote (measured 3 November: "could not
+     speak that line" overwrote "no microphone found"). The greeting
+     itself is a different request and is no longer dropped with it, 12
+     November -- see stSrcSpeak's own muteFail note. */
+  SRC_VOICE.muteFail=true; ST_HUSH=false;
   if(ST_CANT_HEAR[code]){ stVoiceCant(stMicLine(code)+' Typing works.'); return; }
   stRender();
   if(code==='not-allowed'){ stMicRefused(); return; }
@@ -60441,7 +60519,7 @@ function stMic(){
    spoken. The diagnosis asks for that pause to be measured on real
    speakers before it is trusted, and it has not been: this is measured on
    the stand-in in tests/srcchat.js only. */
-var SRC_VOICE={seq:0, el:null, url:'', t:0};
+var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false};
 /* the longest a line may hold the recording. A reply is a sentence or two,
    well under ten seconds spoken; an audio element that never reports its
    end must not leave the person unheard for the rest of the conversation. */
@@ -60473,12 +60551,35 @@ function stSrcSpeak(line){
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
  var seq=++SRC_VOICE.seq;
+ /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
+    "the voice is not hooked up." A microphone failure used to bump
+    SRC_VOICE.seq itself, so this call's own resolution read as stale and
+    was thrown away silently, success included -- a greeting that would
+    have played was killed by an unrelated input failure. The only real
+    problem that fix was guarding against was the 3 November race: a
+    late failure line overwriting the "Typing works" line already on
+    screen. muteFail is that guard, narrowed to just the failure
+    message, so a success still plays and only a genuinely stale failure
+    stays quiet.
+
+    READ AT RESOLUTION, NOT AT THE CALL, a real bug reproduced 13
+    November against tests/voicefall.js's own cases 9-11 and 14: reading
+    SRC_VOICE.muteFail here, before authVoice even goes out, captures
+    whatever it was at the call's start, which is always false (the
+    microphone has not failed yet). The mic's own error arrives tens of
+    milliseconds later and sets the flag for a stale .then() that already
+    closed over the old, false value, so the "could not speak that line"
+    message still overwrote the real error's line every time. Each place
+    below that acts on muteFail now reads it fresh, right where it is
+    used, and clears it there. */
  authVoice(text,'frame').then(function(r){
   if(seq!==SRC_VOICE.seq)return;
   if(!r||!r.ok){
-   status('Source AI could not speak that line. '+
+   var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
+   if(!muteFail)status('Source AI could not speak that line. '+
     (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
    return;}
+  SRC_VOICE.muteFail=false;
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
@@ -60488,18 +60589,16 @@ function stSrcSpeak(line){
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
-  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November. A microphone
-     error drops the greeting (SRC_VOICE.seq++ and srcVoiceStop, in
-     ST_REC.onerror), and the pause() in srcVoiceStop makes the browser
-     reject this play() with AbortError. That rejection landed after the
-     error's own line and wrote this one over it: measured on the
-     permission refused case, "Recording needs microphone permission" at
-     6880ms, then this line at 6884ms. So the same number that drops a late
-     answer drops a late refusal, and a line that is no longer the one
-     playing says nothing. A refusal for the line still playing is the
-     browser's, and is still said. */
+  /* A LINE THIS PAGE STOPPED WAS NOT BLOCKED, 4 November, and still true
+     13 November: a microphone error arriving while this line plays sets
+     muteFail (ST_REC.onerror) and shows its own line first; that same
+     flag, read fresh here rather than closed over, is what keeps this
+     catch from writing "blocked playing it" over a refusal that is still
+     the real line on screen. A refusal for a line nothing else said
+     anything about is still said. */
   if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
-   done(); status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
+   done(); var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
+   if(!muteFail)status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
  });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
@@ -80854,8 +80953,20 @@ function smpImpressionsHtml(o){
  if(!rows.length)return '<p class="smp-note">No impressions recorded here yet.</p>';
  return '<div class="smp-imps">'+rows.map(function(im){
   return '<div class="smp-imp">'+esc(im.nm||im.b||'')+'</div>';}).join('')+'</div>';}
+/* THE EMPTY STATE, 12 November, caught by his own words: "I don't see
+   any of the widgets." With nothing pinned this panel printed nothing
+   at all, so the Dashboard looked unchanged even after it shipped. A
+   hidden surface is one thing; a surface that is simply blank, with no
+   sign it is there, is a different defect this project has a name for
+   (never hide a control with no visible sign of it). One line, same
+   dark panel, same fixed spot, so the space never looks like nothing
+   was built there. */
+function summaryPanelEmptyHtml(){
+ return '<div class="smp smp-empty" id="smppanel" aria-label="Summary, nothing selected">'
+  +'<p class="smp-note smp-emptynote">Pick a complex or saboteur on the left to see everything under it, down to its addresses, with a release ready at every rung.</p>'
+  +'</div>';}
 function summaryPanelHtml(){
- if(!S.pin)return '';
+ if(!S.pin)return summaryPanelEmptyHtml();
  var o=S.pin, ids=leaves(o).map(function(n){return n.i;});
  return '<div class="smp" id="smppanel" aria-label="Summary, '+esc(o.nm)+'">'
   +'<div class="smp-hd">'+crPat(o,'sm')+'<span class="smp-hdname">'+esc(o.nm)+'</span>'
@@ -83869,6 +83980,26 @@ function bootUniT(fade){
    pause her loop, hand her back to whatever mounts her next. Safe to call
    even when she was never mounted (reduced motion, or this ran before she
    could be): every step below is independently guarded. */
+/* THE HAND BACK, 12 November, a real bug his own words caught: "I just
+   landed on the first page to chat, and Uni didn't start up right
+   away." Both places the boot used to let go of her (a clean finish and
+   a skip) called uniPark() unconditionally, which only hides her and
+   moves her into document.body. That is correct when the Journal is not
+   the tab underneath, but on the real first-arrival path it is: TABHOME
+   is TAB.STORY, so the boot finishes directly over the Journal, and
+   nothing after uniPark() ever mounted her back into #stuni. She sat
+   parked until the next tab change or Dashboard press called stRender()
+   for an unrelated reason, measured at over 15s with nothing forcing an
+   earlier one. The fix checks the same thing stRender() itself already
+   checks (storyui.js, the mount right after stOwn()/stDraftBack()) and
+   does it here too, rather than hand her back blind and hope something
+   else mounts her a moment later. */
+function uniHandBack(){
+ var un=(typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY)?document.getElementById('stuni'):null;
+ if(un&&typeof uniMount==='function'){
+  uniMount(un);
+  try{if(typeof uniApply==='function'&&typeof ST_PARSED!=='undefined')uniApply(ST_PARSED);}catch(e){}
+ } else if(typeof uniPark==='function')uniPark();}
 function bootUniEnd(){
  try{if(BOOT_UNI_RAF)cancelAnimationFrame(BOOT_UNI_RAF);}catch(e){}
  BOOT_UNI_RAF=0;
@@ -83879,7 +84010,7 @@ function bootUniEnd(){
  try{var host=document.getElementById('bootuni');
   if(host){host.style.transition='none'; host.style.opacity='0';}}catch(e){}
  try{if(window.Uni&&window.Uni.pause)window.Uni.pause();}catch(e){}
- try{if(typeof uniPark==='function')uniPark();}catch(e){}
+ try{uniHandBack();}catch(e){}
  if(BOOT_UNI_STATE)BOOT_UNI_STATE.done=true;
  BOOT_UNI_STATE=null;}
 /* THE ENHANCEMENT ITSELF. Mounts Uni into #bootuni (shell/body.html) and
@@ -83899,6 +84030,12 @@ function bootUni(){
  if(!host||typeof window.Uni==='undefined'||typeof uniMount!=='function')return;
  el.classList.add('bx-uni');
  uniMount(host);
+ /* THE EYES STAY ON THE SCRIPT, 12 November: his words, "take off the
+    follow mouse animation... off the login for certain." The boot
+    already drives her gaze itself (setGaze below, the rehearsed glances);
+    a stranger's mouse racing across the login door has no reason to be
+    the thing moving her eyes too. */
+ try{window.Uni.setFollow(false);}catch(e){}
  /* uniMount itself only turns her fill transparent inside the hero view's
     own #stflow.st-simple (its own comment explains why: nothing stands
     behind her anywhere else). The boot has its own wash immediately behind
@@ -83917,7 +84054,7 @@ function bootUni(){
  el.addEventListener('animationend',function onEnd(e){
   if(e.target!==el||e.animationName!=='bootOut')return;
   el.removeEventListener('animationend',onEnd);
-  try{if(typeof uniPark==='function')uniPark();}catch(x){}});
+  try{uniHandBack();}catch(x){}});
  var tick=function(){
   if(st.done)return;
   var t=bootUniT(fade);
@@ -92671,7 +92808,7 @@ try{window.__at&&window.__at('ui/onboard.js');}catch(e){}
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false,reset:false,busy:false};
+var LOGIN={open:false,reset:false,busy:false,signup:false};
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -92748,7 +92885,12 @@ function loginCard(mail){
     showing Log in as the default asked them to solve a problem they do
     not have. An ordinary arrival, with no such landing, still opens on
     Log in. */
- var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED);
+ /* "CREATE ACCOUNT DOESN'T DO ANYTHING", 12 November, reproduced before
+    fixing: the button submitted whatever was in the Log in fields on the
+    first press, so an empty card looked like a dead button. LOGIN.signup
+    is the press's own switch into this same quiz-link presentation,
+    first pressed to arrive here rather than only landed from a link. */
+ var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED)||LOGIN.signup;
  return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="'+(landed?'Create account':'Log in')+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
@@ -92914,12 +93056,24 @@ function devSight(){ return false; }
 function loginDevOptions(){ return ''; }
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
+ LOGIN.open=true; LOGIN.reset=false; LOGIN.signup=false; h.style.display='flex'; h.innerHTML=loginCard();
  loginWire(h);}
 function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
- var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
+ var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){
+  /* FIRST PRESS SWITCHES THE CARD, SECOND PRESS SENDS IT. Not landed from
+     a quiz link and not already in this mode: the press itself is the
+     "I want an account" signal, so it earns the same heading and field
+     order a quiz-link arrival gets, with whatever email was already
+     typed carried across, rather than submitting a blank card and
+     reading as a button that does nothing. */
+  if(!LOGIN.signup){
+   var m=document.getElementById('loginmail');
+   LOGIN.signup=true;
+   h.innerHTML=loginCard(m?m.value.trim():''); loginWire(h);
+   return;}
+  loginSubmit('signup'); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');
@@ -95317,5 +95471,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006362484"></div>
+<div id="eof" hidden data-len="006372149"></div>
 </body></html>

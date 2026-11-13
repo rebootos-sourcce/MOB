@@ -56,7 +56,7 @@
    step below no longer reads it. What reads it now is DEV_SKIP, and
    the default is to show the door, his own words this round: "if
    it's not pressed, then it goes to the sequence." */
-var LOGIN={open:false,reset:false,busy:false};
+var LOGIN={open:false,reset:false,busy:false,signup:false};
 /* THE DEVELOPER SKIP. His words: "have a switch for that loading
    screen to turn onboarding tutorial off, so I can just bypass
    straight to the dashboard, just put it as a developer button, on
@@ -133,7 +133,12 @@ function loginCard(mail){
     showing Log in as the default asked them to solve a problem they do
     not have. An ordinary arrival, with no such landing, still opens on
     Log in. */
- var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED);
+ /* "CREATE ACCOUNT DOESN'T DO ANYTHING", 12 November, reproduced before
+    fixing: the button submitted whatever was in the Log in fields on the
+    first press, so an empty card looked like a dead button. LOGIN.signup
+    is the press's own switch into this same quiz-link presentation,
+    first pressed to arrive here rather than only landed from a link. */
+ var landed=(typeof RECORD_LINK_LANDED!=='undefined'&&RECORD_LINK_LANDED)||LOGIN.signup;
  return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="'+(landed?'Create account':'Log in')+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
@@ -299,12 +304,24 @@ function devSight(){ return false; }
 function loginDevOptions(){ return ''; }
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
- LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
+ LOGIN.open=true; LOGIN.reset=false; LOGIN.signup=false; h.style.display='flex'; h.innerHTML=loginCard();
  loginWire(h);}
 function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
- var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
+ var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){
+  /* FIRST PRESS SWITCHES THE CARD, SECOND PRESS SENDS IT. Not landed from
+     a quiz link and not already in this mode: the press itself is the
+     "I want an account" signal, so it earns the same heading and field
+     order a quiz-link arrival gets, with whatever email was already
+     typed carried across, rather than submitting a blank card and
+     reading as a button that does nothing. */
+  if(!LOGIN.signup){
+   var m=document.getElementById('loginmail');
+   LOGIN.signup=true;
+   h.innerHTML=loginCard(m?m.value.trim():''); loginWire(h);
+   return;}
+  loginSubmit('signup'); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');

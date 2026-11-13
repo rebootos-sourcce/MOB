@@ -2995,6 +2995,7 @@ let lastMouseMoveT=performance.now();
    until it runs, which is exactly the old mapping for a 640:520 box. */
 const UNI_FIT={k:1,ox:0,oy:0,w:640,h:520};
 document.addEventListener('mousemove', e => {
+  if(!follow) return;
   const r = _ca.getBoundingClientRect();
   if(!(r.width>0&&r.height>0)) return;
   const sx=r.width/UNI_FIT.w, sy=r.height/UNI_FIT.h;
@@ -3059,6 +3060,18 @@ let unread = false;
 /* uniBgTransparent, 10 November: set once at uniMount, read every frame
    by the render loop below. See the note at uniMount's own assignment. */
 let uniBgTransparent = false;
+/* follow, 12 November: his words, "take off the follow mouse animation,
+   off the login for certain, but also off of the conversation screens."
+   Measured first: the gaze target (mxRaw/myRaw below, clamped to +-5) was
+   also a real defect on its own, pinning at the clamp past about one face
+   radius from centre and taking roughly 8s to recentre against the ruled
+   4s, because the clamp hides most of the return. setFollow(false) is
+   both the off switch he asked for and the fix for that stuck state: it
+   stops the listener from moving the stored target at all and recentres
+   it immediately, rather than leaving her parked on whatever corner the
+   mouse last reached. setGaze (the intro's own scripted glances) is a
+   different path and is untouched, so the boot's rehearsed look stays. */
+let follow = true;
 
 /* THE SCREEN BREATHES WITH HER, 9 November. His words: "when Uni is dark
    red, the background is also kind of a cloudy dark red that subtly
@@ -4931,6 +4944,34 @@ const ZONES=[
      measured for a second idle loop. Cleared the moment motion is
      allowed again, so a toggle back on restarts cleanly. */
   let settledStill=false;
+  /* THIRTY FRAMES A SECOND, SAME LOOK, 12 November. His words: "We need to
+     get Uni operating at 30 frames per second. That's its target. Same
+     look." Measured first, in Chromium on her real Journal mount: she
+     painted at 55 fps on a 59 Hz display and 85 fps with the display
+     limit lifted, so she ran at whatever the screen offered, and every
+     paint costs about 2 ms of script plus the raster of 6,250 particles.
+
+     The loop still asks for every display frame, so pause, resume, hover
+     and the still-settle behave exactly as before; only the paint is
+     gated. uniPaintDue is a fixed 33.3 ms schedule rather than "33 ms since
+     the last paint", so a 144 Hz or 75 Hz screen still averages 30 rather
+     than rounding down to 28.8 or 25; UNI_PAINT_TOL lets a vsync that lands
+     a hair early still count, and a stall resyncs instead of bursting.
+
+     And the motion is stepped as it was at 60, not in one 33 ms leap. Her
+     springs (stepSp) are explicit Euler and her blink is a phase machine
+     whose phases are 58, 15 and 73 ms long, so one 33 ms step per paint
+     integrates a measurably different curve and holds each blink phase
+     for a whole extra frame. UNI_SUB caps each simulation step at a
+     sixtieth of a second, so a paint at 30 runs the same two steps a
+     60 Hz screen ran, and the frame she draws is the one she drew before
+     at that same instant. The old clamp of 50 ms per paint becomes 100 ms,
+     because one paint now covers twice the time; a stall longer than that
+     still freezes rather than leaps, as before. The simulation body inside
+     the substep loop is not re-indented, on purpose, to keep this diff
+     readable beside the other work in this file. */
+  const UNI_PAINT_MS=1000/30, UNI_PAINT_TOL=4, UNI_SUB=1/60;
+  let uniPaintDue=0;
   function kick(){ if(!frameQueued){ frameQueued=true; requestAnimationFrame(frame); } }
   function frame(ts){
     frameQueued=false;
@@ -4942,11 +4983,18 @@ const ZONES=[
        just set). Lets pause()/resume() (and the original mouseenter
        restart) gate cleanly on lastTs===null. */
     if(!cv.hidden && !(still&&settledStill)){ kick(); } else { lastTs=null; return; }
-    if(lastTs===null){lastTs=ts;return;}
+    if(lastTs===null){lastTs=ts;uniPaintDue=ts+UNI_PAINT_MS;return;}
+    /* the 30 fps gate (see THIRTY FRAMES A SECOND above): a tick before the
+       next paint is due draws nothing and leaves lastTs alone, so the next
+       paint's step covers all the real time since the last one. */
+    if(ts<uniPaintDue-UNI_PAINT_TOL) return;
+    uniPaintDue=(ts-uniPaintDue>UNI_PAINT_MS)?ts+UNI_PAINT_MS:uniPaintDue+UNI_PAINT_MS;
     /* never negative: resume() stamps lastTs with performance.now(), which
        can be later than the timestamp of the frame already queued when it
        ran, and a negative step ran every spring and timer backwards. */
-    const dt=Math.max(0,Math.min((ts-lastTs)/1000,0.05)); lastTs=ts;
+    const span=Math.max(0,Math.min((ts-lastTs)/1000,0.1));
+    const nSub=Math.max(1,Math.ceil(span/UNI_SUB-1e-6));
+    const dt=span/nSub, tsPaint=ts; lastTs=ts;
     const t=ts/1000;
     /* UNREAD HOLDS coh01 AT A FLAT MID POINT, 9 November, not only the
        palette. Every coherence-driven flourish below reads this same
@@ -4958,6 +5006,15 @@ const ZONES=[
     const coh01=unread?0.5:coherence/100;
     const p=unread?UNI_UNREAD_PAL:getPalette(coh01);
     ambPaint(p,coh01);
+
+    /* the substep loop (see THIRTY FRAMES A SECOND above). Each pass sees
+       its own instant: ts and t shadow the paint's, so every sin(t*...)
+       and the idle timer read the moment that step stands for, and the
+       last pass lands exactly on the paint. closed is the one value the
+       draw below needs from in here. */
+    let closed=0;
+    for(let si=1;si<=nSub;si++){
+    const ts=tsPaint-(nSub-si)*dt*1000, t=ts/1000;
 
     // Blend shapes
     bsT+=dt;
@@ -5136,7 +5193,7 @@ const ZONES=[
     [headRoll,headRollV]=stepSp(headRoll,headRollV,hx*0.09*headActive,16,8.0,dt);
 
     // Blink
-    const closed=stepBlink(blink,dt);
+    closed=stepBlink(blink,dt);
     if(prevClosed>=0.95&&closed<0.95) blinkCount++;
     prevClosed=closed;
 
@@ -5261,6 +5318,7 @@ const ZONES=[
       pTheta[i]+=(pDrift[i]*latFactor+eddy)*eF*dt;
       pPhi[i]=pPhi0[i]+Math.sin(t*pPhiFreq[i]+pPhiPh[i])*pPhiAmp[i];
     }
+    } // end of the substep loop
 
     // Render
     if(boxDirty) applyFit();
@@ -5447,6 +5505,11 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // uniBgTransparent directly, the same reason setUnread exists beside
     // this rather than letting an outside caller touch `unread` itself.
     setBgTransparent(flag){ uniBgTransparent = !!flag; },
+    // flag: false stops her eyes tracking the mouse (the login boot and
+    // the Journal both call this off, 12 November) and snaps the stored
+    // target back to centre immediately, rather than leaving her pinned
+    // on wherever the mouse last reached. true turns tracking back on.
+    setFollow(flag){ follow = !!flag; if(!follow){ mxRaw=320; myRaw=260; } },
     // family: one of the 10 keys in EMO_FAMILIES (the 9 real laws --
     // fear/anger/shame/disgust/apathy/shock/sadness/surprise/anticipation
     // -- plus the non-canonical 10th, joy). idx: 0-8, rank in that
