@@ -1521,15 +1521,16 @@ const ZONES=[
   }
 
   // Harmonic color radiance -- a subtle iridescent sheen that only emerges
-  // as coherence approaches full. Faint hints 60-92%, ramping bright 92-100%.
+  // as coherence approaches full. RULED, 13 November, his words: "that disk
+  // behind Uni only appears between 92 to 100 CQ" -- a hard gate, not a
+  // fade-in. The earlier build gave it a faint 60-92% preview ramp before
+  // the real band, which is exactly what he was seeing as broken (the disk
+  // showing at a CQ he read as lower than 92). Zero below 0.92, full ramp
+  // only inside the real band.
   function harmonicIntensity(coh01){
-    if(coh01<0.60) return 0;
-    if(coh01<0.92){
-      const u=(coh01-0.60)/(0.92-0.60);
-      return u*u*0.14;
-    }
+    if(coh01<0.92) return 0;
     const u=(coh01-0.92)/(1-0.92);
-    return 0.14+u*u*0.86;
+    return u*u;
   }
   // Fixed vertical rainbow -- red at the bottom pole, lavender at the top,
   // mirrored up both sides (same shape as the real chakra column: root-red

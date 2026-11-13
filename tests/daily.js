@@ -435,9 +435,27 @@ SUITES.compose=function(E,ok,say){
  ok(cb.state==='thin'&&cb.silent==='thin'&&cb.st.length===0&&cb.silence.length>0,'a record with answers and nothing else is thin: silent, with a reason, and no sentence invented: '+J(cb.silence));
  /* one reading is at most one sentence, hedged */
  const w1=world(E,{mut:(p,f)=>{p.history=[]; p.story.entries=[f.ent(-1,TXT_C)]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null;}}), c1=E.dlyCompose(w1.p,NOW);
- ok(c1.st.length<=1&&c1.st.every(s=>/\.h$/.test(s.tpl)&&/^So far/.test(s.text)),'one entry is at most one sentence and it is the hedged one: '+J(c1.st.map(s=>s.text)));
+ /* THE READING ITSELF STAYS CAPPED AT ONE, HEDGED, APART FROM WHATEVER THE
+    EDUCATION LINE DOES. Chakra's own GLOSS entry grew past the 12 character
+    floor gloss.js's unpackAll holds every first sentence to (13 November,
+    his real structural ruling on what a chakra is), so it is no longer in
+    the acknowledged no-tooltip list, and the word "seat" in this fixture's
+    own hedge sentence (DLY_CANON, w:'seat',t:'Chakra') now legitimately
+    earns a why.edu line where it used to be silently skipped for lacking a
+    usable definition. The one-sentence cap this test exists to prove is
+    about the READING, not about whether an unrelated once-a-month
+    education sentence also fires alongside it, so the two are checked
+    apart. */
+ const c1read=c1.st.filter(s=>s.k!=='why'), c1edu=c1.st.filter(s=>s.k==='why');
+ ok(c1read.length<=1&&c1read.every(s=>/\.h$/.test(s.tpl)&&/^So far/.test(s.text)),'one entry is at most one sentence and it is the hedged one: '+J(c1read.map(s=>s.text)));
+ ok(c1edu.length<=1&&c1edu.every(s=>s.tpl==='why.edu'),'and at most one education line, naming a canon word used above: '+J(c1edu.map(s=>s.text)));
  const wr=world(E,{mut:(p,f)=>{p.story.entries=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null; p.history=[f.row(-1,50,'Throat',0)];}}), cr=E.dlyCompose(wr.p,NOW);
- ok(cr.st.length===1&&cr.st[0].tpl==='today.read'&&cr.st[0].src==='known','one saved reading is one plain fact and no line');
+ /* same split as c1/c1edu above: today.read also says "the Throat seat",
+    DLY_CANON's own word for Chakra, so it too may now earn a why.edu line
+    alongside the one plain fact, not instead of it. */
+ const crread=cr.st.filter(s=>s.k!=='why'), credu=cr.st.filter(s=>s.k==='why');
+ ok(crread.length===1&&crread[0].tpl==='today.read'&&crread[0].src==='known','one saved reading is one plain fact and no line');
+ ok(credu.length<=1&&credu.every(s=>s.tpl==='why.edu'),'and at most one education line, naming a canon word used above: '+J(credu.map(s=>s.text)));
  /* NOVELTY: a sentence frozen in the last week is not said again with the same counts */
  const wn=world(E), o=open(E,wn);
  const key=s=>s.tpl+'|'+s.a.join('|'), sealed=o.day.st.map(key);

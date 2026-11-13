@@ -10970,10 +10970,17 @@ console.log('\nGW · the glossary reaches every tooltip it should, task #80');
  GLOSS.forEach(g=>{const v=T[g.t.toLowerCase()];
   (v===undefined?none:(v===first(g)?own:other)).push(g.t);});
  ok(own.length+other.length+none.length===GLOSS.length,'every GLOSS word is counted once, '+GLOSS.length);
- /* acknowledged 12 November. Changing either list is a decision: a word
-    moving into OTHER means a second wording now answers for it. */
+ /* acknowledged 12 November, Chakra moved out 13 November. Changing either
+    list is a decision: a word moving into OTHER means a second wording now
+    answers for it, and a word leaving NONE means its own first sentence
+    finally earned a place past gloss.js's 12 character floor. Chakra's
+    GLOSS entry grew from "A seat." (7 characters, his real structural
+    ruling on what a nerve plexus produces replaced it) to a first sentence
+    long enough to pass, so it now resolves through its own wording like
+    any other GLOSS word and is no longer silent everywhere a tooltip or an
+    education line would have named it. */
  const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Integrity','Mask','Plexus','Release','Saboteur'];
- const NONE=['Chakra','Memory'];
+ const NONE=['Memory'];
  ok(JSON.stringify(other.slice().sort())===JSON.stringify(OTHER.slice().sort()),
   'the GLOSS words whose tooltip is another table\'s wording are the acknowledged list, got '+JSON.stringify(other));
  ok(JSON.stringify(none.slice().sort())===JSON.stringify(NONE.slice().sort()),
