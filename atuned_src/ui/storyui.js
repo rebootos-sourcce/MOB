@@ -2320,7 +2320,8 @@ function srcChatCur(turn,heard,q,ask){
     which leaves out the row being repainted, so a repaint picks what the
     push picked. */
  var said=srcSaidBefore(), keys=srcChatKeysBefore(), lines;
- if(turn.act){r.key='act|'+turn.act; lines=SRC_ACT_SAY[turn.act];}
+ if(turn.act==='clarify'){r.key='act|clarify'; lines=srcClarifyLines(turn,keys);}
+ else if(turn.act){r.key='act|'+turn.act; lines=SRC_ACT_SAY[turn.act];}
  /* an ask's key carries the family question since round SK: the lead's
     count still updates in place, and a new question after a reply is a new
     turn, never the earlier one rewritten under the person's answer */
@@ -2361,6 +2362,31 @@ function srcChatCur(turn,heard,q,ask){
  else{r.key='say|'; lines=[srcNone()];}
  r.q=srcPick(lines.concat(SRC_HEARD),said);
  r.w='src'; return r;}
+/* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
+   is the line the person just replied under, the last of keys
+   (srcChatKeysBefore), and there are three cases.
+
+     a question, or their own words said back   the package's soft restate,
+        SRC_RESTATE, through all ten points about the thread (srcRestate,
+        engine/qcheck.js). Reproduced before this: "What did you do?",
+        then "What do you mean?", then a different family question, "What
+        happens next?", a second question where the package says restate.
+     the opener, a status line, or an act        nothing of theirs has been
+        said back yet, so "what part keeps coming back" would have no part
+        to point at. It says what Source AI does, SRC_ACT_SAY's ask lines,
+        which is what "what do you mean" means there.
+     after Move on, or while venting            the same lines, none of
+        which is a question, because neither ruling ever asks.
+
+   The ask lines also stand behind the restate, so a second "what do you
+   mean" in a row is not given the same question twice (srcPick, and point
+   10 of the check refuses the repeat anyway). Nothing here is logged as an
+   ask: a restate is the same question again, softer, not a new one. */
+function srcClarifyLines(turn,keys){
+ var last=keys.length?keys[keys.length-1]:'', said=/^(ask|q)\|/.test(last)||/^say\|./.test(last);
+ if(turn.move==='vent'||turn.move==='pass'||!said)return SRC_ACT_SAY.ask;
+ var L=srcLedgerNow(), r=srcRestate({text:srcConvText(), ledger:L, asked:srcSaidBefore(), passed:SRC_PASSED},L.thread);
+ return (r.ok?[r.q]:[]).concat(SRC_ACT_SAY.ask);}
 function srcPick(lines,said){
  var prev=said.length?said[said.length-1]:null, i;
  for(i=0;i<lines.length;i++)if(lines[i]&&said.indexOf(lines[i])<0)return lines[i];
@@ -2378,14 +2404,18 @@ function srcChatKeysBefore(){
 /* THE NEWEST TURN, IF IT IS ONLY TALK: srcAct's act, or shift for a change
    of subject, and only when the turn carries no seat of its own. A turn
    that is about the conversation in srcIntent's other three senses already
-   has its own answer (Move on, venting, a no), so it is never an act. */
+   has its own answer (Move on, venting, a no), so it is never an act.
+   CLARIFY IS ONE, 13 November, SK2: "what do you mean" sets nothing on
+   landing and needs only its line, srcClarifyLines. A turn that asks it
+   and also says a feeling, "what do you mean, I am furious", is about
+   being furious, by the same no-seat rule as every act. */
 function srcActNow(){
  var t=null; SRC_CHAT.forEach(function(r){if(r.w==='me')t=r.t;});
  if(!t)return null;
  var it=srcIntent(t);
- if(it&&it.intent!=='shift')return null;
+ if(it&&it.intent!=='shift'&&it.intent!=='clarify')return null;
  if(srcHear(t,null).seats.length)return null;
- if(it)return 'shift';
+ if(it)return it.intent;
  var a=srcAct(t); return a?a.act:null;}
 /* THE REPLIES STILL MATCH THE ENTRY. Text added in the box, or by Record,
    since the last row is the person's next turn. Text changed inside an

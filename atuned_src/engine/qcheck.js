@@ -335,6 +335,34 @@ function srcFamilyCands(lead,target){
  var pre=String(lead||'').trim();
  return SRC_FAMILY.map(function(f){
   return {q:(pre?pre+' ':'')+f.q, base:f.q, dim:f.dim, family:f.family, need:f.need||'', target:target||null};});}
+/* THE SOFT RESTATE, the package's CLARIFY turned round, 13 November, TASKS.md
+   SK2. The family above holds clarification back because nothing here can
+   read what is unclear in the person's words. The other direction needs no
+   reading at all: a person who asks "what do you mean" has said, in words,
+   that Source AI's own line was unclear (srcIntent's clarify, engine/
+   evidence.js). The package gives the answer, 06_DIALOGUE_TDD.md, after
+   "What do you mean?": "What part keeps coming back for you?" [Do not ask
+   for a detailed evidence inventory or repeat the entire user's speech.]
+   So it is that line, word for word, and nothing written here.
+
+   It is not a SRC_FAMILY line on purpose. srcChoose draws from the family
+   on any ask, and this may only ever be said straight after the person
+   asked what was meant; need 'asked' is that, and it is the only thing that
+   separates it from the family's own 'unclear', which point 10 stops.
+
+   IT GOES THROUGH ALL TEN POINTS LIKE ANY QUESTION. Measured before it was
+   wired: on "I was afraid all night. Still afraid. What do you mean?" it
+   passes as written about the thread. Point 7's QC_AGAIN holds "keep
+   coming" and not "keeps coming", which is why it passes, and that is right
+   rather than lucky: it asks which part keeps coming back, it does not say
+   a seat came back, and the place words point 7 guards are not in it. When
+   it fails, a second "what do you mean" after it among them (point 10, a
+   repeat), the caller says what Source AI does instead, never a family
+   question nobody asked for. Pure. */
+var SRC_RESTATE={family:'clarification', need:'asked', dim:null, q:'What part keeps coming back for you?'};
+function srcRestate(ctx,target){
+ return srcVet({q:SRC_RESTATE.q, base:SRC_RESTATE.q, family:SRC_RESTATE.family, need:SRC_RESTATE.need,
+  dim:SRC_RESTATE.dim, target:target||null},ctx);}
 /* A LINE THAT SAYS AND DOES NOT ASK, section 23's Mirror and Name. Three of
    the ten points are about any line Source AI says, not only a question: the
    quotes are the person's (3), nothing is diagnosed (6), and no claim is

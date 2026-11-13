@@ -287,7 +287,36 @@ g('SK2 · the person\'s words about the conversation: vent, move on, and that do
  ok(it('Anyway, I want to talk about my brother instead.')==='shift','and so is naming the new subject with instead, the way he said it');
  ok(it("I don't want to talk about this, can we talk about something else")==='shift','a shift outranks a stop: he asked to go on, about something else');
  ok(it('I talked about it with her instead of shouting')===null,'"instead" in a story is not a request: it needs "talk about" before it');
- ok(it('No more questions.')==='move_on'&&it('Can we stop?')==='move_on','stopping is still Move on');}
+ ok(it('No more questions.')==='move_on'&&it('Can we stop?')==='move_on','stopping is still Move on');
+ /* 13 November, the package's soft restate: "If caller says 'what do you
+    mean,' restate softly". Before this none of these was read at all. */
+ ok(it('What do you mean?')==='clarify'&&it('what do you mean by that')==='clarify'&&it("I don't understand the question")==='clarify'
+  &&it('Say that again?')==='clarify','asking what Source AI meant is heard as asking it to restate');
+ ok(it('No, what do you mean?')==='clarify','a no before it does not set it aside: the question still stands, as srcAct reads a check');
+ ok(it("That's not it, what do you mean?")==='reject'&&it("Stop asking, what do you mean")==='move_on','a no or a stop said with it is that first');
+ ok(it("I don't understand why he left me")===null,'not understanding something in the story is the story, not a request');
+ ok(it('She looked at me and said what do you mean and then she walked out of the room and slammed the door')===null,
+  'and a long turn that quotes the phrase is a story');}
+
+g('SK2c · the soft restate is the package\'s line, and it is held to the same ten points as every question');
+{const {srcRestate,SRC_RESTATE}=E;
+ ok(SRC_RESTATE.q==='What part keeps coming back for you?','the line is 06_DIALOGUE_TDD.md\'s, word for word');
+ ok(SRC_FAMILY.every(f=>f.q!==SRC_RESTATE.q),'and it is not a family line, so srcChoose can never pick it unasked');
+ const t='I was afraid all night.\nStill afraid.\nWhat do you mean?', L=evLedger(t,[],{});
+ const r=srcRestate({text:t,ledger:L,asked:['You wrote “afraid” twice. What did you do?']},L.thread);
+ ok(r.ok&&r.checks.length===10,'about the thread, after a question, it passes all ten: '+JSON.stringify(r.fails));
+ ok(!srcRestate({text:t,ledger:L,asked:[SRC_RESTATE.q]},L.thread).ok,'said once already in the entry, point 10 refuses it the second time');
+ ok(!srcRestate({text:t,ledger:L,passed:true},L.thread).ok,'after Move on it is refused like any question');
+ ok(fails(vet(SRC_RESTATE.q,t,{cand:{family:'clarification',need:'unclear',target:L.thread}})).indexOf(10)>=0,
+  'the same line as the family\'s own clarification, unasked, is still stopped at point 10: only the person asking lifts it');
+ /* found by coverage, 13 November: the default target was never reached by
+    this gate. The page can reach it, a said-back line whose claim the
+    person has since deleted, so what it does there is asserted and not
+    assumed: with a thread still live it is about no claim and point 9
+    refuses it, which is the caller's cue to say what Source AI does. */
+ ok(srcRestate({text:t,ledger:L}).fails.map(f=>f.n).indexOf(9)>=0,'with no claim given and the person on one, point 9 refuses it');
+ const bare=evLedger('What do you mean?',[],{});
+ ok(bare.thread===null&&srcRestate({text:'What do you mean?',ledger:bare}).ok,'and with nothing heard at all there is no thread to contradict');}
 
 g('SK2b · a turn that is only talk: a check, a question to Source AI, a greeting, a yes');
 {const {srcAct}=E, a=t=>{const r=srcAct(t);return r&&r.act;};
