@@ -812,9 +812,13 @@ ROOTD.forEach(function(rn){
    only checks is an array of strings, not their content (engine/schema.js);
    DOMAINS[i].nm is the fixed table and needs nothing. */
 function capD(){
+ /* TASKS.md SW1, his own words on a screenshot: "get rid of some of the
+    unnecessary text, stop adding unnecessary junk." The dropped clause
+    restated, in prose, exactly what the rail's own root buttons already
+    show by their filled/pale state, so it carried no information this
+    caption needed. */
  $('capD').innerHTML=S.doms.map(function(i){
-  return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
-  +(S.roots.length?'<br>plus all of '+S.roots.map(esc).join(', '):'');}
+  return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ');}
 [['ar1','a1'],['ar2','a2']].forEach(function(pair){
  ARCH.forEach(function(a,i){
   var b=document.createElement('button');b.className='ib';b.type='button';

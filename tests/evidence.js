@@ -313,7 +313,14 @@ g('SK3 · the package\'s thirty vectors, run against this engine: what holds, an
  const before=JSON.stringify(E.S.charge);
  /* holds, asserted */
  ['angry_denied','denied_lie','angry_other','actor_reversal_b','quoted','quiet_case','warm_case','mad_ambiguous',
-  'sarcasm','loss_direction','silence','uncertain_motive'].forEach(id=>ok(none(id),id+', '+by[id].expected_guard+': no claim about the speaker'));
+  'sarcasm','loss_direction','silence'].forEach(id=>ok(none(id),id+', '+by[id].expected_guard+': no claim about the speaker'));
+ /* SK10, fixed: "My boss humiliated me in front of the team" names what was
+    done TO the speaker, not what the boss felt, so the speaker's own
+    humiliation is now the claim. do_not_assert_intent still holds: the
+    claim is a Shame candidate at the solar plexus, mentioned once, nothing
+    about the boss's motive is said or scored. */
+ ok(claims('uncertain_motive').length===1&&claims('uncertain_motive')[0].seat==='solar',
+  'uncertain_motive, do_not_assert_intent: the speaker\'s own humiliation is the claim, one candidate at the solar plexus, '+claims('uncertain_motive').map(c=>c.seat));
  ok(claims('two_registries').length===2,'two_registries, keep_multiple_candidates: both kept, '+claims('two_registries').map(c=>c.seat));
  const cor=evLedger(by.anger_correction.utterance,[],{});
  ok(Object.values(cor.claims).length===1&&cor.ev.some(x=>x.said==='denied'),'anger_correction, revise_not_override: the no is evidence and the new word is the claim');
@@ -323,11 +330,12 @@ g('SK3 · the package\'s thirty vectors, run against this engine: what holds, an
  ok(srcIntent(by.voice_vent.utterance).intent==='vent'&&srcIntent(by.voice_move_on.utterance).intent==='move_on'&&srcIntent(by.rejected_pattern.utterance).intent==='reject',
   'voice_vent, voice_move_on and rejected_pattern are each read as what they are');
  ok(JSON.stringify(E.S.charge)===before,'silence and every vector: no_cq_change, nothing here touches the field');
- /* known not to hold, held as expected red so a fix is noticed */
- const xf=(c,m)=>{if(c){F++;console.log('  FAIL  expected red went green, move it up: '+m);}else{P++;console.log('  red   '+m);}};
- xf(none('angry_temporal'),'angry_temporal, do_not_assume_current: "used to be angry, but not anymore" is still a live candidate. The sniffer reads no tense');
- xf(none('angry_hypothetical'),'angry_hypothetical, do_not_score: "If I got angry" is still a candidate, and parseStory scores it. The sniffer reads no conditional');
- xf(srcHear(by.uncertain_motive.utterance,null).seats.length>0,'uncertain_motive: "My boss humiliated me" is set aside as the boss\'s word, so what was done to the speaker is not heard. Done to is read as did');}
+ /* SK9, fixed: both read no tense and no conditional before; sniffTense
+    (engine/sniff.js) now reads "used to... anymore/any more/no longer" and
+    "if... would" within one sentence and voids the candidate the same way
+    sniffDeny already voids a plain no. */
+ ok(none('angry_temporal'),'angry_temporal, do_not_assume_current: "used to be angry, but not anymore" is no longer a live candidate');
+ ok(none('angry_hypothetical'),'angry_hypothetical, do_not_score: "If I got angry, I would leave" is no longer scored');}
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

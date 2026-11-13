@@ -3246,9 +3246,16 @@ bands in his order, cards that open, the journal snippet, and where to improve.
       2258 strings walked, none left. Proved by breaking it twice.
 - [ ] **CS4. 24 strings sit past a surface walk's reach,** inside drills. The
       walk has to open every drill to see them.
-- [ ] **CS5. The fetters rail reads Child emotions above 4 · Child Emotions,**
-      same words, two cases, five pixels apart. Pre existing and more visible
-      now the paragraph between them is gone.
+- [x] **CS5, closed 13 November.** The fetters rail reads Child emotions above
+      Child Emotions, same words, two cases, five pixels apart. Pre existing
+      and more visible now the paragraph between them is gone. Fixed: the
+      `.tier1` sub-label under the section header repeated the header's own
+      words (`atuned_src/shell/body.html`); the header keeps "Child emotions"
+      and the `.tier1` div now reads "The nine poled axes", matching this
+      same section's own documented rule (header carries the label, `.tier1`
+      carries a distinct sub-label) and the pattern every sibling section
+      already follows (The chain / Nerve to super-complex, Superego / Outside
+      the chain, Laws of Action / The six gates).
 
 ### MK. THE MARKETING SYSTEM. ADDRESS BY FIELD, NOT BY PERSON.
 
@@ -33626,8 +33633,8 @@ His words about the live Journal chat: "This is the behavior I want source AI to
 - [ ] **SK6. Sniffer: "outside" heard at the crown.** Settle which reader is right for a hit with no band; marksOf and pathOf disagree on it.
 - [ ] **SK7. P3, prosody, motion, sound, longitudinal memory.** Not started.
 - [ ] **SK8. His: the place said on one mention, in two of his own rulings.** `srcWhy` ("The stress from this story is stuck in the nerves behind your stomach") and the seat colour in the person's bubble both show the body mapping before the person has confirmed it; the package says not to. Kept as they are until he says which wins.
-- [ ] **SK9. Package follow-up: tense and conditional.** "I used to be angry, but not anymore" and "If I got angry, I would leave" are live candidates and are scored by parseStory. The sniffer's, and expected red in `tests/evidence.js` until fixed.
-- [ ] **SK10. Package follow-up: done to is read as did.** "My boss humiliated me" is set aside as the boss's word, so the speaker's humiliation is not heard at all. Expected red.
+- [x] **SK9, closed 13 November.** Package follow-up: tense and conditional. "I used to be angry, but not anymore" and "If I got angry, I would leave" were live candidates and scored by parseStory. Fixed: `sniffTense` (engine/sniff.js) reads "used to... anymore/any more/no longer" and "if... would" bounded to the hit's own sentence (clauseFloor and its new forward twin clauseCeil), and voids the candidate through sniffDeny's own h.neg, the same "not counted" state the Story page and evidence ledger already draw and score, rather than a second bucket neither would read. "if I'm being honest, I was angry" and "I'm used to being ignored" stay live, confirmed directly: both patterns require their full pair in the same sentence.
+- [x] **SK10, closed 13 November.** "My boss humiliated me" is set aside as the boss's word, so the speaker's humiliation is not heard at all. Expected red. Fixed: `whoOf` (`engine/sniff.js`) only ever read backward from a feeling word to find who it belonged to, which is right for "I was humiliated by my boss" but wrong for "my boss humiliated me", where the word straight after, "me", is the one who felt it and the subject before it is only who did it. humiliated, embarrassed and shamed (`WHO_DONE_TO`) now check forward first: a writer's object pronoun ("me", "myself") straight after one of them in the same clause makes the hit the writer's, whoever the subject is, before the backward scan ever runs. "My boss was angry at me" and "He blamed me" are unaffected, confirmed directly: angry is a state the subject feels and stays read as the boss's, not the speaker's. `tests/evidence.js`'s SK3 block moved uncertain_motive off the expected-red list (`xf`) into a real assertion (`ok`) that the claim is now one Shame candidate at the solar plexus; the fixture's own `do_not_assert_intent` guard still holds, nothing about the boss's motive is said. Neither `tests/floors.json` nor its `expected_red_max` tracks `evidence.js` at all (noted in the file's own round-SK entry, 31 October), so no floor or ceiling needed moving.
 - [ ] **SK11. Package follow-up: the SourceOutputV1 adapter.** Not built, on purpose: its candidates require a `confidence` from 0 to 1, and nothing in this engine is calibrated. A fixed number would be a magic number dressed as a probability. Needs a calibration source, or the field made nullable, before the adapter is honest.
 - [ ] **SK12. Package follow-up: independent coherent and shadow evidence.** The package keeps both per candidate and forbids coherent as one minus shadow. srcHear sets coherent words aside and the ledger carries no coherent evidence yet.
 - [ ] **SK13. Package follow-up: the first response acknowledges the feeling.** The package's anchor is "It sounds like you're still carrying that." The house voice rules out soft wellness language, and the two need reconciling by him or the voice seat before any acknowledgement line is written; nothing was written here.
@@ -33850,12 +33857,22 @@ November." The real count, by the app's own label, is 19.
 
 His asks off the same screenshot, annotated directly on it:
 
-- [ ] **SW1. Declutter the left rail's own text.** Struck on his screenshot:
-  a trailing "plus all of Witness, Weaver, Engine, Architect" line under a
-  selected Blueprint Domain's tooltip, and a "Warrior + Explorer" line under
-  the Secondary archetype grid. His words: "get rid of some of the
-  unnecessary text, stop adding unnecessary junk." Needs a seat (narrative +
-  uiux) to find every such line, not only the two he happened to screenshot.
+- [x] **SW1, half closed 13 November.** Declutter the left rail's own text.
+  Struck on his screenshot: a trailing "plus all of Witness, Weaver, Engine,
+  Architect" line under a selected Blueprint Domain's tooltip, and a
+  "Warrior + Explorer" line under the Secondary archetype grid. His words:
+  "get rid of some of the unnecessary text, stop adding unnecessary junk."
+  The Blueprint Domain half is fixed: `capD()` (`ui/panels.js`) dropped the
+  `+(S.roots.length?'<br>plus all of '+...)` clause, which only restated in
+  prose what the rail's own root buttons already show by their filled/pale
+  state. The archetype-grid half could not be found as written: `capA()`,
+  the one caption function both the Primary and Secondary archetype grids
+  share, already prints only the selected names joined by " + " (exactly
+  "Warrior + Explorer" with nothing appended), no clutter clause to cut.
+  Either this was already fixed in an earlier round nobody closed, or the
+  screenshot caught something this reading of the current code does not
+  reproduce. Needs a seat (narrative + uiux) to find every OTHER such line,
+  not only the two he happened to screenshot, which was never done here.
 - [ ] **SW2. Child emotions becomes questions, not a reading.** 9 go into the
   funnel (the intake quiz); any remaining ones go into the knowledge base,
   as part of the diagnostic. Needs scoping: which 9, what the funnel question
@@ -34096,9 +34113,9 @@ The result, after the fix and the re-run, is `SIM-YEAR-10000.md`, on `main`. Fou
 - [ ] **SZA1.** The boundary looks up keys in plain objects, so a name like `toString` or `constructor` gets through, and one such name crashes the Ritual tab while another hides the record on the next boot. `atuned_src/engine/schema.js:1603`.
 - [ ] **SZA2.** `riseLevers` ignores the named-address layer (`S.addr`), so the law lever it reports overstates the gain by about 26 times for anyone whose story named a place. `atuned_src/engine/rise.js:160`.
 - [ ] **SZA3.** Daily Summary says "So far one entry" when several entries actually back the sentence. `atuned_src/engine/daily.js:661`.
-- [ ] **SZA4.** A capitalised first word with no subject drops the writer's own feeling, read as "may not be about you". `atuned_src/engine/sniff.js:599`.
-- [ ] **SZA5.** A Turkish capital İ throws off every `normMap` offset after it in the same entry: wrong highlights, broken sentence bounds, a feeling wrongly read as denied. `atuned_src/engine/sniff.js:309`.
-- [ ] **SZA6.** The lean reads "It wasn't my fault" as accountability taken and "He didn't hit me" as harm by another, the plain negation flipping the read. `atuned_src/engine/verp.js:419`.
+- [x] **SZA4, closed 13 November.** A capitalised first word with no subject drops the writer's own feeling, read as "may not be about you". `atuned_src/engine/sniff.js:599`. Fixed: whoKnown's lists (WHO_OPENER and the rest) name only the singular ("morning", "day", "week"), so a plain plural opener ("Mornings were awful.") matched nothing and read as an unrecognised name. One extra check against the word with a trailing s stripped, never recursed further, now catches the plural of anything already known; a genuinely unknown name (Sarah, Mark) is unaffected and still correctly held as unclear, confirmed directly against the built engine.
+- [x] **SZA5, closed 13 November.** A Turkish capital İ throws off every `normMap` offset after it in the same entry: wrong highlights, broken sentence bounds, a feeling wrongly read as denied. `atuned_src/engine/sniff.js:309`. Fixed: normMap read one source character at a time and assumed `.toLowerCase()` always hands back exactly one character; U+0130 (İ) lower-cases in JS to two characters (i plus a combining dot above), which grew `body` by two while `bm` only grew by one, desyncing every later offset in the entry. İ and its lowercase partner ı (U+0131, dotless i, which also never lands in a-z on its own) are now folded to plain ASCII i before the per-character loop runs, with a defensive guard keeping only the first character if any future case ever expands past one.
+- [x] **SZA6, closed 13 November.** The lean reads "It wasn't my fault" as accountability taken and "He didn't hit me" as harm by another, the plain negation flipping the read. `atuned_src/engine/verp.js:419`. Fixed: LEANNEG only listed uncontracted negators (not/never/no/...); leanNorm keeps apostrophes (unlike sniff.js's LAW_NEG and sourceai.js's SRC_NEG, whose input has them stripped first), so contracted forms like "didn't"/"wasn't" survived as their own tokens but never matched the table. Added the 14 contracted forms, spelled with apostrophes to match leanNorm's actual output.
 - [ ] **SZA7.** Crisis panel's "Talk it through" bypasses the quiz's own 21-answer gate, so a blank or partial reading is printed and packed into the app link it hands over. `funnel/quiz.html:1235`.
 - [ ] **SZA8.** The Character page's last chosen mask is dropped on every reload, because the import boundary's own UI allow-list never names `ui.chmask`. `atuned_src/engine/schema.js:1261`.
 - [ ] **SZA9.** `parseStory` runs in time that grows with the square of the entry's length once the text has no sentence punctuation, which is the ordinary shape of dictated speech. `atuned_src/engine/sourceai.js:99`.

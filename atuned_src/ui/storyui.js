@@ -4279,7 +4279,21 @@ function stSrcSpeak(line){
   var a=new Audio(url);
   SRC_VOICE.el=a; SRC_VOICE.url=url;
   var done=function(){ if(SRC_VOICE.el!==a)return; srcVoiceStop(); stHush(false); };
-  a.onended=done; a.onerror=done;
+  /* A DECODE OR LOAD FAILURE MUST STILL BE SAID, 13 November, his own
+     report: "it listens, but it can't talk." onerror and onended shared
+     this same done(), which clears SRC_VOICE.el before play()'s own
+     promise rejects. The browser's own ordering guarantees the media
+     error event fires before the pending play() promise settles, so by
+     the time the catch below ran, its guard always read the line as
+     already stale and said nothing, every time, not sometimes: total,
+     silent failure on a genuine decode or load error, with the mic still
+     reading Listening. onerror now reports it directly, the same line a
+     synthesis failure already uses, since a decode failure is not an
+     autoplay block and the line below stays for the case that is. */
+  a.onended=done;
+  a.onerror=function(){ if(SRC_VOICE.el!==a)return; done();
+   var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
+   if(!muteFail)status('Source AI could not speak that line. Try again in a moment.','fail'); };
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();

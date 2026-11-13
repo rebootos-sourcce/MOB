@@ -7229,8 +7229,19 @@ function verpRead(){var sh=verpShare();
    accountability and not blame, and "he did not hit me" is not a harm
    marker. A negator INSIDE a phrase is not affected, which is what keeps
    'i did not tell anyone' and 'i was not allowed' working. */
+/* CONTRACTED NEGATORS, TASKS.md SZA6. The table before this line voided
+   'he did not hit me' but not 'he didn't hit me', which is what a person
+   actually types. leanNorm (below) keeps the apostrophe, so the
+   contracted token survives as its own word; this table simply never
+   named it. sniff.js's LAW_NEG and sourceai.js's SRC_NEG already carry
+   the equivalent set, but both run on input that has stripped the
+   apostrophe first (lawNorm, srcNegated), so their entries are spelled
+   'didnt'; this table's input has not, so these keep theirs. */
 var LEANNEG={'not':1,'never':1,'no':1,'none':1,'nothing':1,'nobody':1,
- 'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1};
+ 'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1,
+ "didn't":1,"don't":1,"doesn't":1,"won't":1,"wasn't":1,"weren't":1,
+ "isn't":1,"aren't":1,"haven't":1,"hasn't":1,"hadn't":1,"couldn't":1,
+ "wouldn't":1,"shouldn't":1};
 var LEAN_NEG_W=3;        /* words of look back. three is one clause of run up,
                             and wider started voiding phrases whose negator
                             belonged to the sentence before */
@@ -18932,11 +18943,24 @@ var SOMA_PLACE=somaPlaces();
    rather than inventing a third rule. Dropping a character moves no offset
    the map cannot carry: map holds the raw index of every character kept. */
 var NORM_APOS=/['\u2018\u2019]/;
+/* THE TURKISH CAPITAL I DESYNCED EVERY OFFSET AFTER IT, SZA5. normMap reads
+   one source character at a time and expects toLowerCase() to hand back
+   exactly one character for it, so the single bm.push(i) below stays lined
+   up with body. It does not for U+0130, capital I with dot above: JS lower
+   cases it to "i" plus a combining dot above, U+0069 U+0307, two characters
+   from one. body grew by two, bm grew by one, and every later index in the
+   same entry read one short, the same shape of bug the apostrophe note
+   above fixed for a dropped character, now for an added one. Folded by hand
+   to the plain ASCII letter it is dictated as, alongside its lowercase
+   partner U+0131, dotless i, which also never lands in a-z on its own. */
+var NORM_TR_I=/[\u0130\u0131]/;
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
  for(i=0;i<t.length;i++){
-  c=t.charAt(i).toLowerCase();
+  c=t.charAt(i);
+  c=NORM_TR_I.test(c)?'i':c.toLowerCase();
+  if(c.length>1)c=c.charAt(0);
   if(NORM_APOS.test(c))continue;
   if(!/[a-z ]/.test(c))c=' ';
   body+=c; bm.push(i);}
@@ -19120,6 +19144,38 @@ function sniffDeny(t,nm,hits){
   var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
+/* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
+   up). "I used to be angry, but not anymore" and "If I got angry, I would
+   leave" are not current feelings, the first walked back by the person's
+   own later words, the second never happened at all, but scanStory read
+   both the same as "I am angry" and "I got angry". Reuses sniffDeny's own
+   h.neg, the one "not counted" state the Story page and the evidence
+   ledger already know how to draw and score, rather than a second bucket
+   neither would read, bounded to the hit's own sentence by clauseFloor and
+   its forward twin clauseCeil so a different sentence's "anymore" or
+   "would" cannot reach into this one.
+     past tense walked back   "used to" before the word, and "anymore",
+                               "any more" or "no longer" after it, both in
+                               the same sentence
+     the classic conditional  "if" before the word, and "would" after it,
+                               in that order, in the same sentence
+   Both require their full pair, in this order, so "if I'm being honest, I
+   was angry" (no would after) and "I'm used to being ignored" (no anymore
+   or no longer after) are untouched and stay live, as they should. */
+function clauseCeil(t,nm,at){
+ t=String(t||'');
+ for(var k=at;k<nm.s.length;k++){
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
+ return nm.s.length;}
+function sniffTense(t,nm,hits){
+ hits.forEach(function(h){
+  if(h.neg)return;
+  var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
+  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
+  var pastVoid=before.indexOf(' used to ')>=0&&
+   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
+  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
+  if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
    and guard 2 of SNIFFER_SPEC.md, "never score another person". Measured on
@@ -19219,13 +19275,24 @@ var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there',
  'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
  'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
  'april','may','june','july','august','september','october','november','december'];
-function whoKnown(w){
+function whoKnown0(w){
  var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
  if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
  if([WHO_ME,WHO_SUBJ,WHO_POSS,WHO_OBJ,WHO_YOU,WHO_DET,WHO_OPEN,WHO_LOSS,WHO_OPENER,SOMA_PLACE_WORDS,LEXKIN]
   .some(function(l){return l.indexOf(w)>=0;}))return true;
  if(typeof SRC_NEG!=='undefined'&&SRC_NEG.indexOf(w)>=0)return true;
  return Object.keys(SRC_DIM_CUE).some(function(k){return SRC_DIM_CUE[k].indexOf(w)>=0;});}
+/* TASKS.md SZA4. WHO_OPENER and the other known-word lists name only the
+   singular ("morning", "day", "week"), so a plain plural opener ("Mornings
+   were awful.") matched nothing, read as an unrecognised proper name, and
+   dropped the writer's own feeling as unclear whose it was. One extra check
+   against the word with a trailing s stripped, never recursed further,
+   catches the plural of anything already known without touching how a
+   genuinely unknown word (a name: Sarah, Mark) is held, which is the
+   mechanism this file's own P1-1 ruling (5e070512) built on purpose. */
+function whoKnown(w){
+ if(whoKnown0(w))return true;
+ return w.length>1&&w.charAt(w.length-1)==='s'&&whoKnown0(w.slice(0,-1));}
 function whoStartName(t,ws,j){
  return (j===0||ws[j-1].c!==ws[j].c)&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&!whoKnown(ws[j].w);}
 function whoLoss(h){
@@ -19237,8 +19304,24 @@ function whoPerson(w){
 /* a phrase starting at word k opens its clause: the first word of its comma
    group, or straight after a word that opens a clause */
 function whoOpens(ws,k){return k===0||ws[k-1].g!==ws[k].g||WHO_OPEN.indexOf(ws[k-1].w)>=0;}
+/* A VERB DONE TO THE WRITER NAMES THE WRITER'S FEELING, TASKS.md round SK,
+   item SK10. "My boss humiliated me" read as the boss's own word: the
+   backward scan below meets "boss" first and holds the whole hit as someone
+   else's, so the one thing the sentence actually says, that the speaker was
+   humiliated, was never heard at all. humiliated, embarrassed and shamed
+   name what was done TO a person, not what the doer felt, which is the
+   opposite of angry, furious and the rest of WHO_SUBJ's family, where the
+   subject is the one feeling it. So when the word straight after the hit,
+   in its own comma group, names the writer (WHO_ME's object forms, me and
+   myself, the only two that can sit there), the hit is the writer's
+   whoever did the humiliating, and the backward scan below never runs. */
+var WHO_DONE_TO=['humiliated','embarrassed','shamed'];
+function whoDoneToMe(ws,i){
+ var nx=ws[i+1];
+ return WHO_DONE_TO.indexOf(ws[i].w)>=0&&!!nx&&nx.g===ws[i].g&&(nx.w==='me'||nx.w==='myself');}
 function whoOf(t,ws,i){
  var g=ws[i].g, j, w, k;
+ if(whoDoneToMe(ws,i))return null;
  if(i>0&&ws[i-1].g===g&&(WHO_POSS.indexOf(ws[i-1].w)>=0||WHO_OBJ.indexOf(ws[i-1].w)>=0))
   return {k:i-1,j:i-1};
  for(j=i-1;j>=0&&ws[j].g===g;j--){
@@ -19447,6 +19530,10 @@ function scanStory(text){
     around a word, the way it already says the degree word and the place
     word; parseStory decides what counts. */
  sniffDeny(text,nm,hits);
+ /* AND WHETHER IT IS EVEN NOW, SK9, see sniffTense above. After the denial
+    so a word already struck through by a no is not also struck through for
+    its tense, and before who so a voided word is never read as anyone's. */
+ sniffTense(text,nm,hits);
  /* AND WHOSE IT IS, S2, see sniffWho above. After the denial, so a word said
     with a no is listed once, as denied. */
  sniffWho(text,nm,hits);

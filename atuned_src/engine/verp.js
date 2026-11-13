@@ -416,8 +416,19 @@ function verpRead(){var sh=verpShare();
    accountability and not blame, and "he did not hit me" is not a harm
    marker. A negator INSIDE a phrase is not affected, which is what keeps
    'i did not tell anyone' and 'i was not allowed' working. */
+/* CONTRACTED NEGATORS, TASKS.md SZA6. The table before this line voided
+   'he did not hit me' but not 'he didn't hit me', which is what a person
+   actually types. leanNorm (below) keeps the apostrophe, so the
+   contracted token survives as its own word; this table simply never
+   named it. sniff.js's LAW_NEG and sourceai.js's SRC_NEG already carry
+   the equivalent set, but both run on input that has stripped the
+   apostrophe first (lawNorm, srcNegated), so their entries are spelled
+   'didnt'; this table's input has not, so these keep theirs. */
 var LEANNEG={'not':1,'never':1,'no':1,'none':1,'nothing':1,'nobody':1,
- 'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1};
+ 'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1,
+ "didn't":1,"don't":1,"doesn't":1,"won't":1,"wasn't":1,"weren't":1,
+ "isn't":1,"aren't":1,"haven't":1,"hasn't":1,"hadn't":1,"couldn't":1,
+ "wouldn't":1,"shouldn't":1};
 var LEAN_NEG_W=3;        /* words of look back. three is one clause of run up,
                             and wider started voiding phrases whose negator
                             belonged to the sentence before */
