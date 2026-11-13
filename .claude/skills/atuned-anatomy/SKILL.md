@@ -272,6 +272,22 @@ in any page read: the nerve to levator ani (12), the nerve to subclavius
 (74), a stated vertebral span for the cauda equina (8). `measure.js`
 re-derives only `f:` rows; nothing yet holds a `v:` row to its page.
 
+**Used, 2026-11-13: one more name corrected, no address placed.** 56 was
+"Costal Branches" (BI3a: no nerve has that name; the lateral costal branch
+is an artery). p.207 (thoracic wall, anterior aspect, item 22) and p.214
+(items 18 and 32) label the lateral cutaneous branches of the intercostal
+nerves on the side of the chest, and p.400 draws their skin territory. That
+is the single candidate BI3a gave and the structure 56's own ANAT row
+(Apalapa) already drew, so only `n` moved. Every remaining BMPROP row was
+checked for a sourced placement and none closed on the delivered pages:
+the solar rows (35, 40, 41, 42, 47, 48) and 52 sit on book p.257-346,
+the gap still not delivered (the index puts the mesenteric vessels at
+p.302-308); every bilateral torso row (15, 23, 27, 57, 72, and others)
+needs a distance from the midline, which `v:` takes in typed figure units,
+the very thing this method forbids; 10 and 20 sit on the thigh, where no
+sourced type reaches yet; 8 still has no stated vertebral span (p.230,
+p.232 and p.233 label it but give no level for its lower end).
+
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
 own internal page index, which runs about 14 pages ahead of the printed
