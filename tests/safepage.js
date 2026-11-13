@@ -144,7 +144,18 @@ const look = p => p.evaluate(() => {
     qbtn: !!document.getElementById('srcnew') || !!document.getElementById('srcdyn'),
     ask: !!(src && src.querySelector('.src-q')),
     marks: document.querySelectorAll('#sthl mark').length,
-    commit: (document.getElementById('stapply') || {}).textContent || '',
+    /* THE COUNT IS ITS OWN ELEMENT, 13 November. #stapply is an arrow with a
+       .st-sendn badge beside it (his 9 November ruling, "replace the commit
+       button with an arrow"), not a word, so reading the whole button's text
+       and matching it against "Commit" only ever worked because stRefresh
+       was overwriting the arrow with that string on every keystroke, which
+       was the defect fixed in ui/storyui.js. The count is read off the badge
+       now, with the accessible name beside it, so a badge and a name that
+       disagree fail here too. */
+    commitN: (() => { const b = document.getElementById('stapply'), c = b && b.querySelector('.st-sendn');
+      return c ? c.textContent : null; })(),
+    commitName: (() => { const b = document.getElementById('stapply');
+      return b ? b.getAttribute('aria-label') : null; })(),
     glow: rel ? rel.style.getPropertyValue('--glow') : null,
     /* textContent: at 390 the pending column is folded away and innerText cannot see it */
     pend: [...document.querySelectorAll('.st-none')].map(e => e.textContent).join(' | '),
@@ -173,7 +184,7 @@ const look = p => p.evaluate(() => {
     ok(!s.why && !s.pass && !s.qbtn && !s.ask, 'no why, no Move on, no question and no question buttons' + at + ': ' + JSON.stringify({ why: s.why, pass: s.pass, qbtn: s.qbtn, ask: s.ask }));
     ok(!/Why there|Both land|lands at/.test(s.page), 'no "why there" anywhere on the page' + at);
     ok(s.marks === 0, 'no word in the entry is lit as a feeling' + at + ', ' + s.marks + ' lit');
-    ok(s.commit === 'Commit', 'Commit carries no count' + at + ': ' + JSON.stringify(s.commit));
+    ok(s.commitN === null && s.commitName === 'Commit', 'Commit carries no count' + at + ': ' + JSON.stringify({ badge: s.commitN, name: s.commitName }));
     ok(s.glow === 'var(--accent)', 'the release column is not lit by these words' + at + ': ' + JSON.stringify(s.glow));
     ok(!/write where you felt it|Keep writing/.test(s.page), 'and nothing asks where it was felt' + at);
     const m = s.ink && s.ink.match(/\d+/g).map(Number);
@@ -209,7 +220,7 @@ const look = p => p.evaluate(() => {
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-committed-' + w + '.png') }).catch(() => {});
     await type(p, 'I was scared and my chest went tight.');
     const nx = await look(p);
-    ok(nx.line === null && nx.reach === 0 && nx.commit !== 'Commit', 'the next entry starts and the line goes, and that entry reads as it always did' + at + ': ' + JSON.stringify(nx.commit));
+    ok(nx.line === null && nx.reach === 0 && /^\d+$/.test(nx.commitN || ''), 'the next entry starts and the line goes, and that entry reads as it always did' + at + ': ' + JSON.stringify({ badge: nx.commitN, name: nx.commitName }));
     ok(!p.errs.length, 'no page errors' + at + ': ' + p.errs.join(' | '));
     await p.cx.close();
   }
@@ -273,7 +284,8 @@ const look = p => p.evaluate(() => {
     }
     await p.evaluate(() => SAFE_WORDS.forEach(r => { r.on = false; }));
     await type(p, T); const off = await look(p);
-    ok(off.line === null && /Commit \d/.test(off.commit), 'with on false on the table\'s rows the entry reads as it did on main: ' + JSON.stringify(off.commit));
+    ok(off.line === null && /^\d+$/.test(off.commitN || '') && /^Commit, \d+ imprints$/.test(off.commitName || ''),
+      'with on false on the table\'s rows the entry reads as it did on main: ' + JSON.stringify({ badge: off.commitN, name: off.commitName }));
     await p.evaluate(() => SAFE_WORDS.forEach(r => { r.on = true; }));
     await type(p, T + ' '); const on = await look(p);
     ok(on.line === SAY.entry, 'and back on, the line returns');
@@ -286,8 +298,8 @@ const look = p => p.evaluate(() => {
     const p = await open(browser, 390, 844);
     await type(p, 'I never feel safe at home. He threatened to kill me.');
     const s = await look(p);
-    ok(s.line === SAY.entry && s.reach === 0 && !s.ask && s.marks === 0 && s.commit === 'Commit',
-      '"I never feel safe at home" gets the line, no door (removed 11 November), and no release or question: ' + JSON.stringify({ line: !!s.line, commit: s.commit }));
+    ok(s.line === SAY.entry && s.reach === 0 && !s.ask && s.marks === 0 && s.commitN === null && s.commitName === 'Commit',
+      '"I never feel safe at home" gets the line, no door (removed 11 November), and no release or question: ' + JSON.stringify({ line: !!s.line, badge: s.commitN, name: s.commitName }));
     await p.cx.close();
   }
 

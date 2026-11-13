@@ -88,7 +88,18 @@ const story = p => p.evaluate(() => {
     others: quote(P && P.others, 'whoAt'),
     counts: { words: STR.toks.length, kept: STR.marks.length - ng - no, negated: ng, other: no },
     list: (document.getElementById('stimps') || {}).textContent || '',
-    commit: (document.getElementById('stapply') || {}).textContent || ''
+    /* THE COUNT IS ITS OWN ELEMENT, 13 November. #stapply is an arrow with a
+       .st-sendn badge beside it (his 9 November ruling, "replace the commit
+       button with an arrow"), not a word, so reading the whole button's text
+       and matching it against "Commit" only ever worked because stRefresh
+       was overwriting the arrow with that string on every keystroke, which
+       was the defect fixed in ui/storyui.js. The count is read off the badge
+       now, with the accessible name beside it, so a badge and a name that
+       disagree fail here too. */
+    commitN: (() => { const b = document.getElementById('stapply'), n = b && b.querySelector('.st-sendn');
+      return n ? n.textContent : null; })(),
+    commitName: (() => { const b = document.getElementById('stapply');
+      return b ? b.getAttribute('aria-label') : null; })()
   };
 });
 
@@ -121,7 +132,7 @@ require('./net.js').guardBrowser(browser);
 
     await type(p, 'I was not angry.');
     const d = await story(p);
-    ok(d.commit === 'Commit', 'a denial alone gives the Commit button nothing to count: ' + JSON.stringify(d.commit));
+    ok(d.commitN === null && d.commitName === 'Commit', 'a denial alone gives the Commit button nothing to count: ' + JSON.stringify({ badge: d.commitN, name: d.commitName }));
     ok(!/only from/.test(d.list), 'and the list never says a seat was charged by a denied word alone: ' + JSON.stringify(d.list.slice(0, 90)));
 
     await type(p, 'I was not angry. My chest went tight and I was scared.');
@@ -156,7 +167,7 @@ require('./net.js').guardBrowser(browser);
       'the engine keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.counts));
     await type(p, 'He is furious.');
     const d = await story(p);
-    ok(d.commit === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify(d.commit));
+    ok(d.commitN === null && d.commitName === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify({ badge: d.commitN, name: d.commitName }));
     ok(!p.errs.length, 'no page errors on the Story page: ' + p.errs.join(' | '));
     await p.cx.close();
     /* the quiz half of S2 went 12 November, see the note above S2 */

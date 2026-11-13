@@ -1315,14 +1315,44 @@ function stRefresh(){
  /* THE WORD DEPENDS ON WHICH #stapply IS IN THE DOCUMENT, 9 November. One
     id, two mutually exclusive places it can render (STV.chat&&STV.dash's
     own .st-lsbank in the bank row, reading "Bank"; every other state's
-    plain button in .st-bar, reading "Commit", see ui/storyui.js's own
+    arrow button in .st-bar, labelled "Commit", see ui/storyui.js's own
     stRender). This refresh runs on every keystroke, well after either
     render chose its word, and used to reset it to "Commit" unconditionally
     whichever button it found; now it reads the class that marks which one
     it actually found rather than guessing. */
  if(ap){ap.disabled=!ST_PARSED;
-  var apw=ap.classList.contains('st-lsbank')?'Bank':'Commit';
-  ap.textContent=apw+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
+  var apn=(ST_PARSED&&ST_PARSED.imprints.length)||0;
+  /* THE BANK'S BUTTON IS A WORD AND NOTHING ELSE, so its whole contents
+     are that word and the count and there is no child to lose. */
+  if(ap.classList.contains('st-lsbank')){ap.textContent='Bank'+(apn?' '+apn:'');}
+  /* THE ARROW AND THE BADGE SURVIVED NO KEYSTROKE, 13 November. This read
+     ap.textContent='Commit'+count for both buttons, and textContent
+     replaces every child node, so each character typed threw away the
+     arrow stRender builds (an inline svg, see #stapply there) and the
+     .st-sendn badge with it, and wrote the word "Commit" back into the
+     44 pixel round button his 9 November ruling, "replace the commit
+     button with an arrow", had taken the word off. Reproduced in real
+     Chromium on the built file before this line was touched: the
+     button's own innerHTML went from <svg ...></svg><b
+     class="st-sendn">8</b> to the string "Commit 8" on one key, with
+     zero svg elements left in it. The badge is its own element now and
+     only it is written, the way #stvn, the Archive count beside it,
+     already works: a parent that owns an icon is not also a shelf for a
+     count, the same lesson .st-lsico records at stRender.
+
+     AND THE NAME MOVES WITH THE COUNT. stRender writes the count into
+     aria-label and title as a sentence that says what it counts (the
+     UNPACK rule, 2 October: a number never stands alone), so a count
+     that is live here and a sentence that is not would leave a screen
+     reader and a tooltip quoting a figure the badge no longer shows.
+     Both are rewritten from the same apn. */
+  else{
+   var apb=ap.querySelector('.st-sendn');
+   if(apn){ if(!apb){apb=document.createElement('b'); apb.className='st-sendn'; ap.appendChild(apb);}
+    if(apb.textContent!==String(apn))apb.textContent=String(apn); }
+   else if(apb)apb.remove();
+   ap.setAttribute('aria-label','Commit'+(apn?', '+apn+' imprints':''));
+   ap.setAttribute('title','Commit'+(apn?', '+apn+' imprints found in your words':''));}}
  /* THE HERO VIEW LEAVES REST THE MOMENT A TURN LANDS, same reason the
     word above is read live rather than guessed: srcTurnCommit calls
     this, not a full stRender, every time a spoken sentence finalises
