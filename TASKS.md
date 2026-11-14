@@ -34896,3 +34896,50 @@ dash the row's five other cards use, with the picture's own 0/30 stating
 the fact once), and "stable income between modalities" in Angela's purpose
 data, where CO-29 refuses a word that is always an abstraction standing in
 for a plain one ("steady money between one kind of healing and the next").
+
+## Round WE, 14 November. His own next bug report on Uni, and the gate that was too narrow to catch it
+
+Same night, same conversation, a second bug on the same mechanism Round WC
+had just audited: "Uni isn't showing up whenever I select a new profile. If
+I switch between profiles, Uni doesn't show up." Reproduced narrowly at
+first and wrongly called closed: switching between two example profiles,
+back to a blank "You," and tabbing away and back all happened to land on a
+record that was genuinely `unread`, so the gate that was actually wrong
+never got exercised. A design-workflow audit agent, tracing `storyui.js`
+line by line rather than clicking through the app, found the real
+remaining case: switch to a profile that is NOT a worked example and
+already carries a measured reading, with nothing freshly typed, and Uni
+still parked.
+
+**The cause.** `stUniSync()`'s "loaded up" gate read `ST_TEXT.trim()`
+alone, words in the box right now, the one signal the 13 November fix
+(Round TF) had to work with at the time. `stOwn()` clears `ST_TEXT` to `''`
+on every profile switch, since the old draft was never the new record's own
+words. So a profile switch into a record that already has a reading still
+read as "nothing loaded" until the person typed something new, on a page
+that was already showing that same record's Compass, Body and Field
+numbers everywhere else on the surface.
+
+**The fix.** `stUniSync(r)` now reads "loaded up" as either signal: `ST_TEXT`
+typed this session, OR the open record already carries a reading
+(`!r.unread`, the same flag every other surface on this product checks
+before it will print a band or a tier). A genuinely blank record with
+nothing typed still parks her, the case Round TF was guarding against; a
+record with something to show mounts her immediately. `uniApply(null)` was
+already written to take this safely: it reads `r.unread`, `r.CQ` and `r.DQ`
+on its own, and only the emotion-family highlight depends on a parsed
+story entry, so a loaded record with an untouched box shows her holding
+its coherence with no fresh reaction, not a blank stare. `stRender()` passes
+the `r` it already computed; `stPaintAll()`, a keystroke handler with no `r`
+of its own, computes one fresh, the same cost every other keystroke-driven
+tile on this page already pays.
+
+**The lesson, named rather than buried.** "Reproduce before fixing" held;
+what fell short was reproducing *enough* cases, not reproducing none. Three
+manual checks all happened to share one property (an unread target record)
+that made the narrow, already-wrong gate look correct. The audit that found
+the real gap did it by reading the two call sites and the gate's own
+condition against what `stOwn()` does to `ST_TEXT`, not by trying more
+combinations of clicks. Pushed at `27a50d8f`, gates clean: `node
+tests/engine.js` 7246/0, `node tests/collide.js` 398/0, `node
+tests/design.js` 193/0, `node tests/functional.js` 3033/0.
