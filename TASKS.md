@@ -34987,3 +34987,94 @@ yet built. The "Glass white" theme already in the product is the
 closest existing starting point and was not previously on his radar as
 an option; next round should ground any reskin mockups in that real
 theme and this exact real page, not an invented layout.
+
+## Round WG, 14 November. The well stays dark, the keyboard moves, a standing mobile bug closed
+
+Three real fixes, all built and screenshotted against the real page, none
+against a reconstruction.
+
+**The Uni well is dark edge to edge, on every theme, including the one
+that had never needed it before.** His words, on a screenshot of the
+glasswhite Dashboard: "For the uni space, that cell that it's in, I want
+that edge to edge, the background color." The edge-to-edge gradient fix
+from 10 November was still intact; it faded to `var(--sunk)`, and
+glasswhite's own `--sunk` had just been tuned light for the first time of
+any theme, so the one panel every other theme had always kept dark
+inherited a light base tone nobody had built it to carry. Fixed with a new
+theme-invariant pair, `--uni-well` (a fixed dark) and `--uni-well-ink` (a
+fixed light), scoped to `body.tab-story.st-full #stjr`, with a fallback to
+`--sunk` so nothing else changes. Found and fixed before showing it to
+him: forcing the well dark made `.st-mic` and `.st-type`, which read their
+color from theme tokens built for light panels, go dark-on-dark; both now
+read `--uni-well-ink` inside this one panel instead. Verified by direct
+`getComputedStyle` (well `rgb(13,16,20)`, icons `rgb(220,228,236)`) and by
+screenshot, against the real, committed glasswhite palette (the uncommitted
+palette variant from the reskin round was reverted first, since he has not
+picked between it and the other variant yet; this fix is independent of
+that choice).
+
+**The keyboard icon left the bottom of the panel and the glow leaves when
+it opens.** His words, on the same real screenshot: "Get rid of that
+keyboard icon at the very bottom, move that to the upper left. When I
+press that keyboard, it takes me to just a type display only, no visual
+design. This is my typing journal." Reviewed three times by the team
+before anything was touched (design, technical, then a final pass against
+his exact words), per his own instruction this round. The icon (`#sttype`,
+`ui/storyui.js`) moved out of `.st-bar`, where a 10 November rule had it
+centred under Uni, into `.st-hdbtns` beside Talk; it now shares their ring
+styling (`shell/head.html`) instead of its own bare treatment, and fills
+accent when open the way Dashboard already does when open. The old
+centring rule is marked OVERRIDDEN with his words rather than deleted, the
+house convention. Pressing it now cuts `.st-glow` (Uni's own canvas and
+the Source AI question line) and the two masked-word notes out of the
+markup entirely while typing, not merely alongside a dimmed glow, so the
+panel really is a type display with no visual design showing, exactly as
+asked; the text box takes the freed space. A real gap the final review
+pass found and this round closed: `stUniSync()` only ever parked Uni's
+render loop when it found her own canvas in the DOM; once typing removes
+that canvas, the lookup was never going to find it and the loop would
+have kept running against nothing. Fixed at the root, in `stUniSync()`
+itself, not with a special case in the keyboard's own handler: a missing
+canvas now parks her the same way a hidden one always did. The one
+third-icon-at-rest rule the move could have broken (10 November, "no
+third icon at rest" in the mini view) was checked and re-pinned to the
+icon's new address rather than lost with its old one. Verified by
+`getComputedStyle`/outerHTML dumps before and after the press, and by
+screenshot, at both widths, against the real file; a first pass at the
+glow's own markup swallowed the text box along with it (a parenthesis
+closed later than it looked, in code untouched by this round, not a new
+mistake), caught by the same dump before it ever reached a screenshot.
+
+**A standing bug a prior pass had found and logged, not yet fixed, closed
+this round.** His words, independently, about the real page: "the left
+side looks like it's just a black box floating on top of nothing without
+the rest of the kind of UI housing it." This matches, exactly, the
+"Found in passing, 14 November" note above: the Field's left rail, shut,
+reads correctly above 1180px (`.mid{grid-template-columns:58px 1fr
+336px}` shrinks the whole column to a small square) but below 1180px the
+columns stack at one full-width track with nothing shrinking a shut
+column to match, so `#lpanel`'s own `width:100%` resolved against the
+whole screen instead: a wide, bordered, mostly empty bar with one small
+icon adrift in it, nothing like the small bordered square the same shut
+state already is everywhere else. Reproduced directly (not assumed):
+loading at 1600 then resizing to 390 reliably hits it, a fresh load
+already at 390 does not, since the stored shut state a person carries in
+from a wider screen is what puts the column into this state at a narrow
+one in the first place. Fixed with `justify-self:start` on `#lcol` and
+`width:auto` on both `#lcol` and `#lpanel`, scoped to `body.lshut` inside
+the existing `max-width:1180px` block, so a shut column sizes to its one
+control the same way it already does above 1180px. Verified both states
+(shut, and opened again by pressing the same control) at 390 against the
+real rebuilt file, by `getBoundingClientRect` and by screenshot.
+
+Gates run clean on the combined build: `node tests/engine.js` 7246/0, 0
+expected red; `node tests/collide.js` 398/0; `node tests/design.js`
+193/0; `node tests/functional.js` 3033/0, including the "type instead
+opens the box on a browser with no speech recognition too" check, which
+had come back failed on an earlier run of this same round, chased before
+trusting it: that run's `functional.js` process was still executing
+while `source.html` was rebuilt twice underneath it mid-run (the
+keyboard-move change and its own fix), so part of it tested an
+intermediate, broken build rather than this one. Re-run clean, start to
+finish, against the file actually being shipped, before this was called
+done.

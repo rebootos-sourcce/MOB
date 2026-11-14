@@ -708,6 +708,26 @@ function stRender(){
       hearing state (srcHearing below). Nothing else showed that state, so
       removing it is a real loss of a signal, not only a cosmetic one, and
       is his call to make, taken as said. */
+   /* THE KEYBOARD MOVES UP HERE, BESIDE TALK, 14 November. His words, on a
+      screenshot of this exact screen with the keyboard icon circled at the
+      bottom: "Get rid of that keyboard icon at the very bottom, move that
+      to the upper left." It was centred under Uni in .st-bar (10 November
+      ruling, see the now-superseded CSS at #sttype in shell/head.html);
+      now it is the second control in .st-hdbtns, beside Talk, the same
+      upper-left group the Dashboard door's own comment already calls out
+      as the "left" side. The gate is unchanged from .st-bar's own copy of
+      it: hidden when voice cannot run, during crisis, or when neither door
+      is open (STV.novoice||STV.crisis||!(STV.chat||STV.typed)). The 10 Nov
+      "no third icon at rest" ruling still holds, now enforced in CSS on
+      this new location (see the rest-hiding rule at .st-hdbtns #sttype in
+      shell/head.html) rather than by sitting inside the bar that rule used
+      to hide whole. */
+   +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
+    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" aria-label="Type instead" title="'
+    +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
+    +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">'
+    +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
+    +'</button>')
    +'</div>'
    /* THE DASHBOARD DOOR STANDS ON ITS OWN NOW, round of 29 October, found by
       his own screenshot of the real site: Dashboard sat right beside Talk on
@@ -781,7 +801,20 @@ function stRender(){
      words both times were "get rid of those rainbow colours," and this is
      the one that was still there. srcComb() itself stays defined, in case a
      later screen wants it, only this call is cut. */
-  +(show?showNote('story','st-show'):'<div class="st-glow">'
+  /* THE GLOW LEAVES ENTIRELY WHILE TYPING, 14 November. His words, on the
+     same screenshot as the keyboard move above: "When I press that
+     keyboard, it takes me to just a type display only, no visual design.
+     This is my typing journal." STV.typed used to only ADD the box beside
+     Uni's still-visible glow (4 November, "the typing panel... to the
+     bottom of the journal," additive by design back then); this is him
+     overriding that for the glow specifically, not the box's own gate
+     below (.st-ed stays additive to the crisis and novoice doors, which
+     this does not touch). The whole .st-uni/#stsrc/live-caption block is
+     cut from the markup, not merely hidden by CSS, so stUniSync's own
+     document.getElementById('stuni') genuinely finds nothing and parks
+     her (see the root-cause fix at stUniSync, same date) rather than a
+     canvas sitting invisible and still animating underneath. */
+  +(show?showNote('story','st-show'):(STV.typed?'':'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -808,7 +841,7 @@ function stRender(){
      reader hears it grow the way a sighted ear does. */
   +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
     +esc(ST_LIVE||'Listening')+'</p>':'')
-  +'</div>'
+  +'</div>')
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
      The sniffer already names every word it is reading and which seat that
@@ -882,8 +915,13 @@ function stRender(){
      the engine's (maskedRuns, maskedSay in engine/sniff.js); this is only
      where it is shown. role=note, not a live region: the status line already
      speaks once when a recording brings stars in, see stMic. */
-  +'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
-   +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>'
+  /* THESE TWO NOTES LEAVE WITH THE GLOW TOO, same 14 November round: "no
+     visual design" is read as the whole panel, not the glow alone, so the
+     stars note and the aside note (both already conditionally hidden on
+     their own content) are also cut from the markup while STV.typed, the
+     same way .st-glow above is. */
+  +(STV.typed?'':'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
+   +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>')
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can
@@ -893,8 +931,8 @@ function stRender(){
      quote with what "not counted" means beside it, and nothing at all when
      nothing was set aside. It is a sentence and not a count, so it is not
      the counter round HS took off this place. */
-  +'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
-   +esc(stAsideSay())+'</p>'
+  +(STV.typed?'':'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
+   +esc(stAsideSay())+'</p>')
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
      there" It read "2 words, 0 tagged". The word count is a number nobody
@@ -925,30 +963,10 @@ function stRender(){
    /* the second door, at the foot, where the person finishes: see the crisis
       line above. */
    +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
-   /* TYPE INSTEAD, THE BOX ON REQUEST, 4 November. His words: "We should
-      probably just add the typing panel, closed, to the bottom of the
-      journal. And if a person wants to use it, they can just use it." Since
-      29 October the box came back only when voice could not run
-      (stVoiceCant), so a person whose microphone works but who would rather
-      not speak, in an office or on a train, had no way in. This opens the
-      same box, see stType. It is not drawn beside the forced box
-      (STV.novoice), where closing it would hand the person back to a voice
-      that cannot run, nor beside the crisis door's box, which keeps the one
-      door it already has. The label stays the same open or shut, and
-      aria-expanded carries which. */
-   +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
-    /* ICON ONLY, BIGGER, 6 November, his words on this exact screen:
-       "instead of type instead, just have the keyboard icon. Make it more
-       interesting looking, bigger." The visible label is gone; aria-label
-       carries the same words the title already did, so a screen reader
-       still hears "Type instead", per the same pattern PR #200 already
-       cut this label to an icon with on Discover. 15px to 22px, a heavier
-       stroke so it still reads at the larger size. */
-    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" aria-label="Type instead" title="'
-    +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
-    +'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">'
-    +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
-    +'</button>')
+   /* TYPE INSTEAD'S OWN BUTTON MOVED OUT OF THIS BAR, 14 November, see the
+      long comment at #sttype in .st-hdbtns above, where it now lives. This
+      bar used to centre it under Uni; the bar itself, stType and the box it
+      opens (#sttext, below in .st-ed) are otherwise unchanged. */
    /* AN ARROW, NOT THE WORD, 9 November, his words on this exact screen:
       "replace the commit button with an arrow." aria-label carries
       "Commit" so nothing a screen reader hears changes; the count, when
@@ -1283,7 +1301,18 @@ function stRender(){
    cost every other keystroke-driven tile on this page already pays. */
 function stUniSync(r){
  if(typeof document==='undefined')return;
- var un=document.getElementById('stuni'); if(!un)return;
+ /* PARK HER WHEN HER OWN CANVAS LEAVES THE PAGE, 14 November. Found
+    reviewing the typing-journal round above: this function used to return
+    here doing nothing at all once #stuni was missing, which was never
+    reachable before (#stuni's own markup never used to come and go; see
+    .st-glow above, which now leaves entirely while STV.typed). A missing
+    target meant "nowhere to check yet" before; now it can also mean "she
+    has nowhere to live right now," and the two read identically to this
+    one line unless it parks her itself. uniPark() is her own resting
+    state and safe to call again if she is already there (uniHost.hidden
+    already true costs nothing to set true again). */
+ var un=document.getElementById('stuni');
+ if(!un){ if(typeof uniPark==='function')uniPark(); return; }
  var show=typeof showOnly==='function'&&showOnly();
  var seen=r||(typeof computeSeen==='function'?computeSeen():null);
  var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread);

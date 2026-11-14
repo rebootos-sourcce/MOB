@@ -204,6 +204,13 @@ font-display:swap;src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALw
     drift rather than as rhythm. */
  --g1:6px; --g2:10px; --g3:16px;
  --shadow:0 12px 34px rgba(0,0,0,.34);
+ /* THE ONE CONSTANT NO THEME TINTS. 14 November. Uni's own panel in the
+    Dashboard (body.tab-story.st-full #stjr, far below) is a dark well set
+    into whatever case surrounds it, on every theme alike -- his own words,
+    twice now, pointing at this exact panel. Every other token on this
+    page is themed on purpose; this one names the one place that stays
+    fixed regardless, so the next theme does not have to rediscover it. */
+ --uni-well:#0D1014; --uni-well-ink:#DCE4EC;
 }
 /* ---------- PUNCH. The third theme. Nothing is outlined, everything is solid.
    Flat: one plane, no borders, no shadows, filled shapes, a selected thing is
@@ -4261,8 +4268,20 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    the mini view and already the narrower stage column in the Full
    Dashboard, and Uni's own horizontal centre is #stjr's, so this one
    rule lands the icon under her either way. */
-#stjr .st-bar #sttype{position:absolute;left:50%;bottom:24px;
- transform:translateX(-50%);margin:0;z-index:5}
+/* OVERRIDDEN, 14 November: the rule above (and this selector) is dead.
+   His words, on a screenshot circling this exact icon sitting under Uni:
+   "Get rid of that keyboard icon at the very bottom, move that to the
+   upper left." #sttype moved out of .st-bar into .st-hdbtns (see the long
+   comment at #sttype in ui/storyui.js), where it reads as a plain flex
+   child of that row and needs no position of its own; the rule the
+   comment above describes is kept here, dated, rather than deleted, per
+   house convention, since the reasoning for "one rule, not two" still
+   matters even though its target moved. #stjr .st-bar #sttype now matches
+   nothing (the id left that container), so nothing here needs to change
+   for it to go quiet; it is commented out only so a future reader does
+   not have to work that out again.
+   #stjr .st-bar #sttype{position:absolute;left:50%;bottom:24px;
+    transform:translateX(-50%);margin:0;z-index:5} */
 /* AND THE SIX MINI PICTURES NEVER REACH THE MINI VIEW EITHER, same round,
    same reasoning: Compass, Boundary, Body, Field, Avatar and Masks are a
    Dashboard-only idea, his own words scoping them there ("when I hit
@@ -4453,15 +4472,41 @@ body.tab-story.st-full #stjr{
     centred light and still reads as her glow, not a box (nothing here
     regained a hard edge), but the ground it fades onto now actually has a
     tone, the same dark every other panel in this product is built on. */
- border-radius:0;background-color:var(--sunk);
+ /* THE WELL STAYS DARK, 14 November, regardless of theme. His words,
+    drawn on a glasswhite screenshot: "for the Uni space, that cell that
+    it's in, I want that edge to edge, the background color" -- meaning
+    dark, edge to edge, the way this panel already reads on every other
+    theme. --sunk is dark on Dark/Glass/Flat/Snow (color-mixes toward
+    #12131B/near-black) but light on Glasswhite (rgba(228,226,220,.60)),
+    the one theme this panel had never been built against before tonight.
+    This is the single cell he has twice now called "the circle," and a
+    light fade here is the one place a light theme's own tokens should
+    not reach in: --uni-well is a fixed dark, not a themed one, so this
+    panel is the same dark instrument set into whatever case surrounds
+    it, on every theme alike. */
+ border-radius:0;background-color:var(--uni-well,var(--sunk));
  background-image:radial-gradient(closest-side at 50% 40%,
-   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--sunk)) 0%,
-   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,var(--sunk)) 45%,
-   var(--sunk) 100%);
+   color-mix(in srgb,rgb(var(--uni-amb-core)) 60%,var(--uni-well,var(--sunk))) 0%,
+   color-mix(in srgb,rgb(var(--uni-amb-edge)) 30%,var(--uni-well,var(--sunk))) 45%,
+   var(--uni-well,var(--sunk)) 100%);
  /* BREATHING ROOM, same words, same round. .st-pan's own 14px/16px (its
     base rule, above) was built for a panel that is mostly text; this one
     is mostly her. */
  padding:32px 28px}
+/* THE ICONS INSIDE THE WELL STAY LIGHT, 14 November, found testing the
+   fix above: .st-mic and .st-type both read color:var(--ink)/var(--mid)
+   at rest, the dark ink a light theme paints on its own light panels,
+   now invisible against a panel this same change just made permanently
+   dark. --uni-well-ink is the one light constant paired with --uni-well
+   above, for the same reason: this well is not themed, so nothing
+   inside it should read its ink from a theme either. .st-dash needs no
+   entry here: inside the Dashboard it is always .on, already painted
+   --on-accent on a filled accent circle, themed correctly already. */
+body.tab-story.st-full #stjr .st-mic,
+body.tab-story.st-full #stjr .st-type{color:var(--uni-well-ink)}
+body.tab-story.st-full #stjr .st-mic:hover,
+body.tab-story.st-full #stjr .st-type:hover,
+body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
 /* HER OWN BOX STOPPED GROWING TO FILL WHATEVER WAS LEFT, same round, his
    words: "the whole design needs to be symmetrical." .st-chat .st-uni's
    flex:1 1 0 (below) let her column stretch to every pixel #stsrc's own
@@ -4671,6 +4716,14 @@ body.tab-story:not(.st-full) #stjr{position:static;padding:0;justify-content:cen
    has not seen yet. */
 body.tab-story:not(.st-full) #stjr.st-rest #stsrc,
 body.tab-story:not(.st-full) #stjr.st-rest .st-bar:not(.st-bar-crx){display:none}
+/* THE KEYBOARD STAYS FOLDED AT REST TOO, 14 November, now that it lives in
+   .st-hdbtns and not .st-bar (see the long comment at #sttype in
+   ui/storyui.js). The rule above only ever reached it by being inside the
+   bar it hid whole; moved out, it needs its own line here or it would sit
+   as a permanent third icon beside Talk even with nothing happening, which
+   is exactly the "no third icon at rest" ruling (10 November) this round
+   does not touch. */
+body.tab-story:not(.st-full) #stjr.st-rest .st-hdbtns #sttype{display:none}
 /* THE HALO IS #stsrc's OWN, AND GOES QUIET WITH IT. .st-glow::before (the
    "passing light and the scan" round, above) bleeds a few pixels past
    Source AI's small prompt box; .st-chat .st-glow is flex:1 1 auto and
@@ -5180,20 +5233,29 @@ body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
    control. Listening still fills solid alarm red and Dashboard-open solid
    accent, both real state and neither one grey; see .st-mic.on and
    .st-dash.on below, unchanged. */
-.st-mic,.st-dash{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
+/* THE KEYBOARD JOINS THIS SAME RING, 14 November. His words: "the entire
+   interface and UI UX feels like it's integrated into one design." It had
+   its own bare, ringless treatment before (the now-deleted .st-type rule
+   that used to sit below .st-mask), the one odd icon out beside Talk and
+   Dashboard; moved into their own row (.st-hdbtns, see ui/storyui.js), it
+   reads as a third member of the same control rather than a second
+   language, which is the "one design" he is naming, not a separate ask. */
+.st-mic,.st-dash,.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;
  justify-content:center;gap:6px;background:none;border:0;color:var(--ink);font-weight:600;
  border-radius:50%;padding:0 10px;font-family:var(--sans);font-size:13.5px;cursor:pointer;
  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent);
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),
   color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),
   transform var(--t-micro) var(--ease-out)}
-.st-mic svg,.st-dash svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
+.st-mic svg,.st-dash svg,.st-type svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;
  stroke-linejoin:round;flex:0 0 auto}
-.st-mic:hover,.st-dash:hover{color:var(--ink);transform:translateY(-1px);
+.st-mic:hover,.st-dash:hover,.st-type:hover{color:var(--ink);transform:translateY(-1px);
  box-shadow:0 0 0 1.5px var(--accent),0 4px 14px color-mix(in srgb,var(--accent) 30%,transparent)}
 /* Dashboard filled when it is open, the same accent-on-accent pairing the
-   Commit button already carries, so "on" reads as on and not just outlined */
-.st-dash.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
+   Commit button already carries, so "on" reads as on and not just outlined.
+   THE KEYBOARD GETS THE SAME FILL WHILE OPEN, 14 November, same reasoning:
+   aria-expanded is this button's own "on," so it reads the same as Dashboard's. */
+.st-dash.on,.st-type[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);
  box-shadow:0 0 0 1.5px var(--accent),0 2px 12px color-mix(in srgb,var(--accent) 38%,transparent)}
 /* the eyebrow above Source AI's own line, round of 29 October: see storyui.js
    for the ruling. tier1 is the house's own small-label class; this only
@@ -5278,23 +5340,14 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
    text and the buttons. It's way too tight, dude." 11px read as the box's
    own border practically touching Type instead and Commit/Bank under it. */
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:20px}
-/* TYPE INSTEAD, 4 November, see #sttype in ui/storyui.js. His words: "the
-   typing panel, closed, to the bottom of the journal." Closed means out of
-   the way, so this carries none of the lift Chat and Dashboard were given
-   (no fill, no border, no glow): the icon alone, in the mid ink, and it
-   reaches full ink on hover and while its box is open. Still the full 44
-   pixel target, the floor tests/design.js holds.
-   ICON ONLY, BIGGER, 6 November, his words on this exact screen: "instead
-   of type instead, just have the keyboard icon. Make it more interesting
-   looking, bigger." The visible word is gone (aria-label carries it for a
-   screen reader), 15px to 22px, and the stroke widened to read at the
-   larger size, the same ratio PR #200 used cutting this label to an icon
-   on Discover. */
-.st-type{min-height:var(--tap);min-width:var(--tap);display:inline-flex;align-items:center;justify-content:center;
- background:none;border:0;border-radius:999px;padding:0 8px;margin-left:-8px;color:var(--mid);
- cursor:pointer;transition:color var(--t-micro) var(--ease-out)}
-.st-type svg{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.st-type:hover,.st-type[aria-expanded="true"]{color:var(--ink)}
+/* TYPE INSTEAD'S OWN BARE ICON RULE IS GONE, 14 November. It used to carry
+   none of the lift Chat and Dashboard were given (no fill, no border, no
+   ring), the one odd icon out at 22px against their 16px; now that it
+   lives beside them in .st-hdbtns, it reads from the shared .st-mic,
+   .st-dash,.st-type ring rule above instead (sizing, ring, hover, and the
+   aria-expanded fill), the same "one design" his words ask for. Nothing
+   here replaces it; the rule simply moved up to where Talk and Dashboard's
+   own rules already are. */
 /* words dictation hid behind stars, said where the words are (maskedRuns) */
 .st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
  background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
@@ -7443,6 +7496,25 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .col{min-height:auto}
  .stage{min-height:62vh}
  .panel.sc{max-height:none;overflow:visible}
+ /* THE SHUT RAIL STAYS A SMALL SQUARE BELOW 1181 TOO, 14 November. His
+    words, looking at the real page: "the left side looks like it's just
+    a black box floating on top of nothing without the rest of the kind
+    of UI housing it." Reproduced directly: above 1180 a shut column
+    shrinks through `.mid{grid-template-columns:58px 1fr 336px}` (see
+    body.lshut, above), so #lpanel's own width:100% resolves against a
+    58px track and reads as the same small bordered square every other
+    icon-only control on this page already is. Below 1181 the columns
+    stack at `.mid{grid-template-columns:1fr}`, one track the full row
+    wide, and nothing here ever gave a shut column a narrower track of
+    its own, so the same width:100% resolved against the WHOLE screen
+    width instead: a wide, empty, bordered bar with one small icon
+    adrift in the middle of it, no longer reading as a button at all.
+    justify-self:start keeps #lcol from stretching to the stacked row's
+    full width when it has nothing but its own fold control to show;
+    width:auto on both lets each size to that control's own padding
+    rather than to a percentage of whatever they are handed. */
+ body.lshut #lcol{justify-self:start;width:auto}
+ body.lshut #lpanel{width:auto;align-self:flex-start}
  /* THE TAIL IS FOR A RAIL THAT SCROLLS ITSELF. Below 1181 the rail does not,
     the page does, so the 88vh tail above that gives a pressed header room to
     reach the top has nothing to do here and only sits as empty glass under

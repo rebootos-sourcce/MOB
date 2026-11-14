@@ -3,7 +3,7 @@
    app's own stylesheet. The funnel and the app have to look like one
    product, and a palette copied by hand is correct on the day it is copied
    and wrong afterwards. Change a value in head.html and run the tool.
-   52 tokens. */
+   54 tokens. */
 :root{
  /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
 
@@ -155,4 +155,11 @@
     drift rather than as rhythm. */
  --g1:6px; --g2:10px; --g3:16px;
  --shadow:0 12px 34px rgba(0,0,0,.34);
+ /* THE ONE CONSTANT NO THEME TINTS. 14 November. Uni's own panel in the
+    Dashboard (body.tab-story.st-full #stjr, far below) is a dark well set
+    into whatever case surrounds it, on every theme alike -- his own words,
+    twice now, pointing at this exact panel. Every other token on this
+    page is themed on purpose; this one names the one place that stays
+    fixed regardless, so the next theme does not have to rediscover it. */
+ --uni-well:#0D1014; --uni-well-ink:#DCE4EC;
 }
