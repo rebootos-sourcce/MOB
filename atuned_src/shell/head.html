@@ -4172,12 +4172,28 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    than given a panel colour, because the stage already is one on every
    lighting and a panel colour on a panel is invisible on four of the seven.
    ============================================================ */
-/* FLEX-WRAP ADDED, 13 November, for .st-mini6 below: a fourth child with
-   flex-basis 100% wraps onto its own row under the three columns rather
-   than squeezing in as a fourth narrow one beside them. The three
-   columns themselves are unaffected, none of their own flex rules name
-   a basis that would let them wrap on their own. */
-.st-flow{display:flex;flex-wrap:wrap;gap:12px;width:100%;height:100%;min-height:0;align-items:stretch;text-align:left}
+/* GRID, NOT FLEX-WRAP, 14 November. His words, drawn on the real screenshot:
+   "I don't want to see the widgets not touching the very bottom... the
+   center columns just stretch down to the bottom." The 13 November
+   flex-wrap (comment below, kept for the record) wrapped .st-mini6 onto
+   its own line correctly, but a wrapped flex line's cross size is the
+   browser's own multi-line distribution, not a number either of us chose:
+   measured on this exact build, .st-flow's 875px of real height split as
+   colw 486 / gap 12 / mini6 332, and mini6's own children (the six cards)
+   stayed their fixed 200px regardless, so 132px of that 332 sat empty
+   inside mini6's own box, on top of the usual slack a wrapped line leaves
+   at the container's far edge. That is the gap in his screenshot, measured
+   rather than eyeballed. Two rows, named as rows, removes the ambiguity:
+   row one (the three columns) is 1fr, every pixel #story hands this page
+   that the second row does not need; row two (.st-mini6) is auto, exactly
+   its own six 200px cards, no more. Row one grows until row two sits flush
+   against the bottom, which is the literal ask. FLEX-WRAP ADDED, 13
+   November, for .st-mini6: a fourth child with flex-basis 100% wraps onto
+   its own row under the three columns rather than squeezing in as a fourth
+   narrow one beside them. The three columns themselves are unaffected,
+   none of their own flex rules name a basis that would let them wrap on
+   their own. */
+.st-flow{display:grid;grid-template-columns:1.64fr 1.64fr 1fr;grid-template-rows:1fr auto;gap:12px;width:100%;height:100%;min-height:0;text-align:left}
 /* .st-colr IS GONE, 9 November. His words: "the imprints now column
    becomes now the full bank column." .st-colx (ui/storyui.js keeps its
    id, the release column's own) takes the flex ratio .st-colr used to
@@ -4197,20 +4213,22 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    column rule held, carried onto whichever of the three now owns that
    attention, not dropped with the column it used to share. */
 .st-colw,.st-colb,.st-colz{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;
- transition:flex var(--t-context) var(--ease-out)}
-.st-colw{flex:1.64 1 0}
-.st-colb{flex:1.64 1 0}
-.st-colz{flex:1 1 0}
-.st-flow[data-focus="read"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="read"] .st-colb{flex:2.2 1 0}
-.st-flow[data-focus="read"] .st-colz{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colw{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colb{flex:1 1 0}
-.st-flow[data-focus="release"] .st-colz{flex:1.8 1 0}
+ grid-row:1;transition:flex var(--t-context) var(--ease-out)}
+.st-colw{flex:1.64 1 0;grid-column:1}
+.st-colb{flex:1.64 1 0;grid-column:2}
+.st-colz{flex:1 1 0;grid-column:3}
+/* flex ratios above are dead weight now (.st-flow is grid, not flex) but
+   stay rather than risk a selector this file does not know about still
+   reading them; grid-template-columns on .st-flow itself is what actually
+   places the three widths, in the same 1.64/1.64/1 and read/release
+   proportions the flex rule carried. */
+.st-flow[data-focus="read"]{grid-template-columns:1fr 2.2fr 1fr}
+.st-flow[data-focus="release"]{grid-template-columns:1fr 1fr 1.8fr}
 /* SIMPLE ON LANDING, round of 29 October, his words: "when I land on this
    page, it starts off in simple mode." Imprints and Release are real
    panels, not removed, only shut until Dashboard opens them (STV.dash,
    ui/storyui.js). The Journal takes the width they would have used. */
+.st-flow.st-simple{grid-template-columns:1fr}
 .st-flow.st-simple .st-colb,.st-flow.st-simple .st-colz{display:none}
 .st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
 /* THE KEYBOARD AND COMMIT ESCAPE THE 900PX READING COLUMN, 10 November,
@@ -4258,7 +4276,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;gap:12px}
+.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
    .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
