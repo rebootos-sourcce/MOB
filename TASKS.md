@@ -34943,3 +34943,47 @@ condition against what `stOwn()` does to `ST_TEXT`, not by trying more
 combinations of clicks. Pushed at `27a50d8f`, gates clean: `node
 tests/engine.js` 7246/0, `node tests/collide.js` 398/0, `node
 tests/design.js` 193/0, `node tests/functional.js` 3033/0.
+
+## Round WF, 14 November. He stood down a whole design round, then drew the bug for us
+
+He rejected the layout-redesign exploration mid-stream: "Yeah, I'm not
+liking your new mock-ups. The colors are cool, but the mock-ups are not.
+So let's start back with the skin," then asked for a reskin of the REAL
+page instead of an invented one. While pulling real ground truth for
+that (screenshots of the actual live Dashboard, including the "Glass
+white" theme, which turned out to already be most of the light/cream
+case he described), he sent an annotated screenshot of the real page
+with a scribble under the six widget cards: "I don't want to see the
+widgets not touching the very bottom... the center columns just stretch
+down to the bottom. You already had the design, you just f***ing broke
+it again."
+
+**Diagnosed on the real build, not guessed.** `.st-flow`
+(`atuned_src/shell/head.html`) laid the three dashboard columns and the
+six-widget row (`.st-mini6`) out as one `flex-wrap` container, two
+wrapped lines. Measured directly: `.st-flow` had 875px to spend; it
+split as columns 486 / gap 12 / mini6 332, but mini6's own six cards
+stayed their fixed 200px regardless of the 332px handed to their line,
+leaving 132px empty inside mini6's own box, on top of further slack at
+the container's own bottom edge. That is exactly the gap he circled.
+
+**Fixed with CSS grid, not another flex tweak.** `.st-flow` is now a
+two-row grid: row one (the three columns) at `1fr`, row two (`.st-mini6`)
+at `auto`. Row one takes every pixel going spare; row two is exactly its
+own six cards, no more, so it always sits flush at the bottom. Column
+widths still come from `grid-template-columns` in the same 1.64/1.64/1
+ratio the flex rule carried (and the read/release focus variants, the
+same way); `.st-flow.st-simple` collapses to one column the same way;
+the mobile breakpoint's own flex-column override is untouched. Verified
+visually across full dashboard, read-focus, release-focus and simple
+(hero) states at 1600x1000. Pushed at `6db53814`, gates clean: `node
+tests/engine.js` 7246/0, `node tests/collide.js` 398/0, `node
+tests/design.js` 193/0, `node tests/functional.js` 3033/0.
+
+**Still open, his call:** the reskin itself (colors, fonts, swapping
+Uni's current glow for the aperture circle from the abandoned mockups,
+keeping the real text field/buttons/imprints/release untouched) is not
+yet built. The "Glass white" theme already in the product is the
+closest existing starting point and was not previously on his radar as
+an option; next round should ground any reskin mockups in that real
+theme and this exact real page, not an invented layout.
