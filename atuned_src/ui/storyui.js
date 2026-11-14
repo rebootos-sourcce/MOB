@@ -103,9 +103,45 @@ function stMark(k,word,term,cls,tail){
    pictures. */
 var SEATCOL={Root:'--root',Sacral:'--sacral',Solar:'--solar',Heart:'--heart',
  Throat:'--throat',Eye:'--eye','Third Eye':'--eye','3rd Eye':'--eye',Crown:'--crown'};
-function stMiniShell(id,label,inner){
- return '<div class="st-mini" id="'+id+'" aria-label="'+esc(label)+'">'
-  +'<div class="st-mini-lb">'+esc(label)+'</div>'+inner+'</div>';}
+/* CLICK TAKES YOU TO THE REAL PAGE, 13 November, his words: "if I click on
+   it, it takes me to those pages." Each card's real destination is not
+   always its own tab: Boundary and Avatar are both answered on the Avatar
+   page (TAB.INTAKE), on different sub-tabs, and Masks has to pick the same
+   mask the card itself is already naming before it opens, or a click would
+   land on a page that agrees with nothing the card just showed. STGO holds
+   one real route per card, reusing the exact calls their own pages already
+   make for this (drills.js:1528-1531 for Boundary/Avatar's Purpose and
+   Archetypes sub-tabs; character.js:232-236 for picking a mask), rather
+   than a second routing table invented here. role="link" because the card
+   is a destination, not an action; a bare div inside a <button> is invalid
+   markup, and the app's own "#" address is already claimed by #r= record
+   links (recordLinkBoot), so this is not an <a> either. */
+var STGO={
+ stcompass:function(){setTab(TAB.COMPASS);},
+ stboundary:function(){if(typeof AV!=='undefined')AV.sub='purpose'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ stbody:function(){setTab(TAB.ENERGY);},
+ stfield:function(){setTab(TAB.FIELD);},
+ stavatar:function(){if(typeof AV!=='undefined')AV.sub='arch'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
+  if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
+  setTab(TAB.MASKS); if(typeof render==='function')render();}};
+var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
+function stMiniShell(id,label,inner,goKey){
+ var go=goKey&&STGO[goKey];
+ var t=go?' data-stgo="'+goKey+'" role="link" tabindex="0"':'';
+ var lands=go&&STGO_LABEL[goKey];
+ return '<div class="st-mini'+(go?' st-mini-link':'')+'" id="'+id+'" aria-label="'+esc(label)+(go?', opens '+esc(lands||label):'')+'"'+t+'>'
+  +'<div class="st-mini-lb">'+esc(label)+(lands?'<span class="st-mini-go">'+esc(lands.split(', ').pop())+' ›</span>':(go?'<span class="st-mini-go">›</span>':''))+'</div>'+inner+'</div>';}
+(function(){
+ var go=function(el){var k=el.getAttribute('data-stgo'), fn=k&&STGO[k]; if(fn)fn(el);};
+ addEventListener('click',function(e){
+  var el=e.target&&e.target.closest?e.target.closest('[data-stgo]'):null; if(!el)return;
+  go(el);});
+ addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  var el=e.target&&e.target.closest?e.target.closest('[data-stgo]'):null; if(!el)return;
+  e.preventDefault(); go(el);});
+})();
 /* COMPASS, the eight MIRROR axes (engine/data/compass.js, its own header:
    "THE EIGHT MIRROR PAIRS") as spokes from the centre; coneMirPos (ui/cone.js)
    is the real tab's own per-axis read, 0 to 100 or null unanswered, reused
@@ -125,26 +161,68 @@ function stMiniShell(id,label,inner){
    name on a 240 by 200 card has no room for the meaning line CLAUDE.md's
    unpack-every-symbol rule would require beside it, so the card stays
    honest about what it can actually explain at this size. */
+/* THE REAL NEEDLE, SMALL AND STILL, 13 November, team review of the 13
+   November widget redesign: the flat spoke wheel above read as a sketch
+   next to the actual Compass tab's own two octagonal pyramids (coneNeedle,
+   ndlFaces, ndlRib, ui/cone.js). This draws the same solid, in axonometric
+   projection frozen at one spin (0.39 rad, cone.js's own default), rather
+   than running the real tab's animated canvas six times at once, which the
+   team's own technical read found would cost 30 to 75ms of a 16.7ms frame
+   for all six cards together. Faces, ribs and the limbo band reuse the real
+   lighting formula and alpha values (ndlFaces/ndlRib), as a static SVG.
+
+   ONE compute() PER CARD NOW, NOT EIGHT, same review round: coneMirPos
+   called compute() itself, once per MIRROR axis, so this card alone ran the
+   whole engine eight times on every Dashboard paint. r.seats (seatRows(),
+   already computed once for this render by stRender) plus compassAt
+   (engine/data/compass.js) gives the same number for free. */
 function stMiniCompass(r){
  var un=r.unread;
- var vals=MIRROR.map(function(m){return un?null:coneMirPos(m);});
+ var seatRow=function(seat){return r.seats&&r.seats.filter(function(s){return s.seat===seat;})[0];};
+ var vals=MIRROR.map(function(m){return un?null:compassAt(seatRow(m.seat));});
  var extreme=-1, extremeDist=-1;
  vals.forEach(function(v,i){if(v!=null){var d=Math.abs(v-50); if(d>extremeDist){extremeDist=d; extreme=i;}}});
- var pts='';
+ var CX=60, CY=60, SPIN=0.39, RX=44, RY=9, TOPY=14, BOTY=106;
+ var corner=function(i){var th=i*Math.PI/4+SPIN; return {x:CX+RX*Math.cos(th), y:CY+RY*Math.sin(th), th:th};};
+ var corners=[]; for(var i=0;i<8;i++)corners.push(corner(i));
+ var faces='';
+ for(var f=0;f<8;f++){
+  var a=corners[f], b=corners[(f+1)%8], mid=((f+0.5)*Math.PI/4+SPIN);
+  var lt=.5+.5*Math.cos(mid-2.36), back=Math.sin(mid)<0, k2=back?.45:1;
+  faces+='<path d="M'+CX+' '+TOPY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
+   +'fill="var(--accent)" fill-opacity="'+((.035+.10*lt)*k2).toFixed(3)+'"/>'
+   +'<path d="M'+CX+' '+BOTY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
+   +'fill="var(--root)" fill-opacity="'+((.02+.04*lt)*k2).toFixed(3)+'"/>';}
+ var cq=un?50:clamp(r.CQ,0,100), cpos=clamp((cq-40)/20,0,1);
+ var slab='<linearGradient id="stm-cp-slab" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop offset="0" stop-color="var(--accent)" stop-opacity=".20"/>'
+  +'<stop offset="'+cpos.toFixed(2)+'" stop-color="'+(un?'var(--dim)':'rgb('+cqRamp(cq).join(',')+')')+'" stop-opacity=".34"/>'
+  +'<stop offset="1" stop-color="var(--root)" stop-opacity=".16"/></linearGradient>';
+ var ribs='', nodes='', hotHalo='';
  MIRROR.forEach(function(m,i){
-  var v=vals[i]==null?50:vals[i];
-  var a=(i/MIRROR.length)*Math.PI*2-Math.PI/2;
-  var rad=10+(v/100)*42, x=60+Math.cos(a)*rad, y=60+Math.sin(a)*rad;
+  var v=vals[i]==null?50:vals[i], c=corners[i];
   var hot=!un&&i===extreme;
   var col=un?'var(--dim)':'var('+(SEATCOL[m.seat]||'--dim')+')';
-  var op=un?.4:(hot?1:.25);
-  pts+='<line x1="60" y1="60" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1)+'"/>'
-   +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(hot?3.2:2.3)+'" fill="'+col+'" fill-opacity="'+op+'"/>';});
+  var op=un?.3:(hot?.85:.40);
+  ribs+='<polyline points="'+CX+','+BOTY+' '+c.x.toFixed(1)+','+c.y.toFixed(1)+' '+CX+','+TOPY+'" '
+   +'fill="none" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1.1)+'"/>';
+  var t=v/100, nx, ny;
+  if(t<=.5){var k=t*2; nx=CX+(c.x-CX)*k; ny=BOTY+(c.y-BOTY)*k;}
+  else{var k2b=(t-.5)*2; nx=c.x+(CX-c.x)*k2b; ny=c.y+(TOPY-c.y)*k2b;}
+  if(hot){
+   hotHalo='<radialGradient id="stm-cp-halo" cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" gradientUnits="userSpaceOnUse">'
+    +'<stop offset="0" stop-color="'+col+'" stop-opacity=".45"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".12"/>'
+    +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
+   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" fill="url(#stm-cp-halo)"/>'
+    +'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="3.2" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.4"/>';
+  } else {
+   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="1.8" fill="var(--sunk)" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="1"/>';
+  }});
  var cap='–';
  if(!un&&extreme>=0){var m=MIRROR[extreme]; cap=esc(m.q+', toward '+(vals[extreme]>=50?'up':'dn'));}
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'
-  +'<circle cx="60" cy="60" r="52" fill="none" stroke="var(--edge)"/>'+pts
-  +'<circle cx="60" cy="60" r="2.4" fill="var(--ink)"/></svg></div><div class="st-mini-cap">'+cap+'</div>';}
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+slab+hotHalo+'</defs>'
+  +faces+'<ellipse cx="'+CX+'" cy="'+CY+'" rx="'+RX+'" ry="'+RY+'" fill="none" stroke="url(#stm-cp-slab)" stroke-width="7"/>'
+  +ribs+nodes+'</svg></div><div class="st-mini-cap">'+cap+'</div>';}
 /* BOUNDARY, the purpose hexagon. Each of the six sides (PUR_SIDES,
    engine/avatar.js) lit by how many of its five slots (PUR_PER_SIDE) are
    filled, the same filter boundaryCount runs, so the picture and the
@@ -157,24 +235,71 @@ function stMiniCompass(r){
    thin[0] is not reliably the weakest one. This tracks the real minimum
    count in the same per-side loop that already draws each wedge, no
    second call into boundaryCount. */
+/* EVERY EXAMPLE NOW CARRIES ITS OWN PURPOSE, 13 November team review,
+   reversed the same night it was first built. loadP (ui/personas.js) never
+   set CURP.purpose for the worked-example roster, so this card always
+   showed whichever purpose the signed-in account itself had written, under
+   a stranger's name, on every example: the exact "hooked up" defect his
+   own words named. The fix is not a disclaimer on this one card, it is
+   that the roster itself was missing a field every other card here already
+   reads without trouble (engine/data/people.js, each example's own
+   `purpose`), so Boundary now changes on a profile switch exactly the way
+   the other five widgets already do. */
 function stMiniBoundary(){
  var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu);
  var counts=PUR_SIDES.map(function(s){
   var a=((pu.sides&&pu.sides[s])||[]).filter(function(x){return x&&String(x).trim();});
   return Math.min(a.length,PUR_PER_SIDE);});
- var minCount=Math.min.apply(null,counts), minIdx=counts.indexOf(minCount);
- var segs='';
+ var minCount=Math.min.apply(null,counts);
+ /* THE TIE BREAK NAMED THE SAME SIDE FOR NEARLY EVERY PROFILE, caught live
+    14 November screenshotting the widget against two different example
+    profiles: most people here commit to only one or two of the six sides,
+    so the other four or five all tie at zero, and counts.indexOf(0) always
+    answers the first zero in PUR_SIDES' own fixed order (partner), which is
+    not a fact about the person, it is a fact about where the array starts.
+    Rather than fabricate a thirty-slot boundary for every worked example to
+    force a real difference, the tied sides are read as what they are, all
+    equally thin, and which one is named is salted by the record's own
+    identity so two different people land on two different, but each
+    stable, answers rather than the array's own first entry every time. */
+ var tied=[]; counts.forEach(function(c,i){if(c===minCount)tied.push(i);});
+ var salt=String((CURP&&(CURP.id||CURP.nm))||''), h=0;
+ for(var si=0;si<salt.length;si++)h=(h*31+salt.charCodeAt(si))>>>0;
+ var minIdx=tied[h%tied.length];
+ var CX=60, CY=60, RO=50, RI=18;
+ var pt=function(rad,i){var th=(i/6)*Math.PI*2-Math.PI/2; return {x:CX+rad*Math.cos(th), y:CY+rad*Math.sin(th)};};
+ var defs='', segs='';
  PUR_SIDES.forEach(function(s,i){
   var frac=counts[i]/PUR_PER_SIDE;
-  var a0=(i/PUR_SIDES.length)*Math.PI*2-Math.PI/2, a1=((i+1)/PUR_SIDES.length)*Math.PI*2-Math.PI/2;
-  var x0=(60+Math.cos(a0)*50).toFixed(1), y0=(60+Math.sin(a0)*50).toFixed(1);
-  var x1=(60+Math.cos(a1)*50).toFixed(1), y1=(60+Math.sin(a1)*50).toFixed(1);
-  var hot=i===minIdx&&minCount<PUR_PER_SIDE;
-  segs+='<path d="M60 60L'+x0+' '+y0+'A50 50 0 0 1 '+x1+' '+y1+'Z" fill="var(--throat)" '
-   +'fill-opacity="'+(0.12+frac*0.6).toFixed(2)+'" stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-width="'+(hot?2:1)+'"/>';});
- var cap=minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held';
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'+segs
-  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)">'+bc.filled+'/'+bc.of+'</text></svg></div>'
+  var o0=pt(RO,i), o1=pt(RO,i+1), n0=pt(RI,i), n1=pt(RI,i+1);
+  var hot=bc.filled>0&&i===minIdx&&minCount<PUR_PER_SIDE;
+  var filled=frac>0;
+  if(filled){
+   defs+='<linearGradient id="stm-bd-f'+i+'" gradientUnits="userSpaceOnUse" x1="'+n0.x.toFixed(1)+'" y1="'+n0.y.toFixed(1)+'" x2="'+o0.x.toFixed(1)+'" y2="'+o0.y.toFixed(1)+'">'
+    +'<stop offset="0" stop-color="var(--throat)" stop-opacity="'+(.78*frac).toFixed(2)+'"/>'
+    +'<stop offset="1" stop-color="var(--ink)" stop-opacity="'+(.55*frac).toFixed(2)+'"/></linearGradient>';}
+  segs+='<path d="M'+n0.x.toFixed(1)+' '+n0.y.toFixed(1)+'L'+o0.x.toFixed(1)+' '+o0.y.toFixed(1)
+   +'L'+o1.x.toFixed(1)+' '+o1.y.toFixed(1)+'L'+n1.x.toFixed(1)+' '+n1.y.toFixed(1)+'Z" '
+   +'fill="'+(filled?'url(#stm-bd-f'+i+')':'none')+'" '
+   +'stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-opacity="'+(hot?1:.8)+'" stroke-width="'+(hot?1.6:.8)+'"/>';});
+ var centreGlow=bc.filled?('<radialGradient id="stm-bd-c" cx="'+CX+'" cy="'+CY+'" r="'+RI+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="var(--accent)" stop-opacity="'+(.25*bc.filled/bc.of).toFixed(2)+'"/>'
+  +'<stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></radialGradient>'):'';
+ /* NOTHING FILLED IS NOT A TIE TO BREAK, caught in the same live screenshot
+    that found the tie-break bug above: a blank profile has all six sides at
+    zero, which is not six equally thin sides, it is no boundary started yet,
+    and naming one of them "thinnest" (even salted, even consistently) reads
+    as a reading the person never gave. The dash rather than a sentence,
+    second pass: "Not started yet" was a sixth phrasing of the empty state in
+    a product the voice database (CO-09, CO-22, .claude/skills/atuned-voice)
+    already records as having had too many, and this row's own five other
+    cards already answer nothing-to-say with the same dash. The picture
+    beside it still prints 0/30, so the fact is stated once, in the place
+    built to state it. */
+ var cap=!bc.filled?'–':(minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held');
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+centreGlow+'</defs>'
+  +(centreGlow?'<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="url(#stm-bd-c)"/>':'')+segs
+  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)" font-variant-numeric="tabular-nums" font-weight="600">'+bc.filled+'/'+bc.of+'</text></svg></div>'
   +'<div class="st-mini-cap">'+esc(cap)+'</div>';}
 /* BODY, the heaviest of what compute() already calls carrying: the top
    address (r.heaviest), the band it sits in (r.darkB) and every address
@@ -197,15 +322,53 @@ function stMiniBoundary(){
    specific than the seat mean) and its own charge, the same
    _Unnamed fallback ui/cone.js already uses rather than a second
    naming rule. */
+/* THE REAL SILHOUETTE AND ITS HEAT, NOT A STICK FIGURE, 13 November team
+   review: the real Body tab (ui/map.js, bmRender) fills a true silhouette,
+   lights real nerve paths over it, and glows each seat with a radial
+   gradient sized to its own load, g=sqrt(load) (map.js:528). This card
+   ports that same formula and the same seat-band vertical order (PMBANDS,
+   engine/data/practice.js, its own yp percentage down the figure) onto a
+   hand-drawn silhouette sized for a small card, rather than the full
+   anatomical BODYPATH (engine/data/figure.js), which the team's technical
+   read found runs to hundreds of points and reads as a dark smear at this
+   size: a shape built for 1600px does not survive being the only thing
+   this card draws at 70px wide. The glow, the real per-seat colours and
+   the heaviest address are the actual engine reading; only the outline is
+   simplified. */
 function stMiniBody(r){
  var un=r.unread, hot=un?null:r.darkB;
- var dot=function(seat,x,y){
-  var on=hot===seat, col=un?'var(--dim)':'var('+(SEATCOL[seat]||'--dim')+')';
-  return '<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="'+col+'" stroke="none" opacity="'+(on?1:.5)+'"/>';};
- var svg='<svg viewBox="0 0 70 120" aria-hidden="true" fill="none" stroke="var(--edge-2)" stroke-width="2">'
-  +'<circle cx="35" cy="14" r="10"/><path d="M35 24v46M35 34h-18M35 34h18M35 70l-14 36M35 70l14 36"/>'
-  +dot('Crown',35,4)+dot('3rd Eye',35,10)
-  +dot('Throat',35,34)+dot('Heart',35,48)+dot('Solar',35,58)+dot('Sacral',35,66)+dot('Root',35,72)+'</svg>';
+ var W=70,H=120, CX=35;
+ var load={}; BANDS.forEach(function(b){load[b]=0;});
+ if(!un)(r.carrying||[]).forEach(function(n){load[n.b]=Math.max(load[n.b]||0,n.sq/10);});
+ var defs='', glows='';
+ PMBANDS.forEach(function(pb){
+  var g=un?0:(pb.b===hot?1:Math.sqrt(Math.min(1,load[pb.b]||0)));
+  if(g<=0)return;
+  var y=(pb.yp/100)*H, id='stm-bo-h-'+pb.k;
+  defs+='<radialGradient id="'+id+'" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="20" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.07+.62*g).toFixed(2)+'"/>'
+   +'<stop offset=".64" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.05+.40*g).toFixed(2)+'"/>'
+   +'<stop offset="1" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="0"/></radialGradient>';
+  glows+='<ellipse cx="'+CX+'" cy="'+y.toFixed(1)+'" rx="20" ry="15" fill="url(#'+id+')"/>';});
+ /* a plain, filled silhouette, not an anatomical trace: shoulders, a
+    tapered waist, hips and two legs, close enough to read as a body at
+    card scale without claiming the full map's own precision. */
+ var body='<path d="M35 6a9 9 0 110 18 9 9 0 010-18Z'
+  +'M24 26C19 32 17 42 21 52C16 57 14 66 17 74L19 114L29 114L30 78L40 78L41 114L51 114L53 74'
+  +'C56 66 54 57 49 52C53 42 51 32 46 26C41 23 29 23 24 26Z" fill="rgb(22,24,30)" stroke="var(--ink)" stroke-opacity=".22" stroke-width=".8"/>';
+ var nerves='<path d="M35 15v94" fill="none" stroke="var(--ink)" stroke-opacity=".5" stroke-width="1"/>'
+  +'<path d="M35 32C28 40 24 50 24 60M35 32C42 40 46 50 46 60" fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width=".8"/>'
+  +'<path d="M30 78L22 112M40 78L48 112" fill="none" stroke="var(--accent)" stroke-opacity=".4" stroke-width=".8"/>';
+ var heavy='';
+ if(!un&&r.heaviest){
+  var pb=PMBANDS.filter(function(x){return x.b===r.heaviest.b;})[0], y=pb?(pb.yp/100)*H:60;
+  var col='var('+(SEATCOL[r.heaviest.b]||'--dim')+')';
+  heavy='<radialGradient id="stm-bo-heavy" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
+  defs+=heavy;
+  heavy='<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" fill="url(#stm-bo-heavy)"/>'
+   +'<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="2.4" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.2"/>';}
+ var svg='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><defs>'+defs+'</defs>'+body+glows+nerves+heavy+'</svg>';
  var cap='–';
  if(!un&&r.heaviest){
   var nm=/_Unnamed$/.test(r.heaviest.k)?'An address with no name yet':r.heaviest.k;
@@ -227,20 +390,65 @@ function stMiniBody(r){
    cq here, and never shown on an unread or incomplete reading, so a
    blank profile is never silently handed a tier name that was never
    earned. */
+/* THE SPHERE ITSELF, NOT JUST ITS RING, 13 November team review: the real
+   Field (ui/wheel.js, solCore) draws CQ as a lit sphere, bigger and
+   brighter the higher the coherence, with a halo that only appears above
+   50 (the owner's own size law, wheel.js:386, and his ruling that the
+   number stays centred on the core, wheel.js:452). The ring this card used
+   to draw alone, with a flat colour at any score, is the same mismatch the
+   Compass's spokes had: a true reading with none of the real page's own
+   light. This keeps the ring (now the seven seat arcs and the CQ arc
+   around the sphere, exactly as conePlan draws them) and adds the sphere
+   solCore actually draws, frozen at one frame rather than animated, for
+   the same per-card frame-budget reason the Compass above is static. */
 function stMiniField(r){
- var un=r.unread, cq=un?0:clamp(r.CQ,0,100);
- var rgb=un?null:cqRamp(cq);
- var col=rgb?('rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')'):'var(--edge)';
+ var un=r.unread, cq=un?0:clamp(r.CQ,0,100), coh=cq/100;
+ var rgb=un?[120,124,132]:cqRamp(cq);
+ var gc='rgb('+rgb.join(',')+')';
+ var sz=coh<.5?(.34+(.72-.34)*(coh/.5)):(.72+(1.06-.72)*((coh-.5)/.5));
+ var rad=30*sz, glow=coh>.5?(coh-.5)/.5:0;
  var tierNm=(!un&&r.tier)?esc(r.tier):'';
- var C=2*Math.PI*46, frac=un?0:cq/100;
- var svg='<svg viewBox="0 0 120 120" aria-hidden="true">'
-  +'<circle cx="60" cy="60" r="46" fill="none" stroke="var(--edge)" stroke-width="9"/>'
-  +'<circle cx="60" cy="60" r="46" fill="none" stroke="'+col+'" stroke-width="9" stroke-linecap="round" '
+ var CX=60,CY=60;
+ var defs='', halo='';
+ if(glow>0){
+  var hr=rad*(1.18+1.5*glow);
+  defs+='<radialGradient id="stm-fd-halo" cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+gc+'" stop-opacity="'+(glow*.9).toFixed(2)+'"/>'
+   +'<stop offset=".14" stop-color="'+gc+'" stop-opacity="'+(glow*.6).toFixed(2)+'"/>'
+   +'<stop offset=".42" stop-color="'+gc+'" stop-opacity="'+(glow*.18).toFixed(2)+'"/>'
+   +'<stop offset="1" stop-color="'+gc+'" stop-opacity="0"/></radialGradient>';
+  halo='<circle cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" fill="url(#stm-fd-halo)"/>';}
+ defs+='<radialGradient id="stm-fd-sh" cx="'+(CX-rad*.3).toFixed(1)+'" cy="'+(CY-rad*.42).toFixed(1)+'" r="'+(rad*.9).toFixed(1)+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>';
+ var ringCol=un?'var(--edge)':gc, C=2*Math.PI*50, frac=un?0:coh;
+ var seatArcs='';
+ if(!un)BANDS.forEach(function(b,i){
+  var a0=(i/BANDS.length)*360-90+2, a1=((i+1)/BANDS.length)*360-90-2;
+  var rLg=54, p0=[CX+rLg*Math.cos(a0*Math.PI/180),CY+rLg*Math.sin(a0*Math.PI/180)];
+  var p1=[CX+rLg*Math.cos(a1*Math.PI/180),CY+rLg*Math.sin(a1*Math.PI/180)];
+  seatArcs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+rLg+' '+rLg+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" '
+   +'fill="none" stroke="var('+(SEATCOL[b]||'--dim')+')" stroke-opacity=".55" stroke-width="1.6"/>';});
+ var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+'</defs>'
+  +'<circle cx="60" cy="60" r="50" fill="none" stroke="var(--edge)" stroke-width="2"/>'
+  +'<circle cx="60" cy="60" r="50" fill="none" stroke="'+ringCol+'" stroke-width="2" stroke-linecap="round" '
   +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 60 60)"/>'
-  +'<text x="60" y="58" text-anchor="middle" font-size="18" fill="var(--ink)">'+(un?'–':Math.round(cq)+'%')+'</text>'
-  +(tierNm?'<text x="60" y="76" text-anchor="middle" font-size="10" fill="'+col+'">'+tierNm+'</text>':'')
+  +seatArcs+halo
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="'+(un?'var(--sunk)':gc)+'"/>'
+  +(un?'':'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="url(#stm-fd-sh)"/>')
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+(rad+1.2).toFixed(1)+'" fill="none" stroke="'+(un?'var(--edge)':'rgba(255,255,255,'+(.4+.55*coh).toFixed(2)+')')+'" stroke-width="1.4"/>'
+  +(rad<16?'<circle cx="60" cy="60" r="15" fill="var(--sunk)"/>':'')
+  +'<text x="60" y="64" text-anchor="middle" font-size="18" fill="'+(un?'var(--ink)':(coh>.7?'#0B1418':'var(--ink)'))+'" font-weight="700">'+(un?'–':Math.round(cq)+'%')+'</text>'
   +'</svg>';
- return '<div class="st-mini-vis">'+svg+'</div>';}
+ /* THE TIER NAME SITS ON THE CAPTION LINE, NOT INSIDE THE RING, 14 November,
+    his own "same family" check: this was the one card of the six with no
+    .st-mini-cap at all, so its picture ran to a different depth than its five
+    neighbours and the row had no shared baseline, which is exactly the
+    symmetry he asked about. It was drawn as svg text at the bottom of the
+    viewBox, at y 90 to 112 against a ring whose own bottom edge is 110, so it
+    also sat on the ring it was describing. Moved out: the percent stays in
+    the sphere, the one word under it goes where every other card already puts
+    its one line. */
+ return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+(tierNm?esc(tierNm):'–')+'</div>';}
 /* AVATAR, THE REAL ARCHETYPE NOW, ruled 13 November after team review
    found the widget was reading the wrong layer. r.mask (sups[0]||hys[0]||
    cxs[0]||sabs[0], compute.js) is a saboteur/complex/hyper-complex/super-
@@ -261,13 +469,56 @@ function stMiniField(r){
    JP, already took archetype share off the page entirely ("you either
    embody it or you don't"), so a progress arc here would reverse a
    standing decision, not just invent a number. */
+/* A SMALL POINT CLOUD, NOT A BARE RING, 13 November team review: the real
+   Avatar/Character page (ui/chcloud.js, CHC.Scene) is a particle figure,
+   thousands of points, which the team's technical read ruled out running
+   six times at once (it allocates its cloud whatever the canvas size). This
+   draws a small, FIXED point cloud instead, same envelope shape (a head, a
+   tapering torso, two legs), same two-tone colouring (the archetype's own
+   seat colour plus the accent), reusing chcloud.js's own glow sprite stops
+   rather than a second glow invented here. The points are seeded off the
+   person and the archetype (mulberry32, a tiny deterministic generator, not
+   Math.random) so the same reading always draws the same cloud and a
+   render never visibly reshuffles it. */
 function stMiniAvatar(r){
  var un=r.unread, arch=(!un&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
  var col=arch?('var('+(SEATCOL[arch.b]||'--dim')+')'):'var(--dim)';
  var cap=un?'–':(arch?esc(arch.nm):'–');
+ var seed=(function(s){var h=0; for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0; return h||1;})
+   (String((CURP&&CURP.id)||'')+':'+String(S&&S.who)+':'+String(un?'u':r.pi));
+ var rnd=(function(a){return function(){a^=a<<13;a^=a>>>17;a^=a<<5;a>>>=0;return (a>>>0)/4294967296;};})(seed);
+ var CX=50,CY=60, pts='', glowPts='';
+ if(!un&&arch){
+  var N=90;
+  for(var i=0;i<N;i++){
+   var zone=rnd();
+   var x,y;
+   if(zone<.22){var ang=rnd()*Math.PI*2, rr=rnd(); x=CX+Math.cos(ang)*9*rr; y=26+Math.sin(ang)*11*rr;}
+   else if(zone<.75){var ty=36+rnd()*44, tfrac=(ty-36)/44, half=20-(20-10)*tfrac; x=CX+(rnd()*2-1)*half; y=ty;}
+   else{var leg=rnd()<.5?-1:1, ly=82+rnd()*32; x=CX+leg*(6+rnd()*6); y=ly;}
+   var ac=rnd()<.8; var op=(.25+.65*rnd()).toFixed(2);
+   pts+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.5+rnd()).toFixed(2)+'" fill="'+(ac?col:'var(--accent)')+'" fill-opacity="'+op+'"/>';}
+  for(var g=0;g<14;g++){
+   var gx=CX+(rnd()*2-1)*16, gy=36+rnd()*50;
+   glowPts+='<circle cx="'+gx.toFixed(1)+'" cy="'+gy.toFixed(1)+'" r="'+(3+rnd()*3).toFixed(1)+'" fill="url(#stm-av-g)"/>';}}
+ var defs=arch?('<radialGradient id="stm-av-g" cx="0" cy="0" r="1">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity="1"/><stop offset=".35" stop-color="'+col+'" stop-opacity=".38"/>'
+   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
+  +'<radialGradient id="stm-av-heart" cx="'+CX+'" cy="52" r="18" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".15"/>'
+   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
+  +'<linearGradient id="stm-av-tor" x1="0" y1="0" x2="1" y2="0">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".7"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".2"/></linearGradient>'):'';
+ var torus=arch?('<ellipse cx="'+CX+'" cy="56" rx="38" ry="9" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
+   +'transform="rotate(-12 '+CX+' 56)" stroke-dasharray="3 2"/>'
+  +'<ellipse cx="'+CX+'" cy="56" rx="34" ry="7" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
+   +'transform="rotate(8 '+CX+' 56)" stroke-dasharray="3 2"/>'):'';
  var svg='<svg viewBox="0 0 100 120" aria-hidden="true">'
-  +'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>'
-  +(arch?'<g transform="translate(50,55) scale(1.6) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>':'')
+  +(defs?'<defs>'+defs+'</defs>':'')
+  +(arch?'<circle cx="'+CX+'" cy="52" r="18" fill="url(#stm-av-heart)"/>':'')
+  +torus+glowPts+pts
+  +(arch?'<g transform="translate('+CX+',114) scale(.7) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>'
+   :'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>')
   +'</svg>';
  return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
 /* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
@@ -289,32 +540,58 @@ function stMiniAvatar(r){
    brightness only, name and percent hover-only there too, so this is
    not copying a visible label off the rail, it is the first surface in
    the product built to print one standing); reused here rather than a
-   second formatter. Only the single top-scored mask gets the full
-   labelled row; up to three runners-up stay exactly as before, small
-   unlabelled tiles, title on hover, clearly secondary to the one named
-   fact this card now actually states. */
+   second formatter.
+
+   REBUILT ONTO THE SHARED SHELL, 14 November, found live screenshotting
+   all six cards in a row for his own "same family" question: this was
+   the one card still returning its own top-level markup (.st-mask4, a
+   left-aligned icon-plus-text row plus a strip of three small unlabelled
+   runner tiles below it), built before this round's rewrite of the other
+   five onto one shape, centred picture in .st-mini-vis, one line in
+   .st-mini-cap, and never carried over. Against five cards that each
+   distill to one centred, glowing reading, a sixth card showing a row and
+   a strip read as a different widget that happened to share a border.
+   The runners are dropped here, not hidden elsewhere: no other card in
+   this row shows more than its own single headline fact (Compass one
+   axis, Body one address, Field one number), so a second mask and a
+   third were never this card's fact to carry, only Character's, which
+   still lists all six. The ring, wash and glyph are the same three
+   elements chMaskBtn (character.js) already draws for every mask on the
+   real page, at this card's own 120 by 120 scale rather than invented
+   fresh, and the ring's own fill is the mask's score over the atom scale
+   (engine/pct.js, lo 0 hi 10), the same rule Field's ring above already
+   follows: the fill is a percent, equal to the number beside it. */
 function stMiniMasks(r){
  var un=r.unread;
  if(un||typeof MASKS_READ==='undefined')
-  return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
+  return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
  var bySeat={};
  r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
  var scored=MASKS_READ.map(function(m){
   var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
    return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
-  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;}).slice(0,4);
- if(!scored.length) return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
- var top=scored[0], runners=scored.slice(1);
- var topCol=CHC.maskCols(top.m)[0];
- var topRow='<div class="st-mask-top" style="--c:'+topCol+'">'
-  +'<div class="st-mask4-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+top.m.ic+'"/></svg></div>'
-  +'<span class="st-mask-nm">'+esc(top.m.nm)+'</span><span class="st-mask-pc">'+fmtPct('atom',top.v)+'</span></div>';
- var runnerRow=runners.length?'<div class="st-mask-runners">'+runners.map(function(s){
-   var col=CHC.maskCols(s.m)[0];
-   return '<div class="st-mask4-t sm" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('')+'</div>':'';
- return '<div class="st-mask4" aria-label="Masks">'+topRow+runnerRow+'</div>';}
+  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
+ var top=scored[0];
+ if(!top||!top.v) return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
+ var col=CHC.maskCols(top.m)[0], CX=60, CY=60, R=44, C=2*Math.PI*R;
+ var frac=Math.max(0,Math.min(1,top.v/10));
+ var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'
+  +'<radialGradient id="stm-mk-g" cx="'+CX+'" cy="'+CY+'" r="'+R+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="'+col+'" stop-opacity=".38"/><stop offset=".6" stop-color="'+col+'" stop-opacity=".12"/>'
+  +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient></defs>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="url(#stm-mk-g)"/>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="var(--edge)" stroke-width="2"/>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" '
+  +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 '+CX+' '+CY+')"/>'
+  +'<g transform="translate(38 38) scale(1.83)" fill="none" stroke="'+col+'" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">'
+  +'<path d="'+top.m.ic+'"/></g></svg>';
+ /* data-topmask carries the shown mask's own name so this card's
+    click-through (STGO.stmasks, above) opens the Character page already
+    showing it, never a different mask than the one this card just
+    named. */
+ return '<div class="st-mini-vis" data-topmask="'+esc(top.m.nm)+'">'+svg+'</div>'
+  +'<div class="st-mini-cap">'+esc(top.m.nm)+', '+fmtPct('atom',top.v)+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -850,17 +1127,23 @@ function stRender(){
      than squeezing beside them. All six are the same stMiniShell every
      other mini picture already uses, so they are the same size as each
      other here for the first time. Masks alone had no shell before
-     (stMiniMasks returned a bare .st-mask4 row, no label), so it gets
-     one now, titled like its five neighbours; its own look (currently
-     four small coloured circles with no names or weights printed) is
-     untouched and is a separate task, not folded into a layout move. */
+     (stMiniMasks returned a bare .st-mask4 row, no label), so it got
+     one then; stMiniMasks itself was rebuilt 14 November onto the same
+     .st-mini-vis/.st-mini-cap pair every other card's own function
+     already returns, so its call site here now passes that value
+     straight through like the other five, rather than wrapping it in a
+     second .st-mini-vis the old bare-row version needed and the new one
+     does not: that second wrap put the real .st-mini-vis and
+     .st-mini-cap inside one shared element instead of side by side,
+     which read fine for a plain-text row but broke the centred picture
+     every other card draws in .st-mini-vis alone. */
   +'<div class="st-mini6" id="stmini6">'
-   +stMiniShell('stcompass','Compass',stMiniCompass(r))
-   +stMiniShell('stboundary','Boundary',stMiniBoundary())
-   +stMiniShell('stbody','Body',stMiniBody(r))
-   +stMiniShell('stfield','Field',stMiniField(r))
-   +stMiniShell('stavatar','Avatar',stMiniAvatar(r))
-   +stMiniShell('stmasks','Masks','<div class="st-mini-vis">'+stMiniMasks(r)+'</div>')
+   +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
+   +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
+   +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
+   +stMiniShell('stfield','Field',stMiniField(r),'stfield')
+   +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
+   +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div

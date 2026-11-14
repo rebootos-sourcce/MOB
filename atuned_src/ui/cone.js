@@ -2231,8 +2231,17 @@ function coneRegisters(){
  var dens=Math.round(clamp(Math.pow(G.s0/RGS_AT,2),.35,1.6)*20)/20;
  if(dens!==RGS.dens||!RGS.n)rgsBuild(dens);
  /* a new record starts steady, as coneMirSync does: moving from one person
-    to another is never drawn as a change in either */
- var key=CURP+'|'+S.who, fresh=key!==RGS.who; RGS.who=key;
+    to another is never drawn as a change in either. Found by the
+    profile-switch-audit workflow 14 November: CURP carries no toString, so
+    CURP+'' was always the literal '[object Object]' and this key tracked only
+    S.who. Switching profiles through #psel still worked, because S.who always
+    changes with it, but pImport replacing CURP with a new object while S.who
+    stays put (a sign in, a pasted or linked record onto the open profile) left
+    this key unchanged, so the register cloud read the new record's charge as
+    a drift from the old one instead of starting steady. coneMirSync just above
+    and rings.js's frSig already key the same question on CURP.id||CURP.nm;
+    this now does the same instead of a bare concatenation. */
+ var key=(CURP.id||CURP.nm||'')+'|'+S.who, fresh=key!==RGS.who; RGS.who=key;
  var sp=[0,0,0,0,0,0,0], sn=[0,0,0,0,0,0,0], ad=RGS.ad;
  for(i=0;i<ad.length;i++){var a=ad[i], pt=leverPull(a.n.sq||0);
   if(fresh||REDUCED)a.p=pt; else a.p+=(pt-a.p)*.08;

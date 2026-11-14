@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v69 8382f488 2026-11-13 21:07"><head><meta charset="utf-8">
+<html lang="en" data-build="v71 055126b8 2026-11-14 03:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4260,31 +4260,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    wrap this onto its own line under the three columns above. */
 .st-mini6{display:flex;flex:1 0 100%;gap:12px}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
-/* THE MASK TILES, INSIDE THEIR OWN .st-mini-vis NOW rather than a
-   .st-2row-1 half-row shared with Avatar: a plain centred flex column,
-   the top mask's own labelled row above up to three runner-up dots,
-   with the full tile's own width to sit in instead of half of
-   Release's. */
-.st-mini-vis .st-mask4{display:flex;flex-direction:column;justify-content:center;gap:10px;width:100%}
-/* THE TOP MASK'S OWN ROW, 13 November: the one mask this card now names
-   outright, icon, name and percent, all standing text, no hover needed.
-   --c is each mask's own CHC.maskCols colour, set inline same as the
-   tiles below it. */
-.st-mask-top{display:flex;align-items:center;gap:8px}
-.st-mask-nm{font-size:12px;font-weight:600;color:var(--ink);flex:1 1 0;min-width:0;
- overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.st-mask-pc{font-size:11px;color:var(--c);flex:0 0 auto}
-.st-mask-runners{display:flex;align-items:center;gap:6px}
-.st-mask4-t{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
- justify-content:center;flex:0 0 auto;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
- border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
-/* THE RUNNER-UP TILES READ SMALLER, so the one labelled mask is plainly
-   the card's own headline and the rest plainly secondary. */
-.st-mask4-t.sm{width:26px;height:26px}
-.st-mask4-t.sm svg{width:13px;height:13px}
-.st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
- stroke-linecap:round;stroke-linejoin:round}
-/* THE RAIL'S OWN MASKS SECTION, same tile as .st-mask4-t above, the real
+/* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
+   .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
+   .st-mask4-t and its .sm variant drew the old left-aligned icon-and-text
+   row plus a runner-tile strip (storyui.js, before this date); the
+   rewrite draws a centred ring and glyph straight into .st-mini-vis like
+   every other card in the row, so none of those classes are emitted any
+   more and the rules are gone rather than kept beside markup that cannot
+   reach them, the same reasoning the CSS coverage gate (tests/design.js)
+   already applies the other way round. The rail's own Masks section
+   below is unrelated: it was never built from these classes, despite a
+   comment here once saying so. */
+/* THE RAIL'S OWN MASKS SECTION, a grid of tiles, the real
    five rather than the mini panel's top four, and a name under each: a
    bare icon with a name on hover alone, not printed, is the Release
    rings' own mistake from earlier tonight. */
@@ -4317,7 +4304,23 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    this as a label, the same way .rblk (the rail's own section heading)
    already does with neither capitalisation nor an invented second style. */
 .st-mini-lb{font-size:11px;font-weight:600;color:var(--dim);
- letter-spacing:.02em;margin-bottom:6px}
+ letter-spacing:.02em;margin-bottom:6px;display:flex;align-items:baseline;
+ justify-content:space-between;gap:6px}
+/* THE SIX CARDS BECAME LINKS, 14 November (storyui.js's STGO table,
+   stMiniShell's data-stgo/role=link). The chevron names where the card
+   goes, in the same label row rather than floating over the picture, so it
+   reads before a press and never sits on top of the Compass/Body/Field
+   drawing underneath. */
+.st-mini-go{font-size:11px;font-weight:500;color:var(--dim);opacity:.65;
+ white-space:nowrap;flex:0 0 auto}
+.st-mini-link{cursor:pointer;transition:border-color var(--t-micro) var(--ease-out),
+ transform var(--t-micro) var(--ease-out)}
+@media (hover:hover){
+ .st-mini-link:hover{border-color:var(--accent)}
+ .st-mini-link:hover .st-mini-go{color:var(--accent);opacity:1}}
+.st-mini-link:active{transform:translateY(1px)}
+.st-mini-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.st-mini-link{transition:none}}
 .st-mini-vis{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
 /* width/height:100%, not max-: an <svg> with no width/height attribute of
    its own (every one of the six mini pictures, viewBox alone) renders at
@@ -15585,38 +15588,88 @@ try{window.__at&&window.__at('engine/data/affirm.js');}catch(e){}
    through the real writers by engine/exdepth.js when the example is opened.
    ============================================================ */
 const PEOPLE=[
+ /* PURPOSE, 13 November: every example now carries one, the fix for the
+    Boundary widget reading a stranger's purpose under an example's name
+    (CLAUDE.md, the Dashboard widget round). Short, grounded in the role
+    and the says line above it, not invented from nothing; one to three
+    real committed sides each rather than all thirty, since that is a true
+    partial boundary, the same shape most real people's own answer would
+    take, not a demo flourish.
+
+    A SECOND PASS, 14 November, caught live screenshotting the mini widget
+    against two different examples: the first pass gave every person
+    exactly one filled side, so the other five always tied at zero and the
+    widget's own tie break (counts.indexOf, PUR_SIDES' fixed array order)
+    answered "partner" for nearly all sixteen regardless of who it was,
+    the same stale-looking sameness the owner's own complaint was about,
+    just moved one layer down. Fixed two ways: most people here now carry
+    two or three committed sides, not one, so the number itself (bc.filled
+    of 30) varies by person and not only the picture; and stMiniBoundary's
+    own tie break (storyui.js) now salts which tied side it names by the
+    record's identity rather than always the array's first entry, so a
+    real tie (several sides still at zero) reads as a different, but
+    stable, side per person instead of one word for everyone. The ones
+    left at a single side are deliberate, not missed: Ana and Tomas are
+    mid-crisis in their own says line, Gordon is in denial, Lance 15 is
+    the heaviest of the four Lances, and a person at the start of their
+    own boundary work having touched only one side is the honest case
+    this roster is supposed to carry at least once. */
  {nm:'Sofia',age:41,role:'somatic practitioner · ICP',dom:12,a1:3,a2:1,
   says:'I hold the room for everyone. I have not been held in four years and I would not know how to ask.',
   c:{Fear:1.5,Anger:1,Shame:2,Disgust:1,Apathy:1,Shock:1,Sad:2.5,Surprise:1,Anticipation:2},
-  rep:{Anger:8.6,Sad:6,Fear:5}},
+  rep:{Anger:8.6,Sad:6,Fear:5},
+  purpose:{soul:['presence','service','truth'],ego:['being held','financial safety for the practice','rest'],
+   sides:{partner:[],family:[],friends:['call the one friend who does not need anything back'],community:[],
+    coworkers:['say no to one extra client this month'],alone:[]}}},
  {nm:'Diane',age:46,role:'founder, second company · ICP',dom:6,a1:4,a2:6,
   says:'I work until the work is done and the work is never done. Rest feels like a moral failure.',
   c:{Fear:6,Anger:5,Shame:5,Disgust:3,Apathy:2,Shock:4,Sad:3,Surprise:3,Anticipation:8},
-  rep:{Apathy:9.2,Anticipation:8.8}},
+  rep:{Apathy:9.2,Anticipation:8.8},
+  purpose:{soul:['freedom','mastery','meaning'],ego:['the company surviving her','independence','her own health'],
+   sides:{partner:[],family:[],friends:[],community:[],
+    coworkers:['let someone else present without editing it first'],alone:['one evening with no laptop open']}}},
  {nm:'Marcus',age:44,role:'creative director · ICP',dom:1,a1:1,a2:6,
   says:'I can see what is wrong with anything in four seconds. It has cost me two studios.',
   c:{Fear:2,Anger:3.5,Shame:2,Disgust:4,Apathy:1.5,Shock:1.5,Sad:1.5,Surprise:1,Anticipation:3},
-  rep:{Surprise:8.9,Anticipation:8.2}},
+  rep:{Surprise:8.9,Anticipation:8.2},
+  purpose:{soul:['honesty','craft','clarity'],ego:['a studio that keeps its people','money enough to say no','a steady home life'],
+   sides:{partner:[],family:["sit through one dinner without naming what's wrong with it"],friends:[],community:[],
+    coworkers:["let a junior's draft stand uncorrected for a day"],alone:[]}}},
  {nm:'Angela',age:36,role:'seeker, six kinds of healing · ICP',dom:17,a1:11,a2:5,
   says:'Everything happens for a reason. I have said that at three funerals and I believed it each time.',
   c:{Fear:2,Anger:1,Shame:2.5,Disgust:1,Apathy:2,Shock:2,Sad:3,Surprise:1.5,Anticipation:2},
-  rep:{Sad:9.4,Disgust:9.1}},
+  rep:{Sad:9.4,Disgust:9.1},
+  purpose:{soul:['meaning','peace','connection'],ego:['a body that stops hurting','an honest community','steady money between one kind of healing and the next'],
+   sides:{partner:[],family:[],friends:["let one friend disagree with her meaning-making out loud"],
+    community:['show up to one group with nothing to fix'],coworkers:[],alone:[]}}},
  {nm:'Derek',age:39,role:'high performer, endurance · ICP',dom:5,a1:0,a2:7,
   says:'Pain is information. I have raced on a stress fracture. I would do it again.',
   c:{Fear:5,Anger:6,Shame:6,Disgust:4,Apathy:2,Shock:6,Sad:4,Surprise:3,Anticipation:7},
-  rep:{Apathy:9,Shock:8.7}},
+  rep:{Apathy:9,Shock:8.7},
+  purpose:{soul:['discipline','endurance','proof'],ego:['a body that still works at sixty','his marriage outlasting the training','retirement income'],
+   sides:{partner:['rest when asked, not when forced'],family:[],friends:[],community:[],coworkers:[],
+    alone:['a day with no training log']}}},
  {nm:'James',age:57,role:'C-suite, third turnaround · ICP',dom:2,a1:6,a2:0,
   says:'I make the call and I sleep fine. People find that cold. It is what they hired.',
   c:{Fear:6,Anger:8,Shame:7,Disgust:7,Apathy:5,Shock:7,Sad:4,Surprise:4,Anticipation:5},
-  rep:{Shock:9.3,Shame:8.4}},
+  rep:{Shock:9.3,Shame:8.4},
+  purpose:{soul:['command','clarity','legacy'],ego:['the company surviving the turnaround','his kids calling back','his own health'],
+   sides:{partner:[],family:['call his kids with no agenda'],friends:[],community:[],
+    coworkers:['ask a question in a meeting instead of making the call'],alone:[]}}},
  {nm:'Rosa',age:61,role:'retired midwife',dom:12,a1:11,a2:1,
   says:'Nothing in particular. Things do not sit on me the way they used to.',
   c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:.5,Surprise:0,Anticipation:0},
-  rep:{Fear:6,Anger:6,Shame:6,Disgust:6,Apathy:6,Shock:6,Sad:6,Surprise:6,Anticipation:6}},
+  rep:{Fear:6,Anger:6,Shame:6,Disgust:6,Apathy:6,Shock:6,Sad:6,Surprise:6,Anticipation:6},
+  purpose:{soul:['peace','witness','rest'],ego:['her pension','her garden','her grandchildren near'],
+   sides:{partner:[],family:["let her grandchildren see her unsure of something"],friends:[],
+    community:['join a group with nothing to organize'],coworkers:[],
+    alone:['a morning with nowhere to be and nobody needing her']}}},
  {nm:'Ana',age:47,role:'teacher, one year out',dom:8,a1:2,a2:5,
   says:'I am in the middle of something and I cannot see the far side of it.',
   c:{Fear:9,Anger:7,Shame:9,Disgust:7,Apathy:5,Shock:8,Sad:9,Surprise:6,Anticipation:7},
-  rep:{Sad:4,Fear:3}},
+  rep:{Sad:4,Fear:3},
+  purpose:{soul:['growth','honesty','patience'],ego:['her classroom steady','her own recovery','her marriage holding'],
+   sides:{partner:[],family:[],friends:['tell one friend she is not fine'],community:[],coworkers:[],alone:[]}}},
  /* ---- the ends of the scale ----
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
@@ -15643,18 +15696,29 @@ const PEOPLE=[
  {nm:'Tomas',age:58,role:'long haul driver, off the road fourteen months',dom:0,a1:9,a2:4,
   says:'I used to drive nine hundred miles and feel nothing. Now I cannot get to the end of the street.',
   c:{Fear:9.4,Anger:8.2,Shame:9.1,Disgust:7.6,Apathy:9.6,Shock:8.8,Sad:9.5,Surprise:6.4,Anticipation:8.9},
-  rep:{}},
+  rep:{},
+  purpose:{soul:['stillness','honesty','return'],ego:['his daughter close','his health insurance','the road not calling him back'],
+   sides:{partner:[],family:["answer his daughter's call on the first ring"],friends:[],community:[],coworkers:[],alone:[]}}},
  {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
   c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
-  rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6}},
+  rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6},
+  purpose:{soul:['craft','quiet','precision'],ego:['the shop surviving him','his hands still working','his wife’s patience'],
+   sides:{partner:[],family:[],friends:[],community:[],
+    coworkers:["let an apprentice finish a piece his own way"],
+    alone:['sit at the bench with nothing left to finish']}}},
  {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
   says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
   c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
-  rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8}},
+  rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8},
+  purpose:{soul:['humility','fairness','stillness'],ego:["his children's respect",'his health','his pension'],
+   sides:{partner:[],family:['let his grown children see him unsure of something'],
+    friends:['call a friend from the bench years, not a former colleague'],community:[],coworkers:[],alone:[]}}},
  {nm:'Gordon',age:58,role:'managing partner',dom:2,a1:6,a2:0,
   says:'There is nothing wrong with me. Four people left in a year and each had their reasons.',
-  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}},
+  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{},
+  purpose:{soul:['control','reputation','order'],ego:["the firm's name","his partners' loyalty",'his own health'],
+   sides:{partner:[],family:[],friends:[],community:[],coworkers:['ask one of the four who left what actually happened'],alone:[]}}},
  /* ---- the owner, four times. Round QD, his words: "give me ... one of me
     with a CQ of fifteen, fifty, eighty-five and one hundred. That says Lance,
     comma, developer." He said three and then named four numbers, and all four
@@ -15695,19 +15759,30 @@ const PEOPLE=[
  {nm:'Lance 15',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'I ship at four in the morning and wake at six with my jaw already set. I built the thing that reads this, and it reads me as heavy.',
   c:{Fear:7.6,Anger:8.2,Shame:7.4,Disgust:5.2,Apathy:6.8,Shock:6.4,Sad:7.8,Surprise:4.4,Anticipation:8.8},
-  rep:{Anticipation:1.4}},
+  rep:{Anticipation:1.4},
+  purpose:{soul:['truth','build','proof'],ego:['the product shipping','his family’s patience','his own sleep'],
+   sides:{partner:['one night with the laptop closed before midnight'],family:[],friends:[],community:[],coworkers:[],alone:[]}}},
  {nm:'Lance 50',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Some weeks the work runs clean and I sleep through. Then one call lands wrong and I watch my own hands go back to the old wiring.',
   c:{Fear:5.8,Anger:6.6,Shame:5.4,Disgust:3.6,Apathy:4.4,Shock:4,Sad:6,Surprise:3,Anticipation:7.4},
-  rep:{Anticipation:3,Anger:2.4}},
+  rep:{Anticipation:3,Anger:2.4},
+  purpose:{soul:['truth','build','steadiness'],ego:['the product shipping','his family','his own health'],
+   sides:{partner:['notice the old wiring before it runs the call, and say so out loud'],family:[],friends:[],
+    community:[],coworkers:[],alone:['notice the old wiring before it runs the call']}}},
  {nm:'Lance 85',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Most of it moves through me now. I still catch on waiting, and on needing to be the one who is right in the room.',
   c:{Fear:1.6,Anger:6.8,Shame:1.4,Disgust:1,Apathy:1.2,Shock:1,Sad:2,Surprise:0.8,Anticipation:8.2},
-  rep:{Fear:6.4,Anger:1.2,Shame:6.6,Disgust:6.2,Apathy:6.4,Shock:6,Sad:5.8,Surprise:6,Anticipation:0.8}},
+  rep:{Fear:6.4,Anger:1.2,Shame:6.6,Disgust:6.2,Apathy:6.4,Shock:6,Sad:5.8,Surprise:6,Anticipation:0.8},
+  purpose:{soul:['truth','mastery','service'],ego:['the product','his family','his health'],
+   sides:{partner:[],family:[],friends:[],community:[],coworkers:['let someone else be right in the room'],
+    alone:['sit with the waiting without reaching for a device']}}},
  {nm:'Lance 100',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Nothing is holding. I keep this one to see what the instrument says at the ceiling, and whether it still tells the truth up there.',
   c:{Fear:.5,Anger:1,Shame:.5,Disgust:.5,Apathy:.5,Shock:.5,Sad:1,Surprise:.5,Anticipation:1.5},
-  rep:{Fear:6.6,Anger:6.4,Shame:6.8,Disgust:6.6,Apathy:6.7,Shock:6.3,Sad:6.5,Surprise:6.2}}];
+  rep:{Fear:6.6,Anger:6.4,Shame:6.8,Disgust:6.6,Apathy:6.7,Shock:6.3,Sad:6.5,Surprise:6.2},
+  purpose:{soul:['truth','mastery','witness'],ego:['the product','his family','his own rest'],
+   sides:{partner:[],family:['be the one who needs nothing, and ask for something anyway'],friends:[],community:[],
+    coworkers:[],alone:['see what holds when nothing is driving it']}}}];
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
@@ -56894,9 +56969,45 @@ function stMark(k,word,term,cls,tail){
    pictures. */
 var SEATCOL={Root:'--root',Sacral:'--sacral',Solar:'--solar',Heart:'--heart',
  Throat:'--throat',Eye:'--eye','Third Eye':'--eye','3rd Eye':'--eye',Crown:'--crown'};
-function stMiniShell(id,label,inner){
- return '<div class="st-mini" id="'+id+'" aria-label="'+esc(label)+'">'
-  +'<div class="st-mini-lb">'+esc(label)+'</div>'+inner+'</div>';}
+/* CLICK TAKES YOU TO THE REAL PAGE, 13 November, his words: "if I click on
+   it, it takes me to those pages." Each card's real destination is not
+   always its own tab: Boundary and Avatar are both answered on the Avatar
+   page (TAB.INTAKE), on different sub-tabs, and Masks has to pick the same
+   mask the card itself is already naming before it opens, or a click would
+   land on a page that agrees with nothing the card just showed. STGO holds
+   one real route per card, reusing the exact calls their own pages already
+   make for this (drills.js:1528-1531 for Boundary/Avatar's Purpose and
+   Archetypes sub-tabs; character.js:232-236 for picking a mask), rather
+   than a second routing table invented here. role="link" because the card
+   is a destination, not an action; a bare div inside a <button> is invalid
+   markup, and the app's own "#" address is already claimed by #r= record
+   links (recordLinkBoot), so this is not an <a> either. */
+var STGO={
+ stcompass:function(){setTab(TAB.COMPASS);},
+ stboundary:function(){if(typeof AV!=='undefined')AV.sub='purpose'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ stbody:function(){setTab(TAB.ENERGY);},
+ stfield:function(){setTab(TAB.FIELD);},
+ stavatar:function(){if(typeof AV!=='undefined')AV.sub='arch'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
+  if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
+  setTab(TAB.MASKS); if(typeof render==='function')render();}};
+var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
+function stMiniShell(id,label,inner,goKey){
+ var go=goKey&&STGO[goKey];
+ var t=go?' data-stgo="'+goKey+'" role="link" tabindex="0"':'';
+ var lands=go&&STGO_LABEL[goKey];
+ return '<div class="st-mini'+(go?' st-mini-link':'')+'" id="'+id+'" aria-label="'+esc(label)+(go?', opens '+esc(lands||label):'')+'"'+t+'>'
+  +'<div class="st-mini-lb">'+esc(label)+(lands?'<span class="st-mini-go">'+esc(lands.split(', ').pop())+' ›</span>':(go?'<span class="st-mini-go">›</span>':''))+'</div>'+inner+'</div>';}
+(function(){
+ var go=function(el){var k=el.getAttribute('data-stgo'), fn=k&&STGO[k]; if(fn)fn(el);};
+ addEventListener('click',function(e){
+  var el=e.target&&e.target.closest?e.target.closest('[data-stgo]'):null; if(!el)return;
+  go(el);});
+ addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  var el=e.target&&e.target.closest?e.target.closest('[data-stgo]'):null; if(!el)return;
+  e.preventDefault(); go(el);});
+})();
 /* COMPASS, the eight MIRROR axes (engine/data/compass.js, its own header:
    "THE EIGHT MIRROR PAIRS") as spokes from the centre; coneMirPos (ui/cone.js)
    is the real tab's own per-axis read, 0 to 100 or null unanswered, reused
@@ -56916,26 +57027,68 @@ function stMiniShell(id,label,inner){
    name on a 240 by 200 card has no room for the meaning line CLAUDE.md's
    unpack-every-symbol rule would require beside it, so the card stays
    honest about what it can actually explain at this size. */
+/* THE REAL NEEDLE, SMALL AND STILL, 13 November, team review of the 13
+   November widget redesign: the flat spoke wheel above read as a sketch
+   next to the actual Compass tab's own two octagonal pyramids (coneNeedle,
+   ndlFaces, ndlRib, ui/cone.js). This draws the same solid, in axonometric
+   projection frozen at one spin (0.39 rad, cone.js's own default), rather
+   than running the real tab's animated canvas six times at once, which the
+   team's own technical read found would cost 30 to 75ms of a 16.7ms frame
+   for all six cards together. Faces, ribs and the limbo band reuse the real
+   lighting formula and alpha values (ndlFaces/ndlRib), as a static SVG.
+
+   ONE compute() PER CARD NOW, NOT EIGHT, same review round: coneMirPos
+   called compute() itself, once per MIRROR axis, so this card alone ran the
+   whole engine eight times on every Dashboard paint. r.seats (seatRows(),
+   already computed once for this render by stRender) plus compassAt
+   (engine/data/compass.js) gives the same number for free. */
 function stMiniCompass(r){
  var un=r.unread;
- var vals=MIRROR.map(function(m){return un?null:coneMirPos(m);});
+ var seatRow=function(seat){return r.seats&&r.seats.filter(function(s){return s.seat===seat;})[0];};
+ var vals=MIRROR.map(function(m){return un?null:compassAt(seatRow(m.seat));});
  var extreme=-1, extremeDist=-1;
  vals.forEach(function(v,i){if(v!=null){var d=Math.abs(v-50); if(d>extremeDist){extremeDist=d; extreme=i;}}});
- var pts='';
+ var CX=60, CY=60, SPIN=0.39, RX=44, RY=9, TOPY=14, BOTY=106;
+ var corner=function(i){var th=i*Math.PI/4+SPIN; return {x:CX+RX*Math.cos(th), y:CY+RY*Math.sin(th), th:th};};
+ var corners=[]; for(var i=0;i<8;i++)corners.push(corner(i));
+ var faces='';
+ for(var f=0;f<8;f++){
+  var a=corners[f], b=corners[(f+1)%8], mid=((f+0.5)*Math.PI/4+SPIN);
+  var lt=.5+.5*Math.cos(mid-2.36), back=Math.sin(mid)<0, k2=back?.45:1;
+  faces+='<path d="M'+CX+' '+TOPY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
+   +'fill="var(--accent)" fill-opacity="'+((.035+.10*lt)*k2).toFixed(3)+'"/>'
+   +'<path d="M'+CX+' '+BOTY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
+   +'fill="var(--root)" fill-opacity="'+((.02+.04*lt)*k2).toFixed(3)+'"/>';}
+ var cq=un?50:clamp(r.CQ,0,100), cpos=clamp((cq-40)/20,0,1);
+ var slab='<linearGradient id="stm-cp-slab" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop offset="0" stop-color="var(--accent)" stop-opacity=".20"/>'
+  +'<stop offset="'+cpos.toFixed(2)+'" stop-color="'+(un?'var(--dim)':'rgb('+cqRamp(cq).join(',')+')')+'" stop-opacity=".34"/>'
+  +'<stop offset="1" stop-color="var(--root)" stop-opacity=".16"/></linearGradient>';
+ var ribs='', nodes='', hotHalo='';
  MIRROR.forEach(function(m,i){
-  var v=vals[i]==null?50:vals[i];
-  var a=(i/MIRROR.length)*Math.PI*2-Math.PI/2;
-  var rad=10+(v/100)*42, x=60+Math.cos(a)*rad, y=60+Math.sin(a)*rad;
+  var v=vals[i]==null?50:vals[i], c=corners[i];
   var hot=!un&&i===extreme;
   var col=un?'var(--dim)':'var('+(SEATCOL[m.seat]||'--dim')+')';
-  var op=un?.4:(hot?1:.25);
-  pts+='<line x1="60" y1="60" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1)+'"/>'
-   +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(hot?3.2:2.3)+'" fill="'+col+'" fill-opacity="'+op+'"/>';});
+  var op=un?.3:(hot?.85:.40);
+  ribs+='<polyline points="'+CX+','+BOTY+' '+c.x.toFixed(1)+','+c.y.toFixed(1)+' '+CX+','+TOPY+'" '
+   +'fill="none" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1.1)+'"/>';
+  var t=v/100, nx, ny;
+  if(t<=.5){var k=t*2; nx=CX+(c.x-CX)*k; ny=BOTY+(c.y-BOTY)*k;}
+  else{var k2b=(t-.5)*2; nx=c.x+(CX-c.x)*k2b; ny=c.y+(TOPY-c.y)*k2b;}
+  if(hot){
+   hotHalo='<radialGradient id="stm-cp-halo" cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" gradientUnits="userSpaceOnUse">'
+    +'<stop offset="0" stop-color="'+col+'" stop-opacity=".45"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".12"/>'
+    +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
+   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" fill="url(#stm-cp-halo)"/>'
+    +'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="3.2" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.4"/>';
+  } else {
+   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="1.8" fill="var(--sunk)" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="1"/>';
+  }});
  var cap='–';
  if(!un&&extreme>=0){var m=MIRROR[extreme]; cap=esc(m.q+', toward '+(vals[extreme]>=50?'up':'dn'));}
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'
-  +'<circle cx="60" cy="60" r="52" fill="none" stroke="var(--edge)"/>'+pts
-  +'<circle cx="60" cy="60" r="2.4" fill="var(--ink)"/></svg></div><div class="st-mini-cap">'+cap+'</div>';}
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+slab+hotHalo+'</defs>'
+  +faces+'<ellipse cx="'+CX+'" cy="'+CY+'" rx="'+RX+'" ry="'+RY+'" fill="none" stroke="url(#stm-cp-slab)" stroke-width="7"/>'
+  +ribs+nodes+'</svg></div><div class="st-mini-cap">'+cap+'</div>';}
 /* BOUNDARY, the purpose hexagon. Each of the six sides (PUR_SIDES,
    engine/avatar.js) lit by how many of its five slots (PUR_PER_SIDE) are
    filled, the same filter boundaryCount runs, so the picture and the
@@ -56948,24 +57101,71 @@ function stMiniCompass(r){
    thin[0] is not reliably the weakest one. This tracks the real minimum
    count in the same per-side loop that already draws each wedge, no
    second call into boundaryCount. */
+/* EVERY EXAMPLE NOW CARRIES ITS OWN PURPOSE, 13 November team review,
+   reversed the same night it was first built. loadP (ui/personas.js) never
+   set CURP.purpose for the worked-example roster, so this card always
+   showed whichever purpose the signed-in account itself had written, under
+   a stranger's name, on every example: the exact "hooked up" defect his
+   own words named. The fix is not a disclaimer on this one card, it is
+   that the roster itself was missing a field every other card here already
+   reads without trouble (engine/data/people.js, each example's own
+   `purpose`), so Boundary now changes on a profile switch exactly the way
+   the other five widgets already do. */
 function stMiniBoundary(){
  var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu);
  var counts=PUR_SIDES.map(function(s){
   var a=((pu.sides&&pu.sides[s])||[]).filter(function(x){return x&&String(x).trim();});
   return Math.min(a.length,PUR_PER_SIDE);});
- var minCount=Math.min.apply(null,counts), minIdx=counts.indexOf(minCount);
- var segs='';
+ var minCount=Math.min.apply(null,counts);
+ /* THE TIE BREAK NAMED THE SAME SIDE FOR NEARLY EVERY PROFILE, caught live
+    14 November screenshotting the widget against two different example
+    profiles: most people here commit to only one or two of the six sides,
+    so the other four or five all tie at zero, and counts.indexOf(0) always
+    answers the first zero in PUR_SIDES' own fixed order (partner), which is
+    not a fact about the person, it is a fact about where the array starts.
+    Rather than fabricate a thirty-slot boundary for every worked example to
+    force a real difference, the tied sides are read as what they are, all
+    equally thin, and which one is named is salted by the record's own
+    identity so two different people land on two different, but each
+    stable, answers rather than the array's own first entry every time. */
+ var tied=[]; counts.forEach(function(c,i){if(c===minCount)tied.push(i);});
+ var salt=String((CURP&&(CURP.id||CURP.nm))||''), h=0;
+ for(var si=0;si<salt.length;si++)h=(h*31+salt.charCodeAt(si))>>>0;
+ var minIdx=tied[h%tied.length];
+ var CX=60, CY=60, RO=50, RI=18;
+ var pt=function(rad,i){var th=(i/6)*Math.PI*2-Math.PI/2; return {x:CX+rad*Math.cos(th), y:CY+rad*Math.sin(th)};};
+ var defs='', segs='';
  PUR_SIDES.forEach(function(s,i){
   var frac=counts[i]/PUR_PER_SIDE;
-  var a0=(i/PUR_SIDES.length)*Math.PI*2-Math.PI/2, a1=((i+1)/PUR_SIDES.length)*Math.PI*2-Math.PI/2;
-  var x0=(60+Math.cos(a0)*50).toFixed(1), y0=(60+Math.sin(a0)*50).toFixed(1);
-  var x1=(60+Math.cos(a1)*50).toFixed(1), y1=(60+Math.sin(a1)*50).toFixed(1);
-  var hot=i===minIdx&&minCount<PUR_PER_SIDE;
-  segs+='<path d="M60 60L'+x0+' '+y0+'A50 50 0 0 1 '+x1+' '+y1+'Z" fill="var(--throat)" '
-   +'fill-opacity="'+(0.12+frac*0.6).toFixed(2)+'" stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-width="'+(hot?2:1)+'"/>';});
- var cap=minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held';
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true">'+segs
-  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)">'+bc.filled+'/'+bc.of+'</text></svg></div>'
+  var o0=pt(RO,i), o1=pt(RO,i+1), n0=pt(RI,i), n1=pt(RI,i+1);
+  var hot=bc.filled>0&&i===minIdx&&minCount<PUR_PER_SIDE;
+  var filled=frac>0;
+  if(filled){
+   defs+='<linearGradient id="stm-bd-f'+i+'" gradientUnits="userSpaceOnUse" x1="'+n0.x.toFixed(1)+'" y1="'+n0.y.toFixed(1)+'" x2="'+o0.x.toFixed(1)+'" y2="'+o0.y.toFixed(1)+'">'
+    +'<stop offset="0" stop-color="var(--throat)" stop-opacity="'+(.78*frac).toFixed(2)+'"/>'
+    +'<stop offset="1" stop-color="var(--ink)" stop-opacity="'+(.55*frac).toFixed(2)+'"/></linearGradient>';}
+  segs+='<path d="M'+n0.x.toFixed(1)+' '+n0.y.toFixed(1)+'L'+o0.x.toFixed(1)+' '+o0.y.toFixed(1)
+   +'L'+o1.x.toFixed(1)+' '+o1.y.toFixed(1)+'L'+n1.x.toFixed(1)+' '+n1.y.toFixed(1)+'Z" '
+   +'fill="'+(filled?'url(#stm-bd-f'+i+')':'none')+'" '
+   +'stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-opacity="'+(hot?1:.8)+'" stroke-width="'+(hot?1.6:.8)+'"/>';});
+ var centreGlow=bc.filled?('<radialGradient id="stm-bd-c" cx="'+CX+'" cy="'+CY+'" r="'+RI+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="var(--accent)" stop-opacity="'+(.25*bc.filled/bc.of).toFixed(2)+'"/>'
+  +'<stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></radialGradient>'):'';
+ /* NOTHING FILLED IS NOT A TIE TO BREAK, caught in the same live screenshot
+    that found the tie-break bug above: a blank profile has all six sides at
+    zero, which is not six equally thin sides, it is no boundary started yet,
+    and naming one of them "thinnest" (even salted, even consistently) reads
+    as a reading the person never gave. The dash rather than a sentence,
+    second pass: "Not started yet" was a sixth phrasing of the empty state in
+    a product the voice database (CO-09, CO-22, .claude/skills/atuned-voice)
+    already records as having had too many, and this row's own five other
+    cards already answer nothing-to-say with the same dash. The picture
+    beside it still prints 0/30, so the fact is stated once, in the place
+    built to state it. */
+ var cap=!bc.filled?'–':(minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held');
+ return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+centreGlow+'</defs>'
+  +(centreGlow?'<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="url(#stm-bd-c)"/>':'')+segs
+  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)" font-variant-numeric="tabular-nums" font-weight="600">'+bc.filled+'/'+bc.of+'</text></svg></div>'
   +'<div class="st-mini-cap">'+esc(cap)+'</div>';}
 /* BODY, the heaviest of what compute() already calls carrying: the top
    address (r.heaviest), the band it sits in (r.darkB) and every address
@@ -56988,15 +57188,53 @@ function stMiniBoundary(){
    specific than the seat mean) and its own charge, the same
    _Unnamed fallback ui/cone.js already uses rather than a second
    naming rule. */
+/* THE REAL SILHOUETTE AND ITS HEAT, NOT A STICK FIGURE, 13 November team
+   review: the real Body tab (ui/map.js, bmRender) fills a true silhouette,
+   lights real nerve paths over it, and glows each seat with a radial
+   gradient sized to its own load, g=sqrt(load) (map.js:528). This card
+   ports that same formula and the same seat-band vertical order (PMBANDS,
+   engine/data/practice.js, its own yp percentage down the figure) onto a
+   hand-drawn silhouette sized for a small card, rather than the full
+   anatomical BODYPATH (engine/data/figure.js), which the team's technical
+   read found runs to hundreds of points and reads as a dark smear at this
+   size: a shape built for 1600px does not survive being the only thing
+   this card draws at 70px wide. The glow, the real per-seat colours and
+   the heaviest address are the actual engine reading; only the outline is
+   simplified. */
 function stMiniBody(r){
  var un=r.unread, hot=un?null:r.darkB;
- var dot=function(seat,x,y){
-  var on=hot===seat, col=un?'var(--dim)':'var('+(SEATCOL[seat]||'--dim')+')';
-  return '<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="'+col+'" stroke="none" opacity="'+(on?1:.5)+'"/>';};
- var svg='<svg viewBox="0 0 70 120" aria-hidden="true" fill="none" stroke="var(--edge-2)" stroke-width="2">'
-  +'<circle cx="35" cy="14" r="10"/><path d="M35 24v46M35 34h-18M35 34h18M35 70l-14 36M35 70l14 36"/>'
-  +dot('Crown',35,4)+dot('3rd Eye',35,10)
-  +dot('Throat',35,34)+dot('Heart',35,48)+dot('Solar',35,58)+dot('Sacral',35,66)+dot('Root',35,72)+'</svg>';
+ var W=70,H=120, CX=35;
+ var load={}; BANDS.forEach(function(b){load[b]=0;});
+ if(!un)(r.carrying||[]).forEach(function(n){load[n.b]=Math.max(load[n.b]||0,n.sq/10);});
+ var defs='', glows='';
+ PMBANDS.forEach(function(pb){
+  var g=un?0:(pb.b===hot?1:Math.sqrt(Math.min(1,load[pb.b]||0)));
+  if(g<=0)return;
+  var y=(pb.yp/100)*H, id='stm-bo-h-'+pb.k;
+  defs+='<radialGradient id="'+id+'" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="20" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.07+.62*g).toFixed(2)+'"/>'
+   +'<stop offset=".64" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.05+.40*g).toFixed(2)+'"/>'
+   +'<stop offset="1" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="0"/></radialGradient>';
+  glows+='<ellipse cx="'+CX+'" cy="'+y.toFixed(1)+'" rx="20" ry="15" fill="url(#'+id+')"/>';});
+ /* a plain, filled silhouette, not an anatomical trace: shoulders, a
+    tapered waist, hips and two legs, close enough to read as a body at
+    card scale without claiming the full map's own precision. */
+ var body='<path d="M35 6a9 9 0 110 18 9 9 0 010-18Z'
+  +'M24 26C19 32 17 42 21 52C16 57 14 66 17 74L19 114L29 114L30 78L40 78L41 114L51 114L53 74'
+  +'C56 66 54 57 49 52C53 42 51 32 46 26C41 23 29 23 24 26Z" fill="rgb(22,24,30)" stroke="var(--ink)" stroke-opacity=".22" stroke-width=".8"/>';
+ var nerves='<path d="M35 15v94" fill="none" stroke="var(--ink)" stroke-opacity=".5" stroke-width="1"/>'
+  +'<path d="M35 32C28 40 24 50 24 60M35 32C42 40 46 50 46 60" fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width=".8"/>'
+  +'<path d="M30 78L22 112M40 78L48 112" fill="none" stroke="var(--accent)" stroke-opacity=".4" stroke-width=".8"/>';
+ var heavy='';
+ if(!un&&r.heaviest){
+  var pb=PMBANDS.filter(function(x){return x.b===r.heaviest.b;})[0], y=pb?(pb.yp/100)*H:60;
+  var col='var('+(SEATCOL[r.heaviest.b]||'--dim')+')';
+  heavy='<radialGradient id="stm-bo-heavy" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
+  defs+=heavy;
+  heavy='<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" fill="url(#stm-bo-heavy)"/>'
+   +'<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="2.4" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.2"/>';}
+ var svg='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><defs>'+defs+'</defs>'+body+glows+nerves+heavy+'</svg>';
  var cap='–';
  if(!un&&r.heaviest){
   var nm=/_Unnamed$/.test(r.heaviest.k)?'An address with no name yet':r.heaviest.k;
@@ -57018,20 +57256,65 @@ function stMiniBody(r){
    cq here, and never shown on an unread or incomplete reading, so a
    blank profile is never silently handed a tier name that was never
    earned. */
+/* THE SPHERE ITSELF, NOT JUST ITS RING, 13 November team review: the real
+   Field (ui/wheel.js, solCore) draws CQ as a lit sphere, bigger and
+   brighter the higher the coherence, with a halo that only appears above
+   50 (the owner's own size law, wheel.js:386, and his ruling that the
+   number stays centred on the core, wheel.js:452). The ring this card used
+   to draw alone, with a flat colour at any score, is the same mismatch the
+   Compass's spokes had: a true reading with none of the real page's own
+   light. This keeps the ring (now the seven seat arcs and the CQ arc
+   around the sphere, exactly as conePlan draws them) and adds the sphere
+   solCore actually draws, frozen at one frame rather than animated, for
+   the same per-card frame-budget reason the Compass above is static. */
 function stMiniField(r){
- var un=r.unread, cq=un?0:clamp(r.CQ,0,100);
- var rgb=un?null:cqRamp(cq);
- var col=rgb?('rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')'):'var(--edge)';
+ var un=r.unread, cq=un?0:clamp(r.CQ,0,100), coh=cq/100;
+ var rgb=un?[120,124,132]:cqRamp(cq);
+ var gc='rgb('+rgb.join(',')+')';
+ var sz=coh<.5?(.34+(.72-.34)*(coh/.5)):(.72+(1.06-.72)*((coh-.5)/.5));
+ var rad=30*sz, glow=coh>.5?(coh-.5)/.5:0;
  var tierNm=(!un&&r.tier)?esc(r.tier):'';
- var C=2*Math.PI*46, frac=un?0:cq/100;
- var svg='<svg viewBox="0 0 120 120" aria-hidden="true">'
-  +'<circle cx="60" cy="60" r="46" fill="none" stroke="var(--edge)" stroke-width="9"/>'
-  +'<circle cx="60" cy="60" r="46" fill="none" stroke="'+col+'" stroke-width="9" stroke-linecap="round" '
+ var CX=60,CY=60;
+ var defs='', halo='';
+ if(glow>0){
+  var hr=rad*(1.18+1.5*glow);
+  defs+='<radialGradient id="stm-fd-halo" cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+gc+'" stop-opacity="'+(glow*.9).toFixed(2)+'"/>'
+   +'<stop offset=".14" stop-color="'+gc+'" stop-opacity="'+(glow*.6).toFixed(2)+'"/>'
+   +'<stop offset=".42" stop-color="'+gc+'" stop-opacity="'+(glow*.18).toFixed(2)+'"/>'
+   +'<stop offset="1" stop-color="'+gc+'" stop-opacity="0"/></radialGradient>';
+  halo='<circle cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" fill="url(#stm-fd-halo)"/>';}
+ defs+='<radialGradient id="stm-fd-sh" cx="'+(CX-rad*.3).toFixed(1)+'" cy="'+(CY-rad*.42).toFixed(1)+'" r="'+(rad*.9).toFixed(1)+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>';
+ var ringCol=un?'var(--edge)':gc, C=2*Math.PI*50, frac=un?0:coh;
+ var seatArcs='';
+ if(!un)BANDS.forEach(function(b,i){
+  var a0=(i/BANDS.length)*360-90+2, a1=((i+1)/BANDS.length)*360-90-2;
+  var rLg=54, p0=[CX+rLg*Math.cos(a0*Math.PI/180),CY+rLg*Math.sin(a0*Math.PI/180)];
+  var p1=[CX+rLg*Math.cos(a1*Math.PI/180),CY+rLg*Math.sin(a1*Math.PI/180)];
+  seatArcs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+rLg+' '+rLg+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" '
+   +'fill="none" stroke="var('+(SEATCOL[b]||'--dim')+')" stroke-opacity=".55" stroke-width="1.6"/>';});
+ var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+'</defs>'
+  +'<circle cx="60" cy="60" r="50" fill="none" stroke="var(--edge)" stroke-width="2"/>'
+  +'<circle cx="60" cy="60" r="50" fill="none" stroke="'+ringCol+'" stroke-width="2" stroke-linecap="round" '
   +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 60 60)"/>'
-  +'<text x="60" y="58" text-anchor="middle" font-size="18" fill="var(--ink)">'+(un?'–':Math.round(cq)+'%')+'</text>'
-  +(tierNm?'<text x="60" y="76" text-anchor="middle" font-size="10" fill="'+col+'">'+tierNm+'</text>':'')
+  +seatArcs+halo
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="'+(un?'var(--sunk)':gc)+'"/>'
+  +(un?'':'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="url(#stm-fd-sh)"/>')
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+(rad+1.2).toFixed(1)+'" fill="none" stroke="'+(un?'var(--edge)':'rgba(255,255,255,'+(.4+.55*coh).toFixed(2)+')')+'" stroke-width="1.4"/>'
+  +(rad<16?'<circle cx="60" cy="60" r="15" fill="var(--sunk)"/>':'')
+  +'<text x="60" y="64" text-anchor="middle" font-size="18" fill="'+(un?'var(--ink)':(coh>.7?'#0B1418':'var(--ink)'))+'" font-weight="700">'+(un?'–':Math.round(cq)+'%')+'</text>'
   +'</svg>';
- return '<div class="st-mini-vis">'+svg+'</div>';}
+ /* THE TIER NAME SITS ON THE CAPTION LINE, NOT INSIDE THE RING, 14 November,
+    his own "same family" check: this was the one card of the six with no
+    .st-mini-cap at all, so its picture ran to a different depth than its five
+    neighbours and the row had no shared baseline, which is exactly the
+    symmetry he asked about. It was drawn as svg text at the bottom of the
+    viewBox, at y 90 to 112 against a ring whose own bottom edge is 110, so it
+    also sat on the ring it was describing. Moved out: the percent stays in
+    the sphere, the one word under it goes where every other card already puts
+    its one line. */
+ return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+(tierNm?esc(tierNm):'–')+'</div>';}
 /* AVATAR, THE REAL ARCHETYPE NOW, ruled 13 November after team review
    found the widget was reading the wrong layer. r.mask (sups[0]||hys[0]||
    cxs[0]||sabs[0], compute.js) is a saboteur/complex/hyper-complex/super-
@@ -57052,13 +57335,56 @@ function stMiniField(r){
    JP, already took archetype share off the page entirely ("you either
    embody it or you don't"), so a progress arc here would reverse a
    standing decision, not just invent a number. */
+/* A SMALL POINT CLOUD, NOT A BARE RING, 13 November team review: the real
+   Avatar/Character page (ui/chcloud.js, CHC.Scene) is a particle figure,
+   thousands of points, which the team's technical read ruled out running
+   six times at once (it allocates its cloud whatever the canvas size). This
+   draws a small, FIXED point cloud instead, same envelope shape (a head, a
+   tapering torso, two legs), same two-tone colouring (the archetype's own
+   seat colour plus the accent), reusing chcloud.js's own glow sprite stops
+   rather than a second glow invented here. The points are seeded off the
+   person and the archetype (mulberry32, a tiny deterministic generator, not
+   Math.random) so the same reading always draws the same cloud and a
+   render never visibly reshuffles it. */
 function stMiniAvatar(r){
  var un=r.unread, arch=(!un&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
  var col=arch?('var('+(SEATCOL[arch.b]||'--dim')+')'):'var(--dim)';
  var cap=un?'–':(arch?esc(arch.nm):'–');
+ var seed=(function(s){var h=0; for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0; return h||1;})
+   (String((CURP&&CURP.id)||'')+':'+String(S&&S.who)+':'+String(un?'u':r.pi));
+ var rnd=(function(a){return function(){a^=a<<13;a^=a>>>17;a^=a<<5;a>>>=0;return (a>>>0)/4294967296;};})(seed);
+ var CX=50,CY=60, pts='', glowPts='';
+ if(!un&&arch){
+  var N=90;
+  for(var i=0;i<N;i++){
+   var zone=rnd();
+   var x,y;
+   if(zone<.22){var ang=rnd()*Math.PI*2, rr=rnd(); x=CX+Math.cos(ang)*9*rr; y=26+Math.sin(ang)*11*rr;}
+   else if(zone<.75){var ty=36+rnd()*44, tfrac=(ty-36)/44, half=20-(20-10)*tfrac; x=CX+(rnd()*2-1)*half; y=ty;}
+   else{var leg=rnd()<.5?-1:1, ly=82+rnd()*32; x=CX+leg*(6+rnd()*6); y=ly;}
+   var ac=rnd()<.8; var op=(.25+.65*rnd()).toFixed(2);
+   pts+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.5+rnd()).toFixed(2)+'" fill="'+(ac?col:'var(--accent)')+'" fill-opacity="'+op+'"/>';}
+  for(var g=0;g<14;g++){
+   var gx=CX+(rnd()*2-1)*16, gy=36+rnd()*50;
+   glowPts+='<circle cx="'+gx.toFixed(1)+'" cy="'+gy.toFixed(1)+'" r="'+(3+rnd()*3).toFixed(1)+'" fill="url(#stm-av-g)"/>';}}
+ var defs=arch?('<radialGradient id="stm-av-g" cx="0" cy="0" r="1">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity="1"/><stop offset=".35" stop-color="'+col+'" stop-opacity=".38"/>'
+   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
+  +'<radialGradient id="stm-av-heart" cx="'+CX+'" cy="52" r="18" gradientUnits="userSpaceOnUse">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".15"/>'
+   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
+  +'<linearGradient id="stm-av-tor" x1="0" y1="0" x2="1" y2="0">'
+   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".7"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".2"/></linearGradient>'):'';
+ var torus=arch?('<ellipse cx="'+CX+'" cy="56" rx="38" ry="9" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
+   +'transform="rotate(-12 '+CX+' 56)" stroke-dasharray="3 2"/>'
+  +'<ellipse cx="'+CX+'" cy="56" rx="34" ry="7" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
+   +'transform="rotate(8 '+CX+' 56)" stroke-dasharray="3 2"/>'):'';
  var svg='<svg viewBox="0 0 100 120" aria-hidden="true">'
-  +'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>'
-  +(arch?'<g transform="translate(50,55) scale(1.6) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>':'')
+  +(defs?'<defs>'+defs+'</defs>':'')
+  +(arch?'<circle cx="'+CX+'" cy="52" r="18" fill="url(#stm-av-heart)"/>':'')
+  +torus+glowPts+pts
+  +(arch?'<g transform="translate('+CX+',114) scale(.7) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>'
+   :'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>')
   +'</svg>';
  return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
 /* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
@@ -57080,32 +57406,58 @@ function stMiniAvatar(r){
    brightness only, name and percent hover-only there too, so this is
    not copying a visible label off the rail, it is the first surface in
    the product built to print one standing); reused here rather than a
-   second formatter. Only the single top-scored mask gets the full
-   labelled row; up to three runners-up stay exactly as before, small
-   unlabelled tiles, title on hover, clearly secondary to the one named
-   fact this card now actually states. */
+   second formatter.
+
+   REBUILT ONTO THE SHARED SHELL, 14 November, found live screenshotting
+   all six cards in a row for his own "same family" question: this was
+   the one card still returning its own top-level markup (.st-mask4, a
+   left-aligned icon-plus-text row plus a strip of three small unlabelled
+   runner tiles below it), built before this round's rewrite of the other
+   five onto one shape, centred picture in .st-mini-vis, one line in
+   .st-mini-cap, and never carried over. Against five cards that each
+   distill to one centred, glowing reading, a sixth card showing a row and
+   a strip read as a different widget that happened to share a border.
+   The runners are dropped here, not hidden elsewhere: no other card in
+   this row shows more than its own single headline fact (Compass one
+   axis, Body one address, Field one number), so a second mask and a
+   third were never this card's fact to carry, only Character's, which
+   still lists all six. The ring, wash and glyph are the same three
+   elements chMaskBtn (character.js) already draws for every mask on the
+   real page, at this card's own 120 by 120 scale rather than invented
+   fresh, and the ring's own fill is the mask's score over the atom scale
+   (engine/pct.js, lo 0 hi 10), the same rule Field's ring above already
+   follows: the fill is a percent, equal to the number beside it. */
 function stMiniMasks(r){
  var un=r.unread;
  if(un||typeof MASKS_READ==='undefined')
-  return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
+  return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
  var bySeat={};
  r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
  var scored=MASKS_READ.map(function(m){
   var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
    return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
-  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;}).slice(0,4);
- if(!scored.length) return '<div class="st-mask4" aria-label="Masks"><p class="st-mini-cap">–</p></div>';
- var top=scored[0], runners=scored.slice(1);
- var topCol=CHC.maskCols(top.m)[0];
- var topRow='<div class="st-mask-top" style="--c:'+topCol+'">'
-  +'<div class="st-mask4-t"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+top.m.ic+'"/></svg></div>'
-  +'<span class="st-mask-nm">'+esc(top.m.nm)+'</span><span class="st-mask-pc">'+fmtPct('atom',top.v)+'</span></div>';
- var runnerRow=runners.length?'<div class="st-mask-runners">'+runners.map(function(s){
-   var col=CHC.maskCols(s.m)[0];
-   return '<div class="st-mask4-t sm" style="--c:'+col+'" title="'+esc(s.m.nm)+'">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+s.m.ic+'"/></svg></div>';}).join('')+'</div>':'';
- return '<div class="st-mask4" aria-label="Masks">'+topRow+runnerRow+'</div>';}
+  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
+ var top=scored[0];
+ if(!top||!top.v) return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
+ var col=CHC.maskCols(top.m)[0], CX=60, CY=60, R=44, C=2*Math.PI*R;
+ var frac=Math.max(0,Math.min(1,top.v/10));
+ var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'
+  +'<radialGradient id="stm-mk-g" cx="'+CX+'" cy="'+CY+'" r="'+R+'" gradientUnits="userSpaceOnUse">'
+  +'<stop offset="0" stop-color="'+col+'" stop-opacity=".38"/><stop offset=".6" stop-color="'+col+'" stop-opacity=".12"/>'
+  +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient></defs>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="url(#stm-mk-g)"/>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="var(--edge)" stroke-width="2"/>'
+  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" '
+  +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 '+CX+' '+CY+')"/>'
+  +'<g transform="translate(38 38) scale(1.83)" fill="none" stroke="'+col+'" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">'
+  +'<path d="'+top.m.ic+'"/></g></svg>';
+ /* data-topmask carries the shown mask's own name so this card's
+    click-through (STGO.stmasks, above) opens the Character page already
+    showing it, never a different mask than the one this card just
+    named. */
+ return '<div class="st-mini-vis" data-topmask="'+esc(top.m.nm)+'">'+svg+'</div>'
+  +'<div class="st-mini-cap">'+esc(top.m.nm)+', '+fmtPct('atom',top.v)+'</div>';}
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -57641,17 +57993,23 @@ function stRender(){
      than squeezing beside them. All six are the same stMiniShell every
      other mini picture already uses, so they are the same size as each
      other here for the first time. Masks alone had no shell before
-     (stMiniMasks returned a bare .st-mask4 row, no label), so it gets
-     one now, titled like its five neighbours; its own look (currently
-     four small coloured circles with no names or weights printed) is
-     untouched and is a separate task, not folded into a layout move. */
+     (stMiniMasks returned a bare .st-mask4 row, no label), so it got
+     one then; stMiniMasks itself was rebuilt 14 November onto the same
+     .st-mini-vis/.st-mini-cap pair every other card's own function
+     already returns, so its call site here now passes that value
+     straight through like the other five, rather than wrapping it in a
+     second .st-mini-vis the old bare-row version needed and the new one
+     does not: that second wrap put the real .st-mini-vis and
+     .st-mini-cap inside one shared element instead of side by side,
+     which read fine for a plain-text row but broke the centred picture
+     every other card draws in .st-mini-vis alone. */
   +'<div class="st-mini6" id="stmini6">'
-   +stMiniShell('stcompass','Compass',stMiniCompass(r))
-   +stMiniShell('stboundary','Boundary',stMiniBoundary())
-   +stMiniShell('stbody','Body',stMiniBody(r))
-   +stMiniShell('stfield','Field',stMiniField(r))
-   +stMiniShell('stavatar','Avatar',stMiniAvatar(r))
-   +stMiniShell('stmasks','Masks','<div class="st-mini-vis">'+stMiniMasks(r)+'</div>')
+   +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
+   +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
+   +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
+   +stMiniShell('stfield','Field',stMiniField(r),'stfield')
+   +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
+   +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -78595,8 +78953,17 @@ function coneRegisters(){
  var dens=Math.round(clamp(Math.pow(G.s0/RGS_AT,2),.35,1.6)*20)/20;
  if(dens!==RGS.dens||!RGS.n)rgsBuild(dens);
  /* a new record starts steady, as coneMirSync does: moving from one person
-    to another is never drawn as a change in either */
- var key=CURP+'|'+S.who, fresh=key!==RGS.who; RGS.who=key;
+    to another is never drawn as a change in either. Found by the
+    profile-switch-audit workflow 14 November: CURP carries no toString, so
+    CURP+'' was always the literal '[object Object]' and this key tracked only
+    S.who. Switching profiles through #psel still worked, because S.who always
+    changes with it, but pImport replacing CURP with a new object while S.who
+    stays put (a sign in, a pasted or linked record onto the open profile) left
+    this key unchanged, so the register cloud read the new record's charge as
+    a drift from the old one instead of starting steady. coneMirSync just above
+    and rings.js's frSig already key the same question on CURP.id||CURP.nm;
+    this now does the same instead of a bare concatenation. */
+ var key=(CURP.id||CURP.nm||'')+'|'+S.who, fresh=key!==RGS.who; RGS.who=key;
  var sp=[0,0,0,0,0,0,0], sn=[0,0,0,0,0,0,0], ad=RGS.ad;
  for(i=0;i<ad.length;i++){var a=ad[i], pt=leverPull(a.n.sq||0);
   if(fresh||REDUCED)a.p=pt; else a.p+=(pt-a.p)*.08;
@@ -90682,6 +91049,15 @@ function loadP(i){
  if(!PROF_BY[p.nm]){
   var pr=blankProfile(p.nm==='You'?'You':p.nm);
   if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
+  /* THE PURPOSE HEXAGON COMES FROM THE SAME ROW TOO, 13 November, the same
+     rule as S.addr above: a worked example's own data lives on its own
+     PEOPLE row (engine/data/people.js, p.purpose) or it defaults to the
+     blank's, which here meant every example silently showed whichever
+     purpose the signed-in account itself had written, under a stranger's
+     name. Copied in only when this scratch profile is first built, same as
+     intakeAnswers, so an edit made while looking at an example during this
+     session is never clobbered by a second visit. */
+  if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
@@ -90761,7 +91137,39 @@ function loadP(i){
     picker and toYou all pass through it. */
  $('psel').querySelectorAll('option').forEach(function(o){
   var k=+o.value; if(PEOPLE[k])o.textContent=pselName(PEOPLE[k],k===i);});
- syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
+ /* A PROFILE SWITCH CLOSES EVERY STALE SNAPSHOT AND IN-PROGRESS EDIT, found by
+    the profile-switch-audit workflow 14 November: 18 confirmed cases where a
+    drill card, a running game or an open form was built from the record this
+    function is about to replace and then kept showing or editing it under the
+    new one's name. Each line below reuses an idiom this codebase already has
+    for closing the same thing on its own surface (rdClose for a picked drill,
+    the timer stop at ritual.js:979) rather than inventing a second one. */
+ if(typeof rdClose==='function')rdClose();
+ if(typeof RIT!=='undefined'&&RIT){
+  RIT.sel={}; RIT.add=false; RIT.edit=null; RIT.exp=null; RIT.rang=null;
+  if(RIT.run){clearInterval(RIT.run.iv); RIT.run=null;}}
+ if(typeof LG!=='undefined'&&LG){
+  if(typeof lgStop==='function')lgStop();
+  LG.cards=[]; LG.open=null; LG.done=false; LG.t0=0; LG.turned=0;}
+ if(typeof MT!=='undefined'&&MT){MT.open=[]; MT.pick=null; MT.lock=false;}
+ if(typeof DECK_CARD!=='undefined')DECK_CARD=null;
+ if(typeof IMP_PICK!=='undefined')IMP_PICK={};
+ if(typeof pracPaint==='function')pracPaint();
+ syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();
+ /* RITUAL, KNOWLEDGE AND GAMES HAVE NO BRANCH IN render()'S OWN DISPATCH
+    (ui.js), on purpose, after a branch tried there broke tests/flowtools.js's
+    FT23: setTab (panels.js) already calls ritRender() once on tab entry and
+    then calls this file's render() again later in the same setTab, so a
+    render()-level branch fired ritRender() a second time, right after the
+    first had armed and drawn RIT.arrive, erasing the one-time arrival class
+    it had just painted. loadP calls render() directly, never through setTab,
+    so dispatching here instead fires exactly once, on an actual profile
+    switch, and never doubles up with setTab's own call. Knowledge and Games
+    carry no such one-shot flag, so this is their only gap closed either
+    way, not a second cause the way Ritual had one. */
+ if(S.tab===TAB.RITUAL&&typeof ritRender==='function')ritRender();
+ else if(S.tab===TAB.KNOW&&typeof kbRender==='function')kbRender();
+ else if(S.tab===TAB.GAMES&&typeof gmRender==='function')gmRender();}
 
 /* ---- release button ---- */
 $('bRel').addEventListener('click',function(){
@@ -96035,6 +96443,23 @@ function renderGates(){
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
  else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
+ /* RITUAL, KNOWLEDGE AND GAMES HAD NO DISPATCH ANYWHERE FOR A PROFILE
+    SWITCH, found by the profile-switch-audit workflow 14 November: sit on
+    one of these three and switch profiles, and the whole tab kept showing
+    the record that was open before the switch until you left and came
+    back. A branch was tried here first, same as Summary/Analytics/Story
+    above, and tests/flowtools.js's FT23 caught why that was wrong for
+    Ritual specifically: setTab (panels.js) already calls ritRender() once
+    directly on tab entry, arming RIT.arrive so the page draws in once, and
+    this function's own render() is called a second time later in that
+    same setTab, so the branch fired ritRender() again right after,
+    consuming RIT.arrive a second time and repainting without the arrive
+    class it had just drawn, measured as both arrived1 and arrived2 coming
+    back false where the gate wants true then false. Routed to loadP
+    (personas.js) instead, the one place that actually has the gap: it
+    calls this render() directly, never through setTab, so a dispatch
+    there fires exactly once, on a real profile switch, and never
+    interferes with setTab's own tab-entry call. */
 
 /* ---- the loop ---- */
 let last=0;
@@ -96365,5 +96790,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006429090"></div>
+<div id="eof" hidden data-len="006461351"></div>
 </body></html>

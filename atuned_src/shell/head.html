@@ -4260,31 +4260,18 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    wrap this onto its own line under the three columns above. */
 .st-mini6{display:flex;flex:1 0 100%;gap:12px}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
-/* THE MASK TILES, INSIDE THEIR OWN .st-mini-vis NOW rather than a
-   .st-2row-1 half-row shared with Avatar: a plain centred flex column,
-   the top mask's own labelled row above up to three runner-up dots,
-   with the full tile's own width to sit in instead of half of
-   Release's. */
-.st-mini-vis .st-mask4{display:flex;flex-direction:column;justify-content:center;gap:10px;width:100%}
-/* THE TOP MASK'S OWN ROW, 13 November: the one mask this card now names
-   outright, icon, name and percent, all standing text, no hover needed.
-   --c is each mask's own CHC.maskCols colour, set inline same as the
-   tiles below it. */
-.st-mask-top{display:flex;align-items:center;gap:8px}
-.st-mask-nm{font-size:12px;font-weight:600;color:var(--ink);flex:1 1 0;min-width:0;
- overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.st-mask-pc{font-size:11px;color:var(--c);flex:0 0 auto}
-.st-mask-runners{display:flex;align-items:center;gap:6px}
-.st-mask4-t{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
- justify-content:center;flex:0 0 auto;background:color-mix(in srgb,var(--c) 16%,var(--sunk));
- border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge))}
-/* THE RUNNER-UP TILES READ SMALLER, so the one labelled mask is plainly
-   the card's own headline and the rest plainly secondary. */
-.st-mask4-t.sm{width:26px;height:26px}
-.st-mask4-t.sm svg{width:13px;height:13px}
-.st-mask4-t svg{width:18px;height:18px;fill:none;stroke:var(--c);stroke-width:1.6;
- stroke-linecap:round;stroke-linejoin:round}
-/* THE RAIL'S OWN MASKS SECTION, same tile as .st-mask4-t above, the real
+/* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
+   .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
+   .st-mask4-t and its .sm variant drew the old left-aligned icon-and-text
+   row plus a runner-tile strip (storyui.js, before this date); the
+   rewrite draws a centred ring and glyph straight into .st-mini-vis like
+   every other card in the row, so none of those classes are emitted any
+   more and the rules are gone rather than kept beside markup that cannot
+   reach them, the same reasoning the CSS coverage gate (tests/design.js)
+   already applies the other way round. The rail's own Masks section
+   below is unrelated: it was never built from these classes, despite a
+   comment here once saying so. */
+/* THE RAIL'S OWN MASKS SECTION, a grid of tiles, the real
    five rather than the mini panel's top four, and a name under each: a
    bare icon with a name on hover alone, not printed, is the Release
    rings' own mistake from earlier tonight. */
@@ -4317,7 +4304,23 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    this as a label, the same way .rblk (the rail's own section heading)
    already does with neither capitalisation nor an invented second style. */
 .st-mini-lb{font-size:11px;font-weight:600;color:var(--dim);
- letter-spacing:.02em;margin-bottom:6px}
+ letter-spacing:.02em;margin-bottom:6px;display:flex;align-items:baseline;
+ justify-content:space-between;gap:6px}
+/* THE SIX CARDS BECAME LINKS, 14 November (storyui.js's STGO table,
+   stMiniShell's data-stgo/role=link). The chevron names where the card
+   goes, in the same label row rather than floating over the picture, so it
+   reads before a press and never sits on top of the Compass/Body/Field
+   drawing underneath. */
+.st-mini-go{font-size:11px;font-weight:500;color:var(--dim);opacity:.65;
+ white-space:nowrap;flex:0 0 auto}
+.st-mini-link{cursor:pointer;transition:border-color var(--t-micro) var(--ease-out),
+ transform var(--t-micro) var(--ease-out)}
+@media (hover:hover){
+ .st-mini-link:hover{border-color:var(--accent)}
+ .st-mini-link:hover .st-mini-go{color:var(--accent);opacity:1}}
+.st-mini-link:active{transform:translateY(1px)}
+.st-mini-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.st-mini-link{transition:none}}
 .st-mini-vis{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
 /* width/height:100%, not max-: an <svg> with no width/height attribute of
    its own (every one of the six mini pictures, viewBox alone) renders at

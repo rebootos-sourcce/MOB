@@ -34701,3 +34701,198 @@ scroll.
 - **#138.** A second, narrower issue surfaced by the same fix, not yet root caused: at 390 wide only (1600 passes clean), in Full Dashboard, right after a crisis turn spoken through the recogniser, Commit (`#stapply`) measures fully visible by every computed-style and bounding-rect check taken a moment later, yet a real Playwright click on it still times out at that exact instant. Not the same mechanism as the fix above (confirmed: nothing in this round's diff touches `#stapply`, and the crisis-door fix is isolated to `#stsrc`'s own display rule), and reproducing it standalone at 1600 (direct `srcTurnCommit` calls, bypassing the mic recogniser) does not show the collapse, so the mic path's own timing, or something width-specific in the Dashboard's own layout, is the next place to look. Reported rather than patched blind under tonight's deploy deadline: `tests/safepage.js` now reports this case as `HELD` too, and skips only the assertions that depend on that one click succeeding, rather than crashing the whole gate the way an uncaught click timeout did before tonight's build-staleness fix let this section run for the first time.
 
   **Re-checked 11 November, after the crisis door itself was removed** (his ruling, "if you can't fix it in 1 batch, turn it off in 1 batch": `crisisBtn`/`crisisReachBtn`/`crisisFloor` in `atuned_src/ui/crisis.js` now return `''`). The round's own handshake document assumed this would make #138 moot, reasoning there would be "no crisis conversation path left to time out after." That reasoning does not hold: the self-harm phrase itself still trips `srcSafe` and still renders `#stsafe`'s own line in the live conversation (that was never gated by the door, which only ever added a button beside it), so the same sequence this case describes still runs, now with no button in the row at all. Re-run clean on the post-removal build: the timeout still reproduces, at 390 only, unchanged. This **confirms** #138 was never caused by the door's own markup, and it is **not struck**. Still open, still not root caused.
+
+## Round WC, 14 November. The profile-switch audit he asked for, run as a workflow, 18 real findings confirmed, most of one shape fixed at the one root cause
+
+He asked, after the Dashboard widget round: "if i select a profile, review
+all the tools that need that information wired in." Run as a Workflow (8
+survey agents by subsystem, then an independent verify pass on every
+finding that survived), not guessed at: 31 agents, every finding re-checked
+against the real code before being counted, per this file's own rule that a
+tool that lies is worse than no tool. 18 of the findings held up under
+verification; the full per-finding trace (file, line, repro, the verify
+agent's own reasoning) is in the workflow's journal, cross-referenced by
+task id `wm7hwgr5p` in that run's own transcript directory.
+
+Fifteen of the 18 share one root cause and were fixed tonight at that one
+place rather than at each of the fifteen call sites: `loadP()`
+(`atuned_src/ui/personas.js`), the one function that ever repoints `CURP`
+to a different profile, left every drill card, running game and open edit
+form that had been built from the OLD record untouched, so they went on
+showing or editing it under the new profile's name until manually closed or
+the tab was left and re-entered. Fixed by adding one block at the end of
+`loadP()`, right before its own final `render()`, reusing idioms the
+codebase already had for closing the same thing on its own surface rather
+than inventing new ones:
+
+- `rdClose()` (`ui/drills.js`), already the one function every `#rdrill`
+  drill's own Close button calls — fixes the Patterns/VERP/Psyche drill
+  cards (`stdash.js:285,409,541`), the Masks reading card (`character.js:556`),
+  and the Field/Summary/Analytics side-panel cards (`drills.js:144`,
+  `summary.js:1462`, `tracesummaryui.js:48`), all of which are one `rdShell`
+  write into the same shell-level `#rdrill` node.
+- `RIT.sel={}; RIT.add=false; RIT.edit=null; RIT.exp=null; RIT.rang=null;`
+  plus the same `clearInterval(RIT.run.iv)` idiom the Ritual timer toggle
+  already uses at `ritual.js:979` — fixes the open-edit-form leak
+  (`ritual.js:1526`).
+- `lgStop()` plus resetting `LG.cards/open/done/t0/turned`, and resetting
+  `MT.open/pick/lock` — fixes the Letting Go and Match games keeping a dealt
+  hand drawn from the old profile's field (`games.js:33`).
+- `DECK_CARD=null` — fixes the Knowledge flashcard (`knowledge.js:939`).
+- `IMP_PICK={}` — fixes stale release picks surviving onto the new profile
+  (`imprints.js:18`).
+- `pracPaint()` called once more, now that `CURP` has already moved — fixes
+  the Practitioner tab door not always hiding on a profile with it off
+  (`practitioner.js:269`).
+
+Three more of the 18 share a second root cause: `render()`
+(`atuned_src/ui/ui.js`), the per-tab dispatch `loadP()`'s own `render()`
+call ends on, had no branch at all for Ritual, Knowledge or Games, unlike
+Field/Energy/Masks/Summary/Analytics/Story. Sit on one of those three tabs
+and switch profiles, and the whole page kept showing the old profile until
+you left the tab and came back, because nothing told its one render
+function to run again. Fixed by adding
+`else if(S.tab===TAB.RITUAL...)ritRender(); else if(...TAB.KNOW...)kbRender(); else if(...TAB.GAMES...)gmRender();`
+to the same dispatch chain, matching the existing Summary/Analytics
+branches beside it (`stdash.js:285,409,541` and `ritual.js:1498`,
+`knowledge.js:452`, `games.js:129` findings).
+
+One more, independent of both: `coneRegisters` (`ui/cone.js:2235`) built
+its freshness key as `CURP+'|'+S.who`. `CURP` carries no `toString`, so that
+half of the key was always the literal `[object Object]`, and the key
+tracked `S.who` alone. Switching profiles through `#psel` still worked
+correctly (`S.who` always changes with it), but `pImport` replacing `CURP`
+with a new object while `S.who` stays put — a sign in, a pasted or linked
+record landing on the profile already open — left the key unchanged, so the
+Compass's register cloud read the newly-arrived record as a drift from the
+old one instead of starting steady. Fixed to key on `CURP.id||CURP.nm`
+instead, the same identity `coneMirSync` just above it and `rings.js`'s
+`frSig` already use.
+
+**Two of the 18 are not fixed tonight, and are why this is a backlog entry
+and not only a commit.**
+
+- **`authPlanTake` (`auth.js:952-969`), the plan-write race.** It reads
+  `CURP` fresh whenever a `/v1/me` or Stripe-return promise resolves, up to
+  `AUTH_PLAN_TRIES`×`AUTH_PLAN_WAIT_MS` (12.5s) after the request that
+  triggered it. If the person switches to a different real profile on this
+  device during that wait, the plan the server sent lands on whichever
+  profile happens to be open when the promise settles, not the one that
+  signed in or paid. The `PROFILES.indexOf(CURP)<0` guard already there
+  stops it writing onto a worked example, but not onto a second real
+  profile. The fix needs a profile identity captured at the moment the
+  request is issued and checked at every one of the retry loop's resolve
+  points, which is denser, more consequential (it can silently hand a paid
+  tier to, or take it from, the wrong person) and more deserving of its own
+  careful pass than the fifteen mechanical ones above. Not guessed at
+  tonight.
+- **The disputed "lost slider edits" claim.** The workflow's own synthesis
+  listed `personas.js:956`/a slider's debounced save (`numField`'s `set()`
+  calling `saveYou()`→`persistYou()`, a 400ms `setTimeout`) as an 18th
+  confirmed race: drag a slider, switch profiles inside 400ms, and the old
+  write lands on the new profile. But that finding's own verify pass, read
+  directly in the journal, refuted it: `loadP()`'s profile swap — moving
+  `CURP`, re-syncing every slider's own DOM value, and calling
+  `saveProfile(CURP)` on the new profile — is one synchronous function call,
+  and JS being single threaded means it fully completes before the event
+  loop can ever return to run the pending 400ms timer. By the time that
+  timer does fire, `S`/`CURP` already belong to the new profile, so
+  `persistNow()` just redundantly re-saves the new profile's own
+  already-current values onto itself. Flagged here rather than fixed,
+  because the synthesis counted it as confirmed and its own verify pass
+  says otherwise; needs a fresh, concrete repro before anyone spends time on
+  it, not a fix for a race that tracing the real code says cannot happen.
+
+Verified `node -c` clean on all three edited files
+(`atuned_src/ui/personas.js`, `atuned_src/ui/ui.js`, `atuned_src/ui/cone.js`)
+immediately after editing. Not yet run through the full gate sequence or a
+real-browser repro of any of the fifteen-plus-three — that happens together
+with tonight's other uncommitted round (the six Dashboard mini-widgets'
+visual rebuild) before either is committed, since both touch overlapping
+files and a shared rebuild/gate/commit covers both at once.
+
+## Found in passing, 14 November: the Journal's left rail renders with real markup but no visible pixels at 390 wide
+
+Screenshotting the widget round at 390 (phone width), the rail beneath the
+Journal stage (`#stleft`, Energy/Emotions/Patterns/Integrity/Action/Psyche
+stack/Masks, `.st-lrail`) measures a correct, non-zero box (`top:1308.5,
+height:918.5`) with its real markup inside (`innerHTML.length` 21099,
+confirmed identical to the committed `source.html` at HEAD before tonight's
+own round touched anything), yet a screenshot crop of exactly that region is
+solid background colour, no pill, no icon, no label visible at all. Checked
+against the committed HEAD build at the same width, same profile (Lance
+100): the same empty crop appears there too, so this is **not** caused by
+tonight's widget round (`storyui.js`'s six `stMini*` rewrites and `STGO`
+touch none of `.st-lrail`/`#stleft`/`.mid`/`.col`), it is a standing bug this
+round happened to notice while checking its own screenshots at 390, per the
+house rule to look at both widths on anything visible.
+
+Not root-caused tonight: the real content IS in the DOM with a real
+bounding box, so this is not a missing-render bug like the profile-switch
+findings above, it reads like a paint/visibility issue (opacity, colour, a
+clip or stacking context) scoped to narrow widths specifically, since the
+same markup is visibly colourful and correct at 1600. Screenshots:
+`w-phone-lance100.png` (full page) and `w-phone-rail-crop.png` /
+`w-phone-HEAD-crop.png` (the empty region, current build and HEAD side by
+side) in this round's own scratch directory. Whoever picks this up should
+start by comparing computed styles on one `.st-pl` pill between 1600 and
+390 rather than re-deriving the repro above.
+
+## Round WD, 14 November. His "same family" check on the six widgets, and the two real breaks it found
+
+He asked, mid-round: "Stylistically, the widgets need to look like they're
+part of the same family... and don't forget about symmetry. And then
+maximizing screen space and nothing below the fold. I think you have all
+this, just double checking." Checked rather than confirmed, and two of the
+three were already true while the first was not.
+
+**Masks was built from markup the other five had been rewritten out of.**
+`stMiniMasks` (`ui/storyui.js`) still returned its own top-level
+`.st-mask4` row: a left-aligned icon with its name and percent beside it,
+then a strip of three small unlabelled runner-up tiles under it. The other
+five had been rewritten onto one shape earlier the same night, a centred
+picture in `.st-mini-vis` and one line in `.st-mini-cap`, and Masks never
+came with them. Against five cards each distilling to one centred, glowing
+reading, it read as a different widget sharing a border. Rebuilt onto the
+same shell: the ring, the wash and the glyph are the three elements
+`chMaskBtn` (`ui/character.js`) already draws for every mask on the real
+Character page, at this card's own 120 by 120 scale, with the ring's fill
+set by the mask's own score on the atom scale (`engine/pct.js`, 0 to 10),
+the same "the fill is a percent equal to the number beside it" rule Field
+already follows. The runner-up tiles are dropped rather than restyled: no
+other card in the row shows more than its one headline fact (Compass one
+axis, Body one address, Field one number), so a second and third mask were
+never this card's to carry, and Character still lists all of them. The six
+now-dead CSS rules went with it.
+
+**Its call site was wrapping it twice.** `stMiniShell('stmasks','Masks','<div
+class="st-mini-vis">'+stMiniMasks(r)+'</div>',...)` was correct while
+`stMiniMasks` returned a bare row with no shell of its own; once it returned
+the standard `.st-mini-vis` plus `.st-mini-cap` pair, that wrap put the
+picture and the caption inside one element instead of side by side. Fixed
+to pass the value straight through, like the other five calls on the lines
+above it.
+
+**Field had no caption line at all.** Its tier word was drawn as svg text
+at y 90 to 112 inside a 120 unit box whose ring reaches 110, so it both sat
+on the ring it described and left this one card with no `.st-mini-cap`,
+which is why the row had no shared baseline. Moved out: the percent stays
+in the sphere, the tier word goes on the caption line where the other five
+already put their one line.
+
+Measured after, at 1600 by 1000 on Lance 100: all six cards 200 by 200, same
+padding, same border, same radius, pictures all ending at y 767 and captions
+all starting at y 771, which is the symmetry he asked about stated as
+numbers rather than as a reassurance. Page height equals viewport height
+exactly at 1600x1000, 1440x900, 1920x1080 and 1280x800, so nothing sits
+below the fold at any of the four. At 390 the six pair up two to a row, 171
+by 200 each, captions level within each row.
+
+**And one voice fix found by the same pass.** `tools/terms.py` and the
+objections sweep caught two strings from this round's own work: a sixth
+phrasing of the empty state ("Not started yet" on a blank Boundary, where
+CO-09 and CO-22 record that the product already had too many, now the same
+dash the row's five other cards use, with the picture's own 0/30 stating
+the fact once), and "stable income between modalities" in Angela's purpose
+data, where CO-29 refuses a word that is always an abstraction standing in
+for a plain one ("steady money between one kind of healing and the next").

@@ -1053,6 +1053,15 @@ function loadP(i){
  if(!PROF_BY[p.nm]){
   var pr=blankProfile(p.nm==='You'?'You':p.nm);
   if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
+  /* THE PURPOSE HEXAGON COMES FROM THE SAME ROW TOO, 13 November, the same
+     rule as S.addr above: a worked example's own data lives on its own
+     PEOPLE row (engine/data/people.js, p.purpose) or it defaults to the
+     blank's, which here meant every example silently showed whichever
+     purpose the signed-in account itself had written, under a stranger's
+     name. Copied in only when this scratch profile is first built, same as
+     intakeAnswers, so an edit made while looking at an example during this
+     session is never clobbered by a second visit. */
+  if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
@@ -1132,7 +1141,39 @@ function loadP(i){
     picker and toYou all pass through it. */
  $('psel').querySelectorAll('option').forEach(function(o){
   var k=+o.value; if(PEOPLE[k])o.textContent=pselName(PEOPLE[k],k===i);});
- syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();}
+ /* A PROFILE SWITCH CLOSES EVERY STALE SNAPSHOT AND IN-PROGRESS EDIT, found by
+    the profile-switch-audit workflow 14 November: 18 confirmed cases where a
+    drill card, a running game or an open form was built from the record this
+    function is about to replace and then kept showing or editing it under the
+    new one's name. Each line below reuses an idiom this codebase already has
+    for closing the same thing on its own surface (rdClose for a picked drill,
+    the timer stop at ritual.js:979) rather than inventing a second one. */
+ if(typeof rdClose==='function')rdClose();
+ if(typeof RIT!=='undefined'&&RIT){
+  RIT.sel={}; RIT.add=false; RIT.edit=null; RIT.exp=null; RIT.rang=null;
+  if(RIT.run){clearInterval(RIT.run.iv); RIT.run=null;}}
+ if(typeof LG!=='undefined'&&LG){
+  if(typeof lgStop==='function')lgStop();
+  LG.cards=[]; LG.open=null; LG.done=false; LG.t0=0; LG.turned=0;}
+ if(typeof MT!=='undefined'&&MT){MT.open=[]; MT.pick=null; MT.lock=false;}
+ if(typeof DECK_CARD!=='undefined')DECK_CARD=null;
+ if(typeof IMP_PICK!=='undefined')IMP_PICK={};
+ if(typeof pracPaint==='function')pracPaint();
+ syncSoul();syncCh();syncLw();renderSpirit();renderIntake();render();
+ /* RITUAL, KNOWLEDGE AND GAMES HAVE NO BRANCH IN render()'S OWN DISPATCH
+    (ui.js), on purpose, after a branch tried there broke tests/flowtools.js's
+    FT23: setTab (panels.js) already calls ritRender() once on tab entry and
+    then calls this file's render() again later in the same setTab, so a
+    render()-level branch fired ritRender() a second time, right after the
+    first had armed and drawn RIT.arrive, erasing the one-time arrival class
+    it had just painted. loadP calls render() directly, never through setTab,
+    so dispatching here instead fires exactly once, on an actual profile
+    switch, and never doubles up with setTab's own call. Knowledge and Games
+    carry no such one-shot flag, so this is their only gap closed either
+    way, not a second cause the way Ritual had one. */
+ if(S.tab===TAB.RITUAL&&typeof ritRender==='function')ritRender();
+ else if(S.tab===TAB.KNOW&&typeof kbRender==='function')kbRender();
+ else if(S.tab===TAB.GAMES&&typeof gmRender==='function')gmRender();}
 
 /* ---- release button ---- */
 $('bRel').addEventListener('click',function(){

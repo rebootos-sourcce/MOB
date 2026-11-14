@@ -1848,6 +1848,23 @@ function renderGates(){
     through the Story's own code. Without this the vault read nought after a
     run until the tab was left and entered again. */
  else if(S.tab===TAB.STORY&&typeof stFieldPaint==='function')stFieldPaint(stMoved);}
+ /* RITUAL, KNOWLEDGE AND GAMES HAD NO DISPATCH ANYWHERE FOR A PROFILE
+    SWITCH, found by the profile-switch-audit workflow 14 November: sit on
+    one of these three and switch profiles, and the whole tab kept showing
+    the record that was open before the switch until you left and came
+    back. A branch was tried here first, same as Summary/Analytics/Story
+    above, and tests/flowtools.js's FT23 caught why that was wrong for
+    Ritual specifically: setTab (panels.js) already calls ritRender() once
+    directly on tab entry, arming RIT.arrive so the page draws in once, and
+    this function's own render() is called a second time later in that
+    same setTab, so the branch fired ritRender() again right after,
+    consuming RIT.arrive a second time and repainting without the arrive
+    class it had just drawn, measured as both arrived1 and arrived2 coming
+    back false where the gate wants true then false. Routed to loadP
+    (personas.js) instead, the one place that actually has the gap: it
+    calls this render() directly, never through setTab, so a dispatch
+    there fires exactly once, on a real profile switch, and never
+    interferes with setTab's own tab-entry call. */
 
 /* ---- the loop ---- */
 let last=0;

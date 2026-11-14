@@ -3652,38 +3652,88 @@ var CHALLENGE={
    through the real writers by engine/exdepth.js when the example is opened.
    ============================================================ */
 const PEOPLE=[
+ /* PURPOSE, 13 November: every example now carries one, the fix for the
+    Boundary widget reading a stranger's purpose under an example's name
+    (CLAUDE.md, the Dashboard widget round). Short, grounded in the role
+    and the says line above it, not invented from nothing; one to three
+    real committed sides each rather than all thirty, since that is a true
+    partial boundary, the same shape most real people's own answer would
+    take, not a demo flourish.
+
+    A SECOND PASS, 14 November, caught live screenshotting the mini widget
+    against two different examples: the first pass gave every person
+    exactly one filled side, so the other five always tied at zero and the
+    widget's own tie break (counts.indexOf, PUR_SIDES' fixed array order)
+    answered "partner" for nearly all sixteen regardless of who it was,
+    the same stale-looking sameness the owner's own complaint was about,
+    just moved one layer down. Fixed two ways: most people here now carry
+    two or three committed sides, not one, so the number itself (bc.filled
+    of 30) varies by person and not only the picture; and stMiniBoundary's
+    own tie break (storyui.js) now salts which tied side it names by the
+    record's identity rather than always the array's first entry, so a
+    real tie (several sides still at zero) reads as a different, but
+    stable, side per person instead of one word for everyone. The ones
+    left at a single side are deliberate, not missed: Ana and Tomas are
+    mid-crisis in their own says line, Gordon is in denial, Lance 15 is
+    the heaviest of the four Lances, and a person at the start of their
+    own boundary work having touched only one side is the honest case
+    this roster is supposed to carry at least once. */
  {nm:'Sofia',age:41,role:'somatic practitioner · ICP',dom:12,a1:3,a2:1,
   says:'I hold the room for everyone. I have not been held in four years and I would not know how to ask.',
   c:{Fear:1.5,Anger:1,Shame:2,Disgust:1,Apathy:1,Shock:1,Sad:2.5,Surprise:1,Anticipation:2},
-  rep:{Anger:8.6,Sad:6,Fear:5}},
+  rep:{Anger:8.6,Sad:6,Fear:5},
+  purpose:{soul:['presence','service','truth'],ego:['being held','financial safety for the practice','rest'],
+   sides:{partner:[],family:[],friends:['call the one friend who does not need anything back'],community:[],
+    coworkers:['say no to one extra client this month'],alone:[]}}},
  {nm:'Diane',age:46,role:'founder, second company · ICP',dom:6,a1:4,a2:6,
   says:'I work until the work is done and the work is never done. Rest feels like a moral failure.',
   c:{Fear:6,Anger:5,Shame:5,Disgust:3,Apathy:2,Shock:4,Sad:3,Surprise:3,Anticipation:8},
-  rep:{Apathy:9.2,Anticipation:8.8}},
+  rep:{Apathy:9.2,Anticipation:8.8},
+  purpose:{soul:['freedom','mastery','meaning'],ego:['the company surviving her','independence','her own health'],
+   sides:{partner:[],family:[],friends:[],community:[],
+    coworkers:['let someone else present without editing it first'],alone:['one evening with no laptop open']}}},
  {nm:'Marcus',age:44,role:'creative director · ICP',dom:1,a1:1,a2:6,
   says:'I can see what is wrong with anything in four seconds. It has cost me two studios.',
   c:{Fear:2,Anger:3.5,Shame:2,Disgust:4,Apathy:1.5,Shock:1.5,Sad:1.5,Surprise:1,Anticipation:3},
-  rep:{Surprise:8.9,Anticipation:8.2}},
+  rep:{Surprise:8.9,Anticipation:8.2},
+  purpose:{soul:['honesty','craft','clarity'],ego:['a studio that keeps its people','money enough to say no','a steady home life'],
+   sides:{partner:[],family:["sit through one dinner without naming what's wrong with it"],friends:[],community:[],
+    coworkers:["let a junior's draft stand uncorrected for a day"],alone:[]}}},
  {nm:'Angela',age:36,role:'seeker, six kinds of healing · ICP',dom:17,a1:11,a2:5,
   says:'Everything happens for a reason. I have said that at three funerals and I believed it each time.',
   c:{Fear:2,Anger:1,Shame:2.5,Disgust:1,Apathy:2,Shock:2,Sad:3,Surprise:1.5,Anticipation:2},
-  rep:{Sad:9.4,Disgust:9.1}},
+  rep:{Sad:9.4,Disgust:9.1},
+  purpose:{soul:['meaning','peace','connection'],ego:['a body that stops hurting','an honest community','steady money between one kind of healing and the next'],
+   sides:{partner:[],family:[],friends:["let one friend disagree with her meaning-making out loud"],
+    community:['show up to one group with nothing to fix'],coworkers:[],alone:[]}}},
  {nm:'Derek',age:39,role:'high performer, endurance · ICP',dom:5,a1:0,a2:7,
   says:'Pain is information. I have raced on a stress fracture. I would do it again.',
   c:{Fear:5,Anger:6,Shame:6,Disgust:4,Apathy:2,Shock:6,Sad:4,Surprise:3,Anticipation:7},
-  rep:{Apathy:9,Shock:8.7}},
+  rep:{Apathy:9,Shock:8.7},
+  purpose:{soul:['discipline','endurance','proof'],ego:['a body that still works at sixty','his marriage outlasting the training','retirement income'],
+   sides:{partner:['rest when asked, not when forced'],family:[],friends:[],community:[],coworkers:[],
+    alone:['a day with no training log']}}},
  {nm:'James',age:57,role:'C-suite, third turnaround · ICP',dom:2,a1:6,a2:0,
   says:'I make the call and I sleep fine. People find that cold. It is what they hired.',
   c:{Fear:6,Anger:8,Shame:7,Disgust:7,Apathy:5,Shock:7,Sad:4,Surprise:4,Anticipation:5},
-  rep:{Shock:9.3,Shame:8.4}},
+  rep:{Shock:9.3,Shame:8.4},
+  purpose:{soul:['command','clarity','legacy'],ego:['the company surviving the turnaround','his kids calling back','his own health'],
+   sides:{partner:[],family:['call his kids with no agenda'],friends:[],community:[],
+    coworkers:['ask a question in a meeting instead of making the call'],alone:[]}}},
  {nm:'Rosa',age:61,role:'retired midwife',dom:12,a1:11,a2:1,
   says:'Nothing in particular. Things do not sit on me the way they used to.',
   c:{Fear:0,Anger:0,Shame:0,Disgust:0,Apathy:0,Shock:0,Sad:.5,Surprise:0,Anticipation:0},
-  rep:{Fear:6,Anger:6,Shame:6,Disgust:6,Apathy:6,Shock:6,Sad:6,Surprise:6,Anticipation:6}},
+  rep:{Fear:6,Anger:6,Shame:6,Disgust:6,Apathy:6,Shock:6,Sad:6,Surprise:6,Anticipation:6},
+  purpose:{soul:['peace','witness','rest'],ego:['her pension','her garden','her grandchildren near'],
+   sides:{partner:[],family:["let her grandchildren see her unsure of something"],friends:[],
+    community:['join a group with nothing to organize'],coworkers:[],
+    alone:['a morning with nowhere to be and nobody needing her']}}},
  {nm:'Ana',age:47,role:'teacher, one year out',dom:8,a1:2,a2:5,
   says:'I am in the middle of something and I cannot see the far side of it.',
   c:{Fear:9,Anger:7,Shame:9,Disgust:7,Apathy:5,Shock:8,Sad:9,Surprise:6,Anticipation:7},
-  rep:{Sad:4,Fear:3}},
+  rep:{Sad:4,Fear:3},
+  purpose:{soul:['growth','honesty','patience'],ego:['her classroom steady','her own recovery','her marriage holding'],
+   sides:{partner:[],family:[],friends:['tell one friend she is not fine'],community:[],coworkers:[],alone:[]}}},
  /* ---- the ends of the scale ----
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
@@ -3710,18 +3760,29 @@ const PEOPLE=[
  {nm:'Tomas',age:58,role:'long haul driver, off the road fourteen months',dom:0,a1:9,a2:4,
   says:'I used to drive nine hundred miles and feel nothing. Now I cannot get to the end of the street.',
   c:{Fear:9.4,Anger:8.2,Shame:9.1,Disgust:7.6,Apathy:9.6,Shock:8.8,Sad:9.5,Surprise:6.4,Anticipation:8.9},
-  rep:{}},
+  rep:{},
+  purpose:{soul:['stillness','honesty','return'],ego:['his daughter close','his health insurance','the road not calling him back'],
+   sides:{partner:[],family:["answer his daughter's call on the first ring"],friends:[],community:[],coworkers:[],alone:[]}}},
  {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
   c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
-  rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6}},
+  rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6},
+  purpose:{soul:['craft','quiet','precision'],ego:['the shop surviving him','his hands still working','his wife’s patience'],
+   sides:{partner:[],family:[],friends:[],community:[],
+    coworkers:["let an apprentice finish a piece his own way"],
+    alone:['sit at the bench with nothing left to finish']}}},
  {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
   says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
   c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
-  rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8}},
+  rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8},
+  purpose:{soul:['humility','fairness','stillness'],ego:["his children's respect",'his health','his pension'],
+   sides:{partner:[],family:['let his grown children see him unsure of something'],
+    friends:['call a friend from the bench years, not a former colleague'],community:[],coworkers:[],alone:[]}}},
  {nm:'Gordon',age:58,role:'managing partner',dom:2,a1:6,a2:0,
   says:'There is nothing wrong with me. Four people left in a year and each had their reasons.',
-  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{}},
+  c:{Fear:10,Anger:10,Shame:10,Disgust:10,Apathy:7,Shock:9,Sad:8,Surprise:6,Anticipation:8},rep:{},
+  purpose:{soul:['control','reputation','order'],ego:["the firm's name","his partners' loyalty",'his own health'],
+   sides:{partner:[],family:[],friends:[],community:[],coworkers:['ask one of the four who left what actually happened'],alone:[]}}},
  /* ---- the owner, four times. Round QD, his words: "give me ... one of me
     with a CQ of fifteen, fifty, eighty-five and one hundred. That says Lance,
     comma, developer." He said three and then named four numbers, and all four
@@ -3762,19 +3823,30 @@ const PEOPLE=[
  {nm:'Lance 15',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'I ship at four in the morning and wake at six with my jaw already set. I built the thing that reads this, and it reads me as heavy.',
   c:{Fear:7.6,Anger:8.2,Shame:7.4,Disgust:5.2,Apathy:6.8,Shock:6.4,Sad:7.8,Surprise:4.4,Anticipation:8.8},
-  rep:{Anticipation:1.4}},
+  rep:{Anticipation:1.4},
+  purpose:{soul:['truth','build','proof'],ego:['the product shipping','his family’s patience','his own sleep'],
+   sides:{partner:['one night with the laptop closed before midnight'],family:[],friends:[],community:[],coworkers:[],alone:[]}}},
  {nm:'Lance 50',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Some weeks the work runs clean and I sleep through. Then one call lands wrong and I watch my own hands go back to the old wiring.',
   c:{Fear:5.8,Anger:6.6,Shame:5.4,Disgust:3.6,Apathy:4.4,Shock:4,Sad:6,Surprise:3,Anticipation:7.4},
-  rep:{Anticipation:3,Anger:2.4}},
+  rep:{Anticipation:3,Anger:2.4},
+  purpose:{soul:['truth','build','steadiness'],ego:['the product shipping','his family','his own health'],
+   sides:{partner:['notice the old wiring before it runs the call, and say so out loud'],family:[],friends:[],
+    community:[],coworkers:[],alone:['notice the old wiring before it runs the call']}}},
  {nm:'Lance 85',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Most of it moves through me now. I still catch on waiting, and on needing to be the one who is right in the room.',
   c:{Fear:1.6,Anger:6.8,Shame:1.4,Disgust:1,Apathy:1.2,Shock:1,Sad:2,Surprise:0.8,Anticipation:8.2},
-  rep:{Fear:6.4,Anger:1.2,Shame:6.6,Disgust:6.2,Apathy:6.4,Shock:6,Sad:5.8,Surprise:6,Anticipation:0.8}},
+  rep:{Fear:6.4,Anger:1.2,Shame:6.6,Disgust:6.2,Apathy:6.4,Shock:6,Sad:5.8,Surprise:6,Anticipation:0.8},
+  purpose:{soul:['truth','mastery','service'],ego:['the product','his family','his health'],
+   sides:{partner:[],family:[],friends:[],community:[],coworkers:['let someone else be right in the room'],
+    alone:['sit with the waiting without reaching for a device']}}},
  {nm:'Lance 100',age:54,role:'developer',dom:0,a1:0,a2:6,
   says:'Nothing is holding. I keep this one to see what the instrument says at the ceiling, and whether it still tells the truth up there.',
   c:{Fear:.5,Anger:1,Shame:.5,Disgust:.5,Apathy:.5,Shock:.5,Sad:1,Surprise:.5,Anticipation:1.5},
-  rep:{Fear:6.6,Anger:6.4,Shame:6.8,Disgust:6.6,Apathy:6.7,Shock:6.3,Sad:6.5,Surprise:6.2}}];
+  rep:{Fear:6.6,Anger:6.4,Shame:6.8,Disgust:6.6,Apathy:6.7,Shock:6.3,Sad:6.5,Surprise:6.2},
+  purpose:{soul:['truth','mastery','witness'],ego:['the product','his family','his own rest'],
+   sides:{partner:[],family:['be the one who needs nothing, and ask for something anyway'],friends:[],community:[],
+    coworkers:[],alone:['see what holds when nothing is driving it']}}}];
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
