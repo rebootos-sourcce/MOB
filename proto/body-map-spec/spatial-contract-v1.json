@@ -1,0 +1,56 @@
+{
+  "schema": "atuned.body-map.spatial-contract",
+  "version": 1,
+  "status": "prototype-contract",
+  "purpose": "Stable spatial data contract for the ATUNED body-map prototype. This does not change the shipped application schema.",
+  "coordinateSystem": {
+    "unit": "figure-unit",
+    "origin": "top-left of the normalized view",
+    "xRange": [0, 100],
+    "yRange": [0, 100],
+    "zMeaning": "depth coordinate; required only where a source supports depth",
+    "missingDepth": null,
+    "rule": "Never infer a missing depth coordinate from a front-view projection."
+  },
+  "views": ["front", "back", "head-cut"],
+  "evidenceClasses": ["measured", "sourced", "proposed", "unknown"],
+  "positionRecord": {
+    "required": ["id", "view", "x", "y", "evidence", "source"],
+    "optional": ["z", "side", "landmarkId", "uncertaintyCm", "notes"],
+    "fields": {
+      "id": "Stable identifier for the anatomical place, not the display label.",
+      "view": "One of the declared views.",
+      "x": "Finite number from 0 to 100 in normalized figure coordinates.",
+      "y": "Finite number from 0 to 100 in normalized figure coordinates.",
+      "z": "Finite number from 0 to 100 when known, otherwise null or omitted.",
+      "side": "left, right, midline, or bilateral.",
+      "evidence": "Evidence class; proposed positions must never be represented as measured.",
+      "source": "Non-empty source identifier or reference description.",
+      "landmarkId": "Optional stable reference landmark used for registration.",
+      "uncertaintyCm": "Optional non-negative uncertainty estimate in centimetres."
+    }
+  },
+  "regionRecord": {
+    "required": ["id", "view", "label", "geometrySource", "evidence"],
+    "optional": ["parentId", "side", "cellIds"],
+    "rules": [
+      "Region identifiers are stable and independent of display labels.",
+      "A region's geometry must use the same normalized coordinate space as positions.",
+      "A selected region may contain zero or more place identifiers; membership is explicit, not inferred from seat bands."
+    ]
+  },
+  "grid": {
+    "proposedCellSizeCm": 5,
+    "renderedCellSizeCm": 2,
+    "status": "proposed",
+    "rule": "Grid resolution is a visualization choice and does not imply anatomical measurement precision."
+  },
+  "validation": [
+    "Reject unknown views and evidence classes.",
+    "Reject non-finite or out-of-range x and y values.",
+    "Reject negative or non-finite uncertainty values.",
+    "Require a non-empty source for every position.",
+    "Do not require z when it is unknown; preserve null rather than fabricate depth.",
+    "Keep source provenance and evidence class through projection, rendering, and export."
+  ]
+}
