@@ -163,11 +163,13 @@ const FLOOR_CANVAS=60;
       left column with #stleft in it, and #stleft is deliberately not a
       section, so the rail watch above, which reads [data-rail] hosts, would
       never see it either. So the Journal is walked three ways by name: Simple,
-      where the rail must be hidden and empty; Full with no story, where Energy
-      must say nothing is read and draw no ring; and Full with a story, where
-      it must draw all seven seats and clear the floor. The story is put into
-      the working text and painted directly, never committed or drafted, and
-      the view is put back to Simple after. */
+      where the rail must be hidden and empty; Full with no story, where
+      Energy must still draw all seven pills, unlit, never a sentence (13
+      November: "I just want to see the icons and the panels unlit", reversing
+      this comment's own older "must say nothing is read and draw no ring");
+      and Full with a story, where it must draw all seven seats and clear the
+      floor. The story is put into the working text and painted directly,
+      never committed or drafted, and the view is put back to Simple after. */
    const jr=await p.evaluate(async()=>{
     const out=[], wait=()=>new Promise(r=>setTimeout(r,320));
     /* SCOPED TO ENERGY ITSELF, 8 November. This file's own comment above
@@ -201,7 +203,7 @@ const FLOOR_CANVAS=60;
    jr.forEach(r=>{
     const bad=r.story<FLOOR
      ||(r.nm==='simple'&&(r.shown||r.left>0))
-     ||(r.nm==='full'&&(!r.shown||!r.none||r.pills>0))
+     ||(r.nm==='full'&&(!r.shown||r.none||r.pills!==7))
      ||(r.nm==='full story'&&(!r.shown||r.pills!==7||r.left<FLOOR));
     rows.push([wn,who,{simple:'jnl simple',full:'jnl full','full story':'jnl story'}[r.nm],bad?'EMPTY':'ok',r.story,r.text,
      'Journal '+r.nm+': #story, #stleft '+(r.shown?'shown':'hidden')+' '+r.left+' markup, '+r.pills+' seats'+(r.none?', nothing read yet':'')]);
