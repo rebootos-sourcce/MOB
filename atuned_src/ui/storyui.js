@@ -1238,19 +1238,36 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
- stUniSync();}
+ stUniSync(r);}
 /* MOUNT OR PARK HER, THE ONE PLACE THIS PAGE DECIDES IT, round TF plus 13
    November. A worked example gets none (show only, nothing she would react
    to is the person's own), TAB.STORY's own leave in panels.js parks her.
    AND NOT ON NOTHING EITHER, 13 November, his words: "if a person is
    loaded up, uni should be there. If there's nothing, no persona loaded
-   up, uni should not be there." Reproduced before this fix: the person's
+   up, uni should not be there." Reproduced before that fix: the person's
    own blank profile, nothing typed, nothing in the record, still mounted
    her full size, lit and animating, over an instrument reading nothing.
-   "Loaded up" is read the same way the rail reads it (STV's own gate on
-   ST_TEXT, p in stdash.js): words in the box right now, the one real
-   signal this page already has for "there is something she would react
-   to," the same thing uniApply hands her below.
+
+   RE-READ, 14 November, his own bug report: "Uni isn't showing up whenever
+   I select a new profile." The 13 November fix read "loaded up" as ST_TEXT
+   alone, words in the box right now, which is wrong for a profile switch
+   specifically: stOwn() (above) clears ST_TEXT to '' the moment a different
+   record opens, since the old draft was never that record's own words, so
+   every switch to a profile that already carries a real reading still
+   parked her until something was freshly typed, on a page that already
+   shows that profile's own Compass, Body and Field readings everywhere
+   else. "Loaded up" now reads as either signal: ST_TEXT typed this
+   session, OR the open record already carries a reading (!r.unread, the
+   same flag every other surface on this product already checks before it
+   will print a band or a tier). A genuinely blank record with nothing
+   typed still gets no Uni, which is the case the 13 November fix was
+   actually guarding against; a record that already has something to show
+   gets her immediately, which is the case his new words are naming.
+   uniApply(null) is already written to take this: it reads r.unread, r.CQ
+   and r.DQ on its own and only the emotion family depends on a parsed
+   entry, so a loaded record with an untouched box shows her holding its
+   coherence with no fresh reaction, not a blank stare.
+
    CALLED FROM stPaintAll TOO, not only stRender, so she appears the
    moment the first word lands rather than waiting for a tab leave and
    return: every other tile on this page already reacts to a keystroke
@@ -1259,12 +1276,17 @@ function stRender(){
    repaint would read as a second, slower instrument disagreeing with the
    first. #stuni itself is never rewritten by stPaintAll, only by stRender
    (see the placement note above its markup), so toggling what is mounted
-   inside it here is safe between one full repaint and the next. */
-function stUniSync(){
+   inside it here is safe between one full repaint and the next. r is
+   passed in from stRender, which already computed one for the six mini
+   pictures above; stPaintAll has no r of its own at the point it calls
+   this (a keystroke, not a full repaint) and reads one fresh, the same
+   cost every other keystroke-driven tile on this page already pays. */
+function stUniSync(r){
  if(typeof document==='undefined')return;
  var un=document.getElementById('stuni'); if(!un)return;
  var show=typeof showOnly==='function'&&showOnly();
- var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim());
+ var seen=r||(typeof computeSeen==='function'?computeSeen():null);
+ var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread);
  if(!show&&loaded){
   if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
