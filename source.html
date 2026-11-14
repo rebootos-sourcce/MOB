@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v71 055126b8 2026-11-14 03:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v73 9eaa3eea 2026-11-14 04:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5523,27 +5523,38 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    lights up... the more they talk, the brighter it gets." The corner cut
    is a real bevel (clip-path), not a rounded corner. --b, 0 to 1, written
    per button by ui/stdash.js's stPillRow, is the one dial everything here
-   reads: background tints from --sunk (the product's own darkest token)
-   toward the tile's own colour, the glow grows with it, and the icon's
-   own opacity rises with it, so nothing here is a lit/dim switch any
-   more, it is one continuous value turning up. */
-/* OFF UNTIL THE STORY LIGHTS THEM, AND THEY FILL FROM THE BOTTOM, 10
-   November, his words: "we want to see them off in an off state, and
+   reads: held at --sunk (the product's own darkest token) until --b is
+   above nothing, then the glow and the ring and the icon's own opacity
+   all rise with it, so nothing here is a lit/dim switch, it is one
+   continuous value turning up. How that value is drawn changed 14
+   November; the dial itself has not, since 9 November. */
+/* OVERRIDDEN, 14 November: no fill of any kind, see the rule below this
+   one. What follows is the 10 November ruling it replaces, kept for the
+   record. His words then: "we want to see them off in an off state, and
    then as persons telling their story they light up, they fill up from
    bottom to top." The old rule mixed in a flat 6% of the seat's own
-   colour even at rest (--b:0), so nothing ever read as truly off; this
-   one holds the tile at --sunk, no tint, until --b is above nothing.
-   The fill itself is a hard-edged stop, not a second gradient fading at
-   its own edge: background-image sits ON TOP of the flat --sunk
-   background-color, coloured from 0 to var(--b) of the tile's own
-   height and transparent above that line, so the two meet at one sharp
-   edge the eye reads as a level, the way a gauge fills, not a wash. */
+   colour even at rest (--b:0), so nothing ever read as truly off; that
+   one held the tile at --sunk, no tint, until --b was above nothing, with
+   a hard-edged fill from 0 to var(--b) of the tile's own height, the way
+   a gauge fills and not a wash. The dial it read, --b 0 to 1, is
+   unchanged; only the fill it drove is gone. */
+/* THE GAUGE FILL IS GONE, 14 November, his words: "I want them to not to
+   fill in. I want another way for them to be represented when a person's
+   story is being told." The bottom-up linear-gradient this comment used to
+   describe read as a level in a glass, a container filling, and he asked
+   for the tile to carry intensity some other way. It still carries exactly
+   the same --b, 0 to 1, nothing in stdash.js moved: a centred radial glow
+   behind the icon, the same halo treatment this round's six Dashboard
+   widgets already use for their own hot spots, plus a ring around the tile
+   itself brightening with --b, so a lit tile reads as glowing from within
+   and rimmed, never as a container with a waterline in it. */
 .st-pl{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
- border:none;padding:0;cursor:pointer;background-color:var(--sunk);
- background-image:linear-gradient(to top,var(--c) 0 calc(var(--b)*100%),transparent calc(var(--b)*100%) 100%);
+ border:1px solid color-mix(in srgb,var(--c) calc(var(--b)*60%),var(--edge));padding:0;cursor:pointer;
+ background-color:var(--sunk);
+ background-image:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--c) calc(var(--b)*75%),transparent) 0%,transparent 72%);
  clip-path:polygon(5px 0,calc(100% - 5px) 0,100% 5px,100% calc(100% - 5px),calc(100% - 5px) 100%,5px 100%,0 calc(100% - 5px),0 5px);
  box-shadow:0 0 calc(var(--b)*14px) calc(var(--b)*2px) color-mix(in srgb,var(--c) calc(var(--b)*85%),transparent);
- transition:background-image .4s var(--ease-out),box-shadow .25s var(--ease-out),transform .1s var(--ease-out)}
+ transition:background-image .4s var(--ease-out),border-color .4s var(--ease-out),box-shadow .25s var(--ease-out),transform .1s var(--ease-out)}
 /* THE SYMBOL STAYS, ring not fill, the house rule for every icon: a
    stroked glyph, never a silhouette, so it reads at this size whatever
    the tile beneath it is doing. */
@@ -96790,5 +96801,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006461351"></div>
+<div id="eof" hidden data-len="006462201"></div>
 </body></html>
