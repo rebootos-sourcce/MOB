@@ -1,0 +1,42 @@
+{
+  "nature": "overwhelm",
+  "cap": 30,
+  "owner_named_distinct": 9,
+  "owner_passed_rules": 2,
+  "owner_held_on_reading": 1,
+  "owner_pool": 1,
+  "owner_by_source": {
+    "pdf_b": 1
+  },
+  "card_named_distinct": 184,
+  "card_passed_rules": 141,
+  "card_held_on_reading": 1,
+  "card_same_as_owner_line": 0,
+  "card_pool": 140,
+  "chosen": 100,
+  "chosen_owner": 1,
+  "chosen_card": 99,
+  "reserve": 41,
+  "shortfall": 0,
+  "chosen_tiers": {
+    "core": 100
+  },
+  "chosen_owner_tiers": {
+    "core": 1
+  },
+  "own_held_reasons": {
+    "filed under a heading that names another nature": 1,
+    "from a typed list, not dictation": 1,
+    "longer than 30 words": 1,
+    "names another nature": 4
+  },
+  "card_held_reasons": {
+    "names another nature": 41,
+    "speaks to one sex, or about sex": 2
+  },
+  "little_books_read": 65,
+  "little_books_qualify": 0,
+  "reading_layer_used": 1,
+  "distinct_headings": 79,
+  "bank_content_sha256": "5cd04c9f5fdea0f905c24f862d2820436ece046d11beb008148a61352519576d"
+}

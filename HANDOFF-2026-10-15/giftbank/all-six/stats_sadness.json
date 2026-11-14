@@ -1,0 +1,45 @@
+{
+  "nature": "sadness",
+  "cap": 30,
+  "owner_named_distinct": 53,
+  "owner_passed_rules": 5,
+  "owner_held_on_reading": 0,
+  "owner_pool": 5,
+  "owner_by_source": {
+    "2026": 4,
+    "pdf_b": 1
+  },
+  "card_named_distinct": 78,
+  "card_passed_rules": 66,
+  "card_held_on_reading": 4,
+  "card_same_as_owner_line": 0,
+  "card_pool": 62,
+  "chosen": 67,
+  "chosen_owner": 5,
+  "chosen_card": 62,
+  "reserve": 0,
+  "shortfall": 33,
+  "chosen_tiers": {
+    "core": 36,
+    "neighbour": 31
+  },
+  "chosen_owner_tiers": {
+    "core": 5
+  },
+  "own_held_reasons": {
+    "a second release runs on inside it": 3,
+    "about a named other person": 1,
+    "about ending one's life": 1,
+    "filed under a heading that names another nature": 6,
+    "longer than 30 words": 6,
+    "names another nature": 31
+  },
+  "card_held_reasons": {
+    "names another nature": 12
+  },
+  "little_books_read": 9,
+  "little_books_qualify": 0,
+  "reading_layer_used": 3,
+  "distinct_headings": 37,
+  "bank_content_sha256": "dbb48f8f236778551ec84feaee3b6ba58702e7194107cb5c0d3fc365e75177c7"
+}

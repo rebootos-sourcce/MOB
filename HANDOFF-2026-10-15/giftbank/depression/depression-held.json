@@ -1,0 +1,919 @@
+{
+  "note": "Every line that named depression and is not in the bank or the reserve, one reason each.",
+  "counts": {
+    "owner_lines_held_by_rule": 27,
+    "card_lines_held_by_rule": 36,
+    "held_on_reading": 33,
+    "little_books_lines_read": 16,
+    "little_books_lines_that_qualify": 0
+  },
+  "owner_lines_held_by_rule": [
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling that I'm numb that I cannot feel anything but I feel no empathy they do not feel connected and let it Go believe that I cannot feel anything that my heart feels no sensation that I cannot connect to anything but I feel that I'm alone that I feel that I'm by myself in this world that I believe you came in by yourself you'll go out by yourself because that assumes the object is the self which it's not",
+      "source_kind": "owner dictation",
+      "reason": "a second release runs on inside it",
+      "source_record_id": "2026-048",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=232;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feelings speaking saying voicing that I'm going to give up that let it Go believing perceiving thinking behaving acting feeling speaking saying voicing then I'm giving up that I'm giving up on myself that I'm giving up on my adventure then I'm giving up on my story that I'm giving up on my narrative that I'm giving up on my beliefs that I'm giving up on my desires and I'm giving up on my dreams and giving up on my friends and I'm giving up on my family then getting up on people and getting up on animals",
+      "source_kind": "owner dictation",
+      "reason": "a second release runs on inside it",
+      "source_record_id": "2026-162",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=924;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of feeling unmotivated with life In letting go of feeling unmotivated in love and life",
+      "source_kind": "owner typed list",
+      "reason": "a second release runs on inside it",
+      "source_record_id": "pdf_b-084",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:38-26:39"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving actually feeling and contemplating suicide I want to go and being humiliated embarrassed ashamed shy and secure sad defeated deflated depressed and sorrowful to the point to where I want to commit suicide and money like that I do not want to miss suicide I like life what",
+      "source_kind": "owner dictation",
+      "reason": "about ending one's life",
+      "source_record_id": "2026-243",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1709;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling that my heart is numb that I cannot feel my heart that my heart is closed that I don't know how to open my heart that my heart feels stuck that I don't know how to feel my emotions them disconnected from my emotions they don't know how to feel the range of emotions that I can't feel the charge of energy from my heart or my emotions and letting all I got cuz I feel everything and deeply connected to my heart",
+      "source_kind": "owner dictation",
+      "reason": "filed under a heading that names another nature: grief",
+      "source_record_id": "2026-236",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1620;unit=2"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking voice thing then I'm suppressing my masculinity that is suppressing my manhood and suppressing my inner strength that I'm stressing my confidence that's depressing my authority that I'm suppressing my certainty that I'm suppressing my vision of suppressing my image",
+      "source_kind": "owner dictation",
+      "reason": "longer than 30 words",
+      "source_record_id": "2026-045",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=219;unit=2"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving acting and feeling that I hate don't like don't want to do can't do ready to give up willing to quit the tostone doing right now",
+      "source_kind": "owner dictation",
+      "reason": "longer than 30 words",
+      "source_record_id": "2026-303",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2349;unit=10"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking speaking same voice and behaving acting doing making myself feel insignificant and meaningless and small and shy and demure and gay and aloof and queer and indifferent",
+      "source_kind": "owner dictation",
+      "reason": "longer than 30 words",
+      "source_record_id": "2026-087",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=462;unit=3"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving act and feeling speaking saying voicing that I mean alpha male beta male sigma alpha Male that I'm not an alpha male that I'm not a beta now that I'm not a single outlet those are meaningless greater points that control behavior",
+      "source_kind": "owner dictation",
+      "reason": "longer than 30 words",
+      "source_record_id": "2026-145",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=831;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving I think feeling speaking saying voicing that I'm afraid of love that I'm scared of love that I'm afraid to be hurt from Love that I'm blocking the love that I'm not letting love and that I'm rejecting love that I'm abandoning love and giving up on love that I'm quitting love and I don't love that I need to protect myself from Love no I love openly and freely because that's what I want for myself to be loved openly and freely",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "2026-011",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=49;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of leaving perceiving thinking behaving acting feeling speaking saying voicing feeling tense stressed annoyed irritated bothered pissed frustrated anxious scared humiliated sad embarrassed depressed",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-178",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1018;unit=3"
+    },
+    {
+      "sentence": "I'm letting go of closing my heart to myself to my instincts to my clarity to my frame of mind to my experience to the love of my life to my life and to God and to nature into the fields of energy around us and let it Go of closing my heart out of fear out of terror out of shock well that's a big one that's a really big one out of disgust out of anticipation out of excitement out of horror out of sorrow out of misery how depression and sadness out of being embarrassed humiliated ashamed or guilty out of being shy or insecure or insincere or terrified to tell the truth",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-024",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=116;unit=3"
+    },
+    {
+      "sentence": "I'm letting go of being scared nervous concerned worried bothered embarrassed shy sad depressed of my past that bothered not tense not stressed and afraid not shy",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-199",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1221;unit=16"
+    },
+    {
+      "sentence": "I'm letting go of the humiliation embarrassment guilt shame being shy insecure sad defeated deflated depressed sorrowful really unhappy nervous worried concerned judge by others judge by myself sad stress or tense",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-262",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1955;unit=3"
+    },
+    {
+      "sentence": "I'm letting go of being embarrassed humiliated guilty shy depressed sad defeated deflated shy and secure scared nervous bothered by not rejecting God,  the experience of God",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-269",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2032;unit=7"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving imagining thinking feeling acting behaving speaking saying voicing that I am uncomfortable expressing myself I am letting go of the humiliation and embarrassment and the judgment and the judgment of others and the anxiety and the nervousness and the concern and they discomfort and the stress and the feeling sadness or depressed or defeated about being a comfortable expressing myself in front of myself or others",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-302",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2333;unit=2"
+    },
+    {
+      "sentence": "I'm letting go of being shy and secure and expressing myself in front of a camera and letting her believing perceiving behaving and feeling that I'm uncomfortable expressing myself in front of a camera letting go of being humiliated embarrassed terrified nervous guilty shy depressed sad and secure unhappy weirded out tense stressed Saturday depressed that I'm shy and insecure if speaking in front of the camera",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-302",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2335;unit=4"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I'm worried about the judgments of others nervous about the judgments Brothers worried about their opinions critiques of others worried about what they're going to say about going to say I'm worried about what they're going to think of me I'm going to go to size secure worried bothered embarrassing me machine guilty depressed so sad about some post has been in London movies I'm going to be really scared wow that was a big hit I'm going to be really scared of believe me I am shy or no I'm breaking anything notice or insecure he doesn't know I'm super confident I got nothing to do no emotion to control how we feel",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-123",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=725;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving acting feeling and thinking speaking say and voicing that I am a man who cannot keep his word or give his honor I'm letting go of the humiliation embarrassment guilt shame being shy insecure sad defeated deflated depressed sorrowful really unhappy nervous worried concerned judge by others judge by myself sad stress or tense The most letting go of leaving I cannot keep my word",
+      "source_kind": "owner typed list",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "pdf_b-021",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=8:30-8:35"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I give up to myself that I quit that I can't go any further that I don't know how to go on anymore that I'm ready to throw in the towel that I'm ready to stop and I'm ready to end everything and I can't tolerate another step that I don't know I can go further I don't want to go further but I'm tired of enduring I'm tired of suffering and letting go of believing I'm suffering that I'm in being punished that I'm being harmed but I don't know any better that I didn't learn the right things in life that I don't understand how this all works",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: burnout",
+      "source_record_id": "2026-159",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=908;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that life is fatiguing or life is exhausting or life is heavy or life is difficult or life is a challenge and letting go of being tense stressed annoyed pissed irritated humiliated embarrassed shy sad depressed defeated deflated insecure small because life is fatiguing or exhausting or heavy",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: burnout, sadness",
+      "source_record_id": "2026-194",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1149;unit=4"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I'm in a state of despair that I'm in despair that I feel in despair that I'm sad with despair and I'm grieving from the spare that I'm sad from the spirit that broken from despair that I'm uncertain from the spare them defeated from despair than deflated from the spirit of sorrowful from despair",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: grief, sadness",
+      "source_record_id": "2026-153",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=879;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of believing I have to protect my heart out of embarrassment humiliation guilt being depressed being sad",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: sadness",
+      "source_record_id": "2026-236",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1623;unit=5"
+    },
+    {
+      "sentence": "I'm letting go of being ashamed depressed sad stressed tense that it can't be that easy",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: sadness",
+      "source_record_id": "2026-299",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2314;unit=4"
+    },
+    {
+      "sentence": "I'm letting go of being sad and depressed around change",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: sadness",
+      "source_record_id": "2026-311",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2442;unit=5"
+    },
+    {
+      "sentence": "I'm letting go of being ashamed humiliated embarrassed guilty sad depressed that I'm not in control of my life",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: sadness",
+      "source_record_id": "2026-322",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2599;unit=3"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting speaking saying doing that I have a low grade depression that embarrassed ashamed or slowed down irritated or annoyed sad to feed it or deflated because I have a depression or low grade depression or a little bit of sadness that I haven't been successful or sadness around not being successful or happiness or disapproval of this that I haven't had success that envision and letting go of the desire to have this become the success that I envision so that it can show up the way that it needs to naturally",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: sadness",
+      "source_record_id": "2026-083",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=441;unit=1"
+    }
+  ],
+  "card_lines_held_by_rule": [
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing letting go is giving up.",
+      "source_kind": "from a card, not dictated",
+      "reason": "a second release runs on inside it",
+      "source_record_id": "card-097",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17889",
+      "card_line_as_printed": "believing letting go is giving up."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid that peace means giving up.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-062",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12521",
+      "card_line_as_printed": "afraid that peace means giving up."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am scared that peace will become emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-064",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12959",
+      "card_line_as_printed": "scared that peace will become emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried that generosity will leave me empty.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-079",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15256",
+      "card_line_as_printed": "worried that generosity will leave me empty."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of the emptiness beyond ideas.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-089",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16553",
+      "card_line_as_printed": "afraid of the emptiness beyond ideas."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of emptiness inside awareness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-089",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16621",
+      "card_line_as_printed": "afraid of emptiness inside awareness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid stillness means emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-098",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17958",
+      "card_line_as_printed": "afraid stillness means emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am scared that openness means emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-098",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17984",
+      "card_line_as_printed": "scared that openness means emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid stillness will expose emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-111",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19618",
+      "card_line_as_printed": "afraid stillness will expose emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid surrender equals giving up.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-121",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21195",
+      "card_line_as_printed": "afraid surrender equals giving up."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid surrender means giving up on life.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-122",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21298",
+      "card_line_as_printed": "afraid surrender means giving up on life."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid silence means emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-123",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21570",
+      "card_line_as_printed": "afraid silence means emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid quiet will reveal emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21733",
+      "card_line_as_printed": "afraid quiet will reveal emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of appearing unmotivated.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-132",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23046",
+      "card_line_as_printed": "afraid of appearing unmotivated."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am nervous that stillness will expose emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23111",
+      "card_line_as_printed": "nervous that stillness will expose emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid letting go means giving up.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-155",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=25968",
+      "card_line_as_printed": "afraid letting go means giving up."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am uneasy giving up emotional overwork.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-163",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26896",
+      "card_line_as_printed": "uneasy giving up emotional overwork."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid letting go will leave emptiness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-169",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28194",
+      "card_line_as_printed": "afraid letting go will leave emptiness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried I’ll be empty without this feeling.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-197",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32897",
+      "card_line_as_printed": "worried I’ll be empty without this feeling."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid I’m running on empty.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33604",
+      "card_line_as_printed": "afraid I’m running on empty."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried my body is empty.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33713",
+      "card_line_as_printed": "worried my body is empty."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried effort is meaningless.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-202",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33889",
+      "card_line_as_printed": "worried effort is meaningless."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am panicked my future feels empty.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-204",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34275",
+      "card_line_as_printed": "panicked my future feels empty."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of the emptiness after achievement.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-017",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=3686",
+      "card_line_as_printed": "Afraid of the emptiness after achievement."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am anxious my work is meaningless.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38167",
+      "card_line_as_printed": "anxious my work is meaningless."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid effort is pointless.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38229",
+      "card_line_as_printed": "afraid effort is pointless."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried I’ll stay empty.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-227",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38338",
+      "card_line_as_printed": "worried I’ll stay empty."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of the emptiness after climax.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-004",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=810",
+      "card_line_as_printed": "Afraid of the emptiness after climax."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am holding shame for being “too tired” or “too numb.”",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-005",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1062",
+      "card_line_as_printed": "Holding shame for being “too tired” or “too numb.”"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of empty reassurances.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-060",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12135",
+      "card_line_as_printed": "weary of empty reassurances."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsed in hopeless exhaustion.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23171",
+      "card_line_as_printed": "collapsed in hopeless exhaustion."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am weary of fighting with lifeless code.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-030",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6582",
+      "card_line_as_printed": "Weary of fighting with lifeless code."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am empty and worn out.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-037",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7613",
+      "card_line_as_printed": "Empty and worn out."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drained and empty after the storm passes.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-040",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=8371",
+      "card_line_as_printed": "Drained and empty after the storm passes."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by pointlessness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: overwhelm",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38165",
+      "card_line_as_printed": "overwhelmed by pointlessness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by meaninglessness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: overwhelm",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38225",
+      "card_line_as_printed": "overwhelmed by meaninglessness."
+    }
+  ],
+  "held_on_reading": [
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am hopeless that I can rekindle attraction.",
+      "card_line_as_printed": "Hopeless that I can rekindle attraction.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-005",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1042",
+      "reason": "held on reading: about sexual attraction, from a card set about sexual desire; the gift goes to anyone"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am thinking emptiness means something is missing.",
+      "card_line_as_printed": "Thinking emptiness means something is missing.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-006",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1302",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am regretful for giving too much and feeling empty.",
+      "card_line_as_printed": "Regretful for giving too much and feeling empty.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-007",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1498",
+      "reason": "held on reading: it says being used up, which is burnout; \"empty\" is the only depression word in it"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am regretful that I gave away my nurture and felt empty.",
+      "card_line_as_printed": "Regretful that I gave away my nurture and felt empty.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2040",
+      "reason": "held on reading: it says being used up, which is burnout; \"empty\" is the only depression word in it"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am over-giving until I am empty.",
+      "card_line_as_printed": "Over-giving until I am empty.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-009",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=2124",
+      "reason": "held on reading: it says being used up, which is burnout; \"empty\" is the only depression word in it"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to movement.",
+      "card_line_as_printed": "numb to movement.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-054",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10851",
+      "reason": "held on reading: \"numb\" here is a body sensation, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am running on empty.",
+      "card_line_as_printed": "running on empty.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-055",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11055",
+      "reason": "held on reading: it says being used up, which is burnout; \"empty\" is the only depression word in it"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb in my jaw from restraint.",
+      "card_line_as_printed": "numb in my jaw from restraint.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-057",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11493",
+      "reason": "held on reading: \"numb\" here is a body sensation, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb around my mouth and throat.",
+      "card_line_as_printed": "numb around my mouth and throat.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-058",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11725",
+      "reason": "held on reading: \"numb\" here is a body sensation, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the living field around me.",
+      "card_line_as_printed": "numb to the living field around me.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-071",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14520",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when I try to feel vibration.",
+      "card_line_as_printed": "numb when I try to feel vibration.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-072",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14553",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to vibrational communication.",
+      "card_line_as_printed": "numb to vibrational communication.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-073",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14685",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to subtle shifts in mood and field.",
+      "card_line_as_printed": "numb to subtle shifts in mood and field.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-074",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14780",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the mirror between within and without.",
+      "card_line_as_printed": "numb to the mirror between within and without.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-076",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14965",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to divine presence.",
+      "card_line_as_printed": "numb to divine presence.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-081",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15515",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb where reverence should live.",
+      "card_line_as_printed": "numb where reverence should live.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-081",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15553",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the feeling of divine embrace.",
+      "card_line_as_printed": "numb to the feeling of divine embrace.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-082",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=15638",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to divine connection.",
+      "card_line_as_printed": "numb to divine connection.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-087",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16201",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb when I try to connect upward.",
+      "card_line_as_printed": "numb when I try to connect upward.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-088",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16353",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to higher energy.",
+      "card_line_as_printed": "numb to higher energy.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-088",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16381",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to direct revelation.",
+      "card_line_as_printed": "numb to direct revelation.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-089",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16639",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to higher messages.",
+      "card_line_as_printed": "numb to higher messages.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-090",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16855",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb in some places, overcharged in others.",
+      "card_line_as_printed": "numb in some places, overcharged in others.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-092",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17105",
+      "reason": "held on reading: \"numb\" here is a body sensation, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to the flow of light within form.",
+      "card_line_as_printed": "numb to the flow of light within form.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-093",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17253",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am numb to sacred presence within.",
+      "card_line_as_printed": "numb to sacred presence within.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-094",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17402",
+      "reason": "held on reading: \"numb\" here means not sensing a spiritual signal, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am resisting emptiness with busyness.",
+      "card_line_as_printed": "resisting emptiness with busyness.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-097",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17883",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am closed to the grace of emptiness.",
+      "card_line_as_printed": "closed to the grace of emptiness.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-098",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18052",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am filling air because emptiness feels unsafe.",
+      "card_line_as_printed": "filling air because emptiness feels unsafe.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-103",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18784",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am mistrusting stillness as emptiness.",
+      "card_line_as_printed": "mistrusting stillness as emptiness.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-104",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18903",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing quiet equals emptiness.",
+      "card_line_as_printed": "believing quiet equals emptiness.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-111",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=19614",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed of pelvic numbness.",
+      "card_line_as_printed": "ashamed of pelvic numbness.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-170",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28424",
+      "reason": "held on reading: \"numb\" here is a body sensation, not the flat state of depression"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am enraged I had to give up my bird too.",
+      "card_line_as_printed": "enraged I had to give up my bird too.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-230",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39069",
+      "reason": "held on reading: \"give up\" here means handing something over, not giving up on life"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am bothered by the empty spaces.",
+      "card_line_as_printed": "bothered by the empty spaces.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-230",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39083",
+      "reason": "held on reading: \"emptiness\" here means stillness, quiet or open space, not the empty state of depression"
+    }
+  ],
+  "little_books_lines_read": [
+    {
+      "volume": "DUTY",
+      "pair": 1,
+      "charge": "Honor",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 2,
+      "charge": "Man of my word",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am responsibility, accountability, disappointed, shy, not a man, not a man of commitment, uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 58,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (58)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 3,
+      "charge": "Responsibility",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am improving, uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 47,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (47)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 4,
+      "charge": "Senses",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 5,
+      "charge": "Deception",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address OBSERVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 6,
+      "charge": "Tall Poppy",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 9,
+      "charge": "Self Drive",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not creative enough to innovate, uneasy, disconnected, empty, purposeless, abandoned, forsaken, meaningless, separate, unworthy, lost, disconnected from meaning, disconnected from God, unable to keep my word, afraid none of it matters, afraid I am alone in it.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (51)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 2,
+      "charge": "Finances",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am justified, scared, terrified, absorbing, uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 50,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (50)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 3,
+      "charge": "Finances",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am scared to try but, uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 50,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (50)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 4,
+      "charge": "Truly desire",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 5,
+      "charge": "Despair",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 6,
+      "charge": "Against me",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am kelly, uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 47,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address OBSERVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (47)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 7,
+      "charge": "Ruining experience of life",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 8,
+      "charge": "Blessings",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am cursed, hexed, not worried, not worthy people's love, not worthy of wealth, not worthy of resources but, not worthy of money but, uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 68,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (68)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 9,
+      "charge": "Suicide",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, guarded, withholding, ashamed, guilty, repressed, numb, shut down, undeserving, starved, closed off, disconnected from wanting, unable to receive, afraid of my own appetite, ashamed of desire, afraid to be full.",
+      "words": 46,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (46)"
+    },
+    {
+      "volume": "VOICE",
+      "pair": 6,
+      "charge": "Inside voice",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am meaningless, shy, gay, indifferent, uneasy, tense, hesitant, silenced, unheard, dismissed, misunderstood, swallowed, choked, suppressed, invisible, disconnected from my voice, unable to say the true sentence, unable to disagree out loud, afraid of being heard, afraid of my own words.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/voice.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (53)"
+    }
+  ]
+}

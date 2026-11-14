@@ -1,0 +1,375 @@
+{
+  "note": "Ranked candidates after the 100, same rules, not in the bank. Card lines are marked.",
+  "status": "candidate, not approved",
+  "reserve": [
+    {
+      "pattern_id": "overwhelm-c37d790702180551",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by imagined scrutiny.",
+      "pattern_hash": "c37d790702180551ee87948c442260399b434a0592f44d5f4476b2ab4128a0a1",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-214",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35991"
+    },
+    {
+      "pattern_id": "overwhelm-d512b1a9f908aedd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional denial.",
+      "pattern_hash": "d512b1a9f908aeddfb6faa2dc2d5568fc68e2605f7de7fe38383ff66ad91554d",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-221",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37458"
+    },
+    {
+      "pattern_id": "overwhelm-dbd6e875a0ec574d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by mental self-comparison.",
+      "pattern_hash": "dbd6e875a0ec574d27ef3eb9b5762bbc1159945290fbc379ce8b27a31e70083e",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-193",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31957"
+    },
+    {
+      "pattern_id": "overwhelm-dd87a7df188676fb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotion rising.",
+      "pattern_hash": "dd87a7df188676fb035c97f0cf4c0ef372a035887338778c195269c54ba533c7",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-206",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34689"
+    },
+    {
+      "pattern_id": "overwhelm-e29652dbec8acf81",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social energy.",
+      "pattern_hash": "e29652dbec8acf8106dc34b2a4941962284d090da3b1b12a550d73aba4b94ce6",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-215",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36096"
+    },
+    {
+      "pattern_id": "overwhelm-fd92467c00b22893",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by endless thinking.",
+      "pattern_hash": "fd92467c00b2289333b285961cbc47d0f7f49f30de2bcee1f3afdb14169313e0",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22053"
+    },
+    {
+      "pattern_id": "overwhelm-fdd24580f8d9b450",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by performance narratives.",
+      "pattern_hash": "fdd24580f8d9b450255b5e400ab857e4481b86eee1904f810b124579607e9e02",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-172",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28850"
+    },
+    {
+      "pattern_id": "overwhelm-02c3c30353283af8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am guilty for being overwhelmed easily.",
+      "pattern_hash": "02c3c30353283af82e9feb9a06877165def39a050f12b57102a90a9c95bbae7c",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-183",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30231"
+    },
+    {
+      "pattern_id": "overwhelm-0e732e1d87132014",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by performance of worth.",
+      "pattern_hash": "0e732e1d87132014e27b64ae503111d1c26e850fcd61900ec39c325dd506b9d4",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-209",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35071"
+    },
+    {
+      "pattern_id": "overwhelm-159d7f0f027c4838",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by constant mental chatter.",
+      "pattern_hash": "159d7f0f027c483844edc4c6f23d01ebce58f924f3abcbd66576329cf33a4e81",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-159",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26440"
+    },
+    {
+      "pattern_id": "overwhelm-15bda15197d738ba",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by responsibility in sex.",
+      "pattern_hash": "15bda15197d738bac936eccd22cb510be6602474a33a41b339ed8311245bfd23",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-176",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29292"
+    },
+    {
+      "pattern_id": "overwhelm-2736c7da75d8fb1d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by comparison of intellect.",
+      "pattern_hash": "2736c7da75d8fb1d0d835108a9446eea9c1c428f7e9cff83d121da2a08b3a022",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-192",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31852"
+    },
+    {
+      "pattern_id": "overwhelm-3038652ea29b8146",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by not measuring up.",
+      "pattern_hash": "3038652ea29b81464a34960bf89f0fe94c3e412b1ba28b862ccc314640713a68",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-188",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31261"
+    },
+    {
+      "pattern_id": "overwhelm-3a01d278c2ab0c12",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by others’ imagined reactions.",
+      "pattern_hash": "3a01d278c2ab0c12d53a64b3a5d7eccc74321d3ac2b1305b47479cc461f9d0e1",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-219",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36964"
+    },
+    {
+      "pattern_id": "overwhelm-46a1fcefbd03fd1c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by too much thinking.",
+      "pattern_hash": "46a1fcefbd03fd1c4aa78393c99d2adc67f9b2504438ea36d866e24bacf97f5f",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-124",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21651"
+    },
+    {
+      "pattern_id": "overwhelm-7de2cb5fe72e90c1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by unmet attachment needs.",
+      "pattern_hash": "7de2cb5fe72e90c1a2b0907cff0fe4bd8673ca6a9e943a10eae08c835587e524",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-187",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30932"
+    },
+    {
+      "pattern_id": "overwhelm-8b40ead31e42273a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by tenderness turning inward.",
+      "pattern_hash": "8b40ead31e42273ac0ace3139b43b50d9bb18d263123e61570b522acaa4d3bbc",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-197",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32829"
+    },
+    {
+      "pattern_id": "overwhelm-e72023ad8b228e81",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by the charge building.",
+      "pattern_hash": "e72023ad8b228e81999a1d994805fd388e795c11d8b05a3a343f7f9bab29d179",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-177",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29397"
+    },
+    {
+      "pattern_id": "overwhelm-eb273947a986f799",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when too much happens.",
+      "pattern_hash": "eb273947a986f79911d02080aba53ccfacc51605d94356c24e5e1d5a716c1907",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-044",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9110"
+    },
+    {
+      "pattern_id": "overwhelm-f0563a314eac2450",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by too many ideas.",
+      "pattern_hash": "f0563a314eac2450b216cf136d4e4d9fec810f1aa3c8cc0bf7eef3aea128ec25",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-087",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16137"
+    },
+    {
+      "pattern_id": "overwhelm-3cd7b3784ecf8fb1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed trying to stay balanced alone.",
+      "pattern_hash": "3cd7b3784ecf8fb1c6f33690c842ebac4456bab933f80e856bb9d631d9976e80",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-185",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30498"
+    },
+    {
+      "pattern_id": "overwhelm-5bf10bfe81f3ceb6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by identity built on force.",
+      "pattern_hash": "5bf10bfe81f3ceb68dd0e58346f962b99a51027df5b9f4a2cc3ba7b526388a5a",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-198",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33222"
+    },
+    {
+      "pattern_id": "overwhelm-a3f4ac93081f0fa8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed feeling like it’s my fault.",
+      "pattern_hash": "a3f4ac93081f0fa87bf27d7892e2a482c76b23d310e5b4d1dca32bb3f2131bd4",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-171",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28457"
+    },
+    {
+      "pattern_id": "overwhelm-b1d877fb140923a6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed carrying something to the end.",
+      "pattern_hash": "b1d877fb140923a63a1157c6bf559571f4bdbf23b766217dee36c2077f85fd45",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-210",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35183"
+    },
+    {
+      "pattern_id": "overwhelm-ce419de38398c595",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when reality breaks the deal.",
+      "pattern_hash": "ce419de38398c595ae64332015f62b987fe0bc4ad4fdeb23264f6124537f2a57",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-202",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33821"
+    },
+    {
+      "pattern_id": "overwhelm-f5102b182805b225",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by too many life possibilities.",
+      "pattern_hash": "f5102b182805b22506eb60bd31ee92b9148cbe9e3ddf107bfa6e96c944f09f3e",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-180",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29674"
+    },
+    {
+      "pattern_id": "overwhelm-b3c3089cda017e8e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am explosive when overwhelmed.",
+      "pattern_hash": "b3c3089cda017e8e94fe625eb8a5e295f5a8f5a85261ebf08510684714971682",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-212",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35595"
+    },
+    {
+      "pattern_id": "overwhelm-6fdd8990e3bd2db1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tense anticipating energetic overwhelm.",
+      "pattern_hash": "6fdd8990e3bd2db1da970db81574cd7f2fd525ccb5e631fb4f50e09a1c424af4",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-175",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29162"
+    },
+    {
+      "pattern_id": "overwhelm-9dd48c2d6b2a2938",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by too many feelings.",
+      "pattern_hash": "9dd48c2d6b2a2938e3d52ede9d70c5a155c56b1713a21949ef11c4153676391a",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-050",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9941"
+    },
+    {
+      "pattern_id": "overwhelm-aba80e2f403b3bc8",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am explosive when overwhelmed by judgment.",
+      "pattern_hash": "aba80e2f403b3bc886a7ec6307b5110cdd74b40047919a7bfd45926a064a4460",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-214",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36029"
+    },
+    {
+      "pattern_id": "overwhelm-50b9d20f073b73d1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotion after a shock.",
+      "pattern_hash": "50b9d20f073b73d1ce65cc299cdbabe9fa28ded34d5968b9f724116e0762c492",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-044",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9120"
+    },
+    {
+      "pattern_id": "overwhelm-8cc4c7306089a72e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when I can’t plan ahead.",
+      "pattern_hash": "8cc4c7306089a72eab5d59d5aa813ada5798c00d54119beb1c7c7659a07d6758",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-159",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26470"
+    },
+    {
+      "pattern_id": "overwhelm-119564dd0808cb6d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotion when I try to explain.",
+      "pattern_hash": "119564dd0808cb6d6a993889ed49e32064d00b9a20d19c9a15ab59f273c7b39b",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-052",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10391"
+    },
+    {
+      "pattern_id": "overwhelm-0a64181e68321c2f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by the depth of connection.",
+      "pattern_hash": "0a64181e68321c2ff74767af1c7fe6ce3e1d96a8ce45cc990a42de22a6166ca0",
+      "tier": "core",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-175",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29176"
+    },
+    {
+      "pattern_id": "overwhelm-fad00180bedddbcb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overloaded with information.",
+      "pattern_hash": "fad00180bedddbcb5acae64a4362f6bf04afe5825a928a02e29374f8e946eb8b",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-125",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21991"
+    },
+    {
+      "pattern_id": "overwhelm-8f6edaa3bd70d2ff",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am troubled by self-awareness overload.",
+      "pattern_hash": "8f6edaa3bd70d2ffb96a914b45962c767906132188918544716b54e138fe637a",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-216",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36441"
+    },
+    {
+      "pattern_id": "overwhelm-73e71b91747c3037",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am defensive when I can’t keep up.",
+      "pattern_hash": "73e71b91747c3037fa3dffd872ba849bd09a578e1c6b89a5ad83493d05dcd8fa",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-130",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22563"
+    },
+    {
+      "pattern_id": "overwhelm-8bddfc3a51185ddc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am stressed that I can’t keep up.",
+      "pattern_hash": "8bddfc3a51185ddcd9317d5759c6bebf9d4d787d005c4e603cd466a13fdcd3ab",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-036",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=7274"
+    },
+    {
+      "pattern_id": "overwhelm-899f8cf3a7902e14",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drowning in other people’s views.",
+      "pattern_hash": "899f8cf3a7902e14b8f6ff53fffebe0ae04182501978964d7cf0a05d05790e3c",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-050",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9971"
+    },
+    {
+      "pattern_id": "overwhelm-9fa697e97bea623d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am drowning in guilt instead of clarity.",
+      "pattern_hash": "9fa697e97bea623d3ab900bd51ecdc2aa22e60949bb6285000228c767752ce2f",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-052",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10397"
+    },
+    {
+      "pattern_id": "overwhelm-21551ab5e548729e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed I shut down when overloaded.",
+      "pattern_hash": "21551ab5e548729ec565e1d4a17d067d42b442566c278157d15b7640648533ac",
+      "tier": "neighbour",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-183",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30289"
+    }
+  ]
+}

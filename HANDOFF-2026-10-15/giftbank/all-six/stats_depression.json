@@ -1,0 +1,46 @@
+{
+  "nature": "depression",
+  "cap": 30,
+  "owner_named_distinct": 35,
+  "owner_passed_rules": 8,
+  "owner_held_on_reading": 0,
+  "owner_pool": 8,
+  "owner_by_source": {
+    "2026": 6,
+    "pdf_b": 2
+  },
+  "card_named_distinct": 154,
+  "card_passed_rules": 118,
+  "card_held_on_reading": 33,
+  "card_same_as_owner_line": 0,
+  "card_pool": 85,
+  "chosen": 93,
+  "chosen_owner": 8,
+  "chosen_card": 85,
+  "reserve": 0,
+  "shortfall": 7,
+  "chosen_tiers": {
+    "core": 7,
+    "neighbour": 86
+  },
+  "chosen_owner_tiers": {
+    "core": 1,
+    "neighbour": 7
+  },
+  "own_held_reasons": {
+    "a second release runs on inside it": 3,
+    "about ending one's life": 1,
+    "filed under a heading that names another nature": 1,
+    "longer than 30 words": 4,
+    "names another nature": 18
+  },
+  "card_held_reasons": {
+    "a second release runs on inside it": 1,
+    "names another nature": 35
+  },
+  "little_books_read": 16,
+  "little_books_qualify": 0,
+  "reading_layer_used": 1,
+  "distinct_headings": 62,
+  "bank_content_sha256": "1f37f78792177513cc742d6a88ed726993fc00068e5a3e091a2a8e8afea5ff03"
+}

@@ -1,0 +1,113 @@
+{
+  "banks": [
+    {
+      "approval_reference": "",
+      "bank_version": "anxiety-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "8647ef2b2202cf517cdd56930f9ce12d5a4a16988898f16fdca9d35923986735",
+      "item_count": 100,
+      "nature_id": "anxiety",
+      "raw_file_sha256": "92c6f39ab09bf24d89bcfd88d10c171797fc2c4589786eeb8c954a0e936183fb",
+      "unique_id_count": 100
+    },
+    {
+      "approval_reference": "",
+      "bank_version": "burnout-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "13379add39a6d6a18849723acfeeca65893b0a191fe944e1e8ac067c88e2c2ef",
+      "item_count": 100,
+      "nature_id": "burnout",
+      "raw_file_sha256": "e273b867554dc2cf6fd5341eb9c3864243a4d161ad05861ec0ec7aa7c2ed19c1",
+      "unique_id_count": 100
+    },
+    {
+      "approval_reference": "",
+      "bank_version": "depression-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "1f37f78792177513cc742d6a88ed726993fc00068e5a3e091a2a8e8afea5ff03",
+      "item_count": 93,
+      "nature_id": "depression",
+      "raw_file_sha256": "9510ee93b819419581c991ee57c9b7e34301aca02e72563136c0dc46118a8108",
+      "unique_id_count": 93
+    },
+    {
+      "approval_reference": "",
+      "bank_version": "grief-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "f6032d3fbc7cdc2f82d74b985ac430ea86c34800fab78d5cd553e79656d584c1",
+      "item_count": 52,
+      "nature_id": "grief",
+      "raw_file_sha256": "d73c4eb5f568aed110904a3d9ae964b9f37759dd68358cc994bba0c23075239a",
+      "unique_id_count": 52
+    },
+    {
+      "approval_reference": "",
+      "bank_version": "overwhelm-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "5cd04c9f5fdea0f905c24f862d2820436ece046d11beb008148a61352519576d",
+      "item_count": 100,
+      "nature_id": "overwhelm",
+      "raw_file_sha256": "311df1166f93e620be3926e78720218d6948d96632826d25d711ef314dfbdf1a",
+      "unique_id_count": 100
+    },
+    {
+      "approval_reference": "",
+      "bank_version": "sadness-candidate-2026-10-16-v1",
+      "canonical_payload_sha256": "dbb48f8f236778551ec84feaee3b6ba58702e7194107cb5c0d3fc365e75177c7",
+      "item_count": 67,
+      "nature_id": "sadness",
+      "raw_file_sha256": "e74c98170543fe4bac6fdc39b089f4e4d7dd8594a31d4648b55a3ea7a14c6936",
+      "unique_id_count": 67
+    }
+  ],
+  "errors": [
+    "schema: approval_reference must be a non-empty string",
+    "schema: approved_by must be a non-empty string",
+    "schema: approved_at must be a non-empty string",
+    "anxiety.json: approval_reference must be a non-empty string",
+    "anxiety.json: approved_by must be a non-empty string",
+    "anxiety.json: approved_at must be a non-empty string",
+    "burnout.json: approval_reference must be a non-empty string",
+    "burnout.json: approved_by must be a non-empty string",
+    "burnout.json: approved_at must be a non-empty string",
+    "depression.json: approval_reference must be a non-empty string",
+    "depression.json: approved_by must be a non-empty string",
+    "depression.json: approved_at must be a non-empty string",
+    "depression.json: expected exactly 100 items, found 93",
+    "grief.json: approval_reference must be a non-empty string",
+    "grief.json: approved_by must be a non-empty string",
+    "grief.json: approved_at must be a non-empty string",
+    "grief.json: expected exactly 100 items, found 52",
+    "overwhelm.json: approval_reference must be a non-empty string",
+    "overwhelm.json: approved_by must be a non-empty string",
+    "overwhelm.json: approved_at must be a non-empty string",
+    "sadness.json: approval_reference must be a non-empty string",
+    "sadness.json: approved_by must be a non-empty string",
+    "sadness.json: approved_at must be a non-empty string",
+    "sadness.json: expected exactly 100 items, found 67",
+    "mapping: approval_reference must be a non-empty string",
+    "mapping: approved_by must be a non-empty string",
+    "mapping: approved_at must be a non-empty string",
+    "mapping: keys must be exactly the six required gift natures",
+    "mapping: expected exactly four distinct stable track IDs, found 0"
+  ],
+  "mapping": {
+    "approval_reference": "",
+    "canonical_payload_sha256": "785590462ffbff7c4ed0bf93c6dae723bf3a8a910294799e9ee4bc1ab723d387",
+    "distinct_track_count": 0,
+    "mapping_version": "not-defined",
+    "nature_count": 0,
+    "raw_file_sha256": "755ad35697d32ac9b8ed37269421f149ed8f5c8bf0152c99990db43674a1ac09"
+  },
+  "nature_ids": [
+    "anxiety",
+    "overwhelm",
+    "burnout",
+    "depression",
+    "grief",
+    "sadness"
+  ],
+  "production_manifest_created": false,
+  "result": "rejected",
+  "schema": {
+    "approval_reference": "",
+    "raw_file_sha256": "8025807d892dd8646510a11658a36d4909ec8b4a22721ce8a6d2d3a87d48a2a7",
+    "schema_version": "gift-bank-item-candidate-2026-10-16-v1",
+    "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e"
+  }
+}

@@ -1,0 +1,3742 @@
+{
+  "nature_id": "anxiety",
+  "bank_version": "anxiety-candidate-2026-10-16-v1",
+  "source_path_or_uri": "rebootos-sourcce/Reboot-OS:atuned/data/letgo/ (2026_Let_Go_List.txt, TULA__Lances_Let_Go_List_1.pdf, TULA__Lances_Let_Go_List.pdf)",
+  "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+  "approval_reference": "",
+  "approved_by": "",
+  "approved_at": "",
+  "status": "candidate, not approved",
+  "items": [
+    {
+      "pattern_id": "anxiety-ab8a58ffba6da634",
+      "content": "I'm letting go of being nervous making mistakes",
+      "pattern_hash": "ab8a58ffba6da634d833c29c42670ba6d2cdfb2b10ad45f2efbd9c61f653ffb9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-375",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3468;unit=5",
+        "record_title": "I want to go being self-righteous",
+        "source_text_as_transcribed": "I'm letting go of being nervous making mistakes",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=27:8",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=44:25"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 9.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c6b668c79fd32da9",
+      "content": "I'm letting go of being nervous to win",
+      "pattern_hash": "c6b668c79fd32da9b4856eed223a2b95cb0dbed50a3b7ef2ec6717bb52ba3cc5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-355",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3098;unit=21",
+        "record_title": "Doing Your Best",
+        "source_text_as_transcribed": "I'm going to go being nervous to win",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 213
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-0a3ecf444a762156",
+      "content": "I'm letting go of being anxious when I'm challenged",
+      "pattern_hash": "0a3ecf444a7621567df71579bce9df68e9204f207c3c30f2e118307fdc925e56",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-310",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2427;unit=4",
+        "record_title": "Challenge",
+        "source_text_as_transcribed": "I'm letting go of being anxious when I'm challenged",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 6.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-3c46711d73c4fd10",
+      "content": "I'm letting go of believing I'm nervous communicating directly",
+      "pattern_hash": "3c46711d73c4fd1059c4fe116706392c549b14eacf4d0528af3f86eeb29e3e60",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-330",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2731;unit=4",
+        "record_title": "Being Direct",
+        "source_text_as_transcribed": "I'm letting go of believing I'm nervous communicating directly",
+        "reading_layer": "none",
+        "index_node_id": 191,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=3:21",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=20:37"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-99c6c4027bf9b9a0",
+      "content": "I'm letting go of being nervous to project my voice",
+      "pattern_hash": "99c6c4027bf9b9a0df0c1f12dd8af594b2cffc6127f1692459cfe14675c45d1c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-342",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2910;unit=5",
+        "record_title": "Shy and insecure",
+        "source_text_as_transcribed": "I'm letting go of being nervous to project my voice",
+        "reading_layer": "none",
+        "index_node_id": 202,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=6:45",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=24:12"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 69,
+          "fetter_name": "Comparison",
+          "emo_family": null,
+          "score": 9.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-9b11f4bfd677a58b",
+      "content": "I'm letting go of being nervous to do the hard thing first",
+      "pattern_hash": "9b11f4bfd677a58bf1fdcab10c2fd9f371341f0200698856dd0b839c6af8864c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-353",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3065;unit=10",
+        "record_title": "Goals and tasks",
+        "source_text_as_transcribed": "I'm letting go of being nervous to do the hard thing first",
+        "reading_layer": "none",
+        "index_node_id": 211,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=9:39",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=27:12"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 11,
+          "fetter_name": "Resistance",
+          "emo_family": null,
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-dadcd0139287335a",
+      "content": "I'm letting go of panicking when someone asks me for my time unexpected",
+      "pattern_hash": "dadcd0139287335af10fc1938aafaa9870b25ac4537ad521c6dc329dfe4d9abc",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-352",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3040;unit=2",
+        "record_title": "PTSD",
+        "source_text_as_transcribed": "I'm letting go of panicking when someone asks me for my time unexpected",
+        "reading_layer": "none",
+        "index_node_id": 210,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=9:18",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:31"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "panicking"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-5eccd6ebf2c1c7f1",
+      "content": "I'm letting go of being scared, afraid, nervous, concerned, anxious to be misunderstood or misjudged by others",
+      "pattern_hash": "5eccd6ebf2c1c7f1c1a607ed09c75b0fb8aaae5b698352d17d6b060576586dd6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-363",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3217;unit=2",
+        "record_title": "Misunderstood and judged",
+        "source_text_as_transcribed": "I'm letting go of being scared, afraid, nervous, concerned, anxious to be misunderstood or misjudged by others",
+        "reading_layer": "none",
+        "index_node_id": 222,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:21-15:22",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=32:35-32:36"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 13.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious",
+          "nervous",
+          "afraid",
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-ac1d5260a80d8ac2",
+      "content": "I'm letting go of being terrified of the future worried concern frustrated annoyed ashamed embarrassed defeated deflated made small insecure insufficient unclear uncertain of the future",
+      "pattern_hash": "ac1d5260a80d8ac222e0d6d5181d98af35a2e391acab73efc2f2f5ecafedda6b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-179",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1025;unit=2",
+        "record_title": "The future",
+        "source_text_as_transcribed": "I'm letting go of being terrified of the future worried concern frustrated annoyed ashamed embarrassed defeated deflated made small insecure insufficient unclear uncertain of the future",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 45,
+          "fetter_name": "Anxiety",
+          "emo_family": "Fear",
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worried",
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-24d2e1d119494ffc",
+      "content": "I'm letting go of believing I'm pissed annoyed bothered frustrated irritated anxious shy insecure humiliated embarrassed ashamed rejected abandoned defeated deflated heavy when people tell me no",
+      "pattern_hash": "24d2e1d119494ffc0e0b92dd5bfafe72773140dfbf4237923d4972925400dcd2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-279",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2108;unit=1",
+        "record_title": "No",
+        "source_text_as_transcribed": "I'm letting go of believing I'm pissed annoyed bothered frustrated irritated anxious shy insecure humiliated embarrassed ashamed rejected abandoned defeated deflated heavy when people tell me no",
+        "reading_layer": "none",
+        "index_node_id": 179,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 3.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-92991dd0ff054c68",
+      "content": "I'm letting go of being nervous to be challenged",
+      "pattern_hash": "92991dd0ff054c6872b004acf3f0fb450c64ef86ddb1d2441ddb44439691b0c2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-310",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2426;unit=3",
+        "record_title": "Challenge",
+        "source_text_as_transcribed": "I'm going to go being nervous to be challenged",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 6.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-e90e128435525bb4",
+      "content": "I'm letting go of being nervous to ask for what I want",
+      "pattern_hash": "e90e128435525bb432ecce4340217bfac59efe18b1e8ca9df1f96b1f4d77da85",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-338",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2851;unit=9",
+        "record_title": "Just ask",
+        "source_text_as_transcribed": "I'm letting go of being nervous to ask for what I want",
+        "reading_layer": "none",
+        "index_node_id": 198,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=5:39",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:8"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-8d4d413ebcd332b5",
+      "content": "I'm letting go of being nervous anxious worried to not stand up for my opinion",
+      "pattern_hash": "8d4d413ebcd332b5dd19cac22f23874b92ee04484c60477ab9e326da1c47c82d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-370",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3320;unit=12",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being nervous anxious worried to not stand up for my opinion",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious",
+          "nervous",
+          "worried"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-83da16a03f161be3",
+      "content": "I'm letting go of being nervous to be seen",
+      "pattern_hash": "83da16a03f161be39d983e0f20ebe2d984bba3335fbc4898d123919f7ec7a034",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1307;unit=6",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm letting go of being nervous to be seen",
+        "reading_layer": "none",
+        "index_node_id": 158,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=5:14"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-0a2f5da5294c8916",
+      "content": "I'm letting go of being nervous to speak at full volume",
+      "pattern_hash": "0a2f5da5294c8916a3ac0f449017888ec4744414d566cd922b9f1853473f7899",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-244",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1729;unit=15",
+        "record_title": "No one's coming to save me",
+        "source_text_as_transcribed": "I'm letting go of being nervous to speak at full volume",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-148a6366bdf5537d",
+      "content": "I'm letting go of being shy stressed tense bothered annoyed irritated frustrated ashamed anxious nervous concerned worried about using my voice",
+      "pattern_hash": "148a6366bdf5537db85e36a530b285a1b1983cc0a91d676d07671a56514929eb",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-247",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1789;unit=19",
+        "record_title": "Voice",
+        "source_text_as_transcribed": "I'm letting go of being shy stressed tense bothered annoyed irritated frustrated ashamed anxious nervous concerned worried about using my voice",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 65,
+          "fetter_name": "Self-Silencing",
+          "emo_family": null,
+          "score": 23.5
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious",
+          "nervous",
+          "worried"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-60dd7c2e7c338b41",
+      "content": "I'm letting go of being nervous to lead",
+      "pattern_hash": "60dd7c2e7c338b4115ed79126929d626e29cadd52d2ef7edbfb7dfd398e0003c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3222;unit=2",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm going to go being nervous to lead",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3236;unit=16",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:25",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:39",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=32:39",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:9"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-7f09cd6782d4787c",
+      "content": "I'm letting go of being nervous insecure shy terrified worried bothered annoyed irritated frustrated pissed off to try",
+      "pattern_hash": "7f09cd6782d4787c18af12e35d991975a2ac6084ed7ad375b3cc04e58a157ae7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1311;unit=10",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm going to go being nervous insecure shy terrified worried bothered annoyed irritated frustrated pissed off to try",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 158
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous",
+          "worried",
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-25df69632152b29c",
+      "content": "I'm letting go of being worried about the thoughts of others about me",
+      "pattern_hash": "25df69632152b29ce75b87dd3650d3bdb3c83811bbbcbadb9c42e554a418d86d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3252;unit=32",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being worried about the thoughts of others about me",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=16:9",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:25"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worried"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-a284d7625cbdd4bc",
+      "content": "I'm letting go of being nervous and of what people think when I lead",
+      "pattern_hash": "a284d7625cbdd4bcbf0cb83a17ad8672c9228d4505e7963bd76b5905235109e9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3257;unit=37",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being nervous and of what people think when I lead",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=16:14",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:30"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-3a8b59900947a8fc",
+      "content": "I'm letting go of worrying about tomorrow",
+      "pattern_hash": "3a8b59900947a8fc3c3b6b9b8a8096d74eb6df5acefea085530b8287f70b963e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:39",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about tomorrow",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:22"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-f978eb8640b29219",
+      "content": "I'm letting go of worrying about yesterday",
+      "pattern_hash": "f978eb8640b292192fcee80a54b7cc82a2094959b88c3f78ef05d4828af4a4e0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:40",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about yesterday",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:23"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c09b557046e17cac",
+      "content": "I'm letting go of the sensation labeled anxious talking to people in positions of power",
+      "pattern_hash": "c09b557046e17cac06188133b98eb890dcff1834e0c32dcd4822910c76c51a6e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-119",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:17",
+        "record_title": "Sensations",
+        "source_text_as_transcribed": "I'm letting go of the sensation labeled anxious talking to people in positions of power",
+        "reading_layer": "none",
+        "index_node_id": 239,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=44:4"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-1d7b02f87b833637",
+      "content": "I'm letting go of worry about my finance",
+      "pattern_hash": "1d7b02f87b833637266343a75a54944606f0cadca6278c47d77edd0f87a2e0bc",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:7",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worry about my finance",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:41"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worry"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-8f75bcd1c6a87763",
+      "content": "I'm letting go of being anxious of pain",
+      "pattern_hash": "8f75bcd1c6a8776342ed3ac149f036b361cca86752076b7c328878ab0f4a81ce",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-116",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=58:6",
+        "record_title": "Fear speaking my needs",
+        "source_text_as_transcribed": "I'm letting go of being anxious of pain",
+        "reading_layer": "none",
+        "index_node_id": 237,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=40:41"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "anxious"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-57445bda7436d3f2",
+      "content": "I'm letting go of being nervous about death",
+      "pattern_hash": "57445bda7436d3f273f690503b08e46ead1ebd39d07f9b875f5aab115b90b154",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:17",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of being nervous about death",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=35:1"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-ac06af7c851456f7",
+      "content": "I'm letting go of worrying about the past",
+      "pattern_hash": "ac06af7c851456f73e1418b2cddee5fa826b2a9aadbabd9d8791b1b29f6a11de",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:50",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about the past",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:33"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-e0c64b049f7017db",
+      "content": "I'm letting go of worrying about being sick",
+      "pattern_hash": "e0c64b049f7017dbc501065a3bfd1c60701d6e4881bbb2354f65827179bdaecd",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:15",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about being sick",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:49"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-2b118669e5ae5e28",
+      "content": "I'm letting go of worrying about my sex drive",
+      "pattern_hash": "2b118669e5ae5e28e550cfdf5961c1c715c281af9b6cd19a551f8db48868d08e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:5",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm Letting Go of worrying about my sex drive",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:39"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-acf16a57d868ea81",
+      "content": "I'm letting go of worrying about the company failing",
+      "pattern_hash": "acf16a57d868ea816c6a60fcff0eb2bf6f366d8b97a70ec63e775033ad78e780",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:8",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about the company failing",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:42"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c3e0d9df2820222d",
+      "content": "I'm letting go of worrying about them accepting me",
+      "pattern_hash": "c3e0d9df2820222d4ba6fe346411e7f35e36c1448a2b1e74d39b0d104f386ccb",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:51",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about them accepting me",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:34"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-ce5fa944a6ca6f33",
+      "content": "I'm letting go of worrying about them rejecting me",
+      "pattern_hash": "ce5fa944a6ca6f334d7549f0a42b0f1655fb130ee35c0e5791300106f4857d6d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:1",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about them rejecting me",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:35"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d32f9ddf63a9350c",
+      "content": "I'm letting go of worrying about what happens next",
+      "pattern_hash": "d32f9ddf63a9350cd89454fbc45f2c50dd66ca4955788e8b4f80fd1836dd6dab",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:38",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying about what happens next",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:21"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-4b094d049b997f5e",
+      "content": "I'm letting go of being nervous to ask for help",
+      "pattern_hash": "4b094d049b997f5e815cd67589c8532be0a3974069a408cfd6903d9bf42618dd",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:12",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of being nervous to ask for help",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=35:41"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c8b681a886228f76",
+      "content": "I'm letting go of the story I'm nervous about confrontation",
+      "pattern_hash": "c8b681a886228f76cc0f6537c40d2430d646a7798dbb1dc924e4a6d3aeca6805",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:26",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of the story I'm nervous about confrontation",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=35:10"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-12e0ba835551c7dd",
+      "content": "I'm letting go of worrying if I will never love again",
+      "pattern_hash": "12e0ba835551c7ddd490bf3eb7a7afe63ce79c07a617b70b807c4a849107277b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:46",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of worrying if I will never love again",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=34:29"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worrying"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-20fe3e1a7b7c2edb",
+      "content": "I'm letting go of being nervous of taking full responsibility for my life",
+      "pattern_hash": "20fe3e1a7b7c2edbed3e941f3192a6be939010e12188a747142b677d7a50077f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-109",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:44",
+        "record_title": "Temptation",
+        "source_text_as_transcribed": "I'm letting go of being nervous of taking full responsibility for my life",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=32:32"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-6cc0da0962a8faa5",
+      "content": "I'm letting go of being nervous asking people to do things for me",
+      "pattern_hash": "6cc0da0962a8faa53a85dd7ba1c80bdd778083d169937177086aeacbb5cc1e13",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:10",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of being nervous asking people to do things for me",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=35:39"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "nervous"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-b88d140e25874a87",
+      "content": "I'm letting go of the story I'm worried I'll be hurt during a conversation",
+      "pattern_hash": "b88d140e25874a87d9a69831210150d56393adf1c2b2ee83d1355f1421541859",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-110",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:27",
+        "record_title": "I forgive myself for doubting myself",
+        "source_text_as_transcribed": "I'm letting go of the story I'm worried I'll be hurt during a conversation",
+        "reading_layer": "none",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=35:11"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "worried"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-0abc5a502fc35482",
+      "content": "I'm letting go of being scared about aging",
+      "pattern_hash": "0abc5a502fc354828ec02b49b19f214628bc5afd4e4f5da7a205c6f6697fd3c6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-351",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3032;unit=3",
+        "record_title": "Looks",
+        "source_text_as_transcribed": "I;m letting go of being scared about aging",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 209,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=9:12",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:25"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-0c47fe24bd32f946",
+      "content": "I'm letting go of being scared to lead",
+      "pattern_hash": "0c47fe24bd32f946f1debcb955f88239f07cf389de0f0a5556ca9ff53bfab6ca",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3235;unit=15",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to lead",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:38",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:8"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-316a48e514fc3c0e",
+      "content": "I'm letting go of being scared to try",
+      "pattern_hash": "316a48e514fc3c0e3206295c4e4cee9b2a2548d96ef6ba5f33273a4c0a938a67",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1310;unit=9",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm letting go of being scared to try",
+        "reading_layer": "none",
+        "index_node_id": 158,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=5:17"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-71563455ba28727c",
+      "content": "I'm letting go of being afraid of change",
+      "pattern_hash": "71563455ba28727c212967bf25555c4779db07e262164f17d5706b524da39753",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-311",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2438;unit=1",
+        "record_title": "Change",
+        "source_text_as_transcribed": "I'm letting go of being afraid of change",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 11,
+          "fetter_name": "Resistance",
+          "emo_family": null,
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-a7c162227fde21ad",
+      "content": "I'm letting go of being scared of crowds",
+      "pattern_hash": "a7c162227fde21add490a07b700b1e856c65d402ccb873a0ad1b83b2cfc7c91d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-305",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2366;unit=4",
+        "record_title": "Epigenetics",
+        "source_text_as_transcribed": "I'm letting go of being scared of crowds",
+        "reading_layer": "none"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-ed3d77d87770a031",
+      "content": "I'm letting go of being scared to succeed",
+      "pattern_hash": "ed3d77d87770a031da383d79886a34dde0aa0e864ebb9c1099d7003ef6d5c833",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-349",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3013;unit=5",
+        "record_title": "Defeated",
+        "source_text_as_transcribed": "I'm letting go of being scared to succeed",
+        "reading_layer": "none",
+        "index_node_id": 207,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=8:36",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:11"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-163f4be22d4a45c9",
+      "content": "I'm letting go of being terrified for the world",
+      "pattern_hash": "163f4be22d4a45c9345267245f7ed6c10a8d24424348452f9bd7b61d2aac1318",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3393;unit=10",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being terrified for the world",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=25:34",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:2"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-24ef5a30f37acb69",
+      "content": "I'm letting go of being afraid to be myself",
+      "pattern_hash": "24ef5a30f37acb69e6efabbcd7d82cdc6f108b6d9a2a30a62c364d3a32b18f71",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-258",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1928;unit=26",
+        "record_title": "Ego",
+        "source_text_as_transcribed": "I'm letting Go of being afraid to be myself",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 162,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=7:35"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-4af2010b500f5b00",
+      "content": "I'm letting go of believing I'm afraid of death",
+      "pattern_hash": "4af2010b500f5b0029427b9a7451cf074f791c98079a4d62c9e30c88089223a9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-248",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1793;unit=1",
+        "record_title": "Death",
+        "source_text_as_transcribed": "I'm going to go bleeding I'm afraid of death",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 230,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 6.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c80e6ad6b42514c9",
+      "content": "I'm letting go of believing I'm afraid of conflict",
+      "pattern_hash": "c80e6ad6b42514c957b15b35573567deba2421b1ca67373640afdf49a64ef8aa",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-304",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2354;unit=1",
+        "record_title": "Conflict",
+        "source_text_as_transcribed": "I'm letting go of believing I'm afraid of conflict",
+        "reading_layer": "none"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-24dcc562e351525f",
+      "content": "I'm letting go of believing I'm afraid to lose power",
+      "pattern_hash": "24dcc562e351525fa98e97b04150b8306b28a99b36bdb735ace4d3caeb43adfa",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-313",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2492;unit=27",
+        "record_title": "Progress",
+        "source_text_as_transcribed": "I'm letting go of believing I'm afraid to lose power",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 56,
+          "fetter_name": "Closed Heart",
+          "emo_family": null,
+          "score": 8.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-756181ba4ae2f98b",
+      "content": "I'm letting go of believing I'm afraid to expose myself",
+      "pattern_hash": "756181ba4ae2f98baf7806ab2f36c86904763a50a85d9198892339eae7d6332d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-244",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1720;unit=6",
+        "record_title": "No one's coming to save me",
+        "source_text_as_transcribed": "I'm going to go bleeding I'm afraid to expose myself",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-8250722f61124209",
+      "content": "I'm letting go of not trying over fear of failure",
+      "pattern_hash": "8250722f61124209b47797f950c733ed963b2a94dfced346398af4c74c9f4433",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-341",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2890;unit=20",
+        "record_title": "Self Doubt",
+        "source_text_as_transcribed": "I'm letting go of not trying over fear of failure",
+        "reading_layer": "none",
+        "index_node_id": 201,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=6:28",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:40"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 13.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "fear"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-9d948eb86e683e28",
+      "content": "I'm letting go of being scared to create a pattern",
+      "pattern_hash": "9d948eb86e683e284a05e4e44ffd25657bff96d6bb8f7e8a357694875af93cc4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-202",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1262;unit=2",
+        "record_title": "Scared to set routine",
+        "source_text_as_transcribed": "I'm letting go of being scared to create a pattern",
+        "reading_layer": "none",
+        "index_node_id": 155,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=4:5"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c9ee77f47c3dc117",
+      "content": "I'm letting go of being scared to feel my emotions",
+      "pattern_hash": "c9ee77f47c3dc1176bb60c03df360f2a831d22ce48a8e2b600f8e3828889b8d9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-331",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2737;unit=2",
+        "record_title": "Feel",
+        "source_text_as_transcribed": "I'm letting go of being scared to feel my emotions",
+        "reading_layer": "none",
+        "index_node_id": 192,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=3:25",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=20:41"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-cd9e02ac6fbc4896",
+      "content": "I'm letting go of being scared to fill my shoes",
+      "pattern_hash": "cd9e02ac6fbc48966535941ce30999093fcda1499953e40b3e446e02762c500f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-370",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3318;unit=10",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to fill my shoes",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 7.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d85dc929fadce4ab",
+      "content": "I'm letting go of being scared to make new friends",
+      "pattern_hash": "d85dc929fadce4ab6ee5e2d13943bd5e148a08f80962657d73a5d365fd14cd71",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-321",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2591;unit=1",
+        "record_title": "Making new friends",
+        "source_text_as_transcribed": "I'm letting go of being scared to make new friends",
+        "reading_layer": "none"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-dbba0fbea3807fea",
+      "content": "I'm letting go of believing I'm easily startled or scared",
+      "pattern_hash": "dbba0fbea3807fea594bc53dd48ddfe8e61d0b091b0076fb5a833cd7e690edf9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-256",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1891;unit=1",
+        "record_title": "Scared and startled",
+        "source_text_as_transcribed": "I'm letting Go bleeding I'm easily startled or scared",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-e59cb7504079f000",
+      "content": "I'm letting go of minimizing my voice out of fear",
+      "pattern_hash": "e59cb7504079f000f3d4caaadf1c761215f0d916231b946be7cfaca59a299e74",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-247",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1777;unit=7",
+        "record_title": "Voice",
+        "source_text_as_transcribed": "I'm letting go of minimizing my voice out of fear",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 65,
+          "fetter_name": "Self-Silencing",
+          "emo_family": null,
+          "score": 23.5
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "fear"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-4e9544807306a231",
+      "content": "I'm letting go of being scared and impatient when I'm bored",
+      "pattern_hash": "4e9544807306a2313e0e8c35cd39e760907afb6193adcb4f59bbd1019d41e5ef",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-065",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=321;unit=2",
+        "record_title": "Boredom",
+        "source_text_as_transcribed": "I'm going to go being scared and impatient when I'm bored",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 72
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-9d514cc192c68731",
+      "content": "I'm letting go of being afraid to speak up for myself",
+      "pattern_hash": "9d514cc192c68731fac5d1623be294b203da9063405cefb6b27133247533bcb1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-374",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3454;unit=18",
+        "record_title": "Be at rest",
+        "source_text_as_transcribed": "I'm going to go being afraid to speak up for myself",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 66,
+          "fetter_name": "People Pleasing",
+          "emo_family": null,
+          "score": 9.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-c991af0924db1f2e",
+      "content": "I'm letting go of believing I'm scared to ask for help",
+      "pattern_hash": "c991af0924db1f2e18e9d76b60ba392bb297d8738c6fe87ada24f015e879bfcf",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-188",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1084;unit=3",
+        "record_title": "Looking dumb",
+        "source_text_as_transcribed": "I'm going to go bleeding I'm scared to ask for help",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 13.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-64e89ce930462854",
+      "content": "I'm letting go of being scared to ask for what I want",
+      "pattern_hash": "64e89ce930462854f3866689abe653e4dd5eb1fcd710037c6ad49ad0dcd0bb73",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-338",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2850;unit=8",
+        "record_title": "Just ask",
+        "source_text_as_transcribed": "I'm letting go of being scared to ask for what I want",
+        "reading_layer": "none",
+        "index_node_id": 198,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=5:38",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:7"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-fa6b5f73bae73c30",
+      "content": "I'm letting go of being terrified at the state of our finances",
+      "pattern_hash": "fa6b5f73bae73c3031cd93b3ed8013ccedc5a6f862cb9575ec92e89a7c66563e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-102",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=574;unit=1",
+        "record_title": "Finances",
+        "source_text_as_transcribed": "I'm letting go of being terrified at the state of our finances",
+        "reading_layer": "none",
+        "index_node_id": 33
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-182073f54dcad160",
+      "content": "I'm letting go of rejecting abundance out of scarcity or smallness or fear",
+      "pattern_hash": "182073f54dcad160eb125908773521347a3c64dd6d5217de8b0eda61971ce4a9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-018",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=82;unit=3",
+        "record_title": "Money",
+        "source_text_as_transcribed": "I'm letting go of rejecting abundance out of scarcity or smallness or fear",
+        "reading_layer": "none",
+        "index_node_id": 40,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 8.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "fear"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-4497a0fe7350c950",
+      "content": "I'm letting go of believing I'm scared to take control of my space",
+      "pattern_hash": "4497a0fe7350c9507f82dcd751ec94b0060162a639758bea5d523a81244b8988",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-204",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1291;unit=13",
+        "record_title": "Kingsley status",
+        "source_text_as_transcribed": "I'm letting Go believing I'm scared to take control of my space",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 4,
+          "fetter_name": "Control",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-a11ed4505458962a",
+      "content": "I'm letting go of believing I'm scared and don't know what to do next",
+      "pattern_hash": "a11ed4505458962a4c1200e76728e2a086814afe95f5a621ad014f2c006a41b9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-197",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1177;unit=8",
+        "record_title": "Hard",
+        "source_text_as_transcribed": "I'm letting go of believing I'm scared and don't know what to do next",
+        "reading_layer": "none",
+        "index_node_id": 149,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=1:10"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-e03792399f70954c",
+      "content": "I'm letting go of fearing judgment of others when I reveal or show my art",
+      "pattern_hash": "e03792399f70954c9778808fe6ac07f9171f52f104b80193855e1201c6dde532",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-317",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2537;unit=11",
+        "record_title": "Master artistry",
+        "source_text_as_transcribed": "I'm letting go of fearing judgment of others when I reveal or show my art",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "fearing"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-0de4815c06cb17dc",
+      "content": "I'm letting go of being scared to conquer",
+      "pattern_hash": "0de4815c06cb17dc165a4147f714faf7ba0c5d951d8e961b1c29192dafd63276",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3244;unit=24",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to conquer",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-44345275912696e2",
+      "content": "I'm letting go of being scared to be myself",
+      "pattern_hash": "44345275912696e23826ab243f4bb0b5571b506292d8f4f8c0fdc2b988373ca8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-258",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1929;unit=27",
+        "record_title": "Ego",
+        "source_text_as_transcribed": "I'm letting go of being scared to be myself",
+        "reading_layer": "none",
+        "index_node_id": 162,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=7:36"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-45fe48e6b87ac4b0",
+      "content": "I'm letting go of being afraid to be seen",
+      "pattern_hash": "45fe48e6b87ac4b004a9a7e57b2b255f26e96c4821992cb406c1b1109cd51dea",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1306;unit=5",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm letting go of being afraid to be seen",
+        "reading_layer": "none",
+        "index_node_id": 158,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=5:13"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-7d3df0fca37a11ec",
+      "content": "I'm letting go of believing I'm afraid of crowds",
+      "pattern_hash": "7d3df0fca37a11ece4a659c4e02138983dff1a7118e59f76e51a509890fce33f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-305",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2365;unit=3",
+        "record_title": "Epigenetics",
+        "source_text_as_transcribed": "I'm letting Go bleeding I'm afraid of crowds",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-a7d99927b8385d1c",
+      "content": "I'm letting go of being afraid to make mistakes",
+      "pattern_hash": "a7d99927b8385d1c3e1842d019109b0ef709d0354f0b917e791556e9a15211d2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-375",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3467;unit=4",
+        "record_title": "I want to go being self-righteous",
+        "source_text_as_transcribed": "I'm letting Go of being afraid to make mistakes",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=27:7",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=44:24"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 9.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-cbea588e54fcea10",
+      "content": "I'm letting go of being frightened for the world",
+      "pattern_hash": "cbea588e54fcea1040e4d00c35365636eeb5b265864412ed75fd16c4f6f1950f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3392;unit=9",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being frightened for the world",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=25:33",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:1"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "frightened"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-b8819da6ddb29c83",
+      "content": "I'm letting go of believing I'm afraid to be vulnerable",
+      "pattern_hash": "b8819da6ddb29c83482f02e14faf11a43da187dab76f0f9bf429dede6689f0c9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-244",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1719;unit=5",
+        "record_title": "No one's coming to save me",
+        "source_text_as_transcribed": "I'm letting go of believing I'm afraid to be vulnerable",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 5.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d4241c415c162745",
+      "content": "I'm letting go of being scared to win my game",
+      "pattern_hash": "d4241c415c162745a171256a41fa9e01a51cec6c60060e208af411964a90e0b1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-349",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3014;unit=6",
+        "record_title": "Defeated",
+        "source_text_as_transcribed": "I'm letting go of being scared to win my game",
+        "reading_layer": "none",
+        "index_node_id": 207,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=8:37",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=26:12"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-a0e7cd9bc25bf027",
+      "content": "I'm letting go of believing I'm scared to set a routine",
+      "pattern_hash": "a0e7cd9bc25bf027e0f5b043185ec9ee4096b2a73d595e6a340fa273b7b9ffd6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-202",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1261;unit=1",
+        "record_title": "Scared to set routine",
+        "source_text_as_transcribed": "I'm letting Go bleeding I'm scared to set a routine",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 155,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=4:4"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-cbee5cd6c7a4ffdf",
+      "content": "I'm letting go of believing I'm scared to use my voice",
+      "pattern_hash": "cbee5cd6c7a4ffdff5e9834dcec1dc26b5cbff1ea136b5b5a9f5f4777e5493da",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-247",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1788;unit=18",
+        "record_title": "Voice",
+        "source_text_as_transcribed": "I'm letting Go bleeding I'm scared to use my voice",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 65,
+          "fetter_name": "Self-Silencing",
+          "emo_family": null,
+          "score": 23.5
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d3252d08d8b6ca2e",
+      "content": "I'm letting go of believing I'm shocked easily terrified mortified horrified easily",
+      "pattern_hash": "d3252d08d8b6ca2eddcbfea9379e639f455131e159938f90f378d892880adf91",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-256",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1893;unit=3",
+        "record_title": "Scared and startled",
+        "source_text_as_transcribed": "I'm letting Go believing I'm shocked easily terrified mortified horrified easily",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)"
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-51b41fc5677d9b45",
+      "content": "I'm letting go of being scared to do my job with maximum effort",
+      "pattern_hash": "51b41fc5677d9b451ecd2410556cc16ed9ffa2e9a215c23bd7cdd696905ba437",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-355",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3085;unit=7",
+        "record_title": "Doing Your Best",
+        "source_text_as_transcribed": "I'm letting go of being scared to do my job with maximum effort",
+        "reading_layer": "none",
+        "index_node_id": 213,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=10:16",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=27:29"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-acf1c5b468a09b3f",
+      "content": "I'm letting go of believing I'm scared to look like I don't know",
+      "pattern_hash": "acf1c5b468a09b3f740e68f577f5616c330f923df5de15f548727b1d1079823f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-188",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1083;unit=2",
+        "record_title": "Looking dumb",
+        "source_text_as_transcribed": "I'm letting Go believing I'm scared to look like I don't know",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 74,
+          "fetter_name": "Talking to Avoid Feeling",
+          "emo_family": null,
+          "score": 13.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-b98d2d19ade5beeb",
+      "content": "I'm letting go of believing I'm afraid to take control over my space",
+      "pattern_hash": "b98d2d19ade5beeb0c554e6ca016051064677fec27d50001f7cf57e968325a68",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-204",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1291;unit=12",
+        "record_title": "Kingsley status",
+        "source_text_as_transcribed": "I'm going to go bleeding I'm afraid to take control over my space",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 4,
+          "fetter_name": "Control",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-495862b4e28c0fe7",
+      "content": "I'm letting go of being afraid to lead",
+      "pattern_hash": "495862b4e28c0fe7a27aee960a7b111139f9eb16ff853fb0a8b2209657c1f1b4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3234;unit=14",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being afraid to lead",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:37",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:7"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-bf894b0ccf68f7cd",
+      "content": "I'm letting go of believing I'm scared to become",
+      "pattern_hash": "bf894b0ccf68f7cd2432bd71ef4fb7572b9c030048bb0684787cfd43e93e7c5a",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-258",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1910;unit=7",
+        "record_title": "Ego",
+        "source_text_as_transcribed": "I'm letting Go believing I'm scared to become",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 162,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=7:16"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d0d946f65130eb9b",
+      "content": "I'm letting go of being afraid to be challenged",
+      "pattern_hash": "d0d946f65130eb9b6c2a944258f441ae3240f129458702813ebbcbbfbca0ab14",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-310",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2424;unit=1",
+        "record_title": "Challenge",
+        "source_text_as_transcribed": "I'm letting go of being afraid to be challenged",
+        "reading_layer": "none",
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 37,
+          "fetter_name": "Judgment",
+          "emo_family": "Disgust",
+          "score": 6.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-260422a604f9c3c2",
+      "content": "I'm letting go of feeling afraid to speak the truth",
+      "pattern_hash": "260422a604f9c3c2a443efeff9ce097fb8870604e4dd2bb5439ec98787092edf",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3425;unit=42",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of feeling afraid to speak the truth",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=26:19",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:34"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d930c0907dce79c5",
+      "content": "I'm letting go of being scared to do my job with the highest quality service",
+      "pattern_hash": "d930c0907dce79c598c931c6b55b1d92f81ae6e52d096c06b468846799f43db0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-355",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3086;unit=8",
+        "record_title": "Doing Your Best",
+        "source_text_as_transcribed": "I'm letting go of being scared to do my job with the highest quality service",
+        "reading_layer": "none",
+        "index_node_id": 213,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=10:17",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=27:30"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-16cf5cd3d3a2efea",
+      "content": "I'm letting go of being scared I will be rejected if I ask for what I want",
+      "pattern_hash": "16cf5cd3d3a2efea29a57d80b2a87dc891148a03998957af9214dca4e06e3509",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-338",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2852;unit=10",
+        "record_title": "Just ask",
+        "source_text_as_transcribed": "I'm letting go of being scared I will be rejected if I ask for what I want",
+        "reading_layer": "none",
+        "index_node_id": 198,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=5:40",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=23:9"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-9bd290c566e5e64d",
+      "content": "I'm letting go of being scared to create a natural rhythm so that I can be successful",
+      "pattern_hash": "9bd290c566e5e64d82622efa43ad2d806003a95a1032eddd3611b017ee6c6d10",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-202",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1263;unit=3",
+        "record_title": "Scared to set routine",
+        "source_text_as_transcribed": "I'm letting go of being scared to create a natural rhythm so that I can be successful",
+        "reading_layer": "none",
+        "index_node_id": 155,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=4:6"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-854340930a4e1e09",
+      "content": "I'm letting go of being afraid of life's experiences",
+      "pattern_hash": "854340930a4e1e099ba7cfcdf51dd4e44a8ceb6d3bdd7516695193cc6e58de1f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1302;unit=1",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm letting Go of being afraid of life's experiences",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 158,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=5:9"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-4ad34641486b94dd",
+      "content": "I'm letting go of being scared to speak the truth",
+      "pattern_hash": "4ad34641486b94ddf195120174fb44133a0f5a8ebc1f250675bfddf72ab1c653",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3423;unit=40",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being scared to speak the truth",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=26:17",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:32"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-9b9be20c6d564e01",
+      "content": "I'm letting go of believing I'm scared to become who I'm supposed to be",
+      "pattern_hash": "9b9be20c6d564e011b5e294b6f60a114a325f0759ba127cfca2869166a036901",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-258",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1911;unit=8",
+        "record_title": "Ego",
+        "source_text_as_transcribed": "I'm letting Go bleeding I'm scared to become who I'm supposed to be",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 162,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=7:17"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 99,
+          "fetter_name": "Knowing Better than God",
+          "emo_family": null,
+          "score": 11.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-7dff1f25e42996a1",
+      "content": "I'm letting go of being scared to compete",
+      "pattern_hash": "7dff1f25e42996a173d6422b83133c7c2fe8acf8c38d611730e9a3390b380767",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3246;unit=26",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to compete",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=16:3",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:19"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-b0381810f470969b",
+      "content": "I'm letting go of being terrified to speak the truth",
+      "pattern_hash": "b0381810f470969b928bef76b28b52ab6489ca6d37714fbc792ac8478e1d2208",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3429;unit=46",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being terrified to speak the truth",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=26:23",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:38"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-f7d15c802626d300",
+      "content": "I'm letting go of being terrified to take a leap of faith",
+      "pattern_hash": "f7d15c802626d300c5584ca05e417978d08be565492f37192ff3e932267bfe9d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-206",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1304;unit=3",
+        "record_title": "Life's experiences",
+        "source_text_as_transcribed": "I'm letting go of being terrified to take a leap of faith",
+        "reading_layer": "none",
+        "index_node_id": 158,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=5:11"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "terrified"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-fb08fb050e44b989",
+      "content": "I'm letting go of being afraid to be at peace",
+      "pattern_hash": "fb08fb050e44b9895e5cb6f47aa0e1e1c736b3e14190a464154e88321e30ea88",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3436;unit=53",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being afraid to be at peace",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "afraid"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-ec893e1ac9992c2b",
+      "content": "I'm letting go of being scared to put myself out there",
+      "pattern_hash": "ec893e1ac9992c2ba24bed38546f20ec0051983eff54922d78b46b91532cde74",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3255;unit=35",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to put myself out there",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=16:12",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:28"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-d839e6cf9e822dbe",
+      "content": "I'm letting go of being scared to get caught in a lie",
+      "pattern_hash": "d839e6cf9e822dbeedca02f195853f2ab74abaf515bb7689f0a99203ebb57ce8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-373",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3431;unit=48",
+        "record_title": "Immature",
+        "source_text_as_transcribed": "I'm letting go of being scared to get caught in a lie",
+        "reading_layer": "none",
+        "index_node_id": 233,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=26:25",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=43:40"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 72,
+          "fetter_name": "Speaking to be Right",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-dbf2ac36a02434c6",
+      "content": "I'm letting go of being scared to put myself out there to lead",
+      "pattern_hash": "dbf2ac36a02434c6adb9e0157118d846767b9acc88af83ead0dc2737aa2b7be5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3256;unit=36",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared to put myself out there to lead",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=16:13",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:29"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-1c6b1a9b6c89622e",
+      "content": "I'm letting go of being scared that I don't have The bravery to lead",
+      "pattern_hash": "1c6b1a9b6c89622e7a85e85c6c8235b21b71e993d24094aa5e6bf3432ce22a58",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_2026.json",
+        "source_record_file_blob": "aa4d3081ea1972988276135a9e79f321cd06649f",
+        "source_record_id": "2026-364",
+        "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3243;unit=23",
+        "record_title": "Leadership",
+        "source_text_as_transcribed": "I'm letting go of being scared that I don't have The bravery to lead",
+        "reading_layer": "none",
+        "index_node_id": 223,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=15:46",
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=33:16"
+        ],
+        "record_fetter_join": {
+          "file": "atuned/data/letgo/letgo_join.json",
+          "note": "whole record joined to a canonical fetter by the intake; a separate id namespace, evidence only",
+          "fetter_id": 85,
+          "fetter_name": "Doubt",
+          "emo_family": null,
+          "score": 10.0
+        }
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "scared"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "anxiety-3fbc94013e5e5681",
+      "content": "I'm letting go of fearing originality",
+      "pattern_hash": "3fbc94013e5e568149d527b07d4dc9db816895e43e9eed244ca6cf0779c96bdd",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-101",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=34:22",
+        "record_title": "Creative",
+        "source_text_as_transcribed": "I'm Letting Go of fearing originality",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 227,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=17:8"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "fear",
+        "words": [
+          "fearing"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    }
+  ],
+  "content_sha256": "8647ef2b2202cf517cdd56930f9ce12d5a4a16988898f16fdca9d35923986735"
+}
