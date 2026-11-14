@@ -122,6 +122,25 @@ Then LOOK at the images. Reading CSS is not reviewing a screen.
 
 ## Rules learned the expensive way
 
+**The Dashboard is clean, even, symmetrical, and that is permanent.** Ruled
+14 November, after a design pass sent him mockups rebuilt from a screenshot
+instead of edited from the real file, and the reconstruction drifted on
+every axis he cares about at once: it left an asymmetric dead zone instead
+of maximizing the space, floated the left rail as its own disconnected card
+with no visual connector binding it to the rest of the page, sized the
+Imprints panel too big against its own content, dropped the keyboard-toggle
+icon under Uni's area, and read as three separate split panels rather than
+one continuous frame. His words: "when I come to this dashboard, it's
+clean, it's even, it's symmetrical. There's no weird space and everything
+is even. This is a permanent." Not a one-round note: any future pass on
+this surface is held to all of it, by that name, not re-litigated from
+scratch. And the method that caused the drift is also ruled out going
+forward: a mockup of a real, already-shipped surface is built by editing a
+copy of the real file (or the real file itself, then reverted), never by
+reconstructing the page from a screenshot and a spec, however carefully
+measured. A reconstruction is a second, competing layout by construction,
+even when every number in it was read off the real one.
+
 **Never renumber the TAB integers.** They are identity, persisted and
 compared. `TABDEF` is display order and may be reordered freely. Anything
 needing the entry for a tab looks it up by `.k`, never by position. Compass is
