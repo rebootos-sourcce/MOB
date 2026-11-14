@@ -35078,3 +35078,44 @@ keyboard-move change and its own fix), so part of it tested an
 intermediate, broken build rather than this one. Re-run clean, start to
 finish, against the file actually being shipped, before this was called
 done.
+
+## Round WH, 14 November. What `260430d3` actually shipped with, caught and closed before the next round
+
+`260430d3` pushed clean on the gates it was run against, but two things
+inside it only showed up once CI (and a closer look at the real page)
+ran a wider check than this session had.
+
+**`#sttype` landed on top of `#stmic`, in the one view the keyboard round
+never looked at.** `tests/collide.js`'s "Discover: every visible control
+takes a press, short windows too" check commits real story text first,
+which flips the mini Dashboard out of its rest state. In that state
+`#stmic` and `#stdash` already leave `.st-hdbtns`'s flex flow entirely
+(10 November's "these are the only icons on the screen" rule, each
+pinned `position:absolute` to its own screen corner), so once `#sttype`
+landed inside `.st-hdbtns` this round, the row collapsed to just that one
+icon, painted at the same spot `#stmic` already owns, with `#stmic`
+sitting on top of it. Every manual check this round ran was against the
+Full Dashboard, where `#stmic` is still a plain flex sibling and the bug
+cannot show. Fixed the same way the two icons beside it already escape:
+`body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;
+left:72px;z-index:2}`, parked beside `#stmic` with the row's own 8px gap
+(20px position + 44px tap target + 8px), not under it.
+
+**`#lpanel` stopped 94px short of its own column, found while answering
+his separate complaint about the left rail.** `#lcol` itself already
+stretches to match `#stage` and `#rcol`, a plain flex child of `.mid`
+with nothing stopping it. `#lpanel`, one level further in, never grew
+past its own six sections' content height, so the Full Dashboard's left
+column read as a frame with a real gap under it while its two neighbours
+ran to the bottom, on a real 1680x1020 measurement. Fixed with
+`flex:1 1 auto;min-height:0` added to `#lpanel`'s existing rule, the same
+shape `.st-lrail` one rule below it already uses to fill `#lpanel` in
+turn.
+
+Both found and fixed before the next push, not described and left for
+later. Gates run clean on the combined build: `node tests/collide.js`
+398/0, `node tests/design.js` 193/0, `node tests/functional.js` 3033/0,
+the last of those re-run clean start to finish after an earlier attempt
+was discarded for running concurrently with a rebuild. `engine.js` is
+unaffected (no engine file touched this round) and stayed at its last
+confirmed-clean count.

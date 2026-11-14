@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v79 90ac32f8 2026-11-14 16:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v80 260430d3 2026-11-14 17:57"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4756,6 +4756,20 @@ body.tab-story:not(.st-full) #stjr .st-glow{justify-content:center}
    with no height anything needs, since nothing of it still displays. */
 body.tab-story:not(.st-full) #stmic{position:absolute;top:20px;left:20px;z-index:2}
 body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-index:2}
+/* THE KEYBOARD NEEDS THE SAME ESCAPE, 14 November, found by CI and not by
+   the testing this round actually ran. #sttype moved into .st-hdbtns
+   beside #stmic (see the long comment at #sttype in ui/storyui.js), which
+   works in the Full Dashboard, where #stmic is still a plain flex child
+   of that row. In THIS view #stmic and #stdash leave the row entirely
+   (the two rules above, 10 November: "these are the only icons on the
+   screen"), so .st-hdbtns collapses to whatever is left in it, #sttype
+   alone, at #stmic's own corner -- and #stmic, still painted on top as a
+   positioned element, covers it. tests/collide.js caught the real
+   overlap (#sttype's own centre landing on #stmic) that every manual
+   check this round ran against the Full Dashboard only missed. #sttype
+   gets the same absolute escape, parked beside #stmic with the row's own
+   8px gap (20+44+8), not under it. */
+body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px;z-index:2}
 /* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
    past counting: "no two-way chat... just the user's input," and in the
    same round, pointed at a bordered box, "there is no box." storyui.js's
@@ -5452,7 +5466,18 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
     --panel while every other panel here, the text box, the imprints
     list, Release, already reads --sunk. :not(.lshut), because the
     folded 58px rail keeps its own small padding, untouched. */
- body.tab-story.st-full:not(.lshut) #lpanel{padding:0;background:var(--sunk)}
+ body.tab-story.st-full:not(.lshut) #lpanel{padding:0;background:var(--sunk);flex:1 1 auto;min-height:0}
+ /* THE PANEL STOPPED SHORT OF THE OTHER TWO, 14 November, found on the real
+    page while answering a different question: #lcol itself already
+    stretches to match #stage and #rcol (a plain flex child of .mid with
+    nothing stopping it), but #lpanel, ITS OWN child, never grew past its
+    six sections' own content height, so the fill the ruling above asked
+    for ran out 94px short of the bottom both neighbours actually reach,
+    on a real 1680x1020 measurement. flex:1 1 auto right above is the
+    whole fix: #lpanel is the one and only child of #lcol filling it, the
+    same shape .st-lrail (next rule) already uses one level down to fill
+    #lpanel. His words apply here exactly as they did to the first pass:
+    "everything should be symmetrical, fill and filled in." */
  body.tab-story.st-full .st-lrail{flex:1 0 auto;border:0;border-radius:0}
  body.tab-story.st-full .mid{column-gap:0}
  body.tab-story.st-full #lpanel{border-right:0;border-radius:var(--r) 0 0 var(--r)}
@@ -96942,5 +96967,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006472219"></div>
+<div id="eof" hidden data-len="006474032"></div>
 </body></html>
