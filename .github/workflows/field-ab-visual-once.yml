@@ -1,0 +1,68 @@
+name: one-time Field A and B visual comparison evidence (draft branch only)
+on:
+  push:
+    branches:
+      - lookdev/p0-execution-20261014
+    paths:
+      - .github/workflows/field-ab-visual-once.yml
+permissions:
+  contents: read
+jobs:
+  capture-field-ab:
+    if: contains(github.event.head_commit.message, '[run-field-ab-visual]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: lookdev/p0-execution-20261014
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: install Playwright and Chromium
+        run: |
+          npm install --prefix /tmp/field-ab-pw playwright@1.56.1
+          /tmp/field-ab-pw/node_modules/.bin/playwright install --with-deps chromium
+      - name: capture matched viewport and full-page evidence
+        env:
+          NODE_PATH: /tmp/field-ab-pw/node_modules
+        run: |
+          set -euo pipefail
+          mkdir -p field-ab-visual-evidence
+          printf 'commit=%s\nbranch=%s\nrun_id=%s\n' "$GITHUB_SHA" "$GITHUB_REF_NAME" "$GITHUB_RUN_ID" > field-ab-visual-evidence/provenance.txt
+          sha256sum proto/field-a/index.html proto/field-b/index.html engine.js funnel/tokens.css > field-ab-visual-evidence/source-sha256.txt
+          node - <<'NODE'
+          const {chromium}=require('playwright');
+          const fs=require('fs'),path=require('path');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const report={sourceCommit:process.env.GITHUB_SHA,viewports:[],pages:[]};
+            for(const field of ['field-a','field-b']) for(const v of [{width:1600,height:1000},{width:390,height:844}]) {
+              const context=await browser.newContext({viewport:v,deviceScaleFactor:1,reducedMotion:'reduce'});
+              const page=await context.newPage(); const errors=[],requests=[];
+              page.on('pageerror',e=>errors.push(e.message));
+              page.on('console',m=>{if(m.type()==='error') errors.push(m.text())});
+              page.on('request',r=>requests.push(r.url()));
+              const target=path.resolve('proto',field,'index.html');
+              await page.goto('file://'+target,{waitUntil:'load'}); await page.waitForTimeout(350);
+              const state=await page.evaluate(()=>({title:document.title,viewportWidth:innerWidth,documentWidth:document.documentElement.scrollWidth,bodyWidth:document.body.scrollWidth,scrollHeight:document.documentElement.scrollHeight,h1:document.querySelector('h1')?.innerText||'',buttons:[...document.querySelectorAll('button')].map(b=>({text:b.innerText,pressed:b.getAttribute('aria-pressed'),disabled:b.disabled})),selects:[...document.querySelectorAll('select')].map(s=>({label:s.getAttribute('aria-label')||s.labels?.[0]?.innerText||'',value:s.value,options:[...s.options].map(o=>o.text)}))}));
+              const stem=field+'-'+v.width;
+              await page.screenshot({path:'field-ab-visual-evidence/'+stem+'-viewport.png'});
+              await page.screenshot({path:'field-ab-visual-evidence/'+stem+'-full.png',fullPage:true});
+              report.pages.push({field,viewport:v,state,errors,externalRequests:requests.filter(u=>!u.startsWith('file:')&&!u.startsWith('data:')&&!u.startsWith('blob:'))});
+              await context.close();
+            }
+            await browser.close();
+            fs.writeFileSync('field-ab-visual-evidence/report.json',JSON.stringify(report,null,2)+'\n');
+            console.log(JSON.stringify(report.pages.map(p=>({field:p.field,width:p.viewport.width,title:p.state.title,viewportWidth:p.state.viewportWidth,documentWidth:p.state.documentWidth,scrollHeight:p.state.scrollHeight,errors:p.errors.length,externalRequests:p.externalRequests.length})),null,2));
+            if(report.pages.some(p=>p.errors.length||p.externalRequests.length)) process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: field-a-b-visual-comparison
+          path: field-ab-visual-evidence/
+          if-no-files-found: error

@@ -1,0 +1,61 @@
+name: one-time Field B repeatability measurement (draft branch only)
+on:
+  push:
+    branches:
+      - lookdev/p0-execution-20261014
+    paths:
+      - .github/workflows/field-b-repeat-once.yml
+permissions:
+  contents: read
+jobs:
+  repeat-field-b:
+    if: contains(github.event.head_commit.message, '[run-field-b-repeat]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: lookdev/p0-execution-20261014
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: install Playwright and Chromium
+        run: |
+          npm install --prefix /tmp/field-b-pw playwright@1.56.1
+          /tmp/field-b-pw/node_modules/.bin/playwright install --with-deps chromium
+          mkdir -p /opt/pw-browsers/chromium-1194/chrome-linux
+          ln -sf "$HOME/.cache/ms-playwright/chromium-1194/chrome-linux/chrome" /opt/pw-browsers/chromium-1194/chrome-linux/chrome
+      - name: run three independent Field B measurements
+        env:
+          NODE_PATH: /tmp/field-b-pw/node_modules
+        run: |
+          set -euo pipefail
+          mkdir -p field-b-repeat-evidence
+          printf 'commit=%s\nbranch=%s\nrun_id=%s\n' "$GITHUB_SHA" "$GITHUB_REF_NAME" "$GITHUB_RUN_ID" > field-b-repeat-evidence/provenance.txt
+          sha256sum proto/field-b/index.html engine.js funnel/tokens.css proto/field-b/shoot.js > field-b-repeat-evidence/source-sha256.txt
+          for n in 1 2 3; do
+            mkdir -p "field-b-repeat-evidence/run-$n"
+            NODE_PATH=/tmp/field-b-pw/node_modules node proto/field-b/shoot.js > "field-b-repeat-evidence/run-$n/stdout.log" 2>&1
+            cp proto/field-b/cost.json "field-b-repeat-evidence/run-$n/cost.json"
+            cp proto/field-b/requests.log "field-b-repeat-evidence/run-$n/requests.log"
+            sha256sum proto/field-b/cost.json proto/field-b/requests.log > "field-b-repeat-evidence/run-$n/output-sha256.txt"
+          done
+          node -e '
+            const fs=require("fs");
+            const runs=[1,2,3].map(n=>({run:n,cost:JSON.parse(fs.readFileSync("field-b-repeat-evidence/run-"+n+"/cost.json","utf8"))}));
+            const rows=[];
+            for(const r of runs) for(const key of ["shut-1600","open-1600","gordon-1600","shut-390","open-390","gordon-390"]) {
+              for(const x of r.cost[key]||[]) rows.push({run:r.run,condition:key,profile:x.nm,gapWorstMs:Number(x.gapWorst.toFixed(2)),over17_5ms:x.over,gaps:x.gaps,meanMs:Number(x.mean.toFixed(2)),worstMs:Number(x.worst.toFixed(2))});
+            }
+            const target=rows.filter(x=>x.condition==="gordon-1600"&&x.profile==="Strata");
+            fs.writeFileSync("field-b-repeat-evidence/summary.json",JSON.stringify({sourceCommit:process.env.GITHUB_SHA,thresholdMs:17.5,runs:3,target,targetRepeatability:target.length===3?target.every(x=>x.over>0):null,allRows:rows},null,2)+"\n");
+            console.log(JSON.stringify({target},null,2));
+          '
+      - name: upload repeatability evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: field-b-repeatability-evidence
+          path: field-b-repeat-evidence/
+          if-no-files-found: error
