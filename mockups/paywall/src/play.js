@@ -1,0 +1,53 @@
+/* Presses each mockup the way a person would and checks it answers. Run from the repo root under the browser lock:
+   flock -o -w 3000 /tmp/atuned-browser.lock env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node mockups/paywall/src/play.js */
+const {chromium}=require('playwright');const D='file://'+require('path').resolve(__dirname,'..')+'/';
+(async()=>{const b=await chromium.launch();let bad=0;const ok=(c,m)=>{console.log((c?'ok  ':'BAD ')+m);if(!c)bad++;};
+const pg=await b.newPage({viewport:{width:1600,height:1000}});pg.on('pageerror',e=>{bad++;console.log('ERR',e.message)});
+await pg.goto(D+'p2-icon-grid.html?s=open&t=sab');
+ok((await pg.textContent('.go'))==='Start tier one, $12 a month','p2 door picks tier one for saboteurs');
+await pg.click('.chip[data-t="three"]');ok((await pg.textContent('.go'))==='Start tier three, $59 a month','p2 button follows the picked card');
+ok(await pg.$$eval('.cell.opens',e=>e.length)===6,'p2 tier three fills all six marks');
+await pg.goto(D+'p2-icon-grid.html?s=open&t=none');ok(!(await pg.$('.go'))&&(await pg.textContent('.pickline'))==='Pick a tier','p2 from Billing picks nothing and has no dead button');
+await pg.goto(D+'p2-icon-grid.html?s=out&t=cx');await pg.click('.go');ok(!!(await pg.$('.acct')),'p2 signed out: account step inside the panel');
+await pg.click('[data-act=acctswap]');ok((await pg.textContent('.acct .go'))==='Sign in and pay','p2 account swap to sign in');
+await pg.goto(D+'p3-figure-leads.html?s=open&t=sab');await pg.hover('.seg[data-pv="two"]');
+ok(await pg.$$eval('circle.rg.fill',e=>e.length)===2,'p3 pointing at tier two fills two rings');
+await pg.goto(D+'p4-one-plan.html?s=open&t=hy');ok((await pg.textContent('.go'))==='Start tier three, $59 a month','p4 hyper complexes door is tier three');
+await pg.click('.more');ok(await pg.$$eval('.rows .row',e=>e.length)===3,'p4 see all plans opens three rows');
+await pg.click('.row[data-t="two"]');ok((await pg.textContent('.go'))==='Start tier two, $29 a month','p4 pick in the list moves the button');
+await pg.goto(D+'p1-three-flat-cards.html?s=one&t=cx');await pg.click('[data-act=stop]');await pg.waitForLoadState();
+ok(pg.url().includes('s=stop'),'p1 foot Stop or change plan opens the stop screen, one press');
+await pg.click('[data-act=stopgo]');ok((await pg.textContent('h1')).startsWith('Tier one stops on'),'stop screen: second press stops');
+await pg.goto(D+'p1-three-flat-cards.html?s=closed');ok(!(await pg.$('.card button')),'p1 closed: no card has a press');
+await pg.click('#dtog');ok(await pg.isVisible('#drawer'),'demo drawer opens');
+await pg.goto(D+'p2-icon-grid.html?ph=1&s=open');const fr=await pg.$('iframe');const box=await fr.boundingBox();ok(Math.round(box.width)===390&&Math.round(box.height)===844,'phone view frames 390 by 844');
+await pg.goto(D+'p2-icon-grid.html?s=gift');ok(!(await pg.$('.lk'))&&!(await pg.$('.num')),'gift: no padlock and no price');
+
+/* ---- p5, flat cards second cut: the rings speak on hover, focus and tap ---- */
+const P5=D+'p5-flat-cards-v2.html';
+await pg.goto(P5+'?s=open&t=cx');
+ok(await pg.$$eval('.rg5.came',e=>e.length)===3&&await pg.$$eval('.rg5.came',e=>e.every(x=>x.dataset.k==='cx')),'p5 the touched ring (complexes) is pre-marked on all three cards');
+ok((await pg.getAttribute('.c5.door','data-pt'))==='two'&&(await pg.$$eval('.c5 .go:not(.quiet)',e=>e.length))===1,'p5 the door card is tier two, the one solid button');
+ok(await pg.$$eval('.c5',cs=>cs.map(c=>c.querySelectorAll('.rg5.on').length).join(','))==='1,2,6','p5 tiers light 1, 2 and 6 rings');
+await pg.hover('.c5[data-pt="one"] .rg5[data-k="hy"]');
+ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5 b'))==='Hyper complexes'&&(await pg.textContent('.tip5 .m'))==='Complexes running together.'&&(await pg.textContent('.tip5 .tl'))==='Opens at tier three','p5 hover a locked ring: name, meaning, the tier that opens it');
+await pg.mouse.move(5,500);await pg.waitForTimeout(50);ok(!(await pg.isVisible('.tip5.on')),'p5 the tooltip leaves with the pointer');
+await pg.focus('.c5[data-pt="two"] .rg5[data-k="mask"]');ok((await pg.textContent('.tip5 b'))==='Masks'&&(await pg.textContent('.tip5 .tl'))==='Opens at tier three','p5 keyboard focus on a ring shows its tooltip');
+await pg.focus('.c5[data-pt="two"] .rg5[data-k="sab"]');await pg.keyboard.press('Tab');ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5 b'))==='Complexes','p5 Tab to the next ring moves the tooltip with it');
+await pg.keyboard.press('Escape');ok(!(await pg.isVisible('.tip5.on')),'p5 Esc closes the tooltip');
+await pg.focus('.c5[data-pt="three"] .hl');ok((await pg.textContent('.tip5'))===(await pg.textContent('#ptthree'))&&(await pg.textContent('.tip5')).includes('1,200 new ones every month'),'p5 the number carries its meaning on focus, 1,200 on tier three');
+ok(await pg.$eval('.c5[data-pt="one"] .rg5[data-k="sab"]',e=>document.getElementById(e.getAttribute('aria-describedby')).textContent)==='Habits that run on your charge. Opens at tier one.','p5 a screen reader gets the meaning and the tier too');
+await pg.goto(P5+'?s=closed&t=sab');ok(!(await pg.$('.c5 button.go'))&&(await pg.$$eval('.c5 .shut',e=>e.length))===3,'p5 closed: three "Opens soon", no card can be pressed to pay');
+ok(!(await pg.$('.pr5 [data-act="buy"]'))&&(await pg.textContent('.pr5 .shut'))==='Opens soon','p5 Practitioner cannot be bought and says so');
+await pg.goto(P5+'?s=one&t=cx');ok((await pg.textContent('.c5[data-pt="one"] .act'))==='You are here'&&!(await pg.$('.hd5 .herechip')),'p5 on tier one: the marker moves onto its card');
+await pg.click('[data-act=stop]');await pg.waitForLoadState();await pg.click('[data-act=stopgo]');ok((await pg.textContent('h1')).startsWith('Tier one stops on'),'p5 stop in two presses from the foot');
+await pg.goto(P5+'?s=out&t=sab');await pg.click('.c5[data-pt="one"] .go');ok(!!(await pg.$('.step5 .acct'))&&(await pg.textContent('.step5 .c5 .cn'))==='Tier one','p5 signed out: the account step is inside the panel, with the card chosen');
+await pg.goto(P5+'?s=gift');ok(!(await pg.$('.lk'))&&!(await pg.$('.num'))&&(await pg.$$eval('.rg5.on',e=>e.length))===6,'p5 gift: six rings lit, no padlock, no price');
+const ph=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:2,hasTouch:true});ph.on('pageerror',e=>{bad++;console.log('ERR',e.message)});
+await ph.goto(P5+'?s=open&t=sab');await ph.tap('.c5[data-pt="one"] .rg5[data-k="cx"]');
+ok(await ph.isVisible('.tip5.on')&&(await ph.textContent('.tip5 .tl'))==='Opens at tier two','p5 phone: a tap on a ring opens its tooltip');
+const tb=await ph.$eval('.tip5',e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0;});ok(tb,'p5 phone: the tooltip stays on screen');
+await ph.tap('.c5[data-pt="one"] .rg5[data-k="cx"]');ok(!(await ph.isVisible('.tip5.on')),'p5 phone: a second tap closes it');
+await ph.tap('.c5[data-pt="two"] .rg5[data-k="reg"]');await ph.tap('.hd5 .t1');ok(!(await ph.isVisible('.tip5.on')),'p5 phone: a tap anywhere else closes it');
+await ph.close();
+await b.close();console.log(bad?bad+' problems':'all played');process.exit(bad?1:0);})();
