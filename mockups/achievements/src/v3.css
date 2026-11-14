@@ -1,0 +1,35 @@
+/* V3, field */
+.v3{max-width:1520px;margin:0 auto;padding:20px 32px 64px}
+.v3g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,820px) minmax(0,1fr);gap:24px}
+.v3l{display:flex;flex-direction:column;justify-content:space-between;gap:32px;max-width:330px;padding:24px 0 40px}
+.v3r{display:flex;flex-direction:column;justify-content:flex-end;gap:16px;max-width:330px;justify-self:end;padding:24px 0 40px}
+.v3r>.small{margin:0}
+.v3r .turnk{margin:0}
+.fstage{position:relative;display:flex;justify-content:center}
+.fstage canvas{position:absolute;left:50%;top:0;transform:translateX(-50%)}
+.fstage .stagesvg{position:relative;display:block;overflow:visible}
+.v3 .bodysvg .fig{fill:none;stroke-opacity:.7}
+.hz1 .fig{font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+.hz1 .fig small{font-size:15px;font-weight:400;color:var(--mid);letter-spacing:0}
+.hz1 p{margin:6px 0 0;font-size:13px;color:var(--mid)}
+.hz1 .wf{color:var(--dim)}
+.hz1 p.small{color:var(--dim);margin-top:12px}
+.fold{margin:8px 0 0;border-top:1px solid var(--edge)}
+.fold summary{display:flex;align-items:center;gap:12px;min-height:56px;cursor:pointer;list-style:none;font-size:15px;font-weight:500}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary:before{content:"";width:7px;height:7px;border-right:1.5px solid var(--mid);border-bottom:1.5px solid var(--mid);transform:rotate(-45deg);transition:transform .2s;margin:0 4px}
+.fold[open] summary:before{transform:rotate(45deg)}
+.fold summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.v3 .ledger{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:4px 0 8px}
+@media (max-width:1400px){.v3 .ledger{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.v3 .ledger .buy{grid-column:1/-1;padding:12px 4px}
+@media (max-width:700px){
+ .v3{padding:12px 16px 48px}
+ .v3g{display:flex;flex-direction:column;gap:12px}
+ .v3l{display:contents}
+ .v3h{order:1}
+ .fstage{order:2;margin:0 -16px}
+ .v3l .hz1{order:3}
+ .v3r{order:4;padding:0;max-width:none;justify-self:auto}
+ .v3 .ledger{grid-template-columns:1fr}
+}
