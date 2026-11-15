@@ -2245,10 +2245,13 @@ BREAKS = [
     ('a workflow concurrency that cancels', lambda d: d.__setitem__('concurrency', {'group': 'x', 'cancel-in-progress': True})),
     ('chromium pointed at after the gate', lambda d: _job(d, 'gates-browser')['steps'].append(_job(d, 'gates-browser')['steps'].pop(4))),
     ('a browser gate dropped from the matrix', lambda d: _legs(d, 'gates-browser').pop(0)),
-    # a report leg dropped by name, the record gate, which ran nowhere in CI for
-    # one pull request because its matrix line and this table disagreed
-    ('the record gate dropped from gates-report', lambda d: _legs(d, 'gates-report').remove(
-        [l for l in _legs(d, 'gates-report') if l.get('gate') == 'record'][0])),
+    # a report leg dropped by name, which ran nowhere in CI for one pull
+    # request because its matrix line and this table disagreed. copy is one
+    # of gates-report's permanent legs (no "report only" comment above it,
+    # unlike a gate still waiting on its three green runs), so promoting a
+    # report-only gate to gates-browser, 15 November, never empties this one.
+    ('the copy gate dropped from gates-report', lambda d: _legs(d, 'gates-report').remove(
+        [l for l in _legs(d, 'gates-report') if l.get('gate') == 'copy'][0])),
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the deploy job builds BUILD.sh first', lambda d: _sub(d, 'deploy', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
