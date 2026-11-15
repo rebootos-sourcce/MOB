@@ -7023,7 +7023,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const mid=r=>r.top+r.height/2;
   const rows=[...d.querySelectorAll('.rbar,.rb2')].filter(e=>e.offsetParent), rr=rows.map(e=>e.getBoundingClientRect());
   const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
-  const R=compute(), f=flSpeed();
+  const R=compute(), f=R.flow;
   /* NAMED CHANGE, percent phase 2 slice 1, 17 October: each bar fills
      pct(kind, value), the whole percent its figure prints (engine/pct.js),
      so the fill and the colour ramp are read off that and not off the raw

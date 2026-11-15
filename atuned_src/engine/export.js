@@ -28,7 +28,7 @@ if(typeof module!=='undefined'&&module.exports){
                  evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
-                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
@@ -143,7 +143,7 @@ if(typeof module!=='undefined'&&module.exports){
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
                   lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
-                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
+                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL, SEAT_LOADED:SEAT_LOADED,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,

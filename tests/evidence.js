@@ -12,7 +12,8 @@ let P=0,F=0;
 const g=n=>console.log('\n'+n);
 const ok=(c,m)=>{if(c)P++;else{F++;console.log('  FAIL  '+m);}};
 const {evLedger,evVerdict,evVerdictOk,evTraceSrc,evCan,srcVet,srcVetSay,srcChoose,srcFamilyCands,srcIntent,
- EV_STATES,EV_PERSON,EV_ENGINE,EV_NAMEABLE,EV_MOVES,SRC_FAMILY,parseStory,marksOf,srcHear,srcPrior}=E;
+ EV_STATES,EV_PERSON,EV_ENGINE,EV_NAMEABLE,EV_MOVES,SRC_FAMILY,parseStory,marksOf,srcHear,srcPrior,
+ srcOutputV1Candidate,EV_PLACEABLE}=E;
 const LINES=[].concat(...Object.keys(STORYBANK).map(k=>STORYBANK[k].map(x=>x[1])));
 const PAIRS=[];
 Object.keys(STORYBANK).forEach(k=>{const l=STORYBANK[k].map(x=>x[1]);
@@ -365,6 +366,29 @@ g('SK3 · the package\'s thirty vectors, run against this engine: what holds, an
     sniffDeny already voids a plain no. */
  ok(none('angry_temporal'),'angry_temporal, do_not_assume_current: "used to be angry, but not anymore" is no longer a live candidate');
  ok(none('angry_hypothetical'),'angry_hypothetical, do_not_score: "If I got angry, I would leave" is no longer scored');}
+
+g('SK11 and SK12 · srcOutputV1Candidate, the package\'s one candidate shape, read only');
+{const L=evLedger('I felt angry at him. I also felt calm about the rest.',[],{});
+ const solar=L.claims.solar, cand=srcOutputV1Candidate(solar,L);
+ ok(cand.confidence===null,'SK11: confidence is null, never a fixed number dressed as a probability, got '+cand.confidence);
+ ok(Array.isArray(cand.coherent_evidence)&&Array.isArray(cand.shadow_evidence),'SK12: both kept, as two real arrays, never one minus the other');
+ ok(cand.shadow_evidence.length===1&&cand.shadow_evidence[0]==='w0:angry','shadow_evidence cites this claim\'s own charge mark, got '+JSON.stringify(cand.shadow_evidence));
+ ok(cand.coherent_evidence.length===1&&cand.coherent_evidence[0]==='w1:calm','coherent_evidence carries the entry\'s coherent mark, got '+JSON.stringify(cand.coherent_evidence));
+ ok(cand.state===solar.seam,'state is the ledger\'s own seam word, never a second vocabulary, got '+cand.state+' for seam '+solar.seam);
+ ok(cand.id==='candidate-seat:solar'&&typeof cand.concept==='string'&&cand.concept.length>0,'id and concept are both real, got '+cand.id+' / '+cand.concept);
+ ok(Array.isArray(cand.alternatives)&&cand.alternatives.length===0,'alternatives is honestly empty, SK3 not built, never a guess');
+ ok(Array.isArray(cand.law_candidate_ids)&&cand.law_candidate_ids.length===0,'law_candidate_ids is honestly empty, nothing here maps a claim to a law id');
+ ok(cand.chakra_candidates.length===0,'CHAKRA_CANDIDATES, SK8\'s own rule: a bare candidate names no place, got '+JSON.stringify(cand.chakra_candidates));}
+{const Lc=evLedger('I felt angry at him.',[],{verdicts:[{seat:'solar',v:'yes'}]});
+ const confirmed=srcOutputV1Candidate(Lc.claims.solar,Lc);
+ ok(confirmed.state==='CONFIRMED'&&confirmed.chakra_candidates.length===1&&confirmed.chakra_candidates[0]===Lc.claims.solar.band,
+  'confirmed only: a place is named once the person said yes, matching EV_PLACEABLE, got '+JSON.stringify(confirmed.chakra_candidates));
+ ok(EV_PLACEABLE.indexOf('confirmed')>=0&&EV_PLACEABLE.indexOf('candidate')<0,'the gate itself is the one the rest of the product already answers to, not a new one');}
+{const Li=evLedger('',[{bands:{solar:2}}],{});
+ const inferred=Li.claims.solar;
+ ok(inferred.state==='inferred'&&!inferred.seam,'an inferred claim carries no seam word, the ledger\'s own source_delta=0 case');
+ ok(srcOutputV1Candidate(inferred,Li)===null,'and the adapter returns null for it rather than a candidate with nothing real to show, got '+JSON.stringify(srcOutputV1Candidate(inferred,Li)));
+ ok(srcOutputV1Candidate(null,Li)===null&&srcOutputV1Candidate(undefined,Li)===null,'no claim at all is also null, never a thrown error');}
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

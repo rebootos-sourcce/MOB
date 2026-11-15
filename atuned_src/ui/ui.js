@@ -1637,6 +1637,25 @@ function render(){
     incomplete intake, the engine's own guard against a shadow building
     toward false certainty, so the pair draws no mark and prints a dash
     rather than a 100 less CQ the engine refused to state. */
+ /* NOT TOUCHED THIS ROUND, 15 November, after starting to and reverting.
+    His correction ("the counter lever to CQ is DQ... the battle is CQ
+    versus DQ") reads as wanting this whole pair replaced, and a first pass
+    here did that: swapped rbPair for a single CQ bar with DQ's own pull
+    hatched into it. Stopped and reverted on finding the real size of that
+    change: rbPair's swing, drift band and ghost marks (rbPairPaint,
+    rbPairTick, RBMO below) are load-bearing, tested behaviour
+    (tests/railmenu.js alone holds seven separate blocks against
+    `.rb2[data-pair=coh]`, plus tests/golden.js and tests/pct.js), not
+    incidental markup. Removing the pair to answer one note would have
+    meant rewriting or dropping all of that in the same pass, which is a
+    bigger call than this round's own scope. What is real and checked
+    (systems-director's pass, same round): CQ and DQ are still two
+    unrelated inputs with no battle the engine computes between them; the
+    real, already-computed contest is EX=CQ*(1-PULL), compute.js:622,
+    never shown anywhere. The honest fix is still open: either teach this
+    pair to show CQ against EX/PULL instead of against Shadow, or add a
+    second, connected reading beside it, both real engineering, neither
+    done here. Flagged rather than guessed into a half answer. */
  (function(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
   var read=!r.unread&&r.lawSQ!==null&&r.lawSQ!==undefined;
@@ -1665,8 +1684,21 @@ function render(){
     lighting. Radiance and flow were not given an element, so they keep the
     ramp by their figure, round OG, until he gives them one. */
  (function(){
-  var f=flSpeed(), lo=$('keylo'); if(!lo)return;
+  /* FLOW, OFF r.seats NOW, 15 November, not flSpeed(): r.flow is the same
+     product (a product is the same number in any order), ported in
+     compute.js's seatRows() beside pass/held so this row reads the one
+     canonical table rather than a second copy of its own arithmetic. */
+  var f=r.unread?0:r.flow, lo=$('keylo'); if(!lo)return;
   var nr=r.unread?' Not read yet.':'';
+  var seatPass=rbSeatPass(r.seats), seatHeld=rbSeatHeld(r.seats), seatNames=rbSeatNames();
+  /* THE WORST CHOKE, NAMED, 15 November, his words: "I don't understand
+     what that is trying to tell me" of a bare "3%". rbBlock already finds
+     the held seat passing least; this just says it in words instead of
+     leaving it to a hover. */
+  var blockAt=r.unread?-1:rbBlock(seatPass,seatHeld);
+  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each seat holding '
+   +'charge lets less through, and the losses multiply.'
+   +(blockAt>=0?(' '+seatNames[blockAt]+' lets the least through right now, '+fmtPct('flow',seatPass[blockAt],{})+'.'):''));
   /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent
      phase 2: they filled X*100 and printed X.toFixed(2), so vitality was drawn
      as 17 and read as 0.17. One figure now, the registry's. */
@@ -1690,8 +1722,8 @@ function render(){
   +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
     {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
-    {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:rbSeatPass(),held:rbSeatHeld(),names:rbSeatNames(),
-     title:rbSay('Flow')+(r.unread?nr:' Seven cells run root to crown. The colour in each is what that seat passes on and the hatching is what it holds back. A seat is blocked when it is holding charge and passes on the least of the seats that are, and it is ringed.')});})();
+    {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:seatPass,held:seatHeld,names:seatNames,
+     title:rbSay('Flow')+flowCopy});})();
  /* THE TWO FAMILY HEADS carry their sentence from the meaning table, the
     same way every word on the rail does, so the tooltip, the spoken name and
     the gate read one sentence (body.html says why they are there) */

@@ -228,6 +228,73 @@ function evLedger(text,entries,o){
  out.root=evRoot(out.claims);
  out.dims=dims;
  return out;}
+/* ============================================================
+   SK11 AND SK12, together, read only. The seam package's third JSON
+   Schema (examples/source_output_example.json, contract_version
+   "source.output.v1") names one candidate shape: id, concept, state,
+   supporting_evidence, alternatives, confidence, coherent_evidence,
+   shadow_evidence, chakra_candidates, law_candidate_ids. TASKS.md
+   named two gaps in it, SK11 (confidence has no calibration source)
+   and SK12 (coherent and shadow evidence are not kept independently);
+   both are fields of the one candidate shape below, so one function
+   closes both rather than two half answers.
+
+   SCOPED TO THE CANDIDATE ALONE, NOT THE ENVELOPE. The full contract
+   also carries response, uncertainties, proposals and write_policy,
+   and round SK's own scope line is explicit: "no Bank, Graph, Release
+   or CQ adapter" this round (09_NEXT_AI_IMPLEMENTATION_RUNBOOK.md,
+   step 7: "Develop adapters in narrow separately reviewed change
+   sets"). Those four fields decide what Source AI says and whether
+   anything is written, which is the next, separately authorized pass,
+   not this one. srcOutputV1Candidate maps one claim only, writes
+   nothing, and is never called by anything yet: wiring it into a real
+   envelope is that later pass's first job.
+
+   CONFIDENCE, SK11. "A fixed number would be a magic number dressed
+   as a probability" (TASKS.md). Nothing in this engine is calibrated
+   against the package's 0 to 1 scale, so this is null, honestly,
+   never a number that looks measured and is not. The acceptance plan
+   itself expects this field optional (07_ACCEPTANCE_AND_TEST_PLAN.md:
+   "out-of-range optional confidence... fail"), so null is the
+   contract's own honest answer, not a workaround.
+
+   COHERENT AND SHADOW EVIDENCE, SK12. marksOf already tells the two
+   apart: a mark with a seat is charge, the shadow side, kind 'seat';
+   a mark with no seat and its own coh flag is the coherent side, kind
+   'coherent' (evLedger above). shadow_evidence is this claim's own
+   cited marks (c.ev, the w-prefixed rows only: 'e:'+seat has no text
+   to cite). coherent_evidence has no seat to key it to a claim by, so
+   it is the entry's own coherent marks, the same list on every
+   candidate from this entry: the honest answer given what the engine
+   actually computes, not a per-claim correlation nothing here measures.
+
+   CHAKRA_CANDIDATES gates on EV_PLACEABLE, the same gate srcWhy and
+   the bubble's own seat colour answer to elsewhere (confirmed or
+   corrected only): the package's own words, "Do not map to a chakra
+   as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
+   are both empty: nothing in this engine maps a claim to a specific
+   law id, and the alternative-reading extractor is SK3, the largest
+   named gap, not built. Empty here is the honest state of what is not
+   built yet, not a placeholder standing in for a guess. */
+function srcOutputV1Candidate(c,out){
+ if(!c||!c.seam)return null;
+ var ev=(out&&out.ev)||[];
+ var byId={}; ev.forEach(function(r){byId[r.id]=r;});
+ var shadow=(c.ev||[]).filter(function(id){return byId[id]&&byId[id].text;});
+ var coherent=ev.filter(function(r){return r.kind==='coherent';}).map(function(r){return r.id;});
+ var cite=function(ids){return ids.map(function(id){var r=byId[id];
+  return r&&r.text?id+':'+r.text:id;});};
+ return {
+  id:'candidate-'+c.key,
+  concept:(c.words&&c.words.length?c.words[0]:c.seat.toLowerCase())+' at the '+c.seat.toLowerCase(),
+  state:c.seam,
+  supporting_evidence:cite(shadow),
+  alternatives:[],
+  confidence:null,
+  coherent_evidence:cite(coherent),
+  shadow_evidence:cite(shadow),
+  chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
+  law_candidate_ids:[]};}
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};

@@ -10067,6 +10067,11 @@ function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0
    0 this is leverPull to the bit: v minus 0 is v, and leverPull(10) is
    exactly 1. tests/engine.js 36b holds the bit. */
 function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
+/* the load an address must carry before a seat counts it as blocking its own
+   Flow. Matches ui/map.js's own LOADED, which this file cannot read (ui/
+   loads after engine/, per MANIFEST): named here so the two stay the same
+   number on purpose, not by coincidence. */
+const SEAT_LOADED=4;
 /* ============================================================
    THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
    of over the whole body: the seat's addresses' SQ summed, over ten times
@@ -10080,7 +10085,22 @@ function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
    seat nobody has answered for would still print a confident place on the
    Compass and swell the torus on the strength of a guess nobody gave. So
    seatRows takes the mean of lawNow over only the laws this seat has
-   answered, and null when it has none. Null is an answer, not a zero. */
+   answered, and null when it has none. Null is an answer, not a zero.
+
+   PASS AND EX, PORTED FROM ui/map.js's flSeats, 15 November, his own words:
+   "I should be able to select root, sacral, all those individually." pass is
+   flSeats' own arithmetic, moved here so this is the one place a seat's Flow
+   reading is worked out rather than a second copy that can drift from this
+   one: seatRows().weight (every address) and flSeats().load (only the
+   addresses carrying at SEAT_LOADED or more) already disagreed on a real
+   person, Ana's 3rd Eye reading 0.28 on one and 0 on the other, because they
+   count different things under the same question, "how loaded is this
+   seat". ui/map.js's own flSeats/flSpeed are left exactly as they were for
+   their existing callers; this is a parallel, additive reading for anything
+   that wants a seat's Flow from the same object its CQ and DQ come from. ex
+   is the per-seat Expression, ig against its own bite, new and never
+   stored: what gets through at this one seat, named rather than computed
+   silently, since nothing before this kept a per-seat version of EX. */
 function seatRows(){
  return BANDS.map(function(b){
   var g=W.filter(function(n){return n.b===b;});
@@ -10089,8 +10109,16 @@ function seatRows(){
   var pull=g.length?g.reduce(function(a,n){return a+leverPullWill(n.sq,0);},0)/g.length:0;
   var laws=SI.filter(function(l){return l.b===b&&lawIn(l.nm);});
   var ig=laws.length?laws.reduce(function(a,l){return a+lawNow(l.nm);},0)/laws.length/10:null;
+  var hot=g.filter(function(n){return n.sq>=SEAT_LOADED;});
+  var load=g.length?hot.reduce(function(a,n){return a+n.sq;},0)/g.length/10:0;
+  var pass=Math.max(0,1-load*1.35);
+  /* held, flSeats' own rule, ported beside pass rather than left as the one
+     figure still read off its old copy: at least two of the seat's
+     addresses, and at least 28 percent of them, carrying. */
+  var held=hot.length>=Math.max(2,g.length*0.28);
   return {seat:b, n:g.length, weight:weight, over:over,
-   open:clamp(1-weight,0,1), pull:pull, ig:ig};});}
+   open:clamp(1-weight,0,1), pull:pull, ig:ig, pass:pass, held:held,
+   ex:ig==null?null:ig*(1-pull)};});}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -10616,9 +10644,16 @@ function compute(){
     says, so the arithmetic core keeps its bodies, and the action surfaces get
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
+ /* FLOW, as a whole-body number: the seven seats' pass values multiplied
+    together, root through crown, exactly ui/map.js's own flSpeed (a product
+    is the same number in any order, so seats:seatRows() above, in BANDS'
+    root-to-crown order, needs no reversing to match it). Ported the same
+    round as seats[].pass, for the same reason: one canonical reading. */
+ const seatsRow=seatRows();
+ const flow=seatsRow.reduce((a,s)=>a*s.pass,1);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,psychopathy,maskRing,DQ,lawSQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,seats:seatsRow,flow,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -22149,6 +22184,73 @@ function evLedger(text,entries,o){
  out.root=evRoot(out.claims);
  out.dims=dims;
  return out;}
+/* ============================================================
+   SK11 AND SK12, together, read only. The seam package's third JSON
+   Schema (examples/source_output_example.json, contract_version
+   "source.output.v1") names one candidate shape: id, concept, state,
+   supporting_evidence, alternatives, confidence, coherent_evidence,
+   shadow_evidence, chakra_candidates, law_candidate_ids. TASKS.md
+   named two gaps in it, SK11 (confidence has no calibration source)
+   and SK12 (coherent and shadow evidence are not kept independently);
+   both are fields of the one candidate shape below, so one function
+   closes both rather than two half answers.
+
+   SCOPED TO THE CANDIDATE ALONE, NOT THE ENVELOPE. The full contract
+   also carries response, uncertainties, proposals and write_policy,
+   and round SK's own scope line is explicit: "no Bank, Graph, Release
+   or CQ adapter" this round (09_NEXT_AI_IMPLEMENTATION_RUNBOOK.md,
+   step 7: "Develop adapters in narrow separately reviewed change
+   sets"). Those four fields decide what Source AI says and whether
+   anything is written, which is the next, separately authorized pass,
+   not this one. srcOutputV1Candidate maps one claim only, writes
+   nothing, and is never called by anything yet: wiring it into a real
+   envelope is that later pass's first job.
+
+   CONFIDENCE, SK11. "A fixed number would be a magic number dressed
+   as a probability" (TASKS.md). Nothing in this engine is calibrated
+   against the package's 0 to 1 scale, so this is null, honestly,
+   never a number that looks measured and is not. The acceptance plan
+   itself expects this field optional (07_ACCEPTANCE_AND_TEST_PLAN.md:
+   "out-of-range optional confidence... fail"), so null is the
+   contract's own honest answer, not a workaround.
+
+   COHERENT AND SHADOW EVIDENCE, SK12. marksOf already tells the two
+   apart: a mark with a seat is charge, the shadow side, kind 'seat';
+   a mark with no seat and its own coh flag is the coherent side, kind
+   'coherent' (evLedger above). shadow_evidence is this claim's own
+   cited marks (c.ev, the w-prefixed rows only: 'e:'+seat has no text
+   to cite). coherent_evidence has no seat to key it to a claim by, so
+   it is the entry's own coherent marks, the same list on every
+   candidate from this entry: the honest answer given what the engine
+   actually computes, not a per-claim correlation nothing here measures.
+
+   CHAKRA_CANDIDATES gates on EV_PLACEABLE, the same gate srcWhy and
+   the bubble's own seat colour answer to elsewhere (confirmed or
+   corrected only): the package's own words, "Do not map to a chakra
+   as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
+   are both empty: nothing in this engine maps a claim to a specific
+   law id, and the alternative-reading extractor is SK3, the largest
+   named gap, not built. Empty here is the honest state of what is not
+   built yet, not a placeholder standing in for a guess. */
+function srcOutputV1Candidate(c,out){
+ if(!c||!c.seam)return null;
+ var ev=(out&&out.ev)||[];
+ var byId={}; ev.forEach(function(r){byId[r.id]=r;});
+ var shadow=(c.ev||[]).filter(function(id){return byId[id]&&byId[id].text;});
+ var coherent=ev.filter(function(r){return r.kind==='coherent';}).map(function(r){return r.id;});
+ var cite=function(ids){return ids.map(function(id){var r=byId[id];
+  return r&&r.text?id+':'+r.text:id;});};
+ return {
+  id:'candidate-'+c.key,
+  concept:(c.words&&c.words.length?c.words[0]:c.seat.toLowerCase())+' at the '+c.seat.toLowerCase(),
+  state:c.seam,
+  supporting_evidence:cite(shadow),
+  alternatives:[],
+  confidence:null,
+  coherent_evidence:cite(coherent),
+  shadow_evidence:cite(shadow),
+  chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
+  law_candidate_ids:[]};}
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
@@ -26882,7 +26984,7 @@ if(typeof module!=='undefined'&&module.exports){
                  evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
-                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
@@ -26997,7 +27099,7 @@ if(typeof module!=='undefined'&&module.exports){
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
                   lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
-                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
+                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL, SEAT_LOADED:SEAT_LOADED,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,

@@ -3964,11 +3964,19 @@ body.punch .card{border-color:transparent}
    ring, CHAINGLYPH.fet) is a tall capsule that at 15px and 1.6 reads as a
    literal zero beside its own count, "0 9". The word used to disambiguate
    it; it is gone, so the stroke has to. Checked against the screenshot
-   before trusting it. */
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;
+   before trusting it.
+
+   15 TO 18, 15 November. The stroke change above did not fix it: size was
+   the problem, not line weight (CHAINGLYPH's own comment, same date). Every
+   mark now draws on one shared 3.4-to-20.6 frame, so one size serves all
+   five; measured tab widths are 37 to 52px, so 18px still clears with room
+   either side. b's line-height is set to match the icon's own height so
+   the count sits on its centre rather than its baseline. */
+.stk-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
+.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px;
+ font-size:12px;line-height:18px}
 .stk-t.on{background:transparent;color:var(--accent);font-weight:500}
 .stk-t.on b{color:var(--accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);

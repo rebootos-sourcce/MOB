@@ -53,13 +53,27 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    the lattice/wireframe diamond below did not read as part of the same
    "ring in a ring" family sab/cx/sup use. Replaced with two concentric
    hexagons, the same nested-shell idea as sup, with angular facets so
-   Hyper still reads as its own tier rather than a smaller sup. */
+   Hyper still reads as its own tier rather than a smaller sup.
+
+   ONE SIZE FRAME, 15 November. Reproduced live at the tab's own render
+   size (15px): the first three marks measured 3.8 to 6.3px across inside
+   a 24 unit box while hy and sup already filled it to 17.2, so fet/sab/cx
+   read as loose dots and hy/sup read as real shapes, not five icons in one
+   family. His words: "give them an outline so they're more iconographic."
+   Every mark now sits on the same outer ring, 3.4 to 20.6, the one hy and
+   sup already drew, and what used to be the whole mark becomes what sits
+   inside that ring: fet an inner ring with a gap at twelve o'clock, so it
+   is not read as sup's own closed ring in a ring; sab two small rings,
+   chain links rather than a figure 8; cx three small rings in a triangle,
+   one per saboteur a complex can hold plus the room between them. hy and
+   sup are already on this frame and are unchanged. */
 const CHAINGLYPH={
- fet:'M12 7a5 5 0 110 10 5 5 0 010-10',
- sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
-  +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
- cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
-  +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
+ fet:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12.7 9.9A2.2 2.2 0 1 1 11.3 9.9',
+ sab:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
+  +'M9.8 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3M14.2 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3',
+ cx:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
+  +'M12 7.1a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8M9.8 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8'
+  +'M14.2 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8',
  hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
   +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
@@ -566,26 +580,28 @@ function rbOnHex(hex){return rbLum(hex)>.32?'#0B0D10':'#F6F4EF';}
 /* ONE WORD AND ITS SENTENCE, read off the table. A word the table has no
    sentence for says nothing rather than a guess, and the gate calls it bare. */
 function rbSay(word){return (typeof unpackOf==='function')?unpackOf(word,'rail'):'';}
-/* the seven seats' passes, root first. Pass is flSeats().pass, and Flow is
-   their product. */
-function rbSeatPass(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=x.pass;});
- return BANDS.map(function(b){return Math.max(0,Math.min(1,by[b]===undefined?1:by[b]));});}
-/* WHICH SEATS ARE HELD, root first, by flSeats' own rule and not a new one:
-   at least two of the seat's addresses, and at least 28 percent of them,
-   carrying. The r1 mockup's second round caught "blocked at Root" on a root
-   holding back 7 percent with two addresses of sixteen carrying, which is a
-   person called blocked who holds nothing there, so only a held seat can be
-   where Flow is blocked. */
-function rbSeatHeld(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=!!x.held;});
- return BANDS.map(function(b){return !!by[b];});}
-/* EACH SEAT BY FLOW'S OWN NAME for it, FLOWSEAT's n, root first: the rows
-   flSeats returns are that table's, and it calls the 3rd Eye "Brow", which
-   the meaning table already reads as the 3rd Eye. Measured 30 October at
-   1600, where a cell is 35.4 pixels: "3rd Eye" needs 36 even at 10px. */
+/* the seven seats' passes, root first, straight off r.seats (compute.js
+   seatRows, 15 November): BANDS order already, so no K2B lookup is needed
+   to line them up. Pass is seatRows().pass, and Flow is their product
+   (r.flow), the one figure read off this same table now, not a second copy
+   of its arithmetic. ui/map.js's flSeats/flSpeed stay as they were for their
+   own, separate callers. */
+function rbSeatPass(seats){
+ return (seats||[]).map(function(s){return Math.max(0,Math.min(1,s.pass));});}
+/* WHICH SEATS ARE HELD, root first, r.seats' own rule: at least two of the
+   seat's addresses, and at least 28 percent of them, carrying. The r1
+   mockup's second round caught "blocked at Root" on a root holding back 7
+   percent with two addresses of sixteen carrying, which is a person called
+   blocked who holds nothing there, so only a held seat can be where Flow is
+   blocked. */
+function rbSeatHeld(seats){return (seats||[]).map(function(s){return !!s.held;});}
+/* EACH SEAT BY FLOW'S OWN NAME for it, FLOWSEAT's n, root first: FLOWSEAT
+   calls the 3rd Eye "Brow", which the meaning table already reads as the
+   3rd Eye. Measured 30 October at 1600, where a cell is 35.4 pixels: "3rd
+   Eye" needs 36 even at 10px. This is a label lookup only, no arithmetic,
+   so it stays off r.seats and reads FLOWSEAT directly by band. */
 function rbSeatNames(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=x.p.n;});
+ FLOWSEAT.forEach(function(x){by[K2BAND[x.k]]=x.n;});
  return BANDS.map(function(b){return by[b]||b;});}
 /* the held seat that passes on the least, or -1 when no seat is held */
 function rbBlock(pass,held){var i=-1;

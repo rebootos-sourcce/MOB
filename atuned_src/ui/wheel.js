@@ -667,7 +667,12 @@ function verpArrows(cr0){
    one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
+  /* "SHADOW WEIGHT" WAS WRONG, 15 November. The wash here is DQ, the charge
+     held on the 112 addresses; Shadow (the left rail's own word) is 100
+     less CQ and carries no weight of its own. His words: "SQ is within
+     DQ... neither is Shadow's weight." One word for one quantity, so this
+     reads charge weight, DQ's own name, not Shadow's. */
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is charge weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
   tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',

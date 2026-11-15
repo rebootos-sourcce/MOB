@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v68 49e1c4d0 2026-11-15 13:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v72 79aad141 2026-11-15 15:41"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3964,11 +3964,19 @@ body.punch .card{border-color:transparent}
    ring, CHAINGLYPH.fet) is a tall capsule that at 15px and 1.6 reads as a
    literal zero beside its own count, "0 9". The word used to disambiguate
    it; it is gone, so the stroke has to. Checked against the screenshot
-   before trusting it. */
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;
+   before trusting it.
+
+   15 TO 18, 15 November. The stroke change above did not fix it: size was
+   the problem, not line weight (CHAINGLYPH's own comment, same date). Every
+   mark now draws on one shared 3.4-to-20.6 frame, so one size serves all
+   five; measured tab widths are 37 to 52px, so 18px still clears with room
+   either side. b's line-height is set to match the icon's own height so
+   the count sits on its centre rather than its baseline. */
+.stk-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
+.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px;
+ font-size:12px;line-height:18px}
 .stk-t.on{background:transparent;color:var(--accent);font-weight:500}
 .stk-t.on b{color:var(--accent)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
@@ -22320,6 +22328,11 @@ function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0
    0 this is leverPull to the bit: v minus 0 is v, and leverPull(10) is
    exactly 1. tests/engine.js 36b holds the bit. */
 function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
+/* the load an address must carry before a seat counts it as blocking its own
+   Flow. Matches ui/map.js's own LOADED, which this file cannot read (ui/
+   loads after engine/, per MANIFEST): named here so the two stay the same
+   number on purpose, not by coincidence. */
+const SEAT_LOADED=4;
 /* ============================================================
    THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
    of over the whole body: the seat's addresses' SQ summed, over ten times
@@ -22333,7 +22346,22 @@ function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
    seat nobody has answered for would still print a confident place on the
    Compass and swell the torus on the strength of a guess nobody gave. So
    seatRows takes the mean of lawNow over only the laws this seat has
-   answered, and null when it has none. Null is an answer, not a zero. */
+   answered, and null when it has none. Null is an answer, not a zero.
+
+   PASS AND EX, PORTED FROM ui/map.js's flSeats, 15 November, his own words:
+   "I should be able to select root, sacral, all those individually." pass is
+   flSeats' own arithmetic, moved here so this is the one place a seat's Flow
+   reading is worked out rather than a second copy that can drift from this
+   one: seatRows().weight (every address) and flSeats().load (only the
+   addresses carrying at SEAT_LOADED or more) already disagreed on a real
+   person, Ana's 3rd Eye reading 0.28 on one and 0 on the other, because they
+   count different things under the same question, "how loaded is this
+   seat". ui/map.js's own flSeats/flSpeed are left exactly as they were for
+   their existing callers; this is a parallel, additive reading for anything
+   that wants a seat's Flow from the same object its CQ and DQ come from. ex
+   is the per-seat Expression, ig against its own bite, new and never
+   stored: what gets through at this one seat, named rather than computed
+   silently, since nothing before this kept a per-seat version of EX. */
 function seatRows(){
  return BANDS.map(function(b){
   var g=W.filter(function(n){return n.b===b;});
@@ -22342,8 +22370,16 @@ function seatRows(){
   var pull=g.length?g.reduce(function(a,n){return a+leverPullWill(n.sq,0);},0)/g.length:0;
   var laws=SI.filter(function(l){return l.b===b&&lawIn(l.nm);});
   var ig=laws.length?laws.reduce(function(a,l){return a+lawNow(l.nm);},0)/laws.length/10:null;
+  var hot=g.filter(function(n){return n.sq>=SEAT_LOADED;});
+  var load=g.length?hot.reduce(function(a,n){return a+n.sq;},0)/g.length/10:0;
+  var pass=Math.max(0,1-load*1.35);
+  /* held, flSeats' own rule, ported beside pass rather than left as the one
+     figure still read off its old copy: at least two of the seat's
+     addresses, and at least 28 percent of them, carrying. */
+  var held=hot.length>=Math.max(2,g.length*0.28);
   return {seat:b, n:g.length, weight:weight, over:over,
-   open:clamp(1-weight,0,1), pull:pull, ig:ig};});}
+   open:clamp(1-weight,0,1), pull:pull, ig:ig, pass:pass, held:held,
+   ex:ig==null?null:ig*(1-pull)};});}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -22869,9 +22905,16 @@ function compute(){
     says, so the arithmetic core keeps its bodies, and the action surfaces get
     something true to point at. */
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
+ /* FLOW, as a whole-body number: the seven seats' pass values multiplied
+    together, root through crown, exactly ui/map.js's own flSpeed (a product
+    is the same number in any order, so seats:seatRows() above, in BANDS'
+    root-to-crown order, needs no reversing to match it). Ported the same
+    round as seats[].pass, for the same reason: one canonical reading. */
+ const seatsRow=seatRows();
+ const flow=seatsRow.reduce((a,s)=>a*s.pass,1);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,psychopathy,maskRing,DQ,lawSQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,seats:seatsRow,flow,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -34436,6 +34479,73 @@ function evLedger(text,entries,o){
  out.root=evRoot(out.claims);
  out.dims=dims;
  return out;}
+/* ============================================================
+   SK11 AND SK12, together, read only. The seam package's third JSON
+   Schema (examples/source_output_example.json, contract_version
+   "source.output.v1") names one candidate shape: id, concept, state,
+   supporting_evidence, alternatives, confidence, coherent_evidence,
+   shadow_evidence, chakra_candidates, law_candidate_ids. TASKS.md
+   named two gaps in it, SK11 (confidence has no calibration source)
+   and SK12 (coherent and shadow evidence are not kept independently);
+   both are fields of the one candidate shape below, so one function
+   closes both rather than two half answers.
+
+   SCOPED TO THE CANDIDATE ALONE, NOT THE ENVELOPE. The full contract
+   also carries response, uncertainties, proposals and write_policy,
+   and round SK's own scope line is explicit: "no Bank, Graph, Release
+   or CQ adapter" this round (09_NEXT_AI_IMPLEMENTATION_RUNBOOK.md,
+   step 7: "Develop adapters in narrow separately reviewed change
+   sets"). Those four fields decide what Source AI says and whether
+   anything is written, which is the next, separately authorized pass,
+   not this one. srcOutputV1Candidate maps one claim only, writes
+   nothing, and is never called by anything yet: wiring it into a real
+   envelope is that later pass's first job.
+
+   CONFIDENCE, SK11. "A fixed number would be a magic number dressed
+   as a probability" (TASKS.md). Nothing in this engine is calibrated
+   against the package's 0 to 1 scale, so this is null, honestly,
+   never a number that looks measured and is not. The acceptance plan
+   itself expects this field optional (07_ACCEPTANCE_AND_TEST_PLAN.md:
+   "out-of-range optional confidence... fail"), so null is the
+   contract's own honest answer, not a workaround.
+
+   COHERENT AND SHADOW EVIDENCE, SK12. marksOf already tells the two
+   apart: a mark with a seat is charge, the shadow side, kind 'seat';
+   a mark with no seat and its own coh flag is the coherent side, kind
+   'coherent' (evLedger above). shadow_evidence is this claim's own
+   cited marks (c.ev, the w-prefixed rows only: 'e:'+seat has no text
+   to cite). coherent_evidence has no seat to key it to a claim by, so
+   it is the entry's own coherent marks, the same list on every
+   candidate from this entry: the honest answer given what the engine
+   actually computes, not a per-claim correlation nothing here measures.
+
+   CHAKRA_CANDIDATES gates on EV_PLACEABLE, the same gate srcWhy and
+   the bubble's own seat colour answer to elsewhere (confirmed or
+   corrected only): the package's own words, "Do not map to a chakra
+   as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
+   are both empty: nothing in this engine maps a claim to a specific
+   law id, and the alternative-reading extractor is SK3, the largest
+   named gap, not built. Empty here is the honest state of what is not
+   built yet, not a placeholder standing in for a guess. */
+function srcOutputV1Candidate(c,out){
+ if(!c||!c.seam)return null;
+ var ev=(out&&out.ev)||[];
+ var byId={}; ev.forEach(function(r){byId[r.id]=r;});
+ var shadow=(c.ev||[]).filter(function(id){return byId[id]&&byId[id].text;});
+ var coherent=ev.filter(function(r){return r.kind==='coherent';}).map(function(r){return r.id;});
+ var cite=function(ids){return ids.map(function(id){var r=byId[id];
+  return r&&r.text?id+':'+r.text:id;});};
+ return {
+  id:'candidate-'+c.key,
+  concept:(c.words&&c.words.length?c.words[0]:c.seat.toLowerCase())+' at the '+c.seat.toLowerCase(),
+  state:c.seam,
+  supporting_evidence:cite(shadow),
+  alternatives:[],
+  confidence:null,
+  coherent_evidence:cite(coherent),
+  shadow_evidence:cite(shadow),
+  chakra_candidates:EV_PLACEABLE.indexOf(c.state)>=0?[c.band]:[],
+  law_candidate_ids:[]};}
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
@@ -39199,7 +39309,7 @@ if(typeof module!=='undefined'&&module.exports){
                  evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
-                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState,
+                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
@@ -39314,7 +39424,7 @@ if(typeof module!=='undefined'&&module.exports){
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
                   lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
-                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
+                  LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL, SEAT_LOADED:SEAT_LOADED,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
@@ -41057,13 +41167,27 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    the lattice/wireframe diamond below did not read as part of the same
    "ring in a ring" family sab/cx/sup use. Replaced with two concentric
    hexagons, the same nested-shell idea as sup, with angular facets so
-   Hyper still reads as its own tier rather than a smaller sup. */
+   Hyper still reads as its own tier rather than a smaller sup.
+
+   ONE SIZE FRAME, 15 November. Reproduced live at the tab's own render
+   size (15px): the first three marks measured 3.8 to 6.3px across inside
+   a 24 unit box while hy and sup already filled it to 17.2, so fet/sab/cx
+   read as loose dots and hy/sup read as real shapes, not five icons in one
+   family. His words: "give them an outline so they're more iconographic."
+   Every mark now sits on the same outer ring, 3.4 to 20.6, the one hy and
+   sup already drew, and what used to be the whole mark becomes what sits
+   inside that ring: fet an inner ring with a gap at twelve o'clock, so it
+   is not read as sup's own closed ring in a ring; sab two small rings,
+   chain links rather than a figure 8; cx three small rings in a triangle,
+   one per saboteur a complex can hold plus the room between them. hy and
+   sup are already on this frame and are unchanged. */
 const CHAINGLYPH={
- fet:'M12 7a5 5 0 110 10 5 5 0 010-10',
- sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
-  +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
- cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
-  +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
+ fet:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12.7 9.9A2.2 2.2 0 1 1 11.3 9.9',
+ sab:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
+  +'M9.8 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3M14.2 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3',
+ cx:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
+  +'M12 7.1a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8M9.8 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8'
+  +'M14.2 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8',
  hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
   +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
@@ -41570,26 +41694,28 @@ function rbOnHex(hex){return rbLum(hex)>.32?'#0B0D10':'#F6F4EF';}
 /* ONE WORD AND ITS SENTENCE, read off the table. A word the table has no
    sentence for says nothing rather than a guess, and the gate calls it bare. */
 function rbSay(word){return (typeof unpackOf==='function')?unpackOf(word,'rail'):'';}
-/* the seven seats' passes, root first. Pass is flSeats().pass, and Flow is
-   their product. */
-function rbSeatPass(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=x.pass;});
- return BANDS.map(function(b){return Math.max(0,Math.min(1,by[b]===undefined?1:by[b]));});}
-/* WHICH SEATS ARE HELD, root first, by flSeats' own rule and not a new one:
-   at least two of the seat's addresses, and at least 28 percent of them,
-   carrying. The r1 mockup's second round caught "blocked at Root" on a root
-   holding back 7 percent with two addresses of sixteen carrying, which is a
-   person called blocked who holds nothing there, so only a held seat can be
-   where Flow is blocked. */
-function rbSeatHeld(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=!!x.held;});
- return BANDS.map(function(b){return !!by[b];});}
-/* EACH SEAT BY FLOW'S OWN NAME for it, FLOWSEAT's n, root first: the rows
-   flSeats returns are that table's, and it calls the 3rd Eye "Brow", which
-   the meaning table already reads as the 3rd Eye. Measured 30 October at
-   1600, where a cell is 35.4 pixels: "3rd Eye" needs 36 even at 10px. */
+/* the seven seats' passes, root first, straight off r.seats (compute.js
+   seatRows, 15 November): BANDS order already, so no K2B lookup is needed
+   to line them up. Pass is seatRows().pass, and Flow is their product
+   (r.flow), the one figure read off this same table now, not a second copy
+   of its arithmetic. ui/map.js's flSeats/flSpeed stay as they were for their
+   own, separate callers. */
+function rbSeatPass(seats){
+ return (seats||[]).map(function(s){return Math.max(0,Math.min(1,s.pass));});}
+/* WHICH SEATS ARE HELD, root first, r.seats' own rule: at least two of the
+   seat's addresses, and at least 28 percent of them, carrying. The r1
+   mockup's second round caught "blocked at Root" on a root holding back 7
+   percent with two addresses of sixteen carrying, which is a person called
+   blocked who holds nothing there, so only a held seat can be where Flow is
+   blocked. */
+function rbSeatHeld(seats){return (seats||[]).map(function(s){return !!s.held;});}
+/* EACH SEAT BY FLOW'S OWN NAME for it, FLOWSEAT's n, root first: FLOWSEAT
+   calls the 3rd Eye "Brow", which the meaning table already reads as the
+   3rd Eye. Measured 30 October at 1600, where a cell is 35.4 pixels: "3rd
+   Eye" needs 36 even at 10px. This is a label lookup only, no arithmetic,
+   so it stays off r.seats and reads FLOWSEAT directly by band. */
 function rbSeatNames(){var by={};
- flSeats().forEach(function(x){by[K2B[x.p.k]]=x.p.n;});
+ FLOWSEAT.forEach(function(x){by[K2BAND[x.k]]=x.n;});
  return BANDS.map(function(b){return by[b]||b;});}
 /* the held seat that passes on the least, or -1 when no seat is held */
 function rbBlock(pass,held){var i=-1;
@@ -48302,7 +48428,12 @@ function verpArrows(cr0){
    one word. Definition is on demand. */
 const VIEWS=[
  {k:'A',nm:'Charge',    layers:'the core, 108 addresses and 4 field anchors, the wash',
-  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is shadow weight.'},
+  /* "SHADOW WEIGHT" WAS WRONG, 15 November. The wash here is DQ, the charge
+     held on the 112 addresses; Shadow (the left rail's own word) is 100
+     less CQ and carries no weight of its own. His words: "SQ is within
+     DQ... neither is Shadow's weight." One word for one quantity, so this
+     reads charge weight, DQ's own name, not Shadow's. */
+  tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is charge weight.'},
  {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
   tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
@@ -96861,6 +96992,25 @@ function render(){
     incomplete intake, the engine's own guard against a shadow building
     toward false certainty, so the pair draws no mark and prints a dash
     rather than a 100 less CQ the engine refused to state. */
+ /* NOT TOUCHED THIS ROUND, 15 November, after starting to and reverting.
+    His correction ("the counter lever to CQ is DQ... the battle is CQ
+    versus DQ") reads as wanting this whole pair replaced, and a first pass
+    here did that: swapped rbPair for a single CQ bar with DQ's own pull
+    hatched into it. Stopped and reverted on finding the real size of that
+    change: rbPair's swing, drift band and ghost marks (rbPairPaint,
+    rbPairTick, RBMO below) are load-bearing, tested behaviour
+    (tests/railmenu.js alone holds seven separate blocks against
+    `.rb2[data-pair=coh]`, plus tests/golden.js and tests/pct.js), not
+    incidental markup. Removing the pair to answer one note would have
+    meant rewriting or dropping all of that in the same pass, which is a
+    bigger call than this round's own scope. What is real and checked
+    (systems-director's pass, same round): CQ and DQ are still two
+    unrelated inputs with no battle the engine computes between them; the
+    real, already-computed contest is EX=CQ*(1-PULL), compute.js:622,
+    never shown anywhere. The honest fix is still open: either teach this
+    pair to show CQ against EX/PULL instead of against Shadow, or add a
+    second, connected reading beside it, both real engineering, neither
+    done here. Flagged rather than guessed into a half answer. */
  (function(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
   var read=!r.unread&&r.lawSQ!==null&&r.lawSQ!==undefined;
@@ -96889,8 +97039,21 @@ function render(){
     lighting. Radiance and flow were not given an element, so they keep the
     ramp by their figure, round OG, until he gives them one. */
  (function(){
-  var f=flSpeed(), lo=$('keylo'); if(!lo)return;
+  /* FLOW, OFF r.seats NOW, 15 November, not flSpeed(): r.flow is the same
+     product (a product is the same number in any order), ported in
+     compute.js's seatRows() beside pass/held so this row reads the one
+     canonical table rather than a second copy of its own arithmetic. */
+  var f=r.unread?0:r.flow, lo=$('keylo'); if(!lo)return;
   var nr=r.unread?' Not read yet.':'';
+  var seatPass=rbSeatPass(r.seats), seatHeld=rbSeatHeld(r.seats), seatNames=rbSeatNames();
+  /* THE WORST CHOKE, NAMED, 15 November, his words: "I don't understand
+     what that is trying to tell me" of a bare "3%". rbBlock already finds
+     the held seat passing least; this just says it in words instead of
+     leaving it to a hover. */
+  var blockAt=r.unread?-1:rbBlock(seatPass,seatHeld);
+  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each seat holding '
+   +'charge lets less through, and the losses multiply.'
+   +(blockAt>=0?(' '+seatNames[blockAt]+' lets the least through right now, '+fmtPct('flow',seatPass[blockAt],{})+'.'):''));
   /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent
      phase 2: they filled X*100 and printed X.toFixed(2), so vitality was drawn
      as 17 and read as 0.17. One figure now, the registry's. */
@@ -96914,8 +97077,8 @@ function render(){
   +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
     {unread:r.unread,fk:'core',ic:'rad',col:'color-mix(in srgb,var(--ink) 86%,'+seatCol('Solar')+')',title:rbSay('Radiance')+nr})
   +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
-    {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:rbSeatPass(),held:rbSeatHeld(),names:rbSeatNames(),
-     title:rbSay('Flow')+(r.unread?nr:' Seven cells run root to crown. The colour in each is what that seat passes on and the hatching is what it holds back. A seat is blocked when it is holding charge and passes on the least of the seats that are, and it is ringed.')});})();
+    {unread:r.unread,fk:'seats',ic:'flow',col:'var(--ink)',cells:seatPass,held:seatHeld,names:seatNames,
+     title:rbSay('Flow')+flowCopy});})();
  /* THE TWO FAMILY HEADS carry their sentence from the meaning table, the
     same way every word on the rail does, so the tooltip, the spoken name and
     the gate read one sentence (body.html says why they are there) */
@@ -97595,5 +97758,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006514969"></div>
+<div id="eof" hidden data-len="006525200"></div>
 </body></html>

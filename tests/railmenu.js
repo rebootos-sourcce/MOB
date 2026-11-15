@@ -246,7 +246,10 @@ async function railMenuGate(browser,FILE,ok,booted){
   /* ---- RM13: flow ---- */
   const fl=await pg.evaluate(()=>{
    const e=document.querySelector('#fdock .rbar[data-q=flow]'); if(!e)return null;
-   const pass=rbSeatPass(), seats=flSeats(), held=rbSeatHeld();
+   /* rbSeatPass/rbSeatHeld take r.seats now, 15 November (compute.js's
+      seatRows, not a second copy of flSeats' own arithmetic): read the
+      same object the render just used. */
+   const rseats=compute().seats, pass=rbSeatPass(rseats), seats=flSeats(), held=rbSeatHeld(rseats);
    const cells=[...e.querySelectorAll('.rb-cell')];
    const bk=cells.findIndex(c=>c.classList.contains('bk'));
    let want=-1; pass.forEach((v,j)=>{if(held[j]&&(want<0||v<pass[want]))want=j;});
