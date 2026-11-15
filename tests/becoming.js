@@ -162,9 +162,16 @@ require('./net.js').guardBrowser(b);
   o.l=document.body.classList.contains('lshut'); o.r=document.body.classList.contains('rshut');
   o.tiles=[...document.querySelectorAll('#knowbody [data-kbseat]')].map(x=>x.dataset.kbseat).join(',');
   o.order=IQ_SEATS.join(',');
-  o.open=[...document.querySelectorAll('#knowbody [data-kbpn]')].map(x=>x.dataset.kbpn).join(',');
+  /* THE FORMULA PANEL IS NOT A SEAT. kbRender's showCq (ui/knowledge.js) adds
+     a data-kbpn="cq" section beside a seat's own, on every seat's page, since
+     the formula is what some of that seat's own laws add up to; counting
+     open seat panels is what this block checks, and cq is not a seat. PR
+     189's rescue (15 November) is what first made this show on arrival. */
+  const seatPn=()=>[...document.querySelectorAll('#knowbody [data-kbpn]')]
+   .map(x=>x.dataset.kbpn).filter(x=>x!=='cq').join(',');
+  o.open=seatPn();
   document.querySelector('#knowbody [data-kbseat="Heart"]').click();
-  o.heart=[...document.querySelectorAll('#knowbody [data-kbpn]')].map(x=>x.dataset.kbpn).join(',');
+  o.heart=seatPn();
   o.heartRows=document.querySelectorAll('#knowbody [data-kbpn="Heart"] .kb-row').length;
   o.pressed=document.querySelector('#knowbody [data-kbseat="Heart"]').getAttribute('aria-pressed');
   KB_SEC='addr'; kbRender();

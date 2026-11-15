@@ -250,6 +250,34 @@ jobs:
           - { gate: journey2, timeout: 20, command: node tests/journey2.js }
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
+          # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
+          # valuefeltui, record, examples-showonly, paywall, safepage,
+          # allowance, gift, money, releasechain and pct, all added to
+          # gates-report between 16 and 17 October, each with 5 consecutive
+          # green runs checked directly against the Actions API before this
+          # move (runs 43627473901 through 43720934844), zero failures in
+          # that window. loopui is the one exception named by itself below.
+          - { gate: honest, timeout: 20, command: node tests/honest.js }
+          - { gate: dailyui, timeout: 20, command: node tests/dailyui.js }
+          - { gate: becoming, timeout: 20, command: node tests/becoming.js }
+          - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
+          - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
+          - { gate: record, timeout: 20, command: node tests/record.js }
+          - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
+          - { gate: paywall, timeout: 20, command: node tests/paywall.js }
+          - { gate: safepage, timeout: 20, command: node tests/safepage.js }
+          - { gate: allowance, timeout: 20, command: node tests/allowance.js }
+          - { gate: gift, timeout: 20, command: node tests/gift.js }
+          - { gate: money, timeout: 20, command: node tests/money.js }
+          - { gate: releasechain, timeout: 20, command: node tests/releasechain.js }
+          - { gate: pct, timeout: 20, command: node tests/pct.js }
+          # PROMOTED 15 November, named apart from the batch above on purpose.
+          # loopui failed on 4fa3dbd5 (its floor stale after a real rewrite)
+          # and was fixed the same day in 065c765e; only 3 consecutive green
+          # runs exist since that fix, the stated minimum, not the 5 the rest
+          # of this batch carries. Promoted because 3 is what the rule asks
+          # for, flagged here because the margin is thinner than usual.
+          - { gate: loopui, timeout: 20, command: node tests/loopui.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -314,49 +342,6 @@ jobs:
           - { gate: valuefelt, timeout: 20, command: node tests/valuefelt.js }
           - { gate: claims, timeout: 20, command: node tests/claims.js }
           - { gate: discordfeedback, timeout: 20, command: node tests/discordfeedback.js }
-          # 16 October: six browser gates no job ran, two of them red on main.
-          # Here first, the house rule for a gate new to CI; each moves up to
-          # gates-browser after three green runs. honest.js holds "a control
-          # never claims success before it has it" and goes first.
-          - { gate: honest, timeout: 20, command: node tests/honest.js }
-          - { gate: dailyui, timeout: 20, command: node tests/dailyui.js }
-          - { gate: becoming, timeout: 20, command: node tests/becoming.js }
-          - { gate: loopui, timeout: 20, command: node tests/loopui.js }
-          - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
-          - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
-          - { gate: record, timeout: 20, command: node tests/record.js }
-          # 16 October: a worked example shows everything and runs nothing, at
-          # every tier (engine/showonly.js). New, so report only first.
-          - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
-          # 17 October: the paywall from mockup five (ui/paywall.js), every
-          # locked ring opens it, and it sells nothing while checkout is
-          # closed. New, so report only first.
-          - { gate: paywall, timeout: 20, command: node tests/paywall.js }
-          # 17 October: words about ending a life or danger now get no release and
-          # no question, and the crisis door beside the entry (engine/safe.js).
-          # New, so report only first.
-          - { gate: safepage, timeout: 20, command: node tests/safepage.js }
-          # 17 October: the allowance, five seats (tests/allowance.js): whole
-          # addresses, no free release, the empty card's rerun first, the plan
-          # sheet's day. New, so report only first.
-          - { gate: allowance, timeout: 20, command: node tests/allowance.js }
-          # 17 October: a new person on the gift sees everything, with no
-          # padlock and the gift's one line on the first screen, and is still
-          # on free (DECISIONS.md, TALLY ruling 8). New, so report only first.
-          - { gate: gift, timeout: 20, command: node tests/gift.js }
-          # 17 October: patterns follow the money (tests/money.js), the pay cycle
-          # run's three red steps in engine/plan.js. Headless and fast. New, so
-          # report only first.
-          - { gate: money, timeout: 20, command: node tests/money.js }
-          # 17 October: the release chain (tests/releasechain.js), a story's own
-          # addresses run, no line says "I am" onto an address name, the voice
-          # renders a line once. New, so report only first.
-          - { gate: releasechain, timeout: 20, command: node tests/releasechain.js }
-          # 17 October: percent phase 2 (tests/pct.js), every ring and bar
-          # prints its own fill as a percent, no percent is in the alarm
-          # colour, and each moved surface prints the registry's form. New, so
-          # report only first.
-          - { gate: pct, timeout: 20, command: node tests/pct.js }
           # 14 November: the Insight well's auto-pin (tests/wellpin.js), pin on
           # press, pin unchanged on a second press, a locked tier pins nothing,
           # render() never resurrects a cleared pin. New, so report only first.
