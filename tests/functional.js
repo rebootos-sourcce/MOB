@@ -983,7 +983,13 @@ const kb=await page.evaluate(()=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
-  {const cards=[...document.querySelectorAll('.kb-row')];
+  /* THE FORMULA ROW STANDS BESIDE LAW AND HARM, NOT INSIDE EITHER. kbRender's
+     own showCq prints kbFormulaRow() on both deck pages because the formula
+     is what their cards add up to, not a 22nd law or a 28th universal law.
+     data-kbk carries its real kind (kbRowHtml), so the count below reads
+     what law and harm actually hold rather than what the page also shows
+     beside them. */
+  {const cards=[...document.querySelectorAll('.kb-row')].filter(c=>c.getAttribute('data-kbk')!=='cq');
    /* A MARK IS NOT ALWAYS A PATH, AND THE GLYPH IS NOT THE FIRST SVG IN THE
       ROW. crBadge draws two svgs: .crb-a, the charge ring, identical shape
       on every row; .crb-g, the glyph itself. The dual-pole open state draws
