@@ -19770,6 +19770,28 @@ function originOf(t,nm,hits){
 var ORIGIN_PARENTAL=['mum','mom','mother','dad','father'];
 function originCategory(who){
  return ORIGIN_PARENTAL.indexOf(who)>=0?'parental':'ancestral';}
+/* ORIGIN, THE WHOLE RECORD, 15 November. originCat above is a property of
+   one hit from one parseStory() call, which is why Patterns (ui/stdash.js)
+   could only ever read the open draft: a stored entry (exdepth.js's
+   rec.story.entries.push) keeps its own real text but never the hits a
+   parse of it produced, so there was no whole-record count anywhere to
+   read. Nothing here is stored differently or parsed a second way: this
+   is the same originOf/originCategory call the draft already runs, over
+   every entry's own real text in turn, exactly what the Psyche stack's
+   own header calls "a real summary of the same record," not a new kind
+   of reading. Derived only, same as the chain: nothing written back,
+   recomputed on every call, free to answer differently right after a
+   release or an edit changes what the entries say. */
+function originWhole(p){
+ var count={parental:0,ancestral:0}, hits=[];
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  if(!e||typeof e.text!=='string'||!e.text.trim())return;
+  var parsed=parseStory(e.text);
+  (parsed.hits||[]).forEach(function(h){
+   if(!h.originCat||count[h.originCat]===undefined)return;
+   count[h.originCat]++;
+   hits.push({t:h.t,who:h.originWho,fet:h.fet,charge:h.charge,cat:h.originCat,at:e.t});});});
+ return {count:count,hits:hits};}
 /* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
@@ -27110,6 +27132,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
                   ORIGIN_VERB:ORIGIN_VERB, ORIGIN_GENERIC:ORIGIN_GENERIC, originOf:originOf,
                   ORIGIN_PARENTAL:ORIGIN_PARENTAL, originCategory:originCategory,
+                  originWhole:originWhole,
                   lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,

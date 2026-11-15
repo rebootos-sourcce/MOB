@@ -9082,6 +9082,37 @@ g('ORIGIN CAT · round TD, 8 November: ancestral and generational are one catego
  ok(m2.length>0&&m2.every(m=>m.originCat==='ancestral'),'a family-tagged hit with no named parent carries ancestral');
 }
 
+g('ORIGIN WHOLE · 15 November: Patterns reads the whole record, not just the open draft');
+/* "The Psyche stack should be wired in from nerve to ancestral." Psyche
+   stack and Masks already read the whole record (computeSeen()); Patterns
+   read only the open draft, so a word handed down in an already-committed
+   entry never counted. originWhole() is the same originOf/originCategory
+   pass, re-run over every stored entry's own real text, nothing stored or
+   parsed a second way. */
+{
+ const {originWhole}=E;
+ ok(typeof originWhole==='function','originWhole is exported');
+ const empty=originWhole({story:{entries:[]}});
+ ok(empty.count.parental===0&&empty.count.ancestral===0&&empty.hits.length===0,
+  'a record with no entries counts nothing, never a guess');
+ ok(originWhole(null).count.parental===0&&originWhole(undefined).count.ancestral===0,
+  'a missing profile or story reads as nothing, never throws');
+ const p={story:{entries:[
+  {t:1000,text:'My mother always told me I was never good enough.'},
+  {t:2000,text:'In my family we never talked about feelings, and I feel so alone right now.'},
+  {t:3000,text:'Today was a calm, ordinary day.'}]}};
+ const w=originWhole(p);
+ ok(w.count.parental===1,'one parental hit, from the mother entry, counted across the whole record: got '+w.count.parental);
+ ok(w.count.ancestral===1,'one ancestral hit, from the family entry, counted across the whole record: got '+w.count.ancestral);
+ ok(w.hits.length===2&&w.hits.every(h=>h.t&&h.cat),'every counted hit keeps its own real words and category, nothing collapsed to a bare number');
+ ok(w.hits.some(h=>h.at===1000)&&w.hits.some(h=>h.at===2000),'each hit still names which real entry it came from');
+ const p2={story:{entries:[
+  {t:1000,text:'My mother always told me I was never good enough.'},
+  {t:2000,text:'My dad always told me I was never good enough either.'}]}};
+ const w2=originWhole(p2);
+ ok(w2.count.parental===2,'the same real category, named by two different entries naming two different parents, both counted: got '+w2.count.parental);
+}
+
 g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');
 /* REVIEW-sniffer-audit-2026-10-09.md, package S3, the audit's 13.1.10.
    sniffStory did sniffSaboteurs(axes).slice(0,SAB_SHOW): the domain layer

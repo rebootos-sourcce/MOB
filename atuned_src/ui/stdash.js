@@ -170,7 +170,7 @@ function stDashLeft(){
       +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
- o+=stDashPatterns(p);
+ o+=stDashPatterns();
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
@@ -232,16 +232,16 @@ function stDashChildEmotions(p){
  o+='</section>';
  return o;}
 
-/* PATTERNS, PARENTAL AND ANCESTRAL, READ OFF THIS STORY, 9 November. His
-   own repeated words, finally wired: "I don't understand... the parental
-   generational... those pills belongs." This was dropped entirely on 8
-   November as superseded by real sniffer work, and that was half right:
-   the OLD Patterns stub (a guess at ancestral/generational/parental/
-   learned with no sorting rule) is gone for good, but the real sniffer
-   work it was superseded by was never actually wired into this rail,
-   which is the part his repeating caught. originCategory()
-   (engine/sniff.js) already runs inside scanStory, called from
-   parseStory, so every hit in p.hits that named who handed a feeling
+/* PATTERNS, PARENTAL AND ANCESTRAL, READ OFF THE WHOLE RECORD, 9 November,
+   RESCOPED 15 November. His own repeated words, finally wired: "I don't
+   understand... the parental generational... those pills belongs." This
+   was dropped entirely on 8 November as superseded by real sniffer work,
+   and that was half right: the OLD Patterns stub (a guess at
+   ancestral/generational/parental/learned with no sorting rule) is gone
+   for good, but the real sniffer work it was superseded by was never
+   actually wired into this rail, which is the part his repeating caught.
+   originCategory() (engine/sniff.js) already runs inside scanStory,
+   called from parseStory, so every hit that named who handed a feeling
    down already carries h.originCat, 'parental' or 'ancestral' -- nothing
    guessed here, the same two real categories his own 8 November ruling
    collapsed generational into ancestral to make ("Let's combine
@@ -249,15 +249,28 @@ function stDashChildEmotions(p){
    FOUR: parental and ancestral are the only two real categories; learned
    was never built and is not drawn as an empty third; "ideological" is a
    different concept entirely, one of the five Masks (canon.js), not a
-   Patterns category, so it is not here either. Same draft scope as
-   Energy and Emotions above. Colour is a judgement call, not a ruling:
-   Heart for parental (closest relation) and Root for ancestral (furthest
-   back), reusing seat colours already in the palette -- his to overrule. */
-function stDashPatterns(p){
+   Patterns category, so it is not here either. Colour is a judgement
+   call, not a ruling: Heart for parental (closest relation) and Root for
+   ancestral (furthest back), reusing seat colours already in the
+   palette -- his to overrule.
+
+   RESCOPED FROM THE DRAFT TO THE WHOLE RECORD, 15 November, his words:
+   "the Psyche stack should be wired in from nerve to ancestral." Read
+   off the draft alone, this tile could never agree with Psyche Stack or
+   Masks beside it, which both already read the whole record
+   (computeSeen()); a word handed down in an entry already committed
+   simply never counted. originWhole() (engine/sniff.js) is the whole-
+   record version of the same real call: it re-parses every stored
+   entry's own text, the same originOf/originCategory pass the draft
+   already ran, and sums what it finds. Nothing stored differently,
+   nothing parsed a second way, no new category: the only thing that
+   changed is which text gets read. */
+function stDashPatterns(){
  var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
- var n={parental:0,ancestral:0}, rec=stSeatRecur();
- if(p)(p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
+ var r=(typeof computeSeen==='function')?computeSeen():null;
+ var w=(typeof originWhole==='function')?originWhole(CURP):{count:{parental:0,ancestral:0},hits:[]};
+ var n=w.count, rec=stSeatRecur();
  /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
     lines, nothing filled: parental as one figure standing over a smaller
     one, ancestral as a line handed down through three generations. */
@@ -269,25 +282,28 @@ function stDashPatterns(p){
     rather than leave recurrence out where his answer ("all 7 tiles")
     asked for it everywhere. */
  var CAT=[['parental','Parental',seatCol('Heart'),'Heart'],['ancestral','Ancestral',seatCol('Root'),'Root']];
- /* UNLIT, NOT TEXT, WITH NO STORY. Same rule as Energy above. */
+ /* UNLIT, NOT TEXT, WITH NO RECORD, the same rule Psyche Stack and Masks
+    hold beside it now that this reads what they read. */
+ var unread=!r||r.unread;
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
-   var v=p?n[c[0]]:0, rn=p?(rec[B2K[c[3]]]||0):0;
-   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:p?stBright(Math.min(1,v/4),rn):0,
-     title:p?(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c[1]+', nothing read yet')};}));
+   var v=unread?0:n[c[0]], rn=unread?0:(rec[B2K[c[3]]]||0);
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:unread?0:stBright(Math.min(1,v/4),rn),
+     title:unread?(c[1]+', nothing recorded yet'):(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down on this record':', nothing handed down on this record')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
  o+='</section>';
  return o;}
-/* THE PATTERNS DRILL. Every word this story read as handed down, in the
-   one panel every other drill opens, built here rather than through
-   anaGo because no existing anaCard kind answers "parental" or
+/* THE PATTERNS DRILL, READ OFF THE WHOLE RECORD, RESCOPED WITH THE TILE
+   ABOVE, 15 November. Every word the whole record read as handed down,
+   in the one panel every other drill opens, built here rather than
+   through anaGo because no existing anaCard kind answers "parental" or
    "ancestral": those are this file's own two real categories
    (originCategory, engine/sniff.js), not one of analytics.js's own. */
 function stOpenPattern(cat){
- var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ var w=(typeof originWhole==='function')?originWhole(CURP):{hits:[]};
  var lab=cat==='parental'?'Parental':'Ancestral';
- var hits=p?(p.hits||[]).filter(function(h){return h.originCat===cat;}):[];
- var h=anaHead('Patterns',lab,'words in this story handed down as '+lab.toLowerCase());
- if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' in this story yet.</p>';}
+ var hits=(w.hits||[]).filter(function(h){return h.cat===cat;});
+ var h=anaHead('Patterns',lab,'words on this record handed down as '+lab.toLowerCase());
+ if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' on this record yet.</p>';}
  else{h+='<div class="ad-rows">'+hits.slice(0,12).map(function(x){
    var f=x.fet||x.charge||'';
    return '<div class="pm-r"><span>'+esc(x.t||'')+'</span><em>'+esc(x.who?'from '+x.who:'')+'</em>'

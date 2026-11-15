@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v81 3b3b884b 2026-11-15 00:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v66 065c765 2026-11-15 06:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -32053,6 +32053,28 @@ function originOf(t,nm,hits){
 var ORIGIN_PARENTAL=['mum','mom','mother','dad','father'];
 function originCategory(who){
  return ORIGIN_PARENTAL.indexOf(who)>=0?'parental':'ancestral';}
+/* ORIGIN, THE WHOLE RECORD, 15 November. originCat above is a property of
+   one hit from one parseStory() call, which is why Patterns (ui/stdash.js)
+   could only ever read the open draft: a stored entry (exdepth.js's
+   rec.story.entries.push) keeps its own real text but never the hits a
+   parse of it produced, so there was no whole-record count anywhere to
+   read. Nothing here is stored differently or parsed a second way: this
+   is the same originOf/originCategory call the draft already runs, over
+   every entry's own real text in turn, exactly what the Psyche stack's
+   own header calls "a real summary of the same record," not a new kind
+   of reading. Derived only, same as the chain: nothing written back,
+   recomputed on every call, free to answer differently right after a
+   release or an edit changes what the entries say. */
+function originWhole(p){
+ var count={parental:0,ancestral:0}, hits=[];
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  if(!e||typeof e.text!=='string'||!e.text.trim())return;
+  var parsed=parseStory(e.text);
+  (parsed.hits||[]).forEach(function(h){
+   if(!h.originCat||count[h.originCat]===undefined)return;
+   count[h.originCat]++;
+   hits.push({t:h.t,who:h.originWho,fet:h.fet,charge:h.charge,cat:h.originCat,at:e.t});});});
+ return {count:count,hits:hits};}
 /* THE PLAIN IDIOM, P2-3, see LEXPLAIN in the lexicon. Each span is a plain
    idiom's own words, as {at, len} in nm.s: at is its leading space and len
    its length, the same addressing every hit uses. The follower must be the
@@ -39427,6 +39449,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
                   ORIGIN_VERB:ORIGIN_VERB, ORIGIN_GENERIC:ORIGIN_GENERIC, originOf:originOf,
                   ORIGIN_PARENTAL:ORIGIN_PARENTAL, originCategory:originCategory,
+                  originWhole:originWhole,
                   lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
@@ -62287,7 +62310,7 @@ function stDashLeft(){
       +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
- o+=stDashPatterns(p);
+ o+=stDashPatterns();
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
@@ -62349,16 +62372,16 @@ function stDashChildEmotions(p){
  o+='</section>';
  return o;}
 
-/* PATTERNS, PARENTAL AND ANCESTRAL, READ OFF THIS STORY, 9 November. His
-   own repeated words, finally wired: "I don't understand... the parental
-   generational... those pills belongs." This was dropped entirely on 8
-   November as superseded by real sniffer work, and that was half right:
-   the OLD Patterns stub (a guess at ancestral/generational/parental/
-   learned with no sorting rule) is gone for good, but the real sniffer
-   work it was superseded by was never actually wired into this rail,
-   which is the part his repeating caught. originCategory()
-   (engine/sniff.js) already runs inside scanStory, called from
-   parseStory, so every hit in p.hits that named who handed a feeling
+/* PATTERNS, PARENTAL AND ANCESTRAL, READ OFF THE WHOLE RECORD, 9 November,
+   RESCOPED 15 November. His own repeated words, finally wired: "I don't
+   understand... the parental generational... those pills belongs." This
+   was dropped entirely on 8 November as superseded by real sniffer work,
+   and that was half right: the OLD Patterns stub (a guess at
+   ancestral/generational/parental/learned with no sorting rule) is gone
+   for good, but the real sniffer work it was superseded by was never
+   actually wired into this rail, which is the part his repeating caught.
+   originCategory() (engine/sniff.js) already runs inside scanStory,
+   called from parseStory, so every hit that named who handed a feeling
    down already carries h.originCat, 'parental' or 'ancestral' -- nothing
    guessed here, the same two real categories his own 8 November ruling
    collapsed generational into ancestral to make ("Let's combine
@@ -62366,15 +62389,28 @@ function stDashChildEmotions(p){
    FOUR: parental and ancestral are the only two real categories; learned
    was never built and is not drawn as an empty third; "ideological" is a
    different concept entirely, one of the five Masks (canon.js), not a
-   Patterns category, so it is not here either. Same draft scope as
-   Energy and Emotions above. Colour is a judgement call, not a ruling:
-   Heart for parental (closest relation) and Root for ancestral (furthest
-   back), reusing seat colours already in the palette -- his to overrule. */
-function stDashPatterns(p){
+   Patterns category, so it is not here either. Colour is a judgement
+   call, not a ruling: Heart for parental (closest relation) and Root for
+   ancestral (furthest back), reusing seat colours already in the
+   palette -- his to overrule.
+
+   RESCOPED FROM THE DRAFT TO THE WHOLE RECORD, 15 November, his words:
+   "the Psyche stack should be wired in from nerve to ancestral." Read
+   off the draft alone, this tile could never agree with Psyche Stack or
+   Masks beside it, which both already read the whole record
+   (computeSeen()); a word handed down in an entry already committed
+   simply never counted. originWhole() (engine/sniff.js) is the whole-
+   record version of the same real call: it re-parses every stored
+   entry's own text, the same originOf/originCategory pass the draft
+   already ran, and sums what it finds. Nothing stored differently,
+   nothing parsed a second way, no new category: the only thing that
+   changed is which text gets read. */
+function stDashPatterns(){
  var o='<section class="st-en st-pat" id="st-patterns" aria-labelledby="st-patterns-h"'+'>'
   +'<h2 class="rblk" id="st-patterns-h">Patterns</h2>';
- var n={parental:0,ancestral:0}, rec=stSeatRecur();
- if(p)(p.hits||[]).forEach(function(h){if(h.originCat&&n[h.originCat]!==undefined)n[h.originCat]++;});
+ var r=(typeof computeSeen==='function')?computeSeen():null;
+ var w=(typeof originWhole==='function')?originWhole(CURP):{count:{parental:0,ancestral:0},hits:[]};
+ var n=w.count, rec=stSeatRecur();
  /* NO EXISTING GLYPH NAMES EITHER OF THESE, so two are drawn here, plain
     lines, nothing filled: parental as one figure standing over a smaller
     one, ancestral as a line handed down through three generations. */
@@ -62386,25 +62422,28 @@ function stDashPatterns(p){
     rather than leave recurrence out where his answer ("all 7 tiles")
     asked for it everywhere. */
  var CAT=[['parental','Parental',seatCol('Heart'),'Heart'],['ancestral','Ancestral',seatCol('Root'),'Root']];
- /* UNLIT, NOT TEXT, WITH NO STORY. Same rule as Energy above. */
+ /* UNLIT, NOT TEXT, WITH NO RECORD, the same rule Psyche Stack and Masks
+    hold beside it now that this reads what they read. */
+ var unread=!r||r.unread;
  o+=stPillRow('st-patterns-ls',CAT.map(function(c){
-   var v=p?n[c[0]]:0, rn=p?(rec[B2K[c[3]]]||0):0;
-   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:p?stBright(Math.min(1,v/4),rn):0,
-     title:p?(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down in this story':', nothing handed down in this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c[1]+', nothing read yet')};}));
+   var v=unread?0:n[c[0]], rn=unread?0:(rec[B2K[c[3]]]||0);
+   return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:unread?0:stBright(Math.min(1,v/4),rn),
+     title:unread?(c[1]+', nothing recorded yet'):(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down on this record':', nothing handed down on this record')
+      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
  o+='</section>';
  return o;}
-/* THE PATTERNS DRILL. Every word this story read as handed down, in the
-   one panel every other drill opens, built here rather than through
-   anaGo because no existing anaCard kind answers "parental" or
+/* THE PATTERNS DRILL, READ OFF THE WHOLE RECORD, RESCOPED WITH THE TILE
+   ABOVE, 15 November. Every word the whole record read as handed down,
+   in the one panel every other drill opens, built here rather than
+   through anaGo because no existing anaCard kind answers "parental" or
    "ancestral": those are this file's own two real categories
    (originCategory, engine/sniff.js), not one of analytics.js's own. */
 function stOpenPattern(cat){
- var p=(typeof ST_TEXT==='string'&&ST_TEXT.trim())?ST_PARSED:null;
+ var w=(typeof originWhole==='function')?originWhole(CURP):{hits:[]};
  var lab=cat==='parental'?'Parental':'Ancestral';
- var hits=p?(p.hits||[]).filter(function(h){return h.originCat===cat;}):[];
- var h=anaHead('Patterns',lab,'words in this story handed down as '+lab.toLowerCase());
- if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' in this story yet.</p>';}
+ var hits=(w.hits||[]).filter(function(h){return h.cat===cat;});
+ var h=anaHead('Patterns',lab,'words on this record handed down as '+lab.toLowerCase());
+ if(!hits.length){h+='<p class="ad-p">Nothing handed down as '+lab.toLowerCase()+' on this record yet.</p>';}
  else{h+='<div class="ad-rows">'+hits.slice(0,12).map(function(x){
    var f=x.fet||x.charge||'';
    return '<div class="pm-r"><span>'+esc(x.t||'')+'</span><em>'+esc(x.who?'from '+x.who:'')+'</em>'
@@ -97332,5 +97371,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006499295"></div>
+<div id="eof" hidden data-len="006501587"></div>
 </body></html>
