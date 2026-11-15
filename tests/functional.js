@@ -1013,8 +1013,13 @@ const kb=await page.evaluate(()=>{
  loadP(PERSON('James')); const pool=deckSize(), held=compute().loaded.length;
  deckDeal(); const card=DECK_CARD; deckClose();
  const rail=[...document.querySelectorAll('.lsec-hd span')].map(e=>e.textContent.trim());
- const stack=[...document.querySelectorAll('#stack button')]
-  .map(e=>e.textContent.trim().replace(/\s+/g,' '));
+ /* THE WORD MOVED OFF THE FACE OF THE CONTROL, 14 November: the five tabs
+    are icons only now, "I just want icons, not full words, on one
+    horizontal row," so textContent is a count digit or empty and the word
+    this check wants is read off aria-label (and title carries the same
+    word as the tap reachable fallback this product already uses). */
+ const stack=[...document.querySelectorAll('#stack .stk-t[data-st]')]
+  .map(e=>(e.getAttribute('aria-label')||'').trim().replace(/\s+/g,' '));
  const text=document.body.innerText;
  return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,rail,stack,text,
   cardIsHeld:!!(card&&card.n&&card.n.sq>=4), rank:card?card.rank:0,
@@ -1069,8 +1074,10 @@ const kb=await page.evaluate(()=>{
   'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
  ok(kb.rail.indexOf('Fetters')<0,
   'and the rail no longer calls the nine fetters');
+ /* the word moved off the tab's face to its aria-label, 14 November, but
+    the name itself is unchanged: child emotions, not fetters. */
  ok(/^Child emotions/.test(kb.stack[0]||''),
-  'the stack tab calls them child emotions, got '+(kb.stack[0]||'nothing'));
+  'the stack tab\'s aria-label calls them child emotions, got '+(kb.stack[0]||'nothing'));
  ok(!/child fetter/i.test(kb.text),
   'and the phrase child fetter reaches no surface');}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
@@ -1475,13 +1482,21 @@ ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived
    in a title attribute, and the audience arrives on phones. */
-/* WHERE THE TAP IS, SV18, 5 November. The corner that held #tier came off
-   the Field on his words, "get rid of the graphic that says incoherent", and
-   #tier is still written into it, so measuring it measured a hidden button
-   at 0px. The band word a person can see and tap is the Insight panel's
-   summary card, #psum, which leads with it and opens the same
-   runCompassDrill. The floor and the three things the drill owes are
-   unchanged; only the control measured moved to where the word is. */
+/* #psum IS NOT THE BAND'S DOOR ANY MORE, 14 November, round SV22 finally
+   landed. His words, 5 November: "that little area right there is a
+   summary... that field needs to be moved into the insight field." #psum
+   now prints the Selection panel's own Blueprint domain reading
+   (domReadHtml, ui/drills.js) and a press opens the same runDomDrill, in
+   the place SV18 (5 November) had put the band's runCompassDrill. This is
+   a NAMED LOSS, not a silent one: #psum was the band's only remaining
+   tappable home on the Field (#railtop and #pol2 are both display:none by
+   id), so the band's own definition, body state, "How it shows up", "Where
+   it goes" and the crisis floor have no door on the Field once this gate
+   stops asserting it here. The band word, its state and "Where it goes"
+   still print on Summary's own status card; the definition and the body
+   line do not survive anywhere else. runCompassDrill itself is untouched
+   and still correct, checked directly above through #tier; this block only
+   stops claiming a control that no longer calls it. */
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
 await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
@@ -1489,13 +1504,17 @@ const tapped=await tapPg.evaluate(()=>{
  S.pin=null; render();
  const el=document.getElementById('psum');
  const h=Math.round(el.getBoundingClientRect().height);
+ const hasLabel=(el.getAttribute('aria-label')||'').length>0;
+ const role=el.getAttribute('role'), tab=el.getAttribute('tabindex');
  el.click();
  const d=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- return {tag:el.tagName, h, opened:d.length,
-  full:/means/i.test(d)&&/How it shows up/i.test(d)&&/Where it goes/i.test(d)};});
-ok(tapped.tag==='BUTTON','the tier is a control, not a label printed at a person');
+ return {tag:el.tagName, h, hasLabel, role, tab, opened:d.length,
+  full:/Blueprint domain/i.test(d)&&/cluster/i.test(d)&&(/Read clear/i.test(d)||/What it is/i.test(d))};});
+ok(tapped.tag==='DIV','the domain reading is divs and paragraphs, not phrasing content for a button, got '+tapped.tag);
+ok(tapped.role==='button'&&tapped.tab==='0','so role and tabindex keep it a control instead');
+ok(tapped.hasLabel,'and it carries an aria-label of its own');
 ok(tapped.h>=44,'it clears the touch floor, got '+tapped.h+'px');
-ok(tapped.full,'and a tap gives the definition, the behaviour and the direction');
+ok(tapped.full,'and a tap gives the blueprint domain, its cluster and its clear or distorted read');
 await tapPg.close();
 
 console.log('\n=== zoom atomises the construct ===');

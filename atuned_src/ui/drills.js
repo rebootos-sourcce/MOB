@@ -895,8 +895,18 @@ function runSabDrill(s){
 
 /* THE DOMAIN, read clear and read distorted. The book prints both readings
    for all nineteen. Four are under a different name in the engine, and the
-   drill says both rather than picking one, because that ruling is not mine. */
-function runDomDrill(d){
+   drill says both rather than picking one, because that ruling is not mine.
+
+   SPLIT IN TWO, 14 November, round SV22 finally landed. His words, 5
+   November, never built until tonight: "that little area right there is a
+   summary. When I look further down where it says selection or it says
+   dissolution, that is the actual summary. So that field needs to be moved
+   into the insight field." domReadHtml is the pure markup, with no side
+   effect on the rail, so the Insight summary box (ui/ui.js, the #person
+   writer) can print the same card this drill opens, read off the same two
+   tables, rather than a second, composed version of it. runDomDrill is
+   unchanged in what it does: rdShell(domReadHtml(d)). */
+function domReadHtml(d){
  /* FOUR DOMAINS ARE A DIFFERENT KEY IN DOMDEF, 4 November. DOMAINS[] still
     names Descent, Connection, Exchange and Restoration; DOMDEF is keyed by
     the codex name KB_RENAME points each one to (sacrifice, love,
@@ -912,7 +922,8 @@ function runDomDrill(d){
   h+='<div class="pm-eye">Read clear</div><p class="ad-p">'+esc(def.c)+'</p>'
    +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
  else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
- rdShell(h);}
+ return h;}
+function runDomDrill(d){rdShell(domReadHtml(d));}
 
 /* THE ARCHETYPE AND THE MASK, one drill each, for Knowledge and the Field.
 

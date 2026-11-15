@@ -2569,13 +2569,12 @@ body.punch .rt-cell{box-shadow:none;background:var(--panel-2)}
 .lsec-hd>span{display:inline-flex;align-items:center;gap:9px;min-width:0}
 .lsec-ic{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:currentColor;
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-/* YOUR PATTERNS, ui/loopread.js. One block in two homes: the Field's right
-   column and Summary's own zone, #sumloop. The rail section is the Field's
-   only, so the same block never stands twice on one screen, and it steps out
-   of the column when there is nothing to say (an unread field). The four
-   counts are figures with a one word label each; the why chain is a line of
-   rings, one per step on the record, ring and not fill. */
-body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
+/* YOUR PATTERNS, ui/loopread.js. The Field's rail copy of this block came
+   off 14 November, his words, "I'm not quite certain what that does or
+   what it's for"; its hide rule went with it. Summary's own zone, #sumloop,
+   is untouched, and this .lp rule still styles it. The four counts are
+   figures with a one word label each; the why chain is a line of rings, one
+   per step on the record, ring and not fill. */
 .lp{display:flex;flex-direction:column;gap:12px;min-width:0}
 .lp-figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .lp-rail .lp-figs,.sg-loop .lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -3074,11 +3073,53 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
    carrying the person's name, and the name came off on his screenshot ("the
    person already knows who they are"). What is left, the summary box, is a
    box of its own, so a card around it was a box in a box with the coloured
-   edge he called "an old legacy design" on the Flow cards the same day. */
-.person{border-radius:var(--r-s)}
+   edge he called "an old legacy design" on the Flow cards the same day.
+
+   ALWAYS ON TOP, FIXED, BLACK, ITS OWN DISPLAY AREA, 14 November. His words
+   on the live panel: "the insight panel is always on top and is fixed, and
+   it has a black background... it looks like a unique display area. This is
+   where Source AI provides deep information from my records." Sticky, not
+   fixed: the .rfold rule above this one already measured why on this same
+   rail (a control that has to be scrolled back to is not there, and fixed
+   would hold it over a phone's own content, where the rail does not scroll
+   itself). var(--sunk) and the border and inset highlight are copied from
+   .smp, head.html, which already carries his own words for exactly this
+   read ("dark black, a touch darker than the app's own panel gray... its own
+   unique display area"): one family, not a second black. padding-right
+   clears .rfold's pinned icon, the same 52px gutter .lsec[data-rail=right]
+   .lsec-hd already keeps for it. z-index sits under .rfold (3) so the icon
+   still draws over this box's own top right corner rather than under it. */
+.person{position:sticky;top:0;z-index:2;margin:0;padding:12px 52px 12px 14px;
+ border-radius:var(--r-s) var(--r-s) 0 0;background:var(--sunk);border:1px solid var(--edge-2);border-bottom:0;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.03);cursor:pointer}
+.person:empty{display:none;margin:0;padding:0;border:0;box-shadow:none}
+/* STACKED, THE RAIL DOES NOT SCROLL, same reasoning as .rfold's own override
+   just below: the page scrolls there, and sticky would hold this box over
+   whatever the person scrolled down to, on every tab it still prints on. */
+@media (max-width:1180px){.person{position:relative;top:0}}
+/* ONE FRAME, NOT THREE STACKED CARDS, SV23, 14 November, the Dashboard's own
+   clean/even/symmetrical ruling (CLAUDE.md) carried over to this rail: his
+   words on the live panel, "I want the display area about 80% longer...
+   that way it'll be the information display area." .person above, the
+   pill row and the well below are one continuous sunk frame now, never
+   three. The Insight section (data-sec=you) is .person's own bottom half:
+   same background, same border, no seam between them, its header kept
+   (it still opens and closes the section, railmotion.js still staggers it
+   in) but drawn as the frame's own label rather than a second card's lid.
+   A :has() fallback is not needed: the attribute selector is static in the
+   markup, never conditional on JS, so every browser this product supports
+   resolves it the same way on first paint. */
+.lsec[data-rail="right"][data-sec="you"]{background:var(--sunk);border:1px solid var(--edge-2);
+ border-top:0;border-radius:0 0 var(--r-s) var(--r-s);margin:0 0 14px;padding:0 14px 14px}
+.lsec[data-rail="right"][data-sec="you"] .lsec-hd{padding:8px 2px 6px 0;border-bottom:1px solid var(--edge)}
+.lsec[data-rail="right"][data-sec="you"] .lsec-bd{padding-bottom:0}
+/* a person with nothing read yet has no .person box (it is :empty and
+   gone, above), so the Insight half simply opens the frame on its own,
+   top corners rounded to match, rather than reading as a lid with no box
+   under it */
+.person:empty+.lsec[data-rail="right"][data-sec="you"]{border-top:1px solid var(--edge-2);border-radius:var(--r-s)}
 .person h3{margin:0;font-size:20px;font-weight:600;letter-spacing:0}
 .prole{font-size:12.5px;color:var(--dim);margin-top:3px}
-.psay{font-size:14.5px;line-height:1.7;color:var(--mid);margin:11px 0 0;font-style:italic;font-weight:300}
 .tierow{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:baseline;
  font-size:13.5px;color:var(--mid);padding:4px 0}
 .tk{font-size:11px;font-weight:600;color:var(--dim)}
@@ -3838,15 +3879,93 @@ body.punch .card{border-color:transparent}
 .card-act{display:flex;gap:6px;flex-wrap:wrap}
 /* the stack tabs under the reading */
 .stack{margin-top:14px}
-.stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;position:relative;padding-bottom:9px}
 /* THE TAP FLOOR IS A FLOOR. These two strips set 32 and 36 against a measured
    minimum of 44, and they render on every surface in the product, so one
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
 .stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
  padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:6px}
-.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
+ min-height:var(--tap);display:inline-flex;align-items:center;gap:6px;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+/* THE INDICATOR AND THE CONNECTOR, ONE MARK, SV23. It sits under whichever
+   pill carries .on and ui.js's own FLIP slides it there, translateX and a
+   width tween, never a layout property the well itself depends on. Its
+   place in the row (bottom:0 of .stk-tabs' own padding-bottom:9px) is also
+   the tick down into the well a few pixels below: one bar reads as both
+   the active mark and the frame's own seam, not two drawings of the same
+   idea. prefers-reduced-motion turns the slide off below; the FLIP still
+   lands it in the right place on the frame it just stood up in, it only
+   stops travelling there from wherever it last was. */
+/* top is set in ui.js, never in CSS: a wrapped second row (a tier count wide
+   enough to push Super onto its own line, 14 November's own screenshot of
+   it) puts the on pill above the container's bottom edge, and a bottom:0
+   mark would then float under the wrong row entirely. Measured off the on
+   pill's own rect every render, the same FLIP that sets left. */
+.stk-ind{position:absolute;left:0;top:0;height:3px;width:24px;background:var(--accent);
+ border-radius:2px;transform:translateX(0);pointer-events:none;
+ transition:transform var(--t-element) cubic-bezier(.34,1.56,.64,1),
+  width var(--t-element) cubic-bezier(.34,1.56,.64,1),
+  top var(--t-element) cubic-bezier(.34,1.56,.64,1)}
+@media (prefers-reduced-motion:reduce){.stk-ind{transition:none}}
+/* THE WELL, SV23, 14 November, his words: "I want the display area about 80%
+   longer... that way it'll be the information display area." Fixed by CSS
+   clamp, never measured in JS: a measured height is a layout read on every
+   render, the thrash this product's own render() already guards against
+   elsewhere. clamp(420px,62vh,640px) is the added height in full, and it
+   holds real content at every size it can take, never an empty card: the
+   fet tier's nine bars fill it at the floor, an open cascade four layers
+   deep fills it at the ceiling. overflow:auto inside it only; .person above
+   stays pinned on its own position:sticky, untouched by this rule. */
+.stk-well{height:clamp(420px,62vh,640px);overflow:auto;display:flex;flex-direction:column}
+/* AT 1180 AND BELOW, STICKY IS ALREADY OFF (.person's own media query
+   above): the well drops its fixed height there too and simply flows, the
+   same reasoning, so a short phone screen never traps a tall reading
+   behind a scrollbar inside a scrollbar. */
+@media (max-width:1180px){.stk-well{height:auto;overflow:visible}}
+/* THE WELL'S OWN SUMMARY: Built from, Feeds, Reading, SV23. One generated
+   sentence (Reading, insightSay's own) plus two labelled facts, never a
+   free paragraph, his own objection to the drill's old Feeds-up block
+   (ui/drills.js, tsBlockHtml) carried over to this box on purpose. The
+   label is the rail's own gold eyebrow (.stk-hd, .rows .k, the same word
+   wherever a fact is named rather than composed), so this reads as the
+   same house, not a new one. */
+.stk-sum{margin:0 0 12px;padding:0 0 12px;border-bottom:1px solid var(--edge);
+ font-size:13px;line-height:1.6}
+.stk-sl{display:flex;gap:10px;align-items:baseline;padding:3px 0;color:var(--ink)}
+.stk-sl b{flex:0 0 70px;color:var(--gold);font-size:11px;font-weight:600;
+ font-family:var(--sans);letter-spacing:.02em}
+.stk-sl span{flex:1 1 auto;min-width:0;color:var(--dim)}
+.stk-chip{font-style:normal;color:var(--ink)}
+.stk-chip:not(:last-child):after{content:', ';color:var(--dim)}
+/* THE ENTRANCE, ARMED ONLY ON A PRESS (ui.js's own STK_ENTER), SV23. Old
+   content is never animated out, this product's own rule against an exit
+   animation on a rebuilt list: the well's innerHTML is simply replaced and
+   the new content stages in, parent first, its children staggered 70ms
+   apart and capped at six steps so a saboteur with nine fetters never
+   waits nine beats, Reading 120ms after the last of them, the whole
+   entrance under 700ms. backwards fill so a row never flashes visible
+   before its own delay has run. */
+@keyframes stkIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.stk-well[data-enter] .stk-chip,.stk-well[data-enter] .stk-sl{animation:stkIn var(--t-element) var(--ease-out) backwards}
+@media (prefers-reduced-motion:reduce){
+ .stk-well[data-enter] .stk-chip,.stk-well[data-enter] .stk-sl{animation:none!important;opacity:1!important;
+  transform:none!important;animation-delay:0ms!important}}
+/* PHONE, 390, SV23 #5: "he came for the sentence, not the structure." Built
+   from and Feeds still print above Reading in the markup (what a screen
+   reader meets first stays the summary's own facts, in order), but the
+   column itself reorders so a thumb sees the sentence first. */
+@media (max-width:720px){
+ .stk-sum{display:flex;flex-direction:column}
+ .stk-sl[data-role="reading"]{order:-1;margin-bottom:6px;padding-bottom:6px;
+  border-bottom:1px solid var(--edge)}}
+/* STROKE 1.6 TO 2.2, 14 November. Icons only now carries the whole row,
+   no word beside it, and reproduced live: the Child emotions mark (one
+   ring, CHAINGLYPH.fet) is a tall capsule that at 15px and 1.6 reads as a
+   literal zero beside its own count, "0 9". The word used to disambiguate
+   it; it is gone, so the stroke has to. Checked against the screenshot
+   before trusting it. */
+.stk-t svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.2;
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
 .stk-t.on svg{opacity:1;stroke:var(--accent)}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px}
@@ -3930,11 +4049,19 @@ body.punch .card{border-color:transparent}
 .stk-am .rb-n{min-width:0;overflow:hidden;white-space:nowrap}
 .stk-am .rb-v{grid-column:2;font-size:13px}
 .stk-am .rb-t{height:10px;margin-top:4px}
-/* THE INSIGHT CARD IS THE BAND WORD'S DOOR NOW, SV18. The Field's corner that
-   carried the tier word as a 44px button came off on his words, so #psum,
-   ui/ui.js, is where a person taps the word, and on a two line reading at
-   390 it measured 43px: one short of the floor every control here keeps. */
-.psum{min-height:var(--tap)}
+/* THE INSIGHT CARD IS THE BLUEPRINT DOMAIN'S DOOR NOW, 14 November, SV22
+   finally landed. #psum used to carry the band word's only press on the
+   Field (SV18); it now carries the Selection panel's own domain reading
+   (domReadHtml, ui/drills.js), moved up into #person, and a press opens
+   that same full card (runDomDrill) rather than the band's compass drill.
+   A div and not a button, because the domain reading is divs and
+   paragraphs and a button only takes phrasing content; role and tabindex
+   keep it a control, min-height keeps the 44px floor every control here
+   keeps, and the pm-eye/ad-nm/ad-sub/ad-p rules it prints with are the same
+   ones the drill already uses, so one visual language, not two. */
+.psum{display:block;min-height:var(--tap);transition:opacity var(--t-micro) var(--ease-out)}
+.psum:hover{opacity:.92}
+.psum:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-xs)}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -5383,6 +5510,13 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
    which is where Detail on an imprint opens its drill. */
 body:not(.tab-story) .lsec.st-rail{display:none}
 body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){display:none}
+/* #person escapes this rule, 14 November: it is a sibling of the .lsec
+   sections now, not one of them, because a sticky summary cannot live
+   inside a section a person can collapse. Named by id here, on every rail
+   that already steps the Insight section aside, so the Field's own summary
+   does not leak onto a page that never shows the Insight section it moved
+   out of. */
+body.tab-story #person{display:none}
 /* #railtop left the rail for the Field's stage in round IT and is hidden off
    the Field by its own rule, so only #bRel is stepped aside here */
 body.tab-story #bRel{display:none}
@@ -5695,6 +5829,9 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
    yet) takes the section with it rather than leaving an empty header. */
 body:not(.tab-summary) .lsec.sum-rail{display:none}
 body.tab-summary .lsec[data-rail="right"]:not(.sum-rail):not([data-sec="sel"]){display:none}
+/* #person, see the Story rule above: a sibling of the .lsec sections now,
+   named here too so it does not leak onto Summary. */
+body.tab-summary #person{display:none}
 body.tab-summary .lsec.sum-rail.dl-empty{display:none}
 .dl{padding:2px 2px 0}
 .dl-when{font-size:13px;line-height:1.6;color:var(--dim);margin:2px 0 16px}
@@ -7268,6 +7405,9 @@ body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
    them, as it does on the Story. */
 body:not(.tab-masksview) .lsec.ch-rail{display:none}
 body.tab-masksview .lsec[data-rail="right"]:not(.ch-rail):not([data-sec="sel"]){display:none}
+/* #person, see the Story rule above: a sibling of the .lsec sections now,
+   named here too so it does not leak onto Character. */
+body.tab-masksview #person{display:none}
 body.tab-masksview #bRel{display:none}
 .chr .pm-eye.chr-sp{margin-top:18px}
 .chr-note{margin:0 0 12px;font-size:12.5px;line-height:1.45;color:var(--dim)}

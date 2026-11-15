@@ -1486,12 +1486,31 @@
         the summary now. -->
 
 
+   <!-- THE INSIGHT SUMMARY, ALWAYS ON TOP, 14 November. His words, looking at
+        the live panel: "the selection panel is your intention of the insight
+        panel, is always on top and is fixed, and it has a black background.
+        And it looks like a unique display area. This is where Source AI
+        provides deep information from my records." Hoisted out of the
+        Insight section below to a direct child of #rpanel, a sibling of
+        #rfold, because position:sticky only holds inside its own containing
+        block and that block was a foldable .lsec-bd: a summary that must
+        stay on screen cannot live inside a section a person can collapse.
+        ui/ui.js writes #psum inside this host with the Selection panel's own
+        Blueprint domain reading (domReadHtml, ui/drills.js), rdCase'd the
+        same way runDomDrill is. The black, its-own-display-area treatment
+        is .person in head.html, built on var(--sunk), the token and the
+        words are both his, 12 November, the .smp rule above says so in full.
+        Hidden on every tab that is not the Field by name in head.html,
+        because it escapes the per-tab .lsec hide rules those tabs already
+        carry (it is not a .lsec any more). -->
+   <div class="person" id="person"></div>
+
    <!-- INSIGHT, 4 November, renamed from Reading on his own screenshot
         (DECISIONS.md, "The right rail's Reading panel"). The key stays you:
-        a key is identity, and the word is what a person reads. Under the
-        heading, the summary box and then the cascade, parent through
-        children, and nothing else: the Instruments row came off it the same
-        day, ui/ui.js says why. -->
+        a key is identity, and the word is what a person reads. The summary
+        box left this section for #person above it, 14 November, so what is
+        left here is where to start and the cascade, parent through
+        children. -->
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
     <div class="lsec-bd">
@@ -1501,7 +1520,6 @@
          deep inside the bottom of the compass. They are here instead, and
          they are only here while there is nothing to read. -->
     <div class="start" id="start"></div>
-    <div class="person" id="person"></div>
      <div class="stack" id="stack"></div>
     </div>
    </div>
@@ -1518,18 +1536,11 @@
     <div class="lsec-bd"><div id="charrail"></div></div>
    </div>
 
-   <!-- YOUR PATTERNS, the trace graph's home on the Field. F23 in the pass 3
-        funnel spec: "Its home is the Field's side column, where the app
-        opens; Summary's pinned card is the same component." ui/loopread.js
-        fills #loopside with the block Summary also carries, so it is shown on
-        the Field only (head.html) and the two never stand on one screen.
-        Under the Reading because it is the Reading's evidence: what was
-        written, what was opened, what the person has said yes to. Closed on
-        arrival, like every section but the Reading. -->
-   <div class="lsec lp-sec" data-rail="right" data-sec="loop">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="12" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M8.4 7.2l7.2 3.6M15.6 13.2l-7.2 3.6"/></svg>Your patterns</span><i></i></button>
-    <div class="lsec-bd"><div id="loopside"></div></div>
-   </div>
+   <!-- YOUR PATTERNS CAME OFF THIS RAIL, 14 November. His words: "I'm not
+        quite certain what that does or what it's for." It stood here, F23 in
+        the pass 3 funnel spec, filled from ui/loopread.js's #loopside. Only
+        this rail's copy is gone; Summary's own zone, #sumloop, is a
+        different reader of the same block and is untouched. -->
 
    <div class="lsec" data-rail="right" data-sec="sel">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>

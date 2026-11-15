@@ -28,14 +28,40 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    rail's stack tabs, railStack in ui/ui.js, and the glass bar needs the same
    four for its own switches: one concept, one mark, on every surface, which
    two copies of a path cannot promise. Two locked rings a saboteur, three a
-   complex, a lattice a hyper complex, a ring in a ring the super complex. */
+   complex, a lattice a hyper complex, a ring in a ring the super complex.
+
+   FET JOINS THE FOUR, 14 November. The child emotions tier had no key here:
+   ui/fieldbar.js read CHAINGLYPH.fet for its own glass bar switch, got
+   undefined, and glyphPath fell back to the bare SEATGLYPH._ circle, while
+   ui/ui.js's stack tab kept drawing the real one ring mark on its own
+   separate variable, STK_FETGLYPH. Two drawings of one concept, against this
+   comment's own promise. ui/ui.js now reads it from here instead of
+   carrying a second copy, so the icons-only stack row and the glass bar
+   finally draw the same mark for Child emotions. Found live: the Field's
+   glass bar and the Insight stack drew different marks for the same tier
+   before this fix.
+
+   FET WAS STILL THE OLD CAPSULE, not the ring, corrected the same day. The
+   consolidation above carried forward a stadium path (two straight sides,
+   round caps) that PR 203 (6 November) had already replaced, because the
+   capsule, at the tab's 15px/2.2 stroke render, is indistinguishable from
+   the numeral 0 next to its own count -- a real shape bug, not a missing
+   asset, under this file's own "one ring is a fetter" comment. The true
+   ring, in CHAINGLYPH.cx's own two-arc idiom, is restored below.
+
+   HY NEVER NESTED, fixed the same day, carrying PR 203's own fix forward:
+   the lattice/wireframe diamond below did not read as part of the same
+   "ring in a ring" family sab/cx/sup use. Replaced with two concentric
+   hexagons, the same nested-shell idea as sup, with angular facets so
+   Hyper still reads as its own tier rather than a smaller sup. */
 const CHAINGLYPH={
+ fet:'M12 7a5 5 0 110 10 5 5 0 010-10',
  sab:'M8.6 4.8a3.4 3.4 0 013.4 3.4v3.4a3.4 3.4 0 01-6.8 0V8.2a3.4 3.4 0 013.4-3.4'
   +'M15.4 12.4a3.4 3.4 0 013.4 3.4a3.4 3.4 0 01-6.8 0a3.4 3.4 0 013.4-3.4',
  cx:'M9 6.6a3 3 0 110 6 3 3 0 010-6M15 6.6a3 3 0 110 6 3 3 0 010-6'
   +'M12 12.8a3 3 0 110 6 3 3 0 010-6',
- hy:'M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6zM12 3.2v17.6M4.4 7.6l15.2 8.8'
-  +'M19.6 7.6L4.4 16.4',
+ hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
+  +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
  sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
 /* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
    TASKS.md, his words: "everything should have meaning, everything should

@@ -84,10 +84,15 @@ async function stackNameGate(browser,FILE,ok,booted){
   ok(caught&&clean,'SN2: '+tag+'the reader catches a stray "Character layer" put on the Field, and lets it go once it is gone');
 
   /* ---- SN1, the Field: the bar's switch and the stack's tab ---- */
+  /* THE TAB IS ICONS ONLY NOW, 14 November: "I just want icons, not full
+     words, on one horizontal row." textContent is a count digit or nothing,
+     so the word SN1 checks for is read off aria-label, the same reachable
+     name title already carried before, and title is checked too since
+     both say the word now. */
   const field=await pg.evaluate(()=>{
    const b=document.querySelector('[data-fb="character"]');
    const t=document.querySelector('#stack .stk-t[data-st="sup"]');
-   return {bar:b?b.getAttribute('aria-label'):null, tab:t?t.textContent.replace(/\s+/g,' ').trim():null,
+   return {bar:b?b.getAttribute('aria-label'):null, tab:t?t.getAttribute('aria-label'):null,
     tabTip:t?t.getAttribute('title'):null};});
   ok(field.bar==='Super complexes','SN1: '+tag+'the Field bar\'s innermost switch is Super complexes, got '+JSON.stringify(field.bar));
   ok((w<600&&field.tab===null)||(!!field.tab&&/^Super/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),

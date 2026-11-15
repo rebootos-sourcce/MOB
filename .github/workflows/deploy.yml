@@ -357,6 +357,10 @@ jobs:
           # colour, and each moved surface prints the registry's form. New, so
           # report only first.
           - { gate: pct, timeout: 20, command: node tests/pct.js }
+          # 14 November: the Insight well's auto-pin (tests/wellpin.js), pin on
+          # press, pin unchanged on a second press, a locked tier pins nothing,
+          # render() never resurrects a cleared pin. New, so report only first.
+          - { gate: wellpin, timeout: 20, command: node tests/wellpin.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

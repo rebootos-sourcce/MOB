@@ -889,8 +889,12 @@ function railFold(){
    kind, and the mark's tooltip says the layer in words. One concept, one
    mark, and it costs the same width at every depth. */
 /* the child emotions layer's mark, the Child emotions tab's own, named once
-   so the tab and the cascade's bar rows draw one mark */
-var STK_FETGLYPH='M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5';
+   so the tab and the cascade's bar rows draw one mark. 14 November: the path
+   itself moved to CHAINGLYPH.fet in ui/component.js, because ui/fieldbar.js
+   was reading that same key and finding nothing there, so the glass bar's
+   switch and this tab drew two different marks for one concept. This var
+   stays, read off the one copy, so nothing here has to change again. */
+var STK_FETGLYPH=CHAINGLYPH.fet;
 /* THE TIER, SAID IN WORDS, 5 November, round 3. His words on the linear
    shots, with the three super complex rows struck: "Organize it by Super
    Complex, Hyper Complex, Complex, Saboteur, etc." The mark alone made a
@@ -924,6 +928,14 @@ function stkMark(k){
  return '<span class="stk-lm" title="'+esc(STK_LAYER[k])+'" aria-hidden="true">'
   +svgI('<path d="'+(k==='fet'?STK_FETGLYPH:CHAINGLYPH[k])+'"/>')+'</span>';}
 var STACK_TAB='fet';
+/* THE WELL'S ENTRANCE, ARMED ONLY BY A PRESS, SV23. True for exactly one
+   railStack() call: the one right after a pill or a row is clicked, so the
+   stagger plays for a selection a person just made and never for a render
+   that only happened to pass through this rail (a drill opening, a story
+   commit, the chevron or Open all walking the cascade, each of which calls
+   railStack directly and never sets this). railStack reads it once and
+   clears it, the same one shot pattern STK_OPEN's own neighbors use. */
+var STK_ENTER=false;
 /* the open rows, keyed by their path from the top of the cascade, so a row
    opened under one parent is not opened under another, and a render, which
    rebuilds every object, keeps what a person left open */
@@ -1018,8 +1030,21 @@ function stkNode(o,path,r,depth){
    +' title="'+esc(nm)+'">'
    +stkAmount(o,nm,f)+'</button></div>'
   +(open?'<div class="stk-kids">'+kids+'</div>':'')+'</div>';}
+/* THE FIVE TABS' TOOLTIP SENTENCES, 14 November, for the icons-only row
+   below. Four come straight from engine/data/gloss.js, the one table a
+   meaning is ever written in; child emotions has no entry there (a fetter
+   and a child emotion are different concepts, CLAUDE.md says so in full),
+   so it carries the same sentence ui/fieldbar.js's own glass bar switch
+   already uses for this tier, rather than a second wording of it. */
+var STK_TIP={
+ fet:'The nine child emotions. Each saboteur is a configuration of these at a given intensity: the floor the chain above it runs on.',
+ sab:unpackOf('saboteur'), cx:unpackOf('complex'),
+ hy:unpackOf('hyper complex'), sup:unpackOf('super complex')};
 function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
+ /* consumed once, the one call this press armed; every other caller of
+    railStack leaves it false, STK_ENTER's own comment above */
+ var enter=STK_ENTER; STK_ENTER=false;
  /* THE STACK CARRIES ITS SYMBOLS. Every named thing in this product has a
     glyph and these five rungs were the last strip without one. The glyphs are
     the chain itself: one ring is a fetter, two locked rings a saboteur, three
@@ -1037,28 +1062,58 @@ function railStack(r){
   ['cx','Complexes',r.cxs.length,CHAINGLYPH.cx],
   ['hy','Hyper',r.hys.length,CHAINGLYPH.hy],
   ['sup','Super',r.sups.length,CHAINGLYPH.sup]];
+ /* ICONS ONLY, ONE ROW, 14 November. His words: "I just want icons, not full
+    words, on one horizontal row." The five labelled buttons measured 580px
+    in a 298px column and wrapped to three lines, which is why he is asking:
+    the word still had to go somewhere, so title stays (the native, tap
+    reachable fallback this product already carries), aria-label states the
+    same word so a screen reader hears exactly what it did before, and
+    data-tip carries a plain sentence for the one tooltip the product has,
+    the pattern ui/fieldbar.js already uses for these same five switches and
+    ui/storyui.js uses for Talk and Dashboard: the word moves off the face
+    of the control and onto its reachable name, nothing else changes. The
+    count stays: his own words say the word must go, not the number, and
+    PR 188 and PR 203 both kept it too. */
+ /* THE INDICATOR IS A PILL TOO, THE SAME ROW. SV23's own tick, 14 November:
+    ".person, the pill row and the well read as one frame, not three stacked
+    cards." stk-ind is the bar under the selected pill and the connector
+    into the well below it in one mark; .stk-ind-tk is its own small drop so
+    the frame's seam never shows a plain gap under the row that owns it. */
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
   return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'">'
+   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
+   +(t[2]?', '+t[2]:'')+'" data-tip="'+esc(STK_TIP[t[0]]||t[1])+'">'
    +svgI('<path d="'+t[3]+'"/>')
-   +'<span>'+t[1]+'</span>'+(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')+'</div>';
+   +(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')
+  +'<i class="stk-ind" aria-hidden="true"></i></div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
      screenshot. Each bar names both of its ends inside itself, so a column
      word over them said the same thing a second time. Each row is still a
-     door to runFetterDrill, which says both halves and what fills each. */
-  h+=CHILD.map(function(c,ci){return stkFetBar(ci,0);}).join('');}
+     door to runFetterDrill, which says both halves and what fills each.
+     UNCHANGED, SV23 #1: the well wraps this tab in a fixed height frame but
+     never touches what it draws, on his own ruling that nothing selected
+     still reads as it does today. */
+  h+='<div class="stk-well" id="stkwell">'+CHILD.map(function(c,ci){return stkFetBar(ci,0);}).join('')+'</div>';}
  else{
-  var list=r[STK_LIST[STACK_TAB]]||[];
+  var list=r[STK_LIST[STACK_TAB]]||[], body='';
+  /* THE WELL'S OWN SUMMARY, only when the pinned pattern is of the tier on
+     screen: a cx pinned while sab is the open tab says nothing here, the
+     Selection panel's own full card still carries it. stkSame, not nm
+     alone, in case two tiers ever share a name. */
+  if(S.pin&&S.pin.kind===STACK_TAB){
+   var po=list.filter(function(x){return stkSame(x,S.pin);})[0]||S.pin;
+   body+=stkWellHtml(po,r);}
   if(list.length){
    /* "Or I can close them all." One control, and it says what it will do:
       close all while anything in this cascade stands open, open all when
       nothing does. */
    var any=false; stkWalk(list,'',function(k){if(STK_OPEN[k])any=true;});
-   h+='<div class="stk-tl"><button type="button" class="stk-all" data-sall="'+(any?'0':'1')+'">'
+   body+='<div class="stk-tl"><button type="button" class="stk-all" data-sall="'+(any?'0':'1')+'">'
     +(any?'Close all':'Open all')+'</button></div>'
     +'<div class="stk-tree">'+stkGroup(list,STACK_TAB,'',r,0)+'</div>';}
-  else h+=lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB);}
+  else body+=lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB);
+  h+='<div class="stk-well" id="stkwell"'+(enter?' data-enter':'')+'>'+body+'</div>';}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
     plan is greyed and padlocked with its description, and its count is not
@@ -1066,7 +1121,27 @@ function railStack(r){
     that was open when a plan lapsed is left open, on the lock's own panel, so
     the list never reads "nothing at this layer" about a layer it cannot see. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});}
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});
+ /* THE INDICATOR'S OWN POSITION, measured once a frame and never polled: a
+    FLIP off the pill that carries .on, so the slide plays even though the
+    whole row was just rebuilt from a string. prefers-reduced-motion turns
+    the transition off in CSS, so this still lands the mark in the right
+    place, it just never slides there. */
+ (function(){var tabs=e.querySelector('.stk-tabs'), ind=e.querySelector('.stk-ind'), on=e.querySelector('.stk-t.on');
+  if(!tabs||!ind||!on)return;
+  var tr=tabs.getBoundingClientRect(), br=on.getBoundingClientRect();
+  /* top as well as left: the row wraps when a tier's count widens a pill
+     past the line (Super onto its own row), and the on pill is not always
+     the last one drawn, so bottom:0 would mark the wrong row entirely */
+  ind.style.transform='translateX('+(br.left-tr.left)+'px)'; ind.style.width=br.width+'px';
+  ind.style.top=(br.bottom-tr.top+3)+'px';})();
+ /* CLEARED ON ANIMATIONEND, never on a timer that could drift from the CSS
+    that actually runs: data-last marks the one row (Reading) that always
+    animates last, so the attribute comes off only once every staggered
+    child has had its turn, never mid cascade where a later child would pop
+    straight to its end state instead of animating into it. */
+ if(enter){var we=e.querySelector('#stkwell'), last=e.querySelector('[data-last]');
+  if(we&&last)last.addEventListener('animationend',function(){we.removeAttribute('data-enter');},{once:true});}}
 /* WHAT THE SUMMARY BOX SAYS ABOUT A SELECTED PATTERN. His words on the
    screenshot: "a summary from the records, where Source AI is interpreting
    the parent child stack of anything selected." So the box says three
@@ -1120,7 +1195,13 @@ function insightSay(pin,r){
  var says=function(f){return f&&f.says?'“'+esc(f.says)+'”':'';};
  var res=insightTrace(o);
  var kids=res?res.children:null, ups=res?res.parents:null;
- var h='<b style="font-weight:600;color:var(--ink)">'+esc(o.nm+(o.over?', overshot':''))+'</b>, '+KW[o.kind]+'.';
+ /* o.nm already carries a literal ' overshot' suffix when o.over is true
+    (engine/compute.js, pushSab's own nm:s.nm+' overshot'), so appending a
+    second one here printed "Diffuse Startler overshot, overshot": stripped
+    with traceSummaryBase (engine/tracesummary.js) and said once, as a
+    comma clause the way this product's own named-and-comma convention
+    reads it everywhere else a flag follows a name. */
+ var h='<b style="font-weight:600;color:var(--ink)">'+esc(o.over?traceSummaryBase(o.nm)+', overshot':o.nm)+'</b>, '+KW[o.kind]+'.';
  if(o.kind==='sab'){
   var own=res&&res.node.card.found?res.node.card.fields:null;
   /* the drill's own eyebrow for this record, The sentence it runs, kbSabBlock */
@@ -1138,13 +1219,71 @@ function insightSay(pin,r){
    .map(function(k){return ' '+esc(k.card.label)+': '+esc(k.card.fields.familyLine)+'.';});
   if(!ls.length)ls=(o.parts||[]).map(function(x){var f=patFam(x); return f?' '+esc(x.nm)+': '+esc(f.d)+'.':'';});
   h+=ls.join('');}
- /* the parent: the graph's, kept to what this reading carries */
- var up={sab:'cx',cx:'hy',hy:'sup'}[o.kind], par=null;
- if(up){var mine=r[STK_LIST[up]]||[];
-  if(ups)par=ups.map(function(u){return mine.filter(function(x){return x.nm===u.id&&TS_KIND[u.type]===up;})[0];}).filter(Boolean)[0]||null;
-  if(!par)par=mine.filter(function(x){return (x.parts||[]).some(function(c){return stkSame(c,o);});})[0]||null;}
+ /* the parent: the graph's, kept to what this reading carries. railStkParent
+    is the one place this lookup is written, SV23, shared with the well's own
+    Feeds line below so the two never disagree about who a pattern feeds. */
+ var par=railStkParent(o,r,ups);
  if(par)h+=' It runs inside '+esc(par.nm)+', '+KW[par.kind]+'.';
  return h;}
+/* THE CHAIN'S REAL PARENT, ONE HOP, read off the same traceSummary
+   resolution insightSay already ran (ups, its res.parents) and never off
+   traceDescendants, which walks the whole subtree and answers a different
+   question: "what is above this one rung", not "what is everything below the
+   top". A super complex has no up rung (trace.js:421, THE CHAIN stops at
+   sup), so up is undefined there and par stays null on purpose: the chain's
+   real floor, not a missing record. */
+function railStkParent(o,r,ups){
+ var up={sab:'cx',cx:'hy',hy:'sup'}[o.kind];
+ if(!up)return null;
+ var mine=r[STK_LIST[up]]||[], par=null;
+ if(ups)par=ups.map(function(u){return mine.filter(function(x){return x.nm===u.id&&TS_KIND[u.type]===up;})[0];}).filter(Boolean)[0]||null;
+ if(!par)par=mine.filter(function(x){return (x.parts||[]).some(function(c){return stkSame(c,o);});})[0]||null;
+ return par;}
+/* THE CHAIN'S REAL CHILDREN, ONE HOP, SV23. Not traceNeighbors' own
+   children: a saboteur's real parent per THE CHAIN (trace.js) is a pattern
+   address, not a child emotion, and "built from" here means what the
+   cascade already draws nested under an open row (stkNode above): a
+   saboteur's stkFets() (the child emotions actually read with charge) and
+   everything else's o.parts (the saboteur, complex or hyper complex it is
+   itself built from). One source for both, so the well's Built from line
+   and the chevron's own nested rows can never say two different things
+   about what a pattern is made of. */
+function railStkKids(o){
+ if(o.kind==='sab')return stkFets(o).map(function(ci){var c=CHILD[ci];
+  return {nm:c.nm, f:fmtPct('charge',S.charge[c.nm]||0)};});
+ return (o.parts||[]).map(function(p){
+  return {nm:p.over?traceSummaryBase(p.nm)+', overshot':p.nm, f:fmtPct('chain',p.w)};});}
+/* THE WELL'S OWN SUMMARY, SV23, round of 14 November: "whatever I select,
+   it will select that icon in the right rail and then show me all the
+   children of that, the parent and its children ... tell me how all that
+   runs through me." One generated sentence (Reading, insightSay's own,
+   unchanged) plus two labelled facts (Built from, Feeds), never a free
+   paragraph: a paragraph hides which record each clause came from, his own
+   objection to the drill's old Feeds-up block, pull request 180's
+   tsBlockHtml, struck live the same day this round finally answers.
+
+   TWO TIERS, AN HONEST MINIMAL DERIVATION. A super complex has no up rung
+   (railStkParent, above): Feeds reads "Top of the chain on file", never a
+   fabricated parent and never the Blueprint domain card in #person, which
+   is a different reading entirely and not a node on this chain. A child
+   emotion is not a node type on THE CHAIN at all (fetters are the
+   classification several addresses share, not a rung); this well is never
+   reached for one, since STK_LIST carries no 'fet' key and the pill click
+   handler's auto pin skips it by that same absence, so the fet tab's nine
+   bars print exactly as they did before this round, named in #1 above. */
+function stkWellHtml(o,r){
+ var kids=railStkKids(o), par=railStkParent(o,r,(insightTrace(o)||{}).parents);
+ var built=kids.length?kids.map(function(k,i){
+   return '<i class="stk-chip" style="animation-delay:'+(Math.min(i,5)*70)+'ms">'+esc(k.nm)+' '+k.f+'</i>';}).join('')
+  :'None running.';
+ var lastDelay=kids.length?Math.min(kids.length-1,5)*70:0;
+ var feeds=o.kind==='sup'?'Top of the chain on file.':(par?esc(par.nm):'None running.');
+ var reading=r.unread?'Nothing read yet. Record a story to fill this.':(insightSay(o,r)||'Nothing read yet. Record a story to fill this.');
+ return '<div class="stk-sum">'
+  +'<div class="stk-sl" data-role="built" style="animation-delay:0ms"><b>Built from</b><span>'+built+'</span></div>'
+  +'<div class="stk-sl" data-role="feeds" style="animation-delay:'+lastDelay+'ms"><b>Feeds</b><span>'+feeds+'</span></div>'
+  +'<div class="stk-sl" data-role="reading" data-last style="animation-delay:'+(lastDelay+120)+'ms"><b>Reading</b><span>'+reading+'</span></div>'
+  +'</div>';}
 /* THE BALANCE STRIP, AND WHICH END IS WHICH.
 
    The two poles are masculine and feminine. cards.js states the codex
@@ -1358,7 +1497,10 @@ function render(){
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
     down, the rails, the glass bar, the wheel and the Body, draws and lists
     only the rungs of the chain this plan can see: sightR in ui/lock.js. */
- const r=computeSeen(), p=PEOPLE[S.who];
+ /* p, PEOPLE[S.who], left render() on 14 November with the italic persona
+    line it fed (.psay below): that line was its only remaining reader here,
+    and nothing else in this function asks who the record belongs to. */
+ const r=computeSeen();
  lockTabs();
  /* the tier is a name for a person. it is not printed off the defaults, and it
     never appears without what it owes: the definition, the behaviour and the
@@ -1594,40 +1736,46 @@ function render(){
       needs the same four and two sets of one id is a broken document. */
    st.hidden=false;
    st.innerHTML=startHTML();})();
-  /* THE SUMMARY BOX, AND WHAT IT SAYS. His words on the screenshot: "this is
-     our summary field... it's giving you a summary from the records, where
-     Source AI is interpreting the parent child stack of anything selected."
-     So with a pattern selected in the cascade below, the box says that
-     pattern from its records, and what it runs inside (insightSay). With
-     nothing selected it keeps the band's own lived line, TIERDEF's energy,
-     which is what it said before: the band word in the band's colour, then
-     what the band costs day to day. Nothing while unread, where the doors
-     say where to start; while CQ is still filling there is no band to name,
-     so it says what is left, in the tier button's own sentence.
+  /* THE SUMMARY BOX IS THE SELECTION PANEL'S OWN READING, MOVED UP, 14
+     November, round SV22 finally landed. His words, 5 November, never built
+     until tonight: "that little area right there is a summary. When I look
+     further down where it says selection or it says dissolution, that is the
+     actual summary. So that field needs to be moved into the insight field."
+     Four things came out of this box on the same ruling and none of them
+     come back: the band word and its colour, TIERDEF's energy line, the
+     italic persona line (.psay, p.says) and insightSay's pattern narration,
+     which spoke about the same selected pattern the Selection panel already
+     opens a full card for, the duplication he was reacting to. What this box
+     prints now is domReadHtml(d), the same markup runDomDrill opens below,
+     through rdCase so "Blueprint domain" and "Read clear" keep their
+     sentence case rather than being titled. A press opens that same full
+     card, in the place the band's own runCompassDrill used to open.
 
-     A press opens the drill for what the box is about: the selected
-     pattern's, or the compass drill for the band. */
-  var tdw=r.unread?null:TIER_BY[r.tier];
-  var sel=r.unread?'':insightSay(S.pin,r);
-  var win=r.unread?'':'<button type="button" id="psum" class="psum" '
-   +'style="display:block;width:100%;margin:0;padding:10px 12px;text-align:left;'
-   +'font:inherit;font-size:13.5px;line-height:1.55;color:var(--mid);cursor:pointer;'
-   +'background:var(--panel);border:1px solid var(--edge);border-radius:var(--r-s)">'
-   +(sel?sel
-    :tdw?'<b style="font-weight:600;color:'+(TIERCOL[r.tier]||'var(--ink)')+'">'
-      +esc(tdw.nm)+'.</b> '+esc(tdw.energy)
-    :esc(tierBuilding()))
-   +'</button>';
-  $('person').innerHTML=win
-   /* THE EMPTY STATE OUTLIVED THE EMPTINESS. says was printed whenever it
-      existed, and the blank persona's says is the words "Nothing has been
-      entered yet". A person who then entered charge got a live reading beside
-      a sentence swearing they had entered nothing. It is an empty state, so it
-      goes when the state is not empty. */
-   +(p.says&&!(p.you&&!r.unread)?'<p class="psay">'+esc(p.says)+'</p>':'');
-  var ws=$('psum'); if(ws)ws.onclick=function(){
-   if(sel&&S.pin){runDrill(S.pin); return;}
-   S.pin=null; runCompassDrill(); render();};})();
+     WHAT THIS LOSES, NAMED RATHER THAN LEFT SILENT. #psum was the band
+     word's only remaining tappable home on the Field (SV18, 5 November,
+     head.html's own comment on #railtop and #pol2, both display:none by id).
+     Taking the band out of this box takes the band's own definition, its
+     body state, "How it shows up", "Where it goes", the crisis floor and the
+     ten band ladder off the Field entirely: the band word, its state and
+     "Where it goes" still print on Summary's own status card (sumStatus,
+     ui/summary.js), but the definition, the body line and the cost line do
+     not survive anywhere else. Reported to the owner rather than quietly
+     dropped, the way the hidden undo arrows ruling in CLAUDE.md asks.
+
+     WHAT THIS BOX SAYS ON A RECORD NOBODY HAS TOUCHED is also his call and
+     not decided here: S.doms[0] always holds a domain, but on an untouched
+     record that is the default Knowledge, so this box now states a reading
+     on every read record, default or chosen alike. schema.js's own soul.from
+     flag ('default' against 'picked') exists to tell the two apart and
+     nothing reads it yet; whether an unpicked domain should say so is open. */
+  var d=DOMAINS[S.doms[0]];
+  var win=r.unread?'':'<div id="psum" class="psum" tabindex="0" role="button" '
+   +'aria-label="Your blueprint domain, press to open the full reading">'
+   +rdCase(domReadHtml(d))+'</div>';
+  $('person').innerHTML=win;
+  var ws=$('psum'); if(ws){
+   ws.onclick=function(){runDomDrill(d);};
+   ws.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();runDomDrill(d);}};}})();
  railStack(r); renderBal(r);
  /* THE INSTRUMENTS ROW CAME OFF THIS CARD, 4 November. His words, live, on
     this panel: "Everything under instruments get rid of because we've got
@@ -1786,8 +1934,11 @@ function renderGates(){
  }}
  wireKbJump();
  renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
- /* the trace graph's block in the Field's side column, ui/loopread.js */
- if(typeof loopPaint==='function')loopPaint(r);
+ /* "YOUR PATTERNS" LEFT THE FIELD'S RAIL, 14 November, his words: "I'm not
+    quite certain what that does or what it's for." Only the rail's own
+    copy, #loopside, is gone (ui/loopread.js lost loopPaint, the function
+    that painted it); Summary's own zone, #sumloop, is a different reader
+    of the same loopHtml and is untouched. */
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
@@ -1943,7 +2094,25 @@ bindSend(authFeedback);
    opens the address it names instead of being a dead end. */
 document.addEventListener('click',function(e){
  var st=e.target.closest?e.target.closest('.stk-t[data-st]'):null;
- if(st){STACK_TAB=st.getAttribute('data-st');railStack(computeSeen());return;}
+ if(st){var stk=st.getAttribute('data-st'), rs0=computeSeen(); STACK_TAB=stk;
+  /* THE AUTO PIN LIVES HERE AND ONLY HERE, SV23, the loopWire lesson named
+     in TASKS.md: railStack is called from three other places (render, the
+     chevron, Open all) and pinning inside it would override a person's own
+     unpin on every one of those renders, not just the press that chose a
+     new tier. STK_LIST carries no 'fet' key, so the fetters pill never
+     reaches this (the#1 ruling, unchanged); lockSees(k) first, so a locked
+     tier pins nothing, the house's own words for exactly this failure mode.
+     "isn't already of that kind" is a kind level check on purpose: pressing
+     the same pill twice, or coming back to a tier a row inside it already
+     picked, must never fight a person's own choice there. */
+  if(STK_LIST[stk]&&lockSees(stk)&&!(S.pin&&S.pin.kind===stk)){
+   var list0=rs0[STK_LIST[stk]]||[];
+   var heavy=list0.length?list0.reduce(function(a,b){return (b.w>a.w)?b:a;}):null;
+   if(heavy){S.pin=heavy; STK_OPEN['/'+heavy.kind+':'+heavy.nm]=true;}}
+  STK_ENTER=true; railStack(rs0);
+  if(typeof innerWidth==='number'&&innerWidth<=720){
+   var wel=document.getElementById('stkwell'); if(wel&&wel.scrollIntoView)wel.scrollIntoView({block:'start'});}
+  return;}
  /* THE CASCADE'S TWO CONTROLS, 4 November. A chevron opens or closes its
     own row and nothing else; Close all and Open all walk the tab's whole
     cascade. railStack rebuilds the markup, so the control pressed is found
@@ -1961,7 +2130,14 @@ document.addEventListener('click',function(e){
  if(fr){var fc=CHILD[+fr.getAttribute('data-fet')]; if(fc){S.pin=null; runFetterDrill(fc);} return;}
  var sr=e.target.closest?e.target.closest('.stk-r[data-sk]'):null;
  if(sr){var rr=computeSeen(), o=({sab:rr.sabs,cx:rr.cxs,hy:rr.hys,sup:rr.sups}[sr.getAttribute('data-sk')]||[])[+sr.getAttribute('data-si')];
-  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin); render();} return;}
+  if(o){var same=S.pin&&S.pin.nm===o.nm&&S.pin.kind===o.kind; S.pin=same?null:o; runDrill(S.pin);
+   /* a row still repins exactly as it always has; the only change is the
+      well's own stagger, armed the same way the pill above arms it, and
+      only when the row left something pinned to show */
+   STK_ENTER=!!S.pin; render();
+   if(S.pin&&typeof innerWidth==='number'&&innerWidth<=720){
+    var wel2=document.getElementById('stkwell'); if(wel2&&wel2.scrollIntoView)wel2.scrollIntoView({block:'start'});}}
+  return;}
  var kb=e.target.closest?e.target.closest('.kb[data-q]'):null;
  if(kb){S.pin=null;ANA_PICK=null;runQDrill(kb.getAttribute('data-q'));return;}
  var gate=e.target.closest?e.target.closest('.gate-r[data-gate]'):null;

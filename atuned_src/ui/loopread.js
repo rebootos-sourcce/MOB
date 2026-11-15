@@ -4,13 +4,12 @@
    and P18b, one Next. Its home is the Field's side column, where the app
    opens; Summary's pinned card is the same component."
 
-   ONE COMPONENT, TWO HOMES, NEVER BOTH ON ONE SCREEN. loopHtml writes the
-   whole block. The Field's right column carries it as a folding section,
-   #loopside, shown on the Field only (head.html), and Summary carries it as
-   its own named zone, #sumloop, through sumLoopSlot. The rail is on every tab
-   and Summary's card is on Summary, so the rail section is hidden everywhere
-   but the Field: the same block twice on one screen would be one answer
-   asked for twice.
+   ONE COMPONENT, ONE HOME NOW. loopHtml writes the whole block. The Field's
+   right column carried it as a folding section, #loopside, from F23 until 14
+   November, when the owner struck it: "I'm not quite certain what that does
+   or what it's for." That home is gone (loopPaint with it); Summary keeps
+   its own named zone, #sumloop, through sumLoopSlot, which this never
+   touched.
 
    A SEPARATE, NAMED BLOCK ON SUMMARY. Another seat builds the Daily Summary
    into the same page through sumDaySlot and sumDayHtml in ui/summary.js. This
@@ -172,20 +171,14 @@ function sumLoopSlot(r){
   +'<h2 class="sg-zh" id="sg-h-loop"><svg class="sg-ic" viewBox="0 0 24 24" aria-hidden="true">'+LP_IC+'</svg>'
   +'<span>Your patterns</span></h2>'+body+'</section>';}
 
-/* THE FIELD'S SIDE COLUMN. Painted from render() on every tab, and empty
-   anywhere but the Field, so a hidden section never holds a stale reading. */
-function loopPaint(r){
- var h=document.getElementById('loopside'); if(!h)return;
- var onField=document.body.classList.contains('tab-field');
- var html=onField?loopHtml(r,'rail'):'';
- var sec=h.closest?h.closest('.lsec'):null;
- if(sec)sec.classList.toggle('lp-none',!html);
- if(h.innerHTML!==html)h.innerHTML=html;
- loopWire();}
+/* THE FIELD'S SIDE COLUMN CAME OFF, 14 November, his words: "I'm not quite
+   certain what that does or what it's for." loopPaint painted #loopside, the
+   rail's own copy of this block, and #loopside's whole section (body.html,
+   data-sec="loop") came off with it. Summary's own zone is a different
+   component, sumLoopSlot above, read through sumRender, so it is untouched:
+   one component kept two homes and this is the one that is gone. */
 
 function loopRepaint(){
- var r=(typeof computeSeen==='function')?computeSeen():null;
- loopPaint(r);
  if(document.body.classList.contains('tab-summary')&&typeof sumRender==='function')sumRender();}
 
 /* WIRED ONCE, on the document, so both homes answer the same way and neither
@@ -203,3 +196,11 @@ function loopWire(){
   if(b.hasAttribute('data-lpall')){LP.all=!LP.all; loopRepaint(); return;}
   var n=+b.getAttribute('data-lprel');
   if(!isNaN(n)&&typeof relPick==='function')relPick([n]);});}
+/* CALLED HERE NOW, 14 November. loopWire used to be called from loopPaint,
+   the Field rail's own painter, which left with that rail: nothing called
+   it after, so Summary's Next and Show all pressed and did nothing, found
+   by tests/loopui.js after the rail came off. Wired once at load instead,
+   the way ui/sound.js wires atmWire the same way: idempotent on LP.wired,
+   on the document, so it serves Summary's zone whether or not the Field's
+   rail still exists. */
+loopWire();
