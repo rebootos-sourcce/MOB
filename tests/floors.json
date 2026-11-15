@@ -93,7 +93,7 @@
     "honest": 32,
     "dailyui": 61,
     "becoming": 34,
-    "loopui": 56,
+    "loopui": 50,
     "personas-tier": 44,
     "examples-showonly": 855,
     "gift": 63,
@@ -104,7 +104,8 @@
     "allowance": 84,
     "money": 71,
     "releasechain": 74,
-    "pct": 1594
+    "pct": 1594,
+    "wellpin": 12
   },
   "no_count": {
     "monitor": "all surfaces render"

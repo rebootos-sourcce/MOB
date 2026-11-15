@@ -161,6 +161,9 @@ BROWSER = {
 # the layer observatory wired to trace.js's real traversal engine, 8 November
 # (tests/layer-observatory.js). Report only until three green runs.
     'layer-observatory': ('node tests/layer-observatory.js', 20),
+# the Insight well's auto pin, 14 November (tests/wellpin.js). Report only
+# until three green runs, like every gate new to CI.
+    'wellpin':       ('node tests/wellpin.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
