@@ -4444,16 +4444,18 @@ ok(tiers.there,'Billing carries the tiers group');
 ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Practitioner']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
-/* P2-1, 24 October: Billing reads the paywall's answer to whether paying is
-   open (pwPayOpen), so while it is closed it sells nothing the sheet says is
-   closed, and says nothing about charging */
-ok(!tiers.closedPay&&tiers.pressesClosed.length===0,
- 'P2-1: with checkout closed, as this build ships, Billing offers no Move to at all: '+JSON.stringify(tiers.pressesClosed));
-ok(['one','two','three'].every(k=>tiers.goClosed[k]==='Opens soon'),
- 'P2-1: and each rung the paywall calls closed says the paywall\'s own "Opens soon" where its press sat: '+JSON.stringify(tiers.goClosed));
-ok(!/charged|payment page|needs a sign in/.test(tiers.foot)&&/charged once a month/.test(tiers.footOpen),
- 'P2-1: the foot says nothing about charging or a press while closed, and says when a price is charged once open: '
- +JSON.stringify([tiers.foot,tiers.footOpen]));
+/* P2-1 CLOSED STATE IS GONE, 16 November, 26a409e7, "Open checkout, per
+   Lance's direct instruction." Billing still reads the paywall's answer to
+   whether paying is open (pwPayOpen), but pwPayOpen() can no longer answer
+   false: planCheckoutOpen() (engine/plan.js) is a hardcoded true, which
+   pwPayOpen() (ui/paywall.js) ORs ahead of the harness seam this test
+   forces open two lines below. The three assertions that measured the
+   closed state before the seam was forced (no Move to at all, each rung
+   reading "Opens soon", the foot staying silent about charging) are
+   dropped, since tiers.closedPay/pressesClosed/goClosed/foot can no
+   longer read that way on a real build. tiers.foot/footOpen now measure
+   the same open state twice; kept rather than reworked, since the open
+   assertion right below still needs footOpen's real value. */
 ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
  'once paying opens (the paywall\'s seam), from free every paid tier that can be bought has a press: '+tiers.presses.join());
 /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB */
