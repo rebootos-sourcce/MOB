@@ -553,6 +553,23 @@ function poleGlyph(p,x,y,size,c,a){
  try{g.stroke(new Path2D(p));}catch(e){}
  g.restore();}
 
+/* TWO GATES TOUCH, the one predicate verpArrows spreads its fan against and
+   tests/collide.js holds it to, the way plateHit serves the name plates. A
+   footprint is a disc (x, y, R) and the pill at its lower right (px, py, pw,
+   ph). Four pixels is plateHit's own margin: two marks closer than that
+   read as one at a glance. Disc to disc by centres, anything against a pill
+   by the nearest point of the rectangle, so a pill tucked into the bay
+   between two discs is not failed for a box corner it never paints. */
+function gateHit(p,q){
+ var M=4;
+ function cr(cx,cy,r,x,y,w,h){
+  var nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h));
+  return Math.hypot(cx-nx,cy-ny)<r+M;}
+ function rr(a,b){return a.px<b.px+b.pw+M&&b.px<a.px+a.pw+M&&a.py<b.py+b.ph+M&&b.py<a.py+a.ph+M;}
+ if(Math.hypot(p.x-q.x,p.y-q.y)<p.R+q.R+M)return true;
+ if(cr(p.x,p.y,p.R,q.px,q.py,q.pw,q.ph)||cr(q.x,q.y,q.R,p.px,p.py,p.pw,p.ph))return true;
+ return rr(p,q);}
+window.gateHit=gateHit;
 /* SIX GATES at the core. three higher above, three lower below, each a
    ring icon on a short stem. The ring closes by the share of the story that
    ran through that gate, the pill at its lower right says the number, the
@@ -568,10 +585,53 @@ function verpArrows(cr0){
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
- var R=13*ge, rr=cr0*1.3+34;
+ /* THE FAN SCALES WITH THE WHEEL, AND IS SPREAD UNTIL NOTHING IN IT TOUCHES,
+    16 November. Every size here was a fixed pixel (a 13 disc, a 22 by 12
+    pill, a 0.72 radian step, 34 past the core) tuned at 1600, where U is
+    about 402. At 390 U is about 166, the core shrinks with it and the fan
+    did not: measured on every persona at every depth, adjacent gates sat 32
+    to 40 pixels apart centre to centre while one gate and its pill is 45
+    wide, so each pill sat under its neighbour's disc and the six read as one
+    knot over the 4%. So the parts scale by s, U against the unit they were
+    tuned on, floored at 0.72 so the glyph stays near eleven pixels across; and
+    the spacing is not a constant but solved: the step opens first, to a
+    ceiling of one radian so the side gates stay above and below the core
+    rather than beside it, then the radius grows, until gateHit (below, the
+    one predicate tests/collide.js also asks) finds no two gates within four
+    pixels. At 1600 on a roomy core the first try already clears and the fan
+    draws where it always did. */
+ var s=clamp(U/402,0.72,1), Rb=13*s, R=Rb*ge;
+ var pwN=22*s, pwW=26*s, ph=12*s, STEP_MAX=1.0;
+ var rr=cr0*1.3+34*s, step=0.72;
+ function gateTxt(v){return evid?fmtPct('gate',v.pct):'–';}
+ function gateTxtW(v){g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
+  var w=g.measureText(gateTxt(v)).width; g.restore(); return w;}
+ /* a gate's footprint, disc and pill, at a bearing on the fan; drawn and
+    tested from the same numbers so the gate never checks a shape it did not
+    paint */
+ function foot(v,i,n,up,rad,st){
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*st;
+  var x=CX+Math.cos(a)*rad, y=CY+Math.sin(a)*rad;
+  /* the pill scales with the rest but never narrower than its own figure
+     plus three a side: the first cut scaled it flat and "100%" at 8.5
+     overran a pill 19 wide at 390 */
+  var pw=Math.max((evid&&v.pct>=100)?pwW:pwN,gateTxtW(v)+6);
+  return {a:a,x:x,y:y,R:Rb,px:x+Rb-3*s,py:y+Rb-5*s,pw:pw,ph:ph};}
+ function fan(rad,st){
+  return hi.map(function(v,i){return foot(v,i,hi.length,true,rad,st);})
+   .concat(lo.map(function(v,i){return foot(v,i,lo.length,false,rad,st);}));}
+ for(var tries=0;tries<60;tries++){
+  var F=fan(rr,step), clash=false;
+  for(var fa=0;fa<F.length&&!clash;fa++)for(var fb=fa+1;fb<F.length;fb++)
+   if(gateHit(F[fa],F[fb])){clash=true;break;}
+  if(!clash)break;
+  if(step<STEP_MAX)step=Math.min(STEP_MAX,step+0.04); else rr+=2*s;}
+ /* published for tests/collide.js, the way __PLATES is: the footprints at
+    full size, which is what the fan settles to once the entrance is over */
+ window.__GATES=fan(rr,step);
  function gate(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
-  var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
+  var ft=foot(v,i,n,up,rr,step), a=ft.a;
+  var x=ft.x, y=ft.y;
   var c=up?hx(PAL.Heart):hx(PAL.Root), f=v.pct/100;
   /* the stem. its weight is the share, its length is fixed and short */
   g.beginPath();g.moveTo(CX+Math.cos(a)*cr0*1.12,CY+Math.sin(a)*cr0*1.12);
@@ -591,8 +651,8 @@ function verpArrows(cr0){
      and half alpha on a dark wheel is the difference between a control and a
      smudge. A thing that has not been read yet still has to be seen: that is
      how a person learns it exists and presses it. */
-  var P=new Path2D(GATEGLYPH[v.k]), sc=15/24;
-  g.save();g.translate(x-7.5,y-7.5);g.scale(sc,sc);
+  var gz=15*s, P=new Path2D(GATEGLYPH[v.k]), sc=gz/24;
+  g.save();g.translate(x-gz/2,y-gz/2);g.scale(sc,sc);
   g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';
   g.strokeStyle=rgba(ink,evid?.95:.82);g.stroke(P);g.restore();
   /* AND THE PILL IS ALWAYS THERE. Ruled in the same breath: they carry no
@@ -611,13 +671,15 @@ function verpArrows(cr0){
      middle gate's glyph. The size goes up when the fan makes room for it (rr
      above, and reviews/AD-field.md section 2.6), which is a layout decision
      and not a constant. */
-  {var px=x+R-3, py=y+R-5, pw=(evid&&v.pct>=100)?26:22, ph=12;
-   roundRect(px,py,pw,ph,6);
+  {var px=ft.px, py=ft.py, pw=ft.pw;
+   roundRect(px,py,pw,ph,ph/2);
    g.fillStyle=evid?rgba(c,1):rgba(ink,.22);g.fill();
+   /* the figure keeps its 8.5 at every width: s shrinks the pill round it
+      only as far as the figure's own measured width allows, foot() above */
    g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
    g.textAlign='center';g.textBaseline='middle';
    g.fillStyle=evid?rgba(bgc,1):rgba(ink,.72);
-   g.fillText(evid?fmtPct('gate',v.pct):'\u2013',px+pw/2,py+ph/2+.5);g.restore();}
+   g.fillText(gateTxt(v),px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});
@@ -1426,7 +1488,6 @@ function drawWheel0(r,L){
  pulses(PUL,r);
 
  const cr0=solCore(r,coreBase);
- lay('gates',()=>verpArrows(cr0));
 
  /* --- the 21 laws. present at every depth: they are the numerator of CQ. ---
     Every depth still carries them. The bar can take them off, and the core
@@ -1440,6 +1501,15 @@ function drawWheel0(r,L){
   g.lineCap='round';g.stroke();g.lineCap='butt';
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
   g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();});
+ /* THE GATES DRAW AFTER THE LAWS, 16 November. They drew straight after the
+    core and the law ticks came next, and the ticks scale with U while the
+    core sits inside them: at 390 the law ring starts 42 to 73 pixels out and
+    the fan reaches 58 to 96, so tick strokes ran across the gate glyphs and
+    their pills. A gate is a control with a filled disc, a tick is a reading
+    behind it, so the control goes on top. HIT is read from the end, so a
+    press where the two meet now opens the gate a person can see, not the law
+    under it. */
+ lay('gates',()=>verpArrows(cr0));
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 

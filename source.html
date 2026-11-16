@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v110 5673d997 2026-11-16 20:24"><head><meta charset="utf-8">
+<html lang="en" data-build="v113 849d0a3b 2026-11-16 22:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3879,15 +3879,40 @@ body.punch .card{border-color:transparent}
 .card-act{display:flex;gap:6px;flex-wrap:wrap}
 /* the stack tabs under the reading */
 .stack{margin-top:14px}
-.stk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;position:relative;padding-bottom:9px}
+/* FIVE EQUAL CELLS, 16 November. A wrapping flex row sized each tab to its
+   own count, so Sab measured 63 against 56 and Super fell to a second line
+   at 1600, one tab alone under four: uneven on both axes, against "symmetry
+   in space, everywhere". A five column grid gives every tab the same width
+   and the same gap at every rail width, and it cannot wrap. */
+.stk-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;
+ position:relative;padding-bottom:9px}
 /* THE TAP FLOOR IS A FLOOR. These two strips set 32 and 36 against a measured
    minimum of 44, and they render on every surface in the product, so one
    declaration was responsible for five of the seven failing tabs. Gate 8 now
    watches it, which is why it stopped being a preference. */
-.stk-t{background:var(--sunk);border:0;color:var(--mid);border-radius:var(--r-xs);
- padding:8px 11px;font-family:var(--sans);font-size:12px;cursor:pointer;
- min-height:var(--tap);display:inline-flex;align-items:center;gap:6px;
- transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+/* A BUTTON YOU CAN SEE, 16 November. The tab sat on var(--sunk), the same
+   ground as the .lsec it lives in, with no border, so at rest there was no
+   shape at all, only five floating icons, and the selected one went
+   transparent and lost even that. Modelled on .vt, the shell's own square
+   controls top right (transparent, a 1px var(--edge) hairline, var(--r-s)
+   corners, panel-2 and edge-2 on hover), and square by aspect-ratio with
+   the tap floor under it. The glyph above, its count centred under it, so
+   the count never changes the cell's width. */
+.stk-t{background:transparent;border:1px solid var(--edge);color:var(--mid);border-radius:var(--r-s);
+ padding:6px 0;font-family:var(--sans);font-size:12px;cursor:pointer;position:relative;
+ min-height:var(--tap);aspect-ratio:1/1;min-width:0;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+ transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out),
+  border-color var(--t-micro) var(--ease-out)}
+.stk-t:hover{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
+.stk-t:active{background:var(--edge);border-color:var(--edge-2)}
+.stk-t:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* the themes that take outlines away still give it a ground, so the shape
+   survives; Flat and Punch fill the pinned one, their own rule for state */
+body.lumen .stk-t,body.flat .stk-t,body.punch .stk-t{border-color:transparent;background:var(--panel-2)}
+body.flat .stk-t.on,body.punch .stk-t.on{background:var(--accent);color:var(--on-accent)}
+body.flat .stk-t.on svg,body.flat .stk-t.on b,body.punch .stk-t.on svg,body.punch .stk-t.on b{
+ stroke:var(--on-accent);color:var(--on-accent)}
 /* THE INDICATOR AND THE CONNECTOR, ONE MARK, SV23. It sits under whichever
    pill carries .on and ui.js's own FLIP slides it there, translateX and a
    width tween, never a layout property the well itself depends on. Its
@@ -3972,13 +3997,25 @@ body.punch .card{border-color:transparent}
    five; measured tab widths are 37 to 52px, so 18px still clears with room
    either side. b's line-height is set to match the icon's own height so
    the count sits on its centre rather than its baseline. */
-.stk-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;
- stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;opacity:.75}
-.stk-t.on svg{opacity:1;stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);margin-left:2px;
- font-size:12px;line-height:18px}
-.stk-t.on{background:transparent;color:var(--accent);font-weight:500}
+/* FULL OPACITY AND 1.7, 16 November. The .75 dim made the at rest row read
+   as disabled, which is what a locked tab (.lk, ui/lock.js) is for, so the
+   two could not be told apart. The glyphs drew their own chains at full
+   size the same day (CHAINGLYPH, ui/component.js), which is what lets the
+   stroke come down to 1.7 and still hold a hole inside every ring. */
+.stk-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.stk-t.on svg{stroke:var(--accent)}
+.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);
+ font-size:12px;line-height:14px;min-height:14px}
+.stk-t.on{color:var(--accent);font-weight:500;
+ border-color:color-mix(in srgb,var(--accent) 55%,var(--edge))}
 .stk-t.on b{color:var(--accent)}
+/* NOTHING SELECTED, the well's empty state (railStack, ui/ui.js): the
+   bold line, then the muted one, in the summary's own slot and rhythm */
+.stk-none{margin:0 0 12px;padding:2px 0 12px;border-bottom:1px solid var(--edge);
+ display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.5}
+.stk-none b{font-weight:600;color:var(--ink);font-size:13px}
+.stk-none span{color:var(--dim)}
 .stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
  text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
@@ -41728,17 +41765,38 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    is not read as sup's own closed ring in a ring; sab two small rings,
    chain links rather than a figure 8; cx three small rings in a triangle,
    one per saboteur a complex can hold plus the room between them. hy and
-   sup are already on this frame and are unchanged. */
+   sup are already on this frame and are unchanged.
+
+   THE SHARED OUTER RING CAME OFF AGAIN, 16 November, and the count of rings
+   is the mark. The frame above fixed the size and cost the meaning: four of
+   the five drew the same 8.6 ring, so what told them apart was a 1.4 to 2.2
+   radius mark inside it, three and a half pixels across at the tab's 18,
+   and the row read as five circles with specks in them. Worse, every tier
+   then sat inside an enclosure, which is the one thing only the super
+   complex is: the pattern a person cannot see as separate from themselves.
+   So no tier carries a frame it does not mean, and each draws its own
+   chain at full size on the 24 grid, no ring under 3.5 so a 1.8 stroke
+   still leaves a hole at 18 pixels:
+
+     fet  one ring, 6.5, on a floor line: the floor the chain runs on
+     sab  two rings of 5, overlapped like two links
+     cx   three of 4.5, interlocked in a triangle
+     hy   four of 4 in a two by two mesh, each linked to its neighbours
+          and not across the diagonal, which is what makes it a mesh
+     sup  a ring of 8 round a ring of 4, the only nested mark in the set
+
+   chainRing writes a circle as two arcs, the idiom every ring above
+   already used, so a path stays one d attribute for svgI and for Path2D. */
+function chainRing(cx,cy,r){
+ /* rounded, or 8.7-4 writes 4.699999999999999 into the path */
+ var n=function(x){return +x.toFixed(2);};
+ return 'M'+n(cx-r)+' '+n(cy)+'a'+r+' '+r+' 0 1 0 '+n(2*r)+' 0a'+r+' '+r+' 0 1 0 '+n(-2*r)+' 0';}
 const CHAINGLYPH={
- fet:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12.7 9.9A2.2 2.2 0 1 1 11.3 9.9',
- sab:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
-  +'M9.8 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3M14.2 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3',
- cx:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
-  +'M12 7.1a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8M9.8 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8'
-  +'M14.2 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8',
- hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
-  +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
- sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
+ fet:chainRing(12,10.5,6.5)+'M5 20h14',
+ sab:chainRing(9,12,5)+chainRing(15,12,5),
+ cx:chainRing(12,8.6,4.5)+chainRing(8.6,14.6,4.5)+chainRing(15.4,14.6,4.5),
+ hy:chainRing(8.7,8.7,4)+chainRing(15.3,8.7,4)+chainRing(8.7,15.3,4)+chainRing(15.3,15.3,4),
+ sup:chainRing(12,12,8)+chainRing(12,12,4)};
 /* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
    TASKS.md, his words: "everything should have meaning, everything should
    have an icon." The rail's Western, Eastern, Number and Design headings were
@@ -49931,6 +49989,23 @@ function poleGlyph(p,x,y,size,c,a){
  try{g.stroke(new Path2D(p));}catch(e){}
  g.restore();}
 
+/* TWO GATES TOUCH, the one predicate verpArrows spreads its fan against and
+   tests/collide.js holds it to, the way plateHit serves the name plates. A
+   footprint is a disc (x, y, R) and the pill at its lower right (px, py, pw,
+   ph). Four pixels is plateHit's own margin: two marks closer than that
+   read as one at a glance. Disc to disc by centres, anything against a pill
+   by the nearest point of the rectangle, so a pill tucked into the bay
+   between two discs is not failed for a box corner it never paints. */
+function gateHit(p,q){
+ var M=4;
+ function cr(cx,cy,r,x,y,w,h){
+  var nx=Math.max(x,Math.min(cx,x+w)), ny=Math.max(y,Math.min(cy,y+h));
+  return Math.hypot(cx-nx,cy-ny)<r+M;}
+ function rr(a,b){return a.px<b.px+b.pw+M&&b.px<a.px+a.pw+M&&a.py<b.py+b.ph+M&&b.py<a.py+a.ph+M;}
+ if(Math.hypot(p.x-q.x,p.y-q.y)<p.R+q.R+M)return true;
+ if(cr(p.x,p.y,p.R,q.px,q.py,q.pw,q.ph)||cr(q.x,q.y,q.R,p.px,p.py,p.pw,p.ph))return true;
+ return rr(p,q);}
+window.gateHit=gateHit;
 /* SIX GATES at the core. three higher above, three lower below, each a
    ring icon on a short stem. The ring closes by the share of the story that
    ran through that gate, the pill at its lower right says the number, the
@@ -49946,10 +50021,53 @@ function verpArrows(cr0){
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
  var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
- var R=13*ge, rr=cr0*1.3+34;
+ /* THE FAN SCALES WITH THE WHEEL, AND IS SPREAD UNTIL NOTHING IN IT TOUCHES,
+    16 November. Every size here was a fixed pixel (a 13 disc, a 22 by 12
+    pill, a 0.72 radian step, 34 past the core) tuned at 1600, where U is
+    about 402. At 390 U is about 166, the core shrinks with it and the fan
+    did not: measured on every persona at every depth, adjacent gates sat 32
+    to 40 pixels apart centre to centre while one gate and its pill is 45
+    wide, so each pill sat under its neighbour's disc and the six read as one
+    knot over the 4%. So the parts scale by s, U against the unit they were
+    tuned on, floored at 0.72 so the glyph stays near eleven pixels across; and
+    the spacing is not a constant but solved: the step opens first, to a
+    ceiling of one radian so the side gates stay above and below the core
+    rather than beside it, then the radius grows, until gateHit (below, the
+    one predicate tests/collide.js also asks) finds no two gates within four
+    pixels. At 1600 on a roomy core the first try already clears and the fan
+    draws where it always did. */
+ var s=clamp(U/402,0.72,1), Rb=13*s, R=Rb*ge;
+ var pwN=22*s, pwW=26*s, ph=12*s, STEP_MAX=1.0;
+ var rr=cr0*1.3+34*s, step=0.72;
+ function gateTxt(v){return evid?fmtPct('gate',v.pct):'–';}
+ function gateTxtW(v){g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
+  var w=g.measureText(gateTxt(v)).width; g.restore(); return w;}
+ /* a gate's footprint, disc and pill, at a bearing on the fan; drawn and
+    tested from the same numbers so the gate never checks a shape it did not
+    paint */
+ function foot(v,i,n,up,rad,st){
+  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*st;
+  var x=CX+Math.cos(a)*rad, y=CY+Math.sin(a)*rad;
+  /* the pill scales with the rest but never narrower than its own figure
+     plus three a side: the first cut scaled it flat and "100%" at 8.5
+     overran a pill 19 wide at 390 */
+  var pw=Math.max((evid&&v.pct>=100)?pwW:pwN,gateTxtW(v)+6);
+  return {a:a,x:x,y:y,R:Rb,px:x+Rb-3*s,py:y+Rb-5*s,pw:pw,ph:ph};}
+ function fan(rad,st){
+  return hi.map(function(v,i){return foot(v,i,hi.length,true,rad,st);})
+   .concat(lo.map(function(v,i){return foot(v,i,lo.length,false,rad,st);}));}
+ for(var tries=0;tries<60;tries++){
+  var F=fan(rr,step), clash=false;
+  for(var fa=0;fa<F.length&&!clash;fa++)for(var fb=fa+1;fb<F.length;fb++)
+   if(gateHit(F[fa],F[fb])){clash=true;break;}
+  if(!clash)break;
+  if(step<STEP_MAX)step=Math.min(STEP_MAX,step+0.04); else rr+=2*s;}
+ /* published for tests/collide.js, the way __PLATES is: the footprints at
+    full size, which is what the fan settles to once the entrance is over */
+ window.__GATES=fan(rr,step);
  function gate(v,i,n,up){
-  var a=(up?-Math.PI/2:Math.PI/2)+(i-(n-1)/2)*0.72;
-  var x=CX+Math.cos(a)*rr, y=CY+Math.sin(a)*rr;
+  var ft=foot(v,i,n,up,rr,step), a=ft.a;
+  var x=ft.x, y=ft.y;
   var c=up?hx(PAL.Heart):hx(PAL.Root), f=v.pct/100;
   /* the stem. its weight is the share, its length is fixed and short */
   g.beginPath();g.moveTo(CX+Math.cos(a)*cr0*1.12,CY+Math.sin(a)*cr0*1.12);
@@ -49969,8 +50087,8 @@ function verpArrows(cr0){
      and half alpha on a dark wheel is the difference between a control and a
      smudge. A thing that has not been read yet still has to be seen: that is
      how a person learns it exists and presses it. */
-  var P=new Path2D(GATEGLYPH[v.k]), sc=15/24;
-  g.save();g.translate(x-7.5,y-7.5);g.scale(sc,sc);
+  var gz=15*s, P=new Path2D(GATEGLYPH[v.k]), sc=gz/24;
+  g.save();g.translate(x-gz/2,y-gz/2);g.scale(sc,sc);
   g.lineWidth=1.9/sc;g.lineCap='round';g.lineJoin='round';
   g.strokeStyle=rgba(ink,evid?.95:.82);g.stroke(P);g.restore();
   /* AND THE PILL IS ALWAYS THERE. Ruled in the same breath: they carry no
@@ -49989,13 +50107,15 @@ function verpArrows(cr0){
      middle gate's glyph. The size goes up when the fan makes room for it (rr
      above, and reviews/AD-field.md section 2.6), which is a layout decision
      and not a constant. */
-  {var px=x+R-3, py=y+R-5, pw=(evid&&v.pct>=100)?26:22, ph=12;
-   roundRect(px,py,pw,ph,6);
+  {var px=ft.px, py=ft.py, pw=ft.pw;
+   roundRect(px,py,pw,ph,ph/2);
    g.fillStyle=evid?rgba(c,1):rgba(ink,.22);g.fill();
+   /* the figure keeps its 8.5 at every width: s shrinks the pill round it
+      only as far as the figure's own measured width allows, foot() above */
    g.save();g.font='600 8.5px Inter, system-ui, sans-serif';
    g.textAlign='center';g.textBaseline='middle';
    g.fillStyle=evid?rgba(bgc,1):rgba(ink,.72);
-   g.fillText(evid?fmtPct('gate',v.pct):'\u2013',px+pw/2,py+ph/2+.5);g.restore();}
+   g.fillText(gateTxt(v),px+pw/2,py+ph/2+.5);g.restore();}
   HIT.push({k:'gate',v:v,x:x,y:y,rad:R+9});}
  hi.forEach(function(v,i){gate(v,i,hi.length,true);});
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});
@@ -50804,7 +50924,6 @@ function drawWheel0(r,L){
  pulses(PUL,r);
 
  const cr0=solCore(r,coreBase);
- lay('gates',()=>verpArrows(cr0));
 
  /* --- the 21 laws. present at every depth: they are the numerator of CQ. ---
     Every depth still carries them. The bar can take them off, and the core
@@ -50818,6 +50937,15 @@ function drawWheel0(r,L){
   g.lineCap='round';g.stroke();g.lineCap='butt';
   HIT.push({k:'law',j:i,cx:CX,cy:CY,a0:a-.075,a1:a+.075,r0:r0*.88,r1:r1+U*.03});});
   g.beginPath();g.arc(CX,CY,lr,0,TAU);g.strokeStyle=rgba(ink,.12);g.lineWidth=1;g.stroke();});
+ /* THE GATES DRAW AFTER THE LAWS, 16 November. They drew straight after the
+    core and the law ticks came next, and the ticks scale with U while the
+    core sits inside them: at 390 the law ring starts 42 to 73 pixels out and
+    the fan reaches 58 to 96, so tick strokes ran across the gate glyphs and
+    their pills. A gate is a control with a filled disc, a tick is a reading
+    behind it, so the control goes on top. HIT is read from the end, so a
+    press where the two meet now opens the gate a person can see, not the law
+    under it. */
+ lay('gates',()=>verpArrows(cr0));
  /* AND THE WORD CQ AND THE TIER WORD GO WITH IT, for the same two reasons.
     The tier is coherence said as a word, which was the fourth printing. */
 
@@ -98629,12 +98757,33 @@ function railStack(r){
     cards." stk-ind is the bar under the selected pill and the connector
     into the well below it in one mark; .stk-ind-tk is its own small drop so
     the frame's seam never shows a plain gap under the row that owns it. */
+ /* OPEN IS NOT SELECTED, 16 November. STACK_TAB is which tier's well is
+    showing, and it starts on 'fet' with nothing pinned, so the Child
+    emotions tab wore the accent, the full glyph and the sliding underline on
+    every first look at the Field: the row claimed a selection nobody had
+    made. Reproduced live, S.pin null and .on on fet, at 1600 and at 390,
+    and again after a person unpinned a saboteur by its own row, where Sab
+    kept the underline over a well that had nothing pinned in it. So the two
+    jobs are split. aria-selected still follows the open tab, because a
+    tablist has exactly one selected tab and a screen reader has to know
+    which well it is in. The look, .on and the underline it carries, is now
+    only for a tab whose tier holds the pin. The fet tier is never pinned
+    (its rows open a drill, the click handler below clears the pin), so
+    that tab never claims one. */
+ var pinHere=!!(S.pin&&S.pin.kind===STACK_TAB);
+ /* THE COUNT SITS UNDER THE GLYPH, the same date: beside it, a two digit
+    count made Sab 63 wide against its neighbours' 56 and pushed Super onto a
+    second row at 1600. Under it, every tab is one grid cell wide whatever
+    its number, head.html's own .stk-tabs grid. */
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
-  return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
+  var open=STACK_TAB===t[0];
+  return '<button type="button" role="tab" class="stk-t'+(open&&pinHere?' on':'')+'" data-st="'+t[0]+'" '
+   +'aria-selected="'+open+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
    +(t[2]?', '+t[2]:'')+'" data-tip="'+esc(STK_TIP[t[0]]||t[1])+'">'
    +svgI('<path d="'+t[3]+'"/>')
-   +(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')
+   /* the count's line is held even when there is no count (a locked tier,
+      or none running), so every glyph in the row sits at one height */
+   +'<b>'+(t[2]||'')+'</b></button>';}).join('')
   +'<i class="stk-ind" aria-hidden="true"></i></div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
@@ -98654,6 +98803,19 @@ function railStack(r){
   if(S.pin&&S.pin.kind===STACK_TAB){
    var po=list.filter(function(x){return stkSame(x,S.pin);})[0]||S.pin;
    body+=stkWellHtml(po,r);}
+  /* NOTHING SELECTED IS SAID, 16 November. With a story read and no pin,
+     the summary slot at the top of the well printed nothing at all, and the
+     list under it started where Built from, Feeds and Reading had been, so
+     an unpin read as the panel breaking. One bold line and one muted line,
+     the empty state's two parts in that order. Only when nothing is pinned
+     anywhere: a complex pinned while this tab shows saboteurs is still a
+     selection, carried in full by the Selection panel, and "Nothing
+     selected" there would be false. Never while unread, where the Where to
+     start doors (#start, render's own block) are the one thing that speaks,
+     and never on a locked or empty tier, whose own panel already does. */
+  else if(!S.pin&&!r.unread&&list.length)
+   body+='<div class="stk-none"><b>Nothing selected.</b>'
+    +'<span>Pick a pattern on the body or in the list to read it here.</span></div>';
   if(list.length){
    /* "Or I can close them all." One control, and it says what it will do:
       close all while anything in this cascade stands open, open all when
@@ -98670,15 +98832,23 @@ function railStack(r){
     printed: a "3" on a locked tab says how many saboteurs somebody has. The tab
     that was open when a plan lapsed is left open, on the lock's own panel, so
     the list never reads "nothing at this layer" about a layer it cannot see. */
+ /* corner, 16 November: the padlock beside the glyph made a locked tab wider
+    than an open one and read as a second icon in the cell. In the corner,
+    the option the glass bar's orbs already use, the tab keeps its own
+    glyph, greyed by .lk, with the lock riding its upper right. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0],{corner:true});});
  /* THE INDICATOR'S OWN POSITION, measured once a frame and never polled: a
     FLIP off the pill that carries .on, so the slide plays even though the
     whole row was just rebuilt from a string. prefers-reduced-motion turns
     the transition off in CSS, so this still lands the mark in the right
     place, it just never slides there. */
  (function(){var tabs=e.querySelector('.stk-tabs'), ind=e.querySelector('.stk-ind'), on=e.querySelector('.stk-t.on');
-  if(!tabs||!ind||!on)return;
+  if(!tabs||!ind)return;
+  /* no pin, no mark: left where it was, it would sit at its CSS default
+     under the first tab and say Child emotions again by position alone */
+  ind.style.opacity=on?'':'0';
+  if(!on)return;
   var tr=tabs.getBoundingClientRect(), br=on.getBoundingClientRect();
   /* top as well as left: the row wraps when a tier's count widens a pill
      past the line (Super onto its own row), and the on pill is not always
@@ -99953,5 +100123,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006674639"></div>
+<div id="eof" hidden data-len="006685458"></div>
 </body></html>

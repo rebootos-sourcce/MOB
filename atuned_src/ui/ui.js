@@ -1079,12 +1079,33 @@ function railStack(r){
     cards." stk-ind is the bar under the selected pill and the connector
     into the well below it in one mark; .stk-ind-tk is its own small drop so
     the frame's seam never shows a plain gap under the row that owns it. */
+ /* OPEN IS NOT SELECTED, 16 November. STACK_TAB is which tier's well is
+    showing, and it starts on 'fet' with nothing pinned, so the Child
+    emotions tab wore the accent, the full glyph and the sliding underline on
+    every first look at the Field: the row claimed a selection nobody had
+    made. Reproduced live, S.pin null and .on on fet, at 1600 and at 390,
+    and again after a person unpinned a saboteur by its own row, where Sab
+    kept the underline over a well that had nothing pinned in it. So the two
+    jobs are split. aria-selected still follows the open tab, because a
+    tablist has exactly one selected tab and a screen reader has to know
+    which well it is in. The look, .on and the underline it carries, is now
+    only for a tab whose tier holds the pin. The fet tier is never pinned
+    (its rows open a drill, the click handler below clears the pin), so
+    that tab never claims one. */
+ var pinHere=!!(S.pin&&S.pin.kind===STACK_TAB);
+ /* THE COUNT SITS UNDER THE GLYPH, the same date: beside it, a two digit
+    count made Sab 63 wide against its neighbours' 56 and pushed Super onto a
+    second row at 1600. Under it, every tab is one grid cell wide whatever
+    its number, head.html's own .stk-tabs grid. */
  var h='<div class="stk-tabs" role="tablist">'+TABS.map(function(t){
-  return '<button type="button" role="tab" class="stk-t'+(STACK_TAB===t[0]?' on':'')+'" data-st="'+t[0]+'" '
-   +'aria-selected="'+(STACK_TAB===t[0])+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
+  var open=STACK_TAB===t[0];
+  return '<button type="button" role="tab" class="stk-t'+(open&&pinHere?' on':'')+'" data-st="'+t[0]+'" '
+   +'aria-selected="'+open+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
    +(t[2]?', '+t[2]:'')+'" data-tip="'+esc(STK_TIP[t[0]]||t[1])+'">'
    +svgI('<path d="'+t[3]+'"/>')
-   +(t[2]?' <b>'+t[2]+'</b>':'')+'</button>';}).join('')
+   /* the count's line is held even when there is no count (a locked tier,
+      or none running), so every glyph in the row sits at one height */
+   +'<b>'+(t[2]||'')+'</b></button>';}).join('')
   +'<i class="stk-ind" aria-hidden="true"></i></div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
@@ -1104,6 +1125,19 @@ function railStack(r){
   if(S.pin&&S.pin.kind===STACK_TAB){
    var po=list.filter(function(x){return stkSame(x,S.pin);})[0]||S.pin;
    body+=stkWellHtml(po,r);}
+  /* NOTHING SELECTED IS SAID, 16 November. With a story read and no pin,
+     the summary slot at the top of the well printed nothing at all, and the
+     list under it started where Built from, Feeds and Reading had been, so
+     an unpin read as the panel breaking. One bold line and one muted line,
+     the empty state's two parts in that order. Only when nothing is pinned
+     anywhere: a complex pinned while this tab shows saboteurs is still a
+     selection, carried in full by the Selection panel, and "Nothing
+     selected" there would be false. Never while unread, where the Where to
+     start doors (#start, render's own block) are the one thing that speaks,
+     and never on a locked or empty tier, whose own panel already does. */
+  else if(!S.pin&&!r.unread&&list.length)
+   body+='<div class="stk-none"><b>Nothing selected.</b>'
+    +'<span>Pick a pattern on the body or in the list to read it here.</span></div>';
   if(list.length){
    /* "Or I can close them all." One control, and it says what it will do:
       close all while anything in this cascade stands open, open all when
@@ -1120,15 +1154,23 @@ function railStack(r){
     printed: a "3" on a locked tab says how many saboteurs somebody has. The tab
     that was open when a plan lapsed is left open, on the lock's own panel, so
     the list never reads "nothing at this layer" about a layer it cannot see. */
+ /* corner, 16 November: the padlock beside the glyph made a locked tab wider
+    than an open one and read as a second icon in the cell. In the corner,
+    the option the glass bar's orbs already use, the tab keeps its own
+    glyph, greyed by .lk, with the lock riding its upper right. */
  TABS.forEach(function(t){if(t[0]==='fet')return;
-  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0]);});
+  lockApply(e.querySelector('.stk-t[data-st="'+t[0]+'"]'),t[0],{corner:true});});
  /* THE INDICATOR'S OWN POSITION, measured once a frame and never polled: a
     FLIP off the pill that carries .on, so the slide plays even though the
     whole row was just rebuilt from a string. prefers-reduced-motion turns
     the transition off in CSS, so this still lands the mark in the right
     place, it just never slides there. */
  (function(){var tabs=e.querySelector('.stk-tabs'), ind=e.querySelector('.stk-ind'), on=e.querySelector('.stk-t.on');
-  if(!tabs||!ind||!on)return;
+  if(!tabs||!ind)return;
+  /* no pin, no mark: left where it was, it would sit at its CSS default
+     under the first tab and say Child emotions again by position alone */
+  ind.style.opacity=on?'':'0';
+  if(!on)return;
   var tr=tabs.getBoundingClientRect(), br=on.getBoundingClientRect();
   /* top as well as left: the row wraps when a tier's count widens a pill
      past the line (Super onto its own row), and the on pill is not always
