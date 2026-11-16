@@ -706,6 +706,19 @@ require('./net.js').guardBrowser(browser);
     const q = await open(browser, 1600, 1000);
     await q.evaluate(() => { STV.dash = true; stRender(); });
     for (const t of ['I was afraid all night.', 'I felt so guilty about it.']) { await q.evaluate(t => srcTurnCommit(t), t); await q.waitForTimeout(80); }
+    /* THE FACE'S FIELD HOLDS NO TEXT AT REST, 16 November (tonight),
+       reverses the 16 November ruling this file's own comments above
+       still describe: the box is no longer always there under the face
+       on the Dashboard, and neither is this verdict panel, until the
+       keyboard icon (#sttype, stType) opens it, the same door the hero
+       view already uses. Checked against the build before tonight's
+       change first: there #stsrc already held these rows with nothing
+       pressed, so this fails there and is the real thing tonight's
+       change moved. */
+    const rest = await q.evaluate(() => ({ srcText: (document.getElementById('stsrc') || {}).innerHTML || '',
+      box: !!document.getElementById('sttext') }));
+    ok(!rest.srcText.trim() && !rest.box, 'at rest on the Dashboard the face field holds no text and the box is shut: ' + JSON.stringify(rest));
+    await q.evaluate(() => { stType(); });
     const rowsOf = () => q.evaluate(() => [...document.querySelectorAll('#stsrc [data-srcvrow]')].map(r => {
       const b = r.getBoundingClientRect();
       return { seat: r.getAttribute('data-srcvrow'), line: r.querySelector('.ob-rowp').textContent, h: b.height,
@@ -753,6 +766,9 @@ require('./net.js').guardBrowser(browser);
     const m = await open(browser, 390, 844);
     await m.evaluate(() => { STV.dash = true; stRender(); });
     for (const t of ['I was afraid all night.', 'I felt so guilty about it.']) { await m.evaluate(t => srcTurnCommit(t), t); await m.waitForTimeout(80); }
+    /* same door as the desktop leg above: the panel is behind the keyboard
+       icon now, not standing open under the face */
+    await m.evaluate(() => { stType(); });
     const mf = await m.evaluate(() => { const v = document.querySelector('#stsrc .src-v'); if (v) v.scrollIntoView();
       const bs = [...document.querySelectorAll('#stsrc [data-srcv]')].map(x => x.getBoundingClientRect());
       return { sw: document.documentElement.scrollWidth, w: innerWidth, n: bs.length, tap: bs.every(b => b.height >= 44), inside: bs.every(b => b.right <= innerWidth + 0.5 && b.left >= -0.5) }; });
