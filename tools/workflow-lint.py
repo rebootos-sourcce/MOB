@@ -109,6 +109,7 @@ BROWSER = {
     'voice':         ('node tests/voice.js', 20),
     'journey2':      ('node tests/journey2.js', 20),
     'onboarding2':   ('node tests/onboarding2.js', 20),
+    'srcintro':      ('node tests/srcintro.js', 20),
     'sniffpage':     ('node tests/sniffpage.js', 20),
     'srcchat':       ('node tests/srcchat.js', 20),
     'practitioner':  ('node tests/practitioner.js', 20),
