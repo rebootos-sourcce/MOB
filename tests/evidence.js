@@ -376,7 +376,7 @@ g('SK11 and SK12 · srcOutputV1Candidate, the package\'s one candidate shape, re
  ok(cand.coherent_evidence.length===1&&cand.coherent_evidence[0]==='w1:calm','coherent_evidence carries the entry\'s coherent mark, got '+JSON.stringify(cand.coherent_evidence));
  ok(cand.state===solar.seam,'state is the ledger\'s own seam word, never a second vocabulary, got '+cand.state+' for seam '+solar.seam);
  ok(cand.id==='candidate-seat:solar'&&typeof cand.concept==='string'&&cand.concept.length>0,'id and concept are both real, got '+cand.id+' / '+cand.concept);
- ok(Array.isArray(cand.alternatives)&&cand.alternatives.length===0,'alternatives is honestly empty, SK3 not built, never a guess');
+ ok(Array.isArray(cand.alternatives)&&cand.alternatives.length===0,'alternatives is honestly empty, nothing reads a second seat for the same words, never a guess');
  ok(Array.isArray(cand.law_candidate_ids)&&cand.law_candidate_ids.length===0,'law_candidate_ids is honestly empty, nothing here maps a claim to a law id');
  ok(cand.chakra_candidates.length===0,'CHAKRA_CANDIDATES, SK8\'s own rule: a bare candidate names no place, got '+JSON.stringify(cand.chakra_candidates));}
 {const Lc=evLedger('I felt angry at him.',[],{verdicts:[{seat:'solar',v:'yes'}]});
@@ -389,6 +389,28 @@ g('SK11 and SK12 · srcOutputV1Candidate, the package\'s one candidate shape, re
  ok(inferred.state==='inferred'&&!inferred.seam,'an inferred claim carries no seam word, the ledger\'s own source_delta=0 case');
  ok(srcOutputV1Candidate(inferred,Li)===null,'and the adapter returns null for it rather than a candidate with nothing real to show, got '+JSON.stringify(srcOutputV1Candidate(inferred,Li)));
  ok(srcOutputV1Candidate(null,Li)===null&&srcOutputV1Candidate(undefined,Li)===null,'no claim at all is also null, never a thrown error');}
+
+g('EV11 · SK3, behaviour is evidence on the ledger and never a claim, on the whole story bank');
+{const {srcBehave}=E;
+ let rows=0, byKind={}, bad=[];
+ CORPUS.forEach(t=>{const L=evLedger(t,[],{}), h=srcHear(t,null);
+  const b=L.ev.filter(x=>x.src==='behave');
+  rows+=b.length; b.forEach(x=>byKind[x.behave]=(byKind[x.behave]||0)+1);
+  b.forEach(x=>{if(x.seat!==null||t.slice(x.s,x.e)!==x.text)bad.push(JSON.stringify(x));});
+  if(Object.keys(L.claims).sort().join()!==h.seats.map(s=>s.seat).sort().join())bad.push('claims differ from srcHear in '+JSON.stringify(t.slice(0,40)));
+  Object.values(L.claims).forEach(c=>{if(c.ev.some(id=>id[0]==='b'))bad.push(c.seat+' cites a behaviour row');});
+  Object.keys(L.behave).forEach(k=>L.behave[k].forEach(id=>{const x=L.ev.find(r=>r.id===id);if(!x||x.said!=='said'||x.behave!==k)bad.push('behave list '+k+' '+id);}));
+  const spans={}; L.ev.filter(x=>x.src!=='mark'&&x.src!=='earlier').forEach(x=>{const key=x.s+'|'+x.e+'|'+(x.dim||x.kind);
+   if(spans[key])bad.push('one span twice for one dimension: '+x.text); spans[key]=1;});});
+ ok(rows>0,'the bank carries behaviour at all, '+rows+' rows');
+ ok(bad.length===0,'every row seatless and the person\'s own letters, no claim cites one, claims are srcHear\'s, one span is one piece of evidence, off: '+bad.slice(0,3).join(' | '));
+ console.log('  behaviour rows on the bank by kind: '+JSON.stringify(byKind));
+ const L=evLedger("I keep avoiding things lately.\nNothing. I just want to disappear into my man cave.",[],{});
+ ok(L.ev.some(x=>x.src==='cue'&&x.kind==='feeling'&&x.text==='want to disappear')&&L.ev.some(x=>x.src==='behave'&&x.behave==='withdrawal'&&x.text==='want to disappear'),
+  'a span that is a feeling and a behaviour is kept as both, measured on the first cut, which dropped the feeling');
+ ok(L.ev.some(x=>x.src==='cue'&&x.text==='I keep')&&L.behave.avoidance&&L.behave.withdrawal,'and "I keep" stands beside "avoiding", '+JSON.stringify(L.behave));
+ ok(JSON.stringify(srcBehave('My mum kept putting things off.').map(r=>r.said))==='["other"]'&&!evLedger('My mum kept putting things off.',[],{}).behave.delay,
+  'someone else\'s behaviour is kept as theirs and is not listed as the writer\'s');}
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

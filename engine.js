@@ -21879,6 +21879,189 @@ var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
 var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
  'my','a','an','the','this'];
 function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
+
+/* ============================================================
+   WHAT A PERSON DOES, READ AS BEHAVIOUR AND NEVER AS A SEAT. TASKS.md SK3,
+   the signal extractor. Measured on the 4 October document's own section 40
+   session before this, five turns: "I keep avoiding things lately", "I put
+   things off, then I feel guilty", "That I'm lazy". The lexicon is a
+   feelings table, so "avoiding", "put things off" and "lazy" read at no
+   seat, which is right, and as no evidence either, which is the gap: only
+   "I keep" and "when" survived, as srcDims cues. The document is built on
+   behaviour coming before labels, and the behaviours it is built on were
+   the one thing the instrument could not hear.
+
+   SIX KINDS, the six TASKS.md names, and a stated list for each, so a person
+   and a reviewer can both see why a row fired. Whole words on normMap's own
+   copy, written without apostrophes the way SRC_DIM_CUE is.
+
+     avoidance         not going near the thing
+     withdrawal        taking yourself away from people
+     inhibited_speech  the words that were not said
+     loss_of_control   the thing that went off
+     delay             going near it later
+     self_judgement    the verdict the person gives themselves
+
+   NEVER A SEAT, AND THAT IS STRUCTURAL, NOT A PROMISE. A row is never put
+   into parseStory's hits, so pathOf, the bands, srcHear and the field
+   cannot see it. Some of these words do also read at a seat, by the
+   lexicon's own rows: "snapped" at the solar plexus, "said nothing" at the
+   throat, "put it off" at the root. Those reads are the feeling channel's
+   and are untouched here; this is a second channel beside it, and the gate
+   holds parseStory identical whatever this table says.
+
+   PUT OFF IS DELAY HERE, AND THE OLDER TABLES CALL IT AVOIDANCE. PHRASES in
+   engine/lexicon.js labels "put it off" avoidance and VERPCUE files it under
+   averse. The section 40 session writes "avoiding" and "put things off" as
+   two observations in two turns, and TASKS.md names avoidance and delay as
+   two behaviours, so here the one is not going near it and the other is
+   going near it later. The PHRASES label was not renamed to match: PHRASES
+   is inside LEX_VERSION's hash (engine/sniff.js), so a relabel would restamp
+   every stored entry as read by a different lexicon for a word that moves
+   no seat. Named so nobody has to find it.
+
+   NOT IN LEX_VERSION, on purpose. That hash covers the tables a match, an
+   amount or a seat is read from. This moves none of the three, and nothing
+   it returns is stored: the ledger is derived on every read.
+
+   SELF JUDGEMENT IS A FRAME AND A WORD. "lazy" alone is a word about anyone;
+   "I'm lazy" is a verdict. So it is read only after a first person frame,
+   SRC_JUDGE_FRAME, with degree words and an article stepped over the way
+   srcDims steps them after a feel verb, so "I'm so lazy" and "I am such a
+   failure" read and "she called me lazy" does not. "not" and "never" may be
+   stepped over too, and then the row is the person's no and is said so.
+   ============================================================ */
+var SRC_BEHAVE_ORDER=['avoidance','withdrawal','inhibited_speech','loss_of_control','delay','self_judgement'];
+var SRC_BEHAVE={
+ avoidance:['avoid','avoids','avoided','avoiding','stay away from','stayed away from','staying away from',
+  'steer clear','steered clear','steering clear','dodge','dodged','dodging','went around it','go around it',
+  'changed the subject','change the subject','made an excuse','made excuses','make excuses','making excuses',
+  'got out of it','get out of it','dont want to deal','didnt want to deal','did not want to deal',
+  'not dealing with','pretend it is not','pretended it was not','pretend its not','pretended it wasnt'],
+ withdrawal:['withdrawn','withdrew from','withdraw from','withdrawing from','pulled away',
+  'pull away','pulling away','pulled back from','shut myself away','shut myself in','shut everyone out',
+  'shut people out','i shut down','i just shut down',
+  'isolated myself','isolate myself','isolating myself','isolating','kept to myself','keep to myself',
+  'keeping to myself','retreated','retreat into','retreating','hid in','hide in','hiding in','hid away',
+  'hide away','hiding away','hide from','hid from','hiding from','stayed in bed','stay in bed','staying in bed',
+  'stayed in my room','stayed home','stay home','cancelled plans','canceled plans','cancel plans',
+  'cancelled on','canceled on','want to disappear','wanted to disappear','wish i could disappear',
+  'just disappear','disappear into','i disappeared','i disappear','stopped answering','stopped replying',
+  'stopped calling','stopped going','turned my phone off','went off the grid','ghosted'],
+ inhibited_speech:['said nothing','say nothing','didnt say','did not say','didnt tell','did not tell',
+  'never told','never said','couldnt say','could not say','couldnt speak','could not speak','cannot speak',
+  'cant speak','couldnt get the words out','could not get the words out','kept quiet','keep quiet',
+  'stayed quiet','stay quiet','went quiet','went silent','kept my mouth shut','kept my mouth','bit my tongue',
+  'held my tongue','swallowed my words','held it in','holding it in','kept it in','kept it inside',
+  'bottled it up','bottle it up','bottling it up','held back from','holding back from',
+  'didnt speak up','did not speak up','never speak up','never spoke up','couldnt speak up',
+  'could not speak up','afraid to say','scared to say','afraid to speak','scared to speak',
+  'too afraid to ask','too scared to ask'],
+ loss_of_control:['lost control','lose control','losing control','out of control','lost it','lose it',
+  'losing it','lost my temper','lose my temper','losing my temper','snapped','snap at','snapping at',
+  'blew up','blow up','blowing up','i exploded','i just exploded','flipped out','freaked out','had a meltdown','melted down',
+  'could not stop','couldnt stop','cannot stop','cant stop','could not control','couldnt control',
+  'cant control','cannot control','could not help myself','couldnt help myself','lashed out','lash out',
+  'went off at','went off on','screamed at','yelled at','shouted at','slammed the door','i broke down','broke down crying','broke down in tears',
+  'spiralled','spiraled','spiralling','spiraling','overreacted','got carried away','binged'],
+ delay:['put it off','put that off','put things off','put everything off','puts it off','puts things off',
+  'putting it off','putting that off','putting things off','putting everything off','putting off',
+  /* "postponed" alone is left out: it is mostly passive, "the meeting got
+     postponed by them", and whoOf reads only backward, so the agent after
+     the verb is never seen and the delay landed on the writer. Measured. */
+  'i put off','keep postponing','postpone','i postponed','postponing','procrastinate','procrastinated',
+  'procrastinating','procrastination','i stalled','kept stalling','keep stalling','left it too late',
+  'leave it too late','left it until','leave it until','leaving it until','left it to the last minute',
+  'leave it to the last minute','leaving it to the last minute','waited too long','wait too long',
+  'kept waiting until','keep waiting until','waiting to feel ready','still havent','never got around to',
+  'never get around to','havent got around to','keep meaning to','kept meaning to','been meaning to',
+  'missed the deadline','miss the deadline','i was late again','im late again','running late again'],
+ self_judgement:['hate myself','hated myself','blame myself','blamed myself','beat myself up',
+  'beating myself up','my fault','my own fault','should have known','should have known better',
+  'whats wrong with me','what is wrong with me','disappointed in myself','ashamed of myself',
+  'disgusted with myself','i ruin everything','i ruined everything','i always mess','i always screw',
+  'cant do anything right','cannot do anything right','never do anything right','never get anything right']};
+/* the frame and the words of a verdict, see the header. */
+var SRC_JUDGE_FRAME=['im','i am','i was','i feel','i felt','i must be','im being','i am being','i was being'];
+var SRC_JUDGE=['lazy','stupid','useless','worthless','pathetic','failure','idiot','loser','weak','dumb',
+ 'selfish','hopeless','burden','mess','fraud','disappointment','incompetent','embarrassment','coward',
+ 'not good enough','never good enough'];
+/* stepped over between a frame and a verdict: the degree words, an article,
+   and the two words of a no, which then mark the row the person's no */
+var SRC_JUDGE_STEP=['such','a','an','just','too','being','bit','total','complete','not','never'];
+/* which of srcDims's dimensions each kind answers. Five say what the person
+   did. A verdict on yourself is a rule held about yourself, which is what
+   srcDims's own belief cues already read ("i should", "i always", "i
+   never"), so it answers belief and leaves "What did you do?" open. */
+var SRC_BEHAVE_DIM={avoidance:'behaviour', withdrawal:'behaviour', inhibited_speech:'behaviour',
+ loss_of_control:'behaviour', delay:'behaviour', self_judgement:'belief'};
+/* EVERY BEHAVIOUR IN AN ENTRY, in the order written. Each row is
+   {behave, dim, cue, at, s, e, said, who?, unclear?}: at is the leading space
+   in normMap's copy, which is what a sniffer hit's at is, s to e the raw
+   letters, so text.slice(s,e) is what was typed, and said is one of the
+   three words a mark already uses. Pure, reads only the text.
+
+   ONE MATCHER RULE, THE SNIFFER'S: a longer phrase outranks the words inside
+   it, so "could not stop" is one row and "stop" inside it is not a second.
+   Longest first, then earliest, a span already taken is skipped.
+
+   THREE READERS, ALL PORTED, NONE WRITTEN HERE. The rows are handed to
+   sniffDeny, sniffTense and sniffWho (engine/sniff.js) exactly as a feeling
+   word's hit is, because each of them takes a list of {at, t} on this same
+   copy and flags it. So "I never avoid it" is denied by srcNegated's own
+   window, "If I lost control I would hate it" by the conditional, and "she
+   keeps avoiding me" is someone else's by whoOf's backward scan. A phrase
+   that carries its own no, "didnt say", keeps it: the window reads only the
+   words before a row's first word, which is the rule "cant sleep" already
+   has. A verdict whose frame stepped over a no is denied here, because the
+   no sits inside the row where no window looks. */
+function srcBehave(text,nm){
+ var t=String(text||''); nm=nm||normMap(t);
+ var src=nm.s, found=[];
+ if(!src.trim())return [];
+ SRC_BEHAVE_ORDER.forEach(function(k){
+  SRC_BEHAVE[k].forEach(function(c){
+   var needle=' '+c+' ', from=0, i;
+   while((i=src.indexOf(needle,from))>=0){from=i+1; found.push({behave:k, cue:c, at:i, len:c.length});}});});
+ /* the verdicts: a frame, then any of the step words, then a verdict word */
+ SRC_JUDGE_FRAME.forEach(function(f){
+  var needle=' '+f+' ', from=0, i;
+  while((i=src.indexOf(needle,from))>=0){from=i+1;
+   /* a verdict is tried at each word BEFORE that word is stepped over,
+      because "not good enough" is itself a verdict: stepping "not" first
+      read "I'm not good enough" as the person's no to one. */
+   var j=i+needle.length, no=false, hit=null;
+   while(!hit){
+    for(var q=0;q<SRC_JUDGE.length&&!hit;q++)if(src.indexOf(SRC_JUDGE[q]+' ',j)===j)hit=SRC_JUDGE[q];
+    if(hit)break;
+    var nx=src.indexOf(' ',j); if(nx<0)break;
+    var w=src.slice(j,nx);
+    if(SRC_JUDGE_STEP.indexOf(w)<0&&LEXMOD[w]===undefined)break;
+    if(SRC_NEG.indexOf(w)>=0)no=true;
+    j=nx+1;}
+   if(!hit)continue;
+   var len=j+hit.length-(i+1);
+   found.push({behave:'self_judgement', cue:src.slice(i+1,i+1+len), at:i, len:len, no:no});}});
+ found.sort(function(a,b){return (b.len-a.len)||(a.at-b.at);});
+ var taken=[], rows=[];
+ found.forEach(function(h){
+  var a=h.at, b=h.at+1+h.len;
+  if(taken.some(function(x){return a<x[1]&&x[0]<b;}))return;
+  taken.push([a,b]);
+  rows.push({behave:h.behave, dim:SRC_BEHAVE_DIM[h.behave], cue:h.cue, at:h.at, t:h.cue, no:!!h.no,
+   s:nm.map[h.at+1], e:nm.map[h.at+h.len]+1});});
+ rows.sort(function(a,b){return a.at-b.at;});
+ /* the sniffer's own readers, in parseStory's order: the no, then the
+    tense, then whose. Each writes neg or other onto the row it is handed. */
+ sniffDeny(t,nm,rows);
+ sniffTense(t,nm,rows);
+ sniffWho(t,nm,rows);
+ return rows.map(function(h){
+  var r={behave:h.behave, dim:h.dim, cue:h.cue, at:h.at, s:h.s, e:h.e,
+   said:(h.neg||h.no)?'denied':(h.other?'other':'said')};
+  if(h.other&&h.who)r.who=h.who;
+  if(h.unclear)r.unclear=true;
+  return r;});}
 /* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
    the cue that answered it, which is the because, and the open ones in the
    order above. Pure, and reads nothing but the text. */
@@ -21926,6 +22109,14 @@ function srcDims(text){
   if(w!=='i')return;
   var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
   if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
+ /* the behaviours srcBehave reads, SK3, each answering the dimension
+    SRC_BEHAVE_DIM gives it. A row with a no still answers, by the rule at
+    the head of this block: "I did not avoid it" says what the person did.
+    Someone else's does not: "she kept avoiding me" says nothing about what
+    the writer did, and counting it would skip "What did you do?" for a
+    person who has not said. The cue is the row's own words on normMap's
+    copy, so the ledger can find the span it came from. */
+ srcBehave(t,nm).forEach(function(r){if(r.said!=='other')say(r.dim,r.cue);});
  var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
  /* safe says srcNext may not ask, see srcTurn: a person who wrote about
     ending their life is not asked what their body did */
@@ -22142,7 +22333,7 @@ function evCueRows(t,dims,nm){
    Pure: reads nothing else and writes nothing, the field included. */
 function evLedger(text,entries,o){
  o=o||{};
- var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[]};
+ var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[], behave:{}};
  var prior=srcPrior(entries||[]);
  var heard=srcHear(t,prior,o.active||null);
  var p=t.trim()?parseStory(t):null, nm=normMap(t);
@@ -22154,9 +22345,30 @@ function evLedger(text,entries,o){
   out.ev.push({id:'w'+i, src:'mark', s:m.s, e:m.e, text:t.slice(m.s,m.e),
    seat:m.seat||null, kind:m.seat?'seat':(m.coh?'coherent':'word'),
    said:m.neg?'denied':(m.other?'other':'said'), state:'observed'});});
- /* EVIDENCE, the cues */
+ /* EVIDENCE, the behaviours, SK3. srcBehave's rows, each with the kind of
+    behaviour it is and whether the writer said it, said it with a no, or
+    said it about someone else, read by the sniffer's own three readers.
+    seat is null on every one and none is ever a claim: that is the whole
+    of "evidence, never a seat". out.behave lists, by kind, the ids of the
+    rows the writer said as their own, which is what a caller asks first. */
+ var beh=t.trim()?srcBehave(t,nm):[], bspan={};
+ out.behave={};
+ beh.forEach(function(r,i){
+  bspan[r.s+'|'+r.e+'|'+r.dim]=1;
+  var x={id:'b'+i, src:'behave', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:'behaviour', behave:r.behave, dim:r.dim, cue:r.cue, said:r.said, state:'observed'};
+  if(r.who)x.who=r.who;
+  out.ev.push(x);
+  if(r.said==='said')(out.behave[r.behave]=out.behave[r.behave]||[]).push(x.id);});
+ /* EVIDENCE, the cues. srcDims now answers from the behaviour rows too, so
+    a cue on exactly a behaviour row's span, for the dimension that row
+    answers, is that row said a second time, and stands aside for it. The
+    same span for another dimension is kept: "want to disappear" is a
+    feeling the lexicon reads at the heart AND a withdrawal, and the first
+    cut of this filter dropped the feeling cue with the duplicate. A cue on
+    any other span is kept, "I keep" beside "avoiding" included. */
  var dims=t.trim()?srcDims(t):null;
- evCueRows(t,dims,nm).forEach(function(r,i){
+ evCueRows(t,dims,nm).filter(function(r){return !bspan[r.s+'|'+r.e+'|'+r.kind];}).forEach(function(r,i){
   out.ev.push({id:'c'+i, src:'cue', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
    kind:r.kind, cue:r.cue, said:'said', state:'observed'});});
  /* EVIDENCE, earlier entries, as the seat keys their commits stored and
@@ -22267,9 +22479,13 @@ function evLedger(text,entries,o){
    corrected only): the package's own words, "Do not map to a chakra
    as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
    are both empty: nothing in this engine maps a claim to a specific
-   law id, and the alternative-reading extractor is SK3, the largest
-   named gap, not built. Empty here is the honest state of what is not
-   built yet, not a placeholder standing in for a guess. */
+   law id, and nothing reads a second seat for the same words. This
+   said the alternative-reading extractor was SK3, and that was wrong
+   once SK3 was built, 16 November: SK3 reads behaviour, which has no
+   seat, so a behaviour row is never an alternative reading of a seat.
+   It lives on the ledger, out.behave, and not in this shape. Empty here
+   is the honest state of what is not built yet, not a placeholder
+   standing in for a guess. */
 function srcOutputV1Candidate(c,out){
  if(!c||!c.seam)return null;
  var ev=(out&&out.ev)||[];
@@ -27012,6 +27228,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
+                 SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
+                 SRC_JUDGE:SRC_JUDGE, SRC_JUDGE_FRAME:SRC_JUDGE_FRAME, SRC_JUDGE_STEP:SRC_JUDGE_STEP, srcBehave:srcBehave,
   /* the stop */  SAFE_WORDS:SAFE_WORDS, SAFE_SAY_V:SAFE_SAY_V, SAFE_WORK:SAFE_WORK, SAFE_TOPIC:SAFE_TOPIC,
                  SAFE_ABOUT:SAFE_ABOUT, srcSafe:srcSafe, safeOf:safeOf,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
