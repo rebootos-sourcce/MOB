@@ -200,7 +200,7 @@ function planBuyable(k){
    release. Billing's tiers (ui/plans.js) ask the same question since 24 October
    and say "Opens soon" where each Move to sat; until then they kept their
    presses, and each one could only be refused (P2-1 of the 23 October QA pass). */
-const PLAN_CHECKOUT_OPEN=false;
+const PLAN_CHECKOUT_OPEN=true;
 function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
 /* WHETHER THE RECORD NAMES A PAID TIER, live or ended, 24 October. The plan
    sheet offered Manage billing to everybody, and a person who had never paid
