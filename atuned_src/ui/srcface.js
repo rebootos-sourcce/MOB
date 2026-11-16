@@ -70,8 +70,8 @@
        has no browser voice.
     6  THE MOUNT is the canvas-wrap inside #stuni, Uni's own box, done by
        uniMount (ui/uni.js) when the target is #stuni, which pauses Uni's
-       loop and hides her canvas there. Every other mount of her, the boot
-       intro, is untouched.
+       loop and hides her canvas there. The boot intro's #bootuni is the
+       same kind of mount and takes the same route, 16 November.
 
    KNOWN GAPS, said rather than papered over:
     a  The person's own words have no timing anywhere in the product. A
