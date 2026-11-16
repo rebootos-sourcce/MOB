@@ -89,6 +89,8 @@
    ============================================================ */
 'use strict';
 const { chromium } = require('playwright');
+/* the intro between the door and the first card, walked: tests/intro.js */
+const { throughIntro } = require('./intro.js');
 const fs = require('fs'), path = require('path'), os = require('os'), http = require('http'), zlib = require('zlib');
 const ROOT = path.resolve(__dirname, '..');
 const APP = path.resolve(process.env.ATUNED_FILE || path.join(ROOT, 'source.html'));
@@ -1087,6 +1089,7 @@ async function door(browser, SITE, cut, giftAt) {
   await O.click('#loginb-new');
   await O.click('#loginb-new');
   await po2.waitForFunction(() => typeof LOGIN !== 'undefined' && !LOGIN.open, null, { timeout: 15000 }).catch(() => {});
+  await throughIntro(po2, 8000);
   ok(!!await O.waitSaid(/Account created\. Signed in as /, 6000), 'the press says the account is made and who is signed in');
   const obOn = await po2.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 8000 }).then(() => true, () => false);
   ok(obOn, 'behind the door the first run opens');
@@ -1201,6 +1204,7 @@ async function door(browser, SITE, cut, giftAt) {
     /* FIRST PRESS SWITCHES, SECOND SENDS, 13 November - see station 3's own note. */
     await O2.click('#loginb-new');
     await O2.click('#loginb-new');
+    await throughIntro(O2.page, 15000);
     await O2.page.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 15000 }).catch(() => {});
     await O2.page.waitForTimeout(800);
     const a2 = Object.values(w2.st.acc)[0] || {}, f2 = Object.values(w2.st.fun);

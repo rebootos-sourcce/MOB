@@ -80,6 +80,8 @@
    Run from the repository root. Exits non zero on any failure.
    ============================================================ */
 const {chromium}=require('playwright');
+/* the intro between the door and the first card, walked: tests/intro.js */
+const {throughIntro}=require('./intro.js');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 let PASS=0,FAIL=0;
@@ -112,6 +114,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     app's own dev harness does rather than drive a real sign in here. */
  await page.waitForSelector('#loginb-go',{timeout:8000});
  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();});
+ await throughIntro(page);
  await page.waitForTimeout(300);
  const opened=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
  ok(opened,'a fresh profile meets the onboarding sheet behind the real door');
@@ -415,6 +418,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   'every answer comes back after the reload, linked to the same addresses and entry: '+vback.length);
  await page.waitForSelector('#loginb-go',{timeout:8000}).catch(()=>{});
  await page.evaluate(()=>{if(typeof LOGIN!=='undefined'&&LOGIN.open){loginClose(); if(typeof loginEnter==='function')loginEnter();}});
+ await throughIntro(page,600);
  await page.waitForTimeout(300);
  /* and the next visit opens that end card, never the welcome again (F13) */
  const replay=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:OB.step,end:OB_END}));
@@ -871,7 +875,7 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(JSON.stringify(acts)==='["Log in","Create account"]','its two ways in are unchanged, Guest removed'+at+', '+JSON.stringify(acts));
 
   /* the first run's stage, every step, and the Story page it can reach */
-  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(500);
+  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page); await page.waitForTimeout(500);
   ok(await none('#ob [data-crisis]')&&await none('#ob .obx-crx'),'no crisis door anywhere on the first run\'s stage'+at);
   const arrive=await page.evaluate(()=>({h:(document.querySelector('#ob .ob-card .ob-h')||{}).textContent,
    acts:[...document.querySelectorAll('#ob .ob-card .ob-acts .btn')].map(b=>b.textContent)}));

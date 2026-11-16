@@ -63,6 +63,8 @@
    Run from the repository root. Exits non zero on any failure.
    ============================================================ */
 const {chromium}=require('playwright');
+/* the intro between the door and the first card, walked: tests/intro.js */
+const {throughIntro}=require('./intro.js');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 let PASS=0,FAIL=0;
@@ -204,7 +206,7 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));
   await page.goto(FILE,{waitUntil:'load'}); await booted(page);
   await page.waitForSelector('#loginb-go',{timeout:8000});
-  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(300);
+  await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page); await page.waitForTimeout(300);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
   await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);

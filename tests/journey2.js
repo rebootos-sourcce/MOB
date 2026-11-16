@@ -41,6 +41,8 @@
    is how its mutants are run. Exits non zero on any failure.
    ============================================================ */
 const {chromium}=require('playwright');
+/* the intro between the door and the first card, walked: tests/intro.js */
+const {throughIntro}=require('./intro.js');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 const WIDTHS=(process.env.JY2_WIDTHS||'1600x1000,390x844').split(',').map(s=>s.split('x').map(Number));
@@ -103,7 +105,7 @@ for(const [W,H] of WIDTHS){
     reload meets the door again, so every reload comes back through it. */
  const door=async()=>{await booted(page);
   const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
-  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(350);}};
+  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page,600); await page.waitForTimeout(350);}};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
  /* FROM WHEREVER THE SHEET IS, ON TO A STEP, the way a person would press it.
     Used after a reload that did not resume, so the walk can go on and every
@@ -328,7 +330,7 @@ console.log('\n=== a walk the tutorial door left: the same resume, the same end 
  const rec=()=>page.evaluate(()=>(typeof CURP!=='undefined'&&CURP&&CURP.journey)?JSON.parse(JSON.stringify(CURP.journey)):null);
  const door=async()=>{await booted(page);
   const open=await page.evaluate(()=>typeof LOGIN!=='undefined'&&LOGIN.open);
-  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await page.waitForTimeout(350);}};
+  if(open){await page.evaluate(()=>{loginClose(); if(typeof loginEnter==='function')loginEnter();}); await throughIntro(page,600); await page.waitForTimeout(350);}};
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  const made=await page.evaluate(story=>{
   const lg=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});

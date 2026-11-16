@@ -47,6 +47,8 @@
    ============================================================ */
 const fs=require('fs'), path=require('path');
 const {chromium}=require('playwright');
+/* the intro between the door and the first card, walked: tests/intro.js */
+const {throughIntro}=require('./intro.js');
 const ROOT=path.resolve(__dirname,'..');
 const SRC=path.resolve(process.env.ATUNED_FILE||path.join(ROOT,'source.html'));
 const QUIZ=path.join(ROOT,'funnel','quiz.html');
@@ -87,6 +89,7 @@ async function arrive(browser,payload,W,H){
     is gone (12 November, his own instruction), and this gate never tests
     login itself, only what is past it */
  await pg.evaluate(()=>{if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function'){loginClose(); if(typeof loginEnter==='function')loginEnter();}});
+ await throughIntro(pg,600);
  await pg.waitForTimeout(500);
  await pg.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:6000}).catch(()=>{});
  await pg.waitForTimeout(800);
