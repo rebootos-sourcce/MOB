@@ -5082,6 +5082,18 @@ body.tab-story.st-full .st-ed.dash{flex:0 8 11em;min-height:5em;height:auto;
  width:90%;margin:10px auto 0;font-size:15px;line-height:1.5}
 body.tab-story.st-full .st-ed.dash .st-ta,
 body.tab-story.st-full .st-ed.dash .st-hl{min-height:0;height:100%;padding:12px 14px}
+/* THE BOX ONLY EVER SHOWS OPEN NOW, 16 November (tonight). It used to be
+   rendered here whether or not a person had pressed the keyboard icon,
+   so the 11em/5em floor above was sized for a box squeezed under the
+   face at rest, as small as the layout could make it. It no longer
+   renders at all unless a person opened it (ui/storyui.js, the box's
+   own gate), so '.dash' in the markup now always carries 'open' beside
+   it, and the box deserves the room a deliberate press earns it: real
+   room to read the marked words in, not the rest state's own floor.
+   Still a shrink, not a height, same reason as above: a short window
+   gives the face's own column (the chain line, the verdict rows) room
+   first, collide.js's own case. */
+body.tab-story.st-full .st-ed.dash.open{flex:1 6 16em;min-height:8em}
 /* and #stsrc, which held .src-mine, now holds only the set aside and chain
    notes, and on most entries neither: empty, its pinstripe drew a bare
    pill between the face and the box, seen on the first screenshot after */
