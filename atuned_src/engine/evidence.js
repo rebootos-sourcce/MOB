@@ -62,9 +62,12 @@
    that is the narrow reading of DESIGN-sniffer.md question 12, which is
    still the owner's. An evidence row holds offsets into the text the person
    is writing; the letters are sliced for a caller and never kept a second
-   time. A verdict is page memory in P0, passed in by the caller, and nothing
-   here reaches the record. Keeping a verdict on the entry is P2, an additive
-   field beside ob.yes and ob.no, and it is not built.
+   time. A verdict is page memory in P0, passed in by the caller, and the
+   ledger itself never reaches the record. Since 16 November (SK1) the
+   entry keeps a seat key and an answer for each verdict, through evKept
+   below and the boundary's vEntryVerdicts, and still never a correction's
+   own words: EV_KEEP_FIX says why. Nothing reads them back into a later
+   entry's ledger yet; srcPrior still carries seat keys and counts only.
 
    THE ENGINE MAY NOT TOUCH THE HOST, and this file does not.
    ============================================================ */
@@ -309,6 +312,52 @@ function evVerdict(verdicts,seat,v,fix){
  var r=evVerdictOk(x);
  if(!r.ok)return {ok:false, why:r.why, verdicts:(verdicts||[]).slice()};
  return {ok:true, verdicts:(verdicts||[]).concat([x])};}
+/* WHAT AN ENTRY KEEPS OF THE PERSON'S ANSWERS, TASKS.md SK1, 16 November.
+   Until this a verdict was page memory and srcFresh threw it away at
+   Commit, so a no given in the Journal was gone by the next entry and the
+   record could never say a reading had been turned down. obCommit has kept
+   the mirror's yes and no on the entry since round QB (ob.yes, ob.no in
+   engine/schema.js); this is the Journal's twin, a seat key and an answer.
+
+   NOT INSIDE ob. vEntryOb says why in its own words: ob is what the
+   onboarding sheet was told, and an ob on an entry the Journal committed
+   would claim the person was shown a mirror they never saw. So it is its
+   own key, verdicts, beside ob, held to the same rules.
+
+   ONE ROW A SEAT, THE LAST ANSWER, because the ledger reads them that way
+   (last one wins, evLedger above): a person who said no and then yes to the
+   same seat said yes. Kept in the order each seat was first answered, so it
+   is a property of what they did and not of object key order.
+
+   ONLY A SEAT THIS ENTRY READ. ledger is the one the page drew the control
+   from (srcLedgerNow, ui/storyui.js), and a verdict about a seat with no
+   words in it is about some other text: SRC_VERDICTS is cleared by srcFresh
+   and not by anything that swaps ST_TEXT under it, so a stale answer must
+   never land on an entry it was not given about. A refused verdict was
+   never applied and is not kept either.
+
+   THE CORRECTION'S OWN WORDS ARE NOT KEPT, AND THAT IS ON PURPOSE. SK1's
+   own line: "a correction is the person's words stored a second time,
+   which needs saying in the privacy words first." Those words do not exist
+   yet, so EV_KEEP_FIX is false, a fix row keeps its seat and its answer and
+   nothing of what was typed, and the boundary refuses a fix field on read
+   by the same flag (vEntryVerdicts). The words still do their work for the
+   rest of the entry, in page memory, where every verdict lived before
+   this. Turning it on is one flag here, after the words are written, never
+   before. */
+var EV_KEEP_FIX=false;
+function evKept(verdicts,ledger){
+ var claims=(ledger&&ledger.claims)||{}, out=[], at={};
+ (verdicts||[]).forEach(function(v){
+  if(!evVerdictOk(v).ok)return;
+  var c=claims[v.seat]; if(!c||!(c.mentions>0))return;
+  var row={seat:v.seat, v:v.v};
+  if(v.v==='fix'&&EV_KEEP_FIX)row.fix=String(v.fix).trim();
+  if(at.hasOwnProperty(v.seat))out[at[v.seat]]=row;
+  else{at[v.seat]=out.length; out.push(row);}});
+ return out;}
+/* the most an entry can carry: one answer at every seat */
+function evKeptMax(){return Object.keys(K2BAND).length;}
 
 /* THE ORDER, strongest state first, then the most recent evidence in this
    entry, then the seat key, so it is a property of the text and never of

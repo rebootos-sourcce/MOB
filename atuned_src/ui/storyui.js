@@ -1638,6 +1638,12 @@ function stCommit(){
    imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
   var asked=srcAsked(SRC_LOG,ST_TEXT.length);
   if(asked.length)ent.asked=asked;
+  /* verdicts, what the person answered in the Journal, SK1: a seat key and
+     an answer, read off the ledger the control was drawn from, and never a
+     correction's own words (evKept, engine/evidence.js, says why). Missing
+     when nothing was answered, the way asked is. */
+  var vkept=evKept(SRC_VERDICTS,srcLedgerNow());
+  if(vkept.length)ent.verdicts=vkept;
   CURP.story.entries.push(ent);
   /* the entry's identity, handed back so a release planned off this entry can
      name it on the answer to What changed (relPick's from). STV.lastT sits
@@ -2160,9 +2166,11 @@ function srcSaidBefore(){
    when the text, the committed entries or the field's pattern do */
 var SRC_LEDGER=null, SRC_LEDGER_K='';
 /* THE PERSON'S ANSWERS IN THIS ENTRY, round SK: a spoken "that doesn't fit
-   me" is a no on the claim Source AI was on (srcTurnCommit). Page memory,
-   cleared with the entry by srcFresh, never kept: keeping a verdict is the
-   additive field TASKS.md SK1 names, not built. SRC_VENT is the person
+   me" is a no on the claim Source AI was on (srcTurnCommit), and since 16
+   November the Yes, Not me and Correct it control under their words (SK5,
+   srcVerdictHtml) is the other way in. Page memory, cleared with the entry
+   by srcFresh; what Commit keeps of it is a seat and an answer, evKept in
+   engine/evidence.js (SK1), and never a correction's words. SRC_VENT is the person
    asking to be heard and not asked, the package's VENT. */
 var SRC_VERDICTS=[], SRC_VENT=false;
 /* WHERE THE CONVERSATION'S SUBJECT STARTS, 31 October. An offset into
@@ -2284,7 +2292,7 @@ function srcLog(k,seat){
 /* a new entry is a new conversation: the built question quoted the last one.
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
  SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
@@ -2634,11 +2642,14 @@ function srcPaint(){
  var asideSentence=stAsideSay();
  var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p>'
   +(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine()+'</div>':'';
- o=mineHtml;
+ /* the person's answers sit under their words and outside the scrolled
+    box, which keeps its newest line in view on every paint, SK5 */
+ o=mineHtml+(turn.move==='safe'?'':srcVerdictHtml());
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
  h.innerHTML=o;
+ srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  srcLock(h);
  var mn=h.querySelector('.src-mine'); if(mn)mn.scrollTop=mn.scrollHeight;
@@ -3215,6 +3226,95 @@ function srcChainLine(){
   +esc(unpackOf('imprint'))+'</p>';
  if(stFound().length)o+='<p class="src-chain">Ready to release. '+esc(unpackOf('release'))+'</p>';
  return o;}
+/* YES, NOT ME AND CORRECT IT, IN THE JOURNAL, TASKS.md SK5, 16 November.
+   The engine door was built at round SK (evVerdict, engine/evidence.js) and
+   the only way through it was a no said in words, srcIntentLand: there was
+   no control, so a person could turn a reading down and never say one was
+   theirs. This is the onboarding mirror's row ported, not a new one: obRow
+   in ui/onboard.js, the same .ob-as group with an aria-label, the same
+   .ob-a buttons carrying .on and aria-pressed, the same status line under
+   an answer, and Correct it opening the same .ob-f box with the mirror's
+   own label and its own Read my correction.
+
+   WHAT DIFFERS FROM THE MIRROR, AND WHY. The mirror names an address,
+   because it is the sheet that asks. Here a place is said only about a
+   claim the person confirmed or corrected (point 7, engine/qcheck.js, and
+   EV_PLACEABLE), so a row before an answer says their own words back and
+   no place, and a Yes is what lets the place be said. One row a claim with
+   words in this conversation (srcLedgerNow, the ledger the ask is built
+   from), in the ledger's own order, so the control and the questions can
+   never be about two different readings. A row the person said Not me to
+   stays, pressed, so they can change their mind: EV_MOVES draws an arrow
+   out of every person state.
+
+   EVERY LINE IT SHOWS PASSES srcVetSay, the SK5 rule, and a line that
+   fails is dropped and never shown unchecked. A row whose own words line
+   fails has nothing true to say and is not drawn at all.
+
+   A CORRECTION'S WORDS LIVE ON THIS PAGE ONLY. They go through evVerdict
+   into SRC_VERDICTS, so the claim is corrected for the rest of the entry,
+   and at Commit evKept keeps the seat and the answer and not the words,
+   because SK1 says the privacy words must say so first (EV_KEEP_FIX). The
+   status line says that plainly, so the box never implies it keeps what
+   it does not. The words are not quoted back either: point 3 holds a quote
+   to letters in the entry, and a correction is not in it.
+
+   Built once for what it depends on, the way srcAskVetted is: the ledger,
+   the answers and the open box. srcPaint runs on every key. */
+var SRC_VFIX='', SRC_VFIXT='', SRC_VK='', SRC_VH='';
+var SRC_VSTAT={yes:'You said yes to this.',
+ no:'You said this is not you. Nothing more is asked about it in this entry. Commit keeps it on your record as a no.',
+ fix:'You said what it is instead. Commit keeps that you corrected it, and not the words you wrote here.'};
+function srcVerdictHtml(){
+ if(stSafe()||!ST_TEXT.trim())return '';
+ /* the theme is in the key because seatCol reads it, so a cached row
+    would otherwise keep the last theme's hairline after a switch */
+ var L=srcLedgerNow(), k=SRC_LEDGER_K+'\u0000'+JSON.stringify(SRC_VERDICTS)+'\u0000'+SRC_VFIX+'\u0000'+S.theme;
+ if(k===SRC_VK)return SRC_VH;
+ var ctx={text:srcConvText(), ledger:L}, rows='';
+ var vet=function(line,seat){return srcVetSay(line,ctx,seat).ok?line:'';};
+ (L.order||[]).forEach(function(seat){
+  var c=L.claims[seat]; if(!c||!(c.mentions>0))return;
+  var w=srcQuote(c.words), said=w?vet('You wrote '+w+'.',seat):''; if(!said)return;
+  var a=c.verdict?c.verdict.v:'', st=a&&SRC_VSTAT[a]?vet(SRC_VSTAT[a],seat):'';
+  var at=EV_PLACEABLE.indexOf(c.state)>=0?vet('It lands '+srcPlace(c.band)+'.',seat):'';
+  var b=function(v,nm,on){return '<button type="button" class="ob-a'+(on?' on':'')+'" aria-pressed="'+!!on
+   +'" data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+nm+'</button>';};
+  rows+='<div class="ob-row src-vrow" data-srcvrow="'+esc(seat)+'" style="--c:'+seatCol(c.band)+'">'
+   +'<p class="ob-p ob-rowp">'+esc(said)+(at?' '+esc(at):'')+'</p>'
+   +'<div class="ob-as" role="group" aria-label="'+esc(said)+'">'
+   +b('yes','Yes',a==='yes')+b('no','Not me',a==='no')+b('fix','Correct it',a==='fix'||SRC_VFIX===seat)+'</div>'
+   +(st?'<p class="ob-p ob-dim ob-rowst">'+esc(st)+'</p>':'')
+   +(SRC_VFIX===seat?'<div class="ob-f"><label for="srcvfix">Tell me what is off, in your own words.</label>'
+    +'<textarea id="srcvfix" rows="2">'+esc(SRC_VFIXT)+'</textarea>'
+    +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-srcvread="'+esc(seat)+'">Read my correction</button></div></div>':'')
+   +'</div>';});
+ var hd=vet('Say Yes to each one that fits you.',null);
+ SRC_VH=rows?'<div class="src-v" aria-label="What I read in your words">'
+  +(hd?'<p class="ob-p ob-dim">'+esc(hd)+'</p>':'')+rows+'</div>':'';
+ SRC_VK=k; return SRC_VH;}
+/* a press lands through evVerdict and nothing else, then the panel repaints
+   and the focus goes back to the control pressed, as obRenderKeep does */
+function srcVerdictWire(h){
+ var again=function(sel){srcPaint(); var x=document.querySelector(sel); if(x)x.focus();};
+ h.querySelectorAll('[data-srcv]').forEach(function(btn){btn.onclick=function(){
+  var v=btn.getAttribute('data-srcv'), seat=btn.getAttribute('data-seat');
+  var sel='[data-srcv="'+v+'"][data-seat="'+seat+'"]';
+  if(v==='fix'){SRC_VFIX=SRC_VFIX===seat?'':seat; SRC_VFIXT='';
+   srcPaint(); var t=document.getElementById('srcvfix'); if(t)t.focus(); else again(sel); return;}
+  var r=evVerdict(SRC_VERDICTS,seat,v); if(r.ok)SRC_VERDICTS=r.verdicts;
+  if(SRC_VFIX===seat){SRC_VFIX=''; SRC_VFIXT='';}
+  again(sel);};});
+ var ta=document.getElementById('srcvfix');
+ if(ta)ta.oninput=function(){SRC_VFIXT=ta.value;};
+ h.querySelectorAll('[data-srcvread]').forEach(function(btn){btn.onclick=function(){
+  var seat=btn.getAttribute('data-srcvread'), t=document.getElementById('srcvfix');
+  var r=evVerdict(SRC_VERDICTS,seat,'fix',t?t.value:'');
+  /* an empty box is not a correction: evVerdictOk refuses it, and the box
+     stays open with the focus in it rather than claiming anything landed */
+  if(!r.ok){if(t)t.focus(); return;}
+  SRC_VERDICTS=r.verdicts; SRC_VFIX=''; SRC_VFIXT='';
+  again('[data-srcv="fix"][data-seat="'+seat+'"]');};});}
 function srcThread(turn,heard,cur,acts,why){
  var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});

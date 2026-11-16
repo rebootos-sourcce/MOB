@@ -690,6 +690,72 @@ require('./net.js').guardBrowser(browser);
     release(); await q.cx.close();
   }
 
+  /* SK5 AND SK1, 16 November. The onboarding mirror's Yes, Not me and
+     Correct it, under the person's words in the Journal, through evVerdict
+     and nothing else; and what Commit then keeps on the entry, a seat and
+     an answer and never a correction's own words, read back after a real
+     reload. Checked against the build before this first: there is no row
+     to press there, so the first check below fails. */
+  console.log('\n=== Yes, Not me and Correct it under the words, and what Commit keeps ===');
+  {
+    const q = await open(browser, 1600, 1000);
+    await q.evaluate(() => { STV.dash = true; stRender(); });
+    for (const t of ['I was afraid all night.', 'I felt so guilty about it.']) { await q.evaluate(t => srcTurnCommit(t), t); await q.waitForTimeout(80); }
+    const rowsOf = () => q.evaluate(() => [...document.querySelectorAll('#stsrc [data-srcvrow]')].map(r => {
+      const b = r.getBoundingClientRect();
+      return { seat: r.getAttribute('data-srcvrow'), line: r.querySelector('.ob-rowp').textContent, h: b.height,
+        st: (r.querySelector('.ob-rowst') || {}).textContent || '',
+        on: [...r.querySelectorAll('[data-srcv]')].filter(x => x.getAttribute('aria-pressed') === 'true').map(x => x.getAttribute('data-srcv')) }; }));
+    const rows = await rowsOf();
+    ok(rows.length >= 2 && rows.every(r => r.h > 0), 'a row for each reading in this conversation, on screen: ' + JSON.stringify(rows.map(r => r.seat + ' ' + r.line)));
+    ok(rows.every(r => !/lands/.test(r.line) && /^You wrote “/.test(r.line)), 'before an answer a row says the person\'s own words back and no place: ' + JSON.stringify(rows.map(r => r.line)));
+    const vetAll = () => q.evaluate(() => [...document.querySelectorAll('#stsrc .src-v p')].map(p => {
+      const r = p.closest('[data-srcvrow]'); return { t: p.textContent,
+        ok: srcVetSay(p.textContent, { text: srcConvText(), ledger: srcLedgerNow() }, r ? r.getAttribute('data-srcvrow') : null).ok }; }));
+    const a = rows[0].seat, b = rows[1].seat;
+    await q.click('[data-srcv="no"][data-seat="' + a + '"]'); await q.waitForTimeout(80);
+    const s1 = await q.evaluate(a => ({ v: SRC_VERDICTS, st: srcLedgerNow().claims[a].state, f: document.activeElement && document.activeElement.getAttribute('data-srcv') }), a);
+    const r1 = (await rowsOf()).find(r => r.seat === a);
+    ok(s1.st === 'rejected' && s1.v.length === 1 && s1.v[0].seat === a && s1.v[0].v === 'no', 'Not me lands through evVerdict as a no on that seat: ' + JSON.stringify(s1));
+    ok(r1 && r1.on.join() === 'no' && /not you/.test(r1.st) && s1.f === 'no', 'and the row stays, Not me pressed, its status under it, the focus back on the button: ' + JSON.stringify(r1));
+    await q.click('[data-srcv="yes"][data-seat="' + b + '"]'); await q.waitForTimeout(80);
+    const r2 = (await rowsOf()).find(r => r.seat === b);
+    ok(r2 && r2.on.join() === 'yes' && /lands/.test(r2.line), 'Yes confirms it, and only then is the place said: ' + JSON.stringify(r2 && r2.line));
+    const fixWords = 'It is more like shame than fear.';
+    await q.click('[data-srcv="fix"][data-seat="' + a + '"]'); await q.waitForTimeout(80);
+    const box = await q.evaluate(() => document.activeElement && document.activeElement.id);
+    await q.click('[data-srcvread="' + a + '"]'); await q.waitForTimeout(80);
+    const empty = await q.evaluate(a => srcLedgerNow().claims[a].state, a);
+    ok(box === 'srcvfix' && empty === 'rejected', 'Correct it opens the mirror\'s own box with the focus in it, and an empty box changes nothing: ' + box + ' ' + empty);
+    await q.fill('#srcvfix', fixWords);
+    await shot(q, 'verdict-1600-fix.png');
+    await q.click('[data-srcvread="' + a + '"]'); await q.waitForTimeout(80);
+    const s3 = await q.evaluate(a => srcLedgerNow().claims[a], a);
+    ok(s3.state === 'corrected' && s3.verdict.fix === fixWords, 'Read my correction corrects the claim for this entry, the words in page memory: ' + s3.state);
+    const vt = await vetAll();
+    ok(vt.length > 0 && vt.every(x => x.ok), 'every line the control shows passes srcVetSay: ' + JSON.stringify(vt.filter(x => !x.ok)));
+    const pageWords = await q.evaluate(() => document.getElementById('stsrc').textContent);
+    ok(pageWords.indexOf(fixWords) < 0, 'and the correction is not quoted back: it is not in the entry, so point 3 would refuse it');
+    await shot(q, 'verdict-1600.png');
+    const kept = await q.evaluate(() => { stCommit(); const e = CURP.story.entries[CURP.story.entries.length - 1]; return { v: e.verdicts, all: JSON.stringify(e), left: SRC_VERDICTS.length }; });
+    ok(JSON.stringify(kept.v) === JSON.stringify([{ seat: a, v: 'fix' }, { seat: b, v: 'yes' }]), 'Commit keeps one row a seat, the last answer: ' + JSON.stringify(kept.v));
+    ok(kept.all.indexOf(fixWords) < 0 && kept.left === 0, 'and not the correction\'s own words, and the page memory goes with the entry');
+    await q.reload({ waitUntil: 'load' }); await booted(q);
+    const back = await q.evaluate(() => { const e = CURP.story.entries[CURP.story.entries.length - 1]; return e && e.verdicts; });
+    ok(JSON.stringify(back) === JSON.stringify(kept.v), 'and it is there after a reload, through the boundary: ' + JSON.stringify(back));
+    ok(!q.errs.length, 'no page errors: ' + q.errs.join(' | '));
+    await q.cx.close();
+    const m = await open(browser, 390, 844);
+    await m.evaluate(() => { STV.dash = true; stRender(); });
+    for (const t of ['I was afraid all night.', 'I felt so guilty about it.']) { await m.evaluate(t => srcTurnCommit(t), t); await m.waitForTimeout(80); }
+    const mf = await m.evaluate(() => { const v = document.querySelector('#stsrc .src-v'); if (v) v.scrollIntoView();
+      const bs = [...document.querySelectorAll('#stsrc [data-srcv]')].map(x => x.getBoundingClientRect());
+      return { sw: document.documentElement.scrollWidth, w: innerWidth, n: bs.length, tap: bs.every(b => b.height >= 44), inside: bs.every(b => b.right <= innerWidth + 0.5 && b.left >= -0.5) }; });
+    ok(mf.n > 0 && mf.tap && mf.inside && mf.sw <= mf.w, 'at 390 the buttons are tap sized, inside the screen, and nothing scrolls sideways: ' + JSON.stringify(mf));
+    await shot(m, 'verdict-390.png');
+    await m.cx.close();
+  }
+
   console.log('\n=== pressing Talk again still only ever greets, never the thread ===');
   {
     /* RENAMED, 11 November. This used to prove the second press spoke the
