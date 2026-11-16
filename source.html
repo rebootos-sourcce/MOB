@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v76 432616b1 2026-11-16 06:26"><head><meta charset="utf-8">
+<html lang="en" data-build="v77 fbb032cb 2026-11-16 17:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -90309,9 +90309,13 @@ var PW_W={
  signin:'Sign in', signinMeans:'Already paying? Sign in to bring your plan here.',
  stop:'Stop or change plan', stopMeans:'Opens the payment page, where you stop or change your plan.',
  close:'Close',
- /* the gift's state, the mockup's title, and the gift's line as Summary says
-    it, so the gift has one wording */
- giftTitle:'Your whole reading is open.',
+ /* the gift's line as Summary says it, so the gift has one wording. It is the
+    sheet's title too. The mockup's own title, "Your whole reading is open.",
+    sat above it until 16 November, when the owner read the sheet and said:
+    "'Your whole reading is open' is meaningless. It doesn't say what it does.
+    Kill that line." and that the gift line moves to the top, "so as a user, I
+    can see that this is a gift for me." It is gone from the words list so no
+    later pass can print it again by name. */
  giftTl:'Open on your gift',
  gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; },
  /* the same fact for somebody paying, with no claim about a card */
@@ -90350,11 +90354,21 @@ function pwLock(){ return pwSvg(typeof LOCK_PATH!=='undefined'?LOCK_PATH:''); }
 
 /* ---- the pieces ---- */
 var PW_ID=0;
-function pwRing(pl,g,on,tl){
+/* tile: the gift's rings. They were real buttons drawn as bare filled discs
+   with no edge, no name and no pressed look, and the owner, 16 November: "The
+   icons and the circles, I don't know what I'm supposed to do with them. Do I
+   select them? ... They don't suggest that they're interactive." So on the
+   gift each one wears the shell's own square button, .ib (shell/head.html),
+   with its name printed under the disc and aria-pressed carrying the press,
+   which is the state .ib already draws. The cards keep the bare disc: there a
+   ring sits in a row beside a price, and nobody has asked for it to move. */
+function pwRing(pl,g,on,tl,tile){
  var id='pwr'+(++PW_ID), came=PW.k===g.k; tl=tl||pwTierLine(pl,g);
- return '<button type="button" class="pw-rg'+(on?' on':'')+(came?' came':'')+'" data-k="'+esc(g.k)+'" data-tl="'+esc(tl)+'"'
+ return '<button type="button" class="pw-rg'+(tile?' ib':'')+(on?' on':'')+(came?' came':'')+'" data-k="'+esc(g.k)+'" data-tl="'+esc(tl)+'"'
+  +(tile?' aria-pressed="false"':'')
   +' aria-label="'+esc(pwName(g)+(on?', on this tier':', not on this tier')+(came?'. '+PW_W.came:''))+'" aria-describedby="'+id+'">'
-  +'<span class="pw-dk">'+pwSvg('<path d="'+pwGlyph(g.k)+'"/>')+'</span></button>'
+  +'<span class="pw-dk">'+pwSvg('<path d="'+pwGlyph(g.k)+'"/>')+'</span>'
+  +(tile?'<span class="pw-rn">'+esc(pwName(g))+'</span>':'')+'</button>'
   +'<span class="pw-vh" id="'+id+'">'+esc(pwMean(g)+' '+tl+'.')+'</span>';}
 
 function pwCard(pl,r,pay){
@@ -90402,15 +90416,16 @@ function pwFoot(pl){
   +(typeof legalLink==='function'?legalLink('terms')+legalLink('privacy'):'')
   +'</div></div>';}
 
-/* THE GIFT: every ring lit, nothing to buy, the line that says why */
+/* THE GIFT: the line that says it is a gift, every ring lit, nothing to buy.
+   The line leads and is the dialog's title (pwt1), because the gift is the
+   news; it sat under the rings, below a title that said nothing it did. */
 function pwGiftHtml(pl){
  var w=PW_W.gift();
  return '<div class="pw-sheet pw-gift" role="dialog" aria-modal="true" aria-labelledby="pwt1" tabindex="-1">'
   +'<button type="button" class="pw-x" id="pwx" aria-label="'+esc(PW_W.close)+'">'+PW_X+'</button>'
-  +'<h2 class="pw-t1" id="pwt1">'+esc(PW_W.giftTitle)+'</h2>'
-  +'<div class="pw-rgs pw-giftrgs">'+sightRows().map(function(g){return pwRing(pl,g,true,PW_W.giftTl);}).join('')+'</div>'
-  +'<p class="pw-gq">'+esc(w[0])+'<button type="button" class="pw-gp" data-pwtip="pwngift" aria-describedby="pwngift"><span class="pw-u">'
-  +esc(w[1])+'</span></button>'+esc(w[2])+'</p><span class="pw-vh" id="pwngift">'+esc(PW_W.pat)+'</span>'
+  +'<h2 class="pw-t1 pw-gq" id="pwt1">'+esc(w[0])+'<button type="button" class="pw-gp" data-pwtip="pwngift" aria-describedby="pwngift"><span class="pw-u">'
+  +esc(w[1])+'</span></button>'+esc(w[2])+'</h2><span class="pw-vh" id="pwngift">'+esc(PW_W.pat)+'</span>'
+  +'<div class="pw-rgs pw-giftrgs">'+sightRows().map(function(g){return pwRing(pl,g,true,PW_W.giftTl,true);}).join('')+'</div>'
   +'<button type="button" class="pw-go pw-gclose" data-pwact="close">'+esc(PW_W.close)+'</button></div>';}
 function pwHtml(){
  PW_ID=0;
@@ -90455,10 +90470,17 @@ function pwTipShow(el,pin){
  b.classList.toggle('up',up); b.classList.toggle('dn',!up);
  b.style.setProperty('--cx',Math.round(Math.max(18,Math.min(w-18,r.left+r.width/2-L)))+'px');
  PW.el.querySelectorAll('.tipped').forEach(function(x){x.classList.remove('tipped');});
- el.classList.add('tipped');}
+ el.classList.add('tipped');
+ /* PRESSED IS THE PIN, not the hover: a press (or a tap) holds the card open,
+    and that held card is what a pressed tile says. Hover and focus only show */
+ pwUnpress();
+ if(PW.pin&&el.hasAttribute('aria-pressed'))el.setAttribute('aria-pressed','true');}
+function pwUnpress(){
+ if(PW.el)PW.el.querySelectorAll('[aria-pressed="true"]').forEach(function(x){x.setAttribute('aria-pressed','false');});}
 function pwTipHide(){
  if(PW.tip)PW.tip.classList.remove('on');
  if(PW.tipOn)PW.tipOn.classList.remove('tipped');
+ pwUnpress();
  PW.tipOn=null; PW.pin=false;}
 
 /* ---- open, draw, close ---- */
@@ -90595,7 +90617,11 @@ function pwCss(){
   '  width:min(100%,calc((100vh - 560px) * 1.62))}',
   ' .pw-rg.came::after{bottom:-12px;height:5px;left:32%;right:32%}}',
   '.pw-rg{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:1;min-width:44px;min-height:44px;',
-  ' padding:0;border:0;background:none;cursor:help;border-radius:50%}',
+  ' padding:0;cursor:help}',
+  /* the bare disc's reset, kept off a ring that wears .ib: this sheet is
+     injected after the shell, so a reset here would win the tie and strip
+     the edge, the ground and the pressed look the shell's button carries */
+  '.pw-rg:not(.ib){border:0;background:none;border-radius:50%}',
   '.pw-dk{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;',
   ' box-shadow:inset 0 0 0 2px var(--dim);color:var(--dim);transition:transform var(--t-micro,120ms) var(--ease-out,ease)}',
   '.pw-dk svg{width:54%;height:54%}',
@@ -90661,16 +90687,36 @@ function pwCss(){
   '.pw-tip .pw-tl{order:2;display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600}',
   '.pw-tip .pw-tl svg{width:18px;height:18px;flex:none}',
   'body.pw-on #tip{display:none!important}',
-  /* the gift: six lit rings in the middle, the line, and Close */
-  '.pw-sheet.pw-gift{align-items:center;justify-content:center;text-align:center;padding:16px 28px}',
+  /* the gift: the line, six lit rings in the middle, and Close. ONE STEP OF
+     SPACE BETWEEN ALL THREE, --pw-gs, because the owner's rule of 16 November
+     is that spacing is even: the old sheet stepped 48, then 44, then 28 */
+  '.pw-sheet.pw-gift{align-items:center;justify-content:center;text-align:center;padding:16px 28px;--pw-gs:56px}',
   '.pw-gift .pw-x{left:14px;top:14px}',
-  '.pw-gift .pw-t1{flex:none;font-size:48px;padding:0 52px}',
-  '.pw-gift .pw-giftrgs{width:min(1240px,100%);gap:28px;margin-top:48px}',
-  '.pw-gq{font-size:20px;color:var(--mid);margin:44px 0 28px}',
+  '.pw-gift .pw-t1{flex:none;font-size:44px;padding:0 52px;max-width:1000px;text-wrap:balance}',
+  '.pw-gift .pw-giftrgs{width:min(1080px,100%);gap:32px;margin-top:var(--pw-gs)}',
+  '.pw-gift .pw-gclose{margin-top:var(--pw-gs)}',
+  '.pw-gq{color:var(--ink)}',
+  /* THE GIFT'S RINGS ARE THE SHELL'S BUTTON. .ib gives the tile, its ground,
+     its hover and its pressed ring; this only says what .ib does not: an edge
+     at rest, so a tile reads as a thing to press before it is touched, the
+     disc and its name stacked inside, and the press itself. The rail's .ib
+     shrinks every mark to 18 and strokes it in --mid, so the disc's own mark
+     is restated, and its breathing ::after is the rail's grammar for a chosen
+     seat, not for a card held open. */
+  '.pw-gift .pw-rg.ib{flex-direction:column;gap:12px;padding:14px 8px;cursor:pointer;min-width:0}',
+  '.pw-gift .pw-rg.ib:not([aria-pressed=true]){border-color:var(--edge-2)}',
+  '.pw-gift .pw-rg.ib:active{transform:scale(.97)}',
+  '.pw-gift .pw-rg.ib::after{display:none}',
+  '.pw-gift .pw-rg.ib:focus-visible{border-radius:var(--r-xs)}',
+  '.pw-gift .pw-rg.ib .pw-dk{width:56%;height:auto;aspect-ratio:1;flex:none}',
+  '.pw-gift .pw-rg.ib .pw-ri{position:static;width:54%;height:54%;stroke:currentColor;stroke-width:1.8;opacity:1}',
+  '.pw-rn{font-size:16px;font-weight:500;line-height:1.2;color:var(--ink)}',
   /* a word in a sentence that carries its meaning: 44 tall to a finger, and
      the padding is paid back by the margin so the line it sits in keeps its
      own spacing (measured at 390: a 44 pixel box opened the line by a third) */
   '.pw-gp{display:inline;background:none;border:0;padding:13px 0;margin:-13px 0;min-height:0;cursor:help;color:var(--mid)!important;font-size:inherit!important;line-height:inherit}',
+  /* in the title the word is the title's ink and weight, not a grey word */
+  '.pw-gq .pw-gp{color:inherit!important;font-weight:inherit}',
   '.pw-gift .pw-gclose{width:min(360px,100%)}',
   /* THE PHONE. The sheet is the screen; each card is one row of name and
      number beside the price, the six rings across, and the one action */
@@ -90720,13 +90766,15 @@ function pwCss(){
   ' .pw-tip .pw-r1 b{font-size:15px;white-space:nowrap}',
   ' .pw-tip .pw-tl{font-size:13.5px;gap:6px;white-space:nowrap}',
   ' .pw-tip .pw-tl svg{width:15px;height:15px}',
- ' .pw-sheet.pw-gift{padding:16px}',
+ ' .pw-sheet.pw-gift{padding:16px;--pw-gs:32px}',
  ' .pw-gift .pw-x{left:6px;top:6px}',
- ' .pw-gift .pw-t1{font-size:26px;padding:0 30px;text-wrap:balance}',
- ' .pw-gift .pw-giftrgs{margin-top:28px;gap:18px;grid-template-columns:repeat(3,1fr);width:min(320px,100%)}',
- ' .pw-gift .pw-giftrgs .pw-rg{aspect-ratio:1;height:auto}',
- ' .pw-gift .pw-giftrgs .pw-dk{width:100%;height:100%}',
- ' .pw-gq{font-size:15px;margin:24px 0 18px}}'].join('\n');
+ ' .pw-gift .pw-t1{font-size:24px;padding:0 30px}',
+ ' .pw-gift .pw-giftrgs{gap:16px;grid-template-columns:repeat(3,1fr);width:min(340px,100%)}',
+ ' .pw-gift .pw-giftrgs .pw-rg{aspect-ratio:1;height:auto;gap:8px;padding:10px 4px}',
+ ' .pw-gift .pw-giftrgs .pw-dk{width:50%;height:auto}',
+ /* two lines kept for every name: "Hyper complexes" wraps at this width and
+    lifted its own disc above its neighbours', so a row of discs was not level */
+ ' .pw-rn{font-size:13px;min-height:2.4em;display:flex;align-items:center}}'].join('\n');
  document.head.appendChild(st);}
 
 try{window.__at&&window.__at('ui/paywall.js');}catch(e){}
@@ -98746,5 +98794,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006593252"></div>
+<div id="eof" hidden data-len="006596824"></div>
 </body></html>
