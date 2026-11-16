@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v85 da28eabf 2026-11-16 13:49"><head><meta charset="utf-8">
+<html lang="en" data-build="v88 596abed8 2026-11-16 15:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -47297,6 +47297,8 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
    than built once per screen. uniPark() is also her resting state at
    load: built, hidden, parked in document.body, costing nothing visible
    until the first real caller mounts her. */
+/* the mounts where Source's face stands in her place, by the target's id */
+var UNI_FACE_HOSTS={stuni:true,bootuni:true};
 function uniMount(target){
  if(!target)return false;
  uniHost.hidden=false;
@@ -47322,11 +47324,19 @@ function uniMount(target){
     canvas-wrap, so it takes exactly her box in the Dashboard and in the
     hero view and nothing round it moves (ui/srcface.js). Asked by the
     target's id and not by where it sits, the house rule for finding a
-    surface. Every other mount, the boot intro's #bootuni, still gets her,
-    and the face is parked there. If the face never loaded she is resumed
-    as before, so a broken face costs the Journal its new avatar and never
-    its old one. */
- if(target.id==='stuni'&&window.SrcFace){
+    surface. If the face never loaded she is resumed as before, so a broken
+    face costs the Journal its new avatar and never its old one.
+    AND THE BOOT INTRO, 16 November, his words: "add the animation, swap out
+    uni, loading animation." #bootuni was the one mount left falling through
+    to her, so the loading screen still opened on Uni after the Journal had
+    stopped showing her. It is the same kind of mount as #stuni, her box
+    handed to the face, so it is a second id in the one table below and not
+    a second copy of this branch: two copies of one rule is how the boot and
+    the Journal would drift apart again. No reading exists that early on a
+    first visit, so the face idles there exactly as it does on an empty
+    Journal; a returning person's face carries whatever uniApply last synced,
+    which is their real reading. */
+ if(UNI_FACE_HOSTS[target.id]===true&&window.SrcFace){
   if(window.Uni&&window.Uni.pause)window.Uni.pause();
   window.SrcFace.mount(uniHost.querySelector('.canvas-wrap'));
   return true;}
@@ -47418,8 +47428,8 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
        has no browser voice.
     6  THE MOUNT is the canvas-wrap inside #stuni, Uni's own box, done by
        uniMount (ui/uni.js) when the target is #stuni, which pauses Uni's
-       loop and hides her canvas there. Every other mount of her, the boot
-       intro, is untouched.
+       loop and hides her canvas there. The boot intro's #bootuni is the
+       same kind of mount and takes the same route, 16 November.
 
    KNOWN GAPS, said rather than papered over:
     a  The person's own words have no timing anywhere in the product. A
@@ -87481,7 +87491,12 @@ function bootUniEnd(){
    crossed rather than none of them. Reduced motion is checked first and
    bails before anything mounts, which leaves .bx-uni unset and the CSS
    figure exactly as it always was; tests/boot.js's own reduced-motion rule
-   and the "animation:none!important" it reads already cover that path. */
+   and the "animation:none!important" it reads already cover that path.
+   SINCE 16 November uniMount puts Source's face in #bootuni and pauses
+   her (ui/uni.js, UNI_FACE_HOSTS), so the calls on window.Uni below land on
+   a paused instance and draw nothing; the face keeps its own clock and is
+   faded out with the host at 6.10 exactly as she was. They are left in
+   because they are what still plays if the face failed to load. */
 function bootUni(){
  try{if((typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
  var el=document.getElementById('boot'); if(!el)return;
@@ -99212,5 +99227,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006624046"></div>
+<div id="eof" hidden data-len="006625192"></div>
 </body></html>

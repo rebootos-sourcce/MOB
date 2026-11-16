@@ -1639,7 +1639,12 @@ function bootUniEnd(){
    crossed rather than none of them. Reduced motion is checked first and
    bails before anything mounts, which leaves .bx-uni unset and the CSS
    figure exactly as it always was; tests/boot.js's own reduced-motion rule
-   and the "animation:none!important" it reads already cover that path. */
+   and the "animation:none!important" it reads already cover that path.
+   SINCE 16 November uniMount puts Source's face in #bootuni and pauses
+   her (ui/uni.js, UNI_FACE_HOSTS), so the calls on window.Uni below land on
+   a paused instance and draw nothing; the face keeps its own clock and is
+   faded out with the host at 6.10 exactly as she was. They are left in
+   because they are what still plays if the face failed to load. */
 function bootUni(){
  try{if((typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
  var el=document.getElementById('boot'); if(!el)return;

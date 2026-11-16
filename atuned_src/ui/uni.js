@@ -2764,6 +2764,8 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
    than built once per screen. uniPark() is also her resting state at
    load: built, hidden, parked in document.body, costing nothing visible
    until the first real caller mounts her. */
+/* the mounts where Source's face stands in her place, by the target's id */
+var UNI_FACE_HOSTS={stuni:true,bootuni:true};
 function uniMount(target){
  if(!target)return false;
  uniHost.hidden=false;
@@ -2789,11 +2791,19 @@ function uniMount(target){
     canvas-wrap, so it takes exactly her box in the Dashboard and in the
     hero view and nothing round it moves (ui/srcface.js). Asked by the
     target's id and not by where it sits, the house rule for finding a
-    surface. Every other mount, the boot intro's #bootuni, still gets her,
-    and the face is parked there. If the face never loaded she is resumed
-    as before, so a broken face costs the Journal its new avatar and never
-    its old one. */
- if(target.id==='stuni'&&window.SrcFace){
+    surface. If the face never loaded she is resumed as before, so a broken
+    face costs the Journal its new avatar and never its old one.
+    AND THE BOOT INTRO, 16 November, his words: "add the animation, swap out
+    uni, loading animation." #bootuni was the one mount left falling through
+    to her, so the loading screen still opened on Uni after the Journal had
+    stopped showing her. It is the same kind of mount as #stuni, her box
+    handed to the face, so it is a second id in the one table below and not
+    a second copy of this branch: two copies of one rule is how the boot and
+    the Journal would drift apart again. No reading exists that early on a
+    first visit, so the face idles there exactly as it does on an empty
+    Journal; a returning person's face carries whatever uniApply last synced,
+    which is their real reading. */
+ if(UNI_FACE_HOSTS[target.id]===true&&window.SrcFace){
   if(window.Uni&&window.Uni.pause)window.Uni.pause();
   window.SrcFace.mount(uniHost.querySelector('.canvas-wrap'));
   return true;}
