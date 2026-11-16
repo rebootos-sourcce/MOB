@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v96 d9a7918e 2026-11-16 18:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v97 23715a28 2026-11-16 19:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4006,7 +4006,7 @@ body.flat .stk-t.on svg,body.flat .stk-t.on b,body.punch .stk-t.on svg,body.punc
  stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 .stk-t.on svg{stroke:var(--accent)}
 .stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);
- font-size:12px;line-height:14px}
+ font-size:12px;line-height:14px;min-height:14px}
 .stk-t.on{color:var(--accent);font-weight:500;
  border-color:color-mix(in srgb,var(--accent) 55%,var(--edge))}
 .stk-t.on b{color:var(--accent)}
@@ -98204,7 +98204,9 @@ function railStack(r){
    +'aria-selected="'+open+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
    +(t[2]?', '+t[2]:'')+'" data-tip="'+esc(STK_TIP[t[0]]||t[1])+'">'
    +svgI('<path d="'+t[3]+'"/>')
-   +(t[2]?'<b>'+t[2]+'</b>':'')+'</button>';}).join('')
+   /* the count's line is held even when there is no count (a locked tier,
+      or none running), so every glyph in the row sits at one height */
+   +'<b>'+(t[2]||'')+'</b></button>';}).join('')
   +'<i class="stk-ind" aria-hidden="true"></i></div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
@@ -99544,5 +99546,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006646991"></div>
+<div id="eof" hidden data-len="006647147"></div>
 </body></html>

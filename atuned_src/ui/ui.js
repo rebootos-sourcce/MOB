@@ -1103,7 +1103,9 @@ function railStack(r){
    +'aria-selected="'+open+'" title="'+esc(t[1])+'" aria-label="'+esc(t[1])
    +(t[2]?', '+t[2]:'')+'" data-tip="'+esc(STK_TIP[t[0]]||t[1])+'">'
    +svgI('<path d="'+t[3]+'"/>')
-   +(t[2]?'<b>'+t[2]+'</b>':'')+'</button>';}).join('')
+   /* the count's line is held even when there is no count (a locked tier,
+      or none running), so every glyph in the row sits at one height */
+   +'<b>'+(t[2]||'')+'</b></button>';}).join('')
   +'<i class="stk-ind" aria-hidden="true"></i></div>';
  if(STACK_TAB==='fet'){
   /* THE HELD AND OPPOSITE HEADERS CAME OFF, 4 November, struck on his
