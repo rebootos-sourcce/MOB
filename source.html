@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v76 432616b1 2026-11-16 06:26"><head><meta charset="utf-8">
+<html lang="en" data-build="v77 fbb032cb 2026-11-16 15:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -88793,6 +88793,95 @@ function ptSees(r){
  else say='Shows everything the tier below shows.';
  return '<span>'+esc(say)+'</span>';}
 
+/* ============================================================
+   SYMBOL FIRST, NAME SECOND, THE SENTENCE ON A TAP. Ruled 16 November, his
+   words on this very page: "symbolism, icon first, header secondary ...
+   body information third ... I should not have to read a bunch of text if
+   it forced me." The page printed four paragraphs above the ladder and one
+   under every tier name, so a person deciding whether to pay read about two
+   hundred words before the first number.
+
+   Nothing was deleted. Every sentence the page said is still here, carried by
+   the mark it describes through the one tooltip (ui/tip.js): data-tip on a
+   span that takes focus, so it opens on hover, on keyboard focus and on the
+   first tap on a phone, which is where this audience arrives. A span and not
+   a button on purpose: tip.js gives a control's first tap to the control and
+   only explains on a hold of a second and a half, which nobody would find
+   here. And each mark also carries the sentence for a screen reader, beside
+   it and hidden from the eye (pt-vh), the way the paywall's rings do, because
+   tip.js links no description to its carrier.
+
+   The marks are the product's own, never drawn here: the Field bar's for the
+   addresses, the laws, the archetypes and the domains (FB_BYK, ui/fieldbar.js),
+   the Body's pain mark, the chain's rings through the paywall's own lookup
+   (pwGlyph, ui/paywall.js). One concept, one mark: a person who learned the
+   Field's Domains circle meets the same circle here.
+   ============================================================ */
+function ptSvg(ic){ return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+glyphPath(ic)+'</svg>'; }
+/* the two marks this file draws itself, for two things no surface had a mark
+   for: a pattern count is a bar, the shape every row already draws it as, and
+   running something again is the cycle the avatar's own glyph set uses */
+var PT_IC={
+ pat:'<rect x="3" y="9" width="18" height="6" rx="3"/><path d="M6 12h6"/>',
+ tools:'<circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/>',
+ rerun:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>',
+ pen:'<path d="M4 20h4L19 9l-4-4L4 16z M13 7l4 4"/>',
+ shadow:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M12 3.5v17M12 8.5l4.2-3.4M12 13l6.6-5M12 17.5l7.6-6"/>'};
+/* WHAT EVERY TIER CARRIES, AS MARKS. Keyed by PLAN_ALWAYS's own words, so the
+   engine stays the one list: a phrase this table has not met still draws, as
+   its own words beside a plain ring, rather than vanishing off the page. The
+   phrase itself is the tooltip's title, which is where the 108 and 4 field
+   anchors structure is said in full, his 28 October ruling. The meanings are
+   the glossary's where it has one (unpackOf, engine/data/gloss.js), so this
+   page and every other surface say one sentence per term. */
+function ptAlwaysOf(s){
+ var fb=(typeof FB_BYK!=='undefined')?FB_BYK:{}, u=function(t,c){return (typeof unpackOf==='function'&&unpackOf(t,c))||'';};
+ var ic=function(k){return fb[k]&&fb[k].ic;};
+ var pain=(typeof BMOVL!=='undefined'&&BMOVL.pain)||{};
+ var T={
+  'your 108 somatic addresses and 4 field anchors':{nm:'Addresses',ic:ic('addresses'),say:u('address')},
+  'the domains':{nm:'Domains',ic:ic('domains'),say:u('domain')},
+  'the archetypes':{nm:'Archetypes',ic:ic('archetypes'),say:u('archetype')},
+  'the Laws of Moral Integrity':{nm:'Laws of Moral Integrity',ic:ic('laws'),say:u('laws of moral integrity')},
+  'the Laws of Action':{nm:'Laws of Action',ic:ic('gates'),say:u('laws of action')},
+  /* the rail's sentence for shadow says "on this line" and "100 less CQ",
+     which is true on the rail and shorthand here, so the half that holds on
+     any page is said */
+  'shadow':{nm:'Shadow',ic:PT_IC.shadow,say:'Shadow is the part of the Laws of Moral Integrity your answers leave out.'},
+  'the pain map':{nm:'Pain map',ic:pain.ic,say:pain.tip||''},
+  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Compass and the rest.'},
+  'the journal':{nm:'Journal',ic:PT_IC.pen,say:u('journal')},
+  'rerunning anything already open':{nm:'Rerun',ic:PT_IC.rerun,say:'Anything you have already opened stays open, and you can run it again.'}};
+ var t=T[s]||{nm:s,ic:'',say:''};
+ return {nm:t.nm, ic:t.ic||'<circle cx="12" cy="12" r="8.6"/>', title:s.replace(/^./,function(c){return c.toUpperCase();}), say:t.say||s};}
+function ptAlwaysHtml(){
+ return '<div class="pt-al" role="list">'+PLAN_ALWAYS.map(function(s){
+  var a=ptAlwaysOf(s);
+  return '<span class="pt-a" role="listitem" tabindex="0" data-tip-t="'+esc(a.title)+'" data-tip="'+esc(a.say)+'"'
+   +' aria-label="'+esc(a.title+'. '+a.say)+'"><i>'+ptSvg(a.ic)+'</i><span aria-hidden="true">'+esc(a.nm)+'</span></span>';}).join('')
+  +'</div>';}
+/* THE CHAIN, AS ITS OWN RINGS. Where a row said "Unlocks complexes." in a
+   sentence, it now draws the six rungs a tier can open, lit where that tier
+   shows them and ringed in the tier colour where this tier is the one that
+   opens them. The rings are the paywall sheet's own (pwGlyph), so Billing and
+   the paywall draw one ladder one way. sees(g) is whether the rung is shown,
+   fresh(g) whether this row is where it opens, state(g) the tooltip's last
+   clause. The sentence the row used to print is kept for a screen reader. */
+function ptMarks(sees,fresh,state,said){
+ var gl=function(k){return (typeof pwGlyph==='function'&&pwGlyph(k))||(typeof CHAINGLYPH!=='undefined'&&CHAINGLYPH[k])||'';};
+ return '<span class="pt-mks">'+sightRows().map(function(g){
+  var on=sees(g), nw=on&&fresh(g), nm=g.nm.replace(/^the /,''); nm=nm.charAt(0).toUpperCase()+nm.slice(1);
+  var tip=g.what+' '+state(g,on);
+  return '<span class="pt-mk'+(on?' on':' off')+(nw?' new':'')+'" tabindex="0" data-tip-t="'+esc(nm)+'" data-tip="'+esc(tip)+'"'
+   +' aria-label="'+esc(nm+'. '+tip)+'">'+ptSvg(gl(g.k))+'</span>';}).join('')
+  +'</span><span class="pt-vh">'+said+'</span>';}
+/* A ROW'S OWN LINE IS SHOWN WHEN IT READS AS A NAME, and carried by the name
+   when it reads as a paragraph. "Twice the ground of tier one." is a heading's
+   length and stays; "About what a month of half an hour of practice every day
+   would release." is a sentence a person scanning for a price does not need
+   forced on them. The cut is in characters because that is what wraps. */
+var PT_LINE_MAX=40;
+
 function planTiersHtml(){
  var pl=(typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;
  var rows=planLadder(pl);
@@ -88824,26 +88913,54 @@ function planTiersHtml(){
   +'<div class="ac-gh">The tiers</div>'
   +'<div class="pt-you" id="ptyou"><div class="pt-sh">Your tier</div>'
   +'<p class="pt-yn"><b>'+esc(nowT.nm)+'</b></p>'
-  +'<p>You see '+esc(planSightSay(pl,gift))+'.</p>'
-  +(seeNow.locked.length?'<p class="pt-lk">'+lockMarkHtml()+'<span>Locked: '
-    +esc(planLockedSay(seeNow.locked.map(function(g){return g.k;})))+'.</span></p>':'')
+  /* what this person sees now, as the chain's rings: lit is shown, dim is
+     locked and its tooltip names the tier that opens it. The two sentences
+     this block printed are the rings' own sentence for a screen reader, and
+     the locked clause is still the lock's, word for word. */
+  +'<p class="pt-ysee">'+ptMarks(function(g){return seeNow.sees[g.k]===true;},function(){return false;},
+    function(g,on){return on?(gift?'You see this now, while your gift lasts.':'You see this now.')
+     :'Opens at '+planNmIn(planNeed(g.k))+'.';},
+    esc('You see '+planSightSay(pl,gift)+'.')
+    +(seeNow.locked.length?' '+esc('Locked: '+planLockedSay(seeNow.locked.map(function(g){return g.k;}))+'.'):''))+'</p>'
   +'</div>'
   /* the same on every row, said once and the full width, because it is the
-     part a comparison would otherwise repeat five times or leave out */
+     part a comparison would otherwise repeat five times or leave out. A
+     header and a row of marks; each mark's sentence is on its tooltip. */
   +'<div class="pt-same"><div class="pt-sh">On every tier, free included</div>'
-  +'<p>'+esc(PLAN_ALWAYS.join(', ').replace(/^./,function(c){return c.toUpperCase();}))+'.</p>'
-  /* patterns and not "new ground", the team's word for them, said in the unit
-     the rows below are counted in */
-  +'<p class="pt-so">A tier changes two things: how many new patterns you can open, and how far up the chain you can see.</p></div>'
+  +ptAlwaysHtml()
+  /* WHAT CHANGES BETWEEN ROWS, as the two marks every row below carries: the
+     pattern bar and the chain's rings. A key, not a paragraph. Patterns and
+     not "new ground", the team's word for them, in the unit the rows count. */
+  +'<div class="pt-sh pt-sh2">A tier changes two things</div>'
+  +'<div class="pt-al pt-two" role="list">'
+  +'<span class="pt-a" role="listitem" tabindex="0" data-tip-t="New patterns" data-tip="How many new patterns you can open. Each row says its number and draws it as a bar."'
+  +' aria-label="New patterns. How many new patterns you can open."><i>'+ptSvg(PT_IC.pat)+'</i><span aria-hidden="true">New patterns</span></span>'
+  +'<span class="pt-a" role="listitem" tabindex="0" data-tip-t="The chain" data-tip="How far up the chain you can see, from saboteurs to super complexes. Each row lights the rings that tier shows."'
+  +' aria-label="The chain. How far up the chain you can see."><i>'+ptSvg((typeof CHAINGLYPH!=='undefined'&&CHAINGLYPH.cx)||'')+'</i><span aria-hidden="true">The chain</span></span>'
+  +'</div></div>'
   +'<div class="pt-list" role="list">';
  rows.forEach(function(r){
   var w=Math.max(2,Math.round(ptMonthly(r)/top*100));
   /* data-pt is the row's tier key, so a reader finds a row by identity. A
      closed rung has no button to find it by. */
+  var line=ptLine(r), long=line.length>PT_LINE_MAX, did='ptd'+r.k;
+  var adds=r.adds.map(function(g){return g.k;});
   h+='<div class="pt-row'+(r.now?' on':'')+'" role="listitem" data-pt="'+esc(r.k)+'"'+(r.now?' aria-current="true"':'')+'>'
-   +'<div class="pt-who"><div class="pt-nm">'+esc(r.nm)+'</div>'
-   +'<p class="pt-d">'+esc(ptLine(r))+'</p>'
-   +'<p class="pt-sees">'+ptSees(r)+'</p></div>'
+   /* a long line rides the tier's name, the product's one mark for a word that
+      carries a sentence (.tipu, the dotted underline), and stays in the row for
+      a screen reader through aria-describedby. pt-d keeps its class either way,
+      so a reader finds the line by identity whether it is shown or carried. */
+   +'<div class="pt-who"><div class="pt-nm">'
+   /* the hidden line sits after the name and not inside it: inside, the name's
+      own text read "Tier oneAbout what a month..." to anything that reads a
+      row by its name, and the functional gate's ladder order did exactly that */
+   +(long?'<span class="tipu" tabindex="0" data-tip-t="'+esc(r.nm)+'" data-tip="'+esc(line)+'" aria-describedby="'+did+'">'+esc(r.nm)+'</span>'
+     :esc(r.nm))+'</div>'
+   +(long?'<span class="pt-d pt-vh" id="'+did+'">'+esc(line)+'</span>':'<p class="pt-d">'+esc(line)+'</p>')
+   +'<p class="pt-sees">'+ptMarks(function(g){return r.sees.some(function(s){return s.k===g.k;});},
+     function(g){return adds.indexOf(g.k)>=0;},
+     function(g,on){return !on?'Opens at '+planNmIn(planNeed(g.k))+'.'
+      :(adds.indexOf(g.k)>=0?'This tier is where it opens.':'Shown on this tier.');},ptSees(r))+'</p></div>'
    +'<div class="pt-fig"><div class="pt-n"><b class="num">'+ptN(r.grant)+'</b> patterns a '+esc(r.per)+'</div>'
    +(r.per==='week'?'':'<div class="pt-w">'+ptN(r.week)+' a week</div>')
    +'<div class="pt-bar" aria-hidden="true"><i style="width:'+w+'%"></i></div>'
@@ -88921,14 +89038,34 @@ function planTiersCss(){
   '.pt-same{padding:13px 15px 14px;border-bottom:1px solid var(--edge);background:var(--panel-2)}',
   'body.punch .pt-same{border-bottom-color:transparent}',
   '.pt-sh{font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.06em;margin-bottom:6px}',
-  '.pt-same p{margin:0;font-size:14px;line-height:1.65;color:var(--ink);max-width:70ch}',
-  '.pt-same p.pt-so{margin-top:8px;color:var(--mid)}',
+  /* THE MARKS. Each carrier is at least 44 tall, the tap floor, because on a
+     phone the tap is the only way to its sentence. Ring, never fill: the
+     glyphs are stroked in the ink and lit by colour alone. */
+  '.pt-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
+  '.pt-sh2{margin-top:12px}',
+  '.pt-al{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:2px 6px}',
+  '.pt-two{grid-template-columns:repeat(2,minmax(112px,max-content))}',
+  '.pt-a{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:44px;padding:6px 4px;',
+  ' border-radius:var(--r-s);cursor:help;text-align:center;outline:none}',
+  '.pt-a i{display:flex;width:26px;height:26px;color:var(--ink)}',
+  '.pt-a>span{font-size:12.5px;line-height:1.3;color:var(--mid)}',
+  '.pt-a svg,.pt-mk svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}',
+  '.pt-a:hover,.pt-a.tip-open,.pt-a:focus-visible{background:var(--sunk)}',
+  '.pt-a:hover>span,.pt-a.tip-open>span{color:var(--ink)}',
+  '.pt-a:focus-visible,.pt-mk:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}',
+  '.pt-ysee,.pt-sees{margin:4px 0 0!important}',
+  '.pt-mks{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(32px,44px);justify-content:start;margin-left:-8px}',
+  '.pt-mk{display:flex;align-items:center;justify-content:center;height:44px;border-radius:50%;cursor:help;color:var(--ink)}',
+  '.pt-mk svg{width:22px;height:22px}',
+  /* dim and not gone: a locked rung is still on the ladder, and its tooltip
+     says which tier opens it */
+  '.pt-mk.off{color:var(--dim);opacity:.45}',
+  '.pt-mk.new{color:color-mix(in srgb,var(--c) 80%,var(--ink))}',
+  '.pt-mk.new svg{stroke-width:2}',
+  '.pt-mk:hover,.pt-mk.tip-open{background:var(--sunk);opacity:1}',
   '.pt-you{padding:13px 15px 14px;border-bottom:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
   '.pt-you p{margin:0;font-size:14px;line-height:1.65;color:var(--ink);max-width:70ch}',
   '.pt-yn{font-size:18px!important;margin-bottom:2px!important}',
-  '.pt-lk{display:flex;gap:6px;align-items:flex-start;color:var(--mid)!important;margin-top:4px!important}',
-  '.pt-lk .lk-mk,.pt-sees .lk-mk{margin:3px 0 0;flex:none}',
-  '.pt-sees{display:flex;gap:6px;align-items:flex-start;margin:6px 0 0;font-size:13px;line-height:1.55;color:var(--ink)}',
   '.pt-row{display:grid;grid-template-columns:minmax(0,1fr) 228px 168px;gap:20px;align-items:center;',
   ' padding:14px 15px;border-bottom:1px solid var(--edge)}',
   'body.punch .pt-row{border-bottom-color:var(--panel)}',
@@ -88954,6 +89091,10 @@ function planTiersCss(){
      squeezed "400 patterns a month" onto three lines, measured at 390. */
   '@media (max-width:760px){',
   ' .pt-row{grid-template-columns:1fr;gap:10px}',
+  /* five across on a phone, so the ten marks are two even rows */
+  ' .pt-al{grid-template-columns:repeat(5,minmax(0,1fr))}',
+  ' .pt-two{grid-template-columns:repeat(2,minmax(0,1fr))}',
+  ' .pt-a>span{font-size:12px}',
   ' .pt-go{justify-content:stretch}',
   ' .pt-go .btn{width:100%}',
   ' .pt-now{padding:0}',
@@ -98746,5 +98887,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006593252"></div>
+<div id="eof" hidden data-len="006603785"></div>
 </body></html>
