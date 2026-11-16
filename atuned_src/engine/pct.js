@@ -244,7 +244,9 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. */
+    release. affinity still orders first and second; nothing prints it. A
+    quiz self report is the one route where a story moves it, through this
+    same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
              say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v75 336deaa0 2026-11-16 04:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v76 432616b1 2026-11-16 05:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -19057,7 +19057,9 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. */
+    release. affinity still orders first and second; nothing prints it. A
+    quiz self report is the one route where a story moves it, through this
+    same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
              say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
@@ -21902,12 +21904,48 @@ const DARC=360/19;
    the person's (archSeedShare, engine/archseed.js) and the blueprint answers
    again. A self report of nothing at all is no self report: the quiz writes 0
    for an archetype not answered, and twelve zeros would otherwise name Warrior
-   first on no evidence. */
+   first on no evidence.
+
+   THEN THE STORY ADJUSTS IT, the second half of the same ruling: "as they
+   input their story over time, the reality of those numbers adjust." This
+   returned the self report unchanged whatever was written, and the test said
+   so by name as an open ruling. It is not open: his words name the story as
+   what moves it. The story signal is the one the engine already has for an
+   archetype, archExpr() (engine/archexpr.js), ruled 16 October: one minus the
+   mean sq at the archetype's own seat, 1 with nothing held, dragged by charge
+   a story lands there, lifted by a release. Nothing else in the engine reads
+   a story per archetype; the intake's archetype block is a second self report
+   and the domains are the soul map, so neither is the story. Each strength
+   is the self report times that figure, then against the strongest as
+   before. No weight is invented: with nothing held every archExpr is 1 and
+   this is the self report exactly; a story only moves what the person
+   reported, so an archetype reported at 0 stays 0 and the story never makes
+   up a lean nobody gave; and a release walks it back to the anchor and no
+   further. Measured on the test's own report, Warrior .9 first and Lover .8
+   second: fear held at 8 drags the Root seat to .82, Warrior to .74 under
+   Lover, and pi follows; the fear released, both read their anchor again.
+
+   The twin seats (five seats carry two archetypes) read one archExpr, so a
+   story moves both by the same factor and their ratio stays the person's own.
+   If the story has emptied every strength to 0 there is no difference left
+   for it to show, and the self report's own ratios are the only evidence,
+   so those answer rather than the blueprint. It reads sq as the last
+   compute() left it, like archExpr: compute() calls this after it sets sq,
+   so r.aff is always this record's, and a bare call after loadProfile and
+   before compute() reads the field the previous compute() left, which the
+   engine test tripped over the first time. archExprAll is declared in
+   engine/archexpr.js, after this file in MANIFEST; it is looked up at call
+   time, and the typeof guard keeps any compute() made at load, before that
+   module exists, reading the self report rather than throwing. */
 function affinity(){
  const A=S.archSelf;
  if(A&&A.rec===S.rec&&A.order.length===S.arcs.length&&A.order.every((v,i)=>v===S.arcs[i])){
-  const mx=Math.max(...A.vals);
-  if(mx>0)return A.vals.map(v=>v/mx);}
+  const ex=typeof archExprAll==='function'?archExprAll():null;
+  const adj=A.vals.map((v,i)=>ex&&ex[i]!==null?v*ex[i]:v);
+  const mx=Math.max(...adj);
+  if(mx>0)return adj.map(v=>v/mx);
+  const m0=Math.max(...A.vals);
+  if(m0>0)return A.vals.map(v=>v/m0);}
  const a=new Array(12).fill(0);
  for(let d=0;d<19;d++){const d0=d*DARC,d1=d0+DARC;
   for(let j=0;j<12;j++){const a0=j*30,a1=a0+30;
@@ -40486,7 +40524,10 @@ try{window.__at&&window.__at('engine/ritex.js');}catch(e){}
    So the figure an archetype carries is not how strongly the blueprint leans
    toward it. That is affinity() in engine/core.js, which is read off the soul
    map, never moves with a story or a release, and keeps its one job: naming
-   the first and second archetype. Printed as a percent it told a person their
+   the first and second archetype. One exception since 11 November: while a
+   quiz self report answers affinity(), each strength is multiplied by this
+   figure, because that ruling has the story adjust the reported numbers and
+   this is the only per-archetype story signal there is. Printed as a percent it told a person their
    Innocent was 10% of them because the domains they picked sat elsewhere, and
    no release they ran could ever change it.
 
@@ -40639,7 +40680,7 @@ try{window.__at&&window.__at('engine/showonly.js');}catch(e){}
    No second table and no second score: the one function every surface
    already reads returns the self report.
 
-   WHAT MOVES AFTER THAT IS NOT YET WIRED INTO affinity(). archExpr()
+   WHAT MOVES AFTER THAT. archExpr()
    (archexpr.js) is the figure the ruling describes moving: "you may start
    off at 100%. And over time, watch it diminish... as you go through your
    recipes, watch it rise." It reads seatField(), which moves only as a
@@ -40649,12 +40690,14 @@ try{window.__at&&window.__at('engine/showonly.js');}catch(e){}
    it already adjusts a hand pick's. There is no separate re-weighting
    formula to invent here; the ruling's "the reality of those numbers
    adjust" is archExpr() reading seatField(), already shipped 16 October.
-   That is this file's first author's reading, and it leaves affinity()
-   itself still: no story moves the starting value above. Whether the
-   story should move it, and by what, is open and is the owner's, because
-   the only story signal the engine has for an archetype is its seat's
-   charge, and archexpr.js's own 16 October ruling assigns that signal to
-   expression and keeps it out of affinity() by name. Not guessed here.
+   That is this file's first author's reading, and it left affinity()
+   itself still, calling the story term open. It was not open: the 11
+   November ruling quoted above names the story as what moves "those
+   numbers", and the TA9 board item waiting on it was stale. So affinity()
+   (core.js) now multiplies each self-reported strength by archExpr() of the
+   same archetype, the only per-archetype story signal the engine has. The
+   16 October ruling keeps the blueprint's soul map still, and it still is:
+   the term applies only while the self report answers.
 
    WRITES ONLY ONCE, THE SAME DISCIPLINE AS seedApply (engine/seed.js). A
    self-report answered honestly and then overwritten by a later screen's
@@ -98745,5 +98788,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006593219"></div>
+<div id="eof" hidden data-len="006596144"></div>
 </body></html>

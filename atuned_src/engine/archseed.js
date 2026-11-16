@@ -25,7 +25,7 @@
    No second table and no second score: the one function every surface
    already reads returns the self report.
 
-   WHAT MOVES AFTER THAT IS NOT YET WIRED INTO affinity(). archExpr()
+   WHAT MOVES AFTER THAT. archExpr()
    (archexpr.js) is the figure the ruling describes moving: "you may start
    off at 100%. And over time, watch it diminish... as you go through your
    recipes, watch it rise." It reads seatField(), which moves only as a
@@ -35,12 +35,14 @@
    it already adjusts a hand pick's. There is no separate re-weighting
    formula to invent here; the ruling's "the reality of those numbers
    adjust" is archExpr() reading seatField(), already shipped 16 October.
-   That is this file's first author's reading, and it leaves affinity()
-   itself still: no story moves the starting value above. Whether the
-   story should move it, and by what, is open and is the owner's, because
-   the only story signal the engine has for an archetype is its seat's
-   charge, and archexpr.js's own 16 October ruling assigns that signal to
-   expression and keeps it out of affinity() by name. Not guessed here.
+   That is this file's first author's reading, and it left affinity()
+   itself still, calling the story term open. It was not open: the 11
+   November ruling quoted above names the story as what moves "those
+   numbers", and the TA9 board item waiting on it was stale. So affinity()
+   (core.js) now multiplies each self-reported strength by archExpr() of the
+   same archetype, the only per-archetype story signal the engine has. The
+   16 October ruling keeps the blueprint's soul map still, and it still is:
+   the term applies only while the self report answers.
 
    WRITES ONLY ONCE, THE SAME DISCIPLINE AS seedApply (engine/seed.js). A
    self-report answered honestly and then overwritten by a later screen's

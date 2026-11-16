@@ -592,12 +592,48 @@ const DARC=360/19;
    the person's (archSeedShare, engine/archseed.js) and the blueprint answers
    again. A self report of nothing at all is no self report: the quiz writes 0
    for an archetype not answered, and twelve zeros would otherwise name Warrior
-   first on no evidence. */
+   first on no evidence.
+
+   THEN THE STORY ADJUSTS IT, the second half of the same ruling: "as they
+   input their story over time, the reality of those numbers adjust." This
+   returned the self report unchanged whatever was written, and the test said
+   so by name as an open ruling. It is not open: his words name the story as
+   what moves it. The story signal is the one the engine already has for an
+   archetype, archExpr() (engine/archexpr.js), ruled 16 October: one minus the
+   mean sq at the archetype's own seat, 1 with nothing held, dragged by charge
+   a story lands there, lifted by a release. Nothing else in the engine reads
+   a story per archetype; the intake's archetype block is a second self report
+   and the domains are the soul map, so neither is the story. Each strength
+   is the self report times that figure, then against the strongest as
+   before. No weight is invented: with nothing held every archExpr is 1 and
+   this is the self report exactly; a story only moves what the person
+   reported, so an archetype reported at 0 stays 0 and the story never makes
+   up a lean nobody gave; and a release walks it back to the anchor and no
+   further. Measured on the test's own report, Warrior .9 first and Lover .8
+   second: fear held at 8 drags the Root seat to .82, Warrior to .74 under
+   Lover, and pi follows; the fear released, both read their anchor again.
+
+   The twin seats (five seats carry two archetypes) read one archExpr, so a
+   story moves both by the same factor and their ratio stays the person's own.
+   If the story has emptied every strength to 0 there is no difference left
+   for it to show, and the self report's own ratios are the only evidence,
+   so those answer rather than the blueprint. It reads sq as the last
+   compute() left it, like archExpr: compute() calls this after it sets sq,
+   so r.aff is always this record's, and a bare call after loadProfile and
+   before compute() reads the field the previous compute() left, which the
+   engine test tripped over the first time. archExprAll is declared in
+   engine/archexpr.js, after this file in MANIFEST; it is looked up at call
+   time, and the typeof guard keeps any compute() made at load, before that
+   module exists, reading the self report rather than throwing. */
 function affinity(){
  const A=S.archSelf;
  if(A&&A.rec===S.rec&&A.order.length===S.arcs.length&&A.order.every((v,i)=>v===S.arcs[i])){
-  const mx=Math.max(...A.vals);
-  if(mx>0)return A.vals.map(v=>v/mx);}
+  const ex=typeof archExprAll==='function'?archExprAll():null;
+  const adj=A.vals.map((v,i)=>ex&&ex[i]!==null?v*ex[i]:v);
+  const mx=Math.max(...adj);
+  if(mx>0)return adj.map(v=>v/mx);
+  const m0=Math.max(...A.vals);
+  if(m0>0)return A.vals.map(v=>v/m0);}
  const a=new Array(12).fill(0);
  for(let d=0;d<19;d++){const d0=d*DARC,d1=d0+DARC;
   for(let j=0;j<12;j++){const a0=j*30,a1=a0+30;
