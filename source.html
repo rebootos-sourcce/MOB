@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v76 432616b1 2026-11-16 06:26"><head><meta charset="utf-8">
+<html lang="en" data-build="v56 fbb032c 2026-11-16 14:49"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -7714,7 +7714,18 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the three columns and .st-mini6 all together, side by side, running
     off the right edge of the screen. nowrap keeps this the single top to
     bottom stack it always was. */
- .st-flow{flex-direction:column;flex-wrap:nowrap;height:auto;gap:8px}
+ /* DISPLAY:FLEX RESTORED HERE, 16 November. The 14 November rewrite (above
+    .st-flow's own rule, "GRID, NOT FLEX-WRAP") moved the row above
+    .st-mini6 from flex to grid but left this breakpoint's flex-direction
+    still assuming a flex parent, which a grid container ignores outright.
+    Below 1181 Uni, Imprints and Release kept the three-column grid
+    (1.64fr/1.64fr/1fr, or the data-focus ratios) at every width, squeezed
+    to about 130px each on a phone: the worked example wrapped one word
+    per line and the Imprints well went unreadable. flex-direction:column
+    needs a flex container to do anything; this is the one line that makes
+    it one again, and with it the three wells stack in DOM order (Uni,
+    Imprints, Release) the same way .st-mini6 already does below them. */
+ .st-flow{display:flex;flex-direction:column;flex-wrap:nowrap;height:auto;gap:8px}
  .st-flow>*,.st-colw>*{flex:0 0 auto!important}
  /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
     Release hidden (st-simple, the Dashboard toggle, round of 29 October),
@@ -98746,5 +98757,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006593252"></div>
+<div id="eof" hidden data-len="006594066"></div>
 </body></html>
