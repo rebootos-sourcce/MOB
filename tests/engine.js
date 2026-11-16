@@ -10824,7 +10824,10 @@ console.log('\nARCH SELF · TA9: the twelve self-reported strengths are the star
  ok(v.ok&&v.profile.archSeed&&same(v.profile.archSeed.vals,vals)&&JSON.stringify(v.profile.archSeed.order)===JSON.stringify(seeded.archSeed.order),
   'the boundary keeps the twelve strengths and the pick they wrote, where it dropped them with ok true, got '+JSON.stringify(v.profile&&v.profile.archSeed));
  const q=v.profile; loadProfile(q);
- const af=affinity();
+ /* through compute(), because the story term reads the field the last
+    compute() left (archExpr's contract) and loadProfile does not compute:
+    read bare, this saw the previous block's field and failed */
+ const af=compute().aff;
  ok(same(af,want),'with no story, affinity() is the self report against its strongest, got '+af.map(x=>x.toFixed(3)).join(' '));
  ok(Math.abs(af[1]-.1/.9)<1e-12&&af[11]<af[6],
   ARCH[1].nm+' self-reported at .1 reads '+af[1].toFixed(2)+', where the ranked pick alone gave .61, and '+ARCH[11].nm
@@ -10833,16 +10836,39 @@ console.log('\nARCH SELF · TA9: the twelve self-reported strengths are the star
  ok(r.pi===0&&r.si===8&&same(r.aff,want),
   'compute() carries it as aff, and names the first and second from it: '+ARCH[r.pi].nm+', '+ARCH[r.si].nm);
 
- /* THE STORY TERM IS NOT BUILT, and this pins that so it changes by name. The
-    only story signal the engine has for an archetype is its seat's charge,
-    and archexpr.js's 16 October ruling gives that to expression and keeps it
-    out of affinity(). Which way a story should move the lean is the owner's
-    (engine/archseed.js). Whoever builds it changes this assertion. */
+ /* THE STORY TERM, the second half of the 11 November ruling: "as they input
+    their story over time, the reality of those numbers adjust." This block
+    pinned it as open until it was built; it is the self report times
+    archExpr(), the seat figure the 16 October ruling already moves with a
+    story and a release (engine/core.js, affinity). Read against the formula
+    and against what it must and must not do, not against a number typed in. */
+ const {archExprAll}=E;
+ const expect=()=>{const ex=archExprAll(), adj=vals.map((x,i)=>x*ex[i]), m=Math.max(...adj); return adj.map(x=>x/m);};
  const before=CHARGES.reduce((a,c)=>a+S.charge[c],0);
  applyStory('I was terrified and ashamed. My chest went tight and I could not speak. I hate how small I felt.');
  const after=CHARGES.reduce((a,c)=>a+S.charge[c],0);
- ok(after>before&&same(affinity(),want),
-  'a story moves the charge, '+before.toFixed(2)+' to '+after.toFixed(2)+', and does not yet move the starting value: the story term is an open ruling');
+ const rs=compute();
+ ok(after>before&&same(rs.aff,expect())&&!same(rs.aff,want),
+  'a story moves the charge, '+before.toFixed(2)+' to '+after.toFixed(2)+', and the self report with it, each strength times its seat\'s archExpr');
+ ok(rs.aff.every((x,i)=>vals[i]>0||x===0),'an archetype reported at 0 stays 0: a story never makes up a lean nobody gave');
+ const heart=ARCH.map((a,i)=>a.b==='Heart'?i:-1).filter(i=>i>=0);
+ ok(heart.length===2&&Math.abs(rs.aff[heart[0]]/rs.aff[heart[1]]-vals[heart[0]]/vals[heart[1]])<1e-12,
+  'two archetypes on one seat keep the ratio the person gave them, '+heart.map(i=>ARCH[i].nm).join(' and '));
+ /* the drag is directional: charge held at an archetype's seat lowers that
+    archetype against the rest, and can hand the lead to the next one */
+ loadProfile(q); CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;}); S.charge.Fear=8;
+ const rf=compute();
+ ok(ARCH[0].b==='Root'&&rf.aff[0]<want[0]&&rf.pi!==0&&same(rf.aff,expect()),
+  'fear held at 8 drags the Root seat, so '+ARCH[0].nm+' reads '+rf.aff[0].toFixed(2)+' against its self report of 1 and the first archetype is now '+ARCH[rf.pi].nm);
+ S.replace.Fear=10; const rr=compute();
+ ok(same(rr.aff,want)&&rr.pi===0,'and the fear released, every strength walks back to its self report and no further, '+ARCH[rr.pi].nm+' first again');
+ /* every seat emptied: nothing left for the story to tell apart */
+ /* set on the field directly, because no story reaches sq 10 at every address
+    of every seat; compute() below puts the field back */
+ E.W.forEach(n=>{n.sq=10;});
+ ok(archExprAll().every(x=>x===0)&&same(affinity(),want),
+  'with every seat at its ceiling every product is 0, and the self report\'s own ratios answer, not the blueprint');
+ loadProfile(q); compute();
 
  /* a hand pick since is the person's, and the blueprint answers again */
  loadProfile(q); S.arcs=[7,1]; E.buildSoul();

@@ -8,7 +8,10 @@
    So the figure an archetype carries is not how strongly the blueprint leans
    toward it. That is affinity() in engine/core.js, which is read off the soul
    map, never moves with a story or a release, and keeps its one job: naming
-   the first and second archetype. Printed as a percent it told a person their
+   the first and second archetype. One exception since 11 November: while a
+   quiz self report answers affinity(), each strength is multiplied by this
+   figure, because that ruling has the story adjust the reported numbers and
+   this is the only per-archetype story signal there is. Printed as a percent it told a person their
    Innocent was 10% of them because the domains they picked sat elsewhere, and
    no release they ran could ever change it.
 
