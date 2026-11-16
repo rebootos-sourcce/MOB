@@ -249,6 +249,7 @@ jobs:
           - { gate: firstrelease, timeout: 20, command: node tests/firstrelease.js }
           - { gate: journey2, timeout: 20, command: node tests/journey2.js }
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
+          - { gate: srcintro, timeout: 20, command: node tests/srcintro.js }
           - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
