@@ -79,7 +79,11 @@ function describe(h,r,still){
  if(h.k==='law'){var l=SI[h.j], stem=(typeof IQ_STEM!=='undefined'&&IQ_STEM[l.nm])||'';
   return '<u>law</u> <b>'+l.nm+'</b><hr>'+(stem?'How often you '+esc(stem)+'. ':'')
    +'Seated at the '+l.b.toLowerCase()+'.'
-   +'<br>reads <b>'+fmtPct('law',S.law[l.nm])+'</b><hr><b>Click for detail.</b>';}
+   /* and the hover says the dash the tick now draws. It said "reads 60%"
+      over an empty field, the seed 6 printed as a percentage, which is the
+      same lie the tick told in words. fmtPct already takes unread, the way
+      the core's own line above passes it. */
+   +'<br>reads <b>'+fmtPct('law',S.law[l.nm],{unread:r&&r.unread})+'</b><hr><b>Click for detail.</b>';}
  /* how fully it is expressed, ruled 16 October (engine/archexpr.js): 100%
     with nothing held, dragged down by the charge at its seat. affinity
     still orders the twelve and is printed nowhere, percent phase 2 slice 4. */
