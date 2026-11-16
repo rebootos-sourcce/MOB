@@ -20,8 +20,9 @@
    THE ONE REAL GAP THIS FILE CLOSES. traceSummary(g,node) already computes
    exactly that: real parents (what a node feeds up into) and one narrated
    paragraph, tested, never wired to a screen. This file is the one real
-   call site. tsBlockHtml(type,id) is appended to both existing drills,
-   never replacing what they already show.
+   call site. tsBlockHtml(type,id) was appended to both existing drills,
+   never replacing what they already show. It has no caller now, on his
+   ruling: see the note above tsBlockHtml below before giving it one.
 
    THE GRAPH. The same one loopRead already builds (engine/loop.js:
    traceFromRecord(p, practiceTraceIntents(p.practice), readSeenOf(p))),
@@ -79,7 +80,19 @@ function tsPartRow(part){
 
    Silent and honest on an unread record, the same idiom renderGates and
    loopPaint already use: a cold record shows the sentence that explains
-   why, never a blank box and never an invented reading. */
+   why, never a blank box and never an invented reading.
+
+   NO CALLER, ON PURPOSE, 16 November. Its last line prints traceSummary's
+   narrated paragraph, the engine describing its own graph to the person,
+   which he struck on 4 November wherever a selection summary is built
+   ("That's a big no. We don't do that.", DECISIONS.md, the selection
+   summary reads from the real records). It came off runDrill that day, was
+   wired back onto the fetter drill on 11 November because this function
+   was still here, and came off the fetter and address drills on 16
+   November. Kept so its rows (tsPartRow) can be reused; do not append it to
+   a drill again with the narrated paragraph in it. traceSummary itself
+   stays live: insightTrace in ui/ui.js reads its parents and children and
+   never its summary. */
 function tsBlockHtml(type,id){
  var g=tsCurrentGraph();
  if(!g)return '<div class="pm-eye">Feeds up, and the blend</div>'
