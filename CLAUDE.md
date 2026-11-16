@@ -122,6 +122,18 @@ Then LOOK at the images. Reading CSS is not reviewing a screen.
 
 ## Rules learned the expensive way
 
+**Symmetry in space, everywhere, forever.** Ruled 16 November, his words, as a
+standing instruction for the whole UI/UX team and not one screen: "symmetry in
+space, your spacing should be even, your symmetry should be even at the very
+start. I don't like things brushed up and pressed up against one another. I
+like space." This generalizes the Dashboard's own permanent ruling below to
+every surface this product ever shows: nothing is laid out pressed flush
+against its neighbor by default, spacing is even rather than tight in one
+place and loose in another, and symmetry is a property checked before a
+surface ships, not noticed after. Named here once so a future pass does not
+relitigate it; any surface graded against it is graded against this paragraph
+by name.
+
 **The Dashboard is clean, even, symmetrical, and that is permanent.** Ruled
 14 November, after a design pass sent him mockups rebuilt from a screenshot
 instead of edited from the real file, and the reconstruction drifted on
@@ -216,6 +228,23 @@ so check the tool against a known good case first.
 
 **One word per concept.** See `.claude/skills/atuned-ux/SKILL.md`, which loads
 before any user facing change and carries the measured UX floors.
+
+**Symbol first, header second, body text third.** Ruled 16 November, for the
+copy team as a standing rule and not one screen, his words: "symbolism, icon
+first, header secondary, header second, body information third... we're
+trying to reduce friction for people, and there's so much text, it's
+introducing friction. Everything into the profile should be more visual, more
+interactive, more interaction with text overlays so I can hover and get
+information on the thing. But I should not have to read a bunch of text if
+it forced me." Named on the Account/Billing page's own dense paragraphs
+(three short paragraphs of plain prose above the tier rows, stating things a
+symbol and a hover could say instead), but the rule is general, across the
+board: a screen leads with a symbol or icon a person recognizes, a short
+header names it, and the explanatory paragraph a person is never forced to
+read moves behind a hover or a tap. This does not repeal "unpack every
+symbol" below. A symbol still carries its meaning, reachable on hover and tap
+per that rule; what changes is that the meaning is not also pasted onto the
+screen as a paragraph nobody asked to read.
 
 ## Voice. These are rulings, not preferences.
 
