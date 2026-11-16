@@ -1167,6 +1167,102 @@ ok(kb.pool===kb.held,'the deck is exactly what is held, '+kb.pool+' against '+kb
 ok(kb.cardIsHeld,'a dealt card is an address that is actually carrying');
 ok(kb.rank>=1&&kb.rank<=13,'the rank is a card rank, got '+kb.rank);
 
+/* ============================================================
+   A PRESS ON KNOWLEDGE ANSWERS ON THE SCREEN. 5 November, his words: "I
+   can't click on anything and have it open up and show me what these things
+   mean." Every check above reads #rdrill's text after a press, and #rdrill
+   lives in the right column, which is shut on this page by his round RB
+   ruling. So the text was there and the gate was green while the answer
+   measured 0 by 0 at both widths for every row on the page. These presses
+   are made with the mouse, and what is asserted is what a person sees: the
+   element under the pointer is the answer.
+
+   RESTORED 16 November. This block was written on 5 November (5f89048a)
+   beside the fix, and the rescue that brought the fix to this branch
+   (b33e7521) carried ui/knowledge.js and ui/drills.js and left this block
+   behind, so the layer that puts the answer on screen had no gate at all,
+   which is exactly how it went unseen the first time. Checked again before
+   it went back in: a probe pressing every row of every deck with the mouse
+   fails all of them on the committed build at 15f6952b (0 by 0) and passes
+   all of them on this one, at 1600 and at 390.
+
+   Two checks changed on the way back, both because the code moved on. E43,
+   Responsibility, has its text on file now, so the honest gap is asserted on
+   a fetter, the deck that still has none. And the formula's count is read
+   off SI, never typed: this file has been bitten by a typed count before.
+
+   ONE TRAP FOR WHOEVER PROBES THIS BY HAND. The boot sheet's skip trap
+   (shell/body.html) eats the first press made while the overture stands,
+   and its click, on purpose. A probe that loads, waits two and a half
+   seconds and presses a row reads that as "the first press on Knowledge does
+   nothing", which is the probe's bug: the sheet is still up and a person is
+   looking at it. By this point in this file it is long gone.
+   ============================================================ */
+console.log('\n=== a press on knowledge answers on the screen ===');
+for(const [w,h] of [[1600,1000],[390,844]]){
+ await page.setViewportSize({width:w,height:h});
+ /* the walk above presses a row in every deck and leaves the last answer
+    open, which is a modal over the page now, so it is closed the way a
+    person closes it before these presses */
+ await page.evaluate(()=>{rdClose(); loadP(PERSON('Ana')); KB_Q=''; KB_SEC='all'; KB_SEAT='Crown';
+  setTab(TAB.KNOW); render(); kbRender();});
+ await page.waitForTimeout(150);
+ const seen=async (nm,sel)=>{
+  const row=page.locator(sel||'#knowbody .kb-row',nm?{hasText:nm}:undefined).first();
+  await row.scrollIntoViewIfNeeded(); await row.click(); await page.waitForTimeout(120);
+  const r=await page.evaluate(()=>{const d=document.getElementById('rdrill'), b=d.getBoundingClientRect();
+   const x=Math.min(innerWidth-2,Math.max(1,b.left+b.width/2)), y=Math.min(innerHeight-2,Math.max(1,b.top+24));
+   const at=document.elementFromPoint(x,y);
+   return {w:Math.round(b.width),h:Math.round(b.height),hit:!!(at&&d.contains(at)),
+    text:(d.textContent||'').replace(/\s+/g,' ')};});
+  return r;};
+ const lawRow=await seen('All Is One');
+ ok(lawRow.hit&&lawRow.w>0&&lawRow.h>0,'at '+w+', a press on All Is One puts its answer on the screen, '+lawRow.w+' by '+lawRow.h);
+ ok(/One field\. One source\./.test(lawRow.text),'at '+w+', and the answer is the book\'s text for it');
+ /* escape is one of the ways a drill closes, and the panel goes home */
+ await page.keyboard.press('Escape'); await page.waitForTimeout(80);
+ const shut=await page.evaluate(()=>({layer:!!(document.getElementById('kbans')&&!document.getElementById('kbans').hidden),
+  home:!!document.getElementById('rdrill').closest('.lsec')}));
+ ok(!shut.layer&&shut.home,'at '+w+', escape closes the answer and hands the panel back to the rail, '+JSON.stringify(shut));
+ const unity=await seen('Unity');
+ ok(unity.hit,'at '+w+', a press on Unity answers on the screen');
+ ok(/What it is\s*The field is not divided\./i.test(unity.text),
+  'at '+w+', and a Law of Moral Integrity says what it is before how it runs through you');
+ await page.evaluate(()=>rdClose());
+ /* the fetters are the largest deck and the one row that is drawn as a pole
+    bar rather than a ring, so a press on one is its own check */
+ await page.evaluate(()=>{KB_SEC='addr'; kbRender();});
+ const fet=await seen(null,'#knowbody .kb-row.kbp');
+ ok(fet.hit&&fet.w>0&&fet.h>0,'at '+w+', a press on a fetter puts its answer on the screen, '+fet.w+' by '+fet.h);
+ await page.evaluate(()=>{rdClose(); KB_SEC='all'; kbRender();});}
+await page.setViewportSize({width:1600,height:1000});
+{const o=await page.evaluate(()=>{
+  loadP(PERSON('Ana')); KB_Q=''; KB_SEC='all'; KB_SEAT='Crown'; setTab(TAB.KNOW); kbRender();
+  const body=document.getElementById('knowbody');
+  const panels=[...body.querySelectorAll('[data-kbpn]')].map(e=>e.getAttribute('data-kbpn'));
+  const hdr=(body.querySelector('.kb-hdr')||{}).textContent||'', ph=(document.getElementById('kbq')||{}).placeholder||'';
+  /* the formula's door is the core drill */
+  const cq=[...body.querySelectorAll('.kbs-cq .kb-row')][0]; if(cq)cq.click();
+  const core=document.getElementById('rdrill').textContent;
+  rdClose();
+  /* a fetter has no meaning on file, and in the Knowledge base it says so
+     rather than printing nothing under a name */
+  KB_SEC='addr'; kbRender();
+  const fx=kbRows('addr').filter(x=>BANDS.indexOf(x.o.b)>=0)[0]; kbOpen(fx);
+  const gap=document.getElementById('rdrill').textContent; rdClose();
+  KB_SEC='all'; kbRender();
+  /* a Body page press on a mask still answers in the rail, never in the layer */
+  setTab(TAB.MASKS); render(); kbOpen({k:'mask',o:MASKS[0]});
+  const inRail=!!document.getElementById('rdrill').closest('.lsec'); rdClose();
+  /* and the page is left as the knowledge block above left it */
+  loadP(PERSON('James')); setTab(TAB.KNOW); render();
+  return {panels,hdr,ph,core,gap,inRail,n:SI.length};});
+ ok(o.panels[0]==='cq'&&o.panels.indexOf('Crown')>0,'the coherence formula comes before the seat page that lists the universal laws, '+o.panels.join(','));
+ ok(!/codex/i.test(o.hdr+o.ph)&&!/Crown down to root/.test(o.hdr),'the codex label, its search wording and the seat order line are gone, header "'+o.hdr+'", search "'+o.ph+'"');
+ ok(new RegExp('The '+o.n+' laws, each read from nothing to ten, added together').test(o.core),'the formula opens the core drill, which states the ruled formula over '+o.n+' laws');
+ ok(/No meaning on file yet\./.test(o.gap),'a fetter with no text on file says so in the Knowledge base rather than printing nothing');
+ ok(o.inRail,'a mask opened from the Body page still answers in the rail');}
+
 const rec=await page.evaluate(()=>{
  const p=CURP; p.history=[];
  for(let i=0;i<5;i++){CHARGES.forEach(c=>{S.charge[c]=Math.max(0,(S.charge[c]||3)-0.3);});
