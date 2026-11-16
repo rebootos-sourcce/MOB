@@ -7713,6 +7713,60 @@ require('./relhit.js')(E,ok,g);
  ok(again.added===0&&again.held===it.length,'and replaying them on every save is safe: nothing added, all held, '+JSON.stringify({added:again.added,held:again.held}));
 })();
 
+g('SK1 · what the person answered in the Journal is kept on the entry, a seat and an answer, never a correction\'s words');
+{
+ /* SK1, 16 November. A verdict was page memory and srcFresh threw it away at
+    Commit. evKept is the one writer, vEntryVerdicts the boundary, and the
+    correction's own words are held back by EV_KEEP_FIX until the privacy
+    words say they are kept a second time. Checked on the build before this
+    first: ENT_KEYS did not name verdicts, so the round trip below was refused
+    "story.entries[0] may not carry verdicts", the same defect round QB
+    recorded for ob. */
+ const {evLedger,evVerdict,evKept,evKeptMax,EV_KEEP_FIX,EV_VERDICT,K2BAND,ENT_KEYS,ENT_VERDICT_KEYS,OB_NEVER,
+  blankProfile,saveProfile,validateProfile}=E;
+ ok(EV_KEEP_FIX===false,'the correction\'s own words are not kept: the privacy words for them do not exist yet');
+ const text='I was afraid all night. I felt so guilty about it.';
+ const L=evLedger(text,[],{});
+ const heard=Object.keys(L.claims).filter(k=>L.claims[k].mentions>0);
+ ok(heard.length>=2,'the fixture reads at two seats or more, so the collapse below is about something, got '+JSON.stringify(heard));
+ const a=heard[0], b=heard[1];
+ const off=Object.keys(K2BAND).find(k=>!L.claims[k]||!(L.claims[k].mentions>0));
+ let vs=[];
+ [[a,'no'],[b,'fix','it is shame, not guilt'],[a,'yes'],[off,'no']].forEach(x=>{
+  const r=evVerdict(vs,x[0],x[1],x[2]); if(r.ok)vs=r.verdicts;});
+ vs=vs.concat([{seat:'spleen',v:'no'},{seat:a,v:'maybe'}]);
+ const kept=evKept(vs,L);
+ ok(JSON.stringify(kept)===JSON.stringify([{seat:a,v:'yes'},{seat:b,v:'fix'}]),
+  'one row a seat and the last answer wins, in the order each was first answered; a seat this entry did not read, an unknown seat and an unknown answer are not kept, got '+JSON.stringify(kept));
+ ok(kept.every(r=>!('fix' in r))&&JSON.stringify(kept).indexOf('shame')<0,'a correction keeps its seat and its answer and none of the words typed');
+ ok(JSON.stringify(evKept([],L))==='[]'&&JSON.stringify(evKept(vs,null))==='[]','nothing answered, or no ledger, keeps nothing');
+ const lv=evLedger(text,[],{verdicts:vs});
+ ok(lv.claims[b].state==='corrected'&&lv.claims[b].verdict.fix==='it is shame, not guilt',
+  'in page memory the words still do their work: the claim is corrected and the ledger holds them for the entry');
+ ok(ENT_KEYS.indexOf('verdicts')>=0&&OB_NEVER.indexOf('verdicts')<0&&ENT_VERDICT_KEYS.every(k=>OB_NEVER.indexOf(k)<0),
+  'an entry may carry verdicts, and neither it nor its keys meets the outbox deny list');
+ const base=saveProfile(blankProfile('verdicts'));
+ const now=new Date().toISOString();
+ const withEnt=e=>{const x=JSON.parse(JSON.stringify(base)); x.story={entries:[e]}; return x;};
+ const ent=v=>({t:now,text:text,imprints:2,bands:{},verdicts:v});
+ const all=Object.keys(EV_VERDICT).map((v,i)=>({seat:Object.keys(K2BAND)[i],v:v}));
+ const r=validateProfile(withEnt(ent(all)));
+ ok(r.ok&&JSON.stringify(r.profile.story.entries[0].verdicts)===JSON.stringify(all),
+  'a kept record with each of the four answers loads exactly as written, errs '+JSON.stringify(r.errs||[]));
+ const none=validateProfile(withEnt({t:now,text:text,imprints:2,bands:{}}));
+ ok(none.ok&&!('verdicts' in none.profile.story.entries[0]),'an older entry, or one nothing was answered on, has no verdicts and is given none');
+ const refuse=(v,frag,what)=>{const x=validateProfile(withEnt(ent(v)));
+  ok(!x.ok&&(x.errs||[]).join(' ').indexOf(frag)>=0,what+' is refused by name: '+(x.errs||[]).join(' ').slice(0,110));};
+ refuse({seat:a,v:'no'},'.verdicts is not a list','a record that is not a list');
+ refuse(['no'],'.verdicts[0] is not an object','a row that is not an object');
+ refuse([{seat:'spleen',v:'no'}],'names no seat','an unknown seat');
+ refuse([{seat:a,v:'maybe'}],'is not an answer','an answer the ledger does not take');
+ refuse([{seat:a,v:'no'},{seat:a,v:'yes'}],'repeats '+a,'a seat twice, which the writer cannot produce');
+ refuse([{seat:a,v:'no',text:'x'}],'may not carry text','a key nobody declared');
+ refuse([{seat:b,v:'fix',fix:'it is shame'}],'which this build does not keep','a correction carrying its own words while the privacy words do not exist');
+ refuse(Object.keys(K2BAND).concat(['x']).map(k=>({seat:k,v:'no'})),'more than the '+evKeptMax(),'a record longer than one answer a seat');
+}
+
 g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
 /* HIS WORDS, round OG and again the day after. "A rerun should always, it adds
    the ones that are heavy, but remember, there's a structural flow to the

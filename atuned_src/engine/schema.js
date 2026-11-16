@@ -997,7 +997,7 @@ function vRitual(errs,i,x){
    "story.entries[0] may not carry ob". The closed set did its job, which is
    to refuse what nobody declared. The defect was a writer that shipped
    without a rule here, so the rule now sits beside the list it extends. */
-var ENT_KEYS=['t','text','imprints','bands','lex','asked','ob'];
+var ENT_KEYS=['t','text','imprints','bands','lex','asked','ob','verdicts'];
 /* WHAT ONBOARDING WRITES, read off obCommit in ui/onboard.js and nowhere else:
 
      pick    which of OB_STARTS the person picked, by position, or null
@@ -1057,6 +1057,43 @@ function vEntryOb(errs,path,x){
     if(v!==null)fx.push(v);});
    q.fixes=fx;}}
  return errs.length>bad?null:q;}
+/* WHAT THE PERSON ANSWERED IN THE JOURNAL, TASKS.md SK1, 16 November. The
+   writer is evKept in engine/evidence.js and nothing else, read off it:
+
+     seat   a seat key, the sniffer's own (K2BAND), the seat the answer is about
+     v      yes, no, fix or unsure, the four the ledger takes (EV_VERDICT)
+     fix    a correction's own words, the shape ob.fixes uses: a string, and
+            no length invented. REFUSED WHILE EV_KEEP_FIX IS FALSE, by name,
+            because the privacy words do not yet say these words are kept a
+            second time (evidence.js says why), and a record that carries
+            them did not come from this build
+
+   Every other rule is vEntryOb's. Missing is an older entry, or one nothing
+   was answered about, and stays missing: filling it would claim the person
+   was asked. A seat repeated is refused by name, because the writer keeps
+   one row a seat, so a record carrying two did not come from it. */
+var ENT_VERDICT_KEYS=['seat','v','fix'];
+function vEntryVerdicts(errs,path,x){
+ if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
+ if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
+  +evKeptMax()+' seats there are'); return null;}
+ var bad=errs.length, out=[], seen={};
+ x.forEach(function(r,j){
+  var rp=path+'['+j+']';
+  if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
+  var b0=errs.length;
+  vKeys(errs,rp,r,ENT_VERDICT_KEYS);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
+  if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
+  var q={seat:r.seat, v:r.v};
+  if(r.fix!==undefined){
+   if(!EV_KEEP_FIX)errs.push(rp+'.fix is a correction\'s own words, which this build does not keep');
+   else if(r.v!=='fix')errs.push(rp+'.fix belongs only to a correction, not to '+r.v);
+   else{var f=vStr(errs,rp+'.fix',r.fix); if(f!==null)q.fix=f;}}
+  if(errs.length>b0)return;
+  seen[r.seat]=1; out.push(q);});
+ return errs.length>bad?null:out;}
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -1130,6 +1167,11 @@ function vEntry(errs,i,x){
  if(x.ob!==undefined){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
+ /* WHAT THE PERSON ANSWERED IN THE JOURNAL, SK1. Missing stays missing:
+    vEntryVerdicts above says why. */
+ if(x.verdicts!==undefined){
+  var vd=vEntryVerdicts(errs,path+'.verdicts',x.verdicts);
+  if(vd)q.verdicts=vd;}
  return q;}
 /* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
    already holds is touched. Called where a record is filled, so a profile in

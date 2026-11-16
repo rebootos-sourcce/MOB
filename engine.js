@@ -14619,7 +14619,7 @@ function vRitual(errs,i,x){
    "story.entries[0] may not carry ob". The closed set did its job, which is
    to refuse what nobody declared. The defect was a writer that shipped
    without a rule here, so the rule now sits beside the list it extends. */
-var ENT_KEYS=['t','text','imprints','bands','lex','asked','ob'];
+var ENT_KEYS=['t','text','imprints','bands','lex','asked','ob','verdicts'];
 /* WHAT ONBOARDING WRITES, read off obCommit in ui/onboard.js and nowhere else:
 
      pick    which of OB_STARTS the person picked, by position, or null
@@ -14679,6 +14679,43 @@ function vEntryOb(errs,path,x){
     if(v!==null)fx.push(v);});
    q.fixes=fx;}}
  return errs.length>bad?null:q;}
+/* WHAT THE PERSON ANSWERED IN THE JOURNAL, TASKS.md SK1, 16 November. The
+   writer is evKept in engine/evidence.js and nothing else, read off it:
+
+     seat   a seat key, the sniffer's own (K2BAND), the seat the answer is about
+     v      yes, no, fix or unsure, the four the ledger takes (EV_VERDICT)
+     fix    a correction's own words, the shape ob.fixes uses: a string, and
+            no length invented. REFUSED WHILE EV_KEEP_FIX IS FALSE, by name,
+            because the privacy words do not yet say these words are kept a
+            second time (evidence.js says why), and a record that carries
+            them did not come from this build
+
+   Every other rule is vEntryOb's. Missing is an older entry, or one nothing
+   was answered about, and stays missing: filling it would claim the person
+   was asked. A seat repeated is refused by name, because the writer keeps
+   one row a seat, so a record carrying two did not come from it. */
+var ENT_VERDICT_KEYS=['seat','v','fix'];
+function vEntryVerdicts(errs,path,x){
+ if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
+ if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
+  +evKeptMax()+' seats there are'); return null;}
+ var bad=errs.length, out=[], seen={};
+ x.forEach(function(r,j){
+  var rp=path+'['+j+']';
+  if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
+  var b0=errs.length;
+  vKeys(errs,rp,r,ENT_VERDICT_KEYS);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
+  if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
+  var q={seat:r.seat, v:r.v};
+  if(r.fix!==undefined){
+   if(!EV_KEEP_FIX)errs.push(rp+'.fix is a correction\'s own words, which this build does not keep');
+   else if(r.v!=='fix')errs.push(rp+'.fix belongs only to a correction, not to '+r.v);
+   else{var f=vStr(errs,rp+'.fix',r.fix); if(f!==null)q.fix=f;}}
+  if(errs.length>b0)return;
+  seen[r.seat]=1; out.push(q);});
+ return errs.length>bad?null:out;}
 function vEntry(errs,i,x){
  var path='story.entries['+i+']';
  if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
@@ -14752,6 +14789,11 @@ function vEntry(errs,i,x){
  if(x.ob!==undefined){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
+ /* WHAT THE PERSON ANSWERED IN THE JOURNAL, SK1. Missing stays missing:
+    vEntryVerdicts above says why. */
+ if(x.verdicts!==undefined){
+  var vd=vEntryVerdicts(errs,path+'.verdicts',x.verdicts);
+  if(vd)q.verdicts=vd;}
  return q;}
 /* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
    already holds is touched. Called where a record is filled, so a profile in
@@ -22247,9 +22289,12 @@ function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
    that is the narrow reading of DESIGN-sniffer.md question 12, which is
    still the owner's. An evidence row holds offsets into the text the person
    is writing; the letters are sliced for a caller and never kept a second
-   time. A verdict is page memory in P0, passed in by the caller, and nothing
-   here reaches the record. Keeping a verdict on the entry is P2, an additive
-   field beside ob.yes and ob.no, and it is not built.
+   time. A verdict is page memory in P0, passed in by the caller, and the
+   ledger itself never reaches the record. Since 16 November (SK1) the
+   entry keeps a seat key and an answer for each verdict, through evKept
+   below and the boundary's vEntryVerdicts, and still never a correction's
+   own words: EV_KEEP_FIX says why. Nothing reads them back into a later
+   entry's ledger yet; srcPrior still carries seat keys and counts only.
 
    THE ENGINE MAY NOT TOUCH THE HOST, and this file does not.
    ============================================================ */
@@ -22519,6 +22564,52 @@ function evVerdict(verdicts,seat,v,fix){
  var r=evVerdictOk(x);
  if(!r.ok)return {ok:false, why:r.why, verdicts:(verdicts||[]).slice()};
  return {ok:true, verdicts:(verdicts||[]).concat([x])};}
+/* WHAT AN ENTRY KEEPS OF THE PERSON'S ANSWERS, TASKS.md SK1, 16 November.
+   Until this a verdict was page memory and srcFresh threw it away at
+   Commit, so a no given in the Journal was gone by the next entry and the
+   record could never say a reading had been turned down. obCommit has kept
+   the mirror's yes and no on the entry since round QB (ob.yes, ob.no in
+   engine/schema.js); this is the Journal's twin, a seat key and an answer.
+
+   NOT INSIDE ob. vEntryOb says why in its own words: ob is what the
+   onboarding sheet was told, and an ob on an entry the Journal committed
+   would claim the person was shown a mirror they never saw. So it is its
+   own key, verdicts, beside ob, held to the same rules.
+
+   ONE ROW A SEAT, THE LAST ANSWER, because the ledger reads them that way
+   (last one wins, evLedger above): a person who said no and then yes to the
+   same seat said yes. Kept in the order each seat was first answered, so it
+   is a property of what they did and not of object key order.
+
+   ONLY A SEAT THIS ENTRY READ. ledger is the one the page drew the control
+   from (srcLedgerNow, ui/storyui.js), and a verdict about a seat with no
+   words in it is about some other text: SRC_VERDICTS is cleared by srcFresh
+   and not by anything that swaps ST_TEXT under it, so a stale answer must
+   never land on an entry it was not given about. A refused verdict was
+   never applied and is not kept either.
+
+   THE CORRECTION'S OWN WORDS ARE NOT KEPT, AND THAT IS ON PURPOSE. SK1's
+   own line: "a correction is the person's words stored a second time,
+   which needs saying in the privacy words first." Those words do not exist
+   yet, so EV_KEEP_FIX is false, a fix row keeps its seat and its answer and
+   nothing of what was typed, and the boundary refuses a fix field on read
+   by the same flag (vEntryVerdicts). The words still do their work for the
+   rest of the entry, in page memory, where every verdict lived before
+   this. Turning it on is one flag here, after the words are written, never
+   before. */
+var EV_KEEP_FIX=false;
+function evKept(verdicts,ledger){
+ var claims=(ledger&&ledger.claims)||{}, out=[], at={};
+ (verdicts||[]).forEach(function(v){
+  if(!evVerdictOk(v).ok)return;
+  var c=claims[v.seat]; if(!c||!(c.mentions>0))return;
+  var row={seat:v.seat, v:v.v};
+  if(v.v==='fix'&&EV_KEEP_FIX)row.fix=String(v.fix).trim();
+  if(at.hasOwnProperty(v.seat))out[at[v.seat]]=row;
+  else{at[v.seat]=out.length; out.push(row);}});
+ return out;}
+/* the most an entry can carry: one answer at every seat */
+function evKeptMax(){return Object.keys(K2BAND).length;}
 
 /* THE ORDER, strongest state first, then the most recent evidence in this
    entry, then the seat key, so it is a property of the text and never of
@@ -27238,6 +27329,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_VERDICT:EV_VERDICT, EV_MOVES:EV_MOVES, EV_TRACE:EV_TRACE, EV_RANK:EV_RANK,
                  evTraceSrc:evTraceSrc, evCan:evCan, evEngineState:evEngineState, evWhy:evWhy,
                  evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
+                 EV_KEEP_FIX:EV_KEEP_FIX, evKept:evKept, evKeptMax:evKeptMax,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
                  EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
@@ -27528,7 +27620,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the two nested bags' closed key sets, exported so the gate can assert
      them against OB_NEVER rather than against a second list typed in the
      test, and RIT_PLAN_MAX so the surface and the boundary are one number */
-                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS, ENT_OB_KEYS:ENT_OB_KEYS,
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS, ENT_OB_KEYS:ENT_OB_KEYS, ENT_VERDICT_KEYS:ENT_VERDICT_KEYS,
                   RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* the ring's parameter. ritTarget tells the three shapes apart off the
      tables and returns a target only for the one that is a count, so a

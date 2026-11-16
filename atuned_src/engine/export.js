@@ -28,6 +28,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_VERDICT:EV_VERDICT, EV_MOVES:EV_MOVES, EV_TRACE:EV_TRACE, EV_RANK:EV_RANK,
                  evTraceSrc:evTraceSrc, evCan:evCan, evEngineState:evEngineState, evWhy:evWhy,
                  evLedger:evLedger, evVerdict:evVerdict, evVerdictOk:evVerdictOk,
+                 EV_KEEP_FIX:EV_KEEP_FIX, evKept:evKept, evKeptMax:evKeptMax,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
                  EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
@@ -318,7 +319,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the two nested bags' closed key sets, exported so the gate can assert
      them against OB_NEVER rather than against a second list typed in the
      test, and RIT_PLAN_MAX so the surface and the boundary are one number */
-                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS, ENT_OB_KEYS:ENT_OB_KEYS,
+                  RIT_KEYS:RIT_KEYS, ENT_KEYS:ENT_KEYS, ENT_OB_KEYS:ENT_OB_KEYS, ENT_VERDICT_KEYS:ENT_VERDICT_KEYS,
                   RIT_PLAN_MAX:RIT_PLAN_MAX, RIT_MIN_MAX:RIT_MIN_MAX,
   /* the ring's parameter. ritTarget tells the three shapes apart off the
      tables and returns a target only for the one that is a count, so a
