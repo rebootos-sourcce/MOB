@@ -4372,7 +4372,20 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    ui/storyui.js). The Journal takes the width they would have used. */
 .st-flow.st-simple{grid-template-columns:1fr}
 .st-flow.st-simple .st-colb,.st-flow.st-simple .st-colz{display:none}
-.st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+.st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto;width:100%}
+/* WIDTH:100% AT EVERY WIDTH, NOT ONLY ON A PHONE, 16 November, his words:
+   "When I load up the dashboard, the animation does not load on the mini
+   dashboard." .st-flow is a grid, and a grid item with auto margins on the
+   inline axis does not stretch: it is sized to its own content, the same
+   shrink to fit the phone block further down already names and fixed for
+   390 alone. At rest every child of this column is absolute (#stmic,
+   #stdash), fixed (#stapply), display:none (#stsrc) or a box whose width is
+   a percentage of this one (#stuni), so its content is nothing wide and the
+   column came out 0 by 863 at 1600: Source's face mounted, ran, and drew
+   into a box with no width. Measured on the built file before the change,
+   #stuni at 0 by 420 at 1600 and 354 by 420 at 390, which is the phone rule
+   below doing its job. max-width still caps it at 900 and the margins still
+   centre it, now on a real width. */
 /* THE KEYBOARD AND COMMIT ESCAPE THE 900PX READING COLUMN, 10 November,
    his words: "move the text keyboard icon to the center bottom screen,
    move the commit icon to the right side of the screen." Both still sit
@@ -4998,9 +5011,30 @@ body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)){display:none}
    reads off, so his words have the width his drawing gave them. */
 body.tab-story.st-full #stsrc{width:-moz-fit-content;width:fit-content;
  max-width:90%;margin:0 auto}
-body.tab-story.st-full .src-mine{max-height:12em;overflow-y:auto;
- overflow-x:hidden;scrollbar-width:none}
-body.tab-story.st-full .src-mine::-webkit-scrollbar{display:none}
+/* .src-mine IS GONE, 16 November, and its two rules with it: see srcPaint
+   in ui/storyui.js. It printed the entry back as read only lines where he
+   had drawn the user input, and he asked for it deleted and for that place
+   to be "a full typing text box". The real box (#sttext, .st-ed.dash) takes
+   the same place and the same measure: 90 percent of the column, centred
+   under the face, about seven lines tall, scrolling inside itself. A fixed
+   height and not .st-ed's own flex grow with its 260 pixel floor, which in
+   this column would take the face's room, the "fix Uni's height and fix
+   the keyboard height" ruling of 9 November.
+   SHRINKS FIRST ON A SHORT WINDOW, the same day, caught by tests/collide.js
+   at 1280 by 600: #stjr there is 263 tall, and a box that held its 165 left
+   .st-glow 0, so #stsrc, the chain line it holds, standing at the bottom
+   of a column with no room (flex-end, above), spilled upward over #stmic,
+   #sttype and #stdash. A basis of 11em, not a height, and a shrink eight
+   times .st-glow's, so the box gives up its height first, down to about two
+   lines, and the face's column keeps what its content needs. */
+body.tab-story.st-full .st-ed.dash{flex:0 8 11em;min-height:5em;height:auto;
+ width:90%;margin:10px auto 0;font-size:15px;line-height:1.5}
+body.tab-story.st-full .st-ed.dash .st-ta,
+body.tab-story.st-full .st-ed.dash .st-hl{min-height:0;height:100%;padding:12px 14px}
+/* and #stsrc, which held .src-mine, now holds only the set aside and chain
+   notes, and on most entries neither: empty, its pinstripe drew a bare
+   pill between the face and the box, seen on the first screenshot after */
+body.tab-story.st-full #stsrc:empty{display:none}
 /* THE SET ASIDE SENTENCE, INSIDE THE ONE BOX NOW, NOT A SECOND ONE, 10
    November. srcPaint (storyui.js) reads the same stAsideSay() #staside
    already read and prints it inside .src-mine; #staside itself goes
@@ -7727,7 +7761,16 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     the three columns and .st-mini6 all together, side by side, running
     off the right edge of the screen. nowrap keeps this the single top to
     bottom stack it always was. */
- .st-flow{flex-direction:column;flex-wrap:nowrap;height:auto;gap:8px}
+ /* DISPLAY:FLEX, SAID AGAIN HERE, 16 November. .st-flow became a grid on 14
+    November (the comment at its own rule) and this block was not revisited:
+    everything in it is written for a flex column, which a grid ignores, so
+    from that day the Dashboard at and under 1180 kept the desktop's three
+    grid columns squeezed into a phone. Measured at 390 before this line:
+    the Journal column 130 wide, Source's face 74 by 94 in it, the Release
+    button cut off at the right edge. Found because the Dashboard's typing
+    box (16 November, ui/storyui.js) took that column's last height and the
+    face drew at 74 by 0. The stack this block describes is the one it gets. */
+ .st-flow{display:flex;flex-direction:column;flex-wrap:nowrap;height:auto;gap:8px}
  .st-flow>*,.st-colw>*{flex:0 0 auto!important}
  /* SIMPLE MODE, ALONE ON A PHONE, NEEDS ITS OWN FLOOR. With Imprints and
     Release hidden (st-simple, the Dashboard toggle, round of 29 October),
@@ -7748,6 +7791,13 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     size off, and the column collapsed to 0. width:100% stops it relying
     on shrink to fit at all, on a phone or any width this rule reaches. */
  .st-flow.st-simple .st-colw{width:100%}
+ /* AND THE FACE GETS A HEIGHT OF ITS OWN ON THE STACKED DASHBOARD, the
+    same day. Stacked, nothing hands the Journal column a height to share
+    (flex:0 0 auto above), and the face's own rule there is flex:1 1 0 with
+    no floor, so a share of nothing is 0: measured at 390, 298 by 0 the
+    moment the column stacked. The hero view's own fixed height, held to the
+    Dashboard's own cap. */
+ body.tab-story.st-full .st-chat .st-uni{flex:none;height:min(42vh,380px)}
  .st-colw,.st-colb,.st-colz{gap:8px}
  /* SIX IN A ROW FITS 1600, NOT 390. Six equal flex children at phone
     width would squeeze each mini picture under 60px, so this wraps them

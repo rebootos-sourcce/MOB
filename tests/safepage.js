@@ -344,10 +344,13 @@ const look = p => p.evaluate(() => {
       chat: STV.chat,
       line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
       reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
-      /* NO TWO-WAY CHAT, ANYWHERE, 10 November: #stsrc holds one div now,
+      /* NO TWO-WAY CHAT, ANYWHERE, 10 November: #stsrc held one div,
          .src-mine, the whole entry's own words as ST_TEXT itself reads
-         them, never a bubble per turn. mine reads that one block. */
-      mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null,
+         them, never a bubble per turn. GONE 16 November, his words:
+         "There's a text field that should not be there. That should be
+         deleted entirely." The words are in the one real box, #sttext,
+         where the page carries it, and in the entry where it does not. */
+      mine: (() => { const t = document.getElementById('sttext'); return t ? t.value : (ST_TEXT || null); })(),
       live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
       pass: !!document.getElementById('srcpass'), why: !!document.getElementById('srcwhy'),
       marks: document.querySelectorAll('#stsrc mark').length,
@@ -397,7 +400,7 @@ const look = p => p.evaluate(() => {
       await p.evaluate(() => { STV.dash = false; stRender(); }); await p.waitForTimeout(200);
       await say(p, 'I was scared and my chest went tight.'); await p.waitForTimeout(300);
       const nx = await p.evaluate(() => ({ line: (document.querySelector('#stsafe p') || {}).textContent || null,
-        mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null }));
+        mine: (() => { const t = document.getElementById('sttext'); return t ? t.value : (ST_TEXT || null); })() }));
       ok(nx.line === null && nx.mine === 'I was scared and my chest went tight.', 'the next entry starts and the line goes' + at + ': ' + JSON.stringify(nx));
       ok(!p.errs.length, 'no page errors' + at + ': ' + p.errs.join(' | '));
     }
@@ -414,7 +417,7 @@ const look = p => p.evaluate(() => {
     const sh = await q.evaluate(() => ({ from: SRC_FROM,
       line: (document.querySelector('#stsrc #stsafe p') || {}).textContent || null,
       reach: document.querySelectorAll('[data-crisis="reachnow"]').length,
-      mine: (document.querySelector('.src-mine .src-me') || {}).textContent || null, text: ST_TEXT,
+      mine: (() => { const t = document.getElementById('sttext'); return t ? t.value : (ST_TEXT || null); })(), text: ST_TEXT,
       live: document.querySelectorAll('#stsrc .src-tn-now .src-q, #stsrc .src-tn-now .src-open').length,
       pass: !!document.getElementById('srcpass') }));
     ok(sh.from > 0, 'the probe moves the subject: SRC_FROM is past the words' + at + ': ' + sh.from);

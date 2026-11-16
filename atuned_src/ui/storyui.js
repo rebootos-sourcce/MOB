@@ -906,8 +906,31 @@ function stRender(){
      keyboard. The 'open' class (and the shell's compact CSS keyed on it)
      is only added when STV.typed is what opened it, so the crisis box's
      own size is exactly what it was before this round. */
-  +((!STV.chat||STV.typed)?'<div class="st-ed'+(STV.typed?' open':'')+'"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
-    +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
+  /* AND ON THE DASHBOARD THE BOX IS ALWAYS THERE, UNDER THE FACE, 16
+     November. His words, on a screenshot of the Full Dashboard: "There's a
+     text field that should not be there. That should be deleted entirely
+     because it's now being replaced with the text box. But this text box
+     should be a full typing text box. Where's my keyboard?" What stood
+     under the face there was .src-mine (srcPaint), a div that printed
+     ST_TEXT back as read only lines, sized and placed where his 10
+     November drawing put "the user input only". It looked like the place
+     to type and was not one: no caret, no focus, and on a phone no
+     keyboard, and since a reload restores the draft into ST_TEXT
+     (stDraftBack), it printed the last session's spoken turns ("Hello.",
+     "Can you hear me?") as if a conversation were still running. The div
+     is gone and this, the real box, stands in its place on the Dashboard,
+     holding the same ST_TEXT through the same oninput, so voice turns and
+     typed words are one entry a person can read, edit and clear. The
+     keyboard icon is unchanged: it still opens the type only view his 14
+     November ruling asked for. Not on a worked example, which shows its
+     note in place of every writing control. The 10 November rest ruling,
+     two icons and nothing else, is the hero view's and this does not reach
+     it: STV.dash is false there. */
+  +((!STV.chat||STV.typed||(STV.dash&&!show))?'<div class="st-ed'+(STV.typed?' open':(STV.dash&&STV.chat?' dash':''))+'"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
+    /* inputmode and enterkeyhint name the phone's keyboard outright, the
+       text one with a return key, since a textarea is where a newline
+       belongs; autocapitalize because a story is sentences */
+    +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" inputmode="text" enterkeyhint="enter" autocapitalize="sentences" '
     +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>':'')
   /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
      QR. His own story arrived with whole words turned to stars by the speech
@@ -1821,7 +1844,11 @@ function stRefresh(){
  /* the next entry has started, so the line about the last one goes */
  if(ST_TEXT&&ST_TEXT.trim())STV.safeSaid=false;
  stDraft();
- var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
+ /* the caret is put back only where it was: a spoken turn lands here too,
+    and with the Dashboard's box always on the page (16 November) focusing
+    it unasked would raise a phone's keyboard in the middle of talking */
+ var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0,
+  had=!!keep&&document.activeElement===keep;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
  /* THE WORD DEPENDS ON WHICH #stapply IS IN THE DOCUMENT, 9 November. One
@@ -1885,7 +1912,7 @@ function stRefresh(){
     because stRefresh exists so typing never loses the caret. */
  stPaintHL();
  stPaintAll();
- if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
+ if(had){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
 /* the stars line under the box, kept in step with the text as it is typed
    over, so it goes the moment the last hidden word has been typed in */
 function stMaskPaint(){
@@ -2549,7 +2576,13 @@ function srcPaint(){
     and o below are untouched), only the one write that promotes them into
     the thread waits for the box to actually close, which stType does by
     calling this same function once, by name, before it renders. */
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!STV.typed)srcChatSync(); fresh=srcChatNote(cur);
+ /* READ OFF THE BOX ITSELF SINCE 16 November, not STV.typed: the Dashboard
+    now carries #sttext with STV.typed false (see stRender), and gated on
+    the flag alone every key typed there would sync one row per letter, the
+    defect this gate exists for, and with Talk on speak a reply to each.
+    Typed words there become a turn when the next spoken one lands, which
+    syncs first (srcTurnCommit), or at Commit. */
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!document.getElementById('sttext'))srcChatSync(); fresh=srcChatNote(cur);
   /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
      November, his words: "it needs to do speech to speech, text to
      speech. It needs to do them all." The 10 November ruling only ever
@@ -2639,12 +2672,22 @@ function srcPaint(){
     so there is exactly one sentence of truth for it; #staside itself is
     hidden wherever this box shows (head.html), so the words never print
     twice. */
+ /* THE WORDS THEMSELVES LEFT THIS PANEL, 16 November, his words: "There's
+    a text field that should not be there. That should be deleted
+    entirely." .src-mine printed the whole of ST_TEXT here as read only
+    lines, in the spot he had drawn for typing, so it read as the place to
+    type and gave no caret and no keyboard; after a reload it printed the
+    restored draft's spoken turns as a live looking conversation. The
+    Dashboard's real box (#sttext, stRender) now holds those words, lit by
+    seat in its own layer behind (stPaintHL), so printing them here a second
+    time would be the two boxes he ruled out on 10 November. What stays is
+    what is not the words: the set aside sentence, which tests/sniffpage.js
+    holds on this panel, and the content chain line. */
  var asideSentence=stAsideSay();
- var mineHtml=ST_TEXT.trim()?'<div class="src-mine"><p class="src-me">'+srcMeHtml(0,ST_TEXT.length)+'</p>'
-  +(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine()+'</div>':'';
  /* the person's answers sit under their words and outside the scrolled
     box, which keeps its newest line in view on every paint, SK5 */
- o=mineHtml+(turn.move==='safe'?'':srcVerdictHtml());
+ o=(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+  +(turn.move==='safe'?'':srcVerdictHtml());
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
@@ -2652,7 +2695,6 @@ function srcPaint(){
  srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  srcLock(h);
- var mn=h.querySelector('.src-mine'); if(mn)mn.scrollTop=mn.scrollHeight;
  srcHearing(h);
  /* NO LONGER SAID OUT LOUD, 11 November, the Source AI round's locked plan,
     item 2. This line used to speak every new templated question while
@@ -3117,6 +3159,11 @@ function srcTurnCommit(v){
     SRC_FROM */
  if(it&&it.intent==='shift')SRC_FROM=a;
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
+ /* the Dashboard's box stands open while Talk is on since 16 November, and
+    nothing else writes a spoken turn into it: left stale, the next key
+    typed there would set ST_TEXT to the box's older value through oninput
+    and delete the turn that had just landed */
+ var ta=document.getElementById('sttext'); if(ta&&ta.value!==ST_TEXT)ta.value=ST_TEXT;
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
  uniApply(ST_PARSED);
  /* the turn alone, not the whole entry, is what the face reads aloud in

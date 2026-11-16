@@ -96,7 +96,12 @@ const look = p => p.evaluate(() => {
        the person's own current words, with no bubble, no border and no
        fill (see .src-mine, atuned_src/shell/head.html). */
     sourceOnScreen: document.querySelectorAll('#stsrc .src-bub, #stsrc .src-tn, #stsrc .src-q, #stsrc .src-open, .src-th').length,
-    mineText: (document.querySelector('.src-mine .src-me') || {}).textContent || null,
+    /* .src-mine IS GONE, 16 November, his words: "There's a text field that
+       should not be there. That should be deleted entirely." The words live
+       in the one real box now, #sttext, which the Dashboard always carries;
+       the hero view carries no box at rest and printed .src-mine only under
+       display:none, so there the entry itself is what holds them. */
+    mineText: (() => { const t = document.getElementById('sttext'); return t ? t.value : (ST_TEXT || null); })(),
     said: (document.getElementById('srcsay') || {}).textContent || ''
   };
 });
