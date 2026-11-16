@@ -74,6 +74,7 @@ engine/data/funnelquiz.js
 ui/component.js
 ui/sound.js
 ui/uni.js
+ui/srcface.js
 ui/tip.js
 ui/lock.js
 ui/wheel.js

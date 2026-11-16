@@ -3080,6 +3080,9 @@ function uniApply(parsed){
     and keep running regardless -- a held pose, not a frozen one. */
  if(typeof srcSafe==='function'&&srcSafe(ST_TEXT))return;
  var r=(typeof computeSeen==='function')?computeSeen():null;
+ /* Source's face reads the same reading she is handed, as this plan sees
+    it, so its addresses, chain and CQ arc are this one (ui/srcface.js) */
+ if(r&&window.SrcFace)window.SrcFace.sync(r);
  if(r){
   if(r.unread!==UNI_LAST.unread){
    UNI_LAST.unread=r.unread;
@@ -3105,6 +3108,9 @@ function srcTurnCommit(v){
  SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
  uniApply(ST_PARSED);
+ /* the turn alone, not the whole entry, is what the face reads aloud in
+    marks: the entry's earlier turns have already been read once */
+ if(window.SrcFace)window.SrcFace.read(v);
  return true;}
 /* SEND, the typed door onto srcTurnCommit. */
 function srcChatSend(){
@@ -4875,6 +4881,11 @@ function stSrcSpeak(line){
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
   SRC_VOICE.el=a; SRC_VOICE.url=url;
+  /* Source's face follows this element, the one voice, and no other: it
+     speaks while this plays and holds its reading until this ends
+     (ui/srcface.js). Handed before play(), so its first playing event is
+     never missed. */
+  if(window.SrcFace)window.SrcFace.voice(a,text);
   var done=function(){ if(SRC_VOICE.el!==a)return; srcVoiceStop(); stHush(false); };
   /* A DECODE OR LOAD FAILURE MUST STILL BE SAID, 13 November, his own
      report: "it listens, but it can't talk." onerror and onended shared

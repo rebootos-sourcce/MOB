@@ -5629,11 +5629,27 @@ function uniMount(target){
     here. */
  if(window.Uni&&window.Uni.setBgTransparent)
   window.Uni.setBgTransparent(target.closest&&target.closest('#stflow.st-simple'));
+ /* THE LEDGER IN HER PLACE ON THE JOURNAL, 16 November, his words: "The
+    ledger is the one I want wired in." On #stuni, and only there, her loop
+    is paused and her canvas hidden, and Source's face draws in the same
+    canvas-wrap, so it takes exactly her box in the Dashboard and in the
+    hero view and nothing round it moves (ui/srcface.js). Asked by the
+    target's id and not by where it sits, the house rule for finding a
+    surface. Every other mount, the boot intro's #bootuni, still gets her,
+    and the face is parked there. If the face never loaded she is resumed
+    as before, so a broken face costs the Journal its new avatar and never
+    its old one. */
+ if(target.id==='stuni'&&window.SrcFace){
+  if(window.Uni&&window.Uni.pause)window.Uni.pause();
+  window.SrcFace.mount(uniHost.querySelector('.canvas-wrap'));
+  return true;}
+ if(window.SrcFace)window.SrcFace.pause();
  if(window.Uni&&window.Uni.resume)window.Uni.resume();
  return true;
 }
 function uniPark(){
  if(window.Uni&&window.Uni.pause)window.Uni.pause();
+ if(window.SrcFace)window.SrcFace.pause();
  uniHost.hidden=true;
  document.body.appendChild(uniHost);
 }
