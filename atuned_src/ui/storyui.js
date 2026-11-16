@@ -4989,11 +4989,33 @@ function srcVoiceStop(){
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
  try{ if(SRC_VOICE.url)URL.revokeObjectURL(SRC_VOICE.url); }catch(e){}
  SRC_VOICE.el=null; SRC_VOICE.url='';}
-function stSrcSpeak(line){
- var text=String(line==null?srcSayNow():line).trim(); if(!text)return;
- if(typeof authVoice!=='function')return;
+/* QUIET, FOR A LINE NOBODY ASKED FOR. The intro (ui/srcintro.js) speaks one
+   line the person did not press anything to hear, in the eleven seconds
+   before the first card, and a voice that cannot reach the server there is
+   not a failure of anything the person did: "could not speak that line"
+   under a first arrival's first screen reads as the product broken before it
+   has started. So o.quiet keeps every failure line below off the status line
+   for this one call, and o.onPlay and o.onEnd say what happened instead, to
+   the one caller that has to know: onPlay once the element is really
+   playing, onEnd(played) once it is over or never going to start. Every
+   other caller passes nothing and gets exactly what it got before. The rule
+   that a control never claims success is not bent: the intro claims
+   nothing, its button waits for onEnd. */
+/* CUT THE LINE NOW, AND ANY STILL ON ITS WAY. srcVoiceStop stops the element
+   and nothing else: a line still waiting on the server would play after it,
+   and the recording stays held. The intro's own button press is a person
+   moving on mid sentence, so the line stops, a pending one is dropped by
+   moving the number, and the hold comes off. */
+function srcVoiceCut(){ SRC_VOICE.seq++; var was=!!SRC_VOICE.el; srcVoiceStop(); if(was)stHush(false); }
+function stSrcSpeak(line,o){
+ o=o||{};
+ var quiet=!!o.quiet, ended=false;
+ var fin=function(played){ if(ended)return; ended=true; if(typeof o.onEnd==='function')try{o.onEnd(!!played);}catch(e){} };
+ var say=function(m){ if(!quiet)status(m,'fail'); };
+ var text=String(line==null?srcSayNow():line).trim(); if(!text){ fin(false); return; }
+ if(typeof authVoice!=='function'){ fin(false); return; }
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
+  say('Source AI cannot speak from a file. Open the hosted build to hear it.'); fin(false); return; }
  var seq=++SRC_VOICE.seq;
  /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
     "the voice is not hooked up." A microphone failure used to bump
@@ -5017,12 +5039,12 @@ function stSrcSpeak(line){
     below that acts on muteFail now reads it fresh, right where it is
     used, and clears it there. */
  authVoice(text,'frame').then(function(r){
-  if(seq!==SRC_VOICE.seq)return;
+  if(seq!==SRC_VOICE.seq){ fin(false); return; }
   if(!r||!r.ok){
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI could not speak that line. '+
-    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
-   return;}
+   if(!muteFail)say('Source AI could not speak that line. '+
+    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'));
+   fin(false); return;}
   SRC_VOICE.muteFail=false;
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
@@ -5033,7 +5055,13 @@ function stSrcSpeak(line){
      (ui/srcface.js). Handed before play(), so its first playing event is
      never missed. */
   if(window.SrcFace)window.SrcFace.voice(a,text);
-  var done=function(){ if(SRC_VOICE.el!==a)return; srcVoiceStop(); stHush(false); };
+  var played=false;
+  a.addEventListener('playing',function(){ if(played)return; played=true; if(typeof o.onPlay==='function')try{o.onPlay();}catch(e){} });
+  /* srcVoiceStop clears onended and onerror before it pauses, so a line
+     another line or srcVoiceCut stopped never reaches done(): the pause is
+     where its onEnd is said */
+  a.addEventListener('pause',function(){ if(!a.ended)fin(played); });
+  var done=function(){ if(SRC_VOICE.el!==a){ fin(played); return; } srcVoiceStop(); stHush(false); fin(played); };
   /* A DECODE OR LOAD FAILURE MUST STILL BE SAID, 13 November, his own
      report: "it listens, but it can't talk." onerror and onended shared
      this same done(), which clears SRC_VOICE.el before play()'s own
@@ -5048,7 +5076,7 @@ function stSrcSpeak(line){
   a.onended=done;
   a.onerror=function(){ if(SRC_VOICE.el!==a)return; done();
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI could not speak that line. Try again in a moment.','fail'); };
+   if(!muteFail)say('Source AI could not speak that line. Try again in a moment.'); };
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
@@ -5061,8 +5089,8 @@ function stSrcSpeak(line){
      anything about is still said. */
   if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
    done(); var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
- });}
+   if(!muteFail)say('Source AI\'s voice is ready but the browser blocked playing it.');});
+ },function(){ fin(false); });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
    ST_LISTEN is what the button says, and through a hold the button still

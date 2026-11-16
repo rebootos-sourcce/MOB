@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v102 8717b65a 2026-11-16 19:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v104 c2458ba6 2026-11-16 19:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -9378,10 +9378,10 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
-.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
-.obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
+.obx .btn.pri,.sx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
+.obx .btn.pri::after,.sx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
  rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
-.obx .btn.pri:hover::after{translate:2px 0}
+.obx .btn.pri:hover::after,.sx .btn.pri:hover::after{translate:2px 0}
 .obx .btn.ob-back{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
 .obx .btn.ob-back:hover{color:var(--ink);background:transparent}
 .obx .btn.ob-back::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
@@ -10413,6 +10413,65 @@ body.rail2 .rb-d{right:6px;top:6px;margin-top:0}
 body.rail2 .fdock .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
 body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
 
+/* SOURCE READS AN EXAMPLE, ui/srcintro.js. Eleven seconds, once per device,
+   between the door and the first card. The ground is the door's own hard
+   black (#login above), for the door's reason: this is the bookend that
+   follows it, and a ground read off --bg would turn light under a light
+   theme while the face it holds is a dark lens. The inks are hardcoded light
+   for the same reason, as .dev-skip's are.
+
+   NOTHING MOVES WHEN SOMETHING ARRIVES. Every line the eleven seconds show
+   has its place in the column from the first frame, at opacity 0, so the
+   face never slides up when the rows land and the button never pushes the
+   rows: symmetry in space, ruled 16 November. Line one and the example share
+   one slot, one leaving as the other comes.
+
+   The face's box is min(86vw, 420px): the seat labels only draw at a face
+   radius of 140 and up (TX.res, ui/srcface.js), which needs a box of 284,
+   and at 390 wide this is 335. The 52vh is for a short landscape window,
+   where 420 of face would push the button off the screen; at 390 by 844 and
+   at 1600 by 1000 it never binds. */
+.sx{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;
+ background:#06060a;padding:24px 16px;overflow:auto}
+.sx:focus{outline:none}
+.sx-col{display:flex;flex-direction:column;align-items:center;gap:22px;width:min(560px,100%);margin:auto}
+.sx-face{position:relative;width:min(86vw,420px,52vh);aspect-ratio:1;flex:0 0 auto;
+ animation:sxIn 600ms cubic-bezier(.22,1,.36,1) both}
+.sx-face canvas{position:absolute;inset:0;width:100%;height:100%}
+@keyframes sxIn{from{scale:.94;opacity:0}to{scale:1;opacity:1}}
+.sx-text{display:grid;justify-items:center;gap:16px;width:100%;text-align:center}
+.sx-slot{display:grid;width:100%}
+.sx-slot>*{grid-area:1/1;margin:0}
+.sx-l1,.sx-ex,.sx-row,.sx-go{opacity:0;translate:0 8px;
+ transition:opacity 220ms cubic-bezier(.22,1,.36,1),translate 220ms cubic-bezier(.22,1,.36,1)}
+.sx-l1{align-self:center;font-size:17px;line-height:1.45;color:rgba(239,237,232,.92)}
+.sx-l1.on,.sx-ex.on,.sx-row.on,.sx-go.on{opacity:1;translate:0 0}
+.sx-l1.off{opacity:0;translate:0 0;transition:opacity 180ms cubic-bezier(.4,0,1,1)}
+.sx-eb{margin:0 0 6px;font-size:12px;color:rgba(239,237,232,.55)}
+.sx-s{margin:0;font-size:17px;line-height:1.5;color:rgba(239,237,232,.92)}
+.sx-w{opacity:0;transition:opacity 160ms cubic-bezier(.22,1,.36,1)}
+.sx-w.on{opacity:1}
+.sx-u{position:relative;white-space:nowrap}
+.sx-u::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:var(--sc);
+ scale:0 1;transform-origin:left center;transition:scale 150ms cubic-bezier(.22,1,.36,1)}
+.sx-u.on::after{scale:1 1}
+.sx-rows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.sx-row{font-size:14px;color:rgba(239,237,232,.72);display:flex;align-items:center;justify-content:center;gap:10px}
+.sx-row::before{content:'';width:8px;height:8px;border-radius:50%;border:1.5px solid var(--sc);flex:0 0 auto}
+.sx-row+.sx-row{transition-delay:90ms}
+.sx-go{translate:0 6px;min-height:54px}
+.sx-go .btn{visibility:hidden}
+.sx-go.on .btn{visibility:visible}
+.sx.sx-out .sx-col{scale:.96;opacity:0;transition:scale 260ms cubic-bezier(.4,0,1,1),opacity 260ms cubic-bezier(.4,0,1,1)}
+/* the ground holds until the first card is under it, 120ms into the exit,
+   and only then thins, so the Journal behind both never shows between them */
+.sx.sx-out{background-color:rgba(6,6,10,0);transition:background-color 140ms cubic-bezier(.4,0,1,1) 120ms}
+.sx.sx-out .dev-skip{opacity:0}
+/* STILL, the end frame and nothing on the way to it. Set by the script from
+   rbStill (ui/component.js), which also answers the person's own quiet
+   switch, and by the media query for a page whose script is late */
+.sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
+@media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -47456,6 +47515,13 @@ function uniMount(target){
 function uniPark(){
  if(window.Uni&&window.Uni.pause)window.Uni.pause();
  if(window.SrcFace)window.SrcFace.pause();
+ /* the face comes home with her. The intro (ui/srcintro.js) lends the one
+    canvas to its own stage, and when the tab under it is not the Journal
+    the hand back lands here and not in uniMount, which would have left the
+    face in a stage that is about to be removed, out of the document until
+    the next mount found it */
+ var fc=document.getElementById('srcface'), cw=uniHost.querySelector('.canvas-wrap');
+ if(fc&&cw&&fc.parentNode!==cw)cw.appendChild(fc);
  uniHost.hidden=true;
  document.body.appendChild(uniHost);
 }
@@ -47722,7 +47788,11 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; cqSeen=true; } else if(CQ!==cqTo){ cqFrom=cqv; cqTo=CQ; cqT0=performance.now(); } }
   if(sabIdx>=CH.sabs.length){ sabIdx=0; sabStart=performance.now()+400; lastCyc={}; } }
 
- const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{}};
+ const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{},hk:{}};
+ /* A CALLER'S HOOK MAY NOT STOP THE FACE. The intro (ui/srcintro.js) hangs
+    its captions off these, and a throw from one of them inside a word timer
+    would leave the reading half fired, the seat held as a cross for ever */
+ function hook(name,arg){ const f=RD.hk&&RD.hk[name]; if(typeof f!=='function') return; try{ f(arg); }catch(e){} }
  const rawFx=[], resFx={};
  let lastInput=-9e9, lastEvent=-9e9, speaking=false, holdTimer=0;
  let stateWord='Waiting';
@@ -47739,6 +47809,10 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  let pendClick=null, clickP=null;
  /* first beat lands about two seconds in */
  let pPh=0.62, lastBeat=-9e9;
+ /* the beat's own period on the last frame, for cue(), which has to say how
+    long until the beat it has just called lands. 5.4 seconds, the ordinary
+    period, until the first frame has measured one */
+ let curPeriod=5.4;
  /* the pattern cycle, over the real saboteurs */
  let sabIdx=0, sabStart=performance.now()+1700, lastCyc={};
  const SAB_HOLD=4200, SAB_FADE=900;
@@ -47771,9 +47845,9 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   Object.keys(out).forEach(k=>{ const o=out[k]; o.fet=Object.keys(o.amt).sort((a,b)=>o.amt[b]-o.amt[a])[0]||null; });
   return out;
  }
- function startReading(imp){
+ function startReading(imp,hk){
   for(const k in RD.seats) clearTimeout(RD.seats[k].timer); RD.id++; clearTimeout(holdTimer);
-  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp;
+  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp; RD.hk=hk||{};
   for(const k in resFx) delete resFx[k]; rawFx.length=0;
   stateWord='Listening';
  }
@@ -47804,12 +47878,12 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  function hold(id){ clearTimeout(holdTimer); holdTimer=setTimeout(()=>{ if(RD.id===id) releaseReading(); },HOLD); }
  function closeStory(){
   const id=RD.id; const pending=Object.values(RD.seats).filter(s=>!s.resolved);
-  stateWord='Weighing';
+  stateWord='Weighing'; hook('onClose');
   pending.forEach((s,k)=>setTimeout(()=>{ if(RD.id===id) resolveSeat(s.ring); },RM?0:k*380));
   /* the amplified file closes the reading here, once every seat has
      weighed; the pie's climb up three compound orbits that used to sit
      between this and the hold went with the orbits */
-  setTimeout(()=>{ if(RD.id!==id) return; RD.closed=true; stateWord='Holding'; hold(id); },RM?0:pending.length*380+1100);
+  setTimeout(()=>{ if(RD.id!==id) return; RD.closed=true; stateWord=speaking?'Answering':'Holding'; hold(id); hook('onHold'); },RM?0:pending.length*380+1100);
  }
  function releaseReading(){
   /* the reading is held while the voice is still saying something about it;
@@ -47823,15 +47897,28 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     whole and carry no timing anywhere in the product (gap a, above) */
  let wordTimers=[];
  function wordGaps(words){ const base=60000/160; return words.map(wd=>base*(0.55+0.45*wd.replace(/[^A-Za-z0-9]/g,'').length/5)+(/[,;:]$/.test(wd)?180:0)+(/[.!?]$/.test(wd)?380:0)); }
- /* called by srcTurnCommit (ui/storyui.js) with the turn it was handed */
- function read(text){
-  text=String(text||'').trim(); if(!text) return;
+ /* called by srcTurnCommit (ui/storyui.js) with the turn it was handed, and
+    by the intro (ui/srcintro.js) with its one example and three hooks, so the
+    intro's captions land on this clock and never on a second copy of it:
+    onWord({k,w}) as word k is read, onHit({k,n,ring,seat,key,col}) as a
+    counted hit fires on the n words ending at k, onClose() as the story
+    closes and the open seats are weighed, and onHold() once the reading is
+    closed and held. A hook rides one reading only: the next read or a
+    clear() drops it with the reading it belonged to. */
+ /* WHAT A READING OF THIS TEXT WILL DO, WITHOUT DOING IT. The words on the
+    face's clock and the counted hits that will fire on them, worked out
+    exactly as read() works them out, because read() asks this. The intro
+    lays its sentence out from it before the first word is read, so a skip
+    or reduced motion can show the whole end frame at once, and the face and
+    the caption cannot disagree about which words a hit lands on. null where
+    read() would not read at all. */
+ function plan(text){
+  text=String(text||'').trim(); if(!text) return null;
   /* THE DOOR IS A DOOR AND NOT AN ALARM, the guard uniApply carries: a face
      that visibly reacted the moment srcSafe tripped would be the escalation
      the crisis ruling rules out, in a different channel */
-  if(typeof srcSafe==='function'&&(srcSafe(text)||(typeof ST_TEXT==='string'&&srcSafe(ST_TEXT)))) return;
-  if(typeof parseStory!=='function'||typeof normMap!=='function') return;
-  RM=still();
+  if(typeof srcSafe==='function'&&(srcSafe(text)||(typeof ST_TEXT==='string'&&srcSafe(ST_TEXT)))) return null;
+  if(typeof parseStory!=='function'||typeof normMap!=='function') return null;
   const p=parseStory(text), nm=normMap(text);
   const words=nm.s.trim().split(/\s+/).filter(Boolean);
   /* the counted hits that name a seat. parseStory has already sent a denied
@@ -47841,13 +47928,22 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   const at=[];
   (p.hits||[]).forEach(h=>{ if(h.kind==='adj'||!h.band||h.band==='coherent') return;
    const ring=SEATNM.indexOf(K2BAND[h.band]); if(ring<0) return;
-   const k=nm.s.slice(0,h.at).trim().split(/\s+/).filter(Boolean).length+String(h.t||'').split(' ').length-1;
-   at.push({k:Math.min(k,Math.max(0,words.length-1)),ring}); });
+   const n=String(h.t||'').split(' ').length;
+   const k=nm.s.slice(0,h.at).trim().split(/\s+/).filter(Boolean).length+n-1;
+   at.push({k:Math.min(k,Math.max(0,words.length-1)),n,ring,seat:SEATNM[ring],key:h.band,col:SEATCOL[ring]}); });
+  return {p,words,hits:at};
+ }
+ function read(text,opts){
+  const pl=plan(text); if(!pl) return;
+  RM=still();
+  const words=pl.words, at=pl.hits;
   wordTimers.forEach(clearTimeout); wordTimers=[];
-  startReading(imprintsBySeat(p));
+  const hk={}; ['onWord','onHit','onClose','onHold'].forEach(n=>{ if(opts&&typeof opts[n]==='function') hk[n]=opts[n]; });
+  startReading(imprintsBySeat(pl.p),hk);
   const gaps=wordGaps(words); let acc=0;
   words.forEach((wd,k)=>{ const fire=at.filter(a=>a.k===k);
-   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); wordWave(wd); fire.forEach(a=>fireHit(a.ring)); },RM?0:acc));
+   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); wordWave(wd); hook('onWord',{k,w:wd});
+    fire.forEach(a=>{ fireHit(a.ring); hook('onHit',{k:a.k,n:a.n,ring:a.ring,seat:a.seat,key:a.key,col:a.col}); }); },RM?0:acc));
    acc+=gaps[k]; });
   wordTimers.push(setTimeout(closeStory,RM?0:acc+300));
  }
@@ -47859,7 +47955,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed) hold(RD.id); else if(!RD.on) stateWord='Waiting';
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord='Waiting';
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -47867,7 +47963,13 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8}); if(!RD.on) stateWord='Answering'; });
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+   /* a closed reading is answered too. This read !RD.on alone, so a line
+      spoken over a reading the face was holding left the centre on
+      Holding while the voice talked about it, which is the one moment the
+      intro's spoken line exists for; a story still being read keeps its
+      Listening, since the person's own words are still arriving */
+   if(!RD.on||RD.closed) stateWord='Answering'; });
   ['ended','pause','error','emptied'].forEach(ev=>el.addEventListener(ev,()=>voiceEnd(el)));
  }
  /* where the voice is, read off the element each frame: every word it
@@ -47936,7 +48038,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
      healthy heart does, every beat a little different in strength, and the soft dub kept 300ms on. */
   if(!RM && boot>0.4){
    const period=mix(5.4*(1+0.07*Math.sin(t*0.23)+0.04*Math.sin(t*0.61)),4.2*(1+0.045*Math.sin(t*0.19)+0.025*Math.sin(t*0.53+1.3)),hiE);
-   pPh+=dt/period;
+   curPeriod=period; pPh+=dt/period;
    if(pPh>=1){ pPh-=1; const amp=0.9+0.2*rnd(); beat(now,amp); pulses.push({t0:now+mix(260,300,hiE),amp:mix(0.42,0.22,hiE)*amp,crossed:-1,rim:false,dub:1,seed:rnd()*TAU}); }
   }
   const PT=3.0;
@@ -48411,17 +48513,56 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   if(wordFits){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)})`; ctx.fillText(stateWord,cx,cy); }
  }
 
- function mount(host){ if(!host) return false; if(canvas.parentNode!==host) host.appendChild(canvas); canvas.hidden=false;
+ /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
+    stage, and anything that renders the Journal underneath it in the
+    meantime (an auth answer, a status line, a render() from the login's
+    own close) reaches uniMount or uniPark, which would take the face off
+    the intro mid sentence or pause it there. While lent, those two are
+    answered as if done and do nothing; give() ends the loan and the caller
+    hands the face back through uniHandBack, the boot's own route home. */
+ let lent=null;
+ function show(host){ if(canvas.parentNode!==host) host.appendChild(canvas); canvas.hidden=false;
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); } return true; }
- function pause(){ running=false; cancelAnimationFrame(raf); canvas.hidden=true; }
+ function mount(host){ if(!host) return false; if(lent) return true; return show(host); }
+ function pause(){ if(lent) return; running=false; cancelAnimationFrame(raf); canvas.hidden=true; }
+ function take(host){ if(!host) return false; lent=host; return show(host); }
+ function give(){ lent=null; }
+ /* CALL THE BEAT. The lock's own move, beat(now,1.35);pPh=0, starts a beat at
+    once; this one only brings the next beat forward to where its 12 percent
+    anticipation begins, so the centre draws in and then releases on the
+    face's own curve. Answers how long, in ms, until that beat lands, read
+    off the period the last frame used. A beat already inside its
+    anticipation is left where it is, and reduced motion has no beat. */
+ function cue(){ if(RM) return 0; pPh=Math.max(pPh,0.88); return Math.round((1-pPh)*curPeriod*1000); }
+ /* DROP THE READING AT ONCE. A reading normally leaves on its own: closed,
+    held for HOLD, then released over 2.2 seconds, about fourteen seconds in
+    all. The intro's example must not still be on the face when the
+    Journal's own first reading is due, or a person's first words would
+    land on rings still lit by a stranger's, so everything the reading left
+    on the face goes in one call: its word clock, its seats and their
+    timers, both layers of the reading, the flares and squash its hits
+    left, and the hold. RD.id moves, so a closeStory or resolve still
+    queued for the old reading finds it gone. The voice is not touched: it
+    is the product's one voice, and ends on its own element's events. */
+ function clear(){
+  wordTimers.forEach(clearTimeout); wordTimers=[]; clearTimeout(holdTimer); holdTimer=0;
+  for(const k in RD.seats) clearTimeout(RD.seats[k].timer);
+  RD.id++; RD.on=false; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp={}; RD.hk={};
+  for(const k in resFx) delete resFx[k]; rawFx.length=0;
+  for(const k in flares) delete flares[k]; for(const k in squash) delete squash[k];
+  readE=0; stateWord=speaking?'Answering':'Waiting'; }
  readAddrs();
- window.SrcFace={mount,pause,sync,read,voice,
+ window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,
+  plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
   state:()=>({word:stateWord,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,
    rings:ringList.map(l=>l.length),
    locked:[...LOCKED],rungs:{sab:CH.sabs.length,cx:CH.cxs.length,hy:CH.hys.length,sup:CH.sups.length},
    trace:CH.sabs[sabIdx]?{nm:CH.sabs[sabIdx].nm,parts:CH.sabs[sabIdx].parts.slice()}:null,
    seats:Object.keys(resFx).map(k=>({seat:SEATNM[k],fet:resFx[k].fet,addrs:resFx[k].addrs.slice()})),
+   /* a reading in flight that has not resolved a seat yet is still a
+      reading: what a gate reads to know clear() left nothing behind */
+   reading:RD.on, held:Object.keys(RD.seats).length, lent:!!lent, host:canvas.parentNode?canvas.parentNode.id||canvas.parentNode.className||'':'',
    voiceWord:VO?VO.idx:-1})};
 })();
 
@@ -63774,11 +63915,33 @@ function srcVoiceStop(){
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
  try{ if(SRC_VOICE.url)URL.revokeObjectURL(SRC_VOICE.url); }catch(e){}
  SRC_VOICE.el=null; SRC_VOICE.url='';}
-function stSrcSpeak(line){
- var text=String(line==null?srcSayNow():line).trim(); if(!text)return;
- if(typeof authVoice!=='function')return;
+/* QUIET, FOR A LINE NOBODY ASKED FOR. The intro (ui/srcintro.js) speaks one
+   line the person did not press anything to hear, in the eleven seconds
+   before the first card, and a voice that cannot reach the server there is
+   not a failure of anything the person did: "could not speak that line"
+   under a first arrival's first screen reads as the product broken before it
+   has started. So o.quiet keeps every failure line below off the status line
+   for this one call, and o.onPlay and o.onEnd say what happened instead, to
+   the one caller that has to know: onPlay once the element is really
+   playing, onEnd(played) once it is over or never going to start. Every
+   other caller passes nothing and gets exactly what it got before. The rule
+   that a control never claims success is not bent: the intro claims
+   nothing, its button waits for onEnd. */
+/* CUT THE LINE NOW, AND ANY STILL ON ITS WAY. srcVoiceStop stops the element
+   and nothing else: a line still waiting on the server would play after it,
+   and the recording stays held. The intro's own button press is a person
+   moving on mid sentence, so the line stops, a pending one is dropped by
+   moving the number, and the hold comes off. */
+function srcVoiceCut(){ SRC_VOICE.seq++; var was=!!SRC_VOICE.el; srcVoiceStop(); if(was)stHush(false); }
+function stSrcSpeak(line,o){
+ o=o||{};
+ var quiet=!!o.quiet, ended=false;
+ var fin=function(played){ if(ended)return; ended=true; if(typeof o.onEnd==='function')try{o.onEnd(!!played);}catch(e){} };
+ var say=function(m){ if(!quiet)status(m,'fail'); };
+ var text=String(line==null?srcSayNow():line).trim(); if(!text){ fin(false); return; }
+ if(typeof authVoice!=='function'){ fin(false); return; }
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  status('Source AI cannot speak from a file. Open the hosted build to hear it.','fail'); return; }
+  say('Source AI cannot speak from a file. Open the hosted build to hear it.'); fin(false); return; }
  var seq=++SRC_VOICE.seq;
  /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
     "the voice is not hooked up." A microphone failure used to bump
@@ -63802,12 +63965,12 @@ function stSrcSpeak(line){
     below that acts on muteFail now reads it fresh, right where it is
     used, and clears it there. */
  authVoice(text,'frame').then(function(r){
-  if(seq!==SRC_VOICE.seq)return;
+  if(seq!==SRC_VOICE.seq){ fin(false); return; }
   if(!r||!r.ok){
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI could not speak that line. '+
-    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'),'fail');
-   return;}
+   if(!muteFail)say('Source AI could not speak that line. '+
+    (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'));
+   fin(false); return;}
   SRC_VOICE.muteFail=false;
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
@@ -63818,7 +63981,13 @@ function stSrcSpeak(line){
      (ui/srcface.js). Handed before play(), so its first playing event is
      never missed. */
   if(window.SrcFace)window.SrcFace.voice(a,text);
-  var done=function(){ if(SRC_VOICE.el!==a)return; srcVoiceStop(); stHush(false); };
+  var played=false;
+  a.addEventListener('playing',function(){ if(played)return; played=true; if(typeof o.onPlay==='function')try{o.onPlay();}catch(e){} });
+  /* srcVoiceStop clears onended and onerror before it pauses, so a line
+     another line or srcVoiceCut stopped never reaches done(): the pause is
+     where its onEnd is said */
+  a.addEventListener('pause',function(){ if(!a.ended)fin(played); });
+  var done=function(){ if(SRC_VOICE.el!==a){ fin(played); return; } srcVoiceStop(); stHush(false); fin(played); };
   /* A DECODE OR LOAD FAILURE MUST STILL BE SAID, 13 November, his own
      report: "it listens, but it can't talk." onerror and onended shared
      this same done(), which clears SRC_VOICE.el before play()'s own
@@ -63833,7 +64002,7 @@ function stSrcSpeak(line){
   a.onended=done;
   a.onerror=function(){ if(SRC_VOICE.el!==a)return; done();
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI could not speak that line. Try again in a moment.','fail'); };
+   if(!muteFail)say('Source AI could not speak that line. Try again in a moment.'); };
   SRC_VOICE.t=setTimeout(done,SRC_VOICE_MAX);
   stHush(true);
   var pl=a.play();
@@ -63846,8 +64015,8 @@ function stSrcSpeak(line){
      anything about is still said. */
   if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
    done(); var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
-   if(!muteFail)status('Source AI\'s voice is ready but the browser blocked playing it.','fail');});
- });}
+   if(!muteFail)say('Source AI\'s voice is ready but the browser blocked playing it.');});
+ },function(){ fin(false); });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
    ST_LISTEN is what the button says, and through a hold the button still
@@ -97038,6 +97207,10 @@ function loginEnter(){
     every launch */
  try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
  if(seen)return;
+ /* SOURCE READS AN EXAMPLE FIRST, once per device (ui/srcintro.js), which
+    decides for itself when not to: a walk half done, DEV_SKIP, a device
+    that has seen it. Either way the first card opens from its callback */
+ if(typeof srcIntro==='function'){ srcIntro(function(){ obOpen(false); }); return; }
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
    sits on document with {capture:true} and stops every pointerdown from
@@ -97049,6 +97222,207 @@ function loginEnter(){
    already answering both. */
 
 try{window.__at&&window.__at('ui/login.js');}catch(e){}
+/* ============================================================
+   SOURCE READS AN EXAMPLE. Eleven seconds, once per device, between the
+   door and the first card of the onboarding. His words, 16 November: "Let's
+   bring that up to 90% now." The spec is the animation pass's, built on the
+   face's own timers and not on a second copy of them.
+
+   The face wakes, reads one fixed sentence that is not the person's, lights
+   the two seats those words land on, says one line, and hands over with one
+   button. It is shown, not explained: the first card that follows is where
+   the person writes, and this is the eleven seconds that show what writing
+   does before they are asked to.
+
+   WHERE IT PLAYS. loginEnter (ui/login.js), behind the seen check and ahead
+   of obOpen(false), as srcIntro(()=>obOpen(false)). Never on a replay from
+   Account, which calls obOpen(true) directly and never reaches loginEnter;
+   never for a walk that is half done (journeyRead(CURP).at), which goes
+   straight back to its card; never under DEV_SKIP; and once per device,
+   source.intro in the browser's own store, the pattern tabLandFirst uses
+   for source.landed (ui/panels.js), for its reason: having seen the face
+   read is about this screen, not about the person. Set as it starts, so a
+   reload mid sentence does not play it twice. A store that is blocked
+   cannot remember, so the intro is skipped rather than shown on every
+   launch, which is tabLandFirst's own answer to the same case.
+
+   EVERY BEAT IS THE FACE'S OWN CLOCK. Ahead of the reading the intro holds
+   three times, all from its own start: the beat cued at 0.6 seconds, line
+   one in at 1.25, out at 2.85 with the reading. From there nothing is timed
+   here: each word shows on onWord, each underline on onHit, the rows and the
+   spoken line on onHold, all fired by srcface.js's own word clock and seat
+   timers, so a change to the face's pacing moves the captions with it. The
+   one other timer is the button's fallback, 10.4 seconds, for a voice that
+   never starts; a voice that plays brings the button on its own end.
+
+   SKIP and Escape land on the end frame, the sentence, both underlines, both
+   rows and the button, and never on the first card: one deliberate press is
+   still the way in. The face keeps reading on its own clock under the end
+   frame, since the face is the one thing here with its own motion, and a
+   skip is silence: the line is not spoken after it.
+
+   REDUCED MOTION is the end frame from the first frame, as rbStill
+   (ui/component.js) reads it. The face already reads and draws at reduced
+   motion, every timer at zero, so there is no second still path here. The
+   voice still speaks: sound is not motion.
+
+   THE FACE IS LENT, NOT MOVED. One canvas, normally in #stuni. take() holds
+   it on this stage, so a render of the Journal underneath cannot pull it
+   back mid sentence; clear() drops the example's reading at once, so it is
+   not still lit on the Journal for the fourteen seconds a reading normally
+   takes to leave; give() ends the loan; uniHandBack (ui/panels.js), the
+   boot's own route home, puts it back. One route, three callers.
+   ============================================================ */
+var SRC_INTRO_KEY='source.intro';
+/* parseStory, run headless on the built engine, 16 November: "heart sank" is
+   a counted Heart hit landing on 53 to 56 with Sad, "afraid" a counted Root
+   hit landing on 1, 4, 5 and 7 with Fear, nothing denied, nothing about
+   someone else, and srcSafe does not trip. tests/srcintro.js holds all of it,
+   so a lexicon change that moves either hit fails a gate before it changes
+   what a stranger is shown. */
+var SRC_INTRO_EX='My heart sank when she left, and I felt afraid all night.';
+/* fixed script, not composed: it names the two seats the example lands on,
+   in the order they land, and voiceTick (ui/srcface.js) rings each seat as
+   the voice reaches its name */
+var SRC_INTRO_SAY='Heart, then root. That is where those words landed.';
+var SRC_INTRO_L1='This is Source. It reads what you write.';
+var SRC_INTRO_EB='An example, not yours.';
+/* ms from the start, the spec's, ahead of the face's own clock taking over */
+var SRC_INTRO_T={cue:600, l1:1250, read:2850, go:10400, out:260, hand:120};
+var SX=null;
+function srcIntroDue(){
+ if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return false;
+ if(!window.SrcFace||typeof SrcFace.take!=='function'||typeof SrcFace.plan!=='function')return false;
+ try{ if(typeof journeyRead==='function'&&typeof CURP!=='undefined'&&CURP&&journeyRead(CURP).at)return false; }catch(e){}
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+  if(STORE.get(SRC_INTRO_KEY))return false;
+ }catch(e){ return false; }
+ return true;}
+/* the sentence, laid out from the face's own plan of it, word for word, with
+   each counted hit's words held in one underline in its seat's colour. The
+   face's words are the normalised ones and these are the shown ones, so the
+   two are matched by count, and an example the two would count differently
+   is refused rather than underlined in the wrong place */
+function srcIntroSentence(pl){
+ var shown=SRC_INTRO_EX.split(/\s+/);
+ if(!pl||shown.length!==pl.words.length)return null;
+ var at={}; pl.hits.forEach(function(h,i){ at[h.k-h.n+1]=i; });
+ var out=[], k=0;
+ while(k<shown.length){
+  if(at[k]!==undefined){ var h=pl.hits[at[k]], ws=[];
+   for(var j=k;j<=h.k;j++)ws.push('<span class="sx-w" data-k="'+j+'">'+esc(shown[j])+'</span>');
+   out.push('<span class="sx-u" data-h="'+at[k]+'" style="--sc:'+h.col+'">'+ws.join(' ')+'</span>');
+   k=h.k+1; continue; }
+  out.push('<span class="sx-w" data-k="'+k+'">'+esc(shown[k])+'</span>'); k++; }
+ return out.join(' ');}
+/* one row a seat, in the order the seats are hit, each its FLOWSEAT entry's
+   own name and seat: "Heart, mid sternum." The name alone is a symbol, and
+   the seat beside it is what it means on a body */
+function srcIntroRows(pl){
+ var seen={}, rows=[];
+ pl.hits.forEach(function(h){ if(seen[h.key])return; seen[h.key]=1;
+  var f=(typeof FLOWSEAT!=='undefined'?FLOWSEAT:[]).filter(function(x){ return x.k===h.key; })[0];
+  if(f)rows.push('<li class="sx-row" style="--sc:'+h.col+'">'+esc(f.n+', '+f.seat+'.')+'</li>'); });
+ return rows.join('');}
+function srcIntro(done){
+ done=typeof done==='function'?done:function(){};
+ if(SX||!srcIntroDue()){ if(!SX)done(); return; }
+ var pl=SrcFace.plan(SRC_INTRO_EX), sent=srcIntroSentence(pl);
+ if(!sent||!pl.hits.length){ done(); return; }
+ try{ STORE.set(SRC_INTRO_KEY,'1'); }catch(e){ done(); return; }
+ var still=typeof rbStill==='function'&&rbStill();
+ var h=document.createElement('div');
+ h.id='srcintro'; h.className='sx'+(still?' sx-still':'');
+ h.setAttribute('role','dialog'); h.setAttribute('aria-modal','true');
+ h.setAttribute('aria-label','Source reads an example');
+ h.innerHTML='<button type="button" class="dev-skip sx-skip">Skip</button>'
+  +'<div class="sx-col"><div class="sx-face"></div>'
+  +'<div class="sx-text"><div class="sx-slot">'
+  +'<p class="sx-l1">'+esc(SRC_INTRO_L1)+'</p>'
+  +'<div class="sx-ex" aria-live="polite"><p class="sx-eb">'+esc(SRC_INTRO_EB)+'</p><p class="sx-s">'+sent+'</p></div>'
+  +'</div><ul class="sx-rows">'+srcIntroRows(pl)+'</ul>'
+  +'<div class="sx-go"><button type="button" class="btn pri sx-own">Write your own</button></div>'
+  +'</div></div>';
+ document.body.appendChild(h);
+ SX={h:h, done:done, pl:pl, t:[], t0:performance.now(), end:false, rows:false, go:false,
+  voiced:false, playing:false, spoke:false, left:false, still:still};
+ SrcFace.take(h.querySelector('.sx-face'));
+ h.querySelector('.sx-skip').addEventListener('click',srcIntroSkip);
+ h.querySelector('.sx-own').addEventListener('click',srcIntroLeave);
+ addEventListener('keydown',srcIntroKey,true);
+ var q=function(f,ms){ SX.t.push(setTimeout(f,ms)); };
+ if(still){ srcIntroEnd(); srcIntroRead(); srcIntroSpeak(); srcIntroGo(); return; }
+ /* the focus goes into the stage and not onto Skip: a ring round Skip on
+    the first frame was the loudest thing on the screen, measured on the
+    first screenshots, and Escape answers from anywhere in it */
+ h.tabIndex=-1; h.focus({preventScroll:true});
+ q(function(){ if(window.SrcFace)SrcFace.cue(); },SRC_INTRO_T.cue);
+ q(function(){ srcIntroOn('.sx-l1'); },SRC_INTRO_T.l1);
+ q(function(){ var l=h.querySelector('.sx-l1'); l.classList.add('off'); l.classList.remove('on');
+  srcIntroOn('.sx-ex'); srcIntroRead(); },SRC_INTRO_T.read);
+ /* a voice that never started brings the button here; one that is playing
+    brings it at its own end */
+ q(function(){ if(!SX.playing)srcIntroGo(); },SRC_INTRO_T.go);}
+function srcIntroOn(sel){ if(!SX)return; [].forEach.call(SX.h.querySelectorAll(sel),function(e){ e.classList.add('on'); }); }
+/* the reading, on the face's own clock, its hooks the captions */
+function srcIntroRead(){
+ if(!SX)return;
+ SrcFace.read(SRC_INTRO_EX,{
+  onWord:function(w){ if(!SX)return; var e=SX.h.querySelector('.sx-w[data-k="'+w.k+'"]'); if(e)e.classList.add('on'); },
+  onHit:function(x){ if(!SX)return; var i=-1; SX.pl.hits.forEach(function(y,j){ if(y.k===x.k&&y.ring===x.ring)i=j; });
+   var u=SX.h.querySelector('.sx-u[data-h="'+i+'"]'); if(u)u.classList.add('on'); },
+  onHold:function(){ if(!SX)return; srcIntroOn('.sx-row'); SX.rows=true; srcIntroSpeak(); }});}
+function srcIntroSpeak(){
+ if(!SX||SX.voiced)return; SX.voiced=true;
+ if(typeof stSrcSpeak!=='function'){ return; }
+ stSrcSpeak(SRC_INTRO_SAY,{quiet:true,
+  onPlay:function(){ if(SX)SX.playing=true; },
+  onEnd:function(played){ if(!SX)return; SX.playing=false; SX.spoke=!!played;
+   /* a line that failed before 10.4 waits for the fallback, so a voice that
+      cannot reach the server never brings the button early */
+   if(played||performance.now()-SX.t0>=SRC_INTRO_T.go)srcIntroGo(); }});}
+/* the end frame: every word, both underlines, both rows, line one gone */
+function srcIntroEnd(){
+ if(!SX)return; SX.end=true;
+ var l=SX.h.querySelector('.sx-l1'); l.classList.remove('on'); l.classList.add('off');
+ srcIntroOn('.sx-ex,.sx-w,.sx-u,.sx-row'); SX.rows=true;}
+function srcIntroGo(){
+ if(!SX||SX.go)return; SX.go=true; srcIntroOn('.sx-go');
+ var b=SX.h.querySelector('.sx-own'); if(b)b.focus({preventScroll:true});}
+function srcIntroSkip(){
+ if(!SX||SX.left)return;
+ SX.t.forEach(clearTimeout); SX.t=[];
+ /* a skip is silence: the line is not spoken after it, and one still
+    waiting on the server is dropped. A line already playing finishes,
+    the way a press in the middle of a sentence would not cut it either. */
+ if(!SX.playing){ var asked=SX.voiced; SX.voiced=true; if(asked&&typeof srcVoiceCut==='function')srcVoiceCut(); }
+ if(!SX.end){ var started=!!SX.h.querySelector('.sx-w.on'); if(!started)srcIntroRead(); srcIntroEnd(); }
+ srcIntroGo();}
+function srcIntroKey(e){
+ if(!SX||e.key!=='Escape')return;
+ e.stopPropagation(); if(e.cancelable)e.preventDefault();
+ srcIntroSkip();}
+/* THE HAND OVER. The face leaves on the ease in over 260ms, and the first
+   card's own arrival starts 120ms into that, under it, so the two overlap
+   and the ground never shows the Journal between them. Only then is the face
+   cleared and given back. */
+function srcIntroLeave(){
+ if(!SX||SX.left)return; var sx=SX; sx.left=true;
+ sx.t.forEach(clearTimeout); sx.t=[];
+ removeEventListener('keydown',srcIntroKey,true);
+ if(typeof srcVoiceCut==='function')srcVoiceCut();
+ var fin=function(){
+  try{ SrcFace.clear(); SrcFace.give(); }catch(e){}
+  try{ if(typeof uniHandBack==='function')uniHandBack(); }catch(e){}
+  if(sx.h.parentNode)sx.h.parentNode.removeChild(sx.h);
+  if(SX===sx)SX=null; };
+ if(sx.still){ sx.done(); fin(); return; }
+ sx.h.classList.add('sx-out');
+ setTimeout(function(){ try{ sx.done(); }catch(e){} },SRC_INTRO_T.hand);
+ setTimeout(fin,SRC_INTRO_T.out);}
+
+try{window.__at&&window.__at('ui/srcintro.js');}catch(e){}
 /* ============================================================
    VALUE FELT AFTER SESSION ONE, THE HOST HALF. engine/valuefelt.js says
    what is asked, when, and how it is kept. This file only asks.
@@ -99565,5 +99939,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006649612"></div>
+<div id="eof" hidden data-len="006673677"></div>
 </body></html>

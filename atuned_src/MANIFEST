@@ -119,6 +119,7 @@ ui/railmotion.js
 ui/crisis.js
 ui/onboard.js
 ui/login.js
+ui/srcintro.js
 ui/valuefelt.js
 ui/ui.js
 shell/foot.html

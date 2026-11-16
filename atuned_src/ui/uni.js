@@ -2814,6 +2814,13 @@ function uniMount(target){
 function uniPark(){
  if(window.Uni&&window.Uni.pause)window.Uni.pause();
  if(window.SrcFace)window.SrcFace.pause();
+ /* the face comes home with her. The intro (ui/srcintro.js) lends the one
+    canvas to its own stage, and when the tab under it is not the Journal
+    the hand back lands here and not in uniMount, which would have left the
+    face in a stage that is about to be removed, out of the document until
+    the next mount found it */
+ var fc=document.getElementById('srcface'), cw=uniHost.querySelector('.canvas-wrap');
+ if(fc&&cw&&fc.parentNode!==cw)cw.appendChild(fc);
  uniHost.hidden=true;
  document.body.appendChild(uniHost);
 }

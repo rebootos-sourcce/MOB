@@ -450,6 +450,10 @@ function loginEnter(){
     every launch */
  try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
  if(seen)return;
+ /* SOURCE READS AN EXAMPLE FIRST, once per device (ui/srcintro.js), which
+    decides for itself when not to: a walk half done, DEV_SKIP, a device
+    that has seen it. Either way the first card opens from its callback */
+ if(typeof srcIntro==='function'){ srcIntro(function(){ obOpen(false); }); return; }
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
    sits on document with {capture:true} and stops every pointerdown from
