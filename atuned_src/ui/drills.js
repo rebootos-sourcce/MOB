@@ -282,8 +282,12 @@ function runDrill(o){
      "It runs inside Predatory". So the drill ends on Made of. traceSummary
      is not dropped: insightSay in ui/ui.js reads the stack it resolves and
      quotes the records it finds, which is the job he gave the summary box.
-     tsBlockHtml itself is untouched; the address drill's blend in
-     nodeDrillHtml below is a different surface and is left as it landed. */
+     The address drill's blend in nodeDrillHtml and the fetter drill's
+     tsBlockHtml were left as they landed, read then as different surfaces,
+     and that was wrong: the ruling (DECISIONS.md, "The selection summary
+     reads from the real records, never from engine internals") applies
+     wherever the summary is built. Both came off on 16 November; the
+     comments at each say what they printed. */
  rdShell(h);
  /* a "Runs under" row opens that mask's own drill, the same rail press
     chDrill is already opened by, so "does this show up here" (MX) can be
@@ -439,16 +443,18 @@ function nodeDrillHtml(n,o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
- /* THE BLEND, for this one address. "Feeds" above already names what it
-    compounds into (owners, the chain's own four rungs); traceSummary adds
-    the one thing that did not exist anywhere: a narrated paragraph reading
-    the address together with what sits above it, hedged, never a causal
-    claim. ui/tracesummaryui.js, tsBlockHtml, PR #158's traceSummary. */
- if(lockSees('sab')&&typeof tsBlockHtml==='function')
-  h+='<div class="pm-eye">Source AI, the blend</div><p class="ad-p ts-narr">'
-   +esc((function(){var g=tsCurrentGraph(); if(!g)return '';
-    var res=traceSummary(g,traceKey('pattern',n.i)); return res.ok?res.summary:(res.why||'');})())
-   +'</p>';
+ /* NO BLEND HERE, 16 November. A block titled "Source AI, the blend" sat
+    under Feeds and printed traceSummary's narrated paragraph, which on
+    Doubt Of God read "The selected address, Doubt Of God, reads as
+    coherent, 'Faith'; collapsed, 'Separation'. Nothing sits below it on
+    this graph: an address is the floor of the chain..." and closed on
+    "This paragraph narrates what the graph and the library already hold."
+    That is the engine describing its own graph to the person, the class he
+    struck on 4 November ("That's a big no. We don't do that.", DECISIONS.md,
+    the selection summary reads from the real records). It also said a
+    second time what Feeds directly above it already shows. Feeds stays the
+    last word on what this address compounds into, and the card goes
+    straight on to the person's own stories. */
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
     exactly which address was costing them and had no way to act on it from
@@ -897,16 +903,17 @@ function runFetterDrill(c){
   +'is this nerve pulled to that side. Level between them is the centre, where it is not pulled either way.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
-  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>'
-  /* WHAT THIS FETTER ITSELF FEEDS, the identical gap runDrill's own tsBlockHtml
-     call already closed for a saboteur, complex, hyper or super complex (the
-     comment above runDrill, this file): "Made of" above is the downward
-     direction (the addresses it classifies); nothing said what a fetter
-     itself feeds UP into until this line. traceKey's real id for a fetter is
-     'fetter:'+its own CHILD name (engine/trace.js, TRACE_FETTER, the exact
-     spelling practice.js already writes), confirmed against the real graph
-     builder before this was wired, not guessed. */
-  +(typeof tsBlockHtml==='function'?tsBlockHtml('pattern','fetter:'+c.nm):'');
+  +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+  /* THE CARD ENDS ON ITS ADDRESSES, 16 November. On 11 November tsBlockHtml
+     was appended here, "the identical gap runDrill's own tsBlockHtml call
+     already closed", a week after that call had come off runDrill on his
+     ruling (the comment above rdShell in runDrill, this file). It printed a
+     Feeds up line and "Source AI, blended from the records above and
+     below", which on Fear read "The selected fetter, Fear, carries nothing
+     further on file beyond its own name and weight (a fetter is the
+     classification several addresses share (NODES[].cf)...": the engine's
+     own field name, read to the person. Struck on the same ruling,
+     DECISIONS.md, the selection summary reads from the real records. */
  rdShell(h);}
 
 /* a saboteur the reading is not currently carrying. it still has a definition. */
