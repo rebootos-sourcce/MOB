@@ -1432,7 +1432,22 @@ function drawWheel0(r,L){
     Every depth still carries them. The bar can take them off, and the core
     keeps the figure they sum to, because the core is not a layer. */
  const lr=lAt([U*.44,U*.40,U*.33,U*.255],LF);
- lay('laws',()=>{SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=S.law[l.nm]/10,c=bc(l.b);
+ /* AN UNREAD FIELD DRAWS ITS LAWS EMPTY. This read S.law straight, and on a
+    blank profile every law holds LAW_DEFAULT, the seed 6 that nobody
+    answered, so all twenty one ticks stood at six tenths of their run and
+    about two thirds alpha in their seats' colours, under a core that prints a
+    dash and a strip that says not read yet. The owner saw it as "a bunch of
+    data that was loading up when there's no file selected", and it was: a
+    value nobody entered, drawn as a reading. Measured 16 November in a real
+    Chromium on a blank profile, unread true, measured 0, all 21 ticks one
+    length at 1600 and at 390. On unread the tick goes to zero, the floor it
+    would show at a measured nought, which is how the rb bars already go to
+    scaleX(0). The seed stays in S.law, because CQ and lawIn read it there,
+    and the hit target stays, so the law can still be clicked into and
+    answered. This gates on r.unread and not on lawIn, on purpose: a read
+    field with a law still unanswered is a separate question, and widening
+    this would change what a loaded reading draws. */
+ lay('laws',()=>{SI.forEach((l,i)=>{const a=i/21*TAU-Math.PI/2,v=r.unread?0:S.law[l.nm]/10,c=bc(l.b);
   const r0=lr,r1=r0+lAt([U*.13,U*.12,U*.10,U*.085],LF)*v;
   g.beginPath();g.moveTo(CX+Math.cos(a)*r0,CY+Math.sin(a)*r0);
   g.lineTo(CX+Math.cos(a)*r1,CY+Math.sin(a)*r1);
