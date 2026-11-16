@@ -112,7 +112,25 @@ async function stFullGate(browser,FILE,ok,booted){
      alone, not #stleft and its fold. */
   ok(s1.shown.length===1&&s1.shown.indexOf('stleft')>=0,
    at+'the rail is #stleft alone, its fold gone and nothing of the Field\'s, got '+s1.shown.join(','));
-  if(wn==='desktop')ok(/^302px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 302px 1fr, got '+s1.grid);
+  /* 334 since 16 November: the rail is a card set into a grey frame now,
+     and the 32 extra pixels are that frame's trim, so the tiles inside it
+     keep their size (shell/head.html, the comment at this grid). */
+  if(wn==='desktop')ok(/^334px /.test(s1.grid)&&s1.grid.split(' ').length===2,at+'the row is the rail and the stage, 334px 1fr, got '+s1.grid);
+  /* GREY, WITH A BORDER AND TRIM, 16 November, his words: "it should be
+     gray... The left rail needs its border and trim. So it doesn't look
+     like it's just black floating on black." The column's ground is
+     #stage's own, the rail carries its own visible edge, and the rail's
+     top and bottom line up with the cards in #stage beside it. */
+  if(wn==='desktop'){
+   const fr=await p.evaluate(()=>{
+    const lp=getComputedStyle(document.getElementById('lpanel')), st=getComputedStyle(document.getElementById('stage'));
+    const sl=document.getElementById('stleft'), c=getComputedStyle(sl), r=sl.getBoundingClientRect();
+    const u=document.getElementById('stjr'), ur=u?u.getBoundingClientRect():null;
+    return {lpBg:lp.backgroundColor, stBg:st.backgroundColor, bw:c.borderLeftWidth+' '+c.borderRightWidth+' '+c.borderTopWidth+' '+c.borderBottomWidth,
+     bc:c.borderLeftColor, top:Math.round(r.top), utop:ur?Math.round(ur.top):null, gap:ur?Math.round(ur.left-r.right):null};});
+   ok(fr.lpBg===fr.stBg,at+'the rail\'s column is the frame\'s own grey, '+JSON.stringify(fr));
+   ok(fr.bw==='1px 1px 1px 1px'&&fr.bc!=='rgba(0, 0, 0, 0)',at+'the rail carries its own edge on all four sides, '+JSON.stringify(fr));
+   ok(fr.utop!==null&&Math.abs(fr.top-fr.utop)<=1&&fr.gap>=10,at+'the rail lines up with Uni\'s card and stands clear of it, '+JSON.stringify(fr));}
 
   /* 3. ALL SEVEN, UNLIT, WITH NO STORY TOO, 13 November, reversing the 8
      November round just below: that round's own words, "I don't want the

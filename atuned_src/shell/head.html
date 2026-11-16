@@ -5636,8 +5636,14 @@ body.tab-story.st-full #lcol{display:flex}
 body.tab-story #lpanel>*:not(.lfold):not(.st-lrail){display:none!important}
 body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:none}
 @media (min-width:1181px){
- body.tab-story.st-full:not(.st-bank) .mid{grid-template-columns:302px 1fr}
- body.tab-story.st-full.st-bank .mid{grid-template-columns:302px 1fr 336px}
+ /* 334, NOT 302, 16 November: the 32 pixels are exactly the trim the rule
+    further down now puts around the rail (18 outside, 12 to Uni's card, 2
+    of the rail's own edge), so the rail's content box stays the 273 pixels
+    it was and every tile in it keeps the size the 10 November "no row ends
+    short" rule measured. Narrowing the tiles instead would have put
+    Emotions' nine under the 24 pixel pointer floor. */
+ body.tab-story.st-full:not(.st-bank) .mid{grid-template-columns:334px 1fr}
+ body.tab-story.st-full.st-bank .mid{grid-template-columns:334px 1fr 336px}
  body.tab-story.st-full.lshut:not(.st-bank) .mid{grid-template-columns:58px 1fr}
  body.tab-story.st-full.lshut.st-bank .mid{grid-template-columns:58px 1fr 336px}
  /* ONE PANEL, NOT FOUR BOXES ON TWO GREYS, 10 November. His words: "the
@@ -5655,7 +5661,33 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
     --panel while every other panel here, the text box, the imprints
     list, Release, already reads --sunk. :not(.lshut), because the
     folded 58px rail keeps its own small padding, untouched. */
- body.tab-story.st-full:not(.lshut) #lpanel{padding:0;background:var(--sunk);flex:1 1 auto;min-height:0}
+ /* OVERRIDDEN, 16 November: the frame is grey and the rail is a card set
+    into it, see the next comment. What this line was before, kept for the
+    record: padding:0 and background:var(--sunk), the 10 November answer
+    above, which filled the whole column with the rail's own black. */
+ /* GREY, WITH A BORDER AND TRIM, 16 November. His words, a red circle
+    round the whole rail: "The left dashboard menu still hasn't been
+    repaired. The design has never been fully integrated into everything
+    right of it... it should be gray, not red. The left rail needs its
+    border and trim. So it doesn't look like it's just black floating on
+    black." Measured on the real page at 1600 before touching it: #lpanel
+    and .st-lrail were both --sunk (#090A0E) with no edge of their own,
+    on a page ground of --bg (#0C0D12), so the rail was a black slab on a
+    near black page, the one column of the Dashboard that was not a dark
+    card set into #stage's --panel grey the way Uni, Imprints, Release and
+    the six minis all are. And it sat flush, 0 pixels, against #stjr,
+    Uni's own well, whose warm radial glow then ran straight up the rail's
+    right edge: that warm band, with the Root red on a lit Energy tile at
+    its top, is the red the rail read as. Nothing in the rail's own rules
+    names a red.
+    The fix is the frame the rest of the page already is, not a new look:
+    #lpanel takes #stage's own --panel, and the rail sits inside it as a
+    card with its own edge (the base .st-lrail rule, no longer cancelled
+    below), inset by the same 18 pixels .iq already gives every card in
+    #stage and 12 pixels to Uni's card, which is .st-flow's own gap
+    between its columns. Same gutter on every side of every card, the
+    "symmetry in space" ruling of the same day. */
+ body.tab-story.st-full:not(.lshut) #lpanel{padding:18px 12px 18px 18px;background:var(--panel);flex:1 1 auto;min-height:0}
  /* THE PANEL STOPPED SHORT OF THE OTHER TWO, 14 November, found on the real
     page while answering a different question: #lcol itself already
     stretches to match #stage and #rcol (a plain flex child of .mid with
@@ -5667,7 +5699,11 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
     same shape .st-lrail (next rule) already uses one level down to fill
     #lpanel. His words apply here exactly as they did to the first pass:
     "everything should be symmetrical, fill and filled in." */
- body.tab-story.st-full .st-lrail{flex:1 0 auto;border:0;border-radius:0}
+ /* flex only, 16 November. This line also carried border:0 and
+    border-radius:0, which cancelled the rail's own edge (.st-lrail's base
+    rule) on exactly the widths where it sits beside #stage: that is the
+    "border and trim" he named as missing. */
+ body.tab-story.st-full .st-lrail{flex:1 0 auto}
  body.tab-story.st-full .mid{column-gap:0}
  body.tab-story.st-full #lpanel{border-right:0;border-radius:var(--r) 0 0 var(--r)}
  body.tab-story.st-full #stage{border-left:0;border-radius:0 var(--r) var(--r) 0}

@@ -596,7 +596,7 @@ function stMiniMasks(r){
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  /* FULL OR SIMPLE, SAID ONCE, before anything is measured: the Full view's
-    left rail takes 302 pixels of the row (shell/head.html, st-full), so the
+    left rail takes 334 pixels of the row (shell/head.html, st-full), so the
     chart below must be sized on the row it will actually have. Only on the
     Journal itself, because stCommit can redraw this page from another tab
     and the class must not outlive stRailClear there. */
