@@ -4684,7 +4684,21 @@ body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
    pair, only moves the empty space to sit above the whole block instead
    of splitting it, which is what puts the text zone itself flush with
    #stjr's own bottom edge. */
-body.tab-story.st-full .st-chat .st-glow{flex:1 1 auto;justify-content:flex-end}
+/* A FLOOR UNDER JUSTIFY-CONTENT:FLEX-END, 16 November, caught by
+   tests/collide.js at 1280x600, full, bank open, on a real committed
+   story (so the verdict panel, srcVerdictHtml, is really in #stsrc, not
+   the one or two lines the box above assumed). .st-ed.dash's own floor
+   (above) plus .st-hd wrapping to two rows at this column width can use
+   every pixel #stjr has, so .st-glow's flex-basis resolved to 0; with
+   overflow:visible (needed so the halo below can still bleed past its
+   own edge) and justify-content:flex-end packing from the bottom, a
+   zero-height box's child paints starting ABOVE the box's own collapsed
+   top, which is the row above it, #stmic/#stdash (.st-hd). A real
+   pixel floor, not a percentage one so it never reads against an
+   indefinite basis, gives #stsrc genuine room to paint inside instead
+   of past its parent; #stsrc's own overflow-y:auto (above) still scrolls
+   whatever does not fit. */
+body.tab-story.st-full .st-chat .st-glow{flex:1 1 auto;justify-content:flex-end;min-height:2.4em}
 /* A PINSTRIPE ROUND THE TEXT ZONE ONLY, same round, his own words: "have a
    little pinstripe line around the area that's for text." Thin and the
    same hairline every divider on this rail already draws (var(--edge)),
