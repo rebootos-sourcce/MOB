@@ -255,7 +255,11 @@
   if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; cqSeen=true; } else if(CQ!==cqTo){ cqFrom=cqv; cqTo=CQ; cqT0=performance.now(); } }
   if(sabIdx>=CH.sabs.length){ sabIdx=0; sabStart=performance.now()+400; lastCyc={}; } }
 
- const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{}};
+ const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{},hk:{}};
+ /* A CALLER'S HOOK MAY NOT STOP THE FACE. The intro (ui/srcintro.js) hangs
+    its captions off these, and a throw from one of them inside a word timer
+    would leave the reading half fired, the seat held as a cross for ever */
+ function hook(name,arg){ const f=RD.hk&&RD.hk[name]; if(typeof f!=='function') return; try{ f(arg); }catch(e){} }
  const rawFx=[], resFx={};
  let lastInput=-9e9, lastEvent=-9e9, speaking=false, holdTimer=0;
  let stateWord='Waiting';
@@ -272,6 +276,10 @@
  let pendClick=null, clickP=null;
  /* first beat lands about two seconds in */
  let pPh=0.62, lastBeat=-9e9;
+ /* the beat's own period on the last frame, for cue(), which has to say how
+    long until the beat it has just called lands. 5.4 seconds, the ordinary
+    period, until the first frame has measured one */
+ let curPeriod=5.4;
  /* the pattern cycle, over the real saboteurs */
  let sabIdx=0, sabStart=performance.now()+1700, lastCyc={};
  const SAB_HOLD=4200, SAB_FADE=900;
@@ -304,9 +312,9 @@
   Object.keys(out).forEach(k=>{ const o=out[k]; o.fet=Object.keys(o.amt).sort((a,b)=>o.amt[b]-o.amt[a])[0]||null; });
   return out;
  }
- function startReading(imp){
+ function startReading(imp,hk){
   for(const k in RD.seats) clearTimeout(RD.seats[k].timer); RD.id++; clearTimeout(holdTimer);
-  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp;
+  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp; RD.hk=hk||{};
   for(const k in resFx) delete resFx[k]; rawFx.length=0;
   stateWord='Listening';
  }
@@ -337,12 +345,12 @@
  function hold(id){ clearTimeout(holdTimer); holdTimer=setTimeout(()=>{ if(RD.id===id) releaseReading(); },HOLD); }
  function closeStory(){
   const id=RD.id; const pending=Object.values(RD.seats).filter(s=>!s.resolved);
-  stateWord='Weighing';
+  stateWord='Weighing'; hook('onClose');
   pending.forEach((s,k)=>setTimeout(()=>{ if(RD.id===id) resolveSeat(s.ring); },RM?0:k*380));
   /* the amplified file closes the reading here, once every seat has
      weighed; the pie's climb up three compound orbits that used to sit
      between this and the hold went with the orbits */
-  setTimeout(()=>{ if(RD.id!==id) return; RD.closed=true; stateWord='Holding'; hold(id); },RM?0:pending.length*380+1100);
+  setTimeout(()=>{ if(RD.id!==id) return; RD.closed=true; stateWord=speaking?'Answering':'Holding'; hold(id); hook('onHold'); },RM?0:pending.length*380+1100);
  }
  function releaseReading(){
   /* the reading is held while the voice is still saying something about it;
@@ -356,15 +364,28 @@
     whole and carry no timing anywhere in the product (gap a, above) */
  let wordTimers=[];
  function wordGaps(words){ const base=60000/160; return words.map(wd=>base*(0.55+0.45*wd.replace(/[^A-Za-z0-9]/g,'').length/5)+(/[,;:]$/.test(wd)?180:0)+(/[.!?]$/.test(wd)?380:0)); }
- /* called by srcTurnCommit (ui/storyui.js) with the turn it was handed */
- function read(text){
-  text=String(text||'').trim(); if(!text) return;
+ /* called by srcTurnCommit (ui/storyui.js) with the turn it was handed, and
+    by the intro (ui/srcintro.js) with its one example and three hooks, so the
+    intro's captions land on this clock and never on a second copy of it:
+    onWord({k,w}) as word k is read, onHit({k,n,ring,seat,key,col}) as a
+    counted hit fires on the n words ending at k, onClose() as the story
+    closes and the open seats are weighed, and onHold() once the reading is
+    closed and held. A hook rides one reading only: the next read or a
+    clear() drops it with the reading it belonged to. */
+ /* WHAT A READING OF THIS TEXT WILL DO, WITHOUT DOING IT. The words on the
+    face's clock and the counted hits that will fire on them, worked out
+    exactly as read() works them out, because read() asks this. The intro
+    lays its sentence out from it before the first word is read, so a skip
+    or reduced motion can show the whole end frame at once, and the face and
+    the caption cannot disagree about which words a hit lands on. null where
+    read() would not read at all. */
+ function plan(text){
+  text=String(text||'').trim(); if(!text) return null;
   /* THE DOOR IS A DOOR AND NOT AN ALARM, the guard uniApply carries: a face
      that visibly reacted the moment srcSafe tripped would be the escalation
      the crisis ruling rules out, in a different channel */
-  if(typeof srcSafe==='function'&&(srcSafe(text)||(typeof ST_TEXT==='string'&&srcSafe(ST_TEXT)))) return;
-  if(typeof parseStory!=='function'||typeof normMap!=='function') return;
-  RM=still();
+  if(typeof srcSafe==='function'&&(srcSafe(text)||(typeof ST_TEXT==='string'&&srcSafe(ST_TEXT)))) return null;
+  if(typeof parseStory!=='function'||typeof normMap!=='function') return null;
   const p=parseStory(text), nm=normMap(text);
   const words=nm.s.trim().split(/\s+/).filter(Boolean);
   /* the counted hits that name a seat. parseStory has already sent a denied
@@ -374,13 +395,22 @@
   const at=[];
   (p.hits||[]).forEach(h=>{ if(h.kind==='adj'||!h.band||h.band==='coherent') return;
    const ring=SEATNM.indexOf(K2BAND[h.band]); if(ring<0) return;
-   const k=nm.s.slice(0,h.at).trim().split(/\s+/).filter(Boolean).length+String(h.t||'').split(' ').length-1;
-   at.push({k:Math.min(k,Math.max(0,words.length-1)),ring}); });
+   const n=String(h.t||'').split(' ').length;
+   const k=nm.s.slice(0,h.at).trim().split(/\s+/).filter(Boolean).length+n-1;
+   at.push({k:Math.min(k,Math.max(0,words.length-1)),n,ring,seat:SEATNM[ring],key:h.band,col:SEATCOL[ring]}); });
+  return {p,words,hits:at};
+ }
+ function read(text,opts){
+  const pl=plan(text); if(!pl) return;
+  RM=still();
+  const words=pl.words, at=pl.hits;
   wordTimers.forEach(clearTimeout); wordTimers=[];
-  startReading(imprintsBySeat(p));
+  const hk={}; ['onWord','onHit','onClose','onHold'].forEach(n=>{ if(opts&&typeof opts[n]==='function') hk[n]=opts[n]; });
+  startReading(imprintsBySeat(pl.p),hk);
   const gaps=wordGaps(words); let acc=0;
   words.forEach((wd,k)=>{ const fire=at.filter(a=>a.k===k);
-   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); wordWave(wd); fire.forEach(a=>fireHit(a.ring)); },RM?0:acc));
+   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); wordWave(wd); hook('onWord',{k,w:wd});
+    fire.forEach(a=>{ fireHit(a.ring); hook('onHit',{k:a.k,n:a.n,ring:a.ring,seat:a.seat,key:a.key,col:a.col}); }); },RM?0:acc));
    acc+=gaps[k]; });
   wordTimers.push(setTimeout(closeStory,RM?0:acc+300));
  }
@@ -392,7 +422,7 @@
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed) hold(RD.id); else if(!RD.on) stateWord='Waiting';
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord='Waiting';
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -400,7 +430,13 @@
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8}); if(!RD.on) stateWord='Answering'; });
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+   /* a closed reading is answered too. This read !RD.on alone, so a line
+      spoken over a reading the face was holding left the centre on
+      Holding while the voice talked about it, which is the one moment the
+      intro's spoken line exists for; a story still being read keeps its
+      Listening, since the person's own words are still arriving */
+   if(!RD.on||RD.closed) stateWord='Answering'; });
   ['ended','pause','error','emptied'].forEach(ev=>el.addEventListener(ev,()=>voiceEnd(el)));
  }
  /* where the voice is, read off the element each frame: every word it
@@ -469,7 +505,7 @@
      healthy heart does, every beat a little different in strength, and the soft dub kept 300ms on. */
   if(!RM && boot>0.4){
    const period=mix(5.4*(1+0.07*Math.sin(t*0.23)+0.04*Math.sin(t*0.61)),4.2*(1+0.045*Math.sin(t*0.19)+0.025*Math.sin(t*0.53+1.3)),hiE);
-   pPh+=dt/period;
+   curPeriod=period; pPh+=dt/period;
    if(pPh>=1){ pPh-=1; const amp=0.9+0.2*rnd(); beat(now,amp); pulses.push({t0:now+mix(260,300,hiE),amp:mix(0.42,0.22,hiE)*amp,crossed:-1,rim:false,dub:1,seed:rnd()*TAU}); }
   }
   const PT=3.0;
@@ -944,16 +980,55 @@
   if(wordFits){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)})`; ctx.fillText(stateWord,cx,cy); }
  }
 
- function mount(host){ if(!host) return false; if(canvas.parentNode!==host) host.appendChild(canvas); canvas.hidden=false;
+ /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
+    stage, and anything that renders the Journal underneath it in the
+    meantime (an auth answer, a status line, a render() from the login's
+    own close) reaches uniMount or uniPark, which would take the face off
+    the intro mid sentence or pause it there. While lent, those two are
+    answered as if done and do nothing; give() ends the loan and the caller
+    hands the face back through uniHandBack, the boot's own route home. */
+ let lent=null;
+ function show(host){ if(canvas.parentNode!==host) host.appendChild(canvas); canvas.hidden=false;
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); } return true; }
- function pause(){ running=false; cancelAnimationFrame(raf); canvas.hidden=true; }
+ function mount(host){ if(!host) return false; if(lent) return true; return show(host); }
+ function pause(){ if(lent) return; running=false; cancelAnimationFrame(raf); canvas.hidden=true; }
+ function take(host){ if(!host) return false; lent=host; return show(host); }
+ function give(){ lent=null; }
+ /* CALL THE BEAT. The lock's own move, beat(now,1.35);pPh=0, starts a beat at
+    once; this one only brings the next beat forward to where its 12 percent
+    anticipation begins, so the centre draws in and then releases on the
+    face's own curve. Answers how long, in ms, until that beat lands, read
+    off the period the last frame used. A beat already inside its
+    anticipation is left where it is, and reduced motion has no beat. */
+ function cue(){ if(RM) return 0; pPh=Math.max(pPh,0.88); return Math.round((1-pPh)*curPeriod*1000); }
+ /* DROP THE READING AT ONCE. A reading normally leaves on its own: closed,
+    held for HOLD, then released over 2.2 seconds, about fourteen seconds in
+    all. The intro's example must not still be on the face when the
+    Journal's own first reading is due, or a person's first words would
+    land on rings still lit by a stranger's, so everything the reading left
+    on the face goes in one call: its word clock, its seats and their
+    timers, both layers of the reading, the flares and squash its hits
+    left, and the hold. RD.id moves, so a closeStory or resolve still
+    queued for the old reading finds it gone. The voice is not touched: it
+    is the product's one voice, and ends on its own element's events. */
+ function clear(){
+  wordTimers.forEach(clearTimeout); wordTimers=[]; clearTimeout(holdTimer); holdTimer=0;
+  for(const k in RD.seats) clearTimeout(RD.seats[k].timer);
+  RD.id++; RD.on=false; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp={}; RD.hk={};
+  for(const k in resFx) delete resFx[k]; rawFx.length=0;
+  for(const k in flares) delete flares[k]; for(const k in squash) delete squash[k];
+  readE=0; stateWord=speaking?'Answering':'Waiting'; }
  readAddrs();
- window.SrcFace={mount,pause,sync,read,voice,
+ window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,
+  plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
   state:()=>({word:stateWord,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,
    rings:ringList.map(l=>l.length),
    locked:[...LOCKED],rungs:{sab:CH.sabs.length,cx:CH.cxs.length,hy:CH.hys.length,sup:CH.sups.length},
    trace:CH.sabs[sabIdx]?{nm:CH.sabs[sabIdx].nm,parts:CH.sabs[sabIdx].parts.slice()}:null,
    seats:Object.keys(resFx).map(k=>({seat:SEATNM[k],fet:resFx[k].fet,addrs:resFx[k].addrs.slice()})),
+   /* a reading in flight that has not resolved a seat yet is still a
+      reading: what a gate reads to know clear() left nothing behind */
+   reading:RD.on, held:Object.keys(RD.seats).length, lent:!!lent, host:canvas.parentNode?canvas.parentNode.id||canvas.parentNode.className||'':'',
    voiceWord:VO?VO.idx:-1})};
 })();

@@ -9264,10 +9264,10 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
-.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
-.obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
+.obx .btn.pri,.sx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px}
+.obx .btn.pri::after,.sx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
  rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
-.obx .btn.pri:hover::after{translate:2px 0}
+.obx .btn.pri:hover::after,.sx .btn.pri:hover::after{translate:2px 0}
 .obx .btn.ob-back{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
 .obx .btn.ob-back:hover{color:var(--ink);background:transparent}
 .obx .btn.ob-back::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
@@ -10291,4 +10291,63 @@ body.rail2 .rb-d{right:6px;top:6px;margin-top:0}
 body.rail2 .fdock .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
 body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
 
+/* SOURCE READS AN EXAMPLE, ui/srcintro.js. Eleven seconds, once per device,
+   between the door and the first card. The ground is the door's own hard
+   black (#login above), for the door's reason: this is the bookend that
+   follows it, and a ground read off --bg would turn light under a light
+   theme while the face it holds is a dark lens. The inks are hardcoded light
+   for the same reason, as .dev-skip's are.
+
+   NOTHING MOVES WHEN SOMETHING ARRIVES. Every line the eleven seconds show
+   has its place in the column from the first frame, at opacity 0, so the
+   face never slides up when the rows land and the button never pushes the
+   rows: symmetry in space, ruled 16 November. Line one and the example share
+   one slot, one leaving as the other comes.
+
+   The face's box is min(86vw, 420px): the seat labels only draw at a face
+   radius of 140 and up (TX.res, ui/srcface.js), which needs a box of 284,
+   and at 390 wide this is 335. The 52vh is for a short landscape window,
+   where 420 of face would push the button off the screen; at 390 by 844 and
+   at 1600 by 1000 it never binds. */
+.sx{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;
+ background:#06060a;padding:24px 16px;overflow:auto}
+.sx:focus{outline:none}
+.sx-col{display:flex;flex-direction:column;align-items:center;gap:22px;width:min(560px,100%);margin:auto}
+.sx-face{position:relative;width:min(86vw,420px,52vh);aspect-ratio:1;flex:0 0 auto;
+ animation:sxIn 600ms cubic-bezier(.22,1,.36,1) both}
+.sx-face canvas{position:absolute;inset:0;width:100%;height:100%}
+@keyframes sxIn{from{scale:.94;opacity:0}to{scale:1;opacity:1}}
+.sx-text{display:grid;justify-items:center;gap:16px;width:100%;text-align:center}
+.sx-slot{display:grid;width:100%}
+.sx-slot>*{grid-area:1/1;margin:0}
+.sx-l1,.sx-ex,.sx-row,.sx-go{opacity:0;translate:0 8px;
+ transition:opacity 220ms cubic-bezier(.22,1,.36,1),translate 220ms cubic-bezier(.22,1,.36,1)}
+.sx-l1{align-self:center;font-size:17px;line-height:1.45;color:rgba(239,237,232,.92)}
+.sx-l1.on,.sx-ex.on,.sx-row.on,.sx-go.on{opacity:1;translate:0 0}
+.sx-l1.off{opacity:0;translate:0 0;transition:opacity 180ms cubic-bezier(.4,0,1,1)}
+.sx-eb{margin:0 0 6px;font-size:12px;color:rgba(239,237,232,.55)}
+.sx-s{margin:0;font-size:17px;line-height:1.5;color:rgba(239,237,232,.92)}
+.sx-w{opacity:0;transition:opacity 160ms cubic-bezier(.22,1,.36,1)}
+.sx-w.on{opacity:1}
+.sx-u{position:relative;white-space:nowrap}
+.sx-u::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:1.5px;background:var(--sc);
+ scale:0 1;transform-origin:left center;transition:scale 150ms cubic-bezier(.22,1,.36,1)}
+.sx-u.on::after{scale:1 1}
+.sx-rows{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.sx-row{font-size:14px;color:rgba(239,237,232,.72);display:flex;align-items:center;justify-content:center;gap:10px}
+.sx-row::before{content:'';width:8px;height:8px;border-radius:50%;border:1.5px solid var(--sc);flex:0 0 auto}
+.sx-row+.sx-row{transition-delay:90ms}
+.sx-go{translate:0 6px;min-height:54px}
+.sx-go .btn{visibility:hidden}
+.sx-go.on .btn{visibility:visible}
+.sx.sx-out .sx-col{scale:.96;opacity:0;transition:scale 260ms cubic-bezier(.4,0,1,1),opacity 260ms cubic-bezier(.4,0,1,1)}
+/* the ground holds until the first card is under it, 120ms into the exit,
+   and only then thins, so the Journal behind both never shows between them */
+.sx.sx-out{background-color:rgba(6,6,10,0);transition:background-color 140ms cubic-bezier(.4,0,1,1) 120ms}
+.sx.sx-out .dev-skip{opacity:0}
+/* STILL, the end frame and nothing on the way to it. Set by the script from
+   rbStill (ui/component.js), which also answers the person's own quiet
+   switch, and by the media query for a page whose script is late */
+.sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
+@media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
 </style></head>
