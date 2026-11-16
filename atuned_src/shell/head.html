@@ -4372,7 +4372,23 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    ui/storyui.js). The Journal takes the width they would have used. */
 .st-flow.st-simple{grid-template-columns:1fr}
 .st-flow.st-simple .st-colb,.st-flow.st-simple .st-colz{display:none}
-.st-flow.st-simple .st-colw{flex:1 1 0;max-width:900px;margin:0 auto}
+/* A REAL WIDTH HERE TOO, NOT ONLY ON A PHONE, 16 November. #stuni (Uni's own
+   box) measured 0 wide at 1600, Source's face gone from the hero view
+   entirely, #stjr centred at x:800 with nothing in it. .st-flow is a grid
+   (above), where "flex:1 1 0" is already dead weight, so margin:0 auto was
+   the only thing left sizing this column: a grid item with an auto width
+   and an auto margin does not stretch, it shrink-to-fits its own content
+   first and centres that. Every descendant down to #stuni sizes itself by
+   percentage (.st-uni{width:100%}, the canvas rule below), and a percentage
+   width contributes nothing to a shrink-to-fit measurement, so the content
+   width it shrank to was zero. width:100% below gives margin:auto an actual
+   box to centre instead of a guess, exactly the fix a mockup round already
+   confirmed against this file. The phone rule two screens down
+   (.st-flow.st-simple .st-colw{width:100%}, inside its own media block) now
+   restates what this already says past 720px too; left in place rather
+   than pulled, since its own comment is about a different, later collapse
+   (flex:0 0 auto on a phone) and still holds for that reason. */
+.st-flow.st-simple .st-colw{width:100%;flex:1 1 0;max-width:900px;margin:0 auto}
 /* THE KEYBOARD AND COMMIT ESCAPE THE 900PX READING COLUMN, 10 November,
    his words: "move the text keyboard icon to the center bottom screen,
    move the commit icon to the right side of the screen." Both still sit
