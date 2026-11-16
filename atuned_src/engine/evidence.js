@@ -148,7 +148,7 @@ function evCueRows(t,dims,nm){
    Pure: reads nothing else and writes nothing, the field included. */
 function evLedger(text,entries,o){
  o=o||{};
- var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[]};
+ var t=String(text||''), out={ev:[], claims:{}, order:[], thread:null, root:null, verdicts:[], behave:{}};
  var prior=srcPrior(entries||[]);
  var heard=srcHear(t,prior,o.active||null);
  var p=t.trim()?parseStory(t):null, nm=normMap(t);
@@ -160,9 +160,30 @@ function evLedger(text,entries,o){
   out.ev.push({id:'w'+i, src:'mark', s:m.s, e:m.e, text:t.slice(m.s,m.e),
    seat:m.seat||null, kind:m.seat?'seat':(m.coh?'coherent':'word'),
    said:m.neg?'denied':(m.other?'other':'said'), state:'observed'});});
- /* EVIDENCE, the cues */
+ /* EVIDENCE, the behaviours, SK3. srcBehave's rows, each with the kind of
+    behaviour it is and whether the writer said it, said it with a no, or
+    said it about someone else, read by the sniffer's own three readers.
+    seat is null on every one and none is ever a claim: that is the whole
+    of "evidence, never a seat". out.behave lists, by kind, the ids of the
+    rows the writer said as their own, which is what a caller asks first. */
+ var beh=t.trim()?srcBehave(t,nm):[], bspan={};
+ out.behave={};
+ beh.forEach(function(r,i){
+  bspan[r.s+'|'+r.e+'|'+r.dim]=1;
+  var x={id:'b'+i, src:'behave', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
+   kind:'behaviour', behave:r.behave, dim:r.dim, cue:r.cue, said:r.said, state:'observed'};
+  if(r.who)x.who=r.who;
+  out.ev.push(x);
+  if(r.said==='said')(out.behave[r.behave]=out.behave[r.behave]||[]).push(x.id);});
+ /* EVIDENCE, the cues. srcDims now answers from the behaviour rows too, so
+    a cue on exactly a behaviour row's span, for the dimension that row
+    answers, is that row said a second time, and stands aside for it. The
+    same span for another dimension is kept: "want to disappear" is a
+    feeling the lexicon reads at the heart AND a withdrawal, and the first
+    cut of this filter dropped the feeling cue with the duplicate. A cue on
+    any other span is kept, "I keep" beside "avoiding" included. */
  var dims=t.trim()?srcDims(t):null;
- evCueRows(t,dims,nm).forEach(function(r,i){
+ evCueRows(t,dims,nm).filter(function(r){return !bspan[r.s+'|'+r.e+'|'+r.kind];}).forEach(function(r,i){
   out.ev.push({id:'c'+i, src:'cue', s:r.s, e:r.e, text:t.slice(r.s,r.e), seat:null,
    kind:r.kind, cue:r.cue, said:'said', state:'observed'});});
  /* EVIDENCE, earlier entries, as the seat keys their commits stored and
@@ -273,9 +294,13 @@ function evLedger(text,entries,o){
    corrected only): the package's own words, "Do not map to a chakra
    as fact without user evidence." LAW_CANDIDATE_IDS and ALTERNATIVES
    are both empty: nothing in this engine maps a claim to a specific
-   law id, and the alternative-reading extractor is SK3, the largest
-   named gap, not built. Empty here is the honest state of what is not
-   built yet, not a placeholder standing in for a guess. */
+   law id, and nothing reads a second seat for the same words. This
+   said the alternative-reading extractor was SK3, and that was wrong
+   once SK3 was built, 16 November: SK3 reads behaviour, which has no
+   seat, so a behaviour row is never an alternative reading of a seat.
+   It lives on the ledger, out.behave, and not in this shape. Empty here
+   is the honest state of what is not built yet, not a placeholder
+   standing in for a guess. */
 function srcOutputV1Candidate(c,out){
  if(!c||!c.seam)return null;
  var ev=(out&&out.ev)||[];

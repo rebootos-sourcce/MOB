@@ -11032,5 +11032,73 @@ console.log('\nGW · the glossary reaches every tooltip it should, task #80');
   'the Psyche stack tiles and the card they open read one key table, defined once and used by both');
 }
 
+g('SK3 · what a person does is read as behaviour evidence, never as a seat');
+{
+ const {srcBehave,srcDims,srcHear,parseStory,evLedger,srcVet,SRC_BEHAVE,SRC_BEHAVE_ORDER,SRC_BEHAVE_DIM,SRC_DIM_ORDER}=E;
+ const kinds=t=>srcBehave(t).map(r=>r.behave+':'+t.slice(r.s,r.e)+':'+r.said);
+ ok(SRC_BEHAVE_ORDER.join()==='avoidance,withdrawal,inhibited_speech,loss_of_control,delay,self_judgement',
+  'the six TASKS.md names, in its order, got '+SRC_BEHAVE_ORDER.join());
+ ok(SRC_BEHAVE_ORDER.every(k=>SRC_DIM_ORDER.indexOf(SRC_BEHAVE_DIM[k])>=0)&&Object.keys(SRC_BEHAVE_DIM).length===SRC_BEHAVE_ORDER.length,
+  'every kind answers one of srcDims\'s own dimensions, and only those');
+ ok(SRC_BEHAVE_ORDER.filter(k=>k!=='self_judgement').every(k=>SRC_BEHAVE[k].length>0),'every fixed kind carries a stated list');
+ /* the 4 October section 40 session, which read as nothing before this */
+ const s40=["I keep avoiding things lately.","Usually when I'm already tired.","Nothing. I just want to disappear into my man cave.",
+  "I put things off, then I feel guilty.","That I'm lazy."];
+ const want=[["avoidance:avoiding:said"],[],["withdrawal:want to disappear:said"],["delay:put things off:said"],["self_judgement:I'm lazy:said"]];
+ s40.forEach((t,i)=>ok(JSON.stringify(kinds(t))===JSON.stringify(want[i]),'section 40, turn '+(i+1)+', '+JSON.stringify(t)+', got '+JSON.stringify(kinds(t))));
+ /* each of the six, off a sentence a person writes */
+ [['I dodged the call again.','avoidance','dodged'],
+  ['I stayed in bed all day.','withdrawal','stayed in bed'],
+  ['I bit my tongue the whole meeting.','inhibited_speech','bit my tongue'],
+  ['I lost my temper with the kids.','loss_of_control','lost my temper'],
+  ['I keep postponing the doctor.','delay','keep postponing'],
+  ['I am such a failure.','self_judgement','I am such a failure']].forEach(([t,k,w])=>{
+  const r=srcBehave(t).filter(x=>x.behave===k);
+  ok(r.length===1&&t.slice(r[0].s,r[0].e)===w&&r[0].said==='said',k+' is read off '+JSON.stringify(t)+', got '+JSON.stringify(kinds(t)));});
+ /* the no, the tense and whose, each by the sniffer's own reader */
+ ok(kinds('I never avoid it.')[0]==='avoidance:avoid:denied','a no before it is the person\'s no, by srcNegated\'s window');
+ ok(kinds("I didn't say anything.")[0]==="inhibited_speech:didn't say:said",'a phrase that carries its own no keeps it, the way "cant sleep" does');
+ ok(kinds("I didn't stay quiet.")[0]==='inhibited_speech:stay quiet:denied','and a no before a phrase without one denies it');
+ ok(kinds("I'm not lazy.")[0]==="self_judgement:I'm not lazy:denied",'a no inside a verdict\'s frame is a no');
+ ok(kinds("I'm not good enough.")[0]==="self_judgement:I'm not good enough:said",'and "not good enough" is a verdict, not a no to one');
+ ok(kinds('If I lost control I would hate it.')[0]==='loss_of_control:lost control:denied','the conditional, by sniffTense');
+ ok(kinds('I used to withdraw from everyone, but not anymore.')[0]==='withdrawal:withdraw from:denied','the walked back past, by sniffTense');
+ const she=srcBehave('She keeps avoiding me.');
+ ok(she.length===1&&she[0].said==='other'&&she[0].who==='she','someone else\'s behaviour is theirs, by whoOf, got '+JSON.stringify(she));
+ ok(kinds("He said I'm lazy.")[0]==="self_judgement:I'm lazy:other",'a verdict someone else gave is theirs');
+ ok(kinds('She called me lazy.').length===0,'and "lazy" with no first person frame is no verdict at all');
+ /* the ordinary sentences that share the words */
+ ['The car broke down.','I withdrew cash.','The train was late again.','The meeting got postponed by them.'].forEach(t=>{
+  const r=srcBehave(t).filter(x=>x.said==='said');
+  ok(r.length===0,'not a behaviour of the writer: '+JSON.stringify(t)+', got '+JSON.stringify(kinds(t)));});
+ ok(kinds('I could not stop.').length===1,'a phrase outranks the words inside it: one row, not two');
+ ok(JSON.stringify(kinds('I stayed in bed and cancelled plans.'))==='["withdrawal:stayed in bed:said","withdrawal:cancelled plans:said"]',
+  'two behaviours in one sentence are two rows, in the order written');
+ /* NEVER A SEAT. parseStory is not handed a row, so the reading of a text
+    made only of behaviour is nothing, and the reading of one with a feeling
+    word in it is that word alone. */
+ const only='I keep avoiding things. I put things off. I dodged the call. I stayed in bed.';
+ ok(srcBehave(only).length===4&&srcHear(only,null).unread&&Object.keys(parseStory(only).bands).every(k=>!parseStory(only).bands[k]),
+  'four behaviours, no seat heard and no band charged');
+ ok(srcBehave(only).every(r=>!('seat' in r)&&!('band' in r)),'a row carries no seat and no band');
+ const mix='I put things off, then I feel guilty.', L=evLedger(mix,[],{});
+ ok(Object.keys(L.claims).join()==='solar'&&L.claims.solar.ev.every(id=>id[0]!=='b'),'the claim is guilty\'s alone, and cites no behaviour row');
+ ok(L.ev.filter(x=>x.src==='behave').every(x=>x.seat===null)&&JSON.stringify(L.behave)==='{"delay":["b0"]}',
+  'the ledger keeps the behaviour as seatless evidence, listed by kind, got '+JSON.stringify(L.behave));
+ /* WIRED: srcDims answers from it, and the question check reads that */
+ ok((srcDims('I put things off.').answered.behaviour||[]).indexOf('put things off')>=0,'putting things off answers what the person did');
+ ok((srcDims("That I'm lazy.").answered.belief||[]).length===1&&!srcDims("That I'm lazy.").answered.behaviour,
+  'a verdict answers belief and leaves what they did open');
+ ok(!srcDims('She keeps avoiding me.').answered.behaviour,'someone else\'s behaviour answers nothing about the writer\'s');
+ ok((srcDims('I never avoid it.').answered.behaviour||[]).length===1,'a behaviour said with a no still answers, srcDims\'s standing rule');
+ const t8='I put things off, then I feel guilty.', L8=evLedger(t8,[],{});
+ const r8=srcVet({q:'What did you do?',family:'behaviour',dim:'behaviour',target:'solar'},{text:t8,ledger:L8});
+ ok(r8.fails.some(f=>f.n===8),'"What did you do?" is refused at point 8 of a person who said they put things off, got '+JSON.stringify(r8.fails));
+ const ag=srcVet({q:'What would you rather be doing?',family:'agency',need:'behaviour',dim:'goal',target:'solar'},{text:t8,ledger:L8});
+ ok(!ag.fails.some(f=>f.n===8),'and agency, which waits for what they did, may now be asked, got '+JSON.stringify(ag.fails));
+ const before=JSON.stringify(E.S.charge), j=JSON.stringify(srcBehave(s40.join('\n')));
+ ok(JSON.stringify(srcBehave(s40.join('\n')))===j&&JSON.stringify(E.S.charge)===before&&srcBehave('').length===0&&srcBehave(null).length===0,'reading behaviour is pure, and nothing reads as nothing');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
