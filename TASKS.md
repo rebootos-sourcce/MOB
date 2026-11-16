@@ -852,7 +852,23 @@ into something tidier than he said it.
       end.** The quiz's 2,150 byte file goes through the app's own `pImport`,
       validates, loads, and `compute()` returns the same coherence figure the
       quiz printed.
-- [ ] **FN10. And the control side does not exist, which is the one D.**
+- [x] **FN10. Closed, and this line stayed open after it was.** Measured
+      16 November at `fbb032cb` in headless Chromium, at 1600 and 390, by
+      pressing what a person presses: the profile button opens a menu whose
+      Privacy row lands on Settings, Privacy, and the group "Load a record"
+      there is `recordImportHtml('ac')`, the same importer lifted out of
+      `profileSheet` (see the block above it in `ui/panels.js` and the call in
+      `accPrivacy`, `ui/account.js`). A pasted record loaded through `pImport`
+      and said so; a broken one is refused by name, which `tests/functional.js`
+      already walks under "the record file has a door". This is where the
+      funnel sends people: the quiz says "Profile, Privacy" and the privacy
+      page says "Settings, Privacy ... Load a record". `profileSheet` itself
+      is still unreached and is not wired, on purpose: it would be a second
+      door onto the same importer inside a sheet that also repeats Display
+      and Billing. The importer ran flush to its group's edge there; inset in
+      the same commit that closed this line. What follows is the original
+      finding, kept for the record.
+      **And the control side does not exist, which is the one D.**
       `profileSheet()` at `ui/panels.js:573` holds the paste box and the file
       picker, and it is called from exactly one place: itself, to re-render
       after a density change. Nothing in the app opens it. Confirmed in the

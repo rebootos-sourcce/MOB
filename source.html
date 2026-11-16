@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v88 596abed8 2026-11-16 15:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v90 b5da11ca 2026-11-16 16:01"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -9867,6 +9867,14 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 .btn.dgr:hover{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ac-seg{margin:11px 15px 13px}
 .ac-grp .dens-list{margin:11px 15px 13px}
+/* THE IMPORTER WAS DRAWN FOR A SHEET AND LIVES IN A GROUP. .sh-imp carries its
+   own top rule and no side padding, because inside profileSheet the sheet card
+   gave it both. Lifted into Settings, Privacy, Load a record, the card is an
+   .ac-grp that pads nothing, so its paragraph and its box ran flush to the
+   group's edge at 1600 and at 390, and its rule sat under the heading's rule
+   as an empty strip. Measured in the screenshot of the one door the funnel
+   names, 16 November. Inset the way the density list above is inset. */
+.ac-grp .sh-imp{margin:0;padding:12px 15px 13px;border-top:0}
 @media (max-width:1000px){
  .ac-body{grid-template-columns:1fr}
  .ac-ix{position:static;flex-direction:row;flex-wrap:wrap;gap:4px}
@@ -99227,5 +99235,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006625192"></div>
+<div id="eof" hidden data-len="006625795"></div>
 </body></html>
