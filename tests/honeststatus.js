@@ -123,8 +123,13 @@ async function honestStatusGate(browser,FILE,ok,booted){
   /* undo by the chord, the only route a person has while the arrows are hidden */
   await p.evaluate(()=>{ if(document.activeElement&&document.activeElement.blur)document.activeElement.blur(); status(''); });
   await p.keyboard.press('Control+z');
-  await p.waitForTimeout(250);
-  const u=await st(p);
+  /* the handler is synchronous once it runs, but a fixed wait is a bet on
+     how fast the host delivers the keydown: a loaded machine can leave the
+     cleared line unread for longer than a flat pause allows, which read as
+     the answer press's own leftover line and not the undo's. settled(), the
+     same poll the clipboard checks above already trust, waits for the line
+     to actually move instead of guessing how long that takes. */
+  const u=await settled(p);
   if(full)ok(/^Took back /.test(u.text)&&/Not saved/.test(u.text)&&u.kind==='fail',at+'an undo names what it took back and says Not saved, as a failure, '+JSON.stringify(u));
   else ok(/^Took back /.test(u.text)&&!/Not saved/.test(u.text)&&u.kind==='ok',at+'an undo says Took back, as ok, '+JSON.stringify(u));
   ok(errs.length===0,at+'no page error, '+JSON.stringify(errs));
