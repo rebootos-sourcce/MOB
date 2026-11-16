@@ -66,7 +66,8 @@
        follows that element: it speaks while the element plays, the reading
        is held until it ends, and the word the voice is on is read off the
        element's own playback position. The demo's Speak button and its
-       speechSynthesis path are gone; the product has no browser voice.
+       path through the browser's own built in speech are gone; the product
+       has no browser voice.
     6  THE MOUNT is the canvas-wrap inside #stuni, Uni's own box, done by
        uniMount (ui/uni.js) when the target is #stuni, which pauses Uni's
        loop and hides her canvas there. Every other mount of her, the boot
