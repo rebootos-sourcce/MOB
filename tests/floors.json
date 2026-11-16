@@ -56,7 +56,8 @@
     "Raised 16 November: engine 6945 to 7317, for the checks several merged branches added since the floor was last set (the Source AI narration removal from the drill cards, the Journal/Dashboard face and text-box fix, the left rail frame fix, and the intro animation's own engine-side reads) without anyone raising it, so gates-fast correctly tripped on real drift (372 above the floor, more than the 348 the 5 percent rule allows) rather than a defect. Read off two local runs of tests/engine.js on the merged tree, each 7317 passed, 0 failed, 0 expected red, matching CI's own 7317 on this run.",
     "Lowered 16 November: paywall 577 to 385, not to get green. Checkout was opened for real, permanently, by 26a409e7 (\"Open checkout, per Lance's direct instruction\"), already on main before this session's own chain of changes. engine/plan.js's planCheckoutOpen() is now a hardcoded true, which ui/paywall.js's pwPayOpen() ORs ahead of the harness seam PW_PAY_SEAM, so nothing in tests/paywall.js can simulate checkout closed any more. Dropped the two fixtures that asked for it (free, closed and signed out, closed) and the sections of the file that only ran under them, kept as dead code for if checkout closes again rather than cut outright. Read off a clean local run, 385 passed, 0 failed.",
     "Raised 16 November: functional 2953 to 3050, same cause as the paywall note above. tests/functional.js's own P2-1 section (Billing/ui/plans.js, not the paywall sheet) measured the same now-unreachable checkout-closed state and failed the same three ways on gates-browser (functional), CI run 43952992462, 3053 passed, 3 failed, found independently the same night by another agent's own report on an unrelated branch. Dropped the three dead assertions. 3053 minus the three equals the new floor; not re-measured locally given the gate's own ~30 minute run time, read off the real CI count instead.",
-    "Raised 16 November: paywall 385 to 389, for the gift sheet merge (commit 287b1b54): the four checks tests/paywall.js gained for the reordered gift title, the deleted dead line, and the new pressed/named-button state on the six rings, read off a clean local run, 389 passed, 0 failed."
+    "Raised 16 November: paywall 385 to 389, for the gift sheet merge (commit 287b1b54): the four checks tests/paywall.js gained for the reordered gift title, the deleted dead line, and the new pressed/named-button state on the six rings, read off a clean local run, 389 passed, 0 failed.",
+    "Raised 16 November: collide 388 to 943, missed when the Insight panel round (commit b9b3d86d) was merged: its new centre-gate collision section (68 views at both widths) is real and already green (gates-browser (collide), CI run 43975568966, collide gate itself succeeded at 943 passed; only the un-bumped floor step failed), matching two local runs of the merged tree, both 943 passed, 0 failed."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -68,7 +69,7 @@
     "engine": 7317,
     "funnel-package": 44,
     "boot": 29,
-    "collide": 388,
+    "collide": 943,
     "funnel": 276,
     "design": 192,
     "functional": 3050,
