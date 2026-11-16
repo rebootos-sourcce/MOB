@@ -4355,6 +4355,13 @@ const tiers=await page.evaluate(async()=>{
  o.presses=g?[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier')):[];
  o.text=g?g.textContent.replace(/\s+/g,' '):'';
  o.same=g?(g.querySelector('.pt-same')||{}).textContent||'':'';
+ /* SYMBOL FIRST, 16 November: what every tier carries is a row of marks, each
+    holding its PLAN_ALWAYS phrase as its tooltip's title and its meaning as the
+    tooltip's body, so the phrase is read off the carriers and not the text */
+ o.sameTips=g?[...g.querySelectorAll('.pt-same [data-tip]')].map(e=>({t:e.getAttribute('data-tip-t'),b:e.getAttribute('data-tip'),
+  tab:e.getAttribute('tabindex'),h:e.getBoundingClientRect().height})):[];
+ o.same+=' '+o.sameTips.map(x=>x.t).join(', ');
+ o.alwaysN=PLAN_ALWAYS.length;
  /* rows by identity, data-pt, round RB: a closed rung carries no button, so
     finding a row by its press found nothing for tier four */
  o.rowSees={}; o.rowGo={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
@@ -4463,6 +4470,9 @@ ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
 ok(/On every tier, free included/.test(tiers.same)&&/your 108 somatic addresses and 4 field anchors/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
  'what every tier gets is said once, across the top, from PLAN_ALWAYS');
+ok(tiers.sameTips.length>=tiers.alwaysN+2&&tiers.sameTips.every(x=>x.b&&x.t&&x.b.toLowerCase()!==x.t.toLowerCase()&&x.tab==='0'&&x.h>=44),
+ 'and each mark carries a meaning a tap reaches: focusable, at least 44 tall, a meaning on every one and never its own name again: '
+ +JSON.stringify(tiers.sameTips.filter(x=>!(x.b&&x.tab==='0'&&x.h>=44))));
 ok(!/the whole reading/i.test(tiers.same+tiers.text),
  'and the whole reading is not on every tier any more, so no row says it');
 ok(/400 patterns a month/.test(tiers.text)&&/1,200 patterns a month/.test(tiers.text)&&/100 a week/.test(tiers.text)&&/10 patterns a week/.test(tiers.text),
