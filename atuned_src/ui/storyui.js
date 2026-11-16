@@ -637,6 +637,15 @@ function stRender(){
     ordinary controls (Commit among them) are what belong back on
     screen for it. */
  var heroRest=!STV.dash&&!STV.typed&&!ST_LISTEN&&!STV.crisis&&!ST_TEXT;
+ /* THE FACE'S OWN FIELD CARRIES NO TEXT AT REST ON THE DASHBOARD, REVERSES
+    16 November, round of 16 November (tonight), his words, on the Full
+    Dashboard: "there should be no text where there's just source AI. So
+    that whole field is just for source AI, absolutely no text. Text is
+    for the text box." dashTB names the one state the rest of this
+    function and srcPaint both read for it: the Full Dashboard's own
+    conversation view, STV.dash&&STV.chat, never the hero or a worked
+    example. See the comment at #sttype below for what moves. */
+ var dashTB=STV.dash&&STV.chat;
  var out='<div class="st-flow'+(STV.dash?'':' st-simple')+'" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
@@ -722,9 +731,21 @@ function stRender(){
       this new location (see the rest-hiding rule at .st-hdbtns #sttype in
       shell/head.html) rather than by sitting inside the bar that rule used
       to hide whole. */
+   /* ON THE DASHBOARD THIS IS ALSO "CLICK ON IT", 16 November (tonight).
+      His own words wanted a click on the face's own field to reveal the
+      text box and what it reads off the person's words; this is the one
+      control already there that opens that exact box (see dashTB in
+      stRender and in srcPaint), so it carries both jobs rather than a
+      second, invented one, and its own name says the Dashboard job while
+      it is doing it: "your words" and what reading them means, not
+      "type", since typing is only one of the two doors into that box
+      here (voice is still the other). Hero and the crisis/novoice legacy
+      box keep the wording they already had. */
    +(STV.novoice||STV.crisis||!(STV.chat||STV.typed)?''
-    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" aria-label="Type instead" title="'
-    +(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.')+'">'
+    :'<button type="button" class="st-type" id="sttype" aria-expanded="'+STV.typed+'" aria-label="'
+    +(dashTB?'Your words':'Type instead')+'" title="'
+    +(dashTB?(STV.typed?'Close. What is here stays in the entry.':'See your words and what is being read from them, or type instead of speaking.')
+     :(STV.typed?'Close the box. What you typed stays in the entry.':'Open a box to type in, in place of speaking.'))+'">'
     +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">'
     +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
     +'</button>')
@@ -813,8 +834,14 @@ function stRender(){
      cut from the markup, not merely hidden by CSS, so stUniSync's own
      document.getElementById('stuni') genuinely finds nothing and parks
      her (see the root-cause fix at stUniSync, same date) rather than a
-     canvas sitting invisible and still animating underneath. */
-  +(show?showNote('story','st-show'):(STV.typed?'':'<div class="st-glow">'
+     canvas sitting invisible and still animating underneath.
+     NOT ON THE DASHBOARD, 16 November (tonight), dashTB above. She is the
+     centrepiece there (the standing avatar ruling) and does not leave the
+     screen just because the text box behind her opened; only #stsrc's own
+     content, never her canvas, is what the rest of tonight's change gates
+     on dashTB. Hero and the crisis/novoice legacy box are untouched: for
+     them this still cuts the whole block exactly as it did before. */
+  +(show?showNote('story','st-show'):((STV.typed&&!dashTB)?'':'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -906,27 +933,32 @@ function stRender(){
      keyboard. The 'open' class (and the shell's compact CSS keyed on it)
      is only added when STV.typed is what opened it, so the crisis box's
      own size is exactly what it was before this round. */
-  /* AND ON THE DASHBOARD THE BOX IS ALWAYS THERE, UNDER THE FACE, 16
-     November. His words, on a screenshot of the Full Dashboard: "There's a
-     text field that should not be there. That should be deleted entirely
-     because it's now being replaced with the text box. But this text box
-     should be a full typing text box. Where's my keyboard?" What stood
-     under the face there was .src-mine (srcPaint), a div that printed
-     ST_TEXT back as read only lines, sized and placed where his 10
-     November drawing put "the user input only". It looked like the place
-     to type and was not one: no caret, no focus, and on a phone no
-     keyboard, and since a reload restores the draft into ST_TEXT
-     (stDraftBack), it printed the last session's spoken turns ("Hello.",
-     "Can you hear me?") as if a conversation were still running. The div
-     is gone and this, the real box, stands in its place on the Dashboard,
-     holding the same ST_TEXT through the same oninput, so voice turns and
-     typed words are one entry a person can read, edit and clear. The
-     keyboard icon is unchanged: it still opens the type only view his 14
-     November ruling asked for. Not on a worked example, which shows its
-     note in place of every writing control. The 10 November rest ruling,
-     two icons and nothing else, is the hero view's and this does not reach
-     it: STV.dash is false there. */
-  +((!STV.chat||STV.typed||(STV.dash&&!show))?'<div class="st-ed'+(STV.typed?' open':(STV.dash&&STV.chat?' dash':''))+'"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
+  /* THE DASHBOARD BOX IS NO LONGER ALWAYS THERE, REVERSES 16 November.
+     That round's own ruling is right above, kept for the record: "There's
+     a text field that should not be there... this text box should be a
+     full typing text box. Where's my keyboard?" and it put this real box,
+     holding ST_TEXT through the same oninput as the keyboard's own box
+     always used, where .src-mine, a read only div, used to sit under the
+     face. That stood until tonight, 16 November, the same day, a new
+     screenshot, his words crossing both this box and #stsrc's own content
+     out in red: "there should be no text where there's just source AI...
+     Text is for the text box. If I click on it, then that should have the
+     AB text, and that should actually show what text of mine is being
+     sniffed and turned into process." A new instruction is new
+     information and not a challenge to the old one (CLAUDE.md, 15
+     November), so the change is made rather than argued with: the box
+     this round put here stays the real box it already was, only it no
+     longer renders by merely being on the Dashboard. STV.dash&&!show is
+     gone from the condition below; what is left, !STV.chat||STV.typed, is
+     exactly the crisis/novoice box and the keyboard's own door, the same
+     two doors the hero view already answers to. The keyboard icon
+     (#sttype below) is that door on the Dashboard now too, never a third
+     one invented: pressing it is "clicking on it" in his own words, the
+     one real, labelled, already-visible control this page had for
+     exactly this before tonight (14 November). What changes alongside it,
+     so the box is not merely emptier but the real diagnostic view he
+     asked for, is in srcPaint: see dashTB there. */
+  +((!STV.chat||STV.typed)?'<div class="st-ed'+(STV.typed?' open':'')+(dashTB?' dash':'')+'"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
     /* inputmode and enterkeyhint name the phone's keyboard outright, the
        text one with a return key, since a textarea is where a newline
        belongs; autocapitalize because a story is sentences */
@@ -942,8 +974,16 @@ function stRender(){
      visual design" is read as the whole panel, not the glow alone, so the
      stars note and the aside note (both already conditionally hidden on
      their own content) are also cut from the markup while STV.typed, the
-     same way .st-glow above is. */
-  +(STV.typed?'':'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
+     same way .st-glow above is.
+     AND ON THE DASHBOARD, NEVER AT REST, 16 November (tonight). dashTB
+     above. Tonight's own ruling is "absolutely no text" in the face's
+     field, which this note sits in under the box; it is not one of the
+     three things requirement 3 of tonight's change names for the opened
+     box (the marked words, the chain line, the verdict panel), so rather
+     than invent a reason to keep it, it stays off on the Dashboard
+     outright, open or shut, and keeps its hero behaviour exactly as it
+     was: cut only while STV.typed there. */
+  +((STV.typed||dashTB)?'':'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
    +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>')
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
@@ -954,7 +994,7 @@ function stRender(){
      quote with what "not counted" means beside it, and nothing at all when
      nothing was set aside. It is a sentence and not a count, so it is not
      the counter round HS took off this place. */
-  +(STV.typed?'':'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
+  +((STV.typed||dashTB)?'':'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
    +esc(stAsideSay())+'</p>')
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
@@ -2686,8 +2726,23 @@ function srcPaint(){
  var asideSentence=stAsideSay();
  /* the person's answers sit under their words and outside the scrolled
     box, which keeps its newest line in view on every paint, SK5 */
- o=(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
-  +(turn.move==='safe'?'':srcVerdictHtml());
+ /* THE FACE'S FIELD IS TEXT FREE AT REST ON THE DASHBOARD, 16 November
+    (tonight), reverses the 16 November ruling named at the box's own
+    comment in stRender. dashRest is the Full Dashboard's conversation
+    view with the text box shut: #stsrc holds nothing then, not even this
+    set aside line or the chain line, so the whole face field reads as
+    pure Source AI, his words, "absolutely no text." It is still built
+    (not skipped) once the box opens, STV.typed, which is the stRender
+    comment's dashTB with the one further condition srcPaint alone knows,
+    so the words in it update live while a person types, the same way
+    they always did. The safety row below is never part of this: it is
+    appended after, unconditioned on dashRest, because the door to help
+    is never hidden, at rest or not (CLAUDE.md). Hero and the hidden,
+    CSS-muted copy of this panel there (shell/head.html, :not(.st-full)
+    #stsrc) are untouched; dashRest is false whenever STV.dash is. */
+ var dashRest=STV.dash&&STV.chat&&!STV.typed;
+ o=dashRest?'':((ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+  +(turn.move==='safe'?'':srcVerdictHtml()));
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
