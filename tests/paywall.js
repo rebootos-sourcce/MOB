@@ -14,8 +14,7 @@
    when the sheet disagrees with the table.
 
    AT 1600 BY 1000 AND AT 390 BY 844, for a blank person on free, on tier one,
-   signed out, and with checkout closed (the build's own state) and open (the
-   harness seam, PAYWALL_PAY_OPEN):
+   and signed out, checkout always open since 16 November (26a409e7, below):
      1  the sheet fits one screen with no scroll, and nothing hangs out of its
         own card or out of the sheet
      2  every target is at least 44 by 44, the atuned-ux floor, at both widths
@@ -36,10 +35,11 @@
         TABDEF on free and on tier one, opens the sheet with the ring it locked
         marked on every card and the cheapest tier that opens it as the door,
         and Escape and Close put focus back on that control
-     7  HONEST: with checkout closed nothing in the sheet can start a checkout
-        and no press reaches the payment seam; Practitioner is never sold
-        while it is not built; the sheet never says stopping takes two
-        presses, never offers a refund, never says a gift
+     7  HONEST, held for whenever checkout closes again: nothing in the
+        sheet can start a checkout and no press reaches the payment seam.
+        Practitioner is never sold while it is not built; the sheet never
+        says stopping takes two presses, never offers a refund, never
+        says a gift
      8  open, a card's press goes through planOpen, the one door Billing uses:
         signed out it says the same refusal as before, and a live plan is moved
         on the payment page rather than given a second checkout
@@ -160,12 +160,19 @@ async function page(browser,W,H,o){
  const browser=await chromium.launch({executablePath:CHROME});
  require('./net.js').guardBrowser(browser);
  console.log('\n=== the paywall, mockup five, in the app ===');
+ /* THE CLOSED STATE IS GONE, 16 November, 26a409e7, "Open checkout, per
+    Lance's direct instruction." planCheckoutOpen() (engine/plan.js) is now
+    a hardcoded true and pwPayOpen() (ui/paywall.js) ORs it ahead of the
+    harness seam PW_PAY_SEAM, so nothing on this page can read pay:false
+    any more: the real build has no closed state left to simulate. The two
+    fixtures that asked for one, 'free, closed' and 'signed out, closed',
+    are dropped rather than left to fail forever; the HONEST section below
+    that only ran when !st.pay is accordingly dead code now, kept rather
+    than cut, in case checkout closes again. */
  const STATES=[
-  {nm:'free, closed',tier:'free',signed:true,pay:false},
   {nm:'free, paying open',tier:'free',signed:true,pay:true},
   {nm:'tier one, paying open',tier:'one',signed:true,pay:true},
-  {nm:'signed out, paying open',tier:'free',signed:false,pay:true},
-  {nm:'signed out, closed',tier:'free',signed:false,pay:false}];
+  {nm:'signed out, paying open',tier:'free',signed:false,pay:true}];
  for(const [W,H] of [[1600,1000],[390,844]]){
   for(const st of STATES){
    const tag='@'+W+' '+st.nm+': ';
