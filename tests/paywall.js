@@ -339,11 +339,23 @@ async function page(browser,W,H,o){
      tl:[...s.querySelectorAll('.pw-rg')].every(r=>r.getAttribute('data-tl')==='Open on your gift'),
      buy:s.querySelectorAll('[data-pwbuy]').length, price:/\$\d/.test(t), soon:/Opens soon/.test(t),
      line:(s.querySelector('.pw-gq')||{}).textContent, want2:'Your gift: '+GIFT_N+' patterns, no card. Everything is open.',
-     title:(s.querySelector('#pwt1')||{}).textContent, words:__pw.words()};});
+     title:(s.querySelector('#pwt1')||{}).textContent, words:__pw.words(),
+     /* the line leads: nothing a person can see sits above it but Close */
+     lead:(()=>{const q=s.querySelector('.pw-gq').getBoundingClientRect().top;
+      return [...s.querySelectorAll('.pw-rg,.pw-gclose')].every(e=>e.getBoundingClientRect().top>q);})(),
+     dead:/whole reading is open/i.test(t),
+     /* the rings read as buttons: the shell's .ib, a name a person can see,
+        and a pressed state that starts released */
+     tiles:[...s.querySelectorAll('.pw-rg')].every(r=>r.classList.contains('ib')&&r.getAttribute('aria-pressed')==='false'
+      &&__pw.vis(r.querySelector('.pw-rn'))&&r.querySelector('.pw-rn').textContent.trim().length>0)};});
    ok(g.inGift&&g.gift&&g.k===null&&g.door===null,tag+'a person inside the gift meets the gift state, with nothing marked, '+JSON.stringify(g));
    ok(g.rings===g.want&&g.lit===g.want&&g.tl,tag+'every ring SIGHT draws is lit and says it is open on the gift, '+g.lit+' of '+g.rings);
    ok(g.buy===0&&!g.price&&!g.soon,tag+'no price, no press and no Opens soon: there is nothing to buy');
-   ok(g.line===g.want2&&g.title==='Your whole reading is open.',tag+'the gift\'s one line, in Summary\'s words, under the mockup\'s title, '+JSON.stringify([g.title,g.line]));
+   /* RULED 16 NOVEMBER, the owner: the gift line "moves to the top, so as a
+      user, I can see that this is a gift for me", and "'Your whole reading is
+      open' is meaningless ... Kill that line." The line is the title now. */
+   ok(g.line===g.want2&&g.title===g.want2&&g.lead&&!g.dead,tag+'the gift\'s one line, in Summary\'s words, is the title and leads the sheet, and the dead title is gone, '+JSON.stringify([g.title,g.line,g.lead,g.dead]));
+   ok(g.tiles,tag+'every ring is the shell\'s .ib button with its name shown and aria-pressed released');
    const bad=await pg.evaluate(()=>__pw.fit()), small=await pg.evaluate(m=>__pw.targets(m),TAP), cn=await pg.evaluate(()=>__pw.contrast());
    ok(bad.length===0,tag+'fits one screen, '+bad.slice(0,3).join(' | '));
    ok(small.length===0,tag+'every target is at least '+TAP+', '+small.slice(0,3).join(' | '));
@@ -354,6 +366,16 @@ async function page(browser,W,H,o){
    await pg.focus('#paywall .pw-gp'); await pg.waitForTimeout(40);
    const t2=await pg.evaluate(()=>__pw.tip());
    ok(t2&&t2.text===await pg.evaluate(()=>PW_W.pat),tag+'the word patterns carries what a pattern is');
+   /* a press holds the ring's card and the ring says it is pressed; a second
+      press lets both go, and only the one pressed ring is ever pressed */
+   const prs=()=>pg.evaluate(()=>[...document.querySelectorAll('#paywall .pw-rg')].map(r=>r.getAttribute('aria-pressed')).join(''));
+   await pg.click('#paywall .pw-rg >> nth=2'); await pg.waitForTimeout(60);
+   const p1=await prs(), pt=await pg.evaluate(()=>__pw.tip());
+   await pg.click('#paywall .pw-rg >> nth=2'); await pg.waitForTimeout(60);
+   const p2=await prs();
+   const want=Array.from({length:g.rings},(_,i)=>i===2?'true':'false').join('');
+   ok(p1===want&&pt&&/Open on your gift/.test(pt.text)&&p2===Array(g.rings).fill('false').join(''),
+    tag+'a press shows pressed and holds its card, a second press releases it, '+JSON.stringify([p1,p2]));
    await pg.click('#paywall .pw-gclose'); await pg.waitForTimeout(60);
    ok(!(await pg.evaluate(()=>paywallIsOpen())),tag+'Close shuts it');
    const after=await pg.evaluate(()=>JSON.stringify(Object.assign({},localStorage)));
