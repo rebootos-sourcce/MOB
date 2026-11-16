@@ -72,6 +72,66 @@ for(const w of [[1680,1020],[390,844]]){
  console.log('  '+w.join('x')+': '+n+' labels over '+people.length+' personas and 4 depths, '
   +(worst?'some past the ring':'none past the ring'));}
 /* ============================================================
+   The six gates at the core clear of each other, and on top of the laws.
+
+   16 November. plateHit above holds the names; nothing held the marks.
+   The gate fan (verpArrows, ui/wheel.js) drew at fixed pixel sizes while
+   the core and the law ring scale with the wheel's unit, so at 390 every
+   persona at every depth put a pill under its neighbour's disc and the six
+   read as one knot over the core figure, and the law ticks, drawn after
+   them, ran straight across their glyphs. Nothing failed, because nothing
+   looked.
+
+   Held here with gateHit, the same predicate verpArrows spreads its fan
+   against, the way plateHit is shared with the plates: a disc and its pill
+   against every other disc and pill, four pixels clear, plateHit's own
+   margin. window.__GATES is what the fan settled to, and it is checked
+   against the gate hit targets actually pushed, so the gate cannot pass on
+   a list the wheel did not draw. Six is asserted, or a fan that drew
+   nothing would pass by having nothing to collide.
+
+   THE PREDICATE IS CHECKED AGAINST A KNOWN BAD CASE FIRST, in the run and
+   not only by hand: the fan as it was (a 13 disc, a 22 by 12 pill, a 0.72
+   step, 34 past the core) is rebuilt from the same core radius on every
+   frame at 390 and must clash on at least one. On 16 November it clashed
+   on 40 of the 68 frames; the run prints the figure of the day.
+
+   And the order: every law tick's hit target is pushed before the first
+   gate's. HIT is the draw order, so this is the gates painting after the
+   ticks, which is what keeps a tick off a glyph where the two still meet
+   at 390, the law ring starting inside the fan's reach.
+   ============================================================ */
+console.log('\n=== the six gates clear of each other and over the laws, every persona x every depth ===');
+for(const w of [[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ let frames=0,worstGap=1e9,oldBad=0;
+ for(let i=0;i<people.length;i++)for(let v=0;v<4;v++){
+  const res=await p.evaluate(a=>{loadP(a[0]);setTab(TAB.FIELD);S.view=a[1];layout();
+   window.__GATES=[];draw(compute());
+   const G=window.__GATES||[], H=HIT.filter(h=>h.k==='gate');
+   const lawIx=HIT.map((h,j)=>h.k==='law'?j:-1).filter(j=>j>=0), gateIx=HIT.map((h,j)=>h.k==='gate'?j:-1).filter(j=>j>=0);
+   const hits=[];let gap=1e9;
+   for(let x=0;x<G.length;x++)for(let y=x+1;y<G.length;y++){
+    if(window.gateHit(G[x],G[y]))hits.push(x+'/'+y);
+    gap=Math.min(gap,Math.hypot(G[x].x-G[y].x,G[x].y-G[y].y));}
+   const drawn=G.length===H.length&&G.every((f,j)=>Math.abs(f.x-H[j].x)<0.5&&Math.abs(f.y-H[j].y)<0.5);
+   /* the old fan, rebuilt from this frame's own core */
+   const core=HIT.filter(h=>h.k==='core')[0], cr0=core?core.rad/1.5:0, rr=cr0*1.3+34;
+   const old=[];[[-1,3],[1,3]].forEach(s=>{for(let k=0;k<3;k++){const an=s[0]*Math.PI/2+(k-1)*0.72;
+    const x=CX+Math.cos(an)*rr,y=CY+Math.sin(an)*rr;old.push({x:x,y:y,R:13,px:x+10,py:y+8,pw:22,ph:12});}});
+   let oldHit=false;for(let x=0;x<old.length&&!oldHit;x++)for(let y=x+1;y<old.length;y++)if(window.gateHit(old[x],old[y])){oldHit=true;break;}
+   return {n:G.length,hits:hits,gap:gap,drawn:drawn,
+    order:!lawIx.length||!gateIx.length||Math.max(...lawIx)<Math.min(...gateIx),laws:lawIx.length,oldHit:oldHit};},[i,v]);
+  const tag=w.join('x')+'/'+people[i]+'/depth'+v;
+  frames++;worstGap=Math.min(worstGap,res.gap);if(res.oldHit)oldBad++;
+  ok(res.n===6,tag+': '+res.n+' gates on the wheel, want six');
+  ok(res.drawn,tag+': the published gate footprints are not the gates the wheel pushed');
+  ok(res.hits.length===0,tag+': gates touching, '+res.hits.join(', '));
+  ok(res.order,tag+': a law tick is drawn over a gate ('+res.laws+' ticks)');}
+ if(w[0]===390)ok(oldBad>0,'390: the old fixed fan clashed on '+oldBad+' of '+frames+' frames, so gateHit can see the defect it guards');
+ console.log('  '+w.join('x')+': '+frames+' frames, closest two gate centres '+worstGap.toFixed(1)+'px'
+  +(w[0]===390?', the old fixed fan clashed on '+oldBad+' of '+frames:''));}
+/* ============================================================
    And nothing past the dial's ring either.
 
    CR held the wheel to its edge and left the dial's callouts in its

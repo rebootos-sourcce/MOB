@@ -66,17 +66,38 @@ const svgI=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
    is not read as sup's own closed ring in a ring; sab two small rings,
    chain links rather than a figure 8; cx three small rings in a triangle,
    one per saboteur a complex can hold plus the room between them. hy and
-   sup are already on this frame and are unchanged. */
+   sup are already on this frame and are unchanged.
+
+   THE SHARED OUTER RING CAME OFF AGAIN, 16 November, and the count of rings
+   is the mark. The frame above fixed the size and cost the meaning: four of
+   the five drew the same 8.6 ring, so what told them apart was a 1.4 to 2.2
+   radius mark inside it, three and a half pixels across at the tab's 18,
+   and the row read as five circles with specks in them. Worse, every tier
+   then sat inside an enclosure, which is the one thing only the super
+   complex is: the pattern a person cannot see as separate from themselves.
+   So no tier carries a frame it does not mean, and each draws its own
+   chain at full size on the 24 grid, no ring under 3.5 so a 1.8 stroke
+   still leaves a hole at 18 pixels:
+
+     fet  one ring, 6.5, on a floor line: the floor the chain runs on
+     sab  two rings of 5, overlapped like two links
+     cx   three of 4.5, interlocked in a triangle
+     hy   four of 4 in a two by two mesh, each linked to its neighbours
+          and not across the diagonal, which is what makes it a mesh
+     sup  a ring of 8 round a ring of 4, the only nested mark in the set
+
+   chainRing writes a circle as two arcs, the idiom every ring above
+   already used, so a path stays one d attribute for svgI and for Path2D. */
+function chainRing(cx,cy,r){
+ /* rounded, or 8.7-4 writes 4.699999999999999 into the path */
+ var n=function(x){return +x.toFixed(2);};
+ return 'M'+n(cx-r)+' '+n(cy)+'a'+r+' '+r+' 0 1 0 '+n(2*r)+' 0a'+r+' '+r+' 0 1 0 '+n(-2*r)+' 0';}
 const CHAINGLYPH={
- fet:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12.7 9.9A2.2 2.2 0 1 1 11.3 9.9',
- sab:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
-  +'M9.8 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3M14.2 10.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3',
- cx:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2'
-  +'M12 7.1a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8M9.8 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8'
-  +'M14.2 12.6a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8',
- hy:'M12 3.6L19.27 7.8L19.27 16.2L12 20.4L4.73 16.2L4.73 7.8Z'
-  +'M12 7.4L15.98 9.7L15.98 14.3L12 16.6L8.02 14.3L8.02 9.7Z',
- sup:'M12 3.4a8.6 8.6 0 100 17.2 8.6 8.6 0 000-17.2M12 7.6a4.4 4.4 0 110 8.8 4.4 4.4 0 010-8.8'};
+ fet:chainRing(12,10.5,6.5)+'M5 20h14',
+ sab:chainRing(9,12,5)+chainRing(15,12,5),
+ cx:chainRing(12,8.6,4.5)+chainRing(8.6,14.6,4.5)+chainRing(15.4,14.6,4.5),
+ hy:chainRing(8.7,8.7,4)+chainRing(15.3,8.7,4)+chainRing(8.7,15.3,4)+chainRing(15.3,15.3,4),
+ sup:chainRing(12,12,8)+chainRing(12,12,4)};
 /* THE FOUR SYSTEMS OF ROOT ENERGETICS, AND WHERE A BIRTH WAS, AS MARKS. FV in
    TASKS.md, his words: "everything should have meaning, everything should
    have an icon." The rail's Western, Eastern, Number and Design headings were
