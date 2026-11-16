@@ -142,17 +142,32 @@ function loginCard(mail){
  return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="'+(landed?'Create account':'Log in')+'">'
   +'<div class="ob-wash" aria-hidden="true"></div>'
   +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Welcome</span>'
-  +'<h2 class="ob-h">'+(landed?'Create account':'Log in')+'</h2>'
+  /* WELCOME IS THE HEADING, 16 November, his words on an annotated screenshot
+     of this card: "we just want welcome in large font, just like login." The
+     card said Welcome twice over, a small eyebrow and then "Log in" in large
+     type over a Log in button that already names the press, so the eyebrow
+     is gone and its word takes the heading's place. The Create account
+     heading is kept: it is the only thing above the fold that says the first
+     press of Create account changed the card, which is the 12 November "it
+     doesn't do anything" bug below, and his crossings were made on the Log
+     in card alone. */
+  +'<h2 class="ob-h">'+(landed?'Create account':'Welcome')+'</h2>'
   +'<form id="loginform" novalidate>'
-  +'<div class="login-row"><label class="login-l" for="loginmail">Email</label>'
-  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" value="'+esc(mail||'')+'"></div>'
+  /* THE LABEL IS IN THE FIELD, the same ruling: "email and password you can
+     put inside the fields so that that's cleaned up." A placeholder vanishes
+     on the first keystroke and is not a name a screen reader can rely on, so
+     each field also carries aria-label with the same word. Two fields that
+     say what they are on an empty card is all a placeholder has to do here:
+     the email is carried between cards (loginCard(mail)), so a refilled field
+     shows its own value, which is its own label. */
+  +'<div class="login-row">'
+  +'<input type="email" id="loginmail" autocomplete="email" spellcheck="false" placeholder="Email" aria-label="Email" value="'+esc(mail||'')+'"></div>'
   /* current-password, because the person pressing Log in has one: new-password
      told a password manager to offer a fresh one instead of filling the saved
      one, which was right for a card nothing checked and wrong for one that does.
      Suggest still fills the field for somebody about to press Create account. */
-  +'<div class="login-row"><label class="login-l" for="loginpass">Password</label>'
-  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password">'
+  +'<div class="login-row">'
+  +'<div class="login-pw"><input type="password" id="loginpass" autocomplete="current-password" placeholder="Password" aria-label="Password">'
   +'<button type="button" class="login-pwsug" id="loginsug">Suggest</button></div>'
   +'<span class="login-hint" id="loginpwhint" hidden></span></div>'
   +'<button type="button" class="login-forgot" id="loginforgot">Forgot your password?</button>'
@@ -176,9 +191,15 @@ function loginCard(mail){
      it would put two links ahead of the button in the tab order and a line
      of text above it on a phone, and the button is the one control a person
      in trouble should reach with the fewest presses after them.
-     tests/onboarding2.js holds the button on the first screen at 390. */
-  +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
-  +' before you make an account.</p>'
+     tests/onboarding2.js holds the button on the first screen at 390.
+
+     THE TWO LINKS, NOT THE SENTENCE, 16 November. He crossed out "Read ...
+     and ... before you make an account." around the two words and kept the
+     words: "get rid of the text around, keep privacy in terms." The links
+     are the same two legalLink calls with the same addresses; the dot
+     between them is a separator a screen reader has no use for. */
+  +'<p class="login-legal">'+legalLink('privacy')
+  +'<span class="login-sep" aria-hidden="true">·</span>'+legalLink('terms')+'</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){

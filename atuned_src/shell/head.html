@@ -8635,11 +8635,22 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
    row per field is all that is new. Its own class rather than the account
    sheet's .avin, which carries no rule of its own anywhere in this file. */
 .login-row{display:flex;flex-direction:column;gap:5px;margin:0 0 13px}
+/* .ob-h's six pixels on top were the gap under an eyebrow. The Log in card
+   lost its eyebrow on 16 November and opens on the heading, so the gap only
+   pushed Welcome down off the card's own padding, 33 pixels above it against
+   21 under the legal line at 1600. The reset cards still open on an eyebrow,
+   hence first-child. */
+.login-card .ob-scroll>.ob-h:first-child{margin-top:0}
 .login-l{font-size:13px;color:var(--dim)}
 .login-row input{background:var(--sunk);border:1px solid var(--edge);color:var(--ink);
  border-radius:var(--r-xs);padding:9px 11px;font-family:var(--sans);font-size:14px;
  min-height:var(--tap);width:100%}
 .login-row input:focus{border-color:var(--accent)}
+/* The field's own name, since 16 November when the label above it went: the
+   same --dim the label was, and opacity 1 because Firefox fades a placeholder
+   on its own and a name read at half strength reads as a field already
+   filled in grey. */
+.login-row input::placeholder{color:var(--dim);opacity:1}
 /* THE STRONG PASSWORD SUGGESTION AND FORGOT PASSWORD LINK, ROUND MP: "the
    login needs the typical login stuff... I also want us to be able to
    suggest a strong password." .login-pw turns the password row into an
@@ -8674,6 +8685,10 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 a.legal-a{color:var(--accent);text-underline-offset:3px;display:inline-block;
  min-height:24px;line-height:24px}
 .login-legal{margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}
+/* The two links stand alone since 16 November, with nothing but this dot
+   between them; even space either side, so neither word sits pressed
+   against it. */
+.login-sep{margin:0 10px}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
