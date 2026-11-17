@@ -2166,9 +2166,59 @@ function srcTimes(n){return n===1?'once':(n===2?'twice':(n===3?'three times':n+'
 function srcPlace(b){return SRC_WHY_AT[b]||('at '+srcSeatSay(b));}
 function srcQuote(ws){
  return (ws||[]).slice(0,2).map(function(w){return '“'+w+'”';}).join(' and ');}
+/* ============================================================
+   THE TONE, 17 November. The owner's words: "I want the software to feel a
+   bit more conversational. I don't want it to feel stiff. And it also needs
+   to operate at a CQ 100. So it has a different tone."
+
+   CQ 100 IN THE BOOK'S OWN TERMS, read off mob-canon. CQ is coherence: True
+   Intention times Integrity over Resistance, and "Free Will = CQ as
+   Resistance approaches zero". A voice at the top of that axis is one with
+   nothing held back and nothing performed. Read as the Laws it is scored on,
+   for a sentence: Truth (it says what it sees, and says a guess is a guess),
+   Transparency (it shows its working: your word, then where it thinks it
+   sits), Presence (it answers the turn in front of it, every turn), Courage
+   (it guesses out loud instead of waiting to be sure), Compassion (warm,
+   never soothing), Humility (the person's answer outranks its guess). The
+   cautious register this replaces was the low end of the same axis:
+   withholding, a form to fill in, resistance dressed as care.
+
+   WHAT DOES NOT MOVE. The house voice still holds (no em dashes, sentence
+   case, short, physical, every symbol unpacked), the ten checks still hold
+   on every line (engine/qcheck.js), and one invariant underneath all of it:
+   a place is never said AS FACT before the person said it fits
+   (EV_PLACEABLE). It may be said as a guess, in a sentence that says so
+   (EV_GUESSABLE, QC_GUESS).
+
+   "You said" and not "You wrote": the same mirror reads true whether the
+   turn was typed or spoken, and voice is most of the turns now. */
+function srcMirror(q){return 'You said '+q+'.';}
+function srcGuessAt(b){return 'My guess is it sits '+srcPlace(b)+'.';}
+/* THE MARK ON EVERYTHING SOURCE AI COMPOSES, the owner's 15 November ruling,
+   CLAUDE.md: "make sure when the AI does its own prompting that it looks like
+   a slightly different format or color so I can draw my attention to it." One
+   mark, reused: a ring icon (ring, not fill) carrying its meaning on hover, tap
+   and focus (tip.js, the product's one tooltip), and the .src-ai treatment, a
+   colour and an italic, on the words themselves. Never the icon alone. The
+   person's own words never carry it, and neither does a computed fact. */
+var SRC_MARK_TIP='Source AI wrote this from your words. Where it says my guess, it is a guess until you say it fits.';
+function srcMark(){
+ return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(SRC_MARK_TIP)+'">'
+  +'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+  +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
+/* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring
+   back replies." The line Source AI says to a turn (cur.q, the same words
+   stSrcSpeak reads aloud) prints under her, marked, one line, the newest only.
+   No bubble and no thread: the 10 November rulings against a chat window and
+   a speech bubble are not what he reversed, the silence is. */
+function srcReplyHtml(line){
+ if(!line)return '';
+ /* no aria-live here: #srcsay already says the same line to a screen
+    reader, and two live regions would read every turn twice */
+ return '<p class="src-reply src-ai" id="srcreply">'+srcMark()+'<span class="src-ai-t">'+esc(line)+'</span></p>';}
 function srcAsk(t,words){
  var at=srcPlace(t.band), ws=(words||[]).slice(0,2), q=srcQuote(ws);
- var said=q?'You wrote '+q+'. ':'';
+ var said=q?srcMirror(q)+' ':'';
  if(t.why==='root')
   return said+'Here and in what you wrote before, it lands '+at+'. What sits at the bottom of it?';
  if(t.why==='earlier')
@@ -2180,7 +2230,7 @@ function srcAsk(t,words){
     Measured round SK, 30 October. Once and each time cannot both be true,
     so one mention says it lands, and no count. */
  if((+t.mentions||0)<2)return said+'It lands '+at+'. Why there?';
- return (q?'You wrote '+q+' '+srcTimes(t.mentions)+'. ':'')+'It lands '+at+(q?' each time':' '+srcTimes(t.mentions))+'. Why there?';}
+ return (q?'You said '+q+' '+srcTimes(t.mentions)+'. ':'')+'It lands '+at+(q?' each time':' '+srcTimes(t.mentions))+'. Why there?';}
 /* ============================================================
    THE ASK, CHECKED BEFORE IT IS SHOWN. Round SK, 30 October, his words
    about the live chat: "This is the behavior I want source AI to take on
@@ -2314,7 +2364,17 @@ function srcAskVetted(turn,heard){
 function srcAskBuild(turn,heard){
  var full=srcAsk(turn,heard&&heard.top&&heard.top.words), cut=full.lastIndexOf('. ');
  var L=srcLedgerNow();
- var lead=srcLeadSaid(turn.seat)?'':srcLeadOk(cut>=0?full.slice(0,cut+1):'',L,turn.seat);
+ var first=!srcLeadSaid(turn.seat);
+ var lead=first?srcLeadOk(cut>=0?full.slice(0,cut+1):'',L,turn.seat):'';
+ /* THE FIRST ASK ABOUT A SEAT GUESSES OUT LOUD, 17 November. srcLeadOk
+    drops "It lands ..." until the person said yes, which left the lead as
+    their own word said back and nothing of Source AI's own. Now the place
+    comes back as a guess, in a sentence that says it is one, and still goes
+    through the same ten checks: point 7 lets it through on EV_GUESSABLE and
+    refuses it about a seat the person already turned down. */
+ if(first&&!/\b(lands|land|sits)\b/.test(lead)){
+  var g=srcGuessAt(turn.band);
+  if(srcVetSay(g,{text:srcConvText(), ledger:L},turn.seat).ok)lead=(lead?lead+' ':'')+g;}
  var r=srcChoose([{q:full, base:full, family:'why', target:turn.seat}].concat(srcFamilyCands(lead,turn.seat)),
   {text:srcConvText(), ledger:L, asked:srcSaidBefore(), passed:SRC_PASSED});
  SRC_VET=r;
@@ -2323,7 +2383,9 @@ function srcAskBuild(turn,heard){
     SK: sixteen replies about one seat ran every family question once, nine
     distinct, and the tenth turn drew an empty bubble. */
  return r.ok?r.q:(lead||SRC_SPACE);}
-var SRC_SPACE='Keep writing.';
+/* "Keep writing." until 17 November: wrong for a person talking, which is
+   most turns, and a command where a companion would say it is still there */
+var SRC_SPACE='Keep going. I’m with you.';
 
 /* A QUESTION FROM WHAT YOU WROTE. Round LT, his words: "Then you need to be
    another button next to it that makes it dynamic." He did not say what
@@ -2381,14 +2443,14 @@ function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_
    Belief and goal are read and never asked: the document gives no question
    for either, and a wording made up here would be a wording nobody ruled. */
 var SRC_DIMQ={
- trigger:function(w,at){return w?'You wrote '+w+'. It lands '+at+'. What happened in the minute before?'
+ trigger:function(w,at){return w?srcMirror(w)+' My guess is it sits '+at+'. What happened in the minute before?'
   :'What happened in the minute before?';},
- contact:function(w){return (w?'You wrote '+w+'. ':'')+'Who was there when it started?';},
- feeling:function(w){return (w?'You wrote '+w+'. ':'')+'How did you feel?';},
+ contact:function(w){return (w?srcMirror(w)+' ':'')+'Who was there when it started?';},
+ feeling:function(w){return (w?srcMirror(w)+' ':'')+'How did you feel?';},
  body:function(w){return w?'When you say '+w+', what happens in your body?':'Where do you feel that?';},
- prediction:function(w){return (w?'You wrote '+w+'. ':'')+'What did you expect would happen?';},
- behaviour:function(w){return (w?'You wrote '+w+'. ':'')+'What did you do straight after?';},
- meaning:function(w){return (w?'You wrote '+w+'. ':'')+'What does that mean to you?';}};
+ prediction:function(w){return (w?srcMirror(w)+' ':'')+'What did you expect would happen?';},
+ behaviour:function(w){return (w?srcMirror(w)+' ':'')+'What did you do straight after?';},
+ meaning:function(w){return (w?srcMirror(w)+' ':'')+'What does that mean to you?';}};
 /* THE BUTTON'S QUESTION GOES THROUGH THE SAME TEN CHECKS, round SK. No button
    calls srcDyn since 29 October; if one ever does, what it builds is checked
    exactly as the ask is, and a line that fails is not shown: the caller
@@ -2490,8 +2552,11 @@ function srcGauge(top){
    facts and V19 is reserved for the first one (nothing written at all, see
    the literal strings beside SRC_DNONE below, which are that true case).
    This says the true one instead. */
+/* 17 November, the tone pass: the same two facts (nothing placed, and what
+   would place it), said the way a person would say them to you, first
+   person, with no status-line ring to it. */
 function srcNone(){
- return 'Nothing placed yet, so nothing is asked. Say what your body did, and where.';}
+ return 'I can’t place this one yet. Tell me what your body did, and where.';}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=srcHeardNow();
@@ -2741,7 +2806,20 @@ function srcPaint(){
     CSS-muted copy of this panel there (shell/head.html, :not(.st-full)
     #stsrc) are untouched; dashRest is false whenever STV.dash is. */
  var dashRest=STV.dash&&STV.chat&&!STV.typed;
- o=dashRest?'':((ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+ /* THE REPLY IS BACK ON SCREEN, 17 November, and it is the one thing that
+    prints at rest. The owner: "All right, let's bring back replies." This
+    reverses the visible half of 10 November's "no two-way chat" (the
+    spoken half came back on 13 November, see the per-turn call above).
+    What Source AI says to the person's own turn, cur.q, the line it also
+    speaks, prints under her with the Source AI mark (srcReplyHtml). Only
+    once the person has said something, never over the safety line, and
+    the newest line only, so it is a reply and not a transcript. At rest
+    on the Dashboard it is all that prints, and in the hero view it is all
+    that shows (head.html hides the rest of #stsrc there, as before): the
+    set aside sentence, the chain line and the verdict rows still wait for
+    the Full view's open box, as 16 November ruled. */
+ var reply=(ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
+ o=dashRest?reply:(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml()));
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
@@ -2998,11 +3076,19 @@ function srcChatCur(turn,heard,q,ask){
  else if(top&&!srcLedgerNow().thread&&srcLedgerNow().claims[top.seat]&&
   ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[SRC_LISTENING];}
  else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words), ctx={text:srcConvText(), ledger:L};
-  var line=(w?'You wrote '+w+'. ':'')+'It lands '+srcPlace(c.band)+'.';
-  if(!srcVetSay(line,ctx,c.seat).ok)line=w?'You wrote '+w+'.':srcNone();
+  /* SAID AS FACT ONCE THE PERSON SAID IT FITS, SAID AS A GUESS BEFORE, 17
+     November. It used to drop the place outright until a yes, which is why
+     listening read as a tape recorder: their word back and nothing else. Now
+     it thinks out loud, and the same ten checks decide whether the guess may
+     be said at all (point 7, EV_GUESSABLE). It still asks nothing: listening
+     is the move that never asks, and the question "Does that fit?" sits on
+     the verdict row, beside the three ways to answer it (srcVerdictHtml). */
+  var fact=EV_PLACEABLE.indexOf(c.state)>=0;
+  var line=(w?srcMirror(w)+' ':'')+(fact?'It lands '+srcPlace(c.band)+'.':srcGuessAt(c.band));
+  if(!srcVetSay(line,ctx,c.seat).ok)line=w?srcMirror(w):srcNone();
   /* the same word said again is said back with how often, and only when
      that count is the ledger's own and the line passes the same checks */
-  var more=(w&&(c.words||[]).length===1&&(+c.mentions||0)>1)?'You wrote '+w+' '+srcTimes(c.mentions)+'.':'';
+  var more=(w&&(c.words||[]).length===1&&(+c.mentions||0)>1)?'You said '+w+' '+srcTimes(c.mentions)+'.':'';
   r.key='say|'+c.seat; lines=[line].concat(more&&srcVetSay(more,ctx,c.seat).ok?[more]:[]);}
  else{r.key='say|'; lines=[srcNone()];}
  r.q=srcPick(lines.concat(SRC_HEARD),said);
@@ -3148,7 +3234,8 @@ var SRC_ACT_SAY={
  shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?']};
 /* listening, with nothing asked: what stands behind every list, so no turn
    is ever answered with the line it was answered with last time */
-var SRC_HEARD=[SRC_LISTENING, 'Go on.', 'Still here. Keep going.'];
+/* 17 November, the tone pass: "Go on." alone read as a prompt on a form */
+var SRC_HEARD=[SRC_LISTENING, 'Go on, I’m following you.', 'Still here. Keep going.'];
 /* A TURN THAT IS ABOUT THE CONVERSATION, round SK, read by srcIntent in
    engine/evidence.js before the turn lands. Move on said in words is the
    Move on button, exactly: the same flag, the same outcome kept on the
@@ -3363,10 +3450,28 @@ function srcChainLine(){
 
    Built once for what it depends on, the way srcAskVetted is: the ledger,
    the answers and the open box. srcPaint runs on every key. */
+/* LOOSENED TO A CONVERSATION, 17 November. The owner, on an audit that
+   named this panel as one cause of the stiffness: "let's loosen it so it
+   feels a bit more conversational." It read as a form: their word back, a
+   row of Yes, Not me and Correct it, and an instruction above it all, "Say
+   Yes to each one that fits you." Now each row is Source AI's own turn, its
+   guess said out loud and a question after it, and the three presses are
+   the three ways a person would actually answer that question. The engine
+   door is the same (evVerdict), the values are the same (yes, no, fix), and
+   what Commit keeps is the same.
+
+   THE ONE INVARIANT, HELD AND NOT LOOSENED. Before the person answers, the
+   place is a guess and the sentence says so ("My guess is it sits ..."). It
+   is said as fact ("It lands ...") only once they said it fits or corrected
+   it, EV_PLACEABLE, exactly as before. Every line still passes srcVetSay. */
 var SRC_VFIX='', SRC_VFIXT='', SRC_VK='', SRC_VH='';
-var SRC_VSTAT={yes:'You said yes to this.',
- no:'You said this is not you. Nothing more is asked about it in this entry. Commit keeps it on your record as a no.',
- fix:'You said what it is instead. Commit keeps that you corrected it, and not the words you wrote here.'};
+var SRC_VSTAT={yes:'Good, you said it fits.',
+ /* not "leave it alone": the sniffer reads alone as a feeling, and point 6
+    refuses a line that puts a feeling the person never said in their mouth.
+    Caught by tests/srcchat.js, which found the status line missing. */
+ no:'Got it, that is not you. I will not ask about it for the rest of this entry, and Commit keeps it as a no.',
+ fix:'Thank you for setting me straight. Commit keeps that you corrected me, and not the words you wrote here.'};
+var SRC_VBTN={yes:'That fits', no:'Not me', fix:'Not quite'};
 function srcVerdictHtml(){
  if(stSafe()||!ST_TEXT.trim())return '';
  /* the theme is in the key because seatCol reads it, so a cached row
@@ -3377,23 +3482,27 @@ function srcVerdictHtml(){
  var vet=function(line,seat){return srcVetSay(line,ctx,seat).ok?line:'';};
  (L.order||[]).forEach(function(seat){
   var c=L.claims[seat]; if(!c||!(c.mentions>0))return;
-  var w=srcQuote(c.words), said=w?vet('You wrote '+w+'.',seat):''; if(!said)return;
+  var w=srcQuote(c.words), said=w?vet(srcMirror(w),seat):''; if(!said)return;
   var a=c.verdict?c.verdict.v:'', st=a&&SRC_VSTAT[a]?vet(SRC_VSTAT[a],seat):'';
-  var at=EV_PLACEABLE.indexOf(c.state)>=0?vet('It lands '+srcPlace(c.band)+'.',seat):'';
-  var b=function(v,nm,on){return '<button type="button" class="ob-a'+(on?' on':'')+'" aria-pressed="'+!!on
-   +'" data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+nm+'</button>';};
+  /* fact after a yes or a correction; a guess, with its question, before;
+     after a no, nothing about a place at all */
+  var at=EV_PLACEABLE.indexOf(c.state)>=0?vet('It lands '+srcPlace(c.band)+'.',seat)
+   :(a==='no'?'':vet(srcGuessAt(c.band)+' Does that fit?',seat));
+  if(!at&&!a)at=vet('Does that sound like you?',seat);
+  var b=function(v,on){return '<button type="button" class="ob-a'+(on?' on':'')+'" aria-pressed="'+!!on
+   +'" data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+SRC_VBTN[v]+'</button>';};
   rows+='<div class="ob-row src-vrow" data-srcvrow="'+esc(seat)+'" style="--c:'+seatCol(c.band)+'">'
-   +'<p class="ob-p ob-rowp">'+esc(said)+(at?' '+esc(at):'')+'</p>'
+   +'<p class="ob-p ob-rowp src-ai">'+esc(said)+(at?' '+esc(at):'')+'</p>'
    +'<div class="ob-as" role="group" aria-label="'+esc(said)+'">'
-   +b('yes','Yes',a==='yes')+b('no','Not me',a==='no')+b('fix','Correct it',a==='fix'||SRC_VFIX===seat)+'</div>'
-   +(st?'<p class="ob-p ob-dim ob-rowst">'+esc(st)+'</p>':'')
-   +(SRC_VFIX===seat?'<div class="ob-f"><label for="srcvfix">Tell me what is off, in your own words.</label>'
+   +b('yes',a==='yes')+b('no',a==='no')+b('fix',a==='fix'||SRC_VFIX===seat)+'</div>'
+   +(st?'<p class="ob-p ob-dim ob-rowst src-ai">'+esc(st)+'</p>':'')
+   +(SRC_VFIX===seat?'<div class="ob-f"><label for="srcvfix">What is it really? Say it in your own words.</label>'
     +'<textarea id="srcvfix" rows="2">'+esc(SRC_VFIXT)+'</textarea>'
-    +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-srcvread="'+esc(seat)+'">Read my correction</button></div></div>':'')
+    +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-srcvread="'+esc(seat)+'">Use my words</button></div></div>':'')
    +'</div>';});
- var hd=vet('Say Yes to each one that fits you.',null);
- SRC_VH=rows?'<div class="src-v" aria-label="What I read in your words">'
-  +(hd?'<p class="ob-p ob-dim">'+esc(hd)+'</p>':'')+rows+'</div>':'';
+ var hd=vet('Here is what I picked up. Tell me where I am off.',null);
+ SRC_VH=rows?'<div class="src-v" aria-label="What I picked up in your words">'
+  +'<p class="ob-p ob-dim src-ai">'+srcMark()+(hd?'<span class="src-ai-t">'+esc(hd)+'</span>':'')+'</p>'+rows+'</div>':'';
  SRC_VK=k; return SRC_VH;}
 /* a press lands through evVerdict and nothing else, then the panel repaints
    and the focus goes back to the control pressed, as obRenderKeep does */

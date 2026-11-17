@@ -180,7 +180,7 @@ g('QC4 · the document\'s own canonical lines are held to its own section 8');
 g('QC5 · point 7: a pattern is said only about a claim with the evidence for it');
 {const once='I was furious at him.', twice='I was furious at him. Still furious tonight.';
  const fam=q=>SRC_FAMILY.find(f=>f.q===q);
- const rep=fam('Where else does this happen?'), his=fam('How long has this been happening?');
+ const rep=fam('Where else does this show up?'), his=fam('How long has this been going on?');
  const c=(f,tg)=>({cand:Object.assign({},f,{target:tg})});
  ok(fails(vet(rep.q,once,c(rep,'solar'))).indexOf(7)>=0,'repetition is not asked about a candidate');
  ok(fails(vet(rep.q,twice,c(rep,'solar'))).indexOf(7)<0,'and is about a supported claim');
@@ -258,6 +258,17 @@ g('QC8 · a line that says and does not ask: Mirror is always allowed, Name only
  ok(srcVetSay('You wrote “furious”. It lands behind your stomach.',{text:once,ledger:evLedger(once,[],{verdicts:[{seat:'solar',v:'yes'}]})},'solar').ok,
   'unless the person already said yes to it');
  ok(srcVetSay('x',{text:'x'},null).checks.map(c=>c.n).join()==='3,6,7','and it is points 3, 6 and 7 of the same code, not a second rule');}
+
+g('QC8b · a place said as a guess, 17 November: allowed from the first mention, and only when the same sentence says it is a guess');
+{const once='I was furious at him.', L=evLedger(once,[],{}), say=(l,LL,t)=>srcVetSay(l,{text:once,ledger:LL||L},t===undefined?'solar':t).ok;
+ ok(say('You said “furious”. My guess is it sits behind your stomach.'),'a guess about one mention passes: Source AI may think out loud');
+ ok(!say('You said “furious”. It lands behind your stomach.'),'the same place said flat on one mention is still refused: the invariant holds');
+ ok(!say('It lands behind your stomach. Maybe.'),'a hedge in the next sentence does not hedge this one, point 7 reads sentences apart');
+ ok(!say('My guess is it sits behind your stomach.',evLedger(once,[],{verdicts:[{seat:'solar',v:'no'}]})),'no guess about a seat the person already turned down');
+ ok(!say('My guess is it sits behind your stomach.',evLedger(once,[],{verdicts:[{seat:'solar',v:'unsure'}]})),'and none over an "I am not sure", which would be pressing');
+ ok(!say('My guess is it sits behind your stomach.',L,null),'and none about no claim at all');
+ ok(EV_PLACEABLE.join()==='confirmed,corrected'&&E.EV_GUESSABLE.indexOf('candidate')>=0&&E.EV_GUESSABLE.indexOf('rejected')<0,
+  'the fact gate is unchanged, and the guess gate is the wider one beside it');}
 
 g('SK1 · the seam package\'s lifecycle: each of the eight states lands on one of its states, or on none, and the one-event rule holds');
 {const {evSeamState,EV_SEAM_STATES,EV_SEAM_NEVER}=E;

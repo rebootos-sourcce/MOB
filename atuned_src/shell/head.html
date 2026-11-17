@@ -5038,7 +5038,32 @@ body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px
    (textContent is readable on a hidden element), so that assumption would
    have shipped a silent regression no gate here catches; left in place
    instead, on the stricter reading. */
-body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)){display:none}
+body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)):not(:has(.src-reply)){display:none}
+/* THE REPLY IS THE OTHER EXCEPTION, 17 November. The owner: "All right,
+   let's bring back replies." Source AI's line to the person's own turn
+   (.src-reply, srcReplyHtml in ui/storyui.js) shows here while they talk or
+   type, and it is the only thing that does: everything else srcPaint puts
+   in #stsrc stays hidden in this view, as ruled on 10 November, and the card
+   itself is stripped to nothing, so it reads as words under her and not as
+   the speech bubble he ruled off this screen. At rest the rule above (#stjr
+   .st-rest) still hides all of #stsrc. */
+body.tab-story:not(.st-full) #stsrc:has(.src-reply)>:not(.src-reply):not(#stsafe){display:none}
+body.tab-story:not(.st-full) #stsrc:has(.src-reply){background:none;border:0;padding:0;
+ width:-moz-fit-content;width:fit-content;max-width:90%;margin:14px auto 0}
+body.tab-story:not(.st-full) #stsrc:has(.src-reply)::before,
+body.tab-story:not(.st-full) #stsrc:has(.src-reply)::after{display:none}
+/* THE SOURCE AI MARK, the owner's 15 November ruling, CLAUDE.md: anything
+   Source AI composes "looks like a slightly different format or color". The
+   format is an italic, the colour is the accent mixed into the ink so it
+   holds its contrast on every theme, and the ring icon (ring, not fill)
+   carries the meaning on hover, tap and focus. The person's own words are
+   upright and in the ink, so the two never read as one voice. */
+.src-ai{color:color-mix(in srgb,var(--accent) 58%,var(--ink));font-style:italic}
+.src-mk{display:inline-flex;vertical-align:-2px;margin-right:6px;color:var(--accent);
+ font-style:normal;cursor:help;border-radius:50%}
+.src-mk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.src-reply{margin:0;font-size:15px;line-height:1.5;max-width:46ch;text-align:left}
+.src-reply+.src-aside{margin-top:8px}
 /* THE SAME CAP, ON THE DASHBOARD, 10 November. The hero view's own box
    above was already kept to a few lines; the Dashboard's .src-mine had no
    cap of its own, so on a real story it grew to the full height of

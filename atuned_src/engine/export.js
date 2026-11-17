@@ -31,7 +31,7 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_KEEP_FIX:EV_KEEP_FIX, evKept:evKept, evKeptMax:evKeptMax,
                  evOrder:evOrder, evThread:evThread, evRoot:evRoot,
                  EV_SEAM_STATES:EV_SEAM_STATES, EV_SEAM_NEVER:EV_SEAM_NEVER, EV_SEAM_PERSON:EV_SEAM_PERSON,
-                 EV_PLACEABLE:EV_PLACEABLE, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
+                 EV_PLACEABLE:EV_PLACEABLE, EV_GUESSABLE:EV_GUESSABLE, QC_GUESS:QC_GUESS, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,

@@ -485,6 +485,16 @@ function evSeamState(c){
    yes or their correction, not only more evidence. A place word the person
    wrote themselves is their language and is always theirs to hear back. */
 var EV_PLACEABLE=['confirmed','corrected'];
+/* A PLACE SAID AS A GUESS NEEDS LESS, AND SAYS SO IN ITS OWN WORDS. 17
+   November, the owner's words: "let's loosen it so it feels a bit more
+   conversational... I don't want it to feel stiff." EV_PLACEABLE above is
+   unchanged and still the only gate for a place said as fact. This is the
+   second door: Source AI may voice where it thinks a story sits from the
+   first mention (candidate), as long as the same sentence carries a guess
+   marker (QC_GUESS, engine/qcheck.js) and so never reads as settled. Not
+   after a no (rejected) and not after "I am not sure" (unknown): a guess
+   said again over the person's own answer is pressing, not conversation. */
+var EV_GUESSABLE=['candidate','supported','confirmed','corrected'];
 
 /* ============================================================
    WHAT THE PERSON SAYS ABOUT THE CONVERSATION ITSELF. Round SK. The package's
