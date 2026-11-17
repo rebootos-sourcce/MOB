@@ -3098,14 +3098,32 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
    clears .rfold's pinned icon, the same 52px gutter .lsec[data-rail=right]
    .lsec-hd already keeps for it. z-index sits under .rfold (3) so the icon
    still draws over this box's own top right corner rather than under it. */
-.person{position:sticky;top:0;z-index:2;margin:0;padding:12px 52px 12px 14px;
+.person{position:relative;margin:0;padding:12px 52px 12px 14px;
  border-radius:var(--r-s) var(--r-s) 0 0;background:var(--sunk);border:1px solid var(--edge-2);border-bottom:0;
  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);cursor:pointer}
 .person:empty{display:none;margin:0;padding:0;border:0;box-shadow:none}
-/* STACKED, THE RAIL DOES NOT SCROLL, same reasoning as .rfold's own override
-   just below: the page scrolls there, and sticky would hold this box over
-   whatever the person scrolled down to, on every tab it still prints on. */
-@media (max-width:1180px){.person{position:relative;top:0}}
+/* NOT STICKY, 17 November, OVERRIDDEN from the 14 November build above, which
+   held this box at the rail's top "so it stays on screen while the rest of
+   the rail scrolls under it". His 14 November words were "is always on top
+   and is fixed, and it has a black background", and the build read "fixed"
+   as pinned (TASKS.md, SV22 closing note, which names the sticky as that
+   night's own addition). His words on the live page three days later are
+   that the reading was wrong: "The insight panel's still broken. It doesn't
+   scroll with the rest of the scroll bar. That's a bug for the field, body,
+   the compass, etc." "Always on top" still holds, the box is the first thing
+   in the rail, black, at every scroll position of zero. Reproduced first, 1600
+   by 1000, James, Field, Body and Compass: #rpanel is its own scroller
+   there (scrollHeight 2085, 3901 and 5324 in 867), and with the rail scrolled
+   300 the Insight frame's first half stood at the same y it started at, 138,
+   while everything under it moved. The box is 339 pixels tall, 39 percent of
+   the rail, so a person lost over a third of their reading to a block that
+   would not move, and the Insight half of the same frame slid away under
+   it, which read as the panel breaking in two. The frame is one piece and
+   it moves as one piece. The fold control (.rfold) stays pinned, which is
+   his own earlier ruling and a 44 pixel square, not a third of the rail.
+   Below 1181 this was already position:relative (the page scrolls there and
+   sticky would have held the box over whatever was scrolled to), so the two
+   widths now agree and the media query that said so is gone. */
 /* ONE FRAME, NOT THREE STACKED CARDS, SV23, 14 November, the Dashboard's own
    clean/even/symmetrical ruling (CLAUDE.md) carried over to this rail: his
    words on the live panel, "I want the display area about 80% longer...
@@ -3949,14 +3967,23 @@ body.flat .stk-t.on svg,body.flat .stk-t.on b,body.punch .stk-t.on svg,body.punc
    elsewhere. clamp(420px,62vh,640px) is the added height in full, and it
    holds real content at every size it can take, never an empty card: the
    fet tier's nine bars fill it at the floor, an open cascade four layers
-   deep fills it at the ceiling. overflow:auto inside it only; .person above
-   stays pinned on its own position:sticky, untouched by this rule. */
-.stk-well{height:clamp(420px,62vh,640px);overflow:auto;display:flex;flex-direction:column}
-/* AT 1180 AND BELOW, STICKY IS ALREADY OFF (.person's own media query
-   above): the well drops its fixed height there too and simply flows, the
-   same reasoning, so a short phone screen never traps a tall reading
-   behind a scrollbar inside a scrollbar. */
-@media (max-width:1180px){.stk-well{height:auto;overflow:visible}}
+   deep fills it at the ceiling.
+   A FLOOR, NOT A BOX, 17 November. This was height:clamp(...) with
+   overflow:auto, a scroll box nested in the rail's own scroller, and a
+   long tier was read through it: measured at 1600 by 1000, James, Saboteurs,
+   the well was 620 tall over 1398 of content and Complexes 620 over 678, so
+   the wheel over the Insight moved the well and not the rail, and the rail's
+   scrollbar sat still beside a reading that was moving. His words, "It
+   doesn't scroll with the rest of the scroll bar." The 80 percent he asked
+   for is kept as a minimum height, the display area is never shorter than
+   it was, and a reading longer than that simply makes the well taller and
+   scrolls with everything else on the rail. */
+.stk-well{min-height:clamp(420px,62vh,640px);display:flex;flex-direction:column}
+/* AT 1180 AND BELOW THE WELL HAS NO FLOOR EITHER: it was already a flowing
+   block there, so a short phone screen never traps a tall reading behind a
+   scrollbar inside a scrollbar, and now it is the same rule at every width
+   except for the floor itself. */
+@media (max-width:1180px){.stk-well{min-height:0}}
 /* THE WELL'S OWN SUMMARY: Built from, Feeds, Reading, SV23. One generated
    sentence (Reading, insightSay's own) plus two labelled facts, never a
    free paragraph, his own objection to the drill's old Feeds-up block
