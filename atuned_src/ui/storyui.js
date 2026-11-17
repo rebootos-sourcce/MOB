@@ -269,6 +269,19 @@ function stShowChip(what){
  return '<button type="button" class="stmk-ex"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>Example</button>';}
 
+/* WORDS DICTATION HID, OFF THE FACE AND INTO ONE MARK, 17 November, his own
+   note on a screenshot: "there shouldn't be text here." Same move as
+   stShowChip just above: the sentence (engine/sniff.js's maskedSay) is kept
+   whole, never deleted, only moved behind a mark instead of printed as a
+   paragraph of body text. */
+function stMaskLabel(n){return n+(n===1?' word hidden':' words hidden');}
+function stMaskHtml(){
+ var runs=maskedRuns(ST_TEXT), n=runs.length, say=maskedSay(runs);
+ return '<button type="button" class="stmk-ex" id="stmask"'+(n?'':' hidden')
+  +stmkTip(stMaskLabel(n),say)+' aria-label="'+esc(say)+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z"/></svg>'
+  +'<span id="stmaskn">'+esc(stMaskLabel(n))+'</span></button>';}
+
 /* GAUGES. One ring per reading, the number inside it, flat
    strokes and no glow, after the owner's dashboard reference. Every ring's
    fill is the number it carries, the rule Field's ring already keeps. */
@@ -740,8 +753,7 @@ function stRender(){
      than invent a reason to keep it, it stays off on the Dashboard
      outright, open or shut, and keeps its hero behaviour exactly as it
      was: cut only while STV.typed there. */
-  +((STV.typed||dashTB)?'':'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
-   +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>')
+  +((STV.typed||dashTB)?'':stMaskHtml())
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can
@@ -1920,8 +1932,10 @@ function stRefresh(){
    over, so it goes the moment the last hidden word has been typed in */
 function stMaskPaint(){
  var e=document.getElementById('stmask'); if(!e)return;
- var runs=maskedRuns(ST_TEXT);
- e.hidden=!runs.length; e.textContent=maskedSay(runs);}
+ var runs=maskedRuns(ST_TEXT), n=runs.length, say=maskedSay(runs);
+ e.hidden=!n;
+ if(n){ e.setAttribute('data-tip-t',stMaskLabel(n)); e.setAttribute('data-tip',say); e.setAttribute('aria-label',say);
+  var s=document.getElementById('stmaskn'); if(s)s.textContent=stMaskLabel(n); }}
 /* and the set aside line under it, S5, kept in step the same way. The text is
    the engine's; this only says whether there is any. */
 function stAsideSay(){
