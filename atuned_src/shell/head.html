@@ -5299,19 +5299,6 @@ body.tab-story.st-full #stsrc:empty{display:none}
    when #staside's own .st-mask styling (sunk ground, accent bar, its own
    padding) was still in play here. */
 #staside{display:none}
-/* AND ON THE CLASSIC DASHBOARD IT STANDS UNDER THE BOX, NOT UNDER THE FACE,
-   17 November. His words: "You're still having text show up on the source AI
-   area. It shouldn't be there. That should only be on the text display." The
-   sentence used to print inside #stsrc, under the circle, whenever a person
-   had said something; srcPaint prints it there only while the talk screen's
-   text box is open now. The Full Dashboard with Talk off has no #stsrc box to
-   print in at all and the person is typing in the box itself, so the sentence
-   returns here, the line the page already carried under the writing box, in
-   the same hairline shape as .src-aside and none of .st-mask's card (sunk
-   ground, accent bar, padding). Hidden by the attribute whenever nothing was
-   set aside, and never in the mini view, which carries no text. */
-body.tab-story.st-full #staside:not([hidden]){display:block;margin:8px 0 0;padding:6px 0 0;
- border:0;border-top:1px solid var(--edge);background:none;color:var(--dim);font-size:13px;line-height:1.4}
 .src-aside{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--edge);
  color:var(--dim);font-size:13px;line-height:1.4}
 /* THE CONTENT CHAIN LINE, 11 November, srcChainLine (storyui.js). Sits

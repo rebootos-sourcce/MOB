@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v166 f7defada 2026-11-17 21:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v167 6775c7cf 2026-11-17 22:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5299,19 +5299,6 @@ body.tab-story.st-full #stsrc:empty{display:none}
    when #staside's own .st-mask styling (sunk ground, accent bar, its own
    padding) was still in play here. */
 #staside{display:none}
-/* AND ON THE CLASSIC DASHBOARD IT STANDS UNDER THE BOX, NOT UNDER THE FACE,
-   17 November. His words: "You're still having text show up on the source AI
-   area. It shouldn't be there. That should only be on the text display." The
-   sentence used to print inside #stsrc, under the circle, whenever a person
-   had said something; srcPaint prints it there only while the talk screen's
-   text box is open now. The Full Dashboard with Talk off has no #stsrc box to
-   print in at all and the person is typing in the box itself, so the sentence
-   returns here, the line the page already carried under the writing box, in
-   the same hairline shape as .src-aside and none of .st-mask's card (sunk
-   ground, accent bar, padding). Hidden by the attribute whenever nothing was
-   set aside, and never in the mini view, which carries no text. */
-body.tab-story.st-full #staside:not([hidden]){display:block;margin:8px 0 0;padding:6px 0 0;
- border:0;border-top:1px solid var(--edge);background:none;color:var(--dim);font-size:13px;line-height:1.4}
 .src-aside{margin:6px 0 0;padding-top:6px;border-top:1px solid var(--edge);
  color:var(--dim);font-size:13px;line-height:1.4}
 /* THE CONTENT CHAIN LINE, 11 November, srcChainLine (storyui.js). Sits
@@ -18363,6 +18350,7 @@ var UNPACK_BASE={
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
  'inversion':'An inversion is the same quality turned upside down, and it is a behaviour a person runs and not a being.',
  'pole':'A pole is one end of an axis, either the quality running clean or the same quality turned upside down.',
+ 'path pole':'A path pole is one end of a line through the body that is not an axis, either the quality running clean or the same quality turned upside down.',
  'axis:light':'Light is the axis of warmth, from care that is given freely to a glow put on for an audience.',
  'axis:desire and will':'Desire and will is the axis of wanting, from a want that moves you toward something larger to a want that having never fills.',
  'axis:order':'Order is the axis of structure, from rules people can lean on to disorder made on purpose.',
@@ -62992,16 +62980,23 @@ function srcPaint(){
     line and the verdict rows there, as ruled on 10 November), and in the Full
     Dashboard they print beside it, as 16 November ruled. */
  var reply=(STV.typed&&ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
- /* NOTHING PRINTS UNDER THE CIRCLE AT REST, ANYWHERE, 17 November, his words,
-    on the verdict rows and the set aside line standing under the face on the
-    Dashboard: "You're still having text show up on the source AI area. It
-    shouldn't be there. That should only be on the text display." The reply was
-    already gated on STV.typed above; the set aside line, the chain line and the
-    verdict rows were not, so a person who had said something saw them printed
-    under the face whether or not the box was open. They are the text, so they
-    wait for the text screen with the reply. dashRest is subsumed: it was this
-    same rule for one state. The safe row below is never gated, as before. */
- o=STV.typed?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+ /* NOTHING PRINTS UNDER THE CIRCLE WHILE THE BOX IS SHUT, 17 November, his
+    words, on the reply standing under the face on the Dashboard with Talk on
+    and the box closed: "You're still having text show up on the source AI
+    area. It shouldn't be there. That should only be on the text display." The
+    reply was already gated on STV.typed above, and the set aside line, the
+    chain line and the verdict rows now wait with it for the box to be open.
+    OPEN MEANS THE BOX IS DRAWN, which is the gate stRender uses for it,
+    (!STV.chat||STV.typed), and not STV.typed alone. A browser with no speech
+    service (stVoiceCant) and the crisis "talk it through" door both force the
+    box open with STV.chat false and STV.typed false, and there the verdict
+    rows (That fits, Not me, Not quite) are the only way a person can correct a
+    reading, so gating on typed alone took away the one control that undoes a
+    wrong read. Found by the adversarial review of f7defada before it shipped.
+    What stays text free is Talk on with the box shut, the state he struck. The
+    safe row below is never gated, as before. */
+ var boxOpen=STV.typed||!STV.chat;
+ o=boxOpen?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml())):'';
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
@@ -77155,9 +77150,11 @@ function ritComplexHtml(k){
      whose other end now reads Fraud, a person on one side and a behaviour on
      the other. A row with a behaviour word has no who (engine/data/
      teachers_recipes.js), and the line opens on that word, read off the pole
-     so a rename in compass.js is a rename here. The five poles with no word
-     yet keep the credit until he gives one. */
-  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp('pole',pole?pole.up:row.q))+' \u00b7 '
+     so a rename in compass.js is a rename here. No row carries a who any more
+     (the last five lost theirs on 17 November), so the credit branch is kept
+     only for a teacher he may name again. A pole on no axis says what a path
+     pole is, since "one end of an axis" would be false of it. */
+  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp(onAxis?'pole':'path pole',pole?pole.up:row.q))+' \u00b7 '
    +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
    +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'
@@ -85544,7 +85541,10 @@ function runPoleDrill(end){
   MASTERS.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'">'
     +'<span class="ad-k">'+adGl(x.ic)+esc(x.word||x.nm)+'</span>'
-    +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
+    /* the quality he stood for, unless it is the same word the row already
+       printed: "Discipline  discipline" read as a stutter */
+    +((x.word||'').toLowerCase()===x.was.toLowerCase()?'':'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span>')
+    +'</div>';});
   /* THE COUNT IS READ, NEVER TYPED. This heading said "the twelve" while the
      list under it held eleven, from the moment Eckhart came out on a ruling.
      Three gates in this repository have already failed on a number somebody
@@ -101779,5 +101779,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006801609"></div>
+<div id="eof" hidden data-len="006801579"></div>
 </body></html>

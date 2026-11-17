@@ -1267,7 +1267,10 @@ function runPoleDrill(end){
   MASTERS.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'">'
     +'<span class="ad-k">'+adGl(x.ic)+esc(x.word||x.nm)+'</span>'
-    +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
+    /* the quality he stood for, unless it is the same word the row already
+       printed: "Discipline  discipline" read as a stutter */
+    +((x.word||'').toLowerCase()===x.was.toLowerCase()?'':'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span>')
+    +'</div>';});
   /* THE COUNT IS READ, NEVER TYPED. This heading said "the twelve" while the
      list under it held eleven, from the moment Eckhart came out on a ruling.
      Three gates in this repository have already failed on a number somebody

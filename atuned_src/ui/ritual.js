@@ -592,9 +592,11 @@ function ritComplexHtml(k){
      whose other end now reads Fraud, a person on one side and a behaviour on
      the other. A row with a behaviour word has no who (engine/data/
      teachers_recipes.js), and the line opens on that word, read off the pole
-     so a rename in compass.js is a rename here. The five poles with no word
-     yet keep the credit until he gives one. */
-  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp('pole',pole?pole.up:row.q))+' \u00b7 '
+     so a rename in compass.js is a rename here. No row carries a who any more
+     (the last five lost theirs on 17 November), so the credit branch is kept
+     only for a teacher he may name again. A pole on no axis says what a path
+     pole is, since "one end of an axis" would be false of it. */
+  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp(onAxis?'pole':'path pole',pole?pole.up:row.q))+' \u00b7 '
    +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
    +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'

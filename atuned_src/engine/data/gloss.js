@@ -266,6 +266,7 @@ var UNPACK_BASE={
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
  'inversion':'An inversion is the same quality turned upside down, and it is a behaviour a person runs and not a being.',
  'pole':'A pole is one end of an axis, either the quality running clean or the same quality turned upside down.',
+ 'path pole':'A path pole is one end of a line through the body that is not an axis, either the quality running clean or the same quality turned upside down.',
  'axis:light':'Light is the axis of warmth, from care that is given freely to a glow put on for an audience.',
  'axis:desire and will':'Desire and will is the axis of wanting, from a want that moves you toward something larger to a want that having never fills.',
  'axis:order':'Order is the axis of structure, from rules people can lean on to disorder made on purpose.',

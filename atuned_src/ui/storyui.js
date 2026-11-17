@@ -2841,16 +2841,23 @@ function srcPaint(){
     line and the verdict rows there, as ruled on 10 November), and in the Full
     Dashboard they print beside it, as 16 November ruled. */
  var reply=(STV.typed&&ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
- /* NOTHING PRINTS UNDER THE CIRCLE AT REST, ANYWHERE, 17 November, his words,
-    on the verdict rows and the set aside line standing under the face on the
-    Dashboard: "You're still having text show up on the source AI area. It
-    shouldn't be there. That should only be on the text display." The reply was
-    already gated on STV.typed above; the set aside line, the chain line and the
-    verdict rows were not, so a person who had said something saw them printed
-    under the face whether or not the box was open. They are the text, so they
-    wait for the text screen with the reply. dashRest is subsumed: it was this
-    same rule for one state. The safe row below is never gated, as before. */
- o=STV.typed?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+ /* NOTHING PRINTS UNDER THE CIRCLE WHILE THE BOX IS SHUT, 17 November, his
+    words, on the reply standing under the face on the Dashboard with Talk on
+    and the box closed: "You're still having text show up on the source AI
+    area. It shouldn't be there. That should only be on the text display." The
+    reply was already gated on STV.typed above, and the set aside line, the
+    chain line and the verdict rows now wait with it for the box to be open.
+    OPEN MEANS THE BOX IS DRAWN, which is the gate stRender uses for it,
+    (!STV.chat||STV.typed), and not STV.typed alone. A browser with no speech
+    service (stVoiceCant) and the crisis "talk it through" door both force the
+    box open with STV.chat false and STV.typed false, and there the verdict
+    rows (That fits, Not me, Not quite) are the only way a person can correct a
+    reading, so gating on typed alone took away the one control that undoes a
+    wrong read. Found by the adversarial review of f7defada before it shipped.
+    What stays text free is Talk on with the box shut, the state he struck. The
+    safe row below is never gated, as before. */
+ var boxOpen=STV.typed||!STV.chat;
+ o=boxOpen?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml())):'';
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
