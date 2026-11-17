@@ -6901,6 +6901,13 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
  font-size:13.5px;color:var(--mid);padding:5px 6px;border-radius:var(--r-xs)}
 .ad-r:hover{background:var(--panel-2)}
 .ad-r span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+/* A POLE'S NAME WRAPS RATHER THAN BEING CUT, 17 November. The two ends are
+   behaviour words now and two of them are two words long, so "Sacrificial
+   Extraction" printed as "Sacrificial Extra..." in the rail's list of the
+   eight, an approved name with its second half taken off. The name is the one
+   thing on this row that must be read whole; the quality at the right is a
+   single short word and keeps its place. */
+.ad-r span.ad-wrapnm{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.25}
 .ad-r em{font-style:normal;font-size:12px;color:var(--heart)}
 .ad-r b{font-weight:500;color:var(--gold);font-family:var(--num);font-variant-numeric:tabular-nums}
 /* THE TRACE SUMMARY BLOCK, ui/tracesummaryui.js. "Feeds up" rows read like

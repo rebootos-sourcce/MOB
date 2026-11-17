@@ -18,11 +18,21 @@
    pole's key, the same one MIRROR, PATHS and BECOMING use, and it is identity:
    it is never renumbered and never reused.
      who      the teacher's name, shown as a small credit and never as the
-              headline. The panel is about a behaviour, not a person.
+              headline. The panel is about a behaviour, not a person. A row
+              whose coherent pole has a behaviour word (the pole's own up, in
+              engine/data/compass.js) carries no who at all, ruled 17
+              November: his words on 30 October were that a person is not
+              referred to by a figure's name, and a credit to "Buddha" under
+              a panel headed Discernment put the name back. Only the five
+              poles with no word yet (Krishna, Rama, Lao Tzu, Akhenaten and
+              Confucius) still carry one, and each loses it the day its word
+              is ruled. The panel reads the pole's word off the compass.
      q        the quality the pole is named for.
      opp      the inverted end, by name. Shown only as a caption on the release
               column, never as an entity, on the standing ruling that both ends
-              are behaviours.
+              are behaviours. It is the same word the compass prints at that
+              pole, so a rename there is a rename here and the two are held
+              equal by tests/engine.js.
      line     the pole as one behaviour pair, the headline of the panel.
      release  the old pattern, 3 to 5 short behaviours a person runs now.
               Plain, physical, a thing a camera could film or a body report.
@@ -67,7 +77,7 @@
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', who:'Jesus', q:'Light', opp:'Lucifer', draft:true,
+ {k:'IL', q:'Light', opp:'Lucifer', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',
@@ -81,7 +91,7 @@ var TEACHER_RECIPES=[
    {id:'IL-give', nm:'Give and tell nobody', steps:['box','given']},
    {id:'IL-need', nm:'Ask what they need', steps:['box','il_need']},
    {id:'IL-alone', nm:'Kind when alone', steps:['il_alone','given']}]},
- {k:'RE', who:'Jesus', q:'Revelation', opp:'The Furies', draft:true,
+ {k:'RE', q:'Revelation', opp:'Vengeance', draft:true,
   line:'Update the belief instead of guarding it',
   release:['Steer away from what would test the belief',
    'Answer before the other person has finished',
@@ -95,7 +105,7 @@ var TEACHER_RECIPES=[
    {id:'RE-hold', nm:'Hold it a minute', steps:['box','meetit']},
    {id:'RE-changed', nm:'Say what changed', steps:['box','re_changed']},
    {id:'RE-jaw', nm:'Loose jaw, open ear', steps:['re_jaw','meetit']}]},
- {k:'DE', who:'Ramakrishna', q:'Desire and will', opp:'Asmodeus', draft:true,
+ {k:'DE', q:'Desire and will', opp:'Asmodeus', draft:true,
   line:'Stop at enough instead of reaching for more',
   release:['Get it, then reach for the next one within the hour',
    'Say "one more" and keep going',
@@ -109,7 +119,7 @@ var TEACHER_RECIPES=[
    {id:'DE-want', nm:'Name one want', steps:['slow','offered']},
    {id:'DE-enough', nm:'Say enough', steps:['box','de_enough']},
    {id:'DE-pull', nm:'Ride the pull', steps:['de_pull','offered']}]},
- {k:'OR', who:'Moses', q:'Order', opp:'Set', draft:true,
+ {k:'OR', q:'Order', opp:'Set', draft:true,
   line:'Keep the rule others stand on instead of bending it',
   release:['Change the rule after others have built on it',
    'Agree in the meeting and say something else afterwards',
@@ -123,7 +133,7 @@ var TEACHER_RECIPES=[
    {id:'OR-rule', nm:'Keep one rule', steps:['box','onerule']},
    {id:'OR-plan', nm:'Say the plan', steps:['box','or_plan']},
    {id:'OR-stand', nm:'Who stands on it', steps:['or_stand','onerule']}]},
- {k:'PO', who:'Musashi', q:'Power', opp:'Moloch', draft:true,
+ {k:'PO', q:'Power', opp:'Sacrificial Extraction', draft:true,
   line:'Pay for your own standard instead of billing others',
   release:['Meet your standard with other people’s time',
    'Say "somebody will cover it" and move on',
@@ -137,7 +147,7 @@ var TEACHER_RECIPES=[
    {id:'PO-cut', nm:'The same cut', steps:['box','samecut']},
    {id:'PO-small', nm:'The small version', steps:['box','po_small']},
    {id:'PO-own', nm:'Own the cost', steps:['po_own','samecut']}]},
- {k:'PE', who:'Buddha', q:'Perception', opp:'Geryon', draft:true,
+ {k:'PE', q:'Perception', opp:'Fraud', draft:true,
   line:'See it as it is instead of managing how it looks',
   release:['Manage the gap between how you look and how you are',
    'Edit yourself before the words leave your mouth',
@@ -151,7 +161,7 @@ var TEACHER_RECIPES=[
    {id:'PE-name', nm:'Name it', steps:['box','pe_name']},
    {id:'PE-match', nm:'Face and stomach', steps:['box','pe_match']},
    {id:'PE-see', nm:'See it as it is', steps:['pe_name','pe_match','noting']}]},
- {k:'TR', who:'Rumi', q:'Trust', opp:'Charon', draft:true,
+ {k:'TR', q:'Trust', opp:'Gatekeeping', draft:true,
   line:'Let it land before you explain it',
   release:['Wait at the edge of a feeling until it can be proven',
    'Ask for more information about what you already feel',
@@ -164,7 +174,7 @@ var TEACHER_RECIPES=[
   rituals:[
    {id:'TR-land', nm:'Let it land', steps:['box','tr_land']},
    {id:'TR-tell', nm:'Tell one person', steps:['tr_land','tr_tell']}]},
- {k:'CH', who:'Elijah', q:'Charge', opp:'Phlegyas', draft:true,
+ {k:'CH', q:'Charge', opp:'Reactivity', draft:true,
   line:'Move the heat through the body instead of aiming it',
   release:['Let it go off at somebody',
    'Go flat for the afternoon',
@@ -178,7 +188,7 @@ var TEACHER_RECIPES=[
    {id:'CH-move', nm:'Move the heat', steps:['box','ch_move']},
    {id:'CH-ten', nm:'Take ten minutes', steps:['box','ch_ten']},
    {id:'CH-feel', nm:'Find it in the body', steps:['slow','resist']}]},
- {k:'FL', who:'Krishna', q:'Flow', opp:'Kaliya', draft:true,
+ {k:'FL', who:'Krishna', q:'Flow', opp:'Poisoning', draft:true,
   line:'Let the plan move instead of holding it in place',
   release:['Hold one routine or grievance in place until it sours',
    'Tell the same complaint a fourth time',
@@ -192,7 +202,7 @@ var TEACHER_RECIPES=[
    {id:'FL-move', nm:'Let it move', steps:['box','letmove']},
    {id:'FL-call', nm:'Make the call', steps:['box','fl_call']},
    {id:'FL-other', nm:'The other way', steps:['fl_other','letmove']}]},
- {k:'AL', who:'Rama', q:'Alignment', opp:'Ravana', draft:true,
+ {k:'AL', who:'Rama', q:'Alignment', opp:'Coercive Abduction', draft:true,
   line:'Hold the line you named instead of making an exception',
   release:['Know the rule and cross it because you want the thing more',
    'Decide this one is an exception',
@@ -206,7 +216,7 @@ var TEACHER_RECIPES=[
    {id:'AL-line', nm:'Hold one line', steps:['box','linehold']},
    {id:'AL-said', nm:'Do what you said', steps:['box','al_said']},
    {id:'AL-owe', nm:'What you owe', steps:['al_owe','linehold']}]},
- {k:'HO', who:'Lao Tzu', q:'The horizontal', opp:'Shu and Hu', draft:true,
+ {k:'HO', who:'Lao Tzu', q:'The horizontal', opp:'Forced Alteration', draft:true,
   line:'Stop one thing and wait instead of rushing in to help',
   release:['Hurry in to help and make it worse',
    'Offer the fix nobody asked for',
@@ -220,7 +230,7 @@ var TEACHER_RECIPES=[
    {id:'HO-stop', nm:'Stop one thing', steps:['box','stopone']},
    {id:'HO-wait', nm:'Say I will wait', steps:['ho_open','ho_wait']},
    {id:'HO-rest', nm:'Open hands', steps:['ho_open','stopone','ho_wait']}]},
- {k:'SA', who:'Akhenaten', q:'Light', opp:'Apep', draft:true,
+ {k:'SA', who:'Akhenaten', q:'Light', opp:'Sabotage', draft:true,
   line:'Hand it on and name the source instead of keeping it',
   release:['Take it in and pass nothing on',
    'Tell it as if it started with you',
@@ -233,7 +243,7 @@ var TEACHER_RECIPES=[
   rituals:[
    {id:'SA-hand', nm:'Hand it on', steps:['box','sa_hand']},
    {id:'SA-name', nm:'Say who gave it', steps:['sa_name','sa_hand']}]},
- {k:'TU', who:'Zoroaster', q:'Truth', opp:'The Lie', draft:true,
+ {k:'TU', q:'Truth', opp:'Deception', draft:true,
   line:'Say the plain true sentence instead of the softer one',
   release:['Say the smaller thing to keep the room warm',
    'Say "it is probably nothing" about the thing that is something',
@@ -247,7 +257,7 @@ var TEACHER_RECIPES=[
    {id:'TU-plain', nm:'The plain word', steps:['box','tu_plain']},
    {id:'TU-end', nm:'End the sentence', steps:['box','tu_end']},
    {id:'TU-both', nm:'Say it and stop', steps:['box','tu_plain','tu_end']}]},
- {k:'NA', who:'Confucius', q:'Nature', opp:'The farmer of Song', draft:true,
+ {k:'NA', who:'Confucius', q:'Nature', opp:'Forced Growth', draft:true,
   line:'Tend it at its own pace instead of pulling it faster',
   release:['Pull the shoot up to help it grow',
    'Ask "why is this taking so long" every day',

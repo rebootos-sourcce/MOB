@@ -1249,7 +1249,7 @@ function runPoleDrill(end){
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
    +cr(m.seat,pos,{size:'xs',raw:fmtPct('axis',pos),hot:false})
-   +'<span>'+esc(up?m.up:m.dn)+'</span>'
+   +'<span class="ad-wrapnm">'+esc(up?m.up:m.dn)+'</span>'
    +'<em style="color:'+c+'">'+esc(m.q.toLowerCase())+'</em></button>';});
  h+='</div>';
  if(up){
@@ -1305,9 +1305,13 @@ function runPoleDrill(end){
   h+='<div class="pm-eye">The descent, nine depths</div><div class="ad-rows">';
   CIRCLES.forEach(function(c){
    var here=circ&&circ.c===c.c;
+   /* A GOVERNOR THAT IS THE DEPTH'S OWN NAME IS NOT PRINTED TWICE. Fraud and
+      Violence are both the circle and the behaviour that governs it now (17
+      November, the governors are behaviour words), so the row read "Fraud
+      Fraud". The mark stays on the right, where the eye looks for it. */
    h+='<div class="ad-r static'+(here?' on':'')+'" title="'+esc(c.p+' '+c.at+'.')+'">'
     +'<span class="ad-k">'+esc(c.nm)+'</span>'
-    +'<span class="ad-v">'+adGl(c.ic)+esc(c.by)+'</span></div>';});
+    +'<span class="ad-v">'+adGl(c.ic)+(c.by===c.nm?'':esc(c.by))+'</span></div>';});
   h+='</div>';
   h+='<p class="ad-p">Read as a taxonomy rather than a poem. Each depth is a behaviour at a '
    +'specific compression, and the floor is stasis rather than power: no flow, no movement, '
@@ -1417,7 +1421,7 @@ function runCircleDrill(n){
  seat=BANDS.indexOf(seat)>=0?seat:(BANDS.indexOf(seat.replace(/^\w/,function(m){return m.toUpperCase();}))>=0?seat:'');
  var h='<div class="pm-eye">Depth '+c.c+(c.sin?', '+esc(c.sin.toLowerCase()):'')+'</div>'
   +'<div class="ad-nm">'+esc(c.nm)+'</div>'
-  +'<div class="ad-sub">'+esc(c.by)+'</div>'
+  +(c.by===c.nm?'':'<div class="ad-sub">'+esc(c.by)+'</div>')
   +'<div class="pm-eye">What you might recognise</div><p class="ad-p">'+esc(c.see)+'</p>'
   +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(c.p)+'</p>'
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.at)+'.</p>';

@@ -3121,6 +3121,16 @@ Where the names actually live, checked by grep rather than assumed: `atuned_src/
 
 **Names ruled so far, 30 October, as he works through the list.** Druj is Deception (or Deceiver, if a person-word is needed), opposite Honesty: his words, thinking it through out loud, "truth is the opposite of deceive... deception is just a lie, but you could also say transparency, or honesty. Honesty is probably more real, probably the one." Geryon is Fraud: his words, "Geryon is fraud," which also matches the one already in the research file's own table, Dante's eighth circle. Full detail and the still open structural question (Geryon shares the engine's one real two-piece pattern with Psychopathy, naming him does not by itself tell the two apart) is `TASKS.md` round SM, SM14 to SM16.
 
+**Built, 17 November.** He read the drafted table and accepted it, his words: "I already accepted the drafted name, so just give them those names, please, so I can move on to the next stage." It is wired in `engine/data/compass.js` and `engine/data/teachers_recipes.js`, with `tests/engine.js` holding each word by key. Both ends of the six pairs that have a ruled word are behaviour words now, and no teacher's name is printed at a pole that has one.
+
+- **Negative and positive, as accepted.** Fraud and Discernment, Deception and Honesty, Sacrificial Extraction and Discipline, Gatekeeping and Communion, Reactivity and Grounded Fire, Vengeance and Transmutation.
+- **Negatives only.** Extractive Control (was Malak), Poisoning, Coercive Abduction, Forced Alteration, Sabotage, Forced Growth, and the circle governors Judgment, Insatiability, Possessiveness and Violence.
+- **Positive poles only.** Grace at the Heart, Devotion at the Sacral and Liberation at the Throat. Their negatives are not renamed.
+- **Not renamed, because he rejected the draft by name and has not given his own word.** Lucifer (not simply Separation), Asmodeus (disputed), Set (chaos comes first, not sabotage) and Baal (manipulation is essential to it, and it has no axis and no derivable positive pole). Each prints as it did.
+- **No entry exists, so nothing was written.** The Harpies, Nimrod and Ephialtes are in no table in the engine. The ninth circle's governor, Satan frozen, is not on the table and was left.
+- **Still teacher names, because no word was given.** The positive poles of Flow (Krishna), Alignment (Rama), the horizontal (Lao Tzu), Light on no axis (Akhenaten) and Nature (Confucius), and the master list in `MASTERS`, which are people on the cone and not poles.
+- **Jesus is two words.** The one name at two poles that `tests/engine.js` pinned as his canon is Grace at the Heart and Transmutation at the Crown, so the canon is kept in the axis keys and the lines and no longer in a repeated name.
+
 ## The book's own levels, read in order on the Field's left rail, 28 October
 
 His round, after the superego section landed: "the full cascade wiring of the

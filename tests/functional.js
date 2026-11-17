@@ -2407,7 +2407,7 @@ const pole=await page.evaluate(()=>{
  o.who=(PEOPLE[S.who]||{}).nm;
  o.ends=document.querySelectorAll('#pol2 [data-polend]').length;
  const txt=()=>(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- runPoleDrill('up'); o.up=txt();
+ runPoleDrill('up'); o.up=txt(); o.mirrorUp=MIRROR.map(m=>m.up);
  runPoleDrill('dn'); o.dn=txt();
  /* A DESCENT RECORD IS NEVER PAINTED, 23 October. The voice gate sets
     content.researchPasses and content.inferenceBasis aside as a record about
@@ -2458,13 +2458,17 @@ const pole=await page.evaluate(()=>{
  return o;});
 ok(pole.ends===2,'the cone carries a door at each end, got '+pole.ends);
 ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
-ok(/Musashi/.test(pole.up)&&/Buddha/.test(pole.up)&&/Akhenaten/.test(pole.up),
- 'the upward roster names the twelve');
-ok(/Lucifer/.test(pole.dn)&&/Moloch/.test(pole.dn)&&/Satan frozen/.test(pole.dn),
+/* 17 NOVEMBER. The eight axis rows print the behaviour word at the coherent
+   end, so Discipline and Discernment are read off MIRROR rather than typed. The
+   master list under them is people and still names Musashi, Buddha and
+   Akhenaten, which is why those three are asked for as well. */
+ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Musashi/.test(pole.up)&&/Buddha/.test(pole.up)&&/Akhenaten/.test(pole.up),
+ 'the upward roster names the eight behaviours and the masters');
+ok(/Lucifer/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn),
  'the downward roster names the inversions and the nine circles');
 ok(/behaviours, not entities/.test(pole.dn),
  'and says in the copy that they are behaviours rather than entities');
-ok(/Musashi against Moloch|against/.test(pole.axis),'an axis opens with both poles on it');
+ok(/Discipline against Sacrificial Extraction|against/.test(pole.axis),'an axis opens with both poles on it');
 ok(/\?/.test(pole.axis),'carrying the question that tells them apart');
 ok(/not a verdict/.test(pole.axis),'and saying it is not a verdict');
 /* THE SAFETY RULE, carried out of the book. Gordon is the heaviest case in
@@ -5450,7 +5454,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Buddha/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Buddha" */
+  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Discernment/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Discernment" */
   /* a worked example saves nothing, so the panel offers no button. It also
      said so, "is a worked example, so nothing here is saved", and SV19 cut
      that line on his words: "Get rid of Ana is worked example, so nothing is
@@ -5462,7 +5466,7 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   return o;});
  ok(o.box&&o.pole==='PE','pressing Buddha on the compass opens the behaviour complex for that pole');
  ok(o.line===o.want,'headed by the pole as one behaviour pair, '+o.line);
- ok(/^After Buddha/.test(o.credit),'with the teacher as a small credit under it, '+o.credit);
+ ok(/^Discernment/.test(o.credit)&&!/Buddha/.test(o.credit),'with the pole\'s own word under it and no teacher\'s name, '+o.credit);
  ok(o.rel.join('|')===o.wantRel.join('|')&&o.rel.length>=3&&o.rel.length<=5,'what is released is listed, '+o.rel.length);
  ok(o.ins.join('|')===o.wantIns.join('|')&&o.ins.length>=3&&o.ins.length<=5,'and what is installed, '+o.ins.length);
  ok(o.rituals===o.wantN&&o.rituals>=2&&o.rituals<=3,'with the starter rituals, '+o.rituals);

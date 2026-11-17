@@ -1715,7 +1715,38 @@ function nodeStateOf(w){
    direction. The client is somewhere between them on that axis."
 
    seat is where this product already measures the quality, so the
-   position between the poles is read rather than asked. */
+   position between the poles is read rather than asked.
+
+   THE FIGURES ARE BEHAVIOUR WORDS NOW, RULED 30 OCTOBER AND APPROVED 17
+   NOVEMBER. His words on 30 October: "instead of referring to a person as
+   Lucifer or Moloch, we want to describe the behavior in a single word. Or
+   two." Only Geryon was ever changed, in a ruling and not in this table, so
+   every pole below still printed a name a person has to look up. The names
+   were drafted, he read the draft, and his words on the 17th: "I already
+   accepted the drafted name, so just give them those names, please." The
+   source of each word is reviews/shadow-figure-research-2026-10-30.md.
+
+   BOTH ENDS, WHERE THE WORD IS RULED. The coherent pole on every axis is
+   now a behaviour word as well, because a teacher's name on one end and a
+   behaviour on the other read as a person against a pattern, which is the
+   thing the ruling takes out. Jesus stood at two poles and is two words now,
+   Grace at the Heart and Transmutation at the Crown, so the one name at two
+   poles that tests/engine.js used to pin as his canon is two plain words that
+   cannot be mistaken for each other.
+
+   FOUR NEGATIVES ARE NOT RENAMED AND THAT IS ON PURPOSE. Lucifer, Asmodeus and
+   Set keep their names because his drafts of them were rejected by name:
+   Lucifer "is NOT simply separation", Set puts chaos first and not sabotage,
+   and Asmodeus is disputed. Baal sits in BLUEPRINT with no axis and no
+   derivable positive pole, and "manipulation is essential" to it. Each stays
+   exactly as written until he gives the word himself. Their positive poles
+   are ruled (Grace, Devotion, Liberation) and are in the rows below.
+
+   A KEY IS IDENTITY AND A NAME IS A LABEL. The links that used to ride on a
+   printed name ride on a key now: MASTER_AXIS ties a master to his axis, PATHS
+   reads the Heart and the third eye by k, and ui/cone.js places a path by its
+   k. IC_REUSE is still keyed by the printed word, and it is built from MIRROR
+   in the same pass, so it follows a rename by construction. */
 const MIRROR=[
  /* LIGHT, NOT ILLUMINATION. Round KE, his words: "Just change illumination
     to light." Renamed here, in the data, so every surface that names the
@@ -1724,32 +1755,32 @@ const MIRROR=[
     Trust at the Heart is untouched: whether it is Truth is still his own
     open question, logged as thinking and not as a ruling. */
  {k:'IL', q:'Light', seat:'Heart',
-  up:'Jesus',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
+  up:'Grace',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
   dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
-  up:'Ramakrishna', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
+  up:'Devotion', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
   dn:'Asmodeus',    dnd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
   ask:'Does wanting move them toward something, or does having never satisfy?', ic:'M12 20s-7-4.4-7-9.4A4 4 0 0112 8a4 4 0 017 2.6c0 5-7 9.4-7 9.4z', dic:'M4 9h16l-2.2 10.4a1 1 0 01-1 .6H7.2a1 1 0 01-1-.6zM9 9V6a3 3 0 016 0v3'},
  {k:'OR', q:'Order', seat:'Throat',
-  up:'Moses', upd:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
+  up:'Liberation', upd:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
   dn:'Set',   dnd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
   ask:'Does this person build structures others can stand in, or dismantle what others depend on?', ic:'M4 6h16M4 12h16M4 18h11M19 16.5v3.6M17.4 18.3h3.2', dic:'M4.6 5.4l14.8 13.2M19.4 5.4L4.6 18.6M12 4v16'},
  {k:'PO', q:'Power', seat:'Solar',
-  up:'Musashi', upd:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
-  dn:'Moloch',  dnd:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
+  up:'Discipline', upd:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
+  dn:'Sacrificial Extraction', dnd:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
   ask:'Who pays the cost of this person’s discipline?', ic:'M6.5 17.5L17 7M15 5l4 4M6 18l-1.6 1.6M4.5 15.5l4 4', dic:'M5 20V9l7-5 7 5v11M9 20v-5h6v5M9.5 11.5h5'},
  {k:'PE', q:'Perception', seat:'3rd Eye',
-  up:'Buddha', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
-  dn:'Geryon', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
+  up:'Discernment', upd:'Clear seeing. Reality without overlay. The compositor running on present signal.',
+  dn:'Fraud', dnd:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
   ask:'Does this person’s self presentation match their interior state?', ic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM12 9.4a2.6 2.6 0 110 5.2 2.6 2.6 0 010-5.2', dic:'M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6zM5 5l14 14'},
  {k:'TR', q:'Trust', seat:'Heart',
-  up:'Rumi',   upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
-  dn:'Charon', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
+  up:'Communion', upd:'Direct encounter with the field. Felt knowing. The heart as the instrument.',
+  dn:'Gatekeeping', dnd:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
   ask:'Does this person feel things straight away, or wait for proof before they let themselves feel?', ic:'M12 20.5S4.5 15.6 4.5 10.2A3.8 3.8 0 0112 8a3.8 3.8 0 017.5 2.2c0 5.4-7.5 10.3-7.5 10.3z', dic:'M4 17h16M6.4 17V9.6M17.6 17V9.6M4 9.6h16L12 4.6z'},
  {k:'CH', q:'Charge', seat:'Root',
-  up:'Elijah',   upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
-  dn:'Phlegyas', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
+  up:'Grounded Fire', upd:'Grounded fire. Intensity moving through the body without destroying the container or the target.',
+  dn:'Reactivity', dnd:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
   ask:'Where does this person’s intensity go when it has nowhere to land?', ic:'M13 2.5L5.5 13.5H11L10 21.5l7.5-11H12z', dic:'M12 3v8M12 15v6M6 9l-2.6-2.6M18 9l2.6-2.6M4 13.5h3.4M16.6 13.5H20'},
  /* ECKHART IS OUT AND JESUS TAKES THE CROWN. Both ruled. Eckhart was the one
     name on the eight that was not classical. Lao Tzu held the axis for one
@@ -1774,8 +1805,8 @@ const MIRROR=[
     OPEN, AND HIS: whether the Crown axis is still called Revelation now that
     love rather than direct knowing stands at the top of it. */
  {k:'RE', q:'Revelation', seat:'Crown',
-  up:'Jesus', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
-  dn:'The Furies',      dnd:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
+  up:'Transmutation', upd:'Love as the highest charge. The state every other frequency reorganises around, and the one that transmutes what it meets rather than opposing it.',
+  dn:'Vengeance', dnd:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
   ask:'Can this person change what they believe when what they live through says otherwise?',
   /* the same radiant he carries at the Heart, because it is the same figure
      and a second drawing would be a second concept. */
@@ -1826,7 +1857,7 @@ const MASTERS=[
    the specific ways the adversarial program expresses when it has
    replaced Source direction." */
 const BLUEPRINT=[
- {nm:'Malak',   d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
+ {nm:'Extractive Control', d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Baal',    d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
  {nm:'Set',     d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
  {nm:'Lucifer', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
@@ -1837,14 +1868,14 @@ const BLUEPRINT=[
    Dante and persist now. They are still recognisable because the
    patterns are still running." */
 const CIRCLES=[
- {c:1, nm:'Limbo',      by:'Charon',     sin:'', see:'I do not really believe any of this works, and I am here anyway.', p:'Disbelief. Spiritual bypass through rationalism. Nothing is felt, nothing is trusted.', at:'Crown to heart circuit never completed'},
- {c:2, nm:'Lust',       by:'Minos',      sin:'Lust', see:'I need to be wanted, and I arrange things so that I am.', p:'Narcissism. Grandiose entitlement. The narcissist appoints himself arbiter of all things.', at:'Sacral, desire looping without ground'},
- {c:3, nm:'Gluttony',   by:'Cerberus',   sin:'Gluttony', see:'I consume something every time I feel the gap, and the gap is still there.', p:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.', at:'Solar collapse driving upward into the oral circuit'},
- {c:4, nm:'Greed',      by:'Plutus',     sin:'Greed', see:'I measure how I am doing by what I have managed to keep.', p:'Scarcity identity. Accumulation as self proof. Worth measured in possession.', at:'Root locked in survival frequency'},
- {c:5, nm:'Wrath and sloth', by:'Phlegyas', sin:'Wrath and sloth', see:'I either go off, or I go flat. There is not much in between.', p:'Two exits for one suppressed charge. Wrath outward as attack, sloth inward as shutdown. Same origin.', at:'Solar, the fight or freeze split'},
- {c:6, nm:'Heresy',     by:'The Furies', sin:'Pride', see:'I already know how this works, and I stop listening once I have decided.', p:'Ideological decoherence. Belief replacing direct experience. Doctrine as identity armour.', at:'Third eye locked, perception distorted by installed narrative'},
- {c:7, nm:'Violence',   by:'Minotaur',   sin:'Wrath', see:'Something in me wants to break it, and sometimes that something is me.', p:'Against others, against the self, against order. The pattern has escaped containment.', at:'Full system, no single anchor'},
- {c:8, nm:'Fraud',      by:'Geryon',     sin:'Envy', see:'What people meet is a version I run. It costs me nothing to be warm at them.', p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask now runs everything.', at:'Heart inverted, warmth performed rather than generated'},
+ {c:1, nm:'Limbo',      by:'Gatekeeping', sin:'', see:'I do not really believe any of this works, and I am here anyway.', p:'Disbelief. Spiritual bypass through rationalism. Nothing is felt, nothing is trusted.', at:'Crown to heart circuit never completed'},
+ {c:2, nm:'Lust',       by:'Judgment',    sin:'Lust', see:'I need to be wanted, and I arrange things so that I am.', p:'Narcissism. Grandiose entitlement. The narcissist appoints himself arbiter of all things.', at:'Sacral, desire looping without ground'},
+ {c:3, nm:'Gluttony',   by:'Insatiability', sin:'Gluttony', see:'I consume something every time I feel the gap, and the gap is still there.', p:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.', at:'Solar collapse driving upward into the oral circuit'},
+ {c:4, nm:'Greed',      by:'Possessiveness', sin:'Greed', see:'I measure how I am doing by what I have managed to keep.', p:'Scarcity identity. Accumulation as self proof. Worth measured in possession.', at:'Root locked in survival frequency'},
+ {c:5, nm:'Wrath and sloth', by:'Reactivity', sin:'Wrath and sloth', see:'I either go off, or I go flat. There is not much in between.', p:'Two exits for one suppressed charge. Wrath outward as attack, sloth inward as shutdown. Same origin.', at:'Solar, the fight or freeze split'},
+ {c:6, nm:'Heresy',     by:'Vengeance', sin:'Pride', see:'I already know how this works, and I stop listening once I have decided.', p:'Ideological decoherence. Belief replacing direct experience. Doctrine as identity armour.', at:'Third eye locked, perception distorted by installed narrative'},
+ {c:7, nm:'Violence',   by:'Violence',   sin:'Wrath', see:'Something in me wants to break it, and sometimes that something is me.', p:'Against others, against the self, against order. The pattern has escaped containment.', at:'Full system, no single anchor'},
+ {c:8, nm:'Fraud',      by:'Fraud',      sin:'Envy', see:'What people meet is a version I run. It costs me nothing to be warm at them.', p:'Beautiful surface, serpentine beneath. Shine without a light source. The mask now runs everything.', at:'Heart inverted, warmth performed rather than generated'},
  {c:9, nm:'Treachery',  by:'Satan frozen',sin:'', see:'I went against someone who trusted me, and I have not moved since.', p:'Complete inversion. No flow, no movement, maximum resistance. Stasis at terminal velocity, not active evil.', at:'Full system locked, no circuit completing anywhere'}];
 
 /* ---- THE BEHAVIOURAL CASCADE ----
@@ -1892,23 +1923,36 @@ const IC_NEW={
  'Lao Tzu':'M3 8.5h18M3 14.5c3-3.2 6 3.2 9 0s6-3.2 9 0M3 19h18'};
 /* cold, structured extraction. the crown inverted, because that is what the
    codex calls it: order in service of control rather than governance */
-IC_NEW['Malak']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
+IC_NEW['Extractive Control']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
 /* appetite without direction. a flame with a mouth in it */
 IC_NEW['Baal']='M12 21.5c-3.4 0-5.6-2.3-5.6-5.2 0-3.4 3.1-4.8 3.9-8 .4 1.8 1.5 2.8 2.5 3.5 1.5 1.3 2.3 2.5 2.3 4.5 0 2.9-1.8 5.2-3.1 5.2M9.7 16.5h4.6';
 /* the judge. scales, and they are what the second circle is weighed on */
-IC_NEW['Minos']='M12 4v16M6 8.5h12M6 8.5L3.5 14h5zM18 8.5L15.5 14h5zM8.5 20h7';
+IC_NEW['Judgment']='M12 4v16M6 8.5h12M6 8.5L3.5 14h5zM18 8.5L15.5 14h5zM8.5 20h7';
 /* three mouths, one appetite, none of them filled */
-IC_NEW['Cerberus']='M6 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M12 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M18 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M6 13.3V8M12 13.3V5.5M18 13.3V8';
+IC_NEW['Insatiability']='M6 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M12 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M18 18.5a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2M6 13.3V8M12 13.3V5.5M18 13.3V8';
 /* worth measured in what has been kept. a purse, closed */
-IC_NEW['Plutus']='M8 8.5h8l2.3 8.4a1.9 1.9 0 01-1.9 2.4H7.6a1.9 1.9 0 01-1.9-2.4zM9.6 8.5V7a2.4 2.4 0 014.8 0v1.5M12 12v4.2M10.6 13.2h2.8';
+IC_NEW['Possessiveness']='M8 8.5h8l2.3 8.4a1.9 1.9 0 01-1.9 2.4H7.6a1.9 1.9 0 01-1.9-2.4zM9.6 8.5V7a2.4 2.4 0 014.8 0v1.5M12 12v4.2M10.6 13.2h2.8';
 /* the pattern out of containment. horns, and the two legs still walking */
-IC_NEW['Minotaur']='M4 5.5c0 5.2 3.6 8.4 8 8.4s8-3.2 8-8.4M4 5.5v3.2M20 5.5v3.2M8.8 13.2L7.2 19.5M15.2 13.2l1.6 6.3';
+IC_NEW['Violence']='M4 5.5c0 5.2 3.6 8.4 8 8.4s8-3.2 8-8.4M4 5.5v3.2M20 5.5v3.2M8.8 13.2L7.2 19.5M15.2 13.2l1.6 6.3';
 /* stasis at terminal velocity. not fire, ice: no flow, no movement, nothing
    completing anywhere */
 IC_NEW['Satan frozen']='M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M12 6.2L9.6 4.4M12 6.2l2.4-1.8M12 17.8l-2.4 1.8M12 17.8l2.4 1.8';
+/* THE MASTERS ARE STILL PEOPLE AND THE AXES ARE NOT. This looked a master's
+   mark up in IC_REUSE by his own name, which worked while the mirror pairs
+   printed the same names. They print behaviour words now, so Jesus, Buddha,
+   Musashi and the rest found nothing, and the eleven rows of the upward roster
+   would have lost their icons with no error, because adGl draws nothing for a
+   null. The link is the axis key, which is identity and cannot be renamed out
+   from under it. Jesus is the Heart's Light here, which is the mark he has
+   always worn on the master list. The master list itself is not part of the
+   renaming and is his to rule on. */
+const MASTER_AXIS={Jesus:'IL', Ramakrishna:'DE', Moses:'OR', Musashi:'PO',
+ Buddha:'PE', Rumi:'TR', Elijah:'CH'};
 function icOf(nm){
  if(IC_NEW[nm])return IC_NEW[nm];
- if(nm==='Christ')return IC_REUSE['Jesus']||null;
+ if(nm==='Christ')nm='Jesus';
+ var ax=MASTER_AXIS[nm];
+ if(ax){for(var i=0;i<MIRROR.length;i++)if(MIRROR[i].k===ax)return MIRROR[i].ic;}
  return IC_REUSE[nm]||null;}
 MASTERS.forEach(function(x){x.ic=icOf(x.nm);});
 BLUEPRINT.forEach(function(x){x.ic=icOf(x.nm);});
@@ -1946,37 +1990,39 @@ CIRCLES.forEach(function(c){c.ic=icOf(c.by);});
    ONE NAME, NOT TWO. Shu and Hu act as one in the story and are drawn as one
    inversion, the way The Furies are. */
 const PATHS=(function(){
- function mir(up){for(var i=0;i<MIRROR.length;i++)if(MIRROR[i].up===up)return MIRROR[i];
+ function mir(k){for(var i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
   return null;}
  function mas(nm){for(var i=0;i<MASTERS.length;i++)if(MASTERS[i].nm===nm)return MASTERS[i];
   return null;}
- var il=mir('Jesus'), pe=mir('Buddha');
+ var il=mir('IL'), pe=mir('PE');
  return [
   {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
-   dn:'Kaliya', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+   dn:'Poisoning', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
    from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
-  {k:'AW', q:'awareness', up:'Buddha', upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
+  {k:'AW', q:'awareness', up:pe.up, upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
    from:'codex', src:'mirror pair, perception'},
-  {k:'BO', q:'the body', up:'Jesus', upd:il.upd, dn:il.dn, dnd:il.dnd,
+  {k:'BO', q:'the body', up:il.up, upd:il.upd, dn:il.dn, dnd:il.dnd,
    from:'codex', src:'mirror pair, light'},
   {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
-   dn:'Ravana', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
+   dn:'Coercive Abduction', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
    from:'research', src:'Valmiki Ramayana'},
   {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
-   dn:'Shu and Hu', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
+   dn:'Forced Alteration', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
    from:'research', src:'Zhuangzi, chapter 7'}];})();
 /* the three new inversions' marks, argued from what each one does, on the
-   same 24 unit grid. Ring, not fill. */
+   same 24 unit grid. Ring, not fill. The comment over each mark names the
+   figure the text it comes from is about, and the key is the behaviour word
+   that is printed (30 October ruling, see the header of MIRROR). */
 /* Kaliya: Krishna's two waves, the one that runs into a coil and stops, over
    the still line of the pool */
-IC_NEW['Kaliya']='M3 11c2.4-3.4 4.8 3.4 7.2 0 1.3-1.8 3-2.8 5-2.8a3.6 3.6 0 010 7.2 2.2 2.2 0 010-4.4 1 1 0 010 2M3 19h18';
+IC_NEW['Poisoning']='M3 11c2.4-3.4 4.8 3.4 7.2 0 1.3-1.8 3-2.8 5-2.8a3.6 3.6 0 010 7.2 2.2 2.2 0 010-4.4 1 1 0 010 2M3 19h18';
 /* Ravana: Rama's one spine, with every head pulling on it. Ten in the
    story, three here: five were drawn first and at a badge's size they
    merged into one blot */
-IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M19 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M6.6 8L12 13.5M12 7.4v6.1M17.4 8L12 13.5M12 13.5v7M8 20.5h8';
+IC_NEW['Coercive Abduction']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M19 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M6.6 8L12 13.5M12 7.4v6.1M17.4 8L12 13.5M12 13.5v7M8 20.5h8';
 /* Shu and Hu: two awls driven down into something whole. Driven in level
    they read as an eye, and on a slant as horns */
-IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
+IC_NEW['Forced Alteration']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
 /* ---- THE THREE POLES ON NO AXIS THAT ARE NOT PATHS ----
@@ -1986,6 +2032,14 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
    at two, accepted at round PD. Eight are the axes above and three are the
    paths that are not an axis read twice (Krishna, Rama, Lao Tzu). These are
    the last three, in the paths' own shape so the panels draw all six alike.
+
+   THREE OF THE SIX WORDS CHANGED ON 17 NOVEMBER. Zoroaster's pole is Honesty
+   and the Lie's is Deception, both ruled by him on 30 October, and Apep and
+   the farmer of Song are Sabotage and Forced Growth on the drafted table he
+   accepted. Akhenaten and Confucius keep their names, because no behaviour
+   word has been given for either pole yet, and nothing is invented here to
+   fill the gap. The roster is fourteen poles and no longer thirteen people
+   with Jesus at two: the two Jesus poles are two words (see MIRROR).
 
    NOT A ROW OF MIRROR, ON PURPOSE. An axis is a quality read at one seat and
    its ring is that seat's reading. Akhenaten has no seat. Zoroaster and
@@ -2001,31 +2055,32 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
    proposals, marked proposed, each with the text it names to check them
    against. The keys are identity and are never reused. */
 const HOME_POLES=[
- {k:'SA', q:'Light', up:'Akhenaten', dn:'Apep', home:null,
+ {k:'SA', q:'Light', up:'Akhenaten', dn:'Sabotage', home:null,
   from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
- {k:'TU', q:'Truth', up:'Zoroaster', dn:'The Lie', home:'Throat',
+ {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
   from:'proposed', src:'Yasna 30 and 31'},
- {k:'NA', q:'Nature', up:'Confucius', dn:'The farmer of Song', home:'Crown',
+ {k:'NA', q:'Nature', up:'Confucius', dn:'Forced Growth', home:'Crown',
   from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
-/* the marks. Zoroaster, Confucius and the Lie are the design's own, ported
-   from mockups/teachers/imprint.html. Apep and the farmer had none anywhere,
-   so they are drawn here, argued from what each one does, and are a first
-   draft. Same 24 unit grid, ring not fill. */
-/* Zoroaster and Confucius wear the mark of the law their quality names, the
+/* the marks. Honesty (Zoroaster's), Confucius and Deception (the Lie's) are
+   the design's own, ported from mockups/teachers/imprint.html. Sabotage (Apep)
+   and Forced Growth (the farmer) had none anywhere, so they are drawn here,
+   argued from what each one does, and are a first draft. Same 24 unit grid,
+   ring not fill. */
+/* Honesty and Confucius wear the mark of the law their quality names, the
    Truth law's plumb line and the Nature law's stem, as the design drew them.
    Read off SI rather than copied, so one mark cannot become two. */
 (function(){
  function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic; return null;}
- IC_NEW['Zoroaster']=law('Truth');
+ IC_NEW['Honesty']=law('Truth');
  IC_NEW['Confucius']=law('Nature');})();
 /* the Lie: the plumb line broken and turned aside on its way down */
-IC_NEW['The Lie']='M12 3v4l-3 3 6 4-3 3v4';
+IC_NEW['Deception']='M12 3v4l-3 3 6 4-3 3v4';
 /* Apep: the sun disc, and the serpent's open jaw closing over it from below.
    Light taken in and nothing handed on, the inverse of Akhenaten's rays */
-IC_NEW['Apep']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4.8 2.6 7.2 0M18.4 20c1.6-3.4.6-7.6-2.6-9.6M5.6 12.4c1.6-1.6 3.8-2.2 5.8-1.6';
+IC_NEW['Sabotage']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4.8 2.6 7.2 0M18.4 20c1.6-3.4.6-7.6-2.6-9.6M5.6 12.4c1.6-1.6 3.8-2.2 5.8-1.6';
 /* the farmer of Song: the shoot pulled clear of the ground, roots in the air
    over the hole it came out of */
-IC_NEW['The farmer of Song']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
+IC_NEW['Forced Growth']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
 HOME_POLES.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 /* THE POLES THAT STAND ON NO AXIS, in the roster's order: the paths that are
    not an axis read twice, then the three above. A path is an axis read twice
@@ -3112,11 +3167,21 @@ var PAINREG=[
    pole's key, the same one MIRROR, PATHS and BECOMING use, and it is identity:
    it is never renumbered and never reused.
      who      the teacher's name, shown as a small credit and never as the
-              headline. The panel is about a behaviour, not a person.
+              headline. The panel is about a behaviour, not a person. A row
+              whose coherent pole has a behaviour word (the pole's own up, in
+              engine/data/compass.js) carries no who at all, ruled 17
+              November: his words on 30 October were that a person is not
+              referred to by a figure's name, and a credit to "Buddha" under
+              a panel headed Discernment put the name back. Only the five
+              poles with no word yet (Krishna, Rama, Lao Tzu, Akhenaten and
+              Confucius) still carry one, and each loses it the day its word
+              is ruled. The panel reads the pole's word off the compass.
      q        the quality the pole is named for.
      opp      the inverted end, by name. Shown only as a caption on the release
               column, never as an entity, on the standing ruling that both ends
-              are behaviours.
+              are behaviours. It is the same word the compass prints at that
+              pole, so a rename there is a rename here and the two are held
+              equal by tests/engine.js.
      line     the pole as one behaviour pair, the headline of the panel.
      release  the old pattern, 3 to 5 short behaviours a person runs now.
               Plain, physical, a thing a camera could film or a body report.
@@ -3161,7 +3226,7 @@ var PAINREG=[
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', who:'Jesus', q:'Light', opp:'Lucifer', draft:true,
+ {k:'IL', q:'Light', opp:'Lucifer', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',
@@ -3175,7 +3240,7 @@ var TEACHER_RECIPES=[
    {id:'IL-give', nm:'Give and tell nobody', steps:['box','given']},
    {id:'IL-need', nm:'Ask what they need', steps:['box','il_need']},
    {id:'IL-alone', nm:'Kind when alone', steps:['il_alone','given']}]},
- {k:'RE', who:'Jesus', q:'Revelation', opp:'The Furies', draft:true,
+ {k:'RE', q:'Revelation', opp:'Vengeance', draft:true,
   line:'Update the belief instead of guarding it',
   release:['Steer away from what would test the belief',
    'Answer before the other person has finished',
@@ -3189,7 +3254,7 @@ var TEACHER_RECIPES=[
    {id:'RE-hold', nm:'Hold it a minute', steps:['box','meetit']},
    {id:'RE-changed', nm:'Say what changed', steps:['box','re_changed']},
    {id:'RE-jaw', nm:'Loose jaw, open ear', steps:['re_jaw','meetit']}]},
- {k:'DE', who:'Ramakrishna', q:'Desire and will', opp:'Asmodeus', draft:true,
+ {k:'DE', q:'Desire and will', opp:'Asmodeus', draft:true,
   line:'Stop at enough instead of reaching for more',
   release:['Get it, then reach for the next one within the hour',
    'Say "one more" and keep going',
@@ -3203,7 +3268,7 @@ var TEACHER_RECIPES=[
    {id:'DE-want', nm:'Name one want', steps:['slow','offered']},
    {id:'DE-enough', nm:'Say enough', steps:['box','de_enough']},
    {id:'DE-pull', nm:'Ride the pull', steps:['de_pull','offered']}]},
- {k:'OR', who:'Moses', q:'Order', opp:'Set', draft:true,
+ {k:'OR', q:'Order', opp:'Set', draft:true,
   line:'Keep the rule others stand on instead of bending it',
   release:['Change the rule after others have built on it',
    'Agree in the meeting and say something else afterwards',
@@ -3217,7 +3282,7 @@ var TEACHER_RECIPES=[
    {id:'OR-rule', nm:'Keep one rule', steps:['box','onerule']},
    {id:'OR-plan', nm:'Say the plan', steps:['box','or_plan']},
    {id:'OR-stand', nm:'Who stands on it', steps:['or_stand','onerule']}]},
- {k:'PO', who:'Musashi', q:'Power', opp:'Moloch', draft:true,
+ {k:'PO', q:'Power', opp:'Sacrificial Extraction', draft:true,
   line:'Pay for your own standard instead of billing others',
   release:['Meet your standard with other people’s time',
    'Say "somebody will cover it" and move on',
@@ -3231,7 +3296,7 @@ var TEACHER_RECIPES=[
    {id:'PO-cut', nm:'The same cut', steps:['box','samecut']},
    {id:'PO-small', nm:'The small version', steps:['box','po_small']},
    {id:'PO-own', nm:'Own the cost', steps:['po_own','samecut']}]},
- {k:'PE', who:'Buddha', q:'Perception', opp:'Geryon', draft:true,
+ {k:'PE', q:'Perception', opp:'Fraud', draft:true,
   line:'See it as it is instead of managing how it looks',
   release:['Manage the gap between how you look and how you are',
    'Edit yourself before the words leave your mouth',
@@ -3245,7 +3310,7 @@ var TEACHER_RECIPES=[
    {id:'PE-name', nm:'Name it', steps:['box','pe_name']},
    {id:'PE-match', nm:'Face and stomach', steps:['box','pe_match']},
    {id:'PE-see', nm:'See it as it is', steps:['pe_name','pe_match','noting']}]},
- {k:'TR', who:'Rumi', q:'Trust', opp:'Charon', draft:true,
+ {k:'TR', q:'Trust', opp:'Gatekeeping', draft:true,
   line:'Let it land before you explain it',
   release:['Wait at the edge of a feeling until it can be proven',
    'Ask for more information about what you already feel',
@@ -3258,7 +3323,7 @@ var TEACHER_RECIPES=[
   rituals:[
    {id:'TR-land', nm:'Let it land', steps:['box','tr_land']},
    {id:'TR-tell', nm:'Tell one person', steps:['tr_land','tr_tell']}]},
- {k:'CH', who:'Elijah', q:'Charge', opp:'Phlegyas', draft:true,
+ {k:'CH', q:'Charge', opp:'Reactivity', draft:true,
   line:'Move the heat through the body instead of aiming it',
   release:['Let it go off at somebody',
    'Go flat for the afternoon',
@@ -3272,7 +3337,7 @@ var TEACHER_RECIPES=[
    {id:'CH-move', nm:'Move the heat', steps:['box','ch_move']},
    {id:'CH-ten', nm:'Take ten minutes', steps:['box','ch_ten']},
    {id:'CH-feel', nm:'Find it in the body', steps:['slow','resist']}]},
- {k:'FL', who:'Krishna', q:'Flow', opp:'Kaliya', draft:true,
+ {k:'FL', who:'Krishna', q:'Flow', opp:'Poisoning', draft:true,
   line:'Let the plan move instead of holding it in place',
   release:['Hold one routine or grievance in place until it sours',
    'Tell the same complaint a fourth time',
@@ -3286,7 +3351,7 @@ var TEACHER_RECIPES=[
    {id:'FL-move', nm:'Let it move', steps:['box','letmove']},
    {id:'FL-call', nm:'Make the call', steps:['box','fl_call']},
    {id:'FL-other', nm:'The other way', steps:['fl_other','letmove']}]},
- {k:'AL', who:'Rama', q:'Alignment', opp:'Ravana', draft:true,
+ {k:'AL', who:'Rama', q:'Alignment', opp:'Coercive Abduction', draft:true,
   line:'Hold the line you named instead of making an exception',
   release:['Know the rule and cross it because you want the thing more',
    'Decide this one is an exception',
@@ -3300,7 +3365,7 @@ var TEACHER_RECIPES=[
    {id:'AL-line', nm:'Hold one line', steps:['box','linehold']},
    {id:'AL-said', nm:'Do what you said', steps:['box','al_said']},
    {id:'AL-owe', nm:'What you owe', steps:['al_owe','linehold']}]},
- {k:'HO', who:'Lao Tzu', q:'The horizontal', opp:'Shu and Hu', draft:true,
+ {k:'HO', who:'Lao Tzu', q:'The horizontal', opp:'Forced Alteration', draft:true,
   line:'Stop one thing and wait instead of rushing in to help',
   release:['Hurry in to help and make it worse',
    'Offer the fix nobody asked for',
@@ -3314,7 +3379,7 @@ var TEACHER_RECIPES=[
    {id:'HO-stop', nm:'Stop one thing', steps:['box','stopone']},
    {id:'HO-wait', nm:'Say I will wait', steps:['ho_open','ho_wait']},
    {id:'HO-rest', nm:'Open hands', steps:['ho_open','stopone','ho_wait']}]},
- {k:'SA', who:'Akhenaten', q:'Light', opp:'Apep', draft:true,
+ {k:'SA', who:'Akhenaten', q:'Light', opp:'Sabotage', draft:true,
   line:'Hand it on and name the source instead of keeping it',
   release:['Take it in and pass nothing on',
    'Tell it as if it started with you',
@@ -3327,7 +3392,7 @@ var TEACHER_RECIPES=[
   rituals:[
    {id:'SA-hand', nm:'Hand it on', steps:['box','sa_hand']},
    {id:'SA-name', nm:'Say who gave it', steps:['sa_name','sa_hand']}]},
- {k:'TU', who:'Zoroaster', q:'Truth', opp:'The Lie', draft:true,
+ {k:'TU', q:'Truth', opp:'Deception', draft:true,
   line:'Say the plain true sentence instead of the softer one',
   release:['Say the smaller thing to keep the room warm',
    'Say "it is probably nothing" about the thing that is something',
@@ -3341,7 +3406,7 @@ var TEACHER_RECIPES=[
    {id:'TU-plain', nm:'The plain word', steps:['box','tu_plain']},
    {id:'TU-end', nm:'End the sentence', steps:['box','tu_end']},
    {id:'TU-both', nm:'Say it and stop', steps:['box','tu_plain','tu_end']}]},
- {k:'NA', who:'Confucius', q:'Nature', opp:'The farmer of Song', draft:true,
+ {k:'NA', who:'Confucius', q:'Nature', opp:'Forced Growth', draft:true,
   line:'Tend it at its own pace instead of pulling it faster',
   release:['Pull the shoot up to help it grow',
    'Ask "why is this taking so long" every day',
@@ -5397,7 +5462,7 @@ var UNPACK_BASE={
 
  /* THE COMPASS */
  'teacher':'A teacher here is a picture of one pole, named for the person who showed it most clearly, and the panel describes a behaviour and not that person.',
- 'inversion':'An inversion is the same quality turned upside down, named for a figure who shows it, and it is a behaviour and not a being.',
+ 'inversion':'An inversion is the same quality turned upside down, and it is a behaviour a person runs and not a being.',
  'pole':'A pole is one end of an axis, either the quality running clean or the same quality turned upside down.',
  'axis:light':'Light is the axis of warmth, from care that is given freely to a glow put on for an audience.',
  'axis:desire and will':'Desire and will is the axis of wanting, from a want that moves you toward something larger to a want that having never fills.',
