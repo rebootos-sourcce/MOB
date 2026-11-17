@@ -361,10 +361,21 @@ require('./net.js').guardBrowser(browser);
         sw: document.documentElement.scrollWidth, vw: innerWidth };
     });
     const s = await look();
-    ok(s.text !== null && s.role === 'note' && s.asideText !== null && s.asideW > 0 && s.asideH > 0,
-      '@' + w + ': the note is on the Story page, drawn, in the merged box under Uni: ' + JSON.stringify({ asideW: s.asideW, asideH: s.asideH, role: s.role }));
+    /* 17 NOVEMBER, HIS WORDS, on the sentence printed under the reading circle:
+       "You're still having text show up on the source AI area. It shouldn't be
+       there. That should only be on the text display." The sentence is drawn
+       under the writing box on the classic Dashboard (#staside, where the
+       person is typing) and inside the talk screen's text panel (.src-aside),
+       and it is never under the face, so #stsrc holds nothing at rest. */
+    ok(s.text !== null && s.role === 'note' && s.w > 0 && s.h > 0,
+      '@' + w + ': the note is on the Story page, drawn, under the writing box: ' + JSON.stringify({ w: s.w, h: s.h, role: s.role }));
     ok(s.text === s.engine && s.engine.length > 0, '@' + w + ': it is the engine\'s own sentence, one copy for every surface');
-    ok(s.asideText === s.engine, '@' + w + ': the merged box under Uni carries the exact same sentence, not a second copy of its own');
+    ok(s.asideText === null, '@' + w + ': nothing is printed under the reading circle at rest, saw ' + JSON.stringify(s.asideText));
+    await p.evaluate(() => { STV.chat = true; STV.typed = true; stRender(); srcPaint(); });
+    const tx = await look();
+    ok(tx.asideText === tx.engine && tx.asideW > 0 && tx.asideH > 0,
+      '@' + w + ': on the talk screen\'s text display the panel carries the exact same sentence: ' + JSON.stringify({ asideW: tx.asideW, asideH: tx.asideH }));
+    await p.evaluate(() => { STV.chat = false; STV.typed = false; stRender(); });
     ok(/“not angry” is not counted, because you said no to it\./.test(s.text),
       '@' + w + ': the word said with a no, in the person\'s letters, with what not counted means beside it');
     ok(/“He is furious” is not counted, because it is about someone else\. Write how it landed on you/.test(s.text),
