@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v135 21ddd068 2026-11-17 05:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v137 e273d4a7 2026-11-17 06:19"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -1264,7 +1264,9 @@ body.lumen{
  margin-bottom:8px}
 .gmenu .seg{width:100%;justify-content:space-between}
 .gmenu .seg button{flex:1 1 0;justify-content:center}
-.gmenu-p{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--dim)}
+/* .gmenu-p is gone, 17 November, with the paragraph it styled (see the
+   comment at shell/body.html's #lightmenu): no markup emits that class
+   any more, so the rule goes with it rather than stand here unused. */
 body.punch .gmenu{background:var(--panel-2);border-color:transparent;
  -webkit-backdrop-filter:none;backdrop-filter:none}
 body.punch .gmenu::before{display:none}
@@ -2691,15 +2693,22 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
  background:transparent;color:var(--mid);cursor:pointer;
  transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
-/* GONE ON THE JOURNAL ONLY, 10 November, his words: "the left menu, get
-   rid of that close menu." #lfold is shared: the Field, Compass, Flow
-   and Knowledge columns all fold through this same control
-   (ui/ui.js's colFold), so it is hidden here rather than deleted, and
-   only where body.tab-story is set. colShut() itself never reads a
-   stored shut answer for the Journal's own key now (ui/ui.js), so
-   hiding the one door to it does not strand a person who shut it
-   before this round. */
-body.tab-story .lfold{display:none}
+/* BACK ON THE JOURNAL'S FULL VIEW, 17 November, OVERRIDDEN from the 10
+   November ruling kept below for the record. His annotated screenshot
+   named three corner boxes on the Full Dashboard, one of them this
+   rail's: "be able to minimize that left panel... closes left if I
+   click that left box." colShut() no longer hard codes false for the
+   Journal's own key either (ui/ui.js), so the one real reason the fold
+   was hidden, a person stuck shut with no door back, no longer applies:
+   the door is live again. Hidden only in Simple, where #lcol itself is
+   display:none and there is no rail to fold.
+   WHAT THIS REPLACED, 10 November, his words then: "the left menu, get
+   rid of that close menu... merge that left menu into the full panel."
+   #lfold is shared: the Field, Compass, Flow and Knowledge columns all
+   fold through this same control (ui/ui.js's colFold), so it was
+   hidden here rather than deleted, and only where body.tab-story was
+   set. */
+body.tab-story:not(.st-full) .lfold{display:none}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
 /* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
@@ -4395,7 +4404,37 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  grid-row:1;transition:flex var(--t-context) var(--ease-out)}
 .st-colw{flex:1.64 1 0;grid-column:1}
 .st-colb{flex:1.64 1 0;grid-column:2}
-.st-colz{flex:1 1 0;grid-column:3}
+.st-colz{flex:1 1 0;grid-column:3;position:relative}
+/* THE RELEASE COLUMN'S OWN FOLD, 17 November, ui/storyui.js's zFoldWire.
+   Absolute within .st-colz rather than sticky (.rfold's own reason for
+   sticky does not hold here: #rpanel scrolls on its own and this column
+   does not, it is sized by .st-flow's own grid row), so it sits over
+   whichever is physically first in the column, #strel's own header,
+   the same way #lfold sits over whichever section leads the left rail.
+   The icon is copied from .rfold unchanged, so the same mark means the
+   same thing, "this folds to the right," everywhere it appears. */
+.zfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.zfold:hover{background:var(--sunk);color:var(--ink)}
+.zfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.zfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+/* shut, the column is the control and nothing else, the same shut shape
+   #lpanel and #rpanel already use. */
+body.st-zshut .st-colz>*:not(.zfold){display:none}
+body.st-zshut .st-colz{padding:6px;align-items:center;flex:0 0 58px}
+body.st-zshut .zfold{position:static}
+body.st-zshut .zfold .lf-ch{transform:rotate(180deg)}
+/* THE OTHER TWO COLUMNS TAKE THE WIDTH, EVENLY, THE SAME PROPORTION THEY
+   ALREADY SHARE (1.64fr each, so they stay equal to each other, "symmetry
+   in space" with nothing new to balance). !important because a focus
+   mode (read or release, just above) sets its own grid-template-columns
+   on this same element and a shut column must win regardless of which
+   mode a person was in when they closed it; .st-rl itself is hidden by
+   the rule above either way, so the release focus mode's own layout for
+   it never has anything left to lay out. */
+body.st-zshut .st-flow{grid-template-columns:1.64fr 1.64fr 58px!important}
 /* flex ratios above are dead weight now (.st-flow is grid, not flex) but
    stay rather than risk a selector this file does not know about still
    reading them; grid-template-columns on .st-flow itself is what actually
@@ -4480,8 +4519,49 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px}
+.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
+/* THE WIDGET ROW'S OWN FOLD, 17 November, ui/storyui.js's rowFoldWire,
+   the long comment there explains why it is one control for the whole
+   row rather than six. ABSOLUTE, NOT A RESERVED STRIP: a first pass
+   gave the row its own padding-top the way .st-lrail .rblk already
+   reserves 52px for #lfold, and that cost .st-mini6 48 real pixels of
+   height. .st-flow's two rows are 1fr and auto (this file, above): a
+   taller auto row leaves less of the fixed container height for the
+   1fr row above it, measured on a short window, 1366x657, Full view:
+   263px down to 215px, which pushed the Release column's own content
+   (min-height 310px, already taller than 215px and already showing
+   past its own row on this same window before this round) far enough
+   down that its Release button's centre point moved from just above
+   .st-mini6's top edge to inside it, caught by tests/collide.js's own
+   short window check, which exists for exactly this kind of overflow.
+   So the control costs the row nothing: absolute, it is no part of
+   .st-mini6's own box height, and it sits over whichever card happens
+   to be physically top right, Masks at 1600, a different one once the
+   row wraps under 1181px. Nothing else here reads that card's own
+   button or link through this control's own 44 pixel corner (checked:
+   .st-mini carries no <button> or <a href>, only a role and a click
+   delegate, so tests/collide.js's own control sweep, which queries
+   those tags, never reaches it here), so the overlap costs no press. */
+.rowfold{position:absolute;top:8px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.rowfold:hover{background:var(--sunk);color:var(--ink)}
+.rowfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rowfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+/* the one card that stands under the control at the width he
+   screenshotted, Masks, keeps its own label clear of it; below 1181,
+   where the row wraps and a different card takes that corner, this
+   reservation sits on a card the control is no longer over and costs
+   that card nothing either. */
+#stmini6 .st-mini:last-child .st-mini-lb{padding-right:52px}
+/* shut, the row is the control alone, its own height falling to that
+   control's, the same shape #lpanel and #rpanel already shut to. */
+body.st-rowshut #stmini6{min-height:var(--tap)}
+body.st-rowshut #stmini6>.st-mini{display:none}
+body.st-rowshut .rowfold{position:static;margin-left:auto}
+body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
    .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
    .st-mask4-t and its .sm variant drew the old left-aligned icon-and-text
@@ -11463,11 +11543,23 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
     <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
      <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
    <div class="gmenu" id="lightmenu" hidden>
+    <!-- THE PARAGRAPH BELOW THIS ROW IS GONE, 17 November, his words: "under
+         the lighting, there's a bunch of text. We don't need that. The user
+         can explore and figure out what kind of lighting scenario they want.
+         When I, whichever one they change, they see the name." It also
+         described four lightings by name on a menu that had grown to seven
+         (LIGHTINGS, ui/panels.js) without the sentence growing with it, the
+         same defect CLAUDE.md names against a count typed into a paragraph
+         the product then grows past. Nothing is added in its place: every
+         button in the row below already carries its own name as a real
+         tooltip (title and aria-label, both t[1], ui/panels.js), and the
+         lighting that is on is the bar's own button's name, "Lighting,
+         Dark" and so on, kept current on every choice by setLighting. A
+         person who presses a lighting sees its name the moment they hover
+         or focus either button, which is the existing affordance this
+         fix reuses rather than invents. -->
     <div class="gmenu-hd">Lighting</div>
     <div class="seg" id="themes"></div>
-    <p class="gmenu-p">Dark is the default. Snow is the same instrument on
-     paper. Punch removes every outline and fills every shape. Glass puts the
-     panes in front of a moving ground and lets them refract it.</p>
    </div>
   </div>
   <!-- THE PROFILE LOADER, A CIRCLE BESIDE HELP. GF, his words: "the load
@@ -60417,6 +60509,24 @@ function stRender(){
      Compass and Boundary above: .st-mini6, below. */
   +'</div>'
   +'<div class="st-colz">'
+  /* THE RELEASE COLUMN CLOSES, 17 November, his annotated screenshot on
+     the Full Dashboard's three corner boxes: "be able to minimize that
+     left panel... the release closes right." Same shape as the left
+     rail's own #lfold (ui/ui.js, colFold): a control in the column's
+     top right corner, a body class that hides every child but the
+     control, and the choice kept in STORE so a reload or a profile
+     switch does not reopen what was shut (zFoldWire, below in this
+     file). Its own key, separate from lcols and rcol, because this
+     column exists only inside the Journal's own three column flow, not
+     the shared #lcol/#rcol pair every other tab folds. The icon is
+     .rfold's own, unchanged: a panel with a divider near its right
+     third and a chevron, since this column collapses the same
+     direction the right rail already does. */
+  +'<button class="zfold" id="zfold" type="button" aria-controls="strel"'
+   +' aria-expanded="true" aria-label="Close the Release column">'
+   +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+   +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15 4.5v15"/>'
+   +'<path class="lf-ch" d="M8.4 9.4L11 12l-2.6 2.6"/></svg></button>'
   /* RULED 13 November, his words on a screenshot: "this should all be
      release." Avatar and Masks (the .st-2row-1 pair that used to live
      here) moved to .st-mini6 with their other four; .st-colz carries
@@ -60466,7 +60576,33 @@ function stRender(){
      .st-mini-cap inside one shared element instead of side by side,
      which read fine for a plain-text row but broke the centred picture
      every other card draws in .st-mini-vis alone. */
+  /* THE WIDGET ROW CLOSES DOWN, 17 November, the same screenshot as
+     .zfold above: "the down panel with all the widgets closes down."
+     ONE CONTROL FOR THE WHOLE ROW, A JUDGEMENT CALL: his circle landed
+     near the Masks card, but his own sentence names "that down panel"
+     once, singular, the same way he said "that left panel" once for
+     seven different sections and "the release" once for one column.
+     Six separate controls, one per mini, would be six things to find
+     and six stored answers to keep straight for what reads as one
+     panel; checked against stMiniShell first, which gives every one of
+     the six the same shell with no header strip of its own to carry a
+     control, so a per-card button would have had to float inside
+     content a drill already makes a link (stMiniShell's own data-stgo).
+     The control sits in a strip above the row rather than over whichever
+     card happens to sit at the corner, because that corner card is
+     Masks at 1600 and a different one once the row wraps under 1181
+     (.st-mini6{flex-wrap:wrap}, shell/head.html): a button pinned to
+     one card's corner would have sat over Masks at one width and over
+     Boundary at another. The strip costs the row the same handful of
+     pixels every other folded surface already reserves for its own
+     control (.st-lrail .rblk, .lsec[data-rail=right] .lsec-hd), not a
+     new kind of gap. */
   +'<div class="st-mini6" id="stmini6">'
+   +'<button class="rowfold" id="rowfold" type="button" aria-controls="stmini6"'
+    +' aria-expanded="true" aria-label="Close the widgets row">'
+    +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+    +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
+    +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
@@ -60567,7 +60703,54 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
+ zFoldWire(); rowFoldWire();
  stUniSync(r);}
+/* THE THREE CORNER BOXES' OWN WIRING, 17 November. stRender rewrites the
+   whole flow's innerHTML on every call (STV.dash flipping, a tab arrival,
+   a profile switch), so .zfold and .rowfold are new elements every time
+   and need their onclick and their aria state set again every time, the
+   same reason stWire, stAnaWire and the rest are called from here and
+   not once at boot. The left rail's own fold (ui/ui.js, colFold) is
+   wired once at boot instead, because #lfold is a fixture of the shell
+   that outlives every repaint; these two are not.
+
+   SAME SHAPE AS colFold/railFold, A NEW KEY EACH, kept in STORE rather
+   than STV: STV's own header says its state is "kept across a return to
+   the tab, never saved", which is exactly the "resets itself every
+   reload" problem a collapse control must not have. STORE is backed by
+   localStorage (ui/ui.js, bindStore), survives a reload and a profile
+   switch, and is read fresh on every call here, so neither one can ever
+   go stale against what the button says. */
+function zShut(){
+ try{var got=STORE.get('stzfold'); return got==='shut';}catch(e){return false;}}
+function zFoldPaint(shut){
+ document.body.classList.toggle('st-zshut',shut);
+ var b=document.getElementById('zfold'); if(!b)return;
+ var say=shut?'Open the Release column':'Close the Release column';
+ b.setAttribute('aria-expanded',shut?'false':'true'); b.setAttribute('aria-label',say);
+ if(typeof fbTip==='function')fbTip(b,say);}
+function zFoldWire(){
+ var b=document.getElementById('zfold'); if(!b)return;
+ zFoldPaint(zShut());
+ b.onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation();
+  var now=!document.body.classList.contains('st-zshut');
+  zFoldPaint(now);
+  try{STORE.set('stzfold',now?'shut':'open');}catch(err){}};}
+function rowShut(){
+ try{var got=STORE.get('strowfold'); return got==='shut';}catch(e){return false;}}
+function rowFoldPaint(shut){
+ document.body.classList.toggle('st-rowshut',shut);
+ var b=document.getElementById('rowfold'); if(!b)return;
+ var say=shut?'Open the widgets row':'Close the widgets row';
+ b.setAttribute('aria-expanded',shut?'false':'true'); b.setAttribute('aria-label',say);
+ if(typeof fbTip==='function')fbTip(b,say);}
+function rowFoldWire(){
+ var b=document.getElementById('rowfold'); if(!b)return;
+ rowFoldPaint(rowShut());
+ b.onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation();
+  var now=!document.body.classList.contains('st-rowshut');
+  rowFoldPaint(now);
+  try{STORE.set('strowfold',now?'shut':'open');}catch(err){}};}
 /* MOUNT OR PARK HER, THE ONE PLACE THIS PAGE DECIDES IT, round TF plus 13
    November. A worked example gets none (show only, nothing she would react
    to is the person's own), TAB.STORY's own leave in panels.js parks her.
@@ -98968,14 +99151,20 @@ function colShut(){
     the menu the surface is for, and shut at every width on Knowledge */
  var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
- /* THE JOURNAL'S OWN RAIL NEVER FOLDS, 10 November, his words: "the left
-    menu, get rid of that close menu... merge that left menu into the
-    full panel." Its fold control is hidden now (.lfold, shell/head.html,
-    body.tab-story), so a person who shut it before this round, with the
-    control still live, would be stuck shut with no way back: the one
-    real reason a stored answer is skipped here and nowhere else below.
-    Every other surface's own stored fold still reads normally. */
- if(k==='lcols')return false;
+ /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
+    10 November ruling kept below for the record: his new annotated
+    screenshot asks for exactly the door that round removed, "closes
+    left if I click that left box," which is new information and not a
+    challenge to the old ruling, so the seats make the change rather
+    than relitigate it. The one real reason the stored answer was
+    skipped, a hidden control with no way back, is gone now that
+    .lfold is shown again on body.tab-story.st-full (shell/head.html):
+    this key reads its stored answer exactly as every other surface's
+    does, below, defaulting open (dflt, above) the same way Flow's menu
+    and the Compass's own rail do not default shut either.
+    WHAT THIS REPLACED: "if(k==='lcols')return false;", which hard coded
+    the Journal's rail open regardless of what was stored, because its
+    one door to shut it did not exist. */
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }
@@ -100642,5 +100831,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006723599"></div>
+<div id="eof" hidden data-len="006736163"></div>
 </body></html>

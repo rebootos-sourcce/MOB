@@ -37,8 +37,10 @@
         absence; the line itself still moves correctly)
      7  leaving the tab clears the rail and the class; coming back in Full
         draws both again
-     8  the Journal's fold is its own key, and folding it moves nothing on the
-        Field (1600 only, where the column sits beside the stage)
+     8  THE FOLD IS BACK, 17 November, OVERRIDDEN: the Journal's own rail
+        folds again under its own key, and folding it moves nothing on
+        the Field's own key (1600 only, where the column sits beside
+        the stage)
      9  Dashboard pressed again is Simple, exactly as before
     10  a profile change in Full leaves none of the last person's words, rail,
         page text or parse on screen, writes nothing onto the new
@@ -105,13 +107,16 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(s1.dash&&s1.chat&&s1.full&&!s1.simple&&s1.cols,at+'Dashboard turns on Full with chat still on, '+JSON.stringify({dash:s1.dash,chat:s1.chat,full:s1.full,simple:s1.simple}));
   ok(s1.lcol==='flex'&&s1.rw>0&&s1.rh>0,at+'and the left column is back with the rail in it, '+JSON.stringify({lcol:s1.lcol,lw:s1.lw,rw:s1.rw,rh:s1.rh}));
   ok(!s1.shut,at+'the Journal\'s left column arrives open in Full');
-  /* NO FOLD HERE ANY MORE, 10 November, his words: "the left menu, get
-     rid of that close menu... merge that left menu into the full
-     panel." .lfold is hidden on the Journal now (shell/head.html,
-     body.tab-story .lfold), so #lpanel's own shown list is #stleft
-     alone, not #stleft and its fold. */
-  ok(s1.shown.length===1&&s1.shown.indexOf('stleft')>=0,
-   at+'the rail is #stleft alone, its fold gone and nothing of the Field\'s, got '+s1.shown.join(','));
+  /* THE FOLD IS BACK, 17 November, OVERRIDDEN from the 10 November
+     ruling kept below for the record: his new annotated screenshot
+     names this exact control, "closes left if I click that left box."
+     #lpanel's own shown list is #stleft and #lfold now, the same pair
+     every other surface's own rail already shows.
+     WHAT THIS REPLACED, 10 November, his words then: "the left menu,
+     get rid of that close menu... merge that left menu into the full
+     panel." */
+  ok(s1.shown.length===2&&s1.shown.indexOf('stleft')>=0&&s1.shown.indexOf('lfold')>=0,
+   at+'the rail is #stleft and its fold, nothing of the Field\'s, got '+s1.shown.join(','));
   /* 334 since 16 November: the rail is a card set into a grey frame now,
      and the 32 extra pixels are that frame's trim, so the tiles inside it
      keep their size (shell/head.html, the comment at this grid). */
@@ -233,29 +238,42 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(s4.fieldSec!=='none',at+'and the Field\'s left rail is the Field\'s again, '+s4.fieldSec);
   ok(s4.backFull&&s4.backDash&&s4.backRows===7,at+'coming back in Full draws the class and all seven seats again, '+JSON.stringify(s4));
 
-  /* 8. NO FOLD ON THE JOURNAL ANY MORE, 10 November. His words: "the left
-     menu, get rid of that close menu... merge that left menu into the full
-     panel." #lfold is display:none on body.tab-story (shell/head.html) and
-     colShut() hard codes false for 'lcols' (ui/ui.js), so the Journal's
-     rail can never be shut and there is no fold key here to press any
-     more. What this item checked before, that folding the Journal's own
-     rail left the Field's lcol key alone, no longer applies, there is
-     nothing of the Journal's left to fold. What still holds is checked
-     here instead: the rail stays open through a round trip to the Field
-     and back, and never writes to lcols. */
+  /* 8. THE FOLD IS BACK, 17 November, OVERRIDDEN from the 10 November
+     ruling kept below for the record: his new annotated screenshot
+     names this exact control, "be able to minimize that left panel...
+     closes left if I click that left box." .lfold is shown again on
+     body.tab-story.st-full (shell/head.html) and colShut() reads a
+     stored answer for 'lcols' now, the same shape every other
+     surface's own key already reads (ui/ui.js). Checked here: the
+     control is visible and open on arrival, pressing it shuts the
+     rail and writes 'lcols', a round trip to the Field and back
+     leaves the Journal shut and never touches the Field's own 'lcol'
+     key, and pressing it again reopens the rail with nothing stuck.
+     WHAT THIS REPLACED, 10 November, his words then: "the left menu,
+     get rid of that close menu... merge that left menu into the full
+     panel." */
   if(wn==='desktop'){
-   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols'),
-     fold:getComputedStyle(document.getElementById('lfold')).display}));
-   ok(k0.fold==='none',at+'the Journal has no fold key to press, '+JSON.stringify(k0));
-   const k1=await p.evaluate(async()=>{const o={shut:document.body.classList.contains('lshut')};
+   const k0=await p.evaluate(()=>({lcols:STORE.get('lcols'),lcol:STORE.get('lcol'),
+     fold:getComputedStyle(document.getElementById('lfold')).display,
+     shut:document.body.classList.contains('lshut')}));
+   ok(k0.fold!=='none',at+'the Journal has its fold back to press, '+JSON.stringify(k0));
+   ok(!k0.shut,at+'and it arrives open, '+JSON.stringify(k0));
+   await press(p,'#lfold',ok,at+'the Journal\'s own fold');
+   await p.waitForTimeout(250);
+   const k1=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')}));
+   ok(k1.shut&&k1.lcols==='shut',at+'pressing it shuts the rail and writes lcols, '+JSON.stringify(k1));
+   const k2=await p.evaluate(async()=>{const o={};
     setTab(TAB.FIELD); render(); await new Promise(r=>setTimeout(r,200));
-    o.fieldShut=document.body.classList.contains('lshut');
+    o.fieldShut=document.body.classList.contains('lshut'); o.lcol=STORE.get('lcol');
     setTab(TAB.STORY); render(); await new Promise(r=>setTimeout(r,200));
-    o.backShut=document.body.classList.contains('lshut');
-    o.lcols=STORE.get('lcols');
+    o.backShut=document.body.classList.contains('lshut'); o.lcols=STORE.get('lcols');
     return o;});
-   ok(!k1.shut&&!k1.backShut&&k1.lcols===k0.lcols,
-    at+'the Journal\'s rail stays open through the Field and back, and writes nothing to lcols, '+JSON.stringify({k0,k1}));}
+   ok(k2.backShut&&k2.lcols==='shut'&&k2.lcol===k0.lcol,
+    at+'the Journal\'s own shut rail survives the Field and back, and never writes the Field\'s own lcol key, '+JSON.stringify({k0,k2}));
+   await press(p,'#lfold',ok,at+'the Journal\'s own fold, reopened');
+   await p.waitForTimeout(250);
+   const k3=await p.evaluate(()=>({shut:document.body.classList.contains('lshut'),lcols:STORE.get('lcols')}));
+   ok(!k3.shut&&k3.lcols==='open',at+'and pressing it again reopens the rail, '+JSON.stringify(k3));}
 
   /* 9. Dashboard again is Simple */
   await p.evaluate(()=>window.scrollTo(0,0));
@@ -369,11 +387,13 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(e2.line===e0.line&&e2.reach===0,at+'and its own words trip the line, still no door, '+JSON.stringify(e2));
   await p.evaluate(()=>{ST_TEXT=''; ST_PARSED=null; stDraft(); profDelete(CURP.id);});
   await p.evaluate(()=>{loadP(0); setTab(TAB.STORY); render();});
-  /* NO FOLD ON THE JOURNAL ANY MORE, 10 November, see the note at item 8
-     above. The reopen fade this checked (rmVisible, ui/railmotion.js,
-     railOpened) fires on #lfold's press, which does not exist here any
-     more. What is still true, and worth holding: the rail sits open with
-     no fade running at all, nothing left to fold or reopen. */
+  /* THE FOLD IS BACK, 17 November, see the note at item 8 above. This
+     path is a fresh profile load and a plain render(), never a press
+     on #lfold, so railOpened's own reopen fade (ui/railmotion.js),
+     which only fires from colFold's own onclick, has nothing to fire
+     from here either way. What this checks stays what it checked
+     before the control came back: the rail sits open with no fade
+     running. */
   if(wn==='desktop'){
    await p.waitForTimeout(300);
    const an=await p.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));

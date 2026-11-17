@@ -775,14 +775,20 @@ function colShut(){
     the menu the surface is for, and shut at every width on Knowledge */
  var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
- /* THE JOURNAL'S OWN RAIL NEVER FOLDS, 10 November, his words: "the left
-    menu, get rid of that close menu... merge that left menu into the
-    full panel." Its fold control is hidden now (.lfold, shell/head.html,
-    body.tab-story), so a person who shut it before this round, with the
-    control still live, would be stuck shut with no way back: the one
-    real reason a stored answer is skipped here and nowhere else below.
-    Every other surface's own stored fold still reads normally. */
- if(k==='lcols')return false;
+ /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
+    10 November ruling kept below for the record: his new annotated
+    screenshot asks for exactly the door that round removed, "closes
+    left if I click that left box," which is new information and not a
+    challenge to the old ruling, so the seats make the change rather
+    than relitigate it. The one real reason the stored answer was
+    skipped, a hidden control with no way back, is gone now that
+    .lfold is shown again on body.tab-story.st-full (shell/head.html):
+    this key reads its stored answer exactly as every other surface's
+    does, below, defaulting open (dflt, above) the same way Flow's menu
+    and the Compass's own rail do not default shut either.
+    WHAT THIS REPLACED: "if(k==='lcols')return false;", which hard coded
+    the Journal's rail open regardless of what was stored, because its
+    one door to shut it did not exist. */
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
 function colTab(){ colFoldPaint(colShut()); }

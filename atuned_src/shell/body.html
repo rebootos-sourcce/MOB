@@ -768,11 +768,23 @@
     <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
      <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
    <div class="gmenu" id="lightmenu" hidden>
+    <!-- THE PARAGRAPH BELOW THIS ROW IS GONE, 17 November, his words: "under
+         the lighting, there's a bunch of text. We don't need that. The user
+         can explore and figure out what kind of lighting scenario they want.
+         When I, whichever one they change, they see the name." It also
+         described four lightings by name on a menu that had grown to seven
+         (LIGHTINGS, ui/panels.js) without the sentence growing with it, the
+         same defect CLAUDE.md names against a count typed into a paragraph
+         the product then grows past. Nothing is added in its place: every
+         button in the row below already carries its own name as a real
+         tooltip (title and aria-label, both t[1], ui/panels.js), and the
+         lighting that is on is the bar's own button's name, "Lighting,
+         Dark" and so on, kept current on every choice by setLighting. A
+         person who presses a lighting sees its name the moment they hover
+         or focus either button, which is the existing affordance this
+         fix reuses rather than invents. -->
     <div class="gmenu-hd">Lighting</div>
     <div class="seg" id="themes"></div>
-    <p class="gmenu-p">Dark is the default. Snow is the same instrument on
-     paper. Punch removes every outline and fills every shape. Glass puts the
-     panes in front of a moving ground and lets them refract it.</p>
    </div>
   </div>
   <!-- THE PROFILE LOADER, A CIRCLE BESIDE HELP. GF, his words: "the load
