@@ -841,7 +841,19 @@ function stRender(){
      content, never her canvas, is what the rest of tonight's change gates
      on dashTB. Hero and the crisis/novoice legacy box are untouched: for
      them this still cuts the whole block exactly as it did before. */
-  +(show?showNote('story','st-show'):((STV.typed&&!dashTB)?'':'<div class="st-glow">'
+  /* AND A WORKED EXAMPLE KEEPS HER BOX, 17 November, his report: "source ai
+     not loading in big dashboard", off Sofia's Dashboard. This ternary put
+     the example's note where the whole .st-glow block goes, #stuni with
+     it, so on every example the face had no host to mount into and
+     stUniSync found nothing and parked her: measured, #stuni null in the
+     document and #srcface hidden in the parked widget in document.body,
+     on this build and on 1232842d alike. The note is kept, it is what says
+     an example runs nothing; it takes #stsrc's place under her, and #stsrc
+     stays out because the question it carries is asked of the person's
+     own record and an example answers nothing. */
+  +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
+    +showNote('story','st-show')+'</div>'
+   :((STV.typed&&!dashTB)?'':'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -1376,10 +1388,24 @@ function stUniSync(r){
     already true costs nothing to set true again). */
  var un=document.getElementById('stuni');
  if(!un){ if(typeof uniPark==='function')uniPark(); return; }
- var show=typeof showOnly==='function'&&showOnly();
+ /* A WORKED EXAMPLE IS LOADED UP TOO, 17 November, his report: "source ai
+    not loading in big dashboard", off a screenshot of Sofia's Dashboard
+    with the example's own note in the centre and nothing above it. This
+    gated on !showOnly() as well, the round TF rule that a worked example
+    gets no Uni because nothing she would react to is the person's own,
+    and stRender wrote no #stuni on an example either (see the note at
+    .st-glow), so both halves had to move. Measured: Sofia reads unread
+    false and #srcface sat hidden in the parked widget in document.body,
+    on this build and on 1232842d before tonight's intro and replies work,
+    so it is not a regression from either. Since 16 November the occupant
+    of #stuni is Source's face, which draws the record's own reading, and
+    an example has a whole one to draw. His 13 November words below say
+    "no persona loaded up" is the case for an empty box, and a persona
+    loaded up is exactly what an example is. uniApply writes nothing, so
+    showing her here runs nothing on an example's record. */
  var seen=r||(typeof computeSeen==='function'?computeSeen():null);
  var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread);
- if(!show&&loaded){
+ if(loaded){
   if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
       same off switch the boot uses, 12 November. */
