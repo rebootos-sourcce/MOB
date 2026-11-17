@@ -220,6 +220,16 @@ jobs:
       # It takes no if, for the reason the chrome-path step takes none.
       - name: every test file is run by a job
         run: node tools/orphans.js --self-test && node tools/orphans.js
+      # THE FLAKE LEDGER AND THE NIGHTLY'S READ OF IT, 17 November. The nightly
+      # runs only at night and on main, so a change to what its table says
+      # about a failure would be found out the next morning at the earliest.
+      # tools/flakes.js --self-test (it also reads tests/flakes.json and fails
+      # on a malformed ledger) and tools/gates-repeat.js --self-test, which
+      # holds the NEW, SUSPECTED, KNOWN and UNNAMED verdicts to fixtures and a
+      # scratch ledger, run here on every push and pull request. Neither was
+      # run by any job before. No if, for the reason the orphans step has none.
+      - name: flake ledger and the nightly's verdicts
+        run: node tools/flakes.js --self-test && node tools/gates-repeat.js --self-test
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
