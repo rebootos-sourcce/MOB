@@ -419,10 +419,43 @@ function avAgo(d){return d<=0?'today':d===1?'yesterday':d+' days ago';}
 /* ---------------- the release protocol ----------------
    queueFor, from proto/avatar/seats4, body kept. The run's length is the
    plan the release card will print, read without starting anything. */
+/* THE AVATAR'S INSTRUCTION, AVS4, read once per change of what the person put
+   on it. avatarMarks (engine/avatar.js) parses every release line, so it is
+   kept against the pairs, the tags and the releasing sentence that made it
+   and read again only when one of those moves. Every release door asks
+   avRank, the Discover panel included, so there is one sorting rule. */
+var AV_MK={key:null, M:null};
+function avMarksNow(){
+ var av=(typeof CURP!=='undefined'&&CURP&&CURP.avatar)||null;
+ var key=av?JSON.stringify([av.pairs||[],av.tags||{},av.shedName||'',av.shedDescription||'']):'';
+ if(AV_MK.key!==key){AV_MK.key=key;
+  AV_MK.M=avatarMarks(av,parseStory,typeof readSeat==='function'?readSeat:null);}
+ return AV_MK.M;}
+function avRank(list){return avatarRank(list,avMarksNow());}
+function avWhyNow(n){return avatarWhy(n,avMarksNow());}
+/* the words for why an address is first, from the tag or seat that put it
+   there. One sentence, read on hover and by a screen reader. */
+function avWhySay(w){
+ if(!w)return '';
+ var at=w.b&&AV_THE[w.b]?' at '+AV_THE[w.b]:'';
+ if(w.k==='named')return 'First, because you tagged '+avTagNm(w.t)+at+' on your avatar.';
+ if(w.k==='here')return 'First, because your avatar is releasing '+w.t+at+'.';
+ if(w.k==='there')return 'First, because your avatar is releasing '+w.t+(w.b?at:', in who you are releasing')+'.';
+ return 'First, because your avatar has a story'+at+'.';}
+/* ONE SEAT'S RELEASE, ordered by the avatar first since AVS4: a tagged
+   fetter at this seat goes ahead of a heavier untagged one. The heavy cut is
+   unchanged, so a light tagged address never pushes out a held one. */
 function avQueue(seat){
- var at=W.filter(function(n){return n.b===seat&&n.sq>0&&n.cf;}).sort(function(a,b){return b.sq-a.sq;});
+ var at=avRank(W.filter(function(n){return n.b===seat&&n.sq>0&&n.cf;}));
  var hot=at.filter(function(n){return n.sq>=4;});
  return (hot.length?hot:at).slice(0,8);}
+/* THE WHOLE AVATAR'S RELEASE, AVS4: every address the avatar pulls that still
+   carries charge, in the order the instruction sets. This is what the page
+   shows a person their tags did, and what one press runs. */
+var AV_FIRST=6;
+function avQueueAll(){
+ var M=avMarksNow();
+ return avatarRank(W.filter(function(n){return n.sq>0&&n.cf&&avatarPull(n,M)>0;}),M).slice(0,AV_FIRST);}
 function avMinutes(q){
  if(!q.length||!CURP||typeof meterPlanWhole!=='function'||typeof relBudget!=='function')return null;
  var cap=relBudget(); if(cap<=0)return 0;
@@ -613,7 +646,7 @@ function avState(){
     the sniffer hears it at, because that is where the load it is measured
     against lives. Before this round both were the heard seat, so an older
     pair is placed exactly where it always was. */
- var areas={}, bySeat={};
+ var areas={}, bySeat={}, st0={r:r, M:avMarksNow()};
  AV_AREAS.forEach(function(A){
   var mine=rows.filter(function(x){return avSeatOf(x)===A.b;});
   /* the one a row shows is the newest written at this seat, and a pair the
@@ -621,7 +654,16 @@ function avState(){
   var own=mine.filter(function(x){return x.pair.seat===A.b;});
   bySeat[A.b]=(own.length?own:mine).slice(-1)[0]||null;
   var cs=mine.map(function(x){return x.c;}).filter(function(v){return v!=null;});
-  areas[A.k]={rows:mine, set:mine.length>0,
+  /* WHAT THE SEAT IS DOING NOW, AVS5. His words: "The seven seats here aren't
+     really telling, not giving us any information." A ring said only whether
+     a story was written there. It now carries what is held at the seat, the
+     addresses at 4 or more, which is r.loaded, the line every surface counts
+     held at, and how many of the seat's carrying addresses the avatar puts
+     first in the release queue (AVS4). Both are counts of real addresses on
+     this profile, never a share, so nothing is a mark out of a total. */
+  var held=st0.r.unread?0:(st0.r.loaded||[]).filter(function(n){return n.b===A.b;}).length;
+  var first=st0.r.unread?0:W.filter(function(n){return n.b===A.b&&n.sq>0&&n.cf&&avatarPull(n,st0.M)>0;}).length;
+  areas[A.k]={rows:mine, set:mine.length>0, held:held, first:first,
    pct:cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null};});
  var cs=rows.map(function(x){return x.c;}).filter(function(v){return v!=null;});
  var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;
@@ -645,6 +687,7 @@ function avState(){
     read, speaks to the wrong person. Examples keep what they showed before. */
  var written=!avOwn()||rows.length>0||!!((CURP&&CURP.story&&CURP.story.entries)||[]).length;
  return {r:r, side:side, rows:rows, areas:areas, bySeat:bySeat, overall:overall, lead:lead, seat:seat,
+  first:r.unread?[]:avQueueAll(),
   run:avRunning(r,seats,written), rit:avRituals(r,rows,side.rule), cyc:avCycles(CURP),
   top:rated[0]?avArchByName(rated[0]):null};}
 
@@ -703,6 +746,10 @@ function avRing(st){
   var c=avPos(x.a,ORB), A=st.areas[x.k];
   var has=A.rows.length>0, on=sel===x.b, col=seatCol(x.b);
   if(on)s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+(SR+2.4)+'" class="avh-halo" style="stroke:'+col+'"/>';
+  /* the pull ring, AVS5: dashed, in the seat's colour, round a seat whose
+     addresses the avatar puts first in the release queue. A ring and not a
+     fill, by the standing rule on icons. */
+  if(A.first>0)s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+(SR+1.3)+'" class="av-pull" style="stroke:'+col+'"/>';
   s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+SR+'" class="av-sring" style="stroke:'
    +(has||on?col:'var(--edge-2)')+';stroke-opacity:'+(on?1:has?.45:1)+';stroke-width:'+(on?1:.6)+'"/>';
   if(A.pct!=null&&A.pct>0)
@@ -720,11 +767,18 @@ function avRing(st){
   +'</div>';
  var sats=AV_AREAS.map(function(x){
   var c=avPos(x.a,ORB), A=st.areas[x.k], on=sel===x.b;
-  return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+'" data-avsat="'+x.k+'" style="left:'
-   +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+', '
-   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+fmtPct('complete',A.pct)+' complete')+'">'
+  /* what the ring says, AVS5, in words on hover, on a tap and to a screen
+     reader: the story, what is held, and what the avatar puts first. The
+     count badge and the dashed ring are the same two facts drawn. */
+  var say=(A.set?'Story written.':'Nothing written.')
+   +(st.r.unread?'':' '+(A.held?A.held+(A.held===1?' address':' addresses')+' held.':'Nothing held.'))
+   +(A.first?' '+A.first+(A.first===1?' address goes':' addresses go')+' first in your release, from your avatar.':'');
+  return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+(A.first?' avh-first':'')+'" data-avsat="'+x.k+'" style="left:'
+   +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+'. '+say
+   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' complete.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
    +avSvg(AV_IC[x.k])
-   +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')+'</button>';}).join('');
+   +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')
+   +(A.held?'<span class="avs-n" aria-hidden="true">'+A.held+'</span>':'')+'</button>';}).join('');
  /* each ring's name sits under it. Inside the orbit, where GG put them, the
     larger rings covered half of every name. */
  var labs=AV_AREAS.map(function(x){var l=avPos(x.a,ORB);
@@ -1112,6 +1166,33 @@ function avPairs(st){
   return '<div class="av-pair"><span class="av-pair-ic">'+avSvg(AV_IC.person)+'</span>'
    +'<span class="av-pair-t">'+esc(x.pair.be)+'</span>'
    +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}).join('')+'</section>';}
+
+/* ---------------- release first, AVS4 ----------------
+   What the person's tags and stories did, shown where they put them. The rows
+   are the addresses avQueueAll orders, the avatar's pull first and the charge
+   second, each in the node ring the Discover release draws, with the tag or
+   seat that put it there under its name and the whole reason on hover. One
+   press runs them, through relPick, the shipped door. No card at all until
+   the avatar carries a story or a tag, because there is no instruction yet;
+   once it does and nothing it names carries charge, the slot says nothing
+   held, the product's one wording for that state. */
+function avFirstHTML(st){
+ var av=(CURP&&CURP.avatar)||null;
+ var any=av&&(((av.pairs||[]).length>0)||Object.keys(av.tags||{}).some(function(b){
+  var t=av.tags[b]; return t&&Array.isArray(t.add)&&t.add.length>0;}));
+ if(!any||st.r.unread)return '';
+ var Q=st.first, out='<section class="av-card avq"><div class="pm-eye">Release first</div>';
+ if(!Q.length)return out+'<p class="av-p">Nothing held.</p></section>';
+ out+='<div class="avq-list">'+Q.map(function(n){
+  var w=avWhyNow(n), lab=w&&w.t?avTagNm(w.t):(AV_OF[n.b]?AV_OF[n.b].nm:n.b);
+  return '<div class="avq-one" style="--c:'+seatCol(n.b)+'" data-tip-t="'+esc(avTagNm(n.k))+'" data-tip="'+esc(avWhySay(w))+'" tabindex="0"'
+   +' aria-label="'+esc(avTagNm(n.k)+', '+(AV_THE[n.b]||n.b)+'. '+avWhySay(w))+'">'
+   +crNode(n,'sm',{raw:'',title:''})
+   +'<span class="avq-t"><b>'+esc(avTagNm(n.k))+'</b><i>'+esc(lab)+'</i></span></div>';}).join('')+'</div>';
+ if(!showOnly()){var m=avMinutes(Q);
+  out+='<div class="av-act"><button type="button" class="btn pri av-go" data-avfirst="1">Release'
+   +(m!==null?'<small>'+avMinSay(m)+'</small>':'')+'</button></div>';}
+ return out+'</section>';}
 
 /* ---------------- running, as rows ---------------- */
 function avRunHTML(st){
@@ -1647,6 +1728,37 @@ var AV_CSS=[
  '.avi-wide{grid-column:1/-1}',
  '.avi-f input,.avi-f textarea{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;resize:vertical}',
  '.avi-act{grid-column:1/-1;display:flex;gap:10px}',
+ /* AVS3, the header as the two people: who is released at the left edge, the
+    subtabs in the middle, who is become at the right edge, even either side.
+    Read against the page's own width, as the hero row is: under 860 the
+    subtabs take the first line and the two people share the second, and
+    under 560 each takes its own. */
+ '#avbody .avs-who{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px 20px}',
+ '.avw{display:flex;min-width:0}',
+ '.avw-l{justify-content:flex-start}',
+ '.avw-r{justify-content:flex-end}',
+ '.avw .avi{flex:0 1 auto}',
+ '.avw-l .avi{justify-content:flex-start}',
+ '.avi-shed .avi-mk{border-style:dashed;border-color:var(--mid);color:var(--mid)}',
+ '#avbody .av>.avi-ed{margin:12px 0 4px}',
+ '@container (max-width:860px){#avbody .avs-who{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#avbody .avs-who .avs-subs{grid-column:1/-1;order:-1;justify-self:center}}',
+ '@container (max-width:560px){#avbody .avs-who{grid-template-columns:minmax(0,1fr)}#avbody .avs-who .avw{justify-content:flex-start}}',
+ /* AVS5, each seat says what it holds. The count is the seat's held
+    addresses, set in the seat's colour on the ring's left edge, level with
+    its middle: the lower left was tried first and at 1600 the Love badge sat
+    on the word Love, since every name hangs just under its ring. The tick
+    keeps the upper right. The dashed ring round a seat is the avatar putting
+    its addresses first. Both are read out on hover and tap. */
+ '.av-sat .avs-n{position:absolute;left:-11px;top:50%;transform:translateY(-50%);min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--panel);border:1.5px solid var(--c);color:var(--ink);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;line-height:1}',
+ '.av-pull{fill:none;stroke-width:.45;stroke-dasharray:1.2 .9;opacity:.95}',
+ /* AVS4, release first: the avatar's order, one ring and one name an address */
+ '.avq{margin:16px 0 0}',
+ '.avq-list{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 12px}',
+ '.avq-one{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:4px 14px 4px 4px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge));background:var(--panel);cursor:default}',
+ '.avq-one:focus-visible{outline:2px solid var(--ink);outline-offset:2px}',
+ '.avq-t{display:flex;flex-direction:column;gap:1px;line-height:1.2;min-width:0}',
+ '.avq-t b{font-size:14px;font-weight:600;color:var(--ink)}',
+ '.avq-t i{font-style:normal;font-size:12.5px;color:var(--mid)}',
  /* PURPOSE, round RB, S3: the figure is the art and takes the left, the
     fields are text and take the right, the house rule for a centre column */
  '.avp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:28px;align-items:start;margin-top:8px}',
@@ -1696,11 +1808,25 @@ function avCss(){
  document.head.appendChild(s);}
 
 /* ---------------- the surface ---------------- */
+/* WHO IS RELEASED ON THE LEFT, WHO IS BECOME ON THE RIGHT, AVS3, 17
+   November. His words, 20 September: "The right side would be the becoming,
+   the left side would be release. Who is the person I'm releasing, right
+   side, who's the person I'm becoming. And you should be able to edit that and
+   modify it." The ring's two columns already put the release line left and
+   the embody line right, seat by seat; what was missing was the person each
+   side adds up to. The header is that row now: the releasing person at the
+   left edge, the subtabs centred, the becoming person at the right edge, the
+   same left and right the columns under it keep, and even either side of the
+   middle, by the standing symmetry ruling. An open editor takes the row under
+   the header, full width, rather than squeezing into its own third. */
 function avHead(st){
- var h='<header class="av-hd avs-top"><div class="avs-subs" role="group" aria-label="Avatar">'
+ var own=avOwn(), edR=own&&AV.shedEdit, edB=own&&AV.idEdit&&!edR;
+ var h='<header class="av-hd avs-top avs-who"><div class="avw avw-l">'+(edR?'':avShedHTML())+'</div>'
+  +'<div class="avs-subs" role="group" aria-label="Avatar">'
   +AV_SUBS.map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
-  +'</div>'+avIdHTML()+'</header>';
+  +'</div><div class="avw avw-r">'+(edB?'':avIdHTML())+'</div></header>';
+ if(edR)h+=avShedForm(); else if(edB)h+=avIdHTML();
  /* THE LINE IS GONE, round LV. What used to sit here in its place: the tag
     summary, above the ring rather than a paragraph explaining the ring. */
  if(AV.sub==='becoming')h+=avTagSummary(st);
@@ -1715,12 +1841,12 @@ function renderAvatar(){
  var who=S.who+'|'+(CURP&&CURP.id);
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
-  AV.idEdit=false; AV.side=null;}
+  AV.idEdit=false; AV.shedEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
-  h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
+  h+=avFirstHTML(st)+avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
  else{
@@ -1764,7 +1890,10 @@ function avSig(){
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
  var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
  /* the identity and the purpose map are the page's too since round RB */
- var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt].join('/');
+ /* and since AVS3 and AVS4 who is released, and the tags, which order the
+    release first card, so a tag changed from anywhere repaints the order */
+ var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt,A.shedName,A.shedDescription].join('/')
+  +JSON.stringify(A.tags||{});
  var pu=JSON.stringify(p.purpose||{});
  return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu].join('|');}
 function avRefresh(){
@@ -1837,6 +1966,9 @@ function avBind(host,st){
   var x=st.bySeat[bb]; if(!x||!x.gap)return;
   var q=avQueue(x.gap.seat); if(!q.length)return;
   relPick(q.map(function(n){return n.i;})); avWatch(bb);});
+ /* release first, AVS4: the avatar's own order, run as it stands */
+ on('[data-avfirst]',function(){var q=st.first; if(!q.length)return;
+  relPick(q.map(function(n){return n.i;})); avWatch(null);});
  on('[data-avdil]',function(el){avDilemma(+el.dataset.avdil,+el.dataset.avdv);});
  avIdBind(host); avPurBind(host);
  /* the boxes. The lit layer takes the text at once, because the textarea's
@@ -1914,9 +2046,49 @@ function avIdHTML(){
   +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
   +(own?'<button type="button" class="avi-pen" data-avidedit aria-label="Change who you are becoming" title="Change who you are becoming">'
    +avSvg(AVI_PEN)+'</button>':'')+'</span>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+/* THE PERSON BEING RELEASED, AVS3. The becoming half's own shape cut to two
+   fields, a name and one sentence: a title is how a person introduces who
+   they are becoming and nobody introduces who they are leaving. The mark is
+   the same figure drawn in a broken line, the person coming apart, so the two
+   ends of the header read as one figure whole and the same figure going.
+   What is written here is an instruction too: avatarMarks reads the sentence
+   the way it reads a release line, so a fetter heard in it goes first in the
+   release queue (AVS4). */
+var AVI_SHED='<circle cx="12" cy="8" r="3.6" stroke-dasharray="2.2 2"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6" stroke-dasharray="2.2 2"/>';
+function avShedHTML(){
+ var av=(CURP&&CURP.avatar)||avatarBlank(), own=avOwn();
+ var nm=String(av.shedName||''), de=String(av.shedDescription||'');
+ if(!nm&&!de){
+  if(!own)return '';
+  return '<div class="avi avi-shed"><button type="button" class="avi-add" data-avshededit>'+avSvg(AVI_SHED)
+   +'<span>Name who you are releasing</span></button></div>';}
+ return '<div class="avi avi-shed"><span class="avi-main"><span class="avi-mk" aria-hidden="true">'+avSvg(AVI_SHED)+'</span>'
+  +'<span class="avi-t"><span class="avi-n"><b>'+esc(nm||'Unnamed')+'</b></span>'
+  +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
+  +(own?'<button type="button" class="avi-pen" data-avshededit aria-label="Change who you are releasing" title="Change who you are releasing">'
+   +avSvg(AVI_PEN)+'</button>':'')+'</span></div>';}
+function avShedForm(){
+ var av=(CURP&&CURP.avatar)||avatarBlank();
+ return '<div class="avi avi-ed avi-shed" data-avshedform>'
+  +'<label class="avi-f"><span>Name</span><input data-avshed="shedName" maxlength="'+AV_CAP.shedName+'" value="'+esc(av.shedName||'')+'" '
+  +'placeholder="What you call who you are releasing"></label>'
+  +'<label class="avi-f avi-wide"><span>In one sentence</span><textarea data-avshed="shedDescription" rows="2" maxlength="'+AV_CAP.shedDescription+'" '
+  +'placeholder="Who you are releasing, in your words">'+esc(av.shedDescription||'')+'</textarea></label>'
+  +'<div class="avi-act"><button type="button" class="btn pri" data-avshedsave>Save</button>'
+  +'<button type="button" class="btn" data-avshedcancel>Cancel</button></div></div>';}
 function avIdBind(host){
+ host.querySelectorAll('[data-avshededit]').forEach(function(el){el.onclick=function(){
+  AV.shedEdit=true; AV.idEdit=false; renderAvatar(); var f=host.querySelector('[data-avshed="shedName"]'); if(f)f.focus();};});
+ host.querySelectorAll('[data-avshedcancel]').forEach(function(el){el.onclick=function(){AV.shedEdit=false; renderAvatar();};});
+ host.querySelectorAll('[data-avshedsave]').forEach(function(el){el.onclick=function(){
+  var v={}; host.querySelectorAll('[data-avshed]').forEach(function(f){v[f.dataset.avshed]=String(f.value||'').trim();});
+  /* the same refusal the boundary gives, said before anything is written */
+  var bad=['shedName','shedDescription'].filter(function(k){return (v[k]||'').length>AV_CAP[k];})[0];
+  if(bad){status('Not saved. The '+(bad==='shedName'?'name':'sentence')+' is longer than '+AV_CAP[bad]+' characters.','fail');return;}
+  if(avRecWrite(function(av){av.shedName=v.shedName||''; av.shedDescription=v.shedDescription||'';},'Saved.')){
+   AV.shedEdit=false; renderAvatar();}};});
  host.querySelectorAll('[data-avidedit]').forEach(function(el){el.onclick=function(){
-  AV.idEdit=true; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
+  AV.idEdit=true; AV.shedEdit=false; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
  host.querySelectorAll('[data-avidcancel]').forEach(function(el){el.onclick=function(){AV.idEdit=false; renderAvatar();};});
  host.querySelectorAll('[data-avidsave]').forEach(function(el){el.onclick=function(){
   var v={}; host.querySelectorAll('[data-avid]').forEach(function(f){v[f.dataset.avid]=String(f.value||'').trim();});

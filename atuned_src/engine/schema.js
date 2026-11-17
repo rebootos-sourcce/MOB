@@ -1554,7 +1554,8 @@ function validateProfile(o,ctx){
   /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
      version and a status. Text is bounded and never edited; a wrong type or a
      length past the cap is refused by name, never cut. */
-  ['name','title','description'].forEach(function(f){
+  /* and who is being released, AVS3, 17 November, under the same rule */
+  ['name','title','description','shedName','shedDescription'].forEach(function(f){
    var v=o.avatar[f]; if(v===undefined||v===null)return;
    if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
    else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);

@@ -1372,7 +1372,21 @@ const MASKS=[
  {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 11.65h14',
   v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
- {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
+ /* SOLAR AND HEART, NOT SOLAR AND THROAT, MS25, 17 November. Professional and
+    Preteen both sat at ['Solar','Throat'], so they were read off the same 28
+    addresses and their figures could never differ on any profile: measured
+    and reported at rounds GI, MS and the masks pass, and the reason he hid
+    Professional at round NE ("Preteen is very similar ... Just hide it for
+    now. Don't calculate it."). Preteen keeps its seats, so no live reading
+    moves: Professional is out of MASKS_READ and computes nothing.
+    Throat goes to Heart because of the mask's own line, "performs competence
+    until the feeling passes": the competence is the solar plexus, what you
+    carry, and the feeling it waits out is the heart, what you give. It also
+    puts the heart under a mask, which his round MT ruling asks of all seven
+    ("all the chakras should be in the masks"). The crown is still under none,
+    and whether Professional comes back into the reading now its data is its
+    own is his call; neither is decided here. */
+ {nm:'Professional',b:['Solar','Heart'],ic:MASK_FACE+' M8 13h8v5H8z',
   v:'performs competence until the feeling passes'},
  /* A FLAT BAR ABOVE THE FACE, WORN WHERE A THOUGHT IS KEPT, ROUND MZ. This
     drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
@@ -1412,7 +1426,10 @@ const MASKS=[
    always been identical, and this is the stopgap while the real seven seat
    mapping, R1, stays open. MASKS itself keeps all six, since the body map's
    own seat patches and the glossary still name Professional; MASKS_READ is
-   the five a reading is ever taken on or shown for. */
+   the five a reading is ever taken on or shown for.
+   The shared pair above stopped being true on 17 November, MS25: Professional
+   sits at Solar and Heart now, so the reason for hiding it is gone and the
+   hide itself is not. Bringing it back is his to rule. */
 const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
@@ -6882,6 +6899,70 @@ function fmtPct(kind,value,opts){
  if(o.unread||p===null||p===0)return PCT_DASH;
  return p+'%';}
 
+/* ============================================================
+   EVERY PERCENT ITS OWN HUE, MS23, 17 November. His words: "VGA, and every
+   percent a different hue." The reason, recorded beside the ruling in
+   TASKS.md: a per cent that maps to its own hue turns a column of figures
+   into a picture that can be read at a glance.
+
+   VGA IS READ AS THE ERA'S OWN COLOUR DEPTH, NOT AS PIXEL ART. The VGA card's
+   palette was written through a DAC that held six bits a channel, sixty four
+   levels of red, green and blue. So every hue here is quantised to those
+   sixty four levels, which is the one thing that makes a colour a VGA colour
+   rather than a colour in that style, and it is checkable: tests/engine.js
+   holds every channel to a multiple of the DAC's own step.
+
+   ONE HUE A PERCENT, 101 OF THEM. The hue walks 3 degrees a percent from a
+   cool blue at nothing, through violet and the warm half, to a teal at a
+   hundred, so a percent is never the same hue as its neighbour and never
+   wraps round onto nothing's own blue. It says which figure, not whether it
+   is good: a decoherence and a coherence at the same percent wear the same
+   hue, because the colour is the number and the label is the meaning.
+
+   MUTED, BY THE STANDING RULING ON THE PALETTE, AND AS MUTED AS THE DAC
+   ALLOWS. Saturation 48 percent, a pastel at lightness 66 on the dark
+   lightings and a deep tone at 32 on the two light ones (light true). Not
+   lower, and this was measured rather than chosen: at 42 percent the DAC's
+   sixty four levels cannot tell a hue from the one three degrees beside it,
+   and the 101 percents came out as 84 colours, which tests/engine.js caught
+   on the first run. At 48 the dark tone is 101 colours as it stands and
+   every one holds 4.69 to 1 on the darkest panel; the light tone holds 4.59
+   to 1 on white.
+
+   THE 101 ARE A PALETTE, WRITTEN ONCE, the way a VGA program loaded its DAC.
+   On the light tone 64 of them land on a neighbour's colour after the
+   quantise, so a percent that does steps its hue forward half a degree at a
+   time, never past its own three degree slot, until the DAC gives a colour
+   no lower percent holds. The order of hues is kept, nothing is borrowed
+   from the next percent, and the table is the same on every load.
+
+   A percent the formatter would print as a dash has no hue, null, and the
+   caller keeps its ink.
+   ============================================================ */
+const PCT_HUE0=220, PCT_HUE_STEP=3, PCT_DAC=63;
+/* one colour through the DAC: each channel to the nearest of sixty four
+   levels, then out to the eight bit value a screen is handed, by the card's
+   own scale */
+function pctDac(deg,s,l){
+ var h=(((deg%360)+360)%360)/360, q=l<0.5?l*(1+s):l+s-l*s, a=2*l-q;
+ var ch=function(t){t=t<0?t+1:(t>1?t-1:t);
+  return t<1/6?a+(q-a)*6*t:t<1/2?q:t<2/3?a+(q-a)*(2/3-t)*6:a;};
+ return '#'+[ch(h+1/3),ch(h),ch(h-1/3)].map(function(v){
+  var c=Math.round(Math.round(v*PCT_DAC)*255/PCT_DAC);
+  return ('0'+c.toString(16)).slice(-2);}).join('');}
+function pctPalette(l){
+ var out=[], seen={};
+ for(var p=0;p<=100;p++){
+  var h=PCT_HUE0+p*PCT_HUE_STEP, c=pctDac(h,0.48,l);
+  for(var k=1;seen[c]&&k*0.5<PCT_HUE_STEP;k++)c=pctDac(h+k*0.5,0.48,l);
+  seen[c]=1; out.push(c);}
+ return out;}
+const PCT_VGA={dark:pctPalette(0.66), light:pctPalette(0.32)};
+function pctHue(p,light){
+ if(p===null||p===undefined||p===''||typeof p==='boolean'||!isFinite(+p))return null;
+ p=Math.round(+p); p=p<0?0:(p>100?100:p);
+ return (light?PCT_VGA.light:PCT_VGA.dark)[p];}
+
 /* A CHANGE IS SAID AS BEFORE AND AFTER. "CQ moved from 58% to 61% since last
    session", never "up 3", which is a delta in a unit the person cannot see.
    moved is false when the two print the same, so a move too small to show is
@@ -11869,10 +11950,19 @@ const AV_MONTH=30*24*3600*1000;
 const AV_STATUS=['draft','active','archived'];
 /* the caps on what a person writes, one place, read by the boundary and the
    surface alike so the field and the refusal agree about the number */
-const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
+/* WHO IS BEING RELEASED HAS A NAME TOO, AVS3, 17 November. His words, 20
+   September: "Who is the person I'm releasing, right side, who's the person
+   I'm becoming. And you should be able to edit that and modify it." The
+   becoming half had a name, a title and a sentence since round RB; the
+   releasing half had per seat lines and nothing that said who they add up to,
+   so the left of his left and right had no person on it. shedName and
+   shedDescription are that person, capped the same as the becoming name and
+   sentence so the two sides of the page refuse at the same length. */
+const AV_CAP={name:60, title:80, description:280, tag:60, tags:60, shedName:60, shedDescription:280};
 function avatarBlank(){
  return {built:false, at:null, reviewedAt:null, pairs:[],
   name:'', title:'', description:'', version:1, status:'draft',
+  shedName:'', shedDescription:'',
   arch:{}, load0:{}, tags:{}, movedAt:null};}
 /* the status a record carries, or for one written before there was a status,
    the one its own built flag already said */
@@ -11963,6 +12053,108 @@ function avatarProgress(rows){
  var done=list.filter(function(r){return r.gap&&r.gap.clear;}).length;
  return {done:done, total:list.length,
   pct:Math.round(100*done/Math.max(1,list.length))};}
+
+/* ============================================================
+   THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
+   September: "Adding in data so that I can tag and have Source attach what
+   I'm tagging to my releases, so that it can prioritise those releases, so I
+   can become that person quicker."
+
+   Measured before this was written: the Avatar page stored tags per seat
+   (av.tags) and pairs per seat (av.pairs[].seat), and nothing anywhere read
+   either of them to order a release. The page's own queueFor sorted by
+   charge alone and the Discover release took the three heaviest of what an
+   entry named. A tag changed which stories a chip found and nothing else, so
+   it was the label he said it must not be.
+
+   So the order every release door offers is now the avatar's first and the
+   charge's second. What the person put on their avatar pulls an address
+   forward, strongest first:
+
+     named   an address tagged by its own name at its own seat, the most
+             specific thing a person can say
+     here    a child fetter tagged, or heard in a release line, at the seat it
+             was written at, and the address carries that fetter there
+     there   the same fetter, at an address on any other seat, because a
+             release of that fetter anywhere is the same work; and the fetter
+             heard in the sentence that says who is being released, which
+             belongs to no one seat
+     seat    nothing tagged matches, but the address sits at a seat the person
+             has written a release line for
+
+   Inside a level the heavier address goes first, which is the order before
+   this, so an avatar with nothing on it orders exactly as before. A tag the
+   person took off stops pulling: a found fetter is taken off only when both
+   it and its replacement state are off, because either chip still showing is
+   still the person's instruction.
+
+   A replacement state pulls the fetter it replaces. Joy is what a Sad release
+   is released toward, so tagging Joy at the heart pulls the heart's Sad.
+
+   Host free. parse is parseStory and seatOf the seat resolver, handed in the
+   way avatarGap is handed its weights, so this reads no store and no page.
+   ============================================================ */
+const AV_PULL={named:4, here:3, there:2, seat:1};
+function avatarMarks(av,parse,seatOf){
+ var M={seat:{}, fet:{}, any:{}, named:{}};
+ if(!av||typeof av!=='object')return M;
+ var tags=(av.tags&&typeof av.tags==='object')?av.tags:{};
+ var opp={}, rep={};
+ CHILD.forEach(function(c){opp[c.nm]=c.opp; rep[c.opp]=c.nm;});
+ var isOff=function(b,w){var t=tags[b]; return !!(t&&Array.isArray(t.off)&&t.off.indexOf(w)>=0);};
+ var put=function(b,f){(M.fet[b]=M.fet[b]||{})[f]=1; if(!M.any[f])M.any[f]=b;};
+ /* the heard fetters are weighed per seat across every pair written there and
+    the two heaviest kept, which is what the page's own tag row shows as found,
+    so the queue and the chips cannot disagree about what was heard */
+ var heard={};
+ (Array.isArray(av.pairs)?av.pairs:[]).forEach(function(pr){
+  if(!avatarValid(pr))return;
+  var b=pr.seat||(typeof seatOf==='function'?seatOf(pr.notbe):null); if(!b)return;
+  M.seat[b]=1;
+  if(typeof parse!=='function')return;
+  var w=heard[b]=heard[b]||{};
+  (((parse(pr.notbe)||{}).imprints)||[]).forEach(function(im){if(im.fetter)w[im.fetter]=(w[im.fetter]||0)+(+im.amt||0);});});
+ Object.keys(heard).forEach(function(b){var w=heard[b];
+  Object.keys(w).sort(function(x,y){return w[y]-w[x];}).slice(0,2).forEach(function(f){
+   if(isOff(b,f)&&isOff(b,opp[f]))return;
+   put(b,f);});});
+ Object.keys(tags).forEach(function(b){var t=tags[b];
+  ((t&&Array.isArray(t.add))?t.add:[]).forEach(function(w){
+   if(typeof w!=='string'||!w)return;
+   if(opp[w]!==undefined)put(b,w);
+   else if(rep[w]!==undefined)put(b,rep[w]);
+   else (M.named[b]=M.named[b]||{})[w]=1;});});
+ /* the person being released, AVS3, read the way a release line is read but
+    tied to no seat, so it pulls at the third level and never claims a seat */
+ var shed=[av.shedName,av.shedDescription].filter(function(s){return typeof s==='string'&&s.trim();}).join('. ');
+ if(shed&&typeof parse==='function'){var sw={};
+  (((parse(shed)||{}).imprints)||[]).forEach(function(im){if(im.fetter)sw[im.fetter]=(sw[im.fetter]||0)+(+im.amt||0);});
+  Object.keys(sw).sort(function(x,y){return sw[y]-sw[x];}).slice(0,2).forEach(function(f){if(!M.any[f])M.any[f]='';});}
+ return M;}
+/* how hard one address is pulled, 0 when the avatar says nothing about it */
+function avatarPull(n,M){
+ if(!n||!M)return 0;
+ if(M.named[n.b]&&M.named[n.b][n.k])return AV_PULL.named;
+ if(n.cf&&M.fet[n.b]&&M.fet[n.b][n.cf])return AV_PULL.here;
+ if(n.cf&&M.any[n.cf]!==undefined)return AV_PULL.there;
+ if(M.seat[n.b])return AV_PULL.seat;
+ return 0;}
+/* THE SORTING RULE. A copy, the avatar's pull first, the charge second, and
+   the order handed in last, so two addresses the avatar and the charge cannot
+   tell apart keep the order they came in. */
+function avatarRank(list,M){
+ return (list||[]).map(function(n,j){return {n:n, j:j, p:avatarPull(n,M)};})
+  .sort(function(a,b){return (b.p-a.p)||((+b.n.sq||0)-(+a.n.sq||0))||(a.j-b.j);})
+  .map(function(x){return x.n;});}
+/* why an address is where it is, for the words a surface puts beside it: the
+   level, and the tag or fetter and seat that put it there. null when the
+   avatar says nothing about it. */
+function avatarWhy(n,M){
+ var p=avatarPull(n,M); if(!p)return null;
+ if(p===AV_PULL.named)return {k:'named', t:n.k, b:n.b};
+ if(p===AV_PULL.here)return {k:'here', t:n.cf, b:n.b};
+ if(p===AV_PULL.there)return {k:'there', t:n.cf, b:M.any[n.cf]||null};
+ return {k:'seat', t:null, b:n.b};}
 
 /* ============================================================
    THE PURPOSE MAP. Two overlapping triangles, and the overlap is
@@ -15220,7 +15412,8 @@ function validateProfile(o,ctx){
   /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
      version and a status. Text is bounded and never edited; a wrong type or a
      length past the cap is refused by name, never cut. */
-  ['name','title','description'].forEach(function(f){
+  /* and who is being released, AVS3, 17 November, under the same rule */
+  ['name','title','description','shedName','shedDescription'].forEach(function(f){
    var v=o.avatar[f]; if(v===undefined||v===null)return;
    if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
    else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
@@ -27397,6 +27590,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
+                 pctHue:pctHue, PCT_HUE0:PCT_HUE0, PCT_HUE_STEP:PCT_HUE_STEP, PCT_DAC:PCT_DAC,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
@@ -27435,6 +27629,8 @@ if(typeof module!=='undefined'&&module.exports){
                  purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+                 AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
+                 avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
                  purposeCentre:purposeCentre, purposeRead:purposeRead,
                  boundaryCount:boundaryCount, boundaryCross:boundaryCross,

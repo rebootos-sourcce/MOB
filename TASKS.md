@@ -1771,31 +1771,57 @@ information. We have a spec for this. This isn't following the spec."
       becoming half, with its own note that the gap between who somebody is
       and who they are becoming is not a mood but a measurement. Two surfaces
       have now been built past it.
-- [ ] **AVS2. The page is a build, not a readout.** That is the whole
+- [x] **AVS2. The page is a build, not a readout.** That is the whole
       correction. Everything delivered so far reads the field and prints it.
       He is asking for a surface a person puts data into.
-- [ ] **AVS3. Left is who is being released, right is who is being become,**
+      > **17 November.** What a person puts on the page now changes what the
+      > product does: AVS3 and AVS4 below are the writes, and the Release
+      > first card shows their effect where they were made.
+- [x] **AVS3. Left is who is being released, right is who is being become,**
       and both are editable.
-- [ ] **AVS4. What a person enters prioritises their releases.** This is the
+      > **17 November.** The header is the two people: who is released at the
+      > left edge (`shedName`, `shedDescription`, new on the record, capped and
+      > refused by name at the boundary), the subtabs centred, who is become at
+      > the right edge. Each has its own pen. The seat columns under it keep
+      > the same left and right.
+- [x] **AVS4. What a person enters prioritises their releases.** This is the
       mechanism and it is the reason the page exists: the tag is not a label,
       it is an instruction to the queue. Become that person quicker is a
       sorting rule, not a slogan.
-- [ ] **AVS5. The seven seats are not telling him anything,** so the seat row
+      > **17 November.** `avatarMarks`, `avatarPull`, `avatarRank` in
+      > `engine/avatar.js`. The avatar's pull first, the charge second, so an
+      > empty avatar orders exactly as before. Read by the Avatar page's seat
+      > queue, its new Release first card, and the Discover release panel,
+      > whose rings wear a dashed mark and say why. `tests/becoming.js` proves
+      > a tag puts a lighter address first and that the old charge sort would
+      > not.
+- [x] **AVS5. The seven seats are not telling him anything,** so the seat row
       either earns its place or goes.
+      > **17 November.** Each seat on the ring carries a count of the
+      > addresses held there and a dashed ring when the avatar puts its
+      > addresses first, both read out on hover and tap.
 
 ### MS2. THE MASKS, AND THE MOSAIC.
 
 - [ ] **MS20. The person is at the centre.** Hero element, centre frame, which
       is the standing rule for every surface in this product.
 - [ ] **MS21. The masks sit to the right of centre.**
-- [ ] **MS22. Review the masks, and add the Jungian ones.** The engine already
+- [x] **MS22. Review the masks, and add the Jungian ones.** The engine already
       carries twelve archetypes and six masks. Whichever one a person embodies
       fills in.
-- [ ] **MS23. VGA, and every percent a different hue.** His words, and the
+      > **17 November.** The Character rail shows all twelve in their seat's
+      > colour; the ones the person embodies (the Avatar page's own
+      > `avArchEmbodied`) fill in, and a press opens that archetype on the
+      > Avatar page. Which archetype sits under which mask is not drawn: still
+      > open, round GI item 6.
+- [x] **MS23. VGA, and every percent a different hue.** His words, and the
       reason is the mosaic: a per cent that maps to its own hue turns a column
       of figures into a picture that can be read at a glance. It also answers
       the register question the last pass raised, because VGA is a stated era
       rather than pixel art in general.
+      > **17 November.** `pctHue` in `engine/pct.js`: 101 hues, one a percent,
+      > quantised to the VGA DAC's six bits a channel, a light and a dark tone.
+      > On the Character rail's figures and seat bars. Other surfaces not yet.
 - [?] **MS24. Which mask resolution do you want?** His call, and he asked
       for options rather than an answer. Two sheets go out: fully filled in,
       and the pixelisation with the colours on.
@@ -1803,9 +1829,13 @@ information. We have a spec for this. This isn't following the spec."
       > **At stake.** How the object that sits beside the person on the avatar surface looks.
       > **Either way.** Filled in, and the mask reads as a face and the colours do no work. Pixelised, and every per cent takes its own hue, so a column of figures becomes a picture read at a glance.
       > **Look at.** `proto/avatar/one-armature-solo.html` puts the mask beside the figure today. The six masks themselves are the `MASKS` table in `atuned_src/engine/data/canon.js`.
-- [ ] **MS25. The mask pair defect is still open** from the last pass: two of
+- [x] **MS25. The mask pair defect is still open** from the last pass: two of
       the six masks carry the same seat pair, so their figures can never
       differ on any profile.
+      > **17 November.** Professional moved from Solar and Throat to Solar and
+      > Heart; Preteen kept its seats, so no live reading moved. Professional
+      > is still hidden and not calculated (round NE). Whether it comes back,
+      > and which mask carries the crown, are his.
 
 ## 08c. DELIVERED 20 SEPTEMBER. THE RELEASE FLOW AND THREE ENGINE DEFECTS.
 

@@ -11180,5 +11180,116 @@ g('SK3 · what a person does is read as behaviour evidence, never as a seat');
  ok(JSON.stringify(srcBehave(s40.join('\n')))===j&&JSON.stringify(E.S.charge)===before&&srcBehave('').length===0&&srcBehave(null).length===0,'reading behaviour is pure, and nothing reads as nothing');
 }
 
+g('AVS4 · the avatar is an instruction to the release queue, and it is pure');
+{
+ /* AVS4, 17 November. A tag pulls an address forward; nothing on the avatar
+    leaves the charge order exactly as it was. The fixtures are read off the
+    sniffer rather than typed, so a lexicon change that moves which fetter a
+    sentence lands on moves the fixture with it. */
+ const {avatarBlank,avatarMarks,avatarPull,avatarRank,avatarWhy,AV_PULL,parseStory,validateProfile,blankProfile,AV_CAP}=E;
+ const clone=o=>JSON.parse(JSON.stringify(o));
+ const line='My chest aches and I feel lonely and rejected when my partner goes quiet.';
+ const heard=parseStory(line).imprints.map(i=>i.fetter).filter(Boolean);
+ const F=heard[0], seat='Heart';
+ ok(!!F,'the fixture line is heard as a fetter, got '+JSON.stringify(heard));
+ const here=NODES.find(n=>n.b===seat&&n.cf===F);
+ const there=NODES.find(n=>n.b!==seat&&n.cf===F);
+ const sameSeat=NODES.find(n=>n.b===seat&&n.cf&&n.cf!==F);
+ const away=NODES.find(n=>n.b!==seat&&n.cf&&n.cf!==F);
+ ok(here&&there&&sameSeat&&away,'fixtures exist at and away from the seat');
+ const M0=avatarMarks(avatarBlank(),parseStory);
+ ok(NODES.every(n=>avatarPull(n,M0)===0),'a blank avatar pulls nothing');
+ const L=NODES.filter(n=>n.cf).slice(0,30).map((n,j)=>({i:n.i,b:n.b,k:n.k,cf:n.cf,sq:(j*7)%11}));
+ const bySq=L.slice().sort((a,b)=>b.sq-a.sq);
+ ok(JSON.stringify(avatarRank(L,M0).map(n=>n.i))===JSON.stringify(bySq.map(n=>n.i)),
+  'with nothing on the avatar the order is the charge order, unchanged');
+ const av=avatarBlank(); av.pairs=[{be:'Someone who stays close when it gets hard.',notbe:line,seat:seat,id:'p1'}];
+ const was=JSON.stringify(av), M=avatarMarks(av,parseStory);
+ ok(JSON.stringify(av)===was,'reading the instruction changes nothing on the avatar');
+ ok(avatarPull(here,M)===AV_PULL.here,'the heard fetter at the seat it was written pulls at here, got '+avatarPull(here,M));
+ ok(avatarPull(there,M)===AV_PULL.there,'the same fetter on another seat pulls at there, got '+avatarPull(there,M));
+ ok(avatarPull(sameSeat,M)===AV_PULL.seat||M.fet[seat][sameSeat.cf],'another fetter at a written seat pulls at seat');
+ ok(avatarPull(away,M)===0||M.any[away.cf]!==undefined,'an address the avatar says nothing about is not pulled');
+ ok(AV_PULL.named>AV_PULL.here&&AV_PULL.here>AV_PULL.there&&AV_PULL.there>AV_PULL.seat&&AV_PULL.seat>0,'the four levels are strictly ordered');
+ /* the reason a surface prints, for every level, read off coverage: these
+    were the branches tests/engine.js never ran on the first cut */
+ const wh=avatarWhy(here,M);
+ ok(wh&&wh.k==='here'&&wh.t===F&&wh.b===seat,'why, at here, names the fetter and the seat, got '+JSON.stringify(wh));
+ const wt=avatarWhy(there,M);
+ ok(wt&&wt.k==='there'&&wt.t===F&&wt.b===seat,'why, at there, names the seat the instruction came from, got '+JSON.stringify(wt));
+ const seatOnly=NODES.find(n=>n.b===seat&&n.cf&&!M.fet[seat][n.cf]&&M.any[n.cf]===undefined);
+ ok(seatOnly&&avatarWhy(seatOnly,M).k==='seat'&&avatarWhy(seatOnly,M).t===null,'why, at seat, names only the seat');
+ ok(avatarWhy(away,M0)===null,'an address the avatar says nothing about has no why');
+ ok(JSON.stringify(avatarMarks(null,parseStory))==='{"seat":{},"fet":{},"any":{},"named":{}}'&&avatarPull(null,M)===0&&avatarPull(here,null)===0
+  &&avatarRank(null,M).length===0,'nothing in is nothing out, and nothing throws');
+ const seatOf=t=>t===line?seat:null, avL=avatarBlank(); avL.pairs=[{be:'x',notbe:line}];
+ ok(avatarPull(here,avatarMarks(avL,parseStory,seatOf))===AV_PULL.here,'a pair written before seats is placed by the resolver handed in');
+ ok(avatarPull(here,avatarMarks(avL,parseStory))===0,'and with no resolver it claims no seat');
+ /* the sorting rule: a light pulled address goes ahead of a heavy one the
+    avatar says nothing about, and inside a level the heavier goes first */
+ const lite={i:here.i,b:here.b,k:here.k,cf:here.cf,sq:0.5}, heavy={i:away.i,b:away.b,k:away.k,cf:away.cf,sq:9.5};
+ const lite2={i:there.i,b:there.b,k:there.k,cf:there.cf,sq:6};
+ const Mx=avatarMarks(av,parseStory), r1=avatarRank([heavy,lite2,lite],Mx).map(n=>n.i);
+ ok(r1[0]===lite.i,'a light tagged address goes before a heavy untagged one, got '+JSON.stringify(r1));
+ ok(avatarPull(heavy,Mx)===0?r1[2]===heavy.i:true,'and the untagged one goes last');
+ const h1={i:here.i,b:seat,k:'a',cf:F,sq:2}, h2={i:here.i+1000,b:seat,k:'b',cf:F,sq:8};
+ ok(avatarRank([h1,h2],Mx)[0]===h2,'inside a level the heavier address goes first');
+ /* a replacement state pulls the fetter it replaces */
+ const c=CHILD.find(x=>x.nm===F), avJ=avatarBlank(); avJ.tags[seat]={add:[c.opp],off:[]};
+ ok(avatarPull(here,avatarMarks(avJ,parseStory))===AV_PULL.here,'tagging '+c.opp+' pulls '+F+' at the seat');
+ /* a named address is the most specific instruction there is */
+ const avN=avatarBlank(); avN.tags[seat]={add:[sameSeat.k],off:[]};
+ const MN=avatarMarks(avN,parseStory);
+ ok(avatarPull(sameSeat,MN)===AV_PULL.named,'tagging '+sameSeat.k+' by its name pulls it at named');
+ ok(avatarWhy(sameSeat,MN).k==='named'&&avatarWhy(sameSeat,MN).t===sameSeat.k,'and says so');
+ /* taking a found tag off stops it, but only when both chips are off */
+ const avO=clone(av); avO.tags[seat]={add:[],off:[F]};
+ ok(avatarPull(here,avatarMarks(avO,parseStory))===AV_PULL.here,'one chip off and its pair still showing still pulls');
+ avO.tags[seat].off.push(c.opp);
+ ok(avatarPull(here,avatarMarks(avO,parseStory))===AV_PULL.seat,'both off, and the fetter falls back to the seat');
+ /* AVS3, who is being released is an instruction too, and tied to no seat */
+ const avS=avatarBlank(); avS.shedDescription=line;
+ const MS=avatarMarks(avS,parseStory);
+ ok(avatarPull(here,MS)===AV_PULL.there&&avatarPull(there,MS)===AV_PULL.there,'the releasing sentence pulls its fetter on every seat, at there');
+ ok(avatarWhy(here,MS).b===null,'and claims no seat');
+ ok(Object.keys(MS.seat).length===0,'and writes no seat');
+ /* the boundary keeps the two new fields, and refuses past the cap by name */
+ const bp=blankProfile('t'); bp.avatar.shedName='The one who waits'; bp.avatar.shedDescription=line;
+ const v1=validateProfile(JSON.parse(JSON.stringify(bp)));
+ ok(v1.ok&&v1.profile.avatar.shedName==='The one who waits'&&v1.profile.avatar.shedDescription===line,'the boundary keeps who is released, '+JSON.stringify(v1.errs||[]));
+ bp.avatar.shedName='x'.repeat(AV_CAP.shedName+1);
+ const v2=validateProfile(JSON.parse(JSON.stringify(bp)));
+ ok(!v2.ok&&v2.errs.some(e=>/avatar\.shedName/.test(e)),'and refuses a name past the cap by name, '+JSON.stringify(v2.errs));
+ const old=blankProfile('o'); delete old.avatar.shedName; delete old.avatar.shedDescription;
+ const v3=validateProfile(JSON.parse(JSON.stringify(old)));
+ ok(v3.ok&&v3.profile.avatar.shedName==='','an older record with neither field loads, filled from the blank');
+}
+
+g('MS23 · every percent its own hue, at the VGA DAC\'s depth');
+{
+ const {pctHue,PCT_DAC}=E;
+ const dark=[], light=[];
+ for(let p=0;p<=100;p++){dark.push(pctHue(p,false)); light.push(pctHue(p,true));}
+ ok(new Set(dark).size===dark.length,'every percent has its own colour on the dark lightings, '+new Set(dark).size+' distinct');
+ ok(new Set(light).size===light.length,'and on the light ones, '+new Set(light).size+' distinct');
+ const levels=new Set(); for(let k=0;k<=PCT_DAC;k++)levels.add(Math.round(k*255/PCT_DAC));
+ const onDac=h=>[1,3,5].every(i=>levels.has(parseInt(h.slice(i,i+2),16)));
+ ok(dark.concat(light).every(h=>/^#[0-9a-f]{6}$/.test(h)&&onDac(h)),'every channel is one of the DAC\'s sixty four levels');
+ ok(pctHue(null)===null&&pctHue(undefined)===null&&pctHue('x')===null,'a figure with no value has no hue');
+ ok(pctHue(-5)===pctHue(0)&&pctHue(140)===pctHue(100)&&pctHue(42.4)===pctHue(42),'out of range clamps, and a fraction rounds to the printed percent');
+ ok(dark.every((h,i)=>h!==light[i]),'the light lightings get their own tone of the same hue');
+}
+
+g('MS25 · no two masks are read off the same seats');
+{
+ const key=m=>m.b.slice().sort().join('+');
+ const seen={}; MASKS.forEach(m=>{(seen[key(m)]=seen[key(m)]||[]).push(m.nm);});
+ const dup=Object.keys(seen).filter(k=>seen[k].length>1).map(k=>seen[k].join(' and ')+' at '+k);
+ ok(dup.length===0,'every mask has its own seat set, shared: '+JSON.stringify(dup));
+ const pre=MASKS.find(m=>m.nm==='Preteen');
+ ok(pre&&key(pre)==='Solar+Throat','Preteen keeps its seats, so no live reading moved');
+ ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

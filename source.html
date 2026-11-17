@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v151 36ccd765 2026-11-17 16:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v152 18cb1c39 2026-11-17 17:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5525,6 +5525,11 @@ body.tab-story.st-full #stsrc:empty{display:none}
    "unpack every symbol" ruling: a ring with no visible word beside it is
    exactly the failing case that rule names. */
 .st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+/* AVS4, 17 November: an address the avatar put first wears the avatar's own
+   dashed ring, the mark the Avatar page's seats wear for the same fact. A
+   pseudo element and not an outline, because the outline is the focus ring. */
+.st-rq-av .st-rq{position:relative}
+.st-rq-av .st-rq::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
 /* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
    whole point of printing the name is that it can be read. */
 .st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
@@ -7789,6 +7794,19 @@ body.tab-masksview #bRel{display:none}
 .chr-counts b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 .chr-counts i{width:10px;height:10px;border-radius:50%;border:2px solid var(--sc,var(--ink));display:block}
 .chr-counts .chr-anc i{width:12px;height:12px;border-width:1.5px;border-color:var(--ink)}
+/* MS22, the twelve archetypes as rings in their seat's colour. An embodied one
+   fills in, its ring lit and a wash of its colour behind the mark; the rest
+   hold a faint outline, the potential and not the reading. The mark itself is
+   a stroke, by the rule on icons, at the tap floor on every lighting. */
+.chr-arch{display:grid;grid-template-columns:repeat(6,minmax(var(--tap),1fr));gap:8px;justify-items:center;margin:6px 0 10px}
+.chr-ar{width:var(--tap);height:var(--tap);border-radius:50%;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid color-mix(in srgb,var(--ac) 30%,transparent);background:none;color:color-mix(in srgb,var(--ac) 40%,var(--dim));
+ transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
+.chr-ar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.chr-ar:hover{border-color:var(--ac);color:var(--ac)}
+.chr-ar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chr-ar.on{border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac) 28%,transparent)}
+.chr-arn{color:var(--mid);margin-bottom:4px}
 /* the trace card. A chain of three steps joined by a dotted line, in the colour
    of the seat. */
 .chr-trace{margin:16px 0 4px;padding:14px 14px 12px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge-2)}
@@ -14089,7 +14107,21 @@ const MASKS=[
  {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 11.65h14',
   v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
- {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
+ /* SOLAR AND HEART, NOT SOLAR AND THROAT, MS25, 17 November. Professional and
+    Preteen both sat at ['Solar','Throat'], so they were read off the same 28
+    addresses and their figures could never differ on any profile: measured
+    and reported at rounds GI, MS and the masks pass, and the reason he hid
+    Professional at round NE ("Preteen is very similar ... Just hide it for
+    now. Don't calculate it."). Preteen keeps its seats, so no live reading
+    moves: Professional is out of MASKS_READ and computes nothing.
+    Throat goes to Heart because of the mask's own line, "performs competence
+    until the feeling passes": the competence is the solar plexus, what you
+    carry, and the feeling it waits out is the heart, what you give. It also
+    puts the heart under a mask, which his round MT ruling asks of all seven
+    ("all the chakras should be in the masks"). The crown is still under none,
+    and whether Professional comes back into the reading now its data is its
+    own is his call; neither is decided here. */
+ {nm:'Professional',b:['Solar','Heart'],ic:MASK_FACE+' M8 13h8v5H8z',
   v:'performs competence until the feeling passes'},
  /* A FLAT BAR ABOVE THE FACE, WORN WHERE A THOUGHT IS KEPT, ROUND MZ. This
     drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
@@ -14129,7 +14161,10 @@ const MASKS=[
    always been identical, and this is the stopgap while the real seven seat
    mapping, R1, stays open. MASKS itself keeps all six, since the body map's
    own seat patches and the glossary still name Professional; MASKS_READ is
-   the five a reading is ever taken on or shown for. */
+   the five a reading is ever taken on or shown for.
+   The shared pair above stopped being true on 17 November, MS25: Professional
+   sits at Solar and Heart now, so the reason for hiding it is gone and the
+   hide itself is not. Bringing it back is his to rule. */
 const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================
@@ -19639,6 +19674,70 @@ function fmtPct(kind,value,opts){
  if(o.unread||p===null||p===0)return PCT_DASH;
  return p+'%';}
 
+/* ============================================================
+   EVERY PERCENT ITS OWN HUE, MS23, 17 November. His words: "VGA, and every
+   percent a different hue." The reason, recorded beside the ruling in
+   TASKS.md: a per cent that maps to its own hue turns a column of figures
+   into a picture that can be read at a glance.
+
+   VGA IS READ AS THE ERA'S OWN COLOUR DEPTH, NOT AS PIXEL ART. The VGA card's
+   palette was written through a DAC that held six bits a channel, sixty four
+   levels of red, green and blue. So every hue here is quantised to those
+   sixty four levels, which is the one thing that makes a colour a VGA colour
+   rather than a colour in that style, and it is checkable: tests/engine.js
+   holds every channel to a multiple of the DAC's own step.
+
+   ONE HUE A PERCENT, 101 OF THEM. The hue walks 3 degrees a percent from a
+   cool blue at nothing, through violet and the warm half, to a teal at a
+   hundred, so a percent is never the same hue as its neighbour and never
+   wraps round onto nothing's own blue. It says which figure, not whether it
+   is good: a decoherence and a coherence at the same percent wear the same
+   hue, because the colour is the number and the label is the meaning.
+
+   MUTED, BY THE STANDING RULING ON THE PALETTE, AND AS MUTED AS THE DAC
+   ALLOWS. Saturation 48 percent, a pastel at lightness 66 on the dark
+   lightings and a deep tone at 32 on the two light ones (light true). Not
+   lower, and this was measured rather than chosen: at 42 percent the DAC's
+   sixty four levels cannot tell a hue from the one three degrees beside it,
+   and the 101 percents came out as 84 colours, which tests/engine.js caught
+   on the first run. At 48 the dark tone is 101 colours as it stands and
+   every one holds 4.69 to 1 on the darkest panel; the light tone holds 4.59
+   to 1 on white.
+
+   THE 101 ARE A PALETTE, WRITTEN ONCE, the way a VGA program loaded its DAC.
+   On the light tone 64 of them land on a neighbour's colour after the
+   quantise, so a percent that does steps its hue forward half a degree at a
+   time, never past its own three degree slot, until the DAC gives a colour
+   no lower percent holds. The order of hues is kept, nothing is borrowed
+   from the next percent, and the table is the same on every load.
+
+   A percent the formatter would print as a dash has no hue, null, and the
+   caller keeps its ink.
+   ============================================================ */
+const PCT_HUE0=220, PCT_HUE_STEP=3, PCT_DAC=63;
+/* one colour through the DAC: each channel to the nearest of sixty four
+   levels, then out to the eight bit value a screen is handed, by the card's
+   own scale */
+function pctDac(deg,s,l){
+ var h=(((deg%360)+360)%360)/360, q=l<0.5?l*(1+s):l+s-l*s, a=2*l-q;
+ var ch=function(t){t=t<0?t+1:(t>1?t-1:t);
+  return t<1/6?a+(q-a)*6*t:t<1/2?q:t<2/3?a+(q-a)*(2/3-t)*6:a;};
+ return '#'+[ch(h+1/3),ch(h),ch(h-1/3)].map(function(v){
+  var c=Math.round(Math.round(v*PCT_DAC)*255/PCT_DAC);
+  return ('0'+c.toString(16)).slice(-2);}).join('');}
+function pctPalette(l){
+ var out=[], seen={};
+ for(var p=0;p<=100;p++){
+  var h=PCT_HUE0+p*PCT_HUE_STEP, c=pctDac(h,0.48,l);
+  for(var k=1;seen[c]&&k*0.5<PCT_HUE_STEP;k++)c=pctDac(h+k*0.5,0.48,l);
+  seen[c]=1; out.push(c);}
+ return out;}
+const PCT_VGA={dark:pctPalette(0.66), light:pctPalette(0.32)};
+function pctHue(p,light){
+ if(p===null||p===undefined||p===''||typeof p==='boolean'||!isFinite(+p))return null;
+ p=Math.round(+p); p=p<0?0:(p>100?100:p);
+ return (light?PCT_VGA.light:PCT_VGA.dark)[p];}
+
 /* A CHANGE IS SAID AS BEFORE AND AFTER. "CQ moved from 58% to 61% since last
    session", never "up 3", which is a delta in a unit the person cannot see.
    moved is false when the two print the same, so a move too small to show is
@@ -24642,10 +24741,19 @@ const AV_MONTH=30*24*3600*1000;
 const AV_STATUS=['draft','active','archived'];
 /* the caps on what a person writes, one place, read by the boundary and the
    surface alike so the field and the refusal agree about the number */
-const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
+/* WHO IS BEING RELEASED HAS A NAME TOO, AVS3, 17 November. His words, 20
+   September: "Who is the person I'm releasing, right side, who's the person
+   I'm becoming. And you should be able to edit that and modify it." The
+   becoming half had a name, a title and a sentence since round RB; the
+   releasing half had per seat lines and nothing that said who they add up to,
+   so the left of his left and right had no person on it. shedName and
+   shedDescription are that person, capped the same as the becoming name and
+   sentence so the two sides of the page refuse at the same length. */
+const AV_CAP={name:60, title:80, description:280, tag:60, tags:60, shedName:60, shedDescription:280};
 function avatarBlank(){
  return {built:false, at:null, reviewedAt:null, pairs:[],
   name:'', title:'', description:'', version:1, status:'draft',
+  shedName:'', shedDescription:'',
   arch:{}, load0:{}, tags:{}, movedAt:null};}
 /* the status a record carries, or for one written before there was a status,
    the one its own built flag already said */
@@ -24736,6 +24844,108 @@ function avatarProgress(rows){
  var done=list.filter(function(r){return r.gap&&r.gap.clear;}).length;
  return {done:done, total:list.length,
   pct:Math.round(100*done/Math.max(1,list.length))};}
+
+/* ============================================================
+   THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
+   September: "Adding in data so that I can tag and have Source attach what
+   I'm tagging to my releases, so that it can prioritise those releases, so I
+   can become that person quicker."
+
+   Measured before this was written: the Avatar page stored tags per seat
+   (av.tags) and pairs per seat (av.pairs[].seat), and nothing anywhere read
+   either of them to order a release. The page's own queueFor sorted by
+   charge alone and the Discover release took the three heaviest of what an
+   entry named. A tag changed which stories a chip found and nothing else, so
+   it was the label he said it must not be.
+
+   So the order every release door offers is now the avatar's first and the
+   charge's second. What the person put on their avatar pulls an address
+   forward, strongest first:
+
+     named   an address tagged by its own name at its own seat, the most
+             specific thing a person can say
+     here    a child fetter tagged, or heard in a release line, at the seat it
+             was written at, and the address carries that fetter there
+     there   the same fetter, at an address on any other seat, because a
+             release of that fetter anywhere is the same work; and the fetter
+             heard in the sentence that says who is being released, which
+             belongs to no one seat
+     seat    nothing tagged matches, but the address sits at a seat the person
+             has written a release line for
+
+   Inside a level the heavier address goes first, which is the order before
+   this, so an avatar with nothing on it orders exactly as before. A tag the
+   person took off stops pulling: a found fetter is taken off only when both
+   it and its replacement state are off, because either chip still showing is
+   still the person's instruction.
+
+   A replacement state pulls the fetter it replaces. Joy is what a Sad release
+   is released toward, so tagging Joy at the heart pulls the heart's Sad.
+
+   Host free. parse is parseStory and seatOf the seat resolver, handed in the
+   way avatarGap is handed its weights, so this reads no store and no page.
+   ============================================================ */
+const AV_PULL={named:4, here:3, there:2, seat:1};
+function avatarMarks(av,parse,seatOf){
+ var M={seat:{}, fet:{}, any:{}, named:{}};
+ if(!av||typeof av!=='object')return M;
+ var tags=(av.tags&&typeof av.tags==='object')?av.tags:{};
+ var opp={}, rep={};
+ CHILD.forEach(function(c){opp[c.nm]=c.opp; rep[c.opp]=c.nm;});
+ var isOff=function(b,w){var t=tags[b]; return !!(t&&Array.isArray(t.off)&&t.off.indexOf(w)>=0);};
+ var put=function(b,f){(M.fet[b]=M.fet[b]||{})[f]=1; if(!M.any[f])M.any[f]=b;};
+ /* the heard fetters are weighed per seat across every pair written there and
+    the two heaviest kept, which is what the page's own tag row shows as found,
+    so the queue and the chips cannot disagree about what was heard */
+ var heard={};
+ (Array.isArray(av.pairs)?av.pairs:[]).forEach(function(pr){
+  if(!avatarValid(pr))return;
+  var b=pr.seat||(typeof seatOf==='function'?seatOf(pr.notbe):null); if(!b)return;
+  M.seat[b]=1;
+  if(typeof parse!=='function')return;
+  var w=heard[b]=heard[b]||{};
+  (((parse(pr.notbe)||{}).imprints)||[]).forEach(function(im){if(im.fetter)w[im.fetter]=(w[im.fetter]||0)+(+im.amt||0);});});
+ Object.keys(heard).forEach(function(b){var w=heard[b];
+  Object.keys(w).sort(function(x,y){return w[y]-w[x];}).slice(0,2).forEach(function(f){
+   if(isOff(b,f)&&isOff(b,opp[f]))return;
+   put(b,f);});});
+ Object.keys(tags).forEach(function(b){var t=tags[b];
+  ((t&&Array.isArray(t.add))?t.add:[]).forEach(function(w){
+   if(typeof w!=='string'||!w)return;
+   if(opp[w]!==undefined)put(b,w);
+   else if(rep[w]!==undefined)put(b,rep[w]);
+   else (M.named[b]=M.named[b]||{})[w]=1;});});
+ /* the person being released, AVS3, read the way a release line is read but
+    tied to no seat, so it pulls at the third level and never claims a seat */
+ var shed=[av.shedName,av.shedDescription].filter(function(s){return typeof s==='string'&&s.trim();}).join('. ');
+ if(shed&&typeof parse==='function'){var sw={};
+  (((parse(shed)||{}).imprints)||[]).forEach(function(im){if(im.fetter)sw[im.fetter]=(sw[im.fetter]||0)+(+im.amt||0);});
+  Object.keys(sw).sort(function(x,y){return sw[y]-sw[x];}).slice(0,2).forEach(function(f){if(!M.any[f])M.any[f]='';});}
+ return M;}
+/* how hard one address is pulled, 0 when the avatar says nothing about it */
+function avatarPull(n,M){
+ if(!n||!M)return 0;
+ if(M.named[n.b]&&M.named[n.b][n.k])return AV_PULL.named;
+ if(n.cf&&M.fet[n.b]&&M.fet[n.b][n.cf])return AV_PULL.here;
+ if(n.cf&&M.any[n.cf]!==undefined)return AV_PULL.there;
+ if(M.seat[n.b])return AV_PULL.seat;
+ return 0;}
+/* THE SORTING RULE. A copy, the avatar's pull first, the charge second, and
+   the order handed in last, so two addresses the avatar and the charge cannot
+   tell apart keep the order they came in. */
+function avatarRank(list,M){
+ return (list||[]).map(function(n,j){return {n:n, j:j, p:avatarPull(n,M)};})
+  .sort(function(a,b){return (b.p-a.p)||((+b.n.sq||0)-(+a.n.sq||0))||(a.j-b.j);})
+  .map(function(x){return x.n;});}
+/* why an address is where it is, for the words a surface puts beside it: the
+   level, and the tag or fetter and seat that put it there. null when the
+   avatar says nothing about it. */
+function avatarWhy(n,M){
+ var p=avatarPull(n,M); if(!p)return null;
+ if(p===AV_PULL.named)return {k:'named', t:n.k, b:n.b};
+ if(p===AV_PULL.here)return {k:'here', t:n.cf, b:n.b};
+ if(p===AV_PULL.there)return {k:'there', t:n.cf, b:M.any[n.cf]||null};
+ return {k:'seat', t:null, b:n.b};}
 
 /* ============================================================
    THE PURPOSE MAP. Two overlapping triangles, and the overlap is
@@ -27999,7 +28209,8 @@ function validateProfile(o,ctx){
   /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
      version and a status. Text is bounded and never edited; a wrong type or a
      length past the cap is refused by name, never cut. */
-  ['name','title','description'].forEach(function(f){
+  /* and who is being released, AVS3, 17 November, under the same rule */
+  ['name','title','description','shedName','shedDescription'].forEach(function(f){
    var v=o.avatar[f]; if(v===undefined||v===null)return;
    if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
    else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
@@ -40230,6 +40441,7 @@ if(typeof module!=='undefined'&&module.exports){
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
+                 pctHue:pctHue, PCT_HUE0:PCT_HUE0, PCT_HUE_STEP:PCT_HUE_STEP, PCT_DAC:PCT_DAC,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
@@ -40268,6 +40480,8 @@ if(typeof module!=='undefined'&&module.exports){
                  purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+                 AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
+                 avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
                  purposeCentre:purposeCentre, purposeRead:purposeRead,
                  boundaryCount:boundaryCount, boundaryCross:boundaryCross,
@@ -59158,6 +59372,38 @@ function chTraceCard(r){
   +'<div class="chr-acts"><button type="button" class="btn" id="chto">Open the story</button><button type="button" class="btn" id="chtc">Close trace</button></div></section>';
  return h;}
 
+/* EVERY PERCENT ITS OWN HUE, MS23, 17 November, "VGA, and every percent a
+   different hue". pctHue (engine/pct.js) carries the reasoning and the DAC;
+   this hands it the figure this rail prints, so the colour is the printed
+   number's and cannot be another's. A figure that prints as a dash keeps its
+   ink, and the light lightings get the deep tone of the same hue. */
+function chPcCol(kind,v,unread){
+ var p=unread?null:pct(kind,v);
+ return p?pctHue(p,typeof LIGHT==='function'&&LIGHT()):null;}
+function chPc(kind,v,unread){var c=chPcCol(kind,v,unread); return c?' style="color:'+c+'"':'';}
+/* THE TWELVE, MS22, 17 November. "Review the masks, and add the Jungian ones.
+   The engine already carries twelve archetypes and six masks. Whichever one a
+   person embodies fills in." The twelve are ARCH, each in its seat's colour
+   and its own mark, drawn as a ring. The ones this person embodies are the
+   three the Avatar page already calls embodied, avArchEmbodied, the three
+   strongest of compute().aff, which is read off the soul's domains and no
+   story, so the two pages can never disagree about who is embodied. Those
+   fill in: the ring takes its colour and a wash of it, the rest stay a faint
+   outline, which is "the outline of the mask's potential" from round MT
+   carried to the archetypes. Nothing is filled on a profile not read yet.
+   Which archetype sits under which mask is NOT drawn: the two seats that
+   proposed a pairing disagreed (TASKS.md, round GI, item 6) and it is his to
+   rule. A press opens that archetype on the Avatar page, where it is rated. */
+function chArchHtml(r){
+ var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
+ var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
+ return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
+  +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
+   return '<button type="button" class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
+    +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></button>';}).join('')+'</div>'
+  +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
+  +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
 function chRailHtml(r){
  var sc=CHV.sc, m=maskOf(CHV.pick), unread=!r||r.unread, w=sc.w, li=CHC.leadPat(w), a=CHILD[li], col='#'+'';
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
@@ -59171,19 +59417,20 @@ function chRailHtml(r){
     reading the record does not hold. The note above says the field is dark;
     the panel now agrees with it. */
  if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
-  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig">'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
+  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig"'+chPc('charge',w[a.nm]||0,false)+'>'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
  h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<p class="ad-p">It '+esc(m.v)+'.</p>'
   +'<button type="button" class="btn" id="chread">Read this mask</button>';
+ h+=chArchHtml(r);
  if(CHV.sel>=0)h+=chTraceCard(r);
  h+='<div class="pm-eye chr-sp">Pointing at</div><div class="chr-hover" id="chhover" aria-live="polite" data-h="">'+chHoverText(CHV.hov,-1)+'</div>';
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
-  +'<div class="chr-row"><span>Vitality</span><b>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Coherence</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
+  +'<div class="chr-row"><span>Vitality</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
@@ -59191,7 +59438,7 @@ function chRailHtml(r){
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></button>';}).join('')
+    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
@@ -59221,6 +59468,11 @@ function chRail(r){
  var rd=$('chread'); if(rd)rd.onclick=function(){var m=maskOf(CHV.pick);if(m)chDrill(m);};
  host.querySelectorAll('[data-chtrace]').forEach(function(b){b.onclick=function(){
   var k=+b.getAttribute('data-chtrace'); chTrace(CHV.sel===k&&b.classList.contains('chr-seat')?-1:k);};});
+ /* an archetype opens on the Avatar page, where it is rated, MS22 */
+ host.querySelectorAll('[data-charch]').forEach(function(b){b.onclick=function(){
+  if(typeof AV==='undefined'||typeof setTab!=='function')return;
+  AV.sub='arch'; AV.arch=b.getAttribute('data-charch'); setTab(TAB.INTAKE);
+  if(typeof render==='function')render();};});
  var to=$('chto'); if(to)to.onclick=function(){if(typeof setTab==='function'){setTab(TAB.STORY);}};
  var tc=$('chtc'); if(tc)tc.onclick=function(){chTrace(-1);};}
 
@@ -59355,7 +59607,7 @@ function chDrill(m){
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
+   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
  var top=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>0;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,6);
  h+='<div class="pm-eye">Carrying the most</div>';
  if(!top.length)h+='<p class="ad-p">Nothing held under this mask.</p>';
@@ -63900,6 +64152,17 @@ var ST_OFF={};
 function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
 function stRelModel(){
  var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
+ /* THE AVATAR ORDERS THIS TOO, AVS4, 17 November: "have Source attach what
+    I'm tagging to my releases, so that it can prioritise those releases". The
+    sort below was the charge alone, so a fetter the person tagged on their
+    avatar waited behind any heavier address the entry reached. avRank
+    (ui/avatarui.js, over engine/avatar.js avatarRank) puts what the avatar
+    pulls first and keeps the charge as the order inside each level, so a
+    person with nothing on their avatar gets exactly the order they had. It
+    only reorders what was already going to be offered: the named cut above
+    the slice still decides which addresses are candidates, so a run still
+    runs only what the words named (tests/releasechain.js, check 2). */
+ var rank=function(L){return typeof avRank==='function'?avRank(L):L.sort(bySq);};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
@@ -63944,8 +64207,8 @@ function stRelModel(){
     entry (ui/release.js), so "stale" now means specifically "closed",
     never merely "not the newest object". */
  var live=found.length&&(found!==STV.lastFound||STV.lastOpen===true);
- if(picked.length)take=picked.sort(bySq);
- else if(live)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
+ if(picked.length)take=rank(picked);
+ else if(live)take=rank(cut?found.slice(0,cut):found.slice()).slice(0,3);
  /* THE THIRD TIER IS GONE, 10 November, his words looking at the live
     panel: "there's three icons that start there. There should be
     nothing." With nothing picked and nothing in the live story, this used
@@ -63977,9 +64240,14 @@ function stRelPanel(){
     prints under each one, the same way a term of art gets its meaning
     beside it everywhere else in this product. */
  if(!M.take.length){}
+ /* AND IT SAYS SO, AVS4: an address the avatar put first wears the avatar's
+    own dashed ring round its node, the mark the Avatar page's seats wear for
+    the same fact, and the reason is in its name on hover and to a screen
+    reader. "If I don't see it in software, it doesn't exist." */
  else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
-   return '<div class="st-rq-wrap"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
-    +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
+   var why=(typeof avWhyNow==='function')?avWhyNow(a):null, nm=a.k+', '+a.b+(why?'. '+avWhySay(why):'');
+   return '<div class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
+    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
     +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
   +'</div>';
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
@@ -68752,10 +69020,43 @@ function avAgo(d){return d<=0?'today':d===1?'yesterday':d+' days ago';}
 /* ---------------- the release protocol ----------------
    queueFor, from proto/avatar/seats4, body kept. The run's length is the
    plan the release card will print, read without starting anything. */
+/* THE AVATAR'S INSTRUCTION, AVS4, read once per change of what the person put
+   on it. avatarMarks (engine/avatar.js) parses every release line, so it is
+   kept against the pairs, the tags and the releasing sentence that made it
+   and read again only when one of those moves. Every release door asks
+   avRank, the Discover panel included, so there is one sorting rule. */
+var AV_MK={key:null, M:null};
+function avMarksNow(){
+ var av=(typeof CURP!=='undefined'&&CURP&&CURP.avatar)||null;
+ var key=av?JSON.stringify([av.pairs||[],av.tags||{},av.shedName||'',av.shedDescription||'']):'';
+ if(AV_MK.key!==key){AV_MK.key=key;
+  AV_MK.M=avatarMarks(av,parseStory,typeof readSeat==='function'?readSeat:null);}
+ return AV_MK.M;}
+function avRank(list){return avatarRank(list,avMarksNow());}
+function avWhyNow(n){return avatarWhy(n,avMarksNow());}
+/* the words for why an address is first, from the tag or seat that put it
+   there. One sentence, read on hover and by a screen reader. */
+function avWhySay(w){
+ if(!w)return '';
+ var at=w.b&&AV_THE[w.b]?' at '+AV_THE[w.b]:'';
+ if(w.k==='named')return 'First, because you tagged '+avTagNm(w.t)+at+' on your avatar.';
+ if(w.k==='here')return 'First, because your avatar is releasing '+w.t+at+'.';
+ if(w.k==='there')return 'First, because your avatar is releasing '+w.t+(w.b?at:', in who you are releasing')+'.';
+ return 'First, because your avatar has a story'+at+'.';}
+/* ONE SEAT'S RELEASE, ordered by the avatar first since AVS4: a tagged
+   fetter at this seat goes ahead of a heavier untagged one. The heavy cut is
+   unchanged, so a light tagged address never pushes out a held one. */
 function avQueue(seat){
- var at=W.filter(function(n){return n.b===seat&&n.sq>0&&n.cf;}).sort(function(a,b){return b.sq-a.sq;});
+ var at=avRank(W.filter(function(n){return n.b===seat&&n.sq>0&&n.cf;}));
  var hot=at.filter(function(n){return n.sq>=4;});
  return (hot.length?hot:at).slice(0,8);}
+/* THE WHOLE AVATAR'S RELEASE, AVS4: every address the avatar pulls that still
+   carries charge, in the order the instruction sets. This is what the page
+   shows a person their tags did, and what one press runs. */
+var AV_FIRST=6;
+function avQueueAll(){
+ var M=avMarksNow();
+ return avatarRank(W.filter(function(n){return n.sq>0&&n.cf&&avatarPull(n,M)>0;}),M).slice(0,AV_FIRST);}
 function avMinutes(q){
  if(!q.length||!CURP||typeof meterPlanWhole!=='function'||typeof relBudget!=='function')return null;
  var cap=relBudget(); if(cap<=0)return 0;
@@ -68946,7 +69247,7 @@ function avState(){
     the sniffer hears it at, because that is where the load it is measured
     against lives. Before this round both were the heard seat, so an older
     pair is placed exactly where it always was. */
- var areas={}, bySeat={};
+ var areas={}, bySeat={}, st0={r:r, M:avMarksNow()};
  AV_AREAS.forEach(function(A){
   var mine=rows.filter(function(x){return avSeatOf(x)===A.b;});
   /* the one a row shows is the newest written at this seat, and a pair the
@@ -68954,7 +69255,16 @@ function avState(){
   var own=mine.filter(function(x){return x.pair.seat===A.b;});
   bySeat[A.b]=(own.length?own:mine).slice(-1)[0]||null;
   var cs=mine.map(function(x){return x.c;}).filter(function(v){return v!=null;});
-  areas[A.k]={rows:mine, set:mine.length>0,
+  /* WHAT THE SEAT IS DOING NOW, AVS5. His words: "The seven seats here aren't
+     really telling, not giving us any information." A ring said only whether
+     a story was written there. It now carries what is held at the seat, the
+     addresses at 4 or more, which is r.loaded, the line every surface counts
+     held at, and how many of the seat's carrying addresses the avatar puts
+     first in the release queue (AVS4). Both are counts of real addresses on
+     this profile, never a share, so nothing is a mark out of a total. */
+  var held=st0.r.unread?0:(st0.r.loaded||[]).filter(function(n){return n.b===A.b;}).length;
+  var first=st0.r.unread?0:W.filter(function(n){return n.b===A.b&&n.sq>0&&n.cf&&avatarPull(n,st0.M)>0;}).length;
+  areas[A.k]={rows:mine, set:mine.length>0, held:held, first:first,
    pct:cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null};});
  var cs=rows.map(function(x){return x.c;}).filter(function(v){return v!=null;});
  var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;
@@ -68978,6 +69288,7 @@ function avState(){
     read, speaks to the wrong person. Examples keep what they showed before. */
  var written=!avOwn()||rows.length>0||!!((CURP&&CURP.story&&CURP.story.entries)||[]).length;
  return {r:r, side:side, rows:rows, areas:areas, bySeat:bySeat, overall:overall, lead:lead, seat:seat,
+  first:r.unread?[]:avQueueAll(),
   run:avRunning(r,seats,written), rit:avRituals(r,rows,side.rule), cyc:avCycles(CURP),
   top:rated[0]?avArchByName(rated[0]):null};}
 
@@ -69036,6 +69347,10 @@ function avRing(st){
   var c=avPos(x.a,ORB), A=st.areas[x.k];
   var has=A.rows.length>0, on=sel===x.b, col=seatCol(x.b);
   if(on)s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+(SR+2.4)+'" class="avh-halo" style="stroke:'+col+'"/>';
+  /* the pull ring, AVS5: dashed, in the seat's colour, round a seat whose
+     addresses the avatar puts first in the release queue. A ring and not a
+     fill, by the standing rule on icons. */
+  if(A.first>0)s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+(SR+1.3)+'" class="av-pull" style="stroke:'+col+'"/>';
   s+='<circle cx="'+avP(c[0])+'" cy="'+avP(c[1])+'" r="'+SR+'" class="av-sring" style="stroke:'
    +(has||on?col:'var(--edge-2)')+';stroke-opacity:'+(on?1:has?.45:1)+';stroke-width:'+(on?1:.6)+'"/>';
   if(A.pct!=null&&A.pct>0)
@@ -69053,11 +69368,18 @@ function avRing(st){
   +'</div>';
  var sats=AV_AREAS.map(function(x){
   var c=avPos(x.a,ORB), A=st.areas[x.k], on=sel===x.b;
-  return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+'" data-avsat="'+x.k+'" style="left:'
-   +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+', '
-   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+fmtPct('complete',A.pct)+' complete')+'">'
+  /* what the ring says, AVS5, in words on hover, on a tap and to a screen
+     reader: the story, what is held, and what the avatar puts first. The
+     count badge and the dashed ring are the same two facts drawn. */
+  var say=(A.set?'Story written.':'Nothing written.')
+   +(st.r.unread?'':' '+(A.held?A.held+(A.held===1?' address':' addresses')+' held.':'Nothing held.'))
+   +(A.first?' '+A.first+(A.first===1?' address goes':' addresses go')+' first in your release, from your avatar.':'');
+  return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+(A.first?' avh-first':'')+'" data-avsat="'+x.k+'" style="left:'
+   +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+'. '+say
+   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' complete.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
    +avSvg(AV_IC[x.k])
-   +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')+'</button>';}).join('');
+   +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')
+   +(A.held?'<span class="avs-n" aria-hidden="true">'+A.held+'</span>':'')+'</button>';}).join('');
  /* each ring's name sits under it. Inside the orbit, where GG put them, the
     larger rings covered half of every name. */
  var labs=AV_AREAS.map(function(x){var l=avPos(x.a,ORB);
@@ -69445,6 +69767,33 @@ function avPairs(st){
   return '<div class="av-pair"><span class="av-pair-ic">'+avSvg(AV_IC.person)+'</span>'
    +'<span class="av-pair-t">'+esc(x.pair.be)+'</span>'
    +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}).join('')+'</section>';}
+
+/* ---------------- release first, AVS4 ----------------
+   What the person's tags and stories did, shown where they put them. The rows
+   are the addresses avQueueAll orders, the avatar's pull first and the charge
+   second, each in the node ring the Discover release draws, with the tag or
+   seat that put it there under its name and the whole reason on hover. One
+   press runs them, through relPick, the shipped door. No card at all until
+   the avatar carries a story or a tag, because there is no instruction yet;
+   once it does and nothing it names carries charge, the slot says nothing
+   held, the product's one wording for that state. */
+function avFirstHTML(st){
+ var av=(CURP&&CURP.avatar)||null;
+ var any=av&&(((av.pairs||[]).length>0)||Object.keys(av.tags||{}).some(function(b){
+  var t=av.tags[b]; return t&&Array.isArray(t.add)&&t.add.length>0;}));
+ if(!any||st.r.unread)return '';
+ var Q=st.first, out='<section class="av-card avq"><div class="pm-eye">Release first</div>';
+ if(!Q.length)return out+'<p class="av-p">Nothing held.</p></section>';
+ out+='<div class="avq-list">'+Q.map(function(n){
+  var w=avWhyNow(n), lab=w&&w.t?avTagNm(w.t):(AV_OF[n.b]?AV_OF[n.b].nm:n.b);
+  return '<div class="avq-one" style="--c:'+seatCol(n.b)+'" data-tip-t="'+esc(avTagNm(n.k))+'" data-tip="'+esc(avWhySay(w))+'" tabindex="0"'
+   +' aria-label="'+esc(avTagNm(n.k)+', '+(AV_THE[n.b]||n.b)+'. '+avWhySay(w))+'">'
+   +crNode(n,'sm',{raw:'',title:''})
+   +'<span class="avq-t"><b>'+esc(avTagNm(n.k))+'</b><i>'+esc(lab)+'</i></span></div>';}).join('')+'</div>';
+ if(!showOnly()){var m=avMinutes(Q);
+  out+='<div class="av-act"><button type="button" class="btn pri av-go" data-avfirst="1">Release'
+   +(m!==null?'<small>'+avMinSay(m)+'</small>':'')+'</button></div>';}
+ return out+'</section>';}
 
 /* ---------------- running, as rows ---------------- */
 function avRunHTML(st){
@@ -69980,6 +70329,37 @@ var AV_CSS=[
  '.avi-wide{grid-column:1/-1}',
  '.avi-f input,.avi-f textarea{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;resize:vertical}',
  '.avi-act{grid-column:1/-1;display:flex;gap:10px}',
+ /* AVS3, the header as the two people: who is released at the left edge, the
+    subtabs in the middle, who is become at the right edge, even either side.
+    Read against the page's own width, as the hero row is: under 860 the
+    subtabs take the first line and the two people share the second, and
+    under 560 each takes its own. */
+ '#avbody .avs-who{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px 20px}',
+ '.avw{display:flex;min-width:0}',
+ '.avw-l{justify-content:flex-start}',
+ '.avw-r{justify-content:flex-end}',
+ '.avw .avi{flex:0 1 auto}',
+ '.avw-l .avi{justify-content:flex-start}',
+ '.avi-shed .avi-mk{border-style:dashed;border-color:var(--mid);color:var(--mid)}',
+ '#avbody .av>.avi-ed{margin:12px 0 4px}',
+ '@container (max-width:860px){#avbody .avs-who{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#avbody .avs-who .avs-subs{grid-column:1/-1;order:-1;justify-self:center}}',
+ '@container (max-width:560px){#avbody .avs-who{grid-template-columns:minmax(0,1fr)}#avbody .avs-who .avw{justify-content:flex-start}}',
+ /* AVS5, each seat says what it holds. The count is the seat's held
+    addresses, set in the seat's colour on the ring's left edge, level with
+    its middle: the lower left was tried first and at 1600 the Love badge sat
+    on the word Love, since every name hangs just under its ring. The tick
+    keeps the upper right. The dashed ring round a seat is the avatar putting
+    its addresses first. Both are read out on hover and tap. */
+ '.av-sat .avs-n{position:absolute;left:-11px;top:50%;transform:translateY(-50%);min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--panel);border:1.5px solid var(--c);color:var(--ink);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;line-height:1}',
+ '.av-pull{fill:none;stroke-width:.45;stroke-dasharray:1.2 .9;opacity:.95}',
+ /* AVS4, release first: the avatar's order, one ring and one name an address */
+ '.avq{margin:16px 0 0}',
+ '.avq-list{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 12px}',
+ '.avq-one{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:4px 14px 4px 4px;border-radius:999px;border:1px solid color-mix(in srgb,var(--c) 45%,var(--edge));background:var(--panel);cursor:default}',
+ '.avq-one:focus-visible{outline:2px solid var(--ink);outline-offset:2px}',
+ '.avq-t{display:flex;flex-direction:column;gap:1px;line-height:1.2;min-width:0}',
+ '.avq-t b{font-size:14px;font-weight:600;color:var(--ink)}',
+ '.avq-t i{font-style:normal;font-size:12.5px;color:var(--mid)}',
  /* PURPOSE, round RB, S3: the figure is the art and takes the left, the
     fields are text and take the right, the house rule for a centre column */
  '.avp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:28px;align-items:start;margin-top:8px}',
@@ -70029,11 +70409,25 @@ function avCss(){
  document.head.appendChild(s);}
 
 /* ---------------- the surface ---------------- */
+/* WHO IS RELEASED ON THE LEFT, WHO IS BECOME ON THE RIGHT, AVS3, 17
+   November. His words, 20 September: "The right side would be the becoming,
+   the left side would be release. Who is the person I'm releasing, right
+   side, who's the person I'm becoming. And you should be able to edit that and
+   modify it." The ring's two columns already put the release line left and
+   the embody line right, seat by seat; what was missing was the person each
+   side adds up to. The header is that row now: the releasing person at the
+   left edge, the subtabs centred, the becoming person at the right edge, the
+   same left and right the columns under it keep, and even either side of the
+   middle, by the standing symmetry ruling. An open editor takes the row under
+   the header, full width, rather than squeezing into its own third. */
 function avHead(st){
- var h='<header class="av-hd avs-top"><div class="avs-subs" role="group" aria-label="Avatar">'
+ var own=avOwn(), edR=own&&AV.shedEdit, edB=own&&AV.idEdit&&!edR;
+ var h='<header class="av-hd avs-top avs-who"><div class="avw avw-l">'+(edR?'':avShedHTML())+'</div>'
+  +'<div class="avs-subs" role="group" aria-label="Avatar">'
   +AV_SUBS.map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
-  +'</div>'+avIdHTML()+'</header>';
+  +'</div><div class="avw avw-r">'+(edB?'':avIdHTML())+'</div></header>';
+ if(edR)h+=avShedForm(); else if(edB)h+=avIdHTML();
  /* THE LINE IS GONE, round LV. What used to sit here in its place: the tag
     summary, above the ring rather than a paragraph explaining the ring. */
  if(AV.sub==='becoming')h+=avTagSummary(st);
@@ -70048,12 +70442,12 @@ function renderAvatar(){
  var who=S.who+'|'+(CURP&&CURP.id);
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
-  AV.idEdit=false; AV.side=null;}
+  AV.idEdit=false; AV.shedEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
-  h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
+  h+=avFirstHTML(st)+avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
  else{
@@ -70097,7 +70491,10 @@ function avSig(){
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
  var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
  /* the identity and the purpose map are the page's too since round RB */
- var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt].join('/');
+ /* and since AVS3 and AVS4 who is released, and the tags, which order the
+    release first card, so a tag changed from anywhere repaints the order */
+ var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt,A.shedName,A.shedDescription].join('/')
+  +JSON.stringify(A.tags||{});
  var pu=JSON.stringify(p.purpose||{});
  return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu].join('|');}
 function avRefresh(){
@@ -70170,6 +70567,9 @@ function avBind(host,st){
   var x=st.bySeat[bb]; if(!x||!x.gap)return;
   var q=avQueue(x.gap.seat); if(!q.length)return;
   relPick(q.map(function(n){return n.i;})); avWatch(bb);});
+ /* release first, AVS4: the avatar's own order, run as it stands */
+ on('[data-avfirst]',function(){var q=st.first; if(!q.length)return;
+  relPick(q.map(function(n){return n.i;})); avWatch(null);});
  on('[data-avdil]',function(el){avDilemma(+el.dataset.avdil,+el.dataset.avdv);});
  avIdBind(host); avPurBind(host);
  /* the boxes. The lit layer takes the text at once, because the textarea's
@@ -70247,9 +70647,49 @@ function avIdHTML(){
   +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
   +(own?'<button type="button" class="avi-pen" data-avidedit aria-label="Change who you are becoming" title="Change who you are becoming">'
    +avSvg(AVI_PEN)+'</button>':'')+'</span>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+/* THE PERSON BEING RELEASED, AVS3. The becoming half's own shape cut to two
+   fields, a name and one sentence: a title is how a person introduces who
+   they are becoming and nobody introduces who they are leaving. The mark is
+   the same figure drawn in a broken line, the person coming apart, so the two
+   ends of the header read as one figure whole and the same figure going.
+   What is written here is an instruction too: avatarMarks reads the sentence
+   the way it reads a release line, so a fetter heard in it goes first in the
+   release queue (AVS4). */
+var AVI_SHED='<circle cx="12" cy="8" r="3.6" stroke-dasharray="2.2 2"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6" stroke-dasharray="2.2 2"/>';
+function avShedHTML(){
+ var av=(CURP&&CURP.avatar)||avatarBlank(), own=avOwn();
+ var nm=String(av.shedName||''), de=String(av.shedDescription||'');
+ if(!nm&&!de){
+  if(!own)return '';
+  return '<div class="avi avi-shed"><button type="button" class="avi-add" data-avshededit>'+avSvg(AVI_SHED)
+   +'<span>Name who you are releasing</span></button></div>';}
+ return '<div class="avi avi-shed"><span class="avi-main"><span class="avi-mk" aria-hidden="true">'+avSvg(AVI_SHED)+'</span>'
+  +'<span class="avi-t"><span class="avi-n"><b>'+esc(nm||'Unnamed')+'</b></span>'
+  +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
+  +(own?'<button type="button" class="avi-pen" data-avshededit aria-label="Change who you are releasing" title="Change who you are releasing">'
+   +avSvg(AVI_PEN)+'</button>':'')+'</span></div>';}
+function avShedForm(){
+ var av=(CURP&&CURP.avatar)||avatarBlank();
+ return '<div class="avi avi-ed avi-shed" data-avshedform>'
+  +'<label class="avi-f"><span>Name</span><input data-avshed="shedName" maxlength="'+AV_CAP.shedName+'" value="'+esc(av.shedName||'')+'" '
+  +'placeholder="What you call who you are releasing"></label>'
+  +'<label class="avi-f avi-wide"><span>In one sentence</span><textarea data-avshed="shedDescription" rows="2" maxlength="'+AV_CAP.shedDescription+'" '
+  +'placeholder="Who you are releasing, in your words">'+esc(av.shedDescription||'')+'</textarea></label>'
+  +'<div class="avi-act"><button type="button" class="btn pri" data-avshedsave>Save</button>'
+  +'<button type="button" class="btn" data-avshedcancel>Cancel</button></div></div>';}
 function avIdBind(host){
+ host.querySelectorAll('[data-avshededit]').forEach(function(el){el.onclick=function(){
+  AV.shedEdit=true; AV.idEdit=false; renderAvatar(); var f=host.querySelector('[data-avshed="shedName"]'); if(f)f.focus();};});
+ host.querySelectorAll('[data-avshedcancel]').forEach(function(el){el.onclick=function(){AV.shedEdit=false; renderAvatar();};});
+ host.querySelectorAll('[data-avshedsave]').forEach(function(el){el.onclick=function(){
+  var v={}; host.querySelectorAll('[data-avshed]').forEach(function(f){v[f.dataset.avshed]=String(f.value||'').trim();});
+  /* the same refusal the boundary gives, said before anything is written */
+  var bad=['shedName','shedDescription'].filter(function(k){return (v[k]||'').length>AV_CAP[k];})[0];
+  if(bad){status('Not saved. The '+(bad==='shedName'?'name':'sentence')+' is longer than '+AV_CAP[bad]+' characters.','fail');return;}
+  if(avRecWrite(function(av){av.shedName=v.shedName||''; av.shedDescription=v.shedDescription||'';},'Saved.')){
+   AV.shedEdit=false; renderAvatar();}};});
  host.querySelectorAll('[data-avidedit]').forEach(function(el){el.onclick=function(){
-  AV.idEdit=true; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
+  AV.idEdit=true; AV.shedEdit=false; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
  host.querySelectorAll('[data-avidcancel]').forEach(function(el){el.onclick=function(){AV.idEdit=false; renderAvatar();};});
  host.querySelectorAll('[data-avidsave]').forEach(function(el){el.onclick=function(){
   var v={}; host.querySelectorAll('[data-avid]').forEach(function(f){v[f.dataset.avid]=String(f.value||'').trim();});
@@ -101064,5 +101504,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006751894"></div>
+<div id="eof" hidden data-len="006782580"></div>
 </body></html>

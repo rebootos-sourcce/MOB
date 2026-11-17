@@ -239,6 +239,130 @@ require('./net.js').guardBrowser(b);
  ok(s4.n>0&&s4.off.length===0,'every archetype\'s impact line puts its primary saboteur where its own addresses sit, '
   +'coloured by the seat holding most of them, of '+s4.n+': '+s4.off.slice(0,3).join(' | '));
 
+ console.log('\n=== AVS2 to AVS5: a build a person edits, and a tag that orders the release ===');
+ /* 17 November, his words of 20 September: "Adding in data so that I can tag
+    and have Source attach what I'm tagging to my releases, so that it can
+    prioritise those releases ... Who is the person I'm releasing ... who's
+    the person I'm becoming. And you should be able to edit that." Written
+    through the page's own controls and the Avatar's own commit, avSeatAdd.
+    THE KNOWN CASE FIRST: the Discover order is read with no tag before the
+    tag is put on, so the reorder is proved against the order it replaced. */
+ await p.setViewportSize({width:1600,height:1000}); await wait(300);
+ const av=await p.evaluate(async()=>{
+  const w=t=>new Promise(r=>setTimeout(r,t));
+  loadP(0); CURP.avatar=avatarBlank(); CURP.story={entries:[]};
+  setTab(TAB.INTAKE); AV.sub='becoming'; AV.sig=''; renderAvatar(); await w(50);
+  const host=document.getElementById('avbody'), $=s=>host.querySelector(s), o={};
+  o.noCard=!$('.avq');
+  /* the header is the two people, even either side of the subtabs */
+  const hd=$('.avs-who'), sb=hd&&hd.querySelector('.avs-subs');
+  if(hd&&sb){const H=hd.getBoundingClientRect(), B=sb.getBoundingClientRect();
+   o.mid=Math.round(Math.abs((B.left+B.right)/2-(H.left+H.right)/2));}
+  o.sides=!!$('.avw-l [data-avshededit]')&&!!$('.avw-r [data-avidedit]');
+  /* who is released, through its own editor, refused past the cap by name */
+  $('[data-avshededit]').click(); await w(20);
+  o.cap=+$('[data-avshed="shedName"]').maxLength===AV_CAP.shedName;
+  $('[data-avshed="shedName"]').value='x'.repeat(AV_CAP.shedName+1);
+  $('[data-avshedsave]').click(); await w(20);
+  o.refused=CURP.avatar.shedName===''&&!!$('[data-avshedform]');
+  $('[data-avshed="shedName"]').value='The one who waits to be picked';
+  $('[data-avshed="shedDescription"]').value='Goes quiet and feels alone when nobody calls first.';
+  $('[data-avshedsave]').click(); await w(20);
+  o.shed=CURP.avatar.shedName; o.shedShown=($('.avw-l .avi-n b')||{}).textContent;
+  /* two seats written through the page's own commit */
+  const add=(b,be,nb)=>{AV.seat=b; AV.face='story'; AV.edit=null; AV.drafts[b]={be:be,notbe:nb}; avSeatAdd(b);};
+  add('Heart','Someone who stays close when it gets hard.','My chest aches and I feel lonely and rejected when my partner goes quiet.');
+  add('Solar','Someone who does the work and lets it be checked.','My stomach knots and I get angry when my boss checks my work.');
+  await w(50);
+  const st=avState();
+  o.first=st.first.length; o.firstAllPulled=st.first.every(n=>avatarPull(n,avMarksNow())>0);
+  o.card=!!$('.avq')&&host.querySelectorAll('.avq-one').length===st.first.length;
+  o.cardSays=[...host.querySelectorAll('.avq-one')].every(e=>/^First, because/.test(e.getAttribute('data-tip')||''));
+  /* the seats say something: every ring carries its meaning */
+  o.tips=[...host.querySelectorAll('[data-avsat]')].every(e=>/written\./.test(e.getAttribute('data-tip')||''));
+  /* one press runs the avatar's own order */
+  $('[data-avfirst]').click(); await w(50);
+  o.ran=RUN.open&&JSON.stringify(RUN.pick.map(n=>n.i))===JSON.stringify(st.first.map(n=>n.i));
+  if(typeof relClose==='function')relClose();
+  /* AVS4 ON DISCOVER: the heaviest Solar address and the heaviest Heart one,
+     picked in the bank. Both seats are written, so both pull at the same
+     level and the charge orders them. Then the LIGHTER one is tagged by its
+     own name, and it must go first. The lighter one, because the first cut of
+     this check tagged the Heart's and the Heart's was also the heavier, so
+     the charge order put it first too and the check passed with the ranking
+     taken out: measured, the known bad case went green. Tagging the lighter
+     is the one case the charge alone can never produce. */
+  const top=b=>W.filter(n=>n.b===b&&n.cf&&n.sq>0).sort((a,c)=>c.sq-a.sq)[0];
+  const hN=top('Heart'), sN=top('Solar');
+  o.fixture=!!(hN&&sN)&&hN.sq!==sN.sq;
+  Object.keys(IMP_PICK).forEach(k=>delete IMP_PICK[k]); IMP_PICK[hN.i]=true; IMP_PICK[sN.i]=true;
+  const order=()=>stRelModel().take.map(n=>n.i);
+  const heavy=hN.sq>sN.sq?hN:sN, lite=heavy===hN?sN:hN;
+  o.before=order()[0]===heavy.i;
+  avTagSet(lite.b,lite.k,true,avState()); await w(20);
+  o.after=order()[0]===lite.i;
+  /* and the same press with the ranking swapped for the old charge sort
+     must NOT put it first, or this check proves nothing */
+  const keep=window.avRank; window.avRank=L=>L.sort((a,c)=>c.sq-a.sq);
+  o.bad=order()[0]===lite.i; window.avRank=keep;
+  o.tagKept=(CURP.avatar.tags[lite.b].add||[]).indexOf(lite.k)>=0;
+  setTab(TAB.STORY); render(); await w(100);
+  o.mark=document.querySelectorAll('#strel .st-rq-av').length;
+  o.markSays=/First, because you tagged/.test((document.querySelector('#strel .st-rq-av .st-rq')||{}).title||'');
+  Object.keys(IMP_PICK).forEach(k=>delete IMP_PICK[k]);
+  /* and the record keeps all of it through an export */
+  const v=validateProfile(JSON.parse(JSON.stringify(saveProfile(CURP))));
+  o.trip=v.ok&&v.profile.avatar.shedName===o.shed&&v.profile.avatar.tags[lite.b].add.indexOf(lite.k)>=0;
+  return o;});
+ ok(av.noCard,'an avatar with nothing on it shows no release first card');
+ ok(av.mid<=4&&av.sides,'the header is who is released left, who is become right, the subtabs centred within '+av.mid+'px');
+ ok(av.cap&&av.refused,'the releasing name stops at the boundary\'s cap, and a longer one is refused and not kept');
+ ok(av.shed==='The one who waits to be picked'&&av.shedShown===av.shed,'who is released is kept and shown on the left, '+JSON.stringify(av.shedShown));
+ ok(av.first>0&&av.firstAllPulled&&av.card&&av.cardSays,'release first lists what the avatar pulls, each with its reason, '+av.first+' addresses');
+ ok(av.tips,'every seat on the ring carries what it holds on hover and tap');
+ ok(av.ran,'one press runs the avatar\'s own order through the release');
+ ok(av.fixture&&av.before,'with no tag, Discover orders two written seats by charge');
+ ok(av.after&&av.tagKept,'a tag by name puts the lighter address first on Discover');
+ ok(!av.bad,'and with the old charge sort in its place the same tag does not, so the check can fail');
+ ok(av.mark>=1&&av.markSays,'and the ring on Discover says the avatar put it there, '+av.mark+' marked');
+ ok(av.trip,'who is released and the tag travel through an export and back');
+
+ console.log('\n=== AVS5 on a charged profile, and MS22 and MS23 on Character ===');
+ const ch=await p.evaluate(async()=>{
+  const w=t=>new Promise(r=>setTimeout(r,t));
+  loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.INTAKE); AV.sub='becoming'; AV.sig=''; renderAvatar(); await w(50);
+  const o={}, r=compute();
+  /* each badge is the count of held addresses at that ring's own seat */
+  o.badges=[...document.querySelectorAll('#avbody [data-avsat]')].map(e=>{
+   const A=AV_AREAS.find(x=>x.k===e.dataset.avsat), n=e.querySelector('.avs-n');
+   return {want:r.loaded.filter(x=>x.b===A.b).length, got:n?+n.textContent:0};});
+  o.badgeOk=o.badges.every(x=>x.want===x.got)&&o.badges.some(x=>x.got>0);
+  setTab(TAB.MASKS); render(); await w(150);
+  const rail=document.getElementById('charrail');
+  o.locked=!lockSees('mask');
+  if(!o.locked){
+   const arch=[...rail.querySelectorAll('.chr-ar')];
+   o.twelve=arch.length===ARCH.length;
+   const emb=avArchEmbodied(computeSeen());
+   o.filled=arch.filter(e=>e.classList.contains('on')).map(e=>e.dataset.charch).join(',');
+   o.want=ARCH.filter((a,i)=>emb[i]).map(a=>a.nm).join(',');
+   o.tips=arch.every(e=>(e.getAttribute('data-tip')||'').length>20);
+   /* every printed percent wears the hue of its own figure */
+   const rows=[...rail.querySelectorAll('.chr-row b, .chr-sv')].filter(e=>/%$/.test(e.textContent.trim()));
+   const hex=c=>{const m=c.match(/\d+/g); return '#'+m.slice(0,3).map(x=>('0'+(+x).toString(16)).slice(-2)).join('');};
+   o.hued=rows.length>0&&rows.every(e=>hex(getComputedStyle(e).color)===pctHue(parseInt(e.textContent,10),LIGHT()));
+   o.nRows=rows.length;
+   arch[0].click(); await w(80);
+   o.door=S.tab===TAB.INTAKE&&AV.sub==='arch'&&AV.arch===ARCH[0].nm;}
+  return o;});
+ ok(ch.badgeOk,'every seat\'s badge is the count held at that seat, '+JSON.stringify(ch.badges));
+ if(ch.locked)ok(false,'James can see the masks, so Character can be checked');
+ else{
+  ok(ch.twelve&&ch.tips,'Character shows all twelve archetypes, each with its meaning on hover and tap');
+  ok(ch.filled===ch.want&&ch.want.length>0,'the ones James embodies fill in, and only those, '+ch.filled+' against '+ch.want);
+  ok(ch.hued,'every percent on the rail wears its own hue, read off pctHue, '+ch.nRows+' figures');
+  ok(ch.door,'an archetype opens on the Avatar page where it is rated');}
+
  ok(errs.length===0,'no page errors, '+errs.join(' | '));
  await b.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
