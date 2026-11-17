@@ -126,6 +126,13 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
     out.ctl.story=!document.getElementById('sttext')&&!document.getElementById('stapply')
      &&!document.getElementById('stcin')&&!document.getElementById('stmic')&&!document.getElementById('sttalk')
      &&((document.querySelector('#story .st-colw .show-note')||{}).textContent||'')===line('story');
+    /* AND SOURCE'S FACE IS ON IT, 17 November, his report "source ai not
+       loading in big dashboard" off an example's Dashboard: the example's
+       note used to take #stuni's place, so the face had nowhere to mount
+       and sat hidden in document.body. Read off the canvas itself: in
+       #stuni, not hidden, and a box with real size */
+    const fc=document.getElementById('srcface'), un=document.getElementById('stuni'), fb=fc&&fc.getBoundingClientRect();
+    out.ctl.face=!!(fc&&un&&un.contains(fc)&&!fc.hidden&&fb.width>100&&fb.height>100);
     out.ctl.strun=!document.getElementById('strun')
      &&((document.querySelector('#strel .show-note')||{}).textContent||'')===line('release');
     /* 3 . the story commit, the way the button calls it */
@@ -185,6 +192,7 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
    ok(empty.length===0,tier+' / '+r.nm+': every surface opens, '+r.surf.length+' read, empty: '+JSON.stringify(empty));
    /* 2 */
    ok(r.ctl.story,tier+' / '+r.nm+': the Story journal is the preview line, with no box, Talk, Record or Commit');
+   ok(r.ctl.face,tier+' / '+r.nm+': Source\'s face is mounted in #stuni over the preview line, not parked');
    ok(r.ctl.strun,tier+' / '+r.nm+': the Story release column has the preview line where Run release was');
    ok(r.ctl.card&&r.ctl.begin,tier+' / '+r.nm+': the release card opens as a reading and offers no Begin, '+JSON.stringify({card:r.ctl.card,begin:r.ctl.begin}));
    ok(r.ctl.intake,tier+' / '+r.nm+': the Intake answers are drawn disabled under the preview line');
