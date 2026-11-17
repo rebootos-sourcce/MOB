@@ -1518,9 +1518,12 @@
         And it looks like a unique display area. This is where Source AI
         provides deep information from my records." Hoisted out of the
         Insight section below to a direct child of #rpanel, a sibling of
-        #rfold, because position:sticky only holds inside its own containing
-        block and that block was a foldable .lsec-bd: a summary that must
-        stay on screen cannot live inside a section a person can collapse.
+        #rfold, because it was position:sticky then, and that only holds inside
+        its own containing block, a foldable .lsec-bd. It is not sticky any
+        more, 17 November (his words: "It doesn't scroll with the rest of the
+        scroll bar", head.html's .person has the measurement), so the hoist
+        now only keeps it out of a section a person can collapse: it is the
+        first thing in the rail and it scrolls with the rail.
         ui/ui.js writes #psum inside this host with the Selection panel's own
         Blueprint domain reading (domReadHtml, ui/drills.js), rdCase'd the
         same way runDomDrill is. The black, its-own-display-area treatment
