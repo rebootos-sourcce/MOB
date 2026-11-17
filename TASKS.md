@@ -877,16 +877,39 @@ into something tidier than he said it.
       The funnel was telling people to load the record from Settings, which
       does not exist, through a sheet that cannot be reached. One line wires
       it, and it turns the quiz from a leaflet into an onboarding.
-- [ ] **FN11. The record was named `test`.** `blankProfile('test')`, so a
-      person who did load it met a profile called test. Fixed on the funnel
-      side.
-- [ ] **FN12. The funnel has no address for the product at all.** No page
-      links to the app. That is a distribution decision, where `atuned.html`
-      lives, and it cannot be made inside a directory that ships as standalone
-      files.
-- [ ] **FN13. App boot measures 5,584 milliseconds to `booted`.** The skip
-      line exists. It is still 5.6 seconds between a person finishing the
-      funnel and seeing the product.
+- [x] **FN11. Closed, and this line stayed open after it was.** The name was
+      changed at `ec94db63`: `quizRecord()` in `funnel/quiz.html` calls
+      `blankProfile('Web reading')`, and no call in `funnel/` or `atuned_src/`
+      names a profile `test` any more (every `blankProfile(` and `pNew(` call
+      read 17 November). Measured end to end the same day at `18cb1c39`: the
+      quiz walked in headless Chromium, its own button pressed, and the app it
+      opened held `CURP.name` "Web reading" in five runs of five.
+      `tests/funnel.js` asserts the name on every run.
+- [x] **FN12. Closed. The funnel has an address for the product.** The
+      results screen carries `#toapp-record`, "Create your account", an
+      `<a href>` onto `../source.html` that `recordLinkArm` packs into a
+      `#r=` link, rewritten to `atuned.html` in `dist`. Pressed with a real
+      mouse click on 17 November at `18cb1c39`, five runs of five: the press
+      navigated to `source.html#r=`, the app booted with no error, the
+      record landed (`RECORD_LINK_LANDED` true) and the sign in door stood
+      over it, as ruled. `tests/funnel.js` holds the link and the landing,
+      though it reads the href rather than pressing it.
+- [x] **FN13. Closed as a speed item. The start up takes 0.6 seconds; the
+      rest is the overture, which is ruled.** Measured 17 November at
+      `18cb1c39`, alone on the machine (load average under 1 on 4 cores),
+      five runs, from the press on `#toapp-record`: the start up finished
+      (`data-boot` reads ok) at a median 624 ms, DOM content loaded at 669 ms,
+      and `booted` at 8,176 ms. The gap is not work. Two long tasks run, the
+      parse at about 400 ms and the start up at about 220, and nothing runs
+      after 0.75 seconds; the sheet's fade starts at its own 7.76 second
+      delay (`BOOT_UNI_FADE_AT`, `ui/panels.js`, the eight second script
+      driven sheet of 17 November) and `booted` lands as it ends. The 5,584
+      this line used to carry was the 5.24 second overture of its day, not a
+      slow load, which is why it moved when the overture did and not when
+      the code did. A press at 1.5 seconds skips it: `booted` at a median
+      2,372 ms over three runs. How long the overture runs is his ruling
+      ("keep it at 7 for now", `shell/head.html`), and `PRIORITY.md` section
+      F holds that question, so nothing was retimed here.
 - [x] **FN14. Measured on the funnel itself.** First contentful paint 36
       milliseconds, DOM content loaded 45 to 51, full load 18 to 66 across all
       four pages at both widths. One answer including the engine read and the
