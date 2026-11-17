@@ -550,6 +550,38 @@ stands on and keeps the person as its key. The keys are untouched.
 measure: tests/engine.js holds each word by key and searches every string the
 Compass hands a screen for a retired name.
 
+## 2026-11-17 · owner · the voice prototype's read only layer, and the 96 pattern
+
+said: asked about two Source AI pieces the board listed as done and that are not
+in the product, the 96 pattern library read by `srcVoiceCanon` and the evidence
+bus `srcVoiceEvidenceBus` (SV12): "Revive it and put a note next to it for when
+we review it. I don't quite know what it's doing anymore, the 96 pattern, but
+let's add it."
+read: both pieces were built on the voice prototype, PR #163, which he rejected
+on 8 November ("Source AI is nothing like what I asked for, at all") and which
+was closed unmerged. He is not asking for them to show up anywhere. He wants
+them in the code, with a note beside them so he can review them later and learn
+what they do. Checked in the code: the layer is read only and nothing in the
+interface calls it, so a person sees and hears nothing different. The 96 are a
+shelf of named family patterns from a package he uploaded on 1 November, not his
+superego list of 3 October, and they keep ancestral and generational apart where
+he ruled them one on 8 November. Those are questions for the review, not for
+the port.
+change: ported by file from `aa449a80` onto `main` at `c2bf52a2`, branch
+`revive/source-voice-layer`, unmerged: engine/data/patterns96.js,
+engine/data/researchanchors.js, engine/voice_sniffer.js, voice_narrative.js,
+voice_charge_cycle.js, voice_intelligence.js, source_evidence_bus.js, the
+MANIFEST and export lines, five tests, and the voice gate's NOT_COPY_ROUTES in
+.claude/skills/atuned-voice/check.py. The note he asked for is the first comment
+in every file the layer adds, and the questions for the review are in
+DECISIONS.md under "The voice prototype's read only layer, revived, 17
+November". One change to the code: an entry the safety stop holds is read as
+nothing by the layer, with a test, because the prototype turned it into packets.
+measure: tests/engine.js reads the same as before the port (0 failed), the voice
+objections gate reads 0 findings that stop a build, and each of the five tests
+fails against a deliberately broken copy of the layer. The engine grew by about
+200 kilobytes and the public quiz page with it, which is the cost of adding it.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
