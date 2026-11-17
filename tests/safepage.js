@@ -186,7 +186,7 @@ const look = p => p.evaluate(() => {
     ok(s.marks === 0, 'no word in the entry is lit as a feeling' + at + ', ' + s.marks + ' lit');
     ok(s.commitN === null && s.commitName === 'Commit', 'Commit carries no count' + at + ': ' + JSON.stringify({ badge: s.commitN, name: s.commitName }));
     ok(s.glow === 'var(--accent)', 'the release column is not lit by these words' + at + ': ' + JSON.stringify(s.glow));
-    ok(!/write where you felt it|Keep writing/.test(s.page), 'and nothing asks where it was felt' + at);
+    ok(!/write where you felt it|Keep writing|Keep going|My guess is it sits/.test(s.page), 'and nothing asks where it was felt, or guesses where it sits' + at);
     const m = s.ink && s.ink.match(/\d+/g).map(Number);
     ok(!!m && !(m[0] > 150 && m[0] > m[1] * 1.6 && m[0] > m[2] * 1.6), 'the line is not drawn red' + at + ': ' + s.ink);
     ok(!!s.line && s.line === s.line.replace(/\b[A-Z]{2,}\b/g, '') && !/notic|detect|warning|alert|risk|we /i.test(s.line),
@@ -215,7 +215,7 @@ const look = p => p.evaluate(() => {
     const after = await look(p);
     /* the pending column's empty sentence was cut on main, round of 29
        October, so what is held now is that nothing false or asking stands */
-    ok(!/You have not written anything yet|write where you felt it|Keep writing/.test(after.pend),
+    ok(!/You have not written anything yet|write where you felt it|Keep writing|Keep going|My guess is it sits/.test(after.pend),
       'the pending column says neither that nothing was written nor where it was felt' + at + ': ' + JSON.stringify(after.pend));
     await p.screenshot({ path: path.join(process.env.SHOTS || '/tmp', 'safe-committed-' + w + '.png') }).catch(() => {});
     await type(p, 'I was scared and my chest went tight.');

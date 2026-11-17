@@ -61,23 +61,33 @@
    the document's own lines fail its own section 8 unless the person used
    the word first, and are kept so the check is seen to catch them: "What
    part feels uncertain?" plants uncertain, and "What does that let you
-   avoid?" plants avoidance. */
+   avoid?" plants avoidance.
+
+   THE WORDING WAS LOOSENED, 17 November, the owner: "I want the software to
+   feel a bit more conversational. I don't want it to feel stiff. And it also
+   needs to operate at a CQ 100." The families, their order, their needs and
+   their dimensions are his document's and did not move. The words did, where
+   the document's line read as an intake form ("What happens next?", "How long
+   has this been happening?"), toward what a person sitting with you would
+   actually say. Each new line was put through all ten points below before it
+   went in. The two clarification lines and "What does that let you avoid?"
+   are kept word for word, because they are here to be seen failing. */
 var SRC_FAMILY=[
  {family:'clarification', need:'unclear', dim:null, q:'What do you mean by that?'},
  {family:'clarification', need:'unclear', dim:null, q:'What part feels uncertain?'},
  {family:'behaviour', dim:'behaviour', q:'What did you do?'},
  {family:'agency', need:'behaviour', dim:'goal', q:'What would you rather be doing?'},
- {family:'agency', need:'behaviour', dim:'goal', q:'What did you want to do?'},
- {family:'consequence', dim:null, q:'What happens next?'},
- {family:'body', dim:'body', q:'Where do you feel it?'},
+ {family:'agency', need:'behaviour', dim:'goal', q:'What did you want to do instead?'},
+ {family:'consequence', dim:null, q:'And then what happened?'},
+ {family:'body', dim:'body', q:'Where do you feel it right now?'},
  {family:'body', dim:'body', q:'What do you notice first?'},
- {family:'repetition', need:'supported', dim:null, q:'When else does this happen?'},
- {family:'repetition', need:'supported', dim:null, q:'Where else does this happen?'},
- {family:'function', dim:'behaviour', q:'What changes after you do it?'},
+ {family:'repetition', need:'supported', dim:null, q:'When else does this show up for you?'},
+ {family:'repetition', need:'supported', dim:null, q:'Where else does this show up?'},
+ {family:'function', dim:'behaviour', q:'What shifts for you once you do it?'},
  {family:'function', dim:'behaviour', q:'What does that let you avoid?'},
- {family:'history', need:'history', dim:null, q:'How long has this been happening?'},
- {family:'history', need:'history', dim:null, q:'What was happening then?'},
- {family:'origin', need:'history', dim:null, q:'What happened the first time you remember this?'}];
+ {family:'history', need:'history', dim:null, q:'How long has this been going on?'},
+ {family:'history', need:'history', dim:null, q:'What was going on around you back then?'},
+ {family:'origin', need:'history', dim:null, q:'What do you remember about the first time?'}];
 
 /* POINT 2, CLEAR. The document: "approximately a 10th-grade comprehension
    level", short sentences, concrete words, no academic terms. Read on the
@@ -141,6 +151,17 @@ var QC_AGAIN=['again','twice','three times','each time','every time','keep comin
    while saying a word came back needs only that it did. "lands" moved here
    from the list above, because "it lands" is a place said. */
 var QC_LANDS=['lands','land'];
+/* A GUESS SAYS IT IS A GUESS, 17 November. The owner: "let's loosen it so it
+   feels a bit more conversational." A sentence that says where a story sits
+   and carries one of these is Source AI thinking out loud, and it may be
+   said about any claim the ledger holds as guessable (EV_GUESSABLE,
+   engine/evidence.js), from the first mention. The marker must be in the
+   SAME sentence as the place: "It lands behind your stomach. Maybe." does
+   not hedge the first sentence, and point 7 reads them apart. A short list
+   on purpose, so a person reading the rule can see why a line passed. */
+var QC_GUESS=['my guess','i guess','my hunch','i think','maybe','might','could be','i wonder'];
+function qcSentences(bare){
+ return String(bare).split(/[.!?]+/).map(function(x){return x.trim();}).filter(Boolean);}
 /* place words that name no seat: "what happens in your body" asks about the
    body and says nothing about where a story lands. And srcDims's own
    SRC_BODY_NOT, the place words ordinary sentences use for something else,
@@ -256,12 +277,21 @@ function srcVet(cand,ctx){
 
  /* 7 NO UNSUPPORTED PATTERN */
  var says=notSaid(qcFind(nb,QC_AGAIN));
- var where=notSaid(qcFind(nb,QC_LANDS.concat(qcPlaces())));
+ /* a place word is read a sentence at a time: one stated flat needs the
+    person's yes (EV_PLACEABLE), one in a sentence that says it is a guess
+    needs only a claim that may be guessed about (EV_GUESSABLE) */
+ var where=[], guessed=[], placeList=QC_LANDS.concat(qcPlaces());
+ qcSentences(bare).forEach(function(s){
+  var ns=normMap(s).s, hit=notSaid(qcFind(ns,placeList)); if(!hit.length)return;
+  var into=qcFind(ns,QC_GUESS).length?guessed:where;
+  hit.forEach(function(w){into.push(w);});});
  var placeable=!!(claim&&EV_PLACEABLE.indexOf(claim.state)>=0);
+ var guessable=!!(claim&&EV_GUESSABLE.indexOf(claim.state)>=0);
  var need=cand.need||'';
  var fam=need==='supported'||need==='history';
  var okAgain=(!says.length||nameable)&&(!fam||nameable);
- var okWhere=!where.length||placeable;
+ var okWhere=(!where.length||placeable)&&(!guessed.length||guessable);
+ if(!okWhere&&!where.length)where=guessed;
  var okHist=need!=='history'||!!(claim&&claim.earlier>0);
  add(7,'no unsupported pattern',okAgain&&okWhere&&okHist,
   !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':

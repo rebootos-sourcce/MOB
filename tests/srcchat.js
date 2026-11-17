@@ -371,7 +371,10 @@ require('./net.js').guardBrowser(browser);
        answered now, so the Space is said once the questions have run and
        every turn after it is listened to, never asked, and never with the
        line just said. */
-    const sp = rows.indexOf('Keep writing.');
+    /* the Space is read off the page since 17 November, when its words
+       changed from "Keep writing." in the tone pass, so a reword cannot
+       leave this check holding a line the product no longer says */
+    const sp = rows.indexOf(await q.evaluate(() => SRC_SPACE));
     ok(sp > 0 && rows.slice(sp).every(r => r.indexOf('?') < 0) && rows.every((r, i) => i === 0 || r !== rows[i - 1]),
       'and when every question has been asked it says the document\'s Space, then listens, asking nothing: ' + JSON.stringify(rows.slice(sp)));
     ok(!q.errs.length, 'no page errors in that run: ' + q.errs.join(' | '));
@@ -714,6 +717,49 @@ require('./net.js').guardBrowser(browser);
      an answer and never a correction's own words, read back after a real
      reload. Checked against the build before this first: there is no row
      to press there, so the first check below fails. */
+  /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's
+     bring back replies." After the person's own turn Source AI's line is
+     on the page, it is word for word the line that went into the record
+     and to the voice, it carries the 15 November Source AI mark (a ring
+     icon whose meaning opens on hover, tap and focus, and a colour and an
+     italic on the words, never the icon alone), and in the hero view it is
+     the only thing in #stsrc that shows. Checked against the build before
+     this first: there is no .src-reply there, so every check here fails. */
+  console.log('\n=== a reply after each turn, on screen, with the Source AI mark ===');
+  for (const [w, hgt] of [[1600, 1000], [390, 844]]) {
+    const q = await open(browser, w, hgt);
+    await q.evaluate(() => { STV.dash = true; stRender(); });
+    const none = await q.evaluate(() => !document.querySelector('#stsrc .src-reply'));
+    ok(none, w + ': before the person has said anything there is no reply on screen');
+    await q.evaluate(t => srcTurnCommit(t), 'I was afraid all night.'); await q.waitForTimeout(120);
+    const r = await q.evaluate(() => {
+      const p = document.querySelector('#stsrc .src-reply'), t = p && p.querySelector('.src-ai-t'), mk = p && p.querySelector('.src-mk');
+      const b = p ? p.getBoundingClientRect() : { width: 0, height: 0, right: 0, left: 0 };
+      const cs = t ? getComputedStyle(t) : {}, ink = getComputedStyle(document.body).color;
+      return { line: t ? t.textContent : '', last: (SRC_CHAT.filter(x => x.w === 'src').slice(-1)[0] || {}).q || '',
+        h: b.height, inside: b.left >= -0.5 && b.right <= innerWidth + 0.5, italic: cs.fontStyle === 'italic', colour: cs.color, ink: ink,
+        mk: !!mk, tip: mk ? mk.getAttribute('data-tip') || '' : '', focus: mk ? mk.tabIndex === 0 : false,
+        ring: mk ? [...mk.querySelectorAll('circle')].every(c => c.getAttribute('fill') === 'none') : false,
+        vet: t ? srcVetSay(t.textContent, { text: srcConvText(), ledger: srcLedgerNow() }, srcLedgerNow().thread).ok : false };
+    });
+    ok(r.line && r.line === r.last && r.h > 0 && r.inside, w + ': after a turn the reply is on screen, inside it, and it is the line Source AI said: ' + JSON.stringify({ line: r.line, last: r.last, h: r.h }));
+    ok(r.mk && r.ring && r.focus && /Source AI/.test(r.tip) && /guess/.test(r.tip), w + ': it carries the ring mark, ring and not fill, reachable by keyboard, its meaning on it: ' + JSON.stringify({ tip: r.tip }));
+    ok(r.italic && r.colour !== r.ink, w + ': and the words themselves wear the mark too, an italic and a colour apart from the ink: ' + JSON.stringify({ c: r.colour, ink: r.ink }));
+    ok(r.vet, w + ': and the reply passes the same three checks every said line does: ' + r.line);
+    ok(/My guess is it sits /.test(r.line) && !/lands/.test(r.line), w + ': on a first mention it guesses the place out loud, framed as a guess, never as fact: ' + r.line);
+    /* the hero view: the reply alone shows while the person is talking, the
+       rest of #stsrc stays hidden there as ruled on 10 November */
+    const hero = await q.evaluate(() => { STV.dash = false; stRender(); const j = document.getElementById('stjr'); if (j) j.classList.remove('st-rest');
+      const h = document.getElementById('stsrc'); if (!h) return { none: true };
+      return { shown: [...h.children].filter(x => getComputedStyle(x).display !== 'none').map(x => x.className),
+        host: getComputedStyle(h).display, reply: !!h.querySelector('.src-reply') }; });
+    ok(hero.reply && hero.host !== 'none' && hero.shown.length === 1 && /src-reply/.test(hero.shown[0]),
+      w + ': in the hero view the reply is the only thing in the panel that shows: ' + JSON.stringify(hero));
+    ok(!q.errs.length, w + ': no page errors: ' + q.errs.join(' | '));
+    if (w === 1600) { await q.evaluate(() => { STV.dash = true; stRender(); }); await shot(q, 'reply-1600.png'); }
+    await q.cx.close();
+  }
+
   console.log('\n=== Yes, Not me and Correct it under the words, and what Commit keeps ===');
   {
     const q = await open(browser, 1600, 1000);
@@ -728,9 +774,16 @@ require('./net.js').guardBrowser(browser);
        change first: there #stsrc already held these rows with nothing
        pressed, so this fails there and is the real thing tonight's
        change moved. */
-    const rest = await q.evaluate(() => ({ srcText: (document.getElementById('stsrc') || {}).innerHTML || '',
-      box: !!document.getElementById('sttext') }));
-    ok(!rest.srcText.trim() && !rest.box, 'at rest on the Dashboard the face field holds no text and the box is shut: ' + JSON.stringify(rest));
+    /* AND THE ONE EXCEPTION, 17 November, the owner: "let's bring back
+       replies." At rest the field holds Source AI's reply to the last turn
+       and nothing else: no verdict rows, no set aside line, no chain line,
+       and the box still shut. Checked against the build before this: there
+       the field was empty, so the reply half of this fails there. */
+    const rest = await q.evaluate(() => { const h = document.getElementById('stsrc') || { children: [] };
+      return { kids: [...h.children].map(x => x.className), reply: (document.querySelector('#stsrc .src-reply .src-ai-t') || {}).textContent || '',
+        last: (SRC_CHAT.filter(r => r.w === 'src').slice(-1)[0] || {}).q || '', box: !!document.getElementById('sttext') }; });
+    ok(rest.kids.length === 1 && /src-reply/.test(rest.kids[0]) && rest.reply && rest.reply === rest.last && !rest.box,
+      'at rest on the Dashboard the face field holds only the reply, the line Source AI last said, and the box is shut: ' + JSON.stringify(rest));
     await q.evaluate(() => { stType(); });
     const rowsOf = () => q.evaluate(() => [...document.querySelectorAll('#stsrc [data-srcvrow]')].map(r => {
       const b = r.getBoundingClientRect();
@@ -739,7 +792,12 @@ require('./net.js').guardBrowser(browser);
         on: [...r.querySelectorAll('[data-srcv]')].filter(x => x.getAttribute('aria-pressed') === 'true').map(x => x.getAttribute('data-srcv')) }; }));
     const rows = await rowsOf();
     ok(rows.length >= 2 && rows.every(r => r.h > 0), 'a row for each reading in this conversation, on screen: ' + JSON.stringify(rows.map(r => r.seat + ' ' + r.line)));
-    ok(rows.every(r => !/lands/.test(r.line) && /^You wrote “/.test(r.line)), 'before an answer a row says the person\'s own words back and no place: ' + JSON.stringify(rows.map(r => r.line)));
+    /* LOOSENED, 17 November: before an answer the row now guesses the place
+       out loud, and the invariant is that it is never said as fact. "lands"
+       is the fact word (EV_PLACEABLE); a guess sentence says "My guess". */
+    ok(rows.every(r => !/lands/.test(r.line) && /^You said “/.test(r.line) && (/My guess is it sits/.test(r.line) || !/ sits /.test(r.line))),
+      'before an answer a row says the person\'s own words back, and a place only as a guess, never as fact: ' + JSON.stringify(rows.map(r => r.line)));
+    ok(rows.some(r => /My guess is it sits .+\. Does that fit\?$/.test(r.line)), 'and at least one row guesses and asks whether it fits: ' + JSON.stringify(rows.map(r => r.line)));
     const vetAll = () => q.evaluate(() => [...document.querySelectorAll('#stsrc .src-v p')].map(p => {
       const r = p.closest('[data-srcvrow]'); return { t: p.textContent,
         ok: srcVetSay(p.textContent, { text: srcConvText(), ledger: srcLedgerNow() }, r ? r.getAttribute('data-srcvrow') : null).ok }; }));
@@ -751,7 +809,8 @@ require('./net.js').guardBrowser(browser);
     ok(r1 && r1.on.join() === 'no' && /not you/.test(r1.st) && s1.f === 'no', 'and the row stays, Not me pressed, its status under it, the focus back on the button: ' + JSON.stringify(r1));
     await q.click('[data-srcv="yes"][data-seat="' + b + '"]'); await q.waitForTimeout(80);
     const r2 = (await rowsOf()).find(r => r.seat === b);
-    ok(r2 && r2.on.join() === 'yes' && /lands/.test(r2.line), 'Yes confirms it, and only then is the place said: ' + JSON.stringify(r2 && r2.line));
+    ok(r2 && r2.on.join() === 'yes' && /lands/.test(r2.line) && !/guess/i.test(r2.line), 'That fits confirms it, and only then is the place said as fact: ' + JSON.stringify(r2 && r2.line));
+    ok(r1 && !/lands|sits/.test(r1.line), 'and after Not me no place is said at all, as fact or as a guess: ' + JSON.stringify(r1 && r1.line));
     const fixWords = 'It is more like shame than fear.';
     await q.click('[data-srcv="fix"][data-seat="' + a + '"]'); await q.waitForTimeout(80);
     const box = await q.evaluate(() => document.activeElement && document.activeElement.id);
