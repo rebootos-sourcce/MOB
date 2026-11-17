@@ -254,9 +254,9 @@ function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and
 function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
  s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
- 'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+' of 10, at your '+b.seat+' seat.');}
+ 'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' seat.');}
 function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
- stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+' of 10, the heaviest of your seven.');}
+ stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+', the heaviest of your seven.');}
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
 function stmkTipW(a){return stmkTip(a.w+' done',stmkU('practised')+' A win is a ritual you marked done.');}
 function stmkTipL(a){return stmkTip(a.l+' missed','A loss is a ritual that came due and was marked not done.');}
