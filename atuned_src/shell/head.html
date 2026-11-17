@@ -4027,6 +4027,31 @@ body.punch .card{border-color:transparent}
 .stk-lh .stk-lc{flex:0 0 auto;font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:500;color:var(--mid)}
 .stk-row{display:flex;align-items:stretch;min-width:0;position:relative}
 .stk-row .stk-r{flex:1 1 auto;min-width:0}
+/* THE READING ROW'S BUTTON, 17 November (ui/stksay.js). A full tap target
+   that does not grow the row: 44 square, pulled back into the line by its
+   own negative margin, and out of the row's baseline alignment so the label
+   and the sentence keep theirs. Ring, not fill, the stroke .ib draws. Greyed
+   with a reason on its tip and never hidden, aria-disabled and not disabled,
+   so a press still reaches the status line that says why. While the voice
+   plays its two arcs breathe, and under reduced motion they hold still. */
+.stk-say{flex:0 0 auto;align-self:flex-start;width:var(--tap,44px);height:var(--tap,44px);
+ margin:-10px -6px -10px 2px;padding:0;display:flex;align-items:center;justify-content:center;
+ background:transparent;border:0;border-radius:50%;cursor:pointer;color:var(--accent);position:relative}
+.stk-say svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;position:relative}
+.stk-say::before{content:"";position:absolute;width:32px;height:32px;border-radius:50%;
+ border:1.5px solid color-mix(in srgb,var(--accent) 45%,transparent);pointer-events:none}
+.stk-say:hover::before{background:var(--panel-2)}
+.stk-say[aria-pressed=true]::before{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.stk-say[aria-disabled=true]{color:var(--dim);cursor:default}
+.stk-say[aria-disabled=true]::before{border-color:var(--edge)}
+.stk-say:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+@keyframes stkSayArc{0%,100%{opacity:1}50%{opacity:.35}}
+.stk-say[data-say="speak"][aria-pressed=true] .stk-say-a{animation:stkSayArc 1.1s ease-in-out infinite}
+.stk-say[data-say="speak"][aria-pressed=true] .stk-say-a+.stk-say-a{animation-delay:.18s}
+@media (prefers-reduced-motion:reduce){.stk-say .stk-say-a{animation:none!important}}
+body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!important}
+.stk-live{color:var(--ink)}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
  min-height:var(--tap);padding:3px 6px;border:0;background:transparent;border-radius:var(--r-xs);
  font-family:var(--sans);font-size:13px;color:var(--ink);text-align:left;cursor:pointer}

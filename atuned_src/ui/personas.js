@@ -830,7 +830,8 @@ var SHOW_DOES={
  story:'Commit puts what your words carry on your map',
  release:'a release empties charge from the addresses it reaches',
  intake:'each answer here moves how your laws read',
- export:'Export copies your profile to the clipboard'};
+ export:'Export copies your profile to the clipboard',
+ talk:'Source AI reads a pattern aloud and talks it through with you'};
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}

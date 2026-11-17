@@ -4632,3 +4632,36 @@ What changed, each held by `tests/srcconvo.js` and, for the engine half, `tests/
 Overridden, named once: the 11 November decision that a press of Talk always falls through to the greeting (it said the opener on every press), and the 17 November hover key (it was still a paragraph). Kept: one bubble a turn, no two way chat, every reply spoken (13 November), the safety door never gated, a reading is not a score.
 
 Open, his call: Source AI is deterministic and offline, so "a natural conversation" here means it does not repeat, answers what was said with a word of the person's own, and knows when to be quiet. A conversation that follows any subject would need a language model behind one server connection, which is the first thing in this product that sends a person's words off the device. Not built, not defaulted.
+## The Insight well talks, one button only. Ruled 17 November
+
+His words: "the insight panel is source ai's translation of whats selected.
+i want this to be an audio button too. if i press it, i can talk to source ai
+about the parent and children and how it works through me and run a protocol
+to release it."
+
+**What it overrides, and how far.** "No two-way chat, anywhere, including the
+voice" (10 November, above) is overridden for this one button, on the Reading
+row of the Insight well (`stkWellHtml`, `ui/ui.js`), and nowhere else. The
+Journal's own conversation is unchanged by this entry. A later seat that finds
+two-way talk in the well is reading this ruling, not a regression; a seat that
+wants two-way talk anywhere else needs a new ruling.
+
+**What the button does** (`ui/stksay.js`):
+
+- A press speaks the well's three facts, Built from, Feeds and the Reading,
+  through `stSrcSpeak`, the one voice, then listens on its own recogniser.
+- What the person says is matched against a closed set: a part's or the
+  parent's name, what it is built from, what it feeds, how it works through
+  them, stop, and release. Anything else gets one fixed line naming what can
+  be asked. Every word is read off a record (`railStkKids`, `railStkParent`,
+  `insightSpeak`) or is a fixed line. No body place, no percent, no name.
+- Talk here never becomes the person's story: nothing reaches `ST_TEXT` or
+  `SRC_CHAT`, so nothing is parsed, charged or kept at Commit.
+- Saying release opens the release card through `relPick`, the door Summary's
+  Release all already uses, so the allowance applies and the card says the
+  cost. The card's own Release press starts the run. A word never starts one.
+- A worked example refuses the press before anything is spoken
+  (`showRefuse('talk')`). While the crisis door stands nothing changes in look
+  or sound and the release is not offered.
+
+`tests/stksay.js` holds it.

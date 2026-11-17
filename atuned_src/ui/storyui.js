@@ -5238,6 +5238,9 @@ function stMic(){
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   stVoiceCant('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.'); return; }
+ /* the Insight well's button holds its own recogniser (ui/stksay.js); Talk
+    pressed here takes the microphone back, so two never run at once */
+ if(typeof stkSayCut==='function'&&stkSayCut()){ STK_SAY.line=''; try{ stkSayPaint(); }catch(e){} }
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  /* Chat pressed from a box Type instead opened goes back to the
     conversation, so the two never both write the entry (see stType). Only
@@ -5448,7 +5451,20 @@ var SRC_VOICE_MAX=30000;
 function srcSayNow(){
  /* the safe line, while it stands in the reply's place: the line spoken is
     the line on screen, so pressing Talk never reads an earlier question.
-    The crisis safety line is the one ruled exception and comes first. */
+
+    NEVER THE LAST TEMPLATED QUESTION, 11 November, the Source AI round's
+    own locked plan, item 2. This used to fall back to the last row SRC_CHAT
+    held, so a second press of Talk mid-conversation spoke that templated
+    line even after the per-turn speak call (storyui.js, srcPaint) was
+    removed to carry out the 10 November no-two-way-chat ruling: the
+    screen had gone quiet but a second Talk press still made Source AI
+    sound like it was still asking. The ruling is "no two-way chat,
+    anywhere", not "no two-way chat on the first press", so this always
+    falls through to the greeting now. The crisis safety line above is
+    the one ruled exception and is untouched. The Insight well's button
+    (ui/stksay.js, 17 November) is a second, scoped override recorded in
+    DECISIONS.md; it speaks through stSrcSpeak with its own lines and
+    never through this function, so the Journal's Talk is unchanged. */
  if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
  /* THE OPENER IS SAID ONCE A CONVERSATION, 18 November, his words: "It
     keeps repeating, what are we talking about today?" Every press of Talk
@@ -5540,6 +5556,9 @@ function stSrcSpeak(line,o){
     used, and clears it there. */
  authVoice(text,'frame').then(function(r){
   if(seq!==SRC_VOICE.seq){ fin(false); return; }
+  /* the route's own status, kept for whoever has to know why: the Insight
+     well's button reads 429 to draw itself at today's limit (ui/stksay.js) */
+  SRC_VOICE.fail=r&&r.ok?0:((r&&r.status)||-1);
   if(!r||!r.ok){
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
    if(!muteFail)say('Source AI could not speak that line. '+

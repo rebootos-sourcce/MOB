@@ -392,6 +392,8 @@ function relRerunSay(){
    play and the voice is not spoken for a run the end of it would refuse. */
 function relBegin(){
  if(showRefuse('release'))return;
+ /* the Insight well's funnel (ui/stksay.js): a card its voice opened, begun */
+ if(typeof STK_SAY!=='undefined'&&STK_SAY.relId&&STK_SAY.relId===RUN.id){ STK_SAY.relId=''; stkSayNote('begin'); }
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
