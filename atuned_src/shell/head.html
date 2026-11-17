@@ -4519,20 +4519,30 @@ body.st-zshut .st-flow{grid-template-columns:1.64fr 1.64fr 58px!important}
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative;padding-top:48px}
+.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
 /* THE WIDGET ROW'S OWN FOLD, 17 November, ui/storyui.js's rowFoldWire,
    the long comment there explains why it is one control for the whole
-   row rather than six. A STRIP ABOVE THE CARDS, NOT A BUTTON OVER ONE
-   OF THEM: this row wraps under 1181px (two rules down) and whichever
-   card sits in its top right corner changes with the width, Masks at
-   1600, a different one once wrapped, so a button fixed to the row's
-   own corner would have sat over a different card at every width
-   instead of over the control every other folded surface on this page
-   already reserves space for. padding-top on the row is that reserved
-   space, the same thing .st-lrail .rblk's own 52px already is for
-   #lfold, just carried by the row instead of by the one heading that
-   happens to lead it. */
+   row rather than six. ABSOLUTE, NOT A RESERVED STRIP: a first pass
+   gave the row its own padding-top the way .st-lrail .rblk already
+   reserves 52px for #lfold, and that cost .st-mini6 48 real pixels of
+   height. .st-flow's two rows are 1fr and auto (this file, above): a
+   taller auto row leaves less of the fixed container height for the
+   1fr row above it, measured on a short window, 1366x657, Full view:
+   263px down to 215px, which pushed the Release column's own content
+   (min-height 310px, already taller than 215px and already showing
+   past its own row on this same window before this round) far enough
+   down that its Release button's centre point moved from just above
+   .st-mini6's top edge to inside it, caught by tests/collide.js's own
+   short window check, which exists for exactly this kind of overflow.
+   So the control costs the row nothing: absolute, it is no part of
+   .st-mini6's own box height, and it sits over whichever card happens
+   to be physically top right, Masks at 1600, a different one once the
+   row wraps under 1181px. Nothing else here reads that card's own
+   button or link through this control's own 44 pixel corner (checked:
+   .st-mini carries no <button> or <a href>, only a role and a click
+   delegate, so tests/collide.js's own control sweep, which queries
+   those tags, never reaches it here), so the overlap costs no press. */
 .rowfold{position:absolute;top:8px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
  display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
  background:transparent;color:var(--mid);cursor:pointer;
@@ -4540,11 +4550,17 @@ body.st-zshut .st-flow{grid-template-columns:1.64fr 1.64fr 58px!important}
 .rowfold:hover{background:var(--sunk);color:var(--ink)}
 .rowfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .rowfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
-/* shut, the strip and its control are all that is left, the row's own
-   height falls to that alone since every card is display:none. */
-body.st-rowshut #stmini6{padding:8px;align-items:center;justify-content:flex-end;flex:0 0 auto}
+/* the one card that stands under the control at the width he
+   screenshotted, Masks, keeps its own label clear of it; below 1181,
+   where the row wraps and a different card takes that corner, this
+   reservation sits on a card the control is no longer over and costs
+   that card nothing either. */
+#stmini6 .st-mini:last-child .st-mini-lb{padding-right:52px}
+/* shut, the row is the control alone, its own height falling to that
+   control's, the same shape #lpanel and #rpanel already shut to. */
+body.st-rowshut #stmini6{min-height:var(--tap)}
 body.st-rowshut #stmini6>.st-mini{display:none}
-body.st-rowshut .rowfold{position:static}
+body.st-rowshut .rowfold{position:static;margin-left:auto}
 body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
    .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
