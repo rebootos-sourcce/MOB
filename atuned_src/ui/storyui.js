@@ -1169,6 +1169,24 @@ function stRender(){
      Compass and Boundary above: .st-mini6, below. */
   +'</div>'
   +'<div class="st-colz">'
+  /* THE RELEASE COLUMN CLOSES, 17 November, his annotated screenshot on
+     the Full Dashboard's three corner boxes: "be able to minimize that
+     left panel... the release closes right." Same shape as the left
+     rail's own #lfold (ui/ui.js, colFold): a control in the column's
+     top right corner, a body class that hides every child but the
+     control, and the choice kept in STORE so a reload or a profile
+     switch does not reopen what was shut (zFoldWire, below in this
+     file). Its own key, separate from lcols and rcol, because this
+     column exists only inside the Journal's own three column flow, not
+     the shared #lcol/#rcol pair every other tab folds. The icon is
+     .rfold's own, unchanged: a panel with a divider near its right
+     third and a chevron, since this column collapses the same
+     direction the right rail already does. */
+  +'<button class="zfold" id="zfold" type="button" aria-controls="strel"'
+   +' aria-expanded="true" aria-label="Close the Release column">'
+   +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+   +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15 4.5v15"/>'
+   +'<path class="lf-ch" d="M8.4 9.4L11 12l-2.6 2.6"/></svg></button>'
   /* RULED 13 November, his words on a screenshot: "this should all be
      release." Avatar and Masks (the .st-2row-1 pair that used to live
      here) moved to .st-mini6 with their other four; .st-colz carries
@@ -1218,7 +1236,33 @@ function stRender(){
      .st-mini-cap inside one shared element instead of side by side,
      which read fine for a plain-text row but broke the centred picture
      every other card draws in .st-mini-vis alone. */
+  /* THE WIDGET ROW CLOSES DOWN, 17 November, the same screenshot as
+     .zfold above: "the down panel with all the widgets closes down."
+     ONE CONTROL FOR THE WHOLE ROW, A JUDGEMENT CALL: his circle landed
+     near the Masks card, but his own sentence names "that down panel"
+     once, singular, the same way he said "that left panel" once for
+     seven different sections and "the release" once for one column.
+     Six separate controls, one per mini, would be six things to find
+     and six stored answers to keep straight for what reads as one
+     panel; checked against stMiniShell first, which gives every one of
+     the six the same shell with no header strip of its own to carry a
+     control, so a per-card button would have had to float inside
+     content a drill already makes a link (stMiniShell's own data-stgo).
+     The control sits in a strip above the row rather than over whichever
+     card happens to sit at the corner, because that corner card is
+     Masks at 1600 and a different one once the row wraps under 1181
+     (.st-mini6{flex-wrap:wrap}, shell/head.html): a button pinned to
+     one card's corner would have sat over Masks at one width and over
+     Boundary at another. The strip costs the row the same handful of
+     pixels every other folded surface already reserves for its own
+     control (.st-lrail .rblk, .lsec[data-rail=right] .lsec-hd), not a
+     new kind of gap. */
   +'<div class="st-mini6" id="stmini6">'
+   +'<button class="rowfold" id="rowfold" type="button" aria-controls="stmini6"'
+    +' aria-expanded="true" aria-label="Close the widgets row">'
+    +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+    +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
+    +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
@@ -1319,7 +1363,54 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
+ zFoldWire(); rowFoldWire();
  stUniSync(r);}
+/* THE THREE CORNER BOXES' OWN WIRING, 17 November. stRender rewrites the
+   whole flow's innerHTML on every call (STV.dash flipping, a tab arrival,
+   a profile switch), so .zfold and .rowfold are new elements every time
+   and need their onclick and their aria state set again every time, the
+   same reason stWire, stAnaWire and the rest are called from here and
+   not once at boot. The left rail's own fold (ui/ui.js, colFold) is
+   wired once at boot instead, because #lfold is a fixture of the shell
+   that outlives every repaint; these two are not.
+
+   SAME SHAPE AS colFold/railFold, A NEW KEY EACH, kept in STORE rather
+   than STV: STV's own header says its state is "kept across a return to
+   the tab, never saved", which is exactly the "resets itself every
+   reload" problem a collapse control must not have. STORE is backed by
+   localStorage (ui/ui.js, bindStore), survives a reload and a profile
+   switch, and is read fresh on every call here, so neither one can ever
+   go stale against what the button says. */
+function zShut(){
+ try{var got=STORE.get('stzfold'); return got==='shut';}catch(e){return false;}}
+function zFoldPaint(shut){
+ document.body.classList.toggle('st-zshut',shut);
+ var b=document.getElementById('zfold'); if(!b)return;
+ var say=shut?'Open the Release column':'Close the Release column';
+ b.setAttribute('aria-expanded',shut?'false':'true'); b.setAttribute('aria-label',say);
+ if(typeof fbTip==='function')fbTip(b,say);}
+function zFoldWire(){
+ var b=document.getElementById('zfold'); if(!b)return;
+ zFoldPaint(zShut());
+ b.onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation();
+  var now=!document.body.classList.contains('st-zshut');
+  zFoldPaint(now);
+  try{STORE.set('stzfold',now?'shut':'open');}catch(err){}};}
+function rowShut(){
+ try{var got=STORE.get('strowfold'); return got==='shut';}catch(e){return false;}}
+function rowFoldPaint(shut){
+ document.body.classList.toggle('st-rowshut',shut);
+ var b=document.getElementById('rowfold'); if(!b)return;
+ var say=shut?'Open the widgets row':'Close the widgets row';
+ b.setAttribute('aria-expanded',shut?'false':'true'); b.setAttribute('aria-label',say);
+ if(typeof fbTip==='function')fbTip(b,say);}
+function rowFoldWire(){
+ var b=document.getElementById('rowfold'); if(!b)return;
+ rowFoldPaint(rowShut());
+ b.onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation();
+  var now=!document.body.classList.contains('st-rowshut');
+  rowFoldPaint(now);
+  try{STORE.set('strowfold',now?'shut':'open');}catch(err){}};}
 /* MOUNT OR PARK HER, THE ONE PLACE THIS PAGE DECIDES IT, round TF plus 13
    November. A worked example gets none (show only, nothing she would react
    to is the person's own), TAB.STORY's own leave in panels.js parks her.

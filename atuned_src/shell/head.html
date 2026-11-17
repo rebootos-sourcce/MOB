@@ -1264,7 +1264,9 @@ body.lumen{
  margin-bottom:8px}
 .gmenu .seg{width:100%;justify-content:space-between}
 .gmenu .seg button{flex:1 1 0;justify-content:center}
-.gmenu-p{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--dim)}
+/* .gmenu-p is gone, 17 November, with the paragraph it styled (see the
+   comment at shell/body.html's #lightmenu): no markup emits that class
+   any more, so the rule goes with it rather than stand here unused. */
 body.punch .gmenu{background:var(--panel-2);border-color:transparent;
  -webkit-backdrop-filter:none;backdrop-filter:none}
 body.punch .gmenu::before{display:none}
@@ -2691,15 +2693,22 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
  background:transparent;color:var(--mid);cursor:pointer;
  transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
-/* GONE ON THE JOURNAL ONLY, 10 November, his words: "the left menu, get
-   rid of that close menu." #lfold is shared: the Field, Compass, Flow
-   and Knowledge columns all fold through this same control
-   (ui/ui.js's colFold), so it is hidden here rather than deleted, and
-   only where body.tab-story is set. colShut() itself never reads a
-   stored shut answer for the Journal's own key now (ui/ui.js), so
-   hiding the one door to it does not strand a person who shut it
-   before this round. */
-body.tab-story .lfold{display:none}
+/* BACK ON THE JOURNAL'S FULL VIEW, 17 November, OVERRIDDEN from the 10
+   November ruling kept below for the record. His annotated screenshot
+   named three corner boxes on the Full Dashboard, one of them this
+   rail's: "be able to minimize that left panel... closes left if I
+   click that left box." colShut() no longer hard codes false for the
+   Journal's own key either (ui/ui.js), so the one real reason the fold
+   was hidden, a person stuck shut with no door back, no longer applies:
+   the door is live again. Hidden only in Simple, where #lcol itself is
+   display:none and there is no rail to fold.
+   WHAT THIS REPLACED, 10 November, his words then: "the left menu, get
+   rid of that close menu... merge that left menu into the full panel."
+   #lfold is shared: the Field, Compass, Flow and Knowledge columns all
+   fold through this same control (ui/ui.js's colFold), so it was
+   hidden here rather than deleted, and only where body.tab-story was
+   set. */
+body.tab-story:not(.st-full) .lfold{display:none}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
 /* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
@@ -4395,7 +4404,37 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  grid-row:1;transition:flex var(--t-context) var(--ease-out)}
 .st-colw{flex:1.64 1 0;grid-column:1}
 .st-colb{flex:1.64 1 0;grid-column:2}
-.st-colz{flex:1 1 0;grid-column:3}
+.st-colz{flex:1 1 0;grid-column:3;position:relative}
+/* THE RELEASE COLUMN'S OWN FOLD, 17 November, ui/storyui.js's zFoldWire.
+   Absolute within .st-colz rather than sticky (.rfold's own reason for
+   sticky does not hold here: #rpanel scrolls on its own and this column
+   does not, it is sized by .st-flow's own grid row), so it sits over
+   whichever is physically first in the column, #strel's own header,
+   the same way #lfold sits over whichever section leads the left rail.
+   The icon is copied from .rfold unchanged, so the same mark means the
+   same thing, "this folds to the right," everywhere it appears. */
+.zfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.zfold:hover{background:var(--sunk);color:var(--ink)}
+.zfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.zfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+/* shut, the column is the control and nothing else, the same shut shape
+   #lpanel and #rpanel already use. */
+body.st-zshut .st-colz>*:not(.zfold){display:none}
+body.st-zshut .st-colz{padding:6px;align-items:center;flex:0 0 58px}
+body.st-zshut .zfold{position:static}
+body.st-zshut .zfold .lf-ch{transform:rotate(180deg)}
+/* THE OTHER TWO COLUMNS TAKE THE WIDTH, EVENLY, THE SAME PROPORTION THEY
+   ALREADY SHARE (1.64fr each, so they stay equal to each other, "symmetry
+   in space" with nothing new to balance). !important because a focus
+   mode (read or release, just above) sets its own grid-template-columns
+   on this same element and a shut column must win regardless of which
+   mode a person was in when they closed it; .st-rl itself is hidden by
+   the rule above either way, so the release focus mode's own layout for
+   it never has anything left to lay out. */
+body.st-zshut .st-flow{grid-template-columns:1.64fr 1.64fr 58px!important}
 /* flex ratios above are dead weight now (.st-flow is grid, not flex) but
    stay rather than risk a selector this file does not know about still
    reading them; grid-template-columns on .st-flow itself is what actually
@@ -4480,8 +4519,33 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px}
+.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative;padding-top:48px}
 .st-mini6 .st-mini{flex:1 1 0;min-width:0}
+/* THE WIDGET ROW'S OWN FOLD, 17 November, ui/storyui.js's rowFoldWire,
+   the long comment there explains why it is one control for the whole
+   row rather than six. A STRIP ABOVE THE CARDS, NOT A BUTTON OVER ONE
+   OF THEM: this row wraps under 1181px (two rules down) and whichever
+   card sits in its top right corner changes with the width, Masks at
+   1600, a different one once wrapped, so a button fixed to the row's
+   own corner would have sat over a different card at every width
+   instead of over the control every other folded surface on this page
+   already reserves space for. padding-top on the row is that reserved
+   space, the same thing .st-lrail .rblk's own 52px already is for
+   #lfold, just carried by the row instead of by the one heading that
+   happens to lead it. */
+.rowfold{position:absolute;top:8px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
+ background:transparent;color:var(--mid);cursor:pointer;
+ transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.rowfold:hover{background:var(--sunk);color:var(--ink)}
+.rowfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rowfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
+/* shut, the strip and its control are all that is left, the row's own
+   height falls to that alone since every card is display:none. */
+body.st-rowshut #stmini6{padding:8px;align-items:center;justify-content:flex-end;flex:0 0 auto}
+body.st-rowshut #stmini6>.st-mini{display:none}
+body.st-rowshut .rowfold{position:static}
+body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
    .st-mask4/.st-mask-top/.st-mask-nm/.st-mask-pc/.st-mask-runners/
    .st-mask4-t and its .sm variant drew the old left-aligned icon-and-text
