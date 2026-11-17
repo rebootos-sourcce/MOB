@@ -133,7 +133,26 @@
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
     on the face, travels with it as the hover, since the box has no room for
     a caption of its own */
- const TITLE="Source's reading circle. Every dot is one of the 108 body addresses, each at a named plexus or nerve, drawn at its real charge. The seven rings are the seats, Root at the centre, Crown outside. The slow beat from the centre is Source reading, and it starts once you talk or write. A light running between dots is one of your saboteur patterns, its addresses lit together. The 21 marks on the rim are the laws. The four short marks top and bottom are the field anchors, two above the body and two below.";
+ /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
+    the paragraph that stood here: "This tooltip, it's insane. That text in the
+    tooltip needs to be direct." Each line names a mark the canvas really
+    draws and says what it is, and nothing else. Cut because the canvas does
+    not draw it: the named plexus or nerve (a fact about an address, not a
+    mark), the slow beat (motion, and it runs only once a story is under way,
+    see engaged below), and the CQ score, a term of art. The structure is the
+    ruled one, 108 somatic addresses and 4 field anchors, never a bare total.
+    Checked against draw(): a dot's size and brightness follow its charge
+    (baseR, charge), the rings are the seats Root inward to Crown outward, the
+    light between dots is the saboteur trace, the rim is the law ticks, the
+    four short marks sit at the top and bottom outside the rim, and the arc
+    runs from the top by cqv/100 of a turn. The lines break on a newline,
+    which the tooltip sets (.tip-b, shell/head.html). */
+ const TITLE=["Source's reading circle",
+  "Dots: the 108 somatic addresses, exact places in your body. Bigger means more charge",
+  "Rings: the seven seats, base of the spine in the centre, top of the head outside",
+  "Light between dots: a saboteur, a habit running on those places",
+  "Rim marks: the laws, ways of keeping your integrity",
+  "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");
  canvas.title=TITLE;
  const ctx=canvas.getContext('2d');
  /* the emissive layer and its three bloom copies, the amplified file's */
@@ -251,13 +270,14 @@
   CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
+  const ARC='\nGold arc: coherence, mind, actions and body pointing the same way';
   canvas.title=TITLE+(CQ==null?(r&&!r.unread
-    ?' The gold arc is coherence, the CQ score, and it is drawn once you answer the laws.'
-    :' The gold arc is coherence, the CQ score, and there is no reading yet.')
+    ?ARC+'. It is drawn once you answer the laws'
+    :ARC+'. Not read yet')
    /* a percent, as the Field tile prints the same figure: "of 100" is a
       count against a total, which reads as pass or fail, CO-05 */
-   :' The gold arc is coherence, the CQ score, now '+Math.round(CQ)+' percent, drawn as how far round the arc reaches.'
-    +(CQ>=HI_GATE?' At '+HI_GATE+' and above the rings lock and turn as one.':''));
+   :ARC+'. Now '+Math.round(CQ)+' percent of the way round'
+    +(CQ>=HI_GATE?'\nAt '+HI_GATE+' percent and above the rings lock and turn as one':''));
  }
  /* coherence is eased, the amplified file's 1.4 seconds, so a new reading
     turns the arc and the lock rather than cutting to them */

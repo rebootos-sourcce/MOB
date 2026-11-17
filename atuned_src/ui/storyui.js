@@ -611,7 +611,16 @@ function stRender(){
      (stShowChip), full text elsewhere (showNote); only the host div is new. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
     +(STV.dash?stShowChip('story'):showNote('story','st-show'))+'</div>'
-   :((STV.typed&&!dashTB)?'':'<div class="st-glow">'
+   /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
+      reply printed loose under the face: "The text that pops up on the
+      screen doesn't belong on the screen. It belongs on the text screen."
+      The hero view's typing display cut the whole glow, #stsrc with it, so
+      there was no place in it for a reply to go. It gets the bare host back,
+      no glow and no face, so the 14 November ruling above (this is a typing
+      journal, no visual design) still holds: the one thing in it that is not
+      the person's words is the marked reply, and head.html hides every
+      other row srcPaint puts here in this view, as ruled on 10 November. */
+   :((STV.typed&&!dashTB)?(STV.chat?'<div class="st-pe" id="stsrc" aria-label="Question"></div>':''):'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -2186,7 +2195,9 @@ function srcMark(){
   +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
 /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring
    back replies." The line Source AI says to a turn (cur.q, the same words
-   stSrcSpeak reads aloud) prints under her, marked, one line, the newest only.
+   stSrcSpeak reads aloud) prints marked, one line, the newest only, and on the
+   text screen: his same-day correction, "it belongs on the text screen", is
+   why srcPaint prints it only while the box is open and never under the face.
    No bubble and no thread: the 10 November rulings against a chat window and
    a speech bubble are not what he reversed, the silence is. */
 function srcReplyHtml(line){
@@ -2784,19 +2795,25 @@ function srcPaint(){
     CSS-muted copy of this panel there (shell/head.html, :not(.st-full)
     #stsrc) are untouched; dashRest is false whenever STV.dash is. */
  var dashRest=STV.dash&&STV.chat&&!STV.typed;
- /* THE REPLY IS BACK ON SCREEN, 17 November, and it is the one thing that
-    prints at rest. The owner: "All right, let's bring back replies." This
-    reverses the visible half of 10 November's "no two-way chat" (the
-    spoken half came back on 13 November, see the per-turn call above).
-    What Source AI says to the person's own turn, cur.q, the line it also
-    speaks, prints under her with the Source AI mark (srcReplyHtml). Only
-    once the person has said something, never over the safety line, and
-    the newest line only, so it is a reply and not a transcript. At rest
-    on the Dashboard it is all that prints, and in the hero view it is all
-    that shows (head.html hides the rest of #stsrc there, as before): the
-    set aside sentence, the chain line and the verdict rows still wait for
-    the Full view's open box, as 16 November ruled. */
- var reply=(ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
+ /* THE REPLY IS BACK ON SCREEN, 17 November, BUT ON THE TEXT SCREEN AND
+    NOWHERE ELSE. The owner, that morning: "All right, let's bring back
+    replies." What Source AI says to the person's own turn, cur.q, the line it
+    also speaks, prints with the Source AI mark (srcReplyHtml). Then, looking
+    at it under the reading circle, the same day: "The text that pops up on
+    the screen doesn't belong on the screen. It belongs on the text screen."
+    So it prints only while the text box is open (STV.typed, the keyboard
+    door, #sttype): in the Full Dashboard that is the panel above the box, in
+    the hero view the bare host stRender puts above the typing display. At
+    rest, in either view, the face's field holds no words, which is the 16
+    November ruling extended from rest to talking: the reply is still said out
+    loud, still spoken to a screen reader through #srcsay, and still kept in
+    SRC_CHAT, so opening the box shows the whole of it. Only once the person
+    has said something, never over the safety line, and the newest line
+    only, so it is a reply and not a transcript. In the hero view it is all
+    that shows of #stsrc (head.html hides the set aside sentence, the chain
+    line and the verdict rows there, as ruled on 10 November), and in the Full
+    Dashboard they print beside it, as 16 November ruled. */
+ var reply=(STV.typed&&ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
  o=dashRest?reply:(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml()));
  if(turn.move==='safe')
