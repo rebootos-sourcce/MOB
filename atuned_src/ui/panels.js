@@ -156,8 +156,13 @@ var TAB_KEY='source.tab', TAB_LANDED_KEY='source.landed';
 function tabKnown(k){
  var all=[].concat(typeof TABDEF!=='undefined'?TABDEF:[], typeof TABEXTRA!=='undefined'?TABEXTRA:[]);
  return all.some(function(t){ return t&&t.k===k; });}
+/* A HELD SURFACE IS NOT REOPENED, 17 November. Character came off the bar
+   carrying .held (engine/core.js, above TABEXTRA's entry for it), and a device
+   whose store still says 11 would reopen on a page with no door and no section
+   lit. tabRead answers null for it, so the boot opens on TABHOME instead. */
 function tabKeepable(k){
- return typeof k==='number'&&k!==TAB.SETTINGS&&k!==TAB.PRACTITIONER&&tabKnown(k);}
+ return typeof k==='number'&&k!==TAB.SETTINGS&&k!==TAB.PRACTITIONER&&tabKnown(k)
+  &&!(typeof TABEXTRA!=='undefined'&&TABEXTRA[k]&&TABEXTRA[k].held);}
 function tabKeep(i){
  try{
   if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return;

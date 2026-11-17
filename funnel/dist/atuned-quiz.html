@@ -8531,7 +8531,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a compass axis'},
+             say:'the position on a path axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of
@@ -11251,7 +11251,13 @@ const TABDEF=[
     as always (TAB.ENERGY, emap, tab-energy). The questions are a different
     surface: they are the diagnostic under the Avatar, intakeui.js. */
  {k:TAB.ENERGY,  id:'emap',  nm:'Body',      cls:'tab-energy',  sec:'play'},
- {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
+ /* PATH, NOT COMPASS, 17 November, his words: "For the main menu, change the
+    word compass to path." The word a person reads moved and nothing else did:
+    integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
+    rule the Body and Character renames follow. One word per concept, so every
+    place the product printed "compass" to a person says "path" in the same
+    commit (the bar, the dashboard card, the drills, the tooltips). */
+ {k:TAB.COMPASS, id:'cone',  nm:'Path',      cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
     be under the play tab. It should go field intake compass mask
@@ -11275,30 +11281,22 @@ const TABDEF=[
     masks and above archetype through domain (DECISIONS.md, "The full stack,
     nerve to Character"). This page draws the whole person, the masks and
     what is running them, so it stays the one thing on screen called
-    Character, and the rung gave the word up rather than the page. */
- {k:TAB.MASKS,   id:'masksview', nm:'Character', cls:'tab-masksview', sec:'play'},
+    Character, and the rung gave the word up rather than the page.
+
+    AND IT IS OFF THE BAR, FOR NOW, 17 November. His words: "we want to hide
+    character for now, since we won't have time to get the other, like the
+    torus field and the energy body and the auric field." Its entry is in
+    TABEXTRA below, carrying held:'play', the way Games is. See the note
+    above TABEXTRA for what held means and how it goes back. */
  /* THE FOUR THAT LEFT DISCOVER, 23 October, after his Play order and in the
-    order they stood in Discover. See the note above SECTIONS. */
+    order they stood in Discover. See the note above SECTIONS. Three of them
+    moved on again on 17 November, to Embody, and the Avatar stayed: "We're
+    going to keep avatar there under play, but we're going to move summary,
+    intake, and analytics under embody." */
  /* TAB.INTAKE is the Avatar and keeps that name. The integer's own name is
     history, from when this surface was the intake; the door called Intake
     below is a different tab, TAB.QUESTIONS. Two integers, one word each. */
  {k:TAB.INTAKE,  id:'iq',    nm:'Avatar',    cls:'tab-intake',  sec:'play'},
- /* Summary after the Avatar, the order his own correction gave it in Discover:
-    "then my intake then my summary". */
- {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'play'},
- /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
-    at the very end for now, just restore the intake page." It is the
-    questions, on a page of their own, after Summary and before Analytics, the
-    place round OD named for it. The body map is Body, in Play: this is not
-    that surface and never was. Integer 13, appended, host #iqp, which
-    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
-    asks, and how, is the redesign he put last. */
- {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'play'},
- /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
-    story, avatar, summary, analytics." Integer 4, unfolded: see the note
-    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
-    inside it, and anaRender in ui/analytics.js is unchanged. */
- {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'play'},
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
@@ -11329,6 +11327,28 @@ const TABDEF=[
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
+    and in the order they stood in Play. His words: "move summary, intake, and
+    analytics under embody." Knowledge stays first so pressing Embody still
+    opens on it the first time, which is secGo reading this array's order.
+    No integer moved, and Analytics is still unfolded: TABFOLD does not name
+    it, so TABREAL answers it with itself in any section. */
+ /* Summary after the Avatar, the order his own correction gave it in Discover:
+    "then my intake then my summary". */
+ {k:TAB.SUMMARY, id:'sum',   nm:'Summary',   cls:'tab-summary', sec:'embody'},
+ /* THE INTAKE PAGE IS BACK, round OG. His words: "we'll do the intake questions
+    at the very end for now, just restore the intake page." It is the
+    questions, on a page of their own, after Summary and before Analytics, the
+    place round OD named for it. The body map is Body, in Play: this is not
+    that surface and never was. Integer 13, appended, host #iqp, which
+    borrows #iqbody from intakeui.js the way the Avatar's menu does. What it
+    asks, and how, is the redesign he put last. */
+ {k:TAB.QUESTIONS, id:'iqp',  nm:'Intake',    cls:'tab-questions', sec:'embody'},
+ /* ANALYTICS, RIGHT AFTER SUMMARY, his own order at round LV: "so it'll go
+    story, avatar, summary, analytics." Integer 4, unfolded: see the note
+    above TABDEF. #ana is body.html's own sibling of #sum now, never nested
+    inside it, and anaRender in ui/analytics.js is unchanged. */
+ {k:TAB.ANALYTICS, id:'ana', nm:'Analytics', cls:'tab-analytics', sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
     menu rule above: the section says who a person is being, the tab says
     what the surface does, and a tab carrying its section's own word is two
@@ -11360,6 +11380,30 @@ const SECOF=function(k){var r=TABREAL(k);
 const TABEXTRA={};
 TABEXTRA[TAB.SETTINGS]={k:TAB.SETTINGS,id:'settings',nm:'Settings',cls:'tab-settings'};
 TABEXTRA[TAB.GAMES]={k:TAB.GAMES,id:'games',nm:'Games',cls:'tab-games'};
+/* CHARACTER IS HELD OFF THE BAR, 17 November. His words: "we want to hide
+   character for now, since we won't have time to get the other, like the
+   torus field and the energy body and the auric field." Checked against the
+   code before it was hidden: the torus is drawn on this page (ui/chcloud.js),
+   the auric field is computed and read by nothing (auricField,
+   engine/charfield.js, no caller), and no energy body surface exists. Two of
+   his three are not there, so it is hidden.
+
+   HELD IS GAMES' HIDE WITH ONE THING MORE. Like Games it keeps its integer
+   11, its host #masksview and renderCharacter, and setTab still opens it, so
+   the gates that draw the page keep drawing it. The one thing more is .held:
+   a held surface is never remembered as the tab to reopen (tabKeepable,
+   ui/panels.js), so a device that left off on Character before today opens
+   on TABHOME rather than on a page with no door and no section lit, and
+   nothing on screen links to it while it is held (the dashboard's Masks card
+   reads tabOnBar). .held names the section it goes back to. Putting it back
+   is this line moved into TABDEF with that .sec, and its button restored in
+   shell/body.html's Play group. */
+TABEXTRA[TAB.MASKS]={k:TAB.MASKS,id:'masksview',nm:'Character',cls:'tab-masksview',held:'play'};
+/* whether a tab has a door on the bar now. A folded tab answers for its
+   carrier; a held or doorless one answers false. */
+const tabOnBar=function(k){var r=TABREAL(k);
+ for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===r)return true;
+ return false;};
 const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return TABDEF[i];
  if(TABEXTRA[k])return TABEXTRA[k];
  return TABDEF[0];};
@@ -12871,7 +12915,7 @@ const SIGHT=[
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven seats.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
-  what:'The registers, your point cloud: where each pattern sits in the compass.'},
+  what:'The registers, your point cloud: where each pattern sits on the path.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
   what:'The six masks, and how your chain lights each one.'}];
 /* the rows a person can be told about: the table less any with no surface */
@@ -26844,7 +26888,7 @@ var MARKS=[
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
   to:'Place your six values on the Avatar page.',
-  d:'Six values placed. The compass has something to point at.',
+  d:'Six values placed. The path has a direction now.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',

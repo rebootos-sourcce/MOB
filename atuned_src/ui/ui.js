@@ -31,7 +31,7 @@ function describe(h,r,still){
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
  /* the compass's own two words for its two ends, cone.js, and nothing new */
- if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+ if(h.k==='pole')return '<u>path</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  /* a Law of Action, right or wrong. It said "everything held weighs x0.70"
     under the share, and nothing held is multiplied by a gate (engine/verp.js),

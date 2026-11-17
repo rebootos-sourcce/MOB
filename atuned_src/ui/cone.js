@@ -3051,7 +3051,7 @@ function coneOvBuild(){
   list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
  grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
  if(L.seats)grp(bar,'Seat shells',cnSeatOrbs(),'cn-seatgrp');
- grp(vw,'How the compass is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
+ grp(vw,'How the path is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
  if(!L.views.length)vw.style.display='none';
  cnOvShutPaint(bar,cnOvShut());
  /* a toolbar's arrow keys walk it, as the Field's do */
@@ -3105,7 +3105,7 @@ function coneOpen(inTab){
  h.classList.toggle('tabmode',!!inTab);
  h.style.display='flex';
  h.innerHTML='<div class="cone-card">'
-  +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
+  +'<div class="cone-hd"><span class="pm-eye">The path</span>'
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   /* THE FIGURE, AND THE CONTROLS ON IT. Ruled: the switches go to the upper
      left. They sat under the drawing in a row of their own, which cost a band
@@ -3132,18 +3132,18 @@ function coneOpen(inTab){
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The compass from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The path from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :CONE.shells
      ?'The registers. Seven shells of light, one per seat, Root on the outside and Crown at the centre. Each address is a patch on its seat\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
-     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
+     :'The path. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
       +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
       finds the switches by it still does. */
-   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Compass overlays">'
+   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Path overlays">'
    +'<div class="cone-ctl cnbar" id="cnbar"></div>'
-   +'<div class="cnview" id="cnview" role="group" aria-label="How the compass is drawn"></div>'
+   +'<div class="cnview" id="cnview" role="group" aria-label="How the path is drawn"></div>'
    +'</div>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,

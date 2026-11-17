@@ -89,7 +89,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a compass axis'},
+             say:'the position on a path axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of

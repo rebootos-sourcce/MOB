@@ -115,6 +115,21 @@ async function payloadFromQuiz(browser) {
     s = await state(pg);
     ok(s.tab === s.compass, 'Settings is not remembered: the reload is back on Compass, ' + s.tab);
     ok(s.landed === null, 'and moving about does not count as a first landing');
+    /* A HELD TAB IS NOT REOPENED, 17 November. Character came off the bar
+       ("hide character for now") carrying .held in TABEXTRA. A device whose
+       store says 11 from before that, written straight into the store the
+       way an older build wrote it, opens on TABHOME rather than on a page
+       with no door, and nothing pressed on the bar. */
+    await pg.evaluate(() => { STORE.set('source.tab', String(TAB.MASKS)); });
+    await pg.reload({ waitUntil: 'load' }); await booted(pg);
+    s = await state(pg);
+    const held = await pg.evaluate(() => ({ masks: TAB.MASKS, held: !!(TABEXTRA[TAB.MASKS] && TABEXTRA[TAB.MASKS].held), bar: tabOnBar(TAB.MASKS) }));
+    ok(held.held && !held.bar && s.tab === s.home && s.sec === 'discover',
+      'a stored Character tab, held off the bar, reopens on home with Discover pressed, not on a page with no door: tab ' + s.tab + ', pressed ' + s.sec + ', ' + JSON.stringify(held));
+    await pg.evaluate(() => setTab(TAB.MASKS));
+    s = await state(pg);
+    ok(s.kept !== String(held.masks), 'and opening it by its integer does not write it as the tab to reopen, store holds ' + s.kept);
+    await pg.evaluate(() => setTab(TAB.COMPASS));
     await settle(pg); await pg.click('#brand'); await pg.waitForTimeout(300);
     s = await state(pg);
     ok(s.tab === s.discover && s.sec === 'discover', 'the wordmark goes home, to Discover, ' + s.tab);

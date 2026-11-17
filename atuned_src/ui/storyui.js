@@ -1219,12 +1219,16 @@ function stRender(){
      which read fine for a plain-text row but broke the centred picture
      every other card draws in .st-mini-vis alone. */
   +'<div class="st-mini6" id="stmini6">'
-   +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
+   +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
    +stMiniShell('stfield','Field',stMiniField(r),'stfield')
    +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-   +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
+   /* the Masks card stays on the row, which is ruled even and symmetrical,
+      and stops being a link while Character is held off the bar (17
+      November): a card that opened a page with no door would be the hidden
+      page by another way in. tabOnBar is in engine/core.js. */
+   +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div

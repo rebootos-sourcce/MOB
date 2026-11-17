@@ -260,9 +260,12 @@ async function lockGate(browser,FILE,ok,booted){
 
   /* ---- 7 · THE CHARACTER PAGE ---- */
   const ch=await pg.evaluate(()=>{
-   const t=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]'), r=t.getBoundingClientRect();
+   const t=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
+   /* held off the bar since 17 November ("hide character for now"): no door to padlock */
+   if(!t)return {held:!tabOnBar(TAB.MASKS)};
+   const r=t.getBoundingClientRect();
    return {lock:t.getAttribute('data-lock'),dis:t.getAttribute('aria-disabled'),mark:!!t.querySelector('.lk-mk'),h:r.height,w:r.width};});
-  ok(ch.lock==='mask'&&ch.dis==='true'&&ch.mark,tag+'the Character door is greyed and padlocked, '+JSON.stringify(ch));
+  ok(ch.held||(ch.lock==='mask'&&ch.dis==='true'&&ch.mark),tag+(ch.held?'the Character door is held off the bar, so there is none to padlock, ':'the Character door is greyed and padlocked, ')+JSON.stringify(ch));
   await pg.evaluate(()=>{setTab(TAB.MASKS);render();}); await pg.waitForTimeout(700);
   const cp=await pg.evaluate(()=>{const h=document.getElementById('masksview'), b=h.querySelector('.lk-go'), r=b?b.getBoundingClientRect():null;
    return {panel:!!h.querySelector('.lk-panel'),text:h.textContent.replace(/\s+/g,' '),grids:h.querySelectorAll('canvas,[data-chmask],[data-chov]').length,
@@ -344,8 +347,9 @@ async function lockGate(browser,FILE,ok,booted){
    ok((rg===null)===seen(tier,'reg'),tag+'on tier '+tier+' the Registers are '+(seen(tier,'reg')?'open':'locked')+', SIGHT says '+need('reg'));
    await pg.evaluate(()=>{setTab(TAB.MASKS);render();}); await pg.waitForTimeout(600);
    const mk=await pg.evaluate(()=>({masks:document.querySelectorAll('#masksview [data-chmask]').length,cv:document.querySelectorAll('#masksview canvas').length,
-    panel:!!document.querySelector('#masksview .lk-panel'),door:document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').getAttribute('data-lock')}));
-   ok((mk.masks>0&&mk.cv===1)===seen(tier,'mask')&&mk.panel===!seen(tier,'mask')&&(mk.door===null)===seen(tier,'mask'),
+    panel:!!document.querySelector('#masksview .lk-panel'),held:!tabOnBar(TAB.MASKS),
+    door:(document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]')||{getAttribute:()=>'none'}).getAttribute('data-lock')}));
+   ok((mk.masks>0&&mk.cv===1)===seen(tier,'mask')&&mk.panel===!seen(tier,'mask')&&(mk.held?mk.door==='none':(mk.door===null)===seen(tier,'mask')),
     tag+'on tier '+tier+' the Character page is '+(seen(tier,'mask')?'drawn, its canvas and its masks':'the lock\'s panel')+', SIGHT says '+need('mask')+', '+JSON.stringify(mk));
    await pg.evaluate(()=>{setTab(TAB.FIELD);render();});}
 
