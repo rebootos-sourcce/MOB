@@ -2806,6 +2806,10 @@ function uniMount(target){
  if(UNI_FACE_HOSTS[target.id]===true&&window.SrcFace){
   if(window.Uni&&window.Uni.pause)window.Uni.pause();
   window.SrcFace.mount(uniHost.querySelector('.canvas-wrap'));
+  /* the widget moved and the canvas's own parent did not, so the face is
+     told to paint at its new size now (SrcFace.refit, ui/srcface.js) and
+     never shows its old bitmap stretched into the new box for a frame */
+  if(typeof window.SrcFace.refit==='function')window.SrcFace.refit();
   return true;}
  if(window.SrcFace)window.SrcFace.pause();
  if(window.Uni&&window.Uni.resume)window.Uni.resume();

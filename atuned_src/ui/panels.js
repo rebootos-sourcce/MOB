@@ -1588,10 +1588,17 @@ function bootEase(x1,y1,x2,y2,x){
   t-=bx/d;}
  var it2=1-t; return 3*it2*it2*t*y1+3*it2*t*t*y2+t*t*t;}
 var BOOT_UNI_EASE=function(p){return bootEase(.45,0,.55,1,p);};
+/* 7.76 since 17 November, when the script driven sheet became eight seconds
+   (shell/head.html, .boot.bx.bx-uni); the same cancelling as the 6760 it
+   replaces. Read the fade's delay rather than this whenever the two could
+   differ: this is only what --hold at 0 makes it. */
+var BOOT_UNI_FADE_AT=7.76;
+/* the moment the face leaves the stage for the Journal, on the same clock */
+var BOOT_UNI_SETTLE=7.20;
 function bootUniT(fade){
  try{var ct=fade.currentTime, d=fade.effect.getComputedTiming().delay;
-  if(ct==null)return 0;
-  return (ct-d+6760)/1000;}catch(e){return 0;}}
+  if(ct==null)return null;
+  return (ct-d)/1000+BOOT_UNI_FADE_AT;}catch(e){return null;}}
 /* THE SKIP, AT ANY t. Called ahead of the existing ACT path (the skip just
    below), in the exact order the spec gives, so pressing skip mid gaze or
    mid flare snaps to the same 7.00 end state the sequence would have
@@ -1630,21 +1637,104 @@ function bootUniEnd(){
  try{var host=document.getElementById('bootuni');
   if(host){host.style.transition='none'; host.style.opacity='0';}}catch(e){}
  try{if(window.Uni&&window.Uni.pause)window.Uni.pause();}catch(e){}
- try{uniHandBack();}catch(e){}
+ bootUniLand();
  if(BOOT_UNI_STATE)BOOT_UNI_STATE.done=true;
  BOOT_UNI_STATE=null;}
-/* THE ENHANCEMENT ITSELF. Mounts Uni into #bootuni (shell/body.html) and
-   drives her off the boot clock above, one rAF per frame, each step a
-   one-shot flag so a dropped frame under load still fires every beat it
-   crossed rather than none of them. Reduced motion is checked first and
+/* THE FACE LANDS. Once, whichever way the boot ended: its own fade, a skip,
+   or the floor in the block below removing the sheet. The intro's clock is
+   taken off the face first, so it never reads a sheet that is gone; then the
+   face goes home through uniHandBack, the one route home, and the flight
+   layer, now empty, is removed. Called from the sheet's own clear() as well,
+   because a dropped animationend must still land her. */
+function bootUniLand(){
+ try{if(window.SrcFace&&typeof window.SrcFace.intro==='function')window.SrcFace.intro(null);}catch(e){}
+ var st=BOOT_UNI_STATE; if(!st||st.landed)return; st.landed=true;
+ try{uniHandBack();}catch(e){}
+ try{if(st.flyAnim)st.flyAnim.cancel();}catch(e){}
+ try{if(st.fly&&st.fly.parentNode)st.fly.parentNode.removeChild(st.fly);}catch(e){}
+ try{var h=document.getElementById('bootuni'); if(h)h.classList.remove('bx-uni-out');}catch(e){}}
+/* THE SETTLE, INTO THE START VIEW. "And then it starts off at the dashboard
+   mini": the Journal's own face box, #stuni, in its compact view. Its box is
+   read off the live page now, never typed, so any layout change to that page
+   (the icon pairs moving, the next step button moving) moves the landing
+   with it. The face is lifted out of the sheet into a layer above it, sized
+   to that box, and carried from the stage into it on a transform alone:
+
+     7.20 to 7.32   the backswing, drawing in by 3 percent on
+                    cubic-bezier(.45,0,.55,1), the same draw back the old
+                    figure's push had, because nothing leaves from rest at
+                    full speed
+     7.32 to 7.92   the move, 600ms, the full context change band, on the
+                    house ease out cubic-bezier(.22,1,.36,1), scale and
+                    position together, so it decelerates into its seat
+
+   It is a vertical drop on the page's own axis of symmetry, so the arc rule
+   has nothing to bend: a curve off the centre line would break the symmetry
+   ruled for every surface. The sheet fades from 7.76 to 8.00 underneath it,
+   and on the sheet's end the face is handed home at exactly the size and
+   place it already shows. Where the Journal is not what is under the sheet
+   (the sign in door is up, or another tab), there is nowhere honest to land,
+   so the face settles where it stands and fades with the card instead. */
+function bootUniFly(st,host){
+ var dest=null, stuni=document.getElementById('stuni');
+ try{
+  if(stuni&&typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY){
+   var b=stuni.getBoundingClientRect();
+   /* the sheet takes no pointer, so this answers what is really on top of
+      the box's centre: the box itself, or a door standing over it */
+   var hit=b.width>40&&b.height>40?document.elementFromPoint(b.left+b.width/2,b.top+b.height/2):null;
+   if(hit&&(hit===stuni||stuni.contains(hit)))dest=b;}
+ }catch(e){dest=null;}
+ /* the widget the face rides in, taken off the host it is in, never by the
+    name uni.js keeps it under: that name is not reachable from here, and the
+    first cut, which used it, fell back to the fade on every boot */
+ var wid=host.querySelector(':scope > .uni-widget');
+ if(!dest||!wid){host.classList.add('bx-uni-out'); return;}
+ var src=host.getBoundingClientRect();
+ var rs=Math.min(src.width,src.height)/2-2, rd=Math.min(dest.width,dest.height)/2-2;
+ if(!(rs>0&&rd>0)){host.classList.add('bx-uni-out'); return;}
+ var k=rs/rd, dx=(src.left+src.width/2)-(dest.left+dest.width/2), dy=(src.top+src.height/2)-(dest.top+dest.height/2);
+ var T0='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+k.toFixed(4)+')';
+ var fly=document.createElement('div'); fly.className='bx-fly'; fly.id='bootfly'; fly.setAttribute('aria-hidden','true');
+ fly.style.left=dest.left+'px'; fly.style.top=dest.top+'px'; fly.style.width=dest.width+'px'; fly.style.height=dest.height+'px';
+ fly.style.transform=T0;
+ document.body.appendChild(fly); fly.appendChild(wid);
+ try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}
+ st.fly=fly;
+ try{
+  st.flyAnim=fly.animate([
+   {transform:T0,easing:'cubic-bezier(.45,0,.55,1)'},
+   {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(k*0.97).toFixed(4)+')',offset:120/720,easing:'cubic-bezier(.22,1,.36,1)'},
+   {transform:'none'}],{duration:720,fill:'forwards'});
+ }catch(e){fly.style.transform='none';}}
+/* THE ENHANCEMENT ITSELF. Mounts the face into #bootuni (shell/body.html) and
+   drives it off the boot clock above. Reduced motion is checked first and
    bails before anything mounts, which leaves .bx-uni unset and the CSS
    figure exactly as it always was; tests/boot.js's own reduced-motion rule
    and the "animation:none!important" it reads already cover that path.
-   SINCE 16 November uniMount puts Source's face in #bootuni and pauses
-   her (ui/uni.js, UNI_FACE_HOSTS), so the calls on window.Uni below land on
-   a paused instance and draw nothing; the face keeps its own clock and is
-   faded out with the host at 6.10 exactly as she was. They are left in
-   because they are what still plays if the face failed to load. */
+
+   SINCE 17 November the face plays the intro itself (SrcFace.intro,
+   ui/srcface.js): the sky, the gather, the lock, the beat of life and the
+   breath are all read off this same clock inside the face, so nothing here
+   times them. This block does what is outside the face: the class that
+   gives the sheet its eight seconds, the settle into the Journal at 7.20,
+   and the landing. The words and the card are CSS, on the sheet's own clock.
+
+   Until then the face was mounted here and the choreography below it, the
+   gaze, the coherence climb and the joy flare, drove window.Uni, which
+   uniMount pauses whenever the face takes a host (ui/uni.js,
+   UNI_FACE_HOSTS). So since 16 November every one of those calls landed on
+   a paused instance and drew nothing: the boot showed the face's ordinary
+   entrance and no choreography at all. They are kept only for the case they
+   were left in for, a face that failed to load, and run only then.
+
+   AND THE CLOCK STOPS WITH THE SHEET. The tick asked for another frame until
+   the clock read 7.3, but once the sheet is removed its fade is cancelled,
+   the clock read nought, and the tick asked for a frame every frame for the
+   rest of the session. Measured on the build before this one, four seconds
+   after the sheet had gone: the boot's frame request still advancing (985,
+   then 993 two frames later), its state never done. It stops now on a clock
+   that cannot be read, as well as at its own end. */
 function bootUni(){
  try{if((typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;}catch(e){}
  var el=document.getElementById('boot'); if(!el)return;
@@ -1653,50 +1743,66 @@ function bootUni(){
  if(!fade)return;
  var host=document.getElementById('bootuni');
  if(!host||typeof window.Uni==='undefined'||typeof uniMount!=='function')return;
+ /* A START UP THAT RAN PAST MOST OF THE OVERTURE. shell/body.html then plays
+    the fade whole from now, so there is no time left for a sky; the CSS
+    figure, already at its end, is what stands, as it did before Uni */
+ var t0=null;
+ try{var ct=fade.currentTime, d0=fade.effect.getComputedTiming().delay; if(ct!=null)t0=(ct-d0)/1000+6.76;}catch(e){}
+ if(t0!=null&&t0>5.5)return;
+ var face=!!(window.SrcFace&&typeof window.SrcFace.intro==='function');
  el.classList.add('bx-uni');
+ /* the class moves the fade's delay; read it back now, so the floor that
+    RETIME sets straight after this reads the eight second end */
+ try{void getComputedStyle(el).animationDelay;}catch(e){}
+ /* THE WORDS RUN ON THE SHEET'S CLOCK. They are display:none until .bx-uni
+    lands, so their animations only begin now, when the start up finished,
+    and their 5.35 second delay would count from here: measured late by the
+    whole start up. Each is put on the fade's own start, so the words keep
+    their place in the sequence however long the start up took. */
+ try{ if(fade.startTime!=null)[].forEach.call(el.querySelectorAll('.bx-words>span'),function(w){
+   w.getAnimations().forEach(function(a){ a.startTime=fade.startTime; }); }); }catch(e){}
  uniMount(host);
- /* THE EYES STAY ON THE SCRIPT, 12 November: his words, "take off the
-    follow mouse animation... off the login for certain." The boot
-    already drives her gaze itself (setGaze below, the rehearsed glances);
-    a stranger's mouse racing across the login door has no reason to be
-    the thing moving her eyes too. */
- try{window.Uni.setFollow(false);}catch(e){}
- /* uniMount itself only turns her fill transparent inside the hero view's
-    own #stflow.st-simple (its own comment explains why: nothing stands
-    behind her anywhere else). The boot has its own wash immediately behind
-    this host (.bx-wash, kept visible once .bx-fig is hidden above), so this
-    is the same case and gets the same override, or her canvas paints a flat
-    rectangle over that wash. */
- try{window.Uni.setBgTransparent(true);}catch(e){}
- try{window.Uni.setUnread(false); window.Uni.setCoherence(30); window.Uni.setDQ(70);}catch(e){}
- var st={g1:false,g2:false,g3:false,g4:false,climbDone:false,flared:false,
-   joyOff:false,leaving:false,paused:false,done:false};
+ var st={done:false,landed:false,settled:false,fly:null,flyAnim:null,
+   g1:false,g2:false,g3:false,g4:false,climbDone:false,flared:false,joyOff:false,leaving:false,paused:false};
  BOOT_UNI_STATE=st;
- /* hands her back the moment the sheet is truly gone, whether the sequence
-    ran to its own end or the fade was cut short some other way; bootUniEnd
-    above already does this on a skip, so the two never race for the same
-    uniPark call in any ordering that matters to a caller after it. */
+ /* the intro's own clock: the sheet's, and nothing at all once the sheet is
+    gone, so the face can never read a cancelled fade as the start */
+ var clock=function(){ if(!el.isConnected)return null; return bootUniT(fade); };
+ if(face){ try{window.SrcFace.intro(clock);}catch(e){} }
+ else{
+  /* THE EYES STAY ON THE SCRIPT, 12 November: his words, "take off the
+     follow mouse animation... off the login for certain." */
+  try{window.Uni.setFollow(false);}catch(e){}
+  try{window.Uni.setBgTransparent(true);}catch(e){}
+  try{window.Uni.setUnread(false); window.Uni.setCoherence(30); window.Uni.setDQ(70);}catch(e){}}
+ /* lands her the moment the sheet is truly gone, whether the sequence ran to
+    its own end or the fade was cut short some other way; a skip lands her
+    through bootUniEnd, and bootUniLand runs once whichever comes first */
  el.addEventListener('animationend',function onEnd(e){
   if(e.target!==el||e.animationName!=='bootOut')return;
   el.removeEventListener('animationend',onEnd);
-  try{uniHandBack();}catch(x){}});
+  bootUniLand();});
  var tick=function(){
   if(st.done)return;
-  var t=bootUniT(fade);
-  if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
-  if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}
-  if(!st.g3&&t>=1.75){st.g3=true; try{window.Uni.setGaze(0,0);}catch(e){}}
-  if(!st.g4&&t>=2.10){st.g4=true; try{window.Uni.setGaze(null);}catch(e){}}
-  if(t>=2.10&&t<4.70){
-   var p=(t-2.10)/2.6; if(p<0)p=0; if(p>1)p=1;
-   try{window.Uni.setCoherence(30+70*BOOT_UNI_EASE(p));}catch(e){}
-  }else if(t>=4.70&&!st.climbDone){st.climbDone=true; try{window.Uni.setCoherence(100);}catch(e){}}
-  if(!st.flared&&t>=4.70){st.flared=true;
-   try{window.Uni.react(1.5); window.Uni.setEmotionIntensity('joy',10);}catch(e){}}
-  if(!st.joyOff&&t>=5.90){st.joyOff=true; try{window.Uni.setEmotionIntensity('joy',0);}catch(e){}}
-  if(!st.leaving&&t>=6.10){st.leaving=true; host.classList.add('bx-uni-out');}
-  if(!st.paused&&t>=6.62){st.paused=true; try{window.Uni.pause();}catch(e){}}
-  if(t<7.3){BOOT_UNI_RAF=requestAnimationFrame(tick);}
+  var t=clock();
+  if(t==null){st.done=true; BOOT_UNI_RAF=0; bootUniLand(); return;}
+  if(face){
+   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host);}catch(e){host.classList.add('bx-uni-out');}}
+  }else{
+   if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
+   if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}
+   if(!st.g3&&t>=1.75){st.g3=true; try{window.Uni.setGaze(0,0);}catch(e){}}
+   if(!st.g4&&t>=2.10){st.g4=true; try{window.Uni.setGaze(null);}catch(e){}}
+   if(t>=2.10&&t<4.70){
+    var p=(t-2.10)/2.6; if(p<0)p=0; if(p>1)p=1;
+    try{window.Uni.setCoherence(30+70*BOOT_UNI_EASE(p));}catch(e){}
+   }else if(t>=4.70&&!st.climbDone){st.climbDone=true; try{window.Uni.setCoherence(100);}catch(e){}}
+   if(!st.flared&&t>=4.70){st.flared=true;
+    try{window.Uni.react(1.5); window.Uni.setEmotionIntensity('joy',10);}catch(e){}}
+   if(!st.joyOff&&t>=5.90){st.joyOff=true; try{window.Uni.setEmotionIntensity('joy',0);}catch(e){}}
+   if(!st.leaving&&t>=BOOT_UNI_SETTLE){st.leaving=true; host.classList.add('bx-uni-out');}
+   if(!st.paused&&t>=BOOT_UNI_SETTLE+0.52){st.paused=true; try{window.Uni.pause();}catch(e){}}}
+  if(t<BOOT_UNI_FADE_AT+0.4){BOOT_UNI_RAF=requestAnimationFrame(tick);}
   else{st.done=true; BOOT_UNI_RAF=0;}};
  BOOT_UNI_RAF=requestAnimationFrame(tick);}
 /* when the floor below will remove the sheet, on the page's own clock,
@@ -1713,6 +1819,9 @@ var BOOT_FLOOR_AT=0;
   if(typeof enterLift==='function')enterLift(); }
  function clear(){ if(gone)return; gone=true; lift();
   if(el.parentNode)el.parentNode.removeChild(el);
+  /* and the face lands, whichever way the sheet went: a floor that cleared
+     it with no animationend would otherwise leave her in the flight layer */
+  try{ if(typeof bootUniLand==='function')bootUniLand(); }catch(e){}
   document.body.classList.add('booted'); }
  /* animationstart fires when the fade's delay is over, which is the first
     frame the sheet is anything less than solid */

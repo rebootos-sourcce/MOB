@@ -283,6 +283,79 @@
  /* the pattern cycle, over the real saboteurs */
  let sabIdx=0, sabStart=performance.now()+1700, lastCyc={};
  const SAB_HOLD=4200, SAB_FADE=900;
+ /* ============================================================
+    THE BOOT INTRO, 17 November. His words: "more pacing, a bit more
+    anticipation... the colors starting to come on... to get them more like
+    stars. But then you see like it's something more harmonic and more
+    geometric. And then it fully comes to life. Like a breathing shape...
+    And then it stays where it is, attuned."
+
+    Until this the boot showed the face's ordinary entrance: every address
+    of a ring faded up together, ring by ring, on the face's own first
+    frame, which landed under the sheet's black opening beat, so by 1.3
+    seconds the whole figure was already placed and nothing more arrived.
+    That is the "flat colour blocks" he saw. intro(clock) hands the face a
+    clock, the sheet's own fade read in seconds (ui/panels.js bootUniT), and
+    while it runs the face plays these beats off it instead. A clock and not
+    a timer, so the face can never run ahead of or behind the sheet.
+
+      core    0.55  a single point in the dark swells, then coils inward,
+                    the backswing before anything lights
+      ign     1.10  the 108 addresses ignite one by one and in small
+                    clusters, sparse first and quickening, each with a
+                    speck of anticipation, a white hot flash with a glint,
+                    a cool into its seat's colour, and a twinkle of its own.
+                    A heavier address on the person's own reading lights
+                    sooner and burns brighter, so even the stars are data
+      antic   2.90  every star eases out and dims a little, the inhale
+      gather  3.18  each star travels an arc to its own place on its own
+                    seat ring, Root first, 90ms a seat, the radius landing
+                    on the house overshoot and the angle on the house ease
+                    out; each ring draws itself closed behind its stars
+      lock    4.05  the rings phase lock and the lattice binds them
+      life    4.70  the centre draws in and the first large beat throws
+                    every address out on its spring; from here the shape
+                    breathes, about 2.8 seconds a breath, visibly
+      settle  7.20  the breath eases back to the house breath by the end
+      end     8.00  the sheet's own end
+
+    Reduced motion never enters this: bootUni (ui/panels.js) never mounts
+    under it, and a face that sees rbStill mid intro draws its placed end
+    state at once, since every branch here is gated on !RM.
+    ============================================================ */
+ const IT={core:0.55,coil:0.98,ign:1.10,ign1:2.85,antic:2.90,gather:3.18,gDur:0.66,beat:0.09,
+  lens0:3.30,lens1:4.20,rim0:3.80,rim1:4.40,lock:4.05,life:4.70,breath:2.8,settle:7.20,end:8.00};
+ const EOUT=cbz(.22,1,.36,1);
+ let IN=null, inEndAt=-9e9;
+ const STAR={};
+ /* where each star sits before it is gathered, how bright it burns and when
+    it lights. Seeded, so every boot is the same sky. Clusters of one to
+    four, 70ms apart inside a cluster, placed on a square root of their
+    rank so the first stars come alone and the last come together, the way
+    a sky fills at dusk. The first cluster is one star, alone. */
+ function starPlan(){
+  const sr=mkRnd(0x57A85), span=SQ.hi-SQ.lo;
+  const keyed=addrs.map(a=>{ const ch=span>1e-6?(a.sq-SQ.lo)/span:0;
+   return {a,ch,k:span>1e-6?sr()*0.55+(1-ch)*0.45:sr()}; }).sort((x,y)=>x.k-y.k);
+  const cl=[]; let k=0;
+  while(k<keyed.length){ const n=cl.length?1+Math.floor(sr()*4):1; cl.push(keyed.slice(k,k+n)); k+=n; }
+  const L0=IT.ign, L1=IT.ign1-0.25;
+  cl.forEach((c,ci)=>{ const tc=L0+(L1-L0)*Math.sqrt(ci/Math.max(1,cl.length-1));
+   c.forEach((o,j)=>{ const v=sr();
+    STAR[o.a.i]={t:tc+j*0.07, r:0.10+0.86*Math.sqrt(v), a:sr()*TAU, ph:sr()*TAU,
+     m:Math.min(1,0.35*Math.pow(sr(),2.2)+0.65*o.ch+(span>1e-6?0:0.65*Math.pow(sr(),2.2))),
+     j:sr()*0.05}; }); });
+ }
+ /* START OR END THE INTRO. clock() answers seconds on the sheet's clock; a
+    throw or a non number ends nothing by itself but draws the end state for
+    that frame. intro(null) ends it: the face is at rest from that frame, its
+    own entrance counted as done, the centre word fades back in and the
+    pattern trace waits a moment before it starts. */
+ function intro(clock){
+  if(typeof clock==='function'){ if(still()) return false; starPlan(); IN={clock,fired:false,last:0}; return true; }
+  if(IN){ IN=null; const pn=performance.now(); inEndAt=pn; t0f=(prevNow!=null?prevNow:pn)-99000; sabStart=pn+1500; lastCyc={}; }
+  return true;
+ }
  function partsFor(idx){ const s=CH.sabs[idx]; if(!s) return []; return s.parts.map(i=>byI[i]).filter(Boolean); }
  function beat(now,amp){ const sd=rnd()*TAU; pulses.push({t0:now,amp,crossed:-1,rim:false,seed:sd}); lastBeat=now; domSeed=sd; }
  const MOTES=[];
@@ -458,6 +531,15 @@
 
  function draw(now){
   if(!running) return; raf=requestAnimationFrame(draw);
+  paint(now);
+ }
+ /* ONE FRAME, PAINTED NOW. draw is the loop; paint is the frame, split out
+    17 November so a host change can repaint at its new size in the same
+    task that moved it. Until then the canvas carried its old bitmap into a
+    new box for one frame, stretched to the box's shape: measured on the
+    boot's hand over, a 489 pixel square face shown for a frame across a
+    900 by 420 Journal box. show() and refit() call it; nothing else does. */
+ function paint(now){
   /* the voice is followed ahead of the size check: the desktop hero view
      mounts #stuni zero wide, measured 16 November, and a face with no room
      to draw must still know where the voice is, or the pings and the hold
@@ -467,12 +549,32 @@
   if(t0f===null) t0f=now;
   const dt=prevNow===null?0.016:clamp((now-prevNow)/1000,0,0.05); prevNow=now;
   const t=RM?0:now/1000;
-  const boot=RM?99:Math.max(0,(now-t0f)/1000);
+  /* the intro's clock, when one is lent; reduced motion never reads it */
+  let it=null;
+  if(IN&&!RM){ try{ it=+IN.clock(); }catch(e){ it=null; } if(!isFinite(it)) it=null; else IN.last=it; }
+  const INT=it!==null;
+  const boot=RM||INT?99:Math.max(0,(now-t0f)/1000);
   const w=W0,h=H0, cx=w/2, cy=h/2;
   const U=Rf/430;
   const breath=RM?0:Math.sin(t*TAU/5.6);
+  /* THE INTRO'S ENVELOPES, each 1 outside the intro so the ordinary face is
+     untouched. lensE: the dark lens, its wash and its bezel arrive once the
+     stars are gathering, so the stars first float in open black. rimK: the
+     law ticks and field anchors, last. */
+  const lensE=INT?EOUT((it-IT.lens0)/(IT.lens1-IT.lens0)):1;
+  const rimK=INT?EOUT((it-IT.rim0)/(IT.rim1-IT.rim0)):1;
+  /* THE BREATH, VISIBLE. 0.6 percent of the radius is the house breath, felt
+     more than seen. From the first beat of life the intro breathes at 2.8
+     percent on a 2.8 second breath, inhale first, then hands back to the
+     house breath over the settle, so the face that lands in the Journal is
+     breathing exactly as it always does there */
+  let brA=0.006, br=breath;
+  if(INT&&it>IT.life){ const s=easeInOut((it-IT.settle)/(IT.end-IT.settle));
+   brA=mix(mix(0.006,0.028,easeOut((it-IT.life)/0.5)),0.006,s);
+   br=mix(Math.sin(TAU*(it-IT.life)/IT.breath),breath,s); }
+  const brG=INT&&it>IT.life?br*brA/0.028:0;
   /* the structure, which never reaches the face edge */
-  const R=Rf*0.80*(1+0.006*breath);
+  const R=Rf*0.80*(1+brA*br);
   /* TEXT TIERS, the mockup's: a resolved seat's name is dropped below a face
      of 140, where an 11 pixel label would cover the rings it names, and the
      canvas title carries the meaning */
@@ -483,9 +585,18 @@
   /* coherence, eased; the gate itself is hard at 92, and no reading is not a lock */
   const cp=easeInOut((now-cqT0)/CQ_DUR); cqv=mix(cqFrom,cqTo,cp);
   const isHi=CQ!=null&&cqv>=HI_GATE;
-  hiE+=((isHi?1:0)-hiE)*(1-Math.exp(-dt/0.45)); if(RM) hiE=isHi?1:0;
-  /* the lock lands as one large beat */
-  if(isHi&&!wasHi&&!RM){ beat(now,1.35); pPh=0; }
+  /* the intro locks the rings at IT.lock with no reading behind it: the
+     shape it shows is the instrument at rest, not a score, and the CQ arc
+     below still draws only the reading's own figure. Once the intro ends
+     the lock lets go over 1.6 seconds and not 0.45, so the face that has
+     just landed in the Journal settles into its real state rather than
+     dropping its lattice the moment it arrives */
+  const lockI=INT&&it>=IT.lock;
+  const hiTau=(!INT&&pn-inEndAt<3500)?1.6:0.45;
+  hiE+=((isHi||lockI?1:0)-hiE)*(1-Math.exp(-dt/hiTau)); if(RM) hiE=isHi?1:0;
+  /* the lock lands as one large beat; inside the intro that beat is the
+     beat of life, below, and not the moment the lattice starts */
+  if(isHi&&!wasHi&&!RM&&!INT){ beat(now,1.35); pPh=0; }
   wasHi=isHi;
   /* 0.4 at the amplified profile's 60, 0 at 100. No reading has no disorder
      to show, so it rests at the floor driftK keeps below, the least life
@@ -503,7 +614,12 @@
      ordinary: 5.4s with a little variability and a second, softer beat 260ms on.
      high coherence: about 4.2s, the rings locked in phase while the shared tempo drifts the way a
      healthy heart does, every beat a little different in strength, and the soft dub kept 300ms on. */
-  if(!RM && boot>0.4){
+  /* THE BEAT OF LIFE. Anticipation first: the centre draws in over the 280ms
+     before it, on the same curve the ordinary beat's own draw in uses, then
+     one beat at the lock's own 1.35, and the ordinary clock starts from
+     nought behind it so the next beat is a full period away */
+  if(INT&&!IN.fired&&it>=IT.life){ IN.fired=true; beat(now,1.35); pPh=0; }
+  if(!RM && boot>0.4 && (!INT||it>=IT.life)){
    const period=mix(5.4*(1+0.07*Math.sin(t*0.23)+0.04*Math.sin(t*0.61)),4.2*(1+0.045*Math.sin(t*0.19)+0.025*Math.sin(t*0.53+1.3)),hiE);
    curPeriod=period; pPh+=dt/period;
    if(pPh>=1){ pPh-=1; const amp=0.9+0.2*rnd(); beat(now,amp); pulses.push({t0:now+mix(260,300,hiE),amp:mix(0.42,0.22,hiE)*amp,crossed:-1,rim:false,dub:1,seed:rnd()*TAU}); }
@@ -519,7 +635,7 @@
   }
   /* anticipation: the centre draws in over the last 12 percent of the period, then releases */
   const sinceBeat=Math.max(0,(now-lastBeat)/1000);
-  const pre=RM?0:(pPh>0.88?easeInOut((pPh-0.88)/0.12):0);
+  const pre=RM?0:INT&&it<IT.life?easeInOut((it-(IT.life-0.28))/0.28):(pPh>0.88?easeInOut((pPh-0.88)/0.12):0);
   const beatE=RM?0:Math.exp(-sinceBeat/0.32);
 
   /* ring rotation: ordinary, the seats counter turn at their own rates; high coherence, they lock and turn as one */
@@ -562,8 +678,10 @@
   const preSab=now<sabStart;
   const fadeIn=preSab?0:Math.min(1,cyclePos/500);
   const fadeOut=cyclePos>SAB_HOLD?1-easeInOut((cyclePos-SAB_HOLD)/SAB_FADE):1;
-  const traceAlpha=(preSab?0:fadeIn*fadeOut)*(1-readE);
-  const lit=preSab?[]:partsFor(sabIdx);
+  /* the pattern trace stands aside for the whole intro: staging, one thing
+     at a time, and the sky is the thing */
+  const traceAlpha=INT?0:(preSab?0:fadeIn*fadeOut)*(1-readE);
+  const lit=preSab||INT?[]:partsFor(sabIdx);
   const litSeats=new Set(lit.map(a=>a.ring));
   function litScale(ms){ if(ms<160){const p=ms/160;return 1-0.15*p*p;} if(ms<560){ const x=(ms-160)/400, c1=1.56,c3=c1+1; return 0.85+0.5*(1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)); } return 1.35; }
   const lsc=RM?1.35:1+(litScale(cyclePos)-1)*fadeOut;
@@ -579,7 +697,27 @@
    rr+=soft(a.sx);                       // the beat throws each address outward on its spring
    rr+=dispS(rr)*R*0.035;
    rr=Math.min(rr,R*0.985);
-   return {x:cx+Math.cos(ang)*rr,y:cy+Math.sin(ang)*rr,rr,ang};
+   if(INT){ const s=STAR[a.i]; if(s) return gather(a,s,rr,ang); }
+   return {x:cx+Math.cos(ang)*rr,y:cy+Math.sin(ang)*rr,rr,ang,g:1};
+  }
+  /* THE GATHER. A star sits where the sky put it, drifting a little, until
+     its seat's turn; then it travels to its own place on its ring. The
+     radius lands on the house overshoot, cubic-bezier(.34,1.56,.64,1), and
+     the angle on the house ease out, cubic-bezier(.22,1,.36,1), over 660ms,
+     so the two arrive together and the path between is an arc, never a
+     line. The swirl is the arc's belly: 0.55 of a radian at the middle of
+     the trip, all one way, nought at both ends, so the whole sky turns as
+     it falls into order. Ahead of the gather every star eases 6 percent
+     outward: the inhale before the move. q.g is how far its trip has gone,
+     which the dots below read to hand their twinkle over to the face's. */
+  function gather(a,s,rr,ang){
+   const g0=IT.gather+a.ring*IT.beat+s.j, u=(it-g0)/IT.gDur, uc=clamp(u,0,1);
+   const gR=u<=0?0:u>=1?1:OVS(u), gA=EOUT(u);
+   const an=easeInOut((it-IT.antic)/(IT.gather-IT.antic))*(1-uc);
+   const sa=s.a+0.05*Math.sin(t*0.31+s.ph), sr=R*s.r*(1+0.06*an);
+   const d=((ang-sa)%TAU+TAU+PI)%TAU-PI;
+   const A2=sa+d*gA+0.55*Math.sin(PI*uc), R2=Math.max(0,mix(sr,rr,gR));
+   return {x:cx+Math.cos(A2)*R2,y:cy+Math.sin(A2)*R2,rr:R2,ang:A2,g:uc,an};
   }
 
   /* ======== base: the face floats in the page ========
@@ -591,18 +729,18 @@
   ctx.clearRect(0,0,w,h);
   ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf,0,TAU); ctx.clip();
   { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf); fg.addColorStop(0,'#0b0a0d'); fg.addColorStop(1,'#060608');
-   ctx.fillStyle=fg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); }
+   ctx.globalAlpha=lensE; ctx.fillStyle=fg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); ctx.globalAlpha=1; }
   ctx.globalCompositeOperation='lighter';
   for(let k=0;k<7;k++){
    const a=k*0.9+t*0.034*(k%2?1:-1), rr=Rf*(0.22+0.15*Math.sin(t*0.07+k));
    const nx=cx+Math.cos(a)*rr, ny=cy+Math.sin(a*1.3)*rr*0.8;
    const lift=litSeats.has(k)?0.05*traceAlpha:0;
-   blit(ctx,NEB[k],nx,ny,Rf*(1.3+0.15*Math.sin(t*0.07+k*2)),(0.085+lift+0.035*speakLvl)*(1-0.15*hiE)*(0.75+0.25*Math.sin(t*0.3+k))*(1+0.25*beatE)*clamp(boot/1.2,0,1));
+   blit(ctx,NEB[k],nx,ny,Rf*(1.3+0.15*Math.sin(t*0.07+k*2)),(0.085+lift+0.035*speakLvl)*(1-0.15*hiE)*(0.75+0.25*Math.sin(t*0.3+k))*(1+0.25*beatE)*clamp(boot/1.2,0,1)*lensE*(1+0.3*brG));
   }
-  blit(ctx,GOLDH,cx,cy,R*(2.4+0.4*hiE),0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE);
+  blit(ctx,GOLDH,cx,cy,R*(2.4+0.4*hiE)*(1+0.04*brG),(0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE+0.03*brG)*lensE);
   /* spherical depth: the face darkens toward its rim, like a lens */
   ctx.globalCompositeOperation='source-over';
-  { const vg=ctx.createRadialGradient(cx,cy,Rf*0.55,cx,cy,Rf); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.42)');
+  { const vg=ctx.createRadialGradient(cx,cy,Rf*0.55,cx,cy,Rf); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,'+(0.42*lensE)+')');
    ctx.fillStyle=vg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); }
   ctx.restore();
 
@@ -614,12 +752,17 @@
    const ba=clamp((boot-i*0.09)/0.5,0,1);
    const base=R*((i+1.6)/8)*(1+wobK*Math.sin(t*1.05-i*0.85));
    ringBase.push(base); if(ba<=0) continue;
+   /* in the intro each ring draws itself closed from twelve o'clock,
+      clockwise, 300ms after its first stars leave and over 550ms, so the
+      ring is finished as its last star lands on it; a spark rides the head */
+   const sw=INT?easeInOut((it-(IT.gather+i*IT.beat+0.30))/0.55):1; if(sw<=0) continue;
    const wave=RM?0:0.5+0.5*Math.sin(t*1.05-i*0.85);
    const pb=pulseAt(base);
    const r0=base+dispS(base)*R*0.035, rs=soft(ringS[i]);
-   const path=new Path2D();
-   for(let q=0;q<=128;q++){ const th=q/128*TAU; const rr=Math.min(r0+memb(i,th,base)+rs*dirMul(th),R*0.99); const x=cx+Math.cos(th)*rr, y=cy+Math.sin(th)*rr; q?path.lineTo(x,y):path.moveTo(x,y); }
-   path.closePath();
+   const path=new Path2D(), qn=sw>=1?128:Math.max(1,Math.ceil(128*sw)); let hx=cx,hy=cy;
+   for(let q=0;q<=qn;q++){ const th=Math.min(q/128,sw)*TAU-PI/2; const rr=Math.min(r0+memb(i,th,base)+rs*dirMul(th),R*0.99); const x=cx+Math.cos(th)*rr, y=cy+Math.sin(th)*rr; q?path.lineTo(x,y):path.moveTo(x,y); hx=x; hy=y; }
+   if(sw>=1) path.closePath();
+   else{ blit(lx,HALO[i],hx,hy,22*Math.max(U,0.4),0.55*(1-sw*0.5)); blit(lx,HOT,hx,hy,7*Math.max(U,0.4),0.8*(1-sw*0.6)); }
    const col=mixc(rgb(SEATCOL[i]),[236,214,168],0.5*hiE);
    ctx.globalAlpha=1; ctx.lineWidth=1; ctx.strokeStyle=`rgba(${col.join(',')},${(0.12+0.07*wave+0.06*speakLvl+0.14*hiE+0.3*pb)*ba})`; ctx.stroke(path);
    const glow=(litSeats.has(i)?0.32*traceAlpha:0)+0.4*pb+0.12*hiE+(RM?0:Math.min(0.25,Math.abs(ringV[i])/(R*0.25)));
@@ -648,7 +791,7 @@
   }
 
   /* ---- rim: 21 law ticks (gap c, above: nothing here names one law) ---- */
-  const ta=clamp((boot-0.5)/0.6,0,1);
+  const ta=clamp((boot-0.5)/0.6,0,1)*rimK;
   for(let i=0;i<21;i++){
    const ang=(i/21)*TAU-PI/2; const major=i%3===0;
    const scan=RM?0:Math.pow(Math.max(0,Math.cos(ang+PI/2-t*0.42)),24);
@@ -657,7 +800,7 @@
    const dI=Math.min(i,21-i); let rw=0;
    for(const q of rimWaves){ const ag=(now-q.t0)/1000-dI*0.045; if(ag>0) rw=Math.max(rw,q.amp*(ag<0.05?ag/0.05:Math.exp(-(ag-0.05)/0.42))); }
    const twk=RM?0:0.08*Math.sin(t*(0.7+0.05*i)+i*2.1);
-   const e=clamp(Math.max(scan*(0.55*(1-hiE)+0.25*hiE),hiE*(0.55+0.45*rw),0.6*rw)+twk*(0.4+0.6*hiE),0,1);
+   const e=clamp(Math.max(scan*(0.55*(1-hiE)+0.25*hiE),hiE*(0.55+0.45*rw),0.6*rw)+twk*(0.4+0.6*hiE),0,1)*rimK;
    const r0=R*(major?0.99:1.005)-e*R*0.012, r1=R*1.045+e*R*0.008;
    const c0=Math.cos(ang), s0=Math.sin(ang);
    ctx.globalAlpha=1; ctx.beginPath(); ctx.moveTo(cx+c0*r0,cy+s0*r0); ctx.lineTo(cx+c0*r1,cy+s0*r1);
@@ -673,7 +816,9 @@
   });});
 
   /* ---- gold CQ arc, at the reading's own figure. None while unread. ---- */
-  const cqFrac=CQ==null?0:cqv/100*easeOut((boot-0.8)/1.2);
+  /* in the intro a reading's own arc sweeps in with the beat of life, so a
+     returning person sees their real figure arrive; no reading, no arc */
+  const cqFrac=CQ==null?0:cqv/100*easeOut((boot-0.8)/1.2)*(INT?EOUT((it-IT.life)/1.2):1);
   if(cqFrac>0.001){
    const Rc=R*1.09, a0=-PI/2, a1=a0+cqFrac*TAU;
    [[6,0.12+0.1*hiE],[3,0.35],[1.5,0.95]].forEach(([lw,al])=>{ lx.globalAlpha=1; lx.beginPath(); lx.arc(cx,cy,Rc,a0,a1); lx.strokeStyle=`rgba(214,178,112,${Math.min(1,al*(0.85+0.15*breath+0.25*speakLvl+0.4*rimE*hiE))})`; lx.lineWidth=lw*Math.max(U,0.4); lx.lineCap='round'; lx.stroke(); });
@@ -757,8 +902,19 @@
   let hpre=0, hrel=0;
   if(!RM) for(const f of rawFx){ const ag=(pn-f.t0)/1000; if(ag<0.08) hpre=Math.max(hpre,EIN(ag/0.08)); else if(ag<0.5) hrel=Math.max(hrel,Math.exp(-(ag-0.08)/0.1)); }
   {
-   const cs=R*0.11*(1-0.16*pre)*(1+0.45*beatE)*(1+0.1*hiE)*(1-0.15*hpre)*(1+0.3*hrel);
-   const ca=(0.32+0.1*breath*(RM?0:1))*(1-0.35*pre)+0.55*beatE+0.25*hiE;
+   let cs=R*0.11*(1-0.16*pre)*(1+0.45*beatE)*(1+0.1*hiE)*(1-0.15*hpre)*(1+0.3*hrel)*(1+0.12*brG);
+   let ca=(0.32+0.1*breath*(RM?0:1))*(1-0.35*pre)+0.55*beatE+0.25*hiE+0.1*brG;
+   /* THE FIRST THING IN THE DARK. One point swells on the ease in from 0.55
+      to 0.98, then coils, drawing in by 30 percent over the 120ms before the
+      first star, and releases as it lights: a flash that falls away on a
+      180ms decay. It is the backswing for the whole sky. Once the lens is in
+      it hands over to the ordinary centre. */
+   if(INT){ let cA=0, cS=1;
+    if(it<IT.core) cA=0;
+    else if(it<IT.coil) cA=0.65*EIN((it-IT.core)/(IT.coil-IT.core));
+    else if(it<IT.ign){ cA=0.65; cS=1-0.3*easeInOut((it-IT.coil)/(IT.ign-IT.coil)); }
+    else { const x=it-IT.ign; cA=0.5+0.9*Math.exp(-x/0.18); cS=1+0.5*Math.exp(-x/0.12); }
+    ca=mix(cA,ca,lensE); cs*=mix(cS,1,lensE); }
    blit(lx,WARM,cx,cy,cs*2.6,ca*0.55);
    blit(lx,HOT,cx,cy,cs*0.55,Math.min(1,ca*0.9+0.5*hrel));
    /* harmonic radiance: concentric rings born at the centre, the same mark Uni earns at 92 */
@@ -770,12 +926,26 @@
   }
 
   /* ---- the addresses ---- */
-  if(!RM && boot>2.2 && GW.tot>0 && rnd()<1-Math.exp(-0.35*dt)){ const u=rnd()*GW.tot; let k=0; while(k<GW.length-1&&GW[k]<u) k++; const g=addrs[k]; if(g&&(!flares[g.i]||pn-flares[g.i].t0>900)) flares[g.i]={t0:pn,s:0.3}; }
+  if(!RM && boot>2.2 && (!INT||it>IT.life) && GW.tot>0 && rnd()<1-Math.exp(-0.35*dt)){ const u=rnd()*GW.tot; let k=0; while(k<GW.length-1&&GW[k]<u) k++; const g=addrs[k]; if(g&&(!flares[g.i]||pn-flares[g.i].t0>900)) flares[g.i]={t0:pn,s:0.3}; }
   const inv=new Set(); for(const k in resFx) resFx[k].addrs.forEach(i=>inv.add(i)); for(const k in RD.seats) RD.seats[k].addrs.forEach(i=>inv.add(i));
   const anyRead=readE>0.01||Object.keys(resFx).length>0;
   const span=SQ.hi-SQ.lo;
   addrs.forEach(a=>{
    const p=P[a.i]; const ba=clamp((boot-0.2-a.ring*0.09)/0.45,0,1); if(ba<=0) return;
+   /* A STAR LIGHTING. 140ms of speck first, a fifth of its light, the
+      anticipation; then up to full in 50ms with a white hot flash that falls
+      on a 160ms decay, a four point glint riding the flash, and a white core
+      that cools into the seat's colour over half a second. Its twinkle is
+      two of its own sines multiplied, so its light swings by up to 45
+      percent and no two stars are in step; the twinkle hands over to the
+      face's quieter shimmer as the star lands on its ring (p.g). */
+   let sA=1, sF=0, sC=0, sR0=0, sg=1;
+   if(INT){ const s=STAR[a.i]; if(s){ const ig=it-s.t; if(ig<-0.14) return;
+    sg=p.g!=null?p.g:1;
+    const tw=1+mix(0.45,0.12,sg)*Math.sin(t*(2.3+2.1*a.tw)+a.pt)*Math.sin(t*(1.1+0.7*a.tw)+a.i*1.3);
+    sA=(ig<0?0.2*easeInOut((ig+0.14)/0.14):clamp(ig/0.05,0,1))*tw*(1-0.18*(p.an||0));
+    sF=ig>=0?Math.exp(-ig/0.16):0; sC=ig>=0?Math.exp(-ig/0.5):0;
+    sR0=(0.9+1.8*s.m)*Math.max(U,0.5)*1.5; } }
    const isLit=lit.includes(a);
    let dim=lit.length?(isLit?1:1-0.35*traceAlpha):1;
    /* the rest stay readable while a pattern runs */
@@ -797,10 +967,16 @@
    let sR=1, sT=1; const sq0=squash[a.i];
    if(sq0!==undefined){ const ps=(pn-sq0)/180; if(ps>=1||RM) delete squash[a.i]; else if(ps>=0){ const k=OVS(ps); sR=mix(0.7,1,k); sT=mix(1.5,1,k); } }
    /* the dot floor, the mockup's: 108 dots that cannot be seen are not 108 */
-   const rr=Math.max(0.6,baseR*sc*ba);
-   const A=dim*ba;
+   /* a star is drawn at its own magnitude and shrinks to the address's
+      real size as it lands, so the sky is bright and the placed face is
+      true to the reading */
+   const rr=INT?Math.max(0.6,mix(sR0,baseR,sg)*sc*(1+1.1*sF)):Math.max(0.6,baseR*sc*ba);
+   const A=dim*ba*sA;
    const col=a.ring;
-   const haloA=(0.28+0.22*charge)*lum*A*(isLit?1.2:1)+0.25*wv*A+0.3*pb*A, hotA=(0.25+0.5*charge*lum+(isLit?0.25*traceAlpha:0)+0.8*fE+0.45*pb+0.15*hiE)*A;
+   const haloA=(0.28+0.22*charge)*lum*A*(isLit?1.2:1)+0.25*wv*A+0.3*pb*A+0.35*sF*A, hotA=(0.25+0.5*charge*lum+(isLit?0.25*traceAlpha:0)+0.8*fE+0.45*pb+0.15*hiE+1.4*sF+0.6*sC)*A;
+   if(sF>0.04){ const gl=(5+26*sF)*Math.max(U,0.4)*(0.6+0.8*(STAR[a.i]?STAR[a.i].m:0)); lx.globalAlpha=1; lx.lineWidth=1;
+    lx.strokeStyle=`rgba(255,246,230,${Math.min(1,0.9*sF*A)})`;
+    lx.beginPath(); lx.moveTo(p.x-gl,p.y); lx.lineTo(p.x+gl,p.y); lx.moveTo(p.x,p.y-gl); lx.lineTo(p.x,p.y+gl); lx.stroke(); }
    if(sR!==1||sT!==1){
     blitT(lx,HALO[col],p.x,p.y,rr*(6+charge*5)*(isLit?1.25:1),haloA,p.ang,sR,sT);
     blitT(lx,CORE[col],p.x,p.y,rr*2.6,(0.78+0.22*lum)*A,p.ang,sR,sT);
@@ -901,7 +1077,7 @@
     if(m.rf>1.1){ m.rf=0.2; m.r0=0.2; }
     const lf=m.age/m.life, env=Math.sin(PI*lf);
     const ring=clamp(Math.floor(m.rf*7),0,6);
-    blit(lx,CORE[ring],cx+Math.cos(m.a)*m.rf*R+m.ox,cy+Math.sin(m.a)*m.rf*R+m.oy,m.s*4*U*(1+0.6*Math.min(1,pk)),(0.28+0.3*speakLvl+0.35*Math.min(1,pk))*env*clamp(boot/1.5,0,1));
+    blit(lx,CORE[ring],cx+Math.cos(m.a)*m.rf*R+m.ox,cy+Math.sin(m.a)*m.rf*R+m.oy,m.s*4*U*(1+0.6*Math.min(1,pk)),(0.28+0.3*speakLvl+0.35*Math.min(1,pk))*env*clamp(boot/1.5,0,1)*lensE);
    }
   }
 
@@ -962,7 +1138,7 @@
   /* ---- the face edge: a thin bezel; at high coherence each beat leaves the face as light ---- */
   ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1;
   ctx.beginPath(); ctx.arc(cx,cy,Rf-0.75,0,TAU); ctx.lineWidth=1;
-  ctx.strokeStyle=`rgba(${mixc([216,213,204],[236,206,148],hiE).join(',')},${0.22+0.1*hiE+0.3*rimE})`; ctx.stroke();
+  ctx.strokeStyle=`rgba(${mixc([216,213,204],[236,206,148],hiE).join(',')},${(0.22+0.1*hiE+0.3*rimE)*lensE})`; ctx.stroke();
   const leave=rimE*(0.25+0.75*hiE);
   /* the light leaving the face is held to the box's own inscribed circle, so
      the box's square edge never cuts it */
@@ -977,7 +1153,10 @@
      it never swims, and only where it fits inside the Root ring, the
      innermost seat, so it never sits on an address */
   ctx.globalAlpha=1; ctx.font='500 '+FS+'px '+fs0; ctx.textAlign='center'; ctx.textBaseline='middle';
-  if(wordFits){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)})`; ctx.fillText(stateWord,cx,cy); }
+  /* no word over the intro: it has no state to report, and it comes back
+     over 600ms once the face has landed */
+  const wA=INT?0:clamp((pn-inEndAt)/600,0,1);
+  if(wordFits&&wA>0){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)*wA})`; ctx.fillText(stateWord,cx,cy); }
  }
 
  /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
@@ -988,8 +1167,15 @@
     answered as if done and do nothing; give() ends the loan and the caller
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
- function show(host){ if(canvas.parentNode!==host) host.appendChild(canvas); canvas.hidden=false;
-  if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); } return true; }
+ function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false;
+  if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); }
+  else if(moved) refit();
+  return true; }
+ /* A HOST THAT CHANGED SIZE UNDER THE CANVAS, painted at its new size now
+    rather than on the next frame (paint, above). uniMount calls it after
+    moving the face's whole widget, which leaves the canvas's own parent
+    where it was, so show() alone cannot see the move. */
+ function refit(){ if(!running||canvas.hidden) return; if(canvas.clientWidth!==W0||canvas.clientHeight!==H0) paint(performance.now()); }
  function mount(host){ if(!host) return false; if(lent) return true; return show(host); }
  function pause(){ if(lent) return; running=false; cancelAnimationFrame(raf); canvas.hidden=true; }
  function take(host){ if(!host) return false; lent=host; return show(host); }
@@ -1019,7 +1205,7 @@
   for(const k in flares) delete flares[k]; for(const k in squash) delete squash[k];
   readE=0; stateWord=speaking?'Answering':'Waiting'; }
  readAddrs();
- window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,
+ window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,intro,refit,
   plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
   state:()=>({word:stateWord,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,
@@ -1030,5 +1216,7 @@
    /* a reading in flight that has not resolved a seat yet is still a
       reading: what a gate reads to know clear() left nothing behind */
    reading:RD.on, held:Object.keys(RD.seats).length, lent:!!lent, host:canvas.parentNode?canvas.parentNode.id||canvas.parentNode.className||'':'',
-   voiceWord:VO?VO.idx:-1})};
+   voiceWord:VO?VO.idx:-1,
+   /* the intro's clock on the last frame, null when none is running */
+   intro:IN?IN.last:null})};
 })();
