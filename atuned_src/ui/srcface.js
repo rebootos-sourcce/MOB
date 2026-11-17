@@ -133,7 +133,7 @@
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
     on the face, travels with it as the hover, since the box has no room for
     a caption of its own */
- const TITLE="Source's reading circle. Every dot is one of the 108 body addresses, each at a named plexus or nerve, drawn at its real charge. The seven rings are the seats, Root at the centre, Crown outside. The slow beat from the centre is Source reading all the time. A light running between dots is one of your saboteur patterns, its addresses lit together. The 21 marks on the rim are the laws. The four short marks top and bottom are the field anchors, two above the body and two below.";
+ const TITLE="Source's reading circle. Every dot is one of the 108 body addresses, each at a named plexus or nerve, drawn at its real charge. The seven rings are the seats, Root at the centre, Crown outside. The slow beat from the centre is Source reading, and it starts once you talk or write. A light running between dots is one of your saboteur patterns, its addresses lit together. The 21 marks on the rim are the laws. The four short marks top and bottom are the field anchors, two above the body and two below.";
  canvas.title=TITLE;
  const ctx=canvas.getContext('2d');
  /* the emissive layer and its three bloom copies, the amplified file's */
@@ -237,10 +237,23 @@
   const cxs=up(L2('cxs'),n=>n.hcx), hys=up(L2('hys'),n=>n.nm), sups=up(L2('sups'),n=>n.nm);
   CH={sabs,cxs,hys,sups};
   LOCKED=new Set(Array.isArray(r&&r.locked)?r.locked:[]);
-  CQ=(r&&!r.unread&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
+  /* NO LAW ANSWERED IS NOT COHERENCE ZERO, 17 November, his words on this
+     face: "I haven't said anything and talk is not active and the
+     animations are going haywire." This gated on r.unread alone. A record
+     that carries imprints (a quiz, a seed, an older story) is not unread,
+     but with no law measured compute() reports CQ 0 because no law is in
+     (engine/compute.js, at UNREAD), and the face took that 0 as a real
+     reading of no coherence: disorder 1, so driftK below ran every address
+     at 2.15 against its floor of 0.35, six times the drift, and the hover
+     said "now 0 percent". measured is the count of laws actually answered,
+     the same lawRec read compute() makes, so a 0 there is no reading of
+     coherence at all and draws no arc and no disorder, as unread does. */
+  CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
-  canvas.title=TITLE+(CQ==null?' The gold arc is coherence, the CQ score, and there is no reading yet.'
+  canvas.title=TITLE+(CQ==null?(r&&!r.unread
+    ?' The gold arc is coherence, the CQ score, and it is drawn once you answer the laws.'
+    :' The gold arc is coherence, the CQ score, and there is no reading yet.')
    /* a percent, as the Field tile prints the same figure: "of 100" is a
       count against a total, which reads as pass or fail, CO-05 */
    :' The gold arc is coherence, the CQ score, now '+Math.round(CQ)+' percent, drawn as how far round the arc reaches.'
@@ -262,7 +275,29 @@
  function hook(name,arg){ const f=RD.hk&&RD.hk[name]; if(typeof f!=='function') return; try{ f(arg); }catch(e){} }
  const rawFx=[], resFx={};
  let lastInput=-9e9, lastEvent=-9e9, speaking=false, holdTimer=0;
- let stateWord='Waiting';
+ /* THE IDLE WORD IS NO WORD, 17 November, his words: "there's text at the
+    center of it that says waiting. I don't want it to, it looks broken."
+    It was 'Waiting', printed in the centre from the first frame to a person
+    who had not said anything, with nothing beside it to say what was
+    awaited. The four words that name something happening (Listening,
+    Found, Weighing, Holding, and Answering for the voice) are unchanged;
+    between them the centre is empty. */
+ const IDLE='';
+ let stateWord=IDLE;
+ /* AT REST UNTIL SOMETHING HAPPENS, the same day and the same words: "something
+    is being activated before I've ever even engaged in conversation." The
+    centre beat, the springs it throws and the saboteur trace all ran from
+    the first frame, so a face nobody had spoken to looked like it was mid
+    reading. This is the one switch for it: false until a reading starts
+    (read), the voice plays over the face (voice), or the intro calls a beat
+    (cue), and false again after clear(), so the intro's example does not
+    leave the Journal's face running for a person who has said nothing yet.
+    The surfaces that print a reading do the same thing on r.unread (CLAUDE.md,
+    "the app opens on Discover"); this face is drawn on a loaded record too,
+    so engagement and not unread is what it rests on. At rest the rings,
+    the addresses at their real charge, their own slow drift and the rim
+    stay, which is the placed field and not a reading. */
+ let engaged=false;
  /* live state, the amplified file's */
  const flares={};            // address i -> {t0,s}
  const waves=[];             // word wavefronts
@@ -314,7 +349,7 @@
  }
  function startReading(imp,hk){
   for(const k in RD.seats) clearTimeout(RD.seats[k].timer); RD.id++; clearTimeout(holdTimer);
-  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp; RD.hk=hk||{};
+  RD.on=true; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp=imp; RD.hk=hk||{}; engaged=true;
   for(const k in resFx) delete resFx[k]; rawFx.length=0;
   stateWord='Listening';
  }
@@ -358,7 +393,7 @@
   if(speaking) return;
   RD.on=false; const pn=performance.now();
   for(const k in resFx) if(!resFx[k].rel) resFx[k].rel=pn;
-  setTimeout(()=>{ if(!RD.on&&!speaking) stateWord='Waiting'; },2200);
+  setTimeout(()=>{ if(!RD.on&&!speaking) stateWord=IDLE; },2200);
  }
  /* the ledger's word clock, kept for the person's own words, which arrive
     whole and carry no timing anywhere in the product (gap a, above) */
@@ -422,7 +457,7 @@
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord='Waiting';
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord=IDLE;
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -430,7 +465,7 @@
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; engaged=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
    /* a closed reading is answered too. This read !RD.on alone, so a line
       spoken over a reading the face was holding left the centre on
       Holding while the voice talked about it, which is the one moment the
@@ -491,6 +526,8 @@
      to show, so it rests at the floor driftK keeps below, the least life
      the file allows a field */
   const disorder=CQ==null?0:clamp(1-cqv/100,0,1);
+  /* at rest, see engaged: no beat, no trace, and nothing the beat would throw */
+  const rest=!engaged;
 
   /* the file spoke the story aloud and then the answer, and was "speaking"
      through both; here the person's turn on its word clock is the story */
@@ -503,7 +540,7 @@
      ordinary: 5.4s with a little variability and a second, softer beat 260ms on.
      high coherence: about 4.2s, the rings locked in phase while the shared tempo drifts the way a
      healthy heart does, every beat a little different in strength, and the soft dub kept 300ms on. */
-  if(!RM && boot>0.4){
+  if(!RM && boot>0.4 && !rest){
    const period=mix(5.4*(1+0.07*Math.sin(t*0.23)+0.04*Math.sin(t*0.61)),4.2*(1+0.045*Math.sin(t*0.19)+0.025*Math.sin(t*0.53+1.3)),hiE);
    curPeriod=period; pPh+=dt/period;
    if(pPh>=1){ pPh-=1; const amp=0.9+0.2*rnd(); beat(now,amp); pulses.push({t0:now+mix(260,300,hiE),amp:mix(0.42,0.22,hiE)*amp,crossed:-1,rim:false,dub:1,seed:rnd()*TAU}); }
@@ -555,6 +592,8 @@
   /* ---- reading state: while Source reads a story the pattern trace stands aside ---- */
   readE+=((RD.on?1:0)-readE)*(1-Math.exp(-dt/0.45)); if(RM) readE=RD.on?1:0;
   if(RD.on&&readE>0.9) sabStart=now+400;
+  /* the trace stands aside at rest the same way, held one step short of starting */
+  if(rest) sabStart=now+400;
   /* ---- pattern timing ---- */
   let cyclePos=Math.max(0,now-sabStart);
   if(speaking) cyclePos=Math.min(cyclePos,SAB_HOLD-1);
@@ -942,7 +981,7 @@
   let wordBox=null;
   ctx.font='500 '+FS+'px '+fs0;
   const wordW=ctx.measureText(stateWord).width, wordFits=wordW/2+3<ringBase[0]*0.92;
-  if(wordFits) wordBox={x0:cx-wordW/2-3,x1:cx+wordW/2+3,y0:cy-FS*0.8,y1:cy+FS*0.8};
+  if(wordFits&&stateWord) wordBox={x0:cx-wordW/2-3,x1:cx+wordW/2+3,y0:cy-FS*0.8,y1:cy+FS*0.8};
   if(labels.length){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf-4,0,TAU); ctx.clip(); ctx.globalCompositeOperation='source-over';
    const fs=Math.max(FS,Math.round(12*U)); ctx.font='500 '+fs+'px '+fs0; ctx.textBaseline='middle';
    const placed=wordBox?[wordBox]:[];
@@ -977,7 +1016,7 @@
      it never swims, and only where it fits inside the Root ring, the
      innermost seat, so it never sits on an address */
   ctx.globalAlpha=1; ctx.font='500 '+FS+'px '+fs0; ctx.textAlign='center'; ctx.textBaseline='middle';
-  if(wordFits){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)})`; ctx.fillText(stateWord,cx,cy); }
+  if(wordFits&&stateWord){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)})`; ctx.fillText(stateWord,cx,cy); }
  }
 
  /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
@@ -1000,7 +1039,7 @@
     face's own curve. Answers how long, in ms, until that beat lands, read
     off the period the last frame used. A beat already inside its
     anticipation is left where it is, and reduced motion has no beat. */
- function cue(){ if(RM) return 0; pPh=Math.max(pPh,0.88); return Math.round((1-pPh)*curPeriod*1000); }
+ function cue(){ engaged=true; if(RM) return 0; pPh=Math.max(pPh,0.88); return Math.round((1-pPh)*curPeriod*1000); }
  /* DROP THE READING AT ONCE. A reading normally leaves on its own: closed,
     held for HOLD, then released over 2.2 seconds, about fourteen seconds in
     all. The intro's example must not still be on the face when the
@@ -1017,12 +1056,12 @@
   RD.id++; RD.on=false; RD.closed=false; RD.seats={}; RD.order=[]; RD.imp={}; RD.hk={};
   for(const k in resFx) delete resFx[k]; rawFx.length=0;
   for(const k in flares) delete flares[k]; for(const k in squash) delete squash[k];
-  readE=0; stateWord=speaking?'Answering':'Waiting'; }
+  readE=0; engaged=speaking; stateWord=speaking?'Answering':IDLE; }
  readAddrs();
  window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,
   plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
-  state:()=>({word:stateWord,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,
+  state:()=>({word:stateWord,engaged,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,
    rings:ringList.map(l=>l.length),
    locked:[...LOCKED],rungs:{sab:CH.sabs.length,cx:CH.cxs.length,hy:CH.hys.length,sup:CH.sups.length},
    trace:CH.sabs[sabIdx]?{nm:CH.sabs[sabIdx].nm,parts:CH.sabs[sabIdx].parts.slice()}:null,

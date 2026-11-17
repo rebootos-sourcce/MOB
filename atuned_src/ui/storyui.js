@@ -1319,7 +1319,8 @@ function stRender(){
  var dash=document.getElementById('stdash');
  if(dash)dash.onclick=function(){STV.dash=!STV.dash; stRender();};
  srcChatWire();
- stUniSync(r);}
+ stUniSync(r);
+ stHeroPlace();}
 /* MOUNT OR PARK HER, THE ONE PLACE THIS PAGE DECIDES IT, round TF plus 13
    November. A worked example gets none (show only, nothing she would react
    to is the person's own), TAB.STORY's own leave in panels.js parks her.
@@ -1385,6 +1386,102 @@ function stUniSync(r){
       same off switch the boot uses, 12 November. */
    try{window.Uni.setFollow(false);}catch(e){}}}
  else if(typeof uniPark==='function')uniPark();}
+
+/* THE ICONS FLANK THE FACE, NOT THE SCREEN, 17 November. His words, circling
+   where they go on a screenshot of this view: "so the talk and keyboard icon
+   are to its upper left of the talk panel. And then the dashboard is to its
+   upper right. No longer in the corners." Talk and the keyboard sat at the
+   stage's top left corner, Dashboard at its top right, and Commit fixed to
+   the screen's bottom right (the 10 November rulings at #stmic, #stdash and
+   #stapply in shell/head.html), so at 1600 each was about six hundred
+   pixels from the circle it belongs to. Each control is the same control
+   with the same wiring; only where it lands moved.
+
+   WHY A SCRIPT AND NOT A RULE. The circle is drawn on a canvas, centred in
+   #stuni at the largest radius the box holds (fit() in ui/srcface.js:
+   the smaller side over two, less 2), and #stuni moves inside #stjr as the
+   live caption and the Commit bar come and go, while #stmic and #stdash
+   are positioned against #stage and #stapply against the screen. No one
+   containing block holds all four, so the circle's real centre and radius
+   are read off the canvas's own box and each control is placed in its own
+   containing block from that.
+
+   SYMMETRY IN SPACE, the 16 November ruling, built in rather than checked
+   after. Every control sits the same gap, GAP, outside the bezel, on the
+   diagonals: Talk and the keyboard up and left, Dashboard up and right,
+   Commit down and right, so the two upper groups mirror each other across
+   the circle's own vertical axis and Commit mirrors Dashboard across its
+   horizontal one. Where the diagonal runs off the stage, at 390 where the
+   circle is nearly the stage's width, all three come in by the same amount
+   together, and each then rises or drops just far enough to keep GAP clear
+   of the circle, so the mirror holds at every width.
+
+   And when there is no circle on screen (the box opened for typing takes
+   .st-glow away, a worked example mounts nothing, the Full Dashboard lays
+   these out in its own header row) nothing is written, and the corner
+   rules in shell/head.html stand as they were. */
+/* PLACED IN THE SAME TASK AS THE RENDER, and only the observer waits a frame.
+   The first cut placed on the next frame after every render too, so each
+   render painted the icons at the corners for one frame and then moved
+   them, and tests/typein.js pressed #stmic where it stood before the move
+   and missed it, 57 and 60 of 62 against 62 on the build before. stRender
+   and stPaintAll call stHeroPlace itself, after stUniSync has mounted the
+   face, so the first paint already has them beside it. */
+var ST_HERO_GAP=24, ST_HERO_EDGE=12, ST_HERO_RAF=0, ST_HERO_RO=null, ST_HERO_ON=null;
+function stHeroPlaceSoon(){
+ if(typeof requestAnimationFrame!=='function'){ stHeroPlace(); return; }
+ if(ST_HERO_RAF)return;
+ ST_HERO_RAF=requestAnimationFrame(function(){ ST_HERO_RAF=0; stHeroPlace(); });}
+function stHeroPlace(){
+ if(typeof document==='undefined')return;
+ var flow=document.getElementById('stflow'), jr=document.getElementById('stjr'),
+  stage=document.getElementById('stage'), cv=document.getElementById('srcface');
+ if(!flow||!jr||!stage||!flow.classList.contains('st-simple'))return;
+ /* the circle moves when a sibling in #stjr grows or shrinks (the live
+    caption, the Commit bar) and when the window does, and neither is a
+    render; one observer, re-pointed only when stRender has built a new
+    #stjr, because observing a node reports it once at once, and re-pointing
+    on every place would place again on every frame for ever */
+ if(typeof ResizeObserver==='function'&&ST_HERO_ON!==jr){
+  ST_HERO_ON=jr;
+  if(!ST_HERO_RO)ST_HERO_RO=new ResizeObserver(function(){ stHeroPlaceSoon(); });
+  ST_HERO_RO.disconnect(); ST_HERO_RO.observe(stage); if(cv)ST_HERO_RO.observe(cv);
+  [].forEach.call(jr.querySelectorAll('#stjr > *, .st-glow > *'),function(n){ ST_HERO_RO.observe(n); }); }
+ var vis=function(e){ return !!(e&&e.getClientRects().length&&getComputedStyle(e).display!=='none'); };
+ var mic=document.getElementById('stmic'), ty=document.getElementById('sttype'),
+  dash=document.getElementById('stdash'), ap=document.getElementById('stapply');
+ var left=[mic,ty].filter(vis), right=[dash].filter(vis), low=[ap].filter(vis);
+ /* every inline place this function wrote comes off first, so a control
+    whose circle has gone falls back to its corner rule */
+ [mic,ty,dash,ap].forEach(function(e){ if(e){ e.style.left=e.style.top=e.style.right=e.style.bottom=''; } });
+ if(!cv||cv.hidden||!jr.contains(cv))return;
+ var c=cv.getBoundingClientRect(); if(!(c.width>0&&c.height>0))return;
+ var cx=c.left+c.width/2, cy=c.top+c.height/2, R=Math.max(12,Math.min(c.width,c.height)/2-2)+ST_HERO_GAP;
+ var b=stage.getBoundingClientRect();
+ var x0=b.left+ST_HERO_EDGE, x1=b.right-ST_HERO_EDGE, y0=b.top+ST_HERO_EDGE, y1=b.bottom-ST_HERO_EDGE;
+ var gap=8, wOf=function(list){ return list.reduce(function(s,e,k){ return s+e.getBoundingClientRect().width+(k?gap:0); },0); },
+  hOf=function(list){ return list.reduce(function(m,e){ return Math.max(m,e.getBoundingClientRect().height); },0); };
+ var lw=wOf(left), rw=Math.max(wOf(right),wOf(low));
+ /* the inner edge of each group, out from the vertical axis: the diagonal,
+    or less where a group would leave the stage, the same for all three */
+ var dx=Math.max(0,Math.min(R/Math.SQRT2, cx-lw-x0, x1-rw-cx));
+ var dy=dx<R?Math.sqrt(R*R-dx*dx):0;
+ /* in the control's own containing block, found by measuring and not by
+    asking. offsetParent was asked first and placed Commit 78 pixels low at
+    1600: a fixed element's offsetParent is always null, but its containing
+    block here is not the screen, an ancestor with a transform holds it, so
+    "fixed means the screen" was wrong. Set it at the corner it already
+    has, read where that landed, and move it by the difference, which is
+    right for any containing block there is. */
+ var put=function(e,x,y){
+  e.style.right='auto'; e.style.bottom='auto'; e.style.left='0px'; e.style.top='0px';
+  var o=e.getBoundingClientRect();
+  e.style.left=Math.round(x-o.left)+'px'; e.style.top=Math.round(y-o.top)+'px'; };
+ var th=Math.max(hOf(left),hOf(right)), top=Math.max(y0,cy-dy-th);
+ var x=cx-dx-lw;
+ left.forEach(function(e){ put(e,x,top+(th-e.getBoundingClientRect().height)/2); x+=e.getBoundingClientRect().width+gap; });
+ right.forEach(function(e){ put(e,cx+dx,top+(th-e.getBoundingClientRect().height)/2); });
+ low.forEach(function(e){ put(e,cx+dx,Math.min(y1-e.getBoundingClientRect().height,cy+dy)); });}
 
 /* ============================================================
    THE PAGE'S OWN STATE. None of it is a reading: which way the lanes are
@@ -1975,7 +2072,8 @@ function stPaintAll(){
     here, so a key typed or a turn landed by voice moves it with the chart
     (stRefresh reaches this too, not only stRender). ui/stdash.js. */
  if(typeof stDashLeft==='function')stDashLeft();
- stUniSync();}
+ stUniSync();
+ stHeroPlace();}
 /* THE FIELD MOVED UNDER THE PAGE. render() calls this on the Story, because
    a release that finishes, an undo, or a profile change all change what is
    held, what the release column offers and what the vault holds, and none of
