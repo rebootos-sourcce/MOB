@@ -185,7 +185,8 @@ async function arrive(browser,payload,W,H){
   const reg=await pg.evaluate(()=>{const e=document.querySelector('#cone [data-cn="shells"]'); return e?e.getAttribute('data-lock'):'missing';});
   ok(reg===null,tag+'the Compass\'s Registers, the point cloud, are open, '+reg);
   await pg.evaluate(()=>{setTab(TAB.MASKS);render();}); await pg.waitForTimeout(800);
-  const ch=await pg.evaluate(()=>({door:document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]').getAttribute('data-lock'),
+  /* the door is held off the bar since 17 November; with no door, none is locked */
+  const ch=await pg.evaluate(()=>({door:(document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]')||{getAttribute:()=>null}).getAttribute('data-lock'),
    cv:document.querySelectorAll('#masksview canvas').length,masks:document.querySelectorAll('#masksview [data-chmask]').length,
    panel:!!document.querySelector('#masksview .lk-panel')}));
   ok(ch.door===null&&ch.cv===1&&ch.masks>0&&!ch.panel,tag+'the Character page and its door are open and draw the masks, '+JSON.stringify(ch));

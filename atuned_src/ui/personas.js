@@ -201,7 +201,7 @@ function renderSpirit(){
    row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
     say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
   +line('N',
-   nrow('Path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
+   nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
   +spNumRows(p.nm,true))
   /* the personality and design gates are real and computed. the type is

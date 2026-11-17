@@ -1020,12 +1020,16 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
-   +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
+   +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
    +stMiniShell('stfield','Field',stMiniField(r),'stfield')
    +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-   +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
+   /* the Masks card stays on the row, which is ruled even and symmetrical,
+      and stops being a link while Character is held off the bar (17
+      November): a card that opened a page with no door would be the hidden
+      page by another way in. tabOnBar is in engine/core.js. */
+   +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div

@@ -382,12 +382,16 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const pressed=()=>[...document.querySelectorAll('#bmov [data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');
   const before={on:pressed(),mode:BM.mode};
   const fr=()=>new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
+  /* HELD OFF THE BAR, 17 November: "we want to hide character for now". The
+     door is gone and the page is still a page, opened the way Games is, by
+     setTab, so everything below still holds the page itself. */
   const btn=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
-  btn.click(); await fr();
+  setTab(TAB.MASKS); render(); await fr();
   const host=document.getElementById('masksview'), stage=host.querySelector('#chpstage'), rail=document.getElementById('charrail');
   const cvs=stage?[...stage.querySelectorAll('canvas')]:[];
   const mk=()=>[...host.querySelectorAll('[data-chmask]')];
-  const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),label:(btn.querySelector('.n')||{}).textContent,
+  const out={tab:S.tab===TAB.MASKS,sec:SECOF(TAB.MASKS),door:!!btn,label:TABOF(TAB.MASKS).nm,held:TABEXTRA[TAB.MASKS]&&TABEXTRA[TAB.MASKS].held,
+   onBar:tabOnBar(TAB.MASKS),inDef:TABDEF.some(t=>t.k===TAB.MASKS),
    figure:!!(BM.cv&&host.contains(BM.cv)),emapFig:!!(BM.cv&&document.getElementById('emap').contains(BM.cv)),
    canvases:cvs.length,mine:!!(CHV.sc&&cvs[0]===CHV.sc.cv),role:cvs[0]&&cvs[0].getAttribute('role'),cvLabel:(cvs[0]&&cvs[0].getAttribute('aria-label'))||'',
    roster:MASKS_READ.map(m=>m.nm).join(),
@@ -447,7 +451,8 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const ja=await fig('James'), de=await fig('Derek'), ja2=await fig('James');
   out.people={d:__chDiff(ja,de),same:__chDiff(ja,ja2)};
   return out;});
- ok(mv.tab&&mv.sec==='play'&&mv.label==='Character','the door is Character, in Play, integer 11, got '+mv.label+' in '+mv.sec);
+ ok(mv.tab&&mv.label==='Character'&&!mv.door&&!mv.inDef&&!mv.onBar&&mv.sec===null&&mv.held==='play',
+  '17 November: Character is held off the bar, integer 11 still opens it, no door, no section, held for Play, '+JSON.stringify({door:mv.door,sec:mv.sec,held:mv.held,label:mv.label}));
  ok(!mv.figure&&mv.emapFig,'the Body\'s figure never comes to the Character page and stays in the Body\'s host');
  ok(mv.canvases===1&&mv.mine&&mv.role==='img'&&mv.cvLabel.length>20,
   'the stage is one canvas, the scene\'s own, named to a screen reader, '+JSON.stringify({n:mv.canvases,mine:mv.mine,role:mv.role}));
@@ -657,10 +662,11 @@ console.log('\n=== Character: the five masks, the overlays, Runs under, the lock
    const host=document.getElementById('masksview'), door=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
    return {sees:lockSees('mask'),panel:!!host.querySelector('.lk-panel[data-lock-panel="mask"] .lk-go'),
     cv:host.querySelectorAll('canvas').length,masks:host.querySelectorAll('[data-chmask]').length,
-    rail:((document.getElementById('charrail')||{}).textContent||'').length,sc:!!CHV.sc,door:door?door.getAttribute('data-lock'):'none'};});
+    rail:((document.getElementById('charrail')||{}).textContent||'').length,sc:!!CHV.sc,door:door?door.getAttribute('data-lock'):'none',held:!tabOnBar(TAB.MASKS)};});
   ok(lk.sees===sees&&(sees
-    ?(!lk.panel&&lk.cv===1&&lk.masks>0&&lk.rail>0&&lk.sc&&lk.door===null)
-    :(lk.panel&&lk.cv===0&&lk.masks===0&&lk.rail===0&&!lk.sc&&lk.door==='mask')),
+    ?(!lk.panel&&lk.cv===1&&lk.masks>0&&lk.rail>0&&lk.sc&&lk.door===(lk.held?'none':null))
+    :(lk.panel&&lk.cv===0&&lk.masks===0&&lk.rail===0&&!lk.sc&&lk.door===(lk.held?'none':'mask'))),
+   /* held off the bar since 17 November, so there is no door to padlock */
    'on '+tier+' the Character page is '+(sees?'drawn, no lock':'the lock\'s own panel, nothing drawn, the rail empty and the door padlocked')+', '+JSON.stringify(lk));
   ok(lpErr.length===0,'no page errors on '+tier+', '+lpErr.join(' | '));
   await lp.close();}
@@ -2932,6 +2938,8 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* LE, his order, in the engine and in the markup: "field intake compass mask" */
   out.play=TABDEF.filter(t=>t.sec==='play').map(t=>t.nm).join(',')+' / '
    +[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
+  out.embody=TABDEF.filter(t=>t.sec==='embody').map(t=>t.nm).join(',')+' / '
+   +[...document.querySelectorAll('.tabgrp[data-sec="embody"] .tabtop .n')].map(n=>n.textContent).join(',');
   /* 23 October, his words: "attach the Story link to Discover. So we're
      removing the word Story." Discover's group, in the engine and in the
      markup, and the word Story on no name, mark or title on the bar */
@@ -2967,16 +2975,21 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'the first tier is discover, play, flow, embody, in his order, and with practitioner mode off those four are all the bar shows, '+JSON.stringify(nav.shownKeys));
  ok(JSON.stringify(nav.secKeys)==='["discover","play","flow","embody","practitioner"]'&&JSON.stringify(nav.barKeys)===JSON.stringify(nav.secKeys),
   'LL: Practitioner is a fifth section after the loop, in the engine and the markup alike, '+JSON.stringify(nav.barKeys));
- ok(JSON.stringify(nav.placed)==='{"avatar":"play","summary":"play","intake":"play","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":"play","games":null,"clients":"practitioner"}',
+ ok(JSON.stringify(nav.placed)==='{"avatar":"play","summary":"embody","intake":"embody","story":"discover","know":"embody","ritual":"flow","acct":"flow","field":"play","body":"play","compass":"play","masks":null,"games":null,"clients":"practitioner"}',
   /* round OG reverses round OD: the body map is Body, in Play, between Field
      and Compass. His words: "Body should be between field and compass...
      the intake that you call intake is body." And 23 October: "when you
      click Discover, you only get the journal and the imprints and the
      release. If I click on play, then I get all the other tools."
      engine/core.js has both. */
-  '23 October: the journal page alone in Discover, Field, Body, Compass, Character, Avatar, Summary and Intake in Play, Ritual and Accountability in Flow, Knowledge in Embody, Games hidden, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics / Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics',
-  'Play reads his order, Field, Body, Compass, Character, then the four that left Discover in the order they stood there, in the engine and the bar alike, '+nav.play);
+  /* and 17 November: "change the word compass to path... hide character for
+     now... keep avatar there under play, but we're going to move summary,
+     intake, and analytics under embody." */
+  '17 November: the journal page alone in Discover, Field, Body, Path and Avatar in Play, Ritual and Accountability in Flow, Knowledge, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Path,Avatar / Field,Body,Path,Avatar',
+  '17 November: Play reads Field, Body, Path, Avatar, in the engine and the bar alike, '+nav.play);
+ ok(nav.embody==='Knowledge,Summary,Intake,Analytics / Knowledge,Summary,Intake,Analytics',
+  '17 November: Embody reads Knowledge, then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
  ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
   '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
  ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
@@ -2984,7 +2997,7 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
- ok(nav.secof.analytics==='play'&&nav.secof.settings===null,
+ ok(nav.secof.analytics==='embody'&&nav.secof.settings===null,
   'a folded surface answers with its carrier\'s section and Settings with none, '+JSON.stringify(nav.secof));
  Object.keys(nav.press).forEach(k=>{const p=nav.press[k];
   ok(p.landed&&p.shown&&p.pressed,k+': pressing it opens a tab in it, shows exactly its tabs and presses it alone, '+JSON.stringify(p));
@@ -3552,7 +3565,7 @@ const ipg=await page.evaluate(async()=>{
  o.shown=getComputedStyle(h).display!=='none'&&r.width>300&&r.height>300;
  o.inside=!!q&&q.parentNode===h&&!q.hidden;
  o.laws=h.querySelectorAll('[data-law]').length;
- o.btn=[...document.querySelectorAll('.tabgrp[data-sec="play"] .tabtop .n')].map(n=>n.textContent).join(',');
+ o.btn=[...document.querySelectorAll('.tabgrp[data-sec="embody"] .tabtop .n')].map(n=>n.textContent).join(',');
  o.pressed=document.querySelector('.tabtop[data-tabk="13"]').getAttribute('aria-pressed');
  o.avatarHidden=getComputedStyle(document.getElementById('iq')).display==='none';
  setTab(TAB.INTAKE); render(); await wait();
@@ -3562,7 +3575,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Field,Body,Compass,Character,Avatar,Summary,Intake,Analytics'&&ipg.pressed==='true','Play reads Field, Body, Compass, Character, Avatar, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Knowledge,Summary,Intake,Analytics'&&ipg.pressed==='true','17 November: Embody reads Knowledge, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');

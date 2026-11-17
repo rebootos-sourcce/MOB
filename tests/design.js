@@ -121,7 +121,7 @@ const FOLDOF={};
    keeps relearning. 5 is Intake and it is not swept here. */
 /* 0 is the journal page, named Discover since 23 October */
 const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge',
- 'Games','Compass','Settings','Ritual','Character','Practitioner','Intake page'];
+ 'Games','Path','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to
    show through each other, and both are swept */

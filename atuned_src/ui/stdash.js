@@ -644,7 +644,7 @@ function stDashCompass(){
     28 October ruling retired. unpackOf reads the one table every other CQ
     and DQ tooltip already reads. Not drawn on the rail since 10 November
     (see stDashLeft), kept right for whichever screen calls it next. */
- var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Path">'
   +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'

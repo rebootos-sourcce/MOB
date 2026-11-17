@@ -165,7 +165,7 @@ function ptAlwaysOf(s){
      any page is said */
   'shadow':{nm:'Shadow',ic:PT_IC.shadow,say:'Shadow is the part of the Laws of Moral Integrity your answers leave out.'},
   'the pain map':{nm:'Pain map',ic:pain.ic,say:pain.tip||''},
-  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Compass and the rest.'},
+  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Path and the rest.'},
   'the journal':{nm:'Journal',ic:PT_IC.pen,say:u('journal')},
   'rerunning anything already open':{nm:'Rerun',ic:PT_IC.rerun,say:'Anything you have already opened stays open, and you can run it again.'}};
  var t=T[s]||{nm:s,ic:'',say:''};

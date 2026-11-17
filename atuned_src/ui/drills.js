@@ -1354,7 +1354,7 @@ function runPoleDrill(end){
     sat inside the downward branch on its first write, so the upward roster
     had no way through to the thing it describes. */
  h+='<div class="ad-act">'
-  +'<button class="btn pri" id="rdcone">Go to the compass</button>'
+  +'<button class="btn pri" id="rdcone">Go to the path</button>'
   +(up?'':'<button class="btn" id="rdsee">Start from a sentence</button>')
   +'</div>';
  rdShell(h);
@@ -1722,7 +1722,7 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  /* in percent, percent phase 2 slice 4: CQ prints as a percent, so
     the scale it is read against does too */
- var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
+ var h='<div class="pm-eye">The path</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
   +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
