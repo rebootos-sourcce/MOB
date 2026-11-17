@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v124 08fdd217 2026-11-16 23:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v126 1232842d 2026-11-17 00:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5946,6 +5946,63 @@ body:not(.tab-story) .st-lrail,body.tab-story:not(.st-full) .st-lrail{display:no
  stroke-linejoin:round;opacity:calc(.35 + var(--b)*.65);pointer-events:none}
 .st-pl:hover,.st-pl:focus-visible{transform:scale(1.08)}
 .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+/* THE TILE IS GONE FROM THE RAIL, ONE TRACK AND ONE PIP INSTEAD, 17
+   November, his words on the square tiles above: "too invisible... like
+   video game 90s", asking for something "clean and simple". He was sent
+   three directions built on a real copy of 9ade7e43 and picked this one,
+   direction C, by sending back a screenshot of it. Measured on that copy
+   in Dark, the bevelled tile put the resting glyph at 1.52 to 2.22:1
+   against its own --sunk face, under the 3:1 a symbol needs to be seen at
+   all; the tile was hiding the very thing it framed. So inside #stleft,
+   and only there (.st-pl is still the shape anywhere else it is used):
+   - no tile. No border, no bevel clip, no face, no box glow. The glyph is
+     the object, sized to its cell, with a heavier stroke.
+   - one row height for every section. The per section rules above gave
+     six different heights at 1600 (24.5, 33.3, 39.8, 44, 49 and 62.8px,
+     because aspect-ratio:1 made each grid's tile as tall as its column was
+     wide), which is the uneven rhythm the 16 November symmetry ruling
+     forbids. --rail-row is the one height, taller on a phone for the tap.
+   - each section is one continuous band, the row itself (--panel), never a
+     box per symbol.
+   - lit is said twice: the glyph turns from a washed rest colour to its
+     own full colour, AND a pip under it grows with --b. Colour alone barely
+     separates lit from resting in Snow and not at all for a colour blind
+     reader; the pip is shape, and shape survives both.
+   --b, 0 to 1 from stPillRow in ui/stdash.js, is still the one dial and
+   nothing in the script moved. Hover text and tap to open are the same
+   markup. The resting glyph is aimed between 3:1 and 4:1, deliberately:
+   on the measurement it lands between 3:1 and 4.6:1 on the band, plainly
+   there and still plainly off. Dark lifts it with --dim held back by
+   opacity; a light ground needs the darker --mid. Snow keeps .70 where
+   Dark needs .78, because the band is one surface step lighter than the
+   rail in Dark and the glyph needs a little more to clear 3:1 on it. */
+#stleft{--rail-rest:var(--dim);--rail-rest-op:.78}
+body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:.70}
+#stleft .st-pl-row{background:var(--panel);border-radius:12px;padding:4px 6px;gap:2px}
+#stleft .st-pl-row .st-pl{position:relative;
+ width:100%;height:var(--rail-row,36px);aspect-ratio:auto;flex:1 1 0;
+ border:0;background:none;background-image:none;clip-path:none;box-shadow:none;border-radius:8px;
+ transition:transform .12s var(--ease-out)}
+#stleft .st-pl-row .st-pl svg{
+ width:min(22px,70%);height:auto;aspect-ratio:1;transform:translateY(-2px);stroke-width:calc(1.7 + var(--b)*.35);
+ stroke:color-mix(in srgb,var(--c) calc(40% + var(--b)*60%),var(--rail-rest));
+ opacity:calc(var(--rail-rest-op) + var(--b)*(1 - var(--rail-rest-op)));
+ transition:stroke .4s var(--ease-out),filter .4s var(--ease-out),stroke-width .4s var(--ease-out)}
+/* the pip. Opacity reaches full by --b .25 so a faint reading still shows
+   a mark, while its size keeps rising with --b to say how much. */
+#stleft .st-pl-row .st-pl::after{content:"";position:absolute;left:50%;bottom:3px;
+ width:calc(3px + var(--b)*3px);height:calc(3px + var(--b)*3px);border-radius:50%;
+ transform:translateX(-50%);background:var(--c);opacity:min(1,calc(var(--b)*4))}
+/* the scale(1.08) above would push a tileless glyph into its neighbour
+   with only 2px between them; hover is a wash of the seat's own colour */
+#stleft .st-pl-row .st-pl:hover,#stleft .st-pl-row .st-pl:focus-visible{transform:none}
+#stleft .st-pl-row .st-pl:hover{background:color-mix(in srgb,var(--c) 12%,transparent)}
+#stleft .st-pl-row .st-pl:focus-visible{outline:2px solid var(--c);outline-offset:-2px}
+/* one line per section, not two: the hairline above each section stays,
+   the rule running out of each heading (.rblk::after, below) goes, or
+   every band would sit under two horizontal lines */
+#stleft .rblk::after{display:none}
+@media (max-width:600px){#stleft{--rail-row:42px}}
 .st-lrail .st-none{margin:6px 2px 0}
 /* INTEGRITY'S OWN cr()-RING BUCKET AND ITS .st-law-g WRAPPER ARE GONE, 9
    November, the same round his real tile spec landed: stDashIntegrity now
@@ -100257,5 +100314,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006695139"></div>
+<div id="eof" hidden data-len="006699212"></div>
 </body></html>
