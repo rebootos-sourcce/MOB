@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v151 36ccd765 2026-11-17 16:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v154 39638f05 2026-11-17 18:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5151,19 +5151,23 @@ body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px
    have shipped a silent regression no gate here catches; left in place
    instead, on the stricter reading. */
 body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)):not(:has(.src-reply)){display:none}
-/* THE REPLY IS THE OTHER EXCEPTION, 17 November. The owner: "All right,
-   let's bring back replies." Source AI's line to the person's own turn
-   (.src-reply, srcReplyHtml in ui/storyui.js) shows here while they talk or
-   type, and it is the only thing that does: everything else srcPaint puts
-   in #stsrc stays hidden in this view, as ruled on 10 November, and the card
-   itself is stripped to nothing, so it reads as words under her and not as
-   the speech bubble he ruled off this screen. At rest the rule above (#stjr
-   .st-rest) still hides all of #stsrc. */
+/* THE REPLY IS THE OTHER EXCEPTION, 17 November, AND IT LIVES ON THE TEXT
+   SCREEN. The owner: "All right, let's bring back replies." Then, on the line
+   standing loose under the reading circle: "The text that pops up on the
+   screen doesn't belong on the screen. It belongs on the text screen." So
+   srcPaint (ui/storyui.js) writes .src-reply only while the text box is open
+   (STV.typed), and the rule above lets #stsrc show for it in the hero view's
+   typing display, where it is the only row of #stsrc that shows. At rest
+   there is no .src-reply in the document at all, so nothing here can put
+   words under the face. The card keeps its own look (.st-pe), because it is
+   a panel in the text screen and not words under her. It is centred over the
+   typing box and as wide as its own line, so the two sit on one axis, and it
+   starts 64 pixels down, clear of the three round controls the column carries
+   at its top (measured 390 wide: they run the width, and the card sat under
+   them). */
 body.tab-story:not(.st-full) #stsrc:has(.src-reply)>:not(.src-reply):not(#stsafe){display:none}
-body.tab-story:not(.st-full) #stsrc:has(.src-reply){background:none;border:0;padding:0;
- width:-moz-fit-content;width:fit-content;max-width:90%;margin:14px auto 0}
-body.tab-story:not(.st-full) #stsrc:has(.src-reply)::before,
-body.tab-story:not(.st-full) #stsrc:has(.src-reply)::after{display:none}
+body.tab-story:not(.st-full) #stsrc:has(.src-reply){width:-moz-fit-content;width:fit-content;max-width:min(92%,34em);
+ margin:64px auto 12px}
 /* THE SOURCE AI MARK, the owner's 15 November ruling, CLAUDE.md: anything
    Source AI composes "looks like a slightly different format or color". The
    format is an italic, the colour is the accent mixed into the ink so it
@@ -7369,7 +7373,9 @@ body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24p
 .tip-k{font-family:var(--num);font-size:11.5px;line-height:1.3;color:var(--dim);
  letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:0 0 3px}
 .tip-t{font-size:13px;line-height:1.3;font-weight:600;color:var(--ink);margin:0 0 6px}
-.tip-b{margin:0}
+/* a body may break on a newline: the reading circle's key (ui/srcface.js) is
+   one mark a line, and run together it was the paragraph he struck out */
+.tip-b{margin:0;white-space:pre-line}
 /* THE NUMBERS. Every one says what it is out of. tipNum refuses a value
    with no denominator, which is why the slot is a grid of three and not a
    line of text. */
@@ -48102,7 +48108,26 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
     on the face, travels with it as the hover, since the box has no room for
     a caption of its own */
- const TITLE="Source's reading circle. Every dot is one of the 108 body addresses, each at a named plexus or nerve, drawn at its real charge. The seven rings are the seats, Root at the centre, Crown outside. The slow beat from the centre is Source reading, and it starts once you talk or write. A light running between dots is one of your saboteur patterns, its addresses lit together. The 21 marks on the rim are the laws. The four short marks top and bottom are the field anchors, two above the body and two below.";
+ /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
+    the paragraph that stood here: "This tooltip, it's insane. That text in the
+    tooltip needs to be direct." Each line names a mark the canvas really
+    draws and says what it is, and nothing else. Cut because the canvas does
+    not draw it: the named plexus or nerve (a fact about an address, not a
+    mark), the slow beat (motion, and it runs only once a story is under way,
+    see engaged below), and the CQ score, a term of art. The structure is the
+    ruled one, 108 somatic addresses and 4 field anchors, never a bare total.
+    Checked against draw(): a dot's size and brightness follow its charge
+    (baseR, charge), the rings are the seats Root inward to Crown outward, the
+    light between dots is the saboteur trace, the rim is the law ticks, the
+    four short marks sit at the top and bottom outside the rim, and the arc
+    runs from the top by cqv/100 of a turn. The lines break on a newline,
+    which the tooltip sets (.tip-b, shell/head.html). */
+ const TITLE=["Source's reading circle",
+  "Dots: the 108 somatic addresses, exact places in your body. Bigger means more charge",
+  "Rings: the seven seats, base of the spine in the centre, top of the head outside",
+  "Light between dots: a saboteur, a habit running on those places",
+  "Rim marks: the laws, ways of keeping your integrity",
+  "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");
  canvas.title=TITLE;
  const ctx=canvas.getContext('2d');
  /* the emissive layer and its three bloom copies, the amplified file's */
@@ -48220,13 +48245,14 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
+  const ARC='\nGold arc: coherence, mind, actions and body pointing the same way';
   canvas.title=TITLE+(CQ==null?(r&&!r.unread
-    ?' The gold arc is coherence, the CQ score, and it is drawn once you answer the laws.'
-    :' The gold arc is coherence, the CQ score, and there is no reading yet.')
+    ?ARC+'. It is drawn once you answer the laws'
+    :ARC+'. Not read yet')
    /* a percent, as the Field tile prints the same figure: "of 100" is a
       count against a total, which reads as pass or fail, CO-05 */
-   :' The gold arc is coherence, the CQ score, now '+Math.round(CQ)+' percent, drawn as how far round the arc reaches.'
-    +(CQ>=HI_GATE?' At '+HI_GATE+' and above the rings lock and turn as one.':''));
+   :ARC+'. Now '+Math.round(CQ)+' percent of the way round'
+    +(CQ>=HI_GATE?'\nAt '+HI_GATE+' percent and above the rings lock and turn as one':''));
  }
  /* coherence is eased, the amplified file's 1.4 seconds, so a new reading
     turns the arc and the lock rather than cutting to them */
@@ -60306,7 +60332,16 @@ function stRender(){
      (stShowChip), full text elsewhere (showNote); only the host div is new. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
     +(STV.dash?stShowChip('story'):showNote('story','st-show'))+'</div>'
-   :((STV.typed&&!dashTB)?'':'<div class="st-glow">'
+   /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
+      reply printed loose under the face: "The text that pops up on the
+      screen doesn't belong on the screen. It belongs on the text screen."
+      The hero view's typing display cut the whole glow, #stsrc with it, so
+      there was no place in it for a reply to go. It gets the bare host back,
+      no glow and no face, so the 14 November ruling above (this is a typing
+      journal, no visual design) still holds: the one thing in it that is not
+      the person's words is the marked reply, and head.html hides every
+      other row srcPaint puts here in this view, as ruled on 10 November. */
+   :((STV.typed&&!dashTB)?(STV.chat?'<div class="st-pe" id="stsrc" aria-label="Question"></div>':''):'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -61881,7 +61916,9 @@ function srcMark(){
   +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
 /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring
    back replies." The line Source AI says to a turn (cur.q, the same words
-   stSrcSpeak reads aloud) prints under her, marked, one line, the newest only.
+   stSrcSpeak reads aloud) prints marked, one line, the newest only, and on the
+   text screen: his same-day correction, "it belongs on the text screen", is
+   why srcPaint prints it only while the box is open and never under the face.
    No bubble and no thread: the 10 November rulings against a chat window and
    a speech bubble are not what he reversed, the silence is. */
 function srcReplyHtml(line){
@@ -62479,19 +62516,25 @@ function srcPaint(){
     CSS-muted copy of this panel there (shell/head.html, :not(.st-full)
     #stsrc) are untouched; dashRest is false whenever STV.dash is. */
  var dashRest=STV.dash&&STV.chat&&!STV.typed;
- /* THE REPLY IS BACK ON SCREEN, 17 November, and it is the one thing that
-    prints at rest. The owner: "All right, let's bring back replies." This
-    reverses the visible half of 10 November's "no two-way chat" (the
-    spoken half came back on 13 November, see the per-turn call above).
-    What Source AI says to the person's own turn, cur.q, the line it also
-    speaks, prints under her with the Source AI mark (srcReplyHtml). Only
-    once the person has said something, never over the safety line, and
-    the newest line only, so it is a reply and not a transcript. At rest
-    on the Dashboard it is all that prints, and in the hero view it is all
-    that shows (head.html hides the rest of #stsrc there, as before): the
-    set aside sentence, the chain line and the verdict rows still wait for
-    the Full view's open box, as 16 November ruled. */
- var reply=(ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
+ /* THE REPLY IS BACK ON SCREEN, 17 November, BUT ON THE TEXT SCREEN AND
+    NOWHERE ELSE. The owner, that morning: "All right, let's bring back
+    replies." What Source AI says to the person's own turn, cur.q, the line it
+    also speaks, prints with the Source AI mark (srcReplyHtml). Then, looking
+    at it under the reading circle, the same day: "The text that pops up on
+    the screen doesn't belong on the screen. It belongs on the text screen."
+    So it prints only while the text box is open (STV.typed, the keyboard
+    door, #sttype): in the Full Dashboard that is the panel above the box, in
+    the hero view the bare host stRender puts above the typing display. At
+    rest, in either view, the face's field holds no words, which is the 16
+    November ruling extended from rest to talking: the reply is still said out
+    loud, still spoken to a screen reader through #srcsay, and still kept in
+    SRC_CHAT, so opening the box shows the whole of it. Only once the person
+    has said something, never over the safety line, and the newest line
+    only, so it is a reply and not a transcript. In the hero view it is all
+    that shows of #stsrc (head.html hides the set aside sentence, the chain
+    line and the verdict rows there, as ruled on 10 November), and in the Full
+    Dashboard they print beside it, as 16 November ruled. */
+ var reply=(STV.typed&&ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
  o=dashRest?reply:(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml()));
  if(turn.move==='safe')
@@ -101064,5 +101107,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006751894"></div>
+<div id="eof" hidden data-len="006754667"></div>
 </body></html>

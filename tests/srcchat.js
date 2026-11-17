@@ -717,46 +717,71 @@ require('./net.js').guardBrowser(browser);
      an answer and never a correction's own words, read back after a real
      reload. Checked against the build before this first: there is no row
      to press there, so the first check below fails. */
-  /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's
-     bring back replies." After the person's own turn Source AI's line is
-     on the page, it is word for word the line that went into the record
-     and to the voice, it carries the 15 November Source AI mark (a ring
-     icon whose meaning opens on hover, tap and focus, and a colour and an
-     italic on the words, never the icon alone), and in the hero view it is
-     the only thing in #stsrc that shows. Checked against the build before
-     this first: there is no .src-reply there, so every check here fails. */
-  console.log('\n=== a reply after each turn, on screen, with the Source AI mark ===');
+  /* THE REPLY, ON THE TEXT SCREEN, 17 November. The owner: "All right, let's
+     bring back replies." Then, the same day, on the line it printed loose
+     under the reading circle: "The text that pops up on the screen doesn't
+     belong on the screen. It belongs on the text screen." So after the
+     person's own turn Source AI's line is word for word the line that went
+     into the record and to the voice, it is NOT in the face's field, and it
+     is on the page once the text box is open, in the Full Dashboard's panel
+     above the box and in the hero view's typing display. It carries the 15
+     November Source AI mark (a ring icon whose meaning opens on hover, tap
+     and focus, and a colour and an italic on the words, never the icon
+     alone), and in the hero view it is the only thing in #stsrc that shows.
+     Checked against the build before this first: there the reply printed at
+     rest, so the "no words in the field" checks fail, and the hero typing
+     display had no #stsrc, so the hero checks fail. */
+  console.log('\n=== a reply after each turn, on the text screen only, with the Source AI mark ===');
   for (const [w, hgt] of [[1600, 1000], [390, 844]]) {
     const q = await open(browser, w, hgt);
     await q.evaluate(() => { STV.dash = true; stRender(); });
     const none = await q.evaluate(() => !document.querySelector('#stsrc .src-reply'));
     ok(none, w + ': before the person has said anything there is no reply on screen');
     await q.evaluate(t => srcTurnCommit(t), 'I was afraid all night.'); await q.waitForTimeout(120);
+    /* at rest, the box shut: the line is kept and said, and the face's field holds no words */
+    const rest0 = await q.evaluate(() => { const h = document.getElementById('stsrc');
+      return { line: (SRC_CHAT.filter(x => x.w === 'src').slice(-1)[0] || {}).q || '', box: !!document.getElementById('sttext'),
+        loose: !!document.querySelector('.src-reply'), words: h ? h.textContent.trim() : '(no host)' }; });
+    ok(rest0.line && !rest0.box && !rest0.loose && rest0.words === '',
+      w + ': the line is kept, and with the box shut no word of it is on the canvas, under the circle or anywhere else: ' + JSON.stringify(rest0));
+    /* the keyboard door opens the text screen, and the reply is on it */
+    await q.evaluate(() => { stType(); }); await q.waitForTimeout(150);
     const r = await q.evaluate(() => {
       const p = document.querySelector('#stsrc .src-reply'), t = p && p.querySelector('.src-ai-t'), mk = p && p.querySelector('.src-mk');
       const b = p ? p.getBoundingClientRect() : { width: 0, height: 0, right: 0, left: 0 };
       const cs = t ? getComputedStyle(t) : {}, ink = getComputedStyle(document.body).color;
+      const bx = document.getElementById('sttext'), pb = bx ? bx.getBoundingClientRect() : null;
       return { line: t ? t.textContent : '', last: (SRC_CHAT.filter(x => x.w === 'src').slice(-1)[0] || {}).q || '',
         h: b.height, inside: b.left >= -0.5 && b.right <= innerWidth + 0.5, italic: cs.fontStyle === 'italic', colour: cs.color, ink: ink,
+        aboveBox: !!pb && b.bottom <= pb.top + 0.5,
         mk: !!mk, tip: mk ? mk.getAttribute('data-tip') || '' : '', focus: mk ? mk.tabIndex === 0 : false,
         ring: mk ? [...mk.querySelectorAll('circle')].every(c => c.getAttribute('fill') === 'none') : false,
         vet: t ? srcVetSay(t.textContent, { text: srcConvText(), ledger: srcLedgerNow() }, srcLedgerNow().thread).ok : false };
     });
-    ok(r.line && r.line === r.last && r.h > 0 && r.inside, w + ': after a turn the reply is on screen, inside it, and it is the line Source AI said: ' + JSON.stringify({ line: r.line, last: r.last, h: r.h }));
+    ok(r.line && r.line === r.last && r.h > 0 && r.inside && r.aboveBox, w + ': with the text box open the reply is on screen, inside it, above the box, and it is the line Source AI said: ' + JSON.stringify({ line: r.line, last: r.last, h: r.h, aboveBox: r.aboveBox }));
     ok(r.mk && r.ring && r.focus && /Source AI/.test(r.tip) && /guess/.test(r.tip), w + ': it carries the ring mark, ring and not fill, reachable by keyboard, its meaning on it: ' + JSON.stringify({ tip: r.tip }));
     ok(r.italic && r.colour !== r.ink, w + ': and the words themselves wear the mark too, an italic and a colour apart from the ink: ' + JSON.stringify({ c: r.colour, ink: r.ink }));
     ok(r.vet, w + ': and the reply passes the same three checks every said line does: ' + r.line);
     ok(/My guess is it sits /.test(r.line) && !/lands/.test(r.line), w + ': on a first mention it guesses the place out loud, framed as a guess, never as fact: ' + r.line);
-    /* the hero view: the reply alone shows while the person is talking, the
-       rest of #stsrc stays hidden there as ruled on 10 November */
-    const hero = await q.evaluate(() => { STV.dash = false; stRender(); const j = document.getElementById('stjr'); if (j) j.classList.remove('st-rest');
+    /* the hero view. Box shut: nothing under the face. Box open, the typing
+       display: the reply alone shows of #stsrc, the rest stays hidden there as
+       ruled on 10 November, and the display is still no visual design, no
+       glow and no face in it, as ruled on 14 November */
+    const heroRest = await q.evaluate(() => { STV.dash = false; STV.typed = false; stRender();
+      const h = document.getElementById('stsrc'); const j = document.getElementById('stjr');
+      return { loose: !!document.querySelector('.src-reply'), shownText: h && getComputedStyle(h).display !== 'none' ? h.textContent.trim() : '',
+        face: !!document.getElementById('stuni'), rest: j ? j.classList.contains('st-rest') : null }; });
+    ok(!heroRest.loose && heroRest.shownText === '' && heroRest.face,
+      w + ': in the hero view with the box shut the face is there and no word is under it: ' + JSON.stringify(heroRest));
+    const hero = await q.evaluate(() => { STV.dash = false; STV.typed = true; stRender();
       const h = document.getElementById('stsrc'); if (!h) return { none: true };
       return { shown: [...h.children].filter(x => getComputedStyle(x).display !== 'none').map(x => x.className),
-        host: getComputedStyle(h).display, reply: !!h.querySelector('.src-reply') }; });
-    ok(hero.reply && hero.host !== 'none' && hero.shown.length === 1 && /src-reply/.test(hero.shown[0]),
-      w + ': in the hero view the reply is the only thing in the panel that shows: ' + JSON.stringify(hero));
+        host: getComputedStyle(h).display, reply: !!h.querySelector('.src-reply'),
+        line: (h.querySelector('.src-ai-t') || {}).textContent || '', glow: !!document.querySelector('.st-glow'), face: !!document.getElementById('stuni') }; });
+    ok(hero.reply && hero.host !== 'none' && hero.shown.length === 1 && /src-reply/.test(hero.shown[0]) && !hero.glow && !hero.face,
+      w + ': in the hero typing display the reply is the only thing in the panel that shows, and there is still no glow and no face in it: ' + JSON.stringify(hero));
     ok(!q.errs.length, w + ': no page errors: ' + q.errs.join(' | '));
-    if (w === 1600) { await q.evaluate(() => { STV.dash = true; stRender(); }); await shot(q, 'reply-1600.png'); }
+    if (w === 1600) { await q.evaluate(() => { STV.dash = true; STV.typed = true; stRender(); }); await shot(q, 'reply-1600.png'); }
     await q.cx.close();
   }
 
@@ -774,16 +799,16 @@ require('./net.js').guardBrowser(browser);
        change first: there #stsrc already held these rows with nothing
        pressed, so this fails there and is the real thing tonight's
        change moved. */
-    /* AND THE ONE EXCEPTION, 17 November, the owner: "let's bring back
-       replies." At rest the field holds Source AI's reply to the last turn
-       and nothing else: no verdict rows, no set aside line, no chain line,
-       and the box still shut. Checked against the build before this: there
-       the field was empty, so the reply half of this fails there. */
+    /* AND THE REPLY, 17 November, the owner: "let's bring back replies",
+       then the same day: "It belongs on the text screen." At rest the field
+       holds nothing at all, no reply, no verdict rows, no set aside line, no
+       chain line, and the box is shut. The reply comes with the box, below.
+       Checked against the build before this: there the field held the reply
+       at rest, so this fails there. */
     const rest = await q.evaluate(() => { const h = document.getElementById('stsrc') || { children: [] };
-      return { kids: [...h.children].map(x => x.className), reply: (document.querySelector('#stsrc .src-reply .src-ai-t') || {}).textContent || '',
-        last: (SRC_CHAT.filter(r => r.w === 'src').slice(-1)[0] || {}).q || '', box: !!document.getElementById('sttext') }; });
-    ok(rest.kids.length === 1 && /src-reply/.test(rest.kids[0]) && rest.reply && rest.reply === rest.last && !rest.box,
-      'at rest on the Dashboard the face field holds only the reply, the line Source AI last said, and the box is shut: ' + JSON.stringify(rest));
+      return { kids: [...h.children].map(x => x.className), box: !!document.getElementById('sttext') }; });
+    ok(rest.kids.length === 0 && !rest.box,
+      'at rest on the Dashboard the face field holds no text at all, the reply included, and the box is shut: ' + JSON.stringify(rest));
     await q.evaluate(() => { stType(); });
     const rowsOf = () => q.evaluate(() => [...document.querySelectorAll('#stsrc [data-srcvrow]')].map(r => {
       const b = r.getBoundingClientRect();

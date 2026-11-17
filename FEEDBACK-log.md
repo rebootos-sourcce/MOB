@@ -469,6 +469,28 @@ walked it are gone. The welcome after paying keeps the host it borrowed, as
 measure: tests/onboarding2.js section 2 reads the running page for every
 part of the tutorial and fails by name on 45fe5649, the build from before.
 
+## 2026-11-17 · owner · the reply is on the text screen, and the circle's hover is a key
+
+said: on a marked-up screenshot of the reading circle, striking the italic
+line under it ("You said 'sad' and 'upset'. My guess is it sits around your
+heart. And then what happened?"): "The text that pops up on the screen doesn't
+belong on the screen. It belongs on the text screen." And, striking the whole
+hover: "This tooltip, it's insane. That text in the tooltip needs to be direct."
+read: the reply he asked for that morning ("let's bring back replies") was
+printing under the face at rest. The face's field holds no words, at rest or
+while talking. Source AI's line is still said, kept in SRC_CHAT and marked, and
+it is on screen only with the text box open (the keyboard door): in the Full
+Dashboard in the panel above the box, in the hero view in a bare #stsrc the
+typing display now carries, with no glow and no face. The hover is a key, one
+mark to a line, and says only what draw() in ui/srcface.js really draws:
+the beat and the named plexus or nerve came out, the structure stays 108
+somatic addresses and 4 field anchors, and the arc line says how far round.
+change: ui/storyui.js (stRender, srcPaint), shell/head.html (.src-reply
+rules, .tip-b takes a newline), ui/srcface.js (TITLE, readChain),
+tests/srcchat.js (the reply section and the rest check).
+measure: tests/srcchat.js fails by name on 39638f05, the build from before:
+there the reply printed at rest and the hero typing display had no #stsrc.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

@@ -5151,19 +5151,23 @@ body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px
    have shipped a silent regression no gate here catches; left in place
    instead, on the stricter reading. */
 body.tab-story:not(.st-full) #stsrc:not(:has(#stsafe)):not(:has(.src-reply)){display:none}
-/* THE REPLY IS THE OTHER EXCEPTION, 17 November. The owner: "All right,
-   let's bring back replies." Source AI's line to the person's own turn
-   (.src-reply, srcReplyHtml in ui/storyui.js) shows here while they talk or
-   type, and it is the only thing that does: everything else srcPaint puts
-   in #stsrc stays hidden in this view, as ruled on 10 November, and the card
-   itself is stripped to nothing, so it reads as words under her and not as
-   the speech bubble he ruled off this screen. At rest the rule above (#stjr
-   .st-rest) still hides all of #stsrc. */
+/* THE REPLY IS THE OTHER EXCEPTION, 17 November, AND IT LIVES ON THE TEXT
+   SCREEN. The owner: "All right, let's bring back replies." Then, on the line
+   standing loose under the reading circle: "The text that pops up on the
+   screen doesn't belong on the screen. It belongs on the text screen." So
+   srcPaint (ui/storyui.js) writes .src-reply only while the text box is open
+   (STV.typed), and the rule above lets #stsrc show for it in the hero view's
+   typing display, where it is the only row of #stsrc that shows. At rest
+   there is no .src-reply in the document at all, so nothing here can put
+   words under the face. The card keeps its own look (.st-pe), because it is
+   a panel in the text screen and not words under her. It is centred over the
+   typing box and as wide as its own line, so the two sit on one axis, and it
+   starts 64 pixels down, clear of the three round controls the column carries
+   at its top (measured 390 wide: they run the width, and the card sat under
+   them). */
 body.tab-story:not(.st-full) #stsrc:has(.src-reply)>:not(.src-reply):not(#stsafe){display:none}
-body.tab-story:not(.st-full) #stsrc:has(.src-reply){background:none;border:0;padding:0;
- width:-moz-fit-content;width:fit-content;max-width:90%;margin:14px auto 0}
-body.tab-story:not(.st-full) #stsrc:has(.src-reply)::before,
-body.tab-story:not(.st-full) #stsrc:has(.src-reply)::after{display:none}
+body.tab-story:not(.st-full) #stsrc:has(.src-reply){width:-moz-fit-content;width:fit-content;max-width:min(92%,34em);
+ margin:64px auto 12px}
 /* THE SOURCE AI MARK, the owner's 15 November ruling, CLAUDE.md: anything
    Source AI composes "looks like a slightly different format or color". The
    format is an italic, the colour is the accent mixed into the ink so it
@@ -7369,7 +7373,9 @@ body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24p
 .tip-k{font-family:var(--num);font-size:11.5px;line-height:1.3;color:var(--dim);
  letter-spacing:.02em;font-variant-numeric:tabular-nums;margin:0 0 3px}
 .tip-t{font-size:13px;line-height:1.3;font-weight:600;color:var(--ink);margin:0 0 6px}
-.tip-b{margin:0}
+/* a body may break on a newline: the reading circle's key (ui/srcface.js) is
+   one mark a line, and run together it was the paragraph he struck out */
+.tip-b{margin:0;white-space:pre-line}
 /* THE NUMBERS. Every one says what it is out of. tipNum refuses a value
    with no denominator, which is why the slot is a grid of three and not a
    line of text. */
