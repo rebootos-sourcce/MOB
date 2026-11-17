@@ -1115,9 +1115,15 @@ const NDL_HQ=[100,95,90,85,80,75,70,65,60, 60,55,50,45,40, 40,35,30,25,20,15,10,
    point takes the same angle reflected, so each inversion sits exactly under
    its path. Who the five are and what they invert to is PATHS, in the
    engine's data: this is only where each one is drawn. */
-const NDL_PLACE={'Jesus':[1,-130],'Krishna':[1,-50],
- 'Buddha':[2,-152],'Rama':[2,-90],'Lao Tzu':[2,-28]};
-const NDL_PATHS=PATHS.map(function(p){var at=NDL_PLACE[p.up]||[2,-90];
+/* KEYED BY THE PATH'S KEY, 17 NOVEMBER. This was keyed by the pole's printed
+   name, 'Jesus' and 'Buddha' for the body and awareness paths. Those two poles
+   print Grace and Discernment now, the lookup found nothing and fell through to
+   the default slot, and both drew at [2,-90] on top of Rama's. A key is
+   identity and a name is a label, so the two readers of the table change with
+   the first one and not with a ruling on a word. */
+const NDL_PLACE={BO:[1,-130],FL:[1,-50],
+ AW:[2,-152],AL:[2,-90],HO:[2,-28]};
+const NDL_PATHS=PATHS.map(function(p){var at=NDL_PLACE[p.k]||[2,-90];
  return {p:p,ring:at[0],ang:at[1]*Math.PI/180};});
 /* the tilt at which the gap has become two circular planes, and below which
    it is still the octagonal band */

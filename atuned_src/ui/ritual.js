@@ -585,8 +585,16 @@ function ritComplexHtml(k){
   /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
      names and no meaning. Each is a carrier of its sentence, and under the two
      columns the pole is said phrase by phrase, each phrase with what it means,
-     at both ends. The codex lines it reads from are in engine/data/compass.js. */
-  +'<div class="ad-sub">After '+unp('teacher',row.who)+' \u00b7 '
+     at both ends. The codex lines it reads from are in engine/data/compass.js.
+
+     THE CREDIT IS THE POLE'S OWN WORD, 17 NOVEMBER. The line opened on "After"
+     and the teacher's name for every pole, so "After Buddha" sat under a panel
+     whose other end now reads Fraud, a person on one side and a behaviour on
+     the other. A row with a behaviour word has no who (engine/data/
+     teachers_recipes.js), and the line opens on that word, read off the pole
+     so a rename in compass.js is a rename here. The five poles with no word
+     yet keep the credit until he gives one. */
+  +'<div class="ad-sub">'+(row.who?'After '+unp('teacher',row.who):unp('pole',pole?pole.up:row.q))+' \u00b7 '
    +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
    +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'

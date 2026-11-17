@@ -523,7 +523,7 @@ async function flowGate(browser,FILE,ok,booted){
    const now=document.querySelector('#rit .rv-week .rv-wd1.rv-now');
    const due=now?[...now.querySelectorAll('button.rv-wch[data-nm]')].map(x=>x.getAttribute('data-nm'))
     .concat([...now.querySelectorAll('.rv-wmore')].flatMap(m=>m.getAttribute('data-more').split(';').map(x=>x.split('|')[0]))):[];
-   const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/toward Buddha/i.test(t)).length; /* SV24: mid line after the seat now, so lower case */
+   const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/toward Discernment/i.test(t)).length; /* SV24: mid line after the seat now, so lower case */
    return {label, plan:!!plan, said, name:plan?ritName(plan.steps):'', due, act};});
   ok(!cmp.noRow&&cmp.label==='Add to my ritual'&&cmp.plan&&/^Added/.test(cmp.said),
    'FT10: Add to my ritual on the Compass teacher panel still writes the plan and says Added, '+JSON.stringify(cmp));
