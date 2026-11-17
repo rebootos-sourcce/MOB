@@ -125,13 +125,6 @@ var STGO={
  stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
   if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
   setTab(TAB.MASKS); if(typeof render==='function')render();}};
-var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
-function stMiniShell(id,label,inner,goKey){
- var go=goKey&&STGO[goKey];
- var t=go?' data-stgo="'+goKey+'" role="link" tabindex="0"':'';
- var lands=go&&STGO_LABEL[goKey];
- return '<div class="st-mini'+(go?' st-mini-link':'')+'" id="'+id+'" aria-label="'+esc(label)+(go?', opens '+esc(lands||label):'')+'"'+t+'>'
-  +'<div class="st-mini-lb">'+esc(label)+(lands?'<span class="st-mini-go">'+esc(lands.split(', ').pop())+' ›</span>':(go?'<span class="st-mini-go">›</span>':''))+'</div>'+inner+'</div>';}
 (function(){
  var go=function(el){var k=el.getAttribute('data-stgo'), fn=k&&STGO[k]; if(fn)fn(el);};
  addEventListener('click',function(e){
@@ -176,422 +169,172 @@ function stMiniShell(id,label,inner,goKey){
    whole engine eight times on every Dashboard paint. r.seats (seatRows(),
    already computed once for this render by stRender) plus compassAt
    (engine/data/compass.js) gives the same number for free. */
-function stMiniCompass(r){
- var un=r.unread;
- var seatRow=function(seat){return r.seats&&r.seats.filter(function(s){return s.seat===seat;})[0];};
- var vals=MIRROR.map(function(m){return un?null:compassAt(seatRow(m.seat));});
- var extreme=-1, extremeDist=-1;
- vals.forEach(function(v,i){if(v!=null){var d=Math.abs(v-50); if(d>extremeDist){extremeDist=d; extreme=i;}}});
- var CX=60, CY=60, SPIN=0.39, RX=44, RY=9, TOPY=14, BOTY=106;
- var corner=function(i){var th=i*Math.PI/4+SPIN; return {x:CX+RX*Math.cos(th), y:CY+RY*Math.sin(th), th:th};};
- var corners=[]; for(var i=0;i<8;i++)corners.push(corner(i));
- var faces='';
- for(var f=0;f<8;f++){
-  var a=corners[f], b=corners[(f+1)%8], mid=((f+0.5)*Math.PI/4+SPIN);
-  var lt=.5+.5*Math.cos(mid-2.36), back=Math.sin(mid)<0, k2=back?.45:1;
-  faces+='<path d="M'+CX+' '+TOPY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
-   +'fill="var(--accent)" fill-opacity="'+((.035+.10*lt)*k2).toFixed(3)+'"/>'
-   +'<path d="M'+CX+' '+BOTY+'L'+a.x.toFixed(1)+' '+a.y.toFixed(1)+'L'+b.x.toFixed(1)+' '+b.y.toFixed(1)+'Z" '
-   +'fill="var(--root)" fill-opacity="'+((.02+.04*lt)*k2).toFixed(3)+'"/>';}
- var cq=un?50:clamp(r.CQ,0,100), cpos=clamp((cq-40)/20,0,1);
- var slab='<linearGradient id="stm-cp-slab" x1="0" y1="0" x2="0" y2="1">'
-  +'<stop offset="0" stop-color="var(--accent)" stop-opacity=".20"/>'
-  +'<stop offset="'+cpos.toFixed(2)+'" stop-color="'+(un?'var(--dim)':'rgb('+cqRamp(cq).join(',')+')')+'" stop-opacity=".34"/>'
-  +'<stop offset="1" stop-color="var(--root)" stop-opacity=".16"/></linearGradient>';
- var ribs='', nodes='', hotHalo='';
- MIRROR.forEach(function(m,i){
-  var v=vals[i]==null?50:vals[i], c=corners[i];
-  var hot=!un&&i===extreme;
-  var col=un?'var(--dim)':'var('+(SEATCOL[m.seat]||'--dim')+')';
-  var op=un?.3:(hot?.85:.40);
-  ribs+='<polyline points="'+CX+','+BOTY+' '+c.x.toFixed(1)+','+c.y.toFixed(1)+' '+CX+','+TOPY+'" '
-   +'fill="none" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="'+(hot?2:1.1)+'"/>';
-  var t=v/100, nx, ny;
-  if(t<=.5){var k=t*2; nx=CX+(c.x-CX)*k; ny=BOTY+(c.y-BOTY)*k;}
-  else{var k2b=(t-.5)*2; nx=c.x+(CX-c.x)*k2b; ny=c.y+(TOPY-c.y)*k2b;}
-  if(hot){
-   hotHalo='<radialGradient id="stm-cp-halo" cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" gradientUnits="userSpaceOnUse">'
-    +'<stop offset="0" stop-color="'+col+'" stop-opacity=".45"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".12"/>'
-    +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
-   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="11" fill="url(#stm-cp-halo)"/>'
-    +'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="3.2" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.4"/>';
-  } else {
-   nodes+='<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="1.8" fill="var(--sunk)" stroke="'+col+'" stroke-opacity="'+op+'" stroke-width="1"/>';
-  }});
- var cap='–';
- if(!un&&extreme>=0){var m=MIRROR[extreme]; cap=esc(m.q+', toward '+(vals[extreme]>=50?'up':'dn'));}
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+slab+hotHalo+'</defs>'
-  +faces+'<ellipse cx="'+CX+'" cy="'+CY+'" rx="'+RX+'" ry="'+RY+'" fill="none" stroke="url(#stm-cp-slab)" stroke-width="7"/>'
-  +ribs+nodes+'</svg></div><div class="st-mini-cap">'+cap+'</div>';}
-/* BOUNDARY, the purpose hexagon. Each of the six sides (PUR_SIDES,
-   engine/avatar.js) lit by how many of its five slots (PUR_PER_SIDE) are
-   filled, the same filter boundaryCount runs, so the picture and the
-   number it carries never disagree. Not gated on r.unread: a purpose
-   nobody has opened yet is honestly 0 of 30, not a story left unread.
-
-   THE THINNEST SIDE, ruled 13 November, the same review round as Compass
-   above: boundaryCount(pu).thin already names every side under its cap,
-   but in PUR_SIDES' own fixed array order, not sorted by how thin, so
-   thin[0] is not reliably the weakest one. This tracks the real minimum
-   count in the same per-side loop that already draws each wedge, no
-   second call into boundaryCount. */
-/* EVERY EXAMPLE NOW CARRIES ITS OWN PURPOSE, 13 November team review,
-   reversed the same night it was first built. loadP (ui/personas.js) never
-   set CURP.purpose for the worked-example roster, so this card always
-   showed whichever purpose the signed-in account itself had written, under
-   a stranger's name, on every example: the exact "hooked up" defect his
-   own words named. The fix is not a disclaimer on this one card, it is
-   that the roster itself was missing a field every other card here already
-   reads without trouble (engine/data/people.js, each example's own
-   `purpose`), so Boundary now changes on a profile switch exactly the way
-   the other five widgets already do. */
-function stMiniBoundary(){
+/* THE SIX WIDGETS, DIRECTION A, 17 November. Shipped from the mockup the
+   owner picked ("I want to go with this one, this look"), which was built by
+   editing a copy of this file per the 14 November ruling on mockups, so the
+   code below is that mockup's code and not a rebuild of it. His words: strip the explanatory text, a flat,
+   numeric, symbol forward system. Read with the 16 November ruling,
+   symbol first, header second, body third: every sentence that came off
+   the card face is still one hover or one tap away, through the app's own
+   tip carrier (data-tip-t is the tip's header, data-tip its body,
+   ui/tip.js), and the glossary sentences are read from unpackOf rather
+   than typed again here. */
+var STMK_IC={
+ /* the menu's own marks (shell/body.html), so the card and the door it opens
+    share one symbol. Boundary has no menu mark, so it is the hexagon the
+    card itself draws. */
+ stcompass:'<circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/>',
+ stboundary:'<path d="M12 3.2l7.6 4.4v8.8L12 20.8l-7.6-4.4V7.6z"/>',
+ stbody:'<circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/>',
+ stfield:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/>',
+ stavatar:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/>',
+ stmasks:'<path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/>'};
+var STMK_WHAT={
+ stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
+ stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
+ stbody:'The one address in your body holding the most charge right now.',
+ stfield:'The heaviest of your seven seats right now.',
+ stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
+ stmasks:'Your four strongest masks, strongest first.'};
+var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
+/* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
+   "Purpose", "Archetypes" and "Character" that sat beside the chevron are
+   where the card goes, not what it says, so they move into the tip and the
+   spoken label, and never leave the card's accessible name. */
+function stMiniShell(id,label,inner,goKey){
+ var go=goKey&&STGO[goKey];
+ var t=go?' data-stgo="'+goKey+'" role="link" tabindex="0"':'';
+ var lands=go&&(STGO_LABEL[goKey]||label);
+ return '<div class="st-mini stmk'+(go?' st-mini-link':'')+'" id="'+id+'" aria-label="'+esc(label)+(go?', opens '+esc(lands):'')+'"'+t+'>'
+  +'<div class="st-mini-lb stmk-lb" data-tip-t="'+esc(label)+'" data-tip="'+esc((STMK_WHAT[id]||'')+(go?' Opens '+lands+'.':''))+'">'
+  +'<span class="stmk-h"><svg class="stmk-ic" viewBox="0 0 24 24" aria-hidden="true">'+(STMK_IC[id]||'')+'</svg>'+esc(label)+'</span>'
+  +(go?'<span class="st-mini-go" aria-hidden="true">›</span>':'')+'</div>'+inner+'</div>';}
+function stmkTip(t,b){return ' data-tip-t="'+esc(t)+'" data-tip="'+esc(b)+'"';}
+function stmkU(k){return typeof unpackOf==='function'?unpackOf(k):'';}
+function stmkFmt(v){return (Math.round(v*10)/10).toFixed(1);}
+/* THE READINGS, ONE PLACE, apart from the drawing, so a card that changes
+   its picture again does not also change what it measures. */
+function stmkCompass(r){return r.unread?null:{cq:Math.round(clamp(r.CQ,0,100)),dq:Math.round(clamp(+r.DQ||0,0,100))};}
+function stmkBoundary(){
  var pu=(CURP&&CURP.purpose)||purposeBlank(), bc=boundaryCount(pu);
- var counts=PUR_SIDES.map(function(s){
+ var sides=PUR_SIDES.map(function(s){
   var a=((pu.sides&&pu.sides[s])||[]).filter(function(x){return x&&String(x).trim();});
-  return Math.min(a.length,PUR_PER_SIDE);});
- var minCount=Math.min.apply(null,counts);
- /* THE TIE BREAK NAMED THE SAME SIDE FOR NEARLY EVERY PROFILE, caught live
-    14 November screenshotting the widget against two different example
-    profiles: most people here commit to only one or two of the six sides,
-    so the other four or five all tie at zero, and counts.indexOf(0) always
-    answers the first zero in PUR_SIDES' own fixed order (partner), which is
-    not a fact about the person, it is a fact about where the array starts.
-    Rather than fabricate a thirty-slot boundary for every worked example to
-    force a real difference, the tied sides are read as what they are, all
-    equally thin, and which one is named is salted by the record's own
-    identity so two different people land on two different, but each
-    stable, answers rather than the array's own first entry every time. */
- var tied=[]; counts.forEach(function(c,i){if(c===minCount)tied.push(i);});
- var salt=String((CURP&&(CURP.id||CURP.nm))||''), h=0;
- for(var si=0;si<salt.length;si++)h=(h*31+salt.charCodeAt(si))>>>0;
- var minIdx=tied[h%tied.length];
- var CX=60, CY=60, RO=50, RI=18;
- var pt=function(rad,i){var th=(i/6)*Math.PI*2-Math.PI/2; return {x:CX+rad*Math.cos(th), y:CY+rad*Math.sin(th)};};
- var defs='', segs='';
- PUR_SIDES.forEach(function(s,i){
-  var frac=counts[i]/PUR_PER_SIDE;
-  var o0=pt(RO,i), o1=pt(RO,i+1), n0=pt(RI,i), n1=pt(RI,i+1);
-  var hot=bc.filled>0&&i===minIdx&&minCount<PUR_PER_SIDE;
-  var filled=frac>0;
-  if(filled){
-   defs+='<linearGradient id="stm-bd-f'+i+'" gradientUnits="userSpaceOnUse" x1="'+n0.x.toFixed(1)+'" y1="'+n0.y.toFixed(1)+'" x2="'+o0.x.toFixed(1)+'" y2="'+o0.y.toFixed(1)+'">'
-    +'<stop offset="0" stop-color="var(--throat)" stop-opacity="'+(.78*frac).toFixed(2)+'"/>'
-    +'<stop offset="1" stop-color="var(--ink)" stop-opacity="'+(.55*frac).toFixed(2)+'"/></linearGradient>';}
-  segs+='<path d="M'+n0.x.toFixed(1)+' '+n0.y.toFixed(1)+'L'+o0.x.toFixed(1)+' '+o0.y.toFixed(1)
-   +'L'+o1.x.toFixed(1)+' '+o1.y.toFixed(1)+'L'+n1.x.toFixed(1)+' '+n1.y.toFixed(1)+'Z" '
-   +'fill="'+(filled?'url(#stm-bd-f'+i+')':'none')+'" '
-   +'stroke="'+(hot?'var(--mid)':'var(--edge-2)')+'" stroke-opacity="'+(hot?1:.8)+'" stroke-width="'+(hot?1.6:.8)+'"/>';});
- var centreGlow=bc.filled?('<radialGradient id="stm-bd-c" cx="'+CX+'" cy="'+CY+'" r="'+RI+'" gradientUnits="userSpaceOnUse">'
-  +'<stop offset="0" stop-color="var(--accent)" stop-opacity="'+(.25*bc.filled/bc.of).toFixed(2)+'"/>'
-  +'<stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></radialGradient>'):'';
- /* NOTHING FILLED IS NOT A TIE TO BREAK, caught in the same live screenshot
-    that found the tie-break bug above: a blank profile has all six sides at
-    zero, which is not six equally thin sides, it is no boundary started yet,
-    and naming one of them "thinnest" (even salted, even consistently) reads
-    as a reading the person never gave. The dash rather than a sentence,
-    second pass: "Not started yet" was a sixth phrasing of the empty state in
-    a product the voice database (CO-09, CO-22, .claude/skills/atuned-voice)
-    already records as having had too many, and this row's own five other
-    cards already answer nothing-to-say with the same dash. The picture
-    beside it still prints 0/30, so the fact is stated once, in the place
-    built to state it. */
- var cap=!bc.filled?'–':(minCount<PUR_PER_SIDE?('Thinnest: '+PUR_SIDES[minIdx]):'Every side held');
- return '<div class="st-mini-vis"><svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+centreGlow+'</defs>'
-  +(centreGlow?'<circle cx="'+CX+'" cy="'+CY+'" r="'+RI+'" fill="url(#stm-bd-c)"/>':'')+segs
-  +'<text x="60" y="65" text-anchor="middle" font-size="15" fill="var(--ink)" font-variant-numeric="tabular-nums" font-weight="600">'+bc.filled+'/'+bc.of+'</text></svg></div>'
-  +'<div class="st-mini-cap">'+esc(cap)+'</div>';}
-/* BODY, the heaviest of what compute() already calls carrying: the top
-   address (r.heaviest), the band it sits in (r.darkB) and every address
-   holding anything at all (r.carrying.length). No address-by-address
-   detail here, that is the real Body tab's job; this is one glance at
-   where the charge is sitting now.
-
-   TWO SEATS NEVER RENDERED, found 13 November in team review: BANDS
-   (engine/data/canon.js) is seven seats, Root through Crown, but this
-   svg only ever placed a dot for five of them. A reading whose heaviest
-   seat was 3rd Eye or Crown was named in the caption and shown nowhere
-   on the figure. Both are added here, at the forehead and the top of
-   the head.
-
-   THE SHARPEST FACT, ruled the same round: the caption used to print
-   the aggregate carrying count and the heaviest SEAT's own mean. One
-   line has no room for both an aggregate and an address, and the
-   owner's own instruction was the single most prominent fact, so this
-   now names the single heaviest ADDRESS (r.heaviest, one level more
-   specific than the seat mean) and its own charge, the same
-   _Unnamed fallback ui/cone.js already uses rather than a second
-   naming rule. */
-/* THE REAL SILHOUETTE AND ITS HEAT, NOT A STICK FIGURE, 13 November team
-   review: the real Body tab (ui/map.js, bmRender) fills a true silhouette,
-   lights real nerve paths over it, and glows each seat with a radial
-   gradient sized to its own load, g=sqrt(load) (map.js:528). This card
-   ports that same formula and the same seat-band vertical order (PMBANDS,
-   engine/data/practice.js, its own yp percentage down the figure) onto a
-   hand-drawn silhouette sized for a small card, rather than the full
-   anatomical BODYPATH (engine/data/figure.js), which the team's technical
-   read found runs to hundreds of points and reads as a dark smear at this
-   size: a shape built for 1600px does not survive being the only thing
-   this card draws at 70px wide. The glow, the real per-seat colours and
-   the heaviest address are the actual engine reading; only the outline is
-   simplified. */
-function stMiniBody(r){
- var un=r.unread, hot=un?null:r.darkB;
- var W=70,H=120, CX=35;
- var load={}; BANDS.forEach(function(b){load[b]=0;});
- if(!un)(r.carrying||[]).forEach(function(n){load[n.b]=Math.max(load[n.b]||0,n.sq/10);});
- var defs='', glows='';
- PMBANDS.forEach(function(pb){
-  var g=un?0:(pb.b===hot?1:Math.sqrt(Math.min(1,load[pb.b]||0)));
-  if(g<=0)return;
-  var y=(pb.yp/100)*H, id='stm-bo-h-'+pb.k;
-  defs+='<radialGradient id="'+id+'" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="20" gradientUnits="userSpaceOnUse">'
-   +'<stop offset="0" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.07+.62*g).toFixed(2)+'"/>'
-   +'<stop offset=".64" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="'+(.05+.40*g).toFixed(2)+'"/>'
-   +'<stop offset="1" stop-color="var('+(SEATCOL[pb.b]||'--dim')+')" stop-opacity="0"/></radialGradient>';
-  glows+='<ellipse cx="'+CX+'" cy="'+y.toFixed(1)+'" rx="20" ry="15" fill="url(#'+id+')"/>';});
- /* a plain, filled silhouette, not an anatomical trace: shoulders, a
-    tapered waist, hips and two legs, close enough to read as a body at
-    card scale without claiming the full map's own precision. */
- var body='<path d="M35 6a9 9 0 110 18 9 9 0 010-18Z'
-  +'M24 26C19 32 17 42 21 52C16 57 14 66 17 74L19 114L29 114L30 78L40 78L41 114L51 114L53 74'
-  +'C56 66 54 57 49 52C53 42 51 32 46 26C41 23 29 23 24 26Z" fill="rgb(22,24,30)" stroke="var(--ink)" stroke-opacity=".22" stroke-width=".8"/>';
- var nerves='<path d="M35 15v94" fill="none" stroke="var(--ink)" stroke-opacity=".5" stroke-width="1"/>'
-  +'<path d="M35 32C28 40 24 50 24 60M35 32C42 40 46 50 46 60" fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width=".8"/>'
-  +'<path d="M30 78L22 112M40 78L48 112" fill="none" stroke="var(--accent)" stroke-opacity=".4" stroke-width=".8"/>';
- var heavy='';
- if(!un&&r.heaviest){
-  var pb=PMBANDS.filter(function(x){return x.b===r.heaviest.b;})[0], y=pb?(pb.yp/100)*H:60;
-  var col='var('+(SEATCOL[r.heaviest.b]||'--dim')+')';
-  heavy='<radialGradient id="stm-bo-heavy" cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" gradientUnits="userSpaceOnUse">'
-   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>';
-  defs+=heavy;
-  heavy='<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="8" fill="url(#stm-bo-heavy)"/>'
-   +'<circle cx="'+CX+'" cy="'+y.toFixed(1)+'" r="2.4" fill="var(--sunk)" stroke="'+col+'" stroke-width="1.2"/>';}
- var svg='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><defs>'+defs+'</defs>'+body+glows+nerves+heavy+'</svg>';
- var cap='–';
- if(!un&&r.heaviest){
-  var nm=/_Unnamed$/.test(r.heaviest.k)?'An address with no name yet':r.heaviest.k;
-  cap=esc(nm)+', '+r.heaviest.sq.toFixed(1);
- } else if(!un){ cap='Nothing carrying'; }
- return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
-/* FIELD, the same headline the real tab reads, r.CQ, as a filled ring, the
-   fill a percent equal to the number beside it (the same rule the Summary
-   gate already holds the app to).
-
-   THE RING'S COLOUR MOVES WITH CQ NOW, ruled 13 November: it used to paint
-   every reading in the same flat --uni-amb-core regardless of score, a
-   92 and a 14 looked identical. cqRamp (ui/wheel.js) is the exact ramp
-   the real Field's own centre disc already resolves its colour through
-   (alarm red at the floor, toward white at the crown), reused here at
-   ring scale rather than a second colour law invented for this card.
-   r.tier (compute.js, already tierOf(CQ).nm, null until the intake is
-   complete) names the band under the percent; never computed fresh off
-   cq here, and never shown on an unread or incomplete reading, so a
-   blank profile is never silently handed a tier name that was never
-   earned. */
-/* THE SPHERE ITSELF, NOT JUST ITS RING, 13 November team review: the real
-   Field (ui/wheel.js, solCore) draws CQ as a lit sphere, bigger and
-   brighter the higher the coherence, with a halo that only appears above
-   50 (the owner's own size law, wheel.js:386, and his ruling that the
-   number stays centred on the core, wheel.js:452). The ring this card used
-   to draw alone, with a flat colour at any score, is the same mismatch the
-   Compass's spokes had: a true reading with none of the real page's own
-   light. This keeps the ring (now the seven seat arcs and the CQ arc
-   around the sphere, exactly as conePlan draws them) and adds the sphere
-   solCore actually draws, frozen at one frame rather than animated, for
-   the same per-card frame-budget reason the Compass above is static. */
-function stMiniField(r){
- var un=r.unread, cq=un?0:clamp(r.CQ,0,100), coh=cq/100;
- var rgb=un?[120,124,132]:cqRamp(cq);
- var gc='rgb('+rgb.join(',')+')';
- var sz=coh<.5?(.34+(.72-.34)*(coh/.5)):(.72+(1.06-.72)*((coh-.5)/.5));
- var rad=30*sz, glow=coh>.5?(coh-.5)/.5:0;
- var tierNm=(!un&&r.tier)?esc(r.tier):'';
- var CX=60,CY=60;
- var defs='', halo='';
- if(glow>0){
-  var hr=rad*(1.18+1.5*glow);
-  defs+='<radialGradient id="stm-fd-halo" cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" gradientUnits="userSpaceOnUse">'
-   +'<stop offset="0" stop-color="'+gc+'" stop-opacity="'+(glow*.9).toFixed(2)+'"/>'
-   +'<stop offset=".14" stop-color="'+gc+'" stop-opacity="'+(glow*.6).toFixed(2)+'"/>'
-   +'<stop offset=".42" stop-color="'+gc+'" stop-opacity="'+(glow*.18).toFixed(2)+'"/>'
-   +'<stop offset="1" stop-color="'+gc+'" stop-opacity="0"/></radialGradient>';
-  halo='<circle cx="'+CX+'" cy="'+CY+'" r="'+hr.toFixed(1)+'" fill="url(#stm-fd-halo)"/>';}
- defs+='<radialGradient id="stm-fd-sh" cx="'+(CX-rad*.3).toFixed(1)+'" cy="'+(CY-rad*.42).toFixed(1)+'" r="'+(rad*.9).toFixed(1)+'" gradientUnits="userSpaceOnUse">'
-  +'<stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>';
- var ringCol=un?'var(--edge)':gc, C=2*Math.PI*50, frac=un?0:coh;
- var seatArcs='';
- if(!un)BANDS.forEach(function(b,i){
-  var a0=(i/BANDS.length)*360-90+2, a1=((i+1)/BANDS.length)*360-90-2;
-  var rLg=54, p0=[CX+rLg*Math.cos(a0*Math.PI/180),CY+rLg*Math.sin(a0*Math.PI/180)];
-  var p1=[CX+rLg*Math.cos(a1*Math.PI/180),CY+rLg*Math.sin(a1*Math.PI/180)];
-  seatArcs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+rLg+' '+rLg+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" '
-   +'fill="none" stroke="var('+(SEATCOL[b]||'--dim')+')" stroke-opacity=".55" stroke-width="1.6"/>';});
- var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'+defs+'</defs>'
-  +'<circle cx="60" cy="60" r="50" fill="none" stroke="var(--edge)" stroke-width="2"/>'
-  +'<circle cx="60" cy="60" r="50" fill="none" stroke="'+ringCol+'" stroke-width="2" stroke-linecap="round" '
-  +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 60 60)"/>'
-  +seatArcs+halo
-  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="'+(un?'var(--sunk)':gc)+'"/>'
-  +(un?'':'<circle cx="'+CX+'" cy="'+CY+'" r="'+rad.toFixed(1)+'" fill="url(#stm-fd-sh)"/>')
-  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+(rad+1.2).toFixed(1)+'" fill="none" stroke="'+(un?'var(--edge)':'rgba(255,255,255,'+(.4+.55*coh).toFixed(2)+')')+'" stroke-width="1.4"/>'
-  +(rad<16?'<circle cx="60" cy="60" r="15" fill="var(--sunk)"/>':'')
-  +'<text x="60" y="64" text-anchor="middle" font-size="18" fill="'+(un?'var(--ink)':(coh>.7?'#0B1418':'var(--ink)'))+'" font-weight="700">'+(un?'–':Math.round(cq)+'%')+'</text>'
-  +'</svg>';
- /* THE TIER NAME SITS ON THE CAPTION LINE, NOT INSIDE THE RING, 14 November,
-    his own "same family" check: this was the one card of the six with no
-    .st-mini-cap at all, so its picture ran to a different depth than its five
-    neighbours and the row had no shared baseline, which is exactly the
-    symmetry he asked about. It was drawn as svg text at the bottom of the
-    viewBox, at y 90 to 112 against a ring whose own bottom edge is 110, so it
-    also sat on the ring it was describing. Moved out: the percent stays in
-    the sphere, the one word under it goes where every other card already puts
-    its one line. */
- return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+(tierNm?esc(tierNm):'–')+'</div>';}
-/* AVATAR, THE REAL ARCHETYPE NOW, ruled 13 November after team review
-   found the widget was reading the wrong layer. r.mask (sups[0]||hys[0]||
-   cxs[0]||sabs[0], compute.js) is a saboteur/complex/hyper-complex/super-
-   complex from the adversarial chain, the exact same family the Masks
-   widget already covers below; it has no link to the twelve ARCH
-   archetypes a card titled "Avatar" is actually about, and the previous
-   build of this function caught that the hard way: r.mask is an object,
-   not a name, and the first real profile to trigger one printed the
-   caption "Wearing [object Object]".
-
-   r.pi (compute.js, the strongest index into r.aff=affinity()) is the
-   real number the Avatar/Character page's own torus already treats as
-   the person's primary archetype (avatarui.js's own avArchEmbodied).
-   ARCH[r.pi] (engine/data/canon.js) gives its name, its seat (for colour,
-   via the SEATCOL fix above) and its own icon path, drawn ring only, the
-   house rule this product already keeps for every archetype glyph: never
-   filled. No percent anywhere on this card: the owner's own ruling, round
-   JP, already took archetype share off the page entirely ("you either
-   embody it or you don't"), so a progress arc here would reverse a
-   standing decision, not just invent a number. */
-/* A SMALL POINT CLOUD, NOT A BARE RING, 13 November team review: the real
-   Avatar/Character page (ui/chcloud.js, CHC.Scene) is a particle figure,
-   thousands of points, which the team's technical read ruled out running
-   six times at once (it allocates its cloud whatever the canvas size). This
-   draws a small, FIXED point cloud instead, same envelope shape (a head, a
-   tapering torso, two legs), same two-tone colouring (the archetype's own
-   seat colour plus the accent), reusing chcloud.js's own glow sprite stops
-   rather than a second glow invented here. The points are seeded off the
-   person and the archetype (mulberry32, a tiny deterministic generator, not
-   Math.random) so the same reading always draws the same cloud and a
-   render never visibly reshuffles it. */
-function stMiniAvatar(r){
- var un=r.unread, arch=(!un&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
- var col=arch?('var('+(SEATCOL[arch.b]||'--dim')+')'):'var(--dim)';
- var cap=un?'–':(arch?esc(arch.nm):'–');
- var seed=(function(s){var h=0; for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0; return h||1;})
-   (String((CURP&&CURP.id)||'')+':'+String(S&&S.who)+':'+String(un?'u':r.pi));
- var rnd=(function(a){return function(){a^=a<<13;a^=a>>>17;a^=a<<5;a>>>=0;return (a>>>0)/4294967296;};})(seed);
- var CX=50,CY=60, pts='', glowPts='';
- if(!un&&arch){
-  var N=90;
-  for(var i=0;i<N;i++){
-   var zone=rnd();
-   var x,y;
-   if(zone<.22){var ang=rnd()*Math.PI*2, rr=rnd(); x=CX+Math.cos(ang)*9*rr; y=26+Math.sin(ang)*11*rr;}
-   else if(zone<.75){var ty=36+rnd()*44, tfrac=(ty-36)/44, half=20-(20-10)*tfrac; x=CX+(rnd()*2-1)*half; y=ty;}
-   else{var leg=rnd()<.5?-1:1, ly=82+rnd()*32; x=CX+leg*(6+rnd()*6); y=ly;}
-   var ac=rnd()<.8; var op=(.25+.65*rnd()).toFixed(2);
-   pts+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.5+rnd()).toFixed(2)+'" fill="'+(ac?col:'var(--accent)')+'" fill-opacity="'+op+'"/>';}
-  for(var g=0;g<14;g++){
-   var gx=CX+(rnd()*2-1)*16, gy=36+rnd()*50;
-   glowPts+='<circle cx="'+gx.toFixed(1)+'" cy="'+gy.toFixed(1)+'" r="'+(3+rnd()*3).toFixed(1)+'" fill="url(#stm-av-g)"/>';}}
- var defs=arch?('<radialGradient id="stm-av-g" cx="0" cy="0" r="1">'
-   +'<stop offset="0" stop-color="'+col+'" stop-opacity="1"/><stop offset=".35" stop-color="'+col+'" stop-opacity=".38"/>'
-   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
-  +'<radialGradient id="stm-av-heart" cx="'+CX+'" cy="52" r="18" gradientUnits="userSpaceOnUse">'
-   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".5"/><stop offset=".4" stop-color="'+col+'" stop-opacity=".15"/>'
-   +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient>'
-  +'<linearGradient id="stm-av-tor" x1="0" y1="0" x2="1" y2="0">'
-   +'<stop offset="0" stop-color="'+col+'" stop-opacity=".7"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".2"/></linearGradient>'):'';
- var torus=arch?('<ellipse cx="'+CX+'" cy="56" rx="38" ry="9" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
-   +'transform="rotate(-12 '+CX+' 56)" stroke-dasharray="3 2"/>'
-  +'<ellipse cx="'+CX+'" cy="56" rx="34" ry="7" fill="none" stroke="url(#stm-av-tor)" stroke-width="1" '
-   +'transform="rotate(8 '+CX+' 56)" stroke-dasharray="3 2"/>'):'';
- var svg='<svg viewBox="0 0 100 120" aria-hidden="true">'
-  +(defs?'<defs>'+defs+'</defs>':'')
-  +(arch?'<circle cx="'+CX+'" cy="52" r="18" fill="url(#stm-av-heart)"/>':'')
-  +torus+glowPts+pts
-  +(arch?'<g transform="translate('+CX+',114) scale(.7) translate(-12,-12)" fill="none" stroke="'+col+'" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="'+arch.ic+'"/></g>'
-   :'<circle cx="50" cy="55" r="38" fill="none" stroke="'+col+'" stroke-width="2.4"/>')
-  +'</svg>';
- return '<div class="st-mini-vis">'+svg+'</div><div class="st-mini-cap">'+cap+'</div>';}
-/* THE FOUR MASKS BESIDE HER, 10 November, his words: "on the avatar, you
-   still have this blank space to its right. What I want you to do is
-   move the avatar to the right and then add the masks. Add four
-   masks." MASKS_READ (engine/data/canon.js) names five, each tied to
-   the seats it sits over (m.b); this scores each by the mean weight
-   r.carrying already gives those seats (the same figure darkB/darkV
-   read it from in compute.js, not a second arithmetic invented here)
-   and shows the top four, strongest first, rather than a fixed four
-   that may say nothing about this person's own reading.
-
-   THE TOP MASK NOW SAYS ITS OWN NAME AND WEIGHT, ruled 13 November,
-   team review: every tile here used to carry its name and nothing
-   else, in a title attribute nobody sees without hovering, so a glance
-   at this card answered nothing. fmtPct('atom', score) is the exact
-   formatter ui/stdash.js's own rail section already calls on this same
-   score (checked directly: the rail's own pill row is icon, colour and
-   brightness only, name and percent hover-only there too, so this is
-   not copying a visible label off the rail, it is the first surface in
-   the product built to print one standing); reused here rather than a
-   second formatter.
-
-   REBUILT ONTO THE SHARED SHELL, 14 November, found live screenshotting
-   all six cards in a row for his own "same family" question: this was
-   the one card still returning its own top-level markup (.st-mask4, a
-   left-aligned icon-plus-text row plus a strip of three small unlabelled
-   runner tiles below it), built before this round's rewrite of the other
-   five onto one shape, centred picture in .st-mini-vis, one line in
-   .st-mini-cap, and never carried over. Against five cards that each
-   distill to one centred, glowing reading, a sixth card showing a row and
-   a strip read as a different widget that happened to share a border.
-   The runners are dropped here, not hidden elsewhere: no other card in
-   this row shows more than its own single headline fact (Compass one
-   axis, Body one address, Field one number), so a second mask and a
-   third were never this card's fact to carry, only Character's, which
-   still lists all six. The ring, wash and glyph are the same three
-   elements chMaskBtn (character.js) already draws for every mask on the
-   real page, at this card's own 120 by 120 scale rather than invented
-   fresh, and the ring's own fill is the mask's score over the atom scale
-   (engine/pct.js, lo 0 hi 10), the same rule Field's ring above already
-   follows: the fill is a percent, equal to the number beside it. */
-function stMiniMasks(r){
- var un=r.unread;
- if(un||typeof MASKS_READ==='undefined')
-  return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
+  var n=Math.min(a.length,PUR_PER_SIDE);
+  return {nm:s, n:n, pct:Math.round(100*n/PUR_PER_SIDE)};});
+ return {sides:sides, filled:bc.filled, of:bc.of, pct:Math.round(100*bc.filled/Math.max(1,bc.of))};}
+function stmkBody(r){
+ if(r.unread||!r.heaviest)return null;
+ var h=r.heaviest, nm=/_Unnamed$/.test(h.k)?'An address with no name yet':h.k;
+ return {nm:nm, seat:h.b, v:h.sq, col:'var('+(SEATCOL[h.b]||'--dim')+')'};}
+function stmkField(r){
+ if(r.unread||!r.seats)return null;
+ var rows=r.seats.map(function(s){return {seat:s.seat, v:Math.max(0,Math.min(10,(+s.weight||0)*10)), col:'var('+(SEATCOL[s.seat]||'--dim')+')'};});
+ var top=rows.slice().sort(function(a,b){return b.v-a.v;})[0];
+ if(!top||top.v<=0)return null;
+ return {rows:rows, top:top};}
+function stmkAvatar(r){
+ var arch=(!r.unread&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
+ var rit=((CURP&&CURP.rituals)||[]).filter(Boolean).slice().sort(function(a,b){return (a.t||0)-(b.t||0);});
+ var lost=rit.filter(function(x){return x.done===false;}).length;
+ return {arch:arch, col:arch?'var('+(SEATCOL[arch.b]||'--dim')+')':'var(--dim)',
+  w:rit.length-lost, l:lost, last:rit.slice(-7).map(function(x){return x.done!==false;})};}
+function stmkMasks(r){
+ if(r.unread||typeof MASKS_READ==='undefined')return null;
  var bySeat={};
- r.carrying.forEach(function(n){ (bySeat[n.b]=bySeat[n.b]||[]).push(n.sq); });
+ r.carrying.forEach(function(n){(bySeat[n.b]=bySeat[n.b]||[]).push(n.sq);});
  var scored=MASKS_READ.map(function(m){
-  var vals=(m.b||[]).map(function(s){ var a=bySeat[s];
-   return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0; });
+  var vals=(m.b||[]).map(function(s){var a=bySeat[s]; return a&&a.length?a.reduce(function(x,y){return x+y;},0)/a.length:0;});
   var v=vals.length?vals.reduce(function(x,y){return x+y;},0)/vals.length:0;
-  return {m:m,v:v};}).sort(function(a,b){return b.v-a.v;});
- var top=scored[0];
- if(!top||!top.v) return '<div class="st-mini-vis"></div><div class="st-mini-cap">–</div>';
- var col=CHC.maskCols(top.m)[0], CX=60, CY=60, R=44, C=2*Math.PI*R;
- var frac=Math.max(0,Math.min(1,top.v/10));
- var svg='<svg viewBox="0 0 120 120" aria-hidden="true"><defs>'
-  +'<radialGradient id="stm-mk-g" cx="'+CX+'" cy="'+CY+'" r="'+R+'" gradientUnits="userSpaceOnUse">'
-  +'<stop offset="0" stop-color="'+col+'" stop-opacity=".38"/><stop offset=".6" stop-color="'+col+'" stop-opacity=".12"/>'
-  +'<stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient></defs>'
-  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="url(#stm-mk-g)"/>'
-  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="var(--edge)" stroke-width="2"/>'
-  +'<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" '
-  +'stroke-dasharray="'+(C*frac).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 '+CX+' '+CY+')"/>'
-  +'<g transform="translate(38 38) scale(1.83)" fill="none" stroke="'+col+'" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">'
-  +'<path d="'+top.m.ic+'"/></g></svg>';
- /* data-topmask carries the shown mask's own name so this card's
-    click-through (STGO.stmasks, above) opens the Character page already
-    showing it, never a different mask than the one this card just
-    named. */
- return '<div class="st-mini-vis" data-topmask="'+esc(top.m.nm)+'">'+svg+'</div>'
-  +'<div class="st-mini-cap">'+esc(top.m.nm)+', '+fmtPct('atom',top.v)+'</div>';}
+  return {m:m, v:v, p:pct('atom',v)||0, col:CHC.maskCols(m)[0]};}).sort(function(a,b){return b.v-a.v;});
+ if(!scored[0]||!scored[0].v)return null;
+ return scored.slice(0,4);}
+/* tips, the words that came off the card face */
+function stmkTipCQ(v){return stmkTip('CQ '+v,stmkU('cq')+' It runs 0 to 100, and higher is more of your integrity holding.');}
+function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and lower is lighter.');}
+function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
+ s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
+function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
+ 'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+' of 10, at your '+b.seat+' seat.');}
+function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
+ stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+' of 10, the heaviest of your seven.');}
+function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
+function stmkTipW(a){return stmkTip(a.w+' done',stmkU('practised')+' A win is a ritual you marked done.');}
+function stmkTipL(a){return stmkTip(a.l+' missed','A loss is a ritual that came due and was marked not done.');}
+function stmkTipMask(s){return stmkTip(s.m.nm+', '+s.p+'%',stmkU('mask')+' '+s.m.nm+' reads '+s.p+' percent of the most it could.');}
+/* THE WORKED EXAMPLE LINE, OFF THE FACE AND INTO ONE MARK. His words: the
+   disclaimer near the row goes. The sentence is a standing disclosure
+   (engine/showonly.js, 16 October), so it is kept whole behind the mark,
+   never deleted. Dashboard only; the hero view keeps its line. */
+function stShowChip(what){
+ return '<button type="button" class="stmk-ex"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>Example</button>';}
+
+/* GAUGES. One ring per reading, the number inside it, flat
+   strokes and no glow, after the owner's dashboard reference. Every ring's
+   fill is the number it carries, the rule Field's ring already keeps. */
+function stmkRing(cx,cy,R,frac,col,w,track){
+ var C=2*Math.PI*R, f=Math.max(0,Math.min(1,frac));
+ return '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+(track||'var(--dim)')+'" stroke-opacity="'+(track?1:.42)+'" stroke-width="'+w+'"/>'
+  +(f>0?'<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" stroke-linecap="round" '
+  +'stroke-dasharray="'+(C*f).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 '+cx+' '+cy+')"/>':'');}
+var STMK_DASH='<div class="st-mini-vis"><span class="stmk-dash">–</span></div>';
+function stMiniCompass(r){
+ var c=stmkCompass(r); if(!c)return STMK_DASH;
+ var g=function(x,v,col,lb,tip){return '<g class="stmk-t"'+tip+'>'+stmkRing(x,48,32,v/100,col,5)
+  +'<text x="'+x+'" y="56" text-anchor="middle" class="stmk-n" font-size="23">'+v+'</text>'
+  +'<text x="'+x+'" y="102" text-anchor="middle" class="stmk-k" font-size="11.5">'+lb+'</text></g>';};
+ return '<div class="st-mini-vis"><svg viewBox="0 0 160 110">'
+  +g(42,c.cq,'var(--accent)','CQ',stmkTipCQ(c.cq))+g(118,c.dq,'var(--mid)','DQ',stmkTipDQ(c.dq))+'</svg></div>';}
+function stMiniBoundary(){
+ var b=stmkBoundary(), CX=80, CY=56, R=38, out='';
+ var pt=function(rad,i){var th=(i/6)*Math.PI*2-Math.PI/2; return {x:CX+rad*Math.cos(th), y:CY+rad*Math.sin(th)};};
+ b.sides.forEach(function(s,i){
+  var a=pt(R,i), z=pt(R,i+1), f=s.pct/100;
+  var e={x:a.x+(z.x-a.x)*f, y:a.y+(z.y-a.y)*f};
+  var m=pt(R+15,i+.5);
+  out+='<g class="stmk-t"'+stmkTipSide(s)+'>'
+   +'<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+'" x2="'+z.x.toFixed(1)+'" y2="'+z.y.toFixed(1)+'" stroke="var(--dim)" stroke-opacity=".42" stroke-width="4" stroke-linecap="round"/>'
+   +(f>0?'<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+'" x2="'+e.x.toFixed(1)+'" y2="'+e.y.toFixed(1)+'" stroke="var(--throat)" stroke-width="4" stroke-linecap="round"/>':'')
+   +'<text x="'+m.x.toFixed(1)+'" y="'+(m.y+3.6).toFixed(1)+'" text-anchor="middle" class="stmk-e" font-size="10.5">'+s.pct+'</text></g>';});
+ return '<div class="st-mini-vis"><svg viewBox="0 0 160 112">'+out
+  +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%',b.filled+' of '+b.of+' commitments written across all six sides.')+'>'
+  +'<text x="'+CX+'" y="'+(CY+7)+'" text-anchor="middle" class="stmk-n" font-size="20">'+b.pct+'<tspan font-size="11" dx="1">%</tspan></text></g></svg></div>';}
+function stMiniBody(r){
+ var b=stmkBody(r); if(!b)return STMK_DASH;
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipBody(b)+'>'+stmkRing(60,46,40,b.v/10,b.col,5)
+  +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+b.col+'" stroke-width="1.8" stroke-linecap="round">'+STMK_IC.stbody+'</g>'
+  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(b.v)+'</text></g></svg>'
+  +'<span class="stmk-cap">'+esc(b.nm)+'</span></div>';}
+function stMiniField(r){
+ var f=stmkField(r); if(!f)return STMK_DASH;
+ var CX=60, CY=46, R=40, segs='', n=f.rows.length;
+ f.rows.forEach(function(s,i){
+  var a0=(i/n)*360-90+4, a1=((i+1)/n)*360-90-4, rad=Math.PI/180;
+  var p0=[CX+R*Math.cos(a0*rad),CY+R*Math.sin(a0*rad)], p1=[CX+R*Math.cos(a1*rad),CY+R*Math.sin(a1*rad)];
+  var hot=s===f.top;
+  segs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+R+' '+R+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" fill="none" stroke="'+s.col+'" '
+   +'stroke-opacity="'+(hot?1:(.22+.5*s.v/10)).toFixed(2)+'" stroke-width="'+(hot?7:4)+'" stroke-linecap="round"/>';});
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipField(f)+'>'+segs
+  +'<text x="60" y="55" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(f.top.v)+'</text></g></svg>'
+  +'<span class="stmk-cap"><i class="stmk-dot" style="background:'+f.top.col+'"></i>'+esc(f.top.seat)+'</span></div>';}
+function stMiniAvatar(r){
+ var a=stmkAvatar(r); if(!a.arch&&!a.w&&!a.l)return STMK_DASH;
+ var tot=a.w+a.l, CX=60, CY=46;
+ var ring=stmkRing(CX,CY,40,tot?a.w/tot:0,a.col,5);
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipArch(a)+'>'+ring
+  +(a.arch?'<g transform="translate('+(CX-16.8)+' '+(CY-16.8)+') scale(1.4)" fill="none" stroke="'+a.col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.arch.ic+'"/></g>':'')
+  +'</g></svg>'
+  +'<span class="stmk-wl"><span class="stmk-t"'+stmkTipW(a)+'><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:'+a.col+'"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.6L16 9.6"/></svg><b>'+a.w+'</b></span>'
+  +'<span class="stmk-t"'+stmkTipL(a)+'><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:var(--dim)"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2l5.6 5.6M14.8 9.2l-5.6 5.6"/></svg><b>'+a.l+'</b></span></span></div>';}
+function stMiniMasks(r){
+ var ms=stmkMasks(r); if(!ms)return STMK_DASH;
+ var cells=ms.map(function(s,i){
+  var x=i%2?96:20, y=i<2?30:80;
+  return '<g class="stmk-t"'+stmkTipMask(s)+'>'+stmkRing(x,y,17,s.p/100,s.col,3.4)
+   +'<g transform="translate('+(x-8.4)+' '+(y-8.4)+') scale(.7)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+s.m.ic+'"/></g>'
+   +'<text x="'+(x+23)+'" y="'+(y+5.5)+'" class="stmk-n" font-size="16">'+s.p+'<tspan font-size="9.5" dx=".5">%</tspan></text></g>';}).join('');
+ return '<div class="st-mini-vis" data-topmask="'+esc(ms[0].m.nm)+'"><svg viewBox="0 0 160 110">'+cells+'</svg></div>';}
+
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
@@ -841,7 +584,7 @@ function stRender(){
      content, never her canvas, is what the rest of tonight's change gates
      on dashTB. Hero and the crisis/novoice legacy box are untouched: for
      them this still cuts the whole block exactly as it did before. */
-  +(show?showNote('story','st-show'):((STV.typed&&!dashTB)?'':'<div class="st-glow">'
+  +(show?(STV.dash?stShowChip('story'):showNote('story','st-show')):((STV.typed&&!dashTB)?'':'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -4375,7 +4118,7 @@ function stRelPanel(){
      reaches the card that refuses it and says why. */
   /* and on a worked example it is the preview line, ruled 16 October: the
      rings above are the reading and stay, Run is the run and does not */
-  +(showOnly()?showNote('release','st-show')
+  +(showOnly()?(STV.dash?'':showNote('release','st-show'))
    /* RELEASE, not Run release, round of 29 October, his words: "change run
       release to just release." The card's own button (ui/release.js)
       renamed the same way, same reason the fields above stay matched. */

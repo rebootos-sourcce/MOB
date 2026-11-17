@@ -4554,6 +4554,38 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-mini-vis svg{width:100%;height:100%}
 .st-mini-cap{font-size:11.5px;color:var(--mid);text-align:center;margin-top:4px;
  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* THE SIX DASHBOARD WIDGETS, FLAT AND NUMERIC, 17 November. The owner picked
+   direction A, gauges, from two mockups built on a real copy of this file:
+   "I want to go with this one, this look". One flat ring per reading, the
+   number inside it, no caption sentence on the face. The .stmk prefix is the
+   mockup's own and is kept so the measured mockup and the shipped card are
+   the same selectors. */
+.stmk .stmk-lb{margin-bottom:4px;align-items:center}
+.stmk .st-mini-go{opacity:1;color:var(--mid);font-size:13px;line-height:1}
+.stmk-h{display:inline-flex;align-items:center;gap:6px;color:var(--mid)}
+.st-mini .stmk-ic{width:14px;height:14px;flex:none;fill:none;stroke:var(--mid);stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.stmk-n{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stmk-k{fill:var(--mid);font-weight:600;letter-spacing:.02em}
+.stmk-e{fill:var(--mid);font-weight:600;font-variant-numeric:tabular-nums}
+.stmk-cap{font-size:11.5px;font-weight:500;color:var(--mid);display:flex;align-items:center;gap:6px;
+ justify-content:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.stmk-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none}
+.stmk .stmk-col{flex-direction:column;gap:6px}
+.stmk .stmk-col>svg{flex:1 1 0;min-height:0}
+.stmk-dash{font-size:28px;color:var(--dim)}
+.stmk-t{cursor:help}
+/* an svg group is hit only where it paints; a thin edge or a ring glyph left most of each number without a carrier under the pointer */
+g.stmk-t{pointer-events:bounding-box}
+.stmk-wl{display:flex;gap:16px;justify-content:center;align-items:center}
+.stmk-wl>span{display:inline-flex;align-items:center;gap:5px}
+.stmk .stmk-wl svg{width:16px;height:16px;fill:none;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;flex:none}
+.stmk-wl b{font-size:20px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.stmk-ex{display:inline-flex;align-items:center;gap:6px;margin:12px 2px;padding:5px 11px 5px 7px;
+ border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;
+ font-size:12px;font-weight:600;cursor:help;align-self:flex-start;min-height:30px}
+.stmk-ex svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
