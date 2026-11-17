@@ -5525,6 +5525,11 @@ body.tab-story.st-full #stsrc:empty{display:none}
    "unpack every symbol" ruling: a ring with no visible word beside it is
    exactly the failing case that rule names. */
 .st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+/* AVS4, 17 November: an address the avatar put first wears the avatar's own
+   dashed ring, the mark the Avatar page's seats wear for the same fact. A
+   pseudo element and not an outline, because the outline is the focus ring. */
+.st-rq-av .st-rq{position:relative}
+.st-rq-av .st-rq::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
 /* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
    whole point of printing the name is that it can be read. */
 .st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
@@ -7789,6 +7794,19 @@ body.tab-masksview #bRel{display:none}
 .chr-counts b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
 .chr-counts i{width:10px;height:10px;border-radius:50%;border:2px solid var(--sc,var(--ink));display:block}
 .chr-counts .chr-anc i{width:12px;height:12px;border-width:1.5px;border-color:var(--ink)}
+/* MS22, the twelve archetypes as rings in their seat's colour. An embodied one
+   fills in, its ring lit and a wash of its colour behind the mark; the rest
+   hold a faint outline, the potential and not the reading. The mark itself is
+   a stroke, by the rule on icons, at the tap floor on every lighting. */
+.chr-arch{display:grid;grid-template-columns:repeat(6,minmax(var(--tap),1fr));gap:8px;justify-items:center;margin:6px 0 10px}
+.chr-ar{width:var(--tap);height:var(--tap);border-radius:50%;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+ border:1.5px solid color-mix(in srgb,var(--ac) 30%,transparent);background:none;color:color-mix(in srgb,var(--ac) 40%,var(--dim));
+ transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
+.chr-ar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.chr-ar:hover{border-color:var(--ac);color:var(--ac)}
+.chr-ar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.chr-ar.on{border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac) 28%,transparent)}
+.chr-arn{color:var(--mid);margin-bottom:4px}
 /* the trace card. A chain of three steps joined by a dotted line, in the colour
    of the seat. */
 .chr-trace{margin:16px 0 4px;padding:14px 14px 12px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge-2)}

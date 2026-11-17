@@ -318,6 +318,70 @@ function fmtPct(kind,value,opts){
  if(o.unread||p===null||p===0)return PCT_DASH;
  return p+'%';}
 
+/* ============================================================
+   EVERY PERCENT ITS OWN HUE, MS23, 17 November. His words: "VGA, and every
+   percent a different hue." The reason, recorded beside the ruling in
+   TASKS.md: a per cent that maps to its own hue turns a column of figures
+   into a picture that can be read at a glance.
+
+   VGA IS READ AS THE ERA'S OWN COLOUR DEPTH, NOT AS PIXEL ART. The VGA card's
+   palette was written through a DAC that held six bits a channel, sixty four
+   levels of red, green and blue. So every hue here is quantised to those
+   sixty four levels, which is the one thing that makes a colour a VGA colour
+   rather than a colour in that style, and it is checkable: tests/engine.js
+   holds every channel to a multiple of the DAC's own step.
+
+   ONE HUE A PERCENT, 101 OF THEM. The hue walks 3 degrees a percent from a
+   cool blue at nothing, through violet and the warm half, to a teal at a
+   hundred, so a percent is never the same hue as its neighbour and never
+   wraps round onto nothing's own blue. It says which figure, not whether it
+   is good: a decoherence and a coherence at the same percent wear the same
+   hue, because the colour is the number and the label is the meaning.
+
+   MUTED, BY THE STANDING RULING ON THE PALETTE, AND AS MUTED AS THE DAC
+   ALLOWS. Saturation 48 percent, a pastel at lightness 66 on the dark
+   lightings and a deep tone at 32 on the two light ones (light true). Not
+   lower, and this was measured rather than chosen: at 42 percent the DAC's
+   sixty four levels cannot tell a hue from the one three degrees beside it,
+   and the 101 percents came out as 84 colours, which tests/engine.js caught
+   on the first run. At 48 the dark tone is 101 colours as it stands and
+   every one holds 4.69 to 1 on the darkest panel; the light tone holds 4.59
+   to 1 on white.
+
+   THE 101 ARE A PALETTE, WRITTEN ONCE, the way a VGA program loaded its DAC.
+   On the light tone 64 of them land on a neighbour's colour after the
+   quantise, so a percent that does steps its hue forward half a degree at a
+   time, never past its own three degree slot, until the DAC gives a colour
+   no lower percent holds. The order of hues is kept, nothing is borrowed
+   from the next percent, and the table is the same on every load.
+
+   A percent the formatter would print as a dash has no hue, null, and the
+   caller keeps its ink.
+   ============================================================ */
+const PCT_HUE0=220, PCT_HUE_STEP=3, PCT_DAC=63;
+/* one colour through the DAC: each channel to the nearest of sixty four
+   levels, then out to the eight bit value a screen is handed, by the card's
+   own scale */
+function pctDac(deg,s,l){
+ var h=(((deg%360)+360)%360)/360, q=l<0.5?l*(1+s):l+s-l*s, a=2*l-q;
+ var ch=function(t){t=t<0?t+1:(t>1?t-1:t);
+  return t<1/6?a+(q-a)*6*t:t<1/2?q:t<2/3?a+(q-a)*(2/3-t)*6:a;};
+ return '#'+[ch(h+1/3),ch(h),ch(h-1/3)].map(function(v){
+  var c=Math.round(Math.round(v*PCT_DAC)*255/PCT_DAC);
+  return ('0'+c.toString(16)).slice(-2);}).join('');}
+function pctPalette(l){
+ var out=[], seen={};
+ for(var p=0;p<=100;p++){
+  var h=PCT_HUE0+p*PCT_HUE_STEP, c=pctDac(h,0.48,l);
+  for(var k=1;seen[c]&&k*0.5<PCT_HUE_STEP;k++)c=pctDac(h+k*0.5,0.48,l);
+  seen[c]=1; out.push(c);}
+ return out;}
+const PCT_VGA={dark:pctPalette(0.66), light:pctPalette(0.32)};
+function pctHue(p,light){
+ if(p===null||p===undefined||p===''||typeof p==='boolean'||!isFinite(+p))return null;
+ p=Math.round(+p); p=p<0?0:(p>100?100:p);
+ return (light?PCT_VGA.light:PCT_VGA.dark)[p];}
+
 /* A CHANGE IS SAID AS BEFORE AND AFTER. "CQ moved from 58% to 61% since last
    session", never "up 3", which is a delta in a unit the person cannot see.
    moved is false when the two print the same, so a move too small to show is

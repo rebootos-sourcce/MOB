@@ -368,6 +368,38 @@ function chTraceCard(r){
   +'<div class="chr-acts"><button type="button" class="btn" id="chto">Open the story</button><button type="button" class="btn" id="chtc">Close trace</button></div></section>';
  return h;}
 
+/* EVERY PERCENT ITS OWN HUE, MS23, 17 November, "VGA, and every percent a
+   different hue". pctHue (engine/pct.js) carries the reasoning and the DAC;
+   this hands it the figure this rail prints, so the colour is the printed
+   number's and cannot be another's. A figure that prints as a dash keeps its
+   ink, and the light lightings get the deep tone of the same hue. */
+function chPcCol(kind,v,unread){
+ var p=unread?null:pct(kind,v);
+ return p?pctHue(p,typeof LIGHT==='function'&&LIGHT()):null;}
+function chPc(kind,v,unread){var c=chPcCol(kind,v,unread); return c?' style="color:'+c+'"':'';}
+/* THE TWELVE, MS22, 17 November. "Review the masks, and add the Jungian ones.
+   The engine already carries twelve archetypes and six masks. Whichever one a
+   person embodies fills in." The twelve are ARCH, each in its seat's colour
+   and its own mark, drawn as a ring. The ones this person embodies are the
+   three the Avatar page already calls embodied, avArchEmbodied, the three
+   strongest of compute().aff, which is read off the soul's domains and no
+   story, so the two pages can never disagree about who is embodied. Those
+   fill in: the ring takes its colour and a wash of it, the rest stay a faint
+   outline, which is "the outline of the mask's potential" from round MT
+   carried to the archetypes. Nothing is filled on a profile not read yet.
+   Which archetype sits under which mask is NOT drawn: the two seats that
+   proposed a pairing disagreed (TASKS.md, round GI, item 6) and it is his to
+   rule. A press opens that archetype on the Avatar page, where it is rated. */
+function chArchHtml(r){
+ var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
+ var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
+ return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
+  +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
+   return '<button type="button" class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
+    +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></button>';}).join('')+'</div>'
+  +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
+  +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
 function chRailHtml(r){
  var sc=CHV.sc, m=maskOf(CHV.pick), unread=!r||r.unread, w=sc.w, li=CHC.leadPat(w), a=CHILD[li], col='#'+'';
  var pc=CHC.PCOL[li], hexc='#'+pc.map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2);}).join('');
@@ -381,19 +413,20 @@ function chRailHtml(r){
     reading the record does not hold. The note above says the field is dark;
     the panel now agrees with it. */
  if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
-  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig">'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
+  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig"'+chPc('charge',w[a.nm]||0,false)+'>'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
  h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<p class="ad-p">It '+esc(m.v)+'.</p>'
   +'<button type="button" class="btn" id="chread">Read this mask</button>';
+ h+=chArchHtml(r);
  if(CHV.sel>=0)h+=chTraceCard(r);
  h+='<div class="pm-eye chr-sp">Pointing at</div><div class="chr-hover" id="chhover" aria-live="polite" data-h="">'+chHoverText(CHV.hov,-1)+'</div>';
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
-  +'<div class="chr-row"><span>Vitality</span><b>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
+  +'<div class="chr-row"><span>Coherence</span><b'+chPc('cq',cq,unread)+'>'+fmtPct('cq',cq,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
+  +'<div class="chr-row"><span>Vitality</span><b'+chPc('vitality',vt,unread)+'>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b'+chPc('dq',dq,unread)+'>'+fmtPct('dq',dq,{unread:unread})+'</b><i>The shadow, your 108 addresses and 4 field anchors against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
@@ -401,7 +434,7 @@ function chRailHtml(r){
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></button>';}).join('')
+    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
@@ -431,6 +464,11 @@ function chRail(r){
  var rd=$('chread'); if(rd)rd.onclick=function(){var m=maskOf(CHV.pick);if(m)chDrill(m);};
  host.querySelectorAll('[data-chtrace]').forEach(function(b){b.onclick=function(){
   var k=+b.getAttribute('data-chtrace'); chTrace(CHV.sel===k&&b.classList.contains('chr-seat')?-1:k);};});
+ /* an archetype opens on the Avatar page, where it is rated, MS22 */
+ host.querySelectorAll('[data-charch]').forEach(function(b){b.onclick=function(){
+  if(typeof AV==='undefined'||typeof setTab!=='function')return;
+  AV.sub='arch'; AV.arch=b.getAttribute('data-charch'); setTab(TAB.INTAKE);
+  if(typeof render==='function')render();};});
  var to=$('chto'); if(to)to.onclick=function(){if(typeof setTab==='function'){setTab(TAB.STORY);}};
  var tc=$('chtc'); if(tc)tc.onclick=function(){chTrace(-1);};}
 
@@ -565,7 +603,7 @@ function chDrill(m){
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
+   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
  var top=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>0;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,6);
  h+='<div class="pm-eye">Carrying the most</div>';
  if(!top.length)h+='<p class="ad-p">Nothing held under this mask.</p>';

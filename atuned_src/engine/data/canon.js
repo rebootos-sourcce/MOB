@@ -606,7 +606,21 @@ const MASKS=[
  {nm:'Adult',b:['Sacral','Solar'],ic:MASK_FACE+' M5 11.65h14',
   v:'handles it, and files what it cost'},
  /* a squared jaw fitted over the lower half. it was issued, not grown. */
- {nm:'Professional',b:['Solar','Throat'],ic:MASK_FACE+' M8 13h8v5H8z',
+ /* SOLAR AND HEART, NOT SOLAR AND THROAT, MS25, 17 November. Professional and
+    Preteen both sat at ['Solar','Throat'], so they were read off the same 28
+    addresses and their figures could never differ on any profile: measured
+    and reported at rounds GI, MS and the masks pass, and the reason he hid
+    Professional at round NE ("Preteen is very similar ... Just hide it for
+    now. Don't calculate it."). Preteen keeps its seats, so no live reading
+    moves: Professional is out of MASKS_READ and computes nothing.
+    Throat goes to Heart because of the mask's own line, "performs competence
+    until the feeling passes": the competence is the solar plexus, what you
+    carry, and the feeling it waits out is the heart, what you give. It also
+    puts the heart under a mask, which his round MT ruling asks of all seven
+    ("all the chakras should be in the masks"). The crown is still under none,
+    and whether Professional comes back into the reading now its data is its
+    own is his call; neither is decided here. */
+ {nm:'Professional',b:['Solar','Heart'],ic:MASK_FACE+' M8 13h8v5H8z',
   v:'performs competence until the feeling passes'},
  /* A FLAT BAR ABOVE THE FACE, WORN WHERE A THOUGHT IS KEPT, ROUND MZ. This
     drew as a ring, "M9 4a3 3 0 006 0", the arc the comment used to name it
@@ -646,7 +660,10 @@ const MASKS=[
    always been identical, and this is the stopgap while the real seven seat
    mapping, R1, stays open. MASKS itself keeps all six, since the body map's
    own seat patches and the glossary still name Professional; MASKS_READ is
-   the five a reading is ever taken on or shown for. */
+   the five a reading is ever taken on or shown for.
+   The shared pair above stopped being true on 17 November, MS25: Professional
+   sits at Solar and Heart now, so the reason for hiding it is gone and the
+   hide itself is not. Bringing it back is his to rule. */
 const MASKS_READ=MASKS.filter(m=>m.nm!=='Professional');
 
 /* ============================================================

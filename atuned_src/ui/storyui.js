@@ -4205,6 +4205,17 @@ var ST_OFF={};
 function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
 function stRelModel(){
  var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
+ /* THE AVATAR ORDERS THIS TOO, AVS4, 17 November: "have Source attach what
+    I'm tagging to my releases, so that it can prioritise those releases". The
+    sort below was the charge alone, so a fetter the person tagged on their
+    avatar waited behind any heavier address the entry reached. avRank
+    (ui/avatarui.js, over engine/avatar.js avatarRank) puts what the avatar
+    pulls first and keeps the charge as the order inside each level, so a
+    person with nothing on their avatar gets exactly the order they had. It
+    only reorders what was already going to be offered: the named cut above
+    the slice still decides which addresses are candidates, so a run still
+    runs only what the words named (tests/releasechain.js, check 2). */
+ var rank=function(L){return typeof avRank==='function'?avRank(L):L.sort(bySq);};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
@@ -4249,8 +4260,8 @@ function stRelModel(){
     entry (ui/release.js), so "stale" now means specifically "closed",
     never merely "not the newest object". */
  var live=found.length&&(found!==STV.lastFound||STV.lastOpen===true);
- if(picked.length)take=picked.sort(bySq);
- else if(live)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
+ if(picked.length)take=rank(picked);
+ else if(live)take=rank(cut?found.slice(0,cut):found.slice()).slice(0,3);
  /* THE THIRD TIER IS GONE, 10 November, his words looking at the live
     panel: "there's three icons that start there. There should be
     nothing." With nothing picked and nothing in the live story, this used
@@ -4282,9 +4293,14 @@ function stRelPanel(){
     prints under each one, the same way a term of art gets its meaning
     beside it everywhere else in this product. */
  if(!M.take.length){}
+ /* AND IT SAYS SO, AVS4: an address the avatar put first wears the avatar's
+    own dashed ring round its node, the mark the Avatar page's seats wear for
+    the same fact, and the reason is in its name on hover and to a screen
+    reader. "If I don't see it in software, it doesn't exist." */
  else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
-   return '<div class="st-rq-wrap"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
-    +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
+   var why=(typeof avWhyNow==='function')?avWhyNow(a):null, nm=a.k+', '+a.b+(why?'. '+avWhySay(why):'');
+   return '<div class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
+    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
     +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
   +'</div>';
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
