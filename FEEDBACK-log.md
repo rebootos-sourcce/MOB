@@ -490,6 +490,26 @@ rules, .tip-b takes a newline), ui/srcface.js (TITLE, readChain),
 tests/srcchat.js (the reply section and the rest check).
 measure: tests/srcchat.js fails by name on 39638f05, the build from before:
 there the reply printed at rest and the hero typing display had no #stsrc.
+## 2026-11-17 · owner · the dashboard, in both locations
+
+said: "Why don't you fix the dashboard in both locations?" Earlier the same
+week, on the mini view: "there's a little text that pops up on the mini
+dashboard... there should be no text there."
+read: two presentations of one record, the Journal's start view (the mini one,
+STV.dash false) and the Full Dashboard, and every fix to the worked example
+line and to the stars mark had landed on the Full one only. Measured on the
+mini one, blank profile, own profile with a reading, and a worked example, at
+1600 and at 390: "0 words hidden" printed on an empty canvas because the
+mark's display rule beat its hidden attribute; the example line printed as a
+three line paragraph where the Full view has a chip; both marks stood at the
+left under a centred face, and both were 30 pixels tall.
+change: the same two marks, ui/storyui.js (stShowChip, stMaskHtml) and
+shell/head.html (.stmk-ex), now one shape on both views: the hidden attribute
+honoured, centred on the face's axis, 44 pixels, and on the mini view the
+mark with no word on it. tests/stfull.js stParityGate walks both views for
+three kinds of person at both widths against one set of rulings.
+measure: stParityGate fails 32 checks on the build from before and passes 58
+on this one.
 
 ## Earlier, from FEEDBACK-alexander.md
 

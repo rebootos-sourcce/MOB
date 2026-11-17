@@ -264,23 +264,43 @@ function stmkTipMask(s){return stmkTip(s.m.nm+', '+s.p+'%',stmkU('mask')+' '+s.m
 /* THE WORKED EXAMPLE LINE, OFF THE FACE AND INTO ONE MARK. His words: the
    disclaimer near the row goes. The sentence is a standing disclosure
    (engine/showonly.js, 16 October), so it is kept whole behind the mark,
-   never deleted. Dashboard only; the hero view keeps its line. */
-function stShowChip(what){
- return '<button type="button" class="stmk-ex"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
-  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>Example</button>';}
+   never deleted.
+
+   BOTH PRESENTATIONS NOW, 17 November, his question: "why don't you fix the
+   dashboard in both locations?" This said "Dashboard only; the hero view
+   keeps its line", so every fix to the line landed on the Full Dashboard
+   and the mini one went on printing it as a three line paragraph under the
+   face. The mini wears the same mark with no word on it (io): his rule for
+   that view is symbols and no text ("there should be no text there"), and
+   the sentence is whole in the tip and in the accessible name either way. */
+function stShowChip(what,io){
+ return '<button type="button" class="stmk-ex'+(io?' stmk-io':'')+'"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>'+(io?'':'Example')+'</button>';}
 
 /* WORDS DICTATION HID, OFF THE FACE AND INTO ONE MARK, 17 November, his own
    note on a screenshot: "there shouldn't be text here." Same move as
    stShowChip just above: the sentence (engine/sniff.js's maskedSay) is kept
    whole, never deleted, only moved behind a mark instead of printed as a
-   paragraph of body text. */
+   paragraph of body text.
+
+   AND THE MINI ONE WEARS IT BARE, 17 November, the same question as
+   stShowChip above. Two defects were here, both only on the mini view,
+   because the Full Dashboard never renders this mark (dashTB, in stRender).
+   The mark carries the hidden attribute when nothing is hidden, and
+   .stmk-ex's own display rule beat that attribute, so a person who had said
+   nothing at all saw "0 words hidden" standing alone on an empty canvas
+   (measured on a blank profile and on a committed one, at 1600 and at 390).
+   The rule in shell/head.html honours the attribute now. And when a word
+   really is hidden, the mini shows the mark with no label (io), the symbol
+   first and the count and the sentence behind it, the way Talk and
+   Dashboard already stand on this view. */
 function stMaskLabel(n){return n+(n===1?' word hidden':' words hidden');}
-function stMaskHtml(){
+function stMaskHtml(io){
  var runs=maskedRuns(ST_TEXT), n=runs.length, say=maskedSay(runs);
- return '<button type="button" class="stmk-ex" id="stmask"'+(n?'':' hidden')
+ return '<button type="button" class="stmk-ex'+(io?' stmk-io':'')+'" id="stmask"'+(n?'':' hidden')
   +stmkTip(stMaskLabel(n),say)+' aria-label="'+esc(say)+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z"/></svg>'
-  +'<span id="stmaskn">'+esc(stMaskLabel(n))+'</span></button>';}
+  +(io?'':'<span id="stmaskn">'+esc(stMaskLabel(n))+'</span>')+'</button>';}
 
 /* GAUGES. One ring per reading, the number inside it, flat
    strokes and no glow, after the owner's dashboard reference. Every ring's
@@ -608,9 +628,11 @@ function stRender(){
      stays out because the question it carries is asked of the person's
      own record and an example answers nothing. On the Dashboard the note
      is still the same compact chip tonight's widget-redesign pass built
-     (stShowChip), full text elsewhere (showNote); only the host div is new. */
+     (stShowChip), full text elsewhere (showNote); only the host div is new.
+     UPDATE, same day: the mini view wears the same chip with no word on it
+     (stShowChip's io), so the paragraph is gone from this page in both. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
-    +(STV.dash?stShowChip('story'):showNote('story','st-show'))+'</div>'
+    +stShowChip('story',!STV.dash)+'</div>'
    /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
       reply printed loose under the face: "The text that pops up on the
       screen doesn't belong on the screen. It belongs on the text screen."
@@ -762,7 +784,7 @@ function stRender(){
      than invent a reason to keep it, it stays off on the Dashboard
      outright, open or shut, and keeps its hero behaviour exactly as it
      was: cut only while STV.typed there. */
-  +((STV.typed||dashTB)?'':stMaskHtml())
+  +((STV.typed||dashTB)?'':stMaskHtml(!STV.dash))
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can

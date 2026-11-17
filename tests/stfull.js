@@ -404,7 +404,91 @@ async function stFullGate(browser,FILE,ok,booted){
   ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
   await p.close();}}
 
-module.exports={stFullGate};
+/* ============================================================
+   THE MINI DASHBOARD AND THE FULL ONE HOLD THE SAME RULINGS, 17 November.
+   His question: "why don't you fix the dashboard in both locations?" Fix after
+   fix landed on the Full Dashboard (STV.dash) and the mini one, the Journal's
+   start view, went on showing the same defect, because every gate above
+   walked one view or the other and none walked both against one rule. This
+   one reads the two presentations of the same record, at both widths, for the
+   three kinds of person the page meets (a blank own profile, an own profile
+   with a reading, a worked example), against the rulings that are about the
+   screen and not about which view it is:
+
+     1  no loose explanatory paragraph on the canvas: nothing in #stjr is a
+        sentence of body text, and no .show-note paragraph is printed
+        ("symbol first, header second, body text third", 16 November)
+     2  the hidden attribute is honoured by every element of the page, so a
+        mark drawn hidden is never painted ("0 words hidden" on an empty
+        canvas, on the mini view only)
+     3  a mark standing under the face stands on the face's own axis, and is
+        a 44 pixel target (the 16 November symmetry ruling, the tap floor)
+     4  the mini view's words-hidden mark carries no text of its own, the
+        sentence being its accessible name and its tip
+   ============================================================ */
+async function stParityGate(browser,FILE,ok,booted){
+ const WID=[[1600,1000,'desktop'],[390,844,'phone']];
+ for(const [w,h,wn] of WID){
+  const p=await browser.newPage({viewport:{width:w,height:h}});
+  const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
+  await p.goto(FILE); await booted(p);
+  for(const who of ['blank','read','example']){
+   for(const dash of [false,true]){
+    const at=wn+' '+who+' '+(dash?'Full':'mini')+': ';
+    const m=await p.evaluate(async a=>{
+     const wait=ms=>new Promise(r=>setTimeout(r,ms));
+     if(a.who==='example')loadP(PEOPLE.findIndex(x=>x.nm==='James'));
+     else loadP(0);
+     if(a.who==='read'){
+      ['My chest was tight and I felt scared when he shouted at me. I was angry and ashamed after.',
+       'I am scared all the time and my legs shake.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});}
+     ST_TEXT=''; ST_PARSED=null;
+     setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=a.dash; render(); stRender();
+     await wait(700);
+     const vis=e=>{const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
+      return r.width>0&&r.height>0&&cs.display!=='none'&&cs.visibility!=='hidden';};
+     const jr=document.getElementById('stjr');
+     /* any visible element whose own words run to a sentence */
+     const loose=[...jr.querySelectorAll('p,div,span,small')].filter(e=>{
+      if(!vis(e)||e.closest('button,svg,canvas,textarea,.src-reply,#stsafe'))return false;
+      let own=''; e.childNodes.forEach(n=>{if(n.nodeType===3)own+=n.nodeValue;});
+      return own.trim().length>=40;}).map(e=>(e.className||e.tagName)+': '+e.textContent.trim().slice(0,50));
+     const hiddenLeak=[...document.querySelectorAll('#story [hidden]')].filter(vis).map(e=>e.id||e.className);
+     const un=document.getElementById('stuni'), ub=un&&vis(un)?un.getBoundingClientRect():null;
+     const marks=[...document.querySelectorAll('#stjr .stmk-ex')].filter(vis).map(e=>{
+      const r=e.getBoundingClientRect();
+      return {id:e.id||'', txt:e.textContent.trim(), w:Math.round(r.width), h:Math.round(r.height),
+       off:ub?Math.round((r.left+r.right)/2-(ub.left+ub.right)/2):null,
+       name:(e.getAttribute('aria-label')||'').length>20, tip:!!e.getAttribute('data-tip')};});
+     return {loose, hiddenLeak, marks, paras:document.querySelectorAll('#story .st-colw .show-note').length};
+    },{who,dash});
+    ok(m.loose.length===0,at+'no sentence of body text printed on the canvas, '+JSON.stringify(m.loose));
+    ok(m.paras===0,at+'and no worked example paragraph, '+m.paras);
+    ok(m.hiddenLeak.length===0,at+'every element drawn hidden is hidden, '+JSON.stringify(m.hiddenLeak));
+    m.marks.forEach(k=>{
+     ok(k.w>=44&&k.h>=44,at+'the mark '+(k.id||'on the face')+' is a 44 pixel target, '+k.w+' by '+k.h);
+     ok(k.off===null||Math.abs(k.off)<=2,at+'and stands on the face\'s own axis, '+k.off+' off');
+     ok(k.name&&k.tip,at+'and carries its sentence in its name and its tip, '+JSON.stringify(k));
+     if(!dash)ok(k.txt==='',at+'and on the mini view carries no word of its own, '+JSON.stringify(k.txt));});
+    if(who==='example')ok(m.marks.some(k=>k.id===''),at+'the worked example mark is there, '+JSON.stringify(m.marks));
+   }}
+  /* the one real hidden word, on the mini view: the mark appears bare */
+  const at=wn+' mini, a word hidden: ';
+  const s=await p.evaluate(async()=>{
+   const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   loadP(0); setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=false;
+   ST_TEXT='I felt really ****** furious and my chest was tight.'; ST_PARSED=parseStory(ST_TEXT);
+   render(); stRender(); await wait(700);
+   const e=document.getElementById('stmask'); if(!e)return null;
+   const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
+   return {shown:cs.display!=='none'&&r.width>0, txt:e.textContent.trim(), w:Math.round(r.width), h:Math.round(r.height),
+    name:e.getAttribute('aria-label'), tipT:e.getAttribute('data-tip-t')};});
+  ok(s&&s.shown&&s.txt===''&&s.w>=44&&s.h>=44&&/hidden/.test(s.tipT||'')&&(s.name||'').length>20,
+   at+'it shows with no word on it, a 44 pixel target, the count in its tip, '+JSON.stringify(s));
+  ok(errs.length===0,wn+': no page error on the way, '+errs.join(' | '));
+  await p.close();}}
+
+module.exports={stFullGate,stParityGate};
 
 if(require.main===module){
  const {chromium}=require('playwright');
@@ -426,6 +510,9 @@ if(require.main===module){
   console.log('\n=== the Journal\'s Full view, and the crisis door inside it ===');
   try{ await stFullGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }
+  console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
+  try{ await stParityGate(browser,FILE,ok,booted); }
+  catch(e){ FAIL++; console.log('  FAIL the parity gate threw: '+e.stack); }
   await browser.close();
   console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
   process.exit(FAIL?1:0);})();}
