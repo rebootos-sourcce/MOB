@@ -3422,7 +3422,7 @@ console.log('\n=== a worked example never reaches the person\'s own record ===')
      example is show only (engine/showonly.js), so the journal is the preview
      line and Commit is not drawn. The refusal is still the thing measured:
      the press is the same stCommit the button called, made directly. */
-  o.stArmed=!document.getElementById('stapply')&&!!document.querySelector('#story .show-note');
+  o.stArmed=!document.getElementById('stapply')&&!!document.querySelector('#story .stmk-ex');
   stCommit();
   o.stEntries=((exRec&&exRec.story&&exRec.story.entries)||[]).length-ent0;
   o.stWho=S.who; o.stExample=gi;
@@ -8074,6 +8074,10 @@ await require('./railmenu.js').railMenuGate(browser,FILE,ok,booted);
    can run alone, called here so a full run holds it. */
 console.log('\n=== the Journal\'s Full view ===');
 await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
+/* AND THE MINI DASHBOARD HOLDS THE SAME RULINGS, 17 November: the same file,
+   the two presentations of one record against one set of rules */
+console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
+await require('./stfull.js').stParityGate(browser,FILE,ok,booted);
 
 /* WHEN VOICE CANNOT RUN, tests/voicefall.js, 3 November. A browser with no
    speech recognition, or a page that is not a secure context, was told

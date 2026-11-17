@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v151 36ccd765 2026-11-17 16:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v154 39638f05 2026-11-17 18:22"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4664,8 +4664,28 @@ g.stmk-t{pointer-events:bounding-box}
 .stmk-wl b{font-size:20px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
 .stmk-ex{display:inline-flex;align-items:center;gap:6px;margin:12px 2px;padding:5px 11px 5px 7px;
  border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;
- font-size:12px;font-weight:600;cursor:help;align-self:flex-start;min-height:30px}
+ font-size:12px;font-weight:600;cursor:help;align-self:center;min-height:44px}
 .stmk-ex svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+/* ONE MARK, BOTH PRESENTATIONS, 17 November, his question: "why don't you fix
+   the dashboard in both locations?" Three things were true of this mark on
+   the Full Dashboard and not on the mini one, and a fix made to one never
+   reached the other.
+   1. THE HIDDEN ATTRIBUTE LOST. The mask mark is drawn with hidden when
+      nothing is hidden, and the display rule above outranks the browser's own
+      [hidden] rule, so the mini view printed "0 words hidden" on an empty
+      canvas. The Full view never draws the mark, so it never showed.
+   2. IT STOOD AT THE LEFT under a face that is centred, align-self:flex-start,
+      which is the flush-left asymmetry the 16 November symmetry ruling rules
+      out on every surface. Centred now, on the face's own axis.
+   3. IT WAS 30 PIXELS TALL, under the 44 tap floor every control keeps
+      (tests/design.js gate 8 measures a box, so a hit area drawn around a
+      smaller one would not have passed it).
+   .stmk-io is the mini view's bare form: the mark with no word, a round 44
+   tap target the size of Talk and Dashboard beside it, the sentence in the tip
+   and the accessible name (stShowChip and stMaskHtml in ui/storyui.js). */
+.stmk-ex[hidden]{display:none}
+.stmk-ex.stmk-io{padding:0;width:44px;justify-content:center;gap:0}
+.stmk-ex.stmk-io svg{width:18px;height:18px}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
@@ -59959,23 +59979,43 @@ function stmkTipMask(s){return stmkTip(s.m.nm+', '+s.p+'%',stmkU('mask')+' '+s.m
 /* THE WORKED EXAMPLE LINE, OFF THE FACE AND INTO ONE MARK. His words: the
    disclaimer near the row goes. The sentence is a standing disclosure
    (engine/showonly.js, 16 October), so it is kept whole behind the mark,
-   never deleted. Dashboard only; the hero view keeps its line. */
-function stShowChip(what){
- return '<button type="button" class="stmk-ex"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
-  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>Example</button>';}
+   never deleted.
+
+   BOTH PRESENTATIONS NOW, 17 November, his question: "why don't you fix the
+   dashboard in both locations?" This said "Dashboard only; the hero view
+   keeps its line", so every fix to the line landed on the Full Dashboard
+   and the mini one went on printing it as a three line paragraph under the
+   face. The mini wears the same mark with no word on it (io): his rule for
+   that view is symbols and no text ("there should be no text there"), and
+   the sentence is whole in the tip and in the accessible name either way. */
+function stShowChip(what,io){
+ return '<button type="button" class="stmk-ex'+(io?' stmk-io':'')+'"'+stmkTip('Worked example',showLine(what))+' aria-label="Worked example. '+esc(showLine(what))+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.2M12 7.6v.2"/></svg>'+(io?'':'Example')+'</button>';}
 
 /* WORDS DICTATION HID, OFF THE FACE AND INTO ONE MARK, 17 November, his own
    note on a screenshot: "there shouldn't be text here." Same move as
    stShowChip just above: the sentence (engine/sniff.js's maskedSay) is kept
    whole, never deleted, only moved behind a mark instead of printed as a
-   paragraph of body text. */
+   paragraph of body text.
+
+   AND THE MINI ONE WEARS IT BARE, 17 November, the same question as
+   stShowChip above. Two defects were here, both only on the mini view,
+   because the Full Dashboard never renders this mark (dashTB, in stRender).
+   The mark carries the hidden attribute when nothing is hidden, and
+   .stmk-ex's own display rule beat that attribute, so a person who had said
+   nothing at all saw "0 words hidden" standing alone on an empty canvas
+   (measured on a blank profile and on a committed one, at 1600 and at 390).
+   The rule in shell/head.html honours the attribute now. And when a word
+   really is hidden, the mini shows the mark with no label (io), the symbol
+   first and the count and the sentence behind it, the way Talk and
+   Dashboard already stand on this view. */
 function stMaskLabel(n){return n+(n===1?' word hidden':' words hidden');}
-function stMaskHtml(){
+function stMaskHtml(io){
  var runs=maskedRuns(ST_TEXT), n=runs.length, say=maskedSay(runs);
- return '<button type="button" class="stmk-ex" id="stmask"'+(n?'':' hidden')
+ return '<button type="button" class="stmk-ex'+(io?' stmk-io':'')+'" id="stmask"'+(n?'':' hidden')
   +stmkTip(stMaskLabel(n),say)+' aria-label="'+esc(say)+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z"/></svg>'
-  +'<span id="stmaskn">'+esc(stMaskLabel(n))+'</span></button>';}
+  +(io?'':'<span id="stmaskn">'+esc(stMaskLabel(n))+'</span>')+'</button>';}
 
 /* GAUGES. One ring per reading, the number inside it, flat
    strokes and no glow, after the owner's dashboard reference. Every ring's
@@ -60303,9 +60343,11 @@ function stRender(){
      stays out because the question it carries is asked of the person's
      own record and an example answers nothing. On the Dashboard the note
      is still the same compact chip tonight's widget-redesign pass built
-     (stShowChip), full text elsewhere (showNote); only the host div is new. */
+     (stShowChip), full text elsewhere (showNote); only the host div is new.
+     UPDATE, same day: the mini view wears the same chip with no word on it
+     (stShowChip's io), so the paragraph is gone from this page in both. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
-    +(STV.dash?stShowChip('story'):showNote('story','st-show'))+'</div>'
+    +stShowChip('story',!STV.dash)+'</div>'
    :((STV.typed&&!dashTB)?'':'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
@@ -60448,7 +60490,7 @@ function stRender(){
      than invent a reason to keep it, it stays off on the Dashboard
      outright, open or shut, and keeps its hero behaviour exactly as it
      was: cut only while STV.typed there. */
-  +((STV.typed||dashTB)?'':stMaskHtml())
+  +((STV.typed||dashTB)?'':stMaskHtml(!STV.dash))
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can
@@ -101064,5 +101106,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006751894"></div>
+<div id="eof" hidden data-len="006754689"></div>
 </body></html>

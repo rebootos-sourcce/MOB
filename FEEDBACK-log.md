@@ -469,6 +469,27 @@ walked it are gone. The welcome after paying keeps the host it borrowed, as
 measure: tests/onboarding2.js section 2 reads the running page for every
 part of the tutorial and fails by name on 45fe5649, the build from before.
 
+## 2026-11-17 · owner · the dashboard, in both locations
+
+said: "Why don't you fix the dashboard in both locations?" Earlier the same
+week, on the mini view: "there's a little text that pops up on the mini
+dashboard... there should be no text there."
+read: two presentations of one record, the Journal's start view (the mini one,
+STV.dash false) and the Full Dashboard, and every fix to the worked example
+line and to the stars mark had landed on the Full one only. Measured on the
+mini one, blank profile, own profile with a reading, and a worked example, at
+1600 and at 390: "0 words hidden" printed on an empty canvas because the
+mark's display rule beat its hidden attribute; the example line printed as a
+three line paragraph where the Full view has a chip; both marks stood at the
+left under a centred face, and both were 30 pixels tall.
+change: the same two marks, ui/storyui.js (stShowChip, stMaskHtml) and
+shell/head.html (.stmk-ex), now one shape on both views: the hidden attribute
+honoured, centred on the face's axis, 44 pixels, and on the mini view the
+mark with no word on it. tests/stfull.js stParityGate walks both views for
+three kinds of person at both widths against one set of rulings.
+measure: stParityGate fails 32 checks on the build from before and passes 58
+on this one.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

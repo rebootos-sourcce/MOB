@@ -125,7 +125,12 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
     setTab(TAB.STORY); await wait(30);
     out.ctl.story=!document.getElementById('sttext')&&!document.getElementById('stapply')
      &&!document.getElementById('stcin')&&!document.getElementById('stmic')&&!document.getElementById('sttalk')
-     &&((document.querySelector('#story .st-colw .show-note')||{}).textContent||'')===line('story');
+     /* THE LINE IS BEHIND THE MARK, NOT A PARAGRAPH, 17 November: the mini view
+        wears the Full Dashboard's own chip with no word on it (stShowChip, ui/
+        storyui.js), so the sentence is the chip's accessible name and its tip,
+        and no .show-note paragraph is printed on the canvas. */
+     &&((document.querySelector('#story .st-colw .stmk-ex')||{}).getAttribute('aria-label')||'')==='Worked example. '+line('story')
+     &&!document.querySelector('#story .st-colw .show-note');
     /* AND SOURCE'S FACE IS ON IT, 17 November, his report "source ai not
        loading in big dashboard" off an example's Dashboard: the example's
        note used to take #stuni's place, so the face had nowhere to mount

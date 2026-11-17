@@ -4664,8 +4664,28 @@ g.stmk-t{pointer-events:bounding-box}
 .stmk-wl b{font-size:20px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
 .stmk-ex{display:inline-flex;align-items:center;gap:6px;margin:12px 2px;padding:5px 11px 5px 7px;
  border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;
- font-size:12px;font-weight:600;cursor:help;align-self:flex-start;min-height:30px}
+ font-size:12px;font-weight:600;cursor:help;align-self:center;min-height:44px}
 .stmk-ex svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+/* ONE MARK, BOTH PRESENTATIONS, 17 November, his question: "why don't you fix
+   the dashboard in both locations?" Three things were true of this mark on
+   the Full Dashboard and not on the mini one, and a fix made to one never
+   reached the other.
+   1. THE HIDDEN ATTRIBUTE LOST. The mask mark is drawn with hidden when
+      nothing is hidden, and the display rule above outranks the browser's own
+      [hidden] rule, so the mini view printed "0 words hidden" on an empty
+      canvas. The Full view never draws the mark, so it never showed.
+   2. IT STOOD AT THE LEFT under a face that is centred, align-self:flex-start,
+      which is the flush-left asymmetry the 16 November symmetry ruling rules
+      out on every surface. Centred now, on the face's own axis.
+   3. IT WAS 30 PIXELS TALL, under the 44 tap floor every control keeps
+      (tests/design.js gate 8 measures a box, so a hit area drawn around a
+      smaller one would not have passed it).
+   .stmk-io is the mini view's bare form: the mark with no word, a round 44
+   tap target the size of Talk and Dashboard beside it, the sentence in the tip
+   and the accessible name (stShowChip and stMaskHtml in ui/storyui.js). */
+.stmk-ex[hidden]{display:none}
+.stmk-ex.stmk-io{padding:0;width:44px;justify-content:center;gap:0}
+.stmk-ex.stmk-io svg{width:18px;height:18px}
 /* .st-dash.on's own rule moved beside .st-mic and .st-dash's shared base,
    round of 29 October, where the "standout" ruling lives: see the ruling
    there rather than two rules for the same state in two places. */
