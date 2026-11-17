@@ -482,7 +482,11 @@
   startReading(imprintsBySeat(pl.p),hk);
   const gaps=wordGaps(words); let acc=0;
   words.forEach((wd,k)=>{ const fire=at.filter(a=>a.k===k);
-   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); wordWave(wd); hook('onWord',{k,w:wd});
+   /* no wordWave here, the same report as speakLvl in paint: a wavefront a
+      word is what a word said looks like, and on this clock nothing is said.
+      The real voice still throws one a word as it reaches it (voiceTick),
+      and the hits below still flare their seats, which is the reading */
+   wordTimers.push(setTimeout(()=>{ lastInput=performance.now(); hook('onWord',{k,w:wd});
     fire.forEach(a=>{ fireHit(a.ring); hook('onHit',{k:a.k,n:a.n,ring:a.ring,seat:a.seat,key:a.key,col:a.col}); }); },RM?0:acc));
    acc+=gaps[k]; });
   wordTimers.push(setTimeout(closeStory,RM?0:acc+300));
@@ -603,10 +607,22 @@
      the file allows a field */
   const disorder=CQ==null?0:clamp(1-cqv/100,0,1);
 
-  /* the file spoke the story aloud and then the answer, and was "speaking"
-     through both; here the person's turn on its word clock is the story */
-  const voiced=speaking||(RD.on&&!RD.closed);
-  speakLvl+=((voiced?1:0)-speakLvl)*(1-Math.exp(-dt/0.35));
+  /* SPEAKING IS THE VOICE AND NOTHING ELSE, 17 November, his report: "the
+     source AI starts playing, even though there's no dialogue being
+     spoken." This read speaking||(RD.on&&!RD.closed), ported from the
+     amplified file, which spoke the story aloud and so was speaking through
+     it. Nothing here speaks the person's turn: read() replays it on a
+     silent word clock. So every turn held speakLvl at 1.0 for the whole
+     clock, about nine seconds on a two sentence turn, with no audio element
+     ever made (measured on the Dashboard: lis 1.0 from 1.5s to 8.8s,
+     SRC_VOICE.el null, no play() called). It was there before tonight, and
+     tonight is when it showed: the face now stands on the Dashboard
+     whenever there is a reading and a reply prints after every turn, so a
+     face mouthing over a printed line read as a voice that never came.
+     `speaking` is set only by the element's own playing event and cleared
+     by its ended, pause, error and emptied (voice, voiceEnd, below), which
+     is the one real signal that a line is being heard */
+  speakLvl+=((speaking?1:0)-speakLvl)*(1-Math.exp(-dt/0.35));
   wordE*=Math.exp(-dt/0.18); rimE*=Math.exp(-dt/0.55);
   for(let k=rimWaves.length-1;k>=0;k--) if(now-rimWaves[k].t0>2600) rimWaves.splice(k,1);
 
