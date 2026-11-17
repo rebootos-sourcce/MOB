@@ -608,8 +608,21 @@ require('./net.js').guardBrowser(browser);
     /* a voice that plays until the gate says it ended, so the gate can look
        at the recording while Source AI is mid sentence */
     await q.evaluate(() => { window.__aud = []; window.Audio = function (u) {
-      const a = { src: u, onended: null, onerror: null, play() { __aud.push(a); return Promise.resolve(); }, pause() {} }; return a; }; });
-    const end = () => q.evaluate(() => { const a = __aud[__aud.length - 1]; if (a && a.onended) a.onended(); });
+      const a = { src: u, onended: null, onerror: null, ended: false, _l: {},
+        /* stSrcSpeak (storyui.js, 000b88af) now also wires 'playing' and
+           'pause' through addEventListener, not only onended/onerror as
+           direct properties; this stand-in crashed on that call with no
+           method at all. Real Audio semantics: pause() while already
+           ended fires no 'pause' event (a no-op transition), which is
+           why the 'pause' listener itself reads !a.ended before calling
+           fin(played) -- srcVoiceStop() always pauses on its way out,
+           including right after a natural end, and must not fire fin()
+           a second time there. */
+        addEventListener(ev, fn) { (a._l[ev] = a._l[ev] || []).push(fn); },
+        removeEventListener(ev, fn) { if (a._l[ev]) a._l[ev] = a._l[ev].filter(f => f !== fn); },
+        play() { __aud.push(a); (a._l.playing || []).forEach(fn => fn()); return Promise.resolve(); },
+        pause() { (a._l.pause || []).forEach(fn => fn()); } }; return a; }; });
+    const end = () => q.evaluate(() => { const a = __aud[__aud.length - 1]; if (a) a.ended = true; if (a && a.onended) a.onended(); });
     /* the line is fetched before it plays, so each look below waits for the
        play itself and not a fixed 300 milliseconds: under load the reply's
        fetch had not come back by then, nothing was held yet, and this read

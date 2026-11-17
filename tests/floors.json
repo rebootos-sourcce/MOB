@@ -57,7 +57,8 @@
     "Lowered 16 November: paywall 577 to 385, not to get green. Checkout was opened for real, permanently, by 26a409e7 (\"Open checkout, per Lance's direct instruction\"), already on main before this session's own chain of changes. engine/plan.js's planCheckoutOpen() is now a hardcoded true, which ui/paywall.js's pwPayOpen() ORs ahead of the harness seam PW_PAY_SEAM, so nothing in tests/paywall.js can simulate checkout closed any more. Dropped the two fixtures that asked for it (free, closed and signed out, closed) and the sections of the file that only ran under them, kept as dead code for if checkout closes again rather than cut outright. Read off a clean local run, 385 passed, 0 failed.",
     "Raised 16 November: functional 2953 to 3050, same cause as the paywall note above. tests/functional.js's own P2-1 section (Billing/ui/plans.js, not the paywall sheet) measured the same now-unreachable checkout-closed state and failed the same three ways on gates-browser (functional), CI run 43952992462, 3053 passed, 3 failed, found independently the same night by another agent's own report on an unrelated branch. Dropped the three dead assertions. 3053 minus the three equals the new floor; not re-measured locally given the gate's own ~30 minute run time, read off the real CI count instead.",
     "Raised 16 November: paywall 385 to 389, for the gift sheet merge (commit 287b1b54): the four checks tests/paywall.js gained for the reordered gift title, the deleted dead line, and the new pressed/named-button state on the six rings, read off a clean local run, 389 passed, 0 failed.",
-    "Raised 16 November: collide 388 to 943, missed when the Insight panel round (commit b9b3d86d) was merged: its new centre-gate collision section (68 views at both widths) is real and already green (gates-browser (collide), CI run 43975568966, collide gate itself succeeded at 943 passed; only the un-bumped floor step failed), matching two local runs of the merged tree, both 943 passed, 0 failed."
+    "Raised 16 November: collide 388 to 943, missed when the Insight panel round (commit b9b3d86d) was merged: its new centre-gate collision section (68 views at both widths) is real and already green (gates-browser (collide), CI run 43975568966, collide gate itself succeeded at 943 passed; only the un-bumped floor step failed), matching two local runs of the merged tree, both 943 passed, 0 failed.",
+    "Raised 17 November: srcchat 98 to 113. tests/srcchat.js's own Audio stand-in (the \"Source AI's own voice is never heard as his next turn\" section) had no addEventListener/removeEventListener, which the real stSrcSpeak (storyui.js, commit 000b88af) now calls for its 'playing' and 'pause' listeners; every run since that commit landed threw there and read 3 failed. Added both methods, had play() fire 'playing' and pause() fire 'pause' (guarded by a real a.ended flag so the post-end cleanup pause, which fires no pause event on a real Audio element either, does not double-call fin()). Read off a clean local run, 113 passed, 0 failed."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -80,7 +81,7 @@
     "journey2": 140,
     "onboarding2": 244,
     "sniffpage": 70,
-    "srcchat": 98,
+    "srcchat": 113,
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
