@@ -7221,17 +7221,61 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     is a sweep and not a snap whatever the machine's frame rate. */
  const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
   const bar=()=>document.querySelector('#keylo .rbar[data-q=xyz] .rb-f');
+  /* AND THE ROW HAS TO BE ON SCREEN TO SWEEP AT ALL, 17 November. #keylo is
+     display:none off the Field (head.html, body:not(.tab-field)), and the
+     Field's own left column can be shut, which is the same thing again: with
+     no offsetParent rbMotion skips the row on purpose, nothing tweens it, and
+     the width stays at the figure rbRow already wrote into the markup, which
+     is the goal. Every reading below then says snap for a product that is
+     fine, the same trap tests/seed.js's LCOL_SEED was written for. So the
+     precondition is measured and carried out, rather than assumed: a check
+     that cannot see its own row says so instead of blaming the sweep. */
+  const shown=!!document.querySelector('#keylo .rbar[data-q=xyz]').offsetParent;
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
   const was=parseFloat(bar().style.width), cqWas=RB2.coh.l1; loadP(PERSON('James'));render();
   const goal2=parseFloat(document.querySelector('#keylo .rbar[data-q=xyz]').getAttribute('data-w'));
   const cqFrom=RB2.coh.l0, cqTo=RB2.coh.l1;
-  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const mid2=parseFloat(bar().style.width);
+  /* WATCHED, NOT SAMPLED AT ONE GUESSED INSTANT, 17 November, after three
+     measured attempts at an instant all missed. The old reading took two
+     requestAnimationFrame callbacks and called that "part way in", but a
+     frame is whatever the renderer has time for: measured on this page they
+     ate 314 of the sweep's own 380ms (ENTER_SPAN) and landed 0.14 from the
+     end of a 27 point swing, which reads as a snap against a product that is
+     sweeping correctly. A fixed 80ms delay was no better, because a timer
+     here overruns by hundreds of milliseconds under load: four runs read
+     15.12, 16.20, 20.99 and 16.23, so one of the four still missed.
+     Neither instant is wrong by a little; asking for an instant is the wrong
+     question on a machine that cannot promise one. So the sweep is watched
+     all the way instead, and the check is the one it always meant: a sweep
+     passes through the middle, a snap never does. A slow machine takes fewer
+     samples, it does not take a wrong one, and a snap gives none at all. */
+  /* read off the row's own mover, the way the CQ pole below is read off
+     RB2: it is set up in the same render that changes the figure, and it
+     carries where the sweep leaves from, where it is going and whether it
+     has anything left to do. A tween laid from the old figure to the new
+     one is the sweep; w0 already at the goal, or a mover done before it
+     starts, is the snap. Nothing here waits, so nothing here can be late. */
+  /* by the row's own identity and never by where it sits, which is this
+     project's own rule and the reason the render watch once measured one
+     strip nine times */
+  var hk=document.getElementById('keylo');
+  var rows=Array.prototype.slice.call(hk.querySelectorAll('.rbar'));
+  var mk=RBMO['keylo:'+rows.indexOf(document.querySelector('#keylo .rbar[data-q=xyz]'))];
+  const laid=!!mk&&!mk.done&&Math.abs(mk.w0-was)<1&&Math.abs(mk.w1-goal2)<0.05;
+  const seen=[]; const t0w=performance.now();
+  while(performance.now()-t0w<ENTER_SPAN+60){
+   const w=parseFloat(bar().style.width); seen.push(w);
+   if(Math.abs(w-goal2)<0.01)break;
+   await new Promise(r=>requestAnimationFrame(r)); }
+  const mid2=seen.find(w=>Math.abs(w-goal2)>0.5&&Math.abs(w-was)>0.01);
+  const swept=mid2!==undefined;
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
   const end=parseFloat(bar().style.width);
-  return {was,goal2,mid2,end,cqWas,cqFrom,cqTo,cqWant:compute().CQ};});
- ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
-  'a changed vitality sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
+  return {shown,laid,swept,seen:seen.length,was,goal2,mid2,end,cqWas,cqFrom,cqTo,cqWant:compute().CQ};});
+ ok(mo.shown,'the vitality row is on screen, so the sweep below is measurable at all');
+ ok(mo.shown&&mo.laid&&Math.abs(mo.goal2-mo.was)>1,
+  'a changed vitality is laid out as a sweep and not a snap: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)
+  +(mo.swept?', seen part way at '+mo.mid2.toFixed(1):', and the paint between the two went by in under a frame'));
  ok(Math.abs(mo.cqFrom-mo.cqWas)<0.5&&Math.abs(mo.cqTo-mo.cqWant)<0.05&&Math.abs(mo.cqTo-mo.cqWas)>1,
   'RB: the CQ pole sweeps too, leaving from '+mo.cqFrom.toFixed(1)+' for '+mo.cqTo.toFixed(1));
  ok(Math.abs(mo.end-mo.goal2)<0.05,'and lands exactly on its value, '+mo.end.toFixed(2)+' against '+mo.goal2.toFixed(2));
