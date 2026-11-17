@@ -2460,11 +2460,11 @@ ok(pole.ends===2,'the cone carries a door at each end, got '+pole.ends);
 ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
 /* 17 NOVEMBER. The eight axis rows print the behaviour word at the coherent
    end, so Discipline and Discernment are read off MIRROR rather than typed. The
-   master list under them is people and still names Musashi, Buddha and
-   Akhenaten, which is why those three are asked for as well. */
-ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Musashi/.test(pole.up)&&/Buddha/.test(pole.up)&&/Akhenaten/.test(pole.up),
- 'the upward roster names the eight behaviours and the masters');
-ok(/Lucifer/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn),
+   master list under them prints the word of the pole each master stands on
+   too, since the same day's ruling on the Compass still showing teachers. */
+ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Clear Conduction/.test(pole.up)&&/Free Flow/.test(pole.up)&&!/Musashi|Buddha|Akhenaten|Krishna/.test(pole.up),
+ 'the upward roster prints behaviour words for the eight axes and for the masters, and no teacher\'s name');
+ok(/False Light/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn)&&!/Lucifer/.test(pole.dn),
  'the downward roster names the inversions and the nine circles');
 ok(/behaviours, not entities/.test(pole.dn),
  'and says in the copy that they are behaviours rather than entities');

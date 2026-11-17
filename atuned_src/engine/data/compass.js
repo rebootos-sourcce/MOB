@@ -47,13 +47,27 @@
    poles that tests/engine.js used to pin as his canon is two plain words that
    cannot be mistaken for each other.
 
-   FOUR NEGATIVES ARE NOT RENAMED AND THAT IS ON PURPOSE. Lucifer, Asmodeus and
-   Set keep their names because his drafts of them were rejected by name:
-   Lucifer "is NOT simply separation", Set puts chaos first and not sabotage,
-   and Asmodeus is disputed. Baal sits in BLUEPRINT with no axis and no
-   derivable positive pole, and "manipulation is essential" to it. Each stays
-   exactly as written until he gives the word himself. Their positive poles
-   are ruled (Grace, Devotion, Liberation) and are in the rows below.
+   THE LAST NAMES WENT THE SAME DAY, 17 November, his words, on the Compass
+   still printing them: "the names are still present. So we need to change
+   those names." Four negatives had been held back because the drafts of them
+   were rejected by name (Lucifer "is NOT simply separation", Set puts chaos
+   first and not sabotage, Asmodeus disputed, Baal "manipulation is
+   essential"), and the five teachers on the other poles because no word had
+   been given. Each word below is taken from those same quotes and from this
+   file's own text for the pole, and none is a new idea:
+     False Light         Lucifer. The pole's own line, "Pride as false light".
+                         Not Separation, which he ruled is not the whole of it.
+     Compulsive Craving  Asmodeus. "Craving without closure".
+     Engineered Chaos    Set. Chaos first, his order, and "Chaos engineered to
+                         prevent coherence" is the pole's own line.
+     Manipulation        Baal. His own word.
+     Free Flow           Krishna. "The field wants to move".
+     Duty                Rama. "Duty as the spine".
+     Non Resistance      Lao Tzu. The glossary's own word for the path.
+     Clear Conduction    Akhenaten. "Energy conducting without distortion".
+     Natural Growth      Confucius, the other end of Forced Growth.
+   They are his to overrule by one word each. A person's name stays on the row
+   as its key (MASTERS nm, MASTER_AXIS) and is never printed as a pole.
 
    A KEY IS IDENTITY AND A NAME IS A LABEL. The links that used to ride on a
    printed name ride on a key now: MASTER_AXIS ties a master to his axis, PATHS
@@ -69,15 +83,15 @@ const MIRROR=[
     open question, logged as thinking and not as a ruling. */
  {k:'IL', q:'Light', seat:'Heart',
   up:'Grace',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
-  dn:'Lucifer', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  dn:'False Light', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Devotion', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
-  dn:'Asmodeus',    dnd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
+  dn:'Compulsive Craving', dnd:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
   ask:'Does wanting move them toward something, or does having never satisfy?', ic:'M12 20s-7-4.4-7-9.4A4 4 0 0112 8a4 4 0 017 2.6c0 5-7 9.4-7 9.4z', dic:'M4 9h16l-2.2 10.4a1 1 0 01-1 .6H7.2a1 1 0 01-1-.6zM9 9V6a3 3 0 016 0v3'},
  {k:'OR', q:'Order', seat:'Throat',
   up:'Liberation', upd:'Structure in service of liberation. Law that creates freedom. Order others can stand within.',
-  dn:'Set',   dnd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
+  dn:'Engineered Chaos', dnd:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
   ask:'Does this person build structures others can stand in, or dismantle what others depend on?', ic:'M4 6h16M4 12h16M4 18h11M19 16.5v3.6M17.4 18.3h3.2', dic:'M4.6 5.4l14.8 13.2M19.4 5.4L4.6 18.6M12 4v16'},
  {k:'PO', q:'Power', seat:'Solar',
   up:'Discipline', upd:'Mastery that costs the practitioner. Power in service of precision. Discipline the self bears.',
@@ -171,9 +185,9 @@ const MASTERS=[
    replaced Source direction." */
 const BLUEPRINT=[
  {nm:'Extractive Control', d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
- {nm:'Baal',    d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
- {nm:'Set',     d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
- {nm:'Lucifer', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
+ {nm:'Manipulation', d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
+ {nm:'Engineered Chaos', d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
+ {nm:'False Light', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
    Depth, governor, the pattern and where it sits in the body. The
@@ -234,11 +248,19 @@ const IC_NEW={
  /* the horizontal: a level line, and the water underneath it that goes round
     rather than through */
  'Lao Tzu':'M3 8.5h18M3 14.5c3-3.2 6 3.2 9 0s6-3.2 9 0M3 19h18'};
+/* THE FOUR TEACHER POLES' WORDS WEAR THE MARK THE TEACHER DID. 17 November.
+   A pole prints a behaviour word now, and icOf(word) must find the mark, so
+   each word is an alias of the person's own key, which stays because the
+   master list below still looks its mark up by name. One mark, two keys. */
+IC_NEW['Free Flow']=IC_NEW['Krishna'];
+IC_NEW['Duty']=IC_NEW['Rama'];
+IC_NEW['Non Resistance']=IC_NEW['Lao Tzu'];
+IC_NEW['Clear Conduction']=IC_NEW['Akhenaten'];
 /* cold, structured extraction. the crown inverted, because that is what the
    codex calls it: order in service of control rather than governance */
 IC_NEW['Extractive Control']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
 /* appetite without direction. a flame with a mouth in it */
-IC_NEW['Baal']='M12 21.5c-3.4 0-5.6-2.3-5.6-5.2 0-3.4 3.1-4.8 3.9-8 .4 1.8 1.5 2.8 2.5 3.5 1.5 1.3 2.3 2.5 2.3 4.5 0 2.9-1.8 5.2-3.1 5.2M9.7 16.5h4.6';
+IC_NEW['Manipulation']='M12 21.5c-3.4 0-5.6-2.3-5.6-5.2 0-3.4 3.1-4.8 3.9-8 .4 1.8 1.5 2.8 2.5 3.5 1.5 1.3 2.3 2.5 2.3 4.5 0 2.9-1.8 5.2-3.1 5.2M9.7 16.5h4.6';
 /* the judge. scales, and they are what the second circle is weighed on */
 IC_NEW['Judgment']='M12 4v16M6 8.5h12M6 8.5L3.5 14h5zM18 8.5L15.5 14h5zM8.5 20h7';
 /* three mouths, one appetite, none of them filled */
@@ -309,17 +331,17 @@ const PATHS=(function(){
   return null;}
  var il=mir('IL'), pe=mir('PE');
  return [
-  {k:'FL', q:'flow', up:'Krishna', upd:mas('Krishna').d,
+  {k:'FL', q:'flow', up:'Free Flow', upd:mas('Krishna').d,
    dn:'Poisoning', dnd:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
    from:'research', src:'Bhagavata Purana, canto 10, chapter 16'},
   {k:'AW', q:'awareness', up:pe.up, upd:pe.upd, dn:pe.dn, dnd:pe.dnd,
    from:'codex', src:'mirror pair, perception'},
   {k:'BO', q:'the body', up:il.up, upd:il.upd, dn:il.dn, dnd:il.dnd,
    from:'codex', src:'mirror pair, light'},
-  {k:'AL', q:'alignment', up:'Rama', upd:mas('Rama').d,
+  {k:'AL', q:'alignment', up:'Duty', upd:mas('Rama').d,
    dn:'Coercive Abduction', dnd:'Learning and power with no line held. He knows the law and crosses it, because the wanting outranks it.',
    from:'research', src:'Valmiki Ramayana'},
-  {k:'HO', q:'the horizontal', up:'Lao Tzu', upd:mas('Lao Tzu').d,
+  {k:'HO', q:'the horizontal', up:'Non Resistance', upd:mas('Lao Tzu').d,
    dn:'Forced Alteration', dnd:'Haste that means well. They forced openings into what was whole, one a day, and on the seventh day it died.',
    from:'research', src:'Zhuangzi, chapter 7'}];})();
 /* the three new inversions' marks, argued from what each one does, on the
@@ -368,11 +390,11 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
    proposals, marked proposed, each with the text it names to check them
    against. The keys are identity and are never reused. */
 const HOME_POLES=[
- {k:'SA', q:'Light', up:'Akhenaten', dn:'Sabotage', home:null,
+ {k:'SA', q:'Light', up:'Clear Conduction', dn:'Sabotage', home:null,
   from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
  {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
   from:'proposed', src:'Yasna 30 and 31'},
- {k:'NA', q:'Nature', up:'Confucius', dn:'Forced Growth', home:'Crown',
+ {k:'NA', q:'Nature', up:'Natural Growth', dn:'Forced Growth', home:'Crown',
   from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
 /* the marks. Honesty (Zoroaster's), Confucius and Deception (the Lie's) are
    the design's own, ported from mockups/teachers/imprint.html. Sabotage (Apep)
@@ -385,7 +407,7 @@ const HOME_POLES=[
 (function(){
  function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic; return null;}
  IC_NEW['Honesty']=law('Truth');
- IC_NEW['Confucius']=law('Nature');})();
+ IC_NEW['Natural Growth']=law('Nature');})();
 /* the Lie: the plumb line broken and turned aside on its way down */
 IC_NEW['Deception']='M12 3v4l-3 3 6 4-3 3v4';
 /* Apep: the sun disc, and the serpent's open jaw closing over it from below.
@@ -395,6 +417,21 @@ IC_NEW['Sabotage']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4
    over the hole it came out of */
 IC_NEW['Forced Growth']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
 HOME_POLES.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+/* THE MASTER LIST PRINTS THE WORD AND KEEPS THE PERSON AS ITS KEY, 17 November.
+   His words, on the Compass still showing teachers: "the names are still
+   present. So we need to change those names." The eleven rows are people, and
+   nm stays exactly as it was because the paths, the marks and the tests look
+   a master up by it. What a screen prints is word, read off the pole the
+   master stands on, so a rename of a pole is a rename here and the two cannot
+   drift. A master on no pole would print his own name, and there is none. */
+const MASTER_POLE={Jesus:'IL', Ramakrishna:'DE', Moses:'OR', Musashi:'PO', Buddha:'PE',
+ Rumi:'TR', Elijah:'CH', Krishna:'FL', Rama:'AL', 'Lao Tzu':'HO', Akhenaten:'SA'};
+MASTERS.forEach(function(x){
+ var k=MASTER_POLE[x.nm], w=x.nm, i;
+ for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)w=MIRROR[i].up;
+ for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)w=PATHS[i].up;
+ for(i=0;i<HOME_POLES.length;i++)if(HOME_POLES[i].k===k)w=HOME_POLES[i].up;
+ x.word=w;});
 /* THE POLES THAT STAND ON NO AXIS, in the roster's order: the paths that are
    not an axis read twice, then the three above. A path is an axis read twice
    when its line is a mirror pair's own, the rule runPathDrill uses. */

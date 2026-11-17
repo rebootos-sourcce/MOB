@@ -511,6 +511,45 @@ three kinds of person at both widths against one set of rulings.
 measure: stParityGate fails 32 checks on the build from before and passes 58
 on this one.
 
+## 2026-11-17 · owner · Source AI's text, and the text display
+
+said, on two screenshots, the first of the Dashboard with Source AI's reply
+printed under the reading circle, struck through in red, the second of the
+text display with the circle above it, scribbled out: "You're still having
+text show up on the source AI area. It shouldn't be there. That should only
+be on the text display. And in the text display, we want to get rid of source
+AI."
+read: two separate faults. At rest the reply was already gated on the text
+box being open, but the set aside line, the chain line and the verdict rows
+("Here is what I picked up. Tell me where I am off.", with That fits, Not me
+and Not quite) were not, so they still printed under the circle on the
+Dashboard the moment a person had said something. And the 16 November ruling
+had kept the small circle above the panel in the Dashboard's text display.
+change: ui/storyui.js (stRender drops the face from the text display in both
+views, srcPaint prints nothing under the face unless the box is open) and
+shell/head.html (the panel takes 18 pixels of room above it, and the shut
+Release column's grid rule no longer reaches the mini view, which is what had
+pushed its face off centre). Measured on the own profile with a story: at
+rest #stsrc holds nothing in every view, and the text display has no circle.
+measure: the probe reads #stsrc and #stuni in six states, and the mini view's
+face and column centre agree to the pixel with the Release column shut.
+
+## 2026-11-17 · owner · the last Compass names
+
+said: "I can see made a bunch of changes, but the names are still present. So
+we need to change those names."
+read: nine words had been held back, four negatives because the drafts of
+them were rejected by name and five teachers because no word had been given.
+He had said to just give them the drafted names, so the hold was the fault.
+change: engine/data/compass.js, teachers_recipes.js, ui/drills.js. False
+Light, Compulsive Craving, Engineered Chaos and Manipulation for the four
+negatives, Free Flow, Duty, Non Resistance, Clear Conduction and Natural
+Growth for the five poles, each taken from his own quotes and the pole's own
+text in the file. The master list prints the word of the pole each master
+stands on and keeps the person as its key. The keys are untouched.
+measure: tests/engine.js holds each word by key and searches every string the
+Compass hands a screen for a retired name.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

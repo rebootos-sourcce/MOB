@@ -642,7 +642,13 @@ function stRender(){
       journal, no visual design) still holds: the one thing in it that is not
       the person's words is the marked reply, and head.html hides every
       other row srcPaint puts here in this view, as ruled on 10 November. */
-   :((STV.typed&&!dashTB)?(STV.chat?'<div class="st-pe" id="stsrc" aria-label="Question"></div>':''):'<div class="st-glow">'
+   /* AND THE CIRCLE LEAVES THE TEXT SCREEN IN THE DASHBOARD TOO, 17 November,
+      his words, on the Dashboard's typing display with the small circle above
+      the panel, circled in red: "in the text display, we want to get rid of
+      source AI." The 16 November ruling above kept her there; this overrides
+      it. The host for the reply and the verdict rows stays, because that is
+      the text; the face does not. */
+   :(STV.typed?(STV.chat?'<div class="st-pe" id="stsrc" aria-label="Question"></div>':''):'<div class="st-glow">'
   /* UNI IS THE CHARACTER, AND SHE STANDS ON TOP, 8 November. His words,
      direct: "swap the character in the text field, put the character on
      top." She used to sit under the question, #stsrc, which put the
@@ -2816,7 +2822,6 @@ function srcPaint(){
     is never hidden, at rest or not (CLAUDE.md). Hero and the hidden,
     CSS-muted copy of this panel there (shell/head.html, :not(.st-full)
     #stsrc) are untouched; dashRest is false whenever STV.dash is. */
- var dashRest=STV.dash&&STV.chat&&!STV.typed;
  /* THE REPLY IS BACK ON SCREEN, 17 November, BUT ON THE TEXT SCREEN AND
     NOWHERE ELSE. The owner, that morning: "All right, let's bring back
     replies." What Source AI says to the person's own turn, cur.q, the line it
@@ -2836,8 +2841,17 @@ function srcPaint(){
     line and the verdict rows there, as ruled on 10 November), and in the Full
     Dashboard they print beside it, as 16 November ruled. */
  var reply=(STV.typed&&ST_TEXT.trim()&&turn.move!=='safe')?srcReplyHtml(cur?cur.q:(turn.move==='ask'?ask:'')):'';
- o=dashRest?reply:(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
-  +(turn.move==='safe'?'':srcVerdictHtml()));
+ /* NOTHING PRINTS UNDER THE CIRCLE AT REST, ANYWHERE, 17 November, his words,
+    on the verdict rows and the set aside line standing under the face on the
+    Dashboard: "You're still having text show up on the source AI area. It
+    shouldn't be there. That should only be on the text display." The reply was
+    already gated on STV.typed above; the set aside line, the chain line and the
+    verdict rows were not, so a person who had said something saw them printed
+    under the face whether or not the box was open. They are the text, so they
+    wait for the text screen with the reply. dashRest is subsumed: it was this
+    same rule for one state. The safe row below is never gated, as before. */
+ o=STV.typed?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+  +(turn.move==='safe'?'':srcVerdictHtml())):'';
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';

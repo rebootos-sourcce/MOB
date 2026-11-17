@@ -23,10 +23,11 @@
               engine/data/compass.js) carries no who at all, ruled 17
               November: his words on 30 October were that a person is not
               referred to by a figure's name, and a credit to "Buddha" under
-              a panel headed Discernment put the name back. Only the five
-              poles with no word yet (Krishna, Rama, Lao Tzu, Akhenaten and
-              Confucius) still carry one, and each loses it the day its word
-              is ruled. The panel reads the pole's word off the compass.
+              a panel headed Discernment put the name back. The last five
+              (Krishna, Rama, Lao Tzu, Akhenaten and Confucius) lost theirs
+              the same day, 17 November, when his words, "the names are still
+              present", had their words given in compass.js. No row carries a
+              who now. The panel reads the pole's word off the compass.
      q        the quality the pole is named for.
      opp      the inverted end, by name. Shown only as a caption on the release
               column, never as an entity, on the standing ruling that both ends
@@ -77,7 +78,7 @@
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', q:'Light', opp:'Lucifer', draft:true,
+ {k:'IL', q:'Light', opp:'False Light', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',
@@ -105,7 +106,7 @@ var TEACHER_RECIPES=[
    {id:'RE-hold', nm:'Hold it a minute', steps:['box','meetit']},
    {id:'RE-changed', nm:'Say what changed', steps:['box','re_changed']},
    {id:'RE-jaw', nm:'Loose jaw, open ear', steps:['re_jaw','meetit']}]},
- {k:'DE', q:'Desire and will', opp:'Asmodeus', draft:true,
+ {k:'DE', q:'Desire and will', opp:'Compulsive Craving', draft:true,
   line:'Stop at enough instead of reaching for more',
   release:['Get it, then reach for the next one within the hour',
    'Say "one more" and keep going',
@@ -119,7 +120,7 @@ var TEACHER_RECIPES=[
    {id:'DE-want', nm:'Name one want', steps:['slow','offered']},
    {id:'DE-enough', nm:'Say enough', steps:['box','de_enough']},
    {id:'DE-pull', nm:'Ride the pull', steps:['de_pull','offered']}]},
- {k:'OR', q:'Order', opp:'Set', draft:true,
+ {k:'OR', q:'Order', opp:'Engineered Chaos', draft:true,
   line:'Keep the rule others stand on instead of bending it',
   release:['Change the rule after others have built on it',
    'Agree in the meeting and say something else afterwards',
@@ -188,7 +189,7 @@ var TEACHER_RECIPES=[
    {id:'CH-move', nm:'Move the heat', steps:['box','ch_move']},
    {id:'CH-ten', nm:'Take ten minutes', steps:['box','ch_ten']},
    {id:'CH-feel', nm:'Find it in the body', steps:['slow','resist']}]},
- {k:'FL', who:'Krishna', q:'Flow', opp:'Poisoning', draft:true,
+ {k:'FL', q:'Flow', opp:'Poisoning', draft:true,
   line:'Let the plan move instead of holding it in place',
   release:['Hold one routine or grievance in place until it sours',
    'Tell the same complaint a fourth time',
@@ -202,7 +203,7 @@ var TEACHER_RECIPES=[
    {id:'FL-move', nm:'Let it move', steps:['box','letmove']},
    {id:'FL-call', nm:'Make the call', steps:['box','fl_call']},
    {id:'FL-other', nm:'The other way', steps:['fl_other','letmove']}]},
- {k:'AL', who:'Rama', q:'Alignment', opp:'Coercive Abduction', draft:true,
+ {k:'AL', q:'Alignment', opp:'Coercive Abduction', draft:true,
   line:'Hold the line you named instead of making an exception',
   release:['Know the rule and cross it because you want the thing more',
    'Decide this one is an exception',
@@ -216,7 +217,7 @@ var TEACHER_RECIPES=[
    {id:'AL-line', nm:'Hold one line', steps:['box','linehold']},
    {id:'AL-said', nm:'Do what you said', steps:['box','al_said']},
    {id:'AL-owe', nm:'What you owe', steps:['al_owe','linehold']}]},
- {k:'HO', who:'Lao Tzu', q:'The horizontal', opp:'Forced Alteration', draft:true,
+ {k:'HO', q:'The horizontal', opp:'Forced Alteration', draft:true,
   line:'Stop one thing and wait instead of rushing in to help',
   release:['Hurry in to help and make it worse',
    'Offer the fix nobody asked for',
@@ -230,7 +231,7 @@ var TEACHER_RECIPES=[
    {id:'HO-stop', nm:'Stop one thing', steps:['box','stopone']},
    {id:'HO-wait', nm:'Say I will wait', steps:['ho_open','ho_wait']},
    {id:'HO-rest', nm:'Open hands', steps:['ho_open','stopone','ho_wait']}]},
- {k:'SA', who:'Akhenaten', q:'Light', opp:'Sabotage', draft:true,
+ {k:'SA', q:'Light', opp:'Sabotage', draft:true,
   line:'Hand it on and name the source instead of keeping it',
   release:['Take it in and pass nothing on',
    'Tell it as if it started with you',
@@ -257,7 +258,7 @@ var TEACHER_RECIPES=[
    {id:'TU-plain', nm:'The plain word', steps:['box','tu_plain']},
    {id:'TU-end', nm:'End the sentence', steps:['box','tu_end']},
    {id:'TU-both', nm:'Say it and stop', steps:['box','tu_plain','tu_end']}]},
- {k:'NA', who:'Confucius', q:'Nature', opp:'Forced Growth', draft:true,
+ {k:'NA', q:'Nature', opp:'Forced Growth', draft:true,
   line:'Tend it at its own pace instead of pulling it faster',
   release:['Pull the shoot up to help it grow',
    'Ask "why is this taking so long" every day',

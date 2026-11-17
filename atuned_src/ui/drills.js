@@ -1266,7 +1266,7 @@ function runPoleDrill(end){
      the mirror icon rather than getting a second drawing. */
   MASTERS.forEach(function(x){
    h+='<div class="ad-r static" title="'+esc(x.d)+'">'
-    +'<span class="ad-k">'+adGl(x.ic)+esc(x.nm)+'</span>'
+    +'<span class="ad-k">'+adGl(x.ic)+esc(x.word||x.nm)+'</span>'
     +'<span class="ad-v">'+esc(x.was.toLowerCase())+'</span></div>';});
   /* THE COUNT IS READ, NEVER TYPED. This heading said "the twelve" while the
      list under it held eleven, from the moment Eckhart came out on a ruling.

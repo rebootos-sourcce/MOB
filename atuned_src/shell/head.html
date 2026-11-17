@@ -4461,7 +4461,12 @@ body.st-zshut .zfold .lf-ch{transform:rotate(180deg)}
    mode a person was in when they closed it; .st-rl itself is hidden by
    the rule above either way, so the release focus mode's own layout for
    it never has anything left to lay out. */
-body.st-zshut .st-flow{grid-template-columns:1.64fr 1.64fr 58px!important}
+/* NOT ON THE MINI DASHBOARD, 17 November. His words, on the mini view with the
+   Release column shut: "It's no longer centered." .st-simple is the one
+   column grid (1fr, below), and this !important rule was laying three tracks
+   into it, so the face sat in the first of three and the whole column read
+   off centre. There is no Release column to give width back from there. */
+body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!important}
 /* flex ratios above are dead weight now (.st-flow is grid, not flex) but
    stay rather than risk a selector this file does not know about still
    reading them; grid-template-columns on .st-flow itself is what actually
@@ -5249,7 +5254,7 @@ body.tab-story:not(.st-full) #stsrc:has(.src-reply){width:-moz-fit-content;width
    #stjr's own width, the same measure the hero view's note box already
    reads off, so his words have the width his drawing gave them. */
 body.tab-story.st-full #stsrc{width:-moz-fit-content;width:fit-content;
- max-width:90%;margin:0 auto}
+ max-width:90%;margin:18px auto 0}
 /* .src-mine IS GONE, 16 November, and its two rules with it: see srcPaint
    in ui/storyui.js. It printed the entry back as read only lines where he
    had drawn the user input, and he asked for it deleted and for that place

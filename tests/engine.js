@@ -2265,7 +2265,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     Sacrificial Extraction, light is Grace against Lucifer. Lucifer keeps its
     name because his draft of it was rejected, see the next block. */
  ok(MIRROR.some(m=>m.k==='PO'&&m.up==='Discipline'&&m.dn==='Sacrificial Extraction'),'power is Discipline against Sacrificial Extraction');
- ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='Lucifer'),'light is Grace against Lucifer');
+ ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='False Light'),'light is Grace against False Light');
  /* round KE, his words: "Just change illumination to light." The key stays IL. */
  ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
   'and the Heart axis is called Light, not Illumination');
@@ -2336,7 +2336,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     coherent word, the inverted word. Three inverted words are not here on
     purpose and are asserted unchanged below. The check reads the words off the
     data, so a later edit to one of them is a named diff and not a silent one. */
- {const want={IL:['Grace','Lucifer'],DE:['Devotion','Asmodeus'],OR:['Liberation','Set'],
+ {const want={IL:['Grace','False Light'],DE:['Devotion','Compulsive Craving'],OR:['Liberation','Engineered Chaos'],
    PO:['Discipline','Sacrificial Extraction'],PE:['Discernment','Fraud'],TR:['Communion','Gatekeeping'],
    CH:['Grounded Fire','Reactivity'],RE:['Transmutation','Vengeance']};
   const bad=MIRROR.filter(m=>!want[m.k]||m.up!==want[m.k][0]||m.dn!==want[m.k][1]).map(m=>m.k+' '+m.up+'/'+m.dn);
@@ -2348,24 +2348,24 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   const pd={FL:'Poisoning',AL:'Coercive Abduction',HO:'Forced Alteration'}, pe={};
   E.PATHS.forEach(p=>{pe[p.k]=p;});
   ok(Object.keys(pd).every(k=>pe[k].dn===pd[k]),'the three researched inversions are Poisoning, Coercive Abduction and Forced Alteration');
-  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='Lucifer',
+  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='False Light',
    'and the two paths that are axes read twice follow their axes\' words');
   const gov=CI.map(c=>c.by).join('|');
   ok(gov==='Gatekeeping|Judgment|Insatiability|Possessiveness|Reactivity|Vengeance|Violence|Fraud|Satan frozen',
    'the nine governors are behaviour words, and the ninth is not on his list so it is untouched, saw '+gov);
-  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Baal|Set|Lucifer',
-   'the blueprint renames Malak and leaves Baal, Set and Lucifer, which are not his to be renamed without his word');
+  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Manipulation|Engineered Chaos|False Light',
+   'the blueprint carries behaviour words for all four, Baal, Set and Lucifer included, as his 17 November words on the Compass still showing names ruled');
   /* THE THREE FIGURES WITH NO ENTRY ARE NOT INVENTED. Nimrod, the Harpies and
      Ephialtes are on his table and in no table here. A name is only added when
      a row of data stands behind it, so this holds that no word appears alone. */
   const everything=JSON.stringify([MIRROR,E.PATHS,HOME_POLES,CI,BLUEPRINT,E.TEACHER_RECIPES]);
   ok(!/Hubris|Torment|Defiance/.test(everything),'Hubris, Torment and Defiance have no entry to attach to and are not written');
-  /* NO MYTHOLOGICAL NAME IS PRINTED ANY MORE EXCEPT THE FOUR HE HAS NOT RULED.
+  /* NO MYTHOLOGICAL NAME IS PRINTED ANY MORE, THE FOUR HELD BACK INCLUDED, 17 November.
      The retired words are searched for in every string the Compass and the
      recipe table can hand a screen, so one left in a row, a caption or a path
      is found here and not by him. Lucifer, Asmodeus, Set and Baal are the four
      whose names are still his to give. */
-  const retired=/\b(Geryon|Druj|The Lie|Moloch|Charon|Phlegyas|Furies|Malak|Kaliya|Ravana|Shu and Hu|Apep|farmer of Song|Minos|Cerberus|Plutus|Minotaur)\b/;
+  const retired=/\b(Geryon|Druj|The Lie|Moloch|Charon|Phlegyas|Furies|Malak|Kaliya|Ravana|Shu and Hu|Apep|farmer of Song|Minos|Cerberus|Plutus|Minotaur|Lucifer|Asmodeus|Baal|Krishna|Lao Tzu|Akhenaten|Confucius)\b/;
   const left=[]; (function walk(v,at){
    if(typeof v==='string'){if(retired.test(v)&&!/^(src|crosswalk)$/.test(at))left.push(at+': '+v.slice(0,50));}
    else if(v&&typeof v==='object'&&!(v instanceof Function))Object.keys(v).forEach(k=>walk(v[k],k));})
@@ -2386,7 +2386,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   /* the glossary's five, by key since 17 November: the three that stand on no
      axis still print their teacher, and the two that are axes read twice print
      the axes' words */
-  ok(['FL','AW','BO','AL','HO'].every(k=>PATHS.some(p=>p.k===k))&&['Krishna','Rama','Lao Tzu'].every(n=>PATHS.some(p=>p.up===n)),
+  ok(['FL','AW','BO','AL','HO'].every(k=>PATHS.some(p=>p.k===k))&&['Free Flow','Duty','Non Resistance'].every(n=>PATHS.some(p=>p.up===n)),
    'and they are the glossary\'s five');
   const drift=PATHS.filter(p=>p.from==='codex')
    .filter(p=>!MIRROR.some(m=>m.up===p.up&&m.dn===p.dn&&m.dnd===p.dnd));
@@ -6974,8 +6974,13 @@ g('J14 · the starter recipe for each teacher');
   const credit=TEACHER_RECIPES.filter(r=>r.who).map(r=>r.k+':'+r.who);
   ok(TEACHER_RECIPES.every(r=>{const pl=compassPoleOf(r.k); return r.who?r.who===pl.up:true;}),
    'a teacher\'s credit is only on a pole that still prints that teacher, saw '+credit.join(', '));
-  ok(credit.length===5&&credit.map(c=>c.split(':')[1]).sort().join()==='Akhenaten,Confucius,Krishna,Lao Tzu,Rama',
-   'and the five poles still waiting for a behaviour word are the five he has not given one for, saw '+credit.join(', '));
+  ok(credit.length===0,
+   'and no recipe carries a teacher\'s credit now that every pole has a behaviour word, saw '+credit.join(', '));
+  /* the master list prints the word and keeps the person as its key, so no
+     master is shown by his own name and every one reads the pole he stands on */
+  ok(E.MASTERS.every(x=>x.word&&x.word!==x.nm)&&E.MASTERS.filter(x=>x.nm==='Krishna')[0].word==='Free Flow'
+   &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clear Conduction',
+   'every master prints the word of the pole he stands on, and keeps his name only as a key');
   ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
   ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
    'each pole on no axis carries both marks, its words, and the source its opposite is to be checked against');
@@ -6983,7 +6988,7 @@ g('J14 · the starter recipe for each teacher');
   ok(HOME_POLES.every(p=>compassPoleOf(p.k)===p),'compassPoleOf finds each of the three by key');
   ok(compassPoleOf('TU').ic===E.SI.filter(l=>l.nm==='Truth')[0].ic&&compassPoleOf('NA').ic===E.SI.filter(l=>l.nm==='Nature')[0].ic,
    'Zoroaster and Confucius wear the mark of the law their quality names, read and not copied');}
- ok(TEACHER_RECIPES.filter(r=>r.q==='Light'||r.q==='Revelation').filter(r=>!r.who).length===2,'the two rows that were Jesus carry no teacher now, one each');
+ ok(TEACHER_RECIPES.filter(r=>r.k==='IL'||r.k==='RE').filter(r=>!r.who).length===2,'the two rows that were Jesus carry no teacher now, one each, found by key since 17 November because the Light of Akhenaten is a third row with the same quality name');
  /* the three not found branches, which coverage showed nothing reached: an
     unknown pole, an unknown ritual id and a step the library no longer carries
     each answer null or drop out, and none throws */
