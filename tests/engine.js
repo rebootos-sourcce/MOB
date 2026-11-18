@@ -11173,7 +11173,11 @@ console.log('\nGW · the glossary reaches every tooltip it should, task #80');
     long enough to pass, so it now resolves through its own wording like
     any other GLOSS word and is no longer silent everywhere a tooltip or an
     education line would have named it. */
- const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Integrity','Mask','Plexus','Release','Saboteur'];
+ /* NAMED CHANGE, 18 November: Integrity, Mask and Saboteur left OTHER. Each
+    said one thing in the Wisdom school and another in every tooltip, so the
+    GLOSS row now opens on the table's sentence word for word (kb.js) and the
+    word answers through its own first sentence. */
+ const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Plexus','Release'];
  const NONE=['Memory'];
  ok(JSON.stringify(other.slice().sort())===JSON.stringify(OTHER.slice().sort()),
   'the GLOSS words whose tooltip is another table\'s wording are the acknowledged list, got '+JSON.stringify(other));

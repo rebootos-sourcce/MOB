@@ -157,7 +157,16 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
+ /* MASK AND SABOTEUR SAID ONE WAY, 18 November. The Wisdom school glossary
+    (GLOSS, engine/data/kb.js) opened Mask on "built up distortion that has
+    started to pass for who you are" and Saboteur on "a fetter squeezed into
+    a habit", while every tooltip said this table's sentence: two meanings for
+    one word on two screens. The canon makes a mask a developmental way of
+    showing up worn over the points it speaks from (MASKS, b) and a saboteur a
+    set of fetters at magnitude, so this table's sentences stand, the mask one
+    gains "you grow into" and the point, and GLOSS now opens on the same words.
+    tests/unpack.js holds the two places to one sentence. */
+ 'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -216,6 +225,21 @@ var UNPACK_BASE={
  /* Expression the reading, as against expression the numerology number,
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* THE FOUR READINGS THAT HAD NO SENTENCE HERE, 18 November. Pull, Overshoot,
+    Installed and Self-read shadow had their meanings typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile was the only place
+    that could say them: the session card, the axis card, the pole drill and
+    the release ledger print the same four words and had nothing to ask for,
+    and the owner read them on the status board with no idea what they were.
+    Overshoot's typed tip also carried "60%", which this table refuses. Each
+    sentence is what compute() builds: pull is leverPull averaged over every
+    address, overshoot is n.jq, the opposite past the helpful point, installed
+    is the opposite in place (S.replace, and n.pole where it has passed what is
+    held), and the self-read shadow is lawSQ, 100 less CQ. */
+ 'pull':'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+ 'overshoot':'Overshoot is an opposite feeling put in past the point where it helps, so the fetter under it will not shut.',
+ 'installed':'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+ 'self-read shadow':'Self-read shadow is the part of the laws your own answers leave out, always 100 less CQ, and only a changed law answer moves it.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
  /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
     4", the weight on nought to ten; every weight prints as a percent now, so

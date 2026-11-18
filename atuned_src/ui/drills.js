@@ -698,7 +698,7 @@ function runQDrill(q){
       every address in the body. DESIGN-tooltip-copy.md, example 7. */
    +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has an opposite. Fear turns to trust, and anger to equanimity, a steady calm. '
    +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, from nothing to 100%, averaged across every address in your body.</p>'
-   +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
+   +'<div class="pm-eye">'+unp('installed','Installed')+'</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
  rdShell(h);}
 
@@ -723,7 +723,12 @@ function runXYZDrill(){
    +fmtPct('charge',S.charge.Apathy||0)+'</b>, shadow weight <b>'+fmtPct('dq',r.DQ)+'</b>.','vitality'],
   ['Awareness',r.Y,'3rd Eye','law reach against distortion. Law reach <b>'+fmtPct('lawseat',r.It)
    +'</b>, distortion <b>'+fmtPct('distortion',r.dist)+'</b>.','awareness'],
-  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+fmtPct('integrity',r.Ig)
+  /* r.Ig is not the integrity the table defines, which is the laws kept and
+     is CQ: it is the law mean lifted by the poles and pulled down by
+     overshoot, so it says that here rather than borrowing the word, the same
+     ruling as the Compass paragraph (ui/cone.js), 18 November */
+  ['Will',r.Z,'Root','your laws carried through a clear segment. Your laws, lifted by what is '+unp('installed','installed')
+   +' and pulled down by '+unp('overshoot','overshoot')+', read <b>'+fmtPct('integrity',r.Ig)
    +'</b>, mean depth <b>'+fmtPct('weight',r.SQm)+'</b>.','will']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
