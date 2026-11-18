@@ -596,7 +596,9 @@ ui/srcface.js (the canvas title becomes SrcFace.key()), shell/head.html (one
 line of caption height), shell/body.html (the hidden #micsay), tests/talksilence.js
 (new), tests/voicefall.js (listening is read off the page and the hidden
 region, not the bar), tests/README.md. DECISIONS.md has the ruling, what it
-overrides and four open questions for him. Branch fix/talk-silence.
+overrides and five open questions for him. Branch fix/talk-silence.
+Second pass, from review: the noise guard dropped mm-hmm, uh huh, mhm and hmm
+and a final of only stars; both now land, and the gate says so.
 measure: tests/talksilence.js on the c2bf52a2 build reads 28 failures, one or
 more for each of the five reports: the circle's lit pixels at 4.3 times its
 rest in 33 of 33 samples, a card on every hover over the canvas box, 54 glides

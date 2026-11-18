@@ -10,7 +10,7 @@
    into, the commit button keeps jumping to the upper left-hand corner every
    like 10 seconds, briefly."
 
-   NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/talksilence.js
+   NODE_PATH=/opt/node22/lib/node_modules CHROME=<path to chromium> node tests/talksilence.js
    ATUNED_FILE=path  runs a different build, which is how each check here was
                      shown to fail on the build from before the fix
    SHOTS=dir         also writes the pictures a person looks at
@@ -21,11 +21,19 @@
       the rest of the session (beat, saboteur trace, lit rings). Measured on
       the lit pixels of the real canvas, against its own rest, and on the
       face's own state. And a recogniser result with no word in it (empty,
-      spaces, a lone filler sound) is not a turn, while yes, no, "I don't
-      know", sad and the safety door's own words all still are.
-   2  No word under the circle at rest. The italic Listening is gone and the
-      person's own interim words still show there, and the circle does not
-      move when they arrive.
+      spaces, a lone hesitation sound) is not a turn, while yes, no, "I don't
+      know", sad, the spoken yes (mm-hmm, uh huh, mhm, hmm), a final of only
+      stars, a real sentence that holds an um or a the, and the safety door's
+      own words (every phrase in SAFE_WORDS, alone and behind a hesitation)
+      all still are. Every stand-in result is checked to have reached a live
+      recogniser, since one refused between restarts makes "nothing landed"
+      pass on nothing.
+   2  No word under the circle at rest, and none anywhere. The italic
+      Listening is gone, the person's own interim words still show there, the
+      circle does not move when they arrive, and the set of visible text on the
+      page after Talk (a moment after, nine seconds after, forty seconds after,
+      at 1600 and at 390) holds nothing that was not on it before. His rule is
+      "no text on that screen", not "not these two phrases".
    3  No bar. Listening. Press again to stop. is not drawn and not logged,
       a hidden polite region tells a screen reader the microphone opened and
       closed, and a real failure still reaches the dock.
@@ -150,7 +158,7 @@ async function openLoaded(browser, w, h, o) {
   const p = await open(browser, w, h, Object.assign({}, o, { wavSec: 0.03 }));
   await p.evaluate(async () => { if (!ST_LISTEN) stMic();
     for (let i = 0; i < 120 && !__mic.live(); i++) await new Promise(r => setTimeout(r, 25));
-    __mic.say('I was afraid and angry all day. My chest is tight and I could not sleep.'); });
+    if (!__mic.say('I was afraid and angry all day. My chest is tight and I could not sleep.')) throw new Error('the stand-in recogniser was not live for the set-up sentence'); });
   await p.waitForFunction(() => document.getElementById('stapply') && getComputedStyle(document.getElementById('stapply')).display !== 'none', null, { timeout: 10000 }).catch(() => {});
   await p.waitForTimeout(800);
   await p.click('#stapply').catch(() => {});
@@ -188,6 +196,25 @@ const SEEN = () => { const out = []; const w = document.createTreeWalker(documen
     if (!hid) { const r = e.getBoundingClientRect(); if (r.width < 3 || r.height < 3) hid = true; }
     if (!hid) out.push(t.slice(0, 60)); }
   return out; };
+/* EVERY VISIBLE WORD ON THE PAGE, not only the two phrases he named. His
+   rule is "there should be no text on that screen", and a check that looks
+   for the words Listening and Press again to stop passes a new paragraph
+   that says anything else. So the set of visible text nodes is read before
+   Talk is pressed and again after, and the second must hold nothing the
+   first did not. Hidden regions, an element with no size, and the screen
+   reader's own region are not visible and are not counted; a canvas has no
+   text node and is measured by its lit pixels instead. Compared as a
+   multiset, so a line that appears twice is found. */
+const TEXTS = () => { const out = []; const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let nd;
+  while ((nd = w.nextNode())) { const t = nd.nodeValue.replace(/\s+/g, ' ').trim(); if (!t) continue;
+    let e = nd.parentElement, hid = !e;
+    for (let a = e; a && !hid; a = a.parentElement) { if (a.matches && a.matches('.src-say,[hidden],script,style,noscript,template')) hid = true;
+      const cs = getComputedStyle(a); if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity === 0) hid = true; }
+    if (!hid) { const r = e.getBoundingClientRect(); if (r.width < 3 || r.height < 3) hid = true; }
+    if (!hid) out.push(t.slice(0, 80)); }
+  return out.sort(); };
+const addedText = (before, after) => { const left = before.slice(), add = [];
+  after.forEach(t => { const i = left.indexOf(t); if (i >= 0) left.splice(i, 1); else add.push(t); }); return add; };
 const circleOf = p => p.evaluate(() => { const c = document.getElementById('srcface'); const r = c.getBoundingClientRect(); const R = Math.max(12, Math.min(r.width, r.height) / 2 - 2);
   return { cx: r.left + r.width / 2, cy: r.top + r.height / 2, R, box: [r.left, r.top, r.width, r.height], top: Math.round(r.top) }; });
 const tipOn = p => p.evaluate(() => { const t = document.getElementById('tip'); return !!(t && t.classList.contains('on')); });
@@ -210,6 +237,21 @@ const analyse = w => {
   return { samples: w.rects.length, shown: vis.length, steady: [mx, my], excursions: out.length, first: out.slice(0, 4), tr: w.tr }; };
 
 async function pressTalk(p) { await p.click('#stmic'); }
+
+/* A STAND-IN RESULT IS ONLY A RESULT IF A LIVE RECOGNISER TOOK IT. __mic.say
+   answers false while the recogniser is between restarts or held for Source
+   AI's own voice, and a check that reads "nothing landed" passes for ever on
+   a result that was never delivered. So every say in this file waits for a
+   recogniser that is on, tries again when it is refused, and writes down any
+   it could not deliver in p.lost; each page ends on one check that says
+   nothing was lost. */
+async function say(p, t) {
+  for (let k = 0; k < 20; k++) {
+    await p.waitForFunction(() => !ST_HUSH && __mic.live(), null, { timeout: 8000 }).catch(() => {});
+    if (await p.evaluate(t => __mic.say(t), t)) return true;
+    await p.waitForTimeout(150); }
+  (p.lost = p.lost || []).push(t); return false; }
+const lostOk = p => !(p.lost || []).length;
 
 (async () => {
   const browser = guardBrowser(await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' }));
@@ -245,6 +287,8 @@ async function pressTalk(p) { await p.click('#stmic'); }
     const f0 = await face(p);
     ok(restMean > 300 && !f0.engaged && f0.word === '' && !f0.reading, 'at rest the circle is lit by its own dots and engaged is false: ' + JSON.stringify({ restMean: Math.round(restMean), f0 }));
     const log0 = await p.evaluate(() => MSG_LOG.length);
+    const text0 = await p.evaluate(TEXTS);
+    ok(text0.length > 5, 'the page at rest has words to compare against: ' + text0.length + ' visible text nodes');
 
     await pressTalk(p);
     const t0 = Date.now();
@@ -260,6 +304,8 @@ async function pressTalk(p) { await p.click('#stmic'); }
     const say1 = await p.evaluate(() => { const e = document.getElementById('micsay'); const r = e ? e.getBoundingClientRect() : { width: 999, height: 999 };
       return { text: e ? e.textContent : null, live: e ? e.getAttribute('aria-live') : null, role: e ? e.getAttribute('role') : null, w: Math.round(r.width), h: Math.round(r.height) }; });
     ok(say1.text === 'Microphone open.' && say1.live === 'polite' && say1.w <= 2 && say1.h <= 2, 'a hidden polite region tells a screen reader the microphone is open: ' + JSON.stringify(say1));
+    const add1 = addedText(text0, await p.evaluate(TEXTS));
+    ok(add1.length === 0, 'a moment after Talk the page shows no word it did not show before: ' + JSON.stringify(add1));
     if (SHOTS) await snap(p, 'talk-pressed-early-1600.png');
 
     /* 1 and 2, silence, sampled for nine seconds from the press */
@@ -278,6 +324,8 @@ async function pressTalk(p) { await p.click('#stmic'); }
     ok(late.has && late.cap === '', 'the caption holds its place and has nothing in it: ' + JSON.stringify(late));
     ok(!late.on && late.text === '' && late.log === log0, 'the dock never opened and nothing was logged in nine seconds');
     ok((await p.evaluate(SEEN)).length === 0, 'no visible word Listening or Press again to stop anywhere on the page: ' + JSON.stringify(await p.evaluate(SEEN)));
+    const add2 = addedText(text0, await p.evaluate(TEXTS));
+    ok(add2.length === 0, 'and after nine seconds of silence the page still shows no word it did not show before Talk, of any kind: ' + JSON.stringify(add2));
     const cTop0 = (await circleOf(p)).top;
 
     /* the hover again, now that the circle has moved up under a pointer that was left on Talk */
@@ -311,8 +359,7 @@ async function pressTalk(p) { await p.click('#stmic'); }
     await p.waitForTimeout(2200);
 
     /* the known good case: a real sentence wakes the circle, and the probe sees it */
-    await p.waitForFunction(() => !ST_HUSH && __mic.live(), null, { timeout: 8000 }).catch(() => {});
-    await p.evaluate(() => __mic.say('I was afraid and angry all day. My chest is tight and I could not sleep.'));
+    await say(p, 'I was afraid and angry all day. My chest is tight and I could not sleep.');
     const talkSamples = await sample(p, 7000, 250);
     const f1 = await face(p);
     ok(f1.engaged, 'a real sentence still wakes the circle: ' + JSON.stringify(f1));
@@ -324,7 +371,7 @@ async function pressTalk(p) { await p.click('#stmic'); }
     await pressTalk(p); await p.waitForTimeout(500);
     const cl = await p.evaluate(() => ({ text: (document.getElementById('micsay') || {}).textContent, listen: ST_LISTEN, on: document.getElementById('msgdock').classList.contains('on') }));
     ok(cl.text === 'Microphone closed.' && !cl.listen && !cl.on, 'pressing Talk again closes it and the hidden region says so, still with no bar: ' + JSON.stringify(cl));
-    ok(!p.errs.length, 'no page errors: ' + p.errs.join(' | '));
+    ok(!p.errs.length && lostOk(p), 'no page errors, and every stand-in result reached a live recogniser: ' + p.errs.join(' | ') + JSON.stringify(p.lost || []));
     await p.cx.close();
   }
 
@@ -339,20 +386,44 @@ async function pressTalk(p) { await p.click('#stmic'); }
     const b0 = await p.evaluate(() => ({ text: ST_TEXT, chat: SRC_CHAT.length, renders: window.__renders, face: SrcFace.state().engaged, spoken: 0 }));
     const v0 = p.voice.length;
     ok(v0 === 1 && !b0.face, 'on a blank page Talk has greeted once and the circle has not been woken by it: ' + JSON.stringify({ voice: p.voice, face: b0.face }));
-    await p.evaluate(async () => { for (const t of ['', '   ', 'uh', 'Hmm.', 'the', 'Um, uh', '...', '?!']) { __mic.say(t); await new Promise(r => setTimeout(r, 40)); }
-      __mic.interim(''); await new Promise(r => setTimeout(r, 40)); __mic.interim(''); await new Promise(r => setTimeout(r, 40)); });
+    /* noise: nothing in these is a word, or only the hesitations that are never an answer */
+    for (const t of ['', '   ', 'uh', 'Um.', 'the', 'Um, uh', 'er, ah', '...', '?!']) { await say(p, t); await p.waitForTimeout(40); }
+    await p.evaluate(async () => { __mic.interim(''); await new Promise(r => setTimeout(r, 40)); __mic.interim(''); await new Promise(r => setTimeout(r, 40)); });
     await p.waitForTimeout(500);
     const b1 = await p.evaluate(() => ({ text: ST_TEXT, chat: SRC_CHAT.length, renders: window.__renders, face: SrcFace.state() }));
-    ok(b1.text === b0.text && b1.chat === b0.chat, 'empty finals, spaces, lone filler sounds and bare punctuation are not turns: the entry reads ' + JSON.stringify(b1.text) + ' and the thread holds ' + b1.chat);
+    ok(b1.text === b0.text && b1.chat === b0.chat, 'empty finals, spaces, lone hesitation sounds and bare punctuation are not turns: the entry reads ' + JSON.stringify(b1.text) + ' and the thread holds ' + b1.chat);
     ok(!b1.face.engaged && !b1.face.reading && b1.face.word === '', 'none of them started a reading on the face: ' + JSON.stringify({ engaged: b1.face.engaged, reading: b1.face.reading, word: b1.face.word }));
     ok(p.voice.length === v0, 'and none of them was answered out loud: ' + JSON.stringify(p.voice));
-    ok(b1.renders === b0.renders, 'an interim result that says what the caption already says paints nothing: ' + (b1.renders - b0.renders) + ' renders for ten empty results');
-    for (const t of ['yes', 'no', 'I don\'t know', 'sad']) {
-      await p.waitForFunction(() => !ST_HUSH && __mic.live(), null, { timeout: 8000 }).catch(() => {});
-      await p.evaluate(t => __mic.say(t), t); await p.waitForTimeout(350); }
+    ok(b1.renders === b0.renders, 'an interim result that says what the caption already says paints nothing: ' + (b1.renders - b0.renders) + ' renders for eleven empty results');
+
+    /* answers: the short ones, the spoken yes, a word that was masked, and
+       real sentences that happen to hold a hesitation or an article. Each must
+       land as a turn and be answered out loud, and the last two are the ones
+       a guard that drops a sentence for holding one filler word would lose */
+    const landed = [];
+    const turn = async t => { const before = p.voice.length; const sent = await say(p, t); landed.push(t); await p.waitForTimeout(350);
+      for (let i = 0; i < 60 && p.voice.length === before; i++) await p.waitForTimeout(100);
+      return { sent, answered: p.voice.length > before, status: await p.evaluate(() => document.getElementById('status').textContent) }; };
+    for (const t of ['yes', 'no', 'I don\'t know', 'sad']) await turn(t);
     const b2 = await p.evaluate(() => ST_TEXT);
-    ok(b2 === 'yes\nno\nI don\'t know\nsad', 'a real short answer is never swallowed, yes, no, I don\'t know and sad all land as turns: ' + JSON.stringify(b2));
-    ok(!p.errs.length, 'no page errors: ' + p.errs.join(' | '));
+    ok(b2 === landed.join('\n'), 'a real short answer is never swallowed, yes, no, I don\'t know and sad all land as turns: ' + JSON.stringify(b2));
+    const yes = [];
+    for (const t of ['mm-hmm', 'Mm-hmm.', 'uh huh', 'mhm', 'hmm']) yes.push(Object.assign({ t }, await turn(t)));
+    const b3 = await p.evaluate(() => ST_TEXT);
+    ok(b3 === landed.join('\n'), 'the spoken yes is never swallowed: mm-hmm, uh huh, mhm and hmm are the brief answers the engine itself lists, and each lands as a turn: ' + JSON.stringify(b3.split('\n').slice(4)));
+    ok(yes.every(y => y.sent && y.answered), 'and each is answered out loud: ' + JSON.stringify(yes.map(y => [y.t, y.answered])));
+    const star = await turn('****');
+    const b4 = await p.evaluate(() => ST_TEXT);
+    ok(b4 === landed.join('\n') && /hid a word behind stars/.test(star.status), 'a final made only of stars is a turn with the hidden-word line, not a silent drop: ' + JSON.stringify({ text: b4.split('\n').pop(), status: star.status }));
+    ok(star.answered, 'and it is answered out loud');
+    const fz = [];
+    for (const t of ['the kids were fighting', 'um I was angry']) fz.push(Object.assign({ t }, await turn(t)));
+    const b5 = await p.evaluate(() => ST_TEXT);
+    ok(b5 === landed.join('\n') && fz.every(y => y.sent && y.answered), 'a real sentence that holds the or um is a turn and is answered, never dropped for one filler word: ' + JSON.stringify(b5.split('\n').slice(-2)) + JSON.stringify(fz.map(y => [y.t, y.answered])));
+    const g = await p.evaluate(() => ({ yes: ['mm-hmm', 'Mm-hmm.', 'uh huh', 'mhm', 'hmm', 'huh', 'mm'].map(stMicNoise), star: ['****', 'f***', '*'].map(stMicNoise),
+      sentence: ['the kids were fighting', 'um I was angry', 'uh yes', 'er no'].map(stMicNoise), noise: ['uh', 'um', 'Um, uh', 'the', 'er, ah', 'umm', 'uhh', '', '   ', '...', '?!'].map(stMicNoise) }));
+    ok(g.yes.every(x => x === false) && g.star.every(x => x === false) && g.sentence.every(x => x === false) && g.noise.every(x => x === true), 'the guard itself, read straight: the spoken yes, stars and sentences are not noise, and the hesitations and empties are: ' + JSON.stringify(g));
+    ok(!p.errs.length && lostOk(p), 'no page errors, and every stand-in result reached a live recogniser: ' + p.errs.join(' | ') + JSON.stringify(p.lost || []));
     await p.cx.close();
 
     console.log('\n=== the safety door is never gated by that guard ===');
@@ -360,10 +431,19 @@ async function pressTalk(p) { await p.click('#stmic'); }
     await q.evaluate(() => stMic());
     await q.waitForFunction(() => __mic.live() && !ST_HUSH, null, { timeout: 8000 }).catch(() => {});
     await q.waitForTimeout(300);
-    await q.evaluate(() => __mic.say('I want to kill myself.')); await q.waitForTimeout(500);
-    const sf = await q.evaluate(() => ({ text: ST_TEXT, safe: stSafe(), ...(typeof stMicNoise === 'function' ? { noise: stMicNoise('I want to kill myself.'), noiseUh: stMicNoise('uh'), noiseYes: stMicNoise('yes'), noiseSad: stMicNoise('sad'), noiseDk: stMicNoise('I don\'t know'), noiseAcc: stMicNoise('é'), noiseCjk: stMicNoise('你好') } : { noise: null, noiseUh: null }) }));
-    ok(sf.text === 'I want to kill myself.' && sf.safe && !sf.noise, 'crisis words always pass the guard and the door stands: ' + JSON.stringify({ text: sf.text, safe: sf.safe, noise: sf.noise }));
-    ok(sf.noiseUh === true && sf.noiseYes === false && sf.noiseSad === false && sf.noiseDk === false && sf.noiseAcc === false && sf.noiseCjk === false, 'the guard names sounds and never words, and reads other scripts as speech: ' + JSON.stringify(sf));
+    await say(q, 'I want to kill myself.'); await q.waitForTimeout(600);
+    await say(q, 'uh I want to kill myself'); await q.waitForTimeout(600);
+    const sf = await q.evaluate(() => ({ text: ST_TEXT, safe: stSafe(), noise: stMicNoise('I want to kill myself.'), noiseUh: stMicNoise('uh'), noiseYes: stMicNoise('yes'), noiseSad: stMicNoise('sad'), noiseDk: stMicNoise('I don\'t know'), noiseAcc: stMicNoise('\u00e9'), noiseCjk: stMicNoise('\u4f60\u597d') }));
+    ok(sf.text === 'I want to kill myself.\nuh I want to kill myself' && sf.safe && !sf.noise, 'crisis words always pass the guard and the door stands, also behind a hesitation: ' + JSON.stringify({ text: sf.text, safe: sf.safe, noise: sf.noise }));
+    ok(sf.noiseUh === true && sf.noiseYes === false && sf.noiseSad === false && sf.noiseDk === false && sf.noiseAcc === false && sf.noiseCjk === false, 'the guard names hesitations and never words, and reads other scripts as speech: ' + JSON.stringify(sf));
+    /* every phrase the door is built on, alone and behind a hesitation, is read as speech */
+    const sw = await q.evaluate(() => { const bad = []; let n = 0; SAFE_WORDS.forEach(row => row.say.forEach(w => { n++; [w, 'uh ' + w, 'um, the ' + w + '.'].forEach(t => { if (stMicNoise(t)) bad.push(t); }); })); return { n, bad: bad.slice(0, 5) }; });
+    ok(sw.n > 20 && sw.bad.length === 0, 'every phrase in SAFE_WORDS (' + sw.n + ' of them), alone, behind a hesitation, and between an article and a stop, is read as speech: ' + JSON.stringify(sw.bad));
+    /* the exemption itself: a table that one day held a word the door is built on would take that word for noise unless srcSafe is read first */
+    const ex = await q.evaluate(() => { const had = {}; ['suicide', 'suicidal'].forEach(w => { had[w] = w in ST_FILLER; ST_FILLER[w] = 1; });
+      const r = [stMicNoise('suicide'), stMicNoise('suicidal'), stMicNoise('suicide suicidal')]; Object.keys(had).forEach(w => { if (!had[w]) delete ST_FILLER[w]; }); return r; });
+    ok(ex.every(x => x === false), 'the safety read comes first: even if the hesitation table held a word the door reads, that word is not dropped as noise: ' + JSON.stringify(ex));
+    ok(lostOk(q), 'every stand-in result reached a live recogniser: ' + JSON.stringify(q.lost || []));
     await q.cx.close();
 
     console.log('\n=== a real failure still reaches the dock ===');
@@ -392,6 +472,7 @@ async function pressTalk(p) { await p.click('#stmic'); }
     await D.evaluate(() => { window.__inj = 0; setInterval(() => { const e = document.getElementById('stapply'); if (!e) return; window.__inj++; const was = e.style.transform;
       e.style.transform = 'translate(-1200px,-900px)'; setTimeout(() => { e.style.transform = was; }, 150); }, 10000); });
     /* Talk on in the two loaded pages that go quiet, Talk left off in the third */
+    const [tA, tC] = await Promise.all([A.evaluate(TEXTS), C.evaluate(TEXTS)]);
     await Promise.all([pressTalk(A), pressTalk(C)]);
     await A.waitForTimeout(1500);
     if (SHOTS) await snap(C, 'talk-pressed-early-390.png');
@@ -416,6 +497,8 @@ async function pressTalk(p) { await p.click('#stmic'); }
     ok(!(await tipOn(C)), 'and a tap on the circle at 390 opens no card');
     const seen390 = await C.evaluate(SEEN);
     ok(seen390.length === 0, 'and at 390 there is no visible word Listening or Press again to stop: ' + JSON.stringify(seen390));
+    const [xA, xC] = [addedText(tA, await A.evaluate(TEXTS)), addedText(tC, await C.evaluate(TEXTS))];
+    ok(xA.length === 0 && xC.length === 0, 'forty seconds after Talk, at 1600 and at 390, the page shows no word it did not show before Talk: ' + JSON.stringify({ at1600: xA, at390: xC }));
     await shot(C, 'talk-silent-tap-390.png');
     const errs = [A, B, C, D].map(p => p.errs.join(' | ')).filter(Boolean);
     ok(!errs.length, 'no page errors in any of the four pages: ' + errs.join(' || '));

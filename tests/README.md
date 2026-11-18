@@ -164,7 +164,7 @@ that must fail too.
 Talk with nothing said has its own gate, added 18 November after five reports
 from one screenshot of the Dashboard.
 
-    NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/talksilence.js
+    NODE_PATH=/opt/node22/lib/node_modules CHROME=<path to chromium> node tests/talksilence.js
     SHOTS=dir ... node tests/talksilence.js                      and the pictures
     ATUNED_FILE=other.html node tests/talksilence.js             a different build
     TS_ONLY=l1,blank,jump  ... node tests/talksilence.js         one group of three
@@ -173,9 +173,15 @@ from one screenshot of the Dashboard.
 circle at rest (the lit pixels of the real canvas against its own rest, and the
 face's own `engaged`, word and reading), while the greeting is still asked for
 and still plays; that a recogniser result with no word in it is not a turn and
-that yes, no, I don't know, sad and the safety door's own words still are;
-that no word of Source AI's is on the page at rest, the person's own interim
-words still show, and the circle does not move for them; that the bar line is
+that yes, no, I don't know, sad, the spoken yes (mm-hmm, uh huh, mhm, hmm), a
+final of only stars (which keeps its hidden-word line), a sentence that holds
+an um or a the, and the safety door's own words (alone, behind a hesitation,
+and every phrase in SAFE_WORDS) still are; that every stand-in result reached
+a live recogniser, because one refused between restarts would let a check on
+"nothing landed" pass on nothing; that no word of any kind is on the page
+after Talk that was not there before it (the set of visible text nodes, read
+before and after, at 1600 and 390), the person's own interim words still show,
+and the circle does not move for them; that the bar line is
 neither drawn nor logged, a hidden polite region tells a screen reader the
 microphone opened and closed, and a real failure still reaches the dock; that
 the circle has no hover card (and Talk's own still opens one, the positive

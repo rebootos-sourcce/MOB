@@ -4921,21 +4921,44 @@ function stMicLine(code){
  return (code in M)?M[code]:('Recording stopped: '+code+'.');}
 function stMicSay(code){ var m=stMicLine(code); if(m)status(m,'fail'); }
 /* WHAT THE RECOGNISER HANDS OVER THAT IS NOT SPEECH, 18 November. A final
-   with no letter or digit in it, or one made only of lone filler sounds
-   (the hesitations a microphone in a quiet or noisy room produces, and the
-   one article it invents out of hiss), has no word in it for the engine to
+   with no letter or digit in it, or one made only of lone hesitation sounds
+   (the stumble a microphone in a quiet or noisy room produces, and the one
+   article it invents out of hiss), has no word in it for the engine to
    count and nothing for Source AI to answer. It is dropped before it is a
-   turn. The list is short on purpose and names sounds, never words a person
-   means: yes, no, "I don't know" and one word like sad are real answers and
-   pass, and the engine counts none of the first three, so the test is not
-   "the engine found a hit". Any text srcSafe reads passes first, whatever
-   it is made of: the door is never gated by a guard written for noise.
+   turn. The list is short on purpose and names hesitations, never words a
+   person means: yes, no, "I don't know" and one word like sad are real
+   answers and pass, and the engine counts none of the first three, so the
+   test is not "the engine found a hit".
+
+   THE LIST WAS TOO LONG THE FIRST TIME, and a second look took the spoken
+   yes out of it. mm-hmm, uh huh, mhm and hmm are the commonest spoken yes a
+   person gives a yes or no question, and engine/evidence.js lists mm, mhm,
+   hmm, huh and the rest as the brief answers (SRC_ACT.brief) the page is
+   built to take. A guard that dropped them left a person who said mm-hmm
+   hearing nothing back, with no line on the screen to say why. What stays on
+   the list is the hesitation that is never an answer to anything: uh, um,
+   er, ah and their spellings, and the article. What it costs: a room noise
+   the recogniser mishears as a lone hmm now lands as a short turn and is
+   answered. That is the lesser harm, because a person's spoken yes that is
+   dropped fails with nothing on the screen to say so. Put to the
+   owner as an open question in DECISIONS.md.
+
+   TWO THINGS PASS FIRST, whatever they are made of. Any text srcSafe reads:
+   the door is never gated by a guard written for noise. And any text with a
+   star in it: a dictation that hid a word behind stars ("f***", or a bare
+   "****") is a word the person said and the page cannot read, and the
+   existing rule (maskedRuns, the status line in onresult below) says so out
+   loud and asks them to type it over the stars. A guard that took a final
+   made only of stars for noise would drop it with no line at all, which is
+   the silent failure CLAUDE.md rules out.
+
    Letters and digits are read as Unicode ones, so speech in a script the
    list does not know is never mistaken for silence. */
-var ST_FILLER={uh:1,um:1,uhm:1,umm:1,uhh:1,er:1,erm:1,eh:1,ah:1,hm:1,hmm:1,hmmm:1,mm:1,mmm:1,mhm:1,mmhm:1,huh:1,the:1};
+var ST_FILLER={uh:1,um:1,uhm:1,umm:1,uhh:1,er:1,erm:1,eh:1,ah:1,the:1};
 function stMicNoise(t){
  t=String(t||'');
  if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ if(t.indexOf('*')>=0)return false;
  var w=t.toLowerCase().replace(/[^\p{L}\p{N}'’\s]/gu,' ').split(/\s+/).filter(Boolean);
  if(!w.length)return true;
  return w.every(function(x){ return ST_FILLER[x]===1; });}

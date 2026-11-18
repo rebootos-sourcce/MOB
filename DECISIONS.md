@@ -3730,13 +3730,19 @@ Read as, which is the read back he asked for, five changes:
   greeting is still asked for, still spoken and still holds the recording
   while it plays (the 13 November ruling, every reply spoken, stands); the
   circle just is not told about it (`stSrcSpeak`, option `rest`). And a
-  recogniser result with no word in it, an empty final, spaces, a lone filler
-  sound (uh, um, hmm, mm, huh, the), is not a turn any more: it is not written
+  recogniser result with no word in it, an empty final, spaces, a lone
+  hesitation sound (uh, um, er, ah and their spellings, and the article the
+  recogniser invents out of hiss), is not a turn any more: it is not written
   into the entry, not read by the circle and not answered out loud
-  (`stMicNoise`, `ui/storyui.js`). It names sounds and never words: yes, no,
-  "I don't know" and sad are real answers and pass, anything the safety door
-  reads passes first, and letters and digits are read as Unicode so speech in
-  another script is never mistaken for silence.
+  (`stMicNoise`, `ui/storyui.js`). It names hesitations and never words: yes,
+  no, "I don't know", sad, and the spoken yes (mm-hmm, uh huh, mhm, hmm) are
+  real answers and pass, anything the safety door reads passes first, a final
+  with a star in it passes so the existing "Dictation hid a word behind stars"
+  line still speaks, and letters and digits are read as Unicode so speech in
+  another script is never mistaken for silence. The spoken yes is on the
+  engine's own list of brief answers (`SRC_ACT.brief`, `engine/evidence.js`),
+  and a first cut of the guard dropped it, so a person who said mm-hmm to a
+  yes or no question heard nothing back; a second look put it back.
 - **No word of Source AI's own under the circle.** The italic Listening at the
   lower left was the live caption's placeholder. The caption prints the
   person's own interim words while they speak, as the 29 October ruling asked
@@ -3802,6 +3808,14 @@ rest (the lit pixels of the real canvas, a channel above 110):
   answered out loud.
 
 Open, and his call, written so he does not have to go and find them:
+- **A room noise the recogniser mishears as a lone "hmm" or "mm" now counts as
+  a short answer.** To keep the spoken yes (mm-hmm, uh huh, mhm, hmm), the
+  guard no longer drops those four sounds, so a quiet room that the
+  recogniser hears as a lone hmm lands as one short turn, which Source AI
+  answers and which wakes the circle once. The other way round, dropping them,
+  silently ignored a person who said yes. Which mistake does he want? The
+  build now takes the first, because a dropped yes leaves nothing on the
+  screen to say why. Not his call yet.
 - **The words the circle draws on itself while it is reading** (the centre
   word, which runs Listening, Found, Weighing, Holding, Answering, and the
   seat labels such as "Root, Fear" on the rings). They are drawn on a canvas,
