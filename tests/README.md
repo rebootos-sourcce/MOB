@@ -21,12 +21,17 @@ partial intake scoring, the sniffer, the expression deficit model, accuracy,
 the chain compounding in order, every persona computing, the front door, the host
 seam, and the path.
 
-`BUILD-engine.sh` then runs `atuned_src/hostfree.py`, which strips comments and
-string literals and fails on `document`, `window`, `navigator`, `localStorage`,
-`sessionStorage`, `requestAnimationFrame`, `alert`, `fetch`, `XMLHttpRequest` or
-`new Image`. The engine is not allowed to reach for its host. Stripping first
-matters: a comment naming `localStorage` is not a call to it, and the lexicon
-data legitimately contains the word window.
+`BUILD-engine.sh` then runs `atuned_src/hostfree.py`, which strips comments,
+string literals and the literal text of templates, keeps every template `${}`
+slot as code, and fails on any host global named in its `BAD` list. The list
+is not copied here: this paragraph carried a copy, and it went stale the day
+the audio and speech names were added. The engine is not allowed to reach for
+its host. Stripping first matters: a comment naming `localStorage` is not a
+call to it, and the lexicon data legitimately contains the word window.
+
+Before the real scan, the build runs the guard against
+`tests/fixtures/hostfree/`: every `bad-*.js` must fail it and `good.js` must
+pass it. A new blind spot is fixed by adding the fixture that reproduces it.
 
 ## The claims gate
 
