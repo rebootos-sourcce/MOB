@@ -573,7 +573,8 @@ function sumChips(C){
   say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
  if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
   say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
- out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+ /* no chip for a year the hour decides (chineseYear, engine/birth.js) */
+ if(e.chinese)out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
   say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
  out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
   say(unpackOf('life path'),unpackOf('path:'+e.lp)));

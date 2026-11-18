@@ -11374,5 +11374,129 @@ g('MS25 · no two masks are read off the same seats');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
 }
 
+g('EX18 · every worked example has a birth, and the sky read off it is right');
+/* His words, 18 November, over the Field with Lance 15 open and Root
+   Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+   wire in root energetics for these profiles, and make sure that these
+   profiles are just up to date with all the changes that we made."
+   The roster is read off PEOPLE every time: a count typed here is the defect
+   CLAUDE.md records a dozen times, the loadP(8) that meant the heaviest person
+   in a roster that then grew among them. Each check below was red on c2bf52a2
+   and on its own mutant before it went green. */
+{
+ const {PEOPLE,BIRTH,LAW_WAS,CODE_RETIRED,spiritual,spiritualOf,exampleWho,exampleAge,
+        validateProfile,blankProfile,gateOf,birthJD,ascendant,zonePoint}=E;
+ const ex=PEOPLE.filter(p=>!p.you);
+ ok(ex.length>0&&ex.length===PEOPLE.length-PEOPLE.filter(p=>p.you).length,'the examples are read off PEOPLE, '+ex.length+' of them');
+ /* the six readings his screenshot named, on every example */
+ const six=sp=>({sun:sp&&sp.sun, moon:sp&&sp.moon, rising:sp&&sp.rising,
+  year:sp&&sp.chinese&&sp.celem, path:sp&&sp.lp, gene:sp&&sp.gk&&sp.gk.gate&&sp.gk.line});
+ const short=[];
+ ex.forEach(p=>{const sp=spiritual(p.nm), o=six(sp);
+  const miss=Object.keys(o).filter(k=>!o[k]);
+  if(!BIRTH[p.nm]||miss.length)short.push(p.nm+(BIRTH[p.nm]?' lacks '+miss.join(' '):' has no birth'));});
+ ok(short.length===0,'every example reads sun, moon, rising, year animal, life path and gene key'+(short.length?'  '+short.join(' | '):''));
+ /* the same sky off the record as off the table: loadP writes exampleWho onto
+    the scratch record, so the Avatar's birth fields and the rail agree */
+ const split=[], bad=[], drift=[];
+ ex.forEach(p=>{
+  const w=exampleWho(p.nm); if(!w){split.push(p.nm+' has no record birth'); return;}
+  const rec=blankProfile(p.nm); Object.assign(rec.who,{first:w.first,middle:w.middle,last:w.last,born:w.born});
+  if(p.purpose)rec.purpose=JSON.parse(JSON.stringify(p.purpose));
+  const bn=rec.who.born, a=spiritualOf({d:bn.date,t:bn.timeUnknown?'':bn.time,p:bn.place,z:bn.zone}), b=spiritual(p.nm);
+  if(JSON.stringify(six(a))!==JSON.stringify(six(b)))split.push(p.nm);
+  const v=validateProfile(JSON.parse(JSON.stringify(rec)));
+  if(!v.ok){bad.push(p.nm+': '+v.errs.join(', ')); return;}
+  const back=validateProfile(JSON.parse(JSON.stringify(v.profile)));
+  const strip=o=>JSON.stringify(Object.assign({},o,{updated:null}));
+  if(!back.ok||strip(back.profile)!==strip(v.profile)||JSON.stringify(back.profile.who)!==JSON.stringify(rec.who))drift.push(p.nm);});
+ ok(split.length===0,'the record\'s birth reads the same six as the table'+(split.length?'  '+split.join(', '):''));
+ ok(bad.length===0,'every example\'s record, birth on it, passes the boundary'+(bad.length?'  '+bad.join(' | '):''));
+ ok(drift.length===0,'and comes back through it identical, birth and name included'+(drift.length?'  '+drift.join(', '):''));
+ /* the four Lances are one person at four depths: one birth, one sky */
+ const lances=ex.filter(p=>/^Lance /.test(p.nm));
+ ok(lances.length>0&&lances.every(p=>BIRTH[p.nm]===BIRTH[lances[0].nm]),'the Lance rows share one birth object');
+ /* no retired word anywhere an example carries. The list is read off the
+    tables that retire words, never typed: CODE_RETIRED and LAW_WAS's old names */
+ const gone=CODE_RETIRED.map(r=>r[2]).concat(Object.keys(LAW_WAS).map(k=>LAW_WAS[k]));
+ const re=new RegExp('\\b('+gone.join('|')+')\\b');
+ const stale=ex.filter(p=>re.test(JSON.stringify([p,E.LAWSET[p.nm],BIRTH[p.nm],(E.RITEX_AV||{})[p.nm],(E.EXDEPTH_HIST||{})[p.nm]]))).map(p=>p.nm+' '+JSON.stringify([p,E.LAWSET[p.nm],(E.RITEX_AV||{})[p.nm],(E.EXDEPTH_HIST||{})[p.nm]]).match(re)[0]);
+ ok(gone.length>0&&stale.length===0,'no example carries a retired name ('+gone.join(', ')+')'+(stale.length?'  '+stale.join(' | '):''));
+ /* the age is read off the birth, so the calendar cannot walk past it */
+ const ag=nm=>exampleAge(PEOPLE.find(p=>p.nm===nm),'2026-11-18');
+ ok(ag('Wren')===67&&ag('Abraham')===75&&ag('Tomas')===58,'ages come off the birth: Wren '+ag('Wren')+', Abraham '+ag('Abraham')+', Tomas '+ag('Tomas'));
+ ok(exampleAge(PEOPLE.find(p=>p.nm==='Tomas'),'2026-11-22')===59,'and Tomas turns 59 on his birthday without anyone typing it');
+ ok(lances.every(p=>exampleAge(p,'2026-11-18')===54),'the Lances read 54, the age he gave them');
+ const ageOff=ex.filter(p=>exampleAge(p,'2026-11-18')!==p.age).map(p=>p.nm+' '+p.age+' vs '+exampleAge(p,'2026-11-18'));
+ ok(ageOff.length===0,'no typed age disagrees with its birth on 18 November'+(ageOff.length?'  '+ageOff.join(', '):''));
+
+ /* THE WHEEL'S ANCHORS, from the mandala and not from this file. Gate 41
+    opens at 2 degrees Aquarius, 302; gate 25 at 28 degrees 15 minutes of
+    Pisces; gate 1 at 13 degrees 15 minutes of Scorpio. */
+ const at=(lon,g,l)=>{const x=gateOf(lon); return x.gate===g&&(l===undefined||x.line===l);};
+ ok(at(302.01,41,1)&&at(301.99,60,6),'gate 41 line 1 opens at 302 degrees, with 60 line 6 just before it');
+ ok(at(358.26,25,1)&&at(223.26,1,1)&&at(0,25,2),'gate 25 opens at 358.25 and gate 1 at 223.25, so 0 Aries is gate 25 line 2');
+ ok(Math.abs(gateOf(10).lon-10)<1e-9,'a gate still reports the longitude it was given');
+ /* a published chart: Steve Jobs, 1955-02-24 19:15 San Francisco, a 6/3
+    profile in every Human Design source. The wheel from 0 Aries printed 5/1. */
+ const jobs=spiritualOf({d:'1955-02-24',t:'19:15',z:'America/Los_Angeles'});
+ ok(jobs&&jobs.gk.gate===55&&jobs.gk.line===6&&jobs.hd.profile==='6/3','Jobs reads gene key 55.6 and profile 6/3, got '
+  +(jobs&&jobs.gk.gate+'.'+jobs.gk.line+' '+jobs.hd.profile));
+ const gk=x=>{const sp=spiritualOf(x); return sp&&sp.gk.gate+'.'+sp.gk.line;};
+ ok(gk({d:'1879-03-14',t:'11:30',z:'Europe/Berlin'})==='36.1'&&gk({d:'1961-07-01',t:'19:45',z:'Europe/London'})==='39.1',
+  'Einstein reads 36.1 and Diana 39.1, as their published charts do');
+
+ /* AGAINST AN INDEPENDENT EPHEMERIS. PyEphem 4.2.1, run 18 November by the
+    birth auditor, at the published instant of each case; the signs are the
+    published charts (Astrotheme, Halloran). Tolerance: sun 0.02 degrees,
+    moon 0.5, ascendant 0.1 at the given latitude and longitude. The instant
+    the engine reads off date, clock and zone is checked to the minute where
+    the zone's history is the one the published chart used. */
+ const REF=[
+  ['Einstein','1879-03-14','11:30','Europe/Berlin',2407422.951435185,48.4011,9.9876,353.5077,254.5262,101.6492,'Pisces','Sagittarius','Cancer',false],
+  ['Jobs','1955-02-24','19:15','America/Los_Angeles',2435163.6354166665,37.7749,-122.4194,335.7481,7.7473,172.2912,'Pisces','Aries','Virgo',true],
+  ['Elvis','1935-01-08','04:35','America/Chicago',2427810.940972222,34.2576,-88.7034,287.2323,332.0243,252.3670,'Capricorn','Pisces','Sagittarius',true],
+  ['Diana','1961-07-01','19:45','Europe/London',2437482.28125,52.8297,0.5133,99.6629,325.0380,258.4199,'Cancer','Aquarius','Sagittarius',true],
+  ['Obama','1961-08-04','19:24','Pacific/Honolulu',2437516.725,21.3069,-157.8583,132.5478,63.3573,318.0506,'Leo','Gemini','Aquarius',true],
+  ['King','1929-01-15','12:00','America/Chicago',2425627.25,33.749,-84.388,295.1345,349.5867,43.8040,'Capricorn','Pisces','Taurus',true],
+  ['Monroe','1926-06-01','09:30','America/Los_Angeles',2424668.2291666665,34.0522,-118.2437,70.4442,319.0984,133.0745,'Gemini','Aquarius','Leo',true],
+  ['Ledger, south','1979-04-04','06:30','Australia/Perth',2443967.4375,-31.9523,115.8613,13.5717,98.2476,12.8670,'Aries','Cancer','Aries',true],
+  ['midnight','2000-01-01','00:00','Europe/Lisbon',2451544.5,38.722,-9.139,279.8593,217.2932,180.6675,null,null,null,true],
+  ['one minute shy of Aries','1990-03-20','21:00','Europe/London',2447971.375,51.5072,-0.1276,359.9867,284.3690,210.2135,'Pisces',null,null,true],
+  ['south, summer time','1995-01-15','10:00','Australia/Sydney',2449732.4583333335,-33.8688,151.2093,294.3164,92.8656,343.2709,null,null,null,true]];
+ const off=[];
+ const dd=(a,b)=>Math.abs(((a-b+540)%360)-180);
+ REF.forEach(r=>{const [id,d,t,z,jd,lat,lon,su,mo,as,ps,pm,pa,inst]=r;
+  if(dd(E.sunLon(jd),su)>0.02)off.push(id+' sun '+E.sunLon(jd).toFixed(3)+' vs '+su);
+  if(dd(E.moonLon(jd),mo)>0.5)off.push(id+' moon '+E.moonLon(jd).toFixed(3)+' vs '+mo);
+  if(dd(ascendant(jd,lat,lon),as)>0.1)off.push(id+' ascendant '+ascendant(jd,lat,lon).toFixed(3)+' vs '+as);
+  const b=birthJD({d,t,z}); if(inst&&Math.abs(b.jd-jd)*1440>1)off.push(id+' instant '+((b.jd-jd)*1440).toFixed(1)+' minutes out');
+  const sp=spiritualOf({d,t,z});
+  if(ps&&sp.sun!==ps)off.push(id+' sun sign '+sp.sun+' vs '+ps);
+  if(pm&&sp.moon!==pm)off.push(id+' moon sign '+sp.moon+' vs '+pm);
+  /* the engine reads Rising at the zone's own point, not the birthplace, and
+     on these cases the sign is the published one all the same */
+  if(pa&&sp.rising!==pa)off.push(id+' rising '+sp.rising+' vs '+pa);});
+ ok(off.length===0,'the engine agrees with the ephemeris and the published charts on every case'+(off.length?'  '+off.join(' | '):''));
+ /* THE YEAR TURNS AT LI CHUN, about 4 February, and a window across it is no year */
+ const yr=x=>{const sp=spiritualOf(x); return sp&&sp.chinese?sp.celem+' '+sp.chinese:null;};
+ ok(yr({d:'1935-01-08',t:'04:35',z:'America/Chicago'})==='Wood Dog','Elvis, January 1935 before Li Chun, is Wood Dog, got '+yr({d:'1935-01-08',t:'04:35',z:'America/Chicago'}));
+ ok(yr({d:'1929-01-15',t:'12:00',z:'America/Chicago'})==='Earth Dragon','King, January 1929, is Earth Dragon');
+ ok(yr({d:'1985-02-10',t:'12:00',z:'America/New_York'})==='Wood Ox','after Li Chun and before the lunar new year is the new animal, Wood Ox');
+ ok(yr({d:'1985-01-25',z:'America/New_York'})==='Wood Rat','an untimed January birth well before Li Chun is the old one, Wood Rat');
+ ok(yr({d:'2023-02-04',t:'01:00',z:'Europe/London'})==='Water Tiger'&&yr({d:'2023-02-04',t:'04:00',z:'Europe/London'})==='Water Rabbit',
+  'on the Li Chun day the hour decides: 01:00 Tiger, 04:00 Rabbit');
+ const lc=spiritualOf({d:'2023-02-04',z:'Europe/London'});
+ ok(lc&&lc.chinese===null&&lc.celem===null&&lc.sun!==undefined,'and with no hour that day has no animal, rather than the noon guess, got '+(lc&&lc.chinese));
+ /* THE NINE CITIES READ THEIR OFFSET OFF THEIR ZONE, NOT THE HAND RULES */
+ const ofs=x=>{const b=birthJD(x); return b&&b.offset;};
+ ok(ofs(BIRTH.Wren)===-8,'Wren, Portland 1959, is read at -8, got '+ofs(BIRTH.Wren));
+ ok(ofs(BIRTH.Abraham)===-7,'Abraham, Boulder 1951, no daylight saving that year, is read at -7, got '+ofs(BIRTH.Abraham));
+ ok(ofs({d:'1980-04-10',t:'12:00',p:'Boston, MA'})===-5,'Boston on 10 April 1980 is -5: daylight saving began on the last Sunday of April then');
+ ok(ofs({d:'2005-07-01',t:'12:00',p:'Oaxaca, MX'})===-5&&ofs({d:'1993-01-15',t:'12:00',p:'Lisbon, PT'})===1,'Oaxaca kept summer time in 2005 and Lisbon was on +1 in the winter of 1993');
+ ok(Object.keys(E.PLACE).every(k=>E.PLACE[k].z&&E.zoneOffsets(E.PLACE[k].z,2000,1,1,12)!==null),'every city carries a zone this runtime can read');
+ ok(birthJD(BIRTH.Sofia).place===E.PLACE['Asheville, NC']&&spiritual('Sofia').risingFrom==='place','a city keeps its own horizon when its zone sets the clock');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

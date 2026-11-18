@@ -3706,3 +3706,45 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## The worked examples carry a birth, the four Lances included. Ruled 18 November.
+
+His words, verbatim, over the Field with "Lance 15, example" chosen and Root
+Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+wire in root energetics for these profiles, and make sure that these profiles
+are just up to date with all the changes that we made."
+
+OVERRIDDEN, the same day: the four Lance profiles had no birth, by the earlier
+ruling that a made up birth would be read back to him as his own
+(`engine/data/people.js`).
+
+Read as: every worked example shows sun, moon, rising, the year animal, life
+path and the gene key on the Field's left rail and on the Avatar. The four
+Lances are one person at four depths, so they share one birth. It is invented:
+1972-08-27, 13:15, Johannesburg, time zone Africa/Johannesburg, chosen by a
+search for a reading whose signs each sit well inside their sign, and for the
+age of 54 the rows already said. It is nobody's birth, and if it happens to be
+his, he says so and it moves. They still carry no full name, because any
+surname is either his real one or a made up one that the name numbers would
+read back as his; the six readings he named come off the birth alone.
+
+What moved with it, because the readings were wrong for everyone and an
+example cannot be up to date on top of a wrong reading:
+- **The gene key wheel started 1.75 degrees late.** Gate 41 opens at 2 degrees
+  Aquarius and the wheel had gate 25 at 0 Aries, so every line was one or two
+  out, the gate itself wrong on about 31 births in 100, and nearly every
+  profile wrong. Steve Jobs, a published 6/3, read 5/1. Every example's gene
+  key and profile moved once (`engine/astro.js`, `GATE_START`).
+- **The nine cities read their clock offset off their time zone** and not off
+  two hand written rules that put Wren and Abraham an hour out.
+- **The year animal goes through the same check as every other reading**, so
+  an untimed birth on the Li Chun day, where the hour decides the animal, says
+  it needs a birth time instead of guessing.
+- **An example's age is read off its birth.** Wren and Abraham's typed ages
+  were already a year behind, and Tomas's was four days from it.
+- **An example's record carries its birth and name**, so the Avatar's birth
+  fields show what the rail shows.
+
+Still open, and his: whether the examples also carry an avatar name and title,
+tags, a stated four letter type, archetype self report and journal verdicts.
+Those are words in his voice for sixteen people and were not invented here.

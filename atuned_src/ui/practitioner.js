@@ -767,7 +767,7 @@ function pracDetail(){
  pracSeenSet(p.nm,pracTierWord(snap));
  var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0">'
   +'<h2 class="kb-h">'+esc(p.nm)+'</h2></div>'
-  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(p.age?', '+esc(String(p.age)):'')
+  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(exampleAge(p)!==null?', '+esc(String(exampleAge(p))):'')
   +'. Example person, not a client. The practice history is written for this example and read by the '
   +'same engine a real record goes through.</p></div>';
  /* SILENT ON AN UNREAD FIELD, the rule every surface that prints a reading

@@ -570,6 +570,23 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · the worked examples get a birth, the Lances too
+
+said: "Got a bug, Emmy. Have one of your agents wire in root energetics for
+these profiles, and make sure that these profiles are just up to date with all
+the changes that we made."
+read: Root Energetics shows the six readings on every example, on the Field
+and the Avatar, with invented birth data and never his or anyone's.
+DECISIONS.md has the ruling and the invented birth.
+change: engine/data/people.js (one shared invented birth for the four Lances,
+the overruled comment, the typed ages), engine/astro.js (the gene key wheel's
+start, a time zone on every city), engine/birth.js (the year through the
+window check, bornAge, exampleAge, exampleWho), ui/personas.js (loadP writes
+the birth onto the example's record, the picker age off the birth),
+ui/practitioner.js and ui/summary.js. Branch fix/example-profiles-birth.
+measure: tests/engine.js group EX18 and the new browser gate
+tests/exampleprofiles.js, each red on c2bf52a2 and on its own mutant first.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

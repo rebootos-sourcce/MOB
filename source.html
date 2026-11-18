@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v169 72a28def 2026-11-18 09:23"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -16704,7 +16704,7 @@ const PEOPLE=[
   rep:{},
   purpose:{soul:['stillness','honesty','return'],ego:['his daughter close','his health insurance','the road not calling him back'],
    sides:{partner:[],family:["answer his daughter's call on the first ring"],friends:[],community:[],coworkers:[],alone:[]}}},
- {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
+ {nm:'Wren',age:67,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
   c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
   rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6},
@@ -16712,7 +16712,7 @@ const PEOPLE=[
    sides:{partner:[],family:[],friends:[],community:[],
     coworkers:["let an apprentice finish a piece his own way"],
     alone:['sit at the bench with nothing left to finish']}}},
- {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
+ {nm:'Abraham',age:75,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
   says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
   c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
   rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8},
@@ -16749,9 +16749,17 @@ const PEOPLE=[
     Anticipation carries nothing installed at all, the need to know what comes
     next, which is the one thread through all four of him: five addresses
     carry it under the line, none is held, and it is what his journal writes to
-    and his releases take. No birth and no
-    full name, the same ruling as before: they are his to enter, and a made up
-    birth would be read back to him as his own.
+    and his releases take.
+
+    A BIRTH, AND STILL NO FULL NAME. OVERRIDDEN 18 November: this said no
+    birth, because a made up one would be read back to him as his own. His
+    words that day, over the Field with Lance 15 open and Root Energetics
+    empty: "Got a bug, Emmy. Have one of your agents wire in root energetics
+    for these profiles, and make sure that these profiles are just up to date
+    with all the changes that we made." So the four share one birth in BIRTH
+    below, invented and his in nothing. The full name stays out: any surname
+    is his real one or a made up one that the name numbers would read back as
+    his, and the six readings he named come off the birth alone.
 
     ONE HUNDRED IS EVERY LAW AT A FULL TEN. CQ is the 21 laws over 210, so
     there is no other way to read 100. In round PL he said he does not believe
@@ -16791,10 +16799,11 @@ const PEOPLE=[
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
-   The original assigned a `Humility` law to James and Gordon. There is no
-   Humility among the 21, so it was silently dropped and their intended
-   character note never reached the engine. Carried here by the laws that
-   do exist. */
+   The original assigned a `Humility` law to James and Gordon when there was
+   no Humility among the 21, so it was silently dropped. There is one now, it
+   took Discernment's place (LAW_WAS in engine/schema.js), and Marcus, Angela
+   and Abraham carry it below; James and Gordon's character note stays carried
+   by the laws they were given then. */
 const LAWSET={
  You:    {_:6.5},
  /* found by bisection against compute(), not chosen by feel */
@@ -16853,6 +16862,8 @@ const LAWSET={
    the signal. Where they disagree the instrument says so rather
    than picking a winner.
    ============================================================ */
+/* invented, see the note under BIRTH. Declared first because BIRTH names it. */
+var LANCE_BIRTH={d:'1972-08-27', t:'13:15', p:'Johannesburg, ZA', z:'Africa/Johannesburg'};
 var BIRTH={
  You:null,
  Sofia:  {d:'1985-03-14', t:'04:20', p:'Asheville, NC'},
@@ -16866,12 +16877,21 @@ var BIRTH={
  Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'},
  Tomas:  {d:'1967-11-22', t:'03:55', p:'Chicago, IL'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
- Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
- /* The four Lance profiles have no record here and are left without one: it
-    is his to enter, and a made up birth would be read back to him as his own.
-    A place this table does not name can carry its time zone, z, which settles
-    the clock offset for that year and lends the zone's own point as a horizon,
-    so Rising still resolves; the ladder used it and was cut in round QD. */
+ Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'},
+ 'Lance 15': LANCE_BIRTH, 'Lance 50': LANCE_BIRTH, 'Lance 85': LANCE_BIRTH, 'Lance 100': LANCE_BIRTH};
+ /* THE FOUR LANCE PROFILES SHARE ONE BIRTH, AND IT IS INVENTED. OVERRIDDEN 18
+    November: they had none, by the ruling that a made up birth would be read
+    back to him as his own; his words that day asked for Root Energetics wired
+    in for these profiles (the full quotation is above the four rows). One
+    object, because they are one person at four depths and a sky does not move
+    with CQ. The date, the hour and the city were picked by a search for a
+    reading whose sun, moon and rising each sit three degrees or more inside
+    their sign and whose gene key line is not on an edge, so a small change to
+    the ephemeris does not flip it, and for an age of 54 to match the rows. It
+    is nobody's birth. It is also the roster's only birth south of the equator
+    and its only one outside the nine cities, so it is located by its time
+    zone, z, which settles the offset and lends the zone's own point as the
+    horizon, and Rising resolves from that. */
 /* FULL NAMES, because numerology reads the name on the certificate and not the
    one on the door. The roster carried first names only, so every name number
    in the product was computed off a nickname, which is the numerological
@@ -36768,21 +36788,35 @@ function degInSign(lon){return _norm(lon)%30;}
    decides every gene key and every Human Design gate the product
    prints. It is the one table here that is a claim about someone
    else's system rather than about the sky, so it is isolated in one
-   place, named, and asserted in the gate test against a known chart.
+   place, named, and asserted in the gate test against a known chart
+   (it was not until 18 November, see GATE_START below).
    Correct it here and everything downstream moves with it. */
 const GATE_WHEEL=[25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,
  15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,
  46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,
  10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
 const GATE_ARC=360/64;                       /* 5.625 degrees */
+/* WHERE THE WHEEL STARTS, AND IT IS NOT 0 DEGREES ARIES. The order above
+   was right and its starting point was not: this read gate 25 from 0
+   degrees Aries, and the mandala puts gate 25 at 28 degrees 15 minutes of
+   Pisces, which is gate 41 at 2 degrees Aquarius, 302 degrees. So every
+   longitude was read 1.75 degrees late. A line is 0.9375 degrees, so every
+   line printed was one or two out and the gate itself was wrong on 1.75 in
+   5.625 of births, about 31 in 100. Measured 18 November against a
+   published chart: Steve Jobs, born 1955-02-24 19:15 in San Francisco, is
+   a 6/3 profile in every Human Design source, and this printed 5/1 for
+   him. The comment above said a known chart was asserted in the gate test,
+   and none was: the test only checked the wheel held 64 different gates.
+   tests/engine.js now carries that chart and the mandala's own anchors. */
+const GATE_START=302-GATE_WHEEL.indexOf(41)*GATE_ARC;   /* -1.75 */
 
 /* a longitude to its gate and line. */
 function gateOf(lon){
- var L=_norm(lon);
+ var L=_norm(lon-GATE_START);
  var i=Math.floor(L/GATE_ARC);
  var within=L-i*GATE_ARC;
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
-  lon:L, arc:within};}
+  lon:_norm(lon), arc:within};}
 
 /* The design sun sits 88 degrees of SOLAR ARC before the birth sun,
    not 88 days. Those differ by a couple of days because the earth
@@ -36804,17 +36838,28 @@ function designJD(jd){
    that year. This is the part everyone skips, and skipping it is not
    a small error: one hour of offset moves the ascendant about fifteen
    degrees, which is half a sign. Latitude matters for the same reason.
-   A record with no place gets no ascendant rather than a guessed one. */
+   A record with no place gets no ascendant rather than a guessed one.
+   EACH CITY CARRIES ITS TIME ZONE, z, 18 November, and birthJD reads the
+   offset from it before it reads the two hand written rules below. Those
+   rules put a reference case an hour out: Wren, 1959 in Portland, was read
+   at -7 where the clocks said -8, and Abraham, 1951 in Boulder, at -6 where
+   Colorado kept no daylight saving that year and the clocks said -7. Boston
+   in April 1980 read -4 where it was -5, because the US branch applies the
+   1987 rule to every earlier year, and Oaxaca is marked as never saving
+   daylight where Mexico did from 1996 to 2022. The same Intl table the
+   named zone already used (below) holds every one of those. The hand rules
+   stay as the fallback for a runtime with no Intl, which is the only place
+   they are still read. */
 const PLACE={
- 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us'},
- 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us'},
- 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us'},
- 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us'},
- 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us'},
- 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us'},
- 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none'},
- 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu'},
- 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us'}};
+ 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us', z:'America/New_York'},
+ 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us', z:'America/Chicago'},
+ 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us', z:'America/Los_Angeles'},
+ 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us', z:'America/New_York'},
+ 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none', z:'America/Mexico_City'},
+ 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu', z:'Europe/Lisbon'},
+ 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us', z:'America/New_York'}};
 
 /* US daylight saving. The start moved in 2007 from the first Sunday in
    April to the second in March, and the end from the last Sunday in
@@ -36991,7 +37036,9 @@ function birthJD(bt){
     unknown offset already uses. jd stays noon, so nothing that does not
     check the span moves in this change. */
  var last=23+59/60;
- var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ /* the person's own zone first, then the city's (PLACE, 18 November) */
+ var zn=bt.z||(pl&&pl.z)||'';
+ var zo=zn?zoneOffsets(zn,y,m,d,hrs):null;
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
@@ -36999,13 +37046,13 @@ function birthJD(bt){
   /* the day's ends each at their own offset, since the clocks can change
      inside it, and at the offset that makes the day widest if they did at
      either end */
-  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+  if(!timed){ var z0=zoneOffsets(zn,y,m,d,0), z1=zoneOffsets(zn,y,m,d,last);
    zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
   /* A place the table names is the exact horizon and keeps it. Otherwise
      the zone's own representative point stands in, which is what lets a
      person outside the nine cities have a Rising at all. */
-  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
-   span:zspan, zone:bt.z};}
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(zn), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:zn};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours
@@ -37132,6 +37179,43 @@ function lifePath(d){
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
  return v;}
+/* A WHOLE AGE FROM A BIRTH DATE, counted on the calendar: the years since,
+   less one if the birthday has not come round yet in that year. now is a
+   'YYYY-MM-DD' or a Date, and today when it is left out. Null for a date
+   that is not a day, or a birth after now. */
+function bornAge(d,now){
+ var b=bornYMD(d); if(!b)return null;
+ var n;
+ if(typeof now==='string'){n=bornYMD(now); if(!n)return null;}
+ else{var t=now instanceof Date?now:new Date(); n=[t.getFullYear(),t.getMonth()+1,t.getDate()];}
+ var a=n[0]-b[0]-((n[1]<b[1]||(n[1]===b[1]&&n[2]<b[2]))?1:0);
+ return a>=0?a:null;}
+/* THE AGE A WORKED EXAMPLE SHOWS IS READ OFF ITS BIRTH, 18 November. Each
+   row typed an age beside a birth date in the table below it, and the
+   calendar walked past two of them: Wren was typed 66 and born 1959-04-17,
+   so 67 on the day it was checked, and Abraham 74 against 1951-06-29, so 75.
+   Tomas, typed 58 and born 1967-11-22, was four days from joining them. A
+   typed number the calendar grows past is the defect CLAUDE.md records nine
+   times over. The typed age is kept only for a row with no birth. */
+function exampleAge(p,now){
+ if(!p)return null;
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[p.nm]:null;
+ var a=bt?bornAge(bt.d,now):null;
+ return a!==null?a:(typeof p.age==='number'?p.age:null);}
+/* A WORKED EXAMPLE'S BIRTH AND NAME, IN THE RECORD'S OWN SHAPE, 18 November.
+   BIRTH and FULLNAME are keyed by the example's name and the record was built
+   blank beside them, so the rail read Sofia's sky off the table while the
+   Avatar's own birth fields, which read the record, sat empty under the same
+   name: two truths about one person. loadP writes this onto the scratch
+   record when it first builds it, so every reader sees the one birth. The
+   table marks an untimed birth by an empty t and the record by timeUnknown,
+   and this is the one place the two shapes meet. Null for a name with no
+   birth, which is the person's own You. */
+function exampleWho(nm){
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[nm]:null; if(!bt)return null;
+ var fn=((typeof FULLNAME!=='undefined'&&FULLNAME[nm])||'').split(' ').filter(Boolean);
+ return {first:fn.length?fn[0]:'', middle:fn.length>2?fn.slice(1,-1).join(' '):'', last:fn.length>1?fn[fn.length-1]:'',
+  born:{date:bt.d, time:bt.t||'', place:bt.p||'', zone:bt.z||'', timeUnknown:!bt.t}};}
 function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
 function chineseElement(y){ return CELEM[y%10]; }
 /* The Chinese year turns at Li Chun, when the sun reaches 315 degrees,
@@ -37148,7 +37232,13 @@ function chineseYear(bt){
   var diff=((sunLon(lc)-315+540)%360)-180;
   if(Math.abs(diff)<1e-4)break;
   lc-=diff/0.9856474;}
- return b.jd<lc ? y-1 : y;}
+ /* THE YEAR GOES THROUGH atSpan LIKE EVERY OTHER READING, 18 November. It
+    compared the noon guess with Li Chun and ignored the window, so an untimed
+    birth on the Li Chun day was handed an animal the hour decides:
+    2023-02-04 in London with no time read Rabbit, where 01:00 that day is
+    Tiger and 04:00 is Rabbit. Null when the two ends of the window fall
+    either side of Li Chun, which the panel prints as needing a birth time. */
+ return atSpan(b,function(jd){return jd<lc ? y-1 : y;});}
 /* Human Design. The personality gate is the sun at birth and the design
    gate is the sun 88 degrees of arc earlier, and both of those are real
    and computed here.
@@ -37226,7 +37316,9 @@ function spiritualOf(bt){
      settles it is a time zone, so that is what the reading asks for. An
      untimed record's span is its day, and a zone does not settle that. */
   needsZone:!!(b&&b.timed&&b.span&&!b.zone),
-  chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
+  /* null when the window straddles Li Chun (chineseYear above): null%12 is
+     0, which would have printed Monkey for a year nobody read */
+  chinese:cy===null?null:CHINESE[((cy%12)+12)%12], celem:cy===null?null:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
@@ -40904,7 +40996,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, spiritual:spiritual, converge:converge,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -66739,7 +66831,8 @@ function sumChips(C){
   say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
  if(e.rising)out+=chip('sign',e.rising,uni(ZGLYPH[e.rising]||'*'),e.rising,'rising',
   say(unpackOf('rising sign'),unpackOf(e.rising,'sign')));
- out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
+ /* no chip for a year the hour decides (chineseYear, engine/birth.js) */
+ if(e.chinese)out+=chip('celem',e.celem,svgI(CELEM_IC[e.celem]||CELEM_IC.Earth),e.celem+' '+e.chinese,'',
   say(unpackOf(e.chinese,'animal'),unpackOf(e.celem,'year')));
  out+=chip('lp',e.lp,'<span class="s-num-g">'+e.lp+'</span>','Life path',String(e.lp),
   say(unpackOf('life path'),unpackOf('path:'+e.lp)));
@@ -94276,7 +94369,7 @@ function pracDetail(){
  pracSeenSet(p.nm,pracTierWord(snap));
  var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0">'
   +'<h2 class="kb-h">'+esc(p.nm)+'</h2></div>'
-  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(p.age?', '+esc(String(p.age)):'')
+  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(exampleAge(p)!==null?', '+esc(String(exampleAge(p))):'')
   +'. Example person, not a client. The practice history is written for this example and read by the '
   +'same engine a real record goes through.</p></div>';
  /* SILENT ON AN UNREAD FIELD, the rule every surface that prints a reading
@@ -94717,9 +94810,12 @@ function renderSpirit(){
      element's and its tooltip says both halves, from the same two gloss
      entries the two rows carried. The element's own drill is still the
      Summary's chip for it (sumChips, ui/summary.js). */
+  /* the year is null for an untimed birth on the Li Chun day, where the hour
+     decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
+    :unres('Year','needs a birth time')))
   +line('N',
    nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
@@ -95155,7 +95251,8 @@ function pselOwnSync(){
  if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
  if(p.you)return pselOwnName();
- return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
+ /* the age off the birth, never the typed one (exampleAge, engine/birth.js) */
+ return up?p.nm+', example':p.nm+', '+exampleAge(p)+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
@@ -95582,6 +95679,14 @@ function loadP(i){
      intakeAnswers, so an edit made while looking at an example during this
      session is never clobbered by a second visit. */
   if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+  /* AND ITS BIRTH AND NAME, 18 November, the same rule again. The rail read
+     the example's sky off BIRTH by name while this record's who.born stayed
+     blank, so the Avatar's birth fields sat empty beside a rail showing a
+     chart. exampleWho (engine/birth.js) is the one mapping between the
+     table's shape and the record's. */
+  var ew=p.you?null:exampleWho(p.nm);
+  if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
+   pr.who.born=ew.born;}
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
@@ -101801,5 +101906,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006810436"></div>
 </body></html>

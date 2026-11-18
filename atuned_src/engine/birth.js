@@ -103,6 +103,43 @@ function lifePath(d){
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
  return v;}
+/* A WHOLE AGE FROM A BIRTH DATE, counted on the calendar: the years since,
+   less one if the birthday has not come round yet in that year. now is a
+   'YYYY-MM-DD' or a Date, and today when it is left out. Null for a date
+   that is not a day, or a birth after now. */
+function bornAge(d,now){
+ var b=bornYMD(d); if(!b)return null;
+ var n;
+ if(typeof now==='string'){n=bornYMD(now); if(!n)return null;}
+ else{var t=now instanceof Date?now:new Date(); n=[t.getFullYear(),t.getMonth()+1,t.getDate()];}
+ var a=n[0]-b[0]-((n[1]<b[1]||(n[1]===b[1]&&n[2]<b[2]))?1:0);
+ return a>=0?a:null;}
+/* THE AGE A WORKED EXAMPLE SHOWS IS READ OFF ITS BIRTH, 18 November. Each
+   row typed an age beside a birth date in the table below it, and the
+   calendar walked past two of them: Wren was typed 66 and born 1959-04-17,
+   so 67 on the day it was checked, and Abraham 74 against 1951-06-29, so 75.
+   Tomas, typed 58 and born 1967-11-22, was four days from joining them. A
+   typed number the calendar grows past is the defect CLAUDE.md records nine
+   times over. The typed age is kept only for a row with no birth. */
+function exampleAge(p,now){
+ if(!p)return null;
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[p.nm]:null;
+ var a=bt?bornAge(bt.d,now):null;
+ return a!==null?a:(typeof p.age==='number'?p.age:null);}
+/* A WORKED EXAMPLE'S BIRTH AND NAME, IN THE RECORD'S OWN SHAPE, 18 November.
+   BIRTH and FULLNAME are keyed by the example's name and the record was built
+   blank beside them, so the rail read Sofia's sky off the table while the
+   Avatar's own birth fields, which read the record, sat empty under the same
+   name: two truths about one person. loadP writes this onto the scratch
+   record when it first builds it, so every reader sees the one birth. The
+   table marks an untimed birth by an empty t and the record by timeUnknown,
+   and this is the one place the two shapes meet. Null for a name with no
+   birth, which is the person's own You. */
+function exampleWho(nm){
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[nm]:null; if(!bt)return null;
+ var fn=((typeof FULLNAME!=='undefined'&&FULLNAME[nm])||'').split(' ').filter(Boolean);
+ return {first:fn.length?fn[0]:'', middle:fn.length>2?fn.slice(1,-1).join(' '):'', last:fn.length>1?fn[fn.length-1]:'',
+  born:{date:bt.d, time:bt.t||'', place:bt.p||'', zone:bt.z||'', timeUnknown:!bt.t}};}
 function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
 function chineseElement(y){ return CELEM[y%10]; }
 /* The Chinese year turns at Li Chun, when the sun reaches 315 degrees,
@@ -119,7 +156,13 @@ function chineseYear(bt){
   var diff=((sunLon(lc)-315+540)%360)-180;
   if(Math.abs(diff)<1e-4)break;
   lc-=diff/0.9856474;}
- return b.jd<lc ? y-1 : y;}
+ /* THE YEAR GOES THROUGH atSpan LIKE EVERY OTHER READING, 18 November. It
+    compared the noon guess with Li Chun and ignored the window, so an untimed
+    birth on the Li Chun day was handed an animal the hour decides:
+    2023-02-04 in London with no time read Rabbit, where 01:00 that day is
+    Tiger and 04:00 is Rabbit. Null when the two ends of the window fall
+    either side of Li Chun, which the panel prints as needing a birth time. */
+ return atSpan(b,function(jd){return jd<lc ? y-1 : y;});}
 /* Human Design. The personality gate is the sun at birth and the design
    gate is the sun 88 degrees of arc earlier, and both of those are real
    and computed here.
@@ -197,7 +240,9 @@ function spiritualOf(bt){
      settles it is a time zone, so that is what the reading asks for. An
      untimed record's span is its day, and a zone does not settle that. */
   needsZone:!!(b&&b.timed&&b.span&&!b.zone),
-  chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
+  /* null when the window straddles Li Chun (chineseYear above): null%12 is
+     0, which would have printed Monkey for a year nobody read */
+  chinese:cy===null?null:CHINESE[((cy%12)+12)%12], celem:cy===null?null:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}

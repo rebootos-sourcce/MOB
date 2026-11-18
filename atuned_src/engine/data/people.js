@@ -155,7 +155,7 @@ const PEOPLE=[
   rep:{},
   purpose:{soul:['stillness','honesty','return'],ego:['his daughter close','his health insurance','the road not calling him back'],
    sides:{partner:[],family:["answer his daughter's call on the first ring"],friends:[],community:[],coworkers:[],alone:[]}}},
- {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
+ {nm:'Wren',age:67,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
   c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
   rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6},
@@ -163,7 +163,7 @@ const PEOPLE=[
    sides:{partner:[],family:[],friends:[],community:[],
     coworkers:["let an apprentice finish a piece his own way"],
     alone:['sit at the bench with nothing left to finish']}}},
- {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
+ {nm:'Abraham',age:75,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
   says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
   c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
   rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8},
@@ -200,9 +200,17 @@ const PEOPLE=[
     Anticipation carries nothing installed at all, the need to know what comes
     next, which is the one thread through all four of him: five addresses
     carry it under the line, none is held, and it is what his journal writes to
-    and his releases take. No birth and no
-    full name, the same ruling as before: they are his to enter, and a made up
-    birth would be read back to him as his own.
+    and his releases take.
+
+    A BIRTH, AND STILL NO FULL NAME. OVERRIDDEN 18 November: this said no
+    birth, because a made up one would be read back to him as his own. His
+    words that day, over the Field with Lance 15 open and Root Energetics
+    empty: "Got a bug, Emmy. Have one of your agents wire in root energetics
+    for these profiles, and make sure that these profiles are just up to date
+    with all the changes that we made." So the four share one birth in BIRTH
+    below, invented and his in nothing. The full name stays out: any surname
+    is his real one or a made up one that the name numbers would read back as
+    his, and the six readings he named come off the birth alone.
 
     ONE HUNDRED IS EVERY LAW AT A FULL TEN. CQ is the 21 laws over 210, so
     there is no other way to read 100. In round PL he said he does not believe
@@ -242,10 +250,11 @@ const PEOPLE=[
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
-   The original assigned a `Humility` law to James and Gordon. There is no
-   Humility among the 21, so it was silently dropped and their intended
-   character note never reached the engine. Carried here by the laws that
-   do exist. */
+   The original assigned a `Humility` law to James and Gordon when there was
+   no Humility among the 21, so it was silently dropped. There is one now, it
+   took Discernment's place (LAW_WAS in engine/schema.js), and Marcus, Angela
+   and Abraham carry it below; James and Gordon's character note stays carried
+   by the laws they were given then. */
 const LAWSET={
  You:    {_:6.5},
  /* found by bisection against compute(), not chosen by feel */
@@ -304,6 +313,8 @@ const LAWSET={
    the signal. Where they disagree the instrument says so rather
    than picking a winner.
    ============================================================ */
+/* invented, see the note under BIRTH. Declared first because BIRTH names it. */
+var LANCE_BIRTH={d:'1972-08-27', t:'13:15', p:'Johannesburg, ZA', z:'Africa/Johannesburg'};
 var BIRTH={
  You:null,
  Sofia:  {d:'1985-03-14', t:'04:20', p:'Asheville, NC'},
@@ -317,12 +328,21 @@ var BIRTH={
  Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'},
  Tomas:  {d:'1967-11-22', t:'03:55', p:'Chicago, IL'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
- Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
- /* The four Lance profiles have no record here and are left without one: it
-    is his to enter, and a made up birth would be read back to him as his own.
-    A place this table does not name can carry its time zone, z, which settles
-    the clock offset for that year and lends the zone's own point as a horizon,
-    so Rising still resolves; the ladder used it and was cut in round QD. */
+ Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'},
+ 'Lance 15': LANCE_BIRTH, 'Lance 50': LANCE_BIRTH, 'Lance 85': LANCE_BIRTH, 'Lance 100': LANCE_BIRTH};
+ /* THE FOUR LANCE PROFILES SHARE ONE BIRTH, AND IT IS INVENTED. OVERRIDDEN 18
+    November: they had none, by the ruling that a made up birth would be read
+    back to him as his own; his words that day asked for Root Energetics wired
+    in for these profiles (the full quotation is above the four rows). One
+    object, because they are one person at four depths and a sky does not move
+    with CQ. The date, the hour and the city were picked by a search for a
+    reading whose sun, moon and rising each sit three degrees or more inside
+    their sign and whose gene key line is not on an edge, so a small change to
+    the ephemeris does not flip it, and for an age of 54 to match the rows. It
+    is nobody's birth. It is also the roster's only birth south of the equator
+    and its only one outside the nine cities, so it is located by its time
+    zone, z, which settles the offset and lends the zone's own point as the
+    horizon, and Rising resolves from that. */
 /* FULL NAMES, because numerology reads the name on the certificate and not the
    one on the door. The roster carried first names only, so every name number
    in the product was computed off a nickname, which is the numerological

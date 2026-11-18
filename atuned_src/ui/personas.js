@@ -197,9 +197,12 @@ function renderSpirit(){
      element's and its tooltip says both halves, from the same two gloss
      entries the two rows carried. The element's own drill is still the
      Summary's chip for it (sumChips, ui/summary.js). */
+  /* the year is null for an untimed birth on the Li Chun day, where the hour
+     decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
+    :unres('Year','needs a birth time')))
   +line('N',
    nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
@@ -635,7 +638,8 @@ function pselOwnSync(){
  if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
  if(p.you)return pselOwnName();
- return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
+ /* the age off the birth, never the typed one (exampleAge, engine/birth.js) */
+ return up?p.nm+', example':p.nm+', '+exampleAge(p)+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
@@ -1062,6 +1066,14 @@ function loadP(i){
      intakeAnswers, so an edit made while looking at an example during this
      session is never clobbered by a second visit. */
   if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+  /* AND ITS BIRTH AND NAME, 18 November, the same rule again. The rail read
+     the example's sky off BIRTH by name while this record's who.born stayed
+     blank, so the Avatar's birth fields sat empty beside a rail showing a
+     chart. exampleWho (engine/birth.js) is the one mapping between the
+     table's shape and the record's. */
+  var ew=p.you?null:exampleWho(p.nm);
+  if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
+   pr.who.born=ew.born;}
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];

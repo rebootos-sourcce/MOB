@@ -46,6 +46,12 @@ const fs = require('fs'), path = require('path'), os = require('os');
    reviewer must be able to see, so it carries its reason here, not in a
    commit message. */
 const MANUAL = {
+  /* 18 November, fix/example-profiles-birth. The seat that wrote it may not
+     edit the workflow, so its step was handed over as text. Whoever adds
+     `- { gate: exampleprofiles, timeout: 20, command: node tests/exampleprofiles.js }`
+     to gates-browser drops this line in the same commit, and this list's own
+     check fails until they do. */
+  'exampleprofiles.js': 'run by hand until its gates-browser step lands in deploy.yml',
 };
 
 /* YAML and bash share `#` as a comment. A `#` opens one at the start of a
