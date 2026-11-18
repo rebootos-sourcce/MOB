@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v169 72a28def 2026-11-18 18:08"><head><meta charset="utf-8">
+<html lang="en" data-build="v170 88c8bc3a 2026-11-18 18:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -99014,23 +99014,44 @@ function loginBoot(){
  if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
  loginOpen();}
 /* WHAT HAPPENS BEHIND THE DOOR, whichever way through it a person came:
-   a sign in, a new account, or continuing without one. */
+   a sign in, a new account, or continuing without one.
+
+   THE TWO SHEETS ARE HIDDEN, ruled 18 November: his words, "once you get
+   past the initial attuned intro, it goes straight to your dashboard...
+   we're just getting rid of the second tutorial stuff." Source's own
+   example read (ui/srcintro.js) and the 8 step Arrive tutorial
+   (ui/onboard.js) no longer open themselves behind the door. Neither file
+   is touched, deleted, or stripped of its mechanics; the boot/loading
+   animation above this (bootUni, ui/panels.js) is untouched by name per the
+   same ruling. The Settings/Account replay still opens the tutorial on
+   purpose (ui/account.js, #acob, obOpen(true)) and is unaffected: that call
+   never passes through here.
+
+   WHAT RUNS INSTEAD is the exact path a person already takes today leaving
+   the tutorial on its own first frame without writing a word (obClose,
+   ui/onboard.js: 'skip' on step 0 before anything is picked). Reused, not
+   reinvented: mark the profile onboarded the same guarded way, save it and
+   report a save failure the same way, land once on Summary via
+   tabLandFirst (ui/panels.js, idempotent and independent of the sheet), and
+   render. No journey log line is written here: obClose's own two lines
+   ('tutorial_started' and 'software_entered') are written only through
+   OB.rec, which a skipped sheet never sets, and nothing downstream reads
+   them (confirmed against the whole ui/ tree), so leaving them unwritten
+   changes no behavior a person or the product can see. */
 function loginEnter(){
- if(!DEV_PLAY_ONBOARDING)return;
- if(typeof obOpen!=='function')return;
- /* onboarding is still met once, never on a return visit: the login
-    above is the door met every time, this is the first run behind it. */
  var seen=false;
- /* the flag lives with the other ui facts: a field outside them was dropped
-    at the profile boundary on the next load, so the first run replayed on
-    every launch */
  try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
  if(seen)return;
- /* SOURCE READS AN EXAMPLE FIRST, once per device (ui/srcintro.js), which
-    decides for itself when not to: a walk half done, DEV_SKIP, a device
-    that has seen it. Either way the first card opens from its callback */
- if(typeof srcIntro==='function'){ srcIntro(function(){ obOpen(false); }); return; }
- obOpen(false);}
+ try{
+  if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
+   CURP.ui.onboarded=true;
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. The first run will open again.','fail'); }
+ }catch(e){
+  if(typeof status==='function')
+   status('This browser would not save. The first run will open again.','fail'); }
+ if(typeof tabLandFirst==='function')try{ tabLandFirst(); }catch(e){}
+ if(typeof render==='function')render();}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
    sits on document with {capture:true} and stops every pointerdown from
    ever reaching a listener registered on the button, on purpose, so a
@@ -101810,5 +101831,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006803576"></div>
+<div id="eof" hidden data-len="006804801"></div>
 </body></html>
