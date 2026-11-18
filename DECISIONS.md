@@ -3735,6 +3735,17 @@ example cannot be up to date on top of a wrong reading:
   out, the gate itself wrong on about 31 births in 100, and nearly every
   profile wrong. Steve Jobs, a published 6/3, read 5/1. Every example's gene
   key and profile moved once (`engine/astro.js`, `GATE_START`).
+  **This moves every person's reading, not only the examples'.** Anyone who
+  has entered a birth sees their gene key line change once, about 31 in 100
+  see the gate itself change, and most see their profile change. The old
+  reading was the wrong one.
+  **And SOURCE (reboot-os) has not moved.** `source_os_v151.html` reads the
+  same wheel from 0 Aries (`_lonToGate`, no start offset), so after this lands
+  the two codebases, which this file names as cross compatible, disagree on
+  the gene key for about 31 births in 100 and on most lines. Routed to the
+  SOURCE seat, the same anchor (gate 41 opens at 302 degrees) checked against
+  Jobs reading 6/3. Until it lands there, a gene key read in SOURCE and one
+  read here can differ for the same birth.
 - **The nine cities read their clock offset off their time zone** and not off
   two hand written rules that put Wren and Abraham an hour out.
 - **The year animal goes through the same check as every other reading**, so
@@ -3743,7 +3754,10 @@ example cannot be up to date on top of a wrong reading:
 - **An example's age is read off its birth.** Wren and Abraham's typed ages
   were already a year behind, and Tomas's was four days from it.
 - **An example's record carries its birth and name**, so the Avatar's birth
-  fields show what the rail shows.
+  fields show what the rail shows. Whichever door builds the record first,
+  the picker or the Clients page, builds it the same way (`exampleRecord`,
+  `engine/birth.js`): the Clients page used to build a bare one first, and
+  every client's birth then read empty on the Avatar.
 
 Still open, and his: whether the examples also carry an avatar name and title,
 tags, a stated four letter type, archetype self report and journal verdicts.

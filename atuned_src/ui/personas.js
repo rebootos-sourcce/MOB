@@ -1055,25 +1055,11 @@ function loadP(i){
     reference case's diagnostic from overwriting another's. It is memory only,
     and it is discarded with the page, which is what a demonstration is. */
  if(!PROF_BY[p.nm]){
-  var pr=blankProfile(p.nm==='You'?'You':p.nm);
-  if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
-  /* THE PURPOSE HEXAGON COMES FROM THE SAME ROW TOO, 13 November, the same
-     rule as S.addr above: a worked example's own data lives on its own
-     PEOPLE row (engine/data/people.js, p.purpose) or it defaults to the
-     blank's, which here meant every example silently showed whichever
-     purpose the signed-in account itself had written, under a stranger's
-     name. Copied in only when this scratch profile is first built, same as
-     intakeAnswers, so an edit made while looking at an example during this
-     session is never clobbered by a second visit. */
-  if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
-  /* AND ITS BIRTH AND NAME, 18 November, the same rule again. The rail read
-     the example's sky off BIRTH by name while this record's who.born stayed
-     blank, so the Avatar's birth fields sat empty beside a rail showing a
-     chart. exampleWho (engine/birth.js) is the one mapping between the
-     table's shape and the record's. */
-  var ew=p.you?null:exampleWho(p.nm);
-  if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
-   pr.who.born=ew.born;}
+  /* THE INTAKE ANSWERS, THE PURPOSE HEXAGON, THE BIRTH AND THE NAME all come
+     from the example's own PEOPLE row, through exampleRecord
+     (engine/birth.js), which the Clients page calls too. Seeded here alone,
+     a record the Clients page built first came back without the birth. */
+  var pr=exampleRecord(p);
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];

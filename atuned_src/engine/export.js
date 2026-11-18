@@ -289,7 +289,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */

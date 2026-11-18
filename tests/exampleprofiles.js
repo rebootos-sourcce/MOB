@@ -116,7 +116,34 @@ const readBlock=()=>{
      ok(wd===r.d,r.nm+'\'s Avatar birth date reads '+r.d+' at '+W+', got '+JSON.stringify(wd));}}
   }
   ok(err.length===0,'no page error at '+W+(err.length?': '+err.slice(0,3).join(' | '):''));
-  await ctx.close();}
+  await ctx.close();
+  /* 5  THE CLIENTS PAGE OPENED FIRST, 18 November, found by QA after this
+     gate passed in full. The Clients page (ui/practitioner.js pracRead)
+     builds its own scratch record for each of its ten the first time it is
+     drawn, and loadP only builds one when none exists, so on a page where
+     Clients was opened before the picker every client read an empty
+     who.born on the Avatar while the rail, which reads BIRTH by name, still
+     printed the chart: the two truths this gate was written to close. The
+     passes above always pick first, so they never saw it. A fresh page per
+     width, Clients first, then every example through the picker, and the
+     Avatar's #wdate is the record's birth. The client list is whatever the
+     page itself drew, never typed here. */
+  const ctx2=await browser.newContext({viewport:{width:W,height:H}});
+  const pg2=await ctx2.newPage();
+  await pg2.addInitScript(SEED.FULL_SIGHT); await pg2.addInitScript(SEED.LCOL_SEED);
+  const err2=[]; pg2.on('pageerror',e=>err2.push(e.message));
+  await pg2.goto(FILE,{waitUntil:'load'}); await booted(pg2); await pg2.waitForTimeout(300);
+  const drawn=await pg2.evaluate(()=>{setTab(TAB.PRACTITIONER);
+   return (typeof PROF_BY!=='undefined')?Object.keys(PROF_BY).filter(k=>k!==PEOPLE[0].nm):[];});
+  await pg2.waitForTimeout(300);
+  ok(drawn.length>0,'the Clients page drew its own records before any pick at '+W+', '+drawn.length+' of them');
+  for(const r of roster.filter(x=>!x.you&&x.d)){
+   await pg2.evaluate(i=>{const s=document.getElementById('psel'); s.value=String(i); s.dispatchEvent(new Event('change',{bubbles:true})); setTab(TAB.INTAKE);},r.i);
+   await pg2.waitForTimeout(80);
+   const wd=await pg2.evaluate(()=>{const d=document.getElementById('wdate'); return d?d.value:null;});
+   ok(wd===r.d,'Clients first: '+r.nm+'\'s Avatar birth date reads '+r.d+' at '+W+(drawn.indexOf(r.nm)>=0?' (a client)':'')+', got '+JSON.stringify(wd));}
+  ok(err2.length===0,'no page error with Clients first at '+W+(err2.length?': '+err2.slice(0,3).join(' | '):''));
+  await ctx2.close();}
  await browser.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
  process.exit(FAIL?1:0);

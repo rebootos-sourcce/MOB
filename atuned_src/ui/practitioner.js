@@ -361,10 +361,11 @@ function pracRead(p){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
- if(!PROF_BY[p.nm]){
-  var blank=blankProfile(p.nm);
-  if(p.intakeAnswers)blank.intake.answers=Object.assign({},p.intakeAnswers);
-  PROF_BY[p.nm]=blank;}
+ /* built through the same door as loadP's (exampleRecord, engine/birth.js):
+    this built a blank with the intake answers only, and loadP skips its own
+    seeding when a record exists, so opening Clients first left every
+    client's Avatar birth empty beside a rail that printed the chart */
+ if(!PROF_BY[p.nm])PROF_BY[p.nm]=exampleRecord(p);
  var scratch=PROF_BY[p.nm];
  S.rec=scratch.id||null; LAW_REC=scratch;
  var LS=lawsFor(p);

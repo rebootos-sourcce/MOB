@@ -11384,7 +11384,7 @@ g('EX18 · every worked example has a birth, and the sky read off it is right');
    in a roster that then grew among them. Each check below was red on c2bf52a2
    and on its own mutant before it went green. */
 {
- const {PEOPLE,BIRTH,LAW_WAS,CODE_RETIRED,spiritual,spiritualOf,exampleWho,exampleAge,
+ const {PEOPLE,BIRTH,LAW_WAS,CODE_RETIRED,spiritual,spiritualOf,exampleWho,exampleAge,exampleRecord,
         validateProfile,blankProfile,gateOf,birthJD,ascendant,zonePoint}=E;
  const ex=PEOPLE.filter(p=>!p.you);
  ok(ex.length>0&&ex.length===PEOPLE.length-PEOPLE.filter(p=>p.you).length,'the examples are read off PEOPLE, '+ex.length+' of them');
@@ -11396,13 +11396,19 @@ g('EX18 · every worked example has a birth, and the sky read off it is right');
   const miss=Object.keys(o).filter(k=>!o[k]);
   if(!BIRTH[p.nm]||miss.length)short.push(p.nm+(BIRTH[p.nm]?' lacks '+miss.join(' '):' has no birth'));});
  ok(short.length===0,'every example reads sun, moon, rising, year animal, life path and gene key'+(short.length?'  '+short.join(' | '):''));
- /* the same sky off the record as off the table: loadP writes exampleWho onto
-    the scratch record, so the Avatar's birth fields and the rail agree */
+ /* the same sky off the record as off the table: exampleRecord writes
+    exampleWho onto the scratch record, so the Avatar's birth fields and the rail agree */
  const split=[], bad=[], drift=[];
  ex.forEach(p=>{
   const w=exampleWho(p.nm); if(!w){split.push(p.nm+' has no record birth'); return;}
-  const rec=blankProfile(p.nm); Object.assign(rec.who,{first:w.first,middle:w.middle,last:w.last,born:w.born});
-  if(p.purpose)rec.purpose=JSON.parse(JSON.stringify(p.purpose));
+  /* the record is built through exampleRecord, the one door loadP and the
+     Clients page both use, so a door that drops the birth fails here: it
+     was built by hand in this test before, and the Clients page's own
+     blank went past it with every client's birth missing */
+  const rec=exampleRecord(p);
+  if(JSON.stringify(rec.who.born)!==JSON.stringify(w.born))split.push(p.nm+' record carries no birth');
+  if(p.intakeAnswers&&JSON.stringify(rec.intake.answers)!==JSON.stringify(p.intakeAnswers))split.push(p.nm+' record lost its intake answers');
+  if(p.purpose&&JSON.stringify(rec.purpose)!==JSON.stringify(p.purpose))split.push(p.nm+' record lost its purpose');
   const bn=rec.who.born, a=spiritualOf({d:bn.date,t:bn.timeUnknown?'':bn.time,p:bn.place,z:bn.zone}), b=spiritual(p.nm);
   if(JSON.stringify(six(a))!==JSON.stringify(six(b)))split.push(p.nm);
   const v=validateProfile(JSON.parse(JSON.stringify(rec)));

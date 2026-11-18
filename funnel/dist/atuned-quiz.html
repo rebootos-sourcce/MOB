@@ -26191,6 +26191,30 @@ function exampleWho(nm){
  var fn=((typeof FULLNAME!=='undefined'&&FULLNAME[nm])||'').split(' ').filter(Boolean);
  return {first:fn.length?fn[0]:'', middle:fn.length>2?fn.slice(1,-1).join(' '):'', last:fn.length>1?fn[fn.length-1]:'',
   born:{date:bt.d, time:bt.t||'', place:bt.p||'', zone:bt.z||'', timeUnknown:!bt.t}};}
+/* ONE DOOR FOR A WORKED EXAMPLE'S SCRATCH RECORD, 18 November. Two places
+   build it, whichever runs first: loadP (ui/personas.js) when the example is
+   picked, and pracRead (ui/practitioner.js) when the Clients page draws its
+   ten. loadP seeded the birth, the name, the intake answers and the purpose;
+   pracRead seeded the intake answers alone. Each only builds a record when
+   none exists, so on a page where Clients was opened first loadP found
+   pracRead's record and skipped its own seeding, and every client's Avatar
+   read an empty birth while the rail, which reads BIRTH by name, printed the
+   chart. QA found it on Sofia: #wdate '' beside 1985-03-14. Both doors call
+   this now, so the record is the same whichever is opened first.
+   The purpose is the same rule as S.addr in loadP: an example's own data
+   lives on its own PEOPLE row or defaults to the blank's, which once meant
+   every example showed the signed-in account's own purpose under a
+   stranger's name. Copied only when the record is first built, so an edit
+   made while looking at an example is never clobbered by a second visit.
+   The person's own You (p.you) gets no birth or name: it has none. */
+function exampleRecord(p){
+ var pr=blankProfile(p.nm);
+ if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
+ if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+ var ew=p.you?null:exampleWho(p.nm);
+ if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
+  pr.who.born=ew.born;}
+ return pr;}
 function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
 function chineseElement(y){ return CELEM[y%10]; }
 /* The Chinese year turns at Li Chun, when the sun reaches 315 degrees,
@@ -29949,7 +29973,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
