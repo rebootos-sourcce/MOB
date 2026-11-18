@@ -7331,6 +7331,11 @@ body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24p
             transform var(--t-element) var(--ease-out),
             visibility 0s;
 }
+/* THE EXIT CUT SHORT, when a control's menu opens under its own panel
+   (hold() in ui/tip.js). The fade above is the panel drawn over the arriving
+   menu for its whole length, which is the flash the 18 November card rules
+   out, so this one exit has no motion. The next show takes the class off. */
+.tip.cut{transition:none}
 /* THE ENTRY MARK. Thirty pixels of the carrier's own colour lying along the
    panel's near edge, centred on the tether's foot. With the tether it makes
    one T, forty pixels of continuous stroke, and the T is where the line
