@@ -7719,7 +7719,12 @@ function leanSeries(p){
   /* what the series cannot see, stated on the series rather than in a
      document nobody reads next to the chart. */
   storyCues:false,
-  says:out.length?('the field lean at '+out.length+' of '+H.length+' snapshots')
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S11: on no
+     screen today, fixed in the same sweep so it cannot leak onto one). This
+     said "the field lean at N of M snapshots"; it is the percent of the
+     snapshots a coherence reading was found on, through the portion kind.
+     out.length is positive in this branch, so H.length is too. */
+  says:out.length?('the field lean on '+fmtPct('portion',out.length/H.length)+' of snapshots')
    :'no snapshot on file carries a coherence reading'};}
 
 /* ---------- the gates as schema ----------
@@ -19426,9 +19431,13 @@ function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
  /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
-    to work out seventeen of what. It says how many questions and out of how
-    many, in the same line. */
- if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
+    to work out seventeen of what. It said how many questions and out of how
+    many, in the same line, which NO-FRACTIONS-AUDIT.md (18 November, finding
+    P09) named as a measure of the person in fraction form: "17 of 18
+    questions left". It says how much of the block is answered now, as a
+    percent, through the portion kind (engine/pct.js), which this file may
+    ask: it is engine code, host free, the same as fmtPct itself. */
+ if(r.state==='part')return {head:fmtPct('portion',r.got/r.total)+' answered', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',
