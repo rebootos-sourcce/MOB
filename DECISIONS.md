@@ -4773,10 +4773,12 @@ Found and not fixed here, his to rule on:
   this way before Glass blue. Storing it changes what every first open looks
   like, so it was left. The gate says so on an `info` line and holds that a
   reload never leaves a half state.
-- **The bar's lighting menu opens underneath the Dashboard panels in every
-  glass lighting.** `.glass.top` is a stacking context at z-index auto under a
-  backdrop filter, so the panels that follow it paint over its menu. In Dark it
-  works. It is present on c2bf52a2 and was handed on as its own task.
+- **The bar's lighting menu opens underneath the Dashboard panels in Glass
+  white and Glass blue.** `.glass.top` is a stacking context at z-index auto
+  under a backdrop filter, so the panels that follow it paint over its menu. In
+  Dark and in Glass it works. It is present on c2bf52a2 and was first handed on
+  as its own task. It is fixed in this change, after review, see the review
+  round below.
 - **Accent text on the middle panel reads 4.40 to 1 on Glass blue and 4.55 on
   Glass white**, because B's panel is a little darker. The text floor is 4.5.
   The accent is B's own, so it was left; deepening it by about three levels in
@@ -4813,3 +4815,54 @@ and fails there and passes on the real build. The ids, in the order they ran:
                  console error on boot
     nothing warm M10 the halo left cream, M11 a cream rule with no blue twin,
                  M34 the helper renamed
+
+### The review round on Glass blue, 18 November
+
+Two reviewers read the first build and found real defects, all reproduced
+before they were touched and all fixed at the cause. Nothing about the palette
+moved, and Glass white is still held to the pixel.
+
+- **The home screen read as a patch of the old light mode.** Discover is where
+  the app opens, and its wash painted a dusty mauve (212,205,206 at one pixel)
+  inside a cool bar and a cool page. Every check in the first build clicked the
+  Dashboard open before it measured, so the hero was never looked at. The cause
+  is in `shell/head.html`, the wash behind the avatar: it mixes the warm
+  ambient core into the page ground in oklch, and an oklch mix carries the hue
+  as well as the lightness. A warm near black into a cool pale blue is about
+  half a turn of hue apart, the short way round lands on pink, and whatever
+  chroma is left paints as pink. Glass blue now states the same two gradients
+  in srgb in a rule of its own, which has no hue to carry, and the pale blue
+  stays blue (205,210,214 at the same pixel). Glass white's wash is not edited.
+  Section 8 of `tests/glassblue.js` reads the whole stage, blank and loaded, at
+  1600 and at 390, by what is in the pixels, and first proves it can see the
+  cream by reading Glass white's own home screen.
+- **At phone width the Settings lighting row cut the new lighting in half.**
+  One flex row of eight names runs 510px in a tray that is the screen less 52,
+  so at 390 the selected Glass blue was sliced to "Gla" and Flat and Lumen sat
+  off the screen where nothing could reach them. At 600 and under it is the
+  phone menu's own shape now, two even columns, four even rows. Section 9 reads
+  every button against its tray and the screen at nine widths from 320 up.
+- **The bar's lighting menu opened behind the stage on Discover and on the
+  Dashboard, in Glass white and in Glass blue,** so a person could pick Glass
+  blue from Dark on the home screen and then not pick anything else from the
+  bar. It was already so in Glass white before this work (Glass and Dark were
+  never affected, and the Field escapes it). Those two lightings put a backdrop
+  filter on the bar without positioning it, so the bar is a stacking context at
+  z-index auto and the menu's own z-index is spent inside it, under the stage.
+  The bar is lifted above the stage while the menu is open and not otherwise,
+  because lifting it always would move the bar's shadow from under the stage's
+  blurred backdrop to over its face and change the pixels below the bar in
+  Glass white, which must not move. Shut, the page is painted exactly as it
+  was. Section 10 asks the browser what is at the centre of every entry, for
+  every lighting, on three screens at two widths, and that a shut bar is not
+  lifted.
+- **Two things that were not in the product.** The two usage lines that named
+  the sandbox chromium (`tests/glassblue.js`, `tests/README.md`) failed
+  `tests/chrome-path.js`, a blocking step; they say `<path to a chromium>`
+  now. And the gate was in no workflow: it is registered in the gates report
+  matrix of `.github/workflows/deploy.yml` and in the registry of
+  `tools/workflow-lint.py`, so `tools/orphans.js` is clean and the commit can
+  be pushed on its own.
+- **Rebased onto 72a28def**, which landed while the review ran. The two build
+  products conflicted and were rebuilt from the sources, never merged by hand.
+

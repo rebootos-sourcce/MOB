@@ -490,14 +490,14 @@ off the run and held by `floors.json`.
 
 ## Glass blue
 
-    NODE_PATH=$(npm root -g) CHROME=/opt/pw-browsers/chromium node tests/glassblue.js
+    NODE_PATH=$(npm root -g) CHROME=<path to a chromium> node tests/glassblue.js
 
 The eighth lighting, added on the owner's 18 November ruling ("Let's go with B.
 For the palette. And let's add that as a new light mode."). Glass blue is
 Glass white with its neutral greys moved from warm cream toward blue, and its
 body carries both classes, `glasswhite` and `glassblue`, so every Glass white
 rule and canvas check keeps working on it. Real Chromium at 1600 by 1000 and
-390 by 844. It holds seven things. The picker: every lighting `LIGHTINGS`
+390 by 844, and for the last two things the widths named below. It holds ten things. The picker: every lighting `LIGHTINGS`
 names reaches the bar and the phone menu as a ring mark with its name for a
 header and one short sentence for a body, on a real hover at 1600 and a held
 press at 390, with the phone entries clear of each other and 44 tall. The
@@ -513,7 +513,15 @@ the 4.5 to 1 text floor, dim and the accent giving up under five percent of
 what Glass white reads. The canvases: the light ladder, the Compass well, and
 no cream left in what the Field paints after a switch under reduced motion.
 And nothing warm left behind, read out of the stylesheet and the script: every
-cream a Glass white rule or a canvas carries has its blue twin.
+cream a Glass white rule or a canvas carries has its blue twin. Then three that
+a review found missing from the first build. The home screen: Discover, where
+the app opens, read out of the pixels of the whole stage, blank and loaded, at
+1600 and 390, with Glass white's own home screen read first to prove the probe
+can see cream. Settings, Lighting: every lighting whole, inside its tray and
+the screen, none cut, none under another, at nine widths from 320 up, and an
+even grid with a full last row at phone width. And the bar's lighting menu: for
+every lighting `LIGHTINGS` names, on Discover, the Dashboard and the Field, at
+1600 and 1100, what the browser puts at the centre of each entry is the entry.
 
 The lighting is not stored today, for any of the eight: `S.theme` starts as
 `dark` and `setLighting` writes nothing, so a reload opens on Dark. The gate

@@ -422,6 +422,9 @@ jobs:
           # circle stays at rest, no Source AI word, no open-mic bar, no
           # hover card, Commit holds still for 40s. New, so report only.
           - { gate: talksilence, timeout: 20, command: node tests/talksilence.js }
+          # 18 November: the eighth lighting, Glass blue (tests/glassblue.js).
+          # New, so report only first.
+          - { gate: glassblue, timeout: 20, command: node tests/glassblue.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

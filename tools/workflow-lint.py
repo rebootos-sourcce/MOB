@@ -181,6 +181,9 @@ BROWSER = {
 # the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
 # Report only until three green runs, like every gate new to CI.
     'lightmenu':     ('node tests/lightmenu.js', 20),
+# the eighth lighting, Glass blue, 18 November (tests/glassblue.js). Report only
+# until three green runs.
+    'glassblue':     ('node tests/glassblue.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

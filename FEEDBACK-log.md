@@ -977,6 +977,15 @@ and holds Glass white to the pixel it read before.
 open: the lighting is not stored, for any of the eight lightings, so a reload
 opens on Dark. He has not been told, and has not ruled on it.
 
+review, same day: two reviewers read the first build and found the home screen
+still a dusty mauve inside the cool bar (an oklch mix carried the warm hue of
+the ambient wash round to pink; Glass blue states that wash in srgb now), the
+Settings lighting row cutting the new lighting in half at phone width (two
+even columns at 600 and under), and the bar's lighting menu opening behind the
+stage on Discover and on the Dashboard in Glass white and Glass blue (the bar
+is lifted while the menu is open). tests/glassblue.js sections 8, 9 and 10 hold
+each, and each was proved on the build as it stood before the fix.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

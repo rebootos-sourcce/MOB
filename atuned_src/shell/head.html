@@ -1362,6 +1362,26 @@ body.lumen{
  border-radius:var(--r-s) var(--r-s) 0 0;
  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 26%,transparent),transparent)}
 .gmenu[hidden]{display:none}
+/* THE BAR'S LIGHTING MENU OPENED BEHIND THE STAGE, found 18 November, and it
+   was the only door to a lighting from the home screen. Glass white and Glass
+   blue put a backdrop-filter on the top bar and nothing else (the body carries
+   glasswhite, not glass, so body.glass .glass never gives the bar a position),
+   which makes the bar a stacking context at z-index auto, and #lightmenu's
+   z-index:60 is spent inside it. Against the rest of the page the whole bar
+   sits at auto, in tree order, before the stage, which is positioned and
+   isolated and so painted over the menu on Discover and on the Dashboard.
+   Measured by what the browser puts at the middle of each entry: none of the
+   eight, in Glass white and in Glass blue, on both screens. Glass and Dark
+   were measured unaffected, and so was the Field in all eight. The bar is a
+   flex item of .app, so a z-index lifts it even though it is not positioned.
+   It is lifted WHILE THE MENU IS OPEN and not otherwise: always on
+   would also move the bar's own 52px shadow from under the stage's blurred
+   backdrop to over the stage's face, which changes the pixels below the bar in
+   Glass white, a lighting that must not move, for a fix that only matters
+   while a menu is out. Shut, nothing here applies and the page is painted
+   exactly as it was; the menu's own shadow already sits over that same strip
+   while it is open. Glass blue carries glasswhite, so one rule holds both. */
+body.glasswhite .top:has(#lightmenu:not([hidden])){z-index:5}
 .gmenu-hd{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);
  margin-bottom:8px}
 .gmenu .seg{width:100%;justify-content:space-between}
@@ -5075,6 +5095,30 @@ body.quiet.tab-story:not(.st-full) #stage::before,
 body.rm.tab-story:not(.st-full) #stage::before{animation:none}
 @media (prefers-reduced-motion:reduce){
  body.tab-story:not(.st-full) #stage::before{animation:none}}
+/* GLASS BLUE'S HOME SCREEN READ AS A PATCH OF THE OLD LIGHT MODE, 18 November.
+   Discover is where the app opens, and the wash above painted it a dusty
+   mauve (212,205,206 at a pixel of the hero) inside a cool bar and a cool
+   page. Cause: it mixes in oklch, and an oklch mix interpolates HUE as well as
+   lightness. The ambient core is a warm near black and Glass blue's ground is
+   a cool pale blue, about half a turn of hue apart, so the short way round
+   the hue wheel lands on pink, whatever the chroma left over is. Glass white
+   never showed it because its ground is warm too, so the two hues sit close.
+   The same two gradients are stated again in srgb for Glass blue only, which
+   has no hue to interpolate: the core darkens the pale blue and the blue stays
+   (205,210,214). The seat wash on top keeps oklch, where it mixes a colour
+   with transparent and so has one hue to carry. Colour only: the sizes, the
+   stops, the percentages, the drift and the reduced motion rule above are
+   untouched, and Glass white's own wash is not edited at all. tests/
+   glassblue.js reads the hero, blank and loaded, at both widths. */
+body.glassblue.tab-story:not(.st-full) #stage::before{
+ background:
+  radial-gradient(105% 115% at 50% 50%,
+    color-mix(in oklch,var(--seat,transparent) calc(var(--seat-w,0)*10%),transparent) 0%,
+    transparent 75%),
+  radial-gradient(115% 125% at 50% 50%,
+    color-mix(in srgb,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
+    color-mix(in srgb,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
+    var(--bg) 100%)}
 /* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
    paints twice: once behind her (above) and once again in the box she
    sits in. */
@@ -10367,6 +10411,20 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 .btn.dgr{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 52%,var(--edge))}
 .btn.dgr:hover{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ac-seg{margin:11px 15px 13px}
+/* THE LIGHTING ROW HAD NOWHERE TO GO AT PHONE WIDTH, 18 November. It is one
+   flex row of every lighting by name, 510px of buttons in a tray that is the
+   screen less 52px, and .seg has no wrap and no scroll, so at 390 (a tray of
+   338) the eighth lighting arrived and the selected button was sliced to "Gla"
+   at the edge while Flat and Lumen sat off the screen where nothing could
+   reach them. At 360 and 430 the same, and it only fits from about 560 up.
+   Below that it is the phone menu's own shape instead, two even columns, so
+   every lighting is whole, the same size as its neighbour, and the rows stay
+   in line (an odd number of lightings would leave one alone in the last row,
+   which tests/glassblue.js section 9 names). The row would still have fitted
+   from about 560, and a grid between there and 600 costs nothing and keeps the
+   break at one number. */
+@media (max-width:600px){
+ .ac-seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ac-grp .dens-list{margin:11px 15px 13px}
 /* THE IMPORTER WAS DRAWN FOR A SHEET AND LIVES IN A GROUP. .sh-imp carries its
    own top rule and no side padding, because inside profileSheet the sheet card

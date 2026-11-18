@@ -2,7 +2,7 @@
 /* ============================================================
    GLASS BLUE, THE EIGHTH LIGHTING. 18 November.
 
-   env NODE_PATH=$(npm root -g) CHROME=/opt/pw-browsers/chromium \
+   env NODE_PATH=$(npm root -g) CHROME=<path to a chromium> \
      flock /tmp/atuned-gates.lock node tests/glassblue.js
    GLASSBLUE_HTML=file      runs against another build, for checking the checker
    GLASSBLUE_BASELINE=file  also compares Glass white, element by element,
@@ -42,6 +42,14 @@
      7  nothing warm is left behind: every cream literal a Glass white rule or a
         canvas carries has its blue twin, read out of the stylesheet and the
         script, so a cream added later fails here and not on a screenshot
+     8  the home screen: Discover, where the app opens, is a cool light surface
+        in Glass blue and not a patch of the old warm one, read out of the
+        pixels of the whole stage, blank and loaded, at 1600 and 390
+     9  Settings, Lighting: every lighting whole, inside its tray and the
+        screen, at every width from 320 up, an even grid at phone width
+    10  the bar's lighting menu opens on top, in every lighting LIGHTINGS names,
+        on Discover, the Dashboard and the Field, read by what the browser
+        puts at the centre of each entry
 
    THE TARGETS ARE THE OWNER'S PICTURE, not this build. The exact settings
    behind variant B were lost, so its colours were read back out of the image
@@ -519,6 +527,147 @@ async function dashboard(pg, lighting) {
     ok(bare.length === 0, 'every cream the canvases paint with is behind COOL() in the script' + (bare.length ? ', without it: ' + bare.slice(0, 2).map(l => l.trim().slice(0, 90)).join(' ; ') : ''));
     ok(/const COOL=\(\)=>S\.theme==='glassblue'/.test(html) && /GLASSWHITE_KIN=\['glasswhite','glassblue'\]/.test(html), 'and the two helpers are there, COOL and GLASSWHITE_KIN');
     ok(/drawSig[\s\S]{0,900}LIGHT\(\)\?1:0,S\.theme/.test(html), 'and the Field\'s redraw cache is keyed on the lighting\'s name, so a switch between the two light lightings repaints');
+    /* the home screen's wash is the one gradient that mixes the ambient core
+       into the page ground, and an oklch mix of a warm core into a cool ground
+       carries the HUE round the wrong way, to pink. Glass blue must say that
+       mix in srgb, in a rule of its own, that sits after the rule it overrides */
+    const wash = rules.filter(r => /body\.glassblue\.tab-story[^,]*#stage::before/.test(r.sel));
+    const washBg = wash.map(r => r.decl.filter(d => d[0] === 'background').map(d => d[1]).join(' ')).join(' ');
+    const base = rules.find(r => /^body\.tab-story:not\(\.st-full\) #stage::before$/.test(r.sel) && r.decl.some(d => d[0] === 'background'));
+    ok(wash.length > 0 && base && wash.every(r => r.at > base.at), 'the home screen\'s wash has a Glass blue rule of its own, after the rule it overrides');
+    ok(/--uni-amb-core/.test(washBg) && /--uni-amb-edge/.test(washBg) && !/inoklch,rgb\(var\(--uni-amb/.test(washBg.replace(/\s+/g, '')),
+      'and it mixes the ambient core and edge into the ground without an oklch hue: ' + washBg.replace(/\s+/g, ' ').slice(0, 70));
+  }
+
+  /* ---------------------------------------------------------------- 8 */
+  console.log('\n=== 8 · the home screen: Discover is cool in Glass blue, blank and loaded, wide and narrow ===');
+  if (!want(8)) { /* not asked for */ }
+  else if (!HAVE_GB) ok(false, 'there is no Glass blue, so its home screen cannot be read');
+  else {
+    /* Discover is where the app opens (TABHOME), so it is the first surface a
+       person sees in any lighting. Its wash is a gradient, which the per
+       surface table in section 3 cannot read, and every check above clicks the
+       Dashboard open first, so the hero was never looked at: it shipped a dusty
+       mauve inside a cool bar. Read here by what is in the pixels. Over the
+       whole stage panel, every pixel that is a light surface (no channel under
+       190) is counted, and the ones leaning warm (red above blue by 3 or more)
+       are the share that read as cream or pink. The probe has to be able to
+       see it, so the same screen in Glass white is read first and must lean
+       warm in most of its light pixels. */
+    const scan = (pg, geo) => pg.screenshot().then(buf => pg.evaluate(async ([b64, g]) => {
+      const img = new Image(); img.src = 'data:image/png;base64,' + b64; await img.decode();
+      const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+      const cx = c.getContext('2d'); cx.drawImage(img, 0, 0);
+      const x0 = Math.round(g.x + 12), y0 = Math.round(g.y + 12), w = Math.max(1, Math.round(g.w - 24)), h = Math.max(1, Math.round(g.h - 24));
+      const d = cx.getImageData(x0, y0, w, h).data; let lit = 0, warm = 0; const m = new Map(); let best = null, n = 0;
+      for (let i = 0; i < d.length; i += 4) {
+        if (Math.min(d[i], d[i + 1], d[i + 2]) < 190) continue; lit++;
+        if (d[i] - d[i + 2] >= 3) warm++;
+        const k = d[i] + ',' + d[i + 1] + ',' + d[i + 2]; const v = (m.get(k) || 0) + 1; m.set(k, v); if (v > n) { n = v; best = k; }
+      }
+      return { area: w * h, lit, warm, mode: best ? best.split(',').map(Number) : null };
+    }, [buf.toString('base64'), geo]));
+    const read = async (pg, lt, loaded) => {
+      await pg.evaluate(([lt, loaded]) => { if (loaded) loadP(3); setLighting(lt); setTab(TAB.STORY); render(); }, [lt, loaded]);
+      await pg.waitForTimeout(1800); await settled(pg);
+      const geo = await pg.evaluate(() => { const b = document.getElementById('stage').getBoundingClientRect();
+        return { x: b.x, y: b.y, w: b.width, h: b.height, home: S.tab === TAB.STORY && !document.body.classList.contains('st-full') }; });
+      return Object.assign({ home: geo.home }, await scan(pg, geo));
+    };
+    for (const [W, H] of [[1600, 1000], [390, 844]]) for (const loaded of [false, true]) {
+      const tag = W + (loaded ? ' loaded' : ' blank');
+      const { cx, pg, errs } = await open(browser, W, H);
+      const gw = await read(pg, 'glasswhite', loaded), gb = await read(pg, 'glassblue', loaded);
+      const pct = r => (100 * r.warm / Math.max(1, r.lit)).toFixed(1) + '%';
+      console.log('  info  ' + tag + ': light pixels leaning warm, Glass white ' + pct(gw) + ', Glass blue ' + pct(gb) + '; the Glass blue ground is ' + (gb.mode || []).join(','));
+      ok(gw.home && gb.home, tag + ': the screen read is the home screen, Discover with the Dashboard closed');
+      ok(gw.lit > gw.area * 0.2 && gw.warm > gw.lit * 0.5, tag + ': the probe sees the cream in Glass white\'s home screen, ' + pct(gw) + ' of its light pixels lean warm, so what is left below means something');
+      ok(gb.lit > gb.area * 0.2, tag + ': Glass blue\'s home screen is a light surface, ' + gb.lit + ' of ' + gb.area + ' pixels');
+      ok(gb.warm < gb.lit * 0.05, tag + ': and under five percent of it leans warm, ' + pct(gb));
+      ok(gb.mode && gb.mode[2] - gb.mode[0] >= 3, tag + ': the commonest light colour in it leans blue, blue above red by 3 or more: ' + (gb.mode || []).join(','));
+      ok(errs.length === 0, tag + ': no page error or console error: ' + errs.slice(0, 2).join(' | '));
+      await cx.close();
+    }
+  }
+
+  /* ---------------------------------------------------------------- 9 */
+  console.log('\n=== 9 · Settings, Lighting: every lighting whole and reachable at every width ===');
+  if (!want(9)) { /* not asked for */ }
+  else if (!HAVE_GB) ok(false, 'there is no Glass blue, so the Settings row has nothing new to hold');
+  else {
+    /* the Settings row lists every lighting by name. With eight it ran 510px in
+       a tray that is the screen less 52, so at 390 the selected Glass blue was
+       cut to "Gla" and Flat and Lumen were off the screen. Every button must be
+       inside the tray and inside the screen, none clipped, none under another,
+       the page must not scroll sideways, and where the row becomes a grid the
+       cells are one width and the last row is as full as the first. */
+    for (const W of [320, 360, 390, 430, 520, 600, 768, 1001, 1600]) {
+      const { cx, pg, errs } = await open(browser, W, 900);
+      await pg.evaluate(() => { setLighting('glassblue'); ACC_OPEN = 'display'; setTab(TAB.SETTINGS); renderAccount(); });
+      await pg.waitForTimeout(700);
+      const g = await pg.evaluate(() => { const t = document.getElementById('acthemes'); if (!t) return null;
+        const tr = t.getBoundingClientRect(); const bs = [...t.querySelectorAll('button')]; const r = bs.map(b => b.getBoundingClientRect());
+        let hit = 0; for (let i = 0; i < r.length; i++) for (let j = i + 1; j < r.length; j++) { const a = r[i], b = r[j];
+          if (a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5) hit++; }
+        const tops = r.map(k => Math.round(k.top)), first = Math.min.apply(null, tops), last = Math.max.apply(null, tops);
+        const sel = t.querySelector('button[aria-pressed=true]');
+        return { n: bs.length, want: LIGHTINGS.length, vw: innerWidth, sw: document.documentElement.scrollWidth, tray: Math.round(tr.width),
+          outTray: r.filter(k => k.left < tr.left - 1 || k.right > tr.right + 1).length, outScreen: r.filter(k => k.left < 0 || k.right > innerWidth).length,
+          clipped: bs.filter(b => b.scrollWidth > b.clientWidth + 1).length, hit, minH: Math.min.apply(null, r.map(k => k.height)),
+          widths: Math.max.apply(null, r.map(k => k.width)) - Math.min.apply(null, r.map(k => k.width)),
+          rows: new Set(tops).size, firstRow: tops.filter(v => v === first).length, lastRow: tops.filter(v => v === last).length,
+          selText: sel ? sel.textContent.trim() : '', selW: sel ? Math.round(sel.getBoundingClientRect().width) : 0 }; });
+      if (!g) { ok(false, W + ': the Settings lighting row is not there'); await cx.close(); continue; }
+      ok(g.n === g.want, W + ': the row lists every lighting, ' + g.n + ' of ' + g.want);
+      ok(g.outTray === 0 && g.outScreen === 0, W + ': every button is inside its tray (' + g.tray + ' wide) and inside the screen: ' + g.outTray + ' out of the tray, ' + g.outScreen + ' off the screen');
+      ok(g.clipped === 0, W + ': none is cut, the selected one reads "' + g.selText + '" at ' + g.selW + ' wide, ' + g.clipped + ' clipped');
+      ok(g.hit === 0 && g.minH >= 44, W + ': none sits under another and none is under 44 tall, ' + g.hit + ' overlaps, shortest ' + Math.round(g.minH));
+      ok(g.sw <= g.vw, W + ': the page does not scroll sideways, ' + g.sw + ' of ' + g.vw);
+      if (W <= 600) ok(g.widths <= 1 && g.rows > 1 && g.firstRow === g.lastRow, W + ': at phone width it is an even grid, one width within a pixel (' + g.widths.toFixed(1) + ' apart), ' + g.rows + ' rows, ' + g.firstRow + ' in the first and ' + g.lastRow + ' in the last');
+      ok(errs.length === 0, W + ': no page error or console error: ' + errs.slice(0, 2).join(' | '));
+      await cx.close();
+    }
+  }
+
+  /* ---------------------------------------------------------------- 10 */
+  console.log('\n=== 10 · the bar\'s lighting menu opens on top, in every lighting, on every screen ===');
+  if (!want(10)) { /* not asked for */ }
+  else {
+    /* the bar's menu is the only way to meet a lighting from the home screen.
+       It hangs below a bar that is a stacking context in every glass lighting
+       (backdrop-filter), and the stage after it in the page is a positioned
+       stacking context too, so the stage painted over the menu on Discover and
+       on the Dashboard and the entries could not be pressed: the real test of
+       "on top" is what the browser puts at the middle of each entry. Read by
+       elementFromPoint, for every lighting LIGHTINGS names, on the three
+       screens the menu has been lost on or kept on. */
+    const views = [['Discover', () => { setTab(TAB.STORY); }], ['the Dashboard', () => { setTab(TAB.STORY);
+      const d = document.getElementById('stdash'); if (d && !document.body.classList.contains('st-full')) d.click(); }], ['the Field', () => { setTab(TAB.FIELD); }]];
+    for (const [W, H] of [[1600, 1000], [1100, 800]]) for (const [vn, go] of views) {
+      const { cx, pg, errs } = await open(browser, W, H);
+      const ids = await pg.evaluate(() => LIGHTINGS.map(t => t[0]));
+      const bad = [], lifted = []; let tried = 0;
+      for (const id of ids) {
+        await pg.evaluate(id => { setLighting(id); }, id);
+        await pg.evaluate(go);
+        await pg.waitForTimeout(1100); await settled(pg);
+        /* shut, the bar is painted as it always was: lifting it always would
+           move its shadow over the stage in every glass lighting */
+        const zShut = await pg.evaluate(() => ({ shut: document.getElementById('lightmenu').hidden, z: getComputedStyle(document.querySelector('.top')).zIndex }));
+        if (!zShut.shut || zShut.z !== 'auto') lifted.push(id + ' ' + (zShut.shut ? 'z-index ' + zShut.z : 'menu open'));
+        await pg.evaluate(() => { const m = document.getElementById('lightmenu'); if (m.hidden) document.getElementById('lightbtn').click(); });
+        await pg.waitForTimeout(350);
+        const r = await pg.evaluate(() => { const bs = [...document.querySelectorAll('#themes button')]; let ok = 0;
+          bs.forEach(b => { const k = b.getBoundingClientRect(); const e = document.elementFromPoint(k.x + k.width / 2, k.y + k.height / 2); if (e && (e === b || b.contains(e))) ok++; });
+          return { ok, n: bs.length, open: !document.getElementById('lightmenu').hidden }; });
+        tried++; if (!r.open || r.ok !== r.n) bad.push(id + ' ' + r.ok + '/' + r.n + (r.open ? '' : ' shut'));
+        await pg.evaluate(() => { const m = document.getElementById('lightmenu'); if (!m.hidden) document.getElementById('lightbtn').click(); });
+      }
+      ok(tried === ids.length && bad.length === 0, W + ', ' + vn + ': in all ' + tried + ' lightings every entry of the bar menu is what the browser puts at its centre' + (bad.length ? ', covered or shut in ' + bad.join(', ') : ''));
+      ok(lifted.length === 0, W + ', ' + vn + ': with the menu shut the bar is not lifted, its z-index is auto in every lighting' + (lifted.length ? ', lifted in ' + lifted.join(', ') : ''));
+      ok(errs.length === 0, W + ', ' + vn + ': no page error or console error: ' + errs.slice(0, 2).join(' | '));
+      await cx.close();
+    }
   }
 
   await browser.close();
