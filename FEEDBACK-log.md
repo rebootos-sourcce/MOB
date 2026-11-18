@@ -550,6 +550,34 @@ stands on and keeps the person as its key. The keys are untouched.
 measure: tests/engine.js holds each word by key and searches every string the
 Compass hands a screen for a retired name.
 
+## 2026-11-18 · owner · the body's two halves zoom on their own, and each body sits in the middle of its half
+
+said: "For the body, I want independent zoom on this left and right panel."
+And: "When you do create the independent panel for left and right, so I can
+zoom independently, I also want you to center the bodies to the panels." He
+drew a grey line between the two bodies on a screenshot to show where the
+split is.
+read: the Body drew both figures in one world through one camera, so a wheel
+or a drag on the front moved the back with it, and the two stood where the
+world put them: fourteen units clear on the outside and twenty two between,
+which is not the middle of either half.
+change: ui/map.js. The Front is the left half of the well and the Back the
+right half, each with its own camera, its own fly target and its own fit. A
+wheel is about the pointer in the half it is over, a drag stays in the half it
+began in, a double press and Zoom into this region open the half that owns the
+region (a pair, both knees or both shoulders, is one figure and so one half),
+and Whole body sends every opened half home. Each body is centred on its own
+drawn middle with the same margin either side and the same room above and
+below, and its title is centred over it. A quiet line, the figure's edge
+colour at 12 percent, marks the seam. One figure up, a phone, is as it was.
+ui/ui.js (the F key calls the same Whole body), tests/functional.js and
+tests/sound.js (each reads a panel's camera).
+measure: tests/functional.js, "the Body's two panels", compares the other
+camera exactly after each move, compares the other half's pixels, scans the
+drawn body against the half's edges at every width the well is two figures
+wide, routes a press at two different zooms, and holds the phone's fit to the
+digit.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

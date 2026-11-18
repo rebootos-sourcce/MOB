@@ -140,7 +140,8 @@ const fig=await page.evaluate(()=>({
  vecColor:(()=>{const v=document.querySelector('#emap .pm-vec');
   return v?getComputedStyle(v).color:'none'})(),
  seats:document.querySelectorAll('#emap circle.pm-seat').length}));
-ok(fig.vector===1,'vector figure renders when raster is absent, got '+fig.vector);
+/* one outline in each of the Body's two panels, the Front's and the Back's, where the one svg held both before */
+ok(fig.vector===2,'vector figure renders when raster is absent, one outline in each panel, got '+fig.vector);
 ok(fig.vecColor!=='none'&&fig.vecColor!=='rgba(0, 0, 0, 0)','vector stroke colour resolves, got '+fig.vecColor);
 ok(fig.seats===7,'7 seats drawn, got '+fig.seats);
 console.log(' ',JSON.stringify(fig));
@@ -792,8 +793,8 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   const tog=mk.querySelector('[data-bmmk=tog]').getBoundingClientRect(), bur=ov.querySelector('[data-bmov=shut]').getBoundingClientRect();
   const o={row:new Set(tops).size, left:Math.round(bur.left-wr.left), right:Math.round(wr.right-tog.right),
    shut:mk.classList.contains('shut'), row2:!!document.getElementById('bmmkb').offsetParent,
-   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.z0, head:bmW2S(50,0)[1]};
-  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.z0;
+   sub:getComputedStyle(document.getElementById('subbar')).display, band:BM.inT, z:BM.pan[0].z0, head:bmW2S(50,0)[1]};
+  ov.querySelector('[data-bmov=shut]').click(); await w(); o.bandShut=BM.inT; o.zShut=BM.pan[0].z0;
   ov.querySelector('[data-bmov=shut]').click(); await w();
   mk.querySelector('[data-bmmk=tog]').click(); await w();
   o.open=!!document.getElementById('bmmkb').offsetParent&&document.querySelectorAll('#bmmkb [data-bmamode]').length;
@@ -851,11 +852,268 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
  const inz=await page.evaluate(()=>bmZoomed());
  for(let i=0;i<14;i++){await page.mouse.wheel(0,240);await page.waitForTimeout(40);}
  await page.waitForTimeout(100);
- const cam=await page.evaluate(()=>{const f=bmFitCam(),c=BM.cam;
+ const cam=await page.evaluate(()=>{const f=bmFitCam(0),c=BM.pan[0].cam;
   return {d:Math.max(Math.abs(c.x-f.x),Math.abs(c.y-f.y),Math.abs(c.z-f.z)),z:c.z/f.z};});
  ok(inz&&cam.d<1e-6,'the wheel in and then out lands on the frame, not below it and off centre, '+JSON.stringify(cam));
  await page.mouse.move(5,5);
  await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});}
+
+/* ---------------------------------------------------------------------------
+   THE BODY'S TWO PANELS. His words, 18 November: "For the body, I want
+   independent zoom on this left and right panel." And: "When you do create
+   the independent panel for left and right, so I can zoom independently, I
+   also want you to center the bodies to the panels."
+
+   The Front is the left half of the well and the Back the right half, and
+   each has a camera of its own (BM.pan[0] and BM.pan[1]). Five things are
+   held here, each one a way this could be put back to one shared camera, or
+   to two that were never really apart:
+
+     1. one panel's zoom, drag, wheel or region never moves the other's camera
+        (compared exactly, not within a tolerance: a camera the other panel
+        touched is not the camera it had), and never repaints its picture;
+     2. each body is centred in its own panel, measured off the pixels the
+        canvas draws, at five widths, for both figures, and the titles with it;
+     3. a press in one panel is turned into the world through that panel's
+        camera and no other;
+     4. one figure up, which is a phone, is as it was, to the digit;
+     5. Whole body leaves no panel opened.
+
+   MEASURED, NOT READ. The centring is the drawn body's own box (the figure
+   filled through the panel's transform and scanned for its first and last lit
+   rows and columns) against the panel's own edges, and then the same scan of
+   the still layer the canvas really holds, so the camera arithmetic and what
+   reaches the canvas are each checked and checked against each other.
+--------------------------------------------------------------------------- */
+console.log('\n=== the Body\'s two panels, a camera each ===');
+{
+ const fr=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const settle=async()=>{await page.waitForFunction(()=>!BM.pan.some(p=>p.camT),null,{timeout:15000}).catch(()=>{});await fr();await fr();};
+ const cams=()=>page.evaluate(()=>BM.pan.map(p=>({x:p.cam.x,y:p.cam.y,z:p.cam.z,t:p.camT?1:0})));
+ const same=(a,b)=>!!a&&!!b&&a.x===b.x&&a.y===b.y&&a.z===b.z&&a.t===b.t;
+ const whole=async()=>{await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');if(z&&!z.hidden)z.click();});await settle();};
+ const fitOf=i=>page.evaluate(i=>{const f=bmFitCam(i),c=BM.pan[i].cam;return Math.max(Math.abs(c.x-f.x),Math.abs(c.y-f.y),Math.abs(c.z-f.z));},i);
+ /* a picture of one panel's half of the still layer, so "left alone" means
+    the pixels and not only the numbers */
+ const pic=i=>page.evaluate(i=>{const P=BM.pan[i],d=BM.sctx.getImageData(P.dx0,0,P.dx1-P.dx0,BM.still.height).data;
+  let h=2166136261;for(let k=0;k<d.length;k+=7){h=Math.imul(h^d[k],16777619);}return h>>>0;},i);
+ const wheel=async(x,y,n,dir)=>{await page.mouse.move(x,y);for(let i=0;i<n;i++){await page.mouse.wheel(0,dir*240);await page.waitForTimeout(30);}await fr();};
+ const sizeTo=async(w,h)=>{await page.setViewportSize({width:w,height:h});
+  await page.waitForFunction(()=>{if(!BM.well)return false;const r=BM.well.getBoundingClientRect();
+   return Math.round(r.width)===BM.W&&Math.round(r.height)===BM.H&&!BM.pan.some(p=>p.camT);},null,{timeout:15000}).catch(()=>{});
+  await fr();await fr();await page.waitForTimeout(200);};
+
+ await page.setViewportSize({width:1600,height:1000});
+ await page.evaluate(()=>{rdClose();loadP(PERSON('Gordon'));setTab(TAB.ENERGY);PMLAYER='map';render();});
+ await fr(); await page.waitForTimeout(300); await settle(); await whole();
+ let sv=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return {x:b.left,y:b.top,w:b.width,h:b.height};});
+ const L=[sv.x+sv.w*0.25,sv.y+sv.h*0.45], R=[sv.x+sv.w*0.75,sv.y+sv.h*0.55];
+
+ /* ---- the panels exist, and stand where the well puts them ---- */
+ const lay=await page.evaluate(()=>({np:bmPanN(),W:BM.W,w:BM.pan.map(p=>p.w),x0:BM.pan.map(p=>p.x0),
+  svg:[...BM.sv.querySelectorAll('svg[data-bmp]')].map(s=>[+s.getAttribute('x'),+s.getAttribute('width')]),
+  vec:document.querySelectorAll('#emap g.pm-vec path').length}));
+ ok(lay.np===2&&lay.w[0]===lay.W/2&&lay.w[1]===lay.W/2&&lay.x0[0]===0&&lay.x0[1]===lay.W/2,
+  'with both figures up there are two panels, each half the well, side by side, '+JSON.stringify(lay));
+ ok(lay.svg.length===2&&lay.svg[0][0]===0&&lay.svg[1][0]===lay.W/2&&lay.svg[0][1]===lay.W/2&&lay.svg[1][1]===lay.W/2,
+  'and the svg over each is laid on its own half, so a press is measured in the panel it is in, '+JSON.stringify(lay.svg));
+ ok(lay.vec===2,'each panel carries its own outline of the figure, 2 in all, got '+lay.vec);
+ /* and only its own: a wide panel shows more world than its figure, and the other figure's outline in it was a hand in the lane */
+ const outl=await page.evaluate(()=>BM.pan.map(P=>P.vec.getAttribute('d')));
+ const wantO=await page.evaluate(()=>[bmOutline1(),bmOutlineAt(BMOX)]);
+ ok(outl[0]===wantO[0]&&outl[1]===wantO[1],'the Front\'s panel outlines the front alone and the Back\'s the back alone');
+ /* the seam is drawn: a thin tall rectangle, once a frame, with two figures up */
+ const seam=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
+  g.fillRect=function(x,y,w,h){if(w<=3&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res({got:got,at:BM.pan[1].dx0});}));}));
+ ok(seam.got.length>=1&&seam.got.every(r=>Math.abs(r[0]-seam.at)<=2),'a quiet line is drawn on the seam between the two panels, '+JSON.stringify(seam));
+
+ /* what moves on its own moves once a frame and not once a panel: a pulse on a
+    line advances by its speed times the frame's time, and two panels drawing
+    the frame must not advance it twice */
+ /* read after the frame clock has moved 0.4 s, not after a fixed wait, so a slow runner reads the same thing */
+ const pls=await page.evaluate(()=>new Promise(res=>{const s=BM.sabs.find(x=>x.pulses.length);if(!s||REDUCED)return res(null);
+  const u=s.pulses[0],q0=u.q,t0=BM.t,d0=s.dir,w0=performance.now();
+  (function f(){if(BM.t-t0<0.4&&performance.now()-w0<9000)return requestAnimationFrame(f);
+   const dt=BM.t-t0,dq=((u.q-q0)%1+1)%1,sp=(0.07+0.15*Math.sqrt(s.T/10))*d0;
+   res({same:s.dir===d0,ratio:(d0>0?dq:1-dq)/(Math.abs(sp)*dt),dt:dt});})();}));
+ ok(pls&&pls.same&&pls.dt>=0.4&&Math.abs(pls.ratio-1)<0.08,'a pulse on a line moves once a frame, not once a panel, '+JSON.stringify(pls));
+
+ /* ---- 1. zoom one, the other does not move ---- */
+ const base=await cams(); const p0b=await pic(0), p1b=await pic(1);
+ const world=await page.evaluate(p=>bmS2W(p[0]-BM.sv.getBoundingClientRect().left,p[1]-BM.sv.getBoundingClientRect().top),L);
+ await wheel(L[0],L[1],4,-1); await settle();
+ const a1=await cams(), p0a=await pic(0), p1a=await pic(1);
+ ok(a1[0].z>base[0].z*1.5&&a1[0].t===0,'the wheel over the Front zooms the Front, '+base[0].z.toFixed(2)+' to '+a1[0].z.toFixed(2));
+ ok(same(a1[1],base[1]),'and the Back\'s camera is exactly what it was, '+JSON.stringify([base[1],a1[1]]));
+ ok(p1a===p1b&&p0a!==p0b,'and the Back\'s picture is the same pixels while the Front\'s is redrawn, '+JSON.stringify({back:[p1b,p1a],front:[p0b,p0a]}));
+ const under=await page.evaluate(w=>{const s=bmW2S(w[0],w[1],0),r=BM.sv.getBoundingClientRect();return [s[0]+r.left,s[1]+r.top];},world);
+ ok(Math.hypot(under[0]-L[0],under[1]-L[1])<0.75,'the zoom is about the pointer: the point under it stays under it, off by '
+  +Math.hypot(under[0]-L[0],under[1]-L[1]).toFixed(3)+' px');
+ await wheel(R[0],R[1],5,-1); await settle();
+ const a2=await cams(), p0c=await pic(0), p1c=await pic(1);
+ ok(a2[1].z>base[1].z*1.5&&same(a2[0],a1[0]),'the wheel over the Back zooms the Back and the Front stays as it was, '+JSON.stringify(a2));
+ ok(p0c===p0a&&p1c!==p1a,'with the Front\'s picture the same pixels again, '+JSON.stringify({front:[p0a,p0c],back:[p1a,p1c]}));
+ /* the Back's centre is its own panel's centre, not the well's */
+ const w2=await page.evaluate(p=>{const r=BM.sv.getBoundingClientRect(),c=BM.pan[1].cam;return bmW2S(c.x,c.y,1)[0]-BM.pan[1].cx;},L);
+ ok(Math.abs(w2)<1e-6,'a panel\'s camera is aimed at the middle of that panel, off by '+w2);
+ /* the overlay follows each camera: a seat in the Front's svg is where the canvas draws it */
+ const seat=await page.evaluate(()=>{const e=document.querySelector('[data-seat="throat"]'),r=e.getBoundingClientRect(),sv=BM.sv.getBoundingClientRect(),
+   band=PMBANDS.filter(b=>b.k==='throat')[0],s=bmW2S(50,band.yp,0);
+  return {dx:(r.left+r.width/2)-(sv.left+s[0]),dy:(r.top+r.height/2)-(sv.top+s[1])};});
+ ok(Math.abs(seat.dx)<1&&Math.abs(seat.dy)<1,'a seat in the Front\'s svg stands where the Front\'s camera draws it, even with the Back opened, '+JSON.stringify(seat));
+ /* and each panel's svg shows the world that panel's camera shows */
+ const vbs=await page.evaluate(()=>BM.pan.map(P=>{const v=P.sv.getAttribute('viewBox').split(' ').map(Number),c=P.cam;
+  return Math.max(Math.abs(v[0]-(c.x-P.w/2/c.z)),Math.abs(v[1]-(c.y-BM.H/2/c.z)),Math.abs(v[2]-P.w/c.z),Math.abs(v[3]-BM.H/c.z));}));
+ ok(vbs.every(d=>d<0.01),'each panel\'s svg has the viewBox its own camera shows, off by '+vbs.map(d=>d.toFixed(4)).join(' and '));
+ /* a drag moves the panel it began in, across the seam as well */
+ const f0=await cams();
+ await page.mouse.move(L[0],L[1]); await page.mouse.down(); await page.mouse.move(L[0]+260,L[1]+40,{steps:6}); await page.mouse.move(L[0]+700,L[1]+60,{steps:6}); await page.mouse.up(); await fr();
+ const f1=await cams();
+ ok(f1[0].x<f0[0].x-1&&same(f1[1],f0[1]),'a drag in the Front pans the Front, even carried over into the Back\'s half, and the Back does not move, '+JSON.stringify([f0,f1]));
+ await page.mouse.move(R[0],R[1]); await page.mouse.down(); await page.mouse.move(R[0]-120,R[1]-30,{steps:6}); await page.mouse.up(); await fr();
+ const f2=await cams();
+ ok(f2[1].x>f1[1].x&&same(f2[0],f1[0]),'a drag in the Back pans the Back and the Front does not move, '+JSON.stringify([f1,f2]));
+ await whole();
+ /* the wheel out lands on the fit, and only on the panel it was over */
+ await wheel(L[0],L[1],4,-1); await wheel(R[0],R[1],3,-1); await settle(); const z2=await cams();
+ await wheel(L[0],L[1],14,1); await settle(); const z3=await cams(); const dfit=await fitOf(0);
+ ok(dfit<1e-6&&same(z3[1],z2[1]),'the wheel out on the Front lands it on its fit exactly and leaves the Back opened, '+dfit+' '+JSON.stringify([z2[1],z3[1]]));
+ await whole();
+
+ /* ---- a region opens the panel that owns it ---- */
+ const bz=await cams();
+ await page.evaluate(()=>bmZoomRegs(BMG.reg.filter(r=>r.grp==='front:Knee'))); await settle();
+ const kz=await cams();
+ const knees=await page.evaluate(()=>{const P=BM.pan[0];return BMG.reg.filter(r=>r.grp==='front:Knee').map(r=>{const a=bmW2S(r.box[0],r.box[1],0),b=bmW2S(r.box[2],r.box[3],0);
+  return [a[0]>=P.x0-1,b[0]<=P.x0+P.w+1,a[1]>=-1,b[1]<=BM.H+1];}).flat();});
+ ok(kz[0].z>bz[0].z*2&&same(kz[1],bz[1]),'a region of the front opens the Front\'s panel and not the Back\'s, '+JSON.stringify([bz,kz]));
+ ok(knees.length===2*4&&knees.every(Boolean),'a pair is one panel\'s two sides, and both knees stand inside the panel it opened, '+JSON.stringify(knees));
+ await whole();
+ await page.evaluate(()=>bmZoomRegs(BMG.reg.filter(r=>r.grp==='back:Calf'))); await settle();
+ const cz=await cams();
+ ok(cz[1].z>bz[1].z*2&&same(cz[0],bz[0]),'a region of the back opens the Back\'s panel and not the Front\'s, '+JSON.stringify([bz,cz]));
+ await whole();
+ /* its own answer's button does the same */
+ const btn=await page.evaluate(()=>{const r=BMG.reg.find(x=>x.v===1&&x.nm==='Upper back');bmOpenKey(r.key,false);const z=document.getElementById('bmzoom');if(!z)return false;z.click();return true;});
+ await settle(); const zb=await cams();
+ ok(btn&&zb[1].z>bz[1].z*2&&same(zb[0],bz[0]),'Zoom into this region on a back region opens the Back\'s panel and leaves the Front\'s alone, '+JSON.stringify([btn,bz,zb]));
+ await page.evaluate(()=>rdClose()); await whole();
+ /* a double press, on the figure, in the Back's half */
+ const dp=await page.evaluate(()=>{const r=BMG.reg.find(x=>x.v===1&&x.nm==='Calf'&&x.side==='l')||BMG.reg.find(x=>x.v===1&&x.nm==='Calf'),s=bmW2S(r.cx+BMOX,r.cy,1),b=BM.sv.getBoundingClientRect();return [b.left+s[0],b.top+s[1]];});
+ await page.mouse.dblclick(dp[0],dp[1]); await settle(); const dz=await cams();
+ ok(dz[1].z>bz[1].z*2&&same(dz[0],bz[0]),'a double press on the Back opens the Back\'s panel and leaves the Front\'s alone, '+JSON.stringify([bz,dz]));
+ await page.evaluate(()=>rdClose()); await whole(); await page.mouse.move(5,5);
+
+ /* ---- 3. a press is turned into the world through its own panel's camera ---- */
+ await wheel(L[0],L[1],2,-1); await wheel(R[0],R[1],3,-1); await page.mouse.move(L[0]+90,L[1]-60); await settle();
+ const route=await page.evaluate(()=>{const out=[],P=BM.pan;
+  [0,1].forEach(i=>{BMG.reg.filter(r=>r.v===i&&bmIn(BMG,i,r.cx,r.cy)).forEach(r=>{
+   const s=bmW2S(r.cx+bmVX(i),r.cy,i);
+   if(s[0]<P[i].x0+20||s[0]>P[i].x0+P[i].w-20||s[1]<80||s[1]>BM.H-20)return;
+   const pk=bmPick(s[0],s[1]);
+   out.push({i:i,nm:r.nm,pi:pk.pi,v:pk.v,own:!!pk.reg&&pk.reg.v===i,
+    dw:pk.w?Math.hypot(pk.w[0]-(r.cx+bmVX(i)),pk.w[1]-r.cy):9});});});
+  return {n:out.length,seen:[0,1].map(i=>out.filter(o=>o.i===i).length),
+   bad:out.filter(o=>o.pi!==o.i||o.v!==o.i||!o.own||o.dw>1e-6).map(o=>o.i+':'+o.nm+' pi '+o.pi+' v '+o.v+' own '+o.own+' dw '+o.dw.toFixed(3))};});
+ ok(route.seen[0]>=3&&route.seen[1]>=3,'with the Front and the Back opened to different views, regions of each are pressed in its own panel, '+JSON.stringify(route.seen));
+ ok(route.bad.length===0,'every one resolves to its own panel, its own figure and its own world point, through its own camera, '+route.bad.slice(0,4).join(' | '));
+ await whole();
+
+ /* ---- 2. each body is centred in its own panel ---- */
+ /* viewport widths, and the well is what they leave after the rail: a width
+    that leaves the well under 700 is a phone's one figure, which section 4
+    holds, so it is passed over here and counted, never silently */
+ const measured=[];
+ for(const w of [760,1000,1100,1280,1440,1600,2000]){
+  await sizeTo(w,1000); await whole(); await page.mouse.move(5,5);
+  if((await page.evaluate(()=>bmPanN()))!==2)continue;
+  measured.push(w);
+  /* the titles' own x, read as they are drawn */
+  await page.evaluate(()=>{window.__ttl=[];const o=CanvasRenderingContext2D.prototype.fillText;window.__ftx=o;
+   CanvasRenderingContext2D.prototype.fillText=function(t,x,y){if(t==='Front'||t==='Back')window.__ttl.push([t,x,y]);return o.apply(this,arguments);};});
+  await fr();await fr();
+  const m=await page.evaluate(()=>{CanvasRenderingContext2D.prototype.fillText=window.__ftx;
+   const out={W:BM.W,H:BM.H,T:BM.inT,np:bmPanN(),stage:!!BM.stage,ttl:window.__ttl.slice(-2),f:[]};
+   const scan=(d,w,h,a)=>{let x0=1e9,x1=-1,y0=1e9,y1=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++){if(d[(y*w+x)*4+3]>=a){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}}return [x0,y0,x1+1,y1+1];};
+   [0,1].forEach(i=>{const P=BM.pan[i],dpr=BM.dpr;
+    /* (a) the body filled through this panel's own transform, scanned */
+    const c=document.createElement('canvas');c.width=BM.cv.width;c.height=BM.cv.height;const g=c.getContext('2d');
+    bmAct(i);bmTf(g);g.fill(BMG.body[i]);
+    const a=scan(g.getImageData(0,0,c.width,c.height).data,c.width,c.height,128).map(v=>v/dpr);
+    /* (b) what the still layer really holds for this panel: the opaque man */
+    const sd=BM.sctx.getImageData(P.dx0,0,P.dx1-P.dx0,BM.still.height).data,b0=scan(sd,P.dx1-P.dx0,BM.still.height,250);
+    const b=[b0[0]/dpr+P.x0,b0[1]/dpr,b0[2]/dpr+P.x0,b0[3]/dpr];
+    const row=q=>({l:q[0]-P.x0,r:P.x0+P.w-q[2],t:q[1]-BM.inT,b:BM.H-q[3],cx:(q[0]+q[2])/2-P.cx,cy:(q[1]+q[3])/2-(BM.inT+BM.H)/2});
+    out.f.push({i:i,z:P.z0,zOld:Math.min(BM.W/154,(BM.H-24-BM.inT)/102),model:row(a),canvas:row(b),agree:Math.max(Math.abs(a[0]-b[0]),Math.abs(a[1]-b[1]),Math.abs(a[2]-b[2]),Math.abs(a[3]-b[3]))});});
+   out.px=BM.pan.map(p=>p.cx);return out;});
+  const tol=1.5;
+  m.f.forEach(f=>{
+   ok(Math.abs(f.model.l-f.model.r)<=tol&&Math.abs(f.canvas.l-f.canvas.r)<=tol&&Math.abs(f.canvas.cx)<=tol,
+    'at '+w+' the '+(f.i?'Back':'Front')+' body has the same margin either side in its panel, '+f.canvas.l.toFixed(2)+' and '+f.canvas.r.toFixed(2)+' px (model '+f.model.l.toFixed(2)+' and '+f.model.r.toFixed(2)+')');
+   ok(Math.abs(f.model.t-f.model.b)<=tol&&Math.abs(f.canvas.t-f.canvas.b)<=tol,
+    'at '+w+' the '+(f.i?'Back':'Front')+' body has the same room above and below, under the band, '+f.canvas.t.toFixed(2)+' and '+f.canvas.b.toFixed(2)+' px (model '+f.model.t.toFixed(2)+' and '+f.model.b.toFixed(2)+')');
+   ok(Math.abs(f.z-f.zOld)<1e-9,'at '+w+' the '+(f.i?'Back':'Front')+' body is the size it was before the panels, fitted scale '+f.z.toFixed(4)+' against '+f.zOld.toFixed(4));
+   ok(f.agree<=tol,'at '+w+' the '+(f.i?'Back':'Front')+' body\'s drawn pixels are where its camera puts it, '+f.agree.toFixed(2)+' px apart');});
+  const tt=m.ttl.map(t=>({t:t[0],d:Math.abs(t[1]-m.px[t[0]==='Back'?1:0])}));
+  ok(m.np===2&&!m.stage&&tt.length===2&&tt.every(t=>t.d<=0.75),'at '+w+' the Front and Back titles are centred over their bodies, '+JSON.stringify(tt));
+  console.log('   centred at '+w+': '+m.f.map(f=>(f.i?'Back':'Front')+' margins '+f.canvas.l.toFixed(2)+'/'+f.canvas.r.toFixed(2)+' above/below '+f.canvas.t.toFixed(2)+'/'+f.canvas.b.toFixed(2)).join(', '));}
+ ok(measured.length>=5,'the centring was measured at five widths or more with both figures up, '+measured.join(', '));
+ await sizeTo(1600,1000); await whole();
+
+ /* ---- 5. Whole body leaves no panel opened ---- */
+ let wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===false,'at the whole body the Whole body button is not there');
+ await wheel(R[0],R[1],5,-1); await settle();
+ wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===true,'with only the Back opened, the Whole body button is there');
+ const pre=await cams();
+ await page.evaluate(()=>document.querySelector('[data-bmwhole]').click()); await settle();
+ const post=await cams(), d1=await fitOf(1);
+ ok(d1<1e-6&&post[1].t===0&&same(post[0],pre[0]),'it sends the Back home to its fit exactly and the Front is as it was, '+d1);
+ wb=await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');return !!z&&!z.hidden;});
+ ok(wb===false,'and the button goes with it');
+ await wheel(L[0],L[1],4,-1); await wheel(R[0],R[1],6,-1); await settle();
+ await page.evaluate(()=>document.querySelector('[data-bmwhole]').click()); await settle();
+ const both=await page.evaluate(()=>BM.pan.map((p,i)=>{const f=bmFitCam(i);return {d:Math.max(Math.abs(p.cam.x-f.x),Math.abs(p.cam.y-f.y),Math.abs(p.cam.z-f.z)),t:p.camT?1:0,open:bmPZoomed(p)};}));
+ ok(both.every(b=>b.d<1e-6&&!b.t&&!b.open)&&!(await page.evaluate(()=>bmZoomed())),'with both opened, one press sends both home and leaves neither opened, '+JSON.stringify(both));
+ await wheel(L[0],L[1],3,-1); await settle(); await page.keyboard.press('f'); await settle();
+ ok((await fitOf(0))<1e-6&&!(await page.evaluate(()=>bmZoomed())),'the F key does the same, for whichever panel is opened');
+
+ /* ---- 4. one figure up is as it was ---- */
+ /* the face is the Front's, as a person who has not turned it finds it; the
+    region presses above turned it to the back, and a phone shows what it is told */
+ await page.evaluate(()=>bmSetFace('front'));
+ await sizeTo(390,844);
+ const ph=await page.evaluate(()=>{const T=BM.inT||0,z=Math.min(BM.W/52,(BM.H-24-T)/102),c=BM.pan[0].cam;
+  return {one:bmOne(),np:bmPanN(),w:[BM.pan[0].w,BM.pan[1].w],W:BM.W,views:bmViews().join(),
+   was:{x:50,y:50.5-T/(2*z),z:z},now:{x:c.x,y:c.y,z:c.z},z0:BM.pan[0].z0,face:BM.face,
+   svgs:BM.sv.querySelectorAll('svg[data-bmp]').length,vec:document.querySelectorAll('#emap g.pm-vec path').length};});
+ const phOut=await page.evaluate(()=>[BM.pan[0].vec.getAttribute('d')===bmOutline(),BM.pan[1].w]);
+ ok(phOut[0]&&phOut[1]===0,'on a phone the one panel carries both outlines for the camera to turn between, and the second panel has no width, '+JSON.stringify(phOut));
+ ok(ph.one&&ph.np===1&&ph.w[0]===ph.W&&ph.w[1]===0&&ph.views==='0','on a phone there is one panel, the width of the well, showing the front, '+JSON.stringify({one:ph.one,np:ph.np,w:ph.w,views:ph.views}));
+ ok(ph.now.x===ph.was.x&&ph.now.y===ph.was.y&&ph.now.z===ph.was.z&&ph.z0===ph.was.z,'and its camera is the fit it always had, to the digit, '+JSON.stringify([ph.was,ph.now]));
+ const seam1=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
+  g.fillRect=function(x,y,w,h){if(w<=3&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res(got.length);}));}));
+ ok(seam1===0,'and no seam is drawn through the one figure, '+seam1);
+ /* the turn to the back carries the one camera across the world, as it did */
+ const turn=await page.evaluate(()=>new Promise(res=>{const xs=[];bmSetFace('back');const t0=performance.now();
+  (function f(){xs.push(BM.pan[0].cam.x);if(performance.now()-t0<900)requestAnimationFrame(f);
+   else res({xs:xs,end:BM.pan[0].cam.x,views:bmViews().join(),np:bmPanN()});})();}));
+ ok(Math.abs(turn.end-(74+50))<0.05&&turn.views==='1'&&turn.np===1,'the Back button turns the one panel to the back figure, '+JSON.stringify({end:turn.end,views:turn.views}));
+ ok(turn.xs.some(x=>x>60&&x<114),'and it glides there across the world rather than cutting, '+turn.xs.slice(0,6).map(x=>x.toFixed(1)).join(' '));
+ await page.evaluate(()=>bmSetFace('front')); await settle();
+ const pz=await page.evaluate(()=>{const b=BM.sv.getBoundingClientRect();return [b.left+b.width/2,b.top+b.height*0.5];});
+ await wheel(pz[0],pz[1],4,-1); await settle();
+ const pz1=await page.evaluate(()=>({z:BM.pan[0].cam.z/BM.pan[0].z0,open:bmZoomed(),btn:!!document.querySelector('#rbar [data-bmwhole],[data-bmwhole]:not([hidden])')}));
+ ok(pz1.z>1.5&&pz1.open&&pz1.btn,'a phone still zooms its one figure and offers the way back, '+JSON.stringify(pz1));
+ await page.evaluate(()=>{const z=document.querySelector('[data-bmwhole]');if(z)z.click();}); await settle();
+ ok((await fitOf(0))<1e-6,'and Whole body returns the one figure to its fit');
+ await sizeTo(1600,1000); await whole();
+ await page.mouse.move(5,5);
+ await page.evaluate(()=>{rdClose();loadP(PEOPLE.length-1);render();});
+}
 
 /* ---------------------------------------------------------------------------
    THE PAIN MAP OPENS BLANK AND IS PAINTED ON.

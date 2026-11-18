@@ -4284,6 +4284,10 @@ body.punch .bm-pt.on>i{background:var(--gold)}
 .pm-aura{position:absolute;inset:-18%;pointer-events:none;z-index:0;filter:blur(40px);
  transition: opacity var(--t-context) var(--ease-out), background var(--t-context) var(--ease-out)}
 .pm-svg{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+/* the Body's svg holds one svg per panel (ui/map.js bmBuild), each laid on its
+   half of the well and showing the world its own camera shows. What a panel's
+   camera shows past its own edge is not drawn, and this says so. */
+.bm-ps{overflow:hidden}
 .pm-fig{display:none}
 .pm-art{opacity:.62}
 body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
