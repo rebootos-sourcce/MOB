@@ -434,7 +434,7 @@ function stOpenVerp(k){
    TB's own words: "Psyche Stack (`railStack` in ui/ui.js, pointed at the
    story being written instead of the whole record)." Checked directly
    before building this: railStack's own tree (saboteur to complex to
-   hyper to super complex, ui/ui.js stkGroup/stkFetBar) is built from
+   hyper to super complex, ui/insightui.js stkLevelHtml/stkFetBar) is built from
    compute()'s chain arrays, which are cross-address pattern matching over
    the whole record (SAB33 ranges and the rest, engine/compute.js) -- there
    is no version of that pipeline that runs on one unsent draft's parse,

@@ -64,14 +64,18 @@ CHILD.forEach(function(cf){
  /* the opposite takes the same mark in Heart, as the stack draws it */
  RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
  RPF[cf.nm].inp.parentElement.classList.add('oppf');});
-SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* THE LAW BOXES LIVE IN THE INTAKE PAGE'S FOLD NOW, 18 November (#iqhand, held in
+   #iqhold until renderIntake takes it, ui/intakeui.js iqHand). They left the right
+   rail with the rest of what sat under Selection. Guarded, so a shell that has
+   no such host builds none and nothing downstream throws. */
+if($('laws'))SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
 function syncCh(){CHILD.forEach(function(cf){
  const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
  const o=RPF[cf.nm],w=+S.replace[cf.nm]||0;S.replace[cf.nm]=w;
  o.inp.value=w.toFixed(1);o.tr.style.width=(w*10)+'%';o.trk.setAttribute('aria-valuenow',w.toFixed(1));});}
 function syncLw(){SI.forEach(function(l){
- const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v;
+ const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v; if(!f)return;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));});}
 $('allCh').addEventListener('input',function(e){toYou();
  CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
@@ -86,7 +90,7 @@ $('allRep').addEventListener('input',function(e){toYou();
    A law already answered takes the value and stays answered: the person
    moved their own answer. Moving one law's own control still answers that
    law, because it moves it off the seed. */
-$('allLaw').addEventListener('input',function(e){toYou();
+if($('allLaw'))$('allLaw').addEventListener('input',function(e){toYou();
  var v=+e.target.value;
  SINAMES.forEach(function(l){if(!lawIn(l))LAW_SEED[l]=v; S.law[l]=v;});syncLw();saveYou();render();});
 
@@ -369,7 +373,9 @@ function setTab(i){
     is arguing with them. */
  (function(){
   var WANT={};
-  WANT[TAB.ENERGY]={right:['flow','running']};
+  /* Flow and Running left the rail, 18 November; Insight is the one section
+     it opens on every surface that carries it */
+  WANT[TAB.ENERGY]={right:['you']};
   /* the Awareness grids fold to two lines of what was chosen, round OM, so
      nothing on the left opens by itself on the Field any more */
   WANT[TAB.FIELD]={left:[],right:['you']};

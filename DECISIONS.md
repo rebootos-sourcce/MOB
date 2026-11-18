@@ -3706,3 +3706,173 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## The Insight rail: one reading, one stack, nothing under Selection. Ruled 18 November.
+
+His words, to the team, with a screenshot of the right rail: "This is for the
+insight panel. It's not working as I designed it. The insight panel at the
+very top should say insight. Whatever I select, it should give me source AI's
+reading of the cascade of that information, how it flows through me, and what
+the appropriate actions are. And then underneath that, it lists the stack from
+superego down, which I can run protocols against. When I click on the icons
+for saboteur, complex, hypercomplex, supercomplex, there's too much text in
+there. This should just be the bars. And then that text field that says
+something like back to the field, which says child emotion apathy. That's the
+information that seems like it belongs in the insight panel, not there. So the
+information that's within that selection panel looks like it's borrowing some
+information from the insight panel. So the insight panel needs to be, the
+text needs to be insightful. It needs to be much longer. The insight panel
+will always show 3 paragraphs with dots for more information that you can
+select and click through that panel. I don't think the nested complex or super
+complex, hyper complex, etc. on that right rail is the way to go. Let's
+unnest them and let's see what they look like unnested. Have your team read
+back to me what I said, and let's clean up that right rail."
+
+And a few minutes later, on the same rail: "Got another bug. So the insight
+panel gives us information on our selected whatever. I can turn on source AI
+and we could talk about it, or I can read about it. I can see the different
+layers of it, and I can run a release from it. Everything beneath selection,
+including flow, including seats, including grandiosity and predatory and
+unbending and collapse and grandiosity and predatory, like it's all repeat.
+Running now, grandiosity, that's all repeat, get rid of that. Laws of
+integrity. Yeah, they're all on diagnostics. Get rid of that."
+
+Read as, and sent back to him before it was built:
+- the top of the rail says Insight;
+- whatever is selected, Insight gives Source AI's reading of the cascade, how
+  it flows through him, and the appropriate actions: much longer, always three
+  paragraphs, dots under it to click through more;
+- under it, the stack from Superego down, listed so he can run protocols
+  against any level;
+- the saboteur, complex, hyper complex and super complex icons show only bars;
+- the "back to the field, child emotion Apathy" text belongs in the reading;
+- the nested levels are unnested, and he is shown what they look like;
+- everything beneath Selection leaves the rail: Flow, Seats, Running now and
+  the Laws of Moral Integrity, because each is already on a diagnostics
+  surface.
+
+### What was built, and where
+
+- **The reading** is composed in `engine/insight.js` (`insightRead`), host
+  free, deterministic and offline, from fixed templates and named record
+  fields. There is no language model. A paragraph is a list of segments
+  (`text`, `src`, `kind`, `speak`, `fig`, `q`), and the screen and any voice
+  render from that one list, one paragraph a request. Every segment names the
+  field it came from and `insightResolve` walks that name back to the field; a
+  percent is `fmtPct` of that field, never a decimal; a quotation is a
+  substring of its source; an offer says is available, you can or if you want;
+  a body place is the map's and never claimed as the person's; a graph edge is
+  a registration and never a cause. The three headers are fixed labels: Where
+  it sits, How it runs, What to do. Where the data is thin the paragraph is
+  short and says what is missing, once, in one gap sentence. It is never
+  padded and never borrows a neighbour's card.
+- **The marks.** One Source AI mark heads the reading (`srcMark`, the 15
+  November ruling), the paragraphs wear the Source AI colour, none is set in
+  italic (the embedded Inter has no italic face), and a book line is quoted in
+  the person's ink with where it came from on hover. `SRC_MARK_TIP` was widened
+  once for every surface: "Source AI wrote this from your words and your
+  reading."
+- **One selection.** Every door that opens a card in Selection says what it
+  opened (`insDoor`), and `rdShell` takes it. A card that never said anything
+  leaves the selection empty, so Insight never says nothing is selected while
+  Selection shows a card, which is what it did for 11 of 15 kinds before.
+- **The dots** page through the cascade, one rung a page: the selection, then
+  its parts heaviest first (up to three), then its parent. A child emotion
+  pages through the saboteurs that run on it. A page with no data is not drawn.
+  Tap, arrow keys and swipe; the block holds the height of its tallest page;
+  every dot is an 8px ring in a 44px target and says its page, "Page 2 of 4,
+  Victim + Pleaser"; a new selection starts at the first.
+- **The stack** is six levels from Superego down, flat, each a header (its
+  symbol, its word, its count) and bars. A level shows its six heaviest bars
+  and any bar on the selection's lineage, then one "N more" chip. The child
+  emotions are a fixed set of nine and show as nine. Off the lineage a fill
+  turns neutral and is never darkened, because a dimmed seat colour turns Solar
+  and Sacral brown.
+- **A bar has two targets.** The body selects. A 44px ring at its right end
+  opens that item's release already loaded (`relPick`) and starts nothing: only
+  the card's own Release press does, and only that press spends the allowance.
+  `insightRelease` is the one answer for the pill under the reading, the run
+  glyph and the third paragraph. No release on an overshot item, on
+  Entitlement (no feeling is mapped to it), on an address that holds nothing,
+  or while the safety check holds. When the check holds the third paragraph is
+  the one safety line. The safety door is never hidden or gated.
+- **The selection card is identity only**: name, kind, percent and the
+  addresses as rows. Where it sits, Both halves, Which way it leans, The
+  opposite, What happens, The sentence it runs, What becomes available, Next
+  move, Runs under and Made of are Source AI's reading or cut. The Wisdom
+  school opens the same doors to say what a thing is, and there (`kbAnsOn`) the
+  full card stays, because nothing else on that page says it.
+- **Removed from the rail on every tab**: the Blueprint domain card at the top
+  (`#person`), Flow and Seats (`#eshelf`, `#run`), Running now (`#fire`) and
+  the Laws (`#laws`, `#allLaw`), and the old foot button. `renderShelf` and its
+  two callers are deleted. The Laws are the one input that did not exist
+  elsewhere, so the 21 boxes and the all slider moved whole, ids unchanged,
+  into a fold on the Intake page (`#iqhand`, appended by `iqHand`).
+
+### Where each removed block already lives on a diagnostics surface
+
+- The Flow sentence: Summary, the Reading's second paragraph ("Flow stops at
+  the root"), `ui/summary.js`.
+- Seats and their held counts: Analytics, The Seven Seats. The four heaviest
+  seats: Summary, In the body, Heaviest seats (a fold).
+- What is running: the stack itself, and Analytics, What is running.
+- The laws, as a reading: Analytics, Laws of Moral Integrity. The laws, set by
+  hand: the Intake fold.
+
+### What exists nowhere else, said to him and kept off the rail
+
+Four small things from Flow and Seats were on the rail and on no diagnostics
+surface: the Flow ring's own percent, each seat's pass percent, the plexus names
+(Cardiac, Celiac and the rest), and the word "clear" for an empty seat. The seat
+card (`runSeatFlowDrill`) already prints the plexus name. Default taken: they
+stay off the rail, and the ring and the pass percents are for Analytics' Seven
+Seats once the Psyche team's rework lands. His to overrule.
+
+### The earlier rulings this replaces, each named once, on his 18 November words
+
+- 4 November, the five tiers are one nested cascade with chevrons and "Or I can
+  close them all": REPLACED by "Let's unnest them." STK_OPEN, the chevrons, Open
+  all and Close all, and the one-tier-at-a-time body are gone.
+- 14 November, "I just want icons, not full words, on one horizontal row": its
+  object was the five tabs, which are gone. What survives is the order on a
+  level header: symbol first, then the word, then the count.
+- 16 November, the square button tabs, and 14 November, pressing an icon makes
+  the selection: retired with the tabs. The selection drives the rail, never the
+  other way round.
+- 4 November, "Run a release comes off this panel": REPLACED by 17 and 18
+  November. A release is run from the selection, and from a bar. The foot
+  button that queued the heaviest eight of the whole field is gone.
+- 4 November, Flow, Running now and the Laws come off the Field alone (the CSS
+  said "he ruled this panel and no other"): REPLACED. The rail is one panel,
+  and they are gone from every tab, not hidden.
+- 14 and 15 November, the Selection card carries the reading and a Blueprint
+  domain card stands at the top: REPLACED. The reading is Insight's; the card
+  is identity.
+- 15 November, nothing selected shows Source AI's general reading: already
+  replaced by 16 November (empty, "nothing selected at most"), kept.
+- 10 November, no two-way chat anywhere: replaced for one button by 17
+  November. This build keeps the slot (`insightAudioSlot`, `#insaudio`) the
+  unmerged Insight audio button attaches to and builds none of it.
+
+Kept: no name in the reading (4 November), no "built from 5 held addresses"
+(4 November), percents only, one mark for Source AI, the scroll with the rest
+of the rail (17 November), symbol first and header second (16 November),
+nothing highlighted when nothing is selected (16 November).
+
+### Open, with the default taken
+
+- **The Selection heading**: kept as a slim section under the stack, last in
+  the rail. Folding it into Insight's first line is one move. His to call.
+- **Superego**: the four addresses the left rail already reads (Justification,
+  Entitlement, Perfectionism, Obsession), from the same table and weights. The
+  Psyche team is reworking the left-rail icons; this row does not touch their
+  code and should take their marks when both land.
+- **An overshot item**: no release anywhere in the rail. No protocol is written
+  for it. The Summary panel's two doors that queue a pattern's addresses (Release
+  all and the one on each rung, `summaryPanelWire`) refuse an overshot pattern by
+  name now, with the same sentence, because they spent release lines on addresses
+  holding nothing (12 of a hundred gift lines on Sofia's Manipulator). What stays
+  queued on its own, not built here: that panel's Release all still counts every
+  leaf, so its N says more than one run reaches.
+- **A long reading read aloud**: one paragraph a request, because the voice
+  server refuses more than 600 characters in one go.

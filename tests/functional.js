@@ -159,13 +159,18 @@ for(const nm of people){
  for(const L of layers){
   const res=await page.evaluate(l=>{PMLAYER=l;render();
    const svg=document.querySelector('#emap svg.pm-svg');
-   const shelf=document.getElementById('eshelf');
-   return {nodes:svg?svg.childElementCount:0,
-    shelf:shelf?shelf.childElementCount:0,
-    shelfTxt:shelf?shelf.textContent.trim().length:0};},L);
+   /* THE ENERGY SHELF LEFT THE RIGHT RAIL, 18 November, with Flow, Running now
+      and the Laws: "Everything beneath selection... it's all repeat." This
+      asserted #eshelf held more than 40 characters on Body for every person
+      and every layer, 96 times. It asserts that the repeat blocks are gone
+      from the rail on every one of them instead, so the count is unchanged
+      and what it holds is the new ruling. */
+   const gone=!document.getElementById('eshelf')&&!document.getElementById('run')&&!document.getElementById('fire')
+    &&!document.querySelector('#rpanel [data-sec="flow"],#rpanel [data-sec="running"],#rpanel [data-sec="laws"]');
+   return {nodes:svg?svg.childElementCount:0,gone:gone};},L);
   ok(res.nodes>5,nm+'/'+L+': svg empty');
-  ok(res.shelfTxt>40,nm+'/'+L+': shelf empty ('+res.shelfTxt+' chars)');
-  line.push(L+':'+res.nodes+'/'+res.shelfTxt);}
+  ok(res.gone,nm+'/'+L+': Flow, Seats, Running now and the Laws are not on the rail');
+  line.push(L+':'+res.nodes);}
  console.log(' ',nm.padEnd(8),line.join('  '));}
 
 /* ---------------------------------------------------------------------------
@@ -585,7 +590,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
      panel with nothing drawn, which is read off planNeed and PLANS and not
      typed here as a rung.
 --------------------------------------------------------------------------- */
-console.log('\n=== Character: the five masks, the overlays, Runs under, the lock ===');
+console.log('\n=== Character: the five masks, the overlays, Runs under (gone from the rail card), the lock ===');
 {
  await page.evaluate(CH_HELP);
  const ms=await page.evaluate(async()=>{
@@ -613,22 +618,22 @@ console.log('\n=== Character: the five masks, the overlays, Runs under, the lock
   o.derek={kept:(CURP.ui&&CURP.ui.chmask)||null,on:on()};
   loadP(PERSON('James')); render(); await fr();
   o.jamesBack=on();
-  /* RUNS UNDER. A saboteur of James's whose addresses sit under a read mask
-     other than the one on screen; its drill's row opens that mask here. */
-  const r=compute(), cur=CHV.pick;
-  let ru={found:false};
-  for(const s of r.sabs){
-   const seats=s.parts.filter(Boolean).map(n=>n.b);
-   const m=MASKS_READ.filter(x=>x.nm!==cur&&x.b.some(b=>seats.indexOf(b)>=0))[0];
-   if(!m)continue;
-   runDrill(s); await fr();
-   const row=document.querySelector('#rdrill [data-rununder="'+m.nm+'"]');
-   if(!row)continue;
-   row.click(); await fr();
+  /* RUNS UNDER LEFT THE RAIL'S CARD, 18 November. It was a row in a saboteur's
+     drill that opened the mask the saboteur runs under, and the owner struck it
+     on 15 November ("the runs under doesn't need to be there. Neither does made
+     of") and again on 18 November, when the card became identity only. This
+     held that the row existed and opened the mask. It holds the reverse: the
+     card in the rail carries neither Runs under nor Made of, and lists the
+     addresses as rows. The mask opens from the Character page's own buttons,
+     held a few checks up. */
+  const r=compute();
+  let ru={gone:false};
+  const s0=r.sabs[0];
+  if(s0){
+   runDrill(s0); await fr();
    const d=document.getElementById('rdrill');
-   ru={found:true,sab:s.nm,mask:m.nm,pick:CHV.pick,kept:CURP.ui&&CURP.ui.chmask,on:on(),
-    t:d.style.display!=='none'?d.textContent:''};
-   break;}
+   ru={gone:!d.querySelector('[data-rununder]')&&!/Runs under|Made of/.test(d.textContent)
+     &&/Addresses/.test(d.textContent)&&d.querySelectorAll('.ad-r').length>0,sab:s0.nm};}
   o.ru=ru; rdClose();
   /* the rung that carries the masks, and the one under it, off the table */
   const keys=PLANS.map(p=>p.k), need=planNeed('mask').k;
@@ -646,8 +651,8 @@ console.log('\n=== Character: the five masks, the overlays, Runs under, the lock
   'and each reaches the drawing, pixels changed: cloud '+ms.ov.cloud.d+', torus '+ms.ov.torus.d+', heat '+ms.ov.heat.d);
  ok(!ms.derek.kept&&ms.derek.on==='Child'&&ms.jamesBack==='Adult',
   '5dcb45d: the pick is the profile\'s own, Derek who never picked opens on '+ms.derek.on+' after James picked Adult, James comes back on '+ms.jamesBack);
- ok(ms.ru.found&&ms.ru.pick===ms.ru.mask&&ms.ru.kept===ms.ru.mask&&ms.ru.on===ms.ru.mask&&ms.ru.t.indexOf(ms.ru.mask)>=0&&/Worn over the/.test(ms.ru.t),
-  'a Runs under row in a saboteur\'s drill opens that mask here and its summary in Selection, '+JSON.stringify({sab:ms.ru.sab,mask:ms.ru.mask,on:ms.ru.on}));
+ ok(ms.ru.gone,
+  'a saboteur\'s card in the rail carries no Runs under and no Made of, and lists its addresses as rows, '+JSON.stringify({sab:ms.ru.sab}));
  /* THE LOCK, on two pages of their own: the seed every page here carries is
     overridden by a later init script, the rung under the masks' and the
     masks' own. */
@@ -1030,7 +1035,10 @@ const kb=await page.evaluate(()=>{
     horizontal row," so textContent is a count digit or empty and the word
     this check wants is read off aria-label (and title carries the same
     word as the tap reachable fallback this product already uses). */
- const stack=[...document.querySelectorAll('#stack .stk-t[data-st]')]
+ /* THE FIVE TABS ARE GONE, 18 November: the stack is six levels now, each a
+    header, and the child emotions' header carries the name in its aria-label
+    where the tab did. Read off the headers in the order they stand. */
+ const stack=[...document.querySelectorAll('#stack .stk-lv .stk-lh')]
   .map(e=>(e.getAttribute('aria-label')||'').trim().replace(/\s+/g,' '));
  const text=document.body.innerText;
  return {secs,all,hit,none,foundAll,opened,walked,marks,empty,pool,held,chip,dash,rail,stack,text,
@@ -1088,8 +1096,8 @@ const kb=await page.evaluate(()=>{
   'and the rail no longer calls the nine fetters');
  /* the word moved off the tab's face to its aria-label, 14 November, but
     the name itself is unchanged: child emotions, not fetters. */
- ok(/^Child emotions/.test(kb.stack[0]||''),
-  'the stack tab\'s aria-label calls them child emotions, got '+(kb.stack[0]||'nothing'));
+ ok(kb.stack.some(h=>/^Child emotions/.test(h)),
+  'the stack level\'s aria-label calls them child emotions, got '+kb.stack.join(' | '));
  ok(!/child fetter/i.test(kb.text),
   'and the phrase child fetter reaches no surface');}
 /* ALL 112, NEVER 108. W is the 108 somatic addresses and the four field
@@ -1590,39 +1598,34 @@ ok(/How it shows up/i.test(lab.drill),'says how it shows up in a life');
 ok(/Where it goes/i.test(lab.drill),'and where it goes next');
 /* and the definition has to be reachable by TAP, not only by hover. It lived
    in a title attribute, and the audience arrives on phones. */
-/* #psum IS NOT THE BAND'S DOOR ANY MORE, 14 November, round SV22 finally
-   landed. His words, 5 November: "that little area right there is a
-   summary... that field needs to be moved into the insight field." #psum
-   now prints the Selection panel's own Blueprint domain reading
-   (domReadHtml, ui/drills.js) and a press opens the same runDomDrill, in
-   the place SV18 (5 November) had put the band's runCompassDrill. This is
-   a NAMED LOSS, not a silent one: #psum was the band's only remaining
-   tappable home on the Field (#railtop and #pol2 are both display:none by
-   id), so the band's own definition, body state, "How it shows up", "Where
-   it goes" and the crisis floor have no door on the Field once this gate
-   stops asserting it here. The band word, its state and "Where it goes"
-   still print on Summary's own status card; the definition and the body
-   line do not survive anywhere else. runCompassDrill itself is untouched
-   and still correct, checked directly above through #tier; this block only
-   stops claiming a control that no longer calls it. */
+/* THE BLUEPRINT DOMAIN CARD LEFT THE TOP OF THE RAIL, 18 November. #psum was a
+   fixed library blurb on every read record, above the word Insight. His words:
+   "The insight panel at the very top should say insight. Whatever I select, it
+   should give me source AI's reading." This block asserted the card was a
+   control, 44px tall, with an aria-label, and that a tap opened the domain.
+   Those five checks are kept in count and now hold the new design: the card is
+   gone, the word Insight is the rail's first block, a domain is one more thing
+   Insight reads when it is selected, and the full card still opens in Selection
+   when the domain is pressed. Named in DECISIONS.md, 18 November. */
 const tapPg=await browser.newPage({viewport:{width:390,height:844}});
 await tapPg.goto(FILE,{waitUntil:'load'}); await booted(tapPg); await tapPg.waitForTimeout(700);
 const tapped=await tapPg.evaluate(()=>{
  loadP(PERSON('Tomas')); setTab(TAB.FIELD); render();
  S.pin=null; render();
- const el=document.getElementById('psum');
- const h=Math.round(el.getBoundingClientRect().height);
- const hasLabel=(el.getAttribute('aria-label')||'').length>0;
- const role=el.getAttribute('role'), tab=el.getAttribute('tabindex');
- el.click();
+ const none={psum:!!document.getElementById('psum'),person:!!document.getElementById('person'),
+  head:((document.querySelector('#rpanel .lsec[data-sec="you"] .lsec-hd')||{}).textContent||'').trim()};
+ const d0=DOMAINS[S.doms[0]];
+ runDomDrill(d0); render();
  const d=(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ');
- return {tag:el.tagName, h, hasLabel, role, tab, opened:d.length,
+ const ins=document.getElementById('insight');
+ return {none, name:(ins.querySelector('.ins-nm')||{}).textContent||'', kind:(ins.querySelector('.ins-kd')||{}).textContent||'',
+  paras:ins.querySelectorAll('.ins-pg[data-on] .ins-p').length, dom:d0.nm, opened:d.length,
   full:/Blueprint domain/i.test(d)&&/cluster/i.test(d)&&(/Read clear/i.test(d)||/What it is/i.test(d))};});
-ok(tapped.tag==='DIV','the domain reading is divs and paragraphs, not phrasing content for a button, got '+tapped.tag);
-ok(tapped.role==='button'&&tapped.tab==='0','so role and tabindex keep it a control instead');
-ok(tapped.hasLabel,'and it carries an aria-label of its own');
-ok(tapped.h>=44,'it clears the touch floor, got '+tapped.h+'px');
-ok(tapped.full,'and a tap gives the blueprint domain, its cluster and its clear or distorted read');
+ok(!tapped.none.psum&&!tapped.none.person,'the blueprint domain card is not on the rail');
+ok(tapped.none.head==='Insight','the rail opens on the word Insight, got '+tapped.none.head);
+ok(tapped.name===tapped.dom&&tapped.kind==='Blueprint domain','a domain that is selected is read by Insight, '+JSON.stringify({n:tapped.name,k:tapped.kind}));
+ok(tapped.paras===3,'in three paragraphs, got '+tapped.paras);
+ok(tapped.full,'and the full card still opens in Selection: the blueprint domain, its cluster and its clear or distorted read');
 await tapPg.close();
 
 console.log('\n=== zoom atomises the construct ===');
@@ -1770,11 +1773,16 @@ const rel=await page.evaluate(()=>{
  CHARGES.forEach(c=>{S.charge[c]=0;}); SINAMES.forEach(l=>{S.law[l]=5;});
  syncCh(); syncLw(); render();
  const l0=SINAMES.map(l=>S.law[l]).join();
- document.getElementById('bRel').click();
- return {l0, wait:true};});
+ /* THE BUTTON MOVED INTO THE INSIGHT READING, 18 November, and acts on what is
+    selected: with nothing held there is nothing selected and so no button to
+    press. Where it is drawn the press goes through the same refusal. */
+ const b=document.getElementById('bRel');
+ if(b)b.click();
+ insRunRelease(null);
+ return {l0, wait:true, drawn:!!b};});
 await page.waitForTimeout(3200);
 const relAfter=await page.evaluate(()=>SINAMES.map(l=>S.law[l]).join());
-ok(relAfter===rel.l0,'with nothing held, the button changes no law');
+ok(relAfter===rel.l0&&!rel.drawn,'with nothing held, no release button is drawn and no law changes');
 
 console.log('\n=== a finger reads the wheel, it does not write it ===');
 /* A thumb landing on the wheel to scroll used to drag the charge underneath
@@ -4848,21 +4856,31 @@ for(let i=1;i<15;i++){
 /* AND THE RELEASE CONTROL DOES NOT REFUSE SOMEBODY WHO IS STILL CARRYING.
    The queue was built at the sq 4 line, so the core loop had two runs in it and
    then the control refused. Measured on James: +4.05, +1.80, refused, while 72
-   addresses were still carrying. */
+   addresses were still carrying.
+
+   18 November: the button is inside the Insight reading and acts on what is
+   selected, not on the heaviest eight of the whole field, so the run is made
+   from the heaviest pattern a person has picked. Four selections in a row, each
+   the heaviest pattern that is not overshot and still holds charge, each pressed
+   through the real button: the card opens every time something is carrying. */
 const relOffer=await page.evaluate(async()=>{
  loadP(PERSON('James'));
  const seen=[];
  for(let k=0;k<4;k++){
-  const r=compute();
-  document.getElementById('bRel').click();
+  const r=computeSeen();
+  const pool=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(o=>!o.over&&leaves(o).some(n=>n.cf&&n.sq>=1));
+  const pick=pool.sort((a,b)=>b.w-a.w)[k%Math.max(1,pool.length)];
+  S.pin=pick||null; if(pick)runDrill(pick); render();
+  const b=document.getElementById('bRel');
+  if(b)b.click();
   await new Promise(z=>setTimeout(z,60));
-  seen.push({run:k+1,carrying:r.carrying.length,opened:RUN.open,q:RUN.queue.length});
+  seen.push({run:k+1,carrying:r.carrying.length,picked:!!pick,drawn:!!b,opened:RUN.open,q:RUN.queue.length});
   if(RUN.open){RUN.phase='run';RUN.idx=1e9;relCoolDown();relClose();}
  }
  return seen;});
 relOffer.forEach(s=>{
- ok(!(s.carrying>0&&!s.opened),
-  'release run '+s.run+' is offered while '+s.carrying+' addresses carry');});
+ ok(!(s.carrying>0&&s.picked&&!(s.drawn&&s.opened)),
+  'release run '+s.run+' is offered through the button while '+s.carrying+' addresses carry');});
 
 console.log('\n=== the ceiling on release is computed, not guessed ===');
 /* The ceiling is analytic. It must agree with actually clearing every charge
@@ -7427,7 +7445,12 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      &&getComputedStyle(o).display==='none';})(),
    bare:[...document.querySelectorAll('.lsec-hd')].filter(h=>!h.querySelector('svg')).map(h=>h.textContent.trim()),
    mx:/Architect|Engine|Weaver|Witness/.test(document.getElementById('mxk').textContent),
-   run:[...document.querySelectorAll('#fire .it[data-i]')].map(e=>!!e.querySelector('.crb .crb-v')&&!!e.querySelector('.crb-g path')),
+   /* RUNNING NOW LEFT THE RAIL, 18 November ("Running now, grandiosity, that's all
+      repeat, get rid of that"), and the stack under the Insight reading is the
+      one list of what is running. This held that every Running chip was a badge
+      with its pill and its tier's mark. It holds that every pattern row of the
+      stack is a bar with its figure and its track. */
+   run:[...document.querySelectorAll('#stack .stk-row .stk-am')].map(e=>!!e.querySelector('.rb-v')&&!!e.querySelector('.rb-t')),
    heads:[...document.querySelectorAll('#spirit .sp-hd')].every(h=>!!h.querySelector('svg'))};
   sec.querySelector('.lsec-hd').click();
   /* a blank profile has no birth, and the summary says what unlocks it */
@@ -7463,7 +7486,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
  ok(fv.heads,'and every Root Energetics heading its system\'s');
  ok(!fv.mx,'the matrix carries no root names');
- ok(fv.run.length&&fv.run.every(Boolean),'every Running row is a badge with its pill and its tier\'s mark, '+fv.run.length);
+ ok(fv.run.length&&fv.run.every(Boolean),'every pattern row of the stack is a bar with its figure and its track, '+fv.run.length);
  for(const v of ['frames','dial']){const x=fv.fe[v];
   /* three paths a feather, and a reading at nought draws none, so the count
      is a multiple of three up to the layer's size and never empty */

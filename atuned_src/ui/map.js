@@ -958,7 +958,6 @@ function renderMap(r){
   var bx=sv.getBoundingClientRect(), u=Math.min(bx.width,bx.height)/sv.viewBox.baseVal.width;
   if(u>0)host.querySelectorAll('.pm-seatn').forEach(function(t){
    t.style.fontSize=(13/u).toFixed(3)+'px';});})();
- renderShelf(r,seats,speed,stop,dom,loadedTot,marks);
  /* the gutter rows are gone, and so is the handler that answered for them */
  /* both controls write the same value. The row answers for the keyboard, the
     figure answers for the pointer, and painting the region already selected
@@ -3558,24 +3557,14 @@ function bmRender(r,host){
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
  BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r);
- var seats=flSeats(),speed=flSpeed(),loadedTot=W.filter(function(n){return n.sq>=LOADED;}).length;
- var stop=null;seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
- var dom=seats.slice().sort(function(a,b){return b.hot-a.hot||b.load-a.load;})[0];
+ var seats=flSeats();
  bmSeats(seats);
  pmLayerBar(r); bmBars(); bmOvPaint(r);
- /* THE SHELF IS FLOW'S, and renderShelf names its layer out of PML, which
-    does not carry the map. What it prints for Flow is the head and the seven
-    seats and nothing that belongs to a layer, which is this layer's shelf
-    exactly, so it is asked as Flow for the length of the call. */
- var was=PMLAYER; PMLAYER='nerves';
- try{renderShelf(r,seats,speed,stop,dom,loadedTot,[]);}finally{PMLAYER=was;}
- /* the rail's Running list is this map's list of lines: pointing at a row
-    traces its line here, and pressing one holds it, because ui.js pins it */
- document.querySelectorAll('#fire .run-it').forEach(function(el){
-  var nm=((el.querySelector('.run-n')||{}).textContent||'').trim();
-  el.onpointerenter=function(){BM.hoverSab=nm;BM.hoverFrom='rail';BM.traceT0=performance.now();
-   bmSabRefresh(BM.r);BM.dirty=true;};
-  el.onpointerleave=function(){if(BM.hoverSab===nm)BM.hoverSab=null;BM.hoverFrom='';BM.dirty=true;};});
+ /* THE RAIL'S RUNNING LIST WAS THIS MAP'S LIST OF LINES, and pointing at a row
+    traced its line here. The list left the rail on 18 November (it repeated
+    the stack under the Insight reading), so the hover trace went with it: a
+    loss he is told about, DECISIONS.md. The held trace, a press on a line,
+    is unchanged. */
  BM.stage=bmGround(host); BM.stillKey=''; BM.dirty=true;
  if(!BM.ctx)return;          /* no canvas: the outline and the seats stand alone */
  if(!BM.raf){BM.last=0;BM.raf=requestAnimationFrame(bmFrame);}}

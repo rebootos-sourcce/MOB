@@ -157,6 +157,11 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
+ /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
+    this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
+    stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
+    is kept here, where the header of that level reads it. */
+ 'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",

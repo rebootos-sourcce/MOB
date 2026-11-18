@@ -91,8 +91,8 @@ function tsPartRow(part){
    was still here, and came off the fetter and address drills on 16
    November. Kept so its rows (tsPartRow) can be reused; do not append it to
    a drill again with the narrated paragraph in it. traceSummary itself
-   stays live: insightTrace in ui/ui.js reads its parents and children and
-   never its summary. */
+   stays live: insightRead (engine/insight.js) reads the same records through the
+   chain and never its summary. */
 function tsBlockHtml(type,id){
  var g=tsCurrentGraph();
  if(!g)return '<div class="pm-eye">Feeds up, and the blend</div>'

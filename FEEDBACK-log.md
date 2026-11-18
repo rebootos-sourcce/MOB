@@ -570,6 +570,106 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · the Insight rail, and everything under Selection
+
+said: "This is for the insight panel. It's not working as I designed it. The
+insight panel at the very top should say insight. Whatever I select, it should
+give me source AI's reading of the cascade of that information, how it flows
+through me, and what the appropriate actions are. And then underneath that, it
+lists the stack from superego down, which I can run protocols against. When I
+click on the icons for saboteur, complex, hypercomplex, supercomplex, there's
+too much text in there. This should just be the bars... The insight panel will
+always show 3 paragraphs with dots for more information that you can select and
+click through that panel. I don't think the nested complex or super complex,
+hyper complex, etc. on that right rail is the way to go. Let's unnest them and
+let's see what they look like unnested." And, minutes later: "Everything
+beneath selection, including flow, including seats... like it's all repeat.
+Running now, grandiosity, that's all repeat, get rid of that. Laws of
+integrity. Yeah, they're all on diagnostics. Get rid of that."
+read: Insight is the first block and is Source AI's reading of whatever is
+selected, in three paragraphs with dots; the stack from Superego down sits under
+it, unnested, bars only, each bar with a run glyph; the selection card is
+identity only and what it borrowed from Insight is the reading; Flow, Seats,
+Running now and the Laws leave the rail on every tab. Sent back to him before
+the build.
+change: engine/insight.js (new, the reading), ui/insightui.js (new, the rail),
+ui/ui.js, ui/drills.js, ui/mapshelf.js, ui/map.js, ui/intakeui.js (the law boxes
+moved here), ui/panels.js, ui/personas.js, shell/body.html, shell/head.html,
+tests/insightread.js and tests/insightrail.js (new); tests/wellpin.js retired.
+DECISIONS.md, 18 November, names each earlier ruling this replaces. Branch
+feature/insight-rail-unnested, not pushed.
+measure: see the commit message and DECISIONS.md for the counts read off the
+run. tools/equiv.py names stkWellHtml, insightSay, railStkKids, railStkParent,
+stkGroup, stkNode, stkTier, stkWalk, STACK_TAB, STK_OPEN and renderShelf as
+removed, and nothing else leaving.
+
+## 2026-11-17 · owner · the Insight panel is Source AI's translation of what is selected
+
+said: "the insight panel is source ai's translation of whats selected. i want
+this to be an audio button too. if i press it, i can talk to source ai about
+the parent and children and how it works through me and run a protocol to
+release it."
+read: one audio button on the Insight reading that speaks it and opens its
+release. Built on an unmerged branch (worktree wf_a5bfa25a-317-4, commit
+50c53a04) and not on main. The 18 November rail keeps one slot for it,
+insightAudioSlot and #insaudio, and builds none of it.
+change: none on main for this entry.
+measure: none.
+
+## 2026-11-17 · owner · the Insight panel did not scroll with the rail
+
+said: "And the insight panel's still broken. It doesn't scroll with the rest of
+the scroll bar. That's a bug for the field, body, the compass, etc."
+read: the box was position sticky and held a third of the rail still while the
+rest moved. It is the first block and scrolls with the rail, on every tab.
+change: e61569bb, position relative at every width and no inner scroller. Kept
+whole by the 18 November rail.
+measure: Chromium at 1600 by 1000 on the Field, Body and Compass.
+
+## 2026-11-16 · owner · nothing selected is nothing highlighted
+
+said: "Why are there things highlighted when I have nothing selected in my
+profile? There should be nothing highlighted or selected. And my insight panel
+should be empty. There should be no text here. It should say nothing selected at
+most."
+read: a tab wears the selected look only when its tier holds the pin, and with
+nothing selected the panel says so in two parts. It replaces the 15 November
+wish that nothing selected shows a general reading.
+change: 23715a28, 76777f5e. Kept by the 18 November rail: nothing wears the
+selected look when nothing is selected.
+measure: none recorded.
+
+## 2026-11-15 · owner · the Insight panel, and what belongs in it
+
+said: "The insight panel is broken. First, the design size needs to include
+another 300 pixels... There is information where it says back to the field,
+hypercomplex dysregulation, how it runs through you. That information seems
+like it's what actually belongs in that insight panel... If the text gets too
+long, maybe you can scroll down, or maybe there's like a little tab I can go
+through. It generates pages... Like the runs under doesn't need to be there.
+Neither does made of, because we already have that stuff."
+read: the card text belongs in Insight, long text pages, and Runs under and Made
+of go. Built then: the taller display and the outlined icons. Not built then:
+moving the text, the pages, cutting the two sections. The 18 November rail
+builds all three.
+change: none on 15 November for the open items.
+measure: none.
+
+## 2026-11-14 · owner · the Insight display area, and icons only
+
+said: "I want the display area about 80% longer. See the image. That way it'll
+be the information display area. The icons for the saboteurs, etc. And then
+whatever I select, it will select that icon in the right rail and then show me
+all the children of that, the parent and its children. In the summary, it will
+give me, will tell me what, how all that runs through me."
+read: a tall display area with the five tier icons, and a reading of how a
+selection runs through him. Built as the well (Built from, Feeds, Reading, one
+sentence). The code comments call that round SV23; TASKS.md's SV23 is Ritual
+round four, so this log names it by its date. REPLACED on 18 November by the
+three-paragraph reading and the unnested stack.
+change: 4fa3dbd5 and the round before it.
+measure: none recorded.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
