@@ -324,6 +324,50 @@ body.glasswhite .panel,body.glasswhite .glass{
  backdrop-filter:blur(10px) saturate(1.2)}
 
 /* ============================================================
+   FIVE AND A HALF. GLASS BLUE.
+
+   Glass white with its neutral greys moved from warm cream toward blue. The
+   owner's words, 18 November, choosing "more blue" (variant B) from the
+   palette board: "Let's go with B. For the palette. And let's add that as a
+   new light mode." Glass white is not touched and not renamed; this is a
+   second lighting beside it.
+
+   THE BODY CARRIES BOTH CLASSES, glasswhite and glassblue (setLighting in
+   ui/panels.js). Every Glass white rule, every canvas that reads the stage
+   and every light ground check therefore keeps working unchanged, and this
+   block only overrides the neutral colours. It sits straight after Glass
+   white's own block and states only tokens, so a later rule that sets the
+   same property on body.glasswhite (the tooltip ground, below the tip rules)
+   needs its own glassblue line after it, and has one.
+
+   THE NUMBERS WERE MEASURED, NOT PICKED. The palette board's variant B was
+   drawn from a copy of the file whose colour settings were lost, so they were
+   read back out of its picture, surface against the same surface in a real
+   Glass white render, one token at a time:
+     the page behind everything  --bg    #E8E7E2 to #E3E8ED
+     the glass over it           --panel white .62 to 245,250,255 at .62, which
+                                 is the top bar and the left rail's shell
+     the sunk panes on the stage --sunk  228,226,220 to 218,223,230 at .60,
+                                 which is the middle panel, the Release panel
+                                 and the six bottom cards
+     the stage itself            #F2F1EC to #E9EEF3
+   and the greys that sit on them moved the same way: --mid 74,72,67 to
+   69,75,82 and --dim 110,107,101 to 101,107,114, both read off the darkest
+   pixel of a label in the picture. Rendered, every one of those surfaces lands
+   within one level of the picture. The accent, the gold, the green Release
+   button and every seat colour are Glass white's own and do not move. tests/
+   glassblue.js holds the table. */
+body.glassblue{
+ --bg:#E3E8ED;
+ --panel:rgba(245,250,255,.62);
+ --panel-2:rgba(247,251,255,.76);
+ --sunk:rgba(218,223,230,.60);
+ --edge:rgba(20,24,34,.10); --edge-2:rgba(20,24,34,.18);
+ --ink:#13181F; --mid:#454B52; --dim:#656B72; --um:#13181F;
+ --shadow:0 20px 52px rgba(20,26,36,.14)}
+body.glassblue .stage,body.glassblue #emap,body.glassblue #masksview,body.glassblue #cone{background:#E9EEF3}
+
+/* ============================================================
    SIX. FLAT.
 
    No bevel, no blur, no translucency, no shadow, no gradient. One flat
@@ -560,6 +604,18 @@ body.glasswhite.tab-field .ib,
 body.glasswhite.tab-field .kb-t,body.glasswhite.tab-field .pm-lb,
 body.glasswhite.tab-field .s-dom,body.glasswhite.tab-field .ip-g,
 body.glasswhite.tab-field .st-mic{background:rgba(255,255,255,.72)}
+/* Glass blue takes the same denser ground on the Field, in its own tint: the
+   same two steps of white at .86 and .72, with the red lowered by ten and the
+   green by five as --panel is, so a pane on the Field is not a pure white
+   patch on a blue page. */
+body.glassblue.tab-field .glass,body.glassblue.tab-field .panel,
+body.glassblue.tab-field .top,body.glassblue.tab-field .subbar{
+ background:rgba(245,250,255,.86)}
+body.glassblue.tab-field .vt,body.glassblue.tab-field .btn,
+body.glassblue.tab-field .ib,body.glassblue.tab-field .stk-t,
+body.glassblue.tab-field .kb-t,body.glassblue.tab-field .pm-lb,
+body.glassblue.tab-field .s-dom,body.glassblue.tab-field .ip-g,
+body.glassblue.tab-field .st-mic{background:rgba(245,250,255,.72)}
 /* raised: anything a person summoned. more blur, brighter edge, longer shadow. */
 body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-card{
  -webkit-backdrop-filter:blur(38px) saturate(1.8);
@@ -7479,6 +7535,12 @@ body.glass{--tip-bg:#151922; --tip-edge:rgba(255,255,255,.17);
  --tip-shadow:0 10px 24px rgba(0,0,0,.46)}
 body.glasswhite{--tip-bg:#F6F6F4; --tip-edge:rgba(20,22,28,.18);
  --tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* GLASS BLUE. Its tooltip ground is the colour its own top bar lands on,
+   238,243,249, as Glass white's is the one its top bar lands on, 246,246,244.
+   Stated after the Glass white line because both classes are on the body and
+   the later rule wins. */
+body.glassblue{--tip-bg:#EEF3F9; --tip-edge:rgba(20,24,34,.18);
+ --tip-shadow:0 10px 24px rgba(20,26,36,.13)}
 /* Flat has no shadow anywhere. The tooltip does not get one either: its
    separation is the one pixel edge, which Flat states at full strength. */
 body.flat{--tip-bg:#121419; --tip-edge:#2E333E; --tip-shadow:none}

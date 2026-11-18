@@ -7563,12 +7563,13 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'wheel: the Laws switch takes the laws off the wheel and puts them back, '+lawsGone.before+' to '+lawsGone.off+' to '+lawsGone.back);
  ok(lawsGone.custom===null&&lawsGone.view===3,'and a set that lands back on a preset is that preset again, not a copy of it');
  /* THE GLASS TAKES THE TONE OF THE GROUND IT LIES ON, read by stageLight().
-    Glass white lays a paper stage; Snow keeps the ruled #101010 under paper
-    rails, so there the glass stays dark. */
+    Glass white lays a paper stage, and so does Glass blue, which is Glass white
+    with its greys moved toward blue (18 November); Snow keeps the ruled #101010
+    under paper rails, so there the glass stays dark. */
  const tone=await fp.evaluate(()=>{const was=S.theme,o={};
-  ['dark','snow','glasswhite'].forEach(t=>{setLighting(t);o[t]={lt:document.getElementById('fbar').classList.contains('fb-lt'),stage:stageLight()};});
+  ['dark','snow','glasswhite','glassblue'].forEach(t=>{setLighting(t);o[t]={lt:document.getElementById('fbar').classList.contains('fb-lt'),stage:stageLight()};});
   setLighting(was);return o;});
- ok(Object.keys(tone).every(t=>tone[t].lt===tone[t].stage)&&tone.glasswhite.lt&&!tone.snow.lt,
+ ok(Object.keys(tone).every(t=>tone[t].lt===tone[t].stage)&&tone.glasswhite.lt&&tone.glassblue.lt&&!tone.snow.lt,
   'the bar\'s glass follows the stage\'s own ground under every lighting tried, '+JSON.stringify(tone));
  /* THE READINGS, IN THE LEFT RAIL, AS CIRCLES, CQ THE LARGER. "You should go
     on the left hand side" and "I do want the CQ number bigger, so it's in

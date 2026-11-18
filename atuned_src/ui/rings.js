@@ -389,7 +389,7 @@ function frMount(host,W_,H_,r){
  /* nodeCol from ui/component.js, keyed on the same ground: a light address
     is its seat washed toward slate and takes its full hue as charge comes up */
  M.nodeCol=function(b,sq){var base=M.seat(b),ld=clamp(sq/10,0,1);
-  return mixc(mixc(base,M.light?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));};
+  return mixc(mixc(base,M.light?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));};
  var pad=FVIEW==='frames'?0:8,w={x0:pad,y0:pad,x1:W_-pad,y1:H_-pad};
  w.cx=(w.x0+w.x1)/2;w.cy=(w.y0+w.y1)/2;w.a=(w.x1-w.x0)/2;w.b=(w.y1-w.y0)/2;
  M.win=w;

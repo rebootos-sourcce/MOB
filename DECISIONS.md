@@ -4698,3 +4698,118 @@ changed and why, so a later seat reads it as the ruling and not a regression:
 takes on the real voice against the thirty second cut (`SRC_VOICE_MAX`); the
 longest is a few hundred characters, and the real voice's pace has not been
 timed.
+## Glass blue, an eighth lighting, from the palette board's variant B. Ruled 18 November.
+
+His words, verbatim, choosing between two pictures of the same screen on the
+palette board: "Let's go with B. For the palette. And let's add that as a new
+light mode." B was captioned "Real app, palette variant B (more blue)": Glass
+white with its neutral greys moved from warm cream toward blue. The other
+picture, A (quiet), is not built.
+
+Read as three rulings:
+1. **It is a new lighting, beside Glass white, and Glass white does not move.**
+   The app calls a light mode a lighting. It is named Glass blue, id
+   `glassblue`, and sits straight after Glass white in `LIGHTINGS`
+   (`ui/panels.js`). Glass white's tokens, its stage and every pixel it painted
+   are held exactly by `tests/glassblue.js`, and with a baseline build every
+   element's painted colours on every tab.
+2. **The palette is B, as measured.** The settings behind the B picture were
+   lost (the variant was never committed), so they were read back out of the
+   picture, surface against the same surface in a real Glass white render. The
+   numbers, red, green, blue from 0 to 255:
+
+        surface                 Glass white      Glass blue       read from B
+        top bar                 246,246,244      238,243,249      238,243,249
+        middle panel            234,232,226      224,229,235      224,229,235
+        Release panel           234,232,226      224,229,235      224,229,235
+        bottom cards (three)    234,232,226      224,229,235      224,229,235
+        sort row                231,229,223      221,226,232      221,226,232
+        stage between cards     242,241,236      233,238,243      233,238,243
+        page, top left          230,229,224      225,230,235      225,230,235
+        page, left edge         219,218,213      214,219,225      214,219,224
+        status dock             247,246,244      237,242,247      238,242,247
+
+   and the tokens that produce them, Glass white then Glass blue: `--bg`
+   #E8E7E2 then #E3E8ED; `--panel` rgba(255,255,255,.62) then
+   rgba(245,250,255,.62); `--sunk` rgba(228,226,220,.60) then
+   rgba(218,223,230,.60); the stage #F2F1EC then #E9EEF3; `--ink` #14161C then
+   #13181F; `--mid` #4A4843 then #454B52; `--dim` #6E6B65 then #656B72, the last
+   three read off the darkest pixel of a label in the picture. `--panel-2`,
+   the edges, the shadow, the tooltip ground and the Field's denser panes
+   follow in the same direction, since the picture shows none of them. The
+   accent, the gold, the green Release button, the black Source AI box and
+   every seat colour are Glass white's own. Two things in the picture are not
+   matched and are left out on purpose: the left rail's cards and the stage's
+   vignette, because the 14 November layout stacked different panes there, so
+   the same pixel is a different surface.
+3. **Every lighting says what it is, in one sentence, on hover and on a held
+   press.** The picker's entries are marks with no words. The name is the
+   tooltip's header and a short sentence is its body, through the one tooltip
+   (`ui/tip.js`), for all eight and not only the new one. Glass blue's reads
+   "Pale frosted panels with a cool blue tint." On a phone a tap still chooses
+   and a hold of about a second and a half explains, as it does for every
+   control. His 17 November ruling that no paragraph sits under the lighting
+   row stands: nothing is added to the screen, the meaning is behind the mark.
+
+How it is built, and why this way. The body carries BOTH classes, `glasswhite`
+and `glassblue`, so every Glass white rule, every light ground check and every
+canvas that reads the stage keeps working unchanged, and `body.glassblue` in
+`shell/head.html` states colour only. Three places compared the lighting's name
+to the string `glasswhite` and now read `GLASSWHITE_KIN` (`ui/component.js`):
+`LIGHT()`, `seatCol()` and the class toggle in `setLighting`. The canvases
+carry five light colours of their own, warm on Glass white because its stage is
+cream, and each asks `COOL()` for its blue twin (the pale a quiet node washes
+toward, the plate behind a label, the halo a word is stroked on, the Compass
+well's fallback). The Field's redraw cache under reduced motion was keyed on
+`LIGHT()` alone and so would have kept Glass white's cream through a switch to
+Glass blue; it is keyed on the lighting's name now. `punch` was the precedent
+for a lighting added after the first four (`git log -S punch`); the difference
+is that Glass blue reuses Glass white's whole rule set rather than carrying its
+own.
+
+Found and not fixed here, his to rule on:
+- **The lighting is not stored, for any of the eight.** `S.theme` starts as
+  `dark` and `setLighting` writes nothing, so a reload opens on Dark. It was
+  this way before Glass blue. Storing it changes what every first open looks
+  like, so it was left. The gate says so on an `info` line and holds that a
+  reload never leaves a half state.
+- **The bar's lighting menu opens underneath the Dashboard panels in every
+  glass lighting.** `.glass.top` is a stacking context at z-index auto under a
+  backdrop filter, so the panels that follow it paint over its menu. In Dark it
+  works. It is present on c2bf52a2 and was handed on as its own task.
+- **Accent text on the middle panel reads 4.40 to 1 on Glass blue and 4.55 on
+  Glass white**, because B's panel is a little darker. The text floor is 4.5.
+  The accent is B's own, so it was left; deepening it by about three levels in
+  Glass blue alone would restore 4.5 and not be visible.
+
+Proved on mutants, 18 November. Each assertion in `tests/glassblue.js` was run
+against a scratch copy of the real build carrying the one defect it exists for,
+and fails there and passes on the real build. The ids, in the order they ran:
+
+    picker       M06 no sentence, M06b two sentences, M07 the eighth entry
+                 removed, M12 a mark shared with Glass white, M12b marks painted
+                 as fills, M13 phone entries 30 tall, M14 a held press chooses,
+                 M14b a tap does nothing, M37 no tooltip attributes, M38 a
+                 repeated id, M39 a shared sentence, M40 a label without its
+                 word, M41 no mark, M42 the menus skip it, M43 entries
+                 overlapping, M44 entries running off the edge
+    state        M02 no glasswhite class, M15 nothing marked pressed, M15b a
+                 stale bar name, M16 a tab change drops the class, M17 Settings
+                 lists seven, M18 the class never taken off, M19 a half state at
+                 boot, M20 a second choice painting differently
+    colour       M01 the sunk pane warm, M03 the stage warm, M04 the glass pane
+                 white, M21 the page ground warm, M22 the status dock white,
+                 M23 mid and M24 ink back to Glass white's, M25 the accent
+                 changed, M26 LIGHT() forgetting it, M45 the Release panel
+                 alone, M46 one bottom card alone, M47 the sort row alone
+    Glass white  M05 its page ground moved a level, M27 its stage moved a
+                 level, M28 its shadow moved (a change no token or pixel in the
+                 table holds, caught by the element by element walk with a
+                 baseline build), M29 Glass white also putting glassblue on
+    text         M08 dim lightened, M25b the accent lightened, M30 ink and
+                 M30b mid too pale to read
+    canvases     M09 the redraw cache not keyed on the lighting, M10b the label
+                 plate left cream, M31 the Compass ground left warm, M32 a
+                 console error on boot
+    nothing warm M10 the halo left cream, M11 a cream rule with no blue twin,
+                 M34 the helper renamed

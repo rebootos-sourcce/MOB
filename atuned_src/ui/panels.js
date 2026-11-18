@@ -639,6 +639,9 @@ const THEMEICON={
  glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
  /* the same pane, lit from the front rather than from behind */
  glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* the same pane, lit from the front under a cool sky: the rays of Glass white
+    become a ring, one round mark standing still in the corner. Ring, not fill. */
+ glassblue:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M22 4.2a1.6 1.6 0 1 0-3.2 0a1.6 1.6 0 1 0 3.2 0',
  /* three flat planes, no bevel, no light. The mark is the position. */
  flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
  /* a white field with a solid block set into it, which is the whole of Lumen:
@@ -656,12 +659,34 @@ const THEMEICON={
    no blur, no shadow, and colour doing the work a material was doing. */
 /* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
    black panels, the text on top of the black. */
-const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
- ['glasswhite','Glass white'],['flat','Flat'],['lumen','Lumen']];
+/* EIGHT. Glass blue is Glass white with its neutral greys moved from warm
+   cream toward blue, and he chose it from the palette board on 18 November:
+   "Let's go with B. For the palette. And let's add that as a new light mode."
+   It is a lighting of its own and Glass white is not touched.
+
+   THE THIRD COLUMN IS WHAT THE ENTRY SAYS WHEN IT IS HOVERED OR HELD, one
+   short sentence a person can use to choose by. The bar's entries are marks
+   with no words, so a mark never stands alone: the name is the tooltip's
+   header and this is its body, through the one tooltip (ui/tip.js). Every
+   lighting has one, not only the new one, because a picker where seven marks
+   explain themselves and one does not is a picker with a hole in it. */
+const LIGHTINGS=[
+ ['dark','Dark','Dark panels on a dark ground, with pale ink.'],
+ ['snow','Snow','Pale panels around a dark stage, with dark ink.'],
+ ['punch','Punch','Solid blocks of colour, with no outlines.'],
+ ['glass','Glass','Dark frosted panels with a bright edge.'],
+ ['glasswhite','Glass white','Pale frosted panels with a warm paper tint.'],
+ ['glassblue','Glass blue','Pale frosted panels with a cool blue tint.'],
+ ['flat','Flat','Plain flat planes, with no blur and no shadow.'],
+ ['lumen','Lumen','A white frame with black panels and light text on them.']];
+/* GLASSWHITE_KIN, in ui/component.js, names the lightings whose body carries
+   the glasswhite class: Glass blue is Glass white with other neutrals, so
+   every rule and every canvas check that already reads glasswhite keeps
+   working on it, and the glassblue class only overrides colour. */
 function setLighting(k){
  S.theme=k;
- ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
-  document.body.classList.toggle(c,k===c);});
+ ['snow','punch','glass','glasswhite','glassblue','flat','lumen'].forEach(function(c){
+  document.body.classList.toggle(c,k===c||(c==='glasswhite'&&GLASSWHITE_KIN.indexOf(k)>=0));});
  /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
     doors, one setter, so both say the same lighting is on */
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
@@ -678,6 +703,9 @@ LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
+ /* the meaning, through the one tooltip: hover on a pointer, a held press on
+    a phone, where a tap still chooses the lighting (ui/tip.js, control()) */
+ b.setAttribute('data-tip-t',t[1]); b.setAttribute('data-tip',t[2]);
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
   /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
      lighting put the string "undefined" into a path attribute and the browser
@@ -694,6 +722,7 @@ LIGHTINGS.forEach(function(t,i){
  var nav=$('navthemes'); if(!nav)return;
  var n=document.createElement('button');n.type='button';
  n.setAttribute('aria-pressed',i===0);
+ n.setAttribute('data-tip-t',t[1]); n.setAttribute('data-tip',t[2]);
  n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
   +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
  n.addEventListener('click',function(){setLighting(t[0]);});

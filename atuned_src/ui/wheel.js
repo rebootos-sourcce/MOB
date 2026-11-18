@@ -413,7 +413,7 @@ function solCore(r,base){
     inside reads as inside. A dark base goes under it first, because a wash
     over the wheel's own web would let the chords show through the sphere. */
  if(open>0){g.beginPath();g.arc(CX,CY,cr0,0,TAU);
-  g.fillStyle=rgba(LIGHT()?[250,249,245]:[16,17,25],0.90*open);g.fill();}
+  g.fillStyle=rgba(LIGHT()?(COOL()?[247,250,254]:[250,249,245]):[16,17,25],0.90*open);g.fill();}
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
  coreInside(r,cr0);
@@ -584,7 +584,7 @@ function verpArrows(cr0){
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
- var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
+ var ink=INK(), bgc=LIGHT()?(COOL()?[246,249,253]:[248,247,243]):[23,25,34];
  /* THE FAN SCALES WITH THE WHEEL, AND IS SPREAD UNTIL NOTHING IN IT TOUCHES,
     16 November. Every size here was a fixed pixel (a 13 disc, a 22 by 12
     pill, a 0.72 radian step, 34 past the core) tuned at 1600, where U is
@@ -1298,7 +1298,7 @@ function drawWheel0(r,L){
     collide gate, which holds every label inside it at every depth. */
  R_EDGE=(L===3)?R.dom:shellR;
  /* the halo a word inside the ring is stroked on, the stage's own ground */
- const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
+ const halo=LIGHT()?(COOL()?'rgba(247,250,254,.88)':'rgba(250,250,247,.88)'):'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
  PUL.length=0;
@@ -1815,7 +1815,7 @@ function drawSig(r){
  /* and the layer set, because two sets can need the same room: Blueprint with
     the laws off draws at the same effView as Blueprint with them on */
  return [effView(),Object.keys(layVisible()).sort().join('.'),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         LIGHT()?1:0,S.theme,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  /* The ease used to be a flat .14 of the remaining distance per frame, which

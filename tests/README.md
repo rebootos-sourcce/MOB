@@ -488,6 +488,40 @@ the gift meets the mockup's gift state, every ring lit with nothing to buy,
 and every paid state is measured on a record past the gift. The count is read
 off the run and held by `floors.json`.
 
+## Glass blue
+
+    NODE_PATH=$(npm root -g) CHROME=/opt/pw-browsers/chromium node tests/glassblue.js
+
+The eighth lighting, added on the owner's 18 November ruling ("Let's go with B.
+For the palette. And let's add that as a new light mode."). Glass blue is
+Glass white with its neutral greys moved from warm cream toward blue, and its
+body carries both classes, `glasswhite` and `glassblue`, so every Glass white
+rule and canvas check keeps working on it. Real Chromium at 1600 by 1000 and
+390 by 844. It holds seven things. The picker: every lighting `LIGHTINGS`
+names reaches the bar and the phone menu as a ring mark with its name for a
+header and one short sentence for a body, on a real hover at 1600 and a held
+press at 390, with the phone entries clear of each other and 44 tall. The
+state: both classes and no other lighting's, one entry pressed in each menu,
+the choice kept across tab changes, a profile load and a render, Settings
+saying it, and a reload never leaving a half state. The colour: eleven
+surfaces of the Dashboard, each found by its own element and read from a real
+screenshot, against the colours read out of the palette picture, within two
+levels. Glass white not moving: its tokens and the same surfaces exactly as they
+read before, and with `GLASSBLUE_BASELINE=<a build from before>` every
+element's painted colours on every tab. The text still reading: ink and mid at
+the 4.5 to 1 text floor, dim and the accent giving up under five percent of
+what Glass white reads. The canvases: the light ladder, the Compass well, and
+no cream left in what the Field paints after a switch under reduced motion.
+And nothing warm left behind, read out of the stylesheet and the script: every
+cream a Glass white rule or a canvas carries has its blue twin.
+
+The lighting is not stored today, for any of the eight: `S.theme` starts as
+`dark` and `setLighting` writes nothing, so a reload opens on Dark. The gate
+says so on an `info` line and holds only what can be held, that a reload never
+leaves a half state and that choosing it again paints what it painted before.
+`GLASSBLUE_ONLY=1,2` runs chosen sections, which is how each check was proved
+on its own mutant. The count is read off the run and held by `floors.json`.
+
 ## The path simulation
 
 The engine gate asserts the path's contract. The simulation attacks it, by

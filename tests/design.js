@@ -1328,7 +1328,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
  console.log('  '+drills+' drills opened across '+drillNames.length+' openers');
 }
 
-console.log('\n=== the child treatment holds on all seven lightings ===');
+console.log('\n=== the child treatment holds on every lighting LIGHTINGS names ===');
 /* WHAT THIS SCORES, AND WHY IT IS NOT THE THING GATE 9 REFUSES TO SCORE.
 
    Gate 9 says in its own words that it does not score contrast per lighting,

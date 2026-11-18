@@ -954,6 +954,28 @@ the circle reading and a saved draft, now none; on the
 Dashboard the circle changed 7.5 percent of its pixels every 700 ms with Talk
 on and nothing said, 4.0 now against 3.6 at rest; the hover was over eighty
 words on seven lines, now 17 on one.
+## 2026-11-18 · owner · the palette, Glass blue
+
+said: "Let's go with B. For the palette. And let's add that as a new light
+mode."
+read: B was the picture "Real app, palette variant B (more blue)" on the
+palette board: Glass white with its neutral greys moved from warm cream toward
+blue. The middle panel reads 224, 229, 235 in it where Glass white reads 234,
+232, 226, and the top bar 238, 243, 249 where Glass white reads 246, 246, 244.
+He asked for it as a new light mode, so a lighting of its own beside Glass
+white, and not a replacement for it. The settings behind the picture had been
+lost, so they were read back out of it, surface against surface.
+change: ui/panels.js (an eighth lighting, glassblue, named Glass blue, with a
+ring mark, and one sentence of meaning for every lighting's hover), shell/head.html
+(body.glassblue, colours only), ui/component.js, rings.js, wheel.js and cone.js
+(the light ladder, and the cream the canvases paint with). The body carries
+both classes, glasswhite and glassblue, so every Glass white rule keeps working
+on it. Glass white is not touched.
+measure: tests/glassblue.js reads eleven surfaces of the Dashboard out of a real
+render against the colours read out of the picture, every one within one level,
+and holds Glass white to the pixel it read before.
+open: the lighting is not stored, for any of the eight lightings, so a reload
+opens on Dark. He has not been told, and has not ruled on it.
 
 ## Earlier, from FEEDBACK-alexander.md
 

@@ -1317,7 +1317,7 @@ function ndlWell(){
  if(NDL.wellSig!==sig&&CONE.cv){NDL.wellSig=sig;
   var m=/rgba?\(([^)]+)\)/.exec(getComputedStyle(CONE.cv).backgroundColor||'');
   var v=m?m[1].split(',').map(function(x){return parseFloat(x);}):[16,16,16,1];
-  if(v.length>3&&v[3]<0.5)v=LIGHT()?[242,241,236]:[16,16,16];
+  if(v.length>3&&v[3]<0.5)v=LIGHT()?(COOL()?[233,238,243]:[242,241,236]):[16,16,16];
   NDL.well=[v[0],v[1],v[2]];}
  return NDL.well||[16,16,16];}
 /* WHERE THE GRAVITY IS. Round KA, his words: "animations where you tend to

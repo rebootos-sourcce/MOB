@@ -249,6 +249,13 @@ function unp(term,label,ctx){
    readings in the rail were drawn in colours meant for a black panel. Every
    value written by JS rather than by a token had the same fault, which is why
    the rail looked washed while the sheet looked right. */
+/* THE LIGHTINGS WHOSE BODY CARRIES THE GLASS WHITE CLASS. Glass blue is Glass
+   white with its neutral greys moved toward blue (shell/head.html), so it
+   stands where Glass white stands: the light palette, the light ink, the
+   paper stage. setLighting in ui/panels.js reads this list to put the
+   glasswhite class on both, and the ladders below read it so a third member
+   is one entry here and not a hunt for every comparison to the string. */
+const GLASSWHITE_KIN=['glasswhite','glassblue'];
 /* AND IT KNEW ABOUT TWO OUT OF THREE. Glass white is paper, #E8E7E2 under
    rails at sixty two percent white, and it fell through to the dark palette,
    so every seat colour on it was drawn for a black panel: Connection's icon
@@ -258,7 +265,7 @@ function unp(term,label,ctx){
    which is where the Glass white stage was taken on, with its ink and wash. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
-       : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
+       : S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0 ? PAL_LIGHT
        : PAL;
  return P[b]||'var(--gold)';}
 /* THE ICON GRIDS, PUNCHED UP FIFTEEN PERCENT. The owner: "all our normal
@@ -1294,7 +1301,14 @@ const lerp=(a,b,t)=>a+(b-a)*t;
    ink reads 1.06 to 1 on Snow, carried by the halo. That is Snow's own
    question and is left as shipped. Anything that must match the ground and
    not the lighting reads stageLight() below, as rings.js does. */
-const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
+const LIGHT=()=>S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0;
+/* GLASS BLUE'S PAPER. The canvases carry a few light colours of their own: the
+   pale a quiet node washes toward, the plate behind a label, the halo a word
+   is stroked on. They are warm on Glass white because its stage is #F2F1EC,
+   and they would sit as warm patches on Glass blue's #E9EEF3 stage, so each
+   asks COOL() and takes its blue twin. Glass white and Snow read the same
+   values they always did. */
+const COOL=()=>S.theme==='glassblue';
 /* what the Field's canvas actually sits on, read off the stage the way
    frMount in rings.js reads it. The stage carries no transition, so the
    answer is settled the moment the lighting's class lands. */
@@ -1318,7 +1332,7 @@ function bc(b){
          : PAL;
  return hx(P[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
- return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
+ return mixc(mixc(base,LIGHT()?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----
    Every surface reports through here so the wording, the timing and the
    announcement behave the same way wherever they come from.
