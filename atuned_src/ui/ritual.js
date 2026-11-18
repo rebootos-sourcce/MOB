@@ -251,7 +251,11 @@ function ritPlanOk(p){
    &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
   &&(p.on==null||(Array.isArray(p.on)&&p.on.length>=1&&p.on.length<=7
    &&p.on.every(function(d,i){return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&p.on.indexOf(d)===i;})))
-  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm)));}
+  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm))
+  /* at is the time of day a ritual is set for, 18 November (B8): HH:MM or
+     nothing, ritAtOk in ui/ritweek.js. A plan carrying 24:00 or 7:5 is a
+     store somebody else wrote and is left out whole like any other field. */
+  &&(p.at==null||(typeof ritAtOk==='function'&&ritAtOk(p.at))));}
 /* the longest timer the builder offers is the boundary's own ceiling on a
    ritual's minutes, every practice in the library once, so the two cannot
    disagree and no number is typed here */
@@ -272,7 +276,7 @@ function ritPlans(){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
    rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
-   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm)};});}
+   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm), at:(p.at==null?null:p.at)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -1521,7 +1525,7 @@ function ritRender(){
   /* the next arrival draws in again, round QN, and opens on this week, SV16 */
   RIT.arrive=true; RIT.wk=0;
   return;}
- ritCss(); ritStageCss(); if(typeof ritCalCss==='function')ritCalCss();
+ ritCss(); ritStageCss(); if(typeof ritCalCss==='function')ritCalCss(); if(typeof ritWeekCss==='function')ritWeekCss();
  if(!h||!RIT.open)return;
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;

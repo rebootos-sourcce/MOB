@@ -97,6 +97,7 @@ ui/ritual.js
 ui/accountability.js
 ui/ritstage.js
 ui/ritcal.js
+ui/ritweek.js
 ui/cone.js
 ui/tracesummaryui.js
 ui/drills.js

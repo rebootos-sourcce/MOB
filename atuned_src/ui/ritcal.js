@@ -381,7 +381,10 @@ function ritWeekDay(d,st){
  var seen={}, out=[];
  ritDaySegs(d,st.plans,st.today).forEach(function(s){var k=s.nm+'|'+s.st;
   if(seen[k])return; seen[k]=1; out.push(s);});
- return out;}
+ /* ordered by kind, with the affirmation block on its placed days, 18
+    November (ui/ritweek.js): every reader of a day, the week, a day's list
+    and a block's pop-up, goes through here, so all three index one list */
+ return (typeof ritWeekBlocks==='function')?ritWeekBlocks(d,st,out):out;}
 function ritWeekCalHtml(st){
  var today=st.today, lo=ritWkMin(st);
  RIT.wk=Math.max(lo,Math.min(RIT_WK_AHEAD,RIT.wk|0));
@@ -424,12 +427,13 @@ function ritWeekCalHtml(st){
    +'<button type="button" class="rv-wdh" data-act="wday" data-d="'+d+'"'+(d===today?' aria-current="date"':'')
    +' aria-label="'+esc(dnm+(segs.length?', '+segs.length+(segs.length===1?' ritual':' rituals'):', nothing set'))+'">'
    +'<span>'+RIT_WDN[RIT_WCOL[i]]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
- return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'+days
-  /* Planned, the word the Record and the thirty days beside it use for the
-     same state: the grid this replaced said Set, a second word for one thing
-     on one page */
-  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></section>';}
+ /* THE DONE, PLANNED, MISSED KEY UNDER THE GRID IS GONE, 18 November, his
+    words: "everything beneath that, where it says done, planned, missed ...
+    that can go away." Each block names its own state on its press
+    (ritBlockSay), and the key for the four kinds sits under the head in its
+    place, because colour on the week means the kind now. */
+ return '<section class="rv-sec rv-week"><div class="rv-hd"><span class="rv-h">Week</span>'+nav+'</div>'
+  +(typeof ritKindKeyHtml==='function'?ritKindKeyHtml():'')+days+'</section>';}
 
 /* ---------------- a sash ----------------
    THE DAY'S RITUALS ARE SASHES, SV17, 5 November. He looked at the week this
@@ -460,11 +464,21 @@ function ritSashWord(s){return s.st==='plan'?'Planned':RIT_DAY_SAY[s.st];}
 function ritSashSeat(s){return ritSeat(s.p||s.x);}
 function ritSashGlyph(b){
  return b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'';}
+/* A SASH IS A BLOCK NOW, 18 November, his words: "the actions ... as
+   blocks under the days of the week, sorted by the action color or type."
+   SV17 drew the seat's mark alone in the seat's colour, and that is the
+   ruling this changes, named once: a block is the kind's colour and the
+   kind's ring, a little text (the short name), and the seat's small mark at
+   the right edge. The state and the kind are on its press, ritBlockSay. */
 function ritSashHtml(s,d,k){
- var say=s.nm+', '+RIT_DAY_SAY[s.st];
- return '<button type="button" class="rv-wch rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
-  +' style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'+esc(RIT_DAY_SAY[s.st])+'">'
-  +ritSashGlyph(ritSashSeat(s))+'</button>';}
+ var say=(typeof ritBlockSay==='function')?ritBlockSay(s):s.nm+', '+RIT_DAY_SAY[s.st], b=s.aff?'':ritSashSeat(s);
+ var K=(typeof ritKind==='function')?ritKind(s.kind):null;
+ return '<button type="button" class="rv-wch rv-blk rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
+  +' data-kind="'+esc(s.kind||'')+'" style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'
+  +esc(RIT_DAY_SAY[s.st]+(s.at?', '+s.at:'')+'. '+(K?K.nm+': '+K.says:''))+'">'
+  +(K?ritKindIc(K.k):'')+'<span class="rv-bn">'+esc(s.nm)+'</span>'
+  +(s.st==='done'?'<svg viewBox="0 0 24 24" class="rv-bok" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>':'')
+  +(b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" class="rv-bs" style="stroke:'+seatCol(b)+'" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'')+'</button>';}
 /* the rest of a heavy day, one sash that names how many and opens the day's
    list. It carries what it holds for a screen reader, and for the gate, which
    reads a day's rituals off the sashes and has to see these too. */
