@@ -544,12 +544,18 @@ addEventListener('click',function(e){
 
    The drill is the one place a range is printed (the 14 October ruling),
    and every number in it carries its meaning in the same sentence. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S04, found in
+   the source and not by the live walk, which never opened the drill with
+   some laws open and some still closed). "4 of 21 laws are answered" and
+   "With 12 of 21 laws answered" were both a measure of the person as a
+   fraction; both become the percent of the 21 laws answered, through the
+   portion kind (engine/pct.js). */
 function coreRangeSay(r){
  if(r.unread)return '';
  var sp=cqSpan(), of=sp.of;
  if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
-  +sp.answered+'</b> of '+of+' laws are answered.</p>';
- if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
+  +fmtPct('portion',sp.answered/of)+'</b> of the laws are answered.</p>';
+ if(!sp.complete)return '<p class="ad-p">With <b>'+fmtPct('portion',sp.answered/of)+'</b> of the laws answered, the finished figure lands between <b>'
   +fmtPct('cq',sp.lo)+'</b> and <b>'+fmtPct('cq',sp.hi)+'</b>. It is <b>'+fmtPct('cq',sp.lo)
   +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
