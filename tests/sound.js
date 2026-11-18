@@ -342,16 +342,20 @@ async function soundGate(browser,FILE,ok,booted){
  ok(fw.biteStay===true,'and with the arrival rule taken out the same resting move does spark, so the silence above is a reading, '+fw.biteStay);
  await pg.mouse.move(2,2);
  await pg.evaluate(()=>{ setTab(TAB.ENERGY); render(); });
- await pg.waitForFunction(()=>BM.sabs&&BM.sabs.length>0&&!BM.camT,null,{timeout:15000}).catch(()=>{});
+ await pg.waitForFunction(()=>BM.sabs&&BM.sabs.length>0&&!BM.pan.some(p=>p.camT),null,{timeout:15000}).catch(()=>{});
  await pg.waitForTimeout(600);
- const cable=()=>pg.evaluate(()=>{ const r=BM.sv.getBoundingClientRect(); let hit=null, off=null;
-  for(const s of BM.sabs){ for(const v of [0,1]){ const c=s.views[v]; if(!c||!c.samp)continue;
+ /* each figure is its own panel with its own camera now, so "close" is a
+    panel's: the cable is looked for in one panel (only), or in either the
+    first time, and the panel it was found in is reported with it */
+ const cable=only=>pg.evaluate(only=>{ const r=BM.sv.getBoundingClientRect(); let hit=null, off=null;
+  for(const s of BM.sabs){ for(const v of (only==null?[0,1]:[only])){ const c=s.views[v]; if(!c||!c.samp)continue;
     for(let j=Math.floor(c.samp.length/3);j<c.samp.length;j+=3){ const q=bmW2S(c.samp[j][0],c.samp[j][1]);
      if(q[0]<20||q[1]<20||q[0]>r.width-20||q[1]>r.height-20)continue;
-     const pk=bmPick(q[0],q[1]); if(pk.sab&&!pk.place&&!pk.hub){hit={x:r.left+q[0],y:r.top+q[1],w:[c.samp[j][0],c.samp[j][1]]};break;}}
+     const pk=bmPick(q[0],q[1]); if(pk.sab&&!pk.place&&!pk.hub){hit={x:r.left+q[0],y:r.top+q[1],w:[c.samp[j][0],c.samp[j][1]],v:pk.pi};break;}}
     if(hit)break;} if(hit)break;}
   for(let y=30;y<r.height-30&&!off;y+=37)for(let x=30;x<r.width-30;x+=37){ if(!bmPick(x,y).sab){off={x:r.left+x,y:r.top+y};break;}}
-  return {hit:hit,off:off,close:bmClose(),zr:+(BM.cam.z/BM.z0).toFixed(2)};});
+  const pi=hit?hit.v:0, P=BM.pan[pi];
+  return {hit:hit,off:off,close:bmClose(pi),zr:+(P.cam.z/P.z0).toFixed(2)};},only);
  const touchLine=async c=>{ await pg.mouse.move(c.off.x,c.off.y); await pg.waitForTimeout(700);
   const t0=await spk(); await pg.mouse.move(c.hit.x,c.hit.y); await pg.waitForTimeout(120);
   return {spark:(await spk())>t0, on:await pg.evaluate(()=>BM.hoverSab)};};
@@ -363,16 +367,16 @@ async function soundGate(browser,FILE,ok,booted){
   await pg.evaluate(()=>{ window.__bc=window.bmClose; window.bmClose=function(){return true;}; });
   bw.fitBite=(await touchLine(fitC)).spark;
   await pg.evaluate(()=>{ window.bmClose=window.__bc; });
-  await pg.evaluate(w=>bmFlyTo(w[0],w[1],BM.z0*2.5),fitC.hit.w);
-  await pg.waitForFunction(()=>!BM.camT,null,{timeout:20000}).catch(()=>{});
+  await pg.evaluate(w=>bmFlyTo(w[0],w[1],BM.pan[bmPanOf(w[0])].z0*2.5),fitC.hit.w);
+  await pg.waitForFunction(()=>!BM.pan.some(p=>p.camT),null,{timeout:20000}).catch(()=>{});
   await pg.waitForTimeout(400);
-  const cl=await cable(); bw.close={zr:cl.zr,close:cl.close};
+  const cl=await cable(fitC.hit.v); bw.close={zr:cl.zr,close:cl.close};
   if(cl.hit&&cl.off)Object.assign(bw.close,await touchLine(cl));}
  ok(bw.fit&&bw.fit.on&&bw.fit.spark===false&&bw.close&&bw.close.close&&bw.close.on&&bw.close.spark===true,
   'on the Body, arriving on a tension line is silent at the whole body and sparks once zoomed in close, '+JSON.stringify(bw));
  ok(bw.fitBite===true,'and with the close rule taken out the same arrival at the whole body sparks, so that silence is a reading, '+bw.fitBite);
  await pg.mouse.move(2,2);
- await pg.evaluate(w=>{ SIGHT_PLAN=w==='__none'?null:w; if(BM.cv){BM.cam=bmFitCam();BM.camT=null;} setTab(TAB.FIELD); render(); },sightWas);
+ await pg.evaluate(w=>{ SIGHT_PLAN=w==='__none'?null:w; if(BM.cv){BM.pan.forEach((p,i)=>{p.cam=bmFitCam(i);p.camT=null;});} setTab(TAB.FIELD); render(); },sightWas);
  await pg.waitForTimeout(1400);
 
  /* ---------- 2 and 3. the switch, and Quiet ---------- */
