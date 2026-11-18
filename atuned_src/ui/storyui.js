@@ -4363,6 +4363,8 @@ function stRelPanel(){
     +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
     +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
   +'</div>';
+ /* AFFIRM after a commit and never while typing, ui/affirmui.js */
+ if(M.fromLast&&!String(ST_TEXT||'').trim()&&!showOnly()&&typeof affDoorHtml==='function')o+=affDoorHtml('story');
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
     binaural audio toggle not on the release?" Only the full run screen
     (ui/release.js's own #rel, relSws) carried it; this reads and sets the

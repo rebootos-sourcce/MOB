@@ -1053,7 +1053,8 @@ function avSides(st){
     line said the same thing a second time and are folded into the tags. */
  if(x&&idx==null)return ['',
   '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
-  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>', ''];
+  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p>'
+   +(typeof affDoorHtml==='function'?affDoorHtml('avatar','av:'+(x.pair.id||'')):'')+'</div>', ''];
  var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
  /* the question turns in place by one press on the arrow beside it. THE
     BUTTON IS ITS OWN FOURTH SLOT, round LV. It used to close the embody

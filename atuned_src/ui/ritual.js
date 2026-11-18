@@ -625,6 +625,7 @@ function ritComplexHtml(k){
    +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
    +'</span></button>';});
  h+='</div>';
+ if(b&&typeof affDoorHtml==='function')h+='<div class="rv-acts">'+affDoorHtml('path',null,b.k)+'</div>';
  if(ritOwn())h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
   +'<p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p>';
  if(row.draft!==false)h+='<p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. '
@@ -1267,6 +1268,8 @@ function ritBuildHtml(c,nAct,unread){
     aria-label or title of its own, so its name is this text. */
  out+='<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
   +'<span>Practices</span>'+ritIc('down')+'</button>';
+ /* AFFIRM, 18 November: the affirmation generator's one door here, ui/affirmui.js */
+ if(typeof affDoorHtml==='function')out+='<div class="rv-acts">'+affDoorHtml('ritual')+'</div>';
  /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
     up to and a press moves it a minute at a time under ten and five at a
     time above, which is the size of the difference at each end. How often is

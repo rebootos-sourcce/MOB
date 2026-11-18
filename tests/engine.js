@@ -11374,5 +11374,424 @@ g('MS25 · no two masks are read off the same seats');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
 }
 
+g('AE · the affirmation generator, his anchors and his wrapper, read off the R3 table');
+/* THE TABLE IS THE REFERENCE COMPOSER'S OWN OUTPUT, pasted and not typed:
+   node r3/run.js, two runs, md5 654e454f, SPEC.md section 12.1. The gate
+   composes every row again and compares the whole block byte for byte, so a
+   frame word moved, an anchor recased or a refusal reworded is a named
+   diff here. Fictional themes, and the product's own fictional roster. */
+{
+ const {affCompose,affShape,affSafe,affWeave,affWeaves,affSources,affPlain,affKeptOk,affLineOf,affFlips,
+        AFF_ANCHOR,AFF_PRE,AFF_SUF,AFF_FRAMES,CRISIS_SAY}=E;
+ const AFF_EXPECT=`# "calm"
+  [adj]
+  * Root: I am calm, with both feet on the floor.
+  * Sacral: I magnetize what keeps me calm.
+  * Solar: I command my body to stay calm.
+  * Heart: I receive the day as it comes and stay calm.
+  * Throat: I speak in a calm voice.
+  * 3rd Eye: I foresee myself calm in the room that tests me.
+  * Crown: I empower myself to stay calm among the people I belong to.
+# "clear"
+  [adj]
+  * Root: I am clear, with both feet on the floor.
+  * Sacral: I magnetize what keeps me clear.
+  * Solar: I command my body to stay clear.
+  * Heart: I receive the day as it comes and stay clear.
+  * Throat: I speak in a clear voice.
+  * 3rd Eye: I foresee myself clear in the room that tests me.
+  * Crown: I empower myself to stay clear among the people I belong to.
+# "rested"
+  [adj]
+  * Root: I am rested, with both feet on the floor.
+  * Sacral: I magnetize what keeps me rested.
+  * Solar: I command my body to stay rested.
+  * Heart: I receive the day as it comes and stay rested.
+  * Throat: I speak from a rested body.
+  * 3rd Eye: I foresee myself rested in the room that tests me.
+  * Crown: I empower myself to stay rested among the people I belong to.
+# "clarity"
+  [n]
+  * Root: I am the ground clarity grows from.
+  * Sacral: I magnetize clarity, and I let the want show.
+  * Solar: I command my body toward clarity.
+  * Heart: I receive clarity, and my chest stays open.
+  * Throat: I speak about clarity out loud.
+  * 3rd Eye: I foresee the next step toward clarity, and I take it.
+  * Crown: I empower myself and the people I belong to toward clarity.
+# "money"
+  [n]
+  * Root: I am the ground money grows from.
+  * Sacral: I magnetize money, and I let the want show.
+  * Solar: I command my body toward money.
+  * Heart: I receive money, and my chest stays open.
+  * Throat: I speak about money out loud.
+  * 3rd Eye: I foresee the next step toward money, and I take it.
+  * Crown: I empower myself and the people I belong to toward money.
+# "CLARITY"
+  [n]
+  * Root: I am the ground clarity grows from.
+  * Sacral: I magnetize clarity, and I let the want show.
+  * Solar: I command my body toward clarity.
+  * Heart: I receive clarity, and my chest stays open.
+  * Throat: I speak about clarity out loud.
+  * 3rd Eye: I foresee the next step toward clarity, and I take it.
+  * Crown: I empower myself and the people I belong to toward clarity.
+# "focus,"
+  [n]
+  * Root: I am the ground focus grows from.
+  * Sacral: I magnetize focus, and I let the want show.
+  * Solar: I command my body toward focus.
+  * Heart: I receive focus, and my chest stays open.
+  * Throat: I speak about focus out loud.
+  * 3rd Eye: I foresee the next step toward focus, and I take it.
+  * Crown: I empower myself and the people I belong to toward focus.
+# "focus…"
+  [n]
+  * Root: I am the ground focus grows from.
+  * Sacral: I magnetize focus, and I let the want show.
+  * Solar: I command my body toward focus.
+  * Heart: I receive focus, and my chest stays open.
+  * Throat: I speak about focus out loud.
+  * 3rd Eye: I foresee the next step toward focus, and I take it.
+  * Crown: I empower myself and the people I belong to toward focus.
+# "Someone who asks for help out loud."
+  [vp]
+  * Root: I am built to ask for help out loud.
+  * Sacral: I magnetize what it takes to ask for help out loud.
+  * Solar: I command my body to ask for help out loud.
+  * Heart: I receive what I need to ask for help out loud, and my chest stays open.
+  * Throat: I speak it plainly: I ask for help out loud.
+  * 3rd Eye: I foresee the next step to ask for help out loud, and I take it.
+  * Crown: I empower myself to ask for help out loud.
+# "Someone who keeps his word"
+  [vp]
+  * Root: I am built to keep my word.
+  * Sacral: I magnetize what it takes to keep my word.
+  * Solar: I command my body to keep my word.
+  * Heart: I receive what I need to keep my word, and my chest stays open.
+  * Throat: I speak it out loud: I keep my word.
+  * 3rd Eye: I foresee the next step to keep my word, and I take it.
+  * Crown: I empower myself to keep my word.
+# "Someone who is held as well as holding"
+  [vp]
+  * Root: I am built to be held as well as holding.
+  * Sacral: I magnetize what it takes to be held as well as holding.
+  * Solar: I command my body to be held as well as holding.
+  * Heart: I receive what I need to be held as well as holding, and my chest stays open.
+  * Throat: I speak it out loud: I am held as well as holding.
+  * 3rd Eye: I foresee the next step to be held as well as holding, and I take it.
+  * Crown: I empower myself to be held as well as holding.
+# "Someone who trusts what she already knows"
+  [np]
+  * Root: I am someone who trusts what she already knows.
+  * Sacral: I magnetize what it takes to be someone who trusts what she already knows.
+  * Solar: I command my body to act as someone who trusts what she already knows.
+  * Heart: I receive the room to be someone who trusts what she already knows.
+  * Throat: I speak it out loud: I am someone who trusts what she already knows.
+  * 3rd Eye: I foresee the next step toward being someone who trusts what she already knows.
+  * Crown: I empower myself to be someone who trusts what she already knows.
+# "Someone who calls her mother on Sundays"
+  [np]
+  * Root: I am someone who calls her mother on Sundays.
+  * Sacral: I magnetize what it takes to be someone who calls her mother on Sundays.
+  * Solar: I command my body to act as someone who calls her mother on Sundays.
+  * Heart: I receive the room to be someone who calls her mother on Sundays.
+  * Throat: I speak it out loud: I am someone who calls her mother on Sundays.
+  * 3rd Eye: I foresee the next step toward being someone who calls her mother on Sundays.
+  * Crown: I empower myself to be someone who calls her mother on Sundays.
+# "Someone who rests on a Sunday and lets it show"
+  [np]
+  * Root: I am someone who rests on a Sunday and lets it show.
+  * Sacral: I magnetize what it takes to be someone who rests on a Sunday and lets it show.
+  * Solar: I command my body to act as someone who rests on a Sunday and lets it show.
+  * Heart: I receive the room to be someone who rests on a Sunday and lets it show.
+  * Throat: I speak it out loud: I am someone who rests on a Sunday and lets it show.
+  * 3rd Eye: I foresee the next step toward being someone who rests on a Sunday and lets it show.
+  * Crown: I empower myself to be someone who rests on a Sunday and lets it show.
+# "Someone the team still wants in the room after the review"
+  [np]
+  * Root: I am someone the team still wants in the room after the review.
+  * Sacral: I magnetize what it takes to be someone the team still wants in the room after the review.
+  * Solar: I command my body to act as someone the team still wants in the room after the review.
+  * Heart: I receive the room to be someone the team still wants in the room after the review.
+  * Throat: I speak it out loud: I am someone the team still wants in the room after the review.
+  * 3rd Eye: I foresee the next step toward being someone the team still wants in the room after the review.
+  * Crown: I empower myself to be someone the team still wants in the room after the review.
+# "Someone who stops when the work is good enough"
+  [vp]
+  * Root: I am built to stop when the work is good enough.
+  * Sacral: I magnetize what it takes to stop when the work is good enough.
+  * Solar: I command my body to stop when the work is good enough.
+  * Heart: I receive what I need to stop when the work is good enough, and my chest stays open.
+  * Throat: I speak it out loud: I stop when the work is good enough.
+  * 3rd Eye: I foresee the next step to stop when the work is good enough, and I take it.
+  * Crown: I empower myself to stop when the work is good enough.
+# "to ask for help"
+  [vp]
+  * Root: I am built to ask for help.
+  * Sacral: I magnetize what it takes to ask for help.
+  * Solar: I command my body to ask for help.
+  * Heart: I receive what I need to ask for help, and my chest stays open.
+  * Throat: I speak it out loud: I ask for help.
+  * 3rd Eye: I foresee the next step to ask for help, and I take it.
+  * Crown: I empower myself to ask for help.
+# "I want to sleep through the night"
+  [vp]
+  * Root: I am built to sleep through the night.
+  * Sacral: I magnetize what it takes to sleep through the night.
+  * Solar: I command my body to sleep through the night.
+  * Heart: I receive what I need to sleep through the night, and my chest stays open.
+  * Throat: I speak it out loud: I sleep through the night.
+  * 3rd Eye: I foresee the next step to sleep through the night, and I take it.
+  * Crown: I empower myself to sleep through the night.
+# "I am steady"
+  [adj]
+  * Root: I am steady, with both feet on the floor.
+  * Sacral: I magnetize what keeps me steady.
+  * Solar: I command my body to stay steady.
+  * Heart: I receive the day as it comes and stay steady.
+  * Throat: I speak in a steady voice.
+  * 3rd Eye: I foresee myself steady in the room that tests me.
+  * Crown: I empower myself to stay steady among the people I belong to.
+# "A father who listens"
+  [np]
+  * Root: I am a father who listens.
+  * Sacral: I magnetize what it takes to be a father who listens.
+  * Solar: I command my body to act as a father who listens.
+  * Heart: I receive the room to be a father who listens.
+  * Throat: I speak it out loud: I am a father who listens.
+  * 3rd Eye: I foresee the next step toward being a father who listens.
+  * Crown: I empower myself to be a father who listens.
+# "fear"
+  REFUSE flip: "fear" is what you release. Its opposite is trust. Use trust?
+# "not anxious"
+  REFUSE flip: "anxious" is what you release. Its opposite is calm. Use calm?
+# "I want to stop shouting at the kids"
+  REFUSE toward: Say what you are moving toward.
+# "finishing the boat"
+  REFUSE gerund: Say it as something you do, starting with "to".
+# "abundance, clarity, focus"
+  REFUSE list: One at a time. Pick the one that matters today.
+# "my son"
+  REFUSE person: An affirmation is about you. Name what you bring to your son: patience, time, honesty.
+# "good"
+  REFUSE thin: "good" names nothing your body can check. Name one quality.
+# "..."
+  REFUSE empty: Write who you are becoming, or one word for it.
+# "!!!"
+  REFUSE empty: Write who you are becoming, or one word for it.
+# "I am afraid. I will fail again"
+  REFUSE sentence: Say it as something you do.
+# "I am afraid that I will fail again"
+  REFUSE sentence: Say it as something you do.
+# "my landlord makes me crazy every week and I cannot stand it"
+  REFUSE list: One at a time. Pick the one that matters today.
+# "I want to hurt myself"
+  STOP safety (src): If you want a person now, 988 answers by call or text, any hour.
+# "Someone who no longer wants to die"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "I will never hurt myself again"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "free of wanting to end it"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "not hurting myself"
+  STOP safety (safeOf): If you want a person now, 988 answers by call or text, any hour.
+# "stop cutting"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "finish the shift and end it on time"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "spend it on the boat"
+  REFUSE shape: Write who you are becoming, or one word for it.
+# All that is, "calm"
+  * Root: I am the creator of all that is, I am calm across all space, time, and dimensions.
+  * Sacral: I am the creator of all that is, I magnetize what keeps me calm across all space, time, and dimensions.
+  * Solar: I am the creator of all that is, I command my body to stay calm across all space, time, and dimensions.
+  * Heart: I am the creator of all that is, I receive the day as it comes and stay calm across all space, time, and dimensions.
+  * Throat: I am the creator of all that is, I speak in a calm voice across all space, time, and dimensions.
+  * 3rd Eye: I am the creator of all that is, I foresee myself calm in the room that tests me across all space, time, and dimensions.
+  * Crown: I am the creator of all that is, I empower myself to stay calm among the people I belong to across all space, time, and dimensions.
+# All that is, "Someone who keeps his word"
+  * Root: I am the creator of all that is, I am built to keep my word across all space, time, and dimensions.
+  * Sacral: I am the creator of all that is, I magnetize what it takes to keep my word across all space, time, and dimensions.
+  * Solar: I am the creator of all that is, I command my body to keep my word across all space, time, and dimensions.
+  * Heart: I am the creator of all that is, I receive what I need to keep my word across all space, time, and dimensions.
+  * Throat: I am the creator of all that is, I speak it out loud: I keep my word across all space, time, and dimensions.
+  * 3rd Eye: I am the creator of all that is, I foresee the next step to keep my word across all space, time, and dimensions.
+  * Crown: I am the creator of all that is, I empower myself to keep my word across all space, time, and dimensions.
+# Weave: primary "Someone who asks for help out loud" (Throat), "calm" seated at Heart, "trust" heard at Root (excluded)
+  * Root: I am built to ask for help out loud.
+  * Sacral: I magnetize what it takes to ask for help out loud.
+  * Solar: I command my body to ask for help out loud.
+  * Heart: I receive the day as it comes and stay calm.
+  * Throat: I speak it plainly: I ask for help out loud.
+  * 3rd Eye: I foresee the next step to ask for help out loud, and I take it.
+  * Crown: I empower myself to ask for help out loud.
+# Weave with one source that trips the stop
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.`;
+ const ROWS=['calm','clear','rested','clarity','money','CLARITY','focus,','focus…',
+  'Someone who asks for help out loud.','Someone who keeps his word','Someone who is held as well as holding',
+  'Someone who trusts what she already knows','Someone who calls her mother on Sundays',
+  'Someone who rests on a Sunday and lets it show','Someone the team still wants in the room after the review',
+  'Someone who stops when the work is good enough','to ask for help','I want to sleep through the night','I am steady',
+  'A father who listens',
+  'fear','not anxious','I want to stop shouting at the kids','finishing the boat','abundance, clarity, focus','my son','good',
+  '...','!!!','I am afraid. I will fail again','I am afraid that I will fail again',
+  'my landlord makes me crazy every week and I cannot stand it',
+  'I want to hurt myself','Someone who no longer wants to die','I will never hurt myself again','free of wanting to end it',
+  'not hurting myself','stop cutting','finish the shift and end it on time','spend it on the boat'];
+ const pad=s=>s.replace(/^/gm,'  ');
+ const got=[];
+ ROWS.forEach(t=>{const r=affCompose(t); got.push('# '+JSON.stringify(t));
+  if(!r.ok){got.push('  '+(r.stop?'STOP safety ('+r.why+'): ':'REFUSE '+r.refuse+': ')+r.say);return;}
+  got.push('  ['+r.shape+']'); got.push(pad(affPlain(r.lines,false)));});
+ got.push('# All that is, "calm"'); got.push(pad(affPlain(affCompose('calm').lines,true)));
+ got.push('# All that is, "Someone who keeps his word"'); got.push(pad(affPlain(affCompose('Someone who keeps his word').lines,true)));
+ const W=affWeave([{key:'av:1',text:'Someone who asks for help out loud',b:'Throat',state:'confirmed'},
+  {key:'av:2',text:'calm',b:'Heart',state:'confirmed'},{key:'cl:9',text:'trust',b:'Root',state:'heard'}],'av:1');
+ got.push('# Weave: primary "Someone who asks for help out loud" (Throat), "calm" seated at Heart, "trust" heard at Root (excluded)');
+ got.push(pad(affPlain(W.lines,false)));
+ const Ws=affWeave([{key:'av:1',text:'calm',b:'Heart',state:'confirmed'},{key:'av:2',text:'Someone who no longer wants to die',b:'Root',state:'confirmed'}],'av:1');
+ got.push('# Weave with one source that trips the stop'); got.push('  '+(Ws.stop?'STOP safety ('+Ws.why+'): '+Ws.say:'COMPOSED'));
+ const gl=got.join('\n').split('\n'), xl=AFF_EXPECT.split('\n');
+ const first=xl.findIndex((l,i)=>l!==gl[i]);
+ ok(gl.length===xl.length&&first<0,'the whole table matches the reference byte for byte, '+gl.length+' lines of '+xl.length
+  +(first>=0?', first difference at line '+(first+1)+': expected '+JSON.stringify(xl[first])+' got '+JSON.stringify(gl[first]):''));
+
+ /* THE PROPERTIES, on every composed row in both modes. These hold for any
+    theme, so they also run on the roster and on a sweep below. */
+ const LEX=/\b(attract|manifest\w*|limitless|infinite|abundance|prosperity|destiny|into reality|highest vision|aligned|vessel)\b/i;
+ const props=(r,themeWords)=>{const e=[];
+  if(r.lines.length!==7)e.push('seven lines, got '+r.lines.length);
+  r.lines.forEach((l,i)=>{
+   if(l.b!==BANDS[i])e.push('point order '+i+' '+l.b);
+   if(l.composed!==true)e.push('not marked composed '+i);
+   [['plain',l.plain],['wrapped',l.wrapped]].forEach(([m,x])=>{
+    const body=m==='wrapped'?x.slice(AFF_PRE.length):x;
+    if(m==='wrapped'&&x.indexOf(AFF_PRE)!==0)e.push(m+' prefix '+i);
+    if(m==='wrapped'&&!x.endsWith(AFF_SUF))e.push(m+' suffix '+i);
+    if(m==='plain'&&(x.indexOf('creator of all that is')>=0||x.indexOf('all space, time')>=0))e.push('the wrapper on while off '+i);
+    if(body.indexOf(AFF_ANCHOR[i]+' ')!==0)e.push(m+' anchor '+i+': '+body);
+    if(/(^|[^A-Za-z])i([^A-Za-z']|$)/.test(x))e.push(m+' lowercase i '+i);
+    if(/\bI (am|magnetize|command|receive|speak|foresee|empower) I (am|magnetize|command|receive|speak|foresee|empower)\b/.test(x)||/\bI I\b/.test(x))e.push(m+' double subject '+i);
+    /* his package's double subject, the theme's own I am kept inside the frame's: "I am the ground I am steady grows from" */
+    if(m==='plain'&&(x.match(/\bI am\b/g)||[]).length>1)e.push(m+' double subject '+i);
+    if(!/[^.]\.$/.test(x))e.push(m+' one closing period '+i);
+    if(/  /.test(x))e.push(m+' double space '+i);
+    if(/—|–/.test(x))e.push(m+' dash '+i);
+    if(/\*|_{2}|`|^#|\[|\]/.test(x))e.push(m+' markdown '+i);
+    if(/\d/.test(x))e.push(m+' a number '+i);
+    if(/\b(chakra|chakras|seat|seats)\b/i.test(x))e.push(m+' says chakra or seat '+i);
+    let frame=x; (themeWords||[]).forEach(w=>{frame=frame.split(w).join('');});
+    if(LEX.test(frame))e.push(m+' manifestation word in the frame '+i);
+    (themeWords||[]).forEach(w=>{if(x.indexOf(w)<0)e.push(m+' theme lost '+w+' '+i);});});});
+  return e;};
+ const comp=['calm','clear','rested','clarity','money','honest','patience','Someone who keeps his word','to ask for help',
+  'Someone who calls her mother on Sundays','A father who listens','I am steady','I want to sleep through the night',
+  'focus','awake','courage','an even keel'];
+ const bad=[];
+ comp.forEach(t=>{const r=affCompose(t); if(!r.ok){bad.push(t+': did not compose');return;}
+  const tw=(r.shape==='adj'||r.shape==='n')?[t.replace(/^I am /,'').toLowerCase()]:[];
+  props(r,tw).forEach(x=>bad.push(t+': '+x));});
+ ok(bad.length===0,'every composed line keeps its anchor in exact case in both modes, one period, no lowercase i, no double subject, no markdown, no number, no chakra or seat, the wrapper only when on, and the theme in both modes, '+JSON.stringify(bad.slice(0,4)));
+
+ /* HIS PACKAGE IS THE FIRST KNOWN BAD CASE, its own functions copied word for
+    word. The properties above must fail it, or they test nothing. */
+ const PKG=[t=>`I am the grounded foundation for ${t}.`,t=>`I magnetize creative momentum and ${t}.`,t=>`I command aligned action toward ${t}.`,
+  t=>`I receive ${t} with an open and steady heart.`,t=>`I speak ${t} into tangible reality.`,t=>`I foresee clear pathways manifesting ${t}.`,t=>`I empower my highest vision of ${t}.`];
+ const pkg=t=>({lines:PKG.map((f,i)=>{const c=f(t).replace(/\.$/,'');
+  return {b:BANDS[i],composed:true,plain:c+'.',wrapped:AFF_PRE+c.charAt(0).toLowerCase()+c.slice(1)+AFF_SUF};})});
+ ok(props(pkg('calm'),['calm']).length>0,'the package as uploaded fails these properties: '+props(pkg('calm'),['calm']).slice(0,2).join(', '));
+
+ /* SAFETY, and the line it shows. A refusal that says "Say what you are
+    moving toward" to a person who wrote about dying is a fail, so the gate
+    asserts the 988 line and not only that nothing composed. */
+ ['I want to hurt myself','Someone who no longer wants to die','I will never hurt myself again','free of wanting to end it',
+  'not hurting myself','stop cutting','I want to die','Someone who stops cutting'].forEach(t=>{
+  const r=affCompose(t);
+  ok(r.ok===false&&r.stop==='safety'&&r.say===CRISIS_SAY.entryNow&&r.lines.length===0,
+   'a theme about hurting oneself composes nothing and says the 988 line, '+JSON.stringify(t)+' '+JSON.stringify(r.say));});
+ ok(affSafe('calm').ok&&affSafe('Someone who keeps his word').ok&&affSafe('to ask for help').ok,'and the stop does not trip on ordinary themes');
+ ok(affCompose('finish the shift and end it on time').stop==='safety','the over trip is chosen and counted: "end it" trips, one line against seven chanted');
+
+ /* NO DEFAULT SET. His package showed seven money lines on an empty box. */
+ ['','   ','...','!!!','""'].forEach(t=>{const r=affCompose(t);
+  ok(!r.ok&&r.refuse==='empty'&&r.lines.length===0,'an empty theme composes nothing, '+JSON.stringify(t));});
+
+ /* NOTHING IS SWAPPED SILENTLY. A held pattern is refused, and its opposite
+    is offered from CHILD, not from a copied table. */
+ const F=affFlips();
+ ok(CHILD.every(c=>F[c.nm.toLowerCase()]===c.opp.toLowerCase()),'every CHILD name flips to its own opposite, read off the canon');
+ const fr=affCompose('anger');
+ ok(!fr.ok&&fr.refuse==='flip'&&fr.offer==='equanimity'&&fr.lines.length===0,'"anger" composes nothing and offers equanimity, '+JSON.stringify(fr.say));
+ ok(affCompose(fr.offer).ok,'and the offer it makes composes when pressed');
+ ok(affShape('clarity').k==='n'&&affShape('clear').k==='adj','a word keeps its part of speech: clarity is a noun, clear is a quality');
+
+ /* DETERMINISTIC. The same theme twice is the same seven lines, and nothing
+    reads the clock or a random number. */
+ const a1=JSON.stringify(comp.map(t=>affCompose(t))), a2=JSON.stringify(comp.map(t=>affCompose(t)));
+ ok(a1===a2,'the same themes compose the same lines twice');
+ const fnText=[affCompose,affShape,affSafe,affWeave,affSources,affLineOf].map(f=>String(f)).join('\n');
+ ok(!/Math\.random|Date\.now|new Date/.test(fnText),'the generator reads no clock and no random number');
+
+ /* lineOf THROWS rather than emit a line off its anchor */
+ const keep=AFF_FRAMES.n[2];
+ AFF_FRAMES.n[2]=s=>['i command my body toward '+s.n,''];
+ let threw=false; try{affCompose('clarity');}catch(e){threw=/does not open on I command/.test(e.message);}
+ AFF_FRAMES.n[2]=keep;
+ ok(threw,'a frame that drops its anchor throws instead of printing');
+
+ /* COPY, his format with the product's point names */
+ const cp=affPlain(affCompose('calm').lines,false);
+ ok(cp.split('\n').length===7&&cp.split('\n').every((l,i)=>l.indexOf('* '+BANDS[i]+': '+AFF_ANCHOR[i]+' ')===0)&&!/\n$/.test(cp),
+  'Copy is seven "* Point: line." rows, no trailing newline');
+ ok(!/Solar Plexus|Third Eye|chakra/i.test(cp),'Copy says Solar and 3rd Eye, the product\'s names, never chakra');
+ const kp=affPlain(affCompose('calm').lines,true,[true,false,true,false,false,false,true]);
+ ok(kp.split('\n').length===3&&kp.split('\n')[1].indexOf('* Solar: '+AFF_PRE+'I command ')===0,'Copy carries only pressed rows, wrapped when the switch is on');
+
+ /* THE SOURCES, and only what the person confirmed */
+ const prof={avatar:{pairs:[{id:'p1',be:'Someone who keeps his word',notbe:'x',seat:'Throat'},
+   {id:'p2',be:'calm',notbe:'y',seat:'Heart'},{id:'p3',be:'Someone who asks for help out loud',notbe:'z',seat:''}],
+  tags:{Root:{add:['Fear','Joy','Lumbar plexus'],off:[]}}}};
+ const S=affSources(prof,{banked:[{key:'r1',cf:'Shame'}],pathK:'IL',typed:'clarity',seatOf:()=> 'Solar',
+  claims:[{key:'c1',cf:'Anger',state:'confirmed'},{key:'c2',cf:'Surprise',state:'supported'},{key:'c3',cf:'Apathy',state:'inferred'},
+   {key:'c4',cf:'Shock',state:'rejected'},{key:'c5',cf:'Disgust',state:'unknown'},{key:'c6',cf:'Anticipation',state:'corrected',fix:'steady'}]});
+ const by=k=>S.filter(x=>x.key===k)[0]||{};
+ ok(S[0].kind==='path'&&S[0].text==='grace'&&S[0].b==='Heart','the chosen Path pair comes first, its becoming pole at its point');
+ ok(S[1].key==='av:p3'&&S[1].b==='Solar'&&by('av:p1').b==='Throat','Become lines newest first, an unseated one at the seat its Not be line reads');
+ ok(by('tg:Root:Fear').text==='trust'&&by('tg:Root:Joy').text==='joy'&&!S.some(x=>/lumbar/i.test(x.text)),
+  'a tag says the opposite of a pattern, keeps a state, and an address name is no intention');
+ ok(by('bk:r1').text==='worth'&&by('bk:r1').b==='Sacral','a banked release is said as its opposite at its own point, never as the pattern');
+ ok(by('cl:c1').state==='confirmed'&&by('cl:c2').state==='heard'&&by('cl:c6').text==='steady','confirmed and corrected claims are confirmed, a supported one is only heard');
+ ok(!by('cl:c3').key&&!by('cl:c4').key&&!by('cl:c5').key,'inferred, rejected and unknown claims never leave the engine');
+ ok(by('ty').text==='clarity'&&by('ty').b===null,'the typed word is one more source, at no point');
+ ok(affSources(null,{}).length===0&&affSources({avatar:{pairs:'x',tags:7}},{claims:'x'}).length===0,'a missing or malformed record gives no sources and does not throw');
+ ok(affWeaves(S)&&!affWeaves([by('ty')]),'the weave is offered when two confirmed sources are seated, not for one word');
+ const hw=affWeave([{key:'h',text:'trust',b:'Root',state:'heard'}],'h');
+ ok(!hw.ok&&hw.lines.length===0,'a heard only record composes nothing until the person says yes');
+ const wv=affWeave(S.filter(x=>x.kind!=='path'),'av:p1');
+ ok(wv.ok&&wv.lines[3].src==='av:p2'&&wv.lines[3].core==='I receive the day as it comes and stay calm'&&wv.lines.every(l=>l.src!=='cl:c2'),
+  'the weave seats calm at Heart and never composes the heard claim');
+
+ /* THE KEPT STORE'S READ BOUNDARY */
+ const L=affCompose('calm').lines[2];
+ ok(affKeptOk({b:L.b,core:L.core,tail:L.tail,src:'ty',composed:true}),'a written row reads back');
+ ok(![null,{},{b:'Solar',core:'i command x',composed:true},{b:'Chakra',core:'I am x',composed:true},
+  {b:'Root',core:'I am '+'x'.repeat(200),composed:true},{b:'Root',core:'I am x',tail:'y'.repeat(61),composed:true},
+  {b:'Root',core:'I am x',composed:false},{b:'Root',core:'I am x',src:'k'.repeat(41),composed:true}].some(affKeptOk),
+  'a row off its anchor, off a point, too long or not composed is dropped');
+
+ /* THE ROSTER. Every Become line the product's own fictional people carry,
+    read off engine/ritex.js at run time. The share that composes is read
+    off the run, never typed. */
+ const fs=require('fs');
+ const rx=fs.existsSync('atuned_src/engine/ritex.js')?fs.readFileSync('atuned_src/engine/ritex.js','utf8'):'';
+ const be=[...rx.matchAll(/be:'((?:[^'\\]|\\.)*)'/g)].map(m=>m[1].replace(/\\'/g,"'")).filter(x=>/^Someone/.test(x));
+ let rn=0; const rbad=[];
+ be.forEach(t=>{const r=affCompose(t); if(r.ok){rn++; props(r,[]).forEach(x=>rbad.push(t+': '+x));}});
+ ok(be.length>0&&rn>=be.length-1,'the roster\'s own Become lines compose, '+rn+' of '+be.length);
+ ok(rbad.length===0,'and every roster line keeps every property, '+JSON.stringify(rbad.slice(0,3)));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
