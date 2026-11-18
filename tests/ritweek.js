@@ -42,7 +42,7 @@ const MUTANTS={
  /* the goal and the challenges left off the top */
  notop:`ritTopHtml=function(){return '';};`,
  /* tiles of uneven width, the asymmetry ruled out on 14 and 16 November */
- uneven:`document.head.insertAdjacentHTML('beforeend','<style>.rv-tiles{grid-template-columns:1fr 2fr 1fr 1fr!important}</style>');`,
+ uneven:`document.head.insertAdjacentHTML('beforeend','<style>.rv-ttls{grid-template-columns:1fr 2fr 1fr 1fr!important}</style>');`,
  /* the did tick lost on the way from the Today list to the tile */
  /* the long card back: the description printed on the face again */
  fatcard:`(function(){var f=ritCardFace; ritCardFace=function(o){return f(o).replace('</li>','<p class="rv-sgd">A long description of what this practice is and why it is offered here today.</p></li>');};})();`,
@@ -54,6 +54,14 @@ const MUTANTS={
  noat:`ritAtOk=function(){return true;};`,
  /* the Timer lost on the way from the Today list into the pop-up */
  notimer:`ritTimerHtml=function(){return '';};`,
+ /* the Today list back under the week */
+ today:`(function(){var f=ritStageHtml; ritStageHtml=function(st,P){return f(st,P).replace('<section class="rv-sec rv-week"','<section class="rv-sec rv-act rv-goals"><ol class="rv-list"><li>Box Breathing</li></ol></section><section class="rv-sec rv-week"');};})();`,
+ /* the figures row printed a second time under Success over time */
+ figs:`(function(){var f=ritSuccessHtml; ritSuccessHtml=function(st,c){return f(st,c).replace('</section>','<div class="rv-figs rv-sfigs"><div class="rv-fig"><b>3</b><span>Missed</span></div></div></section>');};})();`,
+ /* the strip without its Marks chip */
+ nomarks:`(function(){var f=acctStreakHtml; acctStreakHtml=function(st){return f(st).replace(/<span class="acs acs-marks"[\s\S]*?<\/span><\/span>/,'');};})();`,
+ /* tiles pressed on top of each other */
+ overlap:`document.head.insertAdjacentHTML('beforeend','<style>.rv-ttl{margin-right:-60px}</style>');`,
  nodid:`(function(){var f=ritChalTile; ritChalTile=function(c,st){return f(c,st).replace(/data-act="did"/,'data-act="none"');};})();`};
 
 (async()=>{
@@ -155,7 +163,7 @@ const MUTANTS={
   const top=await pg.evaluate(()=>{
    const six=document.querySelector('#rit .rv-six'), kids=six?[...six.children]:[];
    const t=document.querySelector('#rit .rv-top'), wk=document.querySelector('#rit .rv-week');
-   const tiles=t?[...t.querySelectorAll('.rv-tile')].map(e=>{const r=e.getBoundingClientRect(); return {l:r.left,r:r.right,w:Math.round(r.width),t:Math.round(r.top),
+   const tiles=t?[...t.querySelectorAll('.rv-ttl')].map(e=>{const r=e.getBoundingClientRect(); return {l:r.left,r:r.right,w:Math.round(r.width),t:Math.round(r.top),
     goal:e.classList.contains('rv-tgoal'),txt:e.textContent.replace(/\s+/g,' ').trim(),tip:(e.querySelector('.rv-tlab')||{getAttribute:()=>''}).getAttribute('data-tip')||''};}):[];
    return {first:kids.indexOf(t)===0, above:!!(t&&wk&&t.getBoundingClientRect().bottom<=wk.getBoundingClientRect().top), tiles,
     want:ritChallenge(ritRead()).map(c=>c.id), ids:t?[...t.querySelectorAll('.rv-tchal .rv-tnm')].map(b=>b.getAttribute('data-id')):[],
@@ -307,6 +315,49 @@ const MUTANTS={
   ok(JSON.stringify(rt.affDays)===JSON.stringify([3,5])&&rt.affFirst,
    'RW9: '+tag+'the affirmation set placed on Wednesday and Friday is one block on those days and first in each, '+JSON.stringify([rt.affDays,rt.affFirst]));
   ok(rt.did&&rt.did.ring&&rt.did.ai,'RW9: '+tag+'a challenge\'s pop-up carries its did ring and its who line is marked as Source AI\'s, '+JSON.stringify(rt.did));
+  /* ---- RW10: the lists under the week are gone, and so is the repeated row ---- */
+  const gone=await pg.evaluate(()=>{
+   const rit=document.getElementById('rit'), six=rit.querySelector('.rv-six');
+   const strip=[...document.querySelectorAll('#flowhd .acs')].map(e=>({k:e.className.replace(/.*acs-/,''),tip:e.getAttribute('data-tip')||'',lab:e.getAttribute('aria-label')||''}));
+   return {lists:rit.querySelectorAll('.rv-goals,.rv-act,.rv-grits,.rv-aff,.rv-chal,.rv-list,.rv-key').length,
+    figs:rit.querySelectorAll('.rv-sfigs,.rv-figs,.rv-sext').length,
+    order:six?[...six.children].map(e=>(e.className.match(/rv-(top|week|c-ok|c-keep|c-ana)\b/)||[])[1]||e.className):[],
+    strip, chain:rit.querySelectorAll('.rv-chain').length};});
+  ok(gone.lists===0,'RW10: '+tag+'no Today list, rituals list, affirmations list, challenges list or Done, Planned, Missed key is left on the stage, '+gone.lists);
+  ok(gone.figs===0&&gone.chain===0,'RW10: '+tag+'the Kept, Missed, Practised, Marks earned row and the chain are off the centre, '+JSON.stringify([gone.figs,gone.chain]));
+  ok(JSON.stringify(gone.order.slice(0,2))===JSON.stringify(['top','week']),'RW10: '+tag+'the stage reads top row, then the week, '+JSON.stringify(gone.order));
+  ok(gone.strip.length===4&&JSON.stringify(gone.strip.map(x=>x.k))===JSON.stringify(['streak','miss','mins','marks'])&&gone.strip.every(x=>x.tip.length>15&&x.lab),
+   'RW10: '+tag+'the strip at the top right carries Streak, Missed, Practised and Marks, each with its meaning on the press, '+JSON.stringify(gone.strip));
+
+  /* ---- RW11: nothing overlaps, and nothing runs off the screen ---- */
+  const ov=await pg.evaluate(()=>{
+   if(typeof sheetShut==='function')sheetShut();
+   const sel='#rit .rv-ttl, #rit button.rv-blk, #rit .rv-wch, #rit .rv-wdh, #rit .rv-kch, #flownew .rv-cf, #flownew .rv-cf button, #flownew .rv-cfr, #flownew .rv-via, #flowhd .acs';
+   const els=[...document.querySelectorAll(sel)].filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden';});
+   const R=els.map(e=>e.getBoundingClientRect()), hit=[];
+   for(let i=0;i<els.length;i++)for(let j=i+1;j<els.length;j++){
+    if(els[i].contains(els[j])||els[j].contains(els[i]))continue;
+    const a=R[i], b=R[j], x=Math.min(a.right,b.right)-Math.max(a.left,b.left), y=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+    if(x>1&&y>1)hit.push([els[i].className.split(' ')[0]+':'+(els[i].textContent||'').trim().slice(0,14),els[j].className.split(' ')[0]+':'+(els[j].textContent||'').trim().slice(0,14)]);}
+   const cols=[...document.querySelectorAll('#rit .rv-week .rv-wd1')].map(e=>Math.round(e.getBoundingClientRect().width));
+   const rows=[...document.querySelectorAll('#rit .rv-week .rv-wd1')].map(e=>Math.round(e.getBoundingClientRect().height));
+   return {n:els.length, hit:hit.slice(0,6), sw:document.documentElement.scrollWidth, cw:document.documentElement.clientWidth, cols:[...new Set(cols)], rows:[...new Set(rows)]};});
+  ok(ov.n>10&&ov.hit.length===0,'RW11: '+tag+'no tile, block, day head, key, card or chip overlaps another, '+ov.n+' measured, '+JSON.stringify(ov.hit));
+  ok(ov.sw<=ov.cw,'RW11: '+tag+'the page does not scroll sideways, '+JSON.stringify([ov.sw,ov.cw]));
+  ok(ov.cols.length===1&&ov.rows.length===1,'RW11: '+tag+'every day of the week is one width and one height, so the week is one clean rectangle, '+JSON.stringify([ov.cols,ov.rows]));
+
+  /* ---- RW12: every symbol on the new parts carries its meaning ---- */
+  const un=await pg.evaluate(()=>{
+   const roots=['#rit .rv-top','#rit .rv-week','#flownew .rv-sug','#flowhd .acs-row'].map(s=>document.querySelector(s)).filter(Boolean);
+   const bare=[];
+   roots.forEach(r=>r.querySelectorAll('svg').forEach(sv=>{
+    const vis=sv.getBoundingClientRect(); if(!vis.width)return;
+    let e=sv, ok=false;
+    while(e&&e!==r.parentNode){if((e.getAttribute&&((e.getAttribute('data-tip')||'').length>8))){ok=true;break;}
+     if(e.tagName==='BUTTON'&&(e.getAttribute('aria-label')||e.textContent.trim()).length>3){ok=true;break;} e=e.parentNode;}
+    if(!ok)bare.push((sv.parentNode.className||sv.parentNode.tagName)+'');}));
+   return {roots:roots.length, bare};});
+  ok(un.roots===4&&un.bare.length===0,'RW12: '+tag+'every mark on the top row, the week, Called for and the strip is inside a carrier of its meaning or a named press, bare: '+JSON.stringify(un.bare.slice(0,6)));
   ok(err.length===0,'RW0: '+tag+'no page errors, '+err.slice(0,3).join(' | '));
   }catch(e){ok(false,'RW0: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();

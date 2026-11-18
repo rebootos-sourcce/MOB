@@ -475,8 +475,8 @@ function ritLiveHtml(){
    markup, ritGoalHtml, is what the goal's pop-up shows when the tile is
    pressed, so the next mark and its sentence keep their one drawing. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritTopHtml(st)+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
-  +ritSuccessHtml(st,P.chain)+'</div>';}
+ return '<div class="rv-six">'+ritTopHtml(st)+ritWeekCalHtml(st)+ritOkHtml(st)+ritKeepHtml(st)
+  +ritSuccessHtml(st,'')+'</div>';}
 
 function ritStageCss(){
  if(document.getElementById('rit2-css'))return;

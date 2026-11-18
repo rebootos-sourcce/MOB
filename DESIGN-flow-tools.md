@@ -131,6 +131,8 @@ tile. A plan keeps its tags field, and an edit carries an older plan's tags
 through untouched. Cancel is drawn once the builder holds something, empties
 it, and leaves it open. `ritbuild` still means holding something.
 
+18 November: the Active list is gone, so the ritual a start writes is held as a block in today's column of the week.
+
 Gate: `tests/flowtools.js`, `FT4:`.
 
 ### FT5. The Ritual stage holds no tracker.
@@ -239,6 +241,8 @@ open. A worked example is refused by name, and the page says once, in the
 centre, that nothing there is saved. Edit on a missed ritual opens that ritual
 in the left column and never leaves the page.
 
+18 November: the Active row is gone, so Edit is reached from a ritual's block on the week, in its pop-up (`ritSashSheet`), and opens the same builder.
+
 Gate: `tests/flowtools.js`, `FT9:`.
 
 ### FT10. Add to my ritual on the Compass teacher panel still lands, and the ritual shows in two columns at once.
@@ -247,6 +251,8 @@ The button writes the plan through `ritStartPlan`, says Added, and the ritual
 is on the centre's Active list (as "Toward" the teacher) and in today's
 column of the week, on one screen. Until SV17 the second place was the
 tracker's Due today.
+
+18 November: the Active list is gone. The ritual the Compass adds is held in today's column of the week, and its block opens it with its Timer.
 
 Gate: `tests/flowtools.js`, `FT10:`; `tests/functional.js`, the group named "a
 teacher on the compass opens the behaviour complex and adds a starter ritual".
@@ -330,6 +336,8 @@ so the bank offers nothing at that seat. Start for a week goes through
 Start. Achievements do not exist yet, so nothing on the page names one: the
 link point is the row `ritSuggest` returns, named in `ui/ritstage.js`.
 
+18 November: a card is one row, so its seats and its reasons are read in its pop-up, and Start for a week is Add, then Add in the pop-up with its When as it opens, every day for a week, saying Added.
+
 Gate: `tests/flowtools.js`, `FT16:`.
 
 ### FT17. The centre is six cards in his slots.
@@ -360,6 +368,8 @@ Ritual to avatar and Ongoing goal are in the right menu (FT6). The grid keeps
 the class `rv-six`, because the gates, the shot tool and the phone order find
 the stage by it. On a phone it is one column in that order.
 
+18 November, his words: "You can move the challenges to the very top above the week, so it's front and center. Same with the goal", and of everything under the week, "that can go away". The stage is now: the goal and the challenges (`ritTopHtml`, `ui/ritweek.js`), the week, Did it work, Keep or delete while one ends, Success over time. Today is gone and the Ongoing goal card is the goal tile's pop-up. This reverses SV19's goal under Today, named once.
+
 Gate: `tests/flowtools.js`, `FT17:`.
 
 ### FT18. Ritual to avatar reads the Avatar page's own cycle and the seats it is feeding.
@@ -389,6 +399,8 @@ only; the right column keeps the marks already earned.
 
 SV16: the card is in the right menu, FT6. What it reads and draws is
 unchanged.
+
+18 November: the goal is the first tile of the top row, with one press, Release. The card it carried is the tile's pop-up, where the held pattern sentence wears the Source AI mark (15 November) and the two schedule presses live.
 
 Gate: `tests/flowtools.js`, `FT19:`.
 
@@ -501,6 +513,8 @@ now, so a row prints no seat word; a second seat is a second mark. The badge's
 press says what the ring and the pill are, with the figure and what it is out
 of. The gate works the expected percent out from the days and the span.
 
+18 November: the Active rows are gone. A ritual is a block on the week, its seat said on the block's press, and its days kept are said in its pop-up, beside its Timer.
+
 Gate: `tests/flowtools.js`, `FT25:`.
 
 ### FT26. The tell is on the press.
@@ -525,6 +539,8 @@ ring (`crbNode`'s shape); otherwise the seat's mark from `SEATGLYPH`, with the
 heaviest place held at that seat as the ring. The mark is the press that opens
 the reasons in place. Each seat tag carries the seat's mark beside its name.
 The active rituals wear their seat as a wash too.
+
+18 November, his words: "sorted by the action color or type". Colour on this page means the kind of act (Affirmation, Action, Meditation, Release, `RIT_KINDS` in `ui/ritweek.js`), so a card wears its kind's ring and colour, and its reasons are folded in its pop-up with the Source AI mark. The seat moved into the pop-up as a tag. This reverses QS and SV16's seat coloured card, named once.
 
 Gate: `tests/flowtools.js`, `FT27:`.
 
@@ -569,6 +585,8 @@ Saved, ruled by the narrative director: everything on it is for later, and a
 press called Save beside a shelf called Saved for later is one act in two
 wordings.
 
+18 November, his words: "there's too much information on these cards. Simplify them ... if I click on it, then I got a pop-up that tells me information about it." What a practice is, what it is for and the record with it are in the card's pop-up; the face is the kind's ring, the name, the minutes, where it came from, Add and Dismiss. Save is in the pop-up. Add is the plan's word for Add to practice.
+
 Gate: `tests/flowtools.js`, `FT29:`.
 
 ### FT30. Goals is today, this week and this month.
@@ -598,6 +616,8 @@ seven day walk below still holds both: Today's rows on each weekday, and the
 Tuesday, Thursday and Saturday ritual under those three days of the week and
 no other.
 
+18 November: Today is gone, his words: "everything beneath that, where it says done, planned, missed, the rituals, the affirmations, that can go away." The challenges are the top row's tiles, each with its did ring; the affirmations are the first card in Called for, whose pop-up holds every line and its said ring and places the set on the week; the rituals are blocks, and on each of the seven days today's column holds every ritual due that day and none kept on another.
+
 Gate: `tests/flowtools.js`, `FT30:`.
 
 ### FT31. The affirmations and the challenges are real content and say where they came from.
@@ -625,6 +645,8 @@ square: a calendar of weeks for two months or less, and a year folded weeks to
 columns past that. A span that reaches back before the record starts draws
 those days blank, says how many, and counts none of them missed. A person with
 no record is told so.
+
+18 November, his words: "get rid of that kept, miss, practice, marks earned, because you already have that in the upper right-hand panel". The figures row is gone, and the strip gained a Marks chip (FT36) because it had no count of marks. The span's kept and missed days are held off its squares.
 
 Gate: `tests/flowtools.js`, `FT32:`.
 
@@ -704,6 +726,8 @@ floor that opens that day in the sheet, every ritual on it each opening its
 own sheet, or Nothing set. Opened, More practices lists every practice one
 to a row, the column's width, and no tile says called for.
 
+18 November, his words: "blocks under the days of the week, sorted by the action color or type". A sash is a block: the kind's colour and ring, the short name on one line, and the seat's small mark at the right edge. A day's blocks run by kind. SV17's no word is reversed, named once. The Today list's controls (Timer, Stop all days, Release now, Change days, Did it work, Keep) are in a block's pop-up.
+
 Gate: `tests/flowtools.js`, `FT35:`.
 
 ### FT36. The streak is the top right of the page, and Accountability sits under it.
@@ -719,6 +743,8 @@ accessible name and the tooltip's title and is never printed. Streak is the
 ladder's; Best and Kept ride on its press. Missed is FT7's. Practised is the
 ladder's minutes. A zero is the house dash. The strip replaces the Done card's
 180 pixel ring.
+
+18 November: four marks, Streak, Missed, Practised and Marks, the marks earned in the last thirty days, because the row under Success over time that was the only count of them is gone.
 
 Gate: `tests/flowtools.js`, `FT36:`.
 

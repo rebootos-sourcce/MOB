@@ -765,14 +765,6 @@ function ritRelDone(ids){
  var ok=ritWrite(function(){hit.forEach(function(p){ritMarkOn(p,today);}); return null;},
   'Release finished. '+(nm.length>1?nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' are':nm[0]+' is')+' done for today.');
  return ok?hit.length:0;}
-function ritMove(id){
- ritWrite(function(plans){
-  var i=-1; plans.forEach(function(p,j){if(p.id===id)i=j;});
-  /* up among the active ones, which is the order a person sees */
-  var today=ritToday0(), j=i-1;
-  while(j>=0&&!ritActive(plans[j],today))j--;
-  if(i>0&&j>=0){var t=plans[i]; plans.splice(i,1); plans.splice(j,0,t);}
-  return plans;},'Moved.');}
 function ritStop(id){
  RIT.exp=null; RIT.edit=null;
  ritWrite(function(plans){
@@ -954,7 +946,11 @@ function ritChainHtml(c,r,act){
  out+='<div class="rv-node rv-do" style="--c:'+col+'">'
   /* "CHANGE 'DO THIS' TO 'GOAL'." Do this named the action; Goal names what
      the action is for, which is the word he asked for in its place. */
-  +'<span class="rv-lb">'+(r.unread?'Start here':'Goal')+'</span>'
+  /* AND GOAL IS CALLED FOR NOW, 18 November (B2): the chain moved into the
+     Ongoing goal's pop-up, and a node named Goal inside the goal would be one
+     word for two things on one page. What it names is the practice the seat
+     calls for, which is Called for's own word. */
+  +'<span class="rv-lb">'+(r.unread?'Start here':'Called for')+'</span>'
   +'<span class="rv-nv"><svg viewBox="0 0 24 24" class="rv-nic" aria-hidden="true"><circle cx="12" cy="12" r="8" style="stroke:'+col+'"/></svg>'
   +'<b class="rv-pn">'+esc(p?p.nm:'')+'</b></span>'
   +'<span class="rv-ns">'+(p?p.min+' minutes':'')+'</span>'
@@ -1017,56 +1013,15 @@ function ritTimer(id){
      the focus out of the When field while a person typed in it. */
   if(el)el.textContent=ritClock(left);},1000)};
  ritRender();}
-/* ACTIVE TODAY, AND THE REST. Round LT: "I should see a list of my active
-   running tasks for the day." Running is a saboteur's word here, so the list
-   is the Active one it always was, split by due: what is due today first,
-   in the person's own order, and what is active but kept on other days under
-   it, named by its days so nobody reads it as missed. */
-/* THE LIST WAS COMPACT WHILE THE BUILDER WAS OPEN, and it is not any more. It
-   sat in a narrow column beside the builder then, and at full height three
-   rituals put the page past the screen, measured at 1123 pixels of content in
-   867, so each row dropped to its ring and its name. The builder is in the
-   right menu now and the list has the stage to itself, so the timer, the
-   days and the rest are on the row all the time and the mode is gone. */
-function ritActiveHtml(act,today,building){
- var due=act.filter(function(p){return ritDue(p,today);});
- return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Active today</span>'
-  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
-  +ritActiveBody(act,today,building)+'</div>';}
-/* THE LIST WITHOUT ITS CARD, round QX. The Goals card (ui/ritcal.js) carries
-   the Active list as its Today, so the rows, the empty line and its press are
-   one function and the two cards cannot draw them two ways. */
-function ritActiveBody(act,today,building){
- var due=act.filter(function(p){return ritDue(p,today);}), rest=act.filter(function(p){return !ritDue(p,today);});
- var out='';
- /* THE EMPTY LINE CARRIES THE PRESS AND NOT A DIRECTION, round QF. It used to
-    say "in the right menu", which was true for one round and is wrong twice
-    over now: the builder is in the left column, and on a phone the columns
-    stack so neither of them is on a side at all. A list that says Nothing
-    active yet and offers no press would be the blank screen with a name on it
-    that panels.js already warns about, so the press is here. The unpacking is
-    the same sentence: what Active means, said where it is shown. */
- /* and the press is offered only while the builder is shut. A second New
-    ritual on the same screen as the left column's is the same control twice,
-    which is how a person ends up wondering whether the two do different
-    things. ROUND QN: the builder no longer opens itself, so with nothing
-    active the left column is shut and carries New ritual and Suggested, and
-    it comes first on a phone (ritnone). This press is drawn for the one case
-    the left column is not there to carry it, folded shut, and shell/head.html
-    shows it only then (rv-addx). */
- /* AND NOTHING ACTIVE SAYS NOTHING, round RB, his words on this page: "Get
-    rid of all the sec[ond] third tier text." Nothing active yet went; Nothing
-    due today stays, because with rituals running it is the one line that
-    says today is clear rather than that the list failed to draw. */
- out+=due.length?'':(act.length?'<p class="rv-empty">Nothing due today.</p>':'')
-  +((act.length||building)?'':'<div class="rv-acts rv-addx"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
- /* "A ritual is active from the day you start it until it ends or you stop
-    it." stood here and is cut, 4 November, struck in red on the live page.
-    Each row already says its own span (ritLeft), so the rule in general sat
-    above the rule in particular on every paint. */
- out+=ritRowsHtml(due,today,act);
- if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
- return out;}
+/* THE ACTIVE LIST IS GONE, 18 November, his words: "everything beneath that,
+   where it says done, planned, missed, the rituals, the affirmations, that
+   can go away." ritActiveHtml, ritActiveBody, ritRowsHtml, ritPctHtml and
+   ritRowSeats drew it, and nothing else drew with them. Every press a row
+   carried has a route from a block's pop-up first (ritSashSheet, ui/ritcal.js:
+   Done, the Timer, Edit, Stop all days, Release now, Change days), which the
+   commit before this one landed, so the list left only once that held. The
+   week is the one drawing of what is due and when. Move up went with it,
+   ritMove, named once: order inside a day is by kind now. */
 /* one ritual's ring for one day, a dash per step, ticked when the day is done.
    The Active list and the week's sheet draw the same ring (Accountability's
    due list drew it until SV17), so the press means the same thing in both
@@ -1110,105 +1065,10 @@ function ritPct(p,today){
   if(!ritCovers(p,d))continue; due++;
   var e=ritEntryFor(p,d); if(e&&ritIsDone(e.x))kept++;}
  return due?{kept:kept, due:due, pct:100*kept/due}:null;}
-function ritPctHtml(p,today,size){
- var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
- var where=b?ritTagNm(b)+' seat':'No seat';
- var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
- /* A COUNT, NOT A PERCENT, SV17. This printed the share kept as a percent
-    and filled the ring to it, and accountability.js's own header rules the
-    page: "There is no percent, no score and no rate on this page ... a person
-    who missed three days of fourteen is told three days, never a grade." The
-    no end branch below already printed a plain count on an empty ring, so
-    both branches now read the same way: the days kept, and the ring is the
-    seat's mark with nothing filled.
-
-    AND NOT KEPT OF SET. The brief for this round asked for "3 of 7" in the
-    pill, and that is a count against a total, his objection CO-05 in the
-    voice database ("every time you add that 11 of 12, why."), widened by
-    CO-31 to any scale and held as a stop. The days set ride in the tooltip's
-    figure line, where they already were. ritPct still does the counting;
-    only the percent it returned is no longer printed. */
- /* THE BADGE IS A FIGURE WITH ITS WORD NOW, SV24. His words, on the live
-    page: "Next to the ritual, where there's a heart, there's a bunch of icons
-    on the right-hand side with numbers and pills, I don't know what that's
-    for." Read off this function before changing it: the heart was the seat's
-    mark (SEATGLYPH, the Heart seat; the bolt is Solar), the ring round it was
-    the percent complete ring SV17 stopped filling, so it drew an empty track
-    on every row, and the pill was the days kept, 6 and 2 on Ana. All three
-    were explained only by the tooltip, a hover he never made. The empty ring
-    was the one piece saying nothing, so it is gone, and the mark and the
-    pill went with it: the count is printed as the Avatar card prints its own,
-    "14 days kept", the unit on the figure and one word for what it counts
-    (V17), and the seat is said in words on the row's own line
-    (ritRowSeats). The tooltip stays on the figure for the days set. */
- var k=P?P.kept:ritRunRead(p,today).kept;
- if(P){body='The days you have kept it. A kept day stays kept.';
-  n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
- else body='No end, so nothing to complete. The number is the days you have kept it.';
- /* none kept is the house dash, the value the pill printed for a zero */
- badge='<b>'+(k?k+'<small>'+(k===1?' day':' days')+'</small>':'\u2013')+'</b><span>kept</span>';
- return '<span class="rv-pc" style="--c:'+col+'"'+rvTip(nm,body,n,where)+'>'+badge+'</span>';}
-/* THE SEATS A RITUAL SITS AT, IN WORDS, SV24. Round QS drew them as marks,
-   the first inside the badge and any more as small rings in the line, "a
-   second seat is a second mark and not a second word". Neither mark carried
-   its meaning anywhere a person could see it (a title, and the tooltip), and
-   UNPACK EVERY SYMBOL (round PO, CLAUDE.md) fails a mark that stands alone.
-   With the badge now a figure, the seat is said once, where the row already
-   says how long and how often: "Heart seat", or "Heart and Throat seats". */
-function ritRowSeats(p){
- var b=ritSeat(p), all=(b?[b]:[]).concat(((p&&p.tags)||[]).filter(function(t){return t!==b&&BANDS.indexOf(t)>=0;}));
- if(!all.length)return '';
- var nm=all.map(ritTagNm);
- return (nm.length===1?nm[0]+' seat':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' seats')+', ';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
   +(d?'<path d="M13 20l5 5 9-10" class="rv-tick" style="stroke:'+col+'"/>':'')+'</svg>';}
-function ritRowsHtml(list,today,act){
- var out='<ol class="rv-list">';
- list.forEach(function(p){
-  var ix=act.indexOf(p);
-  var e=ritEntryFor(p,today), d=e&&ritIsDone(e.x), col=ritCol(p), open=RIT.exp===p.id;
-  var ring=ritRingHtml(p,d,col);
-  out+='<li class="rv-item'+(d?' rv-done':'')+'" style="--c:'+col+'">'
-   +'<div class="rv-row">'
-   +'<button type="button" class="rv-log" data-act="log" data-id="'+p.id+'" aria-pressed="'+!!d+'" aria-label="'
-   +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ring+'</button>'
-   +'<button type="button" class="rv-open" data-act="exp" data-id="'+p.id+'" aria-expanded="'+open+'">'
-   +'<span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
-   /* the line is one sentence, so whichever part opens it takes the capital:
-      the seats, or For or Toward on a ritual with no seat */
-   +'<span class="rv-sub">'+esc(ritCap(ritRowSeats(p)+(p.rel!=null&&BY[p.rel]?'for '+String(BY[p.rel].k).toLowerCase()+', ':'')
-   +(p.tc&&becomingOf(p.tc)?'toward '+becomingOf(p.tc).who+', ':'')))
-   /* the minutes are the timer's, so a timer set longer than the steps reads
-      here as what it is set to. How often is said only when it is not every
-      day, because every day is what a ritual is unless it says otherwise,
-      and a line that wraps to three rows is what put the page past the
-      screen with both rails open. Mid line it is a value and a value is
-      never titled, V13: it read "20 minutes, Every day but Thu". */
-   +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')
-   /* THE WHEN AND THE DAYS LEFT ARE OFF THE ROW, SV19, both struck in red on
-      the live page: "Before school run", "At three, when I wake", "4 days
-      left". Each is the third line on a row whose job is the name and the
-      press. The when and where are the row's opened sentence below (rv-if),
-      and the days left are in the sash's sheet beside the days kept. */
-   /* ROUND QS put the seat in the badge as a mark and any second seat tag as
-      a second mark, never a word. SV24 says them in words at the start of
-      this line instead (ritRowSeats), because neither mark said what it was. */
-   +'</span></button>'+ritPctHtml(p,today)+ritTimerHtml(p)+'</div>';
-  if(open){
-   out+='<div class="rv-more">'
-    +ritSteps(p).map(function(s,i){
-     return '<div class="rv-step"><b>'+(p.steps.length>1?(i+1)+'. ':'')+esc(s.nm)+' <small>'+s.min+' min</small></b><p>'+esc(s.how)+'</p></div>';}).join('')
-    +((p.when||p.where)?'<p class="rv-if">When '+esc(p.when||'it is time')+', '+esc(p.where?'at '+p.where:'wherever you are')+'.</p>':'')
-    +'<div class="rv-acts">'
-    +(p.rel!=null&&BY[p.rel]&&BY[p.rel].sq>=4?'<button type="button" class="btn" data-act="rel" data-n="'+p.rel+'">Release now</button>':'')
-    +'<button type="button" class="btn" data-act="edit" data-id="'+p.id+'">'+ritIc('edit')+'Edit</button>'
-    +(ix>0?'<button type="button" class="btn" data-act="up" data-id="'+p.id+'">'+ritIc('up')+'Move up</button>':'')
-    +'<button type="button" class="btn" data-act="stop" data-id="'+p.id+'">Stop</button>'
-    +'</div></div>';}
-  out+='</li>';});
- return out+'</ol>';}
 /* a seat's name as a tag carries it: sentence case, and the third eye spelled
    out, the way ritSeatNm spells it inside a sentence */
 function ritTagNm(b){return b==='3rd Eye'?'Third eye':String(b||'');}
@@ -1558,8 +1418,9 @@ function ritRender(){
     whole page, and a reading that replayed its entrance each time would read
     as a page that cannot sit still */
  var arrive=!!RIT.arrive; RIT.arrive=false;
- var P={note:ritNote(), live:ritLiveHtml(),
-  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building), building:building};
+ /* P.active is gone with the list it drew, and the chain left the centre
+    for the goal's pop-up (ui/ritweek.js, ritPopGoal), 18 November */
+ var P={note:ritNote(), live:ritLiveHtml(), building:building};
  P.stage=ritStageHtml(st,P);
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','','plus');
@@ -1681,7 +1542,6 @@ function ritWire(h,c){
    case 'logday': ritLog(id,+b.getAttribute('data-d')); return;
    case 'exp': RIT.exp=RIT.exp===id?null:id; break;
    case 'edit': ritEditOpen(id); return;
-   case 'up': ritMove(id); return;
    case 'stop': ritStop(id); return;
    case 'del-plan': RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;

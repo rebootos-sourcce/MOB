@@ -296,44 +296,10 @@ function ritTickHtml(on,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +(on?'<circle cx="20" cy="20" r="14" class="rv-s rv-s-done" style="stroke:'+col+';stroke-width:4"/><path d="M13 20l5 5 9-10" class="rv-tick" style="stroke:'+col+'"/>':'')
   +'</svg>';}
-function ritAffHtml(st,M){
- var A=ritAffirm(st), today=st.today;
- var body='<ul class="rv-afl">'+A.map(function(a){var on=ritDayOn(M.said,today,a.id), col=a.b?seatCol(a.b):'var(--accent)';
-  return '<li class="rv-af1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
-   +'<button type="button" class="rv-log" data-act="said" data-id="'+esc(a.id)+'" aria-pressed="'+on+'" aria-label="'
-   +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
-   +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
- return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
-  /* "Say each one out loud, once today, and press its ring." stood under this
-     heading and is cut, SV17. His word for a line that tells a person how to
-     use a ring was insult, so it is not moved into a tooltip either: the ring
-     carries a press and an accessible name, and that is the instruction. */
-  +'</div>'+body+'</div>';}
-function ritChalHtml(st,M){
- var C=ritChallenge(st), today=st.today, body;
- if(!C.length)body='<p class="rv-empty">'+(st.r.unread
-   ?'Nothing is read yet. A challenge comes from a pattern your reading shows running, so write a story first.'
-   :'Nothing your reading shows running or held has a challenge written for it yet.')+'</p>'
-  +(st.r.unread?'<div class="rv-acts"><button type="button" class="btn" data-act="go-story">Write a story</button></div>':'');
- else body='<ul class="rv-afl">'+C.map(function(c){var on=ritDayOn(M.did,today,c.id), col=c.b?seatCol(c.b):'var(--accent)';
-  return '<li class="rv-af1 rv-ch1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
-   +'<button type="button" class="rv-log" data-act="did" data-id="'+esc(c.id)+'" aria-pressed="'+on+'" aria-label="'
-   +(on?'Done today. Press to take it off':'Mark done today: '+esc(c.nm))+'">'+ritTickHtml(on,col)+'</button>'
-   /* WHEN A CHALLENGE APPLIES IS ON THE PRESS, SV19. It was a third line
-      under every challenge, "When accountability is required.", the third
-      tier text he struck everywhere else on this page this round. The name
-      and its voice stay, because the voice is what the name means (the
-      unpack rule), and the action stays, because it is the challenge. The
-      when rides in the one tooltip on the text. */
-   +'<span class="rv-aft"'+rvTip(c.nm,c.when)+'><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
-   +'<span class="rv-afq">'+esc(c.act)+'</span></span></li>';}).join('')+'</ul>';
- /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
-    to, and it is no longer said. A line counted the rows aloud ("One pattern
-    in your reading has a challenge, so one is shown. More come as your
-    stories show more.") over a list a person can count, and the heading's own
-    line said how to press a ring. Both are cut, SV17, on the same ruling as
-    the affirmations above. */
- return '<div class="rv-gblk rv-chal"><div class="rv-gh"><span class="rv-gt">Challenges</span></div>'+body+'</div>';}
+/* ritAffHtml and ritChalHtml are gone, 18 November, with the Today list they
+   drew into. An affirmation's said ring is in the affirmation set's pop-up,
+   and a challenge's did ring is on its tile in the top row and in its
+   pop-up (ui/ritweek.js), the same ritDayMark press and writer. */
 
 /* ---------------- the week ----------------
    THE CENTRE IS A WEEK, SV16, 5 November. His words, over an annotated
@@ -475,7 +441,7 @@ function ritSashHtml(s,d,k){
  var K=(typeof ritKind==='function')?ritKind(s.kind):null;
  return '<button type="button" class="rv-wch rv-blk rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
   +' data-kind="'+esc(s.kind||'')+'" style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'
-  +esc(RIT_DAY_SAY[s.st]+(s.at?', '+s.at:'')+'. '+(K?K.nm+': '+K.says:''))+'">'
+  +esc(RIT_DAY_SAY[s.st]+(s.at?', '+s.at:'')+'. '+(K?K.nm+': '+K.says:'')+(b?' The small mark is the '+ritSeatNm(b)+', the body place it is for.':''))+'">'
   +(K?ritKindIc(K.k):'')+'<span class="rv-bn">'+esc(s.nm)+'</span>'
   +(s.st==='done'?'<svg viewBox="0 0 24 24" class="rv-bok" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>':'')
   +(b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" class="rv-bs" style="stroke:'+seatCol(b)+'" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'')+'</button>';}
@@ -620,17 +586,12 @@ function ritSheetWire(){
    default: if(typeof ritPopAct==='function')ritPopAct(a,b,c); return;}};}
 
 /* ---------------- today ----------------
-   WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
-   week, SV16. He asked for the week and said nothing of the rest, and the
-   Active list is the one place a ritual's timer, its steps, Edit, Move up and
-   Stop are reached: taking it off with the switch would have left those with
-   no route at all. So the rituals, the three affirmations and the three
-   challenges keep their markup, and only the card around them is new. */
-function ritTodayCardHtml(st,P){
- var M=ritMore();
- return '<section class="rv-sec rv-act rv-goals"><div class="rv-hd"><span class="rv-h">Today</span></div>'
-  +'<div class="rv-gblk rv-grits"><div class="rv-gh"><span class="rv-gt">Rituals</span></div>'
-  +ritActiveBody(st.act,st.today,P.building)+'</div>'+ritAffHtml(st,M)+ritChalHtml(st,M)+'</section>';}
+   THE TODAY CARD IS GONE, 18 November, his words: "everything beneath that,
+   where it says done, planned, missed, the rituals, the affirmations, that
+   can go away." Its rituals are blocks on the week, its affirmations a card
+   in Called for and a block on the days they are placed, and its challenges
+   the top row (ui/ritweek.js). Every control it held has a route from a
+   pop-up or a tile, which tests/ritweek.js RW9 holds. */
 
 /* ---------------- success over time ----------------
    His ten spans, in his order. A month is a calendar month back from today,
@@ -705,7 +666,6 @@ function ritSuccessHtml(st,chain){
  var R=ritRange(RIT.span), S=ritSpanRead(st,R);
  var seg='<div class="rv-rg" role="group" aria-label="Span">'+RIT_RANGES.map(function(x){var on=x.k===R.k;
   return '<button type="button" class="rv-rgb'+(on?' rv-on':'')+'" data-act="rng" data-v="'+x.k+'" aria-pressed="'+on+'">'+x.nm+'</button>';}).join('')+'</div>';
- var fig=function(n,u,lb){return '<div class="rv-fig"><b>'+(n?n+(u?'<small> '+u+'</small>':''):'–')+'</b><span>'+lb+'</span></div>';};
  var note='';
  /* THE HONEST PART. A span that reaches back before the record does not
     pretend the record was empty there: those days are drawn as a blank of
@@ -717,8 +677,6 @@ function ritSuccessHtml(st,chain){
     Before your record, so the picture and its key already say it. None of
     them is counted as missed, which is the honest part, and that is the
     arithmetic in ritSpanRead and not a sentence. */
- var extra=[S.said?'Affirmations said on '+acctDays(S.said)+'.':'', S.did?'Challenges done '+S.did+(S.did===1?' time.':' times.'):'']
-  .filter(Boolean).join(' ');
  /* and with no reading before the span the line says nothing, SV19: a
     sentence about a comparison that cannot be made is the third tier line */
  var held=S.then===null?''
@@ -730,9 +688,14 @@ function ritSuccessHtml(st,chain){
     +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul></div>';
  return '<section class="rv-sec rv-c rv-c-ana"><div class="rv-hd"><span class="rv-h">Success over time</span></div>'
   +'<p class="rv-mean">What you kept, over the span you pick, from a year down to today. Every figure is a count of days or minutes off your record, never a grade.</p>'
-  +chain+seg+'<div class="rv-figs rv-sfigs">'+fig(S.kept,S.kept===1?'day':'days','Kept')+fig(S.missed,S.missed===1?'day':'days','Missed')
-  +fig(S.mins,'min','Practised')+fig(S.marks.length,'','Marks earned')+'</div>'
-  +(extra?'<p class="rv-okf rv-sext">'+esc(extra)+'</p>':'')+note+ritSpanGrid(S)
+  /* THE FIGURES ROW IS GONE, 18 November, his words: "get rid of that kept,
+     miss, practice, marks earned, because you already have that in the upper
+     right-hand panel anyway." Measured before cutting: the strip there showed
+     Streak, Missed and Practised, and not Marks earned, so the strip gained
+     a Marks chip in the same commit (acctStreakHtml), and the row's one count
+     nothing else printed kept a place. The said and done line under it went
+     too: the affirmation and challenge pop-ups carry those marks now. */
+  +(chain||'')+seg+note+ritSpanGrid(S)
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Kept</span><span><i class="rv-k-cmiss"></i>Missed</span>'
   +'<span><i class="rv-k-pre"></i>Before your record</span></div>'+held+bars+'</section>';}
 

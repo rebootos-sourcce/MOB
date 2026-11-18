@@ -190,9 +190,9 @@ function ritKindKeyHtml(){
    longer sentences are on the press, in the pop-up. */
 function ritTopHtml(st){
  var tiles=[ritGoalTile(st)].concat(ritChallenge(st).map(function(c){return ritChalTile(c,st);}));
- if(!st.r.unread&&tiles.length===1)tiles.push('<div class="rv-tile rv-tile0" role="img" aria-label="No challenge: nothing your reading shows running has one written for it yet." data-tip-t="Challenges" data-tip="'
+ if(!st.r.unread&&tiles.length===1)tiles.push('<div class="rv-ttl rv-ttl0" role="img" aria-label="No challenge: nothing your reading shows running has one written for it yet." data-tip-t="Challenges" data-tip="'
   +esc(RIT_TOP_SAY.chal+' Nothing your reading shows running has one written for it yet.')+'" tabindex="0"><span class="rv-tdash" aria-hidden="true">–</span></div>');
- return '<section class="rv-sec rv-top" aria-label="Goal and challenges"><div class="rv-tiles">'+tiles.join('')+'</div></section>';}
+ return '<section class="rv-sec rv-top" aria-label="Goal and challenges"><div class="rv-ttls">'+tiles.join('')+'</div></section>';}
 var RIT_TOP_SAY={
  goal:'Who your avatar is becoming, and what is held in the way.',
  chal:'One act against a pattern your reading shows running.'};
@@ -201,18 +201,18 @@ function ritGoalTile(st){
  for(var i=pairs.length-1;i>=0;i--)if(pairs[i]&&pairs[i].be&&String(pairs[i].be).trim()){last=pairs[i];break;}
  /* nothing read and no avatar line: one tile, and its one press is the way in */
  if(!bc&&!last){
-  if(st.r.unread)return '<div class="rv-tile rv-tgoal" style="--c:var(--accent)">'
+  if(st.r.unread)return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'
    +'<span class="rv-tlab"'+rvTip('Ongoing goal',RIT_TOP_SAY.goal)+'>'+ritIc('ring','rv-tic')+'Ongoing goal</span>'
-   +'<span class="rv-tnm">Nothing read yet</span>'
+   +'<span class="rv-tnm">Not read yet</span>'
    +'<span class="rv-tact"><button type="button" class="btn pri" data-act="go-story">Write a story</button></span></div>';
-  return '<div class="rv-tile rv-tgoal" style="--c:var(--accent)">'
+  return '<div class="rv-ttl rv-tgoal" style="--c:var(--accent)">'
    +'<span class="rv-tlab"'+rvTip('Ongoing goal',RIT_TOP_SAY.goal)+'>'+ritIc('ring','rv-tic')+'Ongoing goal</span>'
    +'<button type="button" class="rv-tnm rv-tpr" data-act="pgoal" aria-label="Ongoing goal: open">–</button></div>';}
  var be=String((bc?bc.be:last.be)||'').trim().replace(/^"+|"+$/g,''), iam=ritIAm(be);
  var seat=bc?bc.seat:'', col=seat?seatCol(seat):'var(--accent)';
  var on=bc&&st.act.some(function(p){return p.rel===bc.n.i;});
  var glyph=seat&&SEATGLYPH[seat]?'<svg viewBox="0 0 24 24" class="rv-tic" aria-hidden="true">'+SEATGLYPH[seat]+'</svg>':ritIc('ring','rv-tic');
- return '<div class="rv-tile rv-tgoal" style="--c:'+col+'">'
+ return '<div class="rv-ttl rv-tgoal" style="--c:'+col+'">'
   +'<span class="rv-tlab"'+rvTip('Ongoing goal',RIT_TOP_SAY.goal)+'>'+glyph+'Ongoing goal</span>'
   +'<button type="button" class="rv-tnm rv-tpr" data-act="pgoal" aria-label="'+esc('Ongoing goal: '+(iam||be)+'. Open')+'">'+esc(iam||('"'+be+'"'))+'</button>'
   +'<span class="rv-tact">'+(bc?(on?'<span class="rv-tsub">Release running</span>'
@@ -220,7 +220,7 @@ function ritGoalTile(st){
 function ritChalTile(c,st){
  var M=ritMore(), on=ritDayOn(M.did,st.today,c.id), col=c.b?seatCol(c.b):'var(--accent)';
  var nm=ritChalName(c.nm);
- return '<div class="rv-tile rv-tchal'+(on?' rv-on':'')+'" style="--c:'+col+'">'
+ return '<div class="rv-ttl rv-tchal'+(on?' rv-on':'')+'" style="--c:'+col+'">'
   +'<span class="rv-tlab"'+rvTip('Challenge',RIT_TOP_SAY.chal)+'>'+ritIc('ring','rv-tic')+'Challenge</span>'
   +'<button type="button" class="rv-tnm rv-tpr" data-act="pchal" data-id="'+esc(c.id)+'" aria-label="'+esc(c.nm+'. Open')+'">'+esc(nm)+'</button>'
   /* THE DID TICK MOVED ONTO THE TILE, B11: it was on the Today list's row,
@@ -375,18 +375,20 @@ function ritPopChal(st){
   +'<button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
 function ritPopGoal(st){
  var bc=ritBecoming(), r=st.r, c=st.c;
- var body=ritGoalHtml(st);
+ /* the goal card's own markup, its two schedule presses rewired to the
+    pop-up's own handler, because the sheet is outside the page's listener */
+ var body=ritGoalHtml(st).replace(/data-act="why"/g,'data-sh="pwhy"')
+ /* the held pattern sentence is Source AI's, so it wears the mark, the 15
+    November ruling; the avatar's own line above it is the person's and never
+    does */
+  .replace('<p class="rv-why-p">You are','<p class="rv-why-p src-ai">'+((typeof srcMark==='function')?srcMark():'')+'You are');
  /* the chain from the story to the work, B2: it left the centre and opens
    here, the one place it says what the goal is fed by */
  var chain=ritChainHtml(c,r,st.act);
- var held=bc?ritAi('You are holding on to '+String(bc.n.k).toLowerCase()+' at '+ritThe(bc.seat)+'.'):'';
- var on=bc&&st.act.some(function(p){return p.rel===bc.n.i;});
  return '<div class="rv-sh rv-pop rv-pgoal" style="--c:'+(bc?seatCol(bc.seat):'var(--accent)')+'">'
   +'<div class="rv-shh"><span class="rv-sht"><span class="sh-h plain">Ongoing goal</span><span class="rv-shs">'+esc(RIT_TOP_SAY.goal)+'</span></span></div>'
-  +body+held+chain
-  +'<div class="sh-act rv-sha">'+(bc&&!on?'<button type="button" class="btn pri" data-sh="pwhy" data-d="7">Release, a week</button>'
-   +'<button type="button" class="btn" data-sh="pwhy" data-d="14">Release, two weeks</button>':'')
-  +'<button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
+  +body+chain
+  +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
 function ritPopHtml(){
  var P=RIT.pop; if(!P)return '';
  var st=ritRead();
@@ -505,8 +507,8 @@ function ritWeekCss(){
   '.rv-kkey{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}',
   /* THE TOP ROW, B2: four equal tiles, even gaps, centred when fewer */
   '.rv-top{padding:14px}',
-  '.rv-tiles{display:grid;grid-template-columns:repeat(auto-fit,calc((100% - 36px) / 4));gap:12px;justify-content:center}',
-  '.rv-tile{box-sizing:border-box;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:132px;padding:12px 14px;border-radius:14px;',
+  '.rv-ttls{display:grid;grid-template-columns:repeat(auto-fit,calc((100% - 36px) / 4));gap:12px;justify-content:center}',
+  '.rv-ttl{box-sizing:border-box;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:132px;padding:12px 14px;border-radius:14px;',
   ' background:color-mix(in srgb,var(--c) 13%,var(--panel-2))}',
   '.rv-tlab{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;min-height:28px;font-size:12.5px;font-weight:600;color:var(--mid);cursor:help}',
   '.rv-tlab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
@@ -521,9 +523,9 @@ function ritWeekCss(){
   '.rv-tsub{font-size:13px;color:var(--mid)}',
   '.rv-ttick{flex:0 0 44px;width:44px;height:44px;padding:0;border:0;background:none;cursor:pointer}',
   '.rv-ttick svg{width:40px;height:40px}',
-  '.rv-tile0{align-items:center;justify-content:center;--c:var(--edge-2);cursor:help}',
+  '.rv-ttl0{align-items:center;justify-content:center;--c:var(--edge-2);cursor:help}',
   '.rv-tdash{font-size:22px;color:var(--dim)}',
-  '@container (max-width:639px){.rv .rv-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}',
+  '@container (max-width:639px){.rv .rv-ttls{grid-template-columns:repeat(2,minmax(0,1fr))}}',
   /* THE WEEK'S BLOCKS, B3. Every column the same height, three blocks and two
      gaps, so the week stays one rectangle. A block is the kind's colour and
      ring, its short name on one line, the seat's small mark at the right
