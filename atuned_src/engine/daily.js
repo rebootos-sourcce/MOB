@@ -131,8 +131,8 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
 /* THE CANON WORDS, the owner's own, and the wisdom school entry each one
    points at. A word with no entry has t null, and that is content for the copy
    seat and not a defect here: a search of the wisdom school on 1 October
-   finds no entry for soul, spiritual or energy. seat points at Chakra, whose
-   entry begins "A seat." */
+   finds no entry for soul, spiritual or energy. point points at Chakra, the
+   entry that says the chakra is an assemblage point. */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
  /* w is the word as a sentence prints it, so it follows the screen: the
     sentences say point since 18 November ("Change seat and chakra to just
