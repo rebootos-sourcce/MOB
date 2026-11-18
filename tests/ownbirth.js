@@ -83,8 +83,18 @@ function READ() {
     if (typed) {
      /* typed into the real fields, the way a person types it, so the save
         and the repaint are the Intake's own and not a write this file did */
-     await p.evaluate(() => setTab(TAB.INTAKE)); await p.waitForTimeout(300);
-     if (!await p.$('#wdate')) { await p.click('#iqwho'); await p.waitForTimeout(300); }
+     /* the page called Intake is TAB.QUESTIONS, integer 13. TAB.INTAKE is the
+        Avatar and kept that name as history (engine/core.js), and its #iqbody
+        is only borrowed by the Intake page, so on the Avatar the birth row
+        is not on screen to press. Looked up by the integer's name. */
+     await p.evaluate(() => setTab(TAB.QUESTIONS)); await p.waitForTimeout(400);
+     /* the birth fields are in the document from the start, nested behind
+        their one row summary with the hidden attribute, so asking whether
+        #wdate exists said yes and the fill then waited on a field nobody can
+        see. The first cut of this file did that and timed out on every build,
+        good and bad alike, which is the reason it is opened by its state. */
+     if (await p.$('#iqwhop[hidden]')) await p.click('#iqwho');
+     await p.waitForSelector('#wdate', { state: 'visible', timeout: 10000 });
      for (const [id, v] of [['#wdate', '1988-04-12'], ['#wtime', '07:45'], ['#wplace', 'Lisbon, PT'], ['#wzone', 'Europe/Lisbon']]) {
       await p.fill(id, v); await p.dispatchEvent(id, 'change'); }
      const bn = await p.evaluate(() => CURP.who.born);
