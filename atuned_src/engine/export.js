@@ -91,7 +91,7 @@ if(typeof module!=='undefined'&&module.exports){
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
                   GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
-                  chineseYear:chineseYear, spiritualOf:spiritualOf,
+                  chineseYear:chineseYear, lichun:lichun, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
                   C3_CHAIN:C3_CHAIN, C3_DIR:C3_DIR, C3_PART:C3_PART, C3_HEAD:C3_HEAD,

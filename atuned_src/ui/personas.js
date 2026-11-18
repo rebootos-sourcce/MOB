@@ -197,9 +197,12 @@ function renderSpirit(){
      element's and its tooltip says both halves, from the same two gloss
      entries the two rows carried. The element's own drill is still the
      Summary's chip for it (sumChips, ui/summary.js). */
-  +line('E',
+  /* the year is null when the record's window crosses Li Chun, and printed
+     "null null" here until it took the unread row the moon already had */
+  +line('E',sp.chinese?
    row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
+   :unres('Year',sp.needsTime?'needs a birth time':noZone))
   +line('N',
    nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')

@@ -109,17 +109,28 @@ function chineseElement(y){ return CELEM[y%10]; }
    which falls on the 3rd to the 5th of February. Using the Gregorian
    first of January hands the wrong animal to everyone born in the first
    five weeks of a year, which is about a tenth of all births. */
-function chineseYear(bt){
- /* no day, no year: this returned NaN and the panel printed undefined */
- if(!bornYMD(bt.d))return null;
- var y=+bt.d.split('-')[0], b=birthJD(bt);
- if(!b)return y;
+function lichun(y){
  var lc=julianDay(y,2,4,0), guard=0;
  while(guard++<8){                     /* solve for the sun at 315 */
   var diff=((sunLon(lc)-315+540)%360)-180;
   if(Math.abs(diff)<1e-4)break;
   lc-=diff/0.9856474;}
- return b.jd<lc ? y-1 : y;}
+ return lc;}
+/* The year went through b.jd alone, so a record whose window ran across Li
+   Chun was read at its guessed instant and printed as settled: an untimed
+   2021-02-03 is 2 February 10:00 to 4 February 11:59 UTC, Li Chun was 14:51
+   on the 3rd, and it read Rat when it could as well be Ox. It goes through
+   atSpan like the sun and the moon, and null is a year the record does not
+   settle. The calendar year is the right y for both ends: a window is at
+   most fifty hours, so even one that crosses New Year sits nowhere near
+   any Li Chun but this one. */
+function chineseYear(bt){
+ /* no day, no year: this returned NaN and the panel printed undefined */
+ if(!bornYMD(bt.d))return null;
+ var y=+bt.d.split('-')[0], b=birthJD(bt);
+ if(!b)return y;
+ var lc=lichun(y);
+ return atSpan(b,function(jd){return jd<lc ? y-1 : y;});}
 /* Human Design. The personality gate is the sun at birth and the design
    gate is the sun 88 degrees of arc earlier, and both of those are real
    and computed here.
@@ -197,7 +208,9 @@ function spiritualOf(bt){
      settles it is a time zone, so that is what the reading asks for. An
      untimed record's span is its day, and a zone does not settle that. */
   needsZone:!!(b&&b.timed&&b.span&&!b.zone),
-  chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
+  /* null when the window crosses Li Chun, and the element with it: they are
+     one reading, the year, and the surfaces print them as one tile */
+  chinese:cy===null?null:CHINESE[((cy%12)+12)%12], celem:cy===null?null:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}

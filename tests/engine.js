@@ -1342,6 +1342,19 @@ g('19 \u00b7 energetics, the birth module');
     year belongs to the previous animal, which is about a tenth of births. */
  ok(chineseYear({d:'1987-01-19'})===1986,'a January birth takes the previous Chinese year');
  ok(chineseYear({d:'1987-06-19'})===1987,'and a June birth takes its own');
+ /* Li Chun 2021 was 3 February 14:51 UTC. The year read b.jd alone, so a
+    record whose own window crossed that moment printed one animal as fact:
+    an untimed 3 February is two days of sky and read Rat. Checked failing
+    on the build before the fix, all three null asserts. */
+ ok(Math.abs(E.lichun(2021)-julianDay(2021,2,3,14+51/60))<2/1440,'Li Chun 2021 lands at 14:51 UTC, got jd '+E.lichun(2021));
+ ok(chineseYear({d:'2021-02-03',t:'14:30',z:'UTC'})===2020&&chineseYear({d:'2021-02-03',t:'15:10',z:'UTC'})===2021,
+  'a located birth twenty minutes either side of Li Chun takes its own side, with confidence');
+ ok(chineseYear({d:'2021-02-03'})===null,'an untimed birth on the day of Li Chun has no year, not a guessed one');
+ ok(chineseYear({d:'2021-02-03',t:'12:00'})===null,'nor does a timed one with no place, whose window is a day wide');
+ {const sp=E.spiritualOf({d:'2021-02-03'});
+  ok(sp.chinese===null&&sp.celem===null&&sp.cyear===null,'and the reading carries no animal and no element, got '+JSON.stringify([sp.chinese,sp.celem,sp.cyear]));}
+ ok(E.spiritualOf({d:'2021-01-20'}).chinese==='Rat'&&E.spiritualOf({d:'2021-02-20'}).chinese==='Ox',
+  'an untimed birth two weeks either side still reads its animal');
 
  /* daylight saving decides an hour, and an hour is half a sign of ascendant */
  ok(usDST(2010,3,14)&&!usDST(2010,3,13),'US daylight saving starts on the second Sunday in March');
