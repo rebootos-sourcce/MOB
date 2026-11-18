@@ -121,7 +121,7 @@ function evWhy(c,state){
  if(state==='supported'){
   if(m>=2)return 'heard '+m+' times in this entry';
   if(e>=1)return 'heard in this entry and in an earlier one';
-  return 'heard in this entry, at a seat the field already holds a pattern on';}
+  return 'heard in this entry, at a point the field already holds a pattern on';}
  return 'heard once in this entry';}
 
 /* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
@@ -326,7 +326,7 @@ function srcOutputV1Candidate(c,out){
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
- if(!K2BAND[v.seat])return {ok:false, why:'no seat called '+JSON.stringify(v.seat)};
+ if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
  if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
  if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
  return {ok:true};}

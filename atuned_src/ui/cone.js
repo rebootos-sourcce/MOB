@@ -2869,7 +2869,7 @@ function cnOffAxis(side){
  if(!all.length)return '';
  var cut=Math.ceil(all.length/2), half=side==='l'?all.slice(0,cut):all.slice(cut);
  if(!half.length)return '';
- return '<p class="cn-grp">Read across the field <i>no one seat, so no position</i></p>'
+ return '<p class="cn-grp">Read across the field <i>no one point, so no position</i></p>'
   +half.map(function(p){
    var c=seatCol(p.home||null), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
    var rc=(typeof recipeOf==='function')?recipeOf(p.k):null;
@@ -2879,7 +2879,7 @@ function cnOffAxis(side){
    var q=String(p.q||''); q=q.charAt(0).toUpperCase()+q.slice(1);
    return '<button type="button" class="cn-nr cn-off" data-cnpole="'+esc(p.k)+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
-    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one seat, so no position on an axis." '
+    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one point, so no position on an axis." '
     +(tip?'data-tip-k="'+esc(q)+'" data-tip="'+esc(tip)+'">':'title="Read '+esc(p.up)+', opposite '+esc(p.dn)+'">')
     +'<span class="cn-pr">'+cnOrb(p.ic,false,true)+cnOrb(p.dic,true)+'</span>'
     +'<span class="cn-tx">'
@@ -2992,13 +2992,13 @@ function cnIc(k){return '<svg class="cn-ic" viewBox="0 0 24 24" aria-hidden="tru
 const CN_OV={
  top:{nm:'Top',tip:'Look straight down on the same eight axes.',st:1},
  shells:{nm:'Registers',st:1,
-  tip:'Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.'},
+  tip:'Draw the seven assemblage points as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.'},
  flat:{nm:'Flat',tip:'Take the tilt out and look straight down on the figure.',st:1},
  reg:{nm:'Regulation',tip:'Show the three laws lifting you most and the three pulling you down most.',st:1},
  well:{nm:'Gravity well',
   tip:'Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse.'},
  heat:{nm:'Radiance',st:1,
-  tip:'Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.'},
+  tip:'Light the whole figure by its radiance. It goes dark where a point holds charge and where the field bends off your level.'},
  layers:{nm:'Layers',tip:'Show the rings the axes are stacked on.',st:1}};
 /* what is offered, and where, for the figure that is up. The same conditions
    the pills carried: a switch that changes nothing on this figure is a dead
@@ -3056,7 +3056,7 @@ function coneOvBuild(){
   c.setAttribute('aria-label',name);
   list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
  grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
- if(L.seats)grp(bar,'Seat shells',cnSeatOrbs(),'cn-seatgrp');
+ if(L.seats)grp(bar,'Point shells',cnSeatOrbs(),'cn-seatgrp');
  grp(vw,'How the path is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
  if(!L.views.length)vw.style.display='none';
  cnOvShutPaint(bar,cnOvShut());
@@ -3138,11 +3138,11 @@ function coneOpen(inTab){
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The path from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The path from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :CONE.shells
-     ?'The registers. Seven shells of light, one per seat, Root on the outside and Crown at the centre. Each address is a patch on its seat\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
+     ?'The registers. Seven shells of light, one per point, Root on the outside and Crown at the centre. Each address is a patch on its point\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
      :'The path. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
-      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
+      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a point holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that

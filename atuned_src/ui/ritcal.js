@@ -680,9 +680,9 @@ function ritSuccessHtml(st,chain){
  var held=S.then===null?''
   :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
- var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by seat, '+esc(R.nm)+'</span><ul class="rv-sbars">'
+ var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by point, '+esc(R.nm)+'</span><ul class="rv-sbars">'
   +S.bars.map(function(x){
-   return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No seat')+'</span>'
+   return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No point')+'</span>'
     +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul></div>';
  return '<section class="rv-sec rv-c rv-c-ana"><div class="rv-hd"><span class="rv-h">Success over time</span></div>'
   +'<p class="rv-mean">What you kept, over the span you pick, from a year down to today. Every figure is a count of days or minutes off your record, never a grade.</p>'

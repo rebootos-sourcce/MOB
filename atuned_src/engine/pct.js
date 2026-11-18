@@ -167,7 +167,7 @@ var PCT_KIND={
     exists to stop. This is a law mean read seat by seat, nothing a person
     committed to or carried out. */
  lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'the same laws read seat by seat, up the body'},
+             say:'the same laws read point by point, up the body'},
  /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
     you said you were gonna do or you didn't", said against done over the
     last seven days, no charge read into it. Wired in 28 October: the
@@ -230,10 +230,10 @@ var PCT_KIND={
              say:'how hard the shadow drags'},
  /* ui/map.js:202, a seat's held charge over its addresses, out of ten */
  seatload:  {lo:0, hi:1, src:'ui/map.js', find:'var load=hot.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length)/10;',
-             say:'the load a seat carries'},
+             say:'the load a point carries'},
  /* ui/map.js:203, what a seat passes on */
  pass:      {lo:0, hi:1, src:'ui/map.js', find:'pass:Math.max(0,1-load*1.35)',
-             say:'what one seat passes on'},
+             say:'what one point passes on'},
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
@@ -248,7 +248,7 @@ var PCT_KIND={
     quiz self report is the one route where a story moves it, through this
     same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
-             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
+             say:'how fully an archetype is expressed, dragged by the charge at its point'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -267,10 +267,10 @@ var PCT_KIND={
  /* charfield.js:60, how closed a seat reads on the Character page, a smooth
     step clamped to nought and one */
  closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
-             say:'how closed a seat is, the shadow at that seat'},
+             say:'how closed a point is, the shadow at that point'},
  /* charfield.js:160, closedness times a share, so never above it */
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
-             say:'how much a seat leaks'},
+             say:'how much a point leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'},

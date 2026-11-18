@@ -151,7 +151,7 @@ function ritexBuild(p,now){
  rows.forEach(function(x,j){
   var nm=p.nm+' '+x.k, steps=x.k.split('+');
   steps.forEach(function(k){if(!RIT_STEP[k])throw new Error('ritex '+nm+': '+k+' names no practice');});
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a point');
   if(x.stop!=null&&x.stop>x.back)throw new Error('ritex '+nm+': stopped before it started');
   var pr=PRACTICE.filter(function(q){return q.k===steps[0];})[0];
   var s=today-x.back, from=x.back?ritexIso(s,now):stamp;
@@ -269,7 +269,7 @@ function ritexAvatar(p,now){
  var av=avatarBlank();
  av.pairs=rows.map(function(x,j){
   var pr={be:x.be, notbe:x.notbe, seat:x.b};
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a point');
   if(!avatarValid(pr))throw new Error('ritex avatar '+p.nm+' '+j+': a pair needs both halves');
   return pr;});
  av.built=true; av.status='active';

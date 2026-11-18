@@ -2895,7 +2895,7 @@ function relGcSync(G){
   if(d<=2)r.setAttribute('data-d',String(d)); else r.removeAttribute('data-d');
   if(d===0)r.setAttribute('aria-current','true'); else r.removeAttribute('aria-current');});
  var a=document.getElementById('relgat');
- if(a)a.textContent=(RUN.grp==='seat'?'Seat ':'Story ')+(k+1)+' of '+R.length;}
+ if(a)a.textContent=(RUN.grp==='seat'?'Point ':'Story ')+(k+1)+' of '+R.length;}
 function relGcTo(G,k,smooth){
  var R=G.querySelectorAll('.rel-gi'), r=R[Math.max(0,Math.min(R.length-1,k))]; if(!r)return;
  var top=r.offsetTop+r.offsetHeight/2-G.clientHeight/2;
@@ -3243,7 +3243,7 @@ function relResults(){
     return '<div class="rel-seat" style="--c:'+seatCol(b)+'"><b>'+esc(b)+'</b>'
      +'<span class="rel-seat-w">'+s.w0.toFixed(1)+' <i aria-hidden="true">→</i> '+s.w1.toFixed(1)+'</span>'
      +((pb.bank||pb.shadow)?'<span class="rel-seat-p">'+pb.bank+' to bank, '+pb.shadow+' to shadow</span>':'')+'</div>';}).join('')
-   +'</div><div class="rel-rs-s">Weight at a seat is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
+   +'</div><div class="rel-rs-s">Weight at a point is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
  /* 4b. CQ before and after, round QQ: "I want to see my CQ improvement." Read
     off compute() after the write, against the figure read before it, so it
     is the record's own number and the same one the run counted up to. */
@@ -3253,7 +3253,7 @@ function relResults(){
   +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
-  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
+  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its point a little.')+'</div>');
  else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
@@ -3495,7 +3495,7 @@ function relRender(){
   relClosePlan();
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
-   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
+   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Point</button></span></div>'
    +relSetupCar(spent);
   /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
      October. A short allowance cut the run without a sentence. It sits under

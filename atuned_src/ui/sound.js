@@ -132,7 +132,7 @@ function bedCtx(){
  if(!BED_AC){
   try{ BED_AC=new (window.AudioContext||window.webkitAudioContext)(); }
   catch(e){ BED_DEAF=true;
-   if(typeof status==='function')status('No seat tone. This browser would not open an audio channel.','fail');
+   if(typeof status==='function')status('No point tone. This browser would not open an audio channel.','fail');
    return null;}}
  if(BED_AC.state!=='running'){
   try{ var r=BED_AC.resume(); if(r&&r.catch)r.catch(function(){}); }catch(e){}}
@@ -967,7 +967,7 @@ var ATM_MAP=[
  {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
  {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
  {kind:'Path overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
- {kind:'Path seat shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Path point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
  {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
   snd:'air', hover:true},
  {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},

@@ -190,7 +190,7 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
-  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its point and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
      +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   /* HOW IT RUNS THROUGH YOU, FROM THE RECORD. 4 November, his live reaction
@@ -338,7 +338,7 @@ function lawDrillHtml(l,o){
      mechanism: a law's seat relief scales down what is held there, so a shut
      law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
   +(!read?'Not read yet.'
-   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
+   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its point.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
@@ -391,7 +391,7 @@ function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-B
 function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
-  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'It carries the average weight of the '+s.toLowerCase()+' point it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
 function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
 function nodeDrillHtml(n,o){
@@ -603,7 +603,7 @@ function runCoreDrill(){
   +fmtPct('radiance',r.radiance)+'</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
-  +'loudest seat. The core takes its colour from the coherence ramp, so '
+  +'loudest point. The core takes its colour from the coherence ramp, so '
   +'saturation and size are coherence and nothing else.</p>'
   +gatesBlock(null);
  rdShell(h);}
@@ -688,7 +688,7 @@ function runQDrill(q){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+fmtPct('weight',r.SQm)+' mean</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, from nothing to 100%. '
    +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
-   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
+   +'<div class="pm-eye">Heaviest point</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
   h='<div class="pm-eye">Pole</div><div class="ad-nm">'+fmtPct('pole',r.poleMean)+' on average</div>'
@@ -790,11 +790,11 @@ function runFlowDrill(){
  var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
     :fmtPct('flow',f)+' reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
-  +'The seven seats pass signal in series, root upward. Each one passes a share '
-  +'and the column carries the product of all seven, so one shut seat closes '
+  +'The seven assemblage points pass signal in series, root upward. Each one passes a share '
+  +'and the column carries the product of all seven, so one shut point closes '
   +'the column whatever the six above it are doing. This is the number the Body '
   +'page draws as a channel, and where it pinches is where the work is.</p>'
-  +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
+  +'<div class="pm-eye">Point by point</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     /* one figure per row, the pass as the registry prints it; the end of
        the row said the same figure again in a second unit */
@@ -804,8 +804,8 @@ function runFlowDrill(){
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
-    +'seats above it open with them.'
-   :'No seat is holding enough to close the column.')+'</p>';
+    +'points above it open with them.'
+   :'No point is holding enough to close the column.')+'</p>';
  rdShell(h);}
 
 /* BALANCE. which way the field discharges, and what it is built from. */
@@ -993,7 +993,7 @@ function runArchDrill(a){
      down." Affinity, the soul map's lean, still orders the twelve and is
      printed nowhere (engine/archexpr.js). */
   h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Expressed <b>'
-   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its seat pulls it down, and a release lifts it.'
+   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its point pulls it down, and a release lifts it.'
    +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
  rdShell(h);}
 function runMaskDrill(m){
@@ -1010,7 +1010,7 @@ function runMaskDrill(m){
   +(own?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(own)+'</p>':kbGap())
   +'<div class="pm-eye">What a mask is</div><p class="ad-p">'
   +'A mask is not a fault and it is not a stage you failed to leave. It is a '
-  +'shape held in front of the seats it covers, and it costs what holding it '
+  +'shape held in front of the points it covers, and it costs what holding it '
   +'costs. This one sits over the '+esc(seats)+'. Its charge is '
   +'read from the story, never from a question about your age.</p>';
  var r=compute(), ring=(r.maskRing||[]).filter(function(x){return x.nm===m.nm;})[0];
@@ -1523,7 +1523,7 @@ function runAvatarDrill(){
   /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
      prompt ever asked these two questions. The Avatar page is where a pair is
      written, one seat at a time. */
-  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one point at a time. '
    +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
@@ -1547,7 +1547,7 @@ function runAvPair(i){
  if(g2){
   h+='<div class="pm-eye">Where that sits</div>'
    +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
-   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that point you read <b>'
    +fmtPct('axis',g2.at)+'</b>.</p>';
   var grp=W.filter(function(n){return n.b===g2.seat;})
    .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -1782,12 +1782,12 @@ function runCellDrill(c,rw){
   +'<div class="ad-sub">'+D.r+' cluster, '+cf.addr.toLowerCase()+'</div>'
   +'<div class="pm-eye">What the crossing does</div><p class="ad-p">'
   +(seg.length
-   ? 'This domain seats <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
+   ? 'This domain holds <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
      +cf.nm.toLowerCase()+' axis, <b>'+held.length+'</b> of them held.'
      +(affine?' This is a <b>1.3× affinity pair</b>: running '+D.r+' makes you more '
        +'susceptible here, and that multiplier is where distortion comes from.'
        :' No affinity multiplier applies to this pair.')
-   : 'No address sits at this crossing. '+D.nm+' does not seat the '+cf.nm.toLowerCase()
+   : 'No address sits at this crossing. '+D.nm+' does not reach the '+cf.nm.toLowerCase()
      +' axis, so the cell is structurally empty rather than merely clear.')+'</p>';
  if(seg.length)h+='<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +seg.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,8).map(addrRow).join('')+'</div>';

@@ -134,7 +134,10 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
    finds no entry for soul, spiritual or energy. seat points at Chakra, whose
    entry begins "A seat." */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
- {w:'seat',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
+ /* w is the word as a sentence prints it, so it follows the screen: the
+    sentences say point since 18 November ("Change seat and chakra to just
+    point"), and a w left at seat matched nothing and linked nothing. */
+ {w:'point',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
 
 /* ---------------- the templates ----------------
    src is the strongest provenance a template may carry, and a statement may be
@@ -150,26 +153,26 @@ var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},
    plus .h, used when the evidence is one record (show_uncertainty).
    @aim and @aims print DLY_AIM_WORD. */
 var DLY_TPL=[
- {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} seat carried the most weight in it.'},
- {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat on {2} separate days.'},
- {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat.'},
- {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat. In the {2} days before that, none did.'},
+ {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
+ {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
+ {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
  {id:'show.ritual.1', src:'known', k:'showing', text:'In the last {0} days you set one ritual and marked {1} done. Both counts are your own entries.'},
- {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} seat {2} times. Your avatar has a line written for that seat.'},
- {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat, where your avatar has a line written.'},
- {id:'intf.seat', src:'known', k:'interfering', text:'The {1} seat carried the most weight in {2} saved readings in the last {0} days.'},
- {id:'chg.heavy', src:'known', k:'changing', text:'The seat carrying the most weight moved from {0} on {1} to {2} on {3}.'},
+ {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} point {2} times. Your avatar has a line written for that point.'},
+ {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point, where your avatar has a line written.'},
+ {id:'intf.seat', src:'known', k:'interfering', text:'The {1} point carried the most weight in {2} saved readings in the last {0} days.'},
+ {id:'chg.heavy', src:'known', k:'changing', text:'The point carrying the most weight moved from {0} on {1} to {2} on {3}.'},
  {id:'chg.law', src:'known', k:'changing', text:'Your answer for {0} moved {1} between {2} and {3}, across {4} saved readings.'},
  {id:'chg.cq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence moved {2}.'},
  {id:'chg.cq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence stayed level.'},
  {id:'chg.dq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses moved {2}.'},
  {id:'chg.dq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses stayed level.'},
- {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} seat has {2} separate days of evidence behind it, the most of any seat.'},
+ {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} point has {2} separate days of evidence behind it, the most of any point.'},
  {id:'aim.fold', src:'known', k:'aim', text:'In the last {0} days you wrote {1} @aims and marked {2} kept, {3} partly kept, {4} not kept and {5} unknown.'},
  {id:'aim.fold.1', src:'known', k:'aim', text:'You wrote one @aim in the last {0} days, on {1}, and marked it {2}.'},
  {id:'try.avatar', src:'known', k:'try', text:'Your avatar was last reviewed on {0}. A monthly review is due.'},
@@ -256,7 +259,7 @@ function dlyRefWhy(type,id){
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
  if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
- if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
+ if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
  if(type==='history'||type==='ritualday')return isNaN(Date.parse(id))?'is not a date: '+id:null;
  if(type==='first')return null;
@@ -310,7 +313,7 @@ function dlyStValid(errs,path,x,names){
    dlyKeys(errs,p2,r,['addr','band']);
    var a=dlyInt(errs,p2+'.addr',r.addr,0,1e4);
    if(a!==null&&!BY[a]){errs.push(p2+'.addr is '+a+', which is not one of the addresses'); a=null;}
-   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a seat: '+JSON.stringify(r.band));
+   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a point: '+JSON.stringify(r.band));
    else if(a!==null)o.read.push({addr:a,band:r.band});});}
  o.links=[];
  if(x.links!==undefined&&x.links!==null){
@@ -403,7 +406,7 @@ function dlyEvValid(errs,path,x,i,days,state){
  if(T==='aim_set'){
   o.text=dlyStr(errs,path+'.text',x.text,DLY_CAP.aim);
   if(x.domain!==undefined&&x.domain!==null&&BANDS.indexOf(x.domain)<0&&PUR_SIDES.indexOf(x.domain)<0)
-   errs.push(path+'.domain is not a seat or a side: '+JSON.stringify(x.domain));
+   errs.push(path+'.domain is not a point or a side: '+JSON.stringify(x.domain));
   o.domain=(x.domain===undefined)?null:x.domain;
   if(state.set[x.sid])errs.push(path+' is a second aim for '+x.sid+', and a day has one');
   state.set[x.sid]=1;}

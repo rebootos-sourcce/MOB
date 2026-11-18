@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v169 72a28def 2026-11-18 15:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -14361,7 +14361,7 @@ const TIERDEF=[
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
   def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
-  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+  toward:'Compounding. Same point, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
@@ -14384,7 +14384,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest point first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -14402,7 +14402,7 @@ const TIERDEF=[
      rather than an instruction about the field, and it is the one band where
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
-  toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
+  toward:'Corrupt, and it is reached one address at a time. One point, one address, one line. Not a programme.'},
  /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
     name, like collapsed ... the energy wants to expand, not collapse." The
     product already says expanding and contracting for the direction a reading
@@ -14598,7 +14598,7 @@ const MIRROR=[
     open question, logged as thinking and not as a ruling. */
  {k:'IL', q:'Light', seat:'Heart',
   up:'Grace',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
-  dn:'False Light', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  dn:'Shadow', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Devotion', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
@@ -14702,7 +14702,7 @@ const BLUEPRINT=[
  {nm:'Extractive Control', d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Manipulation', d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
  {nm:'Engineered Chaos', d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
- {nm:'False Light', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
+ {nm:'Shadow', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
    Depth, governor, the pattern and where it sits in the body. The
@@ -14770,7 +14770,7 @@ const IC_NEW={
 IC_NEW['Free Flow']=IC_NEW['Krishna'];
 IC_NEW['Duty']=IC_NEW['Rama'];
 IC_NEW['Non Resistance']=IC_NEW['Lao Tzu'];
-IC_NEW['Clear Conduction']=IC_NEW['Akhenaten'];
+IC_NEW['Clarity']=IC_NEW['Akhenaten'];
 /* cold, structured extraction. the crown inverted, because that is what the
    codex calls it: order in service of control rather than governance */
 IC_NEW['Extractive Control']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
@@ -14905,7 +14905,7 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
    proposals, marked proposed, each with the text it names to check them
    against. The keys are identity and are never reused. */
 const HOME_POLES=[
- {k:'SA', q:'Light', up:'Clear Conduction', dn:'Sabotage', home:null,
+ {k:'SA', q:'Light', up:'Clarity', dn:'Sabotage', home:null,
   from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
  {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
   from:'proposed', src:'Yasna 30 and 31'},
@@ -15206,7 +15206,7 @@ const DESCENT=[
  d:'the structure gives way downward and stays down',
  content:{
   inferred:false,
-  inferenceBasis:'The family name, its one-line description and its seat at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
+  inferenceBasis:'The family name, its one-line description and its point at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
   behavior:'May show low mood, loss of interest, and fatigue that does not lift on its own, though a reanalysis of 3,703 outpatients found more than a thousand distinct symptom combinations meeting a clinical case definition of depression, so this is one picture among many rather than a fixed profile; may show a pervasive pattern of unstable mood, relationships, and self-image with impulsivity and a strong fear of abandonment, and where a depressive period sits inside this pattern specifically, a 35-study meta-analysis found it running with more anger, hostility, and self-criticism than depression on its own, though with high variation across the studies pooled, not simply a quieter version of the same low mood; may show excessive, hard-to-control worry about several areas of life most days, measured mainly through screening tools whose own factor structure is not settled in the literature. These are three different presentations, each internally variable in its own research base, and a field read as Collapse does not mean all three are present, or present at clinical severity, in any one person.',
   triggerMechanism:'A perceived loss, rejection, uncontrollable stressor, or threat to safety or belonging can start a downward move that does not find a floor. In the three named conditions this looks different (abandonment and invalidation in BPD, loss and perceived failure in depression, uncertainty and threat in anxiety disorders), but the shared shape this family tracks is charge dropping at the root and staying down rather than discharging or resolving. Where depression or anxiety sit alongside the BPD pattern, the literature ties the overlap to worse impulsivity, anger, and hopelessness rather than to one shared trigger, so the shared shape above is this family\'s own organizing idea and not a mechanism the clinical research states directly. This is a working formulation, not a universal cause, and not a substitute for an individual clinical assessment.',
   livedExample:'A person waits for a reply that does not come. The wait does not stay the size of the thing itself: it grows until it is the only thing in the room, and when the mood drops under it, the mood does not come back up once the message finally arrives.',
@@ -15304,8 +15304,8 @@ const DESCENT=[
   oppositeName:'Regulated Range', oppositeId:'opposite:Dysregulation', oppositeDefinition:'A working range that flexes with real demand and still returns to a steady middle: energy, mood and attention that rise and fall with circumstance without overshooting past function, and a felt sense of returning to baseline rather than crashing past it.',
   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
   confidence:0.5,
-  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", seat Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
-  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a seat and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
+  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", point Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
+  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a point and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
   trustBoundary:'This content, the behavioral template, the confidence number, the research sources and passes, and above all the clinical cluster name carried privately on HCX_LIB as sub ("bipolar \u00b7 ADHD", printed to nobody per engine/data/hcxcard.js\u2019s own comment) sits in the same consequential class CLAUDE.md already names for a practitioner\u2019s sight of somatic and psychological self report: it needs explicit consent, a visible list of who has sight, and revocation, never a silent default. Before a practitioner is granted sight of it, the client should be told, in plain words, that a research-informed structural correspondence exists on this pattern, that it is not a diagnosis, what it is based on, and that they can revoke the grant at any time. A practitioner who has sight of it must never state it to the client as a diagnosis of bipolar disorder or ADHD, never use the cluster name with the client at all, never treat the engine\u2019s computed presence of the pattern as sufficient evidence on its own without checking it against the falsification signs above and the client\u2019s own account, and never work the structural layer directly: DESCENT_REFER\u2019s own line already holds for this entry exactly as it holds for the other four, work at the address, say plainly that the structural layer is not worked here, and refer to a licensed clinician alongside, not instead.',
   reviewStatus:'external-research-pass-A-done, external-research-pass-B-done, external-research-pass-C-done, external-research-pass-D-done. All four passes complete; this is the final draft for human review, not yet written to any file. Pass D traced the tie into the real engine and confirmed no fabricated edge, named concrete falsification signs, and stated the consent and trust boundary, but it did not resolve, and explicitly hands to the owner, whether the bipolar-ADHD bundle should be one hyper complex or two, and whether this entry belongs in the malignancy-gated DESCENT table at all rather than an ungated surface like HCXCARD.dysregulation, which already exists with equivalent content and no clinical name. That placement call, not a research pass, is what would move confidence or kind. Confidence is left at 0.5, unmoved, consistent with passes A through C.',
   researchSources:['https://www.nimh.nih.gov/health/topics/bipolar-disorder','https://www.nimh.nih.gov/health/topics/attention-deficit-hyperactivity-disorder-adhd','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9567078/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9403243/','https://pubmed.ncbi.nlm.nih.gov/25406047/','https://pubmed.ncbi.nlm.nih.gov/33515607/','https://pubmed.ncbi.nlm.nih.gov/21278822/','https://pmc.ncbi.nlm.nih.gov/articles/PMC7027938','https://pubmed.ncbi.nlm.nih.gov/31792363/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9464828/','https://core-prod.cambridgecore.org/core/services/aop-cambridge-core/content/view/A87DE2F2846B9019656A97ECA842B901/S003329172300243Xa.pdf/emotion_dysregulation_in_bipolar_disorder_compared_to_other_mental_illnesses_a_systematic_review_and_metaanalysis.pdf','https://pmc.ncbi.nlm.nih.gov/articles/4282137','https://www.ajmc.com/view/emotional-dysregulation-and-executive-dysfunction-in-patients-with-adhd-and-bipolar-disorder','https://eprints.whiterose.ac.uk/id/eprint/183369/1/Attention-DeficitHyperactivity%20Disorder%20Predominantly%20Inattentive%20SubtypePresentation%20Research%20Progress%20and%20Translational%20St.pdf','https://chadd.org/about-adhd/adhd-quick-facts-adhd-presentations/','https://www.nature.com/articles/s41398-021-01666-3','https://resolve.cambridge.org/core/journals/european-psychiatry/article/does-temperamental-instability-support-a-continuity-between-bipolar-ii-disorder-and-major-depressive-disorder/CC0750BAF0C64183F751504434175FCA','https://cambridge.org/core/journals/european-psychiatry/article/does-bipolar-disorder-differ-from-other-mental-illnesses-in-terms-of-emotion-dysregulation-a-systematic-review-and-metaanalysis/BA6413AA6D21BF1035E53E02EEE14E04','https://archive-ouverte.unige.ch/unige:89042'],
@@ -15801,7 +15801,7 @@ var PRACTICE=[
   how:'Visualise your parents and grandparents. Identify what you took on from each. For '
    +'every pattern, decide: keep, transform, or release. Then run the release on the ones '
    +'you named.'},
- {k:'chakra', nm:'Individual Chakra Meditation', track:'Energy', min:20, tier:3,
+ {k:'chakra', nm:'Individual Point Meditation', track:'Energy', min:20, tier:3,
   d:'One band at a time. Five minutes of breath, ten of visualisation.',
   how:'Choose the band carrying the most. Five minutes of breath to ground. Then hold a '
    +'coloured sphere at that nerve plexus for ten to fifteen minutes. One band per sitting.'},
@@ -16098,7 +16098,7 @@ try{window.__at&&window.__at('engine/data/practice.js');}catch(e){}
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', q:'Light', opp:'False Light', draft:true,
+ {k:'IL', q:'Light', opp:'Shadow', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',
@@ -17036,7 +17036,7 @@ try{window.__at&&window.__at('engine/data/zones.js');}catch(e){}
    nerve context, not the individual patterns, and this file
    does not invent what the source does not hold.
    ============================================================ */
-const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival charge is stored here, in the nerves at the base of the spine, because the body's first question, am I safe?, runs through its lowest nerves. Not having enough, getting hurt and being pushed out of the group all land here. Of the patterns released here, about 28 in every 100 have had their opposite installed, the most of any seat. This layer is on the move.","sub":[["Survival Fear",193,93],["Physical Body",114,2],["Financial Scarcity",82,0],["Tribal / Family",63,1],["Shelter / Stability",18,34]]},{"b":"Sacral","nv":"Sacral Plexus (S1-S3) / Hypogastric","d":"Making things and wanting things are stored here, in the nerves of the lower belly and pelvis, because these are the body's making nerves. Holding back what you want to make is a charge here, and these nerves fire every time you stop yourself. Only about 3 in every 100 patterns released here have had their opposite installed, the fewest of any seat. The charge from holding back runs deeper here than anywhere else.","sub":[["Creativity Suppression",211,7],["Emotional Flow",197,5],["Pleasure / Guilt",135,1],["Sexual Identity",64,1],["Relationships / Intimacy",13,2]]},{"b":"Solar","nv":"Solar / Celiac Plexus (T5-T12)","d":"The solar plexus, behind your stomach, is the most complex bundle of nerves outside the brain that runs without you thinking about it. Power, self-worth, shame and will are all stored here, because this is where the body works out where it stands with the world. The gut feeling of \"can I handle this?\" comes from here. About a third of every pattern in the catalog sits at this seat. Every big saboteur group in the catalog has its root address here.","sub":[["Self-Worth / Inadequacy",366,56],["Willpower / Giving Up",330,1],["Power / Powerlessness",124,16],["Control / Chaos",118,6],["Anger / Rage",111,1],["Shame / Humiliation",92,1],["Responsibility Avoidance",68,5]]},{"b":"Heart","nv":"Cardiac Plexus / Vagus (T1-T4)","d":"The nerves around the heart take in branches of the vagus nerve, which carry news about other people up from the gut. Grief, love, being left and forgiving are stored here, because the heart carries what happens between you and other people through its nerves. About 15 in every 100 patterns released here have had their opposite installed, second only to the root. When heart patterns clear, their opposites install well.","sub":[["Love / Fear of Love",122,11],["Forgiveness",84,7],["Connection / Isolation",25,16],["Abandonment / Rejection",23,2],["Grief / Loss",14,3]]},{"b":"Throat","nv":"Pharyngeal / Cervical Plexus (C1-C4)","d":"The nerves in your neck run the parts you speak with. Holding your voice back is a charge in those nerves, a real tightening around your throat and mouth, laid down every time you were shut up, shamed for speaking or punished for having a voice. Voice suppression alone is 405 patterns, far more than anything else at the throat. It is not about confidence. It is the nerves at the top of your neck firing the moment you go to speak.","sub":[["Voice Suppression",405,5],["Self-Expression Blocks",38,26],["Public Speaking / Visibility",32,6],["Judgement Fear",17,0]]},{"b":"3rd Eye","nv":"Optic / Trigeminal / Cranial Nerves (CN II, V)","d":"The trigeminal nerve is the biggest nerve in the head, and it links into the nerves you see with. Being stuck on a choice, or not knowing which way to go, is not a thinking problem. It is a charge in those nerves that fires just as you are about to pick a direction. Vision and direction carry 123 patterns, more than anything else here. The charge that stops you seeing your next step has an exact address in a nerve of the head.","sub":[["Vision / Direction",123,9],["Perception / Reality",69,1],["Decision Paralysis",23,6],["Intuition Denial",17,2],["Overthinking / Mental Loops",9,0]]},{"b":"Crown","nv":"Pineal / Reticular Formation / Cranial Convergence","d":"Every sentence that starts with I am is stored at the crown, because this is where all the nerves of the head meet. Every belief about who you are, and every story that keeps you small, runs through the pineal gland and a net of nerves in the brainstem. The crown is not a spiritual place. It is a meeting point of nerves. There are 196 identity patterns here, each one an I am sentence that keeps you small, fired by the nerves like a command.","sub":[["Identity / I Am",196,17],["Existential Despair",106,9],["God / Source",56,1],["Surrender / Trust",14,4],["Purpose / Mission",14,0],["Ascension / Awakening",2,1]]}];
+const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival charge is stored here, in the nerves at the base of the spine, because the body's first question, am I safe?, runs through its lowest nerves. Not having enough, getting hurt and being pushed out of the group all land here. Of the patterns released here, about 28 in every 100 have had their opposite installed, the most of any point. This layer is on the move.","sub":[["Survival Fear",193,93],["Physical Body",114,2],["Financial Scarcity",82,0],["Tribal / Family",63,1],["Shelter / Stability",18,34]]},{"b":"Sacral","nv":"Sacral Plexus (S1-S3) / Hypogastric","d":"Making things and wanting things are stored here, in the nerves of the lower belly and pelvis, because these are the body's making nerves. Holding back what you want to make is a charge here, and these nerves fire every time you stop yourself. Only about 3 in every 100 patterns released here have had their opposite installed, the fewest of any point. The charge from holding back runs deeper here than anywhere else.","sub":[["Creativity Suppression",211,7],["Emotional Flow",197,5],["Pleasure / Guilt",135,1],["Sexual Identity",64,1],["Relationships / Intimacy",13,2]]},{"b":"Solar","nv":"Solar / Celiac Plexus (T5-T12)","d":"The solar plexus, behind your stomach, is the most complex bundle of nerves outside the brain that runs without you thinking about it. Power, self-worth, shame and will are all stored here, because this is where the body works out where it stands with the world. The gut feeling of \"can I handle this?\" comes from here. About a third of every pattern in the catalog sits at this point. Every big saboteur group in the catalog has its root address here.","sub":[["Self-Worth / Inadequacy",366,56],["Willpower / Giving Up",330,1],["Power / Powerlessness",124,16],["Control / Chaos",118,6],["Anger / Rage",111,1],["Shame / Humiliation",92,1],["Responsibility Avoidance",68,5]]},{"b":"Heart","nv":"Cardiac Plexus / Vagus (T1-T4)","d":"The nerves around the heart take in branches of the vagus nerve, which carry news about other people up from the gut. Grief, love, being left and forgiving are stored here, because the heart carries what happens between you and other people through its nerves. About 15 in every 100 patterns released here have had their opposite installed, second only to the root. When heart patterns clear, their opposites install well.","sub":[["Love / Fear of Love",122,11],["Forgiveness",84,7],["Connection / Isolation",25,16],["Abandonment / Rejection",23,2],["Grief / Loss",14,3]]},{"b":"Throat","nv":"Pharyngeal / Cervical Plexus (C1-C4)","d":"The nerves in your neck run the parts you speak with. Holding your voice back is a charge in those nerves, a real tightening around your throat and mouth, laid down every time you were shut up, shamed for speaking or punished for having a voice. Voice suppression alone is 405 patterns, far more than anything else at the throat. It is not about confidence. It is the nerves at the top of your neck firing the moment you go to speak.","sub":[["Voice Suppression",405,5],["Self-Expression Blocks",38,26],["Public Speaking / Visibility",32,6],["Judgement Fear",17,0]]},{"b":"3rd Eye","nv":"Optic / Trigeminal / Cranial Nerves (CN II, V)","d":"The trigeminal nerve is the biggest nerve in the head, and it links into the nerves you see with. Being stuck on a choice, or not knowing which way to go, is not a thinking problem. It is a charge in those nerves that fires just as you are about to pick a direction. Vision and direction carry 123 patterns, more than anything else here. The charge that stops you seeing your next step has an exact address in a nerve of the head.","sub":[["Vision / Direction",123,9],["Perception / Reality",69,1],["Decision Paralysis",23,6],["Intuition Denial",17,2],["Overthinking / Mental Loops",9,0]]},{"b":"Crown","nv":"Pineal / Reticular Formation / Cranial Convergence","d":"Every sentence that starts with I am is stored at the crown, because this is where all the nerves of the head meet. Every belief about who you are, and every story that keeps you small, runs through the pineal gland and a net of nerves in the brainstem. The crown is not a spiritual place. It is a meeting point of nerves. There are 196 identity patterns here, each one an I am sentence that keeps you small, fired by the nerves like a command.","sub":[["Identity / I Am",196,17],["Existential Despair",106,9],["God / Source",56,1],["Surrender / Trust",14,4],["Purpose / Mission",14,0],["Ascension / Awakening",2,1]]}];
 const APC_REL=3688, APC_EMB=358;
 
 try{window.__at&&window.__at('engine/data/catalog.js');}catch(e){}
@@ -18174,25 +18174,25 @@ var UNPACK_BASE={
  'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
 
  /* THE SEATS */
- 'seat':'A seat is one of seven places along the middle of your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
- 'assemblage point':'An assemblage point is a seat: one of seven places along the middle of your body where the instrument reads what is held.',
- 'seat:root':'Root is the seat at the base of the spine, and it holds what you stand on.',
- 'seat:sacral':'Sacral is the seat in the lower belly, and it holds what you want.',
- 'seat:solar':'Solar is the seat in the upper belly behind the stomach, and it holds what you carry.',
- 'seat:heart':'Heart is the seat in the middle of the chest, and it holds what you give.',
- 'seat:throat':'Throat is the seat at the neck, and it holds what you say.',
- 'seat:3rd eye':'The 3rd Eye is the seat in the forehead, and it holds what you see.',
- 'seat:crown':'Crown is the seat at the top of the head, and it holds what you belong to.',
+ 'seat':'An assemblage point, or point, is one of seven places along your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point, or point, is one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat:root':'Root is the point at the base of the spine, and it holds what you stand on.',
+ 'seat:sacral':'Sacral is the point in the lower belly, and it holds what you want.',
+ 'seat:solar':'Solar is the point in the upper belly behind the stomach, and it holds what you carry.',
+ 'seat:heart':'Heart is the point in the middle of the chest, and it holds what you give.',
+ 'seat:throat':'Throat is the point at the neck, and it holds what you say.',
+ 'seat:3rd eye':'The 3rd Eye is the point in the forehead, and it holds what you see.',
+ 'seat:crown':'Crown is the point at the top of the head, and it holds what you belong to.',
 
  /* THE SEATS IN THE YOGA TRADITION, which is where the Eastern lens takes its
     names. The name, the element and the seed sound are that tradition's own. */
- 'yoga:root':'In the yoga tradition the root seat is called Muladhara, its element is earth and its seed sound is Lam.',
- 'yoga:sacral':'In the yoga tradition the sacral seat is called Svadhisthana, its element is water and its seed sound is Vam.',
- 'yoga:solar':'In the yoga tradition the solar seat is called Manipura, its element is fire and its seed sound is Ram.',
- 'yoga:heart':'In the yoga tradition the heart seat is called Anahata, its element is air and its seed sound is Yam.',
- 'yoga:throat':'In the yoga tradition the throat seat is called Vishuddha, its element is ether and its seed sound is Ham.',
- 'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
- 'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
+ 'yoga:root':'In the yoga tradition the root point is called Muladhara, its element is earth and its seed sound is Lam.',
+ 'yoga:sacral':'In the yoga tradition the sacral point is called Svadhisthana, its element is water and its seed sound is Vam.',
+ 'yoga:solar':'In the yoga tradition the solar point is called Manipura, its element is fire and its seed sound is Ram.',
+ 'yoga:heart':'In the yoga tradition the heart point is called Anahata, its element is air and its seed sound is Yam.',
+ 'yoga:throat':'In the yoga tradition the throat point is called Vishuddha, its element is ether and its seed sound is Ham.',
+ 'yoga:3rd eye':'In the yoga tradition the 3rd Eye point is called Ajna, its element is light and its seed sound is Om.',
+ 'yoga:crown':'In the yoga tradition the crown point is called Sahasrara, its element is thought and its seed is silence.',
 
  /* THE SEAT'S NERVES, TONE AND PAGE, AX8, closed 2 October. Two drills, the
     Field shelf's seat answer (ui/mapshelf.js runSeatFlowDrill) and the seat
@@ -18210,8 +18210,8 @@ var UNPACK_BASE={
     explains so the two cannot drift. The hz is a sound healing choice and
     the sentence says whose. */
  'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
- 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this seat its note, so nothing in your body is measured to get it.',
- 'codex page':'The codex is the book this instrument is built on, and this number is the page this seat comes from.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this point its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this point comes from.',
  /* Two of the seven places a seat is found on the skin are anatomy words,
     printed on the same two lines. The other five are already plain. */
  'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
@@ -18247,7 +18247,7 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
+ 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of points.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -18279,7 +18279,7 @@ var UNPACK_BASE={
  'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
  'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
- 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each point passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
  'rail:positive':'Positive is charge you hold that is not costing you anything.',
  'rail:negative':'Negative is charge you hold that is taking something from you.',
@@ -18325,7 +18325,7 @@ var UNPACK_BASE={
  'practised':'Practised counts the rituals on your record that were done.',
  'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
  'from your words':'From your words means a feeling word you wrote names this pattern.',
- 'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
+ 'from the seat':'From the point means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
@@ -19184,7 +19184,7 @@ const CODE_SOURCES=[
 
 const CODE_KINDS=[
  ['saboteur','a named saboteur, by its SABDEF code'],
- ['cluster','an inferred saboteur: two or more addresses in one seat carrying one child emotion, or the cross seat leftovers of one emotion'],
+ ['cluster','an inferred saboteur: two or more addresses in one point carrying one child emotion, or the cross point leftovers of one emotion'],
  ['overshot','a saboteur or cluster read past the point where it serves'],
  ['family','a hyper-complex family of HCX_LIB'],
  ['pole','a family done past the point where it helps, from FAM_POLE'],
@@ -19701,7 +19701,7 @@ var PCT_KIND={
     exists to stop. This is a law mean read seat by seat, nothing a person
     committed to or carried out. */
  lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'the same laws read seat by seat, up the body'},
+             say:'the same laws read point by point, up the body'},
  /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
     you said you were gonna do or you didn't", said against done over the
     last seven days, no charge read into it. Wired in 28 October: the
@@ -19764,10 +19764,10 @@ var PCT_KIND={
              say:'how hard the shadow drags'},
  /* ui/map.js:202, a seat's held charge over its addresses, out of ten */
  seatload:  {lo:0, hi:1, src:'ui/map.js', find:'var load=hot.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length)/10;',
-             say:'the load a seat carries'},
+             say:'the load a point carries'},
  /* ui/map.js:203, what a seat passes on */
  pass:      {lo:0, hi:1, src:'ui/map.js', find:'pass:Math.max(0,1-load*1.35)',
-             say:'what one seat passes on'},
+             say:'what one point passes on'},
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
@@ -19782,7 +19782,7 @@ var PCT_KIND={
     quiz self report is the one route where a story moves it, through this
     same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
-             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
+             say:'how fully an archetype is expressed, dragged by the charge at its point'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -19801,10 +19801,10 @@ var PCT_KIND={
  /* charfield.js:60, how closed a seat reads on the Character page, a smooth
     step clamped to nought and one */
  closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
-             say:'how closed a seat is, the shadow at that seat'},
+             say:'how closed a point is, the shadow at that point'},
  /* charfield.js:160, closedness times a share, so never above it */
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
-             say:'how much a seat leaks'},
+             say:'how much a point leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'},
@@ -21191,7 +21191,7 @@ function lexKeyOk(k){
 function lexRefuse(k,seat,amt,fet){
  var errs=[];
  if(!lexKeyOk(k)) errs.push('the key '+JSON.stringify(k)+' is not a form the scanner can ever match');
- if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the seat '+seat+', which is not one of the '+LEX_SEATS.length);
+ if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the point '+seat+', which is not one of the '+LEX_SEATS.length);
  if(typeof amt!=='number'||amt!==Math.round(amt)||amt===0||Math.abs(amt)>LEX_AMT_MAX)
   errs.push(k+' carries the amount '+amt+', and an amount is a non zero integer no further than '+LEX_AMT_MAX+' from zero');
  if((amt<0)!==(seat==='coherent'))
@@ -21660,7 +21660,7 @@ var LEXSYN_NO={
  broken:'the printer is broken. read only as broken hearted',
  killed:'killed it at the gym, the cold killed the plants',
  attacked:'felt attacked in an argument is defensive anger, not the root',
- shattered:'exhausted in one country and devastated in another, two seats',
+ shattered:'exhausted in one country and devastated in another, two points',
  sorry:'said a hundred times a day for nothing',
  hate:'i hate mondays. read only as hate myself',
  sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
@@ -21695,7 +21695,7 @@ var LEXSYN_NO={
  stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
  'over and over':'pressing a button over and over. read only as keep going over',
  'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
- 'stabbed in the back':'carries back, which the place rule refuses to seat, so the key could seat a refused place',
+ 'stabbed in the back':'carries back, which the place rule refuses to place, so the key could place a refused place',
  ill:'is i will once the apostrophe is gone, so it can never be a key'};
 
 /* run the pass. Headwords are resolved against the table as it stands after
@@ -21737,7 +21737,7 @@ function lexSyn(places){
   var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
   var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
   var badp=pw.filter(function(w){return places.seat[w]!==seat;});
-  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table seats at '+(places.seat[badp[0]]||'no seat')+' and not '+seat);return;}
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table places at '+(places.seat[badp[0]]||'no point')+' and not '+seat);return;}
   if(inLex){
    /* through the same boundary as every other entry. It cannot refuse here:
       the key was checked above and every other value is copied off an entry
@@ -24091,7 +24091,7 @@ const SIGHT=[
  {k:'sup', nm:'super complexes', need:'three', layer:true,
   what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
-  what:'How far the Kundalini has risen up your seven seats.'},
+  what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
   what:'The registers, your point cloud: where each pattern sits on the path.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
@@ -26375,7 +26375,7 @@ function traceFromRecord(p,intents,reading){
   im.forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]){
     g.gaps.push({kind:'unplaced', story:sk, seat:x.band||null, fetter:x.fetter||null,
-     why:'the reading seated charge at the '+(x.band||'unknown seat')+' and named no address'});
+     why:'the reading seated charge at the '+(x.band||'unknown point')+' and named no address'});
     return;}
    var k=String(x.node);
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
@@ -26413,7 +26413,7 @@ function traceFromRecord(p,intents,reading){
    var b=by[k];
    edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
     why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
-     :'the seat was read and the address was chosen by the fallback, not by the words'});});
+     :'the point was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
  /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.
@@ -27785,7 +27785,7 @@ function vRitual(errs,i,x){
  q.band='';
  if(x.band!==undefined&&x.band!==''){
   if(BANDS.indexOf(x.band)>=0)q.band=x.band;
-  else errs.push(path+'.band is not a seat: '+x.band);}
+  else errs.push(path+'.band is not a point: '+x.band);}
  /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
     cannot find, so an unnamed step reads on the surface as a ritual with fewer
     steps than it was saved with. A list longer than the library is not a
@@ -27917,14 +27917,14 @@ var ENT_VERDICT_KEYS=['seat','v','fix'];
 function vEntryVerdicts(errs,path,x){
  if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
  if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
-  +evKeptMax()+' seats there are'); return null;}
+  +evKeptMax()+' points there are'); return null;}
  var bad=errs.length, out=[], seen={};
  x.forEach(function(r,j){
   var rp=path+'['+j+']';
   if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
   var b0=errs.length;
   vKeys(errs,rp,r,ENT_VERDICT_KEYS);
-  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no point: '+r.seat);
   else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
   if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
   var q={seat:r.seat, v:r.v};
@@ -27968,7 +27968,7 @@ function vEntry(errs,i,x){
   if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
    errs.push(path+'.bands is not an object');
   else Object.keys(x.bands).forEach(function(k){
-   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   if(!K2BAND[k]){errs.push(path+'.bands names no point: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
  /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
@@ -27989,7 +27989,7 @@ function vEntry(errs,i,x){
   if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
   else if(x.asked.length>srcAskedMax())
    errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
-    +srcAskedMax()+' kinds and seats there are');
+    +srcAskedMax()+' kinds and points there are');
   else{
    var ak=[];
    x.asked.forEach(function(r,j){
@@ -27999,7 +27999,7 @@ function vEntry(errs,i,x){
     Object.keys(r).forEach(function(k){
      if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
     if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
-    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no point: '+r.seat);bad++;}
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
@@ -28375,7 +28375,7 @@ function validateProfile(o,ctx){
     .map(function(x){var q={be:x.be, notbe:x.notbe};
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
-      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+      else errs.push('avatar.pairs point '+JSON.stringify(x.seat)+' is not a point');}
      /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
         it is something else, because a weight kept against a pair is found by
         it. Missing is an older pair and is given one below. */
@@ -28433,7 +28433,7 @@ function validateProfile(o,ctx){
   if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
    if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
    else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
-    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a point'); return;}
     if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
     var q={add:[],off:[]}, bad=false;
     ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
@@ -30474,7 +30474,7 @@ function prField(errs,path,v,f){
    if(typeof v!=='string'||!RIT_STEP[v]){errs.push(path+' names no practice in the library: '+JSON.stringify(v)); return null;}
    return v;
   case 'seat':
-   if(BANDS.indexOf(v)<0){errs.push(path+' is not a seat: '+JSON.stringify(v)); return null;}
+   if(BANDS.indexOf(v)<0){errs.push(path+' is not a point: '+JSON.stringify(v)); return null;}
    return v;
   case 'list':{
    if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}
@@ -32579,7 +32579,7 @@ function codexRows(ws,wide){
  CHILD.forEach(function(c){
   if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
  if(wide)APC.forEach(function(r){
-  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' point, '+r.nv;});
  return out;}
 function somaPlaces(){
  var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
@@ -32604,12 +32604,12 @@ function somaPlaces(){
     +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
    else out.unseated.push(w);
    return;}
-  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  if(sk.length>1){out.refused[w]='the lexicon places it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
    return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
   if(veto.length){out.refused[w]='the codex holds '+veto[0].nm+' at the '+veto[0].loc
-   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+   +', which is the '+veto[0].seat+' point and not '+sk[0];return;}
   out.seat[w]=sk[0];});
  /* the two word places. A half and a place: the owner's ruling, checked
     against the codex wherever the codex says the same words. */
@@ -34005,7 +34005,7 @@ function lexComposite(){
   if(LEX[k])return;
   var a=lexAdd(k,out.seat,out.amt,'Anger',
    {src:'composite',from:'the seated members of LEXCOMP',
-    rule:'unanimous seat, family floor',cite:'canon'});
+    rule:'unanimous point, family floor',cite:'canon'});
   if(a.ok&&!a.already)out.added++;
   else out.unseated.push(k);});
  return out;}
@@ -34301,7 +34301,7 @@ function sniffAxes(p){
   shadow[im.fetter]+=im.amt;
   (cited[im.fetter]=cited[im.fetter]||[]).push(
    im.stated?'the text named '+im.fetter.toLowerCase():
-   im.inferred?'read from the '+im.band+' seat, no address named':
+   im.inferred?'read from the '+im.band+' point, no address named':
    'at '+im.name);});
  /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
     reason this block exists rather than trusting the imprints alone.
@@ -34327,7 +34327,7 @@ function sniffAxes(p){
   if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
   shadow[h.fet]+=Math.abs(h.amt||0)/3;
   (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
-   ', and its seat is shared with another axis so the imprint layer dropped it');});
+   ', and its point is shared with another axis so the imprint layer dropped it');});
  /* the composite. resentment is anger that has stopped moving, so it splits. */
  p.hits.forEach(function(h){
   var comp=LEXCOMP[h.t];
@@ -35592,7 +35592,7 @@ function evWhy(c,state){
  if(state==='supported'){
   if(m>=2)return 'heard '+m+' times in this entry';
   if(e>=1)return 'heard in this entry and in an earlier one';
-  return 'heard in this entry, at a seat the field already holds a pattern on';}
+  return 'heard in this entry, at a point the field already holds a pattern on';}
  return 'heard once in this entry';}
 
 /* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
@@ -35797,7 +35797,7 @@ function srcOutputV1Candidate(c,out){
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
- if(!K2BAND[v.seat])return {ok:false, why:'no seat called '+JSON.stringify(v.seat)};
+ if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
  if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
  if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
  return {ok:true};}
@@ -36416,7 +36416,7 @@ function srcVet(cand,ctx){
   !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':
   (!okWhere?('says where it lands, '+where.join(', ')+', about a claim the person has not confirmed, held as '+claim.state):
   (!okAgain?('says '+(says.join(', ')||cand.family)+' about a claim held only as '+claim.state):
-  'asks about history before the seat has come back across entries')));
+  'asks about history before the point has come back across entries')));
 
  /* 8 REDUCES UNCERTAINTY. It must say what it is for, and not ask what the
     entry already answers while something else is still open. */
@@ -38541,7 +38541,10 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
    finds no entry for soul, spiritual or energy. seat points at Chakra, whose
    entry begins "A seat." */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
- {w:'seat',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
+ /* w is the word as a sentence prints it, so it follows the screen: the
+    sentences say point since 18 November ("Change seat and chakra to just
+    point"), and a w left at seat matched nothing and linked nothing. */
+ {w:'point',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
 
 /* ---------------- the templates ----------------
    src is the strongest provenance a template may carry, and a statement may be
@@ -38557,26 +38560,26 @@ var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},
    plus .h, used when the evidence is one record (show_uncertainty).
    @aim and @aims print DLY_AIM_WORD. */
 var DLY_TPL=[
- {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} seat carried the most weight in it.'},
- {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat on {2} separate days.'},
- {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat.'},
- {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat. In the {2} days before that, none did.'},
+ {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
+ {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
+ {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
  {id:'show.ritual.1', src:'known', k:'showing', text:'In the last {0} days you set one ritual and marked {1} done. Both counts are your own entries.'},
- {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} seat {2} times. Your avatar has a line written for that seat.'},
- {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat, where your avatar has a line written.'},
- {id:'intf.seat', src:'known', k:'interfering', text:'The {1} seat carried the most weight in {2} saved readings in the last {0} days.'},
- {id:'chg.heavy', src:'known', k:'changing', text:'The seat carrying the most weight moved from {0} on {1} to {2} on {3}.'},
+ {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} point {2} times. Your avatar has a line written for that point.'},
+ {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point, where your avatar has a line written.'},
+ {id:'intf.seat', src:'known', k:'interfering', text:'The {1} point carried the most weight in {2} saved readings in the last {0} days.'},
+ {id:'chg.heavy', src:'known', k:'changing', text:'The point carrying the most weight moved from {0} on {1} to {2} on {3}.'},
  {id:'chg.law', src:'known', k:'changing', text:'Your answer for {0} moved {1} between {2} and {3}, across {4} saved readings.'},
  {id:'chg.cq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence moved {2}.'},
  {id:'chg.cq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence stayed level.'},
  {id:'chg.dq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses moved {2}.'},
  {id:'chg.dq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses stayed level.'},
- {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} seat has {2} separate days of evidence behind it, the most of any seat.'},
+ {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} point has {2} separate days of evidence behind it, the most of any point.'},
  {id:'aim.fold', src:'known', k:'aim', text:'In the last {0} days you wrote {1} @aims and marked {2} kept, {3} partly kept, {4} not kept and {5} unknown.'},
  {id:'aim.fold.1', src:'known', k:'aim', text:'You wrote one @aim in the last {0} days, on {1}, and marked it {2}.'},
  {id:'try.avatar', src:'known', k:'try', text:'Your avatar was last reviewed on {0}. A monthly review is due.'},
@@ -38663,7 +38666,7 @@ function dlyRefWhy(type,id){
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
  if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
- if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
+ if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
  if(type==='history'||type==='ritualday')return isNaN(Date.parse(id))?'is not a date: '+id:null;
  if(type==='first')return null;
@@ -38717,7 +38720,7 @@ function dlyStValid(errs,path,x,names){
    dlyKeys(errs,p2,r,['addr','band']);
    var a=dlyInt(errs,p2+'.addr',r.addr,0,1e4);
    if(a!==null&&!BY[a]){errs.push(p2+'.addr is '+a+', which is not one of the addresses'); a=null;}
-   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a seat: '+JSON.stringify(r.band));
+   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a point: '+JSON.stringify(r.band));
    else if(a!==null)o.read.push({addr:a,band:r.band});});}
  o.links=[];
  if(x.links!==undefined&&x.links!==null){
@@ -38810,7 +38813,7 @@ function dlyEvValid(errs,path,x,i,days,state){
  if(T==='aim_set'){
   o.text=dlyStr(errs,path+'.text',x.text,DLY_CAP.aim);
   if(x.domain!==undefined&&x.domain!==null&&BANDS.indexOf(x.domain)<0&&PUR_SIDES.indexOf(x.domain)<0)
-   errs.push(path+'.domain is not a seat or a side: '+JSON.stringify(x.domain));
+   errs.push(path+'.domain is not a point or a side: '+JSON.stringify(x.domain));
   o.domain=(x.domain===undefined)?null:x.domain;
   if(state.set[x.sid])errs.push(path+' is a second aim for '+x.sid+', and a day has one');
   state.set[x.sid]=1;}
@@ -40288,10 +40291,10 @@ function codesCheckInto(t,out){
    return !n||n.cf!==e.emotion||(e.seat!==null&&n.b!==e.seat);});
   if(off.length)no('the inferred '+s.nm+' is coded '+c+', and its addresses '+off.join(', ')+' do not carry '
    +e.emotion+(e.seat?' in the '+e.seat:''));
-  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one seat')+', and its code '+c+' says otherwise');});
- t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the seat '+b+', so its clusters have no code');});
- dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two seats the key '+k);});
- if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a seat diffuse, the word the cross seat clusters take');
+  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one point')+', and its code '+c+' says otherwise');});
+ t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the point '+b+', so its clusters have no code');});
+ dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two points the key '+k);});
+ if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a point diffuse, the word the cross point clusters take');
  dupes(t.CODE_EMOTION.map(function(e){return codeKey(t.INFER_NOUN[e]||e);})).forEach(function(n){
   no('INFER_NOUN gives two emotions the noun '+n+', so one cluster name would mean two');});
 
@@ -40520,9 +40523,9 @@ const REG_MAP=[
  ['registers.complexes','mob',['CODE_STRUCT'],'coded here and never stored. compute() pairs two saboteurs of one family, and some of these sit across two or three'],
  ['registers.hyper_complexes','mob',['CODE_STRUCT','HCX_LIB'],'coded here. By the family arithmetic here, most of them land a rung higher, as a super complex'],
  ['registers.amplifiers','ported',['AMPLIFIER'],'no table here had them. The nerve is read off NODES'],
- ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two seats, ARCH18 one of each, and the pairings differ'],
+ ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two points, ARCH18 one of each, and the pairings differ'],
  ['registers.jungian','mob',['ARCH'],'canon.json has Orphan, Outlaw and Caretaker where ARCH has Everyman, Rebel and Caregiver'],
- ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in seats'],
+ ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in points'],
  ['registers.axes','mob',['VERP'],'its axes are the six gates here, taken in pairs. Here the word axes means the nine child emotions'],
  ['registers.domains','mob',['DOMAINS','DOMDEF'],'canon.json files its domains in four families and has no Provision, and DOMAINS and DOMDEF name four of them two ways'],
  ['registers.laws','mob',['SI','HARM'],'canon.json numbers its laws another way, in four groups, and names some of them otherwise'],
@@ -41683,7 +41686,7 @@ function ritexBuild(p,now){
  rows.forEach(function(x,j){
   var nm=p.nm+' '+x.k, steps=x.k.split('+');
   steps.forEach(function(k){if(!RIT_STEP[k])throw new Error('ritex '+nm+': '+k+' names no practice');});
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a point');
   if(x.stop!=null&&x.stop>x.back)throw new Error('ritex '+nm+': stopped before it started');
   var pr=PRACTICE.filter(function(q){return q.k===steps[0];})[0];
   var s=today-x.back, from=x.back?ritexIso(s,now):stamp;
@@ -41801,7 +41804,7 @@ function ritexAvatar(p,now){
  var av=avatarBlank();
  av.pairs=rows.map(function(x,j){
   var pr={be:x.be, notbe:x.notbe, seat:x.b};
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a point');
   if(!avatarValid(pr))throw new Error('ritex avatar '+p.nm+' '+j+': a pair needs both halves');
   return pr;});
  av.built=true; av.status='active';
@@ -43137,7 +43140,7 @@ function rbRow(q,nm,pct,raw,o){
   if(read)sv=o.cells.map(cl);
   var bl=read?rbBlock(sv,o.held):-1;
   if(read)sub='<em class="rb-sub'+(bl<0?'':' bk')+'"'+(bl<0?'':' style="--bc:'+seatCol(BANDS[bl])+'"')+'>'
-   +(bl<0?'no seat blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
+   +(bl<0?'no point blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
   track='<span class="rb-t rb-cells" aria-hidden="true">'
    +BANDS.map(function(b,i){return '<i class="rb-cell'+(i===bl?' bk':'')+'" style="--sc:'+seatCol(b)+'">'
     +'<b style="transform:scaleY('+(sv?sv[i]:0).toFixed(4)+')"></b></i>';}).join('')
@@ -43600,7 +43603,7 @@ function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 function crNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return cr(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -43688,7 +43691,7 @@ function crBadge(band,pct,o){
 function crbNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* a saboteur, complex, hyper or super complex, on the registry's chain kind.
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */
@@ -44345,7 +44348,7 @@ function bedCtx(){
  if(!BED_AC){
   try{ BED_AC=new (window.AudioContext||window.webkitAudioContext)(); }
   catch(e){ BED_DEAF=true;
-   if(typeof status==='function')status('No seat tone. This browser would not open an audio channel.','fail');
+   if(typeof status==='function')status('No point tone. This browser would not open an audio channel.','fail');
    return null;}}
  if(BED_AC.state!=='running'){
   try{ var r=BED_AC.resume(); if(r&&r.catch)r.catch(function(){}); }catch(e){}}
@@ -45180,7 +45183,7 @@ var ATM_MAP=[
  {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
  {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
  {kind:'Path overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
- {kind:'Path seat shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Path point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
  {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
   snd:'air', hover:true},
  {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},
@@ -48498,7 +48501,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  const canvas=document.createElement('canvas');
  canvas.id='srcface';
  canvas.hidden=true;
- canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven seats, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
+ canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven assemblage points, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
     on the face, travels with it as the hover, since the box has no room for
     a caption of its own */
@@ -48518,7 +48521,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     which the tooltip sets (.tip-b, shell/head.html). */
  const TITLE=["Source's reading circle",
   "Dots: the 108 somatic addresses, exact places in your body. Bigger means more charge",
-  "Rings: the seven seats, base of the spine in the centre, top of the head outside",
+  "Rings: the seven assemblage points, base of the spine in the centre, top of the head outside",
   "Light between dots: a saboteur, a habit running on those places",
   "Rim marks: the laws, ways of keeping your integrity",
   "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");
@@ -50760,7 +50763,7 @@ function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
 /* and what it has resolved, by name. The names fed the line under the depth
    bar until BA2 cut that line. They stay, because the functional gate holds
    the order the layers arrive in by them. */
-const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
+const CORE_LAYER_NM=['the triad','the seven assemblage points','the twenty one laws'];
 function coreResolved(){
  var n='';
  for(var i=0;i<CORE_STEP.length;i++) if(coreLayerA(i)>0.5)n=CORE_LAYER_NM[i];
@@ -51203,7 +51206,7 @@ const VIEWS=[
      DQ... neither is Shadow's weight." One word for one quantity, so this
      reads charge weight, DQ's own name, not Shadow's. */
   tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is charge weight.'},
- {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
+ {k:'B',nm:'Patterns',  layers:'charge, plus the points named, the fetters and the saboteurs',
   tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},
@@ -52452,13 +52455,13 @@ const FLAYS=[
    +frCirc(12,3.4,1.1)+frCirc(19.4,16.2,1.1)+frCirc(4.6,16.2,1.1),
   tip:'One line for each story that put charge on an address.'},
  {k:'archetypes',nm:'Archetypes',d:'M12 3.8l2.5 5.1 5.6.8-4 3.9 1 5.6-5.1-2.6-5.1 2.6 1-5.6-4-3.9 5.6-.8z',
-  tip:'The twelve, each set in the seat it runs through.'},
+  tip:'The twelve, each set in the point it runs through.'},
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
   tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
  {k:'chains',nm:'Chains',d:frCirc(5.4,18.6,1.6)+frCirc(11,13,2.3)+frCirc(17.4,6.6,3)+'M6.6 17.4l2.8-2.8M12.7 11.3l2.6-2.6',
   tip:'How a pattern compounds: complex, hyper complex, super complex, inward.'},
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),
-  tip:'The twenty one laws, set by seat. Their sum is the number at the centre.'},
+  tip:'The twenty one laws, set by point. Their sum is the number at the centre.'},
  {k:'gates',nm:'Gates',d:frCirc(12,12,3.1)+'M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3',
   tip:'The six gates round the core. Each higher gate sits across from the lower one it stands against.'},
  {sep:true},
@@ -53893,7 +53896,7 @@ function fbValues(r){
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
  var top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{}, ax=archExpr(top.i);
  V.archetypes={p:pct('archetype',ax)||0,v:fmtPct('archetype',ax),c:seatCol(A.b||'Heart'),
-  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its seat pulls it down; a release lifts it.'};
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its point pulls it down; a release lifts it.'};
  /* the root's colour off the one ladder every other surface reads, rootPlain,
     and not ROOTCOL, which is the Dark values on every lighting */
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
@@ -55504,13 +55507,13 @@ var BMNERVE=[[
  [15,"Stellate ganglion, C7 to T1",48.3,19.7,0.45],
  [15,"Stellate ganglion, C7 to T1",51.7,19.7,0.45],
  [15,"Ganglion impar, the end of both chains",50,52,0.45],
- [16,"Crown seat",50,4.98,1.7],
- [17,"Third eye seat",50,10.57,1.7],
- [18,"Throat seat",50,20.91,1.7],
- [19,"Heart seat",50,30.51,1.7],
- [20,"Solar seat",50,40.21,1.7],
- [21,"Sacral seat",50,47.02,1.7],
- [22,"Root seat",50,53.55,1.7],
+ [16,"Crown point",50,4.98,1.7],
+ [17,"Third eye point",50,10.57,1.7],
+ [18,"Throat point",50,20.91,1.7],
+ [19,"Heart point",50,30.51,1.7],
+ [20,"Solar point",50,40.21,1.7],
+ [21,"Sacral point",50,47.02,1.7],
+ [22,"Root point",50,53.55,1.7],
  [23,"","M50.9,53.55 L50.9,47.02"],
  [24,"","M50.9,47.02 L50.9,40.21"],
  [25,"","M50.9,40.21 L50.9,30.51"],
@@ -57644,7 +57647,7 @@ var BMOVL={
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
  flow:{nm:'Flow',ic:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8',
-  tip:'How open each seat is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
+  tip:'How open each point is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
  sab:{nm:FB_BYK.saboteurs.nm,ic:FB_BYK.saboteurs.ic,tip:FB_BYK.saboteurs.tip},
  cx:{nm:FB_BYK.complexes.nm,ic:FB_BYK.complexes.ic,
   tip:'Where saboteurs join. Each complex is a mark with a line out to every address it is built on.'},
@@ -57664,8 +57667,8 @@ function bmOvVals(r){
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
  var sp=flSpeed();
  V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:fmtPct('flow',sp),c:'var(--accent)',
-  m:'Ring and number: flow, the share of charge that passes every seat, '+fmtPct('flow',sp)+'.'}
-  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
+  m:'Ring and number: flow, the share of charge that passes every point, '+fmtPct('flow',sp)+'.'}
+  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every point yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
 /* the burger, shut and open: the Field's fbShutPaint in its own words */
@@ -57753,7 +57756,7 @@ function bmGround(host){
            always Pattern and the Intake gets back what it had. */
 var BMVIEW={
  emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
-  say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
+  say:'The body, front and back, with its nerves, the seven assemblage points, the addresses and the lines running between them'},
  masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
   say:'The front of the body, with the masks on it'}};
 /* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,
@@ -57887,12 +57890,12 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
      Round J13. */
   +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'Flow',hot:false,raw:loadedTot?null:'\u2013'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
-    :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
+    :(loadedTot?'passing every point':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
      when loaded and "Field clear" when not, while the value swapped too. A
      slot keeps its label; the value carries the state. And the empty state is
      said one way across the app: "nothing held". */
-  +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
+  +'<div class="pm-side"><div class="pm-eye">Heaviest point</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
   +(loadedTot?dom.p.n:'nothing held')+'</div>'
   +'<div class="pm-sub">'+(loadedTot?loadedTot+' held':'')+'</div></div></div>';
@@ -57945,7 +57948,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
     again in GX. Each row opens its own answer in Selection on a press. */
 
  /* the seven seats. bare numbers, per B19. */
- sh+='<div class="pm-eye" style="margin-top:14px">Seats</div><div class="pm-seats">';
+ sh+='<div class="pm-eye" style="margin-top:14px">Points</div><div class="pm-seats">';
  seats.forEach(function(s){var b=PMBANDS.filter(function(x){return x.k===s.p.k;})[0];
   sh+='<button class="pm-sr'+(PMPICK===s.p.k?' on':'')+(s.hot?'':' clear')+'" data-seat="'+s.p.k+'">'
    +'<i style="background:'+b.c+'"></i><span class="pm-sn">'+s.p.n+'</span>'
@@ -59274,7 +59277,7 @@ var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
   d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
-  d:'The field round the body. The seats bend it and vitality makes it breathe.'},
+  d:'The field round the body. The points bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
   d:'The body coloured by the charge it carries, cool to hot.'}];
 /* ring icons, 24 by 24, stroked and never filled. A ring of dots, an apple
@@ -59410,7 +59413,7 @@ function chBuild(host){
   +'<div class="chp-masks" role="group" aria-label="Masks">'+MASKS_READ.map(chMaskBtn).join('')+'</div>'
   +'<div class="chp-ovs" role="group" aria-label="Overlays">'
   +CH_OVERLAYS.map(function(x){return chOvBtn(x.k,x.nm,x.d,CH_IC[x.k],CHV.ov[x.k]);}).join('')
-  +chOvBtn('trace','Trace','Where the energy leaks. Press a seat on the field to trace it.',CH_IC.trace,false)
+  +chOvBtn('trace','Trace','Where the energy leaks. Press a point on the field to trace it.',CH_IC.trace,false)
   +'</div></div></div>';
  var stage=host.querySelector('.chp-stage');
  var sc=CHV.sc=new CHC.Scene(stage,{});
@@ -59494,13 +59497,13 @@ function chHoverText(j,seat){
  if(j>=0){var a=CHC.addr()[j];
   var wo=(CHV.who&&CHV.who[j])||null;
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
-   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
+   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' point')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
    +'. Charge '+fmtPct('weight',sc.achT[j]*10)+'.'
    /* round RB: what is running here, and what it does to the body */
    +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
    +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
-  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+fmtPct('closed',sh)+' shadow. Press to trace it.';}
+  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' point').replace(/\.$/,'')+'</b>, '+fmtPct('closed',sh)+' shadow. Press to trace it.';}
  /* nothing under the pointer is the empty value, a dash. The sentence that
     stood here explained how to use the line (CO-27, section-explains-itself) */
  return '\u2013';}
@@ -59565,16 +59568,16 @@ function chTraceCard(r){
   +'<div class="pm-eye plain">Trace. Where the energy leaks.</div>'
   +'<div class="chr-tabs" role="group" aria-label="Leaks">'+tabs.map(function(t){
     return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatName(BANDS[t]))+'</button>';}).join('')+'</div>'
-  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' seat</b><span>'
+  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' point</b><span>'
   +(lk>.12?'Leaking, '+fmtPct('leak',lk):'Holding. No leak')+'</span></div>';
  if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
   h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+fmtPct('weight',ch.addr.sq),ink:PAL[ch.addr.seat]})
-   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
+   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' point'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
-  +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' seat.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
-  +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this seat. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
+  +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' point.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
+  +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this point. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
   +'<div class="chr-acts"><button type="button" class="btn" id="chto">Open the story</button><button type="button" class="btn" id="chtc">Close trace</button></div></section>';
  return h;}
 
@@ -59640,24 +59643,24 @@ function chRailHtml(r){
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp plain">The seven seats</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">The seven assemblage points</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
     +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
-  +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
+  +'</div><p class="chr-note">The bar is how closed the point is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open point swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
   /* NEVER THE LOWER COUNT. This printed the body's own share of the
      addresses, which is the figure the house rule says is never put in front
      of a person: the count stated is the whole set. Round RG. */
   +'<p class="ad-p">Each point is one address, and there are '+AF.length
-  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'. Most sit round the body at the height of their point, going slowly round the spine. '
   +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
      and the line, each said where it is drawn, with what a saboteur and a
      complex are taken from the one table of meanings */
-  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the seat\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
+  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the point\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
    +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
@@ -59810,7 +59813,7 @@ function chDrill(m){
   h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened in Discover and it starts to fill.</p>';
   rdShell(h);return;}
  var seats=SF.filter(function(s){return m.b.indexOf(s.seat)>=0;});
- h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
+ h+='<div class="pm-eye">The points it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
@@ -59841,7 +59844,7 @@ var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WAN
 var ST_OWN=null;
 function stMine(){ return !ST_OWN||typeof CURP==='undefined'||ST_OWN===CURP; }
 var IMP_GROUP='band', IMP_PICK={};
-var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
+var IMP_GROUPS=[['band','Point'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
 function impLive(){
  return W.filter(function(n){return n.sq>=4||n.pole>=4;}).sort(function(a,b){return b.sq-a.sq;});}
@@ -59911,7 +59914,7 @@ function impPill(n,maxW,IX,ghost,inferred){
     a variable name and two bare counts. Each figure now says what it counts.
     feeds is the saboteurs the address is part of, from impIndex. */
  var fed=IX.feeds[n.i]||0;
- var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
+ var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' point. '
   +(ghost?'Waiting to land: '+fmtPct('atom',ghost)+'.'
     :(installed?opp+' installed at '+fmtPct('pole',n.pole)+'.'
       :'Charge left '+fmtPct('weight',n.sq)+', pain '+painOf(n,IX.bandLoad)
@@ -59954,9 +59957,9 @@ function impPill(n,maxW,IX,ghost,inferred){
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()+'.'
      : (gx&&gx.stated)
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
-       +' and this seat has no address for it, so the charge lands on the seat.'
+       +' and this point has no address for it, so the charge lands on the point.'
      : fl+' at the '+seat
-       +'. Your words named the seat, not the address, so this is where the '
+       +'. Your words named the point, not the address, so this is where the '
        +'charge lands and not what it is called.')
      +((gx&&gx.n>1)?' The amount is the sum across '+gx.n+' addresses.':'')
    : title;
@@ -60047,7 +60050,7 @@ function impRender(){
   var kseats={}; kids.forEach(function(k){kseats[k.seat]=1;});
   var ksn=Object.keys(kseats).length;
   h+='<div class="ip-bh ip-kh">Child patterns<em class="plain">across '
-   +ksn+(ksn===1?' seat':' seats')+'</em></div>';
+   +ksn+(ksn===1?' point':' points')+'</em></div>';
   kids.forEach(function(k){
    h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
     +'<span class="ip-kn">'+esc(k.ax)+'</span>'
@@ -60346,7 +60349,7 @@ var STMK_WHAT={
  stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
  stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
  stbody:'The one address in your body holding the most charge right now.',
- stfield:'The heaviest of your seven seats right now.',
+ stfield:'The heaviest of your seven assemblage points right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
  stmasks:'Your four strongest masks, strongest first.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
@@ -60407,7 +60410,7 @@ function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and
 function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
  s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
- 'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' seat.');}
+ 'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' point.');}
 function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
  stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+', the heaviest of your seven.');}
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
@@ -63822,7 +63825,7 @@ function stRailClear(){
    state again; the branches that still exist for them (stLaneModel,
    stOpenPattern and the rest) are reachable by nothing and are left
    alone rather than torn out blind. */
-var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight']];
+var ST_SORTS=[['seat','Point'],['heard','When heard'],['weight','Weight']];
 var ST_BKEY={}; Object.keys(K2BAND).forEach(function(k){ST_BKEY[K2BAND[k]]=k;});
 function stLaneModel(){
  var p=ST_PARSED,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
@@ -63875,7 +63878,7 @@ function stLaneModel(){
 var ST_VIEWS=[
  ['lanes','Lanes','Lanes: Trace and Route together, the view wired in',
   'M3 20h18M6 17v-4M10 17v-9M14 17v-3M18 17v-7M6 11l4-5 4 6 4-4'],
- ['ring','Ring','Ring: the seven seats as a circle, a spoke for each word kept',
+ ['ring','Ring','Ring: the seven assemblage points as a circle, a spoke for each word kept',
   'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M12 7V3.5M16.3 14.5l3 1.7M7.7 14.5l-3 1.7'],
  ['strip','Strip','Strip: Trace as first drawn, sliding left as you write',
   'M3 6.5h13M3 12h13M3 17.5h13M19.5 4v16M8 12V9M12 6.5V4M14 17.5v-3']];
@@ -64347,8 +64350,8 @@ function stListPaint(){
    +'<div class="st-ghd"><b>'+sym+esc(l.label)+'</b>'+note+'</div><div class="st-pills">'
    +pills.map(function(q){var k=l.key+':'+q.label;seen[k]=1;
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
-     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
-      :q.inf?'The seat was read. The words did not name this address.'
+     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This point has no address for it, so the charge stays at the point.'
+      :q.inf?'The point was read. The words did not name this address.'
       :'Your words named '+String(q.fet||'').toLowerCase()+'.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+fmtPct('atom',q.amt)+'</small></span>';}).join('')
    +'</div></div>';});
@@ -65733,7 +65736,7 @@ function stDashChildEmotions(p){
   var n=p?(byChild[c.nm]||0):0, rn=p?(rec[B2K[c.seat]]||0):0;
   return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:p?stBright(n/4,rn):0,
     title:p?(c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
-     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
+     +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -65794,7 +65797,7 @@ function stDashPatterns(){
    var v=unread?0:n[c[0]], rn=unread?0:(rec[B2K[c[3]]]||0);
    return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:unread?0:stBright(Math.min(1,v/4),rn),
      title:unread?(c[1]+', nothing recorded yet'):(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down on this record':', nothing handed down on this record')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
  o+='</section>';
  return o;}
 /* THE PATTERNS DRILL, READ OFF THE WHOLE RECORD, RESCOPED WITH THE TILE
@@ -65872,7 +65875,7 @@ function stDashIntegrity(p){
    var x=by[l.nm], v=x?x.score:0, rn=p?(rec[B2K[l.b]]||0):0;
    return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:p?stBright(v/10,rn):0,
      title:p?(l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -66182,7 +66185,7 @@ function lensEastern(r){
  var b=r.darkB||'Root';
 
  /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
- return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the point carrying the most'};}
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
@@ -66445,8 +66448,8 @@ function sumStory(r){
    +fmtPct('weight',held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
-     +', which is where the charge is dense enough to close the seat.'
-    :' No seat is closed, so what is held is not yet stopping flow.')
+     +', which is where the charge is dense enough to close the point.'
+    :' No point is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
    +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
@@ -66485,7 +66488,7 @@ function sumStory(r){
        return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
      +(blocked.length>1?' are not passing. The charge named above sits under them.'
                        :' is not passing. The charge named above sits under it.')
-   : ' Every seat your avatar depends on is passing.';
+   : ' Every point your avatar depends on is passing.';
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
@@ -66635,7 +66638,7 @@ function sumSeats(){
     screen." A label names the slot, and this slot is the four seats carrying
     the most, sorted by load. "In the body" is already the axes' eyebrow on
     this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
- return '<div class="pm-eye">Heaviest seats</div>'+seats.map(function(x){
+ return '<div class="pm-eye">Heaviest points</div>'+seats.map(function(x){
    /* and a seat says what a closed one does rather than the word closed */
    return sumStructRow(x.p.n,
     x.held?'shut, so charge sits under it':'open, so charge passes through',
@@ -67468,7 +67471,7 @@ function sumFull(r){
    +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
     +sumGlance(r,true)
     +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest seats',sumSeats())
+    +sgFold('seats','Heaviest points',sumSeats())
     +sgFold('bind','Binds',sumBind())
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
@@ -67722,7 +67725,7 @@ function dlyTermRx(){
  if(DLY_TERM_RX)return DLY_TERM_RX;
  var q=function(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');};
  var seats=BANDS.map(q).join('|'), laws=SINAMES.slice().sort(function(a,b){return b.length-a.length;}).map(q).join('|');
- DLY_TERM_RX=new RegExp('\\b(?:('+seats+') seat|('+laws+')\\b|(seats?)\\b|(coherence)\\b|(charge)\\b|(address(?:es)?)\\b)','g');
+ DLY_TERM_RX=new RegExp('\\b(?:('+seats+') point|('+laws+')\\b|(points?)\\b|(coherence)\\b|(charge)\\b|(address(?:es)?)\\b)','g');
  return DLY_TERM_RX;}
 function dlyCarry(text){
  var rx=dlyTermRx(), out='', at=0, m, used={};
@@ -68031,7 +68034,7 @@ function anaRender(){
         that cannot see the chain has no grounds to make it */
      :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
    /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
+   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every point is passing. ')
    /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
       which this product calls held; carrying is anything above nothing
       (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
@@ -68132,7 +68135,7 @@ function anaRender(){
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','',
+ out+=anaField('The seven assemblage points','',
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
@@ -68334,9 +68337,9 @@ function anaAxisRow(nm){
   +'<span>'+esc(c.nm)+'</span><em>'+unp('axis','toward '+c.opp.toLowerCase())+'</em></button>';}
 function anaSeatRow(band){
  var s=flSeats().filter(function(x){return K2B[x.p.k]===band;})[0]; if(!s)return '';
- return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' seat')+'">'
+ return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' point')+'">'
   +crBadge(band,Math.min(100,s.load*100),{size:'sm',raw:anaN(s.hot),title:anaPl(s.hot,'address','addresses')+' held at the '+band.toLowerCase()})
-  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' seat</em></button>';}
+  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' point</em></button>';}
 function anaBands(list){var bs=[];list.forEach(function(n){if(n.b&&bs.indexOf(n.b)<0)bs.push(n.b);});
  return BANDS.filter(function(b){return bs.indexOf(b)>=0;});}
 
@@ -68385,12 +68388,12 @@ function anaByFeeling(list){
 function anaBySeat(list){
  return anaBars(anaGroup(list,function(n){return n.b;}).map(function(g){
   return {key:anaKey('seat',anaSeatNm(g.k)),lbl:anaSeatWord(g.k,true),v:g.v,c:seatCol(g.k),fig:anaFig(g),
-   title:'Open the '+String(g.k).toLowerCase()+' seat. The bar is the charge left on these fetters, added up.'};}));}
+   title:'Open the '+String(g.k).toLowerCase()+' point. The bar is the charge left on these fetters, added up.'};}));}
 /* the two splits, under one pair of headings, for any set of addresses */
 function anaSplits(list){
  if(!list.length)return '';
  return '<div class="pm-eye" style="margin-top:14px">By feeling</div>'+anaByFeeling(list)
-  +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(list);}
+  +'<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(list);}
 /* the patterns running on a set of addresses, or the lock where the plan
    cannot see them. Never "nothing runs here" to a plan that cannot look. */
 function anaRunning(r,list,head){
@@ -68407,7 +68410,7 @@ function anaStories(bands){
  var s='<div class="pm-eye" style="margin-top:14px">From your stories, '+hit.length+'</div>';
  return s+(hit.length?hit.slice(0,4).map(function(e){
   return '<div class="ad-q">'+esc(e.text.slice(0,130))+(e.text.length>130?'…':'')+'</div>';}).join('')
-  :'<p class="ad-p">No entry has landed on these seats yet.</p>');}
+  :'<p class="ad-p">No entry has landed on these points yet.</p>');}
 /* how many of a set are held, how many carry under the line, said once */
 function anaHeldSay(list){
  var h=list.filter(function(n){return n.sq>=4;}).length;
@@ -68439,7 +68442,7 @@ function anaChainCard(r,o){
  h+=anaKv([['Weight',crBadge(bs[0]||'Heart',pct('chain',o.w)||0,{size:'md',raw:fmtPct('chain',o.w),
    title:'How heavily it runs, on the same scale as an address'})],
   ['Fetters',anaN(lv.length)],['Held',anaN(lv.filter(function(n){return n.sq>=4;}).length)],
-  ['Seats',anaN(bs.length)]]);
+  ['Points',anaN(bs.length)]]);
  /* the word's own meaning, from the one table. Not "What it is": a
     saboteur's card carries that heading already, for its library entry
     (kbSabBlock), and two headings of one name read as one section twice. */
@@ -68456,7 +68459,7 @@ function anaChainCard(r,o){
   +(o.over?'Overshot. The opposite of the feeling underneath is put in past the point where it helps, '
     +'so these fetters will not shut, where a held fetter will not open. ':'')
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
-  +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
+  +(bs.length===1?' point':' points')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
   +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
@@ -68486,7 +68489,7 @@ function anaAxisCard(r,nm){
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
   +anaPl(own.length,'fetter','fetters')+'</b>. '+anaHeldSay(own)+'</p>';
  h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(own,10);
- h+='<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(own);
+ h+='<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(own);
  return h+anaRunning(r,own,'Running on it');}
 function anaSeatCard(r,nm){
  var s2=flSeats().filter(function(x){return x.p.n===nm;})[0]; if(!s2)return null;
@@ -68498,9 +68501,9 @@ function anaSeatCard(r,nm){
     sentence. Vritti is gone: the codex makes it the wave around a nerve,
     never a spine level. The reason is written at engine/data/gloss.js. The
     Hz wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
- var h=anaHead('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
+ var h=anaHead('Point',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
   +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
- h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
+ h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The point sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
   +fmtPct('pass',s2.pass)+'</b> of what reaches it. <b>'+s2.hot+'</b> address'
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
@@ -68518,7 +68521,7 @@ function anaSeatCard(r,nm){
 function anaLawCard(r,nm){
  var l=SI.filter(function(x){return x.nm===nm;})[0]; if(!l)return null;
  var s=anaSeatNm(l.b);
- return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its seat</div>'
+ return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its point</div>'
   +'<div class="ad-rows">'+anaSeatRow(l.b)+'</div>';}
 function anaDomCard(r,nm){
  var di=-1; DOMAINS.forEach(function(d,i){if(d.nm===nm)di=i;});
@@ -68544,7 +68547,7 @@ function anaArchCard(r,nm){
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
-  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
+  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its point pulls it down, and a release lifts it.'
   +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
    +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
@@ -68558,9 +68561,9 @@ function anaMaskCard(r,nm){
  var all=W.filter(function(n){return sb.indexOf(n.b)>=0;}).sort(anaBySq);
  var lv2=all.filter(function(n){return n.sq>=4;});
  var h=anaHead(unp('mask','Mask'),m2.nm,'speaks from '+esc(sb.join(' and ')));
- h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these seats'})],
+ h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these points'})],
   ['Held',anaN(lv2.length)]]);
- h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those seats.</p>'
+ h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those points.</p>'
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
  return h+anaSplits(all)+anaRunning(r,all,'Running under it')+anaStories(sb);}
 /* one seat and one feeling, the cell of the grid */
@@ -68568,10 +68571,10 @@ function anaCellCard(r,nm){
  var i=nm.indexOf(':'), b=nm.slice(0,i), f=nm.slice(i+1);
  var c=CHILD.filter(function(x){return x.nm===f;})[0]; if(!c||BANDS.indexOf(b)<0)return null;
  var list=W.filter(function(n){return n.b===b&&n.cf===f;}).sort(anaBySq);
- var h=anaHead('Seat and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
+ var h=anaHead('Point and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
  h+='<p class="ad-p">'+(list.length?'<b>'+anaPl(list.length,'fetter','fetters')+'</b> at the '+anaSeatWord(b)
-   +' seat hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
-   :'No fetter at this seat holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
+   +' point hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
+   :'No fetter at this point holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
  if(list.length)h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(list,12);
  h+='<div class="pm-eye" style="margin-top:12px">Under it</div><div class="ad-rows">'+anaAxisRow(f)+anaSeatRow(b)+'</div>';
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
@@ -68659,7 +68662,7 @@ function anaMetCard(r,k){
  else if(k==='dq'){
   h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 40% as well as over it. '
    +'It is worked out from the addresses and is not measured on its own. It does not touch CQ. It feeds the pull.</p>'
-   +'<div class="pm-eye">Where it sits, by seat</div>'+bySeat()
+   +'<div class="pm-eye">Where it sits, by point</div>'+bySeat()
    +'<div class="pm-eye" style="margin-top:12px">Heaviest fetters</div>'+anaAddrRows(W.filter(function(n){return n.sq>0;}).sort(anaBySq),8);}
  else if(k==='pull'){
   /* the weights in the unit every address now prints, 17 October */
@@ -68669,7 +68672,7 @@ function anaMetCard(r,k){
    +'<div class="pm-eye">Pulling hardest</div><div class="ad-rows">'
    +W.filter(function(n){return n.sq>=2;}).sort(anaBySq).slice(0,10).map(function(n){
     return addrRow(n,{ana:true,em:'drags '+fmtPct('pull',leverPull(n.sq))});}).join('')+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+bySeat();}
+   +'<div class="pm-eye" style="margin-top:12px">By point</div>'+bySeat();}
  else if(k==='ex'){
   var top=(typeof exCeiling==='function')?exCeiling():null;
   h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+fmtPct('cq',r.CQ)+'</b>, pull <b>'
@@ -68835,14 +68838,14 @@ function anaGrid(r){
     a feeling's name at the start of its row opens the feeling, and the thin
     bar under each name adds that whole column or row up. Same scale along
     each edge, so the longest bar is the heaviest seat or feeling. */
- var s='<div class="ana-grid" role="group" aria-label="Charge left by seat and feeling">'
+ var s='<div class="ana-grid" role="group" aria-label="Charge left by point and feeling">'
   +'<span class="ana-g-c"></span>'+cols.map(function(b){
    var ch=colT[b]?Math.max(6,Math.round(colT[b]/(cmax||1)*100)):0;
-   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' seat, every feeling. Open it.')+'">'
+   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' point, every feeling. Open it.')+'">'
     +'<span>'+anaSeatWord(b,true)+'</span><i style="width:'+ch+'%;background:'+seatCol(b)+'"></i></button>';}).join('');
  rows.forEach(function(c){
   var rw=rowT[c.nm]?Math.max(6,Math.round(rowT[c.nm]/(rmax||1)*100)):0;
-  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every seat. Open it.')+'">'
+  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every point. Open it.')+'">'
    +'<span>'+esc(c.nm)+'</span><i style="width:'+rw+'%;background:'+seatCol(c.seat)+'"></i></button>';
   cols.forEach(function(b){
    var m=M[b+':'+c.nm];
@@ -69642,7 +69645,7 @@ function avRing(st){
    +(A.first?' '+A.first+(A.first===1?' address goes':' addresses go')+' first in your release, from your avatar.':'');
   return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+(A.first?' avh-first':'')+'" data-avsat="'+x.k+'" style="left:'
    +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+'. '+say
-   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' complete.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
+   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' whole.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
    +avSvg(AV_IC[x.k])
    +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')
    +(A.held?'<span class="avs-n" aria-hidden="true">'+A.held+'</span>':'')+'</button>';}).join('');
@@ -70007,7 +70010,7 @@ function avMenu(st){
  var editing=!!(x&&AV.edit===x.i);
  var hd='<div class="av-ph avm-hd"><span class="av-pic">'+avSvg(AV_IC[A.k])+'</span>'
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
-  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
+  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Whole</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
   +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
@@ -70029,7 +70032,7 @@ function avLiveBe(notbe){
 function avPairs(st){
  var loose=st.rows.filter(function(x){return !avSeatOf(x);});
  if(!loose.length)return '';
- return '<section class="av-card av-pairs"><div class="pm-eye">No seat</div>'+loose.map(function(x){
+ return '<section class="av-card av-pairs"><div class="pm-eye">No point</div>'+loose.map(function(x){
   return '<div class="av-pair"><span class="av-pair-ic">'+avSvg(AV_IC.person)+'</span>'
    +'<span class="av-pair-t">'+esc(x.pair.be)+'</span>'
    +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}).join('')+'</section>';}
@@ -72254,7 +72257,7 @@ function iqViewList(p,Q,sc){
    pips:t.L.map(function(x){return sc[x.l.nm]?2:iqGot(p,x.li)?1:0;}),
    fig:t.done?'<b class="iqa-ts">'+fmtPct('law',t.mean)+'</b>':'',
    next:(nx!=null&&SI[nx].b===b), t:t});});
- return iqNestHtml('The seven seats',items,function(o){
+ return iqNestHtml('The seven assemblage points',items,function(o){
   var c=o.c, h='<div class="iqa-laws" role="group" aria-label="The laws in '+esc(o.key)+'">';
   o.t.L.forEach(function(x){
    var s=sc[x.l.nm], g=iqGot(p,x.li), lo=(IQ_OPEN===x.li), st=s?2:g?1:0;
@@ -75751,7 +75754,7 @@ function relGcSync(G){
   if(d<=2)r.setAttribute('data-d',String(d)); else r.removeAttribute('data-d');
   if(d===0)r.setAttribute('aria-current','true'); else r.removeAttribute('aria-current');});
  var a=document.getElementById('relgat');
- if(a)a.textContent=(RUN.grp==='seat'?'Seat ':'Story ')+(k+1)+' of '+R.length;}
+ if(a)a.textContent=(RUN.grp==='seat'?'Point ':'Story ')+(k+1)+' of '+R.length;}
 function relGcTo(G,k,smooth){
  var R=G.querySelectorAll('.rel-gi'), r=R[Math.max(0,Math.min(R.length-1,k))]; if(!r)return;
  var top=r.offsetTop+r.offsetHeight/2-G.clientHeight/2;
@@ -76099,7 +76102,7 @@ function relResults(){
     return '<div class="rel-seat" style="--c:'+seatCol(b)+'"><b>'+esc(b)+'</b>'
      +'<span class="rel-seat-w">'+s.w0.toFixed(1)+' <i aria-hidden="true">→</i> '+s.w1.toFixed(1)+'</span>'
      +((pb.bank||pb.shadow)?'<span class="rel-seat-p">'+pb.bank+' to bank, '+pb.shadow+' to shadow</span>':'')+'</div>';}).join('')
-   +'</div><div class="rel-rs-s">Weight at a seat is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
+   +'</div><div class="rel-rs-s">Weight at a point is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
  /* 4b. CQ before and after, round QQ: "I want to see my CQ improvement." Read
     off compute() after the write, against the figure read before it, so it
     is the record's own number and the same one the run counted up to. */
@@ -76109,7 +76112,7 @@ function relResults(){
   +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
-  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
+  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its point a little.')+'</div>');
  else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
@@ -76351,7 +76354,7 @@ function relRender(){
   relClosePlan();
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
-   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
+   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Point</button></span></div>'
    +relSetupCar(spent);
   /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
      October. A short allowance cut the run without a sentence. It sits under
@@ -77075,9 +77078,9 @@ function ritTeachHtml(k){
  else if(t.held.length)h+='<p class="ad-p">'+esc(nm(t.held).join(' and '))
   +(many?' open':' opens')+' as the charge drops.</p>';
  h+='<p class="ad-p">'+(t.b.path
-   ?(t.seat?'The five paths sit at no one seat, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
-     :'The five paths sit at no one seat, and nothing is read yet, so this is kept without one.')
-   :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
+   ?(t.seat?'The five paths sit at no one point, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+     :'The five paths sit at no one point, and nothing is read yet, so this is kept without one.')
+   :'Kept at the '+esc(ritSeatNm(t.seat))+', the point this axis is read at.')+'</p>';
  if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
  /* on a worked example the starts are not drawn, as before SV19; only the
@@ -77664,7 +77667,7 @@ function ritPct(p,today){
  return due?{kept:kept, due:due, pct:100*kept/due}:null;}
 function ritPctHtml(p,today,size){
  var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
- var where=b?ritTagNm(b)+' seat':'No seat';
+ var where=b?ritTagNm(b)+' point':'No point';
  var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
  /* A COUNT, NOT A PERCENT, SV17. This printed the share kept as a percent
     and filled the ring to it, and accountability.js's own header rules the
@@ -77711,7 +77714,7 @@ function ritRowSeats(p){
  var b=ritSeat(p), all=(b?[b]:[]).concat(((p&&p.tags)||[]).filter(function(t){return t!==b&&BANDS.indexOf(t)>=0;}));
  if(!all.length)return '';
  var nm=all.map(ritTagNm);
- return (nm.length===1?nm[0]+' seat':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' seats')+', ';}
+ return (nm.length===1?nm[0]+' point':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' points')+', ';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
@@ -78838,7 +78841,7 @@ function acctLoopHtml(st){
   :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
   +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
-  +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
+  +'A solid cube is a day you kept a ritual, in the colour of its point; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
   +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
   +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
@@ -79196,7 +79199,7 @@ function ritSugHtml(st){
     the quiz. Where the cards come from is said in the line under it. */
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
   +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
+  +'Each is the practice that point calls for at the charge you carry now. Its mark is the point, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
 /* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
    ritual builder they should be colorized and related to the color of the
    chakra or fetter with their symbol." A card that runs as a release schedule
@@ -79214,10 +79217,10 @@ function ritSugMark(x,b){
  var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
  var col=b?seatCol(b):'var(--accent)';
  var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?fmtPct('weight',n.sq):'–'});
- var says=!b?'No seat yet, so the mark is empty.'
-  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
+ var says=!b?'No point yet, so the mark is empty.'
+  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the point, ')+'and the ring is '
     +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+fmtPct('weight',n.sq)+'.'
-  :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
+  :'The mark is the point. Nothing is held at '+ritThe(b)+', so the ring is empty.';
  return {badge:badge, says:says};}
 
 /* ---------------- ritual to avatar ----------------
@@ -79258,7 +79261,7 @@ function ritAvHtml(st){
  var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
  var hero='<span class="rv-avhero"'+rvTip('Your avatar',
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
-   all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
+   all===null?'':'Whole|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
   /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
      complete." It was wired, avState().overall in the ring's pill, and
@@ -79271,10 +79274,10 @@ function ritAvHtml(st){
      that."), and her two stories have moved nothing, because a worked
      example keeps no starting weight to measure against (avClosure). A
      person whose stories have released reads a percent there. */
-  +'<span class="rv-avlab">Complete</span>'
+  +'<span class="rv-avlab">Whole</span>'
   +'</span>';
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
-   'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
+   'Each day you keep a ritual turns your avatar one point, root to crown. Seven days make a turn, and three turns make a cycle.',
    'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Avatar')+'>'
   +'<div class="rv-cys">'+rings+'</div>'
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
@@ -79299,11 +79302,11 @@ function ritAvHtml(st){
   var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
   var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
   var said=!x?(fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'')
-   :x.gap.clear?'Clear at this seat.'
-   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
+   :x.gap.clear?'Clear at this point.'
+   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this point yet.';
   return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
-   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this seat yet. ')+said,
-    ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
+   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this point yet. ')+said,
+    ap===null?'':'Whole|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,
@@ -79311,7 +79314,7 @@ function ritAvHtml(st){
     well, and with the heading saying it the label was the word twice on one
     card, so it went; the ring keeps its name in the tooltip. */
  return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Avatar</span></div>'
-  +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
+  +'<p class="rv-mean">Your avatar\'s percent whole, the cycles your kept days turn, and each point your avatar has a story at.</p>'
   +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
 
@@ -80401,9 +80404,9 @@ function ritSuccessHtml(st,chain){
  var held=S.then===null?''
   :'<p class="rv-okf rv-shel">Held places: '+S.then+' at the start of this span, '+S.now+' now. A reading is taken each time you commit a story or finish a release.</p>';
  var top=Math.max.apply(null,S.bars.map(function(x){return x.n;}).concat([1]));
- var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by seat, '+esc(R.nm)+'</span><ul class="rv-sbars">'
+ var bars=!S.bars.length?'':'<div class="rv-ana1"><span class="rv-lb">Kept by point, '+esc(R.nm)+'</span><ul class="rv-sbars">'
   +S.bars.map(function(x){
-   return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No seat')+'</span>'
+   return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No point')+'</span>'
     +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul></div>';
  return '<section class="rv-sec rv-c rv-c-ana"><div class="rv-hd"><span class="rv-h">Success over time</span></div>'
   +'<p class="rv-mean">What you kept, over the span you pick, from a year down to today. Every figure is a count of days or minutes off your record, never a grade.</p>'
@@ -83531,7 +83534,7 @@ function cnOffAxis(side){
  if(!all.length)return '';
  var cut=Math.ceil(all.length/2), half=side==='l'?all.slice(0,cut):all.slice(cut);
  if(!half.length)return '';
- return '<p class="cn-grp">Read across the field <i>no one seat, so no position</i></p>'
+ return '<p class="cn-grp">Read across the field <i>no one point, so no position</i></p>'
   +half.map(function(p){
    var c=seatCol(p.home||null), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
    var rc=(typeof recipeOf==='function')?recipeOf(p.k):null;
@@ -83541,7 +83544,7 @@ function cnOffAxis(side){
    var q=String(p.q||''); q=q.charAt(0).toUpperCase()+q.slice(1);
    return '<button type="button" class="cn-nr cn-off" data-cnpole="'+esc(p.k)+'" '
     +'style="--ax:'+c+';--axd:'+cd+'" '
-    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one seat, so no position on an axis." '
+    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one point, so no position on an axis." '
     +(tip?'data-tip-k="'+esc(q)+'" data-tip="'+esc(tip)+'">':'title="Read '+esc(p.up)+', opposite '+esc(p.dn)+'">')
     +'<span class="cn-pr">'+cnOrb(p.ic,false,true)+cnOrb(p.dic,true)+'</span>'
     +'<span class="cn-tx">'
@@ -83654,13 +83657,13 @@ function cnIc(k){return '<svg class="cn-ic" viewBox="0 0 24 24" aria-hidden="tru
 const CN_OV={
  top:{nm:'Top',tip:'Look straight down on the same eight axes.',st:1},
  shells:{nm:'Registers',st:1,
-  tip:'Draw the seven seats as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.'},
+  tip:'Draw the seven assemblage points as shells of light, one inside the other, each sized by its own tone. An address holding charge falls in and goes dark.'},
  flat:{nm:'Flat',tip:'Take the tilt out and look straight down on the figure.',st:1},
  reg:{nm:'Regulation',tip:'Show the three laws lifting you most and the three pulling you down most.',st:1},
  well:{nm:'Gravity well',
   tip:'Draw the heaviest charge as a gravity well that bends the figure, in place of the pulse.'},
  heat:{nm:'Radiance',st:1,
-  tip:'Light the whole figure by its radiance. It goes dark where a seat holds charge and where the field bends off your level.'},
+  tip:'Light the whole figure by its radiance. It goes dark where a point holds charge and where the field bends off your level.'},
  layers:{nm:'Layers',tip:'Show the rings the axes are stacked on.',st:1}};
 /* what is offered, and where, for the figure that is up. The same conditions
    the pills carried: a switch that changes nothing on this figure is a dead
@@ -83718,7 +83721,7 @@ function coneOvBuild(){
   c.setAttribute('aria-label',name);
   list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
  grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
- if(L.seats)grp(bar,'Seat shells',cnSeatOrbs(),'cn-seatgrp');
+ if(L.seats)grp(bar,'Point shells',cnSeatOrbs(),'cn-seatgrp');
  grp(vw,'How the path is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
  if(!L.views.length)vw.style.display='none';
  cnOvShutPaint(bar,cnOvShut());
@@ -83800,11 +83803,11 @@ function coneOpen(inTab){
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The path from the top. Seven seats bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The path from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :CONE.shells
-     ?'The registers. Seven shells of light, one per seat, Root on the outside and Crown at the centre. Each address is a patch on its seat\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
+     ?'The registers. Seven shells of light, one per point, Root on the outside and Crown at the centre. Each address is a patch on its point\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
      :'The path. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
-      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a seat holds charge and where the field bends off your level.':''))
+      +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a point holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
@@ -84478,7 +84481,7 @@ function runDrill(o){
  var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
-  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its point and its child emotion.</div>'
    :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
      +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   /* HOW IT RUNS THROUGH YOU, FROM THE RECORD. 4 November, his live reaction
@@ -84626,7 +84629,7 @@ function lawDrillHtml(l,o){
      mechanism: a law's seat relief scales down what is held there, so a shut
      law leaves more of the charge held. DESIGN-tooltip-copy.md, example 6. */
   +(!read?'Not read yet.'
-   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its seat.'
+   :v<4?'This law is <b>shut</b>. A shut law lets more charge stay held at its point.'
    :v>=7?'This law is <b>open</b>. It is one of the things carrying your coherence.'
    :'Working but not strong. It holds in some places and slips in others.')
   /* the count of what is held is the fact. Against the seat's total it is a
@@ -84679,7 +84682,7 @@ function anchorSeat(n){return !n?null:n.b==='Field-Above'?'Crown':n.b==='Field-B
 function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  var p=Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
-  +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
+  +'It carries the average weight of the '+s.toLowerCase()+' point it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
 function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
 function nodeDrillHtml(n,o){
@@ -84891,7 +84894,7 @@ function runCoreDrill(){
   +fmtPct('radiance',r.radiance)+'</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
-  +'loudest seat. The core takes its colour from the coherence ramp, so '
+  +'loudest point. The core takes its colour from the coherence ramp, so '
   +'saturation and size are coherence and nothing else.</p>'
   +gatesBlock(null);
  rdShell(h);}
@@ -84976,7 +84979,7 @@ function runQDrill(q){
   h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+fmtPct('weight',r.SQm)+' mean</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, from nothing to 100%. '
    +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
-   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
+   +'<div class="pm-eye">Heaviest point</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
   h='<div class="pm-eye">Pole</div><div class="ad-nm">'+fmtPct('pole',r.poleMean)+' on average</div>'
@@ -85078,11 +85081,11 @@ function runFlowDrill(){
  var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
     :fmtPct('flow',f)+' reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
-  +'The seven seats pass signal in series, root upward. Each one passes a share '
-  +'and the column carries the product of all seven, so one shut seat closes '
+  +'The seven assemblage points pass signal in series, root upward. Each one passes a share '
+  +'and the column carries the product of all seven, so one shut point closes '
   +'the column whatever the six above it are doing. This is the number the Body '
   +'page draws as a channel, and where it pinches is where the work is.</p>'
-  +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
+  +'<div class="pm-eye">Point by point</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     /* one figure per row, the pass as the registry prints it; the end of
        the row said the same figure again in a second unit */
@@ -85092,8 +85095,8 @@ function runFlowDrill(){
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
-    +'seats above it open with them.'
-   :'No seat is holding enough to close the column.')+'</p>';
+    +'points above it open with them.'
+   :'No point is holding enough to close the column.')+'</p>';
  rdShell(h);}
 
 /* BALANCE. which way the field discharges, and what it is built from. */
@@ -85281,7 +85284,7 @@ function runArchDrill(a){
      down." Affinity, the soul map's lean, still orders the twelve and is
      printed nowhere (engine/archexpr.js). */
   h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Expressed <b>'
-   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its seat pulls it down, and a release lifts it.'
+   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its point pulls it down, and a release lifts it.'
    +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
  rdShell(h);}
 function runMaskDrill(m){
@@ -85298,7 +85301,7 @@ function runMaskDrill(m){
   +(own?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(own)+'</p>':kbGap())
   +'<div class="pm-eye">What a mask is</div><p class="ad-p">'
   +'A mask is not a fault and it is not a stage you failed to leave. It is a '
-  +'shape held in front of the seats it covers, and it costs what holding it '
+  +'shape held in front of the points it covers, and it costs what holding it '
   +'costs. This one sits over the '+esc(seats)+'. Its charge is '
   +'read from the story, never from a question about your age.</p>';
  var r=compute(), ring=(r.maskRing||[]).filter(function(x){return x.nm===m.nm;})[0];
@@ -85811,7 +85814,7 @@ function runAvatarDrill(){
   /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
      prompt ever asked these two questions. The Avatar page is where a pair is
      written, one seat at a time. */
-  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one point at a time. '
    +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
@@ -85835,7 +85838,7 @@ function runAvPair(i){
  if(g2){
   h+='<div class="pm-eye">Where that sits</div>'
    +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
-   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that point you read <b>'
    +fmtPct('axis',g2.at)+'</b>.</p>';
   var grp=W.filter(function(n){return n.b===g2.seat;})
    .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
@@ -86070,12 +86073,12 @@ function runCellDrill(c,rw){
   +'<div class="ad-sub">'+D.r+' cluster, '+cf.addr.toLowerCase()+'</div>'
   +'<div class="pm-eye">What the crossing does</div><p class="ad-p">'
   +(seg.length
-   ? 'This domain seats <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
+   ? 'This domain holds <b>'+seg.length+'</b> address'+(seg.length===1?'':'es')+' on the '
      +cf.nm.toLowerCase()+' axis, <b>'+held.length+'</b> of them held.'
      +(affine?' This is a <b>1.3× affinity pair</b>: running '+D.r+' makes you more '
        +'susceptible here, and that multiplier is where distortion comes from.'
        :' No affinity multiplier applies to this pair.')
-   : 'No address sits at this crossing. '+D.nm+' does not seat the '+cf.nm.toLowerCase()
+   : 'No address sits at this crossing. '+D.nm+' does not reach the '+cf.nm.toLowerCase()
      +' axis, so the cell is structurally empty rather than merely clear.')+'</p>';
  if(seg.length)h+='<div class="pm-eye">Addresses here</div><div class="ad-rows">'
   +seg.slice().sort(function(a,b){return b.sq-a.sq;}).slice(0,8).map(addrRow).join('')+'</div>';
@@ -86647,7 +86650,7 @@ const KB_OF={
  dom:'of your strongest blueprint lobe',
  arch:'of your strongest archetype',
  gate:'of every Law of Action read in your story',
- seat:'of the seat’s addresses carrying charge',
+ seat:'of the point’s addresses carrying charge',
  card:'of the axis the card releases, where the card names one',
  harm:'of the law kept, where the intake scores it',
  gloss:''};
@@ -86674,7 +86677,7 @@ function kbMatch(row,q){
    identity and the labels are what a person sees. */
 const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
- harm:'Universal law',gloss:'Term',seat:'Seat',mask:'Mask',card:'Card',
+ harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
 
 /* in order is the default, because he ruled that the universal laws go in
@@ -86816,7 +86819,7 @@ function kbRender(){
     line described the tiles' order to a person looking at the tiles. A deck's
     own line stays: it says what that deck's percent is a percent of, which
     nothing else on the screen says. */
- var title=q?'Search':deck?kbSecName(deck):'The seven seats';
+ var title=q?'Search':deck?kbSecName(deck):'The seven assemblage points';
  var scale=(!q&&deck&&KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'';
  var h='<div class="kb-top kbs">'
   +'<div class="kb-hdr">'
@@ -86833,7 +86836,7 @@ function kbRender(){
   +' aria-pressed="'+(KB_SORT==='weight')+'">By weight</button></span></div>'
   /* THE SEVEN SEATS, CROWN DOWN TO ROOT. The Intake page's map, the same
      tile and the same order, so the two pages read as one instrument. */
-  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven seats">'
+  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven assemblage points">'
   +SEATS.map(function(b){var on=bySeat&&KB_SEAT===b;
     return '<button type="button" class="iqa-tile kbs-tile" data-kbseat="'+esc(b)+'" data-st="'+(share[b]?2:0)+'" '
      +'aria-pressed="'+on+'" aria-label="'+esc(b+', '+kbSeatLine(b))+'" style="--c:'+seatCol(b)+'">'
@@ -86885,8 +86888,8 @@ function kbRender(){
    +'<span class="iqa-shl">'+esc(kbSeatLine(b))+'</span></div>'+inner+'</section>';}
  function across(inner){
   return '<section class="iqa-pn kbs-pn kbs-any" data-kbpn="any">'
-   +'<div class="iqa-ph"><span class="iqa-shn">Across every seat</span>'
-   +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
+   +'<div class="iqa-ph"><span class="iqa-shn">Across every point</span>'
+   +'<span class="iqa-shl">held by no one point</span></div>'+inner+'</section>';}
 
  h+='<div class="kbs-body">';
  if(showCq){
@@ -86901,7 +86904,7 @@ function kbRender(){
   h+=seatPanel(KB_SEAT,byDeck(mine));
   /* and what belongs to no seat, one press away and named, never dropped */
   var none=pool.filter(function(x){return !x.seats.length;});
-  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every seat</span>'
+  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every point</span>'
    +'<span class="kbs-fs">domains, bands, kinds and poles</span></summary>'
    +'<div class="kbs-fb">'+byDeck(none)+'</div></details>';
  }else{
@@ -87585,11 +87588,11 @@ function recRender(){
     the boundary lets through, which stays its own, separate fix. */
  if(a.m===b.m&&a.tier&&b.tier&&a.tier!==b.tier)
   moved.push('the tier read '+esc(a.tier.toLowerCase())+' and now reads '+esc(b.tier.toLowerCase()));
- if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
+ if(a.dark!==b.dark)moved.push('the heaviest point moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
  if(a.arch!==b.arch)moved.push('the primary archetype moved from '+esc(a.arch)+' to '+esc(b.arch));
  h+='<p class="sum-p" style="margin-top:14px">'+(moved.length
    ? 'Between these two, '+moved.join(', and ')+'.'
-   : 'Between these two, the tier, the heaviest seat and the primary archetype all held.')
+   : 'Between these two, the tier, the heaviest point and the primary archetype all held.')
   +' What moved them is not in this record.'
   +(a.m!==b.m?' Coherence and shadow weight are left out because one of these was taken '
     +'before they were measured the way they are now.':'')+'</p>';
@@ -94200,7 +94203,7 @@ function pracRingCard(p){
   +(snap.tierDef?'<p class="ac-lead" style="margin:14px 15px 0">'+esc(snap.tierDef)+'</p>':'')
   +'<p class="ac-lead" style="margin:10px 15px 0">'+sent+'</p>'+heavyRow;
  return accGroup('The reading',body,
-   'One ring, seven seats. A brighter arc holds more charge at that seat. Press a seat to list '
+   'One ring, seven assemblage points. A brighter arc holds more charge at that point. Press a point to list '
    +'its addresses. Read off the structure, never off '+esc(p.nm)+'’s own words, which a '
    +'practitioner never sees without a separate yes of its own.');}
 function pracAddrIdx(n){
@@ -94368,7 +94371,7 @@ function pracDrillDay(p,R,day){
 function pracChain(p,x,R){
  var st=[], nm=esc(p.nm);
  if(x.stories)st.push(['Written',pracPl(x.stories,'entry','entries')+', '
-  +(x.named?'from '+nm+'’s own words':'placed by the seat the words pointed at')]);
+  +(x.named?'from '+nm+'’s own words':'placed by the point the words pointed at')]);
  var op=[];
  if(x.lines)op.push(pracPl(x.lines,'release line','release lines'));
  if(x.truths)op.push(pracPl(x.truths,'truth line','truth lines'));
@@ -94388,7 +94391,7 @@ function pracDrillPat(p,R,key){
  var x=null; R.loop.patterns.forEach(function(y){if(y.key===key)x=y;}); if(!x)return;
  var seat=pracPatSeat(x);
  var h=pracEye(p,'one pattern')+'<div class="ad-nm">'+esc(x.name)+'</div>'
-  +(seat?'<div class="ad-sub">'+unp(seat.toLowerCase(),seat+' seat','seat')+'</div>':'')
+  +(seat?'<div class="ad-sub">'+unp(seat.toLowerCase(),seat+' point','seat')+'</div>':'')
   +'<p class="ad-p">'+esc(unpackOf(x.state,'client'))+'</p>';
  if(x.address!==null){
   h+=pracAddrFacts(x.address);
@@ -94408,9 +94411,9 @@ function pracDrillDec(p,R,id){
 
 function pracDrillSeat(p,b){
  var snap=pracRead(p), list=snap.loaded.filter(function(n){return n.b===b;});
- var h=pracEye(p,'one seat')+'<div class="ad-nm">'+esc(b)+'</div>'
+ var h=pracEye(p,'one point')+'<div class="ad-nm">'+esc(b)+'</div>'
   +'<p class="ad-p">'+esc(unpackOf(b,'seat'))+'</p>';
- if(!list.length)h+='<p class="ad-p">Nothing at this seat is above the line.</p>';
+ if(!list.length)h+='<p class="ad-p">Nothing at this point is above the line.</p>';
  else h+='<p class="ad-p">'+pracPl(list.length,'address is','addresses are')+' carrying here, heaviest first.</p>'
   +list.map(function(n){
    var a=pracAddrIdx(n);
@@ -94424,7 +94427,7 @@ function pracDrillAddr(p,R,a){
  var n=BY[a]; if(!n)return;
  var pat=R?pracPatOfAddr(R,a):null, sq=pracSqOf(p,a);
  var h=pracEye(p,'one address')+'<div class="ad-nm">'+esc(n.k)+'</div>'
-  +'<div class="ad-sub">'+unp(String(n.b).toLowerCase(),n.b+' seat','seat')+'</div>'
+  +'<div class="ad-sub">'+unp(String(n.b).toLowerCase(),n.b+' point','seat')+'</div>'
   +pracAddrFacts(a)+(sq!==null?pracMeter(sq):'')
   +(pat?'<div class="ad-rows">'+pracRowBtn('pat:'+pat.key,'Read it as a pattern',pat.state==='confirmed'?'Confirmed':'Unanswered')+'</div>'
    :'<p class="ad-p">No practice is aimed here yet.</p>');
@@ -94472,7 +94475,7 @@ function pracSelNone(open){
  if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note';
   none.parentNode.insertBefore(d,none.nextSibling);}
  if(d)d.textContent=open
-  ?'Nothing selected. Press a figure, a day, a pattern or a seat on '+open.nm+'’s page to read it here.'
+  ?'Nothing selected. Press a figure, a day, a pattern or a point on '+open.nm+'’s page to read it here.'
   :'Nothing selected. Open a worked example on the left.';}
 
 function pracWire(host){
@@ -95979,7 +95982,11 @@ function lpPlural(n,one,many){return n+' '+(n===1?one:many);}
 function lpChain(x){
  var st=[];
  if(x.stories)st.push(['Written',lpPlural(x.stories,'entry','entries')+', '
-  +(x.named?unp('from your words'):unp('from the seat'))]);
+  /* 'from the seat' is the meaning table's key and stays, because a key is
+     identity; what a person reads is passed as the label, since a bare
+     unp(key) prints the key itself and printed the retired word (18
+     November, "Change seat and chakra to just point"). */
+  +(x.named?unp('from your words'):unp('from the seat','from the point'))]);
  var op=[];
  if(x.lines)op.push(x.lines+' '+unp('release line',x.lines===1?'release line':'release lines'));
  if(x.truths)op.push(x.truths+' '+unp('truth line',x.truths===1?'truth line':'truth lines'));
@@ -96010,7 +96017,7 @@ function lpChain(x){
 function lpRow(x,i){
  var w=lpWho(), was=lpOpen(w)[x.key];
  var open=was!==undefined?was:i===0;
- var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' seat','seat'):'';
+ var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' point','seat'):'';
  return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
@@ -97793,7 +97800,7 @@ function obRender(){
       the one that ships, because it is the one every other surface prints. */
    +'<p class="ob-p ob-dim ob-figsay">'+esc(unpackOf('seat'))+'</p>'
    +obChips(OB_PLACES,'obplace',OB.place,true)
-   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
+   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> point. '
      +esc(obSeatMean(pb.b))+'</p>':''),
    '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
@@ -97954,11 +97961,11 @@ function obRow(r,seat){
       exhaustion names apathy and the Solar seat has none, so parseStory
       holds the weight at the seat's first address. Said as that, never as
       "one place apathy sits", which would be false. */
-   +(n.cf===r.fetter?'One place '+esc(obLow(r.fetter))+' sits at your '+esc(seat)+' seat.'
-    :'Your '+esc(seat)+' seat has no place for '+esc(obLow(r.fetter))+', so the engine holds it here.')
+   +(n.cf===r.fetter?'One place '+esc(obLow(r.fetter))+' sits at your '+esc(seat)+' point.'
+    :'Your '+esc(seat)+' point has no place for '+esc(obLow(r.fetter))+', so the engine holds it here.')
    +obAbout(n)
   :'<span class="ob-tag">a guess</span> <b>'+esc(n.k)+'</b>. The engine&rsquo;s guess, from your '
-   +esc(seat)+' seat.'+obAbout(n);
+   +esc(seat)+' point.'+obAbout(n);
  return '<div class="ob-row" data-obrow="'+n.i+'">'
   +'<p class="ob-p ob-rowp">'+said+'</p>'
   +'<div class="ob-as" role="group" aria-label="'+esc(n.k)+'">'
@@ -97994,12 +98001,12 @@ function obGroup(g){
     gate reads the lead off. */
  var o='<div class="ob-grp" data-obgrp="'+esc(g.id)+'" style="--c:'+col+'">'
   +'<div class="ob-grph-r">'+obSeatMark(g.seat,obGrpShare(g),'ob-mk-g')
-  +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> seat.'
+  +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> point.'
   +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p></div>';
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
-   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this seat.</p>';
+   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this point.</p>';
  else
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws+' put weight here.'
     :'Something in your words put weight here.')
@@ -98010,7 +98017,7 @@ function obGroup(g){
  if(rest>0)
   o+='<button type="button" class="ob-a ob-more" data-obmore="'+esc(g.id)+'">'
    +rest+(g.stated?(rest===1?' more place':' more places'):(rest===1?' more guess':' more guesses'))
-   +' at this seat</button>';
+   +' at this point</button>';
  return o+'</div>';}
 function obQuote(t){
  var s=String(t||'').replace(/\s+/g,' ').trim(), m=s.match(/^[^.!?]+/), q=(m?m[0]:s).trim();
@@ -98045,14 +98052,14 @@ function obMirrorCard(){
   lines+='<div class="ob-mirrorfig">'
    +'<p class="ob-p ob-dim ob-figsay">Lit on the body where your words put weight: '
    +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
-   +(seats.length===1?' seat.':' seats.')+'</p></div>'
-   +'<p class="ob-p">This separates into its own components, one seat at a time. '
+   +(seats.length===1?' point.':' points.')+'</p></div>'
+   +'<p class="ob-p">This separates into its own components, one point at a time. '
    +'<span class="ob-dim">'+esc(unpackOf('seat'))+' '+esc(unpackOf('address'))+'</span></p>'
    +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release. '
-   +'The ring beside each seat fills as you answer yes at it.</p>';
+   +'The ring beside each point fills as you answer yes at it.</p>';
   if(pl&&!groups.some(function(g){return obSameSeat(g.seat,pl.b);}))
    lines+='<p class="ob-p ob-dim">You tapped your '+esc(pl.n.toLowerCase())+', at your '+esc(pl.b)
-    +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
+    +' point. Your words put weight at other points, shown below. Both are kept as they are.</p>';
   groups.forEach(function(g){lines+=obGroup(g);});
  }
  /* A WORD READ AND NOT COUNTED IS NOT NOTHING, S1 and S2 of the 9 October
@@ -98079,7 +98086,7 @@ function obMirrorCard(){
   +'<div class="ob-f" id="obcorrwrap" hidden><label for="obcorr">Tell me what is off, in your own words.</label>'
   +'<textarea id="obcorr" rows="2"></textarea>'
   +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-ob="mirroradjust">Read my correction</button></div></div>'
-  +(OB.text?'<p class="ob-p ob-dim" style="margin-top:14px">Commit keeps your words and the weight they put on each seat. '
+  +(OB.text?'<p class="ob-p ob-dim" style="margin-top:14px">Commit keeps your words and the weight they put on each point. '
    +'Nothing is kept until you press it.</p>':'');
  return obCard('Mirror',OB.fixReads.length?'Here is what I heard now.':'Here is what I heard.',
   body,'<button type="button" class="btn pri" data-ob="mirrorcommit">'+(OB.text?'Commit':'Continue')+'</button>'
@@ -98160,7 +98167,7 @@ function obMiniSay(pl,first,yes){
  var seats=[]; pl.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&seats.indexOf(b)<0)seats.push(b);});
  var at=seats.length?(n===1?'It sits':(seats.length===1?'All '+n+' sit':'They sit'))+' at your '
   +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
-  +(seats.length===1?' seat.':' seats.'):'';
+  +(seats.length===1?' point.':' points.'):'';
  var out='';
  if(pl.rest>0){
   var nm=pl.found-pl.foundInferred;
@@ -99401,8 +99408,8 @@ function describe(h,r,still){
  if(h.k==='node'){var n=h.n, c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
   var aff=(AFFIN[r.root]||[]).indexOf(n.cf)>=0;
   return '<u>address</u> <b>'+esc(n.k)+'</b><hr>'
-   +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' seat.'
-        :'Just outside the body, by the '+n.b.toLowerCase()+' seat.')
+   +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' point.'
+        :'Just outside the body, by the '+n.b.toLowerCase()+' point.')
    +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')
    +'<hr>charge held <b>'+fmtPct('held',n.held)+'</b>'
    +(c?'<br>'+esc(c.opp.toLowerCase())+' installed <b>'+fmtPct('installed',n.rep)+'</b>':'')
@@ -99823,7 +99830,7 @@ function wireTouch(k){
    ============================================================ */
 function frDescribe(h,r){
  if(h.k==='seat'){var n=W.filter(function(x){return x.b===h.b;}).length;
-  return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
+  return '<u>point</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
  /* the anchor named itself and stopped, so a ring a person hovered carried a
     weight that counts in DQ and said nothing about it. anchorSays
     (ui/drills.js) is the same sentence the drill prints. */
@@ -101094,7 +101101,7 @@ function render(){
      the held seat passing least; this just says it in words instead of
      leaving it to a hover. */
   var blockAt=r.unread?-1:rbBlock(seatPass,seatHeld);
-  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each seat holding '
+  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each point holding '
    +'charge lets less through, and the losses multiply.'
    +(blockAt>=0?(' '+seatNames[blockAt]+' lets the least through right now, '+fmtPct('flow',seatPass[blockAt],{})+'.'):''));
   /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent
@@ -101309,15 +101316,15 @@ function renderChainKey(r){
    +(x.c?' style="background:'+x.c+'"':'')+'></span>'
    +'<span class="chk-tx"><b>'+x.nm+'.</b> '+x.d+'</span></div>';};
  var rows=[
-  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
-  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
+  {v:true, nm:'Saboteur', d:'Colored by the point it sits at. The pattern closest to a single story.'},
+  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever point they sit at.'},
   {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
   {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'}];
  var pctAt=function(i){var n=BY[i];return n?Math.max(0,Math.min(100,Math.round((n.sq||0)*10))):0;};
  var live=r&&!r.unread;
  var outside=[
   {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
-  {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the seat it extends'
+  {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the point it extends'
    +(live?', the crown above at <b>'+pctAt(109)+'%</b> and the root below at <b>'+pctAt(111)+'%</b>':', the crown above and the root below')
    +'. That weight counts in decoherence, your total shadow.'}];
  h.innerHTML=rows.map(row).join('')
@@ -101801,5 +101808,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006803806"></div>
 </body></html>

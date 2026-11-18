@@ -678,7 +678,7 @@ function rbRow(q,nm,pct,raw,o){
   if(read)sv=o.cells.map(cl);
   var bl=read?rbBlock(sv,o.held):-1;
   if(read)sub='<em class="rb-sub'+(bl<0?'':' bk')+'"'+(bl<0?'':' style="--bc:'+seatCol(BANDS[bl])+'"')+'>'
-   +(bl<0?'no seat blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
+   +(bl<0?'no point blocked':'blocked at '+esc((o.names||BANDS)[bl]))+'</em>';
   track='<span class="rb-t rb-cells" aria-hidden="true">'
    +BANDS.map(function(b,i){return '<i class="rb-cell'+(i===bl?' bk':'')+'" style="--sc:'+seatCol(b)+'">'
     +'<b style="transform:scaleY('+(sv?sv[i]:0).toFixed(4)+')"></b></i>';}).join('')
@@ -1141,7 +1141,7 @@ function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 function crNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return cr(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -1229,7 +1229,7 @@ function crBadge(band,pct,o){
 function crbNode(n,size,o){o=o||{};
  var f=fmtPct('weight',n.sq);
  return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+  title:n.k+', '+n.b.toLowerCase()+' point. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* a saboteur, complex, hyper or super complex, on the registry's chain kind.
    hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
    the figure is a percent; overshot is said in the title. */

@@ -1119,7 +1119,7 @@ function obRender(){
       the one that ships, because it is the one every other surface prints. */
    +'<p class="ob-p ob-dim ob-figsay">'+esc(unpackOf('seat'))+'</p>'
    +obChips(OB_PLACES,'obplace',OB.place,true)
-   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
+   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> point. '
      +esc(obSeatMean(pb.b))+'</p>':''),
    '<button type="button" class="btn ob-back" data-ob="back">Back</button>');
  }
@@ -1280,11 +1280,11 @@ function obRow(r,seat){
       exhaustion names apathy and the Solar seat has none, so parseStory
       holds the weight at the seat's first address. Said as that, never as
       "one place apathy sits", which would be false. */
-   +(n.cf===r.fetter?'One place '+esc(obLow(r.fetter))+' sits at your '+esc(seat)+' seat.'
-    :'Your '+esc(seat)+' seat has no place for '+esc(obLow(r.fetter))+', so the engine holds it here.')
+   +(n.cf===r.fetter?'One place '+esc(obLow(r.fetter))+' sits at your '+esc(seat)+' point.'
+    :'Your '+esc(seat)+' point has no place for '+esc(obLow(r.fetter))+', so the engine holds it here.')
    +obAbout(n)
   :'<span class="ob-tag">a guess</span> <b>'+esc(n.k)+'</b>. The engine&rsquo;s guess, from your '
-   +esc(seat)+' seat.'+obAbout(n);
+   +esc(seat)+' point.'+obAbout(n);
  return '<div class="ob-row" data-obrow="'+n.i+'">'
   +'<p class="ob-p ob-rowp">'+said+'</p>'
   +'<div class="ob-as" role="group" aria-label="'+esc(n.k)+'">'
@@ -1320,12 +1320,12 @@ function obGroup(g){
     gate reads the lead off. */
  var o='<div class="ob-grp" data-obgrp="'+esc(g.id)+'" style="--c:'+col+'">'
   +'<div class="ob-grph-r">'+obSeatMark(g.seat,obGrpShare(g),'ob-mk-g')
-  +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> seat.'
+  +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> point.'
   +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p></div>';
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
-   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this seat.</p>';
+   +' named <b>'+esc(obLow(g.fetter))+'</b>. The engine picks the place at this point.</p>';
  else
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws+' put weight here.'
     :'Something in your words put weight here.')
@@ -1336,7 +1336,7 @@ function obGroup(g){
  if(rest>0)
   o+='<button type="button" class="ob-a ob-more" data-obmore="'+esc(g.id)+'">'
    +rest+(g.stated?(rest===1?' more place':' more places'):(rest===1?' more guess':' more guesses'))
-   +' at this seat</button>';
+   +' at this point</button>';
  return o+'</div>';}
 function obQuote(t){
  var s=String(t||'').replace(/\s+/g,' ').trim(), m=s.match(/^[^.!?]+/), q=(m?m[0]:s).trim();
@@ -1371,14 +1371,14 @@ function obMirrorCard(){
   lines+='<div class="ob-mirrorfig">'
    +'<p class="ob-p ob-dim ob-figsay">Lit on the body where your words put weight: '
    +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
-   +(seats.length===1?' seat.':' seats.')+'</p></div>'
-   +'<p class="ob-p">This separates into its own components, one seat at a time. '
+   +(seats.length===1?' point.':' points.')+'</p></div>'
+   +'<p class="ob-p">This separates into its own components, one point at a time. '
    +'<span class="ob-dim">'+esc(unpackOf('seat'))+' '+esc(unpackOf('address'))+'</span></p>'
    +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release. '
-   +'The ring beside each seat fills as you answer yes at it.</p>';
+   +'The ring beside each point fills as you answer yes at it.</p>';
   if(pl&&!groups.some(function(g){return obSameSeat(g.seat,pl.b);}))
    lines+='<p class="ob-p ob-dim">You tapped your '+esc(pl.n.toLowerCase())+', at your '+esc(pl.b)
-    +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
+    +' point. Your words put weight at other points, shown below. Both are kept as they are.</p>';
   groups.forEach(function(g){lines+=obGroup(g);});
  }
  /* A WORD READ AND NOT COUNTED IS NOT NOTHING, S1 and S2 of the 9 October
@@ -1405,7 +1405,7 @@ function obMirrorCard(){
   +'<div class="ob-f" id="obcorrwrap" hidden><label for="obcorr">Tell me what is off, in your own words.</label>'
   +'<textarea id="obcorr" rows="2"></textarea>'
   +'<div class="ob-acts" style="margin-top:8px"><button type="button" class="btn pri" data-ob="mirroradjust">Read my correction</button></div></div>'
-  +(OB.text?'<p class="ob-p ob-dim" style="margin-top:14px">Commit keeps your words and the weight they put on each seat. '
+  +(OB.text?'<p class="ob-p ob-dim" style="margin-top:14px">Commit keeps your words and the weight they put on each point. '
    +'Nothing is kept until you press it.</p>':'');
  return obCard('Mirror',OB.fixReads.length?'Here is what I heard now.':'Here is what I heard.',
   body,'<button type="button" class="btn pri" data-ob="mirrorcommit">'+(OB.text?'Commit':'Continue')+'</button>'
@@ -1486,7 +1486,7 @@ function obMiniSay(pl,first,yes){
  var seats=[]; pl.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&seats.indexOf(b)<0)seats.push(b);});
  var at=seats.length?(n===1?'It sits':(seats.length===1?'All '+n+' sit':'They sit'))+' at your '
   +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
-  +(seats.length===1?' seat.':' seats.'):'';
+  +(seats.length===1?' point.':' points.'):'';
  var out='';
  if(pl.rest>0){
   var nm=pl.found-pl.foundInferred;

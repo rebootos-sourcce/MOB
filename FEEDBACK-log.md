@@ -570,6 +570,29 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · point, charge, whole, clarity and shadow
+
+said: "Change seat and chakra to just point. It's an assemblage point. You
+can call it AP, or assemblage point for short, or point. We're going to use
+charge instead of tension. And neither becoming or complete, we're going to
+use the word whole. Instead of clear conduction against sabotage, just use
+clarity. Grace against false light, just change that to grace. Oh, I see.
+Grace against shadow. So use the word shadow."
+read: every string a person reads or hears that named one of the seven
+places seat or chakra says point, and the hover's sentence and the headings
+that introduce all seven say assemblage point; tension as stuck energy says
+charge; the Avatar's percent is whole; the pole words are Clarity against
+Sabotage and Grace against Shadow, changed in the compass data and not only
+on a screen. DECISIONS.md has the ruling and what was left alone on purpose.
+change: tools/vocab-sweep.py with its rules in tools/vocab-rules.py, applied
+across atuned_src and the funnel's sources; ui/loopread.js passes the label
+beside the meaning table's key; engine/daily.js links the daily sentences
+that now say point. No identifier or saved key moved. Branch
+fix/vocab-point-charge-whole.
+measure: tests/vocab.js scans the built app and fails on a retired word or
+an old pair name outside its allow list; it fails on origin/main and on each
+mutant named in the commit, and passes on the fix.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

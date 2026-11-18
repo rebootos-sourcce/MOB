@@ -297,7 +297,7 @@ function srcVet(cand,ctx){
   !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':
   (!okWhere?('says where it lands, '+where.join(', ')+', about a claim the person has not confirmed, held as '+claim.state):
   (!okAgain?('says '+(says.join(', ')||cand.family)+' about a claim held only as '+claim.state):
-  'asks about history before the seat has come back across entries')));
+  'asks about history before the point has come back across entries')));
 
  /* 8 REDUCES UNCERTAINTY. It must say what it is for, and not ask what the
     entry already answers while something else is still open. */

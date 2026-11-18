@@ -1148,7 +1148,7 @@ function traceFromRecord(p,intents,reading){
   im.forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]){
     g.gaps.push({kind:'unplaced', story:sk, seat:x.band||null, fetter:x.fetter||null,
-     why:'the reading seated charge at the '+(x.band||'unknown seat')+' and named no address'});
+     why:'the reading seated charge at the '+(x.band||'unknown point')+' and named no address'});
     return;}
    var k=String(x.node);
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
@@ -1186,7 +1186,7 @@ function traceFromRecord(p,intents,reading){
    var b=by[k];
    edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
     why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
-     :'the seat was read and the address was chosen by the fallback, not by the words'});});
+     :'the point was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
  /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.

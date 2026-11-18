@@ -228,7 +228,7 @@ function stDashChildEmotions(p){
   var n=p?(byChild[c.nm]||0):0, rn=p?(rec[B2K[c.seat]]||0):0;
   return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:p?stBright(n/4,rn):0,
     title:p?(c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
-     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
+     +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -289,7 +289,7 @@ function stDashPatterns(){
    var v=unread?0:n[c[0]], rn=unread?0:(rec[B2K[c[3]]]||0);
    return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:unread?0:stBright(Math.min(1,v/4),rn),
      title:unread?(c[1]+', nothing recorded yet'):(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down on this record':', nothing handed down on this record')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
  o+='</section>';
  return o;}
 /* THE PATTERNS DRILL, READ OFF THE WHOLE RECORD, RESCOPED WITH THE TILE
@@ -367,7 +367,7 @@ function stDashIntegrity(p){
    var x=by[l.nm], v=x?x.score:0, rn=p?(rec[B2K[l.b]]||0):0;
    return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:p?stBright(v/10,rn):0,
      title:p?(l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 

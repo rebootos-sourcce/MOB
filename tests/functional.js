@@ -1990,7 +1990,7 @@ ok(core.z42.rad>core.z1.rad*1.5,
 /* this said "and it says what it is showing", which was the line under the
    depth bar. BA2 cut that line, so nothing says it now; the name is still how
    this block holds which layer resolved at 2.8. */
-ok(core.z28.res==='the seven seats','and the layer resolved there is the seven seats, got '+core.z28.res);
+ok(core.z28.res==='the seven assemblage points','and the layer resolved there is the seven assemblage points, got '+core.z28.res);
 console.log(' ',JSON.stringify(core));
 
 console.log('\n=== the readout stays off the pointer, and a real press reaches the core ===');
@@ -2462,9 +2462,9 @@ ok(pole.rows===8,'and eight axes on the roster, got '+pole.rows);
    end, so Discipline and Discernment are read off MIRROR rather than typed. The
    master list under them prints the word of the pole each master stands on
    too, since the same day's ruling on the Compass still showing teachers. */
-ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Clear Conduction/.test(pole.up)&&/Free Flow/.test(pole.up)&&!/Musashi|Buddha|Akhenaten|Krishna/.test(pole.up),
+ok(pole.mirrorUp.every(w=>pole.up.indexOf(w)>=0)&&/Clarity/.test(pole.up)&&/Free Flow/.test(pole.up)&&!/Musashi|Buddha|Akhenaten|Krishna/.test(pole.up),
  'the upward roster prints behaviour words for the eight axes and for the masters, and no teacher\'s name');
-ok(/False Light/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn)&&!/Lucifer/.test(pole.dn),
+ok(/Shadow/.test(pole.dn)&&/Sacrificial Extraction/.test(pole.dn)&&/Satan frozen/.test(pole.dn)&&!/Lucifer/.test(pole.dn),
  'the downward roster names the inversions and the nine circles');
 ok(/behaviours, not entities/.test(pole.dn),
  'and says in the copy that they are behaviours rather than entities');
@@ -3281,7 +3281,7 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    or the patterns that I'm about to release." The heading's place is the
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
-ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
+ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Point/.test(relrun.setup)
  /* counted in lines and the dose named Patterns again since 29 October,
     the controls he named are all still here */
  &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)&&/Patterns/.test(relrun.setup)
@@ -7361,9 +7361,9 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
   &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
   'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
- ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
+ ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown point it extends, <b>'+ck.above+'%</b>')>=0,
   'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
- ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
+ ok(ck.hover.indexOf('average weight of the root point it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
   'an anchor\'s hover on a rendition carries its weight and where it counts');
  await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
  await fp.waitForTimeout(300);

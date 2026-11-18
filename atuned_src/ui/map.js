@@ -1224,13 +1224,13 @@ var BMNERVE=[[
  [15,"Stellate ganglion, C7 to T1",48.3,19.7,0.45],
  [15,"Stellate ganglion, C7 to T1",51.7,19.7,0.45],
  [15,"Ganglion impar, the end of both chains",50,52,0.45],
- [16,"Crown seat",50,4.98,1.7],
- [17,"Third eye seat",50,10.57,1.7],
- [18,"Throat seat",50,20.91,1.7],
- [19,"Heart seat",50,30.51,1.7],
- [20,"Solar seat",50,40.21,1.7],
- [21,"Sacral seat",50,47.02,1.7],
- [22,"Root seat",50,53.55,1.7],
+ [16,"Crown point",50,4.98,1.7],
+ [17,"Third eye point",50,10.57,1.7],
+ [18,"Throat point",50,20.91,1.7],
+ [19,"Heart point",50,30.51,1.7],
+ [20,"Solar point",50,40.21,1.7],
+ [21,"Sacral point",50,47.02,1.7],
+ [22,"Root point",50,53.55,1.7],
  [23,"","M50.9,53.55 L50.9,47.02"],
  [24,"","M50.9,47.02 L50.9,40.21"],
  [25,"","M50.9,40.21 L50.9,30.51"],
@@ -3364,7 +3364,7 @@ var BMOVL={
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
  flow:{nm:'Flow',ic:'M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8',
-  tip:'How open each seat is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
+  tip:'How open each point is, up the spine: open, mildly impaired, moderately impaired, heavily impaired or blocked.'},
  sab:{nm:FB_BYK.saboteurs.nm,ic:FB_BYK.saboteurs.ic,tip:FB_BYK.saboteurs.tip},
  cx:{nm:FB_BYK.complexes.nm,ic:FB_BYK.complexes.ic,
   tip:'Where saboteurs join. Each complex is a mark with a line out to every address it is built on.'},
@@ -3384,8 +3384,8 @@ function bmOvVals(r){
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
  var sp=flSpeed();
  V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:fmtPct('flow',sp),c:'var(--accent)',
-  m:'Ring and number: flow, the share of charge that passes every seat, '+fmtPct('flow',sp)+'.'}
-  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
+  m:'Ring and number: flow, the share of charge that passes every point, '+fmtPct('flow',sp)+'.'}
+  :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every point yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}
 /* the burger, shut and open: the Field's fbShutPaint in its own words */
@@ -3473,7 +3473,7 @@ function bmGround(host){
            always Pattern and the Intake gets back what it had. */
 var BMVIEW={
  emap:{on:BM.ov.on,bar:true,one:false,mode:null,face:null,
-  say:'The body, front and back, with its nerves, the seven seats, the addresses and the lines running between them'},
+  say:'The body, front and back, with its nerves, the seven assemblage points, the addresses and the lines running between them'},
  masksview:{on:{masks:1},bar:false,one:true,mode:'pattern',face:'front',
   say:'The front of the body, with the masks on it'}};
 /* MOVING THE FIGURE EMPTIES THE HOST IT LEFT. bmBuild writes ids (bmcv, bmsv,

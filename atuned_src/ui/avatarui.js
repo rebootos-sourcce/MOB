@@ -775,7 +775,7 @@ function avRing(st){
    +(A.first?' '+A.first+(A.first===1?' address goes':' addresses go')+' first in your release, from your avatar.':'');
   return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+(A.first?' avh-first':'')+'" data-avsat="'+x.k+'" style="left:'
    +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+'. '+say
-   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' complete.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
+   +(A.pct==null?'':' '+fmtPct('complete',A.pct)+' whole.')+'" data-tip-t="'+x.nm+', '+AV_THE[x.b]+'" data-tip="'+esc(say)+'">'
    +avSvg(AV_IC[x.k])
    +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')
    +(A.held?'<span class="avs-n" aria-hidden="true">'+A.held+'</span>':'')+'</button>';}).join('');
@@ -1140,7 +1140,7 @@ function avMenu(st){
  var editing=!!(x&&AV.edit===x.i);
  var hd='<div class="av-ph avm-hd"><span class="av-pic">'+avSvg(AV_IC[A.k])+'</span>'
   +'<div><div class="av-pn">'+A.nm+'</div><p class="av-pa">'+AV_THE[b]+'</p></div>'
-  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Complete</small></span>':'')+'</div>';
+  +(x&&x.c!=null?'<span class="av-pp">'+fmtPct('complete',x.c)+'<small>Whole</small></span>':'')+'</div>';
  return '<aside class="av-card av-panel avm" style="--c:'+seatCol(b)+'">'+tabs+hd
   +(x&&!editing?avSeatWritten(st,b,x):'')+'</aside>';}
 /* what the sniffer hears while the release line is typed: where it lands,
@@ -1162,7 +1162,7 @@ function avLiveBe(notbe){
 function avPairs(st){
  var loose=st.rows.filter(function(x){return !avSeatOf(x);});
  if(!loose.length)return '';
- return '<section class="av-card av-pairs"><div class="pm-eye">No seat</div>'+loose.map(function(x){
+ return '<section class="av-card av-pairs"><div class="pm-eye">No point</div>'+loose.map(function(x){
   return '<div class="av-pair"><span class="av-pair-ic">'+avSvg(AV_IC.person)+'</span>'
    +'<span class="av-pair-t">'+esc(x.pair.be)+'</span>'
    +'<button type="button" class="btn" data-avtake="'+x.i+'">Take it off</button></div>';}).join('')+'</section>';}

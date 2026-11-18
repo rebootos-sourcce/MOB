@@ -193,7 +193,7 @@ var STMK_WHAT={
  stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
  stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
  stbody:'The one address in your body holding the most charge right now.',
- stfield:'The heaviest of your seven seats right now.',
+ stfield:'The heaviest of your seven assemblage points right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
  stmasks:'Your four strongest masks, strongest first.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
@@ -254,7 +254,7 @@ function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and
 function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
  s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
- 'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' seat.');}
+ 'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' point.');}
 function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
  stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+', the heaviest of your seven.');}
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
@@ -3669,7 +3669,7 @@ function stRailClear(){
    state again; the branches that still exist for them (stLaneModel,
    stOpenPattern and the rest) are reachable by nothing and are left
    alone rather than torn out blind. */
-var ST_SORTS=[['seat','Seat'],['heard','When heard'],['weight','Weight']];
+var ST_SORTS=[['seat','Point'],['heard','When heard'],['weight','Weight']];
 var ST_BKEY={}; Object.keys(K2BAND).forEach(function(k){ST_BKEY[K2BAND[k]]=k;});
 function stLaneModel(){
  var p=ST_PARSED,imps=p?p.imprints:[],rg={},wds={},heard=STR.heard;
@@ -3722,7 +3722,7 @@ function stLaneModel(){
 var ST_VIEWS=[
  ['lanes','Lanes','Lanes: Trace and Route together, the view wired in',
   'M3 20h18M6 17v-4M10 17v-9M14 17v-3M18 17v-7M6 11l4-5 4 6 4-4'],
- ['ring','Ring','Ring: the seven seats as a circle, a spoke for each word kept',
+ ['ring','Ring','Ring: the seven assemblage points as a circle, a spoke for each word kept',
   'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9.5a2.5 2.5 0 1 1 0 5a2.5 2.5 0 1 1 0-5M12 7V3.5M16.3 14.5l3 1.7M7.7 14.5l-3 1.7'],
  ['strip','Strip','Strip: Trace as first drawn, sliding left as you write',
   'M3 6.5h13M3 12h13M3 17.5h13M19.5 4v16M8 12V9M12 6.5V4M14 17.5v-3']];
@@ -4194,8 +4194,8 @@ function stListPaint(){
    +'<div class="st-ghd"><b>'+sym+esc(l.label)+'</b>'+note+'</div><div class="st-pills">'
    +pills.map(function(q){var k=l.key+':'+q.label;seen[k]=1;
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
-     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
-      :q.inf?'The seat was read. The words did not name this address.'
+     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This point has no address for it, so the charge stays at the point.'
+      :q.inf?'The point was read. The words did not name this address.'
       :'Your words named '+String(q.fet||'').toLowerCase()+'.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+fmtPct('atom',q.amt)+'</small></span>';}).join('')
    +'</div></div>';});

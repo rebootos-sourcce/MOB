@@ -84,25 +84,25 @@ var UNPACK_BASE={
  'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
 
  /* THE SEATS */
- 'seat':'A seat is one of seven places along the middle of your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
- 'assemblage point':'An assemblage point is a seat: one of seven places along the middle of your body where the instrument reads what is held.',
- 'seat:root':'Root is the seat at the base of the spine, and it holds what you stand on.',
- 'seat:sacral':'Sacral is the seat in the lower belly, and it holds what you want.',
- 'seat:solar':'Solar is the seat in the upper belly behind the stomach, and it holds what you carry.',
- 'seat:heart':'Heart is the seat in the middle of the chest, and it holds what you give.',
- 'seat:throat':'Throat is the seat at the neck, and it holds what you say.',
- 'seat:3rd eye':'The 3rd Eye is the seat in the forehead, and it holds what you see.',
- 'seat:crown':'Crown is the seat at the top of the head, and it holds what you belong to.',
+ 'seat':'An assemblage point, or point, is one of seven places along your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point, or point, is one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat:root':'Root is the point at the base of the spine, and it holds what you stand on.',
+ 'seat:sacral':'Sacral is the point in the lower belly, and it holds what you want.',
+ 'seat:solar':'Solar is the point in the upper belly behind the stomach, and it holds what you carry.',
+ 'seat:heart':'Heart is the point in the middle of the chest, and it holds what you give.',
+ 'seat:throat':'Throat is the point at the neck, and it holds what you say.',
+ 'seat:3rd eye':'The 3rd Eye is the point in the forehead, and it holds what you see.',
+ 'seat:crown':'Crown is the point at the top of the head, and it holds what you belong to.',
 
  /* THE SEATS IN THE YOGA TRADITION, which is where the Eastern lens takes its
     names. The name, the element and the seed sound are that tradition's own. */
- 'yoga:root':'In the yoga tradition the root seat is called Muladhara, its element is earth and its seed sound is Lam.',
- 'yoga:sacral':'In the yoga tradition the sacral seat is called Svadhisthana, its element is water and its seed sound is Vam.',
- 'yoga:solar':'In the yoga tradition the solar seat is called Manipura, its element is fire and its seed sound is Ram.',
- 'yoga:heart':'In the yoga tradition the heart seat is called Anahata, its element is air and its seed sound is Yam.',
- 'yoga:throat':'In the yoga tradition the throat seat is called Vishuddha, its element is ether and its seed sound is Ham.',
- 'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
- 'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
+ 'yoga:root':'In the yoga tradition the root point is called Muladhara, its element is earth and its seed sound is Lam.',
+ 'yoga:sacral':'In the yoga tradition the sacral point is called Svadhisthana, its element is water and its seed sound is Vam.',
+ 'yoga:solar':'In the yoga tradition the solar point is called Manipura, its element is fire and its seed sound is Ram.',
+ 'yoga:heart':'In the yoga tradition the heart point is called Anahata, its element is air and its seed sound is Yam.',
+ 'yoga:throat':'In the yoga tradition the throat point is called Vishuddha, its element is ether and its seed sound is Ham.',
+ 'yoga:3rd eye':'In the yoga tradition the 3rd Eye point is called Ajna, its element is light and its seed sound is Om.',
+ 'yoga:crown':'In the yoga tradition the crown point is called Sahasrara, its element is thought and its seed is silence.',
 
  /* THE SEAT'S NERVES, TONE AND PAGE, AX8, closed 2 October. Two drills, the
     Field shelf's seat answer (ui/mapshelf.js runSeatFlowDrill) and the seat
@@ -120,8 +120,8 @@ var UNPACK_BASE={
     explains so the two cannot drift. The hz is a sound healing choice and
     the sentence says whose. */
  'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
- 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this seat its note, so nothing in your body is measured to get it.',
- 'codex page':'The codex is the book this instrument is built on, and this number is the page this seat comes from.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this point its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this point comes from.',
  /* Two of the seven places a seat is found on the skin are anatomy words,
     printed on the same two lines. The other five are already plain. */
  'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
@@ -157,7 +157,7 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
+ 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of points.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -189,7 +189,7 @@ var UNPACK_BASE={
  'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
  'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
- 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each point passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
  'rail:positive':'Positive is charge you hold that is not costing you anything.',
  'rail:negative':'Negative is charge you hold that is taking something from you.',
@@ -235,7 +235,7 @@ var UNPACK_BASE={
  'practised':'Practised counts the rituals on your record that were done.',
  'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
  'from your words':'From your words means a feeling word you wrote names this pattern.',
- 'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
+ 'from the seat':'From the point means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',

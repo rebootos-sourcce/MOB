@@ -503,9 +503,9 @@ function ritTeachHtml(k){
  else if(t.held.length)h+='<p class="ad-p">'+esc(nm(t.held).join(' and '))
   +(many?' open':' opens')+' as the charge drops.</p>';
  h+='<p class="ad-p">'+(t.b.path
-   ?(t.seat?'The five paths sit at no one seat, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
-     :'The five paths sit at no one seat, and nothing is read yet, so this is kept without one.')
-   :'Kept at the '+esc(ritSeatNm(t.seat))+', the seat this axis is read at.')+'</p>';
+   ?(t.seat?'The five paths sit at no one point, so this is kept at the '+esc(ritSeatNm(t.seat))+', where you carry the most.'
+     :'The five paths sit at no one point, and nothing is read yet, so this is kept without one.')
+   :'Kept at the '+esc(ritSeatNm(t.seat))+', the point this axis is read at.')+'</p>';
  if(act)h+='<p class="ad-p"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-tbgo="1">Open the ritual</button></div>';
  /* on a worked example the starts are not drawn, as before SV19; only the
@@ -1092,7 +1092,7 @@ function ritPct(p,today){
  return due?{kept:kept, due:due, pct:100*kept/due}:null;}
 function ritPctHtml(p,today,size){
  var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
- var where=b?ritTagNm(b)+' seat':'No seat';
+ var where=b?ritTagNm(b)+' point':'No point';
  var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
  /* A COUNT, NOT A PERCENT, SV17. This printed the share kept as a percent
     and filled the ring to it, and accountability.js's own header rules the
@@ -1139,7 +1139,7 @@ function ritRowSeats(p){
  var b=ritSeat(p), all=(b?[b]:[]).concat(((p&&p.tags)||[]).filter(function(t){return t!==b&&BANDS.indexOf(t)>=0;}));
  if(!all.length)return '';
  var nm=all.map(ritTagNm);
- return (nm.length===1?nm[0]+' seat':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' seats')+', ';}
+ return (nm.length===1?nm[0]+' point':nm.slice(0,-1).join(', ')+' and '+nm[nm.length-1]+' points')+', ';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)

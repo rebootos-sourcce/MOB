@@ -16,7 +16,7 @@ function lensEastern(r){
  var b=r.darkB||'Root';
 
  /* ROUND PO. Sanskrit names and seed sounds, said as what they are. */
- return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the seat carrying the most'};}
+ return {t:'Eastern',a:b,b:unpackOf(String(b).toLowerCase(),'yoga'),c:'the point carrying the most'};}
 function lensDesign(r){
  var a=ARCH[r.pi]||{nm:''};
  return {t:'Design',a:a.nm,b:'defined at the '+(r.darkB||'Root').toLowerCase()+', '
@@ -279,8 +279,8 @@ function sumStory(r){
    +fmtPct('weight',held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
-     +', which is where the charge is dense enough to close the seat.'
-    :' No seat is closed, so what is held is not yet stopping flow.')
+     +', which is where the charge is dense enough to close the point.'
+    :' No point is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
    +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'.'
@@ -319,7 +319,7 @@ function sumStory(r){
        return '<b>'+esc(x.pair.be)+'</b>';}).join(' and ')
      +(blocked.length>1?' are not passing. The charge named above sits under them.'
                        :' is not passing. The charge named above sits under it.')
-   : ' Every seat your avatar depends on is passing.';
+   : ' Every point your avatar depends on is passing.';
  }else{
   gapLine=' No avatar has been stated, so there is nothing to measure this against. '
    +'Say who you are becoming and this paragraph names what stands in the way.';}
@@ -469,7 +469,7 @@ function sumSeats(){
     screen." A label names the slot, and this slot is the four seats carrying
     the most, sorted by load. "In the body" is already the axes' eyebrow on
     this page, and ui/mapshelf.js already calls the top one "Heaviest seat". */
- return '<div class="pm-eye">Heaviest seats</div>'+seats.map(function(x){
+ return '<div class="pm-eye">Heaviest points</div>'+seats.map(function(x){
    /* and a seat says what a closed one does rather than the word closed */
    return sumStructRow(x.p.n,
     x.held?'shut, so charge sits under it':'open, so charge passes through',
@@ -1302,7 +1302,7 @@ function sumFull(r){
    +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
     +sumGlance(r,true)
     +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest seats',sumSeats())
+    +sgFold('seats','Heaviest points',sumSeats())
     +sgFold('bind','Binds',sumBind())
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'

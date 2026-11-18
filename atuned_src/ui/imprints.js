@@ -16,7 +16,7 @@ var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WAN
 var ST_OWN=null;
 function stMine(){ return !ST_OWN||typeof CURP==='undefined'||ST_OWN===CURP; }
 var IMP_GROUP='band', IMP_PICK={};
-var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
+var IMP_GROUPS=[['band','Point'],['charge','Charge'],['sab','Saboteur'],
                 ['story','Story'],['expr','Expression']];
 function impLive(){
  return W.filter(function(n){return n.sq>=4||n.pole>=4;}).sort(function(a,b){return b.sq-a.sq;});}
@@ -86,7 +86,7 @@ function impPill(n,maxW,IX,ghost,inferred){
     a variable name and two bare counts. Each figure now says what it counts.
     feeds is the saboteurs the address is part of, from impIndex. */
  var fed=IX.feeds[n.i]||0;
- var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
+ var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' point. '
   +(ghost?'Waiting to land: '+fmtPct('atom',ghost)+'.'
     :(installed?opp+' installed at '+fmtPct('pole',n.pole)+'.'
       :'Charge left '+fmtPct('weight',n.sq)+', pain '+painOf(n,IX.bandLoad)
@@ -129,9 +129,9 @@ function impPill(n,maxW,IX,ghost,inferred){
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()+'.'
      : (gx&&gx.stated)
      ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
-       +' and this seat has no address for it, so the charge lands on the seat.'
+       +' and this point has no address for it, so the charge lands on the point.'
      : fl+' at the '+seat
-       +'. Your words named the seat, not the address, so this is where the '
+       +'. Your words named the point, not the address, so this is where the '
        +'charge lands and not what it is called.')
      +((gx&&gx.n>1)?' The amount is the sum across '+gx.n+' addresses.':'')
    : title;
@@ -222,7 +222,7 @@ function impRender(){
   var kseats={}; kids.forEach(function(k){kseats[k.seat]=1;});
   var ksn=Object.keys(kseats).length;
   h+='<div class="ip-bh ip-kh">Child patterns<em class="plain">across '
-   +ksn+(ksn===1?' seat':' seats')+'</em></div>';
+   +ksn+(ksn===1?' point':' points')+'</em></div>';
   kids.forEach(function(k){
    h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
     +'<span class="ip-kn">'+esc(k.ax)+'</span>'

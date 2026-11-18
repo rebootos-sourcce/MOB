@@ -19,12 +19,12 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
      Round J13. */
   +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'Flow',hot:false,raw:loadedTot?null:'\u2013'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
-    :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
+    :(loadedTot?'passing every point':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"
      when loaded and "Field clear" when not, while the value swapped too. A
      slot keeps its label; the value carries the state. And the empty state is
      said one way across the app: "nothing held". */
-  +'<div class="pm-side"><div class="pm-eye">Heaviest seat</div>'
+  +'<div class="pm-side"><div class="pm-eye">Heaviest point</div>'
   +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
   +(loadedTot?dom.p.n:'nothing held')+'</div>'
   +'<div class="pm-sub">'+(loadedTot?loadedTot+' held':'')+'</div></div></div>';
@@ -77,7 +77,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
     again in GX. Each row opens its own answer in Selection on a press. */
 
  /* the seven seats. bare numbers, per B19. */
- sh+='<div class="pm-eye" style="margin-top:14px">Seats</div><div class="pm-seats">';
+ sh+='<div class="pm-eye" style="margin-top:14px">Points</div><div class="pm-seats">';
  seats.forEach(function(s){var b=PMBANDS.filter(function(x){return x.k===s.p.k;})[0];
   sh+='<button class="pm-sr'+(PMPICK===s.p.k?' on':'')+(s.hot?'':' clear')+'" data-seat="'+s.p.k+'">'
    +'<i style="background:'+b.c+'"></i><span class="pm-sn">'+s.p.n+'</span>'

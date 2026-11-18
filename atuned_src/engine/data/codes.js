@@ -109,7 +109,7 @@ const CODE_SOURCES=[
 
 const CODE_KINDS=[
  ['saboteur','a named saboteur, by its SABDEF code'],
- ['cluster','an inferred saboteur: two or more addresses in one seat carrying one child emotion, or the cross seat leftovers of one emotion'],
+ ['cluster','an inferred saboteur: two or more addresses in one point carrying one child emotion, or the cross point leftovers of one emotion'],
  ['overshot','a saboteur or cluster read past the point where it serves'],
  ['family','a hyper-complex family of HCX_LIB'],
  ['pole','a family done past the point where it helps, from FAM_POLE'],

@@ -80,7 +80,7 @@ function dlyTermRx(){
  if(DLY_TERM_RX)return DLY_TERM_RX;
  var q=function(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');};
  var seats=BANDS.map(q).join('|'), laws=SINAMES.slice().sort(function(a,b){return b.length-a.length;}).map(q).join('|');
- DLY_TERM_RX=new RegExp('\\b(?:('+seats+') seat|('+laws+')\\b|(seats?)\\b|(coherence)\\b|(charge)\\b|(address(?:es)?)\\b)','g');
+ DLY_TERM_RX=new RegExp('\\b(?:('+seats+') point|('+laws+')\\b|(points?)\\b|(coherence)\\b|(charge)\\b|(address(?:es)?)\\b)','g');
  return DLY_TERM_RX;}
 function dlyCarry(text){
  var rx=dlyTermRx(), out='', at=0, m, used={};

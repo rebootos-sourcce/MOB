@@ -201,9 +201,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mirror.rows.every(r=>r.guess===!!mirror.inf[r.i]&&r.said===!mirror.inf[r.i]),
   'every address is tagged a guess exactly when parseStory marks it inferred: '
    +mirror.rows.map(r=>r.i+(r.guess?'g':'')+(r.said?'s':'')+'/'+mirror.inf[r.i]).join(' '));
- ok(mirror.rows.filter(r=>r.guess).every(r=>/The engine.s guess, from your (Heart|Solar|Sacral|Root|Throat|3rd Eye|Crown) seat/.test(r.text)),
+ ok(mirror.rows.filter(r=>r.guess).every(r=>/The engine.s guess, from your (Heart|Solar|Sacral|Root|Throat|3rd Eye|Crown) point/.test(r.text)),
   'and every guess says it is the engine\'s guess and names the seat it came from');
- ok(/A seat is one of seven places/.test(mirror.text)&&/An address is one exact place/.test(mirror.text),
+ ok(/An assemblage point, or point, is one of seven places/.test(mirror.text)&&/An address is one exact place/.test(mirror.text),
   'seat and address carry their plain meaning on the card, round PO');
  /* ONE ANSWER PER ADDRESS. */
  ok(mirror.global===0,'there is no single global "That is me" confirming every address at once');
@@ -676,12 +676,12 @@ console.log('\n=== F4: the mirror says which addresses are guesses, on the revie
  const diane=await read('I snapped at my co-founder in front of the team and I cannot stop replaying it.');
  ok(diane.stated===0&&diane.inferred>0,'Diane\'s sentence is all inferred by parseStory itself, '+diane.inferred+' inferred, '+diane.stated+' stated');
  ok(diane.saidTags===0&&diane.guessTags===diane.rows,'and every address on her mirror is tagged a guess, none as her words');
- ok(/^At your (Solar|Sacral|3rd Eye|Heart|Root|Throat|Crown) seat\./.test(diane.lead),
+ ok(/^At your (Solar|Sacral|3rd Eye|Heart|Root|Throat|Crown) point\./.test(diane.lead),
   'with nothing stated, each seat leads, not an address name, got "'+diane.lead.slice(0,40)+'"');
  ok(/snapped/.test(diane.text),'and the seat is tied to her own word that put weight there');
  ok(!/around the word/i.test(diane.text),'never "around the word" for a word she did not say');
  ok(diane.rows===diane.seats,'one address per seat shows, the rest behind a button that says how many: rows '+diane.rows+' seats '+diane.seats);
- ok(/more guesses at this seat/.test(diane.text),'and that button says they are guesses');
+ ok(/more guesses at this point/.test(diane.text),'and that button says they are guesses');
  ok(diane.entries===0,'nothing is written while she reads it');
 
  const marcus=await read('My partner says I am impossible to work with. She is probably right and I am still angry about it.');
@@ -693,7 +693,7 @@ console.log('\n=== F4: the mirror says which addresses are guesses, on the revie
 
  const angela=await read('My mother died last spring and I keep feeling her in my chest when I try to sleep.');
  ok(angela.stated===0&&angela.guessTags===angela.rows,'Angela\'s bereavement is all guesses and says so');
- ok(/The engine.s guess, from your Heart seat/.test(angela.text),'in the review\'s own words: the engine\'s guess, from your Heart seat');
+ ok(/The engine.s guess, from your Heart point/.test(angela.text),'in the review\'s own words: the engine\'s guess, from your Heart seat');
  const ang2=await page.evaluate(()=>{
   OB.more[OB.read[0].id]=true; obRender();
   const r=[...document.querySelectorAll('[data-obrow]')].find(x=>/Martyrdom/.test(x.innerText));

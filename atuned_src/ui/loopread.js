@@ -73,7 +73,11 @@ function lpPlural(n,one,many){return n+' '+(n===1?one:many);}
 function lpChain(x){
  var st=[];
  if(x.stories)st.push(['Written',lpPlural(x.stories,'entry','entries')+', '
-  +(x.named?unp('from your words'):unp('from the seat'))]);
+  /* 'from the seat' is the meaning table's key and stays, because a key is
+     identity; what a person reads is passed as the label, since a bare
+     unp(key) prints the key itself and printed the retired word (18
+     November, "Change seat and chakra to just point"). */
+  +(x.named?unp('from your words'):unp('from the seat','from the point'))]);
  var op=[];
  if(x.lines)op.push(x.lines+' '+unp('release line',x.lines===1?'release line':'release lines'));
  if(x.truths)op.push(x.truths+' '+unp('truth line',x.truths===1?'truth line':'truth lines'));
@@ -104,7 +108,7 @@ function lpChain(x){
 function lpRow(x,i){
  var w=lpWho(), was=lpOpen(w)[x.key];
  var open=was!==undefined?was:i===0;
- var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' seat','seat'):'';
+ var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' point','seat'):'';
  return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'

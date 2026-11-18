@@ -159,7 +159,7 @@ function anaRender(){
         that cannot see the chain has no grounds to make it */
      :(r.locked&&r.locked.length===SEE_ORDER.length?'':'Nothing is compounding. '))
    /* a count against a total is a score, and this is not a score */
-   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
+   +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every point is passing. ')
    /* HELD, NOT CARRYING, round RB. The count is of addresses at 4 or more,
       which this product calls held; carrying is anything above nothing
       (engine/compute.js, CARRYING IS NOT THE SAME AS HELD), so the word was
@@ -260,7 +260,7 @@ function anaRender(){
  out+=anaField('The nine axes','',
   CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
- out+=anaField('The seven seats','',
+ out+=anaField('The seven assemblage points','',
   /* a count of held addresses, so it prints as a count */
   seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
@@ -462,9 +462,9 @@ function anaAxisRow(nm){
   +'<span>'+esc(c.nm)+'</span><em>'+unp('axis','toward '+c.opp.toLowerCase())+'</em></button>';}
 function anaSeatRow(band){
  var s=flSeats().filter(function(x){return K2B[x.p.k]===band;})[0]; if(!s)return '';
- return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' seat')+'">'
+ return '<button type="button" class="ad-r" data-ana="'+anaKey('seat',s.p.n)+'" title="'+esc('Open the '+band.toLowerCase()+' point')+'">'
   +crBadge(band,Math.min(100,s.load*100),{size:'sm',raw:anaN(s.hot),title:anaPl(s.hot,'address','addresses')+' held at the '+band.toLowerCase()})
-  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' seat</em></button>';}
+  +'<span>'+esc(s.p.n)+'</span><em>'+anaSeatWord(band)+' point</em></button>';}
 function anaBands(list){var bs=[];list.forEach(function(n){if(n.b&&bs.indexOf(n.b)<0)bs.push(n.b);});
  return BANDS.filter(function(b){return bs.indexOf(b)>=0;});}
 
@@ -513,12 +513,12 @@ function anaByFeeling(list){
 function anaBySeat(list){
  return anaBars(anaGroup(list,function(n){return n.b;}).map(function(g){
   return {key:anaKey('seat',anaSeatNm(g.k)),lbl:anaSeatWord(g.k,true),v:g.v,c:seatCol(g.k),fig:anaFig(g),
-   title:'Open the '+String(g.k).toLowerCase()+' seat. The bar is the charge left on these fetters, added up.'};}));}
+   title:'Open the '+String(g.k).toLowerCase()+' point. The bar is the charge left on these fetters, added up.'};}));}
 /* the two splits, under one pair of headings, for any set of addresses */
 function anaSplits(list){
  if(!list.length)return '';
  return '<div class="pm-eye" style="margin-top:14px">By feeling</div>'+anaByFeeling(list)
-  +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(list);}
+  +'<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(list);}
 /* the patterns running on a set of addresses, or the lock where the plan
    cannot see them. Never "nothing runs here" to a plan that cannot look. */
 function anaRunning(r,list,head){
@@ -535,7 +535,7 @@ function anaStories(bands){
  var s='<div class="pm-eye" style="margin-top:14px">From your stories, '+hit.length+'</div>';
  return s+(hit.length?hit.slice(0,4).map(function(e){
   return '<div class="ad-q">'+esc(e.text.slice(0,130))+(e.text.length>130?'…':'')+'</div>';}).join('')
-  :'<p class="ad-p">No entry has landed on these seats yet.</p>');}
+  :'<p class="ad-p">No entry has landed on these points yet.</p>');}
 /* how many of a set are held, how many carry under the line, said once */
 function anaHeldSay(list){
  var h=list.filter(function(n){return n.sq>=4;}).length;
@@ -567,7 +567,7 @@ function anaChainCard(r,o){
  h+=anaKv([['Weight',crBadge(bs[0]||'Heart',pct('chain',o.w)||0,{size:'md',raw:fmtPct('chain',o.w),
    title:'How heavily it runs, on the same scale as an address'})],
   ['Fetters',anaN(lv.length)],['Held',anaN(lv.filter(function(n){return n.sq>=4;}).length)],
-  ['Seats',anaN(bs.length)]]);
+  ['Points',anaN(bs.length)]]);
  /* the word's own meaning, from the one table. Not "What it is": a
     saboteur's card carries that heading already, for its library entry
     (kbSabBlock), and two headings of one name read as one section twice. */
@@ -584,7 +584,7 @@ function anaChainCard(r,o){
   +(o.over?'Overshot. The opposite of the feeling underneath is put in past the point where it helps, '
     +'so these fetters will not shut, where a held fetter will not open. ':'')
   +'It runs on <b>'+anaPl(lv.length,'fetter','fetters')+'</b> at the '+anaAnd(bs.map(function(b){return b==='3rd Eye'?'3rd eye':b.toLowerCase();}))
-  +(bs.length===1?' seat':' seats')+'. '+anaHeldSay(lv)+' '+made
+  +(bs.length===1?' point':' points')+'. '+anaHeldSay(lv)+' '+made
   +(o.kind==='sab'&&o.score?' Matched at <b>'+o.score+'%</b>, a measure of how closely your feelings fit the ranges this saboteur is defined by.':'')
   +(o.kind==='sup'?' A super-complex costs more than it looks like it should, because you cannot see it as separate from you.':'')
   +'</p>';
@@ -614,7 +614,7 @@ function anaAxisCard(r,nm){
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
   +anaPl(own.length,'fetter','fetters')+'</b>. '+anaHeldSay(own)+'</p>';
  h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(own,10);
- h+='<div class="pm-eye" style="margin-top:12px">By seat</div>'+anaBySeat(own);
+ h+='<div class="pm-eye" style="margin-top:12px">By point</div>'+anaBySeat(own);
  return h+anaRunning(r,own,'Running on it');}
 function anaSeatCard(r,nm){
  var s2=flSeats().filter(function(x){return x.p.n===nm;})[0]; if(!s2)return null;
@@ -626,9 +626,9 @@ function anaSeatCard(r,nm){
     sentence. Vritti is gone: the codex makes it the wave around a nerve,
     never a spine level. The reason is written at engine/data/gloss.js. The
     Hz wears its own seat's colour, as ruled 25 September (TASKS.md AX8). */
- var h=anaHead('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
+ var h=anaHead('Point',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
   +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
- h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
+ h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The point sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
   +fmtPct('pass',s2.pass)+'</b> of what reaches it. <b>'+s2.hot+'</b> address'
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
@@ -646,7 +646,7 @@ function anaSeatCard(r,nm){
 function anaLawCard(r,nm){
  var l=SI.filter(function(x){return x.nm===nm;})[0]; if(!l)return null;
  var s=anaSeatNm(l.b);
- return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its seat</div>'
+ return lawDrillHtml(l,{ana:true})+'<div class="pm-eye" style="margin-top:12px">Its point</div>'
   +'<div class="ad-rows">'+anaSeatRow(l.b)+'</div>';}
 function anaDomCard(r,nm){
  var di=-1; DOMAINS.forEach(function(d,i){if(d.nm===nm)di=i;});
@@ -672,7 +672,7 @@ function anaArchCard(r,nm){
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
   /* how fully it is expressed, ruled 16 October; the lean against the
      strongest still orders the archetypes and is printed nowhere */
-  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
+  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its point pulls it down, and a release lifts it.'
   +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>'
    +(sbs.length?', and its '+unp('address','addresses')+' sit at '+esc(unpackList(sbs.map(srcSeatSay))):'')+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
@@ -686,9 +686,9 @@ function anaMaskCard(r,nm){
  var all=W.filter(function(n){return sb.indexOf(n.b)>=0;}).sort(anaBySq);
  var lv2=all.filter(function(n){return n.sq>=4;});
  var h=anaHead(unp('mask','Mask'),m2.nm,'speaks from '+esc(sb.join(' and ')));
- h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these seats'})],
+ h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these points'})],
   ['Held',anaN(lv2.length)]]);
- h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those seats.</p>'
+ h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those points.</p>'
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
  return h+anaSplits(all)+anaRunning(r,all,'Running under it')+anaStories(sb);}
 /* one seat and one feeling, the cell of the grid */
@@ -696,10 +696,10 @@ function anaCellCard(r,nm){
  var i=nm.indexOf(':'), b=nm.slice(0,i), f=nm.slice(i+1);
  var c=CHILD.filter(function(x){return x.nm===f;})[0]; if(!c||BANDS.indexOf(b)<0)return null;
  var list=W.filter(function(n){return n.b===b&&n.cf===f;}).sort(anaBySq);
- var h=anaHead('Seat and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
+ var h=anaHead('Point and feeling',f+' at the '+(b==='3rd Eye'?'3rd eye':b.toLowerCase()));
  h+='<p class="ad-p">'+(list.length?'<b>'+anaPl(list.length,'fetter','fetters')+'</b> at the '+anaSeatWord(b)
-   +' seat hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
-   :'No fetter at this seat holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
+   +' point hold '+esc(f.toLowerCase())+'. '+anaHeldSay(list)
+   :'No fetter at this point holds '+esc(f.toLowerCase())+', so nothing can gather here.')+'</p>';
  if(list.length)h+='<div class="pm-eye">Its fetters</div>'+anaAddrRows(list,12);
  h+='<div class="pm-eye" style="margin-top:12px">Under it</div><div class="ad-rows">'+anaAxisRow(f)+anaSeatRow(b)+'</div>';
  return h+(list.length?anaRunning(r,list,'Running here'):'');}
@@ -787,7 +787,7 @@ function anaMetCard(r,k){
  else if(k==='dq'){
   h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 40% as well as over it. '
    +'It is worked out from the addresses and is not measured on its own. It does not touch CQ. It feeds the pull.</p>'
-   +'<div class="pm-eye">Where it sits, by seat</div>'+bySeat()
+   +'<div class="pm-eye">Where it sits, by point</div>'+bySeat()
    +'<div class="pm-eye" style="margin-top:12px">Heaviest fetters</div>'+anaAddrRows(W.filter(function(n){return n.sq>0;}).sort(anaBySq),8);}
  else if(k==='pull'){
   /* the weights in the unit every address now prints, 17 October */
@@ -797,7 +797,7 @@ function anaMetCard(r,k){
    +'<div class="pm-eye">Pulling hardest</div><div class="ad-rows">'
    +W.filter(function(n){return n.sq>=2;}).sort(anaBySq).slice(0,10).map(function(n){
     return addrRow(n,{ana:true,em:'drags '+fmtPct('pull',leverPull(n.sq))});}).join('')+'</div>'
-   +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+bySeat();}
+   +'<div class="pm-eye" style="margin-top:12px">By point</div>'+bySeat();}
  else if(k==='ex'){
   var top=(typeof exCeiling==='function')?exCeiling():null;
   h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+fmtPct('cq',r.CQ)+'</b>, pull <b>'
@@ -963,14 +963,14 @@ function anaGrid(r){
     a feeling's name at the start of its row opens the feeling, and the thin
     bar under each name adds that whole column or row up. Same scale along
     each edge, so the longest bar is the heaviest seat or feeling. */
- var s='<div class="ana-grid" role="group" aria-label="Charge left by seat and feeling">'
+ var s='<div class="ana-grid" role="group" aria-label="Charge left by point and feeling">'
   +'<span class="ana-g-c"></span>'+cols.map(function(b){
    var ch=colT[b]?Math.max(6,Math.round(colT[b]/(cmax||1)*100)):0;
-   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' seat, every feeling. Open it.')+'">'
+   return '<button type="button" class="ana-g-h" data-ana="'+anaKey('seat',anaSeatNm(b))+'" title="'+esc('The '+b.toLowerCase()+' point, every feeling. Open it.')+'">'
     +'<span>'+anaSeatWord(b,true)+'</span><i style="width:'+ch+'%;background:'+seatCol(b)+'"></i></button>';}).join('');
  rows.forEach(function(c){
   var rw=rowT[c.nm]?Math.max(6,Math.round(rowT[c.nm]/(rmax||1)*100)):0;
-  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every seat. Open it.')+'">'
+  s+='<button type="button" class="ana-g-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc(c.nm+' at every point. Open it.')+'">'
    +'<span>'+esc(c.nm)+'</span><i style="width:'+rw+'%;background:'+seatCol(c.seat)+'"></i></button>';
   cols.forEach(function(b){
    var m=M[b+':'+c.nm];

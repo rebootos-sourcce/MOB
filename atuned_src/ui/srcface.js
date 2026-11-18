@@ -129,7 +129,7 @@
  const canvas=document.createElement('canvas');
  canvas.id='srcface';
  canvas.hidden=true;
- canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven seats, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
+ canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven assemblage points, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
     on the face, travels with it as the hover, since the box has no room for
     a caption of its own */
@@ -149,7 +149,7 @@
     which the tooltip sets (.tip-b, shell/head.html). */
  const TITLE=["Source's reading circle",
   "Dots: the 108 somatic addresses, exact places in your body. Bigger means more charge",
-  "Rings: the seven seats, base of the spine in the centre, top of the head outside",
+  "Rings: the seven assemblage points, base of the spine in the centre, top of the head outside",
   "Light between dots: a saboteur, a habit running on those places",
   "Rim marks: the laws, ways of keeping your integrity",
   "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");

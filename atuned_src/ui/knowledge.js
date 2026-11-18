@@ -364,7 +364,7 @@ const KB_OF={
  dom:'of your strongest blueprint lobe',
  arch:'of your strongest archetype',
  gate:'of every Law of Action read in your story',
- seat:'of the seat’s addresses carrying charge',
+ seat:'of the point’s addresses carrying charge',
  card:'of the axis the card releases, where the card names one',
  harm:'of the law kept, where the intake scores it',
  gloss:''};
@@ -391,7 +391,7 @@ function kbMatch(row,q){
    identity and the labels are what a person sees. */
 const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
- harm:'Universal law',gloss:'Term',seat:'Seat',mask:'Mask',card:'Card',
+ harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
 
 /* in order is the default, because he ruled that the universal laws go in
@@ -533,7 +533,7 @@ function kbRender(){
     line described the tiles' order to a person looking at the tiles. A deck's
     own line stays: it says what that deck's percent is a percent of, which
     nothing else on the screen says. */
- var title=q?'Search':deck?kbSecName(deck):'The seven seats';
+ var title=q?'Search':deck?kbSecName(deck):'The seven assemblage points';
  var scale=(!q&&deck&&KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'';
  var h='<div class="kb-top kbs">'
   +'<div class="kb-hdr">'
@@ -550,7 +550,7 @@ function kbRender(){
   +' aria-pressed="'+(KB_SORT==='weight')+'">By weight</button></span></div>'
   /* THE SEVEN SEATS, CROWN DOWN TO ROOT. The Intake page's map, the same
      tile and the same order, so the two pages read as one instrument. */
-  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven seats">'
+  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven assemblage points">'
   +SEATS.map(function(b){var on=bySeat&&KB_SEAT===b;
     return '<button type="button" class="iqa-tile kbs-tile" data-kbseat="'+esc(b)+'" data-st="'+(share[b]?2:0)+'" '
      +'aria-pressed="'+on+'" aria-label="'+esc(b+', '+kbSeatLine(b))+'" style="--c:'+seatCol(b)+'">'
@@ -602,8 +602,8 @@ function kbRender(){
    +'<span class="iqa-shl">'+esc(kbSeatLine(b))+'</span></div>'+inner+'</section>';}
  function across(inner){
   return '<section class="iqa-pn kbs-pn kbs-any" data-kbpn="any">'
-   +'<div class="iqa-ph"><span class="iqa-shn">Across every seat</span>'
-   +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
+   +'<div class="iqa-ph"><span class="iqa-shn">Across every point</span>'
+   +'<span class="iqa-shl">held by no one point</span></div>'+inner+'</section>';}
 
  h+='<div class="kbs-body">';
  if(showCq){
@@ -618,7 +618,7 @@ function kbRender(){
   h+=seatPanel(KB_SEAT,byDeck(mine));
   /* and what belongs to no seat, one press away and named, never dropped */
   var none=pool.filter(function(x){return !x.seats.length;});
-  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every seat</span>'
+  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every point</span>'
    +'<span class="kbs-fs">domains, bands, kinds and poles</span></summary>'
    +'<div class="kbs-fb">'+byDeck(none)+'</div></details>';
  }else{

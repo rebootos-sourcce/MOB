@@ -210,7 +210,7 @@ function codexRows(ws,wide){
  CHILD.forEach(function(c){
   if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
  if(wide)APC.forEach(function(r){
-  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' point, '+r.nv;});
  return out;}
 function somaPlaces(){
  var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
@@ -235,12 +235,12 @@ function somaPlaces(){
     +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
    else out.unseated.push(w);
    return;}
-  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  if(sk.length>1){out.refused[w]='the lexicon places it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
    return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
   if(veto.length){out.refused[w]='the codex holds '+veto[0].nm+' at the '+veto[0].loc
-   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+   +', which is the '+veto[0].seat+' point and not '+sk[0];return;}
   out.seat[w]=sk[0];});
  /* the two word places. A half and a place: the owner's ruling, checked
     against the codex wherever the codex says the same words. */
@@ -1636,7 +1636,7 @@ function lexComposite(){
   if(LEX[k])return;
   var a=lexAdd(k,out.seat,out.amt,'Anger',
    {src:'composite',from:'the seated members of LEXCOMP',
-    rule:'unanimous seat, family floor',cite:'canon'});
+    rule:'unanimous point, family floor',cite:'canon'});
   if(a.ok&&!a.already)out.added++;
   else out.unseated.push(k);});
  return out;}
@@ -1932,7 +1932,7 @@ function sniffAxes(p){
   shadow[im.fetter]+=im.amt;
   (cited[im.fetter]=cited[im.fetter]||[]).push(
    im.stated?'the text named '+im.fetter.toLowerCase():
-   im.inferred?'read from the '+im.band+' seat, no address named':
+   im.inferred?'read from the '+im.band+' point, no address named':
    'at '+im.name);});
  /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
     reason this block exists rather than trusting the imprints alone.
@@ -1958,7 +1958,7 @@ function sniffAxes(p){
   if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
   shadow[h.fet]+=Math.abs(h.amt||0)/3;
   (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
-   ', and its seat is shared with another axis so the imprint layer dropped it');});
+   ', and its point is shared with another axis so the imprint layer dropped it');});
  /* the composite. resentment is anger that has stopped moving, so it splits. */
  p.hits.forEach(function(h){
   var comp=LEXCOMP[h.t];

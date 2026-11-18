@@ -292,7 +292,7 @@ function coreOpen(){return Math.max(coreLayerA(0),coreLayerA(1),coreLayerA(2));}
 /* and what it has resolved, by name. The names fed the line under the depth
    bar until BA2 cut that line. They stay, because the functional gate holds
    the order the layers arrive in by them. */
-const CORE_LAYER_NM=['the triad','the seven seats','the twenty one laws'];
+const CORE_LAYER_NM=['the triad','the seven assemblage points','the twenty one laws'];
 function coreResolved(){
  var n='';
  for(var i=0;i<CORE_STEP.length;i++) if(coreLayerA(i)>0.5)n=CORE_LAYER_NM[i];
@@ -735,7 +735,7 @@ const VIEWS=[
      DQ... neither is Shadow's weight." One word for one quantity, so this
      reads charge weight, DQ's own name, not Shadow's. */
   tip:'What you are carrying, and where. The core is coherence, the ring is your 108 addresses and 4 field anchors, the wash is charge weight.'},
- {k:'B',nm:'Patterns',  layers:'charge, plus the seats named, the fetters and the saboteurs',
+ {k:'B',nm:'Patterns',  layers:'charge, plus the points named, the fetters and the saboteurs',
   tip:'The nine fetters and the saboteurs running on top of the charge. Each bead is one, and the threads show which addresses built it.'},
  {k:'C',nm:'Chains',    layers:'patterns, plus complexes, hyper, super, archetypes',
   tip:'How a pattern compounds. Saboteur into complex into hyper complex into super complex, inward, each built from the one outside it.'},

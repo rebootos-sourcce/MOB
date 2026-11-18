@@ -234,7 +234,7 @@ function ritSugHtml(st){
     the quiz. Where the cards come from is said in the line under it. */
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
   +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
+  +'Each is the practice that point calls for at the charge you carry now. Its mark is the point, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
 /* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
    ritual builder they should be colorized and related to the color of the
    chakra or fetter with their symbol." A card that runs as a release schedule
@@ -252,10 +252,10 @@ function ritSugMark(x,b){
  var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
  var col=b?seatCol(b):'var(--accent)';
  var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?fmtPct('weight',n.sq):'–'});
- var says=!b?'No seat yet, so the mark is empty.'
-  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
+ var says=!b?'No point yet, so the mark is empty.'
+  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the point, ')+'and the ring is '
     +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+fmtPct('weight',n.sq)+'.'
-  :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
+  :'The mark is the point. Nothing is held at '+ritThe(b)+', so the ring is empty.';
  return {badge:badge, says:says};}
 
 /* ---------------- ritual to avatar ----------------
@@ -296,7 +296,7 @@ function ritAvHtml(st){
  var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
  var hero='<span class="rv-avhero"'+rvTip('Your avatar',
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
-   all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
+   all===null?'':'Whole|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
   /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
      complete." It was wired, avState().overall in the ring's pill, and
@@ -309,10 +309,10 @@ function ritAvHtml(st){
      that."), and her two stories have moved nothing, because a worked
      example keeps no starting weight to measure against (avClosure). A
      person whose stories have released reads a percent there. */
-  +'<span class="rv-avlab">Complete</span>'
+  +'<span class="rv-avlab">Whole</span>'
   +'</span>';
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
-   'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
+   'Each day you keep a ritual turns your avatar one point, root to crown. Seven days make a turn, and three turns make a cycle.',
    'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Avatar')+'>'
   +'<div class="rv-cys">'+rings+'</div>'
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
@@ -337,11 +337,11 @@ function ritAvHtml(st){
   var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
   var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
   var said=!x?(fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'')
-   :x.gap.clear?'Clear at this seat.'
-   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
+   :x.gap.clear?'Clear at this point.'
+   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this point yet.';
   return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
-   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this seat yet. ')+said,
-    ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
+   +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this point yet. ')+said,
+    ap===null?'':'Whole|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,
@@ -349,7 +349,7 @@ function ritAvHtml(st){
     well, and with the heading saying it the label was the word twice on one
     card, so it went; the ring keeps its name in the tooltip. */
  return '<section class="rv-sec rv-c rv-c-av" data-slot="rail"><div class="rv-hd"><span class="rv-h">Avatar</span></div>'
-  +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
+  +'<p class="rv-mean">Your avatar\'s percent whole, the cycles your kept days turn, and each point your avatar has a story at.</p>'
   +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
 

@@ -786,7 +786,7 @@ const TIERDEF=[
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
   def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
-  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+  toward:'Compounding. Same point, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
@@ -809,7 +809,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest point first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -827,7 +827,7 @@ const TIERDEF=[
      rather than an instruction about the field, and it is the one band where
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
-  toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
+  toward:'Corrupt, and it is reached one address at a time. One point, one address, one line. Not a programme.'},
  /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
     name, like collapsed ... the energy wants to expand, not collapse." The
     product already says expanding and contracting for the direction a reading

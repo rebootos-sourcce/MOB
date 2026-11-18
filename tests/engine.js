@@ -966,7 +966,7 @@ g('15e \u00b7 the two nested bags');
  named(withEnt(Object.assign(ent(),{imprints:-1})),'a negative imprint count','.imprints');
  named(withEnt(Object.assign(ent(),{imprints:'three'})),'an imprint count that is not a number','.imprints');
  named(withEnt(Object.assign(ent(),{bands:'root'})),'a bands that is not an object','.bands');
- named(withEnt(Object.assign(ent(),{bands:{spleen:4}})),'a band naming no seat','names no seat');
+ named(withEnt(Object.assign(ent(),{bands:{spleen:4}})),'a band naming no point','names no point');
  named(withEnt(Object.assign(ent(),{bands:{root:'a lot'}})),'a band weight that is not a number','.bands.root');
  named(withEnt(Object.assign(ent(),{secret:'s'})),'an entry carrying a secret','may not carry secret');
  named(withEnt(Object.assign(ent(),{email:'a@b.c'})),'an entry carrying an email','may not carry email');
@@ -2265,7 +2265,8 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     Sacrificial Extraction, light is Grace against Lucifer. Lucifer keeps its
     name because his draft of it was rejected, see the next block. */
  ok(MIRROR.some(m=>m.k==='PO'&&m.up==='Discipline'&&m.dn==='Sacrificial Extraction'),'power is Discipline against Sacrificial Extraction');
- ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='False Light'),'light is Grace against False Light');
+ /* Grace against Shadow, 18 November, his words: "Grace against shadow. So use the word shadow." */
+ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='Shadow'),'light is Grace against Shadow');
  /* round KE, his words: "Just change illumination to light." The key stays IL. */
  ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
   'and the Heart axis is called Light, not Illumination');
@@ -2336,7 +2337,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     coherent word, the inverted word. Three inverted words are not here on
     purpose and are asserted unchanged below. The check reads the words off the
     data, so a later edit to one of them is a named diff and not a silent one. */
- {const want={IL:['Grace','False Light'],DE:['Devotion','Compulsive Craving'],OR:['Liberation','Engineered Chaos'],
+ {const want={IL:['Grace','Shadow'],DE:['Devotion','Compulsive Craving'],OR:['Liberation','Engineered Chaos'],
    PO:['Discipline','Sacrificial Extraction'],PE:['Discernment','Fraud'],TR:['Communion','Gatekeeping'],
    CH:['Grounded Fire','Reactivity'],RE:['Transmutation','Vengeance']};
   const bad=MIRROR.filter(m=>!want[m.k]||m.up!==want[m.k][0]||m.dn!==want[m.k][1]).map(m=>m.k+' '+m.up+'/'+m.dn);
@@ -2348,12 +2349,12 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   const pd={FL:'Poisoning',AL:'Coercive Abduction',HO:'Forced Alteration'}, pe={};
   E.PATHS.forEach(p=>{pe[p.k]=p;});
   ok(Object.keys(pd).every(k=>pe[k].dn===pd[k]),'the three researched inversions are Poisoning, Coercive Abduction and Forced Alteration');
-  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='False Light',
+  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='Shadow',
    'and the two paths that are axes read twice follow their axes\' words');
   const gov=CI.map(c=>c.by).join('|');
   ok(gov==='Gatekeeping|Judgment|Insatiability|Possessiveness|Reactivity|Vengeance|Violence|Fraud|Satan frozen',
    'the nine governors are behaviour words, and the ninth is not on his list so it is untouched, saw '+gov);
-  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Manipulation|Engineered Chaos|False Light',
+  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Manipulation|Engineered Chaos|Shadow',
    'the blueprint carries behaviour words for all four, Baal, Set and Lucifer included, as his 17 November words on the Compass still showing names ruled');
   /* THE THREE FIGURES WITH NO ENTRY ARE NOT INVENTED. Nimrod, the Harpies and
      Ephialtes are on his table and in no table here. A name is only added when
@@ -6979,7 +6980,7 @@ g('J14 · the starter recipe for each teacher');
   /* the master list prints the word and keeps the person as its key, so no
      master is shown by his own name and every one reads the pole he stands on */
   ok(E.MASTERS.every(x=>x.word&&x.word!==x.nm)&&E.MASTERS.filter(x=>x.nm==='Krishna')[0].word==='Free Flow'
-   &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clear Conduction',
+   &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clarity',
    'every master prints the word of the pole he stands on, and keeps his name only as a key');
   ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
   ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
@@ -7677,7 +7678,7 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
  refuse('again','.asked is not a list','a record that is not a list');
  refuse([{k:'again',seat:'solar',a:'moved',q:'Why there?'}],'may not carry q','a row carrying the question\'s words');
  refuse([{k:'pity',seat:'solar',a:'moved'}],'is not a question kind','an unknown kind');
- refuse([{k:'again',seat:'spleen',a:'moved'}],'names no seat','an unknown seat');
+ refuse([{k:'again',seat:'spleen',a:'moved'}],'names no point','an unknown seat');
  refuse([{k:'again',seat:'solar',a:'answered'}],'is not an outcome','an outcome the page cannot see');
  refuse(Array(srcAskedMax()+1).fill({k:'again',seat:'solar',a:'moved'}),'more than the','a record longer than every kind at every seat');
 }
@@ -7842,7 +7843,7 @@ g('SK1 · what the person answered in the Journal is kept on the entry, a seat a
   ok(!x.ok&&(x.errs||[]).join(' ').indexOf(frag)>=0,what+' is refused by name: '+(x.errs||[]).join(' ').slice(0,110));};
  refuse({seat:a,v:'no'},'.verdicts is not a list','a record that is not a list');
  refuse(['no'],'.verdicts[0] is not an object','a row that is not an object');
- refuse([{seat:'spleen',v:'no'}],'names no seat','an unknown seat');
+ refuse([{seat:'spleen',v:'no'}],'names no point','an unknown seat');
  refuse([{seat:a,v:'maybe'}],'is not an answer','an answer the ledger does not take');
  refuse([{seat:a,v:'no'},{seat:a,v:'yes'}],'repeats '+a,'a seat twice, which the writer cannot produce');
  refuse([{seat:a,v:'no',text:'x'}],'may not carry text','a key nobody declared');
@@ -9702,7 +9703,7 @@ g('RB · every worked example with a row runs rituals, written in the shapes the
  H.__rb=[{k:'box', b:'Spleen', on:null, n:0, back:2, d:'c'}]; let thr2='';
  try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr2=e.message;}
  delete H.__rb;
- ok(/nosuch names no practice/.test(thr)&&/Spleen is not a seat/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
+ ok(/nosuch names no practice/.test(thr)&&/Spleen is not a point/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
  ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
 }
 
@@ -9733,7 +9734,7 @@ g('Every worked example carries avatar pairs, each landing at the seat it is wri
  A.__av=[{b:'Spleen', be:'x', notbe:'y'}]; let thr='';
  try{E.ritexAvatar({nm:'__av'},NOW);}catch(e){thr=e.message;}
  delete A.__av;
- ok(/Spleen is not a seat/.test(thr),'a pair at no seat is refused by name, '+thr);
+ ok(/Spleen is not a point/.test(thr),'a pair at no seat is refused by name, '+thr);
 }
 
 g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, and the purpose writer\'s caps');
@@ -9819,7 +9820,7 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   ['a rating on no archetype',o=>{o.avatar.arch.Nobody=3;},/not an archetype/],
   ['a weight for a pair not on the record',o=>{o.avatar.load0.zz9=2;},/not on this record/],
   ['a weight past ten',o=>{o.avatar.load0.n1=12;},/not nought to ten/],
-  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a seat/],
+  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a point/],
   ['a tag list that is not words',o=>{o.avatar.tags.Throat.add=[3];},/not a list of words/],
   ['two pairs with one id',o=>{o.avatar.pairs[1].id='n1';},/on two pairs/],
   ['a pair id that is not an id',o=>{o.avatar.pairs[1].id='Not An Id!';},/not a pair id/],

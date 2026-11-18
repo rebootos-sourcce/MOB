@@ -1552,7 +1552,7 @@ const TIERDEF=[
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
   def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
-  toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
+  toward:'Compounding. Same point, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
@@ -1575,7 +1575,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest point first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -1593,7 +1593,7 @@ const TIERDEF=[
      rather than an instruction about the field, and it is the one band where
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
-  toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
+  toward:'Corrupt, and it is reached one address at a time. One point, one address, one line. Not a programme.'},
  /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
     name, like collapsed ... the energy wants to expand, not collapse." The
     product already says expanding and contracting for the direction a reading
@@ -1787,7 +1787,7 @@ const MIRROR=[
     open question, logged as thinking and not as a ruling. */
  {k:'IL', q:'Light', seat:'Heart',
   up:'Grace',   upd:'Love generated from within. Freely given. No transaction. Light that has a source.',
-  dn:'False Light', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  dn:'Shadow', dnd:'Pride as false light. Shine performed for reflection, not generated from Source.',
   ask:'Does this person’s warmth cost them anything, or does it require an audience?', ic:'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 110 8 4 4 0 010-8', dic:'M12 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16.4 6.99 19.2l1.2-5.6L4 9.8l5.6-.6z'},
  {k:'DE', q:'Desire and will', seat:'Sacral',
   up:'Devotion', upd:'Will surrendered to Source. Desire as devotion. Wanting that moves toward something beyond the self.',
@@ -1891,7 +1891,7 @@ const BLUEPRINT=[
  {nm:'Extractive Control', d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.'},
  {nm:'Manipulation', d:'Hot, chaotic, consuming. Appetite without direction. Destruction as the byproduct of appetite, not the goal. The Creator inverted.'},
  {nm:'Engineered Chaos', d:'Lies and disorder from within. It works from inside something whole to break it, instead of attacking from outside.'},
- {nm:'False Light', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
+ {nm:'Shadow', d:'Pride that cuts a person off from Source. The most capable way of working against coherence, and the hardest to spot, because it uses the words of coherence to serve decoherence.'}];
 
 /* ---- THE NINE CIRCLES, THE DESCENT ----
    Depth, governor, the pattern and where it sits in the body. The
@@ -1959,7 +1959,7 @@ const IC_NEW={
 IC_NEW['Free Flow']=IC_NEW['Krishna'];
 IC_NEW['Duty']=IC_NEW['Rama'];
 IC_NEW['Non Resistance']=IC_NEW['Lao Tzu'];
-IC_NEW['Clear Conduction']=IC_NEW['Akhenaten'];
+IC_NEW['Clarity']=IC_NEW['Akhenaten'];
 /* cold, structured extraction. the crown inverted, because that is what the
    codex calls it: order in service of control rather than governance */
 IC_NEW['Extractive Control']='M19 16.5l-3.6-4.2L12 18.5l-3.4-6.2L5 16.5v-9h14zM5 20h14';
@@ -2094,7 +2094,7 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
    proposals, marked proposed, each with the text it names to check them
    against. The keys are identity and are never reused. */
 const HOME_POLES=[
- {k:'SA', q:'Light', up:'Clear Conduction', dn:'Sabotage', home:null,
+ {k:'SA', q:'Light', up:'Clarity', dn:'Sabotage', home:null,
   from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
  {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
   from:'proposed', src:'Yasna 30 and 31'},
@@ -2395,7 +2395,7 @@ const DESCENT=[
  d:'the structure gives way downward and stays down',
  content:{
   inferred:false,
-  inferenceBasis:'The family name, its one-line description and its seat at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
+  inferenceBasis:'The family name, its one-line description and its point at the root are explicitly source-defined in HCX_LIB; the sub field\'s "depression · BPD · anxiety" is this product\'s own translation label naming three distinct DSM-5 categories, a mood disorder, a personality disorder and a category of anxiety disorders, and is not a claim that they are one clinical construct. The behavioral template below is a research-informed expansion built from literature on the three named conditions, their documented comorbidity, and their own internal structure, not a diagnosis of any of them.',
   behavior:'May show low mood, loss of interest, and fatigue that does not lift on its own, though a reanalysis of 3,703 outpatients found more than a thousand distinct symptom combinations meeting a clinical case definition of depression, so this is one picture among many rather than a fixed profile; may show a pervasive pattern of unstable mood, relationships, and self-image with impulsivity and a strong fear of abandonment, and where a depressive period sits inside this pattern specifically, a 35-study meta-analysis found it running with more anger, hostility, and self-criticism than depression on its own, though with high variation across the studies pooled, not simply a quieter version of the same low mood; may show excessive, hard-to-control worry about several areas of life most days, measured mainly through screening tools whose own factor structure is not settled in the literature. These are three different presentations, each internally variable in its own research base, and a field read as Collapse does not mean all three are present, or present at clinical severity, in any one person.',
   triggerMechanism:'A perceived loss, rejection, uncontrollable stressor, or threat to safety or belonging can start a downward move that does not find a floor. In the three named conditions this looks different (abandonment and invalidation in BPD, loss and perceived failure in depression, uncertainty and threat in anxiety disorders), but the shared shape this family tracks is charge dropping at the root and staying down rather than discharging or resolving. Where depression or anxiety sit alongside the BPD pattern, the literature ties the overlap to worse impulsivity, anger, and hopelessness rather than to one shared trigger, so the shared shape above is this family\'s own organizing idea and not a mechanism the clinical research states directly. This is a working formulation, not a universal cause, and not a substitute for an individual clinical assessment.',
   livedExample:'A person waits for a reply that does not come. The wait does not stay the size of the thing itself: it grows until it is the only thing in the room, and when the mood drops under it, the mood does not come back up once the message finally arrives.',
@@ -2493,8 +2493,8 @@ const DESCENT=[
   oppositeName:'Regulated Range', oppositeId:'opposite:Dysregulation', oppositeDefinition:'A working range that flexes with real demand and still returns to a steady middle: energy, mood and attention that rise and fall with circumstance without overshooting past function, and a felt sense of returning to baseline rather than crashing past it.',
   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
   confidence:0.5,
-  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", seat Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
-  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a seat and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
+  crosswalk:'This entry corresponds to HCX_LIB\u2019s own Dysregulation hyper complex (engine/data/nodes.js, sub:"bipolar \u00b7 ADHD", point Sacral) by name only: it is a DESCENT-table correspondence read inside the gated dark read, never a fetter, saboteur or complex parentage link, and compute() builds no fam or pair tie for it the way it does for Sociopathy and Psychopathy, so no edge is fabricated. But the gate it would sit behind fires only on "both at once" (outward shape and organized control, the harm-to-others malignancy reading Narcissism, Machiavellianism, Sociopathy and Psychopathy share), and nothing in this research supports reading bipolar disorder or ADHD as an other-directed harm pattern, so this table, behind this gate, would itself assert a correspondence the record does not support. HCXCARD.dysregulation (engine/data/hcxcard.js) already carries equivalent behavioral content to every person carrying the pattern, with no malignancy gate and no clinical name, which is the alternative placement named in the pass D finding below.',
+  falsification:'A practitioner checking this correspondence against a specific person would look for: no distinct days-to-weeks mood episode that departs from the person\u2019s own baseline (disconfirms the bipolar half); no attentional or hyperactivity-impulsivity pattern present since before age 12 (disconfirms the ADHD half); a predominantly inattentive presentation with no high or expansive pole ever reported, which this entry\u2019s "overshoots at both ends" image does not fit, and which covers roughly a fifth to a third of ADHD cases; swings that track an identifiable external cause, sleep loss, a medication change, a medical condition such as thyroid or perimenopause, or substance use, and resolve when that cause is addressed rather than recurring on their own; a better fit with borderline personality disorder\u2019s affective lability, which the De Prisco et al 2023 meta-analysis found more strongly evidenced against emotion dysregulation than the ADHD comparison (6 studies, n=1001, against 3 studies, n=232); and, most basically, a story that does not corroborate the swing at all, since the hyper complex is computed from two saboteurs at a point and can fire without the person\u2019s own account matching the shape this entry describes. Any one of these is reason to treat the correspondence as not holding for that person, and the practice line above should be withheld rather than offered on a correspondence that does not hold.',
   trustBoundary:'This content, the behavioral template, the confidence number, the research sources and passes, and above all the clinical cluster name carried privately on HCX_LIB as sub ("bipolar \u00b7 ADHD", printed to nobody per engine/data/hcxcard.js\u2019s own comment) sits in the same consequential class CLAUDE.md already names for a practitioner\u2019s sight of somatic and psychological self report: it needs explicit consent, a visible list of who has sight, and revocation, never a silent default. Before a practitioner is granted sight of it, the client should be told, in plain words, that a research-informed structural correspondence exists on this pattern, that it is not a diagnosis, what it is based on, and that they can revoke the grant at any time. A practitioner who has sight of it must never state it to the client as a diagnosis of bipolar disorder or ADHD, never use the cluster name with the client at all, never treat the engine\u2019s computed presence of the pattern as sufficient evidence on its own without checking it against the falsification signs above and the client\u2019s own account, and never work the structural layer directly: DESCENT_REFER\u2019s own line already holds for this entry exactly as it holds for the other four, work at the address, say plainly that the structural layer is not worked here, and refer to a licensed clinician alongside, not instead.',
   reviewStatus:'external-research-pass-A-done, external-research-pass-B-done, external-research-pass-C-done, external-research-pass-D-done. All four passes complete; this is the final draft for human review, not yet written to any file. Pass D traced the tie into the real engine and confirmed no fabricated edge, named concrete falsification signs, and stated the consent and trust boundary, but it did not resolve, and explicitly hands to the owner, whether the bipolar-ADHD bundle should be one hyper complex or two, and whether this entry belongs in the malignancy-gated DESCENT table at all rather than an ungated surface like HCXCARD.dysregulation, which already exists with equivalent content and no clinical name. That placement call, not a research pass, is what would move confidence or kind. Confidence is left at 0.5, unmoved, consistent with passes A through C.',
   researchSources:['https://www.nimh.nih.gov/health/topics/bipolar-disorder','https://www.nimh.nih.gov/health/topics/attention-deficit-hyperactivity-disorder-adhd','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9567078/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9403243/','https://pubmed.ncbi.nlm.nih.gov/25406047/','https://pubmed.ncbi.nlm.nih.gov/33515607/','https://pubmed.ncbi.nlm.nih.gov/21278822/','https://pmc.ncbi.nlm.nih.gov/articles/PMC7027938','https://pubmed.ncbi.nlm.nih.gov/31792363/','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9464828/','https://core-prod.cambridgecore.org/core/services/aop-cambridge-core/content/view/A87DE2F2846B9019656A97ECA842B901/S003329172300243Xa.pdf/emotion_dysregulation_in_bipolar_disorder_compared_to_other_mental_illnesses_a_systematic_review_and_metaanalysis.pdf','https://pmc.ncbi.nlm.nih.gov/articles/4282137','https://www.ajmc.com/view/emotional-dysregulation-and-executive-dysfunction-in-patients-with-adhd-and-bipolar-disorder','https://eprints.whiterose.ac.uk/id/eprint/183369/1/Attention-DeficitHyperactivity%20Disorder%20Predominantly%20Inattentive%20SubtypePresentation%20Research%20Progress%20and%20Translational%20St.pdf','https://chadd.org/about-adhd/adhd-quick-facts-adhd-presentations/','https://www.nature.com/articles/s41398-021-01666-3','https://resolve.cambridge.org/core/journals/european-psychiatry/article/does-temperamental-instability-support-a-continuity-between-bipolar-ii-disorder-and-major-depressive-disorder/CC0750BAF0C64183F751504434175FCA','https://cambridge.org/core/journals/european-psychiatry/article/does-bipolar-disorder-differ-from-other-mental-illnesses-in-terms-of-emotion-dysregulation-a-systematic-review-and-metaanalysis/BA6413AA6D21BF1035E53E02EEE14E04','https://archive-ouverte.unige.ch/unige:89042'],
@@ -2986,7 +2986,7 @@ var PRACTICE=[
   how:'Visualise your parents and grandparents. Identify what you took on from each. For '
    +'every pattern, decide: keep, transform, or release. Then run the release on the ones '
    +'you named.'},
- {k:'chakra', nm:'Individual Chakra Meditation', track:'Energy', min:20, tier:3,
+ {k:'chakra', nm:'Individual Point Meditation', track:'Energy', min:20, tier:3,
   d:'One band at a time. Five minutes of breath, ten of visualisation.',
   how:'Choose the band carrying the most. Five minutes of breath to ground. Then hold a '
    +'coloured sphere at that nerve plexus for ten to fifteen minutes. One band per sitting.'},
@@ -3281,7 +3281,7 @@ var PAINREG=[
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', q:'Light', opp:'False Light', draft:true,
+ {k:'IL', q:'Light', opp:'Shadow', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',
@@ -4211,7 +4211,7 @@ const ZONEPT={
    nerve context, not the individual patterns, and this file
    does not invent what the source does not hold.
    ============================================================ */
-const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival charge is stored here, in the nerves at the base of the spine, because the body's first question, am I safe?, runs through its lowest nerves. Not having enough, getting hurt and being pushed out of the group all land here. Of the patterns released here, about 28 in every 100 have had their opposite installed, the most of any seat. This layer is on the move.","sub":[["Survival Fear",193,93],["Physical Body",114,2],["Financial Scarcity",82,0],["Tribal / Family",63,1],["Shelter / Stability",18,34]]},{"b":"Sacral","nv":"Sacral Plexus (S1-S3) / Hypogastric","d":"Making things and wanting things are stored here, in the nerves of the lower belly and pelvis, because these are the body's making nerves. Holding back what you want to make is a charge here, and these nerves fire every time you stop yourself. Only about 3 in every 100 patterns released here have had their opposite installed, the fewest of any seat. The charge from holding back runs deeper here than anywhere else.","sub":[["Creativity Suppression",211,7],["Emotional Flow",197,5],["Pleasure / Guilt",135,1],["Sexual Identity",64,1],["Relationships / Intimacy",13,2]]},{"b":"Solar","nv":"Solar / Celiac Plexus (T5-T12)","d":"The solar plexus, behind your stomach, is the most complex bundle of nerves outside the brain that runs without you thinking about it. Power, self-worth, shame and will are all stored here, because this is where the body works out where it stands with the world. The gut feeling of \"can I handle this?\" comes from here. About a third of every pattern in the catalog sits at this seat. Every big saboteur group in the catalog has its root address here.","sub":[["Self-Worth / Inadequacy",366,56],["Willpower / Giving Up",330,1],["Power / Powerlessness",124,16],["Control / Chaos",118,6],["Anger / Rage",111,1],["Shame / Humiliation",92,1],["Responsibility Avoidance",68,5]]},{"b":"Heart","nv":"Cardiac Plexus / Vagus (T1-T4)","d":"The nerves around the heart take in branches of the vagus nerve, which carry news about other people up from the gut. Grief, love, being left and forgiving are stored here, because the heart carries what happens between you and other people through its nerves. About 15 in every 100 patterns released here have had their opposite installed, second only to the root. When heart patterns clear, their opposites install well.","sub":[["Love / Fear of Love",122,11],["Forgiveness",84,7],["Connection / Isolation",25,16],["Abandonment / Rejection",23,2],["Grief / Loss",14,3]]},{"b":"Throat","nv":"Pharyngeal / Cervical Plexus (C1-C4)","d":"The nerves in your neck run the parts you speak with. Holding your voice back is a charge in those nerves, a real tightening around your throat and mouth, laid down every time you were shut up, shamed for speaking or punished for having a voice. Voice suppression alone is 405 patterns, far more than anything else at the throat. It is not about confidence. It is the nerves at the top of your neck firing the moment you go to speak.","sub":[["Voice Suppression",405,5],["Self-Expression Blocks",38,26],["Public Speaking / Visibility",32,6],["Judgement Fear",17,0]]},{"b":"3rd Eye","nv":"Optic / Trigeminal / Cranial Nerves (CN II, V)","d":"The trigeminal nerve is the biggest nerve in the head, and it links into the nerves you see with. Being stuck on a choice, or not knowing which way to go, is not a thinking problem. It is a charge in those nerves that fires just as you are about to pick a direction. Vision and direction carry 123 patterns, more than anything else here. The charge that stops you seeing your next step has an exact address in a nerve of the head.","sub":[["Vision / Direction",123,9],["Perception / Reality",69,1],["Decision Paralysis",23,6],["Intuition Denial",17,2],["Overthinking / Mental Loops",9,0]]},{"b":"Crown","nv":"Pineal / Reticular Formation / Cranial Convergence","d":"Every sentence that starts with I am is stored at the crown, because this is where all the nerves of the head meet. Every belief about who you are, and every story that keeps you small, runs through the pineal gland and a net of nerves in the brainstem. The crown is not a spiritual place. It is a meeting point of nerves. There are 196 identity patterns here, each one an I am sentence that keeps you small, fired by the nerves like a command.","sub":[["Identity / I Am",196,17],["Existential Despair",106,9],["God / Source",56,1],["Surrender / Trust",14,4],["Purpose / Mission",14,0],["Ascension / Awakening",2,1]]}];
+const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival charge is stored here, in the nerves at the base of the spine, because the body's first question, am I safe?, runs through its lowest nerves. Not having enough, getting hurt and being pushed out of the group all land here. Of the patterns released here, about 28 in every 100 have had their opposite installed, the most of any point. This layer is on the move.","sub":[["Survival Fear",193,93],["Physical Body",114,2],["Financial Scarcity",82,0],["Tribal / Family",63,1],["Shelter / Stability",18,34]]},{"b":"Sacral","nv":"Sacral Plexus (S1-S3) / Hypogastric","d":"Making things and wanting things are stored here, in the nerves of the lower belly and pelvis, because these are the body's making nerves. Holding back what you want to make is a charge here, and these nerves fire every time you stop yourself. Only about 3 in every 100 patterns released here have had their opposite installed, the fewest of any point. The charge from holding back runs deeper here than anywhere else.","sub":[["Creativity Suppression",211,7],["Emotional Flow",197,5],["Pleasure / Guilt",135,1],["Sexual Identity",64,1],["Relationships / Intimacy",13,2]]},{"b":"Solar","nv":"Solar / Celiac Plexus (T5-T12)","d":"The solar plexus, behind your stomach, is the most complex bundle of nerves outside the brain that runs without you thinking about it. Power, self-worth, shame and will are all stored here, because this is where the body works out where it stands with the world. The gut feeling of \"can I handle this?\" comes from here. About a third of every pattern in the catalog sits at this point. Every big saboteur group in the catalog has its root address here.","sub":[["Self-Worth / Inadequacy",366,56],["Willpower / Giving Up",330,1],["Power / Powerlessness",124,16],["Control / Chaos",118,6],["Anger / Rage",111,1],["Shame / Humiliation",92,1],["Responsibility Avoidance",68,5]]},{"b":"Heart","nv":"Cardiac Plexus / Vagus (T1-T4)","d":"The nerves around the heart take in branches of the vagus nerve, which carry news about other people up from the gut. Grief, love, being left and forgiving are stored here, because the heart carries what happens between you and other people through its nerves. About 15 in every 100 patterns released here have had their opposite installed, second only to the root. When heart patterns clear, their opposites install well.","sub":[["Love / Fear of Love",122,11],["Forgiveness",84,7],["Connection / Isolation",25,16],["Abandonment / Rejection",23,2],["Grief / Loss",14,3]]},{"b":"Throat","nv":"Pharyngeal / Cervical Plexus (C1-C4)","d":"The nerves in your neck run the parts you speak with. Holding your voice back is a charge in those nerves, a real tightening around your throat and mouth, laid down every time you were shut up, shamed for speaking or punished for having a voice. Voice suppression alone is 405 patterns, far more than anything else at the throat. It is not about confidence. It is the nerves at the top of your neck firing the moment you go to speak.","sub":[["Voice Suppression",405,5],["Self-Expression Blocks",38,26],["Public Speaking / Visibility",32,6],["Judgement Fear",17,0]]},{"b":"3rd Eye","nv":"Optic / Trigeminal / Cranial Nerves (CN II, V)","d":"The trigeminal nerve is the biggest nerve in the head, and it links into the nerves you see with. Being stuck on a choice, or not knowing which way to go, is not a thinking problem. It is a charge in those nerves that fires just as you are about to pick a direction. Vision and direction carry 123 patterns, more than anything else here. The charge that stops you seeing your next step has an exact address in a nerve of the head.","sub":[["Vision / Direction",123,9],["Perception / Reality",69,1],["Decision Paralysis",23,6],["Intuition Denial",17,2],["Overthinking / Mental Loops",9,0]]},{"b":"Crown","nv":"Pineal / Reticular Formation / Cranial Convergence","d":"Every sentence that starts with I am is stored at the crown, because this is where all the nerves of the head meet. Every belief about who you are, and every story that keeps you small, runs through the pineal gland and a net of nerves in the brainstem. The crown is not a spiritual place. It is a meeting point of nerves. There are 196 identity patterns here, each one an I am sentence that keeps you small, fired by the nerves like a command.","sub":[["Identity / I Am",196,17],["Existential Despair",106,9],["God / Source",56,1],["Surrender / Trust",14,4],["Purpose / Mission",14,0],["Ascension / Awakening",2,1]]}];
 const APC_REL=3688, APC_EMB=358;
 
 /* ============================================================
@@ -5337,25 +5337,25 @@ var UNPACK_BASE={
  'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
 
  /* THE SEATS */
- 'seat':'A seat is one of seven places along the middle of your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
- 'assemblage point':'An assemblage point is a seat: one of seven places along the middle of your body where the instrument reads what is held.',
- 'seat:root':'Root is the seat at the base of the spine, and it holds what you stand on.',
- 'seat:sacral':'Sacral is the seat in the lower belly, and it holds what you want.',
- 'seat:solar':'Solar is the seat in the upper belly behind the stomach, and it holds what you carry.',
- 'seat:heart':'Heart is the seat in the middle of the chest, and it holds what you give.',
- 'seat:throat':'Throat is the seat at the neck, and it holds what you say.',
- 'seat:3rd eye':'The 3rd Eye is the seat in the forehead, and it holds what you see.',
- 'seat:crown':'Crown is the seat at the top of the head, and it holds what you belong to.',
+ 'seat':'An assemblage point, or point, is one of seven places along your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point, or point, is one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat:root':'Root is the point at the base of the spine, and it holds what you stand on.',
+ 'seat:sacral':'Sacral is the point in the lower belly, and it holds what you want.',
+ 'seat:solar':'Solar is the point in the upper belly behind the stomach, and it holds what you carry.',
+ 'seat:heart':'Heart is the point in the middle of the chest, and it holds what you give.',
+ 'seat:throat':'Throat is the point at the neck, and it holds what you say.',
+ 'seat:3rd eye':'The 3rd Eye is the point in the forehead, and it holds what you see.',
+ 'seat:crown':'Crown is the point at the top of the head, and it holds what you belong to.',
 
  /* THE SEATS IN THE YOGA TRADITION, which is where the Eastern lens takes its
     names. The name, the element and the seed sound are that tradition's own. */
- 'yoga:root':'In the yoga tradition the root seat is called Muladhara, its element is earth and its seed sound is Lam.',
- 'yoga:sacral':'In the yoga tradition the sacral seat is called Svadhisthana, its element is water and its seed sound is Vam.',
- 'yoga:solar':'In the yoga tradition the solar seat is called Manipura, its element is fire and its seed sound is Ram.',
- 'yoga:heart':'In the yoga tradition the heart seat is called Anahata, its element is air and its seed sound is Yam.',
- 'yoga:throat':'In the yoga tradition the throat seat is called Vishuddha, its element is ether and its seed sound is Ham.',
- 'yoga:3rd eye':'In the yoga tradition the 3rd Eye seat is called Ajna, its element is light and its seed sound is Om.',
- 'yoga:crown':'In the yoga tradition the crown seat is called Sahasrara, its element is thought and its seed is silence.',
+ 'yoga:root':'In the yoga tradition the root point is called Muladhara, its element is earth and its seed sound is Lam.',
+ 'yoga:sacral':'In the yoga tradition the sacral point is called Svadhisthana, its element is water and its seed sound is Vam.',
+ 'yoga:solar':'In the yoga tradition the solar point is called Manipura, its element is fire and its seed sound is Ram.',
+ 'yoga:heart':'In the yoga tradition the heart point is called Anahata, its element is air and its seed sound is Yam.',
+ 'yoga:throat':'In the yoga tradition the throat point is called Vishuddha, its element is ether and its seed sound is Ham.',
+ 'yoga:3rd eye':'In the yoga tradition the 3rd Eye point is called Ajna, its element is light and its seed sound is Om.',
+ 'yoga:crown':'In the yoga tradition the crown point is called Sahasrara, its element is thought and its seed is silence.',
 
  /* THE SEAT'S NERVES, TONE AND PAGE, AX8, closed 2 October. Two drills, the
     Field shelf's seat answer (ui/mapshelf.js runSeatFlowDrill) and the seat
@@ -5373,8 +5373,8 @@ var UNPACK_BASE={
     explains so the two cannot drift. The hz is a sound healing choice and
     the sentence says whose. */
  'plexus':'A plexus is a bundle of nerves that meet and branch out at one place in your body.',
- 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this seat its note, so nothing in your body is measured to get it.',
- 'codex page':'The codex is the book this instrument is built on, and this number is the page this seat comes from.',
+ 'seat tone':'Hz counts how many times a note shakes in one second, and sound healers gave this point its note, so nothing in your body is measured to get it.',
+ 'codex page':'The codex is the book this instrument is built on, and this number is the page this point comes from.',
  /* Two of the seven places a seat is found on the skin are anatomy words,
     printed on the same two lines. The other five are already plain. */
  'spot:throat':'The suprasternal notch is the soft dip at the bottom of your neck, between your two collarbones.',
@@ -5410,7 +5410,7 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
+ 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of points.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -5442,7 +5442,7 @@ var UNPACK_BASE={
  'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
  'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
  'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
- 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each point passing on part of what it gets.',
  'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
  'rail:positive':'Positive is charge you hold that is not costing you anything.',
  'rail:negative':'Negative is charge you hold that is taking something from you.',
@@ -5488,7 +5488,7 @@ var UNPACK_BASE={
  'practised':'Practised counts the rituals on your record that were done.',
  'not done':'Not done counts the times in a row a ritual came due and was not marked done.',
  'from your words':'From your words means a feeling word you wrote names this pattern.',
- 'from the seat':'From the seat means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
+ 'from the seat':'From the point means your words pointed at this part of the body, and the instrument picked the spot there because no word named one.',
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
@@ -6339,7 +6339,7 @@ const CODE_SOURCES=[
 
 const CODE_KINDS=[
  ['saboteur','a named saboteur, by its SABDEF code'],
- ['cluster','an inferred saboteur: two or more addresses in one seat carrying one child emotion, or the cross seat leftovers of one emotion'],
+ ['cluster','an inferred saboteur: two or more addresses in one point carrying one child emotion, or the cross point leftovers of one emotion'],
  ['overshot','a saboteur or cluster read past the point where it serves'],
  ['family','a hyper-complex family of HCX_LIB'],
  ['pole','a family done past the point where it helps, from FAM_POLE'],
@@ -6852,7 +6852,7 @@ var PCT_KIND={
     exists to stop. This is a law mean read seat by seat, nothing a person
     committed to or carried out. */
  lawseat:   {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
-             say:'the same laws read seat by seat, up the body'},
+             say:'the same laws read point by point, up the body'},
  /* ladder.js, intentionRead. Ruled 25 September, "you either did the thing
     you said you were gonna do or you didn't", said against done over the
     last seven days, no charge read into it. Wired in 28 October: the
@@ -6915,10 +6915,10 @@ var PCT_KIND={
              say:'how hard the shadow drags'},
  /* ui/map.js:202, a seat's held charge over its addresses, out of ten */
  seatload:  {lo:0, hi:1, src:'ui/map.js', find:'var load=hot.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length)/10;',
-             say:'the load a seat carries'},
+             say:'the load a point carries'},
  /* ui/map.js:203, what a seat passes on */
  pass:      {lo:0, hi:1, src:'ui/map.js', find:'pass:Math.max(0,1-load*1.35)',
-             say:'what one seat passes on'},
+             say:'what one point passes on'},
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
@@ -6933,7 +6933,7 @@ var PCT_KIND={
     quiz self report is the one route where a story moves it, through this
     same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
-             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
+             say:'how fully an archetype is expressed, dragged by the charge at its point'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -6952,10 +6952,10 @@ var PCT_KIND={
  /* charfield.js:60, how closed a seat reads on the Character page, a smooth
     step clamped to nought and one */
  closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
-             say:'how closed a seat is, the shadow at that seat'},
+             say:'how closed a point is, the shadow at that point'},
  /* charfield.js:160, closedness times a share, so never above it */
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
-             say:'how much a seat leaks'},
+             say:'how much a point leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'},
@@ -8338,7 +8338,7 @@ function lexKeyOk(k){
 function lexRefuse(k,seat,amt,fet){
  var errs=[];
  if(!lexKeyOk(k)) errs.push('the key '+JSON.stringify(k)+' is not a form the scanner can ever match');
- if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the seat '+seat+', which is not one of the '+LEX_SEATS.length);
+ if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the point '+seat+', which is not one of the '+LEX_SEATS.length);
  if(typeof amt!=='number'||amt!==Math.round(amt)||amt===0||Math.abs(amt)>LEX_AMT_MAX)
   errs.push(k+' carries the amount '+amt+', and an amount is a non zero integer no further than '+LEX_AMT_MAX+' from zero');
  if((amt<0)!==(seat==='coherent'))
@@ -8807,7 +8807,7 @@ var LEXSYN_NO={
  broken:'the printer is broken. read only as broken hearted',
  killed:'killed it at the gym, the cold killed the plants',
  attacked:'felt attacked in an argument is defensive anger, not the root',
- shattered:'exhausted in one country and devastated in another, two seats',
+ shattered:'exhausted in one country and devastated in another, two points',
  sorry:'said a hundred times a day for nothing',
  hate:'i hate mondays. read only as hate myself',
  sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
@@ -8842,7 +8842,7 @@ var LEXSYN_NO={
  stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
  'over and over':'pressing a button over and over. read only as keep going over',
  'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
- 'stabbed in the back':'carries back, which the place rule refuses to seat, so the key could seat a refused place',
+ 'stabbed in the back':'carries back, which the place rule refuses to place, so the key could place a refused place',
  ill:'is i will once the apostrophe is gone, so it can never be a key'};
 
 /* run the pass. Headwords are resolved against the table as it stands after
@@ -8884,7 +8884,7 @@ function lexSyn(places){
   var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
   var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
   var badp=pw.filter(function(w){return places.seat[w]!==seat;});
-  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table seats at '+(places.seat[badp[0]]||'no seat')+' and not '+seat);return;}
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table places at '+(places.seat[badp[0]]||'no point')+' and not '+seat);return;}
   if(inLex){
    /* through the same boundary as every other entry. It cannot refuse here:
       the key was checked above and every other value is copied off an entry
@@ -11228,7 +11228,7 @@ const SIGHT=[
  {k:'sup', nm:'super complexes', need:'three', layer:true,
   what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
-  what:'How far the Kundalini has risen up your seven seats.'},
+  what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
   what:'The registers, your point cloud: where each pattern sits on the path.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
@@ -13508,7 +13508,7 @@ function traceFromRecord(p,intents,reading){
   im.forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]){
     g.gaps.push({kind:'unplaced', story:sk, seat:x.band||null, fetter:x.fetter||null,
-     why:'the reading seated charge at the '+(x.band||'unknown seat')+' and named no address'});
+     why:'the reading seated charge at the '+(x.band||'unknown point')+' and named no address'});
     return;}
    var k=String(x.node);
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
@@ -13546,7 +13546,7 @@ function traceFromRecord(p,intents,reading){
    var b=by[k];
    edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
     why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
-     :'the seat was read and the address was chosen by the fallback, not by the words'});});
+     :'the point was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
  /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.
@@ -14914,7 +14914,7 @@ function vRitual(errs,i,x){
  q.band='';
  if(x.band!==undefined&&x.band!==''){
   if(BANDS.indexOf(x.band)>=0)q.band=x.band;
-  else errs.push(path+'.band is not a seat: '+x.band);}
+  else errs.push(path+'.band is not a point: '+x.band);}
  /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
     cannot find, so an unnamed step reads on the surface as a ritual with fewer
     steps than it was saved with. A list longer than the library is not a
@@ -15046,14 +15046,14 @@ var ENT_VERDICT_KEYS=['seat','v','fix'];
 function vEntryVerdicts(errs,path,x){
  if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
  if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
-  +evKeptMax()+' seats there are'); return null;}
+  +evKeptMax()+' points there are'); return null;}
  var bad=errs.length, out=[], seen={};
  x.forEach(function(r,j){
   var rp=path+'['+j+']';
   if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
   var b0=errs.length;
   vKeys(errs,rp,r,ENT_VERDICT_KEYS);
-  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no point: '+r.seat);
   else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
   if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
   var q={seat:r.seat, v:r.v};
@@ -15097,7 +15097,7 @@ function vEntry(errs,i,x){
   if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
    errs.push(path+'.bands is not an object');
   else Object.keys(x.bands).forEach(function(k){
-   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   if(!K2BAND[k]){errs.push(path+'.bands names no point: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
  /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
@@ -15118,7 +15118,7 @@ function vEntry(errs,i,x){
   if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
   else if(x.asked.length>srcAskedMax())
    errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
-    +srcAskedMax()+' kinds and seats there are');
+    +srcAskedMax()+' kinds and points there are');
   else{
    var ak=[];
    x.asked.forEach(function(r,j){
@@ -15128,7 +15128,7 @@ function vEntry(errs,i,x){
     Object.keys(r).forEach(function(k){
      if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
     if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
-    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no point: '+r.seat);bad++;}
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
@@ -15504,7 +15504,7 @@ function validateProfile(o,ctx){
     .map(function(x){var q={be:x.be, notbe:x.notbe};
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
-      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+      else errs.push('avatar.pairs point '+JSON.stringify(x.seat)+' is not a point');}
      /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
         it is something else, because a weight kept against a pair is found by
         it. Missing is an older pair and is given one below. */
@@ -15562,7 +15562,7 @@ function validateProfile(o,ctx){
   if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
    if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
    else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
-    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a point'); return;}
     if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
     var q={add:[],off:[]}, bad=false;
     ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
@@ -17597,7 +17597,7 @@ function prField(errs,path,v,f){
    if(typeof v!=='string'||!RIT_STEP[v]){errs.push(path+' names no practice in the library: '+JSON.stringify(v)); return null;}
    return v;
   case 'seat':
-   if(BANDS.indexOf(v)<0){errs.push(path+' is not a seat: '+JSON.stringify(v)); return null;}
+   if(BANDS.indexOf(v)<0){errs.push(path+' is not a point: '+JSON.stringify(v)); return null;}
    return v;
   case 'list':{
    if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}
@@ -19688,7 +19688,7 @@ function codexRows(ws,wide){
  CHILD.forEach(function(c){
   if(B2K[c.seat]&&(all(c.loc)||(wide&&all(c.addr))))out[B2K[c.seat]]=c.nm+' at the '+(all(c.loc)?c.loc:c.addr);});
  if(wide)APC.forEach(function(r){
-  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' seat, '+r.nv;});
+  if(B2K[r.b]&&all(r.nv)&&!out[B2K[r.b]])out[B2K[r.b]]=r.b+' point, '+r.nv;});
  return out;}
 function somaPlaces(){
  var out={seat:{}, refused:{}, unseated:[], sense:[], missing:[], ruled:[], codex:[], dispute:{},
@@ -19713,12 +19713,12 @@ function somaPlaces(){
     +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
    else out.unseated.push(w);
    return;}
-  if(sk.length>1){out.refused[w]='the lexicon seats it at '+sk.sort().join(' and ');return;}
+  if(sk.length>1){out.refused[w]='the lexicon places it at '+sk.sort().join(' and ');return;}
   var veto=CHILD.filter(function(c){
    var loc=' '+String(c.loc||'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
    return loc.indexOf(' '+w+' ')>=0&&B2K[c.seat]!==sk[0];});
   if(veto.length){out.refused[w]='the codex holds '+veto[0].nm+' at the '+veto[0].loc
-   +', which is the '+veto[0].seat+' seat and not '+sk[0];return;}
+   +', which is the '+veto[0].seat+' point and not '+sk[0];return;}
   out.seat[w]=sk[0];});
  /* the two word places. A half and a place: the owner's ruling, checked
     against the codex wherever the codex says the same words. */
@@ -21114,7 +21114,7 @@ function lexComposite(){
   if(LEX[k])return;
   var a=lexAdd(k,out.seat,out.amt,'Anger',
    {src:'composite',from:'the seated members of LEXCOMP',
-    rule:'unanimous seat, family floor',cite:'canon'});
+    rule:'unanimous point, family floor',cite:'canon'});
   if(a.ok&&!a.already)out.added++;
   else out.unseated.push(k);});
  return out;}
@@ -21410,7 +21410,7 @@ function sniffAxes(p){
   shadow[im.fetter]+=im.amt;
   (cited[im.fetter]=cited[im.fetter]||[]).push(
    im.stated?'the text named '+im.fetter.toLowerCase():
-   im.inferred?'read from the '+im.band+' seat, no address named':
+   im.inferred?'read from the '+im.band+' point, no address named':
    'at '+im.name);});
  /* A STATED FETTER THAT parseStory DROPPED, RECOVERED. Measured, and it is the
     reason this block exists rather than trusting the imprints alone.
@@ -21436,7 +21436,7 @@ function sniffAxes(p){
   if(!h.fet||carried[h.fet]||shadow[h.fet]===undefined)return;
   shadow[h.fet]+=Math.abs(h.amt||0)/3;
   (cited[h.fet]=cited[h.fet]||[]).push('"'+h.t+'" states '+h.fet+
-   ', and its seat is shared with another axis so the imprint layer dropped it');});
+   ', and its point is shared with another axis so the imprint layer dropped it');});
  /* the composite. resentment is anger that has stopped moving, so it splits. */
  p.hits.forEach(function(h){
   var comp=LEXCOMP[h.t];
@@ -22697,7 +22697,7 @@ function evWhy(c,state){
  if(state==='supported'){
   if(m>=2)return 'heard '+m+' times in this entry';
   if(e>=1)return 'heard in this entry and in an earlier one';
-  return 'heard in this entry, at a seat the field already holds a pattern on';}
+  return 'heard in this entry, at a point the field already holds a pattern on';}
  return 'heard once in this entry';}
 
 /* THE CUES srcDims ALREADY READS, AS EVIDENCE WITH AN ADDRESS. srcDims says
@@ -22902,7 +22902,7 @@ function srcOutputV1Candidate(c,out){
 /* a verdict the ledger will take, or the reason it will not */
 function evVerdictOk(v){
  if(!v||typeof v!=='object')return {ok:false, why:'a verdict is an object'};
- if(!K2BAND[v.seat])return {ok:false, why:'no seat called '+JSON.stringify(v.seat)};
+ if(!K2BAND[v.seat])return {ok:false, why:'no point called '+JSON.stringify(v.seat)};
  if(!EV_VERDICT.hasOwnProperty(v.v))return {ok:false, why:'the answers are yes, no, fix and unsure, not '+JSON.stringify(v.v)};
  if(v.v==='fix'&&!String(v.fix||'').trim())return {ok:false, why:'a correction needs the person\'s own words'};
  return {ok:true};}
@@ -23519,7 +23519,7 @@ function srcVet(cand,ctx){
   !claim&&(says.length||where.length||fam)?'it says a pattern and is about no claim':
   (!okWhere?('says where it lands, '+where.join(', ')+', about a claim the person has not confirmed, held as '+claim.state):
   (!okAgain?('says '+(says.join(', ')||cand.family)+' about a claim held only as '+claim.state):
-  'asks about history before the seat has come back across entries')));
+  'asks about history before the point has come back across entries')));
 
  /* 8 REDUCES UNCERTAINTY. It must say what it is for, and not ask what the
     entry already answers while something else is still open. */
@@ -25626,7 +25626,10 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
    finds no entry for soul, spiritual or energy. seat points at Chakra, whose
    entry begins "A seat." */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
- {w:'seat',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
+ /* w is the word as a sentence prints it, so it follows the screen: the
+    sentences say point since 18 November ("Change seat and chakra to just
+    point"), and a w left at seat matched nothing and linked nothing. */
+ {w:'point',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
 
 /* ---------------- the templates ----------------
    src is the strongest provenance a template may carry, and a statement may be
@@ -25642,26 +25645,26 @@ var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},
    plus .h, used when the evidence is one record (show_uncertainty).
    @aim and @aims print DLY_AIM_WORD. */
 var DLY_TPL=[
- {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} seat carried the most weight in it.'},
- {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat on {2} separate days.'},
- {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat.'},
- {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} seat. In the {2} days before that, none did.'},
+ {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
+ {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
+ {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
  {id:'show.ritual.1', src:'known', k:'showing', text:'In the last {0} days you set one ritual and marked {1} done. Both counts are your own entries.'},
- {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} seat {2} times. Your avatar has a line written for that seat.'},
- {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} seat, where your avatar has a line written.'},
- {id:'intf.seat', src:'known', k:'interfering', text:'The {1} seat carried the most weight in {2} saved readings in the last {0} days.'},
- {id:'chg.heavy', src:'known', k:'changing', text:'The seat carrying the most weight moved from {0} on {1} to {2} on {3}.'},
+ {id:'show.avatar', src:'inferred', k:'showing', text:'Entries in the last {0} days touched the {1} point {2} times. Your avatar has a line written for that point.'},
+ {id:'show.avatar.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point, where your avatar has a line written.'},
+ {id:'intf.seat', src:'known', k:'interfering', text:'The {1} point carried the most weight in {2} saved readings in the last {0} days.'},
+ {id:'chg.heavy', src:'known', k:'changing', text:'The point carrying the most weight moved from {0} on {1} to {2} on {3}.'},
  {id:'chg.law', src:'known', k:'changing', text:'Your answer for {0} moved {1} between {2} and {3}, across {4} saved readings.'},
  {id:'chg.cq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence moved {2}.'},
  {id:'chg.cq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, your coherence stayed level.'},
  {id:'chg.dq', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses moved {2}.'},
  {id:'chg.dq.level', src:'known', k:'changing', text:'Across {1} saved readings in the last {0} days, the charge held at your addresses stayed level.'},
- {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} seat has {2} separate days of evidence behind it, the most of any seat.'},
+ {id:'att.seat', src:'inferred', k:'attention', text:'In the last {0} days, the {1} point has {2} separate days of evidence behind it, the most of any point.'},
  {id:'aim.fold', src:'known', k:'aim', text:'In the last {0} days you wrote {1} @aims and marked {2} kept, {3} partly kept, {4} not kept and {5} unknown.'},
  {id:'aim.fold.1', src:'known', k:'aim', text:'You wrote one @aim in the last {0} days, on {1}, and marked it {2}.'},
  {id:'try.avatar', src:'known', k:'try', text:'Your avatar was last reviewed on {0}. A monthly review is due.'},
@@ -25748,7 +25751,7 @@ function dlyRefWhy(type,id){
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
  if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
- if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
+ if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
  if(type==='history'||type==='ritualday')return isNaN(Date.parse(id))?'is not a date: '+id:null;
  if(type==='first')return null;
@@ -25802,7 +25805,7 @@ function dlyStValid(errs,path,x,names){
    dlyKeys(errs,p2,r,['addr','band']);
    var a=dlyInt(errs,p2+'.addr',r.addr,0,1e4);
    if(a!==null&&!BY[a]){errs.push(p2+'.addr is '+a+', which is not one of the addresses'); a=null;}
-   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a seat: '+JSON.stringify(r.band));
+   if(BANDS.indexOf(r.band)<0)errs.push(p2+'.band is not a point: '+JSON.stringify(r.band));
    else if(a!==null)o.read.push({addr:a,band:r.band});});}
  o.links=[];
  if(x.links!==undefined&&x.links!==null){
@@ -25895,7 +25898,7 @@ function dlyEvValid(errs,path,x,i,days,state){
  if(T==='aim_set'){
   o.text=dlyStr(errs,path+'.text',x.text,DLY_CAP.aim);
   if(x.domain!==undefined&&x.domain!==null&&BANDS.indexOf(x.domain)<0&&PUR_SIDES.indexOf(x.domain)<0)
-   errs.push(path+'.domain is not a seat or a side: '+JSON.stringify(x.domain));
+   errs.push(path+'.domain is not a point or a side: '+JSON.stringify(x.domain));
   o.domain=(x.domain===undefined)?null:x.domain;
   if(state.set[x.sid])errs.push(path+' is a second aim for '+x.sid+', and a day has one');
   state.set[x.sid]=1;}
@@ -27367,10 +27370,10 @@ function codesCheckInto(t,out){
    return !n||n.cf!==e.emotion||(e.seat!==null&&n.b!==e.seat);});
   if(off.length)no('the inferred '+s.nm+' is coded '+c+', and its addresses '+off.join(', ')+' do not carry '
    +e.emotion+(e.seat?' in the '+e.seat:''));
-  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one seat')+', and its code '+c+' says otherwise');});
- t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the seat '+b+', so its clusters have no code');});
- dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two seats the key '+k);});
- if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a seat diffuse, the word the cross seat clusters take');
+  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one point')+', and its code '+c+' says otherwise');});
+ t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the point '+b+', so its clusters have no code');});
+ dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two points the key '+k);});
+ if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a point diffuse, the word the cross point clusters take');
  dupes(t.CODE_EMOTION.map(function(e){return codeKey(t.INFER_NOUN[e]||e);})).forEach(function(n){
   no('INFER_NOUN gives two emotions the noun '+n+', so one cluster name would mean two');});
 
@@ -27597,9 +27600,9 @@ const REG_MAP=[
  ['registers.complexes','mob',['CODE_STRUCT'],'coded here and never stored. compute() pairs two saboteurs of one family, and some of these sit across two or three'],
  ['registers.hyper_complexes','mob',['CODE_STRUCT','HCX_LIB'],'coded here. By the family arithmetic here, most of them land a rung higher, as a super complex'],
  ['registers.amplifiers','ported',['AMPLIFIER'],'no table here had them. The nerve is read off NODES'],
- ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two seats, ARCH18 one of each, and the pairings differ'],
+ ['registers.archetypes','mob',['ARCH18'],'canon.json gives each archetype two saboteurs and two points, ARCH18 one of each, and the pairings differ'],
  ['registers.jungian','mob',['ARCH'],'canon.json has Orphan, Outlaw and Caretaker where ARCH has Everyman, Rebel and Caregiver'],
- ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in seats'],
+ ['registers.masks','mob',['MASKS'],'the two lists of masks differ in members and in points'],
  ['registers.axes','mob',['VERP'],'its axes are the six gates here, taken in pairs. Here the word axes means the nine child emotions'],
  ['registers.domains','mob',['DOMAINS','DOMDEF'],'canon.json files its domains in four families and has no Provision, and DOMAINS and DOMDEF name four of them two ways'],
  ['registers.laws','mob',['SI','HARM'],'canon.json numbers its laws another way, in four groups, and names some of them otherwise'],
@@ -28752,7 +28755,7 @@ function ritexBuild(p,now){
  rows.forEach(function(x,j){
   var nm=p.nm+' '+x.k, steps=x.k.split('+');
   steps.forEach(function(k){if(!RIT_STEP[k])throw new Error('ritex '+nm+': '+k+' names no practice');});
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a point');
   if(x.stop!=null&&x.stop>x.back)throw new Error('ritex '+nm+': stopped before it started');
   var pr=PRACTICE.filter(function(q){return q.k===steps[0];})[0];
   var s=today-x.back, from=x.back?ritexIso(s,now):stamp;
@@ -28870,7 +28873,7 @@ function ritexAvatar(p,now){
  var av=avatarBlank();
  av.pairs=rows.map(function(x,j){
   var pr={be:x.be, notbe:x.notbe, seat:x.b};
-  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a seat');
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex avatar '+p.nm+' '+j+': '+x.b+' is not a point');
   if(!avatarValid(pr))throw new Error('ritex avatar '+p.nm+' '+j+': a pair needs both halves');
   return pr;});
  av.built=true; av.status='active';

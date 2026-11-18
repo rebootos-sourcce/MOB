@@ -64,7 +64,7 @@ var CH_OVERLAYS=[
  {k:'cloud', nm:'Point cloud', on:true,
   d:'The person and the 108 addresses round them, plus the 4 field anchors above and below, as points.'},
  {k:'torus', nm:'Torus', on:true,
-  d:'The field round the body. The seats bend it and vitality makes it breathe.'},
+  d:'The field round the body. The points bend it and vitality makes it breathe.'},
  {k:'heat', nm:'Heat map', on:false,
   d:'The body coloured by the charge it carries, cool to hot.'}];
 /* ring icons, 24 by 24, stroked and never filled. A ring of dots, an apple
@@ -200,7 +200,7 @@ function chBuild(host){
   +'<div class="chp-masks" role="group" aria-label="Masks">'+MASKS_READ.map(chMaskBtn).join('')+'</div>'
   +'<div class="chp-ovs" role="group" aria-label="Overlays">'
   +CH_OVERLAYS.map(function(x){return chOvBtn(x.k,x.nm,x.d,CH_IC[x.k],CHV.ov[x.k]);}).join('')
-  +chOvBtn('trace','Trace','Where the energy leaks. Press a seat on the field to trace it.',CH_IC.trace,false)
+  +chOvBtn('trace','Trace','Where the energy leaks. Press a point on the field to trace it.',CH_IC.trace,false)
   +'</div></div></div>';
  var stage=host.querySelector('.chp-stage');
  var sc=CHV.sc=new CHC.Scene(stage,{});
@@ -284,13 +284,13 @@ function chHoverText(j,seat){
  if(j>=0){var a=CHC.addr()[j];
   var wo=(CHV.who&&CHV.who[j])||null;
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
-   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
+   +(a.fld?esc(a.b):esc(chSeatName(a.b))+' point')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
    +'. Charge '+fmtPct('weight',sc.achT[j]*10)+'.'
    /* round RB: what is running here, and what it does to the body */
    +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
    +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
-  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+fmtPct('closed',sh)+' shadow. Press to trace it.';}
+  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' point').replace(/\.$/,'')+'</b>, '+fmtPct('closed',sh)+' shadow. Press to trace it.';}
  /* nothing under the pointer is the empty value, a dash. The sentence that
     stood here explained how to use the line (CO-27, section-explains-itself) */
  return '\u2013';}
@@ -355,16 +355,16 @@ function chTraceCard(r){
   +'<div class="pm-eye plain">Trace. Where the energy leaks.</div>'
   +'<div class="chr-tabs" role="group" aria-label="Leaks">'+tabs.map(function(t){
     return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatName(BANDS[t]))+'</button>';}).join('')+'</div>'
-  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' seat</b><span>'
+  +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' point</b><span>'
   +(lk>.12?'Leaking, '+fmtPct('leak',lk):'Holding. No leak')+'</span></div>';
  if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
   h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+fmtPct('weight',ch.addr.sq),ink:PAL[ch.addr.seat]})
-   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
+   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' point'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
-  +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' seat.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
-  +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this seat. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
+  +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' point.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
+  +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this point. A story put charge on the address. Nothing on the record says it is the only cause.</p>'
   +'<div class="chr-acts"><button type="button" class="btn" id="chto">Open the story</button><button type="button" class="btn" id="chtc">Close trace</button></div></section>';
  return h;}
 
@@ -430,24 +430,24 @@ function chRailHtml(r){
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
- h+='<div class="pm-eye chr-sp plain">The seven seats</div><div class="chr-seats">'
+ h+='<div class="pm-eye chr-sp plain">The seven assemblage points</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
     +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></button>';}).join('')
-  +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
+  +'</div><p class="chr-note">The bar is how closed the point is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open point swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
   /* NEVER THE LOWER COUNT. This printed the body's own share of the
      addresses, which is the figure the house rule says is never put in front
      of a person: the count stated is the whole set. Round RG. */
   +'<p class="ad-p">Each point is one address, and there are '+AF.length
-  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'. Most sit round the body at the height of their point, going slowly round the spine. '
   +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
      and the line, each said where it is drawn, with what a saboteur and a
      complex are taken from the one table of meanings */
-  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the seat\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
+  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the point\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
    +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
@@ -600,7 +600,7 @@ function chDrill(m){
   h+='<p class="ad-p">Nothing read yet, so this mask is plain. Write what happened in Discover and it starts to fill.</p>';
   rdShell(h);return;}
  var seats=SF.filter(function(s){return m.b.indexOf(s.seat)>=0;});
- h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
+ h+='<div class="pm-eye">The points it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%'+(chPcCol('closed',sh,false)?';background:'+chPcCol('closed',sh,false):'')+'"></i></span><span class="chr-sv"'+chPc('closed',sh,false)+'>'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';

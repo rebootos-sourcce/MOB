@@ -2737,9 +2737,9 @@ function bodyMapTile(r){
   return '<div class="seatrow"><div class="seatname">'+seat+'</div><div class="lawicons">'+icons+'</div></div>';
  }).join('');
  var caption = r.lowest
-  ? 'Lowest right now: <b>'+r.lowest.law.nm+'</b>, at the '+r.lowest.law.b+'. Per-law "effects" text does not exist in canon yet, so none is shown here -- only the real score and real seat.'
+  ? 'Lowest right now: <b>'+r.lowest.law.nm+'</b>, at the '+r.lowest.law.b+'. Per-law "effects" text does not exist in canon yet, so none is shown here -- only the real score and real point.'
   : 'No answered laws yet to name a lowest one honestly.';
- return '<div class="tile"><h3>21 Laws, by body seat</h3><div class="cap">'+caption+'</div>'+
+ return '<div class="tile"><h3>21 Laws, by body point</h3><div class="cap">'+caption+'</div>'+
   '<div class="bodymap"><div style="flex:1">'+rows+'</div></div></div>';
 }
 
@@ -2840,11 +2840,11 @@ function fullReadingPanel(r){
   '<tr><td>Mean archetype score</td><td class="mono">'+archAvg+' / 10</td></tr>'+
   '<tr><td>Mean Law-of-Action score</td><td class="mono">'+gateAvg+' / 10</td></tr></table>'+
   '<h4>21 Laws of Integrity, every raw answer</h4>'+
-  '<table><tr><th>Law</th><th>Seat</th><th>Raw</th><th>Corrected</th></tr>'+lawRows+'</table>'+
+  '<table><tr><th>Law</th><th>Point</th><th>Raw</th><th>Corrected</th></tr>'+lawRows+'</table>'+
   '<h4>6 Laws of Action, the 3 gates as raw comparisons</h4>'+
   '<table><tr><th>Axis</th><th>Higher pole</th><th>Lower pole</th></tr>'+gateReadoutRows(r)+'</table>'+
   '<h4>12 Archetypes, every raw answer</h4>'+
-  '<table><tr><th>Archetype</th><th>Seat</th><th>Raw</th></tr>'+archRows+'</table>'+
+  '<table><tr><th>Archetype</th><th>Point</th><th>Raw</th></tr>'+archRows+'</table>'+
   '<h4>20 Saboteurs, every raw answer <span style="font-size:11px;color:var(--dim);font-weight:400">self-inferred, not the engine’s story-derived detection</span></h4>'+
   '<table><tr><th>Saboteur</th><th>Raw</th></tr>'+sabRows+'</table>'+
   '<h4>Astrology, numerology, Human Design</h4>'+

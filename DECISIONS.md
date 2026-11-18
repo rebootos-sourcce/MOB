@@ -3706,3 +3706,66 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## Point, charge, whole, clarity and shadow. Ruled 18 November.
+
+His words, verbatim, answering the need-you list on the status board: "Change
+seat and chakra to just point. It's an assemblage point. You can call it AP,
+or assemblage point for short, or point. We're going to use charge instead of
+tension. And neither becoming or complete, we're going to use the word whole.
+Instead of clear conduction against sabotage, just use clarity. Grace against
+false light, just change that to grace. Oh, I see. Grace against shadow. So
+use the word shadow."
+
+Read as five changes, made everywhere a person reads or hears them, by the
+standing precedent of the 112 ruling ("Make that change everywhere so it's
+just done") and the wisdom school rename of the same day:
+
+- **Seat and chakra are a point.** The seven places along the body's centre
+  line (Root, Sacral, Solar, Heart, Throat, 3rd Eye, Crown) are assemblage
+  points. The sentence a hover or a tap opens says it in full, "An
+  assemblage point, or point, is one of seven places along your body, from
+  the base of the spine to the top of the head, where the instrument reads
+  what is held", a heading that introduces all seven says "the seven
+  assemblage points", and every other use says point.
+- **Tension is charge** where it names the stuck survival energy at a place
+  in the body. Where tension is a sensation a person says or picks (a tension
+  headache, jaw tension, the Jester breaking the tension in a room) it stays.
+- **Whole** is the word for the Avatar's percent that reads how far a person
+  has come: the label under the Avatar card's percent, the Ritual page's
+  Avatar ring and its tooltip row, and the sentence that reads the percent.
+  The verb become and the Becoming subtab's name stay, because neither names
+  the percent.
+- **Clarity against Sabotage.** The coherent end of the pole that sits at no
+  one point (`HOME_POLES`, key SA) is Clarity. Sabotage keeps its name.
+- **Grace against Shadow.** The inverted end of the Light axis (`MIRROR`, key
+  IL) is Shadow, and so is the same figure in the decoherent blueprint and in
+  its recipe row, one word per concept.
+
+How it is held: `tools/vocab-sweep.py` carries every classified replacement
+as a rule in `tools/vocab-rules.py` and applies them only inside strings a
+person reads, so the same sweep can be re-run on a merged tree when other
+branches land new screens with the old words in them. It exits non zero on
+a retired word it has no rule or exception for. `tests/vocab.js` scans the
+built app, every surface at both widths, the drills, the release, the first
+run, the canvases and the data tables, and fails on a retired word or an old
+pair name outside its allow list.
+
+What did not move, on purpose:
+- **Identity.** Every identifier, saved key, id, css class and file name
+  that says seat (`S.seat`, `data-seat`, `seatCol`, the meaning table's
+  `seat:` keys, `SEATGLYPH`, the `seat` field on saved records) keeps its
+  spelling, so a profile saved before this loads unchanged.
+- **The codex line for the Shadow pole**, "Pride as false light", is the
+  book's own line and is held phrase by phrase to its meaning; the pole's
+  name is Shadow.
+- **The Wisdom school glossary's Chakra entry**, ported from the codex, is
+  the entry that says a chakra is an assemblage point. The book and canon
+  sources are not swept.
+- **His own words**, wherever they are quoted.
+- **Fractions.** "We're not doing fractions" is a separate ruling with its
+  own audit, and no x of y form was touched here.
+
+Two collisions are named once, and the change was made: shadow already reads
+how closed a point is (`pct.js`, "the shadow at that seat"), and points is the
+word the points ladder uses. Both are his to separate if he wants them apart.

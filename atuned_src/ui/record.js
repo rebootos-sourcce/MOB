@@ -162,11 +162,11 @@ function recRender(){
     the boundary lets through, which stays its own, separate fix. */
  if(a.m===b.m&&a.tier&&b.tier&&a.tier!==b.tier)
   moved.push('the tier read '+esc(a.tier.toLowerCase())+' and now reads '+esc(b.tier.toLowerCase()));
- if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
+ if(a.dark!==b.dark)moved.push('the heaviest point moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
  if(a.arch!==b.arch)moved.push('the primary archetype moved from '+esc(a.arch)+' to '+esc(b.arch));
  h+='<p class="sum-p" style="margin-top:14px">'+(moved.length
    ? 'Between these two, '+moved.join(', and ')+'.'
-   : 'Between these two, the tier, the heaviest seat and the primary archetype all held.')
+   : 'Between these two, the tier, the heaviest point and the primary archetype all held.')
   +' What moved them is not in this record.'
   +(a.m!==b.m?' Coherence and shadow weight are left out because one of these was taken '
     +'before they were measured the way they are now.':'')+'</p>';
