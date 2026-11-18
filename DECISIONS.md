@@ -3706,3 +3706,148 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## The voice prototype's read only layer, revived, 17 November
+
+His words, verbatim: "Revive it and put a note next to it for when we review
+it. I don't quite know what it's doing anymore, the 96 pattern, but let's add
+it."
+
+**What was revived.** The engine half of the voice prototype, the branch behind
+PR #163, which he rejected on 8 November ("Source AI is nothing like what I
+asked for, at all") and which was closed unmerged. It is the board's #88
+(`srcVoiceCanon`, the lookup that reads the 96 patterns) and #89
+(`srcVoiceEvidenceBus`, the evidence bus), and the three small readers they
+cannot run without. It was ported by file from `aa449a80`, the prototype's last
+commit, onto `main` at `c2bf52a2`, on the branch `revive/source-voice-layer`.
+Never by cherry pick: most of the prototype's commits rewrite the generated
+products, which have moved on. The prototype stays retrievable at
+`origin/source-voice-prototype`, and its own build, which the 10 and 11 November
+entry above says the team could not get back, is `git show
+origin/source-voice-prototype:source.html`.
+
+**What it changes for a person: nothing they can see or hear.** Checked in the
+code and not taken from the branch's name. The prototype changed no line under
+`atuned_src/ui` or `atuned_src/shell`, and nothing in `ui/`, `shell/`, `funnel/`
+or `tools/` calls `srcVoiceSniff`, `srcVoiceNarrative`, `srcVoiceChargeCycle`,
+`srcVoiceGraph`, `srcVoiceIntelligence`, `srcVoiceCanon`, `srcVoicePattern` or
+`srcVoiceEvidenceBus`. Only the tests call them. It is read only in the strict
+sense: a loaded record and the engine's state were byte identical before and
+after a call, and the graph step refuses unless the caller passes consent. So
+none of his recent rulings is touched: Source AI's text prints only on the text
+display, a sentence Source AI composes carries its mark, the structure stays 108
+somatic addresses and 4 field anchors, and nothing here is a score (every report
+says coherence is not measured). If anything in the layer's reports is ever
+shown, it is text Source AI composed and takes the mark, and its catalog index,
+which lists the addresses as one count, must say 108 somatic and 4 field
+anchors and never a flat total.
+
+**What the 96 are, in plain words.** A reference shelf. Each row is a named loop
+a family can repeat, with the steps in order, what you could watch for, what
+else could explain it, a protective move, a question, and links to the research
+it leans on. They are in three layers: ancestral, generational and parental.
+Every row says it is a design category informed by research and not a validated
+diagnosis. Nothing matches a story to a pattern: run against realistic stories,
+none of the 96 came out. A pattern comes out only when a caller types a name or
+an id. The evidence bus is an empty envelope with nine labelled slots (source,
+body map, avatar, compass, story bank, graph editor, laws, ritual builder,
+release protocol), and every slot says action none and write authority none. It
+carries status words and a count, with no text, no seat and no pattern id, so
+even a consumer would have nothing to draw.
+
+**What the 96 are not.** Not his canon from the manuscript: they came in a
+package he uploaded on 1 November, which this repository does not hold, so who
+wrote the rows is not recorded here. Not the list he described on 3 October for
+the superego ("perfectionism, justification, entitlement, obsession"): no row is
+named that, and the layer does not look for it. Not wired to Source AI's voice,
+replies, mark or text display.
+
+**What was changed in the port, and why.** Four things, each named.
+
+- An entry the safety stop holds (`srcSafe`, `engine/safe.js`) is read as
+  nothing by `srcVoiceIntelligence`, so it reaches no packet. The prototype read
+  it: an entry that said the person wanted to die and was angry at their mother
+  came out as a readable report and then as nine packets, ritual and release
+  targets among them. Nothing consumed them, so no person was affected, but a
+  seam must not turn a stopped entry into packets. `tests/source-voice-intelligence.js`
+  holds it, and fails by name without the guard.
+- One comment said "112 canonical nodes". It says 108 somatic nodes and 4 field
+  anchors now.
+- The test for the registry list typed a hand count. It names the registries.
+- The voice gate's `check.py` gained the prototype's `NOT_COPY_ROUTES`, so the
+  published paper titles in the research list stay data. A title reworded to pass
+  a plain words gate is a false citation. The gate reads the same findings as
+  before the port and none that stops a build. The set aside lapses the day any
+  file under `ui/` names `PATTERN96` or `RESEARCHANCHOR`, and the stops come back
+  with it.
+
+**Cost, read off the build on 17 November.** The engine and every product that
+embeds it grew by about 200 kilobytes, almost all of it the pattern rows: the
+engine from 2,088,519 to 2,298,141 bytes, `source.html` from 6,801,579 to
+7,011,711, and the packed file from 1,460,109 to 1,531,621. The funnel's quiz
+page embeds the whole engine, so the public quiz carries the 96 rows and the
+research links too (2,267,967 to 2,477,589 bytes), though no visitor can reach
+them. That is the price of the revival as asked.
+
+**Known defects in the revived code, found by running it and not fixed here,**
+because this was a port and he has not seen any of it. The emotion cycle reader
+marks a whole clause imagined when the clause holds the word "would", so "I was
+terrified when the plane shook, and my hands would not stop shaking" reads as
+hypothetical. The sniffer files "upset" under sadness at the heart while the
+emotion cycle reader files it under anger. The family reader keeps only a fixed
+list of descriptor words, so "my mother hid her feelings" is not kept at all.
+All three are invisible today.
+
+**Not wired into the build gates.** The five tests, `tests/source-evidence-bus.js`,
+`source-voice-charge-cycle.js`, `source-voice-intelligence.js`,
+`source-voice-narrative.js` and `voice-sniffer.js`, each pass with node alone
+against the built engine and each fails against a deliberately broken copy.
+They are not in a workflow, so `tools/orphans.js` fails them by name until the
+integrator adds one step to the fast gates job that runs them. They print a PASS
+line and no "N passed, M failed" summary, so they do not take a line in
+`tests/floors.json`, which needs a tee'd log with a count. `.github/workflows/deploy.yml`
+was left alone on purpose.
+
+**The questions for the review, each with the ways it could go.** None is
+answered for him.
+
+1. **What are the 96 for?** (a) The superego content he asked for on 3 October.
+   They do not contain his named list, so this means writing that list, and
+   either replacing the 96 or adding to them. (b) A reference shelf Source AI
+   reads from when it already knows a name. Costs nothing more, and nothing
+   shows. (c) Retire them: delete about 200 kilobytes and the port of the
+   package, and keep `aa449a80` as the record.
+2. **Ancestral and generational.** On 8 November, round TD, he ruled "Let's
+   combine ancestral and generational. They're the same thing." The library keeps
+   them as two layers of the same size. (a) Keep three layers inside and show two
+   on any screen, which costs a mapping. (b) Fold the two layers into one, which
+   means editing every row of both and finding the rows that say the same thing.
+   (c) Leave the layer names off every screen and decide later.
+3. **If a pattern ever appears on a screen, under what word?** "Pattern" already
+   means an imprint at one of the 108 somatic addresses or 4 field anchors, in
+   the trace graph and across the product. One word per concept means these need
+   a different name, and the name is his. It would also need every symbol in the
+   rows unpacked: all of them carry shorthand with no legend (letter codes at the
+   start of a definition, arrows and generation labels in the transformation
+   line).
+4. **Should Source AI ever ask the questions in the rows?** Most rows carry one.
+   (a) Never, which matches the no two-way chat ruling of 10 and 11 November, but
+   Source AI's reply ends in a question again since 17 November ("let's bring
+   back replies"), so the layer's own "never auto prompt" line would contradict
+   the product if a consumer passed it on. (b) As the one question a turn, which has to pass the question checks and
+   the mark. (c) Held until he reads the questions.
+5. **Do the evidence bus and the three readers stay?** The bus has no consumer and
+   nothing to carry. The emotion cycle reader is a second emotion vocabulary
+   beside the engine's own lexicon. (a) Keep all of it as a dormant seam. (b)
+   Keep the pattern lookup and its two data files and drop the rest, which means
+   moving `srcVoiceCanon` and `srcVoicePattern` out of `voice_intelligence.js`
+   and cutting the prototype's other tests with it. (c) Decide when a first
+   consumer is designed.
+6. **Should the public quiz page carry this at all?** It embeds the whole engine,
+   so a visitor downloads the 96 rows and the research links and cannot reach
+   them. (a) Leave it, since it costs one shared file. (b) Build the quiz from an
+   engine without the layer, which costs a second build target.
+
+**What cannot be said.** Why he rejected PR #163. His words give no reason and
+none is invented here. The layer was not on any screen of the build he judged,
+as far as the code shows, so it cannot be named as the cause.
