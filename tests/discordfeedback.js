@@ -82,6 +82,23 @@ async function fnSuite(F,ok,lists){
  ok(r.status===400,'an empty request is refused, '+r.status);
  r=await hit(F,{body:Object.assign(good(),{body:'a'.repeat(F.FB_BODY_MAX+1)})});
  ok(r.status===400&&/limit/.test(r.body.error),'a body past the ceiling is refused with the ceiling named, '+r.text);
+ /* THE CEILING IS ON WHAT IS SENT. fbMessage puts a zero width space after
+    every backtick, so a body of backticks is twice as long on the way out.
+    Measured 18 November on the old measure: four thousand backticks were
+    accepted and became an 8008 character description against Discord's own
+    4096. Half the ceiling plus one is fine as typed and over once made safe;
+    the same length in plain letters goes, and so does exactly half. */
+ const half=F.FB_BODY_MAX/2;
+ r=await hit(F,{body:Object.assign(good(),{body:'`'.repeat(half+1)})});
+ ok(r.status===400&&/backtick/.test(r.body.error)&&/limit is /.test(r.body.error)&&!r.heard.length,
+  'a body that fits as typed but not once its backticks are made safe is refused by name, '+r.text);
+ ok(F.fbValidate(Object.assign(good(),{body:'a'.repeat(half+1)}))==='',
+  'and the same length in plain letters is taken');
+ ok(F.fbValidate(Object.assign(good(),{body:'`'.repeat(half)}))===''
+  &&F.fbValidate(Object.assign(good(),{body:'a'.repeat(F.FB_BODY_MAX)}))==='',
+  'and a body exactly at the ceiling once made safe is taken, backticks or letters');
+ { const d=F.fbMessage(Object.assign(good(),{body:'`'.repeat(half)})).embeds[0].description;
+   ok(d.length<=4096,'so the most the relay accepts still fits Discord\'s 4096, '+d.length); }
  r=await hit(F,{body:J(Object.assign(good(),{body:'a'.repeat(3000)}))+' '.repeat(F.FB_BYTES_MAX)});
  ok(r.status===413,'a request past the byte ceiling is refused with 413, '+r.status);
  r=await hit(F,{body:Object.assign(good(),{answers:{state:'Sharp'}})});
@@ -132,6 +149,8 @@ const MUTANTS=[
   from:"allowed_mentions: { parse: [] }, ", to:""},
  {what:'any content type is taken',
   from:"if (!/^application\\/json\\b/.test(type)) return no(415, 'feedback must be sent as json');", to:""},
+ {what:'the ceiling is measured before the backticks are made safe',
+  from:"const sent = fbFenced(body).length;", to:"const sent = body.length;"},
  {what:'a Discord refusal is said as sent',
   from:"if (res.ok) return say(200, { ok: true });", to:"return say(200, { ok: true });"}];
 

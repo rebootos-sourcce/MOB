@@ -3972,6 +3972,40 @@ console.log('\n30 · the outbox, and what may never leave the device');
  ok(f.state==='retry'&&f.n===1,'a host that refuses leaves the entry in the queue');
  ok(E.obCount()===1,'so nothing a person wrote is ever dropped on a failed send');
  E.bindSend(null);
+
+ /* A KEY THAT IS NOT A LIST. Measured 18 November on the old obStore: {}, 7,
+    true and null made Send throw a TypeError and queue nothing, a string made
+    it answer queued and write "abc[object Object]", and bytes that did not
+    parse were written over in silence. Each must read as an empty queue, be
+    copied aside verbatim before anything writes, and leave Send working. */
+ for(const bad of ['{}','7','true','null','"abc"','{"0":{"kind":"comment","body":"x"}}','{not json']){
+  mem={}; mem[E.OBKEY]=bad;
+  let c, q, threw=null;
+  try{ c=E.obCount(); q=E.obQueue(e()); }catch(x){ threw=x.message; }
+  ok(!threw,'an outbox key holding '+bad+' does not throw'+(threw?', '+threw:''));
+  ok(c===0,'and reads as an empty queue, '+c);
+  const aside=Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0);
+  ok(aside.length===1&&mem[aside[0]]===bad,'and its bytes are kept verbatim under a key of their own, '+JSON.stringify(aside));
+  ok(q&&q.ok&&q.queued===1&&Array.isArray(JSON.parse(mem[E.OBKEY]))&&E.obCount()===1,
+   'and a real Send after it is queued as the only entry, '+JSON.stringify(q)+' '+mem[E.OBKEY]);
+  try{ E.obCount(); }catch(x){}
+  ok(Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0).length===1,
+   'and a later read does not copy anything aside again');
+  E.bindSend(()=>true);
+  let s; try{ s=E.obDrain(); }catch(x){ s={threw:x.message}; }
+  ok(s.state==='sent'&&s.n===1&&E.obCount()===0,'and it sends, '+JSON.stringify(s));
+  E.bindSend(null);}
+
+ /* AND IF THE COPY CANNOT LAND, NOTHING IS WRITTEN OVER THE ONLY ONE. */
+ mem={}; mem[E.OBKEY]='{"old":"format"}';
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],
+  (k,v)=>{ if(k!==E.OBKEY) throw new Error('QuotaExceeded'); mem[k]=String(v); });
+ let full;
+ try{ full=E.obQueue(e()); }catch(x){ full={threw:x.message}; }
+ ok(full&&full.ok===false&&/could not be read or copied/.test(full.why||'')&&mem[E.OBKEY]==='{"old":"format"}',
+  'with nowhere to copy the bytes, Send refuses by name and the old bytes stay, '+JSON.stringify(full));
+ E.bindStore(k=>mem[k]===undefined?null:mem[k], (k,v)=>{mem[k]=String(v);});
+ mem={}; mem[E.OBKEY]='[]';
 }
 
 g('31 · the lean, two channels and the frame that gates one of them');

@@ -26756,7 +26756,39 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
     X7). aim is the stored word for the daily intention, engine/daily.js. */
  'summaries','summary','mirror','aim','aims'];
 
-function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
+/* A QUEUE THAT IS NOT A LIST IS SET ASIDE, NEVER THROWN AT AND NEVER EATEN.
+
+   This returned whatever JSON.parse gave. Measured 18 November on a key
+   holding {}, 7, true or null: obQueue threw a TypeError at q.concat or
+   q.length, so Send on a fresh comment threw, nothing was queued and nothing
+   was said, and the words were gone. A key holding "abc" was worse, because a
+   string has a length and a concat: Send answered queued, 18, and wrote
+   "abc[object Object]" over the key. And a key that did not parse came back
+   as [] in silence, so the first Send after it wrote over the only copy.
+
+   The bytes may be an older build's queue with somebody's words in it, so
+   they get pStore's treatment (storeSetAside, engine/schema.js): copied
+   verbatim under a key of their own carrying the time, read back to prove it
+   landed, and only then is the outbox key cleared so the next read is clean
+   and does not copy them again. Not storeSetAside itself, because that one
+   writes under the profile key and tells the host the profile store could not
+   be read, which would be a lie about the wrong record. If the copy did not
+   land, the key is left alone and obQueue refuses to write over it. */
+var OB_UNREAD=null;
+function obSetAside(txt,why){
+ var key=OBKEY+'.unreadable.'+Date.now().toString(36), kept=false;
+ try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
+ if(kept){ try{ STORE.set(OBKEY,'[]'); }catch(e){} }
+ OB_UNREAD={why:why, bytes:txt.length, key:kept?key:null};
+ return [];}
+function obStore(){
+ var txt, raw;
+ OB_UNREAD=null;
+ try{ txt=STORE.get(OBKEY); }catch(e){ return []; }
+ if(!txt) return [];
+ try{ raw=JSON.parse(txt); }catch(e){ return obSetAside(String(txt),'it does not parse'); }
+ if(!Array.isArray(raw)) return obSetAside(String(txt),'it is not a list');
+ return raw;}
 function obWrite(q){
  if(!STORE_BOUND) return false;
  try{ STORE.set(OBKEY,JSON.stringify(q)); return true; }catch(e){ return false; } }
@@ -26821,6 +26853,9 @@ function obQueue(e){
  if(!STORE_BOUND) return {ok:false, why:'storage is blocked in this browser, so '
   +'there is nowhere to hold this. Copy it somewhere before you leave the page.'};
  var q=obStore();
+ if(OB_UNREAD&&!OB_UNREAD.key) return {ok:false, why:'the outbox on this device '
+  +'could not be read or copied somewhere safe, so nothing was written over it. '
+  +'Copy this somewhere before you leave the page.'};
  if(q.length>=OB_MAX) return {ok:false, why:'there are already '+OB_MAX
   +' waiting to send and nowhere to send them, so this one was not taken.'};
  var next=q.concat([e]);
