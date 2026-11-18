@@ -421,6 +421,11 @@ if(typeof module!=='undefined'&&module.exports){
      writers and the one count */
                   RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
                   RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+  /* its spoken half: the phrases, the floor, the pure parser and the one
+     writer a heard phrase goes through. The microphone is not here. */
+                  RELHIT_VOICE_PHRASES:RELHIT_VOICE_PHRASES, RELHIT_VOICE_FLOOR:RELHIT_VOICE_FLOOR,
+                  RELHIT_VOICE_COLLIDES:RELHIT_VOICE_COLLIDES, RELHIT_VOICE_RAW_MAX:RELHIT_VOICE_RAW_MAX,
+                  relHitHear:relHitHear, relHitVoice:relHitVoice,
                   relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
                   relHitExecute:relHitExecute, relHitDecide:relHitDecide,
                   relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,
