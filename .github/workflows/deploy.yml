@@ -179,6 +179,14 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # THE BODY PAGE'S TABLE, held headless, 18 November. Nothing read ANAT,
+      # BMPROP or a nerve name before, and proto/anatomy-ref/measure.js, which
+      # figure.js says re-derives the chart rows, was run by no job. Node only,
+      # no browser, a second or less, against the engine just built. It carries
+      # one named expected red (the two spine rulers disagree), counted against
+      # a ceiling in tests/floors.json, so it is green and says what is open.
+      - name: anatomy gate, the Body page's table
+        run: node tests/anatomy.js 2>&1 | tee "$RUNNER_TEMP/gates/anatomy.log"
       # Round SK: Source AI's evidence ledger and its question check, the
       # Journal Mode blueprint's P0. Node only, against the engine just built.
       - name: evidence ledger and question check
@@ -212,7 +220,7 @@ jobs:
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
-        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant anatomy
 
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries

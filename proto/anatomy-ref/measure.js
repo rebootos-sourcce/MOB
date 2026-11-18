@@ -16,7 +16,8 @@
    HOW A CHART POINT REACHES OUR FIGURE. Piecewise straight lines through the
    six landmarks every figure has (charts.js): top of the skull, middle of the
    ear, the neck at its narrowest, the base of the neck, the crotch, the sole. Across, the distance
-   from the midline is scaled by one ratio per figure, see scaleOf. A back view
+   from the midline is scaled by one ratio per figure, see scaleOf in
+   derive.js, where the geometry now lives. A back view
    is mirrored, since its left is the person's left.
 
    THE UNIT IS THE PERSON. A distance is given as a share of the height from
@@ -34,74 +35,18 @@ const path=require('path'), fs=require('fs'), crypto=require('crypto');
 const {execSync}=require('child_process');
 const {FIGS,PTS}=require('./charts.js');
 const {MATCH,SEATS,AGREE}=require('./match.js');
+const D=require('./derive.js');
 const ROOT=path.resolve(__dirname,'..','..');
 const SRC=path.resolve(process.argv[2]||path.join(ROOT,'source.html'));
 const TAG=process.argv[3]||'now';
 const OUT=path.join(__dirname,'out');
-const STATURE_CM=175, ON=3, NEAR=6;
+const STATURE_CM=175, ON=D.ON, NEAR=D.NEAR;
 
-/* ---------- our figure, off its own outline ---------- */
-function ourFigure(g){
- const v=g.BODYPATH.match(/-?\d+(\.\d+)?/g).map(Number), pt=[[v[0],v[1]]];
- for(let i=2;i+5<v.length;i+=6)pt.push([v[i+4],v[i+5]]);
- const P=pt.map(p=>[g.PMTX+p[0]*g.PMS,g.PMTY+p[1]*g.PMS]);
- const cross=y=>{const xs=[];for(let a=0,b=P.length-1;a<P.length;b=a++){const A=P[a],B=P[b];
-  if((A[1]>y)!==(B[1]>y))xs.push(A[0]+(y-A[1])*(B[0]-A[0])/(B[1]-A[1]));}return xs.sort((a,b)=>a-b);};
- /* the trunk's own two edges on a row: the crossings nearest the midline on
-    each side, so a hanging arm beside it is not counted as trunk */
- const trunk=y=>{const xs=cross(y),L=xs.filter(x=>x<50),R=xs.filter(x=>x>50);
-  return (L.length&&R.length)?[L[L.length-1],R[0]]:null;};
- const outer=y=>{const xs=cross(y);return xs.length?[xs[0],xs[xs.length-1]]:null;};
- const scan=(a,b,f)=>{const o=[];for(let y=a;y<=b+1e-9;y+=0.05)o.push([+y.toFixed(2),f(y)]);return o;};
- let F=-1e9;P.forEach(p=>{F=Math.max(F,p[1]);});
- /* neck: the narrowest outline between the jaw and the shoulders, and N the
-    middle of the run that holds within 0.05 of it */
- const nk=scan(13,20,y=>{const o=outer(y);return o?o[1]-o[0]:99;});
- const nmin=Math.min(...nk.map(r=>r[1])), run=nk.filter(r=>r[1]<nmin+0.05);
- const N=(run[0][0]+run[run.length-1][0])/2;
- /* neck base: going down from N, the first row where the outline runs a
-    quarter wider than the neck, the same rule the charts were read by */
- let S=null;for(let y=N;y<26&&S===null;y+=0.01){const o=outer(y);if(o&&o[1]-o[0]>1.25*nmin)S=+y.toFixed(2);}
- /* skull: widest above the ear, from the top of the skull to the brow */
- const sk=scan(g.V+1,g.E-2,y=>{const o=outer(y);return o?o[1]-o[0]:0;});
- const skull=Math.max(...sk.map(r=>r[1]));
- /* waist: the trunk at its narrowest between the chest and the hips */
- const wa=scan(35,46,y=>{const t=trunk(y);return t?t[1]-t[0]:99;});
- const wmin=Math.min(...wa.map(r=>r[1])), wy=wa.find(r=>r[1]===wmin)[0];
- /* crotch: the first row, going down, with outline on both sides of the
-    midline within a unit of it, which is the legs parting */
- let C=null;for(let y=50;y<62&&C===null;y+=0.01){const xs=cross(y);
-  if(xs.some(x=>x<50&&x>49)&&xs.some(x=>x>50&&x<51))C=+y.toFixed(2);}
- return {V:g.V,E:g.E,N,S,C,F,skull,neck:nmin,waist:wmin,wy,poly:P};}
-
-/* ---------- a chart point onto our figure ---------- */
-function lerp(ks,vs,t){
- if(t<=ks[0])return vs[0];
- for(let i=0;i+1<ks.length;i++)if(t<=ks[i+1])return vs[i]+(t-ks[i])*(vs[i+1]-vs[i])/(ks[i+1]-ks[i]);
- return vs[vs.length-1];}
-function extrap(ks,vs,t){
- /* above the skull or below the sole, carry the nearest segment's slope on */
- if(t<ks[0])return vs[0]+(t-ks[0])*(vs[1]-vs[0])/(ks[1]-ks[0]);
- const n=ks.length-1;
- if(t>ks[n])return vs[n]+(t-ks[n])*(vs[n]-vs[n-1])/(ks[n]-ks[n-1]);
- return lerp(ks,vs,t);}
-function warper(fig,us){
- const K=['V','E','N','S','C','F'];
- const ky=K.map(k=>fig[k]), uy=K.map(k=>us[k]);
- const s=scaleOf(fig,us), sign=fig.view==='back'?-1:1;
- return ([x,y])=>[50+sign*(x-fig.mid)/s, extrap(ky,uy,y)];}
-/* ONE SCALE ACROSS, NOT THREE. The first cut eased between the skull, the neck
-   and the waist, and put the marma chart's Amsa, the top of the shoulder,
-   outside our shoulders altogether. Half of that was a misread neck (charts.js
-   says which line), and half is real: a neck is the part of a figure drawn
-   most by taste, and even read right its ratio sits 2 to 11 percent under the
-   other two on all four figures, while skull and waist agree to within four.
-   So across is scaled by the mean of skull and waist, and the neck is still
-   read and printed so the reason can be checked. */
-function scaleOf(fig,us){return (fig.skull/us.skull+fig.waist/us.waist)/2;}
-
-const dist=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
-const mirror=p=>[100-p[0],p[1]];
+/* The geometry that needs no page (our figure off its outline, a chart point
+   onto it, the chart places and their drift) lives in derive.js, which
+   tests/anatomy.js calls as well, so there is one copy of it. */
+const {ourFigure}=D;
+const dist=D.dist, mirror=D.mirror;
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
  const md5=crypto.createHash('md5').update(fs.readFileSync(SRC)).digest('hex');
@@ -128,22 +73,13 @@ const mirror=p=>[100-p[0],p[1]];
   let worst=0;d.marks.forEach(m=>{const r=g.node.find(n=>n.i===m.i);worst=Math.max(worst,Math.abs(r.x-m.x),Math.abs(r.y-m.y));});
   painted.push({profile:d.nm,drawn:d.marks.length,worst:+worst.toFixed(3)});}
  const us=ourFigure(g);
- const inBody=(x,y)=>{const P=us.poly;let c=false;
-  for(let a=0,bb=P.length-1;a<P.length;bb=a++)
-   if(((P[a][1]>y)!==(P[bb][1]>y))&&(x<(P[bb][0]-P[a][0])*(y-P[a][1])/(P[bb][1]-P[a][1])+P[a][0]))c=!c;
-  return c;};
+ const inBody=D.inBodyOf(us);
  const H=us.F-us.V, pct=d=>100*d/H, cm=d=>STATURE_CM*d/H;
  const band=d=>pct(d)<=ON?'on':pct(d)<=NEAR?'near':'off';
- const W={};Object.keys(FIGS).forEach(k=>{W[k]=warper(FIGS[k],us);});
- /* every chart point on our figure, one or two per point */
- const onUs={};
- PTS.forEach(q=>{if(!q.p)return;const list=Array.isArray(q.p[0])?q.p:[q.p];
-  onUs[q.id]=list.map(W[q.fig]);});
+ const {W,onUs}=D.chartOnUs(us,FIGS,PTS);
  /* check the tool on the cases it must get exactly: each figure's own
     landmarks, on its own midline, land on ours */
- const selftest=[];
- Object.keys(FIGS).forEach(k=>{const f=FIGS[k];['V','E','N','S','C','F'].forEach(L=>{
-  const q=W[k]([f.mid,f[L]]);selftest.push(Math.max(Math.abs(q[0]-50),Math.abs(q[1]-us[L])));});});
+ const selftest=D.landmarkRoundTrip(us,FIGS,W);
  const near=(pos,ids)=>{/* nearest of every chart point listed, and its mirror */
   let best=null;ids.forEach(id=>{const q=PTS.find(t=>t.id===id);
    if(!q||q.ok===false||!onUs[id])return;
@@ -189,36 +125,11 @@ const mirror=p=>[100-p[0],p[1]];
    tool:tool.map(v=>+v.toFixed(3)),agrees:dist([x,y],tool)<1e-6};})();
  /* every place a matched row is drawn: is it on the body the page clips to */
  const offBody=rows.filter(r=>!inBody(r.x,r.y)).map(r=>r.i);
- /* WHERE A GATHERED ADDRESS SHOULD STAND, per chart group. The person's right
-    side of each chart point (viewer's left, x under 50), then the mean of the
-    two charts. Where the two charts disagree by more than the near band they
-    are not averaged: the classical marma chart is kept and the other named,
-    since a mean of two places that far apart is neither of them. A place the
-    page would clip is walked in toward the midline until a mark there sits
-    wholly on the body, and how far is recorded. */
- const EDGE=0.9, onBodyMark=(x,y)=>inBody(x,y)&&inBody(x-EDGE,y)&&inBody(x+EDGE,y)&&inBody(x,y-EDGE)&&inBody(x,y+EDGE);
- const right=pid=>{const l=onUs[pid];const r=l.find(q=>q[0]<=50);return r||mirror(l[0]);};
- const groups=[];
- MATCH.forEach(m=>{const key=m.pts.join(' ');let gr=groups.find(t=>t.key===key);
-  if(!gr){gr={key,pts:m.pts,ids:[],tiers:[]};groups.push(gr);}
-  m.ids.forEach(id=>{gr.ids.push(id);gr.tiers.push(m.tier);});});
- const targets=groups.map(gr=>{
-  const use=gr.pts.filter(pid=>{const q=PTS.find(t=>t.id===pid);return q&&q.ok!==false&&onUs[pid];});
-  let from=use, split=null;
-  if(use.length===2){const d=dist(right(use[0]),right(use[1]));
-   if(pct(d)>NEAR){from=use.filter(pid=>pid.startsWith('m.'));split=+pct(d).toFixed(2);}}
-  const c=from.map(right), at=[c.reduce((a,q)=>a+q[0],0)/c.length,c.reduce((a,q)=>a+q[1],0)/c.length];
-  let x=at[0], walked=0;
-  while(!onBodyMark(x,at[1])&&Math.abs(x-50)>0.05){x+=x<50?0.05:-0.05;walked+=0.05;}
-  const f=Math.abs(x-50)<0.5?[[50,+at[1].toFixed(2)]]:[[+x.toFixed(2),+at[1].toFixed(2)],[+(100-x).toFixed(2),+at[1].toFixed(2)]];
-  const gathered=gr.ids.filter(id=>!g.node.find(t=>t.i===id).anat);
-  return {pts:from,asked:gr.pts,split,ids:gr.ids,gathered,f,walked:+walked.toFixed(2)};});
+ /* WHERE A GATHERED ADDRESS SHOULD STAND, per chart group, is derive.js's chartTargets. */
+ const targets=D.chartTargets(us,onUs,PTS,MATCH,ids=>ids.filter(id=>!g.node.find(t=>t.i===id).anat));
  /* and every ANAT row that says it came from a chart must still say what the
-    charts say, or the row has drifted from its source */
- const drift=g.anat.map(r=>{const t=targets.find(q=>q.pts.join(' ')===r.c.join(' '));
-  if(!t)return {ids:r.ids,c:r.c,problem:'no chart group of that name'};
-  const worst=Math.max(...r.f.map((q,i)=>t.f[i]?dist(q,t.f[i]):99));
-  return worst>0.011?{ids:r.ids,c:r.c,problem:'drifted '+worst.toFixed(3)+' units',want:t.f}:null;}).filter(Boolean);
+    charts say, or the row has drifted from its source (derive.js, chartDrift) */
+ const drift=D.chartDrift(g.anat,targets);
  const res={stamp:{src:path.relative(ROOT,SRC),commit,md5,dirty,read:new Date().toISOString()},
   figure:{V:us.V,E:us.E,N:us.N,S:us.S,C:us.C,F:us.F,skull:+us.skull.toFixed(3),neck:+us.neck.toFixed(3),
    waist:+us.waist.toFixed(3),wy:us.wy,stature:+H.toFixed(3)},
