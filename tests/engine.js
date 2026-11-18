@@ -4099,6 +4099,29 @@ g('31 · the lean, two channels and the frame that gates one of them');
   ok(e.self>=2,'a negator does not reach past a full stop, got self '+e.self);
   const f=scan('he did not hit me');
   ok(f.other===0,'and it voids a frame marker too, got other '+f.other);
+  /* THE CONTRACTED NEGATOR AS A PERSON TYPES IT, SZA6 reopened 18 November.
+     The straight apostrophe was already covered; the curly one a phone or a
+     Mac types, and the spelling with no mark at all, were not, and both
+     INVERTED the reading on main at 72a28de: "it wasn't my fault" read
+     accountability taken and "he didn't hit me" read harm confirmed. The
+     controls go first, so a scanner that reads nothing at all cannot pass
+     the denials by accident. */
+  ok(scan('He hit me.').other===1&&scan('It was my fault.').acc===1,
+   'the controls read: a report of harm and an admission of fault');
+  [['It wasn’t my fault.','curly'],['It wasnt my fault.','no mark'],
+   ["It wasn't my fault.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.acc===0,'a denial of fault, '+how+' apostrophe, is not accountability taken, got acc '+r.acc);});
+  [['He didn’t hit me.','curly'],['He didnt hit me.','no mark'],
+   ["He didn't hit me.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.other===0,'a denial of harm, '+how+' apostrophe, is not harm confirmed, got other '+r.other);});
+  ['He doesnt hit me.','He can’t hit me.','He cant hit me.','He won’t hit me.',
+   'He wont hit me.','He couldnt hit me.','He wouldnt hit me.'
+  ].forEach(t=>{const r=scan(t);
+   ok(r.other===0,JSON.stringify(t)+' voids the harm marker, got other '+r.other);});
+  ['It isnt my fault.','It isn’t my fault.'].forEach(t=>{const r=scan(t);
+   ok(r.acc===0,JSON.stringify(t)+' voids the admission, got acc '+r.acc);});
  }
 
  /* ---- defect 4. the frame gate, which is the whole design ---- */

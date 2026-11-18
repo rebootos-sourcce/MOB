@@ -7503,11 +7503,24 @@ function verpRead(){var sh=verpShare();
    the equivalent set, but both run on input that has stripped the
    apostrophe first (lawNorm, srcNegated), so their entries are spelled
    'didnt'; this table's input has not, so these keep theirs. */
+/* AND THE SPELLING WITH NO APOSTROPHE AT ALL, TASKS.md SZA6 reopened 18
+   November. The table above named "wasn't" and nothing else, so "it wasnt
+   my fault", typed on a keyboard that never offers the mark, left 'my
+   fault' unvoided and a denial of fault read as accountability taken.
+   Measured on main at 72a28de before this line. "can't" was missing in
+   both spellings while 'cannot' was in, so "he can't hit me" read as harm
+   confirmed. 'cant' and 'wont' are also nouns, and the cost of that is a
+   phrase voided inside a three word look back, which is the side this
+   table is allowed to err on: an unread cue loses evidence, a misread one
+   inverts it. */
 var LEANNEG={'not':1,'never':1,'no':1,'none':1,'nothing':1,'nobody':1,
  'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1,
  "didn't":1,"don't":1,"doesn't":1,"won't":1,"wasn't":1,"weren't":1,
  "isn't":1,"aren't":1,"haven't":1,"hasn't":1,"hadn't":1,"couldn't":1,
- "wouldn't":1,"shouldn't":1};
+ "wouldn't":1,"shouldn't":1,"can't":1,
+ 'didnt':1,'dont':1,'doesnt':1,'wont':1,'wasnt':1,'werent':1,
+ 'isnt':1,'arent':1,'havent':1,'hasnt':1,'hadnt':1,'couldnt':1,
+ 'wouldnt':1,'shouldnt':1,'cant':1};
 var LEAN_NEG_W=3;        /* words of look back. three is one clause of run up,
                             and wider started voiding phrases whose negator
                             belonged to the sentence before */
@@ -7581,8 +7594,17 @@ function leanKeys(){
    contain, so it stops the look back and also stops a phrase matching
    across two sentences. A comma is left as a space on purpose: it is too
    weak a break to end a negation. */
+/* THE CURLY APOSTROPHE IS FOLDED FIRST. A phone and a Mac both type
+   U+2019 for "wasn't", and the strip below kept only the straight mark, so
+   the curly one became a space: "wasn t my fault", a lone 't' that no
+   table names, and 'my fault' read as accountability taken for a sentence
+   denying it. Same inversion for "he didn't hit me", read as harm
+   confirmed. Measured on main at 72a28de. The left quote, the modifier
+   letter, the prime and the backtick go the same way because each is a
+   keyboard's apostrophe somewhere. */
 function leanNorm(text){
  return ' '+String(text||'').toLowerCase()
+  .replace(/[‘’ʼ′`]/g,"'")
   .replace(/[.!?;:\n\r]+/g,' | ')
   .replace(/[^a-z'| ]+/g,' ').replace(/\s+/g,' ')+' ';}
 
