@@ -207,6 +207,20 @@ jobs:
       # runner. It fails the day the door is closed without saying so.
       - name: plan self grant watch
         run: node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
+      # THE VOICE PROTOTYPE'S READ ONLY LAYER, revived dormant 17 November
+      # (#88 and #89, DECISIONS.md "The voice prototype's read only layer,
+      # revived"). No screen calls it, so these five are the only thing that
+      # runs it, and until this step tools/orphans.js failed each by name.
+      # Node only, against the engine just built. Each prints one PASS line
+      # and no passed and failed count, so none has a line in floors.json:
+      # the exit code is the gate, and && stops on the first red.
+      - name: the revived voice layer, read only and dormant
+        run: >-
+          node tests/voice-sniffer.js
+          && node tests/source-voice-narrative.js
+          && node tests/source-voice-charge-cycle.js
+          && node tests/source-voice-intelligence.js
+          && node tests/source-evidence-bus.js
       - name: voice check, his own objections as rules
         run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: workflow lint, this file held to its own shape
