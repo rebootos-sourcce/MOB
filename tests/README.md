@@ -181,6 +181,60 @@ what is known not to hold (tense, the conditional, done to read as did) is
 expected red, so a fix is noticed. It prints how many of the asks the story bank
 produces pass as written and what they become. Read the counts off the run.
 
+## The anatomy gate, the Body page's table
+
+Added 18 November. Headless, no browser, under a second, in gates-fast. Until
+then nothing read `ANAT`, `BMPROP` or a nerve name, and
+`proto/anatomy-ref/measure.js`, which the figure data and the anatomy skill both
+said re-derives the chart rows, was run by no build and no job.
+
+    ./atuned_src/BUILD-engine.sh
+    node tests/anatomy.js
+
+It reads `engine.js` (the table, the outline, the names), `atuned_src/ui/map.js`
+(`BMPROP` and `BMSPINE`, which live with the renderer) and the research data
+under `proto/`. It holds: every row has one source and a sentence; every
+somatic address is placed once, by a derived coordinate, by `BMPROP`, or filed
+with none (an id twice in `NODES`, twice in a table, or in no table is named by
+number), and one filed with none is one `research.js` says names no structure;
+every placed point is inside the body outline the page clips to; a place of two
+points mirrors, and a single point off the midline is one the gate names as one
+sided; no two addresses land on one point unless the table says they share a
+structure; every somatic address has a nerve name, the four anchors have none,
+the corrected names are pinned, and the addresses that still name no real
+structure are `NOSTRUCT` less the ones `nodes.js` records as corrected, read
+off the run; the spine and head rulers agree with each other and with the
+research; and every `ANAT` row that stands on a reference chart re-derives from
+it (the geometry is `proto/anatomy-ref/derive.js`, which `measure.js` calls too).
+
+The addresses with no derived coordinate are not passed off as measured. The
+gate prints, read off the run, how many of them there are, that the `BMPROP`
+ones are hand placed estimates from standard anatomy (the heading in `map.js`
+calls them "the addresses nobody has measured"), and that they are held to the
+outline, the mirror and being placed once, never to a measurement, because
+there is none. It also says plainly that "54 on each side" is a statement about
+the book: the table gives an address a place, not a side, so the gate checks
+that each pair mirrors and each single point off the midline is a named one
+sided organ, and does not pretend to count sides.
+
+The last group damages a copy of the real tables one way at a time, and each
+damage must be named by address (the numbers that follow the word address, so a
+coordinate such as 7.80 cannot stand in for address 7), so a check that cannot
+fail is caught. Set
+`ANATOMY_VERBOSE=1` to see the sentence each one produces. `ENGINE` and
+`ANATOMY_MAP` point the gate at a damaged build, which is how its first run was
+checked against the real files: a copy of `map.js` or `engine.js` with one
+address moved outside the outline, one pair with a half nudged or deleted, one
+address dropped, one id twice, or one chart row moved half a unit, run through
+`ENGINE=... ANATOMY_MAP=... node tests/anatomy.js`, exits 1 and names it.
+
+One expected red is held open on purpose and printed with its numbers: the two
+spine rulers (`ANATSPINE`, which places addresses, and `BMSPINE`, which the
+pain lines enter the spine by) give different heights for one vertebra. Its
+ceiling is `expected_red_max` in `tests/floors.json`. Checks are counted by
+group, not by address, so the count does not move when the table grows. Read
+every count off the run.
+
 ## Becoming S1 to S3, Knowledge by seat, Summary's lead row
 
 Round RB. Two gates.
