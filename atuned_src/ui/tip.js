@@ -46,6 +46,14 @@ var TIP=(function(){
  var DELAY=380;     /* hover intent. under 300 the panel fires while crossing */
  var GRACE=120;     /* the crossing tolerance, and the exit duration */
  var EL=null, CUR=null, TO=null, HOLD=null, RESTORE=null, GOFOR=null;
+ /* WHICH SHOW IS CURRENT. The panel turns on a frame after showAt, and a hide
+    inside that frame did not cancel it, so the frame put the panel back on
+    after it had been hidden: class on, aria-hidden true, drawn and unheard.
+    Measured on the profile button, 18 November: the press focuses the button,
+    focus re-shows its panel, the click opens the menu and hides it, and the
+    frame then lit it again over the open menu, for good. A hide moves the
+    count on, and a frame whose count is stale does nothing. */
+ var SEQ=0, WAS=null;
 
  function el(){
   if(EL)return EL;
@@ -198,6 +206,7 @@ var TIP=(function(){
     the wheel uses: it hands over the mark's box in client coordinates. */
  function showAt(rect,d,owner){
   clearTimeout(HOLD);
+  var seq=++SEQ;
   if(CUR&&CUR!==owner&&CUR.classList)CUR.classList.remove('tip-open');
   var e=el();
   e.classList.remove('cut');               /* hold() cut the last exit short */
@@ -236,7 +245,7 @@ var TIP=(function(){
        var up=Math.min(doc.scrollTop,(sh+16)-rect.top);
        if(up>0)doc.scrollBy({top:-up,behavior:'smooth'});}}}}
    if(top)e.classList.add('top');
-   requestAnimationFrame(function(){e.classList.add('on');});
+   requestAnimationFrame(function(){if(seq===SEQ)e.classList.add('on');});
    return;}
 
   /* measure before placing. the panel is laid out invisibly first, because
@@ -263,7 +272,7 @@ var TIP=(function(){
   e.style.setProperty('--ox', p.tx!=null?(Math.round(p.tx)+'px'):(p.side==='right'?'0px':'100%'));
   e.style.setProperty('--oy', p.ty!=null?(Math.round(p.ty)+'px'):(p.side==='bottom'?'0px':'100%'));
   e.setAttribute('aria-hidden','false');
-  requestAnimationFrame(function(){e.classList.add('on');});}
+  requestAnimationFrame(function(){if(seq===SEQ)e.classList.add('on');});}
 
  /* A CONTROL WHOSE MENU IS OPEN HAS NO TOOLTIP. 18 November, the owner:
     "Hide the sun button tooltip while its menu is open". Measured before this
@@ -309,8 +318,16 @@ var TIP=(function(){
     of it: Escape shuts the lighting menu and focuses the button in the same
     handler, before the observer below has run, and focus must still find the
     definition there. */
+ /* WAS is the last carrier whose panel went, because a menu can take focus
+    as it opens: the profile menu focuses its first row inside the same
+    click, that focus hides the button's panel with the ordinary fade before
+    this hears of the menu, and the fade then ran its length over the menu.
+    Measured on the profile button at 1600: still at opacity 0.25 a hundred
+    milliseconds after the press. A fade that belongs to this control is cut
+    too. */
  function hold(k){
-  if(CUR&&CUR.nodeType===1&&(CUR===k||k.contains(CUR))){if(EL)EL.classList.add('cut'); hide();}
+  var mine=function(c){return c&&c.nodeType===1&&(c===k||k.contains(c));};
+  if(mine(CUR)||(!CUR&&mine(WAS)&&EL&&!EL.classList.contains('on'))){if(EL)EL.classList.add('cut'); hide();}
   if(k.hasAttribute('title')){k.setAttribute('data-tip-held',k.getAttribute('title')); k.removeAttribute('title');}}
  /* and when it shuts, the title goes back unless a newer one was written
     while it was held: choosing a lighting renames the sun button in the same
@@ -338,10 +355,11 @@ var TIP=(function(){
   return true;}
 
  function hide(){
-  clearTimeout(TO); clearTimeout(HOLD);
+  clearTimeout(TO); clearTimeout(HOLD); SEQ++;
   if(EL){EL.classList.remove('on'); EL.setAttribute('aria-hidden','true');}
   if(CUR&&CUR.classList)CUR.classList.remove('tip-open');
   if(RESTORE){RESTORE[0].setAttribute('title',RESTORE[1]); RESTORE=null;}
+  if(CUR)WAS=CUR;
   CUR=null;}
  function soon(){clearTimeout(HOLD); HOLD=setTimeout(hide,GRACE);}
 
