@@ -10,6 +10,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  PATTERN96:PATTERN96, PATTERN96_BY_LAYER:PATTERN96_BY_LAYER, RESEARCHANCHOR:RESEARCHANCHOR,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
                  pctHue:pctHue, PCT_HUE0:PCT_HUE0, PCT_HUE_STEP:PCT_HUE_STEP, PCT_DAC:PCT_DAC,
@@ -17,6 +18,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
+                 srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -90,7 +93,7 @@ if(typeof module!=='undefined'&&module.exports){
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
-                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
+                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC, GATE_ANCHOR:GATE_ANCHOR, GATE_START:GATE_START,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
@@ -421,6 +424,11 @@ if(typeof module!=='undefined'&&module.exports){
      writers and the one count */
                   RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
                   RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+  /* its spoken half: the phrases, the floor, the pure parser and the one
+     writer a heard phrase goes through. The microphone is not here. */
+                  RELHIT_VOICE_PHRASES:RELHIT_VOICE_PHRASES, RELHIT_VOICE_FLOOR:RELHIT_VOICE_FLOOR,
+                  RELHIT_VOICE_COLLIDES:RELHIT_VOICE_COLLIDES, RELHIT_VOICE_RAW_MAX:RELHIT_VOICE_RAW_MAX,
+                  relHitHear:relHitHear, relHitVoice:relHitVoice,
                   relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
                   relHitExecute:relHitExecute, relHitDecide:relHitDecide,
                   relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,

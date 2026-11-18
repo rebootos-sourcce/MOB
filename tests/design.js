@@ -441,6 +441,42 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
     colour carries the whole hierarchy, so it gets a colour strong enough to. */
  ok(lit.Flat.accent!==lit.Dark.accent,'and Flat states its own, because it has nothing else');
  ok(lit.Snow.accent!==lit.Dark.accent,'and deepens on paper');
+ /* THE LIGHTING PICKER HOLDS NO PARAGRAPH, 17 November, his words: "under the
+    lighting, there's a bunch of text. We don't need that. The user can explore
+    and figure out what kind of lighting scenario they want. When I, whichever
+    one they change, they see the name." The paragraph is gone from the shell
+    (shell/body.html) and nothing held it gone, so a well meant sentence put
+    back under the row would have passed every gate here. It also described
+    four lightings on a menu of seven, which is the defect of a count typed
+    into prose. What the menu is allowed to carry is its header, one button
+    for each entry of LIGHTINGS, and at most the name of a lighting. The name
+    itself is on each button's own title, and the bar's button says which is
+    on after a choice. Every press is a real one: the menu opens from the bar's
+    button, a choice closes it, and the list is read off LIGHTINGS. */
+ const LNAMES=await p4.evaluate(()=>LIGHTINGS.map(t=>t[1]));
+ const pk=[];
+ for(let i=0;i<LNAMES.length;i++){
+  await p4.click('#lightbtn',{timeout:5000});
+  const opened=await p4.evaluate(()=>{
+   const m=document.getElementById('lightmenu'), cl=m.cloneNode(true);
+   cl.querySelectorAll('.gmenu-hd,svg').forEach(e=>e.remove());
+   const bs=[...m.querySelectorAll('#themes button')];
+   return {shown:!m.hidden&&m.getBoundingClientRect().height>0, paras:m.querySelectorAll('p').length,
+    rest:cl.textContent.replace(/\s+/g,' ').trim(), titles:bs.map(b=>b.title),
+    labels:bs.map(b=>b.getAttribute('aria-label')||'')};});
+  await p4.click('#themes button:nth-child('+(i+1)+')',{timeout:5000});
+  await p4.waitForTimeout(120);
+  const after=await p4.evaluate(()=>{const b=document.getElementById('lightbtn');
+   return {title:b.title, label:b.getAttribute('aria-label'), exp:b.getAttribute('aria-expanded')};});
+  pk.push({nm:LNAMES[i],opened,after});}
+ const loose=pk.filter(x=>!x.opened.shown||x.opened.paras!==0||!(x.opened.rest===''||LNAMES.indexOf(x.opened.rest)>=0))
+  .map(x=>x.nm+': '+JSON.stringify({shown:x.opened.shown,paras:x.opened.paras,rest:x.opened.rest.slice(0,60)}));
+ ok(pk.length>0&&loose.length===0,'the lighting picker is a header and its buttons and holds no paragraph, only at most a name, on every one of '
+  +LNAMES.length+' lightings, '+loose.join(' | '));
+ ok(JSON.stringify(pk[0].opened.titles)===JSON.stringify(LNAMES)&&pk[0].opened.labels.every((l,i)=>l.indexOf(LNAMES[i])===0),
+  'each lighting button carries its own name as its title and in its accessible name, '+JSON.stringify({titles:pk[0].opened.titles,want:LNAMES,labels:pk[0].opened.labels}));
+ const wrongName=pk.filter(x=>x.after.title!=='Lighting, '+x.nm||x.after.label!=='Lighting, '+x.nm||x.after.exp!=='false').map(x=>x.nm+': '+JSON.stringify(x.after));
+ ok(wrongName.length===0,'a choice closes the menu and the bar\'s button names the lighting picked, '+wrongName.join(' | '));
  await p4.close();
 }
 

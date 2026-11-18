@@ -389,15 +389,22 @@ function chPc(kind,v,unread){var c=chPcCol(kind,v,unread); return c?' style="col
    carried to the archetypes. Nothing is filled on a profile not read yet.
    Which archetype sits under which mask is NOT drawn: the two seats that
    proposed a pairing disagreed (TASKS.md, round GI, item 6) and it is his to
-   rule. A press opens that archetype on the Avatar page, where it is rated. */
+   rule. A press opens that archetype on the Avatar page, where it is rated.
+
+   NOT WHILE ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN, ui/avatarui.js).
+   The page they opened is not drawn, so a press would land on Becoming with
+   nothing about the archetype on it, which is a door to nowhere. Each one is
+   a mark and not a button while the view is hidden: the meaning still shows
+   on hover and tap, and nothing pretends to go anywhere. */
 function chArchHtml(r){
  var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
+ var door=typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN, tag=door?'button':'span';
  var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
  return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
   +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
-   return '<button type="button" class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
+   return '<'+tag+(door?' type="button"':' role="img" tabindex="0"')+' class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
     +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></button>';}).join('')+'</div>'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></'+tag+'>';}).join('')+'</div>'
   +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
   +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
 function chRailHtml(r){
@@ -465,7 +472,7 @@ function chRail(r){
  host.querySelectorAll('[data-chtrace]').forEach(function(b){b.onclick=function(){
   var k=+b.getAttribute('data-chtrace'); chTrace(CHV.sel===k&&b.classList.contains('chr-seat')?-1:k);};});
  /* an archetype opens on the Avatar page, where it is rated, MS22 */
- host.querySelectorAll('[data-charch]').forEach(function(b){b.onclick=function(){
+ host.querySelectorAll('button[data-charch]').forEach(function(b){b.onclick=function(){
   if(typeof AV==='undefined'||typeof setTab!=='function')return;
   AV.sub='arch'; AV.arch=b.getAttribute('data-charch'); setTab(TAB.INTAKE);
   if(typeof render==='function')render();};});

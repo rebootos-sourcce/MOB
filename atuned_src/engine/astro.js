@@ -98,25 +98,53 @@ function degInSign(lon){return _norm(lon)%30;}
 /* ---- the I Ching wheel ----
    64 gates around 360 degrees, so a gate is 5.625 wide and a line is
    0.9375. The wheel does not run 1 to 64 in order: it runs in the
-   sequence below, and the sequence starts at 0 degrees Aries.
+   sequence below, and where the sequence sits on the zodiac is fixed
+   by GATE_ANCHOR, not by 0 degrees Aries.
 
-   RULING NEEDED. This order is the one in general circulation and it
-   decides every gene key and every Human Design gate the product
-   prints. It is the one table here that is a claim about someone
-   else's system rather than about the sky, so it is isolated in one
-   place, named, and asserted in the gate test against a known chart.
-   Correct it here and everything downstream moves with it. */
+   RULED 18 November 2026, the owner's card "Apply the gene key wheel
+   anchor in SOURCE". The order was right and the anchor was not. This
+   wheel was laid with gate 25 starting at 0 degrees Aries, so every
+   gate boundary sat at a multiple of 5.625 from 0. The wheel Human
+   Design and the Gene Keys both read begins gate 41, line 1, at 2
+   degrees 00 minutes of Aquarius, which puts gate 25 at 28 degrees 15
+   minutes of Pisces, 1.75 degrees before 0 Aries. So every gate and
+   line this product printed was read off a wheel turned 1.75 degrees,
+   nearly two lines: inside about a third of every gate the gate itself
+   was the previous one, and the line was wrong almost everywhere.
+   Checked against published boundaries (gate 25 from 28 15 Pisces to
+   3 52 Aries, gate 27 from 2 00 Taurus, the solar plexus run from 18 51
+   Aquarius to 28 15 Pisces) and against three public charts whose
+   personality and design sun the old wheel misread and this one reads
+   as published: Ra Uru Hu 51.5 over 61.1, Barack Obama 33.6 over 2.2,
+   Steve Jobs 55.6 over 9.3. tests/engine.js holds all of it, with the
+   sources named there.
+
+   The table and the anchor cannot drift apart because the start is not
+   typed: it is derived from where gate 41 sits in the table. Reorder
+   the table and the start moves with it; only the order and the one
+   published degree are claims. */
 const GATE_WHEEL=[25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,
  15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,
  46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,
  10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
 const GATE_ARC=360/64;                       /* 5.625 degrees */
+/* the longitude where gate 41, line 1 begins: 2 degrees 00 of Aquarius,
+   the start of the Human Design year */
+const GATE_ANCHOR=302;
+/* where the first entry of the table, gate 25, begins: 358.25, which is
+   28 degrees 15 of Pisces. Every value here is a multiple of an eighth
+   of a degree, so this is exact in binary and a boundary lands exactly. */
+const GATE_START=_norm(GATE_ANCHOR-GATE_WHEEL.indexOf(41)*GATE_ARC);
 
-/* a longitude to its gate and line. */
+/* a longitude to its gate and line. lon is the longitude as given,
+   normalised, and arc is how far into its gate it sits, as before. */
 function gateOf(lon){
  var L=_norm(lon);
- var i=Math.floor(L/GATE_ARC);
- var within=L-i*GATE_ARC;
+ /* measured from the wheel's own start, not from 0 Aries, which is the
+    whole of the ruling above */
+ var a=_norm(L-GATE_START);
+ var i=Math.floor(a/GATE_ARC);
+ var within=a-i*GATE_ARC;
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
   lon:L, arc:within};}
 

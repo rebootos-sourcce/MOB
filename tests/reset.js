@@ -68,6 +68,20 @@ const shot = async (pg, nm) => { if (SHOTS) { await pg.screenshot({ path: path.j
 const tok = () => 'abc' + crypto.randomBytes(30).toString('base64url');
 const J = x => JSON.stringify(x);
 
+/* THE LOG IN CARD HAS TWO NAMES, AND THIS GATE HOLDS BOTH. 16 November, his
+   words on an annotated screenshot of the first visit card: "we just want
+   welcome in large font, just like login." Commit 61e9f670 made the heading
+   say Welcome and left the card's own name, its aria-label, at Log in. This
+   file went on expecting the heading to say Log in, which left it red, so
+   the gate follows the card and not the other way round. The card is known by its aria-label (the
+   word a screen reader gives the dialog, which names which card it is and
+   which the Create account and Reset cards do not share) and its heading is
+   held to the ruled word, so a build that opened the wrong card, or that put
+   the old heading back, fails here by name. ui/login.js loginCard() is the
+   one place both are written. */
+const LOGIN_LABEL = 'Log in', LOGIN_HEAD = 'Welcome';
+const isLogin = c => !!c && c.open === true && c.label === LOGIN_LABEL && c.head === LOGIN_HEAD;
+
 /* THE STUB. The Worker's routes, its status codes and its own lower case
    words, and its own floor: a password of 8 to 200 characters, or 400. mode
    picks what the reset route answers next, so one page can meet every case
@@ -116,6 +130,7 @@ function helpers() {
     const h = host(), s = document.getElementById('status'), m = document.getElementById('loginmsg');
     const open = !!h && getComputedStyle(h).display !== 'none' && h.innerHTML !== '';
     const head = h && h.querySelector('.ob-h');
+    const dlg = h && h.querySelector('[role=dialog]');
     const pw = h ? [...h.querySelectorAll('input[type=password]')] : [];
     const lab = i => { const l = i.id && document.querySelector('label[for="' + i.id + '"]'); return l ? l.textContent.trim() : ''; };
     const a = document.activeElement;
@@ -124,7 +139,7 @@ function helpers() {
       const k = st.key(i), v = st.getItem(k) || ''; if (needle && (k + v).indexOf(needle) >= 0) store.push(k); }
     const log = typeof MSG_LOG !== 'undefined' ? MSG_LOG.map(x => x.msg).join(' | ') : '';
     const save = window.__btn('Save');
-    return { open, head: head ? head.textContent.trim() : '', href: location.href, search: location.search, hash: location.hash,
+    return { open, head: head ? head.textContent.trim() : '', label: dlg ? (dlg.getAttribute('aria-label') || '') : '', href: location.href, search: location.search, hash: location.hash,
       pw: pw.map(i => ({ id: i.id, val: i.value, label: lab(i), auto: i.getAttribute('autocomplete') })),
       msg: m ? m.textContent : null, msgKind: m ? m.getAttribute('data-kind') : null,
       status: s ? s.textContent : '', statusKind: s ? s.getAttribute('data-kind') : null,
@@ -285,7 +300,7 @@ require('./net.js').guardBrowser(browser);
     await shot(pg, 'reset-open-390.png');
     const back = await pg.evaluate(() => __press('Back to log in'));
     c = await pg.evaluate(t => __card(t), T);
-    ok(back && c.open && c.head === 'Log in', 'Back to log in opens the log in card, got ' + J(c.head));
+    ok(back && isLogin(c), 'Back to log in opens the log in card, got ' + J([c.label, c.head]));
     /* the forgotten password, through the log in card the way a person reaches
        it, for an address with an account and one without */
     const forgot = async mail => pg.evaluate(async m => {
@@ -316,8 +331,8 @@ require('./net.js').guardBrowser(browser);
     await pg.evaluate(() => __press('Save', 'new-password-3', 'new-password-3'));
     c = await pg.evaluate(t => __card(t), T);
     const mail = await pg.evaluate(() => (document.querySelector('#login input[type=email]') || {}).value || '');
-    ok(c.open && c.head === 'Log in' && c.msg === 'New password saved. Log in with it.' && mail === 'probe@example.invalid' && c.session === '',
-      'a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got ' + J([c.head, c.msg, mail, c.session]));
+    ok(isLogin(c) && c.msg === 'New password saved. Log in with it.' && mail === 'probe@example.invalid' && c.session === '',
+      'a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got ' + J([c.label, c.head, c.msg, mail, c.session]));
     mode = 'good';
     const D = tok();
     await pg.goto('about:blank');

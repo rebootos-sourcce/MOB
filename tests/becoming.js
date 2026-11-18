@@ -66,7 +66,9 @@ require('./net.js').guardBrowser(b);
   const v=validateProfile(JSON.parse(JSON.stringify(saveProfile(CURP))));
   o.trip=v.ok&&v.profile.avatar.arch.Warrior===4&&v.profile.avatar.load0[id]===3.5&&v.profile.avatar.tags.Heart.add[0]==='Betrayal';
   /* a rating written now goes to the record and not the old key */
-  AV.sub='arch'; AV.arch='Sage'; renderAvatar(); avRate(5);
+  /* the view is hidden, 18 November (AV_ARCH_SHOWN), and turned on here
+     for this one write, so the rating it would make is still held */
+  AV_ARCH_SHOWN=true; AV.sub='arch'; AV.arch='Sage'; renderAvatar(); avRate(5); AV_ARCH_SHOWN=false;
   o.rate=CURP.avatar.arch.Sage; o.rateSide=(JSON.parse(STORE.get(AV_KEY))[CURP.id].arch||{}).Sage;
   delete o.side; return o;});
  ok(s1.own,'the blank profile is the person\'s own, so it can be written');
@@ -220,7 +222,8 @@ require('./net.js').guardBrowser(b);
     colour read the addresses now. What it should say is read here off SAB_LIB
     and the node table directly, not through the helper the page uses. */
  const s4=await p.evaluate(()=>{
-  loadP(0); setTab(TAB.INTAKE); AV.sub='arch';
+  /* hidden since 18 November and turned on for this walk, AV_ARCH_SHOWN */
+  loadP(0); setTab(TAB.INTAKE); AV_ARCH_SHOWN=true; AV.sub='arch';
   const lib=nm=>{let s=null; SAB_LIB.forEach(x=>{if(KB_KEY(x.nm)===KB_KEY(nm))s=x;}); return s;};
   const out={n:0, off:[]};
   AV_ROSTER.forEach(a=>{ if(!a.sab)return;
@@ -235,6 +238,7 @@ require('./net.js').guardBrowser(b);
    out.n++;
    if(!el||t.indexOf(say)<0||/primary saboteur, at /.test(t)||(most&&col!==seatCol(most)))
     out.off.push(a.nm+' ('+a.sab+'): "'+t+'" coloured '+col+', want "'+say+'" coloured by '+most);});
+  AV_ARCH_SHOWN=false; AV.sub='becoming'; AV.sig='';
   return out;});
  ok(s4.n>0&&s4.off.length===0,'every archetype\'s impact line puts its primary saboteur where its own addresses sit, '
   +'coloured by the seat holding most of them, of '+s4.n+': '+s4.off.slice(0,3).join(' | '));
@@ -352,8 +356,18 @@ require('./net.js').guardBrowser(b);
    const hex=c=>{const m=c.match(/\d+/g); return '#'+m.slice(0,3).map(x=>('0'+(+x).toString(16)).slice(-2)).join('');};
    o.hued=rows.length>0&&rows.every(e=>hex(getComputedStyle(e).color)===pctHue(parseInt(e.textContent,10),LIGHT()));
    o.nRows=rows.length;
+   /* WHILE ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN), the twelve
+      are marks and a press goes nowhere; turned on, each is the MS22 door
+      again. Both halves are held so the one line brings back a door that
+      works. */
+   o.marks=arch.every(e=>e.tagName!=='BUTTON');
    arch[0].click(); await w(80);
-   o.door=S.tab===TAB.INTAKE&&AV.sub==='arch'&&AV.arch===ARCH[0].nm;}
+   o.stay=S.tab===TAB.MASKS&&AV.sub!=='arch';
+   AV_ARCH_SHOWN=true; CHV.rail=''; render(); await w(150);
+   const door=rail.querySelector('button[data-charch]');
+   if(door){door.click(); await w(80);}
+   o.door=!!door&&S.tab===TAB.INTAKE&&AV.sub==='arch'&&AV.arch===ARCH[0].nm;
+   AV_ARCH_SHOWN=false; AV.sub='becoming'; AV.sig='';}
   return o;});
  ok(ch.badgeOk,'every seat\'s badge is the count held at that seat, '+JSON.stringify(ch.badges));
  if(ch.locked)ok(false,'James can see the masks, so Character can be checked');
@@ -361,7 +375,8 @@ require('./net.js').guardBrowser(b);
   ok(ch.twelve&&ch.tips,'Character shows all twelve archetypes, each with its meaning on hover and tap');
   ok(ch.filled===ch.want&&ch.want.length>0,'the ones James embodies fill in, and only those, '+ch.filled+' against '+ch.want);
   ok(ch.hued,'every percent on the rail wears its own hue, read off pctHue, '+ch.nRows+' figures');
-  ok(ch.door,'an archetype opens on the Avatar page where it is rated');}
+  ok(ch.marks&&ch.stay,'while Archetypes is hidden the twelve are marks and a press goes nowhere');
+  ok(ch.door,'with AV_ARCH_SHOWN on, an archetype opens on the Avatar page where it is rated');}
 
  ok(errs.length===0,'no page errors, '+errs.join(' | '));
  await b.close();

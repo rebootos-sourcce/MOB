@@ -3,7 +3,8 @@
     "The flake ledger. One entry per check that has failed and then passed again on the same code, keyed by gate and check. tools/flakes.js reads a gate's failure output, matches each failing check against this list, and either counts one more sighting of a known entry or adds a new one as suspected. It prints the ledger with no arguments.",
     "A check is the failing line as the gate printed it, with every run of digits read as N, so 'reads the plan once more: 2 reads' and '... 1 reads' are one check. The example is one real line as printed.",
     "status is suspected (seen failing, not yet shown to pass on the same commit, so it may be a real failure: a first failure is a failure until three runs say otherwise), open (a known flake, not fixed), resolved (root caused and fixed, with the fix named), or reopened (resolved, then seen failing again after its fix, which is the line to read first).",
-    "Added 3 November with one real entry, station R of tests/golden.js, closed. Its sightings are the CI runs found failing on that exact check in a search of the deploy runs of pull requests 163 and 164, read off each job's own log on 3 November; the local reproduction counts are in its reproduced field and are not sightings. Nothing writes this file but tools/flakes.js record, run on purpose."
+    "Added 3 November with one real entry, station R of tests/golden.js, closed. Its sightings are the CI runs found failing on that exact check in a search of the deploy runs of pull requests 163 and 164, read off each job's own log on 3 November; the local reproduction counts are in its reproduced field and are not sightings. Nothing writes this file but tools/flakes.js record, run on purpose.",
+    "Added 17 November, ten entries from the four failing legs of nightly run 44157475264 on 39638f05, recorded with tools/flakes.js record as suspected from the repeat jobs' own summary lines. Their examples are therefore in key form, with numbers read as N, and not one real line as printed: the gate logs were on the runners. The two reset entries are one deterministic failure, a test expecting a heading the card no longer has, and not a flake; they stay suspected until the fix is on main and main's own runs show it, and are then resolved with the fix commit named."
   ],
   "flakes": [
     {
@@ -48,6 +49,196 @@
         "commit": "931b409072ab8da44016362179a918d6881d40a0",
         "date": "2026-11-05",
         "where": "local, SV17 branch off 931b4090, passed twice in tests/voicefall.js on the same build"
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "boot",
+      "check": "the overture's own clock: the sheet's fade and its opening beat start on one frame, Nms and Nms",
+      "example": "the overture's own clock: the sheet's fade and its opening beat start on one frame, Nms and Nms",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (boot), job 134302819166: parallel-3 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The example is in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (boot), job 134302819166: parallel-3 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The example is in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "design",
+      "check": "one address is four blocks and each runs its full dose: N:Llimit:N xN, N:Rlimit:N xN, N:Ltruth:N xN, N:Rtruth:N xN",
+      "example": "one address is four blocks and each runs its full dose: N:Llimit:N xN, N:Rlimit:N xN, N:Ltruth:N xN, N:Rtruth:N xN",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "design",
+      "check": "and the run shows every line of it, N of N",
+      "example": "and the run shows every line of it, N of N",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "design",
+      "check": "and the cooldown shows every line:",
+      "example": "and the cooldown shows every line:",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "design",
+      "check": "the run completes to Released, run",
+      "example": "the run completes to Released, run",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "design",
+      "check": "and charges exactly the plan it was shown, N of N",
+      "example": "and charges exactly the plan it was shown, N of N",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (design), job 134302819223: parallel-1 failed, 187 passed and 5 failed, 1 of 7 runs (3 solo and 3 of 4 parallel passed on the same commit). The five checks are consecutive lines of one release run block, tests/design.js lines 1616 to 1632 at this commit. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "functional",
+      "check": "a release run with voice and tone off, the fittings switched on, and a fitting and a refusal fired at N steps of it, sounds only its own two boundaries, begin and done: N nodes, N played, begin, phases welcome opening run, in N ms",
+      "example": "a release run with voice and tone off, the fittings switched on, and a fitting and a refusal fired at N steps of it, sounds only its own two boundaries, begin and done: N nodes, N played, begin, phases welcome opening run, in N ms",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (functional), job 134302819445: all 4 parallel runs failed these 2 checks, 3048 passed and 2 failed each, and all 3 solo runs passed (3050 passed) on the same commit, so it follows four way load and not chance. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (functional), job 134302819445: all 4 parallel runs failed these 2 checks, 3048 passed and 2 failed each, and all 3 solo runs passed (3050 passed) on the same commit, so it follows four way load and not chance. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "functional",
+      "check": "and once the run has closed, and a press, the interface sounds again, false",
+      "example": "and once the run has closed, and a press, the interface sounds again, false",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (functional), job 134302819445: all 4 parallel runs failed these 2 checks, 3048 passed and 2 failed each, and all 3 solo runs passed (3050 passed) on the same commit, so it follows four way load and not chance. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (functional), job 134302819445: all 4 parallel runs failed these 2 checks, 3048 passed and 2 failed each, and all 3 solo runs passed (3050 passed) on the same commit, so it follows four way load and not chance. The examples are in key form, with numbers read as N, from the job's summary line; the gate's own log was on the runner and is gone."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "reset",
+      "check": "Back to log in opens the log in card, got \"Welcome\"",
+      "example": "Back to log in opens the log in card, got \"Welcome\"",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (reset), job 134302819526: all 7 of 7 runs, solo and parallel, failed these 2 checks. Deterministic, so not a flake: tests/reset.js expected the log in card heading Log in and the card has said Welcome since 61e9f670 on 16 November, with its aria-label still Log in. The fix is in tests/reset.js and was not on main when this was recorded; resolve this entry with the merged fix commit once main's reset runs read 39 passed, 0 failed. The examples are in key form, with numbers read as N, from the job's summary line."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (reset), job 134302819526: all 7 of 7 runs, solo and parallel, failed these 2 checks. Deterministic, so not a flake: tests/reset.js expected the log in card heading Log in and the card has said Welcome since 61e9f670 on 16 November, with its aria-label still Log in. The fix is in tests/reset.js and was not on main when this was recorded; resolve this entry with the merged fix commit once main's reset runs read 39 passed, 0 failed. The examples are in key form, with numbers read as N, from the job's summary line."
+      },
+      "sightings": 1,
+      "status": "suspected"
+    },
+    {
+      "gate": "reset",
+      "check": "a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got [\"Welcome\",\"New password saved. Log in with it.\",\"probe@example.invalid\",\"\"]",
+      "example": "a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got [\"Welcome\",\"New password saved. Log in with it.\",\"probe@example.invalid\",\"\"]",
+      "first_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (reset), job 134302819526: all 7 of 7 runs, solo and parallel, failed these 2 checks. Deterministic, so not a flake: tests/reset.js expected the log in card heading Log in and the card has said Welcome since 61e9f670 on 16 November, with its aria-label still Log in. The fix is in tests/reset.js and was not on main when this was recorded; resolve this entry with the merged fix commit once main's reset runs read 39 passed, 0 failed. The examples are in key form, with numbers read as N, from the job's summary line."
+      },
+      "last_seen": {
+        "run": "44157475264",
+        "commit": "39638f053841e1c89c5491118968295319844326",
+        "date": "2026-11-17",
+        "where": "nightly-gates (schedule), repeat (reset), job 134302819526: all 7 of 7 runs, solo and parallel, failed these 2 checks. Deterministic, so not a flake: tests/reset.js expected the log in card heading Log in and the card has said Welcome since 61e9f670 on 16 November, with its aria-label still Log in. The fix is in tests/reset.js and was not on main when this was recorded; resolve this entry with the merged fix commit once main's reset runs read 39 passed, 0 failed. The examples are in key form, with numbers read as N, from the job's summary line."
       },
       "sightings": 1,
       "status": "suspected"
