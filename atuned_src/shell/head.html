@@ -6469,6 +6469,12 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
    uses: a line of text swelling and shrinking reads as broken, not alive. */
 .src-livecap{font-size:13px;color:var(--mid);line-height:1.55;margin:6px 0 0;font-style:italic;
  animation:capPulse 1.6s ease-in-out infinite}
+/* ONE LINE OF HEIGHT WITH NOTHING IN IT, 18 November. The caption prints the
+   person's own words and nothing else now, so at rest it is empty; the line it
+   held while it said "Listening" is kept, because it is the only thing under
+   the circle and the circle moved 13 pixels each time words arrived or left
+   without it, measured. A paragraph with no text is zero tall on its own. */
+.src-livecap{min-height:1.55em}
 @keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
 body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);

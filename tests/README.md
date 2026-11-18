@@ -161,6 +161,34 @@ run.
 Since round SK it also runs on a page whose ask skips the question check, and
 that must fail too.
 
+Talk with nothing said has its own gate, added 18 November after five reports
+from one screenshot of the Dashboard.
+
+    NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/talksilence.js
+    SHOTS=dir ... node tests/talksilence.js                      and the pictures
+    ATUNED_FILE=other.html node tests/talksilence.js             a different build
+    TS_ONLY=l1,blank,jump  ... node tests/talksilence.js         one group of three
+
+`tests/talksilence.js` holds that pressing Talk and saying nothing leaves the
+circle at rest (the lit pixels of the real canvas against its own rest, and the
+face's own `engaged`, word and reading), while the greeting is still asked for
+and still plays; that a recogniser result with no word in it is not a turn and
+that yes, no, I don't know, sad and the safety door's own words still are;
+that no word of Source AI's is on the page at rest, the person's own interim
+words still show, and the circle does not move for them; that the bar line is
+neither drawn nor logged, a hidden polite region tells a screen reader the
+microphone opened and closed, and a real failure still reaches the dock; that
+the circle has no hover card (and Talk's own still opens one, the positive
+control) while its key text stays in the data; and that the round Commit button
+never leaves its place in forty seconds of samples every 50 milliseconds, Talk
+on at 1600 and 390 and Talk off, with a recogniser that goes quiet and ends
+itself the way Chrome's does. The jump detector is first run on a page that
+injects a jump every ten seconds and must flag it, and a real sentence must
+still wake the circle, so the probes are shown to see what they look for. Run on
+the build from before the fix it fails every check that names one of the five
+reports, and run on a copy of the fixed build with one fix undone, the check
+for that fix fails. Read the counts off the run.
+
 Source AI's evidence ledger and question check, the Journal Mode blueprint's
 P0, are engine code and have their own headless gate.
 

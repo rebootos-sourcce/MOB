@@ -136,6 +136,7 @@ const read=p=>p.evaluate(()=>{
   focus:document.activeElement&&document.activeElement.id,
   fields:document.querySelectorAll('#story textarea,#story input[type=text],#story [contenteditable=true]').length,
   status:(document.getElementById('status')||{}).textContent||'',
+  micsay:(document.getElementById('micsay')||{}).textContent||'',
   text:ST_TEXT, parsed:!!ST_PARSED,
   move:srcTurn(STR.heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED}).move,
   entries:((CURP&&CURP.story&&CURP.story.entries)||[]).length};});
@@ -195,7 +196,11 @@ async function voiceFallGate(browser,FILE,ok,booted){
    await p.waitForTimeout(250);
    const s=await read(p);
    ok(s.chat===true&&!s.novoice&&!s.box&&s.fields===0,at+nm+': chat stays on and no text field is drawn, '+JSON.stringify({chat:s.chat,novoice:s.novoice,box:s.box,fields:s.fields}));
-   if(fail==='')ok(s.listen&&/Listening/.test(s.status),at+nm+': it is listening, '+JSON.stringify({listen:s.listen,status:s.status}));
+   /* 18 November, his words: "At the very bottom, it says listening, press
+      again to stop. There should be no text there." The bar is gone, so
+      listening is read off the page's own state, the status line is empty,
+      and a screen reader is told through the hidden region (#micsay). */
+   if(fail==='')ok(s.listen&&s.status===''&&s.micsay==='Microphone open.',at+nm+': it is listening, the bar says nothing, and the hidden region tells a screen reader, '+JSON.stringify({listen:s.listen,status:s.status,micsay:s.micsay}));
    if(fail==='not-allowed'){
     ok(!s.listen&&/microphone permission/.test(s.status),at+nm+': its own line, and it stops listening, '+JSON.stringify({listen:s.listen,status:s.status}));
     const q=await p.evaluate(async()=>{ try{ return (await navigator.permissions.query({name:'microphone'})).state; }catch(e){ return 'threw'; } });

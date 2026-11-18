@@ -570,6 +570,41 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · Dashboard, Talk with nothing said
+
+said: "This is feedback for the dashboard. When I click on talk and I haven't
+said anything, source is already activating and animating. That's a bug. This
+text in the lower left that says listening, there should be no text on that
+screen. That's a bug. At the very bottom, it says listening, press again to
+stop. There should be no text there. That's a bug. And then this tooltip isn't
+working. Let's turn that off for now. And one thing to look into, the commit
+button keeps jumping to the upper left-hand corner every like 10 seconds,
+briefly. So there's something going on with this animation. Read this back to
+me, and then let's get this fixed."
+read: five reports from one screenshot. The circle woke on the greeting's
+audio and stayed awake, so Talk with nothing said looked like a reading
+(cause: the circle was handed the greeting as a reply). The caption under the
+circle printed the word Listening as a placeholder. The dock printed
+"Listening. Press again to stop." for a state the Talk button already shows.
+The seven line key hung off the canvas box, 250 pixels from the circle. And
+Commit was not jumping, it was sliding in from the corner on every placement,
+about every eight seconds, because a silent recogniser restarts and the page
+renders on the restart.
+change: ui/storyui.js (stMic, stSrcSpeak, stRender, stHeroPlace, the
+recogniser's onresult, new stMicNoise, micSay and stMicAnnounce, stOwn),
+ui/srcface.js (the canvas title becomes SrcFace.key()), shell/head.html (one
+line of caption height), shell/body.html (the hidden #micsay), tests/talksilence.js
+(new), tests/voicefall.js (listening is read off the page and the hidden
+region, not the bar), tests/README.md. DECISIONS.md has the ruling, what it
+overrides and four open questions for him. Branch fix/talk-silence.
+measure: tests/talksilence.js on the c2bf52a2 build reads 28 failures, one or
+more for each of the five reports: the circle's lit pixels at 4.3 times its
+rest in 33 of 33 samples, a card on every hover over the canvas box, 54 glides
+of the Commit button on left or top in 40 seconds at 1600 and 50 at 390. On this
+build it reads none of them: the circle at 1.1 times rest, no card, no bar, no
+word, 0 glides. Each check also fails on a copy of this build with its own fix
+undone.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

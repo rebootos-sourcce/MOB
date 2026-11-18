@@ -3706,3 +3706,113 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## Talk with nothing said: the circle rests, no Source AI word on the screen, no hover card on the circle, and Commit holds still. Ruled 18 November.
+
+His words, verbatim, on a screenshot of the Dashboard with Talk open, five
+things circled in red: "This is feedback for the dashboard. When I click on
+talk and I haven't said anything, source is already activating and animating.
+That's a bug. This text in the lower left that says listening, there should be
+no text on that screen. That's a bug. At the very bottom, it says listening,
+press again to stop. There should be no text there. That's a bug. And then
+this tooltip isn't working. Let's turn that off for now. And one thing to look
+into, the commit button keeps jumping to the upper left-hand corner every
+like 10 seconds, briefly. So there's something going on with this animation.
+Read this back to me, and then let's get this fixed."
+
+Read as, which is the read back he asked for, five changes:
+- **Talk with nothing said leaves the circle exactly as it is at rest.** No
+  beat, no purple trace along the bottom, no newly lit rings, for as long as
+  nothing is said. The cause was not the microphone. Talk speaks the greeting,
+  the circle was handed that audio as if it were a reply, and the circle sets
+  one latch when it hears a voice (`engaged`, `ui/srcface.js`) that nothing
+  releases, so it ran its beat and its trace from the greeting on. The
+  greeting is still asked for, still spoken and still holds the recording
+  while it plays (the 13 November ruling, every reply spoken, stands); the
+  circle just is not told about it (`stSrcSpeak`, option `rest`). And a
+  recogniser result with no word in it, an empty final, spaces, a lone filler
+  sound (uh, um, hmm, mm, huh, the), is not a turn any more: it is not written
+  into the entry, not read by the circle and not answered out loud
+  (`stMicNoise`, `ui/storyui.js`). It names sounds and never words: yes, no,
+  "I don't know" and sad are real answers and pass, anything the safety door
+  reads passes first, and letters and digits are read as Unicode so speech in
+  another script is never mistaken for silence.
+- **No word of Source AI's own under the circle.** The italic Listening at the
+  lower left was the live caption's placeholder. The caption prints the
+  person's own interim words while they speak, as the 29 October ruling asked
+  ("I should see my input as I'm talking"), and nothing else. It keeps one
+  line of height when empty, because taking it out of the flow moved the
+  circle by 13 pixels on every sentence.
+- **No bar for the open microphone.** `status('Listening. Press again to
+  stop.', 'ok')` is gone. The state is now said to a screen reader and never to
+  the page: a hidden polite region, `#micsay` in `shell/body.html`, written
+  from the foot of `stRender` when the microphone opens or closes
+  ("Microphone open.", "Microphone closed."), and not again on a silent
+  restart. `status()` itself is untouched, so every failure still shows in the
+  dock, as a failure, and is logged.
+- **The circle's hover card is off, for now.** It was the seven line key
+  (17 November, "This tooltip, it's insane. That text in the tooltip needs to
+  be direct."), carried as the canvas's `title`, which the tooltip engine hangs
+  off the whole canvas box: 900 by 420 in the Journal where the circle is 416,
+  so the card opened 250 pixels from the thing it described. The text is kept
+  as data, `SrcFace.key()`, and the canvas keeps its aria-label; nothing may set
+  a title or a data-tip on that canvas while this stands. Turning it back on is
+  one line.
+- **Commit does not move.** It was not jumping, it was sliding in from the
+  upper left corner of the Journal pane: `stHeroPlace` places each control by
+  writing left 0 and top 0, reading it back, then writing the real place, and
+  `.btn` carries `transition: all`, so every placement was a 120 millisecond
+  glide from the corner. It repeated about every eight seconds because a
+  recogniser that hears nothing ends itself, `ST_REC.onend` restarts it and
+  renders the page, and every render builds a new button and places it again.
+  Talk, the keyboard and Dashboard do not slide only because their transition
+  lists do not name left or top. The transition is now off for the length of
+  the placement and put back after a read has flushed the final position
+  (`put` in `stHeroPlace`); a CSS rule that pinned the button would have
+  hidden the cause.
+
+What this overrides, in one clause each, per the 15 November rule: the
+17 November hover on the circle (off, for now, text kept); the
+"Listening" placeholder of the 29 October live caption (the person's words
+stay); and the `status('Listening...')` line of `stMic`. What it does not touch:
+Talk's own hover, which is the one hover left on that screen and explains
+itself; the crisis safety line and its door; every error line; and the words
+the circle draws on its own canvas during a reading.
+
+Held by `tests/talksilence.js`, which was run on the build from before the fix
+and on a copy of the fixed build with each fix undone, one at a time.
+Measured on 18 November in headless Chromium on a real own record, Talk
+pressed and nothing said, a three second greeting, against the circle's own
+rest (the lit pixels of the real canvas, a channel above 110):
+- the build from before, `c2bf52a2`: the circle's lit pixels averaged 4650
+  against a rest of 1077, 4.3 times, in all 33 samples over nine seconds, and
+  its state read engaged with the centre word Answering; "Listening" under the
+  circle; the dock open with "Listening. Press again to stop." and one logged
+  line; the seven line card on a hover anywhere in the 900 by 420 canvas box;
+  Commit 29 samples out of 800 away from its place at 1600 and 26 at 390,
+  with 54 and 50 browser glides on left or top in forty seconds, painted at
+  the pane's upper left corner (11, 78) before sweeping home; and uh, Hmm.,
+  the, "Um, uh" and bare punctuation filed as turns, each answered out loud
+  ("Say more about that.", "I'm listening.").
+- this build: the lit pixels averaged 1235 against a rest of 1091 with no
+  sample above one and a half times the rest maximum, engaged never true, no
+  word, no bar, nothing logged, no card, 0 samples away and 0 glides at both
+  widths through seven silent restarts, filler and empty results dropped with
+  no render, and a real sentence still wakes the circle to 6180 and is still
+  answered out loud.
+
+Open, and his call, written so he does not have to go and find them:
+- **The words the circle draws on itself while it is reading** (the centre
+  word, which runs Listening, Found, Weighing, Holding, Answering, and the
+  seat labels such as "Root, Fear" on the rings). They are drawn on a canvas,
+  so no text probe sees them. Do they count as "no text on that screen"? If
+  yes they go; if no they stay. Not changed.
+- **After his first real sentence the circle stays awake** (beat and trace) for
+  the rest of the session, because `engaged` is never released. Should it go
+  back to rest a few seconds after Source AI finishes answering, or stay awake
+  once a story has begun? That is the 17 November design and was not changed.
+- **Talk's own hover card** ("Talk by speaking instead of typing...") is the one
+  hover left on that screen. Keep it, or shorten it, or take it off too?
+- **When the circle's hover comes back, and saying what?** It is off "for now".
+  The key is kept word for word, so it can return with the same text or a
+  shorter one, hung off the circle and not off the box.

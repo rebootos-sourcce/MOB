@@ -673,8 +673,20 @@ function stRender(){
      off the speech service's own interim result, shown and gone the moment
      that sentence finalises and lands as a real turn. aria-live so a screen
      reader hears it grow the way a sighted ear does. */
+  /* NO WORD AT REST, 18 November, his words, circling the italic "Listening"
+     under the circle: "there should be no text on that screen. That's a
+     bug." The caption was the one place the person's own interim words
+     show, and it fell back to the literal word "Listening" whenever
+     nothing had been said, so a screen with nothing on it carried Source
+     AI's own word for as long as the microphone was open. It prints the
+     person's words now and nothing else. The element stays, empty, and
+     .src-livecap holds its one line of height (shell/head.html), because
+     the caption is the only thing under the circle and taking it out of the
+     flow moved the circle and the buttons round it by 13 pixels on every
+     sentence, measured. Whether the microphone is open is said to a screen
+     reader through #micsay (micSay, below), never on the page. */
   +(ST_LISTEN?'<p class="src-livecap" id="stlivecap" aria-live="polite">'
-    +esc(ST_LIVE||'Listening')+'</p>':'')
+    +esc(ST_LIVE)+'</p>':'')
   +'</div>')
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -1175,7 +1187,8 @@ function stRender(){
  srcChatWire();
  zFoldWire(); rowFoldWire();
  stUniSync(r);
- stHeroPlace();}
+ stHeroPlace();
+ stMicAnnounce();}
 /* THE THREE CORNER BOXES' OWN WIRING, 17 November. stRender rewrites the
    whole flow's innerHTML on every call (STV.dash flipping, a tab arrival,
    a profile switch), so .zfold and .rowfold are new elements every time
@@ -1388,10 +1401,28 @@ function stHeroPlace(){
     "fixed means the screen" was wrong. Set it at the corner it already
     has, read where that landed, and move it by the difference, which is
     right for any containing block there is. */
+ /* NOTHING SLIDES WHILE IT IS PLACED, 18 November, his words: "the commit
+    button keeps jumping to the upper left-hand corner every like 10
+    seconds, briefly." Measured: the button was not jumping, it was
+    sliding in from the corner. This function sets 0,0 and reads it back,
+    which gives the browser a real 0,0 to start from, and .btn carries
+    transition:all, so the real left and top were then a 120 millisecond
+    glide from the corner of the Journal pane to the place. It repeated
+    about every eight seconds because a recogniser that hears nothing ends
+    itself, ST_REC.onend restarts it and renders the page, the render builds
+    a new button, and every place is a new glide. Talk, the keyboard and
+    Dashboard never showed it only because their transition lists do not
+    name left or top. The cause is here, in the intermediate state this
+    function makes, so the transition is off for the whole of it and put
+    back only after a read has flushed the final left and top: put back
+    before that read, the glide would start from 0,0 all the same. */
  var put=function(e,x,y){
+  var tr=e.style.transition; e.style.transition='none';
   e.style.right='auto'; e.style.bottom='auto'; e.style.left='0px'; e.style.top='0px';
   var o=e.getBoundingClientRect();
-  e.style.left=Math.round(x-o.left)+'px'; e.style.top=Math.round(y-o.top)+'px'; };
+  e.style.left=Math.round(x-o.left)+'px'; e.style.top=Math.round(y-o.top)+'px';
+  e.getBoundingClientRect();
+  e.style.transition=tr; };
  var th=Math.max(hOf(left),hOf(right)), top=Math.max(y0,cy-dy-th);
  var x=cx-dx-lw;
  left.forEach(function(e){ put(e,x,top+(th-e.getBoundingClientRect().height)/2); x+=e.getBoundingClientRect().width+gap; });
@@ -1884,7 +1915,7 @@ function stOwn(){
   if(typeof pPersist==='function'&&!pPersist()&&typeof status==='function')
    status('This browser would not save. The words you left in the Journal are on this page and not on your record.','fail');}
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
-  try{ if(ST_REC)ST_REC.stop(); }catch(e){} }
+  try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
  ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
@@ -4889,6 +4920,44 @@ function stMicLine(code){
   'aborted':''};
  return (code in M)?M[code]:('Recording stopped: '+code+'.');}
 function stMicSay(code){ var m=stMicLine(code); if(m)status(m,'fail'); }
+/* WHAT THE RECOGNISER HANDS OVER THAT IS NOT SPEECH, 18 November. A final
+   with no letter or digit in it, or one made only of lone filler sounds
+   (the hesitations a microphone in a quiet or noisy room produces, and the
+   one article it invents out of hiss), has no word in it for the engine to
+   count and nothing for Source AI to answer. It is dropped before it is a
+   turn. The list is short on purpose and names sounds, never words a person
+   means: yes, no, "I don't know" and one word like sad are real answers and
+   pass, and the engine counts none of the first three, so the test is not
+   "the engine found a hit". Any text srcSafe reads passes first, whatever
+   it is made of: the door is never gated by a guard written for noise.
+   Letters and digits are read as Unicode ones, so speech in a script the
+   list does not know is never mistaken for silence. */
+var ST_FILLER={uh:1,um:1,uhm:1,umm:1,uhh:1,er:1,erm:1,eh:1,ah:1,hm:1,hmm:1,hmmm:1,mm:1,mmm:1,mhm:1,mmhm:1,huh:1,the:1};
+function stMicNoise(t){
+ t=String(t||'');
+ if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ var w=t.toLowerCase().replace(/[^\p{L}\p{N}'’\s]/gu,' ').split(/\s+/).filter(Boolean);
+ if(!w.length)return true;
+ return w.every(function(x){ return ST_FILLER[x]===1; });}
+/* THE MICROPHONE IS SAID TO A SCREEN READER AND NEVER TO THE PAGE, 18
+   November, his words on the bar that read "Listening. Press again to
+   stop.": "There should be no text there. That's a bug." The line was
+   status(), the message dock, which also carries Keep and Log and logs
+   the line, so a state the person already sees on the Talk button became
+   a strip across the screen for three seconds. A person who cannot see the
+   button still has to be told, so the words go to #micsay, a hidden polite
+   region that exists from load (shell/body.html), because a live region
+   created at the moment it speaks is not reliably heard. It is written
+   from one place, the foot of stRender, which every route that opens or
+   closes the microphone passes through, and only when the state changed:
+   a silent restart of the recogniser renders the page and says nothing.
+   status() is untouched, so every failure still shows. */
+var ST_MIC_SAID=false;
+function micSay(msg){ var e=document.getElementById('micsay'); if(e)e.textContent=msg; }
+function stMicAnnounce(){
+ if(!!ST_LISTEN===ST_MIC_SAID)return;
+ ST_MIC_SAID=!!ST_LISTEN;
+ micSay(ST_MIC_SAID?'Microphone open.':'Microphone closed.'); }
 /* THREE ERRORS THAT MEAN THIS DEVICE CANNOT BE HEARD, 3 November, the second
    half of the fix below. The browser has a recogniser and the page is secure,
    so stMic starts, and then the recogniser reports one of these: no
@@ -5090,7 +5159,20 @@ function stMic(){
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal){ if(ST_REC_DONE[i])continue; ST_REC_DONE[i]=1; fin+=t; } else live+=t;}
-  if(fin.trim())srcTurnCommit(fin);
+  /* A RESULT WITH NOTHING IN IT IS NOT A TURN, 18 November, his words: "when
+     I click on talk and I haven't said anything, source is already
+     activating and animating. That's a bug." A silent or noisy room hands
+     the recogniser empty finals and lone filler sounds, and each one was
+     filed as a turn: written into the entry, read by the face (a full
+     reading cycle) and answered out loud. stMicNoise names them, above.
+     A real short answer is not one of them, and neither is anything the
+     safety door reads. */
+  var turn=!!fin.trim()&&!stMicNoise(fin);
+  if(turn)srcTurnCommit(fin);
+  /* and an interim result that says what the caption already says paints
+     nothing: a noisy room delivers them many times a second, and each one
+     was a whole render of the page */
+  if(!turn&&live===ST_LIVE)return;
   /* the box keeps its focus here too, 4 November: Type instead stops the
      recording with stop, which hands back the sentence still being spoken
      as one last final, and this render rebuilt the box it had just
@@ -5145,7 +5227,17 @@ function stMic(){
  try{ stMicGo(); }
  catch(err){ stMicStartFail(err); return; }
  ST_START_FAIL=0; ST_LISTEN=true; ST_LISTEN_T0=performance.now(); stRender();
- status('Listening. Press again to stop.','ok'); stSrcSpeak();}
+ /* NO BAR AND NO MOTION FOR AN OPEN MICROPHONE, 18 November. The line that
+    stood here was status('Listening. Press again to stop.','ok'), which is
+    now the hidden announcement stRender makes (stMicAnnounce). The greeting
+    is still spoken, every reply is (the 13 November ruling), but it is
+    handed to the face as no reading at all, {rest:true}: the face took
+    the greeting's audio for a reply, set the one-way latch that wakes it
+    (engaged, ui/srcface.js voice) and ran its beat and its saboteur trace
+    for the rest of the session, which is what a person who had said nothing
+    saw. Measured: with the greeting kept from the face, the same press
+    leaves the circle exactly as it was at rest for twenty seconds. */
+ stSrcSpeak(null,{rest:true});}
 /* SOURCE AI GREETS OUT LOUD WHEN TALK IS PRESSED, round of 29 October, his
    words: "when I hit the talk button, I want to be greeted by the AI. So I
    need to hear the voice." The voice is ElevenLabs and there is no other
@@ -5271,8 +5363,11 @@ function stSrcSpeak(line,o){
   /* Source's face follows this element, the one voice, and no other: it
      speaks while this plays and holds its reading until this ends
      (ui/srcface.js). Handed before play(), so its first playing event is
-     never missed. */
-  if(window.SrcFace)window.SrcFace.voice(a,text);
+     never missed. o.rest keeps one line from it: a line that is not a
+     reply to anything the person said (stMic's greeting) is still heard
+     and still holds the recording, but the face never hears it, because
+     hearing a voice is what wakes the face for good (srcface.js, voice). */
+  if(window.SrcFace&&!o.rest)window.SrcFace.voice(a,text);
   var played=false;
   a.addEventListener('playing',function(){ if(played)return; played=true; if(typeof o.onPlay==='function')try{o.onPlay();}catch(e){} });
   /* srcVoiceStop clears onended and onerror before it pauses, so a line

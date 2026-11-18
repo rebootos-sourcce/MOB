@@ -131,8 +131,19 @@
  canvas.hidden=true;
  canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven seats, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
-    on the face, travels with it as the hover, since the box has no room for
-    a caption of its own */
+    on the face, travelled with it as the hover, since the box has no room for
+    a caption of its own.
+
+    THE HOVER IS OFF, 18 November, his words, looking at the seven line card
+    hung off the right of the circle: "this tooltip isn't working. Let's turn
+    that off for now." The text is kept, as KEY, so turning it back on is one
+    line and the words are still the ruled ones; what is gone is the title
+    attribute, because the tooltip engine (ui/tip.js) takes any title as a
+    hover target and hangs its card off the canvas box, which is 900 by 420
+    in the Journal while the circle is 416 across, so the card stood 250
+    pixels from what it described. The canvas keeps its aria-label above, and
+    SrcFace.key() hands the key to anything that wants to print it. Nothing
+    may set a title or a data-tip on this canvas while the ruling stands. */
  /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
     the paragraph that stood here: "This tooltip, it's insane. That text in the
     tooltip needs to be direct." Each line names a mark the canvas really
@@ -153,7 +164,7 @@
   "Light between dots: a saboteur, a habit running on those places",
   "Rim marks: the laws, ways of keeping your integrity",
   "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");
- canvas.title=TITLE;
+ let KEY=TITLE;
  const ctx=canvas.getContext('2d');
  /* the emissive layer and its three bloom copies, the amplified file's */
  const L=document.createElement('canvas'), lx=L.getContext('2d');
@@ -271,7 +282,7 @@
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
   const ARC='\nGold arc: coherence, mind, actions and body pointing the same way';
-  canvas.title=TITLE+(CQ==null?(r&&!r.unread
+  KEY=TITLE+(CQ==null?(r&&!r.unread
     ?ARC+'. It is drawn once you answer the laws'
     :ARC+'. Not read yet')
    /* a percent, as the Field tile prints the same figure: "of 100" is a
@@ -1286,6 +1297,7 @@
   readE=0; engaged=speaking; stateWord=speaking?'Answering':IDLE; }
  readAddrs();
  window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,intro,refit,
+  key:()=>KEY,
   plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
   state:()=>({word:stateWord,engaged,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,

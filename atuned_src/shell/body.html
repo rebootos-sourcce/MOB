@@ -1627,3 +1627,10 @@
  <button type="button" class="msg-b" id="msglogbtn" aria-haspopup="dialog">Log<i id="msgbadge" hidden></i></button>
 </div>
 <div id="msglog" class="msglog" role="dialog" aria-label="Message log" hidden></div>
+<!-- THE MICROPHONE'S OWN ANNOUNCEMENT, 18 November. Hidden, polite, and here
+     from load so a screen reader is already listening to it when the
+     microphone opens or closes (micSay, ui/storyui.js). It says what the
+     Talk button says and the page does not: the bar that used to carry
+     "Listening. Press again to stop." was ruled out, and a failure still
+     goes through #status above. -->
+<p id="micsay" class="src-say" role="status" aria-live="polite"></p>
