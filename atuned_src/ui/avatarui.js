@@ -373,14 +373,26 @@ function avClosure(row,load0){
  if(load0==null||load0<=0)return 0;
  return clamp(1-row.gap.load/load0,0,1);}
 
-/* ---------------- what the sniffer hears in a pair ---------------- */
+/* ---------------- what the sniffer hears in a pair ----------------
+   WIRED TO THE RECORD, 18 November, his words: "the sniffer needs to be
+   wired into the records and listen for those patterns." Before this,
+   srcHear ran here with no prior argument at all, so a seat already
+   established across this person's own committed entries (srcHear's own
+   rungs 9 and 10, "an earlier committed entry touched this seat too")
+   could never fire on the Avatar page: every pair read as brand new,
+   however many times the same seat had already come back. storyui.js's
+   own calls (stMini/the Story tab) already pass srcPrior(ents); this
+   page is the one that did not. Reads only the seat keys earlier commits
+   already stored (srcPrior, engine/sourceai.js), never their text. */
 function avHeard(notbe){
  var t=String(notbe||'').trim(), out={seat:null, area:null, words:[], named:[]};
  if(!t)return out;
  var b=(typeof readSeat==='function')?readSeat(t):null;
  out.seat=b; out.area=b?AV_OF[b]:null;
  if(typeof srcHear==='function'){
-  var h=srcHear(t), k=b?B2K[b]:null;
+  var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];
+  var pr=(typeof srcPrior==='function')?srcPrior(ents):null;
+  var h=srcHear(t,pr), k=b?B2K[b]:null;
   h.seats.forEach(function(s){
    if(k&&s.seat!==k)return;
    s.words.forEach(function(w){if(out.words.indexOf(w)<0)out.words.push(w);});});}

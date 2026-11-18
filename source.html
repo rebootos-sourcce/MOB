@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v201 9b6b86ab 2026-11-18 20:20"><head><meta charset="utf-8">
+<html lang="en" data-build="v202 791003bc 2026-11-18 20:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -70399,14 +70399,26 @@ function avClosure(row,load0){
  if(load0==null||load0<=0)return 0;
  return clamp(1-row.gap.load/load0,0,1);}
 
-/* ---------------- what the sniffer hears in a pair ---------------- */
+/* ---------------- what the sniffer hears in a pair ----------------
+   WIRED TO THE RECORD, 18 November, his words: "the sniffer needs to be
+   wired into the records and listen for those patterns." Before this,
+   srcHear ran here with no prior argument at all, so a seat already
+   established across this person's own committed entries (srcHear's own
+   rungs 9 and 10, "an earlier committed entry touched this seat too")
+   could never fire on the Avatar page: every pair read as brand new,
+   however many times the same seat had already come back. storyui.js's
+   own calls (stMini/the Story tab) already pass srcPrior(ents); this
+   page is the one that did not. Reads only the seat keys earlier commits
+   already stored (srcPrior, engine/sourceai.js), never their text. */
 function avHeard(notbe){
  var t=String(notbe||'').trim(), out={seat:null, area:null, words:[], named:[]};
  if(!t)return out;
  var b=(typeof readSeat==='function')?readSeat(t):null;
  out.seat=b; out.area=b?AV_OF[b]:null;
  if(typeof srcHear==='function'){
-  var h=srcHear(t), k=b?B2K[b]:null;
+  var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];
+  var pr=(typeof srcPrior==='function')?srcPrior(ents):null;
+  var h=srcHear(t,pr), k=b?B2K[b]:null;
   h.seats.forEach(function(s){
    if(k&&s.seat!==k)return;
    s.words.forEach(function(w){if(out.words.indexOf(w)<0)out.words.push(w);});});}
@@ -103041,5 +103053,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007037215"></div>
+<div id="eof" hidden data-len="007038072"></div>
 </body></html>
