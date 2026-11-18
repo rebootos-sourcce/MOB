@@ -1,0 +1,182 @@
+# Post the "What is running" digest to the owner's #whats-running channel on
+# Discord. 18 November, the owner: "add wiring to Discord to what's running."
+#
+# The digest is docs/WHATS-RUNNING.md, a short plain text file the team writes
+# and the owner approves. It is NOT the internal status board: the privacy
+# check on the server design found the board carries internal rulings, things
+# waiting on the owner, percents of internal modules and a separate
+# application, none of which may reach a channel anyone with the app's public
+# invite can read. So the file is curated by hand, and this workflow refuses
+# it unless its front matter says status: approved, and refuses any text that
+# carries a term from the deny list below, a percent sign, or a dash the house
+# voice does not use. A draft never posts.
+#
+# Two routes in. After every deploy of main that succeeded, so the footer's
+# build and time come off a real deploy and are never typed. And by hand, from
+# main only, to post the approved text on demand. The file is read at the
+# exact commit that was deployed, never at whatever main is by the time this
+# runs.
+#
+# workflow_run runs this file as it is on main, with secrets, whatever ran
+# before it, so the deploy it follows is checked by identity before anything
+# is read: a push to main in this repository and nothing else. A pull request
+# from a fork whose branch happens to be called main also reports head_branch
+# main, and its run can succeed, so the branch name alone was never enough.
+#
+# The text reaches jq as an argument and is never handed to the shell, so
+# "$(anything)" in it is text. allowed_mentions is empty, so "@everyone" in it
+# cannot ping anybody. A refusal, an unset or malformed secret, or Discord
+# saying no fails the run with the reason, because a run that reads green with
+# nothing posted would be read as posted. tools/discord-workflows.py runs both
+# scripts against a stand in curl.
+name: whats running discord
+on:
+  workflow_run:
+    workflows: [deploy]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  post:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # Which commit is live, and when it went live, decided before the
+      # checkout so nothing from a run that is not a deploy of main is read.
+      - name: check the deploy this follows
+        id: which
+        env:
+          EVENT: ${{ github.event_name }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_EVENT: ${{ github.event.workflow_run.event }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_REPO: ${{ github.event.workflow_run.head_repository.full_name }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_DONE: ${{ github.event.workflow_run.updated_at }}
+        run: |
+          case "$EVENT" in
+            workflow_run)
+              if [ "$RUN_CONCLUSION" != success ]; then
+                echo "::error::The deploy run ended ${RUN_CONCLUSION:-with no result}, not success, so nothing was posted."
+                exit 1
+              fi
+              # a rollback is a deploy dispatched by hand, and its head_sha is
+              # main's tip and not the commit it put live, so the footer would
+              # name the wrong build. Post by hand after a rollback.
+              if [ "$RUN_EVENT" != push ] || [ "$RUN_BRANCH" != main ] || [ "$RUN_REPO" != "$GITHUB_REPOSITORY" ]; then
+                echo "::error::The deploy run was a $RUN_EVENT on $RUN_BRANCH from $RUN_REPO, not a push to main here, so nothing was posted."
+                exit 1
+              fi
+              sha="$RUN_SHA"; when="$RUN_DONE"; how="deployed"
+              ;;
+            workflow_dispatch)
+              if [ "$GITHUB_REF" != refs/heads/main ]; then
+                echo "::error::Start this from main. It was started on $GITHUB_REF, and nothing was posted."
+                exit 1
+              fi
+              sha="$GITHUB_SHA"; when="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; how="posted by hand"
+              ;;
+            *)
+              echo "::error::Started by $EVENT, which this workflow does not post for. Nothing was posted."
+              exit 1
+              ;;
+          esac
+          if ! [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || ! [[ "$when" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]; then
+            echo "::error::The deploy did not give a full commit and a time, so nothing was posted."
+            exit 1
+          fi
+          {
+            echo "sha=$sha"
+            echo "when=$when"
+            echo "how=$how"
+          } >> "$GITHUB_OUTPUT"
+      # Pinned by full commit, the tag it was read from beside it, because a
+      # tag can be moved and this job holds a webhook secret. No credentials
+      # are left on disk, and only the one file is checked out.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, read 18 November
+        with:
+          ref: ${{ steps.which.outputs.sha }}
+          persist-credentials: false
+          sparse-checkout: docs/WHATS-RUNNING.md
+          sparse-checkout-cone-mode: false
+      # DENY is the one list of words the digest may never carry. They name
+      # internal work, people's decisions, money or credentials, none of which
+      # belong in a channel the public invite reaches. Matched without regard
+      # to case. A percent sign is refused on its own line below, because the
+      # digest never prints an internal percent.
+      - name: post the approved digest to whats-running
+        env:
+          HOOK: ${{ secrets.DISCORD_WEBHOOK_RUNNING }}
+          SHA: ${{ steps.which.outputs.sha }}
+          WHEN: ${{ steps.which.outputs.when }}
+          HOW: ${{ steps.which.outputs.how }}
+          DENY: "need you,ruled,Reboot-OS,Rapid Release,Mysterium,billing,Stripe,secret,token,password"
+        run: |
+          refuse() {
+            echo "::error::$1 Nothing was posted."
+            exit 1
+          }
+          if [ -z "$HOOK" ]; then
+            refuse "DISCORD_WEBHOOK_RUNNING is not set on GitHub."
+          fi
+          if ! [[ "$HOOK" =~ ^https://((ptb|canary)\.)?discord(app)?\.com/api/webhooks/[0-9]+/[A-Za-z0-9_-]+$ ]]; then
+            refuse "DISCORD_WEBHOOK_RUNNING is set on GitHub but is not a Discord webhook address."
+          fi
+          f=docs/WHATS-RUNNING.md
+          if [ ! -s "$f" ]; then
+            refuse "$f is missing or empty at ${SHA:0:7}."
+          fi
+          text="$(tr -d '\r' < "$f")"
+          if [ "${text%%$'\n'*}" != "---" ]; then
+            refuse "$f does not open with its front matter, so it carries no status: approved."
+          fi
+          # awk reads to the end rather than exit at the closing line, because
+          # a reader that leaves early can kill printf with SIGPIPE, and under
+          # pipefail that fails the step with no reason given
+          status="$(printf '%s\n' "$text" | awk 'NR > 1 && $0 == "---" { done = 1 } !done && NR > 1 && /^status:/ { sub(/^status:[[:space:]]*/, ""); sub(/[[:space:]]+$/, ""); print }')"
+          if [ "$status" != approved ]; then
+            refuse "$f says status: ${status:-nothing}. Only status: approved posts, and the owner approves the text."
+          fi
+          body="$(printf '%s\n' "$text" | awk 'NR == 1 { next } !done && $0 == "---" { done = 1; next } done { print }' | sed '/./,$!d')"
+          if [ -z "$body" ]; then
+            refuse "$f has front matter and no text."
+          fi
+          # bash patterns, not grep -q: under pipefail, grep -q leaving early
+          # kills printf with SIGPIPE and a match reads as a miss
+          for h in "Live now" "Being built" "Next"; do
+            if [[ $'\n'"$body"$'\n' != *$'\n'"## $h"$'\n'* ]]; then
+              refuse "$f has no section headed ## $h."
+            fi
+          done
+          if [[ "$body" == *$'\xe2\x80\x94'* || "$body" == *$'\xe2\x80\x93'* ]]; then
+            refuse "$f carries an em dash or an en dash, which the house voice never uses."
+          fi
+          if [[ "$body" == *%* ]]; then
+            refuse "$f carries a percent sign. The digest never prints a percent."
+          fi
+          lower="${body,,}"
+          IFS=',' read -r -a deny <<< "$DENY"
+          for w in "${deny[@]}"; do
+            if [ -n "$w" ] && [[ "$lower" == *"${w,,}"* ]]; then
+              refuse "$f carries \"$w\", which is on the deny list of internal terms."
+            fi
+          done
+          desc="$(jq -rn --arg b "$body" '$b | split("\n") | map(if startswith("## ") then "**" + .[3:] + "**" else . end) | join("\n")')"
+          # characters, not bytes: wc -m counts bytes with no UTF-8 locale
+          n="$(jq -rn --arg t "$desc" '$t | length')"
+          if [ "$n" -gt 1800 ]; then
+            refuse "$f renders to $n characters and the limit is 1800."
+          fi
+          footer="build ${SHA:0:7}, $HOW ${WHEN:0:10} ${WHEN:11:5} UTC"
+          jq -n --arg d "$desc" --arg f "$footer" \
+            '{username: "Atuned", allowed_mentions: {parse: []},
+              embeds: [{title: "What is running", description: $d, url: "https://atuned.world", footer: {text: $f}}]}' > "$RUNNER_TEMP/running.json"
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/json' \
+            --data @"$RUNNER_TEMP/running.json" "$HOOK" 2>/dev/null)" || code="000"
+          rm -f "$RUNNER_TEMP/running.json"
+          case "$code" in
+            2??) echo "posted to #whats-running: $n characters, $footer" ;;
+            *) refuse "Discord did not take the digest (status $code)." ;;
+          esac
