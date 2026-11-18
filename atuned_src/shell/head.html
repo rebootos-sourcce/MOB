@@ -3186,7 +3186,7 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .rec-a{color:var(--dim)} .rec-b{color:var(--ink)} .rec-d{color:var(--gold)}
 .rec-d.lvl{color:var(--dim)}
 
-/* ---------- the knowledge base ---------- */
+/* ---------- the wisdom school ---------- */
 /* ============================================================
    THE CODEX IS A DECK OF ROWS, AND THE ROW IS FOUR THINGS.
 
@@ -10484,9 +10484,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top .navtog .chev{width:12px;height:12px;opacity:.7;transition:transform var(--t-micro) var(--ease-out)}
  .top.navopen .navtog .chev{transform:rotate(180deg)}
  /* the strip itself is the menu's tabs, folded away until the bar opens,
-    then three to a row. !important because its display is written inline. */
+    then two to a row. !important because its display is written inline.
+    TWO, NOT THREE, 18 November. The Knowledge tab became Wisdom school, and
+    at three to a row its mark and name measured 111 pixels in a 115 pixel
+    cell at 390, two pixels from each edge where its neighbours keep 18 and
+    28. Two to a row gives every name its padding back, and Play and Embody
+    each hold four tabs, so both read as two even rows of two instead of
+    three and an orphan, in the same number of rows as before. */
  .top #tabbar{order:6;display:none!important}
- .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+ .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
  /* DISCOVER IS THE MENU'S FIRST LINE, 23 October. Its section is its door

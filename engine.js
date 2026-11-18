@@ -4215,7 +4215,7 @@ const APC=[{"b":"Root","nv":"Coccygeal / Sacral Plexus (S4-Co1)","d":"Survival c
 const APC_REL=3688, APC_EMB=358;
 
 /* ============================================================
-   THE KNOWLEDGE BASE. Definition, trigger and interrupt for the
+   THE WISDOM SCHOOL. Definition, trigger and interrupt for the
    thirty three saboteurs, the nineteen domains read clear and
    read distorted, the glossary, and the index of the seventy six
    harmonic elements. Ported from the codex.
@@ -9633,7 +9633,15 @@ const TABDEF=[
     kept the word, unlike Discover/Story, so nothing here renames the tab. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* WISDOM SCHOOL, 18 November. His words: "Change the words knowledge base
+    to wisdom school." The tab is the surface the copy called the knowledge
+    base, so the tab takes the same name: one word per concept. Only the
+    name a person reads moved. TAB.KNOW, integer 6, id 'know', cls
+    'tab-know' and ui/knowledge.js are identity and keep their spelling, and
+    a comment that says Knowledge means this tab. The Knowledge domain, under
+    the Architect root (engine/data/canon.js), is a different thing and
+    keeps its name. */
+ {k:TAB.KNOW,    id:'know',  nm:'Wisdom school', cls:'tab-know', sec:'embody'},
  /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
     and in the order they stood in Play. His words: "move summary, intake, and
     analytics under embody." Knowledge stays first so pressing Embody still
@@ -25529,7 +25537,7 @@ function seriesRead(p,spanKey,now){
    is educating the person and cross pollinating the language." The seven
    phrases of the document's section 12 are reported as a note and never
    refuse a statement, and the product's own canon words may appear and link to
-   their Knowledge base entry (DLY_CANON). What stays hard is the document's
+   their wisdom school entry (DLY_CANON). What stays hard is the document's
    non claims: no diagnosis, no unsupported cause, no fabricated evidence, no
    worth scoring, no deterministic claim about the future, and, from the same
    day's ruling that points never go down, no penalty language.
@@ -25612,9 +25620,9 @@ var DLY_PRI={aim:0, attention:1, try:1, today:2, changing:3, interfering:4, why:
 /* the seven phrases of the document's section 12. A soft note, never a refusal */
 var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritual vibration',
  'karmic certainty','your universe is telling you','your energy guarantees'];
-/* THE CANON WORDS, the owner's own, and the Knowledge base entry each one
+/* THE CANON WORDS, the owner's own, and the wisdom school entry each one
    points at. A word with no entry has t null, and that is content for the copy
-   seat and not a defect here: a search of the Knowledge base on 1 October
+   seat and not a defect here: a search of the wisdom school on 1 October
    finds no entry for soul, spiritual or energy. seat points at Chakra, whose
    entry begins "A seat." */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
@@ -25732,13 +25740,13 @@ function dlyStr(errs,path,v,max){
  if(!s.trim().length){errs.push(path+' is empty'); return null;}
  return s;}
 /* why a reference names nothing, or null. Three kinds: a trace node (the
-   graph's own types), a record reference, and kb, a term in the Knowledge base
+   graph's own types), a record reference, and kb, a term in the wisdom school
    that an education statement points at. */
 function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the Knowledge base: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
  if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
@@ -25801,7 +25809,7 @@ function dlyStValid(errs,path,x,names){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the Knowledge base: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one
@@ -25816,7 +25824,7 @@ function dlyStValid(errs,path,x,names){
     every record belonging to a person called Will, Mark or Hope the day a
     template said will, mark or hope. The arguments are the only place the
     person's own words could enter, and a statement that cites only the
-    Knowledge base says nothing about them. */
+    wisdom school says nothing about them. */
  var kbOnly=o.ev.length&&o.ev.every(function(r){return r.type==='kb';});
  if(!kbOnly&&names&&names.length){
   var hit=dlyNameHit(o.a.join(' '),names);
@@ -26433,7 +26441,7 @@ function dlyComposeIn(p,now,opt){
   kept=kept.filter(function(c){return c.k!=='why';}).slice(0,1);}
  var sts=kept.map(dlyStmt);
  /* the education statement: one canon word used above that has an entry in the
-    Knowledge base and has not been explained in the last month. It says
+    wisdom school and has not been explained in the last month. It says
     nothing about the person, so its only provenance is known. */
  if(sts.length&&sts.length<DLY_CAP.st){
   var linked=[]; sts.forEach(function(s){s.links.forEach(function(t){if(linked.indexOf(t)<0)linked.push(t);});});
@@ -26575,7 +26583,7 @@ function dlyGroundOne(s,p,gx,names){
  if(DLY_RX.agency.test(text))push('preserve_user_agency','"'+DLY_RX.agency.exec(text)[0]+'" tells the person what to do');
  /* no_name: the person's own name is not written into a sentence. Words that
     are the template's own are not the person's, and a statement that cites
-    only the Knowledge base says nothing about them. */
+    only the wisdom school says nothing about them. */
  var kbOnly=refs.length&&refs.every(function(r){return r.type==='kb';});
  if(!kbOnly&&names&&names.length){
   var own={}; if(tp)dlyWords(tp.text).forEach(function(w){own[w]=1;});
@@ -26661,7 +26669,7 @@ function dlyDayOpen(p,now,save,opt){
    THE DRAWER. dlyWhy answers "why did you say this" for one sentence of one
    frozen day, from the record and the trace graph, in the document's two
    interactions. Three kinds of reference: a graph node, a record reference
-   and a term in the Knowledge base. The rules, each held by the gate:
+   and a term in the wisdom school. The rules, each held by the gate:
    registration is not causation, so an edge is printed as its own verb and its
    provenance and never as a cause; a sentence keeps the addresses it was read
    at and the drawer says so when today's reading differs; an isolated node is

@@ -958,7 +958,7 @@ Object.keys(drills).forEach(k=>{
  else ok(drills[k]>120,k+' drill too short: '+drills[k]);});
 console.log(' ',JSON.stringify(drills));
 
-console.log('\n=== the knowledge base, the deck and the record ===');
+console.log('\n=== the wisdom school, the deck and the record ===');
 const kb=await page.evaluate(()=>{
  setTab(TAB.KNOW); kbRender();
  /* scoped to #knowbody. Games folded into Knowledge and its two chooser tabs
@@ -1251,7 +1251,7 @@ await page.setViewportSize({width:1600,height:1000});
   const cq=[...body.querySelectorAll('.kbs-cq .kb-row')][0]; if(cq)cq.click();
   const core=document.getElementById('rdrill').textContent;
   rdClose();
-  /* a fetter has no meaning on file, and in the Knowledge base it says so
+  /* a fetter has no meaning on file, and in the wisdom school it says so
      rather than printing nothing under a name */
   KB_SEC='addr'; kbRender();
   const fx=kbRows('addr').filter(x=>BANDS.indexOf(x.o.b)>=0)[0]; kbOpen(fx);
@@ -1266,7 +1266,7 @@ await page.setViewportSize({width:1600,height:1000});
  ok(o.panels[0]==='cq'&&o.panels.indexOf('Crown')>0,'the coherence formula comes before the seat page that lists the universal laws, '+o.panels.join(','));
  ok(!/codex/i.test(o.hdr+o.ph)&&!/Crown down to root/.test(o.hdr),'the codex label, its search wording and the seat order line are gone, header "'+o.hdr+'", search "'+o.ph+'"');
  ok(new RegExp('The '+o.n+' laws, each read from nothing to ten, added together').test(o.core),'the formula opens the core drill, which states the ruled formula over '+o.n+' laws');
- ok(/No meaning on file yet\./.test(o.gap),'a fetter with no text on file says so in the Knowledge base rather than printing nothing');
+ ok(/No meaning on file yet\./.test(o.gap),'a fetter with no text on file says so in the wisdom school rather than printing nothing');
  ok(o.inRail,'a mask opened from the Body page still answers in the rail');}
 
 const rec=await page.evaluate(()=>{
@@ -2068,7 +2068,7 @@ const struck=await page.evaluate(()=>{
  loadP(PERSON('Abraham')); setTab(TAB.FIELD);
  setZoom(2,CW/2,CH/2);
  /* innerText and not textContent: the stage also hosts the hidden surfaces of
-    other tabs, the knowledge base among them, and a phrase in there is not a
+    other tabs, the wisdom school among them, and a phrase in there is not a
     line on the Field */
  const txt=(document.getElementById('subbar').innerText||'')
   +' '+(document.getElementById('stage').innerText||'');
@@ -2989,15 +2989,15 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* and 17 November: "change the word compass to path... hide character for
      now... keep avatar there under play, but we're going to move summary,
      intake, and analytics under embody." */
-  '17 November: the journal page alone in Discover, Field, Body, Path and Avatar in Play, Ritual and Accountability in Flow, Knowledge, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+  '17 November: the journal page alone in Discover, Field, Body, Path and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
  ok(nav.play==='Field,Body,Path,Avatar / Field,Body,Path,Avatar',
   '17 November: Play reads Field, Body, Path, Avatar, in the engine and the bar alike, '+nav.play);
- ok(nav.embody==='Knowledge,Summary,Intake,Analytics / Knowledge,Summary,Intake,Analytics',
-  '17 November: Embody reads Knowledge, then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
+ ok(nav.embody==='Wisdom school,Summary,Intake,Analytics / Wisdom school,Summary,Intake,Analytics',
+  '17 November: Embody reads Wisdom school (Knowledge until 18 November), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
  ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
   '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
  ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
- ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge"}',
+ ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Wisdom school"}',
   'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
@@ -3579,7 +3579,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Knowledge,Summary,Intake,Analytics'&&ipg.pressed==='true','17 November: Embody reads Knowledge, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Wisdom school,Summary,Intake,Analytics'&&ipg.pressed==='true','17 November: Embody reads Wisdom school, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');

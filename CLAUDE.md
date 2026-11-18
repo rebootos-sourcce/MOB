@@ -166,6 +166,13 @@ goes for brain release, and a game folded into a reference page is neither. This
 said otherwise for longer than it was true, which is how a file that describes
 the code stops being usable as one.
 
+Knowledge (6) is called Wisdom school on the bar since 18 November, his words:
+"Change the words knowledge base to wisdom school." Only the name a person
+reads moved. `TAB.KNOW`, the id `know`, `#know`, `ui/knowledge.js` and the `kb`
+prefix are identity and keep their spelling, so a comment or a paragraph here
+that says Knowledge means this tab. The Knowledge domain under the Architect
+root is a different thing and keeps its name. `DECISIONS.md` has the ruling.
+
 And then it said the bar is eight, in that same sentence, for longer than that
 was true either. TABDEF carries nine. A count typed into the paragraph warning
 against counts typed into paragraphs is the tenth time this repository has been

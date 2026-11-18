@@ -550,6 +550,26 @@ stands on and keeps the person as its key. The keys are untouched.
 measure: tests/engine.js holds each word by key and searches every string the
 Compass hands a screen for a retired name.
 
+## 2026-11-18 · owner · knowledge base becomes wisdom school
+
+said: "Change the words knowledge base to wisdom school."
+read: every string a person reads or hears that says knowledge base says
+wisdom school, and the Knowledge tab, the surface those strings named, takes
+the same name so one surface keeps one word. DECISIONS.md has the ruling and
+what was left alone on purpose.
+change: engine/core.js (the tab's name in TABDEF), shell/body.html (the tab
+button, its tooltip and Embody's tooltip), ui/knowledge.js (the search box's
+spoken name and the deck title fallback), ui/drills.js (the back button reads
+Back to the wisdom school), ui/account.js (the review question),
+engine/daily.js (two refusals), shell/head.html (the open phone menu sets two
+tabs to a row, because at three the longer name sat two pixels from its
+cell's edges at 390). No identifier moved: TAB.KNOW, know, kb and
+ui/knowledge.js keep their spelling. Branch rename/wisdom-school.
+measure: tools/equiv.py against the c2bf52a2 build names OB_SURVEY, TABDEF,
+dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
+dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
+added or removed, on 18 November.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

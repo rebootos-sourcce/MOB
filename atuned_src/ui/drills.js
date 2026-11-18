@@ -156,12 +156,13 @@ function rdShell(h){
  b.innerHTML='<div class="rd-card">'
   +'<div class="rd-top"><button type="button" class="rd-back" id="rdback">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
-  /* KNOWLEDGE TAKES NO "THE". Every other tab name is a place ("the field",
-     "the body"), so backTo's own rule reads naturally; "Knowledge" is not a
-     place and "back to the knowledge" read as a translation. Flagged in PR
-     #189, called clumsy, left alone as a one line follow up. This is that
-     line, and nothing else backTo does for any other tab changes. */
-  +'<span>'+esc(backTo?(backTo==='Knowledge'?'Back to Knowledge':'Back to the '+String(backTo).toLowerCase()):'Back')+'</span>'
+  /* backTo's own rule puts "the" before the tab's name ("the field", "the
+     body"). Knowledge was not a place and "back to the knowledge" read as a
+     translation, so PR #189's follow up gave it "Back to Knowledge". On 18
+     November the tab became Wisdom school, which is a place, and "Back to
+     the wisdom school" reads the way the field and the body do, so the
+     exception went with the old name. */
+  +'<span>'+esc(backTo?'Back to the '+String(backTo).toLowerCase():'Back')+'</span>'
   +'</button></div>'
   +h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
@@ -412,7 +413,7 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   /* no fetter has a meaning on file, only the one word it shows up as, so in
-     the Knowledge base it says so (kbGap) */
+     the wisdom school it says so (kbGap) */
   +(anchorSeat(n)?'':kbGap())
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
@@ -858,7 +859,7 @@ function runBalDrill(){
   +INWARD.map(function(c){return row(c,S.charge[c]||0,'Throat');}).join('')+'</div>';
  rdShell(h);}
 
-/* ---- the knowledge base drills. every drill lives in this file. ---- */
+/* ---- the wisdom school drills. every drill lives in this file. ---- */
 /* the catalog entry for one seat. the counts are the clinical record, not a
    score, so they are stated as what was released and what installed. */
 /* the eyebrow follows the bar's name for the layer, GO in TASKS.md: a press on
@@ -1049,7 +1050,7 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book, so in the Knowledge base it
+ /* an inferred saboteur has no entry in the book, so in the wisdom school it
     says it has no meaning on file rather than printing nothing under a name */
  var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
@@ -1095,7 +1096,7 @@ function kbHcxBlock(nm){
    +'.</b> '+esc(c.inverseDefinition)+'</p>'
   +'<div class="pm-eye">Next move</div><p class="ad-p">'+esc(c.practice)+'</p>';}
 
-/* WHAT A THING WITH NO TEXT SAYS, IN THE KNOWLEDGE BASE AND ONLY THERE.
+/* WHAT A THING WITH NO TEXT SAYS, IN THE WISDOM SCHOOL AND ONLY THERE.
    Content Alpha, 23 October: everything has a record, and where there is no
    record the page says so rather than padding. The 19 October restore's rule
    is kept: a person who came to Knowledge to ask what a thing means is told

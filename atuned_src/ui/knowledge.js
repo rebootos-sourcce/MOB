@@ -1,10 +1,17 @@
 
 /* ============================================================
-   THE KNOWLEDGE BASE. Everything the instrument knows, in one
+   THE WISDOM SCHOOL. Everything the instrument knows, in one
    place, searchable, and every row a door to the same drill the
    wheel opens. Nothing here is a second copy of the data: it
-   reads the engine tables directly, so the knowledge base and
+   reads the engine tables directly, so the wisdom school and
    the reading can never disagree.
+
+   Named the wisdom school on 18 November, his words: "Change the
+   words knowledge base to wisdom school." The name a person reads
+   moved and nothing else did: this file, the kb prefix, KB_Q,
+   #know and TAB.KNOW keep their spelling because they are
+   identity, and a comment here that says Knowledge means this
+   page.
 
    The Letting Go Deck sits underneath it. The book specifies it
    as a playing card deck whose suits are the seats and whose
@@ -534,7 +541,7 @@ function kbRender(){
   +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search" '
-  +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
+  +'value="'+esc(KB_Q)+'" aria-label="Search the wisdom school">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')
   +'<span class="kb-sw" role="group" aria-label="Order">'
   +'<button type="button" class="kb-swb'+(KB_SORT==='order'?' on':'')+'" data-kbs="order"'
@@ -704,7 +711,7 @@ function kbsCss(){
    rule this repository already carries for anything needing a tab's entry. */
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
- return 'Knowledge';}
+ return 'Wisdom school';}
 /* ============================================================
    THE POLE ROW. Two rounds of his words, and the second sharpens
    the first.

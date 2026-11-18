@@ -1081,7 +1081,7 @@ var OB_SURVEY=[
   a:['No','In places','Yes']},
  {lens:'The content',k:'p5',q:'Does the protocol make sense?',
   a:['No','I understand it and I do not believe it','Mostly','Yes']},
- {lens:'The content',k:'p6',q:'Does the knowledge base make sense?',
+ {lens:'The content',k:'p6',q:'Does the wisdom school make sense?',
   a:['I have not opened it','No','In places','Yes']},
  {lens:'The product',k:'d1',q:'Do you know what you are doing when you open it?',
   a:['No','I work it out each time','Yes']},

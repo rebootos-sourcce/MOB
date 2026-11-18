@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v167 6775c7cf 2026-11-17 22:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3186,7 +3186,7 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .rec-a{color:var(--dim)} .rec-b{color:var(--ink)} .rec-d{color:var(--gold)}
 .rec-d.lvl{color:var(--dim)}
 
-/* ---------- the knowledge base ---------- */
+/* ---------- the wisdom school ---------- */
 /* ============================================================
    THE CODEX IS A DECK OF ROWS, AND THE ROW IS FOUR THINGS.
 
@@ -10484,9 +10484,15 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  .top .navtog .chev{width:12px;height:12px;opacity:.7;transition:transform var(--t-micro) var(--ease-out)}
  .top.navopen .navtog .chev{transform:rotate(180deg)}
  /* the strip itself is the menu's tabs, folded away until the bar opens,
-    then three to a row. !important because its display is written inline. */
+    then two to a row. !important because its display is written inline.
+    TWO, NOT THREE, 18 November. The Knowledge tab became Wisdom school, and
+    at three to a row its mark and name measured 111 pixels in a 115 pixel
+    cell at 390, two pixels from each edge where its neighbours keep 18 and
+    28. Two to a row gives every name its padding back, and Play and Embody
+    each hold four tabs, so both read as two even rows of two instead of
+    three and an orphan, in the same number of rows as before. */
  .top #tabbar{order:6;display:none!important}
- .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+ .top.navopen #tabbar{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));
   flex:1 1 100%;overflow:visible;border-bottom:0;mask-image:none;-webkit-mask-image:none}
  .top.navopen #tabbar .tabtop{justify-content:center}
  /* DISCOVER IS THE MENU'S FIRST LINE, 23 October. Its section is its door
@@ -11464,7 +11470,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
-    title="Embody. Knowledge, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.8" r="2.3"/><path d="M3.6 4.4c1.7 4.9 4.5 7.4 8.4 7.4s6.7-2.5 8.4-7.4M12 11.8v4.4M7.4 21c1.2-3.2 2.7-4.8 4.6-4.8s3.4 1.6 4.6 4.8"/></svg><span class="sn">Embody</span></button>
+    title="Embody. Wisdom school, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.8" r="2.3"/><path d="M3.6 4.4c1.7 4.9 4.5 7.4 8.4 7.4s6.7-2.5 8.4-7.4M12 11.8v4.4M7.4 21c1.2-3.2 2.7-4.8 4.6-4.8s3.4 1.6 4.6 4.8"/></svg><span class="sn">Embody</span></button>
    <!-- PRACTITIONER, round LL, and shut in the document. His words: "If I turn
         it on, it adds a new tab item called practitioner." The switch is in
         Account and is off on every profile until turned on, so the door is
@@ -11543,7 +11549,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          to TABDEF, so a button left here would fail the run. -->
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
-    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge. Look up what any part of this system means."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Wisdom school. Look up what any part of this system means."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Wisdom school</span></button>
     <!-- SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, his words:
          "move summary, intake, and analytics under embody." After Knowledge, in
          the order they stood in Play. engine/core.js has it. -->
@@ -17036,7 +17042,7 @@ const APC_REL=3688, APC_EMB=358;
 try{window.__at&&window.__at('engine/data/catalog.js');}catch(e){}
 
 /* ============================================================
-   THE KNOWLEDGE BASE. Definition, trigger and interrupt for the
+   THE WISDOM SCHOOL. Definition, trigger and interrupt for the
    thirty three saboteurs, the nineteen domains read clear and
    read distorted, the glossary, and the index of the seventy six
    harmonic elements. Ported from the codex.
@@ -22482,7 +22488,15 @@ const TABDEF=[
     kept the word, unlike Discover/Story, so nothing here renames the tab. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
- {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
+ /* WISDOM SCHOOL, 18 November. His words: "Change the words knowledge base
+    to wisdom school." The tab is the surface the copy called the knowledge
+    base, so the tab takes the same name: one word per concept. Only the
+    name a person reads moved. TAB.KNOW, integer 6, id 'know', cls
+    'tab-know' and ui/knowledge.js are identity and keep their spelling, and
+    a comment that says Knowledge means this tab. The Knowledge domain, under
+    the Architect root (engine/data/canon.js), is a different thing and
+    keeps its name. */
+ {k:TAB.KNOW,    id:'know',  nm:'Wisdom school', cls:'tab-know', sec:'embody'},
  /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
     and in the order they stood in Play. His words: "move summary, intake, and
     analytics under embody." Knowledge stays first so pressing Embody still
@@ -38438,7 +38452,7 @@ try{window.__at&&window.__at('engine/ladder.js');}catch(e){}
    is educating the person and cross pollinating the language." The seven
    phrases of the document's section 12 are reported as a note and never
    refuse a statement, and the product's own canon words may appear and link to
-   their Knowledge base entry (DLY_CANON). What stays hard is the document's
+   their wisdom school entry (DLY_CANON). What stays hard is the document's
    non claims: no diagnosis, no unsupported cause, no fabricated evidence, no
    worth scoring, no deterministic claim about the future, and, from the same
    day's ruling that points never go down, no penalty language.
@@ -38521,9 +38535,9 @@ var DLY_PRI={aim:0, attention:1, try:1, today:2, changing:3, interfering:4, why:
 /* the seven phrases of the document's section 12. A soft note, never a refusal */
 var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritual vibration',
  'karmic certainty','your universe is telling you','your energy guarantees'];
-/* THE CANON WORDS, the owner's own, and the Knowledge base entry each one
+/* THE CANON WORDS, the owner's own, and the wisdom school entry each one
    points at. A word with no entry has t null, and that is content for the copy
-   seat and not a defect here: a search of the Knowledge base on 1 October
+   seat and not a defect here: a search of the wisdom school on 1 October
    finds no entry for soul, spiritual or energy. seat points at Chakra, whose
    entry begins "A seat." */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
@@ -38641,13 +38655,13 @@ function dlyStr(errs,path,v,max){
  if(!s.trim().length){errs.push(path+' is empty'); return null;}
  return s;}
 /* why a reference names nothing, or null. Three kinds: a trace node (the
-   graph's own types), a record reference, and kb, a term in the Knowledge base
+   graph's own types), a record reference, and kb, a term in the wisdom school
    that an education statement points at. */
 function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the Knowledge base: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
  if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no seat: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
@@ -38710,7 +38724,7 @@ function dlyStValid(errs,path,x,names){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the Knowledge base: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one
@@ -38725,7 +38739,7 @@ function dlyStValid(errs,path,x,names){
     every record belonging to a person called Will, Mark or Hope the day a
     template said will, mark or hope. The arguments are the only place the
     person's own words could enter, and a statement that cites only the
-    Knowledge base says nothing about them. */
+    wisdom school says nothing about them. */
  var kbOnly=o.ev.length&&o.ev.every(function(r){return r.type==='kb';});
  if(!kbOnly&&names&&names.length){
   var hit=dlyNameHit(o.a.join(' '),names);
@@ -39342,7 +39356,7 @@ function dlyComposeIn(p,now,opt){
   kept=kept.filter(function(c){return c.k!=='why';}).slice(0,1);}
  var sts=kept.map(dlyStmt);
  /* the education statement: one canon word used above that has an entry in the
-    Knowledge base and has not been explained in the last month. It says
+    wisdom school and has not been explained in the last month. It says
     nothing about the person, so its only provenance is known. */
  if(sts.length&&sts.length<DLY_CAP.st){
   var linked=[]; sts.forEach(function(s){s.links.forEach(function(t){if(linked.indexOf(t)<0)linked.push(t);});});
@@ -39484,7 +39498,7 @@ function dlyGroundOne(s,p,gx,names){
  if(DLY_RX.agency.test(text))push('preserve_user_agency','"'+DLY_RX.agency.exec(text)[0]+'" tells the person what to do');
  /* no_name: the person's own name is not written into a sentence. Words that
     are the template's own are not the person's, and a statement that cites
-    only the Knowledge base says nothing about them. */
+    only the wisdom school says nothing about them. */
  var kbOnly=refs.length&&refs.every(function(r){return r.type==='kb';});
  if(!kbOnly&&names&&names.length){
   var own={}; if(tp)dlyWords(tp.text).forEach(function(w){own[w]=1;});
@@ -39570,7 +39584,7 @@ function dlyDayOpen(p,now,save,opt){
    THE DRAWER. dlyWhy answers "why did you say this" for one sentence of one
    frozen day, from the record and the trace graph, in the document's two
    interactions. Three kinds of reference: a graph node, a record reference
-   and a term in the Knowledge base. The rules, each held by the gate:
+   and a term in the wisdom school. The rules, each held by the gate:
    registration is not causation, so an edge is printed as its own verb and its
    provenance and never as a cause; a sentence keeps the addresses it was read
    at and the drawer says so when today's reading differs; an isolated node is
@@ -84430,12 +84444,13 @@ function rdShell(h){
  b.innerHTML='<div class="rd-card">'
   +'<div class="rd-top"><button type="button" class="rd-back" id="rdback">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>'
-  /* KNOWLEDGE TAKES NO "THE". Every other tab name is a place ("the field",
-     "the body"), so backTo's own rule reads naturally; "Knowledge" is not a
-     place and "back to the knowledge" read as a translation. Flagged in PR
-     #189, called clumsy, left alone as a one line follow up. This is that
-     line, and nothing else backTo does for any other tab changes. */
-  +'<span>'+esc(backTo?(backTo==='Knowledge'?'Back to Knowledge':'Back to the '+String(backTo).toLowerCase()):'Back')+'</span>'
+  /* backTo's own rule puts "the" before the tab's name ("the field", "the
+     body"). Knowledge was not a place and "back to the knowledge" read as a
+     translation, so PR #189's follow up gave it "Back to Knowledge". On 18
+     November the tab became Wisdom school, which is a place, and "Back to
+     the wisdom school" reads the way the field and the body do, so the
+     exception went with the old name. */
+  +'<span>'+esc(backTo?'Back to the '+String(backTo).toLowerCase():'Back')+'</span>'
   +'</button></div>'
   +h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
@@ -84686,7 +84701,7 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   /* no fetter has a meaning on file, only the one word it shows up as, so in
-     the Knowledge base it says so (kbGap) */
+     the wisdom school it says so (kbGap) */
   +(anchorSeat(n)?'':kbGap())
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
@@ -85132,7 +85147,7 @@ function runBalDrill(){
   +INWARD.map(function(c){return row(c,S.charge[c]||0,'Throat');}).join('')+'</div>';
  rdShell(h);}
 
-/* ---- the knowledge base drills. every drill lives in this file. ---- */
+/* ---- the wisdom school drills. every drill lives in this file. ---- */
 /* the catalog entry for one seat. the counts are the clinical record, not a
    score, so they are stated as what was released and what installed. */
 /* the eyebrow follows the bar's name for the layer, GO in TASKS.md: a press on
@@ -85323,7 +85338,7 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book, so in the Knowledge base it
+ /* an inferred saboteur has no entry in the book, so in the wisdom school it
     says it has no meaning on file rather than printing nothing under a name */
  var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
@@ -85369,7 +85384,7 @@ function kbHcxBlock(nm){
    +'.</b> '+esc(c.inverseDefinition)+'</p>'
   +'<div class="pm-eye">Next move</div><p class="ad-p">'+esc(c.practice)+'</p>';}
 
-/* WHAT A THING WITH NO TEXT SAYS, IN THE KNOWLEDGE BASE AND ONLY THERE.
+/* WHAT A THING WITH NO TEXT SAYS, IN THE WISDOM SCHOOL AND ONLY THERE.
    Content Alpha, 23 October: everything has a record, and where there is no
    record the page says so rather than padding. The 19 October restore's rule
    is kept: a person who came to Knowledge to ask what a thing means is told
@@ -86268,11 +86283,18 @@ function summaryPanelWire(h){
 try{window.__at&&window.__at('ui/summarypanel.js');}catch(e){}
 
 /* ============================================================
-   THE KNOWLEDGE BASE. Everything the instrument knows, in one
+   THE WISDOM SCHOOL. Everything the instrument knows, in one
    place, searchable, and every row a door to the same drill the
    wheel opens. Nothing here is a second copy of the data: it
-   reads the engine tables directly, so the knowledge base and
+   reads the engine tables directly, so the wisdom school and
    the reading can never disagree.
+
+   Named the wisdom school on 18 November, his words: "Change the
+   words knowledge base to wisdom school." The name a person reads
+   moved and nothing else did: this file, the kb prefix, KB_Q,
+   #know and TAB.KNOW keep their spelling because they are
+   identity, and a comment here that says Knowledge means this
+   page.
 
    The Letting Go Deck sits underneath it. The book specifies it
    as a playing card deck whose suits are the seats and whose
@@ -86802,7 +86824,7 @@ function kbRender(){
   +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search" '
-  +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
+  +'value="'+esc(KB_Q)+'" aria-label="Search the wisdom school">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')
   +'<span class="kb-sw" role="group" aria-label="Order">'
   +'<button type="button" class="kb-swb'+(KB_SORT==='order'?' on':'')+'" data-kbs="order"'
@@ -86972,7 +86994,7 @@ function kbsCss(){
    rule this repository already carries for anything needing a tab's entry. */
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
- return 'Knowledge';}
+ return 'Wisdom school';}
 /* ============================================================
    THE POLE ROW. Two rounds of his words, and the second sharpens
    the first.
@@ -92751,7 +92773,7 @@ var OB_SURVEY=[
   a:['No','In places','Yes']},
  {lens:'The content',k:'p5',q:'Does the protocol make sense?',
   a:['No','I understand it and I do not believe it','Mostly','Yes']},
- {lens:'The content',k:'p6',q:'Does the knowledge base make sense?',
+ {lens:'The content',k:'p6',q:'Does the wisdom school make sense?',
   a:['I have not opened it','No','In places','Yes']},
  {lens:'The product',k:'d1',q:'Do you know what you are doing when you open it?',
   a:['No','I work it out each time','Yes']},
@@ -101779,5 +101801,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006801579"></div>
+<div id="eof" hidden data-len="006802883"></div>
 </body></html>

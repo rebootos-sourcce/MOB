@@ -120,7 +120,7 @@ const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 /* 0 is the journal page, named Discover since 23 October */
-const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge',
+const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Wisdom school',
  'Games','Path','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to
@@ -1129,7 +1129,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
 
       THE OPENERS ARE DISCOVERED, NEVER TYPED. Every global named runSomething
       Drill, Pair or Year is found at run time and wrapped, so opening one
-      through another one counts. The knowledge base has a single dispatcher
+      through another one counts. The wisdom school has a single dispatcher
       over every row it holds, which is most of them, and the rest are opened
       from the live data tables. The gate then asserts that every discovered
       opener ran at least once: a drill added tomorrow fails this until
@@ -1159,7 +1159,7 @@ console.log('\n=== a sentence in a label class carries plain ===');
     const fire=(k,args)=>{try{window[k].apply(null,args); grab();}
      catch(e){err.push(k+': '+String(e&&e.message).slice(0,90));}};
     try{
-     /* the knowledge base, one dispatcher, every row of every family */
+     /* the wisdom school, one dispatcher, every row of every family */
      if(typeof kbRows==='function'&&typeof kbOpen==='function'
         &&typeof KB_SECS!=='undefined')
       KB_SECS.concat([['gloss','']]).forEach(sec=>{

@@ -3662,3 +3662,47 @@ own record as its starting state. This is the second network seam the fork
 to accounts already named (`CLAUDE.md`, "the app gains network at exactly
 one seam, fetching a record at sign in"), the funnel-to-account handoff
 half of it, not yet built. Scoped as a task.
+
+## Knowledge base becomes wisdom school, and the tab takes the name. Ruled 18 November.
+
+His words, verbatim, at the close of the foundation audit request: "Change the
+words knowledge base to wisdom school."
+
+Read as: every place a person reads or hears "knowledge base" says wisdom
+school, and the Knowledge tab takes the same name, because that tab is the
+surface the copy called the knowledge base and one word per concept gives one
+surface one name. Sentence case: Wisdom school opening a label, wisdom school
+in the middle of a sentence.
+
+What moved: the tab's name in `TABDEF` (`engine/core.js`) and on its button
+in `shell/body.html`, the Embody section's tooltip that lists its tabs, the
+search box's spoken name and the deck title fallback in `ui/knowledge.js`,
+the review question in `ui/account.js`, and the two refusals in
+`engine/daily.js` that name the surface. The drill's back button reads "Back
+to the wisdom school": the exception that printed "Back to Knowledge" existed
+because Knowledge was not a place, and Wisdom school is one, so the exception
+went with the old name.
+
+One layout moved with it. The phone menu set three tabs to a row, and at 390
+pixels wide the longer name and its mark measured 111 pixels in a 115 pixel
+cell, two pixels from each edge where its neighbours keep 18 and 28. That is
+the pressed-together look the 16 November symmetry ruling forbids, so the
+open menu at phone width now sets two to a row (`shell/head.html`). Play and
+Embody each hold four tabs, so both read as two even rows of two instead of
+three and an orphan, in the same number of rows as before. The desktop bar
+did not change.
+
+What did not move, on purpose:
+- **Identity.** `TAB.KNOW`, integer 6, the id `know`, the class `tab-know`,
+  `#know`, `#knowbody`, `ui/knowledge.js`, the `kb` prefix and `KB_Q` keep
+  their spelling. TAB integers and keys are persisted and compared, and
+  CLAUDE.md rules they never move. A comment that says Knowledge means this
+  tab.
+- **The Knowledge domain**, under the Architect root (`engine/data/canon.js`,
+  `DOMDEF` in `engine/data/kb.js`), is a different concept and keeps its name.
+  The rename ends a collision where one word named both.
+- **His own words.** Every quotation of his that says knowledge base stays
+  word for word where it is quoted.
+- **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
+  knowledge, wisdom") is not the surface and stays.
+- **`proto/`.** The prototypes are not the product and were not swept.

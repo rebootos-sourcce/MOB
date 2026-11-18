@@ -1,6 +1,6 @@
 
 /* ============================================================
-   THE KNOWLEDGE BASE. Definition, trigger and interrupt for the
+   THE WISDOM SCHOOL. Definition, trigger and interrupt for the
    thirty three saboteurs, the nineteen domains read clear and
    read distorted, the glossary, and the index of the seventy six
    harmonic elements. Ported from the codex.

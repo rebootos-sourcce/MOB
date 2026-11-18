@@ -3862,7 +3862,7 @@ console.log('\n28 · no title is a truncation');
   if(!/\.$/.test(t))return false;
   if(t.split(/\s+/).length>4)return false;   /* a sentence, not a title */
   return true;});
- ok(trunc.length===0,'no knowledge base title is abbreviated: '
+ ok(trunc.length===0,'no wisdom school title is abbreviated: '
   +trunc.map(x=>x.c+' '+x.t).join(', '));
  /* and the two that were */
  const byc=c=>(E.HARM.filter(x=>x.c===c)[0]||{}).t;

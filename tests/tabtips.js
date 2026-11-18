@@ -49,7 +49,7 @@ async function tabTipGate(browser,FILE,ok,booted){
   return t.indexOf(nm+'. ')===0?t.slice(nm.length+2).trim():null;};
  ok(after('Story. Write what happened.','Story')==='Write what happened.'
   &&after('Story','Story')===null&&after('Open your story.','Story')===null
-  &&(' '+norm('Embody. Knowledge.')+' ').indexOf(' body ')<0
+  &&(' '+norm('Embody. Wisdom school.')+' ').indexOf(' body ')<0
   &&(' '+norm('Play. Field, Body.')+' ').indexOf(' body ')>=0,
   'the reader parses a title it knows the answer to');
  console.log('  tabs on the bar: '+R.tabs.length+', TABDEF entries: '+R.def.length

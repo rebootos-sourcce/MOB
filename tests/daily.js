@@ -145,7 +145,7 @@ SUITES.doc=function(E,ok,say){
  const v=E.validateProfile(rec);
  ok(!v.ok&&has(v.errs,'language_confidence')&&has(v.errs,'A reading is not a score'),'and refuses it with the reason: '+J((v.errs||[]).slice(0,1)));
  const cs=E.DLY_CANON.filter(c=>c.t===null).map(c=>c.w);
- say&&say('  canon words with no Knowledge base entry yet, content for the copy seat: '+cs.join(', '));};
+ say&&say('  canon words with no wisdom school entry yet, content for the copy seat: '+cs.join(', '));};
 
 SUITES.shape=function(E,ok){
  /* D1: the key, the blank, an older record, and the round trip */
@@ -203,14 +203,14 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.days[0].st[0].rung='0.9';},'.rung is not one of','a rung that is a number');
  bad(s=>{s.days[0].st[0].ev=[{type:'rumour',id:'x'}];},'names no kind of evidence this build holds','a reference to no kind of evidence');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:5}];},'names no kind of evidence this build holds','a reference whose id is not text');
- bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the Knowledge base','a Knowledge base reference to nothing');
+ bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the wisdom school','a wisdom school reference to nothing');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:'Spite'}];},'names no law','a law that is not one of the 21');
  /* the chain's four rungs joined the graph's types on 22 October
     (engine/trace.js), and a day still may not cite one: its graph is read
     with no reading and holds no rung. Refused as before, now by name. */
  (E.TRACE_CHAIN||[]).forEach(t=>bad(s=>{s.days[0].st[0].ev=[{type:t,id:'Judge'}];},'names a rung of the chain','a reference to a '+t));
  ok(Array.isArray(E.TRACE_CHAIN)&&E.TRACE_CHAIN.length>0,'the chain is exported, so the check above walked something');
- bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the Knowledge base','a link to no glossary term');
+ bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the wisdom school','a link to no glossary term');
  bad(s=>{s.days[0].st[0].read=[{addr:5000,band:'Heart'}];},'is not one of the addresses','an address that does not exist');
  bad(s=>{s.days[0].st[0].text=s.days[0].st[0].text+' It was 77.';},'prints 77, which is not one of its arguments','a digit that is not an argument');
  bad(s=>{s.days[0].st[0].a=['Pat'];},'carries the person\'s name','the person\'s own name in an argument');
@@ -466,12 +466,12 @@ SUITES.compose=function(E,ok,say){
  ok(later.some(k=>/^today\.read\|/.test(k)),'after a week a plain fact may be said again');
  /* the education line: a canon word used above, explained once a month */
  const edu=c.st.filter(s=>s.tpl==='why.edu')[0];
- ok(!edu||(edu.src==='known'&&edu.ev.length===1&&edu.ev[0].type==='kb'&&E.GLOSS.some(g=>g.t===edu.ev[0].id)),'an education line cites the Knowledge base and says nothing about the person');
+ ok(!edu||(edu.src==='known'&&edu.ev.length===1&&edu.ev[0].type==='kb'&&E.GLOSS.some(g=>g.t===edu.ev[0].id)),'an education line cites the wisdom school and says nothing about the person');
  const eduDay=wn.p.summaries.days[0].st.filter(s=>s.tpl==='why.edu');
  const eduNext=E.dlyCompose(wn.p,at(1)).st.filter(s=>s.tpl==='why.edu');
  ok(!eduDay.length||!eduNext.some(s=>s.a[0]===eduDay[0].a[0]),'and the same word is not explained again the next day');
  /* the canon words link to their entry, and the gaps are named */
- ok(E.DLY_CANON.filter(x=>x.t).every(x=>E.GLOSS.some(g=>g.t===x.t)),'every canon word that points at the Knowledge base points at an entry that exists');
+ ok(E.DLY_CANON.filter(x=>x.t).every(x=>E.GLOSS.some(g=>g.t===x.t)),'every canon word that points at the wisdom school points at an entry that exists');
  const withLink=c.st.filter(s=>/\bseats?\b/i.test(s.text));
  ok(withLink.length>0&&withLink.every(s=>s.links.indexOf('Chakra')>=0),'a sentence that says seat links to its entry: '+J(withLink.map(s=>s.links)));
  ok(c.st.every(s=>s.links.every(t=>E.GLOSS.some(g=>g.t===t))),'and every link is a glossary term');
@@ -635,7 +635,7 @@ SUITES.ground=function(E,ok){
  const gs=E.dlyGround({st:[soul]},w.p,NOW);
  ok(gs.ok,'"Your soul evolution is shifting and your spiritual vibration is rising." passes the hard rules, by the owner\'s ruling');
  ok(gs.notes.some(n=>n.rule==='grounded_language'&&n.phrase==='soul evolution')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='soul')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='spiritual'),
-  'with the phrase and the two canon words that have no Knowledge base entry yet named as notes: '+J(gs.notes));
+  'with the phrase and the two canon words that have no wisdom school entry yet named as notes: '+J(gs.notes));
  const seat=Object.assign(clone(base),{links:[]}), ns=E.dlyNotes(seat);
  ok(ns.some(n=>n.rule==='canon_unlinked'&&n.word==='seat'&&n.term==='Chakra'),'a canon word with an entry that is not linked is a note, so the page can point at it');
  ok(E.dlyNotes(base).length===0,'and a sentence that links its canon words has no note');
@@ -683,7 +683,7 @@ SUITES.drawer=function(E,ok){
   text:E.dlyFill(E.dlyTpl('att.seat'),['30','Throat','4']),a:['30','Throat','4'],
   ev:[{type:'evidence',id:'e1'},{type:'goal',id:'g1'},{type:'story',id:T1},{type:'story',id:lone},{type:'story',id:old},
    {type:'history',id:w.p.history[0].t},{type:'kb',id:'Charge'}],read:[],links:['Chakra']}]},NOW);
- ok(day.ok,'a sentence citing a graph node, a record reference and a Knowledge base term is sealed, because each resolves: '+J(day.errs||''));
+ ok(day.ok,'a sentence citing a graph node, a record reference and a wisdom school term is sealed, because each resolves: '+J(day.errs||''));
  if(!day.ok)return;
  w.p.summaries=day.S;
  const sid=day.day.id, d=E.dlyWhy(w.p,sid,0);
@@ -702,7 +702,7 @@ SUITES.drawer=function(E,ok){
  ok(d.restated.some(x=>x.story==='story:'+old)&&d.restated.every(x=>x.lex!==E.LEX_VERSION||x.lex===null),'an entry read under another lexicon is named as restated: '+J(d.restated.map(x=>x.story+' '+x.lex)));
  const sref=d.refs.filter(r=>r.type==='story'&&r.id===T1)[0];
  ok(sref&&sref.entry===TXT_A,'a story is the person\'s own entry, read live');
- ok(d.refs.filter(r=>r.type==='kb')[0].def&&/Survival energy/.test(d.refs.filter(r=>r.type==='kb')[0].def),'and a Knowledge base reference carries its definition');
+ ok(d.refs.filter(r=>r.type==='kb')[0].def&&/Survival energy/.test(d.refs.filter(r=>r.type==='kb')[0].def),'and a wisdom school reference carries its definition');
  ok(d.practice===1,'practice evidence is shown when there is any: '+d.practice);
  ok(E.dlyCompose(w.p,NOW).basis.p===1,'and the basis counts the practice events in the window: '+J(E.dlyCompose(w.p,NOW).basis));
  const wn=world(E), cn=E.dlyCompose(wn.p,NOW), on=open(E,wn);
