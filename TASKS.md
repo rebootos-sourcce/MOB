@@ -34792,6 +34792,8 @@ scroll.
 
   **Re-checked 11 November, after the crisis door itself was removed** (his ruling, "if you can't fix it in 1 batch, turn it off in 1 batch": `crisisBtn`/`crisisReachBtn`/`crisisFloor` in `atuned_src/ui/crisis.js` now return `''`). The round's own handshake document assumed this would make #138 moot, reasoning there would be "no crisis conversation path left to time out after." That reasoning does not hold: the self-harm phrase itself still trips `srcSafe` and still renders `#stsafe`'s own line in the live conversation (that was never gated by the door, which only ever added a button beside it), so the same sequence this case describes still runs, now with no button in the row at all. Re-run clean on the post-removal build: the timeout still reproduces, at 390 only, unchanged. This **confirms** #138 was never caused by the door's own markup, and it is **not struck**. Still open, still not root caused.
 
+  **Root caused, 17 November (wave 2, track T5). Not a click race: Bank is not on screen at 390, and the fix is a product call, not a test one.** `tests/safepage.js` alone on `c2bf52a2` still printed the held line at 390 and nowhere else. Playwright's own log for the timeout reads "element is not visible" for all five seconds, not "intercepts pointer events", and the Bank button (`#stapply`, which is where Commit went on 13 November) measures 0 by 0 there. It sits inside `#stls`, and the stacked Full Dashboard hides that list (`shell/head.html`, `.st-flow:not([data-focus="read"]) .st-ls{display:none}`) until the flow's focus is `read`. On a phone the only thing that sets that is a tap inside the Imprints chart or list (`stWire`, `ui/storyui.js`), and the List door the same sheet shows for it (`.st-flow:not([data-focus="read"]) .st-open{display:inline-flex}`) has no element: nothing in `atuned_src` makes a `.st-open`. At 1600 the three columns sit side by side and Bank is on screen at once, which is why only 390 ever failed. The first note above, "measures fully visible", described a build where Commit lived in the bar. A tap on the chart (it stands about 2,460 px down the page at 390) brings Bank to 69 by 44 and the press then keeps the spoken words exactly, leaves the line, sends no request and lets the next entry start, so the four safety checks the held case had been hiding at 390 now run there and pass. What stays held is the finding itself: **a person on a phone in the Full Dashboard has no visible door to Bank.** That is the owner's call (restore a List door, or put Bank somewhere that is always on screen), so it is not built here and `ui/storyui.js` is untouched. Question for him, written open: "On a phone, Bank, the button that saves what you wrote, is hidden until you tap the Imprints chart, which sits at the very bottom of the page, and the 'List' button that used to open it is gone. Do you want that button back near the writing box, or do you want Bank itself to stay on screen?"
+
 ## Round WC, 14 November. The profile-switch audit he asked for, run as a workflow, 18 real findings confirmed, most of one shape fixed at the one root cause
 
 He asked, after the Dashboard widget round: "if i select a profile, review
@@ -34927,6 +34929,24 @@ same markup is visibly colourful and correct at 1600. Screenshots:
 side) in this round's own scratch directory. Whoever picks this up should
 start by comparing computed styles on one `.st-pl` pill between 1600 and
 390 rather than re-deriving the repro above.
+
+**Resolved, 17 November (wave 2, track T5): not a paint defect. The capture
+could not see the rail, and the rail is now held in pixels.** Measured on
+`c2bf52a2` at 390 on Lance 100, the same profile: the rail's own screenshot
+lights 49 percent of its pixels and all 54 of its pills draw something over
+their own ground; at 1600 it is 42 percent and the same 54. At 390 the
+document does not scroll, the body does (document scrollHeight 844, body
+scrollHeight 2639), and the rail sits at 1671 px, below the first screen.
+`tools/shots.js` takes the first screen only (`fullPage:false`), so a crop at
+the rail's coordinates falls outside the image and reads solid ground, which
+is the "no pill, no label" of the note above. The same note's 21,099
+characters were markup (`innerHTML.length`, 21,309 now), not text: the rail
+carries 60 characters of text, icon only, since 13 November. What was missing
+was a check that reads pixels, because every check on the rail read the DOM:
+`stRailPixelGate` in `tests/stfull.js` now counts lit pixels of the rail and
+of each pill at both widths, the way `tools/monitor.js` counts the Field's
+canvas, and was shown to fail on a build whose rail is clipped away with
+`clip-path` (box, markup and computed styles intact) before it was trusted.
 
 ## Round WD, 14 November. His "same family" check on the six widgets, and the two real breaks it found
 
