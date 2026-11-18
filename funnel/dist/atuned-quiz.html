@@ -18857,11 +18857,22 @@ function releaseVerifyAt(P,addr){
    SQ, the meter or the work. The addendum rules that a hit feedback event
    must not "silently alter CQ/DQ/SQ/stored charge", and the gate holds it.
 
-   VOICE IS NOT HERE YET, on purpose. The addendum's voice commands are the
-   next item and depend on this one. The event already carries modality, raw
-   command and confidence so that item adds a modality and its floor rather
-   than a new shape; today the only modality is a visible control, whose raw
-   command is its own key and whose confidence is null.
+   VOICE IS HERE AS A PHRASE AND A PATH, AND NOT AS A MICROPHONE. The
+   addendum's section 4 voice commands arrive as a pure parser, relHitHear,
+   and one writer, relHitVoice, which hands what it heard to relHitDecide and
+   to nothing else. A spoken hit therefore goes through the same single door
+   as a pressed one: the same event id guard, the same no op for an item
+   already where the command leaves it, the same count of one per session and
+   pattern. There is no second counter for speech to double. Speech that is
+   not one of the addendum's own phrases, speech that is ambiguous, and speech
+   heard below RELHIT_VOICE_FLOOR does nothing and says so by name: the
+   addendum rules "Low-confidence recognition must ask for clarification or
+   leave state unchanged; never execute a destructive action from uncertain
+   speech", and acceptance 7, "Low-confidence speech does not mutate state".
+   A voice line on the log carries the heard phrase as raw, closed to letters,
+   digits and single spaces, and the confidence the recogniser reported. This
+   file never listens: the browser half, which opens the microphone and calls
+   relHitVoice, is a separate item and lives in ui/release.js.
 
    HOST FREE. No document, no store, no clock it was not handed except as
    the default. Every writer takes the record and either changes it whole or
@@ -18882,8 +18893,33 @@ const RELHIT_STATES=['shown','held','confirmed','rejected'];
    this pattern" as a session action and "this was a hit" as feedback must
    not be confusable, and the session action is the run itself. */
 const RELHIT_CMDS={hold:'held', hit:'confirmed', reject:'rejected'};
-/* visible controls only, until the voice item lands */
-const RELHIT_MODES=['control'];
+/* the two ways a decision reaches the log. control is a visible button and
+   its raw command is its own key. voice is a heard phrase, parsed by
+   relHitHear and written by relHitDecide like every other press. */
+const RELHIT_MODES=['control','voice'];
+/* WHAT A PERSON MAY SAY, the addendum's own words and no others. Section 4
+   names three actions with two aliases each, "HOLD / KEEP", "RELEASE / HIT"
+   and "DELETE / NOT A HIT", and calls the feedback "this was a hit". RELEASE
+   is the one alias left out of this table, on purpose and by the same ruling
+   as RELHIT_CMDS above: the addendum itself warns that "release this
+   pattern" as a session action and "this was a hit" as feedback must not be
+   confusable, so a spoken release is heard and refused by name, below. */
+const RELHIT_VOICE_PHRASES={hold:['hold','keep'], hit:['hit','this was a hit'], reject:['not a hit','delete']};
+/* the one word the addendum lists that this build will not act on, because
+   the run itself is the release. relHitHear answers it as the collision it is */
+const RELHIT_VOICE_COLLIDES='release';
+/* THE CONFIDENCE FLOOR. The recogniser reports a number from 0 to 1 for how
+   sure it is of what it heard. Below this a phrase changes nothing. It is one
+   named number and not a literal at each use, so a gate holds it and a real
+   device can move it. 0.8 is a first default and has not been measured on a
+   real microphone: no CI run has one, so the browser half must read it off
+   real devices before it is trusted. */
+const RELHIT_VOICE_FLOOR=0.8;
+/* a command is a few words; anything longer is not one and is never stored */
+const RELHIT_VOICE_RAW_MAX=60;
+/* a voice line's raw: the heard phrase folded to lower case words, closed to
+   letters, digits and single spaces, so no free text or markup rides in */
+var RH_RAW=/^[a-z0-9]+(?: [a-z0-9]+)*$/;
 const RELHIT_KINDS=['execute','decide'];
 /* the families a pattern can come from, the three relHits presents */
 const RELHIT_FAM=['sab','cx','hy'];
@@ -18942,8 +18978,16 @@ function rhLine(errs,x,i,nowMs){
  if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,x.cmd))errs.push(path+'.cmd is not hold, hit or reject');
  if(RELHIT_MODES.indexOf(x.mode)<0)errs.push(path+'.mode is not a modality this build records');
  /* a control's raw command is its own key, so a control line can never carry
-    words; the voice item will widen this for its own modality only */
+    words. A voice line carries the heard phrase instead, closed to lower case
+    letters, digits and single spaces, and always the confidence it was heard
+    at. The boundary checks the shape and not the floor or the grammar: a
+    floor raised or a phrase added later must not make a line this build
+    wrote refuse to load, and the writer holds both at the moment of writing. */
  if(x.mode==='control'&&x.raw!==x.cmd)errs.push(path+'.raw is not the control\'s own command');
+ if(x.mode==='voice'){
+  if(typeof x.raw!=='string'||x.raw.length>RELHIT_VOICE_RAW_MAX||!RH_RAW.test(x.raw))
+   errs.push(path+'.raw is not a heard phrase');
+  if(!(NUM(x.conf)&&x.conf>=0&&x.conf<=1))errs.push(path+'.conf of a voice line is not 0 to 1');}
  if(x.conf!==null&&!(NUM(x.conf)&&x.conf>=0&&x.conf<=1))errs.push(path+'.conf is not null or 0 to 1');
  if(RELHIT_STATES.indexOf(x.from)<0)errs.push(path+'.from is not a state');
  if(RELHIT_CMDS[x.cmd]!==x.to)errs.push(path+'.to is not where '+String(x.cmd).slice(0,20)+' leaves an item');
@@ -19047,6 +19091,18 @@ function relHitDecide(p,a,now){
  a=a||{};
  if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,a.cmd))
   return {ok:false, why:'a decision is hold, hit or reject, not '+JSON.stringify(a.cmd)};
+ /* A SPOKEN DECISION IS HELD HERE, once, before anything else is looked at,
+    so no caller can reach the log with speech that was not heard clearly as
+    the command it names. The phrase must be the normalised form relHitHear
+    gives, must parse to this very command, and must have been heard at or
+    above the floor. relHitVoice is one caller of this; a host that builds a
+    voice decision by hand meets the same refusals. */
+ if(a.mode==='voice'){
+  var h=relHitHear(a.raw,a.conf);
+  if(!h.ok)return {ok:false, why:h.why, say:h.say, kind:h.kind};
+  if(h.cmd!==a.cmd||h.raw!==a.raw)
+   return {ok:false, kind:'mismatch', say:'The words heard were not the command pressed, so nothing changed.',
+    why:'the heard phrase '+JSON.stringify(String(a.raw).slice(0,80))+' is not the command '+a.cmd};}
  var R=rhOf(p), log=R?R.log:[];
  if(typeof a.ev==='string'&&log.some(function(e){return e.ev===a.ev;}))return {ok:true, dup:true};
  var rp=rhReplay(log,null), s=rp.ses[a.sid];
@@ -19060,6 +19116,93 @@ function relHitDecide(p,a,now){
   raw:a.raw===undefined?a.cmd:a.raw, conf:a.conf===undefined?null:a.conf, from:x.state, to:to},now);
  if(!r.ok)return r;
  return {ok:true, event:r.event, state:to};}
+
+/* ---------------- speech, as a phrase and as a path ---------------- */
+/* The phrase table turned into a lookup once, at load: each normalised phrase
+   to the command it names, and the single words a phrase is built around.
+   Read off RELHIT_VOICE_PHRASES so there is one list and not two. */
+var RH_HEARD=(function(){
+ var by={}, words={};
+ Object.keys(RELHIT_VOICE_PHRASES).forEach(function(cmd){
+  RELHIT_VOICE_PHRASES[cmd].forEach(function(ph){
+   by[ph]=cmd; if(ph.indexOf(' ')<0)words[ph]=1;});});
+ return {by:by, words:words};})();
+/* the name a person gives each command, for a sentence that says it back */
+var RH_SPOKEN={hold:'hold', hit:'hit', reject:'not a hit'};
+/* a heard string folded to lower case words: everything that is not a letter
+   or a digit is a break, so punctuation, case and spacing never matter and
+   nothing outside the closed set survives */
+function rhHeardNorm(s){
+ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^ +| +$/g,'');}
+function rhHeardNo(kind,say,why){
+ return {ok:false, kind:kind, say:say, why:why};}
+
+/* WHAT WAS HEARD, as an intent or as a refusal, and never as a guess. The
+   one pure function of this item: a phrase and the recogniser's confidence
+   in, a verdict out, no record read or written.
+     {ok:true, kind:'command', cmd, raw, conf}   hold, hit or reject, heard
+                                                 whole and heard clearly
+     {ok:false, kind, say, why}                  nothing to do. kind is one of
+        silent     nothing, or not text, was heard
+        unknown    words that are none of the phrases, and hold none
+        release    the word the addendum lists that is the run itself
+        ambiguous  a command inside other words, or more than one
+        unsure     a command heard below the floor, or with no confidence
+   A phrase is a command only when the WHOLE of it is one of
+   RELHIT_VOICE_PHRASES. A command word inside other words is never taken for
+   the command: "this was not a hit" contains hit, and reading the hit out of
+   it would confirm the opposite of what was said. say is one plain sentence
+   for the person, so the host has nothing to compose; it carries no number
+   and none of the free text that was heard. */
+function relHitHear(heard,conf){
+ var how='Say hit, hold or not a hit, or press a button.';
+ if(typeof heard!=='string')
+  return rhHeardNo('silent','Nothing was heard, so nothing changed. '+how,'nothing was heard');
+ if(heard.length>400)
+  return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+   'the heard phrase is too long to be a command');
+ var raw=rhHeardNorm(heard);
+ /* text that folds to nothing was heard, and is not a command: only an empty or
+    blank string is silence */
+ if(!raw){
+  if(!heard.replace(/\s+/g,''))return rhHeardNo('silent','Nothing was heard, so nothing changed. '+how,'nothing was heard');
+  return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+   'the heard phrase is none of the commands');}
+ var own=Object.prototype.hasOwnProperty;
+ if(raw.length<=RELHIT_VOICE_RAW_MAX&&own.call(RH_HEARD.by,raw)){
+  var cmd=RH_HEARD.by[raw];
+  /* heard whole. The floor is the last word: a clear phrase is still not
+     acted on when the recogniser says it was not sure of it, or said nothing
+     about how sure it was, because no confidence is not a high one */
+  if(!(NUM(conf)&&conf>=0&&conf<=1))
+   return rhHeardNo('unsure','That sounded like '+RH_SPOKEN[cmd]+', but how clearly was not reported, so nothing changed. Say it again, or press a button.',
+    'no confidence was reported for the heard phrase');
+  if(conf<RELHIT_VOICE_FLOOR)
+   return rhHeardNo('unsure','That sounded like '+RH_SPOKEN[cmd]+', but not clearly enough, so nothing changed. Say it again, or press a button.',
+    'the heard phrase was below the confidence floor');
+  return {ok:true, kind:'command', cmd:cmd, raw:raw, conf:conf};}
+ var w=raw.split(' ');
+ if(w.indexOf(RELHIT_VOICE_COLLIDES)>=0)
+  return rhHeardNo('release','Release is the run itself and not a decision, so nothing changed. Say hit to mark this one, hold to keep it, or not a hit to remove it.',
+   'release is the session action and not a feedback command');
+ if(w.some(function(x){return own.call(RH_HEARD.words,x);}))
+  return rhHeardNo('ambiguous','A command came with other words, or more than one, so nothing changed. Say hit, hold or not a hit on its own.',
+   'a command word was heard inside other words');
+ return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+  'the heard phrase is none of the commands');}
+
+/* A SPOKEN DECISION, through the one door. a = {ev, sid, pat, heard, conf}.
+   The phrase is parsed and, only if it is a command heard clearly, handed to
+   relHitDecide as a voice decision, which holds the same checks again for any
+   caller that never came through here. The answer is relHitDecide's own, so
+   a replayed event id is the same dup, a hit on a confirmed item the same
+   noop, and the count the same one per session and pattern. A phrase that is
+   not a command is answered {ok:false, kind, say, why} and writes nothing. */
+function relHitVoice(p,a,now){
+ a=a||{};
+ var h=relHitHear(a.heard,a.conf);
+ if(!h.ok)return {ok:false, kind:h.kind, say:h.say, why:h.why};
+ return relHitDecide(p,{ev:a.ev, sid:a.sid, pat:a.pat, cmd:h.cmd, mode:'voice', raw:h.raw, conf:h.conf},now);}
 
 /* ---------------- the readers ---------------- */
 /* ONE SESSION AS ITS CARD SHOWS IT, or null when the record never executed
@@ -29981,6 +30124,11 @@ if(typeof module!=='undefined'&&module.exports){
      writers and the one count */
                   RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
                   RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+  /* its spoken half: the phrases, the floor, the pure parser and the one
+     writer a heard phrase goes through. The microphone is not here. */
+                  RELHIT_VOICE_PHRASES:RELHIT_VOICE_PHRASES, RELHIT_VOICE_FLOOR:RELHIT_VOICE_FLOOR,
+                  RELHIT_VOICE_COLLIDES:RELHIT_VOICE_COLLIDES, RELHIT_VOICE_RAW_MAX:RELHIT_VOICE_RAW_MAX,
+                  relHitHear:relHitHear, relHitVoice:relHitVoice,
                   relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
                   relHitExecute:relHitExecute, relHitDecide:relHitDecide,
                   relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,

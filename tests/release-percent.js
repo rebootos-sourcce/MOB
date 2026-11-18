@@ -48,9 +48,17 @@ require('./net.js').guardBrowser(browser);
   var o={};
   // the setup panel's own run offered before anything is spent
   o.setupHtml=document.getElementById('rel').innerHTML;
+  /* the setup panel by what it is: the card's own phase, and its one start
+     control by id, which reads "Release" (renamed from "Run release" on 29
+     October, see the ruling beside it in ui/release.js) */
+  o.setupPhase=((document.querySelector('#rel .rel-card')||document.createElement('i')).getAttribute('data-ph'))||'';
+  o.go=(document.getElementById('relgo')||{}).textContent||'';
   RUN.phase='run';RUN.idx=0;RUN.pass=3;relRender();
   o.plateText=(document.querySelector('.rel-plate')||{}).textContent||'';
   o.plateHtml=(document.querySelector('.rel-plate')||{}).innerHTML||'';
+  /* the plate by what it is: the xs address ring, and the figure inside it */
+  o.plateRing=!!document.querySelector('.rel-plate .cr.xs');
+  o.plateVal=(document.querySelector('.rel-plate .cr.xs .v')||{}).textContent||'';
   RUN.halted=true; relCoolDown();
   /* round QH: the two minutes are their own screen before the finished card,
      so the card is reached the way a person reaches it early, by Skip */
@@ -60,9 +68,15 @@ require('./net.js').guardBrowser(browser);
   return o;});
 
  console.log('=== release screen, the headline reading carries no percent sign ===');
- ok(/Pattern|Run release/.test(out.setupHtml)||true,'setup panel reached');
+ /* THE TWO CHECKS THAT ENDED IN ||true, repaired. They could not fail. The
+    first also tested a regex that was stale: /Pattern|Run release/ matched the
+    word "Patterns" on a field label, never the control, because "Run release"
+    became "Release" on 29 October. Both now assert the real thing, and a
+    build without it fails them, which is shown in the commit that repaired
+    them. */
+ ok(out.setupPhase==='setup'&&out.go==='Release','setup panel reached, and its start control #relgo reads "Release": '+JSON.stringify([out.setupPhase,out.go]));
  ok(!/\d%/.test(out.plateText),'the running plate\'s address ring is a bare number, not a percent: '+out.plateText);
- ok(/\bxs\b/.test(out.plateHtml)||true,'plate rendered');
+ ok(out.plateRing&&/^\d+\.\d$/.test(out.plateVal),'plate rendered, with its xs address ring reading a bare one place decimal: '+JSON.stringify([out.plateRing,out.plateVal]));
  const dqLine=out.dqFig.find(t=>/^DQ/.test(t))||'';
  const downLine=out.dqFig.find(t=>/^Down/.test(t))||'';
  ok(dqLine.length>0,'the finished card shows a DQ figure: '+JSON.stringify(out.dqFig));
