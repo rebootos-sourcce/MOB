@@ -156,6 +156,17 @@ jobs:
         run: |
           cd atuned_funnel_system
           npm ci --no-audit --no-fund && npm test 2>&1 | tee "$RUNNER_TEMP/gates/funnel-package.log"
+      # THE GUARD IS CHECKED BEFORE IT IS TRUSTED, 17 November. "The engine may
+      # not touch the host" is held by atuned_src/hostfree.py, which
+      # BUILD-engine.sh runs on engine.js, and until now nothing checked the
+      # checker: a template literal hid a ${window.x} from it, a string holding
+      # a slash and a star hid real code, and it printed the wrong line. This
+      # runs it against planted bad and good snippets, before the build that
+      # relies on it, and BUILD-engine.sh runs it too, so a person's own build
+      # and the pre-push hook carry it. No if, for the reason the orphans step
+      # has none.
+      - name: host guard, held to planted cases
+        run: python3 atuned_src/hostfree.py --self-test
       # The engine builds first: BUILD.sh runs tests/claims.js, which reads
       # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
       - name: build, the engine first
@@ -209,6 +220,16 @@ jobs:
       # It takes no if, for the reason the chrome-path step takes none.
       - name: every test file is run by a job
         run: node tools/orphans.js --self-test && node tools/orphans.js
+      # THE FLAKE LEDGER AND THE NIGHTLY'S READ OF IT, 17 November. The nightly
+      # runs only at night and on main, so a change to what its table says
+      # about a failure would be found out the next morning at the earliest.
+      # tools/flakes.js --self-test (it also reads tests/flakes.json and fails
+      # on a malformed ledger) and tools/gates-repeat.js --self-test, which
+      # holds the NEW, SUSPECTED, KNOWN and UNNAMED verdicts to fixtures and a
+      # scratch ledger, run here on every push and pull request. Neither was
+      # run by any job before. No if, for the reason the orphans step has none.
+      - name: flake ledger and the nightly's verdicts
+        run: node tools/flakes.js --self-test && node tools/gates-repeat.js --self-test
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
