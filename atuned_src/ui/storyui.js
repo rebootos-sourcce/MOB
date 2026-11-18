@@ -199,7 +199,7 @@ var STMK_WHAT={
  stbody:'The one address in your body holding the most charge right now.',
  stfield:'The heaviest of your seven seats right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
- stmasks:'Your four strongest masks, strongest first.'};
+ stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are

@@ -136,7 +136,7 @@ const FB_LAYERS=[
  {k:'fetters',g:'run',nm:'Child emotions',ic:CHAINGLYPH.fet,
   tip:'The nine child emotions. Each saboteur is a configuration of these at a given intensity: the floor the chain above it runs on.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
-  tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
+  tip:'A saboteur is a named habit that runs on the charge held at several addresses at once.'},
  {k:'complexes',g:'run',nm:'Complexes',ic:CHAINGLYPH.cx,
   tip:'Where saboteurs join. Each complex is built from the saboteurs outside it.'},
  {k:'hyper',g:'run',nm:'Hyper complexes',ic:CHAINGLYPH.hy,
