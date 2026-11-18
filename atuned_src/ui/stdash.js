@@ -473,7 +473,7 @@ function stDashPsycheStack(){
  var TIER={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root};
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
-  +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
+  +'<h2 class="rblk" id="st-psyche-h">Psyche</h2>';
  /* ALWAYS THE PILLS, NEVER TEXT, 9 November and again 13 November. This
     used to fall back to a whole sentence the moment every tier was
     empty, which is the one section on this rail that did not hold the
@@ -570,7 +570,7 @@ function stOpenPsyche(kind){
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
  var def=stPsyMean(kind);
- var h=anaHead('Psyche stack',lab,def?esc(def):'');
+ var h=anaHead('Psyche',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
 
