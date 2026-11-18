@@ -4251,7 +4251,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(!seen.some(s=>s.email==='probe@example'||s.email==='new@example.invalid'),'and neither of those two was sent');
  ok(o.taken[0]==='An account already uses that email. Log in instead.','a taken email names the way out, got '+JSON.stringify(o.taken));
  ok(o.noSessionYet,'nothing is held after seven refusals');
- ok(o.good[0]==='Signed in as probe@example.invalid.'&&o.good[1]==='ok','a sign in says who, got '+JSON.stringify(o.good));
+ ok(o.good[0]==='Signed in as probe@example.invalid. Your story stays on this device; it does not come over from another one yet.'&&o.good[1]==='ok','a sign in says who, got '+JSON.stringify(o.good));
  ok(/"token":"t-probe"/.test(o.heldAfter)&&/probe@example.invalid/.test(o.heldAfter),'the session is held under its own key, got '+o.heldAfter);
  ok(o.recordSame&&o.exportClean&&o.diskClean,'and never on the record: the profile, its export and the profile store carry no token');
  ok(!o.pwLeak,'no password typed in any attempt reaches storage');
@@ -4273,7 +4273,7 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   'the forgotten password says the server\'s one answer for both cases, got '+JSON.stringify(o.forgot));
  ok(seen.some(x=>x.u==='/v1/auth/forgot'&&x.email==='probe@example.invalid'),'and the request reached the server');
  ok(o.cardWrong&&o.cardWrong[0]==='No account matches that email and password.','the card shows a refusal, got '+JSON.stringify(o.cardWrong));
- ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
+ ok(o.cardIn&&o.cardInSaid[0]==='Signed in as probe@example.invalid. Your story stays on this device; it does not come over from another one yet.'&&/t-probe/.test(o.cardHeld),'a yes closes the card, says who, and holds the session');
  ok(o.bootSkipped,'a person already signed in is not shown the door');
  /* Manage billing used to answer "not built yet. Email support" on every
     press. It goes to /v1/billing/portal now, through ui/auth.js. */
