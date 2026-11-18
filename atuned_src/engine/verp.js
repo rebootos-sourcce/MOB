@@ -640,7 +640,12 @@ function leanSeries(p){
   /* what the series cannot see, stated on the series rather than in a
      document nobody reads next to the chart. */
   storyCues:false,
-  says:out.length?('the field lean at '+out.length+' of '+H.length+' snapshots')
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S11: on no
+     screen today, fixed in the same sweep so it cannot leak onto one). This
+     said "the field lean at N of M snapshots"; it is the percent of the
+     snapshots a coherence reading was found on, through the portion kind.
+     out.length is positive in this branch, so H.length is too. */
+  says:out.length?('the field lean on '+fmtPct('portion',out.length/H.length)+' of snapshots')
    :'no snapshot on file carries a coherence reading'};}
 
 /* ---------- the gates as schema ----------
