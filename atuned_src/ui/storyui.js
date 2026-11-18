@@ -5448,6 +5448,33 @@ var SRC_ECHO_MS=6000;
    well under ten seconds spoken; an audio element that never reports its
    end must not leave the person unheard for the rest of the conversation. */
 var SRC_VOICE_MAX=30000;
+/* WHERE THE VOICE ANSWERS, 17 November. The voice server refuses a file
+   opened off disk on purpose (CLAUDE.md, 29 October: an origin of null is
+   refused, http://localhost is answered), so on a downloaded copy no line
+   will ever play, and "Try again in a moment" was a false hope: measured, the
+   Insight well's button drew itself ready and ended on exactly that. This is
+   decided before a request, from the page's own address, and said once, here,
+   so the Journal's Talk, the intro and the well's button all say the same
+   sentence. Chromium counts file:// as a secure context, so isSecureContext
+   alone never caught it.
+   THE HARNESS SEAM, read once at load from the window the way PW_PAY_SEAM is
+   (ui/paywall.js): a gate's stand-in server answers the voice route itself
+   (tests/net.js), and a page opened from file:// in that gate is standing in
+   for the hosted copy. It grants nothing in a real browser, where nothing
+   sets it and the server decides. A gate that wants the real file case sets
+   SRC_VOICE_STANDIN=false after the page loads (tests/stksay.js). */
+var SRC_VOICE_STANDIN=(typeof window!=='undefined'&&window.SRC_VOICE_STANDIN===true);
+var SRC_VOICE_HOME='Source AI speaks only from the hosted copy at atuned.world, or from http://localhost.';
+/* a page opened from a file, or with no origin of its own. The location is a
+   parameter so a gate can hand it the shapes a browser would not let it make. */
+function srcVoiceDisk(l){
+ try{ l=l||location; return l.protocol==='file:'||l.origin==='null'; }catch(e){ return false; } }
+/* '' when this page may ask the voice for a line, else the sentence that says
+   why it may not */
+function srcVoiceWhyNot(){
+ if(typeof isSecureContext!=='undefined'&&!isSecureContext)return SRC_VOICE_HOME;
+ if(srcVoiceDisk()&&!SRC_VOICE_STANDIN)return SRC_VOICE_HOME;
+ return '';}
 function srcSayNow(){
  /* the safe line, while it stands in the reply's place: the line spoken is
     the line on screen, so pressing Talk never reads an earlier question.
@@ -5463,8 +5490,10 @@ function srcSayNow(){
     falls through to the greeting now. The crisis safety line above is
     the one ruled exception and is untouched. The Insight well's button
     (ui/stksay.js, 17 November) is a second, scoped override recorded in
-    DECISIONS.md; it speaks through stSrcSpeak with its own lines and
-    never through this function, so the Journal's Talk is unchanged. */
+    DECISIONS.md; it speaks through stSrcSpeak with its own lines, and
+    never through this function except under the safety door, where it
+    speaks this function's own safe line and nothing else, so the two voices
+    of Source AI say one thing. The Journal's Talk is unchanged. */
  if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
  /* THE OPENER IS SAID ONCE A CONVERSATION, 18 November, his words: "It
     keeps repeating, what are we talking about today?" Every press of Talk
@@ -5530,8 +5559,8 @@ function stSrcSpeak(line,o){
  if(line==null&&!opener&&!stSafe())SRC_SPOKEN.push(text);
  if(opener){ SRC_OPENED=true; var f0=fin; fin=function(played){ if(!played&&!ended)SRC_OPENED=false; f0(played); }; }
  if(typeof authVoice!=='function'){ fin(false); return; }
- if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  say('Source AI cannot speak from a file. Open the hosted build to hear it.'); fin(false); return; }
+ var why=srcVoiceWhyNot();
+ if(why){ say(why); fin(false); return; }
  var seq=++SRC_VOICE.seq;
  /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
     "the voice is not hooked up." A microphone failure used to bump

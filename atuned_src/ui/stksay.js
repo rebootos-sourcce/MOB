@@ -33,21 +33,46 @@
    name lands as a mark. The person's name is never in a line, because the
    line goes to the voice server.
 
+   THE SAFETY DOOR COMES FIRST. While stSafe() stands the button speaks the one
+   line the Journal's voice speaks (srcSayNow, which reads CRISIS_SAY) and
+   nothing else: no pattern reading, no release, no microphone after it. The
+   button is never greyed or hidden for it. Emmy's 17 October ruling holds,
+   nothing escalates: the look is the same.
+
+   ONE SPELLING, ONE SENTENCE. The line sent to the voice is the line the
+   Reading row shows while it plays, character for character, and the kind is
+   said the way the row says it (INSIGHT_KW, ui/ui.js). A name the voice would
+   read badly, a + or a / between two parts, is made plain once, in
+   stkSayWord, and the plain form is the one shown too.
+
    THE STATE LIVES HERE AND NEVER IN THE DOM. railStack rewrites the well's
    whole innerHTML on every render, so a button that kept its own phase would
    reset to idle mid sentence. STK_SAY is read back on every render, and its
    key is the pin's kind and name, the stkSame identity, because render()
    rebuilds every pattern object.
    ============================================================ */
-var STK_SAY={key:'', pin:null, phase:'idle', seq:0, playing:false, line:'', live:'', rec:null, t:0, relId:''};
+var STK_SAY={key:'', pin:null, phase:'idle', seq:0, vseq:0, playing:false, line:'', live:'', rec:null, t:0, relId:''};
 /* how long listening waits with nothing heard before it closes, quietly,
-   because nothing failed */
-var STK_SAY_WAIT=12000;
-var STK_SAY_KW={sab:'a saboteur',cx:'a complex',hy:'a hyper complex',sup:'a super complex'};
+   because nothing failed. THE HARNESS SEAM: a gate sets window.STKSAY_WAIT_MS
+   before the page loads to shorten it, read once here the way PW_PAY_SEAM is
+   (ui/paywall.js). It can only shorten: a value at or above the ceiling, or
+   none, leaves the ceiling, so nothing can hold the microphone open longer
+   than this file says. The gate that uses it is tests/stksay.js, group N3. */
+var STK_SAY_WAIT_MAX=12000;
+var STK_SAY_WAIT=(function(){
+ var s=(typeof window!=='undefined')?+window.STKSAY_WAIT_MS:0;
+ return s>0&&s<STK_SAY_WAIT_MAX?s:STK_SAY_WAIT_MAX;})();
 function stkSayKey(o){ return o?o.kind+'|'+o.nm:''; }
 /* the screen's own form of a name: o.nm already carries ' overshot' when
    o.over is set, insightSay's own note */
 function stkSayNm(o){ return o.over?traceSummaryBase(o.nm)+', overshot':o.nm; }
+/* THE NAME AS THE LINE SAYS IT AND THE ROW SHOWS IT. A complex is named for
+   its two parts with a + and a super complex with a /, and a voice reads
+   neither well. "with" is plain, it is not "and" so a list of such names is
+   still a list, and it is used in the spoken line and in the line on screen,
+   which are one line. The pattern's own name elsewhere is untouched. */
+function stkSayWord(nm){ return String(nm).replace(/ [+\/] /g,' with '); }
+function stkSaySay(o){ return stkSayWord(stkSayNm(o)); }
 function stkSayList(a){
  if(a.length<2)return a.join('');
  if(a.length>3)return a.slice(0,3).join(', ')+' and '+(a.length-3)+' more';
@@ -55,21 +80,21 @@ function stkSayList(a){
 function stkSayCanHear(){
  return !!(window.SpeechRecognition||window.webkitSpeechRecognition)
   &&!(typeof isSecureContext!=='undefined'&&!isSecureContext);}
-/* THE OFFER. Withheld whole while the crisis door stands (stSafe): the look
-   and the sound do not change, the release is simply not offered, Emmy's 17
-   October ruling that nothing escalates. */
-function stkSayOffer(){ return stSafe()?'Ask me about it.':'Ask me about it, or say release to open it.'; }
+/* THE OFFER. Never reached while the crisis door stands: that press speaks the
+   safe line and ends (stkSaySafe), and a door that opens mid conversation is
+   met in stkSayHeard before any answer is built. */
+function stkSayOffer(){ return 'Ask me about it, or say release to open it.'; }
 /* what the pattern feeds, for the line and for a question about it */
 function stkSayFeeds(o,r){
  if(o.kind==='sup')return 'Nothing sits above it. It is the top of the chain.';
  var par=railStkParent(o,r,(insightTrace(o)||{}).parents);
- return par?'It feeds '+stkSayNm(par)+', '+STK_SAY_KW[par.kind]+'.':'Nothing above it is running.';}
+ return par?'It feeds '+stkSaySay(par)+', '+INSIGHT_KW[par.kind]+'.':'Nothing above it is running.';}
 function stkSayBuilt(o){
  var kids=railStkKids(o);
- return kids.length?'It is built from '+stkSayList(kids.map(function(k){return k.nm;}))+'.':'Nothing is running under it.';}
+ return kids.length?'It is built from '+stkSayList(kids.map(function(k){return stkSayWord(k.nm);}))+'.':'Nothing is running under it.';}
 /* THE OPENING LINE: the well's three rows, in their order, said */
 function stkSayLine(o,r){
- var out=['You picked '+stkSayNm(o)+'. It is '+STK_SAY_KW[o.kind]+'.', stkSayBuilt(o), stkSayFeeds(o,r)];
+ var out=['You picked '+stkSaySay(o)+'. It is '+INSIGHT_KW[o.kind]+'.', stkSayBuilt(o), stkSayFeeds(o,r)];
  var b=insightSpeak(o,r); if(b)out.push(b);
  if(stkSayCanHear())out.push(stkSayOffer());
  return out.join(' ');}
@@ -90,9 +115,9 @@ function stkSayMatch(t,x){
 function stkSayAsk(o,r){
  /* three names at most, so the list stays one breath, and "or" because
     the person picks one */
- var nm=stkSayNames(o,r).map(stkSayNm).slice(0,3);
+ var nm=stkSayNames(o,r).map(stkSaySay).slice(0,3);
  return 'I can only say what this reading holds. '
-  +(nm.length?'Ask about '+stkSayList(nm).replace(/ and (?=[^,]*$)/,' or ')+(stSafe()?'.':', or say release.'):(stSafe()?'Ask about it.':'Say release to open it.'));}
+  +(nm.length?'Ask about '+stkSayList(nm).replace(/ and (?=[^,]*$)/,' or ')+', or say release.':'Say release to open it.');}
 
 /* THE PER-SESSION FUNNEL, in the browser store under source.say and never
    in the record: where people stop between the card opening and Release. */
@@ -105,19 +130,26 @@ var STK_SAY_SPK='<path d="M4 9.5h3.2L11.5 6v12l-4.3-3.5H4z"/><path class="stk-sa
 var STK_SAY_TALK='<path d="M6 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.6l-3.4 2.8a.6.6 0 0 1-1-.46V15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>';
 function stkSayState(o,r){
  if(STK_SAY.phase!=='idle'&&STK_SAY.key===stkSayKey(o))return STK_SAY.phase;
- if(r.unread||!insightPick(o,r))return 'unread';
- if(typeof showOnly==='function'&&showOnly())return 'show';
- if(typeof authVoice!=='function'||(typeof isSecureContext!=='undefined'&&!isSecureContext))return 'off';
+ /* the safety door is never greyed: a press under it speaks the safe line,
+    reading or no reading, worked example or not (stkSaySafe) */
+ if(!stSafe()){
+  if(r.unread||!insightPick(o,r))return 'unread';
+  if(typeof showOnly==='function'&&showOnly())return 'show';}
+ if(typeof authVoice!=='function'||srcVoiceWhyNot())return 'off';
  if(SRC_VOICE.fail===429)return 'limit';
  return 'idle';}
 function stkSayBtn(o,r){
  var st=stkSayState(o,r), N=stkSayNm(o);
- var L={idle:['Hear Source AI read '+N,'Hear Source AI read this. Then talk it through.'],
+ /* the symbol first, its meaning on hover and tap in one sentence. Under the
+    safety door the press does not read the pattern, so neither label nor tip
+    says it will */
+ var L={idle:stSafe()?['Hear Source AI','Hear Source AI.']
+   :['Hear Source AI read '+N,'Hear Source AI read this, then talk it through.'],
   speak:['Stop Source AI','Stop.'],
   listen:['Listening. Press to stop.','Stop.'],
   unread:['Hear Source AI read '+N,'Nothing read yet. Record a story, then press this again.'],
   show:['Hear Source AI read '+N,'A worked example shows every reading and runs nothing.'],
-  off:['Hear Source AI read '+N,'Source AI cannot speak from a file. Open the hosted build to hear it.'],
+  off:['Hear Source AI read '+N,srcVoiceWhyNot()||'Source AI cannot speak in this build.'],
   limit:['Hear Source AI read '+N,'The voice has reached today\'s limit.']}[st];
  var grey=st==='unread'||st==='show'||st==='off'||st==='limit';
  /* pressed only once the voice is really playing, or the microphone really
@@ -148,7 +180,11 @@ function stkSayCut(){
  STK_SAY.seq++; clearTimeout(STK_SAY.t);
  var x=STK_SAY.rec; STK_SAY.rec=null;
  if(x){ x.onresult=x.onend=x.onerror=null; try{ if(typeof x.abort==='function')x.abort(); else x.stop(); }catch(e){} }
- if(STK_SAY.phase==='speak')srcVoiceCut();
+ /* the voice is cut only while it is still this button's line: when another
+    line has gone out since (SRC_VOICE.seq moved past vseq), that line is the
+    Journal's or the intro's and is not ours to stop, and cutting it here, which
+    the first cut did, silenced a line this button had only been talked over by */
+ if(STK_SAY.phase==='speak'&&STK_SAY.vseq===SRC_VOICE.seq)srcVoiceCut();
  STK_SAY.phase='idle'; STK_SAY.playing=false; STK_SAY.live='';
  return true;}
 function stkSayIdle(){ stkSayCut(); STK_SAY.line=''; stkSayPaint(); }
@@ -168,23 +204,38 @@ function stkSayJournalOff(){
    a plan change or a new story can drop it, and then it is not talked about */
 function stkSayNow(r){ return STK_SAY.pin?insightPick(STK_SAY.pin,r):null; }
 
-/* THE PRESS, its refusals in order: nothing to talk about, nothing read, a
-   pattern gone from the reading, a worked example (showRefuse, before
-   anything is spoken), no voice in this build. A file opened off disk goes
-   through stSrcSpeak, whose own line is the report. */
+/* THE PRESS, its refusals in order: nothing to talk about, the safety door
+   (which speaks the safe line and ends, and is never refused), nothing read,
+   a pattern gone from the reading, a worked example (showRefuse, before
+   anything is spoken), no voice from this page. A page opened off disk is
+   told so here, from its address, before any request, and a greyed press
+   says why through status() like every other one. */
 function stkSayPress(){
  if(STK_SAY.phase!=='idle'){ stkSayIdle(); return; }
- var r=computeSeen();
  if(!S.pin||!STK_LIST[S.pin.kind]){ status('Pick a pattern first.','fail'); return; }
+ if(stSafe()){ stkSaySafe(); return; }
+ var r=computeSeen();
  if(r.unread){ status('Nothing read yet. Record a story, then press this again.','fail'); return; }
  var o=insightPick(S.pin,r);
  if(!o){ status('That pattern is not in this reading any more. Pick it again.','fail'); return; }
  if(showRefuse('talk'))return;
  if(typeof authVoice!=='function'){ status('Source AI cannot speak in this build.','fail'); return; }
+ var why=srcVoiceWhyNot();
+ if(why){ status(why,'fail'); return; }
  stkSayNote('press');
  stkSayJournalOff();
  STK_SAY.key=stkSayKey(o); STK_SAY.pin={kind:o.kind,nm:o.nm};
  stkSaySpeak(stkSayLine(o,r),true);}
+/* THE SAFETY DOOR, SPOKEN. The line the Journal's voice speaks while the door
+   stands, read from the same place (srcSayNow), no word of this module's own:
+   no pattern reading, no release offered and no microphone after it. Nothing
+   escalates, so there is no modal and no new look. */
+function stkSaySafe(){
+ var why=srcVoiceWhyNot();
+ if(why){ status(why,'fail'); return; }
+ stkSayNote('safe');
+ STK_SAY.key=stkSayKey(S.pin); STK_SAY.pin={kind:S.pin.kind,nm:S.pin.nm};
+ stkSaySpeak(srcSayNow(),false);}
 function stkSaySpeak(line,listen){
  var seq=++STK_SAY.seq;
  STK_SAY.phase='speak'; STK_SAY.line=line; STK_SAY.live=''; STK_SAY.playing=false;
@@ -192,7 +243,7 @@ function stkSaySpeak(line,listen){
  /* the number stSrcSpeak is about to take. Any other line that goes out
     after this one moves it, and then this line was talked over, not
     finished, so the microphone does not open under it */
- var vseq=SRC_VOICE.seq+1;
+ var vseq=SRC_VOICE.seq+1; STK_SAY.vseq=vseq;
  stSrcSpeak(line,{
   onPlay:function(){ if(seq!==STK_SAY.seq)return; STK_SAY.playing=true; stkSayNote('spoke'); stkSayPaint(); },
   onEnd:function(played){
@@ -225,6 +276,30 @@ function stkSayListen(seq){
  STK_SAY.phase='listen'; STK_SAY.live=''; STK_SAY.rec=rec;
  try{ rec.start(); }catch(e){ STK_SAY.rec=null; stkSayIdle(); status('Recording could not start. Press Hear to try again.','fail'); return; }
  stkSayNote('listened'); wait(); stkSayPaint();}
+/* A COMMAND IS THE WHOLE UTTERANCE, NOT A WORD IN IT. The first cut looked
+   for stop and release anywhere in the sentence, and measured on the real
+   build "I don't want to release it yet" opened the release card and "why
+   can't I stop controlling everything" ended the conversation with no reply.
+   So, narrowly:
+     stop     the utterance begins with a stop word, as a command
+     release  the word is there, in a short utterance that is not a question
+              and has no negation in it ("don't release", "do not release",
+              "not release", "never")
+   Everything else goes on to the names and the questions, and what nothing
+   matches gets the one fixed line. A missed command costs that line, a
+   mistaken one costs the person their place, so the rule leans to the miss.
+   Pure, so a gate can put a table of sentences through it. */
+var STK_SAY_STOP=/^((ok|okay|please|now) )?(stop|that's all|that is all|nothing else|no thanks)( |$)/;
+var STK_SAY_NEG=/(^| )(not|never|no|don't|dont|didn't|didnt|doesn't|doesnt|can't|cant|cannot|won't|wont|wouldn't|shouldn't|couldn't|isn't|aren't|wasn't|haven't|hasn't)( |$)/;
+var STK_SAY_ASKS=/^(why|what|what's|whats|how|when|where|who|which|can|could|would|should|will|do|does|did|is|are|am|was|were|have|has)( |$)/;
+var STK_SAY_REL=/(^| )release( |$)|^((ok|okay|yes|yeah|please|now|let's|lets) )*run (it|the protocol|the release)( |$)/;
+function stkSayWords(text){ return String(text).toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/ +/g,' ').trim(); }
+function stkSayIntent(text){
+ var w=stkSayWords(text);
+ if(!w)return '';
+ if(STK_SAY_STOP.test(w))return 'stop';
+ if(w.split(' ').length<=6&&!STK_SAY_NEG.test(w)&&!STK_SAY_ASKS.test(w)&&STK_SAY_REL.test(w))return 'release';
+ return '';}
 /* WHAT WAS HEARD, against a closed set, narrow on purpose: a missed
    question costs one fixed honest line, an invented answer costs the
    instrument. Every answer ends on the offer, and the microphone reopens
@@ -234,12 +309,15 @@ function stkSayHeard(text){
  if(x){ x.onresult=x.onend=x.onerror=null; try{ if(typeof x.abort==='function')x.abort(); else x.stop(); }catch(e){} }
  var r=computeSeen(), o=stkSayNow(r);
  if(!o){ stkSayIdle(); status('That pattern is not in this reading any more. Pick it again.','fail'); return; }
- var t=' '+String(text).toLowerCase().replace(/[^a-z' ]+/g,' ')+' ';
- if(/ (stop|that's all|that is all|nothing else|no thanks) /.test(t)){ stkSayIdle(); return; }
- if(/ (release|release it|run it|run the protocol) /.test(t)&&!stSafe()){ stkSayRelease(o); return; }
+ /* a door that opened while this was listening: the safe line, and nothing
+    about the pattern, whatever was said */
+ if(stSafe()){ stkSaySpeak(srcSayNow(),false); return; }
+ var it=stkSayIntent(text), t=' '+stkSayWords(text)+' ';
+ if(it==='stop'){ stkSayIdle(); return; }
+ if(it==='release'){ stkSayRelease(o); return; }
  var hit=stkSayNames(o,r).filter(function(y){return stkSayMatch(t,y);})[0];
  if(hit){ var y=insightPick(hit,r)||hit; stkSayNote('asked');
-  stkSaySpeak([stkSayNm(y)+' is '+STK_SAY_KW[y.kind]+'.', stkSayBuilt(y), insightSpeak(y,r), stkSayOffer()].filter(Boolean).join(' '),true); return; }
+  stkSaySpeak([stkSaySay(y)+' is '+INSIGHT_KW[y.kind]+'.', stkSayBuilt(y), insightSpeak(y,r), stkSayOffer()].filter(Boolean).join(' '),true); return; }
  var a='';
  if(/ (through me|work through|works through|what is it|what does it do|how does it work) /.test(t))a=insightSpeak(o,r);
  else if(/ (feed|feeds|parent|inside|above) /.test(t))a=stkSayFeeds(o,r);
@@ -270,7 +348,28 @@ function stkSayRelease(o){
 document.addEventListener('click',function(e){
  var b=e.target.closest?e.target.closest('#stksay'):null;
  if(b){ e.preventDefault(); stkSayPress(); }});
-document.addEventListener('keydown',function(e){
+/* ESCAPE STOPS THE BUTTON ON THE FIRST PRESS, in the capture phase on the
+   window, ahead of the tooltip. The button carries a tip that shows whenever
+   it has the focus, which is every time it is in use, and the tip's own
+   Escape (ui/tip.js, a capture listener on the document) closes the tip and
+   stops the key from travelling on: a bubble listener here never ran, and
+   measured on the real build it took two Escapes, the first spent on the tip.
+   The window's capture listener runs before the document's, so one Escape
+   does both jobs: the button stops and the tip closes. The repaint that
+   follows puts the focus back on the new button, and the tip opens on that
+   focus, so it is shut again here (a pointer resting on the button opens it
+   by hover, as it would for any control). The key is stopped only when a tip
+   was showing, because that is the one case the tip's own handler would have
+   stopped it. Only with the focus inside the well, as before. */
+window.addEventListener('keydown',function(e){
  if(e.key!=='Escape'||STK_SAY.phase==='idle')return;
  var a=document.activeElement;
- if(a&&a.closest&&a.closest('#stkwell')){ stkSayIdle(); }});
+ if(!(a&&a.closest&&a.closest('#stkwell')))return;
+ var tip=document.getElementById('tip'), tipOn=!!(tip&&tip.classList.contains('on'));
+ stkSayIdle();
+ if(typeof TIP!=='undefined'&&TIP.hide){
+  /* twice: the tip puts its panel up one frame after a focus (showAt adds
+     its class in a requestAnimationFrame), so a hide in this same turn is
+     undone a frame later, and the second runs behind that one */
+  TIP.hide(); requestAnimationFrame(function(){ TIP.hide(); }); }
+ if(tipOn)e.stopPropagation();},true);

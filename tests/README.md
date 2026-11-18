@@ -136,6 +136,26 @@ stopped and kept; a refusal, an ended sign in and no network each say what
 happened and keep what they should. It failed on the build before the change.
 Read the counts off the run.
 
+## The Insight well talks
+
+One button on the Insight well's Reading row (`ui/stksay.js`) speaks a pattern
+and talks it through. It runs the real voice route against the stand-in in
+`tests/net.js` and a stand-in speech recogniser, from file://.
+
+    NODE_PATH=/opt/node22/lib/node_modules node tests/stksay.js
+    STKSAY_ONLY=N1,N4 ... node tests/stksay.js                   groups, one or more
+    ATUNED_FILE=/path/mutant.html ... node tests/stksay.js       any build
+
+`tests/stksay.js` holds the flow, the Escape that stops the button and closes
+its tip on one press, pressed meaning playing, silence ending listening, a
+second voice line leaving the microphone closed, the closed set of commands,
+the safety door, a page opened from a file, and that the sentence shown is the
+sentence sent. Two seams are named in the page and documented where they are
+read: `window.STKSAY_WAIT_MS`, which can only shorten the listening wait, and
+`SRC_VOICE_STANDIN`, set for every page `tests/net.js` guards, which stands in
+for the hosted copy. Every check was run against a mutant of the real build
+first, and a mutant must fail its check. Read the counts off the run.
+
 ## Talk
 
 Talk draws the Source AI loop on the Story page as a thread. No engine

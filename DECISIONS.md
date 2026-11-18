@@ -4661,7 +4661,40 @@ wants two-way talk anywhere else needs a new ruling.
   Release all already uses, so the allowance applies and the card says the
   cost. The card's own Release press starts the run. A word never starts one.
 - A worked example refuses the press before anything is spoken
-  (`showRefuse('talk')`). While the crisis door stands nothing changes in look
-  or sound and the release is not offered.
+  (`showRefuse('talk')`).
 
-`tests/stksay.js` holds it.
+**Amended the same day, after an independent audit of the first build.** What
+changed and why, so a later seat reads it as the ruling and not a regression:
+
+- **The safety door comes first.** While `stSafe()` stands, a press speaks the
+  one line the Journal's voice speaks (`srcSayNow`, which reads `CRISIS_SAY`)
+  and nothing else: no pattern reading, no release offered, no microphone
+  after it, and the button is never greyed or hidden for it. The first build
+  went on reading the pattern in full under the door, so Source AI's two
+  voices acted differently under the same door. Built this way on the audit's
+  finding; if he wants the well to read the pattern under the door, that is a
+  new ruling. Nothing escalates: no modal, no new colour.
+- **Escape stops the button on the first press.** The tip the button carries
+  used to take the first Escape; the key is read ahead of it now, so one press
+  stops the button and closes the tip.
+- **A command is the whole utterance.** "Release" opens the card only in a
+  short sentence that is not a question and holds no negation, so "I don't
+  want to release it yet" opens nothing. "Stop" ends the conversation only as
+  the opening word, so a question that contains it does not. What nothing
+  matches still gets the one fixed line.
+- **A copy opened from a file is told so.** The voice server refuses an origin
+  of null on purpose, so from disk the button draws itself off, its tip says
+  Source AI speaks only from the hosted copy at atuned.world or from
+  http://localhost, and the Journal's voice says the same sentence before any
+  request goes out. One function decides it (`srcVoiceWhyNot`,
+  `ui/storyui.js`); tests set `SRC_VOICE_STANDIN` (tests/net.js) because their
+  stand-in server answers for the hosted one.
+- **One sentence, shown and heard.** The kind is spelled as the Reading row
+  spells it (`INSIGHT_KW`, `ui/ui.js`), and a name with a + or a / in it is
+  said with "with" in the line and in the row, which are one line.
+- **A line that talked over the well's is not cut by it.**
+
+`tests/stksay.js` holds it. Not measured: how long the longest opening line
+takes on the real voice against the thirty second cut (`SRC_VOICE_MAX`); the
+longest is a few hundred characters, and the real voice's pace has not been
+timed.

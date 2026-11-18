@@ -36,10 +36,46 @@
          heard opens nothing
     K13  at 390 the button sits inside the screen and over no text
 
-   Checked against a known bad case first: a build whose recogniser files
-   what it hears through srcTurnCommit fails K5, and one whose release word
-   calls relBegin fails K6 (the gate's own header in the commit that added
-   it names both runs).
+   ADDED 17 NOVEMBER, after an independent audit of the first build found
+   four behaviours the summary claimed and nothing held (a build with each one
+   removed still read 34 of 34), and four more it got wrong:
+    N1  ONE Escape: with the tip showing and the focus in the well, a single
+        Escape returns the button to idle, closes the tip, and a line still
+        on its way never plays (keyboard and mouse, listening and speaking)
+    N2  pressed means playing: aria-pressed reads false while the voice route
+        is held open and true only once the audio is playing
+    N3  silence ends listening, quietly, after the wait; the wait is shortened
+        through window.STKSAY_WAIT_MS, a seam that can only shorten
+    N4  a second voice line during the well's line keeps the microphone
+        closed, and the well does not cut the line that talked over it
+    N5  the closed set: a table of sentences through stkSayIntent, and the
+        audit's two sentences through the recogniser: a negated release opens
+        nothing, "stop" inside a question ends nothing
+    C1  the safety door: the press speaks the Journal's own safe line and
+        only that, never greyed, no reading, no release, no microphone after
+        it; a door that opens mid conversation is met the same way
+    D1  a page opened from a file: the button is off with its reason, a press
+        says it through status(), the Journal's voice says the same sentence,
+        and no request goes out
+    F1  the line on the Reading row while it plays is the line sent to the
+        voice, character for character
+    F2  for every pattern of every person: the kind is spelled the way the
+        Reading row spells it, and no spoken name carries a + or a /
+
+   Checked against known bad cases first, each one a mutant of the real build
+   made in scratch (a copy of source.html with one substitution) and run with
+   ATUNED_FILE and STKSAY_ONLY. The first build's two: a recogniser that files
+   what it hears through srcTurnCommit fails K5, one whose release word calls
+   relBegin fails K6. The audit's eleven, M1 to M11, and the mutants made for
+   the new checks, M12 onward, are each listed with the check they fail in the
+   commit that added them; every one failed its own check and the real build
+   passed all. The gate was also run against the build from before the fixes
+   (the merge of origin/main, before this change) and went red on the Escape,
+   the closed set, the safety door, the file case and the spelling, the five
+   defects it was written for.
+
+   STKSAY_ONLY=N1,N2 runs those groups alone (names below, comma separated),
+   which is how a mutant is held against the one check it should fail.
    ============================================================ */
 const path=require('path');
 
@@ -69,9 +105,40 @@ const FAKE_SR=()=>{
 const voiceLog=p=>{ p.voice=[]; p.on('request',r=>{
  if(VOICE.test(r.url())&&r.method()==='POST'){ try{ p.voice.push(JSON.parse(r.postData()).text); }catch(e){ p.voice.push('?'); } } }); };
 
-async function open(browser,w,h,FILE,booted){
+/* a silent sound of ms milliseconds, 8 bit mono at 8 kHz, long enough for a
+   gate to read the button while it is really playing */
+const wavOf=ms=>{ const rate=8000,n=Math.round(rate*ms/1000),b=Buffer.alloc(44+n,128);
+ b.write('RIFF',0); b.writeUInt32LE(36+n,4); b.write('WAVE',8); b.write('fmt ',12); b.writeUInt32LE(16,16);
+ b.writeUInt16LE(1,20); b.writeUInt16LE(1,22); b.writeUInt32LE(rate,24); b.writeUInt32LE(rate,28);
+ b.writeUInt16LE(1,32); b.writeUInt16LE(8,34); b.write('data',36); b.writeUInt32LE(n,40); return b; };
+/* the voice route, answered by the gate itself: a sound ms long. With hold
+   set, the first holdFirst requests wait until release() and every later one
+   is answered at once. texts keeps the text of every request, which is the
+   sentence the page sent. A route registered on the page wins over the
+   guard's (tests/net.js). */
+async function voiceRoute(p,o){
+ o=o||{}; const h={texts:[], waiting:[], n:0};
+ h.release=()=>{ h.waiting.splice(0).forEach(f=>f()); };
+ await p.route(VOICE,route=>{
+  if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:CORS}).catch(()=>{});
+  let t=''; try{ t=JSON.parse(route.request().postData()).text; }catch(e){}
+  h.texts.push(t); h.n++;
+  const go=()=>route.fulfill({status:200,headers:Object.assign({'content-type':'audio/wav'},CORS),body:wavOf(o.ms||1500)}).catch(()=>{});
+  if(o.hold&&h.n<=(o.holdFirst||99))h.waiting.push(go); else go(); });
+ return h;}
+const nodeUntil=async(fn,ms)=>{ const t0=Date.now(); while(!fn()&&Date.now()-t0<(ms||4000))await new Promise(r=>setTimeout(r,40)); return !!fn(); };
+const ONLY=(process.env.STKSAY_ONLY||'').split(',').map(x=>x.trim()).filter(Boolean);
+const want=n=>!ONLY.length||ONLY.indexOf(n)>=0;
+const CRISIS_TEXT='I want to die. I want to kill myself tonight.';
+/* the longest a microphone may stay open with nothing heard: a limit this gate
+   holds on the product, so a ceiling raised past it fails, and not a copy of the
+   product's own number, so a ceiling moved within it does not */
+const QUIET_CEILING=15000;
+
+async function open(browser,w,h,FILE,booted,inits){
  const p=await browser.newPage({viewport:{width:w,height:h}});
  await p.addInitScript(FAKE_SR);
+ for(const i of (inits||[]))await p.addInitScript(i[0],i[1]);
  p.errs=[]; p.on('pageerror',e=>p.errs.push(String(e.message).slice(0,160)));
  voiceLog(p);
  await p.goto(FILE,{waitUntil:'load'}); await booted(p);
@@ -93,22 +160,27 @@ const lastVoice=async(p,n,ms)=>{ const t0=Date.now(); while(p.voice.length<n&&Da
 
 async function stkSayGate(browser,FILE,ok,booted){
  /* ---------------- the flow, at 1600, on the own profile ---------------- */
- {const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+ if(want('flow')){const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
   const s=await own(p,STORY);
   ok(s.cx>0&&!s.show&&!s.unread,'K0: '+at+'the own profile reads a complex to talk about, '+JSON.stringify(s));
   if(!(s.cx>0)){ await p.close(); return; }
+  const wait0=await p.evaluate(()=>STK_SAY_WAIT);
+  ok(wait0>0&&wait0<=QUIET_CEILING,'K0: '+at+'with no seam set, an open microphone with nothing heard closes within '+QUIET_CEILING+' ms (the ceiling this gate holds, not a copy of the product\'s own number), '+wait0);
   await p.waitForTimeout(200);
   const b0=await btn(p);
   ok(!!b0&&b0.say==='idle'&&b0.role==='reading'&&b0.label==='Hear Source AI read '+s.pin&&b0.pressed==='false',
    'K1: '+at+'the button sits on the Reading row, idle and named for the pattern, '+JSON.stringify(b0&&{say:b0.say,label:b0.label,role:b0.role}));
   ok(!!b0&&b0.mark,'K1: '+at+'the Reading carries Source AI\'s mark');
+  ok(!!b0&&b0.tip&&b0.tip.length<=60&&b0.tip.split(/[.!?]\s/).length===1&&/\.$/.test(b0.tip),
+   'K1: '+at+'its meaning on hover and tap is one short sentence, '+JSON.stringify(b0&&b0.tip));
   const before=await p.evaluate(()=>({t:ST_TEXT, chat:SRC_CHAT.length, name:(CURP.who&&CURP.who.first)||''}));
   await p.click('#stksay');
   const line=await lastVoice(p,1);
-  ok(/^You picked .+\. It is a complex\. It is built from .+\. (It feeds .+, a hyper complex\.|Nothing above it is running\.)/.test(line),
+  ok(/^You picked .+\. It is a complex\. It is built from .+\. (It feeds .+, a hyper-complex\.|Nothing above it is running\.)/.test(line),
    'K2: '+at+'the press speaks the well\'s own facts in order, '+JSON.stringify(line.slice(0,160)));
   ok(/Ask me about it, or say release to open it\.$/.test(line),'K2: '+at+'and ends on the offer, '+JSON.stringify(line.slice(-60)));
   ok(!/%|\d/.test(line)&&!(before.name&&line.indexOf(before.name)>=0),'K2: '+at+'no percent, no figure and no name in the line');
+  ok(!/ \+ /.test(line)&&!/hyper complex|super complex/.test(line),'F2: '+at+'no plus in a spoken name, and the kind is hyphenated as the row spells it');
   const heard=await until(p,()=>STK_SAY.phase==='listen');
   const b1=await btn(p);
   ok(heard&&b1.label==='Listening. Press to stop.'&&b1.pressed==='true'&&b1.say==='listen',
@@ -121,7 +193,7 @@ async function stkSayGate(browser,FILE,ok,booted){
   await until(p,()=>STK_SAY.phase==='listen');
   await p.evaluate(()=>window.__say('what does it feed'));
   const l3=await lastVoice(p,3);
-  ok(/^(It feeds .+, a hyper complex\.|Nothing above it is running\.)/.test(l3),'K4: '+at+'a question about the parent is answered with Feeds, '+JSON.stringify(l3.slice(0,80)));
+  ok(/^(It feeds .+, a hyper-complex\.|Nothing above it is running\.)/.test(l3),'K4: '+at+'a question about the parent is answered with Feeds, '+JSON.stringify(l3.slice(0,80)));
   await until(p,()=>STK_SAY.phase==='listen');
   await p.evaluate(()=>window.__say('why did this start when I was young'));
   const l4=await lastVoice(p,4);
@@ -163,26 +235,51 @@ async function stkSayGate(browser,FILE,ok,booted){
   ok(p.errs.length===0,at+'no page errors, '+JSON.stringify(p.errs));
   await p.close();}
 
- /* ---------------- the crisis door ---------------- */
- {const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
-  await own(p,STORY);
-  await p.evaluate(()=>{ ST_TEXT='I want to die. I want to kill myself tonight.'; });
-  const safe=await p.evaluate(()=>stSafe());
-  ok(safe,'K12: '+at+'the crisis door stands for this check');
-  await p.click('#stksay');
-  const l=await lastVoice(p,1);
-  ok(/^You picked /.test(l)&&!/release/i.test(l),'K12: '+at+'the same line, with no release offered, '+JSON.stringify(l.slice(-60)));
-  await until(p,()=>STK_SAY.phase==='listen');
-  await p.evaluate(()=>window.__say('release'));
-  const l2=await lastVoice(p,2);
-  const rel=await p.evaluate(()=>({open:RUN.open, rp:window.__rp, rb:window.__rb}));
-  ok(!rel.open&&rel.rp===0&&rel.rb===0&&!/release/i.test(l2),'K12: '+at+'release heard opens nothing, '+JSON.stringify({rel,l2}));
-  const look=await p.evaluate(()=>({modal:!!document.querySelector('[role=alertdialog],dialog[open]')}));
-  ok(!look.modal,'K12: '+at+'and no modal');
-  await p.close();}
+ /* ---------------- C1: the safety door ---------------- */
+ if(want('crisis')){
+  /* the press */
+  {const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+   const hv=await voiceRoute(p,{ms:1200});
+   await own(p,STORY);
+   await p.evaluate(t=>{ ST_TEXT=t; },CRISIS_TEXT);
+   const door=await p.evaluate(()=>({safe:stSafe(), line:srcSayNow(), pin:S.pin&&S.pin.nm}));
+   ok(door.safe&&/988/.test(door.line),'C1: '+at+'the crisis door stands, and the Journal\'s voice would say '+JSON.stringify(door.line));
+   await p.evaluate(()=>render());
+   const b0=await btn(p);
+   ok(b0.say==='idle'&&b0.dis===null&&!/read/i.test(b0.label)&&!/read/i.test(b0.tip),
+    'C1: '+at+'the button is not greyed and promises no reading, '+JSON.stringify({say:b0.say,dis:b0.dis,label:b0.label,tip:b0.tip}));
+   await p.click('#stksay');
+   await nodeUntil(()=>hv.n>=1);
+   const l=hv.texts[0]||'';
+   ok(l===door.line,'C1: '+at+'the press speaks the Journal\'s own safe line, word for word, '+JSON.stringify(l));
+   ok(!l.split(' ').some(w=>door.pin.split(' ').indexOf(w)>=0&&w.length>3)&&!/release|complex|saboteur|picked/i.test(l),
+    'C1: '+at+'and no pattern and no release in it');
+   await until(p,()=>STK_SAY.phase==='speak');
+   const row=await p.evaluate(()=>{ const e=document.querySelector('#stkwell .stk-sl[data-role=reading] .src-ai'); return e?e.textContent:null; });
+   ok(row===l,'F1: '+at+'the safe line on the row is the line sent to the voice, '+JSON.stringify(row));
+   await until(p,()=>STK_SAY.phase==='idle',5000);
+   const after=await p.evaluate(()=>({recs:window.__recs.length, open:RUN.open, rp:window.__rp, rb:window.__rb, phase:STK_SAY.phase,
+    modal:!!document.querySelector('[role=alertdialog],dialog[open]')}));
+   ok(after.phase==='idle'&&after.recs===0&&!after.open&&after.rp===0&&after.rb===0&&!after.modal,
+    'C1: '+at+'after it the microphone was never opened, no release was offered and there is no modal, '+JSON.stringify(after));
+   await p.close();}
+  /* the door opens while the button is listening */
+  {const p=await open(browser,1600,1000,FILE,booted), at='1600: mid conversation: ';
+   const hv=await voiceRoute(p,{ms:800});
+   await own(p,STORY);
+   await p.click('#stksay'); await until(p,()=>STK_SAY.phase==='listen');
+   await p.evaluate(t=>{ ST_TEXT=t; },CRISIS_TEXT);
+   await p.evaluate(()=>window.__say('release'));
+   await nodeUntil(()=>hv.n>=2);
+   const door=await p.evaluate(()=>srcSayNow());
+   ok(hv.texts[1]===door,'C1: '+at+'a door that opened is met with the safe line, whatever was said, '+JSON.stringify(hv.texts[1]));
+   await until(p,()=>STK_SAY.phase==='idle',5000);
+   const after=await p.evaluate(()=>({open:RUN.open, rp:window.__rp, rb:window.__rb, on:window.__recs.filter(x=>x.on).length}));
+   ok(!after.open&&after.rp===0&&after.rb===0&&after.on===0,'C1: '+at+'release heard opens nothing and the microphone is closed after it, '+JSON.stringify(after));
+   await p.close();}}
 
  /* ---------------- the voice fails ---------------- */
- for(const [code,want] of [[500,/Source AI could not speak that line\. Try again in a moment\./],[429,/The voice has reached today's limit\./]]){
+ if(want('fails'))for(const [code,want2] of [[500,/Source AI could not speak that line\. Try again in a moment\./],[429,/The voice has reached today's limit\./]]){
   const p=await open(browser,1600,1000,FILE,booted), at='1600: '+code+': ';
   await p.route(VOICE,route=>route.request().method()==='OPTIONS'?route.fulfill({status:204,headers:CORS}):route.fulfill({status:code,headers:CORS,body:'{}'}));
   await own(p,STORY);
@@ -190,20 +287,20 @@ async function stkSayGate(browser,FILE,ok,booted){
   await until(p,()=>STK_SAY.phase==='idle'&&/could not speak/.test((document.getElementById('status')||{}).textContent||''));
   const b=await btn(p);
   const recs=await p.evaluate(()=>window.__recs.length);
-  ok(want.test(b.status)&&b.phase==='idle'&&recs===0,'K11: '+at+'a failed voice says so and never opens the microphone, '+JSON.stringify({status:b.status,phase:b.phase,recs}));
+  ok(want2.test(b.status)&&b.phase==='idle'&&recs===0,'K11: '+at+'a failed voice says so and never opens the microphone, '+JSON.stringify({status:b.status,phase:b.phase,recs}));
   if(code===429)ok(b.say==='limit'&&b.dis==='true'&&/today's limit/.test(b.tip),'K11: '+at+'and the button draws itself at the limit, '+JSON.stringify({say:b.say,tip:b.tip}));
   await p.close();}
 
  /* ---------------- the worked example, and the super complex ---------------- */
- {const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+ if(want('example')){const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
   const ex=await p.evaluate(()=>{ let best=-1,n=-1;
    for(let i=0;i<PEOPLE.length;i++){ if(PEOPLE[i].you)continue; loadP(i); const k=computeSeen().sups.length; if(k>n){n=k;best=i;} }
    loadP(best); setTab(TAB.FIELD); STACK_TAB='sup'; const r=computeSeen(); S.pin=r.sups[0]; render();
    window.__rp=0; const rp=relPick; relPick=function(){ window.__rp++; return rp.apply(this,arguments); };
    return {show:showOnly(), sup:S.pin&&S.pin.nm, line:S.pin?stkSayLine(S.pin,r):''};});
   ok(ex.show&&!!ex.sup,'K10: '+at+'a worked example with a super complex is open, '+JSON.stringify({show:ex.show,sup:ex.sup}));
-  ok(ex.line.indexOf('It is a super complex.')>0&&ex.line.indexOf('Nothing sits above it. It is the top of the chain.')>0&&!/It feeds/.test(ex.line),
-   'K9: '+at+'a super complex says it is the top of the chain and names no parent, '+JSON.stringify(ex.line.slice(0,160)));
+  ok(ex.line.indexOf('It is a super-complex.')>0&&ex.line.indexOf('Nothing sits above it. It is the top of the chain.')>0&&!/It feeds/.test(ex.line)&&!/ \/ /.test(ex.line),
+   'K9: '+at+'a super complex says it is the top of the chain, names no parent and carries no slash, '+JSON.stringify(ex.line.slice(0,160)));
   const b0=await btn(p);
   ok(b0&&b0.say==='show'&&b0.dis==='true','K10: '+at+'the button is drawn greyed with its reason, '+JSON.stringify(b0&&{say:b0.say,tip:b0.tip}));
   /* force: aria-disabled reads to Playwright as not enabled, and a greyed
@@ -216,7 +313,7 @@ async function stkSayGate(browser,FILE,ok,booted){
   await p.close();}
 
  /* ---------------- 390 ---------------- */
- {const p=await open(browser,390,844,FILE,booted), at='390: ';
+ if(want('phone')){const p=await open(browser,390,844,FILE,booted), at='390: ';
   await own(p,STORY);
   await p.evaluate(()=>{ const w=document.getElementById('stkwell'); if(w&&w.scrollIntoView)w.scrollIntoView({block:'start'}); });
   await p.waitForTimeout(300);
@@ -232,6 +329,144 @@ async function stkSayGate(browser,FILE,ok,booted){
   const l=await lastVoice(p,1);
   ok(/^You picked /.test(l),'K13: '+at+'and a press there speaks, '+JSON.stringify(l.slice(0,60)));
   ok(p.errs.length===0,at+'no page errors, '+JSON.stringify(p.errs));
+  await p.close();}
+
+ /* ---------------- N1: ONE ESCAPE ---------------- */
+ if(want('N1'))for(const how of ['keyboard, listening','mouse, listening','keyboard, speaking']){
+  const p=await open(browser,1600,1000,FILE,booted), at='1600: '+how+': ';
+  const speaking=/speaking/.test(how), hv=await voiceRoute(p,{hold:speaking,ms:1500});
+  await own(p,STORY);
+  if(/keyboard/.test(how)){ await p.focus('#stksay'); await p.keyboard.press('Enter'); } else await p.click('#stksay');
+  if(speaking)await nodeUntil(()=>hv.n>=1);
+  const reached=await until(p,speaking?()=>STK_SAY.phase==='speak':()=>STK_SAY.phase==='listen');
+  await p.waitForTimeout(250);
+  const pre=await p.evaluate(()=>{ const a=document.activeElement; return {tip:!!document.querySelector('#tip.on'),
+   inWell:!!(a&&a.closest&&a.closest('#stkwell')), phase:STK_SAY.phase}; });
+  ok(reached&&pre.tip&&pre.inWell,'N1: '+at+'before the key the button is in use, its tip is showing and the focus is in the well, '+JSON.stringify(pre));
+  await p.keyboard.press('Escape'); await p.waitForTimeout(250);
+  const post=await p.evaluate(()=>{ const b=document.getElementById('stksay'); return {phase:STK_SAY.phase, recs:window.__recs.filter(x=>x.on).length,
+   tip:!!document.querySelector('#tip.on'), pressed:b&&b.getAttribute('aria-pressed'), say:b&&b.getAttribute('data-say')}; });
+  ok(post.phase==='idle'&&post.recs===0&&!post.tip&&post.pressed==='false'&&post.say==='idle',
+   'N1: '+at+'ONE Escape cuts the button and closes the tip, '+JSON.stringify(post));
+  if(speaking){ hv.release(); await p.waitForTimeout(500);
+   const late=await p.evaluate(()=>({phase:STK_SAY.phase, el:!!SRC_VOICE.el, recs:window.__recs.length}));
+   ok(late.phase==='idle'&&!late.el&&late.recs===0,'N1: '+at+'and the line still on its way never plays and never opens the microphone, '+JSON.stringify(late)); }
+  await p.close();}
+
+ /* ---------------- N2: PRESSED MEANS PLAYING, and F1 ---------------- */
+ if(want('N2')){const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+  const hv=await voiceRoute(p,{hold:true,holdFirst:1,ms:2500});
+  await own(p,STORY);
+  await p.click('#stksay'); await nodeUntil(()=>hv.n>=1); await until(p,()=>STK_SAY.phase==='speak');
+  const held=await p.evaluate(()=>{ const b=document.getElementById('stksay'); return {say:b.getAttribute('data-say'), pressed:b.getAttribute('aria-pressed'),
+   label:b.getAttribute('aria-label'), playing:STK_SAY.playing, el:!!SRC_VOICE.el}; });
+  ok(held.say==='speak'&&held.pressed==='false'&&!held.playing&&!held.el,
+   'N2: '+at+'with the voice route held open the button is working and not pressed, '+JSON.stringify(held));
+  const row=await p.evaluate(()=>{ const e=document.querySelector('#stkwell .stk-sl[data-role=reading] .src-ai'); return e?e.textContent:null; });
+  ok(row!==null&&row===hv.texts[0]&&row.length>40,'F1: '+at+'the line on the row is the line sent to the voice, character for character, '+JSON.stringify((row||'').slice(0,90)));
+  hv.release();
+  const on=await until(p,()=>{ const b=document.getElementById('stksay'); return b&&b.getAttribute('aria-pressed')==='true'; });
+  const playing=await p.evaluate(()=>({say:document.getElementById('stksay').getAttribute('data-say'), playing:STK_SAY.playing, el:!!(SRC_VOICE.el&&!SRC_VOICE.el.paused)}));
+  ok(on&&playing.say==='speak'&&playing.playing&&playing.el,'N2: '+at+'and pressed only once the audio is playing, '+JSON.stringify(playing));
+  await p.click('#stksay'); await p.waitForTimeout(150);
+  await p.close();}
+
+ /* ---------------- N3: SILENCE ENDS LISTENING ---------------- */
+ if(want('N3')){
+  {const p=await open(browser,1600,1000,FILE,booted,[[()=>{ window.STKSAY_WAIT_MS=600; }]]), at='1600: ';
+   await own(p,STORY);
+   const w=await p.evaluate(()=>STK_SAY_WAIT);
+   ok(w===600,'N3: '+at+'the seam shortens the wait, read once at load, '+w);
+   await p.click('#stksay'); await until(p,()=>STK_SAY.phase==='listen'); const t0=Date.now();
+   const st0=(await btn(p)).status;
+   const ended=await until(p,()=>STK_SAY.phase==='idle',3000); const dt=Date.now()-t0;
+   const b=await btn(p), recs=await p.evaluate(()=>window.__recs.filter(x=>x.on).length);
+   ok(ended&&dt>=350&&dt<2600&&b.pressed==='false'&&b.say==='idle'&&recs===0&&b.status===st0,
+    'N3: '+at+'with nothing heard, listening ends by itself, quietly, '+JSON.stringify({ended,ms:dt,pressed:b.pressed,say:b.say,recs,statusChanged:b.status!==st0}));
+   await p.close();}
+  {const p=await open(browser,1600,1000,FILE,booted,[[()=>{ window.STKSAY_WAIT_MS=1e9; }]]), at='1600: ';
+   const w=await p.evaluate(()=>STK_SAY_WAIT);
+   ok(w>0&&w<=QUIET_CEILING,'N3: '+at+'the seam can only shorten, a long value leaves the ceiling in place, '+w);
+   await p.close();}}
+
+ /* ---------------- N4: A SECOND LINE DURING THE WELL'S LINE ---------------- */
+ if(want('N4')){const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+  const hv=await voiceRoute(p,{ms:3000});
+  await own(p,STORY);
+  await p.click('#stksay'); await until(p,()=>STK_SAY.playing);
+  await p.evaluate(()=>{ stSrcSpeak('A second line, from the Journal.'); });
+  await p.waitForTimeout(900);
+  const s=await p.evaluate(()=>({phase:STK_SAY.phase, recsEver:window.__recs.length, second:!!(SRC_VOICE.el&&!SRC_VOICE.el.paused),
+   pressed:(document.getElementById('stksay')||{getAttribute(){return null;}}).getAttribute('aria-pressed')}));
+  ok(hv.n===2&&s.phase==='idle'&&s.recsEver===0&&s.pressed==='false','N4: '+at+'a second voice line during the well\'s line keeps the microphone closed, '+JSON.stringify(Object.assign({requests:hv.n},s)));
+  ok(s.second,'N4: '+at+'and the well does not cut the line that talked over it, '+JSON.stringify({second:s.second}));
+  await p.close();}
+
+ /* ---------------- D1: A PAGE OPENED FROM A FILE ---------------- */
+ if(want('D1')){const p=await open(browser,1600,1000,FILE,booted), at='1600: from disk: ';
+  const hv=await voiceRoute(p,{ms:600});
+  await own(p,STORY);
+  /* every gate runs from file:// with a stand-in for the server, and
+     tests/net.js tells the page so; this one is the real file case */
+  await p.evaluate(()=>{ SRC_VOICE_STANDIN=false; render(); });
+  const env=await p.evaluate(()=>({proto:location.protocol, disk:srcVoiceDisk(), why:srcVoiceWhyNot(),
+   cases:[srcVoiceDisk({protocol:'file:',origin:'file://'}), srcVoiceDisk({protocol:'https:',origin:'null'}),
+    srcVoiceDisk({protocol:'http:',origin:'http://localhost:8080'}), srcVoiceDisk({protocol:'https:',origin:'https://atuned.world'})]}));
+  ok(env.proto==='file:'&&env.disk===true&&JSON.stringify(env.cases)==='[true,true,false,false]',
+   'D1: '+at+'a file and an origin of null are the disk, localhost and the hosted copy are not, '+JSON.stringify(env));
+  const b0=await btn(p);
+  ok(b0.say==='off'&&b0.dis==='true'&&b0.tip===env.why&&/atuned\.world/.test(b0.tip)&&/http:\/\/localhost/.test(b0.tip)&&!/Try again/.test(b0.tip)&&b0.tip.split(/[.!?]\s/).length===1,
+   'D1: '+at+'the button is off, and its tip says plainly where Source AI speaks, '+JSON.stringify({say:b0.say,dis:b0.dis,tip:b0.tip}));
+  await p.evaluate(()=>{ status('Cleared.','ok'); });
+  await p.click('#stksay',{force:true}); await p.waitForTimeout(400);
+  const b1=await btn(p), rec1=await p.evaluate(()=>window.__recs.length);
+  ok(b1.status===env.why&&!/Try again/.test(b1.status)&&b1.phase==='idle'&&hv.n===0&&rec1===0,
+   'D1: '+at+'a press says it through status() and sends nothing, '+JSON.stringify({status:b1.status,phase:b1.phase,requests:hv.n,recs:rec1}));
+  await p.evaluate(()=>{ status('Cleared.','ok'); stSrcSpeak('A line for the Journal.'); }); await p.waitForTimeout(400);
+  const j=await p.evaluate(()=>(document.getElementById('status')||{}).textContent||'');
+  ok(j===env.why&&hv.n===0,'D1: '+at+'the Journal\'s own voice says the same sentence and sends nothing, '+JSON.stringify({status:j,requests:hv.n}));
+  await p.close();}
+
+ /* ---------------- F2: EVERY PATTERN OF EVERY PERSON, and N5: THE CLOSED SET ---------------- */
+ if(want('sweep')||want('N5')){const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+  if(want('sweep')){
+   const sw=await p.evaluate(()=>{ const KW={sab:'a saboteur',cx:'a complex',hy:'a hyper-complex',sup:'a super-complex'};
+    const ALT=/(a saboteur|a complex|a hyper[- ]complex|a super[- ]complex)/; const bad=[]; let n=0,longest=0; const kinds={}; Object.keys(STK_LIST).forEach(k=>{ kinds[k]=0; });
+    for(let i=0;i<PEOPLE.length;i++){ loadP(i); compute(); const r=computeSeen();
+     for(const k of Object.keys(STK_LIST))for(const o of (r[STK_LIST[k]]||[])){ n++; kinds[k]++;
+      const line=stkSayLine(o,r), box=document.createElement('div'); box.innerHTML=insightSay({kind:o.kind,nm:o.nm},r);
+      const rt=box.textContent, lk=(new RegExp('^You picked .*?\\. It is '+ALT.source+'\\.').exec(line)||[])[1], rk=(new RegExp(', '+ALT.source+'\\.').exec(rt)||[])[1];
+      longest=Math.max(longest,line.length);
+      /* the record's own sentences are quoted as the record has them, and one
+         of them carries a slash between three ways of saying it; a NAME is
+         what must be plain, so the record's part is taken out first */
+      const names=line.split(insightSpeak(o,r)).join('');
+      if(lk!==KW[k]||rk!==KW[k]||/ [+\/] /.test(names)||/hyper complex|super complex/.test(line))bad.push({person:i,kind:k,nm:o.nm,line:lk,row:rk});}}
+    return {n,kinds,people:PEOPLE.length,bad:bad.slice(0,4),nbad:bad.length,longest}; });
+   ok(Object.keys(sw.kinds).every(k=>sw.kinds[k]>0)&&sw.nbad===0,'F2: '+at+'every pattern of every person, '+sw.n+' of them ('+JSON.stringify(sw.kinds)+') across '+sw.people+' people, none of the four kinds empty: the kind is spelled as the Reading row spells it and no name carries a plus or a slash, '+JSON.stringify(sw.nbad?sw.bad:{longestLine:sw.longest}));}
+  if(want('N5')){
+   const POS=['release','Release.','release it','release this','okay release it','yes release it',"let's release it",'I want to release it','run the protocol','run it','please run the protocol','release it now'];
+   const NEG=["don't release","do not release",'not release','never release it',"I don't want to release it yet",'I do not want to release this',
+    "I won't release it","why can't I release it",'what does release mean','how do I release this','can you release it','I tried to release it before and it did not work'];
+   const STOP=['stop','Stop.','stop it','stop please','okay stop',"that's all",'that is all','nothing else','no thanks','stop talking about it'];
+   const KEEP=["why can't I stop controlling everything",'how do I stop doing this','what happens when I stop',"I can't stop it",'tell me why I never stop','will it ever stop','is this the reason I cannot stop'];
+   const t=await p.evaluate(T=>{ const bad=[]; const chk=(list,want)=>list.forEach(x=>{ const g=stkSayIntent(x); if(g!==want)bad.push(want+' <- '+JSON.stringify(x)+' gave '+JSON.stringify(g)); }); chk(T.POS,'release'); chk(T.NEG,''); chk(T.STOP,'stop'); chk(T.KEEP,''); return bad; },{POS,NEG,STOP,KEEP});
+   const n=POS.length+NEG.length+STOP.length+KEEP.length;
+   ok(t.length===0,'N5: '+at+'a command is the whole utterance, '+n+' sentences through the matcher: '+POS.length+' release, '+NEG.length+' negated or asked, '+STOP.length+' stop, '+KEEP.length+' with stop inside a sentence, '+JSON.stringify(t)); }
+  await p.close();}
+
+ /* ---------------- N5: the audit's two sentences, through the recogniser ---------------- */
+ if(want('N5'))for(const [say,what] of [["I don't want to release it yet",'a negated release opens nothing'],["why can't I stop controlling everything",'stop inside a question ends nothing']]){
+  const p=await open(browser,1600,1000,FILE,booted), at='1600: ';
+  const hv=await voiceRoute(p,{ms:600});
+  await own(p,STORY);
+  await p.click('#stksay'); await until(p,()=>STK_SAY.phase==='listen'); const n0=hv.n;
+  await p.evaluate(t=>window.__say(t),say);
+  await nodeUntil(()=>hv.n>n0);
+  await until(p,()=>STK_SAY.phase==='listen',4000);
+  const r=await p.evaluate(()=>({open:RUN.open, rp:window.__rp, rb:window.__rb, phase:STK_SAY.phase}));
+  ok(!r.open&&r.rp===0&&r.rb===0&&hv.n===n0+1&&(hv.texts[n0]||'').indexOf('I can only say what this reading holds.')===0&&r.phase==='listen',
+   'N5: '+at+what+', and the one fixed line is spoken, '+JSON.stringify({heard:say,open:r.open,rp:r.rp,line:(hv.texts[n0]||'').slice(0,50),phase:r.phase}));
   await p.close();}
 }
 
