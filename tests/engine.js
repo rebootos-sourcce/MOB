@@ -11781,6 +11781,22 @@ g('AE · the affirmation generator, his anchors and his wrapper, read off the R3
   {b:'Root',core:'I am x',composed:false},{b:'Root',core:'I am x',src:'k'.repeat(41),composed:true}].some(affKeptOk),
   'a row off its anchor, off a point, too long or not composed is dropped');
 
+ /* THE BRANCHES THE TABLE DID NOT REACH, found by the coverage run's
+    unexecuted list and pinned here with their exact Root and Throat lines */
+ [['Someone who carries the load','I am built to carry the load.','I speak it out loud: I carry the load.'],
+  ['Someone who reaches out first','I am built to reach out first.','I speak it out loud: I reach out first.'],
+  ['I walk the dog every morning','I am built to walk the dog every morning.','I speak it out loud: I walk the dog every morning.']].forEach(([t,root,throat])=>{
+  const r=affCompose(t);
+  ok(r.ok&&r.shape==='vp'&&r.lines[0].plain===root&&r.lines[4].plain===throat,'"'+t+'" reads as a verb phrase, '+JSON.stringify(r.ok?[r.lines[0].plain,r.lines[4].plain]:r.say));});
+ [['Someone who stops trying to fix everyone','toward'],['not money','toward'],
+  ['one two three four five six seven eight nine ten eleven twelve thirteen','long']].forEach(([t,code])=>{
+  const r=affCompose(t); ok(!r.ok&&r.refuse===code&&r.lines.length===0,'"'+t+'" is refused '+code+', '+JSON.stringify(r.say));});
+ const wr=affWeave([{key:'a',text:'good',b:'Root',state:'confirmed'},{key:'b',text:'calm',b:'Heart',state:'confirmed'}],'a');
+ ok(!wr.ok&&wr.refuse==='thin'&&wr.lines.length===0,'a weave whose primary is refused composes nothing and says why');
+ const ns=affSources({avatar:{pairs:[null,{be:7},{be:'  '},{be:'calm',notbe:'x'}]}},{});
+ ok(ns.length===1&&/^av:[a-z0-9]+$/.test(ns[0].key)&&ns[0].b===null,'a pair with no words is skipped, one with no id keys on its words, and with no seat reader it sits at no point');
+ ok(affPlain(null,false)===''&&!affWeaves(null),'Copy of nothing is empty, and nothing weaves from nothing');
+
  /* THE ROSTER. Every Become line the product's own fictional people carry,
     read off engine/ritex.js at run time. The share that composes is read
     off the run, never typed. */
