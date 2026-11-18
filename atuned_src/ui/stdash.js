@@ -170,11 +170,20 @@ function stDashLeft(){
       +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
- o+=stDashPatterns();
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
- o+=stDashMasks();
+ /* PATTERNS MOVES UNDER PSYCHE STACK, 18 November, his words on this rail:
+    "Move patterns underneath Psyche Stack." Only the position changed;
+    stDashPatterns reads and draws exactly as it did above Integrity. */
+ o+=stDashPatterns();
+ /* MASKS IS GONE FROM THIS RAIL, 18 November, his words: "get rid of
+    masks. We already have it as a widget in the lower right." Masks had
+    been added here on his own 10 November instruction ("add the masks");
+    this is a later instruction overriding that one, the same way the
+    Boundary/Compass pair was cut from this same rail on 10 November when
+    their work moved to the Dashboard's own mini pictures. stDashMasks
+    stays defined and reachable; only this call is cut. */
  /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
     detector... moves to the lower left or near the lower left bottom of
     the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
