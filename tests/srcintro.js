@@ -135,12 +135,13 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   await door(page);
   await page.waitForTimeout(400);
   const d0=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open),
-   onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), key:STORE.get(SRC_INTRO_KEY), tab:S.tab}));
+   onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), key:STORE.get(SRC_INTRO_KEY), tab:S.tab,
+   tabIsSummary:S.tab===TAB.SUMMARY}));
   ok(!d0.intro,'the real door no longer plays the example'+at);
   ok(!d0.ob,'and no longer opens the first run either'+at);
   ok(d0.onboarded,'the profile is marked onboarded at once'+at);
   ok(!d0.key,'the device is never marked as having seen the example, since it is never shown'+at);
-  ok(d0.tab===TAB.SUMMARY,'and the door lands straight on the dashboard'+at);
+  ok(d0.tabIsSummary,'and the door lands straight on the dashboard, tab '+d0.tab+at);
   ok(errs.length===0,'no page errors: '+errs.join(' | ')+at);
   /* a later visit is no different: nothing left to flip */
   await page.reload({waitUntil:'load'}); await booted(page);
@@ -325,10 +326,10 @@ console.log('=== 9. ?dev=1, and a walk half done, UPDATED 18 November ===');
  ok(!!at,'a walk half done reads as one, at '+at);
  await page.evaluate(()=>{loginClose(); loginEnter();}); await page.waitForTimeout(300);
  const s=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open),
-  onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), tab:S.tab,
+  onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), tab:S.tab, tabIsSummary:S.tab===TAB.SUMMARY,
   walkStill:!!(CURP&&CURP.journey&&CURP.journey.walk&&CURP.journey.walk.step==='story')}));
  ok(!s.intro&&!s.ob,'the real door does not resume it either, no intro and no sheet: '+JSON.stringify(s));
- ok(s.onboarded&&s.tab===TAB.SUMMARY,'it goes straight to the dashboard, the same as any other first visit');
+ ok(s.onboarded&&s.tabIsSummary,'it goes straight to the dashboard, the same as any other first visit, tab '+s.tab);
  ok(s.walkStill,'the half done walk itself is untouched on the record, only the door\'s own behavior changed');
  await page.close();
 }

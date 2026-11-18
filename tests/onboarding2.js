@@ -493,12 +493,13 @@ console.log('\n=== the real door goes straight to the dashboard, 18 November ===
    .filter(sel=>document.querySelector(sel)).length,
   onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded),
   landed:!!(typeof STORE!=='undefined'&&STORE.get&&STORE.get(TAB_LANDED_KEY)),
-  tab:(typeof S!=='undefined')?S.tab:null}));
+  tab:(typeof S!=='undefined')?S.tab:null,
+  tabIsSummary:(typeof S!=='undefined'&&typeof TAB!=='undefined')?S.tab===TAB.SUMMARY:false}));
  ok(!d.srcintro,'no Source example read opens behind the door any more');
  ok(!d.ob&&!d.obHost,'no onboarding sheet opens either, '+JSON.stringify(d));
  ok(d.obDom===0,'and none of its DOM (ask/settle/feel/body/story/mirror/bridge) is anywhere on the page, found '+d.obDom);
  ok(d.onboarded,'the profile is marked onboarded at once, the same flag a replay sets on its own leave');
- ok(d.landed&&d.tab===TAB.SUMMARY,'the one-time landing still runs, straight onto the dashboard (Summary), tab '+d.tab);
+ ok(d.landed&&d.tabIsSummary,'the one-time landing still runs, straight onto the dashboard (Summary), tab '+d.tab);
  ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
 
  /* a second launch of the same device is no different: nothing left to
