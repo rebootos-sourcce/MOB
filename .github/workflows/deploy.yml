@@ -294,6 +294,11 @@ jobs:
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: srcintro, timeout: 20, command: node tests/srcintro.js }
           - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
+          # ADDED 18 November, the same day it was written: the Avatar
+          # Purpose view with its rails removed and Archetype hidden. A
+          # real Chromium gate, orphaned at first because no job named it;
+          # tools/orphans.js caught the gap and this entry is the fix.
+          - { gate: avatarpurpose, timeout: 20, command: node tests/avatarpurpose.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
           # allowance, gift, money, releasechain and pct, all added to
