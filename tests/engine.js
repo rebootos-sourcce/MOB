@@ -1592,6 +1592,80 @@ g('19 \u00b7 energetics, the birth module');
  ok(c.score>=0&&c.score<=100,'and scores agreement in 0..100, got '+c.score);
  ok(JSON.stringify(converge(PEEPS[0],compute()))===JSON.stringify(c),'and is deterministic');
 
+ /* A PERSON'S OWN BIRTH, ROUTED IN. converge took a name and read only the
+    BIRTH table of reference cases, so a birth typed into Intake was read by
+    the side rail and never compared: every Summary caller got null for
+    anybody real. bornAsBirth is the one translation from a profile's
+    who.born, and converge takes the reading it makes. Fictional births only:
+    a timed one from the gazetteer, a date alone, a date alone on a day the
+    sun changed sign, and a day that does not exist. */
+ const {bornAsBirth}=E;
+ const own=born=>{const p=E.blankProfile('Test Person');Object.assign(p.who.born,born);return p;};
+ const ownC=(born,r)=>{const sp=spiritualOf(bornAsBirth(own(born)));return converge('Nobody At All',r||compute(),sp);};
+ reset(5,0,6);
+ const timed={date:'1988-04-12',time:'07:45',place:'Lisbon, PT',zone:'Europe/Lisbon'};
+ const bt=bornAsBirth(own(timed));
+ ok(bt&&bt.d==='1988-04-12'&&bt.t==='07:45'&&bt.p==='Lisbon, PT'&&bt.z==='Europe/Lisbon',
+  'bornAsBirth carries date, time, place and zone into the shape spiritualOf reads: '+JSON.stringify(bt));
+ ok(bornAsBirth(own({date:'1988-04-12',time:'07:45',timeUnknown:true})).t==='',
+  'a time the person said they do not know is no time, whatever the field still holds');
+ ok(bornAsBirth(E.blankProfile('Test Person'))===null&&bornAsBirth(null)===null&&bornAsBirth({})===null,
+  'no date, no profile and no who are all no birth');
+ const oc=ownC(timed);
+ ok(oc!=null&&oc.agree.length+oc.differ.length===4,
+  'a person\'s own timed birth gives a converge reading of four comparisons, got '
+  +(oc?oc.agree.length+oc.differ.length:'null'));
+ ok(oc&&oc.open.length===1&&/^Human Design type/.test(oc.open[0]),
+  'and only the design type is open on it, '+JSON.stringify(oc&&oc.open));
+ ok(JSON.stringify(ownC(timed))===JSON.stringify(oc),'and the own birth reading is deterministic');
+ const od=ownC({date:'1988-04-12'});
+ ok(od!=null&&od.open.indexOf('the ascendant, which needs a birth time')>=0,
+  'a date alone puts the ascendant in open with its reason, '+JSON.stringify(od&&od.open));
+ ok(od&&od.open.some(s=>/^Human Design type, which needs the full bodygraph$/.test(s)),
+  'and the design type, with its reason');
+ /* nothing absent may print as a value or count against the person */
+ const noNull=x=>x&&[].concat(x.agree,x.differ,x.open).every(s=>!/\bnull\b|undefined|NaN/.test(s));
+ ok(noNull(od),'and no line of a date alone reads null, '+JSON.stringify(od&&[od.agree,od.differ]));
+ const cusp=ownC({date:'1988-03-20'});
+ ok(cusp!=null&&cusp.e.sun===null,'a date alone on the day the sun changed sign reads no sun, '+(cusp&&cusp.e.sun));
+ ok(cusp&&cusp.open.indexOf('the birth element, which needs a birth time')>=0
+  &&cusp.open.indexOf('the birth mode, which needs a birth time')>=0,
+  'and the element and the mode go to open with their reason, not to differ, '+JSON.stringify(cusp&&cusp.open));
+ ok(noNull(cusp),'and no line of it reads null, '+JSON.stringify(cusp&&cusp.differ));
+ ok(cusp&&cusp.differ.length+cusp.agree.length===cusp.of&&cusp.of<=2,
+  'and an unread sun is counted for neither side, of '+(cusp&&cusp.of));
+ /* EVERY ONE OF THE FOUR LANDS SOMEWHERE. A date alone never reads a design
+    line, the day is wider than a line, and the line used to drop out of the
+    count without a word. With the field read, element, path, mode and line
+    are each agree, differ or open, and the type and ascendant are extra. */
+ const lands=x=>x.agree.length+x.differ.length
+  +x.open.filter(s=>!/^Human Design type|^the ascendant/.test(s)).length;
+ const unlanded=[['timed',oc],['date alone',od],['sun cusp',cusp]].filter(([,x])=>!x||lands(x)!==4).map(([n])=>n);
+ ok(unlanded.length===0,'every one of the four comparisons lands in agree, differ or open'
+  +(unlanded.length?'  '+unlanded.join(', '):'')+', the date alone opens '+JSON.stringify(od&&od.open));
+ const rOpen=Object.assign({},compute(),{benign:null});
+ const ofld=ownC(timed,rOpen);
+ ok(ofld&&ofld.open.some(s=>/^the direction of your energy, which needs all \d+ laws answered$/.test(s))
+  &&ofld.agree.length+ofld.differ.length===2,
+  'an unfinished intake puts the energy direction in open and scores neither mode nor line, '+JSON.stringify(ofld&&ofld.open));
+ ok(spiritualOf(bornAsBirth(own({date:'1988-02-30'})))===null&&ownC({date:'1988-02-30'})===null,
+  'a date that is not a day gives no reading and no comparison, and does not throw');
+ /* THE EQUIVALENCE. An explicit reading of a reference birth is the name
+    lookup's own result, field for field, on every reference case, and the
+    same birth through a profile's who.born differs only in the record it
+    carries back, where a profile always has a zone and the table may not. */
+ const rr=compute();
+ const eqBad=PEEPS.filter(k=>JSON.stringify(converge(k,rr))!==JSON.stringify(converge('Nobody At All',rr,spiritualOf(BIRTH[k]))));
+ ok(eqBad.length===0,'an explicit reading is identical to the name lookup on every reference case'
+  +(eqBad.length?'  '+eqBad.join(', '):''));
+ const strip=x=>{const y=JSON.parse(JSON.stringify(x));delete y.e.birth;return JSON.stringify(y);};
+ const viaBad=PEEPS.filter(k=>{const b=BIRTH[k];
+  return strip(converge(k,rr))!==strip(ownC({date:b.d,time:b.t||'',place:b.p||'',zone:b.z||''},rr));});
+ ok(viaBad.length===0,'and the same birth typed into a profile reads the same through bornAsBirth'
+  +(viaBad.length?'  '+viaBad.join(', '):''));
+ ok(converge('Nobody At All',rr)===null&&converge('Nobody At All',rr,null)===null,
+  'the name lookup for a name nobody owns stays null, with or without an empty reading');
+
  /* pure functions of date and time, so the same input is the same answer */
  ok(sunSign('1988-04-12').nm===sunSign('1988-04-12').nm,'sun sign is pure');
  ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');

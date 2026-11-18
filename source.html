@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v169 72a28def 2026-11-18 15:55"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -37198,6 +37198,18 @@ function geneKey(b){
 function spiritual(name){
  var bt=BIRTH[name]; if(!bt) return null;
  return spiritualOf(bt);}
+/* A PROFILE'S OWN BIRTH, IN THE SHAPE spiritualOf READS. Intake saves
+   {date,time,place,zone,timeUnknown} to who.born and spiritualOf reads
+   {d,t,p,z}, and the translation between them was written out by hand three
+   times in the UI (renderSpirit, renderRootSum, sumBirth) and not at all at
+   the one call that needed it, converge, so the convergence never ran for a
+   real person. One translation, here, so a fourth reader cannot get a fifth
+   shape. A time the person said they do not know is no time, whatever the
+   field still holds. Null for no date, because no date is no birth. */
+function bornAsBirth(p){
+ var bn=p&&p.who&&p.who.born;
+ if(!bn||!bn.date)return null;
+ return {d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''};}
 /* split out so a live person's own intake can be read the same way a
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
@@ -37231,12 +37243,27 @@ function spiritualOf(bt){
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
-   where they disagree the instrument says so rather than picking a winner. */
-function converge(name,r){
- var e=spiritual(name); if(!e) return null;
- var agree=[],differ=[];
+   where they disagree the instrument says so rather than picking a winner.
+   sp is a reading the caller already holds. Every Summary caller held the
+   person's own reading off their Intake and then asked this for a name, which
+   only the BIRTH table of reference cases answers, so for anybody real it
+   returned null and the comparison never printed however much birth they
+   typed. A reading passed in is used as it is; without one, the name lookup
+   is the default it always was, and a name nobody owns is still null. */
+function converge(name,r,sp){
+ var e=sp||spiritual(name); if(!e) return null;
+ var agree=[],differ=[],open=[];
+ /* AN UNREAD SUN IS A GAP, NOT A DIFFERENCE. Only a reference case reached
+    this while it took a name, and every one of them has a time and a place.
+    A person's own birth can be a date alone on a day the sun changed sign,
+    and then sunSign is null and the element and the mode with it. Compared
+    as they stood, null never equals a root, so the reading said "birth
+    element points null" and counted it against them. What settles the day
+    is what the reading asks for, chosen the way renderSpirit chooses it. */
+ var sunWhy=e.needsTime?'a birth time':e.needsZone?'a birth time zone':'a time the clocks did not change at';
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
+ if(!e.root) open.push('the birth element, which needs '+sunWhy);
+ else if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
  else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
  var archNow=(ARCH[r.pi]||{}).nm||'';
  if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
@@ -37246,7 +37273,8 @@ function converge(name,r){
     for the reason given below for the design type, and scoring it as the
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
- if(!fieldOpen){
+ if(!e.sunMode) open.push('the birth mode, which needs '+sunWhy);
+ else if(!fieldOpen){
   if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
   else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
@@ -37255,7 +37283,6 @@ function converge(name,r){
     there is nothing to compare, so it goes in a third bucket. A gap is
     not a disagreement, and scoring it as one made an absent input look
     like evidence against the person. */
- var open=[];
  if(e.hd.unresolved)open.push('Human Design type, which needs the full bodygraph');
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
@@ -37267,6 +37294,10 @@ function converge(name,r){
     +(r.benign?'expanding':'contracting')+', point the same way');
   else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
+ /* an untimed day can straddle a line of the design gate, and then there is
+    no line. It dropped out of the count without a word, which is the same
+    absent input going unsaid, so it is named with what would settle it. */
+ else open.push('the design line, which needs '+sunWhy);
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
   /* reported as a fraction, because three of four and seventy five
@@ -40904,7 +40935,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -66374,8 +66405,11 @@ function sumUn(term,ctx){
  var s=unpackOf(term,ctx);
  return s?'<span class="s-un">'+esc(s)+'</span>':'';}
 function sumStory(r){
+ /* the reading sumBirth holds, which is the person's own when they typed a
+    birth. converge asked for the roster name alone, and only a reference case
+    has one in BIRTH, so the blueprint paragraph never opened for anyone real. */
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r), e=C?C.e:null;
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null, e=C?C.e:null;
  var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
@@ -66408,11 +66442,19 @@ function sumStory(r){
      thing the blueprint is read from: the sun, the date as a number, the name as
      a number, and what is running now. A person can see where each claim comes
      from, which is the point of unpacking it. */
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)
-   +', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '+sumB(String(e.lp),null,'life path')+', the one who '
+  /* A SUN THAT WAS NOT READ HAS NO ELEMENT. A person's own birth reaches this
+     now, and a date alone on a day the sun changed sign leaves the element
+     null, which printed "reads null" and then "the blueprint says nothing,
+     these differ". The element clause and its comparison are left out and the
+     paragraph says what would settle it, the way converge's open bucket does. */
+  var sunGap='The element is not read: the sun changed sign that day, and '
+   +(e.needsTime?'a birth time':'a birth time zone')+' settles which. ';
+  p.push('The blueprint you were born on '+(elRoot
+    ?'reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)+', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '
+    :'runs on life path ')+sumB(String(e.lp),null,'life path')+', the one who '
    +esc(e.lpMean||'runs')+'. '
    +sumUn('blueprint')+' '+sumUn('symbolic reading')
-   +'<span class="s-blk">'+(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase())+'</span>'
+   +'<span class="s-blk">'+(elRoot?(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase()):esc(sunGap))+'</span>'
    +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
    +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
      +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
@@ -66421,7 +66463,8 @@ function sumStory(r){
       paragraph has just said what it means, three lines up, and saying it
       again was the 14 to 18 words Sofia and Angela read twice */
    +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
-   +(elRoot===rootNow
+   +(!elRoot?''
+    :elRoot===rootNow
      /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
         runs another, and the instrument can say they differ. It cannot say
         why, and "something was installed on top" was a story about a person
@@ -66733,7 +66776,13 @@ function sumChips(C){
     engine/data/gloss.js: what the placement is, then what the sign claims. */
  function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
  var out='<div class="s-chips">';
- out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+ /* THE SUN AND THE GENE KEY ARE LEFT OFF WHEN THEY WERE NOT READ, as the moon
+    and the rising already are. Only reference cases reached this strip until
+    a person's own birth was routed into converge, and every one of them has a
+    time, so a date alone on a day the sun changed sign would have printed a
+    chip reading null, and a gene key reading null.null, the same defect
+    renderSpirit records. What is missing is named in the comparison. */
+ if(e.sun)out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
   say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
   say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
@@ -66748,7 +66797,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI(GATE_IC),
+ if(e.gk.gate!=null)out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
@@ -66771,8 +66820,8 @@ function sumConverge(C){
      person's own names, which is the useful half of the same sentence. */}
  return out;}
 function sumSpirit(r){
- var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r);
+ /* the person's own reading, for the reason sumStory gives */
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
   /* HS sweep: the refusal keeps what is missing and what would put it in.
      The tail on what is stored and why explained the section. */
@@ -66942,9 +66991,7 @@ function sumUnread(r){
 /* one profile's birth reading and name numbers, read once per render and
    handed to every piece that needs them */
 function sumBirth(){
- var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
  /* the name's numbers only off a name that is somebody's, for the reason
     spNumRows gives: a blank profile's roster name is the word You */
  var full=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm])||'';
@@ -67220,7 +67267,7 @@ function sumDrivers(B,r){
    existed and already read real data (engine/astro.js); it only went
    unlabelled before. */
 function sumMarks(B,r){
- var C=B.sp?converge(B.p.nm,r):null;
+ var C=B.sp?converge(B.p.nm,r,B.sp):null;
  return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
   +sumChips(C)+'</div>':'';}
 /* a zone is a heading with a mark and one body. The heading names the slot and
@@ -67413,7 +67460,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -94571,10 +94618,9 @@ function renderSpirit(){
  /* A person's own birth data goes into Intake, is saved to CURP.who.born, and
     until now nothing read it. BIRTH.You is null and always was, so the whole
     ephemeris was visible to nine fixtures and to nobody real. spiritualOf was
-    written to close exactly this and was never called. It is called here. */
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){
-  var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+    written to close exactly this and was never called. It is called here,
+    through bornAsBirth, the one translation every reader of who.born shares. */
+ if(!sp)sp=spiritualOf(bornAsBirth(CURP));
  if(!sp){
   /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
      below says unresolved for every birth there is, because the type needs the
@@ -95848,9 +95894,7 @@ const RS_BRIDGE={
   +'This is where a number and a sign land on the same one.'};
 function renderRootSum(){
  var el=document.getElementById('rootsum'); if(!el)return;
- var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
  /* the name's numbers only off a name that is somebody's, for the reason
     spNumRows gives: a blank profile's roster name is the word You */
  var real=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm]);
@@ -101801,5 +101845,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006806274"></div>
 </body></html>

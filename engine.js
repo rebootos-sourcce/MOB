@@ -24295,6 +24295,18 @@ function geneKey(b){
 function spiritual(name){
  var bt=BIRTH[name]; if(!bt) return null;
  return spiritualOf(bt);}
+/* A PROFILE'S OWN BIRTH, IN THE SHAPE spiritualOf READS. Intake saves
+   {date,time,place,zone,timeUnknown} to who.born and spiritualOf reads
+   {d,t,p,z}, and the translation between them was written out by hand three
+   times in the UI (renderSpirit, renderRootSum, sumBirth) and not at all at
+   the one call that needed it, converge, so the convergence never ran for a
+   real person. One translation, here, so a fourth reader cannot get a fifth
+   shape. A time the person said they do not know is no time, whatever the
+   field still holds. Null for no date, because no date is no birth. */
+function bornAsBirth(p){
+ var bn=p&&p.who&&p.who.born;
+ if(!bn||!bn.date)return null;
+ return {d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''};}
 /* split out so a live person's own intake can be read the same way a
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
@@ -24328,12 +24340,27 @@ function spiritualOf(bt){
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
-   where they disagree the instrument says so rather than picking a winner. */
-function converge(name,r){
- var e=spiritual(name); if(!e) return null;
- var agree=[],differ=[];
+   where they disagree the instrument says so rather than picking a winner.
+   sp is a reading the caller already holds. Every Summary caller held the
+   person's own reading off their Intake and then asked this for a name, which
+   only the BIRTH table of reference cases answers, so for anybody real it
+   returned null and the comparison never printed however much birth they
+   typed. A reading passed in is used as it is; without one, the name lookup
+   is the default it always was, and a name nobody owns is still null. */
+function converge(name,r,sp){
+ var e=sp||spiritual(name); if(!e) return null;
+ var agree=[],differ=[],open=[];
+ /* AN UNREAD SUN IS A GAP, NOT A DIFFERENCE. Only a reference case reached
+    this while it took a name, and every one of them has a time and a place.
+    A person's own birth can be a date alone on a day the sun changed sign,
+    and then sunSign is null and the element and the mode with it. Compared
+    as they stood, null never equals a root, so the reading said "birth
+    element points null" and counted it against them. What settles the day
+    is what the reading asks for, chosen the way renderSpirit chooses it. */
+ var sunWhy=e.needsTime?'a birth time':e.needsZone?'a birth time zone':'a time the clocks did not change at';
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
+ if(!e.root) open.push('the birth element, which needs '+sunWhy);
+ else if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
  else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
  var archNow=(ARCH[r.pi]||{}).nm||'';
  if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
@@ -24343,7 +24370,8 @@ function converge(name,r){
     for the reason given below for the design type, and scoring it as the
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
- if(!fieldOpen){
+ if(!e.sunMode) open.push('the birth mode, which needs '+sunWhy);
+ else if(!fieldOpen){
   if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
   else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
@@ -24352,7 +24380,6 @@ function converge(name,r){
     there is nothing to compare, so it goes in a third bucket. A gap is
     not a disagreement, and scoring it as one made an absent input look
     like evidence against the person. */
- var open=[];
  if(e.hd.unresolved)open.push('Human Design type, which needs the full bodygraph');
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
@@ -24364,6 +24391,10 @@ function converge(name,r){
     +(r.benign?'expanding':'contracting')+', point the same way');
   else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
+ /* an untimed day can straddle a line of the design gate, and then there is
+    no line. It dropped out of the count without a word, which is the same
+    absent input going unsaid, so it is named with what would settle it. */
+ else open.push('the design line, which needs '+sunWhy);
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
   /* reported as a fraction, because three of four and seventy five
@@ -27979,7 +28010,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
