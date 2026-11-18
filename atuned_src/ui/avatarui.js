@@ -2283,7 +2283,9 @@ function avSeatAdd(b){
      own commit, because this is a story entry written by a second door */
   CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands,
    lex:LEX_VERSION});
-  pSave(); pSnap();
+  /* one write for the entry and its snapshot, the way the Story's own
+     commit makes it (pSaveSnap, engine/schema.js), not two that can half land */
+  pSaveSnap();
   var sv=(typeof saveState==='function')?saveState():{ok:true};
   msg=sv.ok?(old?'Changed. ':'Added. ')+k+(k===1?' imprint':' imprints')+' written to the field.'
    :'The story is kept, and the journal entry was not saved. Storage is full or blocked.';

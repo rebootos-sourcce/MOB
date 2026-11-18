@@ -170,7 +170,10 @@ const PLANS=[
     the one place the sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
-const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* no prototype, so a plan.tier of "constructor" off a record names no tier
+   rather than Object's own function, which the boundary read as a tier and
+   kept (validateProfile, engine/schema.js) */
+const PLAN_BY=Object.create(null); PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
    to tier one" and "unlocked on tier two and above", which is right for a
    numbered rung and wrong for Practitioner: lowercased it reads "Move to
@@ -361,8 +364,16 @@ function planLadder(pl){
    that expired is a punishment for a bank's timing. unpaid and canceled do
    not. The names are the processor's so that a record round trips without
    translation, and translation is where access bugs live. */
-const PLAN_LIVE={trialing:1, active:1, past_due:1};
-const PLAN_DEAD={canceled:1, unpaid:1, incomplete_expired:1, paused:1};
+/* NO PROTOTYPE, 18 November. The boundary keeps a status it does not know as
+   written, on purpose, and planState reads one as pending so it grants
+   nothing. On a plain object a status of "constructor" or "toString" found
+   Object's own function in PLAN_LIVE instead, and planState answered live:
+   an unknown state opened a door, which validateProfile's plan block says
+   it must never do.
+   Built without a prototype, the tables hold only the processor's words. They
+   serialise the same, so the pay cycle walk's pins on them do not move. */
+const PLAN_LIVE=Object.assign(Object.create(null),{trialing:1, active:1, past_due:1});
+const PLAN_DEAD=Object.assign(Object.create(null),{canceled:1, unpaid:1, incomplete_expired:1, paused:1});
 /* THE END DATE IS READ, NOT ONLY THE STATUS, 17 October, the pay cycle run
    (step h) and the systems seat: "planState ignores until, so a signed-out
    record stays paid for ever." The status is only as new as the last read of

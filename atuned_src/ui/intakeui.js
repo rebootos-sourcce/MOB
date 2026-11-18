@@ -1544,12 +1544,27 @@ function renderIntake(){
   IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
+ /* THROUGH profCreate, the account page's door (accProfStart, ui/account.js).
+    This called pNew, which pushes the profile, points CURP at it and ignores
+    what pPersist answered, so a full or blocked store left the person working
+    on a profile that was never written, with nothing said, and gone at the
+    next reload. It also skipped profHold, so the working state of the profile
+    being left was not written back first. profCreate validates the name,
+    holds, loads, saves and rolls the list back on a refused write, and the
+    refusal is said in the account page's own words (accWhy). */
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
-  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
+  if(!n)return;
+  if(!profCreate(n)){
+   status('Nothing was started. '+accWhy(),'fail');
+   renderIntake();return;}
+  IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;syncCh();syncLw();syncSoul();renderIntake();render();
+  status(accOpenSay(CURP)+' It starts blank.','ok');};
  var sb=document.getElementById('iqsave');
  /* The button used to read "Saved" whether or not anything was written. It
     reports what happened now, and the status region carries the detail. */
- if(sb)sb.onclick=function(){pSave();pSnap();
+ /* one write, through pSaveSnap. pSave then pSnap was two: the record could
+    land while its snapshot was refused, and the status read only the second. */
+ if(sb)sb.onclick=function(){pSaveSnap();
   var ok=statusSaved();
   sb.textContent=ok?'Saved':'Not saved';
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};

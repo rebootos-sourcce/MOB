@@ -11374,5 +11374,85 @@ g('MS25 · no two masks are read off the same seats');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
 }
 
+g('SB18 · the boundary and the saves around it, 18 November');
+/* FOUR DEFECTS AROUND validateProfile AND THE SAVE HELPERS, each reproduced on
+   72a28de before it was fixed, and each check below fails with its own fix
+   taken back out. */
+{
+ const {blankProfile,saveProfile,validateProfile,pImport,importError,profiles,current,
+        bindStore,snapshot,pSnap,pSave,pStore,profCreate,profErr,planState,PLANS,MASKS,PKEY}=E;
+ const fs=require('fs'), path=require('path');
+ const disk={}; let refuse=false;
+ bindStore(k=>disk[k]===undefined?null:disk[k],(k,v)=>{if(refuse)throw new Error('QuotaExceeded');disk[k]=v;});
+ const base=saveProfile(blankProfile('boundary'));
+ base.history=[snapshot(base)];
+ const copy=()=>JSON.parse(JSON.stringify(base));
+
+ /* 1. A KEY OBJECT'S PROTOTYPE ANSWERS FOR IS NOT A KEY. lawNow's old-name
+    table, K2BAND and the plan tables were plain objects, so "constructor"
+    found Object itself and read as a law, a seat or a tier. */
+ ['constructor','toString','hasOwnProperty'].forEach(k=>{
+  const x=copy(); x.history[0].lawNow={}; x.history[0].lawNow[k]=5;
+  const v=validateProfile(x);
+  ok(!v.ok&&(v.errs||[]).some(e=>e.indexOf('lawNow may not carry '+k)>=0),
+   'history[0].lawNow.'+k+' is refused by name: '+JSON.stringify(v.errs));});
+ {const x=copy(); x.history[0].lawNow={constructor:5};
+  const n=profiles().length, c=current();
+  ok(pImport(JSON.stringify(x))===null&&profiles().length===n&&current()===c,
+   'and pImport refuses it and lands nothing: '+importError());}
+ {const x=copy(); x.story={entries:[{t:new Date().toISOString(),text:'x',imprints:0,bands:{constructor:1}}]};
+  const v=validateProfile(x);
+  ok(!v.ok&&/bands names no seat: constructor/.test(String(v.errs)),'a story band keyed constructor names no seat: '+JSON.stringify(v.errs));}
+ {const x=copy(); x.plan.tier='toString';
+  const v=validateProfile(x);
+  ok(!v.ok&&/plan.tier is not a tier this build knows: toString/.test(String(v.errs)),'a plan.tier of toString is not a tier: '+JSON.stringify(v.errs));}
+ {const t=PLANS.find(q=>q.k!=='free'&&q.k!=='gift').k;
+  ok(planState({tier:t,status:'constructor'})==='pending'&&planState({tier:t,status:'toString'})==='pending',
+   'a status named after an Object method is unknown, so pending, never live');}
+
+ /* 2. THE LAST MASK SURVIVES A RELOAD. ui.chmask was saved and then dropped
+    by the boundary's ui allow list on every load. */
+ {const nm=MASKS[1].nm, x=copy(); x.ui.chmask=nm;
+  const v=validateProfile(JSON.parse(JSON.stringify(x)));
+  ok(v.ok&&v.profile.ui.chmask===nm,'ui.chmask '+nm+' comes back through the boundary, got '+(v.profile&&v.profile.ui.chmask));
+  const y=copy(); y.ui.chmask='Nobody';
+  const w=validateProfile(y);
+  ok(!w.ok&&/ui.chmask is not a mask/.test(String(w.errs)),'a name that is not a mask is refused by name: '+JSON.stringify(w.errs));
+  refuse=false;
+  const p=profCreate('Chmask');
+  ok(!!p,'a profile to carry it is made: '+profErr());
+  p.ui.chmask=nm; ok(pSave(),'and saved');
+  const back=pStore().filter(q=>q.id===p.id)[0];
+  ok(back&&back.ui.chmask===nm,'and the boot read off the store still holds '+nm+', got '+(back&&back.ui.chmask));}
+
+ /* 3. THE INTAKE PANEL'S NEW GOES THROUGH profCreate. The engine half of the
+    door refuses and rolls back; the check on the source holds the handler to
+    it, because it called pNew, which ignores the write. */
+ {refuse=true;
+  const n=profiles().length, c=current();
+  ok(profCreate('Refused')===null&&profiles().length===n&&current()===c&&/could not save/.test(String(profErr())),
+   'a new profile the store refuses is not left open, and says why: '+profErr());
+  refuse=false;
+  const src=fs.readFileSync(path.join(__dirname,'..','atuned_src','ui','intakeui.js'),'utf8');
+  const at=src.indexOf("nb.onclick=function()"), body=at<0?'':src.slice(at,src.indexOf('};',at));
+  ok(at>=0&&/profCreate\(/.test(body)&&!/pNew\(/.test(body),'the #iqnew handler makes the profile with profCreate and not pNew');
+  ok(/if\(!profCreate\(\w+\)\)\{\s*status\([^;]*,'fail'\);/.test(body),'and a refusal is said through status as a failure');}
+
+ /* 4. A REFUSED SNAPSHOT TAKES ITS ROW BACK OUT, so the next good save does
+    not carry a row from a moment the person was told nothing was saved. */
+ {refuse=false;
+  const p=profCreate('Snap'); const n=p.history.length;
+  refuse=true;
+  ok(pSnap()===false,'a snapshot the store refuses reports false');
+  ok(current().history.length===n,'and leaves history at '+n+' rows, got '+current().history.length);
+  refuse=false;
+  ok(pSave(),'the next save lands');
+  const onDisk=JSON.parse(disk[PKEY]).filter(q=>q.id===p.id)[0];
+  ok(onDisk&&onDisk.history.length===n,'and writes no phantom row, '+n+' expected, '+(onDisk&&onDisk.history.length)+' on disk');
+  const ui=f=>fs.readFileSync(path.join(__dirname,'..','atuned_src','ui',f),'utf8');
+  ok(['intakeui.js','avatarui.js'].every(f=>!/pSave\(\);\s*pSnap\(\);/.test(ui(f))),
+   'no surface writes a record and its snapshot as two saves where pSaveSnap is one');}
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

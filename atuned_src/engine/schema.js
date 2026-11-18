@@ -685,9 +685,17 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  return pPersist(); }
 /* checked before the push, so a history nobody can read does not grow */
+/* AND A REFUSED WRITE TAKES ITS ROW BACK OUT. The row was pushed and left in
+   memory when pPersist failed, so the next save that did land wrote it to disk
+   with a timestamp from a moment the person was told nothing was saved, and a
+   second press after a refusal wrote two. pSaveSnap below already rolled its
+   staged row back; this is the same truncation. */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- CURP.history.push(snapshot(CURP)); return pPersist(); }
+ var n=CURP.history.length;
+ CURP.history.push(snapshot(CURP));
+ if(!pPersist()){ CURP.history.length=n; return false; }
+ return true; }
 /* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
    changes the working state and then snapshots it. Calling pSave followed
    by pSnap wrote twice: the first write could land while the second failed,
@@ -1352,7 +1360,20 @@ function validateProfile(o,ctx){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
   ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed','studio'].forEach(function(k){
-   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});
+  /* THE ONE TEXT PREFERENCE, the Character page's last open mask, written by
+     uiSet('chmask') from ui/character.js, ui/drills.js and ui/storyui.js. The
+     list above is booleans only and never named it, so it was written to disk
+     on every pick and dropped on every load, and the page opened on Child
+     again after each reload: the exact failure the comment on that list
+     describes. It is a mask's name or it is refused by name. The roster is
+     MASKS and not MASKS_READ because ui/drills.js writes from MASKS; a hidden
+     mask is still a real one, and chLast in ui/character.js already opens the
+     first readable mask when the one kept is not shown. */
+  if(o.ui.chmask!==undefined&&o.ui.chmask!==null){
+   if(typeof o.ui.chmask==='string'&&MASKS.some(function(m){return m.nm===o.ui.chmask;}))
+    p.ui.chmask=o.ui.chmask;
+   else errs.push('ui.chmask is not a mask: '+JSON.stringify(o.ui.chmask).slice(0,40));}}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
@@ -1699,7 +1720,11 @@ function validateProfile(o,ctx){
    var lp='history['+i+'].lawNow';
    if(typeof x.lawNow!=='object'||Array.isArray(x.lawNow))errs.push(lp+' is not an object');
    else{
-    var WAS={}; Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
+    /* no prototype: on a plain object WAS.constructor is Object itself, so a
+       key of "constructor" or "toString" read as an old law name and was kept
+       under the function's text as its key. pImport took it and the next boot
+       loaded it back. A key that names no law is refused by name. */
+    var WAS=Object.create(null); Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
     var lw={};
     Object.keys(x.lawNow).forEach(function(k){
      var nm=SINAMES.indexOf(k)>=0?k:(WAS[k]||null);

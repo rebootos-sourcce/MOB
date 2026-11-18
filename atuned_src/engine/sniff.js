@@ -2,8 +2,15 @@
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
    ============================================================ */
-var K2BAND={crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
- solar:'Solar',sacral:'Sacral',root:'Root'};
+/* NO PROTOTYPE, 18 November. Every seat check in the product is K2BAND[k]
+   with k off a record, and on a plain object a key of "constructor" or
+   "toString" answers with Object's own function, which is truthy. So the
+   boundary took story.entries[i].bands.constructor as a seat (vEntry,
+   engine/schema.js), and the daily reader then pushed that function in as a
+   seat name and the Ritual surface threw reading it back. A table with no
+   prototype holds only the seven keys written here, at every lookup at once. */
+var K2BAND=Object.assign(Object.create(null),{crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
+ solar:'Solar',sacral:'Sacral',root:'Root'});
 var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
