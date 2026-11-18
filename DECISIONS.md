@@ -3706,3 +3706,42 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## Seven words that printed with no meaning or with two. Team call, 18 November.
+
+He read "Pull, Overshoot, Installed and Self-read shadow have no definition
+yet" on the status board and said he had no idea what it meant. This is what
+the team decided, under his 2 October rule that every symbol is unpacked and
+his rule of one word per concept. None of it changes a figure.
+
+- **Pull, Overshoot, Installed, Self-read shadow** now have one sentence each
+  in `engine/data/gloss.js`, the one meaning table, and every place that
+  prints the word carries it on hover and tap: the Analytics tiles and cards,
+  the session card, the axis card, the pole drill, the Compass and the
+  record's ledger. Pull and Installed keep the wording the Analytics tile
+  already had. Overshoot lost "at 60% and above", because the table refuses a
+  percent, and says what it does to the fetter instead. Self-read shadow is
+  said in one sentence where the tile had two.
+- **Mask and Saboteur.** The Wisdom school glossary (`GLOSS`, `engine/data/kb.js`)
+  opened on a different sentence from every tooltip. The canon (`mob-canon`
+  4.3) makes a mask a developmental way of showing up and a saboteur a set of
+  child fetters at magnitude, which is what the tooltip and `compute()` say,
+  so the glossary row now opens on the tooltip's sentence and keeps the
+  codex's own lines after it. Saboteur's "each one a fetter" became "a set of
+  fetters". Mask's sentence gained "that you grow into" and says point for
+  seat, to meet the point rename.
+- **Integrity.** The word means how well you keep the laws, which is CQ, as
+  the table, the glossary and "your integrity is your CQ" already say. The
+  Compass and the energy drill printed a second figure under the same word,
+  `r.Ig`, which is the law mean lifted by the poles and pulled down by
+  overshoot. The canon does not name that figure, so the team took the
+  wording the product already had for it, the percent registry's own "the
+  laws lifted by the poles and pulled down by overshoot" (`engine/pct.js`),
+  said as "your laws, lifted by what is installed and pulled down by
+  overshoot". The rail's Will sentence, "how much of your integrity gets
+  through the charge you are carrying", was left as it is: it prints no
+  figure, and integrity there reads in its one meaning.
+
+`tests/unpack.js` holds all seven: each of the four fails printed bare, each
+of the three fails with a second sentence anywhere it is carried, and no
+figure may be called integrity.

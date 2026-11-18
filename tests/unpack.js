@@ -75,7 +75,11 @@ function scan(arg){
   arg.rules.forEach(function(r){
    if(!new RegExp(r[1],'i').test(own))return;
    var say=arg.table[r[2]]||'';
-   var blk=e.closest('p,li,dd,dt,button,.sg-m,.sp-row,.tcx-col,.ad-r,div')||e;
+   /* A CARD'S NAME IS GLOSSED BY ITS CARD. .ad-nm is the heading of a drill
+      or an Analytics card and is a div of its own, so the nearest block was
+      the heading alone and the sentence printed straight under it was never
+      seen. Added 18 November with the seven words below. */
+   var blk=(e.classList.contains('ad-nm')&&e.parentElement)||e.closest('p,li,dd,dt,button,.sg-m,.sp-row,.tcx-col,.ad-r,div')||e;
    var tips=[], q=blk.querySelectorAll('[data-tip],[title]');
    for(var j=0;j<q.length;j++)tips.push(q[j].getAttribute('data-tip')||q[j].getAttribute('title'));
    var up=e.closest('[data-tip],[title]'); if(up)tips.push(up.getAttribute('data-tip')||up.getAttribute('title'));
@@ -353,6 +357,112 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const top=await core(21,10);
   ok(/swings between \d+% and 100%\. The figure sits near the top of that range, because the scale stops at 100%\./.test(top)&&!/middle of that range/.test(top),
    'core drill, every law at 10: the band is cut off at a hundred, so it does not say middle, saw "'+top.slice(0,200)+'"');}
+
+ /* ---- THE SEVEN WORDS, 18 November. The owner read "Pull, Overshoot,
+    Installed and Self-read shadow have no definition yet" on the status board
+    and said he had no idea what any of it meant. Two defects, both held here.
+
+    THE FOUR READINGS. Their meanings were typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile carried a sentence
+    the table did not hold, and the session card, the axis card, the pole
+    drill, the record's ledger and the Compass printed the same words bare.
+    Every place the word is printed as a word, and not as a verb inside a
+    sentence, must carry the table's sentence, character for character.
+
+    THE THREE WORDS WITH TWO MEANINGS. Mask and Saboteur opened on one
+    sentence in the Wisdom school and another in every tooltip, and Integrity
+    labelled a figure (r.Ig, the laws lifted by the poles and pulled down by
+    overshoot) beside a sentence that makes integrity the laws kept, which is
+    CQ, one line above at another figure. Each word has one sentence across
+    every carrier and the glossary, and no figure is called integrity.
+
+    A LABEL, NOT A VERB. The patterns match a string that IS the word, the way
+    a label prints it, so "It pulls on expression" is prose and not a use. ---- */
+ {const SEVEN=[['pull','^pull$','pull'],['overshoot','^overshoot$','overshoot'],
+   ['installed','^installed$','installed'],['self-read shadow','^self-read shadow$','self-read shadow']];
+  const TWO=[['mask','^masks?$'],['saboteur','^saboteurs?$'],['integrity','^integrity$']];
+  /* every carrier on the page for one of the seven, by its label */
+  const carriersOf=()=>p.evaluate(a=>{var out=[];
+   document.querySelectorAll('[data-tip]').forEach(function(c){
+    var lbl=(c.getAttribute('data-tip-k')||c.textContent||'').replace(/\s+/g,' ').trim();
+    a.forEach(function(w){if(new RegExp(w[1],'i').test(lbl))out.push({w:w[0],lbl:lbl,say:c.getAttribute('data-tip')});});});
+   return out;},SEVEN.map(x=>[x[0],x[1]]).concat(TWO));
+  const said={}; const seenW=new Set();
+  const hold=async(where,sel)=>{
+   const got=await run(p,sel,SEVEN);
+   ok(!got.missing,where+': '+sel+' is on the page');
+   got.found.forEach(f=>{seenW.add(f.term);
+    ok(f.glossed,where+': "'+f.term+'" in "'+f.text+'" has no meaning beside it');});
+   (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+   return got;};
+
+  /* known bad first: a session row printed bare and a tile carrying a typed
+     sentence the table does not hold must both read bare */
+  await p.evaluate(()=>{var d=document.createElement('div');d.id='unp-bad';
+   d.innerHTML='<div class="ana-dl"><span>Overshoot</span><b>12%</b></div>'
+    +'<div class="ana-dl"><span data-tip="Pull is a sentence typed on the tile.">Pull</span></div>'
+    +'<p class="cone-p">Your integrity is <b>62%</b>.</p>';
+   document.body.appendChild(d);});
+  const bad7=await run(p,'#unp-bad',SEVEN);
+  ok(bad7.found.length===2&&bad7.found.every(f=>!f.glossed),
+   'the gate calls a bare Overshoot row and a Pull carrying a typed sentence bare before it is trusted: '+JSON.stringify(bad7.found.map(f=>f.term+':'+f.glossed)));
+  ok(await p.evaluate(()=>/\bintegrity\s+is\s+(<b>)?\s*\d+%/i.test(document.getElementById('unp-bad').innerText)),
+   'and the integrity probe sees "Your integrity is 62%" on the known bad line');
+  await p.evaluate(()=>{document.getElementById('unp-bad').remove();});
+
+  /* the Analytics tiles, and every reading card with its name */
+  await p.evaluate(()=>{try{rdClose();}catch(e){} ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.ANALYTICS);});
+  await p.waitForTimeout(500);
+  await hold('Analytics readings','#ana .ana-tiles');
+  for(const k of ['lawsq','pull','ex','jq','pole']){
+   await p.evaluate(k=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('met',k,true);},k); await p.waitForTimeout(200);
+   await hold('Analytics card '+k,'#ana');}
+  /* the session card, the axis card and a mask card */
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('sess','0',true);}); await p.waitForTimeout(200);
+  const sess=await hold('session card','#ana');
+  ok(['overshoot','installed'].every(t=>sess.found.some(f=>f.term===t)),'the session card prints Overshoot and Installed, so the gate has something to hold: '+JSON.stringify(sess.found.map(f=>f.term)));
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('axis',CHILD[0].nm,true);}); await p.waitForTimeout(200);
+  const ax=await hold('axis card','#ana');
+  ok(ax.found.some(f=>f.term==='installed'),'the axis card prints Installed');
+  await p.evaluate(()=>{var r=compute();ANA_PICK=null;ANA_TRAIL=[];
+   if(lockSees('mask')&&r.maskRing&&r.maskRing.length)anaGo('mask',r.maskRing[0].nm,true);}); await p.waitForTimeout(200);
+  (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];anaGo('rung','sab',true);}); await p.waitForTimeout(200);
+  (await carriersOf()).forEach(c=>{(said[c.w]=said[c.w]||new Set()).add(c.say);});
+  /* the pole drill, the energy drill and the Compass with its record */
+  await p.evaluate(()=>{ANA_PICK=null;ANA_TRAIL=[];setTab(TAB.FIELD);});
+  await p.waitForTimeout(400);
+  await p.evaluate(()=>{try{rdClose();}catch(e){} runQDrill('pole');}); await p.waitForTimeout(200);
+  const pd=await hold('pole drill','#rdrill');
+  ok(pd.found.some(f=>f.term==='installed'),'the pole drill prints Installed');
+  await p.evaluate(()=>{try{rdClose();}catch(e){} runXYZDrill();}); await p.waitForTimeout(200);
+  await hold('energy drill','#rdrill');
+  const will=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+  ok(!/\bintegrity\s+(is\s+)?\d+%/i.test(will),'the energy drill does not call the r.Ig figure integrity: '+(will.match(/.{0,40}integrity.{0,30}/i)||[''])[0]);
+  await p.evaluate(()=>{try{rdClose();}catch(e){} coneOpen(true);}); await p.waitForTimeout(300);
+  const cn=await hold('Compass reading and record','#rdrill');
+  const cnt=await p.evaluate(()=>document.getElementById('rdrill').innerText.replace(/\s+/g,' '));
+  ok(!/\bintegrity\s+(is\s+)?\d+%/i.test(cnt),'the Compass does not call the r.Ig figure integrity: '+(cnt.match(/.{0,40}integrity is.{0,20}/i)||[''])[0]);
+  ok(cnt.indexOf(T['integrity'])>=0,'the Compass still says what integrity is, in the table\'s sentence');
+  await p.evaluate(()=>{try{rdClose();}catch(e){}});
+  ['pull','overshoot','installed','self-read shadow'].forEach(t=>ok(seenW.has(t),'the walk finds '+t+' printed somewhere, so the gate has something to hold: saw '+Array.from(seenW)));
+
+  /* ONE SENTENCE EACH, across every carrier the walk opened */
+  SEVEN.map(x=>x[0]).concat(TWO.map(x=>x[0])).forEach(w=>{
+   const s=Array.from(said[w]||[]);
+   ok(s.length===0||(s.length===1&&s[0]===T[w]),'every carrier of "'+w+'" says the one table sentence, saw '+JSON.stringify(s.map(x=>String(x).slice(0,70))));});
+  ok((said['saboteur']||new Set()).size>=1&&(said['mask']||new Set()).size>=1,'the walk found a saboteur and a mask carrier to hold');
+
+  /* AND THE WISDOM SCHOOL OPENS ON THE SAME SENTENCE. Its glossary answers a
+     search, so the word is searched and the answer for it is read. */
+  await p.evaluate(()=>{setTab(TAB.KNOW);}); await p.waitForTimeout(400);
+  for(const [w] of TWO){
+   const gd=await p.evaluate(w=>{KB_Q=w;kbRender();
+    var g=[].slice.call(document.querySelectorAll('.kb-g')).filter(function(x){
+     return (x.querySelector('.kb-gt')||{}).textContent.toLowerCase()===w;})[0];
+    return g?g.querySelector('.kb-gd').textContent:null;},w);
+   ok(gd!==null&&gd.indexOf(T[w])===0,'the Wisdom school answers "'+w+'" with the tooltip\'s own sentence first, saw "'+String(gd).slice(0,80)+'"');}
+  await p.evaluate(()=>{KB_Q='';kbRender();});}
 
  ok(errs.length===0,'no page errors: '+errs.slice(0,2));
  await c.close();
