@@ -375,20 +375,40 @@ const look = p => p.evaluate(() => {
     ok(en.host && en.lit === 0, 'in the Full view the Energy rail puts nothing at any seat from these words' + at + ': ' + JSON.stringify(en));
     ok(en.line === SAY.entry, 'and the line stands there too' + at);
     p.net.length = 0;
-    /* HELD, 11 NOVEMBER, TASKS.md #138, re-checked after the crisis door's
-       own removal (crisisReachBtn now returns ''). The timeout this held
-       was never about the button itself; it was a repaint race between the
-       mic path and the Dashboard, confirmed unrelated to the door's own
-       zero-height bug this file's first section found and fixed. The door
-       is gone from #stsafe now, but the row and its line still render, so
-       this is left in place rather than assumed fixed, and the real run
-       below says which way it goes: if it still times out, #138 stands; if
-       it does not, strike #138 as resolved by removal once this has run
-       clean twice. */
+    /* TASKS.md #138, ROOT CAUSED 17 NOVEMBER. It was never a click race and
+       never the crisis door. Playwright's own log for the timeout says
+       "element is not visible", for the whole five seconds: at 390 the Bank
+       button (#stapply) measures 0 by 0, because it lives inside #stls, and
+       the stacked Full Dashboard hides that list (shell/head.html,
+       .st-flow:not([data-focus="read"]) .st-ls{display:none}) until the
+       flow's focus is read. The only thing that sets focus to read on a
+       phone is a tap inside the Imprints chart or list (stWire, ui/storyui.js),
+       and the List door that was meant to carry it (.st-open, the same
+       sheet, its rule still there) has no element any more. At 1600 the
+       three columns sit side by side and Bank is on screen at once, which is
+       why that width always passed. The earlier note here, a repaint race
+       between the mic path and the Dashboard, was a guess, and the first
+       note on #138, "measures fully visible", described a build where Commit
+       lived in the bar.
+       So the safety checks #138 held back at 390 ran at no width but 1600
+       until now. They run here by the one route a person has today, a tap on
+       the chart, and what is left HELD is the real finding, a product
+       question and not a test one: no visible door to Bank in the stacked
+       Full Dashboard. A press that times out AFTER Bank is on screen is a
+       failure now, not a held case. */
+    const bankOn = () => p.evaluate(() => { const e = document.getElementById('stapply'); if (!e) return false;
+      const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+      return r.width > 0 && r.height > 0 && cs.display !== 'none' && cs.visibility !== 'hidden'; });
+    if (!(await bankOn())) {
+      held(at.trim() + ' Bank is not on screen after a spoken crisis turn in the stacked Full Dashboard: #stls is display:none until the flow\'s focus is read, only a tap inside the Imprints chart sets it, and the List door (.st-open) has no element -- TASKS.md #138');
+      try { await p.click('#stch', { timeout: 5000 }); } catch (e) { /* the next check says so */ }
+      await p.waitForTimeout(300);
+      ok(await bankOn(), 'a tap on the Imprints chart, the one route to the list there is, brings Bank on screen' + at);
+    }
     let clicked = true;
     try { await p.click('#stapply', { timeout: 5000 }); } catch (e) { clicked = false; }
     if (!clicked) {
-      held(at.trim() + ' the Bank press after a spoken crisis turn in Full Dashboard, timed out -- TASKS.md #138');
+      ok(false, 'the Bank press after a spoken crisis turn in Full Dashboard could not be made' + at);
     } else {
       await p.waitForTimeout(600);
       const c = await p.evaluate(() => { const es = CURP.story.entries, e = es[es.length - 1];

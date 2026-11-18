@@ -8249,6 +8249,14 @@ await require('./stfull.js').stFullGate(browser,FILE,ok,booted);
    the two presentations of one record against one set of rules */
 console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
 await require('./stfull.js').stParityGate(browser,FILE,ok,booted);
+/* THE THREE CORNER FOLDS AND THE RAIL'S PIXELS, 17 November: the same file.
+   Left rail, Release column and widgets row each pressed, kept across a reload,
+   and opened again, with the face on its axis; and the left rail measured in
+   drawn pixels at 390 and 1600, because every other check on it reads the DOM. */
+console.log('\n=== the three corner folds: left rail, Release column, widgets row ===');
+await require('./stfull.js').stFoldGate(browser,FILE,ok,booted);
+console.log('\n=== the left rail draws something, in pixels, at 390 and 1600 ===');
+await require('./stfull.js').stRailPixelGate(browser,FILE,ok,booted);
 
 /* WHEN VOICE CANNOT RUN, tests/voicefall.js, 3 November. A browser with no
    speech recognition, or a page that is not a secure context, was told
