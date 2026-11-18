@@ -573,3 +573,16 @@ added or removed, on 18 November.
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
+
+## 18 November: device sync, scheduled post alpha
+
+say: "Add the device sync post alpha."
+read: a timing ruling, not a design change. The sign-in-on-a-new-device
+read as a bug tonight ("my account's not being set up") because a device
+with no local record stayed silent about why; the real sync code already
+exists, wired, one constant away (PROFILE_SYNC_ENABLED, ui/auth.js), kept
+false until privacy copy, consent and retention are approved together.
+change: TASKS.md DS1 added (and PB1's stale blocked-on note corrected);
+DECISIONS.md carries the full ruling. No code changed by this entry; the
+honest sign-in message that shipped the same night (authSyncNote, commit
+4ef5c88c) is its own, separate fix.

@@ -33576,14 +33576,27 @@ lead the same day. The Account header email from that commit is ported; the
 bypass is not.
 
 - [ ] **PB1. P2. Returning account bypass of the opening, parked at
-      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: profile sync is
-      dead code on main (`ui/auth.js:189` `typeof profiles==='function'` is
-      never true; `authProfileSync` always skips and would throw at `:222`).
-      Do not enable it as is: it uploads the whole profile, which contradicts
-      the privacy words. Needs a sync and consent design first.
+      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: device sync,
+      below (DS1). **This note was stale**: it said profile sync was dead
+      code because of a `:189` bug; that has since been replaced by a real,
+      wired sync (`authProfileSync`, `profileSyncImport`), gated behind one
+      constant, `PROFILE_SYNC_ENABLED=false`, in `ui/auth.js`. Still do not
+      enable it as is, same reason as before: it uploads the whole profile,
+      which contradicts the privacy words, and needs consent copy first.
 - [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
       `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
       does not take the record the server sent, and no `status()` line says so.
+- [ ] **DS1. Device sync, scheduled post alpha.** His words, 18 November:
+      "Add the device sync post alpha." See `DECISIONS.md`, "Device sync,
+      scheduled post alpha." The wiring already exists (`authProfileSync`,
+      `profileSyncImport`, `ui/auth.js`), one constant away
+      (`PROFILE_SYNC_ENABLED`). Real work left: write and get his approval
+      on the consent/privacy copy a sign in on a second device needs, flip
+      the constant, wire a one-time consent moment, then PB1 and PB2 above
+      unblock. Not alpha work; do not start building it before alpha closes.
+      Tonight's fix in this area is only the honest sign-in message
+      (`authSyncNote`, commit `4ef5c88c`) saying why a new device starts
+      empty, not the sync itself.
 
 ## Audit Dev 1 to 6, consolidated, 9 October
 
