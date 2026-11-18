@@ -429,7 +429,14 @@ const lostOk = p => !(p.lost || []).length;
     console.log('\n=== the safety door is never gated by that guard ===');
     const q = await open(browser, 1600, 1000);
     await q.evaluate(() => stMic());
-    await q.waitForFunction(() => __mic.live() && !ST_HUSH, null, { timeout: 8000 }).catch(() => {});
+    /* the greeting first. Since source-ai/natural-conversation the recording
+       is held for the length of every line Source AI speaks (stHush), and the
+       hold starts when the voice answers, not at the press, so a wait on
+       !ST_HUSH alone passed before the greeting had begun and the crisis
+       sentence then arrived inside the hold and was dropped as Source AI's
+       own voice. Measured on the integrated build: ST_TEXT empty. Wait for
+       the greeting to be said and the hold to lift. */
+    await q.waitForFunction(() => SRC_VOICE.said && __mic.live() && !ST_HUSH, null, { timeout: 8000 }).catch(() => {});
     await q.waitForTimeout(300);
     await say(q, 'I want to kill myself.'); await q.waitForTimeout(600);
     await say(q, 'uh I want to kill myself'); await q.waitForTimeout(600);

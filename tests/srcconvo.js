@@ -440,11 +440,15 @@ const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
     await p.waitForTimeout(150);
     const iv = await p.evaluate(() => { const e = document.getElementById('stlivecap'); const r = e.getBoundingClientRect(); return { text: e.textContent, w: Math.round(r.width), h: Math.round(r.height) }; });
     ok(iv.text === 'my boss called me' && iv.w > 20 && iv.h > 8, w + ': and the person\'s own words are shown as they say them: ' + JSON.stringify(iv));
-    /* the hover */
-    const tip = await p.evaluate(() => (document.getElementById('srcface') || {}).title || '');
-    const words = tip.trim().split(/\s+/).filter(Boolean).length;
-    ok(tip && tip.indexOf('\n') < 0 && words <= 20 && /dot/i.test(tip) && /bright/i.test(tip) && /charge/i.test(tip), w + ': the circle\'s hover is one line that says what a dot is and that brighter is more charge, ' + words + ' words: ' + JSON.stringify(tip));
-    ok(!/Gold arc|Rings:|Rim marks|saboteur|percent/i.test(tip), w + ': and carries none of the rest of the key');
+    /* the hover. His later ruling the same day, on the silence round: "this
+       tooltip isn't working. Let's turn that off for now." So the canvas
+       carries no title at all. The one line this round wrote is not kept:
+       on the integration of 18 November his ruling was that no one line
+       tooltip survives from this round, so the key kept for when the hover
+       is turned back on is the silence round's, and tests/talksilence.js
+       holds its words. This gate holds only that no hover is hung. */
+    const tip = await p.evaluate(() => { const c = document.getElementById('srcface') || {}; return { title: c.title || '', tipAttr: c.getAttribute ? (c.getAttribute('data-tip') || '') : '', key: (window.SrcFace && typeof SrcFace.key === 'function') ? SrcFace.key() : '' }; });
+    ok(!tip.title && !tip.tipAttr, w + ': the circle carries no hover at all, the 18 November ruling: ' + JSON.stringify(tip));
     await p.cx.close();
   }
   if (sel('8')) for (const [w, h, view] of [[1600, 1000, 'hero'], [1600, 1000, 'dash'], [390, 844, 'hero'], [390, 844, 'dash']]) {

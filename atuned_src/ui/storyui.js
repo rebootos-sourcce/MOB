@@ -5064,7 +5064,15 @@ function stMicSay(code){ var m=stMicLine(code); if(m)status(m,'fail'); }
    the silent failure CLAUDE.md rules out.
 
    Letters and digits are read as Unicode ones, so speech in a script the
-   list does not know is never mistaken for silence. */
+   list does not know is never mistaken for silence.
+   Mhm, hmm, mm and huh are not on it, 19 November, merge of
+   fix/talk-silence onto main: tests/talksilence.js already holds each of
+   them, with mm-hmm and uh huh, as the spoken yes that is a turn and not
+   noise (stMicNoise against each reads false), so wave-b's own
+   integration note here, which added hm, hmm, hmmm, mm, mmm and huh back
+   onto this list, is not carried forward: it was written against an
+   earlier state of this same branch (dd4e87da) and would break the gate
+   already merged and green on main. */
 var ST_FILLER={uh:1,um:1,uhm:1,umm:1,uhh:1,er:1,erm:1,eh:1,ah:1,the:1};
 function stMicNoise(t){
  t=String(t||'');

@@ -143,7 +143,15 @@
     in the Journal while the circle is 416 across, so the card stood 250
     pixels from what it described. The canvas keeps its aria-label above, and
     SrcFace.key() hands the key to anything that wants to print it. Nothing
-    may set a title or a data-tip on this canvas while the ruling stands. */
+    may set a title or a data-tip on this canvas while the ruling stands.
+
+    THE KEY IS THE SILENCE ROUND'S, NOT THE ONE LINE, integration 18
+    November. Two branches met here: source-ai/natural-conversation cut the
+    hover to one line, fix/talk-silence turned the hover off and kept the
+    ruled key below. His ruling on the integration was that the tooltip is
+    off and no one line tooltip survives from the conversation round, so the
+    key kept for when it is turned back on is this one, and tests/srcconvo.js
+    holds only that nothing hangs a hover on the canvas. */
  /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
     the paragraph that stood here: "This tooltip, it's insane. That text in the
     tooltip needs to be direct." Each line names a mark the canvas really
