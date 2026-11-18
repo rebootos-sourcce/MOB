@@ -14074,9 +14074,11 @@ function avatarProgress(rows){
    the loop backwards. The Field already shows the state.
 
    It never falls for a miss: a done:false entry adds nothing and subtracts
-   nothing. It only returns to an earlier value when the record is corrected,
-   a press taken back or a ritual deleted, which is the record and not a
-   penalty. Nothing derived is stored, so there is no high water mark to
+   nothing. It returns to an earlier value only when the record itself goes
+   back: a press taken back, a ritual deleted, a release run undone (undo
+   restores meter.unique), or a change of timezone that folds two local day
+   keys into one in pracDay. That is the record and not a penalty, and it is
+   why the hover may not say the Whole only goes up: the first draft did. Nothing derived is stored, so there is no high water mark to
    drift from the record. Affirmations get no part of their own: an
    affirmation is a step in a ritual, and the day that ritual is marked done
    is the act. A generated line is not an act.
@@ -14098,22 +14100,49 @@ const WHOLE_W={released:0.35, reframed:0.35, practised:0.30};
 /* the avatar's own review month, read off AV_MONTH rather than typed a second
    time, so a ritual day is exactly one point of the Whole for thirty days */
 const WHOLE_DAYS=Math.round(AV_MONTH/86400000);
-/* the owner's own data point, quoted at compute.js beside LIFT_R: about
-   15,000 patterns raised his CQ, closing 80 percent of the distance */
-const WHOLE_OWNER_LINES=15000, WHOLE_OWNER_CLOSED=0.8;
+/* THE ANCHOR, and which part of it is his. The 15,000 is his own figure,
+   quoted at compute.js beside LIFT_R: "I had about 15,000 patterns for my
+   CQ. My CQ is about between 88 and 92." He gave no share closed. The share
+   is compute.js's fitted reading of his words under its own assumed start of
+   50, "five is the average", so a law went from 5 to about 9 of 10, and it
+   is derived here from those three numbers rather than typed as 0.8, because
+   0.8 typed was cited as his and is not. The unit differs too: compute.js
+   spreads the 15,000 per seat, both halves together (about 2,143 keys a
+   seat), and this file applies it per half across the whole body, then
+   normalises to the ground in wholeOf, so his 15,000 reads about 89 percent
+   of each half here and not 80. One person, one assumed start. */
+const WHOLE_OWNER_LINES=15000, WHOLE_OWNER_CLOSED=(9-5)/(10-5);
 /* what one line closes, derived and never typed. His 15,000 is halved because
    meterPlan walks release and reframe in turn, so half of them were each */
 const WHOLE_R_LINE=1-Math.pow(1-WHOLE_OWNER_CLOSED,1/(WHOLE_OWNER_LINES/2));
-/* the one hover sentence, said once, so no surface explains it a second way */
-const WHOLE_MEANS='Whole is how much of who you are becoming you have built: '
- +'every pattern you release, every reframe you put in its place, and each day '
- +'you mark a ritual done, one percent a day for your first thirty days. '
- +'It only goes up. A missed day takes nothing away.';
+/* the one hover text, said once, so no surface explains it a second way. The
+   first draft said "one percent a day for your first thirty days" and "It
+   only goes up", and both were false: the first thirty days MARKED DONE count
+   whenever they fall, and a press taken back or a run undone lowers it. What
+   moved it is wholeSay's job, read off the counts, because a fixed sentence
+   cannot say that. */
+const WHOLE_MEANS='Whole counts what you have done: each pattern you release, '
+ +'each reframe you put in its place, and each day you mark a ritual done, '
+ +'one percent a day for thirty days of practice. A missed day takes nothing away.';
 /* the lines there are in one half, release or reframe: both sides of every
    carrying address, LINES_PER_CH each. Counted at run time so an address
    added to the map grows the ground without anyone retyping it. */
 function wholeGround(){
  return W.filter(function(n){return n.cf;}).length*LINES_PER_CH*2;}
+/* A KEY THE METER COULD HAVE WRITTEN. The count and the ground must be drawn
+   from one set of keys. The first cut counted any string whose channel ended
+   in limit or truth, and validateProfile keeps any short string in
+   meter.unique, so a pasted record carrying 'x:limit:0..10699' and
+   'x:truth:0..10699' read 70 percent with no act, and '999:Llimit:0',
+   '3:Llimit:5000', '3:Llimit', '3:Xtruth:0' and '8:Llimit:0' (8 is the one
+   address in W with no cf) each counted. So a key counts only in meterKey's
+   own shape, with no leading zero that would let '03' or '00' count a line
+   twice, at an address wholeGround counts, on a line inside LINES_PER_CH.
+   Returns 'limit', 'truth' or null. */
+function wholeKeyHalf(k,at){
+ var m=/^(0|[1-9]\d*):[LR](limit|truth):(0|[1-9]\d*)$/.exec(k);
+ if(!m||!at[m[1]]||+m[3]>=LINES_PER_CH)return null;
+ return m[2];}
 /* THE DAYS THE WHOLE COUNTS. pracDaysAt's rule (done:false is not a day, one
    key per local day, nothing past tomorrow by pracSoon) and one more: a press
    stamped more than a day after the day it marks does not count here.
@@ -14138,11 +14167,12 @@ function wholeDays(p,now){
 function wholeSat(n){return 1-Math.pow(1-WHOLE_R_LINE,n);}
 function wholeOf(p,now){
  var uq=(p&&p.meter&&Array.isArray(p.meter.unique))?p.meter.unique:[];
- var seen={}, R=0, I=0;
+ var seen={}, R=0, I=0, at={};
+ W.forEach(function(n){if(n.cf)at[n.i]=1;});
  uq.forEach(function(k){
   if(typeof k!=='string'||seen[k])return; seen[k]=1;
-  var ch=k.split(':')[1]||'';
-  if(/limit$/.test(ch))R++; else if(/truth$/.test(ch))I++;});
+  var half=wholeKeyHalf(k,at);
+  if(half==='limit')R++; else if(half==='truth')I++;});
  var D=wholeDays(p,now).length, G=wholeGround(), n={R:R, I:I, D:D, G:G};
  /* nothing done is unread and prints the dash. Never a 0, because a 0 says it
     was read and came to nothing, and a default is not a reading. */
@@ -14158,6 +14188,22 @@ function wholeOf(p,now){
     v of 0.996 shows 99 and never claims the top it has not reached. */
  var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));
  return {pct:pct, v:v, parts:parts, n:n, reason:'read'};}
+/* WHAT MOVED IT, as the counts behind the figure. WHOLE_MEANS says what the
+   Whole is and cannot say what this person did, and one release run moves
+   the figure by a few hundredths of a point, so without the counts the
+   release half cannot be seen moving on the hover. Takes wholeOf's result,
+   so a surface reads one call and prints two strings from it. Unread is
+   null, never a line of noughts, and only the halves with an act are named. */
+function wholeSay(w){
+ if(!w||!w.n||w.reason!=='read')return null;
+ var u=function(c,one,many){return c+' '+(c===1?one:many);};
+ var bits=[];
+ if(w.n.R)bits.push('released '+u(w.n.R,'line','lines'));
+ if(w.n.I)bits.push('reframed '+u(w.n.I,'line','lines'));
+ if(w.n.D)bits.push('practised '+u(w.n.D,'day','days'));
+ if(!bits.length)return null;
+ var s=bits.join(', ');
+ return s.charAt(0).toUpperCase()+s.slice(1)+'.';}
 
 /* ============================================================
    THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
@@ -29737,7 +29783,7 @@ if(typeof module!=='undefined'&&module.exports){
                  wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
                  WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
                  WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
-                 WHOLE_MEANS:WHOLE_MEANS,
+                 WHOLE_MEANS:WHOLE_MEANS, wholeSay:wholeSay,
                  AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
                  avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,

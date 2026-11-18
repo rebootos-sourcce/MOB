@@ -54,7 +54,7 @@ if(typeof module!=='undefined'&&module.exports){
                  wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
                  WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
                  WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
-                 WHOLE_MEANS:WHOLE_MEANS,
+                 WHOLE_MEANS:WHOLE_MEANS, wholeSay:wholeSay,
                  AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
                  avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,

@@ -11383,13 +11383,16 @@ g('MS25 · no two masks are read off the same seats');
    a miss that subtracts, a release that does not move it, a ritual counted
    twice, a press with no day dedupe, a random term, a decimal percent, 0 for
    unread, an unbounded sum, the self report cap removed, the backfill rule
-   removed, the clock rule removed and the 100 ceiling removed. Profiles are
-   fictional and built here from the blank. */
+   removed, the clock rule removed and the 100 ceiling removed. The review
+   pass of 18 November added the checks four more survived: an entry with no
+   done or done true dropped, a sort in place, reframes counted only beside a
+   release, and keys outside the ground counted. Profiles are fictional and
+   built here from the blank. */
 g('WHOLE · the Avatar\'s one percent, read from acts');
 {
  const {wholeOf,wholeDays,wholeGround,WHOLE_W,WHOLE_DAYS,WHOLE_R_LINE,WHOLE_MEANS,
         WHOLE_OWNER_LINES,WHOLE_OWNER_CLOSED,AV_MONTH,LINES_PER_CH,meterKey,
-        blankProfile,validateProfile,pracDays,fmtPct,PCT_DASH,PCT_KIND}=E;
+        blankProfile,validateProfile,pracDays,fmtPct,PCT_DASH,PCT_KIND,wholeSay}=E;
  /* local midday, so a day key never sits on a midnight in any zone the gate
     runs in */
  const NOW=new Date(2026,10,18,12).getTime();
@@ -11399,7 +11402,7 @@ g('WHOLE · the Avatar\'s one percent, read from acts');
  const rk=(j,ch)=>meterKey(cf[j%cf.length].i,ch,Math.floor(j/cf.length)%LINES_PER_CH);
  const mk=()=>{const p=blankProfile('whole'); p.meter.unique=[]; p.rituals=[]; return p;};
  const V=p=>wholeOf(p,NOW).v;
- const fn=['wholeOf','wholeDays','wholeGround'].map(k=>String(E[k])).join('\n');
+ const fn=['wholeOf','wholeDays','wholeGround','wholeSay'].map(k=>String(E[k])).join('\n');
  ok(typeof wholeOf==='function'&&typeof wholeDays==='function'&&typeof wholeGround==='function',
   'wholeOf, wholeDays and wholeGround are exported');
  /* the constants are derived where the spec says derived, never retyped */
@@ -11410,6 +11413,11 @@ g('WHOLE · the Avatar\'s one percent, read from acts');
  near(WHOLE_W.released+WHOLE_W.reframed+WHOLE_W.practised,1,1e-12,'the three weights make one');
  ok(PCT_KIND.whole&&PCT_KIND.whole.src==='engine/avatar.js','PCT_KIND carries whole, cited to engine/avatar.js');
  ok(typeof WHOLE_MEANS==='string'&&WHOLE_MEANS.indexOf('Whole')===0&&!/\u2014/.test(WHOLE_MEANS),'the hover is one string, starts with its word, no em dash');
+ /* the two claims the first draft made that were false: the Whole does fall
+    when a press is taken back or a run undone (A12), and the thirty days
+    are days marked done whenever they fall, not the first thirty on the
+    calendar (A2 below counts day 3 and day 4 of any month) */
+ ok(!/only goes up/i.test(WHOLE_MEANS)&&!/first thirty/i.test(WHOLE_MEANS),'the hover claims neither that it only goes up nor a first thirty days: '+WHOLE_MEANS);
 
  /* A1 */
  const b=wholeOf(mk(),NOW);
@@ -11421,6 +11429,13 @@ g('WHOLE · the Avatar\'s one percent, read from acts');
  const p2b=mk(); p2b.meter.unique=[rk(0,'Llimit'),rk(1,'Rtruth')]; p2b.rituals=[did(3)];
  const v2b=V(p2b); p2b.rituals.push(did(0));
  near(V(p2b)-v2b,0.01,1e-12,'A2 and one more day is one point on a profile that already has acts');
+ /* entries older than the done field, or written done:true, are days.
+    schema.js leaves done unfilled on purpose ("a person's history is not
+    ours to delete"), and every entry above is written by did() with a stamp,
+    so a refactor that dropped either kind ran green until this: a mutant
+    dropping done undefined and one dropping done true both passed */
+ const p2o=mk(); p2o.rituals=[{t:day(3)},{t:day(4),done:true}];
+ ok(V(p2o)===0.02,'A2 an entry with no done and one with done true are two days, '+V(p2o));
  /* A3 */
  const p3=mk(); p3.rituals=[did(0),did(0),{t:day(0),done:true}];
  ok(V(p3)===w2.v,'A3 three presses on one day read as one day, '+V(p3));
@@ -11487,8 +11502,17 @@ g('WHOLE · the Avatar\'s one percent, read from acts');
  const sh=JSON.parse(JSON.stringify(p11)), shuf=a=>{for(let i=a.length-1;i>0;i--){const k=Math.floor(rnd()*(i+1));[a[i],a[k]]=[a[k],a[i]];}};
  shuf(sh.meter.unique); shuf(sh.rituals);
  ok(JSON.stringify(s1)===JSON.stringify(s2)&&wholeOf(sh,NOW).v===s1.v,'A13 the same record read twice and its acts shuffled read the same, '+s1.v);
- const before=JSON.stringify(p11); wholeOf(p11,NOW);
- ok(JSON.stringify(p11)===before,'A13 and reading writes nothing back to the record');
+ /* on a record never read before, with its keys out of sorted order. The
+    first cut snapshot p11 after the walk had read it four hundred times, so
+    a write that gives the same result every time (a sort in place) had
+    already happened and the snapshot equalled the after state: a mutant
+    sorting meter.unique inside wholeOf passed it */
+ const p13=mk(); p13.meter.unique=[rk(5,'Rtruth'),rk(1,'Llimit'),rk(3,'Ltruth'),rk(0,'Rlimit')];
+ p13.rituals=[did(2),{t:day(0),done:false},did(1)];
+ const before=JSON.stringify(p13);
+ ok(JSON.stringify(p13.meter.unique)!==JSON.stringify(p13.meter.unique.slice().sort()),'A13 the fresh record\'s keys are out of order, so a sort in place would show');
+ wholeOf(p13,NOW);
+ ok(JSON.stringify(p13)===before,'A13 and reading it once writes nothing back to the record');
  /* A14 */
  const G=wholeGround(), pa=mk(), all=[];
  cf.forEach(n=>['Llimit','Rlimit','Ltruth','Rtruth'].forEach(ch=>{for(let l=0;l<LINES_PER_CH;l++)all.push(meterKey(n.i,ch,l));}));
@@ -11525,6 +11549,31 @@ g('WHOLE · the Avatar\'s one percent, read from acts');
  ok(vo.ok&&wholeOf(vo.profile,NOW).pct===null&&fmtPct('whole',wholeOf(vo.profile,NOW).pct)===PCT_DASH,'A16 and reads the dash');
  ok(wholeOf(null,NOW).pct===null&&wholeOf({},NOW).pct===null&&wholeOf({meter:{unique:'x'},rituals:[null,5]},NOW).pct===null,
   'A16 a missing or malformed record reads unread and does not throw');
+ /* reframes alone. Every profile above with a truth key also had a limit
+    key, so a mutant counting reframes only when a release existed passed */
+ const pro=mk(); pro.meter.unique=[rk(0,'Ltruth')]; const wro=wholeOf(pro,NOW);
+ ok(wro.reason==='read'&&wro.parts.reframed>0&&wro.parts.released===0&&wro.pct===1,
+  'a profile with one reframe line and nothing else reads 1%, reframed '+(wro.parts&&wro.parts.reframed));
+ /* A19, a key the meter could not have written counts nothing. validateProfile
+    keeps any short string in meter.unique, so the boundary passes these and
+    the reading must refuse them: the first cut read 70% off the junk alone */
+ const bad=['999:Llimit:0','3:Llimit:'+LINES_PER_CH,'3:Llimit','3:Xtruth:0','8:Llimit:0',
+  '0'+cf[0].i+':Llimit:0',cf[0].i+':Llimit:00',cf[0].i+':limit:0',' '+cf[0].i+':Ltruth:0'];
+ for(let i=0;i<10700;i++)bad.push('x:limit:'+i,'x:truth:'+i);
+ const p19=mk(); p19.meter.unique=bad.slice();
+ const v19=validateProfile(JSON.parse(JSON.stringify(p19)));
+ ok(v19.ok,'A19 the junk keys pass the boundary today, so only the reading stands between them and the figure');
+ const w19=wholeOf(v19.profile,NOW);
+ ok(w19.reason==='unread'&&w19.n.R===0&&w19.n.I===0,'A19 keys outside the ground count nothing, '+JSON.stringify(w19.n));
+ p19.meter.unique.push(rk(0,'Llimit'),rk(0,'Ltruth'));
+ const w19b=wholeOf(p19,NOW);
+ ok(w19b.n.R===1&&w19b.n.I===1,'A19 and two real keys among them count exactly two, '+JSON.stringify(w19b.n));
+ /* wholeSay, the counts behind the figure, so the release half shows on the
+    hover even when it moves the percent by hundredths */
+ ok(wholeSay(b)===null&&wholeSay(null)===null,'wholeSay of an unread Whole is null, never a line of noughts');
+ ok(wholeSay(wholeOf(p5,NOW))==='Released 2 lines, reframed 2 lines, practised 1 day.','wholeSay names every half with an act: '+wholeSay(wholeOf(p5,NOW)));
+ ok(wholeSay(wro)==='Reframed 1 line.'&&wholeSay(w2)==='Practised 1 day.','wholeSay names only the halves with an act: '+wholeSay(wro)+' '+wholeSay(w2));
+ ok(!/\u2014/.test(wholeSay(wholeOf(p11,NOW))),'wholeSay carries no em dash');
  /* A17, beside hostfree.py on the build */
  ok(!/\b(document|window|navigator|localStorage|sessionStorage|fetch)\b/.test(fn),'A17 the Whole touches no host');
 }
