@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v1885 72a28def 2026-11-18 17:04"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -36804,17 +36804,35 @@ function designJD(jd){
    that year. This is the part everyone skips, and skipping it is not
    a small error: one hour of offset moves the ascendant about fifteen
    degrees, which is half a sign. Latitude matters for the same reason.
-   A record with no place gets no ascendant rather than a guessed one. */
+   A record with no place gets no ascendant rather than a guessed one.
+   EACH ROW CARRIES ITS IANA ZONE, AND THE ZONE DECIDES THE OFFSET. tz and
+   dst were the only rule, and usDST and euDST below answer by calendar date,
+   so the whole of a change day took the new offset from midnight. A Chicago
+   birth at 00:15 on 14 March 2010, before the clocks went forward at 02:00,
+   read UTC-5 where it was UTC-6, and printed a Scorpio Rising where the sky
+   said Sagittarius; one at 00:30 on 7 November, before they went back, read
+   UTC-6 where it was UTC-5, and printed Virgo where the sky said Leo. An
+   hour is half a sign of ascendant. zoneOffsets already answers the clock
+   change at its hour, and a reading that happened twice as a window, so a
+   named place goes through it the same as a named zone.
+   It also carries the history the two hand rules never had, and that moves
+   ordinary days too: Colorado and New Mexico kept no summer time before
+   1966, the US ran it all year in 1974, the old April start was the last
+   Sunday until 1986 and not the first, Portugal sat on Central European
+   time from 1992 to 1996, and Mexico, so Oaxaca, kept summer time from 1996
+   to 2022 where its row said none. Every one of those was read an hour out.
+   tz and dst stay for a runtime with no Intl, where zoneOffsets is null and
+   the hand rules are all there is. */
 const PLACE={
- 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us'},
- 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us'},
- 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us'},
- 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us'},
- 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us'},
- 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us'},
- 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none'},
- 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu'},
- 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us'}};
+ 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us', zone:'America/New_York'},
+ 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us', zone:'America/Chicago'},
+ 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us', zone:'America/Los_Angeles'},
+ 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us', zone:'America/Denver'},
+ 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us', zone:'America/Denver'},
+ 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us', zone:'America/New_York'},
+ 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none', zone:'America/Mexico_City'},
+ 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu', zone:'Europe/Lisbon'},
+ 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us', zone:'America/New_York'}};
 
 /* US daylight saving. The start moved in 2007 from the first Sunday in
    April to the second in March, and the end from the last Sunday in
@@ -36991,7 +37009,11 @@ function birthJD(bt){
     unknown offset already uses. jd stays noon, so nothing that does not
     check the span moves in this change. */
  var last=23+59/60;
- var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ /* the person's own zone first, then the place's, and a name this runtime
+    cannot read falls through to the next rather than to Greenwich */
+ var zn=null, zo=null;
+ [bt.z,pl&&pl.zone].forEach(function(z){
+  if(!zo&&z){ zo=zoneOffsets(z,y,m,d,hrs); if(zo)zn=z; }});
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
@@ -36999,13 +37021,13 @@ function birthJD(bt){
   /* the day's ends each at their own offset, since the clocks can change
      inside it, and at the offset that makes the day widest if they did at
      either end */
-  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+  if(!timed){ var z0=zoneOffsets(zn,y,m,d,0), z1=zoneOffsets(zn,y,m,d,last);
    zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
   /* A place the table names is the exact horizon and keeps it. Otherwise
      the zone's own representative point stands in, which is what lets a
      person outside the nine cities have a Rising at all. */
-  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
-   span:zspan, zone:bt.z};}
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(zn), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:zn};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours
@@ -101801,5 +101823,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006804626"></div>
 </body></html>

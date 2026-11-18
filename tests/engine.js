@@ -1346,6 +1346,27 @@ g('19 \u00b7 energetics, the birth module');
  /* daylight saving decides an hour, and an hour is half a sign of ascendant */
  ok(usDST(2010,3,14)&&!usDST(2010,3,13),'US daylight saving starts on the second Sunday in March');
  ok(usDST(1985,4,8)&&!usDST(1985,3,20),'and on the old rule before 2007');
+ /* THE CLOCKS CHANGE AT 02:00, NOT AT MIDNIGHT. A named place took its offset
+    from usDST and euDST, which answer by date, so the hours of a change day
+    before the change read the new offset: Chicago at 00:15 on 14 March 2010
+    read UTC-5 and printed a Scorpio Rising where the sky said Sagittarius.
+    The expected offsets are the published rules for those hours, and the
+    Rising is the ascendant at the instant those offsets give, typed from the
+    place's own coordinates rather than read back from birthJD. */
+ const DSTH=[['Chicago, IL','2010-03-14','00:15',-6,'Chicago before the spring change'],
+  ['Chicago, IL','2010-03-14','03:30',-5,'and after it'],
+  ['Chicago, IL','2010-11-07','00:30',-5,'Chicago before the autumn change'],
+  ['Lisbon, PT','2010-03-28','00:30',0,'Lisbon before its 01:00 change'],
+  ['Lisbon, PT','2010-10-31','00:30',1,'Lisbon before the autumn change']];
+ const dstBad=DSTH.filter(c=>{const b=E.birthJD({d:c[1],t:c[2],p:c[0]});
+   const [Y,M,D]=c[1].split('-').map(Number), h=+c[2].slice(0,2)+(+c[2].slice(3))/60;
+   const ll=c[0]==='Chicago, IL'?[41.878,-87.630]:[38.722,-9.139];
+   const want=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius',
+    'Capricorn','Aquarius','Pisces'][E.signOf(E.ascendant(julianDay(Y,M,D,h-c[3]),ll[0],ll[1]))];
+   return b.offset!==c[3]||E.spiritualOf({d:c[1],t:c[2],p:c[0]}).rising!==want;})
+  .map(c=>c[4]+' got '+E.birthJD({d:c[1],t:c[2],p:c[0]}).offset);
+ ok(dstBad.length===0,'a named place changes offset at the hour the clocks change, not at midnight, '
+  +DSTH.length+' cases'+(dstBad.length?'  '+dstBad.join(', '):''));
 
  /* the remaining readings must not throw or hand back nothing */
  /* Lisbon and not London. London is not in PLACE, so this record was being
