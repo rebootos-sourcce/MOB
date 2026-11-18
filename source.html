@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v172 9696cdc1 2026-11-18 18:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v177 35512b54 2026-11-18 19:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2789,6 +2789,24 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
  body.rshut .mid{grid-template-columns:302px 1fr 58px}
  body.lshut.rshut .mid{grid-template-columns:58px 1fr 58px}
  body.rshut.tab-settings .mid,body.rshut.tab-prac .mid{grid-template-columns:1fr}}
+/* THE AVATAR'S PURPOSE VIEW HAS NO RAILS, 18 November, his words: "for the
+   avatar purpose, let's remove the left and right rail." The rails are the
+   Field's two shared columns and the Avatar never had a rule of its own, so
+   it showed them by default. Keyed on the drawn view and not on a class a
+   script sets, because setTab clears only the page classes it knows: a
+   class left behind would strip the rails off the next page, and :has reads
+   what is actually in #avbody, which only counts while body is tab-intake.
+   Becoming keeps both rails until the Avatar redesign takes them off.
+
+   HEAVIER THAN THE FOLD RULES ABOVE ON PURPOSE. A one class rule here weighs
+   the same as body.lshut:not(.tab-settings) .mid and body.lshut.rshut .mid,
+   so it wins or loses by its place in this file, and measured placed ahead
+   of them a person with the left rail folded elsewhere got Purpose in a 58
+   pixel track. The id in :has outweighs every fold state, wherever it sits.
+   The fold controls live inside the rails, so they go with them and the
+   saved fold state returns untouched with Becoming. */
+body.tab-intake:has(#avbody .avp) .mid{grid-template-columns:minmax(0,1fr)}
+body.tab-intake:has(#avbody .avp) .mid>.col{display:none}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -7869,6 +7887,8 @@ body.tab-masksview #bRel{display:none}
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
 .chr-ar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .chr-ar:hover{border-color:var(--ac);color:var(--ac)}
+/* a mark and not a door while Archetypes is hidden (ui/character.js) */
+span.chr-ar{cursor:default}
 .chr-ar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chr-ar.on{border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac) 28%,transparent)}
 .chr-arn{color:var(--mid);margin-bottom:4px}
@@ -59599,15 +59619,22 @@ function chPc(kind,v,unread){var c=chPcCol(kind,v,unread); return c?' style="col
    carried to the archetypes. Nothing is filled on a profile not read yet.
    Which archetype sits under which mask is NOT drawn: the two seats that
    proposed a pairing disagreed (TASKS.md, round GI, item 6) and it is his to
-   rule. A press opens that archetype on the Avatar page, where it is rated. */
+   rule. A press opens that archetype on the Avatar page, where it is rated.
+
+   NOT WHILE ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN, ui/avatarui.js).
+   The page they opened is not drawn, so a press would land on Becoming with
+   nothing about the archetype on it, which is a door to nowhere. Each one is
+   a mark and not a button while the view is hidden: the meaning still shows
+   on hover and tap, and nothing pretends to go anywhere. */
 function chArchHtml(r){
  var unread=!r||!!r.unread, emb=(!unread&&typeof avArchEmbodied==='function')?avArchEmbodied(r):{};
+ var door=typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN, tag=door?'button':'span';
  var on=ARCH.filter(function(a,i){return emb[i];}).map(function(a){return a.nm;});
  return '<div class="pm-eye chr-sp">Archetypes</div><div class="chr-arch" role="group" aria-label="Archetypes">'
   +ARCH.map(function(a,i){var e=!!emb[i], say=chSentence(a.v)+' '+a.d+(unread?'':e?' Embodied, one of the three your field reads strongest.':' Not embodied.');
-   return '<button type="button" class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
+   return '<'+tag+(door?' type="button"':' role="img" tabindex="0"')+' class="chr-ar'+(e?' on':'')+'" data-charch="'+esc(a.nm)+'" style="--ac:'+PAL[a.b]+'"'
     +' aria-label="'+esc(a.nm+'. '+say)+'" data-tip-t="'+esc(a.nm)+'" data-tip="'+esc(say)+'">'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></button>';}).join('')+'</div>'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+a.ic+'"/></svg></'+tag+'>';}).join('')+'</div>'
   +(on.length?'<p class="chr-note chr-arn">Embodied: '+esc(chAnd(on))+'</p>':'')
   +'<p class="chr-note">'+esc(ARCH_CREDIT)+'</p>';}
 function chRailHtml(r){
@@ -59675,7 +59702,7 @@ function chRail(r){
  host.querySelectorAll('[data-chtrace]').forEach(function(b){b.onclick=function(){
   var k=+b.getAttribute('data-chtrace'); chTrace(CHV.sel===k&&b.classList.contains('chr-seat')?-1:k);};});
  /* an archetype opens on the Avatar page, where it is rated, MS22 */
- host.querySelectorAll('[data-charch]').forEach(function(b){b.onclick=function(){
+ host.querySelectorAll('button[data-charch]').forEach(function(b){b.onclick=function(){
   if(typeof AV==='undefined'||typeof setTab!=='function')return;
   AV.sub='arch'; AV.arch=b.getAttribute('data-charch'); setTab(TAB.INTAKE);
   if(typeof render==='function')render();};});
@@ -60274,7 +60301,11 @@ var STGO={
  stboundary:function(){if(typeof AV!=='undefined')AV.sub='purpose'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
  stbody:function(){setTab(TAB.ENERGY);},
  stfield:function(){setTab(TAB.FIELD);},
- stavatar:function(){if(typeof AV!=='undefined')AV.sub='arch'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ /* Archetypes is hidden, 18 November (AV_ARCH_SHOWN, ui/avatarui.js), so
+    the card opens Becoming, where the rituals it counts are, until that
+    one line turns the view back on. */
+ stavatar:function(){if(typeof AV!=='undefined')AV.sub=(typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN)?'arch':'becoming';
+  setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
  stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
   if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
   setTab(TAB.MASKS); if(typeof render==='function')render();}};
@@ -60349,7 +60380,7 @@ var STMK_WHAT={
  stfield:'The heaviest of your seven seats right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
  stmasks:'Your four strongest masks, strongest first.'};
-var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
+var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are
    where the card goes, not what it says, so they move into the tip and the
@@ -70320,10 +70351,30 @@ function avDilHTML(){
    and C on the one Avatar page, which is the audit's recommendation for Q7
    (a layer of the page, not a fifth section of a four step loop). */
 var AV_SUBS=[['becoming','Becoming'],['purpose','Purpose'],['arch','Archetypes']];
+/* ARCHETYPES IS HIDDEN, 18 November, his words: "let's hide the archetype tab
+   under avatar. Archetype. I don't know what it's for. I don't know where it
+   came from. I don't know what it does." Hidden and not deleted, because his
+   word is hide: the wheel, the card, avRate and every rating already saved on
+   avatar.arch stay, and the record still validates and exports them. Nothing
+   in the engine reads those ratings (affinity reads the quiz's archSeed and
+   the hand picks in S.arcs), so no reading moves. This one line is the whole
+   switch: true puts the pill, the Discover card's route and the Character
+   page's twelve doors back as they were. While it is false a view named
+   'arch', set by a pill, by a door or left over in AV.sub, paints Becoming,
+   because renderAvatar's last branch draws the wheel for any value it does
+   not know and a door that sets AV.sub directly never passed through avSub. */
+var AV_ARCH_SHOWN=false;
+function avSubsShown(){return AV_SUBS.filter(function(s){return s[0]!=='arch'||AV_ARCH_SHOWN;});}
 function avSub(k){
  if(k==='intake'){AV.sub='becoming'; AV.face='iq'; renderAvatar(); return;}
- if(!AV_SUBS.some(function(s){return s[0]===k;}))return;
- AV.sub=k; renderAvatar();}
+ if(!avSubsShown().some(function(s){return s[0]===k;}))return;
+ AV.sub=k; renderAvatar();
+ /* PURPOSE HAS NO RAILS, 18 November (shell/head.html, beside the fold
+    rules), so its icon grids sat hidden while it was open, and fitGrid skips
+    a hidden grid. A resize on Purpose left them fitted to the old width once
+    Becoming brought the rails back. setTab and colFold refit for the same
+    reason; a view change inside this page calls neither. */
+ if(typeof fitGrids==='function')requestAnimationFrame(fitGrids);}
 function avIqHome(){
  /* THE INTAKE PAGE HOLDS THE HOST WHILE IT IS OPEN, AND THIS TOOK IT ANYWAY.
     The first paint of the Avatar on a profile with nothing in it runs this
@@ -70699,7 +70750,7 @@ function avHead(st){
  var own=avOwn(), edR=own&&AV.shedEdit, edB=own&&AV.idEdit&&!edR;
  var h='<header class="av-hd avs-top avs-who"><div class="avw avw-l">'+(edR?'':avShedHTML())+'</div>'
   +'<div class="avs-subs" role="group" aria-label="Avatar">'
-  +AV_SUBS.map(function(s){var on=AV.sub===s[0];
+  +avSubsShown().map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
   +'</div><div class="avw avw-r">'+(edB?'':avIdHTML())+'</div></header>';
  if(edR)h+=avShedForm(); else if(edB)h+=avIdHTML();
@@ -70718,7 +70769,8 @@ function renderAvatar(){
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
   AV.idEdit=false; AV.shedEdit=false; AV.side=null;}
- if(!AV.sub)AV.sub='becoming';
+ /* a hidden or unknown view is Becoming, AV_ARCH_SHOWN above says why */
+ if(!avSubsShown().some(function(s){return s[0]===AV.sub;}))AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
@@ -101853,5 +101905,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006806249"></div>
+<div id="eof" hidden data-len="006809966"></div>
 </body></html>

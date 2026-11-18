@@ -121,7 +121,11 @@ var STGO={
  stboundary:function(){if(typeof AV!=='undefined')AV.sub='purpose'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
  stbody:function(){setTab(TAB.ENERGY);},
  stfield:function(){setTab(TAB.FIELD);},
- stavatar:function(){if(typeof AV!=='undefined')AV.sub='arch'; setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
+ /* Archetypes is hidden, 18 November (AV_ARCH_SHOWN, ui/avatarui.js), so
+    the card opens Becoming, where the rituals it counts are, until that
+    one line turns the view back on. */
+ stavatar:function(){if(typeof AV!=='undefined')AV.sub=(typeof AV_ARCH_SHOWN!=='undefined'&&AV_ARCH_SHOWN)?'arch':'becoming';
+  setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
  stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
   if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
   setTab(TAB.MASKS); if(typeof render==='function')render();}};
@@ -196,7 +200,7 @@ var STMK_WHAT={
  stfield:'The heaviest of your seven seats right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
  stmasks:'Your four strongest masks, strongest first.'};
-var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Archetypes',stmasks:'Character'};
+var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are
    where the card goes, not what it says, so they move into the tip and the

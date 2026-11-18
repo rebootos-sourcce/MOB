@@ -570,6 +570,28 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · the Purpose view's rails, and Archetypes hidden
+
+said: "Okay, Amy, for the avatar purpose, let's remove the left and right
+rail. And let's hide the archetype tab under avatar. Archetype. I don't know
+what it's for. I don't know where it came from. I don't know what it does.
+Okay, review this back. And then let's add this to the plate."
+read: the Purpose view on the Avatar page shows the Field's two shared rails,
+which it never uses, and the Archetypes view is a 1 to 5 self rating nothing
+in the app reads (DECISIONS.md, 18 November, carries the plain account of
+what it was and where it came from). Hide means hide: code, data and saved
+ratings stay.
+change: shell/head.html, one rule hides both rails while Purpose is drawn,
+heavier than the fold rules so a rail folded elsewhere cannot squeeze it.
+ui/avatarui.js, AV_ARCH_SHOWN and avSubsShown: the pill is gone and any view
+left at Archetypes paints Becoming. ui/storyui.js, the Discover Avatar card
+opens Becoming and says so. ui/character.js, the twelve archetypes are marks,
+not doors, while the view is hidden. Becoming keeps its rails.
+measure: tests/avatarpurpose.js, at 1600 and 390 on a blank and a loaded
+profile, failed on the live build c2bf52a2 and passes on this one;
+tests/becoming.js and tests/functional.js turn the view on for the checks
+that hold the hidden wheel, so the one line still brings back a working one.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

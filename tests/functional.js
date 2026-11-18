@@ -5333,6 +5333,11 @@ const kh=await page.evaluate(async()=>{
  o.iq=!!document.querySelector('#avqslot #iqbody')&&!document.getElementById('iqbody').hidden;
  AV.face='story'; CURP.avatar=keepA; CURP.story=keepS;
  if(keepSide==null)STORE.set(AV_KEY,'{}'); else STORE.set(AV_KEY,keepSide);
+ /* ARCHETYPES IS HIDDEN, 18 November (AV_ARCH_SHOWN, ui/avatarui.js), so
+    avSub('arch') is refused and this would read Becoming. Hidden is not
+    deleted: the view is turned on for these three checks and off again, so
+    the wheel that one line brings back is still the one KH ruled. */
+ const archWas=AV_ARCH_SHOWN; AV_ARCH_SHOWN=true;
  loadP(PERSON('Marcus')); setTab(TAB.INTAKE); avSub('arch'); render();
  await new Promise(r=>setTimeout(r,300));
  const t=document.getElementById('avbody').innerText;
@@ -5340,7 +5345,7 @@ const kh=await page.evaluate(async()=>{
  o.emb=[...document.querySelectorAll('#avbody .av-mk')].filter(x=>/, embodied/.test(x.getAttribute('aria-label'))).length;
  o.pill=(document.querySelector('#avbody .avx-emb')||{}).textContent;
  o.threads=document.querySelectorAll('#avbody .avx-row').length;
- avSub('becoming'); loadP(0); render();
+ avSub('becoming'); AV_ARCH_SHOWN=archWas; loadP(0); render();
  return o;});
 /* THE LEDE IS GONE, ROUND LV, REVERSING KH. His own words then: "you're
    setting up your avatar, we want to find out who it needs to become..."

@@ -35222,3 +35222,37 @@ the last of those re-run clean start to finish after an earlier attempt
 was discarded for running concurrently with a rebuild. `engine.js` is
 unaffected (no engine file touched this round) and stayed at its last
 confirmed-clean count.
+
+
+## Round WI, 18 November. The Avatar's Purpose view without rails, and Archetypes hidden
+
+His words: "for the avatar purpose, let's remove the left and right rail. And
+let's hide the archetype tab under avatar... And then let's add this to the
+plate." The ruling and the plain account of the hidden view are in
+`DECISIONS.md`, 18 November.
+
+- [x] WI1 Purpose draws neither rail and the centre takes the row, at 1600
+  and 390 (`shell/head.html`, beside the fold rules). Held by
+  `tests/avatarpurpose.js`.
+- [x] WI2 Archetypes hidden behind `AV_ARCH_SHOWN` in `ui/avatarui.js`: no
+  pill, the Discover Avatar card opens Becoming, the Character page's twelve
+  are marks, a stale view paints Becoming. Code, data and saved ratings kept.
+- [ ] WI3 Becoming's rails go when the Avatar page redesign takes them off
+  everywhere (in flight, strategy only). Not touched here.
+- [ ] WI4 His call, open: the 1 to 5 rating was the only place a person could
+  say how much of an archetype they are on the Avatar page, and the Impact box
+  and the "How it runs through you" rows are shown nowhere else. Bring them
+  back, move them, or let them go. Nothing replaces them now.
+- [ ] WI5 His call, open: with Archetypes hidden, the Discover Avatar card
+  opens Becoming. Becoming or Purpose.
+- [ ] WI6 Found on the way, not fixed: `avSig` (ui/avatarui.js) does not
+  include `AV.sub`, so a door that sets the view and calls only `render()`
+  leaves the old view painted. Only the Character door did that, and it is a
+  mark while the view is hidden; it matters again if `AV_ARCH_SHOWN` goes back
+  on.
+- [ ] WI7 Found on the way, not fixed: at 390 the Purpose figure's left label
+  "Community" is cut at the screen's left edge, before and after this change.
+- [ ] WI8 Found on the way, not fixed: on Purpose at 1600 without rails the
+  figure is top aligned and not sticky, so a block under it sits empty while
+  the right column runs on (the symmetry ruling of 16 November). A layout call
+  for the Avatar redesign.

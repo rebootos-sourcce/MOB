@@ -3710,3 +3710,62 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## The Avatar's Purpose view loses both rails, and Archetypes is hidden. Ruled 18 November.
+
+His words, verbatim: "Okay, Amy, for the avatar purpose, let's remove the left
+and right rail. And let's hide the archetype tab under avatar. Archetype. I
+don't know what it's for. I don't know where it came from. I don't know what
+it does. Okay, review this back. And then let's add this to the plate."
+
+Read back to him as four things, and built as the first two:
+
+1. **Purpose has no rails.** On the Avatar page's Purpose view the left rail
+   (Root Energetics, Energy, Psyche, Matrix) and the right rail (Selection)
+   are not drawn, and the centre takes the whole row. One rule in
+   `atuned_src/shell/head.html`, beside the fold rules, keyed on the Purpose
+   view actually being drawn in `#avbody`. Becoming keeps both rails until
+   the Avatar page redesign, already in flight, takes them off everywhere;
+   that was the default taken where he left it open.
+2. **Archetypes is hidden, not deleted.** His word is hide. The pill is gone
+   from the Avatar page, the Discover page's Avatar card now opens Becoming
+   and says so, and the Character page's twelve archetypes are marks with
+   their meaning on hover and tap rather than doors into a page that is not
+   drawn. A view left set to Archetypes paints Becoming. The wheel, the card,
+   the 1 to 5 rating and every rating already saved stay: the record still
+   validates and exports `avatar.arch`. One line turns it all back on,
+   `AV_ARCH_SHOWN` in `atuned_src/ui/avatarui.js`.
+3. **What it was, in plain words** (below), because he asked.
+4. **It is on the plate**: `TASKS.md`, round WI.
+
+### What the hidden view was, for the next reader
+
+- A ring of twelve character patterns (an archetype is a role a person tends
+  to play: the Warrior moves toward a threat and counts the cost later, the
+  Sage stops to work out what is true first). Press one and a card opens: a
+  one line meaning, an Impact box naming the habit that gets in that
+  archetype's way (its saboteur) and where in the body that habit sits, three
+  yes or no rows on how it runs through you, and five buttons, 1 Hardly to 5
+  Fully, for "How much of this is you".
+- Where it came from: his own book's twelve (30 May), then his words on 27
+  September, round HG, "we want to give a scale from one to five. People may
+  not see their full potential, they're a magician as an example, they may
+  not understand it", and 28 September, round JP, "I want the archetypes to
+  be on its own subtab". Round KH took the percentages off. Round RB moved
+  the ratings onto the record. MS22, 17 November, pointed the Character
+  page's twelve at it.
+- What it did: the 1 to 5 rating is saved on the record and nothing else in
+  the app reads it. Measured on the live build c2bf52a2 by the historian seat:
+  all twelve rated 5 and the same story run through gives a reading byte for
+  byte identical to no rating. So hiding it changes no reading, score or
+  ritual.
+- What does move the app, and stays: the web quiz's twelve statements
+  (`archSeedApply`, engine/archseed.js) and the Primary and Secondary picks in
+  the left rail on the Field (`S.arcs`). That is the 11 November ruling, "It's
+  self-reporting of their archetypes, and then as they input their story over
+  time, the reality of those numbers adjust", built 16 November (TA9) on those
+  two inputs and never on this view, which is why the view felt like it had
+  no job.
+- What a person loses while it is hidden: the only screen that sets or shows
+  a 1 to 5 rating, and the only place the Impact box and the "How it runs
+  through you" rows are shown. Nothing replaces them; that is his call.
