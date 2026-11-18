@@ -6957,6 +6957,12 @@ var PCT_KIND={
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
              say:'how much a seat leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
+ /* engine/avatar.js wholeOf, the Avatar's one percent, 18 November: "we're
+    going to use the word whole." Already a whole number 1 to 100 or null,
+    so it rides on nought to a hundred and null prints the dash. complete
+    below is the word it replaces and goes once nothing reads it. */
+ whole:     {lo:0, hi:100, src:'engine/avatar.js', find:'var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));',
+             say:'how much of who you are becoming you have built'},
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'},
  /* engine/seed.js seedShare, how much of what the nine axes carry is still
@@ -12165,6 +12171,115 @@ function avatarProgress(rows){
  var done=list.filter(function(r){return r.gap&&r.gap.clear;}).length;
  return {done:done, total:list.length,
   pct:Math.round(100*done/Math.max(1,list.length))};}
+
+/* ============================================================
+   WHOLE, 18 November. His words: "we're going to use the word whole", and
+   "when a ritual is marked done, it should move the slider." The spec is
+   whole-math/SPEC.md, merged from four seats' papers.
+
+   Measured before this was written, three Avatar percents disagreed: the
+   drill read avatarProgress above (clear pairs only), the Avatar page read
+   avClosure (ui/avatarui.js), which falls when a story lands charge and reads
+   100 off a seat that never carried any, and the Dashboard card drew done over
+   done plus missed, so a missed day pulled it down under a hover that said
+   "loss". A ritual marked done moved none of them. And his belief that the
+   engine had no math for the positive side was only partly true: a reframe
+   line is already kept in meter.unique and already lifts the laws, but no
+   Avatar percent read it.
+
+   So the Whole counts ACTS and never state. Three, each read off the record:
+     released   distinct release lines opened, keys whose channel ends in limit
+     reframed   distinct reframe lines opened, keys whose channel ends in truth
+     practised  distinct days a ritual was marked done, wholeDays below
+   A state (the charge, a seat's load, S.replace) falls when a new story lands,
+   which would teach a person that writing more lowers their number and run
+   the loop backwards. The Field already shows the state.
+
+   It never falls for a miss: a done:false entry adds nothing and subtracts
+   nothing. It only returns to an earlier value when the record is corrected,
+   a press taken back or a ritual deleted, which is the record and not a
+   penalty. Nothing derived is stored, so there is no high water mark to
+   drift from the record. Affirmations get no part of their own: an
+   affirmation is a step in a ritual, and the day that ritual is marked done
+   is the act. A generated line is not an act.
+
+   A measure of what was done, never a reward. No points, no levels, nothing
+   unlocked by it, his 15 November rulings.
+
+   Read at call time, never at load: W is core.js, LINES_PER_CH is schema.js
+   and pracDay and pracSoon are ladder.js, and schema.js and ladder.js load
+   AFTER this file in MANIFEST. Nothing at the top level of this file may
+   touch them, or the const throws in its dead zone and takes every later
+   module with it. WHOLE_R_LINE reads only its own two constants for that
+   reason.
+   ============================================================ */
+/* stated weights, his to change. Release and reframe are one act in two
+   halves (relWrite: "the second half is not optional"), so they are equal.
+   Practise is self report, so it carries the smallest share and is capped. */
+const WHOLE_W={released:0.35, reframed:0.35, practised:0.30};
+/* the avatar's own review month, read off AV_MONTH rather than typed a second
+   time, so a ritual day is exactly one point of the Whole for thirty days */
+const WHOLE_DAYS=Math.round(AV_MONTH/86400000);
+/* the owner's own data point, quoted at compute.js beside LIFT_R: about
+   15,000 patterns raised his CQ, closing 80 percent of the distance */
+const WHOLE_OWNER_LINES=15000, WHOLE_OWNER_CLOSED=0.8;
+/* what one line closes, derived and never typed. His 15,000 is halved because
+   meterPlan walks release and reframe in turn, so half of them were each */
+const WHOLE_R_LINE=1-Math.pow(1-WHOLE_OWNER_CLOSED,1/(WHOLE_OWNER_LINES/2));
+/* the one hover sentence, said once, so no surface explains it a second way */
+const WHOLE_MEANS='Whole is how much of who you are becoming you have built: '
+ +'every pattern you release, every reframe you put in its place, and each day '
+ +'you mark a ritual done, one percent a day for your first thirty days. '
+ +'It only goes up. A missed day takes nothing away.';
+/* the lines there are in one half, release or reframe: both sides of every
+   carrying address, LINES_PER_CH each. Counted at run time so an address
+   added to the map grows the ground without anyone retyping it. */
+function wholeGround(){
+ return W.filter(function(n){return n.cf;}).length*LINES_PER_CH*2;}
+/* THE DAYS THE WHOLE COUNTS. pracDaysAt's rule (done:false is not a day, one
+   key per local day, nothing past tomorrow by pracSoon) and one more: a press
+   stamped more than a day after the day it marks does not count here.
+   ritMarkOn accepts a past day pressed today, so without this a month of the
+   Whole could be bought in one sitting. The streak keeps its own rule and
+   still counts those days; this filter is the Whole's alone. done true, or
+   absent on an entry older than the field, has no stamp and counts. The skip
+   comes before the day is marked seen, so a late press cannot hide an honest
+   entry for the same day. */
+function wholeDays(p,now){
+ var today=pracDay(now||Date.now()), seen={}, out=[];
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false)return;
+  var k=pracDay(x.t); if(!pracSoon(k,today)||seen[k])return;
+  if(typeof x.done==='string'){var dk=pracDay(x.done); if(dk!==null&&dk-k>1)return;}
+  seen[k]=1; out.push(k);});
+ return out.sort(function(a,b){return b-a;});}
+/* release and reframe on the owner's own curve, normalised to the ground there
+   is, so every line in a half opened reads exactly one and a line opened twice
+   counts once. Distinct keys and not relLines or truthLines, because those
+   rise on a rerun and a rerun is not a new act. */
+function wholeSat(n){return 1-Math.pow(1-WHOLE_R_LINE,n);}
+function wholeOf(p,now){
+ var uq=(p&&p.meter&&Array.isArray(p.meter.unique))?p.meter.unique:[];
+ var seen={}, R=0, I=0;
+ uq.forEach(function(k){
+  if(typeof k!=='string'||seen[k])return; seen[k]=1;
+  var ch=k.split(':')[1]||'';
+  if(/limit$/.test(ch))R++; else if(/truth$/.test(ch))I++;});
+ var D=wholeDays(p,now).length, G=wholeGround(), n={R:R, I:I, D:D, G:G};
+ /* nothing done is unread and prints the dash. Never a 0, because a 0 says it
+    was read and came to nothing, and a default is not a reading. */
+ if(!(R+I+D))return {pct:null, v:null, parts:null, n:n, reason:'unread'};
+ var top=wholeSat(G);
+ var parts={released:Math.min(1,wholeSat(R)/top), reframed:Math.min(1,wholeSat(I)/top),
+  practised:Math.min(1,D/WHOLE_DAYS)};
+ var v=WHOLE_W.released*parts.released+WHOLE_W.reframed*parts.reframed
+  +WHOLE_W.practised*parts.practised;
+ /* rules on the printed figure, never on an input. A real act shows at least
+    1, because fmtPct prints a nought as the dash and the dash would say
+    nothing happened. And 100 is printed only when everything is done, so a
+    v of 0.996 shows 99 and never claims the top it has not reached. */
+ var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));
+ return {pct:pct, v:v, parts:parts, n:n, reason:'read'};}
 
 /* ============================================================
    THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
@@ -27741,6 +27856,10 @@ if(typeof module!=='undefined'&&module.exports){
                  purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+                 wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
+                 WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
+                 WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
+                 WHOLE_MEANS:WHOLE_MEANS,
                  AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
                  avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,

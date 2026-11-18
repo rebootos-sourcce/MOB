@@ -11374,5 +11374,160 @@ g('MS25 · no two masks are read off the same seats');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
 }
 
+/* WHOLE, 18 November: "we're going to use the word whole", and "when a ritual
+   is marked done, it should move the slider." One check per acceptance line
+   of whole-math/SPEC.md, A1 to A16. A17 is hostfree.py on the build and is
+   also asserted here on the functions' own text; A18 needs the call sites
+   switched and belongs to the functional gate of the job that switches them.
+   Every check was run against a mutant of engine.js first and seen to fail:
+   a miss that subtracts, a release that does not move it, a ritual counted
+   twice, a press with no day dedupe, a random term, a decimal percent, 0 for
+   unread, an unbounded sum, the self report cap removed, the backfill rule
+   removed, the clock rule removed and the 100 ceiling removed. Profiles are
+   fictional and built here from the blank. */
+g('WHOLE · the Avatar\'s one percent, read from acts');
+{
+ const {wholeOf,wholeDays,wholeGround,WHOLE_W,WHOLE_DAYS,WHOLE_R_LINE,WHOLE_MEANS,
+        WHOLE_OWNER_LINES,WHOLE_OWNER_CLOSED,AV_MONTH,LINES_PER_CH,meterKey,
+        blankProfile,validateProfile,pracDays,fmtPct,PCT_DASH,PCT_KIND}=E;
+ /* local midday, so a day key never sits on a midnight in any zone the gate
+    runs in */
+ const NOW=new Date(2026,10,18,12).getTime();
+ const day=i=>new Date(2026,10,18-i,12).toISOString();
+ const did=(i,stamp)=>({t:day(i), done:stamp===undefined?day(i):stamp});
+ const cf=W.filter(n=>n.cf);
+ const rk=(j,ch)=>meterKey(cf[j%cf.length].i,ch,Math.floor(j/cf.length)%LINES_PER_CH);
+ const mk=()=>{const p=blankProfile('whole'); p.meter.unique=[]; p.rituals=[]; return p;};
+ const V=p=>wholeOf(p,NOW).v;
+ const fn=['wholeOf','wholeDays','wholeGround'].map(k=>String(E[k])).join('\n');
+ ok(typeof wholeOf==='function'&&typeof wholeDays==='function'&&typeof wholeGround==='function',
+  'wholeOf, wholeDays and wholeGround are exported');
+ /* the constants are derived where the spec says derived, never retyped */
+ ok(WHOLE_DAYS===AV_MONTH/86400000,'the practised month is the avatar\'s own month, '+WHOLE_DAYS+' days');
+ ok(wholeGround()===cf.length*LINES_PER_CH*2,'the ground is both sides of every carrying address, read at run time, '+wholeGround());
+ near(Math.pow(1-WHOLE_R_LINE,WHOLE_OWNER_LINES/2),1-WHOLE_OWNER_CLOSED,1e-9,
+  'half the owner\'s lines close his share of the distance on the per line rate');
+ near(WHOLE_W.released+WHOLE_W.reframed+WHOLE_W.practised,1,1e-12,'the three weights make one');
+ ok(PCT_KIND.whole&&PCT_KIND.whole.src==='engine/avatar.js','PCT_KIND carries whole, cited to engine/avatar.js');
+ ok(typeof WHOLE_MEANS==='string'&&WHOLE_MEANS.indexOf('Whole')===0&&!/\u2014/.test(WHOLE_MEANS),'the hover is one string, starts with its word, no em dash');
+
+ /* A1 */
+ const b=wholeOf(mk(),NOW);
+ ok(b.pct===null&&b.v===null&&b.reason==='unread'&&b.parts===null,'A1 a blank profile is unread, pct null, '+JSON.stringify(b));
+ ok(fmtPct('whole',b.pct)===PCT_DASH,'A1 and prints the dash, never 0%: '+fmtPct('whole',b.pct));
+ /* A2 */
+ const p2=mk(); p2.rituals.push(did(0)); const w2=wholeOf(p2,NOW);
+ ok(w2.v===0.01&&w2.pct===1&&w2.reason==='read','A2 one ritual done on its own day is exactly 0.01 and 1%, '+w2.v+' '+w2.pct);
+ const p2b=mk(); p2b.meter.unique=[rk(0,'Llimit'),rk(1,'Rtruth')]; p2b.rituals=[did(3)];
+ const v2b=V(p2b); p2b.rituals.push(did(0));
+ near(V(p2b)-v2b,0.01,1e-12,'A2 and one more day is one point on a profile that already has acts');
+ /* A3 */
+ const p3=mk(); p3.rituals=[did(0),did(0),{t:day(0),done:true}];
+ ok(V(p3)===w2.v,'A3 three presses on one day read as one day, '+V(p3));
+ /* A4 */
+ const p4=mk(); p4.rituals=[did(10)];
+ const v4=V(p4);
+ for(let i=0;i<10;i++)p4.rituals.push({t:day(i),done:false});
+ ok(V(p4)===v4&&wholeOf(p4,NOW).pct===1,'A4 ten missed days after one done still read 1%, '+V(p4));
+ const p4b=mk(); p4b.meter.unique=[rk(2,'Llimit')]; const v4b=V(p4b);
+ p4b.rituals.push({t:day(0),done:false});
+ ok(V(p4b)===v4b,'A4 a miss added to a profile with a release moves nothing');
+ /* A5 and A6, on one profile with the halves level, so the two moves compare */
+ const p5=mk(); p5.meter.unique=[rk(0,'Llimit'),rk(1,'Rlimit'),rk(0,'Ltruth'),rk(1,'Rtruth')]; p5.rituals=[did(2)];
+ const v5=V(p5);
+ const pr=JSON.parse(JSON.stringify(p5)); pr.meter.unique.push(rk(7,'Llimit'));
+ const pt=JSON.parse(JSON.stringify(p5)); pt.meter.unique.push(rk(7,'Ltruth'));
+ ok(V(pr)>v5,'A5 one new release line raises the Whole, '+v5+' to '+V(pr));
+ ok(V(pt)>v5&&V(pt)-v5===V(pr)-v5,'A6 one new reframe line raises it by the same as one release line, '+(V(pt)-v5)+' and '+(V(pr)-v5));
+ /* A7 */
+ const p7=JSON.parse(JSON.stringify(p5)); p7.meter.unique.push(p7.meter.unique[0],p7.meter.unique[2]);
+ p7.meter.relLines=(p7.meter.relLines||0)+40; p7.meter.truthLines=(p7.meter.truthLines||0)+40; p7.meter.lines=(p7.meter.lines||0)+80;
+ ok(V(p7)===v5,'A7 a duplicate key or a rise in the line counts with no new key moves nothing, '+V(p7));
+ /* A8 */
+ const p8=mk(); for(let i=0;i<1000;i++)p8.rituals.push(did(i));
+ const w8=wholeOf(p8,NOW);
+ ok(w8.pct===30&&w8.parts.practised===1&&w8.n.D===1000,'A8 a thousand days marked done with no lines read 30%, '+w8.pct+' '+w8.parts.practised);
+ /* A9 */
+ /* from two days back: yesterday pressed today is inside the one day of
+    slack the spec's own rule allows, and is checked as such below */
+ const p9=mk(); for(let i=2;i<=31;i++)p9.rituals.push(did(i,day(0)));
+ ok(wholeOf(p9,NOW).pct===null&&wholeDays(p9,NOW).length===0,'A9 thirty past days pressed today buy nothing, '+wholeOf(p9,NOW).pct);
+ ok(pracDays(p9,NOW).length===30,'A9 and the streak still counts them by its own rule, '+pracDays(p9,NOW).length);
+ const p9b=mk(); p9b.rituals=[did(1,day(0))];
+ ok(V(p9b)===0.01,'A9 a press stamped the day after still counts, the slack the streak allows');
+ const p9c=mk(); p9c.rituals=[did(2,day(0)),did(2)];
+ ok(V(p9c)===0.01,'A9 a late press does not hide an honest entry for the same day');
+ /* A10 */
+ const p10=mk(); p10.rituals=[did(-5)];
+ ok(wholeOf(p10,NOW).pct===null,'A10 a ritual dated five days ahead adds nothing');
+ const p10b=mk(); p10b.rituals=[did(-1)];
+ ok(V(p10b)===0.01,'A10 and tomorrow, the one day of clock slack, still counts');
+ /* A11 and A14, a seeded walk. Mulberry32, so the walk is the same on every run */
+ let seed=0x5eed1118; const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+ const p11=mk(); let prev=0, fell=[], outside=[];
+ for(let i=0;i<400;i++){
+  const r=rnd(), j=Math.floor(rnd()*cf.length*LINES_PER_CH), d=Math.floor(rnd()*60)-1;
+  if(r<0.3)p11.meter.unique.push(rk(j,rnd()<0.5?'Llimit':'Rlimit'));
+  else if(r<0.6)p11.meter.unique.push(rk(j,rnd()<0.5?'Ltruth':'Rtruth'));
+  else if(r<0.8)p11.rituals.push(did(d));
+  else p11.rituals.push({t:day(d),done:false});
+  const v=V(p11)||0; if(v<prev)fell.push(i+': '+prev+' to '+v); if(v<0||v>1)outside.push(i+': '+v); prev=v;}
+ ok(fell.length===0,'A11 across 400 random acts the Whole never falls, '+JSON.stringify(fell.slice(0,3)));
+ ok(outside.length===0,'A14 and never leaves nought to one, '+JSON.stringify(outside.slice(0,3)));
+ /* A12 */
+ const p12=JSON.parse(JSON.stringify(p5)); const v12=V(p12);
+ p12.rituals.push(did(0)); const up=V(p12);
+ p12.rituals[p12.rituals.length-1].done=false;
+ ok(up>v12&&V(p12)===v12,'A12 a press taken back returns the Whole exactly to before it, '+v12+' '+up+' '+V(p12));
+ p12.rituals.pop();
+ ok(V(p12)===v12,'A12 and so does a ritual deleted');
+ /* A13 */
+ const s1=wholeOf(p11,NOW), s2=wholeOf(p11,NOW);
+ const sh=JSON.parse(JSON.stringify(p11)), shuf=a=>{for(let i=a.length-1;i>0;i--){const k=Math.floor(rnd()*(i+1));[a[i],a[k]]=[a[k],a[i]];}};
+ shuf(sh.meter.unique); shuf(sh.rituals);
+ ok(JSON.stringify(s1)===JSON.stringify(s2)&&wholeOf(sh,NOW).v===s1.v,'A13 the same record read twice and its acts shuffled read the same, '+s1.v);
+ const before=JSON.stringify(p11); wholeOf(p11,NOW);
+ ok(JSON.stringify(p11)===before,'A13 and reading writes nothing back to the record');
+ /* A14 */
+ const G=wholeGround(), pa=mk(), all=[];
+ cf.forEach(n=>['Llimit','Rlimit','Ltruth','Rtruth'].forEach(ch=>{for(let l=0;l<LINES_PER_CH;l++)all.push(meterKey(n.i,ch,l));}));
+ pa.meter.unique=all.slice(); for(let i=0;i<WHOLE_DAYS;i++)pa.rituals.push(did(i));
+ const wa=wholeOf(pa,NOW);
+ ok(wa.v===1&&wa.pct===100&&wa.n.R===G&&wa.n.I===G,'A14 every line and a month of days is exactly one and 100%, '+wa.v);
+ const pb=JSON.parse(JSON.stringify(pa)); pb.meter.unique=pb.meter.unique.filter(k=>k!==all[0]);
+ const wb=wholeOf(pb,NOW);
+ ok(wb.v<1&&Math.round(100*wb.v)===100&&wb.pct===99&&fmtPct('whole',wb.pct)==='99%',
+  'A14 one line short rounds to 100 and is printed 99%, never the top it has not reached, '+wb.v+' '+wb.pct);
+ /* the spec's own 0.996: every reframe line and a month of days, and just
+    enough release lines to land the Whole there. The count is found by
+    walking the release keys, so the check does not lean on the formula. */
+ const lim=all.filter(k=>/limit:/.test(k)), pc=JSON.parse(JSON.stringify(pa));
+ const tru=all.filter(k=>/truth:/.test(k));
+ let lo=0, hi=lim.length;
+ while(lo<hi){const m=(lo+hi)>>1; pc.meter.unique=tru.concat(lim.slice(0,m)); if(V(pc)<0.996)lo=m+1; else hi=m;}
+ pc.meter.unique=tru.concat(lim.slice(0,lo)); const wc=wholeOf(pc,NOW);
+ ok(wc.v>=0.996&&wc.v<0.9961&&wc.pct===99&&fmtPct('whole',wc.pct)==='99%','A14 v = 0.996 prints 99%, '+wc.v+' '+wc.pct);
+ /* A15 */
+ const p15=mk(); p15.meter.unique=[rk(3,'Rlimit')]; const w15=wholeOf(p15,NOW);
+ ok(w15.v>0&&w15.v<0.005&&w15.pct===1&&fmtPct('whole',w15.pct)==='1%','A15 one release line prints 1%, not the dash, '+w15.v);
+ /* the profiles that land between whole numbers, since one that lands on a
+    whole number cannot tell a rounded percent from a decimal one: a mutant
+    printing 100*v passed every other check here */
+ const between=[w2,w8,wa,wb,wc,w15,wholeOf(p2b,NOW),wholeOf(p5,NOW),wholeOf(pr,NOW),wholeOf(p11,NOW)];
+ ok(between.some(w=>!Number.isInteger(100*w.v)),'A15 the set below carries a value between two whole percents');
+ ok(between.every(w=>Number.isInteger(w.pct)&&w.pct>=1&&w.pct<=100),'A15 every printed Whole is a whole number 1 to 100, '+between.map(w=>w.pct).join(' '));
+ /* A16 */
+ const old=mk(); delete old.meter.unique; delete old.rituals; delete old.avatar;
+ const vo=validateProfile(JSON.parse(JSON.stringify(old)));
+ ok(vo.ok&&Array.isArray(vo.profile.meter.unique)&&Array.isArray(vo.profile.rituals)&&vo.profile.avatar&&vo.profile.avatar.built===false,
+  'A16 an older record with no lines, no rituals and no avatar loads, filled from the blank, '+JSON.stringify(vo.errs||[]));
+ ok(vo.ok&&wholeOf(vo.profile,NOW).pct===null&&fmtPct('whole',wholeOf(vo.profile,NOW).pct)===PCT_DASH,'A16 and reads the dash');
+ ok(wholeOf(null,NOW).pct===null&&wholeOf({},NOW).pct===null&&wholeOf({meter:{unique:'x'},rituals:[null,5]},NOW).pct===null,
+  'A16 a missing or malformed record reads unread and does not throw');
+ /* A17, beside hostfree.py on the build */
+ ok(!/\b(document|window|navigator|localStorage|sessionStorage|fetch)\b/.test(fn),'A17 the Whole touches no host');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);
