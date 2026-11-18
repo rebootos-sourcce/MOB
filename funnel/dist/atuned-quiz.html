@@ -7215,8 +7215,8 @@ var UNPACK_BASE={
  'gene key':'A gene key is the gate the sun stood in on your birth day, read for its shadow, its gift and its highest form.',
 
  /* THE SEATS */
- 'seat':'An assemblage point, or point for short, is one of seven places along the middle of your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
- 'assemblage point':'An assemblage point, or point for short, is one of seven places along the middle of your body where the instrument reads what is held.',
+ 'seat':'An assemblage point, or point, is one of seven places along your body, from the base of the spine to the top of the head, where the instrument reads what is held.',
+ 'assemblage point':'An assemblage point, or point, is one of seven places along the middle of your body where the instrument reads what is held.',
  'seat:root':'Root is the point at the base of the spine, and it holds what you stand on.',
  'seat:sacral':'Sacral is the point in the lower belly, and it holds what you want.',
  'seat:solar':'Solar is the point in the upper belly behind the stomach, and it holds what you carry.',
@@ -27501,10 +27501,13 @@ var DLY_NOTE_PHRASES=['divine energy','cosmic destiny','soul evolution','spiritu
 /* THE CANON WORDS, the owner's own, and the wisdom school entry each one
    points at. A word with no entry has t null, and that is content for the copy
    seat and not a defect here: a search of the wisdom school on 1 October
-   finds no entry for soul, spiritual or energy. seat points at Chakra, whose
-   entry begins "A seat." */
+   finds no entry for soul, spiritual or energy. point points at Chakra, the
+   entry that says the chakra is an assemblage point. */
 var DLY_CANON=[{w:'soul',t:null},{w:'spiritual',t:null},{w:'source',t:'Source'},{w:'energy',t:null},
- {w:'seat',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
+ /* w is the word as a sentence prints it, so it follows the screen: the
+    sentences say point since 18 November ("Change seat and chakra to just
+    point"), and a w left at seat matched nothing and linked nothing. */
+ {w:'point',t:'Chakra'},{w:'charge',t:'Charge'},{w:'coherence',t:'Coherence'},{w:'address',t:'Address'}];
 
 /* ---------------- the templates ----------------
    src is the strongest provenance a template may carry, and a statement may be
