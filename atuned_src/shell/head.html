@@ -714,6 +714,52 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    that has seven tabs to fit, because it sizes to its longest profile name. */
 .top #psel{max-width:190px;min-width:0}
 .top::-webkit-scrollbar{display:none}
+/* THE BAR CARRIES ITS MENU'S LAYER WHILE THE MENU IS OUT, 18 November. The
+   owner: "Fix lighting menu hidden behind the Dashboard panels". The menu was
+   always z-index 60, and that number only ever worked by accident: in Dark,
+   Snow, Punch, Flat and Lumen the bar is not a stacking context, so the
+   menu's 60 was ranked straight against the tab hosts' 5 inside .app and
+   won. Glass white puts a backdrop-filter on every .glass, the bar is
+   class="glass top", and a backdrop-filter makes the bar its own stacking
+   context at z-index auto. From then the 60 ranked the menu inside the bar
+   and nowhere else, the bar as a whole tied #stage and #rpanel at auto, and a
+   tie paints in tree order, so the stage and the right rail, later in the
+   document, painted over all seven lightings: measured on the Dashboard at
+   1600, every option's centre hit the Imprints strip or the Release panel.
+   Any lighting that gives .glass a filter, a transform, an opacity under one
+   or isolation does the same, which is why the fix is on the bar and not on
+   one lighting's block.
+
+   Only while a menu is out, and that is deliberate. A bar raised for good
+   would also rise over the Release overlay on the Discover journal page,
+   where #stage is isolated and #rel's own 90 is ranked inside it, so the bar
+   would sit on top of a release in progress in Dark. While a menu is out
+   nothing else can be open over the bar, because either menu shuts on the
+   first click anywhere else. 60 is the menu layer this file already uses for
+   .gmenu, .pmenu and the tip, under .sheet's 70 and the overlays' 90 and up,
+   so the layer order is the one the product already had. */
+.top:has(.gmenu:not([hidden])){position:relative;z-index:60}
+/* AND THE MENU HANGS, IT DOES NOT PUSH. The glass group rule further up lists
+   .gmenu among the panes it sets position:relative, and body.glass .gmenu
+   out-ranks .gmenu{position:absolute}, so in Glass the lighting menu sat in
+   the bar's own flow: opening it took the bar from 57 to 160 pixels at 1600
+   and shoved the whole page down, and the phone's profile loader took the bar
+   from 108 to 688. A menu in this bar always hangs from its wrap; the extra
+   class is the specificity that says so in every lighting, including one
+   added to the group rule later. */
+.top .gwrap>.gmenu{position:absolute}
+/* AND IN THE TWO GLASS LIGHTINGS THE MENU STANDS ON A FLOOR. The menu's wash
+   is a 78 percent tint of --panel and the blur behind it is what makes it
+   read, the glass menu's own comment below says so. But the same
+   backdrop-filter that made the bar a stacking context makes it the menu's
+   backdrop root, so the menu's blur sees only the bar and never the page.
+   Once the menu was on top, the page read straight through it, unblurred:
+   the Release heading printed across Flat and Lumen at 1600 in Glass white,
+   the dark stage greyed every name in the phone's profile list. --panel is
+   55 and 62 percent opaque in these two, so the tint is laid on --bg here,
+   which is what the blur would have shown over a plain ground. */
+body.glass .top .gwrap>.gmenu,body.glasswhite .top .gwrap>.gmenu{
+ background:linear-gradient(color-mix(in srgb,var(--panel) 78%,transparent) 0 0),var(--bg)}
 /* THE MESSAGE DOCK, 2 October. The status region left the navigation bar: it
    printed under the secondary navigation, took the whole bar with it on a
    desktop window (measured 0px wide tabs at 1600 with one "Saved." up, which

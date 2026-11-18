@@ -570,6 +570,33 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · the lighting menu on the Dashboard
+
+said: "Fix lighting menu hidden behind the Dashboard panels"
+read: the sun menu's list painted under the page, so its choices could not
+be seen or pressed. Reproduced, and it was one lighting's doing: Glass white
+gives every .glass a backdrop-filter, the bar is class="glass top", and that
+made the bar its own stacking context, so the menu's z-index 60 ranked it
+inside the bar only. #stage and #rpanel come later in the document and paint
+over it, on every surface but the Field, at every width. The phone's profile
+list, the bar's other menu, was covered the same way. In Glass the same menu
+sat in the bar's flow and pushed the page down while open.
+change: shell/head.html, one block after the bar's rules. The bar takes the
+menu layer, 60, only while one of its menus is open (a bar raised for good
+would also sit on top of a release in progress on the Discover journal page,
+measured); the bar's menus always hang rather than push; and in Glass and
+Glass white the menu's tint is laid on the ground, because the bar is also
+the menu's backdrop root and its blur cannot see the page. tests/lightmenu.js
+is new: every lighting LIGHTINGS lists, every surface TABDEF and TABEXTRA
+name, 1600 and 390, each option the topmost thing at its centre and the bar
+the same height open and shut. Branch fix/lighting-menu-layer.
+measure: on the c2bf52a2 build the new gate fails Glass white on every
+surface but the Field at both widths, and Glass on the bar's height; a copy
+of this build without the bar's rule fails Glass and Glass white; this build
+passes. Not fixed here, filed: at about 800 wide with a profile loaded the
+menu opens past the window's left edge, and the sun button's own tooltip can
+sit over Flat and Lumen while the pointer rests on it.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
