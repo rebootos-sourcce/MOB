@@ -86,3 +86,125 @@ var CHALLENGE={
   when:'When something lands that you did not see coming.'},
  'Anticipation':{act:'Catch yourself bracing for what has not happened. Breathe out, and do the next thing in front of you.',
   when:'When you are already braced for the worst.'}};
+
+/* ============================================================
+   THE AFFIRMATION GENERATOR'S WORDS, 18 November. His words: "This is a small
+   affirmation engine utility that I want added to the ritual builder. We'll
+   use this to generate high quality affirmations." And the same day, the
+   story: Source AI "will spot my avatar's intentions and then generate high
+   quality affirmations. That a person can add to the ritual."
+
+   His package wrote one line per point, Root to Crown, each opening on a
+   locked anchor. The anchors below are his, word for word and in his order.
+   The package never read its own anchor field: it wrote the anchor into each
+   template by hand and then, under Creator Mode, lowercased the first letter
+   of every line, so "I magnetize" printed as "i magnetize" on every theme.
+   Here every line is built from AFF_ANCHOR and engine/affirmgen.js throws
+   rather than emit a line that does not open on it in exact case.
+
+   THE WRAPPER is his too, word for word, capital I kept. The control that
+   turns it on is called All that is and not Creator Mode, because Creator is
+   already an archetype name (ARCH, canon.js) and the rule is one word per
+   concept. Its hover carries his full words.
+
+   THE FRAMES REPLACED HIS SEVEN TEMPLATES. Five of the seven were
+   manifestation register ("into tangible reality", "manifesting", "highest
+   vision") and all seven broke on anything but a bare noun: "I speak to ask
+   for help into tangible reality". A theme is read for its shape first
+   (engine/affirmgen.js, affShape) and each shape has its own frame per point.
+   Each frame is a core, which holds the anchor and the theme, and a tail, a
+   body image or a closing clause. Under All that is the tail drops and the
+   core never does: the wrapper alone is 73 characters, and a full line ran
+   past three rows at 390. A line is a claim a body can check, the same test
+   the AFFIRM lines above are held to, so the tails name the floor, the chest
+   and the next step, never a wish.
+
+   HIS DEFAULT SET IS GONE. Seven money lines showed on open and on an empty
+   box. Nobody asked for them and nothing marked them as composed, so an empty
+   box now composes nothing.
+
+   Content and not code, and the voice seat owns AFF_ADJ, AFF_VOICE and the
+   frames' wording: a word can be added here and nothing else moves.
+   ============================================================ */
+var AFF_ANCHOR=['I am','I magnetize','I command','I receive','I speak','I foresee','I empower'];
+var AFF_PRE='I am the creator of all that is, ';
+var AFF_SUF=' across all space, time, and dimensions.';
+/* what a refusal says. Each one names what to write instead, because a box
+   that only says no teaches nothing. safety is not here on purpose: a trip
+   prints CRISIS_SAY.entryNow (engine/data/crisis.js) and never a copy of it. */
+var AFF_SAY={
+ empty:'Write who you are becoming, or one word for it.',
+ shape:'Write who you are becoming, or one word for it.',
+ sentence:'Say it as something you do.',
+ gerund:'Say it as something you do, starting with "to".',
+ list:'One at a time. Pick the one that matters today.',
+ long:'Too long for one line. Use twelve words or fewer.',
+ toward:'Say what you are moving toward.',
+ thin:function(w){return '"'+w+'" names nothing your body can check. Name one quality.';},
+ person:function(w){return 'An affirmation is about you. Name what you bring to your '+w+': patience, time, honesty.';},
+ flip:function(w,o){return '"'+w+'" is what you release. Its opposite is '+o+'. Use '+o+'?';}};
+/* THE QUALITY TABLE, adjective to its noun. A word here reads as a state and
+   takes the adjective frames; any other short theme is a noun and keeps its
+   own part of speech, so "clarity" is never silently turned into "clear".
+   "whole" is left out on purpose: Whole is the Avatar's percent. */
+var AFF_ADJ={calm:'calm', clear:'clarity', patient:'patience', honest:'honesty', brave:'courage',
+ steady:'steadiness', focused:'focus', rested:'rest', confident:'confidence', grounded:'groundedness',
+ present:'presence', ready:'readiness', worthy:'worth', open:'openness', even:'evenness', awake:'wakefulness'};
+/* the qualities that read as a voice, "I speak in a calm voice". The rest
+   speak from a body, "I speak from a rested body", because a rested voice is
+   not a thing a throat can check */
+var AFF_VOICE={calm:1, clear:1, patient:1, honest:1, steady:1, confident:1, even:1};
+/* words that name nothing a body can check. "good" in seven frames is seven
+   lines that say nothing. */
+var AFF_THIN={good:1, better:1, best:1, nice:1, fine:1, things:1, stuff:1, everything:1, more:1};
+/* someone else as the theme. An affirmation is about the person saying it. */
+var AFF_PERSON=/^(my|our) (son|daughter|kids|children|partner|wife|husband|mother|father|mom|dad|boss|team|friend|friends|family|brother|sister|landlord)$/i;
+/* THE GENERATOR'S OWN STOP, and why srcSafe is not enough here. srcSafe asks
+   whether a hit is the writer's own and said without a no, which is right for
+   a story: "I would never kill myself" is not a statement to meet. It is wrong
+   for a generator, because a Become line is written in recovery phrasing, and
+   "Someone who no longer wants to die" passes srcSafe as denied and would then
+   be chanted seven times. Measured, R2: with srcSafe alone the shaper's own
+   refusal hid the gap, because that line is a negative and was told "Say what
+   you are moving toward", which is the wrong thing to say to that person.
+   These run word edged and with no reading of polarity, after srcSafe and any
+   safeOf hit. The cost is chosen and counted in the gate: "finish the shift
+   and end it on time" trips and shows one line instead of seven. */
+var AFF_STOP=[/\b(hurt|hurting|harm|harming|kill|killing|cut|cutting)\s+(myself|me|my\s+(arms?|wrists?|skin|body))\b/i,
+ /\bself[\s-]?harm/i, /\bsuicid/i, /\b(want|wants|wanting|wanted)\s+to\s+die\b/i, /\bwish\s+i\s+(was|were)\s+dead\b/i,
+ /\bend\s+(it|it all|my life|things)\b/i, /\boverdose/i, /\bcutting\s*$/i, /\bnot\s+(be\s+)?here\s+any\s*more\b/i];
+/* THE FRAMES, one per point per shape, each returning [core, tail]. vp is a
+   verb phrase (vb its base, v1 its first person form), np a whole someone
+   line kept as written, adj a quality from AFF_ADJ, n a short noun. */
+var AFF_FRAMES={
+ vp:[function(s){return ['I am built to '+s.vb,''];},
+  function(s){return ['I magnetize what it takes to '+s.vb,''];},
+  function(s){return ['I command my body to '+s.vb,''];},
+  function(s){return ['I receive what I need to '+s.vb,', and my chest stays open'];},
+  /* "I speak it out loud: I ask for help out loud" said out loud twice */
+  function(s){return [(/\b(out loud|aloud)\b/.test(s.vb)?'I speak it plainly: I ':'I speak it out loud: I ')+s.v1,''];},
+  function(s){return ['I foresee the next step to '+s.vb,', and I take it'];},
+  function(s){return ['I empower myself to '+s.vb,''];}],
+ np:[function(s){return ['I am '+s.np,''];},
+  function(s){return ['I magnetize what it takes to be '+s.np,''];},
+  function(s){return ['I command my body to act as '+s.np,''];},
+  function(s){return ['I receive the room to be '+s.np,''];},
+  function(s){return ['I speak it out loud: I am '+s.np,''];},
+  function(s){return ['I foresee the next step toward being '+s.np,''];},
+  function(s){return ['I empower myself to be '+s.np,''];}],
+ adj:[function(s){return ['I am '+s.a,', with both feet on the floor'];},
+  function(s){return ['I magnetize what keeps me '+s.a,''];},
+  function(s){return ['I command my body to stay '+s.a,''];},
+  function(s){return ['I receive the day as it comes and stay '+s.a,''];},
+  function(s){return [AFF_VOICE[s.a]?'I speak in '+affArt(s.a)+s.a+' voice':'I speak from '+affArt(s.a)+s.a+' body',''];},
+  function(s){return ['I foresee myself '+s.a+' in the room that tests me',''];},
+  function(s){return ['I empower myself to stay '+s.a+' among the people I belong to',''];}],
+ n:[function(s){return ['I am the ground '+s.n+' grows from',''];},
+  function(s){return ['I magnetize '+s.n,', and I let the want show'];},
+  function(s){return ['I command my body toward '+s.n,''];},
+  function(s){return ['I receive '+s.n,', and my chest stays open'];},
+  function(s){return ['I speak about '+s.n+' out loud',''];},
+  function(s){return ['I foresee the next step toward '+s.n,', and I take it'];},
+  function(s){return ['I empower myself and the people I belong to toward '+s.n,''];}]};
+/* the article a quality takes, "an honest voice" */
+function affArt(a){return /^(a|e|i|o|u|hon)/i.test(a)?'an ':'a ';}
