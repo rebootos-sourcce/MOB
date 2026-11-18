@@ -24,7 +24,8 @@
    22 and 33 survive reduction at every step, including inside a
    single name part, because a master reduced is a master lost.
 
-   KARMIC DEBT is reported off the unreduced total and not inferred.
+   KARMIC DEBT is reported off the reduction itself and not inferred:
+   the total and every step it passes through on the way to one digit.
    13, 14, 16 and 19 are the four, and a 4 that came from 13 is not
    the same 4 as one that came from 22.
 
@@ -102,7 +103,18 @@ function numAcross(parts,mode){
  return {each:each, byPart:numReduce(each.reduce(function(a,v){return a+v;},0)),
   flatTotal:flat, flat:numReduce(flat)};}
 
-function numDebt(total){return NUM_DEBT.indexOf(total)>=0?total:null;}
+/* DEBT IS READ OFF EVERY STEP OF THE WAY DOWN, not off the total alone. This
+   compared only the unreduced total against the four, so 85, which reduces
+   85 to 13 to 4, reported no debt while passing straight through 13, and a
+   bare 13 was the only route to one. The walk stops at the first of the four
+   it lands on. It ignores the master stop on purpose: a master reduces to a
+   single digit in one step and so cannot reach a debt number below it. */
+function numDebt(total){
+ var v=Math.abs(total|0);
+ while(v>9){
+  if(NUM_DEBT.indexOf(v)>=0)return v;
+  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);}
+ return null;}
 
 /* what each number does, by the position it is standing in. The same digit is
    not the same statement in the soul as it is in the personality: one is what

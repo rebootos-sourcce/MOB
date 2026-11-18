@@ -3361,6 +3361,20 @@ g('26 \u00b7 numerology, in full');
  NUM_DEBT.forEach(function(d){ok(numReduce(d)===numReduce(d),'debt '+d+' is a real total');});
  ok(numerology('Aa','1980-01-01').debt===null,'a total that is not one of the four is not a debt');
 
+ /* AND A DEBT PASSED THROUGH IS STILL A DEBT. Only the unreduced total was
+    compared, so a name totalling 85 reduced 85 to 13 to 4 and reported none.
+    Z is 8 and E is 5, so these totals are fixed by the letters and do not
+    lean on any roster. 63 is the control: it goes straight to 9 and touches
+    none of the four, so a fix that reported debt everywhere fails it. */
+ const d85=numerology('Zzzzzzzzzz E','1980-01-01');
+ ok(d85.expressionTotal===85,'the debt probe totals 85, so the check below tests what it says');
+ ok(d85.debt===13,'85 passes through 13 on the way to 4, and reports debt 13');
+ const d63=numerology('Zzzzzzz G','1980-01-01');
+ ok(d63.expressionTotal===63,'the control totals 63');
+ ok(d63.debt===null,'63 reduces straight to 9 and reports no debt');
+ ok(numerology('Zzzzzzz Fe','1980-01-01').debt===13,
+  'a part that halts on the master 11 does not hide the whole name passing 67 to 13');
+
  /* PURE. Same name in, same numbers out, and nothing read from shared state. */
  const a1=numerology('Diane Elizabeth Halloran','1980-11-02');
  S.doms=[5]; buildSoul(); compute();
