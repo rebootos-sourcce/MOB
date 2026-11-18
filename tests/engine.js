@@ -5500,6 +5500,31 @@ g('36g · the Kundalini rise, ported from proto/avatar/rise.js, 27 October');
   ok(lv.bigger==='law'||lv.bigger==='release'||lv.bigger==='level','bigger names one of the two levers or a tie, got '+lv.bigger);
  }
 
+ /* THE LAW LEVER IS THE ENGINE'S OWN RECOMPUTE, WITH S.addr IN. riseLevers
+    carried its own copy of the held line and that copy predated the
+    named-address layer, so on a field whose stories named Heart addresses it
+    claimed +0.160 where raising the same law and recomputing moved the seat
+    +0.006. Checked both ways: the lever must equal seatTrans after the real
+    move, and with every law already at 10 the move is a no-op, so the lever
+    must read exactly where seatTrans reads now. reset() does not clear
+    S.addr, so this restores it on the way out. */
+ {
+  const addrWas=S.addr, seat='Heart';
+  const heavy=()=>{S.addr={};W.filter(n=>n.b===seat&&n.cf).forEach(n=>{S.addr[n.i]=5;});compute();};
+  reset(2,0,4); heavy();
+  const now=seatTrans(seat), lv=riseLevers(seat);
+  const wk=lv.law.nm, was=S.law[wk];
+  S.law[wk]=Math.min(10,was+2); compute();
+  const real=seatTrans(seat);
+  S.law[wk]=was; compute();
+  near(lv.law.to,real,1e-12,'with S.addr on the Heart, the law lever lands where seatTrans lands after the same law move');
+  near(lv.now,now,1e-12,'and starts from seatTrans as it reads now');
+  reset(2,0,10); heavy();
+  const full=riseLevers(seat);
+  near(full.law.to,seatTrans(seat),1e-12,'with every law at 10 the law lever is a no-op and reads seatTrans, S.addr included');
+  S.addr=addrWas; compute();
+ }
+
  /* baseline and delta: no change reads d 0, nothing is stored by this file itself */
  const base=riseBase();
  const delta0=riseDelta(rBlocked,base);

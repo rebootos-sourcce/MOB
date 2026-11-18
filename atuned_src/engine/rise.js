@@ -149,8 +149,17 @@ function riseLevers(seat){
  /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
     touched, because a probe in this repository once read shared state left by
     another run and reported a whole lane as empty. */
+ /* HELD FOLDS IN S.addr, THE WAY compute.js DOES, 18 November. This copy of
+    the body was written before the named-address layer landed on 26 October
+    and read only ch[n.cf], so for anyone whose stories named a body place
+    every lever here started from a seat lighter than the one seatTrans reads.
+    Measured on a field with 5 on each Heart address: the law lever claimed
+    +0.160 where raising that law and recomputing moved the seat +0.006, and
+    with every law already at 10 it claimed +0.110 for a move that changes
+    nothing. S.addr is read and never copied into the release runs, because a
+    release empties the axis and nothing in ui/release.js drains S.addr. */
  var openOf=function(n,ch,rp,relief){
-  var held=n.cf?Math.max(0,Math.min(10,(ch[n.cf]||0)*n.susc*(1-relief*0.42))):0;
+  var held=n.cf?Math.max(0,Math.min(10,((ch[n.cf]||0)+(S.addr[n.i]||0))*n.susc*(1-relief*0.42))):0;
   var rep=n.cf?Math.max(0,Math.min(10,(rp[n.cf]||0)*(0.72+0.28*relief))):0;
   var sq=Math.max(0,Math.min(10,held-rep*0.86));
   var pole=Math.max(0,Math.min(10,rep-held));

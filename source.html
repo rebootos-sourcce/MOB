@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v1885 72a28def 2026-11-18 16:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -41460,8 +41460,17 @@ function riseLevers(seat){
  /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
     touched, because a probe in this repository once read shared state left by
     another run and reported a whole lane as empty. */
+ /* HELD FOLDS IN S.addr, THE WAY compute.js DOES, 18 November. This copy of
+    the body was written before the named-address layer landed on 26 October
+    and read only ch[n.cf], so for anyone whose stories named a body place
+    every lever here started from a seat lighter than the one seatTrans reads.
+    Measured on a field with 5 on each Heart address: the law lever claimed
+    +0.160 where raising that law and recomputing moved the seat +0.006, and
+    with every law already at 10 it claimed +0.110 for a move that changes
+    nothing. S.addr is read and never copied into the release runs, because a
+    release empties the axis and nothing in ui/release.js drains S.addr. */
  var openOf=function(n,ch,rp,relief){
-  var held=n.cf?Math.max(0,Math.min(10,(ch[n.cf]||0)*n.susc*(1-relief*0.42))):0;
+  var held=n.cf?Math.max(0,Math.min(10,((ch[n.cf]||0)+(S.addr[n.i]||0))*n.susc*(1-relief*0.42))):0;
   var rep=n.cf?Math.max(0,Math.min(10,(rp[n.cf]||0)*(0.72+0.28*relief))):0;
   var sq=Math.max(0,Math.min(10,held-rep*0.86));
   var pole=Math.max(0,Math.min(10,rep-held));
@@ -101801,5 +101810,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006803593"></div>
 </body></html>
