@@ -570,6 +570,18 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · answers to the need you list
+He answered the board's fourteen need you items in one dictation (verbatim in
+DECISIONS.md, "Answers to the need you list. Ruled 18 November."). It moved:
+the words (seat and chakra become point, tension becomes charge, Becoming and
+Complete become Whole, the pairs named Clarity and Grace against Shadow), no
+fractions, the Avatar's conversation replacing the 10 November no two way chat
+rule, rituals moving the Avatar's slider, the Avatar layers following the tier
+ladder, the If I miss frame before its content, the palette, the way the path
+links are derived, the research for the three missing path stories, and the
+masks logic kept in code. measure: the board's need you list went from 14
+items to 1 on 18 November.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

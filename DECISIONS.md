@@ -3455,6 +3455,13 @@ of which session or AI opened it, never only from this session's own work.
 
 ## No two-way chat, anywhere, including the voice. Ruled 10 November, built whole 11 November
 
+**OVERRIDDEN, 18 November, on the Avatar page and in the Source AI corner:** he
+answered the board's question "Does 'I talk to Source AI' replace your 10
+November rule of no two way chat?" with "Yes. Yes, it does. That replaces it.
+The sniffer is now sniffing specifically for words in my conversation." See
+"Answers to the need you list. Ruled 18 November." at the end of this file.
+What follows is the ruling this replaces, kept for the record.
+
 His words, given over and over and most recently pointed straight at the
 Dashboard: "we don't need 2-way talk anymore... it's just the user's input.
 Or the user can put text." This was never written down in this file before,
@@ -3706,3 +3713,107 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## Answers to the need you list. Ruled 18 November.
+
+He read the status board's need you list (fourteen items) and answered it in
+one dictation. His words, verbatim: "Okay, I'm looking at the what's running.
+There's like 14 that says need you. The first one is a content gap. Um, I
+have no clues what you're talking about. Pull, overshoot, installed, and
+self-read. I have no context. Yeah, for the second one, I think I picked the
+palette. If you miss a challenge 3 days in a row, I don't know. I think I
+need suggestions from the team. Like, you can't force someone to do a
+punishment, and then you have to assume they're going to self-report, even
+if they do the punishment. If they don't, or do the punishment. I think the
+punishment needs to be something that the user can learn. Why don't you go
+ahead and create the frame for this ritual stuff, and we'll figure out what
+content needs to go in it. So build the shell, and then we'll worry about
+the content afterwards. I don't know what you mean by bottom row field %.
+Show the weight on all the chakras as a %. Oh, right. This may be because we
+had some like fractions. We're not doing fractions. Do we still have the
+logic for the masks? Is that section still in code? I may want to revise
+that. For the bottom row words, 3 words on the cards, seat or chakra, change
+or tension, charge or tension. Oh, I see. Change seat and chakra to just
+point. It's an assemblage point. You can call it AP, or assemblage point for
+short, or point. We're going to use charge instead of tension. And neither
+becoming or complete, we're going to use the word whole. Instead of clear
+conduction against sabotage, just use clarity. Grace against false light,
+just change that to grace. Oh, I see. Grace against shadow. So use the word
+shadow. For the path links, I'm not quite certain what you mean, but you
+should have all of the nerve to saboteur connections, or saboteur to super
+complexes, to reverse engineer for the path links. For clear connection,
+honesty, and natural growth, we need to go get their original names. I don't
+know if that's like Lucifer or Asmodeus or whatever. Go out to the internet,
+do our research. We have rules for our research. Find the rules on GitHub,
+and then do your deep dive 4 times, create your records for your 3-path
+stories. Do your research on those 3-path stories 4 times, so you get to the
+mechanic and the behavior. Does I talk to source AI replace your 10 November
+rule of no two-way chat? Yes. Yes, it does. That replaces it. The sniffer is
+now sniffing specifically for words in my conversation. Avatar slider
+meaning I don't know what you mean. The avatar tiers is for the avatars for
+tier. Two, three, and four. One, two, three, and four. We're all
+data-driven, so for the avatar ritual slider, when a ritual is marked done,
+it should move the slider. I don't think we have math in our calculations
+for positive, for reframes. All right, Emmy, review my input 3 times, sort
+it against the 14 that need me and what's running. Organize it so that it
+makes sense to your agents. And then get all this into plan and then
+execute."
+
+Read three times, item by item, against the board. Where a reading is the
+team's and not his own words it says so, and one word flips it.
+
+**Rulings.**
+- **Words, everywhere.** "Seat" and "chakra" become **point**, an assemblage
+  point (AP for short): the first use on a screen says assemblage point with
+  its meaning, later uses say point. **Charge** replaces **tension** where the
+  word names the stuck energy at a place in the body. **Whole** replaces
+  Becoming and Complete as the name of the Avatar's percent. The pair named
+  Clear Conduction against Sabotage is named **Clarity**; the pair named Grace
+  against False Light is named **Grace**, and its opposite end is **Shadow**.
+  Identifiers, saved keys and his own quoted words do not move (the same rule
+  as the Wisdom school rename).
+- **No fractions.** Any measure of a person is a whole percent, never "3 of 6"
+  or "3/6". This restates the percents only ruling of 16 October and 18
+  November and extends it to the "x of y" form.
+- **Talking to Source AI.** Yes, a person talks to Source AI, and that
+  replaces the 10 November ruling of no two way chat on the Avatar page and in
+  the Source AI corner. The sniffer reads the words of that conversation.
+  Source AI stays deterministic and offline: a conversation is not a language
+  model, and the open decision about a model behind one server seam is still
+  his, with the default of no.
+- **Rituals move the Whole.** A ritual marked done moves the Avatar's slider.
+  He observed that the engine has no math for the positive side (reframes,
+  rituals): that math is to be built, data driven, with no points and no
+  penalty for a miss.
+- **The Avatar tiers.** Read as: the Avatar's layers follow the tier ladder the
+  way the Field's saboteur, complex and hyper complex circles do. The team's
+  reading, one word flips it: the body with its points and weights is the base
+  every person sees, the torus is tier two, the auric field tier three, the
+  energy body tier four (Practitioner). The tier names and prices stay as ruled
+  in the tier ladder entries above.
+- **If I miss.** Not decided by him. He asked the team for suggestions and
+  gave the constraints: nothing can be forced, the app can only take the
+  person's word whether or not they did it, and what happens must be
+  something the person can learn, not a punishment. He ruled the order:
+  build the frame (the shell) now, content later. The earlier default (a cost
+  the person picks ahead of time) is replaced by those words.
+- **The palette.** He picked the palette (B); it ships as the Glass blue
+  lighting.
+- **Path links.** Derived, not hand drafted: reverse engineer which patterns
+  belong to each pair from the nerve to saboteur and saboteur to complex to
+  hyper complex to super complex connections the product already holds.
+- **Path stories.** For Clear Conduction (Clarity), Honesty and Natural Growth:
+  research the original names on the internet under the project's research
+  rules (found on GitHub), four deep dives each, down to the mechanic and the
+  behaviour, and write the records.
+- **Field percent.** Each point's weight is shown as a whole percent; his
+  confusion about the question came from fractions, which are now ruled out.
+  The team's default (each point's own fullness) stands.
+- **Masks.** He asked whether the masks logic is still in the code: it is, all
+  of it. He may revise that section, so nothing about it is removed. The
+  bottom row card draws the five Character signs large unless he says
+  otherwise.
+- **Context owed.** The words Pull, Overshoot, Installed and Self-read shadow
+  were put to him with no context. The team owes him where each shows, what
+  each measures and the sentence it will say; the definitions ship in the
+  house voice and he reacts in the app.
