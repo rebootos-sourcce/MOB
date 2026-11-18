@@ -165,6 +165,9 @@ BROWSER = {
 # the Insight well's auto pin, 14 November (tests/wellpin.js). Report only
 # until three green runs, like every gate new to CI.
     'wellpin':       ('node tests/wellpin.js', 20),
+# the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
+# Report only until three green runs, like every gate new to CI.
+    'lightmenu':     ('node tests/lightmenu.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

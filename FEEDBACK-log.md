@@ -593,7 +593,8 @@ the same height open and shut. Branch fix/lighting-menu-layer.
 measure: on the c2bf52a2 build the new gate fails Glass white on every
 surface but the Field at both widths, and Glass on the bar's height; a copy
 of this build without the bar's rule fails Glass and Glass white; this build
-passes. Not fixed here, filed: at about 800 wide with a profile loaded the
+passes. Not fixed here, filed as suggested tasks task_e520d0cf and
+task_8b72acdb on 18 November: at about 800 wide with a profile loaded the
 menu opens past the window's left edge, and the sun button's own tooltip can
 sit over Flat and Lumen while the pointer rests on it.
 

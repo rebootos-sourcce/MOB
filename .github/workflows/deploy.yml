@@ -347,6 +347,11 @@ jobs:
           # press, pin unchanged on a second press, a locked tier pins nothing,
           # render() never resurrects a cleared pin. New, so report only first.
           - { gate: wellpin, timeout: 20, command: node tests/wellpin.js }
+          # 18 November: the lighting menu on top of every surface
+          # (tests/lightmenu.js). In Glass white the bar's backdrop-filter made
+          # it a stacking context and the open menu painted under the
+          # Dashboard. New, so report only first.
+          - { gate: lightmenu, timeout: 20, command: node tests/lightmenu.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
