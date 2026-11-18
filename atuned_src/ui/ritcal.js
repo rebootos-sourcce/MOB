@@ -546,10 +546,31 @@ function ritSashSheet(s,d,st){
    +esc(on?'Done '+ritDayName(d,today).toLowerCase()+'. Press to take it off':'Mark '+s.nm+' done '+ritDayName(d,today).toLowerCase())+'">'
    +ritRingHtml(p,on,col)+'Done</button>';}
  if(p&&ritActive(p,today))acts+='<button type="button" class="btn" data-sh="edit" data-id="'+p.id+'">'+ritIc('edit')+'Edit</button>';
+ /* THE TODAY LIST'S CONTROLS LIVE HERE NOW, 18 November (B11): the Timer,
+    Stop all days, Release now, a ritual's When, and Did it work and Keep.
+    The list on the stage was the only route to the first three, so they
+    moved in the same commit that took the list away. Move up is dropped,
+    named once: order inside a day is by kind now. */
+ var live=p&&ritActive(p,today);
+ if(live)acts+=ritTimerHtml(p).replace('class="rv-tmr','class="btn rv-tmr').replace('data-act="timer"','data-sh="ptimer"');
+ if(p&&live&&p.rel!=null&&BY[p.rel]&&BY[p.rel].sq>=4)acts+='<button type="button" class="btn" data-sh="prel" data-n="'+p.rel+'">Release now</button>';
  if(p)acts+='<button type="button" class="btn" data-sh="del-plan" data-id="'+p.id+'">Delete</button>';
  else if(s.x)acts+='<button type="button" class="btn" data-sh="del-entry" data-i="'+s.i+'">Delete</button>';
  acts+='<button type="button" class="btn rv-shx" data-sh="close">Close</button>';
- return out+'<div class="sh-act rv-sha">'+acts+'</div></div>';}
+ var more='';
+ if(p&&typeof ritKindChip==='function')more+='<div class="rv-pchips">'+ritKindChip(s.kind||ritKindOf(p))+'</div>';
+ /* did it work, for this one ritual: the kept and missed days off the record
+    and the held places before it started against now, ritOkRead's own read */
+ if(p&&today-ritStart0(p)>=2){var run=ritRunRead(p,today), h=ritSnapBefore(p.from);
+  more+='<p class="rv-pp"><b>Did it work.</b> Kept '+acctDays(run.kept)+', missed '+run.missed+'.'
+   +(h&&typeof h.loaded==='number'?' Held places: '+h.loaded+' when it started, '+(st.r.loaded||[]).length+' now.':'')+'</p>';}
+ /* keep, in a ritual's last three days, ritKeepHtml's own rule */
+ var keep=p&&live&&p.days>0&&ritStart0(p)+p.days-today<=RIT_KEEP_AT
+  ?'<button type="button" class="btn pri" data-sh="pkeep" data-id="'+p.id+'">Keep, a week more</button>':'';
+ var when=(p&&live&&RIT.pop&&RIT.pop.W&&typeof ritWhenHtml==='function')
+  ?ritWhenHtml(RIT.pop.W)+'<div class="sh-act rv-sha"><button type="button" class="btn" data-sh="pset" data-id="'+p.id+'">Change days</button>'
+   +'<button type="button" class="btn" data-sh="pstop" data-id="'+p.id+'">Stop all days</button>'+keep+'</div>':'';
+ return out+more+'<div class="sh-act rv-sha">'+acts+'</div>'+when+'</div>';}
 /* a heavy day's list: every ritual on it, each a row that opens its own sheet */
 function ritDaySheet(d,st){
  var segs=ritWeekDay(d,st);
@@ -560,9 +581,15 @@ function ritDaySheet(d,st){
     +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
     +'<span class="rv-shrn">'+esc(s.nm)+'</span><span class="rv-shs">'+esc(ritSashWord(s))+'</span></button></li>';}).join('')+'</ul>'
   +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
+/* an affirmation block opens the affirmation set's pop-up, and a ritual's
+   block carries its own When in the pop-up's state, 18 November */
 function ritSashOpen(d,i){
  var st=ritRead(), s=ritWeekDay(d,st)[i]; if(!s||typeof sheetOpen!=='function')return false;
- ritCalCss(); sheetOpen(ritSashSheet(s,d,st)); ritSheetWire(); return true;}
+ if(s.aff&&typeof ritPopOpen==='function')return ritPopOpen({t:'aff', W:ritWhen0(ritSchedAff())});
+ var p=ritSashPlan(s,d,st);
+ RIT.pop={t:'blk', d:d, nm:s.nm, W:(typeof ritWhen0==='function')?ritWhen0(p):null};
+ ritCalCss(); if(typeof ritWeekCss==='function')ritWeekCss();
+ sheetOpen('<div class="rv-pop">'+ritSashSheet(s,d,st)+'</div>'); ritSheetWire(); if(typeof ritPopWireIn==='function')ritPopWireIn(); return true;}
 function ritDayOpen(d){
  if(typeof sheetOpen!=='function')return false;
  ritCalCss(); sheetOpen(ritDaySheet(d,ritRead())); ritSheetWire(); return true;}
@@ -581,9 +608,10 @@ function ritSheetWire(){
     ritLog(id,d);
     var st=ritRead(), segs=ritWeekDay(d,st), k=-1;
     segs.forEach(function(s,j){if(k<0&&s.nm===nm)k=j;});
-    if(k>=0){c.innerHTML=ritSashSheet(segs[k],d,st); var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();}
+    if(k>=0){c.innerHTML='<div class="rv-pop">'+ritSashSheet(segs[k],d,st)+'</div>'; var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();
+     if(typeof ritPopWireIn==='function')ritPopWireIn();}
     return;}
-   case 'edit': sheetShut(); ritEditOpen(id); return;
+   case 'edit': sheetShut(); RIT.pop=null; ritEditOpen(id); return;
    case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;

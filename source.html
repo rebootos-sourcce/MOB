@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v171 3db2f115 2026-11-18 14:52"><head><meta charset="utf-8">
+<html lang="en" data-build="v172 eee9d4b0 2026-11-18 14:55"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -76978,8 +76978,15 @@ function ritPick(k){
 /* START. The plan is written beside the record and today goes on the record as
    set and not done, which is exactly what Save ritual wrote before: said is
    what intentionRead counts, and ritToday is what the avatar reads back. */
+/* 18 NOVEMBER (B8), three more things a start may carry, from the pop-up's
+   When: at, the time of day; fromDay, a first day in the future, so Once on
+   Thursday starts on Thursday and today is not written as set; and join, so
+   a practice already running gets the new days added to the days it has.
+   Without join a second start replaced the day list: Box Breathing put on
+   Tuesday and then on Thursday ended on Thursday only. */
 function ritStartPlan(q,msg){
- var now=new Date().toISOString(), today=ritToday0(), steps=q.steps;
+ var today=ritToday0(), fd=(q.fromDay!=null&&q.fromDay>today)?q.fromDay:today;
+ var now=fd===today?new Date().toISOString():ritDayIso(fd), steps=q.steps;
  var track=(ritPr(steps[0])||{}).track||q.track||'';
  var id='r'+Date.now().toString(36);
  return ritWrite(function(plans){
@@ -77001,13 +77008,19 @@ function ritStartPlan(q,msg){
    /* a wake carries what the builder set and keeps what it did not: a
       release schedule that sets none of the three leaves them as they were */
    if(q.tags&&q.tags.length)same.tags=q.tags.slice();
-   if(q.on)same.on=q.on.slice();
-   if(q.tm)same.tm=q.tm;}
+   /* joined, the union; an every day plan already holds every day */
+   if(q.join)same.on=(!same.on||!q.on)?null:same.on.concat(q.on.filter(function(d){return same.on.indexOf(d)<0;})).sort();
+   else if(q.on)same.on=q.on.slice();
+   if(same.on&&same.on.length===7)same.on=null;
+   if(q.tm)same.tm=q.tm;
+   if(q.at)same.at=q.at;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
    from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
    tc:q.tc||null, tags:(q.tags&&q.tags.length?q.tags.slice():null),
-   on:(q.on?q.on.slice():null), tm:(q.tm||null)});
-  if(!ritEntryFor({steps:steps},today))
+   on:(q.on?q.on.slice():null), tm:(q.tm||null), at:(q.at||null)});
+  /* today goes on the record as set only when the plan starts today: a
+     Thursday ritual added on a Monday is not a Monday left undone */
+  if(fd===today&&!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
   return plans;},msg||'Started.');}
@@ -77566,9 +77579,12 @@ function ritTimer(id){
  if(was===id){ritRender();return;}
  var end=Date.now()+ritTm(p)*60000;
  RIT.run={id:id, end:end, iv:setInterval(function(){
-  var left=(end-Date.now())/1000, el=document.querySelector('#rit [data-tmr="'+id+'"]');
+  /* the figure is written wherever the timer is drawn: on the page, and in a
+     block's pop-up since the Today list left (18 November) */
+  var left=(end-Date.now())/1000, el=document.querySelector('[data-tmr="'+id+'"]');
   if(left<=0){clearInterval(RIT.run.iv); RIT.run=null; RIT.rang=id;
-   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender(); return;}
+   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender();
+   if(typeof ritSashRedraw==='function'&&RIT.pop&&RIT.pop.t==='blk')ritSashRedraw(null); return;}
   /* only the figure is written each second. A render every second would take
      the focus out of the When field while a person typed in it. */
   if(el)el.textContent=ritClock(left);},1000)};
@@ -80247,10 +80263,31 @@ function ritSashSheet(s,d,st){
    +esc(on?'Done '+ritDayName(d,today).toLowerCase()+'. Press to take it off':'Mark '+s.nm+' done '+ritDayName(d,today).toLowerCase())+'">'
    +ritRingHtml(p,on,col)+'Done</button>';}
  if(p&&ritActive(p,today))acts+='<button type="button" class="btn" data-sh="edit" data-id="'+p.id+'">'+ritIc('edit')+'Edit</button>';
+ /* THE TODAY LIST'S CONTROLS LIVE HERE NOW, 18 November (B11): the Timer,
+    Stop all days, Release now, a ritual's When, and Did it work and Keep.
+    The list on the stage was the only route to the first three, so they
+    moved in the same commit that took the list away. Move up is dropped,
+    named once: order inside a day is by kind now. */
+ var live=p&&ritActive(p,today);
+ if(live)acts+=ritTimerHtml(p).replace('class="rv-tmr','class="btn rv-tmr').replace('data-act="timer"','data-sh="ptimer"');
+ if(p&&live&&p.rel!=null&&BY[p.rel]&&BY[p.rel].sq>=4)acts+='<button type="button" class="btn" data-sh="prel" data-n="'+p.rel+'">Release now</button>';
  if(p)acts+='<button type="button" class="btn" data-sh="del-plan" data-id="'+p.id+'">Delete</button>';
  else if(s.x)acts+='<button type="button" class="btn" data-sh="del-entry" data-i="'+s.i+'">Delete</button>';
  acts+='<button type="button" class="btn rv-shx" data-sh="close">Close</button>';
- return out+'<div class="sh-act rv-sha">'+acts+'</div></div>';}
+ var more='';
+ if(p&&typeof ritKindChip==='function')more+='<div class="rv-pchips">'+ritKindChip(s.kind||ritKindOf(p))+'</div>';
+ /* did it work, for this one ritual: the kept and missed days off the record
+    and the held places before it started against now, ritOkRead's own read */
+ if(p&&today-ritStart0(p)>=2){var run=ritRunRead(p,today), h=ritSnapBefore(p.from);
+  more+='<p class="rv-pp"><b>Did it work.</b> Kept '+acctDays(run.kept)+', missed '+run.missed+'.'
+   +(h&&typeof h.loaded==='number'?' Held places: '+h.loaded+' when it started, '+(st.r.loaded||[]).length+' now.':'')+'</p>';}
+ /* keep, in a ritual's last three days, ritKeepHtml's own rule */
+ var keep=p&&live&&p.days>0&&ritStart0(p)+p.days-today<=RIT_KEEP_AT
+  ?'<button type="button" class="btn pri" data-sh="pkeep" data-id="'+p.id+'">Keep, a week more</button>':'';
+ var when=(p&&live&&RIT.pop&&RIT.pop.W&&typeof ritWhenHtml==='function')
+  ?ritWhenHtml(RIT.pop.W)+'<div class="sh-act rv-sha"><button type="button" class="btn" data-sh="pset" data-id="'+p.id+'">Change days</button>'
+   +'<button type="button" class="btn" data-sh="pstop" data-id="'+p.id+'">Stop all days</button>'+keep+'</div>':'';
+ return out+more+'<div class="sh-act rv-sha">'+acts+'</div>'+when+'</div>';}
 /* a heavy day's list: every ritual on it, each a row that opens its own sheet */
 function ritDaySheet(d,st){
  var segs=ritWeekDay(d,st);
@@ -80261,9 +80298,15 @@ function ritDaySheet(d,st){
     +'<span class="rv-wch rv-wch-'+s.st+'" aria-hidden="true">'+ritSashGlyph(ritSashSeat(s))+'</span>'
     +'<span class="rv-shrn">'+esc(s.nm)+'</span><span class="rv-shs">'+esc(ritSashWord(s))+'</span></button></li>';}).join('')+'</ul>'
   +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
+/* an affirmation block opens the affirmation set's pop-up, and a ritual's
+   block carries its own When in the pop-up's state, 18 November */
 function ritSashOpen(d,i){
  var st=ritRead(), s=ritWeekDay(d,st)[i]; if(!s||typeof sheetOpen!=='function')return false;
- ritCalCss(); sheetOpen(ritSashSheet(s,d,st)); ritSheetWire(); return true;}
+ if(s.aff&&typeof ritPopOpen==='function')return ritPopOpen({t:'aff', W:ritWhen0(ritSchedAff())});
+ var p=ritSashPlan(s,d,st);
+ RIT.pop={t:'blk', d:d, nm:s.nm, W:(typeof ritWhen0==='function')?ritWhen0(p):null};
+ ritCalCss(); if(typeof ritWeekCss==='function')ritWeekCss();
+ sheetOpen('<div class="rv-pop">'+ritSashSheet(s,d,st)+'</div>'); ritSheetWire(); if(typeof ritPopWireIn==='function')ritPopWireIn(); return true;}
 function ritDayOpen(d){
  if(typeof sheetOpen!=='function')return false;
  ritCalCss(); sheetOpen(ritDaySheet(d,ritRead())); ritSheetWire(); return true;}
@@ -80282,9 +80325,10 @@ function ritSheetWire(){
     ritLog(id,d);
     var st=ritRead(), segs=ritWeekDay(d,st), k=-1;
     segs.forEach(function(s,j){if(k<0&&s.nm===nm)k=j;});
-    if(k>=0){c.innerHTML=ritSashSheet(segs[k],d,st); var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();}
+    if(k>=0){c.innerHTML='<div class="rv-pop">'+ritSashSheet(segs[k],d,st)+'</div>'; var f=c.querySelector('[data-sh="log"]'); if(f)f.focus();
+     if(typeof ritPopWireIn==='function')ritPopWireIn();}
     return;}
-   case 'edit': sheetShut(); ritEditOpen(id); return;
+   case 'edit': sheetShut(); RIT.pop=null; ritEditOpen(id); return;
    case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
@@ -81141,7 +81185,7 @@ function ritSashRedraw(b){
  var P=RIT.pop, c=document.getElementById('sheet-card'); if(!P||!c)return;
  var st=ritRead(), segs=ritWeekDay(P.d,st), k=-1;
  segs.forEach(function(s,j){if(k<0&&s.nm===P.nm)k=j;});
- if(k>=0)ritPopRedraw(ritSashSheet(segs[k],P.d,st),b);}
+ if(k>=0)ritPopRedraw('<div class="rv-pop">'+ritSashSheet(segs[k],P.d,st)+'</div>',b);}
 
 /* ---------------- the look ---------------- */
 function ritWeekCss(){
@@ -102408,5 +102452,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006847271"></div>
+<div id="eof" hidden data-len="006850930"></div>
 </body></html>

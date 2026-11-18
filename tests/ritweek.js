@@ -48,6 +48,12 @@ const MUTANTS={
  fatcard:`(function(){var f=ritCardFace; ritCardFace=function(o){return f(o).replace('</li>','<p class="rv-sgd">A long description of what this practice is and why it is offered here today.</p></li>');};})();`,
  /* where a card came from, said with no meaning */
  novia:`(function(){var f=ritViaMark; ritViaMark=function(v){return f(v).replace(/ data-tip="[^"]*"/,'');};})();`,
+ /* a second add of the same practice replacing its days, the B8 defect */
+ nojoin:`(function(){var f=ritStartPlan; ritStartPlan=function(q,m){if(q)q.join=false; return f(q,m);};})();`,
+ /* a time of day taken without its shape checked */
+ noat:`ritAtOk=function(){return true;};`,
+ /* the Timer lost on the way from the Today list into the pop-up */
+ notimer:`ritTimerHtml=function(){return '';};`,
  nodid:`(function(){var f=ritChalTile; ritChalTile=function(c,st){return f(c,st).replace(/data-act="did"/,'data-act="none"');};})();`};
 
 (async()=>{
@@ -200,6 +206,107 @@ const MUTANTS={
    'RW7: '+tag+'every card has Add, its kind ring and its source mark each carry a sentence, and a practice can be dismissed, '+JSON.stringify(cf.cards.map(x=>[x.ring,x.viaTip])));
   ok(prac.length<=4&&Object.values(per).every(n=>n<=2)&&cf.cards.every(x=>x.c===cf.tok[x.kind]),
    'RW7: '+tag+'four practices at most, two at most from one source, and each card wears its kind\'s colour, '+JSON.stringify({per,c:cf.cards.map(x=>[x.kind,x.c])}));
+  /* ---- RW8: the pop-up, its When, and the writer behind it ---- */
+  const pop=await pg.evaluate(async()=>{
+   const w=ms=>new Promise(r=>setTimeout(r,ms||150)), say=()=>(document.getElementById('status')||{}).textContent||'';
+   const sheet=()=>document.getElementById('sheet'), card=()=>document.getElementById('sheet-card');
+   const out={};
+   /* a practice card that is not already on the week */
+   const on=ritPlans().map(x=>ritName(x.steps));
+   const li=[...document.querySelectorAll('#flownew .rv-sug .rv-cf')].filter(l=>l.getAttribute('data-kind')!=='aff'
+    &&on.indexOf(l.querySelector('.rv-cfn').textContent)<0)[0];
+   if(!li)return {none:true};
+   const nm=li.querySelector('.rv-cfn').textContent; out.nm=nm;
+   li.querySelector('.rv-cfa').click(); await w();
+   const c=card(), q=s=>[...c.querySelectorAll(s)];
+   out.open=!sheet().hidden&&!!c.querySelector('.rv-pop');
+   out.days=q('[data-sh="pd"]').length; out.quick=q('[data-sh="pall"],[data-sh="pwk"],[data-sh="pany"]').length;
+   out.reps=q('[data-sh="prep"]').map(b=>b.textContent); out.time=!!c.querySelector('input[type="time"]');
+   out.small=q('button,input,summary').filter(b=>{const r=b.getBoundingClientRect(); return r.width&&r.height&&(r.height<44||r.width<44);}).map(b=>b.textContent.trim()||b.getAttribute('aria-label'));
+   out.btns=q('.rv-sha .btn').map(b=>b.textContent.trim());
+   out.ai=!!c.querySelector('.rv-pf .src-mk');
+   out.focus=document.activeElement&&document.activeElement.getAttribute('data-sh');
+   /* Tuesday and Thursday, 07:30, a week: press the days off to those two */
+   for(const wd of [6,0,2,4,5]){const b=card().querySelector('[data-sh="pd"][data-d="'+wd+'"]'); b.click(); await w(60);}
+   const t=card().querySelector('#rv-pat'); t.value='07:30'; t.dispatchEvent(new Event('change'));
+   card().querySelector('[data-sh="prep"][data-d="7"]').click(); await w(60);
+   out.pressed=[...card().querySelectorAll('[data-sh="pd"][aria-pressed="true"]')].map(b=>+b.getAttribute('data-d'));
+   card().querySelector('[data-sh="padd"]').click(); await w(250);
+   const p=ritPlans().filter(x=>ritName(x.steps)===nm)[0];
+   out.added={closed:sheet().hidden, said:say(), on:p&&p.on, at:p&&p.at};
+   /* the same practice again on Saturday joins the days, never replaces them */
+   const x=RIT.sug.filter(s=>s.p.nm===nm)[0]||{k:p.steps[0],p:ritPr(p.steps[0]),seats:[],why:[],rel:null};
+   ritCardAdd(x,{on:[5],at:'',rep:7}); await w(150);
+   const p2=ritPlans().filter(y=>ritName(y.steps)===nm)[0]; out.joined=p2&&p2.on;
+   /* a bad time is refused by name and writes nothing */
+   const before=JSON.stringify(ritPlans());
+   ritCardAdd(x,{on:[6],at:'24:00',rep:7}); await w(100);
+   out.bad={said:say(), same:JSON.stringify(ritPlans())===before};
+   /* a stored plan carrying 7:5 is left out on the read */
+   const all=JSON.parse(STORE.get('atuned-ritual-active')||'{}'), mine=all[CURP.id].slice();
+   all[CURP.id]=mine.concat([Object.assign({},mine[0],{id:'wz',at:'7:5'})]); STORE.set('atuned-ritual-active',JSON.stringify(all));
+   out.badRead=ritPlans().some(y=>y.id==='wz');
+   all[CURP.id]=mine; STORE.set('atuned-ritual-active',JSON.stringify(all)); ritRender(); await w(150);
+   /* the block for it on Tuesday says its time */
+   const tue=[...document.querySelectorAll('#rit .rv-week .rv-wd1')][2];
+   const bl=tue&&[...tue.querySelectorAll('button.rv-blk')].filter(b=>b.getAttribute('data-nm')===nm)[0];
+   out.block=bl?bl.getAttribute('aria-label'):'';
+   return out;});
+  ok(!pop.none&&pop.open&&pop.days===7&&pop.quick===3&&pop.time&&JSON.stringify(pop.reps)===JSON.stringify(['Once','A week','Two weeks','No end']),
+   'RW8: '+tag+'Add on a card opens the pop-up at When: seven days, Every day, Weekdays, Any time, a time, and Once, A week, Two weeks, No end, '+JSON.stringify(pop));
+  ok(pop.focus==='pd'&&pop.small.length===0&&pop.ai&&['Add','Save','Dismiss','Close'].every(b=>(pop.btns||[]).indexOf(b)>=0),
+   'RW8: '+tag+'the keyboard lands on the days, every control is 44 pixels or more, the reasons carry the Source AI mark, and Add, Save, Dismiss and Close are there, '
+   +JSON.stringify({focus:pop.focus,small:pop.small,ai:pop.ai,btns:pop.btns}));
+  ok(pop.added&&pop.added.closed&&JSON.stringify(pop.added.on)===JSON.stringify([1,3])&&pop.added.at==='07:30'&&/^Added\./.test(pop.added.said),
+   'RW8: '+tag+'Add writes the days and the time picked and says so, '+JSON.stringify([pop.pressed,pop.added]));
+  ok(JSON.stringify(pop.joined)===JSON.stringify([1,3,5]),'RW8: '+tag+'adding the same practice on another day joins the days, '+JSON.stringify(pop.joined));
+  ok(pop.bad&&pop.bad.same&&/HH:MM/.test(pop.bad.said)&&pop.badRead===false,
+   'RW8: '+tag+'a time of 24:00 is refused by name and writes nothing, and a stored 7:5 is left out on the read, '+JSON.stringify([pop.bad,pop.badRead]));
+  ok(/07:30$/.test(pop.block||''),'RW8: '+tag+'the block on Tuesday says its kind, its state and its time, '+JSON.stringify(pop.block));
+  /* ---- RW9: every control the Today list carried has a route from a pop-up or a tile ---- */
+  const rt=await pg.evaluate(async(seed)=>{
+   const w=ms=>new Promise(r=>setTimeout(r,ms||150)), card=()=>document.getElementById('sheet-card');
+   const has=s=>!!card().querySelector(s), out={};
+   const days=()=>[...document.querySelectorAll('#rit .rv-week .rv-wd1')];
+   const blockOn=(col,nm)=>[...days()[col].querySelectorAll('button.rv-blk')].filter(b=>b.getAttribute('data-nm')===nm)[0];
+   /* today is Monday, column 1; Noting Meditation runs every day */
+   let b=blockOn(1,'Noting Meditation'); if(!b)return {none:'noting'};
+   b.click(); await w();
+   out.today={timer:has('[data-sh="ptimer"]'), done:has('[data-sh="log"]'), edit:has('[data-sh="edit"]'), stop:has('[data-sh="pstop"]'),
+    when:has('[data-sh="pd"]'), change:has('[data-sh="pset"]'), kind:has('.rv-kch')};
+   card().querySelector('[data-sh="ptimer"]').click(); await w(1200);
+   const run=RIT.run&&ritPlans().filter(p=>p.id===RIT.run.id)[0];
+   out.timer={run:run?ritName(run.steps):null, clock:((card().querySelector('[data-tmr]')||{}).textContent||'')};
+   card().querySelector('[data-sh="ptimer"]').click(); await w(); out.timer.off=!RIT.run;
+   sheetShut();
+   /* Saturday, column 6, carries the release schedule */
+   const rel=[...days()[6].querySelectorAll('button.rv-blk[data-kind="rel"]')][0];
+   if(rel){rel.click(); await w(); out.rel={now:has('[data-sh="prel"]'), stop:has('[data-sh="pstop"]')}; sheetShut();}
+   /* said: the affirmation card's pop-up, every line with its ring */
+   document.querySelector('#flownew [data-act="aff-pop"].rv-cfo').click(); await w();
+   const n=ritAffirm(ritRead()).length, rings=[...card().querySelectorAll('[data-sh="said"]')];
+   out.said={n, rings:rings.length};
+   rings[0].click(); await w(200);
+   out.said.rec=ritMore().said.some(x=>x[0]===ritToday0());
+   out.said.pressed=(card().querySelector('[data-sh="said"]')||{}).getAttribute?card().querySelector('[data-sh="said"]').getAttribute('aria-pressed'):null;
+   /* and the set placed on Wednesday and Friday puts a block on those days only */
+   for(const wd of [6,0,1,3,5]){card().querySelector('[data-sh="pd"][data-d="'+wd+'"]').click(); await w(40);}
+   card().querySelector('[data-sh="paffset"]').click(); await w(250);
+   out.affDays=days().map((d,i)=>d.querySelectorAll('button.rv-blk[data-kind="aff"]').length?i:-1).filter(i=>i>=0);
+   out.affFirst=days().filter(d=>d.querySelector('button.rv-blk[data-kind="aff"]')).every(d=>d.querySelector('button.rv-blk').getAttribute('data-kind')==='aff');
+   /* did: the challenge's pop-up */
+   const ct=document.querySelector('#rit .rv-tchal .rv-tnm'); if(ct){ct.click(); await w(); out.did={ring:has('[data-sh="did"]'), ai:has('.src-mk')}; sheetShut();}
+   return out;},seed);
+  ok(!rt.none&&rt.today&&Object.values(rt.today).every(Boolean),
+   'RW9: '+tag+'today\'s block opens a pop-up with the Timer, Done, Edit, Stop all days, its kind and its When with Change days, '+JSON.stringify(rt.today||rt));
+  ok(rt.timer&&rt.timer.run==='Noting Meditation'&&/^\d+:\d\d$/.test(rt.timer.clock)&&rt.timer.off,
+   'RW9: '+tag+'the Timer in the pop-up runs for that ritual, counts in the pop-up, and the same press stops it, '+JSON.stringify(rt.timer));
+  ok(rt.rel&&rt.rel.now&&rt.rel.stop,'RW9: '+tag+'a release schedule\'s block carries Release now and Stop all days, '+JSON.stringify(rt.rel));
+  ok(rt.said&&rt.said.n>0&&rt.said.rings===rt.said.n&&rt.said.rec&&rt.said.pressed==='true',
+   'RW9: '+tag+'every affirmation line has its said ring in the pop-up, and one press marks today, '+JSON.stringify(rt.said));
+  ok(JSON.stringify(rt.affDays)===JSON.stringify([3,5])&&rt.affFirst,
+   'RW9: '+tag+'the affirmation set placed on Wednesday and Friday is one block on those days and first in each, '+JSON.stringify([rt.affDays,rt.affFirst]));
+  ok(rt.did&&rt.did.ring&&rt.did.ai,'RW9: '+tag+'a challenge\'s pop-up carries its did ring and its who line is marked as Source AI\'s, '+JSON.stringify(rt.did));
   ok(err.length===0,'RW0: '+tag+'no page errors, '+err.slice(0,3).join(' | '));
   }catch(e){ok(false,'RW0: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();

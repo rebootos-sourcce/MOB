@@ -406,8 +406,15 @@ function ritPick(k){
 /* START. The plan is written beside the record and today goes on the record as
    set and not done, which is exactly what Save ritual wrote before: said is
    what intentionRead counts, and ritToday is what the avatar reads back. */
+/* 18 NOVEMBER (B8), three more things a start may carry, from the pop-up's
+   When: at, the time of day; fromDay, a first day in the future, so Once on
+   Thursday starts on Thursday and today is not written as set; and join, so
+   a practice already running gets the new days added to the days it has.
+   Without join a second start replaced the day list: Box Breathing put on
+   Tuesday and then on Thursday ended on Thursday only. */
 function ritStartPlan(q,msg){
- var now=new Date().toISOString(), today=ritToday0(), steps=q.steps;
+ var today=ritToday0(), fd=(q.fromDay!=null&&q.fromDay>today)?q.fromDay:today;
+ var now=fd===today?new Date().toISOString():ritDayIso(fd), steps=q.steps;
  var track=(ritPr(steps[0])||{}).track||q.track||'';
  var id='r'+Date.now().toString(36);
  return ritWrite(function(plans){
@@ -429,13 +436,19 @@ function ritStartPlan(q,msg){
    /* a wake carries what the builder set and keeps what it did not: a
       release schedule that sets none of the three leaves them as they were */
    if(q.tags&&q.tags.length)same.tags=q.tags.slice();
-   if(q.on)same.on=q.on.slice();
-   if(q.tm)same.tm=q.tm;}
+   /* joined, the union; an every day plan already holds every day */
+   if(q.join)same.on=(!same.on||!q.on)?null:same.on.concat(q.on.filter(function(d){return same.on.indexOf(d)<0;})).sort();
+   else if(q.on)same.on=q.on.slice();
+   if(same.on&&same.on.length===7)same.on=null;
+   if(q.tm)same.tm=q.tm;
+   if(q.at)same.at=q.at;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
    from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
    tc:q.tc||null, tags:(q.tags&&q.tags.length?q.tags.slice():null),
-   on:(q.on?q.on.slice():null), tm:(q.tm||null)});
-  if(!ritEntryFor({steps:steps},today))
+   on:(q.on?q.on.slice():null), tm:(q.tm||null), at:(q.at||null)});
+  /* today goes on the record as set only when the plan starts today: a
+     Thursday ritual added on a Monday is not a Monday left undone */
+  if(fd===today&&!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
   return plans;},msg||'Started.');}
@@ -994,9 +1007,12 @@ function ritTimer(id){
  if(was===id){ritRender();return;}
  var end=Date.now()+ritTm(p)*60000;
  RIT.run={id:id, end:end, iv:setInterval(function(){
-  var left=(end-Date.now())/1000, el=document.querySelector('#rit [data-tmr="'+id+'"]');
+  /* the figure is written wherever the timer is drawn: on the page, and in a
+     block's pop-up since the Today list left (18 November) */
+  var left=(end-Date.now())/1000, el=document.querySelector('[data-tmr="'+id+'"]');
   if(left<=0){clearInterval(RIT.run.iv); RIT.run=null; RIT.rang=id;
-   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender(); return;}
+   status(ritName(p.steps)+', time is up.'); if(typeof sfx==='function')sfx('time'); ritRender();
+   if(typeof ritSashRedraw==='function'&&RIT.pop&&RIT.pop.t==='blk')ritSashRedraw(null); return;}
   /* only the figure is written each second. A render every second would take
      the focus out of the When field while a person typed in it. */
   if(el)el.textContent=ritClock(left);},1000)};

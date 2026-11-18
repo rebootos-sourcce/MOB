@@ -483,7 +483,7 @@ function ritSashRedraw(b){
  var P=RIT.pop, c=document.getElementById('sheet-card'); if(!P||!c)return;
  var st=ritRead(), segs=ritWeekDay(P.d,st), k=-1;
  segs.forEach(function(s,j){if(k<0&&s.nm===P.nm)k=j;});
- if(k>=0)ritPopRedraw(ritSashSheet(segs[k],P.d,st),b);}
+ if(k>=0)ritPopRedraw('<div class="rv-pop">'+ritSashSheet(segs[k],P.d,st)+'</div>',b);}
 
 /* ---------------- the look ---------------- */
 function ritWeekCss(){
