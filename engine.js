@@ -20111,7 +20111,20 @@ var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there',
  'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
  'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
  'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
- 'april','may','june','july','august','september','october','november','december'];
+ 'april','may','june','july','august','september','october','november','december',
+ 'feel','felt','feeling','was','been','being','got','getting','woke','spent','kind','kinda','sort',
+ 'pretty','super','bit','kept','went'];
+/* THE LAST ROW IS THE WRITER WITH THE I LEFT OFF, 18 November, reopening
+   SZA4. "Felt furious all day." read nothing while "felt furious all day."
+   and "I felt furious all day." both read solar: a diary drops its subject,
+   the phone capitalises the verb it starts on, and felt was not a word this
+   reader knew, so whoStartName took it for a name and held the writer's own
+   anger as someone else's. The plural strip SZA4 added cannot reach it,
+   because a past tense is not a plural. These are the words a subjectless
+   sentence about the writer opens on, a verb of feeling or being with no
+   subject, or a hedge (kind of, pretty, a bit) in front of one; feels is
+   reached through the plural strip from feel and is not listed twice.
+   A real name is untouched, because none of these is one. */
 function whoKnown0(w){
  var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
  if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;

@@ -6108,6 +6108,28 @@ g('39 · the sentence is read once, and the marks land on the letters');
   if(c!==' '&&c!==r)wrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
  ok(wrong.length===0,'and each one points at the character it came from, '
   +wrong.length+' do not'+(wrong[0]?': '+wrong[0]:''));
+ /* THE TURKISH CAPITAL I, SZA5, which shipped its fix on 13 November with no
+    row here. U+0130 lower cases to two characters, and before the fold every
+    map entry after it pointed one character short while the copy and the map
+    stayed the same length, so the length row above passes on the broken
+    build and cannot be the guard. The map row and the highlight row are the
+    guard, and both were measured red with the fold taken out. The reading
+    row stays green on that broken build, because hits are found on the copy
+    and only their raw offsets were wrong, so it holds the contract and is
+    not the proof. */
+ const trRaw='İstanbul, İzmir. I am not sad. I am furious and shaking.';
+ const trNm=normMap(trRaw), trWrong=[];
+ for(let i=1;i<trNm.s.length-1;i++){
+  const c=trNm.s.charAt(i), r=trRaw.charAt(trNm.map[i]);
+  if(c!==' '&&!(c===r.toLowerCase()||(r==='İ'&&c==='i')))trWrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
+ ok(trNm.s.length===trNm.map.length&&trNm.map.every(i=>i>=0&&i<=trRaw.length)&&trWrong.length===0,
+  'a dotted capital I keeps every later map entry on its own character, '+trWrong.length+' do not'+(trWrong[0]?': '+trWrong[0]:''));
+ const trPlain=trRaw.replace(/İ/g,'I');
+ ok(JSON.stringify(parseStory(trRaw).bands)===JSON.stringify(parseStory(trPlain).bands)&&parseStory(trRaw).bands.solar>0,
+  'and the charge after it reads what the same story with a plain I reads: '+JSON.stringify(parseStory(trRaw).bands));
+ const trMarks=marksOf(trRaw,parseStory(trRaw)).map(m=>trRaw.slice(m.s,m.e).toLowerCase());
+ ok(trMarks.indexOf('furious')>=0&&trMarks.indexOf('shaking')>=0,
+  'and its highlights land on the words, not one character short: '+JSON.stringify(trMarks));
  /* THE ONE STRING. scanStory reads normMap's output and nothing else, so a hit
     offset slices that hit's own text straight back out of it. This is the row
     that would catch the two copies parting by one. */
@@ -9074,6 +9096,19 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
   .forEach(t=>ok(writer(t),'a common first word is not a name, and the sentence is the writer\'s: '+say(t)));
  ok(E.sniffLaws('Sarah lied to me.').every(l=>l.law!=='Truth'),'and the law reader holds her lie the same way');
  ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
+ /* THE WRITER WITH THE I LEFT OFF, SZA4 reopened 18 November. "Felt furious
+    all day." read nothing, held as a name, while the same sentence lowercase
+    or with "I" read solar. The capitalised form must read exactly what the
+    lowercase one reads, band for band, and a real name in the same shape
+    must still be held, or the fix has only moved the defect. */
+ ["Felt furious all day.","Was furious all day.","Feeling furious all day.","Got furious all day.",
+  "Woke up furious.","Spent the day furious.","Kept crying all day.","Went home furious."]
+  .forEach(t=>{const lo=t.charAt(0).toLowerCase()+t.slice(1);
+   ok(writer(t)&&JSON.stringify(parseStory(t).bands)===JSON.stringify(parseStory(lo).bands),
+    'a subjectless first word is the writer, and reads what its lowercase reads: '+say(t)+' against '+say(lo));});
+ ok(parseStory('Felt furious all day.').bands.solar>0&&JSON.stringify(parseStory('Felt furious all day.').bands)===JSON.stringify(parseStory('I felt furious all day.').bands),
+  'and what "I felt furious" reads, solar: '+say('Felt furious all day.'));
+ ok(held('Sarah felt furious all day.','sarah'),'and a name in front of the same verb is still held: '+say('Sarah felt furious all day.'));
  const ha=parseStory('Her anger scared me.');
  ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
  ok(writer('I saw his face and froze.'),'a possessive after a verb is what was seen, and the freezing is mine: '+say('I saw his face and froze.'));
