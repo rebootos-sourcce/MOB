@@ -11374,5 +11374,101 @@ g('MS25 · no two masks are read off the same seats');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
 }
 
+g('GK WHEEL · the gate wheel sits on its published anchor, gate 41 at 2 degrees Aquarius');
+{
+ /* RULED 18 November, "Apply the gene key wheel anchor in SOURCE". The wheel
+    was laid with gate 25 at 0 degrees Aries, so every gate and line the
+    product printed was read 1.75 degrees off, nearly two lines. Nothing in
+    the old gates could see it: they held that the wheel had 64 gates and
+    that a gate came back, never where a gate begins.
+
+    THE TABLE BELOW IS TYPED, ON PURPOSE, AND NEVER REGENERATED FROM THE
+    ENGINE, which would only prove the engine agrees with itself. Each row
+    is a gate and the sign, degree, minute and second its line 1 begins, in
+    the form published tables print it. It was written from the published
+    order laid from gate 41 at 2 00 Aquarius, by a separate script that
+    reads no engine code, and checked against the published boundaries
+    that could be found: gate 25 from 28 15 Pisces to 3 52 Aries, gate 27
+    from 2 00 Taurus, gate 41 just past 2 Aquarius, and the solar plexus
+    run from about 18 52 Aquarius to 28 15 Pisces. On the old wheel every
+    one of those read 1.75 degrees later. */
+ const PUB=[
+ '1 Sco 13 15 00','2 Tau 13 15 00','3 Ari 26 22 30','4 Leo 18 52 30','5 Sag 11 22 30','6 Vir 22 37 30','7 Leo 13 15 00','8 Tau 24 30 00',
+ '9 Sag 5 45 00','10 Sag 28 15 00','11 Sag 22 37 30','12 Gem 22 37 30','13 Aqu 13 15 00','14 Sco 24 30 00','15 Gem 28 15 00','16 Gem 5 45 00',
+ '17 Ari 3 52 30','18 Lib 3 52 30','19 Aqu 7 37 30','20 Gem 0 07 30','21 Ari 9 30 00','22 Pis 17 00 00','23 Tau 18 52 30','24 Tau 7 37 30',
+ '25 Pis 28 15 00','26 Sag 17 00 00','27 Tau 2 00 00','28 Sco 2 00 00','29 Leo 24 30 00','30 Aqu 24 30 00','31 Leo 2 00 00','32 Lib 20 45 00',
+ '33 Leo 7 37 30','34 Sag 0 07 30','35 Gem 11 22 30','36 Pis 22 37 30','37 Pis 5 45 00','38 Cap 9 30 00','39 Can 9 30 00','40 Vir 5 45 00',
+ '41 Aqu 2 00 00','42 Ari 20 45 00','43 Sco 18 52 30','44 Sco 7 37 30','45 Gem 17 00 00','46 Vir 28 15 00','47 Vir 17 00 00','48 Lib 9 30 00',
+ '49 Aqu 18 52 30','50 Lib 26 22 30','51 Ari 15 07 30','52 Can 3 52 30','53 Can 15 07 30','54 Cap 15 07 30','55 Pis 0 07 30','56 Can 26 22 30',
+ '57 Lib 15 07 30','58 Cap 3 52 30','59 Vir 0 07 30','60 Cap 26 22 30','61 Cap 20 45 00','62 Can 20 45 00','63 Pis 11 22 30','64 Vir 11 22 30'];
+ const SG=['Ari','Tau','Gem','Can','Leo','Vir','Lib','Sco','Sag','Cap','Aqu','Pis'];
+ const start={};
+ PUB.forEach(r=>{const [gt,s,d,m,x]=r.split(' ');start[+gt]=SG.indexOf(s)*30+(+d)+(+m)/60+(+x)/3600;});
+ ok(Object.keys(start).length===64&&Object.values(start).every(v=>v>=0&&v<360),
+  'the published table names all 64 gates once, '+Object.keys(start).length+' read');
+ /* the wheel's own starts, from its anchor and its order, against the table */
+ const off=[];
+ GATE_WHEEL.forEach((gt,i)=>{const L=(((E.GATE_START+i*E.GATE_ARC)%360)+360)%360;
+  if(Math.abs(L-start[gt])>1e-9)off.push(gt+' at '+L+' not '+start[gt]);});
+ ok(!off.length,'every gate on the wheel begins where the published table puts it, off: '+off.slice(0,4).join(', '));
+ ok(E.GATE_ANCHOR===302&&E.GATE_START===358.25,
+  'the anchor is gate 41 at 302 and the wheel starts at 358.25, got '+E.GATE_ANCHOR+' and '+E.GATE_START);
+ /* every gate, at its start and a thousandth of a degree either side: line 1
+    of itself after, line 6 of the gate before it on the wheel before */
+ const byLon=Object.keys(start).map(Number).sort((a,b)=>start[a]-start[b]);
+ const edge=[];
+ byLon.forEach((gt,k)=>{const prev=byLon[(k+63)%64], L=start[gt];
+  const at=E.gateOf(L), up=E.gateOf(L+0.001), dn=E.gateOf(L-0.001);
+  if(at.gate!==gt||at.line!==1)edge.push(gt+' at its start read '+at.gate+'.'+at.line);
+  if(up.gate!==gt||up.line!==1)edge.push(gt+' just after read '+up.gate+'.'+up.line);
+  if(dn.gate!==prev||dn.line!==6)edge.push(gt+' just before read '+dn.gate+'.'+dn.line+' not '+prev+'.6');});
+ ok(!edge.length,'all 64 gates turn over at their published degree, '+edge.slice(0,4).join(', '));
+ /* every line of every gate begins where it should, 384 boundaries */
+ const lineBad=[];
+ byLon.forEach(gt=>{for(let k=0;k<6;k++){const L=start[gt]+k*0.9375, r=E.gateOf(L+1e-6), b=E.gateOf(L-1e-6);
+  if(r.gate!==gt||r.line!==k+1)lineBad.push(gt+'.'+(k+1)+' read '+r.gate+'.'+r.line);
+  if(k&&(b.gate!==gt||b.line!==k))lineBad.push(gt+' below line '+(k+1)+' read '+b.gate+'.'+b.line);}});
+ ok(!lineBad.length,'every line of every gate begins at its published sixth, '+lineBad.slice(0,4).join(', '));
+ /* the named points, and the wrap. 0 Aries is 1.75 degrees into gate 25,
+    which is its second line, and that is the single fact the old wheel
+    could never print */
+ const gl=x=>{const r=E.gateOf(x);return r.gate+'.'+r.line;};
+ ok(gl(302)==='41.1'&&gl(301.999)==='60.6','gate 41 begins at 302, after 60.6, got '+gl(302)+' and '+gl(301.999));
+ ok(gl(358.25)==='25.1'&&gl(358.249)==='36.6','gate 25 begins at 358.25, after 36.6, got '+gl(358.25)+' and '+gl(358.249));
+ ok(gl(0)==='25.2','0 degrees Aries is gate 25 line 2, got '+gl(0));
+ ok(gl(360)===gl(0)&&gl(-0.001)===gl(359.999)&&gl(359.999)==='25.2'&&gl(720.5)===gl(0.5)&&gl(-358.25)===gl(1.75),
+  'the wheel wraps at 360 and below 0 with no seam, got '+[gl(360),gl(-0.001),gl(359.999),gl(720.5)].join(' '));
+ const z=E.gateOf(0);
+ ok(z.lon===0&&Math.abs(z.arc-1.75)<1e-12,'gateOf keeps its shape: lon is the longitude and arc how far into the gate, got '+z.lon+' and '+z.arc);
+
+ /* THREE PUBLIC CHARTS, END TO END. Public figures only, never a person
+    using the product. Birth data as published with its zone, turned to
+    universal time here, so the place table is not in the path; each
+    expected gate and line is the chart as published, sun and design sun,
+    and the profile is the two lines. On the old wheel all three misread:
+    Ra 51.3 over 54.5, Obama 33.4 over 24.6, Jobs 55.5 over 9.1.
+      Ra Uru Hu, 9 April 1948, 00:14 EST, Montreal (the Human Design
+       System's own chart archive prints 05:14 GMT). 5/1, Left Angle Cross
+       of the Clarion, 51/57 over 61/62.
+      Barack Obama, 4 August 1961, 19:24, Honolulu, UTC minus 10, rated AA.
+       6/2 Projector, Left Angle Cross of Refinement, 33/19 over 2/1.
+      Steve Jobs, 24 February 1955, 19:15 PST, San Francisco, rated AA, a
+       birth certificate. 6/3 Generator, Left Angle Cross of Spirit, 55/59
+       over 9/16. His sun sits about a hundredth of a degree inside the end
+       of 55, which is why a three minute rectification of his time is
+       published as a different cross, so he is the margin case here and
+       the first two are the ones that cannot pass by luck. */
+ const PUBC=[['Ra Uru Hu',1948,4,9,5+14/60,'51.5','61.1','5/1'],
+  ['Barack Obama',1961,8,5,5+24/60,'33.6','2.2','6/2'],
+  ['Steve Jobs',1955,2,25,3+15/60,'55.6','9.3','6/3']];
+ PUBC.forEach(([nm,y,mo,d,h,ps,ds,pr])=>{
+  const jd=julianDay(y,mo,d,h), dj=designJD(jd), p=E.gateOf(sunLon(jd)), q=E.gateOf(sunLon(dj));
+  const arc=(((sunLon(jd)-sunLon(dj))%360)+360)%360;
+  ok(p.gate+'.'+p.line===ps,nm+': the personality sun is '+ps+' as published, got '+p.gate+'.'+p.line);
+  ok(q.gate+'.'+q.line===ds,nm+': the design sun is '+ds+' as published, got '+q.gate+'.'+q.line);
+  ok(p.line+'/'+q.line===pr,nm+': the profile is '+pr+' as published, got '+p.line+'/'+q.line);
+  ok(Math.abs(arc-88)<0.01,nm+': and the design sun still lands 88 degrees of solar arc before, got '+arc.toFixed(4));});
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

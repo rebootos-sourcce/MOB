@@ -39,14 +39,18 @@
    gate wheel: the personality gate's trigrams carry the sun sign's
    element 13.6 percent of the time where an unrelated gate would 22.7,
    so the two are tied together. The design gate, the sun 88 degrees
-   earlier, carries it 24.5 percent of the time, near enough the
-   unrelated figure to be read as a separate voice.
+   earlier, carries it 25.0 percent of the time, near enough the
+   unrelated figure to be read as a separate voice. Re-measured 18
+   November, after the wheel was moved onto its published anchor (gate
+   41 at 2 degrees Aquarius, engine/astro.js): the design figure read
+   24.5 on the old wheel and the other two did not move.
 
    OVERLAP IS COMMON, SO IT IS WEIGHED, NOT COUNTED. With fourteen
    themes and up to eleven placements, two systems share something for
    almost everybody: on the sweep tests/engine.js runs, 700 births
-   spread over seventy years, 689 had at least one theme two systems
-   reach, measured 27 September. A summary that called every one of
+   spread over seventy years, 690 had at least one theme two systems
+   reach, measured 18 November on the anchored wheel (689 on 27
+   September, when every gate was read 1.75 degrees off). A summary that called every one of
    those the truth would be saying the same thing to everybody. So
    each meeting point carries q, the chance that the systems reaching
    it would each reach it at least as often if every placement were
@@ -103,8 +107,10 @@ const ROOT_NUMPLANET={1:'Sun',2:'Moon',3:'Jupiter',4:'Uranus',5:'Mercury',6:'Ven
 /* HOW STRONG A MEETING IS, by q. At or under the first, the rail says the
    systems agree strongly; at or under the second, that they agree; above it
    the meeting is common and the rail says that, rather than calling it the
-   truth. On the same sweep, measured 27 September, 66 of 700 births reached
-   strong, 149 clear and 474 light, and 11 had no meeting at all. The shares
+   truth. On the same sweep, measured 18 November, 63 of 700 births reached
+   strong, 152 clear and 475 light, and 10 had no meeting at all. It read
+   66, 149, 474 and 11 on 27 September, before the gate wheel took its
+   published anchor, which moved the design gate for a share of births. The shares
    are held by tests/engine.js as a contract on the words, strong rare and
    agreement a minority, so a table change that moves them fails there and
    not in front of somebody. */
