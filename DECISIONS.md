@@ -2812,6 +2812,10 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 
 A seat finding (P1-E), not a ruling. The profile sync on main is dead code: `profileSyncEligible` in `ui/auth.js:189` asks `typeof profiles==='function'`, which is never true, so `authProfileSync` always skips and would throw at `:222` if it ran. It must not be switched on as is, because it uploads the whole profile, stories included, which contradicts the privacy words; it needs a sync and consent design first. The returning account bypass of the opening that depends on it is parked at `claude/p1e-bypass-parked` (`743df63`), `TASKS.md` PB1.
 
+**Priority order, ruled 18 November.** His words: "Focus on the cosmetic bugs and visual enhancements. Prioritize all of those first. And then let's get that release engine as Source AI, in behind that." Cosmetic bugs and visual work (the dashboard bottom row and left rail redraws already in progress, card redesigns, stray-visual defects like the unmeasured text and scrollbar between the Path/Boundary/Body cards) come first. Wiring Source AI into the release engine (the sniffer's findings driving real release offers, the evidence bus and the 96-pattern library already built but not wired, the Avatar page's own Source AI corner and sniffer-to-bank line) is next, queued right behind it, not started ahead of it. Read as a sequencing ruling, not a scope cut: nothing already named in either area is dropped.
+
+**Device sync, scheduled post alpha. Ruled 18 November.** His words: "Add the device sync post alpha." This is a timing ruling, not a design change: the code to pull a person's story onto a device that does not already hold it exists and is wired (`authProfileSync`, `profileSyncImport`, `ui/auth.js`), gated behind one constant, `PROFILE_SYNC_ENABLED=false`, with the reason already written beside it: "profile sync is not part of alpha... keep this false until privacy copy, consent and retention are approved together." That reason still holds and is now dated: not before alpha closes. The flag stays false through alpha; flipping it, and writing the consent/privacy copy it needs first, is the first real piece of post-alpha accounts work, alongside the paywall flip in the same area (`TASKS.md`, accounts-auth and accounts-paywall). Found this round because signing in on a device with no local record read as a bug ("my account's not being set up") rather than the device's own first run; the fix shipped the same night is only the honest message (`authSyncNote`, commit `4ef5c88c`), not the switch.
+
 ## Sniffer, 9 October: the audit checked, and the defaults the seats took
 
 The owner supplied a sniffer design and gap audit (8 October) and asked for a review, a strategy, handshake notes and an entry in the sniffer documents. All of it is in `REVIEW-sniffer-audit-2026-10-09.md` and `HANDSHAKE-sniffer.md`. These are seat rulings, taken because the owner's order is that the seats decide and ask only when blocked. The owner may overturn any of them.
@@ -3851,3 +3855,61 @@ answered for him.
 **What cannot be said.** Why he rejected PR #163. His words give no reason and
 none is invented here. The layer was not on any screen of the build he judged,
 as far as the code shows, so it cannot be named as the cause.
+## The Avatar's Purpose view loses both rails, and Archetypes is hidden. Ruled 18 November.
+
+His words, verbatim: "Okay, Amy, for the avatar purpose, let's remove the left
+and right rail. And let's hide the archetype tab under avatar. Archetype. I
+don't know what it's for. I don't know where it came from. I don't know what
+it does. Okay, review this back. And then let's add this to the plate."
+
+Read back to him as four things, and built as the first two:
+
+1. **Purpose has no rails.** On the Avatar page's Purpose view the left rail
+   (Root Energetics, Energy, Psyche, Matrix) and the right rail (Selection)
+   are not drawn, and the centre takes the whole row. One rule in
+   `atuned_src/shell/head.html`, beside the fold rules, keyed on the Purpose
+   view actually being drawn in `#avbody`. Becoming keeps both rails until
+   the Avatar page redesign, already in flight, takes them off everywhere;
+   that was the default taken where he left it open.
+2. **Archetypes is hidden, not deleted.** His word is hide. The pill is gone
+   from the Avatar page, the Discover page's Avatar card now opens Becoming
+   and says so, and the Character page's twelve archetypes are marks with
+   their meaning on hover and tap rather than doors into a page that is not
+   drawn. A view left set to Archetypes paints Becoming. The wheel, the card,
+   the 1 to 5 rating and every rating already saved stay: the record still
+   validates and exports `avatar.arch`. One line turns it all back on,
+   `AV_ARCH_SHOWN` in `atuned_src/ui/avatarui.js`.
+3. **What it was, in plain words** (below), because he asked.
+4. **It is on the plate**: `TASKS.md`, round WI.
+
+### What the hidden view was, for the next reader
+
+- A ring of twelve character patterns (an archetype is a role a person tends
+  to play: the Warrior moves toward a threat and counts the cost later, the
+  Sage stops to work out what is true first). Press one and a card opens: a
+  one line meaning, an Impact box naming the habit that gets in that
+  archetype's way (its saboteur) and where in the body that habit sits, three
+  yes or no rows on how it runs through you, and five buttons, 1 Hardly to 5
+  Fully, for "How much of this is you".
+- Where it came from: his own book's twelve (30 May), then his words on 27
+  September, round HG, "we want to give a scale from one to five. People may
+  not see their full potential, they're a magician as an example, they may
+  not understand it", and 28 September, round JP, "I want the archetypes to
+  be on its own subtab". Round KH took the percentages off. Round RB moved
+  the ratings onto the record. MS22, 17 November, pointed the Character
+  page's twelve at it.
+- What it did: the 1 to 5 rating is saved on the record and nothing else in
+  the app reads it. Measured on the live build c2bf52a2 by the historian seat:
+  all twelve rated 5 and the same story run through gives a reading byte for
+  byte identical to no rating. So hiding it changes no reading, score or
+  ritual.
+- What does move the app, and stays: the web quiz's twelve statements
+  (`archSeedApply`, engine/archseed.js) and the Primary and Secondary picks in
+  the left rail on the Field (`S.arcs`). That is the 11 November ruling, "It's
+  self-reporting of their archetypes, and then as they input their story over
+  time, the reality of those numbers adjust", built 16 November (TA9) on those
+  two inputs and never on this view, which is why the view felt like it had
+  no job.
+- What a person loses while it is hidden: the only screen that sets or shows
+  a 1 to 5 rating, and the only place the Impact box and the "How it runs
+  through you" rows are shown. Nothing replaces them; that is his call.

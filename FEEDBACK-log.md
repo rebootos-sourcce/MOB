@@ -601,7 +601,41 @@ measure: tests/engine.js reads the same as before the port (0 failed), the voice
 objections gate reads 0 findings that stop a build, and each of the five tests
 fails against a deliberately broken copy of the layer. The engine grew by about
 200 kilobytes and the public quiz page with it, which is the cost of adding it.
+## 2026-11-18 · owner · the Purpose view's rails, and Archetypes hidden
+
+said: "Okay, Amy, for the avatar purpose, let's remove the left and right
+rail. And let's hide the archetype tab under avatar. Archetype. I don't know
+what it's for. I don't know where it came from. I don't know what it does.
+Okay, review this back. And then let's add this to the plate."
+read: the Purpose view on the Avatar page shows the Field's two shared rails,
+which it never uses, and the Archetypes view is a 1 to 5 self rating nothing
+in the app reads (DECISIONS.md, 18 November, carries the plain account of
+what it was and where it came from). Hide means hide: code, data and saved
+ratings stay.
+change: shell/head.html, one rule hides both rails while Purpose is drawn,
+heavier than the fold rules so a rail folded elsewhere cannot squeeze it.
+ui/avatarui.js, AV_ARCH_SHOWN and avSubsShown: the pill is gone and any view
+left at Archetypes paints Becoming. ui/storyui.js, the Discover Avatar card
+opens Becoming and says so. ui/character.js, the twelve archetypes are marks,
+not doors, while the view is hidden. Becoming keeps its rails.
+measure: tests/avatarpurpose.js, at 1600 and 390 on a blank and a loaded
+profile, failed on the live build c2bf52a2 and passes on this one;
+tests/becoming.js and tests/functional.js turn the view on for the checks
+that hold the hidden wheel, so the one line still brings back a working one.
 
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
+
+## 18 November: device sync, scheduled post alpha
+
+say: "Add the device sync post alpha."
+read: a timing ruling, not a design change. The sign-in-on-a-new-device
+read as a bug tonight ("my account's not being set up") because a device
+with no local record stayed silent about why; the real sync code already
+exists, wired, one constant away (PROFILE_SYNC_ENABLED, ui/auth.js), kept
+false until privacy copy, consent and retention are approved together.
+change: TASKS.md DS1 added (and PB1's stale blocked-on note corrected);
+DECISIONS.md carries the full ruling. No code changed by this entry; the
+honest sign-in message that shipped the same night (authSyncNote, commit
+4ef5c88c) is its own, separate fix.

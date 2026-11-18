@@ -33576,14 +33576,27 @@ lead the same day. The Account header email from that commit is ported; the
 bypass is not.
 
 - [ ] **PB1. P2. Returning account bypass of the opening, parked at
-      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: profile sync is
-      dead code on main (`ui/auth.js:189` `typeof profiles==='function'` is
-      never true; `authProfileSync` always skips and would throw at `:222`).
-      Do not enable it as is: it uploads the whole profile, which contradicts
-      the privacy words. Needs a sync and consent design first.
+      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: device sync,
+      below (DS1). **This note was stale**: it said profile sync was dead
+      code because of a `:189` bug; that has since been replaced by a real,
+      wired sync (`authProfileSync`, `profileSyncImport`), gated behind one
+      constant, `PROFILE_SYNC_ENABLED=false`, in `ui/auth.js`. Still do not
+      enable it as is, same reason as before: it uploads the whole profile,
+      which contradicts the privacy words, and needs consent copy first.
 - [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
       `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
       does not take the record the server sent, and no `status()` line says so.
+- [ ] **DS1. Device sync, scheduled post alpha.** His words, 18 November:
+      "Add the device sync post alpha." See `DECISIONS.md`, "Device sync,
+      scheduled post alpha." The wiring already exists (`authProfileSync`,
+      `profileSyncImport`, `ui/auth.js`), one constant away
+      (`PROFILE_SYNC_ENABLED`). Real work left: write and get his approval
+      on the consent/privacy copy a sign in on a second device needs, flip
+      the constant, wire a one-time consent moment, then PB1 and PB2 above
+      unblock. Not alpha work; do not start building it before alpha closes.
+      Tonight's fix in this area is only the honest sign-in message
+      (`authSyncNote`, commit `4ef5c88c`) saying why a new device starts
+      empty, not the sync itself.
 
 ## Audit Dev 1 to 6, consolidated, 9 October
 
@@ -35230,3 +35243,37 @@ the last of those re-run clean start to finish after an earlier attempt
 was discarded for running concurrently with a rebuild. `engine.js` is
 unaffected (no engine file touched this round) and stayed at its last
 confirmed-clean count.
+
+
+## Round WI, 18 November. The Avatar's Purpose view without rails, and Archetypes hidden
+
+His words: "for the avatar purpose, let's remove the left and right rail. And
+let's hide the archetype tab under avatar... And then let's add this to the
+plate." The ruling and the plain account of the hidden view are in
+`DECISIONS.md`, 18 November.
+
+- [x] WI1 Purpose draws neither rail and the centre takes the row, at 1600
+  and 390 (`shell/head.html`, beside the fold rules). Held by
+  `tests/avatarpurpose.js`.
+- [x] WI2 Archetypes hidden behind `AV_ARCH_SHOWN` in `ui/avatarui.js`: no
+  pill, the Discover Avatar card opens Becoming, the Character page's twelve
+  are marks, a stale view paints Becoming. Code, data and saved ratings kept.
+- [ ] WI3 Becoming's rails go when the Avatar page redesign takes them off
+  everywhere (in flight, strategy only). Not touched here.
+- [ ] WI4 His call, open: the 1 to 5 rating was the only place a person could
+  say how much of an archetype they are on the Avatar page, and the Impact box
+  and the "How it runs through you" rows are shown nowhere else. Bring them
+  back, move them, or let them go. Nothing replaces them now.
+- [ ] WI5 His call, open: with Archetypes hidden, the Discover Avatar card
+  opens Becoming. Becoming or Purpose.
+- [ ] WI6 Found on the way, not fixed: `avSig` (ui/avatarui.js) does not
+  include `AV.sub`, so a door that sets the view and calls only `render()`
+  leaves the old view painted. Only the Character door did that, and it is a
+  mark while the view is hidden; it matters again if `AV_ARCH_SHOWN` goes back
+  on.
+- [ ] WI7 Found on the way, not fixed: at 390 the Purpose figure's left label
+  "Community" is cut at the screen's left edge, before and after this change.
+- [ ] WI8 Found on the way, not fixed: on Purpose at 1600 without rails the
+  figure is top aligned and not sticky, so a block under it sits empty while
+  the right column runs on (the symmetry ruling of 16 November). A layout call
+  for the Avatar redesign.

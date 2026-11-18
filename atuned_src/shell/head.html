@@ -2789,6 +2789,24 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
  body.rshut .mid{grid-template-columns:302px 1fr 58px}
  body.lshut.rshut .mid{grid-template-columns:58px 1fr 58px}
  body.rshut.tab-settings .mid,body.rshut.tab-prac .mid{grid-template-columns:1fr}}
+/* THE AVATAR'S PURPOSE VIEW HAS NO RAILS, 18 November, his words: "for the
+   avatar purpose, let's remove the left and right rail." The rails are the
+   Field's two shared columns and the Avatar never had a rule of its own, so
+   it showed them by default. Keyed on the drawn view and not on a class a
+   script sets, because setTab clears only the page classes it knows: a
+   class left behind would strip the rails off the next page, and :has reads
+   what is actually in #avbody, which only counts while body is tab-intake.
+   Becoming keeps both rails until the Avatar redesign takes them off.
+
+   HEAVIER THAN THE FOLD RULES ABOVE ON PURPOSE. A one class rule here weighs
+   the same as body.lshut:not(.tab-settings) .mid and body.lshut.rshut .mid,
+   so it wins or loses by its place in this file, and measured placed ahead
+   of them a person with the left rail folded elsewhere got Purpose in a 58
+   pixel track. The id in :has outweighs every fold state, wherever it sits.
+   The fold controls live inside the rails, so they go with them and the
+   saved fold state returns untouched with Becoming. */
+body.tab-intake:has(#avbody .avp) .mid{grid-template-columns:minmax(0,1fr)}
+body.tab-intake:has(#avbody .avp) .mid>.col{display:none}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -7869,6 +7887,8 @@ body.tab-masksview #bRel{display:none}
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
 .chr-ar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .chr-ar:hover{border-color:var(--ac);color:var(--ac)}
+/* a mark and not a door while Archetypes is hidden (ui/character.js) */
+span.chr-ar{cursor:default}
 .chr-ar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chr-ar.on{border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac) 28%,transparent)}
 .chr-arn{color:var(--mid);margin-bottom:4px}
