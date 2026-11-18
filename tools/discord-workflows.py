@@ -33,14 +33,16 @@ address whose token is searched for in everything printed.
       an injected command that runs nothing, no mention that can ping
   D6  triggers: the probe and the hand post are hand start only, and the
       probe names no secret. The digest follows the deploy workflow on main
-      and a hand start, and nothing else; its checkout is pinned by full
+      and a hand start, and nothing else; its job runs in the whats-running
+      environment, which admits main only; its checkout is pinned by full
       commit, reads the deployed commit, and leaves no credentials behind
   D7  the digest's deploy check: a push to main in this repository that
       succeeded, or a hand start from main, and nothing else; the commit and
       time it hands on come off the deploy run
   D8  the digest's post: unset or malformed secret, a missing, empty or draft
-      file, no front matter, a missing section, a dash, a percent, every term
-      on the deny list in any case, the length counted in characters, Discord
+      file, no front matter, a missing section, a dash, a percent in any of
+      its three signs, every term on the deny list in any case, spaced,
+      squashed or split by a zero width space, the length counted in characters, Discord
       refusing; the exact card posted, and an injected command that runs
       nothing and a mention that pings nobody. Every refusal fails the run
       with its own reason and posts nothing
@@ -79,7 +81,15 @@ DIGEST = 'docs/WHATS-RUNNING.md'
 # them. Held here as the specification: the workflow keeps the list it
 # matches, in one place, and this proves every one of these is on it.
 MUST_DENY = ('need you', 'ruled', 'Reboot-OS', 'Rapid Release', 'Mysterium',
-             'billing', 'Stripe', 'secret', 'token', 'password')
+             'billing', 'Stripe', 'secret', 'token', 'password', 'percent', 'per cent')
+# the spellings a term reaches a digest in, beside the one on the list. Each
+# of the last three posted past a match as written, measured 18 November:
+# "Reboot OS" and "rebootos" are how the repository itself spells the app far
+# more often than Reboot-OS, and a zero width space hides a gap from the eye.
+def spellings(t):
+    squashed = re.sub(r'[^a-z0-9]', '', t.lower())
+    return list(dict.fromkeys((t, t.upper(), t.replace('-', ' '), squashed, t[0] + '\u200b' + t[1:])))
+
 WHICH_ENV = {
     'EVENT': '${{ github.event_name }}',
     'RUN_CONCLUSION': '${{ github.event.workflow_run.conclusion }}',
@@ -378,7 +388,12 @@ class Check:
                 % (wr.get('workflows'), wr.get('types'), wr.get('branches'), deploy_name))
         self.ok(doc.get('permissions') == {'contents': 'read'},
                 'D6 whats-running-discord.yml asks for permissions %r; it reads one file and needs contents: read only.' % doc.get('permissions'))
-        steps = ((doc.get('jobs') or {}).get('post') or {}).get('steps') or []
+        job = (doc.get('jobs') or {}).get('post') or {}
+        env_ = job.get('environment')
+        env_ = env_.get('name') if isinstance(env_, dict) else env_
+        self.ok(env_ == 'whats-running',
+                'D6 whats-running-discord.yml\'s post job runs in environment %r; it runs in whats-running, whose secret only main may read, because the main only check in this file is in a file any branch can rewrite.' % env_)
+        steps = job.get('steps') or []
         co = [x for x in steps if str(x.get('uses', '')).startswith('actions/checkout')]
         uses = [str(x.get('uses')) for x in steps if 'uses' in x]
         self.ok(uses and all(re.match(r'^[a-z0-9_.-]+/[a-z0-9_.-]+@[0-9a-f]{40}$', u) for u in uses),
@@ -475,9 +490,14 @@ class Check:
             ('it carries an em dash', self.digest(body.replace('A new week view.', 'A new week \u2014 view.')), None, 'em dash'),
             ('it carries an en dash', self.digest(body.replace('A new week view.', 'Week 1\u20132.')), None, 'em dash'),
             ('it carries a percent', self.digest(body.replace('A new week view.', 'Ritual is 40% done.')), None, 'percent'),
+            ('it carries a full width percent', self.digest(body.replace('A new week view.', 'Ritual is 40\uff05 done.')), None, 'percent sign'),
+            ('it carries a small percent', self.digest(body.replace('A new week view.', 'Ritual is 40\ufe6a done.')), None, 'percent sign'),
+            ('it names the Reboot OS app', self.digest(body.replace('A new week view.', 'Built beside the Reboot OS app.')), None, 'Reboot-OS'),
+            ('it carries the repository name', self.digest(body.replace('A new week view.', 'See rebootos-sourcce/MOB.')), None, 'Reboot-OS'),
+            ('it says ninety percent', self.digest(body.replace('A new week view.', 'Ninety percent done.')), None, '"percent"'),
         ]
         for t in MUST_DENY:
-            for form in (t, t.upper()):
+            for form in spellings(t):
                 refusals.append(('it carries %r' % form, self.digest(body.replace('A new week view.', 'About %s here.' % form)), None, 'deny list'))
         for label, text, v, why in refusals:
             r = go(text, v)
@@ -568,9 +588,23 @@ def _step(docs, secret):
 def _sub(secret, old, new, key='run'):
     def f(docs):
         s = _step(docs, secret)
-        assert old in s[key], 'self test: %r is not in the %s step' % (old, secret)
-        s[key] = s[key].replace(old, new, 1)
+        t, k = (s['env'], key[4:]) if key.startswith('env.') else (s, key)
+        assert old in t[k], 'self test: %r is not in the %s step' % (old, secret)
+        t[k] = t[k].replace(old, new, 1)
     return f
+
+
+def _chain(*fs):
+    def f(docs):
+        for g in fs:
+            g(docs)
+    return f
+
+
+def _drop_env(docs):
+    job = docs['whats-running-discord.yml']['jobs']['post']
+    assert 'environment' in job, 'self test: the post job has no environment'
+    del job['environment']
 
 
 def _trig(docs):
@@ -622,7 +656,7 @@ BREAKS = [
     ('W1 the digest posts with the secret unset', _sub(R, 'refuse "DISCORD_WEBHOOK_RUNNING is not set on GitHub."', 'true')),
     ('W2 the digest\'s deny list is emptied', _set(R, 'DENY', '', sub='env')),
     ('W3 the digest posts a draft', _sub(R, 'if [ "$status" != approved ]; then', 'if false; then')),
-    ('W4 the digest lets a percent through', _sub(R, 'if [[ "$body" == *%* ]]; then', 'if false; then')),
+    ('W4 the digest lets a percent through', _sub(R, 'if [[ "$body" == *%* || ', 'if [[ ')),
     ('W5 the digest lets a mention ping', _sub(R, 'allowed_mentions: {parse: []},', 'allowed_mentions: {parse: ["everyone"]},')),
     ('W6 the digest lets a dash through', _sub(R, "if [[ \"$body\" == *$'\\xe2\\x80\\x94'* || \"$body\" == *$'\\xe2\\x80\\x93'* ]]; then", 'if false; then')),
     ('W7 the digest takes any length', _sub(R, 'if [ "$n" -gt 1800 ]; then', 'if [ "$n" -gt 99999 ]; then')),
@@ -635,7 +669,7 @@ BREAKS = [
     ('W14 the digest\'s checkout is pinned by tag', _set('checkout', 'uses', 'actions/checkout@v4')),
     ('W15 the digest can be started by a push', _running_push),
     ('W16 the digest reads main and not the deployed commit', _set('checkout', 'ref', 'main', sub='with')),
-    ('W17 the digest matches the deny list by case', _sub(R, 'lower="${body,,}"', 'lower="$body"')),
+    ('W17 the digest matches the deny list by case', _sub(R, 'printf \'%s\' "${body,,}"', 'printf \'%s\' "$body"')),
     ('W18 the digest\'s checkout leaves credentials on disk', _set('checkout', 'persist-credentials', True, sub='with')),
     ('W19 the digest posts to a malformed address', _sub(R, 'refuse "DISCORD_WEBHOOK_RUNNING is set on GitHub but is not a Discord webhook address."', 'true')),
     ('W20 the digest posts with the file missing', _sub(R, 'refuse "$f is missing or empty at ${SHA:0:7}."', 'true')),
@@ -643,6 +677,14 @@ BREAKS = [
     ('W22 the digest\'s footer takes the time of this run, not the deploy', _sub('which', 'sha="$RUN_SHA"; when="$RUN_DONE"', 'sha="$RUN_SHA"; when="$(date -u +%Y-%m-%dT%H:%M:%SZ)"')),
     ('W23 the digest asks for write access', _running_perms),
     ('W24 the digest trusts a pull request run', _sub('which', 'if [ "$RUN_EVENT" != push ] || ', 'if ')),
+    # 18 November, the review of W1 to W24. Each of these posted before the fix.
+    ('W25 the digest\'s job holds the secret outside the whats-running environment', _drop_env),
+    ('W26 the digest matches the deny list as written, not squashed', _chain(
+        _sub(R, 'squash="$(printf \'%s\' "${body,,}" | LC_ALL=C tr -cd \'a-z0-9\')"', 'squash="${body,,}"'),
+        _sub(R, 't="$(printf \'%s\' "${w,,}" | LC_ALL=C tr -cd \'a-z0-9\')"', 't="${w,,}"'))),
+    ('W27 the digest lets the word percent through', _sub(R, ',percent,per cent', '', key='env.DENY')),
+    ('W28 the digest lets a full width percent through', _sub(R, ' || "$body" == *$\'\\xef\\xbc\\x85\'*', '')),
+    ('W29 the digest lets a small percent through', _sub(R, ' || "$body" == *$\'\\xef\\xb9\\xaa\'*', '')),
 ]
 
 

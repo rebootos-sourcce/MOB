@@ -40,6 +40,13 @@ permissions:
   contents: read
 jobs:
   post:
+    # The main only check below lives in this file, and a branch controls its
+    # own copy of this file: a hand start runs the workflow as the branch has
+    # it, so a copy with that check deleted, started on its branch, was handed
+    # the webhook as a repository secret. The webhook is a secret of this
+    # environment instead, and the environment admits main only, a rule held
+    # in the repository's settings where no branch can edit it.
+    environment: whats-running
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -103,16 +110,17 @@ jobs:
           sparse-checkout-cone-mode: false
       # DENY is the one list of words the digest may never carry. They name
       # internal work, people's decisions, money or credentials, none of which
-      # belong in a channel the public invite reaches. Matched without regard
-      # to case. A percent sign is refused on its own line below, because the
-      # digest never prints an internal percent.
+      # belong in a channel the public invite reaches. A percent sign is
+      # refused on its own line below, because the digest never prints an
+      # internal percent, and percent and per cent are on the list for the
+      # same reason, spelled out.
       - name: post the approved digest to whats-running
         env:
           HOOK: ${{ secrets.DISCORD_WEBHOOK_RUNNING }}
           SHA: ${{ steps.which.outputs.sha }}
           WHEN: ${{ steps.which.outputs.when }}
           HOW: ${{ steps.which.outputs.how }}
-          DENY: "need you,ruled,Reboot-OS,Rapid Release,Mysterium,billing,Stripe,secret,token,password"
+          DENY: "need you,ruled,Reboot-OS,Rapid Release,Mysterium,billing,Stripe,secret,token,password,percent,per cent"
         run: |
           refuse() {
             echo "::error::$1 Nothing was posted."
@@ -153,13 +161,24 @@ jobs:
           if [[ "$body" == *$'\xe2\x80\x94'* || "$body" == *$'\xe2\x80\x93'* ]]; then
             refuse "$f carries an em dash or an en dash, which the house voice never uses."
           fi
-          if [[ "$body" == *%* ]]; then
+          # the full width and the small percent sign as well, because each
+          # passed a check that looked for % alone (measured, 18 November)
+          if [[ "$body" == *%* || "$body" == *$'\xef\xbc\x85'* || "$body" == *$'\xef\xb9\xaa'* ]]; then
             refuse "$f carries a percent sign. The digest never prints a percent."
           fi
-          lower="${body,,}"
+          # Matched squashed: lower case, and everything that is not a letter
+          # or a digit taken out, on both sides. Matched as written, "Reboot
+          # OS" and "rebootos", the spellings the repository itself uses most,
+          # missed the term Reboot-OS, and "need" with a zero width space
+          # before " you" missed need you, and each posted (measured, 18
+          # November). A squashed match can refuse an innocent run of words
+          # across a gap, which costs a rewrite; letting one through costs a
+          # post nobody can take back.
+          squash="$(printf '%s' "${body,,}" | LC_ALL=C tr -cd 'a-z0-9')"
           IFS=',' read -r -a deny <<< "$DENY"
           for w in "${deny[@]}"; do
-            if [ -n "$w" ] && [[ "$lower" == *"${w,,}"* ]]; then
+            t="$(printf '%s' "${w,,}" | LC_ALL=C tr -cd 'a-z0-9')"
+            if [ -n "$t" ] && [[ "$squash" == *"$t"* ]]; then
               refuse "$f carries \"$w\", which is on the deny list of internal terms."
             fi
           done
