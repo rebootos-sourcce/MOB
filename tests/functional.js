@@ -1498,6 +1498,173 @@ ok(bands.length===0,'no band word appears anywhere on an unread first screen, fo
  +(bands.join(', ')||'none'));
 await blank.close();
 
+console.log('\n=== an unread Field draws its 21 law ticks empty, and answers to no seed nobody entered ===');
+/* THE GATE FOR 22141540, 16 November. On a blank profile every law holds
+   LAW_DEFAULT, the seed 6 nobody answered, and the wheel's law ticks read
+   S.law straight, so all twenty one stood at six tenths of their run in their
+   seats' colours under a core that prints a dash. The owner saw it as "a bunch
+   of data that was loading up when there's no file selected". The fix changed
+   two files and added no test, so nothing stopped the seed coming back.
+
+   WHAT IS HELD. A canvas has no DOM, so a tick's length is read off the strokes
+   themselves: the 2D context is wrapped for one synchronous draw, and the
+   twenty one ticks are the only run of twenty one identical straight round
+   capped strokes, one on each law's own angle (HIT carries that angle). Both
+   halves of the engine's guard are named here, r.unread and r.lawSQ null, and
+   a read field's lengths are taken as a ratio to the law's own value, so the
+   gate carries no extent of its own and moves with the wheel's geometry.
+
+   The seed is then moved under the unread field, all 21 to ten and all 21 to
+   nought, the way the bulk law slider moves it (ui/panels.js, allLaw: an
+   unanswered law takes the value and its seed goes with it, so it stays
+   unanswered). The whole wheel is drawn again from a fresh compute and not one
+   pixel of it may move, because nothing a person has not answered may be drawn
+   as a reading. The same method on a complete intake has to see the frame
+   move, or the zero above would be a detector that cannot see.
+
+   THE WASH IS HELD ONLY AS FAR AS IT IS TRUE, and the line below says where it
+   stops. What drawAura reads from CQ is held: CQ, DQ, benign and darkB are the
+   unread reading's and no seed moves them. What it reads from r.radiance is
+   NOT held, because it is not silent: radiance is built from Ig and It, which
+   read the seed (6 on a blank profile, radiance 0.80, measured 18 November), so
+   the glow and the wash's opacity answer to a value nobody entered. That is
+   the coherence wash's line to close, wave 3 of the Field plan, and its
+   check is the one this section already runs on the wheel: draw the wash again
+   under a moved seed and count the pixels. The numbers are printed under each
+   width so the day it reads 0 is seen in the log and the check can be added.
+
+   The hover is the second half of the same lie ("reads 60%" over an empty
+   field), so it is read through describe() at both widths, and through a real
+   pointer at 1600 where the law ticks are the topmost target; at 390 the
+   rings sit over them and a finger reaches them by the same describe(). */
+const fieldSilenceProbe=()=>{
+ const cv=document.getElementById('cv'), g=cv.getContext('2d'), wash=document.getElementById('bgaura');
+ const snap=c=>new Uint32Array(c.getContext('2d').getImageData(0,0,c.width,c.height).data.buffer);
+ const diff=(a,b)=>{let n=Math.abs(a.length-b.length);const m=Math.min(a.length,b.length);
+  for(let i=0;i<m;i++)if(a[i]!==b[i])n++;return n;};
+ const names=SI.map(l=>l.nm), kept=names.map(n=>S.law[n]), keptSeed=names.map(n=>LAW_SEED[n]);
+ /* the seed moves the way the bulk law slider moves it (ui/panels.js, allLaw):
+    an unanswered law takes the value and its seed goes with it, so it stays
+    unanswered. Writing S.law alone is an answer, lawIn counts it, and CQ moves. */
+ const seed=v=>names.forEach((n,i)=>{
+  if(v===null){S.law[n]=kept[i];LAW_SEED[n]=keptSeed[i];return;}
+  if(!lawIn(n))LAW_SEED[n]=v; S.law[n]=v;});
+ /* what the wash is handed that comes from CQ, and the one thing that does not */
+ const feed=r=>({CQ:r.CQ,DQ:r.DQ,benign:r.benign,darkB:r.darkB,unread:r.unread,radiance:+r.radiance.toFixed(3)});
+ /* one frame of the wheel and of the wash, from a fresh reading. The two
+    signatures are cleared so the draw is never skipped as "nothing moved". */
+ const frame=forged=>{const r=computeSeen();DRAW_SIG=null;draw(r);AURA_SIG=null;
+  drawAura(forged?Object.assign({},r,forged):r);return {w:snap(cv),a:snap(wash)};};
+ /* the ticks, measured as they are drawn */
+ const ticks=()=>{
+  const M=['beginPath','moveTo','lineTo','stroke'], orig={}, rec=[]; let path=[];
+  M.forEach(k=>{orig[k]=g[k];});
+  g.beginPath=function(){path=[];return orig.beginPath.apply(g,arguments);};
+  g.moveTo=function(x,y){path.push(['M',x,y]);return orig.moveTo.apply(g,arguments);};
+  g.lineTo=function(x,y){path.push(['L',x,y]);return orig.lineTo.apply(g,arguments);};
+  g.stroke=function(){rec.push({p:path.slice(),cap:g.lineCap,w:g.lineWidth});return orig.stroke.apply(g,arguments);};
+  try{DRAW_SIG=null;draw(computeSeen());}finally{M.forEach(k=>{delete g[k];});}
+  const lh=HIT.filter(h=>h.k==='law'), groups={};
+  lh.forEach(h=>{const a=(h.a0+h.a1)/2,ux=Math.cos(a),uy=Math.sin(a);
+   rec.forEach(s=>{
+    if(s.p.length!==2||s.p[0][0]!=='M'||s.p[1][0]!=='L'||s.cap!=='round')return;
+    const dx=s.p[0][1]-h.cx,dy=s.p[0][2]-h.cy,d=Math.hypot(dx,dy);
+    if(!d||Math.abs(dx/d-ux)>1e-6||Math.abs(dy/d-uy)>1e-6)return;
+    const k=s.w.toFixed(3)+'@'+d.toFixed(2);
+    (groups[k]=groups[k]||{})[h.j]=Math.hypot(s.p[1][1]-s.p[0][1],s.p[1][2]-s.p[0][2]);});});
+  const whole=Object.keys(groups).filter(k=>Object.keys(groups[k]).length===lh.length);
+  return {targets:lh.length,runs:whole.length,lens:whole.length===1?lh.map(h=>groups[whole[0]][h.j]):null};};
+ const r0=computeSeen(), tk=ticks();
+ const o={unread:r0.unread,complete:r0.complete,lawSQ:r0.lawSQ,CQ:r0.CQ,targets:tk.targets,runs:tk.runs,lens:tk.lens,
+  laws:names.map(n=>S.law[n]),dash:PCT_DASH,onField:S.tab===TAB.FIELD,fview:fviewOn()};
+ /* what the hover says, from the targets the frame just put down */
+ o.say=HIT.filter(h=>h.k==='law').map(h=>describe(h,r0).replace(/<[^>]+>/g,' ').replace(/\s+/g,' '));
+ /* the frame as it stands, drawn twice, then under a seed of ten and of nought */
+ const A=frame(), A2=frame();
+ seed(10); const rt=computeSeen(), B=frame();
+ seed(0); const rz=computeSeen(), C=frame();
+ seed(null);
+ o.feed={as:feed(r0),ten:feed(rt),nought:feed(rz)};
+ o.still={wheel:diff(A.w,A2.w),wash:diff(A.a,A2.a)};
+ o.moved={wheelTen:diff(A.w,B.w),wheelNought:diff(A.w,C.w),washTen:diff(A.a,B.a),washNought:diff(A.a,C.a)};
+ /* and the wash on a forged CQ, which only a complete intake may answer to */
+ o.moved.washForged=diff(A.a,frame({CQ:r0.CQ>50?5:95}).a);
+ o.px={wheel:A.w.length,wash:A.a.length};
+ return o;};
+const fieldTicksOnUnread=async W=>{
+ const sp=await browser.newPage({viewport:{width:W,height:W===390?844:1000}});
+ await sp.goto(FILE,{waitUntil:'load'}); await booted(sp); await sp.waitForTimeout(400);
+ await sp.evaluate(()=>{try{localStorage.clear();}catch(e){}});
+ await sp.reload({waitUntil:'load'}); await booted(sp); await sp.waitForTimeout(700);
+ /* two frames for the render, and the entrance let finish: the Field assembles
+    on arrival, and a frame measured while it does measures the animation */
+ const settle=async()=>{await sp.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+  await ready(sp,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');};
+ await sp.evaluate(()=>{setTab(TAB.FIELD);render();}); await settle();
+ const blankRead=await sp.evaluate(fieldSilenceProbe);
+ /* a real pointer, where the ticks are the top target (1600 only) */
+ let pointer=null;
+ if(W===1600){
+  const pts=await sp.evaluate(()=>{const rc=document.getElementById('cv').getBoundingClientRect();
+   return HIT.filter(h=>h.k==='law').map(h=>{const a=(h.a0+h.a1)/2,r=(h.r0+h.r1)/2;
+    return [rc.left+h.cx+Math.cos(a)*r,rc.top+h.cy+Math.sin(a)*r];});});
+  pointer=[];
+  for(const [X,Y] of pts){
+   await sp.mouse.move(4,4); await sp.mouse.move(X,Y,{steps:3});
+   pointer.push(await sp.evaluate(()=>{const pr=document.getElementById('probe');
+    return pr.classList.contains('on')?pr.textContent.replace(/\s+/g,' '):'';}));}
+  await sp.mouse.move(4,4);}
+ /* then a complete intake, by name, on the same page */
+ await sp.evaluate(()=>{loadP(PERSON('James'));setTab(TAB.FIELD);render();}); await settle();
+ const readRead=await sp.evaluate(fieldSilenceProbe);
+ await sp.close();
+ return {blank:blankRead,read:readRead,pointer};};
+for(const W of [1600,390]){
+ const fs=await fieldTicksOnUnread(W), b=fs.blank, rd=fs.read, tag=W+': ';
+ /* the guard the gate stands on, both halves of it */
+ ok(b.unread===true&&b.lawSQ===null&&b.complete===false&&b.CQ===0&&b.onField&&!b.fview,
+  tag+'a blank profile on the Field is unread, with no law answered, lawSQ null and CQ 0, '
+  +JSON.stringify({unread:b.unread,lawSQ:b.lawSQ,CQ:b.CQ,complete:b.complete}));
+ /* the ticks are found, so a zero below is a measurement and not a miss */
+ ok(b.targets===21&&b.runs===1&&b.lens&&b.lens.length===21,
+  tag+'the wheel puts down 21 law targets and the 21 ticks are found as one run of strokes, '
+  +JSON.stringify({targets:b.targets,runs:b.runs}));
+ ok(b.lens&&b.lens.every(x=>x<0.01)&&b.laws.every(x=>x>0),
+  tag+'every tick is nought long while the seed under it is not, seeds '+b.laws.slice(0,3).join(',')
+  +' ..., lengths '+(b.lens?b.lens.map(x=>+x.toFixed(2)).join(','):'none'));
+ ok(b.say.length===21&&b.say.every(t=>/^\s*law\b/.test(t)&&t.indexOf('reads '+b.dash)>=0&&!/reads\s*[0-9]/.test(t)),
+  tag+'and the hover on each says the dash, never the seed as a percentage, '+JSON.stringify(b.say.slice(0,1)));
+ /* nothing answers to a number nobody entered */
+ const fd=b.feed, same=(x,y)=>x.CQ===y.CQ&&x.DQ===y.DQ&&x.benign===y.benign&&x.darkB===y.darkB&&x.unread===y.unread;
+ ok(fd.as.CQ===0&&fd.as.DQ===0&&fd.as.benign===null&&fd.as.unread===true&&same(fd.as,fd.ten)&&same(fd.as,fd.nought),
+  tag+'a seed of ten and of nought on all 21 laws moves no CQ, DQ, benign or darkB and leaves the field unread, '+JSON.stringify(fd));
+ ok(b.moved.wheelTen===0&&b.moved.wheelNought===0,
+  tag+'and the wheel is drawn identically, '+b.moved.wheelTen+' and '+b.moved.wheelNought+' of '+b.px.wheel+' pixels moved');
+ /* a complete intake draws what it was told, which is what makes the zeros above mean something */
+ ok(rd.unread===false&&rd.complete===true&&rd.lawSQ!==null&&rd.targets===21&&rd.runs===1,
+  tag+'a complete intake is read, whole, and its 21 ticks are found, '
+  +JSON.stringify({unread:rd.unread,complete:rd.complete,lawSQ:rd.lawSQ,runs:rd.runs}));
+ const ratio=rd.lens?rd.lens.map((x,i)=>x/rd.laws[i]):[0];
+ ok(rd.lens&&rd.lens.every(x=>x>0)&&rd.laws.every(x=>x>0)&&new Set(rd.laws).size>1
+   &&Math.max(...ratio)-Math.min(...ratio)<1e-6*Math.max(...ratio),
+  tag+'each tick is as long as its own law, one length per point of the law and not all one length, laws '
+  +rd.laws.slice(0,4).join(',')+' ..., lengths '+(rd.lens?rd.lens.slice(0,4).map(x=>+x.toFixed(2)).join(','):'none'));
+ ok(rd.say.length===21&&rd.say.every(t=>/reads\s*[0-9]+%/.test(t)),
+  tag+'and the hover reads a percentage again, '+JSON.stringify(rd.say.slice(0,1)));
+ ok(b.still.wheel===0&&b.still.wash===0&&rd.moved.wheelTen>rd.still.wheel&&rd.moved.wheelNought>rd.still.wheel
+   &&rd.moved.washForged>0,
+  tag+'and the same method sees a read field move and a still one stay: an unread frame drawn twice is identical, a read wheel moves under '
+  +'a seed change ('+rd.moved.wheelTen+', '+rd.moved.wheelNought+' pixels, against '+rd.still.wheel+' of its own) and the wash under a '
+  +'different CQ ('+rd.moved.washForged+' pixels)');
+ if(W===1600){
+  ok(fs.pointer.length===21&&fs.pointer.every(t=>/^\s*law\b/.test(t)&&t.indexOf('reads '+b.dash)>=0&&!/reads\s*[0-9]/.test(t)),
+   '1600: a real pointer on each of the 21 ticks reads a law and says the dash, '+fs.pointer.filter(t=>!/^\s*law\b/.test(t)).length
+   +' of 21 did not reach a law at all');}
+ /* the open line, printed and not counted: see THE WASH above */
+ console.log('  '+W+': the wash under a moved seed on an unread field, '+b.moved.washTen+' and '+b.moved.washNought+' of '+b.px.wash
+  +' pixels moved, from radiance '+b.feed.as.radiance+' at the seed, '+b.feed.ten.radiance+' at ten, '+b.feed.nought.radiance+' at nought');
+}
+
 console.log('\n=== nothing in the rail is clipped without an affordance ===');
 /* Witness rendered as Witn at every desktop width, in a row that did not wrap
    and had no scrollbar. Rule 10: never hide a control with no affordance. */
