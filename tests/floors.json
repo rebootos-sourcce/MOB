@@ -89,7 +89,8 @@
     "Raised 19 November, merge of feature/affirmation-engine: engine 7816 to 7868, for group AE (the affirmation generator, read off the R3 reference table, md5 654e454f), read off a clean run of the merged tree. Added: affirm 74, for tests/affirm.js (the ritual builder's Affirm door and sheet, real Chromium, both widths), newly orphaned the same way avatarpurpose was. Two real bugs found and fixed in the gate itself before it would pass at all, neither a product regression, both gaps in the branch's own test that nobody had run to a clean finish before tonight: it opened the page with no ?dev=1, so the login door blocked every click behind it (every other browser gate tonight opens with ?dev=1, this one alone did not); and after a keyboard Space on the All that is switch, its own tooltip stayed open on focus and caught the next click, fixed with the same document.activeElement.blur() pattern paywall.js and others already use for exactly this.",
     "Added 18 November: talksilence 48, read off its first green run on the fix/talk-silence build (48 passed, 0 failed), and off the same file run on the c2bf52a2 build, where it reads 28 failed. It holds the five things the owner saw on the Dashboard with Talk pressed and nothing said: the circle stays at rest, no Source AI word on the screen, no bar for the open microphone, no hover card on the circle, and the round Commit button holds still for forty seconds sampled every 50 milliseconds. It is a new gate and runs report only first, in gates-report.",
     "Raised 18 November: talksilence 48 to 61, read off a green run of the build after the review's four findings were fixed (61 passed, 0 failed; the same file on the first build read 48). The new checks hold that the spoken yes (mm-hmm, uh huh, mhm, hmm) and a final of only stars are still turns, that a sentence holding an um or a the is never dropped for one filler word, that every phrase in SAFE_WORDS and a hesitation before a crisis phrase still pass, that the set of visible words on the page after Talk holds nothing it did not hold before (at 1600 and at 390, not only the two phrases named), and that every stand-in result reached a live recogniser. Each was shown to fail on a copy of the build with its own fix undone.",
-    "Raised 19 November, merge of fix/talk-silence onto main (37 commits stale): wellpin stays removed, srcintro kept at this session's current 112. talksilence carried forward at 61, this branch's own confined atuned_src/ui/storyui.js change merging clean against main's own earlier sniffer-wiring commit (dc8149dc) with no real conflict, confirmed by reading the diff rather than only trusting a clean auto-merge. Its own commit history flagged that tests/talksilence.js was never actually wired into deploy.yml despite its own note calling it new; added here, gates-report, matching house convention for a new gate."
+    "Raised 19 November, merge of fix/talk-silence onto main (37 commits stale): wellpin stays removed, srcintro kept at this session's current 112. talksilence carried forward at 61, this branch's own confined atuned_src/ui/storyui.js change merging clean against main's own earlier sniffer-wiring commit (dc8149dc) with no real conflict, confirmed by reading the diff rather than only trusting a clean auto-merge. Its own commit history flagged that tests/talksilence.js was never actually wired into deploy.yml despite its own note calling it new; added here, gates-report, matching house convention for a new gate.",
+    "Raised and added 18 November: srcchat 131 to 135, and srcconvo 81, new (tests/srcconvo.js, Source AI as a conversation, the owner's 17 November report that it repeats itself). Both read off green runs on the round's build: srcchat 135 passed, 0 failed, srcconvo 81 passed, 0 failed. srcchat's own count rose by four on the round's build, read off its run. srcconvo is registered by the integrator: a gates-report matrix entry in .github/workflows/deploy.yml and its line in the BROWSER table of tools/workflow-lint.py, and until both land tools/orphans.js names it. Run against the build before the round (c2bf52a2) its checks of the day failed 51 of 75, and its door, echo window and hold checks were each run against a deliberately broken copy of the page and failed."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -113,7 +114,7 @@
     "journey2": 140,
     "onboarding2": 244,
     "sniffpage": 70,
-    "srcchat": 131,
+    "srcchat": 135,
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
@@ -154,7 +155,8 @@
     "affirm": 74,
     "exampleprofiles": 334,
     "psychepanel": 201,
-    "talksilence": 61
+    "talksilence": 61,
+    "srcconvo": 81
   },
   "no_count": {
     "monitor": "all surfaces render"

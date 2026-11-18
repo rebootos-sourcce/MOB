@@ -158,6 +158,31 @@ scrolls sideways and the controls are tap sized. It first runs on two known bad
 copies of the page, one whose send joins with a space and one whose thread
 prints every question, and each must fail its check. Read the counts off the
 run.
+
+## Source AI as a conversation
+
+`tests/srcconvo.js` is the page held to the owner's 17 November report, "it
+keeps repeating, what are we talking about today? So it's acting more like an
+algorithm", and to the three marks he struck on a screenshot: the line that
+says it is listening, the paragraph on the circle's hover, and "0 words
+hidden". It drives the real built page with a stand-in recogniser and a
+stand-in voice, so a result can arrive in the hold after a line, in the middle
+of a sentence, or from a recording that ended late.
+
+    NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/srcconvo.js
+    ONLY=1,1b,2 ...                      runs only those sections
+    ATUNED_FILE=path ...                 runs it against another build
+
+It holds that silence, a lone filler word and Source AI's own voice coming back
+are not a turn, that a short answer and every phrase of the safety table is, that
+the recording starts a stated time after a line ends, that the opener is said
+once a conversation, that fourteen mixed turns never repeat a line, that the
+circle is at rest until a sentence with a seat in it is read and goes back to
+rest after it, and that no "Listening", no "0 words hidden" and no paragraph
+hover is on screen. Every section was run against the build from before the
+round (c2bf52a2) and fails there by name, and the door, the echo window and the
+hold were each run against a deliberately broken copy. The engine half is in
+`tests/evidence.js`, group SK13. Read the counts off the run.
 Since round SK it also runs on a page whose ask skips the question check, and
 that must fail too.
 

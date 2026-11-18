@@ -916,6 +916,44 @@ of the Commit button on left or top in 40 seconds at 1600 and 50 at 390. On this
 build it reads none of them: the circle at 1.1 times rest, no card, no bar, no
 word, 0 glides. Each check also fails on a copy of this build with its own fix
 undone.
+## 2026-11-18 · owner · Source AI repeats itself, and the last words on the circle
+
+said: on a screenshot of the Discover tab with three things struck in red, 17
+November: "Source AI animation appears broken when I load up the dashboard
+without saying anything or profile. Animations are automatically playing.
+There's a tooltip that looks like it's a paragraph long that needs to go.
+There's text still that says I'm listening that needs to go. There's text that
+says 0 words hidden... Source AI, it needs its logic reviewed. Right now,
+there's a lot of bugs with it... It keeps repeating, what are we talking about
+today? So it's acting more like an algorithm and not something intelligent I
+could have a conversation with."
+read: his own guess was a limit somewhere, and it was a gate that was missing.
+Every result the speech service handed back was filed as a turn: a lone uh,
+the, um or hmm, and Source AI's own voice coming back through the speakers.
+Each was answered aloud, read by the circle and saved into the draft. The
+opener was spoken on every press of Talk and inside the answers to hello and
+can you hear me. The circle was switched on by the greeting and by any reading
+and nothing switched it off. "Listening" was the status line, the placeholder
+under the circle and a word drawn at its centre. The "0 words hidden" chip
+reproduced on the live build (39638f05) on eight of twelve views and had
+already been hidden on c2bf52a2, with its label still in the page.
+change: ui/storyui.js (a door on the recogniser, the hold after a line, the
+opener said once, the seven lines and the thing the person said back, the
+status line and the placeholder), ui/srcface.js (rest after a reading, no
+centre word, a one line hover), engine/evidence.js and engine/sourceai.js (what
+is noise, what is its own echo, three more acts, a short leash for vent and
+move on, what can be said back), shell/head.html. tests/srcconvo.js and
+tests/evidence.js group SK13 hold it.
+measure: against the build before (c2bf52a2), same stand-in microphone and
+voice, read off the run: four presses of Talk and three answers spoke the
+opener six times, now once; seventeen results (eleven real, six silence, noise
+or its own voice) landed sixteen turns with the opener three times, "I'm
+listening." three times and seven lines repeated, now eleven turns, no line
+repeated and "I'm listening." not said; uh, the and hmm were three turns with
+the circle reading and a saved draft, now none; on the
+Dashboard the circle changed 7.5 percent of its pixels every 700 ms with Talk
+on and nothing said, 4.0 now against 3.6 at rest; the hover was over eighty
+words on seven lines, now 17 on one.
 
 ## Earlier, from FEEDBACK-alexander.md
 

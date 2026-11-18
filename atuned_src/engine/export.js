@@ -38,6 +38,8 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_PLACEABLE:EV_PLACEABLE, EV_GUESSABLE:EV_GUESSABLE, QC_GUESS:QC_GUESS, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
+                 SRC_INTENT_MAXW:SRC_INTENT_MAXW, SRC_ACT_MAXW:SRC_ACT_MAXW, SRC_REPORT:SRC_REPORT, SRC_NOISE:SRC_NOISE, SRC_NOISE_MAX:SRC_NOISE_MAX, srcNoise:srcNoise, srcEcho:srcEcho,
+                 SRC_SPOT_WHO:SRC_SPOT_WHO, SRC_SPOT_DO:SRC_SPOT_DO, srcSpot:srcSpot,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,

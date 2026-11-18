@@ -4613,3 +4613,22 @@ Open, and his call, written so he does not have to go and find them:
 - **When the circle's hover comes back, and saying what?** It is off "for now".
   The key is kept word for word, so it can return with the same text or a
   shorter one, hung off the circle and not off the box.
+## Source AI is a conversation and not an algorithm. Reported 17 November, built 18 November.
+
+His words, verbatim, on a screenshot of the Discover tab with three things struck in red: "Source AI animation appears broken when I load up the dashboard without saying anything or profile. Animations are automatically playing. There's a tooltip that looks like it's a paragraph long that needs to go. There's text still that says I'm listening that needs to go. There's text that says 0 words hidden. I don't understand why this is here. This should not be there. But the software needs to be validated. Source AI, it needs its logic reviewed. Right now, there's a lot of bugs with it. And right now, there's something with Source AI where it's not having a natural conversation with me. It keeps repeating, what are we talking about today? So it's acting more like an algorithm and not something intelligent I could have a conversation with. And I may put a limitation on it somewhere that is creating this experience. That's undesirable."
+
+Read as, and measured on the build before (c2bf52a2) with a stand-in microphone and voice:
+
+- It repeated because the page filed every result the speech service handed back as a turn. A lone "uh", "the", "um" or "hmm", and Source AI's own voice coming back through the speakers, were each a turn, each answered aloud, each read by the circle and each saved into the draft. And the opener was said on every press of Talk and inside the answers to "hello" and "can you hear me": four presses of Talk spoke it four times, and answering hello and can you hear me spoke it two more.
+- The circle moved with nothing said because the voice playing a line, and any reading, switched the circle's motion on and nothing ever switched it off.
+- "I'm listening." was the status line, the placeholder under the circle and the word the canvas drew at the centre. "0 words hidden" was the stars chip drawn with its count. The hover was seven lines and over eighty words.
+
+What changed, each held by `tests/srcconvo.js` and, for the engine half, `tests/evidence.js` group SK13:
+
+- A result that is no words, or is Source AI's own line said back, is not a turn. A short answer is (yes, no, I don't know, sad, what), and the door to help is read first and never refused. The recording starts half a second after a line ends, and a person who is mid sentence when a line arrives is not talked over.
+- The opener is said once a conversation. Three new acts are answered as what they are: a complaint that it repeats, a thanks and a goodbye. A turn with no seat in it is answered from seven lines and, when the engine holds one, one thing the person said back in their own words ("You said "my boss"."), never the same line twice.
+- The circle is at rest until a sentence with a seat in it is read, and goes back to rest after it. No "Listening" is printed on the screen or drawn on the circle; a screen reader is still told the microphone is on. The hover is one line. The chip is the star alone on every view and absent at zero.
+
+Overridden, named once: the 11 November decision that a press of Talk always falls through to the greeting (it said the opener on every press), and the 17 November hover key (it was still a paragraph). Kept: one bubble a turn, no two way chat, every reply spoken (13 November), the safety door never gated, a reading is not a score.
+
+Open, his call: Source AI is deterministic and offline, so "a natural conversation" here means it does not repeat, answers what was said with a word of the person's own, and knows when to be quiet. A conversation that follows any subject would need a language model behind one server connection, which is the first thing in this product that sends a person's words off the device. Not built, not defaulted.

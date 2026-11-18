@@ -497,7 +497,18 @@
   if(speaking) return;
   RD.on=false; const pn=performance.now();
   for(const k in resFx) if(!resFx[k].rel) resFx[k].rel=pn;
-  setTimeout(()=>{ if(!RD.on&&!speaking) stateWord=IDLE; },2200);
+  /* AND THE FACE GOES BACK TO REST WITH IT, 18 November, his words: "Source
+     AI animation appears broken when I load up the dashboard without saying
+     anything... Animations are automatically playing." engaged was raised by
+     a reading, by the voice and by the intro, and lowered only by the
+     intro's own clear(), so after one reading or one spoken line the centre
+     beat, the springs it throws and the pattern trace ran for the rest of
+     the page's life. Measured: one press of Talk and one greeting, nothing
+     said, and engaged stayed true 30 seconds on, the trace cycling saboteur
+     names with rings lit. Once the reading has been let go, and nothing is
+     being said aloud, it rests again, after the same 2.2 seconds the
+     fading rings take. */
+  setTimeout(()=>{ if(!RD.on&&!speaking){ stateWord=IDLE; engaged=false; } },2200);
  }
  /* the ledger's word clock, kept for the person's own words, which arrive
     whole and carry no timing anywhere in the product (gap a, above) */
@@ -565,7 +576,7 @@
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord=IDLE;
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on){ stateWord=IDLE; engaged=false; }
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -573,7 +584,12 @@
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; engaged=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+  /* THE VOICE DOES NOT ENGAGE THE FACE, 18 November. A line Source AI speaks
+     lifts the face while it plays (speakLvl, the wavefront below) and that is
+     all: the greeting that Talk speaks, with nothing said, used to set
+     engaged and so start the centre beat and the pattern trace for good. A
+     reading is what engages it (startReading), and the intro (cue). */
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
    /* a closed reading is answered too. This read !RD.on alone, so a line
       spoken over a reading the face was holding left the centre on
       Holding while the voice talked about it, which is the one moment the
@@ -1204,13 +1220,11 @@
      inward along its radius, the pie wiring's rule, and on a 390 phone that
      walked "Sacral, Apathy" straight onto the centre word, so the centre
      word's own box is held as placed before any label is */
-  let wordBox=null;
-  ctx.font='500 '+FS+'px '+fs0;
-  const wordW=ctx.measureText(stateWord).width, wordFits=wordW/2+3<ringBase[0]*0.92;
-  if(wordFits&&stateWord) wordBox={x0:cx-wordW/2-3,x1:cx+wordW/2+3,y0:cy-FS*0.8,y1:cy+FS*0.8};
+  /* NO WORD AT THE CENTRE, 18 November: see the end of paint. The box that
+     kept a label off it is gone with it. */
   if(labels.length){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf-4,0,TAU); ctx.clip(); ctx.globalCompositeOperation='source-over';
    const fs=Math.max(FS,Math.round(12*U)); ctx.font='500 '+fs+'px '+fs0; ctx.textBaseline='middle';
-   const placed=wordBox?[wordBox]:[];
+   const placed=[];
    labels.forEach(l=>{ const c0=Math.cos(l.na), s0=Math.sin(l.na); const off=U*16-l.sl; let lxp=l.x+c0*off, lyp=l.y+s0*off;
     const tw=ctx.measureText(l.txt).width; ctx.textAlign=c0>=0?'left':'right';
     const x0=c0>=0?lxp:lxp-tw; const d=Math.hypot(Math.max(Math.abs(x0-cx),Math.abs(x0+tw-cx)),lyp-cy); if(d>Rf-14){ const k2=(Rf-14)/d; lxp=cx+(lxp-cx)*k2; lyp=cy+(lyp-cy)*k2; }
@@ -1238,16 +1252,16 @@
    ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(cx,cy,outR,0,TAU); ctx.arc(cx,cy,Rf*0.97,0,TAU,true); ctx.fill('evenodd'); }
   ctx.globalCompositeOperation='source-over';
 
-  /* the centre word, the one readout the wiring kept, outside the breath so
-     it never swims, and only where it fits inside the Root ring, the
-     innermost seat, so it never sits on an address */
-  ctx.globalAlpha=1; ctx.font='500 '+FS+'px '+fs0; ctx.textAlign='center'; ctx.textBaseline='middle';
-  /* no word over the intro: it has no state to report, and it comes back
-     over 600ms once the face has landed. And never a bare idle word either
-     (stateWord is IDLE, empty, until a story actually starts), which is the
-     "it says waiting and I haven't said anything" fix. */
-  const wA=INT?0:clamp((pn-inEndAt)/600,0,1);
-  if(wordFits&&stateWord&&wA>0){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)*wA})`; ctx.fillText(stateWord,cx,cy); }
+  /* NO WORD AT THE CENTRE, 18 November, his words: "There's text still that
+     says I'm listening that needs to go." The centre drew the face's state in
+     grey, Listening, Found, Weighing, Holding, Answering, from the moment a
+     result landed and for twelve seconds after it, over the glow. Source AI's
+     words are on the text display and the face carries no text at rest
+     (17 November); a state word that appears with every turn is text on the
+     face. stateWord is kept: it is the face's own state, read by the gates
+     and by the intro's captions through state() and the hooks, and it is
+     not drawn. The seat labels are the reading's answer, and stay. */
+  ctx.globalAlpha=1;
  }
 
  /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own

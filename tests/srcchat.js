@@ -637,7 +637,12 @@ require('./net.js').guardBrowser(browser);
     const plays = k => q.waitForFunction(k => __aud.length >= k, k, { timeout: 10000 }).catch(() => {});
     await q.evaluate(() => stMic()); await plays(1);
     const g = await q.evaluate(() => ({ live: __mic.live(), listen: ST_LISTEN, playing: __aud.length }));
-    await end(); await q.waitForTimeout(150);
+    /* THE HOLD OUTLASTS THE LINE, 18 November: the recording starts SRC_TAIL_MS
+       after the audio ended (ui/storyui.js, and tests/srcconvo.js holds the
+       tail itself), so this waits that long and a little more where it used
+       to wait 150 milliseconds */
+    const tail = await q.evaluate(() => SRC_TAIL_MS);
+    await end(); await q.waitForTimeout(tail + 250);
     const g2 = await q.evaluate(() => __mic.live());
     ok(g.playing === 1 && !g.live && g.listen && g2, 'while the greeting plays the recording is held, and it runs again when the greeting ends: ' + JSON.stringify([g, g2]));
     /* THE ONE REPLY STILL SPOKEN, 11 November. An ordinary turn no longer
@@ -653,7 +658,7 @@ require('./net.js').guardBrowser(browser);
       if (r.onresult) r.onresult({ resultIndex: 0, results: { 0: { 0: { transcript: 'Yes, I hear you.' }, isFinal: true, length: 1 }, length: 1 } });
       return { live, same: ST_TEXT === t0, text: ST_TEXT, playing: __aud.length }; });
     ok(mid.playing === 2 && !mid.live && mid.same, 'while the safety line plays the recording is held, and anything delivered in it is not filed as his turn: ' + JSON.stringify(mid));
-    await end(); await q.waitForTimeout(150);
+    await end(); await q.waitForTimeout(tail + 250);
     const back = await q.evaluate(() => ({ live: __mic.live(), heard: __mic.say('Hello?') }));
     await q.waitForTimeout(150);
     const me = await q.evaluate(() => SRC_CHAT.filter(r => r.w === 'me').map(r => r.t));
@@ -874,14 +879,17 @@ require('./net.js').guardBrowser(browser);
     await m.cx.close();
   }
 
-  console.log('\n=== pressing Talk again still only ever greets, never the thread ===');
+  console.log('\n=== pressing Talk again never greets twice, and never reads the thread ===');
   {
-    /* RENAMED, 11 November. This used to prove the second press spoke the
-       newest templated question (srcSayNow's own fallback read the last
-       SRC_CHAT row). That fallback is gone the same reason the per-turn
-       speak call is: the 10 November ruling means no templated line is
-       ever spoken, first press or second. srcSayNow now always falls
-       through to the greeting. */
+    /* 18 November, his words: "It keeps repeating, what are we talking
+       about today?" This held "the second press speaks the greeting again,
+       never a question", which was the 11 November ruling that srcSayNow
+       "always falls through to the greeting": written so a press would not
+       read out the last templated question, and it made the opener the
+       thing he heard on every press. The 11 November reason still holds, a
+       press never reads the thread, and the opener is said once a
+       conversation now. A press after that says a short line that is not a
+       question (tests/srcconvo.js holds it through four presses). */
     const q = await open(browser, 1600, 1000);
     await run(q, ['I am afraid of losing my job.', 'I am so afraid, my boss keeps cutting my hours.']);
     const greet = await q.evaluate(() => srcOpen());
@@ -889,7 +897,8 @@ require('./net.js').guardBrowser(browser);
     const n0 = q.voice.length;
     await q.evaluate(() => stMic()); await q.waitForTimeout(300);
     const sent = q.voice.slice(n0);
-    ok(sent.length === 1 && sent[0] === greet, 'the second press speaks the greeting again, never a question: ' + JSON.stringify(sent));
+    ok(sent.length === 1 && sent[0] !== greet && sent[0].indexOf('?') < 0 && !/You said|My guess/.test(sent[0]),
+      'a press in the middle of a conversation says a short line that is not the greeting and not a question: ' + JSON.stringify(sent));
     await q.cx.close();
   }
 

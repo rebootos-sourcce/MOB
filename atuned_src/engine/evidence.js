@@ -554,25 +554,50 @@ var SRC_INTENT={
   'rather talk about'],
  move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
   'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
-  'enough questions','stop talking','can we stop','lets stop'],
+  'enough questions','stop talking','can we stop','lets stop',
+  'lets move on','let us move on','can we move on','never mind','nevermind','drop it',
+  'thats enough','that is enough'],
  reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
   'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
   'you are wrong'],
  vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
-  'just want to get it out','just need to get it out','just want to talk','just listen'],
+  'just want to get it out','just need to get it out','just listen'],
  clarify:['what do you mean','what does that mean','what does this mean','what are you asking',
   'what was the question','not sure what you mean','dont know what you mean','dont understand the question',
   'dont understand what you mean','dont get the question','dont get what you mean','say that again']};
 var SRC_INTENT_ORDER=['shift','move_on','reject','vent','clarify'];
 var SRC_INTENT_SHORT=12;
+/* A PHRASE THAT IS ALSO ORDINARY SPEECH GETS A SHORTER LEASH, 18 November.
+   "I wish my mother would just listen to me" holds "just listen" and is
+   about the mother. A phrase named here counts only in a turn of this many
+   words or fewer, so a request to be heard is a short turn and a wish about
+   someone else is not. The exits added the same day are on it for the same
+   reason and a worse one: Move on is final for the entry, and "never mind
+   the cost, I just felt sick" is a story that opens on the phrase. */
+var SRC_INTENT_MAXW={'just listen':5, 'never mind':4, 'nevermind':4, 'drop it':4, 'lets move on':5, 'let us move on':5,
+ 'can we move on':5, 'thats enough':5, 'that is enough':5};
+/* and a phrase that follows a word that reports what someone said is that
+   person's, not the speaker's: "my dad told me to stop talking at dinner" is
+   about the dad and nine words long. Read in the six words before the
+   phrase, for vent and move on only. */
+var SRC_REPORT=['told','tells','asked','asks','said','says','yelled','shouted','screamed','begged','ordered'];
 var SRC_SHIFT_PAIR=[['talk about','instead']];
 function srcIntent(turn){
  var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
  if(!words)return null;
  for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
-  if((k==='reject'||k==='clarify')&&words>SRC_INTENT_SHORT)continue;
+  /* VENT AND MOVE ON ARE SHORT TURNS TOO, 18 November. They were the two
+     kinds read in a turn of any length, and each one, once read, lasts for
+     the rest of the entry (SRC_VENT, SRC_PASSED in ui/storyui.js): "I told
+     her I need to vent about work, my boss yelled at me for an hour" is a
+     story, read as vent for twenty four words, and every question after it
+     was lost. A request to be heard or to stop is short, the way a no to a
+     reading is, and a long turn that holds the phrase is about the story. */
+  if((k==='reject'||k==='clarify'||k==='vent'||k==='move_on')&&words>SRC_INTENT_SHORT)continue;
   for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
    if(at<0)continue;
+   if(SRC_INTENT_MAXW[list[j]]&&words>SRC_INTENT_MAXW[list[j]])continue;
+   if((k==='vent'||k==='move_on')&&s.slice(0,at).trim().split(' ').slice(-6).some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
    /* the phrases that carry their own no are read as said; the others are
       set aside when a no stands before them, except clarify's, above */
    if(k!=='clarify'&&!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
@@ -600,6 +625,17 @@ function srcIntent(turn){
      greet  a turn that opens on hello, hi or hey, or asks how it is
      brief  a turn made only of yes, yeah, okay, no and their kind
 
+   AND THREE MORE, 18 November, the owner: "it keeps repeating, what are we
+   talking about today? So it's acting more like an algorithm". The first
+   thing a person says to a thing that repeats itself is that it repeats
+   itself, and nothing heard it. Measured: "you keep repeating yourself",
+   "you already asked me that", "thank you" and "bye" were each answered
+   from the same four listening lines as noise is.
+
+     complain  you keep repeating, you already asked, you asked the same
+     thanks    thanks, thank you, cheers, opening the turn
+     bye       bye, goodbye, good night, thats all, opening a short turn
+
    Each is read only in a short turn, and the page answers it only when the
    turn carries no seat of its own (srcActNow, ui/storyui.js): "hello, I am
    so anxious" is about being anxious, and the feeling is answered. A brief
@@ -622,9 +658,17 @@ var SRC_ACT={
  greet:['hi','hello','hey','hiya','good morning','good afternoon','good evening','how are you'],
  brief:['yeah','yes','yep','yup','yea','ya','ok','okay','sure','mm','mhm','hmm','uh','huh','um',
   'right','true','maybe','no','nope','nah','not','really','i','guess','suppose','think','so',
-  'kind','sort','of','dont','know','dunno','fine','alright','cool']};
-var SRC_ACT_ORDER=['check','ask','greet','brief'];
-var SRC_ACT_SHORT={check:8, ask:SRC_INTENT_SHORT, greet:6, brief:5};
+  'kind','sort','of','dont','know','dunno','fine','alright','cool'],
+ complain:['you keep repeating','you keep saying','you keep asking','you already asked','you already said',
+  'you said that already','you asked that already','you asked me that','you just said that',
+  'you just asked','you said the same','you asked the same',
+  'repeating yourself','repeat yourself','stop repeating'],
+ thanks:['thanks','thank you','thankyou','thx','cheers','much appreciated'],
+ bye:['bye','goodbye','good bye','goodnight','good night','see you','see ya','talk later',
+  'talk to you later','thats all','that is all','gotta go','got to go']};
+var SRC_ACT_ORDER=['check','complain','ask','thanks','bye','greet','brief'];
+var SRC_ACT_MAXW={'you keep saying':6,'you keep asking':6};
+var SRC_ACT_SHORT={check:8, complain:SRC_INTENT_SHORT, ask:SRC_INTENT_SHORT, thanks:5, bye:4, greet:6, brief:5};
 function srcAct(turn){
  var s=normMap(String(turn||'')).s, ws=s.trim()?s.trim().split(' '):[];
  if(!ws.length)return null;
@@ -642,5 +686,82 @@ function srcAct(turn){
       leaves the question standing. Found by coverage, 31 October, where
       the guard never ran and would have filed that turn as nothing. */
    if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
+   /* a thanks and a goodbye open the turn, the way a greeting does: "I said
+      thanks and then she left" and "she said bye" are stories. A no before
+      a thanks declines something, and a no, thanks is not one. */
+   if((k==='thanks'||k==='bye')&&at!==0)continue;
+   /* "Thanks for nothing, he said." is a sentence from a story, and so is
+      "bye, she said": a word that reports what someone said, anywhere in
+      the turn, makes the thanks or the goodbye that person's. */
+   if((k==='thanks'||k==='bye')&&ws.some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
+   /* and two of the complaint's phrases are also what is said about someone
+      else, "you keep saying that I should relax" to the person in the story:
+      read only in a short turn, which is how a complaint to Source AI runs */
+   if(SRC_ACT_MAXW[list[j]]&&ws.length>SRC_ACT_MAXW[list[j]])continue;
    return {act:k, cue:list[j]};}}
  return null;}
+
+/* ============================================================
+   WHAT THE MICROPHONE MAY HAND IN AS A TURN, 18 November. The owner: "it
+   keeps repeating, what are we talking about today? So it's acting more like
+   an algorithm and not something intelligent I could have a conversation
+   with." Every finalised result the speech service returned was filed as a
+   turn, whatever it was, and answered aloud: measured on the page, a lone
+   "uh", "the", "um" and "hmm" were each a turn, each read by the circle for
+   fourteen seconds, each answered from the same four lines, and each saved
+   into the draft, so a reload showed the face over a profile nobody had
+   written in. A room, a cough and Source AI's own voice coming back through
+   the speakers all arrive as results too.
+
+   TWO QUESTIONS, BOTH ABOUT THE WORDS AND NEITHER ABOUT A SCORE.
+
+     srcNoise  is this only a sound a person makes while thinking, or a
+               function word the recogniser caught on its own: "um", "uh",
+               "the", "you", "oh so". True only when EVERY word is on the
+               stated list and there are two or fewer, so one word that
+               means something, "yes", "no", "afraid", "boss", keeps the
+               turn, and so does "what is it", three words of anything,
+               and a question to Source AI, which is made of the same
+               words.
+               "mhm" and "uh huh" are a yes and stay.
+     srcEcho   is this Source AI's own line, said back: a run of two or more
+               of its words in a row, or three words or more of which four
+               in five are its. The page asks it only of what arrives while
+               a line plays and for a few seconds after (ui/storyui.js), so
+               a person who repeats a word of it later is never refused.
+
+   NEVER THE DOOR TO HELP. srcSafe is read first and a turn it stops is not
+   noise and not an echo, whatever else it is: the page admits it before it
+   asks either. Both read only the words and neither reaches the record.
+   ============================================================ */
+var SRC_NOISE=['uh','um','umm','uhh','er','erm','ah','aah','eh','ehh','hm','hmm','hmmm','mm','mmm','oh','ooh',
+ 'the','a','an','and','or','but','so','to','of','in','on','at','it','its','is','you','i','he','she','we','they',
+ 'that','this','like','just','well'];
+/* NOT what, who or how: a person who did not catch a line says "what?", and a lone question word is a
+   question and not a sound. The turn is answered by what the page says to any turn with no seat in it. */
+var SRC_NOISE_MAX=2;
+var SRC_NOISE_YES=/^(mm hm+|uh huh|mhm|mmhm+|uh uh)$/;
+function srcNoise(text){
+ var t=String(text||'');
+ if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ var s=normMap(t).s.trim();
+ if(!s)return true;
+ if(SRC_NOISE_YES.test(s))return false;
+ /* a question to Source AI is made of these same words: "what is this" and
+    "is this on" are three words that are all on the list, and are exactly
+    what a person says to a thing they are testing. Anything srcAct or
+    srcIntent reads is a turn, except brief, which is um, uh and hmm among
+    its words. */
+ var ac=srcAct(t); if(ac&&ac.act!=='brief')return false;
+ if(srcIntent(t))return false;
+ var ws=s.split(' ');
+ if(ws.length>SRC_NOISE_MAX)return false;
+ return ws.every(function(w){return SRC_NOISE.indexOf(w)>=0;});}
+function srcEcho(text,line){
+ var a=normMap(String(text||'')).s.trim(), b=normMap(String(line||'')).s.trim();
+ if(!a||!b)return false;
+ var aw=a.split(' '), bw=b.split(' ');
+ if(aw.length>=2&&(' '+b+' ').indexOf(' '+a+' ')>=0)return true;
+ if(aw.length<3)return false;
+ var n=0; aw.forEach(function(w){if(bw.indexOf(w)>=0)n++;});
+ return n/aw.length>=0.8;}

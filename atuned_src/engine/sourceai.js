@@ -180,7 +180,9 @@ function srcHear(text,prior,active){
      quoted back is what they typed and not the lowercased copy. */
   var a=s.at+1, b=s.at+String(s.word).length;
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
-  if(o.words.indexOf(w)<0)o.words.push(w);});
+  /* the same word in two cases is one word said twice, not two words:
+     "Afraid" then "afraid" was quoted back as “Afraid” and “afraid” */
+  if(!o.words.some(function(x){return x.toLowerCase()===String(w).toLowerCase();}))o.words.push(w);});
  var P=prior||{};
  var A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
@@ -559,6 +561,63 @@ function srcDims(text){
  var out={answered:by, open:open, words:ws.filter(Boolean).length};
  if(srcSafe(t))out.safe=true;
  return out;}
+
+/* ============================================================
+   THE ONE THING IT CAN SAY BACK WHEN NO SEAT IS FOUND, 18 November. The
+   owner: "it keeps repeating... it's acting more like an algorithm." A turn
+   that lands on no seat was answered from four fixed lines whatever it said:
+   "my boss gave my idea to someone else" and "I froze" and "my sister
+   called" each got "I'm listening". The engine does hold something in those
+   turns, srcDims reads who was in it and srcBehave reads what the person did,
+   and nothing said it.
+
+   WHAT IT RETURNS. The person's own letters for the first thing of two
+   kinds, in the order they were written, or null: a person in the story, one
+   of a closed list of nouns (boss, sister, mother), with the word that
+   claims them ("my", "his", "their") when one stands before it; and a
+   thing the person did, "I" and a doing verb from SRC_SPOT_DO, "I froze",
+   "I just left". Never a pronoun, because "You said “he”" is a lexicon dump
+   and not a listener, and never one of srcBehave's phrase spans, because
+   "did not say" and "keep thinking about" read as a table being cited.
+   Never a sentence: only words the engine itself recognised, so what comes
+   back is what it read and not a clause the person happened to say, which
+   keeps what is spoken aloud to the same small kind of word it has always
+   been.
+
+   {kind:'who'|'did', words}. Pure, reads only the turn. */
+var SRC_SPOT_WHO=['boss','manager','colleague','coworker','partner','husband','wife','boyfriend','girlfriend',
+ 'mother','father','mum','mom','dad','parents','son','daughter','brother','sister','friend','friends',
+ 'family','kids','child','children','teacher','client','ex','neighbour','neighbor'];
+var SRC_SPOT_OWN=['my','his','her','their','our','your'];
+/* the doing verbs worth saying back: a word that says what happened. "I did",
+   "I said" and "I went" are in SRC_DO because they answer the question what
+   did you do, and said back they are filler. */
+var SRC_SPOT_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','avoided','shouted','yelled',
+ 'screamed','snapped','slammed','cried','quit','ignored','pretended','apologised','apologized','shut','hung'];
+function srcSpot(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, found=[];
+ if(!src.trim()||srcSafe(t))return null;
+ function raw(from,len){return t.slice(nm.map[from+1],nm.map[from+len]+1);}
+ SRC_SPOT_WHO.forEach(function(c){
+  var needle=' '+c+' ', i=src.indexOf(needle);
+  if(i<0)return;
+  var from=i, len=c.length, pw=src.slice(0,i).split(' ').pop();
+  if(SRC_SPOT_OWN.indexOf(pw)>=0){from=i-pw.length-1; len=c.length+pw.length+1;}
+  found.push({at:from, kind:'who', words:raw(from,len)});});
+ var ws=src.trim().split(' '), off=0;
+ ws.forEach(function(w,k){
+  /* off is the leading space of this word in normMap's copy, the position
+     a hit's at is */
+  var at=off; off+=w.length+1;
+  if(w!=='i')return;
+  var n=ws[k+1]; if(n==='just'||n==='then')n=ws[k+2];
+  if(SRC_SPOT_DO.indexOf(n)<0)return;
+  var span=ws[k+1]===n?w+' '+n:w+' '+ws[k+1]+' '+n;
+  found.push({at:at, kind:'did', words:raw(at,span.length)});});
+ found=found.filter(function(f){return f.words&&f.words.trim();});
+ if(!found.length)return null;
+ found.sort(function(a,b){return a.at-b.at;});
+ return {kind:found[0].kind, words:found[0].words.trim()};}
 
 /* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
    result, asked the kinds already asked in this entry in the order they

@@ -817,7 +817,10 @@ function stRender(){
      than invent a reason to keep it, it stays off on the Dashboard
      outright, open or shut, and keeps its hero behaviour exactly as it
      was: cut only while STV.typed there. */
-  +((STV.typed||dashTB)?'':stMaskHtml(!STV.dash))
+  /* THE MARK ALONE ON EVERY VIEW, 18 November: the Dashboard still printed
+     the count and the word ("1 word hidden") beside it, the paragraph sized
+     habit he struck on the mini view. Symbol first, the sentence behind it. */
+  +((STV.typed||dashTB)?'':stMaskHtml(true))
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can
@@ -1137,6 +1140,14 @@ function stRender(){
  srcLock(h.querySelector('.st-glow'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
+  /* AN EMPTIED BOX IS A NEW ENTRY, 18 November. Commit and Clear started the
+     conversation over and a person who selected all and deleted did not:
+     Move on, venting, a no, what had been asked and the subject's start all
+     stayed in force, so the next story was answered under the last one's
+     rulings (measured: after "that is not me" and "I just want to vent", a
+     cleared box and a new story were never asked a question). */
+  if(!ST_TEXT.trim()&&(SRC_PASSED||SRC_VENT||SRC_VERDICTS.length||SRC_LOG.length||SRC_FROM||SRC_CHAT.some(function(r){return r.w==='me';}))){
+   SRC_PASSED=false; srcFresh(); }
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
   /* the layer behind has to travel with the text, or a long entry drifts
      out of register the moment the box scrolls. */
@@ -2406,7 +2417,13 @@ function srcLedgerNow(){
 function srcLeadSaid(seat){
  var pend=false, said=false;
  SRC_CHAT.forEach(function(r){
-  if(r.w==='src'){pend=!!(r.key&&r.key.indexOf('ask|'+seat+'|')===0); return;}
+  /* THE SAY ROW COUNTS TOO, 18 November. Only an ask row was read as having
+     said the lead, but the reply before the first ask is the say row about
+     the same seat, and it already carries the mirror and the guess: measured,
+     "You said “afraid”. My guess is it sits at the base of your spine." and
+     then, a turn later, "You said “afraid” twice. My guess is it sits at the
+     base of your spine. What did you do?", the same guess twice running. */
+  if(r.w==='src'){pend=!!(r.key&&(r.key.indexOf('ask|'+seat+'|')===0||r.key==='say|'+seat)); return;}
   if(r.w==='me'&&pend){said=true; pend=false;}});
  return said;}
 /* THE LEAD IS CHECKED A SENTENCE AT A TIME, round SK. srcAsk's lead says
@@ -2488,7 +2505,10 @@ function srcLog(k,seat){
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
 function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
- SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
+ SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';
+ /* a new entry is a new conversation, so it is greeted once again and the
+    short lines a press said before are free to be said */
+ SRC_OPENED=false;SRC_SPOKEN=[];}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
    entry has not answered, in the order written in engine/sourceai.js. Each
@@ -2797,7 +2817,7 @@ function srcPaint(){
     to SRC_CHAT. */
  var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
  SRC_SAFE_UP=turn.move==='safe';
- if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
+ if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay,{force:true});
  /* NO TWO-WAY CHAT, ANYWHERE, 10 November, his words, given over and
     over, most recently pointed straight at the Dashboard: "we don't need
     2-way talk anymore... it's just the user's input. Or the user can put
@@ -3161,7 +3181,7 @@ function srcChatCur(turn,heard,q,ask){
  /* a seat the person turned down is not said back to them either: with no
     other thread, Source AI listens, round SK */
  else if(top&&!srcLedgerNow().thread&&srcLedgerNow().claims[top.seat]&&
-  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[SRC_LISTENING];}
+  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[];}
  else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words), ctx={text:srcConvText(), ledger:L};
   /* SAID AS FACT ONCE THE PERSON SAID IT FITS, SAID AS A GUESS BEFORE, 17
      November. It used to drop the place outright until a yes, which is why
@@ -3177,8 +3197,16 @@ function srcChatCur(turn,heard,q,ask){
      that count is the ledger's own and the line passes the same checks */
   var more=(w&&(c.words||[]).length===1&&(+c.mentions||0)>1)?'You said '+w+' '+srcTimes(c.mentions)+'.':'';
   r.key='say|'+c.seat; lines=[line].concat(more&&srcVetSay(more,ctx,c.seat).ok?[more]:[]);}
- else{r.key='say|'; lines=[srcNone()];}
- r.q=srcPick(lines.concat(SRC_HEARD),said);
+ else{r.key='say|'; lines=[];}
+ /* WHAT STANDS BEHIND EVERY LIST IS SRC_HEARD AND, FIRST, A WORD OF THE
+    PERSON'S OWN WHEN THE ENGINE HOLDS ONE, 18 November: see srcHeardLines.
+    "I can't place this one yet" was the whole answer to a turn with no seat
+    and "I'm listening" the answer to the next; now the answer is about what
+    was said when it can be, and otherwise one of seven that are tried in
+    turn. */
+ var hl=srcHeardLines(turn.move==='vent'||turn.move==='pass');
+ r.q=srcPick(lines.concat(hl.lines),said);
+ if(hl.sp&&hl.lines[0]===r.q)r.sp=hl.sp;
  r.w='src'; return r;}
 /* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
    is the line the person just replied under, the last of keys
@@ -3231,7 +3259,10 @@ function srcActNow(){
  var t=null; SRC_CHAT.forEach(function(r){if(r.w==='me')t=r.t;});
  if(!t)return null;
  var it=srcIntent(t);
- if(it&&it.intent!=='shift'&&it.intent!=='clarify')return null;
+ /* A NO IS ANSWERED NOW, 18 November: the verdict was recorded and the reply
+    was "Go on, I'm following you", as if nothing had been said. It is an act
+    when it carries no seat of its own, like a change of subject. */
+ if(it&&it.intent!=='shift'&&it.intent!=='clarify'&&it.intent!=='reject')return null;
  if(srcHear(t,null).seats.length)return null;
  if(it)return it.intent;
  var a=srcAct(t); return a?a.act:null;}
@@ -3292,13 +3323,15 @@ var SRC_LISTENING='I\u2019m listening.';
    as stay true, and each list runs in order so a second "can you hear me"
    is answered and never with the first answer again (srcPick).
 
-     check  he asked whether it hears him. It says yes, first, and then
-            hands him the opener's own question, SRC_OPEN, his ruled line,
-            rather than a second wording of it. The second says where his
-            words go, which is the true sign it heard: they are on the
-            right, in his bubble.
-     greet  a greeting back, the opener's question again, and nothing
-            about how Source AI is, since it is not anything.
+     check  he asked whether it hears him. It says yes. It does not hand
+            him the opener's question again: the greeting asked it, and
+            until 18 November the first answer to "hello" and to "can you
+            hear me" asked it a second time, which he heard as "it keeps
+            repeating". The second line said his sentences "show up on the
+            right", which has been false since the thread left the screen
+            (10 and 16 November), and is gone.
+     greet  a greeting back, and nothing about how Source AI is, since it
+            is not anything.
      ask    what it is, said as what it does, no more than the engine
             does: it reads where what he says sits in his body and asks
             one question at a time. "find where it sits" names no place,
@@ -3311,18 +3344,61 @@ var SRC_LISTENING='I\u2019m listening.';
    None holds a why, a place, a canon name or a feeling word, so each
    passes srcVetSay as written; tests/srcchat.js holds that. */
 var SRC_ACT_SAY={
- check:['Yes, I hear you. '+SRC_OPEN, 'I hear you. Every sentence you say shows up on the right.',
-  'Still here, and I hear you. Say what happened.'],
- greet:['Hello. I hear you. '+SRC_OPEN, 'Here, and listening. What happened today?', 'Still here. Say what happened.'],
+ check:['Yes, I hear you.', 'Still here, and I hear you. Say what happened.', 'I hear you. Go ahead.'],
+ greet:['Hello. I hear you.', 'Hi. I’m here.', 'Still here. Say what happened.'],
  ask:['I am Source AI. You say what happened, and I find where it sits in your body. I ask one question at a time.',
   'I work only from what you say. Say one thing that happened today.',
   'Say what happened, in your own words. I follow where it goes.'],
  brief:['Say more about that.', 'Go on. One sentence about what happened.', 'Keep going.'],
- shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?']};
+ shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?'],
+ /* 18 November, with the three acts and the no in engine/evidence.js and
+    srcActNow. complain is the owner's own complaint, answered the way the
+    package answers a correction: take it, do not argue. None names a place,
+    a feeling or a why, and none asks, so each passes srcVetSay as written. */
+ complain:['You’re right, I said that already. Go on.', 'Fair. I’ll drop that one.', 'Okay. That one is done. Say what is next.'],
+ thanks:['You’re welcome.', 'Anytime. I’m still here.', 'Of course. Go on if there is more.'],
+ bye:['Okay. I’ll be here when you want to talk.', 'Take care.', 'Okay. Go well.'],
+ reject:['Okay. That one was off. I’ll drop it.', 'Got it. Not that one.', 'Fair. I’ll set that down.']};
 /* listening, with nothing asked: what stands behind every list, so no turn
-   is ever answered with the line it was answered with last time */
-/* 17 November, the tone pass: "Go on." alone read as a prompt on a form */
-var SRC_HEARD=[SRC_LISTENING, 'Go on, I’m following you.', 'Still here. Keep going.'];
+   is ever answered with the line it was answered with last time.
+
+   SEVEN LINES AND NOT THREE, AND NONE OF THEM SAYS LISTENING, 18 November,
+   his words: "it keeps repeating... it's acting more like an algorithm and
+   not something intelligent I could have a conversation with." With nothing
+   placed the page had four lines (these three and the I can't place line) and
+   cycled them in the same order for as long as the conversation ran: in a
+   fourteen turn run seven turns were one of them, and "I'm listening." came
+   three times. "I'm listening." is the package's line for a person who asked
+   to vent (SRC_LISTENING, srcChatCur) and is said for that and nothing else.
+   The order is the order they are tried in, and the I can't place line is
+   second, so the first reply to a turn with nothing in it is an
+   acknowledgement and not a request. */
+var SRC_HEARD=['Go on, I’m following you.', 'Still here. Keep going.', 'I’m with you. Say more.',
+ 'Take your time. I’m here.', 'I hear that. Go on.', 'Okay. Keep going.', 'Say it however it comes.'];
+/* what Source AI says after it says back a word of the person's own: kept
+   short and not a question, and taken in turn so the same words are never
+   followed by the same line twice running */
+var SRC_TAIL=['Go on, I’m following you.', 'Say more about that.', 'Keep going.', 'I’m with you.'];
+/* WHAT IT CAN SAY BACK ABOUT THE NEWEST TURN WHEN NO SEAT IS FOUND, 18
+   November. The reflection first (srcSpot, engine/sourceai.js: the person's
+   own words for a person in it or a thing they did, and nothing else), and
+   then the lines above with the I can't place line second. A reflection is
+   never made of the same words twice in a conversation. Reads only the
+   replies the person has already answered under, the rule srcSaidBefore
+   reads by, so a repaint of the row being drawn picks what the push picked
+   and the line does not change under a key. */
+function srcHeardLines(noAsk){
+ var t=null, done=[], pend=null;
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='src'){pend=r; return;}
+  t=r.t; if(pend){done.push(pend); pend=null;}});
+ var sp=t?srcSpot(t):null, key=sp?sp.words.toLowerCase():'', out=[];
+ if(sp&&!done.some(function(r){return r.sp===key;})){
+  var n=done.filter(function(r){return r.sp;}).length;
+  out.push(srcMirror(srcQuote([sp.words]))+' '+SRC_TAIL[n%SRC_TAIL.length]);}
+ /* a person who asked to vent, or to move on, is not told what to say next */
+ var pool=SRC_HEARD.slice(); if(!noAsk)pool.splice(1,0,srcNone());
+ return {lines:out.concat(pool), sp:out.length?key:''};}
 /* A TURN THAT IS ABOUT THE CONVERSATION, round SK, read by srcIntent in
    engine/evidence.js before the turn lands. Move on said in words is the
    Move on button, exactly: the same flag, the same outcome kept on the
@@ -3331,6 +3407,10 @@ var SRC_HEARD=[SRC_LISTENING, 'Go on, I’m following you.', 'Still here. Keep g
    kept beyond the entry. Venting is listened to. A change of subject sets
    nothing here: srcTurnCommit moves SRC_FROM once it knows where the turn
    lands in the entry. */
+function srcLastSeat(){
+ for(var i=SRC_CHAT.length-1;i>=0;i--){var r=SRC_CHAT[i];
+  if(r.w==='src'){var m=/^(?:ask|say)\|([^|]+)/.exec(r.key||''); return m?m[1]:null;}}
+ return null;}
 function srcIntentLand(v){
  var it=srcIntent(v); if(!it)return null;
  if(it.intent==='move_on'){
@@ -3338,7 +3418,11 @@ function srcIntentLand(v){
   SRC_PASSED=true;}
  else if(it.intent==='vent')SRC_VENT=true;
  else if(it.intent==='reject'){
-  var L=srcLedgerNow(), seat=(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
+  /* THE SEAT THE NO IS ABOUT IS THE ONE SOURCE AI LAST SAID OR ASKED, 18
+     November: SRC_VET's target is whatever the last question was about and
+     is not cleared when the move changes, so "that is not me" after a
+     throat guess turned down the root. */
+  var L=srcLedgerNow(), seat=srcLastSeat()||(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
   if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
  return it;}
 /* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
@@ -3397,7 +3481,14 @@ function srcTurnCommit(v){
  uniApply(ST_PARSED);
  /* the turn alone, not the whole entry, is what the face reads aloud in
     marks: the entry's earlier turns have already been read once */
- if(window.SrcFace)window.SrcFace.read(v);
+ /* THE CIRCLE READS A SENTENCE THE SNIFFER FOUND A SEAT IN, 18 November. It
+    read every turn that landed: a yes, a thank you and a stray word each ran
+    the circle's whole reading, Listening, Weighing, Holding, for fourteen
+    seconds with nothing lit, which is the animation going by itself that he
+    reported. SrcFace.plan is the face's own count of the hits it would
+    light, so a turn it would light nothing for does not start one. */
+ if(window.SrcFace){var pl=typeof window.SrcFace.plan==='function'?window.SrcFace.plan(v):null;
+  if(pl&&pl.hits&&pl.hits.length)window.SrcFace.read(v);}
  return true;}
 /* SEND, the typed door onto srcTurnCommit. */
 function srcChatSend(){
@@ -5082,7 +5173,7 @@ function stVoiceCant(msg){
     note at stSrcSpeak's own muteFail read: a microphone failure is an
     input problem, not a reason to throw away an output request that may
     still succeed. */
- SRC_VOICE.muteFail=true; ST_HUSH=false;
+ SRC_VOICE.muteFail=true; ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
  /* typed goes because the box is the forced one now: Type instead is not
     drawn beside it, and its Close would hand the person back to a voice
     that cannot run */
@@ -5147,9 +5238,19 @@ function stMic(){
  if(STV.typed){ STV.typed=false; STV.chat=true; }
  /* a recording never starts under a line still playing from the last one,
     or the microphone would take it for the person */
- srcVoiceStop(); ST_HUSH=false;
+ srcVoiceStop(); ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
  ST_WANT_LISTEN=true;
  try{ ST_REC=new SR(); }catch(err){ ST_REC=null; stMicStartFail(err); return; }
+ /* EACH HANDLER BELOW ANSWERS FOR ITS OWN RECORDING ONLY, 18 November. A
+    press of Talk makes a new recogniser, and the one before it is not gone
+    the moment stop is called: Chrome ends it a beat later. That late end
+    read the person's intent from the page, which the new press had already
+    set, restarted the NEW recogniser (already running, so start threw, and
+    the catch below read that as a failed restart) and switched the button
+    and the status off over a microphone that was live. Reproduced with an
+    end 400 milliseconds late: after it, ST_LISTEN false, the new recording
+    live, and every sentence after it filed with no reply spoken. */
+ var rec=ST_REC;
  ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  /* A NORMAL SPEECH CONVERSATION, round of 29 October, his words: "I hit the
     talk button and whatever I say enters into the text field. That should
@@ -5196,21 +5297,18 @@ function stMic(){
     that window is dropped here: it is Source AI's own voice coming back
     through the microphone, and filing it as his turn would have it answer
     itself. */
- var hidAt=maskedRuns(ST_TEXT).length;
  ST_REC.onresult=function(e){var fin='',live='';
-  if(ST_HUSH)return;
+  if(rec!==ST_REC||ST_HUSH)return;
+  var hidAt=maskedRuns(ST_TEXT).length;
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal){ if(ST_REC_DONE[i])continue; ST_REC_DONE[i]=1; fin+=t; } else live+=t;}
-  /* A RESULT WITH NOTHING IN IT IS NOT A TURN, 18 November, his words: "when
-     I click on talk and I haven't said anything, source is already
-     activating and animating. That's a bug." A silent or noisy room hands
-     the recogniser empty finals and lone filler sounds, and each one was
-     filed as a turn: written into the entry, read by the face (a full
-     reading cycle) and answered out loud. stMicNoise names them, above.
-     A real short answer is not one of them, and neither is anything the
-     safety door reads. */
-  var turn=!!fin.trim()&&!stMicNoise(fin);
+  /* THE DOOR, 18 November: a result that is no words, or is Source AI's own
+     line said back, is not a turn. It is marked done above so the browser's
+     resend of it is not one either, and it is dropped here, before it can
+     reach the entry, the circle, the draft or a reply. */
+  if(fin.trim()&&!srcMicDoor(fin))fin='';
+  var turn=!!fin.trim();
   if(turn)srcTurnCommit(fin);
   /* and an interim result that says what the caption already says paints
      nothing: a noisy room delivers them many times a second, and each one
@@ -5226,8 +5324,7 @@ function stMic(){
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
     +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
-    +(hid-hidAt===1?'it':'them')+' read.','fail');
-   hidAt=hid;}};
+    +(hid-hidAt===1?'it':'them')+' read.','fail');}};
  /* CAN'T HEAR ME, round of 29 October: Chrome's own continuous recognition
     still ends itself on its own, silently, well before the person is done
     talking, and the old onend read that the same as the person pressing
@@ -5245,12 +5342,13 @@ function stMic(){
     the focus on nothing: measured, focusin on sttext, then this stRender,
     then focusout. The node is new after a render, so the focus and the caret
     are put back on the new one. */
- ST_REC.onend=function(){ST_LIVE=''; ST_REC_ON=false;
+ ST_REC.onend=function(){ if(rec!==ST_REC)return; ST_LIVE=''; ST_REC_ON=false;
   if(ST_WANT_LISTEN&&ST_HUSH){ stRender(); return; }
   if(ST_WANT_LISTEN){ try{ stMicGo(); stRender(); return; }catch(err){} }
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null;
   stRenderKeep();};
  ST_REC.onerror=function(e){var code=(e&&e.error)||'unknown';
+  if(rec!==ST_REC)return;
   /* no-speech is the browser noticing silence, not a failure, and onend
      follows it either way; restarting there, not here, keeps one path. */
   if(code==='no-speech')return;
@@ -5262,7 +5360,7 @@ function stMic(){
      speak that line" overwrote "no microphone found"). The greeting
      itself is a different request and is no longer dropped with it, 12
      November -- see stSrcSpeak's own muteFail note. */
-  SRC_VOICE.muteFail=true; ST_HUSH=false;
+  SRC_VOICE.muteFail=true; ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
   if(ST_CANT_HEAR[code]){ stVoiceCant(stMicLine(code)+' Typing works.'); return; }
   stRender();
   if(code==='not-allowed'){ stMicRefused(); return; }
@@ -5316,7 +5414,25 @@ function stMic(){
    spoken. The diagnosis asks for that pause to be measured on real
    speakers before it is trusted, and it has not been: this is measured on
    the stand-in in tests/srcchat.js only. */
-var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false};
+/* said is the text of the line last handed to the voice and endAt when it
+   stopped (0 while it plays), which is what the microphone door reads to
+   tell Source AI's own voice coming back from the person (srcMicDoor). tail
+   is the timer that holds the recording a moment after a line ends. */
+var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false, said:'', endAt:0, tail:0};
+/* THE HOLD OUTLASTS THE LINE, 18 November. The recording came back the same
+   tick the audio ended, and a speaker and a room do not stop that fast: what
+   was left of Source AI's own voice was heard as the person's next turn and
+   answered, and measured on the page a two word echo of the greeting landed
+   74 milliseconds after it ended and was answered with the opener. So the
+   hold stays on this long past the end, nothing is heard in it, and the
+   recording starts after it. A person who answers at once loses the first
+   half second of the answer, which is the cost, and the code's own note
+   (stSrcSpeak, "measured on real speakers") still stands: this number is
+   measured on the stand-in and not on a laptop. */
+var SRC_TAIL_MS=500;
+/* and a result that is Source AI's own words, for this long after its line
+   ended, is its echo and not the person (srcEcho, engine/evidence.js) */
+var SRC_ECHO_MS=6000;
 /* the longest a line may hold the recording. A reply is a sentence or two,
    well under ten seconds spoken; an audio element that never reports its
    end must not leave the person unheard for the rest of the conversation. */
@@ -5324,19 +5440,35 @@ var SRC_VOICE_MAX=30000;
 function srcSayNow(){
  /* the safe line, while it stands in the reply's place: the line spoken is
     the line on screen, so pressing Talk never reads an earlier question.
-
-    NEVER THE LAST TEMPLATED QUESTION, 11 November, the Source AI round's
-    own locked plan, item 2. This used to fall back to the last row SRC_CHAT
-    held, so a second press of Talk mid-conversation spoke that templated
-    line even after the per-turn speak call (storyui.js, srcPaint) was
-    removed to carry out the 10 November no-two-way-chat ruling: the
-    screen had gone quiet but a second Talk press still made Source AI
-    sound like it was still asking. The ruling is "no two-way chat,
-    anywhere", not "no two-way chat on the first press", so this always
-    falls through to the greeting now. The crisis safety line above is
-    the one ruled exception and is untouched. */
+    The crisis safety line is the one ruled exception and comes first. */
  if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
- return srcOpen();}
+ /* THE OPENER IS SAID ONCE A CONVERSATION, 18 November, his words: "It
+    keeps repeating, what are we talking about today?" Every press of Talk
+    spoke it, a mic that dropped and was pressed again spoke it, and so did
+    the answers to hello and can you hear me (SRC_ACT_SAY). That reverses
+    the 11 November decision that a press "always falls through to the
+    greeting": that was written to stop a press reading out the last
+    question, and the greeting it fell back to became the thing he heard
+    again and again. The first press of an entry with nothing said greets, as
+    it always did. A press after that, or on an entry that already has the
+    person's words, says a short line that is not a question and not the
+    line before it (SRC_BACK). Not the standing question either: the 11
+    November reason for that still holds. */
+ if(!SRC_OPENED&&!srcHasTurn())return srcOpen();
+ return srcPick(SRC_BACK,SRC_SPOKEN);}
+/* whether the opener has been said in this conversation: set when a press
+   asks for it, handed back when the voice could not play it, so a person who
+   never heard it is greeted on the next press, cleared with the entry
+   (srcFresh) */
+var SRC_OPENED=false;
+/* every line a press of Talk has spoken in this conversation, so the short
+   lines are never the same one twice running; cleared with the entry */
+var SRC_SPOKEN=[];
+var SRC_BACK=['Go ahead.','I’m here.','Back with you.','Go on, I’m listening.'];
+/* the person has said something in this conversation: a turn in the thread,
+   or words in the entry from the box */
+function srcHasTurn(){
+ return !!ST_TEXT.trim()||SRC_CHAT.some(function(r){return r.w==='me';});}
 function srcVoiceStop(){
  clearTimeout(SRC_VOICE.t);
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
@@ -5366,6 +5498,13 @@ function stSrcSpeak(line,o){
  var fin=function(played){ if(ended)return; ended=true; if(typeof o.onEnd==='function')try{o.onEnd(!!played);}catch(e){} };
  var say=function(m){ if(!quiet)status(m,'fail'); };
  var text=String(line==null?srcSayNow():line).trim(); if(!text){ fin(false); return; }
+ /* a press with no line given speaks what srcSayNow chose: if that was the
+    opener and the voice never plays it, the next press may say it again,
+    and every other line it chose is remembered so it is not said twice
+    running */
+ var opener=(line==null&&text.indexOf(SRC_OPEN)>=0);
+ if(line==null&&!opener&&!stSafe())SRC_SPOKEN.push(text);
+ if(opener){ SRC_OPENED=true; var f0=fin; fin=function(played){ if(!played&&!ended)SRC_OPENED=false; f0(played); }; }
  if(typeof authVoice!=='function'){ fin(false); return; }
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   say('Source AI cannot speak from a file. Open the hosted build to hear it.'); fin(false); return; }
@@ -5399,6 +5538,15 @@ function stSrcSpeak(line,o){
     (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'));
    fin(false); return;}
   SRC_VOICE.muteFail=false;
+  /* THE PERSON IS MID SENTENCE, 18 November. The line was asked for before
+     they started and arrived while they talked: playing it held the
+     recording and aborted it, which handed back nothing, so the half of a
+     sentence they had said was gone and Source AI spoke over them. A line
+     they have already talked past is dropped (it stays in the thread, the
+     text display holds it); what they are saying lands as their turn. The
+     crisis line is never dropped for this, the door to help is not
+     optional. */
+  if(!o.force&&ST_LISTEN&&ST_LIVE&&String(ST_LIVE).trim()){ fin(false); return; }
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
@@ -5411,6 +5559,7 @@ function stSrcSpeak(line,o){
      and still holds the recording, but the face never hears it, because
      hearing a voice is what wakes the face for good (srcface.js, voice). */
   if(window.SrcFace&&!o.rest)window.SrcFace.voice(a,text);
+  SRC_VOICE.said=text; SRC_VOICE.endAt=0;
   var played=false;
   a.addEventListener('playing',function(){ if(played)return; played=true; if(typeof o.onPlay==='function')try{o.onPlay();}catch(e){} });
   /* srcVoiceStop clears onended and onerror before it pauses, so a line
@@ -5473,10 +5622,30 @@ function stRenderKeep(){
  if(t){ t.focus(); var n=t.value.length;
   try{ if(kept[2])t.setSelectionRange(n,n); else t.setSelectionRange(kept[0],kept[1]); }catch(e){} }}
 function stMicGo(){ ST_REC_DONE={}; ST_REC.start(); ST_REC_ON=true; }
+/* WHAT THE RECOGNISER MAY HAND IN AS A TURN, see srcNoise and srcEcho in
+   engine/evidence.js for the rule and why. The door to help is asked first
+   and is never refused. The echo is only asked inside SRC_ECHO_MS of the
+   last line, so a word of it said later by a person is theirs. */
+function srcMicDoor(v){
+ var t=String(v||'').trim();
+ if(!t)return false;
+ if(srcSafe(t))return true;
+ if(srcNoise(t))return false;
+ var line=SRC_VOICE.said;
+ if(line&&(!SRC_VOICE.endAt||performance.now()-SRC_VOICE.endAt<SRC_ECHO_MS)&&srcEcho(t,line))return false;
+ return true;}
 function stHush(on){
- if(on){ if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
+ if(on){ clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
+  if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
   if(ST_REC&&ST_REC_ON){ try{ if(typeof ST_REC.abort==='function')ST_REC.abort(); else ST_REC.stop(); }catch(e){} }
   return;}
+ if(!ST_HUSH)return;
+ /* the line is over; the hold stays on for SRC_TAIL_MS more, see there */
+ SRC_VOICE.endAt=performance.now();
+ if(SRC_VOICE.tail)return;
+ SRC_VOICE.tail=setTimeout(stHushLift,SRC_TAIL_MS);}
+function stHushLift(){
+ SRC_VOICE.tail=0;
  if(!ST_HUSH)return;
  ST_HUSH=false;
  if(!ST_WANT_LISTEN||!ST_REC||ST_REC_ON)return;
