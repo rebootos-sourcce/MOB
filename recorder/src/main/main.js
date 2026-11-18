@@ -48,11 +48,39 @@ console.warn  = (...args) => { _origConsoleWarn(...args);  logger.warn(args.map(
 // else in this file handles them. Logged, not swallowed into a silent exit:
 // Electron's own default (print to stderr and often keep running in an
 // undefined state) is worse than knowing it happened.
+// Declared here (not down with the other window variables) so it's already
+// initialized before the exception handlers below are even registered —
+// those handlers read it, and reading a `let` before its declaration line
+// has run throws its own ReferenceError, which is the last thing a crash
+// handler should do.
+let control = null;
+
+// A code audit of the "process runs, no window, no dialog" report found that
+// these two handlers, exactly as written, can BE that bug: anything that
+// throws from an Electron-native callback outside the app.whenReady() chain
+// (window/webContents events, a timer, etc.) before the control window
+// exists used to just get logged — leaving the user with nothing on screen,
+// nothing to click, and nothing to tell them anything went wrong at all. If
+// it happens before any window exists, treat it as the fatal startup error
+// it is: show it and quit, the same way the whenReady().catch() below
+// already does for a thrown/rejected error in that chain. Once the control
+// window exists, the original log-only behavior stands — a stray error
+// mid-session shouldn't nuke a running app the user can already see and use.
 process.on('uncaughtException', (err) => {
   logger.error('uncaughtException: ' + (err && err.stack || err));
+  if (!control) {
+    dialog.showErrorBox('MOB Recorder failed to start', String(err && err.stack || err));
+    app.quit();
+    process.exit(1);
+  }
 });
 process.on('unhandledRejection', (reason) => {
   logger.error('unhandledRejection: ' + (reason && reason.stack || reason));
+  if (!control) {
+    dialog.showErrorBox('MOB Recorder failed to start', String(reason && reason.stack || reason));
+    app.quit();
+    process.exit(1);
+  }
 });
 
 // #69: every ipcMain.handle call anywhere in the app (db-handlers.js,
@@ -88,7 +116,6 @@ if (!app.requestSingleInstanceLock()) {
 }
 app.setAppUserModelId('com.mob.recorder');
 
-let control = null;
 let bubble = null;
 let recorder = null;
 let recorderReady = null;   // resolves once the recorder window has loaded
@@ -1112,6 +1139,30 @@ app.whenReady().then(async () => {
   logger.init(app.getPath('userData'));
   logger.info('app ready — version ' + app.getVersion() + ', platform ' + process.platform + ' ' + process.arch);
 
+  // Two independent code audits (both triggered by a real Windows user
+  // report of "process runs, no window ever appears, no dialog, no crash")
+  // converged on the same conclusion: nothing between here and
+  // createControlWindow() below has a timeout. db.init()'s synchronous file
+  // reads (mob.db, settings.json, the sql.js WASM blob) can stall
+  // indefinitely against a OneDrive "Files On-Demand" placeholder or an
+  // antivirus file-lock, and the .catch() at the bottom of this chain only
+  // fires on a *rejection* — a promise that never settles produces no
+  // dialog and no exit, which is exactly the reported symptom. This
+  // watchdog turns a silent infinite hang into a visible, actionable error
+  // instead of leaving the user staring at Task Manager forever.
+  const startupWatchdog = setTimeout(() => {
+    logger.error('startup watchdog: control window not created within 20s — startup is hung');
+    dialog.showErrorBox(
+      'MOB Recorder is stuck starting up',
+      'The app has been starting for over 20 seconds without opening its window — far longer ' +
+      'than normal. The most common causes:\n\n' +
+      '  • antivirus is scanning the app or its data files\n' +
+      '  • your user data folder lives on OneDrive/cloud storage that hasn\'t finished syncing\n' +
+      '  • a previous recording database was left in a bad state\n\n' +
+      'The app will keep trying in the background. Log file:\n' + (logger.getLogPath() || '(not available yet)')
+    );
+  }, 20000);
+
   // Initialize SQLite (ADR-001) and register IPC handlers before windows open.
   await db.init();
   // A corrupt mob.db used to throw straight out of init(), landing in the
@@ -1130,7 +1181,14 @@ app.whenReady().then(async () => {
       const result = await reconcileOrphanedRecordings();
       adoptedCount = result.adopted.length;
     } catch (_) { /* best effort — the dialog below still tells the truth either way */ }
-    dialog.showMessageBoxSync({
+    // showMessageBoxSync blocks the main process's native message loop until
+    // the user clicks through — on a machine where that dialog fails to
+    // surface for any reason (odd window-station/session state), this one
+    // call alone could be the entire "alive, no window, no dialog" hang.
+    // The async form still waits for the click (so behavior is unchanged)
+    // but never blocks the event loop the way the sync form does, and the
+    // startup watchdog above can still fire while it's pending.
+    await dialog.showMessageBox({
       type: 'warning',
       title: 'MOB Recorder database was reset',
       message: 'Your recording library could not be opened and has been reset to start fresh.' +
@@ -1266,6 +1324,7 @@ app.whenReady().then(async () => {
   rec.micEnabled = s.mic.enabled;
 
   control = windows.createControlWindow();
+  clearTimeout(startupWatchdog);
   // Restore saved window position (clamped to available screen area)
   const ws = s.window;
   if (ws && ws.x != null && ws.y != null) {
