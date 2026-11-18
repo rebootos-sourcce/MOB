@@ -506,8 +506,14 @@ function ritLiveHtml(){
    which is what shipped, and it is done because this is his current word; the
    PR says so. It sits under Today: the week, what is due today, then what the
    days are for. Avatar was not named this round and stays in the right menu. */
+/* 18 NOVEMBER, THE GOAL AND THE CHALLENGES GO TO THE TOP, his words: "You
+   can move the challenges to the very top above the week, so it's front and
+   center. Same with the goal." That reverses SV19's goal under Today, named
+   once. The top row is ui/ritweek.js (ritTopHtml); the goal card's own
+   markup, ritGoalHtml, is what the goal's pop-up shows when the tile is
+   pressed, so the next mark and its sentence keep their one drawing. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritGoalHtml(st)+ritOkHtml(st)+ritKeepHtml(st)
+ return '<div class="rv-six">'+ritTopHtml(st)+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
   +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){

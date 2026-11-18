@@ -587,7 +587,9 @@ function ritSheetWire(){
    case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
-   case 'close': sheetShut(); return;}};}
+   case 'close': sheetShut(); RIT.pop=null; return;
+   /* everything else in the one pop-up, ui/ritweek.js, 18 November */
+   default: if(typeof ritPopAct==='function')ritPopAct(a,b,c); return;}};}
 
 /* ---------------- today ----------------
    WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the

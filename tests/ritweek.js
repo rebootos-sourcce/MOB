@@ -38,7 +38,13 @@ const MUTANTS={
  /* a kind sentence dropped off its chip, the unpack rule broken */
  bare:`(function(){var f=ritKindChip; ritKindChip=function(k){return f(k).replace(/ data-tip="[^"]*"/,'');};})();`,
  /* a practice added to the library with no kind written for it */
- nokind:`delete RIT_KIND_OF.listen;`};
+ nokind:`delete RIT_KIND_OF.listen;`,
+ /* the goal and the challenges left off the top */
+ notop:`ritTopHtml=function(){return '';};`,
+ /* tiles of uneven width, the asymmetry ruled out on 14 and 16 November */
+ uneven:`document.head.insertAdjacentHTML('beforeend','<style>.rv-tiles{grid-template-columns:1fr 2fr 1fr 1fr!important}</style>');`,
+ /* the did tick lost on the way from the Today list to the tile */
+ nodid:`(function(){var f=ritChalTile; ritChalTile=function(c,st){return f(c,st).replace(/data-act="did"/,'data-act="none"');};})();`};
 
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium'});
@@ -135,6 +141,38 @@ const MUTANTS={
   ok(key.old===0,'RW5: '+tag+'the Done, Planned, Missed key under the week is gone, '+key.old);
   ok(key.chips.length===4&&JSON.stringify(key.chips)===JSON.stringify(key.say)&&key.chips.every(c=>c.tip.length>10),
    'RW5: '+tag+'the four kinds are keyed in the week\'s head, each with its one sentence on the press, '+JSON.stringify(key.chips));
+  /* ---- RW6: the goal and the challenges are the top row, above the week ---- */
+  const top=await pg.evaluate(()=>{
+   const six=document.querySelector('#rit .rv-six'), kids=six?[...six.children]:[];
+   const t=document.querySelector('#rit .rv-top'), wk=document.querySelector('#rit .rv-week');
+   const tiles=t?[...t.querySelectorAll('.rv-tile')].map(e=>{const r=e.getBoundingClientRect(); return {l:r.left,r:r.right,w:Math.round(r.width),t:Math.round(r.top),
+    goal:e.classList.contains('rv-tgoal'),txt:e.textContent.replace(/\s+/g,' ').trim(),tip:(e.querySelector('.rv-tlab')||{getAttribute:()=>''}).getAttribute('data-tip')||''};}):[];
+   return {first:kids.indexOf(t)===0, above:!!(t&&wk&&t.getBoundingClientRect().bottom<=wk.getBoundingClientRect().top), tiles,
+    want:ritChallenge(ritRead()).map(c=>c.id), ids:t?[...t.querySelectorAll('.rv-tchal .rv-tnm')].map(b=>b.getAttribute('data-id')):[],
+    phone:innerWidth<600};});
+  ok(top.first&&top.above,'RW6: '+tag+'the goal and challenges are the first thing on the stage and sit above the week, '+JSON.stringify({first:top.first,above:top.above}));
+  ok(top.tiles.length>=2&&top.tiles[0].goal&&/speaks up calmly in the room/.test(top.tiles[0].txt),
+   'RW6: '+tag+'the goal is the first tile and says the avatar line the seed wrote, '+JSON.stringify(top.tiles.map(x=>x.txt)));
+  ok(top.want.length>0&&JSON.stringify(top.ids)===JSON.stringify(top.want.slice(0,3)),
+   'RW6: '+tag+'one tile for each challenge the reading names, up to three, '+JSON.stringify({want:top.want,got:top.ids}));
+  ok(top.tiles.every(x=>/^(Ongoing goal|Challenge)/.test(x.txt)&&x.tip.length>20),
+   'RW6: '+tag+'every tile opens with its name and that name carries its meaning on the press, '+JSON.stringify(top.tiles.map(x=>x.tip)));
+  /* even: every tile one width, the gaps between tiles in a row one size and
+     never under 12 pixels, so nothing is pressed against its neighbour */
+  const rows={}; top.tiles.forEach(x=>{(rows[x.t]=rows[x.t]||[]).push(x);});
+  const gaps=[].concat(...Object.values(rows).map(r=>r.sort((a,b)=>a.l-b.l).slice(1).map((x,i)=>Math.round(x.l-r[i].r))));
+  const ws=new Set(top.tiles.map(x=>x.w));
+  ok(ws.size===1&&gaps.length>0&&new Set(gaps).size===1&&gaps[0]>=12,
+   'RW6: '+tag+'the tiles are one width with one even gap of 12 or more, '+JSON.stringify({w:[...ws],gaps}));
+  /* the did tick lives on the tile now: one press marks today and says so */
+  const did=await pg.evaluate(async()=>{
+   const b=document.querySelector('#rit .rv-tchal [data-act="did"]'); if(!b)return {none:true};
+   const id=b.getAttribute('data-id'); b.click(); await new Promise(r=>setTimeout(r,200));
+   const b2=document.querySelector('#rit .rv-tchal [data-act="did"][data-id="'+CSS.escape(id)+'"]');
+   return {id, pressed:b2&&b2.getAttribute('aria-pressed'), said:(document.getElementById('status')||{}).textContent||'',
+    rec:ritMore().did.some(x=>x[0]===ritToday0()&&x[1]===id)};});
+  ok(!did.none&&did.pressed==='true'&&did.rec&&/^Done/.test(did.said),
+   'RW6: '+tag+'the challenge tile\'s ring marks it done today through the writer and says so, '+JSON.stringify(did));
   ok(err.length===0,'RW0: '+tag+'no page errors, '+err.slice(0,3).join(' | '));
   }catch(e){ok(false,'RW0: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();

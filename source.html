@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v169 72a28def 2026-11-18 14:49"><head><meta charset="utf-8">
+<html lang="en" data-build="v170 e923f500 2026-11-18 14:50"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -78184,9 +78184,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday','pgoal','pchal','sug-pop','aff-pop','cf-more'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday','pgoal','pchal','sug-pop','aff-pop','cf-more'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -78265,6 +78265,10 @@ function ritWire(h,c){
    case 'rng': RIT.span=b.getAttribute('data-v'); break;
    case 'said': ritDayMark('said',id); return;
    case 'did': ritDayMark('did',id); return;
+   /* the top row's tiles and the Called for cards open the one pop-up, 18
+      November (ui/ritweek.js). Opening writes nothing, so nothing repaints. */
+   case 'pgoal': ritPopOpen({t:'goal'}); return;
+   case 'pchal': ritPopOpen({t:'chal', id:id}); return;
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
@@ -79472,8 +79476,14 @@ function ritLiveHtml(){
    which is what shipped, and it is done because this is his current word; the
    PR says so. It sits under Today: the week, what is due today, then what the
    days are for. Avatar was not named this round and stays in the right menu. */
+/* 18 NOVEMBER, THE GOAL AND THE CHALLENGES GO TO THE TOP, his words: "You
+   can move the challenges to the very top above the week, so it's front and
+   center. Same with the goal." That reverses SV19's goal under Today, named
+   once. The top row is ui/ritweek.js (ritTopHtml); the goal card's own
+   markup, ritGoalHtml, is what the goal's pop-up shows when the tile is
+   pressed, so the next mark and its sentence keep their one drawing. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritGoalHtml(st)+ritOkHtml(st)+ritKeepHtml(st)
+ return '<div class="rv-six">'+ritTopHtml(st)+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
   +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){
@@ -80312,7 +80322,9 @@ function ritSheetWire(){
    case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
-   case 'close': sheetShut(); return;}};}
+   case 'close': sheetShut(); RIT.pop=null; return;
+   /* everything else in the one pop-up, ui/ritweek.js, 18 November */
+   default: if(typeof ritPopAct==='function')ritPopAct(a,b,c); return;}};}
 
 /* ---------------- today ----------------
    WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
@@ -102430,5 +102442,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006849260"></div>
+<div id="eof" hidden data-len="006850214"></div>
 </body></html>

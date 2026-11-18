@@ -1612,9 +1612,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday','pgoal','pchal','sug-pop','aff-pop','cf-more'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday','pgoal','pchal','sug-pop','aff-pop','cf-more'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1693,6 +1693,10 @@ function ritWire(h,c){
    case 'rng': RIT.span=b.getAttribute('data-v'); break;
    case 'said': ritDayMark('said',id); return;
    case 'did': ritDayMark('did',id); return;
+   /* the top row's tiles and the Called for cards open the one pop-up, 18
+      November (ui/ritweek.js). Opening writes nothing, so nothing repaints. */
+   case 'pgoal': ritPopOpen({t:'goal'}); return;
+   case 'pchal': ritPopOpen({t:'chal', id:id}); return;
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
