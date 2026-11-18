@@ -449,6 +449,16 @@ SUITES.compose=function(E,ok,say){
  const c1read=c1.st.filter(s=>s.k!=='why'), c1edu=c1.st.filter(s=>s.k==='why');
  ok(c1read.length<=1&&c1read.every(s=>/\.h$/.test(s.tpl)&&/^So far/.test(s.text)),'one entry is at most one sentence and it is the hedged one: '+J(c1read.map(s=>s.text)));
  ok(c1edu.length<=1&&c1edu.every(s=>s.tpl==='why.edu'),'and at most one education line, naming a canon word used above: '+J(c1edu.map(s=>s.text)));
+ /* SEVERAL ENTRIES ON ONE DAY ARE NOT ONE ENTRY. The rung is once because the
+    entries share a day, and the sentence used to be picked on the rung, so
+    two and three entries logged on 9 March each read "So far one entry". The
+    count expected is read off the fixture's own entries, never typed. */
+ [2,3].forEach(n=>{
+  const wd=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null;
+   p.story.entries=Array.from({length:n},(_,i)=>f.ent(-1+i/48,TXT_C));}});
+  const got=wd.p.story.entries.length, cd=E.dlyCompose(wd.p,NOW).st.filter(s=>/^show\.seat/.test(s.tpl));
+  ok(cd.length>0&&cd.every(s=>s.tpl==='show.seat.day.h'&&s.text.indexOf('So far '+got+' entries')===0&&!/one entry/.test(s.text)),
+   got+' entries on one day name '+got+' entries and never one: '+J(cd.map(s=>s.text)));});
  const wr=world(E,{mut:(p,f)=>{p.story.entries=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null; p.history=[f.row(-1,50,'Throat',0)];}}), cr=E.dlyCompose(wr.p,NOW);
  /* same split as c1/c1edu above: today.read also says "the Throat seat",
     DLY_CANON's own word for Chakra, so it too may now earn a why.edu line
@@ -890,6 +900,8 @@ const MUTANTS=[
   from:"if(have.indexOf(d)<0)errs.push(", to:"if(false)errs.push("},
  {suite:'ground', what:'the language list is ignored (no note is made for any of the seven phrases)',
   from:"if(text.indexOf(ph)>=0)out.push({rule:'grounded_language', phrase:ph});", to:""},
+ {suite:'compose', what:'several entries on one day are called one entry again',
+  from:"else if(s.n===1)cands.push(dlyCand('show.seat.h'", to:"else if(true)cands.push(dlyCand('show.seat.h'"},
  {suite:'compose', what:'an unread record composes text',
   from:"if(dlyUnread(p,opt.r)){", to:"if(false){"},
  {suite:'ground', what:'penalty language is allowed',
