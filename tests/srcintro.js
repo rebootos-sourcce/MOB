@@ -2,27 +2,46 @@
    THE INTRO GATE, ui/srcintro.js. Source reads an example, eleven seconds,
    once per device, between the door and the first card.
 
-   WHAT IT HOLDS, each through the real door (ui/login.js) and never through
-   ?dev=1, except the one block that is about ?dev=1:
+   UPDATED 18 November: his words, "once you get past the initial attuned
+   intro, it goes straight to your dashboard... we're not using any of
+   this, these two systems anymore." ui/login.js's loginEnter no longer
+   calls srcIntro at all, so the real door opens neither this screen nor
+   onboarding; it marks the profile onboarded and lands on the dashboard
+   at once (tests/onboarding2.js holds that in full). srcintro.js itself is
+   not touched, deleted or stripped: its mechanics stay real code, just
+   unreachable from the door, the same way onboard.js's sheet stays
+   reachable only from Settings' replay. There is no replay button for this
+   screen anywhere in the product (unlike onboard.js's #acob), so nothing
+   here is "a new entry point": srcIntro is an existing global function,
+   already self-governing (srcIntroDue decides for itself when not to run),
+   and calling it directly is the same kind of direct call this suite
+   already makes on obOpen, relPick and stCommit without a button behind
+   them either.
+
+   WHAT IT HOLDS NOW:
 
      1  the example is still what the intro says it is: parseStory, through
         the face's own plan(), lands "heart sank" on Heart and "afraid" on
-        Root, and the copy passes the voice gate line by line.
-     2  the beats, at 1600 and at 390, in order, read off the page as each
-        caption arrives rather than off a clock in this file: line one, the
-        sentence, the Heart underline on "sank", the Root underline on
-        "afraid", the rows, the button. The face's own seats are Heart, Sad
-        and Root, Fear at the hold, and the face box is the size the seat
-        labels need (a radius of 140, TX.res in ui/srcface.js).
-     3  the hand over: the button opens the first card, the example's
-        reading is gone from the face (clear()), the face is no longer lent,
-        and it is back in #stuni.
-     4  once per device: a second arrival through the door goes straight to
-        the first card, and an arrival that is already onboarded meets
-        neither.
-     5  Skip and Escape land on the end frame and never on the first card.
-     6  reduced motion is the end frame from the first frame.
-     7  ?dev=1 means no intro, and a walk half done resumes without one.
+        Root, and the copy passes the voice gate line by line. Unchanged,
+        no door involved.
+     2  THE REAL DOOR, at 1600 and at 390: it opens neither #srcintro nor
+        onboarding, marks the profile onboarded at once, never marks the
+        device as having seen the example (since it is never shown), and
+        lands straight on the dashboard (Summary). A second arrival is no
+        different. Checked against the build before this change, where a
+        fresh profile behind the same door meets #srcintro first.
+     3  THE SCREEN'S OWN MECHANICS, opened directly (srcIntro(done), the
+        same callback loginEnter used to pass it, obOpen(false)), because
+        hiding the door is not deleting the screen: the beats, at 1600 and
+        at 390, in order, read off the page as each caption arrives rather
+        than off a clock in this file; the hand over, the once-per-device
+        decision, Skip and Escape landing on the end frame, reduced motion,
+        and a walk already half done (?dev=1) resuming without the intro.
+        The face's own seats are Heart, Sad and Root, Fear at the hold, and
+        the face box is the size the seat labels need (a radius of 140,
+        TX.res in ui/srcface.js).
+     4  an arrival that is already onboarded meets neither screen either
+        way in, through the real door or direct.
 
    Screenshots of the beats go to $SHOTS when it is set.
 
@@ -41,10 +60,26 @@ const booted=async p=>{try{await p.waitForFunction(
 const shot=async(p,n)=>{ if(!SHOTS)return; fs.mkdirSync(SHOTS,{recursive:true}); await p.screenshot({path:path.join(SHOTS,n+'.png')}); };
 
 /* the door, closed the way the app's own dev harness closes it, as
-   tests/onboarding2.js does: this gate is about what is behind it */
+   tests/onboarding2.js does. Since 18 November it no longer opens
+   srcIntro or onboarding on its own; kept for the block that checks
+   exactly that, and for "never after onboarded", which never opened
+   either screen even before this change. */
 async function door(page){
  await page.waitForSelector('#loginb-go',{timeout:8000});
  await page.evaluate(()=>{loginClose(); loginEnter();});}
+/* THE SCREEN OPENED DIRECTLY, the real door's own dead chain reused rather
+   than reinvented: srcIntro is still the global function loginEnter used
+   to call, with the same callback it used to pass it. This is not a new
+   product entry point, only a direct call, the same kind this suite
+   already makes elsewhere (obOpen, relPick, stCommit) with no button
+   behind them either. srcIntroDue still decides for itself when not to
+   run (DEV_SKIP, a device that has seen it, a walk already started), so
+   calling srcIntro here reads exactly the same decision the dead chain
+   used to. */
+async function openIntro(page){
+ await page.waitForSelector('#loginb-go',{timeout:8000});
+ await page.evaluate(()=>{loginClose();});
+ await page.evaluate(()=>{srcIntro(function(){ if(typeof obOpen==='function')obOpen(false); });});}
 /* every caption's arrival, stamped from the intro's own start, by watching
    the class each one gains, so the gate reads the beats the page shows */
 async function watch(page){
@@ -91,16 +126,40 @@ console.log('=== 1. the example, read by the real engine, and the copy ===');
 
 for(const [W,H] of [[1600,1000],[390,844]]){
  const at=' at '+W;
- console.log('=== 2, 3, 4. the beats, the hand over and once per device'+at+' ===');
+ console.log('=== 2. the real door opens neither screen, straight to the dashboard'+at+' ===');
+ {
+  const ctx=await browser.newContext({viewport:{width:W,height:H}});
+  const page=await ctx.newPage();
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+  await door(page);
+  await page.waitForTimeout(400);
+  const d0=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open),
+   onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), key:STORE.get(SRC_INTRO_KEY), tab:S.tab}));
+  ok(!d0.intro,'the real door no longer plays the example'+at);
+  ok(!d0.ob,'and no longer opens the first run either'+at);
+  ok(d0.onboarded,'the profile is marked onboarded at once'+at);
+  ok(!d0.key,'the device is never marked as having seen the example, since it is never shown'+at);
+  ok(d0.tab===TAB.SUMMARY,'and the door lands straight on the dashboard'+at);
+  ok(errs.length===0,'no page errors: '+errs.join(' | ')+at);
+  /* a later visit is no different: nothing left to flip */
+  await page.reload({waitUntil:'load'}); await booted(page);
+  await door(page); await page.waitForTimeout(300);
+  const d1=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open)}));
+  ok(!d1.intro&&!d1.ob,'and a later visit opens neither screen either'+at);
+  await ctx.close();
+ }
+
+ console.log('=== 3, 4, 5. the screen\'s own mechanics, opened directly, the beats, the hand over and once per device'+at+' ===');
  const ctx=await browser.newContext({viewport:{width:W,height:H}});
  const page=await ctx.newPage();
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
- await door(page);
+ await openIntro(page);
  const s0=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open),
   inStage:!!document.querySelector('#srcintro .sx-face #srcface'), st:SrcFace.state(), key:STORE.get(SRC_INTRO_KEY),
   box:(document.querySelector('#srcintro .sx-face')||{}).clientWidth}));
- ok(s0.intro,'the intro plays behind the door on a fresh device'+at);
+ ok(s0.intro,'the intro plays on a fresh device, opened directly'+at);
  ok(!s0.ob,'and the first card waits for it'+at);
  ok(s0.inStage&&s0.st.lent&&s0.st.running,'the face is lent to the intro\'s stage and drawing'+at);
  ok(s0.key==='1','the device remembers it at once'+at);
@@ -168,15 +227,16 @@ for(const [W,H] of [[1600,1000],[390,844]]){
  ok(!s1.st.lent,'the face is no longer lent'+at);
  ok(s1.story&&s1.home,'the face is back in #stuni'+at);
  ok(errs.length===0,'no page errors: '+errs.join(' | ')+at);
- /* once per device: the same browser, a new arrival */
+ /* once per device: the same browser, a new arrival, opened directly again
+    (srcIntroDue reads the device's own key, SRC_INTRO_KEY, set above) */
  await page.reload({waitUntil:'load'}); await booted(page);
- await door(page); await page.waitForTimeout(300);
+ await openIntro(page); await page.waitForTimeout(300);
  const s2=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open)}));
  ok(!s2.intro&&s2.ob,'a second arrival goes straight to the first card'+at);
  await ctx.close();
 }
 
-console.log('=== 4. never after onboarded ===');
+console.log('=== 6. never after onboarded ===');
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
@@ -189,11 +249,11 @@ console.log('=== 4. never after onboarded ===');
  await page.close();
 }
 
-console.log('=== 5. Skip and Escape land on the end frame ===');
+console.log('=== 7. Skip and Escape land on the end frame, opened directly ===');
 for(const how of ['skip','escape']){
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
- await door(page);
+ await openIntro(page);
  await page.waitForTimeout(how==='skip'?400:3800);
  if(how==='skip')await page.click('#srcintro .sx-skip'); else await page.keyboard.press('Escape');
  await page.waitForTimeout(120);
@@ -211,12 +271,12 @@ for(const how of ['skip','escape']){
  await page.close();
 }
 
-console.log('=== 6. reduced motion is the end frame ===');
+console.log('=== 8. reduced motion is the end frame, opened directly ===');
 {
  const ctx=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
  const page=await ctx.newPage();
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
- await door(page); await page.waitForTimeout(150);
+ await openIntro(page); await page.waitForTimeout(150);
  const e=await endFrame(page);
  ok(e.w===12&&e.u===2&&e.rows===2&&e.go&&!e.ob,'reduced motion shows the end frame at once '+JSON.stringify(e));
  const v=await page.evaluate(()=>SX&&SX.voiced);
@@ -228,26 +288,48 @@ console.log('=== 6. reduced motion is the end frame ===');
  await ctx.close();
 }
 
-console.log('=== 7. ?dev=1, and a walk half done ===');
+console.log('=== 9. ?dev=1, and a walk half done, UPDATED 18 November ===');
+/* srcIntroDue itself is unchanged and still refuses under DEV_SKIP, checked
+   directly below with no door involved, the same fact the old gate read
+   through loginEnter. What changed is loginEnter itself: it no longer opens
+   the first card either, with or without ?dev=1, so the second half of
+   the old check here (loginEnter opening the sheet once the intro was out
+   of the way) no longer holds, and is replaced with the same straight-to-
+   dashboard behavior tests/onboarding2.js holds for the real door generally. */
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  await page.waitForTimeout(300);
  ok(await page.evaluate(()=>!document.getElementById('srcintro')&&DEV_SKIP),'?dev=1 boots with no intro');
  await page.evaluate(()=>loginEnter()); await page.waitForTimeout(200);
- const s=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open), key:STORE.get(SRC_INTRO_KEY)}));
- ok(!s.intro&&s.ob&&!s.key,'DEV_SKIP means no intro even through loginEnter, the first card opens');
+ const s=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open), key:STORE.get(SRC_INTRO_KEY),
+  onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded)}));
+ ok(!s.intro&&!s.ob&&!s.key,'DEV_SKIP or not, loginEnter opens neither screen any more, '+JSON.stringify(s));
+ ok(s.onboarded,'and marks the profile onboarded straight away, the same as on a plain first visit');
  await page.close();
 }
 {
+ /* A DEVICE WITH A HALF DONE LEGACY WALK, written directly the way the
+    record itself holds it (journeyWalk), never through the sheet. Before
+    18 November the real door resumed such a walk; the owner's ruling made
+    no exception for one, "once you get past the initial attuned intro, it
+    goes straight to your dashboard", so this now goes straight there too,
+    the same as a profile with no walk at all. The walk itself is left on
+    the record exactly as journeyWalk wrote it: this is a product decision
+    about what the door does, not a change to the schema or to what a
+    profile may carry, so it is not this gate's place to erase it. */
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
  await page.waitForSelector('#loginb-go',{timeout:8000});
  const at=await page.evaluate(()=>{ journeyWalk(CURP,'story',{door:'onboarding'}); return journeyRead(CURP).at; });
  ok(!!at,'a walk half done reads as one, at '+at);
  await page.evaluate(()=>{loginClose(); loginEnter();}); await page.waitForTimeout(300);
- const s=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open)}));
- ok(!s.intro&&s.ob,'it resumes on its card with no intro');
+ const s=await page.evaluate(()=>({intro:!!document.getElementById('srcintro'), ob:!!(OB&&OB.open),
+  onboarded:!!(CURP&&CURP.ui&&CURP.ui.onboarded), tab:S.tab,
+  walkStill:!!(CURP&&CURP.journey&&CURP.journey.walk&&CURP.journey.walk.step==='story')}));
+ ok(!s.intro&&!s.ob,'the real door does not resume it either, no intro and no sheet: '+JSON.stringify(s));
+ ok(s.onboarded&&s.tab===TAB.SUMMARY,'it goes straight to the dashboard, the same as any other first visit');
+ ok(s.walkStill,'the half done walk itself is untouched on the record, only the door\'s own behavior changed');
  await page.close();
 }
 
