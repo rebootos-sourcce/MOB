@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v171 a76717e5 2026-11-18 18:27"><head><meta charset="utf-8">
+<html lang="en" data-build="v172 9696cdc1 2026-11-18 18:30"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -90674,6 +90674,27 @@ function authPwWhy(pw,isNew){
    sentence to show, and kept is false when the browser would not hold the
    session, which is still a sign in and is said as one that ends on reload. */
 var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on reload.';
+/* THE FIRST THING A DEVICE SEES OF AN OLDER ACCOUNT IS NOTHING, AND THAT IS
+   NOT SAID ANYWHERE, 18 November: his words, after signing in on a device
+   with no local record and reading a blank Dashboard, "my account's not
+   being set up." It is not a broken sign in. PROFILE_SYNC_ENABLED is still
+   false (owner ruling, above: sync is not part of alpha until privacy copy,
+   consent and retention are approved together), so a sign in never pulls a
+   story onto a device that does not already hold one; the record stays
+   wherever it was written. "Signed in as X." said that truthfully and said
+   nothing about why the screen behind it was empty, which read as broken
+   rather than as the device's own first run. This does not turn sync on; it
+   only stops the silence. authSyncNote names the real condition (this
+   account has never been seen on this device, read off the same identity
+   key profileSyncMeta already keys sync by) rather than guessing from
+   whether the profile looks empty, which would be wrong for a returning
+   device with a real, full record. */
+function authSyncNote(acc,mail){
+ if(PROFILE_SYNC_ENABLED)return '';
+ var identity=(typeof acc.id==='string'&&acc.id)||String(mail||'').toLowerCase();
+ var seen=false;
+ try{ seen=profileSyncMeta().accountId===identity; }catch(e){}
+ return seen?'':' Your story stays on this device; it does not come over from another one yet.';}
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
@@ -90685,6 +90706,7 @@ function authEnter(route,mail,pw){
   var held=authHold(b,mail);
   return {ok:true, kept:held.kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+held.s.email+'.'
+    +(route==='signin'?authSyncNote(acc,mail):'')
     +(held.kept?'':AUTH_UNKEPT)};});}
 /* A SESSION THE SERVER HANDED BACK, HELD, and everything a sign in starts.
    Out of authEnter because a reset answers the same {token, account} and is a
@@ -101831,5 +101853,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006804789"></div>
+<div id="eof" hidden data-len="006806249"></div>
 </body></html>
