@@ -2959,6 +2959,21 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* THE FOUR SUPEREGO SYMBOLS, 18 November, his words: "super ego, make those
+   icons. 4 icons horizontal. And make them symbolic." Keyed by the name the
+   AMPLIFIER table carries (engine/data/registers.js), so the Field's row and
+   any later surface draw one mark for one defence. 24 unit box, stroked, ring
+   and never fill, the same grammar as GATEGLYPH above. A balance with the
+   beam tipped to one pan for justification, a crown for entitlement, a rule
+   with its ticks for perfectionism (the thing it measures everything against),
+   and a spiral wound inward for obsession (the thought that circles back). The
+   scale's two pans are open bowls and not closed triangles, which at the
+   badge's 20 pixels read as two solid dots. */
+const SUPEREGO_IC={
+ Justification:'M12 4.2v15.6M8.6 19.8h6.8M3.6 9.6l16.8-3.6M3.6 9.6l-2.2 4.4M3.6 9.6l2.2 4.4M1.4 14a2.2 2.2 0 0 0 4.4 0M20.4 6l-2.2 4.4M20.4 6l2.2 4.4M18.2 10.4a2.2 2.2 0 0 0 4.4 0',
+ Entitlement:'M4.2 17.4L3 7.6l4.8 3.9L12 5l4.2 6.5L21 7.6l-1.2 9.8zM5.4 20.4h13.2',
+ Perfectionism:'M2.8 8.4h18.4v7.2H2.8zM6.2 8.4v3.6M9.4 8.4v2.2M12.6 8.4v3.6M15.8 8.4v2.2M19 8.4v3.6',
+ Obsession:'M10.5 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0'};
 /* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
    here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
    SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
@@ -7303,6 +7318,41 @@ var UNPACK_BASE={
  'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Each of
+    the three said something the panel is no longer there to say, so the
+    sentence is kept here, where a hover on the term still reaches it, and no
+    surface keeps a copy. The chain legend's colour key went with it and is
+    said by the wheel's own hover on a dot (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'chain':'The chain is how patterns stack: saboteurs join into complexes, complexes into hyper complexes, and those into a super complex.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -7483,6 +7533,17 @@ function unpackAll(){
  if(UNPACK_MEMO)return UNPACK_MEMO;
  var t={}, k;
  for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
  /* the four Western elements */
  Object.keys(UNPACK_ELEM).forEach(function(el){
   var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);
@@ -29575,7 +29636,7 @@ function ladderPlaces(w){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,

@@ -2118,7 +2118,7 @@ body:not(.tab-field) .fdock{display:none}
 .rb-fam .rb-ic{width:16px;height:16px;margin:0;color:var(--dim)}
 .rb-fam:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .rb-fam2{margin-top:8px;border-top:1px solid var(--edge);border-radius:0}
-.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
+.fdock .kb.rbar,#gaterows .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
  padding:6px 2px 8px;border:0;border-radius:var(--r-xs);background:transparent;box-shadow:none;
  text-align:left;white-space:nowrap;cursor:pointer;color:var(--ink)}
 /* round 3 of the r1 review: DQ is the one amount where more is worse, so it
@@ -2159,12 +2159,12 @@ body:not(.tab-field) .fdock{display:none}
  animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;
  animation-delay:calc(var(--k,0) * var(--t-stagger) * 7)}
 @keyframes rbsweep{0%{transform:translateX(-100%)}62%,100%{transform:translateX(100%)}}
-#keylo .rbar:nth-child(1){--k:1}
-#keylo .rbar:nth-child(2){--k:2}
-#keylo .rbar:nth-child(3){--k:3}
-#keylo .rbar:nth-child(4){--k:4}
-#keylo .rbar:nth-child(5){--k:5}
-#keylo .rbar:nth-child(6){--k:6}
+#keylo .rbar:nth-child(1),#gaterows .rbar:nth-child(1){--k:1}
+#keylo .rbar:nth-child(2),#gaterows .rbar:nth-child(2){--k:2}
+#keylo .rbar:nth-child(3),#gaterows .rbar:nth-child(3){--k:3}
+#keylo .rbar:nth-child(4),#gaterows .rbar:nth-child(4){--k:4}
+#keylo .rbar:nth-child(5),#gaterows .rbar:nth-child(5){--k:5}
+#keylo .rbar:nth-child(6),#gaterows .rbar:nth-child(6){--k:6}
 .rbar.off .rb-f{display:none}
 /* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds.
    Not on Flow, whose cells carry seven figures and have no one place a fill
@@ -2213,14 +2213,14 @@ body:not(.tab-field) .fdock{display:none}
 .rb-d.on.st{opacity:1;animation:none;transform:none}
 /* PAIRED. A row lights the glass bar's circle for the same reading, and the
    circle lights the row, one ring in the row's own colour. */
-.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot{box-shadow:inset 0 0 0 1px var(--c)}
-.fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
+.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot,#gaterows .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+.fdock .kb.rbar:focus-visible,#gaterows .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
 .rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
 .rbar.off .rb-n .rb-ic{color:var(--dim)}
 body.quiet .rb-f::before,body.rm .rb-f::before{animation:none}
 @media (prefers-reduced-motion:reduce){
  .rb-f::before{animation:none}}
-.fdock .kb:hover{background:transparent}
+.fdock .kb:hover,#gaterows .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
@@ -2309,9 +2309,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    in flow, on every tab, and it needs none of the pinning. */
 .bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
  background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
-/* the definition of the two ends of an axis, said once in the rail rather than
-   only in a tooltip, because a tooltip is not reachable by a thumb. */
-.stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
 /* a glyph set beside the name of the thing it stands for, in a drill header */
 .ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;
@@ -2335,7 +2332,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .ad-prot .btn{align-self:flex-start}
 .ad-prot-n{font-size:12.5px;line-height:1.55;color:var(--dim)}
 
-.stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
@@ -2948,8 +2944,6 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  cursor:ew-resize;position:relative;box-sizing:content-box}
 .nf .tr:hover{outline:1px solid var(--gold);outline-offset:2px;border-radius:3px}
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
-.nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
-.nf.oppf{margin-bottom:12px;margin-top:-2px}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -2970,34 +2964,36 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
 
-/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
-   The dot is the exact color the wheel paints that tier's threads and beads
-   with, set inline from bc() at render time, so a swatch here and a bead on
-   the wheel can never read as two different colors for the same tier. */
-.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
-.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
- box-shadow:0 0 0 1px rgba(0,0,0,.25)}
-.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
-/* a field anchor sits at no seat and has no colour of its own yet (CB10,
-   open), and every rendition draws it as an unfilled ring, so its swatch is
-   that ring and not a dot of a colour the drawing never uses */
-.chk-dot.ring{background:transparent;box-shadow:inset 0 0 0 1.4px var(--ink);opacity:.6}
-.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
-.chk-tx b{color:var(--ink);font-weight:600}
-
-/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
-   above) reading its own address. Its own small rule rather than
-   knowledge.js's kb-row/kbp, which that file injects itself only once the
-   Knowledge tab has been opened: a press on Field alone, never Knowledge,
-   would have shown these names with no flex, no gap and no border, the
-   classes present with nothing behind them. */
-.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
- border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
- font:inherit}
-.amp-row:last-child{border-bottom:0}
-.amp-row:hover{background:var(--sunk)}
-.amp-nm{font-size:13.5px;color:var(--ink)}
+/* THE CHAIN KEY AND THE AMPLIFIER ROWS WENT, 18 November, with the sections
+   that drew them (body.html says why). What stands in the amplifiers' place is
+   below, and what stands in the key's place is nothing: the wheel's own hover
+   on a dot names its tier. */
+/* THE FOUR SUPEREGO SYMBOLS, 18 November. One row of four equal columns with
+   one gap, so the row is centred under its label and even from end to end. A
+   cell is one button and the whole cell is the target: the ring, which is
+   crBadge's own medium badge with no pill, and under it the figure. The name
+   is not printed, it does not fit a column that is 60 pixels wide at 1600, and
+   it is the sentence on hover and tap and in the spoken name. */
+.amp-icons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:6px 0 2px}
+.amp-i{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:var(--tap);
+ padding:8px 0 6px;background:none;border:0;border-radius:var(--r-xs);color:var(--ink);font:inherit;cursor:pointer}
+.amp-i:hover{background:var(--sunk)}
+.amp-i:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.amp-i .crb{pointer-events:none}
+.amp-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;line-height:1;
+ color:var(--ink)}
+.amp-i.off .crb-g,.amp-i.off .amp-v{color:var(--dim)}
+/* THE SIX ACTION BARS, 18 November. They are rbRow's own bar, laid out by the
+   same rules the dock's bars are (the selectors above that name .fdock name
+   this host as well, so the two cannot drift into two drawings). A column of
+   six with the dock's own gap, the 10 pixel gap that stands above DQ between
+   the three that keep the law and the three that break it, the sweep's
+   stagger by position as in the dock, and a hatch on the fill of the three
+   that break it, the one Flow's held cells already wear, so the sides are not
+   told apart by a hue alone. */
+#gaterows{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:0}
+#gaterows .rbar:nth-child(3){margin-bottom:10px}
+#gaterows .rbar[data-side=lower] .rb-f{background-image:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 18%,transparent) 0 1.5px,transparent 1.5px 4px)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}

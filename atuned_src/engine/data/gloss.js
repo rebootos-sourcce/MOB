@@ -172,6 +172,41 @@ var UNPACK_BASE={
  'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Each of
+    the three said something the panel is no longer there to say, so the
+    sentence is kept here, where a hover on the term still reaches it, and no
+    surface keeps a copy. The chain legend's colour key went with it and is
+    said by the wheel's own hover on a dot (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'chain':'The chain is how patterns stack: saboteurs join into complexes, complexes into hyper complexes, and those into a super complex.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -352,6 +387,17 @@ function unpackAll(){
  if(UNPACK_MEMO)return UNPACK_MEMO;
  var t={}, k;
  for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
  /* the four Western elements */
  Object.keys(UNPACK_ELEM).forEach(function(el){
   var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);

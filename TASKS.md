@@ -35209,3 +35209,40 @@ the last of those re-run clean start to finish after an earlier attempt
 was discarded for running concurrently with a rebuild. `engine.js` is
 unaffected (no engine file touched this round) and stayed at its last
 confirmed-clean count.
+
+## Round WP, 18 November. The Psyche panel holds Matrix, Superego and Action
+
+His words, twice, are in DECISIONS.md, "The Psyche panel holds Matrix,
+Superego and Action, and nothing else". The first read of them, "strip the
+panel to a matrix", was wrong, and he said so: everything under the word
+Psyche is in scope, and the panel is Matrix, Superego as four symbols, and
+Action as six bars.
+
+- [x] **WP1. Built on `fix/psyche-panel-rework`, not yet merged.** The book's
+  levels, Child emotions with its sliders, The chain with Outside the chain,
+  and every sub heading and paragraph of Superego and Laws of Action are out of
+  the Field's left rail. Superego is four ring symbols in one row with a
+  percent each. Action is six bars drawn by `rbRow`, the bar the CQ, vitality,
+  energy and flow rows use. `tests/psychepanel.js` holds it.
+- [x] **WP2. SV22's Psyche half, the hold on PR #188 and the TA4 and TA8
+  tension are closed by WP1.** The 3 October ruling only asked to add the
+  superego, which stays, so there was never a clash. PR #188 and PR #203 can be
+  closed when this merges.
+- [x] **WP3. SW5 is superseded.** "A visual on the left rail showing the chain
+  connected": he says get rid of the chain.
+- [ ] **WP4. SW2 is still open and the sliders did not wait for it.** The funnel
+  quiz asks none of the nine child emotions and the Intake's Emotional axes feed
+  nothing, so nothing a person types moves their nine charges except the four
+  letter seed and their stories.
+- [ ] **WP5. Entitlement reads the dash for everybody.** Its address, the unnamed
+  Root address, has no child emotion. His ruling on that address is open.
+- [ ] **WP6. A reading of the four defences from a person's own words.** The
+  Superego figure is the charge held at the defence's place in the body. The
+  engine's lean reader already has word lists that touch Justification and
+  Entitlement; nothing counts Perfectionism or Obsession.
+- [ ] **WP7. One phrase reads as a full Action bar.** A floor before a figure
+  shows would have to move the gate drill and the Journal with it.
+- [ ] **WP8. Awareness the reading and Awareness the gate share a rail.** Each
+  hover says its own meaning. A rename is his call.
+- [ ] **WP9. The wheel's dot colours lost their legend.** Hovering a dot names
+  its tier. Whether the colours need a line of their own is open.

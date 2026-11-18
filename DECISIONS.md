@@ -3134,6 +3134,16 @@ Where the names actually live, checked by grep rather than assumed: `atuned_src/
 
 ## The book's own levels, read in order on the Field's left rail, 28 October
 
+**OVERRIDDEN, 18 November: the section is gone, and so is this entry's
+reason for existing.** His words that day: "I never asked you to put in the
+book levels. I don't even know what that is." The only words of his on record
+for it are the 28 October ones quoted below, "the full cascade wiring of the
+Psyche stack for the field in the left menu", and a seat read the word "book"
+and the row for each level out of them. The section is out of the rail, and
+what is written under this heading is kept for the record of what was
+weighed. The ruling that replaces it is "The Psyche panel holds Matrix,
+Superego and Action", at the foot of this file.
+
 His round, after the superego section landed: "the full cascade wiring of the
 Psyche stack for the field in the left menu." The Mechanics of Being numbers
 the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
@@ -3706,3 +3716,161 @@ What did not move, on purpose:
 - **The ordinary word.** Knowledge in its plain sense ("Freedom, free will,
   knowledge, wisdom") is not the surface and stays.
 - **`proto/`.** The prototypes are not the product and were not swept.
+
+## The Psyche panel holds Matrix, Superego and Action, and nothing else. Ruled 18 November.
+
+His words, first, on two screenshots of the Field's left rail under the
+heading Psyche (it was six sections: The book's levels, Child emotions, Matrix,
+The chain, Superego, Laws of Action):
+
+> Review this with your team. I asked you to get rid of everything in these two
+> images. I asked you that a long time ago. Review it with your team. Maybe keep
+> the matrix for now, but get rid of everything else. It doesn't belong there.
+
+And then, when the first reading of that was "strip the panel down to a
+matrix", his correction of it, whole:
+
+> I didn't say strip the psyche panel down to just a matrix. I'm saying
+> everything that's from the word psyche. Like, I never asked you to put in the
+> book levels. I don't even know what that is. I also asked you to remove the
+> child emotions because we're going to have the person do self-reporting in
+> the diagnostic. I also asked you to get rid of the chain. I don't even know
+> what this is doing here. That got put in there by you automatically or
+> automagically. Super ego. It needs to be more iconographic. You can keep
+> super ego, but get rid of the laws of action. Or just make that action and
+> give me them as 6 icons, so symbolic icons. Actually make it a bar. Make them
+> all bars, like the ones for like CQ, vitality, energy, flow, etc. Make it a
+> bar. And then super ego, make those icons. 4 icons horizontal. And make them
+> symbolic. And give it a %. We don't do points anymore.
+
+Read as, and built as: the panel keeps its Psyche heading and holds three
+sections in this order, with no paragraph, no sub heading and no empty state
+sentence in any of them.
+
+- **Matrix.** Unchanged, "for now".
+- **Superego.** Four symbols in one horizontal row: Justification,
+  Entitlement, Perfectionism, Obsession. Each is a ring filled to its figure,
+  with a mark inside it that stands for the defence (a balance tipped to one
+  side, a crown, a rule with its ticks, a spiral wound inward), and a percent
+  under it. The name and one sentence of meaning are on hover and tap and in
+  the spoken name, never printed beside the symbol, because "Perfectionism"
+  does not fit a column that is 60 pixels wide.
+- **Action.** The six gates as six bars, drawn by the same function the CQ,
+  vitality, energy and flow bars are drawn by (`rbRow`, `ui/component.js`),
+  right action first (Awareness, Detachment, Intention) and wrong action under
+  it (Ignorance, Attachment, Aversion), in the book's order. The word is
+  Action, the word he gave the Journal's rail on 10 November.
+- **Gone.** The book's levels. Child emotions, with its eighteen sliders and
+  its two bulk sliders. The chain, with Outside the chain, Archetype and Field
+  anchors. The Superego sub heading and paragraph. The Laws of Action sub
+  headings, paragraphs, empty state paragraphs and the Avoidance block.
+
+**What the two percents are.** Said once here, and said again on hover.
+- **A Superego figure** is `fmtPct('weight', BY[i].sq)`: the charge held at the
+  address the book seats that defence at, out of the most one address can hold,
+  whole number and percent sign, the dash for nothing held or nothing read. It
+  is not a reading of the defence. A story written in the language of
+  justification can read 0, and one line of anger can read 16, because what the
+  engine measures there is anger or fear held at a place in the body
+  (`AMPLIFIER`, `engine/data/registers.js`; `n.sq`, `engine/compute.js`). The
+  hover says "its figure is the charge held at its place in the body" and
+  never says it is how much of the defence a person shows. A real reading of
+  the defences from a person's own words is a separate piece of work and is
+  open, below. The figure used to print as `10.0` beside a ring filled in
+  percent: points, in the one place the 16 October percent ruling had already
+  ended them.
+- **An Action figure** is `fmtPct('gate', verpRead().pct)`: this gate's share
+  of every action read across the person's stories, so the six add up to one
+  whole and a person shows on both sides at once. It is the figure the gate
+  drill and the Journal print for the same gate, so the bar and the drill never
+  say two things. A gate with none of its own prints the dash, never 0%. With
+  nothing read at all the six bars draw unlit.
+
+**The formatter is the one that was already there.** `pct` and `fmtPct`
+(`engine/pct.js`), kinds `weight` and `gate`. Nothing new was added, so
+another team's percent only formatter reuses the same two calls.
+
+**What each removed block said, and where it lives now.** The meaning table
+(`engine/data/gloss.js`) carries one sentence for each, so no term lost its
+explanation:
+- the Superego paragraph is the hover on the Superego header (the table's
+  existing `superego` entry, so the word has one definition and not two);
+- the four defences each get `superego:<name>`, and the one whose address no
+  child emotion reaches (Entitlement) says so while that is true, read off the
+  address and never typed;
+- the Laws of Action paragraphs are `rail:action` and six `gate:<name>`
+  sentences, each saying what the move is and what its figure is;
+- `child emotions`, `chain` and `field anchor` are new, because each was printed
+  or implied elsewhere and the panel was where a person met its meaning.
+The gate drill keeps its longer text. The Avoidance reading stays where it is
+never shown alone, the Journal's Laws accordion, with the two readings it is
+built from.
+
+**Why his earlier asks never stuck, and he was right that he made them.** Read
+off the record on 18 November, not from memory:
+- **28 October.** He asked for the superego, the six gates and "the full
+  cascade wiring of the Psyche stack" on the left menu. A seat built each, and
+  widened two of them: the chain colour legend was its answer to "nothing has
+  been wired", and The book's levels was its reading of "Psyche stack". He did
+  not ask for those two in those forms.
+- **2 November.** "Move child emotions to diagnostic." It was built as a
+  button that opened the diagnostic and left the sliders where they were.
+- **5 November.** He marked a screenshot of this panel for removal: five rows
+  out, Matrix kept (SV22, PR #188). It was built and tested, and held as a
+  draft because it was read as clashing with the 3 October ruling. That ruling
+  only asked to add the superego to the left menu, so the clash was a
+  misreading, and the removal was bundled into a four screenshot job about
+  another panel, so it had nothing of its own to stand on.
+- **14 November.** "Delete those for good." It was written to the status board
+  as ruled and ticked done, and nothing was queued to build it. The Insight half
+  of the draft was rebuilt on main that night and the Psyche half left behind
+  on purpose, on the same misreading.
+- **15 November.** The question came back to him in jargon, he said he did not
+  follow it, and his answer about "the Psyche stack" was read as an order for a
+  different surface (the Journal's Psyche stack tile).
+Plain reason: the word "Psyche stack" names three different things in this
+product, the ask lived in one backlog line and not in this file, and a ticked
+line on a board read as finished while the page stayed the same. This entry is
+the durable place. A board line that says ruled is not done until the page has
+changed.
+
+**Superseded by this.** TASKS.md SW5 (14 and 15 November, "a visual on the left
+rail showing the chain connected"): he says get rid of the chain, so it is
+dropped. TASKS.md SW2 (child emotions become questions in the diagnostic) is
+not superseded and is not done: the funnel quiz asks none of the nine and the
+Intake's "Emotional axes" block feeds nothing, so after this round nothing a
+person types moves their nine charges except the four letter seed and their
+stories. Removing the sliders did not wait for it.
+
+**Left alone on purpose, each his call.**
+- The Field's glass bar still has a circle called Laws of Action
+  (`ui/fieldbar.js`, held by `tests/functional.js`), and the right rail's
+  Insight stack still has a Child emotions tab. The first is a layer of the
+  Field and the second is a reading, not a place to type; neither is in the
+  Psyche panel.
+- The Journal's left rail keeps its Emotions, Psyche stack and Action
+  sections.
+
+**Open, written down with the ways it could go.**
+- **Entitlement reads the dash for everybody.** Its address, the unnamed Root
+  address, has no child emotion, so no story can put charge there. The symbol is
+  drawn, unlit, and its hover says no story reaches it yet. Ways it could go:
+  keep it (default), show three symbols, or wire it, which needs his ruling on
+  that address (CLAUDE.md, "His, not mine").
+- **A real reading of the four defences.** The figure is charge at a place in
+  the body. Reading the defences themselves from a person's words (blame and
+  "anyone would have" for Justification, "they owe me" for Entitlement) has a
+  word list in the engine's lean reader already, and nothing counts
+  Perfectionism or Obsession. New arithmetic, not built.
+- **One phrase reads as a full bar.** One line that says "I avoided him" is
+  Aversion at 100%, true as a share and thin as evidence. The bar and the drill
+  print the same share today. A floor of about six phrases before a figure shows
+  would have to move the drill and the Journal with it, so it is not built here.
+- **Two things called Awareness on one rail.** The reading (how strong what you
+  mean is) and the gate (noticing the feeling) are both on the Field's left
+  rail. Each bar's hover says its own meaning. Renaming either is his call.
+- **The wheel's dot colours.** The chain legend was the one place that said
+  yellow is a complex, orange a hyper complex, red a super complex. Hovering a
+  dot still names its tier. Whether the colours need one line of their own on
+  the wheel is open.
+

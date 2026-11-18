@@ -1078,12 +1078,19 @@ const kb=await page.evaluate(()=>{
  ok(kb.names.indexOf('Glossary')<0,
   'and the glossary is not a deck, it is what the search answers with');
  /* THE RENAME REACHES EVERY SURFACE OR IT IS NOT A RENAME. The codex is one
-    of three places the nine are named. The left rail's fourth section holds
+    of three places the nine are named. The left rail's fourth section held
     their sliders and the right rail's stack counts them, and a word that
     moves in one place and not the others is how this product ends up with two
-    vocabularies for one thing, which is what it just finished removing. */
- ok(kb.rail.indexOf('Child emotions')>=0,
-  'the left rail calls the nine child emotions, got '+kb.rail.join(', '));
+    vocabularies for one thing, which is what it just finished removing.
+
+    CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child
+    emotions because we're going to have the person do self-reporting in the
+    diagnostic." The left rail's Child emotions section, with its eighteen
+    sliders, is gone, so this check, which asked that the section be there
+    under that name, now asks that it be gone. The word itself still reaches
+    the stack's own tab, which the check after the next one holds. */
+ ok(kb.rail.indexOf('Child emotions')<0,
+  'the left rail has no Child emotions section any more, 18 November, got '+kb.rail.join(', '));
  ok(kb.rail.indexOf('Fetters')<0,
   'and the rail no longer calls the nine fetters');
  /* the word moved off the tab's face to its aria-label, 14 November, but
@@ -7338,29 +7345,24 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(!om.soulOpen&&om.fold.length===2&&om.fold.every(f=>f[1]>=44)&&om.foldCircles>=2,'OM: the Awareness grids fold to a domain line and an archetype line, each 44 or more, '+JSON.stringify(om.fold));
  ok(om.shadowCircle==='','OM: the Decoherence circle is gone from the bar, 5 November, his own mark on it, got '+JSON.stringify(om.shadowCircle));
  ok(!om.overlay&&!om.rail2,'OO: nothing of the left menu is drawn on the stage, and option two is not on by default');
- /* THE CHAIN KEY SAYS ONLY WHAT IS COMPUTED, round of 31 October. Its fifth
-    row read "Archetype: the shape the whole pattern points toward" under a
-    heading that made it a tier of the chain, and compute() stops at the
-    super complex. The four field anchors were in no key, the drill printed
-    more left at Sol Star than was ever held, and the renditions' hover gave
-    an anchor no weight. Each figure is read off FIELD, never typed, so the
-    checks hold for whichever person this page carries. */
+ /* THE CHAIN KEY IS GONE, 18 November, his words: "I also asked you to get
+    rid of the chain. I don't even know what this is doing here." It said only
+    what is computed (round of 31 October: its fifth row read "Archetype: the
+    shape the whole pattern points toward" under a heading that made it a tier,
+    and the four field anchors were in no key) and three checks held that: the
+    heading, the Archetype row, and the anchors' row with its live crown and
+    root figures. They are replaced by this one, which asks that the section,
+    its key and its Outside the chain rows are not in the rail at all. What an
+    anchor says about itself did not go with the key: the drill and the hover
+    below read FIELD and are held as before. Each figure is read off FIELD,
+    never typed, so those checks hold for whichever person this page carries. */
  const ck=await fp.evaluate(()=>{
-  const k=document.getElementById('chainkey'), r=compute();
   const pc=n=>Math.max(0,Math.min(100,Math.round((n.sq||0)*10)));
   const up=FIELD.filter(n=>n.b==='Field-Above'), dn=FIELD.filter(n=>n.b==='Field-Below');
-  return {rows:k?[...k.querySelectorAll('.chk-row')].map(x=>x.textContent):[],
-   head:(document.querySelector('.lsec[data-sec=chain] .tier1')||{}).textContent,
-   unread:!!r.unread, above:pc(up[0]), below:pc(dn[0]),
-   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},r)};});
- const ckNm=ck.rows.map(t=>t.split('.')[0]);
- ok(ck.head==='Nerve to super-complex'&&ckNm.slice(0,4).join()==='Saboteur,Complex,Hyper-complex,Super-complex',
-  'chain key: the chain is four tiers, nerve to super-complex, '+JSON.stringify([ck.head,ckNm]));
- ok(ckNm[4]==='Archetype'&&/^Archetype\. Not part of the chain\./.test(ck.rows[4])&&!ck.rows.some(t=>/points toward/.test(t)),
-  'chain key: Archetype is named a pick outside the chain, never a tier it climbs into, '+JSON.stringify(ck.rows[4]));
- ok(!ck.unread&&ckNm[5]==='Field anchors'&&ck.rows[5].indexOf('crown above at '+ck.above+'%')>=0
-  &&ck.rows[5].indexOf('root below at '+ck.below+'%')>=0&&/decoherence/.test(ck.rows[5]),
-  'chain key: the four field anchors carry their seat\'s live average and say it counts in decoherence, '+JSON.stringify([ck.above,ck.below,ck.rows[5]]));
+  return {gone:!document.getElementById('chainkey')&&!document.querySelector('.lsec[data-sec=chain]')&&!document.querySelector('.chk-row'),
+   above:pc(up[0]), below:pc(dn[0]),
+   drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},compute())};});
+ ok(ck.gone,'chain key: the chain section, its colour key and the Outside the chain rows are gone from the left rail, 18 November');
  ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
   'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
  ok(ck.hover.indexOf('average weight of the root seat it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),

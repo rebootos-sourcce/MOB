@@ -8400,6 +8400,31 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  ok(T['plexus']&&/sound healers/.test(T['seat tone'])&&/nothing in your body is measured/.test(T['seat tone'])&&T['codex page'],
   'the plexus, the seat tone and the codex page each have a sentence, and the tone is said as a choice and not a measurement');
  ok(keys.every(k=>!/vritti/i.test(T[k])),'no sentence in the table uses the word vritti');
+ /* THE PSYCHE PANEL'S WORDS AND MARKS, 18 November. The panel took the book's
+    levels, Child emotions and The chain off the Field's left rail and drew the
+    four defences as symbols and the six gates as bars (DECISIONS.md, "The Psyche
+    panel holds Matrix, Superego and Action"). What each of those said is kept
+    here, one sentence apiece, and the page side is tests/psychepanel.js. */
+ {const FOURD=['Justification','Entitlement','Perfectionism','Obsession'];
+  ok(FOURD.every(n=>E.AMPLIFIER.some(a=>a.nm===n)),'the four symbols are four of the amplifiers the engine carries');
+  ok(FOURD.every(n=>typeof E.SUPEREGO_IC[n]==='string'&&/^[MmLlHhVvCcSsAaZz0-9 .,-]+$/.test(E.SUPEREGO_IC[n]))&&new Set(FOURD.map(n=>E.SUPEREGO_IC[n])).size===4
+   &&Object.keys(E.SUPEREGO_IC).length===4,
+   'each of the four defences has its own mark, plain path data, and no mark stands for a defence the Field does not draw');
+  ok(FOURD.every(n=>/^[A-Z][a-z]+ is /.test(T['superego:'+n.toLowerCase()]||'')&&T['superego:'+n.toLowerCase()].indexOf(n)===0),
+   'each defence has a sentence that opens on its own name');
+  /* the figure under a symbol is the charge held at its place, and the sentence says so and nothing larger */
+  ok(FOURD.every(n=>/the charge held at its place in the body|no story reaches its place in the body yet/.test(T['superego:'+n.toLowerCase()])),
+   'every defence sentence says its figure is the charge at its place in the body, never how much of the defence a person shows');
+  /* an amplifier whose address no child emotion reaches says so, read off the address and never typed */
+  ok(FOURD.every(n=>{const a=E.AMPLIFIER.filter(x=>x.nm===n)[0];
+   return /no story reaches/.test(T['superego:'+n.toLowerCase()])===!E.BY[a.i].cf;}),
+   'the defence whose address holds no child emotion says no story reaches it, and no other one does');
+  ok(E.VERP.every(v=>{const t=T['gate:'+v.nm.toLowerCase()]||'';
+   return t.indexOf(v.nm+', a '+(v.side==='higher'?'right':'wrong')+' action,')===0&&/its share of every action read in your stories/.test(t);}),
+   'each of the six gates has a sentence that names it, says which side of the law it stands on and says what its figure is');
+  ok(/^Action is the move/.test(T['rail:action']||'')&&/nine basic feelings/.test(T['child emotions']||'')
+   &&/saboteurs join into complexes/.test(T['chain']||'')&&/two above the head and two below the feet/.test(T['field anchor']||''),
+   'the sentences the removed sections carried are in the table: action, child emotions, the chain, a field anchor');}
  /* the two anatomy words among the seat spots carry a sentence that names them */
  ok(E.FLOWSEAT.filter(s=>/notch|sternum/i.test(s.seat)).every(s=>T['spot:'+s.k]&&T['spot:'+s.k].toLowerCase().indexOf(s.seat.replace(/^the /,'').toLowerCase())>=0),
   'every anatomy word among the seat spots has a sentence naming it');

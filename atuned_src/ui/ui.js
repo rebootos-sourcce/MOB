@@ -1914,110 +1914,79 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
-/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
-   October, his words after finding them only as small marks on the wheel:
-   "those would be great to expose, wouldn't they, maybe they go on our
-   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
-   the same six-row reading already shown inside the gate drill, right
-   action against wrong action, and its rows already wire themselves to
-   that drill through the delegated .gate-r[data-gate] click below, so
-   nothing new needs wiring for a press here to open it.
+/* THE PSYCHE PANEL'S TWO READINGS, 18 November, his words: "super ego, make
+   those icons. 4 icons horizontal... And give it a %. We don't do points
+   anymore", and of the six gates "Actually make it a bar. Make them all bars,
+   like the ones for like CQ, vitality, energy, flow." The three sections
+   under the Psyche heading are Matrix, Superego and Action (body.html says
+   why). The chain key, the book's levels and the nine sliders went with the
+   round and nothing here draws them.
 
-   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
-   carries its own structural rule for this exact number: it is read only
-   together with the two upstream gates it was built from. stLawWins
-   (ui/storyui.js) already finds the most recent entry with a real gate
-   reading for the Journal's own Laws accordion; this calls the same
-   function rather than re-reading the entries a second way, so the two
-   surfaces can never disagree about which entry's reading is current. */
-/* THE CHAIN KEY. Round of 28 October, the shell's own body.html comment
-   above the section carries the full why. Five rows, nerve to root, each a
-   swatch and one sentence. The swatch colors come straight from bc(), the
-   exact function wheel.js paints the chords and beads with, so this list
-   and the wheel's own picture read as one source and not two. Archetype
-   keeps its own gold rather than a seat color, because that is what the
-   wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
-   dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
-   own thread is colored by whichever seat it sits at and not by one fixed
-   color the other three tiers share.
+   SUPEREGO IS FOUR SYMBOLS IN ONE ROW. Each is a real address AMPLIFIER maps
+   to, read the way every address on this page is read, BY[i].sq, no new
+   number. The ring is crBadge's (ui/component.js), bare, so the figure sits
+   under the ring where four of them stay even and none hangs off one side,
+   and the figure is fmtPct('weight', ...), the registry's own form: a whole
+   number and a percent sign, and the dash for nothing held or nothing read.
+   The weight used to print as 10.0 beside a ring filled in percent, points
+   in the one place the product had ruled them out. The state words the old
+   rows spoke, impaired and blocked, read as a verdict on a defence and are
+   gone. A press opens the node drill, as it always did, and the name and
+   its sentence are on hover and tap and in the spoken name, never printed
+   beside the symbol, because "Perfectionism" is wider than its column. */
+ var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ function renderAmplifiers(r){
+  var h=document.getElementById('amprows'); if(!h)return;
+  var unread=!!(r&&r.unread);
+  h.innerHTML=AMP_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+   .filter(Boolean).map(function(a){
+    var n=BY[a.i]; if(!n)return '';
+    var f=fmtPct('weight',n.sq,{unread:unread}), held=f!==PCT_DASH, say=unpackOf(a.nm,'superego');
+    return '<button type="button" class="amp-i'+(held?'':' off')+'" data-amp-i="'+a.i+'" data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(say)+'"'
+     +' aria-label="'+esc(a.nm+', '+(held?f:'nothing held')+'. '+say+' Opens the address.')+'">'
+     +crBadge(n.b,held?(pct('weight',n.sq)||0):0,{size:'md',bare:true,color:bc(n.b),
+       glyph:'<path d="'+(SUPEREGO_IC[a.nm]||'')+'"/>'})
+     +'<span class="amp-v">'+esc(f)+'</span></button>';}).join('');
+  var hd=document.querySelector('.lsec[data-sec=superego] .lsec-hd');
+  if(hd){var hs=unpackOf('Superego');
+   hd.setAttribute('data-tip-k','Superego'); hd.setAttribute('data-tip',hs); hd.setAttribute('aria-label','Superego. '+hs);}
+  if(!h.getAttribute('data-wired')){h.setAttribute('data-wired','1');
+   h.addEventListener('click',function(e){
+    var b=e.target.closest('[data-amp-i]'); if(!b)return;
+    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
+ /* ACTION IS SIX BARS, the same bar the readings above draw. rbRow
+    (ui/component.js) is called as the CQ, vitality and flow rows call it, so
+    the track, the ticks, the head, the sweep and the move of a figure are one
+    drawing; its o.gate says only that a press opens the gate's own drill
+    (runGatesDrill, the delegated .gate-r[data-gate] click below) and not a
+    reading, and o.side says which side of the law it stands on. The three
+    that keep the law come first in the Heart seat's colour, the three that
+    break it under them in the Root seat's, the two colours the gate drill,
+    the dial and the Journal's rail already use, with the 10 pixel gap the
+    dock puts above DQ between them and a hatch on the broken fill, so the
+    two sides do not rest on a hue alone.
 
-   ARCHETYPE IS NOT A FIFTH TIER, AND THE KEY SAID IT WAS. Round of 31
-   October. The fifth row read "Archetype: the shape the whole pattern points
-   toward", under a heading that called all five one chain. compute() builds
-   saboteur, complex, hyper complex and super complex and stops there
-   (engine/compute.js, sups); nothing reads a super complex upward into an
-   archetype. The gold ring is affinity() (engine/core.js) off DOMAIN, which
-   buildSoul makes from the archetypes and domains a person picked at setup,
-   and suscAll() turns DOMAIN into n.susc, how readily each address takes a
-   story's charge. So archetype runs into the chain, it never comes out of it,
-   and the row now says that, under its own label beside the four field
-   anchors, which are the other thing on the Field outside the chain. The
-   anchors' row reads their live weight off BY, the same objects compute()
-   writes, and drops the figure on an unread reading, where it would be a
-   zero nobody entered. Their swatch is a ring, which is how every rendition
-   draws them (ui/rings.js); their colour is CB10 and still open. */
-function renderChainKey(r){
- var h=document.getElementById('chainkey'); if(!h)return;
- var row=function(x){
-  return '<div class="chk-row"><span class="chk-dot'+(x.v?' varies':x.ring?' ring':'')+'"'
-   +(x.c?' style="background:'+x.c+'"':'')+'></span>'
-   +'<span class="chk-tx"><b>'+x.nm+'.</b> '+x.d+'</span></div>';};
- var rows=[
-  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
-  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
-  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
-  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'}];
- var pctAt=function(i){var n=BY[i];return n?Math.max(0,Math.min(100,Math.round((n.sq||0)*10))):0;};
- var live=r&&!r.unread;
- var outside=[
-  {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
-  {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the seat it extends'
-   +(live?', the crown above at <b>'+pctAt(109)+'%</b> and the root below at <b>'+pctAt(111)+'%</b>':', the crown above and the root below')
-   +'. That weight counts in decoherence, your total shadow.'}];
- h.innerHTML=rows.map(row).join('')
-  +'<div class="tier1" style="margin-top:14px">Outside the chain</div>'
-  +outside.map(row).join('');}
-/* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
-   the full why. Each row is a real address AMPLIFIER already maps to, read
-   the same way every other address on this page is read, BY[i].sq, no new
-   number. Reuses the locked dual-pole glyph (NODE_STRIKE, ui/knowledge.js)
-   and crBadge (ui/component.js) so an amplifier's own charge reads in the
-   same language as every other address on the Field, and a press opens the
-   same node drill a press on any address already opens. */
-function renderAmplifiers(){
- var h=document.getElementById('amprows'); if(!h)return;
- var FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
- var rows=FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
-  .filter(Boolean);
- h.innerHTML=rows.map(function(a){
-  var n=BY[a.i]; if(!n)return '';
-  var p=Math.round((n.sq||0)/10*100), state=dualPoleState(p), c=bc(n.b);
-  var say=a.nm+', '+(n.sq>=0.05?'weight '+n.sq.toFixed(1):'nothing held')+', '+dualPoleStateWord(state)+'.';
-  return '<button type="button" class="amp-row" data-amp-i="'+a.i+'" aria-label="'+esc(say)+'">'
-   +'<span class="amp-nm">'+esc(a.nm)+'</span>'
-   +crBadge(n.b,p,{size:'sm',color:c,raw:n.sq.toFixed(1),glyph:NODE_STRIKE[state],title:a.nm+' · '+dualPoleStateWord(state)})
-   +'</button>';}).join('');
- var wired=h.getAttribute('data-wired');
- if(!wired){h.setAttribute('data-wired','1');
-  h.addEventListener('click',function(e){
-   var b=e.target.closest('[data-amp-i]'); if(!b)return;
-   var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
-function renderGates(){
- var h=document.getElementById('gaterows'); if(!h)return;
- h.innerHTML=gatesBlock(null);
- var g=document.getElementById('gateavoid'); if(!g)return;
- if(typeof stLawWins==='function')stLawWins();
- var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
- if(gate&&gate.intentional){
-  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
-   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
-   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
-   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
- } else {
-  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
- }}
+    THE FIGURE IS THE SHARE, verpRead().pct: the gate's count over every
+    gate's count across the person's stories, so the six add to one whole
+    (engine/verp.js). A gate with nothing of its own prints the dash through
+    fmtPct('gate'), the same call the drill makes, so the bar and the drill
+    never say two things. With no story read at all every bar draws unlit.
+    The avoidance line is not here: it is built from two other readings and
+    is never shown without them (sniffGates, engine/sniff.js), and the
+    Journal's Laws accordion already shows it with both. */
+ function renderGates(r){
+  var h=document.getElementById('gaterows'); if(!h)return;
+  var V=verpRead(), none=!V.some(function(v){return v.pct>0;});
+  h.innerHTML=V.map(function(v){
+   var up=v.side==='higher', say=unpackOf(v.nm,'gate');
+   return rbRow('gate:'+v.k,v.nm,none?0:(pct('gate',v.pct)||0),fmtPct('gate',v.pct,{unread:none}),
+    {unread:none,gate:v.k,side:up?'higher':'lower',col:up?seatCol('Heart'):seatCol('Root'),
+     ic:'<path d="'+GATEGLYPH[v.k]+'"/>',title:say});}).join('');
+  var hd=document.querySelector('.lsec[data-sec=gates] .lsec-hd');
+  if(hd){var hs=unpackOf('Action','rail');
+   hd.setAttribute('data-tip-k','Action'); hd.setAttribute('data-tip',hs); hd.setAttribute('aria-label','Action. '+hs);}}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(r); renderAmplifiers(r);
  /* "YOUR PATTERNS" LEFT THE FIELD'S RAIL, 14 November, his words: "I'm not
     quite certain what that does or what it's for." Only the rail's own
     copy, #loopside, is gone (ui/loopread.js lost loopPaint, the function
@@ -2026,7 +1995,7 @@ function renderGates(){
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
- crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
+ crMotion([$('acc')]); rbMotion([$('key'),$('keylo'),$('gaterows')]); rbRate(r); rlArcs(r);
  /* the rail's pairs take their elements and their fades after the rows have
     been written, ui/component.js rbPairs. The wire the six rows used to hang
     on is gone, rounds RZ and RB: it was the vertical bar he asked about, "I

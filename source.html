@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v168 c2bf52a2 2026-11-18 03:57"><head><meta charset="utf-8">
+<html lang="en" data-build="v169 72a28def 2026-11-18 09:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2118,7 +2118,7 @@ body:not(.tab-field) .fdock{display:none}
 .rb-fam .rb-ic{width:16px;height:16px;margin:0;color:var(--dim)}
 .rb-fam:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .rb-fam2{margin-top:8px;border-top:1px solid var(--edge);border-radius:0}
-.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
+.fdock .kb.rbar,#gaterows .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
  padding:6px 2px 8px;border:0;border-radius:var(--r-xs);background:transparent;box-shadow:none;
  text-align:left;white-space:nowrap;cursor:pointer;color:var(--ink)}
 /* round 3 of the r1 review: DQ is the one amount where more is worse, so it
@@ -2159,12 +2159,12 @@ body:not(.tab-field) .fdock{display:none}
  animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;
  animation-delay:calc(var(--k,0) * var(--t-stagger) * 7)}
 @keyframes rbsweep{0%{transform:translateX(-100%)}62%,100%{transform:translateX(100%)}}
-#keylo .rbar:nth-child(1){--k:1}
-#keylo .rbar:nth-child(2){--k:2}
-#keylo .rbar:nth-child(3){--k:3}
-#keylo .rbar:nth-child(4){--k:4}
-#keylo .rbar:nth-child(5){--k:5}
-#keylo .rbar:nth-child(6){--k:6}
+#keylo .rbar:nth-child(1),#gaterows .rbar:nth-child(1){--k:1}
+#keylo .rbar:nth-child(2),#gaterows .rbar:nth-child(2){--k:2}
+#keylo .rbar:nth-child(3),#gaterows .rbar:nth-child(3){--k:3}
+#keylo .rbar:nth-child(4),#gaterows .rbar:nth-child(4){--k:4}
+#keylo .rbar:nth-child(5),#gaterows .rbar:nth-child(5){--k:5}
+#keylo .rbar:nth-child(6),#gaterows .rbar:nth-child(6){--k:6}
 .rbar.off .rb-f{display:none}
 /* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds.
    Not on Flow, whose cells carry seven figures and have no one place a fill
@@ -2213,14 +2213,14 @@ body:not(.tab-field) .fdock{display:none}
 .rb-d.on.st{opacity:1;animation:none;transform:none}
 /* PAIRED. A row lights the glass bar's circle for the same reading, and the
    circle lights the row, one ring in the row's own colour. */
-.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot{box-shadow:inset 0 0 0 1px var(--c)}
-.fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
+.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot,#gaterows .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+.fdock .kb.rbar:focus-visible,#gaterows .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
 .rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
 .rbar.off .rb-n .rb-ic{color:var(--dim)}
 body.quiet .rb-f::before,body.rm .rb-f::before{animation:none}
 @media (prefers-reduced-motion:reduce){
  .rb-f::before{animation:none}}
-.fdock .kb:hover{background:transparent}
+.fdock .kb:hover,#gaterows .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
@@ -2309,9 +2309,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    in flow, on every tab, and it needs none of the pinning. */
 .bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
  background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
-/* the definition of the two ends of an axis, said once in the rail rather than
-   only in a tooltip, because a tooltip is not reachable by a thumb. */
-.stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
 /* a glyph set beside the name of the thing it stands for, in a drill header */
 .ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;
@@ -2335,7 +2332,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .ad-prot .btn{align-self:flex-start}
 .ad-prot-n{font-size:12.5px;line-height:1.55;color:var(--dim)}
 
-.stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
@@ -2948,8 +2944,6 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  cursor:ew-resize;position:relative;box-sizing:content-box}
 .nf .tr:hover{outline:1px solid var(--gold);outline-offset:2px;border-radius:3px}
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
-.nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
-.nf.oppf{margin-bottom:12px;margin-top:-2px}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -2970,34 +2964,36 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
 
-/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
-   The dot is the exact color the wheel paints that tier's threads and beads
-   with, set inline from bc() at render time, so a swatch here and a bead on
-   the wheel can never read as two different colors for the same tier. */
-.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
-.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
- box-shadow:0 0 0 1px rgba(0,0,0,.25)}
-.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
-/* a field anchor sits at no seat and has no colour of its own yet (CB10,
-   open), and every rendition draws it as an unfilled ring, so its swatch is
-   that ring and not a dot of a colour the drawing never uses */
-.chk-dot.ring{background:transparent;box-shadow:inset 0 0 0 1.4px var(--ink);opacity:.6}
-.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
-.chk-tx b{color:var(--ink);font-weight:600}
-
-/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
-   above) reading its own address. Its own small rule rather than
-   knowledge.js's kb-row/kbp, which that file injects itself only once the
-   Knowledge tab has been opened: a press on Field alone, never Knowledge,
-   would have shown these names with no flex, no gap and no border, the
-   classes present with nothing behind them. */
-.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
- border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
- font:inherit}
-.amp-row:last-child{border-bottom:0}
-.amp-row:hover{background:var(--sunk)}
-.amp-nm{font-size:13.5px;color:var(--ink)}
+/* THE CHAIN KEY AND THE AMPLIFIER ROWS WENT, 18 November, with the sections
+   that drew them (body.html says why). What stands in the amplifiers' place is
+   below, and what stands in the key's place is nothing: the wheel's own hover
+   on a dot names its tier. */
+/* THE FOUR SUPEREGO SYMBOLS, 18 November. One row of four equal columns with
+   one gap, so the row is centred under its label and even from end to end. A
+   cell is one button and the whole cell is the target: the ring, which is
+   crBadge's own medium badge with no pill, and under it the figure. The name
+   is not printed, it does not fit a column that is 60 pixels wide at 1600, and
+   it is the sentence on hover and tap and in the spoken name. */
+.amp-icons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:6px 0 2px}
+.amp-i{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:var(--tap);
+ padding:8px 0 6px;background:none;border:0;border-radius:var(--r-xs);color:var(--ink);font:inherit;cursor:pointer}
+.amp-i:hover{background:var(--sunk)}
+.amp-i:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.amp-i .crb{pointer-events:none}
+.amp-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;line-height:1;
+ color:var(--ink)}
+.amp-i.off .crb-g,.amp-i.off .amp-v{color:var(--dim)}
+/* THE SIX ACTION BARS, 18 November. They are rbRow's own bar, laid out by the
+   same rules the dock's bars are (the selectors above that name .fdock name
+   this host as well, so the two cannot drift into two drawings). A column of
+   six with the dock's own gap, the 10 pixel gap that stands above DQ between
+   the three that keep the law and the three that break it, the sweep's
+   stagger by position as in the dock, and a hatch on the fill of the three
+   that break it, the one Flow's held cells already wear, so the sides are not
+   told apart by a hue alone. */
+#gaterows{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:0}
+#gaterows .rbar:nth-child(3){margin-bottom:10px}
+#gaterows .rbar[data-side=lower] .rb-f{background-image:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 18%,transparent) 0 1.5px,transparent 1.5px 4px)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
@@ -11966,80 +11962,33 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
     <div class="aw-sum" id="awsum"></div>
    </div>
    <h2 class="rblk">Psyche</h2>
-   <!-- THE BOOK'S OWN LEVELS, READ IN ITS OWN ORDER AND NOT GUESSED AT. His
-        round of 28 October asked for "the full cascade wiring of the Psyche
-        stack" on this rail. The Mechanics of Being numbers it, level 4
-        through 10 (1 through 3 sit below the body, level 9 already shipped
-        its own section below, Superego). This is the index: which of the
-        rest already has a real reading on this rail, under its own name
-        below, and which does not, named honestly rather than built from a
-        guess.
+   <!-- THE PSYCHE PANEL HOLDS THREE THINGS, 18 November, his words, twice. The
+        first: "I asked you to get rid of everything in these two images. I
+        asked you that a long time ago... Maybe keep the matrix for now, but
+        get rid of everything else." And his correction of that reading, whole:
+        "I didn't say strip the psyche panel down to just a matrix. I'm saying
+        everything that's from the word psyche. Like, I never asked you to put
+        in the book levels. I don't even know what that is. I also asked you to
+        remove the child emotions because we're going to have the person do
+        self-reporting in the diagnostic. I also asked you to get rid of the
+        chain. I don't even know what this is doing here. That got put in there
+        by you automatically or automagically. Super ego. It needs to be more
+        iconographic. You can keep super ego, but get rid of the laws of
+        action. Or just make that action and give me them as 6 icons, so
+        symbolic icons. Actually make it a bar. Make them all bars, like the
+        ones for like CQ, vitality, energy, flow, etc. Make it a bar. And then
+        super ego, make those icons. 4 icons horizontal. And make them
+        symbolic. And give it a %. We don't do points anymore."
 
-        NAMED "THE BOOK'S LEVELS", NOT "THE STACK" AND NOT "LAYERS", round
-        28 October review. "The stack" is already the Knowledge page's own
-        section for the seven seats (ui/knowledge.js KB_SECS, held by
-        tests/functional.js), and "Layers" is already the Field's own
-        control on this same surface for the overlays you switch on and off
-        (ui/fieldbar.js FB_FOLD). One word per concept, atuned-ux rule 1, so
-        this section takes a word neither of them uses, and the copy inside
-        it says level throughout.
-
-        6 and 8 are two readings of the same nine fetters in Child emotions
-        below, under two of the book's own names: the nerve's own tilt (6,
-        fight or flight, the dual pole ruling of 27 October, DECISIONS.md)
-        and the nine words that fetter names (8, ego; which two of the nine
-        belong is open, DECISIONS.md, 28 October). 7 is the six gates
-        below, under its own name (action response: aware, detached,
-        intentional against attached, ignorant, avoiding, the exact words of
-        round 28 October's Laws of Action section). 4 and 5 have no
-        computed reading: the book places them before a feeling or a charge
-        is recorded, and nothing in this engine measures a level before that
-        point, so nothing is invented to fill the row. 10, the koshas, is not
-        a disagreement this product gets to settle: BOOK-ERRATA.md finding 8,
-        "Two koshas rosters", is that chapter 10 names eight, the glossary
-        names six that are not six of those eight, and a ninth term appears
-        in neither list, so there is no one list to build from yet. The
-        citations live in this comment and not in the copy, because neither
-        file ships inside the product. Static, no render function: nothing
-        in this section is a number, so nothing here can drift out of sync
-        with one. -->
-   <div class="lsec" data-sec="levels">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l8.5 4.3-8.5 4.3-8.5-4.3z"/><path d="M3.5 12l8.5 4.3 8.5-4.3M3.5 16.3l8.5 4.3 8.5-4.3"/></svg>The book's levels</span><i></i></button>
-    <div class="lsec-bd">
-     <div class="tier1">His book's own levels</div>
-     <p class="stk-def">The Mechanics of Being numbers the levels a signal passes through on its way to a story. Some of them this engine already reads, under their own name, below. Some it does not yet.</p>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>4, imagination.</b> The mind running a possibility forward or back in time. Not computed. Nothing here measures a level before a feeling is recorded.</span></div>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>5, frequency intensity.</b> The charge a signal carries before it is labelled. Not computed. The charge shown everywhere on this app is this level's result, not the level itself.</span></div>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>6, fight or flight.</b> The organism's yes or no, before a feeling has a name. Real, below. The same nine fetters in Child emotions, read as one tilt rather than nine words.</span></div>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>7, action response.</b> Attached and ignorant is the pattern's default. Aware and detached is the way out. Real, below. The six gates in Laws of Action, under its own name.</span></div>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--good)"></span><span class="chk-tx"><b>8, ego, nine words.</b> Fear, anger, shame, disgust, grief, receiving blocked, apathy, shock, sad. Real, below, seven of the nine: Child emotions reads fear, anger, shame, disgust, apathy, shock and sad. Its other two are surprise and anticipation, not grief or receiving blocked. Which two belong is still open, and nothing is merged until it is settled.</span></div>
-     <div class="chk-row"><span class="chk-dot" style="background:var(--mid)"></span><span class="chk-tx"><b>10, the koshas.</b> The elements, the body, the mind, the energy, the intelligence, the peace, the awareness, the soul. Not computed. The book gives two lists for this that do not match: eight in chapter 10, and six in its glossary that are not six of those eight.</span></div>
-    </div>
-   </div>
-   <div class="lsec" data-sec="fetters">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5a3.6 3.6 0 013.6 3.6v7.8a3.6 3.6 0 01-7.2 0V8.1A3.6 3.6 0 0112 4.5"/></svg>Child emotions</span><i></i></button>
-    <div class="lsec-bd">
-     <!-- THE LABEL RULE, applied. One word where one word will do, and the
-     subtitle says what the control does rather than restating the schema.
-     "nine poled axes, held state then coherent opposite" is the data model
-     read aloud. -->
-     <!-- A PARAGRAPH IN A LABEL IS NOT A CASE PROBLEM. Nineteen words sat in
-     the span of a tier1 and the capitalize rule title cased all of them, and
-     the second clause started lowercase after a comma so it read as a
-     sentence broken in half. The label is the label and the prose goes in the
-     prose class, which on this rail is stk-def, the class that already
-     carries the definition of held and opposite.
-
-     It was also wrong about the controls. "the left slider is how much you
-     carry it" describes one axis and these two sliders set all nine at once,
-     which is the only thing about them a person cannot work out by looking. -->
-     <div class="tier1">The nine poled axes</div>
-     <p class="stk-def">Both sliders set all nine axes at once.</p>
-     <div class="bulk"><label for="allCh">held</label><input type="range" id="allCh" min="0" max="10" step="0.5" value="3"></div>
-     <div class="bulk"><label for="allRep">opposite</label><input type="range" id="allRep" min="0" max="10" step="0.5" value="0"></div>
-     <div id="chg"></div>
-    </div>
-   </div>
+        So the panel is the heading and three sections, in this order: Matrix,
+        unchanged; Superego, four symbols in one row with a percent each
+        (renderAmplifiers, ui/ui.js); Action, six bars with a percent each
+        (renderGates, ui/ui.js). Gone: The book's levels, Child emotions with
+        its eighteen sliders, The chain with Outside the chain, and every
+        sub heading and paragraph the other two carried. What each of them
+        said that is said nowhere else moved to the meaning table
+        (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
+        18 November, records the earlier asks and why they never landed. -->
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
@@ -12048,89 +11997,28 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
      <div class="mxk" id="mxk"></div>
     </div>
    </div>
-   <!-- THE CHAIN, READ AT A GLANCE. Round of 28 October, his words after
-        looking at the wheel: "the field needs to be completely updated with
-        the new wiring from nerve to super complex... so the field will be
-        showing the full geometric structure... enhance and elevate it."
-        Checked first, not assumed: the chain already computes and already
-        draws, every thread and bead colored by its own tier (ui/wheel.js,
-        the tier() and bead() calls), and hovering any bead already opens a
-        full readout naming the tier, the pattern and its addresses
-        (describe(), ui/ui.js). None of that needed building. What was
-        missing is this: nothing said so without a hover. A person looking
-        at the wheel cold saw a tangle of color with no key to it, which is
-        exactly what read, reasonably, as unwired.
-
-        This section is the key, read-only, static, filled once by
-        renderChainKey() below off the same bc() colors the wheel itself
-        paints with, so the two can never drift apart. Four rows, nerve to
-        super-complex, each a swatch and the one sentence a person needs
-        before they have hovered anything.
-
-        Round of 31 October: it said five rows, nerve to root, and the fifth
-        was Archetype, a tier no code computes. The chain stops at the super
-        complex, so the heading says that, and Archetype moved under "Outside
-        the chain" with the four field anchors, each saying what it really
-        is. renderChainKey() carries the full why. -->
-   <div class="lsec" data-sec="chain">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/><path d="M12 6.6v4M12 13.6v4"/></svg>The chain</span><i></i></button>
-    <div class="lsec-bd">
-     <div class="tier1">Nerve to super-complex</div>
-     <p class="stk-def">Every thread and dot on the wheel is part of one chain. Hover any dot for its name. This is what the colors mean.</p>
-     <div id="chainkey"></div>
-    </div>
-   </div>
-   <!-- THE SUPEREGO, OUTSIDE THE CHAIN. Round of 28 October, his words: "we
-        need the superego complex outside of that," meaning outside the
-        saboteur to super-complex chain above, its own tier. He pointed to
-        the real source: "look for superego in the mechanics of being, it's
-        in there." The manuscript names it plainly: the layer that takes the
-        ego's patterns and builds a defense around them, why seeing a
-        pattern does not change it, since these four supply the reason it is
-        fine to keep.
-
-        The manuscript names four: Justification, Entitlement,
-        Perfectionism, Obsession. The engine's own AMPLIFIER table
-        (engine/data/registers.js) carries six, two more than the book,
-        Judgment and Comparison. This section shows the four the book names.
-        The other two are a real difference between the book and the
-        engine, not resolved here, his call, the same way BOOK-ERRATA.md
-        already tracks every other place the two disagree.
-
-        No new reading, no new sniffer, no consent question: each amplifier
-        is a real address AMPLIFIER already maps to (engine/data/nodes.js),
-        and its weight is the charge already computed there, BY[i].sq, the
-        same number every other charge display on this page already reads
-        and already had consent for. Filled by renderAmplifiers(), ui/ui.js. -->
+   <!-- SUPEREGO, FOUR SYMBOLS IN ONE ROW, each a ring filled to its figure
+        with a percent under it. No sub heading, no paragraph: the meaning of
+        the section is the hover on its header and each symbol carries its own
+        sentence (ui/ui.js, renderAmplifiers). The book names four, the
+        engine's AMPLIFIER table six (Judgment and Comparison are the two it
+        does not show), the difference BOOK-ERRATA.md already tracks. -->
    <div class="lsec" data-sec="superego">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/></svg>Superego</span><i></i></button>
     <div class="lsec-bd">
-     <div class="tier1">Outside the chain</div>
-     <p class="stk-def">The layer that builds a defense around a pattern once it is already there. Why seeing it does not change it.</p>
-     <div id="amprows"></div>
+     <div id="amprows" class="amp-icons"></div>
     </div>
    </div>
-   <!-- THE SIX GATES, GIVEN A NAMED PLACE ON THIS RAIL. Round of 28 October,
-        his words, after seeing the Field's own small marks for them: "if you
-        look on the field, you'll find the awareness ignorant detach attach
-        intentional aware, that's the only space, those would be great to
-        expose, wouldn't they, maybe they go on our left-hand menu." They
-        already drew as marks on the wheel (the Gates layer, FLAYS in
-        ui/rings.js) and as a reference list on the Codex's own Laws of
-        Action page, and the derived avoidance reading already lived,
-        correctly built with its upstream pair beside it per the engine's
-        own guard against showing it alone, inside the Journal's collapsed
-        Laws accordion. None of those is a named section here. This is.
-        Filled by renderGates(), ui/ui.js, off verpRead() and sniffGates(),
-        read-only: see those files for what guard the avoidance line may
-        never be shown without. -->
+   <!-- ACTION, SIX BARS, the same bar the readings above draw (rbRow,
+        ui/component.js): the three moves of right action, then the three of
+        wrong action. Named Action and not Laws of Action on the Journal's
+        rail on 10 November, his words "change word laws of actions to
+        action", and the Field's rail says the same now. ui/ui.js,
+        renderGates. -->
    <div class="lsec" data-sec="gates">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3"/></svg>Laws of Action</span><i></i></button>
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 8.9V3.6M9.6 6L12 3.6 14.4 6M12 15.1v5.3"/></svg>Action</span><i></i></button>
     <div class="lsec-bd">
-     <div class="tier1">The six gates</div>
-     <p class="stk-def">Read from your own words. Three are the law kept, three the law broken.</p>
      <div id="gaterows"></div>
-     <div id="gateavoid"></div>
     </div>
    </div>
   </div></div>
@@ -13890,6 +13778,21 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* THE FOUR SUPEREGO SYMBOLS, 18 November, his words: "super ego, make those
+   icons. 4 icons horizontal. And make them symbolic." Keyed by the name the
+   AMPLIFIER table carries (engine/data/registers.js), so the Field's row and
+   any later surface draw one mark for one defence. 24 unit box, stroked, ring
+   and never fill, the same grammar as GATEGLYPH above. A balance with the
+   beam tipped to one pan for justification, a crown for entitlement, a rule
+   with its ticks for perfectionism (the thing it measures everything against),
+   and a spiral wound inward for obsession (the thought that circles back). The
+   scale's two pans are open bowls and not closed triangles, which at the
+   badge's 20 pixels read as two solid dots. */
+const SUPEREGO_IC={
+ Justification:'M12 4.2v15.6M8.6 19.8h6.8M3.6 9.6l16.8-3.6M3.6 9.6l-2.2 4.4M3.6 9.6l2.2 4.4M1.4 14a2.2 2.2 0 0 0 4.4 0M20.4 6l-2.2 4.4M20.4 6l2.2 4.4M18.2 10.4a2.2 2.2 0 0 0 4.4 0',
+ Entitlement:'M4.2 17.4L3 7.6l4.8 3.9L12 5l4.2 6.5L21 7.6l-1.2 9.8zM5.4 20.4h13.2',
+ Perfectionism:'M2.8 8.4h18.4v7.2H2.8zM6.2 8.4v3.6M9.4 8.4v2.2M12.6 8.4v3.6M15.8 8.4v2.2M19 8.4v3.6',
+ Obsession:'M10.5 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0'};
 /* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
    here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
    SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
@@ -18262,6 +18165,41 @@ var UNPACK_BASE={
  'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Each of
+    the three said something the panel is no longer there to say, so the
+    sentence is kept here, where a hover on the term still reaches it, and no
+    surface keeps a copy. The chain legend's colour key went with it and is
+    said by the wheel's own hover on a dot (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'chain':'The chain is how patterns stack: saboteurs join into complexes, complexes into hyper complexes, and those into a super complex.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -18442,6 +18380,17 @@ function unpackAll(){
  if(UNPACK_MEMO)return UNPACK_MEMO;
  var t={}, k;
  for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
  /* the four Western elements */
  Object.keys(UNPACK_ELEM).forEach(function(el){
   var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);
@@ -40622,7 +40571,7 @@ try{window.__at&&window.__at('engine/registers.js');}catch(e){}
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
@@ -43148,12 +43097,19 @@ function rbRow(q,nm,pct,raw,o){
  else track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+w+'%"></i><em class="rb-h"></em></span>';
  var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)';
- return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+ /* A GATE'S BAR IS THIS BAR. o.gate names the gate it stands for, 18
+    November, the Psyche panel's Action section: the row carries data-gate and
+    the .gate-r class the delegated click reads (ui/ui.js) and no data-q, so a
+    press opens the gate's own drill and not a reading it is not one of. o.side
+    is which side of the law it stands on, 'higher' or 'lower', for the hatch
+    the broken fill wears in head.html. Nothing else about the row differs. */
+ return '<button type="button" class="kb rbar'+cls+(read?'':' off')+(o.gate?' gate-r':'')+'" '
+  +(o.gate?'data-gate="'+esc(o.gate)+'"'+(o.side?' data-side="'+esc(o.side)+'"':''):'data-q="'+q+'"')+' data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
   +' data-v="'+esc(raw)+'" style="--c:'+c+'"'
   +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
-  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,o.gate?'Opens the action.':'Opens the reading.'))+'">'
   +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span>'+sub
   +'<span class="rb-v">'+esc(raw)+'</span></span>'
   +track+seats
@@ -43168,8 +43124,11 @@ function rbRow(q,nm,pct,raw,o){
    reading is and never per frame. */
 function rbRate(r){
  var d=document.getElementById('fdock'); if(!d)return;
- var dq=clamp((+(r&&r.DQ)||0)/100,0,1);
- d.style.setProperty('--rate',lerp(PUL_LO,PUL_HI,dq).toFixed(3));}
+ var dq=clamp((+(r&&r.DQ)||0)/100,0,1), v=lerp(PUL_LO,PUL_HI,dq).toFixed(3);
+ d.style.setProperty('--rate',v);
+ /* the Action bars in the left rail's Psyche panel are rbRow's own bars and
+    sweep at the same rate, though they stand outside the dock (18 November) */
+ var g=document.getElementById('gaterows'); if(g)g.style.setProperty('--rate',v);}
 /* ============================================================
    WHAT A BAR DOES, ONE LANGUAGE. Three verbs and no others, every one of them
    an opacity or a transform except the fill's own width, which the gate reads
@@ -87065,19 +87024,6 @@ var NODE_STRIKE={
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
  cl:'<circle cx="12" cy="12" r="7"/><path d="M5 12h15"/>'};
-/* RESTORED 30 October, SI8 in TASKS.md. 3cdc18dc moved the deck onto
-   poleTip and poleDualBar and deleted these two with the row code they
-   served, but renderAmplifiers in ui/ui.js, the Field's four amplifier rows,
-   still calls both, so every loadP and every render threw "dualPoleState is
-   not defined" and the boot guard spoke over a page that never drew. Put
-   back verbatim from 82a2c1b5, beside NODE_STRIKE, whose keys they return.
-   Only these two: the deck itself is SI9's. */
-function dualPoleState(p){
- var w=Math.max(0,Math.min(100,+p||0));
- if(w<20)return 'op'; if(w<40)return 'im'; if(w<60)return 'mo'; if(w<80)return 'he';
- return 'cl';}
-function dualPoleStateWord(k){
- return {op:'open',im:'impaired',mo:'moderately impaired',he:'heavily impaired',cl:'blocked'}[k]||'';}
 /* 0 fully collapsed, 50 neutral, 100 fully open, both lp and rp already
    percents 0 to 100. */
 function poleTip(lp,rp){return 50-(lp||0)/2+(rp||0)/2;}
@@ -87903,25 +87849,22 @@ function numField(host,name,band,store,key,ic,tip){
  trk.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  inp.addEventListener('wheel',function(e){e.preventDefault();set(store[key]+(e.deltaY<0?.5:-.5));},{passive:false});
  return {inp,tr,trk};}
-const CHF={},RPF={},LWF={};
-CHILD.forEach(function(cf){
- CHF[cf.nm]=numField($('chg'),cf.nm,cf.seat,S.charge,cf.nm,cf.ic,unpackOf(cf.nm,'feeling'));
- /* the opposite takes the same mark in Heart, as the stack draws it */
- RPF[cf.nm]=numField($('chg'),'toward '+cf.opp,'Heart',S.replace,cf.nm,cf.ic,unpackOf(cf.opp,'opposite'));
- RPF[cf.nm].inp.parentElement.classList.add('oppf');});
+/* THE CHILD EMOTION SLIDERS CAME OFF, 18 November, with the left rail's Child
+   emotions section, his words: "I also asked you to remove the child emotions
+   because we're going to have the person do self-reporting in the diagnostic."
+   They were built here into #chg, and numField appends into its host, so a
+   build left behind would throw at load on a host that no longer exists and
+   take every module after this one with it. The laws keep theirs. */
+const LWF={};
 SI.forEach(function(l){LWF[l.nm]=numField($('laws'),l.nm,l.b,S.law,l.nm,l.ic,unpackOf(l.nm,'law'));});
+/* syncCh stays, and keeps the half that was never about the sliders: nine
+   callers rely on it to coerce each held and opposite value to a number, and
+   a loaded record with a missing axis to a zero. */
 function syncCh(){CHILD.forEach(function(cf){
- const f=CHF[cf.nm],v=+S.charge[cf.nm]||0;S.charge[cf.nm]=v;
- f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));
- const o=RPF[cf.nm],w=+S.replace[cf.nm]||0;S.replace[cf.nm]=w;
- o.inp.value=w.toFixed(1);o.tr.style.width=(w*10)+'%';o.trk.setAttribute('aria-valuenow',w.toFixed(1));});}
+ S.charge[cf.nm]=+S.charge[cf.nm]||0; S.replace[cf.nm]=+S.replace[cf.nm]||0;});}
 function syncLw(){SI.forEach(function(l){
  const f=LWF[l.nm],v=+S.law[l.nm]||0;S.law[l.nm]=v;
  f.inp.value=v.toFixed(1);f.tr.style.width=(v*10)+'%';f.trk.setAttribute('aria-valuenow',v.toFixed(1));});}
-$('allCh').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.charge[c]=+e.target.value;});syncCh();saveYou();render();});
-$('allRep').addEventListener('input',function(e){toYou();
- CHARGES.forEach(function(c){S.replace[c]=+e.target.value;});syncCh();saveYou();render();});
 /* THE BULK LAW SLIDER ANSWERS NOTHING, P2-5 of the inference audit, 24
    October. It set every law in one drag, and a law moved off its seed counts
    as answered (lawIn, saveProfile), so one gesture filled all 21 and CQ, the
@@ -88820,8 +88763,6 @@ function rebuildSwatches(){
  $('roots').querySelectorAll('.rootb').forEach(function(b){b.style.setProperty('--rc',rootCol(b.dataset.r));});
  ['ar1','ar2'].forEach(function(id){
   $(id).querySelectorAll('.ib').forEach(function(b,i){b.style.setProperty('--c',icCol(ARCH[i].b));});});
- CHILD.forEach(function(cf){
-  var i=CHF[cf.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(cf.seat);});
  SI.forEach(function(l){
   var i=LWF[l.nm].inp.parentElement.querySelector('i');if(i)i.style.background=seatCol(l.b);});
  /* the matrix's own key is written once at boot and again only when the
@@ -96459,7 +96400,7 @@ function railFirstSight(){
  RM.seen=true; RM.seenAt=performance.now();
  /* the bars, if they were not already started by a render that found the
     rail open */
- rbMotion([document.getElementById('key'),document.getElementById('keylo')]);
+ rbMotion([document.getElementById('key'),document.getElementById('keylo'),document.getElementById('gaterows')]);
  /* and the pairs, which find their elements and their widths only once the
     column is open (ui/component.js, rbPairs) */
  rbPairs();
@@ -101260,110 +101201,79 @@ function render(){
     name. Hover shows the meaning in the product's own tooltip. Press takes
     the person to the knowledge page with that entry already open, so a word
     they did not know is two gestures from being a word they do. */
-/* THE SIX GATES, A NAMED PLACE ON THE FIELD'S OWN LEFT RAIL. Round of 28
-   October, his words after finding them only as small marks on the wheel:
-   "those would be great to expose, wouldn't they, maybe they go on our
-   left-hand menu." Ported, not rebuilt: gatesBlock(null) (ui/drills.js) is
-   the same six-row reading already shown inside the gate drill, right
-   action against wrong action, and its rows already wire themselves to
-   that drill through the delegated .gate-r[data-gate] click below, so
-   nothing new needs wiring for a press here to open it.
+/* THE PSYCHE PANEL'S TWO READINGS, 18 November, his words: "super ego, make
+   those icons. 4 icons horizontal... And give it a %. We don't do points
+   anymore", and of the six gates "Actually make it a bar. Make them all bars,
+   like the ones for like CQ, vitality, energy, flow." The three sections
+   under the Psyche heading are Matrix, Superego and Action (body.html says
+   why). The chain key, the book's levels and the nine sliders went with the
+   round and nothing here draws them.
 
-   THE AVOIDANCE LINE IS NEVER SHOWN ALONE. sniffGates (engine/sniff.js)
-   carries its own structural rule for this exact number: it is read only
-   together with the two upstream gates it was built from. stLawWins
-   (ui/storyui.js) already finds the most recent entry with a real gate
-   reading for the Journal's own Laws accordion; this calls the same
-   function rather than re-reading the entries a second way, so the two
-   surfaces can never disagree about which entry's reading is current. */
-/* THE CHAIN KEY. Round of 28 October, the shell's own body.html comment
-   above the section carries the full why. Five rows, nerve to root, each a
-   swatch and one sentence. The swatch colors come straight from bc(), the
-   exact function wheel.js paints the chords and beads with, so this list
-   and the wheel's own picture read as one source and not two. Archetype
-   keeps its own gold rather than a seat color, because that is what the
-   wheel already draws it in (GOLDC, ui/component.js); the saboteur row's
-   dot is the conic sweep in head.html's .chk-dot.varies, since a saboteur's
-   own thread is colored by whichever seat it sits at and not by one fixed
-   color the other three tiers share.
+   SUPEREGO IS FOUR SYMBOLS IN ONE ROW. Each is a real address AMPLIFIER maps
+   to, read the way every address on this page is read, BY[i].sq, no new
+   number. The ring is crBadge's (ui/component.js), bare, so the figure sits
+   under the ring where four of them stay even and none hangs off one side,
+   and the figure is fmtPct('weight', ...), the registry's own form: a whole
+   number and a percent sign, and the dash for nothing held or nothing read.
+   The weight used to print as 10.0 beside a ring filled in percent, points
+   in the one place the product had ruled them out. The state words the old
+   rows spoke, impaired and blocked, read as a verdict on a defence and are
+   gone. A press opens the node drill, as it always did, and the name and
+   its sentence are on hover and tap and in the spoken name, never printed
+   beside the symbol, because "Perfectionism" is wider than its column. */
+ var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ function renderAmplifiers(r){
+  var h=document.getElementById('amprows'); if(!h)return;
+  var unread=!!(r&&r.unread);
+  h.innerHTML=AMP_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+   .filter(Boolean).map(function(a){
+    var n=BY[a.i]; if(!n)return '';
+    var f=fmtPct('weight',n.sq,{unread:unread}), held=f!==PCT_DASH, say=unpackOf(a.nm,'superego');
+    return '<button type="button" class="amp-i'+(held?'':' off')+'" data-amp-i="'+a.i+'" data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(say)+'"'
+     +' aria-label="'+esc(a.nm+', '+(held?f:'nothing held')+'. '+say+' Opens the address.')+'">'
+     +crBadge(n.b,held?(pct('weight',n.sq)||0):0,{size:'md',bare:true,color:bc(n.b),
+       glyph:'<path d="'+(SUPEREGO_IC[a.nm]||'')+'"/>'})
+     +'<span class="amp-v">'+esc(f)+'</span></button>';}).join('');
+  var hd=document.querySelector('.lsec[data-sec=superego] .lsec-hd');
+  if(hd){var hs=unpackOf('Superego');
+   hd.setAttribute('data-tip-k','Superego'); hd.setAttribute('data-tip',hs); hd.setAttribute('aria-label','Superego. '+hs);}
+  if(!h.getAttribute('data-wired')){h.setAttribute('data-wired','1');
+   h.addEventListener('click',function(e){
+    var b=e.target.closest('[data-amp-i]'); if(!b)return;
+    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
+ /* ACTION IS SIX BARS, the same bar the readings above draw. rbRow
+    (ui/component.js) is called as the CQ, vitality and flow rows call it, so
+    the track, the ticks, the head, the sweep and the move of a figure are one
+    drawing; its o.gate says only that a press opens the gate's own drill
+    (runGatesDrill, the delegated .gate-r[data-gate] click below) and not a
+    reading, and o.side says which side of the law it stands on. The three
+    that keep the law come first in the Heart seat's colour, the three that
+    break it under them in the Root seat's, the two colours the gate drill,
+    the dial and the Journal's rail already use, with the 10 pixel gap the
+    dock puts above DQ between them and a hatch on the broken fill, so the
+    two sides do not rest on a hue alone.
 
-   ARCHETYPE IS NOT A FIFTH TIER, AND THE KEY SAID IT WAS. Round of 31
-   October. The fifth row read "Archetype: the shape the whole pattern points
-   toward", under a heading that called all five one chain. compute() builds
-   saboteur, complex, hyper complex and super complex and stops there
-   (engine/compute.js, sups); nothing reads a super complex upward into an
-   archetype. The gold ring is affinity() (engine/core.js) off DOMAIN, which
-   buildSoul makes from the archetypes and domains a person picked at setup,
-   and suscAll() turns DOMAIN into n.susc, how readily each address takes a
-   story's charge. So archetype runs into the chain, it never comes out of it,
-   and the row now says that, under its own label beside the four field
-   anchors, which are the other thing on the Field outside the chain. The
-   anchors' row reads their live weight off BY, the same objects compute()
-   writes, and drops the figure on an unread reading, where it would be a
-   zero nobody entered. Their swatch is a ring, which is how every rendition
-   draws them (ui/rings.js); their colour is CB10 and still open. */
-function renderChainKey(r){
- var h=document.getElementById('chainkey'); if(!h)return;
- var row=function(x){
-  return '<div class="chk-row"><span class="chk-dot'+(x.v?' varies':x.ring?' ring':'')+'"'
-   +(x.c?' style="background:'+x.c+'"':'')+'></span>'
-   +'<span class="chk-tx"><b>'+x.nm+'.</b> '+x.d+'</span></div>';};
- var rows=[
-  {v:true, nm:'Saboteur', d:'Colored by the seat it sits at. The pattern closest to a single story.'},
-  {c:rgba(bc('Solar'),1), nm:'Complex', d:'Two saboteurs joined. Always this color, whichever seat they sit at.'},
-  {c:rgba(bc('Sacral'),1), nm:'Hyper-complex', d:'Complexes joined into one driving pattern.'},
-  {c:rgba(bc('Root'),1), nm:'Super-complex', d:'The deepest join this instrument reads, built from hyper-complexes. The chain ends here.'}];
- var pctAt=function(i){var n=BY[i];return n?Math.max(0,Math.min(100,Math.round((n.sq||0)*10))):0;};
- var live=r&&!r.unread;
- var outside=[
-  {c:rgba(GOLDC(),1), nm:'Archetype', d:'Not part of the chain. It is the pick you made at setup. It sets how readily each address takes charge from a story, so it shapes the chain and is never built from it.'},
-  {ring:true, nm:'Field anchors', d:'The 4 places outside the body: Sol Star and Stellar Gateway above the head, Earth Star and Gaia Gateway below the feet. No nerve sits under them, so no saboteur forms there. Each carries the average weight of the seat it extends'
-   +(live?', the crown above at <b>'+pctAt(109)+'%</b> and the root below at <b>'+pctAt(111)+'%</b>':', the crown above and the root below')
-   +'. That weight counts in decoherence, your total shadow.'}];
- h.innerHTML=rows.map(row).join('')
-  +'<div class="tier1" style="margin-top:14px">Outside the chain</div>'
-  +outside.map(row).join('');}
-/* THE FOUR AMPLIFIERS. body.html's own comment above the section carries
-   the full why. Each row is a real address AMPLIFIER already maps to, read
-   the same way every other address on this page is read, BY[i].sq, no new
-   number. Reuses the locked dual-pole glyph (NODE_STRIKE, ui/knowledge.js)
-   and crBadge (ui/component.js) so an amplifier's own charge reads in the
-   same language as every other address on the Field, and a press opens the
-   same node drill a press on any address already opens. */
-function renderAmplifiers(){
- var h=document.getElementById('amprows'); if(!h)return;
- var FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
- var rows=FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
-  .filter(Boolean);
- h.innerHTML=rows.map(function(a){
-  var n=BY[a.i]; if(!n)return '';
-  var p=Math.round((n.sq||0)/10*100), state=dualPoleState(p), c=bc(n.b);
-  var say=a.nm+', '+(n.sq>=0.05?'weight '+n.sq.toFixed(1):'nothing held')+', '+dualPoleStateWord(state)+'.';
-  return '<button type="button" class="amp-row" data-amp-i="'+a.i+'" aria-label="'+esc(say)+'">'
-   +'<span class="amp-nm">'+esc(a.nm)+'</span>'
-   +crBadge(n.b,p,{size:'sm',color:c,raw:n.sq.toFixed(1),glyph:NODE_STRIKE[state],title:a.nm+' · '+dualPoleStateWord(state)})
-   +'</button>';}).join('');
- var wired=h.getAttribute('data-wired');
- if(!wired){h.setAttribute('data-wired','1');
-  h.addEventListener('click',function(e){
-   var b=e.target.closest('[data-amp-i]'); if(!b)return;
-   var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
-function renderGates(){
- var h=document.getElementById('gaterows'); if(!h)return;
- h.innerHTML=gatesBlock(null);
- var g=document.getElementById('gateavoid'); if(!g)return;
- if(typeof stLawWins==='function')stLawWins();
- var gate=(typeof STLW!=='undefined'&&STLW&&STLW.gate)||null;
- if(gate&&gate.intentional){
-  g.innerHTML='<div class="pm-eye" style="margin-top:14px">Avoidance, your last entry</div>'
-   +'<p class="ad-p">Avoidance reads <b>'+gate.intentional.avoidance+' per cent</b>, built from the two readings below it and never shown without them.</p>'
-   +'<p class="ad-p">Awareness against ignorance: <b>'+Math.round(gate.aware*100)+' per cent</b> awareness.</p>'
-   +'<p class="ad-p">Detachment against attachment: <b>'+Math.round(gate.detached*100)+' per cent</b> detachment.</p>';
- } else {
-  g.innerHTML='<p class="ad-p" style="margin-top:10px">Nothing read yet. Write a line in the Journal and the gates fill in from it.</p>';
- }}
+    THE FIGURE IS THE SHARE, verpRead().pct: the gate's count over every
+    gate's count across the person's stories, so the six add to one whole
+    (engine/verp.js). A gate with nothing of its own prints the dash through
+    fmtPct('gate'), the same call the drill makes, so the bar and the drill
+    never say two things. With no story read at all every bar draws unlit.
+    The avoidance line is not here: it is built from two other readings and
+    is never shown without them (sniffGates, engine/sniff.js), and the
+    Journal's Laws accordion already shows it with both. */
+ function renderGates(r){
+  var h=document.getElementById('gaterows'); if(!h)return;
+  var V=verpRead(), none=!V.some(function(v){return v.pct>0;});
+  h.innerHTML=V.map(function(v){
+   var up=v.side==='higher', say=unpackOf(v.nm,'gate');
+   return rbRow('gate:'+v.k,v.nm,none?0:(pct('gate',v.pct)||0),fmtPct('gate',v.pct,{unread:none}),
+    {unread:none,gate:v.k,side:up?'higher':'lower',col:up?seatCol('Heart'):seatCol('Root'),
+     ic:'<path d="'+GATEGLYPH[v.k]+'"/>',title:say});}).join('');
+  var hd=document.querySelector('.lsec[data-sec=gates] .lsec-hd');
+  if(hd){var hs=unpackOf('Action','rail');
+   hd.setAttribute('data-tip-k','Action'); hd.setAttribute('data-tip',hs); hd.setAttribute('aria-label','Action. '+hs);}}
  wireKbJump();
- renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(); renderChainKey(r); renderAmplifiers();
+ renderAcc(r); renderSpirit(); renderRootSum(); renderPol2(r); syncMx(); renderGates(r); renderAmplifiers(r);
  /* "YOUR PATTERNS" LEFT THE FIELD'S RAIL, 14 November, his words: "I'm not
     quite certain what that does or what it's for." Only the rail's own
     copy, #loopside, is gone (ui/loopread.js lost loopPaint, the function
@@ -101372,7 +101282,7 @@ function renderGates(){
  /* the dock's circles move into their values rather than snapping, and only
     after all three of its hosts are written, so one stagger runs across the
     two rows in reading order. ui/component.js, crMotion. */
- crMotion([$('acc')]); rbMotion([$('key'),$('keylo')]); rbRate(r); rlArcs(r);
+ crMotion([$('acc')]); rbMotion([$('key'),$('keylo'),$('gaterows')]); rbRate(r); rlArcs(r);
  /* the rail's pairs take their elements and their fades after the rows have
     been written, ui/component.js rbPairs. The wire the six rows used to hang
     on is gone, rounds RZ and RB: it was the vertical bar he asked about, "I
@@ -101801,5 +101711,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006802883"></div>
+<div id="eof" hidden data-len="006797715"></div>
 </body></html>

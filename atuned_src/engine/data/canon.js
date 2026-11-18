@@ -315,6 +315,21 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* THE FOUR SUPEREGO SYMBOLS, 18 November, his words: "super ego, make those
+   icons. 4 icons horizontal. And make them symbolic." Keyed by the name the
+   AMPLIFIER table carries (engine/data/registers.js), so the Field's row and
+   any later surface draw one mark for one defence. 24 unit box, stroked, ring
+   and never fill, the same grammar as GATEGLYPH above. A balance with the
+   beam tipped to one pan for justification, a crown for entitlement, a rule
+   with its ticks for perfectionism (the thing it measures everything against),
+   and a spiral wound inward for obsession (the thought that circles back). The
+   scale's two pans are open bowls and not closed triangles, which at the
+   badge's 20 pixels read as two solid dots. */
+const SUPEREGO_IC={
+ Justification:'M12 4.2v15.6M8.6 19.8h6.8M3.6 9.6l16.8-3.6M3.6 9.6l-2.2 4.4M3.6 9.6l2.2 4.4M1.4 14a2.2 2.2 0 0 0 4.4 0M20.4 6l-2.2 4.4M20.4 6l2.2 4.4M18.2 10.4a2.2 2.2 0 0 0 4.4 0',
+ Entitlement:'M4.2 17.4L3 7.6l4.8 3.9L12 5l4.2 6.5L21 7.6l-1.2 9.8zM5.4 20.4h13.2',
+ Perfectionism:'M2.8 8.4h18.4v7.2H2.8zM6.2 8.4v3.6M9.4 8.4v2.2M12.6 8.4v3.6M15.8 8.4v2.2M19 8.4v3.6',
+ Obsession:'M10.5 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0'};
 /* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
    here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
    SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed

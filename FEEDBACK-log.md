@@ -570,6 +570,78 @@ dlyRefWhy, dlyStValid, kbSecName and rdShell for the copy, and dlyComposeIn,
 dlyGroundOne, kbSabBlock and nodeDrillHtml for comments only, and nothing
 added or removed, on 18 November.
 
+## 2026-11-18 · owner · the Psyche panel is Matrix, Superego and Action
+
+said (first, on two screenshots of the Field's left rail): "Review this with
+your team. I asked you to get rid of everything in these two images. I asked
+you that a long time ago. Review it with your team. Maybe keep the matrix for
+now, but get rid of everything else. It doesn't belong there."
+said (then, correcting how that was read): "I didn't say strip the psyche panel
+down to just a matrix. I'm saying everything that's from the word psyche. Like,
+I never asked you to put in the book levels. I don't even know what that is. I
+also asked you to remove the child emotions because we're going to have the
+person do self-reporting in the diagnostic. I also asked you to get rid of the
+chain. I don't even know what this is doing here. That got put in there by you
+automatically or automagically. Super ego. It needs to be more iconographic.
+You can keep super ego, but get rid of the laws of action. Or just make that
+action and give me them as 6 icons, so symbolic icons. Actually make it a bar.
+Make them all bars, like the ones for like CQ, vitality, energy, flow, etc.
+Make it a bar. And then super ego, make those icons. 4 icons horizontal. And
+make them symbolic. And give it a %. We don't do points anymore."
+read: the panel keeps its Psyche heading and holds exactly Matrix (unchanged),
+Superego (four symbols in one row, a percent under each) and Action (the six
+gates as six bars, the same bar the CQ, vitality, energy and flow rows use, a
+percent on each). Everything else under the heading is gone: the book's
+levels, Child emotions with its sliders, the chain with Outside the chain, and
+every sub heading and paragraph of the other two. The first reading, "strip it
+to a matrix", was wrong and he said so.
+earlier asks, and why they never stuck: 28 October (superego, six gates, "the
+full cascade wiring of the Psyche stack", built, and the chain legend and the
+book's levels were seats' own widenings), 2 November ("move child emotions to
+diagnostic", built as a button that left the sliders), 5 November (marked
+screenshot, built as PR #188, held on a misreading of the 3 October ruling and
+bundled with another panel's job), 14 November ("Delete those for good",
+ticked ruled on the board with nothing queued to build it), 15 November (asked
+again in jargon, his answer read as an order for the Journal). The ask lived
+in one backlog line and not in DECISIONS.md, and a ticked board line read as
+finished while the page stayed the same.
+change: shell/body.html (three sections, the rest and its comments out),
+ui/ui.js (renderChainKey gone, renderAmplifiers and renderGates rewritten, the
+bars join rbMotion's hosts), ui/component.js (rbRow takes o.gate and o.side),
+ui/panels.js (the eighteen sliders and the two bulk sliders out, syncCh kept as
+the coercion every caller shares), ui/railmotion.js, ui/knowledge.js
+(dualPoleState and dualPoleStateWord, whose only caller was the old rows),
+shell/head.html (the bar's layout selectors name #gaterows beside .fdock, the
+four symbols' grid, the broken side's hatch, the dead .chk-, .amp-row, .nf.oppf
+and .stk-def rules out), engine/data/canon.js (SUPEREGO_IC, four stroked
+marks), engine/data/gloss.js (child emotions, chain, field anchor, rail:action,
+six gate: sentences, four superego: sentences), tests/psychepanel.js (new),
+tests/functional.js, tests/design.js, tests/unpack.js, tests/floors.json.
+Branch fix/psyche-panel-rework.
+measure: tests/psychepanel.js (new, report only first) read 174 passed, 0 failed
+on this build at 1600 and 390, on a blank profile and a loaded one, and fails
+by name on the build from before the round (a panel of six sections, not
+three). Each of seventeen mutants fails on the check written for it: each
+removed block put back one at a time (the book's levels, Child emotions, the
+chain, the Superego paragraph, the Laws of Action paragraphs), a decimal, the
+word points, the four symbols wrapping to two rows at 390 only, a bar with a
+12 pixel track, a hand drawn copy of the bar, a stale store key that throws, a
+fill that is not the percent, no hatch, one colour for both sides, a verdict
+word on a defence, a filled symbol, and the six bars reversed. The panel's
+three sections are 862 pixels tall at 1600 and 881 at 390, where the six were
+4179 and 3877. tests/engine.js 7378 passed with seven new checks on the marks
+and the sentences, tests/unpack.js 838 (the 36 checks of the eighteen axis
+labels at two widths retired on purpose), collide 943, design 192, landing 22,
+boot 29, funnel 276, pct 1594, and tools/monitor.js reads every surface
+rendered. The voice objections check reads no finding that stops a build.
+tests/functional.js is not run on the box this was built on, so its three
+chain key checks, now one, are held by CI. tools/equiv.py against c2bf52a2
+names CHF, dualPoleState, dualPoleStateWord, renderChainKey, renderAmplifiers
+and the old renderGates as removed and SUPEREGO_IC as added, and UNPACK_BASE,
+unpackAll, rbRow, rbRate, railFirstSight, rebuildSwatches, syncCh and syncLw as
+changed; the other bodies it lists (OB_SURVEY, TABDEF and the rest) are the
+wisdom school rename under it, 18 November.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

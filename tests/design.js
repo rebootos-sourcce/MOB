@@ -56,6 +56,7 @@ const shell=await page.evaluate(()=>({
  arcs:document.querySelectorAll('#ar1 .ib').length,
  laws:document.querySelectorAll('#laws .nf').length,
  axes:document.querySelectorAll('#chg .nf').length,
+ chg:!!document.getElementById('chg'),
  mx:document.querySelectorAll('#mx button').length,
  tabdef:TABDEF.length,
  eshelf:!!document.getElementById('eshelf')}));
@@ -76,7 +77,12 @@ ok(shell.depths===shell.views&&shell.views>0,shell.views+' depths declared, '+sh
 ok(shell.doms===19,'19 domains, got '+shell.doms);
 ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
 ok(shell.laws===21,'21 law fields, got '+shell.laws);
-ok(shell.axes===18,'18 axis fields (9 held + 9 opposite), got '+shell.axes);
+/* CHANGED 18 NOVEMBER, his words: "I also asked you to remove the child
+   emotions because we're going to have the person do self-reporting in the
+   diagnostic." This said eighteen axis fields, the nine held and the nine
+   opposite, in the left rail's Child emotions section. The section and its
+   host are gone, so it asks that there are none and no host left behind. */
+ok(shell.axes===0&&!shell.chg,'no axis fields and no host for them: Child emotions left the left rail, 18 November, got '+shell.axes);
 ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
 ok(shell.eshelf,'#eshelf element exists');
 console.log('  shell:',JSON.stringify(shell));
