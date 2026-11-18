@@ -6,7 +6,7 @@
 const {chromium}=require('playwright'), path=require('path');
 const D=path.join(__dirname,'..'), OUT=path.join(D,'shots');
 (async()=>{
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  for(const [w,h] of [[1600,1000],[390,844]]){
   for(const who of ['blank','sofia','diane','marcus','angela','derek','james','tomas']){
    for(const v of (w<500?['A','B','C']:['C'])){

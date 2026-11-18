@@ -5,7 +5,7 @@ const path = require('path');
 const SRC = path.resolve(process.argv[2]);
 const WORKER = 'https://atuned-api.lance-o-powell.workers.dev';
 const ACC = { id: 'acc_probe', research_id: 'rsh_probe', plan: 1, email: 'probe@example.invalid' };
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME = process.env.CHROME || chromium.executablePath();
 (async () => {
   const browser = await chromium.launch({ executablePath: CHROME });
   for (const bad of [false, true]) {

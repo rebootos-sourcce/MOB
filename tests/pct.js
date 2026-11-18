@@ -85,7 +85,7 @@ const READ=`(function(){
  return out;})()`;
 
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  require('./net.js').guardBrowser(browser);
  const people=['', 'Marcus', 'James', 'Diane'];
  for(const [W,H] of [[1600,1000],[390,844]]){

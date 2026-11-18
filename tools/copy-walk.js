@@ -54,7 +54,7 @@ const ONLY_WHO=(process.argv.find(a=>a.startsWith('--who='))||'').slice(6).split
 const FILE=path.resolve(arg('--file','source.html'));
 const OUT=path.resolve(arg('--out','COPY-VERIFY-strings.json'));
 const ROOT=path.resolve(__dirname,'..');
-const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||chromium.executablePath();
 const sh=c=>{try{return cp.execSync(c,{encoding:'utf8',cwd:ROOT}).trim();}catch(e){return '?';}};
 
 /* WHO IS WALKED. Blank is the profile a person arrives with, and it is the one

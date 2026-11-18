@@ -167,7 +167,7 @@ function helpers() {
   ok(hits === 1, 'the build carries AUTH_API once, so the served copy talks to the stub, found ' + hits);
   if (hits !== 1) { stub.close(); console.log('\n===== ' + (n - fails.length) + ' passed, ' + fails.length + ' failed ====='); process.exit(1); }
 
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath() });
 require('./net.js').guardBrowser(browser);
   const worker = [];
   const ctx = async (w, h) => {

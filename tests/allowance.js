@@ -48,7 +48,6 @@ const ROOT = path.resolve(__dirname, '..');
 const E = require(path.resolve(process.env.ENGINE || path.join(ROOT, 'engine.js')));
 const SRC = path.resolve(process.env.ALLOWANCE_HTML || path.join(ROOT, 'source.html'));
 const SHOTS = process.env.ALLOWANCE_SHOTS ? path.resolve(process.env.ALLOWANCE_SHOTS) : null;
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
 let PASS = 0, FAIL = 0;
 const ok = (c, m) => { if (c) { PASS++; console.log('  ok    ' + m); } else { FAIL++; console.log('  FAIL  ' + m); } };
@@ -179,7 +178,7 @@ async function shot(page, name, W) {
   if (!fs.existsSync(SRC)) { console.log(path.relative(ROOT, SRC) + ' is missing: build first'); process.exit(1); }
   let chromium;
   try { ({ chromium } = require('playwright')); } catch (e) { ok(false, 'playwright is not installed, so the browser half did not run'); return done(); }
-  const browser = await chromium.launch({ executablePath: CHROME });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath() });
   require('./net.js').guardBrowser(browser);
   for (const [W, H] of [[1600, 1000], [390, 844]]) {
     const page = await browser.newPage({ viewport: { width: W, height: H } });

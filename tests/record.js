@@ -18,7 +18,7 @@ const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
 /* every gate launches the chromium CI installs, named by CHROME, and the
    sandbox's own only when CHROME is unset (tests/chrome-path.js holds this) */
-const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||chromium.executablePath();
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 const booted=async p=>{

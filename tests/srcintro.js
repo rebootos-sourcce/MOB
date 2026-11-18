@@ -60,7 +60,7 @@ const endFrame=page=>page.evaluate(()=>({
  l1:!!document.querySelector('#srcintro .sx-l1.on'), ob:!!(OB&&OB.open)}));
 
 (async()=>{
-const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
 require('./net.js').guardBrowser(browser);
 
 console.log('=== 1. the example, read by the real engine, and the copy ===');

@@ -400,7 +400,7 @@ async function door(browser, SITE, cut, giftAt) {
   fs.copyFileSync(APP, path.join(tmp, 'atuned.html'));
   const site = await serve(tmp);
   const SITE = site.origin, cut = [];
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath(),
     args: ['--autoplay-policy=no-user-gesture-required'] });
 
   /* =================================================================

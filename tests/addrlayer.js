@@ -98,7 +98,7 @@ if(require.main===module){
    await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
    await p.waitForTimeout(120); }catch(e){}};
  (async()=>{
-  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
   require('./net.js').guardBrowser(browser);
   console.log('\n=== the named address layer follows the record it belongs to ===');
   try{ await addrLayerGate(browser,FILE,ok,booted); }

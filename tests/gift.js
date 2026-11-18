@@ -52,7 +52,7 @@ const {throughIntro}=require('./intro.js');
 const ROOT=path.resolve(__dirname,'..');
 const SRC=path.resolve(process.env.ATUNED_FILE||path.join(ROOT,'source.html'));
 const QUIZ=path.join(ROOT,'funnel','quiz.html');
-const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||chromium.executablePath();
 let PASS=0,FAIL=0,HELD=0;
 /* HELD, the same mechanism BUILD.sh's CLAIMS GATE already uses for a known,
    dated, tracked finding that is not this gate's to resolve: printed, not

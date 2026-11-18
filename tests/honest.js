@@ -74,7 +74,7 @@ const clearLog = p => p.evaluate(() => { MSG_LOG.length = 0; });
 const press = (p, sel) => p.evaluate(s => { const b = document.querySelector(s); if (b && !b.disabled) { b.click(); return true; } return false; }, sel);
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || chromium.executablePath() });
 require('./net.js').guardBrowser(browser);
   const ctx = await browser.newContext({ viewport: { width: W, height: H } });
   /* the Worker host is cut, so nothing here waits on a network */

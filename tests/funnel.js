@@ -151,7 +151,7 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
 
 (async () => {
   const browser = await chromium.launch(
-    { executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+    { executablePath: process.env.CHROME || chromium.executablePath() });
 
   console.log('\n=== funnel gate ===');
   console.log('  pages found: ' + PAGES.length + ' (' + PAGES.join(', ') + ')');
