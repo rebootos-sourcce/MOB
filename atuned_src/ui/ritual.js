@@ -1697,6 +1697,10 @@ function ritWire(h,c){
       November (ui/ritweek.js). Opening writes nothing, so nothing repaints. */
    case 'pgoal': ritPopOpen({t:'goal'}); return;
    case 'pchal': ritPopOpen({t:'chal', id:id}); return;
+   case 'sug-pop': {var sp=(RIT.sug||[])[+b.getAttribute('data-i')];
+    if(sp)ritPopOpen({t:'sug', key:ritSugKey(sp), W:ritWhen0(null), at:b.getAttribute('data-at')||''}); return;}
+   case 'aff-pop': ritPopOpen({t:'aff', W:ritWhen0(ritSchedAff()), at:b.getAttribute('data-at')||''}); return;
+   case 'cf-more': RIT.cfAll=!RIT.cfAll; break;
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}

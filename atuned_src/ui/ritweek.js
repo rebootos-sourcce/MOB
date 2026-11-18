@@ -249,12 +249,12 @@ function ritViaMark(v){
  return '<span class="rv-via" role="img" aria-label="'+esc(V.says)+'"'+rvTip(V.nm,V.says)+'><svg viewBox="0 0 24 24" aria-hidden="true">'+V.ic+'</svg></span>';}
 function ritCardFace(o){
  var K=ritKind(o.kind)||RIT_KINDS[2];
- return '<li class="rv-cf" style="--c:'+ritKindCol(K.k)+'">'
+ return '<li class="rv-cf" data-kind="'+K.k+'" data-via="'+esc(o.via||'story')+'" style="--c:'+ritKindCol(K.k)+'">'
   +'<span class="rv-cfr" role="img" aria-label="'+esc(K.nm+'. '+K.says)+'"'+rvTip(K.nm,K.says)+'>'+ritKindIc(K.k)+'</span>'
   +'<button type="button" class="rv-cfo" data-act="'+o.act+'" data-i="'+o.i+'" aria-label="'+esc(o.nm+', '+K.nm.toLowerCase()+'. Open')+'">'
   +'<span class="rv-cfn">'+esc(o.nm)+'</span><span class="rv-cfm">'+esc(o.sub)+'</span></button>'
   +ritViaMark(o.via)
-  +'<button type="button" class="btn pri rv-cfa" data-act="'+o.act+'" data-i="'+o.i+'" aria-label="'+esc('Add '+o.nm)+'">Add</button>'
+  +'<button type="button" class="btn pri rv-cfa" data-act="'+o.act+'" data-i="'+o.i+'" data-at="when" aria-label="'+esc('Add '+o.nm)+'">Add</button>'
   +(o.x?'<button type="button" class="rv-cfx" data-act="'+o.x+'" data-i="'+o.i+'" aria-label="'+esc('Dismiss '+o.nm)+'"'
    +' data-tip-t="Dismiss" data-tip="Take it off this list. Put back brings it back.">'+ritIc('x')+'</button>':'<span class="rv-cfx0" aria-hidden="true"></span>')
   +'</li>';}

@@ -44,6 +44,10 @@ const MUTANTS={
  /* tiles of uneven width, the asymmetry ruled out on 14 and 16 November */
  uneven:`document.head.insertAdjacentHTML('beforeend','<style>.rv-tiles{grid-template-columns:1fr 2fr 1fr 1fr!important}</style>');`,
  /* the did tick lost on the way from the Today list to the tile */
+ /* the long card back: the description printed on the face again */
+ fatcard:`(function(){var f=ritCardFace; ritCardFace=function(o){return f(o).replace('</li>','<p class="rv-sgd">A long description of what this practice is and why it is offered here today.</p></li>');};})();`,
+ /* where a card came from, said with no meaning */
+ novia:`(function(){var f=ritViaMark; ritViaMark=function(v){return f(v).replace(/ data-tip="[^"]*"/,'');};})();`,
  nodid:`(function(){var f=ritChalTile; ritChalTile=function(c,st){return f(c,st).replace(/data-act="did"/,'data-act="none"');};})();`};
 
 (async()=>{
@@ -173,6 +177,29 @@ const MUTANTS={
     rec:ritMore().did.some(x=>x[0]===ritToday0()&&x[1]===id)};});
   ok(!did.none&&did.pressed==='true'&&did.rec&&/^Done/.test(did.said),
    'RW6: '+tag+'the challenge tile\'s ring marks it done today through the writer and says so, '+JSON.stringify(did));
+  /* ---- RW7: Called for is simple cards, one row each, the rest in the pop-up ---- */
+  const cf=await pg.evaluate(()=>{
+   const col=document.getElementById('flownew')||document;
+   const cards=[...col.querySelectorAll('.rv-sug .rv-cf')].map(li=>{const r=li.getBoundingClientRect();
+    const own=li.cloneNode(true); own.querySelectorAll('.rv-cfn').forEach(e=>e.remove());
+    return {kind:li.getAttribute('data-kind'), via:li.getAttribute('data-via'), h:Math.round(r.height),
+     nm:(li.querySelector('.rv-cfn')||{}).textContent||'', rest:own.textContent.replace(/\s+/g,' ').trim(),
+     ring:(li.querySelector('.rv-cfr')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
+     viaTip:(li.querySelector('.rv-via')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
+     add:!!li.querySelector('.rv-cfa'), x:!!li.querySelector('.rv-cfx'),
+     c:getComputedStyle(li.querySelector('.rv-cfr')).color};});
+   const tok={}; ['aff','act','med','rel'].forEach(k=>{const e=document.createElement('i'); e.style.color='var(--kd-'+k+')'; col.appendChild(e); tok[k]=getComputedStyle(e).color; e.remove();});
+   return {cards, tok, old:col.querySelectorAll('.rv-sug .rv-sgd,.rv-sug .rv-sgo,.rv-sug .rv-sgc,.rv-sug .rv-pc').length};});
+  const prac=cf.cards.filter(x=>x.kind!=='aff'), per={}; prac.forEach(x=>{per[x.via]=(per[x.via]||0)+1;});
+  ok(cf.cards.length>=2&&cf.cards[0].kind==='aff'&&cf.cards[0].nm==='Affirmations',
+   'RW7: '+tag+'Called for opens on the affirmation card and carries the practices under it, '+JSON.stringify(cf.cards.map(x=>x.nm)));
+  ok(cf.old===0&&cf.cards.every(x=>x.h<=72&&x.rest.split(' ').length<=6),
+   'RW7: '+tag+'every card is one short row, name, minutes and two presses, with no description, chips or pill on its face, '
+   +JSON.stringify({old:cf.old,rows:cf.cards.map(x=>[x.h,x.rest])}));
+  ok(cf.cards.every(x=>x.add&&x.ring.length>10&&x.viaTip.length>10)&&prac.every(x=>x.x),
+   'RW7: '+tag+'every card has Add, its kind ring and its source mark each carry a sentence, and a practice can be dismissed, '+JSON.stringify(cf.cards.map(x=>[x.ring,x.viaTip])));
+  ok(prac.length<=4&&Object.values(per).every(n=>n<=2)&&cf.cards.every(x=>x.c===cf.tok[x.kind]),
+   'RW7: '+tag+'four practices at most, two at most from one source, and each card wears its kind\'s colour, '+JSON.stringify({per,c:cf.cards.map(x=>[x.kind,x.c])}));
   ok(err.length===0,'RW0: '+tag+'no page errors, '+err.slice(0,3).join(' | '));
   }catch(e){ok(false,'RW0: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();

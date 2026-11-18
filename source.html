@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v170 e923f500 2026-11-18 14:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v171 3db2f115 2026-11-18 14:52"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -78269,6 +78269,10 @@ function ritWire(h,c){
       November (ui/ritweek.js). Opening writes nothing, so nothing repaints. */
    case 'pgoal': ritPopOpen({t:'goal'}); return;
    case 'pchal': ritPopOpen({t:'chal', id:id}); return;
+   case 'sug-pop': {var sp=(RIT.sug||[])[+b.getAttribute('data-i')];
+    if(sp)ritPopOpen({t:'sug', key:ritSugKey(sp), W:ritWhen0(null), at:b.getAttribute('data-at')||''}); return;}
+   case 'aff-pop': ritPopOpen({t:'aff', W:ritWhen0(ritSchedAff()), at:b.getAttribute('data-at')||''}); return;
+   case 'cf-more': RIT.cfAll=!RIT.cfAll; break;
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
@@ -79070,12 +79074,15 @@ function ritSuggest(st){
  st.act.forEach(function(p){actKey[ritKey(p.steps)]=1; if(p.rel!=null)actRel[p.rel]=1;});
  /* one card per practice, or per practice and place for a release schedule.
     A second reason for the same card is added to it, never a second card. */
- var add=function(k,seat,why,rel){
+ /* via is where the card came from, 18 November (B5): the card's face says
+    it with one small mark, and a second source for the same card keeps the
+    first, because the first is the read that put it on the list */
+ var add=function(k,seat,why,rel,via){
   var key=k+'|'+(rel==null?'':rel), x=by[key], p=ritPr(k);
   if(!p)return;
   if(x){if(seat&&x.seats.indexOf(seat)<0)x.seats.push(seat);
    if(x.why.indexOf(why)<0)x.why.push(why); return;}
-  out.push(by[key]={k:k, p:p, seats:seat?[seat]:[], why:[why], rel:(rel==null?null:rel)});};
+  out.push(by[key]={k:k, p:p, seats:seat?[seat]:[], why:[why], rel:(rel==null?null:rel), via:via||'story'});};
  /* the field. NOT WHILE NOTHING IS READ, SV16. This card used to say
     "Nothing is read yet, so this is the lightest place to start." and sat
     under the list's heading, which is Called for now, and on a blank profile
@@ -79085,7 +79092,7 @@ function ritSuggest(st){
     practice, ritFor's lightest, so a blank person's one start is the first
     thing in the column. */
  if(c.called&&!actKey[c.called.k]&&!r.unread)
-  add(c.called.k,c.band,ritCap(ritThe(c.band))+' carries the most charge in your field.');
+  add(c.called.k,c.band,ritCap(ritThe(c.band))+' carries the most charge in your field.',null,'field');
  /* the avatar */
  if(typeof avRituals==='function'&&typeof avRows==='function'&&typeof avSide==='function'){
   var rows=avRows();
@@ -79093,7 +79100,7 @@ function ritSuggest(st){
    if(actKey[x.p.k])return;
    x.areas.forEach(function(A){
     add(x.p.k,A.b,'Your avatar\'s story about '+String(A.nm).toLowerCase()+' sits at '+ritThe(A.b)
-     +', which still carries charge.');});});}
+     +', which still carries charge.',null,'avatar');});});}
  /* the bank, one place per seat, the heaviest, and only a place held at the
     line every surface counts held at (4) */
  var bc=ritBecoming(), seen={}, n=0;
@@ -79111,7 +79118,7 @@ function ritSuggest(st){
      or the avatar already made takes it, and its Start sets the schedule. */
   var same=out.filter(function(x){return x.k===called.k&&x.rel==null&&x.seats.indexOf(q.b)>=0;})[0];
   if(same){same.why.push(why); same.rel=q.i; by[called.k+'|'+q.i]=same; return;}
-  add(called.k,q.b,why,q.i);});
+  add(called.k,q.b,why,q.i,'held');});
  return out;}
 function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);}
 function ritSugStart(i){
@@ -79136,75 +79143,34 @@ function ritSugHtml(st){
  var undo=RIT.sgGone?'<div class="rv-gone" role="status"><span>Dismissed '+esc(RIT.sgGone.nm)+'.</span>'
   +'<button type="button" class="btn" data-act="sug-back">Put back</button></div>':'';
  var foot=(MO.gone.length&&!RIT.sgGone)?'<div class="rv-sgfoot"><button type="button" class="btn rv-sgq" data-act="sug-all">Bring back dismissed</button></div>':'';
- /* and when the builder holds every suggestion there is, the section says
-    nothing: "Nothing to suggest yet" under a builder holding the suggestion
-    would be untrue */
- if(!list.length&&all.length&&!undo)return saved;
- RIT.sgw=RIT.sgw||{};
- var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
-  :'<ul class="rv-sugl">'+list.map(function(x,i){
-   var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
-   /* ROUND QX, "add a text description. And the success of what it leads
-      to." The description is the library's own line for the practice. What
-      it leads to is the quality release installs at the place the card is
-      for, a canon word and not a measurement. The success is the person's own
-      record with this practice, because no measure of how well a practice
-      works exists anywhere in the engine and one made up here would be the
-      status lie. ui/ritcal.js says the same at ritSugRec. */
-   var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x), recSays=ritSugRecSays(x,R);
-   var chips='<div class="rv-sgo">'
-    +(T?'<span class="rv-sgc"'+rvTip('Toward '+T.opp.toLowerCase(),'What it is for: '+T.opp.toLowerCase()
-      +' is the quality release puts back where '+ritCfWord(T.nm)+' was held. You hold '+String(T.k).toLowerCase()+' at '+ritThe(T.b)+'.')+'>'
-      +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14 M14 7l5 5-5 5"/></svg>Toward '+esc(T.opp.toLowerCase())+'</span>':'')
-    +'<span class="rv-sgc'+(R.kept?'':' rv-sgc0')+'"'+rvTip('Your record with it',recSays.join(' '))+'>'
-     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>'
-     +(R.kept?'Kept '+acctDays(R.kept):'Not tried yet')+'</span></div>';
-   return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
-    +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
-     +'" aria-label="Why '+esc(x.p.nm)+' is called for">'+M.badge+'</button>'
-    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span></span></div>'
-    /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
-       Round QX made it what the practice is, his "text description", and the
-       reason it is offered moved into the press, where the full why-list was
-       already: the first reason was printed twice whenever a card was open. */
-    /* and a practice with no line prints no empty paragraph: the Truth
-       Check's was cut, engine/data/practice.js says why */
-    +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+chips
-    /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
-       tell if you want tell you press on something to get information." The
-       mark is the press, and it opens the reasons and what the ring measures
-       in place, under the name, rather than in a panel somewhere else. */
-    +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')
-     +'</ul><ul class="rv-sgrec">'+recSays.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
-     +'<p class="rv-sgr">'+esc(M.says)+'</p></div>'
-    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
-      return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
-       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>'
-    /* ROUND QX, HIS THREE: "add them to my daily practice or bank them to my
-       vault or dismiss". Add is the press it always was (ritSugStart). Save
-       for later is his "bank to my vault": Bank and Vault already mean the
-       imprints held and what has been released, so a third meaning for either
-       word would be one word for two concepts. Dismiss takes it off the list,
-       with Put back in the same place. */
-    /* SV16, his words: "Instead of add to daily practice, just add to
-       practice. Instead of saying save for later, just do save." The
-       accessible name keeps the span the press sets, because a button that
-       starts a week of practice should say so to a person who cannot see the
-       card's other lines. */
-    +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to practice, each day for a week">Add to practice</button>'
-    +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+'">Save</button>'
-    +'<button type="button" class="btn rv-sgq" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'">Dismiss</button></div></li>';}).join('')+'</ul>';
+ /* SIMPLE CARDS, 18 November, his words: "there's too much information on
+    these cards. Simplify them. It just needs to be a little text and the
+    buttons that I need to do ... And if I click on it, then I got a pop-up
+    that tells me information about it." So a card is one row (ritCardFace,
+    ui/ritweek.js): the kind's ring, the name, the minutes, where it came
+    from, Add and Dismiss. Round QX's description, Toward, the record, the
+    seats and the reasons, and Save, are in the pop-up the name and Add both
+    open (ritPopSug), not cut. That reverses SV16's flat seat coloured card,
+    named once: the colour is the kind now, as on the week.
+
+    The affirmation set is the first card, because the Today list that
+    carried its lines is gone (B11), and it is offered whether or not a
+    practice is: it is the only route to the said ticks off the week. */
+ var aff=(typeof ritAffCardHtml==='function')?ritAffCardHtml(st):'';
+ var C=ritCardList(list), show=RIT.cfAll?list:C.shown;
+ var cards=show.map(function(x){var i=list.indexOf(x);
+  return ritCardFace({kind:ritKindOf(x), nm:x.p.nm, act:'sug-pop', x:'sug-x', i:i, via:x.via, sub:x.p.min+(x.p.min===1?' minute':' minutes')});}).join('');
+ var more=C.rest.length?'<button type="button" class="btn rv-cfmore" data-act="cf-more" aria-expanded="'+!!RIT.cfAll+'">'
+  +(RIT.cfAll?'Fewer':'More, '+C.rest.length)+'</button>':'';
+ var body=(aff||cards?'<ul class="rv-cfl">'+aff+cards+'</ul>'+more:'')
+  +(!list.length&&!aff?'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>':'');
  /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
     suggested, those are pulled from your ritual selectors. It's the stuff it
-    picks up based off your story." True of the code: every card is one of
-    the three reads above, and none is a guess. The narrative director ruled
-    the word: called for is already the house's word for a practice a seat
-    asks for (the builder's tile prints it, ritFor names it), and From your
-    story was not true of every card, since the field can carry charge from
-    the quiz. Where the cards come from is said in the line under it. */
+    picks up based off your story." The narrative director ruled the word:
+    called for is already the house's word for a practice a seat asks for.
+    The line under it is its meaning, folded onto the heading by ritTell. */
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
-  +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
+  +'<p class="rv-mean">Rituals your stories, your avatar and the places you hold call for, waiting for a day.</p>'+undo+body+foot+'</div>'+saved;}
 /* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
    ritual builder they should be colorized and related to the color of the
    chakra or fetter with their symbol." A card that runs as a release schedule
@@ -80941,12 +80907,12 @@ function ritViaMark(v){
  return '<span class="rv-via" role="img" aria-label="'+esc(V.says)+'"'+rvTip(V.nm,V.says)+'><svg viewBox="0 0 24 24" aria-hidden="true">'+V.ic+'</svg></span>';}
 function ritCardFace(o){
  var K=ritKind(o.kind)||RIT_KINDS[2];
- return '<li class="rv-cf" style="--c:'+ritKindCol(K.k)+'">'
+ return '<li class="rv-cf" data-kind="'+K.k+'" data-via="'+esc(o.via||'story')+'" style="--c:'+ritKindCol(K.k)+'">'
   +'<span class="rv-cfr" role="img" aria-label="'+esc(K.nm+'. '+K.says)+'"'+rvTip(K.nm,K.says)+'>'+ritKindIc(K.k)+'</span>'
   +'<button type="button" class="rv-cfo" data-act="'+o.act+'" data-i="'+o.i+'" aria-label="'+esc(o.nm+', '+K.nm.toLowerCase()+'. Open')+'">'
   +'<span class="rv-cfn">'+esc(o.nm)+'</span><span class="rv-cfm">'+esc(o.sub)+'</span></button>'
   +ritViaMark(o.via)
-  +'<button type="button" class="btn pri rv-cfa" data-act="'+o.act+'" data-i="'+o.i+'" aria-label="'+esc('Add '+o.nm)+'">Add</button>'
+  +'<button type="button" class="btn pri rv-cfa" data-act="'+o.act+'" data-i="'+o.i+'" data-at="when" aria-label="'+esc('Add '+o.nm)+'">Add</button>'
   +(o.x?'<button type="button" class="rv-cfx" data-act="'+o.x+'" data-i="'+o.i+'" aria-label="'+esc('Dismiss '+o.nm)+'"'
    +' data-tip-t="Dismiss" data-tip="Take it off this list. Put back brings it back.">'+ritIc('x')+'</button>':'<span class="rv-cfx0" aria-hidden="true"></span>')
   +'</li>';}
@@ -102442,5 +102408,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006850214"></div>
+<div id="eof" hidden data-len="006847271"></div>
 </body></html>
