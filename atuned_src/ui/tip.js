@@ -68,9 +68,21 @@ var TIP=(function(){
   document.body.classList.toggle('tip-sheet',m);
   return m;}
 
- /* THE CONTENT. Every field optional but the body. Numbers are a list of
-    three: what it is, the value, and what the value is out of. There is no
-    way to pass a bare number, which is the point. */
+ /* THE CONTENT. Every field optional but the body. NO FRACTIONS, 18 November
+    (the no-fractions audit, S12): a number row used to be a list of three,
+    what it is, the value, and what the value was out of, rendered as "value
+    of total". That is the fraction the owner ruled out, and this was its one
+    cause, reached by every caller through rvTip. A row is a list of two now:
+    what it is, and the value, already said the way the rest of the product
+    says a measure, a percent through fmtPct or a plain count. There is no
+    denominator slot any more, so nothing built here can print a fraction.
+
+    AND THE DROPPED-TOTAL BUG THIS SAME LINE CARRIED. A row with no third part
+    was silently dropped, so a caller that had nothing to call a total (Best
+    and Kept in the Streak tooltip, ui/accountability.js's acctStreakHtml, two
+    parts each) printed nothing at all and nobody saw it go missing. A row is
+    dropped now only for an empty label or an empty value, never for want of a
+    third part it was never going to need. */
  function build(d){
   var h='';
   if(d.k)h+='<p class="tip-k">'+esc(d.k)+'</p>';
@@ -79,8 +91,8 @@ var TIP=(function(){
   if(d.n&&d.n.length){
    h+='<dl class="tip-n">';
    d.n.forEach(function(r){
-    if(r.length<3)return;                    /* a value with no denominator is dropped */
-    h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+' <i>of '+esc(r[2])+'</i></dd>';});
+    if(r.length<2||!r[0]||!r[1])return;       /* an empty label or value is dropped, not a missing denominator */
+    h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>';});
    h+='</dl>';}
   if(d.a)h+='<p class="tip-a">'+esc(d.a)+'</p>';
   /* A DOOR INSIDE A DEFINITION. A locked control's definition has to say where
