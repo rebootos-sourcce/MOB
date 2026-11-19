@@ -196,9 +196,12 @@ function renderSpirit(){
      element's and its tooltip says both halves, from the same two gloss
      entries the two rows carried. The element's own drill is still the
      Summary's chip for it (sumChips, ui/summary.js). */
+  /* the year is null for an untimed birth on the Li Chun day, where the hour
+     decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
+    :unres('Year','needs a birth time')))
   +line('N',
    nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
@@ -634,7 +637,8 @@ function pselOwnSync(){
  if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
  if(p.you)return pselOwnName();
- return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
+ /* the age off the birth, never the typed one (exampleAge, engine/birth.js) */
+ return up?p.nm+', example':p.nm+', '+exampleAge(p)+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
@@ -1050,17 +1054,11 @@ function loadP(i){
     reference case's diagnostic from overwriting another's. It is memory only,
     and it is discarded with the page, which is what a demonstration is. */
  if(!PROF_BY[p.nm]){
-  var pr=blankProfile(p.nm==='You'?'You':p.nm);
-  if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
-  /* THE PURPOSE HEXAGON COMES FROM THE SAME ROW TOO, 13 November, the same
-     rule as S.addr above: a worked example's own data lives on its own
-     PEOPLE row (engine/data/people.js, p.purpose) or it defaults to the
-     blank's, which here meant every example silently showed whichever
-     purpose the signed-in account itself had written, under a stranger's
-     name. Copied in only when this scratch profile is first built, same as
-     intakeAnswers, so an edit made while looking at an example during this
-     session is never clobbered by a second visit. */
-  if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+  /* THE INTAKE ANSWERS, THE PURPOSE HEXAGON, THE BIRTH AND THE NAME all come
+     from the example's own PEOPLE row, through exampleRecord
+     (engine/birth.js), which the Clients page calls too. Seeded here alone,
+     a record the Clients page built first came back without the birth. */
+  var pr=exampleRecord(p);
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];

@@ -4233,3 +4233,58 @@ team's and not his own words it says so, and one word flips it.
   printed them bare now carries the sentence, and r.Ig stopped borrowing
   the word integrity. He still reacts to the result in the app; nothing
   further is owed on the context itself.
+## The worked examples carry a birth, the four Lances included. Ruled 18 November.
+
+His words, verbatim, over the Field with "Lance 15, example" chosen and Root
+Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+wire in root energetics for these profiles, and make sure that these profiles
+are just up to date with all the changes that we made."
+
+OVERRIDDEN, the same day: the four Lance profiles had no birth, by the earlier
+ruling that a made up birth would be read back to him as his own
+(`engine/data/people.js`).
+
+Read as: every worked example shows sun, moon, rising, the year animal, life
+path and the gene key on the Field's left rail and on the Avatar. The four
+Lances are one person at four depths, so they share one birth. It is invented:
+1972-08-27, 13:15, Johannesburg, time zone Africa/Johannesburg, chosen by a
+search for a reading whose signs each sit well inside their sign, and for the
+age of 54 the rows already said. It is nobody's birth, and if it happens to be
+his, he says so and it moves. They still carry no full name, because any
+surname is either his real one or a made up one that the name numbers would
+read back as his; the six readings he named come off the birth alone.
+
+What moved with it, because the readings were wrong for everyone and an
+example cannot be up to date on top of a wrong reading:
+- **The gene key wheel started 1.75 degrees late.** Gate 41 opens at 2 degrees
+  Aquarius and the wheel had gate 25 at 0 Aries, so every line was one or two
+  out, the gate itself wrong on about 31 births in 100, and nearly every
+  profile wrong. Steve Jobs, a published 6/3, read 5/1. Every example's gene
+  key and profile moved once (`engine/astro.js`, `GATE_START`).
+  **This moves every person's reading, not only the examples'.** Anyone who
+  has entered a birth sees their gene key line change once, about 31 in 100
+  see the gate itself change, and most see their profile change. The old
+  reading was the wrong one.
+  **And SOURCE (reboot-os) has not moved.** `source_os_v151.html` reads the
+  same wheel from 0 Aries (`_lonToGate`, no start offset), so after this lands
+  the two codebases, which this file names as cross compatible, disagree on
+  the gene key for about 31 births in 100 and on most lines. Routed to the
+  SOURCE seat, the same anchor (gate 41 opens at 302 degrees) checked against
+  Jobs reading 6/3. Until it lands there, a gene key read in SOURCE and one
+  read here can differ for the same birth.
+- **The nine cities read their clock offset off their time zone** and not off
+  two hand written rules that put Wren and Abraham an hour out.
+- **The year animal goes through the same check as every other reading**, so
+  an untimed birth on the Li Chun day, where the hour decides the animal, says
+  it needs a birth time instead of guessing.
+- **An example's age is read off its birth.** Wren and Abraham's typed ages
+  were already a year behind, and Tomas's was four days from it.
+- **An example's record carries its birth and name**, so the Avatar's birth
+  fields show what the rail shows. Whichever door builds the record first,
+  the picker or the Clients page, builds it the same way (`exampleRecord`,
+  `engine/birth.js`): the Clients page used to build a bare one first, and
+  every client's birth then read empty on the Avatar.
+
+Still open, and his: whether the examples also carry an avatar name and title,
+tags, a stated four letter type, archetype self report and journal verdicts.
+Those are words in his voice for sixteen people and were not invented here.

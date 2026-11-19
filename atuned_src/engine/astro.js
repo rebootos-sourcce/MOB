@@ -146,7 +146,7 @@ function gateOf(lon){
  var i=Math.floor(a/GATE_ARC);
  var within=a-i*GATE_ARC;
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
-  lon:L, arc:within};}
+  lon:_norm(lon), arc:within};}
 
 /* The design sun sits 88 degrees of SOLAR ARC before the birth sun,
    not 88 days. Those differ by a couple of days because the earth
@@ -168,17 +168,28 @@ function designJD(jd){
    that year. This is the part everyone skips, and skipping it is not
    a small error: one hour of offset moves the ascendant about fifteen
    degrees, which is half a sign. Latitude matters for the same reason.
-   A record with no place gets no ascendant rather than a guessed one. */
+   A record with no place gets no ascendant rather than a guessed one.
+   EACH CITY CARRIES ITS TIME ZONE, z, 18 November, and birthJD reads the
+   offset from it before it reads the two hand written rules below. Those
+   rules put a reference case an hour out: Wren, 1959 in Portland, was read
+   at -7 where the clocks said -8, and Abraham, 1951 in Boulder, at -6 where
+   Colorado kept no daylight saving that year and the clocks said -7. Boston
+   in April 1980 read -4 where it was -5, because the US branch applies the
+   1987 rule to every earlier year, and Oaxaca is marked as never saving
+   daylight where Mexico did from 1996 to 2022. The same Intl table the
+   named zone already used (below) holds every one of those. The hand rules
+   stay as the fallback for a runtime with no Intl, which is the only place
+   they are still read. */
 const PLACE={
- 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us'},
- 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us'},
- 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us'},
- 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us'},
- 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us'},
- 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us'},
- 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none'},
- 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu'},
- 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us'}};
+ 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us', z:'America/New_York'},
+ 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us', z:'America/Chicago'},
+ 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us', z:'America/Los_Angeles'},
+ 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us', z:'America/New_York'},
+ 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none', z:'America/Mexico_City'},
+ 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu', z:'Europe/Lisbon'},
+ 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us', z:'America/New_York'}};
 
 /* US daylight saving. The start moved in 2007 from the first Sunday in
    April to the second in March, and the end from the last Sunday in
@@ -355,7 +366,9 @@ function birthJD(bt){
     unknown offset already uses. jd stays noon, so nothing that does not
     check the span moves in this change. */
  var last=23+59/60;
- var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ /* the person's own zone first, then the city's (PLACE, 18 November) */
+ var zn=bt.z||(pl&&pl.z)||'';
+ var zo=zn?zoneOffsets(zn,y,m,d,hrs):null;
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
@@ -363,13 +376,13 @@ function birthJD(bt){
   /* the day's ends each at their own offset, since the clocks can change
      inside it, and at the offset that makes the day widest if they did at
      either end */
-  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+  if(!timed){ var z0=zoneOffsets(zn,y,m,d,0), z1=zoneOffsets(zn,y,m,d,last);
    zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
   /* A place the table names is the exact horizon and keeps it. Otherwise
      the zone's own representative point stands in, which is what lets a
      person outside the nine cities have a Rising at all. */
-  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
-   span:zspan, zone:bt.z};}
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(zn), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:zn};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours
