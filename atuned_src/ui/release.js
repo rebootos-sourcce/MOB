@@ -1210,20 +1210,26 @@ function relHitRows(H){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
-   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S01, found in
-      the source and not by the live walk, which never opened a run with more
-      than one seat). The title and the visible <em> both said "3 of its 5
-      addresses in this run". The ring beside it already fills to this same
-      share (x.reach/Math.max(1,x.of)*100, two lines down, unchanged), so the
-      printed figure is that ring's own fill, through the portion kind. */
+   /* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+      NO-FRACTIONS-AUDIT.md finding S01) converted this count to a percent
+      through the portion kind. Round PQ already ruled this exact screen
+      percent-free, named by name in ui/release.js's own header comment and
+      held by tests/release-percent.js's whole-card scan: "no reading on the
+      whole finished card is printed as a percent." That gate caught this
+      row the first time it ran against the merged tree. A screen-specific
+      ruling beats the general one on the screen it already named, so the
+      count form returns here; the ring beside it still fills to the same
+      share (x.reach/Math.max(1,x.of)*100, unchanged) and is not a reading in
+      text, so round PQ's own exceptions for the address ring do not apply
+      to it either way. */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
-    var reached=fmtPct('portion',x.reach/Math.max(1,x.of));
+    var reached=x.reach+' of '+x.of+(x.of===1?' address':' addresses');
     return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+reached+' of its addresses in this run'})
+       title:x.nm+', '+reached+' in this run'})
      +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
@@ -1247,16 +1253,19 @@ function relReach(){
    reach and planN from relCoolDown, and added from the meter's own answer. A
    rerun is never charged, so it says so and does not print a charge that did
    not happen. */
-/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P06): this said
-   "6 of 12 lines were said", a measure of the person. It is a percent of the
-   lines planned for this run now, through the portion kind (engine/pct.js);
-   RUN.planN is positive whenever this guard lets the function past its
-   first line, so the division is safe. */
+/* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+   NO-FRACTIONS-AUDIT.md finding P06) changed "6 of 12 lines were said" to a
+   percent through the portion kind. Round PQ already ruled this exact
+   screen percent-free (its own header comment names the finished card by
+   name), and tests/release-percent.js's whole-card scan caught this note
+   the first time it ran against the merged tree: "8%" on a card the gate
+   asserts carries none. A screen-specific ruling beats the general one on
+   the screen it already named, so the count form returns. */
 function relEndNote(){
  if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
  var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
- return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early, at '
-  +fmtPct('portion',RUN.reach/RUN.planN)+' of its lines said. '
+ return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early. '
+  +RUN.reach+' of '+RUN.planN+(RUN.planN===1?' line was':' lines were')+' said. '
   +(RUN.rerun?'A rerun costs nothing. '
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
