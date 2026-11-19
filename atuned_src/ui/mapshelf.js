@@ -1,102 +1,15 @@
 
 /* ============================================================
-   THE ENERGY SHELF. The original built all of this every frame and
-   dropped it, because no element with this id existed in the markup.
-   B19 scope: the ring carries the one headline value. Seat rows and
-   deltas stay bare numbers.
+   THE ENERGY SHELF LEFT THE RAIL, 18 November. renderShelf drew the Flow ring,
+   the heaviest seat and the seven seat rows into #eshelf, the Flow section
+   under Selection on the right rail. His words: "Everything beneath
+   selection, including flow, including seats... like it's all repeat." It is
+   removed with its section and its two callers in ui/map.js. The flow sentence
+   is on Summary's reading, the seats' held counts are on Analytics' The Seven
+   Seats, and the heaviest seats are on Summary's In the body. What stays in
+   this file is what answers a press on the figure: pmAnswer and the two drills
+   it opens.
    ============================================================ */
-function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
- var el=document.getElementById('eshelf'); if(!el)return;
- var sh='<div class="pm-hd">'
-  /* FLOW, NOT FLOW THROUGH. Ruled in COPY.md by name, and the quantity is
-     called Flow on the key strip and in its own drill. One word per concept. */
-  +'<div><div class="pm-eye">Flow</div>'
-  /* flow through is a share that passes, so its high end is the good one and
-    it never prints in the alarm colour. */
-  /* NOTHING HELD, SO NOTHING PASSES AND NOTHING IS MEASURED. With no charge
-     on the body every seat passes everything and the ring read 100%, a share
-     printed off an empty field. It holds a dash until something is held.
-     Round J13. */
-  +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'Flow',hot:false,raw:loadedTot?null:'\u2013'})
-  +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
-    :(loadedTot?'passing every point':'nothing held'))+'</div></div>'
-  /* The label used to swap identity with the state, reading "Heaviest seat"
-     when loaded and "Field clear" when not, while the value swapped too. A
-     slot keeps its label; the value carries the state. And the empty state is
-     said one way across the app: "nothing held". */
-  +'<div class="pm-side"><div class="pm-eye">Heaviest point</div>'
-  +'<div class="pm-dom" style="color:'+(loadedTot?PMC[K2B[dom.p.k]]:'var(--dim)')+'">'
-  +(loadedTot?dom.p.n:'nothing held')+'</div>'
-  +'<div class="pm-sub">'+(loadedTot?loadedTot+' held':'')+'</div></div></div>';
-
- var beads=marks.filter(function(m){return m.kind==='bead';}).sort(function(a,b){return a.rank-b.rank;});
- var layerNm=PML.filter(function(L){return L[0]===PMLAYER;})[0][1];
- if(beads.length){
-  sh+='<div class="pm-eye" style="margin-top:14px">'+layerNm+', '+beads.length+'</div><div class="pm-list">';
-  beads.forEach(function(m){
-   sh+='<button class="pm-li'+(PMPICK===m.o?' on':'')+'" data-it="'+m.rank+'">'
-    +'<i style="background:'+(PMC[m.band]||'#888')+'"></i>'
-    +'<span class="pm-ln">'+esc(m.nm)+'</span>'
-    +'<span class="pm-lw">'+fmtPct('chain',m.v*10)+'</span>'
-    +(m.sub?'<span class="pm-ls">'+esc(m.sub)+'</span>':'')
-    +'<span class="pm-lk">'+m.links.length+' address'+(m.links.length===1?'':'es')+'</span></button>';});
-  sh+='</div>';
- } else if(PMLAYER==='bands'||PMLAYER==='pain'){
-  var top=marks.slice().sort(function(a,b){return b.v-a.v;}).slice(0,10);
-  sh+='<div class="pm-eye" style="margin-top:14px">'
-   +(PMLAYER==='pain'?'Above the line':'Held addresses')+', '+marks.length+'</div><div class="pm-list">';
-  top.forEach(function(m){
-   var opp=(CHILD.filter(function(c){return c.nm===m.o.cf;})[0]||{}).opp||'';
-   sh+='<button class="pm-li" data-seat="'+B2K[m.band]+'"><i style="background:'+(PMC[m.band]||'#888')+'"></i>'
-    +'<span class="pm-ln">'+esc(m.nm)+'</span>'
-    +'<span class="pm-lw">'+fmtPct('weight',m.o.sq)+'</span>'
-    +'<span class="pm-ls">toward '+esc(opp||'no pole')+'</span>'
-    +'<span class="pm-lk">'+m.band+'</span></button>';});
-  sh+='</div>';}
-
- /* THE ANSWER TO A PRESS IS NOT PRINTED HERE ANY MORE. It was, three times
-    over: a pain region under the rows, a pattern under the legend, a seat
-    under the seats. This shelf sits in the Flow section, below Reading and
-    Selection, so every one of them landed at the bottom of a long rail.
-    Measured on Gordon at 1600: a person scrolls to the first saboteur row,
-    presses it at y 545, and its answer printed at y 3,124, 2,579 pixels
-    under the row, while the Selection section above still read "Nothing
-    selected". A ring on the figure put it at 4,626. And a mask threw: a mask
-    has no parts, so leaves() handed back the mask itself as its own address,
-    n.sq was undefined, and every render of the Body page failed until the
-    pick changed.
-
-    Every press now opens its answer through pmAnswer below, in Selection,
-    which is where every other surface answers and which rdOpen brings into
-    view. The rows and the seats stay here and still show what is picked. */
-
- /* THE LEGEND IS GONE. CO-16, his: "I'm not sure what that is. Get rid of
-    it." It keyed every row, colour and number on this layer in the model's
-    own words, "SQ held there", "clinical bridge", "two hyper co-mingled", to
-    somebody who had not asked, and it is the third tier small print he struck
-    again in GX. Each row opens its own answer in Selection on a press. */
-
- /* the seven seats. bare numbers, per B19. */
- sh+='<div class="pm-eye" style="margin-top:14px">Points</div><div class="pm-seats">';
- seats.forEach(function(s){var b=PMBANDS.filter(function(x){return x.k===s.p.k;})[0];
-  sh+='<button class="pm-sr'+(PMPICK===s.p.k?' on':'')+(s.hot?'':' clear')+'" data-seat="'+s.p.k+'">'
-   +'<i style="background:'+b.c+'"></i><span class="pm-sn">'+s.p.n+'</span>'
-   +'<span class="pm-gauge"><b style="width:'+Math.round(s.pass*100)+'%;background:'+b.c+'"></b></span>'
-   +'<span class="pm-sv">'+(s.hot?s.hot+' held':'clear')+'</span>'
-   /* A SEAT WITH NOTHING ON IT PASSES EVERYTHING, which is the default and not
-      a measurement, so the share is a dash until something is held. J13. */
-   +'<span class="pm-sp">'+(s.hot?fmtPct('pass',s.pass):'\u2013')+'</span>'
-   +'<span class="pm-sk">'+s.p.nv+'</span></button>';});
- sh+='</div>';
- el.innerHTML=sh;
- el.querySelectorAll('[data-it]').forEach(function(b){b.onclick=function(){
-  var hit=marks.filter(function(m){return m.kind==='bead'&&m.rank===+b.dataset.it;})[0];
-  var o=hit&&hit.o; PMPICK=(PMPICK===o)?null:o;
-  S.pin=(PMPICK&&typeof PMPICK==='object')?PMPICK:null; pmAnswer(PMPICK,false,true);};});
- el.querySelectorAll('[data-seat]').forEach(function(b){b.onclick=function(){
-  PMPICK=(PMPICK===b.dataset.seat)?null:b.dataset.seat; pmAnswer(PMPICK,false,true);};});
-}
-
 /* ============================================================
    BODY ANSWERS WHERE EVERYTHING ELSE ANSWERS.
 
@@ -141,6 +54,7 @@ function runSeatFlowDrill(k){
  var sd=FLOWSEAT.filter(function(p){return p.k===k;})[0];
  var ss=seats.filter(function(x){return x.p.k===k;})[0],bnd=K2B[k];
  if(!sd||!ss)return;
+ insDoor('seat',bnd);
  var seg=W.filter(function(n){return n.b===bnd;}).sort(function(a,b){return b.sq-a.sq;});
  var lws=SI.filter(function(l){return l.b===bnd;});
  /* AX8, closed 2 October. The eyebrow printed "Muladhara · 396 Hz · source

@@ -46,6 +46,26 @@ const fs = require('fs'), path = require('path'), os = require('os');
    reviewer must be able to see, so it carries its reason here, not in a
    commit message. */
 const MANUAL = {
+  /* 18 November, fix/example-profiles-birth. The seat that wrote it may not
+     edit the workflow, so its step was handed over as text. Whoever adds
+     `- { gate: exampleprofiles, timeout: 20, command: node tests/exampleprofiles.js }`
+     to gates-browser drops this line in the same commit, and this list's own
+     check fails until they do. */
+  'exampleprofiles.js': 'run by hand until its gates-browser step lands in deploy.yml',
+  /* 19 November, fix/vocab-point-charge-whole. Not wired in yet: it reads 15
+     passed, 5 failed on the merged tree, not the clean run a CI gate needs.
+     Two of the five are a glued-text defeat (the drill panel's .pm-eye
+     heading and the next element's text concatenate with no space in
+     document.innerText, so a word-boundary allow phrase right after a
+     heading, "Breaks the tension" and "Pride as false light" twice, never
+     matches); one is the self-test's own synthetic fixture, whose nested
+     span does not actually carry a percent figure in its own textContent
+     so the live scanner can never see what the fixture means to inject;
+     one is an internal object key, "seat", reached by the generic data
+     walker inside a JSON dump rather than read off the page a person sees.
+     Wire the real gates-browser step into deploy.yml and drop this line
+     once those are resolved and the file is confirmed clean. */
+  'vocab.js': 'reads 15 passed, 5 failed on the merged tree; not clean yet, see tests/vocab.js and this file\'s own comment',
 };
 
 /* YAML and bash share `#` as a comment. A `#` opens one at the start of a

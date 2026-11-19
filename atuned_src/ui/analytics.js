@@ -608,7 +608,7 @@ function anaAxisCard(r,nm){
  var h=anaHead(unp('axis','Axis'),c.nm+' toward '+c.opp,where+', '+esc(c.loc));
  var hv=S.charge[c.nm]||0, iv=S.replace[c.nm]||0;
  h+=anaKv([['Held',crBadge(c.seat,pct('charge',hv)||0,{size:'md',raw:fmtPct('charge',hv),title:c.nm+' held'})],
-  ['Installed',crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
+  [unp('installed','Installed'),crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
   ['Fetters',anaN(own.length)]]);
  h+='<p class="ad-p">'+unpSay('axis')+' Held is how much '+c.nm.toLowerCase()+' is stored. Installed is how much '
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
@@ -738,8 +738,13 @@ function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:
    said each figure a second way beside the sentence engine/data/gloss.js
    already gives it, which is the one table every other CQ and DQ tooltip
    reads. A getter, so the table is asked when the tile is drawn and not
-   when this file loads. The five below have no entry in that table, so
-   they keep their own words: a content gap, not a wiring one. */
+   when this file loads. THE CONTENT GAP CLOSED, 18 November: Self-read
+   shadow, Pull, Overshoot and Installed kept their own words here because
+   the table had no sentence for them, which left every other screen that
+   prints those words (the session card, the axis card, the pole drill, the
+   release ledger) nothing to ask. Their sentences live in gloss.js now and
+   these read them the way CQ and DQ do. Expression keeps its own words: the
+   table's bare expression is the numerology number. */
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
   get tip(){return unpackOf('cq');},
@@ -748,24 +753,27 @@ var ANA_MET={
   get tip(){return unpackOf('dq');},
   fig:function(r){return anaPctFig('dq',r.DQ,r);}},
  lawsq:{nm:'Self-read shadow',seat:'Root',txt:'SQ',
-  tip:'SQ is what your own law answers alone imply about shadow, CQ\'s own complement. It is not Shadow (DQ): DQ moves when you release what you actually carry, SQ only moves when a law answer changes.',
+  get tip(){return unpackOf('self-read shadow');},
   fig:function(r){return r.lawSQ===null?{p:0,raw:'–'}:anaPctFig('lawsq',r.lawSQ,r);}},
  pull:{nm:'Pull',seat:'Solar',txt:null,
-  tip:'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+  get tip(){return unpackOf('pull');},
   fig:function(r){return anaPctFig('pull',r.PULL,r);}},
  ex:{nm:'Expression',seat:'Throat',txt:null,
   tip:'Expression is your coherence with the pull taken off it, so it is how much of it reaches what you do.',
   fig:function(r){return anaPctFig('expression',r.EX,r);}},
  jq:{nm:'Overshoot',seat:'3rd Eye',txt:null,
-  tip:'Overshoot is an opposite feeling put in past the point where it helps, at 60% and above.',
+  get tip(){return unpackOf('overshoot');},
   fig:function(r){return anaPctFig('overshoot',r.JQ,r);}},
  pole:{nm:'Installed',seat:'Heart',txt:null,
-  tip:'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+  get tip(){return unpackOf('installed');},
   fig:function(r){return anaPctFig('pole',r.poleMean,r);}}};
 function anaMetRow(r,k){
  var M=ANA_MET[k], f=M.fig(r);
  return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'
-  +crBadge(M.seat,f.p,{size:'sm',raw:f.raw,title:M.nm})+'<span>'+esc(M.nm)+'</span><em>reading</em></button>';}
+  +crBadge(M.seat,f.p,{size:'sm',raw:f.raw,title:M.nm})
+  /* the word carries its sentence the way the tile's does, a data-tip on the
+     label and no tabindex, because the row is already the focusable button */
+  +'<span data-tip-k="'+esc(M.nm)+'" data-tip="'+esc(M.tip)+'">'+esc(M.nm)+'</span><em>reading</em></button>';}
 function anaMetCard(r,k){
  var M=ANA_MET[k]; if(!M)return null;
  var f=M.fig(r), h=anaHead('Reading',M.nm);
@@ -838,8 +846,11 @@ function anaSessCard(r,nm){
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
   +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
-  +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Super-complexes','ch',0)
-  +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
+  /* the four rungs carry their sentences beside Overshoot and Installed, so
+     one dotted word in a column of bare ones does not read as the odd row */
+  +row(unp('saboteur','Saboteurs'),'sab',0)+row(unp('complex','Complexes'),'cx',0)
+  +row(unp('hyper complex','Hyper-complexes'),'hy',0)+row(unp('super complex','Super-complexes'),'ch',0)
+  +row(unp('overshoot','Overshoot'),'jq',2,'overshoot')+row(unp('installed','Installed'),'pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
  return h;}

@@ -83,10 +83,23 @@ function summaryPanelHtml(){
   +smpImpressionsHtml(o)
   +'</div>';}
 function summaryPanelWire(h){
+ /* AN OVERSHOT PATTERN IS NEVER RELEASED, 18 November. ui/release.js says it in
+    its own words: the pattern is the installed opposite driven past where it
+    helps, and a release does not work on it. These two doors queued its
+    addresses all the same, which spent the person's release lines on places
+    holding nothing (12 of a hundred gift lines on three empty addresses,
+    measured on Sofia's Manipulator). They refuse it by name, the same refusal
+    the Insight rail makes (insWhySay), so no door to a run is more generous than
+    another. */
+ var refuse=function(o){
+  if(!o||!o.over)return false;
+  if(typeof status==='function'&&typeof insWhySay==='function')status(insWhySay('over'),'warn');
+  return true;};
  var all=h.querySelector('#smprelall');
  if(all)all.onclick=function(){
-  if(!S.pin||typeof relPick!=='function')return;
+  if(!S.pin||typeof relPick!=='function'||refuse(S.pin))return;
   relPick(leaves(S.pin).map(function(n){return n.i;}));};
  h.querySelectorAll('[data-smprel]').forEach(function(b){b.onclick=function(){
   var found=smpFind(b.getAttribute('data-smprel'));
+  if(found&&refuse(found))return;
   if(found&&typeof relPick==='function')relPick(leaves(found).map(function(n){return n.i;}));};});}

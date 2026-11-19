@@ -33576,14 +33576,27 @@ lead the same day. The Account header email from that commit is ported; the
 bypass is not.
 
 - [ ] **PB1. P2. Returning account bypass of the opening, parked at
-      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: profile sync is
-      dead code on main (`ui/auth.js:189` `typeof profiles==='function'` is
-      never true; `authProfileSync` always skips and would throw at `:222`).
-      Do not enable it as is: it uploads the whole profile, which contradicts
-      the privacy words. Needs a sync and consent design first.
+      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: device sync,
+      below (DS1). **This note was stale**: it said profile sync was dead
+      code because of a `:189` bug; that has since been replaced by a real,
+      wired sync (`authProfileSync`, `profileSyncImport`), gated behind one
+      constant, `PROFILE_SYNC_ENABLED=false`, in `ui/auth.js`. Still do not
+      enable it as is, same reason as before: it uploads the whole profile,
+      which contradicts the privacy words, and needs consent copy first.
 - [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
       `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
       does not take the record the server sent, and no `status()` line says so.
+- [ ] **DS1. Device sync, scheduled post alpha.** His words, 18 November:
+      "Add the device sync post alpha." See `DECISIONS.md`, "Device sync,
+      scheduled post alpha." The wiring already exists (`authProfileSync`,
+      `profileSyncImport`, `ui/auth.js`), one constant away
+      (`PROFILE_SYNC_ENABLED`). Real work left: write and get his approval
+      on the consent/privacy copy a sign in on a second device needs, flip
+      the constant, wire a one-time consent moment, then PB1 and PB2 above
+      unblock. Not alpha work; do not start building it before alpha closes.
+      Tonight's fix in this area is only the honest sign-in message
+      (`authSyncNote`, commit `4ef5c88c`) saying why a new device starts
+      empty, not the sync itself.
 
 ## Audit Dev 1 to 6, consolidated, 9 October
 
@@ -33904,6 +33917,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
   - **A real discrepancy, flagged, not resolved: `srcVoiceCanon` and `srcVoiceEvidenceBus`, marked completed on this tracker (#88, #89 above), do not exist anywhere on `main`.** Grepped the whole checkout, case insensitive, every extension, zero matches. Either that work lives on an unmerged branch or the completion mark was wrong. Dispatched to find out (SV12).
 - [x] **SV11 closed, 4 November. The 6 hyper-complex family records wired in, PR #179.** New `engine/data/hcxcard.js`, same pattern as the 33 saboteur cards, read by `ui/drills.js` into five labeled sections a person already recognizes from elsewhere in the app. Nothing authored, ported as written, with 3 sentences swapped off the project's own banned-word list ("framework"). Checked live in a real browser against the source text, word for word. Engine 6617/0, full browser gate suite clean. Draft, his to merge.
 - [x] **SV12 closed, 4 November. Found: real, sound, unmerged. The completion mark was wrong as a claim about `main`.** `srcVoiceCanon` and `srcVoiceEvidenceBus` are real: commit `639f2033` ("Wire the real 96-pattern content library into the sniffer's intelligence layer", 1 November) and commit `edd64721` ("Wire the evidence bus into the engine: the sniffer's intelligence layer now has a real graph/dashboard seam", 2 November), both on branch `source-voice-sniffer-readonly-20261031`, open draft PR #163 against `main`, never merged. Not a fabricated completion: the work was done and the commit messages are the near-exact source of #88/#89's wording. The gap is that it landed on a draft branch and the tracker was marked done as if it had landed on `main`. Verified directly, not from the PR's own claims: extracted `atuned_src` from the branch tip (`aa449a80`) into an isolated scratch build, re-ran `BUILD-engine.sh`, confirmed the rebuilt `engine.js` is byte identical to the one committed on the branch (the PR's own earlier "generated products are stale" warning no longer holds at tip), ran the full `tests/engine.js` suite against it clean: 6509 passed, 0 failed, 10 expected red, same convention as `main`'s own runs. Also ran the five Source-voice-specific tests (`source-voice-intelligence.js`, `source-evidence-bus.js`, `voice-sniffer.js`, `source-voice-narrative.js`, `source-voice-charge-cycle.js`) directly against that engine: all five pass. `check.py --objections` on that tree: 18 non-blocking findings, 0 that stop a build, same as `main`'s own standard. Not run, for lack of a browser toolchain and disk headroom in this pass: `tests/functional.js`, `tests/design.js`, `tests/collide.js`, `tests/funnel.js`, `tests/boot.js`, `tools/monitor.js`. Not merged in this pass: PR #163 is 77 commits, still marked draft by its own run of authors across every one of its iterations ("This PR must remain draft until all gates and runtime wiring are verified"), carries real open items beyond #88/#89 (no live production caller wires `srcVoiceIntelligence` into the voice UI yet, ancestry and CQDQ grading explicitly deferred, real microphone/audio behaviour unverified), and reads consent-scoped personal narrative evidence, which this project's own precedent (PR #149, Celestial Avatar, "explicitly not for merge without his review") treats as needing the owner's look before it lands on `main`, not a unilateral merge to close a tracker line. #88 and #89 are corrected: they were true as commits, false as a claim about `main`. Dispatched: his call whether PR #163 goes to review and merge now that its engine half is independently confirmed sound, or stays held with the rest of Source AI voice.
+- [x] **SV12 answered, 17 November. #88 and #89 are on a branch cut from `main` now, dormant and unmerged: `revive/source-voice-layer`.** His answer to the SV12 question: "Revive it and put a note next to it for when we review it. I don't quite know what it's doing anymore, the 96 pattern, but let's add it." Ported by file from `aa449a80` (the voice prototype's last commit, PR #163, closed 8 November), never by cherry pick, because most of those commits rewrite the generated products. What a person sees or hears: nothing. No file under `ui/` or `shell/` calls `srcVoiceCanon`, `srcVoicePattern`, `srcVoiceIntelligence` or `srcVoiceEvidenceBus`, so nothing prints, speaks, asks or writes from them. One adaptation: an entry `srcSafe` stops is read as nothing by the layer, with a test, because the prototype read it and handed packets for the ritual and release targets to the bus. The note he asked for sits at the top of every file the layer adds, and the open questions for the review are in `DECISIONS.md`, "The voice prototype's read only layer, revived, 17 November". Open: the five tests are not in a workflow yet, so `tools/orphans.js` fails them by name until the integrator adds the step. Not touched here, another seat's lines: SK11 and SK12 above still read `[ ]` though `srcOutputV1Candidate` is in `engine/evidence.js`.
 
 This round is not closed until SV1 through SV3 land with real commits and SV4, SV6 and SV8 have a seat or a ruling. Written here the same round it happened, per SU9.
 
@@ -34792,6 +34806,8 @@ scroll.
 
   **Re-checked 11 November, after the crisis door itself was removed** (his ruling, "if you can't fix it in 1 batch, turn it off in 1 batch": `crisisBtn`/`crisisReachBtn`/`crisisFloor` in `atuned_src/ui/crisis.js` now return `''`). The round's own handshake document assumed this would make #138 moot, reasoning there would be "no crisis conversation path left to time out after." That reasoning does not hold: the self-harm phrase itself still trips `srcSafe` and still renders `#stsafe`'s own line in the live conversation (that was never gated by the door, which only ever added a button beside it), so the same sequence this case describes still runs, now with no button in the row at all. Re-run clean on the post-removal build: the timeout still reproduces, at 390 only, unchanged. This **confirms** #138 was never caused by the door's own markup, and it is **not struck**. Still open, still not root caused.
 
+  **Root caused, 17 November (wave 2, track T5). Not a click race: Bank is not on screen at 390, and the fix is a product call, not a test one.** `tests/safepage.js` alone on `c2bf52a2` still printed the held line at 390 and nowhere else. Playwright's own log for the timeout reads "element is not visible" for all five seconds, not "intercepts pointer events", and the Bank button (`#stapply`, which is where Commit went on 13 November) measures 0 by 0 there. It sits inside `#stls`, and the stacked Full Dashboard hides that list (`shell/head.html`, `.st-flow:not([data-focus="read"]) .st-ls{display:none}`) until the flow's focus is `read`. On a phone the only thing that sets that is a tap inside the Imprints chart or list (`stWire`, `ui/storyui.js`), and the List door the same sheet shows for it (`.st-flow:not([data-focus="read"]) .st-open{display:inline-flex}`) has no element: nothing in `atuned_src` makes a `.st-open`. At 1600 the three columns sit side by side and Bank is on screen at once, which is why only 390 ever failed. The first note above, "measures fully visible", described a build where Commit lived in the bar. A tap on the chart (it stands about 2,460 px down the page at 390) brings Bank to 69 by 44 and the press then keeps the spoken words exactly, leaves the line, sends no request and lets the next entry start, so the four safety checks the held case had been hiding at 390 now run there and pass. What stays held is the finding itself: **a person on a phone in the Full Dashboard has no visible door to Bank.** That is the owner's call (restore a List door, or put Bank somewhere that is always on screen), so it is not built here and `ui/storyui.js` is untouched. Question for him, written open: "On a phone, Bank, the button that saves what you wrote, is hidden until you tap the Imprints chart, which sits at the very bottom of the page, and the 'List' button that used to open it is gone. Do you want that button back near the writing box, or do you want Bank itself to stay on screen?"
+
 ## Round WC, 14 November. The profile-switch audit he asked for, run as a workflow, 18 real findings confirmed, most of one shape fixed at the one root cause
 
 He asked, after the Dashboard widget round: "if i select a profile, review
@@ -34927,6 +34943,24 @@ same markup is visibly colourful and correct at 1600. Screenshots:
 side) in this round's own scratch directory. Whoever picks this up should
 start by comparing computed styles on one `.st-pl` pill between 1600 and
 390 rather than re-deriving the repro above.
+
+**Resolved, 17 November (wave 2, track T5): not a paint defect. The capture
+could not see the rail, and the rail is now held in pixels.** Measured on
+`c2bf52a2` at 390 on Lance 100, the same profile: the rail's own screenshot
+lights 49 percent of its pixels and all 54 of its pills draw something over
+their own ground; at 1600 it is 42 percent and the same 54. At 390 the
+document does not scroll, the body does (document scrollHeight 844, body
+scrollHeight 2639), and the rail sits at 1671 px, below the first screen.
+`tools/shots.js` takes the first screen only (`fullPage:false`), so a crop at
+the rail's coordinates falls outside the image and reads solid ground, which
+is the "no pill, no label" of the note above. The same note's 21,099
+characters were markup (`innerHTML.length`, 21,309 now), not text: the rail
+carries 60 characters of text, icon only, since 13 November. What was missing
+was a check that reads pixels, because every check on the rail read the DOM:
+`stRailPixelGate` in `tests/stfull.js` now counts lit pixels of the rail and
+of each pill at both widths, the way `tools/monitor.js` counts the Field's
+canvas, and was shown to fail on a build whose rail is clipped away with
+`clip-path` (box, markup and computed styles intact) before it was trusted.
 
 ## Round WD, 14 November. His "same family" check on the six widgets, and the two real breaks it found
 
@@ -35209,3 +35243,83 @@ the last of those re-run clean start to finish after an earlier attempt
 was discarded for running concurrently with a rebuild. `engine.js` is
 unaffected (no engine file touched this round) and stayed at its last
 confirmed-clean count.
+
+
+## Round WI, 18 November. The Avatar's Purpose view without rails, and Archetypes hidden
+
+His words: "for the avatar purpose, let's remove the left and right rail. And
+let's hide the archetype tab under avatar... And then let's add this to the
+plate." The ruling and the plain account of the hidden view are in
+`DECISIONS.md`, 18 November.
+
+- [x] WI1 Purpose draws neither rail and the centre takes the row, at 1600
+  and 390 (`shell/head.html`, beside the fold rules). Held by
+  `tests/avatarpurpose.js`.
+- [x] WI2 Archetypes hidden behind `AV_ARCH_SHOWN` in `ui/avatarui.js`: no
+  pill, the Discover Avatar card opens Becoming, the Character page's twelve
+  are marks, a stale view paints Becoming. Code, data and saved ratings kept.
+- [ ] WI3 Becoming's rails go when the Avatar page redesign takes them off
+  everywhere (in flight, strategy only). Not touched here.
+- [ ] WI4 His call, open: the 1 to 5 rating was the only place a person could
+  say how much of an archetype they are on the Avatar page, and the Impact box
+  and the "How it runs through you" rows are shown nowhere else. Bring them
+  back, move them, or let them go. Nothing replaces them now.
+- [ ] WI5 His call, open: with Archetypes hidden, the Discover Avatar card
+  opens Becoming. Becoming or Purpose.
+- [ ] WI6 Found on the way, not fixed: `avSig` (ui/avatarui.js) does not
+  include `AV.sub`, so a door that sets the view and calls only `render()`
+  leaves the old view painted. Only the Character door did that, and it is a
+  mark while the view is hidden; it matters again if `AV_ARCH_SHOWN` goes back
+  on.
+- [ ] WI7 Found on the way, not fixed: at 390 the Purpose figure's left label
+  "Community" is cut at the screen's left edge, before and after this change.
+- [ ] WI8 Found on the way, not fixed: on Purpose at 1600 without rails the
+  figure is top aligned and not sticky, so a block under it sits empty while
+  the right column runs on (the symmetry ruling of 16 November). A layout call
+  for the Avatar redesign.
+## Round WP, 18 November. The Psyche panel holds Matrix, Superego and Action
+
+His words, twice, are in DECISIONS.md, "The Psyche panel holds Matrix,
+Superego and Action, and nothing else". The first read of them, "strip the
+panel to a matrix", was wrong, and he said so: everything under the word
+Psyche is in scope, and the panel is Matrix, Superego as four symbols, and
+Action as six bars.
+
+- [x] **WP1. Built on `fix/psyche-panel-rework`, not yet merged.** The book's
+  levels, Child emotions with its sliders, The chain with Outside the chain,
+  and every sub heading and paragraph of Superego and Laws of Action are out of
+  the Field's left rail. Superego is four ring symbols in one row with a
+  percent each. Action is six bars drawn by `rbRow`, the bar the CQ, vitality,
+  energy and flow rows use. `tests/psychepanel.js` holds it.
+- [x] **WP2. SV22's Psyche half, the hold on PR #188 and the TA4 and TA8
+  tension are closed by WP1.** The 3 October ruling only asked to add the
+  superego, which stays, so there was never a clash. PR #188 and PR #203 can be
+  closed when this merges.
+- [x] **WP3. SW5 is superseded.** "A visual on the left rail showing the chain
+  connected": he says get rid of the chain.
+- [ ] **WP4. SW2 is still open and the sliders did not wait for it.** The funnel
+  quiz asks none of the nine child emotions and the Intake's Emotional axes feed
+  nothing, so nothing a person types moves their nine charges except the four
+  letter seed and their stories.
+- [ ] **WP5. Entitlement reads the dash for everybody. First question to him.**
+  Its address, the unnamed Root address, has no child emotion, and the charge
+  at it is 0 for all sixteen people the engine carries (measured 18 November).
+  Keep four with the crown unlit (built), show three, or wire it (he names a
+  child emotion for address 8, or moves the amplifier to address 38). His
+  ruling on that address is open; the costs are in DECISIONS.md.
+- [ ] **WP6. A reading of the four defences from a person's own words.** The
+  Superego figure is the charge held at the defence's place in the body. The
+  engine's lean reader already has word lists that touch Justification and
+  Entitlement; nothing counts Perfectionism or Obsession.
+- [ ] **WP7. One phrase reads as a full Action bar.** A floor before a figure
+  shows would have to move the gate drill and the Journal with it.
+- [ ] **WP8. Awareness the reading and Awareness the gate share a rail.** Each
+  hover says its own meaning. A rename is his call.
+- [ ] **WP9. The wheel's dot colours lost their legend.** Hovering a dot names
+  its tier. Whether the colours need a line of their own is open.
+- [x] **WP10. The skeptic's four findings on WP1, closed 18 November.** A press
+  on a Superego symbol opens a card headed with the defence and its sentence
+  (WP5 and WP6 stay his call); the Matrix caption carries the meaning of child
+  emotions; the field anchor's card says what it is; the entry for the chain
+  was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
+  any entry the round added that nothing asks for.

@@ -40,6 +40,11 @@ keep('*', r'\bbreaks? the tension\b', 'the Jester\'s idiom, a room\'s mood, not 
 keep('ui/sound.js', r'\ba tension line\b',
      'the sound map\'s note for a drawn line\'s tautness, a physical metaphor '
      'for the line, not charge at a place')
+keep('engine/data/patterns96.js', r'\btension\b',
+     'the revived voice prototype\'s 96 pattern library, not yet reviewed by '
+     'him (its own header says so); each mechanic field quotes a generic '
+     'behavioral-science term for anxiety relief in a reinforcement loop, '
+     'the research literature\'s word and not the body\'s own charge')
 
 # the codex line for the Shadow pole, quoted, which the unpack table holds
 # phrase by phrase to its meaning (POLE_MEANS)

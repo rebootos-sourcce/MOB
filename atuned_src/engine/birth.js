@@ -103,6 +103,67 @@ function lifePath(d){
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
  return v;}
+/* A WHOLE AGE FROM A BIRTH DATE, counted on the calendar: the years since,
+   less one if the birthday has not come round yet in that year. now is a
+   'YYYY-MM-DD' or a Date, and today when it is left out. Null for a date
+   that is not a day, or a birth after now. */
+function bornAge(d,now){
+ var b=bornYMD(d); if(!b)return null;
+ var n;
+ if(typeof now==='string'){n=bornYMD(now); if(!n)return null;}
+ else{var t=now instanceof Date?now:new Date(); n=[t.getFullYear(),t.getMonth()+1,t.getDate()];}
+ var a=n[0]-b[0]-((n[1]<b[1]||(n[1]===b[1]&&n[2]<b[2]))?1:0);
+ return a>=0?a:null;}
+/* THE AGE A WORKED EXAMPLE SHOWS IS READ OFF ITS BIRTH, 18 November. Each
+   row typed an age beside a birth date in the table below it, and the
+   calendar walked past two of them: Wren was typed 66 and born 1959-04-17,
+   so 67 on the day it was checked, and Abraham 74 against 1951-06-29, so 75.
+   Tomas, typed 58 and born 1967-11-22, was four days from joining them. A
+   typed number the calendar grows past is the defect CLAUDE.md records nine
+   times over. The typed age is kept only for a row with no birth. */
+function exampleAge(p,now){
+ if(!p)return null;
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[p.nm]:null;
+ var a=bt?bornAge(bt.d,now):null;
+ return a!==null?a:(typeof p.age==='number'?p.age:null);}
+/* A WORKED EXAMPLE'S BIRTH AND NAME, IN THE RECORD'S OWN SHAPE, 18 November.
+   BIRTH and FULLNAME are keyed by the example's name and the record was built
+   blank beside them, so the rail read Sofia's sky off the table while the
+   Avatar's own birth fields, which read the record, sat empty under the same
+   name: two truths about one person. loadP writes this onto the scratch
+   record when it first builds it, so every reader sees the one birth. The
+   table marks an untimed birth by an empty t and the record by timeUnknown,
+   and this is the one place the two shapes meet. Null for a name with no
+   birth, which is the person's own You. */
+function exampleWho(nm){
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[nm]:null; if(!bt)return null;
+ var fn=((typeof FULLNAME!=='undefined'&&FULLNAME[nm])||'').split(' ').filter(Boolean);
+ return {first:fn.length?fn[0]:'', middle:fn.length>2?fn.slice(1,-1).join(' '):'', last:fn.length>1?fn[fn.length-1]:'',
+  born:{date:bt.d, time:bt.t||'', place:bt.p||'', zone:bt.z||'', timeUnknown:!bt.t}};}
+/* ONE DOOR FOR A WORKED EXAMPLE'S SCRATCH RECORD, 18 November. Two places
+   build it, whichever runs first: loadP (ui/personas.js) when the example is
+   picked, and pracRead (ui/practitioner.js) when the Clients page draws its
+   ten. loadP seeded the birth, the name, the intake answers and the purpose;
+   pracRead seeded the intake answers alone. Each only builds a record when
+   none exists, so on a page where Clients was opened first loadP found
+   pracRead's record and skipped its own seeding, and every client's Avatar
+   read an empty birth while the rail, which reads BIRTH by name, printed the
+   chart. QA found it on Sofia: #wdate '' beside 1985-03-14. Both doors call
+   this now, so the record is the same whichever is opened first.
+   The purpose is the same rule as S.addr in loadP: an example's own data
+   lives on its own PEOPLE row or defaults to the blank's, which once meant
+   every example showed the signed-in account's own purpose under a
+   stranger's name. Copied only when the record is first built, so an edit
+   made while looking at an example is never clobbered by a second visit.
+   The person's own You (p.you) gets no birth or name: it has none. */
+function exampleRecord(p){
+ var pr=blankProfile(p.nm);
+ if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
+ if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+ var ew=p.you?null:exampleWho(p.nm);
+ if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
+  pr.who.born=ew.born;}
+ return pr;}
 function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
 function chineseElement(y){ return CELEM[y%10]; }
 /* The Chinese year turns at Li Chun, when the sun reaches 315 degrees,
@@ -119,7 +180,13 @@ function chineseYear(bt){
   var diff=((sunLon(lc)-315+540)%360)-180;
   if(Math.abs(diff)<1e-4)break;
   lc-=diff/0.9856474;}
- return b.jd<lc ? y-1 : y;}
+ /* THE YEAR GOES THROUGH atSpan LIKE EVERY OTHER READING, 18 November. It
+    compared the noon guess with Li Chun and ignored the window, so an untimed
+    birth on the Li Chun day was handed an animal the hour decides:
+    2023-02-04 in London with no time read Rabbit, where 01:00 that day is
+    Tiger and 04:00 is Rabbit. Null when the two ends of the window fall
+    either side of Li Chun, which the panel prints as needing a birth time. */
+ return atSpan(b,function(jd){return jd<lc ? y-1 : y;});}
 /* Human Design. The personality gate is the sun at birth and the design
    gate is the sun 88 degrees of arc earlier, and both of those are real
    and computed here.
@@ -169,6 +236,18 @@ function geneKey(b){
 function spiritual(name){
  var bt=BIRTH[name]; if(!bt) return null;
  return spiritualOf(bt);}
+/* A PROFILE'S OWN BIRTH, IN THE SHAPE spiritualOf READS. Intake saves
+   {date,time,place,zone,timeUnknown} to who.born and spiritualOf reads
+   {d,t,p,z}, and the translation between them was written out by hand three
+   times in the UI (renderSpirit, renderRootSum, sumBirth) and not at all at
+   the one call that needed it, converge, so the convergence never ran for a
+   real person. One translation, here, so a fourth reader cannot get a fifth
+   shape. A time the person said they do not know is no time, whatever the
+   field still holds. Null for no date, because no date is no birth. */
+function bornAsBirth(p){
+ var bn=p&&p.who&&p.who.born;
+ if(!bn||!bn.date)return null;
+ return {d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''};}
 /* split out so a live person's own intake can be read the same way a
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
@@ -197,17 +276,34 @@ function spiritualOf(bt){
      settles it is a time zone, so that is what the reading asks for. An
      untimed record's span is its day, and a zone does not settle that. */
   needsZone:!!(b&&b.timed&&b.span&&!b.zone),
-  chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
+  /* null when the window straddles Li Chun (chineseYear above): null%12 is
+     0, which would have printed Monkey for a year nobody read */
+  chinese:cy===null?null:CHINESE[((cy%12)+12)%12], celem:cy===null?null:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
-   where they disagree the instrument says so rather than picking a winner. */
-function converge(name,r){
- var e=spiritual(name); if(!e) return null;
- var agree=[],differ=[];
+   where they disagree the instrument says so rather than picking a winner.
+   sp is a reading the caller already holds. Every Summary caller held the
+   person's own reading off their Intake and then asked this for a name, which
+   only the BIRTH table of reference cases answers, so for anybody real it
+   returned null and the comparison never printed however much birth they
+   typed. A reading passed in is used as it is; without one, the name lookup
+   is the default it always was, and a name nobody owns is still null. */
+function converge(name,r,sp){
+ var e=sp||spiritual(name); if(!e) return null;
+ var agree=[],differ=[],open=[];
+ /* AN UNREAD SUN IS A GAP, NOT A DIFFERENCE. Only a reference case reached
+    this while it took a name, and every one of them has a time and a place.
+    A person's own birth can be a date alone on a day the sun changed sign,
+    and then sunSign is null and the element and the mode with it. Compared
+    as they stood, null never equals a root, so the reading said "birth
+    element points null" and counted it against them. What settles the day
+    is what the reading asks for, chosen the way renderSpirit chooses it. */
+ var sunWhy=e.needsTime?'a birth time':e.needsZone?'a birth time zone':'a time the clocks did not change at';
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
+ if(!e.root) open.push('the birth element, which needs '+sunWhy);
+ else if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
  else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
  var archNow=(ARCH[r.pi]||{}).nm||'';
  if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
@@ -217,7 +313,8 @@ function converge(name,r){
     for the reason given below for the design type, and scoring it as the
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
- if(!fieldOpen){
+ if(!e.sunMode) open.push('the birth mode, which needs '+sunWhy);
+ else if(!fieldOpen){
   if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
   else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
@@ -226,7 +323,6 @@ function converge(name,r){
     there is nothing to compare, so it goes in a third bucket. A gap is
     not a disagreement, and scoring it as one made an absent input look
     like evidence against the person. */
- var open=[];
  if(e.hd.unresolved)open.push('Human Design type, which needs the full bodygraph');
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
@@ -238,6 +334,10 @@ function converge(name,r){
     +(r.benign?'expanding':'contracting')+', point the same way');
   else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
+ /* an untimed day can straddle a line of the design gate, and then there is
+    no line. It dropped out of the count without a word, which is the same
+    absent input going unsaid, so it is named with what would settle it. */
+ else open.push('the design line, which needs '+sunWhy);
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
   /* reported as a fraction, because three of four and seventy five

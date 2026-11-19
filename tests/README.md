@@ -161,6 +161,40 @@ run.
 Since round SK it also runs on a page whose ask skips the question check, and
 that must fail too.
 
+Talk with nothing said has its own gate, added 18 November after five reports
+from one screenshot of the Dashboard.
+
+    NODE_PATH=/opt/node22/lib/node_modules CHROME=<path to chromium> node tests/talksilence.js
+    SHOTS=dir ... node tests/talksilence.js                      and the pictures
+    ATUNED_FILE=other.html node tests/talksilence.js             a different build
+    TS_ONLY=l1,blank,jump  ... node tests/talksilence.js         one group of three
+
+`tests/talksilence.js` holds that pressing Talk and saying nothing leaves the
+circle at rest (the lit pixels of the real canvas against its own rest, and the
+face's own `engaged`, word and reading), while the greeting is still asked for
+and still plays; that a recogniser result with no word in it is not a turn and
+that yes, no, I don't know, sad, the spoken yes (mm-hmm, uh huh, mhm, hmm), a
+final of only stars (which keeps its hidden-word line), a sentence that holds
+an um or a the, and the safety door's own words (alone, behind a hesitation,
+and every phrase in SAFE_WORDS) still are; that every stand-in result reached
+a live recogniser, because one refused between restarts would let a check on
+"nothing landed" pass on nothing; that no word of any kind is on the page
+after Talk that was not there before it (the set of visible text nodes, read
+before and after, at 1600 and 390), the person's own interim words still show,
+and the circle does not move for them; that the bar line is
+neither drawn nor logged, a hidden polite region tells a screen reader the
+microphone opened and closed, and a real failure still reaches the dock; that
+the circle has no hover card (and Talk's own still opens one, the positive
+control) while its key text stays in the data; and that the round Commit button
+never leaves its place in forty seconds of samples every 50 milliseconds, Talk
+on at 1600 and 390 and Talk off, with a recogniser that goes quiet and ends
+itself the way Chrome's does. The jump detector is first run on a page that
+injects a jump every ten seconds and must flag it, and a real sentence must
+still wake the circle, so the probes are shown to see what they look for. Run on
+the build from before the fix it fails every check that names one of the five
+reports, and run on a copy of the fixed build with one fix undone, the check
+for that fix fails. Read the counts off the run.
+
 Source AI's evidence ledger and question check, the Journal Mode blueprint's
 P0, are engine code and have their own headless gate.
 
@@ -180,6 +214,60 @@ byte copy held to the package manifest's checksum: what holds is asserted, and
 what is known not to hold (tense, the conditional, done to read as did) is
 expected red, so a fix is noticed. It prints how many of the asks the story bank
 produces pass as written and what they become. Read the counts off the run.
+
+## The anatomy gate, the Body page's table
+
+Added 18 November. Headless, no browser, under a second, in gates-fast. Until
+then nothing read `ANAT`, `BMPROP` or a nerve name, and
+`proto/anatomy-ref/measure.js`, which the figure data and the anatomy skill both
+said re-derives the chart rows, was run by no build and no job.
+
+    ./atuned_src/BUILD-engine.sh
+    node tests/anatomy.js
+
+It reads `engine.js` (the table, the outline, the names), `atuned_src/ui/map.js`
+(`BMPROP` and `BMSPINE`, which live with the renderer) and the research data
+under `proto/`. It holds: every row has one source and a sentence; every
+somatic address is placed once, by a derived coordinate, by `BMPROP`, or filed
+with none (an id twice in `NODES`, twice in a table, or in no table is named by
+number), and one filed with none is one `research.js` says names no structure;
+every placed point is inside the body outline the page clips to; a place of two
+points mirrors, and a single point off the midline is one the gate names as one
+sided; no two addresses land on one point unless the table says they share a
+structure; every somatic address has a nerve name, the four anchors have none,
+the corrected names are pinned, and the addresses that still name no real
+structure are `NOSTRUCT` less the ones `nodes.js` records as corrected, read
+off the run; the spine and head rulers agree with each other and with the
+research; and every `ANAT` row that stands on a reference chart re-derives from
+it (the geometry is `proto/anatomy-ref/derive.js`, which `measure.js` calls too).
+
+The addresses with no derived coordinate are not passed off as measured. The
+gate prints, read off the run, how many of them there are, that the `BMPROP`
+ones are hand placed estimates from standard anatomy (the heading in `map.js`
+calls them "the addresses nobody has measured"), and that they are held to the
+outline, the mirror and being placed once, never to a measurement, because
+there is none. It also says plainly that "54 on each side" is a statement about
+the book: the table gives an address a place, not a side, so the gate checks
+that each pair mirrors and each single point off the midline is a named one
+sided organ, and does not pretend to count sides.
+
+The last group damages a copy of the real tables one way at a time, and each
+damage must be named by address (the numbers that follow the word address, so a
+coordinate such as 7.80 cannot stand in for address 7), so a check that cannot
+fail is caught. Set
+`ANATOMY_VERBOSE=1` to see the sentence each one produces. `ENGINE` and
+`ANATOMY_MAP` point the gate at a damaged build, which is how its first run was
+checked against the real files: a copy of `map.js` or `engine.js` with one
+address moved outside the outline, one pair with a half nudged or deleted, one
+address dropped, one id twice, or one chart row moved half a unit, run through
+`ENGINE=... ANATOMY_MAP=... node tests/anatomy.js`, exits 1 and names it.
+
+One expected red is held open on purpose and printed with its numbers: the two
+spine rulers (`ANATSPINE`, which places addresses, and `BMSPINE`, which the
+pain lines enter the spine by) give different heights for one vertebra. Its
+ceiling is `expected_red_max` in `tests/floors.json`. Checks are counted by
+group, not by address, so the count does not move when the table grows. Read
+every count off the run.
 
 ## Becoming S1 to S3, Knowledge by seat, Summary's lead row
 

@@ -488,7 +488,311 @@ async function stParityGate(browser,FILE,ok,booted){
   ok(errs.length===0,wn+': no page error on the way, '+errs.join(' | '));
   await p.close();}}
 
-module.exports={stFullGate,stParityGate};
+/* ============================================================
+   THE THREE CORNER FOLDS, 17 November. His annotated screenshot of the Full
+   Dashboard named three boxes that close: the left rail "closes left", the
+   Release column "closes right", and "the down panel with all the widgets
+   closes down". They shipped (ui/ui.js colFold for the rail, ui/storyui.js
+   zFoldWire and rowFoldWire for the other two, keys lcols, stzfold and
+   strowfold) and only the rail's own press had a check, at 1600 alone, in
+   stFullGate item 8. The other two had none, and nothing held what a person
+   actually sees when one of them is shut: the other columns take the width,
+   the picture of the face stays on its column's axis, and the choice is still
+   there after a reload.
+
+   THE BUG THIS EXISTS FOR, the same day. Shut, body.st-zshut laid three grid
+   tracks onto .st-flow with !important, and the mini dashboard is the same
+   .st-flow with ONE track, so the face sat in the first of three and read off
+   centre ("It's no longer centered", his words). Every check there was green,
+   because none of them measured the face against the page with the column
+   shut. The mini block below does, at both widths.
+
+   EVERY PRESS IS A REAL POINTER PRESS, as in stFullGate. Both widths: the
+   desktop flow lays its columns side by side and the phone stacks them, so
+   what "takes the width" means is read off the flow's own display, and the
+   gate says which of the two it measured.
+
+   PER CONTROL, A LOADED PROFILE, THE FULL VIEW:
+     1  it arrives open: no body class, no stored answer, aria-expanded true,
+        a 44 pixel target, and the face on its column's axis
+     2  pressed, the class is on, aria-expanded false, the label says open,
+        its own key reads shut, the other two controls and keys did not move
+     3  the layout answers: the freed width or height goes to what is left,
+        the face stays on its column's axis
+     4  Dashboard turned off, the mini view with the control still shut keeps
+        the face on the flow's own axis and its one track
+     5  a reload keeps it shut, on the same layout
+     6  a profile change and back keeps it shut, and its control says so
+     7  pressed again it opens and every box is where it was
+   and the three shut at once, then open at once. Every number a check
+   compares with is read off the same page in the same run.
+   ============================================================ */
+async function stFoldGate(browser,FILE,ok,booted){
+ const WID=[[1600,1000,'desktop'],[390,844,'phone']];
+ const READ=['My chest was tight and I felt scared when he shouted at me. I was angry and ashamed after.',
+  'I am scared all the time and my legs shake.'];
+ const TOL=2;
+ const near=(a,b,t)=>Math.abs(a-b)<=(t===undefined?TOL:t);
+ /* the face stands on its column's axis. Read as the centre of the face
+    against the centre of the column that carries it, so a column that grows or
+    shrinks cannot be mistaken for a face that moved. */
+ const face=(s)=>{const f=[];
+  if(!s.uni||!s.uni.shown)f.push('the face is not on screen');
+  else if(!s.colw||!near(s.uni.ax,s.colw.ax))f.push('the face is '+Math.round(s.uni.ax-(s.colw?s.colw.ax:0))+' px off its column\'s axis');
+  return f;};
+ /* the same arrangement, to within a couple of pixels. Lefts and widths, and
+    the heights of the boxes named in tall: a press scrolls the phone's page,
+    which moves every top, and a reload changes the page's own chrome (the
+    first visit's strip under the stage is gone on the next one, measured at
+    1600: the stage 824 tall on the first load and 913 on the reload), which
+    moves every height that is only the flow's share of what is left. A box
+    that is its own content's height, the widgets row and at 390 the stacked
+    columns, is compared across a reload too. */
+ const SHAPE=['stage','flow','colw','colb','colz','row','lcol'];
+ const sameShape=(a,b,tall)=>{const f=[]; tall=tall||[];
+  SHAPE.forEach(k=>{const x=a[k], y=b[k];
+   if(!x&&!y)return;
+   if(!x||!y||x.shown!==y.shown){f.push(k+' is '+(y&&y.shown?'shown':'hidden')+' now and was '+(x&&x.shown?'shown':'hidden'));return;}
+   if(!x.shown)return;
+   const th=tall.indexOf(k)>=0;
+   if(!near(x.l,y.l)||!near(x.w,y.w)||(th&&!near(x.h,y.h)))
+    f.push(k+' was '+Math.round(x.l)+'+'+Math.round(x.w)+(th?'x'+Math.round(x.h):'')+' now '+Math.round(y.l)+'+'+Math.round(y.w)+(th?'x'+Math.round(y.h):''));});
+  return f;};
+ const own=side=>side==='stack'?['row','colz','lcol']:['row'];
+ /* WHAT EACH CONTROL SHUTS, as a list of what is wrong. side is 'row' when the
+    flow lays columns beside each other and 'stack' when it stacks them. */
+ const LAY={
+  l:(a,b,side)=>{const f=[];
+   if(!b.left||b.left.shown)f.push('the rail still draws its sections');
+   if(side==='row'){
+    if(!(b.stage.w-a.stage.w>=a.lcol.w-b.lcol.w-4))f.push('the stage took '+Math.round(b.stage.w-a.stage.w)+' px of the '+Math.round(a.lcol.w-b.lcol.w)+' px the column gave back');
+    if(!(b.lcol.w<=b.ctl.l.w+16))f.push('the shut column is '+Math.round(b.lcol.w)+' wide round a '+Math.round(b.ctl.l.w)+' px control');
+    if(!(b.colw.w>a.colw.w))f.push('the face column did not grow, '+Math.round(a.colw.w)+' to '+Math.round(b.colw.w));
+   }else{
+    if(!(b.lcol.h<=b.ctl.l.h+16&&b.lcol.h<a.lcol.h))f.push('the shut column is '+Math.round(b.lcol.h)+' tall, was '+Math.round(a.lcol.h));}
+   return f.concat(face(b));},
+  z:(a,b,side)=>{const f=[];
+   if(b.rel&&b.rel.shown)f.push('Release still draws');
+   if(!(b.colz.w>0))f.push('the shut Release column has no box');
+   if(side==='row'){
+    const freed=a.colz.w-b.colz.w;
+    if(!(freed>0))f.push('the column gave back no width, '+Math.round(a.colz.w)+' to '+Math.round(b.colz.w));
+    if(!(b.colz.w<=b.ctl.z.w+16))f.push('the shut column is '+Math.round(b.colz.w)+' wide round a '+Math.round(b.ctl.z.w)+' px control');
+    ['colw','colb'].forEach(k=>{if(!(b[k].w-a[k].w>=freed/2-4))f.push(k+' took '+Math.round(b[k].w-a[k].w)+' px of the '+Math.round(freed)+' px given back, half is '+Math.round(freed/2));});
+    if(!near(b.colw.w,b.colb.w))f.push('the two columns that took it are '+Math.round(b.colw.w)+' and '+Math.round(b.colb.w)+' wide, not even');
+    if(!near(b.colz.r,b.flow.r,1))f.push('the shut column ends '+Math.round(b.colz.r-b.flow.r)+' px from the flow\'s edge');
+   }else{
+    if(!(b.colz.h<=b.ctl.z.h+16&&b.colz.h<a.colz.h))f.push('the shut column is '+Math.round(b.colz.h)+' tall, was '+Math.round(a.colz.h));
+    if(!near(b.ctl.z.ax,b.flow.ax))f.push('the control is '+Math.round(b.ctl.z.ax-b.flow.ax)+' px off the page\'s axis');}
+   return f.concat(face(b));},
+  r:(a,b,side)=>{const f=[];
+   if(!(a.minis>0&&a.minis===a.minisAll))f.push('the row did not arrive whole, '+a.minis+' of '+a.minisAll+' cards');
+   if(b.minis!==0)f.push(b.minis+' cards still draw in the shut row');
+   if(!near(b.row.h,b.ctl.r.h))f.push('the shut row is '+Math.round(b.row.h)+' tall round a '+Math.round(b.ctl.r.h)+' px control');
+   if(!near(b.ctl.r.r,b.row.r))f.push('the control is '+Math.round(b.row.r-b.ctl.r.r)+' px in from the row\'s right edge');
+   const freed=a.row.h-b.row.h;
+   if(!(freed>0))f.push('the row gave back no height');
+   else if(side==='row'){ if(!(b.colw.h-a.colw.h>=freed-4))f.push('the columns took '+Math.round(b.colw.h-a.colw.h)+' px of the '+Math.round(freed)+' px given back');}
+   else if(!(a.flow.h-b.flow.h>=freed-4))f.push('the page shrank '+Math.round(a.flow.h-b.flow.h)+' px for the '+Math.round(freed)+' px given back');
+   return f.concat(face(b));}};
+ const FOLDS=[
+  {nm:'the left rail',id:'lfold',c:'l',key:'lcols',cls:'lshut'},
+  {nm:'the Release column',id:'zfold',c:'z',key:'stzfold',cls:'st-zshut'},
+  {nm:'the widgets row',id:'rowfold',c:'r',key:'strowfold',cls:'st-rowshut'}];
+ for(const [w,h,wn] of WID){
+  const p=await browser.newPage({viewport:{width:w,height:h}});
+  const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
+  await p.goto(FILE); await booted(p);
+  const snap=()=>p.evaluate(()=>{
+   const B=document.body.classList, rd=x=>Math.round(x*10)/10;
+   const R=e=>{if(!e)return null; const cs=getComputedStyle(e), r=e.getBoundingClientRect();
+    return {l:rd(r.left),r:rd(r.right),w:rd(r.width),h:rd(r.height),ax:rd((r.left+r.right)/2),
+     shown:cs.display!=='none'&&cs.visibility!=='hidden'&&r.width>0&&r.height>0};};
+   const Q=s=>R(document.querySelector(s));
+   const ctl=id=>{const e=document.getElementById(id); if(!e)return null;
+    const o=R(e); o.exp=e.getAttribute('aria-expanded'); o.label=e.getAttribute('aria-label')||''; return o;};
+   const fl=document.getElementById('stflow'), grid=fl&&getComputedStyle(fl).display==='grid';
+   const minis=[...document.querySelectorAll('#stmini6>.st-mini')];
+   return {
+    cls:{l:B.contains('lshut'),z:B.contains('st-zshut'),r:B.contains('st-rowshut'),full:B.contains('st-full')},
+    key:{l:STORE.get('lcols')||null,z:STORE.get('stzfold')||null,r:STORE.get('strowfold')||null},
+    ctl:{l:ctl('lfold'),z:ctl('zfold'),r:ctl('rowfold')},
+    stage:Q('#stage'),flow:Q('#stflow'),colw:Q('.st-colw'),colb:Q('.st-colb'),colz:Q('.st-colz'),
+    uni:Q('#stuni'),row:Q('#stmini6'),lcol:Q('#lcol'),left:Q('#stleft'),rel:Q('#strel'),
+    simple:!!document.querySelector('#stflow.st-simple'),
+    side:grid?'row':'stack', tracks:grid?getComputedStyle(fl).gridTemplateColumns.split(' ').length:null,
+    minis:minis.filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}).length, minisAll:minis.length,
+    vw:innerWidth};});
+  /* a transition is a moving target, so a reading is taken when two in a row agree */
+  const settle=async()=>{let prev=null, cur=null;
+   for(let i=0;i<30;i++){cur=JSON.stringify(await snap()); if(cur===prev)break; prev=cur; await p.waitForTimeout(140);}
+   return JSON.parse(cur);};
+  const prep=()=>p.evaluate(async a=>{
+   loadP(0); a.forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
+   ST_TEXT=''; ST_PARSED=null;
+   setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=false; render(); stRender();
+   await new Promise(r=>setTimeout(r,500));},READ);
+  const goFull=async(on)=>{
+   const now=await p.evaluate(()=>!!STV.dash);
+   if(now!==on)await press(p,'#stdash',ok,wn+': Dashboard');
+   return settle();};
+  const pick=async(v)=>{await p.selectOption('#psel',v,{force:true}); await p.waitForTimeout(350); return settle();};
+  await prep();
+  let base=await goFull(true);
+  const other=await p.evaluate(()=>[...document.querySelectorAll('#psel option')].map(o=>o.value).find(v=>v!=='0'));
+  for(const f of FOLDS){
+   const at=wn+' '+f.nm+': ';
+   const oth=FOLDS.filter(g=>g!==f);
+   /* 1. arrives open, a person who has never chosen */
+   const s0=await settle(), side=s0.side;
+   const c0=s0.ctl[f.c];
+   ok(s0.cls.full&&!s0.cls[f.c]&&s0.key[f.c]!=='shut'&&!!c0&&c0.shown&&c0.exp==='true'&&/^Close/.test(c0.label)
+    &&c0.w>=44&&c0.h>=44&&face(s0).length===0&&(wn==='desktop')===(side==='row'),
+    at+'arrives open, a 44 pixel target, the face on its axis, the flow laid '+side+'ways, '+JSON.stringify({cls:s0.cls,key:s0.key[f.c],ctl:c0,face:face(s0),side}));
+   /* 2. one real press shuts it, and only it */
+   await press(p,'#'+f.id,ok,at+f.nm+' fold');
+   const s1=await settle(), c1=s1.ctl[f.c];
+   const moved=oth.filter(g=>s1.cls[g.c]!==s0.cls[g.c]||s1.key[g.c]!==s0.key[g.c]).map(g=>g.id);
+   ok(s1.cls[f.c]&&!!c1&&c1.exp==='false'&&/^Open/.test(c1.label)&&s1.key[f.c]==='shut'&&c1.w>=44&&c1.h>=44&&moved.length===0,
+    at+'pressed, it is shut, says so, writes '+f.key+' shut, and moves nothing else, '+JSON.stringify({cls:s1.cls[f.c],ctl:c1&&{exp:c1.exp,label:c1.label,w:c1.w,h:c1.h},key:s1.key[f.c],moved}));
+   /* 3. what a person sees */
+   const bad=LAY[f.c](s0,s1,side);
+   ok(bad.length===0,at+'the layout answers on the '+side+' flow, '+bad.join('; '));
+   /* 4. THE MINI VIEW WITH IT STILL SHUT, the 17 November bug */
+   const sm=await goFull(false);
+   const mbad=face(Object.assign({},sm,{colw:sm.flow}));
+   ok(!sm.cls.full&&sm.simple&&sm.cls[f.c]&&mbad.length===0&&(sm.tracks===null||sm.tracks===1),
+    at+'on the mini view the face stays on the page\'s axis with it shut, one track, '+JSON.stringify({full:sm.cls.full,simple:sm.simple,shut:sm.cls[f.c],tracks:sm.tracks,mbad}));
+   await goFull(true);
+   /* 5. a reload */
+   await p.reload({waitUntil:'load'}); await booted(p); await prep(); await goFull(true);
+   const s3=await settle(), c3=s3.ctl[f.c];
+   const d3=sameShape(s1,s3,own(side));
+   ok(s3.cls[f.c]&&s3.key[f.c]==='shut'&&!!c3&&c3.exp==='false'&&d3.length===0,
+    at+'a reload keeps it shut, on the same layout, '+JSON.stringify({cls:s3.cls[f.c],key:s3.key[f.c],exp:c3&&c3.exp,d3}));
+   /* 6. a profile change and back */
+   const sa=await pick(other), sb=await pick('0');
+   const cb=sb.ctl[f.c];
+   ok(sa.cls[f.c]&&sa.key[f.c]==='shut'&&sb.cls[f.c]&&sb.key[f.c]==='shut'&&!!cb&&cb.exp==='false',
+    at+'another profile and back keeps it shut, '+JSON.stringify({other:{cls:sa.cls[f.c],key:sa.key[f.c]},back:{cls:sb.cls[f.c],key:sb.key[f.c],exp:cb&&cb.exp}}));
+   /* 7. open again */
+   await press(p,'#'+f.id,ok,at+f.nm+' fold, again');
+   const s4=await settle(), c4=s4.ctl[f.c], d4=sameShape(s0,s4,own(side));
+   ok(!s4.cls[f.c]&&!!c4&&c4.exp==='true'&&/^Close/.test(c4.label)&&s4.key[f.c]==='open'&&d4.length===0,
+    at+'pressed again it opens, writes open, and every box is where it was, '+JSON.stringify({cls:s4.cls[f.c],exp:c4&&c4.exp,key:s4.key[f.c],d4}));}
+  /* ALL THREE AT ONCE, then all three open */
+  for(const f of FOLDS)await press(p,'#'+f.id,ok,wn+' all three: '+f.nm);
+  const sx=await settle();
+  const xbad=face(sx);
+  ok(FOLDS.every(f=>sx.cls[f.c]&&sx.key[f.c]==='shut'&&sx.ctl[f.c]&&sx.ctl[f.c].exp==='false')&&xbad.length===0&&sx.flow.r<=sx.vw+1,
+   wn+' all three shut: every class, key and control agrees, the face on its axis, nothing past the screen, '+JSON.stringify({cls:sx.cls,key:sx.key,face:xbad,flowRight:sx.flow.r,vw:sx.vw}));
+  for(const f of FOLDS)await press(p,'#'+f.id,ok,wn+' all three open: '+f.nm);
+  const sy=await settle(), dy=sameShape(base,sy,own(base.side));
+  ok(FOLDS.every(f=>!sy.cls[f.c]&&sy.key[f.c]==='open')&&dy.length===0,
+   wn+' all three open again, every box where it was, '+JSON.stringify({cls:sy.cls,key:sy.key,dy}));
+  ok(errs.length===0,wn+': no page error on the way, '+errs.join(' | '));
+  await p.close();}}
+
+/* ============================================================
+   THE JOURNAL'S LEFT RAIL DRAWS SOMETHING, AT 390 AS AT 1600, 17 November.
+   TASKS.md, "Found in passing, 14 November": at 390 the rail (#stleft) had a
+   non zero box and 21,099 characters of real markup, and a crop of exactly
+   that region was solid background, no pill and no label. It was never root
+   caused and it predated the rail's redesign, and every check on the rail in
+   this file reads the DOM (counts, titles, computed styles, boxes), so a rail
+   that was all there and drew nothing would have passed every one of them.
+   This one reads pixels.
+
+   WHAT IT FOUND, 17 November, on the build in hand: the defect does not
+   reproduce. At 390 on Lance 100, the heaviest rail the roster draws, the
+   rail's own screenshot lights about half of its pixels, and every pill in it
+   draws. The 14 November crop was almost certainly the capture and not the
+   page: at 390 the document does not scroll, the body does (scrollHeight of
+   the document equals the window, the body's is three times that), the rail
+   sits below the first screen, and tools/shots.js takes the first screen only
+   (fullPage false), so a crop taken at the rail's coordinates is outside the
+   image. A screenshot of the element itself scrolls it into view first, which
+   is what this does.
+
+   HOW IT COUNTS, the way tools/monitor.js counts the Field's canvas: the
+   drawn bitmap, and how many of its pixels are not the ground. The ground is
+   the commonest colour in the region, a pixel is lit when any channel is more
+   than 12 away from it, and a region that drew nothing reads exactly nought.
+   The floors are well clear of nought and well under what the build measures
+   (the rail lights about half of itself, the smallest pill about 2.5 percent
+   of its own box), so they separate drew from did not rather than grading how
+   much. Measured on this build: rail 49 percent at 390 and 42 at 1600, the
+   thinnest pill 48 lit pixels in 1,806.
+
+   CHECKED AGAINST A KNOWN BAD CASE FIRST: a copy of the build with the rail
+   clipped away by clip-path keeps its box, its markup and every computed
+   style the DOM checks read, and this reads nought.
+   ============================================================ */
+async function stRailPixelGate(browser,FILE,ok,booted){
+ const WID=[[390,844,'phone'],[1600,1000,'desktop']];
+ const RAIL_FLOOR=0.05, PILL_FLOOR=0.01;
+ const dec=await browser.newPage();
+ /* a blank page that only decodes a PNG into pixels, so this needs no image
+    library: a Blob and createImageBitmap, nothing fetched. rects are in the
+    screenshot's own pixels. */
+ const count=(buf,rects)=>dec.evaluate(async a=>{
+  const bin=atob(a.b64), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+  const bmp=await createImageBitmap(new Blob([u],{type:'image/png'}));
+  const c=document.createElement('canvas'); c.width=bmp.width; c.height=bmp.height;
+  const g=c.getContext('2d'); g.drawImage(bmp,0,0);
+  const lit=(x0,y0,w0,h0)=>{
+   x0=Math.max(0,Math.round(x0)); y0=Math.max(0,Math.round(y0));
+   w0=Math.min(c.width-x0,Math.round(w0)); h0=Math.min(c.height-y0,Math.round(h0));
+   if(w0<=0||h0<=0)return {lit:0,total:0};
+   const d=g.getImageData(x0,y0,w0,h0).data, cnt=new Map();
+   for(let i=0;i<d.length;i+=4){const k=(d[i]<<16)|(d[i+1]<<8)|d[i+2]; cnt.set(k,(cnt.get(k)||0)+1);}
+   let mode=0,mc=0; cnt.forEach((v,k)=>{if(v>mc){mc=v;mode=k;}});
+   const mr=mode>>16, mg=(mode>>8)&255, mb=mode&255; let n=0;
+   for(let i=0;i<d.length;i+=4)if(Math.max(Math.abs(d[i]-mr),Math.abs(d[i+1]-mg),Math.abs(d[i+2]-mb))>12)n++;
+   return {lit:n,total:w0*h0};};
+  return {w:c.width,h:c.height,all:lit(0,0,c.width,c.height),parts:a.rects.map(r=>lit(r.x,r.y,r.w,r.h))};},
+  {b64:buf.toString('base64'),rects});
+ for(const [w,h,wn] of WID){
+  const p=await browser.newPage({viewport:{width:w,height:h}});
+  const errs=[]; p.on('pageerror',e=>errs.push(e.message.slice(0,160)));
+  await p.goto(FILE); await booted(p);
+  const at=wn+' left rail pixels: ';
+  /* by name, and loud when the name is gone, the way tools/monitor.js does it */
+  const seen=await p.evaluate(async nm=>{
+   const i=PEOPLE.findIndex(x=>x.nm===nm); if(i<0)return null;
+   loadP(i); setTab(TAB.STORY); STV.chat=true; STV.typed=false; STV.dash=true; render(); stRender();
+   await new Promise(r=>setTimeout(r,900));
+   const rail=document.getElementById('stleft'), rr=rail.getBoundingClientRect();
+   /* visible to a person: shown, not transparent anywhere up its own chain,
+      a box with some size, and inside the rail's own box */
+   const chain=e=>{let o=1; for(let n=e;n&&n!==document.documentElement;n=n.parentElement)o*=parseFloat(getComputedStyle(n).opacity); return o;};
+   const pills=[...rail.querySelectorAll('.st-pl')].map(e=>{
+    const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
+    return {t:(e.getAttribute('title')||e.getAttribute('aria-label')||e.className).slice(0,24),
+     x:r.left-rr.left, y:r.top-rr.top, w:r.width, h:r.height,
+     seen:cs.display!=='none'&&cs.visibility!=='hidden'&&chain(e)>0&&r.width>0&&r.height>0,
+     inside:r.left>=rr.left-1&&r.right<=rr.right+1&&r.top>=rr.top-1&&r.bottom<=rr.bottom+1};});
+   return {who:CURP&&CURP.name, w:rr.width, h:rr.height, html:rail.innerHTML.length, pills};},'Lance 100');
+  ok(!!seen,at+'Lance 100 is still in the roster, the loaded profile this rail was reported on');
+  if(!seen){await p.close(); continue;}
+  const hidden=seen.pills.filter(q=>!q.seen||!q.inside).map(q=>q.t+' '+Math.round(q.w)+'x'+Math.round(q.h));
+  ok(seen.w>0&&seen.h>0&&seen.html>0&&seen.pills.length>0&&hidden.length===0,
+   at+'the rail has a box, markup and pills, and every pill is on screen and inside it, '+JSON.stringify({w:seen.w,h:seen.h,html:seen.html,pills:seen.pills.length,hidden}));
+  /* the rail's own screenshot scrolls it into view, which a crop of the first
+     screen at the rail's coordinates does not (the note above) */
+  const shot=await p.locator('#stleft').screenshot();
+  const px=await count(shot,seen.pills.map(q=>({x:q.x,y:q.y,w:q.w,h:q.h})));
+  const share=px.all.lit/Math.max(1,px.all.total);
+  ok(px.all.total>0&&share>=RAIL_FLOOR,
+   at+'the rail draws, '+px.all.lit+' of '+px.all.total+' pixels lit, '+(share*100).toFixed(1)+' percent, floor '+(RAIL_FLOOR*100)+' percent');
+  const blank=seen.pills.map((q,i)=>({q,c:px.parts[i]})).filter(o=>!(o.c.total>0&&o.c.lit/o.c.total>=PILL_FLOOR))
+   .map(o=>o.q.t+' '+o.c.lit+' of '+o.c.total);
+  ok(blank.length===0,at+'every one of its '+seen.pills.length+' pills draws something over its own ground, '+blank.join(' | '));
+  ok(errs.length===0,at+'no page error on the way, '+errs.join(' | '));
+  await p.close();}
+ await dec.close();}
+
+module.exports={stFullGate,stParityGate,stFoldGate,stRailPixelGate};
 
 if(require.main===module){
  const {chromium}=require('playwright');
@@ -513,6 +817,12 @@ if(require.main===module){
   console.log('\n=== the mini dashboard and the Full one, one set of rulings ===');
   try{ await stParityGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the parity gate threw: '+e.stack); }
+  console.log('\n=== the three corner folds: left rail, Release column, widgets row ===');
+  try{ await stFoldGate(browser,FILE,ok,booted); }
+  catch(e){ FAIL++; console.log('  FAIL the fold gate threw: '+e.stack); }
+  console.log('\n=== the left rail draws something, in pixels, at 390 and 1600 ===');
+  try{ await stRailPixelGate(browser,FILE,ok,booted); }
+  catch(e){ FAIL++; console.log('  FAIL the rail pixel gate threw: '+e.stack); }
   await browser.close();
   console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
   process.exit(FAIL?1:0);})();}

@@ -625,6 +625,7 @@ function ritComplexHtml(k){
    +(act?'<span class="tcx-pace"><b>Active</b>, '+esc(ritLeft(act,today).toLowerCase())+'.</span>':'')
    +'</span></button>';});
  h+='</div>';
+ if(b&&typeof affDoorHtml==='function')h+='<div class="rv-acts">'+affDoorHtml('path',null,b.k)+'</div>';
  if(ritOwn())h+='<div class="rv-acts"><button type="button" class="btn pri" data-tcxgo="1">Add to my ritual</button></div>'
   +'<p class="tcx-hint">Runs for a week from today. The Ritual page changes the span.</p>';
  if(row.draft!==false)h+='<p class="tcx-draft">First draft. These are starting behaviours and rituals, to be refined. '
@@ -1102,12 +1103,18 @@ function ritPctHtml(p,today,size){
     both branches now read the same way: the days kept, and the ring is the
     seat's mark with nothing filled.
 
-    AND NOT KEPT OF SET. The brief for this round asked for "3 of 7" in the
-    pill, and that is a count against a total, his objection CO-05 in the
-    voice database ("every time you add that 11 of 12, why."), widened by
-    CO-31 to any scale and held as a stop. The days set ride in the tooltip's
-    figure line, where they already were. ritPct still does the counting;
-    only the percent it returned is no longer printed. */
+    AND NOT KEPT OF SET, WIDENED TO THE TOOLTIP TOO, 18 November. The brief
+    for this round asked for "3 of 7" in the pill, and that is a count
+    against a total, his objection CO-05 in the voice database ("every time
+    you add that 11 of 12, why."), widened by CO-31 to any scale and held as
+    a stop. SV17 moved the fraction out of the pill and into the tooltip's
+    own figure line, "Kept: 2 days of 7 set", which is the same fraction
+    CO-31 already ruled out, one tap deeper, and the no-fractions audit of
+    18 November caught it there (NO-FRACTIONS-AUDIT.md, finding P10). It is
+    not turned into a percent either: this is the one page SV17 holds to a
+    count, never a grade, so the fix is a second count beside the first,
+    Kept and Set, never joined by "of". ritPct still does the counting; what
+    changed is only how the two counts it returns are said. */
  /* THE BADGE IS A FIGURE WITH ITS WORD NOW, SV24. His words, on the live
     page: "Next to the ritual, where there's a heart, there's a bunch of icons
     on the right-hand side with numbers and pills, I don't know what that's
@@ -1120,10 +1127,11 @@ function ritPctHtml(p,today,size){
     pill went with it: the count is printed as the Avatar card prints its own,
     "14 days kept", the unit on the figure and one word for what it counts
     (V17), and the seat is said in words on the row's own line
-    (ritRowSeats). The tooltip stays on the figure for the days set. */
+    (ritRowSeats). The tooltip stays on the figure for the days set, as its
+   own count now and not a fraction's denominator. */
  var k=P?P.kept:ritRunRead(p,today).kept;
  if(P){body='The days you have kept it. A kept day stays kept.';
-  n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
+  n='Kept|'+acctDays(P.kept)+';Set|'+P.due+(P.due===1?' day':' days');}
  else body='No end, so nothing to complete. The number is the days you have kept it.';
  /* none kept is the house dash, the value the pill printed for a zero */
  badge='<b>'+(k?k+'<small>'+(k===1?' day':' days')+'</small>':'\u2013')+'</b><span>kept</span>';
@@ -1267,6 +1275,8 @@ function ritBuildHtml(c,nAct,unread){
     aria-label or title of its own, so its name is this text. */
  out+='<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
   +'<span>Practices</span>'+ritIc('down')+'</button>';
+ /* AFFIRM, 18 November: the affirmation generator's one door here, ui/affirmui.js */
+ if(typeof affDoorHtml==='function')out+='<div class="rv-acts">'+affDoorHtml('ritual')+'</div>';
  /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
     up to and a press moves it a minute at a time under ten and five at a
     time above, which is the size of the difference at each end. How often is

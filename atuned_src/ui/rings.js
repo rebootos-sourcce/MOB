@@ -143,7 +143,7 @@ const FLAYS=[
  {k:'archetypes',nm:'Archetypes',d:'M12 3.8l2.5 5.1 5.6.8-4 3.9 1 5.6-5.1-2.6-5.1 2.6 1-5.6-4-3.9 5.6-.8z',
   tip:'The twelve, each set in the point it runs through.'},
  {k:'patterns',nm:'Patterns',d:frCirc(15.6,8.4,3.2)+'M13.3 10.7L5 19',
-  tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
+  tip:'A saboteur is a named habit that runs on the charge held at several addresses at once.'},
  {k:'chains',nm:'Chains',d:frCirc(5.4,18.6,1.6)+frCirc(11,13,2.3)+frCirc(17.4,6.6,3)+'M6.6 17.4l2.8-2.8M12.7 11.3l2.6-2.6',
   tip:'How a pattern compounds: complex, hyper complex, super complex, inward.'},
  {k:'laws',nm:'Laws',d:frCirc(12,12,2.4)+frTicks(7,5.2,10,[1,.6,.9,.45,.8,.55,.95]),

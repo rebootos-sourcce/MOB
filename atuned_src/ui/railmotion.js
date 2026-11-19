@@ -91,7 +91,7 @@ function railFirstSight(){
  RM.seen=true; RM.seenAt=performance.now();
  /* the bars, if they were not already started by a render that found the
     rail open */
- rbMotion([document.getElementById('key'),document.getElementById('keylo')]);
+ rbMotion([document.getElementById('key'),document.getElementById('keylo'),document.getElementById('gaterows')]);
  /* and the pairs, which find their elements and their widths only once the
     column is open (ui/component.js, rbPairs) */
  rbPairs();

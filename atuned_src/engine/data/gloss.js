@@ -157,7 +157,21 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of points.',
+ /* MASK AND SABOTEUR SAID ONE WAY, 18 November. The Wisdom school glossary
+    (GLOSS, engine/data/kb.js) opened Mask on "built up distortion that has
+    started to pass for who you are" and Saboteur on "a fetter squeezed into
+    a habit", while every tooltip said this table's sentence: two meanings for
+    one word on two screens. The canon makes a mask a developmental way of
+    showing up worn over the points it speaks from (MASKS, b) and a saboteur a
+    set of fetters at magnitude, so this table's sentences stand, the mask one
+    gains "you grow into" and the point, and GLOSS now opens on the same words.
+    tests/unpack.js holds the two places to one sentence. */
+ 'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
+    this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
+    stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
+    is kept here, where the header of that level reads it. */
+ 'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -172,6 +186,45 @@ var UNPACK_BASE={
  'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Two of the
+    terms kept a sentence here because something on a screen still says them
+    and now asks for it: the Matrix caption's "9 child emotions" (mxKey,
+    ui/personas.js) and the card a field anchor opens (nodeDrillHtml,
+    ui/drills.js). The third, "the chain", has no entry: the first cut of this
+    round wrote one, and the skeptic found nothing asked for it, so it was cut
+    rather than left as a sentence no screen can reach. Each tier of the chain
+    keeps its own entry (saboteur, complex, hyper complex, super complex), the
+    legend's colour key has no new home and is listed as open in DECISIONS.md,
+    and a wheel dot's hover still names its tier (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -216,6 +269,21 @@ var UNPACK_BASE={
  /* Expression the reading, as against expression the numerology number,
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* THE FOUR READINGS THAT HAD NO SENTENCE HERE, 18 November. Pull, Overshoot,
+    Installed and Self-read shadow had their meanings typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile was the only place
+    that could say them: the session card, the axis card, the pole drill and
+    the release ledger print the same four words and had nothing to ask for,
+    and the owner read them on the status board with no idea what they were.
+    Overshoot's typed tip also carried "60%", which this table refuses. Each
+    sentence is what compute() builds: pull is leverPull averaged over every
+    address, overshoot is n.jq, the opposite past the helpful point, installed
+    is the opposite in place (S.replace, and n.pole where it has passed what is
+    held), and the self-read shadow is lawSQ, 100 less CQ. */
+ 'pull':'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+ 'overshoot':'Overshoot is an opposite feeling put in past the point where it helps, so the fetter under it will not shut.',
+ 'installed':'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+ 'self-read shadow':'Self-read shadow is the part of the laws your own answers leave out, always 100 less CQ, and only a changed law answer moves it.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
  /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
     4", the weight on nought to ten; every weight prints as a percent now, so
@@ -352,6 +420,17 @@ function unpackAll(){
  if(UNPACK_MEMO)return UNPACK_MEMO;
  var t={}, k;
  for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
  /* the four Western elements */
  Object.keys(UNPACK_ELEM).forEach(function(el){
   var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);

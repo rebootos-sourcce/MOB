@@ -593,6 +593,366 @@ measure: tests/vocab.js scans the built app and fails on a retired word or
 an old pair name outside its allow list; it fails on origin/main and on each
 mutant named in the commit, and passes on the fix.
 
+## 2026-11-17 · owner · the voice prototype's read only layer, and the 96 pattern
+
+said: asked about two Source AI pieces the board listed as done and that are not
+in the product, the 96 pattern library read by `srcVoiceCanon` and the evidence
+bus `srcVoiceEvidenceBus` (SV12): "Revive it and put a note next to it for when
+we review it. I don't quite know what it's doing anymore, the 96 pattern, but
+let's add it."
+read: both pieces were built on the voice prototype, PR #163, which he rejected
+on 8 November ("Source AI is nothing like what I asked for, at all") and which
+was closed unmerged. He is not asking for them to show up anywhere. He wants
+them in the code, with a note beside them so he can review them later and learn
+what they do. Checked in the code: the layer is read only and nothing in the
+interface calls it, so a person sees and hears nothing different. The 96 are a
+shelf of named family patterns from a package he uploaded on 1 November, not his
+superego list of 3 October, and they keep ancestral and generational apart where
+he ruled them one on 8 November. Those are questions for the review, not for
+the port.
+change: ported by file from `aa449a80` onto `main` at `c2bf52a2`, branch
+`revive/source-voice-layer`, unmerged: engine/data/patterns96.js,
+engine/data/researchanchors.js, engine/voice_sniffer.js, voice_narrative.js,
+voice_charge_cycle.js, voice_intelligence.js, source_evidence_bus.js, the
+MANIFEST and export lines, five tests, and the voice gate's NOT_COPY_ROUTES in
+.claude/skills/atuned-voice/check.py. The note he asked for is the first comment
+in every file the layer adds, and the questions for the review are in
+DECISIONS.md under "The voice prototype's read only layer, revived, 17
+November". One change to the code: an entry the safety stop holds is read as
+nothing by the layer, with a test, because the prototype turned it into packets.
+measure: tests/engine.js reads the same as before the port (0 failed), the voice
+objections gate reads 0 findings that stop a build, and each of the five tests
+fails against a deliberately broken copy of the layer. The engine grew by about
+200 kilobytes and the public quiz page with it, which is the cost of adding it.
+## 2026-11-18 · owner · the Purpose view's rails, and Archetypes hidden
+
+said: "Okay, Amy, for the avatar purpose, let's remove the left and right
+rail. And let's hide the archetype tab under avatar. Archetype. I don't know
+what it's for. I don't know where it came from. I don't know what it does.
+Okay, review this back. And then let's add this to the plate."
+read: the Purpose view on the Avatar page shows the Field's two shared rails,
+which it never uses, and the Archetypes view is a 1 to 5 self rating nothing
+in the app reads (DECISIONS.md, 18 November, carries the plain account of
+what it was and where it came from). Hide means hide: code, data and saved
+ratings stay.
+change: shell/head.html, one rule hides both rails while Purpose is drawn,
+heavier than the fold rules so a rail folded elsewhere cannot squeeze it.
+ui/avatarui.js, AV_ARCH_SHOWN and avSubsShown: the pill is gone and any view
+left at Archetypes paints Becoming. ui/storyui.js, the Discover Avatar card
+opens Becoming and says so. ui/character.js, the twelve archetypes are marks,
+not doors, while the view is hidden. Becoming keeps its rails.
+measure: tests/avatarpurpose.js, at 1600 and 390 on a blank and a loaded
+profile, failed on the live build c2bf52a2 and passes on this one;
+tests/becoming.js and tests/functional.js turn the view on for the checks
+that hold the hidden wheel, so the one line still brings back a working one.
+
+## 2026-11-18 · owner · the lighting menu on the Dashboard
+
+said: "Fix lighting menu hidden behind the Dashboard panels"
+read: the sun menu's list painted under the page, so its choices could not
+be seen or pressed. Reproduced, and it was one lighting's doing: Glass white
+gives every .glass a backdrop-filter, the bar is class="glass top", and that
+made the bar its own stacking context, so the menu's z-index 60 ranked it
+inside the bar only. #stage and #rpanel come later in the document and paint
+over it, on every surface but the Field, at every width. The phone's profile
+list, the bar's other menu, was covered the same way. In Glass the same menu
+sat in the bar's flow and pushed the page down while open.
+change: shell/head.html, one block after the bar's rules. The bar takes the
+menu layer, 60, only while one of its menus is open (a bar raised for good
+would also sit on top of a release in progress on the Discover journal page,
+measured); the bar's menus always hang rather than push; and in Glass and
+Glass white the menu's tint is laid on the ground, because the bar is also
+the menu's backdrop root and its blur cannot see the page. tests/lightmenu.js
+is new: every lighting LIGHTINGS lists, every surface TABDEF and TABEXTRA
+name, 1600 and 390, each option the topmost thing at its centre and the bar
+the same height open and shut. Branch fix/lighting-menu-layer.
+measure: on the c2bf52a2 build the new gate fails Glass white on every
+surface but the Field at both widths, and Glass on the bar's height; a copy
+of this build without the bar's rule fails Glass and Glass white; this build
+passes. Not fixed here, filed as suggested tasks task_e520d0cf and
+task_8b72acdb on 18 November: at about 800 wide with a profile loaded the
+menu opens past the window's left edge, and the sun button's own tooltip can
+sit over Flat and Lumen while the pointer rests on it.
+
+## 2026-11-18 · owner · the body's two halves zoom on their own, and each body sits in the middle of its half
+
+said: "For the body, I want independent zoom on this left and right panel."
+And: "When you do create the independent panel for left and right, so I can
+zoom independently, I also want you to center the bodies to the panels." He
+drew a grey line between the two bodies on a screenshot to show where the
+split is.
+read: the Body drew both figures in one world through one camera, so a wheel
+or a drag on the front moved the back with it, and the two stood where the
+world put them: fourteen units clear on the outside and twenty two between,
+which is not the middle of either half.
+change: ui/map.js. The Front is the left half of the well and the Back the
+right half, each with its own camera, its own fly target and its own fit. A
+wheel is about the pointer in the half it is over, a drag stays in the half it
+began in, a double press and Zoom into this region open the half that owns the
+region (a pair, both knees or both shoulders, is one figure and so one half),
+and Whole body sends every opened half home. Each body is centred on its own
+drawn middle with the same margin either side and the same room above and
+below, and its title is centred over it. A quiet line, the figure's edge
+colour at 12 percent, marks the seam. One figure up, a phone, is as it was.
+ui/ui.js (the F key calls the same Whole body), tests/functional.js and
+tests/sound.js (each reads a panel's camera).
+measure: tests/functional.js, "the Body's two panels", compares the other
+camera exactly after each move, compares the other half's pixels, scans the
+drawn body against the half's edges at every width the well is two figures
+wide, routes a press at two different zooms, and holds the phone's fit to the
+digit.
+## 2026-11-18 · owner · the Insight rail, and everything under Selection
+
+said: "This is for the insight panel. It's not working as I designed it. The
+insight panel at the very top should say insight. Whatever I select, it should
+give me source AI's reading of the cascade of that information, how it flows
+through me, and what the appropriate actions are. And then underneath that, it
+lists the stack from superego down, which I can run protocols against. When I
+click on the icons for saboteur, complex, hypercomplex, supercomplex, there's
+too much text in there. This should just be the bars... The insight panel will
+always show 3 paragraphs with dots for more information that you can select and
+click through that panel. I don't think the nested complex or super complex,
+hyper complex, etc. on that right rail is the way to go. Let's unnest them and
+let's see what they look like unnested." And, minutes later: "Everything
+beneath selection, including flow, including seats... like it's all repeat.
+Running now, grandiosity, that's all repeat, get rid of that. Laws of
+integrity. Yeah, they're all on diagnostics. Get rid of that."
+read: Insight is the first block and is Source AI's reading of whatever is
+selected, in three paragraphs with dots; the stack from Superego down sits under
+it, unnested, bars only, each bar with a run glyph; the selection card is
+identity only and what it borrowed from Insight is the reading; Flow, Seats,
+Running now and the Laws leave the rail on every tab. Sent back to him before
+the build.
+change: engine/insight.js (new, the reading), ui/insightui.js (new, the rail),
+ui/ui.js, ui/drills.js, ui/mapshelf.js, ui/map.js, ui/intakeui.js (the law boxes
+moved here), ui/panels.js, ui/personas.js, shell/body.html, shell/head.html,
+tests/insightread.js and tests/insightrail.js (new); tests/wellpin.js retired.
+DECISIONS.md, 18 November, names each earlier ruling this replaces. Branch
+feature/insight-rail-unnested, not pushed.
+measure: see the commit message and DECISIONS.md for the counts read off the
+run. tools/equiv.py names stkWellHtml, insightSay, railStkKids, railStkParent,
+stkGroup, stkNode, stkTier, stkWalk, STACK_TAB, STK_OPEN and renderShelf as
+removed, and nothing else leaving.
+
+## 2026-11-17 · owner · the Insight panel is Source AI's translation of what is selected
+
+said: "the insight panel is source ai's translation of whats selected. i want
+this to be an audio button too. if i press it, i can talk to source ai about
+the parent and children and how it works through me and run a protocol to
+release it."
+read: one audio button on the Insight reading that speaks it and opens its
+release. Built on an unmerged branch (worktree wf_a5bfa25a-317-4, commit
+50c53a04) and not on main. The 18 November rail keeps one slot for it,
+insightAudioSlot and #insaudio, and builds none of it.
+change: none on main for this entry.
+measure: none.
+
+## 2026-11-17 · owner · the Insight panel did not scroll with the rail
+
+said: "And the insight panel's still broken. It doesn't scroll with the rest of
+the scroll bar. That's a bug for the field, body, the compass, etc."
+read: the box was position sticky and held a third of the rail still while the
+rest moved. It is the first block and scrolls with the rail, on every tab.
+change: e61569bb, position relative at every width and no inner scroller. Kept
+whole by the 18 November rail.
+measure: Chromium at 1600 by 1000 on the Field, Body and Compass.
+
+## 2026-11-16 · owner · nothing selected is nothing highlighted
+
+said: "Why are there things highlighted when I have nothing selected in my
+profile? There should be nothing highlighted or selected. And my insight panel
+should be empty. There should be no text here. It should say nothing selected at
+most."
+read: a tab wears the selected look only when its tier holds the pin, and with
+nothing selected the panel says so in two parts. It replaces the 15 November
+wish that nothing selected shows a general reading.
+change: 23715a28, 76777f5e. Kept by the 18 November rail: nothing wears the
+selected look when nothing is selected.
+measure: none recorded.
+
+## 2026-11-15 · owner · the Insight panel, and what belongs in it
+
+said: "The insight panel is broken. First, the design size needs to include
+another 300 pixels... There is information where it says back to the field,
+hypercomplex dysregulation, how it runs through you. That information seems
+like it's what actually belongs in that insight panel... If the text gets too
+long, maybe you can scroll down, or maybe there's like a little tab I can go
+through. It generates pages... Like the runs under doesn't need to be there.
+Neither does made of, because we already have that stuff."
+read: the card text belongs in Insight, long text pages, and Runs under and Made
+of go. Built then: the taller display and the outlined icons. Not built then:
+moving the text, the pages, cutting the two sections. The 18 November rail
+builds all three.
+change: none on 15 November for the open items.
+measure: none.
+
+## 2026-11-14 · owner · the Insight display area, and icons only
+
+said: "I want the display area about 80% longer. See the image. That way it'll
+be the information display area. The icons for the saboteurs, etc. And then
+whatever I select, it will select that icon in the right rail and then show me
+all the children of that, the parent and its children. In the summary, it will
+give me, will tell me what, how all that runs through me."
+read: a tall display area with the five tier icons, and a reading of how a
+selection runs through him. Built as the well (Built from, Feeds, Reading, one
+sentence). The code comments call that round SV23; TASKS.md's SV23 is Ritual
+round four, so this log names it by its date. REPLACED on 18 November by the
+three-paragraph reading and the unnested stack.
+change: 4fa3dbd5 and the round before it.
+measure: none recorded.
+## 2026-11-18 · owner · answers to the need you list
+He answered the board's fourteen need you items in one dictation (verbatim in
+DECISIONS.md, "Answers to the need you list. Ruled 18 November."). It moved:
+the words (seat and chakra become point, tension becomes charge, Becoming and
+Complete become Whole, the pairs named Clarity and Grace against Shadow), no
+fractions, the Avatar's conversation replacing the 10 November no two way chat
+rule, rituals moving the Avatar's slider, the Avatar layers following the tier
+ladder, the If I miss frame before its content, the palette, the way the path
+links are derived, the research for the three missing path stories, and the
+masks logic kept in code. measure: the board's need you list went from 14
+items to 1 on 18 November.
+## 2026-11-18 · owner · the worked examples get a birth, the Lances too
+
+said: "Got a bug, Emmy. Have one of your agents wire in root energetics for
+these profiles, and make sure that these profiles are just up to date with all
+the changes that we made."
+read: Root Energetics shows the six readings on every example, on the Field
+and the Avatar, with invented birth data and never his or anyone's.
+DECISIONS.md has the ruling and the invented birth.
+change: engine/data/people.js (one shared invented birth for the four Lances,
+the overruled comment, the typed ages), engine/astro.js (the gene key wheel's
+start, a time zone on every city), engine/birth.js (the year through the
+window check, bornAge, exampleAge, exampleWho), ui/personas.js (loadP writes
+the birth onto the example's record, the picker age off the birth),
+ui/practitioner.js and ui/summary.js. Branch fix/example-profiles-birth.
+measure: tests/engine.js group EX18 and the new browser gate
+tests/exampleprofiles.js, each red on c2bf52a2 and on its own mutant first.
+## 2026-11-18 · owner · the Psyche panel is Matrix, Superego and Action
+
+said (first, on two screenshots of the Field's left rail): "Review this with
+your team. I asked you to get rid of everything in these two images. I asked
+you that a long time ago. Review it with your team. Maybe keep the matrix for
+now, but get rid of everything else. It doesn't belong there."
+said (then, correcting how that was read): "I didn't say strip the psyche panel
+down to just a matrix. I'm saying everything that's from the word psyche. Like,
+I never asked you to put in the book levels. I don't even know what that is. I
+also asked you to remove the child emotions because we're going to have the
+person do self-reporting in the diagnostic. I also asked you to get rid of the
+chain. I don't even know what this is doing here. That got put in there by you
+automatically or automagically. Super ego. It needs to be more iconographic.
+You can keep super ego, but get rid of the laws of action. Or just make that
+action and give me them as 6 icons, so symbolic icons. Actually make it a bar.
+Make them all bars, like the ones for like CQ, vitality, energy, flow, etc.
+Make it a bar. And then super ego, make those icons. 4 icons horizontal. And
+make them symbolic. And give it a %. We don't do points anymore."
+read: the panel keeps its Psyche heading and holds exactly Matrix (unchanged),
+Superego (four symbols in one row, a percent under each) and Action (the six
+gates as six bars, the same bar the CQ, vitality, energy and flow rows use, a
+percent on each). Everything else under the heading is gone: the book's
+levels, Child emotions with its sliders, the chain with Outside the chain, and
+every sub heading and paragraph of the other two. The first reading, "strip it
+to a matrix", was wrong and he said so.
+earlier asks, and why they never stuck: 28 October (superego, six gates, "the
+full cascade wiring of the Psyche stack", built, and the chain legend and the
+book's levels were seats' own widenings), 2 November ("move child emotions to
+diagnostic", built as a button that left the sliders), 5 November (marked
+screenshot, built as PR #188, held on a misreading of the 3 October ruling and
+bundled with another panel's job), 14 November ("Delete those for good",
+ticked ruled on the board with nothing queued to build it), 15 November (asked
+again in jargon, his answer read as an order for the Journal). The ask lived
+in one backlog line and not in DECISIONS.md, and a ticked board line read as
+finished while the page stayed the same.
+change: shell/body.html (three sections, the rest and its comments out),
+ui/ui.js (renderChainKey gone, renderAmplifiers and renderGates rewritten, the
+bars join rbMotion's hosts), ui/component.js (rbRow takes o.gate and o.side),
+ui/panels.js (the eighteen sliders and the two bulk sliders out, syncCh kept as
+the coercion every caller shares), ui/railmotion.js, ui/knowledge.js
+(dualPoleState and dualPoleStateWord, whose only caller was the old rows),
+shell/head.html (the bar's layout selectors name #gaterows beside .fdock, the
+four symbols' grid, the broken side's hatch, the dead .chk-, .amp-row, .nf.oppf
+and .stk-def rules out), engine/data/canon.js (SUPEREGO_IC, four stroked
+marks), engine/data/gloss.js (child emotions, field anchor, rail:action,
+six gate: sentences, four superego: sentences; the first cut's entry for the
+chain was cut because nothing asked for it), ui/drills.js (a press on a
+Superego symbol opens the address card headed with the defence's name and its
+table sentence, an address with no name is titled Unnamed, Root 08, and a field
+anchor's card says Field anchor, above or below the body), ui/personas.js (the
+Matrix caption carries the meaning of child emotions), tests/psychepanel.js (new),
+tests/functional.js, tests/design.js, tests/unpack.js, tests/floors.json.
+Branch fix/psyche-panel-rework.
+measure: tests/psychepanel.js (new, report only first) read 174 passed, 0 failed
+on this build at 1600 and 390, on a blank profile and a loaded one, and fails
+by name on the build from before the round (a panel of six sections, not
+three). Each of seventeen mutants fails on the check written for it: each
+removed block put back one at a time (the book's levels, Child emotions, the
+chain, the Superego paragraph, the Laws of Action paragraphs), a decimal, the
+word points, the four symbols wrapping to two rows at 390 only, a bar with a
+12 pixel track, a hand drawn copy of the bar, a stale store key that throws, a
+fill that is not the percent, no hatch, one colour for both sides, a verdict
+word on a defence, a filled symbol, and the six bars reversed. The panel's
+three sections are 862 pixels tall at 1600 and 881 at 390, where the six were
+4179 and 3877. tests/engine.js 7378 passed with seven new checks on the marks
+and the sentences, tests/unpack.js 838 (the 36 checks of the eighteen axis
+labels at two widths retired on purpose), collide 943, design 192, landing 22,
+boot 29, funnel 276, pct 1594, and tools/monitor.js reads every surface
+rendered. The voice objections check reads no finding that stops a build.
+tests/functional.js is not run on the box this was built on, so its three
+chain key checks, now one, are held by CI. tools/equiv.py against c2bf52a2
+names CHF, dualPoleState, dualPoleStateWord, renderChainKey, renderAmplifiers
+and the old renderGates as removed and SUPEREGO_IC as added, and UNPACK_BASE,
+unpackAll, rbRow, rbRate, railFirstSight, rebuildSwatches, syncCh and syncLw as
+changed; the other bodies it lists (OB_SURVEY, TABDEF and the rest) are the
+wisdom school rename under it, 18 November.
+## 2026-11-18 · owner · Dashboard, Talk with nothing said
+
+said: "This is feedback for the dashboard. When I click on talk and I haven't
+said anything, source is already activating and animating. That's a bug. This
+text in the lower left that says listening, there should be no text on that
+screen. That's a bug. At the very bottom, it says listening, press again to
+stop. There should be no text there. That's a bug. And then this tooltip isn't
+working. Let's turn that off for now. And one thing to look into, the commit
+button keeps jumping to the upper left-hand corner every like 10 seconds,
+briefly. So there's something going on with this animation. Read this back to
+me, and then let's get this fixed."
+read: five reports from one screenshot. The circle woke on the greeting's
+audio and stayed awake, so Talk with nothing said looked like a reading
+(cause: the circle was handed the greeting as a reply). The caption under the
+circle printed the word Listening as a placeholder. The dock printed
+"Listening. Press again to stop." for a state the Talk button already shows.
+The seven line key hung off the canvas box, 250 pixels from the circle. And
+Commit was not jumping, it was sliding in from the corner on every placement,
+about every eight seconds, because a silent recogniser restarts and the page
+renders on the restart.
+change: ui/storyui.js (stMic, stSrcSpeak, stRender, stHeroPlace, the
+recogniser's onresult, new stMicNoise, micSay and stMicAnnounce, stOwn),
+ui/srcface.js (the canvas title becomes SrcFace.key()), shell/head.html (one
+line of caption height), shell/body.html (the hidden #micsay), tests/talksilence.js
+(new), tests/voicefall.js (listening is read off the page and the hidden
+region, not the bar), tests/README.md. DECISIONS.md has the ruling, what it
+overrides and five open questions for him. Branch fix/talk-silence.
+Second pass, from review: the noise guard dropped mm-hmm, uh huh, mhm and hmm
+and a final of only stars; both now land, and the gate says so.
+measure: tests/talksilence.js on the c2bf52a2 build reads 28 failures, one or
+more for each of the five reports: the circle's lit pixels at 4.3 times its
+rest in 33 of 33 samples, a card on every hover over the canvas box, 54 glides
+of the Commit button on left or top in 40 seconds at 1600 and 50 at 390. On this
+build it reads none of them: the circle at 1.1 times rest, no card, no bar, no
+word, 0 glides. Each check also fails on a copy of this build with its own fix
+undone.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
+
+## 18 November: device sync, scheduled post alpha
+
+say: "Add the device sync post alpha."
+read: a timing ruling, not a design change. The sign-in-on-a-new-device
+read as a bug tonight ("my account's not being set up") because a device
+with no local record stayed silent about why; the real sync code already
+exists, wired, one constant away (PROFILE_SYNC_ENABLED, ui/auth.js), kept
+false until privacy copy, consent and retention are approved together.
+change: TASKS.md DS1 added (and PB1's stale blocked-on note corrected);
+DECISIONS.md carries the full ruling. No code changed by this entry; the
+honest sign-in message that shipped the same night (authSyncNote, commit
+4ef5c88c) is its own, separate fix.

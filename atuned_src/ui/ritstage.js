@@ -294,9 +294,14 @@ function ritAvHtml(st){
    +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg><span>'+names[i]+'</span></div>';}).join('');
  var A0=(typeof avState==='function')?avState():null;
  var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
+ /* NO FRACTIONS, 18 November: this row used to carry a literal denominator,
+    'Complete|XX%|100%', which ui/tip.js then printed as "Complete: XX% of
+    100%", a fraction made of a percent and its own scale repeated back. The
+    row is one part now, the percent alone; tip.js's own contract no longer
+    takes a third part at all (ui/tip.js build()). */
  var hero='<span class="rv-avhero"'+rvTip('Your avatar',
-   'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
-   all===null?'':'Whole|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
+   'Percent whole: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
+   all===null?'':'Whole|'+fmtPct('complete',all),'Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
   /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
      complete." It was wired, avState().overall in the ring's pill, and
@@ -311,9 +316,15 @@ function ritAvHtml(st){
      person whose stories have released reads a percent there. */
   +'<span class="rv-avlab">Whole</span>'
   +'</span>';
+ /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P11): this row
+    said "Kept: N days of 63 days for three cycles". The figure below still
+    says the plain count of days kept (V17, the Avatar card's own word for
+    it), unchanged; the tooltip's own number is the percent of the 63 days
+    three cycles take, through the portion kind (engine/pct.js), already
+    named there for exactly this shape: a count against its own total. */
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
    'Each day you keep a ritual turns your avatar one point, root to crown. Seven days make a turn, and three turns make a cycle.',
-   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Avatar')+'>'
+   'Kept|'+fmtPct('portion',C.days/(AV_TURN*AV_TURNS*AV_CYCLES)),'Avatar')+'>'
   +'<div class="rv-cys">'+rings+'</div>'
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
@@ -341,7 +352,9 @@ function ritAvHtml(st){
    :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this point yet.';
   return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
    +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this point yet. ')+said,
-    ap===null?'':'Whole|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
+    /* NO FRACTIONS, 18 November: same fix as the hero's Complete row above,
+       the row is the percent alone, never a percent over a literal 100%. */
+    ap===null?'':'Whole|'+fmtPct('complete',ar.pct),A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,

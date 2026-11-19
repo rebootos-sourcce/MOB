@@ -15,20 +15,28 @@ and the running log of what real source material has confirmed so far.
 `atuned_src/engine/data/figure.js` is `ANAT`, the engine's trusted placement
 table. Of the 108 somatic addresses:
 
-    80   have a derived coordinate: 32 from real brain-atlas centroids
+    some have a derived coordinate: from real brain-atlas centroids
          (figure.js `h:`, Harvard-Oxford/Juelich/Neuromorphometrics, the
-         "second anatomy pass" BQ), 6 from vertebral spine levels (`v:`,
-         sourced in BI3a/BI3c), 41 from the two reference charts the owner
-         sent 26 September (`f:`, figure.js:62-67, re-derived from the chart
-         on every build by proto/anatomy-ref/measure.js, which fails the
-         build if a row has drifted), 1 (108, Ascension Column) explicitly
-         filed with no anatomy at all (figure.js:128, `at:'crown'`).
-    28   have NO coordinate in the engine. They live only in
-         atuned_src/ui/map.js:1443 as BMPROP, hand-researched guesses the
-         comment there calls "the older and more cautious claim," kept out
-         of ANAT on purpose. Moving a BMPROP row into ANAT is a ruling (it
-         means trusting the guess as measured fact), never a mechanical
-         port — map.js:46461-46464.
+         "second anatomy pass" BQ), from vertebral spine levels (`v:`,
+         sourced in BI3a/BI3c), and from the two reference charts the owner
+         sent 26 September (`f:`, figure.js:62-67, re-derived from the charts
+         by tests/anatomy.js on every gates-fast run in CI, and by hand by
+         proto/anatomy-ref/measure.js against a real page; either one fails
+         if a row has drifted. BUILD.sh runs neither: this file used to say
+         measure.js "fails the build", and it never did). One more, 108
+         (Ascension Column), is explicitly filed with no anatomy at all
+         (`at:'crown'`).
+    some have NO derived coordinate. They live only in
+         atuned_src/ui/map.js as BMPROP, hand-researched estimates from
+         standard anatomy, never measured, which the comment there calls
+         "the older and more cautious claim," kept out of ANAT on purpose.
+         Moving a BMPROP row into ANAT is a ruling (it means trusting the
+         estimate as measured fact), never a mechanical port.
+
+The counts are not typed here. This block said 80, 28 and 6, and they went
+stale when address 16 moved into ANAT on 12 November. `node tests/anatomy.js`
+prints them on every run (its group 2), and says in the same place that the
+BMPROP ones are estimated and not measured.
 
 Ruled 26 September (figure.js:38-46): "place everything as close as it can,
 precision but feel, roughly the right spot," and a plexus branches, so more
@@ -82,9 +90,10 @@ uses from here on:
    makes a point reproducible on a figure of any proportions.
 3. **A citation**: which real source, which plate or page, says so.
 
-This is also the mechanism `proto/anatomy-ref/measure.js` already enforces
-for the 41 `f:` rows — re-derives the figure coordinate from the source
-chart on every build. Any new source added under this skill should be
+This is also the mechanism `proto/anatomy-ref/measure.js` and `tests/anatomy.js`
+(which shares its geometry, `proto/anatomy-ref/derive.js`) enforce for the `f:`
+rows: they re-derive the figure coordinate from the source chart, and the
+second does it on every gates-fast run. Any new source added under this skill should be
 checkable the same way: a human (or a gate) can trace a row back to the
 page and landmark it came from.
 
@@ -287,6 +296,21 @@ needs a distance from the midline, which `v:` takes in typed figure units,
 the very thing this method forbids; 10 and 20 sit on the thigh, where no
 sourced type reaches yet; 8 still has no stated vertebral span (p.230,
 p.232 and p.233 label it but give no level for its lower end).
+
+**Used, 2026-11-18: the table is held by a gate, nothing placed or renamed.**
+`node tests/anatomy.js` (headless, in gates-fast) checks that every somatic
+address is placed once, lies inside the body outline, mirrors where it is a
+pair, is named, and that every `f:` row re-derives from its charts. On the
+tree at `c2bf52a2` it found no mis-typed number and no address missing from
+every table, so it changed no data. It holds one finding open, as an expected
+red with a ceiling in `tests/floors.json`: the two spine rulers (ANATSPINE,
+which places addresses, and BMSPINE in map.js, which the pain lines enter the
+spine by) give different heights for the same vertebra at every level
+BMSPINE names. Which is right is the owner's and the anatomy's call, and
+either move shifts rows on screen. It also prints, read off the run, how many
+addresses have no derived coordinate and that the BMPROP ones are estimated
+from standard anatomy, never measured. Still true after it: nothing holds a
+`v:` row to its page.
 
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's

@@ -549,14 +549,14 @@ body.glass.tab-field .glass,body.glass.tab-field .panel,
 body.glass.tab-field .top,body.glass.tab-field .subbar{
  background:rgba(18,20,27,.72)}
 body.glass.tab-field .vt,body.glass.tab-field .btn,body.glass.tab-field .ib,
-body.glass.tab-field .stk-t,body.glass.tab-field .kb-t,body.glass.tab-field .pm-lb,
+body.glass.tab-field .kb-t,body.glass.tab-field .pm-lb,
 body.glass.tab-field .s-dom,body.glass.tab-field .ip-g,body.glass.tab-field .st-mic{
  background:rgba(255,255,255,.085)}
 body.glasswhite.tab-field .glass,body.glasswhite.tab-field .panel,
 body.glasswhite.tab-field .top,body.glasswhite.tab-field .subbar{
  background:rgba(255,255,255,.86)}
 body.glasswhite.tab-field .vt,body.glasswhite.tab-field .btn,
-body.glasswhite.tab-field .ib,body.glasswhite.tab-field .stk-t,
+body.glasswhite.tab-field .ib,
 body.glasswhite.tab-field .kb-t,body.glasswhite.tab-field .pm-lb,
 body.glasswhite.tab-field .s-dom,body.glasswhite.tab-field .ip-g,
 body.glasswhite.tab-field .st-mic{background:rgba(255,255,255,.72)}
@@ -567,7 +567,7 @@ body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-ca
  border-color:var(--edge-2);
  box-shadow:0 34px 90px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.19)}
 /* controls are small panes, not painted rectangles */
-body.glass .vt,body.glass .btn,body.glass .ib,body.glass .stk-t,body.glass .kb-t,
+body.glass .vt,body.glass .btn,body.glass .ib,body.glass .kb-t,
 body.glass .pm-lb,body.glass .s-dom,body.glass .ip-g,body.glass .st-mic{
  background:rgba(255,255,255,.055);border-color:var(--edge);
  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -714,6 +714,52 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
    that has seven tabs to fit, because it sizes to its longest profile name. */
 .top #psel{max-width:190px;min-width:0}
 .top::-webkit-scrollbar{display:none}
+/* THE BAR CARRIES ITS MENU'S LAYER WHILE THE MENU IS OUT, 18 November. The
+   owner: "Fix lighting menu hidden behind the Dashboard panels". The menu was
+   always z-index 60, and that number only ever worked by accident: in Dark,
+   Snow, Punch, Flat and Lumen the bar is not a stacking context, so the
+   menu's 60 was ranked straight against the tab hosts' 5 inside .app and
+   won. Glass white puts a backdrop-filter on every .glass, the bar is
+   class="glass top", and a backdrop-filter makes the bar its own stacking
+   context at z-index auto. From then the 60 ranked the menu inside the bar
+   and nowhere else, the bar as a whole tied #stage and #rpanel at auto, and a
+   tie paints in tree order, so the stage and the right rail, later in the
+   document, painted over all seven lightings: measured on the Dashboard at
+   1600, every option's centre hit the Imprints strip or the Release panel.
+   Any lighting that gives .glass a filter, a transform, an opacity under one
+   or isolation does the same, which is why the fix is on the bar and not on
+   one lighting's block.
+
+   Only while a menu is out, and that is deliberate. A bar raised for good
+   would also rise over the Release overlay on the Discover journal page,
+   where #stage is isolated and #rel's own 90 is ranked inside it, so the bar
+   would sit on top of a release in progress in Dark. While a menu is out
+   nothing else can be open over the bar, because either menu shuts on the
+   first click anywhere else. 60 is the menu layer this file already uses for
+   .gmenu, .pmenu and the tip, under .sheet's 70 and the overlays' 90 and up,
+   so the layer order is the one the product already had. */
+.top:has(.gmenu:not([hidden])){position:relative;z-index:60}
+/* AND THE MENU HANGS, IT DOES NOT PUSH. The glass group rule further up lists
+   .gmenu among the panes it sets position:relative, and body.glass .gmenu
+   out-ranks .gmenu{position:absolute}, so in Glass the lighting menu sat in
+   the bar's own flow: opening it took the bar from 57 to 160 pixels at 1600
+   and shoved the whole page down, and the phone's profile loader took the bar
+   from 108 to 688. A menu in this bar always hangs from its wrap; the extra
+   class is the specificity that says so in every lighting, including one
+   added to the group rule later. */
+.top .gwrap>.gmenu{position:absolute}
+/* AND IN THE TWO GLASS LIGHTINGS THE MENU STANDS ON A FLOOR. The menu's wash
+   is a 78 percent tint of --panel and the blur behind it is what makes it
+   read, the glass menu's own comment below says so. But the same
+   backdrop-filter that made the bar a stacking context makes it the menu's
+   backdrop root, so the menu's blur sees only the bar and never the page.
+   Once the menu was on top, the page read straight through it, unblurred:
+   the Release heading printed across Flat and Lumen at 1600 in Glass white,
+   the dark stage greyed every name in the phone's profile list. --panel is
+   55 and 62 percent opaque in these two, so the tint is laid on --bg here,
+   which is what the blur would have shown over a plain ground. */
+body.glass .top .gwrap>.gmenu,body.glasswhite .top .gwrap>.gmenu{
+ background:linear-gradient(color-mix(in srgb,var(--panel) 78%,transparent) 0 0),var(--bg)}
 /* THE MESSAGE DOCK, 2 October. The status region left the navigation bar: it
    printed under the secondary navigation, took the whole bar with it on a
    desktop window (measured 0px wide tabs at 1600 with one "Saved." up, which
@@ -2118,7 +2164,7 @@ body:not(.tab-field) .fdock{display:none}
 .rb-fam .rb-ic{width:16px;height:16px;margin:0;color:var(--dim)}
 .rb-fam:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .rb-fam2{margin-top:8px;border-top:1px solid var(--edge);border-radius:0}
-.fdock .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
+.fdock .kb.rbar,#gaterows .kb.rbar{position:relative;display:block;width:100%;min-width:0;min-height:var(--tap);
  padding:6px 2px 8px;border:0;border-radius:var(--r-xs);background:transparent;box-shadow:none;
  text-align:left;white-space:nowrap;cursor:pointer;color:var(--ink)}
 /* round 3 of the r1 review: DQ is the one amount where more is worse, so it
@@ -2159,12 +2205,12 @@ body:not(.tab-field) .fdock{display:none}
  animation:rbsweep calc(var(--t-breath) * 1.5 / var(--rate,1)) var(--ease-breath) infinite;
  animation-delay:calc(var(--k,0) * var(--t-stagger) * 7)}
 @keyframes rbsweep{0%{transform:translateX(-100%)}62%,100%{transform:translateX(100%)}}
-#keylo .rbar:nth-child(1){--k:1}
-#keylo .rbar:nth-child(2){--k:2}
-#keylo .rbar:nth-child(3){--k:3}
-#keylo .rbar:nth-child(4){--k:4}
-#keylo .rbar:nth-child(5){--k:5}
-#keylo .rbar:nth-child(6){--k:6}
+#keylo .rbar:nth-child(1),#gaterows .rbar:nth-child(1){--k:1}
+#keylo .rbar:nth-child(2),#gaterows .rbar:nth-child(2){--k:2}
+#keylo .rbar:nth-child(3),#gaterows .rbar:nth-child(3){--k:3}
+#keylo .rbar:nth-child(4),#gaterows .rbar:nth-child(4){--k:4}
+#keylo .rbar:nth-child(5),#gaterows .rbar:nth-child(5){--k:5}
+#keylo .rbar:nth-child(6),#gaterows .rbar:nth-child(6){--k:6}
 .rbar.off .rb-f{display:none}
 /* WHAT CHANGED. A hairline where the fill stood, fading over 2.4 seconds.
    Not on Flow, whose cells carry seven figures and have no one place a fill
@@ -2213,14 +2259,14 @@ body:not(.tab-field) .fdock{display:none}
 .rb-d.on.st{opacity:1;animation:none;transform:none}
 /* PAIRED. A row lights the glass bar's circle for the same reading, and the
    circle lights the row, one ring in the row's own colour. */
-.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot{box-shadow:inset 0 0 0 1px var(--c)}
-.fdock .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
+.fdock .kb.rbar:hover,.fdock .kb.rbar.rb-hot,#gaterows .kb.rbar:hover{box-shadow:inset 0 0 0 1px var(--c)}
+.fdock .kb.rbar:focus-visible,#gaterows .kb.rbar:focus-visible{outline:2px solid var(--c);outline-offset:1px}
 .rbar.off .rb-v,.rbar.off .rb-n{color:var(--dim)}
 .rbar.off .rb-n .rb-ic{color:var(--dim)}
 body.quiet .rb-f::before,body.rm .rb-f::before{animation:none}
 @media (prefers-reduced-motion:reduce){
  .rb-f::before{animation:none}}
-.fdock .kb:hover{background:transparent}
+.fdock .kb:hover,#gaterows .kb:hover{background:transparent}
 .fdock .kb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .key{display:flex;flex-wrap:nowrap;gap:4px;align-items:center}
 .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
@@ -2309,9 +2355,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
    in flow, on every tab, and it needs none of the pinning. */
 .bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
  background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
-/* the definition of the two ends of an axis, said once in the rail rather than
-   only in a tooltip, because a tooltip is not reachable by a thumb. */
-.stk-def{margin:10px 0 8px;font-size:12.5px;line-height:1.6;color:var(--dim)}
 /* a glyph set beside the name of the thing it stands for, in a drill header */
 .ad-ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:8px;
@@ -2335,7 +2378,6 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
 .ad-prot .btn{align-self:flex-start}
 .ad-prot-n{font-size:12.5px;line-height:1.55;color:var(--dim)}
 
-.stk-def b{color:var(--ink);font-weight:500}
 /* the accuracy block owns the bottom right, so the howto stops before it
    rather than running under it at the narrower desktop widths. */
 .howto{position:absolute;bottom:14px;left:16px;font-size:12.5px;color:var(--dim);
@@ -2789,6 +2831,24 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
  body.rshut .mid{grid-template-columns:302px 1fr 58px}
  body.lshut.rshut .mid{grid-template-columns:58px 1fr 58px}
  body.rshut.tab-settings .mid,body.rshut.tab-prac .mid{grid-template-columns:1fr}}
+/* THE AVATAR'S PURPOSE VIEW HAS NO RAILS, 18 November, his words: "for the
+   avatar purpose, let's remove the left and right rail." The rails are the
+   Field's two shared columns and the Avatar never had a rule of its own, so
+   it showed them by default. Keyed on the drawn view and not on a class a
+   script sets, because setTab clears only the page classes it knows: a
+   class left behind would strip the rails off the next page, and :has reads
+   what is actually in #avbody, which only counts while body is tab-intake.
+   Becoming keeps both rails until the Avatar redesign takes them off.
+
+   HEAVIER THAN THE FOLD RULES ABOVE ON PURPOSE. A one class rule here weighs
+   the same as body.lshut:not(.tab-settings) .mid and body.lshut.rshut .mid,
+   so it wins or loses by its place in this file, and measured placed ahead
+   of them a person with the left rail folded elsewhere got Purpose in a 58
+   pixel track. The id in :has outweighs every fold state, wherever it sits.
+   The fold controls live inside the rails, so they go with them and the
+   saved fold state returns untouched with Becoming. */
+body.tab-intake:has(#avbody .avp) .mid{grid-template-columns:minmax(0,1fr)}
+body.tab-intake:has(#avbody .avp) .mid>.col{display:none}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -2930,6 +2990,20 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .cap b{font-weight:600}
 
 /* ---------- number fields ---------- */
+/* THE LAW BOXES, SET BY HAND. They left the right rail on 18 November and live in
+   a fold at the foot of the Intake page (ui/intakeui.js, iqHand). The fold is a
+   native details: its summary is the 44px press, a ring-and-arrow mark turns
+   when it opens, and the boxes and the all slider keep their own rules below. */
+.iq-hand{width:min(100%,560px);margin:32px auto 16px;padding:0 16px;box-sizing:border-box}
+.iq-hand>summary{display:flex;align-items:center;gap:10px;min-height:var(--tap);cursor:pointer;
+ font-size:13.5px;font-weight:600;color:var(--dim);list-style:none}
+.iq-hand>summary::-webkit-details-marker{display:none}
+.iq-hand>summary::before{content:'';flex:0 0 auto;width:7px;height:7px;border-right:1.6px solid currentColor;
+ border-bottom:1.6px solid currentColor;transform:rotate(-45deg);transition:transform var(--t-micro) var(--ease-out)}
+.iq-hand[open]>summary::before{transform:rotate(45deg)}
+.iq-hand>summary:hover{color:var(--ink)}
+.iq-hand>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-xs)}
+.iq-hand .bulk{margin-top:8px}
 .nf{display:flex;align-items:center;gap:10px;margin-bottom:7px;min-height:var(--tap)}
 .nf label{flex:1 1 auto;font-size:14px;color:var(--mid);overflow:hidden;
  text-overflow:ellipsis;white-space:nowrap;font-weight:400}
@@ -2948,8 +3022,6 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  cursor:ew-resize;position:relative;box-sizing:content-box}
 .nf .tr:hover{outline:1px solid var(--gold);outline-offset:2px;border-radius:3px}
 .nf .tr b{display:block;height:100%;border-radius:3px;transition: width var(--t-surface) var(--ease-out)}
-.nf.oppf label{opacity:.74;font-size:13px;padding-left:4px}
-.nf.oppf{margin-bottom:12px;margin-top:-2px}
 .bulk{display:flex;gap:10px;align-items:center;margin-bottom:11px}
 .bulk label{font-size:13.5px;color:var(--mid);flex:0 0 58px}
 .bulk input[type=range]{flex:1 1 auto;-webkit-appearance:none;appearance:none;height:var(--tap);
@@ -2970,34 +3042,36 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 .mxk{font-size:12.5px;color:var(--dim);line-height:1.65;margin-top:10px}
 .mxk b{color:var(--ink);font-weight:600}
 
-/* THE CHAIN KEY. One row per tier, nerve to root, a swatch and a sentence.
-   The dot is the exact color the wheel paints that tier's threads and beads
-   with, set inline from bc() at render time, so a swatch here and a bead on
-   the wheel can never read as two different colors for the same tier. */
-.chk-row{display:flex;align-items:flex-start;gap:9px;margin-top:10px}
-.chk-dot{flex:0 0 auto;width:11px;height:11px;border-radius:50%;margin-top:3px;
- box-shadow:0 0 0 1px rgba(0,0,0,.25)}
-.chk-dot.varies{background:conic-gradient(from 0deg,#e06a5a,#e0a65a,#e0d85a,#6ac17a,#5ac1b8,#5a8fe0,#a05ae0,#e06a5a)}
-/* a field anchor sits at no seat and has no colour of its own yet (CB10,
-   open), and every rendition draws it as an unfilled ring, so its swatch is
-   that ring and not a dot of a colour the drawing never uses */
-.chk-dot.ring{background:transparent;box-shadow:inset 0 0 0 1.4px var(--ink);opacity:.6}
-.chk-tx{font-size:12.5px;color:var(--dim);line-height:1.5}
-.chk-tx b{color:var(--ink);font-weight:600}
-
-/* THE FOUR AMPLIFIERS. One row each, a name and the real crBadge (.crb,
-   above) reading its own address. Its own small rule rather than
-   knowledge.js's kb-row/kbp, which that file injects itself only once the
-   Knowledge tab has been opened: a press on Field alone, never Knowledge,
-   would have shown these names with no flex, no gap and no border, the
-   classes present with nothing behind them. */
-.amp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:9px 0;border-bottom:1px solid var(--edge);background:none;border-left:0;
- border-right:0;border-top:0;width:100%;text-align:left;cursor:pointer;color:inherit;
- font:inherit}
-.amp-row:last-child{border-bottom:0}
-.amp-row:hover{background:var(--sunk)}
-.amp-nm{font-size:13.5px;color:var(--ink)}
+/* THE CHAIN KEY AND THE AMPLIFIER ROWS WENT, 18 November, with the sections
+   that drew them (body.html says why). What stands in the amplifiers' place is
+   below, and what stands in the key's place is nothing: the wheel's own hover
+   on a dot names its tier. */
+/* THE FOUR SUPEREGO SYMBOLS, 18 November. One row of four equal columns with
+   one gap, so the row is centred under its label and even from end to end. A
+   cell is one button and the whole cell is the target: the ring, which is
+   crBadge's own medium badge with no pill, and under it the figure. The name
+   is not printed, it does not fit a column that is 60 pixels wide at 1600, and
+   it is the sentence on hover and tap and in the spoken name. */
+.amp-icons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:6px 0 2px}
+.amp-i{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:var(--tap);
+ padding:8px 0 6px;background:none;border:0;border-radius:var(--r-xs);color:var(--ink);font:inherit;cursor:pointer}
+.amp-i:hover{background:var(--sunk)}
+.amp-i:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.amp-i .crb{pointer-events:none}
+.amp-v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;line-height:1;
+ color:var(--ink)}
+.amp-i.off .crb-g,.amp-i.off .amp-v{color:var(--dim)}
+/* THE SIX ACTION BARS, 18 November. They are rbRow's own bar, laid out by the
+   same rules the dock's bars are (the selectors above that name .fdock name
+   this host as well, so the two cannot drift into two drawings). A column of
+   six with the dock's own gap, the 10 pixel gap that stands above DQ between
+   the three that keep the law and the three that break it, the sweep's
+   stagger by position as in the dock, and a hatch on the fill of the three
+   that break it, the one Flow's held cells already wear, so the sides are not
+   told apart by a hue alone. */
+#gaterows{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:0}
+#gaterows .rbar:nth-child(3){margin-bottom:10px}
+#gaterows .rbar[data-side=lower] .rb-f{background-image:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 18%,transparent) 0 1.5px,transparent 1.5px 4px)}
 
 /* ---------- spiritual states ---------- */
 .sp-hd{margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--edge);color:var(--gold)}
@@ -3069,83 +3143,109 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
  clip-path:inset(50%);white-space:nowrap}
 
 /* ---------- right rail ---------- */
-.rcard{border-radius:var(--r-s);padding:14px 16px;margin-bottom:9px;position:relative;
- overflow:hidden;cursor:pointer;transition:all var(--t-micro) var(--ease-out);background:var(--panel-2)}
-.rcard:hover{transform:translateX(3px);outline:1px solid var(--edge-2)}
-.rcard .bar{position:absolute;left:0;top:0;bottom:0;opacity:.17}
-.rcard .tier{font-size:11px;font-weight:600;opacity:.85;position:relative}
-.rcard .nm{font-size:19px;font-weight:600;line-height:1.25;position:relative;margin:4px 0 4px;letter-spacing:0}
-.rcard .sub{font-size:13px;opacity:.72;position:relative;margin:0;color:var(--mid);font-weight:300}
-.rcard .w{position:absolute;right:14px;top:12px}
 .rnone{font-size:13.5px;color:var(--dim);padding:10px 0}
-/* NO CARD AROUND THE SUMMARY BOX, 4 November. This was a gold edged card
-   carrying the person's name, and the name came off on his screenshot ("the
-   person already knows who they are"). What is left, the summary box, is a
-   box of its own, so a card around it was a box in a box with the coloured
-   edge he called "an old legacy design" on the Flow cards the same day.
+/* THE INSIGHT FRAME, 18 November. His words: "The insight panel at the very
+   top should say insight. Whatever I select, it should give me source AI's
+   reading of the cascade of that information, how it flows through me, and
+   what the appropriate actions are. And then underneath that, it lists the
+   stack from superego down, which I can run protocols against." One sunk
+   frame (var(--sunk), the display area he asked for on 14 November), in this
+   order: the word Insight, what is selected, the reading, its dots, one
+   Release, a hairline, the stack. The Blueprint domain card that was the first
+   thing in this rail (#person, a fixed library blurb, not a reading of
+   anything selected) is gone, and its job went to the reading when a domain is
+   what is selected.
 
-   ALWAYS ON TOP, FIXED, BLACK, ITS OWN DISPLAY AREA, 14 November. His words
-   on the live panel: "the insight panel is always on top and is fixed, and
-   it has a black background... it looks like a unique display area. This is
-   where Source AI provides deep information from my records." Sticky, not
-   fixed: the .rfold rule above this one already measured why on this same
-   rail (a control that has to be scrolled back to is not there, and fixed
-   would hold it over a phone's own content, where the rail does not scroll
-   itself). var(--sunk) and the border and inset highlight are copied from
-   .smp, head.html, which already carries his own words for exactly this
-   read ("dark black, a touch darker than the app's own panel gray... its own
-   unique display area"): one family, not a second black. padding-right
-   clears .rfold's pinned icon, the same 52px gutter .lsec[data-rail=right]
-   .lsec-hd already keeps for it. z-index sits under .rfold (3) so the icon
-   still draws over this box's own top right corner rather than under it. */
-.person{position:relative;margin:0;padding:12px 52px 12px 14px;
- border-radius:var(--r-s) var(--r-s) 0 0;background:var(--sunk);border:1px solid var(--edge-2);border-bottom:0;
- box-shadow:inset 0 1px 0 rgba(255,255,255,.03);cursor:pointer}
-.person:empty{display:none;margin:0;padding:0;border:0;box-shadow:none}
-/* NOT STICKY, 17 November, OVERRIDDEN from the 14 November build above, which
-   held this box at the rail's top "so it stays on screen while the rest of
-   the rail scrolls under it". His 14 November words were "is always on top
-   and is fixed, and it has a black background", and the build read "fixed"
-   as pinned (TASKS.md, SV22 closing note, which names the sticky as that
-   night's own addition). His words on the live page three days later are
-   that the reading was wrong: "The insight panel's still broken. It doesn't
-   scroll with the rest of the scroll bar. That's a bug for the field, body,
-   the compass, etc." "Always on top" still holds, the box is the first thing
-   in the rail, black, at every scroll position of zero. Reproduced first, 1600
-   by 1000, James, Field, Body and Compass: #rpanel is its own scroller
-   there (scrollHeight 2085, 3901 and 5324 in 867), and with the rail scrolled
-   300 the Insight frame's first half stood at the same y it started at, 138,
-   while everything under it moved. The box is 339 pixels tall, 39 percent of
-   the rail, so a person lost over a third of their reading to a block that
-   would not move, and the Insight half of the same frame slid away under
-   it, which read as the panel breaking in two. The frame is one piece and
-   it moves as one piece. The fold control (.rfold) stays pinned, which is
-   his own earlier ruling and a 44 pixel square, not a third of the rail.
-   Below 1181 this was already position:relative (the page scrolls there and
-   sticky would have held the box over whatever was scrolled to), so the two
-   widths now agree and the media query that said so is gone. */
-/* ONE FRAME, NOT THREE STACKED CARDS, SV23, 14 November, the Dashboard's own
-   clean/even/symmetrical ruling (CLAUDE.md) carried over to this rail: his
-   words on the live panel, "I want the display area about 80% longer...
-   that way it'll be the information display area." .person above, the
-   pill row and the well below are one continuous sunk frame now, never
-   three. The Insight section (data-sec=you) is .person's own bottom half:
-   same background, same border, no seam between them, its header kept
-   (it still opens and closes the section, railmotion.js still staggers it
-   in) but drawn as the frame's own label rather than a second card's lid.
-   A :has() fallback is not needed: the attribute selector is static in the
-   markup, never conditional on JS, so every browser this product supports
-   resolves it the same way on first paint. */
-.lsec[data-rail="right"][data-sec="you"]{background:var(--sunk);border:1px solid var(--edge-2);
- border-top:0;border-radius:0 0 var(--r-s) var(--r-s);margin:0 0 14px;padding:0 14px 14px}
-.lsec[data-rail="right"][data-sec="you"] .lsec-hd{padding:8px 2px 6px 0;border-bottom:1px solid var(--edge)}
-.lsec[data-rail="right"][data-sec="you"] .lsec-bd{padding-bottom:0}
-/* a person with nothing read yet has no .person box (it is :empty and
-   gone, above), so the Insight half simply opens the frame on its own,
-   top corners rounded to match, rather than reading as a lid with no box
-   under it */
-.person:empty+.lsec[data-rail="right"][data-sec="you"]{border-top:1px solid var(--edge-2);border-radius:var(--r-s)}
-.person h3{margin:0;font-size:20px;font-weight:600;letter-spacing:0}
+   EVEN, NOTHING FLUSH, his 16 November symmetry ruling: 16px between blocks,
+   12px inside one, 14px gutters, so the frame reads as one piece at 1600 and
+   at 390. It scrolls with the rail (17 November): no sticky box, no inner
+   scroller. padding-right on the header clears the pinned fold control, which
+   now stands over this header's right end. */
+.lsec[data-rail="right"][data-sec="you"]{position:relative;background:var(--sunk);
+ border:1px solid var(--edge-2);border-radius:var(--r-s);margin:0 0 14px;padding:0 14px 14px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.lsec[data-rail="right"][data-sec="you"] .lsec-hd{min-height:52px;padding:8px 52px 8px 0;
+ border-bottom:1px solid var(--edge);color:var(--ink);font-size:16px;font-weight:600;letter-spacing:0}
+.lsec[data-rail="right"][data-sec="you"] .lsec-hd:hover{color:var(--ink)}
+.lsec[data-rail="right"][data-sec="you"] .lsec-ic{width:20px;height:20px;color:var(--accent)}
+.lsec[data-rail="right"][data-sec="you"] .lsec-hd i{margin-right:0}
+.lsec[data-rail="right"][data-sec="you"] .lsec-bd{padding:16px 0 0}
+/* the one slot the Insight audio button attaches to, drawn only when something
+   is in it, so the rail never shows a button that cannot run */
+.ins-audio{position:absolute;top:4px;right:84px;width:var(--tap);height:var(--tap);
+ display:flex;align-items:center;justify-content:center}
+.ins-audio:empty{display:none}
+#insight{display:flex;flex-direction:column;gap:16px}
+#insight:empty{display:none}
+/* WHAT IS SELECTED: its chain mark in a ring, its name, its kind in words and
+   its percent. Identity and nothing else, symbol first, header second. */
+.ins-id{display:flex;align-items:center;gap:12px;min-height:var(--tap)}
+.ins-ring{flex:0 0 28px;width:28px;height:28px;border-radius:50%;box-sizing:border-box;
+ border:1.5px solid var(--c,var(--accent));color:var(--c,var(--accent));
+ display:flex;align-items:center;justify-content:center}
+.ins-ring svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.ins-idt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ins-nm{font-size:15px;font-weight:600;line-height:1.25;color:var(--ink);
+ overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ins-kd{font-size:12px;line-height:1.3;color:var(--mid)}
+.ins-fg{flex:0 0 auto;font-family:var(--num);font-variant-numeric:tabular-nums;
+ font-size:15px;font-weight:600;color:var(--ink)}
+/* NOTHING SELECTED, the two parts in order: a bold line, then a muted one */
+.ins-none{display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.5}
+.ins-none b{font-weight:600;color:var(--ink)}
+.ins-none span{color:var(--mid)}
+/* THE READING. One Source AI mark heads the block (the Journal's own mark, one
+   concept one mark) and the words wear the Source AI colour, 15 November. No
+   italic: the embedded Inter has no italic face, so three paragraphs of the
+   browser's own slant would be a wall. 14px on a 22px line, 10px between
+   paragraphs. The three headers are fixed labels. A book line is quoted in the
+   person's ink with its source on hover. The height of the block is held at
+   its tallest page (railInsight sets min-height), so paging never moves the
+   rail. */
+.ins-rd{position:relative;outline:none;border-radius:var(--r-xs)}
+.ins-rd:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.ins-mk{display:flex;align-items:center;gap:6px;margin:0 0 10px;font-size:12px;line-height:1.3;color:var(--mid)}
+.ins-mk .src-mk{margin-right:0;vertical-align:0}
+.ins-rd{touch-action:pan-y}
+/* every page sits in the same grid cell, so the block is as tall as its tallest
+   page without a single measurement, and a page change is a crossfade */
+.ins-pgs{display:grid}
+.ins-pg{grid-area:1/1;display:flex;flex-direction:column;gap:10px;opacity:0;visibility:hidden;
+ transition:opacity var(--t-element) var(--ease-out),visibility 0s linear var(--t-element)}
+.ins-pg[data-on]{opacity:1;visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){.ins-pg{transition:none}}
+.ins-p{margin:0;font-size:14px;line-height:22px}
+.ins-rd .src-ai{font-style:normal}
+.ins-p b{color:var(--ink);font-weight:600}
+.ins-q{color:var(--ink)}
+/* THE DOTS. One ring a page, an 8px ring in a 44px hit area (the tap floor).
+   The current page is the same ring drawn long, in the accent with a light
+   wash: a ring, never a filled disc. */
+.ins-dots{display:flex;justify-content:center;min-height:var(--tap)}
+.ins-dot{flex:0 0 var(--tap);width:var(--tap);height:var(--tap);display:flex;align-items:center;
+ justify-content:center;padding:0;border:0;background:transparent;color:var(--mid);cursor:pointer;
+ border-radius:var(--r-xs)}
+.ins-dot i{display:block;width:8px;height:8px;border-radius:50%;box-sizing:border-box;
+ border:1.5px solid currentColor;transition:width var(--t-micro) var(--ease-out),border-radius var(--t-micro) var(--ease-out)}
+.ins-dot:hover{color:var(--ink)}
+.ins-dot:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.ins-dot[aria-current="true"] i{width:20px;border-radius:4px;border-color:var(--accent);
+ background:color-mix(in srgb,var(--accent) 22%,transparent)}
+@media (prefers-reduced-motion:reduce){.ins-dot i{transition:none}}
+/* THE ONE ACTION. A ring pill: the accent outline, the word in ink. */
+.ins-rel{display:flex;justify-content:center}
+#bRel{min-height:var(--tap);padding:0 24px;border-radius:999px;border:1.5px solid var(--accent);
+ background:transparent;color:var(--ink);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;
+ display:inline-flex;align-items:center;gap:8px;
+ transition:background var(--t-micro) var(--ease-out)}
+#bRel svg{width:16px;height:16px;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#bRel:hover{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+#bRel:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* the Selection section's own empty state, said in the same two parts */
+#rdrill-none{display:flex;flex-direction:column;gap:4px}
+#rdrill-none b{font-weight:600;color:var(--ink)}
+.prole{font-size:12.5px;color:var(--dim);margin-top:3px}
 .prole{font-size:12.5px;color:var(--dim);margin-top:3px}
 .tierow{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:baseline;
  font-size:13.5px;color:var(--mid);padding:4px 0}
@@ -3904,245 +4004,93 @@ body.punch .card{border-color:transparent}
  border-top:1px solid var(--edge);padding-top:10px}
 .card-sq{font-family:var(--num);color:var(--ink)}
 .card-act{display:flex;gap:6px;flex-wrap:wrap}
-/* the stack tabs under the reading */
-.stack{margin-top:14px}
-/* FIVE EQUAL CELLS, 16 November. A wrapping flex row sized each tab to its
-   own count, so Sab measured 63 against 56 and Super fell to a second line
-   at 1600, one tab alone under four: uneven on both axes, against "symmetry
-   in space, everywhere". A five column grid gives every tab the same width
-   and the same gap at every rail width, and it cannot wrap. */
-.stk-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px;
- position:relative;padding-bottom:9px}
-/* THE TAP FLOOR IS A FLOOR. These two strips set 32 and 36 against a measured
-   minimum of 44, and they render on every surface in the product, so one
-   declaration was responsible for five of the seven failing tabs. Gate 8 now
-   watches it, which is why it stopped being a preference. */
-/* A BUTTON YOU CAN SEE, 16 November. The tab sat on var(--sunk), the same
-   ground as the .lsec it lives in, with no border, so at rest there was no
-   shape at all, only five floating icons, and the selected one went
-   transparent and lost even that. Modelled on .vt, the shell's own square
-   controls top right (transparent, a 1px var(--edge) hairline, var(--r-s)
-   corners, panel-2 and edge-2 on hover), and square by aspect-ratio with
-   the tap floor under it. The glyph above, its count centred under it, so
-   the count never changes the cell's width. */
-.stk-t{background:transparent;border:1px solid var(--edge);color:var(--mid);border-radius:var(--r-s);
- padding:6px 0;font-family:var(--sans);font-size:12px;cursor:pointer;position:relative;
- min-height:var(--tap);aspect-ratio:1/1;min-width:0;
- display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
- transition:background var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out),
-  border-color var(--t-micro) var(--ease-out)}
-.stk-t:hover{background:var(--panel-2);border-color:var(--edge-2);color:var(--ink)}
-.stk-t:active{background:var(--edge);border-color:var(--edge-2)}
-.stk-t:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-/* the themes that take outlines away still give it a ground, so the shape
-   survives; Flat and Punch fill the pinned one, their own rule for state */
-body.lumen .stk-t,body.flat .stk-t,body.punch .stk-t{border-color:transparent;background:var(--panel-2)}
-body.flat .stk-t.on,body.punch .stk-t.on{background:var(--accent);color:var(--on-accent)}
-body.flat .stk-t.on svg,body.flat .stk-t.on b,body.punch .stk-t.on svg,body.punch .stk-t.on b{
- stroke:var(--on-accent);color:var(--on-accent)}
-/* THE INDICATOR AND THE CONNECTOR, ONE MARK, SV23. It sits under whichever
-   pill carries .on and ui.js's own FLIP slides it there, translateX and a
-   width tween, never a layout property the well itself depends on. Its
-   place in the row (bottom:0 of .stk-tabs' own padding-bottom:9px) is also
-   the tick down into the well a few pixels below: one bar reads as both
-   the active mark and the frame's own seam, not two drawings of the same
-   idea. prefers-reduced-motion turns the slide off below; the FLIP still
-   lands it in the right place on the frame it just stood up in, it only
-   stops travelling there from wherever it last was. */
-/* top is set in ui.js, never in CSS: a wrapped second row (a tier count wide
-   enough to push Super onto its own line, 14 November's own screenshot of
-   it) puts the on pill above the container's bottom edge, and a bottom:0
-   mark would then float under the wrong row entirely. Measured off the on
-   pill's own rect every render, the same FLIP that sets left. */
-.stk-ind{position:absolute;left:0;top:0;height:3px;width:24px;background:var(--accent);
- border-radius:2px;transform:translateX(0);pointer-events:none;
- transition:transform var(--t-element) cubic-bezier(.34,1.56,.64,1),
-  width var(--t-element) cubic-bezier(.34,1.56,.64,1),
-  top var(--t-element) cubic-bezier(.34,1.56,.64,1)}
-@media (prefers-reduced-motion:reduce){.stk-ind{transition:none}}
-/* THE WELL, SV23, 14 November, his words: "I want the display area about 80%
-   longer... that way it'll be the information display area." Fixed by CSS
-   clamp, never measured in JS: a measured height is a layout read on every
-   render, the thrash this product's own render() already guards against
-   elsewhere. clamp(420px,62vh,640px) is the added height in full, and it
-   holds real content at every size it can take, never an empty card: the
-   fet tier's nine bars fill it at the floor, an open cascade four layers
-   deep fills it at the ceiling.
-   A FLOOR, NOT A BOX, 17 November. This was height:clamp(...) with
-   overflow:auto, a scroll box nested in the rail's own scroller, and a
-   long tier was read through it: measured at 1600 by 1000, James, Saboteurs,
-   the well was 620 tall over 1398 of content and Complexes 620 over 678, so
-   the wheel over the Insight moved the well and not the rail, and the rail's
-   scrollbar sat still beside a reading that was moving. His words, "It
-   doesn't scroll with the rest of the scroll bar." The 80 percent he asked
-   for is kept as a minimum height, the display area is never shorter than
-   it was, and a reading longer than that simply makes the well taller and
-   scrolls with everything else on the rail. */
-.stk-well{min-height:clamp(420px,62vh,640px);display:flex;flex-direction:column}
-/* AT 1180 AND BELOW THE WELL HAS NO FLOOR EITHER: it was already a flowing
-   block there, so a short phone screen never traps a tall reading behind a
-   scrollbar inside a scrollbar, and now it is the same rule at every width
-   except for the floor itself. */
-@media (max-width:1180px){.stk-well{min-height:0}}
-/* THE WELL'S OWN SUMMARY: Built from, Feeds, Reading, SV23. One generated
-   sentence (Reading, insightSay's own) plus two labelled facts, never a
-   free paragraph, his own objection to the drill's old Feeds-up block
-   (ui/drills.js, tsBlockHtml) carried over to this box on purpose. The
-   label is the rail's own gold eyebrow (.stk-hd, .rows .k, the same word
-   wherever a fact is named rather than composed), so this reads as the
-   same house, not a new one. */
-.stk-sum{margin:0 0 12px;padding:0 0 12px;border-bottom:1px solid var(--edge);
- font-size:13px;line-height:1.6}
-.stk-sl{display:flex;gap:10px;align-items:baseline;padding:3px 0;color:var(--ink)}
-.stk-sl b{flex:0 0 70px;color:var(--gold);font-size:11px;font-weight:600;
- font-family:var(--sans);letter-spacing:.02em}
-.stk-sl span{flex:1 1 auto;min-width:0;color:var(--dim)}
-.stk-chip{font-style:normal;color:var(--ink)}
-.stk-chip:not(:last-child):after{content:', ';color:var(--dim)}
-/* THE ENTRANCE, ARMED ONLY ON A PRESS (ui.js's own STK_ENTER), SV23. Old
-   content is never animated out, this product's own rule against an exit
-   animation on a rebuilt list: the well's innerHTML is simply replaced and
-   the new content stages in, parent first, its children staggered 70ms
-   apart and capped at six steps so a saboteur with nine fetters never
-   waits nine beats, Reading 120ms after the last of them, the whole
-   entrance under 700ms. backwards fill so a row never flashes visible
-   before its own delay has run. */
-@keyframes stkIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.stk-well[data-enter] .stk-chip,.stk-well[data-enter] .stk-sl{animation:stkIn var(--t-element) var(--ease-out) backwards}
-@media (prefers-reduced-motion:reduce){
- .stk-well[data-enter] .stk-chip,.stk-well[data-enter] .stk-sl{animation:none!important;opacity:1!important;
-  transform:none!important;animation-delay:0ms!important}}
-/* PHONE, 390, SV23 #5: "he came for the sentence, not the structure." Built
-   from and Feeds still print above Reading in the markup (what a screen
-   reader meets first stays the summary's own facts, in order), but the
-   column itself reorders so a thumb sees the sentence first. */
-@media (max-width:720px){
- .stk-sum{display:flex;flex-direction:column}
- .stk-sl[data-role="reading"]{order:-1;margin-bottom:6px;padding-bottom:6px;
-  border-bottom:1px solid var(--edge)}}
-/* STROKE 1.6 TO 2.2, 14 November. Icons only now carries the whole row,
-   no word beside it, and reproduced live: the Child emotions mark (one
-   ring, CHAINGLYPH.fet) is a tall capsule that at 15px and 1.6 reads as a
-   literal zero beside its own count, "0 9". The word used to disambiguate
-   it; it is gone, so the stroke has to. Checked against the screenshot
-   before trusting it.
-
-   15 TO 18, 15 November. The stroke change above did not fix it: size was
-   the problem, not line weight (CHAINGLYPH's own comment, same date). Every
-   mark now draws on one shared 3.4-to-20.6 frame, so one size serves all
-   five; measured tab widths are 37 to 52px, so 18px still clears with room
-   either side. b's line-height is set to match the icon's own height so
-   the count sits on its centre rather than its baseline. */
-/* FULL OPACITY AND 1.7, 16 November. The .75 dim made the at rest row read
-   as disabled, which is what a locked tab (.lk, ui/lock.js) is for, so the
-   two could not be told apart. The glyphs drew their own chains at full
-   size the same day (CHAINGLYPH, ui/component.js), which is what lets the
-   stroke come down to 1.7 and still hold a hole inside every ring. */
-.stk-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;
- stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.stk-t.on svg{stroke:var(--accent)}
-.stk-t b{font-family:var(--num);font-weight:500;color:var(--dim);
- font-size:12px;line-height:14px;min-height:14px}
-.stk-t.on{color:var(--accent);font-weight:500;
- border-color:color-mix(in srgb,var(--accent) 55%,var(--edge))}
-.stk-t.on b{color:var(--accent)}
-/* NOTHING SELECTED, the well's empty state (railStack, ui/ui.js): the
-   bold line, then the muted one, in the summary's own slot and rhythm */
-.stk-none{margin:0 0 12px;padding:2px 0 12px;border-bottom:1px solid var(--edge);
- display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.5}
-.stk-none b{font-weight:600;color:var(--ink);font-size:13px}
-.stk-none span{color:var(--dim)}
-.stk-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
- text-transform:none;padding:2px 6px 4px;letter-spacing:.02em}
+/* THE STACK, UNNESTED, 18 November. His words: "I don't think the nested
+   complex or super complex, hyper complex, etc. on that right rail is the way
+   to go. Let's unnest them." Six levels from Superego down, flat, one left
+   edge at every depth (5 November: "give me a linear layout"), each a header
+   and its bars. No tabs, no chevrons, no wells: the five-tab row (14 November
+   "icons, not full words, on one horizontal row", 16 November square
+   buttons), the nested cascade (4 November) and the pin-on-press are
+   replaced by this, the 18 November ruling being the later word. What
+   survives of the 14 November principle is the order on a level header:
+   symbol first, then the word, then the count. */
+.stack{margin-top:16px;padding-top:4px;border-top:1px solid var(--edge)}
+.stack:empty{display:none}
+.stk-lv{padding-top:18px}
+.stk-lv+.stk-lv{margin-top:18px;border-top:1px solid var(--edge)}
+.stk-lh{display:flex;align-items:center;gap:8px;min-height:var(--tap);color:var(--mid);
+ font-size:12px;font-weight:600;letter-spacing:.02em;cursor:help;border-radius:var(--r-xs)}
+.stk-lh:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stk-lh svg{flex:0 0 auto;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.stk-lh b{flex:1 1 auto;min-width:0;font-weight:600}
+.stk-lh .stk-lc{flex:0 0 auto;font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:500;color:var(--mid)}
+.stk-row{display:flex;align-items:stretch;min-width:0;position:relative}
+.stk-row .stk-r{flex:1 1 auto;min-width:0}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
  min-height:var(--tap);padding:3px 6px;border:0;background:transparent;border-radius:var(--r-xs);
  font-family:var(--sans);font-size:13px;color:var(--ink);text-align:left;cursor:pointer}
-.stk-r.static{cursor:default}
-.stk-r:not(.static):hover,.stk-r.on{background:var(--panel-2)}
-.stk-l,.stk-p{display:inline-flex;align-items:center;gap:6px;min-width:0}
-.stk-l{flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.stk-p{flex:0 0 auto;color:var(--mid);font-size:12px}
-.stk-r em{font-style:normal;color:var(--dim);font-size:11px;margin-left:4px}
-/* THE CASCADE, 4 November. ui/ui.js stkNode. A row is the chevron, the
-   layer's mark and the door side by side, and what it is made of sits right
-   under it. No card, no coloured edge, his ruling on the old Flow cards. The
-   chevron is the section headers' own, .lsec-hd i above, so one mark means
-   open here and on the rail around it.
-
-   NO STEP PER LAYER, 5 November, his words on the first cut's shots: "give
-   me a linear layout. its too nested right now." Each layer was set in by
-   12 pixels, a staircase four steps deep. Every row now starts at the same
-   left edge, and depth is the layer mark in its own fixed column, .stk-lm,
-   the same width at every depth, so the bars at the bottom of a branch are
-   as wide as the bars at the top. A bar has no chevron, so .stk-gut holds
-   that column empty and its mark lines up with every mark above it. */
-.stk-tl{display:flex;justify-content:flex-end;margin:-2px 0 2px}
-.stk-all{min-height:var(--tap);padding:0 8px;border:0;background:transparent;color:var(--dim);
- font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:var(--r-xs)}
-.stk-all:hover{color:var(--ink)}
-.stk-nr{display:flex;align-items:center;min-width:0}
-.stk-nr .stk-r{flex:1 1 auto;min-width:0}
+.stk-r:hover{background:var(--panel-2)}
+.stk-r:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.stk-r em{font-style:normal;color:var(--mid);font-size:11px;margin-left:4px}
 .stk-nm{overflow:hidden;text-overflow:ellipsis}
-.stk-x{flex:0 0 auto;width:var(--tap);min-height:var(--tap);display:inline-flex;align-items:center;justify-content:center;
- border:0;background:transparent;color:var(--dim);cursor:pointer;border-radius:var(--r-xs);padding:0}
-.stk-x:hover{color:var(--ink);background:var(--panel-2)}
-.stk-x i{display:block;width:7px;height:7px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;
- transform:translateY(-2px) rotate(45deg);transition:transform var(--t-element) var(--ease-out)}
-.stk-n.open>.stk-nr>.stk-x{color:var(--gold)}
-.stk-n.open>.stk-nr>.stk-x i{transform:translateY(2px) rotate(-135deg)}
-.stk-kids{padding-left:0}
-/* THE TIER'S WORD, round 3, ui/ui.js stkTier: the panel's own eyebrow, once
-   above each tier's rows in an open branch, starting at the mark column so
-   the word stands over the marks it names. No indent: the staircase stays
-   gone, and the word says the depth the step used to. */
-.stk-tier{display:block;margin:8px 0 0;padding:0 0 2px var(--tap)}
-.stk-tree>.stk-tier:first-child{margin-top:0}
-.stk-gut{flex:0 0 var(--tap);width:var(--tap)}
-.stk-lm{flex:0 0 20px;width:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--dim)}
-.stk-lm svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6;
- stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+/* THE SELECTED ROW: a 2px accent rule on its left edge, and nothing else wears
+   the look when nothing is selected (16 November) */
+.stk-row.sel .stk-r{background:var(--panel-2);box-shadow:inset 2px 0 0 var(--accent)}
+/* THE LINEAGE KEEPS ITS HUE, EVERYTHING ELSE GOES NEUTRAL. The selection, its
+   parent, its children and their child emotions keep the seat colour. Every
+   other fill turns --mid and its name drops to --mid at 500. A darker or more
+   transparent seat colour would turn Solar and Sacral brown, the orange he has
+   ruled out twice, so the fill is replaced and never dimmed. */
+.stk-row.dim .rb-t{--c:var(--mid)!important}
+.stk-row.dim .rb-f{opacity:.55}
+.stk-row.dim .stk-nm,.stk-row.dim .rb-n,.stk-row.dim .rb2-n{color:var(--mid);font-weight:500}
+.stk-row.dim .rb2{--lc:var(--mid)!important;--rc:var(--mid)!important;--sc:var(--mid)!important}
+.stk-row.dim .rb2-p{--pc:var(--mid)!important}
+.stk-row.dim .rb2-p.lit{color:var(--mid)}
+/* A BAR'S SECOND TARGET: a 44px ring at its right end that opens that item's
+   release already loaded. The body of the bar selects; this runs. Ring, never
+   a fill. Accent only on hover and focus, so small text is never accent on the
+   sunk ground in the light themes. */
+.stk-run{flex:0 0 var(--tap);width:var(--tap);min-height:var(--tap);display:flex;align-items:center;
+ justify-content:center;padding:0;border:0;background:transparent;color:var(--mid);cursor:pointer;
+ border-radius:var(--r-xs)}
+.stk-run svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.stk-run:hover,.stk-run:focus-visible{color:var(--accent);background:var(--panel-2)}
+.stk-run:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.stk-run.off{visibility:hidden;pointer-events:none}
+.stk-more{display:block;width:100%;min-height:var(--tap);margin-top:4px;padding:0 8px;border:0;
+ border-radius:var(--r-xs);background:transparent;color:var(--mid);font-family:var(--sans);
+ font-size:12px;font-weight:500;text-align:center;cursor:pointer}
+.stk-more:hover{color:var(--ink);background:var(--panel-2)}
+.stk-more:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 /* a child emotion's bar is rbPair, the Balance bar; on the Field's dock it
    is laid out by .fdock .rb2, and here by the same rule */
 .stack .rb2{position:relative;display:block;flex:1 1 auto;width:100%;min-width:0;padding:4px 0 6px;
  white-space:nowrap;text-align:left}
 /* the poles here are longer words than Balance's, Groundedness and
-   Anticipation, and at the dock's gap the centre figure sat against the
-   right pole's word and read as its figure: "100% Equanimity" for anger held
-   at 100. A wider gap keeps the figure with the line it stands on. */
+   Anticipation, and at the dock's gap the centre figure sat against the right
+   pole's word and read as its figure: "100% Equanimity" for anger held at
+   100. A wider gap keeps the figure with the line it stands on. */
 .stack .rb2-ln{gap:14px}
-/* and four layers down a pole's word is wider than its half of the bar, so
-   it shortens with an ellipsis inside its own half rather than running under
-   the figure; the full word is in the row's title and its spoken name */
-/* capped at its own half: a pole set to its end is sized to its words and
-   not to its column, so without the cap its word ran out of the half and
-   was cut from the front, "100%quanimity", once the linear layout's mark
-   column took the bar's width at 1600, 5 November */
+/* a pole's word is wider than its half of the bar, so it shortens with an
+   ellipsis inside its own half rather than running under the figure, and keeps
+   at least 8px between the word and the figure; the full word is in the row's
+   title and its spoken name */
 .stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
-.stack .rb2-n{min-width:0;flex:0 1 auto}
+.stack .rb2-n{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stk-b{padding:2px 6px}
-/* A PATTERN'S ROW AS THE RAIL'S AMOUNT BAR, SV18, ui/ui.js stkAmount: the
-   line of words over the track, the way .rbar lays it out on the dock. The
-   dock's name column sizes to its word, which is right for "Vitality" and
-   wrong for "Heart Recoiler + Diffuse Hider", so here the name takes what is
-   left and shortens with an ellipsis, and the figure keeps its column. */
+/* A PATTERN'S ROW IS THE RAIL'S AMOUNT BAR, ui/ui.js stkAmount: the line of
+   words over the track, drawn by the same rb-row, rb-n, rb-v and rb-t rules
+   the left rail's bars use, at the same 16px track. The name takes what is
+   left and shortens with an ellipsis, and the figure keeps its column. There
+   is no second track height for this rail: the 10px override that stood here
+   drew one component two ways. */
 .stk-r.stk-am{display:block;padding:5px 6px 7px}
 .stk-am .rb-row{grid-template-columns:minmax(0,1fr) auto}
-.stk-am .rb-n{min-width:0;overflow:hidden;white-space:nowrap}
-.stk-am .rb-v{grid-column:2;font-size:13px}
-.stk-am .rb-t{height:10px;margin-top:4px}
-/* THE INSIGHT CARD IS THE BLUEPRINT DOMAIN'S DOOR NOW, 14 November, SV22
-   finally landed. #psum used to carry the band word's only press on the
-   Field (SV18); it now carries the Selection panel's own domain reading
-   (domReadHtml, ui/drills.js), moved up into #person, and a press opens
-   that same full card (runDomDrill) rather than the band's compass drill.
-   A div and not a button, because the domain reading is divs and
-   paragraphs and a button only takes phrasing content; role and tabindex
-   keep it a control, min-height keeps the 44px floor every control here
-   keeps, and the pm-eye/ad-nm/ad-sub/ad-p rules it prints with are the same
-   ones the drill already uses, so one visual language, not two. */
-.psum{display:block;min-height:var(--tap);transition:opacity var(--t-micro) var(--ease-out)}
-.psum:hover{opacity:.92}
-.psum:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-xs)}
+.stk-am .rb-n{min-width:0;overflow:hidden;white-space:nowrap;color:var(--ink)}
+.stk-am .rb-v{grid-column:2;font-size:14px;color:var(--ink)}
 .rows{font-size:13.5px;line-height:1.85;color:var(--dim);margin-top:14px;padding-top:12px;
  border-top:1px solid var(--edge)}
 .rows b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
@@ -4152,9 +4100,6 @@ body.flat .stk-t.on svg,body.flat .stk-t.on b,body.punch .stk-t.on svg,body.punc
 .it:hover{color:var(--ink);background:var(--panel-2)}
 .it.pin{background:rgba(223,204,126,.2);color:var(--ink)}
 .it b{color:var(--ink);font-weight:500;font-family:var(--num);font-variant-numeric:tabular-nums}
-/* a Running row: the badge, then the name, which takes the rest and ellipses */
-.it.run-it{justify-content:flex-start;align-items:center;gap:8px}
-.it.run-it .run-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bmrow{display:grid;grid-template-columns:86px 1fr 46px;gap:10px;align-items:center;
  font-size:11px;font-weight:600;margin-bottom:7px}
 .bmk{color:var(--dim)}
@@ -4284,6 +4229,10 @@ body.punch .bm-pt.on>i{background:var(--gold)}
 .pm-aura{position:absolute;inset:-18%;pointer-events:none;z-index:0;filter:blur(40px);
  transition: opacity var(--t-context) var(--ease-out), background var(--t-context) var(--ease-out)}
 .pm-svg{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+/* the Body's svg holds one svg per panel (ui/map.js bmBuild), each laid on its
+   half of the well and showing the world its own camera shows. What a panel's
+   camera shows past its own edge is not drawn, and this says so. */
+.bm-ps{overflow:hidden}
 .pm-fig{display:none}
 .pm-art{opacity:.62}
 body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
@@ -5826,30 +5775,11 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
    which is where Detail on an imprint opens its drill. */
 body:not(.tab-story) .lsec.st-rail{display:none}
 body.tab-story .lsec[data-rail="right"]:not(.st-rail):not([data-sec="sel"]){display:none}
-/* #person escapes this rule, 14 November: it is a sibling of the .lsec
-   sections now, not one of them, because a sticky summary cannot live
-   inside a section a person can collapse. Named by id here, on every rail
-   that already steps the Insight section aside, so the Field's own summary
-   does not leak onto a page that never shows the Insight section it moved
-   out of. */
-body.tab-story #person{display:none}
-/* #railtop left the rail for the Field's stage in round IT and is hidden off
-   the Field by its own rule, so only #bRel is stepped aside here */
-body.tab-story #bRel{display:none}
-/* ---------- the Field's rail, 4 November ----------
-   His live reaction to this rail, on the Field: the Flow section's coloured
-   cards are "an old legacy design", the Running list is "also legacy.
-   Because this should show parent to children as a stack. Underneath the
-   summary", and neither Laws of Moral Integrity nor Run a release is wanted
-   on this panel. The cascade in Insight is what is running now, so the
-   four step aside on the Field, the way the Story's rail steps them aside,
-   and every other surface keeps them as they were: he ruled this panel and
-   no other. Hidden and not deleted, so the ids every renderer and the
-   release route still write to stay in the document. */
-body.tab-field .lsec[data-rail="right"][data-sec="flow"],
-body.tab-field .lsec[data-rail="right"][data-sec="running"],
-body.tab-field .lsec[data-rail="right"][data-sec="laws"],
-body.tab-field #bRel{display:none}
+/* THE FIELD'S RAIL HIDES NOTHING OF ITS OWN ANY MORE, 18 November. The four
+   sections this block stepped aside on the Field alone (Flow, Running, Laws and
+   the old foot button) are gone from the rail on every tab, not hidden: his
+   words, "Everything beneath selection... it's all repeat... get rid of that."
+   The 4 November ruling that scoped them to this one tab is replaced. */
 /* five grouping buttons are wider than a rail, and a row that overflows with
    no affordance reads as a missing control, so it wraps. */
 .st-rail .ip-ctl{flex-wrap:wrap}
@@ -6238,9 +6168,6 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
    yet) takes the section with it rather than leaving an empty header. */
 body:not(.tab-summary) .lsec.sum-rail{display:none}
 body.tab-summary .lsec[data-rail="right"]:not(.sum-rail):not([data-sec="sel"]){display:none}
-/* #person, see the Story rule above: a sibling of the .lsec sections now,
-   named here too so it does not leak onto Summary. */
-body.tab-summary #person{display:none}
 body.tab-summary .lsec.sum-rail.dl-empty{display:none}
 .dl{padding:2px 2px 0}
 .dl-when{font-size:13px;line-height:1.6;color:var(--dim);margin:2px 0 16px}
@@ -6469,6 +6396,12 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
    uses: a line of text swelling and shrinking reads as broken, not alive. */
 .src-livecap{font-size:13px;color:var(--mid);line-height:1.55;margin:6px 0 0;font-style:italic;
  animation:capPulse 1.6s ease-in-out infinite}
+/* ONE LINE OF HEIGHT WITH NOTHING IN IT, 18 November. The caption prints the
+   person's own words and nothing else now, so at rest it is empty; the line it
+   held while it said "Listening" is kept, because it is the only thing under
+   the circle and the circle moved 13 pixels each time words arrived or left
+   without it, measured. A paragraph with no text is zero tall on its own. */
+.src-livecap{min-height:1.55em}
 @keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
 body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
 .src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
@@ -7823,10 +7756,6 @@ body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
    them, as it does on the Story. */
 body:not(.tab-masksview) .lsec.ch-rail{display:none}
 body.tab-masksview .lsec[data-rail="right"]:not(.ch-rail):not([data-sec="sel"]){display:none}
-/* #person, see the Story rule above: a sibling of the .lsec sections now,
-   named here too so it does not leak onto Character. */
-body.tab-masksview #person{display:none}
-body.tab-masksview #bRel{display:none}
 .chr .pm-eye.chr-sp{margin-top:18px}
 .chr-note{margin:0 0 12px;font-size:12.5px;line-height:1.45;color:var(--dim)}
 .chr-lead{display:flex;align-items:center;gap:12px}
@@ -7869,6 +7798,8 @@ body.tab-masksview #bRel{display:none}
  transition:background var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out)}
 .chr-ar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .chr-ar:hover{border-color:var(--ac);color:var(--ac)}
+/* a mark and not a door while Archetypes is hidden (ui/character.js) */
+span.chr-ar{cursor:default}
 .chr-ar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .chr-ar.on{border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 20%,transparent);box-shadow:0 0 14px color-mix(in srgb,var(--ac) 28%,transparent)}
 .chr-arn{color:var(--mid);margin-bottom:4px}
@@ -8067,8 +7998,6 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 #cone.tabmode .cone-card{height:100%;min-height:0;overflow-x:hidden;overflow-y:auto}
 #cone.tabmode .cone-body{height:100%;min-height:0}
 #cone.tabmode .cone-info{max-height:100%;min-height:0;padding-right:4px}
-#eshelf{display:none}
-body.tab-energy #eshelf{display:flex;flex-direction:column}
 
 /* ============================================================
    RESPONSIVE

@@ -2709,13 +2709,22 @@ function coneRead(){
     time, so the sentence says what it is read from and claims no movement. */
  return '<p class="cone-p">Your coherence is <b>'+fmtPct('cq',r.CQ)+'</b>. '+unpSay('coherence')+' '
   +band+', where most people swing between better days and worse ones.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+fmtPct('integrity',r.Ig)+'</b>. '+unpSay('integrity')+'</p>'
-  +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
+  /* INTEGRITY MEANT TWO THINGS ON THIS SCREEN, 18 November. The figure
+     printed as "your integrity" is r.Ig, the law mean lifted by the poles and
+     pulled down by overshoot (engine/compute.js, the registry's own say for
+     the integrity kind), while the sentence printed beside it, the table's,
+     makes integrity how well you keep the laws, which is CQ, printed one line
+     above at a different figure. Integrity keeps the table's one meaning, and
+     the figure says what it is built from in its own sentence, with each of
+     its two words carrying its meaning. Recorded in DECISIONS.md. */
+  +'<p class="cone-p">Your laws, lifted by what is '+unp('installed','installed')+' and pulled down by '
+  +unp('overshoot','overshoot')+', read <b>'+fmtPct('integrity',r.Ig)+'</b>.</p>'
+  +'<p class="cone-p">'+unpSay('integrity')+' Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
   +'integrity again. The loop turns both ways. Yours is turning '
-  +'<b>'+(rising?'up':'down')+'</b>, because your integrity is in the '
-  +(rising?'top':'bottom')+' half of its range.</p>'
+  +'<b>'+(rising?'up':'down')+'</b>, because your laws, read that way, are in the '
+  +(rising?'top':'bottom')+' half of their range.</p>'
   +weak
   /* "You are floating the ship out of the water so that it can float" came
      off the end: a ship floats in water, so the sentence cannot be pictured,
@@ -3493,7 +3502,10 @@ function ladderHtml(){
   (l.planned-l.minutes)+((l.planned-l.minutes)===1?' minute':' minutes')]);
  LG=LG.concat([['Saved',ldn(l.rituals,' ritual',' rituals')],
   ['Opened',ldn(l.ground,' address',' addresses')],
-  ['Installed',ldn(l.clear,' axis',' axes')]]);
+  /* the word carries the table's sentence, 18 November: it is the count of
+     axes whose opposite is in place, the same Installed the Analytics tile
+     reads, and it printed bare here */
+  [unp('installed','Installed'),ldn(l.clear,' axis',' axes')]]);
  h+='<div class="ld-led">'+LG.map(function(x){
   return '<div class="ld-r"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';
  /* the marks. icon, name, and what it meant. */

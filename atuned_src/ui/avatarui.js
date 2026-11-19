@@ -373,14 +373,26 @@ function avClosure(row,load0){
  if(load0==null||load0<=0)return 0;
  return clamp(1-row.gap.load/load0,0,1);}
 
-/* ---------------- what the sniffer hears in a pair ---------------- */
+/* ---------------- what the sniffer hears in a pair ----------------
+   WIRED TO THE RECORD, 18 November, his words: "the sniffer needs to be
+   wired into the records and listen for those patterns." Before this,
+   srcHear ran here with no prior argument at all, so a seat already
+   established across this person's own committed entries (srcHear's own
+   rungs 9 and 10, "an earlier committed entry touched this seat too")
+   could never fire on the Avatar page: every pair read as brand new,
+   however many times the same seat had already come back. storyui.js's
+   own calls (stMini/the Story tab) already pass srcPrior(ents); this
+   page is the one that did not. Reads only the seat keys earlier commits
+   already stored (srcPrior, engine/sourceai.js), never their text. */
 function avHeard(notbe){
  var t=String(notbe||'').trim(), out={seat:null, area:null, words:[], named:[]};
  if(!t)return out;
  var b=(typeof readSeat==='function')?readSeat(t):null;
  out.seat=b; out.area=b?AV_OF[b]:null;
  if(typeof srcHear==='function'){
-  var h=srcHear(t), k=b?B2K[b]:null;
+  var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];
+  var pr=(typeof srcPrior==='function')?srcPrior(ents):null;
+  var h=srcHear(t,pr), k=b?B2K[b]:null;
   h.seats.forEach(function(s){
    if(k&&s.seat!==k)return;
    s.words.forEach(function(w){if(out.words.indexOf(w)<0)out.words.push(w);});});}
@@ -1053,7 +1065,8 @@ function avSides(st){
     line said the same thing a second time and are folded into the tags. */
  if(x&&idx==null)return ['',
   '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
-  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p></div>', ''];
+  '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p>'
+   +(typeof affDoorHtml==='function'?affDoorHtml('avatar','av:'+(x.pair.id||'')):'')+'</div>', ''];
  var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
  /* the question turns in place by one press on the arrow beside it. THE
     BUTTON IS ITS OWN FOURTH SLOT, round LV. It used to close the embody
@@ -1444,10 +1457,30 @@ function avDilHTML(){
    and C on the one Avatar page, which is the audit's recommendation for Q7
    (a layer of the page, not a fifth section of a four step loop). */
 var AV_SUBS=[['becoming','Becoming'],['purpose','Purpose'],['arch','Archetypes']];
+/* ARCHETYPES IS HIDDEN, 18 November, his words: "let's hide the archetype tab
+   under avatar. Archetype. I don't know what it's for. I don't know where it
+   came from. I don't know what it does." Hidden and not deleted, because his
+   word is hide: the wheel, the card, avRate and every rating already saved on
+   avatar.arch stay, and the record still validates and exports them. Nothing
+   in the engine reads those ratings (affinity reads the quiz's archSeed and
+   the hand picks in S.arcs), so no reading moves. This one line is the whole
+   switch: true puts the pill, the Discover card's route and the Character
+   page's twelve doors back as they were. While it is false a view named
+   'arch', set by a pill, by a door or left over in AV.sub, paints Becoming,
+   because renderAvatar's last branch draws the wheel for any value it does
+   not know and a door that sets AV.sub directly never passed through avSub. */
+var AV_ARCH_SHOWN=false;
+function avSubsShown(){return AV_SUBS.filter(function(s){return s[0]!=='arch'||AV_ARCH_SHOWN;});}
 function avSub(k){
  if(k==='intake'){AV.sub='becoming'; AV.face='iq'; renderAvatar(); return;}
- if(!AV_SUBS.some(function(s){return s[0]===k;}))return;
- AV.sub=k; renderAvatar();}
+ if(!avSubsShown().some(function(s){return s[0]===k;}))return;
+ AV.sub=k; renderAvatar();
+ /* PURPOSE HAS NO RAILS, 18 November (shell/head.html, beside the fold
+    rules), so its icon grids sat hidden while it was open, and fitGrid skips
+    a hidden grid. A resize on Purpose left them fitted to the old width once
+    Becoming brought the rails back. setTab and colFold refit for the same
+    reason; a view change inside this page calls neither. */
+ if(typeof fitGrids==='function')requestAnimationFrame(fitGrids);}
 function avIqHome(){
  /* THE INTAKE PAGE HOLDS THE HOST WHILE IT IS OPEN, AND THIS TOOK IT ANYWAY.
     The first paint of the Avatar on a profile with nothing in it runs this
@@ -1823,7 +1856,7 @@ function avHead(st){
  var own=avOwn(), edR=own&&AV.shedEdit, edB=own&&AV.idEdit&&!edR;
  var h='<header class="av-hd avs-top avs-who"><div class="avw avw-l">'+(edR?'':avShedHTML())+'</div>'
   +'<div class="avs-subs" role="group" aria-label="Avatar">'
-  +AV_SUBS.map(function(s){var on=AV.sub===s[0];
+  +avSubsShown().map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
   +'</div><div class="avw avw-r">'+(edB?'':avIdHTML())+'</div></header>';
  if(edR)h+=avShedForm(); else if(edB)h+=avIdHTML();
@@ -1842,7 +1875,8 @@ function renderAvatar(){
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
   AV.idEdit=false; AV.shedEdit=false; AV.side=null;}
- if(!AV.sub)AV.sub='becoming';
+ /* a hidden or unknown view is Becoming, AV_ARCH_SHOWN above says why */
+ if(!avSubsShown().some(function(s){return s[0]===AV.sub;}))AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';

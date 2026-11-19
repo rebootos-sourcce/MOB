@@ -1336,6 +1336,24 @@ function iqxHtml(p){
      sentence is the page explaining itself three times */
   +'<p class="iqx-note">These three are kept beside your reading. They do not change it.</p>';}
 
+/* THE LAW BOXES, SET BY HAND, 18 November. They left the right rail ("Laws of
+   integrity. Yeah, they're all on diagnostics. Get rid of that.") and this is
+   where they went, because they were the one place a person could type one
+   law's number: the fold holds the 21 boxes and the all slider whole, ids and
+   handlers unchanged, kept in #iqhold until the page draws and appended to its
+   body every time it does. renderIntake writes its whole host, so the fold is
+   moved in after, never written in, and the controls it holds survive every
+   repaint. */
+function iqHand(host){
+ var f=document.getElementById('iqhand'); if(!f||!host)return;
+ if(f.parentNode!==host)host.appendChild(f);}
+/* and put back before the page writes its host, because host.innerHTML=h takes
+   every child of the host with it, a fold it was holding included: the gate
+   found the 21 boxes gone on the second draw, and a lost control is the one
+   thing this move may never do */
+function iqHandPark(){
+ var f=document.getElementById('iqhand'), h=document.getElementById('iqhold');
+ if(f&&h&&f.parentNode!==h)h.appendChild(f);}
 function renderIntake(){
  /* ITS OWN BODY, round HG. The tab is the Avatar now and the avatar is its
     hero, in #avbody above this. This renderer writes the whole of its host on
@@ -1382,7 +1400,9 @@ function renderIntake(){
  h+=iqxHtml(p);
  h+='</div>';
  iqArtCss(); iqDoors();
+ iqHandPark();
  host.innerHTML=h;
+ iqHand(host);
  /* A WORKED EXAMPLE'S ANSWERS ARE ITS READING, AND THEY ARE NOT PRESSED.
     Ruled 16 October (engine/showonly.js). Every control on this page that
     writes an answer, a name, a birth moment, the seal, the stated type, a save

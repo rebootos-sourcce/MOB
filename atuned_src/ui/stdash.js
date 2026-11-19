@@ -170,11 +170,20 @@ function stDashLeft(){
       +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
- o+=stDashPatterns();
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
- o+=stDashMasks();
+ /* PATTERNS MOVES UNDER PSYCHE STACK, 18 November, his words on this rail:
+    "Move patterns underneath Psyche Stack." Only the position changed;
+    stDashPatterns reads and draws exactly as it did above Integrity. */
+ o+=stDashPatterns();
+ /* MASKS IS GONE FROM THIS RAIL, 18 November, his words: "get rid of
+    masks. We already have it as a widget in the lower right." Masks had
+    been added here on his own 10 November instruction ("add the masks");
+    this is a later instruction overriding that one, the same way the
+    Boundary/Compass pair was cut from this same rail on 10 November when
+    their work moved to the Dashboard's own mini pictures. stDashMasks
+    stays defined and reachable; only this call is cut. */
  /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
     detector... moves to the lower left or near the lower left bottom of
     the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
@@ -434,7 +443,7 @@ function stOpenVerp(k){
    TB's own words: "Psyche Stack (`railStack` in ui/ui.js, pointed at the
    story being written instead of the whole record)." Checked directly
    before building this: railStack's own tree (saboteur to complex to
-   hyper to super complex, ui/ui.js stkGroup/stkFetBar) is built from
+   hyper to super complex, ui/insightui.js stkLevelHtml/stkFetBar) is built from
    compute()'s chain arrays, which are cross-address pattern matching over
    the whole record (SAB33 ranges and the rest, engine/compute.js) -- there
    is no version of that pipeline that runs on one unsent draft's parse,
@@ -464,7 +473,7 @@ function stDashPsycheStack(){
  var TIER={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root};
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
-  +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
+  +'<h2 class="rblk" id="st-psyche-h">Psyche</h2>';
  /* ALWAYS THE PILLS, NEVER TEXT, 9 November and again 13 November. This
     used to fall back to a whole sentence the moment every tier was
     empty, which is the one section on this rail that did not hold the
@@ -561,7 +570,7 @@ function stOpenPsyche(kind){
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
  var def=stPsyMean(kind);
- var h=anaHead('Psyche stack',lab,def?esc(def):'');
+ var h=anaHead('Psyche',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
 

@@ -287,19 +287,26 @@ async function lockGate(browser,FILE,ok,booted){
 
   /* ---- 8 · THE RAIL AND THE LISTS, which must say locked and not nothing ---- */
   await as('free');
+  /* THE RAIL'S LISTS ARE THE STACK NOW, 18 November. #run and #fire, the Flow
+     cards and the Running now list, left the rail with the five tabs, and the
+     six-level stack under the Insight reading is the one list of what is
+     running. These three checks held that the rail says locked and never
+     nothing is running, that the chain tabs were locked without a count and
+     the fetters were not, and that an open locked tab showed the lock's panel.
+     They hold the same three things of the levels. */
   const rl=await pg.evaluate(()=>{
-   const run=document.getElementById('run').textContent.replace(/\s+/g,' '), fire=document.getElementById('fire').textContent.replace(/\s+/g,' ');
-   const st=[...document.querySelectorAll('#stack .stk-t[data-st]')].map(t=>({k:t.getAttribute('data-st'),lock:t.getAttribute('data-lock'),
-    n:(t.querySelector('b')||{}).textContent||'',h:t.getBoundingClientRect().height}));
-   STACK_TAB='sab'; railStack(computeSeen());
-   const sl=document.querySelector('#stack .lk-panel');
-   STACK_TAB='fet'; railStack(computeSeen());
-   return {run:run,fire:fire,panels:document.querySelectorAll('#run .lk-panel,#fire .lk-panel').length,st:st,stackPanel:!!sl};});
-  ok(rl.panels>=2&&!/Nothing is running|Nothing running/.test(rl.run+' '+rl.fire),
-   tag+'the rail says it is locked and never that nothing is running, '+rl.run.slice(0,120));
-  ok(rl.st.filter(t=>t.k!=='fet').every(t=>t.lock===t.k&&t.n===''&&t.h>=30)&&rl.st.find(t=>t.k==='fet').lock===null,
-   tag+'the stack\'s chain tabs are locked and print no count, the fetters are not, '+JSON.stringify(rl.st));
-  ok(rl.stackPanel,tag+'a locked stack tab that is open shows the lock\'s panel and not an empty list');
+   const lv=[...document.querySelectorAll('#stack .stk-lv')].map(l=>({k:l.getAttribute('data-lv'),
+    panel:!!l.querySelector('.lk-panel'),n:(l.querySelector('.stk-lc')||{}).textContent||'',
+    h:l.querySelector('.stk-lh').getBoundingClientRect().height}));
+   return {text:document.getElementById('stack').textContent.replace(/\s+/g,' '),
+    panels:document.querySelectorAll('#stack .lk-panel').length,lv:lv};});
+  ok(rl.panels>=2&&!/Nothing is running|Nothing running|None running/.test(rl.text),
+   tag+'the rail says it is locked and never that nothing is running, '+rl.text.slice(0,120));
+  ok(rl.lv.filter(t=>['sup','hy','cx','sab'].indexOf(t.k)>=0).every(t=>t.panel&&t.n==='')
+   &&rl.lv.filter(t=>['sup','hy','cx','sab'].indexOf(t.k)>=0).length===4
+   &&rl.lv.find(t=>t.k==='fet')&&!rl.lv.find(t=>t.k==='fet').panel&&rl.lv.find(t=>t.k==='fet').n!=='',
+   tag+'the stack\'s chain levels are locked and print no count, the child emotions are not, '+JSON.stringify(rl.lv));
+  ok(rl.panels>=4,tag+'every locked level shows the lock\'s panel and not an empty list');
   /* summary, analytics, imprints, avatar, drill */
   await pg.evaluate(()=>{setTab(TAB.SUMMARY);render();}); await pg.waitForTimeout(700);
   const sm=await pg.evaluate(()=>{const h=document.getElementById('sumbody'), c=h.querySelector('.s-chain');

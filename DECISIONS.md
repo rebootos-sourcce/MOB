@@ -2812,6 +2812,10 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 
 A seat finding (P1-E), not a ruling. The profile sync on main is dead code: `profileSyncEligible` in `ui/auth.js:189` asks `typeof profiles==='function'`, which is never true, so `authProfileSync` always skips and would throw at `:222` if it ran. It must not be switched on as is, because it uploads the whole profile, stories included, which contradicts the privacy words; it needs a sync and consent design first. The returning account bypass of the opening that depends on it is parked at `claude/p1e-bypass-parked` (`743df63`), `TASKS.md` PB1.
 
+**Priority order, ruled 18 November.** His words: "Focus on the cosmetic bugs and visual enhancements. Prioritize all of those first. And then let's get that release engine as Source AI, in behind that." Cosmetic bugs and visual work (the dashboard bottom row and left rail redraws already in progress, card redesigns, stray-visual defects like the unmeasured text and scrollbar between the Path/Boundary/Body cards) come first. Wiring Source AI into the release engine (the sniffer's findings driving real release offers, the evidence bus and the 96-pattern library already built but not wired, the Avatar page's own Source AI corner and sniffer-to-bank line) is next, queued right behind it, not started ahead of it. Read as a sequencing ruling, not a scope cut: nothing already named in either area is dropped.
+
+**Device sync, scheduled post alpha. Ruled 18 November.** His words: "Add the device sync post alpha." This is a timing ruling, not a design change: the code to pull a person's story onto a device that does not already hold it exists and is wired (`authProfileSync`, `profileSyncImport`, `ui/auth.js`), gated behind one constant, `PROFILE_SYNC_ENABLED=false`, with the reason already written beside it: "profile sync is not part of alpha... keep this false until privacy copy, consent and retention are approved together." That reason still holds and is now dated: not before alpha closes. The flag stays false through alpha; flipping it, and writing the consent/privacy copy it needs first, is the first real piece of post-alpha accounts work, alongside the paywall flip in the same area (`TASKS.md`, accounts-auth and accounts-paywall). Found this round because signing in on a device with no local record read as a bug ("my account's not being set up") rather than the device's own first run; the fix shipped the same night is only the honest message (`authSyncNote`, commit `4ef5c88c`), not the switch.
+
 ## Sniffer, 9 October: the audit checked, and the defaults the seats took
 
 The owner supplied a sniffer design and gap audit (8 October) and asked for a review, a strategy, handshake notes and an entry in the sniffer documents. All of it is in `REVIEW-sniffer-audit-2026-10-09.md` and `HANDSHAKE-sniffer.md`. These are seat rulings, taken because the owner's order is that the seats decide and ask only when blocked. The owner may overturn any of them.
@@ -3134,6 +3138,16 @@ Where the names actually live, checked by grep rather than assumed: `atuned_src/
 
 ## The book's own levels, read in order on the Field's left rail, 28 October
 
+**OVERRIDDEN, 18 November: the section is gone, and so is this entry's
+reason for existing.** His words that day: "I never asked you to put in the
+book levels. I don't even know what that is." The only words of his on record
+for it are the 28 October ones quoted below, "the full cascade wiring of the
+Psyche stack for the field in the left menu", and a seat read the word "book"
+and the row for each level out of them. The section is out of the rail, and
+what is written under this heading is kept for the record of what was
+weighed. The ruling that replaces it is "The Psyche panel holds Matrix,
+Superego and Action", at the foot of this file.
+
 His round, after the superego section landed: "the full cascade wiring of the
 Psyche stack for the field in the left menu." The Mechanics of Being numbers
 the layers a signal passes through, 4 to 10 above the body (1 to 3 sit below
@@ -3455,6 +3469,13 @@ of which session or AI opened it, never only from this session's own work.
 
 ## No two-way chat, anywhere, including the voice. Ruled 10 November, built whole 11 November
 
+**OVERRIDDEN, 18 November, on the Avatar page and in the Source AI corner:** he
+answered the board's question "Does 'I talk to Source AI' replace your 10
+November rule of no two way chat?" with "Yes. Yes, it does. That replaces it.
+The sniffer is now sniffing specifically for words in my conversation." See
+"Answers to the need you list. Ruled 18 November." at the end of this file.
+What follows is the ruling this replaces, kept for the record.
+
 His words, given over and over and most recently pointed straight at the
 Dashboard: "we don't need 2-way talk anymore... it's just the user's input.
 Or the user can put text." This was never written down in this file before,
@@ -3769,3 +3790,889 @@ What did not move, on purpose:
 Two collisions are named once, and the change was made: shadow already reads
 how closed a point is (`pct.js`, "the shadow at that seat"), and points is the
 word the points ladder uses. Both are his to separate if he wants them apart.
+
+## Seven words that printed with no meaning or with two. Team call, 18 November.
+
+He read "Pull, Overshoot, Installed and Self-read shadow have no definition
+yet" on the status board and said he had no idea what it meant. This is what
+the team decided, under his 2 October rule that every symbol is unpacked and
+his rule of one word per concept. None of it changes a figure.
+
+- **Pull, Overshoot, Installed, Self-read shadow** now have one sentence each
+  in `engine/data/gloss.js`, the one meaning table, and every place that
+  prints the word carries it on hover and tap: the Analytics tiles and cards,
+  the session card, the axis card, the pole drill, the Compass and the
+  record's ledger. Pull and Installed keep the wording the Analytics tile
+  already had. Overshoot lost "at 60% and above", because the table refuses a
+  percent, and says what it does to the fetter instead. Self-read shadow is
+  said in one sentence where the tile had two.
+- **Mask and Saboteur.** The Wisdom school glossary (`GLOSS`, `engine/data/kb.js`)
+  opened on a different sentence from every tooltip. The canon (`mob-canon`
+  4.3) makes a mask a developmental way of showing up and a saboteur a set of
+  child fetters at magnitude, which is what the tooltip and `compute()` say,
+  so the glossary row now opens on the tooltip's sentence and keeps the
+  codex's own lines after it. Saboteur's "each one a fetter" became "a set of
+  fetters". Mask's sentence gained "that you grow into" and says point for
+  seat, to meet the point rename.
+- **Integrity.** The word means how well you keep the laws, which is CQ, as
+  the table, the glossary and "your integrity is your CQ" already say. The
+  Compass and the energy drill printed a second figure under the same word,
+  `r.Ig`, which is the law mean lifted by the poles and pulled down by
+  overshoot. The canon does not name that figure, so the team took the
+  wording the product already had for it, the percent registry's own "the
+  laws lifted by the poles and pulled down by overshoot" (`engine/pct.js`),
+  said as "your laws, lifted by what is installed and pulled down by
+  overshoot". The rail's Will sentence, "how much of your integrity gets
+  through the charge you are carrying", was left as it is: it prints no
+  figure, and integrity there reads in its one meaning.
+
+`tests/unpack.js` holds all seven: each of the four fails printed bare, each
+of the three fails with a second sentence anywhere it is carried, and no
+figure may be called integrity.
+## The voice prototype's read only layer, revived, 17 November
+
+His words, verbatim: "Revive it and put a note next to it for when we review
+it. I don't quite know what it's doing anymore, the 96 pattern, but let's add
+it."
+
+**What was revived.** The engine half of the voice prototype, the branch behind
+PR #163, which he rejected on 8 November ("Source AI is nothing like what I
+asked for, at all") and which was closed unmerged. It is the board's #88
+(`srcVoiceCanon`, the lookup that reads the 96 patterns) and #89
+(`srcVoiceEvidenceBus`, the evidence bus), and the three small readers they
+cannot run without. It was ported by file from `aa449a80`, the prototype's last
+commit, onto `main` at `c2bf52a2`, on the branch `revive/source-voice-layer`.
+Never by cherry pick: most of the prototype's commits rewrite the generated
+products, which have moved on. The prototype stays retrievable at
+`origin/source-voice-prototype`, and its own build, which the 10 and 11 November
+entry above says the team could not get back, is `git show
+origin/source-voice-prototype:source.html`.
+
+**What it changes for a person: nothing they can see or hear.** Checked in the
+code and not taken from the branch's name. The prototype changed no line under
+`atuned_src/ui` or `atuned_src/shell`, and nothing in `ui/`, `shell/`, `funnel/`
+or `tools/` calls `srcVoiceSniff`, `srcVoiceNarrative`, `srcVoiceChargeCycle`,
+`srcVoiceGraph`, `srcVoiceIntelligence`, `srcVoiceCanon`, `srcVoicePattern` or
+`srcVoiceEvidenceBus`. Only the tests call them. It is read only in the strict
+sense: a loaded record and the engine's state were byte identical before and
+after a call, and the graph step refuses unless the caller passes consent. So
+none of his recent rulings is touched: Source AI's text prints only on the text
+display, a sentence Source AI composes carries its mark, the structure stays 108
+somatic addresses and 4 field anchors, and nothing here is a score (every report
+says coherence is not measured). If anything in the layer's reports is ever
+shown, it is text Source AI composed and takes the mark, and its catalog index,
+which lists the addresses as one count, must say 108 somatic and 4 field
+anchors and never a flat total.
+
+**What the 96 are, in plain words.** A reference shelf. Each row is a named loop
+a family can repeat, with the steps in order, what you could watch for, what
+else could explain it, a protective move, a question, and links to the research
+it leans on. They are in three layers: ancestral, generational and parental.
+Every row says it is a design category informed by research and not a validated
+diagnosis. Nothing matches a story to a pattern: run against realistic stories,
+none of the 96 came out. A pattern comes out only when a caller types a name or
+an id. The evidence bus is an empty envelope with nine labelled slots (source,
+body map, avatar, compass, story bank, graph editor, laws, ritual builder,
+release protocol), and every slot says action none and write authority none. It
+carries status words and a count, with no text, no seat and no pattern id, so
+even a consumer would have nothing to draw.
+
+**What the 96 are not.** Not his canon from the manuscript: they came in a
+package he uploaded on 1 November, which this repository does not hold, so who
+wrote the rows is not recorded here. Not the list he described on 3 October for
+the superego ("perfectionism, justification, entitlement, obsession"): no row is
+named that, and the layer does not look for it. Not wired to Source AI's voice,
+replies, mark or text display.
+
+**What was changed in the port, and why.** Four things, each named.
+
+- An entry the safety stop holds (`srcSafe`, `engine/safe.js`) is read as
+  nothing by `srcVoiceIntelligence`, so it reaches no packet. The prototype read
+  it: an entry that said the person wanted to die and was angry at their mother
+  came out as a readable report and then as nine packets, ritual and release
+  targets among them. Nothing consumed them, so no person was affected, but a
+  seam must not turn a stopped entry into packets. `tests/source-voice-intelligence.js`
+  holds it, and fails by name without the guard.
+- One comment said "112 canonical nodes". It says 108 somatic nodes and 4 field
+  anchors now.
+- The test for the registry list typed a hand count. It names the registries.
+- The voice gate's `check.py` gained the prototype's `NOT_COPY_ROUTES`, so the
+  published paper titles in the research list stay data. A title reworded to pass
+  a plain words gate is a false citation. The gate reads the same findings as
+  before the port and none that stops a build. The set aside lapses the day any
+  file under `ui/` names `PATTERN96` or `RESEARCHANCHOR`, and the stops come back
+  with it.
+
+**Cost, read off the build on 17 November.** The engine and every product that
+embeds it grew by about 200 kilobytes, almost all of it the pattern rows: the
+engine from 2,088,519 to 2,298,141 bytes, `source.html` from 6,801,579 to
+7,011,711, and the packed file from 1,460,109 to 1,531,621. The funnel's quiz
+page embeds the whole engine, so the public quiz carries the 96 rows and the
+research links too (2,267,967 to 2,477,589 bytes), though no visitor can reach
+them. That is the price of the revival as asked.
+
+**Known defects in the revived code, found by running it and not fixed here,**
+because this was a port and he has not seen any of it. The emotion cycle reader
+marks a whole clause imagined when the clause holds the word "would", so "I was
+terrified when the plane shook, and my hands would not stop shaking" reads as
+hypothetical. The sniffer files "upset" under sadness at the heart while the
+emotion cycle reader files it under anger. The family reader keeps only a fixed
+list of descriptor words, so "my mother hid her feelings" is not kept at all.
+All three are invisible today.
+
+**Not wired into the build gates.** The five tests, `tests/source-evidence-bus.js`,
+`source-voice-charge-cycle.js`, `source-voice-intelligence.js`,
+`source-voice-narrative.js` and `voice-sniffer.js`, each pass with node alone
+against the built engine and each fails against a deliberately broken copy.
+They are not in a workflow, so `tools/orphans.js` fails them by name until the
+integrator adds one step to the fast gates job that runs them. They print a PASS
+line and no "N passed, M failed" summary, so they do not take a line in
+`tests/floors.json`, which needs a tee'd log with a count. `.github/workflows/deploy.yml`
+was left alone on purpose.
+
+**The questions for the review, each with the ways it could go.** None is
+answered for him.
+
+1. **What are the 96 for?** (a) The superego content he asked for on 3 October.
+   They do not contain his named list, so this means writing that list, and
+   either replacing the 96 or adding to them. (b) A reference shelf Source AI
+   reads from when it already knows a name. Costs nothing more, and nothing
+   shows. (c) Retire them: delete about 200 kilobytes and the port of the
+   package, and keep `aa449a80` as the record.
+2. **Ancestral and generational.** On 8 November, round TD, he ruled "Let's
+   combine ancestral and generational. They're the same thing." The library keeps
+   them as two layers of the same size. (a) Keep three layers inside and show two
+   on any screen, which costs a mapping. (b) Fold the two layers into one, which
+   means editing every row of both and finding the rows that say the same thing.
+   (c) Leave the layer names off every screen and decide later.
+3. **If a pattern ever appears on a screen, under what word?** "Pattern" already
+   means an imprint at one of the 108 somatic addresses or 4 field anchors, in
+   the trace graph and across the product. One word per concept means these need
+   a different name, and the name is his. It would also need every symbol in the
+   rows unpacked: all of them carry shorthand with no legend (letter codes at the
+   start of a definition, arrows and generation labels in the transformation
+   line).
+4. **Should Source AI ever ask the questions in the rows?** Most rows carry one.
+   (a) Never, which matches the no two-way chat ruling of 10 and 11 November, but
+   Source AI's reply ends in a question again since 17 November ("let's bring
+   back replies"), so the layer's own "never auto prompt" line would contradict
+   the product if a consumer passed it on. (b) As the one question a turn, which has to pass the question checks and
+   the mark. (c) Held until he reads the questions.
+5. **Do the evidence bus and the three readers stay?** The bus has no consumer and
+   nothing to carry. The emotion cycle reader is a second emotion vocabulary
+   beside the engine's own lexicon. (a) Keep all of it as a dormant seam. (b)
+   Keep the pattern lookup and its two data files and drop the rest, which means
+   moving `srcVoiceCanon` and `srcVoicePattern` out of `voice_intelligence.js`
+   and cutting the prototype's other tests with it. (c) Decide when a first
+   consumer is designed.
+6. **Should the public quiz page carry this at all?** It embeds the whole engine,
+   so a visitor downloads the 96 rows and the research links and cannot reach
+   them. (a) Leave it, since it costs one shared file. (b) Build the quiz from an
+   engine without the layer, which costs a second build target.
+
+**What cannot be said.** Why he rejected PR #163. His words give no reason and
+none is invented here. The layer was not on any screen of the build he judged,
+as far as the code shows, so it cannot be named as the cause.
+## The Avatar's Purpose view loses both rails, and Archetypes is hidden. Ruled 18 November.
+
+His words, verbatim: "Okay, Amy, for the avatar purpose, let's remove the left
+and right rail. And let's hide the archetype tab under avatar. Archetype. I
+don't know what it's for. I don't know where it came from. I don't know what
+it does. Okay, review this back. And then let's add this to the plate."
+
+Read back to him as four things, and built as the first two:
+
+1. **Purpose has no rails.** On the Avatar page's Purpose view the left rail
+   (Root Energetics, Energy, Psyche, Matrix) and the right rail (Selection)
+   are not drawn, and the centre takes the whole row. One rule in
+   `atuned_src/shell/head.html`, beside the fold rules, keyed on the Purpose
+   view actually being drawn in `#avbody`. Becoming keeps both rails until
+   the Avatar page redesign, already in flight, takes them off everywhere;
+   that was the default taken where he left it open.
+2. **Archetypes is hidden, not deleted.** His word is hide. The pill is gone
+   from the Avatar page, the Discover page's Avatar card now opens Becoming
+   and says so, and the Character page's twelve archetypes are marks with
+   their meaning on hover and tap rather than doors into a page that is not
+   drawn. A view left set to Archetypes paints Becoming. The wheel, the card,
+   the 1 to 5 rating and every rating already saved stay: the record still
+   validates and exports `avatar.arch`. One line turns it all back on,
+   `AV_ARCH_SHOWN` in `atuned_src/ui/avatarui.js`.
+3. **What it was, in plain words** (below), because he asked.
+4. **It is on the plate**: `TASKS.md`, round WI.
+
+### What the hidden view was, for the next reader
+
+- A ring of twelve character patterns (an archetype is a role a person tends
+  to play: the Warrior moves toward a threat and counts the cost later, the
+  Sage stops to work out what is true first). Press one and a card opens: a
+  one line meaning, an Impact box naming the habit that gets in that
+  archetype's way (its saboteur) and where in the body that habit sits, three
+  yes or no rows on how it runs through you, and five buttons, 1 Hardly to 5
+  Fully, for "How much of this is you".
+- Where it came from: his own book's twelve (30 May), then his words on 27
+  September, round HG, "we want to give a scale from one to five. People may
+  not see their full potential, they're a magician as an example, they may
+  not understand it", and 28 September, round JP, "I want the archetypes to
+  be on its own subtab". Round KH took the percentages off. Round RB moved
+  the ratings onto the record. MS22, 17 November, pointed the Character
+  page's twelve at it.
+- What it did: the 1 to 5 rating is saved on the record and nothing else in
+  the app reads it. Measured on the live build c2bf52a2 by the historian seat:
+  all twelve rated 5 and the same story run through gives a reading byte for
+  byte identical to no rating. So hiding it changes no reading, score or
+  ritual.
+- What does move the app, and stays: the web quiz's twelve statements
+  (`archSeedApply`, engine/archseed.js) and the Primary and Secondary picks in
+  the left rail on the Field (`S.arcs`). That is the 11 November ruling, "It's
+  self-reporting of their archetypes, and then as they input their story over
+  time, the reality of those numbers adjust", built 16 November (TA9) on those
+  two inputs and never on this view, which is why the view felt like it had
+  no job.
+- What a person loses while it is hidden: the only screen that sets or shows
+  a 1 to 5 rating, and the only place the Impact box and the "How it runs
+  through you" rows are shown. Nothing replaces them; that is his call.
+## The Insight rail: one reading, one stack, nothing under Selection. Ruled 18 November.
+
+His words, to the team, with a screenshot of the right rail: "This is for the
+insight panel. It's not working as I designed it. The insight panel at the
+very top should say insight. Whatever I select, it should give me source AI's
+reading of the cascade of that information, how it flows through me, and what
+the appropriate actions are. And then underneath that, it lists the stack from
+superego down, which I can run protocols against. When I click on the icons
+for saboteur, complex, hypercomplex, supercomplex, there's too much text in
+there. This should just be the bars. And then that text field that says
+something like back to the field, which says child emotion apathy. That's the
+information that seems like it belongs in the insight panel, not there. So the
+information that's within that selection panel looks like it's borrowing some
+information from the insight panel. So the insight panel needs to be, the
+text needs to be insightful. It needs to be much longer. The insight panel
+will always show 3 paragraphs with dots for more information that you can
+select and click through that panel. I don't think the nested complex or super
+complex, hyper complex, etc. on that right rail is the way to go. Let's
+unnest them and let's see what they look like unnested. Have your team read
+back to me what I said, and let's clean up that right rail."
+
+And a few minutes later, on the same rail: "Got another bug. So the insight
+panel gives us information on our selected whatever. I can turn on source AI
+and we could talk about it, or I can read about it. I can see the different
+layers of it, and I can run a release from it. Everything beneath selection,
+including flow, including seats, including grandiosity and predatory and
+unbending and collapse and grandiosity and predatory, like it's all repeat.
+Running now, grandiosity, that's all repeat, get rid of that. Laws of
+integrity. Yeah, they're all on diagnostics. Get rid of that."
+
+Read as, and sent back to him before it was built:
+- the top of the rail says Insight;
+- whatever is selected, Insight gives Source AI's reading of the cascade, how
+  it flows through him, and the appropriate actions: much longer, always three
+  paragraphs, dots under it to click through more;
+- under it, the stack from Superego down, listed so he can run protocols
+  against any level;
+- the saboteur, complex, hyper complex and super complex icons show only bars;
+- the "back to the field, child emotion Apathy" text belongs in the reading;
+- the nested levels are unnested, and he is shown what they look like;
+- everything beneath Selection leaves the rail: Flow, Seats, Running now and
+  the Laws of Moral Integrity, because each is already on a diagnostics
+  surface.
+
+### What was built, and where
+
+- **The reading** is composed in `engine/insight.js` (`insightRead`), host
+  free, deterministic and offline, from fixed templates and named record
+  fields. There is no language model. A paragraph is a list of segments
+  (`text`, `src`, `kind`, `speak`, `fig`, `q`), and the screen and any voice
+  render from that one list, one paragraph a request. Every segment names the
+  field it came from and `insightResolve` walks that name back to the field; a
+  percent is `fmtPct` of that field, never a decimal; a quotation is a
+  substring of its source; an offer says is available, you can or if you want;
+  a body place is the map's and never claimed as the person's; a graph edge is
+  a registration and never a cause. The three headers are fixed labels: Where
+  it sits, How it runs, What to do. Where the data is thin the paragraph is
+  short and says what is missing, once, in one gap sentence. It is never
+  padded and never borrows a neighbour's card.
+- **The marks.** One Source AI mark heads the reading (`srcMark`, the 15
+  November ruling), the paragraphs wear the Source AI colour, none is set in
+  italic (the embedded Inter has no italic face), and a book line is quoted in
+  the person's ink with where it came from on hover. `SRC_MARK_TIP` was widened
+  once for every surface: "Source AI wrote this from your words and your
+  reading."
+- **One selection.** Every door that opens a card in Selection says what it
+  opened (`insDoor`), and `rdShell` takes it. A card that never said anything
+  leaves the selection empty, so Insight never says nothing is selected while
+  Selection shows a card, which is what it did for 11 of 15 kinds before.
+- **The dots** page through the cascade, one rung a page: the selection, then
+  its parts heaviest first (up to three), then its parent. A child emotion
+  pages through the saboteurs that run on it. A page with no data is not drawn.
+  Tap, arrow keys and swipe; the block holds the height of its tallest page;
+  every dot is an 8px ring in a 44px target and says its page, "Page 2 of 4,
+  Victim + Pleaser"; a new selection starts at the first.
+- **The stack** is six levels from Superego down, flat, each a header (its
+  symbol, its word, its count) and bars. A level shows its six heaviest bars
+  and any bar on the selection's lineage, then one "N more" chip. The child
+  emotions are a fixed set of nine and show as nine. Off the lineage a fill
+  turns neutral and is never darkened, because a dimmed seat colour turns Solar
+  and Sacral brown.
+- **A bar has two targets.** The body selects. A 44px ring at its right end
+  opens that item's release already loaded (`relPick`) and starts nothing: only
+  the card's own Release press does, and only that press spends the allowance.
+  `insightRelease` is the one answer for the pill under the reading, the run
+  glyph and the third paragraph. No release on an overshot item, on
+  Entitlement (no feeling is mapped to it), on an address that holds nothing,
+  or while the safety check holds. When the check holds the third paragraph is
+  the one safety line. The safety door is never hidden or gated.
+- **The selection card is identity only**: name, kind, percent and the
+  addresses as rows. Where it sits, Both halves, Which way it leans, The
+  opposite, What happens, The sentence it runs, What becomes available, Next
+  move, Runs under and Made of are Source AI's reading or cut. The Wisdom
+  school opens the same doors to say what a thing is, and there (`kbAnsOn`) the
+  full card stays, because nothing else on that page says it.
+- **Removed from the rail on every tab**: the Blueprint domain card at the top
+  (`#person`), Flow and Seats (`#eshelf`, `#run`), Running now (`#fire`) and
+  the Laws (`#laws`, `#allLaw`), and the old foot button. `renderShelf` and its
+  two callers are deleted. The Laws are the one input that did not exist
+  elsewhere, so the 21 boxes and the all slider moved whole, ids unchanged,
+  into a fold on the Intake page (`#iqhand`, appended by `iqHand`).
+
+### Where each removed block already lives on a diagnostics surface
+
+- The Flow sentence: Summary, the Reading's second paragraph ("Flow stops at
+  the root"), `ui/summary.js`.
+- Seats and their held counts: Analytics, The Seven Seats. The four heaviest
+  seats: Summary, In the body, Heaviest seats (a fold).
+- What is running: the stack itself, and Analytics, What is running.
+- The laws, as a reading: Analytics, Laws of Moral Integrity. The laws, set by
+  hand: the Intake fold.
+
+### What exists nowhere else, said to him and kept off the rail
+
+Four small things from Flow and Seats were on the rail and on no diagnostics
+surface: the Flow ring's own percent, each seat's pass percent, the plexus names
+(Cardiac, Celiac and the rest), and the word "clear" for an empty seat. The seat
+card (`runSeatFlowDrill`) already prints the plexus name. Default taken: they
+stay off the rail, and the ring and the pass percents are for Analytics' Seven
+Seats once the Psyche team's rework lands. His to overrule.
+
+### The earlier rulings this replaces, each named once, on his 18 November words
+
+- 4 November, the five tiers are one nested cascade with chevrons and "Or I can
+  close them all": REPLACED by "Let's unnest them." STK_OPEN, the chevrons, Open
+  all and Close all, and the one-tier-at-a-time body are gone.
+- 14 November, "I just want icons, not full words, on one horizontal row": its
+  object was the five tabs, which are gone. What survives is the order on a
+  level header: symbol first, then the word, then the count.
+- 16 November, the square button tabs, and 14 November, pressing an icon makes
+  the selection: retired with the tabs. The selection drives the rail, never the
+  other way round.
+- 4 November, "Run a release comes off this panel": REPLACED by 17 and 18
+  November. A release is run from the selection, and from a bar. The foot
+  button that queued the heaviest eight of the whole field is gone.
+- 4 November, Flow, Running now and the Laws come off the Field alone (the CSS
+  said "he ruled this panel and no other"): REPLACED. The rail is one panel,
+  and they are gone from every tab, not hidden.
+- 14 and 15 November, the Selection card carries the reading and a Blueprint
+  domain card stands at the top: REPLACED. The reading is Insight's; the card
+  is identity.
+- 15 November, nothing selected shows Source AI's general reading: already
+  replaced by 16 November (empty, "nothing selected at most"), kept.
+- 10 November, no two-way chat anywhere: replaced for one button by 17
+  November. This build keeps the slot (`insightAudioSlot`, `#insaudio`) the
+  unmerged Insight audio button attaches to and builds none of it.
+
+Kept: no name in the reading (4 November), no "built from 5 held addresses"
+(4 November), percents only, one mark for Source AI, the scroll with the rest
+of the rail (17 November), symbol first and header second (16 November),
+nothing highlighted when nothing is selected (16 November).
+
+### Open, with the default taken
+
+- **The Selection heading**: kept as a slim section under the stack, last in
+  the rail. Folding it into Insight's first line is one move. His to call.
+- **Superego**: the four addresses the left rail already reads (Justification,
+  Entitlement, Perfectionism, Obsession), from the same table and weights. The
+  Psyche team is reworking the left-rail icons; this row does not touch their
+  code and should take their marks when both land.
+- **An overshot item**: no release anywhere in the rail. No protocol is written
+  for it. The Summary panel's two doors that queue a pattern's addresses (Release
+  all and the one on each rung, `summaryPanelWire`) refuse an overshot pattern by
+  name now, with the same sentence, because they spent release lines on addresses
+  holding nothing (12 of a hundred gift lines on Sofia's Manipulator). What stays
+  queued on its own, not built here: that panel's Release all still counts every
+  leaf, so its N says more than one run reaches.
+- **A long reading read aloud**: one paragraph a request, because the voice
+  server refuses more than 600 characters in one go.
+## Answers to the need you list. Ruled 18 November.
+
+He read the status board's need you list (fourteen items) and answered it in
+one dictation. His words, verbatim: "Okay, I'm looking at the what's running.
+There's like 14 that says need you. The first one is a content gap. Um, I
+have no clues what you're talking about. Pull, overshoot, installed, and
+self-read. I have no context. Yeah, for the second one, I think I picked the
+palette. If you miss a challenge 3 days in a row, I don't know. I think I
+need suggestions from the team. Like, you can't force someone to do a
+punishment, and then you have to assume they're going to self-report, even
+if they do the punishment. If they don't, or do the punishment. I think the
+punishment needs to be something that the user can learn. Why don't you go
+ahead and create the frame for this ritual stuff, and we'll figure out what
+content needs to go in it. So build the shell, and then we'll worry about
+the content afterwards. I don't know what you mean by bottom row field %.
+Show the weight on all the chakras as a %. Oh, right. This may be because we
+had some like fractions. We're not doing fractions. Do we still have the
+logic for the masks? Is that section still in code? I may want to revise
+that. For the bottom row words, 3 words on the cards, seat or chakra, change
+or tension, charge or tension. Oh, I see. Change seat and chakra to just
+point. It's an assemblage point. You can call it AP, or assemblage point for
+short, or point. We're going to use charge instead of tension. And neither
+becoming or complete, we're going to use the word whole. Instead of clear
+conduction against sabotage, just use clarity. Grace against false light,
+just change that to grace. Oh, I see. Grace against shadow. So use the word
+shadow. For the path links, I'm not quite certain what you mean, but you
+should have all of the nerve to saboteur connections, or saboteur to super
+complexes, to reverse engineer for the path links. For clear connection,
+honesty, and natural growth, we need to go get their original names. I don't
+know if that's like Lucifer or Asmodeus or whatever. Go out to the internet,
+do our research. We have rules for our research. Find the rules on GitHub,
+and then do your deep dive 4 times, create your records for your 3-path
+stories. Do your research on those 3-path stories 4 times, so you get to the
+mechanic and the behavior. Does I talk to source AI replace your 10 November
+rule of no two-way chat? Yes. Yes, it does. That replaces it. The sniffer is
+now sniffing specifically for words in my conversation. Avatar slider
+meaning I don't know what you mean. The avatar tiers is for the avatars for
+tier. Two, three, and four. One, two, three, and four. We're all
+data-driven, so for the avatar ritual slider, when a ritual is marked done,
+it should move the slider. I don't think we have math in our calculations
+for positive, for reframes. All right, Emmy, review my input 3 times, sort
+it against the 14 that need me and what's running. Organize it so that it
+makes sense to your agents. And then get all this into plan and then
+execute."
+
+Read three times, item by item, against the board. Where a reading is the
+team's and not his own words it says so, and one word flips it.
+
+**Rulings.**
+- **Words, everywhere.** "Seat" and "chakra" become **point**, an assemblage
+  point (AP for short): the first use on a screen says assemblage point with
+  its meaning, later uses say point. **Charge** replaces **tension** where the
+  word names the stuck energy at a place in the body. **Whole** replaces
+  Becoming and Complete as the name of the Avatar's percent. The pair named
+  Clear Conduction against Sabotage is named **Clarity**; the pair named Grace
+  against False Light is named **Grace**, and its opposite end is **Shadow**.
+  Identifiers, saved keys and his own quoted words do not move (the same rule
+  as the Wisdom school rename).
+- **No fractions.** Any measure of a person is a whole percent, never "3 of 6"
+  or "3/6". This restates the percents only ruling of 16 October and 18
+  November and extends it to the "x of y" form.
+- **Talking to Source AI.** Yes, a person talks to Source AI, and that
+  replaces the 10 November ruling of no two way chat on the Avatar page and in
+  the Source AI corner. The sniffer reads the words of that conversation.
+  Source AI stays deterministic and offline: a conversation is not a language
+  model, and the open decision about a model behind one server seam is still
+  his, with the default of no.
+- **Rituals move the Whole.** A ritual marked done moves the Avatar's slider.
+  He observed that the engine has no math for the positive side (reframes,
+  rituals): that math is to be built, data driven, with no points and no
+  penalty for a miss.
+- **The Avatar tiers.** Read as: the Avatar's layers follow the tier ladder the
+  way the Field's saboteur, complex and hyper complex circles do. The team's
+  reading, one word flips it: the body with its points and weights is the base
+  every person sees, the torus is tier two, the auric field tier three, the
+  energy body tier four (Practitioner). The tier names and prices stay as ruled
+  in the tier ladder entries above.
+- **If I miss.** Not decided by him. He asked the team for suggestions and
+  gave the constraints: nothing can be forced, the app can only take the
+  person's word whether or not they did it, and what happens must be
+  something the person can learn, not a punishment. He ruled the order:
+  build the frame (the shell) now, content later. The earlier default (a cost
+  the person picks ahead of time) is replaced by those words.
+- **The palette.** He picked the palette (B); it ships as the Glass blue
+  lighting.
+- **Path links.** Derived, not hand drafted: reverse engineer which patterns
+  belong to each pair from the nerve to saboteur and saboteur to complex to
+  hyper complex to super complex connections the product already holds.
+- **Path stories.** For Clear Conduction (Clarity), Honesty and Natural Growth:
+  research the original names on the internet under the project's research
+  rules (found on GitHub), four deep dives each, down to the mechanic and the
+  behaviour, and write the records.
+- **Field percent.** Each point's weight is shown as a whole percent; his
+  confusion about the question came from fractions, which are now ruled out.
+  The team's default (each point's own fullness) stands.
+- **Masks.** He asked whether the masks logic is still in the code: it is, all
+  of it. He may revise that section, so nothing about it is removed. The
+  bottom row card draws the five Character signs large unless he says
+  otherwise.
+- **Context owed, shipped.** The words Pull, Overshoot, Installed and
+  Self-read shadow were put to him with no context. Already closed by
+  80916962, before this ruling was recorded here: the four readings carry
+  their meanings from GLOSS (engine/data/gloss.js), every place that
+  printed them bare now carries the sentence, and r.Ig stopped borrowing
+  the word integrity. He still reacts to the result in the app; nothing
+  further is owed on the context itself.
+## The worked examples carry a birth, the four Lances included. Ruled 18 November.
+
+His words, verbatim, over the Field with "Lance 15, example" chosen and Root
+Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+wire in root energetics for these profiles, and make sure that these profiles
+are just up to date with all the changes that we made."
+
+OVERRIDDEN, the same day: the four Lance profiles had no birth, by the earlier
+ruling that a made up birth would be read back to him as his own
+(`engine/data/people.js`).
+
+Read as: every worked example shows sun, moon, rising, the year animal, life
+path and the gene key on the Field's left rail and on the Avatar. The four
+Lances are one person at four depths, so they share one birth. It is invented:
+1972-08-27, 13:15, Johannesburg, time zone Africa/Johannesburg, chosen by a
+search for a reading whose signs each sit well inside their sign, and for the
+age of 54 the rows already said. It is nobody's birth, and if it happens to be
+his, he says so and it moves. They still carry no full name, because any
+surname is either his real one or a made up one that the name numbers would
+read back as his; the six readings he named come off the birth alone.
+
+What moved with it, because the readings were wrong for everyone and an
+example cannot be up to date on top of a wrong reading:
+- **The gene key wheel started 1.75 degrees late.** Gate 41 opens at 2 degrees
+  Aquarius and the wheel had gate 25 at 0 Aries, so every line was one or two
+  out, the gate itself wrong on about 31 births in 100, and nearly every
+  profile wrong. Steve Jobs, a published 6/3, read 5/1. Every example's gene
+  key and profile moved once (`engine/astro.js`, `GATE_START`).
+  **This moves every person's reading, not only the examples'.** Anyone who
+  has entered a birth sees their gene key line change once, about 31 in 100
+  see the gate itself change, and most see their profile change. The old
+  reading was the wrong one.
+  **And SOURCE (reboot-os) has not moved.** `source_os_v151.html` reads the
+  same wheel from 0 Aries (`_lonToGate`, no start offset), so after this lands
+  the two codebases, which this file names as cross compatible, disagree on
+  the gene key for about 31 births in 100 and on most lines. Routed to the
+  SOURCE seat, the same anchor (gate 41 opens at 302 degrees) checked against
+  Jobs reading 6/3. Until it lands there, a gene key read in SOURCE and one
+  read here can differ for the same birth.
+- **The nine cities read their clock offset off their time zone** and not off
+  two hand written rules that put Wren and Abraham an hour out.
+- **The year animal goes through the same check as every other reading**, so
+  an untimed birth on the Li Chun day, where the hour decides the animal, says
+  it needs a birth time instead of guessing.
+- **An example's age is read off its birth.** Wren and Abraham's typed ages
+  were already a year behind, and Tomas's was four days from it.
+- **An example's record carries its birth and name**, so the Avatar's birth
+  fields show what the rail shows. Whichever door builds the record first,
+  the picker or the Clients page, builds it the same way (`exampleRecord`,
+  `engine/birth.js`): the Clients page used to build a bare one first, and
+  every client's birth then read empty on the Avatar.
+
+Still open, and his: whether the examples also carry an avatar name and title,
+tags, a stated four letter type, archetype self report and journal verdicts.
+Those are words in his voice for sixteen people and were not invented here.
+## The Psyche panel holds Matrix, Superego and Action, and nothing else. Ruled 18 November.
+
+His words, first, on two screenshots of the Field's left rail under the
+heading Psyche (it was six sections: The book's levels, Child emotions, Matrix,
+The chain, Superego, Laws of Action):
+
+> Review this with your team. I asked you to get rid of everything in these two
+> images. I asked you that a long time ago. Review it with your team. Maybe keep
+> the matrix for now, but get rid of everything else. It doesn't belong there.
+
+And then, when the first reading of that was "strip the panel down to a
+matrix", his correction of it, whole:
+
+> I didn't say strip the psyche panel down to just a matrix. I'm saying
+> everything that's from the word psyche. Like, I never asked you to put in the
+> book levels. I don't even know what that is. I also asked you to remove the
+> child emotions because we're going to have the person do self-reporting in
+> the diagnostic. I also asked you to get rid of the chain. I don't even know
+> what this is doing here. That got put in there by you automatically or
+> automagically. Super ego. It needs to be more iconographic. You can keep
+> super ego, but get rid of the laws of action. Or just make that action and
+> give me them as 6 icons, so symbolic icons. Actually make it a bar. Make them
+> all bars, like the ones for like CQ, vitality, energy, flow, etc. Make it a
+> bar. And then super ego, make those icons. 4 icons horizontal. And make them
+> symbolic. And give it a %. We don't do points anymore.
+
+Read as, and built as: the panel keeps its Psyche heading and holds three
+sections in this order, with no paragraph, no sub heading and no empty state
+sentence in any of them.
+
+- **Matrix.** Unchanged, "for now".
+- **Superego.** Four symbols in one horizontal row: Justification,
+  Entitlement, Perfectionism, Obsession. Each is a ring filled to its figure,
+  with a mark inside it that stands for the defence (a balance tipped to one
+  side, a crown, a rule with its ticks, a spiral wound inward), and a percent
+  under it. The name and one sentence of meaning are on hover and tap and in
+  the spoken name, never printed beside the symbol, because "Perfectionism"
+  does not fit a column that is 60 pixels wide.
+- **Action.** The six gates as six bars, drawn by the same function the CQ,
+  vitality, energy and flow bars are drawn by (`rbRow`, `ui/component.js`),
+  right action first (Awareness, Detachment, Intention) and wrong action under
+  it (Ignorance, Attachment, Aversion), in the book's order. The word is
+  Action, the word he gave the Journal's rail on 10 November.
+- **Gone.** The book's levels. Child emotions, with its eighteen sliders and
+  its two bulk sliders. The chain, with Outside the chain, Archetype and Field
+  anchors. The Superego sub heading and paragraph. The Laws of Action sub
+  headings, paragraphs, empty state paragraphs and the Avoidance block.
+
+**What the two percents are.** Said once here, and said again on hover.
+- **A Superego figure** is `fmtPct('weight', BY[i].sq)`: the charge held at the
+  address the book seats that defence at, out of the most one address can hold,
+  whole number and percent sign, the dash for nothing held or nothing read. It
+  is not a reading of the defence. A story written in the language of
+  justification can read 0, and one line of anger can read 16, because what the
+  engine measures there is anger or fear held at a place in the body
+  (`AMPLIFIER`, `engine/data/registers.js`; `n.sq`, `engine/compute.js`). The
+  hover says "its figure is the charge held at its place in the body" and
+  never says it is how much of the defence a person shows. A real reading of
+  the defences from a person's own words is a separate piece of work and is
+  open, below. The figure used to print as `10.0` beside a ring filled in
+  percent: points, in the one place the 16 October percent ruling had already
+  ended them.
+- **An Action figure** is `fmtPct('gate', verpRead().pct)`: this gate's share
+  of every action read across the person's stories, so the six add up to one
+  whole and a person shows on both sides at once. It is the figure the gate
+  drill and the Journal print for the same gate, so the bar and the drill never
+  say two things. A gate with none of its own prints the dash, never 0%. With
+  nothing read at all the six bars draw unlit.
+
+**The formatter is the one that was already there.** `pct` and `fmtPct`
+(`engine/pct.js`), kinds `weight` and `gate`. Nothing new was added, so
+another team's percent only formatter reuses the same two calls.
+
+**What each removed block said, and where it lives now.** The meaning table
+(`engine/data/gloss.js`) carries one sentence for each, so no term lost its
+explanation:
+- the Superego paragraph is the hover on the Superego header (the table's
+  existing `superego` entry, so the word has one definition and not two);
+- the four defences each get `superego:<name>`, and the one whose address no
+  child emotion reaches (Entitlement) says so while that is true, read off the
+  address and never typed. A press on a symbol opens the address card headed
+  with the defence's own name and that same sentence, straight under the
+  address (`nodeDrillHtml`, `o.amp`), because the figure is the charge left at
+  the address and not a reading of the defence, and a card headed only
+  "Solar, Arrogance" let a person read it as one (skeptic's finding, 18
+  November). The address with no name yet is titled "Unnamed, Root 08", never
+  the key it is stored under, and its card says why no story reaches it and
+  stops there, without the team's own words "open ruling". The eyebrow names the
+  seat as the product does everywhere else, "Justification, at the solar seat";
+- the Laws of Action paragraphs are `rail:action` and six `gate:<name>`
+  sentences, each saying what the move is and what its figure is;
+- `child emotions` and `field anchor` are new, and each has a caller now: the
+  Matrix caption's own "9 child emotions" carries the sentence on hover, tap and
+  to a screen reader (`mxKey`, `ui/personas.js`), and the card a field anchor
+  opens is headed "Field anchor, above the body" with the sentence on hover and
+  tap, where it used to print its storage key, Field-Above. The first cut also
+  wrote an entry for `chain`. Nothing on any screen asked for it, so it was cut
+  and not left as a sentence no one can reach; each tier of the chain keeps its
+  own entry. `tests/psychepanel.js` (F) wraps the lookup, draws the panel and
+  opens the cards, and fails on any entry the round added that nothing asked
+  for;
+The gate drill keeps its longer text. The Avoidance reading stays where it is
+never shown alone, the Journal's Laws accordion, with the two readings it is
+built from.
+
+**Why his earlier asks never stuck, and he was right that he made them.** Read
+off the record on 18 November, not from memory:
+- **28 October.** He asked for the superego, the six gates and "the full
+  cascade wiring of the Psyche stack" on the left menu. A seat built each, and
+  widened two of them: the chain colour legend was its answer to "nothing has
+  been wired", and The book's levels was its reading of "Psyche stack". He did
+  not ask for those two in those forms.
+- **2 November.** "Move child emotions to diagnostic." It was built as a
+  button that opened the diagnostic and left the sliders where they were.
+- **5 November.** He marked a screenshot of this panel for removal: five rows
+  out, Matrix kept (SV22, PR #188). It was built and tested, and held as a
+  draft because it was read as clashing with the 3 October ruling. That ruling
+  only asked to add the superego to the left menu, so the clash was a
+  misreading, and the removal was bundled into a four screenshot job about
+  another panel, so it had nothing of its own to stand on.
+- **14 November.** "Delete those for good." It was written to the status board
+  as ruled and ticked done, and nothing was queued to build it. The Insight half
+  of the draft was rebuilt on main that night and the Psyche half left behind
+  on purpose, on the same misreading.
+- **15 November.** The question came back to him in jargon, he said he did not
+  follow it, and his answer about "the Psyche stack" was read as an order for a
+  different surface (the Journal's Psyche stack tile).
+Plain reason: the word "Psyche stack" names three different things in this
+product, the ask lived in one backlog line and not in this file, and a ticked
+line on a board read as finished while the page stayed the same. This entry is
+the durable place. A board line that says ruled is not done until the page has
+changed.
+
+**Superseded by this.** TASKS.md SW5 (14 and 15 November, "a visual on the left
+rail showing the chain connected"): he says get rid of the chain, so it is
+dropped. TASKS.md SW2 (child emotions become questions in the diagnostic) is
+not superseded and is not done: the funnel quiz asks none of the nine and the
+Intake's "Emotional axes" block feeds nothing, so after this round nothing a
+person types moves their nine charges except the four letter seed and their
+stories. Removing the sliders did not wait for it.
+
+**Left alone on purpose, each his call.**
+- The Field's glass bar still has a circle called Laws of Action
+  (`ui/fieldbar.js`, held by `tests/functional.js`), and the right rail's
+  Insight stack still has a Child emotions tab. The first is a layer of the
+  Field and the second is a reading, not a place to type; neither is in the
+  Psyche panel.
+- The Journal's left rail keeps its Emotions, Psyche stack and Action
+  sections.
+
+**Open, written down with the ways it could go.**
+- **Entitlement reads the dash for everybody. This is the first question to
+  him.** Measured on all sixteen people the engine carries (18 November): the
+  charge at Entitlement's address is 0 for sixteen of sixteen, because that
+  address, the unnamed Root address (`Root_08_Unnamed`, address 8), has no child
+  emotion and a story's charge lands on an address through its child emotion. So
+  the crown is permanently unlit and its hover says no story reaches it yet.
+  Ways it could go, and what each costs:
+  - keep four, the crown always unlit (built, the default). Costs nothing and
+    shows him the gap, and costs a symbol that can never light for anyone;
+  - show three. Costs one line and a test, and the four he asked for become
+    three until the address is ruled;
+  - wire it. Either he names a child emotion for address 8 (the engine then
+    reads it with no other change), or he moves the amplifier to address 38,
+    where the book's node list already has a Solar address named Entitlement
+    with anger under it. The second changes a table he ruled (`AMPLIFIER`, AM01,
+    tag R, `engine/data/registers.js`) and the codes and errata that compare it
+    to the book (`engine/data/codes.js`, `BOOK-ERRATA.md`). Either way it needs
+    his ruling on that address (CLAUDE.md, "His, not mine").
+- **A real reading of the four defences.** Question two to him. The figure is
+  charge at a place in the body: on Derek it reads 54%, a dash, 30% and 54%
+  under a balance, a crown, a rule and a spiral, and a person can read a ring
+  with a percent as "how much of this defence I carry". The hover, the spoken
+  name and the card a press opens all say it is the charge held at its place,
+  and none says it is a reading of the defence. Whether it should stay that way
+  or become a real reading of the defences from a person's words is his call.
+  Reading the defences themselves from a person's words (blame and "anyone
+  would have" for Justification, "they owe me" for Entitlement) has a word list
+  in the engine's lean reader already, and nothing counts Perfectionism or
+  Obsession. New arithmetic, not built.
+- **One phrase reads as a full bar.** One line that says "I avoided him" is
+  Aversion at 100%, true as a share and thin as evidence. The bar and the drill
+  print the same share today. A floor of about six phrases before a figure shows
+  would have to move the drill and the Journal with it, so it is not built here.
+- **Two things called Awareness on one rail.** The reading (how strong what you
+  mean is) and the gate (noticing the feeling) are both on the Field's left
+  rail. Each bar's hover says its own meaning. Renaming either is his call.
+- **The wheel's dot colours.** The chain legend was the one place that said
+  yellow is a complex, orange a hyper complex, red a super complex. Hovering a
+  dot still names its tier. Whether the colours need one line of their own on
+  the wheel is open.
+
+## Talk with nothing said: the circle rests, no Source AI word on the screen, no hover card on the circle, and Commit holds still. Ruled 18 November.
+
+His words, verbatim, on a screenshot of the Dashboard with Talk open, five
+things circled in red: "This is feedback for the dashboard. When I click on
+talk and I haven't said anything, source is already activating and animating.
+That's a bug. This text in the lower left that says listening, there should be
+no text on that screen. That's a bug. At the very bottom, it says listening,
+press again to stop. There should be no text there. That's a bug. And then
+this tooltip isn't working. Let's turn that off for now. And one thing to look
+into, the commit button keeps jumping to the upper left-hand corner every
+like 10 seconds, briefly. So there's something going on with this animation.
+Read this back to me, and then let's get this fixed."
+
+Read as, which is the read back he asked for, five changes:
+- **Talk with nothing said leaves the circle exactly as it is at rest.** No
+  beat, no purple trace along the bottom, no newly lit rings, for as long as
+  nothing is said. The cause was not the microphone. Talk speaks the greeting,
+  the circle was handed that audio as if it were a reply, and the circle sets
+  one latch when it hears a voice (`engaged`, `ui/srcface.js`) that nothing
+  releases, so it ran its beat and its trace from the greeting on. The
+  greeting is still asked for, still spoken and still holds the recording
+  while it plays (the 13 November ruling, every reply spoken, stands); the
+  circle just is not told about it (`stSrcSpeak`, option `rest`). And a
+  recogniser result with no word in it, an empty final, spaces, a lone
+  hesitation sound (uh, um, er, ah and their spellings, and the article the
+  recogniser invents out of hiss), is not a turn any more: it is not written
+  into the entry, not read by the circle and not answered out loud
+  (`stMicNoise`, `ui/storyui.js`). It names hesitations and never words: yes,
+  no, "I don't know", sad, and the spoken yes (mm-hmm, uh huh, mhm, hmm) are
+  real answers and pass, anything the safety door reads passes first, a final
+  with a star in it passes so the existing "Dictation hid a word behind stars"
+  line still speaks, and letters and digits are read as Unicode so speech in
+  another script is never mistaken for silence. The spoken yes is on the
+  engine's own list of brief answers (`SRC_ACT.brief`, `engine/evidence.js`),
+  and a first cut of the guard dropped it, so a person who said mm-hmm to a
+  yes or no question heard nothing back; a second look put it back.
+- **No word of Source AI's own under the circle.** The italic Listening at the
+  lower left was the live caption's placeholder. The caption prints the
+  person's own interim words while they speak, as the 29 October ruling asked
+  ("I should see my input as I'm talking"), and nothing else. It keeps one
+  line of height when empty, because taking it out of the flow moved the
+  circle by 13 pixels on every sentence.
+- **No bar for the open microphone.** `status('Listening. Press again to
+  stop.', 'ok')` is gone. The state is now said to a screen reader and never to
+  the page: a hidden polite region, `#micsay` in `shell/body.html`, written
+  from the foot of `stRender` when the microphone opens or closes
+  ("Microphone open.", "Microphone closed."), and not again on a silent
+  restart. `status()` itself is untouched, so every failure still shows in the
+  dock, as a failure, and is logged.
+- **The circle's hover card is off, for now.** It was the seven line key
+  (17 November, "This tooltip, it's insane. That text in the tooltip needs to
+  be direct."), carried as the canvas's `title`, which the tooltip engine hangs
+  off the whole canvas box: 900 by 420 in the Journal where the circle is 416,
+  so the card opened 250 pixels from the thing it described. The text is kept
+  as data, `SrcFace.key()`, and the canvas keeps its aria-label; nothing may set
+  a title or a data-tip on that canvas while this stands. Turning it back on is
+  one line.
+- **Commit does not move.** It was not jumping, it was sliding in from the
+  upper left corner of the Journal pane: `stHeroPlace` places each control by
+  writing left 0 and top 0, reading it back, then writing the real place, and
+  `.btn` carries `transition: all`, so every placement was a 120 millisecond
+  glide from the corner. It repeated about every eight seconds because a
+  recogniser that hears nothing ends itself, `ST_REC.onend` restarts it and
+  renders the page, and every render builds a new button and places it again.
+  Talk, the keyboard and Dashboard do not slide only because their transition
+  lists do not name left or top. The transition is now off for the length of
+  the placement and put back after a read has flushed the final position
+  (`put` in `stHeroPlace`); a CSS rule that pinned the button would have
+  hidden the cause.
+
+What this overrides, in one clause each, per the 15 November rule: the
+17 November hover on the circle (off, for now, text kept); the
+"Listening" placeholder of the 29 October live caption (the person's words
+stay); and the `status('Listening...')` line of `stMic`. What it does not touch:
+Talk's own hover, which is the one hover left on that screen and explains
+itself; the crisis safety line and its door; every error line; and the words
+the circle draws on its own canvas during a reading.
+
+Held by `tests/talksilence.js`, which was run on the build from before the fix
+and on a copy of the fixed build with each fix undone, one at a time.
+Measured on 18 November in headless Chromium on a real own record, Talk
+pressed and nothing said, a three second greeting, against the circle's own
+rest (the lit pixels of the real canvas, a channel above 110):
+- the build from before, `c2bf52a2`: the circle's lit pixels averaged 4650
+  against a rest of 1077, 4.3 times, in all 33 samples over nine seconds, and
+  its state read engaged with the centre word Answering; "Listening" under the
+  circle; the dock open with "Listening. Press again to stop." and one logged
+  line; the seven line card on a hover anywhere in the 900 by 420 canvas box;
+  Commit 29 samples out of 800 away from its place at 1600 and 26 at 390,
+  with 54 and 50 browser glides on left or top in forty seconds, painted at
+  the pane's upper left corner (11, 78) before sweeping home; and uh, Hmm.,
+  the, "Um, uh" and bare punctuation filed as turns, each answered out loud
+  ("Say more about that.", "I'm listening.").
+- this build: the lit pixels averaged 1235 against a rest of 1091 with no
+  sample above one and a half times the rest maximum, engaged never true, no
+  word, no bar, nothing logged, no card, 0 samples away and 0 glides at both
+  widths through seven silent restarts, filler and empty results dropped with
+  no render, and a real sentence still wakes the circle to 6180 and is still
+  answered out loud.
+
+Open, and his call, written so he does not have to go and find them:
+- **A room noise the recogniser mishears as a lone "hmm" or "mm" now counts as
+  a short answer.** To keep the spoken yes (mm-hmm, uh huh, mhm, hmm), the
+  guard no longer drops those four sounds, so a quiet room that the
+  recogniser hears as a lone hmm lands as one short turn, which Source AI
+  answers and which wakes the circle once. The other way round, dropping them,
+  silently ignored a person who said yes. Which mistake does he want? The
+  build now takes the first, because a dropped yes leaves nothing on the
+  screen to say why. Not his call yet.
+- **The words the circle draws on itself while it is reading** (the centre
+  word, which runs Listening, Found, Weighing, Holding, Answering, and the
+  seat labels such as "Root, Fear" on the rings). They are drawn on a canvas,
+  so no text probe sees them. Do they count as "no text on that screen"? If
+  yes they go; if no they stay. Not changed.
+- **After his first real sentence the circle stays awake** (beat and trace) for
+  the rest of the session, because `engaged` is never released. Should it go
+  back to rest a few seconds after Source AI finishes answering, or stay awake
+  once a story has begun? That is the 17 November design and was not changed.
+- **Talk's own hover card** ("Talk by speaking instead of typing...") is the one
+  hover left on that screen. Keep it, or shorten it, or take it off too?
+- **When the circle's hover comes back, and saying what?** It is off "for now".
+  The key is kept word for word, so it can return with the same text or a
+  shorter one, hung off the circle and not off the box.

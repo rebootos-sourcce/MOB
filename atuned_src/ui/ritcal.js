@@ -224,6 +224,8 @@ function ritIAm(be){
  if(!RIT_IAM_RX.test(be))return null;
  return 'I am '+be.charAt(0).toLowerCase()+be.slice(1);}
 function ritAffirm(st){
+ /* a kept set from the generator (ui/affirmui.js) is the person's choice, up to seven, and replaces the automatic three */
+ var kept=(typeof affKeptLines==='function')?affKeptLines():null; if(kept&&kept.length)return kept;
  var out=[], seen={}, cfs={};
  var pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[];
  for(var i=pairs.length-1;i>=0&&out.length<3;i--){
@@ -302,7 +304,7 @@ function ritAffHtml(st,M){
   return '<li class="rv-af1'+(on?' rv-on':'')+'" style="--c:'+col+'">'
    +'<button type="button" class="rv-log" data-act="said" data-id="'+esc(a.id)+'" aria-pressed="'+on+'" aria-label="'
    +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
-   +'<span class="rv-aft"><span class="rv-afq">'+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
+   +'<span class="rv-aft"><span class="rv-afq'+(a.ai?' src-ai':'')+'">'+(a.ai&&typeof srcMark==='function'?srcMark():'')+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
  return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
   /* "Say each one out loud, once today, and press its ring." stood under this
      heading and is cut, SV17. His word for a line that tells a person how to

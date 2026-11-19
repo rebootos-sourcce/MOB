@@ -71,6 +71,10 @@ const ALLOW=[
   'a band of the cards\' escalation curve, a felt rise in pressure, not charge at a place'],
  [/\bbreaks? the tension\b/gi, 'the Jester\'s idiom, a room\'s mood'],
  [/\ba tension line\b/gi, 'the sound map\'s note for how taut a drawn line is'],
+ [/\btension (reduction|reduces|relief)\b|\bsustain tension\b/gi,
+  'the revived, not yet reviewed 96 pattern library (engine/data/patterns96.js); '
+  +'a mechanic field quoting the research literature\'s own term for anxiety '
+  +'relief in a reinforcement loop, not charge at a place'],
  [/\bPride as false light\b/gi, 'the codex\'s own line for the Shadow pole, quoted, held phrase by phrase to its meaning'],
  /* the Wisdom school glossary is a port of the codex, and its Chakra entry
     is the entry that says a chakra is an assemblage point. Allowed only as

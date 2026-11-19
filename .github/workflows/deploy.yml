@@ -156,6 +156,17 @@ jobs:
         run: |
           cd atuned_funnel_system
           npm ci --no-audit --no-fund && npm test 2>&1 | tee "$RUNNER_TEMP/gates/funnel-package.log"
+      # THE GUARD IS CHECKED BEFORE IT IS TRUSTED, 17 November. "The engine may
+      # not touch the host" is held by atuned_src/hostfree.py, which
+      # BUILD-engine.sh runs on engine.js, and until now nothing checked the
+      # checker: a template literal hid a ${window.x} from it, a string holding
+      # a slash and a star hid real code, and it printed the wrong line. This
+      # runs it against planted bad and good snippets, before the build that
+      # relies on it, and BUILD-engine.sh runs it too, so a person's own build
+      # and the pre-push hook carry it. No if, for the reason the orphans step
+      # has none.
+      - name: host guard, held to planted cases
+        run: python3 atuned_src/hostfree.py --self-test
       # The engine builds first: BUILD.sh runs tests/claims.js, which reads
       # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
       - name: build, the engine first
@@ -179,6 +190,14 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # THE BODY PAGE'S TABLE, held headless, 18 November. Nothing read ANAT,
+      # BMPROP or a nerve name before, and proto/anatomy-ref/measure.js, which
+      # figure.js says re-derives the chart rows, was run by no job. Node only,
+      # no browser, a second or less, against the engine just built. It carries
+      # one named expected red (the two spine rulers disagree), counted against
+      # a ceiling in tests/floors.json, so it is green and says what is open.
+      - name: anatomy gate, the Body page's table
+        run: node tests/anatomy.js 2>&1 | tee "$RUNNER_TEMP/gates/anatomy.log"
       # Round SK: Source AI's evidence ledger and its question check, the
       # Journal Mode blueprint's P0. Node only, against the engine just built.
       - name: evidence ledger and question check
@@ -188,6 +207,20 @@ jobs:
       # runner. It fails the day the door is closed without saying so.
       - name: plan self grant watch
         run: node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
+      # THE VOICE PROTOTYPE'S READ ONLY LAYER, revived dormant 17 November
+      # (#88 and #89, DECISIONS.md "The voice prototype's read only layer,
+      # revived"). No screen calls it, so these five are the only thing that
+      # runs it, and until this step tools/orphans.js failed each by name.
+      # Node only, against the engine just built. Each prints one PASS line
+      # and no passed and failed count, so none has a line in floors.json:
+      # the exit code is the gate, and && stops on the first red.
+      - name: the revived voice layer, read only and dormant
+        run: >-
+          node tests/voice-sniffer.js
+          && node tests/source-voice-narrative.js
+          && node tests/source-voice-charge-cycle.js
+          && node tests/source-voice-intelligence.js
+          && node tests/source-evidence-bus.js
       - name: voice check, his own objections as rules
         run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: workflow lint, this file held to its own shape
@@ -209,10 +242,20 @@ jobs:
       # It takes no if, for the reason the chrome-path step takes none.
       - name: every test file is run by a job
         run: node tools/orphans.js --self-test && node tools/orphans.js
+      # THE FLAKE LEDGER AND THE NIGHTLY'S READ OF IT, 17 November. The nightly
+      # runs only at night and on main, so a change to what its table says
+      # about a failure would be found out the next morning at the earliest.
+      # tools/flakes.js --self-test (it also reads tests/flakes.json and fails
+      # on a malformed ledger) and tools/gates-repeat.js --self-test, which
+      # holds the NEW, SUSPECTED, KNOWN and UNNAMED verdicts to fixtures and a
+      # scratch ledger, run here on every push and pull request. Neither was
+      # run by any job before. No if, for the reason the orphans step has none.
+      - name: flake ledger and the nightly's verdicts
+        run: node tools/flakes.js --self-test && node tools/gates-repeat.js --self-test
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
-        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant anatomy
 
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries
@@ -251,6 +294,26 @@ jobs:
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: srcintro, timeout: 20, command: node tests/srcintro.js }
           - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
+          # ADDED 18 November, the same day it was written: the Avatar
+          # Purpose view with its rails removed and Archetype hidden. A
+          # real Chromium gate, orphaned at first because no job named it;
+          # tools/orphans.js caught the gap and this entry is the fix.
+          - { gate: avatarpurpose, timeout: 20, command: node tests/avatarpurpose.js }
+          # ADDED 19 November, same pattern: a person's own typed birth now
+          # reaches converge(), which only ever read a name off the static
+          # BIRTH table before. Real Chromium gate, orphaned at first the
+          # same way avatarpurpose was.
+          - { gate: ownbirth, timeout: 20, command: node tests/ownbirth.js }
+          # ADDED 19 November, the Insight rail (feature/insight-rail-unnested):
+          # the reading composer (engine/insight.js, headless) and the
+          # unnested six-level stack's own real-Chromium walk. Both orphaned
+          # the same way avatarpurpose was.
+          - { gate: insightread, timeout: 20, command: node tests/insightread.js }
+          - { gate: insightrail, timeout: 20, command: node tests/insightrail.js }
+          # ADDED 19 November, the affirmation engine (feature/affirmation-
+          # engine): the ritual builder's Affirm door and sheet, real
+          # Chromium. Newly orphaned the same way avatarpurpose was.
+          - { gate: affirm, timeout: 20, command: node tests/affirm.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
           # allowance, gift, money, releasechain and pct, all added to
@@ -343,10 +406,22 @@ jobs:
           - { gate: valuefelt, timeout: 20, command: node tests/valuefelt.js }
           - { gate: claims, timeout: 20, command: node tests/claims.js }
           - { gate: discordfeedback, timeout: 20, command: node tests/discordfeedback.js }
-          # 14 November: the Insight well's auto-pin (tests/wellpin.js), pin on
-          # press, pin unchanged on a second press, a locked tier pins nothing,
-          # render() never resurrects a cleared pin. New, so report only first.
-          - { gate: wellpin, timeout: 20, command: node tests/wellpin.js }
+          # wellpin REMOVED 19 November, merge of feature/insight-rail-unnested:
+          # the five tabs and the auto-pin it tested are gone on the unnested
+          # rail; tests/wellpin.js is deleted, not edited.
+          # 18 November: the lighting menu on top of every surface
+          # (tests/lightmenu.js). In Glass white the bar's backdrop-filter made
+          # it a stacking context and the open menu painted under the
+          # Dashboard. New, so report only first.
+          - { gate: lightmenu, timeout: 20, command: node tests/lightmenu.js }
+          # 18 November: the Field's Psyche panel is Matrix, Superego and Action
+          # and nothing else (tests/psychepanel.js, DECISIONS.md "The Psyche panel
+          # holds Matrix, Superego and Action"). New, so report only first.
+          - { gate: psychepanel, timeout: 20, command: node tests/psychepanel.js }
+          # 18 November: Talk with nothing said (tests/talksilence.js). The
+          # circle stays at rest, no Source AI word, no open-mic bar, no
+          # hover card, Commit holds still for 40s. New, so report only.
+          - { gate: talksilence, timeout: 20, command: node tests/talksilence.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

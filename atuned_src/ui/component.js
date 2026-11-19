@@ -689,12 +689,19 @@ function rbRow(q,nm,pct,raw,o){
  else track='<span class="rb-t" aria-hidden="true"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+w+'%"></i><em class="rb-h"></em></span>';
  var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)';
- return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
+ /* A GATE'S BAR IS THIS BAR. o.gate names the gate it stands for, 18
+    November, the Psyche panel's Action section: the row carries data-gate and
+    the .gate-r class the delegated click reads (ui/ui.js) and no data-q, so a
+    press opens the gate's own drill and not a reading it is not one of. o.side
+    is which side of the law it stands on, 'higher' or 'lower', for the hatch
+    the broken fill wears in head.html. Nothing else about the row differs. */
+ return '<button type="button" class="kb rbar'+cls+(read?'':' off')+(o.gate?' gate-r':'')+'" '
+  +(o.gate?'data-gate="'+esc(o.gate)+'"'+(o.side?' data-side="'+esc(o.side)+'"':''):'data-q="'+q+'"')+' data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
   +' data-v="'+esc(raw)+'" style="--c:'+c+'"'
   +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
-  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,o.gate?'Opens the action.':'Opens the reading.'))+'">'
   +'<span class="rb-row"><span class="rb-n">'+rbIcon(o.ic)+esc(nm)+'</span>'+sub
   +'<span class="rb-v">'+esc(raw)+'</span></span>'
   +track+seats
@@ -709,8 +716,11 @@ function rbRow(q,nm,pct,raw,o){
    reading is and never per frame. */
 function rbRate(r){
  var d=document.getElementById('fdock'); if(!d)return;
- var dq=clamp((+(r&&r.DQ)||0)/100,0,1);
- d.style.setProperty('--rate',lerp(PUL_LO,PUL_HI,dq).toFixed(3));}
+ var dq=clamp((+(r&&r.DQ)||0)/100,0,1), v=lerp(PUL_LO,PUL_HI,dq).toFixed(3);
+ d.style.setProperty('--rate',v);
+ /* the Action bars in the left rail's Psyche panel are rbRow's own bars and
+    sweep at the same rate, though they stand outside the dock (18 November) */
+ var g=document.getElementById('gaterows'); if(g)g.style.setProperty('--rate',v);}
 /* ============================================================
    WHAT A BAR DOES, ONE LANGUAGE. Three verbs and no others, every one of them
    an opacity or a transform except the fill's own width, which the gate reads
@@ -1238,23 +1248,9 @@ function crPat(p,size,o){o=o||{};
  return cr(b, pct('chain',p.w)||0, Object.assign({size:size||'md', raw:f, label:p.nm,
   hot:p.w>=9||!!p.over,
   title:p.nm+', weight '+f+(p.over?', overshot':'')},o));}
-function leaves(o){if(!o||!o.parts)return o?[o]:[];
- var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
-  else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
-/* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
-   reaction to the pattern drill: the words must come "from the records", and
-   "built from 5 held addresses" is "a big no". A saboteur and a complex name
-   their family in hcx, a hyper complex is its family; the record is HCX_LIB's
-   d, the line that already prints on every hover of a hyper complex. An
-   overshoot family has no row there, and its sentence is the one compute()
-   gives the same family (engine/compute.js, FAMS), read the same way here
-   off FAM_POLE so the two cannot word it differently. */
-function patFam(o){
- var nm=!o?'':o.kind==='hy'?o.nm:(o.hcx||''); if(!nm)return null;
- var h=HCX_LIB.filter(function(x){return x.nm===nm;})[0];
- if(h)return {nm:nm,d:h.d};
- var base=Object.keys(FAM_POLE).filter(function(k){return FAM_POLE[k]===nm;})[0];
- return base?{nm:nm,d:'the fix for '+base.toLowerCase()+', done past the point where it helps'}:null;}
+/* leaves() and patFam() live in engine/insight.js now, 18 November: the
+   Insight composer needs them and the engine may not read a renderer. Same
+   names, same bodies, so every caller below still finds them. */
 
 /* ============================================================
    CANVAS UTILITIES

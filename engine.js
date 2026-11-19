@@ -1081,6 +1081,21 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
+/* THE FOUR SUPEREGO SYMBOLS, 18 November, his words: "super ego, make those
+   icons. 4 icons horizontal. And make them symbolic." Keyed by the name the
+   AMPLIFIER table carries (engine/data/registers.js), so the Field's row and
+   any later surface draw one mark for one defence. 24 unit box, stroked, ring
+   and never fill, the same grammar as GATEGLYPH above. A balance with the
+   beam tipped to one pan for justification, a crown for entitlement, a rule
+   with its ticks for perfectionism (the thing it measures everything against),
+   and a spiral wound inward for obsession (the thought that circles back). The
+   scale's two pans are open bowls and not closed triangles, which at the
+   badge's 20 pixels read as two solid dots. */
+const SUPEREGO_IC={
+ Justification:'M12 4.2v15.6M8.6 19.8h6.8M3.6 9.6l16.8-3.6M3.6 9.6l-2.2 4.4M3.6 9.6l2.2 4.4M1.4 14a2.2 2.2 0 0 0 4.4 0M20.4 6l-2.2 4.4M20.4 6l2.2 4.4M18.2 10.4a2.2 2.2 0 0 0 4.4 0',
+ Entitlement:'M4.2 17.4L3 7.6l4.8 3.9L12 5l4.2 6.5L21 7.6l-1.2 9.8zM5.4 20.4h13.2',
+ Perfectionism:'M2.8 8.4h18.4v7.2H2.8zM6.2 8.4v3.6M9.4 8.4v2.2M12.6 8.4v3.6M15.8 8.4v2.2M19 8.4v3.6',
+ Obsession:'M10.5 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0'};
 /* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
    here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
    SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
@@ -1702,6 +1717,253 @@ function nodeStateOf(w){
  var x=weightShown(w);
  for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
  return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It is a shelf of written up family patterns. Each row is a
+ * named loop a family can repeat, with its steps, what you could watch for,
+ * what else could explain it, and a protective move. It is data only: nothing
+ * in it looks at a person's story or picks a pattern for anyone.
+ *
+ * WHERE ITS OUTPUT GOES. srcVoiceCanon and srcVoicePattern
+ * (engine/voice_intelligence.js) hand a row back when a caller types a name
+ * or an id. Nothing under ui/ or shell/ calls either one, so no row is
+ * printed, spoken, asked or written anywhere, and only
+ * tests/source-voice-intelligence.js reads it. The data does ride inside the
+ * engine export, and so inside the quiz page, which embeds the engine.
+ *
+ * WHAT IT IS NOT. It is not from the Mechanics of Being manuscript. It came
+ * in a package he uploaded, which this repository does not hold, so who wrote
+ * the rows is not recorded here. It is not the perfectionism, justification,
+ * entitlement and obsession list he asked the sniffer for on 3 October. It
+ * keeps ancestral and generational apart, and on 8 November he ruled "Let's
+ * combine ancestral and generational. They're the same thing." And the word
+ * pattern means a lineage behaviour here, while in engine/trace.js a pattern
+ * node is an imprint at one of the 108 somatic addresses or 4 field anchors.
+ */
+/* ============================================================
+   PATTERN96, the ATUNED Source OS pattern reference library, version 1.0.0, as of 2026-11-01.
+   96 records: 32 ancestral, 32 generational, 32 parental. Each is a named
+   repeating behavior with a mechanic, observable signals, a protective
+   countermechanism and the alternative explanations that would falsify it.
+
+   PORTED 2026-11-01 from the owner's uploaded handshake package
+   (ATUNED_SOURCE_OS_ALL_96_PATTERNS_EXECUTIVE_HANDSHAKE_V1.zip),
+   05_DATA_SCHEMAS/source_os_pattern_reference_registry_v1.json, read only,
+   not generated. Every scientific_status on every row says the same thing
+   the package's own cover documents say: evidence informed design category,
+   not a validated diagnostic construct. A name match against this table is a
+   catalog entry, never an observation about a person, a cause, or a measured
+   CQ. srcVoiceCanon in voice_intelligence.js carries that same note on every
+   query against it. See RESEARCHANCHOR in researchanchors.js for what each
+   id in research_anchor_ids actually cites, and its own stated limits.
+   ============================================================ */
+var PATTERN96=[
+{id:'AP-01',layer:'ancestral',name:'Emotional distance',domain:'Relational safety and conflict',functionalDefinition:'P, E, B. Protects against feared emotional engulfment, rejection, or exposure by reducing contact during moments of closeness. Not synonymous with introversion, solitude, low expressiveness, or a temporary need for rest.',mechanic:'Bid for intimacy or distress → intimacy feels demanding or unsafe → silence, topic shift, physical withdrawal, or delayed reply → immediate relief and reduced demands → fewer repair experiences and increased distance make future closeness feel riskier. A stated need for space with a return time is a different behavior.',observableSignals:'Repeated exit following a partner\'s emotional disclosure; changing topics when asked about feelings; absence of later repair. Capture exactly what precedes the withdrawal, its duration, and whether reconnection occurs.',generationalTransformation:'G−2 treats feelings as private → G−1 explicitly praises self-reliance → G0 withdraws during relationship stress (repetition/context shift). An inverse route is intense pursuit of closeness after cold caregiving (compensation).',alternativeExplanations:'Sensory overload, exhaustion, unsafe partner, cultural privacy, or ordinary preference for low-intensity communication; weakening evidence is consistent warm availability in safe conditions.',protectiveCountermechanism:'Say “I am overloaded; I will return in 20 minutes,” then return, listen, and repair. Track honored return appointments, not stated intentions.',inquiryPrompt:null,researchAnchorIds:['S01','S11','S12'],evidenceFitNote:'Attachment/relationship regulation [S11], avoidance learning [S12], broad parenting continuity [S01]. Fit: moderate for the loop, indirect for ancestral origin.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-02',layer:'ancestral',name:'Abandonment vigilance',domain:'Relational safety and conflict',functionalDefinition:'P, B. Attempts to prevent unexpected disconnection through reassurance seeking, protest, or monitoring. Distinguish it from noticing real non-responsiveness.',mechanic:'Unanswered message, altered plans, or separation → “I may be left” expectation → checking, repeated contact, tests of loyalty, reassurance requests → short-term reassurance → repeated checking reduces opportunities to learn tolerance of uncertainty, sometimes straining the bond.',observableSignals:'Frequency of check-ins despite explicit benign explanations; what reassurance changes; whether a boundary is respected. A single worried call after an emergency is not this pattern.',generationalTransformation:'G−2 experiences loss/separation → G−1 manages uncertainty through overprotection → G0 monitors a partner (compensation/amplification). Conversely G0 might avoid intimacy to evade abandonment (inversion).',alternativeExplanations:'Actually unreliable partner, ongoing danger, recent bereavement, relationship agreements. Regular predictability without checking weakens the pattern.',protectiveCountermechanism:'Make a direct, proportionate reassurance request, jointly define communication expectations, and observe whether uncertainty can be tolerated with support.',inquiryPrompt:null,researchAnchorIds:['S10','S11'],evidenceFitNote:'Adult attachment anxiety and dyadic regulation [S11]; grief/family adaptation [S10]. Fit: moderate for relational mechanism, indirect for lineage.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-03',layer:'ancestral',name:'Controlling protection',domain:'Relational safety and conflict',functionalDefinition:'P, A. Attempts to create safety through constraints on another person\'s choices. Separate developmentally suitable safety supervision from coercive monitoring.',mechanic:'Unpredictable risk or loved one\'s independent action → “Only control prevents harm” → rules, location checks, permission demands, restriction → temporary predictability → dependence, secrecy, or resistance may increase, confirming the controller\'s fear.',observableSignals:'Unilateral tracking or punitive consequences for ordinary autonomy; whether proportional rules are negotiated; whether the target can decline. Safety rules for a young child are not automatically coercive.',generationalTransformation:'G−2 lived with danger → G−1 normalized constant supervision → G0 imposes monitoring (repetition/amplification) or rejects every limit (inversion).',alternativeExplanations:'Current stalking, violence, age-appropriate caregiving, legal duties, mutually agreed logistics; a demonstrable proportional response to real risk changes interpretation.',protectiveCountermechanism:'Risk-specific, time-limited, consent-based agreements; gradually restore independent decisions while retaining genuinely necessary safeguards.',inquiryPrompt:null,researchAnchorIds:['S06','S14','S20'],evidenceFitNote:'Boundary intrusion findings [S06], family stress [S14], CDC context [S20]. Fit: moderate; ancestral transformation hypothetical.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-04',layer:'ancestral',name:'Conflict escalation',domain:'Relational safety and conflict',functionalDefinition:'P, A, E. Uses intensity or intimidation to end an argument, secure attention, or prevent perceived power loss. A loud voice alone is insufficient without the interaction sequence.',mechanic:'Criticism or perceived disrespect → threat/defeat appraisal → interruption, yelling, threats, or punitive withdrawal → other party backs down or escalates → rapid short-term consequence reinforces a high-intensity conflict script.',observableSignals:'Escalation threshold, timing, behaviors, who stops speaking, whether apology and nonrepeat occur. Threats and violence are safety issues, not material for a casual dialogue experiment.',generationalTransformation:'G−2 used coercive arguments → G−1 anticipates attack and responds defensively → G0 escalates quickly (repetition) or becomes silent (inversion).',alternativeExplanations:'Present coercive threat, acute stress, sleep loss, substance effects, neurodevelopmental factors, one isolated incident. Peaceful repeated conflict handling undermines generalized classification.',protectiveCountermechanism:'Stop before intimidation; separate parties where needed; use structured turns and accountable repair. Prioritize safety and external support where abuse occurs.',inquiryPrompt:null,researchAnchorIds:['S14','S15','S20','S21'],evidenceFitNote:'Family stress/conflict pathways [S14, S15], protective peaceful problem-solving [S20], parenting intervention evidence [S21]. Fit: strong for interaction processes, indirect for individual lineage.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-05',layer:'ancestral',name:'Conflict avoidance',domain:'Relational safety and conflict',functionalDefinition:'P, B, E. Avoids disagreement to preserve safety or belonging, sometimes at the cost of clarity and accumulated resentment. May be wise when speaking would be dangerous.',mechanic:'Opportunity to disagree → prediction of conflict, punishment, or rejection → appease, defer, change topic, agree outwardly → immediate tension reduction → needs stay unmet, increasing expectation that disagreement cannot be handled.',observableSignals:'Repeated agreement followed by private distress; retracted requests; divergence between spoken and enacted preferences. De-escalation under coercion is self-protection, not defective behavior.',generationalTransformation:'G−2 punished dissent → G−1 presents silence as “keeping peace” → G0 cannot state low-stakes disagreement (repetition/context shift); G0 may instead react with defiance (inversion).',alternativeExplanations:'Cultural courtesy, deliberate negotiation timing, unsafe setting, low personal investment. Comfortable disagreement with safe peers argues against a generalized pattern.',protectiveCountermechanism:'Try one specific non-dangerous preference statement; observe whether consequences differ from the feared scenario; never prescribe confrontation with an unsafe person.',inquiryPrompt:null,researchAnchorIds:['S06','S12'],evidenceFitNote:'Avoidance/negative reinforcement [S12], psychological control/roles [S06]. Fit: moderate, intergenerational specificity unproven.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-06',layer:'ancestral',name:'Emotion invalidation',domain:'Emotion rules and regulation',functionalDefinition:'E, A. Dismisses another person\'s feeling to restore order, control discomfort, or enforce an emotion rule. Disagreeing with a claim while recognizing a feeling is not invalidation.',mechanic:'Another person shows distress → “This feeling is excessive/unacceptable” → minimization, ridicule, immediate advice, or forbidding tears → emotional display may stop → the person shares less, limiting emotional learning and increasing future misunderstanding.',observableSignals:'Repeated “don\'t be dramatic,” mocking of crying, interruption when feelings are named; whether caregivers later acknowledge distress.',generationalTransformation:'G−2 forbids sadness → G−1 has little emotion vocabulary and corrects displays → G0 suppresses feelings or dismisses others (repetition/role migration).',alternativeExplanations:'Time-limited problem-solving, language mismatch, one failed response. Repair (“I understand you\'re upset even though I disagree”) weakens sustained invalidation.',protectiveCountermechanism:'Name the reported emotion, validate its existence, distinguish emotion from behavior, and offer choice about problem-solving.',inquiryPrompt:null,researchAnchorIds:['S04','S05','S27'],evidenceFitNote:'Emotion socialization meta-analyses [S04, S05], emotion-regulation mechanisms [S27]. Fit: relatively strong at population level, person-level link still uncertain.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-07',layer:'ancestral',name:'Grief silence',domain:'Emotion rules and regulation',functionalDefinition:'E, I, P. Reduces exposure to painful loss cues by suppressing or restricting conversation. Private mourning and culturally prescribed silence can be appropriate and voluntary.',mechanic:'A name, anniversary, photo, or question evokes loss → anticipation of overwhelming grief or family upset → shut topic down, hide objects, redirect attention → immediate relief → little shared language for loss; descendants may invent explanations or avoid asking.',observableSignals:'Repeated abrupt exits after loss reminders; family “never mention it” instructions; whether anyone can ask respectfully without sanction.',generationalTransformation:'G−2 suffers profound loss → G−1 learns silence as protection → G0 feels anxiety around funerals but cannot explain family history (suppression/context shift). G0 may instead initiate remembrance (interruption).',alternativeExplanations:'Explicit privacy choice, recent acute grief, meaningful ritual in nonverbal form, or differing traditions of remembrance.',protectiveCountermechanism:'Offer opt-in remembrance, questions, and honest age-appropriate answers without requiring disclosure or retraumatizing exploration.',inquiryPrompt:null,researchAnchorIds:['S10','S17'],evidenceFitNote:'2026 family grief synthesis [S10], migration/silence qualitative evidence [S17]. Fit: moderate; no automatic inherited-grief label.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-08',layer:'ancestral',name:'Shame-based correction',domain:'Emotion rules and regulation',functionalDefinition:'A, B, E. Seeks compliance through global judgments of the person\'s worth instead of describing changeable behavior.',mechanic:'Mistake or perceived social embarrassment → “Failure makes us bad/unacceptable” → name-calling, humiliation, contempt, conditional acceptance → immediate compliance or concealment → heightened self-criticism and secrecy can perpetuate failures of repair.',observableSignals:'“You are worthless” contrasted with “that action hurt someone”; public humiliation; withdrawal of affection following error; how mistakes are discussed afterward.',generationalTransformation:'G−2 humiliates to enforce standards → G−1 equates mistakes with identity → G0 uses internal self-attack or repeats criticism (internalization/repetition).',alternativeExplanations:'Firm behavior-focused limits without contempt; actual bullying outside family; a rare regretted remark followed by accountable repair.',protectiveCountermechanism:'Name action, impact, restitution, and next-step skill while explicitly preserving dignity and relationship.',inquiryPrompt:null,researchAnchorIds:['S08','S09'],evidenceFitNote:'Child shame/guilt meta-analysis [S09], parental conditional regard [S08]. Fit: relatively strong for association with shame, not causation across a specific lineage.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-09',layer:'ancestral',name:'Anger displacement',domain:'Emotion rules and regulation',functionalDefinition:'E, P, A. Moves an aggressive response from a threatening or unavailable source toward a safer substitute. It is an account of *target selection*, not permission to mistreat others.',mechanic:'Powerless encounter with boss/caregiver/institution → anger plus inhibition toward the source → sharpness toward partner, sibling, or child → immediate discharge/control → new relational injury, guilt, or retaliatory anger keeps stress active.',observableSignals:'Temporal proximity between original affront and later irritability; targets with less power; explicit reports like “I couldn\'t say it there, then snapped at home.” Note antecedent and subsequent target separately.',generationalTransformation:'G−2 survives by suppressing protest upward → G−1 uses harsh discipline downward → G0 reenacts displacement under stress (role migration/repetition), or deliberately stops the chain (interruption).',alternativeExplanations:'Target actually caused a separate conflict, generalized overload, medication effects, or mutually escalating interaction. No temporal or functional link weakens displacement.',protectiveCountermechanism:'Identify the real source and affected person, restore safety, make amends, and choose an appropriate response to the source of frustration.',inquiryPrompt:null,researchAnchorIds:['S13','S14'],evidenceFitNote:'Displaced aggression review [S13], family stress pathways [S14]. Fit: moderate for displacement generally; weak for a specific ancestral chain.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-10',layer:'ancestral',name:'Emotional caretaking',domain:'Emotion rules and regulation',functionalDefinition:'B, C, P. A person manages others\' feelings to keep attachment safe or conflict contained. Ordinary empathic support is different when voluntary, age-suitable and reciprocal.',mechanic:'Another person looks distressed → “Their mood is my responsibility” → soothe, mediate, hide own needs, pre-empt demands → temporary calm or praise → helper becomes default regulator; others may fail to develop self-regulation and helper accumulates exhaustion.',observableSignals:'Child regularly managing adult arguments, adult repeatedly monitoring partners\' moods, compulsive apology for another\'s distress, inability to decline emotional labor.',generationalTransformation:'G−2 has unmet care needs → G−1 relies on child emotional support → G0 acts as adult partner rescuer (role migration) or becomes unavailable to avoid demands (inversion).',alternativeExplanations:'Mutual crisis support, cooperative caregiving, shared cultural responsibilities, or agreed professional role. The person\'s freedom to stop without penalty is decisive.',protectiveCountermechanism:'Restore age-appropriate responsibility; ask before giving help, allow feelings without taking ownership, and build reciprocal support.',inquiryPrompt:null,researchAnchorIds:['S06','S07','S28'],evidenceFitNote:'Parentification reviews [S07, S28], boundary dissolution meta-analysis [S06]. Fit: strong for disproportionate child caregiving associations; specific multigeneration sequence unproven.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-11',layer:'ancestral',name:'Enmeshment and weak boundaries',domain:'Agency, family roles, boundaries',functionalDefinition:'B, A. Preserves connection by making autonomous decisions emotionally costly. Close-knit, collectivist, multigenerational, or mutually interdependent families are not inherently enmeshed.',mechanic:'Person considers choice that diverges from family → guilt or anticipated rejection → seeks permission, yields preference, or hides action → short-term inclusion → autonomy becomes less practiced, and family surveillance may increase.',observableSignals:'Threats of love withdrawal for ordinary choices; repeated inability to say no without sanction; boundaries intruded on despite clear requests; measure coercion, not physical closeness.',generationalTransformation:'G−2 relied on group solidarity to survive → G−1 converts loyalty into compulsory compliance → G0 suppresses choices (amplification/context shift) or cuts off entirely (inversion).',alternativeExplanations:'Freely chosen interdependence, shared resources with transparent contracts, cultural duties consented to, housing dependency, or temporary collective response to crisis.',protectiveCountermechanism:'Preserve relationship while making one independently chosen, low-risk decision; observe whether disagreement is tolerated and whether support remains available.',inquiryPrompt:null,researchAnchorIds:['S06','S25'],evidenceFitNote:'Boundary dissolution meta-analysis [S06], family resilience [S25]. Fit: strong for the idea of boundary intrusion, weak for labeling diverse families or ancestry.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-12',layer:'ancestral',name:'Rigid independence',domain:'Agency, family roles, boundaries',functionalDefinition:'A, P. Refuses support because accepting it is anticipated to create debt, control, shame, or disappointment. Healthy self-reliance is not the target.',mechanic:'Offer of legitimate help → “Dependence is dangerous/weak” → reject aid, do everything alone, conceal strain → immediate autonomy/protection from obligations → lost support and overload reinforce belief that only oneself is dependable.',observableSignals:'Refusing small safe help despite cost; secrecy about normal needs; defensive reaction to support; distinguish freely chosen privacy from distressing inability to accept assistance.',generationalTransformation:'G−2 suffered exploitative dependence → G−1 teaches “never rely on anyone” → G0 avoids support (repetition/context shift). The converse may be chronic reassurance seeking (inversion).',alternativeExplanations:'History of actual exploitative offers, inaccessible services, discriminating institutions, or a realistic cost-benefit choice.',protectiveCountermechanism:'Choose one low-risk, clearly bounded exchange, explicitly state no implied debt, and assess whether autonomy remained intact.',inquiryPrompt:null,researchAnchorIds:['S11','S16','S20'],evidenceFitNote:'Attachment avoidance [S11], financial socialization [S16], protective social networks [S20]. Fit: moderate for the relational mechanism, low for ancestry-specific explanation.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-13',layer:'ancestral',name:'Learned helplessness scripts',domain:'Agency, family roles, boundaries',functionalDefinition:'P, A. Disengages when attempts are expected to have no effect. Not a claim that someone facing genuine barriers merely needs to try harder.',mechanic:'Repeated uncontrollable outcomes or credible reports of failure → “Effort will not change this” → no attempt, early withdrawal, low exploratory behavior → immediate effort/threat avoidance → fewer experiences of controllable success, preserving expectancy.',observableSignals:'Declining a feasible action before testing it; global “nothing I do matters”; contrast domains with real control against domains constrained by institutions/resources.',generationalTransformation:'G−2 faced severe restrictions → G−1 taught caution about institutions → G0 applies a broad futility rule in a newly controllable setting (context shift/amplification). Real ongoing constraints invalidate this simplistic chain.',alternativeExplanations:'Actual systemic exclusion, lack of resources, disability access barriers, depression requiring clinical evaluation, strategically conserving effort. Attempts under improved conditions weaken generalized helplessness.',protectiveCountermechanism:'First change material access where needed; then try small *genuinely controllable* actions with observable feedback and revise the predicted action-outcome link.',inquiryPrompt:null,researchAnchorIds:['S14','S20','S24'],evidenceFitNote:'Learned controllability research [S24]; structural and economic conditions [S14, S20]. Fit: strong for action-outcome learning theory, indirect for family transmission.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-14',layer:'ancestral',name:'Secrecy and image protection',domain:'Agency, family roles, boundaries',functionalDefinition:'P, B, I. Conceals information to prevent stigma, punishment, or loss of standing. Privacy and keeping others\' confidences can be sound boundaries.',mechanic:'Potentially embarrassing disclosure → anticipated reputational danger → omit, invent cover story, demand silence → short-term protection → support becomes harder to obtain; secrecy increases scrutiny and reinforces expectation that disclosure is unsafe.',observableSignals:'“We don\'t talk about family problems outside,” punitive reactions when seeking help, contradictory official and private accounts; distinguish a legitimate security concern from reputation-driven suppression.',generationalTransformation:'G−2 faces public punishment → G−1 institutionalizes concealment → G0 masks ordinary setbacks (context shift), or challenges secrecy at personal risk (interruption).',alternativeExplanations:'Safety in a hostile environment, survivor privacy, professional confidentiality, autonomous preference not to share. Evidence of threat changes whether concealment is protective.',protectiveCountermechanism:'Identify safe audiences and purpose-limited disclosures; make access to help possible without exposing third parties or forcing family confession.',inquiryPrompt:null,researchAnchorIds:['S17','S18','S26'],evidenceFitNote:'Forced-migrant narrative synthesis [S17], institutional trust [S18], family storytelling [S26]. Fit: plausible, context-sensitive, with limited direct lineage validation.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-15',layer:'ancestral',name:'Role reversal or parentification',domain:'Agency, family roles, boundaries',functionalDefinition:'C, B, P. A child assumes sustained, developmentally inappropriate adult emotional or instrumental responsibility. Age-appropriate chores, supervised helping, and culturally shared contributions are not automatically parentification.',mechanic:'Adult distress, illness, conflict, or absent support → child learns “the family needs me to keep it together” → mediation, adult confidant, financial problem-solving beyond developmental capacity → praise, reduced immediate crisis → child needs are displaced and role becomes entrenched.',observableSignals:'Child routinely arbitrating caregiver conflict, shielding an adult from consequences, making adult-level decisions without support; record age, duration, coercion, acknowledgment, and resources.',generationalTransformation:'G−2 had inadequate caregiver support → G−1 relies heavily on child → G0 equates closeness with rescue (role migration). G0 may reject caretaking altogether (inversion).',alternativeExplanations:'Short emergency assistance, normal contribution with adult oversight, voluntary caring that does not impair development, community-based interdependence.',protectiveCountermechanism:'Shift responsibility back to capable adults/institutions, affirm the child\'s right to developmentally appropriate needs, and distinguish voluntary adult caregiving from compulsion.',inquiryPrompt:null,researchAnchorIds:['S06','S07','S28'],evidenceFitNote:'Systematic reviews [S07, S28] and boundary dissolution [S06]. Fit: relatively strong for child-role mechanisms; no automatic ancestral attribution.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-16',layer:'ancestral',name:'Scarcity vigilance',domain:'Resources, achievement, and status',functionalDefinition:'R, P. Maintains attention to resource loss even when a specific purchase is affordable. Rational budgeting during true scarcity is not pathology.',mechanic:'Spending, food use, or disposal opportunity → anticipation of future deprivation → hoard, stockpile, overcheck, feel guilt → temporary relief/sense of readiness → inflexibility and repeated checking persist without updated resource calculations.',observableSignals:'Disproportionate distress about low-risk expenditure; inability to discard surplus with known replacement access; compare forecasts with actual reserves, debt and current insecurity.',generationalTransformation:'G−2 survives deprivation → G−1 teaches strict resource conservation → G0 applies emergency rules despite changed finances (context shift/amplification); alternatively G0 spends impulsively to reject deprivation (inversion).',alternativeExplanations:'Actual low income, unstable employment, high prices, uncertain benefits, migration disruption, prudent planning; accurate budgeting explains the behavior without ancestral hypothesis.',protectiveCountermechanism:'Verify the material safety margin and automate necessary protections; experiment only with *genuinely affordable* flexible spending and assess resulting safety.',inquiryPrompt:null,researchAnchorIds:['S14','S15','S16'],evidenceFitNote:'Family stress studies [S14, S15], financial socialization [S16]. Fit: strong for contextual socialization, indirect for anxiety-related manifestations.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-17',layer:'ancestral',name:'Achievement-for-worth',domain:'Resources, achievement, and status',functionalDefinition:'B, R, I. Performance is used to earn or protect acceptance, not simply to pursue a valued goal. Ambition and excellence alone are not evidence.',mechanic:'Evaluation, comparison, or mistake → “My value depends on exceptional results” → overprepare, conceal weakness, abandon difficult tasks, or self-attack → praise or avoidance of disapproval → standards become more rigid and satisfaction shorter-lived.',observableSignals:'Affection contingent on grades/status, distress out of proportion to ordinary setbacks, persistent inability to rest after success; compare the person\'s self-chosen goal with externally required approval.',generationalTransformation:'G−2 needs achievements for class mobility → G−1 makes approval conditional on success → G0 performs to feel worthy (amplification/context shift); G0 may refuse achievement systems (inversion).',alternativeExplanations:'External school/work consequences, personally meaningful mastery, healthy high standards, current economic precarity. Warm responses to failures and rest weaken conditional-worth account.',protectiveCountermechanism:'Give behavior-specific feedback independent of affection; practice attainable standards and celebrate effort, learning, relationships and nonperformance time.',inquiryPrompt:null,researchAnchorIds:['S08','S09','S14'],evidenceFitNote:'Conditional parental regard meta-analysis [S08], shame meta-analysis [S09], economic stress [S14]. Fit: relatively strong for contingent regard, ancestral route hypothetical.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-18',layer:'ancestral',name:'Work as emotional escape',domain:'Resources, achievement, and status',functionalDefinition:'E, R, P. Uses productivity to displace emotional contact or inner distress. Long hours forced by livelihood or caregiving should not be labeled escape.',mechanic:'Emotional conflict, vulnerability, or unstructured quiet → felt discomfort or threat to self-image → compulsive tasking, availability to work, busyness → short-term mastery/numbing → unresolved interpersonal issues persist and busyness becomes default relief.',observableSignals:'Repeated work bursts immediately after distressing conversations; conflict conversations deferred indefinitely; person reports fear of stillness despite available leisure. Record actual workload necessities.',generationalTransformation:'G−2 survives through relentless labor → G−1 equates love with providing materially → G0 avoids emotional intimacy by working (role/function shift). Or G0 intentionally prioritizes rest (interruption).',alternativeExplanations:'Economic necessity, seasonal workload, rewarding vocation, acute deadlines, family dependence on income; emotional engagement during off-hours contradicts generalized escape.',protectiveCountermechanism:'Protect income needs while scheduling small, safe emotional check-ins and recovery periods; monitor whether work stops being the sole coping response.',inquiryPrompt:null,researchAnchorIds:['S12','S14','S15'],evidenceFitNote:'Family stress and economic constraints [S14, S15], experiential avoidance [S12]. Fit: indirect/proposed; weak evidence for a distinct intergenerational subtype.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-19',layer:'ancestral',name:'Financial secrecy and mistrust',domain:'Resources, achievement, and status',functionalDefinition:'R, P, A. Conceals money information or withholds joint decision-making to protect autonomy or guard against exploitation. Private accounts can also be legitimate and consensual.',mechanic:'Request to discuss debt, spending, or shared expenses → threat of judgment, dependence, or loss of control → conceal balance, lie, evade budget meetings, or tightly restrict information → short-term avoidance of conflict → surprise costs and damaged trust intensify suspicion.',observableSignals:'Financial agreements contradicted by concealed transactions; sanctions for asking basic joint-account questions; distinguish personal financial privacy from deception affecting shared obligations.',generationalTransformation:'G−2 experiences dispossession → G−1 teaches financial secrecy as survival → G0 withholds financial information in safe partnership (context shift); G0 may demand excessive access as compensation (inversion).',alternativeExplanations:'Current financial coercion or abuse, safety planning, legitimate business confidentiality, separate-account agreement, privacy law, and fraud exposure. Do not urge disclosures that increase danger.',protectiveCountermechanism:'Establish voluntary, proportionate transparency for shared liabilities and explicit consent for personal privacy; independent professional support if coercion or abuse is involved.',inquiryPrompt:null,researchAnchorIds:['S14','S16','S18'],evidenceFitNote:'Financial socialization literature [S16], institutional trust [S18], stress pathways [S14]. Fit: moderate for learning/financial communication, weak for ancestry-specific causal claims.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-20',layer:'ancestral',name:'Belonging conditionality',domain:'Identity, culture, and narrative',functionalDefinition:'B, I, P. Acceptance is granted only when a member conforms to assigned beliefs, roles, relationships, or presentation. Shared norms are not inherently coercive.',mechanic:'Individual expresses difference → family interprets it as disloyalty or threat → affection, access, or inclusion withdrawn → person hides difference or complies → short-term belonging but less authentic participation and increasing fear of exposure.',observableSignals:'Explicit threats of exclusion for ordinary identity choices; family celebrations conditional on conformity; whether dissenting members remain treated with dignity.',generationalTransformation:'G−2 encounters exclusion externally → G−1 builds strict internal identity rules → G0 conceals meaningful differences (compensation/amplification); another path is breaking exclusion while retaining culture (interruption).',alternativeExplanations:'Voluntary shared practices, explicit safety rules, actual discrimination outside family, mutually agreed household obligations. Acceptance of difference weakens conditionality.',protectiveCountermechanism:'Protect belonging without uniformity; negotiate specific needs without threats to basic connection; allow culturally meaningful choice and respectful dissent.',inquiryPrompt:null,researchAnchorIds:['S17','S20','S26'],evidenceFitNote:'Family stories and sociocultural identity [S26], migration narratives [S17], protective connection [S20]. Fit: moderate for sociocultural pathways, limited direct specific-generation evidence.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-21',layer:'ancestral',name:'Stigma and forbidden topics',domain:'Identity, culture, and narrative',functionalDefinition:'I, P, B. Prohibits discussion of illness, addiction, violence, identity, or family trouble to avoid stigma or consequences. Never assume silence is irrational if speaking is dangerous.',mechanic:'Sensitive topic or help-seeking opportunity → prediction of judgment/exposure → forbidden language, euphemism, secrecy, blocked services → immediate reduced visibility → members remain uninformed and support may be delayed, sustaining fear and confusion.',observableSignals:'Recurrent sanctions for asking neutral questions; euphemisms that erase access to needed services; patterns of selective disclosure tied to actual safety.',generationalTransformation:'G−2 experiences public stigma → G−1 teaches that disclosure threatens family → G0 avoids seeking needed help (context shift); G0 creates protected, non-coercive conversation (interruption).',alternativeExplanations:'Privacy right, active discrimination, asylum or legal exposure, genuine safety needs, medical confidentiality, trauma-sensitive pacing.',protectiveCountermechanism:'Ensure confidential, voluntary access to trustworthy services; share only the minimum necessary; protect both disclosure autonomy and right not to disclose.',inquiryPrompt:null,researchAnchorIds:['S17','S18','S20'],evidenceFitNote:'Migration/silence qualitative synthesis [S17], public-health trust [S18], CDC supports [S20]. Fit: contextually plausible, not diagnostic or universal.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-22',layer:'ancestral',name:'Inherited loyalty narratives',domain:'Identity, culture, and narrative',functionalDefinition:'I, B, A. A repeated family story assigns durable hero/villain/rescuer obligations and shapes choices. Remembered stories can also be truthful, sustaining, and freely embraced.',mechanic:'Choice conflicts with a familiar family legend → fear of disloyalty or desire to uphold heroic identity → take prescribed role, blame a designated figure, or sacrifice alternatives → belonging/identity coherence → competing histories and changing needs get excluded.',observableSignals:'“In this family we always...,” “we never forgive...,” names assigned to a villain across disputes; ask who tells story, who disagrees, and whether members can revise it.',generationalTransformation:'G−2 endures consequential event → G−1 retells with fixed roles → G0 chooses partners/careers/alliances to maintain script (narrative transmission); G0 may retain history while refusing inherited obligation (interruption).',alternativeExplanations:'Independently verified wrongdoing, justified accountability, freely embraced traditions, accurate moral witness rather than fixed role demands.',protectiveCountermechanism:'Preserve factual history, identify missing perspectives, separate gratitude/solidarity from coerced repetition; allow new roles without erasure.',inquiryPrompt:null,researchAnchorIds:['S17','S26'],evidenceFitNote:'Intergenerational family stories [S26], forced migration narratives [S17]. Fit: moderate for narrative/identity, low for any one rigid script.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-23',layer:'ancestral',name:'Migration and displacement adaptation',domain:'Identity, culture, and narrative',functionalDefinition:'P, I, R, B. Strategies for mobility, safety, language, and belonging persist after displacement. Migration, bilingualism, cultural adaptation, and alertness to policy are not symptoms.',mechanic:'Uncertain residence or institutional treatment → need to protect safety and opportunity → selective language use, secrecy about status, high achievement pressure, resource preservation, mutual aid → access/survival → context may shift while learned strategies remain; some continue to be necessary.',observableSignals:'Which rules emerged in specific historical conditions; how descendants interpret them; distinct family voices about what remains helpful. Never infer refugee trauma from ethnicity or country of origin.',generationalTransformation:'G−2 experiences forced relocation → G−1 balances assimilation with family identity → G0 struggles with conflicting belonging expectations (context shift) or sustains language and solidarity (protective continuity).',alternativeExplanations:'Current legal/policy threats, language preference, ordinary cultural differences, freely chosen mobility, personal adaptation unrelated to relatives.',protectiveCountermechanism:'Affirm real-world safety and cultural self-determination; support language, historical context, resources, and optional dialogue across generations.',inquiryPrompt:null,researchAnchorIds:['S15','S17','S20'],evidenceFitNote:'2026 qualitative meta-synthesis [S17], family stress cross-cultural study [S15], CDC ecological factors [S20]. Fit: robust qualitative themes, no deterministic lineage claims.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-24',layer:'ancestral',name:'Threat scanning',domain:'Loss, uncertainty, and threat',functionalDefinition:'P, E. Monitors surroundings for danger, sometimes beyond what current conditions warrant. Vigilance in an unsafe environment is appropriate and should not be pathologized.',mechanic:'Ambiguous sound, delay, facial expression, or unfamiliar location → high threat estimate → repeated scanning, checking exits/phones, difficulty disengaging → brief sense of preparedness → attention favors danger cues and fewer experiences update perceived safety.',observableSignals:'Frequency/trigger of checks, whether objective threats exist, whether information changes behavior, relationship to sleep and substance exposure; never diagnose PTSD from a sentence.',generationalTransformation:'G−2 lives with sustained threat → G−1 models high-alert caregiving → G0 generalizes danger scanning into safer contexts (amplification/context shift) or adopts calibrated vigilance (attenuation).',alternativeExplanations:'Current violence or discrimination, realistic occupational danger, disability/sensory needs, medical conditions, recent trauma requiring clinical assessment.',protectiveCountermechanism:'First improve actual safety and resources; then compare predictions with observed outcomes, use consent-based support and context-sensitive checks. Avoid forced exposure to hazards.',inquiryPrompt:null,researchAnchorIds:['S03','S12','S20'],evidenceFitNote:'Adversity intergenerational association [S03], ecological risk/protection [S20], avoidance mechanics [S12]. Fit: moderate for contextual maintenance, weak for ancestral origin and physiology.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-25',layer:'ancestral',name:'Intimacy-loss oscillation',domain:'Loss, uncertainty, and threat',functionalDefinition:'B, P, E. Alternates between seeking connection and creating distance when closeness activates concerns about rejection, engulfment, or inconsistency. Ordinary changing preferences or mixed feelings are not enough.',mechanic:'Loneliness or uncertainty → seek intense closeness → intimacy creates new vulnerability or unmet expectation → protest, test, retreat → temporary autonomy → renewed loneliness prompts another pursuit; the loop can involve both partners, not a defective individual.',observableSignals:'Repeated pursue–withdraw sequences with timing and partner responses; whether cues are objectively inconsistent; whether explicit expectations predict less oscillation.',generationalTransformation:'G−2 repeatedly absent due to necessity → G−1 inconsistently available under stress → G0 both seeks and mistrusts closeness (role/context shift). A different chain produces stable connection (interruption).',alternativeExplanations:'A currently unpredictable or coercive partner, mismatched goals, ordinary relationship transitions, sleep/stress, consensual preference for distance.',protectiveCountermechanism:'Define consent and availability, make modest concrete bids, respond with predictable repair, and consider the *pair\'s* interaction rather than assigning inherited pathology to one person.',inquiryPrompt:null,researchAnchorIds:['S11'],evidenceFitNote:'Attachment anxiety/avoidance and partner buffering [S11]. Fit: moderate to strong for dyadic loops; indirect for ancestral linkage.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-26',layer:'ancestral',name:'Rescue-and-sacrifice cycles',domain:'Loss, uncertainty, and threat',functionalDefinition:'C, B, P. Repeatedly assumes others\' responsibilities at serious personal cost while expecting connection, safety, or identity through rescue. Generosity and community solidarity are not equivalent to unhealthy sacrifice.',mechanic:'Another person struggles → “If I do not fix this, I am failing or will lose them” → overgive, absorb costs, override own limits → instant relief, gratitude or relational security → depletion and resentment; recipients may rely increasingly on rescuer.',observableSignals:'Voluntary vs pressured aid; whether “no” is permitted; recurring exhaustion and resentment; whether responsibilities are negotiated and returned.',generationalTransformation:'G−2 mobilizes necessary reciprocal survival support → G−1 moralizes unlimited self-sacrifice → G0 rescues without consent or boundaries (amplification/context shift), or restores mutual aid (attenuation/protective continuity).',alternativeExplanations:'Temporary emergency caregiving, freely chosen sacrifice, culturally reciprocal obligation with shared resources, structural care deficits requiring material solutions.',protectiveCountermechanism:'Ask “What help was requested, what can I offer, and what responsibility remains theirs?” Track consent, reciprocity, rest, and ability to decline.',inquiryPrompt:null,researchAnchorIds:['S06','S07','S22','S25'],evidenceFitNote:'Child caregiving/boundary dissolution [S06, S07], prosocial support [S22], resilience [S25]. Fit: moderate, with significant cultural/context qualification.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-27',layer:'ancestral',name:'Distrust of institutions',domain:'Loss, uncertainty, and threat',functionalDefinition:'P, A, I. Protects against expected harm or exploitation by authorities and systems. Distrust can be accurate when institutions are unsafe; defaulting to “maladaptive” repeats the harm.',mechanic:'Encounter with school, court, employer, health care, or government → expectation of unfairness/injury → avoidance, extensive checking, preferred informal alternatives → reduced immediate exposure → sometimes missed opportunities; alternatively avoidance may *correctly prevent harm*.',observableSignals:'Precisely which institution and practice is distrusted; documented experiences; differences between credible and untrustworthy providers; whether practical alternatives exist.',generationalTransformation:'G−2 experiences institutional dispossession → G−1 explicitly warns descendants → G0 uses broad distrust (narrative/context shift) or learns evidence-based selective trust (attenuation).',alternativeExplanations:'Ongoing discrimination, documented malpractice, privacy threats, rational skepticism, inaccessible services. A safe institution\'s behavior, not a person\'s compliance, is a necessary comparison.',protectiveCountermechanism:'Improve provider trustworthiness, offer independent verification and culturally appropriate advocacy, respect informed refusal, and distinguish evidence from inherited maxims.',inquiryPrompt:null,researchAnchorIds:['S17','S18','S20'],evidenceFitNote:'2024 trust/mistrust public-health review [S18]; displacement accounts [S17]; CDC levels of risk, from person to society [S20]. Fit: strong for structural importance, no assumption of family pathology.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-28',layer:'ancestral',name:'Repair literacy',domain:'Protective inheritance and cycle breaking',functionalDefinition:'C, B, E. A learnable sequence of recognizing harm, acknowledging another\'s experience, restoring connection, and changing behavior. An apology without changed behavior does not meet the full pattern.',mechanic:'Rupture → discomfort and awareness of harm → nondefensive account of action, impact acknowledgement, proportionate restitution → greater predictability and trust → future conflict is less threatening because repair has worked.',observableSignals:'Specific apology naming conduct, listening without retaliation, follow-through, repeat frequency of the harmful act, whether harmed person can decline immediate reconciliation.',generationalTransformation:'G−2 models repair after conflict → G−1 internalizes accountability → G0 uses repair in partnerships (protective continuity); G0 can also develop it independently of a harsh earlier home (interruption).',alternativeExplanations:'Appeasement, ritual apology under coercion, reconciliation that hides repeated abuse, forgiveness pressure without safety.',protectiveCountermechanism:'Keep responsibility tied to observable changed behavior and consent; if repair fails, strengthen boundaries rather than demand absolution.',inquiryPrompt:null,researchAnchorIds:['S04','S11','S20','S21'],evidenceFitNote:'Protective family conflict/problem-solving [S20, S21], emotion socialization [S04], relationship buffering [S11]. Fit: strong for underlying skills, specific 3-generation transmission less studied.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-29',layer:'ancestral',name:'Mutual aid and solidarity',domain:'Protective inheritance and cycle breaking',functionalDefinition:'C, B, R. Members and communities provide practical support with respect, accessibility, and reciprocity over time. Coerced dependency or one-way extraction is a separate mechanism.',mechanic:'Need is noticed or voiced → expectation that asking and helping are legitimate → practical assistance is offered with consent → needs met and social trust reinforced → future help becomes more accessible, capacity to assist grows.',observableSignals:'Real transfers of care/resources, whether helpers can decline, whether recipients retain dignity, whether contributions vary according to ability rather than enforced equality.',generationalTransformation:'G−2 creates survival network → G−1 models reciprocal assistance → G0 participates in community mutual aid (protective continuity), or converts help into compulsory indebtedness (distortion/inversion).',alternativeExplanations:'Reputation-building exchanges, coercive demands, restricted help contingent on obedience, current external aid systems; keep structural policy distinct from private benevolence.',protectiveCountermechanism:'Make needs and limits discussable; preserve consent and distributed responsibility; document shared resources and successful help-seeking episodes.',inquiryPrompt:null,researchAnchorIds:['S20','S22','S25'],evidenceFitNote:'Prosocial modeling meta-analysis [S22], CDC social networks [S20], family resilience [S25]. Fit: strong for helping/modeling, variable across cultures and generations.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-30',layer:'ancestral',name:'Meaning and ritual continuity',domain:'Protective inheritance and cycle breaking',functionalDefinition:'I, B, E. Shared symbolic practices and stories make transitions, grief, celebration, and belonging understandable. Ritual is not automatically protective: coercion and silencing can change its function.',mechanic:'Milestone, uncertainty, loss, or reunion → shared practice and narrative frame → participation, remembrance, collective action → predictable connection and emotional coherence → future members have a repertoire for transition and recovery.',observableSignals:'What participants actually do; who may opt out; whether ritual helps people discuss difficult feelings or prohibits them; distinguish daily *routine* from symbolically meaningful *ritual*.',generationalTransformation:'G−2 establishes communal ceremony → G−1 maintains it under changing conditions → G0 adapts meaningful elements (protective continuity/context shift), or rejects coercive parts while retaining identity (interruption).',alternativeExplanations:'Hollow obligation, exclusion, suppression of grief, purely logistical schedule; ritual meaning can differ sharply by member.',protectiveCountermechanism:'Make participation voluntary and adaptable; invite multiple memories and permit new forms without erasing cultural history.',inquiryPrompt:null,researchAnchorIds:['S10','S17','S23','S25'],evidenceFitNote:'Routine/ritual review [S23], family grief [S10], resilience [S25], migration narratives [S17]. Fit: moderate for family processes, weaker for measuring subjective meaning causally.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-31',layer:'ancestral',name:'Flexible boundaries',domain:'Protective inheritance and cycle breaking',functionalDefinition:'A, B, C. Maintains both connection and autonomy through explicit, revisable limits. Rigid cutoff, compliance under threat, and permissiveness without care are not the same.',mechanic:'Competing needs arise → both parties recognize distinct preferences → name a limit and listen to the other\'s need → negotiate feasible conditions → repeated follow-through builds confidence that “no” need not equal abandonment.',observableSignals:'Clear, respectful refusal; continuation of care after disagreement; negotiated adjustment when circumstances change; treatment of lower-power members.',generationalTransformation:'G−2 learns to disagree without rejection → G−1 models negotiated independence → G0 maintains healthy separateness (protective continuity); or G0 establishes first safe boundary in a coercive line (interruption).',alternativeExplanations:'Temporary avoidance as safety planning, empty verbal promises, coerced agreement, boundary language used to evade responsibility.',protectiveCountermechanism:'Attend to asymmetry of power; specify who will do what and when; keep contact optional if relationship is unsafe.',inquiryPrompt:null,researchAnchorIds:['S06','S11','S20'],evidenceFitNote:'Boundary dissolution research [S06], attachment buffering [S11], CDC protective relationships [S20]. Fit: relatively strong for boundary distinctions, person-level ancestry unproven.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'AP-32',layer:'ancestral',name:'Cycle interruption',domain:'Protective inheritance and cycle breaking',functionalDefinition:'C, A, E, I. A person identifies a harmful recurrent sequence and reliably enacts a different behavior over time, with changed outcomes. An inspiring insight by itself is not a completed interruption.',mechanic:'Familiar trigger → old response is recognized before/during enactment → a feasible alternative is chosen and supported by context → immediate cost may include discomfort or disapproval → repeated practice and better feedback make the alternative increasingly available.',observableSignals:'Baseline episodes; specific alternative action; repetition across multiple opportunities; results including relapses, resource changes, social support and others\' responses. No requirement to forgive or recontact an unsafe relative.',generationalTransformation:'G−2 and G−1 enact coercive responses → G0 substitutes nonviolent conflict handling (interruption); G0\'s child sees repair rather than fear (new protective continuity, which remains to be observed, not presumed).',alternativeExplanations:'No behavioral follow-through, one exceptional event, changed circumstances rather than learned action, biased retrospective storytelling, or coerced compliance.',protectiveCountermechanism:'Track measurable alternatives, reinforce safety and material support, accept setbacks, and check whether protective gains reach the next generation without claiming inevitability.',inquiryPrompt:null,researchAnchorIds:['S02','S20','S21'],evidenceFitNote:'Maltreatment discontinuity meta-analysis [S02], WHO parenting intervention synthesis [S21], CDC protective environments [S20]. Fit: strong that discontinuity occurs; effectiveness of any particular ATUNED intervention requires testing.',canonicalDocument:'01_ANCESTRAL/ATUNED_ANCESTRAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-01',layer:'generational',name:'Inherited emotional reserve',domain:'Relational regulation',functionalDefinition:'Contact is maintained through action rather than disclosure; do not mistake a quiet temperament for impairment.',mechanic:'Vulnerability invitation → forecast of exposure or burden → practical help instead of sharing → short-term control of exposure → missed bids for intimacy can reinforce reserve.',observableSignals:'Repeated topic shifts after feeling questions, offers of tasks instead of emotional replies, voluntary reconnection as counterexample.',generationalTransformation:'G−2 avoids disclosure under danger → G−1 prizes stoicism → G0 uses silence in safe relationships; inversion can be intense demand for openness.',alternativeExplanations:'Privacy preference, cultural restraint, relationship-specific unsafety, neurodivergent communication differences.',protectiveCountermechanism:'Invite opt-in feeling words plus concrete support; preserve the choice to remain private.',inquiryPrompt:'When do they choose to open up, and is that respected?',researchAnchorIds:['R01','R06','R23'],evidenceFitNote:'Indirect relational mechanism; no validated lineage marker.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-02',layer:'generational',name:'Separation-alert family script',domain:'Relational regulation',functionalDefinition:'Closeness is repeatedly checked because absence is interpreted as possible abandonment.',mechanic:'Ordinary delay → interpreted loss → repetitive calling or reassurance → immediate certainty → relationship fatigue creates more uncertainty.',observableSignals:'Repeated urgent contact demands in ordinary separations; secure routine departures without checking weaken candidate.',generationalTransformation:'G−2 experienced separation → G−1 responds with protective contact monitoring → G0 repeatedly tests partner availability.',alternativeExplanations:'Currently unreliable caregiver, actual separation threat, disability supports, consensual safety plans.',protectiveCountermechanism:'Agree on realistic check-in rhythms; build predictable returns without forced reassurance.',inquiryPrompt:'Is the contact request a consented safety plan or a fear-driven obligation?',researchAnchorIds:['R01','R10','R13'],evidenceFitNote:'Attachment-related analogy, not direct inherited mechanism.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-03',layer:'generational',name:'Conflict escalation script',domain:'Relational regulation',functionalDefinition:'Family members learn that volume or intimidation wins attention or stops disagreement.',mechanic:'Opposing preference → forecast of not being heard → threat, shouting or abrupt exit → other yields or argument stops → escalation becomes an efficient habit.',observableSignals:'Repeated coercive disagreements plus sanctions for peaceful dissent; an isolated overwhelmed conversation is not a rule.',generationalTransformation:'G−2 used coercion → G−1 anticipates and counterattacks → G0 escalates earlier; a fourth member may become a peacemaker.',alternativeExplanations:'Real coercive control requiring protection, current partner aggression, exhaustion, substance-related effects.',protectiveCountermechanism:'Establish safety first, then predictable pause and return with nonthreatening boundaries.',inquiryPrompt:'Which person\'s behavior changed after shouting, and was consent possible?',researchAnchorIds:['R04','R15','R28'],evidenceFitNote:'Evidence supports conflict correlates; this sequence is an interpretive hypothesis.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-04',layer:'generational',name:'Appeasement and peacekeeping',domain:'Relational regulation',functionalDefinition:'Agreement is used to prevent conflict rather than express true preference.',mechanic:'Conflict cue → danger or belonging threat → yield, flatter or hide disagreement → tension reduces → needs remain unvoiced and acquiescence is rewarded.',observableSignals:'Saying yes then privately expressing resentment; disagreement permitted with safe people is counterevidence of a global rule.',generationalTransformation:'G−2 punished contradiction → G−1 modeled nonconfrontation → G0 suppresses preferences; alternatively G0 rebels openly.',alternativeExplanations:'Reasonable de-escalation in unsafe setting, courtesy, collaborative compromise, genuine agreement.',protectiveCountermechanism:'Separate immediate safety from longer-term agency; try one low-risk explicit preference with a safe person.',inquiryPrompt:'Could they safely disagree, and what actually followed when they did?',researchAnchorIds:['R01','R15','R25'],evidenceFitNote:'Plausible; no standalone validated GP category.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-05',layer:'generational',name:'Trust-by-proof inheritance',domain:'Relational regulation',functionalDefinition:'Trust is withheld until extraordinary certainty is obtained; targeted caution can be fully rational.',mechanic:'Ambiguous offer → forecast of exploitation → test, withhold or surveil → short-term reduced exposure → diminished chances to learn nuanced trust.',observableSignals:'Repeated proof demands across trustworthy relationships; selective trust in genuinely safe contexts weakens global claim.',generationalTransformation:'G−2 faced betrayal or institutional abuse → G−1 taught broad suspicion → G0 applies it to unrelated people.',alternativeExplanations:'Documented present discrimination, domestic abuse, unsafe institutions, prudent due diligence.',protectiveCountermechanism:'Evaluate evidence per person and institution; protect privacy without universalizing danger.',inquiryPrompt:'What evidence distinguishes this specific counterpart from the original danger?',researchAnchorIds:['R13','R23','R25'],evidenceFitNote:'Contextual inference; avoid pathologizing protective distrust.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-06',layer:'generational',name:'Duty-before-self family rule',domain:'Roles and boundaries',functionalDefinition:'Individual needs are subordinated to mandatory family service, regardless of cost or consent.',mechanic:'Family demand → guilt-based obligation → sacrifice own commitments → immediate approval or crisis relief → expectations deepen.',observableSignals:'Unequal unnegotiable workload and sanction for declining; freely shared caregiving is not the target.',generationalTransformation:'G−2 survived through mutual dependence → G−1 moralized total sacrifice → G0 suppresses needs or rejects family altogether.',alternativeExplanations:'Chosen collectivism, real eldercare requirements, missing public services, temporary caregiving emergency.',protectiveCountermechanism:'Make duties explicit, proportionate, consented and resourced; include limits and replacement care.',inquiryPrompt:'Who can decline safely, and who supplies practical support?',researchAnchorIds:['R14','R25','R13'],evidenceFitNote:'Indirect; the idea of a family role requires consent/context.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-07',layer:'generational',name:'Assigned rescuer lineage',domain:'Roles and boundaries',functionalDefinition:'One member is designated to solve recurring adult problems and gains identity through indispensability.',mechanic:'Crisis → assigned rescuer identity → step in rapidly → immediate praise/crisis stabilization → other capacities underdevelop and obligation repeats.',observableSignals:'Same person routinely managing others\' solvable responsibilities; group shares load as counterexample.',generationalTransformation:'G−2 emergency hero role → G−1 praises rescuer as family identity → G0 rescues partners; inversion becomes refusing any help.',alternativeExplanations:'Actual unavailable care systems, expertise-driven delegation, voluntary limited aid.',protectiveCountermechanism:'Rotate responsibilities, build recipient capacity, protect helper boundaries and outside resources.',inquiryPrompt:'If they do not rescue, what actually happens and who else can act?',researchAnchorIds:['R08','R14','R25'],evidenceFitNote:'Parentification/role concepts support analogy, not ancestry-specific proof.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-08',layer:'generational',name:'Hierarchy and unquestioned authority',domain:'Roles and boundaries',functionalDefinition:'Authority is treated as beyond review and disagreement as betrayal; predictable consensual leadership is different.',mechanic:'Direction from elder → fear of disloyalty → compliance without voice → smooth immediate hierarchy → less feedback and accountability.',observableSignals:'Punishment for respectful disagreement, unilateral decisions with no appeals; role-specific temporary authority is counterevidence.',generationalTransformation:'G−2 authority ensured group survival → G−1 turns it into rigid deference → G0 avoids choices or counter-controls others.',alternativeExplanations:'Culture-specific respectful communication, genuine expertise, safeguarding rules, age-appropriate limits.',protectiveCountermechanism:'Differentiate dignity/respect from nonnegotiable coercion; specify decision rights and appeals.',inquiryPrompt:'Can a younger member make a respectful different choice without losing relationship?',researchAnchorIds:['R08','R11','R25'],evidenceFitNote:'Indirect behavioral mechanism; culture needs review.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-09',layer:'generational',name:'Sibling-role crystallization',domain:'Roles and boundaries',functionalDefinition:'Family members are persistently cast as capable, difficult, invisible or favored independent of current behavior.',mechanic:'Role cue → comparison label → member enacts or resists role → predictable family response → role expectation becomes self-confirming.',observableSignals:'Repeated contrasting labels across activities; updated descriptions when behavior changes weaken classification.',generationalTransformation:'G−2 favored achievement → G−1 labels one child capable → G0 assigns same archetype to siblings or rejects labels.',alternativeExplanations:'Real age/development differences, disability accommodation, temporary skill distribution, child preference.',protectiveCountermechanism:'Replace global roles with behavior-specific observations and symmetrical opportunities.',inquiryPrompt:'Does the label change when the person\'s behavior changes?',researchAnchorIds:['R17','R32','R25'],evidenceFitNote:'Direct support for differential treatment, indirect for multigeneration role scripts.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-10',layer:'generational',name:'Child-as-mediator tradition',domain:'Roles and boundaries',functionalDefinition:'Family conflict is offloaded onto a child or younger relative to stabilize adults.',mechanic:'Adult dispute → child recruited for message or loyalty → child soothes/chooses side → immediate adult tension relief → child\'s developmental boundary erodes.',observableSignals:'Child repeatedly delivers hostile messages or arbitrates adult relationships; supervised age-appropriate opinions differ.',generationalTransformation:'G−2 made oldest child mediator → G−1 repeats triangulation under conflict → G0 becomes peacemaker or refuses family contact.',alternativeExplanations:'Single necessary communication due accessibility, neutral legal/care context, the child\'s autonomous request for information.',protectiveCountermechanism:'Keep conflict between adults or qualified mediators and remove obligation to choose sides.',inquiryPrompt:'Who asked the child to transmit the message or judge loyalty?',researchAnchorIds:['R15','R16','R14'],evidenceFitNote:'Strong evidence for the idea of triangulation; generational replication untested.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-11',layer:'generational',name:'Family silence rule',domain:'Roles and boundaries',functionalDefinition:'Seeking help or discussing a topic is sanctioned by a family norm; privacy alone is not evidence.',mechanic:'Potential disclosure → shame or punishment forecast → silence/cover story → reputation protected short term → reduced access to support.',observableSignals:'Repeated prohibitions around safe help-seeking plus retaliation; voluntary confidences are not a prohibition.',generationalTransformation:'G−2 protected against real stigma → G−1 generalized silence → G0 hides manageable distress.',alternativeExplanations:'Real legal, social, safety exposure; reasonable confidentiality; nondisclosure chosen freely.',protectiveCountermechanism:'Build safe, limited, confidential channels; do not demand traumatic disclosure.',inquiryPrompt:'Which topics are forbidden, to whom, and what is the consequence?',researchAnchorIds:['R23','R25'],evidenceFitNote:'Communication literature suggests a pathway; context critical.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-12',layer:'generational',name:'Unspoken mourning inheritance',domain:'Emotion and story',functionalDefinition:'Loss cues trigger withdrawal from discussion, leaving later members uncertain about what can be grieved.',mechanic:'Loss reminder → feared destabilization → silence or distraction → immediate relief → less shared vocabulary for loss.',observableSignals:'Specific reminders consistently shut down despite expressed wish to talk; quiet private mourning by mutual agreement is not the pattern.',generationalTransformation:'G−2 experienced unresolved public loss → G−1 protected children by silence → G0 struggles to seek support during grief.',alternativeExplanations:'Spiritual mourning practices, genuine preference for private ritual, uncertain family histories.',protectiveCountermechanism:'Invite optional age-appropriate story-sharing, remembrance or quiet presence without forced exposure.',inquiryPrompt:'Does silence protect a chosen boundary or block requested support?',researchAnchorIds:['R23','R26','R25'],evidenceFitNote:'Indirect for how grief changes over time; avoid claims of inherited trauma.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-13',layer:'generational',name:'Shame-based family learning',domain:'Emotion and story',functionalDefinition:'Errors are framed as evidence of defective identity rather than correctable behavior.',mechanic:'Mistake → family status threat → ridicule or global label → immediate compliance → concealment and fear of learning persist.',observableSignals:'Globalized humiliation after small errors, avoidance of asking questions; firm respectful correction is different.',generationalTransformation:'G−2 used public shame as norm → G−1 criticizes identity → G0 self-attacks after ordinary mistakes.',alternativeExplanations:'Current bullying, workplace pressure, religious/cultural practices interpreted without local meaning.',protectiveCountermechanism:'Use specific feedback with dignity and observable repair; allow failure without abandonment.',inquiryPrompt:'Is the criticized action described specifically, or is the person defined as bad?',researchAnchorIds:['R09','R04','R25'],evidenceFitNote:'Conditional regard is empirically studied; GP form interpretive.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-14',layer:'generational',name:'Hero-villain inheritance',domain:'Emotion and story',functionalDefinition:'A fixed moral family narrative assigns members permanent roles regardless of new evidence.',mechanic:'Family setback → inherited explanation → blame or idealize assigned person → quick coherence of story → contrary evidence excluded.',observableSignals:'Repeated single-story explanations for disparate events; multiple nuanced accounts counter the candidate.',generationalTransformation:'G−2 had a defining conflict → G−1 narrates hero/villain roles → G0 adopts blame or strives to rescue family story.',alternativeExplanations:'Documented actual abuse, differing memories, genuine gratitude or accountability.',protectiveCountermechanism:'Preserve source and uncertainty, allow multiple vantage points, distinguish responsibility from total identity.',inquiryPrompt:'What evidence would change the family\'s account of that person?',researchAnchorIds:['R26','R25'],evidenceFitNote:'The family story idea is supported in theory, not a validated syndrome.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-15',layer:'generational',name:'Selective family memory',domain:'Emotion and story',functionalDefinition:'Families reinforce particular episodes while erasing others, shaping what is discussable.',mechanic:'Uncomfortable fact → expected relationship disruption → omit or rewrite story → short-term shared unity → later confusion and mistrust.',observableSignals:'Conflicting accounts, repeated topic edits, shared permission to correct as counterexample.',generationalTransformation:'G−2 survives social danger through selective story → G−1 curates official history → G0 inherits gaps or creates counter-history.',alternativeExplanations:'Ordinary memory fallibility, different witnesses, privacy rights, child-development boundaries.',protectiveCountermechanism:'Record competing accounts with source provenance, no forced factual arbitration.',inquiryPrompt:'Who saw the event, who heard it secondhand, and what remains unknown?',researchAnchorIds:['R26','R23'],evidenceFitNote:'Research supports story effects broadly, not truth detection.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-16',layer:'generational',name:'Catastrophe forecasting',domain:'Emotion and story',functionalDefinition:'Expected worst-case outcomes are narrated as inevitable, narrowing realistic choices.',mechanic:'Novel opportunity → catastrophic family warning → avoid or overprepare → immediate anxiety relief → missed experiences prevent risk updating.',observableSignals:'Automatic disaster predictions across new contexts despite safeguards; accurate forecasts and high-risk environments counter the label.',generationalTransformation:'G−2 faced unpredictable losses → G−1 warns constantly → G0 overgeneralizes warnings beyond original context.',alternativeExplanations:'Ongoing violence, financial uncertainty, climate hazard, appropriate emergency planning.',protectiveCountermechanism:'Specify probability qualitatively, document actual resources, test reversible low-risk choices where safe.',inquiryPrompt:'How does the forecast compare with current evidence and real constraints?',researchAnchorIds:['R03','R13','R25'],evidenceFitNote:'Indirect mechanism inference, not an inherited risk score.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-17',layer:'generational',name:'Scarcity-calibrated resource rule',domain:'Resources and status',functionalDefinition:'Old shortage rules remain active when resource conditions improve, or flexible thrift remains appropriately useful.',mechanic:'Purchase or disposal → remembered future scarcity → overrestrict spending or stockpile → immediate security feeling → little updating to current reserves.',observableSignals:'Distress disproportionate to verified buffer, inability to revise budget; current poverty invalidates dysfunction inference.',generationalTransformation:'G−2 suffered deprivation → G−1 teaches strict conservation → G0 follows same rule despite altered resources or overspends in rebellion.',alternativeExplanations:'Inflation, insecure work, housing costs, shared family commitments, prudent saving.',protectiveCountermechanism:'Protect actual needs first, then review available margin with user-controlled experiments.',inquiryPrompt:'What is today\'s measurable resource situation compared with the original risk?',researchAnchorIds:['R18','R19','R20'],evidenceFitNote:'Financial socialization supported; overrestriction classification indirect.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-18',layer:'generational',name:'Status-through-achievement lineage',domain:'Resources and status',functionalDefinition:'Prestige is treated as a condition for belonging rather than one possible valued aspiration.',mechanic:'Evaluation or comparison → fear of family disappointment → perfectionism, overwork or concealment → praise → short-lived safety dependent on next milestone.',observableSignals:'Approval changes dramatically after outcomes; intrinsically chosen high standards differ.',generationalTransformation:'G−2 relied on credentials for mobility → G−1 ties approval to rank → G0 pursues status or rejects institutions.',alternativeExplanations:'Real labor-market credentials, culturally important education, noncoercive high aspiration.',protectiveCountermechanism:'Separate unconditional connection from realistic performance goals and resources.',inquiryPrompt:'Is love or basic dignity withdrawn after an ordinary failure?',researchAnchorIds:['R09','R01','R25'],evidenceFitNote:'Conditional regard evidence strong; lineage extrapolation limited.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-19',layer:'generational',name:'Money-opacity precedent',domain:'Resources and status',functionalDefinition:'Financial secrecy is normalized across generations even when it prevents consensual shared decisions.',mechanic:'Budget or debt question → anticipated control or shame → conceal account or transaction → temporary autonomy → mistrust and reactive surveillance grow.',observableSignals:'Shared liabilities hidden or disclosure punished; legitimate independent accounts are counterexample.',generationalTransformation:'G−2 endured confiscation → G−1 guarded every transaction → G0 hides consequential shared obligations or insists on invasive access.',alternativeExplanations:'Financial abuse requiring secret safety funds, bank privacy, personal independence, current debt stigma.',protectiveCountermechanism:'Establish safe shared-decision boundaries for joint obligations while protecting individual safety.',inquiryPrompt:'Who bears the consequences of the undisclosed decision?',researchAnchorIds:['R19','R20','R29'],evidenceFitNote:'Socialization evidence, not a diagnostic money pattern.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-20',layer:'generational',name:'Work-as-sacrifice family mandate',domain:'Resources and status',functionalDefinition:'Rest is judged disloyal or undeserved and work used to prove family value.',mechanic:'Opportunity for rest → inherited duty appraisal → continue work beyond need → approval or guilt reduction → burnout and absent connection normalize.',observableSignals:'Rest shamed even after obligations met; temporary required overtime is different.',generationalTransformation:'G−2 worked for basic survival → G−1 made overwork virtue → G0 cannot rest or rejects career work.',alternativeExplanations:'Current economic survival needs, disability accommodation, meaningful chosen work.',protectiveCountermechanism:'Address economic necessities first, then establish rest as compatible with reliability.',inquiryPrompt:'Is the labor currently necessary, freely chosen, or socially enforced?',researchAnchorIds:['R18','R25','R13'],evidenceFitNote:'Contextually plausible, little direct long-chain testing.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-21',layer:'generational',name:'Educational opportunity transfer',domain:'Resources and status',functionalDefinition:'Families transmit the importance of schooling, navigation skills and support; protective or coercive depending on how applied.',mechanic:'School choice → expectation that education protects future → resource support or strict demands → immediate focus → pathways broaden or autonomy narrows.',observableSignals:'Tutoring, school engagement, conditional approval; distinguish assistance from compulsory status.',generationalTransformation:'G−2 denied schooling → G−1 saves for education → G0 mentors younger members; reversal may occur after coercion.',alternativeExplanations:'Structural access, discrimination, financing, student preference, alternative pathways.',protectiveCountermechanism:'Support multiple pathways and informed consent, not one definition of success.',inquiryPrompt:'Does the family expand the child\'s choices or merely restrict them?',researchAnchorIds:['R13','R25','R01'],evidenceFitNote:'Protective socialization broadly supported; no universal outcome.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-22',layer:'generational',name:'Migration-era adaptation script',domain:'Culture and historical context',functionalDefinition:'Strategies developed for relocation persist or adapt under changed language, law and threat conditions.',mechanic:'New institution → learned outsider risk forecast → cautious use, code-switching or reliance on kin → safety/belonging → possible opportunity narrowing.',observableSignals:'Repeated strategies tied to stated migration history, but ordinary bilingualism is not dysfunction.',generationalTransformation:'G−2 migrates under constraint → G−1 teaches survival strategies → G0 negotiates dual contexts.',alternativeExplanations:'Current immigration enforcement, linguistic preference, policy discrimination, pride in heritage.',protectiveCountermechanism:'Preserve cultural competence and access to trustworthy help; avoid assumptions from identity.',inquiryPrompt:'What specific conditions made the rule useful, and are they present now?',researchAnchorIds:['R21','R31','R23'],evidenceFitNote:'Mixed immigrant-family evidence; no gap pathology assumption.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-23',layer:'generational',name:'Heritage-language stewardship',domain:'Culture and historical context',functionalDefinition:'Language practices carry continuity and responsibility, sometimes becoming burdensome when a child must interpret adult crises.',mechanic:'Family translation need → cultural duty appraisal → interpret or mediate → immediate access → child may shoulder adult burden if high stakes.',observableSignals:'Routine bilingual participation vs children interpreting confidential legal/medical matters; both require context.',generationalTransformation:'G−2 preserves language → G−1 entrusts translation to child → G0 values heritage but may feel trapped as mediator.',alternativeExplanations:'Voluntary fluency, pride, limited interpreting resources, developmental stage.',protectiveCountermechanism:'Support heritage language while funding qualified interpreters for high-stakes decisions.',inquiryPrompt:'Who is responsible for accuracy and adult consequences?',researchAnchorIds:['R21','R31','R14'],evidenceFitNote:'Contextual family role mechanism, not an inherited defect.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-24',layer:'generational',name:'Institutional-wariness script',domain:'Culture and historical context',functionalDefinition:'Family experience of institutional harm shapes selective avoidance; can be adaptive and evidence-based.',mechanic:'School/medical/government contact → warning derived from previous harm → avoid or demand safeguards → immediate protection → access may narrow if threat changed.',observableSignals:'Concrete warnings tied to specific institutions vs blanket avoidance without updating.',generationalTransformation:'G−2 suffered exclusion → G−1 teaches caution → G0 either demands safeguards or distrusts all services.',alternativeExplanations:'Ongoing discrimination, unsafe providers, justified legal concerns, alternative care access.',protectiveCountermechanism:'Identify risks and independent safeguards per institution; never require forced trust.',inquiryPrompt:'What is the documented present-day risk, and what alternative is safe?',researchAnchorIds:['R13','R23','R25'],evidenceFitNote:'Sociocultural interpretation; avoid unjustified irrationality labels.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-25',layer:'generational',name:'Identity-concealment legacy',domain:'Culture and historical context',functionalDefinition:'A socially disfavored identity is hidden for safety, sometimes continuing into safer settings.',mechanic:'Visibility cue → expectation of sanction → conceal affiliation or trait → immediate protection → reduced choice about public self-expression.',observableSignals:'Safety-driven decisions across environments; freely chosen privacy is not a defect.',generationalTransformation:'G−2 protected members under persecution → G−1 teaches concealment → G0 selectively discloses or openly reclaims identity.',alternativeExplanations:'Current discriminatory policy, legal risk, ordinary privacy, safeguarding dependents.',protectiveCountermechanism:'Let individual choose disclosure context and support safety; don\'t require openness.',inquiryPrompt:'Who owns the identity and who controls the decision to disclose?',researchAnchorIds:['R22','R31','R13'],evidenceFitNote:'Indirect, strong sensitivity to actual social conditions.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-26',layer:'generational',name:'Cultural-pride continuity',domain:'Culture and historical context',functionalDefinition:'Identity, language, rituals and history are actively shared to increase belonging and flexibility.',mechanic:'Heritage practice opportunity → valued connection appraisal → teach, celebrate or discuss → shared meaning → younger members gain usable identity resources.',observableSignals:'Open participation, questions welcomed and adaptations permitted; coercion changes categorization.',generationalTransformation:'G−2 safeguards tradition → G−1 teaches its meanings → G0 chooses new expressions while maintaining connection.',alternativeExplanations:'Obligatory participation under sanction, external identity pressure, cultural appropriation risk.',protectiveCountermechanism:'Preserve voluntary access, accurate context and multiple self-descriptions.',inquiryPrompt:'May members adapt or decline a tradition without exclusion?',researchAnchorIds:['R22','R34','R25'],evidenceFitNote:'Positive cultural socialization supported, identity-specific effects vary.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-27',layer:'generational',name:'Parenting-style replay',domain:'Caregiving transitions',functionalDefinition:'A person may reproduce a caregiving response learned as a child despite intending otherwise.',mechanic:'Child\'s challenge → familiar parental script activated → repeat tone or consequence → fast default response → same reinforcement loop strengthens.',observableSignals:'Self-reported \'I sounded like my parent\' plus repeated matched interactions; one resemblance insufficient.',generationalTransformation:'G−2 harsh/accepting parenting → G−1 experiences it → G−1 later uses similar parenting with G0; G0 may repeat or depart.',alternativeExplanations:'Independent stress, child temperament, partner practices, community norms, chance similarity.',protectiveCountermechanism:'Practice one scripted alternative and monitor repair and child response, not inherited essence.',inquiryPrompt:'What exact interaction repeated, and what happens if a different response is tried?',researchAnchorIds:['R01','R04','R12'],evidenceFitNote:'Direct evidence for small average parenting continuity; weak person-level causation.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-28',layer:'generational',name:'Opposite-style overcorrection',domain:'Caregiving transitions',functionalDefinition:'A parent rejects a painful original practice so strongly that an opposite problem can emerge; change can also be genuinely adaptive.',mechanic:'Reminder of childhood hurt → \'never do that\' rule → swing to unlimited permission or constant checking → relief from resemblance → new constraints emerge.',observableSignals:'Decisions explicitly justified as opposite of prior parent; proportionate repair is a counterexample.',generationalTransformation:'G−2 rigid control → G−1 raised restricted → G−1 gives G0 no boundaries; G0 later seeks structure.',alternativeExplanations:'New evidence-based parenting, age differences, genuine change without overcorrection.',protectiveCountermechanism:'Choose desired child need and calibrated response rather than only rejecting the ancestor\'s behavior.',inquiryPrompt:'Is the new rule based on today\'s needs or solely on avoiding resemblance?',researchAnchorIds:['R01','R04','R11'],evidenceFitNote:'Hypothetical transformation operator; not a researched diagnostic category.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-29',layer:'generational',name:'Context-shifted protection',domain:'Caregiving transitions',functionalDefinition:'A previously useful protective practice becomes costly because threats and resources changed.',mechanic:'Old family warning → automatic protection → control or restriction → short-term familiarity → blocked opportunities in current context.',observableSignals:'Clear old context vs current context mismatch; ongoing equivalent danger defeats the label.',generationalTransformation:'G−2 uses strict supervision amid violence → G−1 preserves rule → G0 experiences ordinary autonomy as danger.',alternativeExplanations:'Persistent neighborhood danger, developmental disability accommodations, current abuse risk.',protectiveCountermechanism:'Update evidence before changing rule; preserve proportionate safety.',inquiryPrompt:'Which original threat is now absent, and which threat remains?',researchAnchorIds:['R13','R01','R11'],evidenceFitNote:'Strong contextual principle; specific lineage cases unverified.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-30',layer:'generational',name:'Repair-as-heritage',domain:'Protective and interrupting',functionalDefinition:'Families show that disagreement can end in accountability and changed behavior without severing bonds.',mechanic:'Rupture → responsibility and perspective-taking → specific apology and repair action → trust restored through follow-through → cooperative expectations strengthen.',observableSignals:'Apology names harm, amends follow, recurrence decreases; apology without change is insufficient.',generationalTransformation:'G−2 models responsible apology → G−1 practices with children → G0 expects repair instead of silence.',alternativeExplanations:'Polite ritual masking coercion, forced forgiveness, one-sided apologies under threat.',protectiveCountermechanism:'Track repaired behavior over time and allow the affected person to decline reconnection.',inquiryPrompt:'What was changed after the apology, not just said?',researchAnchorIds:['R28','R25','R12'],evidenceFitNote:'Protective communication evidence; lineage continuity hypothesized.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-31',layer:'generational',name:'Voluntary mutual-aid lineage',domain:'Protective and interrupting',functionalDefinition:'Families model reciprocal help without tying worth to sacrifice or controlling recipients.',mechanic:'Need appears → shared responsibility appraisal → offered consented aid → need met and autonomy preserved → reciprocity and trust become reusable.',observableSignals:'Specific freely requested help, transparent limits and ability to refuse.',generationalTransformation:'G−2 organizes community support → G−1 includes wider kin → G0 offers and receives help flexibly.',alternativeExplanations:'Coercive indebtedness, unequal gendered labor, conditional housing or money.',protectiveCountermechanism:'Establish consent, sustainable contributions, and outside assistance.',inquiryPrompt:'Can both helper and recipient say no without punishment?',researchAnchorIds:['R13','R25','R30'],evidenceFitNote:'Broad social-support evidence; category itself novel.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'GP-32',layer:'generational',name:'Flexible inheritance and cycle interruption',domain:'Protective and interrupting',functionalDefinition:'Family members retain useful inherited strengths while deliberately revising harmful rules in a new context.',mechanic:'Old pattern activated → notice function and current cost → select updated action → experience manageable safety and agency → new response becomes available.',observableSignals:'Repeated alternative actions with lower harm, not simply self-described \'cycle breaker\'.',generationalTransformation:'G−2 transmits mixed tools → G−1 questions one rule → G0 models a flexible alternative; paths can reverse under stress.',alternativeExplanations:'New circumstances alone, outside mentoring, therapy or resources; no need to assign blame to ancestors.',protectiveCountermechanism:'Track change by actual behavior and safer conditions, not a permanent label.',inquiryPrompt:'What observable behavior changed across several comparable events?',researchAnchorIds:['R02','R12','R13'],evidenceFitNote:'Discontinuity and intervention evidence strong; this 32-family grouping is design-only.',canonicalDocument:'02_GENERATIONAL/ATUNED_GENERATIONAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:true},
+{id:'PP-01',layer:'parental',name:'Contingent caregiver responsiveness',domain:'Attunement and emotion',functionalDefinition:'Parent notices a child\'s actual signal and responds proportionately rather than imposing an assumed need.',mechanic:'Child signals discomfort or interest → parent interprets cue → timely safe response → child\'s immediate need addressed → repeated predictability supports trust.',observableSignals:'Parent asks, checks, and adjusts after child\'s feedback; delayed response during real constraints need not mean neglect.',generationalTransformation:'G−2 sensitivity → G−1 has examples of responsive care → G0 may offer similar attention; where G0 goes next is optional, never inferred.',alternativeExplanations:'Child neurotype, communication access, caregiver illness, age, overstimulation, available resources.',protectiveCountermechanism:'Expand the child\'s communication options; attend and correct mismatched interpretations without guilt induction.',inquiryPrompt:'What did the child actually signal and how did the response change after feedback?',researchAnchorIds:['R10','R27','R12'],evidenceFitNote:'Strong caregiving-attachment association; individual effect uncertain.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-02',layer:'parental',name:'Emotion dismissal',domain:'Attunement and emotion',functionalDefinition:'Child\'s affect is minimized or mocked instead of acknowledged, independent of behavioral limits.',mechanic:'Child expresses distress → caregiver predicts weakness or inconvenience → says \'nothing happened\' or ridicules → expression may stop → child learns expression gains little support.',observableSignals:'Recurrent dismissal during ordinary distress; an adult calmly declining unsafe behavior is not dismissal.',generationalTransformation:'G−2 felt emotions disapproved → G−1 learned minimization → G0 may experience same, but source is unverified.',alternativeExplanations:'Time pressure, communication misunderstanding, child needing practical help not talk, cultural variation.',protectiveCountermechanism:'Name emotion without surrendering safe limits; revisit if an initial response missed the cue.',inquiryPrompt:'Was the feeling acknowledged even when the action was limited?',researchAnchorIds:['R06','R07','R10'],evidenceFitNote:'Direct emotion-socialization evidence, not causal proof for this child.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-03',layer:'parental',name:'Emotion coaching',domain:'Attunement and emotion',functionalDefinition:'Parent supports the child\'s labeling and management of emotions while keeping age-appropriate boundaries.',mechanic:'Child dysregulated → adult interprets as teachable state → validates, names, models calming and problem solving → distress becomes manageable → child can practice self-regulation.',observableSignals:'Emotion words matched to context, joint calming and child choice; scripted labels without listening are weak evidence.',generationalTransformation:'G−2 modeled emotional literacy → G−1 adopted tools → G0 practices flexible coaching; learned via nonfamily mentors too.',alternativeExplanations:'Over-talking a child who needs space, language differences, actual danger requiring immediate protection.',protectiveCountermechanism:'Co-regulate first, then collaborate on one feasible response; accept a child\'s differing emotion description.',inquiryPrompt:'Did the child feel heard and gain a usable skill?',researchAnchorIds:['R06','R07','R12'],evidenceFitNote:'Good evidence for emotion socialization; specific \'coaching\' pathways vary.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-04',layer:'parental',name:'Unpredictable comfort',domain:'Attunement and emotion',functionalDefinition:'Similar bids for support receive dramatically different responses without comprehensible cues.',mechanic:'Child seeks comfort → parent capacity or stress fluctuates → warm response on one occasion, rejection next → child may intensify checking → family feedback becomes volatile.',observableSignals:'Contrasting responses to matched bids over time; changes explained by fatigue, illness or accessibility need separate support.',generationalTransformation:'G−2 inconsistent care → G−1 familiar with unpredictable signals → G0 may anticipate uncertainty; none inferred from one report.',alternativeExplanations:'Shift work, mental health, neurodivergence, safety needs, uneven co-caregiver coverage.',protectiveCountermechanism:'Build realistic predictable response windows and a backup adult; repair when unavailable.',inquiryPrompt:'Is the inconsistency explained and followed by a reliable reconnection?',researchAnchorIds:['R10','R30','R13'],evidenceFitNote:'Attachment-relevant interpretation, not a specific attachment diagnosis.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-05',layer:'parental',name:'Emotional unavailability',domain:'Attunement and emotion',functionalDefinition:'Parent repeatedly misses or declines bids for connection despite feasible opportunities and without safer substitutes.',mechanic:'Child seeks interaction → parent disengages or stays preoccupied → child stops asking → immediate parent relief → opportunities for shared regulation diminish.',observableSignals:'Persistent unreturned bids across settings and caregivers; a respectful \'later\' with follow-through weakens claim.',generationalTransformation:'G−2 used task-focused coping → G−1 defaults to disengagement → G0 receives less interaction, but work and hardship may explain.',alternativeExplanations:'Economic overwork, illness, disability, exhaustion, child preference, caregiver schedules.',protectiveCountermechanism:'Reduce overload and build small consistent windows with attentive follow-through.',inquiryPrompt:'How often is connection actually available, and what obstacles can be resourced?',researchAnchorIds:['R10','R13','R30'],evidenceFitNote:'Indirect for this family; stress context required.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-06',layer:'parental',name:'Adult affect spillover',domain:'Attunement and emotion',functionalDefinition:'Caregiver transfers unprocessed frustration into tone or actions directed at the child.',mechanic:'External stress → adult arousal → sharp correction unrelated to child\'s act → brief discharge/control → child vigilance and adult regret sustain tension.',observableSignals:'Discipline severity changes after unrelated stress with same child behavior; safety threat or child action still needs independent evaluation.',generationalTransformation:'G−2 had high stress → G−1 normalized angry discharge → G0 may learn this response or fear it; alternative pathways likely.',alternativeExplanations:'Material hardship, untreated pain, sleep loss, workplace abuse, unsupported caregiving.',protectiveCountermechanism:'Increase adult support, use safe pause and repair, keep disciplinary limits linked to actual behavior.',inquiryPrompt:'What preceded the response beyond the child\'s action?',researchAnchorIds:['R18','R04','R30'],evidenceFitNote:'Family-stress link supported; event-level mechanism hypothesized.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-07',layer:'parental',name:'Predictable behavioral boundaries',domain:'Structure and autonomy',functionalDefinition:'Parent states proportionate rules, reasons, follow-through and age-appropriate consequences without attacking identity.',mechanic:'Limit encounter → reason and predictable consequence → calm enforceable response → immediate clarity → child learns contingency and can negotiate developmentally.',observableSignals:'Known consistent rules applied comparably and with flexibility; rigid fear-based punishment is a different pattern.',generationalTransformation:'G−2 modeled clear structure → G−1 adapts standards → G0 learns boundaries; not necessarily a family lineage.',alternativeExplanations:'Disability needs, age, trauma safety, cultural setting, household capacity.',protectiveCountermechanism:'Keep limits few, transparent, participatory and proportionate; adjust for child feedback.',inquiryPrompt:'Can the child predict the rule and ask why without humiliation?',researchAnchorIds:['R04','R05','R12'],evidenceFitNote:'Parent behavioral control supported, not a validated standalone score.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-08',layer:'parental',name:'Harsh punitive correction',domain:'Structure and autonomy',functionalDefinition:'Fear, insult, humiliation or physical punishment are used to obtain compliance.',mechanic:'Child error → caregiver perceives defiance → threat/harsh punishment → immediate suppression → fear or escalation may become conditioned.',observableSignals:'Recurrent painful or humiliating correction; proportionate nonviolent limit does not qualify.',generationalTransformation:'G−2 harsh discipline → G−1 learned rule \'fear teaches\' → G0 may experience or reject it; not inevitable.',alternativeExplanations:'Acute safeguarding risk, misreported event, cultural description that still requires child safety assessment.',protectiveCountermechanism:'Prioritize child safety and nonviolent parenting support; never recommend exposure exercises during abuse.',inquiryPrompt:'Does the consequence teach a skill without fear, pain or degradation?',researchAnchorIds:['R04','R05','R12','R02'],evidenceFitNote:'Substantial empirical/guideline support for harm risk, not a specific diagnosis.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-09',layer:'parental',name:'Psychological control and guilt',domain:'Structure and autonomy',functionalDefinition:'Caregiver controls thoughts, affiliations or self-worth with guilt and love withdrawal rather than setting behavior-specific limits.',mechanic:'Child chooses independently → adult interprets disloyalty → guilt, sulking or emotional blackmail → child yields → autonomy becomes linked to affection loss.',observableSignals:'\'After all I\'ve done\' for ordinary choice, withheld affection until agreement; honest disappointment can be noncoercive.',generationalTransformation:'G−2 used conditional attachment → G−1 repeats guilt scripts → G0 hides preferences.',alternativeExplanations:'Genuine financial dependence, safety restriction, family negotiations, culturally meaningful but freely chosen duties.',protectiveCountermechanism:'Clarify consent and boundaries; maintain affection and allow disagreement with predictable consequences only for behavior.',inquiryPrompt:'Is the child allowed an independent thought while remaining loved?',researchAnchorIds:['R11','R09','R08'],evidenceFitNote:'Strong cross-cultural association for psychological control.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-10',layer:'parental',name:'Conditional love for performance',domain:'Structure and autonomy',functionalDefinition:'Warmth and approval rise or disappear with grades, obedience or social rank.',mechanic:'Result reported → parent appraises family worth → praise or coldness contingent on outcome → child pursues approval → contingent self-worth loop persists.',observableSignals:'Affection withheld after ordinary errors, exaggerated praise only on wins; behavior-specific feedback amid consistent love differs.',generationalTransformation:'G−2 equated success with survival → G−1 used conditional regard → G0 learns worth as performance; alternatives possible.',alternativeExplanations:'Real high-stakes educational requirements, supportive aspiration, child temperament, peer pressure.',protectiveCountermechanism:'Separate enduring connection from accurate feedback; help plan next learning step without identity judgment.',inquiryPrompt:'What happens to warmth when the child underperforms?',researchAnchorIds:['R09','R11','R04'],evidenceFitNote:'Conditional-regard evidence directly relevant; lineage attribution weak.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-11',layer:'parental',name:'Overprotective restriction',domain:'Structure and autonomy',functionalDefinition:'Child\'s safe, developmentally appropriate exploration is blocked because adult danger forecasts dominate.',mechanic:'Child asks to try → caregiver imagines harm → prohibits or takes over → immediate adult relief → child has fewer graded mastery experiences.',observableSignals:'Repeated restriction despite verified safeguards; age, disability and neighborhood risk materially change assessment.',generationalTransformation:'G−2 lived in unsafe conditions → G−1 uses strict protection → G0 receives restrictions in a different context.',alternativeExplanations:'Actual danger, access needs, child consent, past acute incidents, child preference not to explore.',protectiveCountermechanism:'Start with real risk assessment and graded autonomy, with support and safety planning.',inquiryPrompt:'What capability can the child safely practice today?',researchAnchorIds:['R11','R13','R05'],evidenceFitNote:'Related autonomy/control literature; evidence for overprotection as its own idea is indirect.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-12',layer:'parental',name:'Premature independence demands',domain:'Structure and autonomy',functionalDefinition:'Child is expected to manage adult-level tasks or emotions without developmentally sufficient support.',mechanic:'Need for care or instruction → adult assumes child should cope alone → support withheld → temporary adult time saved → child may conceal overwhelm or overfunction.',observableSignals:'Sustained high-stakes independent responsibility without tools; age-appropriate chores or chosen autonomy differ.',generationalTransformation:'G−2 had early self-reliance → G−1 repeats it as strength → G0 may be overburdened or strongly competent.',alternativeExplanations:'Chronic underfunding, emergency need, cultural contribution with supports, child skills.',protectiveCountermechanism:'Match demand to age and capacity; add adult backup and teach steps without humiliation.',inquiryPrompt:'Who is available when the child cannot safely finish the task?',researchAnchorIds:['R14','R08','R13'],evidenceFitNote:'Parentification support; not every independence expectation is harmful.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-13',layer:'parental',name:'Collaborative limit negotiation',domain:'Structure and autonomy',functionalDefinition:'Parent and child consider preferences, explain nonnegotiable safety limits and revise negotiable rules.',mechanic:'Rule dispute → adult invites perspective → discuss tradeoffs and choose feasible boundary → cooperation → child practices agency with accountability.',observableSignals:'Child can propose an alternative and receive explanation; capitulation to unsafe demand is not required.',generationalTransformation:'G−2 practiced dialogue → G−1 adapts → G0 learns participation; adult training can establish it without lineage.',alternativeExplanations:'Acute safety needs, child\'s developmental level, serious aggression, limited decision time.',protectiveCountermechanism:'Reserve fixed rules for safety and offer genuine choices elsewhere; schedule later review.',inquiryPrompt:'Which part of the decision was meaningfully open to the child?',researchAnchorIds:['R11','R12','R13'],evidenceFitNote:'Strong support for autonomy-supportive processes; exact negotiation style varies.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-14',layer:'parental',name:'Parentification and adult-role transfer',domain:'Family boundaries',functionalDefinition:'Parent relies on a child for adult emotional, financial or conflict-management responsibility beyond developmental capacity.',mechanic:'Adult strain → child senses obligation → mediates, counsels or carries high-stakes tasks → adult burden briefly decreases → role becomes entrenched.',observableSignals:'Repeated adult confidential disclosures, child as primary caretaker for parent, disproportionate responsibility; temporary support is not automatically harmful.',generationalTransformation:'G−2 lacked care resources → G−1 delegated to children → G0 enters a care role; not proof by itself.',alternativeExplanations:'Age-appropriate family work, properly supported disability assistance, brief emergencies, chosen community reciprocity.',protectiveCountermechanism:'Restore adult ownership, obtain outside resources, protect the child\'s play/peer time.',inquiryPrompt:'If the child stepped out, which adult would assume responsibility?',researchAnchorIds:['R14','R08','R13'],evidenceFitNote:'Parentification studied directly; outcomes/context heterogeneous.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-15',layer:'parental',name:'Intrusive closeness and enmeshment',domain:'Family boundaries',functionalDefinition:'Parent treats normal psychological separation as disloyalty and intrudes into private thoughts or decisions.',mechanic:'Child expresses distinct preference → parent experiences threat to closeness → demands access/consent → child yields → boundaries remain blurred.',observableSignals:'Coerced sharing of private thoughts, guilt over age-appropriate independence; consensual interdependence differs.',generationalTransformation:'G−2 relied on tight family cohesion → G−1 adds compulsory access → G0 has restricted privacy or creates sudden cutoff.',alternativeExplanations:'Cultural closeness chosen freely, disability support, age-specific supervision, shared household resources.',protectiveCountermechanism:'Define domains of child privacy and parent safety obligations; negotiate developmentally.',inquiryPrompt:'What privacy is respected even when views differ?',researchAnchorIds:['R08','R11','R13'],evidenceFitNote:'Boundary dissolution evidence, not condemnation of collective living.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-16',layer:'parental',name:'Interparental triangulation',domain:'Family boundaries',functionalDefinition:'Parent recruits a child to manage an adult partnership conflict or choose sides.',mechanic:'Adult disagreement → parent seeks ally → confidential accusations or message passing through child → adult temporarily validated → child feels caught.',observableSignals:'Repeated requests to spy, judge, or deliver hostile messages; neutral co-parent schedule information is different.',generationalTransformation:'G−2 triangulated their child → G−1 normalizes it → G0 may repeat with their own child; source uncertain.',alternativeExplanations:'Necessary communication about safety, court-directed age-appropriate disclosures, disclosures seeking immediate protection.',protectiveCountermechanism:'Separate adult conflict from child care, use adult mediators or qualified support; never demand secrecy about danger.',inquiryPrompt:'Would the child be punished for caring about both adults?',researchAnchorIds:['R15','R16','R28'],evidenceFitNote:'Strong triangulation associations; causality bidirectional and variable.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-17',layer:'parental',name:'Escalating coercive parent-child cycle',domain:'Family boundaries',functionalDefinition:'Each side\'s increasingly intense action temporarily stops the other\'s behavior, reinforcing escalation.',mechanic:'Limit or protest → parent and child exchange threats/yelling → one retreats → short-term relief → next conflict starts at higher intensity.',observableSignals:'Repeated escalation and reciprocal reinforcement; protective child\'s resistance to abuse must not be coded as equal culpability.',generationalTransformation:'G−2 coercive discipline → G−1 repeats familiar escalation → G0 may react similarly; alternative outside forces possible.',alternativeExplanations:'Child disability distress, trauma triggers, adult abuse, lack of accommodations, systemic danger.',protectiveCountermechanism:'Ensure protection and adult accountability; use planned calm responses and supportive skills when safe.',inquiryPrompt:'Whose action was reinforced, and was either party unsafe?',researchAnchorIds:['R04','R12','R28'],evidenceFitNote:'Coercive process plausible; blame must not shift to children.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-18',layer:'parental',name:'Parent-initiated rupture repair',domain:'Family boundaries',functionalDefinition:'Adult takes responsibility for a misattuned or hurtful action and changes what happens next.',mechanic:'Parent notices injury → names own behavior → apology/repair and asks child\'s needs → trust rebuilt with follow-through → child learns accountability is compatible with love.',observableSignals:'Adult\'s apology is specific and changed behavior recurs; pressured forgiveness undermines repair.',generationalTransformation:'G−2 modeled apology → G−1 practices with child → G0 learns repair; external models can substitute.',alternativeExplanations:'Manipulative \'sorry\' without change, child in active danger, parent using apology to demand silence.',protectiveCountermechanism:'Track recurrence, invite child correction without demanding reassurance.',inquiryPrompt:'What was different the next time the same trigger occurred?',researchAnchorIds:['R28','R12','R25'],evidenceFitNote:'Repair is a protective design inference grounded in constructive conflict evidence.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-19',layer:'parental',name:'Unequal sibling attention',domain:'Identity and comparison',functionalDefinition:'Parent allocates warmth, criticism or opportunities unequally in ways not explained by differing needs.',mechanic:'Sibling comparison → parent defaults to favorite/identified child → attention gap → brief family role predictability → unequal bids for recognition intensify.',observableSignals:'Repeated warmth/hostility disparity after age and need controls; tailored disability support is not favoritism.',generationalTransformation:'G−2 compared siblings → G−1 expects roles → G0 replicates uneven attention, or deliberately equalizes.',alternativeExplanations:'Child-specific needs, age gaps, illness, safety, co-parent availability.',protectiveCountermechanism:'Compare opportunity and responsiveness over time, not identical treatment every day.',inquiryPrompt:'What changes when both children\'s needs and situations are matched?',researchAnchorIds:['R17','R32','R18'],evidenceFitNote:'Strong association for differential treatment, contextual causation not assigned.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-20',layer:'parental',name:'Achievement-pressure interaction',domain:'Identity and comparison',functionalDefinition:'Parent treats success as central to child\'s identity and escalates demands despite distress or changed goals.',mechanic:'Test or practice outcome → parent compares ranking → increases drills/criticism → near-term compliance → intrinsic motivation or well-being may narrow.',observableSignals:'Distress dismissed to preserve achievement, no child\'s voice in goal; agreed ambitious coaching is different.',generationalTransformation:'G−2 navigated economic barriers through education → G−1 insists child must exceed them → G0 pursues or avoids achievement.',alternativeExplanations:'Competitive schools, realistic credential needs, child\'s own ambitions, financial security concerns.',protectiveCountermechanism:'Jointly set goals and rest; preserve relationship and curiosity independent of ranking.',inquiryPrompt:'Can the child reduce or change a goal without losing warmth?',researchAnchorIds:['R09','R11','R04'],evidenceFitNote:'Conditional regard/autonomy evidence; specific achievement mechanism is extrapolated.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-21',layer:'parental',name:'Child identity invalidation',domain:'Identity and comparison',functionalDefinition:'Parent persistently overrides the child\'s expressed preferences or self-description for approval or conformity.',mechanic:'Child reveals difference → caregiver anticipates stigma → dismisses or shames → immediate conformity/display management → child may stop sharing.',observableSignals:'Consistent repudiation of self-report, forced presentation; age-limited safety decisions differ.',generationalTransformation:'G−2 faced stigma → G−1 learned concealment → G0 is pressured to hide; ongoing stigma may make safety complex.',alternativeExplanations:'Age, current social danger, privacy choice, miscommunication, cultural expression.',protectiveCountermechanism:'Respect self-description and safety planning; do not push unwanted disclosure.',inquiryPrompt:'Whose identity is being described, and who bears the consequences of the decision?',researchAnchorIds:['R11','R22','R13'],evidenceFitNote:'Autonomy/identity contexts support concern; no diagnostic shortcut.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-22',layer:'parental',name:'Strength-focused noticing',domain:'Identity and comparison',functionalDefinition:'Parent accurately recognizes effort, kindness, skill and growth without manufacturing an idealized identity.',mechanic:'Child tries or contributes → parent notices specific behavior → appreciative feedback → behavior seen and understood → realistic agency strengthens.',observableSignals:'Concrete descriptions of effort and process, not constant inflated praise; response to errors remains warm.',generationalTransformation:'G−2 modeled encouragement → G−1 praises process → G0 practices self-revision; not genetic inheritance.',alternativeExplanations:'Child dislikes public praise, cultural differences in feedback, pressure to perform gratitude.',protectiveCountermechanism:'Ask which feedback feels usable; emphasize effort, strategies, help-seeking and limits.',inquiryPrompt:'Does praise describe something observable that the child also recognizes?',researchAnchorIds:['R12','R13','R09'],evidenceFitNote:'Indirect protective process, not a validated \'strength noticing\' factor.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-23',layer:'parental',name:'Material-stress parenting spillover',domain:'Context and caregiving capacity',functionalDefinition:'Real pressures reduce caregiver availability or patience, without implying a defect in family character.',mechanic:'Rent/food/work crisis → bandwidth limited → shorter responses or inconsistent rules → immediate task survival → parent-child strain can follow.',observableSignals:'Changes covary with objective strain and improve with relief; persistent effects still warrant support.',generationalTransformation:'G−2 scarce resources → G−1 learned survival routines → G0 parents amid new strain; direct resource effects may dominate history.',alternativeExplanations:'Poverty, disability access barriers, workplace demands, unmet services, discrimination, illness.',protectiveCountermechanism:'Address housing, food, childcare and adult support before behavior-only coaching.',inquiryPrompt:'Which material constraint must change for a different response to be feasible?',researchAnchorIds:['R18','R13','R30'],evidenceFitNote:'Contextual stress associations supported; avoid moralizing hardship.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-24',layer:'parental',name:'Caregiver handoff inconsistency',domain:'Context and caregiving capacity',functionalDefinition:'Multiple caregivers deliver incompatible rules or emotional messages without a predictable transition plan.',mechanic:'Caregiver changes → child tests or seeks clarity → adults contradict one another → temporary flexibility for adults → child uncertainty.',observableSignals:'Repeated mutually incompatible guidance across caregivers; developmentally appropriate role diversity is normal.',generationalTransformation:'G−2 had frequent care transitions → G−1 expects switching norms → G0 navigates several caregivers; contemporary schedules may fully explain.',alternativeExplanations:'Shared custody, kin care, foster placements, safety rules, travel/shift work; differing care cultures.',protectiveCountermechanism:'Agree on a few child-centered safety and communication standards while respecting legitimate household differences.',inquiryPrompt:'Which specific contradiction harms safety or understanding?',researchAnchorIds:['R27','R10','R13'],evidenceFitNote:'Context-linked hypothesis, not direct transmission measure.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-25',layer:'parental',name:'Protective secrecy versus forced silence',domain:'Context and caregiving capacity',functionalDefinition:'Adult conceals danger or asks a child to hold secrets, which must be distinguished from privacy and safety-focused confidential plans.',mechanic:'Sensitive event → parent anticipates stigma or threat → asks for silence → short-term adult control or actual protection → child may lose avenues for help.',observableSignals:'\'Never tell anyone\' plus isolation or threats; temporary privacy for genuine safety plans is distinct.',generationalTransformation:'G−2 concealed under oppression → G−1 preserved silence → G0 lacks safe disclosure routes; do not assume trauma history.',alternativeExplanations:'Child safety, survivor confidentiality, legal privacy, actual threats from abusive household member.',protectiveCountermechanism:'Identify trusted safe adults and required reporting/safeguards; never instruct unsafe disclosure.',inquiryPrompt:'Is the secrecy preventing access to protection, or protecting the child\'s safety?',researchAnchorIds:['R23','R13','R14'],evidenceFitNote:'Trauma communication literature supports nuance, not a universal disclosure rule.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-26',layer:'parental',name:'Surveillance without proportionality',domain:'Context and caregiving capacity',functionalDefinition:'Parent tracks a child beyond age-appropriate safety needs and uses collected information to control identity or relationships.',mechanic:'Parent imagines an unverified threat → assumes total access prevents harm → demands location/password/peer access → immediate certainty → privacy conflict and secrecy can grow.',observableSignals:'Escalating nonconsensual monitoring with no stated risk; age-appropriate device protection and crisis safety plans differ.',generationalTransformation:'G−2 feared unknown dangers → G−1 monitored intensely → G0 learns secrecy or repeats monitoring; not established.',alternativeExplanations:'Age of child, exploitation risk, emergency threats, online harms, disability supports.',protectiveCountermechanism:'Calibrate transparency and limits to actual risk; co-create safety agreements and review as child matures.',inquiryPrompt:'What specific threat justifies each information access, and when will it end?',researchAnchorIds:['R11','R13','R04'],evidenceFitNote:'Parenting-control evidence indirect for modern digital surveillance.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-27',layer:'parental',name:'Stabilizing daily routines',domain:'Protective parenting and growth',functionalDefinition:'Predictable, flexible family rhythms make care and transitions comprehensible without requiring rigidity.',mechanic:'Transition/time cue → parent offers routine and advance notice → child predicts next step → less confusion → autonomy grows within structure.',observableSignals:'Understandable rhythms around sleep, meals, school and connection; temporary deviations openly explained.',generationalTransformation:'G−2 practiced regular care → G−1 retained helpful rituals → G0 can rely on predictable expectations.',alternativeExplanations:'Disability scheduling needs, irregular shifts, food insecurity, child developmental variation.',protectiveCountermechanism:'Build low-cost adaptable anchors and repair broken promises without shame.',inquiryPrompt:'Does the routine support basic needs and adjust when reality changes?',researchAnchorIds:['R13','R12','R25'],evidenceFitNote:'Protective family-context evidence; precise routine effect is not established here.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-28',layer:'parental',name:'Developmentally calibrated autonomy',domain:'Protective parenting and growth',functionalDefinition:'Parent increases child choice with skill, risk and readiness while preserving adult accountability.',mechanic:'Child seeks new freedom → adult assesses capacity and context → scaffolds graded choice → mastery feedback → future choices expand safely.',observableSignals:'Increasing decisions with mentoring, boundaries adjusted by age and need; abandonment under the label freedom is different.',generationalTransformation:'G−2 modeled independence with support → G−1 offers supported choice → G0 grows agency or finds mentors elsewhere.',alternativeExplanations:'Acute safety risks, disability accommodation, differing maturity, environmental threats.',protectiveCountermechanism:'Start with safe reversible choices and observe actual skill, not symbolic age alone.',inquiryPrompt:'Which choice can the child make safely now, and what support remains?',researchAnchorIds:['R11','R04','R13'],evidenceFitNote:'Strong autonomy-support association; no individual prediction.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-29',layer:'parental',name:'Reflective listening and curiosity',domain:'Protective parenting and growth',functionalDefinition:'Parent asks about the child\'s meaning before assigning motives, allowing corrections to adult interpretations.',mechanic:'Child reports event → adult suspends certainty → asks and restates → child revises or confirms → fewer false attributions and better mutual understanding.',observableSignals:'Verifies interpretation, tolerates \'no, that\'s not it\'; interrogating for confession is different.',generationalTransformation:'G−2 offered curious dialogue → G−1 uses it → G0 learns perspective taking, but other relationships also teach it.',alternativeExplanations:'Child wants privacy, language barriers, fatigue, abusive situation requiring safety rather than prolonged discussion.',protectiveCountermechanism:'Ask one nonleading question, reflect uncertainty, let child set disclosure boundaries.',inquiryPrompt:'Can the child reject the parent\'s interpretation without sanction?',researchAnchorIds:['R10','R07','R12'],evidenceFitNote:'Inferred conversational process from responsive parenting literature.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-30',layer:'parental',name:'Shared play and noninstrumental warmth',domain:'Protective parenting and growth',functionalDefinition:'Caregiver engages in child-chosen activity without making productivity or compliance the price of attention.',mechanic:'Child initiates play/interest → adult joins appropriately → connection and enjoyment → shared positive experience → child expects relationship beyond performance.',observableSignals:'Child-directed engagement, humor respecting boundaries, availability of ungraded time; intrusion is not play.',generationalTransformation:'G−2 made room for family joy → G−1 continues → G0 uses shared leisure or reinvents ritual.',alternativeExplanations:'A tight schedule, disability accommodations, differing play preferences, sensory overload.',protectiveCountermechanism:'Offer brief consented interest-based moments; stop when child signals enough.',inquiryPrompt:'Is enjoyment shared and freely chosen, or used as a reward for obedience?',researchAnchorIds:['R13','R10','R12'],evidenceFitNote:'Broad protective relevance, not a validated named pattern.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-31',layer:'parental',name:'Kin and community support scaffolding',domain:'Protective parenting and growth',functionalDefinition:'Parent enlists trustworthy adults and services so one caregiver or child is not sole source of regulation and care.',mechanic:'Family need → caregiver maps resources → safe shared support → load distributed → stable connection and practical resilience increase.',observableSignals:'Child has reliable alternative adults, consent, culturally appropriate help and clear confidentiality; unsafe helpers disqualify.',generationalTransformation:'G−2 sustained mutual aid → G−1 builds community links → G0 benefits, but networks may be newly created.',alternativeExplanations:'Lack of services, discrimination, child-protection concerns, kin boundaries, coercive community pressure.',protectiveCountermechanism:'Vet supports, identify backups and preserve child autonomy and safety.',inquiryPrompt:'Who can reliably help when the primary caregiver cannot?',researchAnchorIds:['R13','R25','R30'],evidenceFitNote:'Robust protective factor framing; specific longitudinal mechanism indirect.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false},
+{id:'PP-32',layer:'parental',name:'Adult-led protection and cycle interruption',domain:'Protective parenting and growth',functionalDefinition:'Caregiver recognizes a recurring harmful response, assumes responsibility and replaces it with safe observable conduct.',mechanic:'Old trigger → parent notices urge and safety stakes → pauses, obtains help and applies a nonharmful limit → immediate conflict is handled without harm → repeated repair and safer responses weaken old contingency.',observableSignals:'Repeated documented reductions in harm and improved child safety; stated intention alone is insufficient.',generationalTransformation:'G−2 used harsh response → G−1 chooses change with supports → G0 receives safer care; where G0 goes later remains open.',alternativeExplanations:'Child currently unsafe, need for professional treatment, unresolved structural pressures, all-or-nothing self-labeling.',protectiveCountermechanism:'Prioritize safety and evidence-based parenting resources; track events, repairs and child feedback.',inquiryPrompt:'Across comparable situations, what did the adult do differently and what improved for the child?',researchAnchorIds:['R02','R12','R13','R01'],evidenceFitNote:'Good discontinuity/intervention support; ATUNED pattern itself unvalidated.',canonicalDocument:'03_PARENTAL/ATUNED_PARENTAL_MECHANICS_BEHAVIOR_CANON_v1.md',scientificStatus:'evidence_informed_design_category_not_validated_diagnostic_construct',requiresAncestorEvidence:false}
+];
+const PATTERN96_BY_LAYER={ancestral:PATTERN96.filter(function(p){return p.layer==='ancestral';}),
+ generational:PATTERN96.filter(function(p){return p.layer==='generational';}),
+ parental:PATTERN96.filter(function(p){return p.layer==='parental';})};
+
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It lists the research citations the pattern rows point at:
+ * authors, year, the published title, a link, and the limit the source
+ * package states for each. It is a reference list for the pattern library and
+ * says nothing about any person.
+ *
+ * WHERE ITS OUTPUT GOES. srcVoicePattern resolves a pattern's anchors from it
+ * and srcVoiceCanon can search its labels by name. Nothing a person sees or
+ * hears reads it. Its labels are published paper titles, so
+ * .claude/skills/atuned-voice/check.py sets them aside as data (NOT_COPY and
+ * NOT_COPY_ROUTES), because rewording a title to pass the voice gate would
+ * make a false citation. That set aside ends the day any file under ui/ names
+ * this table.
+ */
+/* ============================================================
+   RESEARCHANCHOR, what each research_anchor_ids entry in PATTERN96 cites.
+   62 namespaced source entries, ancestral and family (the family namespace
+   covers generational and parental alike, per the source package's own
+   note). Some bibliographic works overlap across ids. These are citations
+   with their own stated scope and limit, never 62 distinct validated
+   mechanisms, and never evidence that a specific person carries a pattern.
+
+   PORTED 2026-11-01 from 04_EVIDENCE/research_anchor_registry_v1.json in the
+   same uploaded handshake package as PATTERN96. note is the ancestral rows'
+   own stated scope_and_limit where the source gave one, else null; never
+   invented here.
+   ============================================================ */
+var RESEARCHANCHOR=[
+{id:'R01',namespace:'family',label:'Geeraerts et al. (2025), Intergenerational stability in parenting across two generations: multilevel meta-analysis',note:null,url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12676645/',kind:'meta-analysis'},
+{id:'R02',namespace:'family',label:'Madigan et al. (2025), Patterns of continuity and discontinuity of childhood maltreatment across generations',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/40384270/',kind:'meta-analysis'},
+{id:'R03',namespace:'family',label:'Racine et al. (2025), Intergenerational transmission of parental adverse childhood experiences to child outcomes',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/37821290/',kind:'meta-analysis'},
+{id:'R04',namespace:'family',label:'Pinquart (2017), Associations of parenting dimensions and styles with child externalizing problems',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/28459276/',kind:'meta-analysis'},
+{id:'R05',namespace:'family',label:'Pinquart (2017), Parenting dimensions and styles with internalizing symptoms',note:null,url:'https://doi.org/10.1080/01494929.2016.1247761',kind:'meta-analysis'},
+{id:'R06',namespace:'family',label:'Brumariu et al. (2025), Parental emotion socialization and internalizing problems',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/40931681/',kind:'meta-analysis'},
+{id:'R07',namespace:'family',label:'Distinct parental emotion socialization strategies and contextual moderators (2026)',note:null,url:'https://www.sciencedirect.com/science/article/pii/S0273229726000079',kind:'meta-analysis'},
+{id:'R08',namespace:'family',label:'Thompson, Platts & Davies (2024), Parent-child boundary dissolution',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/38884957/',kind:'meta-analysis'},
+{id:'R09',namespace:'family',label:'Haines & Schutte (2023), Parental conditional regard',note:null,url:'https://onlinelibrary.wiley.com/doi/full/10.1002/jad.12111',kind:'meta-analysis'},
+{id:'R10',namespace:'family',label:'Maternal and paternal sensitivity and child attachment security (2024)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/38709619/',kind:'meta-analysis'},
+{id:'R11',namespace:'family',label:'Autonomy-supportive vs psychologically controlling parenting (2024)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/39052356/',kind:'meta-analysis'},
+{id:'R12',namespace:'family',label:'WHO (2023), Guidelines on parenting interventions for caregivers of ages 0–17',note:null,url:'https://www.who.int/publications/i/item/9789240065505',kind:'guideline'},
+{id:'R13',namespace:'family',label:'CDC (2024), Risk and protective factors for adverse childhood experiences',note:null,url:'https://www.cdc.gov/aces/risk-factors/index.html',kind:'public-health'},
+{id:'R14',namespace:'family',label:'Dariotis et al. (2023), Parentification review',note:null,url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10341267/',kind:'systematic-review'},
+{id:'R15',namespace:'family',label:'Schrodt (2026), Interparental conflict and feeling caught between parents',note:null,url:'https://academic.oup.com/hcr/article/52/2/77/8223507',kind:'meta-analysis'},
+{id:'R16',namespace:'family',label:'Schrodt (2026), Children feeling caught and adjustment',note:null,url:'https://doi.org/10.1093/anncom/wlag024',kind:'meta-analysis'},
+{id:'R17',namespace:'family',label:'Jensen & Thomsen (2024), Parental differential treatment of siblings',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/38439142/',kind:'meta-analysis'},
+{id:'R18',namespace:'family',label:'Family stress model and parents differential treatment (2022)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/35266775/',kind:'meta-analysis'},
+{id:'R19',namespace:'family',label:'LeBaron-Black et al. (2026), Parent financial socialization and outcomes',note:null,url:'https://doi.org/10.1111/jftr.70037',kind:'meta-analysis'},
+{id:'R20',namespace:'family',label:'LeBaron & Kelley (2021), Financial socialization: a decade in review',note:null,url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC7652916/',kind:'review'},
+{id:'R21',namespace:'family',label:'Shukla et al. (2025), Parent-child acculturation gaps',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/40073496/',kind:'systematic-review'},
+{id:'R22',namespace:'family',label:'Wang et al. (2020), Parental ethnic-racial socialization and psychosocial adjustment',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/31058521/',kind:'meta-analysis'},
+{id:'R23',namespace:'family',label:'de Beijer et al. (2025/2026), Parent-child communication after traumatic events',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/40577320/',kind:'systematic-review'},
+{id:'R24',namespace:'family',label:'Biological embedding and human epigenetic transmission of stress (2023)',note:null,url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10454883/',kind:'scoping-review'},
+{id:'R25',namespace:'family',label:'Walsh (2016), Applying a family resilience framework',note:null,url:'https://onlinelibrary.wiley.com/doi/10.1111/famp.12260',kind:'theory-review'},
+{id:'R26',namespace:'family',label:'Intergenerational narratives and identity across development (2016)',note:null,url:'https://www.sciencedirect.com/science/article/pii/S0273229716000125',kind:'review'},
+{id:'R27',namespace:'family',label:'A meta-analytic review of parenting interventions in foster care and adoption (2019)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/31366418/',kind:'meta-analysis'},
+{id:'R28',namespace:'family',label:'Constructive interparental conflict and child outcomes (2026)',note:null,url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC13409171/',kind:'systematic-review'},
+{id:'R29',namespace:'family',label:'Tang (2017), Longitudinal intergenerational financial behavior',note:null,url:'https://doi.org/10.1111/joca.12122',kind:'longitudinal-observational'},
+{id:'R30',namespace:'family',label:'Family-level mediators of maternal childhood trauma (2026)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/41910153/',kind:'meta-analysis'},
+{id:'R31',namespace:'family',label:'Foner & Dreby (2011), Relations between generations in immigrant families',note:null,url:'https://www.annualreviews.org/content/journals/10.1146/annurev-soc-081309-150030',kind:'review'},
+{id:'R32',namespace:'family',label:'Jensen et al. (2023), Sibling differences and parental differential treatment',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/35758992/',kind:'meta-analysis'},
+{id:'R33',namespace:'family',label:'Maltreatment cycle testing: meta-analysis (2019)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/30757994/',kind:'meta-analysis'},
+{id:'R34',namespace:'family',label:'Cultural socialization and ethnic-racial identity (2019)',note:null,url:'https://pubmed.ncbi.nlm.nih.gov/30896188/',kind:'meta-analysis'},
+{id:'S01',namespace:'ancestral',label:'Geeraerts et al. (2025), [*Intergenerational stability in parenting across two generations: A multilevel meta-analytic review*](https://pmc.ncbi.nlm.nih.gov/articles/PMC12676645/), *Psychological Bulletin*.',note:'Preregistered meta-analysis, 24 longitudinal datasets, mean **r=.12**, substantial heterogeneity; does not validate AP labels.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12676645/',kind:null},
+{id:'S02',namespace:'ancestral',label:'Madigan et al. (2025), [*Patterns of continuity and discontinuity of childhood maltreatment across generations*](https://pubmed.ncbi.nlm.nih.gov/40384270/), *Development and Psychopathology*.',note:'Meta-analysis of 65 independent studies: maintainers **17.1%**, breakers **23.6%**, initiators **11.4%**, controls **47.8%** in sampled families; not individual probabilities.',url:'https://pubmed.ncbi.nlm.nih.gov/40384270/',kind:null},
+{id:'S03',namespace:'ancestral',label:'Racine et al. (2025), [*Intergenerational transmission of parent adverse childhood experiences to child outcomes*](https://pubmed.ncbi.nlm.nih.gov/37821290/), *Child Abuse & Neglect*.',note:'52-study meta-analysis; parental ACE history linked to child mental-health problems **r=.17**; observational association, not inherited mechanism.',url:'https://pubmed.ncbi.nlm.nih.gov/37821290/',kind:null},
+{id:'S04',namespace:'ancestral',label:'Parental emotion socialization meta-analytic review (2025), [PubMed PMID 40931681](https://pubmed.ncbi.nlm.nih.gov/40931681/), *Development and Psychopathology*.',note:'Nonsupportive ES linked to child internalizing **r=.18**; does not prove individual causal trajectory.',url:'https://pubmed.ncbi.nlm.nih.gov/40931681/',kind:null},
+{id:'S05',namespace:'ancestral',label:'[*Distinct parental emotion socialization strategies and contextual moderators*](https://www.sciencedirect.com/science/article/pii/S0273229726000079) (2026), *Developmental Review*.',note:'Meta-analysis of 133 studies; emotion type and sociocultural context moderate associations; avoid universalizing one “supportive” script.',url:'https://www.sciencedirect.com/science/article/pii/S0273229726000079',kind:null},
+{id:'S06',namespace:'ancestral',label:'Thompson, Platts & Davies (2024), [*Parent–child boundary dissolution and children\'s psychological difficulties*](https://pubmed.ncbi.nlm.nih.gov/38884957/), *Psychological Bulletin*.',note:'478-study synthesis distinguishes enmeshment, disorganization, caregiving, coerciveness; not a judgment of collectivist families.',url:'https://pubmed.ncbi.nlm.nih.gov/38884957/',kind:null},
+{id:'S07',namespace:'ancestral',label:'[*Parentification vulnerability, reactivity, resilience, and thriving*](https://pmc.ncbi.nlm.nih.gov/articles/PMC10341267/) (2023), *International Journal of Environmental Research and Public Health*.',note:'Review of 95 studies; distinguish developmentally inappropriate role reversal from helpful contribution.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10341267/',kind:null},
+{id:'S08',namespace:'ancestral',label:'Haines & Schutte (2023), [*Parental conditional regard: A meta-analysis*](https://pubmed.ncbi.nlm.nih.gov/36345118/), *Journal of Adolescence*.',note:'Conditional regard associated with contingent self-esteem **r=.29** and other outcomes; associative.',url:'https://pubmed.ncbi.nlm.nih.gov/36345118/',kind:null},
+{id:'S09',namespace:'ancestral',label:'[*The parent–child relationship and child shame and guilt: A meta-analytic systematic review*](https://pmc.ncbi.nlm.nih.gov/articles/PMC12023818/) (2025), *Child Development*.',note:'Meta-analyses in 65 samples; small correlations for shame and maladaptive guilt; interpret behavior specificity.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC12023818/',kind:null},
+{id:'S10',namespace:'ancestral',label:'[*Family dynamics and the grieving process: A systematic review and narrative synthesis*](https://pubmed.ncbi.nlm.nih.gov/42363652/) (2026), *Death Studies*.',note:'29 studies; communication, cohesion, roles and culture relate to grieving; many designs cross-sectional/retrospective.',url:'https://pubmed.ncbi.nlm.nih.gov/42363652/',kind:null},
+{id:'S11',namespace:'ancestral',label:'Overall, Pietromonaco & Simpson (2022), [*Buffering and spillover of adult attachment insecurity in couple and family relationships*](https://www.nature.com/articles/s44159-021-00011-1), *Nature Reviews Psychology*.',note:'Stress between partners and how each partner responds; do not diagnose attachment from isolated dialogue.',url:'https://www.nature.com/articles/s44159-021-00011-1',kind:null},
+{id:'S12',namespace:'ancestral',label:'Wang, Tian & Yang (2024), [*Experiential avoidance process model*](https://pmc.ncbi.nlm.nih.gov/articles/PMC11332439/), *Psychiatry and Clinical Psychopharmacology*.',note:'Review of how negative reinforcement keeps avoidance going; not ancestry-specific.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11332439/',kind:null},
+{id:'S13',namespace:'ancestral',label:'Lagios et al. (2025), [*Disrupting the chain of displaced aggression*](https://onlinelibrary.wiley.com/doi/10.1002/job.2893), *Journal of Organizational Behavior*.',note:'Review of aggression directed toward substitute targets; mechanisms/context remain contested.',url:'https://onlinelibrary.wiley.com/doi/10.1002/job.2893',kind:null},
+{id:'S14',namespace:'ancestral',label:'Neppl, Senia & Donnellan (2016), [*Effects of economic hardship: Testing the family stress model over time*](https://pmc.ncbi.nlm.nih.gov/articles/PMC4742411/), *Journal of Family Psychology*.',note:'Prospective associations among economic pressure, parental distress, conflict and parenting, with confounder limits.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC4742411/',kind:null},
+{id:'S15',namespace:'ancestral',label:'[*A longitudinal examination of the family stress model of economic hardship in seven countries*](https://pmc.ncbi.nlm.nih.gov/articles/PMC9631805/) (2022), *Journal of Family Psychology*.',note:'Cross-cultural data from 1,082 families; partial, varying support across groups.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC9631805/',kind:null},
+{id:'S16',namespace:'ancestral',label:'LeBaron & Kelley (2021), [*Financial socialization: A decade in review*](https://pubmed.ncbi.nlm.nih.gov/33192037/), *Journal of Family and Economic Issues*.',note:'Modeling, discussion and practice as socialization mechanisms; no diagnosis of money beliefs.',url:'https://pubmed.ncbi.nlm.nih.gov/33192037/',kind:null},
+{id:'S17',namespace:'ancestral',label:'Kirsch et al. (2026), [*Exploring intergenerational trauma in forced migrant populations: A qualitative meta-synthesis*](https://journals.sagepub.com/doi/10.1177/10443894261448360).',note:'17 qualitative studies: silence/disclosure, identity tensions, changing roles and coping; context-specific, not universalizable.',url:'https://journals.sagepub.com/doi/10.1177/10443894261448360',kind:null},
+{id:'S18',namespace:'ancestral',label:'Richmond et al. (2024), [*Conceptualizing and measuring trust, mistrust, and distrust*](https://www.annualreviews.org/content/journals/10.1146/annurev-publhealth-061022-044737), *Annual Review of Public Health*.',note:'Distinguishes trustworthiness of institutions from pressure on individuals to trust; structural-harm guardrail.',url:'https://www.annualreviews.org/content/journals/10.1146/annurev-publhealth-061022-044737',kind:null},
+{id:'S19',namespace:'ancestral',label:'[*Biological embedding of early-life adversity and a scoping review of evidence for intergenerational epigenetic transmission*](https://pmc.ncbi.nlm.nih.gov/articles/PMC10454883/) (2023).',note:'Human transgenerational epigenetic inheritance cannot be concluded from family narratives; designs/confounding unresolved.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10454883/',kind:null},
+{id:'S20',namespace:'ancestral',label:'CDC (2024), [*Adverse Childhood Experiences: Risk and protective factors*](https://www.cdc.gov/aces/risk-factors/index.html).',note:'Ecological levels: individual, family, community, societal; safe relationships, housing/resources, peaceful conflict.',url:'https://www.cdc.gov/aces/risk-factors/index.html',kind:null},
+{id:'S21',namespace:'ancestral',label:'WHO, [*Guidelines on parenting interventions to prevent maltreatment and enhance parent–child relationships*](https://www.ncbi.nlm.nih.gov/books/NBK589376/).',note:'Large controlled-trial synthesis; moderate-certainty evidence for several parenting/child outcomes; not ATUNED-specific efficacy.',url:'https://www.ncbi.nlm.nih.gov/books/NBK589376/',kind:null},
+{id:'S22',namespace:'ancestral',label:'[*Prosocial modeling: A meta-analytic review and synthesis*](https://pubmed.ncbi.nlm.nih.gov/32406697/) (2020), *Psychological Bulletin*.',note:'88 studies, 25,354 people, helping behavior effect **g=.45**; not direct proof of three-generation mutual aid.',url:'https://pubmed.ncbi.nlm.nih.gov/32406697/',kind:null},
+{id:'S23',namespace:'ancestral',label:'Selman et al. (2024), [*Routines and child development: A systematic review*](https://onlinelibrary.wiley.com/doi/full/10.1111/jftr.12549), *Journal of Family Theory & Review*.',note:'Differentiates regular practical routines from symbolically significant rituals; measurement caveats.',url:'https://onlinelibrary.wiley.com/doi/full/10.1111/jftr.12549',kind:null},
+{id:'S24',namespace:'ancestral',label:'Maier & Seligman (2016), [*Learned helplessness at fifty: Insights from neuroscience*](https://pmc.ncbi.nlm.nih.gov/articles/PMC4920136/), *Psychological Review*.',note:'Theory of controllability under stress, with substantial animal-model contributions; not permission to ignore structural barriers.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC4920136/',kind:null},
+{id:'S25',namespace:'ancestral',label:'[*Resilience in the context of transgenerational trauma: A scoping review*](https://pubmed.ncbi.nlm.nih.gov/41910546/) (2026).',note:'40 included studies; regulatory, interpersonal, meaning and environmental factors; labels and assessments heterogeneous.',url:'https://pubmed.ncbi.nlm.nih.gov/41910546/',kind:null},
+{id:'S26',namespace:'ancestral',label:'Bohanek et al. (2025), [*Construction of self and family in intergenerational family stories*](https://doi.org/10.1080/15295192.2024.2446820).',note:'Association of family stories, identity and sociocultural context; cannot verify particular family legend.',url:'https://doi.org/10.1080/15295192.2024.2446820',kind:null},
+{id:'S27',namespace:'ancestral',label:'Girod et al. (2025), [*Intergenerational transmission of emotionally responsive parenting via parenting-related emotion and cognition*](https://pmc.ncbi.nlm.nih.gov/articles/PMC11961316/), *Journal of Family Psychology*.',note:'Study of 299 mother–infant dyads; supports studying emotion and thought as potential mediators, not deterministic inheritance.',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC11961316/',kind:null},
+{id:'S28',namespace:'ancestral',label:'Keny & Banerjee (2026), [*Losing childhood and gaining responsibilities: Consequences of parentification*](https://doi.org/10.1016/j.childyouth.2026.108919), *Children and Youth Services Review*.',note:'Systematic review of 69 studies; impacts depend on caregiving type, duration and sociocultural context.',url:'https://doi.org/10.1016/j.childyouth.2026.108919',kind:null}
+];
+
 /* ============================================================
    THE COMPASS. Two cones, eight axes, and a descent.
 
@@ -3728,6 +3990,128 @@ var CHALLENGE={
   when:'When you are already braced for the worst.'}};
 
 /* ============================================================
+   THE AFFIRMATION GENERATOR'S WORDS, 18 November. His words: "This is a small
+   affirmation engine utility that I want added to the ritual builder. We'll
+   use this to generate high quality affirmations." And the same day, the
+   story: Source AI "will spot my avatar's intentions and then generate high
+   quality affirmations. That a person can add to the ritual."
+
+   His package wrote one line per point, Root to Crown, each opening on a
+   locked anchor. The anchors below are his, word for word and in his order.
+   The package never read its own anchor field: it wrote the anchor into each
+   template by hand and then, under Creator Mode, lowercased the first letter
+   of every line, so "I magnetize" printed as "i magnetize" on every theme.
+   Here every line is built from AFF_ANCHOR and engine/affirmgen.js throws
+   rather than emit a line that does not open on it in exact case.
+
+   THE WRAPPER is his too, word for word, capital I kept. The control that
+   turns it on is called All that is and not Creator Mode, because Creator is
+   already an archetype name (ARCH, canon.js) and the rule is one word per
+   concept. Its hover carries his full words.
+
+   THE FRAMES REPLACED HIS SEVEN TEMPLATES. Five of the seven were
+   manifestation register ("into tangible reality", "manifesting", "highest
+   vision") and all seven broke on anything but a bare noun: "I speak to ask
+   for help into tangible reality". A theme is read for its shape first
+   (engine/affirmgen.js, affShape) and each shape has its own frame per point.
+   Each frame is a core, which holds the anchor and the theme, and a tail, a
+   body image or a closing clause. Under All that is the tail drops and the
+   core never does: the wrapper alone is 73 characters, and a full line ran
+   past three rows at 390. A line is a claim a body can check, the same test
+   the AFFIRM lines above are held to, so the tails name the floor, the chest
+   and the next step, never a wish.
+
+   HIS DEFAULT SET IS GONE. Seven money lines showed on open and on an empty
+   box. Nobody asked for them and nothing marked them as composed, so an empty
+   box now composes nothing.
+
+   Content and not code, and the voice seat owns AFF_ADJ, AFF_VOICE and the
+   frames' wording: a word can be added here and nothing else moves.
+   ============================================================ */
+var AFF_ANCHOR=['I am','I magnetize','I command','I receive','I speak','I foresee','I empower'];
+var AFF_PRE='I am the creator of all that is, ';
+var AFF_SUF=' across all space, time, and dimensions.';
+/* what a refusal says. Each one names what to write instead, because a box
+   that only says no teaches nothing. safety is not here on purpose: a trip
+   prints CRISIS_SAY.entryNow (engine/data/crisis.js) and never a copy of it. */
+var AFF_SAY={
+ empty:'Write who you are becoming, or one word for it.',
+ shape:'Write who you are becoming, or one word for it.',
+ sentence:'Say it as something you do.',
+ gerund:'Say it as something you do, starting with "to".',
+ list:'One at a time. Pick the one that matters today.',
+ long:'Too long for one line. Use twelve words or fewer.',
+ toward:'Say what you are moving toward.',
+ thin:function(w){return '"'+w+'" names nothing your body can check. Name one quality.';},
+ person:function(w){return 'An affirmation is about you. Name what you bring to your '+w+': patience, time, honesty.';},
+ flip:function(w,o){return '"'+w+'" is what you release. Its opposite is '+o+'. Use '+o+'?';}};
+/* THE QUALITY TABLE, adjective to its noun. A word here reads as a state and
+   takes the adjective frames; any other short theme is a noun and keeps its
+   own part of speech, so "clarity" is never silently turned into "clear".
+   "whole" is left out on purpose: Whole is the Avatar's percent. */
+var AFF_ADJ={calm:'calm', clear:'clarity', patient:'patience', honest:'honesty', brave:'courage',
+ steady:'steadiness', focused:'focus', rested:'rest', confident:'confidence', grounded:'groundedness',
+ present:'presence', ready:'readiness', worthy:'worth', open:'openness', even:'evenness', awake:'wakefulness'};
+/* the qualities that read as a voice, "I speak in a calm voice". The rest
+   speak from a body, "I speak from a rested body", because a rested voice is
+   not a thing a throat can check */
+var AFF_VOICE={calm:1, clear:1, patient:1, honest:1, steady:1, confident:1, even:1};
+/* words that name nothing a body can check. "good" in seven frames is seven
+   lines that say nothing. */
+var AFF_THIN={good:1, better:1, best:1, nice:1, fine:1, things:1, stuff:1, everything:1, more:1};
+/* someone else as the theme. An affirmation is about the person saying it. */
+var AFF_PERSON=/^(my|our) (son|daughter|kids|children|partner|wife|husband|mother|father|mom|dad|boss|team|friend|friends|family|brother|sister|landlord)$/i;
+/* THE GENERATOR'S OWN STOP, and why srcSafe is not enough here. srcSafe asks
+   whether a hit is the writer's own and said without a no, which is right for
+   a story: "I would never kill myself" is not a statement to meet. It is wrong
+   for a generator, because a Become line is written in recovery phrasing, and
+   "Someone who no longer wants to die" passes srcSafe as denied and would then
+   be chanted seven times. Measured, R2: with srcSafe alone the shaper's own
+   refusal hid the gap, because that line is a negative and was told "Say what
+   you are moving toward", which is the wrong thing to say to that person.
+   These run word edged and with no reading of polarity, after srcSafe and any
+   safeOf hit. The cost is chosen and counted in the gate: "finish the shift
+   and end it on time" trips and shows one line instead of seven. */
+var AFF_STOP=[/\b(hurt|hurting|harm|harming|kill|killing|cut|cutting)\s+(myself|me|my\s+(arms?|wrists?|skin|body))\b/i,
+ /\bself[\s-]?harm/i, /\bsuicid/i, /\b(want|wants|wanting|wanted)\s+to\s+die\b/i, /\bwish\s+i\s+(was|were)\s+dead\b/i,
+ /\bend\s+(it|it all|my life|things)\b/i, /\boverdose/i, /\bcutting\s*$/i, /\bnot\s+(be\s+)?here\s+any\s*more\b/i];
+/* THE FRAMES, one per point per shape, each returning [core, tail]. vp is a
+   verb phrase (vb its base, v1 its first person form), np a whole someone
+   line kept as written, adj a quality from AFF_ADJ, n a short noun. */
+var AFF_FRAMES={
+ vp:[function(s){return ['I am built to '+s.vb,''];},
+  function(s){return ['I magnetize what it takes to '+s.vb,''];},
+  function(s){return ['I command my body to '+s.vb,''];},
+  function(s){return ['I receive what I need to '+s.vb,', and my chest stays open'];},
+  /* "I speak it out loud: I ask for help out loud" said out loud twice */
+  function(s){return [(/\b(out loud|aloud)\b/.test(s.vb)?'I speak it plainly: I ':'I speak it out loud: I ')+s.v1,''];},
+  function(s){return ['I foresee the next step to '+s.vb,', and I take it'];},
+  function(s){return ['I empower myself to '+s.vb,''];}],
+ np:[function(s){return ['I am '+s.np,''];},
+  function(s){return ['I magnetize what it takes to be '+s.np,''];},
+  function(s){return ['I command my body to act as '+s.np,''];},
+  function(s){return ['I receive the room to be '+s.np,''];},
+  function(s){return ['I speak it out loud: I am '+s.np,''];},
+  function(s){return ['I foresee the next step toward being '+s.np,''];},
+  function(s){return ['I empower myself to be '+s.np,''];}],
+ adj:[function(s){return ['I am '+s.a,', with both feet on the floor'];},
+  function(s){return ['I magnetize what keeps me '+s.a,''];},
+  function(s){return ['I command my body to stay '+s.a,''];},
+  function(s){return ['I receive the day as it comes and stay '+s.a,''];},
+  function(s){return [AFF_VOICE[s.a]?'I speak in '+affArt(s.a)+s.a+' voice':'I speak from '+affArt(s.a)+s.a+' body',''];},
+  function(s){return ['I foresee myself '+s.a+' in the room that tests me',''];},
+  function(s){return ['I empower myself to stay '+s.a+' among the people I belong to',''];}],
+ n:[function(s){return ['I am the ground '+s.n+' grows from',''];},
+  function(s){return ['I magnetize '+s.n,', and I let the want show'];},
+  function(s){return ['I command my body toward '+s.n,''];},
+  function(s){return ['I receive '+s.n,', and my chest stays open'];},
+  function(s){return ['I speak about '+s.n+' out loud',''];},
+  function(s){return ['I foresee the next step toward '+s.n,', and I take it'];},
+  function(s){return ['I empower myself and the people I belong to toward '+s.n,''];}]};
+/* the article a quality takes, "an honest voice" */
+function affArt(a){return /^(a|e|i|o|u|hon)/i.test(a)?'an ':'a ';}
+
+/* ============================================================
    PEOPLE. Twelve worked examples across the coherence scale, and four of the
    owner at four points on it. c = held fetter, rep = coherent opposite
    installed. A high rep is not health. Past 7 it is jouissance: the thing
@@ -3883,7 +4267,7 @@ const PEOPLE=[
   rep:{},
   purpose:{soul:['stillness','honesty','return'],ego:['his daughter close','his health insurance','the road not calling him back'],
    sides:{partner:[],family:["answer his daughter's call on the first ring"],friends:[],community:[],coworkers:[],alone:[]}}},
- {nm:'Wren',age:66,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
+ {nm:'Wren',age:67,role:'luthier, forty one years at the bench',dom:1,a1:0,a2:11,
   says:'Most of it went quiet a long time ago. One thing did not, and I know exactly which.',
   c:{Fear:2,Anger:1.2,Shame:7.5,Disgust:1,Apathy:1.5,Shock:1.1,Sad:2,Surprise:0.7,Anticipation:2},
   rep:{Fear:5.4,Anger:4.8,Apathy:4.2,Sad:4.6},
@@ -3891,7 +4275,7 @@ const PEOPLE=[
    sides:{partner:[],family:[],friends:[],community:[],
     coworkers:["let an apprentice finish a piece his own way"],
     alone:['sit at the bench with nothing left to finish']}}},
- {nm:'Abraham',age:74,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
+ {nm:'Abraham',age:75,role:'retired judge, eleven years of practice',dom:6,a1:8,a2:0,
   says:'I spent a career deciding for other people. The last decade has been learning to sit still.',
   c:{Fear:1,Anger:0.6,Shame:5.4,Disgust:0.4,Apathy:0.8,Shock:0.5,Sad:1.2,Surprise:0.3,Anticipation:0.9},
   rep:{Fear:6.2,Anger:5.8,Apathy:5.4,Sad:5.6,Shock:5,Disgust:4.8},
@@ -3928,9 +4312,17 @@ const PEOPLE=[
     Anticipation carries nothing installed at all, the need to know what comes
     next, which is the one thread through all four of him: five addresses
     carry it under the line, none is held, and it is what his journal writes to
-    and his releases take. No birth and no
-    full name, the same ruling as before: they are his to enter, and a made up
-    birth would be read back to him as his own.
+    and his releases take.
+
+    A BIRTH, AND STILL NO FULL NAME. OVERRIDDEN 18 November: this said no
+    birth, because a made up one would be read back to him as his own. His
+    words that day, over the Field with Lance 15 open and Root Energetics
+    empty: "Got a bug, Emmy. Have one of your agents wire in root energetics
+    for these profiles, and make sure that these profiles are just up to date
+    with all the changes that we made." So the four share one birth in BIRTH
+    below, invented and his in nothing. The full name stays out: any surname
+    is his real one or a made up one that the name numbers would read back as
+    his, and the six readings he named come off the birth alone.
 
     ONE HUNDRED IS EVERY LAW AT A FULL TEN. CQ is the 21 laws over 210, so
     there is no other way to read 100. In round PL he said he does not believe
@@ -3970,10 +4362,11 @@ const PEOPLE=[
 
 
 /* law values per persona. `_` is the baseline; named laws override it.
-   The original assigned a `Humility` law to James and Gordon. There is no
-   Humility among the 21, so it was silently dropped and their intended
-   character note never reached the engine. Carried here by the laws that
-   do exist. */
+   The original assigned a `Humility` law to James and Gordon when there was
+   no Humility among the 21, so it was silently dropped. There is one now, it
+   took Discernment's place (LAW_WAS in engine/schema.js), and Marcus, Angela
+   and Abraham carry it below; James and Gordon's character note stays carried
+   by the laws they were given then. */
 const LAWSET={
  You:    {_:6.5},
  /* found by bisection against compute(), not chosen by feel */
@@ -4032,6 +4425,8 @@ const LAWSET={
    the signal. Where they disagree the instrument says so rather
    than picking a winner.
    ============================================================ */
+/* invented, see the note under BIRTH. Declared first because BIRTH names it. */
+var LANCE_BIRTH={d:'1972-08-27', t:'13:15', p:'Johannesburg, ZA', z:'Africa/Johannesburg'};
 var BIRTH={
  You:null,
  Sofia:  {d:'1985-03-14', t:'04:20', p:'Asheville, NC'},
@@ -4045,12 +4440,21 @@ var BIRTH={
  Gordon: {d:'1968-08-05', t:'14:00', p:'Greenwich, CT'},
  Tomas:  {d:'1967-11-22', t:'03:55', p:'Chicago, IL'},
  Wren:   {d:'1959-04-17', t:'08:35', p:'Portland, OR'},
- Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'}};
- /* The four Lance profiles have no record here and are left without one: it
-    is his to enter, and a made up birth would be read back to him as his own.
-    A place this table does not name can carry its time zone, z, which settles
-    the clock offset for that year and lends the zone's own point as a horizon,
-    so Rising still resolves; the ladder used it and was cut in round QD. */
+ Abraham:{d:'1951-06-29', t:'11:20', p:'Boulder, CO'},
+ 'Lance 15': LANCE_BIRTH, 'Lance 50': LANCE_BIRTH, 'Lance 85': LANCE_BIRTH, 'Lance 100': LANCE_BIRTH};
+ /* THE FOUR LANCE PROFILES SHARE ONE BIRTH, AND IT IS INVENTED. OVERRIDDEN 18
+    November: they had none, by the ruling that a made up birth would be read
+    back to him as his own; his words that day asked for Root Energetics wired
+    in for these profiles (the full quotation is above the four rows). One
+    object, because they are one person at four depths and a sky does not move
+    with CQ. The date, the hour and the city were picked by a search for a
+    reading whose sun, moon and rising each sit three degrees or more inside
+    their sign and whose gene key line is not on an edge, so a small change to
+    the ephemeris does not flip it, and for an age of 54 to match the rows. It
+    is nobody's birth. It is also the roster's only birth south of the equator
+    and its only one outside the nine cities, so it is located by its time
+    zone, z, which settles the offset and lends the zone's own point as the
+    horizon, and Rising resolves from that. */
 /* FULL NAMES, because numerology reads the name on the certificate and not the
    one on the door. The roster carried first names only, so every name number
    in the product was computed off a nickname, which is the numerological
@@ -4236,7 +4640,16 @@ var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communicati
    the hull, and CQ is its number. CQ read "your coherence number", the same
    collapse from the other side. Intention opens on what you meant against
    what you still do, which is the reading intentionRead makes. */
-var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"What a nerve plexus produces. Three nerve branches meeting make a triangle, and the point that triangle generates is the chakra, an assemblage point you cannot touch. The seven primary chakras, base of the spine to the top of the head, are each built from several of these assemblage points connected together. A smaller plexus makes a smaller, minor chakra the same way. The plexus is the wiring. The chakra is the point it generates."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at the 108 addresses in the body plus the 4 field anchors just outside it, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"How closely you keep the 21 Laws of Moral Integrity, and the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
+/* THREE ROWS OPEN ON THE TOOLTIP'S SENTENCE, 18 November. Mask, Saboteur and
+   Integrity each said one thing here and another in every tooltip, which
+   reads engine/data/gloss.js, so the word meant two things depending on the
+   screen. Each row now opens on the table's sentence word for word and keeps
+   the codex's own lines after it, so the Wisdom school and the tooltip say the
+   same first thing. Saboteur's "each one a fetter" became "a set of fetters",
+   the canon's "complexes of the child fetters", because a saboteur runs on
+   several addresses at once in compute() and never on one. tests/unpack.js
+   and tests/engine.js GW hold the two places to one sentence. */
+var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"What a nerve plexus produces. Three nerve branches meeting make a triangle, and the point that triangle generates is the chakra, an assemblage point you cannot touch. The seven primary chakras, base of the spine to the top of the head, are each built from several of these assemblage points connected together. A smaller plexus makes a smaller, minor chakra the same way. The plexus is the wiring. The chakra is the point it generates."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at the 108 addresses in the body plus the 4 field anchors just outside it, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day. The laws are the 21 Laws of Moral Integrity, and keeping them is the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from. Built up, it starts to pass for who you are, and it is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"A saboteur is a named habit that runs on the charge held at several addresses at once. The library names 33, each a set of fetters squeezed into a habit you keep repeating, and each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19","d":"One field. One source. Every apparent separation is a signal distortion, the field reading itself through a loaded nervous system."},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19","d":"Nothing is still. Frequency is the structural material of reality. The stillness you perceive is your nervous system's bandwidth limit."},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19","d":"Every peak has an equal valley. The field explores itself through contrast. There is no escaping polarity, only learning to hold both ends without being run by either."},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19","d":"The outer world is a readout. What you carry inside is being displayed outside. The pattern repeats at every scale."},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19","d":"Resonant frequencies converge. This is not motivational law of attraction. It is physics. Like organizes with like at every scale."},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19","d":"Attraction generates contact. Contact generates creation. Inspired Action is not motivation, it is what happens at the moment of genuine resonance."},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19","d":"Energy doesn't disappear. It changes state. The friction that feels like obstruction is refinement in process."},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19","d":"Every motion propagates. The body registers this before the mind admits it. Karma is not spiritual, it is mechanical."},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19","d":"The field self-corrects. For every deviation, an equal return toward center. This is not justice, it is equilibrium."},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19","d":"All form exists first as possibility. Awareness selects it. Desire activates it. What you cannot see or want cannot materialize."},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19","d":"Nothing has meaning outside of contrast. Cold is only cold next to warm. This is not relativism, it is how perception works."},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19","d":"Everything breathes. Expansion and contraction. The upward spiral and the downward. Fighting the cycle compounds the charge."},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19","d":"Active and receptive forces generate new form. Not social identity, generative polarity. Masculine and feminine as charge and field."},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19","d":"Geometry precedes biology. Structure arrives before meaning. Before the nerve fires, the template already exists."},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19","d":"The templates precede their expressions. Tree. Rock. Planet. Warrior. Lover. Sage. These are not metaphors, they are structural blueprints the field organizes through."},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19","d":"The cells generate a field. The nervous system organizes it. The SFN, Soma Field Network, is the continuous interior medium that carries the voltage between deep nodes and the surface. Blocked SFN attenuates the signal. Cleared SFN restores it. The dermis recharges on its own once the supply is restored."},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19","d":"Soul attunes to the heart first. Like attracts like at the frequency level. How spirit enters a body without distorting it on arrival. Attunement is embodiment. Once attuned, fully embodied."},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19","d":"The six senses are measurement instruments. The quality of what they return depends entirely on the clarity of the field receiving the signal. A loaded node distorts the incoming read before it reaches awareness."},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19","d":"The mind organizes what the senses receive. When nodes are loaded, the organizing narrows. As nodes clear, intelligence expands, not from adding information, but from removing interference."},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19","d":"The primordial binary. Cortisol or dopamine, contract or expand, safe or unsafe. Fires before thought, before identity, before choice. Given the same stimulus and the same soma state, it fires the same way every time until the soma state changes. The switch reads binary. One or zero, expand or contract, yes or no. Not good and evil. What sets the wiring is conditioning held in the soma, which is why one stimulus reads as threat in one body and as nothing in the next. Morality is not here. Morality is the Laws of Spiritual Integrity layer, and it is mechanical there too. The switch is upstream of all of it."},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19","d":"Every signal routes through three axes: Aware or Ignorant, Detached or Attached, Intentional or Avoidant. The three lower poles are pride, anger, and greed, the three poisons. They hijack the axes before clean intention can work. The three upper poles are their replacement states, installed at the same address."},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19","d":"We name what we perceive. The name becomes the carrier. Language is compressed symbolic encoding of archetypal reality, and it cuts in both directions."},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19","d":"Which symbols you attach to. How consciousness locates itself in a story. Necessary for navigation. Distorting when it hardens into defense."},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19","d":"The first law where the pattern can be interrupted. Everything upstream, Vibration through Identity, runs largely without your permission. Here it can be redirected."},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19","d":"Ego is not prior to choice. It is built by repeated choices made through Identity. The adaptive character. Useful as instrument. Distorting as master."},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19","d":"Focused will. Tells energy where to go. One of the two main variables in the coherence formula. Without integrity pointing the same direction, it creates distortion rather than form."},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19","d":"Where reality gets changed. Incoherent action generates new charge. Coherent action resolves charge and stabilizes flow. Every action registers in Memory before you take it."},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19","d":"The body's record of the quality of every action. Not psychological, biological. The nerve registers the intent before the act occurs. This is what the Release Protocol works at."},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19","d":"The body knows before the mind admits it. Truth maintains coherence. Deception degrades it, before the lie leaves the mouth, the nervous system is already producing the stress response."},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19","d":"Nothing hidden. Hiddenness has a cost, the body maintains vigilance to protect what is concealed. That is voltage being spent on maintenance instead of signal."},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19","d":"The field is not divided. Division is a perception created by Identity and Ego. Unity is the accurate read. Behavior that enforces separation does so against the actual structure of reality."},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19","d":"The capacity to be with what is without becoming it. Becoming it lodges it. The pattern seen is not the pattern run."},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19","d":"Full occupancy of the moment. The ground the other laws stand on. Rumination abandons it backward, rehearsal abandons it forward."},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19","d":"Staying level. Presence is being here. Equanimity is remaining even here. Evenness of mind as the condition you work from, not the reward."},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19","d":"Recognition of suffering in self and other, and movement toward it. Equal regard as action, in both directions. Love and Compassion are synonymous in this layer."},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19","d":"Release of stored charge against a specific person, self included. Not condoning. Unbinding. A release elevated to law."},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19","d":"Not the absence of fear. The act of moving through it. Each time you take the coherent action despite the contraction, the nervous system re-learns. Fear turns down. Courage turns up. Gate-governor pair with Temperance. Courage rules the aversion door."},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19","d":"Self-control as the governed appetite. Regulation, not abstinence. Blocks the cascade where pleasure turns to overindulgence, then obsession. Gate-governor pair with Courage. Temperance rules the desire door."},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19","d":"The word you gave. To yourself or to others. When Duty breaks, self-trust fragments. When it holds, coherence stabilizes. Not moral virtue, energetic maintenance. Carries Right Relation. Each relationship given its correct form, the web of obligation kept clean."},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19","d":"Claiming what is yours in both arenas. Responsibility is ownership of your own field, the patterns and the charge. Accountability is ownership of cause and consequence in the shared world. Answering for impact, not intention."},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19","d":"Right-dealing. Giving each their due, self included. The law-form of the Justice domain."},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19","d":"Ahimsa. The conduct floor. Deliberate minimizing of damage in thought, word, and act. Doubles as the practitioner ethics law."},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19","d":"Ownership of your own field, the patterns and the charge, claimed before anyone else is touched by it. Paired with Accountability (E40): responsibility is what you own, accountability is what you watch and answer for once it reaches the shared world. You are responsible for the words you speak, accountable for the actions that follow them."},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19","d":"Accurate self-measure. Neither inflation nor collapse. Contains Self-Examination as its practice, the honest score faced on schedule. Carries the stance of standing before the larger."},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19","d":"Giving as circuit, not transaction. Contains Gratitude as the receiving stroke. Recognition of what has been received restores flow, and the loop closes when the gift lands."},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19","d":"Nishkama karma. Act fully, release the fruits. Full intention, zero clinging to outcome."},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19","d":"Right timing against forcing. Sustained attention against scattering. The two failure poles, the outcome demanded now and attention fragmenting."},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19","d":"Order reduces the load on thinking. A noisy environment agitates the nervous system and drains signal. Not aesthetics as preference, aesthetics as nervous system regulation."},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19","d":"The body evolved inside natural rhythms. Alignment with those rhythms restores coherence. Departure introduces chronic low-level dysregulation, background noise the system cannot locate or release. Carries the stance that the real is not inventory. The world not treated as a resource."},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19","d":"The ninth law and the root. The zero point the other eight depart from. Equanimity, stillness of mind and body, the settled ground the table rises from. When peace meets resistance, will drags down, and everything above it drags with it. Every expression draws from a foundation of settled ground."},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19","d":"Open exploration without agenda. The childlike state. When this law is running, you are learning from everything you touch. When it isn't, you are defending against it."},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19","d":"The pull toward the unknown without immediate fear collapse. What moved you before you knew what fear was. It keeps perception expanding. This is why you picked up this book."},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19","d":"Novel pattern generation. Consciousness remixing itself. Turning raw feeling into pattern. Insight into form. Not inspiration, the nervous system doing what it does when it isn't defending."},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19","d":"Awareness and action synchronizing without excessive interference. The work and the worker become one event. Resistance drops. Productivity is a side effect."},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19","d":"The drive to create something wonderful for another. Building a house, painting, making music, cooking food. If the work is for somebody else, the maker is trying to create wonder, and that is the whole point of beauty. Not manufactured, the natural output of Play, Curiosity, Creativity, and Flow working together."},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19","d":"The metaphysical becoming physical. Without Order, Beauty stays private. With Order, it becomes something others can use. The bridge between perceiving higher pattern and making it transmissible."},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19","d":"Maximum positive charge. The only frequency that transmutes all others. Not sentiment. The frequency a fully coherent system runs on. When you reach here, it is not performance."},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19","d":"The aim a life orients around. Not what the maker produces per act, that is Wonder. Purpose is the standing vector, the target every act is aimed at across the whole. Will carries it. Intention aims it moment to moment. Purpose names what the aiming is for."},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19","d":"Sustained application of directed energy through resistance over time. Not force. The reconditioned nerve responding to what is true. Two steps forward, one step back. Account for it. Do the better thing. Separate from the expressions. Always a directed force."},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19","d":"The most fundamental contraction. Lumbar Plexus, L1-L4. The track is: I am stuck. I am trapped. The nerve is running a survival program. The node is not a feeling, it is a structural event."},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19","d":"Compressed will. Solar Plexus / Celiac Plexus. The track is: This is wrong. Move. Anger is the signal that a boundary has been crossed. Calm is what remains when the compressed will finds its outlet."},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19","d":"The deepest collapse. Pudendal Nerve. The track is: I am not worthy. Not a thought, a nerve address. The node predates language."},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19","d":"Sacral plexus and dermis, front-to-back. The track is: Things are not as they should be. Rejection of what is present. The coherent pole is not agreement, it is the capacity to receive without resistance."},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19","d":"Shoulder girdle and throat, the coupled will system. When this axis is blocked the track is: What is the point. Not depression, resignation. Joy is not happiness. It is aliveness."},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19","d":"Full skin surface, the dermis. The track is: This should not be happening. The system flooded faster than it can process. Coherent pole pending confirmation."},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19","d":"Inferior anterior cardiac nerves, the superficial cardiac plexus. The track is: I cannot have what I want. Sad and Happy are the same axis at opposite ends. Sadness is the signal of perceived loss. Happiness is the restoration of what was already present. Grief runs on this axis. It is Sad at depth, not a separate signal."},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19","d":"Distinct from Anticipation. The unexpected arriving before the system has framed it. Somatic address and coherent pole pending confirmation."},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19","d":"Distinct from Surprise. The system leaning toward what is coming. Somatic address and coherent pole pending confirmation."},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19","d":"The body as hardware. Density, vitality, embodiment. What coherence runs through. Named. Not yet separately measured."},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19","d":"Depth, clarity, structure. The capacity to organize what perception brings in. Named. Not yet separately measured."},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19","d":"Width and quality. Awareness and movement across the nine emotional regulation axes. Named. Not yet separately measured."},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19","d":"Gradient seeing. The capacity to perceive emotions as information rather than commands. Named. Not yet separately measured."},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19","d":"Range navigation. Allostatic load as the measure of what has been metabolized versus what has been stored and is still running as charge."},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19","d":"Hull integrity. Total system alignment without resistance. The only formally developed instrument. CQ 100 = no leak. CQ 0 = complete collapse."},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19","d":"The 0,0,0 coordinate. No distortion, no thought, no feeling. All six senses in unison. Aware of what is present and what needs doing. The window fully open. You do not produce this state. You remove what was blocking it."},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19","d":"The destination state of the entire system. The hull reading across all layers simultaneously. When intention, integrity, and action align without resistance, the system self-organizes into flow. CQ is not the practice, it is what the practice reveals."}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -5410,7 +5823,21 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of points.',
+ /* MASK AND SABOTEUR SAID ONE WAY, 18 November. The Wisdom school glossary
+    (GLOSS, engine/data/kb.js) opened Mask on "built up distortion that has
+    started to pass for who you are" and Saboteur on "a fetter squeezed into
+    a habit", while every tooltip said this table's sentence: two meanings for
+    one word on two screens. The canon makes a mask a developmental way of
+    showing up worn over the points it speaks from (MASKS, b) and a saboteur a
+    set of fetters at magnitude, so this table's sentences stand, the mask one
+    gains "you grow into" and the point, and GLOSS now opens on the same words.
+    tests/unpack.js holds the two places to one sentence. */
+ 'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
+    this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
+    stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
+    is kept here, where the header of that level reads it. */
+ 'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -5425,6 +5852,45 @@ var UNPACK_BASE={
  'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
+ /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
+    levels, Child emotions and The chain off the Field's left rail. Two of the
+    terms kept a sentence here because something on a screen still says them
+    and now asks for it: the Matrix caption's "9 child emotions" (mxKey,
+    ui/personas.js) and the card a field anchor opens (nodeDrillHtml,
+    ui/drills.js). The third, "the chain", has no entry: the first cut of this
+    round wrote one, and the skeptic found nothing asked for it, so it was cut
+    rather than left as a sentence no screen can reach. Each tier of the chain
+    keeps its own entry (saboteur, complex, hyper complex, super complex), the
+    legend's colour key has no new home and is listed as open in DECISIONS.md,
+    and a wheel dot's hover still names its tier (describe, ui/ui.js). */
+ 'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
+ 'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
+ /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
+    under a symbol is what the engine measures, the charge held at the address
+    the book seats that defence at (AMPLIFIER, engine/data/registers.js), and
+    never how much of the defence a person shows, so every sentence says the
+    figure is the charge at its place in the body and none says it is the
+    defence. Built in unpackAll below for the one address no feeling reaches. */
+ 'superego:justification':'Justification is the reason you give yourself that makes a pattern fine to keep, and its figure is the charge held at its place in the body.',
+ 'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
+ 'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
+ 'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ /* ACTION, the Field's rail and the Journal's, one word for the six moves
+    (10 November, his words: "change word laws of actions to action"). The
+    six bars each carry their own sentence under gate:, the family prefix, so
+    Awareness the gate keeps its own meaning beside Awareness the reading
+    (rail:awareness above) and the soul's window (GLOSS). Each says what the
+    move is and what its figure is, because a figure stands with its meaning:
+    the share of every action read in the person's stories (verpRead, the
+    six add to one whole). No sentence here says a count, a percent or a
+    score, the contract group PO in tests/engine.js holds. */
+ 'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
+ 'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
+ 'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
+ 'gate:intention':'Intention, a right action, is feeling it rise and keeping to what you were already doing, and its figure is its share of every action read in your stories.',
+ 'gate:ignorance':'Ignorance, a wrong action, is not seeing the feeling coming or choosing not to look, and its figure is its share of every action read in your stories.',
+ 'gate:attachment':'Attachment, a wrong action, is the story taking hold and you going where it pulls, and its figure is its share of every action read in your stories.',
+ 'gate:aversion':'Aversion, a wrong action, is going around the feeling and away from what set it off, and its figure is its share of every action read in your stories.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -5469,6 +5935,21 @@ var UNPACK_BASE={
  /* Expression the reading, as against expression the numerology number,
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* THE FOUR READINGS THAT HAD NO SENTENCE HERE, 18 November. Pull, Overshoot,
+    Installed and Self-read shadow had their meanings typed into ANA_MET in
+    ui/analytics.js and nowhere else, so the Analytics tile was the only place
+    that could say them: the session card, the axis card, the pole drill and
+    the release ledger print the same four words and had nothing to ask for,
+    and the owner read them on the status board with no idea what they were.
+    Overshoot's typed tip also carried "60%", which this table refuses. Each
+    sentence is what compute() builds: pull is leverPull averaged over every
+    address, overshoot is n.jq, the opposite past the helpful point, installed
+    is the opposite in place (S.replace, and n.pole where it has passed what is
+    held), and the self-read shadow is lawSQ, 100 less CQ. */
+ 'pull':'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
+ 'overshoot':'Overshoot is an opposite feeling put in past the point where it helps, so the fetter under it will not shut.',
+ 'installed':'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
+ 'self-read shadow':'Self-read shadow is the part of the laws your own answers leave out, always 100 less CQ, and only a changed law answer moves it.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
  /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
     4", the weight on nought to ten; every weight prints as a percent now, so
@@ -5605,6 +6086,17 @@ function unpackAll(){
  if(UNPACK_MEMO)return UNPACK_MEMO;
  var t={}, k;
  for(k in UNPACK_BASE)t[k]=UNPACK_BASE[k];
+ /* AN AMPLIFIER THE ENGINE CANNOT REACH SAYS SO. A story's charge lands on an
+    address through that address's child emotion (compute.js, n.held), and the
+    one amplifier seated at an address with none, Entitlement at the unnamed
+    Root address, can therefore never hold anything: its figure is always the
+    dash. The sentence says that while it is true and goes back to the plain
+    one the day the owner rules that address, because it is read off the
+    address and never typed. */
+ if(typeof AMPLIFIER!=='undefined'&&typeof BY!=='undefined')
+  AMPLIFIER.forEach(function(a){
+   var k='superego:'+a.nm.toLowerCase(), n=BY[a.i];
+   if(n&&!n.cf&&t[k])t[k]=t[k].replace(/ its figure is the charge held at its place in the body\.$/,' no story reaches its place in the body yet, so its figure is a dash.');});
  /* the four Western elements */
  Object.keys(UNPACK_ELEM).forEach(function(el){
   var signs=unpackSigns(el), nm=el.charAt(0).toUpperCase()+el.slice(1);
@@ -6957,6 +7449,12 @@ var PCT_KIND={
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
              say:'how much a point leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
+ /* engine/avatar.js wholeOf, the Avatar's one percent, 18 November: "we're
+    going to use the word whole." Already a whole number 1 to 100 or null,
+    so it rides on nought to a hundred and null prints the dash. complete
+    below is the word it replaces and goes once nothing reads it. */
+ whole:     {lo:0, hi:100, src:'engine/avatar.js', find:'var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));',
+             say:'how much of who you are becoming you have built'},
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'},
  /* engine/seed.js seedShare, how much of what the nine axes carry is still
@@ -7719,7 +8217,12 @@ function leanSeries(p){
   /* what the series cannot see, stated on the series rather than in a
      document nobody reads next to the chart. */
   storyCues:false,
-  says:out.length?('the field lean at '+out.length+' of '+H.length+' snapshots')
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S11: on no
+     screen today, fixed in the same sweep so it cannot leak onto one). This
+     said "the field lean at N of M snapshots"; it is the percent of the
+     snapshots a coherence reading was found on, through the portion kind.
+     out.length is positive in this branch, so H.length is too. */
+  says:out.length?('the field lean on '+fmtPct('portion',out.length/H.length)+' of snapshots')
    :'no snapshot on file carries a coherence reading'};}
 
 /* ---------- the gates as schema ----------
@@ -12167,6 +12670,161 @@ function avatarProgress(rows){
   pct:Math.round(100*done/Math.max(1,list.length))};}
 
 /* ============================================================
+   WHOLE, 18 November. His words: "we're going to use the word whole", and
+   "when a ritual is marked done, it should move the slider." The spec is
+   whole-math/SPEC.md, merged from four seats' papers.
+
+   Measured before this was written, three Avatar percents disagreed: the
+   drill read avatarProgress above (clear pairs only), the Avatar page read
+   avClosure (ui/avatarui.js), which falls when a story lands charge and reads
+   100 off a seat that never carried any, and the Dashboard card drew done over
+   done plus missed, so a missed day pulled it down under a hover that said
+   "loss". A ritual marked done moved none of them. And his belief that the
+   engine had no math for the positive side was only partly true: a reframe
+   line is already kept in meter.unique and already lifts the laws, but no
+   Avatar percent read it.
+
+   So the Whole counts ACTS and never state. Three, each read off the record:
+     released   distinct release lines opened, keys whose channel ends in limit
+     reframed   distinct reframe lines opened, keys whose channel ends in truth
+     practised  distinct days a ritual was marked done, wholeDays below
+   A state (the charge, a seat's load, S.replace) falls when a new story lands,
+   which would teach a person that writing more lowers their number and run
+   the loop backwards. The Field already shows the state.
+
+   It never falls for a miss: a done:false entry adds nothing and subtracts
+   nothing. It returns to an earlier value only when the record itself goes
+   back: a press taken back, a ritual deleted, a release run undone (undo
+   restores meter.unique), or a change of timezone that folds two local day
+   keys into one in pracDay. That is the record and not a penalty, and it is
+   why the hover may not say the Whole only goes up: the first draft did. Nothing derived is stored, so there is no high water mark to
+   drift from the record. Affirmations get no part of their own: an
+   affirmation is a step in a ritual, and the day that ritual is marked done
+   is the act. A generated line is not an act.
+
+   A measure of what was done, never a reward. No points, no levels, nothing
+   unlocked by it, his 15 November rulings.
+
+   Read at call time, never at load: W is core.js, LINES_PER_CH is schema.js
+   and pracDay and pracSoon are ladder.js, and schema.js and ladder.js load
+   AFTER this file in MANIFEST. Nothing at the top level of this file may
+   touch them, or the const throws in its dead zone and takes every later
+   module with it. WHOLE_R_LINE reads only its own two constants for that
+   reason.
+   ============================================================ */
+/* stated weights, his to change. Release and reframe are one act in two
+   halves (relWrite: "the second half is not optional"), so they are equal.
+   Practise is self report, so it carries the smallest share and is capped. */
+const WHOLE_W={released:0.35, reframed:0.35, practised:0.30};
+/* the avatar's own review month, read off AV_MONTH rather than typed a second
+   time, so a ritual day is exactly one point of the Whole for thirty days */
+const WHOLE_DAYS=Math.round(AV_MONTH/86400000);
+/* THE ANCHOR, and which part of it is his. The 15,000 is his own figure,
+   quoted at compute.js beside LIFT_R: "I had about 15,000 patterns for my
+   CQ. My CQ is about between 88 and 92." He gave no share closed. The share
+   is compute.js's fitted reading of his words under its own assumed start of
+   50, "five is the average", so a law went from 5 to about 9 of 10, and it
+   is derived here from those three numbers rather than typed as 0.8, because
+   0.8 typed was cited as his and is not. The unit differs too: compute.js
+   spreads the 15,000 per seat, both halves together (about 2,143 keys a
+   seat), and this file applies it per half across the whole body, then
+   normalises to the ground in wholeOf, so his 15,000 reads about 89 percent
+   of each half here and not 80. One person, one assumed start. */
+const WHOLE_OWNER_LINES=15000, WHOLE_OWNER_CLOSED=(9-5)/(10-5);
+/* what one line closes, derived and never typed. His 15,000 is halved because
+   meterPlan walks release and reframe in turn, so half of them were each */
+const WHOLE_R_LINE=1-Math.pow(1-WHOLE_OWNER_CLOSED,1/(WHOLE_OWNER_LINES/2));
+/* the one hover text, said once, so no surface explains it a second way. The
+   first draft said "one percent a day for your first thirty days" and "It
+   only goes up", and both were false: the first thirty days MARKED DONE count
+   whenever they fall, and a press taken back or a run undone lowers it. What
+   moved it is wholeSay's job, read off the counts, because a fixed sentence
+   cannot say that. */
+const WHOLE_MEANS='Whole counts what you have done: each pattern you release, '
+ +'each reframe you put in its place, and each day you mark a ritual done, '
+ +'one percent a day for thirty days of practice. A missed day takes nothing away.';
+/* the lines there are in one half, release or reframe: both sides of every
+   carrying address, LINES_PER_CH each. Counted at run time so an address
+   added to the map grows the ground without anyone retyping it. */
+function wholeGround(){
+ return W.filter(function(n){return n.cf;}).length*LINES_PER_CH*2;}
+/* A KEY THE METER COULD HAVE WRITTEN. The count and the ground must be drawn
+   from one set of keys. The first cut counted any string whose channel ended
+   in limit or truth, and validateProfile keeps any short string in
+   meter.unique, so a pasted record carrying 'x:limit:0..10699' and
+   'x:truth:0..10699' read 70 percent with no act, and '999:Llimit:0',
+   '3:Llimit:5000', '3:Llimit', '3:Xtruth:0' and '8:Llimit:0' (8 is the one
+   address in W with no cf) each counted. So a key counts only in meterKey's
+   own shape, with no leading zero that would let '03' or '00' count a line
+   twice, at an address wholeGround counts, on a line inside LINES_PER_CH.
+   Returns 'limit', 'truth' or null. */
+function wholeKeyHalf(k,at){
+ var m=/^(0|[1-9]\d*):[LR](limit|truth):(0|[1-9]\d*)$/.exec(k);
+ if(!m||!at[m[1]]||+m[3]>=LINES_PER_CH)return null;
+ return m[2];}
+/* THE DAYS THE WHOLE COUNTS. pracDaysAt's rule (done:false is not a day, one
+   key per local day, nothing past tomorrow by pracSoon) and one more: a press
+   stamped more than a day after the day it marks does not count here.
+   ritMarkOn accepts a past day pressed today, so without this a month of the
+   Whole could be bought in one sitting. The streak keeps its own rule and
+   still counts those days; this filter is the Whole's alone. done true, or
+   absent on an entry older than the field, has no stamp and counts. The skip
+   comes before the day is marked seen, so a late press cannot hide an honest
+   entry for the same day. */
+function wholeDays(p,now){
+ var today=pracDay(now||Date.now()), seen={}, out=[];
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false)return;
+  var k=pracDay(x.t); if(!pracSoon(k,today)||seen[k])return;
+  if(typeof x.done==='string'){var dk=pracDay(x.done); if(dk!==null&&dk-k>1)return;}
+  seen[k]=1; out.push(k);});
+ return out.sort(function(a,b){return b-a;});}
+/* release and reframe on the owner's own curve, normalised to the ground there
+   is, so every line in a half opened reads exactly one and a line opened twice
+   counts once. Distinct keys and not relLines or truthLines, because those
+   rise on a rerun and a rerun is not a new act. */
+function wholeSat(n){return 1-Math.pow(1-WHOLE_R_LINE,n);}
+function wholeOf(p,now){
+ var uq=(p&&p.meter&&Array.isArray(p.meter.unique))?p.meter.unique:[];
+ var seen={}, R=0, I=0, at={};
+ W.forEach(function(n){if(n.cf)at[n.i]=1;});
+ uq.forEach(function(k){
+  if(typeof k!=='string'||seen[k])return; seen[k]=1;
+  var half=wholeKeyHalf(k,at);
+  if(half==='limit')R++; else if(half==='truth')I++;});
+ var D=wholeDays(p,now).length, G=wholeGround(), n={R:R, I:I, D:D, G:G};
+ /* nothing done is unread and prints the dash. Never a 0, because a 0 says it
+    was read and came to nothing, and a default is not a reading. */
+ if(!(R+I+D))return {pct:null, v:null, parts:null, n:n, reason:'unread'};
+ var top=wholeSat(G);
+ var parts={released:Math.min(1,wholeSat(R)/top), reframed:Math.min(1,wholeSat(I)/top),
+  practised:Math.min(1,D/WHOLE_DAYS)};
+ var v=WHOLE_W.released*parts.released+WHOLE_W.reframed*parts.reframed
+  +WHOLE_W.practised*parts.practised;
+ /* rules on the printed figure, never on an input. A real act shows at least
+    1, because fmtPct prints a nought as the dash and the dash would say
+    nothing happened. And 100 is printed only when everything is done, so a
+    v of 0.996 shows 99 and never claims the top it has not reached. */
+ var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));
+ return {pct:pct, v:v, parts:parts, n:n, reason:'read'};}
+/* WHAT MOVED IT, as the counts behind the figure. WHOLE_MEANS says what the
+   Whole is and cannot say what this person did, and one release run moves
+   the figure by a few hundredths of a point, so without the counts the
+   release half cannot be seen moving on the hover. Takes wholeOf's result,
+   so a surface reads one call and prints two strings from it. Unread is
+   null, never a line of noughts, and only the halves with an act are named. */
+function wholeSay(w){
+ if(!w||!w.n||w.reason!=='read')return null;
+ var u=function(c,one,many){return c+' '+(c===1?one:many);};
+ var bits=[];
+ if(w.n.R)bits.push('released '+u(w.n.R,'line','lines'));
+ if(w.n.I)bits.push('reframed '+u(w.n.I,'line','lines'));
+ if(w.n.D)bits.push('practised '+u(w.n.D,'day','days'));
+ if(!bits.length)return null;
+ var s=bits.join(', ');
+ return s.charAt(0).toUpperCase()+s.slice(1)+'.';}
+
+/* ============================================================
    THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
    September: "Adding in data so that I can tag and have Source attach what
    I'm tagging to my releases, so that it can prioritise those releases, so I
@@ -13968,6 +14626,612 @@ function traceSummary(g,node){
   node:{type:self.type, id:self.id, key:key, attrs:self, card:selfCard},
   parents:parents, children:children,
   summary:traceSummaryNarrate(self,selfCard,parents,children)};}
+/* ============================================================
+   THE INSIGHT READING. 18 November, the owner's words, on the right rail:
+   "Whatever I select, it should give me source AI's reading of the cascade
+   of that information, how it flows through me, and what the appropriate
+   actions are." And: "The insight panel will always show 3 paragraphs with
+   dots for more information that you can select and click through."
+
+   WHAT THIS IS. One pure function, insightRead(sel, r, g, o). It takes what
+   was selected, the reading compute() made, the trace graph when there is
+   one, and a few facts only the host knows (is the safety check on, which
+   addresses have already been released, how the avatar ranks them), and it
+   returns three paragraphs per page. No language model: every clause is a
+   fixed template plus a named record field or a computed figure, and a slot
+   with no data is dropped or said as one short gap sentence. It is never
+   filled by invention. 17 November, his words: "the insight panel is source
+   ai's translation of whats selected."
+
+   THE SEGMENT SHAPE IS THE POINT. A paragraph is a list of segments, and a
+   segment is {t, text, src, kind, speak}, plus fig (the percents it prints,
+   each with the registry kind and the value they were read from) and q (the
+   words it quotes). src is a list of dotted paths that insightResolve can
+   walk back to the field the clause came from. That is what the CQ 10 law
+   monitor needs in order to check a Source AI sentence, and it is the seam an
+   audio button can speak from, character for character: the screen and the
+   voice render from one list, and nobody ever runs a pattern over HTML.
+
+     kind   model  the product's own map, true by construction
+            mine   a fact read off this person's record
+            quote  the person's own words (none are quoted yet: every
+                   imprint the sniffer places is inferred, and an inferred
+                   imprint is never quoted at an address)
+            book   a library line, quoted, its source on hover
+            offer  an action the product can actually run
+            gap    what is missing, said once and short
+     speak  false on any segment holding a percent or a body place, the same
+            line the voice branch already holds
+
+   WHAT IT MAY NEVER SAY. A percent is fmtPct of the field it names and never
+   a decimal. A body place is the map's, never claimed as the person's. A
+   graph edge is a registration and never a cause. An offer says is
+   available, you can or if you want, and never should, must, need to or
+   have to. No identity sentence: a pattern is something you run. No word of
+   the clinical register (HCXCARD sub, impact and behavior are never printed).
+   When the safety check holds, the third paragraph is the safety line and
+   nothing else is offered.
+
+   leaves() and patFam() moved here from ui/component.js unchanged, because
+   the composer needs them and the engine may not read a renderer. The names
+   did not change, so every caller still finds them.
+   ============================================================ */
+
+/* every address a pattern is built on, once each */
+function leaves(o){if(!o||!o.parts)return o?[o]:[];
+ var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
+  else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
+/* THE FAMILY A PATTERN BELONGS TO, AND ITS RECORD. 4 November, his live
+   reaction to the pattern drill: the words must come "from the records", and
+   "built from 5 held addresses" is "a big no". A saboteur and a complex name
+   their family in hcx, a hyper complex is its family; the record is HCX_LIB's
+   d, the line that already prints on every hover of a hyper complex. An
+   overshoot family has no row there, and its sentence is the one compute()
+   gives the same family (engine/compute.js, FAMS), read the same way here
+   off FAM_POLE so the two cannot word it differently. */
+function patFam(o){
+ var nm=!o?'':o.kind==='hy'?o.nm:(o.hcx||''); if(!nm)return null;
+ var h=HCX_LIB.filter(function(x){return x.nm===nm;})[0];
+ if(h)return {nm:nm,d:h.d};
+ var base=Object.keys(FAM_POLE).filter(function(k){return FAM_POLE[k]===nm;})[0];
+ return base?{nm:nm,d:'the fix for '+base.toLowerCase()+', done past the point where it helps'}:null;}
+
+/* ---------- the words ---------- */
+var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
+var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
+ addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
+ path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
+var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
+var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
+/* the three fixed run-in headers, a label and never data */
+var INS_HEAD=['Where it sits.','How it runs.','What to do.'];
+/* the paragraph ceilings that keep three paragraphs inside a short scroll at
+   390: 70, 70 and 60 words, 200 in all, under the 210 the owner's own "much
+   longer" was set against. */
+var INS_MAX=[70,70,60];
+var INS_BAN=/\b(should|must|need to|needs to|have to|has to)\b/i;
+/* what a person sees on hover over a book line: where it came from, in words */
+var INS_SRC_WORDS={SABDEF:'the saboteur record',SABCARD:'the saboteur card',HCX_LIB:'the hyper complex record',
+ HCXCARD:'the hyper complex card',CHILD:'the child emotion table',AFFIRM:'the affirmation table',
+ CHALLENGE:'the daily challenge table',DOMDEF:'the domain record',APC:'the point record',HARM:'the law record',
+ ARCH:'the archetype record',MASKS:'the mask record',NODES:'the address table',FAM_POLE:'the family table',
+ CRISIS_SAY:'the safety line'};
+
+/* ---------- small helpers ---------- */
+function insArt(w){return /^[aeiou]/i.test(w)?'an':'a';}
+function insCap1(s){s=String(s||'');return s.charAt(0).toUpperCase()+s.slice(1);}
+function insLow1(s){s=String(s||'');return s.charAt(0).toLowerCase()+s.slice(1);}
+function insWords(s){var t=String(s||'').trim();return t?t.split(/\s+/).length:0;}
+function insSeat(b){return b==='3rd Eye'?'3rd eye':String(b||'').toLowerCase();}
+/* WHERE A CHILD EMOTION SITS, as a phrase that carries its own preposition. The
+   table names six of them as places ('Cardiac plexus') and three as regions or
+   a direction ('Below the heart', 'Prefrontal and dermis'), and 'at the below
+   the heart' came out of a reading, found by looking at it. A direction stands
+   alone, and a pair of regions says what it is a region of. */
+function insAtPlace(a){
+ var s=String(a||'').toLowerCase();
+ if(/^(below|above|behind|under|beside)\b/.test(s))return s;
+ return 'at the '+s.replace(/^(prefrontal|sacral) and /,'$1 region and ');}
+/* WHERE AN ADDRESS SITS. A somatic address is seated at a named plexus or nerve
+   and says so. The four field anchors have none (their nerve is null) and sit
+   above or below the body, which a scan of every reading found as 'at the
+   null'. */
+function insNodeAt(n){
+ if(n&&n.n)return 'at the '+String(n.n).toLowerCase();
+ return /below/i.test(String(n&&n.b))?'below the body':'above the body';}
+function insBase(o){return traceSummaryBase(o.nm);}
+function insFirst(s){var t=String(s||'').trim(), m=/^(.*?[.!?])(\s|$)/.exec(t);return m?m[1]:t;}
+function insFind(r,kind,nm){return (r[INS_LIST[kind]]||[]).filter(function(x){return x.nm===nm;})[0]||null;}
+function insUp(o,r){
+ var up=INS_UP[o.kind]; if(!up)return null;
+ return (r[INS_LIST[up]]||[]).filter(function(p){
+  return (p.parts||[]).some(function(c){return c.kind===o.kind&&c.nm===o.nm;});})[0]||null;}
+/* the heaviest first, ties kept in the order the reading gave them */
+function insByW(list){return (list||[]).map(function(x,j){return {x:x,j:j};})
+ .sort(function(a,b){return (b.x.w-a.x.w)||(a.j-b.j);}).map(function(z){return z.x;});}
+function insBySq(list){return (list||[]).map(function(x,j){return {x:x,j:j};})
+ .sort(function(a,b){return ((+b.x.sq||0)-(+a.x.sq||0))||(a.j-b.j);}).map(function(z){return z.x;});}
+/* the child emotions a selection runs on, heaviest held first */
+function insFets(o){
+ var seen={}; leaves(o).forEach(function(n){if(n.cf)seen[n.cf]=1;});
+ return CHILD.filter(function(c){return seen[c.nm];})
+  .sort(function(a,b){return (S.charge[b.nm]||0)-(S.charge[a.nm]||0);});}
+/* a list said in words: a, b and c */
+function insAnd(a){
+ if(a.length<2)return a.join('');
+ return a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+/* a name with its percent, and the name alone when the figure rounds to
+   nothing, because a percent that is the dash is never printed as 0% */
+function insAtPct(nm,kind,v){var f=fmtPct(kind,v);return f===PCT_DASH?nm:nm+' at '+f;}
+function insHeld(kind,v){return fmtPct(kind,v)!==PCT_DASH;}
+/* the segment, one clause. fig lists the percents it prints, each as
+   [registry kind, value], so a test can read the figure back off its field */
+function insSeg(text,src,kind,x){
+ x=x||{};
+ var g={t:'text',text:text,src:(src instanceof Array)?src:[src],kind:kind||'model',
+  speak:!(/%/.test(text)||x.place)};
+ if(x.fig)g.fig=x.fig;
+ if(x.q)g.q=x.q;
+ return g;}
+/* a book line, quoted, with the exact quoted words kept apart for the check */
+function insBook(lead,q,src,tail,place){
+ /* a line that already ends on a stop takes no second one */
+ if(tail==='.'&&/[.!?]$/.test(q))tail='';
+ return insSeg(lead+'“'+q+'”'+(tail||''),src,'book',{q:q,place:!!place});}
+/* a paragraph, packed to its ceiling. Each clause carries a priority, 0 is
+   always kept, and clauses join in priority order until the ceiling is
+   reached, then print in the order they were written. Nothing is cut in the
+   middle of a clause. */
+function insPack(h,clauses,max){
+ var list=clauses.filter(function(c){return c&&c.s&&c.s.text;})
+  .map(function(c,i){return {s:c.s,p:c.p||0,i:i};});
+ var used=insWords(h), keep={};
+ list.slice().sort(function(a,b){return (a.p-b.p)||(a.i-b.i);}).forEach(function(c){
+  var w=insWords(c.s.text);
+  if(c.p===0||used+w<=max){keep[c.i]=1;used+=w;}});
+ return {h:h,segs:list.filter(function(c){return keep[c.i];}).map(function(c){return c.s;})};}
+function insClause(s,p){return {s:s,p:p};}
+/* a record line may not carry a word an offer is banned from using, so the
+   clause is left out and the reading says less rather than something else */
+function insOk(t){return t&&!INS_BAN.test(String(t))&&!/\u2014/.test(String(t));}
+
+/* THE RELEASE THE READING MAY OFFER, one answer for the pill, the run glyph
+   on a stack bar, and the third paragraph, so the three can never disagree.
+   Never on an overshot pattern (ui/release.js: the opposite pushed past where
+   it helps, so a release has nothing to work), never where no address holds
+   charge, never on Entitlement (no child emotion is mapped to it, so
+   relPick drops it), and the host adds the safety check and the plan lock.
+   o.rank orders the addresses the way the release door will, o.released is
+   the set of addresses already opened. */
+function insightRelease(sel,r,o){
+ o=o||{};
+ var base={ok:false,ids:[],first:null,why:'none'}, list=[], opp='';
+ if(!sel||!r||r.unread){base.why='unread';return base;}
+ if(INS_LIST[sel.kind]){
+  var p=insFind(r,sel.kind,sel.nm); if(!p){base.why='gone';return base;}
+  if(p.over){base.why='over';return base;}
+  list=leaves(p);}
+ else if(sel.kind==='fet'){list=W.filter(function(n){return n.cf===sel.nm;});}
+ else if(sel.kind==='addr'){var n0=BY[sel.i]; list=n0?[n0]:[];}
+ else{base.why='kind';return base;}
+ list=list.filter(function(n){return n.cf&&n.sq>=1;});
+ if(!list.length){base.why='quiet';return base;}
+ var rel=o.released||{};
+ var ranked=(typeof o.rank==='function')?o.rank(list):insBySq(list);
+ var fresh=ranked.filter(function(n){return !rel[n.i];});
+ var first=(fresh[0]||ranked[0]);
+ var c=CHILD.filter(function(x){return x.nm===first.cf;})[0];
+ opp=c?c.opp:'';
+ return {ok:true,ids:ranked.map(function(n){return n.i;}),first:{i:first.i,k:first.k,sq:first.sq,cf:first.cf,opp:opp,fresh:fresh.length>0},why:''};}
+
+/* ---------- the trace graph, read for the entries that land ---------- */
+/* the distinct journal entries whose imprints land at any of these addresses,
+   never edges: one entry that reaches three addresses is one entry */
+function insStories(g,ids){
+ if(!g||typeof traceIsGraph!=='function'||!traceIsGraph(g))return null;
+ var any=false, seen={};
+ (g.nodes||[]).forEach(function(n){if(n.type==='story')any=true;});
+ ids.forEach(function(i){
+  traceNeighbors(g,traceKey('pattern',i),'supports').forEach(function(e){
+   if(e.dir==='in'&&/^story:/.test(e.key))seen[e.key]=1;});});
+ return {any:any,n:Object.keys(seen).length};}
+
+/* ---------- resolving a src path back to its field ---------- */
+var INS_ARR={HCX_LIB:'nm',CHILD:'nm',NODES:'i',DOMAINS:'nm',ARCH:'nm',MASKS:'nm',SI:'nm',APC:'b',HARM:'t'};
+function insightResolve(path,r){
+ var t=String(path||'');
+ if(/^(model|gap):/.test(t))return true;
+ var tok=t.split('.'), root=tok.shift(), cur;
+ var T={S:S,SABDEF:SABDEF,SABCARD:SABCARD,HCXCARD:HCXCARD,DOMDEF:DOMDEF,AFFIRM:AFFIRM,CHALLENGE:CHALLENGE,
+  FAM_POLE:FAM_POLE,CRISIS_SAY:CRISIS_SAY,HCX_LIB:HCX_LIB,CHILD:CHILD,NODES:NODES,DOMAINS:DOMAINS,ARCH:ARCH,
+  MASKS:MASKS,SI:SI,APC:APC,HARM:HARM,r:r};
+ if(!(root in T))return undefined;
+ cur=T[root];
+ for(var i=0;i<tok.length;i++){
+  var k=tok[i]; if(cur===undefined||cur===null)return undefined;
+  if(root==='r'&&i===0){var m=/^(sabs|cxs|hys|sups):(.*)$/.exec(k);
+   if(m){cur=(cur[m[1]]||[]).filter(function(x){return x.nm===m[2];})[0];continue;}}
+  if(cur instanceof Array){
+   var f=INS_ARR[root]||'nm';
+   cur=cur.filter(function(x){return String(x[f])===k||String(x.nm)===k;})[0];}
+  else cur=cur[k];}
+ return cur;}
+
+/* ============================================================
+   ONE SELECTION, THREE PARAGRAPHS
+   ============================================================ */
+function insFig(kind,v){return [kind,v];}
+
+/* the chain above a pattern, one rung at a time, said once */
+function insFeeds(o,r,leadKind){
+ var chain=[], x=o, up;
+ while((up=insUp(x,r))){chain.push(up); x=up;}
+ return chain;}
+
+function insP1Pattern(o,r){
+ var base=insBase(o), word=INS_WORD[o.kind], over=!!o.over;
+ var kw=(over?'overshot ':'')+word, cl=[];
+ var path='r.'+INS_LIST[o.kind]+':'+o.nm;
+ cl.push(insClause(insSeg(base+' is '+insArt(kw)+' '+kw+', at '+fmtPct('chain',o.w)+'.',[path+'.w'],'mine',
+  {fig:[insFig('chain',o.w)]}),0));
+ if(o.kind==='sab'&&o.unnamed)
+  cl.push(insClause(insSeg('The library has no name for this cluster, so it is named for its point and its feeling.',
+   [path+'.unnamed'],'mine'),2));
+ if(over)
+  cl.push(insClause(insSeg('That is the opposite pushed past where it helps.',['FAM_POLE'],'model'),1));
+ /* ONE STEP DOWN, EACH PART WITH ITS PERCENT */
+ if(o.kind==='sab'){
+  var top=insBySq(leaves(o)).slice(0,3);
+  if(top.length){
+   var bits=top.map(function(n){return insAtPct(n.k,'weight',n.sq);});
+   var held=top.filter(function(n){return insHeld('weight',n.sq);});
+   cl.push(insClause(insSeg('It is built on '+insAnd(bits)+'.'+(held.length?'':' Each has nothing left after the opposite.'),
+    top.map(function(n){return 'NODES.'+n.i+'.k';}),
+    'mine',{fig:held.map(function(n){return insFig('weight',n.sq);})}),1));
+   cl.push(insClause(insSeg(top[0].k+' sits '+insNodeAt(top[0])+', in the '+insSeat(top[0].b)+' point.',
+    ['NODES.'+top[0].i+'.n','NODES.'+top[0].i+'.b'],'model',{place:true}),3));}}
+ else{
+  var parts=insByW(o.parts).slice(0,3);
+  if(parts.length){
+   var pl=parts.map(function(p){return insAtPct(insBase(p),'chain',p.w);});
+   var lead=o.kind==='cx'?'It joins ':(o.kind==='hy'?'It is built from ':'It joins ');
+   cl.push(insClause(insSeg(lead+insAnd(pl)+'.',
+    parts.map(function(p){return 'r.'+INS_LIST[p.kind]+':'+p.nm+'.w';}),'mine',
+    {fig:parts.map(function(p){return insFig('chain',p.w);})}),1));}}
+ /* ONE STEP UP, AND ON TO THE TOP OF THE CHAIN ON FILE */
+ var chain=insFeeds(o,r);
+ if(chain.length){
+  var fl=chain.map(function(u,i){return (i?'then ':'')+'the '+INS_WORD[u.kind]+' '+insBase(u)+' at '+fmtPct('chain',u.w);});
+  cl.push(insClause(insSeg('It feeds '+fl.join(', ')+'.',
+   chain.map(function(u){return 'r.'+INS_LIST[u.kind]+':'+u.nm+'.w';}),'mine',
+   {fig:chain.map(function(u){return insFig('chain',u.w);})}),2));}
+ else if(o.kind==='sup')
+  cl.push(insClause(insSeg('Nothing sits above it.',['model:top'],'model'),2));
+ else
+  cl.push(insClause(insSeg('Nothing above it is joined to it yet.',['model:top'],'model'),2));
+ /* ITS OWN LINE, FROM THE BOOK. A hyper complex is its family, so it quotes
+    the line and does not say it belongs to itself, which was circular. */
+ if(o.kind==='sab'&&!over){
+  var def=SABDEF[KB_KEY(base)];
+  if(def&&def.q&&insOk(def.q))
+   cl.push(insClause(insBook('Its line: ',def.q,['SABDEF.'+KB_KEY(base)+'.q'],'.'),3));
+  else{var f=patFam(o); if(f&&insOk(f.d))cl.push(insClause(insSeg('It belongs to the '+f.nm+' family: '+f.d+'.',['HCX_LIB.'+f.nm+'.d'],'book'),3));}}
+ else if(o.kind==='hy'){
+  var fh=patFam(o);
+  if(fh&&insOk(fh.d)){
+   if(over)cl.push(insClause(insSeg('Its family line: '+fh.d+'.',['FAM_POLE'],'model'),3));
+   else cl.push(insClause(insBook('Its line: ',fh.d,['HCX_LIB.'+fh.nm+'.d'],'.'),3));}}
+ else if(o.kind==='cx'){
+  var fc=patFam(o);
+  if(fc&&insOk(fc.d))cl.push(insClause(insSeg('It belongs to the '+fc.nm+' family: '+fc.d+'.',
+   [over?'FAM_POLE':'HCX_LIB.'+fc.nm+'.d'],'book'),3));}
+ return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+
+/* the heaviest saboteur under a pattern: a complex, a hyper complex and a super
+   complex have no sentence of their own, and what they run is what their
+   heaviest saboteur runs */
+function insHeavySab(o){
+ if(o.kind==='sab')return o;
+ var best=null;
+ (function dig(x){(x.parts||[]).forEach(function(c){
+  if(c.kind==='sab'){if(!best||c.w>best.w)best=c;}else dig(c);});})(o);
+ return best;}
+/* the pattern's pole: where the work moves to, from the record that has one */
+function insPole(o){
+ var base=insBase(o), key=KB_KEY(base);
+ if(o.kind==='sab'&&!o.over){var c=SABCARD[key]; if(c&&c.op&&insOk(c.op))return {t:c.op,src:'SABCARD.'+key+'.op'};}
+ if(o.kind==='hy'&&!o.over){var h=HCXCARD[key]; if(h&&h.inverseName&&insOk(h.inverseName))return {t:h.inverseName,src:'HCXCARD.'+key+'.inverseName'};}
+ return null;}
+
+function insP2Pattern(o,r,g){
+ var cl=[], path='r.'+INS_LIST[o.kind]+':'+o.nm, fets=insFets(o);
+ var top=fets.filter(function(c){return (S.charge[c.nm]||0)>0;}).slice(0,3);
+ if(top.length){
+  var bits=top.map(function(c){return c.nm+' held at '+fmtPct('charge',S.charge[c.nm]);});
+  cl.push(insClause(insSeg('It runs on '+insAnd(bits)+'.',top.map(function(c){return 'S.charge.'+c.nm;}),'mine',
+   {fig:top.map(function(c){return insFig('charge',S.charge[c.nm]);})}),0));
+  var c0=top[0];
+  cl.push(insClause(insSeg('The map points '+c0.nm+' '+insAtPlace(c0.addr)+'.',
+   ['CHILD.'+c0.nm+'.addr'],'model',{place:true}),2));}
+ else cl.push(insClause(insSeg('No child emotion under it holds charge yet.',['gap:charge'],'gap'),0));
+ /* WHAT FIRES IT, from the record, and only for a named saboteur */
+ if(o.kind==='sab'&&!o.over){
+  var def=SABDEF[KB_KEY(insBase(o))];
+  if(def&&def.t&&insOk(def.t))cl.push(insClause(insBook('It fires in this moment: ',def.t,['SABDEF.'+KB_KEY(insBase(o))+'.t'],''),1));}
+ /* WHERE THE WORK MOVES TO */
+ var pole=insPole(o);
+ if(pole)cl.push(insClause(insSeg((/,/.test(pole.t)?'Its higher poles: ':'Its higher pole: ')+pole.t+'.',[pole.src],'book'),1));
+ if(top.length){
+  var opp=top[0].opp;
+  var inst=S.replace[top[0].nm]||0;
+  cl.push(insClause(insSeg('The opposite of '+top[0].nm+' is '+opp+', '+(inst>0?'installed at '+fmtPct('installed',inst):'not installed yet')+'.',
+   ['CHILD.'+top[0].nm+'.opp','S.replace.'+top[0].nm],'mine',inst>0?{fig:[insFig('installed',inst)]}:{}),2));}
+ /* WHAT IT RUNS, in the words of the part that carries it: the sentence the
+    heaviest saboteur under a complex, a hyper complex or a super complex runs,
+    from that saboteur's own record */
+ if(o.kind!=='sab'){
+  var hs=insHeavySab(o), hd=hs&&!hs.over?SABDEF[KB_KEY(insBase(hs))]:null;
+  if(hd&&hd.q&&insOk(hd.q))
+   cl.push(insClause(insBook('Its heaviest part, '+insBase(hs)+', runs: ',hd.q,['SABDEF.'+KB_KEY(insBase(hs))+'.q'],'.'),1));}
+ /* THE ENTRIES THAT LAND UNDER IT */
+ var st=insStories(g,leaves(o).map(function(n){return n.i;}));
+ if(st&&st.any){
+  if(st.n>0)cl.push(insClause(insSeg((st.n===1?'One entry in your journal lands':st.n+' entries in your journal land')+' at addresses under it.',
+   ['model:stories'],'mine'),1));
+  else cl.push(insClause(insSeg('No entry in your journal is linked to it yet. The reading did not pick one up.',['gap:stories'],'gap'),1));}
+ return insPack(INS_HEAD[1],cl,INS_MAX[1]);}
+
+/* the step the record itself names, first sentence only, for the third paragraph */
+function insStep(o){
+ var base=insBase(o), key=KB_KEY(base), src, t;
+ if(o.kind==='sab'&&!o.over){
+  var c=SABCARD[key], d=SABDEF[key];
+  if(c&&c.n&&insOk(insFirst(c.n))){t=insFirst(c.n);src='SABCARD.'+key+'.n';}
+  else if(d&&d.i&&insOk(insFirst(d.i))){t=insFirst(d.i);src='SABDEF.'+key+'.i';}}
+ else if(o.kind==='hy'&&!o.over){
+  var h=HCXCARD[key]; if(h&&h.practice&&insOk(insFirst(h.practice))){t=insFirst(h.practice);src='HCXCARD.'+key+'.practice';}}
+ else if(o.kind==='cx'||o.kind==='sup'){
+  var heavy=insByW(o.parts)[0];
+  if(heavy)return insStep(heavy);}
+ return t?{t:t,src:src}:null;}
+
+function insP3Pattern(o,r,rel,safe){
+ if(safe)return insSafeP3();
+ var cl=[];
+ if(rel.ok){
+  var f=rel.first, lead=o.kind==='sup'
+   ?'One run works its heaviest places first, starting at '+f.k+' ('+fmtPct('weight',f.sq)+').'
+   :'A release at '+f.k+' ('+fmtPct('weight',f.sq)+') is available.';
+  cl.push(insClause(insSeg(lead,['NODES.'+f.i+'.k'],'offer',{fig:[insFig('weight',f.sq)],place:true}),0));
+  cl.push(insClause(insSeg('It lowers the charge there, then installs '+f.opp+' while the address is open.',
+   ['model:release','CHILD.'+f.cf+'.opp'],'offer'),1));}
+ else if(rel.why==='over')
+  cl.push(insClause(insSeg('This is the opposite pushed past where it helps, so a release has nothing to work on it.',['model:over'],'model'),0));
+ else
+  cl.push(insClause(insSeg('Nothing under it holds charge yet, so a release has nothing to open.',['gap:release'],'gap'),0));
+ var st=insStep(o);
+ if(st)cl.push(insClause(insBook('If you want a step from its record: ',st.t,[st.src],''),2));
+ var fets=insFets(o), dom=fets.filter(function(c){return AFFIRM[c.nm];})[0];
+ if(dom&&rel.ok)cl.push(insClause(insBook('After the release, this line is available: ',AFFIRM[dom.nm],['AFFIRM.'+dom.nm],''),3));
+ cl.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return insPack(INS_HEAD[2],cl,INS_MAX[2]);}
+
+function insSafeP3(){
+ return {h:INS_HEAD[2],segs:[insSeg(CRISIS_SAY.q,['CRISIS_SAY.q'],'model')]};}
+
+/* ---------- a child emotion ---------- */
+function insFetSabs(r,nm){
+ return insByW((r.sabs||[]).filter(function(s){return leaves(s).some(function(n){return n.cf===nm;});}));}
+function insP1Fet(c,r){
+ var cl=[], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+ cl.push(insClause(insSeg(c.nm+' is a child emotion, held at '+fmtPct('charge',v)+'.',['S.charge.'+c.nm],'mine',
+  {fig:[insFig('charge',v)]}),0));
+ cl.push(insClause(insSeg(c.opp+' is its opposite, '+(p>0?'installed at '+fmtPct('installed',p):'not installed yet')+'.',
+  ['CHILD.'+c.nm+'.opp','S.replace.'+c.nm],'mine',p>0?{fig:[insFig('installed',p)]}:{}),0));
+ cl.push(insClause(insSeg('The map points it '+insAtPlace(c.addr)+', in the '+insSeat(c.seat)+' point.',
+  ['CHILD.'+c.nm+'.addr','CHILD.'+c.nm+'.seat'],'model',{place:true}),1));
+ var sabs=insFetSabs(r,c.nm).slice(0,3);
+ if(sabs.length)cl.push(insClause(insSeg(insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+(sabs.length===1?' runs':' run')+' on it.',
+  sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),1));
+ else cl.push(insClause(insSeg('No saboteur runs on it yet.',['gap:sabs'],'gap'),1));
+ return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+function insP2Fet(c,r,g){
+ var cl=[], v=S.charge[c.nm]||0, p=S.replace[c.nm]||0;
+ var lv=W.filter(function(n){return n.cf===c.nm&&n.sq>=1;});
+ var top=insBySq(lv).slice(0,3);
+ if(top.length)cl.push(insClause(insSeg('Its heaviest addresses are '+insAnd(top.map(function(n){return n.k+' at '+fmtPct('weight',n.sq);}))+'.',
+  top.map(function(n){return 'NODES.'+n.i+'.k';}),'mine',{fig:top.map(function(n){return insFig('weight',n.sq);}),place:true}),0));
+ else cl.push(insClause(insSeg('No address carrying it holds charge yet.',['gap:charge'],'gap'),0));
+ var lean=(v-p)*5>0?'It leans toward being held: more is held than installed.'
+  :((v-p)*5<0?'It leans toward '+c.opp+': more is installed than held.':'Held and installed sit level.');
+ if(v>0||p>0)cl.push(insClause(insSeg(lean,['S.charge.'+c.nm,'S.replace.'+c.nm],'mine'),1));
+ var st=insStories(g,lv.map(function(n){return n.i;}));
+ if(st&&st.any){
+  if(st.n>0)cl.push(insClause(insSeg((st.n===1?'One entry in your journal lands':st.n+' entries in your journal land')+' at addresses that carry it.',
+   ['model:stories'],'mine'),1));
+  else cl.push(insClause(insSeg('No entry in your journal is linked to it yet. The reading did not pick one up.',['gap:stories'],'gap'),1));}
+ return insPack(INS_HEAD[1],cl,INS_MAX[1]);}
+function insP3Fet(c,r,rel,safe){
+ if(safe)return insSafeP3();
+ var cl=[];
+ if(rel.ok){
+  var f=rel.first;
+  cl.push(insClause(insSeg('A release at '+f.k+' ('+fmtPct('weight',f.sq)+') is available.',['NODES.'+f.i+'.k'],'offer',
+   {fig:[insFig('weight',f.sq)],place:true}),0));
+  cl.push(insClause(insSeg('It lowers the charge there, then installs '+c.opp+' while the address is open.',['model:release','CHILD.'+c.nm+'.opp'],'offer'),1));}
+ else cl.push(insClause(insSeg('No address carrying it holds charge yet, so a release has nothing to open.',['gap:release'],'gap'),0));
+ var ch=CHALLENGE[c.nm];
+ if(ch&&ch.act&&insOk(insFirst(ch.act)))cl.push(insClause(insBook('If you want a step for today: ',insFirst(ch.act),['CHALLENGE.'+c.nm+'.act'],''),2));
+ if(AFFIRM[c.nm]&&rel.ok)cl.push(insClause(insBook('After the release, this line is available: ',AFFIRM[c.nm],['AFFIRM.'+c.nm],''),3));
+ cl.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return insPack(INS_HEAD[2],cl,INS_MAX[2]);}
+
+/* ---------- an address ---------- */
+function insSabsAt(r,i){
+ return insByW((r.sabs||[]).filter(function(s){return leaves(s).some(function(n){return n.i===i;});}));}
+function insP1Addr(n,r){
+ var cl=[];
+ cl.push(insClause(insSeg(n.k+' is an address, '+insNodeAt(n)+', in the '+insSeat(n.b)+' point'
+  +(insHeld('weight',n.sq)?', at '+fmtPct('weight',n.sq)+'.':'. It has nothing left after the opposite.'),
+  ['NODES.'+n.i+'.k','NODES.'+n.i+'.n','NODES.'+n.i+'.b'],'mine',{fig:insHeld('weight',n.sq)?[insFig('weight',n.sq)]:[],place:true}),0));
+ if(n.a&&n.d&&insOk(n.a)&&insOk(n.d))
+  cl.push(insClause(insSeg('Held clear, it reads '+insLow1(n.a)+'. Distorted, it reads '+insLow1(n.d)+'.',['NODES.'+n.i+'.a','NODES.'+n.i+'.d'],'book'),1));
+ var sabs=insSabsAt(r,n.i).slice(0,3);
+ if(sabs.length)cl.push(insClause(insSeg('Running on it: '+insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+'.',
+  sabs.map(function(s){return 'r.sabs:'+s.nm+'.w';}),'mine',{fig:sabs.map(function(s){return insFig('chain',s.w);})}),0));
+ else cl.push(insClause(insSeg('No saboteur runs on it yet.',['gap:sabs'],'gap'),0));
+ return insPack(INS_HEAD[0],cl,INS_MAX[0]);}
+function insP2Addr(n,r,g){
+ var cl=[];
+ if(n.cf){
+  var v=S.charge[n.cf]||0, p=S.replace[n.cf]||0, c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
+  cl.push(insClause(insSeg('It carries '+n.cf+', held at '+fmtPct('charge',v)+'.',['S.charge.'+n.cf],'mine',{fig:[insFig('charge',v)]}),0));
+  if(c)cl.push(insClause(insSeg(c.opp+' is its opposite, '+(p>0?'installed at '+fmtPct('installed',p):'not installed yet')+'.',
+   ['CHILD.'+n.cf+'.opp','S.replace.'+n.cf],'mine',p>0?{fig:[insFig('installed',p)]}:{}),1));}
+ else cl.push(insClause(insSeg('No child emotion is mapped to it yet, so nothing is held or installed here.',['gap:fetter'],'gap'),0));
+ var st=insStories(g,[n.i]);
+ if(st&&st.any){
+  if(st.n>0)cl.push(insClause(insSeg((st.n===1?'One entry in your journal lands':st.n+' entries in your journal land')+' here.',['model:stories'],'mine'),1));
+  else cl.push(insClause(insSeg('No entry in your journal is linked to it yet. The reading did not pick one up.',['gap:stories'],'gap'),1));}
+ return insPack(INS_HEAD[1],cl,INS_MAX[1]);}
+function insP3Addr(n,r,rel,safe){
+ if(safe)return insSafeP3();
+ var cl=[];
+ if(rel.ok){
+  var f=rel.first;
+  cl.push(insClause(insSeg('A release here, at '+fmtPct('weight',f.sq)+', is available.',['NODES.'+f.i+'.k'],'offer',{fig:[insFig('weight',f.sq)],place:true}),0));
+  cl.push(insClause(insSeg('It lowers the charge here, then installs '+f.opp+' while the address is open.',['model:release','CHILD.'+f.cf+'.opp'],'offer'),1));}
+ else if(!n.cf)cl.push(insClause(insSeg('No child emotion is mapped to this address yet, so a release cannot run here.',['gap:fetter'],'gap'),0));
+ else cl.push(insClause(insSeg('This address holds too little to open a release.',['gap:release'],'gap'),0));
+ if(n.cf&&AFFIRM[n.cf]&&rel.ok)cl.push(insClause(insBook('After the release, this line is available: ',AFFIRM[n.cf],['AFFIRM.'+n.cf],''),2));
+ cl.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return insPack(INS_HEAD[2],cl,INS_MAX[2]);}
+
+/* ---------- a blueprint domain ---------- */
+function insParasDom(d,o){
+ /* four domains are a different key in DOMDEF, the book's own name for them */
+ var key=KB_KEY(d.nm), alt=(typeof KB_RENAME!=='undefined')?KB_RENAME[key]:null;
+ if(!DOMDEF[key]&&alt&&DOMDEF[KB_KEY(alt)])key=KB_KEY(alt);
+ var def=DOMDEF[key]||{};
+ var cl1=[insClause(insSeg(d.nm+' is a blueprint domain'+(d.r?', in the '+d.r+' cluster':'')+'.',['DOMAINS.'+d.nm+'.nm'],'model'),0)];
+ var pick=o.soulFrom==='default'?'It is the default. You have not picked one yet.':(o.soulFrom==='picked'?'You picked it.':'');
+ if(pick)cl1.push(insClause(insSeg(pick,['model:soul'],'mine'),1));
+ if(def.c&&insOk(insFirst(def.c)))cl1.push(insClause(insBook('Read clear: ',insFirst(def.c),['DOMDEF.'+key+'.c'],''),1));
+ var cl2=[insClause(insSeg('Nothing in your entries is linked to a domain yet. The engine reads it from your blueprint.',['gap:domain'],'gap'),0)];
+ var cl3=[];
+ if(def.x&&insOk(def.x))cl3.push(insClause(insBook('Read distorted: ',insFirst(def.x),['DOMDEF.'+key+'.x'],''),1));
+ cl3.push(insClause(insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0));
+ cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+
+/* ---------- the other kinds: a short reading, honest about the rest ---------- */
+function insLineFor(sel){
+ /* the one line the drill for this kind already quotes, with where it came from */
+ if(sel.kind==='law'){
+  var h=HARM.filter(function(x){return x.a==='spirit'&&x.t===sel.nm;})[0];
+  if(h&&h.d)return {t:insFirst(h.d),src:'HARM.'+sel.nm+'.d'};}
+ else if(sel.kind==='arch'){
+  var a=ARCH.filter(function(x){return x.nm===sel.nm;})[0];
+  if(a&&a.d)return {t:a.d,src:'ARCH.'+sel.nm+'.d',v:a.v};}
+ else if(sel.kind==='mask'){
+  var m=MASKS.filter(function(x){return x.nm===sel.nm;})[0];
+  if(m&&m.v)return {t:m.v,src:'MASKS.'+sel.nm+'.v'};}
+ else if(sel.kind==='seat'){
+  var s=APC.filter(function(x){return x.b===sel.nm;})[0];
+  if(s&&s.d)return {t:insFirst(s.d),src:'APC.'+sel.nm+'.d'};}
+ return null;}
+function insParasOther(sel,o){
+ var nm=sel.nm||'', word=(INS_CAP[sel.kind]||'Selection').toLowerCase();
+ var lead=sel.kind==='core'?'The core is the centre of the wheel.':(nm?insCap1(nm)+' is '+insArt(word)+' '+word+'.':insCap1(word)+' is selected.');
+ var cl1=[insClause(insSeg(lead,['model:'+sel.kind],'model'),0)];
+ if(sel.kind==='law'&&S.law&&S.law[nm]!==undefined)
+  cl1.push(insClause(insSeg('It reads '+fmtPct('law',S.law[nm])+'.',['S.law.'+nm],'mine',{fig:[insFig('law',S.law[nm])]}),0));
+ var ln=insLineFor(sel);
+ if(ln&&insOk(ln.t)){
+  cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],'',sel.kind==='seat'),1));}
+ var cl2=[insClause(insSeg('Nothing in your entries is linked to this yet. Source AI has no longer reading of it so far.',['gap:'+sel.kind],'gap'),0)];
+ var cl3=[insClause(insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0),
+  insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0)];
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+
+/* ============================================================
+   THE PAGES. One per rung: the selection, then its direct parts heaviest
+   first, up to three, then its parent. A child emotion pages through the
+   saboteurs that run on it. A page with no data is not drawn, so there is
+   never a dead dot. The dots page into the next record, never into new
+   prose, and paging never changes the selection.
+   ============================================================ */
+function insTitle(sel,r){
+ if(INS_LIST[sel.kind]){var p=insFind(r,sel.kind,sel.nm);return p?insBase(p):sel.nm;}
+ if(sel.kind==='addr'){var n=BY[sel.i];return n?n.k:'';}
+ return sel.nm||INS_CAP[sel.kind]||'';}
+function insSelKey(sel){return sel?sel.kind+':'+(sel.kind==='addr'?sel.i:(sel.nm||'')):'';}
+function insParas(sel,r,g,o){
+ o=o||{};
+ var safe=!!o.safe, rel=insightRelease(sel,r,o);
+ if(INS_LIST[sel.kind]){
+  var p=insFind(r,sel.kind,sel.nm); if(!p)return null;
+  return [insP1Pattern(p,r),insP2Pattern(p,r,g),insP3Pattern(p,r,rel,safe)];}
+ if(sel.kind==='fet'){
+  var c=CHILD.filter(function(x){return x.nm===sel.nm;})[0]; if(!c)return null;
+  return [insP1Fet(c,r),insP2Fet(c,r,g),insP3Fet(c,r,rel,safe)];}
+ if(sel.kind==='addr'){
+  var n=BY[sel.i]; if(!n)return null;
+  return [insP1Addr(n,r),insP2Addr(n,r,g),insP3Addr(n,r,rel,safe)];}
+ if(sel.kind==='dom'){
+  var d=DOMAINS.filter(function(x){return x.nm===sel.nm;})[0]; if(!d)return null;
+  var ps=insParasDom(d,o); if(safe)ps[2]=insSafeP3(); return ps;}
+ var ps2=insParasOther(sel,o); if(safe)ps2[2]=insSafeP3(); return ps2;}
+function insPageSels(sel,r){
+ var out=[], p, up;
+ if(INS_LIST[sel.kind]){
+  p=insFind(r,sel.kind,sel.nm); if(!p)return out;
+  var parts=p.kind==='sab'
+   ?insBySq(leaves(p)).slice(0,3).map(function(n){return {sel:{kind:'addr',i:n.i},rung:'part'};})
+   :insByW(p.parts).slice(0,3).map(function(x){return {sel:{kind:x.kind,nm:x.nm},rung:'part'};});
+  out=out.concat(parts);
+  up=insUp(p,r); if(up)out.push({sel:{kind:up.kind,nm:up.nm},rung:'parent'});}
+ else if(sel.kind==='fet'){
+  out=insFetSabs(r,sel.nm).slice(0,3).map(function(s){return {sel:{kind:'sab',nm:s.nm},rung:'part'};});}
+ else if(sel.kind==='addr'){
+  out=insSabsAt(r,sel.i).slice(0,3).map(function(s){return {sel:{kind:'sab',nm:s.nm},rung:'parent'};});}
+ return out;}
+/* THE ONE ENTRY. sel is {kind, nm} or {kind:'addr', i}. Returns
+   {ok, id, pages, rel, safe}, or {ok:false, why} when nothing can be read:
+   an unread record, a pattern that is no longer running. */
+function insightRead(sel,r,g,o){
+ o=o||{};
+ if(!sel||!r)return {ok:false,why:'none'};
+ if(r.unread)return {ok:false,why:'unread'};
+ var paras=insParas(sel,r,g,o);
+ if(!paras)return {ok:false,why:'gone'};
+ var obj=INS_LIST[sel.kind]?insFind(r,sel.kind,sel.nm):null;
+ var kindWord=INS_CAP[sel.kind]||'Selection';
+ if(obj&&obj.over)kindWord=kindWord+', overshot';
+ var fig='';
+ if(obj)fig=fmtPct('chain',obj.w);
+ else if(sel.kind==='addr'&&BY[sel.i])fig=fmtPct('weight',BY[sel.i].sq);
+ else if(sel.kind==='fet')fig=fmtPct('charge',S.charge[sel.nm]||0);
+ else if(sel.kind==='law'&&S.law&&S.law[sel.nm]!==undefined)fig=fmtPct('law',S.law[sel.nm]);
+ var title=insTitle(sel,r);
+ var pages=[{key:insSelKey(sel),sel:sel,title:title,rung:'self',
+  tip:'Page 1: '+title+', what you picked',paras:paras}];
+ insPageSels(sel,r).forEach(function(ps){
+  var pp=insParas(ps.sel,r,g,o); if(!pp)return;
+  var t=insTitle(ps.sel,r);
+  pages.push({key:insSelKey(ps.sel),sel:ps.sel,title:t,rung:ps.rung,paras:pp,
+   tip:ps.rung==='parent'?t+', what this feeds':'Page '+(pages.length+1)+': '+t+', a part of this'});});
+ pages.forEach(function(pg,i){
+  pg.aria='Page '+(i+1)+' of '+pages.length+', '+pg.title;
+  if(pg.rung==='parent')pg.tip='Page '+(i+1)+': '+pg.title+', what this feeds';
+  else if(pg.rung==='part')pg.tip='Page '+(i+1)+': '+pg.title+', a part of this';});
+ return {ok:true,safe:!!o.safe,id:{key:insSelKey(sel),title:title,kindWord:kindWord,fig:fig,
+  over:!!(obj&&obj.over)},pages:pages,rel:insightRelease(sel,r,o)};}
+/* the words of one paragraph or page, plain, for the voice and for the tests.
+   speakOnly keeps the segments the voice may say. */
+function insightText(paras,speakOnly){
+ return paras.map(function(p){
+  return p.h+' '+p.segs.filter(function(s){return !speakOnly||s.speak;}).map(function(s){return s.text;}).join(' ');}).join(' ');}
 
 /* ============================================================
    SOURCE PROFILE SCHEMA v1 · the cross-compatibility contract.
@@ -16987,11 +18251,22 @@ function releaseVerifyAt(P,addr){
    SQ, the meter or the work. The addendum rules that a hit feedback event
    must not "silently alter CQ/DQ/SQ/stored charge", and the gate holds it.
 
-   VOICE IS NOT HERE YET, on purpose. The addendum's voice commands are the
-   next item and depend on this one. The event already carries modality, raw
-   command and confidence so that item adds a modality and its floor rather
-   than a new shape; today the only modality is a visible control, whose raw
-   command is its own key and whose confidence is null.
+   VOICE IS HERE AS A PHRASE AND A PATH, AND NOT AS A MICROPHONE. The
+   addendum's section 4 voice commands arrive as a pure parser, relHitHear,
+   and one writer, relHitVoice, which hands what it heard to relHitDecide and
+   to nothing else. A spoken hit therefore goes through the same single door
+   as a pressed one: the same event id guard, the same no op for an item
+   already where the command leaves it, the same count of one per session and
+   pattern. There is no second counter for speech to double. Speech that is
+   not one of the addendum's own phrases, speech that is ambiguous, and speech
+   heard below RELHIT_VOICE_FLOOR does nothing and says so by name: the
+   addendum rules "Low-confidence recognition must ask for clarification or
+   leave state unchanged; never execute a destructive action from uncertain
+   speech", and acceptance 7, "Low-confidence speech does not mutate state".
+   A voice line on the log carries the heard phrase as raw, closed to letters,
+   digits and single spaces, and the confidence the recogniser reported. This
+   file never listens: the browser half, which opens the microphone and calls
+   relHitVoice, is a separate item and lives in ui/release.js.
 
    HOST FREE. No document, no store, no clock it was not handed except as
    the default. Every writer takes the record and either changes it whole or
@@ -17012,8 +18287,33 @@ const RELHIT_STATES=['shown','held','confirmed','rejected'];
    this pattern" as a session action and "this was a hit" as feedback must
    not be confusable, and the session action is the run itself. */
 const RELHIT_CMDS={hold:'held', hit:'confirmed', reject:'rejected'};
-/* visible controls only, until the voice item lands */
-const RELHIT_MODES=['control'];
+/* the two ways a decision reaches the log. control is a visible button and
+   its raw command is its own key. voice is a heard phrase, parsed by
+   relHitHear and written by relHitDecide like every other press. */
+const RELHIT_MODES=['control','voice'];
+/* WHAT A PERSON MAY SAY, the addendum's own words and no others. Section 4
+   names three actions with two aliases each, "HOLD / KEEP", "RELEASE / HIT"
+   and "DELETE / NOT A HIT", and calls the feedback "this was a hit". RELEASE
+   is the one alias left out of this table, on purpose and by the same ruling
+   as RELHIT_CMDS above: the addendum itself warns that "release this
+   pattern" as a session action and "this was a hit" as feedback must not be
+   confusable, so a spoken release is heard and refused by name, below. */
+const RELHIT_VOICE_PHRASES={hold:['hold','keep'], hit:['hit','this was a hit'], reject:['not a hit','delete']};
+/* the one word the addendum lists that this build will not act on, because
+   the run itself is the release. relHitHear answers it as the collision it is */
+const RELHIT_VOICE_COLLIDES='release';
+/* THE CONFIDENCE FLOOR. The recogniser reports a number from 0 to 1 for how
+   sure it is of what it heard. Below this a phrase changes nothing. It is one
+   named number and not a literal at each use, so a gate holds it and a real
+   device can move it. 0.8 is a first default and has not been measured on a
+   real microphone: no CI run has one, so the browser half must read it off
+   real devices before it is trusted. */
+const RELHIT_VOICE_FLOOR=0.8;
+/* a command is a few words; anything longer is not one and is never stored */
+const RELHIT_VOICE_RAW_MAX=60;
+/* a voice line's raw: the heard phrase folded to lower case words, closed to
+   letters, digits and single spaces, so no free text or markup rides in */
+var RH_RAW=/^[a-z0-9]+(?: [a-z0-9]+)*$/;
 const RELHIT_KINDS=['execute','decide'];
 /* the families a pattern can come from, the three relHits presents */
 const RELHIT_FAM=['sab','cx','hy'];
@@ -17072,8 +18372,16 @@ function rhLine(errs,x,i,nowMs){
  if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,x.cmd))errs.push(path+'.cmd is not hold, hit or reject');
  if(RELHIT_MODES.indexOf(x.mode)<0)errs.push(path+'.mode is not a modality this build records');
  /* a control's raw command is its own key, so a control line can never carry
-    words; the voice item will widen this for its own modality only */
+    words. A voice line carries the heard phrase instead, closed to lower case
+    letters, digits and single spaces, and always the confidence it was heard
+    at. The boundary checks the shape and not the floor or the grammar: a
+    floor raised or a phrase added later must not make a line this build
+    wrote refuse to load, and the writer holds both at the moment of writing. */
  if(x.mode==='control'&&x.raw!==x.cmd)errs.push(path+'.raw is not the control\'s own command');
+ if(x.mode==='voice'){
+  if(typeof x.raw!=='string'||x.raw.length>RELHIT_VOICE_RAW_MAX||!RH_RAW.test(x.raw))
+   errs.push(path+'.raw is not a heard phrase');
+  if(!(NUM(x.conf)&&x.conf>=0&&x.conf<=1))errs.push(path+'.conf of a voice line is not 0 to 1');}
  if(x.conf!==null&&!(NUM(x.conf)&&x.conf>=0&&x.conf<=1))errs.push(path+'.conf is not null or 0 to 1');
  if(RELHIT_STATES.indexOf(x.from)<0)errs.push(path+'.from is not a state');
  if(RELHIT_CMDS[x.cmd]!==x.to)errs.push(path+'.to is not where '+String(x.cmd).slice(0,20)+' leaves an item');
@@ -17177,6 +18485,18 @@ function relHitDecide(p,a,now){
  a=a||{};
  if(!Object.prototype.hasOwnProperty.call(RELHIT_CMDS,a.cmd))
   return {ok:false, why:'a decision is hold, hit or reject, not '+JSON.stringify(a.cmd)};
+ /* A SPOKEN DECISION IS HELD HERE, once, before anything else is looked at,
+    so no caller can reach the log with speech that was not heard clearly as
+    the command it names. The phrase must be the normalised form relHitHear
+    gives, must parse to this very command, and must have been heard at or
+    above the floor. relHitVoice is one caller of this; a host that builds a
+    voice decision by hand meets the same refusals. */
+ if(a.mode==='voice'){
+  var h=relHitHear(a.raw,a.conf);
+  if(!h.ok)return {ok:false, why:h.why, say:h.say, kind:h.kind};
+  if(h.cmd!==a.cmd||h.raw!==a.raw)
+   return {ok:false, kind:'mismatch', say:'The words heard were not the command pressed, so nothing changed.',
+    why:'the heard phrase '+JSON.stringify(String(a.raw).slice(0,80))+' is not the command '+a.cmd};}
  var R=rhOf(p), log=R?R.log:[];
  if(typeof a.ev==='string'&&log.some(function(e){return e.ev===a.ev;}))return {ok:true, dup:true};
  var rp=rhReplay(log,null), s=rp.ses[a.sid];
@@ -17190,6 +18510,93 @@ function relHitDecide(p,a,now){
   raw:a.raw===undefined?a.cmd:a.raw, conf:a.conf===undefined?null:a.conf, from:x.state, to:to},now);
  if(!r.ok)return r;
  return {ok:true, event:r.event, state:to};}
+
+/* ---------------- speech, as a phrase and as a path ---------------- */
+/* The phrase table turned into a lookup once, at load: each normalised phrase
+   to the command it names, and the single words a phrase is built around.
+   Read off RELHIT_VOICE_PHRASES so there is one list and not two. */
+var RH_HEARD=(function(){
+ var by={}, words={};
+ Object.keys(RELHIT_VOICE_PHRASES).forEach(function(cmd){
+  RELHIT_VOICE_PHRASES[cmd].forEach(function(ph){
+   by[ph]=cmd; if(ph.indexOf(' ')<0)words[ph]=1;});});
+ return {by:by, words:words};})();
+/* the name a person gives each command, for a sentence that says it back */
+var RH_SPOKEN={hold:'hold', hit:'hit', reject:'not a hit'};
+/* a heard string folded to lower case words: everything that is not a letter
+   or a digit is a break, so punctuation, case and spacing never matter and
+   nothing outside the closed set survives */
+function rhHeardNorm(s){
+ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^ +| +$/g,'');}
+function rhHeardNo(kind,say,why){
+ return {ok:false, kind:kind, say:say, why:why};}
+
+/* WHAT WAS HEARD, as an intent or as a refusal, and never as a guess. The
+   one pure function of this item: a phrase and the recogniser's confidence
+   in, a verdict out, no record read or written.
+     {ok:true, kind:'command', cmd, raw, conf}   hold, hit or reject, heard
+                                                 whole and heard clearly
+     {ok:false, kind, say, why}                  nothing to do. kind is one of
+        silent     nothing, or not text, was heard
+        unknown    words that are none of the phrases, and hold none
+        release    the word the addendum lists that is the run itself
+        ambiguous  a command inside other words, or more than one
+        unsure     a command heard below the floor, or with no confidence
+   A phrase is a command only when the WHOLE of it is one of
+   RELHIT_VOICE_PHRASES. A command word inside other words is never taken for
+   the command: "this was not a hit" contains hit, and reading the hit out of
+   it would confirm the opposite of what was said. say is one plain sentence
+   for the person, so the host has nothing to compose; it carries no number
+   and none of the free text that was heard. */
+function relHitHear(heard,conf){
+ var how='Say hit, hold or not a hit, or press a button.';
+ if(typeof heard!=='string')
+  return rhHeardNo('silent','Nothing was heard, so nothing changed. '+how,'nothing was heard');
+ if(heard.length>400)
+  return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+   'the heard phrase is too long to be a command');
+ var raw=rhHeardNorm(heard);
+ /* text that folds to nothing was heard, and is not a command: only an empty or
+    blank string is silence */
+ if(!raw){
+  if(!heard.replace(/\s+/g,''))return rhHeardNo('silent','Nothing was heard, so nothing changed. '+how,'nothing was heard');
+  return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+   'the heard phrase is none of the commands');}
+ var own=Object.prototype.hasOwnProperty;
+ if(raw.length<=RELHIT_VOICE_RAW_MAX&&own.call(RH_HEARD.by,raw)){
+  var cmd=RH_HEARD.by[raw];
+  /* heard whole. The floor is the last word: a clear phrase is still not
+     acted on when the recogniser says it was not sure of it, or said nothing
+     about how sure it was, because no confidence is not a high one */
+  if(!(NUM(conf)&&conf>=0&&conf<=1))
+   return rhHeardNo('unsure','That sounded like '+RH_SPOKEN[cmd]+', but how clearly was not reported, so nothing changed. Say it again, or press a button.',
+    'no confidence was reported for the heard phrase');
+  if(conf<RELHIT_VOICE_FLOOR)
+   return rhHeardNo('unsure','That sounded like '+RH_SPOKEN[cmd]+', but not clearly enough, so nothing changed. Say it again, or press a button.',
+    'the heard phrase was below the confidence floor');
+  return {ok:true, kind:'command', cmd:cmd, raw:raw, conf:conf};}
+ var w=raw.split(' ');
+ if(w.indexOf(RELHIT_VOICE_COLLIDES)>=0)
+  return rhHeardNo('release','Release is the run itself and not a decision, so nothing changed. Say hit to mark this one, hold to keep it, or not a hit to remove it.',
+   'release is the session action and not a feedback command');
+ if(w.some(function(x){return own.call(RH_HEARD.words,x);}))
+  return rhHeardNo('ambiguous','A command came with other words, or more than one, so nothing changed. Say hit, hold or not a hit on its own.',
+   'a command word was heard inside other words');
+ return rhHeardNo('unknown','That was not one of the commands, so nothing changed. '+how,
+  'the heard phrase is none of the commands');}
+
+/* A SPOKEN DECISION, through the one door. a = {ev, sid, pat, heard, conf}.
+   The phrase is parsed and, only if it is a command heard clearly, handed to
+   relHitDecide as a voice decision, which holds the same checks again for any
+   caller that never came through here. The answer is relHitDecide's own, so
+   a replayed event id is the same dup, a hit on a confirmed item the same
+   noop, and the count the same one per session and pattern. A phrase that is
+   not a command is answered {ok:false, kind, say, why} and writes nothing. */
+function relHitVoice(p,a,now){
+ a=a||{};
+ var h=relHitHear(a.heard,a.conf);
+ if(!h.ok)return {ok:false, kind:h.kind, say:h.say, why:h.why};
+ return relHitDecide(p,{ev:a.ev, sid:a.sid, pat:a.pat, cmd:h.cmd, mode:'voice', raw:h.raw, conf:h.conf},now);}
 
 /* ---------------- the readers ---------------- */
 /* ONE SESSION AS ITS CARD SHOWS IT, or null when the record never executed
@@ -19426,9 +20833,13 @@ function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
  /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
-    to work out seventeen of what. It says how many questions and out of how
-    many, in the same line. */
- if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
+    to work out seventeen of what. It said how many questions and out of how
+    many, in the same line, which NO-FRACTIONS-AUDIT.md (18 November, finding
+    P09) named as a measure of the person in fraction form: "17 of 18
+    questions left". It says how much of the block is answered now, as a
+    percent, through the portion kind (engine/pct.js), which this file may
+    ask: it is engine code, host free, the same as fmtPct itself. */
+ if(r.state==='part')return {head:fmtPct('portion',r.got/r.total)+' answered', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',
@@ -22574,7 +23985,60 @@ function srcAsked(log,len){
  return out;}
 /* the most an entry can carry: every kind at every seat and at none. */
 function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
-/* ============================================================
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It runs the engine's own sniffStory and srcHear on one spoken
+ * turn and hands back which words matched, at which seats, on which axes, as
+ * candidates only. It adds no scoring of its own and changes nothing.
+ *
+ * WHERE ITS OUTPUT GOES. To its caller as a plain object, and into
+ * srcVoiceIntelligence. Nothing in the product calls it. The inquiry field it
+ * carries is the engine's own next move, returned and never asked.
+ */
+/* Source voice -> canonical Sniffer adapter. Host-free and read-only.
+ * This file belongs after engine/sniff.js and engine/sourceai.js in MANIFEST.
+ * It never calls applyStory, changes profile state, or declares CQ.
+ */
+function srcVoiceSniff(text, prior, active){
+ var s=String(text||'');
+ if(!s.trim())return {
+  status:'UNREAD', engine:'MOB/sniffStory+srcHear', reason:'no spoken user text',
+  hits:[],denied:[],others:[],seats:[],axes:[],laws:[],saboteurs:[],
+  flow:null,gates:null,depth:null,inquiry:{move:'listen'},gaps:null};
+ var report=sniffStory(s), parsed=report.parsed||{};
+ var heard=srcHear(s,prior||{},active||{});
+ var hit=function(h){return {word:h.t||null, kind:h.kind||null,
+  band:h.band||null, sourceOffset:typeof h.at==='number'?h.at:null,
+  label:h.label||null, charge:h.charge||null};};
+ var axes=(report.axes||[]).filter(function(a){return a.shadow>0||a.coherent>0;})
+  .map(function(a){return {axis:a.axis,shadow:a.shadow,coherent:a.coherent,
+   address:a.address||null,because:a.because||[],status:'candidate'};});
+ var laws=(report.laws||[]).map(function(x){return {law:x.law,direction:x.direction||null,
+  because:x.because||[],status:'candidate, not measured integrity'};});
+ var saboteurs=(report.saboteurs||[]).map(function(x){return {id:x.id,name:x.name,
+  confidence:x.confidence,because:x.because||[],status:'hypothesis only'};});
+ return {
+  status:(parsed.hits||[]).length?'READ':'UNREAD',
+  engine:'MOB/sniffStory+srcHear',source:'canonical read-only engine; user speech',
+  hits:(parsed.hits||[]).map(hit),
+  denied:(parsed.denied||[]).map(hit),
+  others:(parsed.others||[]).map(hit),
+  seats:(heard.seats||[]).map(function(x){return {seat:x.seat,band:x.band,
+   mentions:x.mentions,earlier:x.earlier,rung:x.rung,words:x.words||[]};}),
+  axes:axes,laws:laws,saboteurs:saboteurs,
+  flow:report.flow||null,gates:report.gates||null,depth:report.depth||null,
+  inquiry:srcTurn(heard,{typed:true,passed:true}), /* the user leads; never auto-prompt */
+  gaps:report.gaps||null,
+  measurement:'UNVERIFIED: lexical analysis is not a CQ score or diagnosis',
+  ancestry:'NOT ASSESSED by the existing Sniffer; needs independent lineage evidence seam',
+  note:'The application may suggest; only the person can confirm. No data mutated.'};
+}/* ============================================================
    THE EVIDENCE LEDGER, P0 of the Journal Mode blueprint. Round SK, 30
    October, TASKS.md. The document is atuned_source_ai_journal_mode_TDDB.md,
    his own Drive, 4 October, and its rule is "the system proposes, the person
@@ -23220,6 +24684,582 @@ function srcAct(turn){
    if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
    return {act:k, cue:list[j]};}}
  return null;}
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It reads a few turns of a person's own words for the family
+ * members they describe (my mother, my sister) and for whether they say they
+ * see the same thing in themselves. It matches fixed word lists and claims no
+ * cause and no diagnosis.
+ *
+ * WHERE ITS OUTPUT GOES. The narrative field of srcVoiceIntelligence, and
+ * from there the evidence bus. Nothing a person sees or hears reads it.
+ */
+/* SOURCE narrative role and lineage observations.
+ * Read-only, host-free, source-text-grounded. No diagnosis, CQ grading,
+ * ancestry causation, character label, automatic question or profile write.
+ */
+function srcVoiceNarrative(turns){
+ var input=Array.isArray(turns)?turns:[turns], latest=input.length-1;
+ var descriptions=[], selfReports=[], corrections=[], familyByTerm={};
+ var kin=/\b(?:my|our)\s+(sister|brother|mother|mom|mum|father|dad|parents|grandmother|grandfather|grandparents|grandma|grandpa|aunt|uncle|child|son|daughter)\b/ig;
+ var descriptors=/\b(indignant|indignation|avoidant|avoiding|angry|anger|resentful|resentment|dismissive|critical|judgmental|judgemental|withdrawn|distant|disrespectful|hurt|rejected|rejecting|unloved|fearful|defensive|ashamed|controlling)\b/ig;
+ var selfYes=/\b(?:i\s+(?:can\s+)?(?:also\s+)?(?:see|notice|recognize|recognise|find)\s+(?:some\s+of\s+)?(?:their|those|these|the|my\s+family'?s)\s+(?:patterns?|traits?|behavio[u]?rs?|habits?|things?)\s+(?:in|within)\s+(?:myself|me)|i\s+(?:can\s+)?(?:see|recognize|recognise|notice)\s+(?:them|it)\s+(?:in|within)\s+(?:myself|me)|i\s+have\s+(?:those|the\s+same|similar)\s+patterns?|i\s+(?:am|'m)\s+(?:just\s+)?like\s+(?:them|my\s+(?:mother|father|parents)))\b/i;
+ var uncertainSelf=/\b(?:i\s+(?:do\s+not|don't)\s+know\s+(?:if|whether)|i\s+(?:am\s+not|ain't|amn't)\s+sure\s+(?:if|whether)|maybe|perhaps|hypothetically|imagine|suppose|what\s+if)\b/i;
+ var hypothetical=/\b(?:hypothetically|imagine|suppose|what\s+if|let's\s+pretend|let us pretend)\b/i;
+ var selfNo=/\b(?:i\s+(?:do\s+not|don't|never|cannot|can't)\s+(?:see|notice|recognize|recognise|have)\s+(?:(?:their|those|the|these)\s+)?(?:patterns?|traits?|behavio[u]?rs?|habits?)\s+(?:in|within)\s+(?:myself|me)|i\s+(?:am\s+not|'m\s+not|am\s+different\s+from|am\s+nothing\s+like)\s+(?:like\s+)?(?:them|my\s+(?:mother|father|parents))|those\s+patterns?\s+(?:are\s+not|aren't)\s+(?:in|within)\s+me)\b/i;
+ function addTerm(row){descriptions.push(row);var k=row.term;
+  if(!row.negated&&!row.hypothetical){(familyByTerm[k]||(familyByTerm[k]=[])).push(row.role);}}
+ input.forEach(function(raw,turn){
+  var text=String(raw||'').slice(0,5000), list=[], m;
+  /* Attribute speculation per clause, not per entire turn. */
+  kin.lastIndex=0;
+  while((m=kin.exec(text))!==null){list.push({role:m[1].toLowerCase(),start:m.index,end:kin.lastIndex});}
+  list.forEach(function(person,i){
+   var stop=i+1<list.length?list[i+1].start:text.length;
+   var nextSelf=text.slice(person.end).search(/\b(?:i\s+(?:can\s+)?(?:see|notice|recognize|recognise)|i\s+have\s+(?:those|the same))\b/i);
+   /* Do not assign the speaker's first-person descriptor to their relative. */
+   var firstPerson=text.slice(person.end,stop).search(/\b(?:I|we)\s+(?:am|was|were|feel|felt|have|had|became|become|got|can|will|do|did|think|said|say)\b/i);
+   if(firstPerson>=0)stop=Math.min(stop,person.end+firstPerson);
+   if(nextSelf>=0)stop=Math.min(stop,person.end+nextSelf);
+   var clause=text.slice(person.end,Math.min(stop,person.end+130)).split(/[.!?;]/)[0];
+   var prefix=text.slice(0,person.start).split(/[.!?;]/).pop();
+   var hypotheticalClause=hypothetical.test(prefix)||hypothetical.test(clause)||/\b(?:maybe|perhaps)\b/i.test(prefix);
+   descriptors.lastIndex=0;
+   var hit;while((hit=descriptors.exec(clause))!==null){
+    var pre=clause.slice(Math.max(0,hit.index-45),hit.index).toLowerCase();
+    var negated=/\b(?:not|never|no|isn't|wasn't|doesn't|didn't|is not|was not|no longer)\s+(?:\w+\s+){0,2}$/.test(pre);
+    addTerm({turn:turn,role:person.role,term:hit[1].toLowerCase(),negated:negated, hypothetical:hypotheticalClause,
+     status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+hit.index});
+   }
+  });
+  /* Self reports and uncertainty are scoped to their own sentence;
+   * latest explicit correction wins within a turn as well as across turns. */
+  var yes=selfYes.exec(text), no=selfNo.exec(text);
+  if(yes){
+   var selfClause=text.slice(0,yes.index+yes[0].length).split(/[.!?;]/).pop();
+   if(!hypothetical.test(selfClause)&&!uncertainSelf.test(selfClause))
+    selfReports.push({turn:turn,offset:yes.index,state:'CANDIDATE_RESEMBLANCE_REPORTED'});
+  }
+  if(no)corrections.push({turn:turn,offset:no.index,state:'SELF_RESEMBLANCE_DENIED'});
+ });
+ var lastYes=selfReports.length?selfReports[selfReports.length-1]:null;
+ var lastNo=corrections.length?corrections[corrections.length-1]:null;
+ var denialWins=lastNo&&(!lastYes||lastNo.turn>lastYes.turn||
+  (lastNo.turn===lastYes.turn&&lastNo.offset>=lastYes.offset));
+ var state=denialWins?'REJECTED_BY_SPEAKER':
+  lastYes&&descriptions.some(function(d){return !d.negated&&!d.hypothetical;})?'FAMILY_TO_SELF_CANDIDATE':
+  lastYes?'SELF_RESEMBLANCE_UNSPECIFIED':'NOT_REPORTED';
+ var parentTerms={},elderTerms={};
+ descriptions.filter(function(d){return !d.negated&&!d.hypothetical;}).forEach(function(d){
+  if(/^(mother|mom|mum|father|dad|parents)$/.test(d.role))parentTerms[d.term]=true;
+  if(/^(grandmother|grandfather|grandparents|grandma|grandpa)$/.test(d.role))elderTerms[d.term]=true;});
+ var shared=Object.keys(parentTerms).filter(function(t){return elderTerms[t];});
+ var causal='NOT_ESTABLISHED';
+ // Two generations describing the same term are only a reported similarity;
+ // never declare inheritance, epigenetic transmission or spiritual mechanism.
+ return {status:'READ',source:'MOB voice turn text, without verification',
+  observations:descriptions.slice(-16),selfReports:selfReports.slice(-5),
+  corrections:corrections.slice(-5),familyToSelf:state,
+  sharedParentGrandparentDescriptors:shared,
+  multiGeneration:shared.length?'MULTIGENERATIONAL_SIMILARITY_REPORTED':'NOT_ESTABLISHED',
+  whichPatternIsInSelf:'UNKNOWN_UNLESS_EXPLICITLY_NAMED',
+  ancestralCausation:causal,measuredCQ:'NOT_MEASURED',
+  lastTurn:latest,needMoreEvidence:state==='FAMILY_TO_SELF_CANDIDATE',
+  rule:'Quoted family descriptions are attributed user reports, not verified identities or causes. Only the speaker may confirm.'};
+}
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It reads emotion words in a person's turns against seven
+ * ladders of nine words each (the TULA emotion words) and reports a family, a
+ * rung, whether the charge is rising or falling, and whether it is about the
+ * person or someone else. A rung is an ordinal word rank, not CQ and not a
+ * physiological reading.
+ *
+ * WHERE ITS OUTPUT GOES. The emotionCycle field of srcVoiceIntelligence, and
+ * from there the evidence bus. Nothing a person sees or hears reads it. It is
+ * a second emotion vocabulary beside the engine's own lexicon, and whether
+ * the two should be reconciled is a review question.
+ */
+/* Source AI: read-only TULA emotion episode interpreter. v0.2 draft.
+ * Lexical ranks are ordinal TULA words, NOT CQ or a physiological reading.
+ * Keep subject, self-report, direction and time perspective independent.
+ * Do not mutate profile state or initiate conversational questions.
+ */
+var SRC_TULA_LADDERS={
+ Fear:['cautious','uneasy','nervous','worried','scared','afraid','terrified','panicked','horrified'],
+ Anger:['annoyed','irritated','upset','angry','mad','furious','livid','outraged','enraged'],
+ Sadness:['down','unhappy','sad','sorrowful','mournful','grief-stricken','heartbroken','despondent','desolate'],
+ Disgust:['displeased','disapproving','disgusted','offended','repulsed','revolted','appalled','horrified','sickened'],
+ Shock:['surprised','stunned','shocked','shaken','disturbed','dismayed','flabbergasted','astonished','thunderstruck'],
+ Happiness:['content','pleased','happy','cheerful','joyful','delighted','ecstatic','overjoyed','jubilant'],
+ Shame:['embarrassed','regretful','remorseful','ashamed','guilty','disgraced','humiliated','mortified','shamed']
+};
+var SRC_TULA_PAGE={Fear:3,Anger:4,Sadness:5,Disgust:6,Shock:7,Happiness:8,Shame:9};
+/* Idioms are candidates, NOT authored TULA ladder ranks. */
+var SRC_TULA_IDIOMS=[
+ {phrase:'pissed off',family:'Anger'},{phrase:'pissed me off',family:'Anger'},{phrase:'angrier',family:'Anger'}, {phrase:'frightened',family:'Fear'},
+ {phrase:'seething',family:'Anger'},{phrase:'raging',family:'Anger'},
+ {phrase:'infuriated',family:'Anger'},{phrase:'fuming',family:'Anger'},
+ {phrase:'calmed down',family:null},{phrase:'settled down',family:null}
+];
+var SRC_TULA_CHANNELS={
+ Believe:/\b(?:i\s+(?:believe|assume|trust)|my belief)\b/i,
+ Perceive:/\b(?:i\s+(?:see|notice|perceive|observe|imagine|recognize|recognise))\b/i,
+ Think:/\b(?:i\s+(?:think|thought|suppose|wonder|know))\b/i,
+ Behave:/\b(?:i\s+(?:behave|react|withdraw|avoid))\b/i,
+ Act:/\b(?:i\s+(?:did|do|chose|choose|decided|walked|yelled|shouted|paused|stopped))\b/i,
+ Say:/\b(?:i\s+(?:said|say|told|spoke|shouted|yelled))\b/i,
+ Feel:/\b(?:i\s+(?:feel|felt|was|got|became))\b/i
+};
+var SRC_TULA_ROLE=/\b(?:my\s+)?(mother|mom|mum|father|dad|sister|brother|aunt|uncle|grandmother|grandfather|grandma|grandpa|parent|parents|he|she|they|him|her)\b/ig;
+var SRC_TULA_NEG=/\b(?:not|never|no|wasnt|wasn't|weren't|isn't|isnt|didn't|didnt|don't|dont|was not|did not|am not|ain't)\b/i;
+var SRC_TULA_HYP=/\b(?:imagine|hypothetically|suppose|what if|if i|might|could|would|perhaps|maybe|pretend)\b/i;
+var SRC_TULA_FUTURE=/\b(?:tomorrow|next week|next month|one day|in the future|i might|what if)\b/i;
+var SRC_TULA_CHOICE=/\b(?:i\s+(?:decided|chose|choose|made a choice)|i wanted to\s+\w+(?:\s+\w+)?\s+but|i\s+(?:paused|stopped)\s+myself)\b/i;
+var SRC_TULA_AFTER=/\b(?:after|afterwards?|later|then|subsequently|eventually|once)\b/i;
+var SRC_TULA_DOWN=/\b(?:calmed? down|settled down|cooled off|felt calmer|let it go|decompress(?:ed|ing)?|relaxed|became calmer|was less angry)\b/i;
+var SRC_TULA_UP=/\b(?:even angrier|got angrier|grew angrier|more furious|more upset|escalated|kept building|building up|got worse)\b/i;
+var SRC_TULA_CONTINUE=/\b(?:still furious|still angry|remained angry|kept feeling angry|continued to feel angry)\b/i;
+var SRC_TULA_STABLE=/\b(?:stayed angry|was angry for hours|remained angry for hours|stayed furious|never changed)\b/i;
+var SRC_TULA_RETRACT=/\b(?:no,?\s+i\s+(?:wasn't|wasn’t|was not|never|didn't|did not)|actually,?\s+no\b|i\s+(?:don't|don’t|do not)\s+see\s+(?:those|their)\s+patterns|i\s+(?:wasn't|wasn’t|was not)\s+angry)\b/i;
+var SRC_TULA_DECREASE=/\b(?:calmed? down|settled down|cooled off|felt calmer|let it go|relaxed)\b/i;
+var SRC_TULA_AFTER_SHAME=/\b(?:embarrassed|ashamed|guilty|humiliated|regretful|remorseful|mortified)\b/i;
+function srcTulaWords(){
+ var out=[];
+ Object.keys(SRC_TULA_LADDERS).forEach(function(f){
+  SRC_TULA_LADDERS[f].forEach(function(w,i){out.push({word:w,family:f,tulaRank:i+1,page:SRC_TULA_PAGE[f],matchKind:'EXACT_TULA'});});});
+ SRC_TULA_IDIOMS.forEach(function(a){if(a.family)out.push({word:a.phrase,family:a.family,tulaRank:null,page:null,matchKind:'PROVISIONAL_IDIOM'});});
+ return out.sort(function(a,b){return b.word.length-a.word.length;});
+}
+function srcTulaRole(phrase,word,idx){
+ var prior=phrase.slice(0,idx), tail=phrase.slice(idx+word.length), lastI=Math.max(prior.lastIndexOf(' i '),prior.lastIndexOf(' i\''),prior.lastIndexOf(' me '));
+ var lastOther=null, m;SRC_TULA_ROLE.lastIndex=0;
+ while((m=SRC_TULA_ROLE.exec(prior))!==null)lastOther={name:m[1].toLowerCase(),at:m.index};
+ if(/\b(?:he|she|they)\s+said\b/i.test(phrase)&&/["“”]/.test(phrase))return 'quoted_other';
+ /* Transitive 'I pissed off <someone>' names a caused event, not speaker's anger. */
+ if(word==='pissed off'&&/\bi\s+pissed off\s+(?:my|his|her|the|a|an|him|her|them)\b/i.test(phrase))return 'causative_other';
+ if(word==='pissed off'&&/\bpissed\s+(?:my|his|her|him|them)\s+off\b/i.test(phrase))return 'causative_other';
+ if((word==='pissed off'||word==='pissed me off')&&/\bpissed\s+me\s+off\b/i.test(phrase))return 'self';
+ if(lastOther&&lastOther.at>lastI&&(/\b(?:my\s+)?(?:father|mother|mom|dad|sister|brother|aunt|uncle|grandfather|grandmother|grandma|grandpa|parent|parents|he|she|they)\b/i.test(prior))){
+  var role=lastOther.name;
+  return ['he','him','she','her','they'].indexOf(role)>=0?'third_party':role;
+ }
+ if(/\b(?:he|she|they)\b/i.test(phrase.slice(0,idx))&&lastI<0)return 'third_party';
+ return 'self';
+}
+function srcTulaClauses(text){
+ /* Keep quote punctuation in the evidence, but do not let one clause's negation
+    or actor apply to a later sentence. */
+ var a=[],last=0, re=/[.!?;]+/g,m;
+ while((m=re.exec(text))!==null){if(text.slice(last,m.index).trim())a.push({s:last,e:m.index,text:text.slice(last,m.index)});last=re.lastIndex;}
+ if(text.slice(last).trim())a.push({s:last,e:text.length,text:text.slice(last)});
+ return a;
+}
+function srcTulaObservations(text,turn){
+ var out=[],low=String(text||'').toLowerCase(), rules=srcTulaWords();
+ srcTulaClauses(text).forEach(function(c){
+  var chunk=low.slice(c.s,c.e), seen={};
+  rules.forEach(function(rule){
+   /* A short word cannot steal the tail of an emotion idiom. */
+   if(rule.word==='down'&&/\b(?:calmed?|settled|cooled)\s+down\b/i.test(chunk))return;
+   var w=rule.word,rg=new RegExp('(^|[^a-z])('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/-/g,'[- ]')+')(?=$|[^a-z])','g'),m;
+   while((m=rg.exec(chunk))!==null){
+    var start=c.s+m.index+m[1].length,end=start+m[2].length;
+    if(Object.keys(seen).some(function(k){return start>=+k&&start<seen[k];}))continue;
+    var prefix=chunk.slice(0,start-c.s), around=chunk.slice(Math.max(0,start-c.s-75),start-c.s);
+    var neg=SRC_TULA_NEG.test(around.split(/\b(?:but|however|although)\b/).pop().split(',').pop());
+    var hyp=SRC_TULA_HYP.test(chunk)||SRC_TULA_FUTURE.test(chunk);
+    var role=srcTulaRole(chunk,w,start-c.s);
+    out.push({turn:turn,span:[start,end],text:text.slice(start,end),family:rule.family,
+     tulaRank:rule.tulaRank,page:rule.page,matchKind:rule.matchKind,subject:role,
+     negated:neg,hypothetical:hyp,affirmed:!neg&&!hyp&&role!=='causative_other',
+     status:rule.matchKind==='EXACT_TULA'?'SOURCE_WORD':'PROVISIONAL_SYNONYM'});
+    seen[start]=end;rg.lastIndex=Math.max(rg.lastIndex,start-c.s+m[2].length);
+   }
+  });
+ });
+ return out.sort(function(a,b){return a.turn-b.turn||a.span[0]-b.span[0];});
+}
+function srcVoiceChargeCycle(turns,opts){
+ var o=opts||{}, rows=(Array.isArray(turns)?turns:[turns]).slice(-16)
+   .map(function(t){return typeof t==='string'?{text:t,final:true,role:'user'}:t||{};})
+   .filter(function(t){return t.final!==false&&t.role!=='assistant'&&typeof t.text==='string';});
+ var obs=[],channels=[],texts=rows.map(function(r){return String(r.text||'').slice(0,5000);});
+ texts.forEach(function(t,i){
+  obs=obs.concat(srcTulaObservations(t,i));
+  Object.keys(SRC_TULA_CHANNELS).forEach(function(k){if(SRC_TULA_CHANNELS[k].test(t))channels.push({turn:i,channel:k});});
+ });
+ var text=texts.join(' '),active=obs.filter(function(x){return x.affirmed&&x.subject!=='causative_other';});
+ var self=active.filter(function(x){return x.subject==='self';});
+ var now=texts.length?texts[texts.length-1]:'';
+ var corrected=SRC_TULA_RETRACT.test(now)&&texts.length>1;
+ if(corrected){
+  /* A later explicit denial retracts a previous episode candidate; new
+     positive emotions in the correction are not silently deleted. */
+  var changed=now.toLowerCase();
+  if(/\b(?:wasn't|wasn’t|was not|never|not)\s+(?:really\s+)?angry\b/i.test(now))
+   self=self.filter(function(x){return x.family!=='Anger';});
+ }
+ var familyNames=[];self.forEach(function(x){if(familyNames.indexOf(x.family)<0)familyNames.push(x.family);});
+ var after=SRC_TULA_AFTER.test(text),down=SRC_TULA_DOWN.test(text),up=SRC_TULA_UP.test(text);
+ var continuing=SRC_TULA_CONTINUE.test(text),stable=SRC_TULA_STABLE.test(text);
+ var choice=SRC_TULA_CHOICE.test(text),futuristic=SRC_TULA_FUTURE.test(text),shameAfter=after&&SRC_TULA_AFTER_SHAME.test(text);
+ var orderedAnger=self.filter(function(x){return x.family==='Anger'&&x.tulaRank!==null});
+ var rankedRise=orderedAnger.length>=2&&orderedAnger[orderedAnger.length-1].tulaRank>orderedAnger[0].tulaRank&&after;
+ var phase='UNKNOWN', direction='UNKNOWN';
+ if(corrected)phase='CORRECTED';
+ else if(futuristic&&!self.length)phase='FUTURE_PROJECTION';
+ else if(stable){phase='STABLE';direction='STABLE';}
+ else if(rankedRise)phase='BUILDING';
+ else if(after&&(down||continuing||up||shameAfter||self.length>=2))phase='PAST_REFLECTION';
+ else if(choice)phase='PEAK_OR_CHOICE';
+ else if(familyNames.length>1)phase='MIXED';
+ if(up||rankedRise)direction='INCREASING';
+ else if(down&&self.length)direction='DECREASING';
+ else if(continuing)direction='CONTINUING';
+ if(corrected)direction='UNKNOWN';
+ var episodeFamily=null;
+ if(familyNames.length===1)episodeFamily=familyNames[0];
+ else if(familyNames.length===2&&shameAfter&&familyNames.indexOf('Anger')>=0&&familyNames.indexOf('Shame')>=0)episodeFamily='Anger';
+ /* An explicit self report can replace previous observations; do not pretend
+    all family members have a shared behavior or that family traits are inherited. */
+ var people=active.filter(function(x){return x.subject!=='self'}).map(function(x){return x.subject;});
+ var familyToSelf=/\bi\s+(?:recognize|recognise|see|notice)\s+(?:some\s+)?(?:of\s+)?(?:(?:their|those|these)\s+)?patterns\s+in\s+myself\b/i.test(text);
+ var familyToSelfDenied=/\bi\s+(?:(?:do\s+not|don't|don’t)\s+)?(?:see|notice|recognize|recognise)\s+(?:those|their|these)\s+patterns\s+in\s+myself\b/i.test(now)&&/\b(?:don't|don’t|do not)\b/i.test(now);
+ var subject=episodeFamily?'self':people.length>1?'family':people.length===1?people[0]:'self';
+ if(people.length&&!self.length&&people.every(function(x){return x===people[0];})){
+  subject=people[0]==='he'||people[0]==='she'?'third_party':people[0];
+  if(people.length===1)episodeFamily=active[0].family;
+ }
+ if(familyToSelf&&!familyToSelfDenied)subject='family_to_self';
+ if(familyToSelfDenied)subject='self';
+ if(!self.length&&active.length===0&&texts.some(function(x){return SRC_TULA_HYP.test(x);}))subject='hypothetical';
+ if(/\b(?:he|she|they)\s+said\b/i.test(text)&&/["“”]/.test(text))subject='quoted_other';
+ if(active.length===1&&active[0].subject==='third_party')episodeFamily=active[0].family;
+ /* A self-report of a single explicit TULA word has a lexical rank, but
+    multiple mentions, contradictory/ambiguous terms or story escalation do not. */
+ var rank=null;
+ if(episodeFamily&&self.length===1&&self[0].family===episodeFamily&&self[0].tulaRank!=null)rank=self[0].tulaRank;
+ if(episodeFamily&&self.length===0&&active.length===1&&active[0].tulaRank!=null)rank=active[0].tulaRank;
+ if(/\bhorrified\b/i.test(text)||/\bupset\b/i.test(text)&&familyNames.length===1) { if(episodeFamily==='Fear'||episodeFamily==='Disgust'||episodeFamily==='Anger') {if(!self.some(function(x){return x.text.toLowerCase()!== 'horrified'&&x.text.toLowerCase()!=='upset';}))episodeFamily=null;rank=null;} }
+ if(familyNames.length>1&&!shameAfter){episodeFamily=null;rank=null;}
+ if(phase==='PAST_REFLECTION')rank=null;
+ if(!self.length&&active.length===1&&active[0].subject==='self')episodeFamily=null;
+ if(corrected){episodeFamily=null;rank=null;}
+ /* Preserve corrections as explicit provenance. An earlier report can be
+    observed without continuing to count it as a current positive claim. */
+ if(corrected&&/\b(?:wasn't|wasn’t|was not|never|not)\s+(?:really\s+)?angry\b/i.test(now)){
+  obs.forEach(function(x){if(x.turn<texts.length-1&&x.family==='Anger'&&x.subject==='self'){
+   x.retracted=true;x.affirmed=false;x.status='CORRECTED_BY_SPEAKER';}});
+ }
+ var events=[];
+ if(up||rankedRise)events.push({type:'BUILD',evidence:up?'explicit intensification':'ordered ranked terms'});
+ if(choice)events.push({type:'CHOICE',evidence:'explicit decision language'});
+ if(after||down)events.push({type:'AFTERMATH',evidence:down?'explicit calming language':'temporal narration'});
+ return {version:'0.2-draft',status:text.trim()?'READ':'UNREAD',engine:'MOB/srcVoiceChargeCycle',
+  source:'TULA pages 3-9 and 15-21; user-reported language only',
+  family:episodeFamily,subject:subject,phase:phase,chargeDirection:direction,tulaRank:rank,
+  observations:obs.slice(-32),channels:channels.slice(-24),events:events,
+  curvePosition:'NOT_MEASURED',chakraElement:'DESIGN_PENDING_CANONICAL_MAPPING',
+  graph:'NOT_QUERIED_BY_THIS_READER',ancestry:'NOT_ESTABLISHED',coherence:'NOT_MEASURED',
+  automaticQuestions:false,canWriteProfile:false,
+  policy:'A spoken adjective does not establish a diagnosis, inherited cause, calibrated intensity, or a fetter.'};
+}
+if(typeof module!=='undefined'&&module.exports)module.exports={srcVoiceChargeCycle:srcVoiceChargeCycle,SRC_TULA_LADDERS:SRC_TULA_LADDERS};/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. srcVoiceIntelligence bundles the sniffer read, the narrative,
+ * the emotion cycle, the evidence ledger and, only when the caller passes
+ * consent, the record graph into one read only report. srcVoiceCanon and
+ * srcVoicePattern look a name or an id up in the engine's loaded tables and
+ * in the 96 pattern library, when a caller asks.
+ *
+ * WHERE ITS OUTPUT GOES. To its caller as a plain object, and into
+ * source_evidence_bus.js. Nothing in the product calls it, so nothing prints,
+ * speaks, asks or writes from it. An entry the safety stop (srcSafe,
+ * engine/safe.js) holds is read as nothing here, so it feeds nothing
+ * downstream. The strings in its report (instruction, note, gaps) are written
+ * for a tool and not for a person: if any is ever shown, it is text Source AI
+ * composed and takes the Source AI mark.
+ */
+/* SOURCE VOICE INTELLIGENCE READ SEAM.
+ * Stage 2: the canonical Sniffer's already-read seat signals may query the
+ * actual record-derived trace graph. Stage 3: Source receives a bounded,
+ * evidence-only intelligence report. No writes, no independent CQ scores.
+ */
+function srcVoiceGraph(text,record,opts){
+ var o=opts||{}, voice=srcVoiceSniff(text,o.prior,o.active);
+ var base={status:'UNREAD',engine:'MOB/traceFromRecord',scope:'ACTIVE_RECORD_ONLY',
+  matched:[], graphNodes:0, graphEdges:0, structures:[], gaps:0, refused:0};
+ if(!String(text||'').trim())return {voice:voice,graph:base};
+ if(o.allowProfile!==true){base.status='CONSENT_REQUIRED';return {voice:voice,graph:base};}
+ if(!record||typeof record!=='object'||Array.isArray(record)){
+  base.status='NO_RECORD';return {voice:voice,graph:base};}
+ /* Do not silently fall back to CURP, all profiles, a remote graph, or a
+  * record with another identity. The caller must pass its active record. */
+ /* A profile's canonical compute result is included only when the record
+  * is currently held by the engine; readHeld refuses mismatched identities.
+  * Never load a different record to make a chain appear. */
+ var reading=o.reading!==undefined?o.reading:
+  (typeof readHeld==='function'?readHeld(record):null);
+ var g=traceFromRecord(record,null,reading);
+ base.status=(g.refused||[]).length?'PARTIAL':'READ';
+ base.graphNodes=g.nodes.length;base.graphEdges=g.edges.length;
+ var typeCounts={};
+ (g.nodes||[]).forEach(function(n){typeCounts[n.type]=(typeCounts[n.type]||0)+1;});
+ base.structures=Object.keys(typeCounts).sort().map(function(k){
+  return {type:k,count:typeCounts[k],source:'derived canonical record trace'};});
+ base.gaps=(g.gaps||[]).length;base.refused=(g.refused||[]).length;
+ var seats={};(voice.seats||[]).forEach(function(s){seats[s.seat]=s;});
+ var nodes={};(g.nodes||[]).forEach(function(n){nodes[n.type+':'+n.id]=n;});
+ var by={};
+ (g.edges||[]).forEach(function(e){
+  /* Known membership between the 108 somatic nodes and 4 field anchors is not evidence that
+   * any pattern is embodied. Only a story's specific supports edge is. */
+  if(e.edge!=='supports'||String(e.from).indexOf('story:')!==0||
+   String(e.to).indexOf('pattern:')!==0)return;
+  if(e.src!=='user_confirmed'&&e.src!=='inferred')return;
+  var p=nodes[e.to];
+  if(!p||!p.seat)return;
+  var k=B2K[p.seat];
+  if(!k||!seats[k])return;
+  var here=by[k]=by[k]||{seat:k,mentions:seats[k].mentions,
+   recordInferences:0,userConfirmed:0,status:'CANDIDATE'};
+  if(e.src==='user_confirmed')here.userConfirmed++;
+  else here.recordInferences++;
+  if(here.userConfirmed)here.status='USER_CONFIRMED_RECORD_HISTORY';
+ });
+ base.matched=Object.keys(by).sort().map(function(k){return by[k];});
+ return {voice:voice,graph:base};
+}
+/* Stage 3: actual Source intelligence is a constrained READ of Source's
+ * evidence ledger and record graph. The model can decide how to speak but
+ * may never promote a read to an independently measured CQ or a diagnosis. */
+function srcVoiceIntelligence(text,record,opts){
+ var o=opts||{}, t=String(text||'');
+ var v=srcVoiceGraph(t,record,o);
+ var out={status:t.trim()?'READ':'UNREAD',engine:'MOB/evLedger+srcVoiceGraph',
+  graphStatus:v.graph.status,recordScope:'ACTIVE_RECORD_ONLY',
+  coherence:'NOT_MEASURED',ancestry:'NOT_ASSESSED',
+  userLead:true,automaticQuestions:false,evidence:[],
+  graphMatches:v.graph.matched,claims:[], narrative:null,emotionCycle:null,
+  gaps:['ancestral lineage relationships not independently measured',
+   'CQDQ law grades and full knowledge graph traversal not connected to voice'],
+  instruction:'Respond to actual words. An inference is not an identity or a cause. Never auto-prompt.'};
+ if(!t.trim())return {voice:v.voice,intelligence:out};
+ /* An entry srcSafe (engine/safe.js) stops is heard as nothing everywhere
+  * else in the engine, so it is read as nothing here: no evidence, no
+  * narrative, no cycle, and so no packet for the evidence bus to carry. */
+ if(typeof srcSafe==='function'&&srcSafe(t)){out.status='UNREAD';out.safe=true;
+  out.gaps.push('an entry the safety stop holds is read as nothing');
+  return {voice:v.voice,intelligence:out};}
+ /* Read user-attributed narrative over a bounded explicit session window.
+  * No historic raw journal or user identifiers leave this function. */
+ var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
+ if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
+ out.narrative=srcVoiceNarrative(userTurns);
+ /* The TULA episode reader is a pure report of explicit user turns. A rank
+  * refers to the exact source adjective, never to CQ, profile or curve height. */
+ out.emotionCycle=srcVoiceChargeCycle(userTurns);
+ /* A tool consumer must not get any historical raw journal text or profile
+  * identifiers. The ledger is computed locally; only this turn's words and
+  * the non-identifying claim state leave this seam. */
+ var entries=(o.allowProfile===true&&record&&record.story&&
+  Array.isArray(record.story.entries))?record.story.entries:[];
+ var ledger=evLedger(t,entries,{active:o.active||null});
+ out.evidence=(ledger.ev||[]).filter(function(e){return e.src!=='earlier';})
+  .slice(0,12).map(function(e){return {
+   source:'current_turn',text:typeof e.text==='string'?e.text.slice(0,80):null,
+   kind:e.kind||null,said:e.said||'unknown',status:'USER_REPORTED'};});
+ out.claims=(ledger.order||[]).slice(0,7).map(function(k){
+  var c=ledger.claims[k]||{};
+  return {state:c.state||'unknown',evidenceCount:Array.isArray(c.ev)?c.ev.length:0,
+   reportedSeat:c.state==='confirmed'||c.state==='corrected'?k:null,
+   status:'not a diagnosis or identity'};});
+ if(v.graph.status!=='READ')out.gaps.push('record graph access not available: '+v.graph.status);
+ return {voice:v.voice,intelligence:out};
+}
+
+/* Actual canon registry retrieval for explicit questions, not user profiling.
+ * The source records are the ones already loaded into the engine. An empty
+ * query returns counts; other queries return small sourced name matches.
+ * Never claim a matching word proves that somebody carries that pattern. */
+function srcVoiceCanon(kind,query,limit){
+ var k=String(kind||'all').toLowerCase(), q=String(query||'').toLowerCase().trim();
+ var cap=Math.max(1,Math.min(12,Math.floor(+limit||6)));
+ var registries=[
+  {kind:'address',source:'NODES',rows:NODES.map(function(n){
+   return {id:n.i,name:n.k,seat:n.b,category:n.c||null};})},
+  {kind:'saboteur',source:'SAB33',rows:SAB33.map(function(r){
+   return {name:r[0],axisBands:r[1].map(function(b){return b[0];})};})},
+  {kind:'axis',source:'CHARGES',rows:CHARGES.map(function(c){return {name:c};})},
+  {kind:'law',source:'SI',rows:SI.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'expression',source:'EXPR',rows:EXPR.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'archetype',source:'ARCH',rows:ARCH.map(function(x){return {name:x.nm,seat:x.b};})},
+  {kind:'domain',source:'DOMAINS',rows:DOMAINS.map(function(x){return {name:x.nm,root:x.r};})},
+  {kind:'mask',source:'MASKS',rows:MASKS.map(function(x){return {name:x.nm};})},
+  {kind:'chakra',source:'BANDS',rows:BANDS.map(function(x){return {name:x};})},
+  {kind:'pattern',source:'PATTERN96',rows:PATTERN96.map(function(p){
+   return {name:p.name,id:p.id,layer:p.layer,domain:p.domain,
+    scientificStatus:p.scientificStatus};})},
+  {kind:'researchanchor',source:'RESEARCHANCHOR',rows:RESEARCHANCHOR.map(function(a){
+   return {name:a.label,id:a.id,namespace:a.namespace};})}
+ ];
+ var inventory=registries.map(function(r){return {kind:r.kind,source:r.source,count:r.rows.length};});
+ if(!q)return {status:'INDEX',source:'MOB canonical loaded tables',
+  inventory:inventory,records:[],otherRegistries:'NOT_INDEXED_BY_VOICE'};
+ var matches=[];
+ registries.forEach(function(r){
+  if(k!=='all'&&k!==r.kind)return;
+  r.rows.forEach(function(x){
+   if(String(x.name||'').toLowerCase().indexOf(q)>=0)matches.push({
+    kind:r.kind,source:r.source,record:x});});});
+ return {status:matches.length?'READ':'UNREAD',
+  source:'MOB canonical loaded tables',inventory:inventory,
+  records:matches.slice(0,cap),
+  more:matches.length>cap,
+  note:'A name match is a catalog entry, not an observation about a person.'};
+}
+
+/* A single PATTERN96 record, with its research anchors resolved. The catalog
+ * search above returns a name and an id; a caller that already has the id
+ * uses this to read the full record rather than guessing at a shape. */
+function srcVoicePattern(id){
+ var pid=String(id||'').toUpperCase().trim();
+ var rec=null;
+ for(var i=0;i<PATTERN96.length;i++){if(PATTERN96[i].id===pid){rec=PATTERN96[i];break;}}
+ if(!rec)return {status:'UNREAD',id:pid,record:null,anchors:[]};
+ var anchors=(rec.researchAnchorIds||[]).map(function(aid){
+  for(var j=0;j<RESEARCHANCHOR.length;j++){if(RESEARCHANCHOR[j].id===aid)return RESEARCHANCHOR[j];}
+  return {id:aid,namespace:null,label:null,note:null,url:null,kind:null,unresolved:true};
+ });
+ return {status:'READ',id:pid,record:rec,anchors:anchors,
+  note:'A named pattern is a catalog entry with its own stated alternative explanations, never a diagnosis or a measured CQ.'};
+}
+/* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
+ * November; its last commit is aa449a80 on origin/source-voice-prototype).
+ * NOT YET REVIEWED BY HIM. On 17 November he said:
+ * "Revive it and put a note next to it for when we review it. I don't quite know
+ * what it's doing anymore, the 96 pattern, but let's add it."
+ * The open questions for that review are in DECISIONS.md, under "The voice
+ * prototype's read only layer, revived, 17 November".
+ *
+ * WHAT IT DOES. It takes the srcVoiceIntelligence report and, only when the
+ * caller passes allowSessionShare as exactly true, reshapes it into nine
+ * labelled packets (source, body map, avatar, compass, story bank, graph
+ * editor, laws, ritual builder, release protocol). Every packet says action
+ * none and write authority none, and carries status words and a count only:
+ * no text, no seat, no pattern id.
+ *
+ * WHERE ITS OUTPUT GOES. To its caller. No page or consumer reads a packet,
+ * so the nine slots are a mailbox with nobody listening. Checking the shape
+ * of a report is not authenticating it, which is why a production host has to
+ * verify identity and consent itself before this is ever read.
+ */
+/* Source AI evidence envelope v1.1, audit-hardened staging adapter.
+ * In MANIFEST and export.js (round SR, 2 November), read-only and callable;
+ * no production host or consumer calls it yet, and every packet it returns
+ * still says NOT_EXPORTED_UNTRUSTED_HOST, ACTION NONE, writeAuthority NONE.
+ * Source is untrusted input to this function, even if it has canonical labels.
+ * No boolean, including hostVerifiedActiveRecord, authenticates a record.
+ * This function creates session-only candidate metadata, not authority.
+ */
+function srcVoiceEvidenceBus(report,opts){
+ var o=(opts&&typeof opts==='object'&&!Array.isArray(opts))?opts:{};
+ function empty(status){return {
+  schema:'atuned.source.evidence-bus.v1.1',status:status,
+  source:'MOB/srcVoiceIntelligence',sessionShare:false,profileShare:false,
+  evidenceRefs:[],packets:[],writeAuthority:'NONE',
+  provenance:'UNVERIFIED_CALLER_REPORT',
+  note:'Session-only candidate evidence; no auth, profile access, diagnosis, causal inference, law grade or downstream action.'};}
+ if(o.revoked===true)return empty('REVOKED');
+ if(o.allowSessionShare!==true)return empty('CONSENT_REQUIRED');
+ if(!report||typeof report!=='object'||Array.isArray(report)||
+  !report.voice||typeof report.voice!=='object'||Array.isArray(report.voice)||
+  !report.intelligence||typeof report.intelligence!=='object'||Array.isArray(report.intelligence))
+  return empty('INVALID_REPORT');
+ var v=report.voice, intel=report.intelligence;
+ /* Shape checking is NOT an authenticity check. A production host must
+  * independently verify active session, user consent and record identity. */
+ if(v.engine!=='MOB/sniffStory+srcHear'||
+  intel.engine!=='MOB/evLedger+srcVoiceGraph'||
+  intel.recordScope!=='ACTIVE_RECORD_ONLY'||
+  (intel.status!=='READ'&&intel.status!=='UNREAD')||
+  (v.status!=='READ'&&v.status!=='UNREAD')||
+  intel.coherence!=='NOT_MEASURED'||intel.ancestry!=='NOT_ASSESSED')
+  return empty('INVALID_REPORT');
+ if(intel.status==='UNREAD')return empty('UNREAD');
+ var out=empty('READ');out.sessionShare=true;
+ /* Do not grant profileShare from caller supplied booleans or graphStatus.
+  * Such authorization belongs ONLY inside a trusted, identity-bound host. */
+ var ev=Array.isArray(intel.evidence)?intel.evidence.slice(0,12):[];
+ var hits=v.status==='READ'&&Array.isArray(v.hits)?v.hits.slice(0,12):[];
+ ev.forEach(function(e,i){
+  if(e&&e.source==='current_turn'&&e.status==='USER_REPORTED')
+   out.evidenceRefs.push({ref:'turn:ledger:'+i,
+    origin:'CURRENT_TURN_CLAIMED_BY_CALLER',type:'LEDGER_CANDIDATE',
+    durability:'EPHEMERAL_SESSION_ONLY',verification:'NOT_VERIFIED'});
+ });
+ hits.forEach(function(h,i){
+  if(h&&typeof h.sourceOffset==='number'&&Number.isSafeInteger(h.sourceOffset)&&
+   h.sourceOffset>=0&&h.sourceOffset<=5000)
+   out.evidenceRefs.push({ref:'turn:voice:'+i,
+    origin:'CURRENT_TURN_CLAIMED_BY_CALLER',type:'LEXICAL_CANDIDATE',
+    durability:'EPHEMERAL_SESSION_ONLY',verification:'NOT_VERIFIED'});
+ });
+ var narrative=intel.narrative||{};
+ var familyStates=['NOT_REPORTED','FAMILY_TO_SELF_CANDIDATE',
+  'REJECTED_BY_SPEAKER','SELF_RESEMBLANCE_UNSPECIFIED'];
+ var family=familyStates.indexOf(narrative.familyToSelf)>=0?
+  narrative.familyToSelf:'NOT_REPORTED';
+ var summary={sourceStatus:v.status==='READ'?'LEXICAL_CANDIDATES':'NO_LEXICAL_MATCH',
+  evidenceCount:out.evidenceRefs.length,familyToSelf:family,
+  ancestry:'NOT_ASSESSED',ancestralCausation:'NOT_ESTABLISHED',
+  cq:'NOT_MEASURED',lawGrades:'NOT_MEASURED',
+  emotionCycle:intel.emotionCycle&&intel.emotionCycle.status==='READ'?
+   'CANDIDATE_READ_ONLY':'UNASSESSED'};
+ var targets=[
+  ['SOURCE','SESSION_CONVERSATION'],
+  ['BODY_MAP','REGION_MAPPING_UNAPPROVED'],
+  ['AVATAR','SHADOW_QUOTIENT_NOT_MEASURED'],
+  ['COMPASS','COHERENCE_NOT_MEASURED'],
+  ['STORY_BANK','PERSISTENCE_REQUIRES_SEPARATE_CONSENT'],
+  ['GRAPH_EDITOR','TRUSTED_HOST_IDENTITY_AND_CONSENT_REQUIRED'],
+  ['CQDQ_LAWS','GRADES_NOT_MEASURED'],
+  ['RITUAL_BUILDER','CREATION_REQUIRES_SEPARATE_CONFIRMATION'],
+  ['RELEASE_PROTOCOL','INITIATION_REQUIRES_SEPARATE_CONFIRMATION']
+ ];
+ out.packets=targets.map(function(row){
+  return {target:row[0],status:'PROVISIONAL_SESSION_ONLY',
+   boundary:row[1],action:'NONE',writeAuthority:'NONE',
+   sourceRefs:out.evidenceRefs.map(function(x){return x.ref;}),
+   referenceDurability:'EPHEMERAL_SESSION_ONLY',
+   summary:{sourceStatus:summary.sourceStatus,evidenceCount:summary.evidenceCount,
+    familyToSelf:summary.familyToSelf,ancestry:summary.ancestry,
+    ancestralCausation:summary.ancestralCausation,cq:summary.cq,
+    lawGrades:summary.lawGrades,emotionCycle:summary.emotionCycle},
+   graphStatus:'NOT_EXPORTED_UNTRUSTED_HOST',
+   dispatch:'NONE'};
+ });
+ return out;
+}
 /* ============================================================
    THE QUESTION CHECK, section 35 of the Journal Mode blueprint, ten points,
    as code every question Source AI builds passes through before it is shown.
@@ -23861,27 +25901,55 @@ function degInSign(lon){return _norm(lon)%30;}
 /* ---- the I Ching wheel ----
    64 gates around 360 degrees, so a gate is 5.625 wide and a line is
    0.9375. The wheel does not run 1 to 64 in order: it runs in the
-   sequence below, and the sequence starts at 0 degrees Aries.
+   sequence below, and where the sequence sits on the zodiac is fixed
+   by GATE_ANCHOR, not by 0 degrees Aries.
 
-   RULING NEEDED. This order is the one in general circulation and it
-   decides every gene key and every Human Design gate the product
-   prints. It is the one table here that is a claim about someone
-   else's system rather than about the sky, so it is isolated in one
-   place, named, and asserted in the gate test against a known chart.
-   Correct it here and everything downstream moves with it. */
+   RULED 18 November 2026, the owner's card "Apply the gene key wheel
+   anchor in SOURCE". The order was right and the anchor was not. This
+   wheel was laid with gate 25 starting at 0 degrees Aries, so every
+   gate boundary sat at a multiple of 5.625 from 0. The wheel Human
+   Design and the Gene Keys both read begins gate 41, line 1, at 2
+   degrees 00 minutes of Aquarius, which puts gate 25 at 28 degrees 15
+   minutes of Pisces, 1.75 degrees before 0 Aries. So every gate and
+   line this product printed was read off a wheel turned 1.75 degrees,
+   nearly two lines: inside about a third of every gate the gate itself
+   was the previous one, and the line was wrong almost everywhere.
+   Checked against published boundaries (gate 25 from 28 15 Pisces to
+   3 52 Aries, gate 27 from 2 00 Taurus, the solar plexus run from 18 51
+   Aquarius to 28 15 Pisces) and against three public charts whose
+   personality and design sun the old wheel misread and this one reads
+   as published: Ra Uru Hu 51.5 over 61.1, Barack Obama 33.6 over 2.2,
+   Steve Jobs 55.6 over 9.3. tests/engine.js holds all of it, with the
+   sources named there.
+
+   The table and the anchor cannot drift apart because the start is not
+   typed: it is derived from where gate 41 sits in the table. Reorder
+   the table and the start moves with it; only the order and the one
+   published degree are claims. */
 const GATE_WHEEL=[25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,
  15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,
  46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,
  10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
 const GATE_ARC=360/64;                       /* 5.625 degrees */
+/* the longitude where gate 41, line 1 begins: 2 degrees 00 of Aquarius,
+   the start of the Human Design year */
+const GATE_ANCHOR=302;
+/* where the first entry of the table, gate 25, begins: 358.25, which is
+   28 degrees 15 of Pisces. Every value here is a multiple of an eighth
+   of a degree, so this is exact in binary and a boundary lands exactly. */
+const GATE_START=_norm(GATE_ANCHOR-GATE_WHEEL.indexOf(41)*GATE_ARC);
 
-/* a longitude to its gate and line. */
+/* a longitude to its gate and line. lon is the longitude as given,
+   normalised, and arc is how far into its gate it sits, as before. */
 function gateOf(lon){
  var L=_norm(lon);
- var i=Math.floor(L/GATE_ARC);
- var within=L-i*GATE_ARC;
+ /* measured from the wheel's own start, not from 0 Aries, which is the
+    whole of the ruling above */
+ var a=_norm(L-GATE_START);
+ var i=Math.floor(a/GATE_ARC);
+ var within=a-i*GATE_ARC;
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
-  lon:L, arc:within};}
+  lon:_norm(lon), arc:within};}
 
 /* The design sun sits 88 degrees of SOLAR ARC before the birth sun,
    not 88 days. Those differ by a couple of days because the earth
@@ -23903,17 +25971,28 @@ function designJD(jd){
    that year. This is the part everyone skips, and skipping it is not
    a small error: one hour of offset moves the ascendant about fifteen
    degrees, which is half a sign. Latitude matters for the same reason.
-   A record with no place gets no ascendant rather than a guessed one. */
+   A record with no place gets no ascendant rather than a guessed one.
+   EACH CITY CARRIES ITS TIME ZONE, z, 18 November, and birthJD reads the
+   offset from it before it reads the two hand written rules below. Those
+   rules put a reference case an hour out: Wren, 1959 in Portland, was read
+   at -7 where the clocks said -8, and Abraham, 1951 in Boulder, at -6 where
+   Colorado kept no daylight saving that year and the clocks said -7. Boston
+   in April 1980 read -4 where it was -5, because the US branch applies the
+   1987 rule to every earlier year, and Oaxaca is marked as never saving
+   daylight where Mexico did from 1996 to 2022. The same Intl table the
+   named zone already used (below) holds every one of those. The hand rules
+   stay as the fallback for a runtime with no Intl, which is the only place
+   they are still read. */
 const PLACE={
- 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us'},
- 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us'},
- 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us'},
- 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us'},
- 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us'},
- 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us'},
- 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none'},
- 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu'},
- 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us'}};
+ 'Asheville, NC': {lat:35.595, lon:-82.552, tz:-5, dst:'us', z:'America/New_York'},
+ 'Chicago, IL':   {lat:41.878, lon:-87.630, tz:-6, dst:'us', z:'America/Chicago'},
+ 'Portland, OR':  {lat:45.515, lon:-122.679,tz:-8, dst:'us', z:'America/Los_Angeles'},
+ 'Santa Fe, NM':  {lat:35.687, lon:-105.938,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boulder, CO':   {lat:40.015, lon:-105.271,tz:-7, dst:'us', z:'America/Denver'},
+ 'Boston, MA':    {lat:42.360, lon:-71.059, tz:-5, dst:'us', z:'America/New_York'},
+ 'Oaxaca, MX':    {lat:17.073, lon:-96.727, tz:-6, dst:'none', z:'America/Mexico_City'},
+ 'Lisbon, PT':    {lat:38.722, lon:-9.139,  tz:0,  dst:'eu', z:'Europe/Lisbon'},
+ 'Greenwich, CT': {lat:41.027, lon:-73.629, tz:-5, dst:'us', z:'America/New_York'}};
 
 /* US daylight saving. The start moved in 2007 from the first Sunday in
    April to the second in March, and the end from the last Sunday in
@@ -24090,7 +26169,9 @@ function birthJD(bt){
     unknown offset already uses. jd stays noon, so nothing that does not
     check the span moves in this change. */
  var last=23+59/60;
- var zo=bt.z?zoneOffsets(bt.z,y,m,d,hrs):null;
+ /* the person's own zone first, then the city's (PLACE, 18 November) */
+ var zn=bt.z||(pl&&pl.z)||'';
+ var zo=zn?zoneOffsets(zn,y,m,d,hrs):null;
  if(zo){
   off=zo[0]; dst=null;
   var zspan=zo.length>1?[julianDay(y,m,d,hrs-Math.max(zo[0],zo[1])),
@@ -24098,13 +26179,13 @@ function birthJD(bt){
   /* the day's ends each at their own offset, since the clocks can change
      inside it, and at the offset that makes the day widest if they did at
      either end */
-  if(!timed){ var z0=zoneOffsets(bt.z,y,m,d,0), z1=zoneOffsets(bt.z,y,m,d,last);
+  if(!timed){ var z0=zoneOffsets(zn,y,m,d,0), z1=zoneOffsets(zn,y,m,d,last);
    zspan=[julianDay(y,m,d,0-Math.max.apply(null,z0)), julianDay(y,m,d,last-Math.min.apply(null,z1))];}
   /* A place the table names is the exact horizon and keeps it. Otherwise
      the zone's own representative point stands in, which is what lets a
      person outside the nine cities have a Rising at all. */
-  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(bt.z), timed:timed, offset:off, dst:dst,
-   span:zspan, zone:bt.z};}
+  return {jd:julianDay(y,m,d,hrs-off), place:pl||zonePoint(zn), timed:timed, offset:off, dst:dst,
+   span:zspan, zone:zn};}
  /* A PLACE THIS TABLE DOES NOT NAME IS AN UNKNOWN OFFSET, NOT OFFSET ZERO.
     The line above reads a missing place as Greenwich, so a clock time typed
     in Auckland was treated as the same clock time in London, thirteen hours
@@ -24229,6 +26310,67 @@ function lifePath(d){
  while(v>9&&v!==11&&v!==22&&v!==33)
   v=String(v).split('').reduce(function(a,c){return a+ +c;},0);
  return v;}
+/* A WHOLE AGE FROM A BIRTH DATE, counted on the calendar: the years since,
+   less one if the birthday has not come round yet in that year. now is a
+   'YYYY-MM-DD' or a Date, and today when it is left out. Null for a date
+   that is not a day, or a birth after now. */
+function bornAge(d,now){
+ var b=bornYMD(d); if(!b)return null;
+ var n;
+ if(typeof now==='string'){n=bornYMD(now); if(!n)return null;}
+ else{var t=now instanceof Date?now:new Date(); n=[t.getFullYear(),t.getMonth()+1,t.getDate()];}
+ var a=n[0]-b[0]-((n[1]<b[1]||(n[1]===b[1]&&n[2]<b[2]))?1:0);
+ return a>=0?a:null;}
+/* THE AGE A WORKED EXAMPLE SHOWS IS READ OFF ITS BIRTH, 18 November. Each
+   row typed an age beside a birth date in the table below it, and the
+   calendar walked past two of them: Wren was typed 66 and born 1959-04-17,
+   so 67 on the day it was checked, and Abraham 74 against 1951-06-29, so 75.
+   Tomas, typed 58 and born 1967-11-22, was four days from joining them. A
+   typed number the calendar grows past is the defect CLAUDE.md records nine
+   times over. The typed age is kept only for a row with no birth. */
+function exampleAge(p,now){
+ if(!p)return null;
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[p.nm]:null;
+ var a=bt?bornAge(bt.d,now):null;
+ return a!==null?a:(typeof p.age==='number'?p.age:null);}
+/* A WORKED EXAMPLE'S BIRTH AND NAME, IN THE RECORD'S OWN SHAPE, 18 November.
+   BIRTH and FULLNAME are keyed by the example's name and the record was built
+   blank beside them, so the rail read Sofia's sky off the table while the
+   Avatar's own birth fields, which read the record, sat empty under the same
+   name: two truths about one person. loadP writes this onto the scratch
+   record when it first builds it, so every reader sees the one birth. The
+   table marks an untimed birth by an empty t and the record by timeUnknown,
+   and this is the one place the two shapes meet. Null for a name with no
+   birth, which is the person's own You. */
+function exampleWho(nm){
+ var bt=(typeof BIRTH!=='undefined')?BIRTH[nm]:null; if(!bt)return null;
+ var fn=((typeof FULLNAME!=='undefined'&&FULLNAME[nm])||'').split(' ').filter(Boolean);
+ return {first:fn.length?fn[0]:'', middle:fn.length>2?fn.slice(1,-1).join(' '):'', last:fn.length>1?fn[fn.length-1]:'',
+  born:{date:bt.d, time:bt.t||'', place:bt.p||'', zone:bt.z||'', timeUnknown:!bt.t}};}
+/* ONE DOOR FOR A WORKED EXAMPLE'S SCRATCH RECORD, 18 November. Two places
+   build it, whichever runs first: loadP (ui/personas.js) when the example is
+   picked, and pracRead (ui/practitioner.js) when the Clients page draws its
+   ten. loadP seeded the birth, the name, the intake answers and the purpose;
+   pracRead seeded the intake answers alone. Each only builds a record when
+   none exists, so on a page where Clients was opened first loadP found
+   pracRead's record and skipped its own seeding, and every client's Avatar
+   read an empty birth while the rail, which reads BIRTH by name, printed the
+   chart. QA found it on Sofia: #wdate '' beside 1985-03-14. Both doors call
+   this now, so the record is the same whichever is opened first.
+   The purpose is the same rule as S.addr in loadP: an example's own data
+   lives on its own PEOPLE row or defaults to the blank's, which once meant
+   every example showed the signed-in account's own purpose under a
+   stranger's name. Copied only when the record is first built, so an edit
+   made while looking at an example is never clobbered by a second visit.
+   The person's own You (p.you) gets no birth or name: it has none. */
+function exampleRecord(p){
+ var pr=blankProfile(p.nm);
+ if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
+ if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+ var ew=p.you?null:exampleWho(p.nm);
+ if(ew){pr.who.first=ew.first; pr.who.middle=ew.middle; pr.who.last=ew.last;
+  pr.who.born=ew.born;}
+ return pr;}
 function masterNumber(bt){var lp=lifePath(bt.d);return (lp===11||lp===22||lp===33)?lp:null;}
 function chineseElement(y){ return CELEM[y%10]; }
 /* The Chinese year turns at Li Chun, when the sun reaches 315 degrees,
@@ -24245,7 +26387,13 @@ function chineseYear(bt){
   var diff=((sunLon(lc)-315+540)%360)-180;
   if(Math.abs(diff)<1e-4)break;
   lc-=diff/0.9856474;}
- return b.jd<lc ? y-1 : y;}
+ /* THE YEAR GOES THROUGH atSpan LIKE EVERY OTHER READING, 18 November. It
+    compared the noon guess with Li Chun and ignored the window, so an untimed
+    birth on the Li Chun day was handed an animal the hour decides:
+    2023-02-04 in London with no time read Rabbit, where 01:00 that day is
+    Tiger and 04:00 is Rabbit. Null when the two ends of the window fall
+    either side of Li Chun, which the panel prints as needing a birth time. */
+ return atSpan(b,function(jd){return jd<lc ? y-1 : y;});}
 /* Human Design. The personality gate is the sun at birth and the design
    gate is the sun 88 degrees of arc earlier, and both of those are real
    and computed here.
@@ -24295,6 +26443,18 @@ function geneKey(b){
 function spiritual(name){
  var bt=BIRTH[name]; if(!bt) return null;
  return spiritualOf(bt);}
+/* A PROFILE'S OWN BIRTH, IN THE SHAPE spiritualOf READS. Intake saves
+   {date,time,place,zone,timeUnknown} to who.born and spiritualOf reads
+   {d,t,p,z}, and the translation between them was written out by hand three
+   times in the UI (renderSpirit, renderRootSum, sumBirth) and not at all at
+   the one call that needed it, converge, so the convergence never ran for a
+   real person. One translation, here, so a fourth reader cannot get a fifth
+   shape. A time the person said they do not know is no time, whatever the
+   field still holds. Null for no date, because no date is no birth. */
+function bornAsBirth(p){
+ var bn=p&&p.who&&p.who.born;
+ if(!bn||!bn.date)return null;
+ return {d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''};}
 /* split out so a live person's own intake can be read the same way a
    reference case is, rather than only through the BIRTH table. */
 function spiritualOf(bt){
@@ -24323,17 +26483,34 @@ function spiritualOf(bt){
      settles it is a time zone, so that is what the reading asks for. An
      untimed record's span is its day, and a zone does not settle that. */
   needsZone:!!(b&&b.timed&&b.span&&!b.zone),
-  chinese:CHINESE[((cy%12)+12)%12], celem:chineseElement(((cy%10)+10)%10), cyear:cy,
+  /* null when the window straddles Li Chun (chineseYear above): null%12 is
+     0, which would have printed Monkey for a year nobody read */
+  chinese:cy===null?null:CHINESE[((cy%12)+12)%12], celem:cy===null?null:chineseElement(((cy%10)+10)%10), cyear:cy,
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
 /* CONVERGENCE. where independent systems agree, that is the signal.
-   where they disagree the instrument says so rather than picking a winner. */
-function converge(name,r){
- var e=spiritual(name); if(!e) return null;
- var agree=[],differ=[];
+   where they disagree the instrument says so rather than picking a winner.
+   sp is a reading the caller already holds. Every Summary caller held the
+   person's own reading off their Intake and then asked this for a name, which
+   only the BIRTH table of reference cases answers, so for anybody real it
+   returned null and the comparison never printed however much birth they
+   typed. A reading passed in is used as it is; without one, the name lookup
+   is the default it always was, and a name nobody owns is still null. */
+function converge(name,r,sp){
+ var e=sp||spiritual(name); if(!e) return null;
+ var agree=[],differ=[],open=[];
+ /* AN UNREAD SUN IS A GAP, NOT A DIFFERENCE. Only a reference case reached
+    this while it took a name, and every one of them has a time and a place.
+    A person's own birth can be a date alone on a day the sun changed sign,
+    and then sunSign is null and the element and the mode with it. Compared
+    as they stood, null never equals a root, so the reading said "birth
+    element points null" and counted it against them. What settles the day
+    is what the reading asks for, chosen the way renderSpirit chooses it. */
+ var sunWhy=e.needsTime?'a birth time':e.needsZone?'a birth time zone':'a time the clocks did not change at';
  var rootNow=(DOMAINS[S.doms[0]]||{}).r||'';
- if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
+ if(!e.root) open.push('the birth element, which needs '+sunWhy);
+ else if(e.root===rootNow) agree.push('birth element '+e.sunEl+' and your root domain both read '+e.root);
  else differ.push('birth element points '+e.root+', your domain runs '+rootNow);
  var archNow=(ARCH[r.pi]||{}).nm||'';
  if(LP2ARCH[e.lp]===archNow) agree.push('life path '+e.lp+' and your first archetype both read '+archNow);
@@ -24343,7 +26520,8 @@ function converge(name,r){
     for the reason given below for the design type, and scoring it as the
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
- if(!fieldOpen){
+ if(!e.sunMode) open.push('the birth mode, which needs '+sunWhy);
+ else if(!fieldOpen){
   if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
   else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
@@ -24352,7 +26530,6 @@ function converge(name,r){
     there is nothing to compare, so it goes in a third bucket. A gap is
     not a disagreement, and scoring it as one made an absent input look
     like evidence against the person. */
- var open=[];
  if(e.hd.unresolved)open.push('Human Design type, which needs the full bodygraph');
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
@@ -24364,6 +26541,10 @@ function converge(name,r){
     +(r.benign?'expanding':'contracting')+', point the same way');
   else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
+ /* an untimed day can straddle a line of the design gate, and then there is
+    no line. It dropped out of the count without a word, which is the same
+    absent input going unsaid, so it is named with what would settle it. */
+ else open.push('the design line, which needs '+sunWhy);
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
   /* reported as a fraction, because three of four and seventy five
@@ -24618,14 +26799,18 @@ function numerologyOf(name,p){
    gate wheel: the personality gate's trigrams carry the sun sign's
    element 13.6 percent of the time where an unrelated gate would 22.7,
    so the two are tied together. The design gate, the sun 88 degrees
-   earlier, carries it 24.5 percent of the time, near enough the
-   unrelated figure to be read as a separate voice.
+   earlier, carries it 25.0 percent of the time, near enough the
+   unrelated figure to be read as a separate voice. Re-measured 18
+   November, after the wheel was moved onto its published anchor (gate
+   41 at 2 degrees Aquarius, engine/astro.js): the design figure read
+   24.5 on the old wheel and the other two did not move.
 
    OVERLAP IS COMMON, SO IT IS WEIGHED, NOT COUNTED. With fourteen
    themes and up to eleven placements, two systems share something for
    almost everybody: on the sweep tests/engine.js runs, 700 births
-   spread over seventy years, 689 had at least one theme two systems
-   reach, measured 27 September. A summary that called every one of
+   spread over seventy years, 690 had at least one theme two systems
+   reach, measured 18 November on the anchored wheel (689 on 27
+   September, when every gate was read 1.75 degrees off). A summary that called every one of
    those the truth would be saying the same thing to everybody. So
    each meeting point carries q, the chance that the systems reaching
    it would each reach it at least as often if every placement were
@@ -24682,8 +26867,10 @@ const ROOT_NUMPLANET={1:'Sun',2:'Moon',3:'Jupiter',4:'Uranus',5:'Mercury',6:'Ven
 /* HOW STRONG A MEETING IS, by q. At or under the first, the rail says the
    systems agree strongly; at or under the second, that they agree; above it
    the meeting is common and the rail says that, rather than calling it the
-   truth. On the same sweep, measured 27 September, 66 of 700 births reached
-   strong, 149 clear and 474 light, and 11 had no meeting at all. The shares
+   truth. On the same sweep, measured 18 November, 63 of 700 births reached
+   strong, 152 clear and 475 light, and 10 had no meeting at all. It read
+   66, 149, 474 and 11 on 27 September, before the gate wheel took its
+   published anchor, which moved the design gate for a share of births. The shares
    are held by tests/engine.js as a contract on the words, strong rare and
    agreement a minority, so a table change that moves them fails there and
    not in front of somebody. */
@@ -27700,9 +29887,10 @@ function ladderPlaces(w){
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  PATTERN96:PATTERN96, PATTERN96_BY_LAYER:PATTERN96_BY_LAYER, RESEARCHANCHOR:RESEARCHANCHOR,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
                  pctHue:pctHue, PCT_HUE0:PCT_HUE0, PCT_HUE_STEP:PCT_HUE_STEP, PCT_DAC:PCT_DAC,
@@ -27710,6 +29898,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
+                 srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -27733,6 +29923,9 @@ if(typeof module!=='undefined'&&module.exports){
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
                  srcVet:srcVet, srcVetSay:srcVetSay, srcChoose:srcChoose, qcFamilyOf:qcFamilyOf, srcFamilyCands:srcFamilyCands,
                  SRC_RESTATE:SRC_RESTATE, srcRestate:srcRestate,
+  /* insight */  insightRead:insightRead, insightRelease:insightRelease, insightResolve:insightResolve,
+                 insightText:insightText, INS_HEAD:INS_HEAD, INS_MAX:INS_MAX, INS_LIST:INS_LIST,
+                 INS_WORD:INS_WORD, INS_CAP:INS_CAP, patFam:patFam,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
@@ -27744,6 +29937,10 @@ if(typeof module!=='undefined'&&module.exports){
                  purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
+                 wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
+                 WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
+                 WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
+                 WHOLE_MEANS:WHOLE_MEANS, wholeSay:wholeSay,
                  AV_PULL:AV_PULL, avatarMarks:avatarMarks, avatarPull:avatarPull,
                  avatarRank:avatarRank, avatarWhy:avatarWhy,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
@@ -27783,7 +29980,7 @@ if(typeof module!=='undefined'&&module.exports){
                   ascendant:ascendant, signOf:signOf, degInSign:degInSign,
                   gateOf:gateOf, designJD:designJD, birthJD:birthJD, bornYMD:bornYMD, bornHM:bornHM, PLACE:PLACE,
                   usDST:usDST, euDST:euDST, zoneOffsets:zoneOffsets, zonePoint:zonePoint, ZONEPT:ZONEPT,
-                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC,
+                  GATE_WHEEL:GATE_WHEEL, GATE_ARC:GATE_ARC, GATE_ANCHOR:GATE_ANCHOR, GATE_START:GATE_START,
                   chineseYear:chineseYear, spiritualOf:spiritualOf,
   /* catalog */   C3_VERB:C3_VERB, C3_STEM:C3_STEM, C3_TRUTH:C3_TRUTH,
                   C3_BAND:C3_BAND, C3_LADDER:C3_LADDER, C3_POLE:C3_POLE, C3_BILATERAL:C3_BILATERAL,
@@ -27982,7 +30179,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, spiritual:spiritual, converge:converge,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -28114,6 +30311,11 @@ if(typeof module!=='undefined'&&module.exports){
      writers and the one count */
                   RELHIT_V:RELHIT_V, RELHIT_STATES:RELHIT_STATES, RELHIT_CMDS:RELHIT_CMDS,
                   RELHIT_MODES:RELHIT_MODES, RELHIT_LOG_MAX:RELHIT_LOG_MAX,
+  /* its spoken half: the phrases, the floor, the pure parser and the one
+     writer a heard phrase goes through. The microphone is not here. */
+                  RELHIT_VOICE_PHRASES:RELHIT_VOICE_PHRASES, RELHIT_VOICE_FLOOR:RELHIT_VOICE_FLOOR,
+                  RELHIT_VOICE_COLLIDES:RELHIT_VOICE_COLLIDES, RELHIT_VOICE_RAW_MAX:RELHIT_VOICE_RAW_MAX,
+                  relHitHear:relHitHear, relHitVoice:relHitVoice,
                   relHitBlank:relHitBlank, relHitPat:relHitPat, relHitValidate:relHitValidate,
                   relHitExecute:relHitExecute, relHitDecide:relHitDecide,
                   relHitSession:relHitSession, relHitState:relHitState, relHitCount:relHitCount,
@@ -29393,6 +31595,256 @@ if(typeof module!=='undefined'&&module.exports){
   sabSeedAxes:sabSeedAxes, sabSeedEmpty:sabSeedEmpty, sabSeedApply:sabSeedApply,
   sabSeedClear:sabSeedClear, sabSeedShare:sabSeedShare, sabSeedValid:sabSeedValid,
   SAB33_BY:SAB33_BY});}
+/* ============================================================
+   THE AFFIRMATION GENERATOR, 18 November. Seven lines, one per point, Root to
+   Crown, each opening on his anchor (AFF_ANCHOR, engine/data/affirm.js), from
+   one theme. The theme is what Source AI spots in the person's own record, a
+   Become line, a tag, a banked release, a confirmed claim, the pair chosen on
+   the Path, or a word they type. Deterministic and offline: no model, no
+   network, the same theme in gives the same seven lines out.
+
+   THE ORDER, every time, and it is load bearing:
+     safety   affSafe on the raw text of every source, before anything reads
+              it. His package had none and affirmed "I want to hurt myself"
+              seven times. In a weave one trip stops the whole set.
+     clean    whitespace, quotes at both ends, trailing punctuation, and only
+              then the empty test: "..." tested before the strip is not empty
+              and composed seven lines about nothing (mutant M5, R3).
+     shape    affShape reads what kind of phrase it is, or refuses it by name
+              with what to write instead.
+     frames   one frame per shape per point. lineOf throws on a line that
+              does not open on its anchor in exact case, so the defect his
+              Creator Mode shipped, "i magnetize", cannot be emitted.
+
+   NOTHING IS SWAPPED SILENTLY. A held pattern, "fear", is refused and its
+   opposite is offered behind one press. A word keeps its part of speech.
+
+   THE ENGINE NEVER READS CURP. affSources is handed the profile and what the
+   UI already read (banked rows, claims, the chosen Path pair, a seat reader),
+   the way avatarMarks is handed parse and seatOf, so this file reads no store
+   and no page. hostfree.py holds it.
+
+   WHY IT SITS AFTER engine/export.js. The decision spec placed it after
+   engine/safe.js. Everything it calls is declared before export.js either
+   way, and export.js assigns module.exports whole, so a module ahead of it
+   would have to edit the list other seats are appending to. charfield.js set
+   this precedent: add its own names to what export.js left.
+   ============================================================ */
+
+/* A HELD PATTERN AND WHAT RELEASE PUTS BACK, built from CHILD on first use so
+   no table copies the canon: a renamed opposite moves here on its own. The
+   adjective and common forms follow, each pointing at the same opposite. */
+var AFF_FLIP=null;
+function affFlips(){
+ if(AFF_FLIP)return AFF_FLIP;
+ var f={};
+ CHILD.forEach(function(c){f[c.nm.toLowerCase()]=c.opp.toLowerCase();});
+ /* the adjective and common forms of the nine, and three words the canon
+    does not name, each released toward a quality in AFF_ADJ's own words */
+ var more={afraid:'Fear', scared:'Fear', angry:'Anger', ashamed:'Shame', disgusted:'Disgust', apathetic:'Apathy',
+  shocked:'Shock', sadness:'Sad', surprised:'Surprise'};
+ Object.keys(more).forEach(function(w){f[w]=f[more[w].toLowerCase()];});
+ f.anxious='calm'; f.anxiety='calm'; f.doubt='confidence';
+ return (AFF_FLIP=f);}
+
+/* THE STOP. srcSafe first, the product's one question; then any safeOf hit
+   whatever its polarity, because a denied hit in a Become line is recovery
+   phrasing and still not a thing to chant; then AFF_STOP, word edged. */
+function affSafe(text){
+ var t=String(text||'');
+ if(srcSafe(t))return {ok:false, why:'src'};
+ if(safeOf(t).length)return {ok:false, why:'safeOf'};
+ for(var i=0;i<AFF_STOP.length;i++)if(AFF_STOP[i].test(t))return {ok:false, why:'lex'};
+ return {ok:true, why:null};}
+
+/* a third person verb to its base and its first person form. is is the one
+   whose two differ, so Throat says "I am held" and never "I be held". */
+var AFF_IRR={is:['be','am'], has:['have','have'], does:['do','do'], goes:['go','go']};
+function affConj(w){
+ var f=String(w).toLowerCase(), b=null;
+ if(AFF_IRR[f])return AFF_IRR[f];
+ if(/ies$/.test(f))b=f.slice(0,-3)+'y';
+ else if(/(ches|shes|sses|xes|zes|oes)$/.test(f))b=f.slice(0,-2);
+ else if(/[^s]s$/.test(f))b=f.slice(0,-1);
+ return b?[b,b]:null;}
+function affVp(vb){
+ var v1=/^be\b/.test(vb)?vb.replace(/^be\b/,'am'):vb;
+ return {k:'vp', vb:vb, v1:v1};}
+var AFF_NEG=/^(not|never|no longer|no more|free of|less|without|doesn't|does not|don't|do not)\s+/i;
+/* "I am afraid", "I keep failing": a sentence about now, not a thing to do */
+var AFF_ISTOP={am:1, was:1, were:1, feel:1, felt:1, think:1, thought:1, hate:1, need:1, "can't":1, cannot:1,
+ "don't":1, "won't":1, never:1, keep:1, wish:1};
+function affRefuse(k,w,o){
+ var s=AFF_SAY[k], say=typeof s==='function'?s(w,o):s;
+ return o?{refuse:k, say:say, offer:o}:{refuse:k, say:say};}
+
+/* WHAT KIND OF PHRASE IT IS, first match wins. SPEC.md 3.1 step 6 is the
+   rule; this is its executable form, ported from r3/ref.js with its bodies. */
+function affShape(raw){
+ var t=String(raw||'').replace(/\s+/g,' ').trim()
+  .replace(/^["'“”‘’]+|["'“”‘’]+$/g,'')
+  .replace(/[.,;:!?…]+$/,'').trim();
+ if(!/[A-Za-z]/.test(t))return affRefuse('empty');
+ var words=t.split(' '), m;
+ if(words.length>12)return affRefuse('long');
+ if(/[.!?…]\s+\S/.test(t)||/["“”]/.test(t))return affRefuse('sentence');
+ /* an all caps theme is shouted, not named: lowercased whole. Otherwise only
+    the first word, so "Sundays" stays "Sundays" and "I" stays "I". */
+ if(t===t.toUpperCase()&&/[A-Z]{2}/.test(t))t=t.toLowerCase();
+ else if(words[0]!=='I')t=t.charAt(0).toLowerCase()+t.slice(1);
+ if((m=t.match(/^(someone|somebody) who (\S+)(.*)$/i))){
+  var np=t;
+  if(AFF_NEG.test(m[2]+m[3]+' ')||/^(no|never)$/i.test(m[2]))return affRefuse('toward');
+  /* WITHOUT A PARSER "her" CANNOT BE TOLD APART as owner or object: "calls
+     her mother" is not "calls my mother", and a wrong guess changes who is
+     meant. So any other person in the line keeps it whole, after I am. */
+  if(/\b(he|she|her|him|they|them|their|and|or)\b/i.test(m[3]))return {k:'np', np:np};
+  var c=affConj(m[2]); if(!c)return {k:'np', np:np};
+  var rest=m[3].replace(/\bhis\b/gi,'my').replace(/\b(himself|herself)\b/gi,'myself');
+  if(/^(stop|quit)$/.test(c[0])&&/^\s+\w+ing\b/.test(rest))return affRefuse('toward');
+  var o=affVp(c[0]+rest); o.np=np; return o;}
+ /* the same rule ritIAm already says a Become line by, RIT_IAM_RX */
+ if(/^(someone|somebody|a|an|the one|the person|the kind of person)\b/i.test(t))return {k:'np', np:t};
+ if((m=t.match(/^I (?:want to|will|choose to|am going to|can) (.+)$/)))t='to '+m[1];
+ else if((m=t.match(/^I am (\S+)$/)))return affShape(m[1]);
+ else if((m=t.match(/^I (\S+)(.*)$/))){
+  if(AFF_ISTOP[m[1].toLowerCase()])return affRefuse('sentence');
+  t='to '+m[1]+m[2];}
+ if((m=t.match(/^to (.+)$/i))){
+  var v=m[1];
+  if(AFF_NEG.test(v+' ')||/^(stop|quit) \w+ing\b/i.test(v))return affRefuse('toward');
+  return affVp(v);}
+ if(/^\w+ing\b/.test(t)&&!AFF_ADJ[t])return affRefuse('gerund');
+ if(/,|;|\s&\s|\band\b|\bor\b/.test(t))return affRefuse('list');
+ if(AFF_PERSON.test(t))return affRefuse('person',t.split(' ')[1]);
+ var F=affFlips(), low=t.toLowerCase(), neg=low.replace(AFF_NEG,'');
+ if(neg!==low){
+  if(F[neg])return affRefuse('flip',neg,F[neg]);
+  return affRefuse('toward');}
+ if(F[low])return affRefuse('flip',low,F[low]);
+ if(AFF_THIN[low])return affRefuse('thin',low);
+ if(AFF_ADJ[low])return {k:'adj', a:low};
+ if(t.split(' ').length<=4)return {k:'n', n:t};
+ return affRefuse('shape');}
+
+/* ONE LINE, and the one place a line is made. Both modes are built here so
+   the switch re-renders without composing again, which is his live toggle. */
+function affLineOf(i,s,src){
+ var f=AFF_FRAMES[s.k][i](s), core=f[0], tail=f[1];
+ if(core.indexOf(AFF_ANCHOR[i]+' ')!==0)throw new Error('affirm: line '+i+' does not open on '+AFF_ANCHOR[i]);
+ return {b:BANDS[i], anchor:AFF_ANCHOR[i], core:core, tail:tail, plain:core+tail+'.',
+  wrapped:AFF_PRE+core+AFF_SUF, src:src||null, composed:true};}
+function affStopped(g){return {ok:false, stop:'safety', why:g.why, say:CRISIS_SAY.entryNow, lines:[]};}
+function affCompose(theme,src){
+ var g=affSafe(theme); if(!g.ok)return affStopped(g);
+ var s=affShape(theme);
+ if(s.refuse)return {ok:false, refuse:s.refuse, say:s.say, offer:s.offer||null, lines:[]};
+ return {ok:true, shape:s.k, lines:BANDS.map(function(b,i){return affLineOf(i,s,src);})};}
+
+/* WHAT COUNTS AS AN INTENTION, and only what the person confirmed. The UI
+   reads and hands in; this reads only its arguments.
+     path    the pair chosen on the Path, becomingOf(k).who, at its point
+     avatar  a Become line, CURP.avatar.pairs[].be, at its seat, else the
+             seat its Not be line reads at, exactly as ritAffirm seats it
+     tag     a tag the person put on, a CHILD name or its opposite, said as
+             the opposite. Any other tag is an address name and no intention
+     bank    a Banked release row, said as its fetter's CHILD opposite,
+             never as the pattern
+     claim   confirmed or corrected: confirmed. supported or candidate:
+             heard, which the UI may only offer behind a Yes. inferred,
+             rejected and unknown never leave here.
+     typed   the person's own word
+   Order: the Path pair, Become lines newest first, tags, banked rows, claims,
+   then the typed word. One text is one source. */
+function affSources(profile,o){
+ o=o||{};
+ var out=[], seen={};
+ var opp={}, seatOf={}, rep={};
+ CHILD.forEach(function(c){opp[c.nm]=c.opp; seatOf[c.nm]=c.seat; rep[c.opp]=c.nm;});
+ var put=function(key,kind,text,b,state){
+  text=String(text||'').replace(/\s+/g,' ').trim(); if(!text)return;
+  var id=text.toLowerCase(); if(seen[id])return; seen[id]=1;
+  out.push({key:String(key).slice(0,40), kind:kind, text:text, b:(b&&BANDS.indexOf(b)>=0)?b:null, state:state});};
+ if(o.pathK&&typeof becomingOf==='function'){
+  var bc=becomingOf(o.pathK);
+  if(bc&&bc.who)put('pa:'+bc.k,'path',String(bc.who).toLowerCase(),bc.seat,'confirmed');}
+ var av=(profile&&profile.avatar&&typeof profile.avatar==='object')?profile.avatar:{};
+ var pairs=Array.isArray(av.pairs)?av.pairs:[];
+ for(var i=pairs.length-1;i>=0;i--){
+  var pr=pairs[i]; if(!pr||typeof pr.be!=='string')continue;
+  var be=pr.be.trim().replace(/^"+|"+$/g,''); if(!be)continue;
+  var b=(pr.seat&&BANDS.indexOf(pr.seat)>=0)?pr.seat:(typeof o.seatOf==='function'?o.seatOf(pr.notbe||''):null);
+  put('av:'+(pr.id||avatarHash(be)),'avatar',be,b,'confirmed');}
+ var tags=(av.tags&&typeof av.tags==='object')?av.tags:{};
+ BANDS.forEach(function(tb){
+  var t=tags[tb]; if(!t||!Array.isArray(t.add))return;
+  t.add.forEach(function(w){
+   if(typeof w!=='string')return;
+   var q=opp[w]!==undefined?opp[w]:(rep[w]!==undefined?w:null);
+   if(q)put('tg:'+tb+':'+w,'tag',q.toLowerCase(),tb,'confirmed');});});
+ (Array.isArray(o.banked)?o.banked:[]).forEach(function(r){
+  if(!r||!opp[r.cf])return;
+  put('bk:'+(r.key||r.cf),'bank',opp[r.cf].toLowerCase(),r.b||seatOf[r.cf],'confirmed');});
+ var ST={confirmed:'confirmed', corrected:'confirmed', supported:'heard', candidate:'heard'};
+ (Array.isArray(o.claims)?o.claims:[]).forEach(function(c){
+  if(!c||!ST[c.state])return;
+  /* a corrected claim says what the person put in its place */
+  var text=(c.state==='corrected'&&typeof c.fix==='string'&&c.fix.trim())?c.fix:(opp[c.cf]||'').toLowerCase();
+  put('cl:'+(c.key||c.cf),'claim',text,c.b||seatOf[c.cf],ST[c.state]);});
+ if(typeof o.typed==='string')put('ty','typed',o.typed,null,'confirmed');
+ return out;}
+
+/* THE WEAVE, "Your record". Each point says the confirmed source seated
+   there, and a point nobody seated says the primary. A heard source is never
+   composed. Safety runs on every source handed in, heard ones included,
+   because a heard line is still the person's words. */
+function affWeave(sources,primaryKey){
+ sources=Array.isArray(sources)?sources:[];
+ for(var i=0;i<sources.length;i++){
+  var g=affSafe(sources[i]&&sources[i].text); if(!g.ok)return affStopped(g);}
+ var ok=sources.filter(function(x){return x&&x.state==='confirmed';});
+ var p=ok.filter(function(x){return x.key===primaryKey;})[0]||ok[0];
+ if(!p)return {ok:false, refuse:'empty', say:AFF_SAY.empty, offer:null, lines:[]};
+ var ps=affShape(p.text);
+ if(ps.refuse)return {ok:false, refuse:ps.refuse, say:ps.say, offer:ps.offer||null, lines:[]};
+ return {ok:true, shape:'weave', lines:BANDS.map(function(b,k){
+  var at=ok.filter(function(x){return x.b===b&&x!==p;})
+   .map(function(x){return {x:x, s:affShape(x.text)};})
+   .filter(function(z){return !z.s.refuse;})[0];
+  return at?affLineOf(k,at.s,at.x.key):affLineOf(k,ps,p.key);})};}
+/* how many points a confirmed source other than the primary is seated at.
+   The weave is offered only when it would differ from one source's set. */
+function affWeaves(sources){
+ var seated={};
+ (sources||[]).forEach(function(x){if(x&&x.state==='confirmed'&&x.b&&!affShape(x.text).refuse)seated[x.key]=1;});
+ return Object.keys(seated).length>=2;}
+
+/* HIS FORMAT FOR COPY, "* Point: line.", plain text, no markdown and nothing
+   else. The labels are the product's point names (BANDS), so Solar and 3rd
+   Eye, never Solar Plexus or a chakra. keep leaves out unpressed rows. */
+function affPlain(lines,creator,keep){
+ return (lines||[]).filter(function(l,i){return !keep||keep[i]!==false;})
+  .map(function(l){return '* '+l.b+': '+(creator?l.wrapped:l.plain);}).join('\n');}
+
+/* THE READ BOUNDARY for the kept set on this device (atuned-affirm-kept,
+   ui/affirmui.js). Browser storage is anyone's to edit, so a row is only
+   drawn if it is the shape the writer writes: a point name, a core that
+   opens on that point's anchor, a short tail and a short source key. */
+function affKeptOk(row){
+ if(!row||typeof row!=='object'||row.composed!==true)return false;
+ var i=BANDS.indexOf(row.b); if(i<0)return false;
+ if(typeof row.core!=='string'||row.core.length<1||row.core.length>200)return false;
+ if(row.core.indexOf(AFF_ANCHOR[i]+' ')!==0)return false;
+ if(row.tail!=null&&(typeof row.tail!=='string'||row.tail.length>60))return false;
+ if(row.src!=null&&(typeof row.src!=='string'||row.src.length>40))return false;
+ return true;}
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{AFF_ANCHOR:AFF_ANCHOR, AFF_PRE:AFF_PRE, AFF_SUF:AFF_SUF, AFF_SAY:AFF_SAY,
+  AFF_FRAMES:AFF_FRAMES, AFF_ADJ:AFF_ADJ, AFF_VOICE:AFF_VOICE, AFF_THIN:AFF_THIN, AFF_PERSON:AFF_PERSON,
+  AFF_STOP:AFF_STOP, affFlips:affFlips, affSafe:affSafe, affShape:affShape, affCompose:affCompose,
+  affSources:affSources, affWeave:affWeave, affWeaves:affWeaves, affPlain:affPlain, affKeptOk:affKeptOk,
+  affLineOf:affLineOf});}
 /* ============================================================
    THE FUNNEL/QUIZ SELF-REPORT STATEMENTS. The pre-account quiz asks one
    first-person statement per law, per archetype and per self-reported

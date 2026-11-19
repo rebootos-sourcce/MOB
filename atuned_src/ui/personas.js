@@ -33,7 +33,16 @@ $('mx').addEventListener('mouseleave',mxKey);
    the gold ring. "Columns are domains, rows are child emotions" repeated the
    label over the grid, and "Press any cell" told a person how to use it. */
 function mxKey(){$('mxk').innerHTML='The brighter a cell, the more charge it holds. '
- +'A gold ring marks a pair that weighs more together.';}
+ +'A gold ring marks a pair that weighs more together.';
+ /* THE CAPTION'S TERM CARRIES ITS MEANING, 18 November. "9 child emotions" is
+    the one place on the Psyche panel that still says the term now that the
+    section named for it is gone, so the sentence the table keeps for it
+    (engine/data/gloss.js, 'child emotions') is on the caption itself, on hover
+    and tap and to a screen reader, and the table entry has a caller. Set from
+    the table and never typed, so a sentence that is reworded changes here. */
+ var cap=$('mxcap'), ce=unpackOf('child emotions');
+ if(cap&&ce){cap.setAttribute('data-tip-k','Child emotions'); cap.setAttribute('data-tip',ce);
+  cap.setAttribute('aria-label','19 domains by 9 child emotions. '+ce);}}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -51,10 +60,9 @@ function renderSpirit(){
  /* A person's own birth data goes into Intake, is saved to CURP.who.born, and
     until now nothing read it. BIRTH.You is null and always was, so the whole
     ephemeris was visible to nine fixtures and to nobody real. spiritualOf was
-    written to close exactly this and was never called. It is called here. */
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){
-  var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+    written to close exactly this and was never called. It is called here,
+    through bornAsBirth, the one translation every reader of who.born shares. */
+ if(!sp)sp=spiritualOf(bornAsBirth(CURP));
  if(!sp){
   /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
      below says unresolved for every birth there is, because the type needs the
@@ -197,9 +205,12 @@ function renderSpirit(){
      element's and its tooltip says both halves, from the same two gloss
      entries the two rows carried. The element's own drill is still the
      Summary's chip for it (sumChips, ui/summary.js). */
+  /* the year is null for an untimed birth on the Li Chun day, where the hour
+     decides the animal (chineseYear, engine/birth.js), and is that row then */
   +line('E',
-   row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
-    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year'))))
+   (sp.chinese?row('Year',cic,sp.celem+' '+sp.chinese,CH_RUNS[sp.chinese]||'','chinese',sp.chinese,
+    say(unpackOf('year animal'),unpackOf(sp.chinese,'animal'),unpackOf('year element'),unpackOf(sp.celem,'year')))
+    :unres('Year','needs a birth time')))
   +line('N',
    nrow('Life path',NUMFIELD_IC.path,String(sp.lp),sp.lpMean,'lp',String(sp.lp),say(unpackOf('life path'),unpackOf('path:'+sp.lp)))
   +(sp.master?nrow('Master',NUMFIELD_IC.master,String(sp.master),'survives reduction','lp',String(sp.master),unpackOf('master number')):'')
@@ -635,7 +646,8 @@ function pselOwnSync(){
  if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
  if(p.you)return pselOwnName();
- return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
+ /* the age off the birth, never the typed one (exampleAge, engine/birth.js) */
+ return up?p.nm+', example':p.nm+', '+exampleAge(p)+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
@@ -1051,17 +1063,11 @@ function loadP(i){
     reference case's diagnostic from overwriting another's. It is memory only,
     and it is discarded with the page, which is what a demonstration is. */
  if(!PROF_BY[p.nm]){
-  var pr=blankProfile(p.nm==='You'?'You':p.nm);
-  if(p.intakeAnswers)pr.intake.answers=Object.assign({},p.intakeAnswers);
-  /* THE PURPOSE HEXAGON COMES FROM THE SAME ROW TOO, 13 November, the same
-     rule as S.addr above: a worked example's own data lives on its own
-     PEOPLE row (engine/data/people.js, p.purpose) or it defaults to the
-     blank's, which here meant every example silently showed whichever
-     purpose the signed-in account itself had written, under a stranger's
-     name. Copied in only when this scratch profile is first built, same as
-     intakeAnswers, so an edit made while looking at an example during this
-     session is never clobbered by a second visit. */
-  if(p.purpose)pr.purpose=JSON.parse(JSON.stringify(p.purpose));
+  /* THE INTAKE ANSWERS, THE PURPOSE HEXAGON, THE BIRTH AND THE NAME all come
+     from the example's own PEOPLE row, through exampleRecord
+     (engine/birth.js), which the Clients page calls too. Seeded here alone,
+     a record the Clients page built first came back without the birth. */
+  var pr=exampleRecord(p);
   if(p.you)PROFILES.push(pr);
   PROF_BY[p.nm]=pr;}
  CURP=PROF_BY[p.nm];
@@ -1176,45 +1182,15 @@ function loadP(i){
  else if(S.tab===TAB.GAMES&&typeof gmRender==='function')gmRender();}
 
 /* ---- release button ---- */
-$('bRel').addEventListener('click',function(){
- /* the heaviest eight, engine/compute.js relQueueOf: at or over the line
-    first, and below it when nothing is that heavy, for the reason below */
- var hot=relQueueOf(8);
- if(hot.length){relPick(hot.map(function(n){return n.i;}));return;}
- /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
-    only, so the control refused the moment nothing was stacked that high, and
-    the core loop of the product had exactly two runs in it.
-
-    Measured on James, through this control. Run one +4.04 CQ, run two +1.80,
-    run three refused. He is left at CQ 18.6, tier Severe, the worst band but
-    one, with 72 addresses still carrying, and the product tells him there is
-    nothing to release. Three of the six ICPs never get past this line even on
-    their first visit, because their load was never stacked above it.
-
-    Below the line there is still ground, so the control takes it. The queue is
-    the heaviest addresses actually holding something. The release run already
-    handles them: it frees weight proportional to what is there, so the returns
-    fall away honestly as the field empties instead of stopping at a cliff. */
- /* relQueueOf above has already taken that ground when nothing is over the
-    line, so reaching here means nothing is carrying at any depth. */
- /* Nothing is held, so there is nothing to release. This used to run a 2.8
-    second animation that zeroed every charge and raised every law toward ten,
-    on one click, with no confirmation and no undo. It was written as a
-    demonstration of the mechanism and a person cannot tell a demonstration
-    from the real thing: the numbers simply changed and there was no way back.
-    A control must never claim to have done something it has not done, and it
-    must never do something destructive it was not asked to do. */
- /* AND THE REASON IS NOT THE SAME FOR EVERYBODY WHO LANDS HERE. The old copy
-    said nothing was held above the line, which was the wrong line: this branch
-    only runs when nothing is carrying at any depth. A person who has answered
-    the intake and nothing else is in a different position from a person who has
-    entered nothing at all, and telling them both to write a story leaves the
-    first one thinking sixty three answers did nothing. The intake measures how
-    they act. A story is what puts an address on the map. */
- var _m=compute().measured;
- status(_m>0
-  ?'Nothing is carrying, so there is nothing to release. The intake measured '
-   +_m+(_m===1?' law':' laws')+'. They show how you act and not what you hold. A story is '
-   +'what puts an address on the map.'
-  :'Nothing is carrying, so there is nothing to release. Write a story or set '
-   +'a charge first.','warn');});
+/* THE RELEASE BUTTON MOVED INTO THE INSIGHT READING, 18 November, and it acts
+   on what is selected. This handler stood here for the old foot button, which
+   queued the heaviest eight addresses on the whole field whether or not
+   anything was picked. His words: "I can see the different layers of it, and
+   I can run a release from it." The button is #bRel inside the reading
+   (railInsight, ui/insightui.js), drawn only when the selection holds charge a
+   release can open, and the press is handled there with the bars' own run
+   glyphs, so every door to a run is one function (insRunRelease). A person
+   with nothing selected has the release doors on Summary, the Journal and the
+   Story, which queue the whole field. The 24 September rule that a run is
+   never made out of a field holding nothing is kept: insightCanRelease
+   refuses it by name and says why through status(). */
