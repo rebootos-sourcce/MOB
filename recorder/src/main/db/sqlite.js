@@ -180,6 +180,7 @@ async function applySchema() {
   const schemaPath = path.join(__dirname, 'schema.sql');
   const sql = fs.readFileSync(schemaPath, 'utf8');
   db.run(sql);
+  db.run('PRAGMA foreign_keys = ON');
   await persist();
 }
 

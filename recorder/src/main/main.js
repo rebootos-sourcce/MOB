@@ -1021,6 +1021,7 @@ ipcMain.handle('recording:delete', (_e, { recordingId, deleteFile = false }) => 
     db.run('DELETE FROM distributions WHERE recording_id = ?', [recordingId]);
     db.run('DELETE FROM production_packages WHERE recording_id = ?', [recordingId]);
     db.run('DELETE FROM edl_entries WHERE recording_id = ?', [recordingId]);
+    db.run('DELETE FROM markers WHERE recording_id = ?', [recordingId]);
     db.run('DELETE FROM metadata_tags WHERE recording_id = ?', [recordingId]);
     db.run('DELETE FROM transcripts WHERE recording_id = ?', [recordingId]);
     db.run('DELETE FROM clips WHERE recording_id = ?', [recordingId]);

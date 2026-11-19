@@ -13,7 +13,31 @@ const db = require('./db/sqlite');
 const _undoStacks = new Map(); // recordingId -> array of previous edl_entries snapshots
 
 /**
+ * Subtract cuts from already-kept source segments, composing on top of previous edits.
+ * Each cut is a {start_ms, end_ms} in source-timeline coordinates; the segments are
+ * the ranges that survived all prior applyCuts() calls.
+ */
+function composeCuts(prevEntries, cuts) {
+  let remaining = prevEntries.map(e => ({ source_start_ms: e.source_start_ms, source_end_ms: e.source_end_ms }));
+  for (const cut of cuts) {
+    const next = [];
+    for (const seg of remaining) {
+      if (cut.end_ms <= seg.source_start_ms || cut.start_ms >= seg.source_end_ms) {
+        next.push(seg);
+        continue;
+      }
+      if (cut.start_ms > seg.source_start_ms) next.push({ source_start_ms: seg.source_start_ms, source_end_ms: cut.start_ms });
+      if (cut.end_ms < seg.source_end_ms)   next.push({ source_start_ms: cut.end_ms, source_end_ms: seg.source_end_ms });
+    }
+    remaining = next;
+  }
+  return remaining;
+}
+
+/**
  * Apply a list of cuts to a recording. Each cut removes a [start_ms, end_ms] range.
+ * Cuts compose with any previous applyCuts() — running "remove fillers" and then
+ * "trim silences" keeps both sets of cuts, not just the last one.
  * Writes edl_entries rows with correct output_start_ms / output_end_ms offsets.
  *
  * @param {string} recordingId
@@ -26,21 +50,24 @@ function applyCuts(recordingId, totalDurationMs, cuts) {
   if (!_undoStacks.has(recordingId)) _undoStacks.set(recordingId, []);
   _undoStacks.get(recordingId).push(prevEntries);
 
-  // Sort and merge overlapping cuts
   const merged = mergeCuts(cuts);
 
-  // Build kept segments (the inverse of cuts)
-  const kept = [];
-  let cursor = 0;
-
-  for (const cut of merged) {
-    if (cut.start_ms > cursor) {
-      kept.push({ source_start_ms: cursor, source_end_ms: cut.start_ms });
+  // Compose: subtract new cuts from the already-kept source ranges so each
+  // editing action (remove fillers, trim silences, manual trim, retakes) stacks
+  // on top of the previous one instead of replacing it wholesale. If there are
+  // no prior entries the recording is uncut — build the initial kept segments
+  // from scratch against the full source duration.
+  let kept;
+  if (prevEntries.length) {
+    kept = composeCuts(prevEntries, merged);
+  } else {
+    kept = [];
+    let cursor = 0;
+    for (const cut of merged) {
+      if (cut.start_ms > cursor) kept.push({ source_start_ms: cursor, source_end_ms: cut.start_ms });
+      cursor = cut.end_ms;
     }
-    cursor = cut.end_ms;
-  }
-  if (cursor < totalDurationMs) {
-    kept.push({ source_start_ms: cursor, source_end_ms: totalDurationMs });
+    if (cursor < totalDurationMs) kept.push({ source_start_ms: cursor, source_end_ms: totalDurationMs });
   }
 
   // Compute output positions and persist
@@ -172,4 +199,4 @@ function mergeCuts(cuts) {
   return out;
 }
 
-module.exports = { applyCuts, remapTimestamp, loadEdl, canUndo, undoLastCut };
+module.exports = { applyCuts, remapTimestamp, loadEdl, canUndo, undoLastCut, _composeCuts: composeCuts };

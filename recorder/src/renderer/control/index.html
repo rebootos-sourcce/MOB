@@ -108,6 +108,39 @@
           <button id="btnVoice" class="icon-btn voice-btn" title="Enable / disable voice commands">🎤</button>
         </div>
 
+        <!-- voice command vocabulary — collapsible reference panel -->
+        <details class="voice-help">
+          <summary class="voice-help-toggle">Voice commands <span class="voice-help-arrow">›</span></summary>
+          <div class="voice-help-body">
+            <div class="voice-mode-group">
+              <span class="voice-mode-label">Idle</span>
+              <span class="voice-phrase">"start recording"</span>
+            </div>
+            <div class="voice-mode-group">
+              <span class="voice-mode-label">Recording</span>
+              <span class="voice-phrase">"stop recording" · "pause" · "resume"</span>
+              <span class="voice-phrase">"mute" · "unmute" · "chapter here"</span>
+              <span class="voice-phrase">"scratch that" · "new take" · "cut that"</span>
+            </div>
+            <div class="voice-mode-group">
+              <span class="voice-mode-label">Editing</span>
+              <span class="voice-phrase">"remove filler words" · "trim silences"</span>
+              <span class="voice-phrase">"clean up audio" · "add captions"</span>
+              <span class="voice-phrase">"make a clip" · "ready to grade"</span>
+            </div>
+            <div class="voice-mode-group">
+              <span class="voice-mode-label">Production</span>
+              <span class="voice-phrase">"normalize audio" · "export for youtube"</span>
+              <span class="voice-phrase">"ready to publish"</span>
+            </div>
+            <div class="voice-mode-group">
+              <span class="voice-mode-label">Distribution</span>
+              <span class="voice-phrase">"upload to youtube" · "upload to tiktok"</span>
+            </div>
+            <p class="voice-help-note">Requires Vosk model in <span class="mono">userData/vosk-model</span></p>
+          </div>
+        </details>
+
         <div class="meter-row">
           <canvas id="meter" height="16"></canvas>
           <span id="meterDb" class="mono hint">–∞</span>

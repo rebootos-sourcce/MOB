@@ -109,6 +109,30 @@ button.mini:hover { color: var(--text); }
 .voice-btn { opacity: .55; transition: opacity 120ms; }
 .voice-btn.active { opacity: 1; }
 #btnMic { width: 80px; }  /* matches the two flip buttons + gap so both selects align */
+
+/* ── voice command help panel ───────────────────────────────────────────── */
+.voice-help { margin: 2px 0 6px; }
+.voice-help-toggle {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted); cursor: pointer;
+  list-style: none; padding: 2px 0;
+  user-select: none;
+}
+.voice-help-toggle::-webkit-details-marker { display: none; }
+.voice-help-arrow { transition: transform 150ms; }
+details[open] .voice-help-arrow { transform: rotate(90deg); }
+.voice-help-body {
+  margin-top: 6px; padding: 8px 10px;
+  background: var(--card-2); border: 1px solid var(--line); border-radius: 8px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.voice-mode-group { display: flex; flex-direction: column; gap: 2px; }
+.voice-mode-label {
+  font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1px;
+}
+.voice-phrase { font-size: 10px; color: var(--text); line-height: 1.5; }
+.voice-help-note { font-size: 9px; color: var(--muted); margin-top: 4px; }
 .icon-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 .icon-btn.off { background: #3a2323; border-color: #5c2f2f; color: #ffb4b0; }
 
