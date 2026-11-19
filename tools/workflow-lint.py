@@ -173,6 +173,9 @@ BROWSER = {
     'layer-observatory': ('node tests/layer-observatory.js', 20),
 # wellpin REMOVED 19 November, merge of feature/insight-rail-unnested: the
 # five tabs and the auto pin it tested are gone on the unnested rail.
+# the Field's Psyche panel, Matrix/Superego/Action and nothing else, 18
+# November (tests/psychepanel.js). Report only until three green runs.
+    'psychepanel': ('node tests/psychepanel.js', 20),
 # the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
 # Report only until three green runs, like every gate new to CI.
     'lightmenu':     ('node tests/lightmenu.js', 20),

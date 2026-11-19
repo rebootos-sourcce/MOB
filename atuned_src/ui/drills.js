@@ -433,7 +433,10 @@ function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
   +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
-function runNodeDrill(n){if(n){insDoor('addr',null,n.i);rdShell(nodeDrillHtml(n));}}
+/* o.amp names a Superego defence when the press came from one of its four
+   symbols (renderAmplifiers, ui/ui.js), and the card then says which defence
+   it opened for. See the header below. */
+function runNodeDrill(n,o){if(n){insDoor('addr',null,n.i);rdShell(nodeDrillHtml(n,o));}}
 function nodeDrillHtml(n,o){
  o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
@@ -441,8 +444,37 @@ function nodeDrillHtml(n,o){
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
  /* The header read "Address 007, root". The index is a storage key and a
     person's Scarcity is not 007 to them. The seat is what carries meaning. */
- var h='<div class="pm-eye">'+esc(n.b)+'</div>'
-  +'<div class="ad-nm">'+esc(n.k)+'</div>'
+ /* A PRESS ON A SUPEREGO SYMBOL SAYS WHICH DEFENCE IT IS. 18 November, the
+    skeptic's finding on the Psyche round: the card opened headed "Solar,
+    Arrogance" and never said Justification, so a person who pressed the
+    balance and read 54% could take the card for a reading of Justification,
+    which the figure is not. Its own figure is the charge left at the address
+    the book seats the defence at, and the card now opens on the defence's
+    name and on the one sentence the meaning table keeps for it, the same one
+    the symbol's hover carries (unpackOf, engine/data/gloss.js), so the figure
+    is defined in the place it is opened and is never described a second way.
+    Nothing is invented here: the sentence is read off the table.
+
+    An address with no name yet is shown as the engine's own helper shows it,
+    "Unnamed, Root 08" (charAddrName, engine/charfield.js), and never as the
+    key it is stored under, which is what the title printed for Entitlement's
+    address until now. The card says why no story reaches it and stops there:
+    "this one is an open ruling" is the team's own word, and it was being
+    printed to a person under a heading it does not belong to. The eyebrow
+    names the seat the way the rest of the product does, "the solar seat"
+    (anchorSays, above), and not "at the solar". */
+ var amp=o.amp?String(o.amp):'', ampSay=amp?unpackOf(amp,'superego'):'';
+ var unnamed=/_Unnamed$/.test(n.k);
+ /* a field anchor says what it is in the place a seat is named for every other
+    address: its bucket key, Field-Above, is storage and not a word for a person
+    (engine/data/gloss.js, 'field anchor', is the sentence on hover and tap) */
+ var anchor=anchorSeat(n), fa=anchor?unpackOf('field anchor'):'';
+ var h=amp
+   ?'<div class="pm-eye plain">'+esc(amp)+', at the '+esc(String(n.b).toLowerCase())+' seat</div>'
+   :anchor
+   ?'<div class="pm-eye plain" data-tip-k="Field anchor" data-tip="'+esc(fa)+'">Field anchor, '+(n.b==='Field-Above'?'above':'below')+' the body</div>'
+   :'<div class="pm-eye">'+esc(n.b)+'</div>';
+ h+='<div class="ad-nm'+(unnamed?' plain':'')+'">'+esc(unnamed?charAddrName(n.k):n.k)+'</div>'
   /* V21. The sentence read "Held 5.4, opposite installed 0.0, net SQ 5.4.
      Distorts as Self-rejection.", three variable names and a one noun
      behaviour, which is the string he pressed and could not read. Each figure
@@ -450,6 +482,7 @@ function nodeDrillHtml(n,o){
      left of the held state after the opposite is in. DESIGN-tooltip-copy.md,
      example 1. */
   +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
+  +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   /* no fetter has a meaning on file, only the one word it shows up as, so in
@@ -468,7 +501,8 @@ function nodeDrillHtml(n,o){
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
-   :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
+   :anchor?'A field address, with no poled axis under it. This one is an open ruling.'
+   :'No feeling is seated at this address yet, so no story can put charge here.')+'</p>'
   /* in the Analytics trail, the feeling and the seat under this address are
      the next two steps down, round RB */
   +(o.ana&&typeof anaTraceRows==='function'?anaTraceRows(n):'')

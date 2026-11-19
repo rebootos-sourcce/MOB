@@ -81,7 +81,11 @@
     "18 November, the Insight rail (DECISIONS.md, 18 November, his words: \"Let's unnest them\", \"Everything beneath selection... it's all repeat... get rid of that\"). One floor LOWERED, on purpose, by the one gate whose whole subject was retired: wellpin 12 to none. tests/wellpin.js held the 14 November auto pin, that pressing a tier tab pins that tier's heaviest pattern, that a second press leaves it, that a locked tier pins nothing and that render never resurrects a cleared pin. The five tabs are gone, the stack is six levels and nothing is pinned by pressing a header, so each of its 12 checks lost its subject and the file was removed, not edited. Read off its last run on the build before this change, 12 passed. No other floor moved down: the checks edited in functional (the shelf check, the stack tab's label, the domain card block, Runs under, the Running chips, the release button twice), locks (three), stackname (one) and design (one) were rewritten one for one to hold the new ruling, and each file's count is unchanged. Two floors added, each read off its own run: insightread 304 (node tests/insightread.js, headless, the composer in engine/insight.js, which includes a sweep of every page of every selection on every roster record, added after the first look at the output found two broken phrases no single-record check had; two checks were added after tools/insightread-mutants.js found two of its 17 mutants unnoticed, the Entitlement release and the entry count, which the roster could not exercise: 302 to 304) and insightrail 42 (the browser gate, tests/insightrail.js, run against the c2bf52a2 build first to see it fail by name). engine stays unmoved by this branch's own work; its own stale note (\"engine stays 7317\") is 25 commits out of date and is not the number carried forward.",
     "Raised 19 November, merge of feature/insight-rail-unnested onto main (37 commits stale): srcintro kept at this session's current 112, not the branch's stale 95 (the door sections were re-anchored since this branch cut). wellpin removed from floors entirely, following the branch's own deletion of tests/wellpin.js and its deploy.yml/tools/workflow-lint.py registrations, the auto-pin stack it tested no longer existing on the unnested rail. mask said one way (791003bc, earlier tonight) and this branch's own, different 'mask' GLOSS sentence conflicted on the same key; kept this session's canonical sentence (unpack.js enforces it everywhere) and dropped the branch's, re-checked with tests/unpack.js after the merge.",
     "Raised 18 November: engine 7317 to 7400, for group EX18 (every worked example has a birth and the sky read off it is right: the six readings on every example, the record's birth against the table, the boundary and its round trip, no retired name, ages off the birth, the gene key wheel against the mandala's anchors and three published charts, eleven cases against an independent ephemeris, the year at Li Chun, and the nine cities' clock offsets off their zones), read off a local run on fix/example-profiles-birth, 7400 passed, 0 failed, 0 expected red; the build at c2bf52a2 fails its first check on the four Lances and then stops. Added the same day: exampleprofiles 298, read off its first green local run on the same branch (tests/exampleprofiles.js, every example's Root Energetics on the Field and the Avatar at 1600 and 390); the build at c2bf52a2 read 158 passed, 76 failed against it before the year check was added. Raised the same day: exampleprofiles 298 to 334, for the Clients first pass (open the Clients page before any pick, then every example's Avatar birth date reads its own), read off a flocked green run on the same branch, 334 passed, 0 failed; the build at 5fbb31b6 left every client example's Avatar birth empty that way, which QA found and the earlier passes never saw.",
-    "Raised 19 November, merge of fix/example-profiles-birth onto main: a real gate-wheel fix duplicate resolved first (atuned_src/engine/astro.js), keeping this session's own named GATE_ANCHOR constant (016de7a0, already merged and mutant tested) over this branch's unnormalised, differently derived copy of the identical fix; both read the same real bug the same way, so nothing was lost by dropping the branch's. engine 7779 to 7808, read off a clean run of the merged tree, not computed: all three groups present (GK WHEEL, WHOLE, EX18), confirming the branch's own EX18 group (29 net checks against this base) carries forward intact alongside the rest of tonight's own additions."
+    "Raised 19 November, merge of fix/example-profiles-birth onto main: a real gate-wheel fix duplicate resolved first (atuned_src/engine/astro.js), keeping this session's own named GATE_ANCHOR constant (016de7a0, already merged and mutant tested) over this branch's unnormalised, differently derived copy of the identical fix; both read the same real bug the same way, so nothing was lost by dropping the branch's. engine 7779 to 7808, read off a clean run of the merged tree, not computed: all three groups present (GK WHEEL, WHOLE, EX18), confirming the branch's own EX18 group (29 net checks against this base) carries forward intact alongside the rest of tonight's own additions.",
+    "Lowered 18 November, on purpose, by exactly the checks retired with the Child emotions section he struck (\"I also asked you to remove the child emotions because we're going to have the person do self-reporting in the diagnostic\"): unpack 874 to 838. The rail's label check ran once for each of the eighteen axis labels, the nine held and the nine opposite, at 1600 and at 390, and that is 36 checks; the count of laws it still checks is unchanged. 838 is the count read off the full run of tests/unpack.js on the new build, 838 passed, 0 failed. This was computed against the branch's own stale base (874); the real merged tree reads 982, see the merge note below.",
+    "Added 18 November: psychepanel 174, read off the full run of tests/psychepanel.js on the new build (174 passed, 0 failed). The gate holds the Field's Psyche panel to Matrix, Superego and Action, and it was shown to fail on the build from before the round (12 failures and then a crash on a panel with six sections) and on each of seventeen mutants. New, so report only first, with wellpin.",
+    "Raised 19 November, review fixes on fix/psyche-panel-rework before merging: a press on a Superego symbol now opens a card headed with the defence's own name, the unnamed address and a field anchor's card never print the key they are stored under, and the Matrix caption carries the meaning of child emotions. psychepanel 174 to 201, read off a clean local run in the worktree (201 passed, 0 failed) before this branch was merged into main. A dead GLOSS entry for \"chain\", which nothing on any screen asked for, was cut in the same change; unpack's own 838 is unaffected (that count never included it, since unpack.js only checks entries a page actually carries).",
+    "Raised 19 November, merge of fix/psyche-panel-rework onto main (37 commits stale): design kept at this session's current 195 (the branch's own 192 predates the lighting-menu-layer fix); functional kept at this session's current estimate, adjusted by the branch's own stated delta (net -2, the chain key's three checks replaced by one, the child-emotions check becoming an absence check at net nought): 3223 to 3221, still arithmetic and not read off a run, for the same reason as every other functional estimate in this file. engine 7808 to 7816, read off a clean run of the merged tree. unpack read off the real merged tree rather than computed from either side's own base: 982, not either branch's own 1018 or 838, confirming the two changes (791003bc's carrier-consistency fix and this branch's child-emotion-slider removal) are additive and do not overlap: 1018 minus the 36 checks this branch retires is exactly 982. psychepanel carried forward at 201 (this session's own review-fix pass, above, not the branch's original 174); wellpin stays removed. git's 3-way merge of this file's own notes array needed only its usual append-both resolution, and the leftover opening marker it keeps leaving behind (the third time tonight) was caught by the JSON parser, not missed."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -91,13 +95,13 @@
     "anatomy": 1
   },
   "floors": {
-    "engine": 7808,
+    "engine": 7816,
     "funnel-package": 44,
     "boot": 29,
     "collide": 943,
     "funnel": 276,
     "design": 195,
-    "functional": 3223,
+    "functional": 3221,
     "copy": 165,
     "reset": 39,
     "storage": 120,
@@ -109,7 +113,7 @@
     "practitioner": 60,
     "release-screen": 153,
     "release-percent": 8,
-    "unpack": 1018,
+    "unpack": 982,
     "layer-observatory": 45,
     "recordlink": 73,
     "golden": 150,
@@ -143,7 +147,8 @@
     "lightmenu": 3679,
     "insightread": 304,
     "insightrail": 42,
-    "exampleprofiles": 334
+    "exampleprofiles": 334,
+    "psychepanel": 201
   },
   "no_count": {
     "monitor": "all surfaces render"

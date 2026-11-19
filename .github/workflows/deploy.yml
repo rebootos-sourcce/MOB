@@ -410,6 +410,10 @@ jobs:
           # it a stacking context and the open menu painted under the
           # Dashboard. New, so report only first.
           - { gate: lightmenu, timeout: 20, command: node tests/lightmenu.js }
+          # 18 November: the Field's Psyche panel is Matrix, Superego and Action
+          # and nothing else (tests/psychepanel.js, DECISIONS.md "The Psyche panel
+          # holds Matrix, Superego and Action"). New, so report only first.
+          - { gate: psychepanel, timeout: 20, command: node tests/psychepanel.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
