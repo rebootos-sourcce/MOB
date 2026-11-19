@@ -236,7 +236,7 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.events[iset].text='';},'.text is empty','an empty aim');
  bad(s=>{s.events[iset].text='   ';},'.text is empty','an aim of spaces');
  bad(s=>{s.events[iset].text='y'.repeat(E.DLY_CAP.aim+1);},'the cap is '+E.DLY_CAP.aim,'an aim over 200, never cut');
- bad(s=>{s.events[iset].domain='spleen';},'is not a seat or a side','a domain that is neither a seat nor a side');
+ bad(s=>{s.events[iset].domain='spleen';},'is not a point or a side','a domain that is neither a seat nor a side');
  bad(s=>{const c=clone(s.events[iset]); c.seq=s.events.length+1; s.events.push(c);},'is a second aim for','a second aim for one day');
  bad(s=>{s.events[ians].kind='missed';},'.kind is not one of','a mark that is missed');
  bad(s=>{const c=clone(s.events[ians]); c.seq=s.events.length+1; s.events.push(c);},'is a second answer for','a second mark for one aim');
@@ -472,7 +472,7 @@ SUITES.compose=function(E,ok,say){
  ok(!eduDay.length||!eduNext.some(s=>s.a[0]===eduDay[0].a[0]),'and the same word is not explained again the next day');
  /* the canon words link to their entry, and the gaps are named */
  ok(E.DLY_CANON.filter(x=>x.t).every(x=>E.GLOSS.some(g=>g.t===x.t)),'every canon word that points at the wisdom school points at an entry that exists');
- const withLink=c.st.filter(s=>/\bseats?\b/i.test(s.text));
+ const withLink=c.st.filter(s=>/\bpoints?\b/i.test(s.text));
  ok(withLink.length>0&&withLink.every(s=>s.links.indexOf('Chakra')>=0),'a sentence that says seat links to its entry: '+J(withLink.map(s=>s.links)));
  ok(c.st.every(s=>s.links.every(t=>E.GLOSS.some(g=>g.t===t))),'and every link is a glossary term');
  /* THE AIM, WITH NO LOSS WORDING */
@@ -529,7 +529,7 @@ SUITES.compose=function(E,ok,say){
  const wav=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.story.entries=[f.ent(-1,TXT_C),f.ent(-2,TXT_C),f.ent(-3,TXT_C)];
   p.avatar.pairs[0].seat=cseat; p.avatar.reviewedAt=at(-1);}});
  const av2=E.dlyCompose(wav.p,NOW).st.filter(s=>s.tpl==='show.avatar');
- ok(av2.length===1&&/touched the .* seat 3 times\. Your avatar has a line written for that seat\./.test(av2[0].text)&&av2[0].ev[0].type==='avatar'&&av2[0].read.length>0,
+ ok(av2.length===1&&/touched the .* point 3 times\. Your avatar has a line written for that point\./.test(av2[0].text)&&av2[0].ev[0].type==='avatar'&&av2[0].read.length>0,
   'an avatar line whose seat three entries touched is one sentence that cites the line and the entries and keeps their addresses: '+J(av2.map(s=>s.text)));
  const wdq=bare((p,f)=>{p.history=[f.row(-8,50,'Heart',0),f.row(-1,50,'Heart',0)]; p.history[1].dq=25;});
  const cdq=E.dlyCompose(wdq.p,NOW).st;
@@ -637,7 +637,7 @@ SUITES.ground=function(E,ok){
  ok(gs.notes.some(n=>n.rule==='grounded_language'&&n.phrase==='soul evolution')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='soul')&&gs.notes.some(n=>n.rule==='canon_no_entry'&&n.word==='spiritual'),
   'with the phrase and the two canon words that have no wisdom school entry yet named as notes: '+J(gs.notes));
  const seat=Object.assign(clone(base),{links:[]}), ns=E.dlyNotes(seat);
- ok(ns.some(n=>n.rule==='canon_unlinked'&&n.word==='seat'&&n.term==='Chakra'),'a canon word with an entry that is not linked is a note, so the page can point at it');
+ ok(ns.some(n=>n.rule==='canon_unlinked'&&n.word==='point'&&n.term==='Chakra'),'a canon word with an entry that is not linked is a note, so the page can point at it');
  ok(E.dlyNotes(base).length===0,'and a sentence that links its canon words has no note');
  const en=Object.assign(clone(base),{text:'Your energy and your charge and the source are noted.',links:[]});
  ok(E.dlyNotes(en).filter(n=>n.rule==='canon_unlinked').map(n=>n.word).sort().join()==='charge,source'&&E.dlyNotes(en).some(n=>n.rule==='canon_no_entry'&&n.word==='energy'),

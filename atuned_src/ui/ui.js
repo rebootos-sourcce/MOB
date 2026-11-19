@@ -55,8 +55,8 @@ function describe(h,r,still){
  if(h.k==='node'){var n=h.n, c=CHILD.filter(function(x){return x.nm===n.cf;})[0];
   var aff=(AFFIN[r.root]||[]).indexOf(n.cf)>=0;
   return '<u>address</u> <b>'+esc(n.k)+'</b><hr>'
-   +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' seat.'
-        :'Just outside the body, by the '+n.b.toLowerCase()+' seat.')
+   +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' point.'
+        :'Just outside the body, by the '+n.b.toLowerCase()+' point.')
    +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')
    +'<hr>charge held <b>'+fmtPct('held',n.held)+'</b>'
    +(c?'<br>'+esc(c.opp.toLowerCase())+' installed <b>'+fmtPct('installed',n.rep)+'</b>':'')
@@ -477,7 +477,7 @@ function wireTouch(k){
    ============================================================ */
 function frDescribe(h,r){
  if(h.k==='seat'){var n=W.filter(function(x){return x.b===h.b;}).length;
-  return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
+  return '<u>point</u> <b>'+esc(h.b)+'</b><hr>'+n+' addresses<hr><b>Click for detail.</b>';}
  /* the anchor named itself and stopped, so a ring a person hovered carried a
     weight that counts in DQ and said nothing about it. anchorSays
     (ui/drills.js) is the same sentence the drill prints. */
@@ -1271,7 +1271,7 @@ function render(){
      the held seat passing least; this just says it in words instead of
      leaving it to a hover. */
   var blockAt=r.unread?-1:rbBlock(seatPass,seatHeld);
-  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each seat holding '
+  var flowCopy=r.unread?nr:(' How much of what starts at the root gets to the crown. Each point holding '
    +'charge lets less through, and the losses multiply.'
    +(blockAt>=0?(' '+seatNames[blockAt]+' lets the least through right now, '+fmtPct('flow',seatPass[blockAt],{})+'.'):''));
   /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent

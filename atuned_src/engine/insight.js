@@ -71,7 +71,7 @@ function patFam(o){
 /* ---------- the words ---------- */
 var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
 var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
- addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Seat',core:'Core',
+ addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
  path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
@@ -85,7 +85,7 @@ var INS_BAN=/\b(should|must|need to|needs to|have to|has to)\b/i;
 /* what a person sees on hover over a book line: where it came from, in words */
 var INS_SRC_WORDS={SABDEF:'the saboteur record',SABCARD:'the saboteur card',HCX_LIB:'the hyper complex record',
  HCXCARD:'the hyper complex card',CHILD:'the child emotion table',AFFIRM:'the affirmation table',
- CHALLENGE:'the daily challenge table',DOMDEF:'the domain record',APC:'the seat record',HARM:'the law record',
+ CHALLENGE:'the daily challenge table',DOMDEF:'the domain record',APC:'the point record',HARM:'the law record',
  ARCH:'the archetype record',MASKS:'the mask record',NODES:'the address table',FAM_POLE:'the family table',
  CRISIS_SAY:'the safety line'};
 
@@ -247,7 +247,7 @@ function insP1Pattern(o,r){
  cl.push(insClause(insSeg(base+' is '+insArt(kw)+' '+kw+', at '+fmtPct('chain',o.w)+'.',[path+'.w'],'mine',
   {fig:[insFig('chain',o.w)]}),0));
  if(o.kind==='sab'&&o.unnamed)
-  cl.push(insClause(insSeg('The library has no name for this cluster, so it is named for its seat and its feeling.',
+  cl.push(insClause(insSeg('The library has no name for this cluster, so it is named for its point and its feeling.',
    [path+'.unnamed'],'mine'),2));
  if(over)
   cl.push(insClause(insSeg('That is the opposite pushed past where it helps.',['FAM_POLE'],'model'),1));
@@ -260,7 +260,7 @@ function insP1Pattern(o,r){
    cl.push(insClause(insSeg('It is built on '+insAnd(bits)+'.'+(held.length?'':' Each has nothing left after the opposite.'),
     top.map(function(n){return 'NODES.'+n.i+'.k';}),
     'mine',{fig:held.map(function(n){return insFig('weight',n.sq);})}),1));
-   cl.push(insClause(insSeg(top[0].k+' sits '+insNodeAt(top[0])+', in the '+insSeat(top[0].b)+' seat.',
+   cl.push(insClause(insSeg(top[0].k+' sits '+insNodeAt(top[0])+', in the '+insSeat(top[0].b)+' point.',
     ['NODES.'+top[0].i+'.n','NODES.'+top[0].i+'.b'],'model',{place:true}),3));}}
  else{
   var parts=insByW(o.parts).slice(0,3);
@@ -323,7 +323,7 @@ function insP2Pattern(o,r,g){
   cl.push(insClause(insSeg('It runs on '+insAnd(bits)+'.',top.map(function(c){return 'S.charge.'+c.nm;}),'mine',
    {fig:top.map(function(c){return insFig('charge',S.charge[c.nm]);})}),0));
   var c0=top[0];
-  cl.push(insClause(insSeg('The map seats '+c0.nm+' '+insAtPlace(c0.addr)+'.',
+  cl.push(insClause(insSeg('The map points '+c0.nm+' '+insAtPlace(c0.addr)+'.',
    ['CHILD.'+c0.nm+'.addr'],'model',{place:true}),2));}
  else cl.push(insClause(insSeg('No child emotion under it holds charge yet.',['gap:charge'],'gap'),0));
  /* WHAT FIRES IT, from the record, and only for a named saboteur */
@@ -400,7 +400,7 @@ function insP1Fet(c,r){
   {fig:[insFig('charge',v)]}),0));
  cl.push(insClause(insSeg(c.opp+' is its opposite, '+(p>0?'installed at '+fmtPct('installed',p):'not installed yet')+'.',
   ['CHILD.'+c.nm+'.opp','S.replace.'+c.nm],'mine',p>0?{fig:[insFig('installed',p)]}:{}),0));
- cl.push(insClause(insSeg('The map seats it '+insAtPlace(c.addr)+', in the '+insSeat(c.seat)+' seat.',
+ cl.push(insClause(insSeg('The map points it '+insAtPlace(c.addr)+', in the '+insSeat(c.seat)+' point.',
   ['CHILD.'+c.nm+'.addr','CHILD.'+c.nm+'.seat'],'model',{place:true}),1));
  var sabs=insFetSabs(r,c.nm).slice(0,3);
  if(sabs.length)cl.push(insClause(insSeg(insAnd(sabs.map(function(s){return insBase(s)+' at '+fmtPct('chain',s.w);}))+(sabs.length===1?' runs':' run')+' on it.',
@@ -443,7 +443,7 @@ function insSabsAt(r,i){
  return insByW((r.sabs||[]).filter(function(s){return leaves(s).some(function(n){return n.i===i;});}));}
 function insP1Addr(n,r){
  var cl=[];
- cl.push(insClause(insSeg(n.k+' is an address, '+insNodeAt(n)+', in the '+insSeat(n.b)+' seat'
+ cl.push(insClause(insSeg(n.k+' is an address, '+insNodeAt(n)+', in the '+insSeat(n.b)+' point'
   +(insHeld('weight',n.sq)?', at '+fmtPct('weight',n.sq)+'.':'. It has nothing left after the opposite.'),
   ['NODES.'+n.i+'.k','NODES.'+n.i+'.n','NODES.'+n.i+'.b'],'mine',{fig:insHeld('weight',n.sq)?[insFig('weight',n.sq)]:[],place:true}),0));
  if(n.a&&n.d&&insOk(n.a)&&insOk(n.d))

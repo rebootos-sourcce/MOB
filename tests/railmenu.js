@@ -259,7 +259,7 @@ async function railMenuGate(browser,FILE,ok,booted){
     seatsN:seats.length, step:!!e.querySelector('.rb-step path')};
    function __rmX2(c){const b=c.querySelector('b');const m=/scaleY\(([\d.]+)\)/.exec(b.style.transform||'');return m?+m[1]:-1;}});
   ok(!!fl&&fl.n===7&&fl.fills.every(Boolean)&&fl.cols.every(Boolean)&&fl.step,'RM13: '+tag+'Flow is seven cells, root to crown, each in its seat\'s colour filled to what it passes, with the step line, '+JSON.stringify(fl));
-  ok(!!fl&&fl.bk===fl.want&&(fl.want<0?/no seat blocked/.test(fl.sub):/^blocked at /.test(fl.sub)),
+  ok(!!fl&&fl.bk===fl.want&&(fl.want<0?/no point blocked/.test(fl.sub):/^blocked at /.test(fl.sub)),
    'RM13: '+tag+'it is ringed and said blocked only at the held seat passing the least, '+JSON.stringify(fl&&{bk:fl.bk,want:fl.want,held:fl.heldN,sub:fl.sub}));
 
   /* ---- RM9 and RM10: doors, names, keyboard ---- */

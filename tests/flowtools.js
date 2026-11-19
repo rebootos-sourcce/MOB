@@ -624,7 +624,7 @@ async function flowGate(browser,FILE,ok,booted){
   ok(!av.none&&new RegExp('^'+seed.keptDays+' days?$').test(av.fig.trim())&&av.rings===3&&av.tick===(seed.keptDays>=21?1:0),
    'FT18: Avatar prints the '+seed.keptDays+' distinct days kept, draws three cycles and ticks only a full one, '+JSON.stringify(av));
   const heart=(av.seats||[]).filter(x=>/at the heart/.test(x.n))[0], solar=(av.seats||[]).filter(x=>/solar plexus/.test(x.n))[0];
-  ok(heart&&/ Fed by Controlled Breath\.$/.test(heart.f)&&heart.fedDot&&solar&&/No ritual at this seat yet/.test(solar.f)&&!solar.fedDot,
+  ok(heart&&/ Fed by Controlled Breath\.$/.test(heart.f)&&heart.fedDot&&solar&&/No ritual at this point yet/.test(solar.f)&&!solar.fedDot,
    'FT18: each avatar seat says on its press the active ritual kept there, or that none is, and its dot is filled only when fed, '+JSON.stringify(av.seats));
   const wantHero=av.overall==null?'\u2013':(Math.round(av.overall*100)?Math.round(av.overall*100)+'%':'\u2013');
   ok(av.hero===wantHero&&av.heroTip&&(av.seats||[]).every(x=>x.glyph),
@@ -632,7 +632,7 @@ async function flowGate(browser,FILE,ok,booted){
   /* SV24, his words: "make sure it's hooked up to the [seven] growth areas,
      and I want to see a percent complete." The seven are AV_AREAS, one a
      seat; every one is a tile, and the hero's pill carries its word */
-  ok(JSON.stringify(av.areas)===JSON.stringify(av.wantAreas)&&av.areas.length===7&&av.empty===av.wantEmpty&&av.lab==='Complete',
+  ok(JSON.stringify(av.areas)===JSON.stringify(av.wantAreas)&&av.areas.length===7&&av.empty===av.wantEmpty&&av.lab==='Whole',
    'FT18: the card draws all seven areas in seat order, the '+av.wantEmpty+' with no story marked empty, and the percent complete is named under its ring, '+JSON.stringify([av.areas,av.empty,av.lab]));
 
   /* ---- FT19 ---- */
@@ -745,7 +745,7 @@ async function flowGate(browser,FILE,ok,booted){
    return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:((r.querySelector('.rv-pc b')||{}).textContent||'').replace(/\s*days?$/,''),
     said:(r.querySelector('.rv-pc')||{textContent:''}).textContent, glyph:!!r.querySelector('.rv-pc svg,.rv-sub .rv-tgi'),
     tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
-    seat:/^(Root|Sacral|Solar|Heart|Throat|Third eye|Crown)( and [A-Za-z ]+)? seats?, /.test((r.querySelector('.rv-sub')||{textContent:''}).textContent),
+    seat:/^(Root|Sacral|Solar|Heart|Throat|Third eye|Crown)( and [A-Za-z ]+)? points?, /.test((r.querySelector('.rv-sub')||{textContent:''}).textContent),
     timer:((r.querySelector('.rv-tmr span')||{}).textContent||'')}));});
   const by=Object.fromEntries(pc.map(x=>[x.id,x]));
   /* the percent each span ritual should read, worked out here from its plan

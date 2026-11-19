@@ -100,7 +100,7 @@ const SIGHT=[
  {k:'sup', nm:'super complexes', need:'three', layer:true,
   what:'Where your hyper complexes join into super complexes.'},
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
-  what:'How far the Kundalini has risen up your seven seats.'},
+  what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
   what:'The registers, your point cloud: where each pattern sits on the path.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,

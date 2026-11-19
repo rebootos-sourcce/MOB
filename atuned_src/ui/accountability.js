@@ -227,7 +227,7 @@ function acctLoopHtml(st){
   :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
   +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
-  +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
+  +'A solid cube is a day you kept a ritual, in the colour of its point; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
   +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
   +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')

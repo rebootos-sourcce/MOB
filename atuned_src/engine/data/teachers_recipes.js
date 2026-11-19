@@ -78,7 +78,7 @@
    same rules so a row he edits cannot arrive failing.
    ============================================================ */
 var TEACHER_RECIPES=[
- {k:'IL', q:'Light', opp:'False Light', draft:true,
+ {k:'IL', q:'Light', opp:'Shadow', draft:true,
   line:'Give with no audience instead of for the room',
   release:['Warm in the room, flat when it empties',
    'Keep count of who noticed the kindness',

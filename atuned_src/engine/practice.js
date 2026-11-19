@@ -375,7 +375,7 @@ function prField(errs,path,v,f){
    if(typeof v!=='string'||!RIT_STEP[v]){errs.push(path+' names no practice in the library: '+JSON.stringify(v)); return null;}
    return v;
   case 'seat':
-   if(BANDS.indexOf(v)<0){errs.push(path+' is not a seat: '+JSON.stringify(v)); return null;}
+   if(BANDS.indexOf(v)<0){errs.push(path+' is not a point: '+JSON.stringify(v)); return null;}
    return v;
   case 'list':{
    if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}

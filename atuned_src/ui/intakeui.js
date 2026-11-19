@@ -991,7 +991,7 @@ function iqViewList(p,Q,sc){
    pips:t.L.map(function(x){return sc[x.l.nm]?2:iqGot(p,x.li)?1:0;}),
    fig:t.done?'<b class="iqa-ts">'+fmtPct('law',t.mean)+'</b>':'',
    next:(nx!=null&&SI[nx].b===b), t:t});});
- return iqNestHtml('The seven seats',items,function(o){
+ return iqNestHtml('The seven assemblage points',items,function(o){
   var c=o.c, h='<div class="iqa-laws" role="group" aria-label="The laws in '+esc(o.key)+'">';
   o.t.L.forEach(function(x){
    var s=sc[x.l.nm], g=iqGot(p,x.li), lo=(IQ_OPEN===x.li), st=s?2:g?1:0;
