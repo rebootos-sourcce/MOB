@@ -429,6 +429,10 @@ jobs:
           # (tests/srcconvo.js), the owner's 17 November report that it
           # repeats itself. New, so report only first.
           - { gate: srcconvo, timeout: 20, command: node tests/srcconvo.js }
+          # 18 November: a control whose menu is open has no tooltip
+          # (tests/menutip.js, fix/sun-tooltip-menu-open). New, so report
+          # only first.
+          - { gate: menutip, timeout: 20, command: node tests/menutip.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -299,10 +299,10 @@ function codesCheckInto(t,out){
    return !n||n.cf!==e.emotion||(e.seat!==null&&n.b!==e.seat);});
   if(off.length)no('the inferred '+s.nm+' is coded '+c+', and its addresses '+off.join(', ')+' do not carry '
    +e.emotion+(e.seat?' in the '+e.seat:''));
-  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one seat')+', and its code '+c+' says otherwise');});
- t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the seat '+b+', so its clusters have no code');});
- dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two seats the key '+k);});
- if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a seat diffuse, the word the cross seat clusters take');
+  if(!!s.diffuse!==(e.seat===null))no('the inferred '+s.nm+' is '+(s.diffuse?'diffuse':'in one point')+', and its code '+c+' says otherwise');});
+ t.BANDS.forEach(function(b){if(!t.B2K[b])no('B2K has no key for the point '+b+', so its clusters have no code');});
+ dupes(t.BANDS.map(function(b){return t.B2K[b];})).forEach(function(k){no('B2K gives two points the key '+k);});
+ if(t.BANDS.some(function(b){return t.B2K[b]==='diffuse';}))no('B2K keys a point diffuse, the word the cross point clusters take');
  dupes(t.CODE_EMOTION.map(function(e){return codeKey(t.INFER_NOUN[e]||e);})).forEach(function(n){
   no('INFER_NOUN gives two emotions the noun '+n+', so one cluster name would mean two');});
 

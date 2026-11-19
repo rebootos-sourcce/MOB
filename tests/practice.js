@@ -131,7 +131,7 @@ SUITES.schema=function(E,ok){
  bad(Q=>{Q.protocol_steps[0].type='prayer';},'practice.protocol_steps[0].type is not one of','a step type not on the list');
  bad(Q=>{Q.practice_events[0].status='verified';},'practice.practice_events[0].status is not one of','verified, which is a stage and not a status');
  bad(Q=>{Q.evidence[0].dimension='mood';},'practice.evidence[0].dimension is not one of','a dimension that is not effect or affect');
- bad(Q=>{Q.rituals[0].tags=['Spleen'];},'practice.rituals[0].tags[0] is not a seat','a free text tag (TG4)');
+ bad(Q=>{Q.rituals[0].tags=['Spleen'];},'practice.rituals[0].tags[0] is not a point','a free text tag (TG4)');
  bad(Q=>{Q.rituals[0].days=['mon','mon'];},'names "mon" twice','a weekday twice');
  /* references */
  bad(Q=>{Q.behavior_objectives[0].goal_id='g9';},'goal_id names no goal: g9','a behavior on no goal');

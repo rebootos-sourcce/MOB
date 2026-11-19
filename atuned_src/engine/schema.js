@@ -944,7 +944,7 @@ function vRitual(errs,i,x){
  q.band='';
  if(x.band!==undefined&&x.band!==''){
   if(BANDS.indexOf(x.band)>=0)q.band=x.band;
-  else errs.push(path+'.band is not a seat: '+x.band);}
+  else errs.push(path+'.band is not a point: '+x.band);}
  /* A STEP NAMES A PRACTICE OR IT NAMES NOTHING, and ritSteps drops what it
     cannot find, so an unnamed step reads on the surface as a ritual with fewer
     steps than it was saved with. A list longer than the library is not a
@@ -1076,14 +1076,14 @@ var ENT_VERDICT_KEYS=['seat','v','fix'];
 function vEntryVerdicts(errs,path,x){
  if(!Array.isArray(x)){errs.push(path+' is not a list'); return null;}
  if(x.length>evKeptMax()){errs.push(path+' holds '+x.length+', which is more than the '
-  +evKeptMax()+' seats there are'); return null;}
+  +evKeptMax()+' points there are'); return null;}
  var bad=errs.length, out=[], seen={};
  x.forEach(function(r,j){
   var rp=path+'['+j+']';
   if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(rp+' is not an object'); return;}
   var b0=errs.length;
   vKeys(errs,rp,r,ENT_VERDICT_KEYS);
-  if(!K2BAND[r.seat])errs.push(rp+'.seat names no seat: '+r.seat);
+  if(!K2BAND[r.seat])errs.push(rp+'.seat names no point: '+r.seat);
   else if(seen[r.seat])errs.push(rp+' repeats '+r.seat);
   if(!EV_VERDICT.hasOwnProperty(r.v))errs.push(rp+'.v is not an answer: '+r.v);
   var q={seat:r.seat, v:r.v};
@@ -1127,7 +1127,7 @@ function vEntry(errs,i,x){
   if(!x.bands||typeof x.bands!=='object'||Array.isArray(x.bands))
    errs.push(path+'.bands is not an object');
   else Object.keys(x.bands).forEach(function(k){
-   if(!K2BAND[k]){errs.push(path+'.bands names no seat: '+k); return;}
+   if(!K2BAND[k]){errs.push(path+'.bands names no point: '+k); return;}
    var v=vRange(errs,path+'.bands.'+k,x.bands[k],0,1e6);
    if(v!==null)q.bands[k]=v;});}
  /* THE LEXICON THAT READ IT, 19.B6. Missing is an entry from before the stamp
@@ -1148,7 +1148,7 @@ function vEntry(errs,i,x){
   if(!Array.isArray(x.asked))errs.push(path+'.asked is not a list');
   else if(x.asked.length>srcAskedMax())
    errs.push(path+'.asked holds '+x.asked.length+', which is more than the '
-    +srcAskedMax()+' kinds and seats there are');
+    +srcAskedMax()+' kinds and points there are');
   else{
    var ak=[];
    x.asked.forEach(function(r,j){
@@ -1158,7 +1158,7 @@ function vEntry(errs,i,x){
     Object.keys(r).forEach(function(k){
      if(['k','seat','a'].indexOf(k)<0){errs.push(ap+' may not carry '+k);bad++;}});
     if(SRC_KINDS.indexOf(r.k)<0){errs.push(ap+'.k is not a question kind: '+r.k);bad++;}
-    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no seat: '+r.seat);bad++;}
+    if(r.seat!==null&&!K2BAND[r.seat]){errs.push(ap+'.seat names no point: '+r.seat);bad++;}
     if(SRC_OUTCOMES.indexOf(r.a)<0){errs.push(ap+'.a is not an outcome: '+r.a);bad++;}
     if(!bad)ak.push({k:r.k, seat:r.seat, a:r.a});});
    q.asked=ak;}}
@@ -1534,7 +1534,7 @@ function validateProfile(o,ctx){
     .map(function(x){var q={be:x.be, notbe:x.notbe};
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
-      else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+      else errs.push('avatar.pairs point '+JSON.stringify(x.seat)+' is not a point');}
      /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
         it is something else, because a weight kept against a pair is found by
         it. Missing is an older pair and is given one below. */
@@ -1592,7 +1592,7 @@ function validateProfile(o,ctx){
   if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
    if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
    else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
-    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a point'); return;}
     if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
     var q={add:[],off:[]}, bad=false;
     ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;

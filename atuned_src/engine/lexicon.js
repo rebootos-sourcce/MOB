@@ -581,7 +581,7 @@ function lexKeyOk(k){
 function lexRefuse(k,seat,amt,fet){
  var errs=[];
  if(!lexKeyOk(k)) errs.push('the key '+JSON.stringify(k)+' is not a form the scanner can ever match');
- if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the seat '+seat+', which is not one of the '+LEX_SEATS.length);
+ if(LEX_SEATS.indexOf(seat)<0) errs.push(k+' names the point '+seat+', which is not one of the '+LEX_SEATS.length);
  if(typeof amt!=='number'||amt!==Math.round(amt)||amt===0||Math.abs(amt)>LEX_AMT_MAX)
   errs.push(k+' carries the amount '+amt+', and an amount is a non zero integer no further than '+LEX_AMT_MAX+' from zero');
  if((amt<0)!==(seat==='coherent'))
@@ -1050,7 +1050,7 @@ var LEXSYN_NO={
  broken:'the printer is broken. read only as broken hearted',
  killed:'killed it at the gym, the cold killed the plants',
  attacked:'felt attacked in an argument is defensive anger, not the root',
- shattered:'exhausted in one country and devastated in another, two seats',
+ shattered:'exhausted in one country and devastated in another, two points',
  sorry:'said a hundred times a day for nothing',
  hate:'i hate mondays. read only as hate myself',
  sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
@@ -1085,7 +1085,7 @@ var LEXSYN_NO={
  stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
  'over and over':'pressing a button over and over. read only as keep going over',
  'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
- 'stabbed in the back':'carries back, which the place rule refuses to seat, so the key could seat a refused place',
+ 'stabbed in the back':'carries back, which the place rule refuses to place, so the key could place a refused place',
  ill:'is i will once the apostrophe is gone, so it can never be a key'};
 
 /* run the pass. Headwords are resolved against the table as it stands after
@@ -1127,7 +1127,7 @@ function lexSyn(places){
   var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
   var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
   var badp=pw.filter(function(w){return places.seat[w]!==seat;});
-  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table seats at '+(places.seat[badp[0]]||'no seat')+' and not '+seat);return;}
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table places at '+(places.seat[badp[0]]||'no point')+' and not '+seat);return;}
   if(inLex){
    /* through the same boundary as every other entry. It cannot refuse here:
       the key was checked above and every other value is copied off an entry

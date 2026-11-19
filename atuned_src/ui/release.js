@@ -1212,20 +1212,26 @@ function relHitRows(H){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
-   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S01, found in
-      the source and not by the live walk, which never opened a run with more
-      than one seat). The title and the visible <em> both said "3 of its 5
-      addresses in this run". The ring beside it already fills to this same
-      share (x.reach/Math.max(1,x.of)*100, two lines down, unchanged), so the
-      printed figure is that ring's own fill, through the portion kind. */
+   /* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+      NO-FRACTIONS-AUDIT.md finding S01) converted this count to a percent
+      through the portion kind. Round PQ already ruled this exact screen
+      percent-free, named by name in ui/release.js's own header comment and
+      held by tests/release-percent.js's whole-card scan: "no reading on the
+      whole finished card is printed as a percent." That gate caught this
+      row the first time it ran against the merged tree. A screen-specific
+      ruling beats the general one on the screen it already named, so the
+      count form returns here; the ring beside it still fills to the same
+      share (x.reach/Math.max(1,x.of)*100, unchanged) and is not a reading in
+      text, so round PQ's own exceptions for the address ring do not apply
+      to it either way. */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
-    var reached=fmtPct('portion',x.reach/Math.max(1,x.of));
+    var reached=x.reach+' of '+x.of+(x.of===1?' address':' addresses');
     return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+reached+' of its addresses in this run'})
+       title:x.nm+', '+reached+' in this run'})
      +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
@@ -1249,16 +1255,19 @@ function relReach(){
    reach and planN from relCoolDown, and added from the meter's own answer. A
    rerun is never charged, so it says so and does not print a charge that did
    not happen. */
-/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P06): this said
-   "6 of 12 lines were said", a measure of the person. It is a percent of the
-   lines planned for this run now, through the portion kind (engine/pct.js);
-   RUN.planN is positive whenever this guard lets the function past its
-   first line, so the division is safe. */
+/* REVERTED, 19 November: the no-fractions pass (aea8a294, 18 November,
+   NO-FRACTIONS-AUDIT.md finding P06) changed "6 of 12 lines were said" to a
+   percent through the portion kind. Round PQ already ruled this exact
+   screen percent-free (its own header comment names the finished card by
+   name), and tests/release-percent.js's whole-card scan caught this note
+   the first time it ran against the merged tree: "8%" on a card the gate
+   asserts carries none. A screen-specific ruling beats the general one on
+   the screen it already named, so the count form returns. */
 function relEndNote(){
  if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
  var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
- return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early, at '
-  +fmtPct('portion',RUN.reach/RUN.planN)+' of its lines said. '
+ return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early. '
+  +RUN.reach+' of '+RUN.planN+(RUN.planN===1?' line was':' lines were')+' said. '
   +(RUN.rerun?'A rerun costs nothing. '
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
@@ -2887,7 +2896,7 @@ function relGroupHtml(g,k){
 function relSetupCar(none){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
  var pats=G.reduce(function(s,g){return s+g.pats;},0), q=RUN.queue||[];
- return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+mode+'">'
+ return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+(mode==='seat'?'point':'story')+'">'
   +'<div class="rel-gpad" aria-hidden="true"></div>'
   +G.map(relGroupHtml).join('')
   +'<div class="rel-gpad" aria-hidden="true"></div></div>'
@@ -2909,7 +2918,7 @@ function relGcSync(G){
   if(d<=2)r.setAttribute('data-d',String(d)); else r.removeAttribute('data-d');
   if(d===0)r.setAttribute('aria-current','true'); else r.removeAttribute('aria-current');});
  var a=document.getElementById('relgat');
- if(a)a.textContent=(RUN.grp==='seat'?'Seat ':'Story ')+(k+1)+' of '+R.length;}
+ if(a)a.textContent=(RUN.grp==='seat'?'Point ':'Story ')+(k+1)+' of '+R.length;}
 function relGcTo(G,k,smooth){
  var R=G.querySelectorAll('.rel-gi'), r=R[Math.max(0,Math.min(R.length-1,k))]; if(!r)return;
  var top=r.offsetTop+r.offsetHeight/2-G.clientHeight/2;
@@ -3257,7 +3266,7 @@ function relResults(){
     return '<div class="rel-seat" style="--c:'+seatCol(b)+'"><b>'+esc(b)+'</b>'
      +'<span class="rel-seat-w">'+s.w0.toFixed(1)+' <i aria-hidden="true">→</i> '+s.w1.toFixed(1)+'</span>'
      +((pb.bank||pb.shadow)?'<span class="rel-seat-p">'+pb.bank+' to bank, '+pb.shadow+' to shadow</span>':'')+'</div>';}).join('')
-   +'</div><div class="rel-rs-s">Weight at a seat is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
+   +'</div><div class="rel-rs-s">Weight at a point is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
  /* 4b. CQ before and after, round QQ: "I want to see my CQ improvement." Read
     off compute() after the write, against the figure read before it, so it
     is the record's own number and the same one the run counted up to. */
@@ -3267,7 +3276,7 @@ function relResults(){
   +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
-  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
+  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its point a little.')+'</div>');
  else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
   +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
@@ -3509,7 +3518,7 @@ function relRender(){
   relClosePlan();
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
-   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
+   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Point</button></span></div>'
    +relSetupCar(spent);
   /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
      October. A short allowance cut the run without a sentence. It sits under
