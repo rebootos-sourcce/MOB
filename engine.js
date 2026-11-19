@@ -11796,9 +11796,12 @@ const PLANS=[
     their cohorts analytics, create recipes, set up their protocol, and see
     their analytics." It said "Manage profiles, build rituals and build
     accountability" in the present tense, for a suite ui/practitioner.js says is
-    not there, so it says opens soon now and nothing in it is claimed built. The
-    paywall's Practitioner strip prints this row's d as its tooltip, so this is
-    the one place the sentence lives. */
+    not there, so it says opens soon now and nothing in it is claimed built.
+    REVERSED, 19 November, Lance's own words ("the paywall needs all 4
+    tiers"): Practitioner is a card now, not the slim strip that used to sit
+    under the other three, and its card's own name prints this row's d as
+    its tooltip (ui/paywall.js's pwCard), so this is still the one place the
+    sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
@@ -11976,7 +11979,7 @@ function planLadder(pl){
  var at=keys.indexOf(now.k);
  return PLANS.filter(function(p){return p.k!=='gift';}).map(function(p){
   var i=keys.indexOf(p.k);
-  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant,
+  return {k:p.k, nm:p.nm, per:p.per, grant:p.grant, d:p.d,
    /* a month here is four weeks, which is the owner's own arithmetic: four
       hundred a month is a hundred a week in DECISIONS.md */
    week:(p.per==='week')?p.grant:Math.round(p.grant/4),
