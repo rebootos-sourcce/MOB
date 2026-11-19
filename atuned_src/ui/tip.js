@@ -473,6 +473,15 @@ var TIP=(function(){
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){
+   /* FOCUS LANDING INSIDE THE PANEL IS NOT A NEW CARRIER. pointerdown already
+      skips EL this way (above); focusin needs the same guard, because
+      lock.js moves keyboard focus onto the panel's own See tiers button on
+      purpose (ui/lock.js, "a click with no pointer behind it puts focus on
+      the panel's button"). Without this check carrier() finds nothing on
+      that button, since it carries no data-tip of its own, and this handler
+      hid the panel in the same frame lock.js had just focused it, so Enter
+      on a lock and then Enter on See tiers never reached the paywall. */
+   if(EL&&EL.contains(ev.target))return;
    var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c||popped(c)){hide();return;}
    /* on a phone a tap focuses the button it lands on, and this opened the
       panel on that focus, so the hold above would never have been the only

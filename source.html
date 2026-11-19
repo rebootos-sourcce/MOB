@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v264 5170506b 2026-11-19 15:07"><head><meta charset="utf-8">
+<html lang="en" data-build="v271 c5ea664a 2026-11-19 17:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -52452,6 +52452,15 @@ var TIP=(function(){
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){
+   /* FOCUS LANDING INSIDE THE PANEL IS NOT A NEW CARRIER. pointerdown already
+      skips EL this way (above); focusin needs the same guard, because
+      lock.js moves keyboard focus onto the panel's own See tiers button on
+      purpose (ui/lock.js, "a click with no pointer behind it puts focus on
+      the panel's button"). Without this check carrier() finds nothing on
+      that button, since it carries no data-tip of its own, and this handler
+      hid the panel in the same frame lock.js had just focused it, so Enter
+      on a lock and then Enter on See tiers never reached the paywall. */
+   if(EL&&EL.contains(ev.target))return;
    var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c||popped(c)){hide();return;}
    /* on a phone a tap focuses the button it lands on, and this opened the
       panel on that focus, so the hold above would never have been the only
@@ -104824,5 +104833,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007149716"></div>
+<div id="eof" hidden data-len="007150360"></div>
 </body></html>

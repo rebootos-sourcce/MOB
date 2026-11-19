@@ -5701,7 +5701,11 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   ok(N.shut,'and a press on the open one shuts it');
   ok(N.seatTile,'and the archetype tile is the seat tile, one control on this page and not two');}
  ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
- ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
+ /* FIXED, stale: a half answered block used to say what is left ("X of Y
+    questions left"), a fraction, which NO-FRACTIONS-AUDIT.md (18 November,
+    finding P09) replaced with a plain percent answered (ixSay, round PU,
+    engine/intakemore.js), and this assertion was never moved to match. */
+ ok(/%.*answered/.test(ix.pressed.part),'and a half answered block says how much is answered, as a percent and not a fraction, "'+ix.pressed.part+'"');
  ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
   'a finished block names its leader with the place and its other end unpacked, "'+ix.read+'"');
  ok(ix.moved===9&&ix.onAnger===1,'a second press on the same question moves the answer and leaves one cell pressed');
@@ -7811,8 +7815,12 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    above:pc(up[0]), below:pc(dn[0]),
    drill:nodeDrillHtml(up[0]), hover:frDescribe({k:'anchor',n:dn[0]},compute())};});
  ok(ck.gone,'chain key: the chain section, its colour key and the Outside the chain rows are gone from the left rail, 18 November');
- ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown seat it extends, <b>'+ck.above+'%</b>')>=0,
-  'an anchor\'s drill states its seat average and never "held 0.0, left after that" more');
+ /* FIXED, stale: drills.js said "seat" here before the 18 November rename
+    (seat to point, tools/vocab-rules.py); the hover check right below
+    already read "point" and this one was the one occurrence the vocab
+    merge missed. */
+ ok(!/Charge held here/.test(ck.drill)&&ck.drill.indexOf('average weight of the crown point it extends, <b>'+ck.above+'%</b>')>=0,
+  'an anchor\'s drill states its point average and never "held 0.0, left after that" more');
  ok(ck.hover.indexOf('average weight of the root point it extends, <b>'+ck.below+'%</b>')>=0&&/decoherence/.test(ck.hover),
   'an anchor\'s hover on a rendition carries its weight and where it counts');
  await fp.evaluate(()=>{const s=document.querySelector('#lpanel .lsec[data-sec=soul]');if(s&&!s.classList.contains('open'))s.querySelector('.lsec-hd').click();});
