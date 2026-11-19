@@ -52,6 +52,15 @@ const MANUAL = {
      to gates-browser drops this line in the same commit, and this list's own
      check fails until they do. */
   'exampleprofiles.js': 'run by hand until its gates-browser step lands in deploy.yml',
+  /* 19 November, extraction of integ/wave-b. The Insight well's talking
+     button (ui/stksay.js) is built against the stack's own per-tier
+     summary row, which the insight-rail unnesting removed; its call from
+     tests/functional.js is cut in the same change this entry lands in
+     (functional.js's own comment there has the reproduction), since
+     calling a gate that cannot reach the page crashes a blocking file
+     rather than failing a check. Run by hand until the button has a real
+     place in the unnested rail and is wired to it. */
+  'stksay.js': 'run by hand, not wired: the button has no surface to attach to since the insight-rail unnesting removed the per-tier summary it was built against',
 };
 
 /* YAML and bash share `#` as a comment. A `#` opens one at the start of a

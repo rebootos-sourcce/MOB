@@ -8556,12 +8556,27 @@ await require('./stfull.js').stRailPixelGate(browser,FILE,ok,booted);
 console.log('\n=== when voice cannot run, the Journal still takes words ===');
 await require('./voicefall.js').voiceFallGate(browser,FILE,ok,booted);
 
-/* THE INSIGHT WELL TALKS, tests/stksay.js, 17 November. His words: "if i
-   press it, i can talk to source ai about the parent and children and how
-   it works through me and run a protocol to release it." A file of its own
-   so it can run alone, called here so a full run holds it. */
-console.log('\n=== the Insight well talks ===');
-await require('./stksay.js').stkSayGate(browser,FILE,ok,booted);
+/* THE INSIGHT WELL TALKS, tests/stksay.js, 17 November, NOT CALLED HERE,
+   19 November, extraction of integ/wave-b. His words on the feature itself:
+   "if i press it, i can talk to source ai about the parent and children and
+   how it works through me and run a protocol to release it." It is built
+   against the stack's own per-tier summary row (Built from, Feeds, Reading,
+   railStkKids/railStkParent/insightSpeak, ui/ui.js), which the insight-rail
+   unnesting (18 November, "Let's unnest them") removed outright: the well
+   and insightSay are gone, the rail is six flat levels of bars with no
+   per-tier summary left for the button to sit on. Calling stkSayGate here
+   is not a report of failure, it is a crash: #stksay never exists, so its
+   own page.click times out after 30 seconds and throws past this call's own
+   try-free await, taking down every later section of this file with it, a
+   blocking gate, not a report-only one. Reproduced directly: node
+   tests/stksay.js alone reads 2 passed, 4 failed, then "the gate threw",
+   exit 1, not a hang and not a silent pass. tests/stksay.js itself stays,
+   unregistered in CI, as the record of what the button is meant to do; it
+   needs a real decision on where it attaches in the unnested rail (the new
+   top-of-rail reading, a per-bar affordance, or a redesign) before it is
+   called from anywhere again. floors.json's own "stksay" floor is removed
+   in the same change: a floor for a gate that cannot reach the real page is
+   the same defect as a number typed into one that can. */
 
 /* TYPE INSTEAD, tests/typein.js, 4 November. His words: "We should probably
    just add the typing panel, closed, to the bottom of the journal. And if a

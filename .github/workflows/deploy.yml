@@ -425,6 +425,10 @@ jobs:
           # 18 November: the eighth lighting, Glass blue (tests/glassblue.js).
           # New, so report only first.
           - { gate: glassblue, timeout: 20, command: node tests/glassblue.js }
+          # 18 November: Source AI as a conversation, real Chromium
+          # (tests/srcconvo.js), the owner's 17 November report that it
+          # repeats itself. New, so report only first.
+          - { gate: srcconvo, timeout: 20, command: node tests/srcconvo.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

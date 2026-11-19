@@ -11,7 +11,7 @@
    natural conversation with me. It keeps repeating, what are we talking about
    today? So it's acting more like an algorithm."
 
-   NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/srcconvo.js
+   NODE_PATH=/opt/node22/lib/node_modules CHROME=/path/to/chromium node tests/srcconvo.js
    ATUNED_FILE=path  runs it against another build, which is how it is
    checked against a known bad one first, the standing rule: every section
    below is run against the build from before this round (c2bf52a2) and must
@@ -141,7 +141,7 @@ const rows = p => p.evaluate(() => ({ me: SRC_CHAT.filter(r => r.w === 'me').map
 const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   require('./net.js').guardBrowser(browser);
 
   /* ---------------------------------------------------------------- 1 */
@@ -433,7 +433,7 @@ const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
     });
     const a = await seen();
     ok(a.out.length === 0 && !a.status, w + ': Talk on and nothing said, the word Listening is nowhere a person can see it: ' + JSON.stringify(a));
-    const cap = await p.evaluate(() => { const e = document.getElementById('stlivecap'); if (!e) return null; const r = e.getBoundingClientRect();
+    const cap = await p.evaluate(() => { const e = document.getElementById('micsay'); if (!e) return null; const r = e.getBoundingClientRect();
       return { live: e.getAttribute('aria-live'), text: e.textContent, w: Math.round(r.width), h: Math.round(r.height) }; });
     ok(cap && cap.live === 'polite' && /microphone/i.test(cap.text) && cap.w <= 2 && cap.h <= 2, w + ': a screen reader is still told the microphone is on, by a line nobody else sees: ' + JSON.stringify(cap));
     await p.evaluate(() => __mic.interim('my boss called me'));

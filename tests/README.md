@@ -189,7 +189,7 @@ hidden". It drives the real built page with a stand-in recogniser and a
 stand-in voice, so a result can arrive in the hold after a line, in the middle
 of a sentence, or from a recording that ended late.
 
-    NODE_PATH=/opt/node22/lib/node_modules CHROME=/opt/pw-browsers/chromium node tests/srcconvo.js
+    NODE_PATH=/opt/node22/lib/node_modules CHROME=/path/to/chromium node tests/srcconvo.js
     ONLY=1,1b,2 ...                      runs only those sections
     ATUNED_FILE=path ...                 runs it against another build
 

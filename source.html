@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v251 7e534938 2026-11-19 11:46"><head><meta charset="utf-8">
+<html lang="en" data-build="v260 c6b308d4 2026-11-19 13:19"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -324,6 +324,50 @@ body.glasswhite .panel,body.glasswhite .glass{
  backdrop-filter:blur(10px) saturate(1.2)}
 
 /* ============================================================
+   FIVE AND A HALF. GLASS BLUE.
+
+   Glass white with its neutral greys moved from warm cream toward blue. The
+   owner's words, 18 November, choosing "more blue" (variant B) from the
+   palette board: "Let's go with B. For the palette. And let's add that as a
+   new light mode." Glass white is not touched and not renamed; this is a
+   second lighting beside it.
+
+   THE BODY CARRIES BOTH CLASSES, glasswhite and glassblue (setLighting in
+   ui/panels.js). Every Glass white rule, every canvas that reads the stage
+   and every light ground check therefore keeps working unchanged, and this
+   block only overrides the neutral colours. It sits straight after Glass
+   white's own block and states only tokens, so a later rule that sets the
+   same property on body.glasswhite (the tooltip ground, below the tip rules)
+   needs its own glassblue line after it, and has one.
+
+   THE NUMBERS WERE MEASURED, NOT PICKED. The palette board's variant B was
+   drawn from a copy of the file whose colour settings were lost, so they were
+   read back out of its picture, surface against the same surface in a real
+   Glass white render, one token at a time:
+     the page behind everything  --bg    #E8E7E2 to #E3E8ED
+     the glass over it           --panel white .62 to 245,250,255 at .62, which
+                                 is the top bar and the left rail's shell
+     the sunk panes on the stage --sunk  228,226,220 to 218,223,230 at .60,
+                                 which is the middle panel, the Release panel
+                                 and the six bottom cards
+     the stage itself            #F2F1EC to #E9EEF3
+   and the greys that sit on them moved the same way: --mid 74,72,67 to
+   69,75,82 and --dim 110,107,101 to 101,107,114, both read off the darkest
+   pixel of a label in the picture. Rendered, every one of those surfaces lands
+   within one level of the picture. The accent, the gold, the green Release
+   button and every seat colour are Glass white's own and do not move. tests/
+   glassblue.js holds the table. */
+body.glassblue{
+ --bg:#E3E8ED;
+ --panel:rgba(245,250,255,.62);
+ --panel-2:rgba(247,251,255,.76);
+ --sunk:rgba(218,223,230,.60);
+ --edge:rgba(20,24,34,.10); --edge-2:rgba(20,24,34,.18);
+ --ink:#13181F; --mid:#454B52; --dim:#656B72; --um:#13181F;
+ --shadow:0 20px 52px rgba(20,26,36,.14)}
+body.glassblue .stage,body.glassblue #emap,body.glassblue #masksview,body.glassblue #cone{background:#E9EEF3}
+
+/* ============================================================
    SIX. FLAT.
 
    No bevel, no blur, no translucency, no shadow, no gradient. One flat
@@ -560,6 +604,18 @@ body.glasswhite.tab-field .ib,
 body.glasswhite.tab-field .kb-t,body.glasswhite.tab-field .pm-lb,
 body.glasswhite.tab-field .s-dom,body.glasswhite.tab-field .ip-g,
 body.glasswhite.tab-field .st-mic{background:rgba(255,255,255,.72)}
+/* Glass blue takes the same denser ground on the Field, in its own tint: the
+   same two steps of white at .86 and .72, with the red lowered by ten and the
+   green by five as --panel is, so a pane on the Field is not a pure white
+   patch on a blue page. */
+body.glassblue.tab-field .glass,body.glassblue.tab-field .panel,
+body.glassblue.tab-field .top,body.glassblue.tab-field .subbar{
+ background:rgba(245,250,255,.86)}
+body.glassblue.tab-field .vt,body.glassblue.tab-field .btn,
+body.glassblue.tab-field .ib,body.glassblue.tab-field .stk-t,
+body.glassblue.tab-field .kb-t,body.glassblue.tab-field .pm-lb,
+body.glassblue.tab-field .s-dom,body.glassblue.tab-field .ip-g,
+body.glassblue.tab-field .st-mic{background:rgba(245,250,255,.72)}
 /* raised: anything a person summoned. more blur, brighter edge, longer shadow. */
 body.glass .sheet-card,body.glass .rd-card,body.glass .gmenu,body.glass .cone-card{
  -webkit-backdrop-filter:blur(38px) saturate(1.8);
@@ -1306,6 +1362,26 @@ body.lumen{
  border-radius:var(--r-s) var(--r-s) 0 0;
  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 26%,transparent),transparent)}
 .gmenu[hidden]{display:none}
+/* THE BAR'S LIGHTING MENU OPENED BEHIND THE STAGE, found 18 November, and it
+   was the only door to a lighting from the home screen. Glass white and Glass
+   blue put a backdrop-filter on the top bar and nothing else (the body carries
+   glasswhite, not glass, so body.glass .glass never gives the bar a position),
+   which makes the bar a stacking context at z-index auto, and #lightmenu's
+   z-index:60 is spent inside it. Against the rest of the page the whole bar
+   sits at auto, in tree order, before the stage, which is positioned and
+   isolated and so painted over the menu on Discover and on the Dashboard.
+   Measured by what the browser puts at the middle of each entry: none of the
+   eight, in Glass white and in Glass blue, on both screens. Glass and Dark
+   were measured unaffected, and so was the Field in all eight. The bar is a
+   flex item of .app, so a z-index lifts it even though it is not positioned.
+   It is lifted WHILE THE MENU IS OPEN and not otherwise: always on
+   would also move the bar's own 52px shadow from under the stage's blurred
+   backdrop to over the stage's face, which changes the pixels below the bar in
+   Glass white, a lighting that must not move, for a fix that only matters
+   while a menu is out. Shut, nothing here applies and the page is painted
+   exactly as it was; the menu's own shadow already sits over that same strip
+   while it is open. Glass blue carries glasswhite, so one rule holds both. */
+body.glasswhite .top:has(#lightmenu:not([hidden])){z-index:5}
 .gmenu-hd{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);
  margin-bottom:8px}
 .gmenu .seg{width:100%;justify-content:space-between}
@@ -4027,6 +4103,31 @@ body.punch .card{border-color:transparent}
 .stk-lh .stk-lc{flex:0 0 auto;font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:500;color:var(--mid)}
 .stk-row{display:flex;align-items:stretch;min-width:0;position:relative}
 .stk-row .stk-r{flex:1 1 auto;min-width:0}
+/* THE READING ROW'S BUTTON, 17 November (ui/stksay.js). A full tap target
+   that does not grow the row: 44 square, pulled back into the line by its
+   own negative margin, and out of the row's baseline alignment so the label
+   and the sentence keep theirs. Ring, not fill, the stroke .ib draws. Greyed
+   with a reason on its tip and never hidden, aria-disabled and not disabled,
+   so a press still reaches the status line that says why. While the voice
+   plays its two arcs breathe, and under reduced motion they hold still. */
+.stk-say{flex:0 0 auto;align-self:flex-start;width:var(--tap,44px);height:var(--tap,44px);
+ margin:-10px -6px -10px 2px;padding:0;display:flex;align-items:center;justify-content:center;
+ background:transparent;border:0;border-radius:50%;cursor:pointer;color:var(--accent);position:relative}
+.stk-say svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;position:relative}
+.stk-say::before{content:"";position:absolute;width:32px;height:32px;border-radius:50%;
+ border:1.5px solid color-mix(in srgb,var(--accent) 45%,transparent);pointer-events:none}
+.stk-say:hover::before{background:var(--panel-2)}
+.stk-say[aria-pressed=true]::before{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.stk-say[aria-disabled=true]{color:var(--dim);cursor:default}
+.stk-say[aria-disabled=true]::before{border-color:var(--edge)}
+.stk-say:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+@keyframes stkSayArc{0%,100%{opacity:1}50%{opacity:.35}}
+.stk-say[data-say="speak"][aria-pressed=true] .stk-say-a{animation:stkSayArc 1.1s ease-in-out infinite}
+.stk-say[data-say="speak"][aria-pressed=true] .stk-say-a+.stk-say-a{animation-delay:.18s}
+@media (prefers-reduced-motion:reduce){.stk-say .stk-say-a{animation:none!important}}
+body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!important}
+.stk-live{color:var(--ink)}
 .stk-r{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;
  min-height:var(--tap);padding:3px 6px;border:0;background:transparent;border-radius:var(--r-xs);
  font-family:var(--sans);font-size:13px;color:var(--ink);text-align:left;cursor:pointer}
@@ -4994,6 +5095,30 @@ body.quiet.tab-story:not(.st-full) #stage::before,
 body.rm.tab-story:not(.st-full) #stage::before{animation:none}
 @media (prefers-reduced-motion:reduce){
  body.tab-story:not(.st-full) #stage::before{animation:none}}
+/* GLASS BLUE'S HOME SCREEN READ AS A PATCH OF THE OLD LIGHT MODE, 18 November.
+   Discover is where the app opens, and the wash above painted it a dusty
+   mauve (212,205,206 at a pixel of the hero) inside a cool bar and a cool
+   page. Cause: it mixes in oklch, and an oklch mix interpolates HUE as well as
+   lightness. The ambient core is a warm near black and Glass blue's ground is
+   a cool pale blue, about half a turn of hue apart, so the short way round
+   the hue wheel lands on pink, whatever the chroma left over is. Glass white
+   never showed it because its ground is warm too, so the two hues sit close.
+   The same two gradients are stated again in srgb for Glass blue only, which
+   has no hue to interpolate: the core darkens the pale blue and the blue stays
+   (205,210,214). The seat wash on top keeps oklch, where it mixes a colour
+   with transparent and so has one hue to carry. Colour only: the sizes, the
+   stops, the percentages, the drift and the reduced motion rule above are
+   untouched, and Glass white's own wash is not edited at all. tests/
+   glassblue.js reads the hero, blank and loaded, at both widths. */
+body.glassblue.tab-story:not(.st-full) #stage::before{
+ background:
+  radial-gradient(105% 115% at 50% 50%,
+    color-mix(in oklch,var(--seat,transparent) calc(var(--seat-w,0)*10%),transparent) 0%,
+    transparent 75%),
+  radial-gradient(115% 125% at 50% 50%,
+    color-mix(in srgb,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
+    color-mix(in srgb,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
+    var(--bg) 100%)}
 /* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
    paints twice: once behind her (above) and once again in the box she
    sits in. */
@@ -6404,8 +6529,8 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-livecap{min-height:1.55em}
 @keyframes capPulse{0%,100%{opacity:1}50%{opacity:.55}}
 body.quiet .src-livecap,body.rm .src-livecap{animation:none;opacity:.85}
-.src-say{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
- white-space:nowrap;margin:0}
+.src-say,.src-livecap.src-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);
+ white-space:nowrap;margin:0;animation:none}
 .src-row{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px}
 .src-gauge{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim)}
 .src-seat{font-size:12.5px;font-weight:600;color:var(--c)}
@@ -7454,6 +7579,12 @@ body.glass{--tip-bg:#151922; --tip-edge:rgba(255,255,255,.17);
  --tip-shadow:0 10px 24px rgba(0,0,0,.46)}
 body.glasswhite{--tip-bg:#F6F6F4; --tip-edge:rgba(20,22,28,.18);
  --tip-shadow:0 10px 24px rgba(20,22,28,.13)}
+/* GLASS BLUE. Its tooltip ground is the colour its own top bar lands on,
+   238,243,249, as Glass white's is the one its top bar lands on, 246,246,244.
+   Stated after the Glass white line because both classes are on the body and
+   the later rule wins. */
+body.glassblue{--tip-bg:#EEF3F9; --tip-edge:rgba(20,24,34,.18);
+ --tip-shadow:0 10px 24px rgba(20,26,36,.13)}
 /* Flat has no shadow anywhere. The tooltip does not get one either: its
    separation is the one pixel edge, which Flat states at full strength. */
 body.flat{--tip-bg:#121419; --tip-edge:#2E333E; --tip-shadow:none}
@@ -10280,6 +10411,20 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 .btn.dgr{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 52%,var(--edge))}
 .btn.dgr:hover{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .ac-seg{margin:11px 15px 13px}
+/* THE LIGHTING ROW HAD NOWHERE TO GO AT PHONE WIDTH, 18 November. It is one
+   flex row of every lighting by name, 510px of buttons in a tray that is the
+   screen less 52px, and .seg has no wrap and no scroll, so at 390 (a tray of
+   338) the eighth lighting arrived and the selected button was sliced to "Gla"
+   at the edge while Flat and Lumen sat off the screen where nothing could
+   reach them. At 360 and 430 the same, and it only fits from about 560 up.
+   Below that it is the phone menu's own shape instead, two even columns, so
+   every lighting is whole, the same size as its neighbour, and the rows stay
+   in line (an odd number of lightings would leave one alone in the last row,
+   which tests/glassblue.js section 9 names). The row would still have fitted
+   from about 560, and a grid between there and 600 costs nothing and keeps the
+   break at one number. */
+@media (max-width:600px){
+ .ac-seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ac-grp .dens-list{margin:11px 15px 13px}
 /* THE IMPORTER WAS DRAWN FOR A SHEET AND LIVES IN A GROUP. .sh-imp carries its
    own top rule and no side padding, because inside profileSheet the sheet card
@@ -11498,7 +11643,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
        Dark, Lumen, etc, to the lighting section in the main menu." On a phone
-       the lighting menu at the right of the bar goes and its seven choices
+       the lighting menu at the right of the bar goes and its choices
        are here, under the tabs, each with its name beside its mark, filled
        from LIGHTINGS and kept pressed by setLighting in ui/panels.js. -->
   <div class="navlight" id="navlight">
@@ -11557,7 +11702,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
        own: it was whichever lighting is on, written by setLighting, so taking
        it off for Dark alone would make the button grow a word the moment Snow
        was chosen and shrink again on the way back. The icon is the button
-       now for all seven, and the lighting that is on is said where it already
+       now for every lighting, and the lighting that is on is said where it already
        was, the pressed mark in the menu, and in the button's accessible name,
        which setLighting keeps current. -->
   <div class="gwrap" id="lightwrap">
@@ -36265,7 +36410,9 @@ function srcHear(text,prior,active){
      quoted back is what they typed and not the lowercased copy. */
   var a=s.at+1, b=s.at+String(s.word).length;
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
-  if(o.words.indexOf(w)<0)o.words.push(w);});
+  /* the same word in two cases is one word said twice, not two words:
+     "Afraid" then "afraid" was quoted back as “Afraid” and “afraid” */
+  if(!o.words.some(function(x){return x.toLowerCase()===String(w).toLowerCase();}))o.words.push(w);});
  var P=prior||{};
  var A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
@@ -36644,6 +36791,63 @@ function srcDims(text){
  var out={answered:by, open:open, words:ws.filter(Boolean).length};
  if(srcSafe(t))out.safe=true;
  return out;}
+
+/* ============================================================
+   THE ONE THING IT CAN SAY BACK WHEN NO SEAT IS FOUND, 18 November. The
+   owner: "it keeps repeating... it's acting more like an algorithm." A turn
+   that lands on no seat was answered from four fixed lines whatever it said:
+   "my boss gave my idea to someone else" and "I froze" and "my sister
+   called" each got "I'm listening". The engine does hold something in those
+   turns, srcDims reads who was in it and srcBehave reads what the person did,
+   and nothing said it.
+
+   WHAT IT RETURNS. The person's own letters for the first thing of two
+   kinds, in the order they were written, or null: a person in the story, one
+   of a closed list of nouns (boss, sister, mother), with the word that
+   claims them ("my", "his", "their") when one stands before it; and a
+   thing the person did, "I" and a doing verb from SRC_SPOT_DO, "I froze",
+   "I just left". Never a pronoun, because "You said “he”" is a lexicon dump
+   and not a listener, and never one of srcBehave's phrase spans, because
+   "did not say" and "keep thinking about" read as a table being cited.
+   Never a sentence: only words the engine itself recognised, so what comes
+   back is what it read and not a clause the person happened to say, which
+   keeps what is spoken aloud to the same small kind of word it has always
+   been.
+
+   {kind:'who'|'did', words}. Pure, reads only the turn. */
+var SRC_SPOT_WHO=['boss','manager','colleague','coworker','partner','husband','wife','boyfriend','girlfriend',
+ 'mother','father','mum','mom','dad','parents','son','daughter','brother','sister','friend','friends',
+ 'family','kids','child','children','teacher','client','ex','neighbour','neighbor'];
+var SRC_SPOT_OWN=['my','his','her','their','our','your'];
+/* the doing verbs worth saying back: a word that says what happened. "I did",
+   "I said" and "I went" are in SRC_DO because they answer the question what
+   did you do, and said back they are filler. */
+var SRC_SPOT_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','avoided','shouted','yelled',
+ 'screamed','snapped','slammed','cried','quit','ignored','pretended','apologised','apologized','shut','hung'];
+function srcSpot(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, found=[];
+ if(!src.trim()||srcSafe(t))return null;
+ function raw(from,len){return t.slice(nm.map[from+1],nm.map[from+len]+1);}
+ SRC_SPOT_WHO.forEach(function(c){
+  var needle=' '+c+' ', i=src.indexOf(needle);
+  if(i<0)return;
+  var from=i, len=c.length, pw=src.slice(0,i).split(' ').pop();
+  if(SRC_SPOT_OWN.indexOf(pw)>=0){from=i-pw.length-1; len=c.length+pw.length+1;}
+  found.push({at:from, kind:'who', words:raw(from,len)});});
+ var ws=src.trim().split(' '), off=0;
+ ws.forEach(function(w,k){
+  /* off is the leading space of this word in normMap's copy, the position
+     a hit's at is */
+  var at=off; off+=w.length+1;
+  if(w!=='i')return;
+  var n=ws[k+1]; if(n==='just'||n==='then')n=ws[k+2];
+  if(SRC_SPOT_DO.indexOf(n)<0)return;
+  var span=ws[k+1]===n?w+' '+n:w+' '+ws[k+1]+' '+n;
+  found.push({at:at, kind:'did', words:raw(at,span.length)});});
+ found=found.filter(function(f){return f.words&&f.words.trim();});
+ if(!found.length)return null;
+ found.sort(function(a,b){return a.at-b.at;});
+ return {kind:found[0].kind, words:found[0].words.trim()};}
 
 /* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
    result, asked the kinds already asked in this entry in the order they
@@ -37317,25 +37521,50 @@ var SRC_INTENT={
   'rather talk about'],
  move_on:['dont want to talk about it','do not want to talk about it','dont want to talk about this',
   'dont want to talk anymore','dont want to talk any more','stop asking','no more questions',
-  'enough questions','stop talking','can we stop','lets stop'],
+  'enough questions','stop talking','can we stop','lets stop',
+  'lets move on','let us move on','can we move on','never mind','nevermind','drop it',
+  'thats enough','that is enough'],
  reject:['doesnt fit me','that doesnt fit','does not fit me','thats not me','that is not me',
   'thats not it','that is not it','thats not right','thats wrong','not what i meant','youre wrong',
   'you are wrong'],
  vent:['just want to vent','want to vent','need to vent','just venting','let me vent',
-  'just want to get it out','just need to get it out','just want to talk','just listen'],
+  'just want to get it out','just need to get it out','just listen'],
  clarify:['what do you mean','what does that mean','what does this mean','what are you asking',
   'what was the question','not sure what you mean','dont know what you mean','dont understand the question',
   'dont understand what you mean','dont get the question','dont get what you mean','say that again']};
 var SRC_INTENT_ORDER=['shift','move_on','reject','vent','clarify'];
 var SRC_INTENT_SHORT=12;
+/* A PHRASE THAT IS ALSO ORDINARY SPEECH GETS A SHORTER LEASH, 18 November.
+   "I wish my mother would just listen to me" holds "just listen" and is
+   about the mother. A phrase named here counts only in a turn of this many
+   words or fewer, so a request to be heard is a short turn and a wish about
+   someone else is not. The exits added the same day are on it for the same
+   reason and a worse one: Move on is final for the entry, and "never mind
+   the cost, I just felt sick" is a story that opens on the phrase. */
+var SRC_INTENT_MAXW={'just listen':5, 'never mind':4, 'nevermind':4, 'drop it':4, 'lets move on':5, 'let us move on':5,
+ 'can we move on':5, 'thats enough':5, 'that is enough':5};
+/* and a phrase that follows a word that reports what someone said is that
+   person's, not the speaker's: "my dad told me to stop talking at dinner" is
+   about the dad and nine words long. Read in the six words before the
+   phrase, for vent and move on only. */
+var SRC_REPORT=['told','tells','asked','asks','said','says','yelled','shouted','screamed','begged','ordered'];
 var SRC_SHIFT_PAIR=[['talk about','instead']];
 function srcIntent(turn){
  var nm=normMap(String(turn||'')), s=nm.s, words=s.trim()?s.trim().split(' ').length:0;
  if(!words)return null;
  for(var i=0;i<SRC_INTENT_ORDER.length;i++){var k=SRC_INTENT_ORDER[i], list=SRC_INTENT[k];
-  if((k==='reject'||k==='clarify')&&words>SRC_INTENT_SHORT)continue;
+  /* VENT AND MOVE ON ARE SHORT TURNS TOO, 18 November. They were the two
+     kinds read in a turn of any length, and each one, once read, lasts for
+     the rest of the entry (SRC_VENT, SRC_PASSED in ui/storyui.js): "I told
+     her I need to vent about work, my boss yelled at me for an hour" is a
+     story, read as vent for twenty four words, and every question after it
+     was lost. A request to be heard or to stop is short, the way a no to a
+     reading is, and a long turn that holds the phrase is about the story. */
+  if((k==='reject'||k==='clarify'||k==='vent'||k==='move_on')&&words>SRC_INTENT_SHORT)continue;
   for(var j=0;j<list.length;j++){var c=' '+list[j]+' ', at=s.indexOf(c);
    if(at<0)continue;
+   if(SRC_INTENT_MAXW[list[j]]&&words>SRC_INTENT_MAXW[list[j]])continue;
+   if((k==='vent'||k==='move_on')&&s.slice(0,at).trim().split(' ').slice(-6).some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
    /* the phrases that carry their own no are read as said; the others are
       set aside when a no stands before them, except clarify's, above */
    if(k!=='clarify'&&!/^(dont|do not)/.test(list[j])&&srcNegated(s,at+1))continue;
@@ -37363,6 +37592,17 @@ function srcIntent(turn){
      greet  a turn that opens on hello, hi or hey, or asks how it is
      brief  a turn made only of yes, yeah, okay, no and their kind
 
+   AND THREE MORE, 18 November, the owner: "it keeps repeating, what are we
+   talking about today? So it's acting more like an algorithm". The first
+   thing a person says to a thing that repeats itself is that it repeats
+   itself, and nothing heard it. Measured: "you keep repeating yourself",
+   "you already asked me that", "thank you" and "bye" were each answered
+   from the same four listening lines as noise is.
+
+     complain  you keep repeating, you already asked, you asked the same
+     thanks    thanks, thank you, cheers, opening the turn
+     bye       bye, goodbye, good night, thats all, opening a short turn
+
    Each is read only in a short turn, and the page answers it only when the
    turn carries no seat of its own (srcActNow, ui/storyui.js): "hello, I am
    so anxious" is about being anxious, and the feeling is answered. A brief
@@ -37385,9 +37625,17 @@ var SRC_ACT={
  greet:['hi','hello','hey','hiya','good morning','good afternoon','good evening','how are you'],
  brief:['yeah','yes','yep','yup','yea','ya','ok','okay','sure','mm','mhm','hmm','uh','huh','um',
   'right','true','maybe','no','nope','nah','not','really','i','guess','suppose','think','so',
-  'kind','sort','of','dont','know','dunno','fine','alright','cool']};
-var SRC_ACT_ORDER=['check','ask','greet','brief'];
-var SRC_ACT_SHORT={check:8, ask:SRC_INTENT_SHORT, greet:6, brief:5};
+  'kind','sort','of','dont','know','dunno','fine','alright','cool'],
+ complain:['you keep repeating','you keep saying','you keep asking','you already asked','you already said',
+  'you said that already','you asked that already','you asked me that','you just said that',
+  'you just asked','you said the same','you asked the same',
+  'repeating yourself','repeat yourself','stop repeating'],
+ thanks:['thanks','thank you','thankyou','thx','cheers','much appreciated'],
+ bye:['bye','goodbye','good bye','goodnight','good night','see you','see ya','talk later',
+  'talk to you later','thats all','that is all','gotta go','got to go']};
+var SRC_ACT_ORDER=['check','complain','ask','thanks','bye','greet','brief'];
+var SRC_ACT_MAXW={'you keep saying':6,'you keep asking':6};
+var SRC_ACT_SHORT={check:8, complain:SRC_INTENT_SHORT, ask:SRC_INTENT_SHORT, thanks:5, bye:4, greet:6, brief:5};
 function srcAct(turn){
  var s=normMap(String(turn||'')).s, ws=s.trim()?s.trim().split(' '):[];
  if(!ws.length)return null;
@@ -37405,8 +37653,85 @@ function srcAct(turn){
       leaves the question standing. Found by coverage, 31 October, where
       the guard never ran and would have filed that turn as nothing. */
    if(k==='greet'&&at!==0&&list[j]!=='how are you')continue;
+   /* a thanks and a goodbye open the turn, the way a greeting does: "I said
+      thanks and then she left" and "she said bye" are stories. A no before
+      a thanks declines something, and a no, thanks is not one. */
+   if((k==='thanks'||k==='bye')&&at!==0)continue;
+   /* "Thanks for nothing, he said." is a sentence from a story, and so is
+      "bye, she said": a word that reports what someone said, anywhere in
+      the turn, makes the thanks or the goodbye that person's. */
+   if((k==='thanks'||k==='bye')&&ws.some(function(w){return SRC_REPORT.indexOf(w)>=0;}))continue;
+   /* and two of the complaint's phrases are also what is said about someone
+      else, "you keep saying that I should relax" to the person in the story:
+      read only in a short turn, which is how a complaint to Source AI runs */
+   if(SRC_ACT_MAXW[list[j]]&&ws.length>SRC_ACT_MAXW[list[j]])continue;
    return {act:k, cue:list[j]};}}
  return null;}
+
+/* ============================================================
+   WHAT THE MICROPHONE MAY HAND IN AS A TURN, 18 November. The owner: "it
+   keeps repeating, what are we talking about today? So it's acting more like
+   an algorithm and not something intelligent I could have a conversation
+   with." Every finalised result the speech service returned was filed as a
+   turn, whatever it was, and answered aloud: measured on the page, a lone
+   "uh", "the", "um" and "hmm" were each a turn, each read by the circle for
+   fourteen seconds, each answered from the same four lines, and each saved
+   into the draft, so a reload showed the face over a profile nobody had
+   written in. A room, a cough and Source AI's own voice coming back through
+   the speakers all arrive as results too.
+
+   TWO QUESTIONS, BOTH ABOUT THE WORDS AND NEITHER ABOUT A SCORE.
+
+     srcNoise  is this only a sound a person makes while thinking, or a
+               function word the recogniser caught on its own: "um", "uh",
+               "the", "you", "oh so". True only when EVERY word is on the
+               stated list and there are two or fewer, so one word that
+               means something, "yes", "no", "afraid", "boss", keeps the
+               turn, and so does "what is it", three words of anything,
+               and a question to Source AI, which is made of the same
+               words.
+               "mhm" and "uh huh" are a yes and stay.
+     srcEcho   is this Source AI's own line, said back: a run of two or more
+               of its words in a row, or three words or more of which four
+               in five are its. The page asks it only of what arrives while
+               a line plays and for a few seconds after (ui/storyui.js), so
+               a person who repeats a word of it later is never refused.
+
+   NEVER THE DOOR TO HELP. srcSafe is read first and a turn it stops is not
+   noise and not an echo, whatever else it is: the page admits it before it
+   asks either. Both read only the words and neither reaches the record.
+   ============================================================ */
+var SRC_NOISE=['uh','um','umm','uhh','er','erm','ah','aah','eh','ehh','hm','hmm','hmmm','mm','mmm','oh','ooh',
+ 'the','a','an','and','or','but','so','to','of','in','on','at','it','its','is','you','i','he','she','we','they',
+ 'that','this','like','just','well'];
+/* NOT what, who or how: a person who did not catch a line says "what?", and a lone question word is a
+   question and not a sound. The turn is answered by what the page says to any turn with no seat in it. */
+var SRC_NOISE_MAX=2;
+var SRC_NOISE_YES=/^(mm hm+|uh huh|mhm|mmhm+|uh uh)$/;
+function srcNoise(text){
+ var t=String(text||'');
+ if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ var s=normMap(t).s.trim();
+ if(!s)return true;
+ if(SRC_NOISE_YES.test(s))return false;
+ /* a question to Source AI is made of these same words: "what is this" and
+    "is this on" are three words that are all on the list, and are exactly
+    what a person says to a thing they are testing. Anything srcAct or
+    srcIntent reads is a turn, except brief, which is um, uh and hmm among
+    its words. */
+ var ac=srcAct(t); if(ac&&ac.act!=='brief')return false;
+ if(srcIntent(t))return false;
+ var ws=s.split(' ');
+ if(ws.length>SRC_NOISE_MAX)return false;
+ return ws.every(function(w){return SRC_NOISE.indexOf(w)>=0;});}
+function srcEcho(text,line){
+ var a=normMap(String(text||'')).s.trim(), b=normMap(String(line||'')).s.trim();
+ if(!a||!b)return false;
+ var aw=a.split(' '), bw=b.split(' ');
+ if(aw.length>=2&&(' '+b+' ').indexOf(' '+a+' ')>=0)return true;
+ if(aw.length<3)return false;
+ var n=0; aw.forEach(function(w){if(bw.indexOf(w)>=0)n++;});
+ return n/aw.length>=0.8;}
 
 try{window.__at&&window.__at('engine/evidence.js');}catch(e){}
 /* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
@@ -42676,6 +43001,8 @@ if(typeof module!=='undefined'&&module.exports){
                  EV_PLACEABLE:EV_PLACEABLE, EV_GUESSABLE:EV_GUESSABLE, QC_GUESS:QC_GUESS, evSeamState:evSeamState, srcOutputV1Candidate:srcOutputV1Candidate,
                  SRC_INTENT:SRC_INTENT, SRC_INTENT_ORDER:SRC_INTENT_ORDER, SRC_INTENT_SHORT:SRC_INTENT_SHORT, srcIntent:srcIntent,
                  SRC_SHIFT_PAIR:SRC_SHIFT_PAIR, SRC_ACT:SRC_ACT, SRC_ACT_ORDER:SRC_ACT_ORDER, SRC_ACT_SHORT:SRC_ACT_SHORT, srcAct:srcAct,
+                 SRC_INTENT_MAXW:SRC_INTENT_MAXW, SRC_ACT_MAXW:SRC_ACT_MAXW, SRC_REPORT:SRC_REPORT, SRC_NOISE:SRC_NOISE, SRC_NOISE_MAX:SRC_NOISE_MAX, srcNoise:srcNoise, srcEcho:srcEcho,
+                 SRC_SPOT_WHO:SRC_SPOT_WHO, SRC_SPOT_DO:SRC_SPOT_DO, srcSpot:srcSpot,
   /* qcheck */    SRC_FAMILY:SRC_FAMILY, QC_GRADE:QC_GRADE, QC_QWORDS:QC_QWORDS, QC_WORDS:QC_WORDS,
                  QC_JARGON:QC_JARGON, QC_CAUSE:QC_CAUSE, QC_FORCE:QC_FORCE, QC_LABELS:QC_LABELS,
                  QC_AGAIN:QC_AGAIN, QC_LANDS:QC_LANDS, qcGrade:qcGrade, qcSyl:qcSyl, qcCanon:qcCanon, qcPlaces:qcPlaces,
@@ -44998,6 +45325,13 @@ function unp(term,label,ctx){
    readings in the rail were drawn in colours meant for a black panel. Every
    value written by JS rather than by a token had the same fault, which is why
    the rail looked washed while the sheet looked right. */
+/* THE LIGHTINGS WHOSE BODY CARRIES THE GLASS WHITE CLASS. Glass blue is Glass
+   white with its neutral greys moved toward blue (shell/head.html), so it
+   stands where Glass white stands: the light palette, the light ink, the
+   paper stage. setLighting in ui/panels.js reads this list to put the
+   glasswhite class on both, and the ladders below read it so a third member
+   is one entry here and not a hunt for every comparison to the string. */
+const GLASSWHITE_KIN=['glasswhite','glassblue'];
 /* AND IT KNEW ABOUT TWO OUT OF THREE. Glass white is paper, #E8E7E2 under
    rails at sixty two percent white, and it fell through to the dark palette,
    so every seat colour on it was drawn for a black panel: Connection's icon
@@ -45007,7 +45341,7 @@ function unp(term,label,ctx){
    which is where the Glass white stage was taken on, with its ink and wash. */
 function seatCol(b){
  var P = S.theme==='lumen' ? PAL_VIVID
-       : S.theme==='snow'||S.theme==='glasswhite' ? PAL_LIGHT
+       : S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0 ? PAL_LIGHT
        : PAL;
  return P[b]||'var(--gold)';}
 /* THE ICON GRIDS, PUNCHED UP FIFTEEN PERCENT. The owner: "all our normal
@@ -46043,7 +46377,14 @@ const lerp=(a,b,t)=>a+(b-a)*t;
    ink reads 1.06 to 1 on Snow, carried by the halo. That is Snow's own
    question and is left as shipped. Anything that must match the ground and
    not the lighting reads stageLight() below, as rings.js does. */
-const LIGHT=()=>S.theme==='snow'||S.theme==='glasswhite';
+const LIGHT=()=>S.theme==='snow'||GLASSWHITE_KIN.indexOf(S.theme)>=0;
+/* GLASS BLUE'S PAPER. The canvases carry a few light colours of their own: the
+   pale a quiet node washes toward, the plate behind a label, the halo a word
+   is stroked on. They are warm on Glass white because its stage is #F2F1EC,
+   and they would sit as warm patches on Glass blue's #E9EEF3 stage, so each
+   asks COOL() and takes its blue twin. Glass white and Snow read the same
+   values they always did. */
+const COOL=()=>S.theme==='glassblue';
 /* what the Field's canvas actually sits on, read off the stage the way
    frMount in rings.js reads it. The stage carries no transition, so the
    answer is settled the moment the lighting's class lands. */
@@ -46067,7 +46408,7 @@ function bc(b){
          : PAL;
  return hx(P[b]);}
 function nodeCol(n){const base=bc(n.b),ld=clamp(n.disp/10,0,1);
- return mixc(mixc(base,LIGHT()?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));}
+ return mixc(mixc(base,LIGHT()?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));}
 /* ---- the one status writer ----
    Every surface reports through here so the wording, the timing and the
    announcement behave the same way wherever they come from.
@@ -50798,7 +51139,15 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     in the Journal while the circle is 416 across, so the card stood 250
     pixels from what it described. The canvas keeps its aria-label above, and
     SrcFace.key() hands the key to anything that wants to print it. Nothing
-    may set a title or a data-tip on this canvas while the ruling stands. */
+    may set a title or a data-tip on this canvas while the ruling stands.
+
+    THE KEY IS THE SILENCE ROUND'S, NOT THE ONE LINE, integration 18
+    November. Two branches met here: source-ai/natural-conversation cut the
+    hover to one line, fix/talk-silence turned the hover off and kept the
+    ruled key below. His ruling on the integration was that the tooltip is
+    off and no one line tooltip survives from the conversation round, so the
+    key kept for when it is turned back on is this one, and tests/srcconvo.js
+    holds only that nothing hangs a hover on the canvas. */
  /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
     the paragraph that stood here: "This tooltip, it's insane. That text in the
     tooltip needs to be direct." Each line names a mark the canvas really
@@ -51152,7 +51501,18 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   if(speaking) return;
   RD.on=false; const pn=performance.now();
   for(const k in resFx) if(!resFx[k].rel) resFx[k].rel=pn;
-  setTimeout(()=>{ if(!RD.on&&!speaking) stateWord=IDLE; },2200);
+  /* AND THE FACE GOES BACK TO REST WITH IT, 18 November, his words: "Source
+     AI animation appears broken when I load up the dashboard without saying
+     anything... Animations are automatically playing." engaged was raised by
+     a reading, by the voice and by the intro, and lowered only by the
+     intro's own clear(), so after one reading or one spoken line the centre
+     beat, the springs it throws and the pattern trace ran for the rest of
+     the page's life. Measured: one press of Talk and one greeting, nothing
+     said, and engaged stayed true 30 seconds on, the trace cycling saboteur
+     names with rings lit. Once the reading has been let go, and nothing is
+     being said aloud, it rests again, after the same 2.2 seconds the
+     fading rings take. */
+  setTimeout(()=>{ if(!RD.on&&!speaking){ stateWord=IDLE; engaged=false; } },2200);
  }
  /* the ledger's word clock, kept for the person's own words, which arrive
     whole and carry no timing anywhere in the product (gap a, above) */
@@ -51220,7 +51580,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord=IDLE;
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on){ stateWord=IDLE; engaged=false; }
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -51228,7 +51588,12 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; engaged=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+  /* THE VOICE DOES NOT ENGAGE THE FACE, 18 November. A line Source AI speaks
+     lifts the face while it plays (speakLvl, the wavefront below) and that is
+     all: the greeting that Talk speaks, with nothing said, used to set
+     engaged and so start the centre beat and the pattern trace for good. A
+     reading is what engages it (startReading), and the intro (cue). */
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
    /* a closed reading is answered too. This read !RD.on alone, so a line
       spoken over a reading the face was holding left the centre on
       Holding while the voice talked about it, which is the one moment the
@@ -51859,13 +52224,11 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
      inward along its radius, the pie wiring's rule, and on a 390 phone that
      walked "Sacral, Apathy" straight onto the centre word, so the centre
      word's own box is held as placed before any label is */
-  let wordBox=null;
-  ctx.font='500 '+FS+'px '+fs0;
-  const wordW=ctx.measureText(stateWord).width, wordFits=wordW/2+3<ringBase[0]*0.92;
-  if(wordFits&&stateWord) wordBox={x0:cx-wordW/2-3,x1:cx+wordW/2+3,y0:cy-FS*0.8,y1:cy+FS*0.8};
+  /* NO WORD AT THE CENTRE, 18 November: see the end of paint. The box that
+     kept a label off it is gone with it. */
   if(labels.length){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf-4,0,TAU); ctx.clip(); ctx.globalCompositeOperation='source-over';
    const fs=Math.max(FS,Math.round(12*U)); ctx.font='500 '+fs+'px '+fs0; ctx.textBaseline='middle';
-   const placed=wordBox?[wordBox]:[];
+   const placed=[];
    labels.forEach(l=>{ const c0=Math.cos(l.na), s0=Math.sin(l.na); const off=U*16-l.sl; let lxp=l.x+c0*off, lyp=l.y+s0*off;
     const tw=ctx.measureText(l.txt).width; ctx.textAlign=c0>=0?'left':'right';
     const x0=c0>=0?lxp:lxp-tw; const d=Math.hypot(Math.max(Math.abs(x0-cx),Math.abs(x0+tw-cx)),lyp-cy); if(d>Rf-14){ const k2=(Rf-14)/d; lxp=cx+(lxp-cx)*k2; lyp=cy+(lyp-cy)*k2; }
@@ -51893,16 +52256,16 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
    ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(cx,cy,outR,0,TAU); ctx.arc(cx,cy,Rf*0.97,0,TAU,true); ctx.fill('evenodd'); }
   ctx.globalCompositeOperation='source-over';
 
-  /* the centre word, the one readout the wiring kept, outside the breath so
-     it never swims, and only where it fits inside the Root ring, the
-     innermost seat, so it never sits on an address */
-  ctx.globalAlpha=1; ctx.font='500 '+FS+'px '+fs0; ctx.textAlign='center'; ctx.textBaseline='middle';
-  /* no word over the intro: it has no state to report, and it comes back
-     over 600ms once the face has landed. And never a bare idle word either
-     (stateWord is IDLE, empty, until a story actually starts), which is the
-     "it says waiting and I haven't said anything" fix. */
-  const wA=INT?0:clamp((pn-inEndAt)/600,0,1);
-  if(wordFits&&stateWord&&wA>0){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)*wA})`; ctx.fillText(stateWord,cx,cy); }
+  /* NO WORD AT THE CENTRE, 18 November, his words: "There's text still that
+     says I'm listening that needs to go." The centre drew the face's state in
+     grey, Listening, Found, Weighing, Holding, Answering, from the moment a
+     result landed and for twelve seconds after it, over the glow. Source AI's
+     words are on the text display and the face carries no text at rest
+     (17 November); a state word that appears with every turn is text on the
+     face. stateWord is kept: it is the face's own state, read by the gates
+     and by the intro's captions through state() and the hooks, and it is
+     not drawn. The seat labels are the reading's answer, and stay. */
+  ctx.globalAlpha=1;
  }
 
  /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
@@ -53191,7 +53554,7 @@ function solCore(r,base){
     inside reads as inside. A dark base goes under it first, because a wash
     over the wheel's own web would let the chords show through the sphere. */
  if(open>0){g.beginPath();g.arc(CX,CY,cr0,0,TAU);
-  g.fillStyle=rgba(LIGHT()?[250,249,245]:[16,17,25],0.90*open);g.fill();}
+  g.fillStyle=rgba(LIGHT()?(COOL()?[247,250,254]:[250,249,245]):[16,17,25],0.90*open);g.fill();}
  g.beginPath();g.arc(CX,CY,cr0,0,TAU);g.fillStyle=rgba(gc,1-open*0.62);g.fill();
  g.lineWidth=Math.max(1.2,cr0*.05);g.strokeStyle=rgba(mixc(gc,[0,0,0],.45),.9);g.stroke();
  coreInside(r,cr0);
@@ -53362,7 +53725,7 @@ function verpArrows(cr0){
  if(!evid) V=V.map(function(v){return {k:v.k,nm:v.nm,side:v.side,mult:v.mult,d:v.d,pct:0,n:0};});
  var hi=V.filter(function(v){return v.side==='higher';});
  var lo=V.filter(function(v){return v.side==='lower';});
- var ink=INK(), bgc=LIGHT()?[248,247,243]:[23,25,34];
+ var ink=INK(), bgc=LIGHT()?(COOL()?[246,249,253]:[248,247,243]):[23,25,34];
  /* THE FAN SCALES WITH THE WHEEL, AND IS SPREAD UNTIL NOTHING IN IT TOUCHES,
     16 November. Every size here was a fixed pixel (a 13 disc, a 22 by 12
     pill, a 0.72 radian step, 34 past the core) tuned at 1600, where U is
@@ -54076,7 +54439,7 @@ function drawWheel0(r,L){
     collide gate, which holds every label inside it at every depth. */
  R_EDGE=(L===3)?R.dom:shellR;
  /* the halo a word inside the ring is stroked on, the stage's own ground */
- const halo=LIGHT()?'rgba(250,250,247,.88)':'rgba(16,16,16,.82)';
+ const halo=LIGHT()?(COOL()?'rgba(247,250,254,.88)':'rgba(250,250,247,.88)'):'rgba(16,16,16,.82)';
 
  /* --- chain chords, C and D --- */
  PUL.length=0;
@@ -54593,7 +54956,7 @@ function drawSig(r){
  /* and the layer set, because two sets can need the same room: Blueprint with
     the laws off draws at the same effView as Blueprint with them on */
  return [effView(),Object.keys(layVisible()).sort().join('.'),S.tab,S.who,S.hover&&S.hover.k,S.pin&&(S.pin.nm||S.pin.k),
-         LIGHT()?1:0,S.zoom.toFixed(3),S.panx|0,S.pany|0,
+         LIGHT()?1:0,S.theme,S.zoom.toFixed(3),S.panx|0,S.pany|0,
          d.toFixed(3),r.CQ.toFixed(3)].join('|');}
 function draw(r){
  /* The ease used to be a flat .14 of the remaining distance per frame, which
@@ -55010,7 +55373,7 @@ function frMount(host,W_,H_,r){
  /* nodeCol from ui/component.js, keyed on the same ground: a light address
     is its seat washed toward slate and takes its full hue as charge comes up */
  M.nodeCol=function(b,sq){var base=M.seat(b),ld=clamp(sq/10,0,1);
-  return mixc(mixc(base,M.light?[238,236,230]:[150,160,180],.74),base,Math.pow(ld,.55));};
+  return mixc(mixc(base,M.light?(COOL()?[229,234,240]:[238,236,230]):[150,160,180],.74),base,Math.pow(ld,.55));};
  var pad=FVIEW==='frames'?0:8,w={x0:pad,y0:pad,x1:W_-pad,y1:H_-pad};
  w.cx=(w.x0+w.x1)/2;w.cy=(w.y0+w.y1)/2;w.a=(w.x1-w.x0)/2;w.b=(w.y1-w.y0)/2;
  M.win=w;
@@ -63380,7 +63743,10 @@ function stRender(){
      than invent a reason to keep it, it stays off on the Dashboard
      outright, open or shut, and keeps its hero behaviour exactly as it
      was: cut only while STV.typed there. */
-  +((STV.typed||dashTB)?'':stMaskHtml(!STV.dash))
+  /* THE MARK ALONE ON EVERY VIEW, 18 November: the Dashboard still printed
+     the count and the word ("1 word hidden") beside it, the paragraph sized
+     habit he struck on the mini view. Symbol first, the sentence behind it. */
+  +((STV.typed||dashTB)?'':stMaskHtml(true))
   /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
      October sniffer audit. A word said with a no and a word about someone
      else are drawn set aside in the sentence, and an exclusion nobody can
@@ -63700,6 +64066,14 @@ function stRender(){
  srcLock(h.querySelector('.st-glow'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
+  /* AN EMPTIED BOX IS A NEW ENTRY, 18 November. Commit and Clear started the
+     conversation over and a person who selected all and deleted did not:
+     Move on, venting, a no, what had been asked and the subject's start all
+     stayed in force, so the next story was answered under the last one's
+     rulings (measured: after "that is not me" and "I just want to vent", a
+     cleared box and a new story were never asked a question). */
+  if(!ST_TEXT.trim()&&(SRC_PASSED||SRC_VENT||SRC_VERDICTS.length||SRC_LOG.length||SRC_FROM||SRC_CHAT.some(function(r){return r.w==='me';}))){
+   SRC_PASSED=false; srcFresh(); }
   ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null; stRefresh(); };
   /* the layer behind has to travel with the text, or a long entry drifts
      out of register the moment the box scrolls. */
@@ -64969,7 +65343,13 @@ function srcLedgerNow(){
 function srcLeadSaid(seat){
  var pend=false, said=false;
  SRC_CHAT.forEach(function(r){
-  if(r.w==='src'){pend=!!(r.key&&r.key.indexOf('ask|'+seat+'|')===0); return;}
+  /* THE SAY ROW COUNTS TOO, 18 November. Only an ask row was read as having
+     said the lead, but the reply before the first ask is the say row about
+     the same seat, and it already carries the mirror and the guess: measured,
+     "You said “afraid”. My guess is it sits at the base of your spine." and
+     then, a turn later, "You said “afraid” twice. My guess is it sits at the
+     base of your spine. What did you do?", the same guess twice running. */
+  if(r.w==='src'){pend=!!(r.key&&(r.key.indexOf('ask|'+seat+'|')===0||r.key==='say|'+seat)); return;}
   if(r.w==='me'&&pend){said=true; pend=false;}});
  return said;}
 /* THE LEAD IS CHECKED A SENTENCE AT A TIME, round SK. srcAsk's lead says
@@ -65051,7 +65431,10 @@ function srcLog(k,seat){
    The thread goes with it, and so does a reply still in the line, which on a
    commit has already been sent into the entry and on Clear is cleared. */
 function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];SRC_VET=null;SRC_VERDICTS=[];SRC_VENT=false;SRC_ASK_K='';SRC_FROM=0;SRC_VFIX='';SRC_VFIXT='';SRC_VK='';
- SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
+ SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';
+ /* a new entry is a new conversation, so it is greeted once again and the
+    short lines a press said before are free to be said */
+ SRC_OPENED=false;SRC_SPOKEN=[];}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
    entry has not answered, in the order written in engine/sourceai.js. Each
@@ -65360,7 +65743,7 @@ function srcPaint(){
     to SRC_CHAT. */
  var safeNew=turn.move==='safe'&&!SRC_SAFE_UP;
  SRC_SAFE_UP=turn.move==='safe';
- if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay);
+ if(safeNew&&safeTh&&ST_WANT_LISTEN)stSrcSpeak(safeSay,{force:true});
  /* NO TWO-WAY CHAT, ANYWHERE, 10 November, his words, given over and
     over, most recently pointed straight at the Dashboard: "we don't need
     2-way talk anymore... it's just the user's input. Or the user can put
@@ -65724,7 +66107,7 @@ function srcChatCur(turn,heard,q,ask){
  /* a seat the person turned down is not said back to them either: with no
     other thread, Source AI listens, round SK */
  else if(top&&!srcLedgerNow().thread&&srcLedgerNow().claims[top.seat]&&
-  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[SRC_LISTENING];}
+  ['rejected','corrected'].indexOf(srcLedgerNow().claims[top.seat].state)>=0){r.key='say|'; lines=[];}
  else if(top){var L=srcLedgerNow(), c=(L.thread&&L.claims[L.thread])||top, w=srcQuote(c.words), ctx={text:srcConvText(), ledger:L};
   /* SAID AS FACT ONCE THE PERSON SAID IT FITS, SAID AS A GUESS BEFORE, 17
      November. It used to drop the place outright until a yes, which is why
@@ -65740,8 +66123,16 @@ function srcChatCur(turn,heard,q,ask){
      that count is the ledger's own and the line passes the same checks */
   var more=(w&&(c.words||[]).length===1&&(+c.mentions||0)>1)?'You said '+w+' '+srcTimes(c.mentions)+'.':'';
   r.key='say|'+c.seat; lines=[line].concat(more&&srcVetSay(more,ctx,c.seat).ok?[more]:[]);}
- else{r.key='say|'; lines=[srcNone()];}
- r.q=srcPick(lines.concat(SRC_HEARD),said);
+ else{r.key='say|'; lines=[];}
+ /* WHAT STANDS BEHIND EVERY LIST IS SRC_HEARD AND, FIRST, A WORD OF THE
+    PERSON'S OWN WHEN THE ENGINE HOLDS ONE, 18 November: see srcHeardLines.
+    "I can't place this one yet" was the whole answer to a turn with no seat
+    and "I'm listening" the answer to the next; now the answer is about what
+    was said when it can be, and otherwise one of seven that are tried in
+    turn. */
+ var hl=srcHeardLines(turn.move==='vent'||turn.move==='pass');
+ r.q=srcPick(lines.concat(hl.lines),said);
+ if(hl.sp&&hl.lines[0]===r.q)r.sp=hl.sp;
  r.w='src'; return r;}
 /* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
    is the line the person just replied under, the last of keys
@@ -65794,7 +66185,10 @@ function srcActNow(){
  var t=null; SRC_CHAT.forEach(function(r){if(r.w==='me')t=r.t;});
  if(!t)return null;
  var it=srcIntent(t);
- if(it&&it.intent!=='shift'&&it.intent!=='clarify')return null;
+ /* A NO IS ANSWERED NOW, 18 November: the verdict was recorded and the reply
+    was "Go on, I'm following you", as if nothing had been said. It is an act
+    when it carries no seat of its own, like a change of subject. */
+ if(it&&it.intent!=='shift'&&it.intent!=='clarify'&&it.intent!=='reject')return null;
  if(srcHear(t,null).seats.length)return null;
  if(it)return it.intent;
  var a=srcAct(t); return a?a.act:null;}
@@ -65855,13 +66249,15 @@ var SRC_LISTENING='I\u2019m listening.';
    as stay true, and each list runs in order so a second "can you hear me"
    is answered and never with the first answer again (srcPick).
 
-     check  he asked whether it hears him. It says yes, first, and then
-            hands him the opener's own question, SRC_OPEN, his ruled line,
-            rather than a second wording of it. The second says where his
-            words go, which is the true sign it heard: they are on the
-            right, in his bubble.
-     greet  a greeting back, the opener's question again, and nothing
-            about how Source AI is, since it is not anything.
+     check  he asked whether it hears him. It says yes. It does not hand
+            him the opener's question again: the greeting asked it, and
+            until 18 November the first answer to "hello" and to "can you
+            hear me" asked it a second time, which he heard as "it keeps
+            repeating". The second line said his sentences "show up on the
+            right", which has been false since the thread left the screen
+            (10 and 16 November), and is gone.
+     greet  a greeting back, and nothing about how Source AI is, since it
+            is not anything.
      ask    what it is, said as what it does, no more than the engine
             does: it reads where what he says sits in his body and asks
             one question at a time. "find where it sits" names no place,
@@ -65874,18 +66270,61 @@ var SRC_LISTENING='I\u2019m listening.';
    None holds a why, a place, a canon name or a feeling word, so each
    passes srcVetSay as written; tests/srcchat.js holds that. */
 var SRC_ACT_SAY={
- check:['Yes, I hear you. '+SRC_OPEN, 'I hear you. Every sentence you say shows up on the right.',
-  'Still here, and I hear you. Say what happened.'],
- greet:['Hello. I hear you. '+SRC_OPEN, 'Here, and listening. What happened today?', 'Still here. Say what happened.'],
+ check:['Yes, I hear you.', 'Still here, and I hear you. Say what happened.', 'I hear you. Go ahead.'],
+ greet:['Hello. I hear you.', 'Hi. I’m here.', 'Still here. Say what happened.'],
  ask:['I am Source AI. You say what happened, and I find where it sits in your body. I ask one question at a time.',
   'I work only from what you say. Say one thing that happened today.',
   'Say what happened, in your own words. I follow where it goes.'],
  brief:['Say more about that.', 'Go on. One sentence about what happened.', 'Keep going.'],
- shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?']};
+ shift:['Okay. We set that down. What do you want to talk about instead?', 'Okay, new subject. Go ahead.', 'Okay. What is next?'],
+ /* 18 November, with the three acts and the no in engine/evidence.js and
+    srcActNow. complain is the owner's own complaint, answered the way the
+    package answers a correction: take it, do not argue. None names a place,
+    a feeling or a why, and none asks, so each passes srcVetSay as written. */
+ complain:['You’re right, I said that already. Go on.', 'Fair. I’ll drop that one.', 'Okay. That one is done. Say what is next.'],
+ thanks:['You’re welcome.', 'Anytime. I’m still here.', 'Of course. Go on if there is more.'],
+ bye:['Okay. I’ll be here when you want to talk.', 'Take care.', 'Okay. Go well.'],
+ reject:['Okay. That one was off. I’ll drop it.', 'Got it. Not that one.', 'Fair. I’ll set that down.']};
 /* listening, with nothing asked: what stands behind every list, so no turn
-   is ever answered with the line it was answered with last time */
-/* 17 November, the tone pass: "Go on." alone read as a prompt on a form */
-var SRC_HEARD=[SRC_LISTENING, 'Go on, I’m following you.', 'Still here. Keep going.'];
+   is ever answered with the line it was answered with last time.
+
+   SEVEN LINES AND NOT THREE, AND NONE OF THEM SAYS LISTENING, 18 November,
+   his words: "it keeps repeating... it's acting more like an algorithm and
+   not something intelligent I could have a conversation with." With nothing
+   placed the page had four lines (these three and the I can't place line) and
+   cycled them in the same order for as long as the conversation ran: in a
+   fourteen turn run seven turns were one of them, and "I'm listening." came
+   three times. "I'm listening." is the package's line for a person who asked
+   to vent (SRC_LISTENING, srcChatCur) and is said for that and nothing else.
+   The order is the order they are tried in, and the I can't place line is
+   second, so the first reply to a turn with nothing in it is an
+   acknowledgement and not a request. */
+var SRC_HEARD=['Go on, I’m following you.', 'Still here. Keep going.', 'I’m with you. Say more.',
+ 'Take your time. I’m here.', 'I hear that. Go on.', 'Okay. Keep going.', 'Say it however it comes.'];
+/* what Source AI says after it says back a word of the person's own: kept
+   short and not a question, and taken in turn so the same words are never
+   followed by the same line twice running */
+var SRC_TAIL=['Go on, I’m following you.', 'Say more about that.', 'Keep going.', 'I’m with you.'];
+/* WHAT IT CAN SAY BACK ABOUT THE NEWEST TURN WHEN NO SEAT IS FOUND, 18
+   November. The reflection first (srcSpot, engine/sourceai.js: the person's
+   own words for a person in it or a thing they did, and nothing else), and
+   then the lines above with the I can't place line second. A reflection is
+   never made of the same words twice in a conversation. Reads only the
+   replies the person has already answered under, the rule srcSaidBefore
+   reads by, so a repaint of the row being drawn picks what the push picked
+   and the line does not change under a key. */
+function srcHeardLines(noAsk){
+ var t=null, done=[], pend=null;
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='src'){pend=r; return;}
+  t=r.t; if(pend){done.push(pend); pend=null;}});
+ var sp=t?srcSpot(t):null, key=sp?sp.words.toLowerCase():'', out=[];
+ if(sp&&!done.some(function(r){return r.sp===key;})){
+  var n=done.filter(function(r){return r.sp;}).length;
+  out.push(srcMirror(srcQuote([sp.words]))+' '+SRC_TAIL[n%SRC_TAIL.length]);}
+ /* a person who asked to vent, or to move on, is not told what to say next */
+ var pool=SRC_HEARD.slice(); if(!noAsk)pool.splice(1,0,srcNone());
+ return {lines:out.concat(pool), sp:out.length?key:''};}
 /* A TURN THAT IS ABOUT THE CONVERSATION, round SK, read by srcIntent in
    engine/evidence.js before the turn lands. Move on said in words is the
    Move on button, exactly: the same flag, the same outcome kept on the
@@ -65894,6 +66333,10 @@ var SRC_HEARD=[SRC_LISTENING, 'Go on, I’m following you.', 'Still here. Keep g
    kept beyond the entry. Venting is listened to. A change of subject sets
    nothing here: srcTurnCommit moves SRC_FROM once it knows where the turn
    lands in the entry. */
+function srcLastSeat(){
+ for(var i=SRC_CHAT.length-1;i>=0;i--){var r=SRC_CHAT[i];
+  if(r.w==='src'){var m=/^(?:ask|say)\|([^|]+)/.exec(r.key||''); return m?m[1]:null;}}
+ return null;}
 function srcIntentLand(v){
  var it=srcIntent(v); if(!it)return null;
  if(it.intent==='move_on'){
@@ -65901,7 +66344,11 @@ function srcIntentLand(v){
   SRC_PASSED=true;}
  else if(it.intent==='vent')SRC_VENT=true;
  else if(it.intent==='reject'){
-  var L=srcLedgerNow(), seat=(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
+  /* THE SEAT THE NO IS ABOUT IS THE ONE SOURCE AI LAST SAID OR ASKED, 18
+     November: SRC_VET's target is whatever the last question was about and
+     is not cleared when the move changes, so "that is not me" after a
+     throat guess turned down the root. */
+  var L=srcLedgerNow(), seat=srcLastSeat()||(SRC_VET&&SRC_VET.cand&&SRC_VET.cand.target)||L.thread;
   if(seat){var r=evVerdict(SRC_VERDICTS,seat,'no'); if(r.ok)SRC_VERDICTS=r.verdicts;}}
  return it;}
 /* UNI'S ONE OWNER, 9 November. Three places would otherwise push her: a
@@ -65960,7 +66407,14 @@ function srcTurnCommit(v){
  uniApply(ST_PARSED);
  /* the turn alone, not the whole entry, is what the face reads aloud in
     marks: the entry's earlier turns have already been read once */
- if(window.SrcFace)window.SrcFace.read(v);
+ /* THE CIRCLE READS A SENTENCE THE SNIFFER FOUND A SEAT IN, 18 November. It
+    read every turn that landed: a yes, a thank you and a stray word each ran
+    the circle's whole reading, Listening, Weighing, Holding, for fourteen
+    seconds with nothing lit, which is the animation going by itself that he
+    reported. SrcFace.plan is the face's own count of the hits it would
+    light, so a turn it would light nothing for does not start one. */
+ if(window.SrcFace){var pl=typeof window.SrcFace.plan==='function'?window.SrcFace.plan(v):null;
+  if(pl&&pl.hits&&pl.hits.length)window.SrcFace.read(v);}
  return true;}
 /* SEND, the typed door onto srcTurnCommit. */
 function srcChatSend(){
@@ -67536,7 +67990,15 @@ function stMicSay(code){ var m=stMicLine(code); if(m)status(m,'fail'); }
    the silent failure CLAUDE.md rules out.
 
    Letters and digits are read as Unicode ones, so speech in a script the
-   list does not know is never mistaken for silence. */
+   list does not know is never mistaken for silence.
+   Mhm, hmm, mm and huh are not on it, 19 November, merge of
+   fix/talk-silence onto main: tests/talksilence.js already holds each of
+   them, with mm-hmm and uh huh, as the spoken yes that is a turn and not
+   noise (stMicNoise against each reads false), so wave-b's own
+   integration note here, which added hm, hmm, hmmm, mm, mmm and huh back
+   onto this list, is not carried forward: it was written against an
+   earlier state of this same branch (dd4e87da) and would break the gate
+   already merged and green on main. */
 var ST_FILLER={uh:1,um:1,uhm:1,umm:1,uhh:1,er:1,erm:1,eh:1,ah:1,the:1};
 function stMicNoise(t){
  t=String(t||'');
@@ -67645,7 +68107,7 @@ function stVoiceCant(msg){
     note at stSrcSpeak's own muteFail read: a microphone failure is an
     input problem, not a reason to throw away an output request that may
     still succeed. */
- SRC_VOICE.muteFail=true; ST_HUSH=false;
+ SRC_VOICE.muteFail=true; ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
  /* typed goes because the box is the forced one now: Type instead is not
     drawn beside it, and its Close would hand the person back to a voice
     that cannot run */
@@ -67702,6 +68164,9 @@ function stMic(){
  if(typeof isSecureContext!=='undefined'&&!isSecureContext){
   stVoiceCant('Recording needs a secure page. Opened from a file, the browser will '
    +'not turn the microphone on. Typing works.'); return; }
+ /* the Insight well's button holds its own recogniser (ui/stksay.js); Talk
+    pressed here takes the microphone back, so two never run at once */
+ if(typeof stkSayCut==='function'&&stkSayCut()){ STK_SAY.line=''; try{ stkSayPaint(); }catch(e){} }
  if(ST_REC&&ST_LISTEN){ ST_WANT_LISTEN=false; ST_REC.stop(); ST_LISTEN=false; ST_LISTEN_T0=null; stRender(); return; }
  /* Chat pressed from a box Type instead opened goes back to the
     conversation, so the two never both write the entry (see stType). Only
@@ -67710,9 +68175,19 @@ function stMic(){
  if(STV.typed){ STV.typed=false; STV.chat=true; }
  /* a recording never starts under a line still playing from the last one,
     or the microphone would take it for the person */
- srcVoiceStop(); ST_HUSH=false;
+ srcVoiceStop(); ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
  ST_WANT_LISTEN=true;
  try{ ST_REC=new SR(); }catch(err){ ST_REC=null; stMicStartFail(err); return; }
+ /* EACH HANDLER BELOW ANSWERS FOR ITS OWN RECORDING ONLY, 18 November. A
+    press of Talk makes a new recogniser, and the one before it is not gone
+    the moment stop is called: Chrome ends it a beat later. That late end
+    read the person's intent from the page, which the new press had already
+    set, restarted the NEW recogniser (already running, so start threw, and
+    the catch below read that as a failed restart) and switched the button
+    and the status off over a microphone that was live. Reproduced with an
+    end 400 milliseconds late: after it, ST_LISTEN false, the new recording
+    live, and every sentence after it filed with no reply spoken. */
+ var rec=ST_REC;
  ST_REC.continuous=true; ST_REC.interimResults=true; ST_REC.lang='en-US';
  /* A NORMAL SPEECH CONVERSATION, round of 29 October, his words: "I hit the
     talk button and whatever I say enters into the text field. That should
@@ -67759,21 +68234,18 @@ function stMic(){
     that window is dropped here: it is Source AI's own voice coming back
     through the microphone, and filing it as his turn would have it answer
     itself. */
- var hidAt=maskedRuns(ST_TEXT).length;
  ST_REC.onresult=function(e){var fin='',live='';
-  if(ST_HUSH)return;
+  if(rec!==ST_REC||ST_HUSH)return;
+  var hidAt=maskedRuns(ST_TEXT).length;
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal){ if(ST_REC_DONE[i])continue; ST_REC_DONE[i]=1; fin+=t; } else live+=t;}
-  /* A RESULT WITH NOTHING IN IT IS NOT A TURN, 18 November, his words: "when
-     I click on talk and I haven't said anything, source is already
-     activating and animating. That's a bug." A silent or noisy room hands
-     the recogniser empty finals and lone filler sounds, and each one was
-     filed as a turn: written into the entry, read by the face (a full
-     reading cycle) and answered out loud. stMicNoise names them, above.
-     A real short answer is not one of them, and neither is anything the
-     safety door reads. */
-  var turn=!!fin.trim()&&!stMicNoise(fin);
+  /* THE DOOR, 18 November: a result that is no words, or is Source AI's own
+     line said back, is not a turn. It is marked done above so the browser's
+     resend of it is not one either, and it is dropped here, before it can
+     reach the entry, the circle, the draft or a reply. */
+  if(fin.trim()&&!srcMicDoor(fin))fin='';
+  var turn=!!fin.trim();
   if(turn)srcTurnCommit(fin);
   /* and an interim result that says what the caption already says paints
      nothing: a noisy room delivers them many times a second, and each one
@@ -67789,8 +68261,7 @@ function stMic(){
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
     +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
-    +(hid-hidAt===1?'it':'them')+' read.','fail');
-   hidAt=hid;}};
+    +(hid-hidAt===1?'it':'them')+' read.','fail');}};
  /* CAN'T HEAR ME, round of 29 October: Chrome's own continuous recognition
     still ends itself on its own, silently, well before the person is done
     talking, and the old onend read that the same as the person pressing
@@ -67808,12 +68279,13 @@ function stMic(){
     the focus on nothing: measured, focusin on sttext, then this stRender,
     then focusout. The node is new after a render, so the focus and the caret
     are put back on the new one. */
- ST_REC.onend=function(){ST_LIVE=''; ST_REC_ON=false;
+ ST_REC.onend=function(){ if(rec!==ST_REC)return; ST_LIVE=''; ST_REC_ON=false;
   if(ST_WANT_LISTEN&&ST_HUSH){ stRender(); return; }
   if(ST_WANT_LISTEN){ try{ stMicGo(); stRender(); return; }catch(err){} }
   ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null;
   stRenderKeep();};
  ST_REC.onerror=function(e){var code=(e&&e.error)||'unknown';
+  if(rec!==ST_REC)return;
   /* no-speech is the browser noticing silence, not a failure, and onend
      follows it either way; restarting there, not here, keeps one path. */
   if(code==='no-speech')return;
@@ -67825,7 +68297,7 @@ function stMic(){
      speak that line" overwrote "no microphone found"). The greeting
      itself is a different request and is no longer dropped with it, 12
      November -- see stSrcSpeak's own muteFail note. */
-  SRC_VOICE.muteFail=true; ST_HUSH=false;
+  SRC_VOICE.muteFail=true; ST_HUSH=false; clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
   if(ST_CANT_HEAR[code]){ stVoiceCant(stMicLine(code)+' Typing works.'); return; }
   stRender();
   if(code==='not-allowed'){ stMicRefused(); return; }
@@ -67879,11 +68351,56 @@ function stMic(){
    spoken. The diagnosis asks for that pause to be measured on real
    speakers before it is trusted, and it has not been: this is measured on
    the stand-in in tests/srcchat.js only. */
-var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false};
+/* said is the text of the line last handed to the voice and endAt when it
+   stopped (0 while it plays), which is what the microphone door reads to
+   tell Source AI's own voice coming back from the person (srcMicDoor). tail
+   is the timer that holds the recording a moment after a line ends. */
+var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false, said:'', endAt:0, tail:0};
+/* THE HOLD OUTLASTS THE LINE, 18 November. The recording came back the same
+   tick the audio ended, and a speaker and a room do not stop that fast: what
+   was left of Source AI's own voice was heard as the person's next turn and
+   answered, and measured on the page a two word echo of the greeting landed
+   74 milliseconds after it ended and was answered with the opener. So the
+   hold stays on this long past the end, nothing is heard in it, and the
+   recording starts after it. A person who answers at once loses the first
+   half second of the answer, which is the cost, and the code's own note
+   (stSrcSpeak, "measured on real speakers") still stands: this number is
+   measured on the stand-in and not on a laptop. */
+var SRC_TAIL_MS=500;
+/* and a result that is Source AI's own words, for this long after its line
+   ended, is its echo and not the person (srcEcho, engine/evidence.js) */
+var SRC_ECHO_MS=6000;
 /* the longest a line may hold the recording. A reply is a sentence or two,
    well under ten seconds spoken; an audio element that never reports its
    end must not leave the person unheard for the rest of the conversation. */
 var SRC_VOICE_MAX=30000;
+/* WHERE THE VOICE ANSWERS, 17 November. The voice server refuses a file
+   opened off disk on purpose (CLAUDE.md, 29 October: an origin of null is
+   refused, http://localhost is answered), so on a downloaded copy no line
+   will ever play, and "Try again in a moment" was a false hope: measured, the
+   Insight well's button drew itself ready and ended on exactly that. This is
+   decided before a request, from the page's own address, and said once, here,
+   so the Journal's Talk, the intro and the well's button all say the same
+   sentence. Chromium counts file:// as a secure context, so isSecureContext
+   alone never caught it.
+   THE HARNESS SEAM, read once at load from the window the way PW_PAY_SEAM is
+   (ui/paywall.js): a gate's stand-in server answers the voice route itself
+   (tests/net.js), and a page opened from file:// in that gate is standing in
+   for the hosted copy. It grants nothing in a real browser, where nothing
+   sets it and the server decides. A gate that wants the real file case sets
+   SRC_VOICE_STANDIN=false after the page loads (tests/stksay.js). */
+var SRC_VOICE_STANDIN=(typeof window!=='undefined'&&window.SRC_VOICE_STANDIN===true);
+var SRC_VOICE_HOME='Source AI speaks only from the hosted copy at atuned.world, or from http://localhost.';
+/* a page opened from a file, or with no origin of its own. The location is a
+   parameter so a gate can hand it the shapes a browser would not let it make. */
+function srcVoiceDisk(l){
+ try{ l=l||location; return l.protocol==='file:'||l.origin==='null'; }catch(e){ return false; } }
+/* '' when this page may ask the voice for a line, else the sentence that says
+   why it may not */
+function srcVoiceWhyNot(){
+ if(typeof isSecureContext!=='undefined'&&!isSecureContext)return SRC_VOICE_HOME;
+ if(srcVoiceDisk()&&!SRC_VOICE_STANDIN)return SRC_VOICE_HOME;
+ return '';}
 function srcSayNow(){
  /* the safe line, while it stands in the reply's place: the line spoken is
     the line on screen, so pressing Talk never reads an earlier question.
@@ -67897,9 +68414,40 @@ function srcSayNow(){
     sound like it was still asking. The ruling is "no two-way chat,
     anywhere", not "no two-way chat on the first press", so this always
     falls through to the greeting now. The crisis safety line above is
-    the one ruled exception and is untouched. */
+    the one ruled exception and is untouched. The Insight well's button
+    (ui/stksay.js, 17 November) is a second, scoped override recorded in
+    DECISIONS.md; it speaks through stSrcSpeak with its own lines, and
+    never through this function except under the safety door, where it
+    speaks this function's own safe line and nothing else, so the two voices
+    of Source AI say one thing. The Journal's Talk is unchanged. */
  if(stSafe())return (STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
- return srcOpen();}
+ /* THE OPENER IS SAID ONCE A CONVERSATION, 18 November, his words: "It
+    keeps repeating, what are we talking about today?" Every press of Talk
+    spoke it, a mic that dropped and was pressed again spoke it, and so did
+    the answers to hello and can you hear me (SRC_ACT_SAY). That reverses
+    the 11 November decision that a press "always falls through to the
+    greeting": that was written to stop a press reading out the last
+    question, and the greeting it fell back to became the thing he heard
+    again and again. The first press of an entry with nothing said greets, as
+    it always did. A press after that, or on an entry that already has the
+    person's words, says a short line that is not a question and not the
+    line before it (SRC_BACK). Not the standing question either: the 11
+    November reason for that still holds. */
+ if(!SRC_OPENED&&!srcHasTurn())return srcOpen();
+ return srcPick(SRC_BACK,SRC_SPOKEN);}
+/* whether the opener has been said in this conversation: set when a press
+   asks for it, handed back when the voice could not play it, so a person who
+   never heard it is greeted on the next press, cleared with the entry
+   (srcFresh) */
+var SRC_OPENED=false;
+/* every line a press of Talk has spoken in this conversation, so the short
+   lines are never the same one twice running; cleared with the entry */
+var SRC_SPOKEN=[];
+var SRC_BACK=['Go ahead.','I’m here.','Back with you.','Go on, I’m listening.'];
+/* the person has said something in this conversation: a turn in the thread,
+   or words in the entry from the box */
+function srcHasTurn(){
+ return !!ST_TEXT.trim()||SRC_CHAT.some(function(r){return r.w==='me';});}
 function srcVoiceStop(){
  clearTimeout(SRC_VOICE.t);
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
@@ -67929,9 +68477,16 @@ function stSrcSpeak(line,o){
  var fin=function(played){ if(ended)return; ended=true; if(typeof o.onEnd==='function')try{o.onEnd(!!played);}catch(e){} };
  var say=function(m){ if(!quiet)status(m,'fail'); };
  var text=String(line==null?srcSayNow():line).trim(); if(!text){ fin(false); return; }
+ /* a press with no line given speaks what srcSayNow chose: if that was the
+    opener and the voice never plays it, the next press may say it again,
+    and every other line it chose is remembered so it is not said twice
+    running */
+ var opener=(line==null&&text.indexOf(SRC_OPEN)>=0);
+ if(line==null&&!opener&&!stSafe())SRC_SPOKEN.push(text);
+ if(opener){ SRC_OPENED=true; var f0=fin; fin=function(played){ if(!played&&!ended)SRC_OPENED=false; f0(played); }; }
  if(typeof authVoice!=='function'){ fin(false); return; }
- if(typeof isSecureContext!=='undefined'&&!isSecureContext){
-  say('Source AI cannot speak from a file. Open the hosted build to hear it.'); fin(false); return; }
+ var why=srcVoiceWhyNot();
+ if(why){ say(why); fin(false); return; }
  var seq=++SRC_VOICE.seq;
  /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
     "the voice is not hooked up." A microphone failure used to bump
@@ -67956,12 +68511,24 @@ function stSrcSpeak(line,o){
     used, and clears it there. */
  authVoice(text,'frame').then(function(r){
   if(seq!==SRC_VOICE.seq){ fin(false); return; }
+  /* the route's own status, kept for whoever has to know why: the Insight
+     well's button reads 429 to draw itself at today's limit (ui/stksay.js) */
+  SRC_VOICE.fail=r&&r.ok?0:((r&&r.status)||-1);
   if(!r||!r.ok){
    var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
    if(!muteFail)say('Source AI could not speak that line. '+
     (r&&r.status===429?'The voice has reached today\'s limit.':'Try again in a moment.'));
    fin(false); return;}
   SRC_VOICE.muteFail=false;
+  /* THE PERSON IS MID SENTENCE, 18 November. The line was asked for before
+     they started and arrived while they talked: playing it held the
+     recording and aborted it, which handed back nothing, so the half of a
+     sentence they had said was gone and Source AI spoke over them. A line
+     they have already talked past is dropped (it stays in the thread, the
+     text display holds it); what they are saying lands as their turn. The
+     crisis line is never dropped for this, the door to help is not
+     optional. */
+  if(!o.force&&ST_LISTEN&&ST_LIVE&&String(ST_LIVE).trim()){ fin(false); return; }
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
@@ -67974,6 +68541,7 @@ function stSrcSpeak(line,o){
      and still holds the recording, but the face never hears it, because
      hearing a voice is what wakes the face for good (srcface.js, voice). */
   if(window.SrcFace&&!o.rest)window.SrcFace.voice(a,text);
+  SRC_VOICE.said=text; SRC_VOICE.endAt=0;
   var played=false;
   a.addEventListener('playing',function(){ if(played)return; played=true; if(typeof o.onPlay==='function')try{o.onPlay();}catch(e){} });
   /* srcVoiceStop clears onended and onerror before it pauses, so a line
@@ -68036,10 +68604,30 @@ function stRenderKeep(){
  if(t){ t.focus(); var n=t.value.length;
   try{ if(kept[2])t.setSelectionRange(n,n); else t.setSelectionRange(kept[0],kept[1]); }catch(e){} }}
 function stMicGo(){ ST_REC_DONE={}; ST_REC.start(); ST_REC_ON=true; }
+/* WHAT THE RECOGNISER MAY HAND IN AS A TURN, see srcNoise and srcEcho in
+   engine/evidence.js for the rule and why. The door to help is asked first
+   and is never refused. The echo is only asked inside SRC_ECHO_MS of the
+   last line, so a word of it said later by a person is theirs. */
+function srcMicDoor(v){
+ var t=String(v||'').trim();
+ if(!t)return false;
+ if(srcSafe(t))return true;
+ if(srcNoise(t))return false;
+ var line=SRC_VOICE.said;
+ if(line&&(!SRC_VOICE.endAt||performance.now()-SRC_VOICE.endAt<SRC_ECHO_MS)&&srcEcho(t,line))return false;
+ return true;}
 function stHush(on){
- if(on){ if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
+ if(on){ clearTimeout(SRC_VOICE.tail); SRC_VOICE.tail=0;
+  if(ST_HUSH)return; ST_HUSH=true; ST_LIVE='';
   if(ST_REC&&ST_REC_ON){ try{ if(typeof ST_REC.abort==='function')ST_REC.abort(); else ST_REC.stop(); }catch(e){} }
   return;}
+ if(!ST_HUSH)return;
+ /* the line is over; the hold stays on for SRC_TAIL_MS more, see there */
+ SRC_VOICE.endAt=performance.now();
+ if(SRC_VOICE.tail)return;
+ SRC_VOICE.tail=setTimeout(stHushLift,SRC_TAIL_MS);}
+function stHushLift(){
+ SRC_VOICE.tail=0;
  if(!ST_HUSH)return;
  ST_HUSH=false;
  if(!ST_WANT_LISTEN||!ST_REC||ST_REC_ON)return;
@@ -75887,6 +76475,8 @@ function relRerunSay(){
    play and the voice is not spoken for a run the end of it would refuse. */
 function relBegin(){
  if(showRefuse('release'))return;
+ /* the Insight well's funnel (ui/stksay.js): a card its voice opened, begun */
+ if(typeof STK_SAY!=='undefined'&&STK_SAY.relId&&STK_SAY.relId===RUN.id){ STK_SAY.relId=''; stkSayNote('begin'); }
  if(typeof sfx==='function')sfx('begin',true);
  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
@@ -84972,7 +85562,7 @@ function ndlWell(){
  if(NDL.wellSig!==sig&&CONE.cv){NDL.wellSig=sig;
   var m=/rgba?\(([^)]+)\)/.exec(getComputedStyle(CONE.cv).backgroundColor||'');
   var v=m?m[1].split(',').map(function(x){return parseFloat(x);}):[16,16,16,1];
-  if(v.length>3&&v[3]<0.5)v=LIGHT()?[242,241,236]:[16,16,16];
+  if(v.length>3&&v[3]<0.5)v=LIGHT()?(COOL()?[233,238,243]:[242,241,236]):[16,16,16];
   NDL.well=[v[0],v[1],v[2]];}
  return NDL.well||[16,16,16];}
 /* WHERE THE GRAVITY IS. Round KA, his words: "animations where you tend to
@@ -91605,6 +92195,9 @@ const THEMEICON={
  glass:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M5.5 7.2L9.6 9.4',
  /* the same pane, lit from the front rather than from behind */
  glasswhite:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M19 3l2.4 2.4M21 7.6l1.6-1.6',
+ /* the same pane, lit from the front under a cool sky: the rays of Glass white
+    become a ring, one round mark standing still in the corner. Ring, not fill. */
+ glassblue:'M5.5 7.2l9-3.2v12.8l-9 3.2zM14.5 4l4 2.4v11.2l-4 2.4M22 4.2a1.6 1.6 0 1 0-3.2 0a1.6 1.6 0 1 0 3.2 0',
  /* three flat planes, no bevel, no light. The mark is the position. */
  flat:'M3.5 5.5h7v7h-7zM13.5 5.5h7v4h-7zM13.5 12.5h7v6h-7zM3.5 15.5h7v3h-7z',
  /* a white field with a solid block set into it, which is the whole of Lumen:
@@ -91622,12 +92215,34 @@ const THEMEICON={
    no blur, no shadow, and colour doing the work a material was doing. */
 /* SEVEN. Lumen is the owner's, and it is the only two tone one: white chrome,
    black panels, the text on top of the black. */
-const LIGHTINGS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass'],
- ['glasswhite','Glass white'],['flat','Flat'],['lumen','Lumen']];
+/* EIGHT. Glass blue is Glass white with its neutral greys moved from warm
+   cream toward blue, and he chose it from the palette board on 18 November:
+   "Let's go with B. For the palette. And let's add that as a new light mode."
+   It is a lighting of its own and Glass white is not touched.
+
+   THE THIRD COLUMN IS WHAT THE ENTRY SAYS WHEN IT IS HOVERED OR HELD, one
+   short sentence a person can use to choose by. The bar's entries are marks
+   with no words, so a mark never stands alone: the name is the tooltip's
+   header and this is its body, through the one tooltip (ui/tip.js). Every
+   lighting has one, not only the new one, because a picker where seven marks
+   explain themselves and one does not is a picker with a hole in it. */
+const LIGHTINGS=[
+ ['dark','Dark','Dark panels on a dark ground, with pale ink.'],
+ ['snow','Snow','Pale panels around a dark stage, with dark ink.'],
+ ['punch','Punch','Solid blocks of colour, with no outlines.'],
+ ['glass','Glass','Dark frosted panels with a bright edge.'],
+ ['glasswhite','Glass white','Pale frosted panels with a warm paper tint.'],
+ ['glassblue','Glass blue','Pale frosted panels with a cool blue tint.'],
+ ['flat','Flat','Plain flat planes, with no blur and no shadow.'],
+ ['lumen','Lumen','A white frame with black panels and light text on them.']];
+/* GLASSWHITE_KIN, in ui/component.js, names the lightings whose body carries
+   the glasswhite class: Glass blue is Glass white with other neutrals, so
+   every rule and every canvas check that already reads glasswhite keeps
+   working on it, and the glassblue class only overrides colour. */
 function setLighting(k){
  S.theme=k;
- ['snow','punch','glass','glasswhite','flat','lumen'].forEach(function(c){
-  document.body.classList.toggle(c,k===c);});
+ ['snow','punch','glass','glasswhite','glassblue','flat','lumen'].forEach(function(c){
+  document.body.classList.toggle(c,k===c||(c==='glasswhite'&&GLASSWHITE_KIN.indexOf(k)>=0));});
  /* the bar's menu and the main menu's lighting on a phone, GF: one list, two
     doors, one setter, so both say the same lighting is on */
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
@@ -91644,6 +92259,9 @@ LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);
  b.className='seg-i'; b.title=t[1]; b.setAttribute('aria-label',t[1]+' theme');
+ /* the meaning, through the one tooltip: hover on a pointer, a held press on
+    a phone, where a tap still chooses the lighting (ui/tip.js, control()) */
+ b.setAttribute('data-tip-t',t[1]); b.setAttribute('data-tip',t[2]);
  b.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true">'
   /* A MISSING ICON IS A MISSING ICON, NOT THE WORD UNDEFINED. Adding a seventh
      lighting put the string "undefined" into a path attribute and the browser
@@ -91660,6 +92278,7 @@ LIGHTINGS.forEach(function(t,i){
  var nav=$('navthemes'); if(!nav)return;
  var n=document.createElement('button');n.type='button';
  n.setAttribute('aria-pressed',i===0);
+ n.setAttribute('data-tip-t',t[1]); n.setAttribute('data-tip',t[2]);
  n.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="'
   +(THEMEICON[t[0]]||'')+'"/></svg><span>'+esc(t[1])+'</span>';
  n.addEventListener('click',function(){setLighting(t[0]);});
@@ -98495,7 +99114,8 @@ var SHOW_DOES={
  story:'Commit puts what your words carry on your map',
  release:'a release empties charge from the addresses it reaches',
  intake:'each answer here moves how your laws read',
- export:'Export copies your profile to the clipboard'};
+ export:'Export copies your profile to the clipboard',
+ talk:'Source AI reads a pattern aloud and talks it through with you'};
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
@@ -102883,6 +103503,383 @@ document.addEventListener('keydown',function(e){
  document.addEventListener('pointercancel',function(){X=null;},true);})();
 
 try{window.__at&&window.__at('ui/insightui.js');}catch(e){}
+/* ============================================================
+   THE INSIGHT WELL TALKS, 17 November. The owner, his words: "the insight
+   panel is source ai's translation of whats selected. i want this to be an
+   audio button too. if i press it, i can talk to source ai about the parent
+   and children and how it works through me and run a protocol to release it."
+
+   ONE BUTTON ON THE READING ROW (stkWellHtml, ui/ui.js), and this module is
+   all of what it does. A press speaks the well's own three facts (Built from,
+   Feeds, Reading) through stSrcSpeak, the one voice, then listens. What the
+   person says next is matched against a closed set and answered only out of
+   what the engine already computed. Saying release opens the release card
+   through relPick, the same door Summary's Release all uses, and the card's
+   own Release press is what starts a run. A word never starts one: a run
+   spends the allowance and speech to text mishears.
+
+   SCOPED, AND NAMED SO. DECISIONS.md, 10 November, "No two-way chat,
+   anywhere, including the voice," is overridden by this request for this one
+   button only, and is recorded there on this date. The Journal is unchanged.
+
+   THIS IS NOT THE JOURNAL'S CONVERSATION, on purpose. Talk here is talk
+   about a pattern, not the person's story: filing it through srcTurnCommit
+   would put it in ST_TEXT, re-parse it, charge the field and keep it at
+   Commit. So this recogniser has its own onresult, it never writes ST_TEXT
+   or SRC_CHAT, and the Journal's Talk is stopped first so only one
+   recogniser ever holds the microphone (stkSayJournalOff, and stMic cuts
+   this one on its own press).
+
+   EVERY WORD SPOKEN IS READ OFF A RECORD OR A FIXED LINE. railStkKids,
+   railStkParent and insightSpeak (ui/ui.js) carry the facts; the rest are
+   the fixed lines below. No body place is said, because the pattern's
+   addresses are the engine's reading and not something the person has said
+   fits (EV_PLACEABLE). No percent is said, because a figure read after a
+   name lands as a mark. The person's name is never in a line, because the
+   line goes to the voice server.
+
+   THE SAFETY DOOR COMES FIRST. While stSafe() stands the button speaks the one
+   line the Journal's voice speaks (srcSayNow, which reads CRISIS_SAY) and
+   nothing else: no pattern reading, no release, no microphone after it. The
+   button is never greyed or hidden for it. Emmy's 17 October ruling holds,
+   nothing escalates: the look is the same.
+
+   ONE SPELLING, ONE SENTENCE. The line sent to the voice is the line the
+   Reading row shows while it plays, character for character, and the kind is
+   said the way the row says it (INSIGHT_KW, ui/ui.js). A name the voice would
+   read badly, a + or a / between two parts, is made plain once, in
+   stkSayWord, and the plain form is the one shown too.
+
+   THE STATE LIVES HERE AND NEVER IN THE DOM. railStack rewrites the well's
+   whole innerHTML on every render, so a button that kept its own phase would
+   reset to idle mid sentence. STK_SAY is read back on every render, and its
+   key is the pin's kind and name, the stkSame identity, because render()
+   rebuilds every pattern object.
+   ============================================================ */
+var STK_SAY={key:'', pin:null, phase:'idle', seq:0, vseq:0, playing:false, line:'', live:'', rec:null, t:0, relId:''};
+/* how long listening waits with nothing heard before it closes, quietly,
+   because nothing failed. THE HARNESS SEAM: a gate sets window.STKSAY_WAIT_MS
+   before the page loads to shorten it, read once here the way PW_PAY_SEAM is
+   (ui/paywall.js). It can only shorten: a value at or above the ceiling, or
+   none, leaves the ceiling, so nothing can hold the microphone open longer
+   than this file says. The gate that uses it is tests/stksay.js, group N3. */
+var STK_SAY_WAIT_MAX=12000;
+var STK_SAY_WAIT=(function(){
+ var s=(typeof window!=='undefined')?+window.STKSAY_WAIT_MS:0;
+ return s>0&&s<STK_SAY_WAIT_MAX?s:STK_SAY_WAIT_MAX;})();
+function stkSayKey(o){ return o?o.kind+'|'+o.nm:''; }
+/* the screen's own form of a name: o.nm already carries ' overshot' when
+   o.over is set, insightSay's own note */
+function stkSayNm(o){ return o.over?traceSummaryBase(o.nm)+', overshot':o.nm; }
+/* THE NAME AS THE LINE SAYS IT AND THE ROW SHOWS IT. A complex is named for
+   its two parts with a + and a super complex with a /, and a voice reads
+   neither well. "with" is plain, it is not "and" so a list of such names is
+   still a list, and it is used in the spoken line and in the line on screen,
+   which are one line. The pattern's own name elsewhere is untouched. */
+function stkSayWord(nm){ return String(nm).replace(/ [+\/] /g,' with '); }
+function stkSaySay(o){ return stkSayWord(stkSayNm(o)); }
+function stkSayList(a){
+ if(a.length<2)return a.join('');
+ if(a.length>3)return a.slice(0,3).join(', ')+' and '+(a.length-3)+' more';
+ return a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+function stkSayCanHear(){
+ return !!(window.SpeechRecognition||window.webkitSpeechRecognition)
+  &&!(typeof isSecureContext!=='undefined'&&!isSecureContext);}
+/* THE OFFER. Never reached while the crisis door stands: that press speaks the
+   safe line and ends (stkSaySafe), and a door that opens mid conversation is
+   met in stkSayHeard before any answer is built. */
+function stkSayOffer(){ return 'Ask me about it, or say release to open it.'; }
+/* what the pattern feeds, for the line and for a question about it */
+function stkSayFeeds(o,r){
+ if(o.kind==='sup')return 'Nothing sits above it. It is the top of the chain.';
+ var par=railStkParent(o,r,(insightTrace(o)||{}).parents);
+ return par?'It feeds '+stkSaySay(par)+', '+INSIGHT_KW[par.kind]+'.':'Nothing above it is running.';}
+function stkSayBuilt(o){
+ var kids=railStkKids(o);
+ return kids.length?'It is built from '+stkSayList(kids.map(function(k){return stkSayWord(k.nm);}))+'.':'Nothing is running under it.';}
+/* THE OPENING LINE: the well's three rows, in their order, said */
+function stkSayLine(o,r){
+ var out=['You picked '+stkSaySay(o)+'. It is '+INSIGHT_KW[o.kind]+'.', stkSayBuilt(o), stkSayFeeds(o,r)];
+ var b=insightSpeak(o,r); if(b)out.push(b);
+ if(stkSayCanHear())out.push(stkSayOffer());
+ return out.join(' ');}
+/* the names a person can ask about: the pattern's own parts and its parent.
+   A saboteur's Built from is child emotions, which are not nodes on the
+   chain, so they are said and never answered as patterns. */
+function stkSayNames(o,r){
+ var a=o.kind==='sab'?[]:(o.parts||[]).slice();
+ var par=o.kind==='sup'?null:railStkParent(o,r,(insightTrace(o)||{}).parents);
+ if(par)a.push(par);
+ return a;}
+/* a name matches when the whole name, or every word of it, was heard */
+function stkSayMatch(t,x){
+ var nm=String(x.over?traceSummaryBase(x.nm):x.nm).toLowerCase();
+ if(t.indexOf(nm)>=0)return true;
+ var w=nm.split(/[^a-z]+/).filter(function(s){return s.length>2;});
+ return w.length>0&&w.every(function(s){return t.indexOf(s)>=0;});}
+function stkSayAsk(o,r){
+ /* three names at most, so the list stays one breath, and "or" because
+    the person picks one */
+ var nm=stkSayNames(o,r).map(stkSaySay).slice(0,3);
+ return 'I can only say what this reading holds. '
+  +(nm.length?'Ask about '+stkSayList(nm).replace(/ and (?=[^,]*$)/,' or ')+', or say release.':'Say release to open it.');}
+
+/* THE PER-SESSION FUNNEL, in the browser store under source.say and never
+   in the record: where people stop between the card opening and Release. */
+function stkSayNote(k){
+ try{ var s=JSON.parse(localStorage.getItem('source.say')||'{}')||{};
+  s[k]=(+s[k]||0)+1; localStorage.setItem('source.say',JSON.stringify(s)); }catch(e){}}
+
+/* THE BUTTON, drawn from STK_SAY on every render */
+var STK_SAY_SPK='<path d="M4 9.5h3.2L11.5 6v12l-4.3-3.5H4z"/><path class="stk-say-a" d="M15 9.2a4 4 0 0 1 0 5.6"/><path class="stk-say-a" d="M17.6 6.6a7.6 7.6 0 0 1 0 10.8"/>';
+var STK_SAY_TALK='<path d="M6 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.6l-3.4 2.8a.6.6 0 0 1-1-.46V15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>';
+function stkSayState(o,r){
+ if(STK_SAY.phase!=='idle'&&STK_SAY.key===stkSayKey(o))return STK_SAY.phase;
+ /* the safety door is never greyed: a press under it speaks the safe line,
+    reading or no reading, worked example or not (stkSaySafe) */
+ if(!stSafe()){
+  if(r.unread||!insightPick(o,r))return 'unread';
+  if(typeof showOnly==='function'&&showOnly())return 'show';}
+ if(typeof authVoice!=='function'||srcVoiceWhyNot())return 'off';
+ if(SRC_VOICE.fail===429)return 'limit';
+ return 'idle';}
+function stkSayBtn(o,r){
+ var st=stkSayState(o,r), N=stkSayNm(o);
+ /* the symbol first, its meaning on hover and tap in one sentence. Under the
+    safety door the press does not read the pattern, so neither label nor tip
+    says it will */
+ var L={idle:stSafe()?['Hear Source AI','Hear Source AI.']
+   :['Hear Source AI read '+N,'Hear Source AI read this, then talk it through.'],
+  speak:['Stop Source AI','Stop.'],
+  listen:['Listening. Press to stop.','Stop.'],
+  unread:['Hear Source AI read '+N,'Nothing read yet. Record a story, then press this again.'],
+  show:['Hear Source AI read '+N,'A worked example shows every reading and runs nothing.'],
+  off:['Hear Source AI read '+N,srcVoiceWhyNot()||'Source AI cannot speak in this build.'],
+  limit:['Hear Source AI read '+N,'The voice has reached today\'s limit.']}[st];
+ var grey=st==='unread'||st==='show'||st==='off'||st==='limit';
+ /* pressed only once the voice is really playing, or the microphone really
+    open: a control never claims the voice started before it has */
+ var on=(st==='speak'&&STK_SAY.playing)||st==='listen';
+ return '<button type="button" class="stk-say" id="stksay" data-say="'+st+'"'+(grey?' aria-disabled="true"':'')
+  +' aria-pressed="'+on+'" aria-label="'+esc(L[0])+'" data-tip-k="Hear" data-tip="'+esc(L[1])+'">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+(st==='listen'?STK_SAY_TALK:STK_SAY_SPK)+'</svg></button>';}
+/* THE READING ROW'S OWN WORDS. While the button speaks, the row shows the
+   line being said, marked as Source AI's, so the line heard and the line on
+   screen are one line. While it listens, what is being heard shows plain,
+   the person's own words, with no mark. */
+function stkSayRow(o,r,reading){
+ var mine=STK_SAY.phase!=='idle'&&STK_SAY.key===stkSayKey(o);
+ if(mine&&STK_SAY.phase==='listen'&&STK_SAY.live)return '<span class="stk-live">'+esc(STK_SAY.live)+'</span>';
+ if(mine&&STK_SAY.line)return '<span class="src-ai">'+srcMark()+esc(STK_SAY.line)+'</span>';
+ return reading;}
+
+function stkSayPaint(){
+ var a=document.activeElement, had=!!(a&&a.id==='stksay');
+ if(typeof railStack==='function')railStack(computeSeen());
+ var b=had&&document.getElementById('stksay'); if(b)b.focus();}
+/* STOP EVERYTHING THIS BUTTON STARTED, and nothing it did not. The number
+   moves first, so a voice or a recogniser still on its way answers a press
+   that is already over and is dropped. */
+function stkSayCut(){
+ if(STK_SAY.phase==='idle'&&!STK_SAY.rec)return false;
+ STK_SAY.seq++; clearTimeout(STK_SAY.t);
+ var x=STK_SAY.rec; STK_SAY.rec=null;
+ if(x){ x.onresult=x.onend=x.onerror=null; try{ if(typeof x.abort==='function')x.abort(); else x.stop(); }catch(e){} }
+ /* the voice is cut only while it is still this button's line: when another
+    line has gone out since (SRC_VOICE.seq moved past vseq), that line is the
+    Journal's or the intro's and is not ours to stop, and cutting it here, which
+    the first cut did, silenced a line this button had only been talked over by */
+ if(STK_SAY.phase==='speak'&&STK_SAY.vseq===SRC_VOICE.seq)srcVoiceCut();
+ STK_SAY.phase='idle'; STK_SAY.playing=false; STK_SAY.live='';
+ return true;}
+function stkSayIdle(){ stkSayCut(); STK_SAY.line=''; stkSayPaint(); }
+/* the well's pin moved, its tab moved, or the pin left: what was being said
+   was about something no longer on screen. Read on every railStack. */
+function stkSayHold(){
+ if(STK_SAY.phase==='idle')return;
+ if(!S.pin||stkSayKey(S.pin)!==STK_SAY.key||STACK_TAB!==S.pin.kind){ stkSayCut(); STK_SAY.line=''; }}
+/* the Journal's Talk, stopped through its own stop path, so one recogniser */
+function stkSayJournalOff(){
+ if(!(ST_LISTEN||ST_WANT_LISTEN))return;
+ ST_WANT_LISTEN=false;
+ try{ if(ST_REC)ST_REC.stop(); }catch(e){}
+ ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+ try{ if(typeof stRender==='function')stRender(); }catch(e){}}
+/* the pattern this button is about, read again off this reading: a turn,
+   a plan change or a new story can drop it, and then it is not talked about */
+function stkSayNow(r){ return STK_SAY.pin?insightPick(STK_SAY.pin,r):null; }
+
+/* THE PRESS, its refusals in order: nothing to talk about, the safety door
+   (which speaks the safe line and ends, and is never refused), nothing read,
+   a pattern gone from the reading, a worked example (showRefuse, before
+   anything is spoken), no voice from this page. A page opened off disk is
+   told so here, from its address, before any request, and a greyed press
+   says why through status() like every other one. */
+function stkSayPress(){
+ if(STK_SAY.phase!=='idle'){ stkSayIdle(); return; }
+ if(!S.pin||!STK_LIST[S.pin.kind]){ status('Pick a pattern first.','fail'); return; }
+ if(stSafe()){ stkSaySafe(); return; }
+ var r=computeSeen();
+ if(r.unread){ status('Nothing read yet. Record a story, then press this again.','fail'); return; }
+ var o=insightPick(S.pin,r);
+ if(!o){ status('That pattern is not in this reading any more. Pick it again.','fail'); return; }
+ if(showRefuse('talk'))return;
+ if(typeof authVoice!=='function'){ status('Source AI cannot speak in this build.','fail'); return; }
+ var why=srcVoiceWhyNot();
+ if(why){ status(why,'fail'); return; }
+ stkSayNote('press');
+ stkSayJournalOff();
+ STK_SAY.key=stkSayKey(o); STK_SAY.pin={kind:o.kind,nm:o.nm};
+ stkSaySpeak(stkSayLine(o,r),true);}
+/* THE SAFETY DOOR, SPOKEN. The line the Journal's voice speaks while the door
+   stands, read from the same place (srcSayNow), no word of this module's own:
+   no pattern reading, no release offered and no microphone after it. Nothing
+   escalates, so there is no modal and no new look. */
+function stkSaySafe(){
+ var why=srcVoiceWhyNot();
+ if(why){ status(why,'fail'); return; }
+ stkSayNote('safe');
+ STK_SAY.key=stkSayKey(S.pin); STK_SAY.pin={kind:S.pin.kind,nm:S.pin.nm};
+ stkSaySpeak(srcSayNow(),false);}
+function stkSaySpeak(line,listen){
+ var seq=++STK_SAY.seq;
+ STK_SAY.phase='speak'; STK_SAY.line=line; STK_SAY.live=''; STK_SAY.playing=false;
+ stkSayPaint();
+ /* the number stSrcSpeak is about to take. Any other line that goes out
+    after this one moves it, and then this line was talked over, not
+    finished, so the microphone does not open under it */
+ var vseq=SRC_VOICE.seq+1; STK_SAY.vseq=vseq;
+ stSrcSpeak(line,{
+  onPlay:function(){ if(seq!==STK_SAY.seq)return; STK_SAY.playing=true; stkSayNote('spoke'); stkSayPaint(); },
+  onEnd:function(played){
+   if(seq!==STK_SAY.seq)return;
+   if(!played){ if(SRC_VOICE.fail)stkSayNote('fail'+SRC_VOICE.fail); stkSayIdle(); return; }
+   if(listen&&vseq===SRC_VOICE.seq&&stkSayCanHear())stkSayListen(seq); else stkSayIdle(); }});}
+function stkSayListen(seq){
+ var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec;
+ try{ rec=new SR(); }catch(e){ stkSayIdle(); status('Recording could not start. Press Hear to try again.','fail'); return; }
+ rec.continuous=true; rec.interimResults=true; rec.lang='en-US';
+ var done={};
+ var wait=function(){ clearTimeout(STK_SAY.t); STK_SAY.t=setTimeout(function(){ if(seq===STK_SAY.seq)stkSayIdle(); },STK_SAY_WAIT); };
+ /* by index, never by text, the ST_REC_DONE rule: a browser that reports a
+    final twice must not be answered twice */
+ rec.onresult=function(e){ if(seq!==STK_SAY.seq)return;
+  var fin='',live='';
+  for(var i=e.resultIndex;i<e.results.length;i++){
+   var t=e.results[i][0].transcript;
+   if(e.results[i].isFinal){ if(done[i])continue; done[i]=1; fin+=t; } else live+=t;}
+  wait();
+  if(fin.trim()){ stkSayHeard(fin); return; }
+  STK_SAY.live=live; stkSayPaint();};
+ rec.onerror=function(e){ if(seq!==STK_SAY.seq)return; var code=(e&&e.error)||'unknown';
+  if(code==='no-speech'||code==='aborted')return;
+  stkSayIdle(); stMicSay(code);};
+ /* the browser ends a continuous recording on its own; while the button
+    still says Listening that end is the browser's, so it starts again */
+ rec.onend=function(){ if(seq!==STK_SAY.seq||STK_SAY.rec!==rec)return;
+  try{ rec.start(); }catch(e){ stkSayIdle(); }};
+ STK_SAY.phase='listen'; STK_SAY.live=''; STK_SAY.rec=rec;
+ try{ rec.start(); }catch(e){ STK_SAY.rec=null; stkSayIdle(); status('Recording could not start. Press Hear to try again.','fail'); return; }
+ stkSayNote('listened'); wait(); stkSayPaint();}
+/* A COMMAND IS THE WHOLE UTTERANCE, NOT A WORD IN IT. The first cut looked
+   for stop and release anywhere in the sentence, and measured on the real
+   build "I don't want to release it yet" opened the release card and "why
+   can't I stop controlling everything" ended the conversation with no reply.
+   So, narrowly:
+     stop     the utterance begins with a stop word, as a command
+     release  the word is there, in a short utterance that is not a question
+              and has no negation in it ("don't release", "do not release",
+              "not release", "never")
+   Everything else goes on to the names and the questions, and what nothing
+   matches gets the one fixed line. A missed command costs that line, a
+   mistaken one costs the person their place, so the rule leans to the miss.
+   Pure, so a gate can put a table of sentences through it. */
+var STK_SAY_STOP=/^((ok|okay|please|now) )?(stop|that's all|that is all|nothing else|no thanks)( |$)/;
+var STK_SAY_NEG=/(^| )(not|never|no|don't|dont|didn't|didnt|doesn't|doesnt|can't|cant|cannot|won't|wont|wouldn't|shouldn't|couldn't|isn't|aren't|wasn't|haven't|hasn't)( |$)/;
+var STK_SAY_ASKS=/^(why|what|what's|whats|how|when|where|who|which|can|could|would|should|will|do|does|did|is|are|am|was|were|have|has)( |$)/;
+var STK_SAY_REL=/(^| )release( |$)|^((ok|okay|yes|yeah|please|now|let's|lets) )*run (it|the protocol|the release)( |$)/;
+function stkSayWords(text){ return String(text).toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/ +/g,' ').trim(); }
+function stkSayIntent(text){
+ var w=stkSayWords(text);
+ if(!w)return '';
+ if(STK_SAY_STOP.test(w))return 'stop';
+ if(w.split(' ').length<=6&&!STK_SAY_NEG.test(w)&&!STK_SAY_ASKS.test(w)&&STK_SAY_REL.test(w))return 'release';
+ return '';}
+/* WHAT WAS HEARD, against a closed set, narrow on purpose: a missed
+   question costs one fixed honest line, an invented answer costs the
+   instrument. Every answer ends on the offer, and the microphone reopens
+   after it through the same onEnd. */
+function stkSayHeard(text){
+ var x=STK_SAY.rec; STK_SAY.rec=null; clearTimeout(STK_SAY.t);
+ if(x){ x.onresult=x.onend=x.onerror=null; try{ if(typeof x.abort==='function')x.abort(); else x.stop(); }catch(e){} }
+ var r=computeSeen(), o=stkSayNow(r);
+ if(!o){ stkSayIdle(); status('That pattern is not in this reading any more. Pick it again.','fail'); return; }
+ /* a door that opened while this was listening: the safe line, and nothing
+    about the pattern, whatever was said */
+ if(stSafe()){ stkSaySpeak(srcSayNow(),false); return; }
+ var it=stkSayIntent(text), t=' '+stkSayWords(text)+' ';
+ if(it==='stop'){ stkSayIdle(); return; }
+ if(it==='release'){ stkSayRelease(o); return; }
+ var hit=stkSayNames(o,r).filter(function(y){return stkSayMatch(t,y);})[0];
+ if(hit){ var y=insightPick(hit,r)||hit; stkSayNote('asked');
+  stkSaySpeak([stkSaySay(y)+' is '+INSIGHT_KW[y.kind]+'.', stkSayBuilt(y), insightSpeak(y,r), stkSayOffer()].filter(Boolean).join(' '),true); return; }
+ var a='';
+ if(/ (through me|work through|works through|what is it|what does it do|how does it work) /.test(t))a=insightSpeak(o,r);
+ else if(/ (feed|feeds|parent|inside|above) /.test(t))a=stkSayFeeds(o,r);
+ else if(/ (built|made of|children|under it|underneath) /.test(t))a=stkSayBuilt(o);
+ if(a){ stkSayNote('asked'); stkSaySpeak(a+' '+stkSayOffer(),true); return; }
+ stkSaySpeak(stkSayAsk(o,r),true);}
+/* RELEASE, OPENED AND NEVER STARTED. relPick plans the run against the
+   allowance and opens the card, which says what the run would take; the
+   card's own Release (#relgo, relBegin) is the start, the browser's audio
+   unlock and the second showRefuse. The voice and the microphone are cut
+   first, because the release room has its own voice. "The release is open"
+   is said only once the card is: a control never claims success first. */
+function stkSayRelease(o){
+ stkSayCut();
+ if(showRefuse('release')){ STK_SAY.line=''; stkSayPaint(); return; }
+ var ids=leaves(o).filter(function(n){return n&&n.cf;}).map(function(n){return n.i;});
+ if(!ids.length||typeof relPick!=='function'){ STK_SAY.line=''; stkSayPaint();
+  status('Nothing in '+stkSayNm(o)+' is open to release.','fail'); return; }
+ relPick(ids);
+ if(!(typeof RUN!=='undefined'&&RUN.open)){ STK_SAY.line=''; stkSayPaint();
+  status('The release card did not open. Try again from Summary.','fail'); return; }
+ STK_SAY.relId=RUN.id; stkSayNote('opened');
+ /* a spent allowance draws no Release on the card, and then there is
+    nothing to tell the person to press: the card says why */
+ if(document.getElementById('relgo'))stkSaySpeak('The release is open. Press Release when you are ready.',false);
+ else{ STK_SAY.line=''; stkSayPaint(); }}
+
+document.addEventListener('click',function(e){
+ var b=e.target.closest?e.target.closest('#stksay'):null;
+ if(b){ e.preventDefault(); stkSayPress(); }});
+/* ESCAPE STOPS THE BUTTON ON THE FIRST PRESS, in the capture phase on the
+   window, ahead of the tooltip. The button carries a tip that shows whenever
+   it has the focus, which is every time it is in use, and the tip's own
+   Escape (ui/tip.js, a capture listener on the document) closes the tip and
+   stops the key from travelling on: a bubble listener here never ran, and
+   measured on the real build it took two Escapes, the first spent on the tip.
+   The window's capture listener runs before the document's, so one Escape
+   does both jobs: the button stops and the tip closes. The repaint that
+   follows puts the focus back on the new button, and the tip opens on that
+   focus, so it is shut again here (a pointer resting on the button opens it
+   by hover, as it would for any control). The key is stopped only when a tip
+   was showing, because that is the one case the tip's own handler would have
+   stopped it. Only with the focus inside the well, as before. */
+window.addEventListener('keydown',function(e){
+ if(e.key!=='Escape'||STK_SAY.phase==='idle')return;
+ var a=document.activeElement;
+ if(!(a&&a.closest&&a.closest('#stkwell')))return;
+ var tip=document.getElementById('tip'), tipOn=!!(tip&&tip.classList.contains('on'));
+ stkSayIdle();
+ if(typeof TIP!=='undefined'&&TIP.hide){
+  /* twice: the tip puts its panel up one frame after a focus (showAt adds
+     its class in a requestAnimationFrame), so a hide in this same turn is
+     undone a frame later, and the second runs behind that one */
+  TIP.hide(); requestAnimationFrame(function(){ TIP.hide(); }); }
+ if(tipOn)e.stopPropagation();},true);
+
+try{window.__at&&window.__at('ui/stksay.js');}catch(e){}
 
 /* ============================================================
    POINTER. Drag a segment to load or clear it, click to drill.
@@ -104706,5 +105703,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007141270"></div>
+<div id="eof" hidden data-len="007206019"></div>
 </body></html>
