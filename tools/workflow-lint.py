@@ -114,6 +114,10 @@ BROWSER = {
     'srcchat':       ('node tests/srcchat.js', 20),
     'practitioner':  ('node tests/practitioner.js', 20),
     'release-screen': ('node tests/release-screen.js', 20),
+# the Avatar Purpose view with its rails removed and Archetype hidden, 18
+# November (tests/avatarpurpose.js). Real Chromium gate, already wired into
+# deploy.yml's gates-browser matrix; this entry is the registry half R2 needs.
+    'avatarpurpose': ('node tests/avatarpurpose.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
