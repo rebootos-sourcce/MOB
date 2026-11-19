@@ -348,8 +348,8 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
       Justification. It opens on the defence's name and its one table sentence,
       and that sentence is the one the hover carries, so there is one definition. */
    ok(P.cards.length===4&&J(P.cards.map(c=>c.nm))===J(FOUR),'F '+tag+'all four symbols open a card, got '+J(P.cards.map(c=>c.nm)));
-   ok(P.cards.every(c=>c.eye===c.nm+', at the '+c.seat+' seat'),
-    'F '+tag+'each card is headed with its defence\'s name and the seat it is read at, said as the rest of the product says a seat ("the solar seat"), got '+J(P.cards.map(c=>c.eye)));
+   ok(P.cards.every(c=>c.eye===c.nm+', at the '+c.seat+' point'),
+    'F '+tag+'each card is headed with its defence\'s name and the point it is read at, said as the rest of the product says a point since the 18 November rename ("the solar point"), got '+J(P.cards.map(c=>c.eye)));
    ok(P.cards.every(c=>c.want&&c.say===c.want&&c.sayFirst),
     'F '+tag+'each card carries the table\'s sentence for its defence, straight under the address, got '+J(P.cards.map(c=>[c.nm,c.say&&c.say.slice(0,30),c.sayFirst])));
    ok(P.cards.every(c=>c.title===c.wantTitle&&!/_Unnamed|Root_\d/.test(c.text)),
