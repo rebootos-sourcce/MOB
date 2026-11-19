@@ -7701,7 +7701,6 @@ var UNPACK_BASE={
  'super complex':'A super complex forms when two hyper complexes run together and are heavy enough, one ring further in than a hyper complex.',
  'character':'Character is the whole of you, added up: your charge, the patterns running on it, your masks and what you were born with.',
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
-<<<<<<< HEAD
  /* MASK AND SABOTEUR SAID ONE WAY, 18 November. The Wisdom school glossary
     (GLOSS, engine/data/kb.js) opened Mask on "built up distortion that has
     started to pass for who you are" and Saboteur on "a fetter squeezed into
@@ -7712,14 +7711,11 @@ var UNPACK_BASE={
     gains "you grow into" and the point, and GLOSS now opens on the same words.
     tests/unpack.js holds the two places to one sentence. */
  'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
-=======
  /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
     this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
     stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
     is kept here, where the header of that level reads it. */
  'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
- 'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
->>>>>>> feature/insight-rail-unnested
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ
@@ -27786,7 +27782,6 @@ function degInSign(lon){return _norm(lon)%30;}
    sequence below, and where the sequence sits on the zodiac is fixed
    by GATE_ANCHOR, not by 0 degrees Aries.
 
-<<<<<<< HEAD
    RULED 18 November 2026, the owner's card "Apply the gene key wheel
    anchor in SOURCE". The order was right and the anchor was not. This
    wheel was laid with gate 25 starting at 0 degrees Aries, so every
@@ -27809,21 +27804,11 @@ function degInSign(lon){return _norm(lon)%30;}
    typed: it is derived from where gate 41 sits in the table. Reorder
    the table and the start moves with it; only the order and the one
    published degree are claims. */
-=======
-   RULING NEEDED. This order is the one in general circulation and it
-   decides every gene key and every Human Design gate the product
-   prints. It is the one table here that is a claim about someone
-   else's system rather than about the sky, so it is isolated in one
-   place, named, and asserted in the gate test against a known chart
-   (it was not until 18 November, see GATE_START below).
-   Correct it here and everything downstream moves with it. */
->>>>>>> fix/example-profiles-birth
 const GATE_WHEEL=[25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,
  15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,
  46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,
  10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
 const GATE_ARC=360/64;                       /* 5.625 degrees */
-<<<<<<< HEAD
 /* the longitude where gate 41, line 1 begins: 2 degrees 00 of Aquarius,
    the start of the Human Design year */
 const GATE_ANCHOR=302;
@@ -27831,37 +27816,16 @@ const GATE_ANCHOR=302;
    28 degrees 15 of Pisces. Every value here is a multiple of an eighth
    of a degree, so this is exact in binary and a boundary lands exactly. */
 const GATE_START=_norm(GATE_ANCHOR-GATE_WHEEL.indexOf(41)*GATE_ARC);
-=======
-/* WHERE THE WHEEL STARTS, AND IT IS NOT 0 DEGREES ARIES. The order above
-   was right and its starting point was not: this read gate 25 from 0
-   degrees Aries, and the mandala puts gate 25 at 28 degrees 15 minutes of
-   Pisces, which is gate 41 at 2 degrees Aquarius, 302 degrees. So every
-   longitude was read 1.75 degrees late. A line is 0.9375 degrees, so every
-   line printed was one or two out and the gate itself was wrong on 1.75 in
-   5.625 of births, about 31 in 100. Measured 18 November against a
-   published chart: Steve Jobs, born 1955-02-24 19:15 in San Francisco, is
-   a 6/3 profile in every Human Design source, and this printed 5/1 for
-   him. The comment above said a known chart was asserted in the gate test,
-   and none was: the test only checked the wheel held 64 different gates.
-   tests/engine.js now carries that chart and the mandala's own anchors. */
-const GATE_START=302-GATE_WHEEL.indexOf(41)*GATE_ARC;   /* -1.75 */
->>>>>>> fix/example-profiles-birth
 
 /* a longitude to its gate and line. lon is the longitude as given,
    normalised, and arc is how far into its gate it sits, as before. */
 function gateOf(lon){
-<<<<<<< HEAD
  var L=_norm(lon);
  /* measured from the wheel's own start, not from 0 Aries, which is the
     whole of the ruling above */
  var a=_norm(L-GATE_START);
  var i=Math.floor(a/GATE_ARC);
  var within=a-i*GATE_ARC;
-=======
- var L=_norm(lon-GATE_START);
- var i=Math.floor(L/GATE_ARC);
- var within=L-i*GATE_ARC;
->>>>>>> fix/example-profiles-birth
  return {gate:GATE_WHEEL[i%64], line:Math.floor(within/(GATE_ARC/6))+1,
   lon:_norm(lon), arc:within};}
 
@@ -32090,11 +32054,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-<<<<<<< HEAD
-                  lifePath:lifePath, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
-=======
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge,
->>>>>>> fix/example-profiles-birth
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
