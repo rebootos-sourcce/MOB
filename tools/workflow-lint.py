@@ -178,6 +178,9 @@ BROWSER = {
 # November (tests/psychepanel.js). Report only until three green runs.
     'psychepanel': ('node tests/psychepanel.js', 20),
     'talksilence': ('node tests/talksilence.js', 20),
+# a control whose menu is open has no tooltip, 18 November
+# (tests/menutip.js). Report only until three green runs.
+    'menutip': ('node tests/menutip.js', 20),
 # the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
 # Report only until three green runs, like every gate new to CI.
     'lightmenu':     ('node tests/lightmenu.js', 20),

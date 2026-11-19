@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v251 7e534938 2026-11-19 11:46"><head><meta charset="utf-8">
+<html lang="en" data-build="v256 f7c1a80a 2026-11-19 12:03"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -7331,6 +7331,11 @@ body.snow{--tip-bg:#F8F7F3;--tip-edge:rgba(20,23,28,.18);--tip-shadow:0 10px 24p
             transform var(--t-element) var(--ease-out),
             visibility 0s;
 }
+/* THE EXIT CUT SHORT, when a control's menu opens under its own panel
+   (hold() in ui/tip.js). The fade above is the panel drawn over the arriving
+   menu for its whole length, which is the flash the 18 November card rules
+   out, so this one exit has no motion. The next show takes the class off. */
+.tip.cut{transition:none}
 /* THE ENTRY MARK. Thirty pixels of the carrier's own colour lying along the
    panel's near edge, centred on the tether's foot. With the tether it makes
    one T, forty pixels of continuous stroke, and the T is where the line
@@ -52017,6 +52022,14 @@ var TIP=(function(){
  var DELAY=380;     /* hover intent. under 300 the panel fires while crossing */
  var GRACE=120;     /* the crossing tolerance, and the exit duration */
  var EL=null, CUR=null, TO=null, HOLD=null, RESTORE=null, GOFOR=null;
+ /* WHICH SHOW IS CURRENT. The panel turns on a frame after showAt, and a hide
+    inside that frame did not cancel it, so the frame put the panel back on
+    after it had been hidden: class on, aria-hidden true, drawn and unheard.
+    Measured on the profile button, 18 November: the press focuses the button,
+    focus re-shows its panel, the click opens the menu and hides it, and the
+    frame then lit it again over the open menu, for good. A hide moves the
+    count on, and a frame whose count is stale does nothing. */
+ var SEQ=0, WAS=null;
 
  function el(){
   if(EL)return EL;
@@ -52082,6 +52095,7 @@ var TIP=(function(){
  function read(e){
   var b=e.getAttribute('data-tip');
   if(b==null)b=e.getAttribute('title');
+  if(b==null)b=e.getAttribute('data-tip-held');   /* see hold(), below */
   if(!b)return null;
   var n=(e.getAttribute('data-tip-n')||'').split(';').filter(Boolean)
         .map(function(s){return s.split('|');});
@@ -52168,8 +52182,10 @@ var TIP=(function(){
     the wheel uses: it hands over the mark's box in client coordinates. */
  function showAt(rect,d,owner){
   clearTimeout(HOLD);
+  var seq=++SEQ;
   if(CUR&&CUR!==owner&&CUR.classList)CUR.classList.remove('tip-open');
   var e=el();
+  e.classList.remove('cut');               /* hold() cut the last exit short */
   e.innerHTML=build(d);
   GOFOR=d.go?(owner||null):null;
   e.style.setProperty('--tc',d.c||'var(--accent)');
@@ -52205,7 +52221,7 @@ var TIP=(function(){
        var up=Math.min(doc.scrollTop,(sh+16)-rect.top);
        if(up>0)doc.scrollBy({top:-up,behavior:'smooth'});}}}}
    if(top)e.classList.add('top');
-   requestAnimationFrame(function(){e.classList.add('on');});
+   requestAnimationFrame(function(){if(seq===SEQ)e.classList.add('on');});
    return;}
 
   /* measure before placing. the panel is laid out invisibly first, because
@@ -52232,10 +52248,78 @@ var TIP=(function(){
   e.style.setProperty('--ox', p.tx!=null?(Math.round(p.tx)+'px'):(p.side==='right'?'0px':'100%'));
   e.style.setProperty('--oy', p.ty!=null?(Math.round(p.ty)+'px'):(p.side==='bottom'?'0px':'100%'));
   e.setAttribute('aria-hidden','false');
-  requestAnimationFrame(function(){e.classList.add('on');});}
+  requestAnimationFrame(function(){if(seq===SEQ)e.classList.add('on');});}
+
+ /* A CONTROL WHOSE MENU IS OPEN HAS NO TOOLTIP. 18 November, the owner:
+    "Hide the sun button tooltip while its menu is open". Measured before this
+    existed, at 1600: hover the sun, press it, and the button's own panel,
+    "Lighting, Dark", stayed up across the top of the menu it had just opened,
+    and stayed while the pointer rested there. Three routes kept it up. A fine
+    pointer's pointerdown returns before any hide, so a panel already showing
+    survived the press. A press inside the hover delay left the timer armed,
+    so the panel opened after the menu did. And nothing in this file knew a
+    menu was open at all: showFor would serve any carrier, and the native
+    title stood ready behind it for the moment the panel stepped aside.
+
+    The answer is the control's own state, read where every caller passes
+    through, rather than a layer order: the panel is still the topmost thing
+    on the page by design, it only has nothing to say about a door the person
+    is already standing in. A carrier that is, or sits inside, a control with
+    aria-expanded true is refused when that control opens a popup. A popup is
+    said one of two ways here. aria-haspopup, which the lighting menu, the
+    profile loader, the profile menu and the Field's Depth carry. Or
+    aria-controls naming a layer that floats (fixed or absolute) and does not
+    hold the control itself, which is the Field's Layers panel. That second
+    clause is narrow on purpose: the intake's tiles, the ritual's and the
+    loop's show all, and the law rows are disclosures that open in the flow
+    beneath them, and their definitions are what a person came for, so an
+    open disclosure keeps its tooltip. The Field bar's own fold names #fbar,
+    the bar it sits inside, and keeps its tooltip for the same reason. */
+ function popped(c){
+  var k=c&&c.closest?c.closest('[aria-expanded="true"]'):null; if(!k)return null;
+  var p=k.getAttribute('aria-haspopup'); if(p&&p!=='false')return k;
+  var id=k.getAttribute('aria-controls'), m=id?document.getElementById(id):null;
+  if(m&&!m.contains(k)){var s=getComputedStyle(m).position; if(s==='fixed'||s==='absolute')return k;}
+  return null;}
+
+ /* THE MOMENT THE MENU OPENS. Any panel up for the control goes at once,
+    with no exit fade: a fade is a hundred and twenty milliseconds of the
+    panel drawn over the menu that is arriving, which is the flash the card
+    rules out, and no motion at all is also what reduced motion asks for.
+    The native title is held too, because with the panel refused the browser
+    would put its own box up after a second of rest and the defect would come
+    back in the system's colours. It is held in data-tip-held rather than
+    dropped, so carrier() and read() still know the control while it is held.
+    That matters for the one frame between a menu closing and this hearing
+    of it: Escape shuts the lighting menu and focuses the button in the same
+    handler, before the observer below has run, and focus must still find the
+    definition there. */
+ /* WAS is the last carrier whose panel went, because a menu can take focus
+    as it opens: the profile menu focuses its first row inside the same
+    click, that focus hides the button's panel with the ordinary fade before
+    this hears of the menu, and the fade then ran its length over the menu.
+    Measured on the profile button at 1600: still at opacity 0.25 a hundred
+    milliseconds after the press. A fade that belongs to this control is cut
+    too. */
+ function hold(k){
+  var mine=function(c){return c&&c.nodeType===1&&(c===k||k.contains(c));};
+  if(mine(CUR)||(!CUR&&mine(WAS)&&EL&&!EL.classList.contains('on'))){if(EL)EL.classList.add('cut'); hide();}
+  if(k.hasAttribute('title')){k.setAttribute('data-tip-held',k.getAttribute('title')); k.removeAttribute('title');}}
+ /* and when it shuts, the title goes back unless a newer one was written
+    while it was held: choosing a lighting renames the sun button in the same
+    click that shuts its menu, and the old name must not overwrite the new.
+    A panel the refocus above opened in that frame has already stood the
+    title down, so it is handed to the panel to restore and not to the
+    element, or the element would carry a native title under its own panel. */
+ function unhold(k){
+  var t=k.getAttribute('data-tip-held'); if(t==null)return;
+  k.removeAttribute('data-tip-held');
+  if(k.hasAttribute('title'))return;
+  if(CUR===k&&!RESTORE)RESTORE=[k,t]; else k.setAttribute('title',t);}
 
  function showFor(target){
-  var d=read(target); if(!d)return;
+  if(popped(target))return false;
+  var d=read(target); if(!d)return false;
   /* THE NATIVE TITLE STANDS DOWN, and only now. Up to this moment the
      element still carries its title, so a script that never ran or that
      threw at boot leaves a working native tooltip behind. */
@@ -52243,13 +52327,15 @@ var TIP=(function(){
    RESTORE=[target,target.getAttribute('title')];
    target.removeAttribute('title');}
   target.classList.add('tip-open');
-  showAt(target.getBoundingClientRect(),d,target);}
+  showAt(target.getBoundingClientRect(),d,target);
+  return true;}
 
  function hide(){
-  clearTimeout(TO); clearTimeout(HOLD);
+  clearTimeout(TO); clearTimeout(HOLD); SEQ++;
   if(EL){EL.classList.remove('on'); EL.setAttribute('aria-hidden','true');}
   if(CUR&&CUR.classList)CUR.classList.remove('tip-open');
   if(RESTORE){RESTORE[0].setAttribute('title',RESTORE[1]); RESTORE=null;}
+  if(CUR)WAS=CUR;
   CUR=null;}
  function soon(){clearTimeout(HOLD); HOLD=setTimeout(hide,GRACE);}
 
@@ -52265,7 +52351,7 @@ var TIP=(function(){
     The title is suppressed and restored around a show already, so including it
     here cannot produce two tooltips on one element. */
  function carrier(t){
-  return t&&t.closest?t.closest('[data-tip],[data-tip-t],[title]'):null;}
+  return t&&t.closest?t.closest('[data-tip],[data-tip-t],[title],[data-tip-held]'):null;}
 
  function wire(){
   if(!document.body)return;
@@ -52276,7 +52362,7 @@ var TIP=(function(){
   document.addEventListener('pointerover',function(ev){
    if(sheet())return;
    var c=carrier(ev.target);
-   if(!c){ if(!EL||!EL.contains(ev.target))soon(); return; }
+   if(!c||popped(c)){ if(!EL||!EL.contains(ev.target))soon(); return; }
    if(c===CUR){clearTimeout(HOLD);return;}
    clearTimeout(TO); clearTimeout(HOLD);
    TO=setTimeout(function(){showFor(c);},DELAY);});
@@ -52332,7 +52418,11 @@ var TIP=(function(){
   function pressArm(c,ev){pressDrop();
    PRESS={c:c,id:ev.pointerId,x:ev.clientX,y:ev.clientY,t:setTimeout(function(){
     var p=PRESS; PRESS=null; if(!p)return;
-    clearTimeout(TO); showFor(p.c); EAT=p.c;},PRESS_MS)};}
+    clearTimeout(TO); if(showFor(p.c))EAT=p.c;},PRESS_MS)};}
+  /* only a hold that explained eats the click that ends it. A hold on a
+     control whose menu is open explains nothing (popped, above), and eating
+     its click as well would make the press do nothing at all; it acts as a
+     tap instead, which shuts the menu the person pressed. */
   document.addEventListener('pointermove',function(ev){
    if(PRESS&&ev.pointerId===PRESS.id
       &&Math.hypot(ev.clientX-PRESS.x,ev.clientY-PRESS.y)>PRESS_SLOP)pressDrop();},true);
@@ -52345,11 +52435,11 @@ var TIP=(function(){
   document.addEventListener('pointerdown',function(ev){
    var c=sheet()?carrierIn(ev.target):carrier(ev.target);
    if(EL&&EL.contains(ev.target))return;
-   if(!c){hide();return;}
+   if(!c||popped(c)){hide();return;}
    if(!sheet())return;                    /* a fine pointer keeps hover */
    if(control(c)){EAT=null; hide(); pressArm(c,ev); return;}
    if(c===CUR){EAT=null; hide(); return;} /* tap the same thing again and it acts */
-   clearTimeout(TO); showFor(c); EAT=c;},true);
+   clearTimeout(TO); if(showFor(c))EAT=c;},true);
   document.addEventListener('click',function(ev){
    if(!EAT)return;
    var c=sheet()?carrierIn(ev.target):carrier(ev.target);
@@ -52359,7 +52449,7 @@ var TIP=(function(){
   /* KEYBOARD. Focus opens, escape closes, and escape is caught in the
      capture phase so a carrier inside a sheet cannot eat it. */
   document.addEventListener('focusin',function(ev){
-   var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c){hide();return;}
+   var c=sheet()?carrierIn(ev.target):carrier(ev.target); if(!c||popped(c)){hide();return;}
    /* on a phone a tap focuses the button it lands on, and this opened the
       panel on that focus, so the hold above would never have been the only
       way in. Keyboard focus still opens it: that is what :focus-visible
@@ -52390,7 +52480,19 @@ var TIP=(function(){
    if(ev&&ev.target&&ev.target.nodeType===1&&EL.contains(ev.target))return;
    hide();},true);
   document.addEventListener('click',function(ev){
-   if(EL&&EL.contains(ev.target)&&ev.target.closest('.tip-x')){hide();}});}
+   if(EL&&EL.contains(ev.target)&&ev.target.closest('.tip-x')){hide();}});
+  /* THE MENUS ARE HEARD BY THEIR STATE, not told one by one. Every menu here
+     opens and shuts by writing aria-expanded on its control, and four files
+     own four of them (ui/panels.js, ui/personas.js, ui/account.js,
+     ui/fieldbar.js). Watching the attribute covers each of them and the next
+     one, with no menu having to remember to call in. The callback is a
+     microtask, so it lands after the click that opened the menu and before
+     the frame that would have drawn the panel over it. */
+  if(typeof MutationObserver==='function')new MutationObserver(function(rs){
+   rs.forEach(function(r){var k=r.target;
+    if(k.getAttribute('aria-expanded')==='true'){if(popped(k)===k)hold(k);}
+    else unhold(k);});
+  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:['aria-expanded']});}
 
  /* goFor is the carrier whose description put the door button in the panel,
     read only. A locked control's See tiers has to say which lock it belongs
@@ -104706,5 +104808,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007141270"></div>
+<div id="eof" hidden data-len="007148104"></div>
 </body></html>

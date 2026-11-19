@@ -2,7 +2,7 @@
 /* ============================================================
    A CONTROL WHOSE MENU IS OPEN HAS NO TOOLTIP. 18 November.
 
-   env CHROME=/opt/pw-browsers/chromium NODE_PATH=$(npm root -g) \
+   env CHROME=/path/to/chromium NODE_PATH=$(npm root -g) \
      flock /tmp/atuned-gates.lock node tests/menutip.js
    MENUTIP_HTML=file   runs against another build, for checking the checker
 
@@ -158,7 +158,7 @@ async function pressAndRest(pg, sel, name, strict) {
     for (let i = 0; i < n; i++) {
       await pg.mouse.move(c.x, c.y + 60); await pg.waitForTimeout(200);
       const e = await pg.evaluate(i => { const b = document.querySelectorAll('#themes button')[i], r = b.getBoundingClientRect();
-        return { x: r.x + r.width / 2, y: r.y + r.height / 2, nm: b.getAttribute('data-tip-t') }; }, i);
+        return { x: r.x + r.width / 2, y: r.y + r.height / 2, nm: b.getAttribute('title') }; }, i);
       await pg.mouse.move(e.x, e.y); await pg.waitForTimeout(900);
       const t = await TIP(pg);
       ok(shown(t) && t.text.indexOf(e.nm) >= 0, 'hover on the ' + e.nm + ' entry, with the menu open, shows its panel: ' + say(t));
