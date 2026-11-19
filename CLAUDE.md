@@ -26,9 +26,11 @@ else may.
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
     node tests/engine.js               headless, and fast
+    node tests/insightread.js          headless, the Insight reading's traces
     node tests/functional.js           real Chromium
     node tests/collide.js              no overlapping nameplates
     node tests/design.js               the look, held to its floors
+    node tests/insightrail.js          the right rail: Insight, its dots, the stack
     node tools/monitor.js             every surface renders, and it logs
     node tests/funnel.js               the funnel, which nothing gated before
     node tests/boot.js                 the guard, against a real throwing extension

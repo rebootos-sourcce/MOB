@@ -84,19 +84,20 @@ async function stackNameGate(browser,FILE,ok,booted){
   ok(caught&&clean,'SN2: '+tag+'the reader catches a stray "Character layer" put on the Field, and lets it go once it is gone');
 
   /* ---- SN1, the Field: the bar's switch and the stack's tab ---- */
-  /* THE TAB IS ICONS ONLY NOW, 14 November: "I just want icons, not full
-     words, on one horizontal row." textContent is a count digit or nothing,
-     so the word SN1 checks for is read off aria-label, the same reachable
-     name title already carried before, and title is checked too since
-     both say the word now. */
+  /* THE TAB IS A LEVEL HEADER NOW, 18 November. The five tabs went with the
+     nested cascade ("Let's unnest them"), and the stack is six levels under
+     the Insight reading, each a header with its symbol, its word and its count.
+     The rung's header carries the word in its aria-label, where the tab did,
+     and SN1 holds the same two things of it: it says Super complexes, and no
+     part of it says Character. */
   const field=await pg.evaluate(()=>{
    const b=document.querySelector('[data-fb="character"]');
-   const t=document.querySelector('#stack .stk-t[data-st="sup"]');
+   const t=document.querySelector('#stack .stk-lv[data-lv="sup"] .stk-lh');
    return {bar:b?b.getAttribute('aria-label'):null, tab:t?t.getAttribute('aria-label'):null,
-    tabTip:t?t.getAttribute('title'):null};});
+    tabTip:t?t.getAttribute('data-tip'):null};});
   ok(field.bar==='Super complexes','SN1: '+tag+'the Field bar\'s innermost switch is Super complexes, got '+JSON.stringify(field.bar));
-  ok((w<600&&field.tab===null)||(!!field.tab&&/^Super/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),
-   'SN1: '+tag+'the stack\'s tab for the rung reads Super, got '+JSON.stringify(field));
+  ok((w<600&&field.tab===null)||(!!field.tab&&/^Super complexes/.test(field.tab)&&!/character/i.test(field.tab+' '+field.tabTip)),
+   'SN1: '+tag+'the stack\'s level for the rung reads Super complexes, got '+JSON.stringify(field));
 
   /* ---- SN1, a pattern drill on the rung ---- */
   const drill=await pg.evaluate(()=>{

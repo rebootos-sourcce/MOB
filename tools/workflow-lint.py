@@ -121,6 +121,8 @@ BROWSER = {
 # a person's own typed birth reaching converge(), 19 November
 # (tests/ownbirth.js). Real Chromium gate, wired the same day it was written.
     'ownbirth': ('node tests/ownbirth.js', 20),
+    'insightread': ('node tests/insightread.js', 20),
+    'insightrail': ('node tests/insightrail.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
@@ -169,9 +171,8 @@ BROWSER = {
 # the layer observatory wired to trace.js's real traversal engine, 8 November
 # (tests/layer-observatory.js). Report only until three green runs.
     'layer-observatory': ('node tests/layer-observatory.js', 20),
-# the Insight well's auto pin, 14 November (tests/wellpin.js). Report only
-# until three green runs, like every gate new to CI.
-    'wellpin':       ('node tests/wellpin.js', 20),
+# wellpin REMOVED 19 November, merge of feature/insight-rail-unnested: the
+# five tabs and the auto pin it tested are gone on the unnested rail.
 # the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
 # Report only until three green runs, like every gate new to CI.
     'lightmenu':     ('node tests/lightmenu.js', 20),

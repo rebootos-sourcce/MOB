@@ -78,7 +78,10 @@ ok(shell.arcs===12,'12 archetypes, got '+shell.arcs);
 ok(shell.laws===21,'21 law fields, got '+shell.laws);
 ok(shell.axes===18,'18 axis fields (9 held + 9 opposite), got '+shell.axes);
 ok(shell.mx===171,'171 matrix cells, got '+shell.mx);
-ok(shell.eshelf,'#eshelf element exists');
+/* THE ENERGY SHELF LEFT THE RAIL, 18 November: Flow, Seats, Running now and the
+   Laws are not under Selection on any tab. This held that #eshelf existed. It
+   holds that it does not, in the same place, so the count is unchanged. */
+ok(!shell.eshelf,'#eshelf element is gone, the repeat blocks left the rail');
 console.log('  shell:',JSON.stringify(shell));
 /* EVERY DEPTH IS ON THE SCREEN, NOT ONLY IN THE DOCUMENT. The count above read
    four for six days while three of the four sat past the right edge: the depth

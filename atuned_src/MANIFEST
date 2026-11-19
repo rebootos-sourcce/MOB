@@ -37,6 +37,7 @@ engine/plan.js
 engine/avatar.js
 engine/trace.js
 engine/tracesummary.js
+engine/insight.js
 engine/schema.js
 engine/journey.js
 engine/relhit.js
@@ -128,5 +129,6 @@ ui/onboard.js
 ui/login.js
 ui/srcintro.js
 ui/valuefelt.js
+ui/insightui.js
 ui/ui.js
 shell/foot.html

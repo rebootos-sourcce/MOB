@@ -339,8 +339,8 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    read(q); runCoreDrill(); var d=document.getElementById('rdrill');
    var t=d?d.innerText.replace(/\s+/g,' '):''; try{rdClose();}catch(e){} return t;},{n,v});
   const few=await core(1,10);
-  ok(/There are not enough answers yet to give a range\. 1 of 21 laws are answered\./.test(few),
-   'core drill, 1 law of 21: says there are not enough answers yet, with the count, saw "'+few.slice(0,160)+'"');
+  ok(/There are not enough answers yet to give a range\. 5% of the laws are answered\./.test(few),
+   'core drill, 1 law of 21: says there are not enough answers yet, with the percent, saw "'+few.slice(0,160)+'"');
   ok(!/swings between|middle of that range/.test(few),'and draws no swing and no middle off one answer');
   /* NAMED CHANGE, percent phase 2 slice 4: the core drill prints CQ and its
      range as the registry's percents (engine/pct.js), so every figure below
@@ -348,7 +348,7 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
      hundred", which contradicted a figure printed as a percent. The same
      meanings are checked. */
   const half=await core(12,5);
-  ok(/With 12 of 21 laws answered, the finished figure lands between 29% and 71%\. It is 29% if every law still open is answered at nothing, and 71% if every one is answered at ten\./.test(half),
+  ok(/With 57% of the laws answered, the finished figure lands between 29% and 71%\. It is 29% if every law still open is answered at nothing, and 71% if every one is answered at ten\./.test(half),
    'core drill, 12 laws at 5: where the finished figure can land, each end with its meaning, saw "'+half.slice(0,220)+'"');
   ok(!/middle of that range/.test(half),'and the figure, which is the low end, is never called the middle');
   const all=await core(21,6);

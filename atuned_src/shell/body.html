@@ -1354,6 +1354,18 @@
         own host, the #know and #knowbody lesson: a renderer that writes the
         whole of a shared host deletes its sibling on the way past. -->
    <div id="iq" class="iq"><div id="avbody"></div><div id="iqbody"></div></div>
+   <!-- THE LAW BOXES, MOVED OFF THE RIGHT RAIL, 18 November. The only place a
+        person could set one law's number by hand, with an all slider that moves
+        the unanswered ones together (panels.js, numField and #allLaw, the
+        24 October rule that a bulk move answers nothing). Kept whole, ids and
+        all, in a fold that renderIntake appends to the Intake page's body
+        (iqHand, ui/intakeui.js) every time it draws. Held here until then, so
+        the controls exist in the document for the code that reads them. -->
+   <div id="iqhold" hidden><details class="iq-hand" id="iqhand"><summary>Set the laws by hand</summary>
+    <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
+    <div id="laws"></div>
+   </details></div>
+
    <!-- THE INTAKE PAGE, round OG. Empty until it is opened: setTab moves intakeui.js's #iqbody in, and avatarui.js moves it back under #iq. -->
    <div id="iqp" class="iq"></div>
    <!-- KNOWLEDGE ONCE CARRIED GAMES, AND SUMMARY ONCE CARRIED ANALYTICS. Both
@@ -1512,43 +1524,33 @@
         the summary now. -->
 
 
-   <!-- THE INSIGHT SUMMARY, ALWAYS ON TOP, 14 November. His words, looking at
-        the live panel: "the selection panel is your intention of the insight
-        panel, is always on top and is fixed, and it has a black background.
-        And it looks like a unique display area. This is where Source AI
-        provides deep information from my records." Hoisted out of the
-        Insight section below to a direct child of #rpanel, a sibling of
-        #rfold, because it was position:sticky then, and that only holds inside
-        its own containing block, a foldable .lsec-bd. It is not sticky any
-        more, 17 November (his words: "It doesn't scroll with the rest of the
-        scroll bar", head.html's .person has the measurement), so the hoist
-        now only keeps it out of a section a person can collapse: it is the
-        first thing in the rail and it scrolls with the rail.
-        ui/ui.js writes #psum inside this host with the Selection panel's own
-        Blueprint domain reading (domReadHtml, ui/drills.js), rdCase'd the
-        same way runDomDrill is. The black, its-own-display-area treatment
-        is .person in head.html, built on var(--sunk), the token and the
-        words are both his, 12 November, the .smp rule above says so in full.
-        Hidden on every tab that is not the Field by name in head.html,
-        because it escapes the per-tab .lsec hide rules those tabs already
-        carry (it is not a .lsec any more). -->
-   <div class="person" id="person"></div>
 
-   <!-- INSIGHT, 4 November, renamed from Reading on his own screenshot
-        (DECISIONS.md, "The right rail's Reading panel"). The key stays you:
-        a key is identity, and the word is what a person reads. The summary
-        box left this section for #person above it, 14 November, so what is
-        left here is where to start and the cascade, parent through
-        children. -->
+
+   <!-- INSIGHT, THE TOP OF THE RAIL, 18 November. His words: "The insight panel
+        at the very top should say insight. Whatever I select, it should give
+        me source AI's reading of the cascade of that information, how it
+        flows through me, and what the appropriate actions are. And then
+        underneath that, it lists the stack from superego down, which I can
+        run protocols against." One frame, in this order: the word Insight,
+        what is selected, three paragraphs of Source AI's reading with dots to
+        page through the rest, one Release, and then the stack, unnested and
+        bars only. The Blueprint domain card that stood above this section
+        (#person) is gone: a domain is one more thing the reading reads when
+        it is selected. The key stays you: a key is identity, and the word is
+        what a person reads.
+        #insight is written by railInsight (ui/insightui.js) and #stack by
+        railStack (both in ui/insightui.js). #insaudio is the one slot the Insight audio
+        button attaches to (insightAudioSlot), empty until that branch lands. -->
    <div class="lsec open" data-rail="right" data-sec="you">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
+    <span class="ins-audio" id="insaudio"></span>
     <div class="lsec-bd">
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
-         is the same as a missing feature. The two ways in were three clicks
-         deep inside the bottom of the compass. They are here instead, and
-         they are only here while there is nothing to read. -->
-    <div class="start" id="start"></div>
+         is the same as a missing feature. The two ways in are here, and only
+         while there is nothing to read. -->
+     <div class="start" id="start"></div>
+     <div id="insight"></div>
      <div class="stack" id="stack"></div>
     </div>
    </div>
@@ -1575,31 +1577,21 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">
      <div id="rdrill" style="display:none"></div>
-     <div id="rdrill-none" class="rel-note">Nothing selected. Click an address, a law, a saboteur or the core.</div>
+     <div id="rdrill-none" class="rel-note"><b>Nothing selected.</b><span>Pick an address, a pattern or a row above to read it here.</span></div>
     </div>
    </div>
 
-   <div class="lsec" data-rail="right" data-sec="flow">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M12 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8M18 19c3-2.4 3-5.6 0-8 3-2.4 3-5.6 0-8"/></svg>Flow</span><i></i></button>
-    <!-- the energy shelf. the original computed this every frame and then
-         dropped it on the floor, because no element with this id existed. -->
-    <div class="lsec-bd"><div id="eshelf"></div><div id="run"></div></div>
-   </div>
-
-   <div class="lsec" data-rail="right" data-sec="running">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.4-5.6 4.4 11.2L16.2 12H21"/></svg>Running</span><i></i></button>
-    <div class="lsec-bd"><div id="fire"></div></div>
-   </div>
-
-   <div class="lsec" data-rail="right" data-sec="laws">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16M5.6 20V10M10 20V10M14 20V10M18.4 20V10M3.6 10L12 4.2l8.4 5.8z"/></svg>Laws of Moral Integrity</span><i></i></button>
-    <div class="lsec-bd">
-     <div class="bulk"><label for="allLaw">all</label><input type="range" id="allLaw" min="0" max="10" step="0.5" value="6"></div>
-     <div id="laws"></div>
-    </div>
-   </div>
-
-   <div style="display:flex;gap:7px;margin-top:14px"><button class="btn pri" id="bRel">Run a release</button></div>
+   <!-- FLOW, SEATS, RUNNING NOW, THE LAWS AND THE OLD FOOT BUTTON LEFT THIS
+        RAIL, 18 November. His words: "Everything beneath selection, including
+        flow, including seats, including grandiosity and predatory and
+        unbending and collapse... like it's all repeat. Running now,
+        grandiosity, that's all repeat, get rid of that. Laws of integrity.
+        Yeah, they're all on diagnostics. Get rid of that." Each one is on a
+        diagnostics surface already (DECISIONS.md, 18 November, names where),
+        and nothing renders after Selection on any tab now. The law boxes did
+        not exist anywhere else as an input, so they moved to Intake, in a
+        fold the Intake page carries (#iqhand, below), ids unchanged. The
+        Release button is #bRel inside the Insight reading. -->
   </div></div>
  </div>
 </div>

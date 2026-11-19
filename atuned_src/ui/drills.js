@@ -82,11 +82,21 @@ function rdOpen(){
     length of one drill (RD_INRAIL, set by pmAnswer for the shelf's rows).
     A press on the stage never sets it, so the rule above holds for every
     one of those exactly as it did. */
- if((beside||RD_INRAIL)&&sec&&sec.scrollIntoView){
-  try{sec.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
-  catch(e){sec.scrollIntoView();}}
+ /* THE ANSWER A PRESS IS BROUGHT TO IS THE READING, 18 November. Selection is the
+    last block of the rail now, under the stack, and Insight is the first, so
+    bringing the card into view scrolled the reading, the thing a person pressed
+    to read, off the top of the rail. Where the Insight section is on screen it
+    is the target; where it is not (the Story, the Summary and the Character
+    page keep only Selection) the card is, as it always was. */
+ var go=sec;
+ try{var iz=document.querySelector('.lsec[data-rail="right"][data-sec="you"]');
+  if(iz&&iz.getBoundingClientRect().height>0)go=iz;}catch(e){}
+ if((beside||RD_INRAIL)&&go&&go.scrollIntoView){
+  try{go.scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});}
+  catch(e){go.scrollIntoView();}}
  return b;}
 function rdClose(){ANA_PICK=null;S.pin=null;
+ if(typeof insClear==='function')insClear();
  /* AND BODY'S PICK GOES DOWN WITH THE ANSWER, now that Body answers here. The
     way back is where every surface puts its pick down, the Field's S.pin and
     Analytics' ANA_PICK above, and Body's was missing because Body never
@@ -149,8 +159,13 @@ function rdCase(h){
     &&t.split(/\s+/).length<=4&&/^[A-Z0-9]/.test(t);
    return '<div class="'+cls+(label?'':' plain')+'">'+body+'</div>';});}
 function rdShell(h){
+ /* WHAT THE DOOR SAID IT WAS OPENING BECOMES THE SELECTION, 18 November. A door
+    announces itself with insDoor (ui/insightui.js) just before it calls this,
+    and a card that never did leaves the selection empty, so the Insight reading
+    can never name one thing while Selection shows another. */
+ if(typeof insTake==='function')insTake();
  h=rdCase(h);
- var b=rdOpen(); if(!b)return;
+ var b=rdOpen(); if(!b){if(typeof insRefresh==='function')insRefresh();return;}
  var backTo=(typeof TABDEF!=='undefined'&&typeof S!=='undefined')
   ? (TABDEF.filter(function(t){return t.k===S.tab;})[0]||{}).nm : '';
  b.innerHTML='<div class="rd-card">'
@@ -167,7 +182,9 @@ function rdShell(h){
   +h
   +'<button class="btn" id="rdx" style="margin-top:14px">Close</button></div>';
  var x=document.getElementById('rdx'); if(x)x.onclick=rdClose;
- var k=document.getElementById('rdback'); if(k)k.onclick=rdClose;}
+ var k=document.getElementById('rdback'); if(k)k.onclick=rdClose;
+ /* the reading and the stack follow the card that was just opened, in place */
+ if(typeof insRefresh==='function')insRefresh();}
 /* ESCAPE LEAVES, the same as every other sheet in this product. It is bound
    once rather than per drill, and it only fires when a drill is actually open,
    so it never eats an escape another surface wanted. */
@@ -178,8 +195,30 @@ addEventListener('keydown',function(e){
  rdClose();});
 /* addrRow lives in component.js, beside the component it renders. */
 
+function runDrillRail(o){
+ var lv=leaves(o).slice().sort(function(a,b){return (+b.sq||0)-(+a.sq||0);});
+ var TN={sup:'Super complex',hy:'Hyper complex',cx:'Complex',sab:'Saboteur'};
+ var h='<div class="pm-eye">'+(TN[o.kind]||'Pattern')+(o.over?', overshot':'')+'</div>'
+  +'<div class="ad-nm">'+esc(traceSummaryBase(o.nm))+'</div>'
+  +'<div class="ad-sub">'+esc(fmtPct('chain',o.w))+(o.auth?'. '+esc(o.auth):'')+'</div>'
+  +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>':'')
+  +'<div class="pm-eye">Addresses</div><div class="ad-rows">'
+  +lv.slice(0,8).map(addrRow).join('')
+  +(lv.length>8?'<div class="pm-more">and '+(lv.length-8)+' more</div>':'')+'</div>';
+ rdShell(h);}
 function runDrill(o){
  if(!o){rdClose();return;}
+ /* THE RAIL'S CARD IS IDENTITY ONLY, 18 November: the name, the kind and the
+    percent, and the addresses under it as rows that open the address drill.
+    What it used to print beyond that, The opposite, What happens, The
+    sentence it runs, What becomes available, Next move, Runs under and Made
+    of, was Source AI's reading borrowed into the wrong section (his words:
+    "the information that's within that selection panel looks like it's
+    borrowing some information from the insight panel"), and it is composed
+    into the Insight reading now, from the same records (engine/insight.js). The
+    Wisdom school opens this same door to say what a pattern is, and there the
+    full card stays as it was. */
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn())){runDrillRail(o);return;}
  var lv=leaves(o), bs=[], fets=[];
  lv.forEach(function(n){if(bs.indexOf(n.b)<0)bs.push(n.b);
   if(n.cf&&fets.indexOf(n.cf)<0)fets.push(n.cf);});
@@ -281,8 +320,9 @@ function runDrill(o){
      edged block he called "an old legacy design" on the Flow cards. And
      Feeds up said a second time what the Insight box above it already says,
      "It runs inside Predatory". So the drill ends on Made of. traceSummary
-     is not dropped: insightSay in ui/ui.js reads the stack it resolves and
-     quotes the records it finds, which is the job he gave the summary box.
+     is not dropped: insightRead (engine/insight.js, from 18 November) reads the
+     same records and quotes the lines it finds, which is the job he gave the
+     summary box.
      The address drill's blend in nodeDrillHtml and the fetter drill's
      tsBlockHtml were left as they landed, read then as different surfaces,
      and that was wrong: the ruling (DECISIONS.md, "The selection summary
@@ -304,7 +344,7 @@ function runDrill(o){
    Analytics shows the same card inside its trail (ui/analytics.js), so there
    is one card and two doors, not two cards. o.ana marks the held rows so a
    press on one stays inside the Analytics trail. */
-function runLawDrill(l){if(l)rdShell(lawDrillHtml(l));}
+function runLawDrill(l){if(l){insDoor('law',l.nm);rdShell(lawDrillHtml(l));}}
 function lawDrillHtml(l,o){
  o=o||{};
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
@@ -393,7 +433,7 @@ function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
   +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
-function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
+function runNodeDrill(n){if(n){insDoor('addr',null,n.i);rdShell(nodeDrillHtml(n));}}
 function nodeDrillHtml(n,o){
  o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
@@ -569,6 +609,7 @@ function coreRangeSay(r){
    :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
+ insDoor('core');
  var r=compute();
  /* THE FIGURE LIVES HERE, ONE TAP DOWN, WITH ITS RANGE. 15 October, under
     the owner's 14 October ruling: no bare score on a daily surface. The
@@ -658,6 +699,7 @@ function gatesBlock(focus){
 function runGatesDrill(k){
  var V=verpRead(), v=V.filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
+ insDoor('gates',k);
  var o=V.filter(function(x){return x.k===VERP_VS[k];})[0], up=v.side==='higher';
  var read=V.some(function(x){return x.n>0;});
  var h='<div class="pm-eye">'+(up?'Right action':'Wrong action')+'</div>'
@@ -758,6 +800,7 @@ function runXYZDrill(){
    whole and not summarised, and the address it landed on is named with what
    it is standing on and what it costs. */
 function runAtomDrill(n,x){
+ insDoor('atom','Imprint');
  var d=''; try{d=new Date(x.t).toLocaleDateString(undefined,
    {year:'numeric',month:'long',day:'numeric'});}catch(e){d='';}
  var cf=CHILD.filter(function(y){return y.nm===n.cf;})[0];
@@ -821,6 +864,7 @@ function runFlowDrill(){
 
 /* BALANCE. which way the field discharges, and what it is built from. */
 function runBalDrill(){
+ insDoor('bal','Balance');
  var r=compute(), b=r.balance;
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
@@ -876,6 +920,7 @@ function runBalDrill(){
 /* the eyebrow follows the bar's name for the layer, GO in TASKS.md: a press on
    Assemblage Points and then on a band of it must not answer under "Seat" */
 function runSeatDrill(c){
+ insDoor('seat',c&&c.b);
  var h='<div class="pm-eye">Assemblage point</div><div class="ad-nm">'+esc(c.b)+'</div>'
   +'<div class="ad-sub">'+esc(c.nv)+'</div>'
   +'<div class="pm-eye">What encodes here</div><p class="ad-p">'+esc(c.d)+'</p>'
@@ -889,8 +934,25 @@ function runSeatDrill(c){
  rdShell(h);}
 
 function runFetterDrill(c){
+ insDoor('fet',c.nm);
  var held=S.charge[c.nm]||0, inst=S.replace[c.nm]||0;
  var at=W.filter(function(n){return n.cf===c.nm;});
+ /* THE RAIL'S CARD IS IDENTITY ONLY, 18 November. His words, on this card's
+    "Back to the field, child emotion Apathy" block: "That's the information
+    that seems like it belongs in the insight panel, not there." Where it sits,
+    Both halves and Which way it leans are Source AI's reading now (railInsight,
+    ui/insightui.js, composed in engine/insight.js from CHILD and the two
+    charge tables), so this card keeps the name, its opposite and the addresses
+    it runs. The Wisdom school opens this same door to answer what a child
+    emotion is, and there the whole card stays, because nothing else on that
+    page says it. */
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn())){
+  var sh='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
+   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
+   +'<div class="pm-eye">Addresses</div><div class="ad-rows">'
+   +at.slice(0,10).map(addrRow).join('')
+   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
+  rdShell(sh); return;}
  var h='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   /* the book's entry for each of the nine is on file as a universal law,
@@ -974,7 +1036,7 @@ function domReadHtml(d){
    +'<div class="pm-eye">Read distorted</div><p class="ad-p">'+esc(def.x)+'</p>';}
  else h+='<div class="pm-eye">What it is</div><p class="ad-p">'+esc(d.d||'')+'</p>';
  return h;}
-function runDomDrill(d){rdShell(domReadHtml(d));}
+function runDomDrill(d){insDoor('dom',d&&d.nm);rdShell(domReadHtml(d));}
 
 /* THE ARCHETYPE AND THE MASK, one drill each, for Knowledge and the Field.
 
@@ -988,6 +1050,7 @@ function runDomDrill(d){rdShell(domReadHtml(d));}
    where this person sits, read off the same compute() the wheel draws from. */
 function runArchDrill(a){
  if(!a)return;
+ insDoor('arch',a.nm);
  var j=ARCH.indexOf(a), r=compute(), at=(S.arcs||[]).indexOf(j);
  /* THE SENTENCE WAS ON FILE AND NOT PRINTED. ARCH carries two lines for each
     of the twelve, v, the four words the Knowledge row shows under the name,
@@ -1009,6 +1072,7 @@ function runArchDrill(a){
  rdShell(h);}
 function runMaskDrill(m){
  if(!m)return;
+ insDoor('mask',m.nm);
  var b=m.b||m.bands||[], seats=b.join(' and ');
  /* EVERY MASK ANSWERED WITH THE SAME PARAGRAPH. It is about what a mask is
     in general, and it was the whole of "What it is" for all five, so Child
@@ -1245,6 +1309,7 @@ function runHomePoleDrill(p){
   +'<div class="ad-sub">opposite '+esc(p.dn)+'</div>'
   +'<p class="ad-p">No behaviours are written for this teacher yet.</p>');}
 function runPoleDrill(end){
+ insDoor('pole',end==='dn'?'The downward cone':'The upward cone');
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
   +'<div class="ad-nm">'+(up?'Eight qualities at full expression':'The same eight, inverted')+'</div>'
@@ -1731,6 +1796,7 @@ function runMirrorDrill(k){
 
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
+ insDoor('path','Path');
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  /* the band formula stood here as a second copy of renderPol2's, kept only to
     print "the swing, 11 points". With the figure gone it had no reader, and a

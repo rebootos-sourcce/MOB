@@ -167,6 +167,11 @@ var UNPACK_BASE={
     gains "you grow into" and the point, and GLOSS now opens on the same words.
     tests/unpack.js holds the two places to one sentence. */
  'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
+    this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
+    stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
+    is kept here, where the header of that level reads it. */
+ 'child emotions':'The child emotions are the nine feelings the chain of patterns runs on, and each bar leans from what is held toward what is installed.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
     which made CQ and coherence one thing. The 25 September ruling makes CQ

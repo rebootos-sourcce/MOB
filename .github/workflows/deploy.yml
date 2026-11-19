@@ -304,6 +304,12 @@ jobs:
           # BIRTH table before. Real Chromium gate, orphaned at first the
           # same way avatarpurpose was.
           - { gate: ownbirth, timeout: 20, command: node tests/ownbirth.js }
+          # ADDED 19 November, the Insight rail (feature/insight-rail-unnested):
+          # the reading composer (engine/insight.js, headless) and the
+          # unnested six-level stack's own real-Chromium walk. Both orphaned
+          # the same way avatarpurpose was.
+          - { gate: insightread, timeout: 20, command: node tests/insightread.js }
+          - { gate: insightrail, timeout: 20, command: node tests/insightrail.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
           # allowance, gift, money, releasechain and pct, all added to
@@ -396,10 +402,9 @@ jobs:
           - { gate: valuefelt, timeout: 20, command: node tests/valuefelt.js }
           - { gate: claims, timeout: 20, command: node tests/claims.js }
           - { gate: discordfeedback, timeout: 20, command: node tests/discordfeedback.js }
-          # 14 November: the Insight well's auto-pin (tests/wellpin.js), pin on
-          # press, pin unchanged on a second press, a locked tier pins nothing,
-          # render() never resurrects a cleared pin. New, so report only first.
-          - { gate: wellpin, timeout: 20, command: node tests/wellpin.js }
+          # wellpin REMOVED 19 November, merge of feature/insight-rail-unnested:
+          # the five tabs and the auto-pin it tested are gone on the unnested
+          # rail; tests/wellpin.js is deleted, not edited.
           # 18 November: the lighting menu on top of every surface
           # (tests/lightmenu.js). In Glass white the bar's backdrop-filter made
           # it a stacking context and the open menu painted under the

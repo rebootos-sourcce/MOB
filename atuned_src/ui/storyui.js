@@ -2231,7 +2231,10 @@ function srcGuessAt(b){return 'My guess is it sits '+srcPlace(b)+'.';}
    and focus (tip.js, the product's one tooltip), and the .src-ai treatment, a
    colour and an italic, on the words themselves. Never the icon alone. The
    person's own words never carry it, and neither does a computed fact. */
-var SRC_MARK_TIP='Source AI wrote this from your words. Where it says my guess, it is a guess until you say it fits.';
+/* WIDENED, 18 November, for the Insight reading, which is written from a
+   person's record and not only from their words: "from your words and your
+   reading". One concept, one mark, one tip, on every surface. */
+var SRC_MARK_TIP='Source AI wrote this from your words and your reading. Where it says my guess, it is a guess until you say it fits.';
 function srcMark(){
  return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(SRC_MARK_TIP)+'">'
   +'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'

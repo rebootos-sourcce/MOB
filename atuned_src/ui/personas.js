@@ -1175,45 +1175,15 @@ function loadP(i){
  else if(S.tab===TAB.GAMES&&typeof gmRender==='function')gmRender();}
 
 /* ---- release button ---- */
-$('bRel').addEventListener('click',function(){
- /* the heaviest eight, engine/compute.js relQueueOf: at or over the line
-    first, and below it when nothing is that heavy, for the reason below */
- var hot=relQueueOf(8);
- if(hot.length){relPick(hot.map(function(n){return n.i;}));return;}
- /* THIS IS WHERE THE REWARD CURVE ENDED. The queue was built at the sq 4 line
-    only, so the control refused the moment nothing was stacked that high, and
-    the core loop of the product had exactly two runs in it.
-
-    Measured on James, through this control. Run one +4.04 CQ, run two +1.80,
-    run three refused. He is left at CQ 18.6, tier Severe, the worst band but
-    one, with 72 addresses still carrying, and the product tells him there is
-    nothing to release. Three of the six ICPs never get past this line even on
-    their first visit, because their load was never stacked above it.
-
-    Below the line there is still ground, so the control takes it. The queue is
-    the heaviest addresses actually holding something. The release run already
-    handles them: it frees weight proportional to what is there, so the returns
-    fall away honestly as the field empties instead of stopping at a cliff. */
- /* relQueueOf above has already taken that ground when nothing is over the
-    line, so reaching here means nothing is carrying at any depth. */
- /* Nothing is held, so there is nothing to release. This used to run a 2.8
-    second animation that zeroed every charge and raised every law toward ten,
-    on one click, with no confirmation and no undo. It was written as a
-    demonstration of the mechanism and a person cannot tell a demonstration
-    from the real thing: the numbers simply changed and there was no way back.
-    A control must never claim to have done something it has not done, and it
-    must never do something destructive it was not asked to do. */
- /* AND THE REASON IS NOT THE SAME FOR EVERYBODY WHO LANDS HERE. The old copy
-    said nothing was held above the line, which was the wrong line: this branch
-    only runs when nothing is carrying at any depth. A person who has answered
-    the intake and nothing else is in a different position from a person who has
-    entered nothing at all, and telling them both to write a story leaves the
-    first one thinking sixty three answers did nothing. The intake measures how
-    they act. A story is what puts an address on the map. */
- var _m=compute().measured;
- status(_m>0
-  ?'Nothing is carrying, so there is nothing to release. The intake measured '
-   +_m+(_m===1?' law':' laws')+'. They show how you act and not what you hold. A story is '
-   +'what puts an address on the map.'
-  :'Nothing is carrying, so there is nothing to release. Write a story or set '
-   +'a charge first.','warn');});
+/* THE RELEASE BUTTON MOVED INTO THE INSIGHT READING, 18 November, and it acts
+   on what is selected. This handler stood here for the old foot button, which
+   queued the heaviest eight addresses on the whole field whether or not
+   anything was picked. His words: "I can see the different layers of it, and
+   I can run a release from it." The button is #bRel inside the reading
+   (railInsight, ui/insightui.js), drawn only when the selection holds charge a
+   release can open, and the press is handled there with the bars' own run
+   glyphs, so every door to a run is one function (insRunRelease). A person
+   with nothing selected has the release doors on Summary, the Journal and the
+   Story, which queue the whole field. The 24 September rule that a run is
+   never made out of a field holding nothing is kept: insightCanRelease
+   refuses it by name and says why through status(). */
