@@ -614,8 +614,13 @@ the coercion every caller shares), ui/railmotion.js, ui/knowledge.js
 shell/head.html (the bar's layout selectors name #gaterows beside .fdock, the
 four symbols' grid, the broken side's hatch, the dead .chk-, .amp-row, .nf.oppf
 and .stk-def rules out), engine/data/canon.js (SUPEREGO_IC, four stroked
-marks), engine/data/gloss.js (child emotions, chain, field anchor, rail:action,
-six gate: sentences, four superego: sentences), tests/psychepanel.js (new),
+marks), engine/data/gloss.js (child emotions, field anchor, rail:action,
+six gate: sentences, four superego: sentences; the first cut's entry for the
+chain was cut because nothing asked for it), ui/drills.js (a press on a
+Superego symbol opens the address card headed with the defence's name and its
+table sentence, an address with no name is titled Unnamed, Root 08, and a field
+anchor's card says Field anchor, above or below the body), ui/personas.js (the
+Matrix caption carries the meaning of child emotions), tests/psychepanel.js (new),
 tests/functional.js, tests/design.js, tests/unpack.js, tests/floors.json.
 Branch fix/psyche-panel-rework.
 measure: tests/psychepanel.js (new, report only first) read 174 passed, 0 failed

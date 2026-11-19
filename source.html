@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v169 72a28def 2026-11-18 09:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v170 5d6c6660 2026-11-18 18:22"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11992,7 +11992,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
-     <div class="lbl plain">19 domains &times; 9 child emotions</div>
+     <div class="lbl plain" id="mxcap">19 domains &times; 9 child emotions</div>
      <div class="mx" id="mx"></div>
      <div class="mxk" id="mxk"></div>
     </div>
@@ -18166,13 +18166,17 @@ var UNPACK_BASE={
  'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
  'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
  /* THE PSYCHE PANEL'S OWN WORDS, 18 November, the round that took the book's
-    levels, Child emotions and The chain off the Field's left rail. Each of
-    the three said something the panel is no longer there to say, so the
-    sentence is kept here, where a hover on the term still reaches it, and no
-    surface keeps a copy. The chain legend's colour key went with it and is
-    said by the wheel's own hover on a dot (describe, ui/ui.js). */
+    levels, Child emotions and The chain off the Field's left rail. Two of the
+    terms kept a sentence here because something on a screen still says them
+    and now asks for it: the Matrix caption's "9 child emotions" (mxKey,
+    ui/personas.js) and the card a field anchor opens (nodeDrillHtml,
+    ui/drills.js). The third, "the chain", has no entry: the first cut of this
+    round wrote one, and the skeptic found nothing asked for it, so it was cut
+    rather than left as a sentence no screen can reach. Each tier of the chain
+    keeps its own entry (saboteur, complex, hyper complex, super complex), the
+    legend's colour key has no new home and is listed as open in DECISIONS.md,
+    and a wheel dot's hover still names its tier (describe, ui/ui.js). */
  'child emotions':'The child emotions are the nine basic feelings, such as fear, anger and shame, and every charge in your body is held as one of them.',
- 'chain':'The chain is how patterns stack: saboteurs join into complexes, complexes into hyper complexes, and those into a super complex.',
  'field anchor':'A field anchor is one of four places outside the body, two above the head and two below the feet, where no nerve sits.',
  /* THE FOUR SUPEREGO SYMBOLS, 18 November, each said once, here. The figure
     under a symbol is what the engine measures, the charge held at the address
@@ -84640,7 +84644,10 @@ function anchorSays(n){var s=anchorSeat(n); if(!s)return null;
  return 'No nerve sits under it, so it holds no charge of its own and no saboteur forms here. '
   +'It carries the average weight of the '+s.toLowerCase()+' seat it extends, <b>'+p+'%</b>. '
   +'That weight counts in decoherence, your total shadow, and nowhere in the chain.';}
-function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
+/* o.amp names a Superego defence when the press came from one of its four
+   symbols (renderAmplifiers, ui/ui.js), and the card then says which defence
+   it opened for. See the header below. */
+function runNodeDrill(n,o){if(n)rdShell(nodeDrillHtml(n,o));}
 function nodeDrillHtml(n,o){
  o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
@@ -84648,8 +84655,37 @@ function nodeDrillHtml(n,o){
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
  /* The header read "Address 007, root". The index is a storage key and a
     person's Scarcity is not 007 to them. The seat is what carries meaning. */
- var h='<div class="pm-eye">'+esc(n.b)+'</div>'
-  +'<div class="ad-nm">'+esc(n.k)+'</div>'
+ /* A PRESS ON A SUPEREGO SYMBOL SAYS WHICH DEFENCE IT IS. 18 November, the
+    skeptic's finding on the Psyche round: the card opened headed "Solar,
+    Arrogance" and never said Justification, so a person who pressed the
+    balance and read 54% could take the card for a reading of Justification,
+    which the figure is not. Its own figure is the charge left at the address
+    the book seats the defence at, and the card now opens on the defence's
+    name and on the one sentence the meaning table keeps for it, the same one
+    the symbol's hover carries (unpackOf, engine/data/gloss.js), so the figure
+    is defined in the place it is opened and is never described a second way.
+    Nothing is invented here: the sentence is read off the table.
+
+    An address with no name yet is shown as the engine's own helper shows it,
+    "Unnamed, Root 08" (charAddrName, engine/charfield.js), and never as the
+    key it is stored under, which is what the title printed for Entitlement's
+    address until now. The card says why no story reaches it and stops there:
+    "this one is an open ruling" is the team's own word, and it was being
+    printed to a person under a heading it does not belong to. The eyebrow
+    names the seat the way the rest of the product does, "the solar seat"
+    (anchorSays, above), and not "at the solar". */
+ var amp=o.amp?String(o.amp):'', ampSay=amp?unpackOf(amp,'superego'):'';
+ var unnamed=/_Unnamed$/.test(n.k);
+ /* a field anchor says what it is in the place a seat is named for every other
+    address: its bucket key, Field-Above, is storage and not a word for a person
+    (engine/data/gloss.js, 'field anchor', is the sentence on hover and tap) */
+ var anchor=anchorSeat(n), fa=anchor?unpackOf('field anchor'):'';
+ var h=amp
+   ?'<div class="pm-eye plain">'+esc(amp)+', at the '+esc(String(n.b).toLowerCase())+' seat</div>'
+   :anchor
+   ?'<div class="pm-eye plain" data-tip-k="Field anchor" data-tip="'+esc(fa)+'">Field anchor, '+(n.b==='Field-Above'?'above':'below')+' the body</div>'
+   :'<div class="pm-eye">'+esc(n.b)+'</div>';
+ h+='<div class="ad-nm'+(unnamed?' plain':'')+'">'+esc(unnamed?charAddrName(n.k):n.k)+'</div>'
   /* V21. The sentence read "Held 5.4, opposite installed 0.0, net SQ 5.4.
      Distorts as Self-rejection.", three variable names and a one noun
      behaviour, which is the string he pressed and could not read. Each figure
@@ -84657,6 +84693,7 @@ function nodeDrillHtml(n,o){
      left of the held state after the opposite is in. DESIGN-tooltip-copy.md,
      example 1. */
   +'<div class="ad-sub">'+esc(n.n||'just outside the body')+(n.a?' · '+esc(n.a):'')+'</div>'
+  +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   /* no fetter has a meaning on file, only the one word it shows up as, so in
@@ -84675,7 +84712,8 @@ function nodeDrillHtml(n,o){
     +c.nm+' itself lives mainly at the '+c.addr.toLowerCase()+(c.loc?', in the '+esc(c.loc):'')
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
-   :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
+   :anchor?'A field address, with no poled axis under it. This one is an open ruling.'
+   :'No feeling is seated at this address yet, so no story can put charge here.')+'</p>'
   /* in the Analytics trail, the feeling and the seat under this address are
      the next two steps down, round RB */
   +(o.ana&&typeof anaTraceRows==='function'?anaTraceRows(n):'')
@@ -94494,7 +94532,16 @@ $('mx').addEventListener('mouseleave',mxKey);
    the gold ring. "Columns are domains, rows are child emotions" repeated the
    label over the grid, and "Press any cell" told a person how to use it. */
 function mxKey(){$('mxk').innerHTML='The brighter a cell, the more charge it holds. '
- +'A gold ring marks a pair that weighs more together.';}
+ +'A gold ring marks a pair that weighs more together.';
+ /* THE CAPTION'S TERM CARRIES ITS MEANING, 18 November. "9 child emotions" is
+    the one place on the Psyche panel that still says the term now that the
+    section named for it is gone, so the sentence the table keeps for it
+    (engine/data/gloss.js, 'child emotions') is on the caption itself, on hover
+    and tap and to a screen reader, and the table entry has a caller. Set from
+    the table and never typed, so a sentence that is reworded changes here. */
+ var cap=$('mxcap'), ce=unpackOf('child emotions');
+ if(cap&&ce){cap.setAttribute('data-tip-k','Child emotions'); cap.setAttribute('data-tip',ce);
+  cap.setAttribute('aria-label','19 domains by 9 child emotions. '+ce);}}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});
@@ -101220,7 +101267,10 @@ function render(){
    rows spoke, impaired and blocked, read as a verdict on a defence and are
    gone. A press opens the node drill, as it always did, and the name and
    its sentence are on hover and tap and in the spoken name, never printed
-   beside the symbol, because "Perfectionism" is wider than its column. */
+   beside the symbol, because "Perfectionism" is wider than its column. The
+   card a press opens is headed with the defence's own name and its one table
+   sentence (nodeDrillHtml, ui/drills.js, o.amp), so it never reads as a
+   reading of the defence that it is not. */
  var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
  function renderAmplifiers(r){
   var h=document.getElementById('amprows'); if(!h)return;
@@ -101240,7 +101290,7 @@ function render(){
   if(!h.getAttribute('data-wired')){h.setAttribute('data-wired','1');
    h.addEventListener('click',function(e){
     var b=e.target.closest('[data-amp-i]'); if(!b)return;
-    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
+    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n,{amp:b.getAttribute('data-tip-k')});});}}
  /* ACTION IS SIX BARS, the same bar the readings above draw. rbRow
     (ui/component.js) is called as the CQ, vitality and flow rows call it, so
     the track, the ticks, the head, the sweep and the move of a figure are one
@@ -101711,5 +101761,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="006797715"></div>
+<div id="eof" hidden data-len="006801330"></div>
 </body></html>

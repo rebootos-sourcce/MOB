@@ -35234,8 +35234,12 @@ Action as six bars.
   quiz asks none of the nine child emotions and the Intake's Emotional axes feed
   nothing, so nothing a person types moves their nine charges except the four
   letter seed and their stories.
-- [ ] **WP5. Entitlement reads the dash for everybody.** Its address, the unnamed
-  Root address, has no child emotion. His ruling on that address is open.
+- [ ] **WP5. Entitlement reads the dash for everybody. First question to him.**
+  Its address, the unnamed Root address, has no child emotion, and the charge
+  at it is 0 for all sixteen people the engine carries (measured 18 November).
+  Keep four with the crown unlit (built), show three, or wire it (he names a
+  child emotion for address 8, or moves the amplifier to address 38). His
+  ruling on that address is open; the costs are in DECISIONS.md.
 - [ ] **WP6. A reading of the four defences from a person's own words.** The
   Superego figure is the charge held at the defence's place in the body. The
   engine's lean reader already has word lists that touch Justification and
@@ -35246,3 +35250,9 @@ Action as six bars.
   hover says its own meaning. A rename is his call.
 - [ ] **WP9. The wheel's dot colours lost their legend.** Hovering a dot names
   its tier. Whether the colours need a line of their own is open.
+- [x] **WP10. The skeptic's four findings on WP1, closed 18 November.** A press
+  on a Superego symbol opens a card headed with the defence and its sentence
+  (WP5 and WP6 stay his call); the Matrix caption carries the meaning of child
+  emotions; the field anchor's card says what it is; the entry for the chain
+  was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
+  any entry the round added that nothing asks for.

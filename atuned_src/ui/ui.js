@@ -1933,7 +1933,10 @@ function render(){
    rows spoke, impaired and blocked, read as a verdict on a defence and are
    gone. A press opens the node drill, as it always did, and the name and
    its sentence are on hover and tap and in the spoken name, never printed
-   beside the symbol, because "Perfectionism" is wider than its column. */
+   beside the symbol, because "Perfectionism" is wider than its column. The
+   card a press opens is headed with the defence's own name and its one table
+   sentence (nodeDrillHtml, ui/drills.js, o.amp), so it never reads as a
+   reading of the defence that it is not. */
  var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
  function renderAmplifiers(r){
   var h=document.getElementById('amprows'); if(!h)return;
@@ -1953,7 +1956,7 @@ function render(){
   if(!h.getAttribute('data-wired')){h.setAttribute('data-wired','1');
    h.addEventListener('click',function(e){
     var b=e.target.closest('[data-amp-i]'); if(!b)return;
-    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n);});}}
+    var n=BY[+b.getAttribute('data-amp-i')]; if(n)runNodeDrill(n,{amp:b.getAttribute('data-tip-k')});});}}
  /* ACTION IS SIX BARS, the same bar the readings above draw. rbRow
     (ui/component.js) is called as the CQ, vitality and flow rows call it, so
     the track, the ticks, the head, the sweep and the move of a figure are one

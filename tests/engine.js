@@ -8423,8 +8423,15 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
    return t.indexOf(v.nm+', a '+(v.side==='higher'?'right':'wrong')+' action,')===0&&/its share of every action read in your stories/.test(t);}),
    'each of the six gates has a sentence that names it, says which side of the law it stands on and says what its figure is');
   ok(/^Action is the move/.test(T['rail:action']||'')&&/nine basic feelings/.test(T['child emotions']||'')
-   &&/saboteurs join into complexes/.test(T['chain']||'')&&/two above the head and two below the feet/.test(T['field anchor']||''),
-   'the sentences the removed sections carried are in the table: action, child emotions, the chain, a field anchor');}
+   &&/two above the head and two below the feet/.test(T['field anchor']||''),
+   'the sentences the removed sections carried that a screen still asks for are in the table: action, child emotions, a field anchor');
+  /* THE CHAIN HAS NO ENTRY, on purpose. The first cut wrote one and nothing on
+     any screen asked for it, which the skeptic found: a sentence no surface can
+     reach is dead data that rots. Each tier keeps its own entry. tests/
+     psychepanel.js holds the other half, that every entry the round added has a
+     caller in the page. */
+  ok(!Object.prototype.hasOwnProperty.call(T,'chain')&&['saboteur','complex','hyper complex','super complex'].every(k=>T[k]),
+   'there is no meaning entry for the chain that no screen asks for, and each of its four tiers keeps its own');}
  /* the two anatomy words among the seat spots carry a sentence that names them */
  ok(E.FLOWSEAT.filter(s=>/notch|sternum/i.test(s.seat)).every(s=>T['spot:'+s.k]&&T['spot:'+s.k].toLowerCase().indexOf(s.seat.replace(/^the /,'').toLowerCase())>=0),
   'every anatomy word among the seat spots has a sentence naming it');

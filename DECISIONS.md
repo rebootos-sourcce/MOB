@@ -3797,11 +3797,27 @@ explanation:
   existing `superego` entry, so the word has one definition and not two);
 - the four defences each get `superego:<name>`, and the one whose address no
   child emotion reaches (Entitlement) says so while that is true, read off the
-  address and never typed;
+  address and never typed. A press on a symbol opens the address card headed
+  with the defence's own name and that same sentence, straight under the
+  address (`nodeDrillHtml`, `o.amp`), because the figure is the charge left at
+  the address and not a reading of the defence, and a card headed only
+  "Solar, Arrogance" let a person read it as one (skeptic's finding, 18
+  November). The address with no name yet is titled "Unnamed, Root 08", never
+  the key it is stored under, and its card says why no story reaches it and
+  stops there, without the team's own words "open ruling". The eyebrow names the
+  seat as the product does everywhere else, "Justification, at the solar seat";
 - the Laws of Action paragraphs are `rail:action` and six `gate:<name>`
   sentences, each saying what the move is and what its figure is;
-- `child emotions`, `chain` and `field anchor` are new, because each was printed
-  or implied elsewhere and the panel was where a person met its meaning.
+- `child emotions` and `field anchor` are new, and each has a caller now: the
+  Matrix caption's own "9 child emotions" carries the sentence on hover, tap and
+  to a screen reader (`mxKey`, `ui/personas.js`), and the card a field anchor
+  opens is headed "Field anchor, above the body" with the sentence on hover and
+  tap, where it used to print its storage key, Field-Above. The first cut also
+  wrote an entry for `chain`. Nothing on any screen asked for it, so it was cut
+  and not left as a sentence no one can reach; each tier of the chain keeps its
+  own entry. `tests/psychepanel.js` (F) wraps the lookup, draws the panel and
+  opens the cards, and fails on any entry the round added that nothing asked
+  for;
 The gate drill keeps its longer text. The Avoidance reading stays where it is
 never shown alone, the Journal's Laws accordion, with the two readings it is
 built from.
@@ -3852,16 +3868,35 @@ stories. Removing the sliders did not wait for it.
   sections.
 
 **Open, written down with the ways it could go.**
-- **Entitlement reads the dash for everybody.** Its address, the unnamed Root
-  address, has no child emotion, so no story can put charge there. The symbol is
-  drawn, unlit, and its hover says no story reaches it yet. Ways it could go:
-  keep it (default), show three symbols, or wire it, which needs his ruling on
-  that address (CLAUDE.md, "His, not mine").
-- **A real reading of the four defences.** The figure is charge at a place in
-  the body. Reading the defences themselves from a person's words (blame and
-  "anyone would have" for Justification, "they owe me" for Entitlement) has a
-  word list in the engine's lean reader already, and nothing counts
-  Perfectionism or Obsession. New arithmetic, not built.
+- **Entitlement reads the dash for everybody. This is the first question to
+  him.** Measured on all sixteen people the engine carries (18 November): the
+  charge at Entitlement's address is 0 for sixteen of sixteen, because that
+  address, the unnamed Root address (`Root_08_Unnamed`, address 8), has no child
+  emotion and a story's charge lands on an address through its child emotion. So
+  the crown is permanently unlit and its hover says no story reaches it yet.
+  Ways it could go, and what each costs:
+  - keep four, the crown always unlit (built, the default). Costs nothing and
+    shows him the gap, and costs a symbol that can never light for anyone;
+  - show three. Costs one line and a test, and the four he asked for become
+    three until the address is ruled;
+  - wire it. Either he names a child emotion for address 8 (the engine then
+    reads it with no other change), or he moves the amplifier to address 38,
+    where the book's node list already has a Solar address named Entitlement
+    with anger under it. The second changes a table he ruled (`AMPLIFIER`, AM01,
+    tag R, `engine/data/registers.js`) and the codes and errata that compare it
+    to the book (`engine/data/codes.js`, `BOOK-ERRATA.md`). Either way it needs
+    his ruling on that address (CLAUDE.md, "His, not mine").
+- **A real reading of the four defences.** Question two to him. The figure is
+  charge at a place in the body: on Derek it reads 54%, a dash, 30% and 54%
+  under a balance, a crown, a rule and a spiral, and a person can read a ring
+  with a percent as "how much of this defence I carry". The hover, the spoken
+  name and the card a press opens all say it is the charge held at its place,
+  and none says it is a reading of the defence. Whether it should stay that way
+  or become a real reading of the defences from a person's words is his call.
+  Reading the defences themselves from a person's words (blame and "anyone
+  would have" for Justification, "they owe me" for Entitlement) has a word list
+  in the engine's lean reader already, and nothing counts Perfectionism or
+  Obsession. New arithmetic, not built.
 - **One phrase reads as a full bar.** One line that says "I avoided him" is
   Aversion at 100%, true as a share and thin as evidence. The bar and the drill
   print the same share today. A floor of about six phrases before a figure shows

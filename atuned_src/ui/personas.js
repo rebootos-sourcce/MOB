@@ -33,7 +33,16 @@ $('mx').addEventListener('mouseleave',mxKey);
    the gold ring. "Columns are domains, rows are child emotions" repeated the
    label over the grid, and "Press any cell" told a person how to use it. */
 function mxKey(){$('mxk').innerHTML='The brighter a cell, the more charge it holds. '
- +'A gold ring marks a pair that weighs more together.';}
+ +'A gold ring marks a pair that weighs more together.';
+ /* THE CAPTION'S TERM CARRIES ITS MEANING, 18 November. "9 child emotions" is
+    the one place on the Psyche panel that still says the term now that the
+    section named for it is gone, so the sentence the table keeps for it
+    (engine/data/gloss.js, 'child emotions') is on the caption itself, on hover
+    and tap and to a screen reader, and the table entry has a caller. Set from
+    the table and never typed, so a sentence that is reworded changes here. */
+ var cap=$('mxcap'), ce=unpackOf('child emotions');
+ if(cap&&ce){cap.setAttribute('data-tip-k','Child emotions'); cap.setAttribute('data-tip',ce);
+  cap.setAttribute('aria-label','19 domains by 9 child emotions. '+ce);}}
 function syncMx(){MXC.forEach(function(b){
  const c=+b.dataset.c,rw=+b.dataset.rw,cf=CHILD[rw].nm,D=DOMAINS[c];
  const seg=W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===cf;});

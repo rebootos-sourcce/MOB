@@ -38,6 +38,17 @@
         by colour, a gap and a hatch in every lighting. The percent is the
         fill. A press opens that gate's drill.
      D  NO POINTS. No decimal and no word points anywhere in the panel.
+     F  EVERY SENTENCE THE ROUND ADDED HAS A CALLER, and a press says what it
+        opened. The 18 November skeptic found three entries in the meaning
+        table that nothing on a screen asked for ("child emotions", "chain",
+        "field anchor"), so the Matrix caption's own term stood with no
+        meaning beside it. This wraps unpackOf in the page, renders the panel,
+        opens the cards a person can open, and fails on any entry the round
+        added that was never asked for. A press on a Superego symbol opens a
+        card headed with that defence's name and its table sentence, and the
+        card for an address with no name never prints the key it is stored
+        under (Root_08_Unnamed), and a field anchor's card never prints its
+        bucket key (Field-Above).
      E  AN OLD STORE. A browser carrying section keys from before this round
         loads without an error and the panel is the same three; nothing the
         product writes brings a removed section's key back; and the coercion
@@ -159,7 +170,11 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
       levels:!!document.querySelector('.lsec[data-sec=levels]'),fetters:!!document.querySelector('.lsec[data-sec=fetters]'),
       chain:!!document.querySelector('.lsec[data-sec=chain]'),chk:document.querySelectorAll('.chk-row').length},
      mx:document.querySelectorAll('#mx button').length,
-     mxCap:(document.querySelector('.lsec[data-sec=matrix] .lbl')||{textContent:''}).textContent.replace(/\s+/g,' ').trim()};});
+     mxCap:(document.querySelector('.lsec[data-sec=matrix] .lbl')||{textContent:''}).textContent.replace(/\s+/g,' ').trim(),
+     capTip:(document.getElementById('mxcap')||{getAttribute:function(){return null;}}).getAttribute('data-tip'),
+     capTipK:(document.getElementById('mxcap')||{getAttribute:function(){return null;}}).getAttribute('data-tip-k'),
+     capAria:(document.getElementById('mxcap')||{getAttribute:function(){return null;}}).getAttribute('aria-label')||'',
+     capWant:unpackOf('child emotions')};});
    ok(A.head==='Psyche','A '+tag+'the panel keeps its Psyche heading, got '+J(A.head));
    ok(J(A.names)===J(['Matrix','Superego','Action'])&&J(A.keys)===J(['matrix','superego','gates'])
     &&A.kinds.every(k=>/^DIV\.lsec$/.test(k)),
@@ -171,6 +186,12 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
     'A '+tag+'no removed section, slider or host is left in the document, '+J(A.gone));
    ok(A.paras===0,'A '+tag+'no paragraph and no sub heading in Superego or Action, saw '+A.paras);
    ok(A.mx===171&&/^19 domains\s*\u00d7\s*9 child emotions$/.test(A.mxCap),'A '+tag+'the Matrix is as it was, 171 cells and its own line, got '+J([A.mx,A.mxCap]));
+   /* THE TERM THE CAPTION STILL SAYS CARRIES ITS MEANING. "9 child emotions" is
+      all that is left of the section named for them, and a term stands with its
+      meaning, so the caption has the table's sentence on hover and tap and in
+      its spoken name. The sentence is read off the table, never typed here. */
+   ok(!!A.capWant&&A.capTip===A.capWant&&A.capTipK==='Child emotions'&&A.capAria.indexOf(A.capWant)>=0,
+    'A '+tag+'the Matrix caption carries the meaning of child emotions, on hover, tap and in its spoken name, got '+J([A.capTip,A.capTipK,A.capAria.slice(0,40)]));
    /* the sections sit an even distance apart: the gap above each is the same */
    const gaps=await page.evaluate(()=>{var b=window.__psy(),r=b.secs.map(window.__R);
     return r.slice(1).map(function(x,i){return x.t-r[i].b;});});
@@ -295,6 +316,24 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
     var a=document.querySelector('#amprows .amp-i[data-amp-i]'); var before=(document.getElementById('rdrill')||{innerText:''}).innerText;
     a.click(); var d=document.getElementById('rdrill'); out.ampOpen=!!d&&d.innerText.length>0&&d.innerText!==before;
     out.ampName=(d&&d.innerText||'').slice(0,60);
+    /* EVERY SYMBOL, pressed. What each card is headed with, what it says about
+       the figure, and the title it gives the address. */
+    out.cards=[...document.querySelectorAll('#amprows .amp-i')].map(function(b){
+     b.click(); var c=document.getElementById('rdrill'), n=BY[+b.getAttribute('data-amp-i')], nm=b.getAttribute('data-tip-k');
+     var say=c&&c.querySelector('.amp-say');
+     return {nm:nm, key:n.k, unnamed:/_Unnamed$/.test(n.k), want:unpackOf(nm,'superego'), cf:n.cf,
+      eye:c&&(c.querySelector('.pm-eye')||{}).textContent, title:c&&(c.querySelector('.ad-nm')||{}).textContent,
+      say:say?say.textContent:null, sayFirst:say&&c.querySelector('.ad-sub')&&(c.querySelector('.ad-sub').nextElementSibling===say),
+      text:c?c.innerText:'', wantTitle:/_Unnamed$/.test(n.k)?charAddrName(n.k):n.k, seat:String(n.b).toLowerCase()};});
+    /* a card opened any other way keeps the plain header: no defence is named on it */
+    runNodeDrill(BY[34]); out.plain=(document.querySelector('#rdrill .pm-eye')||{}).textContent;
+    out.plainSay=!!document.querySelector('#rdrill .amp-say');
+    /* a field anchor's card says what it is, and carries the meaning on hover and tap */
+    var fa=document.createElement('div'); fa.innerHTML=nodeDrillHtml(FIELD[0]);
+    var fe=fa.querySelector('.pm-eye');
+    out.anchor={eye:fe?fe.textContent:'', tip:fe?fe.getAttribute('data-tip'):null, want:unpackOf('field anchor'), raw:/Field-(Above|Below)/.test(fa.textContent)};
+    var fb=document.createElement('div'); fb.innerHTML=nodeDrillHtml(FIELD[FIELD.length-1]);
+    out.anchorBelow=(fb.querySelector('.pm-eye')||{}).textContent;
     var bars=[...document.querySelectorAll('#gaterows .rbar')];
     bars[0].click(); out.kept=(document.querySelector('#rdrill .pm-eye')||{}).textContent;
     out.keptNm=(document.querySelector('#rdrill .ad-nm')||{}).textContent;
@@ -303,12 +342,52 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
     if(typeof rdClose==='function')rdClose();
     return out;});
    ok(P.ampOpen,'B '+tag+'a press on a symbol opens its address, got '+J(P.ampName));
+   /* THE CARD A SYMBOL OPENS NAMES THE DEFENCE. The figure under a symbol is the
+      charge left at the address the book seats it at, and a card headed with
+      only the address ("Solar, Arrogance") let a person read it as a reading of
+      Justification. It opens on the defence's name and its one table sentence,
+      and that sentence is the one the hover carries, so there is one definition. */
+   ok(P.cards.length===4&&J(P.cards.map(c=>c.nm))===J(FOUR),'F '+tag+'all four symbols open a card, got '+J(P.cards.map(c=>c.nm)));
+   ok(P.cards.every(c=>c.eye===c.nm+', at the '+c.seat+' seat'),
+    'F '+tag+'each card is headed with its defence\'s name and the seat it is read at, said as the rest of the product says a seat ("the solar seat"), got '+J(P.cards.map(c=>c.eye)));
+   ok(P.cards.every(c=>c.want&&c.say===c.want&&c.sayFirst),
+    'F '+tag+'each card carries the table\'s sentence for its defence, straight under the address, got '+J(P.cards.map(c=>[c.nm,c.say&&c.say.slice(0,30),c.sayFirst])));
+   ok(P.cards.every(c=>c.title===c.wantTitle&&!/_Unnamed|Root_\d/.test(c.text)),
+    'F '+tag+'a card never prints an address by the key it is stored under, got '+J(P.cards.map(c=>[c.key,c.title])));
+   ok(P.cards.filter(c=>c.unnamed).every(c=>!/A field address/.test(c.text)&&/No feeling is seated at this address/.test(c.text)&&!/open ruling/i.test(c.text)),
+    'F '+tag+'the address with no name is not called a field address, the card says why no story reaches it, and it never prints the team\'s own words "open ruling" to a person, got '+J(P.cards.filter(c=>c.unnamed).map(c=>c.text.slice(0,200))));
+   ok(P.cards.filter(c=>!c.unnamed).every(c=>!/No feeling is seated at this address/.test(c.text)),'F '+tag+'and the sentence is said only where it is true');
+   ok(/^Solar$/i.test(P.plain||'')&&!P.plainSay,'F '+tag+'a card opened from anywhere else keeps its own plain header and names no defence, got '+J(P.plain));
+   ok(P.anchor.eye==='Field anchor, above the body'&&P.anchor.tip&&P.anchor.tip===P.anchor.want&&!P.anchor.raw&&P.anchorBelow==='Field anchor, below the body',
+    'F '+tag+'a field anchor\'s card says field anchor, above or below the body, with its meaning on hover and tap, and never the key it is stored under, got '+J([P.anchor,P.anchorBelow]));
    ok(/^Right action$/i.test(P.kept||'')&&P.keptNm==='Awareness'&&/^Wrong action$/i.test(P.broke||'')&&P.brokeNm==='Ignorance',
     'C '+tag+'a press on a bar opens that gate\'s own drill, got '+J(P));
    /* ONE GATE ALONE reads a whole, and the five others read the dash and never 0% */
    await page.evaluate(SETUP(derek,{aware:1})); await page.waitForTimeout(250);
    const one=await page.evaluate(()=>[...document.querySelectorAll('#gaterows .rb-v')].map(e=>e.textContent));
    ok(one[0]==='100%'&&one.slice(1).every(v=>v==='\u2013'),'C '+tag+'one gate alone reads 100% and the five others the dash, never 0%, got '+J(one));
+   /* F. EVERY SENTENCE THE ROUND ADDED HAS A CALLER. unpackOf is wrapped in the
+      page, the panel is drawn, the cards a person can open are opened, and each
+      key asked for is written down. Checked against a known bad case first:
+      the caption's tip and the anchor card's tip each removed, and the table
+      entry the first cut wrote for "the chain", which nothing ever asked for. */
+   const Q=await page.evaluate(()=>{
+    var asked={}, orig=window.unpackOf;
+    window.unpackOf=function(t,c){var k=unpackKey(t,c); if(k)asked[k]=1; return orig.apply(this,arguments);};
+    try{
+     setTab(TAB.FIELD); render(); mxKey();
+     [...document.querySelectorAll('#amprows .amp-i')].forEach(function(b){b.click();});
+     nodeDrillHtml(FIELD[0]); if(typeof rdClose==='function')rdClose();
+    }finally{window.unpackOf=orig;}
+    var T=unpackAll();
+    var ADDED=['child emotions','field anchor','superego','rail:action'].concat(
+     ['awareness','detachment','intention','ignorance','attachment','aversion'].map(function(g){return 'gate:'+g;}),
+     ['justification','entitlement','perfectionism','obsession'].map(function(g){return 'superego:'+g;}));
+    return {missing:ADDED.filter(function(k){return !T[k];}), unasked:ADDED.filter(function(k){return !asked[k];}),
+     chain:Object.prototype.hasOwnProperty.call(T,'chain')};});
+   ok(Q.missing.length===0,'F '+tag+'every entry the round added is in the table, missing '+J(Q.missing));
+   ok(Q.unasked.length===0,'F '+tag+'every entry the round added is asked for by something a person can reach, never asked for: '+J(Q.unasked));
+   ok(!Q.chain,'F '+tag+'the one entry nothing could ask for, the chain, is not in the table');
    /* EVERY LIGHTING. Both sides stay two things in each: two colours, one hatch. */
    await page.evaluate(SETUP(derek,EVID)); await page.waitForTimeout(250);
    const lights=await page.evaluate(async()=>{
@@ -345,6 +424,10 @@ const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
    await page.mouse.move(2,2); await page.waitForTimeout(300); await page.mouse.move(h2.x,h2.y); await page.waitForTimeout(800);
    const t2=await page.evaluate(()=>{var t=document.getElementById('tip');return t?t.innerText:'';});
    ok(h2.want&&t2.indexOf(h2.want)>=0,'C hover: a bar shows its sentence in the one tooltip, got '+J(t2.slice(0,120)));
+   const h3=await page.evaluate(()=>{var e=document.getElementById('mxcap'); e.scrollIntoView({block:'center'});var r=e.getBoundingClientRect();return {x:r.left+Math.min(40,r.width/2),y:r.top+r.height/2,want:e.getAttribute('data-tip')};});
+   await page.mouse.move(2,2); await page.waitForTimeout(300); await page.mouse.move(h3.x,h3.y); await page.waitForTimeout(800);
+   const t3=await page.evaluate(()=>{var t=document.getElementById('tip');return t?t.innerText:'';});
+   ok(h3.want&&t3.indexOf(h3.want)>=0,'A hover: the Matrix caption shows the meaning of child emotions in the one tooltip, got '+J(t3.slice(0,120)));
   }catch(e){ok(false,'B and C hover: the tooltip checks could not run: '+String(e.message).slice(0,160));}
 
   await ctx.close();
