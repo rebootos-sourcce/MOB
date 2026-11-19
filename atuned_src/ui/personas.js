@@ -51,10 +51,9 @@ function renderSpirit(){
  /* A person's own birth data goes into Intake, is saved to CURP.who.born, and
     until now nothing read it. BIRTH.You is null and always was, so the whole
     ephemeris was visible to nine fixtures and to nobody real. spiritualOf was
-    written to close exactly this and was never called. It is called here. */
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){
-  var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+    written to close exactly this and was never called. It is called here,
+    through bornAsBirth, the one translation every reader of who.born shares. */
+ if(!sp)sp=spiritualOf(bornAsBirth(CURP));
  if(!sp){
   /* THIS LINE PROMISED A DESIGN TYPE, AND NOTHING COMPUTES ONE. The Type row
      below says unresolved for every birth there is, because the type needs the

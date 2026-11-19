@@ -299,6 +299,11 @@ jobs:
           # real Chromium gate, orphaned at first because no job named it;
           # tools/orphans.js caught the gap and this entry is the fix.
           - { gate: avatarpurpose, timeout: 20, command: node tests/avatarpurpose.js }
+          # ADDED 19 November, same pattern: a person's own typed birth now
+          # reaches converge(), which only ever read a name off the static
+          # BIRTH table before. Real Chromium gate, orphaned at first the
+          # same way avatarpurpose was.
+          - { gate: ownbirth, timeout: 20, command: node tests/ownbirth.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
           # allowance, gift, money, releasechain and pct, all added to

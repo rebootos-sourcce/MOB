@@ -71,7 +71,8 @@
     "Raised 18 November, integration of wave A (integ/wave-a): functional 3071 to 3129. The arithmetic, because functional runs only in CI and was not run on the merged tree: main's floor 3050, plus 21 from wave2/t2-field-silence (the unread Field silence section, its own note above), plus 58 from wave2/t5-journal-gates through tests/stfull.js (stFoldGate 48 and stRailPixelGate 10, which that branch counted and left unmoved on purpose), is 3129. Its slack is 157, so the last CI reading of 3108 plus those 79, 3187, sits 58 above it and passes. If the first CI run of the merged tree prints another total, that total is the number to write here.",
     "Added 18 November: avatarpurpose 55, read off its green local run on the avatar-purpose branch (55 passed, 0 failed); the same file read 21 passed, 34 failed on the live build c2bf52a2, before the change. becoming raised 51 to 52 in the same change, read off its own green run (52 passed, 0 failed): the Character door check became two, the twelve as marks while Archetypes is hidden and the door with AV_ARCH_SHOWN turned on.",
     "Raised 18 November: unpack 874 to 1018, for the carrier-consistency fix on commit 791003bc (the Saboteurs layer tip, the patterns layer tip and the Masks mini-dashboard card each made to say the one GLOSS table sentence for mask and saboteur, word for word, where each had carried its own paraphrase before). CI (gates-report (unpack), run 44393379277) correctly tripped on this as real drift, 144 above the floor, more than the 44 the 5 percent rule allows at this size. Read off a clean local run of tests/unpack.js on the current tree, 1018 passed, 0 failed, at both 1600 and 390.",
-    "Raised 18 November: srcintro 95 to 112, left behind when tests/srcintro.js's own section 9 ('?dev=1, and a walk half done') was updated and its door sections re-anchored off the dead door (56f07f1a, 'Re-anchor the onboarding/intro test gates off the dead door') without raising this floor in the same change. CI (gates-browser (srcintro), run 44393379277) correctly tripped on this as real drift, 17 above the floor, more than the 5 it may drift: the gate itself was green, 112 passed, 0 failed, both widths, on two clean local runs. Not a content regression: the srcintro test's own prior-fix (section headers now read 'the real door opens neither screen, straight to the dashboard') had already landed; only this floor was missed."
+    "Raised 18 November: srcintro 95 to 112, left behind when tests/srcintro.js's own section 9 ('?dev=1, and a walk half done') was updated and its door sections re-anchored off the dead door (56f07f1a, 'Re-anchor the onboarding/intro test gates off the dead door') without raising this floor in the same change. CI (gates-browser (srcintro), run 44393379277) correctly tripped on this as real drift, 17 above the floor, more than the 5 it may drift: the gate itself was green, 112 passed, 0 failed, both widths, on two clean local runs. Not a content regression: the srcintro test's own prior-fix (section headers now read 'the real door opens neither screen, straight to the dashboard') had already landed; only this floor was missed.",
+    "Added 19 November: ownbirth 28, for tests/ownbirth.js (fix/converge-own-birth, merged into main): a person's own typed birth now reaches converge(), which only ever accepted a name off the static BIRTH table before, so every real person's Root Energetics birth comparison silently returned null however much birth data they entered. Read off a clean local run of the merged tree, 28 passed, 0 failed, at 1600 and 390, typed and untyped. engine 7694 to 7713, for the EX18 group (bornAsBirth, the single translation point, and the edge cases: unknown time, sun-sign cusp dates, invalid dates routed to an open bucket rather than printed as null or a false disagreement). Both gates were newly orphaned the same way avatarpurpose was (tools/orphans.js caught the gap); wired into deploy.yml and tools/workflow-lint.py's BROWSER table in the same change."
   ],
   "expected_red_max": {
     "engine": 0,
@@ -81,7 +82,7 @@
     "anatomy": 1
   },
   "floors": {
-    "engine": 7672,
+    "engine": 7713,
     "funnel-package": 44,
     "boot": 29,
     "collide": 943,
@@ -129,7 +130,8 @@
     "wellpin": 12,
     "srcintro": 112,
     "anatomy": 37,
-    "avatarpurpose": 55
+    "avatarpurpose": 55,
+    "ownbirth": 28
   },
   "no_count": {
     "monitor": "all surfaces render"

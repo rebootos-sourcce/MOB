@@ -208,8 +208,11 @@ function sumUn(term,ctx){
  var s=unpackOf(term,ctx);
  return s?'<span class="s-un">'+esc(s)+'</span>':'';}
 function sumStory(r){
+ /* the reading sumBirth holds, which is the person's own when they typed a
+    birth. converge asked for the roster name alone, and only a reference case
+    has one in BIRTH, so the blueprint paragraph never opened for anyone real. */
  var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r), e=C?C.e:null;
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null, e=C?C.e:null;
  var held=W.filter(function(n){return n.sq>=4;}).sort(function(a,b){return b.sq-a.sq;});
  var named=r.sabs.filter(function(s){return s.named;}).sort(function(a,b){return b.score-a.score;});
  var loud=[].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;})[0];
@@ -242,11 +245,19 @@ function sumStory(r){
      thing the blueprint is read from: the sun, the date as a number, the name as
      a number, and what is running now. A person can see where each claim comes
      from, which is the point of unpacking it. */
-  p.push('The blueprint you were born on reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)
-   +', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '+sumB(String(e.lp),null,'life path')+', the one who '
+  /* A SUN THAT WAS NOT READ HAS NO ELEMENT. A person's own birth reaches this
+     now, and a date alone on a day the sun changed sign leaves the element
+     null, which printed "reads null" and then "the blueprint says nothing,
+     these differ". The element clause and its comparison are left out and the
+     paragraph says what would settle it, the way converge's open bucket does. */
+  var sunGap='The element is not read: the sun changed sign that day, and '
+   +(e.needsTime?'a birth time':'a birth time zone')+' settles which. ';
+  p.push('The blueprint you were born on '+(elRoot
+    ?'reads '+sumB(e.sunEl,rootPlain(elRoot)||null,e.sunEl)+', which is the '+rootB(elRoot)+' '+unp('root')+', on life path '
+    :'runs on life path ')+sumB(String(e.lp),null,'life path')+', the one who '
    +esc(e.lpMean||'runs')+'. '
    +sumUn('blueprint')+' '+sumUn('symbolic reading')
-   +'<span class="s-blk">'+(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase())+'</span>'
+   +'<span class="s-blk">'+(elRoot?(e.sun?sumUn('sun sign')+' '+sumUn(e.sun,'sign')+' ':'')+sumUn(e.sunEl)+' '+sumUn(elRoot.toLowerCase()):esc(sunGap))+'</span>'
    +'<span class="s-blk">'+sumUn('life path')+' '+sumUn('path:'+e.lp)
    +(num?' Your full name carries an expression of <b>'+num.expression+'</b>, and numerology claims that '
      +'one '+esc(numSays('expression',num.expression))+'. '+sumUn('expression'):'')+'</span>'
@@ -255,7 +266,8 @@ function sumStory(r){
       paragraph has just said what it means, three lines up, and saying it
       again was the 14 to 18 words Sofia and Angela read twice */
    +sumUn('running')+' '+(elRoot===rootNow?'':sumUn(rootNow.toLowerCase())+' ')+sumUn('archetype:'+arch.toLowerCase())+' '
-   +(elRoot===rootNow
+   +(!elRoot?''
+    :elRoot===rootNow
      /* A CAUSE IS NOT A READING. The blueprint says one thing and the field
         runs another, and the instrument can say they differ. It cannot say
         why, and "something was installed on top" was a story about a person
@@ -567,7 +579,13 @@ function sumChips(C){
     engine/data/gloss.js: what the placement is, then what the sign claims. */
  function say(){return Array.prototype.slice.call(arguments).filter(Boolean).join(' ');}
  var out='<div class="s-chips">';
- out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
+ /* THE SUN AND THE GENE KEY ARE LEFT OFF WHEN THEY WERE NOT READ, as the moon
+    and the rising already are. Only reference cases reached this strip until
+    a person's own birth was routed into converge, and every one of them has a
+    time, so a date alone on a day the sun changed sign would have printed a
+    chip reading null, and a gene key reading null.null, the same defect
+    renderSpirit records. What is missing is named in the comparison. */
+ if(e.sun)out+=chip('sign',e.sun,uni(ZGLYPH[e.sun]||'*'),e.sun,'',
   say(unpackOf('sun sign'),unpackOf(e.sun,'sign')));
  if(e.moon)out+=chip('sign',e.moon,uni(ZGLYPH[e.moon]||'*'),e.moon,'moon',
   say(unpackOf('moon sign'),unpackOf(e.moon,'sign')));
@@ -582,7 +600,7 @@ function sumChips(C){
   e.hd.profile?('profile '+e.hd.profile):'unresolved',
   e.hd.unresolved?say(unpackOf('design'),'The type needs the full bodygraph and is not computed. The profile is.')
    :say(unpackOf('design'),unpackOf('profile')));
- out+=chip('gk',e.gk.gate,svgI(GATE_IC),
+ if(e.gk.gate!=null)out+=chip('gk',e.gk.gate,svgI(GATE_IC),
   'Gene key',e.gk.gate+'.'+e.gk.line,say(unpackOf('gene key'),unpackOf('gate')));
  return out+'</div>';}
 function sumConverge(C){
@@ -605,8 +623,8 @@ function sumConverge(C){
      person's own names, which is the useful half of the same sentence. */}
  return out;}
 function sumSpirit(r){
- var nm2=(PEOPLE[S.who]||{}).nm||'You';
- var C=converge(nm2,r);
+ /* the person's own reading, for the reason sumStory gives */
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  if(!C)return '<div class="s-spirit"><div class="pm-eye">The spiritual layer</div>'
   /* HS sweep: the refusal keeps what is missing and what would put it in.
      The tail on what is stored and why explained the section. */
@@ -776,9 +794,7 @@ function sumUnread(r){
 /* one profile's birth reading and name numbers, read once per render and
    handed to every piece that needs them */
 function sumBirth(){
- var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm);
- if(!sp&&CURP&&CURP.who&&CURP.who.born&&CURP.who.born.date){var bn=CURP.who.born;
-  sp=spiritualOf({d:bn.date, t:(bn.timeUnknown?'':(bn.time||'')), p:bn.place||'', z:bn.zone||''});}
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));
  /* the name's numbers only off a name that is somebody's, for the reason
     spNumRows gives: a blank profile's roster name is the word You */
  var full=numFullName(CURP)||(typeof FULLNAME!=='undefined'&&FULLNAME[p.nm])||'';
@@ -1054,7 +1070,7 @@ function sumDrivers(B,r){
    existed and already read real data (engine/astro.js); it only went
    unlabelled before. */
 function sumMarks(B,r){
- var C=B.sp?converge(B.p.nm,r):null;
+ var C=B.sp?converge(B.p.nm,r,B.sp):null;
  return C?'<div class="sg-marks" data-grp="marks"><div class="pm-eye">The celestial layer</div>'
   +sumChips(C)+'</div>':'';}
 /* a zone is a heading with a mark and one body. The heading names the slot and
@@ -1247,7 +1263,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r):null;
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}

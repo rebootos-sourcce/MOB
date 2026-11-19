@@ -118,6 +118,9 @@ BROWSER = {
 # November (tests/avatarpurpose.js). Real Chromium gate, already wired into
 # deploy.yml's gates-browser matrix; this entry is the registry half R2 needs.
     'avatarpurpose': ('node tests/avatarpurpose.js', 20),
+# a person's own typed birth reaching converge(), 19 November
+# (tests/ownbirth.js). Real Chromium gate, wired the same day it was written.
+    'ownbirth': ('node tests/ownbirth.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
