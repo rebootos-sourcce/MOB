@@ -419,11 +419,36 @@ function maskedSay(runs){
    produced. A comma is left out on purpose, the same ruling leanNorm
    already made: it is too weak a break to end a negation. */
 var SENT_END=/[.!?;:\n\r]/;
-function clauseFloor(t,nm,at){
+/* EVERY BOUNDARY, ONCE, 18 November. clauseFloor and clauseCeil used to walk
+   nm.s a character at a time from the hit to the nearest boundary, and
+   sniffDeny and sniffTense ask that of every hit. Dictated speech carries no
+   full stops, so the nearest boundary was the start or the end of the whole
+   entry, every walk crossed all of it, and parseStory grew with the square of
+   the length: measured at 40,000 characters, 1725 ms with no punctuation
+   against 201 ms with it. This is the same test, run once over the copy, and
+   the two primitives below binary search its list. A pass that asks per hit
+   builds the list once and hands it in; a call without one builds its own,
+   so a direct call reads exactly what it always read. */
+function clauseCuts(t,nm){
  t=String(t||'');
- for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return -1;}
+ var out=[];
+ for(var k=0;k<nm.s.length;k++)
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))out.push(k);
+ return out;}
+/* how many of a, sorted ascending, sit below x, or at or below it when
+   orEq. The one search every per hit lookup in this file now goes through. */
+function sortedBelow(a,x,orEq){
+ var lo=0, hi=a.length;
+ while(lo<hi){var m=(lo+hi)>>1; if(orEq?a[m]<=x:a[m]<x)lo=m+1; else hi=m;}
+ return lo;}
+function clauseFloor(t,nm,at,cuts){
+ /* the old walk started at the smaller of at and the last index and ran
+    down to nought, so an at below nought, or not a number, found nothing. */
+ var lim=Math.min(at,nm.s.length-1);
+ if(!(lim>=0))return -1;
+ cuts=cuts||clauseCuts(t,nm);
+ var i=sortedBelow(cuts,lim,true)-1;
+ return i>=0?cuts[i]:-1;}
 /* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
    copy and by the same rule: a space whose raw character ends a clause opens
    the next one, so a word whose own leading space is that boundary belongs
@@ -487,7 +512,7 @@ function wordsOf(t,nm){
    typed. srcNegated is the decision; this only finds which word it saw. */
 var NEG_NOT_DENY=['stop','stops','stopped','help'];
 function sniffDeny(t,nm,hits){
- var ws=null, cuts=[];
+ var ws=null, cuts=[], ends=null, wat=null, B=null;
  hits.forEach(function(h){
   if(!ws){ws=wordsOf(t,nm);
    /* every place a no is already spoken for: the end of each word read, and
@@ -496,11 +521,25 @@ function sniffDeny(t,nm,hits){
    hits.forEach(function(o){cuts.push({at:o.at,end:o.at+1+String(o.t).length});});
    for(var i=0;i+1<ws.length;i++)
     if(ws[i].c===ws[i+1].c&&SRC_NEG.indexOf(ws[i].w)>=0&&NEG_NOT_DENY.indexOf(ws[i+1].w)>=0)
-     cuts.push({at:ws[i].at,end:ws[i+1].at+1+ws[i+1].w.length});}
-  var f=clauseFloor(t,nm,h.at);
-  cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
+     cuts.push({at:ws[i].at,end:ws[i+1].at+1+ws[i+1].w.length});
+   /* sorted once, searched per hit, 18 November. Every hit used to walk
+      every cut and every word, hits times hits, the second square beside
+      the clause walk. A cut always ends past where it starts, so an end at
+      or before h.at already says its start is before it, and the latest
+      such end is the floor the old walk climbed to. A NaN end never passed
+      the old test and is dropped here for the same reason. */
+   ends=cuts.map(function(c){return c.end;}).filter(function(e){return e===e;})
+    .sort(function(a,b){return a-b;});
+   wat=ws.map(function(w){return w.at;});
+   B=clauseCuts(t,nm);}
+  var f=clauseFloor(t,nm,h.at,B);
+  var j=sortedBelow(ends,h.at,true)-1;
+  if(j>=0&&ends[j]>f)f=ends[j];
   if(!srcNegated(nm.s,h.at,f))return;
-  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  /* the last SRC_NEG_W words before the hit and at or after the floor,
+     which is what filtering every word and keeping the tail returned. */
+  var win=[], lo=Math.max(f,0);
+  for(var k=sortedBelow(wat,h.at,false)-1;k>=0&&win.length<SRC_NEG_W&&wat[k]>=lo;k--)win.unshift(ws[k]);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 /* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
@@ -521,19 +560,40 @@ function sniffDeny(t,nm,hits){
    Both require their full pair, in this order, so "if I'm being honest, I
    was angry" (no would after) and "I'm used to being ignored" (no anymore
    or no longer after) are untouched and stay live, as they should. */
-function clauseCeil(t,nm,at){
- t=String(t||'');
- for(var k=at;k<nm.s.length;k++){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return nm.s.length;}
+function clauseCeil(t,nm,at,cuts){
+ cuts=cuts||clauseCuts(t,nm);
+ var i=sortedBelow(cuts,at,false);
+ return i<cuts.length?cuts[i]:nm.s.length;}
+/* DOES s.slice(lo,hi)+' ' HOLD THE PHRASE, without making the slice. This
+   pass used to cut the whole sentence before and after every hit and search
+   each copy, and with no full stop in the entry the sentence is the entry,
+   which is the second half of the square the note above clauseCuts measured.
+   pos is every place the phrase starts in s, found once per pass. A phrase
+   held whole inside the slice is a start in [lo, hi-len]; the trailing space
+   the old code appended can also finish a phrase whose last letter is at hi-1,
+   which is the second test, and it reads exactly what the copy read. */
+function phraseIn(s,pos,ph,lo,hi){
+ hi=Math.min(hi,s.length);
+ var i=sortedBelow(pos,lo,false);
+ if(i<pos.length&&pos[i]+ph.length<=hi)return true;
+ var p=hi-ph.length+1;
+ return p>=lo&&s.substr(p,ph.length-1)===ph.slice(0,-1);}
+function phraseAt(s,ph){
+ var out=[];
+ for(var i=s.indexOf(ph);i>=0;i=s.indexOf(ph,i+1))out.push(i);
+ return out;}
 function sniffTense(t,nm,hits){
+ var B=null, P=null, s=nm.s;
+ function has(ph,lo,hi){return phraseIn(s,P[ph],ph,lo,hi);}
  hits.forEach(function(h){
   if(h.neg)return;
-  var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
-  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
-  var pastVoid=before.indexOf(' used to ')>=0&&
-   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
-  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
+  if(!B){B=clauseCuts(t,nm); P={};
+   [' used to ',' anymore ',' any more ',' no longer ',' if ',' would ']
+    .forEach(function(ph){P[ph]=phraseAt(s,ph);});}
+  var f=Math.max(clauseFloor(t,nm,h.at,B),0), c=clauseCeil(t,nm,h.at,B);
+  var pastVoid=has(' used to ',f,h.at)&&
+   (has(' anymore ',h.at,c)||has(' any more ',h.at,c)||has(' no longer ',h.at,c));
+  var condVoid=has(' if ',f,h.at)&&has(' would ',h.at,c);
   if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
@@ -817,6 +877,16 @@ function scanStory(text){
     at=src.indexOf(' '+w+' ',at+1); }});});
  /* multi-word LEX entries next, then single words */
  var keys=Object.keys(LEX).sort(function(a,b){return b.length-a.length;});
+ /* EVERY OFFSET A HIT ALREADY HOLDS, 18 November. The test below asked
+    hits.some of every match, which walks every hit found so far, so a long
+    entry paid hits times hits. A hit holds the offsets from its own at to
+    at+t.length inclusive, exactly the range that test accepted, and every
+    at here comes from indexOf, so a whole number. Marked once when a hit
+    lands and looked up after; nothing else pushes a hit before the
+    adjectives, which never asked. */
+ var held=new Set();
+ function hold(h){for(var k=h.at;k<=h.at+h.t.length;k++)held.add(k);}
+ hits.forEach(hold);
  keys.forEach(function(w){
   var at=src.indexOf(' '+w+' ');
   while(at>=0){
@@ -826,7 +896,7 @@ function scanStory(text){
       following a longer one was suppressed, and keys are scanned longest
       first, so it bit constantly: a third of legitimate matches never landed.
       The phrase still outranks the words inside it, which is what this is for. */
-   if(!inPlain(at,w.length)&&!hits.some(function(h){return h.at<=at&&at<h.at+h.t.length+1;}))
+   if(!inPlain(at,w.length)&&!held.has(at))
     /* A WORD MAY NAME ITS OWN FETTER, and some have to.
 
        LEX was [seat, intensity] and the fetter was then inferred from the
@@ -840,7 +910,7 @@ function scanStory(text){
        which is what the body map needs, and the fetter now says what, which is
        what the person reads. Entries without a third element behave exactly as
        before. */
-    hits.push({t:w,kind:'word',band:LEX[w][0],amt:LEX[w][1],fet:LEX[w][2]||null,at:at});
+    hold(hits[hits.push({t:w,kind:'word',band:LEX[w][0],amt:LEX[w][1],fet:LEX[w][2]||null,at:at})-1]);
    at=src.indexOf(' '+w+' ',at+1);}});
  /* adjectives name the charge even when they carry no band */
  Object.keys(ADJ2CHG).forEach(function(w){
@@ -856,7 +926,13 @@ function scanStory(text){
  var mods=Object.keys(LEXMOD).sort(function(a,b){return b.length-a.length;});
  hits.forEach(function(h){
   if(h.amt==null||(h.kind!=='word'&&h.kind!=='phrase'))return;
-  var before=src.slice(0,h.at+1);
+  /* only the tail is ever compared, so cut only the tail. This copied the
+     whole entry up to every hit, 18 November's measurement. The tail kept
+     is the longest degree word and its two spaces, mods[0] since mods is
+     longest first, so before.slice(-n) reads the same letters for every n
+     the loop below asks, and near the start of the entry the tail is all of
+     it, as the long copy was. */
+  var before=src.slice(Math.max(0,h.at+1-(mods.length?mods[0].length+2:0)),h.at+1);
   for(var i=0;i<mods.length;i++){
    if(before.slice(-(mods[i].length+2))===' '+mods[i]+' '){
     h.mod=LEXMOD[mods[i]]; h.modw=mods[i]; h.amt=h.amt*h.mod; break;}}});

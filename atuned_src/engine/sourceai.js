@@ -94,9 +94,22 @@ var SRC_NEG_W=2;
    srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
    boundary, the exact width and word list this was measured against
    stand exactly as they were. */
+/* THE READ BACK IS BOUNDED, 18 November. This cut from the floor to the hit
+   and split all of it to keep two words, and in dictated speech, with no full
+   stop anywhere, the floor is the start of the entry: every hit split the
+   whole story up to itself. Now it reads a short tail and widens only when
+   that tail holds too few words. Once the trimmed tail has more than
+   SRC_NEG_W words its last spaces are the last spaces of the full trimmed
+   cut, so its last SRC_NEG_W words are the same words; a tail that reaches
+   the floor is the full cut. A NaN at keeps lo at f, the old read. */
 function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
- var before=String(src).slice(f,at).trim().split(' ');
+ src=String(src);
+ var before;
+ for(var w=64;;w*=4){
+  var lo=(at-w>f)?at-w:f;
+  before=src.slice(lo,at).trim().split(' ');
+  if(lo===f||before.length>SRC_NEG_W)break;}
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 

@@ -6728,6 +6728,43 @@ g('SA · Source AI hears on the rung, asks at seven, and the person leads');
   'a comma is not a boundary, so this finds none before "shaking" in a text with no sentence end at all');
 }
 
+g('SA1b · a long dictated entry, with no full stop, parses as fast as a punctuated one');
+/* 18 November. Dictated speech carries no full stops, so every per hit read
+   that walked back or forward to the nearest sentence end crossed the whole
+   entry: clauseFloor and clauseCeil a character at a time, srcNegated by
+   splitting everything before the hit, sniffTense by copying the sentence
+   either side, and sniffDeny and scanStory by walking every hit for every
+   hit. parseStory grew with the square of the length. Measured on this
+   string at 40,000 characters, best of three on a loaded machine: 2321 ms
+   with no punctuation against 260 ms with it, a ratio of 8.9, and 24 at
+   80,000. After: 105 ms against 159 ms, at or under 1.8 at every length
+   measured from 10,000 to 80,000. The check is that ratio and not a number
+   of milliseconds, because a ratio is the shape of the defect and a
+   millisecond count is the speed of whichever machine runs the gate.
+   Output identity is not proved here; it was proved against the build
+   before the change, 9868 texts, 0 differences, and every existing test in
+   this file is unchanged. */
+{
+ const base='i was angry at my father and i could not sleep and my chest felt tight and i was not afraid but i cried and the shame sat in my stomach for days and nobody listened ';
+ const mk=(n,dot)=>{let s='';while(s.length<n)s+=dot?base.trim()+'. ':base;return s.slice(0,n);};
+ const best=t=>{E.parseStory(t);let b=Infinity;
+  for(let r=0;r<3;r++){const t0=process.hrtime.bigint();E.parseStory(t);b=Math.min(b,Number(process.hrtime.bigint()-t0)/1e6);}
+  return b;};
+ const dot=best(mk(40000,true)), bare=best(mk(40000,false));
+ ok(bare<3*dot,
+  'no punctuation costs under three times punctuation at 40,000 characters, it was 8.9; read '
+  +bare.toFixed(0)+' ms against '+dot.toFixed(0)+' ms');
+ /* the bounded read still reaches the last words of a long entry, and the
+    sorted lookups still find a no that sits there */
+ const tail=mk(40000,false)+' i was not furious ';
+ const pt=E.parseStory(tail);
+ ok(pt.denied.some(h=>h.t==='furious'&&h.negw==='not'),
+  'a denial at the very end of 40,000 unpunctuated characters is still read as a denial');
+ const tense=mk(40000,false)+' if i got furious i would leave ';
+ ok(E.parseStory(tense).denied.some(h=>h.t==='furious'&&h.negw==='if'),
+  'the conditional at the end of a long unpunctuated entry is still voided by sniffTense');
+}
+
 g('SA2 · srcHyperSeats, which seats a driven hyper complex actually sits on');
 /* 27 October, his words: Source AI should recognise a seat the field already
    knows is load bearing for a pattern running across several addresses, the
