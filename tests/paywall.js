@@ -99,11 +99,30 @@ function install(){
   fit(){ const s=this.sheet(), r=s.getBoundingClientRect(), bad=[];
    if(s.scrollHeight>s.clientHeight+1||s.scrollWidth>s.clientWidth+1)bad.push('sheet scrolls '+s.scrollHeight+'/'+s.clientHeight);
    if(r.top<-0.5||r.left<-0.5||r.bottom>innerHeight+0.5||r.right>innerWidth+0.5)bad.push('sheet off screen');
-   s.querySelectorAll('*').forEach(e=>{ if(!this.vis(e))return; const b=e.getBoundingClientRect();
-    if(b.bottom>r.bottom+0.5||b.right>r.right+0.5||b.top<r.top-0.5||b.left<r.left-0.5)bad.push('outside the sheet: '+e.className);});
+   /* NOTHING ESCAPES ITS OWN NEAREST CLIP, not only the sheet's, and true
+      until 19 November, when four real cards made .pw-cards its own
+      vertically scrolling region (overflow-y:auto). Checking a scrolled
+      element's full rect against that region's own bottom edge is wrong,
+      not merely incomplete: a card below the fold is SUPPOSED to extend
+      past clientHeight, that is what overflow-y:auto means, so the first
+      version of this fix flagged every scrolled card as a defect and
+      still failed. The region may only scroll on one axis, so only that
+      axis's overflow is real: anything held by .pw-cards is checked for
+      escaping it on the LEFT or RIGHT alone, never top or bottom; .pw-cards
+      itself (closest matches the element itself) is still checked on all
+      four sides against the sheet, since the scroll CONTAINER must stay
+      inside the sheet even though its CONTENT may run past it vertically.
+      Anything outside any scrolling region still checks against the sheet,
+      exactly as before. */
+   s.querySelectorAll('*').forEach(e=>{ if(!this.vis(e))return;
+    const clip=e.closest('.pw-cards'), b=e.getBoundingClientRect();
+    if(clip&&clip!==e){
+     const cb=clip.getBoundingClientRect();
+     if(b.right>cb.right+0.5||b.left<cb.left-0.5)bad.push('outside the sheet: '+e.className);
+    }else if(b.bottom>r.bottom+0.5||b.right>r.right+0.5||b.top<r.top-0.5||b.left<r.left-0.5)bad.push('outside the sheet: '+e.className);});
    /* NOTHING OUT OF ITS OWN CARD, the mockup gate's check that caught the
       failed state pushing buttons over the card edges on a phone */
-   s.querySelectorAll('.pw-c,.pw-prac').forEach(c=>{const cr=c.getBoundingClientRect();
+   s.querySelectorAll('.pw-c').forEach(c=>{const cr=c.getBoundingClientRect();
     c.querySelectorAll('*').forEach(e=>{ if(!this.vis(e))return; const b=e.getBoundingClientRect();
      if(b.bottom>cr.bottom+1||b.right>cr.right+1||b.top<cr.top-1||b.left<cr.left-1)bad.push('outside its card: '+(e.className&&e.className.baseVal!==undefined?e.className.baseVal:e.className));});});
    return bad;},
@@ -116,7 +135,7 @@ function install(){
    s.querySelectorAll('*').forEach(e=>{ if(!this.vis(e)||!textOf(e))return;
     const r=this.ratio(this.parse(getComputedStyle(e).color),this.ground(e)); minT=Math.min(minT,r);
     if(r<4.5)lowT.push(e.textContent.trim().slice(0,30)+' '+r.toFixed(2));});
-   s.querySelectorAll('.pw-dk,.pw-pdk').forEach(e=>{ if(!this.vis(e))return;
+   s.querySelectorAll('.pw-dk').forEach(e=>{ if(!this.vis(e))return;
     const r=this.ratio(this.parse(getComputedStyle(e).color),this.ground(e)); minM=Math.min(minM,r);
     if(r<3)lowM.push(e.parentElement.getAttribute('data-k')+' '+r.toFixed(2));
     /* a lit disc is a mark against its card as well */
@@ -211,9 +230,13 @@ async function page(browser,W,H,o){
     lit:[...c.querySelectorAll('.pw-rg.on')].map(r=>r.getAttribute('data-k')),
     rings:[...c.querySelectorAll('.pw-rg')].map(r=>[r.getAttribute('data-k'),r.getAttribute('data-tl'),r.classList.contains('came')]),
     buy:!!c.querySelector('[data-pwbuy]'), shut:((c.querySelector('.pw-shut')||{}).textContent||'').trim(),
-    here:((c.querySelector('.pw-act .pw-here')||{}).textContent||'').trim()})));
-   const paid=E.rows.filter(r=>r.k!=='free'&&!r.lead);
-   ok(C.map(c=>c.k).join()===paid.map(r=>r.k).join(),tag+'one card per paid tier the ladder names, '+C.map(c=>c.k).join());
+    here:((c.querySelector('.pw-act .pw-here')||{}).textContent||'').trim(),
+    nameTip:(c.querySelector('.pw-cnd')?(document.getElementById(c.querySelector('.pw-cnd').getAttribute('aria-describedby'))||{}).textContent:null)})));
+   /* ALL FOUR PAID TIERS ARE CARDS, 19 November ("the paywall needs all 4
+      tiers"): Practitioner is just one more row of this same filter, not a
+      slim strip apart from the other three any more. */
+   const paid=E.rows.filter(r=>r.k!=='free');
+   ok(C.map(c=>c.k).join()===paid.map(r=>r.k).join(),tag+'one card per paid tier the ladder names, all four, '+C.map(c=>c.k).join());
    const N=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',');
    for(const r of paid){
     const c=C.find(x=>x.k===r.k); if(!c){ok(false,tag+r.k+' has no card');continue;}
@@ -230,12 +253,16 @@ async function page(browser,W,H,o){
     else if(!r.up)ok(!c.buy&&!c.shut,tag+r.k+' is below the tier in force and offers nothing');
     else if(!st.pay)ok(!c.buy&&c.shut==='Opens soon',tag+r.k+' with checkout closed says Opens soon and carries no press');
     else ok(c.buy===r.buy,tag+r.k+' with checkout open carries a press exactly when the ladder can sell it');}
-   const four=E.rows.find(r=>r.lead);
-   const pr=await pg.evaluate(()=>{const p=document.querySelector('#paywall .pw-prac');
-    return p?{buy:!!p.querySelector('[data-pwbuy]'),text:p.textContent.replace(/\s+/g,' '),tip:(document.getElementById('pwptp')||{}).textContent}:null;});
-   ok(pr&&pr.text.indexOf('$'+four.price)>=0&&pr.text.indexOf(four.nm)>=0,tag+'the Practitioner strip prints the ladder\'s name and price, '+(pr&&pr.text));
-   ok(pr&&(four.buy?true:(!pr.buy&&/Opens soon/.test(pr.text))),tag+'Practitioner is not sold while it is not built, '+JSON.stringify(pr&&{buy:pr.buy,built:four.buy}));
-   ok(pr&&pr.tip===E.d4&&/opens? soon/i.test(E.d4),tag+'its card is the plan table\'s own sentence, and it says it opens soon');
+   /* PRACTITIONER'S CARD CARRIES ONE MORE THING: its own name is a second
+      tooltip button, since the ladder's cohort sentence (E.d4) is the only
+      place that says what actually sets this card apart from tier three
+      (DECISIONS.md: same grant, same sees). Checked here because the
+      generic loop above already covers everything the Practitioner card
+      shares with the other three (price, patterns, rings, door, the real
+      act-slot state while it stays closed to purchase). */
+   const four=E.rows.find(r=>r.lead), fourC=C.find(c=>c.k===four.k);
+   ok(fourC&&fourC.nameTip===E.d4&&/opens? soon/i.test(E.d4),tag+'Practitioner\'s card carries the plan table\'s own sentence as its name\'s tooltip, and it says it opens soon, '+(fourC&&fourC.nameTip));
+   ok(C.filter(c=>c.k!==four.k).every(c=>c.nameTip===null),tag+'no other card carries that second tooltip');
    ok(!E.stopTwo,tag+'never says stopping takes two presses or runs to the month\'s end');
    const txt=await pg.evaluate(()=>document.getElementById('paywall').textContent);
    ok(!/refund|gift/i.test(txt),tag+'no refund line and no gift state');
@@ -276,7 +303,7 @@ async function page(browser,W,H,o){
    await pg.focus('#paywall .pw-hl >> nth=0'); await pg.waitForTimeout(40);
    const nt=await pg.evaluate(()=>__pw.tip());
    ok(nt&&nt.text===E.pat&&nt.on,tag+'the number opens its meaning on focus, '+(nt&&nt.text));
-   await pg.focus('#paywall .pw-pn'); await pg.waitForTimeout(40);
+   await pg.focus('#paywall .pw-cnd'); await pg.waitForTimeout(40);
    const pt=await pg.evaluate(()=>__pw.tip());
    ok(pt&&pt.text===E.d4&&pt.on,tag+'Practitioner opens its meaning on focus and it stays on screen');
    /* Escape closes an open card first, then the sheet */
