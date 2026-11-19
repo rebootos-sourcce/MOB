@@ -310,6 +310,10 @@ jobs:
           # the same way avatarpurpose was.
           - { gate: insightread, timeout: 20, command: node tests/insightread.js }
           - { gate: insightrail, timeout: 20, command: node tests/insightrail.js }
+          # ADDED 19 November, the affirmation engine (feature/affirmation-
+          # engine): the ritual builder's Affirm door and sheet, real
+          # Chromium. Newly orphaned the same way avatarpurpose was.
+          - { gate: affirm, timeout: 20, command: node tests/affirm.js }
           # PROMOTED 15 November: honest, dailyui, becoming, personas-tier,
           # valuefeltui, record, examples-showonly, paywall, safepage,
           # allowance, gift, money, releasechain and pct, all added to

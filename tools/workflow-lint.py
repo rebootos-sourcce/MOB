@@ -123,6 +123,7 @@ BROWSER = {
     'ownbirth': ('node tests/ownbirth.js', 20),
     'insightread': ('node tests/insightread.js', 20),
     'insightrail': ('node tests/insightrail.js', 20),
+    'affirm': ('node tests/affirm.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
