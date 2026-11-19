@@ -4601,8 +4601,17 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
-.st-mini6 .st-mini{flex:1 1 0;min-width:0}
+/* TWO EVEN ROWS, 19 November, his words: "if the super ego button doesn't
+   fit, use two rows and make sure that the rows are even." .st-mini6 was
+   one flex row of six; it is now a flex COLUMN holding two .st-mini6-row
+   children (four cards, then three), the same gap value reused as the
+   vertical space between the rows, so the space above and below the
+   split reads the same as the space between any two cards (the standing
+   16 November symmetry-in-space rule: nothing pressed tighter in one
+   place than another). */
+.st-mini6{display:flex;flex-direction:column;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
+.st-mini6-row{display:flex;gap:12px}
+.st-mini6-row .st-mini{flex:1 1 0;min-width:0}
 /* THE WIDGET ROW'S OWN FOLD, 17 November, ui/storyui.js's rowFoldWire,
    the long comment there explains why it is one control for the whole
    row rather than six. ABSOLUTE, NOT A RESERVED STRIP: a first pass
@@ -4619,8 +4628,9 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
    short window check, which exists for exactly this kind of overflow.
    So the control costs the row nothing: absolute, it is no part of
    .st-mini6's own box height, and it sits over whichever card happens
-   to be physically top right, Masks at 1600, a different one once the
-   row wraps under 1181px. Nothing else here reads that card's own
+   to be physically top right, Field at 1600 since the 19 November split
+   above put Path/Boundary/Body/Field on the first row, a different one
+   once the row wraps under 1181px. Nothing else here reads that card's own
    button or link through this control's own 44 pixel corner (checked:
    .st-mini carries no <button> or <a href>, only a role and a click
    delegate, so tests/collide.js's own control sweep, which queries
@@ -4632,16 +4642,20 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
 .rowfold:hover{background:var(--sunk);color:var(--ink)}
 .rowfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .rowfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
-/* the one card that stands under the control at the width he
-   screenshotted, Masks, keeps its own label clear of it; below 1181,
-   where the row wraps and a different card takes that corner, this
+/* the one card that stands under the control, Field since the 19
+   November two-row split put it last in the first row; below 1181,
+   where that row wraps and a different card takes that corner, this
    reservation sits on a card the control is no longer over and costs
-   that card nothing either. */
-#stmini6 .st-mini:last-child .st-mini-lb{padding-right:52px}
+   that card nothing either. Scoped to the first row only: the second
+   row's own last card (Superego) sits under no control and keeps its
+   label flush. */
+#stmini6 .st-mini6-row:first-child .st-mini:last-child .st-mini-lb{padding-right:52px}
 /* shut, the row is the control alone, its own height falling to that
-   control's, the same shape #lpanel and #rpanel already shut to. */
+   control's, the same shape #lpanel and #rpanel already shut to. BOTH
+   ROWS, not a direct child of #stmini6 any more since the 19 November
+   split nested every card one level deeper inside .st-mini6-row. */
 body.st-rowshut #stmini6{min-height:var(--tap)}
-body.st-rowshut #stmini6>.st-mini{display:none}
+body.st-rowshut #stmini6 .st-mini6-row{display:none}
 body.st-rowshut .rowfold{position:static;margin-left:auto}
 body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
@@ -4681,6 +4695,17 @@ body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
    (the text box, the imprints list, Release) already reads --sunk. */
 .st-mini{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:10px 12px;display:flex;flex-direction:column;height:200px}
+/* SHORTER, 19 November: two rows of these at the old 200px would cost the
+   widget area 412px against the old single row's 200px, which
+   tests/collide.js's own short window check caught overlapping the
+   Release column's own controls (reproduced first: 945/0 on the old
+   single row, 6 failing once split to two rows at the old height). 88px
+   is the real measured number, found by lowering it and re-running the
+   gate until it read 945/0 again (140px: still 4 failing; 100px: still 2;
+   88px: clean), not guessed. Every card's content is SVG and flex, not a
+   fixed pixel drawing, so it scales down clean; checked by screenshot
+   too before trusting the number. */
+#stmini6 .st-mini{height:88px}
 /* SENTENCE CASE, NO ALL CAPS UI COPY, the house voice ruling, CLAUDE.md:
    caught here by tests/design.js's own "no all-caps UI copy" check
    ("transform:Compass | transform:Boundary") before this shipped.
@@ -8240,13 +8265,15 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     Dashboard's own cap. */
  body.tab-story.st-full .st-chat .st-uni{flex:none;height:min(42vh,380px)}
  .st-colw,.st-colb,.st-colz{gap:8px}
- /* SIX IN A ROW FITS 1600, NOT 390. Six equal flex children at phone
-    width would squeeze each mini picture under 60px, so this wraps them
-    into whatever number of rows the screen actually has room for (2
-    across at phone width, measured), the same real-second-line approach
-    .st-mk-row already takes for the rail's five mask tiles. */
- .st-mini6{flex-wrap:wrap}
- .st-mini6 .st-mini{flex:1 1 140px}
+ /* FOUR AND THREE FIT 1600, NOT 390. Each .st-mini6-row (four cards, then
+    three, 19 November above) would squeeze its own mini pictures under
+    60px at phone width, so each row wraps independently into whatever
+    number of lines it has room for, the same real-second-line approach
+    .st-mk-row already takes for the rail's five mask tiles. The outer
+    .st-mini6 stays a column of exactly two rows at every width; only
+    the cards inside each row reflow. */
+ .st-mini6-row{flex-wrap:wrap}
+ .st-mini6-row .st-mini{flex:1 1 140px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}

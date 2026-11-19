@@ -612,7 +612,11 @@ async function stFoldGate(browser,FILE,ok,booted){
    const ctl=id=>{const e=document.getElementById(id); if(!e)return null;
     const o=R(e); o.exp=e.getAttribute('aria-expanded'); o.label=e.getAttribute('aria-label')||''; return o;};
    const fl=document.getElementById('stflow'), grid=fl&&getComputedStyle(fl).display==='grid';
-   const minis=[...document.querySelectorAll('#stmini6>.st-mini')];
+   /* DESCENDANT, NOT A DIRECT CHILD, 19 November: the two-row split
+      (ui/storyui.js, shell/head.html) nested every card one level deeper
+      inside .st-mini6-row, so the direct-child selector this line used to
+      read (#stmini6>.st-mini) now matches nothing at all. */
+   const minis=[...document.querySelectorAll('#stmini6 .st-mini')];
    return {
     cls:{l:B.contains('lshut'),z:B.contains('st-zshut'),r:B.contains('st-rowshut'),full:B.contains('st-full')},
     key:{l:STORE.get('lcols')||null,z:STORE.get('stzfold')||null,r:STORE.get('strowfold')||null},

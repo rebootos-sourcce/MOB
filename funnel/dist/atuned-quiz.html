@@ -24083,7 +24083,17 @@ function marksOf(t,p){
    if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
    if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
    return;}
-  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  /* SK6, 19 November, ai-director's own read of the code confirmed the
+     fix and corrected two things in the first draft of it: a charge-only
+     adjective (no m.band, "outside" carries charge but names no seat by
+     itself) does not all land at crown, each one lands at ITS OWN seat
+     by its charge, the exact same lookup pathOf's own seatOf() already
+     runs (PATHSEAT[charge]). Without this, marksOf colored nothing for
+     these hits while pathOf and the fetter tally both already counted
+     them, so the chat asked about a point the story bubble showed in
+     plain, uncoloured text. 39 real words move, measured against the
+     live build, not the ~60 first guessed. */
+  m.seat=(m.band&&m.band!=='coherent')?m.band:(m.kind==='adj'?(PATHSEAT[m.charge]||null):null);
   m.bn=m.seat?K2BAND[m.seat]:null;
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});

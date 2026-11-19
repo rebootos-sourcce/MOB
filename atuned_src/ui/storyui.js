@@ -192,14 +192,19 @@ var STMK_IC={
  stbody:'<circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/>',
  stfield:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/>',
  stavatar:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/>',
- stmasks:'<path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/>'};
+ stmasks:'<path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/>',
+ /* THE SAME MARK AS THE FIELD'S OWN SUPEREGO SECTION HEADER
+    (shell/body.html, .lsec[data-sec=superego] .lsec-hd), 19 November: one
+    concept, one mark, reused rather than invented for this card. */
+ stsuperego:'<rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/>'};
 var STMK_WHAT={
  stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
  stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
  stbody:'The one address in your body holding the most charge right now.',
  stfield:'The heaviest of your seven assemblage points right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
- stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.'};
+ stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ stsuperego:'The defence holding the most charge right now, of the four the product tracks.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are
@@ -382,6 +387,29 @@ function stMiniMasks(r){
    +'<g transform="translate('+(x-8.4)+' '+(y-8.4)+') scale(.7)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+s.m.ic+'"/></g>'
    +'<text x="'+(x+23)+'" y="'+(y+5.5)+'" class="stmk-n" font-size="16">'+s.p+'<tspan font-size="9.5" dx=".5">%</tspan></text></g>';}).join('');
  return '<div class="st-mini-vis" data-topmask="'+esc(ms[0].m.nm)+'"><svg viewBox="0 0 160 110">'+cells+'</svg></div>';}
+
+/* THE SEVENTH CARD, 19 November, his words: "if the super ego button
+   doesn't fit, use two rows." Same real reading the left rail's own
+   Superego section already shows (ui/ui.js renderAmplifiers, AMP_FOUR),
+   not a new number: the heaviest of the four defences the product
+   tracks (AMPLIFIER filtered to those four names, read off BY[i].sq,
+   the same registry weight every other mini card reads). */
+var STMK_SUPEREGO_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+function stmkSuperego(r){
+ if(r.unread)return null;
+ var rows=STMK_SUPEREGO_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+  .filter(Boolean).map(function(a){var n=BY[a.i]; return n?{nm:a.nm,seat:n.b,v:n.sq}:null;}).filter(Boolean);
+ var top=rows.sort(function(a,b){return b.v-a.v;})[0];
+ if(!top||!top.v)return null;
+ return {nm:top.nm, seat:top.seat, v:top.v, col:'var('+(SEATCOL[top.seat]||'--dim')+')'};}
+function stmkTipSuperego(s){return stmkTip(s.nm+', '+stmkFmt(s.v),
+ stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
+function stMiniSuperego(r){
+ var s=stmkSuperego(r); if(!s)return STMK_DASH;
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipSuperego(s)+'>'+stmkRing(60,46,40,s.v/10,s.col,5)
+  +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round"><path d="'+(SUPEREGO_IC[s.nm]||'')+'"/></g>'
+  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(s.v)+'</text></g></svg>'
+  +'<span class="stmk-cap">'+esc(s.nm)+'</span></div>';}
 
 /* ---- the journal ---- */
 function stRender(){
@@ -1093,22 +1121,36 @@ function stRender(){
      pixels every other folded surface already reserves for its own
      control (.st-lrail .rblk, .lsec[data-rail=right] .lsec-hd), not a
      new kind of gap. */
+  /* SEVEN CARDS, TWO EVEN ROWS, 19 November, his words: "if the super ego
+     button doesn't fit, use two rows and make sure that the rows are even,
+     so that the icons are symmetrical and fit." The six-sacrosanct row
+     (13 November, above) is still one flex row of equal-width cards, now
+     split into two: four on top, three below, each row its own flex line
+     that fills the same full width edge to edge, so neither row is
+     cramped against the other and nothing sits pressed against a
+     neighbour (the standing 16 November symmetry-in-space rule). One fold
+     control still closes the whole thing, not one per row. */
   +'<div class="st-mini6" id="stmini6">'
    +'<button class="rowfold" id="rowfold" type="button" aria-controls="stmini6"'
     +' aria-expanded="true" aria-label="Close the widgets row">'
     +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
-   +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
-   +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
-   +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
-   +stMiniShell('stfield','Field',stMiniField(r),'stfield')
-   +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-   /* the Masks card stays on the row, which is ruled even and symmetrical,
-      and stops being a link while Character is held off the bar (17
-      November): a card that opened a page with no door would be the hidden
-      page by another way in. tabOnBar is in engine/core.js. */
-   +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
+   +'<div class="st-mini6-row">'
+    +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
+    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
+    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
+    +stMiniShell('stfield','Field',stMiniField(r),'stfield')
+   +'</div>'
+   +'<div class="st-mini6-row">'
+    +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
+    /* the Masks card stays on the row, which is ruled even and symmetrical,
+       and stops being a link while Character is held off the bar (17
+       November): a card that opened a page with no door would be the hidden
+       page by another way in. tabOnBar is in engine/core.js. */
+    +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
+    +stMiniShell('stsuperego','Superego',stMiniSuperego(r),null)
+   +'</div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div

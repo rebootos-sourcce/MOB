@@ -4929,3 +4929,16 @@ moved, and Glass white is still held to the pixel.
 - **Rebased onto 72a28def**, which landed while the review ran. The two build
   products conflicted and were rebuilt from the sources, never merged by hand.
 
+### Source AI may read a person's own prior entries. Ruled 19 November.
+
+Answers `DESIGN-sniffer.md` question 12, open since 27 September: "May Source
+AI see a person's own previous entries in order to read the current one?"
+His words, direct: "Yes, source can read prior entries." Only that person's
+own record, on their own device, never a corpus and never another person's
+record; the existing privacy rulings (name never leaves the device, a key
+replaces it, the record never held joined to the story) are structural and
+do not move. Until this ruling Source AI's ladder was built to a narrower
+version on purpose, carrying only the seat keys an earlier commit stores,
+never the text itself, and stopped at rung 8 of 10 because of it. Building
+the wider read is tracked on the board as `t19-sourceai-data-gap`.
+

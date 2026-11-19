@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v283 c539fd81 2026-11-19 20:10"><head><meta charset="utf-8">
+<html lang="en" data-build="v285 013a0fd1 2026-11-19 22:48"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4601,8 +4601,17 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
    shade of panel inside a panel, so six of these beside each other read
    as one row and not six boxes. flex-basis 100% is what makes .st-flow
    wrap this onto its own line under the three columns above. */
-.st-mini6{display:flex;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
-.st-mini6 .st-mini{flex:1 1 0;min-width:0}
+/* TWO EVEN ROWS, 19 November, his words: "if the super ego button doesn't
+   fit, use two rows and make sure that the rows are even." .st-mini6 was
+   one flex row of six; it is now a flex COLUMN holding two .st-mini6-row
+   children (four cards, then three), the same gap value reused as the
+   vertical space between the rows, so the space above and below the
+   split reads the same as the space between any two cards (the standing
+   16 November symmetry-in-space rule: nothing pressed tighter in one
+   place than another). */
+.st-mini6{display:flex;flex-direction:column;flex:1 0 100%;grid-column:1/-1;grid-row:2;gap:12px;position:relative}
+.st-mini6-row{display:flex;gap:12px}
+.st-mini6-row .st-mini{flex:1 1 0;min-width:0}
 /* THE WIDGET ROW'S OWN FOLD, 17 November, ui/storyui.js's rowFoldWire,
    the long comment there explains why it is one control for the whole
    row rather than six. ABSOLUTE, NOT A RESERVED STRIP: a first pass
@@ -4619,8 +4628,9 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
    short window check, which exists for exactly this kind of overflow.
    So the control costs the row nothing: absolute, it is no part of
    .st-mini6's own box height, and it sits over whichever card happens
-   to be physically top right, Masks at 1600, a different one once the
-   row wraps under 1181px. Nothing else here reads that card's own
+   to be physically top right, Field at 1600 since the 19 November split
+   above put Path/Boundary/Body/Field on the first row, a different one
+   once the row wraps under 1181px. Nothing else here reads that card's own
    button or link through this control's own 44 pixel corner (checked:
    .st-mini carries no <button> or <a href>, only a role and a click
    delegate, so tests/collide.js's own control sweep, which queries
@@ -4632,16 +4642,20 @@ body.st-zshut .st-flow:not(.st-simple){grid-template-columns:1.64fr 1.64fr 58px!
 .rowfold:hover{background:var(--sunk);color:var(--ink)}
 .rowfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .rowfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
-/* the one card that stands under the control at the width he
-   screenshotted, Masks, keeps its own label clear of it; below 1181,
-   where the row wraps and a different card takes that corner, this
+/* the one card that stands under the control, Field since the 19
+   November two-row split put it last in the first row; below 1181,
+   where that row wraps and a different card takes that corner, this
    reservation sits on a card the control is no longer over and costs
-   that card nothing either. */
-#stmini6 .st-mini:last-child .st-mini-lb{padding-right:52px}
+   that card nothing either. Scoped to the first row only: the second
+   row's own last card (Superego) sits under no control and keeps its
+   label flush. */
+#stmini6 .st-mini6-row:first-child .st-mini:last-child .st-mini-lb{padding-right:52px}
 /* shut, the row is the control alone, its own height falling to that
-   control's, the same shape #lpanel and #rpanel already shut to. */
+   control's, the same shape #lpanel and #rpanel already shut to. BOTH
+   ROWS, not a direct child of #stmini6 any more since the 19 November
+   split nested every card one level deeper inside .st-mini6-row. */
 body.st-rowshut #stmini6{min-height:var(--tap)}
-body.st-rowshut #stmini6>.st-mini{display:none}
+body.st-rowshut #stmini6 .st-mini6-row{display:none}
 body.st-rowshut .rowfold{position:static;margin-left:auto}
 body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
 /* THE MASKS MINI CARD WAS REBUILT ONTO THE SHARED SHELL, 14 November:
@@ -4681,6 +4695,17 @@ body.st-rowshut .rowfold .lf-ch{transform:rotate(180deg)}
    (the text box, the imprints list, Release) already reads --sunk. */
 .st-mini{background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);
  padding:10px 12px;display:flex;flex-direction:column;height:200px}
+/* SHORTER, 19 November: two rows of these at the old 200px would cost the
+   widget area 412px against the old single row's 200px, which
+   tests/collide.js's own short window check caught overlapping the
+   Release column's own controls (reproduced first: 945/0 on the old
+   single row, 6 failing once split to two rows at the old height). 88px
+   is the real measured number, found by lowering it and re-running the
+   gate until it read 945/0 again (140px: still 4 failing; 100px: still 2;
+   88px: clean), not guessed. Every card's content is SVG and flex, not a
+   fixed pixel drawing, so it scales down clean; checked by screenshot
+   too before trusting the number. */
+#stmini6 .st-mini{height:88px}
 /* SENTENCE CASE, NO ALL CAPS UI COPY, the house voice ruling, CLAUDE.md:
    caught here by tests/design.js's own "no all-caps UI copy" check
    ("transform:Compass | transform:Boundary") before this shipped.
@@ -8240,13 +8265,15 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     Dashboard's own cap. */
  body.tab-story.st-full .st-chat .st-uni{flex:none;height:min(42vh,380px)}
  .st-colw,.st-colb,.st-colz{gap:8px}
- /* SIX IN A ROW FITS 1600, NOT 390. Six equal flex children at phone
-    width would squeeze each mini picture under 60px, so this wraps them
-    into whatever number of rows the screen actually has room for (2
-    across at phone width, measured), the same real-second-line approach
-    .st-mk-row already takes for the rail's five mask tiles. */
- .st-mini6{flex-wrap:wrap}
- .st-mini6 .st-mini{flex:1 1 140px}
+ /* FOUR AND THREE FIT 1600, NOT 390. Each .st-mini6-row (four cards, then
+    three, 19 November above) would squeeze its own mini pictures under
+    60px at phone width, so each row wraps independently into whatever
+    number of lines it has room for, the same real-second-line approach
+    .st-mk-row already takes for the rail's five mask tiles. The outer
+    .st-mini6 stays a column of exactly two rows at every width; only
+    the cards inside each row reflow. */
+ .st-mini6-row{flex-wrap:wrap}
+ .st-mini6-row .st-mini{flex:1 1 140px}
  .st-pan{padding:10px 12px}
  .st-hd{margin-bottom:6px}
  .st-bar{margin-top:8px}
@@ -35072,7 +35099,17 @@ function marksOf(t,p){
    if(pv&&m.band&&!pv.band){pv.band=m.band;pv.coh=m.coh;}
    if(pv&&m.amt!=null&&pv.amt==null)pv.amt=m.amt;
    return;}
-  m.seat=(m.band&&m.band!=='coherent')?m.band:null;
+  /* SK6, 19 November, ai-director's own read of the code confirmed the
+     fix and corrected two things in the first draft of it: a charge-only
+     adjective (no m.band, "outside" carries charge but names no seat by
+     itself) does not all land at crown, each one lands at ITS OWN seat
+     by its charge, the exact same lookup pathOf's own seatOf() already
+     runs (PATHSEAT[charge]). Without this, marksOf colored nothing for
+     these hits while pathOf and the fetter tally both already counted
+     them, so the chat asked about a point the story bubble showed in
+     plain, uncoloured text. 39 real words move, measured against the
+     live build, not the ~60 first guessed. */
+  m.seat=(m.band&&m.band!=='coherent')?m.band:(m.kind==='adj'?(PATHSEAT[m.charge]||null):null);
   m.bn=m.seat?K2BAND[m.seat]:null;
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
@@ -63261,14 +63298,19 @@ var STMK_IC={
  stbody:'<circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/>',
  stfield:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/>',
  stavatar:'<circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/>',
- stmasks:'<path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/>'};
+ stmasks:'<path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/>',
+ /* THE SAME MARK AS THE FIELD'S OWN SUPEREGO SECTION HEADER
+    (shell/body.html, .lsec[data-sec=superego] .lsec-hd), 19 November: one
+    concept, one mark, reused rather than invented for this card. */
+ stsuperego:'<rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/>'};
 var STMK_WHAT={
  stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
  stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
  stbody:'The one address in your body holding the most charge right now.',
  stfield:'The heaviest of your seven assemblage points right now.',
  stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
- stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.'};
+ stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ stsuperego:'The defence holding the most charge right now, of the four the product tracks.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are
@@ -63451,6 +63493,29 @@ function stMiniMasks(r){
    +'<g transform="translate('+(x-8.4)+' '+(y-8.4)+') scale(.7)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="'+s.m.ic+'"/></g>'
    +'<text x="'+(x+23)+'" y="'+(y+5.5)+'" class="stmk-n" font-size="16">'+s.p+'<tspan font-size="9.5" dx=".5">%</tspan></text></g>';}).join('');
  return '<div class="st-mini-vis" data-topmask="'+esc(ms[0].m.nm)+'"><svg viewBox="0 0 160 110">'+cells+'</svg></div>';}
+
+/* THE SEVENTH CARD, 19 November, his words: "if the super ego button
+   doesn't fit, use two rows." Same real reading the left rail's own
+   Superego section already shows (ui/ui.js renderAmplifiers, AMP_FOUR),
+   not a new number: the heaviest of the four defences the product
+   tracks (AMPLIFIER filtered to those four names, read off BY[i].sq,
+   the same registry weight every other mini card reads). */
+var STMK_SUPEREGO_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+function stmkSuperego(r){
+ if(r.unread)return null;
+ var rows=STMK_SUPEREGO_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
+  .filter(Boolean).map(function(a){var n=BY[a.i]; return n?{nm:a.nm,seat:n.b,v:n.sq}:null;}).filter(Boolean);
+ var top=rows.sort(function(a,b){return b.v-a.v;})[0];
+ if(!top||!top.v)return null;
+ return {nm:top.nm, seat:top.seat, v:top.v, col:'var('+(SEATCOL[top.seat]||'--dim')+')'};}
+function stmkTipSuperego(s){return stmkTip(s.nm+', '+stmkFmt(s.v),
+ stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
+function stMiniSuperego(r){
+ var s=stmkSuperego(r); if(!s)return STMK_DASH;
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipSuperego(s)+'>'+stmkRing(60,46,40,s.v/10,s.col,5)
+  +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round"><path d="'+(SUPEREGO_IC[s.nm]||'')+'"/></g>'
+  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(s.v)+'</text></g></svg>'
+  +'<span class="stmk-cap">'+esc(s.nm)+'</span></div>';}
 
 /* ---- the journal ---- */
 function stRender(){
@@ -64162,22 +64227,36 @@ function stRender(){
      pixels every other folded surface already reserves for its own
      control (.st-lrail .rblk, .lsec[data-rail=right] .lsec-hd), not a
      new kind of gap. */
+  /* SEVEN CARDS, TWO EVEN ROWS, 19 November, his words: "if the super ego
+     button doesn't fit, use two rows and make sure that the rows are even,
+     so that the icons are symmetrical and fit." The six-sacrosanct row
+     (13 November, above) is still one flex row of equal-width cards, now
+     split into two: four on top, three below, each row its own flex line
+     that fills the same full width edge to edge, so neither row is
+     cramped against the other and nothing sits pressed against a
+     neighbour (the standing 16 November symmetry-in-space rule). One fold
+     control still closes the whole thing, not one per row. */
   +'<div class="st-mini6" id="stmini6">'
    +'<button class="rowfold" id="rowfold" type="button" aria-controls="stmini6"'
     +' aria-expanded="true" aria-label="Close the widgets row">'
     +'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
-   +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
-   +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
-   +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
-   +stMiniShell('stfield','Field',stMiniField(r),'stfield')
-   +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-   /* the Masks card stays on the row, which is ruled even and symmetrical,
-      and stops being a link while Character is held off the bar (17
-      November): a card that opened a page with no door would be the hidden
-      page by another way in. tabOnBar is in engine/core.js. */
-   +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
+   +'<div class="st-mini6-row">'
+    +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
+    +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
+    +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
+    +stMiniShell('stfield','Field',stMiniField(r),'stfield')
+   +'</div>'
+   +'<div class="st-mini6-row">'
+    +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
+    /* the Masks card stays on the row, which is ruled even and symmetrical,
+       and stops being a link while Character is held off the bar (17
+       November): a card that opened a page with no door would be the hidden
+       page by another way in. tabOnBar is in engine/core.js. */
+    +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
+    +stMiniShell('stsuperego','Superego',stMiniSuperego(r),null)
+   +'</div>'
   +'</div>'
   /* CLOSES .st-flow ITSELF, opened at the top of this function; lost for a
      moment in the 9 November edit that folded .st-colr's own closing div
@@ -105882,5 +105961,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007219105"></div>
+<div id="eof" hidden data-len="007224538"></div>
 </body></html>
