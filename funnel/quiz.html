@@ -2730,7 +2730,13 @@ function bodyMapTile(r){
   var icons = bySeat[seat].map(function(s){
    var bright = s.answered ? (0.25 + 0.075*s.corrected) : 0.18;
    var color = 'var('+SEAT_COLOR[seat]+')';
-   return '<div class="lawicon" title="'+s.law.nm+(s.answered?' -- '+s.raw+'/10':' -- not answered')+'" '+
+   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding F20): this
+      read "Unity -- 7/10". s.raw is the 0 to 10 answer, so *10 is its own
+      percent; not run through fmtPct, because a real answer of 0 here means
+      the person said 0, not "not read yet", and fmtPct's dash is for the
+      second case, not the first (the "not answered" branch beside it already
+      says the first case in words). */
+   return '<div class="lawicon" title="'+s.law.nm+(s.answered?', '+(s.raw*10)+'%':' -- not answered')+'" '+
     'style="background:'+color+';opacity:'+bright.toFixed(2)+'">'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="'+ (s.answered?'var(--on-accent)':'#00000055') +'" stroke-width="1.6">'+icInner(s.law.ic)+'</svg></div>';
   }).join('');
@@ -2747,7 +2753,8 @@ function medallionTile(r){
  var meds = r.archScores.map(function(s){
   var op = s.answered ? (0.3+0.07*s.v) : 0.2;
   var sym = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="'+s.arch.ic+'"/></svg>';
-  return '<div class="med" style="background:rgba(126,184,212,'+op.toFixed(2)+')" title="'+s.arch.nm+(s.answered?' -- '+s.raw+'/10':' -- not answered')+'">'+sym+'</div>';
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding F20). */
+  return '<div class="med" style="background:rgba(126,184,212,'+op.toFixed(2)+')" title="'+s.arch.nm+(s.answered?', '+(s.raw*10)+'%':' -- not answered')+'">'+sym+'</div>';
  }).join('');
  var caption = r.top ? 'Highest right now: <b>'+r.top.arch.nm+'</b>, seated at the '+r.top.arch.b+'.' : 'No answered archetypes yet to name a top one honestly.';
  return '<div class="tile"><h3>12 Archetypes</h3><div class="cap">'+caption+'</div><div class="medgrid">'+meds+'</div></div>';
@@ -2756,7 +2763,9 @@ function medallionTile(r){
 function sabTile(r){
  var chips = r.sabScores.map(function(s){
   var op = s.answered ? (0.3+0.07*s.v) : 0.2;
-  return '<div class="chip" style="opacity:'+(s.answered?1:0.6)+'" title="'+s.sab.nm+(s.answered?' -- '+s.raw+'/10 (self-inferred)':' -- not answered')+'">'+s.sab.nm+'</div>';
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding F20, which
+     also asked for the double hyphen to go while this line was open). */
+  return '<div class="chip" style="opacity:'+(s.answered?1:0.6)+'" title="'+s.sab.nm+(s.answered?', '+(s.raw*10)+'%, from your own answers':' -- not answered')+'">'+s.sab.nm+'</div>';
  }).join('');
  var caption = r.topSab
   ? 'Highest right now: <b>'+r.topSab.sab.nm+'</b>. Self-inferred, from the real twenty saboteurs above, ten of them the engine’s own Positive Intelligence set (SAB_PI) -- not the engine’s own story-derived detection.'
@@ -2870,8 +2879,12 @@ function resultsHTML(r){
  return ''+
  '<div class="reflect">'+
   '<div class="reflect-main">'+
+   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding F19): this
+      read "62 / 100". rawCQ (below) is already a percent, sum/210*100, the
+      same formula the main app's cq kind cites (engine/pct.js), so the unit
+      is just a percent sign now. */
    '<div class="kicker">Reported Coherence</div>'+
-   '<div class="cq-big"><span id="cqCount">0</span><span class="cq-unit"> / 100</span></div>'+
+   '<div class="cq-big"><span id="cqCount">0</span><span class="cq-unit">%</span></div>'+
    '<div class="reflect-copy">'+reflectCopy(r)+'</div>'+
   '</div>'+
  '</div>'+

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v206 29543e9b 2026-11-19 10:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v213 b23cf966 2026-11-19 10:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -20874,7 +20874,12 @@ function leanSeries(p){
   /* what the series cannot see, stated on the series rather than in a
      document nobody reads next to the chart. */
   storyCues:false,
-  says:out.length?('the field lean at '+out.length+' of '+H.length+' snapshots')
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S11: on no
+     screen today, fixed in the same sweep so it cannot leak onto one). This
+     said "the field lean at N of M snapshots"; it is the percent of the
+     snapshots a coherence reading was found on, through the portion kind.
+     out.length is positive in this branch, so H.length is too. */
+  says:out.length?('the field lean on '+fmtPct('portion',out.length/H.length)+' of snapshots')
    :'no snapshot on file carries a coherence reading'};}
 
 /* ---------- the gates as schema ----------
@@ -32762,9 +32767,13 @@ function ixSay(id,r){
  var none={head:'', body:''};
  if(!r||r.state==='none')return none;
  /* A NUMBER SAYS WHAT IT COUNTS, round PU: "17 left" on its own left a person
-    to work out seventeen of what. It says how many questions and out of how
-    many, in the same line. */
- if(r.state==='part')return {head:r.left+' of '+r.total+' questions left', body:''};
+    to work out seventeen of what. It said how many questions and out of how
+    many, in the same line, which NO-FRACTIONS-AUDIT.md (18 November, finding
+    P09) named as a measure of the person in fraction form: "17 of 18
+    questions left". It says how much of the block is answered now, as a
+    percent, through the portion kind (engine/pct.js), which this file may
+    ask: it is engine code, host free, the same as fmtPct itself. */
+ if(r.state==='part')return {head:fmtPct('portion',r.got/r.total)+' answered', body:''};
  var lbl={arch:['Leading archetype','Leading archetypes'], axes:['Loudest axis','Loudest axes'],
           acts:['Most used move','Most used moves']}[id];
  if(r.state==='level')return {head:'Nothing leads.',
@@ -50900,9 +50909,21 @@ var TIP=(function(){
   document.body.classList.toggle('tip-sheet',m);
   return m;}
 
- /* THE CONTENT. Every field optional but the body. Numbers are a list of
-    three: what it is, the value, and what the value is out of. There is no
-    way to pass a bare number, which is the point. */
+ /* THE CONTENT. Every field optional but the body. NO FRACTIONS, 18 November
+    (the no-fractions audit, S12): a number row used to be a list of three,
+    what it is, the value, and what the value was out of, rendered as "value
+    of total". That is the fraction the owner ruled out, and this was its one
+    cause, reached by every caller through rvTip. A row is a list of two now:
+    what it is, and the value, already said the way the rest of the product
+    says a measure, a percent through fmtPct or a plain count. There is no
+    denominator slot any more, so nothing built here can print a fraction.
+
+    AND THE DROPPED-TOTAL BUG THIS SAME LINE CARRIED. A row with no third part
+    was silently dropped, so a caller that had nothing to call a total (Best
+    and Kept in the Streak tooltip, ui/accountability.js's acctStreakHtml, two
+    parts each) printed nothing at all and nobody saw it go missing. A row is
+    dropped now only for an empty label or an empty value, never for want of a
+    third part it was never going to need. */
  function build(d){
   var h='';
   if(d.k)h+='<p class="tip-k">'+esc(d.k)+'</p>';
@@ -50911,8 +50932,8 @@ var TIP=(function(){
   if(d.n&&d.n.length){
    h+='<dl class="tip-n">';
    d.n.forEach(function(r){
-    if(r.length<3)return;                    /* a value with no denominator is dropped */
-    h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+' <i>of '+esc(r[2])+'</i></dd>';});
+    if(r.length<2||!r[0]||!r[1])return;       /* an empty label or value is dropped, not a missing denominator */
+    h+='<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>';});
    h+='</dl>';}
   if(d.a)h+='<p class="tip-a">'+esc(d.a)+'</p>';
   /* A DOOR INSIDE A DEFINITION. A locked control's definition has to say where
@@ -61574,8 +61595,15 @@ function stmkMasks(r){
 /* tips, the words that came off the card face */
 function stmkTipCQ(v){return stmkTip('CQ '+v,stmkU('cq')+' It runs 0 to 100, and higher is more of your integrity holding.');}
 function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and lower is lighter.');}
-function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
- s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P01): the body
+   used to print "0 of 5 commitments written on this side", a measure of the
+   person as a fraction. The title already carried the same measure as a
+   percent (s.pct), so the body drops the count and keeps only what the
+   percent means. The title's own percent goes through the portion kind now
+   too (engine/pct.js), so writing nothing on a side reads as the house dash
+   and never a bare 0%, his ruling against a zero carried as a percent. */
+function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+fmtPct('portion',s.n/PUR_PER_SIDE),
+ 'Each commitment you write on this side fills it 20 percent.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
  'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' seat.');}
 function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
@@ -61653,7 +61681,11 @@ function stMiniBoundary(){
    +(f>0?'<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+'" x2="'+e.x.toFixed(1)+'" y2="'+e.y.toFixed(1)+'" stroke="var(--throat)" stroke-width="4" stroke-linecap="round"/>':'')
    +'<text x="'+m.x.toFixed(1)+'" y="'+(m.y+3.6).toFixed(1)+'" text-anchor="middle" class="stmk-e" font-size="10.5">'+s.pct+'</text></g>';});
  return '<div class="st-mini-vis"><svg viewBox="0 0 160 112">'+out
-  +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%',b.filled+' of '+b.of+' commitments written across all six sides.')+'>'
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P02): the body
+     used to print "0 of 30 commitments written across all six sides", a
+     second fraction for a measure the title already carries as a percent
+     (b.pct). The body now only says what the percent means. */
+  +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%','How full all six sides are together.')+'>'
   +'<text x="'+CX+'" y="'+(CY+7)+'" text-anchor="middle" class="stmk-n" font-size="20">'+b.pct+'<tspan font-size="11" dx="1">%</tspan></text></g></svg></div>';}
 function stMiniBody(r){
  var b=stmkBody(r); if(!b)return STMK_DASH;
@@ -75305,14 +75337,21 @@ function relHitRows(H){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
+   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S01, found in
+      the source and not by the live walk, which never opened a run with more
+      than one seat). The title and the visible <em> both said "3 of its 5
+      addresses in this run". The ring beside it already fills to this same
+      share (x.reach/Math.max(1,x.of)*100, two lines down, unchanged), so the
+      printed figure is that ring's own fill, through the portion kind. */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
+    var reached=fmtPct('portion',x.reach/Math.max(1,x.of));
     return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+x.reach+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
-     +'<span>'+esc(x.nm)+'</span><em>'+x.reach+' of '+x.of+(x.of===1?' address':' addresses')+'</em>'
+       title:x.nm+', '+reached+' of its addresses in this run'})
+     +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
 /* HOW MUCH OF THE PLAN WAS TRULY SAID, as a count of plan entries from the
@@ -75335,11 +75374,16 @@ function relReach(){
    reach and planN from relCoolDown, and added from the meter's own answer. A
    rerun is never charged, so it says so and does not print a charge that did
    not happen. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P06): this said
+   "6 of 12 lines were said", a measure of the person. It is a percent of the
+   lines planned for this run now, through the portion kind (engine/pct.js);
+   RUN.planN is positive whenever this guard lets the function past its
+   first line, so the division is safe. */
 function relEndNote(){
  if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
  var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
- return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early. '
-  +RUN.reach+' of '+RUN.planN+(RUN.planN===1?' line was':' lines were')+' said. '
+ return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early, at '
+  +fmtPct('portion',RUN.reach/RUN.planN)+' of its lines said. '
   +(RUN.rerun?'A rerun costs nothing. '
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
@@ -78913,12 +78957,18 @@ function ritPctHtml(p,today,size){
     both branches now read the same way: the days kept, and the ring is the
     seat's mark with nothing filled.
 
-    AND NOT KEPT OF SET. The brief for this round asked for "3 of 7" in the
-    pill, and that is a count against a total, his objection CO-05 in the
-    voice database ("every time you add that 11 of 12, why."), widened by
-    CO-31 to any scale and held as a stop. The days set ride in the tooltip's
-    figure line, where they already were. ritPct still does the counting;
-    only the percent it returned is no longer printed. */
+    AND NOT KEPT OF SET, WIDENED TO THE TOOLTIP TOO, 18 November. The brief
+    for this round asked for "3 of 7" in the pill, and that is a count
+    against a total, his objection CO-05 in the voice database ("every time
+    you add that 11 of 12, why."), widened by CO-31 to any scale and held as
+    a stop. SV17 moved the fraction out of the pill and into the tooltip's
+    own figure line, "Kept: 2 days of 7 set", which is the same fraction
+    CO-31 already ruled out, one tap deeper, and the no-fractions audit of
+    18 November caught it there (NO-FRACTIONS-AUDIT.md, finding P10). It is
+    not turned into a percent either: this is the one page SV17 holds to a
+    count, never a grade, so the fix is a second count beside the first,
+    Kept and Set, never joined by "of". ritPct still does the counting; what
+    changed is only how the two counts it returns are said. */
  /* THE BADGE IS A FIGURE WITH ITS WORD NOW, SV24. His words, on the live
     page: "Next to the ritual, where there's a heart, there's a bunch of icons
     on the right-hand side with numbers and pills, I don't know what that's
@@ -78931,10 +78981,11 @@ function ritPctHtml(p,today,size){
     pill went with it: the count is printed as the Avatar card prints its own,
     "14 days kept", the unit on the figure and one word for what it counts
     (V17), and the seat is said in words on the row's own line
-    (ritRowSeats). The tooltip stays on the figure for the days set. */
+    (ritRowSeats). The tooltip stays on the figure for the days set, as its
+   own count now and not a fraction's denominator. */
  var k=P?P.kept:ritRunRead(p,today).kept;
  if(P){body='The days you have kept it. A kept day stays kept.';
-  n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
+  n='Kept|'+acctDays(P.kept)+';Set|'+P.due+(P.due===1?' day':' days');}
  else body='No end, so nothing to complete. The number is the days you have kept it.';
  /* none kept is the house dash, the value the pill printed for a zero */
  badge='<b>'+(k?k+'<small>'+(k===1?' day':' days')+'</small>':'\u2013')+'</b><span>kept</span>';
@@ -80495,9 +80546,14 @@ function ritAvHtml(st){
    +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg><span>'+names[i]+'</span></div>';}).join('');
  var A0=(typeof avState==='function')?avState():null;
  var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
+ /* NO FRACTIONS, 18 November: this row used to carry a literal denominator,
+    'Complete|XX%|100%', which ui/tip.js then printed as "Complete: XX% of
+    100%", a fraction made of a percent and its own scale repeated back. The
+    row is one part now, the percent alone; tip.js's own contract no longer
+    takes a third part at all (ui/tip.js build()). */
  var hero='<span class="rv-avhero"'+rvTip('Your avatar',
    'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
-   all===null?'':'Complete|'+fmtPct('complete',all)+'|100%','Avatar')+'>'
+   all===null?'':'Complete|'+fmtPct('complete',all),'Avatar')+'>'
   +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:fmtPct('complete',all)})
   /* THE PERCENT IS NAMED, SV24, his words: "I want to see a percent
      complete." It was wired, avState().overall in the ring's pill, and
@@ -80512,9 +80568,15 @@ function ritAvHtml(st){
      person whose stories have released reads a percent there. */
   +'<span class="rv-avlab">Complete</span>'
   +'</span>';
+ /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P11): this row
+    said "Kept: N days of 63 days for three cycles". The figure below still
+    says the plain count of days kept (V17, the Avatar card's own word for
+    it), unchanged; the tooltip's own number is the percent of the 63 days
+    three cycles take, through the portion kind (engine/pct.js), already
+    named there for exactly this shape: a count against its own total. */
  var cyc='<div class="rv-avc"'+rvTip('Cycles',
    'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
-   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Avatar')+'>'
+   'Kept|'+fmtPct('portion',C.days/(AV_TURN*AV_TURNS*AV_CYCLES)),'Avatar')+'>'
   +'<div class="rv-cys">'+rings+'</div>'
   +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
@@ -80542,7 +80604,9 @@ function ritAvHtml(st){
    :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
   return '<li class="rv-avs'+(fed.length?' rv-fed':'')+(x?'':' rv-avs0')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
    +rvTip(A.nm+', at '+ritThe(b),(x?'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" ':'No avatar story at this seat yet. ')+said,
-    ap===null?'':'Complete|'+fmtPct('complete',ar.pct)+'|100%',A.about)+'>'
+    /* NO FRACTIONS, 18 November: same fix as the hero's Complete row above,
+       the row is the percent alone, never a percent over a literal 100%. */
+    ap===null?'':'Complete|'+fmtPct('complete',ar.pct),A.about)+'>'
    +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':fmtPct('complete',ar.pct)})
    +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  /* THE HEADING IS AVATAR, SV19, his words: "Get rid of the word ritual too,
@@ -86083,12 +86147,18 @@ addEventListener('click',function(e){
 
    The drill is the one place a range is printed (the 14 October ruling),
    and every number in it carries its meaning in the same sentence. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S04, found in
+   the source and not by the live walk, which never opened the drill with
+   some laws open and some still closed). "4 of 21 laws are answered" and
+   "With 12 of 21 laws answered" were both a measure of the person as a
+   fraction; both become the percent of the 21 laws answered, through the
+   portion kind (engine/pct.js). */
 function coreRangeSay(r){
  if(r.unread)return '';
  var sp=cqSpan(), of=sp.of;
  if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
-  +sp.answered+'</b> of '+of+' laws are answered.</p>';
- if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
+  +fmtPct('portion',sp.answered/of)+'</b> of the laws are answered.</p>';
+ if(!sp.complete)return '<p class="ad-p">With <b>'+fmtPct('portion',sp.answered/of)+'</b> of the laws answered, the finished figure lands between <b>'
   +fmtPct('cq',sp.lo)+'</b> and <b>'+fmtPct('cq',sp.hi)+'</b>. It is <b>'+fmtPct('cq',sp.lo)
   +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
@@ -88015,10 +88085,15 @@ function kbDeckOf(x){
    never a deck: a chip counting it would be a figure nobody asked for. Its
    figure waits until a law is answered, because before that it is a zero
    and not a reading. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S05): "out of
+   210" named the formula's own denominator, which read as a fraction once
+   joined to the figure Pressed opens (CQ, already a percent). The row says
+   the formula is read as a percent now and drops the number it is read
+   against; the figure itself is unchanged. */
 function kbFormulaRow(){
  var r=compute(), n=SI.length;
  var row=kbRow('cq','The coherence formula',
-  n+' laws, each 0 to 10, added up, out of '+(n*10),'Crown',
+  n+' laws, each 0 to 10, added up and read as a percent of the most they can hold','Crown',
   (!kbUnread()&&r.answered)?pct('cq',r.CQ):null,'M18 5H6l6 7-6 7h12',{},'var(--accent)');
  row.seats=[];
  return row;}
@@ -103097,5 +103172,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007041463"></div>
+<div id="eof" hidden data-len="007046835"></div>
 </body></html>

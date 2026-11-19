@@ -1210,14 +1210,21 @@ function relHitRows(H){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
       scrolls is three places for a thumb to catch */
+   /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S01, found in
+      the source and not by the live walk, which never opened a run with more
+      than one seat). The title and the visible <em> both said "3 of its 5
+      addresses in this run". The ring beside it already fills to this same
+      share (x.reach/Math.max(1,x.of)*100, two lines down, unchanged), so the
+      printed figure is that ring's own fill, through the portion kind. */
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
+    var reached=fmtPct('portion',x.reach/Math.max(1,x.of));
     return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
-       title:x.nm+', '+x.reach+' of its '+x.of+(x.of===1?' address':' addresses')+' in this run'})
-     +'<span>'+esc(x.nm)+'</span><em>'+x.reach+' of '+x.of+(x.of===1?' address':' addresses')+'</em>'
+       title:x.nm+', '+reached+' of its addresses in this run'})
+     +'<span>'+esc(x.nm)+'</span><em>'+reached+'</em>'
      +(on?relHitSeg(id,x.nm,st[id]):'')+'</div>';}).join('')
    +'</div>';}).join('');}
 /* HOW MUCH OF THE PLAN WAS TRULY SAID, as a count of plan entries from the
@@ -1240,11 +1247,16 @@ function relReach(){
    reach and planN from relCoolDown, and added from the meter's own answer. A
    rerun is never charged, so it says so and does not print a charge that did
    not happen. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P06): this said
+   "6 of 12 lines were said", a measure of the person. It is a percent of the
+   lines planned for this run now, through the portion kind (engine/pct.js);
+   RUN.planN is positive whenever this guard lets the function past its
+   first line, so the division is safe. */
 function relEndNote(){
  if(!RUN.halted||RUN.reach==null||RUN.reach>=RUN.planN)return '';
  var rest=RUN.planN-RUN.reach, paid=(RUN.meter&&RUN.meter.added)||0;
- return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early. '
-  +RUN.reach+' of '+RUN.planN+(RUN.planN===1?' line was':' lines were')+' said. '
+ return '<div class="rel-note" id="relendnote">You ended this '+(RUN.rerun?'rerun':'release')+' early, at '
+  +fmtPct('portion',RUN.reach/RUN.planN)+' of its lines said. '
   +(RUN.rerun?'A rerun costs nothing. '
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'

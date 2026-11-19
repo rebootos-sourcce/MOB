@@ -255,8 +255,15 @@ function stmkMasks(r){
 /* tips, the words that came off the card face */
 function stmkTipCQ(v){return stmkTip('CQ '+v,stmkU('cq')+' It runs 0 to 100, and higher is more of your integrity holding.');}
 function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and lower is lighter.');}
-function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+s.pct+'%',
- s.n+' of '+PUR_PER_SIDE+' commitments written on this side. Each one you write moves this edge 20 percent toward 100.');}
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P01): the body
+   used to print "0 of 5 commitments written on this side", a measure of the
+   person as a fraction. The title already carried the same measure as a
+   percent (s.pct), so the body drops the count and keeps only what the
+   percent means. The title's own percent goes through the portion kind now
+   too (engine/pct.js), so writing nothing on a side reads as the house dash
+   and never a bare 0%, his ruling against a zero carried as a percent. */
+function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+fmtPct('portion',s.n/PUR_PER_SIDE),
+ 'Each commitment you write on this side fills it 20 percent.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
  'This is where you are holding the most tension. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' seat.');}
 function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
@@ -334,7 +341,11 @@ function stMiniBoundary(){
    +(f>0?'<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+'" x2="'+e.x.toFixed(1)+'" y2="'+e.y.toFixed(1)+'" stroke="var(--throat)" stroke-width="4" stroke-linecap="round"/>':'')
    +'<text x="'+m.x.toFixed(1)+'" y="'+(m.y+3.6).toFixed(1)+'" text-anchor="middle" class="stmk-e" font-size="10.5">'+s.pct+'</text></g>';});
  return '<div class="st-mini-vis"><svg viewBox="0 0 160 112">'+out
-  +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%',b.filled+' of '+b.of+' commitments written across all six sides.')+'>'
+  /* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding P02): the body
+     used to print "0 of 30 commitments written across all six sides", a
+     second fraction for a measure the title already carries as a percent
+     (b.pct). The body now only says what the percent means. */
+  +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%','How full all six sides are together.')+'>'
   +'<text x="'+CX+'" y="'+(CY+7)+'" text-anchor="middle" class="stmk-n" font-size="20">'+b.pct+'<tspan font-size="11" dx="1">%</tspan></text></g></svg></div>';}
 function stMiniBody(r){
  var b=stmkBody(r); if(!b)return STMK_DASH;

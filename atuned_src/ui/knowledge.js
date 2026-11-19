@@ -476,10 +476,15 @@ function kbDeckOf(x){
    never a deck: a chip counting it would be a figure nobody asked for. Its
    figure waits until a law is answered, because before that it is a zero
    and not a reading. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S05): "out of
+   210" named the formula's own denominator, which read as a fraction once
+   joined to the figure Pressed opens (CQ, already a percent). The row says
+   the formula is read as a percent now and drops the number it is read
+   against; the figure itself is unchanged. */
 function kbFormulaRow(){
  var r=compute(), n=SI.length;
  var row=kbRow('cq','The coherence formula',
-  n+' laws, each 0 to 10, added up, out of '+(n*10),'Crown',
+  n+' laws, each 0 to 10, added up and read as a percent of the most they can hold','Crown',
   (!kbUnread()&&r.answered)?pct('cq',r.CQ):null,'M18 5H6l6 7-6 7h12',{},'var(--accent)');
  row.seats=[];
  return row;}
