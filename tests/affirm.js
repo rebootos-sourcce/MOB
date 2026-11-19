@@ -2,7 +2,7 @@
 /* ============================================================
    THE AFFIRMATION SHEET, IN A REAL PAGE. 18 November.
 
-   env NODE_PATH=$(npm root -g) CHROME=/opt/pw-browsers/chromium node tests/affirm.js
+   env NODE_PATH=$(npm root -g) CHROME=/path/to/chromium node tests/affirm.js
    AFFIRM_HTML=file   runs against another build, for checking the checker
 
    His words: "This is a small affirmation engine utility that I want added
@@ -34,7 +34,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = process.env.AFFIRM_HTML ? path.resolve(process.env.AFFIRM_HTML) : path.join(ROOT, 'source.html');
-const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium';
+const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
 let PASS = 0, FAIL = 0;
 const ok = (c, m) => { if (c) { PASS++; console.log('  ok    ' + m); } else { FAIL++; console.log('  FAIL  ' + m); } };

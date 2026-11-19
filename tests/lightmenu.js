@@ -2,7 +2,7 @@
 /* ============================================================
    THE BAR'S MENUS ARE ON TOP OF EVERYTHING THEY OPEN OVER. 18 November.
 
-   env CHROME=/opt/pw-browsers/chromium NODE_PATH=$(npm root -g) node tests/lightmenu.js
+   env CHROME=/path/to/chromium NODE_PATH=$(npm root -g) node tests/lightmenu.js
    LIGHTMENU_HTML=file   runs against another build, for checking the checker
 
    The owner: "Fix lighting menu hidden behind the Dashboard panels". It was

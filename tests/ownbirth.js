@@ -2,7 +2,7 @@
 /* ============================================================
    A PERSON'S OWN BIRTH REACHES THE SUMMARY. 18 November.
 
-   env CHROME=/opt/pw-browsers/chromium NODE_PATH=$(npm root -g) node tests/ownbirth.js
+   env CHROME=/path/to/chromium NODE_PATH=$(npm root -g) node tests/ownbirth.js
    OWNBIRTH_HTML=file   runs against another build, for checking the checker
    OWNBIRTH_SHOTS=dir   also writes a picture of each Summary into dir
 
