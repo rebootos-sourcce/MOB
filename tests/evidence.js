@@ -426,10 +426,16 @@ g('EV11 · SK3, behaviour is evidence on the ledger and never a claim, on the wh
 g('SK13 · what the microphone may hand in, three more acts, a short leash for vent and move on, and what it can say back (18 November)');
 {const {srcAct,srcIntent,srcSafe}=E, srcNoise=E.srcNoise||(()=>null), srcEcho=E.srcEcho||(()=>null), srcSpot=E.srcSpot||(()=>null), a=t=>{const r=srcAct(t);return r&&r.act;}, it=t=>{const r=srcIntent(t);return r&&r.intent;};
  /* the door. Every word on the noise list is a word the sniffer reads nothing in, so the door never
-    refuses a feeling, and "mhm" and "uh huh" are a yes. */
- ok(['uh','um','umm','hmm','mm','oh','the','a','you','I','so','oh so','the a','uh um'].every(t=>srcNoise(t)),
+    refuses a feeling, and "mhm", "uh huh", "hmm" and "mm" are a yes.
+    CORRECTED 19 November, run 1862's own gates-fast failure: this group is dated 18 November, the
+    same wave-b era ui/storyui.js's own comment already named and overrode for this exact word
+    ("wave-b's own integration note... added hm, hmm, hmmm, mm, mmm and huh back onto this list, is
+    not carried forward... would break the gate already merged and green on main"). hmm and mm move
+    to the not-noise list below, the third and last place carrying the stale ruling (ui/storyui.js's
+    ST_FILLER and tests/srcconvo.js were the other two, already fixed this session). */
+ ok(['uh','um','umm','oh','the','a','you','I','so','oh so','the a','uh um'].every(t=>srcNoise(t)),
   'a lone filler or function word the recogniser caught, or two of them, is noise');
- ok(['yes','no','okay','sure','maybe','fine','afraid','boss','mhm','uh huh','mm hmm','bye','hello','thanks','tired','guilty','what','who','how','why','so what','sorry','wait','help'].every(t=>!srcNoise(t)),
+ ok(['yes','no','okay','sure','maybe','fine','afraid','boss','mhm','uh huh','mm hmm','hmm','mm','bye','hello','thanks','tired','guilty','what','who','how','why','so what','sorry','wait','help'].every(t=>!srcNoise(t)),
   'a short answer, a greeting, a feeling, and a yes in sounds are not noise');
  ok(!srcNoise("I don't know")&&!srcNoise('not really')&&!srcNoise('I guess')&&!srcNoise('I am so afraid')&&!srcNoise('the boss'),
   'two and three word answers that carry a word that means something are kept: '+['I don\'t know','not really','I guess','the boss'].map(t=>srcNoise(t)).join());
