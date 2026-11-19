@@ -2520,6 +2520,18 @@ function bmDraw(dt){
  var gain=BM.ph, np=bmPanN();
  /* the flow's seats, read once and not once a panel */
  BM.flowCol=BM.ov.on.flow?bmFlowCol():null;
+ /* THE HELD SELECTION, THE LIMBS' ANCHORS, AND THE ADDRESSES' LINE CHARGE.
+    Three more that answer the same question regardless of which panel is
+    drawing: bmSelAll reads PMPICK and BMG, never a camera; a limb's region is
+    always the front one, mirrored onto the back by bmLimb itself; and a
+    saboteur's own charge on its addresses is the saboteur's, not the figure's.
+    Building any of the three inside the per panel loop below built it twice a
+    frame for an answer that cannot differ the second time, which is exactly
+    the allocation this file already names for BM.conn and BM.flowCol. */
+ var selAll=bmSelAll();
+ BM.limbPos=BMLIMB.map(function(l){var r=BMG.reg.filter(function(x){return x.v===0&&x.nm===l[0]&&x.side===l[1];})[0];
+  return r?{x:r.cx,y:r.cy+(l[0]==='Foot'?1.2:0)}:null;});
+ BM.onLine={};BM.sabs.forEach(function(s){s.nids.forEach(function(id){BM.onLine[id]=Math.max(BM.onLine[id]||0,s.T);});});
  /* 3. Reveal only: the nerves under the pain stay lit. Cached, because
     recompositing every nerve through the mask each frame measured 21ms. Built
     for every panel at once, each figure through its own camera and inside its
@@ -2554,8 +2566,9 @@ function bmDraw(dt){
    g.setTransform(1,0,0,1,0,0);g.globalAlpha=BM.pg*(V.litA||1);
    g.drawImage(BM.lit,P.dx0,0,P.dx1-P.dx0,BM.lit.height,P.dx0,0,P.dx1-P.dx0,BM.cv.height);g.globalAlpha=1;}
   bmTf(g);
-  /* regions: the pointed one and the open ones, clipped to him */
-  var sel=bmSelAll();
+  /* regions: the pointed one and the open ones, clipped to him. selAll is
+     read once a frame, above, and not recomputed per panel. */
+  var sel=selAll;
   vs.forEach(function(v){g.save();g.clip(G.body[v]);
    if(BM.mode==='pain')G.reg.forEach(function(r){if(r.v!==v)return;var b=r.box;
     g.strokeStyle=bmRgba(BMC.acc,.10);g.lineWidth=px;g.strokeRect(b[0]+bmVX(v),b[1],b[2]-b[0],b[3]-b[1]);});
@@ -2626,8 +2639,9 @@ function bmPainLines(g,vs,gain){var px=1/BM.pa.cam.z;
    ONE: dashed, the proposal colour, a fixed size in screen pixels, no charge
    arc, never counted, never pressed, never on a line. Question D. */
 function bmLimb(g,vs,dl){
- BMLIMB.forEach(function(l){var r=BMG.reg.filter(function(x){return x.v===0&&x.nm===l[0]&&x.side===l[1];})[0];if(!r)return;
-  var x=r.cx,y=r.cy+(l[0]==='Foot'?1.2:0);
+ /* the anchor points are BM.limbPos, read once a frame by bmDraw: always the
+    front region, mirrored onto the back below, and never a panel's own */
+ BM.limbPos.forEach(function(p){if(!p)return;var x=p.x,y=p.y;
   [0,1].forEach(function(v){if(vs.indexOf(v)<0)return;var ghost=(v===1),s=bmW2S((v?100-x:x)+bmVX(v),y);
    g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
    g.setLineDash([2.5,2.5]);g.beginPath();g.arc(s[0],s[1],6.5,0,BMTAU);
@@ -2681,8 +2695,10 @@ function bmMarkR(p){return 3.2+0.55*Math.min(p.ids.length,6);}
    product's own reading circle: a faint track, and an arc filled to sq over
    ten. The three readings of question A differ here and nowhere else. */
 function bmDrawAddr(g,vs,dl,dt){
- var Pa=BM.pa, zI=Pa.z0*1.7, ic=BM.amode==='A4'?bmSstep(zI*0.8,zI*1.25,Pa.cam.z):0, onLine={};
- BM.sabs.forEach(function(s){s.nids.forEach(function(id){onLine[id]=Math.max(onLine[id]||0,s.T);});});
+ /* onLine is BM.onLine, read once a frame by bmDraw: a saboteur's charge on
+    its own addresses, never a panel's own, so building it here a second time
+    a frame built the same object twice for the same answer */
+ var Pa=BM.pa, zI=Pa.z0*1.7, ic=BM.amode==='A4'?bmSstep(zI*0.8,zI*1.25,Pa.cam.z):0, onLine=BM.onLine;
  var C=BM.conn||{};
  g.setTransform(BM.dpr,0,0,BM.dpr,0,0);
  BMG.places.forEach(function(p){
