@@ -734,16 +734,42 @@ function srcAct(turn){
    noise and not an echo, whatever else it is: the page admits it before it
    asks either. Both read only the words and neither reaches the record.
    ============================================================ */
-var SRC_NOISE=['uh','um','umm','uhh','er','erm','ah','aah','eh','ehh','hm','hmm','hmmm','mm','mmm','oh','ooh',
+var SRC_NOISE=['uh','um','umm','uhh','er','erm','ah','aah','eh','ehh','oh','ooh',
  'the','a','an','and','or','but','so','to','of','in','on','at','it','its','is','you','i','he','she','we','they',
  'that','this','like','just','well'];
 /* NOT what, who or how: a person who did not catch a line says "what?", and a lone question word is a
    question and not a sound. The turn is answered by what the page says to any turn with no seat in it. */
 var SRC_NOISE_MAX=2;
-var SRC_NOISE_YES=/^(mm hm+|uh huh|mhm|mmhm+|uh uh)$/;
+/* A BARE "HMM" FELL THROUGH THIS REGEX INTO THE NOISE LIST BELOW, 19
+   November, run 1861's own gates-report (talksilence) failure: mm-hmm, uh
+   huh and mhm matched here and stayed a turn, but hmm matched none of
+   these and reached the SRC_NOISE check, where hm/hmm/hmmm/mm/mmm were
+   still listed as pure filler, so it was dropped and never answered.
+   ui/storyui.js's own ST_FILLER already made the opposite call for the same
+   word, on the same owner complaint, and says so in its own comment: mhm,
+   hmm, mm and huh are a spoken yes, not a hesitation, and stay a turn.
+   This regex now carries hm+ and mm+ as their own accepted forms, the same
+   call storyui.js already made, and the two filler lists agree again.
+   hm/hmm/hmmm/mm/mmm come off the list below for the same reason: once
+   this regex accepts them standalone, leaving them in the fallback list
+   only invites the same drop through a second path. */
+var SRC_NOISE_YES=/^(mm\s*hm+|uh huh|mhm+|mmhm+|uh uh|hm+|mm+)$/;
 function srcNoise(text){
  var t=String(text||'');
  if(typeof srcSafe==='function'&&srcSafe(t))return false;
+ /* A MASKED WORD WAS DROPPED SILENTLY, 19 November, run 1861's own
+    gates-report (talksilence) failure, cascading into two more: a final of
+    only stars never reached ST_TEXT at all, so the page's own "hid a word
+    behind stars" line never showed and the turn was lost with nothing on
+    screen to say why, the exact silent failure CLAUDE.md rules out.
+    normMap strips punctuation, so "****" normalises to an empty string and
+    fell into the "nothing said" branch below. ui/storyui.js's own stMicNoise
+    already carries this same check (its own comment names the reason:
+    "any text with a star in it... is a word the person said and the page
+    cannot read"); this file's parallel implementation never had it. Read
+    before normMap, the same order stMicNoise uses, so a real word that
+    happens to use an asterisk never reaches the strip at all. */
+ if(t.indexOf('*')>=0)return false;
  var s=normMap(t).s.trim();
  if(!s)return true;
  if(SRC_NOISE_YES.test(s))return false;

@@ -19,10 +19,14 @@
 
    WHAT IT HOLDS, and the reproduction each came from, read off the page
      1  the microphone's door. A result with no words in it (silence, a lone
-        uh, the, um, hmm, you) is not a turn: no row, no reading, no reply, no
+        uh, the, um, you) is not a turn: no row, no reading, no reply, no
         saved draft. A short answer that means something (yes, no, I don't
-        know, okay, afraid, mhm) is a turn. The door to help is never refused.
-        Source AI's own words coming back are not a turn.
+        know, okay, afraid, mhm, hmm) is a turn, hmm included: the spoken-yes
+        ruling in ui/storyui.js (fix/talk-silence, 19 November) already
+        settled hmm as a turn and not a hesitation, reconciled here rather
+        than re-litigated, since the two shared one door before this round
+        and must still agree now. The door to help is never refused. Source
+        AI's own words coming back are not a turn.
      2  the hold outlasts the line. The recording starts SRC_TAIL_MS after the
         audio ended and a result delivered inside it is dropped.
      3  a person mid sentence when a reply arrives is not talked over, and
@@ -150,10 +154,10 @@ const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
     const p = await open(browser, 1600, 1000); await fast(p);
     await talk(p);
     const said0 = await p.evaluate(() => __said.length);
-    for (const t of ['', '   ', 'uh', 'the', 'um', 'hmm', 'a', 'you', 'oh so', 'er']) await say(p, t, 160);
+    for (const t of ['', '   ', 'uh', 'the', 'um', 'a', 'you', 'oh so', 'er']) await say(p, t, 160);
     const a = await rows(p), g = await p.evaluate(() => ({ said: __said.length, reading: SrcFace.state().reading, engaged: SrcFace.state().engaged,
       draft: (CURP.story && CURP.story.draft) || '', hasFace: !!document.querySelector('#srcface:not([hidden])') }));
-    ok(a.me.length === 0 && a.text === '', 'silence, empty and whitespace results, and uh, the, um, hmm, a, you, oh so, er, are no turn: no row, no entry text, ' + JSON.stringify(a.me));
+    ok(a.me.length === 0 && a.text === '', 'silence, empty and whitespace results, and uh, the, um, a, you, oh so, er, are no turn: no row, no entry text, ' + JSON.stringify(a.me));
     ok(g.said === said0, 'and nothing is said back to them: ' + (g.said - said0) + ' lines asked of the voice after the greeting');
     ok(!g.reading && !g.engaged, 'and the circle reads nothing for them: reading ' + g.reading + ', engaged ' + g.engaged);
     ok(!g.draft, 'and nothing is saved as a draft, so a reload does not show a face over a profile nobody wrote in: ' + JSON.stringify(g.draft));
