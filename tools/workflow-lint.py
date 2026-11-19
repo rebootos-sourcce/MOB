@@ -177,6 +177,7 @@ BROWSER = {
 # the Field's Psyche panel, Matrix/Superego/Action and nothing else, 18
 # November (tests/psychepanel.js). Report only until three green runs.
     'psychepanel': ('node tests/psychepanel.js', 20),
+    'talksilence': ('node tests/talksilence.js', 20),
 # the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
 # Report only until three green runs, like every gate new to CI.
     'lightmenu':     ('node tests/lightmenu.js', 20),
