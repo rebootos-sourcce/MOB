@@ -448,7 +448,7 @@ function stkTrayHtml(){
   +' data-tip-k="Pick several" data-tip="Turns every release ring into a pick ring, so one release can run several patterns at once.">'
   +svgI('<path d="'+STK_PICKON+'"/>')+(STK_PICKING?'Done picking':'Pick several')+'</button>'
   +(STK_PICKING?'<span class="stk-tray-n" aria-live="polite">'+n+' picked</span>':''), body='';
- if(STK_PICKING&&!n)body='<p class="stk-tray-p">Press a ring to add it.</p>';
+ if(STK_PICKING&&!n)body='<p class="stk-tray-p">A press on any ring adds it.</p>';
  else if(STK_PICKING){
   var got=stkPickIds(), sec=got.ids.length?stkPickSec(got.ids):null;
   body='<ul class="stk-tray-l">'+STK_PICK.map(function(pk){return '<li>'+esc(pk.label||pk.nm||'')+'</li>';}).join('')+'</ul>'
