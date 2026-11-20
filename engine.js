@@ -10067,7 +10067,7 @@ const TABDEF=[
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
     commit (the bar, the dashboard card, the drills, the tooltips). */
- {k:TAB.COMPASS, id:'cone',  nm:'Path',      cls:'tab-compass', sec:'play'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
     be under the play tab. It should go field intake compass mask
