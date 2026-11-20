@@ -44,7 +44,20 @@ const cases=[
  ['Tomorrow I might get furious',{family:null,subject:'hypothetical',phase:'FUTURE_PROJECTION'}],
  ['I was furious, and I decided not to yell',{phase:'PEAK_OR_CHOICE',tulaRank:6}],
  ['I wanted to lash out but I didn’t',{phase:'PEAK_OR_CHOICE',family:null}],
- ['I got pissed off. Later I felt embarrassed',{phase:'PAST_REFLECTION',chargeDirection:'UNKNOWN'}]
+ ['I got pissed off. Later I felt embarrassed',{phase:'PAST_REFLECTION',chargeDirection:'UNKNOWN'}],
+ /* 20 November, the board's would defect. Before the fix the first two read
+    subject 'hypothetical' and family null, because any would marked the clause
+    imagined. The third and fourth are the would that must still read imagined
+    and the habitual would that must not. */
+ ['My hands would not stop shaking',{subject:'self'}],
+ ['I was scared and my hands would not stop shaking',{family:'Fear',subject:'self',tulaRank:5}],
+ ['I would have been furious',{family:null,subject:'hypothetical'}],
+ ['My father would get furious every night',{family:'Anger',subject:'father'}],
+ ['I could feel myself getting angry',{family:'Anger',subject:'self'}],
+ /* The upset defect. Before the fix "My mother was upset" read Anger here
+    while the sniffer files upset as sadness. */
+ ['My mother was upset',{family:null,tulaRank:null,subject:'mother'}],
+ ['I was annoyed and upset',{family:'Anger'}]
 ];
 let n=0;
 for(const [t,exp] of cases){
@@ -70,4 +83,8 @@ const withheld=E.srcVoiceChargeCycle(['I got pissed off'],{record:privateRecord,
 A.equal(JSON.stringify(withheld).includes('PRIVATE'),false);
 A.equal(JSON.stringify(privateRecord),JSON.stringify({name:'PRIVATE_NAME',id:'PRIVATE_ID'}));
 A.deepEqual(E.srcVoiceChargeCycle(['I got pissed off']),E.srcVoiceChargeCycle(['I got pissed off']));
-console.log('Source TULA charge cycle: '+n+' canonical-engine cases + 7 structural/privacy gates PASS');
+/* An ambiguous word stays an observation and names every family it is filed under. */
+const up=E.srcVoiceChargeCycle(['My mother was upset']).observations;
+A.equal(up.length,1);A.equal(up[0].family,null);A.deepEqual(up[0].candidates,['Anger','Sadness']);
+A.equal(E.srcVoiceSniff('I felt upset').hits.some(h=>h.charge==='sadness'),true,'the sniffer still files upset as sadness');
+console.log('Source TULA charge cycle: '+n+' canonical-engine cases + 8 structural/privacy gates PASS');
