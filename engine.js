@@ -28281,6 +28281,7 @@ var DLY_TPL=[
  {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
  {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
  {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, touched the {1} point.'},
  {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
@@ -28967,7 +28968,12 @@ function dlyComposeIn(p,now,opt){
   var rd=dlyRead(ctx,s.idx,s.seat), ev=dlyStoryEv(s.ids);
   if(s.rung==='windowed')cands.push(dlyCand('show.seat.new','showing',[s.span,s.seat,s.base],ev,'inferred','windowed',{read:rd,dom:s.seat}));
   else if(s.rung==='repeated')cands.push(dlyCand('show.seat','showing',[s.span,s.seat,s.days],ev,'inferred','repeated',{read:rd,dom:s.seat}));
-  else cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));});
+  /* the rung is once when the entries sit on one day, and that is a count of
+     days, not of entries. Picking the sentence on the rung printed "one entry"
+     over two and three entries logged the same day, so the sentence is picked
+     on s.n, the entries themselves, and the rung stays once either way. */
+  else if(s.n===1)cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));
+  else cands.push(dlyCand('show.seat.day.h','showing',[dlyDayWord(s.last),s.seat,s.n],ev,'inferred','once',{read:rd,dom:s.seat}));});
  (by.cue||[]).forEach(function(c){
   var rung=(c.ents>=2&&c.days>=2)?'repeated':'once', ev=dlyStoryEv(c.ids);
   if(rung==='repeated')cands.push(dlyCand('show.cue','showing',[c.span,c.nm,c.total,c.ents],ev,'inferred','repeated'));
