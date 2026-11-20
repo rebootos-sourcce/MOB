@@ -3428,10 +3428,14 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
      engine/core.js has both. */
   /* and 17 November: "change the word compass to path... hide character for
      now... keep avatar there under play, but we're going to move summary,
-     intake, and analytics under embody." */
-  '17 November: the journal page alone in Discover, Field, Body, Path and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
- ok(nav.play==='Field,Body,Path,Avatar / Field,Body,Path,Avatar',
-  '17 November: Play reads Field, Body, Path, Avatar, in the engine and the bar alike, '+nav.play);
+     intake, and analytics under embody." And 20 November, the word back:
+     "change the title path back to compass, I think it's a better title."
+     This line read Path for three days after the bar's engine half said
+     Compass again, because the reversal moved TABDEF and not the markup, and
+     the assertion below is what compares the two. */
+  '20 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ ok(nav.play==='Field,Body,Compass,Avatar / Field,Body,Compass,Avatar',
+  '20 November: Play reads Field, Body, Compass, Avatar, in the engine and the bar alike, '+nav.play);
  ok(nav.embody==='Wisdom school,Summary,Intake,Analytics / Wisdom school,Summary,Intake,Analytics',
   '17 November: Embody reads Wisdom school (Knowledge until 18 November), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
  ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,

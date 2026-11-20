@@ -43,8 +43,13 @@ var AFF={o:null, src:null, typed:'', creator:false, res:null, keep:null, srcs:[]
 var AFF_SW_TIP='Adds "I am the creator of all that is" before each line and "across all space, time, and dimensions" after it.';
 var AFF_HEAD_TIP='Lines you say out loud, one for each of your seven points, Root to Crown.';
 var AFF_DOOR_TIP='Source AI writes one line for each of your seven points from this. You choose which go in your ritual.';
-/* the kind of source, said in the select beside the person's own words */
-var AFF_KIND={path:'Path', avatar:'Become', tag:'Tag', bank:'Banked', claim:'Said yes', typed:'Typed'};
+/* the kind of source, said in the select beside the person's own words.
+   path is the Ritual's pole card (ritComplexHtml, ui/ritual.js), whose row is
+   read off the Compass's own data, an axis pole or a path pole alike
+   (becomingOf, engine/data/practice.js). It was written the day the tab was
+   called Path and said Path for that reason; with the tab Compass again it
+   says the tab's word, since Path over an axis pole names a thing it is not. */
+var AFF_KIND={path:'Compass', avatar:'Become', tag:'Tag', bank:'Banked', claim:'Said yes', typed:'Typed'};
 /* a ring with three lines in it: a spoken line, drawn as a ring and never
    a fill, the same stroke the Ritual page's practice rings use */
 function affIc(){

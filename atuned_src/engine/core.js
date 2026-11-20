@@ -321,7 +321,16 @@ const TABDEF=[
     integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
-    commit (the bar, the dashboard card, the drills, the tooltips). */
+    commit (the bar, the dashboard card, the drills, the tooltips).
+
+    COMPASS AGAIN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." The first pass back moved only nm
+    here, and shell/body.html's own button kept reading Path over an engine
+    that said Compass, because the bar is markup this file does not write. The
+    rest went back with it: the button and its title, the Play door's title,
+    the dashboard card, the drill, the Insight kind word, the overlays, the
+    hover word, the plans and the Ritual's affirmation source. The numerology
+    row stays Life path, which was never this tab's word. */
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should

@@ -72,7 +72,7 @@ function patFam(o){
 var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
 var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
  addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
- path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
+ path:'Compass',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
 /* the three fixed run-in headers, a label and never data */

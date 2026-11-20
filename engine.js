@@ -7266,7 +7266,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a path axis'},
+             say:'the position on a compass axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of
@@ -10066,7 +10066,16 @@ const TABDEF=[
     integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
-    commit (the bar, the dashboard card, the drills, the tooltips). */
+    commit (the bar, the dashboard card, the drills, the tooltips).
+
+    COMPASS AGAIN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." The first pass back moved only nm
+    here, and shell/body.html's own button kept reading Path over an engine
+    that said Compass, because the bar is markup this file does not write. The
+    rest went back with it: the button and its title, the Play door's title,
+    the dashboard card, the drill, the Insight kind word, the overlays, the
+    hover word, the plans and the Ritual's affirmation source. The numerology
+    row stays Life path, which was never this tab's word. */
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -11733,7 +11742,7 @@ const SIGHT=[
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
-  what:'The registers, your point cloud: where each pattern sits on the path.'},
+  what:'The registers, your point cloud: where each pattern sits in the compass.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
   what:'The six masks, and how your chain lights each one.'}];
 /* the rows a person can be told about: the table less any with no surface */
@@ -14703,7 +14712,7 @@ function patFam(o){
 var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
 var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
  addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
- path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
+ path:'Compass',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
 /* the three fixed run-in headers, a label and never data */
@@ -27803,7 +27812,7 @@ var MARKS=[
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
   to:'Place your six values on the Avatar page.',
-  d:'Six values placed. The path has a direction now.',
+  d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
