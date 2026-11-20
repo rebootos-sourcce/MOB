@@ -329,11 +329,29 @@ function authProfileSync(){
   if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
 
   /* First association with an account is deliberately conservative. */
+  /* ALWAYS KEEP THE HIGHER NUMBER, accounts-badges. Both pulls below used to
+     import the remote profile whole, so a device with the newer stamp and
+     the shorter record took every badge the other had earned off it.
+     ladderKeep (engine/ladder.js) carries the ritual list and the ground
+     opened across from this side, and names any mark it cannot carry; while
+     it names one nothing is pulled and nothing is pushed, because the rule
+     for a record conflict is still the owner's to pick. Read on the pull
+     only: a push sends this side, which is the higher one by then, and
+     holding it as well would leave the higher record unable to leave. */
+  var keep=remote&&typeof ladderKeep==='function'?ladderKeep(local,remote,Date.now()):null;
+  if(keep&&!keep.lost.length)keep.remote=keep.kept;
+  /* the hash a pull records is the server's copy and not the kept one, so a
+     pull that carried this side's rituals across differs from it on the next
+     pass and is pushed, and the other device gets the union too. Where
+     nothing was carried the two are the same text, as before. */
+  var remoteText=remote?JSON.stringify(remote):'';
   if(meta.accountId!==identity){
    if(remote){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled=profileSyncImport(remote,remoteVersion);
     if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled.text).then(function(remoteHash){
+    return profileSyncHash(remoteText).then(function(remoteHash){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();
@@ -349,9 +367,11 @@ function authProfileSync(){
    var lu=local.updated?Date.parse(local.updated):0;
    var ru=remote.updated?Date.parse(remote.updated):0;
    if(ru>lu){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled2=profileSyncImport(remote,remoteVersion);
     if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled2.text).then(function(remoteHash2){
+    return profileSyncHash(remoteText).then(function(remoteHash2){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();

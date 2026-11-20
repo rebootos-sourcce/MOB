@@ -3780,6 +3780,82 @@ console.log('\n27 · the ladder');
   reset();}
 }
 
+console.log('\n27e · the reminder speaks after a missed day, and a sync keeps the higher number');
+{
+ /* accounts-push and accounts-badges, 19 November. Named off E so the block
+    stands alone. NOW is a fixed afternoon, so a run at midnight cannot move
+    a day under the gate. */
+ const {blankProfile,remindDue,ladderKeep,ladderRead,ledgerRead,streakRead,pracDay}=E;
+ const NOW=Date.parse('2026-11-19T15:00:00Z'), TODAY=pracDay(NOW);
+ const day=n=>new Date(NOW-n*86400000).toISOString();
+ const mk=(days,extra)=>{const p=blankProfile('K');
+  days.forEach(d=>p.rituals.push(Object.assign({t:day(d),min:10,steps:[]},extra||{})));return p;};
+
+ /* THE REMINDER. A missed day is a whole day ended with nothing marked done. */
+ ok(remindDue(blankProfile('K'),NOW,null)===null,
+  'a person who has never marked a ritual done is not reminded');
+ ok(remindDue(mk([0]),NOW,null)===null,'a ritual done today is not reminded');
+ ok(remindDue(mk([1]),NOW,null)===null,
+  'a ritual done yesterday is not reminded, because today is not over');
+ const due=remindDue(mk([2,3]),NOW,null);
+ ok(due&&due.gap===2&&due.last===TODAY-2&&due.today===TODAY,
+  'two days since the last ritual done is a missed day, got '+JSON.stringify(due));
+ ok(remindDue(mk([2]),NOW,TODAY)===null,'and it speaks once a day, not on every check');
+ ok(remindDue(mk([2]),NOW,TODAY-1)!==null,'but yesterday\'s showing does not silence today');
+ ok(remindDue(mk([0],{done:false}),NOW,null)===null,
+  'a ritual started and never marked done is not a day practised, so nothing was missed');
+ ok(remindDue(mk([5,0],{done:false}),NOW,null)===null,
+  'and only set-not-done entries still means no practice to miss');
+
+ /* ALWAYS KEEP THE HIGHER NUMBER. The laptop has thirty days and twelve
+    addresses; the phone synced long ago, has two days and one address, and
+    a newer stamp. */
+ const laptop=mk(Array.from({length:30},(_,i)=>i+3));
+ laptop.meter.unique=Array.from({length:12},(_,i)=>'n'+i+':L:1'); laptop.meter.lines=600;
+ const phone=mk([0,1]); phone.meter.unique=['n0:L:1','n99:R:2']; phone.meter.lines=40;
+ phone.updated=new Date(NOW).toISOString();
+ const lapTxt=JSON.stringify(laptop), phTxt=JSON.stringify(phone);
+ /* known bad first: taking the phone whole, which is what authProfileSync
+    did, does cost the laptop its marks, so the test below can fail */
+ const hadK=ladderRead(laptop,NOW).earned.map(m=>m.k);
+ const wholeK=ladderRead(phone,NOW).earned.map(m=>m.k);
+ ok(hadK.includes('month')&&hadK.includes('ten')&&!wholeK.includes('month')&&!wholeK.includes('ten'),
+  'known bad: adopting the newer record whole loses Thirty days and Ten addresses, had '
+  +JSON.stringify(hadK)+', whole '+JSON.stringify(wholeK));
+ const r=ladderKeep(laptop,phone,NOW), keptK=ladderRead(r.kept,NOW).earned.map(m=>m.k);
+ ok(r.lost.length===0,'nothing the laptop earned is lost, got '+JSON.stringify(r.lost));
+ ok(hadK.every(k=>keptK.includes(k)),'every mark the laptop held is held after, '+JSON.stringify(keptK));
+ ok(streakRead(r.kept,NOW).days===32&&r.kept.meter.unique.length===13&&r.kept.meter.lines===600,
+  'the days, the ground and the lines are the union and the larger, got '
+  +streakRead(r.kept,NOW).days+' days, '+r.kept.meter.unique.length+' keys, '+r.kept.meter.lines+' lines');
+ ok(r.kept.updated===phone.updated,'and the rest of the record is the incoming one, untouched');
+ ok(JSON.stringify(laptop)===lapTxt&&JSON.stringify(phone)===phTxt,'and neither side is changed');
+ /* done is the higher number for one entry */
+ {const a=mk([4]), b=mk([4],{done:false});
+  const k=ladderKeep(a,b,NOW).kept;
+  ok(k.rituals.length===1&&k.rituals[0].done!==false,
+   'one entry marked done on one side and not the other is kept done, got '+JSON.stringify(k.rituals));}
+ /* a mark the merge cannot carry is held and named, never silently dropped */
+ {const a=mk([2]); a.story.entries.push({t:day(2),text:'x',imprints:[],bands:[]});
+  const k=ladderKeep(a,mk([1]),NOW);
+  ok(k.lost.length===1&&k.lost[0]==='told',
+   'a story the incoming record lacks is reported lost by key, not erased, got '+JSON.stringify(k.lost));}
+ /* the property, swept: a lower incoming value never overwrites a higher one */
+ let s=7; const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+ let worse=0, n=0;
+ for(let i=0;i<300;i++){
+  const pick=()=>{const ds=[]; for(let j=0,m=Math.floor(rnd()*40);j<m;j++)ds.push(Math.floor(rnd()*120));
+   const p=mk(ds); p.rituals.forEach(x=>{if(rnd()<0.2)x.done=false; x.min=5*(1+Math.floor(rnd()*4));});
+   p.meter.unique=Array.from({length:Math.floor(rnd()*60)},()=>'n'+Math.floor(rnd()*108)+':L:'+Math.floor(rnd()*5));
+   p.meter.lines=Math.floor(rnd()*900); return p;};
+  const a=pick(), b=pick(), k=ladderKeep(a,b,NOW).kept;
+  const la=ledgerRead(a,NOW), lb=ledgerRead(b,NOW), lk=ledgerRead(k,NOW);
+  const sa=streakRead(a,NOW), sb=streakRead(b,NOW), sk=streakRead(k,NOW);
+  ['minutes','done','ground','lines'].forEach(f=>{n++; if(lk[f]<Math.max(la[f],lb[f]))worse++;});
+  ['days','best'].forEach(f=>{n++; if(sk[f]<Math.max(sa[f],sb[f]))worse++;});}
+ ok(n===1800&&worse===0,'across 300 random pairs no count falls below the higher side, '+worse+' of '+n+' fell');
+}
+
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
 {
  let mem={};

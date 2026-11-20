@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v301 d04c0dd8 2026-11-20 20:28"><head><meta charset="utf-8">
+<html lang="en" data-build="v302 5fb6fecb 2026-11-20 21:06"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -853,6 +853,28 @@ body.glass .top .gwrap>.gmenu,body.glasswhite .top .gwrap>.gmenu{
  background:var(--hot,#c0392b);color:#fff;font:600 11px/16px var(--sans);font-style:normal;text-align:center}
 .msg-b i[hidden]{display:none}
 body.rm .msgdock{transition:none}
+/* THE RITUAL REMINDER, ui/remind.js. Bottom right and clear of the dock,
+   which sits at 14px and is about 50 tall, so the two never overlap when a
+   save message lands while the reminder is up. Symbol, then the header, then
+   one line, then the two buttons, all spaced on one 12px step so nothing is
+   pressed against its neighbour. At a phone width it takes the width less
+   the 16px gutter on each side rather than its own 360. */
+.rmd{position:fixed;right:16px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:95;
+ width:min(360px,calc(100vw - 32px));box-sizing:border-box;padding:16px;
+ display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;
+ border-radius:var(--r);background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);
+ box-shadow:0 12px 32px rgba(0,0,0,.34);animation:rmdIn var(--t-element) var(--ease-out) both}
+.rmd-sym{width:var(--tap);height:var(--tap);display:grid;place-items:center;border-radius:50%;
+ border:1px solid var(--edge-2);color:var(--gold);outline:none}
+.rmd-sym:focus-visible{border-color:var(--gold)}
+.rmd-txt{min-width:0}
+.rmd-h{margin:0;font:500 15px/1.3 var(--sans);color:var(--ink)}
+.rmd-b{margin:4px 0 0;font:400 13px/1.4 var(--sans);color:var(--mid)}
+.rmd-go{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rmd-go .btn{min-height:var(--tap);margin:0}
+@keyframes rmdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+body.rm .rmd{animation:none}
+@media (max-width:600px){.rmd{left:16px;right:16px;width:auto}}
 /* NOT A SECOND CHAT BUBBLE, 9 November. His words, on this exact screen:
    "if you look at the very bottom, middle, it's doing a chat bubble, that
    doesn't belong in the mini." This is #status's own dock (body.html),
@@ -11618,7 +11640,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <button type="button" class="secb" data-sec="discover" aria-pressed="true"
     title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="false"
-    title="Play. Field, Body, Path and Avatar."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+    title="Play. Field, Body, Compass and Avatar."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -11670,7 +11692,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="false" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
     <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Path. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Path</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
     <!-- CHARACTER IS HELD OFF THE BAR, 17 November: "we want to hide character
          for now". Integer 11, host #masksview and its renderer stay, and its
          entry is in TABEXTRA with held:'play' (engine/core.js). The gate holds
@@ -12353,7 +12375,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 
-   <button class="pol2" id="pol2" aria-label="The path. Where coherence sits and how far it swings. Opens the reading."></button>
+   <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->
@@ -20162,7 +20184,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a path axis'},
+             say:'the position on a compass axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of
@@ -24643,7 +24665,7 @@ const SIGHT=[
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
-  what:'The registers, your point cloud: where each pattern sits on the path.'},
+  what:'The registers, your point cloud: where each pattern sits in the compass.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
   what:'The six masks, and how your chain lights each one.'}];
 /* the rows a person can be told about: the table less any with no surface */
@@ -40775,7 +40797,7 @@ var MARKS=[
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
   to:'Place your six values on the Avatar page.',
-  d:'Six values placed. The path has a direction now.',
+  d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
@@ -40910,6 +40932,114 @@ function seriesRead(p,spanKey,now){
   /* direction is only a claim when there are two ends to compare */
   dir: st==='line' ? (last>first?'up':(last<first?'down':'level')) : null,
   t0:t0, t1:t1};}
+
+/* ============================================================
+   THE REMINDER, accounts-push, 19 November. An in-app pop-up and not a phone
+   push, which was already ruled: a push reaches a closed app, needs a service
+   worker and a server that knows a device, and this file has neither. So it
+   can only speak while the app is open, and it reads only what the device
+   already holds: the days a ritual was marked done, through pracDays, the
+   same list the streak counts.
+
+   WHAT TRIGGERS IT WAS OPEN, AND IS DEFAULTED HERE, not ruled: a missed day,
+   not a set time. A set time needs a clock a person sets and somewhere on the
+   record to keep it, which is a schema change and his call. A missed day
+   needs nothing new: a whole day ended with no ritual marked done. gap is
+   streakRead's own, today less the last day practised, so 1 is yesterday,
+   which is not missed yet, because a streak does not break at midnight
+   either. 2 or more is a full day gone by. If he picks a set time this is the
+   one function that changes.
+
+   A person who has never marked a ritual done is never reminded: nothing was
+   missed, and a reminder to someone who has not started is a nag about a
+   habit they never took on. shown is the day key it was last shown on, so it
+   speaks once a day at most. The caller passes the moment, as everywhere in
+   this file. */
+var REMIND_GAP=2;
+function remindDue(p,now,shown){
+ var s=streakRead(p,now);
+ if(!s.days||s.today===null||s.last===null)return null;
+ if(s.gap<REMIND_GAP)return null;
+ if(shown===s.today)return null;
+ return {last:s.last, gap:s.gap, today:s.today};}
+
+/* ============================================================
+   ALWAYS KEEP THE HIGHER NUMBER, accounts-badges, 19 November.
+
+   The defect, in ui/auth.js authProfileSync as it stands, switched off: a
+   remote profile whose updated stamp is newer replaces the local one whole,
+   through profileSyncImport. A badge here is not stored, it is read off the
+   record (ladderRead), so a phone that last synced a week ago, then had one
+   story typed into it, carries the newer stamp and the shorter ritual list,
+   and the pull would take a laptop's Thirty days and Sixty minutes back to
+   whatever the phone held. Nobody erased a badge. The record it was read off
+   was replaced, silently, which is worse.
+
+   The fix keeps the two tallies a badge counts that are tallies of acts:
+     rituals       every entry on either side, one copy of each. An entry is
+                   the same entry when its day stamp, length and steps agree;
+                   where one side has it marked done and the other does not,
+                   done is kept, because done is the higher number.
+     meter         unique, the ground opened, is the union of both lists, and
+                   lines is the larger of the two counts.
+   Both can only go up under this, so no practice or ground mark that either
+   side had earned from them is lost. The price is named: an entry deleted on
+   one device comes back from the other. Under "only ever up" that is correct.
+
+   WHAT IT DOES NOT MERGE, and why. Stories, readings, the intake and the axes
+   feed marks too (First story, Ten stories, Ten snapshots, Laws measured, Nine
+   axes, the clearings), but those are the record itself and not a tally of
+   acts, and which side wins a conflict over them is the record sync rule he
+   has not picked yet (newest wins, biggest wins, or ask). So this does not
+   decide it. Any mark the stored side holds that the kept profile would not
+   is returned in lost, by key, and the caller must not adopt kept while lost
+   is not empty. That is the safeguard: a lower incoming record never
+   silently overwrites a higher one. It is held instead, and said.
+
+   Pure: neither argument is changed, kept is a copy. Sync is still off
+   (PROFILE_SYNC_ENABLED, ui/auth.js), so nothing calls this on a live
+   device yet; tests/engine.js 27b holds it. */
+function ladderRitKey(x){
+ return String(x&&x.t)+'|'+((x&&+x.min)||0)+'|'+((x&&Array.isArray(x.steps))?x.steps.join(','):'');}
+/* an entry with no done key predates the field and ledgerRead reads it as
+   practised, so it ranks with done; only done===false ranks below */
+function ladderRitDone(x){return !!x&&x.done!==false;}
+function ladderKeep(had,came,now){
+ var kept=JSON.parse(JSON.stringify(came||{}));
+ var mine=(had&&Array.isArray(had.rituals))?had.rituals:[];
+ var theirs=Array.isArray(kept.rituals)?kept.rituals:[];
+ /* TWO IDENTICAL ENTRIES ON ONE SIDE ARE TWO ENTRIES. The first cut keyed
+    the union on the entry alone, so a side carrying the same ten minutes twice
+    at one stamp came out with one, and the sweep in tests/engine.js 27e caught
+    seven counts of 1800 falling below the higher side. Each entry is keyed by
+    which copy of itself it is on its own side, so the union keeps the larger
+    multiplicity and never folds one side's own record. */
+ var at={}, out=[];
+ [theirs,JSON.parse(JSON.stringify(mine))].forEach(function(side){
+  var nth={};
+  side.forEach(function(x){
+   if(!x||typeof x!=='object')return;
+   var b=ladderRitKey(x), k=b+'#'+(nth[b]=(nth[b]||0)+1);
+   if(at[k]===undefined){at[k]=out.length; out.push(x); return;}
+   if(!ladderRitDone(out[at[k]])&&ladderRitDone(x))out[at[k]]=x;});});
+ /* oldest first, the order every writer appends in; an unreadable stamp
+    keeps its place at the front rather than being dropped, and the boundary
+    refuses it by name on the way in, as it would have anyway */
+ kept.rituals=out.map(function(x,i){var ms=Date.parse(x.t); return {x:x, ms:isNaN(ms)?-Infinity:ms, i:i};})
+  .sort(function(a,b){return a.ms-b.ms||a.i-b.i;}).map(function(o){return o.x;});
+ var hm=(had&&had.meter&&typeof had.meter==='object')?had.meter:null;
+ if(hm){
+  if(!kept.meter||typeof kept.meter!=='object')kept.meter={};
+  var km=kept.meter, seen={}, u=[];
+  (Array.isArray(km.unique)?km.unique:[]).concat(Array.isArray(hm.unique)?hm.unique:[])
+   .forEach(function(k){if(typeof k==='string'&&!seen[k]){seen[k]=1; u.push(k);}});
+  km.unique=u;
+  if(typeof hm.lines==='number'&&!(km.lines>=hm.lines))km.lines=hm.lines;}
+ var was={}, lost=[];
+ ladderRead(had,now).earned.forEach(function(m){was[m.k]=1;});
+ var got={}; ladderRead(kept,now).earned.forEach(function(m){got[m.k]=1;});
+ Object.keys(was).forEach(function(k){if(!got[k])lost.push(k);});
+ return {kept:kept, lost:lost};}
 
 try{window.__at&&window.__at('engine/ladder.js');}catch(e){}
 /* ============================================================
@@ -43250,6 +43380,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
+                  remindDue:remindDue, REMIND_GAP:REMIND_GAP, ladderKeep:ladderKeep,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* the six families' paired opposite, core.js. Reachable as a browser global
      and absent from the contract, so a headless caller had no route to it but
@@ -47968,8 +48099,8 @@ var ATM_SEAT={
 var ATM_MAP=[
  {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
  {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
- {kind:'Path overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
- {kind:'Path point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Compass overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
+ {kind:'Compass point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
  {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
   snd:'air', hover:true},
  {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},
@@ -64332,7 +64463,7 @@ function stRender(){
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
    +'<div class="st-mini6-row">'
-    +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
+    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
     +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
     +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
     +stMiniShell('stfield','Field',stMiniField(r),'stfield')
@@ -69605,7 +69736,7 @@ function stDashCompass(){
     28 October ruling retired. unpackOf reads the one table every other CQ
     and DQ tooltip already reads. Not drawn on the rail since 10 November
     (see stDashLeft), kept right for whichever screen calls it next. */
- var o='<section class="st-en st-cps" id="st-compass" aria-label="Path">'
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
   +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
@@ -88562,7 +88693,7 @@ function coneOvBuild(){
   list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
  grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
  if(L.seats)grp(bar,'Point shells',cnSeatOrbs(),'cn-seatgrp');
- grp(vw,'How the path is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
+ grp(vw,'How the compass is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
  if(!L.views.length)vw.style.display='none';
  cnOvShutPaint(bar,cnOvShut());
  /* a toolbar's arrow keys walk it, as the Field's do */
@@ -88616,7 +88747,7 @@ function coneOpen(inTab){
  h.classList.toggle('tabmode',!!inTab);
  h.style.display='flex';
  h.innerHTML='<div class="cone-card">'
-  +'<div class="cone-hd"><span class="pm-eye">The path</span>'
+  +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   /* THE FIGURE, AND THE CONTROLS ON IT. Ruled: the switches go to the upper
      left. They sat under the drawing in a row of their own, which cost a band
@@ -88643,18 +88774,18 @@ function coneOpen(inTab){
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The path from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The compass from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :CONE.shells
      ?'The registers. Seven shells of light, one per point, Root on the outside and Crown at the centre. Each address is a patch on its point\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
-     :'The path. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
+     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
       +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a point holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
       finds the switches by it still does. */
-   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Path overlays">'
+   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Compass overlays">'
    +'<div class="cone-ctl cnbar" id="cnbar"></div>'
-   +'<div class="cnview" id="cnview" role="group" aria-label="How the path is drawn"></div>'
+   +'<div class="cnview" id="cnview" role="group" aria-label="How the compass is drawn"></div>'
    +'</div>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,
@@ -90606,7 +90737,7 @@ function runPoleDrill(end){
     sat inside the downward branch on its first write, so the upward roster
     had no way through to the thing it describes. */
  h+='<div class="ad-act">'
-  +'<button class="btn pri" id="rdcone">Go to the path</button>'
+  +'<button class="btn pri" id="rdcone">Go to the compass</button>'
   +(up?'':'<button class="btn" id="rdsee">Start from a sentence</button>')
   +'</div>';
  rdShell(h);
@@ -90975,7 +91106,7 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  /* in percent, percent phase 2 slice 4: CQ prints as a percent, so
     the scale it is read against does too */
- var h='<div class="pm-eye">The path</div><div class="ad-nm">'
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
   +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
@@ -95449,11 +95580,29 @@ function authProfileSync(){
   if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
 
   /* First association with an account is deliberately conservative. */
+  /* ALWAYS KEEP THE HIGHER NUMBER, accounts-badges. Both pulls below used to
+     import the remote profile whole, so a device with the newer stamp and
+     the shorter record took every badge the other had earned off it.
+     ladderKeep (engine/ladder.js) carries the ritual list and the ground
+     opened across from this side, and names any mark it cannot carry; while
+     it names one nothing is pulled and nothing is pushed, because the rule
+     for a record conflict is still the owner's to pick. Read on the pull
+     only: a push sends this side, which is the higher one by then, and
+     holding it as well would leave the higher record unable to leave. */
+  var keep=remote&&typeof ladderKeep==='function'?ladderKeep(local,remote,Date.now()):null;
+  if(keep&&!keep.lost.length)keep.remote=keep.kept;
+  /* the hash a pull records is the server's copy and not the kept one, so a
+     pull that carried this side's rituals across differs from it on the next
+     pass and is pushed, and the other device gets the union too. Where
+     nothing was carried the two are the same text, as before. */
+  var remoteText=remote?JSON.stringify(remote):'';
   if(meta.accountId!==identity){
    if(remote){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled=profileSyncImport(remote,remoteVersion);
     if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled.text).then(function(remoteHash){
+    return profileSyncHash(remoteText).then(function(remoteHash){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();
@@ -95469,9 +95618,11 @@ function authProfileSync(){
    var lu=local.updated?Date.parse(local.updated):0;
    var ru=remote.updated?Date.parse(remote.updated):0;
    if(ru>lu){
+    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
+    if(keep)remote=keep.remote;
     var pulled2=profileSyncImport(remote,remoteVersion);
     if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(pulled2.text).then(function(remoteHash2){
+    return profileSyncHash(remoteText).then(function(remoteHash2){
      profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
      PROFILE_SYNC_BUSY=false;
      if(typeof render==='function')render();
@@ -96451,7 +96602,7 @@ function ptAlwaysOf(s){
      any page is said */
   'shadow':{nm:'Shadow',ic:PT_IC.shadow,say:'Shadow is the part of the Laws of Moral Integrity your answers leave out.'},
   'the pain map':{nm:'Pain map',ic:pain.ic,say:pain.tip||''},
-  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Path and the rest.'},
+  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Compass and the rest.'},
   'the journal':{nm:'Journal',ic:PT_IC.pen,say:u('journal')},
   'rerunning anything already open':{nm:'Rerun',ic:PT_IC.rerun,say:'Anything you have already opened stays open, and you can run it again.'}};
  var t=T[s]||{nm:s,ic:'',say:''};
@@ -104079,6 +104230,106 @@ function loginEnter(){
 
 try{window.__at&&window.__at('ui/login.js');}catch(e){}
 /* ============================================================
+   THE RITUAL REMINDER, accounts-push, 19 November. A pop-up inside the app,
+   never a phone push: that was his ruling before this was built, and a push
+   reaching a closed app would need a service worker and a server that knows
+   the device, which is a second file and a second network seam.
+
+   WHAT IT READS. remindDue (engine/ladder.js) off CURP, the record on this
+   device, through the same day list the streak counts, so the reminder and
+   the streak cannot disagree about what a missed day is. What triggers it,
+   a missed day and not a set time, is a default and not a ruling, and that
+   function says why. Nothing new goes on the record: the day it last spoke
+   is source.remind in the browser's own store, the pattern tabLandFirst
+   uses for source.landed (ui/panels.js), because having been reminded today
+   is about this screen and not about the person. A store that is blocked
+   cannot remember, so it stays quiet rather than speak on every check,
+   which is srcIntroDue's answer to the same case.
+
+   WHEN IT LOOKS. At the end of the boot, when the page comes back into view,
+   and once a minute while it is open, so an app left open past midnight
+   into a missed day still says so. Each look is one function of a profile
+   and a day key, so a minute's tick costs nothing. It never stacks on the
+   door or on any other sheet: while a modal is open, or the login is, the
+   look is skipped and the next one tries again. Never under DEV_SKIP, the
+   flag every browser gate enters through, which is the srcIntro precedent:
+   a gate fixture with old rituals would otherwise meet a card it did not
+   ask for at a corner it measures.
+
+   NOT MODAL, AND FOCUS IS NOT TAKEN. It is a reminder and not a question, so
+   the page under it stays usable, and a person typing a story is not pulled
+   out of the sentence by a card arriving. Escape closes it while focus is in
+   it. Open Ritual goes to the ritual tab through setTab, the one route every
+   caller takes. Both buttons record today, so a dismissal holds for the day.
+   ============================================================ */
+var REMIND_KEY='source.remind';
+var REMIND_TICK=60000;
+var REMIND_T=null;
+function remindShown(){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return undefined;
+  var v=STORE.get(REMIND_KEY); return v==null?null:+v;
+ }catch(e){ return undefined; }}
+function remindQuiet(){
+ if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return true;
+ if(typeof LOGIN!=='undefined'&&LOGIN&&LOGIN.open)return true;
+ /* a roster person or a worked example is not this person's own record,
+    the same test profileSyncEligible reads (ui/auth.js) */
+ if(typeof S!=='undefined'&&S.who&&S.who!==0)return true;
+ if(document.querySelector('[aria-modal="true"]'))return true;
+ return false;}
+/* the day a ritual was last marked done, as the Ritual page names a day
+   (ritDayName, ui/ritual.js), so the two read the same */
+function remindDayWord(d,today){
+ if(typeof ritDayName==='function')return ritDayName(d,today);
+ var off=new Date().getTimezoneOffset()*60000;
+ return new Date(d*DAY_MS+off+12*3600000).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});}
+var REMIND_MEANS='Shown once a day, after a full day with no ritual marked done. '
+ +'Read from this device only. Nothing is sent.';
+function remindHtml(due){
+ return '<div class="rmd-sym" tabindex="0" data-tip="'+esc(REMIND_MEANS)+'" aria-label="'+esc(REMIND_MEANS)+'">'
+  +'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" '
+  +'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+  +'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>'
+  +'<div class="rmd-txt"><h2 class="rmd-h" id="rmdh">Ritual reminder</h2>'
+  +'<p class="rmd-b">Last marked done: '+esc(remindDayWord(due.last,due.today))+'.</p></div>'
+  +'<div class="rmd-go"><button type="button" class="btn pri" data-rmd="go">Open Ritual</button>'
+  +'<button type="button" class="btn" data-rmd="no">Not today</button></div>';}
+function remindKeep(today){
+ try{ STORE.set(REMIND_KEY,String(today)); return true; }catch(e){ return false; }}
+function remindClose(){
+ var h=document.getElementById('remind'); if(h&&h.parentNode)h.parentNode.removeChild(h);}
+function remindCheck(now){
+ if(document.getElementById('remind')||remindQuiet())return null;
+ if(typeof CURP==='undefined'||!CURP||typeof remindDue!=='function')return null;
+ var shown=remindShown(); if(shown===undefined)return null;
+ var due=remindDue(CURP,now||Date.now(),shown); if(!due)return null;
+ /* recorded as it shows, so a reload does not show it twice in a day; a
+    store that refuses the write is a store that cannot remember, and it
+    stays quiet for the reason given above */
+ if(!remindKeep(due.today))return null;
+ var h=document.createElement('div');
+ h.id='remind'; h.className='rmd';
+ h.setAttribute('role','dialog'); h.setAttribute('aria-modal','false');
+ h.setAttribute('aria-labelledby','rmdh');
+ h.innerHTML=remindHtml(due);
+ h.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('[data-rmd]'); if(!b)return;
+  remindClose();
+  if(b.getAttribute('data-rmd')==='go'&&typeof setTab==='function')setTab(TAB.RITUAL);});
+ h.addEventListener('keydown',function(e){ if(e.key==='Escape'){ e.stopPropagation(); remindClose(); } });
+ document.body.appendChild(h);
+ return due;}
+function remindBoot(){
+ if(REMIND_T)return;
+ var look=function(){ try{ remindCheck(); }catch(e){} };
+ REMIND_T=setInterval(look,REMIND_TICK);
+ document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible')look(); });
+ /* after the boot sheet has lifted, the way the login step waits on it */
+ setTimeout(look,6000);}
+
+try{window.__at&&window.__at('ui/remind.js');}catch(e){}
+/* ============================================================
    SOURCE READS AN EXAMPLE. Eleven seconds, once per device, between the
    door and the first card of the onboarding. His words, 16 November: "Let's
    bring that up to 90% now." The spec is the animation pass's, built on the
@@ -105368,7 +105619,7 @@ function describe(h,r,still){
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
  /* the compass's own two words for its two ends, cone.js, and nothing new */
- if(h.k==='pole')return '<u>path</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+ if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  /* a Law of Action, right or wrong. It said "everything held weighs x0.70"
     under the share, and nothing held is multiplied by a gate (engine/verp.js),
@@ -107129,6 +107380,10 @@ step('login',function(){
    here, once the sheet lifts. Its own step, so a throw costs the notice and
    not the start up. */
 step('the only copy',function(){ if(typeof keepBoot==='function')keepBoot(); });
+/* THE RITUAL REMINDER, accounts-push, ui/remind.js. Its own step, so a throw
+   costs the reminder and not the start up, and after the only copy so the
+   store it remembers the day in has already been asked to keep. */
+step('the reminder',function(){ if(typeof remindBoot==='function')remindBoot(); });
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather
@@ -107158,5 +107413,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007307263"></div>
+<div id="eof" hidden data-len="007322952"></div>
 </body></html>

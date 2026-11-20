@@ -31,7 +31,7 @@ function describe(h,r,still){
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
  /* the compass's own two words for its two ends, cone.js, and nothing new */
- if(h.k==='pole')return '<u>path</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+ if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  /* a Law of Action, right or wrong. It said "everything held weighs x0.70"
     under the share, and nothing held is multiplied by a gate (engine/verp.js),
@@ -1792,6 +1792,10 @@ step('login',function(){
    here, once the sheet lifts. Its own step, so a throw costs the notice and
    not the start up. */
 step('the only copy',function(){ if(typeof keepBoot==='function')keepBoot(); });
+/* THE RITUAL REMINDER, accounts-push, ui/remind.js. Its own step, so a throw
+   costs the reminder and not the start up, and after the only copy so the
+   store it remembers the day in has already been asked to keep. */
+step('the reminder',function(){ if(typeof remindBoot==='function')remindBoot(); });
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather

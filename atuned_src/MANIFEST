@@ -130,6 +130,7 @@ ui/railmotion.js
 ui/crisis.js
 ui/onboard.js
 ui/login.js
+ui/remind.js
 ui/srcintro.js
 ui/valuefelt.js
 ui/insightui.js
