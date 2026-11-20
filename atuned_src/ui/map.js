@@ -2595,10 +2595,11 @@ function bmDraw(dt){
 /* the line between the two panels. A single pixel of the figure's own edge
    colour, faint, set in from the band and from the foot so it reads as the
    seam between two views and not as a frame, and nothing at all with one
-   figure up. */
+   figure up. Widened 7 screen pixels past that one pixel, his approval,
+   20 November. */
 function bmDivider(g){
  if(bmOne())return;
- var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr)), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round(24*BM.dpr);
+ var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round(24*BM.dpr);
  if(y1<=y0)return;
  g.setTransform(1,0,0,1,0,0);g.fillStyle=bmRgba(BMC.edge,.12);g.fillRect(x-(d>>1),y0,d,y1-y0);}
 /* both cameras, as one string, for a cache that depends on both */
