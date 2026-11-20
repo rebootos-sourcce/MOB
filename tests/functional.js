@@ -929,9 +929,15 @@ console.log('\n=== the Body\'s two panels, a camera each ===');
  ok(outl[0]===wantO[0]&&outl[1]===wantO[1],'the Front\'s panel outlines the front alone and the Back\'s the back alone');
  /* the seam is drawn: a thin tall rectangle, once a frame, with two figures up */
  const seam=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
-  g.fillRect=function(x,y,w,h){if(w<=3&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  g.fillRect=function(x,y,w,h){if(w<=40&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
   requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res({got:got,at:BM.pan[1].dx0});}));}));
- ok(seam.got.length>=1&&seam.got.every(r=>Math.abs(r[0]-seam.at)<=2),'a quiet line is drawn on the seam between the two panels, '+JSON.stringify(seam));
+ /* bmDivider was widened 7 screen pixels past its hairline, his approval, 20
+    November, and it is drawn centred on the seam (x-(d>>1)). The capture took
+    w<=3 and compared the left edge to the seam, both true only of a hairline,
+    so it caught nothing and failed. The rule is a thin tall rect centred on
+    the seam, so the centre is what is measured and a width change cannot
+    break it again. */
+ ok(seam.got.length>=1&&seam.got.every(r=>Math.abs((r[0]+r[2]/2)-seam.at)<=2),'a quiet line is drawn on the seam between the two panels, '+JSON.stringify(seam));
 
  /* what moves on its own moves once a frame and not once a panel: a pulse on a
     line advances by its speed times the frame's time, and two panels drawing
@@ -1099,7 +1105,7 @@ console.log('\n=== the Body\'s two panels, a camera each ===');
  ok(ph.one&&ph.np===1&&ph.w[0]===ph.W&&ph.w[1]===0&&ph.views==='0','on a phone there is one panel, the width of the well, showing the front, '+JSON.stringify({one:ph.one,np:ph.np,w:ph.w,views:ph.views}));
  ok(ph.now.x===ph.was.x&&ph.now.y===ph.was.y&&ph.now.z===ph.was.z&&ph.z0===ph.was.z,'and its camera is the fit it always had, to the digit, '+JSON.stringify([ph.was,ph.now]));
  const seam1=await page.evaluate(()=>new Promise(res=>{const g=BM.ctx,o=g.fillRect,got=[];
-  g.fillRect=function(x,y,w,h){if(w<=3&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
+  g.fillRect=function(x,y,w,h){if(w<=40&&h>200)got.push([x,y,w,h]);return o.apply(this,arguments);};
   requestAnimationFrame(()=>requestAnimationFrame(()=>{g.fillRect=o;res(got.length);}));}));
  ok(seam1===0,'and no seam is drawn through the one figure, '+seam1);
  /* the turn to the back carries the one camera across the world, as it did */
@@ -3428,12 +3434,11 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
      engine/core.js has both. */
   /* and 17 November: "change the word compass to path... hide character for
      now... keep avatar there under play, but we're going to move summary,
-     intake, and analytics under embody." And 20 November, the word back:
-     "change the title path back to compass, I think it's a better title."
-     This line read Path for three days after the bar's engine half said
-     Compass again, because the reversal moved TABDEF and not the markup, and
-     the assertion below is what compares the two. */
-  '20 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+     intake, and analytics under embody." */
+  '17 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+ /* OVERRIDDEN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." Only the word moved; the 17
+    November placement this block checks did not. */
  ok(nav.play==='Field,Body,Compass,Avatar / Field,Body,Compass,Avatar',
   '20 November: Play reads Field, Body, Compass, Avatar, in the engine and the bar alike, '+nav.play);
  ok(nav.embody==='Wisdom school,Summary,Intake,Analytics / Wisdom school,Summary,Intake,Analytics',
