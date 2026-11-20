@@ -7,6 +7,7 @@
       "Bash(cd /home/user/reboot-os && git fetch origin main*)",
       "Workflow",
       "mcp__Claude_Code_Remote__add_repo"
-    ]
+    ],
+    "defaultMode": "dontAsk"
   }
 }
