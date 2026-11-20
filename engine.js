@@ -10067,7 +10067,7 @@ const TABDEF=[
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
     commit (the bar, the dashboard card, the drills, the tooltips). */
- {k:TAB.COMPASS, id:'cone',  nm:'Path',      cls:'tab-compass', sec:'play'},
+ {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
     be under the play tab. It should go field intake compass mask
@@ -24927,6 +24927,14 @@ function srcVoiceNarrative(turns){
  var input=Array.isArray(turns)?turns:[turns], latest=input.length-1;
  var descriptions=[], selfReports=[], corrections=[], familyByTerm={};
  var kin=/\b(?:my|our)\s+(sister|brother|mother|mom|mum|father|dad|parents|grandmother|grandfather|grandparents|grandma|grandpa|aunt|uncle|child|son|daughter)\b/ig;
+ /* descriptors only ever held adjectives, so a relative described by what they
+  did and not by what they were was dropped whole: "my mother hid her feelings"
+  came back with no observation at all, though it is the commonest way a person
+  describes a family pattern and the shape the patterns96 shelf is written in.
+  acts holds the behaviour phrases, each kept under one fixed term so two
+  generations reporting the same act line up the way two adjectives do. */
+ var acts=[{term:'hid feelings',re:/\b(?:hid|hides|hide|hiding|hidden|bottled\s+up|bottles\s+up|suppressed|suppresses|buried|buries|swallowed|swallows)\s+(?:all\s+(?:of\s+)?)?(?:his|her|their|its)?\s*(?:own\s+)?(?:feelings|emotions|tears|grief|anger|pain)\b/ig},
+  {term:'never cried',re:/\bnever\s+(?:once\s+)?cried\b/ig}];
  var descriptors=/\b(indignant|indignation|avoidant|avoiding|angry|anger|resentful|resentment|dismissive|critical|judgmental|judgemental|withdrawn|distant|disrespectful|hurt|rejected|rejecting|unloved|fearful|defensive|ashamed|controlling)\b/ig;
  var selfYes=/\b(?:i\s+(?:can\s+)?(?:also\s+)?(?:see|notice|recognize|recognise|find)\s+(?:some\s+of\s+)?(?:their|those|these|the|my\s+family'?s)\s+(?:patterns?|traits?|behavio[u]?rs?|habits?|things?)\s+(?:in|within)\s+(?:myself|me)|i\s+(?:can\s+)?(?:see|recognize|recognise|notice)\s+(?:them|it)\s+(?:in|within)\s+(?:myself|me)|i\s+have\s+(?:those|the\s+same|similar)\s+patterns?|i\s+(?:am|'m)\s+(?:just\s+)?like\s+(?:them|my\s+(?:mother|father|parents)))\b/i;
  var uncertainSelf=/\b(?:i\s+(?:do\s+not|don't)\s+know\s+(?:if|whether)|i\s+(?:am\s+not|ain't|amn't)\s+sure\s+(?:if|whether)|maybe|perhaps|hypothetically|imagine|suppose|what\s+if)\b/i;
@@ -24956,6 +24964,13 @@ function srcVoiceNarrative(turns){
     addTerm({turn:turn,role:person.role,term:hit[1].toLowerCase(),negated:negated, hypothetical:hypotheticalClause,
      status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+hit.index});
    }
+   acts.forEach(function(a){a.re.lastIndex=0;var h;while((h=a.re.exec(clause))!==null){
+    var pre=clause.slice(Math.max(0,h.index-45),h.index).toLowerCase();
+    /* "never cried" carries its own never, so only a negation ahead of it counts. */
+    var negated=/\b(?:not|never|no|isn't|wasn't|doesn't|didn't|is not|was not|no longer)\s+(?:\w+\s+){0,2}$/.test(pre);
+    addTerm({turn:turn,role:person.role,term:a.term,negated:negated,hypothetical:hypotheticalClause,
+     status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+h.index});
+   }});
   });
   /* Self reports and uncertainty are scoped to their own sentence;
    * latest explicit correction wins within a turn as well as across turns. */
@@ -25026,6 +25041,16 @@ var SRC_TULA_LADDERS={
  Shame:['embarrassed','regretful','remorseful','ashamed','guilty','disgraced','humiliated','mortified','shamed']
 };
 var SRC_TULA_PAGE={Fear:3,Anger:4,Sadness:5,Disgust:6,Shock:7,Happiness:8,Shame:9};
+/* upset sits on the Anger ladder at rank 3, and the engine's own lexicon files
+   it under sad (engine/lexicon.js), which is what srcVoiceSniff reports. So one
+   word came back as Anger from this reader and as sadness from the sniffer for
+   the same sentence. The old guard below only caught it for the speaker's own
+   upset: "My mother was upset" still read Anger. Which family upset belongs to
+   is not settled here and neither source is rewritten; a word on this list is
+   kept as an observation naming every family it is filed under, and never by
+   itself decides the episode's family or rank. horrified is on two ladders,
+   Fear and Disgust, and is the same case. */
+var SRC_TULA_AMBIGUOUS={upset:['Anger','Sadness'],horrified:['Fear','Disgust']};
 /* Idioms are candidates, NOT authored TULA ladder ranks. */
 var SRC_TULA_IDIOMS=[
  {phrase:'pissed off',family:'Anger'},{phrase:'pissed me off',family:'Anger'},{phrase:'angrier',family:'Anger'}, {phrase:'frightened',family:'Fear'},
@@ -25044,7 +25069,18 @@ var SRC_TULA_CHANNELS={
 };
 var SRC_TULA_ROLE=/\b(?:my\s+)?(mother|mom|mum|father|dad|sister|brother|aunt|uncle|grandmother|grandfather|grandma|grandpa|parent|parents|he|she|they|him|her)\b/ig;
 var SRC_TULA_NEG=/\b(?:not|never|no|wasnt|wasn't|weren't|isn't|isnt|didn't|didnt|don't|dont|was not|did not|am not|ain't)\b/i;
-var SRC_TULA_HYP=/\b(?:imagine|hypothetically|suppose|what if|if i|might|could|would|perhaps|maybe|pretend)\b/i;
+/* might, could and would used to sit in this list and marked the whole clause
+   imagined, so "I was scared and my hands would not stop shaking" filed scared
+   as hypothetical and the turn's subject as hypothetical, for a shaking that
+   happened. A modal is not a marker by itself. It reads as imagined only when
+   it governs a state (would be, would have been, could have felt) and only in
+   the stretch of clause before the emotion word, which SRC_TULA_MODAL and its
+   caller do. "Would get" is left out on purpose: "my father would get furious
+   every night" is the habitual past and is a report, not a supposition. So is
+   "could feel": "I could feel myself getting angry" is a perception, and could
+   counts only before be, become or a perfect. */
+var SRC_TULA_HYP=/\b(?:imagine|hypothetically|suppose|what if|if i|perhaps|maybe|pretend)\b/i;
+var SRC_TULA_MODAL=/\b(?:would|might)(?:n't|\s+not)?\s+(?:have\s+(?:been|felt|become)|be|feel|become)\b|\bcould(?:n't|\s+not)?\s+(?:have\s+(?:been|felt|become)|be|become)\b/i;
 var SRC_TULA_FUTURE=/\b(?:tomorrow|next week|next month|one day|in the future|i might|what if)\b/i;
 var SRC_TULA_CHOICE=/\b(?:i\s+(?:decided|chose|choose|made a choice)|i wanted to\s+\w+(?:\s+\w+)?\s+but|i\s+(?:paused|stopped)\s+myself)\b/i;
 var SRC_TULA_AFTER=/\b(?:after|afterwards?|later|then|subsequently|eventually|once)\b/i;
@@ -25099,10 +25135,13 @@ function srcTulaObservations(text,turn){
     if(Object.keys(seen).some(function(k){return start>=+k&&start<seen[k];}))continue;
     var prefix=chunk.slice(0,start-c.s), around=chunk.slice(Math.max(0,start-c.s-75),start-c.s);
     var neg=SRC_TULA_NEG.test(around.split(/\b(?:but|however|although)\b/).pop().split(',').pop());
-    var hyp=SRC_TULA_HYP.test(chunk)||SRC_TULA_FUTURE.test(chunk);
+    var lead=prefix.split(/\b(?:and|but|however|although|because|so)\b|,/).pop();
+    var hyp=SRC_TULA_HYP.test(chunk)||SRC_TULA_FUTURE.test(chunk)||SRC_TULA_MODAL.test(lead+w);
+    var amb=SRC_TULA_AMBIGUOUS[w]||null;
     var role=srcTulaRole(chunk,w,start-c.s);
-    out.push({turn:turn,span:[start,end],text:text.slice(start,end),family:rule.family,
-     tulaRank:rule.tulaRank,page:rule.page,matchKind:rule.matchKind,subject:role,
+    out.push({turn:turn,span:[start,end],text:text.slice(start,end),family:amb?null:rule.family,
+     tulaRank:amb?null:rule.tulaRank,page:amb?null:rule.page,matchKind:amb?'AMBIGUOUS':rule.matchKind,
+     candidates:amb?amb.slice():[rule.family],subject:role,
      negated:neg,hypothetical:hyp,affirmed:!neg&&!hyp&&role!=='causative_other',
      status:rule.matchKind==='EXACT_TULA'?'SOURCE_WORD':'PROVISIONAL_SYNONYM'});
     seen[start]=end;rg.lastIndex=Math.max(rg.lastIndex,start-c.s+m[2].length);
@@ -25131,7 +25170,7 @@ function srcVoiceChargeCycle(turns,opts){
   if(/\b(?:wasn't|wasn’t|was not|never|not)\s+(?:really\s+)?angry\b/i.test(now))
    self=self.filter(function(x){return x.family!=='Anger';});
  }
- var familyNames=[];self.forEach(function(x){if(familyNames.indexOf(x.family)<0)familyNames.push(x.family);});
+ var familyNames=[];self.forEach(function(x){if(x.family&&familyNames.indexOf(x.family)<0)familyNames.push(x.family);});
  var after=SRC_TULA_AFTER.test(text),down=SRC_TULA_DOWN.test(text),up=SRC_TULA_UP.test(text);
  var continuing=SRC_TULA_CONTINUE.test(text),stable=SRC_TULA_STABLE.test(text);
  var choice=SRC_TULA_CHOICE.test(text),futuristic=SRC_TULA_FUTURE.test(text),shameAfter=after&&SRC_TULA_AFTER_SHAME.test(text);
@@ -25164,7 +25203,11 @@ function srcVoiceChargeCycle(turns,opts){
  }
  if(familyToSelf&&!familyToSelfDenied)subject='family_to_self';
  if(familyToSelfDenied)subject='self';
- if(!self.length&&active.length===0&&texts.some(function(x){return SRC_TULA_HYP.test(x);}))subject='hypothetical';
+ /* Imagined when nothing was affirmed and something was read as imagined, not
+    whenever a modal appears anywhere: a would in a sentence with no emotion
+    word in it made "My hands would not stop shaking" a hypothetical turn. */
+ if(!self.length&&active.length===0&&(obs.some(function(x){return x.hypothetical;})||
+  texts.some(function(x){return SRC_TULA_HYP.test(x);})))subject='hypothetical';
  if(/\b(?:he|she|they)\s+said\b/i.test(text)&&/["“”]/.test(text))subject='quoted_other';
  if(active.length===1&&active[0].subject==='third_party')episodeFamily=active[0].family;
  /* A self-report of a single explicit TULA word has a lexical rank, but
@@ -25172,7 +25215,6 @@ function srcVoiceChargeCycle(turns,opts){
  var rank=null;
  if(episodeFamily&&self.length===1&&self[0].family===episodeFamily&&self[0].tulaRank!=null)rank=self[0].tulaRank;
  if(episodeFamily&&self.length===0&&active.length===1&&active[0].tulaRank!=null)rank=active[0].tulaRank;
- if(/\bhorrified\b/i.test(text)||/\bupset\b/i.test(text)&&familyNames.length===1) { if(episodeFamily==='Fear'||episodeFamily==='Disgust'||episodeFamily==='Anger') {if(!self.some(function(x){return x.text.toLowerCase()!== 'horrified'&&x.text.toLowerCase()!=='upset';}))episodeFamily=null;rank=null;} }
  if(familyNames.length>1&&!shameAfter){episodeFamily=null;rank=null;}
  if(phase==='PAST_REFLECTION')rank=null;
  if(!self.length&&active.length===1&&active[0].subject==='self')episodeFamily=null;

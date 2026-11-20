@@ -73,4 +73,13 @@ assert.equal(N(['My mother was angry. I see their patterns in myself. I do not s
 assert.equal(N(['My mother was angry. I do not see those patterns in myself. I see their patterns in myself.'])
  .familyToSelf,'FAMILY_TO_SELF_CANDIDATE');
 
+// 20 November, the board's defect: a relative described by an act and not an
+// adjective was dropped. Before the fix this sentence returned no observation.
+const hid=N(['My mother hid her feelings']);
+assert.ok(hid.observations.some(x=>x.role==='mother'&&x.term==='hid feelings'&&!x.negated&&!x.hypothetical));
+assert.ok(N(['My mother never hid her feelings']).observations.some(x=>x.term==='hid feelings'&&x.negated));
+assert.equal(N(['My mother hid her feelings.','My grandmother hid her feelings.']).multiGeneration,
+ 'MULTIGENERATIONAL_SIMILARITY_REPORTED');
+assert.equal(N(['My mother told me I hid my feelings.']).observations.some(x=>x.term==='hid feelings'),false);
+
 console.log('SOURCE narrative attribution/ancestral humility contract PASS');

@@ -22,6 +22,14 @@ function srcVoiceNarrative(turns){
  var input=Array.isArray(turns)?turns:[turns], latest=input.length-1;
  var descriptions=[], selfReports=[], corrections=[], familyByTerm={};
  var kin=/\b(?:my|our)\s+(sister|brother|mother|mom|mum|father|dad|parents|grandmother|grandfather|grandparents|grandma|grandpa|aunt|uncle|child|son|daughter)\b/ig;
+ /* descriptors only ever held adjectives, so a relative described by what they
+  did and not by what they were was dropped whole: "my mother hid her feelings"
+  came back with no observation at all, though it is the commonest way a person
+  describes a family pattern and the shape the patterns96 shelf is written in.
+  acts holds the behaviour phrases, each kept under one fixed term so two
+  generations reporting the same act line up the way two adjectives do. */
+ var acts=[{term:'hid feelings',re:/\b(?:hid|hides|hide|hiding|hidden|bottled\s+up|bottles\s+up|suppressed|suppresses|buried|buries|swallowed|swallows)\s+(?:all\s+(?:of\s+)?)?(?:his|her|their|its)?\s*(?:own\s+)?(?:feelings|emotions|tears|grief|anger|pain)\b/ig},
+  {term:'never cried',re:/\bnever\s+(?:once\s+)?cried\b/ig}];
  var descriptors=/\b(indignant|indignation|avoidant|avoiding|angry|anger|resentful|resentment|dismissive|critical|judgmental|judgemental|withdrawn|distant|disrespectful|hurt|rejected|rejecting|unloved|fearful|defensive|ashamed|controlling)\b/ig;
  var selfYes=/\b(?:i\s+(?:can\s+)?(?:also\s+)?(?:see|notice|recognize|recognise|find)\s+(?:some\s+of\s+)?(?:their|those|these|the|my\s+family'?s)\s+(?:patterns?|traits?|behavio[u]?rs?|habits?|things?)\s+(?:in|within)\s+(?:myself|me)|i\s+(?:can\s+)?(?:see|recognize|recognise|notice)\s+(?:them|it)\s+(?:in|within)\s+(?:myself|me)|i\s+have\s+(?:those|the\s+same|similar)\s+patterns?|i\s+(?:am|'m)\s+(?:just\s+)?like\s+(?:them|my\s+(?:mother|father|parents)))\b/i;
  var uncertainSelf=/\b(?:i\s+(?:do\s+not|don't)\s+know\s+(?:if|whether)|i\s+(?:am\s+not|ain't|amn't)\s+sure\s+(?:if|whether)|maybe|perhaps|hypothetically|imagine|suppose|what\s+if)\b/i;
@@ -51,6 +59,13 @@ function srcVoiceNarrative(turns){
     addTerm({turn:turn,role:person.role,term:hit[1].toLowerCase(),negated:negated, hypothetical:hypotheticalClause,
      status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+hit.index});
    }
+   acts.forEach(function(a){a.re.lastIndex=0;var h;while((h=a.re.exec(clause))!==null){
+    var pre=clause.slice(Math.max(0,h.index-45),h.index).toLowerCase();
+    /* "never cried" carries its own never, so only a negation ahead of it counts. */
+    var negated=/\b(?:not|never|no|isn't|wasn't|doesn't|didn't|is not|was not|no longer)\s+(?:\w+\s+){0,2}$/.test(pre);
+    addTerm({turn:turn,role:person.role,term:a.term,negated:negated,hypothetical:hypotheticalClause,
+     status:'USER_REPORTED_THIRD_PARTY_DESCRIPTION',sourceOffset:person.end+h.index});
+   }});
   });
   /* Self reports and uncertainty are scoped to their own sentence;
    * latest explicit correction wins within a turn as well as across turns. */

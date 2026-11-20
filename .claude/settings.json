@@ -4,7 +4,9 @@
       "mcp__github__actions_list",
       "mcp__github__get_job_logs",
       "mcp__github__list_pull_requests",
-      "Bash(cd /home/user/reboot-os && git fetch origin main*)"
+      "Bash(cd /home/user/reboot-os && git fetch origin main*)",
+      "Workflow",
+      "mcp__Claude_Code_Remote__add_repo"
     ]
   }
 }
