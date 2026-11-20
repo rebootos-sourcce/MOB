@@ -485,6 +485,34 @@ async function soundGate(browser,FILE,ok,booted){
    line:(document.getElementById('status')||{}).textContent}),ub);
   ok(ua.played===1&&ua.undo&&ua.depth===ub.depth-1,'Ctrl+Z takes it back and sounds undo, '+JSON.stringify(ua));}
 
+ /* AND ON A STORE THAT REFUSES, the chord is heard as the refusal and never
+    as the latch. Both handlers played undo and kept after settle whatever the
+    save answered: the first refused Ctrl+Z played refuse and undo in the same
+    millisecond, and a second inside refuse's gap played undo alone, so the
+    person heard a success on a move a reload brings back. setItem throws the
+    way a full disk does, and is put back before the debounced write fires. */
+ await pg.waitForTimeout(400);
+ await commit('My chest locks when my brother shouts and I go quiet for hours.');
+ await pg.waitForTimeout(1600);
+ const refusedChord=async(key,want)=>{
+  const b=await pg.evaluate(()=>{ if(document.activeElement)document.activeElement.blur();
+   window.__setItem=Storage.prototype.setItem;
+   Storage.prototype.setItem=function(){ throw new DOMException('The quota has been exceeded.','QuotaExceededError'); };
+   return {p:SFX_PLAYED, last:Object.assign({},SFX_LAST), u:undoDepth(), r:redoDepth()}; });
+  await pg.keyboard.press(key); await pg.waitForTimeout(80);
+  return pg.evaluate(b=>{ Storage.prototype.setItem=window.__setItem;
+   return {played:SFX_PLAYED-b.p, which:Object.keys(SFX_LAST).filter(k=>SFX_LAST[k]!==b.last[k]),
+    moved:undoDepth()!==b.u||redoDepth()!==b.r, err:saveState().err,
+    line:(document.getElementById('status')||{}).textContent}; },b);};
+ const ru=await refusedChord('Control+z');
+ ok(ru.moved&&ru.err==='QuotaExceededError'&&ru.played===1&&ru.which.join()==='refuse'&&/Not saved/.test(ru.line),
+  'Ctrl+Z on a store that refuses the write sounds refuse and not undo, '+JSON.stringify(ru));
+ await pg.waitForTimeout(1600);
+ const rr=await refusedChord('Control+y');
+ ok(rr.moved&&rr.err==='QuotaExceededError'&&rr.played===1&&rr.which.join()==='refuse'&&/Not saved/.test(rr.line),
+  'and Ctrl+Y on the same store sounds refuse and not kept, '+JSON.stringify(rr));
+ await pg.evaluate(()=>{ if(typeof pSave==='function')pSave(); });
+
  /* ---------- 6. a silent release stays silent, with the fittings on ---------- */
  await pg.waitForTimeout(1600);
  const walk=async bite=>pg.evaluate(async bite=>{
