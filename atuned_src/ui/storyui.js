@@ -1137,7 +1137,7 @@ function stRender(){
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
    +'<div class="st-mini6-row">'
-    +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
+    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
     +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
     +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
     +stMiniShell('stfield','Field',stMiniField(r),'stfield')
