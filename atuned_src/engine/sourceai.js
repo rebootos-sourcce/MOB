@@ -94,9 +94,24 @@ var SRC_NEG_W=2;
    srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
    boundary, the exact width and word list this was measured against
    stand exactly as they were. */
+/* AND IT READS BACK FROM at, NOT FORWARD FROM f, SZA9 of round SZ. With no
+   sentence end in the text, which is the ordinary shape of dictated speech,
+   f is 0, so every mention sliced and split the whole entry up to itself to
+   keep two words, and the parse grew with the square of the entry: 16,000
+   unpunctuated characters took 193 ms where the same words punctuated took
+   37. The window now starts 32 characters back and doubles until it holds
+   one word more than the run needs, or reaches f. Its first word may be cut
+   in half, and that is why it needs one more: the cut word is never in the
+   run, so the run is the same words the whole slice would have given, and
+   when the window reaches f it is the whole slice. */
 function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
- var before=String(src).slice(f,at).trim().split(' ');
+ var s=String(src), w=32, lo, before;
+ for(;;){
+  lo=Math.max(f,at-w);
+  before=s.slice(lo,at).trim().split(' ');
+  if(lo===f||before.length>SRC_NEG_W)break;
+  w*=2;}
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 

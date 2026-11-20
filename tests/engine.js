@@ -12606,5 +12606,38 @@ g('SB18 · the boundary and the saves around it, 18 November');
    'no surface writes a record and its snapshot as two saves where pSaveSnap is one');}
 }
 
+g('SZA9 · a parse with no sentence end grows with the entry, not with its square');
+{
+ /* THE OLD WALKS, TYPED HERE ON PURPOSE AND NEVER READ OFF THE ENGINE, so the
+    search that replaced them is held to what they returned and not to
+    itself. Every offset of every text, both directions. */
+ const {clauseFloor,clauseCeil,normMap,parseStory}=E, END=/[.!?;:\n\r]/;
+ const walkF=(t,nm,at)=>{for(let k=Math.min(at,nm.s.length-1);k>=0;k--)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return -1;};
+ const walkC=(t,nm,at)=>{for(let k=at;k<nm.s.length;k++)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return nm.s.length;};
+ const texts=['','.','I am not afraid. Afraid now.','i was so angry at him and i never said it',
+  'No. Not angry; not ever!\nUsed to be afraid... not anymore? If he came back I would scream: fine.',
+  '  Mornings were awful,   honestly. I used to dread them, I do not any more.'];
+ let bad=[];
+ texts.forEach(t=>{const nm=normMap(t);for(let at=-2;at<=nm.s.length+2;at++){
+  if(clauseFloor(t,nm,at)!==walkF(t,nm,at))bad.push(['floor',t,at]);
+  if(clauseCeil(t,nm,at)!==walkC(t,nm,at))bad.push(['ceil',t,at]);}});
+ ok(bad.length===0,'the boundary search returns what the walk returned at every offset, '+JSON.stringify(bad.slice(0,3)));
+ /* the words the readers above key on, still read the same way */
+ ok(parseStory('I used to be angry, I am not anymore').denied.length>0,'"used to ... anymore" still sets the word aside');
+ ok(parseStory('If I was furious he would leave').denied.length>0,'"if ... would" still sets the word aside');
+ ok(parseStory('I was not angry').denied.length>0,'a plain no still sets the word aside');
+ /* AND THE GROWTH. Measured on main before this: 16,000 characters with no
+    sentence end took 193 ms and the same words punctuated 37, five times as
+    long for the same words, and the gap widened with the length. The two are
+    timed side by side, best of three, so a busy machine slows both and the
+    ratio holds; before the fix it read about five at this length. */
+ const base='and then i felt my chest go tight and i was so angry at him because he never listens and i just ';
+ let t='';while(t.length<16000)t+=base;
+ const tp=t.replace(/ i /g,'. I ');
+ const best=x=>{let m=1e9;for(let i=0;i<3;i++){const s=Date.now();parseStory(x);m=Math.min(m,Date.now()-s);}return Math.max(m,1);};
+ const ru=best(t), rp=best(tp);
+ ok(ru/rp<2.5,'no sentence end costs about what the same words punctuated cost, '+ru+' ms against '+rp+' ms');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

@@ -426,11 +426,35 @@ function maskedSay(runs){
    produced. A comma is left out on purpose, the same ruling leanNorm
    already made: it is too weak a break to end a negation. */
 var SENT_END=/[.!?;:\n\r]/;
+/* THE BOUNDARIES ARE FOUND ONCE PER COPY, NOT ONCE PER HIT, SZA9 of round SZ.
+   clauseFloor walked back from every hit and clauseCeil walked forward, each
+   until it met a sentence end, and dictated speech has none, so each walk
+   crossed the whole entry and the parse grew with the square of its length:
+   16,000 unpunctuated characters took 193 ms where the same words punctuated
+   took 37, most of it in these two walks. The same rule, a space whose raw
+   character ends a clause, is now read in one pass into an ascending list
+   kept on the copy itself, keyed by the text it was read against, and each
+   walk becomes a binary search on that list. The answer is the same index
+   the walk returned, because the walk returned the nearest boundary and the
+   search finds the nearest boundary. */
+function clauseEnds(t,nm){
+ if(nm._ends&&nm._endsT===t)return nm._ends;
+ var out=[], s=nm.s;
+ for(var k=0;k<s.length;k++)
+  if(s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))out.push(k);
+ nm._ends=out; nm._endsT=t;
+ return out;}
+/* the index of the first entry in a sorted list that is at least v */
+function sortedAtLeast(a,v){
+ var lo=0, hi=a.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(a[mid]<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function clauseFloor(t,nm,at){
  t=String(t||'');
- for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return -1;}
+ var a=clauseEnds(t,nm), top=Math.min(at,nm.s.length-1);
+ if(top<0)return -1;
+ var i=sortedAtLeast(a,top+1)-1;
+ return i>=0?a[i]:-1;}
 /* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
    copy and by the same rule: a space whose raw character ends a clause opens
    the next one, so a word whose own leading space is that boundary belongs
@@ -493,6 +517,12 @@ function wordsOf(t,nm){
    nm.s, so a mark and a list can quote from the no to the word on the letters
    typed. srcNegated is the decision; this only finds which word it saw. */
 var NEG_NOT_DENY=['stop','stops','stopped','help'];
+/* the index of the first word whose at is at least v, wordsOf's list being
+   in order of at */
+function wsAt(ws,v){
+ var lo=0, hi=ws.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(ws[mid].at<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
@@ -507,7 +537,12 @@ function sniffDeny(t,nm,hits){
   var f=clauseFloor(t,nm,h.at);
   cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
   if(!srcNegated(nm.s,h.at,f))return;
-  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  /* the last two words before the hit and inside its clause. This was a
+     filter over every word in the entry, once per denied hit, the third
+     place SZA9 grew with the square of an entry. ws is in order of at, so
+     the same two are found by a search and a step back. */
+  var lo0=Math.max(f,0), j=wsAt(ws,h.at), win=[];
+  while(j>0&&win.length<SRC_NEG_W&&ws[j-1].at>=lo0)win.unshift(ws[--j]);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 /* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
@@ -528,19 +563,39 @@ function sniffDeny(t,nm,hits){
    Both require their full pair, in this order, so "if I'm being honest, I
    was angry" (no would after) and "I'm used to being ignored" (no anymore
    or no longer after) are untouched and stay live, as they should. */
+/* the forward walk, read off the same list clauseFloor reads. A NaN at never
+   entered the old loop and so answered the end of the text, kept here. */
 function clauseCeil(t,nm,at){
  t=String(t||'');
- for(var k=at;k<nm.s.length;k++){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return nm.s.length;}
+ if(!(at<nm.s.length))return nm.s.length;
+ var a=clauseEnds(t,nm), i=sortedAtLeast(a,at);
+ return i<a.length?a[i]:nm.s.length;}
+/* WHERE A PHRASE SITS IN THE COPY, every start, found once per copy. The
+   second half of SZA9: sniffTense sliced the whole clause on each side of
+   every hit and searched the slices, and with no sentence end the clause is
+   the whole entry, so this too grew with the square of it.
+   phraseIn(nm,p,lo,hi) says whether p starts at or after lo and ends at or
+   before hi, which is exactly whether the old slice nm.s.slice(lo,hi) with a
+   space put on the end held it: a hit's at is its own leading space, and the
+   clause ceiling is a space or the end of a copy that always closes on one,
+   so the space the old code added was already the next character of nm.s,
+   or, at the very end, sat after a space where no phrase here can use it. */
+function phraseIn(nm,p,lo,hi){
+ var c=nm._ph||(nm._ph={}), a=c[p];
+ if(!a){a=c[p]=[]; for(var k=nm.s.indexOf(p);k>=0;k=nm.s.indexOf(p,k+1))a.push(k);}
+ var i=sortedAtLeast(a,lo);
+ return i<a.length&&a[i]+p.length<=hi;}
 function sniffTense(t,nm,hits){
+ var n=nm.s.length;
  hits.forEach(function(h){
   if(h.neg)return;
   var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
-  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
-  var pastVoid=before.indexOf(' used to ')>=0&&
-   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
-  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
+  /* the old before was nm.s.slice(f,h.at)+' ', the old after
+     nm.s.slice(h.at,c)+' '; see phraseIn for why these bounds are the same */
+  var bEnd=h.at+1, aEnd=Math.min(c+1,n);
+  var pastVoid=phraseIn(nm,' used to ',f,bEnd)&&
+   (phraseIn(nm,' anymore ',h.at,aEnd)||phraseIn(nm,' any more ',h.at,aEnd)||phraseIn(nm,' no longer ',h.at,aEnd));
+  var condVoid=phraseIn(nm,' if ',f,bEnd)&&phraseIn(nm,' would ',h.at,aEnd);
   if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
