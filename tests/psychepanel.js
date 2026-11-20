@@ -116,7 +116,12 @@ const FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
 /* in the page: the Psyche heading and everything after it in its column */
 const BLOCK=`window.__psy=function(){
  var h=[...document.querySelectorAll('#lpanel h2.rblk')].filter(function(x){return x.textContent.trim()==='Psyche';})[0];
- var secs=[]; if(h)for(var e=h.nextElementSibling;e&&!(e.matches&&e.matches('h2.rblk'));e=e.nextElementSibling)secs.push(e);
+ /* what the panel shows, so a section the sheet takes off this tab is not in
+    it: What is running sits under this heading in the markup and is shown on
+    the Summary only, 20 November (shell/body.html, sum-only), and on the
+    Field it is display none and the panel is the three it always was */
+ var secs=[]; if(h)for(var e=h.nextElementSibling;e&&!(e.matches&&e.matches('h2.rblk'));e=e.nextElementSibling)
+  if(getComputedStyle(e).display!=='none')secs.push(e);
  return {h:h,secs:secs};};
 window.__R=function(el){var r=el.getBoundingClientRect();return {l:r.left,t:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height};};
 window.__openAll=function(){var b=window.__psy();b.secs.forEach(function(s){

@@ -218,6 +218,11 @@ var UNPACK_BASE={
     the share of every action read in the person's stories (verpRead, the
     six add to one whole). No sentence here says a count, a percent or a
     score, the contract group PO in tests/engine.js holds. */
+ /* THE SUMMARY'S LEFT RAIL, 20 November: one flat reading from the sky down
+    to the archetype, where what is his stands lit and the rest stands dim
+    (ui/railtiles.js, rlSumPaint). His own word for the dim half: "the
+    elements that they are not are dimmed out." */
+ 'rail:lit':'Lit is yours, and dim is what you are not.',
  'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
  'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
  'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',

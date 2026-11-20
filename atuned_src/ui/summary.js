@@ -695,7 +695,8 @@ function sumRender(){
  sumWire();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);}
+ if(typeof sumDayPaint==='function')sumDayPaint(r);
+ sumRunPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -1014,8 +1015,16 @@ function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
+    moved to is gone. His words on the live page: "where it says oscillating
+    50%, just get rid of that entirely." That was sumStatus(), the band, its
+    state and "Where it goes", and the gift rode inside it, so deleting the
+    band without moving the gift would have taken the one line tests/gift.js
+    holds on a new person's first screen off the page with it. Under the plate
+    it is above the fold at 390 as well, where inside the side column it sat
+    at 918 on an 844 screen (TASKS.md #137). */
  return sgZone('who','Who this is',
-  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -1024,7 +1033,13 @@ function sumWho(r,B,full){
    so it still finds it here), and sumGift() still writes #sumgift with the
    same id and the same sentence tests/gift.js reads on a brand new person's
    first screen (inView at scroll 0 holds: this column sits above the fold
-   at the widths that gate opens at). */
+   at the widths that gate opens at).
+   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
+   just get rid of that entirely." That is this block, the band's word, its
+   state and Where it goes, so sumFull stopped calling it and the gift moved
+   under the plate (sumWho). Kept rather than deleted on the same footing as
+   sumOutput below: free for a surface that wants the band, and the tier's
+   colour still reads on the plate's own ring. */
 function sumStatus(r,B){
  var t=TIER_BY[r.tier]||null;
  /* no band line at all while CQ is still filling: "N laws to answer" was
@@ -1264,7 +1279,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
+ var B=sumBirth();
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -1302,37 +1317,54 @@ function sumFull(r){
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
+   +'<div class="sg-side">'+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
-  +sumMarks(B,r)
-  +'<div class="sg-two sg-even">'
-   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
-    +sumBlueprint()
-    +'<div class="sg-gap">'+sumArch(r)+'</div>'
-    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
-    +'<div class="sg-gap">'+sumChain(r)+'</div>'
-    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
-   +'</section>'
-   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
-    +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest points',sumSeats())
-    +sgFold('bind','Binds',sumBind())
-    +sgFold('ig','Integrity over time',sumIg(r))
-   +'</section>'
-  +'</div>'
-  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
-     made, inside a closed <details> at the very bottom; now a card on the
-     page itself, so Path, Expression, Soul urge, Personality, Birthday and
-     Maturity read without a tap. */
-  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
-  +'<div class="sg-folds">'
-   +sgFold('lens','Four lenses',sumLens(r,true))
-   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-  +'</div>';}
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
+ /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
+    beneath your patterns... what's running is moving to the left panel. And
+    then the rest of that looks like it's in analytics." Under it stood the
+    celestial strip (sumMarks), What is running, What it costs, Numerology and
+    the Four lenses and Birth comparison folds. Every one of them is still
+    drawn somewhere a person can reach: the celestial placements and every
+    numerology number are the left rail's Root Energetics, which this tab now
+    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
+    READING"); the blueprint and the archetypes are the rail's own grids; the
+    masks are the rail's new What is running (sumRunPaint below); the nine,
+    the seats, the binds and integrity over time are Analytics. Only the calls
+    went. The functions stay, because Analytics, the unread page and the gates
+    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
+    stays, because Your patterns has had no other home since 14 November and
+    deleting it here would delete it from the product. The converge() this
+    function opened with went too: the Birth comparison fold was its only
+    reader on this page. */
+
+/* ============================================================
+   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
+   the same ruling. The rail's own grids already carry what that card printed
+   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
+   copying sumBlueprint and sumArch across would print each of them twice on
+   one screen. The masks are the one part the rail did not carry, so that is
+   all that moves: the first three as the rows they always were, and the rest
+   one tap down under the fold they always had. sumChain is not carried. He
+   named the chain as junk on 18 November, in the Psyche ruling recorded at
+   shell/body.html, and this is that same chain.
+
+   Painted from sumRender, so it is always the reading this page holds, and
+   emptied on an unread page, where there is nothing running to show and a
+   stale list would be a reading of somebody else.
+   ============================================================ */
+function sumRunPaint(r){
+ var h=document.getElementById('sumrun'); if(!h)return;
+ var body=r&&!r.unread?sumMasks(r,0,3):'';
+ h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
+ var sec=h.closest?h.closest('.lsec'):null;
+ if(sec)sec.classList.toggle('sum-empty',!body);
+ /* the rows keep data-mask, so the one listener the page body uses opens them
+    here too, rather than a second copy of its routing */
+ if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
+  h.addEventListener('toggle',sumFoldKeep,true);}}
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
@@ -1445,9 +1477,15 @@ function sumWire(){
  /* a fold remembers that it was opened through the next repaint, because
     the surface is rewritten whole whenever a reading changes. toggle does not
     bubble, so it is caught on the way down. */
- h.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
- h.addEventListener('click',function(ev){
+ h.addEventListener('toggle',sumFoldKeep,true);
+ h.addEventListener('click',sumClick);}
+/* NAMED, 20 November, and nothing in them changed. They were the two
+   anonymous handlers above, and What is running moved to the left rail
+   (sumRunPaint) carrying rows whose data-mask this routing already answers,
+   so the rail attaches the same two functions rather than a copy of them. */
+function sumFoldKeep(ev){var d=ev.target;
+ if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
+function sumClick(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -1488,4 +1526,4 @@ function sumWire(){
   if(b.hasAttribute('data-gl'))return runCoreDrill();
   /* an archetype or a mask has no drill of its own yet, so the core reading is
      the honest destination rather than a button that does nothing. */
-  return runCoreDrill();});}
+  return runCoreDrill();}

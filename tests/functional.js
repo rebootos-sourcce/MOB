@@ -2647,36 +2647,47 @@ const sum=await page.evaluate(()=>{
  const q=s=>document.querySelectorAll(s).length;
  const body=document.getElementById('sumbody');
  /* every ring on this surface is the same object: icon, arc, pill */
- const rings=[...document.querySelectorAll('#sumbody .cr')];
+ /* the page and its left rail, which since 20 November carries What is
+    running (#sumrun) and the celestial layer flat (#spirit): his words, "what's
+    running is moving to the left panel" */
+ const rings=[...document.querySelectorAll('#sumbody .cr,#sumrun .cr')];
  const badRing=rings.filter(c=>!c.querySelector('svg.arc')||!c.querySelector('.gl svg'));
  /* a pill that is empty must not paint, or a colour marker grows a chip */
  const emptyPill=rings.filter(c=>{const v=c.querySelector('.v');
   return v&&!v.textContent.trim()&&getComputedStyle(v).display!=='none';});
  return {
-  glance:q('#sumbody .s-gl'),
   storyP:q('#sumbody .s-story .s-p'),
-  structRows:q('#sumbody .s-row'),
-  doms:q('#sumbody .s-dom'),
-  chips:q('#sumbody .s-chip'),
+  structRows:q('#sumrun .s-row'),
+  doms:q('#doms .ib:not(.rl-off)'),
+  chips:q('#spirit .sp-tile'),
   /* no boxes around the spiritual glyphs, on the owner's ruling */
   chipBox:[...document.querySelectorAll('#sumbody .s-chip')]
    .filter(c=>getComputedStyle(c).borderTopWidth!=='0px').length,
-  numRows:q('#sumbody .s-nrow'),
-  numParts:q('#sumbody .s-npart'),
+  numRows:q('#spirit .sp-line[data-sys=N] .sp-tile'),
   rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
   /* nothing may run wider than its own column */
   over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
    &&getComputedStyle(e).overflowX==='visible').length,
   text:(body.textContent||'').replace(/\s+/g,' ')};});
-ok(sum.glance>=5,'the glance strip carries every reading, got '+sum.glance);
+/* RE-POINTED AND RETIRED BY NAME, 20 November, his words: "everything
+   beneath your patterns... what's running is moving to the left panel. And
+   then the rest of that looks like it's in analytics... where it says
+   oscillating 50%, just get rid of that entirely." What moved is read where
+   it went: the masks as What is running in the left rail (#sumrun), the
+   blueprint as the rail's own lit domain, the spiritual layer and the
+   numerology numbers as the rail's flat Root Energetics (#spirit). Two are
+   retired, not moved: the glance strip was the What it costs card and the
+   name parts were the full numerology card, both off this page now, and
+   Analytics carries the readings. Every ring the page and its rail draw is
+   still held to icon, arc and pill; there are fewer of them on the page, so
+   the count asks for one or more, not nine. */
 ok(sum.storyP===3,'the story is three paragraphs, got '+sum.storyP);
-ok(sum.structRows>5,'the structures panel lists what is measured, got '+sum.structRows);
-ok(sum.doms>0,'and draws the blueprint selection, got '+sum.doms);
-ok(sum.chips>=5,'the spiritual layer is a row of glyphs, got '+sum.chips);
+ok(sum.structRows>0,'What is running lists the masks in the left rail, got '+sum.structRows);
+ok(sum.doms>0,'and the rail lights the blueprint selection, got '+sum.doms);
+ok(sum.chips>=5,'the celestial layer is a row of glyphs in the rail, got '+sum.chips);
 ok(sum.chipBox===0,'with no boxes around them, got '+sum.chipBox);
-ok(sum.numRows>=5,'numerology prints its numbers, got '+sum.numRows);
-ok(sum.numParts===3,'and every name on its own, got '+sum.numParts);
-ok(sum.rings>8&&sum.badRing===0,
+ok(sum.numRows>=5,'numerology prints its numbers in the rail, got '+sum.numRows);
+ok(sum.rings>0&&sum.badRing===0,
  sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
 ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
 
@@ -2800,7 +2811,10 @@ const numUI=await page.evaluate(()=>{
   pct75:/convergence[^.]*\d+%/i.test(txt)};});
 ok(numUI.inPage,'the full name is read, not the roster nickname');
 ok(numUI.hasLp,'and the six numbers are on the page');
-ok(numUI.basis,'convergence names the comparisons it rests on');
+/* RETIRED 20 November: the Birth comparison fold left the Summary with
+   everything under Your patterns, on his ruling recorded above at "the
+   summary, the opening screen". sumConverge still exists and its drill is
+   unchanged. */
 ok(numUI.noFrac,'and does not state them as a count against a total');
 ok(!numUI.pct75,'and never a bare percentage with no denominator');
 
