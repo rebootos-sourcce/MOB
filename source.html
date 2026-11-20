@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v300 8c1d968e 2026-11-20 19:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v301 d04c0dd8 2026-11-20 20:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -47977,7 +47977,7 @@ var ATM_MAP=[
  {kind:'Tab', sel:'[role=tab],.tabtop', snd:'click', hover:true},
  {kind:'Switch, checkbox or radio', sel:'[role=switch],[role=menuitemcheckbox],[role=radio],[role=menuitemradio],input[type=checkbox],input[type=radio]',
   snd:'click', hover:true},
- {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-wkd', snd:'click-light', hover:true},
+ {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-wkd,.rv-rd,.rv-rib', snd:'click-light', hover:true},
  {kind:'List row', sel:'.kb-row,.stk-r', snd:'click-light', hover:true},
  {kind:'Button, link or menu item', sel:'button,[role=button],[role=menuitem],a[href],summary', snd:'click', hover:true},
  {kind:'A press on the Field wheel, Frames or Dial', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},
@@ -80239,7 +80239,11 @@ var RIT={open:false, sel:{}, order:[], from:null, all:false, when:'', where:'',
     run and rang are the live timer's own state, named by the plan id it
     counts against so switching rituals cannot leave two ticking against one
     render, and never persisted, the same posture as hover and pin. */
- tags:[], on:null, tm:null, run:null, rang:null};
+ tags:[], on:null, tm:null, run:null, rang:null,
+ /* the repeat band's, 20 November (ritRecurOf): the time of day, Set days
+    chosen while every day is lit, and which of When and Where is open. The
+    last is a moment, like hover and pin, and never persisted. */
+ at:'', rown:false, wp:null};
 var TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
                 Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
 function ritFor(r){
@@ -80292,7 +80296,7 @@ function ritFor(r){
 function ritOpen(fromLog){
  RIT.open=true; RIT.from=fromLog||null; RIT.sel={}; RIT.order=[]; RIT.all=false;
  RIT.when=''; RIT.where=''; RIT.edit=null; RIT.exp=null; RIT.days=7;
- RIT.tags=[]; RIT.on=null; RIT.tm=null;
+ RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.at=''; RIT.rown=false; RIT.wp=null;
  RIT.add=!!(fromLog&&fromLog.length);
  /* A CALLER OFF THE TAB GOES TO THE TAB. The builder is in Flow's right menu
     and that menu exists on Flow only, so the modal this used to draw over the
@@ -80348,7 +80352,16 @@ var RIT_KEY='atuned-ritual-active';
    weeks or a day", and the avatar's own names for them so the two pages say
    the same thing, plus one with no end, because a morning breath is not a two
    week project. 0 is no end. */
-var RIT_SPANS=[{d:1,nm:'A day'},{d:7,nm:'A week'},{d:14,nm:'Two weeks'},{d:0,nm:'No end'}];
+/* A NUMBER, NOT FOUR WORDS, 20 November, his words on the builder: "how long
+   a day, a week, 2 weeks, no end ... that's just a number." So the length is
+   one dropdown of weeks (ritRecurHtml, ui/ritbank.js) and A day became Once,
+   which is the Repeat dropdown's answer and never a length. nm is what the
+   dropdown prints and say is what a sentence carries, because "1 week from
+   today" reads as a count and "a week from today" reads as speech. 21 and 28
+   are new; ritPlanOk already keeps any whole number of days up to 3660, so
+   no stored plan moves. */
+var RIT_SPANS=[{d:1,nm:'Once',say:'a day'},{d:7,nm:'1 week',say:'a week'},{d:14,nm:'2 weeks',say:'two weeks'},
+ {d:21,nm:'3 weeks',say:'three weeks'},{d:28,nm:'4 weeks',say:'four weeks'},{d:0,nm:'No end',say:'no end'}];
 var RIT_SPAN_D=RIT_SPANS.map(function(s){return s.d;});
 function ritSideAll(){
  if(typeof STORE==='undefined')return {};
@@ -80610,12 +80623,15 @@ function ritStartPlan(q,msg){
   return plans;},msg||'Started.');}
 function ritStart(c){
  var steps=ritDraft(); if(!steps.length)return;
+ /* the builder carries a time since 20 November, the pop-up's own, and it is
+    checked the pop-up's way: 24:00 is refused by name and nothing is written */
+ if(typeof ritAtCheck==='function'&&!ritAtCheck({at:RIT.at}))return;
  /* a tagged ritual is kept at the first seat it was tagged for, so its ring
     carries the colour of the seat the person named and not the heaviest one */
- var ok=ritStartPlan({steps:steps, band:RIT.tags.length?RIT.tags[0]:(compute().unread?'':c.band), track:c.track,
-  days:RIT.days, when:RIT.when, where:RIT.where, tags:RIT.tags, on:RIT.on, tm:RIT.tm});
+ var ok=ritStartPlan(ritOnceOf({steps:steps, band:RIT.tags.length?RIT.tags[0]:(compute().unread?'':c.band), track:c.track,
+  days:RIT.days, when:RIT.when, where:RIT.where, tags:RIT.tags, on:RIT.on, tm:RIT.tm, at:RIT.at||null}));
  if(ok){RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.add=false; RIT.all=false;
-  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.from=null; ritRender();}}
+  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.from=null; RIT.at=''; RIT.rown=false; RIT.wp=null; RIT.days=7; ritRender();}}
 /* A RELEASE SCHEDULE. The practice the pattern's own seat calls for, every day
    for the span he named, carrying the place it is for, so the Active row can
    open the release on that place any day. The record holds practices and not
@@ -80834,6 +80850,7 @@ function ritComplexWire(redraw){
  sync();}
 function ritSaveEdit(){
  var steps=ritDraft(); if(!steps.length||!RIT.edit)return;
+ if(typeof ritAtCheck==='function'&&!ritAtCheck({at:RIT.at}))return;
  var id=RIT.edit, today=ritToday0();
  var ok=ritWrite(function(plans){
   var p=plans.filter(function(x){return x.id===id;})[0]; if(!p)throw new Error('gone');
@@ -80846,14 +80863,14 @@ function ritSaveEdit(){
      carries the seat its axis is read at, and an edit that sets no tag must
      not move it to wherever the heaviest charge sits today. */
   p.tags=RIT.tags.length?RIT.tags.slice():null; if(RIT.tags.length)p.band=RIT.tags[0];
-  p.on=RIT.on?RIT.on.slice():null; p.tm=RIT.tm||null;
+  p.on=RIT.on?RIT.on.slice():null; p.tm=RIT.tm||null; p.at=RIT.at||null;
   /* a span chosen while editing runs from today, not from the day the ritual
      began, or a week chosen on a ritual five weeks old would end it */
   if(RIT.days>=0)p.days=RIT.days?today-ritStart0(p)+RIT.days:0;
   if(e&&!ritIsDone(e.x)){e.x.steps=steps; e.x.min=ritMin(steps); e.x.when=p.when; e.x.where=p.where;}
   return plans;},'Saved.');
  if(ok){RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.when=''; RIT.where=''; RIT.all=false;
-  RIT.tags=[]; RIT.on=null; RIT.tm=null;}}
+  RIT.tags=[]; RIT.on=null; RIT.tm=null; RIT.at=''; RIT.rown=false; RIT.wp=null; RIT.days=7;}}
 function ritEditOpen(id){
  var p=ritPlans().filter(function(x){return x.id===id;})[0]; if(!p)return;
  RIT.edit=id; RIT.add=false; RIT.sel={}; RIT.order=p.steps.slice();
@@ -80862,7 +80879,8 @@ function ritEditOpen(id){
     days left would be a claim, so the chips start empty with what is left
     beside them, and a span chosen here runs from today. */
  RIT.when=p.when; RIT.where=p.where; RIT.days=-1; RIT.all=false;
- RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm; ritRender();
+ RIT.tags=p.tags.slice(); RIT.on=p.on?p.on.slice():null; RIT.tm=p.tm;
+ RIT.at=p.at||''; RIT.rown=false; RIT.wp=null; ritRender();
  var f=document.querySelector('.rv-build'); if(f&&f.scrollIntoView)f.scrollIntoView({block:'nearest'});}
 /* MARK DONE, AND UNDO IT WITH THE SAME PRESS. Today, and yesterday, because
    the streak already forgives a day (streakRead) and a person who practised
@@ -81045,7 +81063,12 @@ var RIT_IC={
  plus:'<path d="M12 5v14 M5 12h14"/>', check:'<path d="M5 12l5 5 9-10"/>',
  clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
  stop:'<circle cx="12" cy="12" r="8"/><path d="M9.5 9.5h5v5h-5z"/>',
- minus:'<path d="M5 12h14"/>'};
+ minus:'<path d="M5 12h14"/>',
+ /* the repeat band's two, 20 November (ritRecurHtml, ui/ritbank.js):
+    When is a calendar with a clock on its corner because it carries a time
+    and a cue, not a date; Where is a pin */
+ cal:'<path d="M11 18H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3 M4 9.5h14 M8 3v4 M14 3v4"/><circle cx="17" cy="17" r="4"/><path d="M17 15.2V17l1.3 1"/>',
+ pin:'<path d="M12 21s-6-5.6-6-10.5a6 6 0 0 1 12 0C18 15.4 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.2"/>'};
 function ritIc(k,cls){
  return '<svg viewBox="0 0 24 24" class="'+(cls||'rv-ic')+'" aria-hidden="true">'+RIT_IC[k]+'</svg>';}
 
@@ -81436,39 +81459,38 @@ function ritBuildHtml(c,nAct,unread){
     chevron's turn, which is the attribute drawn.
     PRACTICES, NOT MORE PRACTICES, SV24, his words: "Where it says more
     practices, just get rid of the word more." The press opens the whole
-    library, the called for one included, so Practices is also the truer
-    name. It is the one place the string is written: the button has no
-    aria-label or title of its own, so its name is this text. */
- out+='<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
-  +'<span>Practices</span>'+ritIc('down')+'</button>';
+    library, the called for one included.
+    RITUALS, NOT PRACTICES, 20 November, his words: "And then change
+    practices to rituals." It is still the one place the string is written:
+    the button has no aria-label or title of its own, so its name is this
+    text. Only this control's word moved; a practice in engine/data/
+    practice.js is the library's own unit and keeps its name. */
+ /* ROW TWO, THREE CONTROLS, 20 November, his "maybe we do more icons, maybe
+    we focus on more drop downs". Rituals, the timer and Affirm were three
+    rows of 44 with 12 between them, and the timer was a stepper with a
+    label over it, 123 pixels with How often beside it. They are one row
+    now: the timer is a dropdown with its ring and the minutes on its face,
+    Timer itself is the tip, and Affirm is its ring alone (affDoorHtml's ic). */
+ out+='<div class="rv-tools">'
+  +'<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
+  +'<span>Rituals</span>'+ritIc('down')+'</button>';
+ /* THE TIMER STARTS AT THE MINUTES THE STEPS ADD UP TO, and offers a minute
+    at a time under ten and five at a time above, the steps the stepper took,
+    because that is the size of the difference at each end. A figure off
+    those steps, twelve minutes of steps or the ceiling, is offered as itself
+    and never rounded to the nearest step, which would be a timer the person
+    did not set. */
+ var tm=RIT.tm||mins||1, tms=[];
+ for(var t=1;t<=RIT_TM_MAX;t+=(t<10?1:5))tms.push(t);
+ if(tms.indexOf(tm)<0)tms.push(tm);
+ if(tms.indexOf(RIT_TM_MAX)<0)tms.push(RIT_TM_MAX);
+ tms.sort(function(x,y){return x-y;});
+ out+='<label class="rv-rsel rv-tmsel" data-tip-t="Timer" data-tip="How long the steps run together.">'+ritIc('clock')
+  +'<select data-act="tm" aria-label="Timer">'+tms.map(function(v){
+   return '<option value="'+v+'"'+(v===tm?' selected':'')+'>'+v+' min</option>';}).join('')+'</select></label>';
  /* AFFIRM, 18 November: the affirmation generator's one door here, ui/affirmui.js */
- if(typeof affDoorHtml==='function')out+='<div class="rv-acts">'+affDoorHtml('ritual')+'</div>';
- /* THE TIMER AND HOW OFTEN. The timer starts at the minutes the steps add
-    up to and a press moves it a minute at a time under ten and five at a
-    time above, which is the size of the difference at each end. How often is
-    a week of seven presses, Sunday first since SV24, with the two sets a person picks
-    most as one press each: every day, and weekdays. One day is weekly. */
- var tm=RIT.tm||mins||1, on=RIT.on||[0,1,2,3,4,5,6], wk=on.join()==='0,1,2,3,4';
- out+='<div class="rv-row2">'
-  +'<div class="rv-fld"><span class="rv-fl">Timer</span><div class="rv-stp">'
-  +'<button type="button" class="rv-ib" data-act="tm" data-d="-1" aria-label="Shorter"'+(tm<=1?' disabled':'')+'>'+ritIc('minus')+'</button>'
-  +'<b>'+tm+' min</b>'
-  +'<button type="button" class="rv-ib" data-act="tm" data-d="1" aria-label="Longer"'+(tm>=RIT_TM_MAX?' disabled':'')+'>'+ritIc('plus')+'</button></div></div>'
-  /* NO HOW OFTEN LABEL, SV24, his words: "Get rid of the text that says how
-     often." The two presses under it say what they set, Every day and
-     Weekdays, and the seven days under those. The words leave the screen and
-     stay the group's accessible name, so a screen reader still hears what
-     the two presses are for. */
-  +'<div class="rv-fld rv-fld-oft"><div class="rv-span rv-oft" role="group" aria-label="How often">'
-  +'<button type="button" class="rv-sp'+(!RIT.on?' rv-on':'')+'" data-act="often" data-v="all" aria-pressed="'+!RIT.on+'">Every day</button>'
-  +'<button type="button" class="rv-sp'+(wk?' rv-on':'')+'" data-act="often" data-v="wk" aria-pressed="'+wk+'">Weekdays</button>'
-  +'</div></div></div>'
-  +'<div class="rv-wk" role="group" aria-label="Days">'
-  /* Sunday first like the calendars, and each press still writes the stored
-     weekday, Monday 0, so data-d is the weekday and not the column */
-  +RIT_WCOL.map(function(i){var p=on.indexOf(i)>=0;
-   return '<button type="button" class="rv-wkd'+(p?' rv-on':'')+'" data-act="wd" data-d="'+i+'" aria-pressed="'+p+'" aria-label="'+RIT_WDF[i]+'">'+RIT_WD[i]+'</button>';}).join('')
-  +'</div>';
+ if(typeof affDoorHtml==='function')out+=affDoorHtml('ritual',null,null,true);
+ out+='</div>';
  /* THE IF THEN PLAN. Two fields, and they are the largest single item in the
     whole loop: 72 of 1000 at day thirty, measured. Gollwitzer and Sheeran
     2006, ninety four studies, d 0.65: a plan that names a time and a place is
@@ -81481,24 +81503,30 @@ function ritBuildHtml(c,nAct,unread){
     in red: "All that like third tier text you keep putting in, like after I
     put the kettle on, is fucking stupid." It survived four rounds of cuts
     because no gate read an attribute, so every cut took the text he struck
-    and left this. The labels, When and Where, say what goes in; the field is
+    and left this. The labels, Cue and Where, say what goes in; the field is
     empty. check.py --objections, invented-example-copy, now reads every
     placeholder and value and fails a build on a sample answer. */
- out+='<div class="rv-plan">'
-  +'<label class="rit-f"><span>When</span><input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX
+ /* AND BOTH ARE ONE TAP DEEP NOW, 20 November: they are the When and Where
+    icons on the repeat band (ritRecurHtml, ui/ritbank.js), and the band draws
+    them hidden until the icon is pressed. When holds the time and this cue,
+    and the sentence they make sits under the cue, where it fills in as it is
+    typed. Whether a plan one tap deep is set as often as a field always on
+    screen is the measure to read next round, not an assumption. */
+ var cue='<label class="rv-rf"><span>Cue</span><input type="text" id="ritwhen" maxlength="'+RIT_PLAN_MAX
   +'" value="'+esc(RIT.when||'')+'"></label>'
-  +'<label class="rit-f"><span>Where</span><input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX
-  +'" value="'+esc(RIT.where||'')+'"></label>'
-  +(RIT.days<0&&RIT.edit?(function(){var q=ritPlans().filter(function(x){return x.id===RIT.edit;})[0];
-    return q?'<p class="rv-left">'+ritLeft(q,ritToday0())+'</p>':'';})():'')
-  +'<span class="rv-fl">How long</span><div class="rv-span" role="radiogroup" aria-label="How long">'
-  +RIT_SPANS.map(function(s){var on=RIT.days===s.d;
-   return '<button type="button" role="radio" aria-checked="'+on+'" class="rv-sp'+(on?' rv-on':'')+'" data-act="span" data-d="'+s.d+'">'+s.nm+'</button>';}).join('')
-  +'</div>'
   +((RIT.when||RIT.where)&&draft.length
     ?'<p class="rv-if">When '+esc(RIT.when||'it is time')+', '+esc(RIT.where?'at '+RIT.where:'wherever you are')
-     +', you will '+esc(String(ritPr(draft[0]).nm).toLowerCase())+'.</p>':'')
-  +'</div>';
+     +', you will '+esc(String(ritPr(draft[0]).nm).toLowerCase())+'.</p>':'');
+ var where='<label class="rv-rf"><span>Where</span><input type="text" id="ritwhere" maxlength="'+RIT_PLAN_MAX
+  +'" value="'+esc(RIT.where||'')+'"></label>';
+ /* an edit opens on no length chosen, and what is left is the For
+    dropdown's first answer rather than a line of its own under it: For 12
+    days is the same fact as 12 days left, said in the dropdown's own words
+    and short enough to read whole beside Repeat on a phone */
+ var left=null;
+ if(RIT.days<0&&RIT.edit){var q=ritPlans().filter(function(x){return x.id===RIT.edit;})[0];
+  if(q){var lt=q.days?ritStart0(q)+q.days-ritToday0():0; left=!q.days?'No end':(lt<=1?'1 day':lt+' days');}}
+ out+=ritRecurHtml(ritRecurOf(),{a:'data-act', id:'rv-', cue:cue, cueV:RIT.when||'', where:where, whereV:RIT.where||'', left:left});
  out+='<div class="rv-acts">'
   +(editing?'<button type="button" class="btn" data-act="del-plan" data-id="'+RIT.edit+'">Delete</button>':'')
   /* CANCEL WHEN THERE IS SOMETHING TO CANCEL, SV16. Round QN put it on every
@@ -81515,7 +81543,24 @@ function ritBuildHtml(c,nAct,unread){
 
 /* whether the builder holds anything a Cancel would empty */
 function ritDirty(){
- return ritDraft().length>0||!!RIT.on||!!RIT.tm||!!RIT.when||!!RIT.where||RIT.days!==7||!!(RIT.from&&RIT.from.length);}
+ return ritDraft().length>0||!!RIT.on||!!RIT.tm||!!RIT.when||!!RIT.where||!!RIT.at||RIT.days!==7||!!(RIT.from&&RIT.from.length);}
+/* the builder's half of the repeat band. The band reads and writes one
+   shape, the pop-up's W, so the builder hands it a W made of its own fields
+   and takes the answer back: days is the band's rep, and at, rown and wp are
+   the time, Set days and which panel is open. */
+function ritRecurOf(){
+ return {on:RIT.on, rep:RIT.days, own:!!RIT.rown, at:RIT.at||'', wp:RIT.wp||null};}
+function ritRecurPut(R){
+ RIT.on=R.on; RIT.days=R.rep; RIT.rown=!!R.own; RIT.at=R.at; RIT.wp=R.wp;}
+/* a Once start: the dates lit inside the coming seven are the plan, from the
+   first of them, which ritStartPlan already takes as fromDay. ritWhenSpan is
+   the pop-up's own reading of the same answer. */
+function ritOnceOf(q){
+ if(RIT.days!==1)return q;
+ var S=ritWhenSpan({on:RIT.on, rep:1},ritToday0()), on=[];
+ S.list.forEach(function(d){var w=ritWd(d); if(on.indexOf(w)<0)on.push(w);});
+ q.fromDay=S.from; q.days=S.days; q.on=on.length===7?null:on.sort();
+ return q;}
 /* THE RECORD AS A MONTH. Each day is a ring cut into what it carried. */
 var RIT_WD=['M','T','W','T','F','S','S'];
 function ritDayName(day,today){
@@ -81776,11 +81821,21 @@ function ritTell(root){
   h.setAttribute('tabindex','0'); h.setAttribute('data-tip',m.textContent);
   h.setAttribute('data-tip-t',h.textContent); h.classList.add('rv-hq'); m.classList.add('rv-told');});}
 
+/* the builder repaints its column on every press, so a press on the band
+   puts the keyboard back on the control that made it, found by what it does
+   and not by where it sits */
+function ritRefocus(a,v){
+ var L=document.querySelector('.rv-build'); if(!L)return;
+ var f=[].slice.call(L.querySelectorAll('[data-act="'+a+'"]')).filter(function(x){
+  return v==null||x.getAttribute('data-d')===v||x.getAttribute('data-v')===v;})[0];
+ if(f&&f.focus)f.focus({preventScroll:true});}
 /* one listener on the host. Every control carries what it does in data-act,
    so a layout that moves a control does not have to move its wiring. */
 function ritWire(h,c){
  h.onclick=function(ev){
   var b=ev.target.closest&&ev.target.closest('[data-act]'); if(!b||!h.contains(b)||b.disabled)return;
+  /* a dropdown answers on change, below; its click is only the list opening */
+  if(b.tagName==='SELECT')return;
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
@@ -81801,22 +81856,16 @@ function ritWire(h,c){
     if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
    case 'add': RIT.add=true; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.tags=[]; RIT.on=null; RIT.tm=null;
     if(c.called)ritPick(c.called.k); break;
-   case 'tm': {var t0=RIT.tm||ritMin(ritDraft())||1, st=+b.getAttribute('data-d');
-    var t1=st<0?(t0<=10?t0-1:t0-5):(t0<10?t0+1:t0+5);
-    RIT.tm=Math.max(1,Math.min(RIT_TM_MAX,t1)); break;}
-   case 'often': RIT.on=b.getAttribute('data-v')==='wk'?[0,1,2,3,4]:null; break;
-   /* a day pressed off the week. The last day cannot be pressed off: a
-      ritual due on no day is not a ritual, and the button says so by staying
-      on rather than by an error. All seven on is every day, stored as none. */
-   case 'wd': {var wd=+b.getAttribute('data-d'), cur=(RIT.on||[0,1,2,3,4,5,6]).slice(), at=cur.indexOf(wd);
-    if(at>=0){if(cur.length>1)cur.splice(at,1);} else cur.push(wd);
-    cur.sort(); RIT.on=cur.length===7?null:cur; break;}
+   /* the repeat band's presses, ritRecurAct in ui/ritbank.js, the same
+      function the pop-up's go through. The keyboard stays on the press that
+      was made, found again by what it does, because the column repaints. */
+   case 'rc-d': case 'rc-pop': case 'rc-any': {var R=ritRecurOf(), v=b.getAttribute(a==='rc-d'?'data-d':'data-v');
+    ritRecurAct(R,a,v); ritRecurPut(R); ritRender(); ritRefocus(a,v); return;}
    case 'timer': ritTimer(id); return;
    case 'pick': ritPick(b.getAttribute('data-k')); break;
    case 'step-up': {var k=b.getAttribute('data-k'), d=ritDraft(), i=d.indexOf(k);
     if(i>0){d.splice(i,1); d.splice(i-1,0,k); RIT.order=d;} break;}
    case 'all': RIT.all=!RIT.all; break;
-   case 'span': RIT.days=+b.getAttribute('data-d'); break;
    /* cancel empties the builder. Opened over another tab by the release, it
       is the close as well, because there is a tab behind it to go back to. */
    case 'cancel': RIT.add=false; RIT.edit=null; RIT.sel={}; RIT.order=[]; RIT.all=false; RIT.from=null;
@@ -81825,7 +81874,7 @@ function ritWire(h,c){
        Where or a How long left behind was never seen. The builder stays open
        now, so a Cancel that left them would be a press that cleared half the
        card and stayed on screen, since ritDirty still counts them. */
-    RIT.when=''; RIT.where=''; RIT.days=7;
+    RIT.when=''; RIT.where=''; RIT.days=7; RIT.at=''; RIT.rown=false; RIT.wp=null;
     if(!ritTab()){ritClose();return;} break;
    case 'save': if(RIT.edit)ritSaveEdit(); else ritStart(c); return;
    case 'why': {var bc=ritBecoming(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
@@ -81895,6 +81944,18 @@ function ritWire(h,c){
   var el=document.getElementById('rit'+k); if(!el)return;
   el.oninput=function(){RIT[k]=el.value;};
   el.onchange=function(){RIT[k]=el.value; ritRender();};});
+ /* the time, the same way, kept as typed and checked on Start, so a half
+    typed 07: is not refused while it is still being written */
+ var at=document.getElementById('rv-at');
+ if(at)at.oninput=at.onchange=function(){RIT.at=at.value.trim();};
+ /* the three dropdowns: the timer, Repeat and For */
+ h.onchange=function(ev){
+  var s=ev.target; if(!s||s.tagName!=='SELECT'||!h.contains(s))return;
+  var a=s.getAttribute('data-act');
+  if(a==='tm'){var t=+s.value; if(t>=1&&t<=RIT_TM_MAX&&Math.floor(t)===t)RIT.tm=t;}
+  else if(a==='rc-rep'||a==='rc-for'){var R=ritRecurOf(); ritRecurAct(R,a,s.value); ritRecurPut(R);}
+  else return;
+  ritRender(); ritRefocus(a,null);};
  /* a Called for card or a block dragged onto a day, ui/ritbank.js */
  if(typeof ritBankDragWire==='function')ritBankDragWire(h);}
 
@@ -82171,6 +82232,19 @@ function ritCss(){
   '.rv-new .rv-plan .rv-fl{margin-top:12px}',
   '.rv-new .rv-plan .rv-span{margin-top:0}',
   '.rv-new .rv-acts{margin-top:12px}',
+  /* ROW TWO AND THE BAND, 20 November: one row of three presses 12 under
+     the steps, and the repeat band 12 under that running the card's full
+     width, so its seven days have the 44 a press needs at 390. The band's
+     inset is the card's own padding, so its rows line up with every row
+     above and below it. */
+  '.rv-new .rv-tools{display:flex;align-items:center;gap:8px;margin-top:12px}',
+  '.rv-new .rv-tools:first-child{margin-top:0}',
+  '.rv-new .rv-tools .rit-more{flex:1 1 auto;width:auto;min-width:0;margin:0;display:flex;padding:0 12px;border:1px solid var(--edge);',
+  ' border-radius:12px;background:var(--panel);color:var(--ink);font-size:14px}',
+  '.rv-new .rv-tools .rv-tmsel{flex:0 0 104px}',
+  '.rv-new .rv-tools .aff-door-ic{position:relative;flex:0 0 44px;width:44px;min-width:44px;height:44px;padding:0;justify-content:center;border-radius:12px}',
+  '.rv-new .aff-door-ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
+  '.rv-new .rv-rc{--c:var(--accent);margin:12px -14px 0;padding:8px 14px}',
   /* the timer on a row, and its three states: set, counting, time is up */
   '.rv-tmr{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;min-height:44px;min-width:44px;margin-right:6px;padding:0 12px;',
   ' border:1px solid var(--edge-2);border-radius:999px;background:none;color:var(--mid);font:inherit;font-size:13.5px;',
@@ -82537,7 +82611,7 @@ function acctRotate(i){
   when:p?p.when:'', where:p?p.where:'', rel:(p&&p.rel!=null&&BY[p.rel])?p.rel:null,
   tc:(p&&p.tc&&typeof becomingOf==='function'&&becomingOf(p.tc))?p.tc:null,
   tags:p?p.tags:null, on:p?p.on:null, tm:p?p.tm:null},
-  'Back in rotation. '+H.nm+(span?', '+sp.nm.toLowerCase()+' from today.':', with no end.'));}
+  'Back in rotation. '+H.nm+(span?', '+sp.say+' from today.':', with no end.'));}
 
 /* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
    rather than painting a host of its own, because there is no host of its own
@@ -84372,33 +84446,140 @@ function ritAtNo(s){
 /* ---------------- When: days, time, repeat ----------------
    One state the pop-up owns, W: on (null is every day, else stored weekdays,
    Monday 0, ritWd's numbering), at ('' is any time) and rep, a repeat in
-   days (1 Once, 7 A week, 14 Two weeks, 0 No end). The span names are the
-   builder's own (RIT_SPANS) with A day called Once here, because in a pop-up
-   that sets days a span of one day is a single day and the word says so. */
+   days (1 Once, then the builder's own lengths). own and wp are the repeat
+   band's two (ritRecurHtml below): own is Set days chosen while every day is
+   still lit, and wp is which of When and Where is open. RIT_REP IS RIT_SPANS,
+   one table: the pop-up kept a copy of its own with Once where the builder
+   said A day, and the two drifted the day the builder's list grew. */
 RIT.pop=null;
-var RIT_REP=[{d:1,nm:'Once'},{d:7,nm:'A week'},{d:14,nm:'Two weeks'},{d:0,nm:'No end'}];
-var RIT_REP_SAY={1:'once', 7:'for a week', 14:'for two weeks', 0:'with no end'};
+var RIT_REP=RIT_SPANS;
+var RIT_REP_SAY={1:'once', 0:'with no end'};
+RIT_SPANS.forEach(function(s){if(!RIT_REP_SAY[s.d])RIT_REP_SAY[s.d]='for '+s.say;});
 function ritWhen0(p){
  var rep=p&&typeof p.days==='number'&&RIT_REP.some(function(r){return r.d===p.days;})?p.days:7;
- return {on:p&&p.on?p.on.slice():null, at:(p&&p.at)||'', rep:rep};}
+ return {on:p&&p.on?p.on.slice():null, at:(p&&p.at)||'', rep:rep, own:false, wp:null};}
 function ritWhenHtml(W){
- var on=W.on||[0,1,2,3,4,5,6], all=!W.on, wk=!!W.on&&W.on.join()==='0,1,2,3,4';
- var days=RIT_WCOL.map(function(wd){var y=on.indexOf(wd)>=0;
-  return '<button type="button" class="rv-pd'+(y?' rv-on':'')+'" data-sh="pd" data-d="'+wd+'" aria-pressed="'+y+'" aria-label="'+RIT_WDF[wd]+'">'
-   +RIT_WDN[wd].slice(0,2)+'</button>';}).join('');
- return '<div class="rv-pw" id="rv-pwhen"><span class="rv-pwh"'+rvTip('When','The days, the time and how long it runs. A time orders your day; nothing reminds you of it yet.')+'>'
-  +ritIc('clock')+'When</span>'
-  +'<div class="rv-pdays" role="group" aria-label="Days">'+days+'</div>'
-  +'<div class="rv-prow" role="group" aria-label="Days, quick">'
-  +'<button type="button" class="rv-pq'+(all?' rv-on':'')+'" data-sh="pall" aria-pressed="'+all+'">Every day</button>'
-  +'<button type="button" class="rv-pq'+(wk?' rv-on':'')+'" data-sh="pwk" aria-pressed="'+wk+'">Weekdays</button></div>'
-  +'<div class="rv-prow" role="group" aria-label="Time">'
-  +'<button type="button" class="rv-pq'+(W.at?'':' rv-on')+'" data-sh="pany" aria-pressed="'+!W.at+'">Any time</button>'
-  +'<input type="text" class="rv-pat" id="rv-pat" inputmode="numeric" maxlength="5" placeholder="07:30" autocomplete="off" value="'+esc(W.at||'')
+ return ritRecurHtml(W,{a:'data-sh', id:'rv-p', col:'var(--c)'});}
+
+/* ---------------- one repeat band, two hosts ----------------
+   20 NOVEMBER, GRADED D-, his words on the builder: "This panel takes up too
+   much space ... how long a day, a week, 2 weeks, no end, plus Sunday,
+   Monday ... every day and Wednesday, those are all spread out, but those
+   are all describing one system, which is, do you want it reoccurring? And
+   then select the days of the week you want it reoccurring and for how long.
+   That's just a number." Measured at 390 before this: the builder was 678
+   pixels tall with 22 controls, and its Every day and Weekdays pills, seven
+   day letters and four How long pills were three groups in three places for
+   one answer. The pop-up drew the same three again as four rows of its own.
+   So the answer is one shaded band, drawn by this one function for both:
+   row A is Repeat (Once, Every day, Weekdays, Set days), For (a number of
+   weeks, or No end, not drawn on Once) and the When and Where icons; row B
+   is the seven days, or on Once the next seven dates.
+   "MAYBE WHEN AND WHERE IS A CALENDAR ICON THEY CAN CLICK ON, SO WE CAN
+   CLAIM ALL THAT SPACE FROM THOSE BLACK FIELDS." The two black fields were
+   never broken: they were plain text fields on --sunk, the darkest token,
+   with no hint text because SV19 struck the sample answer, stretched under an
+   11 pixel label. They are the icons now, and each opens a small panel under
+   the band holding the same field by the same id and cap, so the boundary
+   and every gate that reads #ritwhen's maxLength still find it. The panels
+   are drawn and hidden, never left out, for the same reason.
+   o.a is the attribute a press carries, data-act on the builder's host and
+   data-sh in the sheet, so each host keeps the one listener it has. o.id
+   prefixes every id, o.cue and o.where are the host's own field markup and
+   o.cueV and o.whereV their values, and both are optional: the pop-up writes
+   no cue and no place, so it draws no Where. Every press ends in
+   ritRecurAct, so the two hosts cannot disagree about what a press does. */
+var RIT_RMODE=[{k:'once',nm:'Once'},{k:'all',nm:'Every day'},{k:'wk',nm:'Weekdays'},{k:'own',nm:'Set days'}];
+function ritRecurMode(R){
+ if(R.rep===1)return 'once';
+ if(R.own)return 'own';
+ if(!R.on)return 'all';
+ return R.on.join()==='0,1,2,3,4'?'wk':'own';}
+function ritRecurHtml(R,o){
+ ritBankCss();
+ var A=o.a, id=o.id, m=ritRecurMode(R), on=R.on||[0,1,2,3,4,5,6], today=ritToday0();
+ var opt=function(v,nm,y){return '<option value="'+v+'"'+(y?' selected':'')+'>'+esc(nm)+'</option>';};
+ var rep='<label class="rv-rsel rv-rrep" data-tip-t="Repeat" data-tip="Does it repeat: once, every day, weekdays, or only the days you set.">'
+  +'<select '+A+'="rc-rep" aria-label="Repeat">'
+  +RIT_RMODE.map(function(x){return opt(x.k,x.nm,x.k===m);}).join('')+'</select>'+ritIc('down','rv-ic rv-rch')+'</label>';
+ /* For is a number of weeks or no end, and on Once there is no length to
+    give. o.left is an edit's own first answer, what is left, because a
+    length chosen on a ritual five weeks old runs from today (ritSaveEdit)
+    and a dropdown reading 1 week over it would be a claim */
+ var fr=m==='once'?'':'<label class="rv-rsel rv-rfor" data-tip-t="For" data-tip="How long it runs. No end keeps it until you stop it.">'
+  +'<select '+A+'="rc-for" aria-label="For how long">'
+  +(o.left&&R.rep<0?opt(-1,o.left,true):'')
+  +RIT_SPANS.filter(function(s){return s.d!==1;}).map(function(s){return opt(s.d,s.nm,s.d===R.rep);}).join('')+'</select>'+ritIc('down','rv-ic rv-rch')+'</label>';
+ /* an icon carries what it holds in its name and its dot, and the value
+    itself stays off the row: a screen reader hears "When: 07:30, after
+    coffee", and a row of 44 pixel icons is not stretched by a sentence */
+ var ib=function(k,ic,nm,say,tip){var set=!!say, op=R.wp===k;
+  return '<button type="button" class="rv-rib'+(set?' rv-set':'')+'" '+A+'="rc-pop" data-v="'+k+'" aria-expanded="'+op
+   +'" aria-controls="'+id+k+'o" aria-label="'+esc(nm+': '+(say||'not set'))+'" data-tip-t="'+nm+'" data-tip="'+esc(tip)+'">'
+   +ritIc(ic)+(set?'<i aria-hidden="true"></i>':'')+'</button>';};
+ var wSay=[R.at,o.cueV].filter(Boolean).join(', ');
+ var row='<div class="rv-rca">'+rep+fr
+  +ib('when','cal','When',wSay,'The time and the cue that starts it.')
+  +(o.where?ib('where','pin','Where',o.whereV||'','The place you will do it.'):'')+'</div>';
+ /* ONE BAR OF SEVEN, Sunday first, RIT_WCOL. The row it replaces asked for
+    seven columns of at least 44 with 4 between, 332 pixels, in the 316 a
+    phone has, and its last Saturday ran into the card's edge. Seven equal
+    shares of the row with a hairline between cannot overflow it, and at 390
+    each is 44. On Once the same seven are the next
+    seven dates, and since seven days in a row are seven different weekdays,
+    each date is still one stored weekday and the press is the same press. */
+ var cells=[0,1,2,3,4,5,6].map(function(i){
+  var wd=m==='once'?ritWd(today+i):RIT_WCOL[i], y=on.indexOf(wd)>=0, lab, face;
+  if(m==='once'){var dt=ritDateOf(today+i);
+   lab=i?RIT_WDF[wd]+' '+dt.getDate():'Today';
+   face='<small>'+(i?RIT_WDN[wd]:'Today')+'</small><b>'+dt.getDate()+'</b>';}
+  else{lab=RIT_WDF[wd]; face=RIT_WD[wd];}
+  return '<button type="button" class="rv-rd'+(y?' rv-on':'')+'" '+A+'="rc-d" data-d="'+wd+'" aria-pressed="'+y+'" aria-label="'+lab+'">'+face+'</button>';}).join('');
+ var days='<div class="rv-rcd" role="group" aria-label="'+(m==='once'?'Dates':'Days')+'">'+cells+'</div>';
+ /* the time is a typed HH:MM and never a picker, ritAtOk says why, and
+    nothing reminds anyone of it yet, which is said where it is set */
+ var wo='<div class="rv-ro" id="'+id+'wheno" role="group" aria-label="When"'+(R.wp==='when'?'':' hidden')+'>'
+  +'<div class="rv-rot"><button type="button" class="rv-rq'+(R.at?'':' rv-on')+'" '+A+'="rc-any" aria-pressed="'+!R.at+'">Any time</button>'
+  +'<input type="text" class="rv-rat" id="'+id+'at" inputmode="numeric" maxlength="5" placeholder="07:30" autocomplete="off" value="'+esc(R.at||'')
   +'" aria-label="Time of day, hours and minutes"></div>'
-  +'<div class="rv-prow" role="group" aria-label="Repeat">'+RIT_REP.map(function(r){var y=W.rep===r.d;
-   return '<button type="button" class="rv-pq'+(y?' rv-on':'')+'" data-sh="prep" data-d="'+r.d+'" aria-pressed="'+y+'">'+r.nm+'</button>';}).join('')
-  +'</div></div>';}
+  +(o.cue||'')+'<p class="rv-rno">A time orders your day. Nothing reminds you of it yet.</p></div>';
+ var ro=o.where?'<div class="rv-ro" id="'+id+'whereo" role="group" aria-label="Where"'+(R.wp==='where'?'':' hidden')+'>'+o.where+'</div>':'';
+ return '<div class="rv-rc" id="'+id+'when" data-rc="'+A+'">'+row+days+wo+ro+'</div>';}
+/* what a press on the band does, for both hosts. The last day lit cannot be
+   pressed off, the rule both day rows already kept: a ritual due on no day
+   is not one, and the cell says so by staying lit rather than by an error. */
+function ritRecurAct(R,a,v){
+ switch(a){
+  case 'rc-rep':
+   if(v==='once'){R.rep=1; R.own=false;
+    /* Once from every day is today, not the coming seven: Once means once */
+    if(!R.on)R.on=[ritWd(ritToday0())];}
+   else{if(R.rep===1||R.rep==null)R.rep=7;
+    R.own=v==='own';
+    if(v==='all')R.on=null;
+    if(v==='wk')R.on=[0,1,2,3,4];}
+   return true;
+  case 'rc-for': R.rep=+v; return true;
+  case 'rc-d': {var wd=+v, cur=(R.on||[0,1,2,3,4,5,6]).slice(), at=cur.indexOf(wd);
+   if(at>=0){if(cur.length>1)cur.splice(at,1);} else cur.push(wd);
+   cur.sort(); R.on=cur.length===7?null:cur;
+   if(R.rep!==1)R.own=true;
+   return true;}
+  case 'rc-pop': R.wp=R.wp===v?null:v; return true;
+  case 'rc-any': R.at=''; return true;
+  default: return false;}}
+/* ESCAPE SHUTS THE PANEL BEFORE THE SHEET. Captured on the document, so in
+   the pop-up it is the panel that closes and not the whole sheet behind it,
+   and the keyboard goes back to the icon that opened it. */
+if(typeof document!=='undefined')document.addEventListener('keydown',function(ev){
+ if(ev.key!=='Escape')return;
+ var t=ev.target, band=t&&t.closest&&t.closest('.rv-rc'); if(!band)return;
+ var op=band.querySelector('.rv-ro:not([hidden])'); if(!op)return;
+ var k=op.id.slice(-5)==='wheno'?'when':'where', b=band.querySelector('[data-v="'+k+'"]');
+ ev.stopPropagation(); ev.preventDefault();
+ if(b)b.click();
+ var id=band.id;
+ var f=document.getElementById(id)&&document.getElementById(id).querySelector('[data-v="'+k+'"]'); if(f)f.focus();},true);
 /* the first set day on or after today, and for Once the last set day inside
    the coming seven, so Once on Tuesday and Thursday is this Tuesday and this
    Thursday and then it ends */
@@ -84685,9 +84866,16 @@ function ritBankOpen(P){
 /* the two text fields write to the pop-up's state on the way past, so a
    redraw for a day pressed after them keeps what was typed */
 function ritBankWireIn(){
- var t=document.getElementById('rv-pat'), o=document.getElementById('rv-pown');
+ var t=document.getElementById('rv-pat'), o=document.getElementById('rv-pown'), c=document.getElementById('sheet-card');
  if(t)t.oninput=t.onchange=function(){if(RIT.pop&&RIT.pop.W)RIT.pop.W.at=t.value.trim();};
- if(o)o.oninput=o.onchange=function(){if(RIT.pop)RIT.pop.own=o.value;};}
+ if(o)o.oninput=o.onchange=function(){if(RIT.pop)RIT.pop.own=o.value;};
+ /* Repeat and For are selects, and a select answers on change and not on
+    click, so the card listens for that too. The text fields above set their
+    own and are left to them. */
+ if(c)c.onchange=function(ev){var s=ev.target;
+  if(!s||s.tagName!=='SELECT'||!RIT.pop||!RIT.pop.W||!c.contains(s))return;
+  var a=s.getAttribute('data-sh'); if(a!=='rc-rep'&&a!=='rc-for')return;
+  ritRecurAct(RIT.pop.W,a,s.value); ritBankRedraw(s);};}
 /* redraw in place and keep the keyboard where it was, found by what the
    control does and not by where it sits */
 function ritBankRedraw(b){
@@ -84778,14 +84966,9 @@ function ritMissAnswer(id,why){
 function ritBankAct(a,b){
  var P=RIT.pop, W=P&&P.W; if(!P)return;
  switch(a){
-  case 'pd': {var wd=+b.getAttribute('data-d'), cur=(W.on||[0,1,2,3,4,5,6]).slice(), at=cur.indexOf(wd);
-   /* the last day cannot be pressed off: a ritual on no day is not one */
-   if(at>=0){if(cur.length>1)cur.splice(at,1);} else cur.push(wd);
-   cur.sort(); W.on=cur.length===7?null:cur; break;}
-  case 'pall': W.on=null; break;
-  case 'pwk': W.on=[0,1,2,3,4]; break;
-  case 'pany': W.at=''; break;
-  case 'prep': W.rep=+b.getAttribute('data-d'); break;
+  /* the repeat band's presses, the same function the builder's go through */
+  case 'rc-d': case 'rc-pop': case 'rc-any':
+   ritRecurAct(W,a,b.getAttribute(a==='rc-d'?'data-d':'data-v')); break;
   case 'pmk': P.mk=b.getAttribute('data-d'); break;
   case 'badd': {var x=(RIT.sug||[]).filter(function(s){return ritSugKey(s)===P.key;})[0]||P.x; if(!x)return;
    if(ritBankAdd(x,W))ritBankShut(); return;}
@@ -84931,6 +85114,60 @@ function ritBankCss(){
   '#rit .rv-wd1.rv-drop{box-shadow:inset 0 0 0 2px var(--accent);border-radius:12px}',
   '#rit .rv-wd1.rv-nodrop{opacity:.55}',
   '.rv-sg1[data-drag]{cursor:grab}',
+  /* THE REPEAT BAND, ritRecurHtml. One shaded band is one setting, the look
+     .rv-pw already gave the pop-up's When. 8 between the parts of the one
+     setting, 44 on every press, and the panels under it fold away whole. */
+  '.rv-rc{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--c) 7%,var(--panel-2))}',
+  '.rv-rca{display:flex;align-items:center;gap:8px}',
+  '.rv-rsel{position:relative;display:flex;align-items:center;min-width:0;cursor:pointer}',
+  '.rv-rsel select{appearance:none;-webkit-appearance:none;width:100%;min-width:0;min-height:44px;padding:0 28px 0 12px;border-radius:12px;border:1px solid var(--edge);',
+  ' background:var(--panel);color:var(--ink);font:inherit;font-size:14px;cursor:pointer;text-overflow:ellipsis}',
+  '.rv-rsel>.rv-ic:first-child{position:absolute;left:11px;pointer-events:none;color:var(--c,var(--accent))}',
+  '.rv-rsel>.rv-ic:first-child~select{padding-left:36px}',
+  '.rv-rsel .rv-rch{position:absolute;right:8px;width:16px;height:16px;pointer-events:none;color:var(--mid)}',
+  '.rv-rsel select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-rsel select:hover{border-color:var(--edge-2)}',
+  /* Repeat takes what the row leaves, and For is as wide as its longest
+     answer and no wider: on a phone the row is 316 and both have to read
+     whole, Every day beside 2 weeks beside two icons */
+  '.rv-rrep{flex:1 0 auto}',
+  '.rv-rfor{flex:0 1 auto;min-width:0}',
+  '.rv-rib{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:44px;padding:0;',
+  ' border-radius:12px;border:1px solid var(--edge);background:var(--panel);color:var(--mid);cursor:pointer}',
+  '.rv-rib .rv-ic{width:20px;height:20px}',
+  '.rv-rib:hover{color:var(--ink);border-color:var(--edge-2)}',
+  '.rv-rib[aria-expanded="true"]{border-color:var(--c);color:var(--ink)}',
+  '.rv-rib.rv-set{background:color-mix(in srgb,var(--c) 22%,var(--panel));color:var(--ink)}',
+  '.rv-rib i{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--c)}',
+  '.rv-rib:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* seven cells and a hairline between, drawn as the gap over the edge
+     colour, so the outer corners are the bar's own and only those round */
+  '.rv-rcd{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;width:100%;border-radius:12px;overflow:hidden;',
+  ' background:var(--edge-2);box-shadow:0 0 0 1px var(--edge)}',
+  '.rv-rd{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:44px;min-width:0;padding:0;border:0;border-radius:0;',
+  ' background:var(--panel);color:var(--mid);font:inherit;font-size:14px;line-height:1.1;cursor:pointer}',
+  '.rv-rd:hover{color:var(--ink)}',
+  '.rv-rd.rv-on{background:color-mix(in srgb,var(--c) 22%,var(--panel));color:var(--ink);font-weight:600}',
+  '.rv-rd:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}',
+  '.rv-rd small{font-size:11px;font-weight:500;color:inherit}',
+  '.rv-rd b{font-size:13.5px;font-weight:inherit;font-variant-numeric:tabular-nums}',
+  /* the panel under When or Where, attached to the band and not a sheet */
+  '.rv-ro{display:flex;flex-direction:column;gap:8px;padding-top:8px;border-top:1px solid var(--edge)}',
+  '.rv-ro[hidden]{display:none}',
+  '.rv-rot{display:flex;flex-wrap:wrap;gap:8px}',
+  '.rv-rq{min-height:44px;min-width:44px;padding:0 12px;border-radius:12px;border:1px solid var(--edge);background:var(--panel);color:var(--ink);font:inherit;font-size:13.5px;cursor:pointer}',
+  '.rv-rq.rv-on{background:color-mix(in srgb,var(--c) 22%,var(--panel));border-color:color-mix(in srgb,var(--c) 60%,var(--edge));font-weight:600}',
+  '.rv-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-rat{width:7.5em;min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--edge);background:var(--panel);color:var(--ink);font:inherit;font-size:14px;font-variant-numeric:tabular-nums}',
+  '.rv-rf{display:flex;align-items:center;gap:8px;margin:0}',
+  '.rv-rf span{flex:0 0 auto;min-width:3.4em;font-size:13px;font-weight:500;color:var(--mid)}',
+  /* the field is the panel's colour and never --sunk: on the darkest token
+     an empty field read as a hole in the card, which is what he called the
+     black fields */
+  '.rv-rf input{flex:1 1 auto;min-width:0;min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--edge);background:var(--panel);color:var(--ink);font:inherit;font-size:14px}',
+  '.rv-rf input:focus-visible,.rv-rat:focus-visible{outline:2px solid var(--accent);outline-offset:1px}',
+  '.rv-rno{margin:0;font-size:12.5px;line-height:1.5;color:var(--dim)}',
+  '.rv-ro .rv-if{margin:0}',
   '.rv-sg1 .rv-sgs,#rit .rv-week button.rv-wch{touch-action:none}'
  ].join('\n');
  document.head.appendChild(st);}
@@ -84989,9 +85226,13 @@ function affIc(){
  return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">'
   +'<circle cx="12" cy="12" r="9"/><path d="M8 9.5h8M8 12.5h8M8 15.5h5"/></svg>';}
 
-/* THE DOOR, one button, the same word in every place it appears */
-function affDoorHtml(from,key,pathK){
- return '<button type="button" class="btn aff-door" data-affopen="'+esc(from||'')+'"'
+/* THE DOOR, one button, the same word in every place it appears. ic draws
+   it as the ring alone, for a host that has a row of icons to sit in (the
+   ritual builder's, 20 November): the word stays in the button, folded out
+   of sight by the host's own rule, so its name and the tip are unchanged and
+   it is still the same word everywhere it appears. */
+function affDoorHtml(from,key,pathK,ic){
+ return '<button type="button" class="btn aff-door'+(ic?' aff-door-ic':'')+'" data-affopen="'+esc(from||'')+'"'
   +(key?' data-affkey="'+esc(key)+'"':'')+(pathK?' data-affpath="'+esc(pathK)+'"':'')
   +' data-tip-k="Affirm" data-tip="'+esc(AFF_DOOR_TIP)+'">'+affIc()+'<span>Affirm</span></button>';}
 if(typeof document!=='undefined')document.addEventListener('click',function(ev){
@@ -106917,5 +107158,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007290078"></div>
+<div id="eof" hidden data-len="007307263"></div>
 </body></html>

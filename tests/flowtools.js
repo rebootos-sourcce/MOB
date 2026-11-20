@@ -174,7 +174,7 @@ async function flowGate(browser,FILE,ok,booted){
    setTab(TAB.RITUAL); ritRender(); const a=document.querySelector('#lcol [data-act="add"]'); if(a)a.click();}); await wait(500);
   const nr=await pg.evaluate(()=>{
    const lc=document.getElementById('lcol'), rc=document.getElementById('rcol'), rit=document.getElementById('rit');
-   const ctl='[data-act="tag"],[data-act="newtag"],[data-act="save"],[data-act="span"],[data-act="often"],.rv-build,#ritwhen,#ritwhere';
+   const ctl='[data-act="tag"],[data-act="newtag"],[data-act="save"],[data-act="rc-rep"],[data-act="rc-for"],.rv-build,#ritwhen,#ritwhere';
    const n=(root)=>[...root.querySelectorAll(ctl)].length;
    const w=document.getElementById('ritwhen');
    return {inLeft:n(lc), inRight:n(rc), inStage:n(rit), when:!!(w&&lc.contains(w)),
@@ -212,8 +212,10 @@ async function flowGate(browser,FILE,ok,booted){
     cancel:!!lc.querySelector('#ritx'), build:document.body.classList.contains('ritbuild')};
    const stageAdd=document.querySelectorAll('#rit [data-act="add"]').length;
    const tile=lc.querySelector('.rv-tile[data-act="pick"]'); if(tile)tile.click(); await new Promise(r=>setTimeout(r,200));
-   const wk=lc.querySelector('.rv-wk'), rl=document.getElementById('flownew'), rr=rl?rl.getBoundingClientRect():{left:0,right:0};
-   const wr=wk?wk.getBoundingClientRect():null;
+   /* the seven days are the repeat band's bar since 20 November, and it
+      fits by its own scroll width too: the row before it overflowed by 16 */
+   const wk=lc.querySelector('.rv-build .rv-rcd'), rl=document.getElementById('flownew'), rr=rl?rl.getBoundingClientRect():{left:0,right:0};
+   const wr=wk&&wk.scrollWidth<=wk.clientWidth?wk.getBoundingClientRect():null;
    return {rest, stageAdd, picked:ritDraft().length, cancel:!!lc.querySelector('#ritx'),
     weekFits:!!wr&&wr.right<=rr.right+0.5&&wr.left>=rr.left-0.5,
     build:document.body.classList.contains('ritbuild'),
@@ -903,7 +905,9 @@ async function flowGate(browser,FILE,ok,booted){
    const picked=ritDraft().map(k=>ritPr(k).nm);
    /* and the fields under the steps, which Cancel must empty as well: a
       Cancel that left a How long or a When behind would stay on screen */
-   const one=L.querySelector('[data-act="span"][data-d="1"]'); if(one)one.click(); await new Promise(r=>setTimeout(r,200));
+   /* Once is the Repeat dropdown's answer since 20 November, where it was
+      the A day pill, and a dropdown answers on change */
+   const one=L.querySelector('select[data-act="rc-rep"]'); if(one){one.value='once'; one.dispatchEvent(new Event('change',{bubbles:true}));} await new Promise(r=>setTimeout(r,200));
    RIT.when='after the kettle'; ritRender();
    const c=L.querySelector('[data-act="cancel"]'), out={before, picked, cancel:!!c, span:RIT.days};
    if(c){c.click(); await new Promise(r=>setTimeout(r,250));}
@@ -1442,10 +1446,11 @@ async function flowGate(browser,FILE,ok,booted){
   const tg=await pg.evaluate(async()=>{const b=()=>document.getElementById('ritall'), a=[b().textContent,b().getAttribute('aria-expanded')];
    b().click(); await new Promise(r=>setTimeout(r,150)); const z=[b().textContent,b().getAttribute('aria-expanded')];
    b().click(); await new Promise(r=>setTimeout(r,150)); return [a,z];});
-  /* SV24, his words: "just get rid of the word more". The label is
-     Practices, and it is still the one label open and shut */
-  ok(tg[0][0]==='Practices'&&tg[1][0]==='Practices'&&tg[0][1]==='false'&&tg[1][1]==='true',
-   'FT35: '+tag+'Practices keeps its label open and shut, and aria-expanded carries the state, '+JSON.stringify(tg));
+  /* SV24, his words: "just get rid of the word more". The label was
+     Practices, and on 20 November, his words, "change practices to
+     rituals": it is Rituals, still the one label open and shut */
+  ok(tg[0][0]==='Rituals'&&tg[1][0]==='Rituals'&&tg[0][1]==='false'&&tg[1][1]==='true',
+   'FT35: '+tag+'Rituals keeps its label open and shut, and aria-expanded carries the state, '+JSON.stringify(tg));
   /* SV19, his words: "If I select a day of the week, I don't [get what I
      expect]." The weekday and date at the head of each column are a press
      now, and open that day in the sheet: every ritual on it, or Nothing set */
@@ -1512,16 +1517,26 @@ async function flowGate(browser,FILE,ok,booted){
   const card=await pg.evaluate(()=>{const c=document.querySelector('#flowleft .rv-sg1'), n=c&&c.querySelector('.rv-bko');
    return {n:(RIT.sug||[]).length, press:!!n&&n.tagName==='BUTTON', nm:n?n.textContent:'', k:RIT.sug&&RIT.sug[0]?RIT.sug[0].k:null};});
   await pg.focus('#flowleft .rv-sg1 .rv-bko'); await pg.keyboard.press('Enter'); await w();
-  const pop=await pg.evaluate(()=>{const c=document.getElementById('sheet-card'), wh=c.querySelector('#rv-pwhen');
-   const all=wh?[...wh.querySelectorAll('button,input')]:[];
-   return {open:!document.getElementById('sheet').hidden, days:wh?wh.querySelectorAll('.rv-pd').length:0,
-    words:wh?[...wh.querySelectorAll('.rv-pq')].map(b=>b.textContent):[], time:!!(wh&&wh.querySelector('#rv-pat')),
-    small:all.filter(e=>{const r=e.getBoundingClientRect(); return r.height<44||r.width<44;}).length,
-    wide:c.getBoundingClientRect().right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1,
+  /* ONE REPEAT BAND, 20 November, his "those are all describing one
+     system": Repeat and For are two dropdowns, the seven days one bar, and
+     the time one press under the When icon, drawn hidden until then. The
+     words are read off the dropdowns' own options, and the floor is held on
+     every press a person can see, before and after When is opened. */
+  const popRead=()=>pg.evaluate(()=>{const c=document.getElementById('sheet-card'), wh=c.querySelector('#rv-pwhen');
+   const all=wh?[...wh.querySelectorAll('button,input,select')].filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}):[];
+   return {open:!document.getElementById('sheet').hidden, days:wh?wh.querySelectorAll('.rv-rd').length:0,
+    words:wh?[...wh.querySelectorAll('select')].map(s=>[...s.options].map(o=>o.text)):[], time:!!(wh&&wh.querySelector('#rv-pat')),
+    any:!!(wh&&[...wh.querySelectorAll('.rv-rq')].some(b=>b.textContent==='Any time'&&b.getBoundingClientRect().width>0)),
+    small:all.filter(e=>{const r=e.getBoundingClientRect(); return r.height<44||r.width<44;}).length, seen:all.length,
+    wide:c.getBoundingClientRect().right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1&&(!wh||wh.querySelector('.rv-rcd').scrollWidth<=wh.querySelector('.rv-rcd').clientWidth),
     head:(c.querySelector('.sh-h')||{}).textContent||''};});
-  ok(card.n>0&&card.press&&pop.open&&pop.head===card.nm&&pop.days===7&&pop.time&&pop.small===0&&pop.wide
-    &&JSON.stringify(pop.words)===JSON.stringify(['Every day','Weekdays','Any time','Once','A week','Two weeks','No end']),
-   'FT37: '+tag+'the Called for card\'s name is a press, reached from the keyboard, that opens the pop-up with seven days, a time and the four repeats, every press at the tap floor and nothing past the screen, '+JSON.stringify({card,pop}));
+  const pop=await popRead();
+  await pg.evaluate(()=>{const b=document.querySelector('#sheet-card [data-sh="rc-pop"][data-v="when"]'); if(b)b.click();}); await w(80);
+  const popW=await popRead();
+  await pg.evaluate(()=>{const b=document.querySelector('#sheet-card [data-sh="rc-pop"][data-v="when"]'); if(b)b.click();}); await w(80);
+  ok(card.n>0&&card.press&&pop.open&&pop.head===card.nm&&pop.days===7&&pop.time&&!pop.any&&popW.any&&pop.small===0&&popW.small===0&&pop.wide&&popW.wide
+    &&JSON.stringify(pop.words)===JSON.stringify([['Once','Every day','Weekdays','Set days'],['1 week','2 weeks','3 weeks','4 weeks','No end']]),
+   'FT37: '+tag+'the Called for card\'s name is a press, reached from the keyboard, that opens the pop-up with Repeat and For, seven days and a time under When, every press at the tap floor and nothing past the screen, '+JSON.stringify({card,pop,popW}));
   /* A SECOND DAY KEEPS THE FIRST, the defect the bank was built to close:
      Tuesday for a week, then the same practice on Thursday, by presses */
   /* the presses go through the element and not a hit test, as FT35's do: on
@@ -1530,10 +1545,12 @@ async function flowGate(browser,FILE,ok,booted){
      pop-up's, and the floors above are what hold the presses' size */
   const tap=async sel=>{await pg.evaluate(q=>{const b=document.querySelector(q); if(!b)throw new Error('no '+q); b.click();},sel); await w(60);};
   const type=async v=>{await pg.evaluate(v=>{const t=document.getElementById('rv-pat'); t.value=v; t.dispatchEvent(new Event('input'));},v); await w(40);};
+  const sel=async(a,v)=>{await pg.evaluate(([a,v])=>{const s=document.querySelector('#sheet-card select[data-sh="'+a+'"]'); if(!s)throw new Error('no '+a);
+   s.value=String(v); s.dispatchEvent(new Event('change',{bubbles:true}));},[a,v]); await w(60);};
   const pick=async(days,rep,at)=>{
-   await tap('#sheet-card [data-sh="pall"]');
-   for(const d of [0,1,2,3,4,5,6].filter(x=>days.indexOf(x)<0))await tap('#sheet-card .rv-pd[data-d="'+d+'"]');
-   await tap('#sheet-card .rv-pq[data-sh="prep"][data-d="'+rep+'"]');
+   await sel('rc-rep','all');
+   for(const d of [0,1,2,3,4,5,6].filter(x=>days.indexOf(x)<0))await tap('#sheet-card .rv-rd[data-d="'+d+'"]');
+   if(rep===1)await sel('rc-rep','once'); else await sel('rc-for',rep);
    await type(at||'');};
   await pick([1],7,''); await tap('#sheet-card [data-sh="badd"]'); await w();
   const one=await pg.evaluate(k=>ritPlans().filter(p=>p.steps[0]===k).map(p=>({on:p.on,days:p.days})),card.k);
@@ -1578,7 +1595,7 @@ async function flowGate(browser,FILE,ok,booted){
     res.drop=await pg.evaluate(o=>{const p=ritPlans().filter(x=>x.steps[0]===o.k);
      const st=ritRead(), on=[]; for(let d=st.today-7;d<st.today+21;d++)if(p.some(x=>ritCovers(x,d)))on.push(d);
      return {n:ritPlans().length, days:on, want:[o.d], pop:!document.getElementById('sheet').hidden&&!!document.querySelector('#sheet-card #rv-pwhen'),
-      once:!!document.querySelector('#sheet-card .rv-pq[data-sh="prep"][data-d="1"][aria-pressed="true"]'),
+      once:(document.querySelector('#sheet-card select[data-sh="rc-rep"]')||{}).value==='once',
       block:ritWeekDay(o.d,st).some(s=>s.nm===ritPr(o.k).nm)};},pos);}
    ok(!!res.drop&&pos.own&&res.nowhere.plans===pos.plans&&!res.nowhere.ghost&&!res.nowhere.sheet&&(!res.past||res.past.plans===pos.plans)
      &&res.drop.n===pos.plans+1&&JSON.stringify(res.drop.days)===JSON.stringify(res.drop.want)&&res.drop.pop&&res.drop.once&&res.drop.block,
@@ -1654,7 +1671,7 @@ async function flowGate(browser,FILE,ok,booted){
   const af=await pg.evaluate(async()=>{
    const w=ms=>new Promise(r=>setTimeout(r,ms||150));
    document.querySelector('#rit .rv-aff [data-act="aff-set"]').click(); await w();
-   document.querySelector('#sheet-card [data-sh="pwk"]').click(); await w(80);
+   const rp=document.querySelector('#sheet-card select[data-sh="rc-rep"]'); rp.value='wk'; rp.dispatchEvent(new Event('change',{bubbles:true})); await w(80);
    document.querySelector('#sheet-card [data-sh="baff"]').click(); await w();
    const st=ritRead(), r=ritSchedOf('aff'), on=[];
    for(let d=st.today;d<st.today+7;d++)if(ritWeekDay(d,st).some(s=>s.sc&&s.sc.id==='aff'))on.push(ritWd(d));

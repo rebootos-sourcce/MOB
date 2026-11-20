@@ -314,7 +314,7 @@ function acctRotate(i){
   when:p?p.when:'', where:p?p.where:'', rel:(p&&p.rel!=null&&BY[p.rel])?p.rel:null,
   tc:(p&&p.tc&&typeof becomingOf==='function'&&becomingOf(p.tc))?p.tc:null,
   tags:p?p.tags:null, on:p?p.on:null, tm:p?p.tm:null},
-  'Back in rotation. '+H.nm+(span?', '+sp.nm.toLowerCase()+' from today.':', with no end.'));}
+  'Back in rotation. '+H.nm+(span?', '+sp.say+' from today.':', with no end.'));}
 
 /* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
    rather than painting a host of its own, because there is no host of its own

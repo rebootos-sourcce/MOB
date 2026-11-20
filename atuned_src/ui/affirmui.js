@@ -51,9 +51,13 @@ function affIc(){
  return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">'
   +'<circle cx="12" cy="12" r="9"/><path d="M8 9.5h8M8 12.5h8M8 15.5h5"/></svg>';}
 
-/* THE DOOR, one button, the same word in every place it appears */
-function affDoorHtml(from,key,pathK){
- return '<button type="button" class="btn aff-door" data-affopen="'+esc(from||'')+'"'
+/* THE DOOR, one button, the same word in every place it appears. ic draws
+   it as the ring alone, for a host that has a row of icons to sit in (the
+   ritual builder's, 20 November): the word stays in the button, folded out
+   of sight by the host's own rule, so its name and the tip are unchanged and
+   it is still the same word everywhere it appears. */
+function affDoorHtml(from,key,pathK,ic){
+ return '<button type="button" class="btn aff-door'+(ic?' aff-door-ic':'')+'" data-affopen="'+esc(from||'')+'"'
   +(key?' data-affkey="'+esc(key)+'"':'')+(pathK?' data-affpath="'+esc(pathK)+'"':'')
   +' data-tip-k="Affirm" data-tip="'+esc(AFF_DOOR_TIP)+'">'+affIc()+'<span>Affirm</span></button>';}
 if(typeof document!=='undefined')document.addEventListener('click',function(ev){
