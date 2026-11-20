@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v300 8c1d968e 2026-11-20 19:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v301 d04c0dd8 2026-11-20 19:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11618,7 +11618,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <button type="button" class="secb" data-sec="discover" aria-pressed="true"
     title="Discover. Write what happened, see where it lands in your body, and release it."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="false"
-    title="Play. Field, Body, Path and Avatar."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
+    title="Play. Field, Body, Compass and Avatar."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
     title="Flow. Ritual sets what you will do. Accountability shows what you did."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/></svg><span class="sn">Flow</span></button>
    <button type="button" class="secb" data-sec="embody" aria-pressed="false"
@@ -11670,7 +11670,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
     <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="false" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
     <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Path. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Path</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
     <!-- CHARACTER IS HELD OFF THE BAR, 17 November: "we want to hide character
          for now". Integer 11, host #masksview and its renderer stay, and its
          entry is in TABEXTRA with held:'play' (engine/core.js). The gate holds
@@ -12353,7 +12353,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    <div class="probe" id="probe"></div>
    <div class="howto" id="howto"></div>
 
-   <button class="pol2" id="pol2" aria-label="The path. Where coherence sits and how far it swings. Opens the reading."></button>
+   <button class="pol2" id="pol2" aria-label="The compass. Where coherence sits and how far it swings. Opens the reading."></button>
   </div>
 
   <!-- ============ RIGHT RAIL ============ -->
@@ -20162,7 +20162,7 @@ var PCT_KIND={
              say:'identification, how much of the person the instrument has measured'},
  /* data/compass.js:484, where a person sits on a compass axis */
  axis:      {lo:0, hi:100, src:'engine/data/compass.js', find:'return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}',
-             say:'the position on a path axis'},
+             say:'the position on a compass axis'},
  /* core.js sab33Detect, how closely the feelings fit a saboteur's defined
     ranges: the ramp's confidence, nought to one (sabConfidence clamps it,
     data/canon.js), as a percent. It was the staircase's fit until P1-6 of
@@ -24643,7 +24643,7 @@ const SIGHT=[
  {k:'kund', nm:'the Kundalini', need:'two', layer:false, built:false,
   what:'How far the Kundalini has risen up your seven assemblage points.'},
  {k:'reg', nm:'the registers', need:'three', layer:false,
-  what:'The registers, your point cloud: where each pattern sits on the path.'},
+  what:'The registers, your point cloud: where each pattern sits in the compass.'},
  {k:'mask', nm:'the masks', need:'three', layer:false,
   what:'The six masks, and how your chain lights each one.'}];
 /* the rows a person can be told about: the table less any with no surface */
@@ -40775,7 +40775,7 @@ var MARKS=[
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
   to:'Place your six values on the Avatar page.',
-  d:'Six values placed. The path has a direction now.',
+  d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
@@ -47968,8 +47968,8 @@ var ATM_SEAT={
 var ATM_MAP=[
  {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
  {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
- {kind:'Path overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
- {kind:'Path point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Compass overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
+ {kind:'Compass point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
  {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
   snd:'air', hover:true},
  {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},
@@ -64332,7 +64332,7 @@ function stRender(){
     +'<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 13h17"/>'
     +'<path class="lf-ch" d="M9.4 8.4L12 11l2.6-2.6"/></svg></button>'
    +'<div class="st-mini6-row">'
-    +stMiniShell('stcompass','Path',stMiniCompass(r),'stcompass')
+    +stMiniShell('stcompass','Compass',stMiniCompass(r),'stcompass')
     +stMiniShell('stboundary','Boundary',stMiniBoundary(),'stboundary')
     +stMiniShell('stbody','Body',stMiniBody(r),'stbody')
     +stMiniShell('stfield','Field',stMiniField(r),'stfield')
@@ -69605,7 +69605,7 @@ function stDashCompass(){
     28 October ruling retired. unpackOf reads the one table every other CQ
     and DQ tooltip already reads. Not drawn on the rail since 10 November
     (see stDashLeft), kept right for whichever screen calls it next. */
- var o='<section class="st-en st-cps" id="st-compass" aria-label="Path">'
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
   +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'
@@ -88321,7 +88321,7 @@ function coneOvBuild(){
   list.forEach(function(x){c.appendChild(x);}); host.appendChild(c);};
  grp(bar,'Overlays',L.layers.map(function(k){return cnOvOrb(k,V);}));
  if(L.seats)grp(bar,'Point shells',cnSeatOrbs(),'cn-seatgrp');
- grp(vw,'How the path is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
+ grp(vw,'How the compass is drawn',L.views.map(function(k){return cnOvOrb(k,V);}));
  if(!L.views.length)vw.style.display='none';
  cnOvShutPaint(bar,cnOvShut());
  /* a toolbar's arrow keys walk it, as the Field's do */
@@ -88375,7 +88375,7 @@ function coneOpen(inTab){
  h.classList.toggle('tabmode',!!inTab);
  h.style.display='flex';
  h.innerHTML='<div class="cone-card">'
-  +'<div class="cone-hd"><span class="pm-eye">The path</span>'
+  +'<div class="cone-hd"><span class="pm-eye">The compass</span>'
   +(inTab?'':'<button class="btn" id="conex">Close</button>')+'</div>'
   /* THE FIGURE, AND THE CONTROLS ON IT. Ruled: the switches go to the upper
      left. They sat under the drawing in a row of their own, which cost a band
@@ -88402,18 +88402,18 @@ function coneOpen(inTab){
    +'aria-label="'+(CONE.side
      ?'Two cones meeting at the median. Eight axes, each with a coherent pole above and its inversion below.'
      :CONE.top
-     ?'The path from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
+     ?'The compass from the top. Seven assemblage points bent around your coherence, and eight axes, each with its coherent pole at the rim and its inversion at the centre.'
      :CONE.shells
      ?'The registers. Seven shells of light, one per point, Root on the outside and Crown at the centre. Each address is a patch on its point\'s shell, and where it holds charge the patch falls in and goes dark. The light at the centre is your coherence.'
-     :'The path. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
+     :'The compass. Two pyramids: one points up to coherent, one points down to decoherent, and the oscillating range sits in the gap between them. Each of the eight axes has its teacher near the top point and the opposite figure near the bottom one. The five paths sit at the top point and their opposites at the bottom one. Your coherence cuts through the figure as a level.'
       +(CONE.heat?' Radiance lights the whole figure, and it goes dark where a point holds charge and where the field bends off your level.':''))
    +'"></canvas>'
    /* THE OVERLAYS. Built into by coneOvBuild once the card is in the
       document. .cone-ctl is kept as the name of the row so the gate that
       finds the switches by it still does. */
-   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Path overlays">'
+   +'<div class="cn-top" id="cntop" role="toolbar" aria-label="Compass overlays">'
    +'<div class="cone-ctl cnbar" id="cnbar"></div>'
-   +'<div class="cnview" id="cnview" role="group" aria-label="How the path is drawn"></div>'
+   +'<div class="cnview" id="cnview" role="group" aria-label="How the compass is drawn"></div>'
    +'</div>'
    /* ZOOM, round KQ: "the icon's already there. I want to be able to zoom
       in." It is: the Field's three circles in its lower right, zoom out,
@@ -90365,7 +90365,7 @@ function runPoleDrill(end){
     sat inside the downward branch on its first write, so the upward roster
     had no way through to the thing it describes. */
  h+='<div class="ad-act">'
-  +'<button class="btn pri" id="rdcone">Go to the path</button>'
+  +'<button class="btn pri" id="rdcone">Go to the compass</button>'
   +(up?'':'<button class="btn" id="rdsee">Start from a sentence</button>')
   +'</div>';
  rdShell(h);
@@ -90734,7 +90734,7 @@ function runCompassDrill(){
  var me=r.unread?null:TIER_BY[r.tier];
  /* in percent, percent phase 2 slice 4: CQ prints as a percent, so
     the scale it is read against does too */
- var h='<div class="pm-eye">The path</div><div class="ad-nm">'
+ var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
   +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
@@ -96210,7 +96210,7 @@ function ptAlwaysOf(s){
      any page is said */
   'shadow':{nm:'Shadow',ic:PT_IC.shadow,say:'Shadow is the part of the Laws of Moral Integrity your answers leave out.'},
   'the pain map':{nm:'Pain map',ic:pain.ic,say:pain.tip||''},
-  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Path and the rest.'},
+  'every tool':{nm:'Every tool',ic:PT_IC.tools,say:'Every tool in Play: the Field, the Body, the Compass and the rest.'},
   'the journal':{nm:'Journal',ic:PT_IC.pen,say:u('journal')},
   'rerunning anything already open':{nm:'Rerun',ic:PT_IC.rerun,say:'Anything you have already opened stays open, and you can run it again.'}};
  var t=T[s]||{nm:s,ic:'',say:''};
@@ -105127,7 +105127,7 @@ function describe(h,r,still){
   +'<span class="tt-q">'+(r.complete?'every law answered':tierSay(r))+'</span>'
   +'<hr><b>Click for the breakdown.</b>';
  /* the compass's own two words for its two ends, cone.js, and nothing new */
- if(h.k==='pole')return '<u>path</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
+ if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  /* a Law of Action, right or wrong. It said "everything held weighs x0.70"
     under the share, and nothing held is multiplied by a gate (engine/verp.js),
@@ -106917,5 +106917,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007290078"></div>
+<div id="eof" hidden data-len="007290147"></div>
 </body></html>
