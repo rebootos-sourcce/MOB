@@ -459,6 +459,18 @@ SUITES.compose=function(E,ok,say){
   const got=wd.p.story.entries.length, cd=E.dlyCompose(wd.p,NOW).st.filter(s=>/^show\.seat/.test(s.tpl));
   ok(cd.length>0&&cd.every(s=>s.tpl==='show.seat.day.h'&&s.text.indexOf('So far '+got+' entries')===0&&!/one entry/.test(s.text)),
    got+' entries on one day name '+got+' entries and never one: '+J(cd.map(s=>s.text)));});
+ /* THE CUE SENTENCE HAD THE SAME DEFECT. Its rung counts days too, so TXT_B,
+    which carries words that read as aversion, logged two and three times on
+    9 March read "So far one entry". One entry must keep that wording, so the
+    fix cannot be passed by never saying it. Counts read off the fixture. */
+ [1,2,3].forEach(n=>{
+  const wd=world(E,{mut:(p,f)=>{p.history=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null;
+   p.story.entries=Array.from({length:n},(_,i)=>f.ent(-1+i/48,TXT_B));}});
+  const got=wd.p.story.entries.length, cd=E.dlyCompose(wd.p,NOW).st.filter(s=>/^show\.cue/.test(s.tpl));
+  if(got===1)ok(cd.length===1&&cd[0].tpl==='show.cue.h'&&/^So far one entry, /.test(cd[0].text),
+   'one entry carrying a cue still reads one entry: '+J(cd.map(s=>s.text)));
+  else ok(cd.length===1&&cd[0].tpl==='show.cue.day.h'&&cd[0].text.indexOf('So far '+got+' entries, all from ')===0&&!/one entry/.test(cd[0].text),
+   got+' entries on one day carrying a cue name '+got+' entries and never one: '+J(cd.map(s=>s.text)));});
  const wr=world(E,{mut:(p,f)=>{p.story.entries=[]; p.rituals=[]; p.meter.firsts=[]; p.avatar=null; p.history=[f.row(-1,50,'Throat',0)];}}), cr=E.dlyCompose(wr.p,NOW);
  /* same split as c1/c1edu above: today.read also says "the Throat seat",
     DLY_CANON's own word for Chakra, so it too may now earn a why.edu line
@@ -902,6 +914,8 @@ const MUTANTS=[
   from:"if(text.indexOf(ph)>=0)out.push({rule:'grounded_language', phrase:ph});", to:""},
  {suite:'compose', what:'several entries on one day are called one entry again',
   from:"else if(s.n===1)cands.push(dlyCand('show.seat.h'", to:"else if(true)cands.push(dlyCand('show.seat.h'"},
+  {suite:'compose', what:'several entries on one day carrying a cue are called one entry again',
+  from:"else if(c.ents===1)cands.push(dlyCand('show.cue.h'", to:"else if(true)cands.push(dlyCand('show.cue.h'"},
  {suite:'compose', what:'an unread record composes text',
   from:"if(dlyUnread(p,opt.r)){", to:"if(false){"},
  {suite:'ground', what:'penalty language is allowed',
