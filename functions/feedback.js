@@ -79,7 +79,17 @@ export function fbValidate(e) {
   if (FB_KINDS.indexOf(e.kind) < 0) return 'kind must be one of ' + FB_KINDS.join(', ');
   if (e.body !== undefined && typeof e.body !== 'string') return 'body must be text';
   const body = String(e.body || '').trim();
-  if (body.length > FB_BODY_MAX) return 'that is ' + body.length + ' characters and the limit is ' + FB_BODY_MAX;
+  /* THE CEILING IS MEASURED ON WHAT IS SENT, NOT ON WHAT ARRIVED. This
+     measured body.length, and fbMessage then puts a zero width space after
+     every backtick, so each one costs two characters on the way out. Measured
+     18 November: four thousand backticks passed here and became a description
+     of 8008 characters against Discord's 4096, so the relay said yes to a post
+     Discord could not take as written. The same fbFenced that builds the card
+     is measured here, so the check and the card cannot drift apart. */
+  const sent = fbFenced(body).length;
+  if (sent > FB_BODY_MAX) return 'that is ' + sent + ' characters'
+    + (sent > body.length ? ' once each backtick is made safe for discord,' : '')
+    + ' and the limit is ' + FB_BODY_MAX;
   let n = 0;
   if (e.answers !== undefined) {
     if (!e.answers || typeof e.answers !== 'object' || Array.isArray(e.answers)) return 'answers must be an object';
@@ -110,6 +120,7 @@ export function fbValidate(e) {
    leaves what was typed visibly identical. allowed_mentions empty means an
    @everyone or a role mention in the text is printed and never pings, in a
    channel the owner may open to the whole community. */
+export const fbFenced = s => s.replace(/`/g, '`\u200b');
 export function fbMessage(e) {
   const body = String(e.body || '').trim();
   const fields = [];
@@ -125,7 +136,7 @@ export function fbMessage(e) {
   if (e.build) fields.push({ name: 'Build', value: e.build, inline: true });
   if (e.at) fields.push({ name: 'Day', value: e.at, inline: true });
   const card = { title: FB_TITLE[e.kind] || e.kind, fields };
-  if (body) card.description = '```\n' + body.replace(/`/g, '`​') + '\n```';
+  if (body) card.description = '```\n' + fbFenced(body) + '\n```';
   return { username: 'Atuned feedback', allowed_mentions: { parse: [] }, embeds: [card] };
 }
 
