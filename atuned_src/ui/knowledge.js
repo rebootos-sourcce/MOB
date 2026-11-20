@@ -167,6 +167,13 @@ function kbRowsOf(sec){
   var fam=kbFind(HCX_LIB,s.hcx), live=kbFind(r.sabs,s.nm);
   out.push(kbRow('sab', s.nm, s.hcx||'unnamed', (fam&&fam.b)||'Heart',
    kbPct(live?live.w:0), (fam&&fam.ic)||null, s));});
+ /* the six families. The live weight is the running hyper complex of that
+    name from computeSeen, the same tier read the saboteur deck uses, and an
+    overshoot (over) is a different pattern under FAM_POLE's name, so it is
+    never counted as the family itself. The seat is HCX_LIB's own b. */
+ if(sec==='hcx') HCX_LIB.forEach(function(f){
+  var live=r.hys.filter(function(h){return h.nm===f.nm&&!h.over;})[0];
+  out.push(kbRow('hcx', f.nm, f.b, f.b, kbPct(live?live.w:0), f.ic||null, f));});
  /* HIGH IS GOOD HERE AND THE COLOUR MUST NOT SAY OTHERWISE. A law at 90 is a
     law kept, not an alarm, and this product has shipped that defect twice.
     The ring takes the seat colour like every other deck and never the alarm.
@@ -347,8 +354,14 @@ function kbRowsOf(sec){
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
  ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
- ['law','Laws of Moral Integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
- ['addr','Fetters']];
+ ['law','Laws of Moral Integrity'],['hcx','Hyper complexes'],['sab','Saboteurs'],
+ ['fetter','Child emotions'],['addr','Fetters']];
+/* HYPER COMPLEXES GET A DECK, round LY. The six families were written in
+   full (HCX_LIB and HCXCARD) and had no deck, so the page that lists every
+   thing in the instrument listed the saboteurs and stopped one rung short.
+   It sits directly above Saboteurs because that is the stack's own order,
+   saboteurs compounding up into a family, and the list already runs from
+   the laws down to the body. */
 
 /* whether nothing has been read, asked once and never typed */
 function kbUnread(){return unreadNow();}
@@ -359,6 +372,7 @@ const KB_OF={
  addr:'',
  fetter:'of the axis held',
  sab:'of the pattern at full weight',
+ hcx:'of the pattern at full weight',
  law:'of the law kept, where high is the law holding',
  mask:'of the mask at full weight',
  dom:'of your strongest blueprint lobe',
@@ -389,7 +403,7 @@ function kbMatch(row,q){
    names and not words the product uses anywhere a person can see. node reads
    Fetter and fetter reads Child emotion, which is the rename: the keys are
    identity and the labels are what a person sees. */
-const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
+const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',hcx:'Hyper complex',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
  harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
@@ -414,6 +428,7 @@ function kbSubIn(x){
  if(x.k==='mask')return o.v||'';
  if(x.k==='harm')return x.fam||'';
  if(x.k==='law')return '';
+ if(x.k==='hcx')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
 /* one row, the markup it always had, so the drills and the gates read it as
@@ -458,7 +473,7 @@ function kbSeatLine(b){
  return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
 /* the deck a row came from, by its kind. Four kinds share the cards deck. */
 function kbDeckOf(x){
- return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
+ return ({node:'addr',fetter:'fetter',sab:'sab',hcx:'hcx',law:'law',mask:'mask',dom:'dom',arch:'arch',
   gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
 /* THE COHERENCE FORMULA COMES BEFORE THE LAWS. His words, 18 October: "the
    coherence formula should be before the universal laws." It was nowhere on
@@ -1007,6 +1022,10 @@ function kbOpenIn(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
+ if(x.k==='hcx'){
+  var rh=computeSeen(), on=rh.hys.filter(function(h){return h.nm===x.o.nm&&!h.over;})[0];
+  if(on){S.pin=on; runDrill(on); render(); return;}
+  runHcxDrill(x.o); return;}
  /* the real definition, pulled from the book's own Harmonic Table entry for
     this law. Where that extraction found no safe match (E43, Responsibility,
     folded into Ownership/E40 in the current build) it fell back to the
