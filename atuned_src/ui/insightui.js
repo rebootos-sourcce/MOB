@@ -349,6 +349,31 @@ function stkRunHtml(attrs,ok,say,pk){
    +svgI('<path d="'+(on?STK_PICKON:STK_PICKOFF)+'"/>')+'</button>';}
  return '<button type="button" class="stk-run" '+attrs+' aria-label="'+esc(say)+'"'
   +' data-tip-k="Release" data-tip="Release: starts the release for this one.">'+svgI(INS_RUNGLYPH)+'</button>';}
+/* THE NERVE STATE MARK, 20 November, his words on this rail: "I want to see
+   those tiny little icons on these bars so people can see very clearly what
+   the state of their nerve is." Four rungs, read off the figure the bar
+   already prints through NERVESTATE (engine/data/canon.js), never chosen here.
+   One ring, the house mark, and what crosses it says the state, so the four
+   differ by shape and not by shade: empty, a bar to the centre, a bar right
+   across, and crossed out. Ring, not fill. It stands at the row's left, in the
+   column the level header's own glyph stands in, so every tier wears it in
+   the same place whatever its bar is (one sided, both poles or a child
+   emotion's pair), and no bar is rebuilt to carry it. Not a button: the bar
+   beside it already selects and the ring at the end already runs, so a third
+   target would only be a mispress. It is focusable and carries data-tip, so
+   tip.js unpacks it on hover, on a tap and on keyboard focus. */
+var STK_NSR=7.2;
+var STK_NSGLYPH={
+ open:chainRing(12,12,STK_NSR),
+ moderate:chainRing(12,12,STK_NSR)+'M4.8 12H12',
+ heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',
+ closed:chainRing(12,12,STK_NSR)+'M6.9 6.9l10.2 10.2M17.1 6.9L6.9 17.1'};
+function stkNsHtml(v,nm,f){
+ var s=nerveStateOf(v);
+ return '<span class="stk-ns" data-ns="'+s.k+'" tabindex="0" role="img"'
+  +' aria-label="'+esc('Nerve state, '+s.nm+'. '+s.def)+'"'
+  +' data-tip-k="'+esc('Nerve state: '+s.nm)+'" data-tip="'+esc(s.def+' '+nm+' is at '+(f===PCT_DASH?'no charge':f)+'.')+'">'
+  +svgI('<path d="'+STK_NSGLYPH[s.k]+'"/>')+'</span>';}
 function stkRowClass(key,L,selKey,pk){
  return 'stk-row'+(key===selKey?' sel':'')+(L&&!L[key]?' dim':'')+(STK_PICKING&&pk&&stkPickAt(pk)>=0?' picked':'');}
 function stkPatternRow(o,r,L,selKey,ctx){
@@ -359,7 +384,7 @@ function stkPatternRow(o,r,L,selKey,ctx){
  var tip=o.over?'The opposite pushed past where it helps. A release has nothing to work here.'
   :pole?pole.nm+'. '+pole.def:'';
  var says=pole?nm+' held '+f+', '+pole.nm+' installed '+fmtPct('installed',hr.p):nm;
- return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'
+ return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkNsHtml(o.w,o.nm,f)
   +'<button type="button" class="stk-r '+(pole?'stk-b stk-pl':'stk-am')+'" data-sk="'+o.kind+'" data-si="'+si+'" title="'+esc(says)+'"'
   +(tip?' data-tip-k="'+esc(pole?o.nm+' and its opposite':o.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +(pole?stkPolar(o,nm,f,pole):stkAmount(o,nm,f))+'</button>'
@@ -368,7 +393,7 @@ function stkAmpRow(a,n,r,L,selKey,ctx){
  var key='amp:'+n.i, f=fmtPct('weight',n.sq), p=Math.max(0,Math.min(100,pct('weight',n.sq)||0));
  var can=insightCanRelease({kind:'addr',i:n.i},r,ctx);
  var tip=!n.cf?'No feeling is mapped to this address yet, so a release cannot run here.':'';
- return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'
+ return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'+stkNsHtml(n.sq,a.nm,f)
   +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(a.nm)+'"'
   +(tip?' data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +'<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(a.nm)+'</span></span><span class="rb-v">'+esc(f)+'</span></span>'
@@ -486,7 +511,8 @@ function railStack(r){
     table's own order, so a bar never moves from where it was */
  h+=stkLevelHtml('fet','Child emotions',CHILD.length,CHILD.map(function(c,ci){
   var key='fet:'+c.nm, can=insightCanRelease({kind:'fet',nm:c.nm},r,ctx), pk={kind:'fet',nm:c.nm,label:c.nm};
-  return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkFetBar(ci,0)
+  var cv=S.charge[c.nm]||0;
+  return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkNsHtml(cv,c.nm,fmtPct('charge',cv))+stkFetBar(ci,0)
    +stkRunHtml('data-run="fet" data-ri="'+ci+'"',can.ok,'Release '+c.nm,pk)+'</div>';}).join(''));
  e.innerHTML=h;
  /* A LEVEL THE PLAN CANNOT SEE IS GREYED, PADLOCKED AND DESCRIBED, as the five

@@ -96,6 +96,7 @@ if(typeof module!=='undefined'&&module.exports){
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf, TIERCOL:TIERCOL,
+                 NODESTATE_PROPOSED:NODESTATE_PROPOSED, NERVESTATE:NERVESTATE, nerveStateOf:nerveStateOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
