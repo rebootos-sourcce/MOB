@@ -108,20 +108,46 @@ function ritAiHtml(t,tag){
  tag=tag||'li';
  return '<'+tag+' class="src-ai">'+((typeof srcMark==='function')?srcMark():'')+esc(t)+'</'+tag+'>';}
 
+/* ---------------- the card's kind ----------------
+   THE FILL SAYS WHAT KIND OF THING IT IS, graded D-4 on 20 November, his
+   words: "We don't need the icon, the large icon ... It's taking up a lot of
+   space. And we can allow the background color to define whether something's
+   an affirmation or a challenge or whatever." The card was filled with its
+   seat's colour and led by a 72 by 53 ring badge, so the colour and the mark
+   both said where in the body and nothing said what the card was. The fill is
+   the practice's track now, PTRACK (engine/data/practice.js), the table the
+   builder's tiles and the Active rows already colour by, so no colour is new.
+   The seat is not lost: its tag keeps its own colour and glyph. Round QS's
+   "colour of the chakra with its symbol" moves from the fill and the badge to
+   that tag, which is this ruling overriding that one.
+   And the colour is never alone, unpack every symbol: the track's word is
+   printed on the card and its meaning is on the word's hover and tap. Only
+   practices reach Called for today; an affirmation or a challenge that ever
+   does needs its own entry here, and the challenge's colour is his to pick. */
+var RIT_TRACK_SAY={
+ Somatic:'Somatic practices work by attention on a place the body is holding.',
+ Body:'Body practices work through the breath and the muscles.',
+ Energy:'Energy practices work by holding attention on one point.',
+ Mind:'Mind practices train attention itself.'};
+function ritSugKind(x){
+ var tr=x&&x.p&&x.p.track, col=(tr&&PTRACK[tr])||'var(--accent)';
+ return {nm:tr||'Practice', col:col,
+  says:'The card\'s colour is its track. '+(RIT_TRACK_SAY[tr]||'A practice from the library.')};}
+
 /* ---------------- the card ----------------
-   The Called for card's face, as Ritual drew it before this file existed and
-   unchanged on that page: the mark that opens the reasons, the name, now a
-   press that opens the pop-up, the minutes, the library's line, the two
-   chips, the reasons folded, the seats, and Add, Save, Dismiss. i is the
-   card's place in RIT.sug, which is what every press carries. A host other
-   than Ritual sets RIT.sug to its own list and wires the same data-act names
-   (sug, sug-save, sug-x, sgwhy, bank) to the same functions. */
+   The Called for card's face. Since the D-4 grade of 20 November it is three
+   rows and three presses: the name as the headline with Add and Dismiss
+   beside it, then the track, the minutes, the two chips and the seats, then
+   the library's line. i is the card's place in RIT.sug, which is what every
+   press carries. A host other than Ritual sets RIT.sug to its own list and
+   wires the same data-act names (sug, sug-x, bank) to the same functions.
+   Save and the reasons are one press away, in the pop-up the name opens. */
 function ritBankCard(x,i,st){
  /* the look is injected with the first card, not with the first pop-up: the
     name is a button now, and a button with no rule of its own is drawn by
     the browser as a white box on every card until a pop-up has opened */
  ritBankCss();
- var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!(RIT.sgw&&RIT.sgw[x.k+'|'+x.rel]);
+ var K=ritSugKind(x);
  /* ROUND QX, "add a text description. And the success of what it leads
     to." The description is the library's own line for the practice. What
     it leads to is the quality release installs at the place the card is
@@ -130,54 +156,52 @@ function ritBankCard(x,i,st){
     works exists anywhere in the engine and one made up here would be the
     status lie. ui/ritcal.js says the same at ritSugRec. */
  var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x), recSays=ritSugRecSays(x,R);
- var chips='<div class="rv-sgo">'
+ /* the track's word leads the row, and it is also the finger's grip for a
+    drag onto a day: the badge was, and a touch drag needs a part of the card
+    that is not a press and carries touch-action:none */
+ var chips='<div class="rv-sgo"><span class="rv-sgk" data-grip="1"'+rvTip(K.nm+' practice',K.says)+'>'+esc(K.nm)+'</span>'
+  +'<span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span>'
   +(T?'<span class="rv-sgc"'+rvTip('Toward '+T.opp.toLowerCase(),'What it is for: '+T.opp.toLowerCase()
     +' is the quality release puts back where '+ritCfWord(T.nm)+' was held. You hold '+String(T.k).toLowerCase()+' at '+ritThe(T.b)+'.')+'>'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14 M14 7l5 5-5 5"/></svg>Toward '+esc(T.opp.toLowerCase())+'</span>':'')
   +'<span class="rv-sgc'+(R.kept?'':' rv-sgc0')+'"'+rvTip('Your record with it',recSays.join(' '))+'>'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>'
-   +esc(ritSugRecWord(R))+'</span></div>';
- return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'" data-drag="sug" data-i="'+i+'">'
-  +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" data-grip="1" aria-expanded="'+open
-   +'" aria-label="Why '+esc(x.p.nm)+' is called for">'+M.badge+'</button>'
-  /* THE NAME OPENS THE POP-UP, 20 November: days, a time and a repeat are
-     set there, and it is also the keyboard's way to put the card on a day,
-     the same thing a drag onto the week does */
-  +'<span class="rv-sgt0"><button type="button" class="rv-sgn rv-bko" data-act="bank" data-i="'+i+'" aria-label="'+esc(x.p.nm)+': days, time and repeat">'
-   +esc(x.p.nm)+'</button><span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span></span></div>'
-  /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
-     Round QX made it what the practice is, his "text description", and the
-     reason it is offered moved into the press, where the full why-list was
-     already: the first reason was printed twice whenever a card was open. */
-  /* and a practice with no line prints no empty paragraph: the Truth
-     Check's was cut, engine/data/practice.js says why */
-  +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+chips
-  /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
-     tell if you want tell you press on something to get information." The
-     mark is the press, and it opens the reasons and what the ring measures
-     in place, under the name, rather than in a panel somewhere else. */
-  /* and the reasons are Source AI's own sentences, so since 20 November each
-     wears its mark */
-  +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return ritAiHtml(w);}).join('')
-   +'</ul><ul class="rv-sgrec">'+recSays.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
-   +'<p class="rv-sgr">'+esc(M.says)+'</p></div>'
-  +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
+   +esc(ritSugRecWord(R))+'</span>'
+  +'<span class="rv-sgt">'+x.seats.map(function(sb){
     return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
-     +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>'
-  /* ROUND QX, HIS THREE: "add them to my daily practice or bank them to my
-     vault or dismiss". Add is the press it always was (ritSugStart). Save
-     for later is his "bank to my vault": Bank and Vault already mean the
-     imprints held and what has been released, so a third meaning for either
-     word would be one word for two concepts. Dismiss takes it off the list,
-     with Put back in the same place. */
-  /* SV16, his words: "Instead of add to daily practice, just add to
-     practice. Instead of saying save for later, just do save." The
-     accessible name keeps the span the press sets, because a button that
-     starts a week of practice should say so to a person who cannot see the
-     card's other lines. */
-  +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to practice, each day for a week">Add to practice</button>'
-  +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+'">Save</button>'
-  +'<button type="button" class="btn rv-sgq" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'">Dismiss</button></div></li>';}
+     +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>';
+ return '<li class="rv-sg1" style="--c:'+K.col+'" data-drag="sug" data-i="'+i+'">'
+  /* THE NAME IS THE HEADLINE AND OPENS THE POP-UP. His words, D-4: "The text
+     is a headline, like a news headline. It is the thing that calls my
+     attention ... If I click the text, then it should give me the pop-up."
+     Days, a time and a repeat are set there, the reasons and Save are there,
+     and it is the keyboard's way to put the card on a day, the same thing a
+     drag onto the week does. */
+  +'<div class="rv-sgh"><button type="button" class="rv-sgn rv-bko" data-act="bank" data-i="'+i+'" aria-label="'+esc(x.p.nm)+': why, days, time and repeat">'
+   +esc(x.p.nm)+'</button>'
+  /* GREEN ADDS, RED DISMISSES, D-4. His words: "Add is overwhelming, and the
+     dismiss is ineffectual ... Maybe just like a green or red button, so they
+     can either just press a green or press a red." Add was a 138 pixel pill
+     and Dismiss grey text pushed to the row's end, so the pair read as one
+     answer and an afterthought. They are two equal squares now, solid
+     --good and --bad, the theme's own tokens, with a stroked check and cross.
+     ADD WRITES AND OPENS NOTHING, "If I click on add, that should
+     automatically add it to my schedule, not give me the pop-up": the press
+     is ritBankAdd with the pop-up's own default, every day, any time, a week,
+     the span the accessible name says. Dismiss keeps Put back beside the
+     list. Save, round QX's third answer, is in the pop-up. */
+  +'<span class="rv-sga"><button type="button" class="rv-yes" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to practice, every day, for a week"'
+   +' data-tip-t="Add" data-tip="Puts it on your week: every day, any time, for a week. Press the name to pick days and a time.">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></button>'
+  +'<button type="button" class="rv-no" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'"'
+   +' data-tip-t="Dismiss" data-tip="Takes it off Called for. Put back is offered in the same place.">'
+   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"/></svg></button></span></div>'
+  +chips
+  /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
+     Round QX made it what the practice is, his "text description". A
+     practice with no line prints no empty paragraph: the Truth Check's was
+     cut, engine/data/practice.js says why */
+  +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+'</li>';}
 
 /* ---------------- the schedule rows for affirmations and challenges ---------------- */
 var RIT_SCHED_KEY='atuned-ritual-sched';
@@ -289,7 +313,8 @@ function ritFold(nm,body){
 function ritPopSug(st){
  var P=RIT.pop, x=(RIT.sug||[]).filter(function(s){return ritSugKey(s)===P.key;})[0]||P.x;
  if(!x)return ritPopGone('This one is no longer called for.');
- var i=(RIT.sug||[]).indexOf(x), b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)';
+ /* the pop-up wears its card's fill, the track, so the two read as one thing */
+ var i=(RIT.sug||[]).indexOf(x), col=ritSugKind(x).col;
  var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x);
  var steps=ritSteps({steps:[x.k]});
  var body=(x.p.d?'<p class="rv-pwhat">'+esc(x.p.d)+'</p>':'')
@@ -490,7 +515,7 @@ function ritBankAct(a,b){
    that has gone, the ghost goes and nothing is written.
    POINTER EVENTS AND NOT HTML DRAG AND DROP, because HTML drag does not run
    on a touch screen at all. A mouse drags the card from anywhere on it that
-   is not a press; a finger drags from the card's mark and a block itself,
+   is not a press; a finger drags from the card's track word and a block itself,
    which carry touch-action:none, so a finger anywhere else still scrolls the
    page. The keyboard route is the pop-up: the card's name opens it, a day and
    Once are pressed, then Add, which writes exactly what a drop writes. */
@@ -613,6 +638,34 @@ function ritBankCss(){
   '#rit .rv-wd1.rv-drop{box-shadow:inset 0 0 0 2px var(--accent);border-radius:12px}',
   '#rit .rv-wd1.rv-nodrop{opacity:.55}',
   '.rv-sg1[data-drag]{cursor:grab}',
-  '.rv-sg1 .rv-sgs,#rit .rv-week button.rv-wch{touch-action:none}'
+  '.rv-sg1 .rv-sgk,#rit .rv-week button.rv-wch{touch-action:none}',
+  /* THE CARD, D-4, 20 November. Three rows on even gaps, nothing flush, his
+     "symmetry in space": the headline and the pair of presses, then the
+     track, minutes, chips and seats, then the line. The rules carry .rv-sugl
+     ahead of the card so they win over ui/ritstage.js and ui/ritcal.js
+     whichever sheet was injected last. */
+  '.rv-sugl>.rv-sg1{display:flex;flex-direction:column;gap:8px;padding:12px 12px 12px 14px}',
+  '.rv-sugl .rv-sgh{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:12px}',
+  /* the headline: smaller than the 15 it was, as he asked, and heavier so it
+     still reads first; two lines at most, the second for a long name */
+  '.rv-sugl .rv-sg1 .rv-bko{font-size:14px;font-weight:650;line-height:1.3;letter-spacing:-.005em;min-height:44px;',
+  ' display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}',
+  '.rv-sugl .rv-sga{display:inline-flex;gap:8px;margin:0}',
+  '.rv-yes,.rv-no{width:48px;height:48px;padding:0;border:0;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;',
+  ' color:var(--on-accent);transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-yes{background:var(--good)}',
+  '.rv-no{background:var(--bad)}',
+  '.rv-yes:hover{background:color-mix(in srgb,var(--good) 92%,black)}',
+  '.rv-no:hover{background:color-mix(in srgb,var(--bad) 92%,black)}',
+  '.rv-yes:focus-visible,.rv-no:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* the glyphs are stroked, icons are ring and not fill; the press is solid */
+  '.rv-yes svg,.rv-no svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-sugl .rv-sgo{align-items:center;gap:6px 8px;margin:0}',
+  '.rv-sgk{display:inline-flex;align-items:center;gap:6px;min-height:28px;font-size:12.5px;font-weight:600;cursor:help;',
+  ' color:color-mix(in srgb,var(--c) 55%,var(--ink))}',
+  '.rv-sgk::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}',
+  '.rv-sgk:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}',
+  '.rv-sugl .rv-sgo .rv-sgm{font-size:12.5px;margin-right:4px}',
+  '.rv-sugl .rv-sgd{margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}'
  ].join('\n');
  document.head.appendChild(st);}

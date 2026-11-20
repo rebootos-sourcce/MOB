@@ -606,8 +606,11 @@ async function flowGate(browser,FILE,ok,booted){
 
   /* read before anything below starts a ritual: a practice that is active is
      not suggested, which FT16 checks on its own further down */
+  /* the reasons left the card's face at D-4, 20 November, for the pop-up its
+     name opens (FT37 reads them there with their mark), so they are read off
+     the list each card is drawn from, by the card's own index */
   const sug=await pg.evaluate(()=>[...document.querySelectorAll('#lcol .rv-sg1')].map(x=>({nm:x.querySelector('.rv-sgn').textContent,
-   tags:[...x.querySelectorAll('.rv-tg')].map(t=>t.textContent), why:[...x.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)})));
+   tags:[...x.querySelectorAll('.rv-tg')].map(t=>t.textContent), why:RIT.sug[+x.getAttribute('data-i')].why.slice()})));
   /* ---- FT18 ---- */
   /* the card is in the right menu since SV16, his "move that to the right
      menu"; what it reads and prints is unchanged, so only where it is looked
@@ -677,10 +680,16 @@ async function flowGate(browser,FILE,ok,booted){
    b.click(); await new Promise(r=>setTimeout(r,300));
    const p=ritPlans().filter(x=>ritName(x.steps)===nm&&ritActive(x,ritToday0()))[0];
    return {nm, tags, said:(document.getElementById('status')||{}).textContent||'', plan:!!p, ptags:p?p.tags.map(ritTagNm):[], days:p?p.days:null,
+    sheet:!document.getElementById('sheet').hidden, on:p?p.on:'none', at:p?p.at:'none',
     still:[...document.querySelectorAll('#lcol .rv-sgn')].map(x=>x.textContent).indexOf(nm)>=0, n0,
     n1:document.querySelectorAll('#lcol .rv-sg1').length};});
-  ok(st1.plan&&/^(Started|Set)\./.test(st1.said)&&JSON.stringify(st1.ptags)===JSON.stringify(st1.tags)&&st1.days===7&&!st1.still,
-   'FT16: Start for a week writes the plan with its seats as tags, says so, and the card leaves the list, '+JSON.stringify(st1));
+  /* D-4, 20 November, his words: "If I click on add, that should
+     automatically add it to my schedule, not give me the pop-up." Add is the
+     bank's one writer with the pop-up's default, so it says Added in the
+     bank's words, every day, any time, for a week, and opens no sheet */
+  ok(st1.plan&&/^Added\. .+, from today, every day, for a week\.$/.test(st1.said)&&JSON.stringify(st1.ptags)===JSON.stringify(st1.tags)&&st1.days===7
+    &&st1.on===null&&st1.at===null&&!st1.sheet&&!st1.still,
+   'FT16: Add writes the plan every day for a week with its seats as tags, opens no pop-up, says so, and the card leaves the list, '+JSON.stringify(st1));
 
   /* ---- FT20 ---- */
   const okc=await pg.evaluate(()=>[...document.querySelectorAll('#rit .rv-c-ok .rv-ok1')].map(x=>({nm:x.querySelector('.rv-okn').textContent,
@@ -787,19 +796,32 @@ async function flowGate(browser,FILE,ok,booted){
     &&tellNames.some(h=>/^[A-Z][a-z]+( to [A-Z][a-z]+)? \d{4}$/.test(h))&&tell.every(x=>x.tip&&x.focus&&!x.shown),
    'FT26: every part\'s sentence is on its heading\'s press, reachable by keyboard, and folded at rest, '+JSON.stringify(tell));
 
-  /* ---- FT27: a suggestion wears its seat and its mark ---- */
-  const sg=await pg.evaluate(async()=>{const L=document.getElementById('flowleft');
-   const cards=[...L.querySelectorAll('.rv-sg1')].map((c,i)=>{const x=RIT.sug[i], b=x.seats[0]||'';
-    const n=x.rel!=null?BY[x.rel]:null, cf=n&&n.cf?CHILD.find(f=>f.nm===n.cf):null;
-    const want=(n&&cf)?cf.ic:null, g=c.querySelector('.rv-sgs .crb-g svg');
-    return {nm:c.querySelector('.rv-sgn').textContent, col:getComputedStyle(c).getPropertyValue('--c').trim()===seatCol(b),
-     mark:!!g&&(want?g.innerHTML.indexOf(want)>=0:g.innerHTML===(SEATGLYPH[b]||SEATGLYPH._)),
-     hidden:c.querySelector('.rv-sgx').hidden, tagMark:[...c.querySelectorAll('.rv-tg svg')].length===x.seats.length};});
-   const b=L.querySelector('.rv-sgs'); b.click(); await new Promise(r=>setTimeout(r,200));
-   const c0=L.querySelector('.rv-sg1');
-   return {cards, opened:!c0.querySelector('.rv-sgx').hidden&&b.isConnected===false&&L.querySelector('.rv-sgs').getAttribute('aria-expanded')==='true'};});
-  ok(sg.cards.length>0&&sg.cards.every(c=>c.col&&c.mark&&c.hidden&&c.tagMark)&&sg.opened,
-   'FT27: each suggestion is in its seat\'s colour with the seat\'s or the pattern\'s mark, its reasons folded until the mark is pressed, '+JSON.stringify(sg));
+  /* ---- FT27: a suggestion wears its kind, and answers green or red ----
+     D-4, 20 November, his words: "We don't need the icon, the large icon ...
+     we can allow the background color to define whether something's an
+     affirmation or a challenge or whatever ... just press a green or press a
+     red." This held the seat's colour and the badge's mark until then; the
+     intended change is named here. The fill is the track's (PTRACK), its word
+     is printed with its meaning on the press, the seat keeps its tag and
+     glyph, no badge is drawn, and Add and Dismiss are two equal squares in
+     the theme's own --good and --bad, each read off the computed style */
+  const sg=await pg.evaluate(()=>{const L=document.getElementById('flowleft');
+   const tok=v=>{const e=document.createElement('i'); e.style.background='var('+v+')'; L.appendChild(e); const c=getComputedStyle(e).backgroundColor; e.remove(); return c;};
+   const good=tok('--good'), bad=tok('--bad');
+   const sz=e=>{if(!e)return null; const r=e.getBoundingClientRect(); return [Math.round(r.width),Math.round(r.height)];};
+   const cards=[...L.querySelectorAll('.rv-sg1')].map(c=>{const x=RIT.sug[+c.getAttribute('data-i')], k=c.querySelector('.rv-sgk');
+    const y=c.querySelector('.rv-yes[data-act="sug"]'), n=c.querySelector('.rv-no[data-act="sug-x"]');
+    return {nm:c.querySelector('.rv-sgn').textContent, col:getComputedStyle(c).getPropertyValue('--c').trim()===PTRACK[x.p.track],
+     kind:!!k&&k.textContent===x.p.track&&(k.getAttribute('data-tip')||'').length>20&&k.getAttribute('data-grip')==='1',
+     badge:!!c.querySelector('.rv-sgs,.crb,[data-act="sgwhy"]'), tagMark:[...c.querySelectorAll('.rv-tg svg')].length===x.seats.length,
+     yes:sz(y), no:sz(n), green:!!y&&getComputedStyle(y).backgroundColor===good, red:!!n&&getComputedStyle(n).backgroundColor===bad,
+     names:!!y&&!!n&&/^Add .+ to practice, every day, for a week$/.test(y.getAttribute('aria-label')||'')&&/^Dismiss /.test(n.getAttribute('aria-label')||''),
+     presses:c.querySelectorAll('button').length};});
+   return {cards};});
+  ok(sg.cards.length>0&&sg.cards.every(c=>c.col&&c.kind&&!c.badge&&c.tagMark),
+   'FT27: each suggestion is filled in its track\'s colour with the track\'s word and its meaning on the press, no badge, and the seat kept on its tag, '+JSON.stringify(sg));
+  ok(sg.cards.length>0&&sg.cards.every(c=>c.green&&c.red&&c.names&&c.yes&&c.no&&c.yes[0]>=44&&c.yes[1]>=44&&JSON.stringify(c.yes)===JSON.stringify(c.no)&&c.presses===3),
+   'FT27: each card is three presses, the name, a green Add and a red Dismiss of one size at the tap floor, each named for a screen reader, '+JSON.stringify(sg));
 
   /* ---- FT28: the marks, on the days that earned them ---- */
   const mk2=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'), L=ladderRead(CURP,Date.now()), md=markDays(CURP,Date.now());
@@ -920,7 +942,7 @@ async function flowGate(browser,FILE,ok,booted){
   await pg.waitForTimeout(250);
   const jm=await pg.evaluate(async()=>{const L=document.getElementById('lcol');
    const cards=[...L.querySelectorAll('.rv-sg1')].map(c=>({nm:c.querySelector('.rv-sgn').textContent,
-    tags:[...c.querySelectorAll('.rv-tg')].map(t=>t.textContent).join('/'), why:[...c.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)}));
+    tags:[...c.querySelectorAll('.rv-tg')].map(t=>t.textContent).join('/'), why:RIT.sug[+c.getAttribute('data-i')].why.slice()}));
    const rel=(RIT.sug||[]).map(x=>x.rel!=null);
    const b=L.querySelector('.rv-build'), s=L.querySelector('.rv-sug');
    const under=!!(b&&s)&&s.getBoundingClientRect().top>=b.getBoundingClientRect().bottom-1;
@@ -1047,9 +1069,10 @@ async function flowGate(browser,FILE,ok,booted){
       return !!rc&&!/Kept on 0 days/.test(c.innerHTML)&&(days?/^Kept on /.test(tip):tip.indexOf(want)===0);})(),
      tips:[...c.querySelectorAll('.rv-sgc')].every(e=>(e.getAttribute('data-tip')||'').length>20),
      add:btn('[data-act="sug"]'), save:btn('[data-act="sug-save"]'), drop:btn('[data-act="sug-x"]'),
-     /* SV16, his words, each: "2 minutes", "Add to practice", "Save" */
-     words:[(c.querySelector('.rv-sgm')||{}).textContent, (c.querySelector('[data-act="sug"]')||{}).textContent,
-      (c.querySelector('[data-act="sug-save"]')||{}).textContent], min:p.min,
+     /* SV16, his words: "2 minutes". Add and Dismiss are a green and a red
+        square since D-4, named by aria-label (FT27), and Save is in the
+        pop-up the name opens, read below */
+     words:[(c.querySelector('.rv-sgm')||{}).textContent], min:p.min,
      /* and flat: one opaque fill, nothing outlined, his "flat solid color
         background". Read off the computed style, not the stylesheet */
      flat:(()=>{const cs=getComputedStyle(c), bg=cs.backgroundColor, a=/rgba\([^)]*,\s*([\d.]+)\)$/.exec(bg);
@@ -1057,10 +1080,10 @@ async function flowGate(browser,FILE,ok,booted){
      noRate:!/%|\brate\b|\bscore\b/i.test(c.innerText)};});});
   ok(sg.length>0&&sg.every(c=>c.desc&&c.toward&&c.rec&&c.tips&&c.noRate),
    'FT29: '+tag+'each suggestion shows what the practice is, what it is for when a held place gives it one, and your own record with it, counted here, with no rate, '+JSON.stringify(sg));
-  ok(sg.length>0&&sg.every(c=>JSON.stringify(c.words)===JSON.stringify([c.min+(c.min===1?' minute':' minutes'),'Add to practice','Save'])&&c.flat),
-   'FT29: '+tag+'each card says its minutes as minutes, Add to practice and Save, and is one flat opaque fill with nothing outlined, '+JSON.stringify(sg.map(c=>[c.words,c.flat])));
-  ok(sg.every(c=>[c.add,c.save,c.drop].every(b=>b&&b[0]>=44&&b[1]>=44)),
-   'FT29: '+tag+'every card carries Add to practice, Save and Dismiss, each at least 44 by 44, '+JSON.stringify(sg.map(c=>[c.add,c.save,c.drop])));
+  ok(sg.length>0&&sg.every(c=>JSON.stringify(c.words)===JSON.stringify([c.min+(c.min===1?' minute':' minutes')])&&c.flat),
+   'FT29: '+tag+'each card says its minutes as minutes and is one flat opaque fill with nothing outlined, '+JSON.stringify(sg.map(c=>[c.words,c.flat])));
+  ok(sg.every(c=>[c.add,c.drop].every(b=>b&&b[0]>=44&&b[1]>=44)&&c.save===null),
+   'FT29: '+tag+'every card carries Add and Dismiss, each at least 44 by 44, and Save is not on the face, '+JSON.stringify(sg.map(c=>[c.add,c.save,c.drop])));
   const ans=await pg.evaluate(async()=>{const L=document.getElementById('flowleft'), w=()=>new Promise(r=>setTimeout(r,250));
    const names=()=>[...L.querySelectorAll('.rv-sug .rv-sg1 .rv-sgn')].map(x=>x.textContent);
    const shelf=()=>[...L.querySelectorAll('.rv-saved .rv-sv1 .rv-sgn')].map(x=>x.textContent);
@@ -1075,14 +1098,17 @@ async function flowGate(browser,FILE,ok,booted){
    L.querySelector('[data-act="sug-x"][data-i="0"]').click(); await w(); RIT.sgGone=null; ritRender();
    out.drop.all=!!L.querySelector('[data-act="sug-all"]');
    if(out.drop.all){L.querySelector('[data-act="sug-all"]').click(); await w(); out.drop.allBack=names().indexOf(nm1)>=0;}
-   const nm0=names()[0]; L.querySelector('[data-act="sug-save"][data-i="0"]').click(); await w();
+   /* Save is in the pop-up the name opens, since D-4 */
+   const nm0=names()[0]; L.querySelector('[data-act="bank"][data-i="0"]').click(); await w();
+   out.saveIn=!document.getElementById('sheet').hidden&&!!document.querySelector('#sheet-card [data-sh="bsave"]');
+   document.querySelector('#sheet-card [data-sh="bsave"]').click(); await w();
    out.save={said:said(), gone:names().indexOf(nm0)<0, shelf:shelf(), stored:JSON.parse(STORE.get('atuned-ritual-more'))[CURP.id].save.length,
     head:(L.querySelector('.rv-saved .rv-h')||{}).textContent};
    ritRender(); out.save.kept=shelf().indexOf(nm0)>=0;
    const r0=CURP.rituals.length; L.querySelector('[data-act="sv-add"][data-i="0"]').click(); await w();
    out.add={said:said(), plan:ritPlans().some(p=>ritName(p.steps)===nm0&&ritActive(p,ritToday0())&&p.days===7), shelf:shelf(), r:CURP.rituals.length-r0};
    return out;});
-  ok(/^Saved\. .+ waits under Saved until you add it\.$/.test(ans.save.said)&&ans.save.gone&&ans.save.kept&&ans.save.stored===1
+  ok(ans.saveIn&&/^Saved\. .+ waits under Saved until you add it\.$/.test(ans.save.said)&&ans.save.gone&&ans.save.kept&&ans.save.stored===1
     &&ans.save.head==='Saved',
    'FT29: '+tag+'Save takes it off Called for, puts it under Saved, keeps it across a repaint, and says so, '+JSON.stringify(ans.save));
   ok(ans.drop&&ans.drop.gone&&ans.drop.back&&ans.drop.again&&ans.drop.all&&ans.drop.allBack,
@@ -1090,7 +1116,8 @@ async function flowGate(browser,FILE,ok,booted){
   ok(/^(Started|Set)\./.test(ans.add.said)&&ans.add.plan&&ans.add.shelf.length===0,
    'FT29: '+tag+'Add from Saved starts it each day for a week and it leaves the shelf, '+JSON.stringify(ans.add));
   const we=await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.RITUAL); ritRender();
-   const b=document.querySelector('#flowleft [data-act="sug-save"]'); if(b)b.click();
+   const n=document.querySelector('#flowleft [data-act="bank"]'); if(n)n.click();
+   const b=document.querySelector('#sheet-card [data-sh="bsave"]'); if(b)b.click();
    const r={said:(document.getElementById('status')||{}).textContent||'', btn:!!b};
    loadP(0); setTab(TAB.RITUAL); ritRender(); return r;});
   ok(we.btn&&/worked example, so nothing was saved/.test(we.said),'FT29: '+tag+'on a worked example the answer is refused by name, '+JSON.stringify(we));
@@ -1560,11 +1587,13 @@ async function flowGate(browser,FILE,ok,booted){
       a 1000 pixel window it sits under the keep notice and the status line,
       which take the press, so a drag from there measures the shell and not
       the drop. The point pressed is checked to be the card's own. */
-   const pos=await pg.evaluate(()=>{const c=[...document.querySelectorAll('#flowleft .rv-sg1')].find(e=>!e.querySelector('[data-act="sgwhy"][aria-expanded="true"]'));
+   const pos=await pg.evaluate(()=>{const c=document.querySelector('#flowleft .rv-sg1');
     if(c)c.scrollIntoView({block:'center'});
     const st=ritRead(), d=st.today+3, past=st.today-1, R=e=>{const r=e.getBoundingClientRect(); return [r.left+r.width/2,r.top+Math.min(r.height/2,40)];};
     const li=document.querySelector('#rit .rv-wd1[data-d="'+d+'"]'), lp=document.querySelector('#rit .rv-wd1[data-d="'+past+'"]');
-    const sd=c?c.querySelector('.rv-sgd,.rv-sgo'):null;
+    /* the line, and not the row of chips over it since D-4 put that row
+       first: a chip is a press, which a mouse drag does not start on */
+    const sd=c?(c.querySelector('.rv-sgd')||c.querySelector('.rv-sgo')):null;
     const from=sd?R(sd):null, hit=from?document.elementFromPoint(from[0],from[1]):null;
     return {i:c?+c.getAttribute('data-i'):-1, k:c?RIT.sug[+c.getAttribute('data-i')].k:null, from, own:!!hit&&c.contains(hit), to:li?R(li):null, past:lp?R(lp):null, d, plans:ritPlans().length};});
    const drag=async(a,b)=>{await pg.mouse.move(a[0],a[1]); await pg.mouse.down(); await pg.mouse.move(a[0]+20,a[1]+10,{steps:4});
@@ -1602,10 +1631,12 @@ async function flowGate(browser,FILE,ok,booted){
      reasons, the goal's held pattern sentence, a challenge's who line. Each
      carries the one mark (srcMark) and the src-ai treatment, and the
      person's own avatar line carries neither */
+  /* the reasons are in the pop-up the card's name opens since D-4, under
+     Why here, so they are read there; the pop-up is shut again after */
   const ai=await pg.evaluate(async()=>{
-   [...document.querySelectorAll('#flowleft [data-act="sgwhy"][aria-expanded="false"]')].slice(0,1).forEach(b=>b.click());
+   const n=document.querySelector('#flowleft .rv-sg1 [data-act="bank"]'); if(n)n.click();
    await new Promise(r=>setTimeout(r,150));
-   const why=[...document.querySelectorAll('#flowleft .rv-sgw li')], who=[...document.querySelectorAll('#rit .rv-chal .rv-chn small')];
+   const why=[...document.querySelectorAll('#sheet-card .rv-pwl li')], who=[...document.querySelectorAll('#rit .rv-chal .rv-chn small')];
    const goal=[...document.querySelectorAll('#rit .rv-c-goal .rv-why-p')].filter(p=>/holding on to|stands in the way/.test(p.textContent));
    const marked=e=>e.classList.contains('src-ai')&&!!e.querySelector('.src-mk[aria-label="Source AI"][data-tip]');
    return {why:why.length, whyOk:why.every(marked), who:who.length, whoOk:who.every(marked), goal:goal.length, goalOk:goal.every(marked),

@@ -144,13 +144,6 @@ function ritSuggest(st){
   add(called.k,q.b,why,q.i);});
  return out;}
 function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);}
-function ritSugStart(i){
- var x=(RIT.sug||[])[i]; if(!x)return false;
- var seat=x.seats[0]||'';
- var q={steps:[x.k], band:seat, track:x.p.track, days:7, tags:x.seats.slice()};
- if(x.rel!=null&&BY[x.rel]){q.rel=x.rel;
-  return ritStartPlan(q,'Set. '+x.p.nm+' each day for a week, for '+String(BY[x.rel].k).toLowerCase()+'.');}
- return ritStartPlan(q,'Started. '+x.p.nm+' each day for a week.');}
 function ritSugHtml(st){
  /* a practice already picked in the builder above is that choice being made,
     so it is not offered a second time underneath. A release schedule is tied
@@ -170,16 +163,17 @@ function ritSugHtml(st){
     nothing: "Nothing to suggest yet" under a builder holding the suggestion
     would be untrue */
  if(!list.length&&all.length&&!undo)return saved;
- RIT.sgw=RIT.sgw||{};
  var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
-  /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so the Path
-     and Avatar seats draw this same card and not their own. The rulings that
+  /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
+     Avatar host draws this same card and not its own. This is its only
+     caller: measured at D-4, neither page draws one yet. The rulings that
      shaped it went with it: round QX's description, the toward chip and the
      person's own record in place of a success rate nothing measures; round
      QV's one visible line, and no empty paragraph for a practice with none;
-     round QS's reasons one press away, on the mark; and his three, add, save
-     and dismiss, in SV16's words, with an accessible name that keeps the
-     span a press sets. */
+     round QS's reasons one press away, on the name's pop-up since D-4; and
+     his three, add, save and dismiss, with an accessible name that keeps the
+     span a press sets. The line under the heading said "Its mark is the
+     point" until D-4 took the mark off the card, a sentence about nothing. */
   :'<ul class="rv-sugl">'+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+'</ul>';
  /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
     suggested, those are pulled from your ritual selectors. It's the stuff it
@@ -191,30 +185,7 @@ function ritSugHtml(st){
     the quiz. Where the cards come from is said in the line under it. */
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
   +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
-  +'Each is the practice that point calls for at the charge you carry now. Its mark is the point, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
-/* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
-   ritual builder they should be colorized and related to the color of the
-   chakra or fetter with their symbol." A card that runs as a release schedule
-   is tied to one held place, so it wears that place's pattern, the fetter's
-   own mark from CHILD (the one the rail and the Avatar page draw for it), and
-   its ring is that place's charge, which is crbNode's shape for an address.
-   Any other card is for its seat, so it wears the seat's mark from SEATGLYPH
-   and its ring is the heaviest place held at that seat. Both in the seat's
-   colour, from seatCol. A seat holding nothing draws the mark with an empty
-   ring and says so. */
-function ritSugMark(x,b){
- var n=(x.rel!=null&&BY[x.rel])?BY[x.rel]:null;
- if(!n&&b)n=ritHeld().filter(function(h){return h.b===b;}).sort(function(a,c){return c.sq-a.sq;})[0]||null;
- var cf=n&&n.cf?CHILD.filter(function(c){return c.nm===n.cf;})[0]:null;
- var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
- var col=b?seatCol(b):'var(--accent)';
- var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?fmtPct('weight',n.sq):'–'});
- var says=!b?'No point yet, so the mark is empty.'
-  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the point, ')+'and the ring is '
-    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+fmtPct('weight',n.sq)+'.'
-  :'The mark is the point. Nothing is held at '+ritThe(b)+', so the ring is empty.';
- return {badge:badge, says:says};}
-
+  +'Each is the practice that point calls for at the charge you carry now. Its colour is its track.</p>'+undo+body+foot+'</div>'+saved;}
 /* ---------------- ritual to avatar ----------------
    ROUND QS made this card a picture first. His words: "everything like the
    rest of the app has to be visually symbolic ... more show less tell if you
@@ -525,10 +496,8 @@ function ritStageCss(){
   '.rv-sug{--k:var(--accent)}',
   '.rv-sugl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-sg1{padding:11px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
-  '.rv-sgh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}',
   '.rv-sgn{font-size:15px;font-weight:600;color:var(--ink)}',
   '.rv-sgm{font-size:13px;color:var(--mid);white-space:nowrap}',
-  '.rv-sgw{list-style:none;margin:4px 0 8px;padding:0;display:flex;flex-direction:column;gap:3px;font-size:13.5px;line-height:1.5;color:var(--mid)}',
   '.rv-sgf{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}',
   '.rv-sgt{display:flex;flex-wrap:wrap;gap:4px}',
   /* ritual to avatar */
@@ -669,26 +638,12 @@ function ritStageCss(){
      into the panel, borders gone. Opaque on purpose: a mix into transparent
      would let the still layer's pools show through and be a gradient again. */
   '.rv-sg1{background:color-mix(in srgb,var(--c) 22%,var(--panel-2));border-color:transparent;box-shadow:none}',
-  '.rv-sgh{align-items:center;justify-content:flex-start;gap:8px}',
-  '.rv-sgs{flex:0 0 auto;display:inline-flex;min-width:44px;min-height:44px;padding:0;border:0;border-radius:12px;background:none;cursor:pointer;color:inherit}',
-  '.rv-sgs:hover .crb-a circle:first-child{stroke:color-mix(in srgb,var(--c) 40%,transparent)}',
-  '.rv-sgs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
-  '.rv-sgt0{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex:1 1 auto;min-width:0}',
   '.rv-sg0{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--mid);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
-  '.rv-sgx{margin:6px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 7%,var(--panel))}',
-  '.rv-sgx[hidden]{display:none}',
-  '.rv-sg1 .rv-sgw{margin:0}',
-  '.rv-sgr{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}',
-  '.rv-sg1.rv-open .rv-sgx{animation:rvOpen .22s cubic-bezier(.22,1,.36,1) both}',
-  '@keyframes rvOpen{from{opacity:0;transform:translateY(-4px)}}',
   '.rv-sgf{margin-top:8px}',
   '.rv-sg1 .rv-tg{gap:5px;padding:2px 9px 2px 6px;color:var(--ink);background:color-mix(in srgb,var(--t) 12%,transparent)}',
   '.rv-tg svg{width:12px;height:12px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
-  '.rv-sg1 .btn{border-color:transparent}',
-  '.rv-sg1 .btn:not(.pri):not(.rv-sgq){background:color-mix(in srgb,var(--c) 14%,var(--panel))}',
   '.rv-sg1 .rv-sgc{border-color:transparent;background:color-mix(in srgb,var(--c) 16%,var(--panel))}',
   '.rv-sg1 .rv-sgc.rv-sgc0{border-style:solid;color:var(--mid)}',
-  '.rv-sg1 .rv-sgx{background:color-mix(in srgb,var(--c) 10%,var(--panel))}',
   '.rv-sg1 .rv-tg{border-color:transparent;background:color-mix(in srgb,var(--t) 16%,var(--panel))}',
   /* the thirty days as cubes */
   '.rv-cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;max-width:340px;margin:0 auto 10px}',

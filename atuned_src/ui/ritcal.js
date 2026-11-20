@@ -927,18 +927,9 @@ function ritCalCss(){
   '.rv-sgc svg{width:13px;height:13px;fill:none;stroke:var(--c);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
   '.rv-sgc.rv-sgc0{background:none;border-style:dashed;color:var(--mid)}',
   '.rv-sgc:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
-  '.rv-sgrec{margin:6px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.5;color:var(--mid)}',
-  '.rv-sga{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}',
-  '.rv-sga .btn{min-height:44px}',
-  /* Add to practice no longer grows to fill the row, SV19: grown, it pushed
-     Dismiss onto a second line of its own under the other two, measured at
-     1600 on every card, which was the misalignment he named */
+  /* the quiet text press, Bring back dismissed at the foot of Called for.
+     The card's own Add and Dismiss are ui/ritbank.js's since D-4 */
   '.rv-sgq{background:none;border-color:transparent;color:var(--mid)}',
-  /* the three answers on one row, SV19: measured, the three summed to 305.4
-     pixels in a 306 pixel row at 1600, so Dismiss wrapped to a line of its
-     own. It is the quiet one, text only, so it gives back its padding and
-     sits at the row's right end, where a dismiss is looked for */
-  '.rv-sga .rv-sgq{padding-left:8px;padding-right:8px;margin-left:auto}',
   '.rv-sgq:hover{color:var(--ink)}',
   '.rv-sgfoot{display:flex;justify-content:flex-end;margin-top:8px}',
   '.rv-saved{--k:var(--accent)}',

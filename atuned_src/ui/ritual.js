@@ -1651,9 +1651,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','wk','rng','exp','view','day','mo','hist','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1710,7 +1710,15 @@ function ritWire(h,c){
    case 'del-entry': RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
       one writer, so a failed save says so and a worked example is refused. */
-   case 'sug': ritSugStart(+b.getAttribute('data-i')); return;
+   /* ADD WRITES, AND THROUGH THE BANK'S ONE WRITER, D-4, 20 November. This
+      called ritSugStart, a second writer beside ritBankAdd that the bank's
+      own header rules out: it skipped the join, so a practice already running
+      on Tuesday was replaced by an Add, and it said its result in words of
+      its own. It is ritBankAdd now with the pop-up's default, ritWhen0(null),
+      every day, any time, a week, which is the span Add always set. No sheet
+      opens: his words, "If I click on add, that should automatically add it
+      to my schedule, not give me the pop-up." The name is the pop-up. */
+   case 'sug': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(sx)ritBankAdd(sx,ritWhen0(null)); return;}
    /* round QX, ui/ritcal.js: the two other answers to a suggestion, the
       saved shelf, the goals' three views, the span of the record, and the
       day's affirmations and challenges. Every write goes through
@@ -1732,9 +1740,6 @@ function ritWire(h,c){
    case 'rng': RIT.span=b.getAttribute('data-v'); break;
    case 'said': ritDayMark('said',id); return;
    case 'did': ritDayMark('did',id); return;
-   /* a suggestion's mark opens its reasons in place, round QS */
-   case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
-    if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
    /* the bank's pop-ups, 20 November, ui/ritbank.js. Opening one writes
       nothing, so nothing repaints under it */
    case 'bank': {var bx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(bx)ritBankOpen({t:'sug', x:bx}); return;}
