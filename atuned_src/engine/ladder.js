@@ -494,3 +494,111 @@ function seriesRead(p,spanKey,now){
   /* direction is only a claim when there are two ends to compare */
   dir: st==='line' ? (last>first?'up':(last<first?'down':'level')) : null,
   t0:t0, t1:t1};}
+
+/* ============================================================
+   THE REMINDER, accounts-push, 19 November. An in-app pop-up and not a phone
+   push, which was already ruled: a push reaches a closed app, needs a service
+   worker and a server that knows a device, and this file has neither. So it
+   can only speak while the app is open, and it reads only what the device
+   already holds: the days a ritual was marked done, through pracDays, the
+   same list the streak counts.
+
+   WHAT TRIGGERS IT WAS OPEN, AND IS DEFAULTED HERE, not ruled: a missed day,
+   not a set time. A set time needs a clock a person sets and somewhere on the
+   record to keep it, which is a schema change and his call. A missed day
+   needs nothing new: a whole day ended with no ritual marked done. gap is
+   streakRead's own, today less the last day practised, so 1 is yesterday,
+   which is not missed yet, because a streak does not break at midnight
+   either. 2 or more is a full day gone by. If he picks a set time this is the
+   one function that changes.
+
+   A person who has never marked a ritual done is never reminded: nothing was
+   missed, and a reminder to someone who has not started is a nag about a
+   habit they never took on. shown is the day key it was last shown on, so it
+   speaks once a day at most. The caller passes the moment, as everywhere in
+   this file. */
+var REMIND_GAP=2;
+function remindDue(p,now,shown){
+ var s=streakRead(p,now);
+ if(!s.days||s.today===null||s.last===null)return null;
+ if(s.gap<REMIND_GAP)return null;
+ if(shown===s.today)return null;
+ return {last:s.last, gap:s.gap, today:s.today};}
+
+/* ============================================================
+   ALWAYS KEEP THE HIGHER NUMBER, accounts-badges, 19 November.
+
+   The defect, in ui/auth.js authProfileSync as it stands, switched off: a
+   remote profile whose updated stamp is newer replaces the local one whole,
+   through profileSyncImport. A badge here is not stored, it is read off the
+   record (ladderRead), so a phone that last synced a week ago, then had one
+   story typed into it, carries the newer stamp and the shorter ritual list,
+   and the pull would take a laptop's Thirty days and Sixty minutes back to
+   whatever the phone held. Nobody erased a badge. The record it was read off
+   was replaced, silently, which is worse.
+
+   The fix keeps the two tallies a badge counts that are tallies of acts:
+     rituals       every entry on either side, one copy of each. An entry is
+                   the same entry when its day stamp, length and steps agree;
+                   where one side has it marked done and the other does not,
+                   done is kept, because done is the higher number.
+     meter         unique, the ground opened, is the union of both lists, and
+                   lines is the larger of the two counts.
+   Both can only go up under this, so no practice or ground mark that either
+   side had earned from them is lost. The price is named: an entry deleted on
+   one device comes back from the other. Under "only ever up" that is correct.
+
+   WHAT IT DOES NOT MERGE, and why. Stories, readings, the intake and the axes
+   feed marks too (First story, Ten stories, Ten snapshots, Laws measured, Nine
+   axes, the clearings), but those are the record itself and not a tally of
+   acts, and which side wins a conflict over them is the record sync rule he
+   has not picked yet (newest wins, biggest wins, or ask). So this does not
+   decide it. Any mark the stored side holds that the kept profile would not
+   is returned in lost, by key, and the caller must not adopt kept while lost
+   is not empty. That is the safeguard: a lower incoming record never
+   silently overwrites a higher one. It is held instead, and said.
+
+   Pure: neither argument is changed, kept is a copy. Sync is still off
+   (PROFILE_SYNC_ENABLED, ui/auth.js), so nothing calls this on a live
+   device yet; tests/engine.js 27b holds it. */
+function ladderRitKey(x){
+ return String(x&&x.t)+'|'+((x&&+x.min)||0)+'|'+((x&&Array.isArray(x.steps))?x.steps.join(','):'');}
+/* an entry with no done key predates the field and ledgerRead reads it as
+   practised, so it ranks with done; only done===false ranks below */
+function ladderRitDone(x){return !!x&&x.done!==false;}
+function ladderKeep(had,came,now){
+ var kept=JSON.parse(JSON.stringify(came||{}));
+ var mine=(had&&Array.isArray(had.rituals))?had.rituals:[];
+ var theirs=Array.isArray(kept.rituals)?kept.rituals:[];
+ /* TWO IDENTICAL ENTRIES ON ONE SIDE ARE TWO ENTRIES. The first cut keyed
+    the union on the entry alone, so a side carrying the same ten minutes twice
+    at one stamp came out with one, and the sweep in tests/engine.js 27e caught
+    seven counts of 1800 falling below the higher side. Each entry is keyed by
+    which copy of itself it is on its own side, so the union keeps the larger
+    multiplicity and never folds one side's own record. */
+ var at={}, out=[];
+ [theirs,JSON.parse(JSON.stringify(mine))].forEach(function(side){
+  var nth={};
+  side.forEach(function(x){
+   if(!x||typeof x!=='object')return;
+   var b=ladderRitKey(x), k=b+'#'+(nth[b]=(nth[b]||0)+1);
+   if(at[k]===undefined){at[k]=out.length; out.push(x); return;}
+   if(!ladderRitDone(out[at[k]])&&ladderRitDone(x))out[at[k]]=x;});});
+ /* oldest first, the order every writer appends in; an unreadable stamp
+    keeps its place at the front rather than being dropped, and the boundary
+    refuses it by name on the way in, as it would have anyway */
+ kept.rituals=out.map(function(x,i){var ms=Date.parse(x.t); return {x:x, ms:isNaN(ms)?-Infinity:ms, i:i};})
+  .sort(function(a,b){return a.ms-b.ms||a.i-b.i;}).map(function(o){return o.x;});
+ var hm=(had&&had.meter&&typeof had.meter==='object')?had.meter:null;
+ if(hm){
+  if(!kept.meter||typeof kept.meter!=='object')kept.meter={};
+  var km=kept.meter, seen={}, u=[];
+  (Array.isArray(km.unique)?km.unique:[]).concat(Array.isArray(hm.unique)?hm.unique:[])
+   .forEach(function(k){if(typeof k==='string'&&!seen[k]){seen[k]=1; u.push(k);}});
+  km.unique=u;
+  if(typeof hm.lines==='number'&&!(km.lines>=hm.lines))km.lines=hm.lines;}
+ var was={}, lost=[];
+ ladderRead(had,now).earned.forEach(function(m){was[m.k]=1;});
+ var got={}; ladderRead(kept,now).earned.forEach(function(m){got[m.k]=1;});
+ Object.keys(was).forEach(function(k){if(!got[k])lost.push(k);});
+ return {kept:kept, lost:lost};}

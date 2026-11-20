@@ -274,11 +274,14 @@ async function flowGate(browser,FILE,ok,booted){
    const nm=h&&h.querySelector('.fl-nm');
    return {first:!!row&&row.classList.contains('acs-row'), above:!!row&&!!nm&&row.getBoundingClientRect().bottom<=nm.getBoundingClientRect().top+1,
     chips:row?[...row.children].map(c=>({k:c.className, t:c.getAttribute('data-tip-t'), tip:(c.getAttribute('data-tip')||'').length,
-     svg:!!c.querySelector('svg'), word:/[A-Za-z]{4,}/.test((c.querySelector('b')||{}).textContent.replace(/days?|min/g,'')),
+     svg:!!c.querySelector('svg'), word:/[A-Za-z]{4,}/.test((c.querySelector('b')||{}).textContent.replace(/days?|min|marks?/g,'')),
      h:Math.round(c.getBoundingClientRect().height), top:Math.round(c.getBoundingClientRect().top)})):[]};});
-  ok(sk.first&&sk.above&&JSON.stringify(sk.chips.map(c=>c.t))===JSON.stringify(['Streak','Missed','Practised'])
+  /* and Marks, 18 November: the figures row under Success over time carried
+     the only count of marks, and it went on his word that the upper right
+     already had it, so the strip carries it now */
+  ok(sk.first&&sk.above&&JSON.stringify(sk.chips.map(c=>c.t))===JSON.stringify(['Streak','Missed','Practised','Marks'])
     &&sk.chips.every(c=>c.svg&&c.tip>20&&!c.word&&c.h>=44)&&new Set(sk.chips.map(c=>c.top)).size===1,
-   'FT36: '+tag+'the streak strip is the first row of the right head, above Accountability, three marks on one row, each word on its press and none on the screen, '+JSON.stringify(sk));
+   'FT36: '+tag+'the streak strip is the first row of the right head, above Accountability, four marks on one row, each word on its press and none on the screen, '+JSON.stringify(sk));
   }catch(e){ok(false,'FT6: '+tag+'the columns group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
   ok(err.length===0,tag+'no page errors across the Flow page, '+err.join(' | '));
@@ -1034,7 +1037,14 @@ async function flowGate(browser,FILE,ok,booted){
        4 November (engine/data/practice.js), and an empty box is not a line */
     return {nm:p.nm, desc:p.d?(c.querySelector('.rv-sgd')||{}).textContent===p.d:!c.querySelector('.rv-sgd'),
      toward:cf?chips.indexOf('Toward '+cf.opp.toLowerCase())>=0:!chips.some(t=>/^Toward/.test(t)),
-     rec:chips.indexOf(days?'Kept '+days+(days===1?' day':' days'):'Not tried yet')>=0,
+     /* and the chip and its own tooltip name one state, 18 November: a
+        practice run and never kept read Not tried yet on the chip and Kept on
+        0 days under it. Never run is Not tried yet, run and never kept is Not
+        kept yet, and a count is printed only for a kept day */
+     rec:(()=>{const runs=ritPlans().filter(q=>q.steps.indexOf(x.k)>=0).length;
+      const want=days?'Kept '+days+(days===1?' day':' days'):runs?'Not kept yet':'Not tried yet';
+      const rc=[...c.querySelectorAll('.rv-sgc')].find(e=>e.textContent===want), tip=rc?rc.getAttribute('data-tip')||'':'';
+      return !!rc&&!/Kept on 0 days/.test(c.innerHTML)&&(days?/^Kept on /.test(tip):tip.indexOf(want)===0);})(),
      tips:[...c.querySelectorAll('.rv-sgc')].every(e=>(e.getAttribute('data-tip')||'').length>20),
      add:btn('[data-act="sug"]'), save:btn('[data-act="sug-save"]'), drop:btn('[data-act="sug-x"]'),
      /* SV16, his words, each: "2 minutes", "Add to practice", "Save" */
@@ -1311,9 +1321,13 @@ async function flowGate(browser,FILE,ok,booted){
     const t0=back(m,d); let kept=0, missed=0, pre=0;
     for(let x=t0;x<=today;x++){if(x<rs){pre++;continue;} if(doneD.has(x)){kept++;continue;}
      if(x<today&&plans.some(p=>covers(p,x)))missed++;}
-    const figs=[...sec().querySelectorAll('.rv-sfigs .rv-fig')].map(f=>f.querySelector('b').textContent.trim().split(/\s/)[0]);
-    const n=v=>v?String(v):'–';
-    out.rows.push({k, kept:figs[0]===n(kept), missed:figs[1]===n(missed), pre:sec().querySelectorAll('.rv-sc-pre').length===pre,
+    /* 18 November, his words: "get rid of that kept, miss, practice, marks
+       earned, because you already have that in the upper right-hand panel".
+       The figures row is gone and held gone, so the span's kept and missed
+       days are read off its squares, a day a square, which the row only ever
+       summed */
+    const figs=[sec().querySelectorAll('.rv-sc-done').length, sec().querySelectorAll('.rv-sc-miss').length, sec().querySelectorAll('.rv-sfigs,.rv-fig').length];
+    out.rows.push({k, kept:figs[0]===kept, missed:figs[1]===missed&&figs[2]===0, pre:sec().querySelectorAll('.rv-sc-pre').length===pre,
      /* SV19: the paragraph that counted the days before the record aloud is
         cut, his third tier text; the hatch is named by the key under the
         grid, so the key is held here and the paragraph is held gone */
@@ -1464,6 +1478,198 @@ async function flowGate(browser,FILE,ok,booted){
   await pg.close();
  }
 
+ /* ---- FT37: the ritual bank, ui/ritbank.js, 20 November ----
+    One Called for card, one pop-up and one writer. Each check below is read
+    off the store and the record, never off the page's own answer to the
+    question being checked: a plan's days are its on and ex lists, a block is
+    a sash on the week, and a refusal is the status line with nothing
+    written. Both widths, because the pop-up's When is seven presses on a row
+    and the floor that row is held to is the phone's. */
+ for(const [W,H] of [[1600,1000],[390,844]]){
+  const phone=W<600, tag='@'+W+' ';
+  const pg=await newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
+  const err=[]; pg.on('pageerror',e=>err.push(e.message));
+  try{
+  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
+  /* the person: their own profile, the three stories FT30 writes so the
+     reading names challenges, two avatar lines so the goal card has its held
+     pattern sentence, nothing running and nothing set */
+  const seed=async()=>pg.evaluate(async()=>{
+   loadP(0); CURP.rituals=[]; ritPlanPut([]);
+   try{STORE.set(RIT_SCHED_KEY,'{}'); STORE.set(RIT_MORE_KEY,'{}');}catch(e){}
+   if(!(CURP.stories||[]).length)['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
+    'I feel worthless and ashamed, I am never enough, I am a failure.',
+    'I am scared all the time and my legs shake.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
+   CURP.avatar=avatarBlank(); CURP.avatar.built=true; CURP.avatar.at=new Date().toISOString();
+   CURP.avatar.pairs=[{be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'}]; pSave();
+   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; RIT.wk=0; RIT.pop=null; sheetShut(); setTab(TAB.RITUAL); ritRender();
+   await new Promise(r=>setTimeout(r,200));});
+  await seed();
+  const w=ms=>pg.waitForTimeout(ms||200);
+  /* the card's name is the press that opens the pop-up, from the keyboard
+     too, and the pop-up carries When: seven days, Every day, Weekdays, Any
+     time and a time, and the four repeats, every press at the tap floor */
+  const card=await pg.evaluate(()=>{const c=document.querySelector('#flowleft .rv-sg1'), n=c&&c.querySelector('.rv-bko');
+   return {n:(RIT.sug||[]).length, press:!!n&&n.tagName==='BUTTON', nm:n?n.textContent:'', k:RIT.sug&&RIT.sug[0]?RIT.sug[0].k:null};});
+  await pg.focus('#flowleft .rv-sg1 .rv-bko'); await pg.keyboard.press('Enter'); await w();
+  const pop=await pg.evaluate(()=>{const c=document.getElementById('sheet-card'), wh=c.querySelector('#rv-pwhen');
+   const all=wh?[...wh.querySelectorAll('button,input')]:[];
+   return {open:!document.getElementById('sheet').hidden, days:wh?wh.querySelectorAll('.rv-pd').length:0,
+    words:wh?[...wh.querySelectorAll('.rv-pq')].map(b=>b.textContent):[], time:!!(wh&&wh.querySelector('#rv-pat')),
+    small:all.filter(e=>{const r=e.getBoundingClientRect(); return r.height<44||r.width<44;}).length,
+    wide:c.getBoundingClientRect().right<=innerWidth+1&&document.documentElement.scrollWidth<=innerWidth+1,
+    head:(c.querySelector('.sh-h')||{}).textContent||''};});
+  ok(card.n>0&&card.press&&pop.open&&pop.head===card.nm&&pop.days===7&&pop.time&&pop.small===0&&pop.wide
+    &&JSON.stringify(pop.words)===JSON.stringify(['Every day','Weekdays','Any time','Once','A week','Two weeks','No end']),
+   'FT37: '+tag+'the Called for card\'s name is a press, reached from the keyboard, that opens the pop-up with seven days, a time and the four repeats, every press at the tap floor and nothing past the screen, '+JSON.stringify({card,pop}));
+  /* A SECOND DAY KEEPS THE FIRST, the defect the bank was built to close:
+     Tuesday for a week, then the same practice on Thursday, by presses */
+  /* the presses go through the element and not a hit test, as FT35's do: on
+     a phone the product's status line and the keep notice sit over the
+     bottom of every sheet while they show, which is the shell's and not this
+     pop-up's, and the floors above are what hold the presses' size */
+  const tap=async sel=>{await pg.evaluate(q=>{const b=document.querySelector(q); if(!b)throw new Error('no '+q); b.click();},sel); await w(60);};
+  const type=async v=>{await pg.evaluate(v=>{const t=document.getElementById('rv-pat'); t.value=v; t.dispatchEvent(new Event('input'));},v); await w(40);};
+  const pick=async(days,rep,at)=>{
+   await tap('#sheet-card [data-sh="pall"]');
+   for(const d of [0,1,2,3,4,5,6].filter(x=>days.indexOf(x)<0))await tap('#sheet-card .rv-pd[data-d="'+d+'"]');
+   await tap('#sheet-card .rv-pq[data-sh="prep"][data-d="'+rep+'"]');
+   await type(at||'');};
+  await pick([1],7,''); await tap('#sheet-card [data-sh="badd"]'); await w();
+  const one=await pg.evaluate(k=>ritPlans().filter(p=>p.steps[0]===k).map(p=>({on:p.on,days:p.days})),card.k);
+  await pg.evaluate(k=>{const x=(RIT.sug||[]).find(s=>s.k===k)||{k:k,p:ritPr(k),seats:[],why:[],rel:null}; ritBankOpen({t:'sug',x:x});},card.k); await w();
+  await pick([3],7,'24:00'); await tap('#sheet-card [data-sh="badd"]'); await w();
+  const bad={say:await pg.evaluate(()=>(document.getElementById('status')||{}).textContent||''),
+   plans:await pg.evaluate(k=>JSON.stringify(ritPlans().filter(p=>p.steps[0]===k).map(p=>[p.on,p.at])),card.k), open:await pg.evaluate(()=>!document.getElementById('sheet').hidden)};
+  await type('7:5'); await tap('#sheet-card [data-sh="badd"]'); await w();
+  const bad2=await pg.evaluate(()=>(document.getElementById('status')||{}).textContent||'');
+  await type('07:30'); await tap('#sheet-card [data-sh="badd"]'); await w();
+  const two=await pg.evaluate(k=>ritPlans().filter(p=>p.steps[0]===k).map(p=>({on:p.on,at:p.at,n:ritPlans().length})),card.k);
+  ok(JSON.stringify(one)===JSON.stringify([{on:[1],days:7}])&&two.length===1&&JSON.stringify(two[0].on)===JSON.stringify([1,3])&&two[0].at==='07:30',
+   'FT37: '+tag+'a practice put on Tuesday and then on Thursday keeps both days, one plan, and carries the time it was given, '+JSON.stringify({one,two}));
+  ok(/^"24:00" is not a time of day/.test(bad.say)&&/Nothing changed/.test(bad.say)&&bad.plans===JSON.stringify([[[1],null]])&&bad.open
+    &&/^"7:5" is not a time of day/.test(bad2),
+   'FT37: '+tag+'24:00 and 7:5 are refused by name, nothing is written and the pop-up stays open with what was chosen, '+JSON.stringify({bad,bad2}));
+  /* DRAG, with a real pointer. A card dropped on a day ahead writes one Once
+     day and opens the pop-up; dropped on nothing, or on a day gone, the
+     ghost goes and nothing is written. On a phone the finger route is the
+     card's mark, which a touch screen in this sandbox only approximates, so
+     the drag is held at 1600 and the keyboard route above holds both. */
+  if(!phone){
+   /* the card is brought to the middle of the screen first: at the foot of
+      a 1000 pixel window it sits under the keep notice and the status line,
+      which take the press, so a drag from there measures the shell and not
+      the drop. The point pressed is checked to be the card's own. */
+   const pos=await pg.evaluate(()=>{const c=[...document.querySelectorAll('#flowleft .rv-sg1')].find(e=>!e.querySelector('[data-act="sgwhy"][aria-expanded="true"]'));
+    if(c)c.scrollIntoView({block:'center'});
+    const st=ritRead(), d=st.today+3, past=st.today-1, R=e=>{const r=e.getBoundingClientRect(); return [r.left+r.width/2,r.top+Math.min(r.height/2,40)];};
+    const li=document.querySelector('#rit .rv-wd1[data-d="'+d+'"]'), lp=document.querySelector('#rit .rv-wd1[data-d="'+past+'"]');
+    const sd=c?c.querySelector('.rv-sgd,.rv-sgo'):null;
+    const from=sd?R(sd):null, hit=from?document.elementFromPoint(from[0],from[1]):null;
+    return {i:c?+c.getAttribute('data-i'):-1, k:c?RIT.sug[+c.getAttribute('data-i')].k:null, from, own:!!hit&&c.contains(hit), to:li?R(li):null, past:lp?R(lp):null, d, plans:ritPlans().length};});
+   const drag=async(a,b)=>{await pg.mouse.move(a[0],a[1]); await pg.mouse.down(); await pg.mouse.move(a[0]+20,a[1]+10,{steps:4});
+    await pg.mouse.move(b[0],b[1],{steps:12}); await pg.mouse.up(); await w(260);};
+   let res={pos};
+   if(pos.from&&pos.to){
+    await drag(pos.from,[pos.from[0]+30,pos.from[1]+400>H?pos.from[1]-200:pos.from[1]+60]);
+    res.nowhere={plans:await pg.evaluate(()=>ritPlans().length), ghost:await pg.evaluate(()=>!!document.querySelector('.rv-ghost')), sheet:await pg.evaluate(()=>!document.getElementById('sheet').hidden)};
+    if(pos.past){await drag(pos.from,pos.past); res.past={plans:await pg.evaluate(()=>ritPlans().length)};}
+    await drag(pos.from,pos.to);
+    res.drop=await pg.evaluate(o=>{const p=ritPlans().filter(x=>x.steps[0]===o.k);
+     const st=ritRead(), on=[]; for(let d=st.today-7;d<st.today+21;d++)if(p.some(x=>ritCovers(x,d)))on.push(d);
+     return {n:ritPlans().length, days:on, want:[o.d], pop:!document.getElementById('sheet').hidden&&!!document.querySelector('#sheet-card #rv-pwhen'),
+      once:!!document.querySelector('#sheet-card .rv-pq[data-sh="prep"][data-d="1"][aria-pressed="true"]'),
+      block:ritWeekDay(o.d,st).some(s=>s.nm===ritPr(o.k).nm)};},pos);}
+   ok(!!res.drop&&pos.own&&res.nowhere.plans===pos.plans&&!res.nowhere.ghost&&!res.nowhere.sheet&&(!res.past||res.past.plans===pos.plans)
+     &&res.drop.n===pos.plans+1&&JSON.stringify(res.drop.days)===JSON.stringify(res.drop.want)&&res.drop.pop&&res.drop.once&&res.drop.block,
+    'FT37: '+tag+'a card dragged onto a day ahead writes that one day and opens the pop-up on Once; dropped on nothing or on a day gone, nothing is written and the ghost goes, '+JSON.stringify(res));
+   await pg.evaluate(()=>{sheetShut(); RIT.pop=null;});
+   /* and a block dragged onto another day is that ritual once more on that
+      day, its own days untouched */
+   const blk=await pg.evaluate(()=>{const st=ritRead(), b=[...document.querySelectorAll('#rit .rv-week button.rv-wch[data-nm]')].find(x=>+x.getAttribute('data-d')>=st.today&&!x.classList.contains('rv-wmore'));
+    if(!b)return null; const d=+b.getAttribute('data-d'), nm=b.getAttribute('data-nm');
+    let to=null; for(let x=st.today;x<st.today+7;x++)if(x!==d&&!ritWeekDay(x,st).some(s=>s.nm===nm)){to=x;break;}
+    const li=to!=null&&document.querySelector('#rit .rv-wd1[data-d="'+to+'"]'); if(!li)return null;
+    const R=e=>{const r=e.getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height/2];};
+    const p=ritPlans().find(q=>ritName(q.steps)===nm);
+    return {nm, d, to, a:R(b), b:R(li), on:p?p.on:null};});
+   if(blk){await drag(blk.a,blk.b);
+    blk.after=await pg.evaluate(o=>{const p=ritPlans().find(q=>ritName(q.steps)===o.nm); return {on:p?p.on:null, ex:p?p.ex:null, there:ritWeekDay(o.to,ritRead()).some(s=>s.nm===o.nm)};},blk);}
+   ok(!!blk&&!!blk.after&&blk.after.there&&JSON.stringify(blk.after.on)===JSON.stringify(blk.on)&&(blk.after.ex||[]).indexOf(blk.to)>=0,
+    'FT37: '+tag+'a block dragged onto another day puts that ritual on that day once, and its own days stay as they were, '+JSON.stringify(blk));
+   await pg.evaluate(()=>{sheetShut(); RIT.pop=null;});}
+  /* SOURCE AI'S OWN SENTENCES WEAR ITS MARK, the 15 November ruling: the
+     reasons, the goal's held pattern sentence, a challenge's who line. Each
+     carries the one mark (srcMark) and the src-ai treatment, and the
+     person's own avatar line carries neither */
+  const ai=await pg.evaluate(async()=>{
+   [...document.querySelectorAll('#flowleft [data-act="sgwhy"][aria-expanded="false"]')].slice(0,1).forEach(b=>b.click());
+   await new Promise(r=>setTimeout(r,150));
+   const why=[...document.querySelectorAll('#flowleft .rv-sgw li')], who=[...document.querySelectorAll('#rit .rv-chal .rv-chn small')];
+   const goal=[...document.querySelectorAll('#rit .rv-c-goal .rv-why-p')].filter(p=>/holding on to|stands in the way/.test(p.textContent));
+   const marked=e=>e.classList.contains('src-ai')&&!!e.querySelector('.src-mk[aria-label="Source AI"][data-tip]');
+   return {why:why.length, whyOk:why.every(marked), who:who.length, whoOk:who.every(marked), goal:goal.length, goalOk:goal.every(marked),
+    own:[...document.querySelectorAll('#rit .rv-c-goal .rv-why-be')].every(e=>!e.closest('.src-ai')&&!e.querySelector('.src-mk'))};});
+  ok(ai.why>0&&ai.whyOk&&ai.who>0&&ai.whoOk&&ai.goal>0&&ai.goalOk&&ai.own,
+   'FT37: '+tag+'the why-here reasons, the goal\'s held pattern sentence and every challenge\'s who line carry the Source AI mark and treatment, and the avatar\'s own line does not, '+JSON.stringify(ai));
+  /* AFFIRMATIONS AND CHALLENGES ON THE WEEK, and IF I MISS. The clock on a
+     challenge opens its pop-up; Agree with the default writes the row and
+     its If I miss; the week carries its blocks; with three set days gone
+     unmarked the offer is one neutral press, the why question first in the
+     pop-up, and answering it closes the offer. None of it touches the
+     record or the streak, and nothing is drawn red. */
+  await seed();
+  const ch=await pg.evaluate(async()=>{
+   const w=ms=>new Promise(r=>setTimeout(r,ms||150));
+   const rec0=JSON.stringify(CURP.rituals), L0=JSON.stringify(ladderRead(CURP,Date.now()).streak);
+   const b=document.querySelector('#rit .rv-chal [data-act="chal-set"]'); if(!b)return {none:true};
+   const id=b.getAttribute('data-id'); b.click(); await w();
+   const c=document.getElementById('sheet-card'), miss=c.querySelector('#rv-pmiss');
+   const opts=miss?[...miss.querySelectorAll('[data-sh="pmk"]')].map(x=>[x.textContent,x.getAttribute('aria-checked')]):[];
+   c.querySelector('[data-sh="bagree"]').click(); await w();
+   const row=ritSchedOf(id), st=ritRead();
+   const week=[0,1,2,3,4,5,6].map(i=>ritWeekDay(st.today+i,st).some(s=>s.sc&&s.sc.id===id));
+   const none0=document.querySelectorAll('#rit [data-act="miss-why"]').length;
+   /* nine set days gone unmarked: one offer, never three */
+   const all=JSON.parse(STORE.get(RIT_SCHED_KEY)); all[CURP.id].forEach(r=>{if(r.id===id)r.from=ritDayIso(st.today-9);}); STORE.set(RIT_SCHED_KEY,JSON.stringify(all)); ritRender(); await w();
+   const offers=[...document.querySelectorAll('#rit [data-act="miss-why"]')];
+   const col=offers[0]?getComputedStyle(offers[0]):null, red=col?[col.color,col.backgroundColor,col.borderColor].some(v=>{const m=/rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(v); return m&&+m[1]>170&&+m[2]<90&&+m[3]<90;}):false;
+   if(offers[0])offers[0].click(); await w();
+   const pc=document.getElementById('sheet-card'), first=pc.querySelector('.rv-pop>:not(.rv-shh)');
+   const whyFirst=!!first&&first.classList.contains('rv-mwhy')&&document.activeElement&&document.activeElement.id==='rv-mwhy';
+   pc.querySelector('[data-sh="bwhy"]').click(); await w();
+   const empty=(document.getElementById('status')||{}).textContent||'';
+   document.getElementById('rv-mwhy').value='Late shifts all week'; pc.querySelector('[data-sh="bwhy"]').click(); await w();
+   const after={offers:document.querySelectorAll('#rit [data-act="miss-why"]').length, ans:(ritSchedOf(id).ans||[]).map(a=>a.why)};
+   sheetShut(); RIT.pop=null;
+   return {id, opts, row:row&&{miss:row.miss, days:row.days, on:row.on}, week, none0, offers:offers.length, red, whyFirst, empty, after,
+    rec:JSON.stringify(CURP.rituals)===rec0, streak:JSON.stringify(ladderRead(CURP,Date.now()).streak)===L0};});
+  ok(!ch.none&&JSON.stringify(ch.opts)===JSON.stringify([['Answer why','true'],['In my words','false']])&&ch.row&&ch.row.miss.k==='why'
+    &&ch.week.every(Boolean)&&ch.none0===0,
+   'FT37: '+tag+'a challenge taken on by Agree, with the default Answer why, is on every day of the week it was set for, and offers nothing until a day is missed, '+JSON.stringify(ch));
+  ok(ch.offers===1&&!ch.red&&ch.whyFirst&&/Write a few words first/.test(ch.empty)&&ch.after.offers===0
+    &&JSON.stringify(ch.after.ans)===JSON.stringify(['Late shifts all week'])&&ch.rec&&ch.streak,
+   'FT37: '+tag+'nine set days missed is one offer, never red, the why question is first and an empty answer is refused, answering closes it, and the record and the streak are untouched, '+JSON.stringify(ch));
+  /* the affirmation set gets days of its own the same way */
+  const af=await pg.evaluate(async()=>{
+   const w=ms=>new Promise(r=>setTimeout(r,ms||150));
+   document.querySelector('#rit .rv-aff [data-act="aff-set"]').click(); await w();
+   document.querySelector('#sheet-card [data-sh="pwk"]').click(); await w(80);
+   document.querySelector('#sheet-card [data-sh="baff"]').click(); await w();
+   const st=ritRead(), r=ritSchedOf('aff'), on=[];
+   for(let d=st.today;d<st.today+7;d++)if(ritWeekDay(d,st).some(s=>s.sc&&s.sc.id==='aff'))on.push(ritWd(d));
+   return {on:r&&r.on, week:on.sort(), lit:!!document.querySelector('#rit .rv-aff [data-act="aff-set"].rv-on')};});
+  ok(JSON.stringify(af.on)==='[0,1,2,3,4]'&&JSON.stringify(af.week)==='[0,1,2,3,4]'&&af.lit,
+   'FT37: '+tag+'the affirmations set for weekdays sit on the five weekdays of the week, and their clock is lit, '+JSON.stringify(af));
+  /* and a deleted profile takes every key held under its id with it */
+  const fg=await pg.evaluate(()=>{const id=CURP.id, has=k=>{try{return Object.prototype.hasOwnProperty.call(JSON.parse(STORE.get(k)||'{}'),id);}catch(e){return null;}};
+   const before=[RIT_SCHED_KEY,RIT_MORE_KEY].map(has); const ok=accForget(id); return {before, after:[RIT_SCHED_KEY,RIT_MORE_KEY,RIT_KEY].map(has), ok};});
+  ok(fg.ok&&fg.before[0]===true&&fg.after.every(v=>v===false),
+   'FT37: '+tag+'deleting a profile removes its affirmation and challenge days, their answers and its ticks from the browser, '+JSON.stringify(fg));
+  }catch(e){ok(false,'FT37: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
+  ok(err.length===0,'FT37: '+tag+'no page errors, '+err.join(' | '));
+  await pg.close();
+ }
  /* ---- FT15: the rules and the gates are one list ---- */
  {
   const md=fs.readFileSync(path.join(__dirname,'..','DESIGN-flow-tools.md'),'utf8');

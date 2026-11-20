@@ -251,7 +251,17 @@ function ritPlanOk(p){
    &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
   &&(p.on==null||(Array.isArray(p.on)&&p.on.length>=1&&p.on.length<=7
    &&p.on.every(function(d,i){return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&p.on.indexOf(d)===i;})))
-  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm)));}
+  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm))
+  /* at and ex, 20 November (ui/ritbank.js). at is the time of day a ritual
+     is set for, HH:MM or nothing, and a plan carrying 24:00 or 7:5 is a store
+     somebody else wrote, left out whole like any other field. ex is the days
+     set Once on top of a running plan, a drop on the week or a Once from the
+     pop-up: day keys, whole and distinct, at most a year of them. */
+  &&(p.at==null||(typeof ritAtOk==='function'&&ritAtOk(p.at)))
+  &&(p.ex==null||ritExOk(p.ex)));}
+function ritExOk(a){
+ return Array.isArray(a)&&a.length<=366&&a.every(function(d,i){
+  return typeof d==='number'&&Math.floor(d)===d&&d>=0&&a.indexOf(d)===i;});}
 /* the longest timer the builder offers is the boundary's own ceiling on a
    ritual's minutes, every practice in the library once, so the two cannot
    disagree and no number is typed here */
@@ -272,7 +282,8 @@ function ritPlans(){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
    days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
    rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
-   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm)};});}
+   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm),
+   at:(p.at==null?null:p.at), ex:(p.ex?p.ex.slice().sort(function(a,b){return a-b;}):null)};});}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false. */
 function ritPlanPut(list){
@@ -284,7 +295,10 @@ function ritToday0(){return pracDay(Date.now());}
 function ritStart0(p){return pracDay(p.from);}
 function ritActive(p,today){
  if(p.stop)return false;
- return p.days===0||today<ritStart0(p)+p.days;}
+ /* a day set Once ahead keeps a plan running until that day has come, or
+    the plan would end with the day the person just put on the week still
+    in front of it */
+ return p.days===0||today<ritStart0(p)+p.days||!!(p.ex&&p.ex.some(function(d){return d>=today;}));}
 /* a day is on a ritual from the day it started, for as long as it runs, and
    not on or after the day it was stopped. */
 /* the weekday of a day key, Monday 0. Day 0 of pracDay is 1 January 1970, a
@@ -323,6 +337,10 @@ function ritOften(on){
 function ritTm(p){return (p&&p.tm)||ritMin(p&&p.steps)||1;}
 function ritCovers(p,day){
  var s=ritStart0(p);
+ /* a day set Once is on the plan whatever its weekday and its span say, and
+    before the plan's own first day too: a Tuesday plan with today dropped on
+    it covers today. Only a stop takes it off. */
+ if(p.ex&&p.ex.indexOf(day)>=0)return !(p.stop&&day>=pracDay(p.stop));
  if(day<s)return false;
  if(!ritDue(p,day))return false;
  if(p.days&&day>=s+p.days)return false;
@@ -403,7 +421,19 @@ function ritPick(k){
    set and not done, which is exactly what Save ritual wrote before: said is
    what intentionRead counts, and ritToday is what the avatar reads back. */
 function ritStartPlan(q,msg){
- var now=new Date().toISOString(), today=ritToday0(), steps=q.steps;
+ /* 20 NOVEMBER, THREE MORE THINGS A START MAY CARRY, from the pop-up's When
+    (ui/ritbank.js): at, the time of day; fromDay, a first day ahead, so a
+    Thursday ritual added on a Monday starts on Thursday and Monday is not
+    written as set and then counted missed; and join.
+    JOIN IS THE FIX FOR THE SECOND DAY. A start for steps already running
+    woke that plan and REPLACED its day list with the new one, so Box
+    Breathing put on Tuesday and then on Thursday ended on Thursday only, and
+    the Tuesday the person had set was gone with nothing said. With join the
+    new days are added to the days it has. The builder's own Start does not
+    join: there the days chosen are the whole answer, and Edit is the route
+    that changes them. */
+ var today=ritToday0(), fd=(q.fromDay!=null&&q.fromDay>today)?q.fromDay:today;
+ var now=fd===today?new Date().toISOString():ritDayIso(fd), steps=q.steps;
  var track=(ritPr(steps[0])||{}).track||q.track||'';
  var id='r'+Date.now().toString(36);
  return ritWrite(function(plans){
@@ -416,22 +446,32 @@ function ritStartPlan(q,msg){
      it on the spot: measured, pressing A week on the release schedule took Box
      Breathing off the Active list and its missed days off the month. A ritual
      with no end keeps none; one with an end runs at least the new span from
-     today. */
+     the new first day. */
   if(same){same.when=q.when||same.when; same.where=q.where||same.where;
-   if(same.days){var need=q.days?today-ritStart0(same)+q.days:0;
+   if(same.days){var need=q.days?fd-ritStart0(same)+q.days:0;
     if(!need||need>same.days)same.days=need;}
    if(q.rel!=null)same.rel=q.rel;
    if(q.tc)same.tc=q.tc;
    /* a wake carries what the builder set and keeps what it did not: a
       release schedule that sets none of the three leaves them as they were */
    if(q.tags&&q.tags.length)same.tags=q.tags.slice();
-   if(q.on)same.on=q.on.slice();
-   if(q.tm)same.tm=q.tm;}
+   /* joined, the union, and an every day plan already holds every day */
+   if(q.join)same.on=(!same.on||!q.on)?null:same.on.concat(q.on.filter(function(d){return same.on.indexOf(d)<0;})).sort();
+   else if(q.on)same.on=q.on.slice();
+   if(same.on&&same.on.length===7)same.on=null;
+   if(q.tm)same.tm=q.tm;
+   if(q.at)same.at=q.at;}
   else plans.push({id:id, steps:steps, when:q.when||'', where:q.where||'', days:q.days,
    from:now, stop:null, band:q.band||'', track:track, rel:(q.rel==null?null:q.rel),
    tc:q.tc||null, tags:(q.tags&&q.tags.length?q.tags.slice():null),
-   on:(q.on?q.on.slice():null), tm:(q.tm||null)});
-  if(!ritEntryFor({steps:steps},today))
+   on:(q.on?q.on.slice():null), tm:(q.tm||null), at:(q.at||null)});
+  /* today goes on the record as set only when the plan starts today: a
+     Thursday ritual added on a Monday is not a Monday left undone */
+  /* AND ONLY WHEN TODAY IS ONE OF ITS DAYS, 20 November. A Tuesday and
+     Thursday ritual started from the builder on a Monday wrote Monday as set,
+     so the week drew it on Monday, Today said Nothing due today under it, and
+     the next morning Monday counted as missed: a day the person never chose. */
+  if(fd===today&&(!q.on||q.on.indexOf(ritWd(today))>=0)&&!ritEntryFor({steps:steps},today))
    CURP.rituals.push(ritEntryOf({t:now, track:track, band:q.band, steps:steps,
     when:q.when, where:q.where, done:false}));
   return plans;},msg||'Started.');}
@@ -998,27 +1038,20 @@ function ritTimer(id){
      the focus out of the When field while a person typed in it. */
   if(el)el.textContent=ritClock(left);},1000)};
  ritRender();}
-/* ACTIVE TODAY, AND THE REST. Round LT: "I should see a list of my active
-   running tasks for the day." Running is a saboteur's word here, so the list
-   is the Active one it always was, split by due: what is due today first,
-   in the person's own order, and what is active but kept on other days under
-   it, named by its days so nobody reads it as missed. */
-/* THE LIST WAS COMPACT WHILE THE BUILDER WAS OPEN, and it is not any more. It
-   sat in a narrow column beside the builder then, and at full height three
-   rituals put the page past the screen, measured at 1123 pixels of content in
-   867, so each row dropped to its ring and its name. The builder is in the
-   right menu now and the list has the stage to itself, so the timer, the
-   days and the rest are on the row all the time and the mode is gone. */
-function ritActiveHtml(act,today,building){
- var due=act.filter(function(p){return ritDue(p,today);});
- return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Active today</span>'
-  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
-  +ritActiveBody(act,today,building)+'</div>';}
+/* THE ACTIVE TODAY CARD IS GONE, 18 November. ritActiveHtml drew the whole
+   Active today card on every render into P.active, and nothing has read
+   P.active since round QX put the list inside the Today card through
+   ritActiveBody below. A drawing nobody reads is work on every press and a
+   second, stale shape of the list for the next reader to mistake for the
+   live one, so the function and the field went together. */
 /* THE LIST WITHOUT ITS CARD, round QX. The Goals card (ui/ritcal.js) carries
    the Active list as its Today, so the rows, the empty line and its press are
    one function and the two cards cannot draw them two ways. */
 function ritActiveBody(act,today,building){
- var due=act.filter(function(p){return ritDue(p,today);}), rest=act.filter(function(p){return !ritDue(p,today);});
+  /* due is ritCovers and not ritDue, 20 November: a plan set to start on a
+     day ahead (ui/ritbank.js) is active and is not due today, and ritDue
+     reads only the weekday, so it listed Thursday's ritual under today */
+ var due=act.filter(function(p){return ritCovers(p,today);}), rest=act.filter(function(p){return !ritCovers(p,today);});
  var out='';
  /* THE EMPTY LINE CARRIES THE PRESS AND NOT A DIRECTION, round QF. It used to
     say "in the right menu", which was true for one round and is wrong twice
@@ -1549,7 +1582,7 @@ function ritRender(){
     as a page that cannot sit still */
  var arrive=!!RIT.arrive; RIT.arrive=false;
  var P={note:ritNote(), live:ritLiveHtml(),
-  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building), building:building};
+  chain:ritChainHtml(c,r,act), building:building};
  P.stage=ritStageHtml(st,P);
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','','plus');
@@ -1618,9 +1651,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','hist','sgwhy','wk','rng','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.gone=null;
   /* a dismissed suggestion's Put back lasts the same way, round QX */
-  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday'].indexOf(a)<0)RIT.sgGone=null;
+  if(['sug-back','sgwhy','wk','rng','exp','view','day','mo','hist','wsash','wday','bank','aff-set','chal-set','miss-why'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1702,6 +1735,12 @@ function ritWire(h,c){
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
+   /* the bank's pop-ups, 20 November, ui/ritbank.js. Opening one writes
+      nothing, so nothing repaints under it */
+   case 'bank': {var bx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(bx)ritBankOpen({t:'sug', x:bx}); return;}
+   case 'aff-set': ritBankOpen({t:'aff'}); return;
+   case 'chal-set': ritBankOpen({t:'chal', id:id}); return;
+   case 'miss-why': ritBankOpen({t:'chal', id:id, at:'why'}); return;
    case 'keep': ritKeep(id); return;
    case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
    case 'rot': acctRotate(+b.getAttribute('data-i')); return;
@@ -1722,7 +1761,9 @@ function ritWire(h,c){
  ['when','where'].forEach(function(k){
   var el=document.getElementById('rit'+k); if(!el)return;
   el.oninput=function(){RIT[k]=el.value;};
-  el.onchange=function(){RIT[k]=el.value; ritRender();};});}
+  el.onchange=function(){RIT[k]=el.value; ritRender();};});
+ /* a Called for card or a block dragged onto a day, ui/ritbank.js */
+ if(typeof ritBankDragWire==='function')ritBankDragWire(h);}
 
 /* ---------------- the look ----------------
    Carried by this file and injected once, the way intakeui.js carries its own,

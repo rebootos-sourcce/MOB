@@ -96,10 +96,14 @@ var ACCT_IC={
  streak:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>',
  /* a miss is the dashed ring every calendar on this page draws for one */
  miss:'<circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/>',
- mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>'};
+ mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
+ /* a mark is a ring on a ribbon, ring not fill, 18 November */
+ marks:'<circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 21l4.5-2.5 4.5 2.5-1.5-6.5"/>'};
 function acctStreakHtml(st){
  var L=st.L, s=L.streak||{}, run=s.run||0, best=s.best||0, kept=s.days||0, mins=(L.ledger&&L.ledger.minutes)||0;
  var miss=acctCubeRead(st).days.filter(function(X){return X.st==='miss';}).length;
+ var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{};
+ var marks=(L.earned||[]).filter(function(m){var d=md[m.k]; return d!=null&&d>st.today-ACCT_LOOP&&d<=st.today;}).length;
  /* A ZERO IS A DASH, COPY.md Value, and the unit rides on the figure (V17) */
  var fig=function(k,n,u,nm,tip,fl){
   return '<span class="acs acs-'+k+'"'+rvTip(nm,tip,fl)+' aria-label="'+esc(nm+', '+(n?n+' '+u:'none'))+'">'
@@ -112,7 +116,13 @@ function acctStreakHtml(st){
   +fig('streak',run,run===1?'day':'days','Streak',STREAK_MEANS+' Best is your longest run with no gap. Kept is the days you marked a ritual done.',
     'Best|'+(best?acctDays(best):'\u2013')+';Kept|'+(kept?acctDays(kept):'\u2013'))
   +fig('miss',miss,miss===1?'day':'days','Missed','Days in the last thirty a ritual was due and nothing was marked done: the dashed cubes below.')
-  +fig('mins',mins,'min','Practised','The minutes you have put in.')+'</div>';}
+  +fig('mins',mins,'min','Practised','The minutes you have put in.')
+  /* MARKS, 18 November. His reason for cutting the figures row under
+     Success over time was "you already have that in the upper right-hand
+     panel", and for marks it was not true: this strip had no count of them,
+     so cutting the row would have taken the only one. Earned in the last
+     thirty days, the cubes' own span, off the ladder's own days. */
+  +fig('marks',marks,marks===1?'mark':'marks','Marks','Marks you earned in the last thirty days. A mark is earned by what you do, never bought.')+'</div>';}
 
 /* THE THIRTY DAY LOOP OF ROUND QN, one ring round thirty days, became the
    cubes in round QS, below, and its read, acctLoopRead, went in SV19 with the

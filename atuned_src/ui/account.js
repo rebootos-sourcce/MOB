@@ -366,7 +366,15 @@ function accProfOpen(id){
    is removed. False when either key would not take the write. */
 function accForget(id){
  var ok=true;
- [typeof AV_KEY!=='undefined'?AV_KEY:null, typeof RIT_KEY!=='undefined'?RIT_KEY:null]
+ /* AND EVERY OTHER KEY HELD UNDER THE PROFILE'S ID, 20 November. This list
+    named two of five: the said and done ticks, the saved and dismissed
+    practices (RIT_MORE_KEY), the kept affirmation set (AFF_KEPT_KEY) and the
+    affirmation and challenge days with their why answers (RIT_SCHED_KEY)
+    were all left in the browser after the profile was deleted, which is the
+    part of a deleted profile this function exists to remove. */
+ [typeof AV_KEY!=='undefined'?AV_KEY:null, typeof RIT_KEY!=='undefined'?RIT_KEY:null,
+  typeof RIT_MORE_KEY!=='undefined'?RIT_MORE_KEY:null, typeof AFF_KEPT_KEY!=='undefined'?AFF_KEPT_KEY:null,
+  typeof RIT_SCHED_KEY!=='undefined'?RIT_SCHED_KEY:null]
   .forEach(function(k){
    if(!k)return;
    try{var o=JSON.parse(STORE.get(k)||'{}');

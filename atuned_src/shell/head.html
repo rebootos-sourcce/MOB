@@ -853,6 +853,28 @@ body.glass .top .gwrap>.gmenu,body.glasswhite .top .gwrap>.gmenu{
  background:var(--hot,#c0392b);color:#fff;font:600 11px/16px var(--sans);font-style:normal;text-align:center}
 .msg-b i[hidden]{display:none}
 body.rm .msgdock{transition:none}
+/* THE RITUAL REMINDER, ui/remind.js. Bottom right and clear of the dock,
+   which sits at 14px and is about 50 tall, so the two never overlap when a
+   save message lands while the reminder is up. Symbol, then the header, then
+   one line, then the two buttons, all spaced on one 12px step so nothing is
+   pressed against its neighbour. At a phone width it takes the width less
+   the 16px gutter on each side rather than its own 360. */
+.rmd{position:fixed;right:16px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:95;
+ width:min(360px,calc(100vw - 32px));box-sizing:border-box;padding:16px;
+ display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;
+ border-radius:var(--r);background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);
+ box-shadow:0 12px 32px rgba(0,0,0,.34);animation:rmdIn var(--t-element) var(--ease-out) both}
+.rmd-sym{width:var(--tap);height:var(--tap);display:grid;place-items:center;border-radius:50%;
+ border:1px solid var(--edge-2);color:var(--gold);outline:none}
+.rmd-sym:focus-visible{border-color:var(--gold)}
+.rmd-txt{min-width:0}
+.rmd-h{margin:0;font:500 15px/1.3 var(--sans);color:var(--ink)}
+.rmd-b{margin:4px 0 0;font:400 13px/1.4 var(--sans);color:var(--mid)}
+.rmd-go{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rmd-go .btn{min-height:var(--tap);margin:0}
+@keyframes rmdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+body.rm .rmd{animation:none}
+@media (max-width:600px){.rmd{left:16px;right:16px;width:auto}}
 /* NOT A SECOND CHAT BUBBLE, 9 November. His words, on this exact screen:
    "if you look at the very bottom, middle, it's doing a chat bubble, that
    doesn't belong in the mini." This is #status's own dock (body.html),
@@ -8167,6 +8189,9 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 .acs{--c:var(--sec-play);display:inline-flex;align-items:center;gap:5px;min-height:44px;padding:0 9px 0 8px;border-radius:12px;
  background:color-mix(in srgb,var(--c) 16%,var(--panel));color:var(--ink);cursor:help}
 .acs-miss{--c:var(--dim)} .acs-mins{--c:var(--sec-flow)}
+/* Marks, 18 November, the fourth chip, in the accent the ladder's next mark
+   already wears on the Ongoing goal card */
+.acs-marks{--c:var(--accent)}
 .acs svg{width:19px;height:19px;flex:0 0 auto;fill:none;stroke:var(--c);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .acs-miss svg{stroke:var(--mid)}
 .acs b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}

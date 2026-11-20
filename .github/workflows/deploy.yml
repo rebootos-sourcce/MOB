@@ -433,6 +433,9 @@ jobs:
           # (tests/menutip.js, fix/sun-tooltip-menu-open). New, so report
           # only first.
           - { gate: menutip, timeout: 20, command: node tests/menutip.js }
+          # 19 November: the ritual reminder pop-up, accounts-push
+          # (tests/remind.js, ui/remind.js). New, so report only first.
+          - { gate: remind, timeout: 20, command: node tests/remind.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
