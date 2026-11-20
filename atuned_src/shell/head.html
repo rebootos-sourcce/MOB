@@ -4166,6 +4166,32 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
  font-size:12px;font-weight:500;text-align:center;cursor:pointer}
 .stk-more:hover{color:var(--ink);background:var(--panel-2)}
 .stk-more:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+/* PICK SEVERAL (ui/insightui.js, stkTrayHtml). The tray sits on the rail's
+   own scroller, sticky at its top while picking, so the count and the one
+   Release stay in reach while the person scrolls down the stack to pick. The
+   pick ring is the run ring's slot and size: a ring, and a tick inside it once
+   picked, never a filled box. A picked row carries the accent rule on its
+   right edge, so it never reads as the selected row, whose rule is the left. */
+.stk-tray{display:flex;flex-direction:column;gap:10px;padding:10px 0 12px}
+.stk-tray.on{position:sticky;top:0;z-index:2;background:var(--panel);border-bottom:1px solid var(--edge)}
+.stk-tray-hd{display:flex;align-items:center;justify-content:flex-start;gap:12px}
+.stk-pick-t{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap)}
+.stk-pick-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.stk-pick-t[aria-pressed=true]{border-color:var(--accent)}
+.stk-tray-n{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--mid);font-size:13px}
+.stk-tray-p{margin:0;color:var(--mid);font-size:13px}
+.stk-tray-l{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.stk-tray-l li{padding:3px 8px;border:1px solid var(--edge);border-radius:var(--r-xs);font-size:12px;color:var(--ink)}
+.stk-tray-f{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stk-tray-f .seg button{min-height:var(--tap);min-width:var(--tap)}
+.stk-tray-t{display:inline-flex;align-items:center;gap:6px;font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--ink)}
+.stk-tray-t svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.stk-tray-b{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stk-tray-b .btn{min-height:var(--tap);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.stk-tray-b .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.stk-pk[aria-checked=true]{color:var(--accent)}
+.stk-row.picked .stk-r{box-shadow:inset -2px 0 0 var(--accent)}
+.stk-row.picked.sel .stk-r{box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent)}
 /* a child emotion's bar is rbPair, the Balance bar; on the Field's dock it
    is laid out by .fdock .rb2, and here by the same rule */
 .stack .rb2{position:relative;display:block;flex:1 1 auto;width:100%;min-width:0;padding:4px 0 6px;
@@ -4182,6 +4208,23 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
 .stack .rb2-p{overflow:hidden;min-width:0;max-width:100%}
 .stack .rb2-n{min-width:0;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stk-b{padding:2px 6px}
+/* A PATTERN WITH TWO POLES (stkPolar). The opposite names a hyper complex
+   carries run to twenty three letters, Supported Re-engagement, and side by
+   side in a 268px rail both words cut to four letters and a dot. So the held
+   name and its figure keep the line every other bar in this rail has, the
+   track runs under them, and the opposite sits under the track at the right
+   end, mirroring the held name at the left: each word at the end of the bar
+   it names. The pole icons are the level header's own glyph twice over and
+   are left to the header. */
+.stack .stk-pl .rb2{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l f" "t t" "r r";
+ row-gap:4px;padding:3px 0 5px}
+.stack .stk-pl .rb2-ln{display:contents}
+.stack .stk-pl .rb2-p.l{grid-area:l;font-size:13px;color:var(--ink)}
+.stack .stk-pl .rb2-f{grid-area:f;justify-self:end}
+.stack .stk-pl .rb2-f .rb2-v{font-size:14px}
+.stack .stk-pl .rb2-t{grid-area:t}
+.stack .stk-pl .rb2-p.r{grid-area:r;justify-self:end;font-size:12px}
+.stack .stk-pl .rb2-p .rb-ic{display:none}
 /* A PATTERN'S ROW IS THE RAIL'S AMOUNT BAR, ui/ui.js stkAmount: the line of
    words over the track, drawn by the same rb-row, rb-n, rb-v and rb-t rules
    the left rail's bars use, at the same 16px track. The name takes what is

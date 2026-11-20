@@ -39,6 +39,20 @@ var INS_SEL=null, INS_PENDING=null, INS_PAGE=0, INS_KEY='', INS_OUT=null;
    so a stored profile can never carry a stale key for it */
 var STK_MORE={};
 var STK_CAP=6;
+/* PICK SEVERAL, 20 November, his words on this rail: "I should be able to
+   select the patterns from here that I want to release." relPick already
+   takes an array and runs it as one release; only this rail asked for one row
+   at a time. A pick is stored as what it names, {kind,nm} or {kind:'addr',i},
+   never as a row object or a data-si index, because computeSeen rebuilds r on
+   every render and an index goes stale between the press and the release. It
+   is resolved through insightCanRelease, the single glyph's own route, at the
+   moment Release is pressed. Kept apart from S.pin: pressing a bar still pins
+   and opens its reading, the ring picks, and neither writes to the other. In
+   memory only, and dropped when the person changes (STK_PICK_FOR), so one
+   person's picks can never be released against another's record. */
+var STK_PICKING=false, STK_PICK=[], STK_PICK_FOR=null;
+var STK_PICKOFF=chainRing(12,12,8.2);
+var STK_PICKON=chainRing(12,12,8.2)+'M8.2 12.2l2.6 2.6 5-5.4';
 var STK_AMP=['Justification','Entitlement','Perfectionism','Obsession'];
 /* the Superego's own mark: a ring with an arc built round it, the defense
    that stands round a pattern once it is already there. Ring, not fill. */
@@ -93,14 +107,34 @@ function insWhySay(why){
  return why==='over'?'This is the opposite pushed past where it helps. A release has nothing to work here.'
   :why==='quiet'?'Nothing here holds charge yet, so there is nothing to release.'
   :why==='safe'?'':'A release cannot run here.';}
-/* the one door to a run, shared by the pill and every bar's run glyph. It
-   opens the release card already loaded and never starts a run: only the
-   card's own Release press does, and only that press spends the allowance. */
+/* the one door to a run, shared by the pill and every bar's run glyph, and
+   since 20 November it goes past the card into the run itself (insRunGo) */
 function insRunRelease(sel){
  var r=computeSeen(), x=insightCanRelease(sel,r);
  if(!x.ok){var say=insWhySay(x.why); if(say)status(say,'warn'); return false;}
- if(typeof relPick!=='function')return false;
- relPick(x.ids); return true;}
+ return insRunGo(x.ids);}
+/* STRAIGHT INTO THE PROTOCOL, 20 November, overriding 18 November's "opens the
+   card and never starts a run" above. His words on this rail: "I should be
+   able to click run release, and they take me to the release protocol." The
+   rail is where the choosing happens now (what, and with Pick several, how
+   many and at what dose), so the setup card would be the same choice asked a
+   second time. The protocol itself stays full screen: in the 268px rail its
+   820px text column and the two channel tallies, the left and right split,
+   do not fit, and a narrow run would be those cut without saying so.
+   The card still stands, and is the one thing shown, wherever beginning would
+   be wrong: a worked example (showOnly, relBegin refuses it anyway), a spent
+   allowance (an empty plan, which relBegin would run as a run of no lines that
+   still released every picked address at its end), and the onboarding mini
+   dose, whose card is the promise of four lines. Nothing is charged here: the
+   meter is written in relCoolDown, at the end, as before. The press is still
+   the browser's user gesture, so the opening sound plays as it did off the
+   card's own Release. */
+function insRunGo(ids){
+ if(typeof relPick!=='function'||!ids||!ids.length)return false;
+ relPick(ids);
+ var example=typeof showOnly==='function'&&showOnly();
+ if(RUN.open&&!RUN.mini&&!example&&(RUN.plan||[]).length&&typeof relBegin==='function')relBegin();
+ return true;}
 
 /* ---------- what a selection looks like ---------- */
 function insGlyphFor(sel){
@@ -192,7 +226,7 @@ function railInsight(r){
    +insPagesHtml(out)+'</div>'
   +insDotsHtml(out)
   +(rel.ok?'<div class="ins-rel"><button type="button" class="btn" id="bRel"'
-    +' data-tip-k="Release" data-tip="Opens the release at the heaviest place this holds. Nothing runs until you press Release on the card.">'
+    +' data-tip-k="Release" data-tip="Starts the release at the heaviest place this holds. Pause and End stay on its screen.">'
     +svgI(INS_RUNGLYPH)+'Release</button></div>':'');
  if(slot)slot.innerHTML=insightAudioSlot(out,r);}
 
@@ -265,34 +299,152 @@ function stkFetBar(ci,depth){
   +' aria-label="'+esc(c.nm+' and '+c.opp+'. '+say+' Opens the reading.')+'"'
   +' title="'+esc(read?c.nm+' held '+fv+', '+c.opp+' installed '+fp:c.nm+', not read yet')+'">'
   +fetBar(ci,'stkf'+depth+'-'+ci)+'</button>';}
+/* BOTH POLES ON A PATTERN'S BAR, 20 November, his words on this rail: "The bars
+   on the right should have both poles." The child emotions already drew two
+   (stkFetBar). A saboteur and a hyper complex draw two now, with the opposite
+   read from the one place the reading already reads it, insPole in
+   engine/insight.js: SABCARD's op, the CHILD opposites of the charges the
+   saboteur keys on and checked by tests/engine.js against SAB33 (the guard
+   that caught Martyr's invented "Rest"), and HCXCARD's inverseName. So the
+   bar and the third paragraph can never name two different opposites.
+   The mark is placed the way fetBar places a child emotion's, held less
+   installed, from the means of n.held and n.rep over the pattern's own
+   addresses (compute.js gives a saboteur s.held and s.rep the same way). The
+   figure is the chain figure this row always printed while it leans to the
+   held pole, and the installed figure once the opposite outweighs it, which
+   is fetBar's rule.
+   NO OPPOSITE IS INVENTED. Superego, super complexes, complexes and an
+   overshot row have no sourced opposite (insPole answers null), and they keep
+   the one sided bar. Deriving one from the charge at an address is the exact
+   mistake the Martyr guard exists to catch, so those names are the owner's. */
+function stkPoleOf(o){
+ var p=(typeof insPole==='function')?insPole(o):null;
+ if(!p)return null;
+ var def='';
+ if(o.kind==='hy'){var h=HCXCARD[KB_KEY(insBase(o))]; def=(h&&h.inverseDefinition)||'';}
+ else def='What opens as this saboteur lets go: the opposite of each charge it runs on.';
+ return {nm:p.t, def:def};}
+function stkHeldRep(o){
+ if(typeof o.held==='number'&&typeof o.rep==='number')return {h:o.held,p:o.rep};
+ var lv=leaves(o); if(!lv.length)return {h:0,p:0};
+ return {h:lv.reduce(function(a,n){return a+(n.held||0);},0)/lv.length,
+  p:lv.reduce(function(a,n){return a+(n.rep||0);},0)/lv.length};}
+function stkPolar(o,nm,f,pole){
+ var b=(leaves(o)[0]||{}).b||'Heart', hr=stkHeldRep(o), read=hr.h>0||hr.p>0;
+ var lean=clamp(50+(hr.h-hr.p)*5,0,100), side=!read?0:Math.round(lean)>50?-1:Math.round(lean)<50?1:0;
+ var ic='<path d="'+CHAINGLYPH[o.kind]+'"/>';
+ return rbPair('stkp-'+o.kind+'-'+KB_KEY(o.nm),{read:read, whole:true,
+  fig:!read?'–':side>0?fmtPct('installed',hr.p):f,
+  L:{nm:nm,ic:ic,c:seatCol(b),v:lean}, R:{nm:pole.nm,ic:ic,c:'var(--accent)',v:100-lean}});}
 /* the run glyph: a ring at the bar's right end. Not drawn (the slot is kept so
-   every bar ends at the same place) when a release has nothing to open here. */
-function stkRunHtml(attrs,ok,say){
+   every bar ends at the same place) when a release has nothing to open here.
+   In Pick several it is the pick ring instead, in the same slot, so the two
+   never stand side by side and every bar still ends at the same place. */
+function stkRunHtml(attrs,ok,say,pk){
  if(!ok)return '<span class="stk-run off" aria-hidden="true"></span>';
+ if(STK_PICKING){
+  var on=stkPickAt(pk)>=0;
+  return '<button type="button" class="stk-run stk-pk" role="checkbox" aria-checked="'+on+'" '+attrs.replace('data-run=','data-pk=')
+   +' aria-label="'+esc('Pick '+pk.label)+'" data-tip-k="Pick" data-tip="Adds this to the release you are building. Press again to take it out.">'
+   +svgI('<path d="'+(on?STK_PICKON:STK_PICKOFF)+'"/>')+'</button>';}
  return '<button type="button" class="stk-run" '+attrs+' aria-label="'+esc(say)+'"'
-  +' data-tip-k="Release" data-tip="Release: opens the release for this one.">'+svgI(INS_RUNGLYPH)+'</button>';}
-function stkRowClass(key,L,selKey){
- return 'stk-row'+(key===selKey?' sel':'')+(L&&!L[key]?' dim':'');}
+  +' data-tip-k="Release" data-tip="Release: starts the release for this one.">'+svgI(INS_RUNGLYPH)+'</button>';}
+function stkRowClass(key,L,selKey,pk){
+ return 'stk-row'+(key===selKey?' sel':'')+(L&&!L[key]?' dim':'')+(STK_PICKING&&pk&&stkPickAt(pk)>=0?' picked':'');}
 function stkPatternRow(o,r,L,selKey,ctx){
  var si=(r[INS_LIST[o.kind]]||[]).indexOf(o);
  var key=o.kind+':'+o.nm, nm=o.nm+(o.over?', overshot':''), f=fmtPct('chain',o.w);
- var can=insightCanRelease({kind:o.kind,nm:o.nm},r,ctx);
- var tip=o.over?'The opposite pushed past where it helps. A release has nothing to work here.':'';
- return '<div class="'+stkRowClass(key,L,selKey)+'">'
-  +'<button type="button" class="stk-r stk-am" data-sk="'+o.kind+'" data-si="'+si+'" title="'+esc(nm)+'"'
-  +(tip?' data-tip-k="'+esc(o.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'+stkAmount(o,nm,f)+'</button>'
-  +stkRunHtml('data-run="'+o.kind+'" data-si="'+si+'"',can.ok,'Release '+o.nm)+'</div>';}
+ var can=insightCanRelease({kind:o.kind,nm:o.nm},r,ctx), pk={kind:o.kind,nm:o.nm,label:o.nm};
+ var pole=o.over?null:stkPoleOf(o), hr=pole?stkHeldRep(o):null;
+ var tip=o.over?'The opposite pushed past where it helps. A release has nothing to work here.'
+  :pole?pole.nm+'. '+pole.def:'';
+ var says=pole?nm+' held '+f+', '+pole.nm+' installed '+fmtPct('installed',hr.p):nm;
+ return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'
+  +'<button type="button" class="stk-r '+(pole?'stk-b stk-pl':'stk-am')+'" data-sk="'+o.kind+'" data-si="'+si+'" title="'+esc(says)+'"'
+  +(tip?' data-tip-k="'+esc(pole?o.nm+' and its opposite':o.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
+  +(pole?stkPolar(o,nm,f,pole):stkAmount(o,nm,f))+'</button>'
+  +stkRunHtml('data-run="'+o.kind+'" data-si="'+si+'"',can.ok,'Release '+o.nm,pk)+'</div>';}
 function stkAmpRow(a,n,r,L,selKey,ctx){
  var key='amp:'+n.i, f=fmtPct('weight',n.sq), p=Math.max(0,Math.min(100,pct('weight',n.sq)||0));
  var can=insightCanRelease({kind:'addr',i:n.i},r,ctx);
  var tip=!n.cf?'No feeling is mapped to this address yet, so a release cannot run here.':'';
- return '<div class="'+stkRowClass(key,L,selKey)+'">'
+ return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'
   +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(a.nm)+'"'
   +(tip?' data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +'<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(a.nm)+'</span></span><span class="rb-v">'+esc(f)+'</span></span>'
   +'<span class="rb-t" aria-hidden="true" style="--c:'+seatCol(n.b)+'"><s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>'
   +'<i class="rb-f" style="width:'+p.toFixed(2)+'%"></i></span></button>'
-  +stkRunHtml('data-run="addr" data-ri="'+n.i+'"',can.ok,'Release '+a.nm)+'</div>';}
+  +stkRunHtml('data-run="addr" data-ri="'+n.i+'"',can.ok,'Release '+a.nm,{kind:'addr',i:n.i,label:a.nm})+'</div>';}
+function stkPickSame(a,b){
+ return a.kind===b.kind&&(a.kind==='addr'?a.i===b.i:a.nm===b.nm);}
+function stkPickAt(pk){
+ if(!pk)return -1;
+ for(var j=0;j<STK_PICK.length;j++)if(stkPickSame(STK_PICK[j],pk))return j;
+ return -1;}
+function stkPickFlip(pk){
+ var j=stkPickAt(pk);
+ if(j>=0)STK_PICK.splice(j,1);
+ else STK_PICK.push(pk.kind==='addr'?{kind:'addr',i:pk.i,label:pk.label||''}:{kind:pk.kind,nm:pk.nm,label:pk.label||pk.nm});
+ railStack(computeSeen());}
+function stkPickToggle(on){
+ STK_PICKING=on===undefined?!STK_PICKING:!!on;
+ if(!STK_PICKING)STK_PICK=[];
+ railStack(computeSeen());}
+/* who the picks belong to: the record and the worked example on screen */
+function stkPickWho(){
+ return (typeof CURP!=='undefined'?CURP:null)+'|'+(typeof S!=='undefined'?S.who:'');}
+/* every pick, resolved now, in the order picked, each address once. A pick
+   that no longer resolves (its pattern stopped running) is skipped and said. */
+function stkPickIds(){
+ var rr=computeSeen(), ctx=insCtx(), ids=[], seen={}, lost=0;
+ STK_PICK.forEach(function(pk){
+  var x=insightCanRelease(pk.kind==='addr'?{kind:'addr',i:pk.i}:{kind:pk.kind,nm:pk.nm},rr,ctx);
+  if(!x.ok){lost++; return;}
+  x.ids.forEach(function(i){if(!seen[i]){seen[i]=1; ids.push(i);}});});
+ return {ids:ids,lost:lost};}
+/* HOW LONG IT WOULD RUN, before anything opens: the plan the card would build
+   (relPlan, the allowance's cap included) and the script's own clock
+   (relSecFrom), read with the picked addresses in RUN's queue and put back
+   untouched. Never while a release is open, whose queue this must not touch. */
+function stkPickSec(ids){
+ if(typeof relPlan!=='function'||typeof relSecFrom!=='function'||RUN.open)return null;
+ var q0=RUN.queue, p0=RUN.plan;
+ try{
+  RUN.queue=ids.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
+  RUN.plan=relPlan();
+  return RUN.plan.length?relSecFrom(null):0;}
+ catch(e){return null;}
+ finally{RUN.queue=q0; RUN.plan=p0;}}
+/* THE TRAY. The toggle always; with it on, what is picked, how long it runs,
+   the dose the setup card used to ask for (the same REL_DOSES and RUN.dose,
+   so the card and the tray cannot disagree), and the one Release. */
+function stkTrayHtml(){
+ var n=STK_PICK.length, hd='<button type="button" class="btn stk-pick-t" id="stkpick" aria-pressed="'+STK_PICKING+'"'
+  +' data-tip-k="Pick several" data-tip="Turns every release ring into a pick ring, so one release can run several patterns at once.">'
+  +svgI('<path d="'+STK_PICKON+'"/>')+(STK_PICKING?'Done picking':'Pick several')+'</button>'
+  +(STK_PICKING?'<span class="stk-tray-n" aria-live="polite">'+n+' picked</span>':''), body='';
+ if(STK_PICKING&&!n)body='<p class="stk-tray-p">Press a ring to add it.</p>';
+ else if(STK_PICKING){
+  var got=stkPickIds(), sec=got.ids.length?stkPickSec(got.ids):null;
+  body='<ul class="stk-tray-l">'+STK_PICK.map(function(pk){return '<li>'+esc(pk.label||pk.nm||'')+'</li>';}).join('')+'</ul>'
+   +'<div class="stk-tray-f">'
+   +'<div class="seg" role="group" aria-label="Patterns, times each line is said, left and right" data-tip-k="Patterns"'
+   +' data-tip="How many times each line is said, left and right. More takes longer.">'
+   +REL_DOSES.map(function(d){return '<button type="button" data-stkdose="'+d+'" aria-pressed="'+(RUN.dose===d)+'">'+d+'</button>';}).join('')
+   +'</div>'
+   +(sec!=null&&sec>0?'<span class="stk-tray-t" data-tip-k="Time" data-tip="How long the release runs, start to finish, at this many patterns.">'
+    +svgI('<circle cx="12" cy="12" r="8.2"/><path d="M12 7.5V12l3 2"/>')+relMMSS(sec)+'</span>':'')
+   +'</div>'
+   +'<div class="stk-tray-b"><button type="button" class="btn" id="stkclear">Clear</button>'
+   +'<button type="button" class="btn pri" id="stkgo"'+(got.ids.length?'':' disabled')+'>'+svgI(INS_RUNGLYPH)+'Release '+n+'</button></div>';}
+ return '<div class="stk-tray'+(STK_PICKING?' on':'')+'" id="relq"><div class="stk-tray-hd">'+hd+'</div>'+body+'</div>';}
+function stkPickGo(){
+ var got=stkPickIds();
+ if(!got.ids.length){status('Nothing picked can run a release right now.','warn'); return false;}
+ var ok=insRunGo(got.ids);
+ if(ok){STK_PICK=[]; STK_PICKING=false; railStack(computeSeen());
+  if(got.lost)status(got.lost+(got.lost===1?' pick has':' picks have')+' nothing to release now and '+(got.lost===1?'was':'were')+' left out.','warn');}
+ return ok;}
 function stkLevelHtml(k,label,count,body){
  return '<section class="stk-lv" data-lv="'+k+'">'
   +'<div class="stk-lh" tabindex="0" role="heading" aria-level="3" data-tip-k="'+esc(label)+'"'
@@ -308,7 +460,8 @@ function railStack(r){
  var e=document.getElementById('stack'); if(!e)return;
  r=r||computeSeen();
  if(r.unread){e.innerHTML=''; return;}
- var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h='';
+ if(STK_PICK_FOR!==stkPickWho()){STK_PICK_FOR=stkPickWho(); STK_PICK=[]; STK_PICKING=false;}
+ var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h=stkTrayHtml();
  /* SUPEREGO, the four addresses the left rail's own Superego section reads,
     from the same table (AMPLIFIER, engine/data/registers.js) and the same
     weights (BY[i].sq), so the two can never disagree */
@@ -332,9 +485,9 @@ function railStack(r){
  /* the child emotions are a fixed set of nine and draw as nine, in the
     table's own order, so a bar never moves from where it was */
  h+=stkLevelHtml('fet','Child emotions',CHILD.length,CHILD.map(function(c,ci){
-  var key='fet:'+c.nm, can=insightCanRelease({kind:'fet',nm:c.nm},r,ctx);
-  return '<div class="'+stkRowClass(key,L,selKey)+'">'+stkFetBar(ci,0)
-   +stkRunHtml('data-run="fet" data-ri="'+ci+'"',can.ok,'Release '+c.nm)+'</div>';}).join(''));
+  var key='fet:'+c.nm, can=insightCanRelease({kind:'fet',nm:c.nm},r,ctx), pk={kind:'fet',nm:c.nm,label:c.nm};
+  return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkFetBar(ci,0)
+   +stkRunHtml('data-run="fet" data-ri="'+ci+'"',can.ok,'Release '+c.nm,pk)+'</div>';}).join(''));
  e.innerHTML=h;
  /* A LEVEL THE PLAN CANNOT SEE IS GREYED, PADLOCKED AND DESCRIBED, as the five
     tabs were before them. The header carries the lock (data-lock, the tier that
@@ -353,6 +506,22 @@ function insRefresh(){
  if(typeof rbPairs==='function')rbPairs();}
 document.addEventListener('click',function(e){
  var t=e.target; if(!t||!t.closest)return;
+ if(t.closest('#stkpick')){stkPickToggle(); var tg=document.getElementById('stkpick'); if(tg)tg.focus(); return;}
+ if(t.closest('#stkclear')){STK_PICK=[]; railStack(computeSeen()); return;}
+ if(t.closest('#stkgo')){stkPickGo(); return;}
+ var dz=t.closest('[data-stkdose]');
+ if(dz){RUN.dose=+dz.getAttribute('data-stkdose'); railStack(computeSeen()); return;}
+ var pkb=t.closest('.stk-pk[data-pk]');
+ if(pkb){
+  var pkk=pkb.getAttribute('data-pk'), pr=computeSeen(), pk=null;
+  if(pkk==='fet'){var pc=CHILD[+pkb.getAttribute('data-ri')]; if(pc)pk={kind:'fet',nm:pc.nm,label:pc.nm};}
+  else if(pkk==='addr'){var pi=+pkb.getAttribute('data-ri'), pa=AMPLIFIER.filter(function(a){return a.i===pi;})[0];
+   pk={kind:'addr',i:pi,label:pa?pa.nm:''};}
+  else{var po2=(pr[INS_LIST[pkk]]||[])[+pkb.getAttribute('data-si')]; if(po2)pk={kind:po2.kind,nm:po2.nm,label:po2.nm};}
+  if(pk){stkPickFlip(pk);
+   var back2=document.querySelector('#stack .stk-pk[data-pk="'+pkk+'"]['+(pkb.hasAttribute('data-si')?'data-si="'+pkb.getAttribute('data-si'):'data-ri="'+pkb.getAttribute('data-ri'))+'"]');
+   if(back2)back2.focus();}
+  return;}
  var run=t.closest('.stk-run[data-run]');
  if(run){
   var k=run.getAttribute('data-run'), rr=computeSeen(), sel=null;

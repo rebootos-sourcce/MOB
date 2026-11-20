@@ -280,13 +280,54 @@ async function gate(browser,file,ok){
   const o={n:gl.length,small:sizes.filter(s=>{const [w,h]=s.split('x').map(Number);return w<44||h<44;}).length,names:gl.slice(0,3).map(g=>g.getAttribute('aria-label'))};
   const hy=document.querySelector('#stack .stk-run[data-run="hy"]');
   const was=RUN.open; o.was=was;
-  if(hy){hy.click(); await new Promise(z=>setTimeout(z,80));
-   o.opened=RUN.open; o.queue=RUN.queue.length; o.phase=RUN.phase; o.started=RUN.t0>0||RUN.phase==='run';
-   if(RUN.open){RUN.phase='run';RUN.idx=1e9;relCoolDown();relClose();}}
+  /* a worked example first: it can never run (showOnly), so the press stops
+     on the card, loaded, with the preview line in Begin's place */
+  if(hy){o.example=showOnly(); hy.click(); await new Promise(z=>setTimeout(z,80));
+   o.exOpen=RUN.open; o.exPhase=RUN.phase; o.exQueue=RUN.queue.length; relClose();}
+  /* then the same record as a person's own, which is the case he pressed:
+     the press goes past the card and the run has begun */
+  const at=SHOW_RECS.indexOf(CURP); if(at>=0)SHOW_RECS.splice(at,1);
+  render(); const hy2=document.querySelector('#stack .stk-run[data-run="hy"]');
+  if(hy2){hy2.click(); await new Promise(z=>setTimeout(z,80));
+   o.opened=RUN.open; o.queue=RUN.queue.length; o.phase=RUN.phase; o.started=RUN.t0>0&&RUN.phase!=='idle';
+   if(RUN.open){relHush();RUN.phase='run';RUN.idx=1e9;relCoolDown();relClose();}}
+  if(at>=0)SHOW_RECS.push(CURP);
   return o;});
  ok(run.n>0&&run.small===0,'RUN: every bar that can run has a 44 by 44 run glyph, '+JSON.stringify({n:run.n,small:run.small}));
- ok(run.opened&&run.queue>0&&run.phase!=='run'&&!run.started&&!run.was,
-  'RUN: pressing it opens that item\'s release already loaded and starts nothing, '+JSON.stringify(run));
+ ok(run.example&&run.exOpen&&run.exPhase==='idle'&&run.exQueue>0,
+  'RUN: on a worked example pressing it opens that item\'s release loaded and starts nothing, '+JSON.stringify(run));
+ ok(run.opened&&run.queue>0&&run.started&&!run.was,
+  'RUN: on a person\'s own record pressing it goes straight into the release protocol, '+JSON.stringify(run));
+
+ /* BOTH POLES AND PICK SEVERAL, 20 November */
+ const pk=await pg.evaluate(async()=>{
+  S.pin=null; rdClose(); render();
+  const r=computeSeen(), o={};
+  const pl=[...document.querySelectorAll('#stack .stk-pl')];
+  o.pl=pl.length; o.hy=r.hys.filter(x=>!x.over).length;
+  o.hyPl=document.querySelectorAll('#stack .stk-lv[data-lv="hy"] .stk-pl').length;
+  o.right=pl.map(e=>(e.querySelector('.rb2-p.r')||{}).textContent||'');
+  o.agree=r.hys.filter(x=>!x.over).every(x=>{const p=insPole(x);
+   const row=document.querySelector('#stack .stk-pl[data-sk="hy"][data-si="'+r.hys.indexOf(x)+'"] .rb2-p.r');
+   return !row||(p&&row.textContent===p.t);});
+  o.egoPl=document.querySelectorAll('#stack .stk-lv[data-lv="ego"] .stk-pl,#stack .stk-lv[data-lv="sup"] .stk-pl,#stack .stk-lv[data-lv="cx"] .stk-pl').length;
+  stkPickToggle(true);
+  o.rings=document.querySelectorAll('#stack .stk-pk').length; o.runs=document.querySelectorAll('#stack .stk-run[data-run]').length;
+  document.querySelector('#stack .stk-pk[data-pk="hy"]').click();
+  document.querySelector('#stack .stk-pk[data-pk="fet"]').click();
+  o.n=STK_PICK.length; o.checked=document.querySelectorAll('#stack .stk-pk[aria-checked=true]').length;
+  o.word=((document.getElementById('relq')||{}).innerText||'').indexOf('2 picked')>=0;
+  const want=stkPickIds().ids; o.want=want.length;
+  let got=null; const keep=window.relPick; window.relPick=function(ids){got=ids.slice(); return keep.apply(this,arguments);};
+  document.getElementById('stkgo').click(); await new Promise(z=>setTimeout(z,80));
+  window.relPick=keep;
+  o.calls=got?got.length:-1; o.same=!!got&&got.join()===want.join(); o.open=RUN.open; o.cleared=STK_PICK.length===0&&!STK_PICKING;
+  if(RUN.open)relClose();
+  return o;});
+ ok(pk.hyPl===pk.hy&&pk.agree&&pk.egoPl===0&&pk.right.every(t=>t.length>0),
+  'POLES: every hyper complex and named saboteur draws its sourced opposite, and no level without one invents it, '+JSON.stringify(pk));
+ ok(pk.rings>0&&pk.runs===0&&pk.n===2&&pk.checked===2&&pk.word&&pk.calls===pk.want&&pk.same&&pk.open&&pk.cleared,
+  'PICK: Pick several turns the rings to picks, counts them, and releases them together in one relPick, '+JSON.stringify(pk));
 
  /* THE RELEASE BUTTON, in the reading */
  const rel=await pg.evaluate(async()=>{
@@ -439,7 +480,9 @@ const MUT=[
  ['tab-row-back',"var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h='';","var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h='<div class=\"stk-tabs\"><button class=\"stk-t\" data-st=\"sab\">x</button></div>';",'STACK: unnested'],
  ['no-more-chip',"+(hidden>0?'<button type=\"button\" class=\"stk-more\"","+(false?'<button type=\"button\" class=\"stk-more\"",'STACK: a level counts what runs'],
  ['small-run-glyph','.stk-run{flex:0 0 var(--tap);width:var(--tap);min-height:var(--tap);','.stk-run{flex:0 0 30px;width:30px;min-height:30px;','RUN: every bar that can run'],
- ['run-glyph-starts-a-run',"if(typeof relPick!=='function')return false;\n relPick(x.ids); return true;}","if(typeof relPick!=='function')return false;\n relPick(x.ids); RUN.phase='run'; return true;}",'RUN: pressing it opens'],
+ ['run-glyph-stops-at-card',"if(RUN.open&&!RUN.mini&&!example&&(RUN.plan||[]).length&&typeof relBegin==='function')relBegin();","",'RUN: on a person'],
+ ['pole-invented-for-superego',"var pole=o.over?null:stkPoleOf(o)","var pole=o.over?null:(stkPoleOf(o)||{nm:'Invented',def:''})",'POLES:'],
+ ['picks-run-one-at-a-time',"var ok=insRunGo(got.ids);","var ok=insRunGo(got.ids.slice(0,1));",'PICK:'],
  ['borrowed-text-in-card',"+'<div class=\"pm-eye\">Addresses</div><div class=\"ad-rows\">'\n  +lv.slice(0,8)","+'<div class=\"pm-eye\">Made of</div><div class=\"ad-rows\">'\n  +lv.slice(0,8)",'CARD: the Selection card holds none'],
  ['decimal-in-identity',"if(obj)fig=fmtPct('chain',obj.w);","if(obj)fig=obj.w.toFixed(1)+'%';",'PERCENT:'],
  ['stale-key-throws',"function railStack(r){\n var e=document.getElementById('stack'); if(!e)return;","function railStack(r){\n var e=document.getElementById('stack'); if(!e)return;\n try{if(localStorage.getItem('stkopen'))throw new Error('stale key');}catch(x){if(x.message==='stale key')throw x;}",'STALE:'],
