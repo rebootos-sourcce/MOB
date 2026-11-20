@@ -997,7 +997,18 @@ function rbPair(k,o){
  if(read&&o.band){var b0=clamp(Math.min(o.band[0],o.band[1]),0,100), b1=clamp(Math.max(o.band[0],o.band[1]),0,100);
   if(b1-b0>0.05)band='<i class="rb2-band" style="left:'+(100-b1).toFixed(2)+'%;width:'+(b1-b0).toFixed(2)+'%"></i>';}
  var drift=read&&L.sw;
- return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
+ /* DATA-FIGFIXED, 20 November. The figure printed in the middle is the
+    dominant pole's own share, and equals the lean this bar draws, except
+    when the caller hands over its own fig (fetBar and stkPolar's pattern
+    rows): a held-less-installed amount or a chain weight, on its own scale,
+    never the lean's position. The two are different quantities sharing one
+    widget on purpose (the comment above rbPairFig says so), so a reader that
+    checks the printed number against the drawn lean needs to know which
+    case it is looking at without guessing from the numbers alone. This bit
+    is that fact, carried on the markup the way the arc's own dasharray
+    already carries a ring's. tests/pct.js reads it rather than assume. */
+ return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'"'+(o.fig!==undefined?' data-figfixed="1"':'')
+  +' style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
   +'<span class="rb2-ln" aria-hidden="true">'+pole(L,'l')
   +'<span class="rb2-f">'+(sd<0?rbIcon('chevL'):'')+'<b class="rb2-v">'+esc(rbPairFig(o))+'</b>'+(sd>0?rbIcon('chevR'):'')+'</span>'
   +pole(R,'r')+'</span>'

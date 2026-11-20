@@ -1717,6 +1717,62 @@ function nodeStateOf(w){
  var x=weightShown(w);
  for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
  return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}
+
+/* ============================================================
+   NERVE STATE, FOUR RUNGS, ON THE INSIGHT RAIL'S BARS. 20 November, his words
+   on the Field's right rail: "I need to see the nerve state, whether the nerve
+   on these bars open and closed, the icons open, moderately impaired, heavily
+   impaired, closed. I want to see those tiny little icons on these bars so
+   people can see very clearly what the state of their nerve is."
+
+   FOUR WORDS, HIS, AND NO FIGURES, AGAIN. Round KD named five rungs and this
+   names four: the light "impaired" rung is gone and "blocked" is now
+   "closed". The lines are not invented here. Each one is read by name off
+   NODESTATE_PROPOSED above, so moving a line there moves it here and the two
+   tables cannot drift:
+
+     open                 nothing held. The figure beside it prints the dash.
+     moderately impaired  from the floor of the dropped "impaired" rung, 0.1
+                          (1%). Charge a person entered under 4 may not read
+                          open: that is BELOW THE LINE in compute.js, measured,
+                          where a field set to 3.9 everywhere read as nothing.
+                          With no lighter word left it takes the lightest
+                          impaired word he named, never open.
+     heavily impaired     6.5 (65%), the hyper gate in compute.js.
+     closed               9 (90%), where the renderers already draw it hot.
+
+   The 4 line the five-rung table drew between impaired and moderately impaired
+   has no rung to separate any more, so it is not used. Where the lines sit is
+   still his to move, and still a proposal until he does.
+
+   THE STATE READS THE FIGURE THE RAIL PRINTS, the tierOf lesson again. The rail
+   prints whole percents on a 0 to 10 scale (pct in engine/pct.js, kinds chain,
+   weight and charge, all 0 to 10), so the line is compared as a whole percent
+   with the same rounding, and a bar that prints 65% can never wear the
+   moderately impaired mark. The percent is worked out here rather than by
+   calling pct, because this file loads before engine/pct.js.
+
+   def is the one plain sentence the mark unpacks to on hover and tap, the
+   house rule for every symbol. It names what the rung means and the range it
+   covers, and is written from the lines, never typed beside them. */
+function nsAt(nm){
+ for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(NODESTATE_PROPOSED[i].nm===nm)return Math.round(NODESTATE_PROPOSED[i].at*10);
+ throw new Error('nsAt: there is no node state '+JSON.stringify(nm));}
+const NERVESTATE=[
+ {k:'closed',   nm:'closed',              at:nsAt('blocked'),          say:'fully blocked, nothing moves through it'},
+ {k:'heavy',    nm:'heavily impaired',    at:nsAt('heavily impaired'), say:'running hard, very little moves through it'},
+ {k:'moderate', nm:'moderately impaired', at:nsAt('impaired'),         say:'carrying charge, part of the flow is held back'},
+ {k:'open',     nm:'open',                at:0,                        say:'nothing held, the flow moves through'}];
+NERVESTATE.forEach(function(s,i){
+ var up=i?NERVESTATE[i-1].at-1:100;
+ s.range=s.at===0?'no charge':s.at===up?'charge at '+s.at+'%':'charge from '+s.at+'% to '+up+'%';
+ s.def=s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+': '+s.say+'. Reads '+s.range+'.';});
+function nerveStateOf(v){
+ var x=+v; if(!isFinite(x))x=0;
+ /* pct's own expression for a 0 to 10 kind, so the two round alike */
+ var p=Math.round(100*x/10); p=p<0?0:p>100?100:p;
+ for(var i=0;i<NERVESTATE.length;i++) if(p>=NERVESTATE[i].at)return NERVESTATE[i];
+ return NERVESTATE[NERVESTATE.length-1];}
 /* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
  * November; its last commit is aa449a80 on origin/source-voice-prototype).
  * NOT YET REVIEWED BY HIM. On 17 November he said:
@@ -10066,7 +10122,16 @@ const TABDEF=[
     integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
-    commit (the bar, the dashboard card, the drills, the tooltips). */
+    commit (the bar, the dashboard card, the drills, the tooltips).
+
+    COMPASS AGAIN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." The first pass back moved only nm
+    here, and shell/body.html's own button kept reading Path over an engine
+    that said Compass, because the bar is markup this file does not write. The
+    rest went back with it: the button and its title, the Play door's title,
+    the dashboard card, the drill, the Insight kind word, the overlays, the
+    hover word, the plans and the Ritual's affirmation source. The numerology
+    row stays Life path, which was never this tab's word. */
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -14703,7 +14768,7 @@ function patFam(o){
 var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
 var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
  addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
- path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
+ path:'Compass',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
 /* the three fixed run-in headers, a label and never data */
@@ -30345,6 +30410,7 @@ if(typeof module!=='undefined'&&module.exports){
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf, TIERCOL:TIERCOL,
+                 NODESTATE_PROPOSED:NODESTATE_PROPOSED, NERVESTATE:NERVESTATE, nerveStateOf:nerveStateOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,

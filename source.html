@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v302 5fb6fecb 2026-11-20 21:06"><head><meta charset="utf-8">
+<html lang="en" data-build="v305 5e556983 2026-11-20 23:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4183,6 +4183,22 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
 .stk-run:hover,.stk-run:focus-visible{color:var(--accent);background:var(--panel-2)}
 .stk-run:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .stk-run.off{visibility:hidden;pointer-events:none}
+/* THE NERVE STATE MARK (ui/insightui.js, stkNsHtml). 16px, the level header's
+   own glyph size, in a 16px column on the row's left, so the row's name lines
+   up under the header's word the way the header's glyph lines up over the
+   mark. Centred on the bar's name line, never on the whole row, because a
+   pair bar is taller and a centred mark would sit between its two lines. The
+   shape carries the state; the colour only follows it: open in --mid, the two
+   impaired rungs in --ink, closed in --alarm, the one colour this product
+   already keeps for a thing that is hot. */
+.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:9px 2px 0 0;display:flex;
+ align-items:center;justify-content:center;color:var(--ink);border-radius:50%;cursor:help}
+.stk-ns svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.stk-ns[data-ns="open"]{color:var(--mid)}
+.stk-ns[data-ns="closed"]{color:var(--alarm)}
+.stk-ns:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stk-row.dim .stk-ns{color:var(--mid)}
 .stk-more{display:block;width:100%;min-height:var(--tap);margin-top:4px;padding:0 8px;border:0;
  border-radius:var(--r-xs);background:transparent;color:var(--mid);font-family:var(--sans);
  font-size:12px;font-weight:500;text-align:center;cursor:pointer}
@@ -14592,6 +14608,62 @@ function nodeStateOf(w){
  for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(x>=NODESTATE_PROPOSED[i].at)return NODESTATE_PROPOSED[i];
  return NODESTATE_PROPOSED[NODESTATE_PROPOSED.length-1];}
 
+/* ============================================================
+   NERVE STATE, FOUR RUNGS, ON THE INSIGHT RAIL'S BARS. 20 November, his words
+   on the Field's right rail: "I need to see the nerve state, whether the nerve
+   on these bars open and closed, the icons open, moderately impaired, heavily
+   impaired, closed. I want to see those tiny little icons on these bars so
+   people can see very clearly what the state of their nerve is."
+
+   FOUR WORDS, HIS, AND NO FIGURES, AGAIN. Round KD named five rungs and this
+   names four: the light "impaired" rung is gone and "blocked" is now
+   "closed". The lines are not invented here. Each one is read by name off
+   NODESTATE_PROPOSED above, so moving a line there moves it here and the two
+   tables cannot drift:
+
+     open                 nothing held. The figure beside it prints the dash.
+     moderately impaired  from the floor of the dropped "impaired" rung, 0.1
+                          (1%). Charge a person entered under 4 may not read
+                          open: that is BELOW THE LINE in compute.js, measured,
+                          where a field set to 3.9 everywhere read as nothing.
+                          With no lighter word left it takes the lightest
+                          impaired word he named, never open.
+     heavily impaired     6.5 (65%), the hyper gate in compute.js.
+     closed               9 (90%), where the renderers already draw it hot.
+
+   The 4 line the five-rung table drew between impaired and moderately impaired
+   has no rung to separate any more, so it is not used. Where the lines sit is
+   still his to move, and still a proposal until he does.
+
+   THE STATE READS THE FIGURE THE RAIL PRINTS, the tierOf lesson again. The rail
+   prints whole percents on a 0 to 10 scale (pct in engine/pct.js, kinds chain,
+   weight and charge, all 0 to 10), so the line is compared as a whole percent
+   with the same rounding, and a bar that prints 65% can never wear the
+   moderately impaired mark. The percent is worked out here rather than by
+   calling pct, because this file loads before engine/pct.js.
+
+   def is the one plain sentence the mark unpacks to on hover and tap, the
+   house rule for every symbol. It names what the rung means and the range it
+   covers, and is written from the lines, never typed beside them. */
+function nsAt(nm){
+ for(var i=0;i<NODESTATE_PROPOSED.length;i++) if(NODESTATE_PROPOSED[i].nm===nm)return Math.round(NODESTATE_PROPOSED[i].at*10);
+ throw new Error('nsAt: there is no node state '+JSON.stringify(nm));}
+const NERVESTATE=[
+ {k:'closed',   nm:'closed',              at:nsAt('blocked'),          say:'fully blocked, nothing moves through it'},
+ {k:'heavy',    nm:'heavily impaired',    at:nsAt('heavily impaired'), say:'running hard, very little moves through it'},
+ {k:'moderate', nm:'moderately impaired', at:nsAt('impaired'),         say:'carrying charge, part of the flow is held back'},
+ {k:'open',     nm:'open',                at:0,                        say:'nothing held, the flow moves through'}];
+NERVESTATE.forEach(function(s,i){
+ var up=i?NERVESTATE[i-1].at-1:100;
+ s.range=s.at===0?'no charge':s.at===up?'charge at '+s.at+'%':'charge from '+s.at+'% to '+up+'%';
+ s.def=s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+': '+s.say+'. Reads '+s.range+'.';});
+function nerveStateOf(v){
+ var x=+v; if(!isFinite(x))x=0;
+ /* pct's own expression for a 0 to 10 kind, so the two round alike */
+ var p=Math.round(100*x/10); p=p<0?0:p>100?100:p;
+ for(var i=0;i<NERVESTATE.length;i++) if(p>=NERVESTATE[i].at)return NERVESTATE[i];
+ return NERVESTATE[NERVESTATE.length-1];}
+
 try{window.__at&&window.__at('engine/data/canon.js');}catch(e){}
 /* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
  * November; its last commit is aa449a80 on origin/source-voice-prototype).
@@ -22990,7 +23062,16 @@ const TABDEF=[
     integer 8, TAB.COMPASS, the id cone and the class tab-compass stay, on the
     rule the Body and Character renames follow. One word per concept, so every
     place the product printed "compass" to a person says "path" in the same
-    commit (the bar, the dashboard card, the drills, the tooltips). */
+    commit (the bar, the dashboard card, the drills, the tooltips).
+
+    COMPASS AGAIN, 20 November, his words: "change the title path back to
+    compass, I think it's a better title." The first pass back moved only nm
+    here, and shell/body.html's own button kept reading Path over an engine
+    that said Compass, because the bar is markup this file does not write. The
+    rest went back with it: the button and its title, the Play door's title,
+    the dashboard card, the drill, the Insight kind word, the overlays, the
+    hover word, the plans and the Ritual's affirmation source. The numerology
+    row stays Life path, which was never this tab's word. */
  {k:TAB.COMPASS, id:'cone',  nm:'Compass',   cls:'tab-compass', sec:'play'},
  /* THE MASKS HAVE THEIR OWN DOOR, AFTER COMPASS, in the order he gave. Round
     LE, his words, marked urgent: "the point cloud data and the masks should
@@ -27643,7 +27724,7 @@ function patFam(o){
 var INS_WORD={sab:'saboteur',cx:'complex',hy:'hyper complex',sup:'super complex'};
 var INS_CAP={sab:'Saboteur',cx:'Complex',hy:'Hyper complex',sup:'Super complex',fet:'Child emotion',
  addr:'Address',dom:'Blueprint domain',arch:'Archetype',mask:'Mask',law:'Law',seat:'Point',core:'Core',
- path:'Path',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
+ path:'Compass',bal:'Balance',atom:'Imprint',gates:'Gates',pole:'Pole'};
 var INS_LIST={sab:'sabs',cx:'cxs',hy:'hys',sup:'sups'};
 var INS_UP={sab:'cx',cx:'hy',hy:'sup'};
 /* the three fixed run-in headers, a label and never data */
@@ -43351,6 +43432,7 @@ if(typeof module!=='undefined'&&module.exports){
                  GOVERN:GOVERN, quadrant:quadrant, outwardShare:outwardShare, organisedShare:organisedShare, ORG_W:ORG_W,
                  FAM_OUT:FAM_OUT, FAM_IN:FAM_IN, GOV_ORG:GOV_ORG, GOV_MAL:GOV_MAL, GOV_ANGEL:GOV_ANGEL,
   /* labels */   TIERDEF:TIERDEF, TIER_BY:TIER_BY, tierOf:tierOf, TIERCOL:TIERCOL,
+                 NODESTATE_PROPOSED:NODESTATE_PROPOSED, NERVESTATE:NERVESTATE, nerveStateOf:nerveStateOf,
                  MEDIAN:MEDIAN, MEDIAN_LO:MEDIAN_LO, MEDIAN_HI:MEDIAN_HI,
                  medianRange:medianRange, tierTop:tierTop, tierRange:tierRange,
   /* astro */     julianDay:julianDay, sunLon:sunLon, moonLon:moonLon, gmst:gmst,
@@ -46366,7 +46448,18 @@ function rbPair(k,o){
  if(read&&o.band){var b0=clamp(Math.min(o.band[0],o.band[1]),0,100), b1=clamp(Math.max(o.band[0],o.band[1]),0,100);
   if(b1-b0>0.05)band='<i class="rb2-band" style="left:'+(100-b1).toFixed(2)+'%;width:'+(b1-b0).toFixed(2)+'%"></i>';}
  var drift=read&&L.sw;
- return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
+ /* DATA-FIGFIXED, 20 November. The figure printed in the middle is the
+    dominant pole's own share, and equals the lean this bar draws, except
+    when the caller hands over its own fig (fetBar and stkPolar's pattern
+    rows): a held-less-installed amount or a chain weight, on its own scale,
+    never the lean's position. The two are different quantities sharing one
+    widget on purpose (the comment above rbPairFig says so), so a reader that
+    checks the printed number against the drawn lean needs to know which
+    case it is looking at without guessing from the numbers alone. This bit
+    is that fact, carried on the markup the way the arc's own dasharray
+    already carries a ring's. tests/pct.js reads it rather than assume. */
+ return '<span class="rb2'+(read?'':' off')+'" data-pair="'+k+'"'+(o.fig!==undefined?' data-figfixed="1"':'')
+  +' style="--lc:'+L.c+';--rc:'+R.c+';--sc:'+sc+'">'
   +'<span class="rb2-ln" aria-hidden="true">'+pole(L,'l')
   +'<span class="rb2-f">'+(sd<0?rbIcon('chevL'):'')+'<b class="rb2-v">'+esc(rbPairFig(o))+'</b>'+(sd>0?rbIcon('chevR'):'')+'</span>'
   +pole(R,'r')+'</span>'
@@ -85349,8 +85442,13 @@ var AFF={o:null, src:null, typed:'', creator:false, res:null, keep:null, srcs:[]
 var AFF_SW_TIP='Adds "I am the creator of all that is" before each line and "across all space, time, and dimensions" after it.';
 var AFF_HEAD_TIP='Lines you say out loud, one for each of your seven points, Root to Crown.';
 var AFF_DOOR_TIP='Source AI writes one line for each of your seven points from this. You choose which go in your ritual.';
-/* the kind of source, said in the select beside the person's own words */
-var AFF_KIND={path:'Path', avatar:'Become', tag:'Tag', bank:'Banked', claim:'Said yes', typed:'Typed'};
+/* the kind of source, said in the select beside the person's own words.
+   path is the Ritual's pole card (ritComplexHtml, ui/ritual.js), whose row is
+   read off the Compass's own data, an axis pole or a path pole alike
+   (becomingOf, engine/data/practice.js). It was written the day the tab was
+   called Path and said Path for that reason; with the tab Compass again it
+   says the tab's word, since Path over an axis pole names a thing it is not. */
+var AFF_KIND={path:'Compass', avatar:'Become', tag:'Tag', bank:'Banked', claim:'Said yes', typed:'Typed'};
 /* a ring with three lines in it: a spoken line, drawn as a ring and never
    a fill, the same stroke the Ritual page's practice rings use */
 function affIc(){
@@ -91095,7 +91193,7 @@ function runMirrorDrill(k){
 
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
- insDoor('path','Path');
+ insDoor('path','Compass');
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  /* the band formula stood here as a second copy of renderPol2's, kept only to
     print "the swing, 11 points". With the figure gone it had no reader, and a
@@ -94931,20 +95029,29 @@ function paintUndo(){
      the person read "Took back" and a reload brought the change back. */
   saveYou(); var saved=(typeof pSave==='function')?pSave():true;
   render(); paintUndo();
-  if(saved){status(msg,'ok');return;}
+  if(saved){status(msg,'ok');return true;}
   var st=(typeof saveState==='function')?saveState():{};
   status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
-   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');
+  return false;}
+ /* THE LATCH SOUNDS ONLY ON A MOVE THAT WAS KEPT. Both handlers played undo
+    and kept after settle whatever it answered, so on a store that refused the
+    write the press was heard as a success. Measured with a spy on sfx and a
+    setItem throwing QuotaExceededError: the first Ctrl+Z played refuse and
+    undo in the same millisecond, and a second one inside refuse's 1200 ms gap
+    played undo alone, so the refusal was not heard at all and the latch told
+    the person it had landed. A refused save is heard once, from status, as
+    refuse. */
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  settle('Took back '+u.nm+'.'); if(typeof sfx==='function')sfx('undo');};
+  if(settle('Took back '+u.nm+'.')&&typeof sfx==='function')sfx('undo');};
  var f=$('redobtn');
  if(f)f.onclick=function(){
   var u=(typeof redoPop==='function')?redoPop():null;
   if(!u){paintUndo();return;}
-  settle('Put back '+u.nm+'.'); if(typeof sfx==='function')sfx('kept');};
+  if(settle('Put back '+u.nm+'.')&&typeof sfx==='function')sfx('kept');};
  /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
   if(!(e.metaKey||e.ctrlKey))return;
@@ -104992,6 +105099,31 @@ function stkRunHtml(attrs,ok,say,pk){
    +svgI('<path d="'+(on?STK_PICKON:STK_PICKOFF)+'"/>')+'</button>';}
  return '<button type="button" class="stk-run" '+attrs+' aria-label="'+esc(say)+'"'
   +' data-tip-k="Release" data-tip="Release: starts the release for this one.">'+svgI(INS_RUNGLYPH)+'</button>';}
+/* THE NERVE STATE MARK, 20 November, his words on this rail: "I want to see
+   those tiny little icons on these bars so people can see very clearly what
+   the state of their nerve is." Four rungs, read off the figure the bar
+   already prints through NERVESTATE (engine/data/canon.js), never chosen here.
+   One ring, the house mark, and what crosses it says the state, so the four
+   differ by shape and not by shade: empty, a bar to the centre, a bar right
+   across, and crossed out. Ring, not fill. It stands at the row's left, in the
+   column the level header's own glyph stands in, so every tier wears it in
+   the same place whatever its bar is (one sided, both poles or a child
+   emotion's pair), and no bar is rebuilt to carry it. Not a button: the bar
+   beside it already selects and the ring at the end already runs, so a third
+   target would only be a mispress. It is focusable and carries data-tip, so
+   tip.js unpacks it on hover, on a tap and on keyboard focus. */
+var STK_NSR=7.2;
+var STK_NSGLYPH={
+ open:chainRing(12,12,STK_NSR),
+ moderate:chainRing(12,12,STK_NSR)+'M4.8 12H12',
+ heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',
+ closed:chainRing(12,12,STK_NSR)+'M6.9 6.9l10.2 10.2M17.1 6.9L6.9 17.1'};
+function stkNsHtml(v,nm,f){
+ var s=nerveStateOf(v);
+ return '<span class="stk-ns" data-ns="'+s.k+'" tabindex="0" role="img"'
+  +' aria-label="'+esc('Nerve state, '+s.nm+'. '+s.def)+'"'
+  +' data-tip-k="'+esc('Nerve state: '+s.nm)+'" data-tip="'+esc(s.def+' '+nm+' is at '+(f===PCT_DASH?'no charge':f)+'.')+'">'
+  +svgI('<path d="'+STK_NSGLYPH[s.k]+'"/>')+'</span>';}
 function stkRowClass(key,L,selKey,pk){
  return 'stk-row'+(key===selKey?' sel':'')+(L&&!L[key]?' dim':'')+(STK_PICKING&&pk&&stkPickAt(pk)>=0?' picked':'');}
 function stkPatternRow(o,r,L,selKey,ctx){
@@ -105002,7 +105134,7 @@ function stkPatternRow(o,r,L,selKey,ctx){
  var tip=o.over?'The opposite pushed past where it helps. A release has nothing to work here.'
   :pole?pole.nm+'. '+pole.def:'';
  var says=pole?nm+' held '+f+', '+pole.nm+' installed '+fmtPct('installed',hr.p):nm;
- return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'
+ return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkNsHtml(o.w,o.nm,f)
   +'<button type="button" class="stk-r '+(pole?'stk-b stk-pl':'stk-am')+'" data-sk="'+o.kind+'" data-si="'+si+'" title="'+esc(says)+'"'
   +(tip?' data-tip-k="'+esc(pole?o.nm+' and its opposite':o.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +(pole?stkPolar(o,nm,f,pole):stkAmount(o,nm,f))+'</button>'
@@ -105011,7 +105143,7 @@ function stkAmpRow(a,n,r,L,selKey,ctx){
  var key='amp:'+n.i, f=fmtPct('weight',n.sq), p=Math.max(0,Math.min(100,pct('weight',n.sq)||0));
  var can=insightCanRelease({kind:'addr',i:n.i},r,ctx);
  var tip=!n.cf?'No feeling is mapped to this address yet, so a release cannot run here.':'';
- return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'
+ return '<div class="'+stkRowClass(key,L,selKey,{kind:'addr',i:n.i})+'">'+stkNsHtml(n.sq,a.nm,f)
   +'<button type="button" class="stk-r stk-am" data-amp="'+n.i+'" title="'+esc(a.nm)+'"'
   +(tip?' data-tip-k="'+esc(a.nm)+'" data-tip="'+esc(tip)+'"':'')+'>'
   +'<span class="rb-row"><span class="rb-n"><span class="stk-nm">'+esc(a.nm)+'</span></span><span class="rb-v">'+esc(f)+'</span></span>'
@@ -105066,7 +105198,7 @@ function stkTrayHtml(){
   +' data-tip-k="Pick several" data-tip="Turns every release ring into a pick ring, so one release can run several patterns at once.">'
   +svgI('<path d="'+STK_PICKON+'"/>')+(STK_PICKING?'Done picking':'Pick several')+'</button>'
   +(STK_PICKING?'<span class="stk-tray-n" aria-live="polite">'+n+' picked</span>':''), body='';
- if(STK_PICKING&&!n)body='<p class="stk-tray-p">Press a ring to add it.</p>';
+ if(STK_PICKING&&!n)body='<p class="stk-tray-p">A press on any ring adds it.</p>';
  else if(STK_PICKING){
   var got=stkPickIds(), sec=got.ids.length?stkPickSec(got.ids):null;
   body='<ul class="stk-tray-l">'+STK_PICK.map(function(pk){return '<li>'+esc(pk.label||pk.nm||'')+'</li>';}).join('')+'</ul>'
@@ -105129,7 +105261,8 @@ function railStack(r){
     table's own order, so a bar never moves from where it was */
  h+=stkLevelHtml('fet','Child emotions',CHILD.length,CHILD.map(function(c,ci){
   var key='fet:'+c.nm, can=insightCanRelease({kind:'fet',nm:c.nm},r,ctx), pk={kind:'fet',nm:c.nm,label:c.nm};
-  return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkFetBar(ci,0)
+  var cv=S.charge[c.nm]||0;
+  return '<div class="'+stkRowClass(key,L,selKey,pk)+'">'+stkNsHtml(cv,c.nm,fmtPct('charge',cv))+stkFetBar(ci,0)
    +stkRunHtml('data-run="fet" data-ri="'+ci+'"',can.ok,'Release '+c.nm,pk)+'</div>';}).join(''));
  e.innerHTML=h;
  /* A LEVEL THE PLAN CANNOT SEE IS GREYED, PADLOCKED AND DESCRIBED, as the five
@@ -107413,5 +107546,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007322952"></div>
+<div id="eof" hidden data-len="007331835"></div>
 </body></html>

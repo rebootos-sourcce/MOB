@@ -82,6 +82,26 @@ const READ=`(function(){
   if(!vis(b))return; var v=b.querySelector('.rb-v'), f=b.querySelector('.rb-f'); if(!v||!f)return;
   out.push({kind:'bar',where:'.stk-am '+((b.querySelector('.stk-nm')||{}).textContent||''),
    fill:parseFloat(f.style.width),text:v.textContent.trim(),alarm:false});});
+ /* THE TWO POLE PAIR, 20 November (rbPair, ui/component.js). A hyper complex
+    or a named saboteur's row left .stk-am for this the day the rail grew a
+    second pole (ui/insightui.js), and this walk went on reading only
+    .stk-am, so every such row, and the Balance, Orientation and Coherence
+    pairs that were built from the same widget before it, vanished from the
+    count with nothing failing: not lost, never counted. Read off the drawing
+    the way a ring is: the lean is the two .rb2-fl widths, left and right of
+    centre, and left's half the track plus right's is the whole of it, so
+    the lean is read from whichever one is not zero. A pair with its own
+    figure (data-figfixed, the same bit rbPair writes when its caller hands
+    over fig instead of the lean) prints a different quantity on purpose, so
+    F cannot ask it to equal the lean, and is not asked to. */
+ document.querySelectorAll('.rb2').forEach(function(e){
+  if(!vis(e))return; var v=e.querySelector('.rb2-v'); if(!v)return;
+  var fl=e.querySelector('.rb2-fl.l'), fr=e.querySelector('.rb2-fl.r');
+  var sl=fl?parseFloat((fl.style.transform||'').replace(/^scaleX\\(([-\\d.]+)\\)$/,'$1')):NaN;
+  var sr=fr?parseFloat((fr.style.transform||'').replace(/^scaleX\\(([-\\d.]+)\\)$/,'$1')):NaN;
+  var lean=isFinite(sl)&&sl>0?50+sl*50:isFinite(sr)&&sr>0?50+sr*50:(isFinite(sl)||isFinite(sr))?50:null;
+  out.push({kind:e.getAttribute('data-figfixed')?'pairfixed':'pair',where:'.rb2 '+e.getAttribute('data-pair'),
+   fill:lean,text:v.textContent.trim(),alarm:false});});
  return out;})()`;
 
 (async()=>{
@@ -112,8 +132,12 @@ const READ=`(function(){
     for(const x of rows){
      const m=/^(\d+)%$/.exec(x.text);
      if(!m)continue; pctSeen++;
-     /* F: the printed percent is the arc's own fill */
-     ok(x.fill!==null&&Math.abs(+m[1]-x.fill)<=1,
+     /* F: the printed percent is the arc's own fill. A 'pairfixed' pair
+        (data-figfixed, rbPair in ui/component.js) hands over its own figure
+        on purpose, a quantity the lean it draws was never meant to equal
+        (fetBar's held less installed, stkPolar's chain or installed share,
+        each its own scale), so F is not asked of it; A still is. */
+     if(x.kind!=='pairfixed')ok(x.fill!==null&&Math.abs(+m[1]-x.fill)<=1,
       'F: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' over a fill of '+(x.fill===null?'nothing':x.fill.toFixed(1)));
      /* A: and it is never in the alarm state */
      ok(!x.alarm,'A: '+tag+nm+', '+x.kind+' '+J(x.where)+' prints '+x.text+' in the alarm colour');}}

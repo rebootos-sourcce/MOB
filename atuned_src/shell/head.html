@@ -4183,6 +4183,22 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
 .stk-run:hover,.stk-run:focus-visible{color:var(--accent);background:var(--panel-2)}
 .stk-run:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .stk-run.off{visibility:hidden;pointer-events:none}
+/* THE NERVE STATE MARK (ui/insightui.js, stkNsHtml). 16px, the level header's
+   own glyph size, in a 16px column on the row's left, so the row's name lines
+   up under the header's word the way the header's glyph lines up over the
+   mark. Centred on the bar's name line, never on the whole row, because a
+   pair bar is taller and a centred mark would sit between its two lines. The
+   shape carries the state; the colour only follows it: open in --mid, the two
+   impaired rungs in --ink, closed in --alarm, the one colour this product
+   already keeps for a thing that is hot. */
+.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:9px 2px 0 0;display:flex;
+ align-items:center;justify-content:center;color:var(--ink);border-radius:50%;cursor:help}
+.stk-ns svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+.stk-ns[data-ns="open"]{color:var(--mid)}
+.stk-ns[data-ns="closed"]{color:var(--alarm)}
+.stk-ns:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stk-row.dim .stk-ns{color:var(--mid)}
 .stk-more{display:block;width:100%;min-height:var(--tap);margin-top:4px;padding:0 8px;border:0;
  border-radius:var(--r-xs);background:transparent;color:var(--mid);font-family:var(--sans);
  font-size:12px;font-weight:500;text-align:center;cursor:pointer}
