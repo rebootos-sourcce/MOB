@@ -166,9 +166,19 @@ function ritSugRec(x,now){
  if(x.rel!=null&&typeof releaseVerifyAt==='function')
   releaseVerifyAt((CURP&&CURP.practice)||null,x.rel).forEach(function(a){said[a.value]=(said[a.value]||0)+1;});
  return {kept:Object.keys(days).length, runs:runs, then:then, now:now, said:said};}
+/* ONE STATE, ONE WORD, 18 November. A practice that was started and never
+   kept read "Not tried yet" on its chip, because the chip asks only whether a
+   day was kept, while this list printed "Kept on 0 days" under it, because it
+   asked whether it was ever run. Both were true to their own test and the
+   card contradicted itself. The three states are named once, here, and the
+   chip reads the same function (ritSugRecWord), so they cannot drift again:
+   never run is Not tried yet, run and never kept is Not kept yet, and only a
+   kept day is a count. */
+function ritSugRecWord(R){return R.kept?'Kept '+acctDays(R.kept):R.runs?'Not kept yet':'Not tried yet';}
 function ritSugRecSays(x,R){
  var out=[];
  if(!R.kept&&!R.runs)out.push('Not tried yet, so your record says nothing about what it does for you.');
+ else if(!R.kept)out.push('Not kept yet. You started it '+(R.runs>1?R.runs+' times':'once')+' and have not marked a day done.');
  else{out.push('Kept on '+acctDays(R.kept)+(R.runs>1?', across '+R.runs+' runs.':'.'));
   if(R.then!==null)out.push('Held places: '+R.then+' when you last started it, '+R.now+' now. The two moved together; that does not say this practice moved them.');}
  var ks=Object.keys(R.said);
@@ -305,12 +315,33 @@ function ritAffHtml(st,M){
    +'<button type="button" class="rv-log" data-act="said" data-id="'+esc(a.id)+'" aria-pressed="'+on+'" aria-label="'
    +(on?'Said today. Press to take it off':'Mark said today: '+esc(a.line))+'">'+ritTickHtml(on,col)+'</button>'
    +'<span class="rv-aft"><span class="rv-afq'+(a.ai?' src-ai':'')+'">'+(a.ai&&typeof srcMark==='function'?srcMark():'')+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</span></span></li>';}).join('')+'</ul>';
+ /* ON A DAY OF THE WEEK, 20 November: the clock opens the affirmations'
+    pop-up (ui/ritbank.js), where the set is given days, a time and a repeat.
+    A mark with its name on the press, no sentence on the card. */
  return '<div class="rv-gblk rv-aff"><div class="rv-gh"><span class="rv-gt">Affirmations</span>'
+  +ritSetBtn('aff-set','','Affirmations')
   /* "Say each one out loud, once today, and press its ring." stood under this
      heading and is cut, SV17. His word for a line that tells a person how to
      use a ring was insult, so it is not moved into a tooltip either: the ring
      carries a press and an accessible name, and that is the instruction. */
   +'</div>'+body+'</div>';}
+/* the clock that opens a pop-up's When, one 44 pixel mark with its name on
+   the press. Lit once the thing is on the week, so a set one and an unset
+   one are told apart by the mark and not by a sentence. */
+function ritSetBtn(act,id,nm){
+ var on=typeof ritSchedOf==='function'&&!!ritSchedOf(act==='aff-set'?'aff':id);
+ return '<button type="button" class="rv-ib rv-set'+(on?' rv-on':'')+'" data-act="'+act+'"'+(id?' data-id="'+esc(id)+'"':'')
+  +' aria-label="'+esc(nm+(on?': on your week. Change days, time and repeat':': put on days of your week'))+'"'
+  +' data-tip-t="'+esc(nm)+'" data-tip="'+esc(on?'On your week. Press to change the days, the time or the repeat.':'Put it on days of your week, with a time and a repeat.')+'">'
+  +ritIc('clock')+'</button>';}
+/* IF I MISS, OFFERED, 20 November (ui/ritbank.js says what it is and the
+   ruling it answers). One neutral press under the challenge once three of its
+   set days have passed in a row without it, and nothing at all otherwise: no
+   count, no colour of alarm, nothing taken. */
+function ritMissOfferHtml(c,st){
+ if(typeof ritSchedOf!=='function')return '';
+ var r=ritSchedOf('ch:'+c.id); if(!r||!ritMissOffer(r,st))return '';
+ return '<button type="button" class="rv-mof" data-act="miss-why" data-id="'+esc('ch:'+c.id)+'">'+ritIc('ring')+'Three set days missed. Why?</button>';}
 function ritChalHtml(st,M){
  var C=ritChallenge(st), today=st.today, body;
  if(!C.length)body='<p class="rv-empty">'+(st.r.unread
@@ -327,8 +358,14 @@ function ritChalHtml(st,M){
       and its voice stay, because the voice is what the name means (the
       unpack rule), and the action stays, because it is the challenge. The
       when rides in the one tooltip on the text. */
-   +'<span class="rv-aft"'+rvTip(c.nm,c.when)+'><span class="rv-chn">'+esc(c.nm)+'<small>, '+esc(c.who)+'</small></span>'
-   +'<span class="rv-afq">'+esc(c.act)+'</span></span></li>';}).join('')+'</ul>';
+   /* THE WHO LINE IS SOURCE AI'S, 20 November, the 15 November ruling: the
+      app composed it from the reading, so it wears srcMark and the src-ai
+      treatment (ui/ritbank.js ritAiHtml says why both); the name and the act
+      are the library's and do not */
+   +'<span class="rv-aft"'+rvTip(c.nm,c.when)+'><span class="rv-chn">'+esc(c.nm)+'<small class="src-ai">, '
+   +(typeof srcMark==='function'?srcMark():'')+esc(c.who)+'</small></span>'
+   +'<span class="rv-afq">'+esc(c.act)+'</span>'+ritMissOfferHtml(c,st)+'</span>'
+   +ritSetBtn('chal-set','ch:'+c.id,c.nm)+'</li>';}).join('')+'</ul>';
  /* FEWER THAN THREE IS STILL NEVER PADDED with a challenge nothing points
     to, and it is no longer said. A line counted the rows aloud ("One pattern
     in your reading has a challenge, so one is shown. More come as your
@@ -383,7 +420,9 @@ function ritWeekDay(d,st){
  var seen={}, out=[];
  ritDaySegs(d,st.plans,st.today).forEach(function(s){var k=s.nm+'|'+s.st;
   if(seen[k])return; seen[k]=1; out.push(s);});
- return out;}
+ /* and the affirmations and challenges set on a day, 20 November, from their
+    own rows (ritSchedSegs, ui/ritbank.js), after the rituals */
+ return (typeof ritSchedSegs==='function')?out.concat(ritSchedSegs(d,st)):out;}
 function ritWeekCalHtml(st){
  var today=st.today, lo=ritWkMin(st);
  RIT.wk=Math.max(lo,Math.min(RIT_WK_AHEAD,RIT.wk|0));
@@ -422,7 +461,8 @@ function ritWeekCalHtml(st){
      the same ritDayOpen the +N uses: every ritual on it, each opening its own
      sheet, or Nothing set. It writes nothing, so it repaints nothing. */
   var dnm=dt.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'">'
+  /* the day key on the column is the drop target's identity, ui/ritbank.js */
+  return '<li class="rv-wd1'+(d===today?' rv-now':'')+(d<today?' rv-past':'')+'" data-d="'+d+'">'
    +'<button type="button" class="rv-wdh" data-act="wday" data-d="'+d+'"'+(d===today?' aria-current="date"':'')
    +' aria-label="'+esc(dnm+(segs.length?', '+segs.length+(segs.length===1?' ritual':' rituals'):', nothing set'))+'">'
    +'<span>'+RIT_WDN[RIT_WCOL[i]]+'</span><b>'+dt.getDate()+'</b></button>'+list+'</li>';}).join('')+'</ol>';
@@ -430,8 +470,12 @@ function ritWeekCalHtml(st){
   /* Planned, the word the Record and the thirty days beside it use for the
      same state: the grid this replaced said Set, a second word for one thing
      on one page */
-  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></section>';}
+  /* NO KEY UNDER THE WEEK, 18 November, his words: "everything beneath
+     that, where it says done, planned, missed ... that can go away". Each
+     sash already says its state on its press (RIT_DAY_SAY, the tooltip and
+     the accessible name), so the key was the same three words a second time.
+     The key under Success over time stays: its hatch has no press to say it. */
+  +'</section>';}
 
 /* ---------------- a sash ----------------
    THE DAY'S RITUALS ARE SASHES, SV17, 5 November. He looked at the week this
@@ -459,13 +503,15 @@ var RIT_SASH_MAX=3;
 /* the state word where the day is already named, a sheet's heading or its
    line: today's is Planned and not Planned for today said under Today */
 function ritSashWord(s){return s.st==='plan'?'Planned':RIT_DAY_SAY[s.st];}
-function ritSashSeat(s){return ritSeat(s.p||s.x);}
+/* a block from a schedule row carries its seat itself: it has no plan or
+   record entry for ritSeat to read */
+function ritSashSeat(s){return s.sc?s.b:ritSeat(s.p||s.x);}
 function ritSashGlyph(b){
  return b&&SEATGLYPH[b]?'<svg viewBox="0 0 24 24" aria-hidden="true">'+SEATGLYPH[b]+'</svg>':'';}
 function ritSashHtml(s,d,k){
- var say=s.nm+', '+RIT_DAY_SAY[s.st];
+ var at=(s.p&&s.p.at)||(s.sc&&s.sc.at)||'', say=s.nm+', '+RIT_DAY_SAY[s.st]+(at?', at '+at:'');
  return '<button type="button" class="rv-wch rv-wch-'+s.st+'" data-act="wsash" data-d="'+d+'" data-i="'+k+'" data-nm="'+esc(s.nm)+'"'
-  +' style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'+esc(RIT_DAY_SAY[s.st])+'">'
+  +' style="--c:'+s.col+'" aria-label="'+esc(say)+'" data-tip-t="'+esc(s.nm)+'" data-tip="'+esc(RIT_DAY_SAY[s.st]+(at?', at '+at:''))+'">'
   +ritSashGlyph(ritSashSeat(s))+'</button>';}
 /* the rest of a heavy day, one sash that names how many and opens the day's
    list. It carries what it holds for a screen reader, and for the gate, which
@@ -511,7 +557,8 @@ function ritSashSheet(s,d,st){
  var out='<div class="rv-sh" style="--c:'+col+'">'
   +'<div class="rv-shh"><span class="rv-shg">'+ritSashGlyph(b)+'</span>'
   +'<span class="rv-sht"><span class="sh-h plain">'+esc(s.nm)+'</span>'
-  +'<span class="rv-shs">'+esc(ritDayName(d,today)+', '+ritSashWord(s).toLowerCase())+'</span></span></div>';
+  /* and the time it is set for, when it has one, 20 November (ui/ritbank.js) */
+  +'<span class="rv-shs">'+esc(ritDayName(d,today)+', '+ritSashWord(s).toLowerCase()+(p&&p.at?', at '+p.at:''))+'</span></span></div>';
  var ci=ritFetIndex(p);
  if(ci>=0)out+='<div class="rv-shb">'+fetBar(ci,'rvsh-'+ci)+'</div>';
  if(p){var P=ritPct(p,today);
@@ -550,6 +597,8 @@ function ritDaySheet(d,st){
   +'<div class="sh-act rv-sha"><button type="button" class="btn rv-shx" data-sh="close">Close</button></div></div>';}
 function ritSashOpen(d,i){
  var st=ritRead(), s=ritWeekDay(d,st)[i]; if(!s||typeof sheetOpen!=='function')return false;
+ /* an affirmation or challenge block opens its own pop-up, ui/ritbank.js */
+ if(s.sc)return ritBankOpen(s.sc.kind==='aff'?{t:'aff'}:{t:'chal', id:s.sc.id});
  ritCalCss(); sheetOpen(ritSashSheet(s,d,st)); ritSheetWire(); return true;}
 function ritDayOpen(d){
  if(typeof sheetOpen!=='function')return false;
@@ -575,7 +624,9 @@ function ritSheetWire(){
    case 'del-plan': sheetShut(); RIT.goneAt='record'; ritDelPlan(id); return;
    case 'del-entry': sheetShut(); RIT.goneAt='record'; ritDelEntry(+b.getAttribute('data-i')); return;
    case 'sash': ritSashOpen(d,+b.getAttribute('data-i')); return;
-   case 'close': sheetShut(); return;}};}
+   case 'close': sheetShut(); RIT.pop=null; return;
+   /* everything the bank's pop-up carries, ui/ritbank.js */
+   default: if(typeof ritBankAct==='function')ritBankAct(a,b);}};}
 
 /* ---------------- today ----------------
    WHAT THE GOALS CARD'S TODAY HELD, UNCHANGED, as a card of its own under the
@@ -610,7 +661,7 @@ function ritRecordStart(st){
  return m;}
 function ritSpanRead(st,R){
  var today=st.today, t0=ritRangeStart(R,today), rs=ritRecordStart(st), M=ritMore(), days=[];
- var kept=0, missed=0, mins=0, seat={};
+ var kept=0, missed=0, seat={};
  for(var d=t0;d<=today;d++){
   var X={d:d, pre:(rs===null||d<rs), done:[], miss:[], plan:[]}, seen={};
   if(!X.pre)ritDaySegs(d,st.plans,today).forEach(function(s){
@@ -620,15 +671,15 @@ function ritSpanRead(st,R){
   X.st=X.pre?'pre':X.done.length?'done':X.plan.length?'plan':X.miss.length?'miss':'none';
   if(X.st==='done')kept++; if(X.st==='miss')missed++;
   days.push(X);}
- ((CURP&&CURP.rituals)||[]).forEach(function(x){if(!x||!ritIsDone(x))return; var d=pracDay(x.t); if(d!==null&&d>=t0&&d<=today)mins+=(+x.min||0);});
- var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{};
- var marks=(st.L.earned||[]).filter(function(m){var d=md[m.k]; return d!=null&&d>=t0&&d<=today;});
+ /* the span's minutes and marks went with the figures row, 18 November:
+    the strip carries Practised and Marks, and a figure computed here for no
+    reader is the drawing nothing reads that the same pass deleted */
  var said={}; M.said.forEach(function(x){if(x[0]>=t0&&x[0]<=today)said[x[0]]=1;});
  var did=M.did.filter(function(x){return x[0]>=t0&&x[0]<=today;}).length;
  var h=ritSnapBefore(new Date(ritDateOf(t0).getTime()-12*3600000).toISOString());
  var bars=BANDS.slice().reverse().concat(['']).filter(function(b){return seat[b];})
   .map(function(b){return {b:b, n:Object.keys(seat[b]).length};});
- return {R:R, t0:t0, today:today, n:today-t0+1, rs:rs, days:days, kept:kept, missed:missed, mins:mins, marks:marks,
+ return {R:R, t0:t0, today:today, n:today-t0+1, rs:rs, days:days, kept:kept, missed:missed,
   said:Object.keys(said).length, did:did, then:(h&&typeof h.loaded==='number')?h.loaded:null, now:(st.r.loaded||[]).length, bars:bars};}
 function ritSpanCell(X,today,small){
  var c=(X.done[0]||X.plan[0]||X.miss[0]||{}).col||'var(--accent)', bg='';
@@ -663,7 +714,6 @@ function ritSuccessHtml(st,chain){
  var R=ritRange(RIT.span), S=ritSpanRead(st,R);
  var seg='<div class="rv-rg" role="group" aria-label="Span">'+RIT_RANGES.map(function(x){var on=x.k===R.k;
   return '<button type="button" class="rv-rgb'+(on?' rv-on':'')+'" data-act="rng" data-v="'+x.k+'" aria-pressed="'+on+'">'+x.nm+'</button>';}).join('')+'</div>';
- var fig=function(n,u,lb){return '<div class="rv-fig"><b>'+(n?n+(u?'<small> '+u+'</small>':''):'–')+'</b><span>'+lb+'</span></div>';};
  var note='';
  /* THE HONEST PART. A span that reaches back before the record does not
     pretend the record was empty there: those days are drawn as a blank of
@@ -688,8 +738,14 @@ function ritSuccessHtml(st,chain){
     +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')+'</ul></div>';
  return '<section class="rv-sec rv-c rv-c-ana"><div class="rv-hd"><span class="rv-h">Success over time</span></div>'
   +'<p class="rv-mean">What you kept, over the span you pick, from a year down to today. Every figure is a count of days or minutes off your record, never a grade.</p>'
-  +chain+seg+'<div class="rv-figs rv-sfigs">'+fig(S.kept,S.kept===1?'day':'days','Kept')+fig(S.missed,S.missed===1?'day':'days','Missed')
-  +fig(S.mins,'min','Practised')+fig(S.marks.length,'','Marks earned')+'</div>'
+  /* THE FIGURES ROW IS GONE, 18 November, his words: "get rid of that kept,
+     miss, practice, marks earned, because you already have that in the upper
+     right-hand panel anyway." True of three of the four: the streak strip
+     (ui/accountability.js) already carried kept, missed and practised. It had
+     no count of marks, so the strip gained a Marks chip in the same commit and
+     this row was not the only place the number lived when it went. The span's
+     kept and missed days are still drawn, a day a square, in the grid below. */
+  +chain+seg
   +(extra?'<p class="rv-okf rv-sext">'+esc(extra)+'</p>':'')+note+ritSpanGrid(S)
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Kept</span><span><i class="rv-k-cmiss"></i>Missed</span>'
   +'<span><i class="rv-k-pre"></i>Before your record</span></div>'+held+bars+'</section>';}

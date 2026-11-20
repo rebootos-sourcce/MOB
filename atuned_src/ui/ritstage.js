@@ -172,58 +172,15 @@ function ritSugHtml(st){
  if(!list.length&&all.length&&!undo)return saved;
  RIT.sgw=RIT.sgw||{};
  var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
-  :'<ul class="rv-sugl">'+list.map(function(x,i){
-   var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
-   /* ROUND QX, "add a text description. And the success of what it leads
-      to." The description is the library's own line for the practice. What
-      it leads to is the quality release installs at the place the card is
-      for, a canon word and not a measurement. The success is the person's own
-      record with this practice, because no measure of how well a practice
-      works exists anywhere in the engine and one made up here would be the
-      status lie. ui/ritcal.js says the same at ritSugRec. */
-   var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x), recSays=ritSugRecSays(x,R);
-   var chips='<div class="rv-sgo">'
-    +(T?'<span class="rv-sgc"'+rvTip('Toward '+T.opp.toLowerCase(),'What it is for: '+T.opp.toLowerCase()
-      +' is the quality release puts back where '+ritCfWord(T.nm)+' was held. You hold '+String(T.k).toLowerCase()+' at '+ritThe(T.b)+'.')+'>'
-      +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14 M14 7l5 5-5 5"/></svg>Toward '+esc(T.opp.toLowerCase())+'</span>':'')
-    +'<span class="rv-sgc'+(R.kept?'':' rv-sgc0')+'"'+rvTip('Your record with it',recSays.join(' '))+'>'
-     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>'
-     +(R.kept?'Kept '+acctDays(R.kept):'Not tried yet')+'</span></div>';
-   return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
-    +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
-     +'" aria-label="Why '+esc(x.p.nm)+' is called for">'+M.badge+'</button>'
-    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span></span></div>'
-    /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
-       Round QX made it what the practice is, his "text description", and the
-       reason it is offered moved into the press, where the full why-list was
-       already: the first reason was printed twice whenever a card was open. */
-    /* and a practice with no line prints no empty paragraph: the Truth
-       Check's was cut, engine/data/practice.js says why */
-    +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+chips
-    /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
-       tell if you want tell you press on something to get information." The
-       mark is the press, and it opens the reasons and what the ring measures
-       in place, under the name, rather than in a panel somewhere else. */
-    +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')
-     +'</ul><ul class="rv-sgrec">'+recSays.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
-     +'<p class="rv-sgr">'+esc(M.says)+'</p></div>'
-    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
-      return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
-       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>'
-    /* ROUND QX, HIS THREE: "add them to my daily practice or bank them to my
-       vault or dismiss". Add is the press it always was (ritSugStart). Save
-       for later is his "bank to my vault": Bank and Vault already mean the
-       imprints held and what has been released, so a third meaning for either
-       word would be one word for two concepts. Dismiss takes it off the list,
-       with Put back in the same place. */
-    /* SV16, his words: "Instead of add to daily practice, just add to
-       practice. Instead of saying save for later, just do save." The
-       accessible name keeps the span the press sets, because a button that
-       starts a week of practice should say so to a person who cannot see the
-       card's other lines. */
-    +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to practice, each day for a week">Add to practice</button>'
-    +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+'">Save</button>'
-    +'<button type="button" class="btn rv-sgq" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'">Dismiss</button></div></li>';}).join('')+'</ul>';
+  /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so the Path
+     and Avatar seats draw this same card and not their own. The rulings that
+     shaped it went with it: round QX's description, the toward chip and the
+     person's own record in place of a success rate nothing measures; round
+     QV's one visible line, and no empty paragraph for a practice with none;
+     round QS's reasons one press away, on the mark; and his three, add, save
+     and dismiss, in SV16's words, with an accessible name that keeps the
+     span a press sets. */
+  :'<ul class="rv-sugl">'+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+'</ul>';
  /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
     suggested, those are pulled from your ritual selectors. It's the stuff it
     picks up based off your story." True of the code: every card is one of
@@ -378,7 +335,11 @@ function ritGoalHtml(st){
  if(bc){
   var on=st.act.some(function(p){return p.rel===bc.n.i;}), col=seatCol(bc.seat);
   var said=on?'<p class="rv-why-p">A release schedule for <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at '+esc(ritThe(bc.seat))+' is active.</p>'
-   :'<p class="rv-why-p">You are holding on to <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at '
+   /* THE HELD PATTERN SENTENCE IS SOURCE AI'S, 20 November, the 15 November
+      ruling: the app read it off the bank, so it wears srcMark and the src-ai
+      treatment. The avatar line above it is the person's own and never does,
+      and the schedule line beside it is a fact of their plan. */
+   :'<p class="rv-why-p src-ai">'+(typeof srcMark==='function'?srcMark():'')+'You are holding on to <b>'+esc(String(bc.n.k).toLowerCase())+'</b> at '
     +esc(ritThe(bc.seat))+'. Set up a release schedule for it?</p>';
   var acts=on?'':'<span class="rv-acts rv-why-a">'
    +'<button type="button" class="btn pri" data-act="why" data-d="7">A week</button>'
@@ -388,7 +349,7 @@ function ritGoalHtml(st){
  else if(last)
   h+='<div class="rv-why" style="--c:var(--accent)"><div class="rv-why-t"><span class="rv-lb">Your avatar wants to be</span>'
    +'<p class="rv-why-be">"'+esc(String(last.be).trim().replace(/^"+|"+$/g,''))+'"</p>'
-   +'<p class="rv-why-p">Nothing held at four or more stands in the way of it yet.</p></div></div>';
+   +'<p class="rv-why-p src-ai">'+(typeof srcMark==='function'?srcMark():'')+'Nothing held at four or more stands in the way of it yet.</p></div></div>';
  /* with no goal written the card says nothing in its place, round RB, his
     words on this page: "Get rid of all the sec[ond] third tier text." The
     card's own line above already says what goes here, so the card is never
@@ -457,7 +418,9 @@ function ritOkHtml(st){
 /* ---------------- keep or delete ---------------- */
 var RIT_KEEP_AT=3;
 function ritKeepHtml(st){
- var today=st.today, rows=st.act.filter(function(p){return p.days>0&&ritStart0(p)+p.days-today<=RIT_KEEP_AT;});
+ /* and only one that has begun, 20 November: a plan set to start on a day
+    ahead (ui/ritbank.js) with a short span is not ending, it has not started */
+ var today=st.today, rows=st.act.filter(function(p){return p.days>0&&ritStart0(p)<=today&&ritStart0(p)+p.days-today<=RIT_KEEP_AT;});
  var body=(RIT.gone&&RIT.goneAt==='keep')?'<div class="rv-gone" role="status"><span>Deleted.</span><button type="button" class="btn" data-act="putback">Put back</button></div>':'';
  /* NOTHING ENDING IS NO CARD, SV19. It drew a half width card saying
     Nothing ends in the next 3 days beside Did it work, an empty box holding

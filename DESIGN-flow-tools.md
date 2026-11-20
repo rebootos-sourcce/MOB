@@ -712,15 +712,60 @@ SV19, 5 November, his words: "Where it says streak missed, make the symbolic
 icons, the streak should be in the upper right hand side. Move the streak to
 the upper right hand side and then accountability will be underneath that."
 The right menu's head carries the streak strip as its first row, above the
-name Accountability, on the row the fold control ends: Streak, Missed and
-Practised, each a mark (ring, not fill) and its figure with its unit, on one
+name Accountability, on the row the fold control ends: Streak, Missed,
+Practised and, since 18 November, Marks, each a mark (ring, not fill) and its
+figure with its unit, on one
 row at 1600 and at 390, each at least 44 tall. The word is the mark's
 accessible name and the tooltip's title and is never printed. Streak is the
 ladder's; Best and Kept ride on its press. Missed is FT7's. Practised is the
-ladder's minutes. A zero is the house dash. The strip replaces the Done card's
+ladder's minutes. Marks is the ladder's marks earned in the last thirty days,
+the cubes' own span: his 18 November reason for cutting the figures row under
+Success over time was "you already have that in the upper right-hand panel",
+and for marks it was not true until this chip. A zero is the house dash. The strip replaces the Done card's
 180 pixel ring.
 
 Gate: `tests/flowtools.js`, `FT36:`.
+
+### FT37. One Called for card, one pop-up, one writer, and the week takes a drop.
+
+20 November, `ui/ritbank.js`. The Called for card is `ritBankCard`, so the
+Path and Avatar seats draw the same card and call the same writer. Its name is
+a press that opens the pop-up, from a click, a tap or the keyboard. The
+pop-up's When is seven days, Every day, Weekdays, Any time or a time, and
+Once, A week, Two weeks or No end, every press at the tap floor at 1600 and at
+390.
+
+Add joins: a practice put on Tuesday and then on Thursday keeps both days, the
+defect where the second start replaced the first. A time is HH:MM, 00:00 to
+23:59; 24:00 and 7:5 are refused by name, nothing is written, and the pop-up
+keeps what was chosen. A day set Once on a running plan rides its `ex` list, so
+it is that one day and not every such weekday.
+
+A card, or a block on the week, dragged onto a day ahead writes that one day
+and opens the same pop-up on Once. Released on nothing, or on a day gone, the
+ghost goes and nothing is written. The drag is pointer events, so a finger can
+drag from a card's mark or a block; that route is held here only at 1600 with a
+mouse, and a real phone has to be tried by hand. The keyboard route is the
+pop-up.
+
+Source AI's own sentences on this tab, the reasons, the goal's held pattern
+sentence and each challenge's who line, carry `srcMark` and the `src-ai`
+treatment, the 15 November ruling, and the person's own avatar line never does.
+
+Affirmations and challenges have days of their own (`atuned-ritual-sched`,
+beside the record, never in an export) and sit on the week as blocks. A
+challenge is taken on with Agree and an If I miss choice. Three of its set days
+gone in a row unmarked opens one neutral offer, never red and never more than
+one; the why question is first, an empty answer is refused, and answering
+closes the offer. None of it writes the record, the streak or the ladder. The
+choices are `RIT_MISS`: Answer why, the team's default under his 18 November
+words (nothing forced, the person's word, something learned and not a
+punishment), and In my words. The default is his to change.
+
+A deleted profile takes every key held under its id, the ticks, the kept
+affirmations and these days and answers among them.
+
+Gate: `tests/flowtools.js`, `FT37:`.
 
 ## 5. Not built, and why
 
@@ -742,7 +787,8 @@ gap is not read as an oversight.
   presses into the cubes and retiring the rings is the next cut, and changes
   FT8 and the Record's gates, so it is named and not made here.
 
-- **The reason a day was missed.** TDD section 24 lists the classes
+- **The reason a day was missed, for a ritual.** For a challenge it is built
+  (FT37, the why question of If I miss). For a ritual, TDD section 24 lists the classes
   (`wrong_time`, `too_long` and the rest, `PR_MISS` in the engine). The profile
   has nowhere to keep one yet, and a control that took an answer and dropped it
   would be the status lie. Edit is the only response offered at `PR_MISS_AT`.
@@ -778,7 +824,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT36 | `tests/flowtools.js` |
+| FT1 to FT37 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |
