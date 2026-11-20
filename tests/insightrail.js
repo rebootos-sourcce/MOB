@@ -260,6 +260,38 @@ async function gate(browser,file,ok){
  const cap=st.counts.filter(c=>['sup','hy','cx','sab'].indexOf(c.k)>=0);
  ok(cap.every(c=>+c.n===st.want[c.k]&&(c.rows<=6+0||/more/.test(c.more)||c.rows===st.want[c.k]))&&cap.some(c=>/\d+ more/.test(c.more)),
   'STACK: a level counts what runs, shows its six heaviest, and ends in one More chip for the rest, '+JSON.stringify(cap));
+ /* NERVE STATE, 20 November: "I want to see those tiny little icons on these
+    bars so people can see very clearly what the state of their nerve is."
+    Every row in every tier wears one mark, its state is the one its own value
+    reads through nerveStateOf, the four marks are four different drawings and
+    not one drawing in four colours, and each one unpacks on hover and tap to
+    its name and the range it covers. The value is read off the same field the
+    row's own figure is printed from, never off the mark. */
+ const ns=await pg.evaluate(()=>{
+  const r=computeSeen(), rows=[...document.querySelectorAll('#stack .stk-row')];
+  const valOf=row=>{
+   const b=row.querySelector('.stk-r');
+   if(b.hasAttribute('data-fet'))return S.charge[CHILD[+b.getAttribute('data-fet')].nm]||0;
+   if(b.hasAttribute('data-amp'))return BY[+b.getAttribute('data-amp')].sq;
+   const o=(r[INS_LIST[b.getAttribute('data-sk')]]||[])[+b.getAttribute('data-si')]; return o?o.w:null;};
+  const per=rows.map(row=>{const m=row.querySelectorAll('.stk-ns'), v=valOf(row);
+   return {n:m.length,k:m[0]&&m[0].getAttribute('data-ns'),want:v==null?null:nerveStateOf(v).k,
+    tip:m[0]&&m[0].getAttribute('data-tip')||'',tk:m[0]&&m[0].getAttribute('data-tip-k')||'',
+    lv:row.closest('.stk-lv').getAttribute('data-lv'),d:m[0]&&(m[0].querySelector('path')||{}).getAttribute&&m[0].querySelector('path').getAttribute('d'),
+    w:m[0]?Math.round(m[0].getBoundingClientRect().width):0,first:row.firstElementChild&&row.firstElementChild.classList.contains('stk-ns')};});
+  const draw={}; per.forEach(p=>{if(p.k)draw[p.k]=p.d;});
+  const all=NERVESTATE.map(s=>s.k), glyph=all.map(k=>STK_NSGLYPH[k]);
+  return {rows:per.length,lv:[...new Set(per.map(p=>p.lv))].join(','),
+   one:per.every(p=>p.n===1&&p.first),wrong:per.filter(p=>p.k!==p.want).slice(0,3),
+   tips:per.every(p=>/^Nerve state: /.test(p.tk)&&p.tip.indexOf(NERVESTATE.filter(s=>s.k===p.k)[0].def)===0),
+   size:per.every(p=>p.w>=14&&p.w<=18),seen:Object.keys(draw).sort().join(','),
+   glyphs:new Set(glyph).size===all.length&&per.every(p=>p.d===STK_NSGLYPH[p.k])};});
+ ok(ns.rows>0&&ns.one,'NERVE: every row in every tier carries one nerve state mark, first in the row, '+JSON.stringify({rows:ns.rows,lv:ns.lv}));
+ ok(!ns.wrong.length,'NERVE: each mark is the state its own row reads through nerveStateOf, '+JSON.stringify(ns.wrong));
+ ok(ns.glyphs,'NERVE: the four states are four different drawings, and every mark draws its own');
+ ok(ns.tips,'NERVE: every mark unpacks on hover and tap to its state and the range it covers');
+ ok(ns.size,'NERVE: the mark is small, the level header glyph\'s own size');
+ ok(ns.seen.split(',').length>=3,'NERVE: the loaded record shows a real spread of states, '+ns.seen);
  const more=await pg.evaluate(()=>{
   const lv=document.querySelector('#stack .stk-lv[data-lv="sab"]'); const before=lv.querySelectorAll('.stk-row').length;
   lv.querySelector('.stk-more').click();
@@ -491,6 +523,10 @@ const MUT=[
  ['safety-offer-kept',"if(x.ok&&ctx.safe)return {ok:false,ids:[],first:null,why:'safe'};","",'SAFETY:'],
  ['door-silent',"function runLawDrill(l){if(l){insDoor('law',l.nm);rdShell","function runLawDrill(l){if(l){rdShell",'DOORS:'],
  ['overshot-releases',"if(p.over){base.why='over';return base;}","",'OVERSHOT:'],
+ ['nerve-mark-dropped-from-fet',"+stkNsHtml(cv,c.nm,fmtPct('charge',cv))+stkFetBar(ci,0)","+stkFetBar(ci,0)",'NERVE: every row'],
+ ['nerve-state-read-off-wrong-value',"+stkNsHtml(o.w,o.nm,f)","+stkNsHtml(o.w/2,o.nm,f)",'NERVE: each mark is the state'],
+ ['nerve-marks-one-drawing',"heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',","heavy:chainRing(12,12,STK_NSR)+'M4.8 12H12',",'NERVE: the four states'],
+ ['nerve-mark-unexplained',"+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(s.def+' '+nm","+' data-tip-k=\"'+esc('Nerve state: '+s.nm)+'\" data-tip=\"'+esc(' '+nm",'NERVE: every mark unpacks'],
  ['laws-lost-from-intake',"if(f.parentNode!==host)host.appendChild(f);}","}",'LAWS: and the fold'],
 ];
 

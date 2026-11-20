@@ -53,7 +53,7 @@ function selections(r){
  out.push({kind:'dom',nm:E.DOMAINS[S.doms[0]].nm});
  E.DOMAINS.forEach(d=>out.push({kind:'dom',nm:d.nm}));
  out.push({kind:'arch',nm:E.ARCH[0].nm},{kind:'mask',nm:E.MASKS[0].nm},{kind:'law',nm:SINAMES[0]},
-  {kind:'seat',nm:'Root'},{kind:'seat',nm:'3rd Eye'},{kind:'core'},{kind:'path',nm:'Path'},
+  {kind:'seat',nm:'Root'},{kind:'seat',nm:'3rd Eye'},{kind:'core'},{kind:'path',nm:'Compass'},
   {kind:'bal',nm:'Balance'},{kind:'gates',nm:'Awareness'},{kind:'pole',nm:'The upward cone'});
  return out;}
 const words=s=>String(s).trim().split(/\s+/).filter(Boolean).length;

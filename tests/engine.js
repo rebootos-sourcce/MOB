@@ -2000,6 +2000,28 @@ g('19a \u00b7 the roster covers the scale');
  /* the vocabulary claim itself does not need a persona: a band is ten wide */
  ok(E.tierOf(2).nm===E.tierOf(10).nm,'2 and 10 are the same word: '+E.tierOf(2).nm);
  ok(E.tierOf(92).nm===E.tierOf(98).nm,'92 and 98 are the same word: '+E.tierOf(92).nm);
+ /* NERVE STATE, the four marks on the Insight rail's bars, 20 November. The
+    lines are read off NODESTATE_PROPOSED by name, so they are read here the
+    same way and never typed. Each rung's own floor and the percent under it
+    are checked, and every whole percent on the rail reads the rung its own
+    printed figure falls in, the tierOf lesson. */
+ (function(){
+  const NS=E.NERVESTATE, at=nm=>Math.round(E.NODESTATE_PROPOSED.filter(x=>x.nm===nm)[0].at*10);
+  ok(NS.map(s=>s.nm).join('|')==='closed|heavily impaired|moderately impaired|open','nerve state is his four words, heaviest first: '+NS.map(s=>s.nm).join('|'));
+  ok(NS[0].at===at('blocked')&&NS[1].at===at('heavily impaired')&&NS[2].at===at('impaired')&&NS[3].at===0,
+   'nerve state lines are the node state lines, read by name: '+NS.map(s=>s.at).join(','));
+  ok(E.nerveStateOf(0).k==='open'&&E.nerveStateOf(0.04).k==='open','nothing held, and a charge that prints the dash, read open');
+  ok(E.nerveStateOf(0.05).k==='moderate'&&E.nerveStateOf(3.9).k==='moderate','charge a person entered, even under the line at 4, never reads open (BELOW THE LINE)');
+  NS.slice(0,3).forEach(s=>{
+   ok(E.nerveStateOf(s.at/10).k===s.k,s.nm+' starts at its own line, '+s.at+'%');
+   ok(E.nerveStateOf((s.at-1)/10).k!==s.k,s.nm+' does not reach one percent under it, '+(s.at-1)+'%');});
+  let bad=[];
+  for(let p=0;p<=100;p++){const v=p/10, got=E.nerveStateOf(v), want=NS.filter(s=>E.pct('chain',v)>=s.at)[0];
+   if(got!==want)bad.push(p);}
+  ok(!bad.length,'every printed percent reads the rung its own figure falls in, off: '+bad.join(','));
+  ok(E.nerveStateOf(12).k==='closed'&&E.nerveStateOf(-1).k==='open'&&E.nerveStateOf(NaN).k==='open','out of range clamps to the ends, and nothing a number is open');
+  ok(NS.every(s=>s.def&&/%|no charge/.test(s.def)&&s.def.indexOf(s.nm.charAt(0).toUpperCase()+s.nm.slice(1))===0),
+   'every mark unpacks to its own name and the range it covers: '+NS.map(s=>s.def).join(' / '));})();
  /* the ends must be real fields, not empty ones */
  ok(by.Tomas.loaded.length>60,'the floor case is genuinely loaded, got '+by.Tomas.loaded.length);
  ok(by.Wren.loaded.length>0,'and the ceiling case still carries something, got '+by.Wren.loaded.length);

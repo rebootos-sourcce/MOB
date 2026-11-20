@@ -1830,7 +1830,7 @@ function runMirrorDrill(k){
 
 /* the compass on the right of the stage. it was a picture with no door. */
 function runCompassDrill(){
- insDoor('path','Path');
+ insDoor('path','Compass');
  var r=compute(), cq=Math.max(0,Math.min(100,r.CQ));
  /* the band formula stood here as a second copy of renderPol2's, kept only to
     print "the swing, 11 points". With the figure gone it had no reader, and a

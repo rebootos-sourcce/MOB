@@ -1993,20 +1993,29 @@ function paintUndo(){
      the person read "Took back" and a reload brought the change back. */
   saveYou(); var saved=(typeof pSave==='function')?pSave():true;
   render(); paintUndo();
-  if(saved){status(msg,'ok');return;}
+  if(saved){status(msg,'ok');return true;}
   var st=(typeof saveState==='function')?saveState():{};
   status(msg+(st.err==='NotARecord'?' Nothing saved on a worked example.'
-   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');}
+   :' Not saved. Storage is full or blocked, so a reload brings it back.'),'fail');
+  return false;}
+ /* THE LATCH SOUNDS ONLY ON A MOVE THAT WAS KEPT. Both handlers played undo
+    and kept after settle whatever it answered, so on a store that refused the
+    write the press was heard as a success. Measured with a spy on sfx and a
+    setItem throwing QuotaExceededError: the first Ctrl+Z played refuse and
+    undo in the same millisecond, and a second one inside refuse's 1200 ms gap
+    played undo alone, so the refusal was not heard at all and the latch told
+    the person it had landed. A refused save is heard once, from status, as
+    refuse. */
  var b=$('undobtn');
  if(b)b.onclick=function(){
   var u=undoPop();
   if(!u){paintUndo();return;}
-  settle('Took back '+u.nm+'.'); if(typeof sfx==='function')sfx('undo');};
+  if(settle('Took back '+u.nm+'.')&&typeof sfx==='function')sfx('undo');};
  var f=$('redobtn');
  if(f)f.onclick=function(){
   var u=(typeof redoPop==='function')?redoPop():null;
   if(!u){paintUndo();return;}
-  settle('Put back '+u.nm+'.'); if(typeof sfx==='function')sfx('kept');};
+  if(settle('Put back '+u.nm+'.')&&typeof sfx==='function')sfx('kept');};
  /* the usual chords, because a person who wants either one reaches for them */
  addEventListener('keydown',function(e){
   if(!(e.metaKey||e.ctrlKey))return;
