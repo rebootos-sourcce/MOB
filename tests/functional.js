@@ -8361,9 +8361,19 @@ console.log('\n=== GB: the glass bar closes and opens, and accuracy takes no box
  const dqBg=await fill('#fdock .kb[data-q=dq]'), accBg=await fill('#accbtn');
  ok(accBg===dqBg,'hovered, accuracy draws what DQ draws behind it and no slab of its own, '+accBg+' against '+dqBg);
  await gp.mouse.move(800,900);
+ /* THE WORD IS GONE, 21 November: "get rid of the text accuracy and just
+    keep the icon of the pill". This check read the word's fill on Flat and
+    would now throw on a null, so it holds the ruling instead: no word on any
+    lighting, the circle still titled so the definition opens from it, and
+    the circle centred in its capsule now the word's inset is gone with it. */
  const flat=await gp.evaluate(()=>{setLighting('flat');render();
-  const w=getComputedStyle(document.querySelector('#acc .acc-l')).backgroundColor;setLighting('dark');return w;});
- ok(/rgba\(0, 0, 0, 0\)|transparent/.test(flat),'on Flat the word Accuracy sits on no box of its own, '+flat);
+  const a=document.getElementById('acc'),c=document.querySelector('#accbtn .cr');
+  const r=a.getBoundingClientRect(),q=c.getBoundingClientRect();
+  const o={word:!!a.querySelector('.acc-l'),text:a.innerText.replace(/\s+/g,' ').trim(),
+   title:c.getAttribute('title')||'',l:Math.round(q.left-r.left),rt:Math.round(r.right-q.right)};
+  setLighting('dark');return o;});
+ ok(!flat.word&&!/accuracy/i.test(flat.text)&&/^Accuracy, /.test(flat.title)&&Math.abs(flat.l-flat.rt)<=1,
+  'the word Accuracy is off the pill, the circle still carries its title, and it sits even in its capsule, '+JSON.stringify(flat));
  ok(gerr.length===0,'GB: no errors, '+gerr.join(' | '));
  await gx.close();
 }

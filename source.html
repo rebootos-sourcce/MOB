@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v373 74564639 2026-11-21 18:42"><head><meta charset="utf-8">
+<html lang="en" data-build="v377 6e4dfd7b 2026-11-21 19:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -2509,7 +2509,13 @@ body.punch .crb-v{border-color:transparent;background:var(--c);color:var(--on-ac
  padding:2px;border-radius:999px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .acc-b{display:flex;align-items:center;gap:8px;background:transparent;border:0;
- padding:0 0 0 14px;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+ padding:0;border-radius:999px;color:inherit;font:inherit;cursor:pointer;min-height:var(--tap)}
+/* THE 14 ON THE LEFT HELD THE WORD OFF THE CAPSULE'S EDGE, and the word came
+   off on 21 November ("just keep the icon of the pill"). Left in, it sat the
+   circle 17 from the left of the capsule and 3 from the right, measured, which
+   is a dead strip on one side and the even spacing he ruled on 16 November
+   broken on the one control left. With it gone the capsule's own 2 is the
+   edge on all four sides. */
 /* AND ACCURACY TAKES NO BOX THE OTHER CIRCLES DO NOT. GB in TASKS.md, his
    words: "The accuracy pill is bigger than everything else. Make all of
    those uniform." Its ring and value pill were already the orb size, DQ's to
@@ -102779,7 +102785,14 @@ function renderAcc(r){
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b></span>'
+  /* AND THE WORD CAME OFF, 21 November, his words on the Insight panel:
+     "Where it says accuracy, get rid of the text accuracy and just keep the
+     icon of the pill." The meaning is not lost with it. The ring below
+     carries its own title, Accuracy and the value, from cr()'s label, and that
+     title is the carrier tip.js answers on hover and on a held press
+     (carrierIn falls back to the [title] inside the button), so the word was
+     never the anchor and the definition still opens from the circle. The
+     aria-label above already says what this is to a screen reader. */
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
@@ -110098,5 +110111,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007577860"></div>
+<div id="eof" hidden data-len="007578815"></div>
 </body></html>

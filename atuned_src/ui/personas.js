@@ -524,7 +524,14 @@ function renderAcc(r){
  el.innerHTML='<button type="button" class="acc-b" id="accbtn" '
   +'aria-label="Family identification. How much of you the instrument has '
   +'measured. Opens the detail.">'
-  +'<span class="acc-l"><b>Accuracy</b></span>'
+  /* AND THE WORD CAME OFF, 21 November, his words on the Insight panel:
+     "Where it says accuracy, get rid of the text accuracy and just keep the
+     icon of the pill." The meaning is not lost with it. The ring below
+     carries its own title, Accuracy and the value, from cr()'s label, and that
+     title is the carrier tip.js answers on hover and on a held press
+     (carrierIn falls back to the [title] inside the button), so the word was
+     never the anchor and the definition still opens from the circle. The
+     aria-label above already says what this is to a screen reader. */
   /* AND IT NEVER PRINTS RED. Ruled: "ninety six percent flow accuracy and
      yet it is red, red is a colour of danger, that is bad colouring." A
      well measured person is the good case and the ring says so. */
