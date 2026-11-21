@@ -1393,12 +1393,11 @@ function render(){
    why). The chain key, the book's levels and the nine sliders went with the
    round and nothing here draws them.
 
-   SUPEREGO IS ONE ROW OF SYMBOLS, ONE PER ROW OF AMPLIFIER. Each is a real
-   address AMPLIFIER maps to, read the way every address on this page is
-   read, BY[i].sq, no new number; the row count is AMPLIFIER.length and not
-   written here a second time, on the rule this file has already been bitten
-   by. The ring is crBadge's (ui/component.js), bare, so the figure sits
-   under the ring where they stay even and none hangs off one side,
+   SUPEREGO IS FOUR SYMBOLS IN ONE ROW. Each is a real address AMPLIFIER
+   maps to, read the way every address on this page is read, BY[i].sq, no
+   new number. The ring is crBadge's (ui/component.js), bare, so the figure
+   sits under the ring where four of them stay even and none hangs off one
+   side,
    and the figure is fmtPct('weight', ...), the registry's own form: a whole
    number and a percent sign, and the dash for nothing held or nothing read.
    The weight used to print as 10.0 beside a ring filled in percent, points
@@ -1410,13 +1409,17 @@ function render(){
    card a press opens is headed with the defence's own name and its one table
    sentence (nodeDrillHtml, ui/drills.js, o.amp), so it never reads as a
    reading of the defence that it is not. */
- /* AMP_FOUR used to be a hand typed subset of four names, Justification,
-    Entitlement, Perfectionism and Obsession, which silently hid Judgment and
-    Comparison once they rejoined AMPLIFIER as rows five and six: the table
-    grew to six and this list did not. It now reads the real table directly,
-    so a row AMPLIFIER carries is a row this rail shows, with no second count
-    to keep in step. */
- var AMP_FOUR=AMPLIFIER.map(function(a){return a.nm;});
+ /* AMP_FOUR IS FOUR, BY HIS OWN WORDS, 18 November: "super ego, make those
+    icons. 4 icons horizontal." round FD, 21 November, tried reading
+    AMPLIFIER directly (all six rows, Judgment and Comparison included) on
+    the theory that the four name subset was silently hiding two real rows;
+    that broke the ruling above (tests/psychepanel.js, section B, caught a
+    4+2 wrap at 390 and two symbols with no icon, SUPEREGO_IC never having
+    carried Judgment or Comparison) and is reverted here. Judgment and
+    Comparison stay real AMPLIFIER rows, read everywhere else the table is
+    read (Analytics, the node map, nodeDrillHtml by direct address), only
+    not drawn as a fifth and sixth Superego symbol. */
+ var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
  function renderAmplifiers(r){
   var h=document.getElementById('amprows'); if(!h)return;
   var unread=!!(r&&r.unread);

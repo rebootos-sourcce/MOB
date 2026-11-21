@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v359 fdfe48bf 2026-11-21 09:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v362 7f4ebbaf 2026-11-21 10:41"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -65707,13 +65707,14 @@ function stMiniMasks(r){
 /* THE SEVENTH CARD, 19 November, his words: "if the super ego button
    doesn't fit, use two rows." Same real reading the left rail's own
    Superego section already shows (ui/ui.js renderAmplifiers, AMP_FOUR),
-   not a new number: the heaviest of the defences the product tracks
-   (AMPLIFIER, read off BY[i].sq, the same registry weight every other
-   mini card reads). STMK_SUPEREGO_FOUR used to be a hand typed subset of
-   four names and silently hid Judgment and Comparison once they rejoined
-   AMPLIFIER as rows five and six; it now reads the real table directly, so
-   the heaviest of six can win here same as it can on the rail. */
-var STMK_SUPEREGO_FOUR=AMPLIFIER.map(function(a){return a.nm;});
+   not a new number: the heaviest of the four defences the product
+   tracks (AMPLIFIER filtered to those four names, read off BY[i].sq,
+   the same registry weight every other mini card reads). Round FD, 21
+   November, read AMPLIFIER directly instead (all six rows); that broke
+   his 18 November ruling on the rail this card mirrors ("4 icons
+   horizontal") without this card's own gate noticing, and is reverted
+   here to stay the same four as the rail. */
+var STMK_SUPEREGO_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
 function stmkSuperego(r){
  if(r.unread)return null;
  var rows=STMK_SUPEREGO_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
@@ -65722,7 +65723,7 @@ function stmkSuperego(r){
  if(!top||!top.v)return null;
  return {nm:top.nm, seat:top.seat, v:top.v, col:'var('+(SEATCOL[top.seat]||'--dim')+')'};}
 function stmkTipSuperego(s){return stmkTip(s.nm+', '+stmkFmt(s.v),
- stmkU('superego')+' '+s.nm+' holds the most of the '+AMPLIFIER.length+' right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
+ stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
 function stMiniSuperego(r){
  var s=stmkSuperego(r); if(!s)return STMK_DASH;
  return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipSuperego(s)+'>'+stmkRing(60,46,40,s.v/10,s.col,5)
@@ -107032,11 +107033,12 @@ var STK_CAP=6;
 var STK_PICKING=false, STK_PICK=[], STK_PICK_FOR=null;
 var STK_PICKOFF=chainRing(12,12,8.2);
 var STK_PICKON=chainRing(12,12,8.2)+'M8.2 12.2l2.6 2.6 5-5.4';
-/* STK_AMP used to be a hand typed subset of four names and silently hid
-   Judgment and Comparison once they rejoined AMPLIFIER as rows five and six.
-   It now reads the real table directly, so a row AMPLIFIER carries is a row
-   this stack shows. */
-var STK_AMP=AMPLIFIER.map(function(a){return a.nm;});
+/* STK_AMP IS THE SAME FOUR THE LEFT RAIL'S OWN SUPEREGO SECTION SHOWS,
+   AMP_FOUR in ui/ui.js, his own 18 November ruling, "4 icons horizontal":
+   round FD, 21 November, read AMPLIFIER directly instead (all six rows),
+   which broke that ruling (tests/psychepanel.js) without this stack's own
+   gate noticing, and is reverted here to stay in step with the rail. */
+var STK_AMP=['Justification','Entitlement','Perfectionism','Obsession'];
 /* the Superego's own mark: a ring with an arc built round it, the defense
    that stands round a pattern once it is already there. Ring, not fill. */
 var STK_EGOGLYPH=chainRing(12,12,4)+'M12 3.4a8.6 8.6 0 018.6 8.6';
@@ -107471,10 +107473,9 @@ function railStack(r){
  if(r.unread){e.innerHTML=''; return;}
  if(STK_PICK_FOR!==stkPickWho()){STK_PICK_FOR=stkPickWho(); STK_PICK=[]; STK_PICKING=false;}
  var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h=stkTrayHtml();
- /* SUPEREGO, the same addresses the left rail's own Superego section reads,
+ /* SUPEREGO, the four addresses the left rail's own Superego section reads,
     from the same table (AMPLIFIER, engine/data/registers.js) and the same
-    weights (BY[i].sq), so the two can never disagree. The count is not
-    written here; AMPLIFIER.length is the answer. */
+    weights (BY[i].sq), so the two can never disagree */
  var amps=STK_AMP.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
   .filter(Boolean).map(function(a){return {a:a,n:BY[a.i]};}).filter(function(x){return x.n;});
  if(amps.some(function(x){return x.n.sq>=0.05;}))
@@ -109349,12 +109350,11 @@ function render(){
    why). The chain key, the book's levels and the nine sliders went with the
    round and nothing here draws them.
 
-   SUPEREGO IS ONE ROW OF SYMBOLS, ONE PER ROW OF AMPLIFIER. Each is a real
-   address AMPLIFIER maps to, read the way every address on this page is
-   read, BY[i].sq, no new number; the row count is AMPLIFIER.length and not
-   written here a second time, on the rule this file has already been bitten
-   by. The ring is crBadge's (ui/component.js), bare, so the figure sits
-   under the ring where they stay even and none hangs off one side,
+   SUPEREGO IS FOUR SYMBOLS IN ONE ROW. Each is a real address AMPLIFIER
+   maps to, read the way every address on this page is read, BY[i].sq, no
+   new number. The ring is crBadge's (ui/component.js), bare, so the figure
+   sits under the ring where four of them stay even and none hangs off one
+   side,
    and the figure is fmtPct('weight', ...), the registry's own form: a whole
    number and a percent sign, and the dash for nothing held or nothing read.
    The weight used to print as 10.0 beside a ring filled in percent, points
@@ -109366,13 +109366,17 @@ function render(){
    card a press opens is headed with the defence's own name and its one table
    sentence (nodeDrillHtml, ui/drills.js, o.amp), so it never reads as a
    reading of the defence that it is not. */
- /* AMP_FOUR used to be a hand typed subset of four names, Justification,
-    Entitlement, Perfectionism and Obsession, which silently hid Judgment and
-    Comparison once they rejoined AMPLIFIER as rows five and six: the table
-    grew to six and this list did not. It now reads the real table directly,
-    so a row AMPLIFIER carries is a row this rail shows, with no second count
-    to keep in step. */
- var AMP_FOUR=AMPLIFIER.map(function(a){return a.nm;});
+ /* AMP_FOUR IS FOUR, BY HIS OWN WORDS, 18 November: "super ego, make those
+    icons. 4 icons horizontal." round FD, 21 November, tried reading
+    AMPLIFIER directly (all six rows, Judgment and Comparison included) on
+    the theory that the four name subset was silently hiding two real rows;
+    that broke the ruling above (tests/psychepanel.js, section B, caught a
+    4+2 wrap at 390 and two symbols with no icon, SUPEREGO_IC never having
+    carried Judgment or Comparison) and is reverted here. Judgment and
+    Comparison stay real AMPLIFIER rows, read everywhere else the table is
+    read (Analytics, the node map, nodeDrillHtml by direct address), only
+    not drawn as a fifth and sixth Superego symbol. */
+ var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
  function renderAmplifiers(r){
   var h=document.getElementById('amprows'); if(!h)return;
   var unread=!!(r&&r.unread);
@@ -109798,5 +109802,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007554686"></div>
+<div id="eof" hidden data-len="007554986"></div>
 </body></html>

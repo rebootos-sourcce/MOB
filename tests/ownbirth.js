@@ -27,6 +27,21 @@
    comparison and the strip for the typed birth at both widths, and passes
    the no birth case, which did not change.
 
+   RE-POINTED, 20 November's OWN RULING TAKEN INTO ACCOUNT (cd55089c,
+   "Summary: flat left rail from celestial to archetype, centre ends at
+   Your patterns", his words quoted there: "everything beneath your
+   patterns... get rid of everything beneath Psyche"). sumFull no longer
+   calls sumMarks or sumSpirit, so the strip this file watches for is not
+   sumMarks's own .s-chip markup inside #sumbody any more; it is #spirit's
+   own [data-sp] rows, the same real placements, shown flat on this tab
+   now (confirmed directly: a typed birth still reaches #spirit here, a
+   blank one still shows none). The birth comparison was not moved, it was
+   cut outright, named in that commit as one of the folds off the page and
+   never given a new home, so this file no longer looks for it. The thing
+   this file actually guards, that a person's own typed birth and not only
+   a canned reference case reaches the Summary screen, still holds; only
+   where it shows moved.
+
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
 const path = require('path');
@@ -54,14 +69,15 @@ function PERSON() {
    change also touched */
 function READ() {
  var h = document.getElementById('sumbody'); if (!h) return null;
- var conv = h.querySelector('[data-fold="conv"]'), marks = h.querySelector('[data-grp="marks"]');
+ /* the strip is #spirit's own [data-sp] rows now, not sumMarks's .s-chip
+    markup inside #sumbody; see the file header, 20 November. */
+ var spirit = document.getElementById('spirit');
+ var marks = spirit ? spirit.querySelectorAll('[data-sp]') : [];
  var vis = function (e) { if (!e) return false; var r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
  return {
-  conv: !!conv, convText: conv ? conv.textContent.replace(/\s+/g, ' ').trim() : '',
-  marks: !!marks, marksShown: vis(marks),
-  chips: marks ? marks.querySelectorAll('.s-chip').length : 0,
-  untipped: marks ? Array.prototype.filter.call(marks.querySelectorAll('.s-chip'), function (c) {
-   return !(c.getAttribute('data-tip') || c.querySelector('[data-tip]') || c.getAttribute('title')); }).length : 0,
+  chips: marks.length, marksShown: marks.length > 0 && vis(spirit),
+  untipped: Array.prototype.filter.call(marks, function (c) {
+   return !(c.getAttribute('data-tip') || c.querySelector('[data-tip]')); }).length,
   nul: /\bnull\b|undefined|NaN/.test(h.textContent),
   unread: !!(computeSeen() || {}).unread };}
 
@@ -104,22 +120,19 @@ function READ() {
     const s = await p.evaluate(READ);
     ok(s && !s.unread, tag + ': the Summary is a reading and not the unread page');
     if (typed) {
-     ok(s.conv, tag + ': the birth comparison is on the Summary');
-     ok(/\d+ comparisons? could be made/.test(s.convText) && /point the same way/.test(s.convText),
-      tag + ': and it says how many could be made and how many agree: ' + s.convText.slice(0, 160));
-     ok(s.marks && s.marksShown && s.chips > 0, tag + ': the celestial strip shows, ' + s.chips + ' marks');
+     /* the birth comparison (data-fold=conv) is not checked here any more:
+        cd55089c cut it outright, 20 November, named in its own commit as
+        one of the folds off a read Summary, with no new home. */
+     ok(s.chips > 0 && s.marksShown, tag + ': the celestial strip (now the left rail, #spirit) shows, ' + s.chips + ' marks');
      ok(s.untipped === 0, tag + ': every mark on the strip carries its meaning, ' + s.untipped + ' without');
     } else {
-     ok(!s.conv && !s.marks, tag + ': no comparison and no strip without a birth');
+     ok(s.chips === 0, tag + ': no strip without a birth');
     }
     ok(!s.nul, tag + ': no line on the Summary reads null');
     if (SHOTS) {
-     await p.evaluate(() => { var e = document.querySelector('[data-fold="conv"]'); if (e) { e.open = true; } });
-     const el = await p.$('[data-grp="marks"]');
+     const el = await p.$('#spirit');
      if (el) await el.scrollIntoViewIfNeeded();
      await p.screenshot({ path: path.join(SHOTS, (typed ? 'typed' : 'none') + '-' + w + '.png') });
-     const cv = await p.$('[data-fold="conv"]');
-     if (cv) { await cv.scrollIntoViewIfNeeded(); await p.screenshot({ path: path.join(SHOTS, (typed ? 'typed' : 'none') + '-' + w + '-conv.png') }); }
     }
     ok(errs.length === 0, tag + ': no page errors: ' + JSON.stringify(errs.slice(0, 3)));
    } catch (e) { ok(false, tag + ' threw: ' + String(e && e.message || e).split('\n')[0]); }

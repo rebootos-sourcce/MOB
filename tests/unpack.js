@@ -135,15 +135,18 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  ['root','architect','western','number'].forEach(t=>ok(seenC.has(t)||t==='number'||t==='western','the card names '+t));
  cd.found.forEach(f=>ok(f.glossed,'blueprint card: "'+f.term+'" in "'+f.text+'" has no meaning beside it'));
 
- /* ---- the sign chips under the story, and every tooltip is the table's ---- */
- const chips=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.s-chip'),function(c){
-  return {k:c.getAttribute('data-sp'),v:c.getAttribute('data-spv'),t:c.getAttribute('title')||c.getAttribute('data-tip')||''};}));
- ok(chips.length>=4,'the summary shows its birth chips, saw '+chips.length);
- const want=(k,v)=>({sign:['sign:'+String(v).toLowerCase()],celem:['year:'],lp:['life path','path:'+v],hd:['design'],gk:['gene key']}[k]||[]);
- chips.forEach(ch=>{
-  want(ch.k,ch.v).forEach(key=>{
-   if(key==='year:')return;
-   ok(T[key]&&ch.t.indexOf(T[key])>=0,'chip '+ch.k+' '+ch.v+' tooltip carries the table sentence for '+key+', has "'+ch.t.slice(0,60)+'"');});});
+ /* ---- the sign chips, moved to the left rail, 20 November (cd55089c,
+    "Summary: flat left rail from celestial to archetype, centre ends at
+    Your patterns"). sumChips's own .s-chip strip inside #sumbody is off
+    the page on a read Summary now; the same real placements are #spirit's
+    own [data-sp] rows, shown flat on this tab. Existence alone is checked
+    here; every row's tooltip against the table is already held below,
+    under "the left rail, which reads the same birth", which checks it
+    correctly by row label (gk alone covers three different readings,
+    Personality, Design and Gene key, so a key read off data-sp would have
+    checked the wrong sentence on two of the three). ---- */
+ const chips=await p.evaluate(()=>document.querySelectorAll('#spirit [data-sp]').length);
+ ok(chips>=4,'the summary shows its birth chips, saw '+chips);
 
  /* ---- THE CARRIER OPENS WHERE THE PERSON IS. A phone has no hover, so on the
     phone a tap opens it, and on a desktop a hover does. The sentence in the
@@ -159,9 +162,12 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    const said=await tipSay();
    ok(said.indexOf(first)>=0,(w<600?'a tap':'a hover')+' on a carrier opens its sentence in the one tooltip, saw "'+said.slice(0,70)+'"');
    await p.keyboard.press('Escape'); await p.waitForTimeout(200);}
-  /* and a control that holds a symbol opens a drill that says what it is */
-  await p.evaluate(()=>{var c=document.querySelector('.s-chip[data-sp="sign"]'); if(c){c.scrollIntoView({block:'center'});}});
-  if(w<600){await p.tap('.s-chip[data-sp="sign"]');} else {await p.click('.s-chip[data-sp="sign"]');}
+  /* and a control that holds a symbol opens a drill that says what it is.
+     The sign chip is #spirit's own Sun row now (data-tip-k disambiguates
+     it from the Moon and Rising rows that share the same data-sp="sign"). */
+  const SIGNSEL='#spirit [data-sp="sign"][data-tip-k="Sun"]';
+  await p.evaluate((sel)=>{var c=document.querySelector(sel); if(c){c.scrollIntoView({block:'center'});}},SIGNSEL);
+  if(w<600){await p.tap(SIGNSEL);} else {await p.click(SIGNSEL);}
   await p.waitForTimeout(500);
   const drill=await p.evaluate(()=>{var d=document.getElementById('rdrill');return d?d.innerText.replace(/\s+/g,' '):'';});
   ok(/What it is/i.test(drill),'pressing a sign chip opens a drill with What it is');
@@ -197,18 +203,14 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const m=/^toward (.+)$/.exec(l.t);
   const want=m?T['opposite:'+m[1].toLowerCase()]:(T['law:'+l.t.toLowerCase()]||T['feeling:'+l.t.toLowerCase()]);
   ok(want&&l.tip===want&&l.dotted,'rail label "'+l.t+'" carries its sentence as a tooltip, has "'+l.tip.slice(0,50)+'"');});
- /* "HEAVIEST SEATS" MOVED OFF addrRow'S MARKUP (.ad-r em with a tipu
-    carrying T['seat:...']) ONTO sumStructRow'S (.s-row .s-row-t b, its
-    state said in plain prose beside it, no tooltip), in the Summary rework
-    that also built sumSeats(). addrRow itself is unchanged and still used
-    elsewhere (release.js, analytics.js, drills.js); only this one caller,
-    Summary's seat list, took the new shape. Checked directly before
-    writing this: Derek's own Summary prints real seat names here (Solar,
-    Throat, Sacral...), so the row below reads the real markup rather than
-    the one this test used to assume. */
- const seatB=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.s-row .s-row-t b'),function(e){
-  return e.textContent;}).filter(function(t){return BANDS.indexOf(t)>=0;}));
- ok(seatB.length>0,'Summary\'s Heaviest seats lists real seats on a loaded profile, saw '+seatB.length);
+ /* "HEAVIEST SEATS" (sumSeats, .s-row .s-row-t b) IS RETIRED, NOT MOVED, same
+    20 November cut as the glance strip and the name parts (tests/
+    functional.js, "re-pointed and retired by name"): sumFull stops calling
+    it when the centre column was cut to end at Your patterns, and nothing
+    in that round's own accounting (functional.js's own list of what moved
+    where) names a new home for it. sumSeats() itself is unchanged and
+    still in the file, on the same standing as sumChain and sumOutput,
+    uncalled, so a caller that wants it back finds real code. */
 
  /* ---- every carrier the round wrote is a sentence the table holds ---- */
  const carriers=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.tipu[data-tip]'),function(c){return c.getAttribute('data-tip');}));

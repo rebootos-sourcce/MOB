@@ -391,13 +391,14 @@ function stMiniMasks(r){
 /* THE SEVENTH CARD, 19 November, his words: "if the super ego button
    doesn't fit, use two rows." Same real reading the left rail's own
    Superego section already shows (ui/ui.js renderAmplifiers, AMP_FOUR),
-   not a new number: the heaviest of the defences the product tracks
-   (AMPLIFIER, read off BY[i].sq, the same registry weight every other
-   mini card reads). STMK_SUPEREGO_FOUR used to be a hand typed subset of
-   four names and silently hid Judgment and Comparison once they rejoined
-   AMPLIFIER as rows five and six; it now reads the real table directly, so
-   the heaviest of six can win here same as it can on the rail. */
-var STMK_SUPEREGO_FOUR=AMPLIFIER.map(function(a){return a.nm;});
+   not a new number: the heaviest of the four defences the product
+   tracks (AMPLIFIER filtered to those four names, read off BY[i].sq,
+   the same registry weight every other mini card reads). Round FD, 21
+   November, read AMPLIFIER directly instead (all six rows); that broke
+   his 18 November ruling on the rail this card mirrors ("4 icons
+   horizontal") without this card's own gate noticing, and is reverted
+   here to stay the same four as the rail. */
+var STMK_SUPEREGO_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
 function stmkSuperego(r){
  if(r.unread)return null;
  var rows=STMK_SUPEREGO_FOUR.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
@@ -406,7 +407,7 @@ function stmkSuperego(r){
  if(!top||!top.v)return null;
  return {nm:top.nm, seat:top.seat, v:top.v, col:'var('+(SEATCOL[top.seat]||'--dim')+')'};}
 function stmkTipSuperego(s){return stmkTip(s.nm+', '+stmkFmt(s.v),
- stmkU('superego')+' '+s.nm+' holds the most of the '+AMPLIFIER.length+' right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
+ stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
 function stMiniSuperego(r){
  var s=stmkSuperego(r); if(!s)return STMK_DASH;
  return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipSuperego(s)+'>'+stmkRing(60,46,40,s.v/10,s.col,5)

@@ -309,9 +309,16 @@ async function lockGate(browser,FILE,ok,booted){
   ok(rl.panels>=4,tag+'every locked level shows the lock\'s panel and not an empty list');
   /* summary, analytics, imprints, avatar, drill */
   await pg.evaluate(()=>{setTab(TAB.SUMMARY);render();}); await pg.waitForTimeout(700);
-  const sm=await pg.evaluate(()=>{const h=document.getElementById('sumbody'), c=h.querySelector('.s-chain');
-   return {chainNums:c?c.querySelectorAll('.s-ch').length:-1,panels:h.querySelectorAll('.lk-panel').length};});
-  ok(sm.chainNums===0&&sm.panels>=1,tag+'the Summary counts no rung of the chain and says the chain is locked, '+JSON.stringify(sm));
+  /* THE CHAIN IS RETIRED FROM THE SUMMARY OUTRIGHT, 20 November (cd55089c,
+     "Summary: flat left rail from celestial to archetype, centre ends at
+     Your patterns"). sumChain lost its only caller that day; CLAUDE.md's
+     own account of the round: "sumChain is not carried. He named the
+     chain as junk on 18 November... this is that same chain." There is no
+     rung count left on the Summary to say locked or unlocked, so this
+     holds that .s-chain stays gone rather than asserting a lock panel the
+     page no longer prints for it. */
+  const sm=await pg.evaluate(()=>!!document.getElementById('sumbody').querySelector('.s-chain'));
+  ok(!sm,tag+'the Summary\'s chain is retired and has not come back, '+JSON.stringify(sm));
   await pg.evaluate(()=>{setTab(TAB.ANALYTICS);render();}); await pg.waitForTimeout(700);
   const an=await pg.evaluate(()=>{const h=document.getElementById('ana');
    return {panels:h.querySelectorAll('.lk-panel').length,nothing:/Nothing is compounding/.test(h.textContent),

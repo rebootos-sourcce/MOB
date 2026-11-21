@@ -14,8 +14,11 @@
    What is held, read off the page and never typed:
 
      SN1  every place the rung prints says super complex: the Field bar's
-          switch, the stack tab, Summary's chain, Analytics' ring and its
-          card, and a pattern drill
+          switch, the stack tab, Analytics' ring and its card, and a pattern
+          drill. Summary's chain held this too until cd55089c retired it
+          outright, 20 November ("Summary: flat left rail from celestial to
+          archetype, centre ends at Your patterns"); SN1 now holds that it
+          stayed gone rather than that it still says the right word.
      SN2  on every tab TABDEF names, with a person whose reading reaches the
           rung, the word character stands only on the Character page, its
           door, its rail section, the Play section's title that names that
@@ -107,12 +110,15 @@ async function stackNameGate(browser,FILE,ok,booted){
    return {sup:/\bsuper[- ]complex(es)?\b/i.test(s),character:/\bcharacter\b/i.test(s),head:s.slice(0,80)};});
   ok(drill.sup&&!drill.character,'SN1: '+tag+'the rung\'s own drill names it a super complex and never Character, '+JSON.stringify(drill));
 
-  /* ---- SN1, Summary's chain ---- */
+  /* ---- SN1, Summary's chain, retired outright, 20 November (cd55089c) ----
+     sumChain lost its only caller that day, named in CLAUDE.md's own
+     account of the round: "sumChain is not carried. He named the chain as
+     junk on 18 November... this is that same chain." There is no rung
+     word on the Summary left to mislabel, so this holds that .s-chain
+     stays gone rather than asserting a count the page no longer prints. */
   const sum=await pg.evaluate(()=>{setTab(TAB.SUMMARY); render();
-   return [...document.querySelectorAll('.s-chain .s-ch')].map(e=>e.textContent.replace(/\s+/g,' ').trim());});
-  /* the count and its word sit in one span with no space, "2super" */
-  ok(sum.length>0&&sum.some(s=>/^\d+\s*super$/.test(s))&&!sum.some(s=>/character/i.test(s)),
-   'SN1: '+tag+'Summary\'s chain counts the rung as super, got '+JSON.stringify(sum));
+   return !!document.querySelector('.s-chain');});
+  ok(!sum,'SN1: '+tag+'Summary\'s chain is retired and has not come back, '+JSON.stringify(sum));
 
   /* ---- SN1, Analytics: the ring and its card ---- */
   await pg.evaluate(()=>{setTab(TAB.ANALYTICS); render();});
