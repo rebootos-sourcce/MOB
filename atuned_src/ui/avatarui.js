@@ -677,8 +677,21 @@ function avState(){
   var first=st0.r.unread?0:W.filter(function(n){return n.b===A.b&&n.sq>0&&n.cf&&avatarPull(n,st0.M)>0;}).length;
   areas[A.k]={rows:mine, set:mine.length>0, held:held, first:first,
    pct:cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null};});
- var cs=rows.map(function(x){return x.c;}).filter(function(v){return v!=null;});
- var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;
+ /* THE WHOLE IS WHOLEOF, 21 November. His 18 November ruling, "we're going
+    to use the word whole," built the real figure this hero was named for
+    (engine/avatar.js wholeOf: 35 released, 35 reframed, 30 practised,
+    weighted by WHOLE_W), and nothing under ui/ ever called it. The hero's
+    own percent was cs's mean instead, avClosure averaged across written
+    stories alone, which never reads CURP.rituals, so marking a ritual done
+    could not move it; confirmed broken on this tip, with a real profile, in
+    tests/avatarwhole.js before this line changed. wholeOf's own pct already
+    prints on nought to a hundred with its own never-a-bare-zero rule
+    (engine/pct.js's whole kind), so dividing it by 100 keeps every existing
+    caller's fraction exactly as it read it before, avArc's f here and
+    ritstage.js's own Math.round(all*100), while the number beneath both is
+    finally the real one, the same call feeding the ring and the Ritual
+    page's hero (avState().overall, both read it). */
+ var W0=wholeOf(CURP), overall=(W0&&W0.reason==='read')?W0.pct/100:null;
  /* the lead is the heaviest story still carrying. Since round KH nothing on
     the screen is chosen by it; a take off with no row named still reads it. */
  var open=rows.filter(function(x){return x.gap&&!x.gap.clear;})
@@ -1207,61 +1220,18 @@ function avFirstHTML(st){
    +(m!==null?'<small>'+avMinSay(m)+'</small>':'')+'</button></div>';}
  return out+'</section>';}
 
-/* ---------------- running, as rows ---------------- */
-function avRunHTML(st){
- var R=st.run, out='<section class="av-card av-run"><div class="pm-eye">Running</div>';
- /* "No saboteur is running" about somebody whose plan cannot see saboteurs is
-    a claim about their field the product has no grounds to make, so the card
-    says it is locked and what unlocks it */
- if(!lockSees('sab'))return out+lockPanelHtml('sab')+'</section>';
- if(!R.rows.length)
-  return out+'<p class="av-p">'+(st.r.unread?'Nothing read yet, so no saboteur is running.'
-   :'No saboteur is running.')+'</p></section>';
- /* HS sweep. A paragraph here described the list under it: which saboteurs,
-    in what order, what the arrow means, and what a press does. The rows are
-    ordered, carry their direction word and are buttons, so the list shows all
-    four of those things itself. */
- /* the rows above a written word come from the stated type, and say so once */
- if(!R.written)out+='<p class="av-p">'+(R.seed?'From the type you stated, '+esc(R.seed)+'. ':'')
-  +'Nothing you wrote is in this yet.</p>';
- out+='<div class="av-runs">';
- R.rows.forEach(function(x){
-  var c=x.fam?seatCol(x.fam.b):'var(--dim)', on=AV.trace===x.nm;
-  out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
-   +'<span class="av-run-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(x.fam?x.fam.ic:'')+'</svg></span>'
-   +'<span class="av-run-nm">'+esc(x.nm)+'</span>'
-   +'<span class="av-run-v">'+fmtPct('chain',x.w)+'</span>'
-   +'<span class="av-run-d av-'+x.dir+'">'+(R.written?x.dir:'')+'</span>'
-   +'<span class="av-run-bar"><i style="width:'+Math.min(100,x.w*10).toFixed(0)+'%"></i></span></button>';});
- return out+'</div></section>';}
+/* ---------------- the cycles' own arc, kept for the Ritual page ----------------
+   avRunHTML (Running), avRitHTML (Rituals) and avCycHTML (Cycles), the
+   Avatar page's own cards for these three, are gone, 21 November, the
+   avatar-remove-old-blocks pass: superseded and stale per the board's own
+   tracking. Nothing they called is deleted. avRunning still feeds this
+   page's own hero (avLines, inside avRing, draws its tension lines from
+   st.run) and the Ritual page's own Running read; avRituals still feeds
+   the Ritual page's own Suggested list (ritstage.js, avRituals(r,rows,
+   avSide().rule)); avCycles and this very arc still draw that page's own
+   Kept rings (ritAvHtml). Only the three render calls, and the cards they
+   drew on this page, are gone.
 
-/* ---------------- rituals, queued and tasked ---------------- */
-function avRitHTML(st){
- var out='<section class="av-card av-rit"><div class="pm-eye">Rituals</div>';
- var td=(typeof ritToday==='function')?ritToday():null;
- if(td){var ts=ritSteps(td);
-  out+='<p class="av-p av-rit-today">Today: '+esc(ts.map(function(p){return p.nm;}).join(', '))
-   +', '+((+td.min)||0)+' minutes. '+(td.done?'Done.':'Not done yet.')+'</p>';}
- if(!st.rit.length)
-  return out+'<p class="av-p">Nothing to queue yet.</p></section>';
- if(AV.q===null){AV.q={}; AV.q[st.rit[0].p.k]=true;}
- /* HS sweep. "What each area you are working on calls for... Queue them
-    here, then task them" described the rows and the button under them, and
-    the empty state above carried a second sentence on how a queue fills. Each
-    row names its practice and the area it is for, and the button says Task
-    these. */
- out+='<div class="av-rits">';
- var mins=0;
- st.rit.forEach(function(x){
-  var on=!!AV.q[x.p.k]; if(on)mins+=x.p.min;
-  out+='<button type="button" class="av-rit-row'+(on?' av-on':'')+'" data-avrit="'+x.p.k+'" aria-pressed="'+on+'" style="--c:'
-   +(PTRACK[x.track]||GOLD)+'"><span class="av-rit-m"></span><span class="av-rit-t"><b>'+esc(x.p.nm)+'</b><em>for '
-   +esc(x.areas.map(function(a){return a.nm;}).join(' and '))+'</em></span><span class="av-rit-n">'+x.p.min+' minutes</span></button>';});
- out+='</div><div class="av-act"><span class="av-rit-sum">'+(mins?mins+' minutes queued':'Nothing queued')+'</span>'
-  +'<button type="button" class="btn pri" id="avtask"'+(mins?'':' disabled')+'>Task these</button></div>';
- return out+'</section>';}
-
-/* ---------------- the cycles ----------------
    His, round JP: "you can show your completion, like as you've been running
    your rituals, how often you're doing a cycle. And then you get a tick per
    cycle as well. And I want three cycles, three revolutions per cycle."
@@ -1278,22 +1248,6 @@ function avCycArc(f,a0,span){
  var r=15, t0=(a0-90)*Math.PI/180, t1=(a0-90+span*Math.min(f,0.9999))*Math.PI/180;
  return 'M'+avP(20+r*Math.cos(t0))+' '+avP(20+r*Math.sin(t0))+' A'+r+' '+r+' 0 '+(span*f>180?1:0)
   +' 1 '+avP(20+r*Math.cos(t1))+' '+avP(20+r*Math.sin(t1));}
-var AV_CYCN=['First','Second','Third'];
-function avCycHTML(st){
- var C=st.cyc, out='<section class="av-card avc"><div class="pm-eye">Cycles</div><div class="avc-rings">';
- C.cyc.forEach(function(c,i){
-  var gap=6, span=120-gap, s='<svg viewBox="0 0 40 40" aria-hidden="true">';
-  c.turns.forEach(function(f,t){var a0=t*120+gap/2;
-   s+='<path class="avc-trk" d="'+avCycArc(1,a0,span)+'"/>';
-   if(f>0)s+='<path class="avc-arc" d="'+avCycArc(f,a0,span)+'"/>';});
-  if(c.done)s+='<g transform="translate(10 10) scale(.84)" class="avc-ok">'+AV_OK+'</g>';
-  var turns=c.turns.filter(function(f){return f>=1;}).length;
-  out+='<div class="avc-one'+(c.done?' avc-done':'')+'" role="img" aria-label="'+AV_CYCN[i]+' cycle, '
-   +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg>'
-   +'<span class="avc-lb">'+AV_CYCN[i]+'</span></div>';});
- out+='</div><div class="avc-fig"><span>Practised</span><b>'+(C.days?C.days+(C.days===1?' day':' days'):'\u2013')+'</b></div>'
-  +'<p class="av-p avc-how">Seven days with a ritual done make one turn. Three turns make a cycle.</p>';
- return out+'</section>';}
 
 /* ---------------- the archetype wheel and its scale ----------------
    The merged wheel, round GU mockup D, approved for this page at round GV.
@@ -1880,7 +1834,20 @@ function renderAvatar(){
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
-  h+=avFirstHTML(st)+avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
+  /* CYCLES, RITUALS AND RUNNING ARE OFF THIS PAGE, 21 November, his words on
+     the avatar system: as real a priority as the ritual, and these three
+     cards were superseded and stale per the board's own tracking. Nothing
+     under them is deleted: avCycles/avCycArc still draw the Ritual page's
+     own Kept rings (ritstage.js ritAvHtml), avRituals still feeds that same
+     page's Suggested list, and avRunning still feeds this very hero's own
+     tension lines (avLines, inside avRing above) and the Ritual page's
+     Running read; only this page's own avCycHTML, avRitHTML and avRunHTML
+     calls, and the three cards they drew, are gone. Release first stays: it
+     is not stale, it is AVS4's only route to a press that runs the avatar's
+     own order (tests/becoming.js exercises the real click and the real
+     order it produces), so removing it would take away tested, working
+     behaviour rather than a superseded one. */
+  h+=avFirstHTML(st)+avPairs(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
  else{
@@ -1952,7 +1919,6 @@ function avWatch(fromRule){
   if(typeof S!=='undefined'&&S.tab===TAB.INTAKE)renderAvatar();},400);}
 
 function avBind(host,st){
- var b;
  var on=function(sel,fn){host.querySelectorAll(sel).forEach(function(el){el.onclick=function(){fn(el);};});};
  on('[data-avsub]',function(el){avSub(el.dataset.avsub);});
  /* A RING PRESSED IS A SEAT SELECTED, round KH: "Select each ring and tell
@@ -1980,8 +1946,6 @@ function avBind(host,st){
   el.oninput=function(){AV.tagQ=el.value;
    var P=host.querySelector('[data-avpool]'); if(!P)return;
    P.innerHTML=avTagPool(st.seat,avTagsOf(st,st.seat)); pool();};});
- on('[data-avsab]',function(el){AV.trace=(AV.trace===el.dataset.avsab)?null:el.dataset.avsab; renderAvatar();});
- on('[data-avrit]',function(el){AV.q[el.dataset.avrit]=!AV.q[el.dataset.avrit]; renderAvatar();});
  on('[data-avmk]',function(el){AV.arch=el.dataset.avmk; renderAvatar();});
  on('[data-avst]',function(el){avRate(+el.dataset.avst);});
  /* the prompt turns in place, so nothing typed is redrawn under the caret */
@@ -2032,12 +1996,7 @@ function avBind(host,st){
     if(lr)lr.innerHTML=avLive(avHeard(d.notbe),d);
     if(lb)lb.innerHTML=avLiveBe(d.notbe);},200);};
   el.onscroll=function(){var hl=el.parentNode.querySelector('.st-hl'); if(hl)hl.scrollTop=el.scrollTop;};});
- on('[data-avadd]',function(el){avSeatAdd(el.dataset.avadd);});
- if((b=document.getElementById('avtask')))b.onclick=function(){
-  var keys=Object.keys(AV.q||{}).filter(function(k){return AV.q[k];}); if(!keys.length)return;
-  /* the shipped builder is the one writer of a ritual. It opens with this
-     queue in it and asks the when and the where before it saves. */
-  ritOpen(); RIT.sel={}; keys.forEach(function(k){RIT.sel[k]=true;}); RIT.all=true; ritRender();};}
+ on('[data-avadd]',function(el){avSeatAdd(el.dataset.avadd);});}
 
 /* ============================================================
    WHO THE AVATAR IS, round RB, Becoming slice S2, the document's layer A.

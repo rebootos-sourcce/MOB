@@ -271,15 +271,23 @@ var PCT_KIND={
  /* charfield.js:160, closedness times a share, so never above it */
  leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
              say:'how much a point leaks'},
- /* ui/avatarui.js:624, the mean of the avatar's closures */
  /* engine/avatar.js wholeOf, the Avatar's one percent, 18 November: "we're
     going to use the word whole." Already a whole number 1 to 100 or null,
-    so it rides on nought to a hundred and null prints the dash. complete
-    below is the word it replaces and goes once nothing reads it. */
+    so it rides on nought to a hundred and null prints the dash. WIRED IN,
+    21 November: avState().overall (ui/avatarui.js) used to be complete's
+    own mean below instead, which never read CURP.rituals at all, so a
+    ritual marked done could not move the hero's own percent; confirmed
+    broken, then fixed, in tests/avatarwhole.js. overall is wholeOf's pct
+    now, divided back to complete's own nought-to-one range so every
+    existing caller (avArc's fraction, ritstage.js's own *100) still reads
+    it unchanged. complete below is the mean that is left, one row or one
+    area's own closure, never the hero's own figure again. */
  whole:     {lo:0, hi:100, src:'engine/avatar.js', find:'var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));',
              say:'how much of who you are becoming you have built'},
- complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
-             say:'the avatar\'s percent complete'},
+ /* ui/avatarui.js:668, the mean of one area's own rows' closures, AV_AREAS'
+    own per-seat badge; not the hero's own circle, which is whole above */
+ complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var cs=mine.map(function(x){return x.c;}).filter(function(v){return v!=null;});',
+             say:'one seat\'s own mean closure, not the avatar\'s whole figure'},
  /* engine/seed.js seedShare, how much of what the nine axes carry is still
     the stated four letter type, against how far the person has moved it
     since. Added with the ui/intakeui.js sweep of percent phase 3: it hand
