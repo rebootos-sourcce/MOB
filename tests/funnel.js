@@ -75,6 +75,15 @@
         such landing behind it is untouched: TAB.STORY stays the default
         document.title, STV.dash stays false.
 
+   And the gate the quiz owes the app:
+
+    11  a partial quiz never reaches a reading. From no answers, five, and
+        one short of TOTAL_Q, every forward control a person can press
+        leaves the page on a question: no intake, no results, no
+        state.completed and no #r= link. The crisis door in the quiz before
+        the V19 replacement walked round this, and the comment at the check
+        says how.
+
    NO COUNT IS TYPED INTO THIS FILE. Not the number of pages, not the number
    of questions, not the number of controls. Every one of them is read off
    the run and printed. This repository has been bitten nine times by a
@@ -384,6 +393,74 @@ const SIZE = c => '"' + c.t + '" ' + c.w + 'x' + c.h
     ok(/\/source\.html#r=/.test(href), '@' + w + ': Create your account packed "' + (href || '').slice(0, 60) + '", not a #r= link onto source.html');
     ok(errs.length === 0, '@' + w + ': ' + errs.length + ' error(s) across the whole walk: ' + errs.slice(0, 3).join(' | '));
     ok(reqs.length === 0, '@' + w + ': ' + reqs.length + ' outbound request(s) across the whole walk: ' + reqs.slice(0, 3).join(' '));
+    await ctx.close();
+  }
+
+  /* ---------- a partial quiz never reaches a reading ----------
+     THE CRISIS DOOR WAS A WAY ROUND THE LAST QUESTION, found 18 November
+     against the quiz from before the V19 replacement (534a3572, the parent
+     of 89777423). Its "Talk it through" set STATE to 'story' with no look at
+     answered(), and that view offered "Skip to my record", which packed a #r=
+     link onto the app from 0, 5 or 20 answers out of SINAMES.length. A blank
+     or partial self report went to the app looking like a real reading.
+     The replacement at 7d474400 removed the panel and viewStory with it, and
+     its own gate is per question: Next stays disabled until the screen is
+     answered, and results are reached only from the intake screen, which
+     sits after the last question. Nothing held that. This does, against any
+     door a later pass adds back: from 0, from 5 and from one short of
+     TOTAL_Q (read off the page), it presses Next, ArrowRight, and every
+     visible enabled button except the scale and Back, until nothing moves,
+     then asserts no intake, no results, no completed flag and no #r= link.
+     One width: this is state, not layout, and the walk above covers both.
+     Checked against a known bad case first: with canAdvance() returning true
+     it fails at every count, and it passes on the code as it stands. */
+  console.log('\n--- a partial quiz never reaches a reading ---');
+  for (const short of ['none', 'five', 'all but one']) {
+    const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const page = await ctx.newPage();
+    await page.goto('file://' + path.join(DIR, 'quiz.html'), { waitUntil: 'load' });
+    const total = await page.evaluate(() => TOTAL_Q);
+    const want = short === 'none' ? 0 : short === 'five' ? 5 : total - 1;
+    await page.evaluate(() => { state.autoAdvance = false; });
+    await page.click('#introStart');
+    let given = 0;
+    while (given < want) {
+      const s = await page.evaluate(() => { const s = STEPS[state.screen]; return s ? { type: s.type, q: s.qIndex } : null; });
+      if (!s || s.type !== 'q' && s.type !== 'interstitial') break;
+      if (s.type === 'q') { await page.click('.scale-stop[data-i="' + s.q + '"][data-v="7"]'); given++; await page.click('#quizNextBtn'); }
+      else await page.evaluate(() => document.getElementById('int-' + STEPS[state.screen].afterBlock).click());
+    }
+    /* every forward route a person has, until the screen stops moving. An
+       interstitial is tapped through like the walk above does, because it
+       is a beat between blocks and not a door past a question. */
+    const pressed = new Set();
+    for (let round = 0, last = -1; round < total + 20; round++) {
+      const at = await page.evaluate(() => state.screen);
+      if (at === last) break;
+      last = at;
+      await page.evaluate(() => { const s = STEPS[state.screen]; if (s && s.type === 'interstitial') document.getElementById('int-' + s.afterBlock).click(); });
+      await page.keyboard.press('ArrowRight');
+      for (const b of await page.$$('button:visible')) {
+        const d = await b.evaluate(e => ({ id: e.id, cls: e.className, off: e.disabled, t: e.textContent.trim().slice(0, 40) }));
+        if (d.off || /scale-stop/.test(d.cls) || d.id === 'backBtn') continue;
+        pressed.add(d.id || d.t);
+        await b.click({ timeout: 1000 }).catch(() => {});
+      }
+    }
+    const end = await page.evaluate(() => ({
+      given: state.answers.filter(a => a !== null).length,
+      step: (STEPS[state.screen] || {}).type, completed: state.completed,
+      intake: document.getElementById('intake').classList.contains('active'),
+      results: document.getElementById('results').classList.contains('active'),
+      links: document.querySelectorAll('a[href*="#r="]').length
+    }));
+    console.log('  ' + end.given + ' of ' + total + ' answered, pressed ' + (pressed.size ? [...pressed].join(', ') : 'Next and ArrowRight only')
+      + ', stopped on ' + end.step);
+    ok(end.given === want, short + ': meant to answer ' + want + ', the page holds ' + end.given);
+    ok(!end.intake && !end.results && end.step === 'q',
+      short + ': ' + end.given + ' of ' + total + ' answers reached the ' + end.step + ' screen');
+    ok(!end.completed, short + ': ' + end.given + ' of ' + total + ' answers set state.completed');
+    ok(end.links === 0, short + ': ' + end.given + ' of ' + total + ' answers packed ' + end.links + ' #r= link(s) onto the app');
     await ctx.close();
   }
 
