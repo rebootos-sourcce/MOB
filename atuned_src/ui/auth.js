@@ -13,9 +13,12 @@
    WHAT IT DOES AND DOES NOT CARRY. Sign up, sign in, the forgotten password
    request, the new password its link sets, and sign out, against the routes
    the reboot-os Worker serves for them.
-   It does not sync. Every story, reading and imprint stays in this browser
-   exactly as before. One field of a profile is written from here and nothing
-   else is: the plan, read back off the account by authPlanTake at the foot of
+   It syncs only on the person's yes. Since 21 November a person signed in
+   can turn on Keep my record on my account, and only then does the record,
+   without its name, go to the account and come back on another device
+   (PROFILE SYNC IS ON, below). Without that yes every story, reading and
+   imprint stays in this browser exactly as before. Apart from a pull, one
+   field of a profile is written from here and nothing else is: the plan, read back off the account by authPlanTake at the foot of
    this file, because only the server knows what was paid for. The session
    is held under its own key beside the profiles and never inside one: Export
    copies a profile to the clipboard, so a token written onto one would leave
@@ -239,12 +242,93 @@ function authFunnelAttach(){
   });
 }
 function authFunnelClear(){ return funnelKeep(null); }
-/* Owner ruling in DECISIONS.md: profile sync is not part of alpha. The stored profile contains identity, birth details and story entries. Keep this false until privacy copy, consent and retention are approved together. */
-var PROFILE_SYNC_ENABLED=false;
+/* ============================================================
+   PROFILE SYNC IS ON, 21 November. The owner, that day: "let's approve the
+   privacy copy for now. We'll have a lawyer review that later... We can use
+   temporary consent privacy wording for now." The ruling it replaces, 18
+   November, held this false "until privacy copy, consent and retention are
+   approved together". They are approved now, on a temporary footing, and the
+   legal pass is still owed (SYNC_CONSENT_V, below).
+
+   ON IS NOT A DEFAULT FOR A PERSON. This switch makes the feature exist and
+   nothing more. Nothing leaves a device until the person signed in on it
+   presses Turn on under Settings, Account, beside the words in
+   SYNC_CONSENT_SAY, and that yes is held per account, on this device, never
+   inside the record (syncConsented). CLAUDE.md's posture for a consequential
+   grant is explicit consent, a visible state and revocation, and the group
+   that holds the switch carries all three.
+
+   IT WAS NEVER RUN BEFORE TODAY, and two defects were waiting. The eligibility
+   test asked for a profiles() that has never existed anywhere in the build
+   (DECISIONS.md, "Profile sync, 9 October", found that and it was still
+   true), so with the flag on it still skipped every call; and the pull took
+   the older copy of the record out of PROFILES after pImport had already
+   saved, so the store kept both under one id and the next boot loaded the
+   older one beside the new. Both are fixed below, and tests/sync.js is the
+   first gate that ever drove this against a server. */
+var PROFILE_SYNC_ENABLED=true;
 var PROFILE_SYNC_ID='atuned.primary-profile';
 var PROFILE_SYNC_META_KEY='source.profile.sync';
 var PROFILE_SYNC_TIMER=null;
 var PROFILE_SYNC_BUSY=false;
+/* the last thing a pass found, for the Account group to show and so the
+   status line speaks once per change and not every thirty seconds */
+var PROFILE_SYNC_LAST=null, PROFILE_SYNC_SAID='';
+
+/* ============================================================
+   THE CONSENT WORDS. TEMPORARY, PENDING LEGAL REVIEW.
+   Approved by the owner on 21 November as temporary wording, his words: "add
+   a note that needs to be reviewed by legal, but that shouldn't stop us from
+   moving forward." Counsel has not read these sentences. They are written to
+   be complete and true of the code as it stands (what goes, where, who can
+   reach it, how long, how to stop), because a person is agreeing to them
+   today, and "temporary" means a lawyer will revise them, not that they are
+   loose. Every sentence was read off this file and the reboot-os Worker
+   (atuned/server/src/index.js PUT and GET /v1/sync, seal.js, deleteAccount)
+   on 21 November.
+
+   WHEN COUNSEL CHANGES THEM, BUMP SYNC_CONSENT_V. A yes is held against the
+   version it was given to, so a person who agreed to these words is asked
+   again under the new ones rather than carried over to text they never read.
+   The same review covers PRIVACY-POLICY.md section 4, 6 and 7, which say the
+   same thing at length, and its counsel notes list this item.
+
+   THE NAME IS NOT IN THE COPY. DECISIONS.md, "The name never leaves", is a
+   standing ruling and the sync is held to it: profileSyncBare takes the
+   profile name and the first, middle and last name off before anything is
+   sent, and a pull puts this device's own back (profileSyncDress). Birth
+   details do go, and the words say so, because a record brought to a new
+   device without them cannot draw the blueprint it was read from. */
+var SYNC_CONSENT_V='2026-11-21-temporary';
+var SYNC_CONSENT_KEY='source.sync.consent';
+var SYNC_CONSENT_SAY=[
+ 'Turned on, a copy of this record is kept on our server under your account, so it opens on any device you log in on.',
+ 'The copy holds your stories, answers, readings, snapshots, imprints, releases, practices, avatar, purpose, plan and birth details.',
+ 'It never holds the name you enter. That stays on this device, and on a new device you enter it again.',
+ 'The copy is sealed with a key before it is stored. Only the people who run Atüned can open it, to fix a fault or answer you.',
+ 'It is never sold, never used for ads, never shared for research, and no AI model is trained on it.',
+ 'Turn this off and the copy on our server is removed. Delete this account removes it too. The record on this device stays either way.'];
+function syncConsentRead(){
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return null;
+ try{ var o=JSON.parse(STORE.get(SYNC_CONSENT_KEY)||'null'); return o&&typeof o==='object'?o:null; }
+ catch(e){ return null; }}
+/* a yes counts for the account it was given under and the words it was given
+   to, and for nothing else */
+function syncConsented(){
+ var o=syncConsentRead(), id=profileSyncIdentity();
+ return !!(o&&id&&o.id===id&&o.v===SYNC_CONSENT_V);}
+/* True when the yes landed, read back, the way authKeep proves its own. A yes
+   the browser would not keep is refused rather than held for the visit: it
+   would read as on until a reload quietly turned it off, which is a state the
+   person never chose. */
+function syncConsentGive(){
+ var id=profileSyncIdentity();
+ if(!id||typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var txt=JSON.stringify({id:id, v:SYNC_CONSENT_V, at:new Date().toISOString()});
+ try{ STORE.set(SYNC_CONSENT_KEY,txt); return STORE.get(SYNC_CONSENT_KEY)===txt; }catch(e){ return false; }}
+function syncConsentDrop(){
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ try{ STORE.set(SYNC_CONSENT_KEY,''); return !STORE.get(SYNC_CONSENT_KEY); }catch(e){ return false; }}
 
 function profileSyncMeta(){
  try{
@@ -269,29 +353,56 @@ function profileSyncMetaSave(meta){
  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
  try{ STORE.set(PROFILE_SYNC_META_KEY,JSON.stringify(meta)); return true; }catch(e){ return false; }
 }
+/* PROFILES, NOT profiles(). The second never existed, so this was false on
+   every call from the day it was written. And the open record must be the one
+   this account synced: with two records on a device, opening the second and
+   letting a pass run would push it over the first one's account copy, so a
+   record that is not the synced one is left alone (meta.profileId). */
 function profileSyncEligible(){
- return !!(PROFILE_SYNC_ENABLED&&authSession()&&typeof CURP!=='undefined'&&CURP&&typeof pExport==='function'
-  &&typeof pImport==='function'&&typeof S!=='undefined'&&(!S.who||S.who===0)
-  &&typeof profiles==='function');
+ if(!(PROFILE_SYNC_ENABLED&&authSession()&&syncConsented()&&typeof CURP!=='undefined'&&CURP
+  &&typeof pExport==='function'&&typeof pImport==='function'&&typeof S!=='undefined'&&(!S.who||S.who===0)
+  &&typeof PROFILES!=='undefined'&&Array.isArray(PROFILES)))return false;
+ var m=profileSyncMeta();
+ return !(m.accountId===profileSyncIdentity()&&m.profileId&&m.profileId!==CURP.id);
 }
+/* The name off, a copy. DECISIONS.md: "The name never leaves." */
+function profileSyncBare(p){
+ var o=JSON.parse(JSON.stringify(p));
+ delete o.name;
+ if(o.who&&typeof o.who==='object'){o.who.first=''; o.who.middle=''; o.who.last='';}
+ return o;}
+/* and this device's own name back onto a copy that came without one */
+function profileSyncDress(remote,local){
+ var o=JSON.parse(JSON.stringify(remote));
+ o.name=(local&&typeof local.name==='string'&&local.name)||o.name||'You';
+ var lw=(local&&local.who)||{};
+ if(o.who&&typeof o.who==='object')['first','middle','last'].forEach(function(f){
+  o.who[f]=typeof lw[f]==='string'?lw[f]:'';});
+ return o;}
+/* the live row, and the highest version the server holds for this id, live
+   or removed. A removed row still owns its version on the server, which keeps
+   only a higher one: a push after Turn off and Turn on again that started
+   back at one would be answered stale for ever. */
 function profileSyncReadRemote(){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false,status:0,body:null});
  return authCall('GET','/v1/sync',null,s.token).then(function(r){
   if(!r.ok)return r;
   var rows=(r.body&&Array.isArray(r.body.records))?r.body.records:[];
-  var found=null;
+  var found=null, top=0;
   rows.forEach(function(x){
-   if(x&&x.kind==='state'&&x.id===PROFILE_SYNC_ID&&!x.deleted)found=x;
+   if(!x||x.kind!=='state'||x.id!==PROFILE_SYNC_ID)return;
+   if(Number.isInteger(x.version)&&x.version>top)top=x.version;
+   found=x.deleted?null:x;
   });
-  return {ok:true,status:r.status,body:found};
+  return {ok:true,status:r.status,body:found,version:top};
  });
 }
-function profileSyncPush(profile,version){
+function profileSyncPush(profile,version,gone){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false,status:0,body:null});
  return authCall('PUT','/v1/sync',{
-  records:[{kind:'state',id:PROFILE_SYNC_ID,version:version,body:profile,deleted:false}]
+  records:[{kind:'state',id:PROFILE_SYNC_ID,version:version,body:gone?null:profileSyncBare(profile),deleted:!!gone}]
  },s.token).then(function(r){
   if(!r.ok)return r;
   var kept=(r.body&&Array.isArray(r.body.kept))?r.body.kept:[];
@@ -301,116 +412,217 @@ function profileSyncPush(profile,version){
   return {ok:accepted,status:r.status,body:r.body};
  });
 }
+/* THE PULL, AND IT SAVES WHAT IT LEAVES. pImport pushes the incoming copy and
+   saves, and the older copy under the same id was spliced out after that save,
+   so the store still held both and the next boot read two records with one id
+   (every verb keyed by id reaches only the first). The splice is saved now,
+   and a save that fails says so through the same status the import uses. A
+   copy with a different id is a different record: it is opened beside the one
+   already here, which pImport keeps, and beside says so. */
 function profileSyncImport(remote,remoteVersion){
  var text=JSON.stringify(remote);
- /* keepId: this is a replace of the same record, and the loop below removes
-    the older entry, so pImport must not give it a fresh id as a copy */
  var imported=pImport(text,true);
- if(!imported)return {ok:false};
- var list=profiles();
+ if(!imported)return {ok:false, why:(typeof importError==='function'&&importError())||null};
+ var list=PROFILES, beside=false;
  for(var i=list.length-1;i>=0;i--){
-  if(list[i]&&list[i].id===imported.id&&list[i]!==imported)list.splice(i,1);
+  if(list[i]&&list[i]!==imported){ if(list[i].id===imported.id)list.splice(i,1); else beside=true; }
  }
- return {ok:true,text:text,version:remoteVersion,updated:imported.updated||null};
+ if(typeof pPersist==='function'&&!pPersist())return {ok:false, why:['could not save: '+((typeof SAVE_ERR!=='undefined'&&SAVE_ERR)||'error')]};
+ return {ok:true,text:text,version:remoteVersion,updated:imported.updated||null,beside:beside};
 }
 function authProfileSync(){
  if(PROFILE_SYNC_BUSY||!profileSyncEligible())return Promise.resolve({state:'skip'});
  PROFILE_SYNC_BUSY=true;
+ var done=function(r){PROFILE_SYNC_BUSY=false; return r;};
+ /* THE RECORD AS SAVED, NOT pExport. pExport runs saveProfile, which stamps
+    updated with the moment of the call, so every pass read this side as just
+    written: its hash never matched the last one and it was pushed every
+    thirty seconds, and no copy from another device could ever be newer, so
+    the pull below never ran. The saved record carries the stamp of its last
+    real save, which is the fact the comparison needs. */
  var localText;
- try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
- if(localText==null){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ try{ localText=JSON.stringify(CURP); }catch(e){return Promise.resolve(done({state:'refused'}));}
+ if(!localText)return Promise.resolve(done({state:'refused'}));
  var local;
- try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
- if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ try{ local=JSON.parse(localText); }catch(e){return Promise.resolve(done({state:'refused'}));}
+ if(!local||typeof local!=='object')return Promise.resolve(done({state:'refused'}));
  return Promise.all([profileSyncHash(localText),profileSyncReadRemote()]).then(function(pair){
   var localHash=pair[0], rr=pair[1], meta=profileSyncMeta(), identity=profileSyncIdentity();
-  var remote=rr.body&&rr.body.body&&typeof rr.body.body==='object'?rr.body.body:null;
+  if(!rr.ok)return done({state:'retry',status:rr.status,why:rr.body&&rr.body.error});
+  var remote=rr.body&&rr.body.body&&typeof rr.body.body==='object'?profileSyncDress(rr.body.body,local):null;
   var remoteVersion=rr.body&&Number.isInteger(rr.body.version)?rr.body.version:0;
-  if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
+  var topVersion=Math.max(remoteVersion,rr.version||0);
 
-  /* First association with an account is deliberately conservative. */
   /* ALWAYS KEEP THE HIGHER NUMBER, accounts-badges. Both pulls below used to
      import the remote profile whole, so a device with the newer stamp and
      the shorter record took every badge the other had earned off it.
      ladderKeep (engine/ladder.js) carries the ritual list and the ground
      opened across from this side, and names any mark it cannot carry; while
-     it names one nothing is pulled and nothing is pushed, because the rule
-     for a record conflict is still the owner's to pick. Read on the pull
+     it names one nothing is pulled and nothing is pushed. Read on the pull
      only: a push sends this side, which is the higher one by then, and
      holding it as well would leave the higher record unable to leave. */
   var keep=remote&&typeof ladderKeep==='function'?ladderKeep(local,remote,Date.now()):null;
   if(keep&&!keep.lost.length)keep.remote=keep.kept;
+  /* AND NEVER ERASE A STORY OR A SNAPSHOT, 21 November. A record this device
+     holds under the same id is replaced by a pull, so what it has that the
+     incoming copy lacks is counted first (syncAtRisk) and the pull is held
+     while anything would go. A copy under another id replaces nothing. */
+  var same=remote&&remote.id===local.id;
+  var mine=same&&typeof syncAtRisk==='function'?syncAtRisk(local,remote):null;
+  var held=function(){
+   return done({state:'held',lost:(keep&&keep.lost)||[],mine:mine||{stories:0,snaps:0},theirs:{stories:0,snaps:0}});};
+  var blocked=function(){return (keep&&keep.lost.length)||(mine&&syncAtRiskAny(mine));};
   /* the hash a pull records is the server's copy and not the kept one, so a
      pull that carried this side's rituals across differs from it on the next
      pass and is pushed, and the other device gets the union too. Where
      nothing was carried the two are the same text, as before. */
   var remoteText=remote?JSON.stringify(remote):'';
-  if(meta.accountId!==identity){
-   if(remote){
-    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
-    if(keep)remote=keep.remote;
-    var pulled=profileSyncImport(remote,remoteVersion);
-    if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(remoteText).then(function(remoteHash){
-     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
-     PROFILE_SYNC_BUSY=false;
-     if(typeof render==='function')render();
-     return {state:'pulled-first',version:remoteVersion};
-    });
-   }
-   profileSyncMetaSave({accountId:identity,version:0,hash:localHash,updated:local.updated||null});
-   PROFILE_SYNC_BUSY=false;
-   return {state:'associated',version:0};
-  }
+  var pull=function(first){
+   if(blocked())return held();
+   var pulled=profileSyncImport(keep?keep.remote:remote,remoteVersion);
+   if(!pulled.ok)return done({state:'refused',why:pulled.why});
+   return profileSyncHash(remoteText).then(function(remoteHash){
+    profileSyncMetaSave({accountId:identity,profileId:CURP&&CURP.id,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
+    if(typeof render==='function')render();
+    return done({state:first?'pulled-first':'pulled',version:remoteVersion,beside:pulled.beside});
+   });
+  };
 
-  if(remote){
+  /* First association with an account is deliberately conservative. */
+  if(meta.accountId!==identity){
+   if(remote)return pull(true);
+   meta={accountId:identity,profileId:local.id,version:topVersion,hash:'',updated:local.updated||null};
+   profileSyncMetaSave(meta);
+  }
+  else if(remote){
    var lu=local.updated?Date.parse(local.updated):0;
    var ru=remote.updated?Date.parse(remote.updated):0;
-   if(ru>lu){
-    if(keep&&keep.lost.length){PROFILE_SYNC_BUSY=false;return {state:'held',lost:keep.lost};}
-    if(keep)remote=keep.remote;
-    var pulled2=profileSyncImport(remote,remoteVersion);
-    if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    return profileSyncHash(remoteText).then(function(remoteHash2){
-     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
-     PROFILE_SYNC_BUSY=false;
-     if(typeof render==='function')render();
-     return {state:'pulled',version:remoteVersion};
-    });
-   }
+   if(ru>lu)return pull(false);
   }
 
-  if(meta.hash===localHash&&remoteVersion===meta.version){
-   PROFILE_SYNC_BUSY=false;
-   return {state:'clean',version:meta.version};
-  }
+  if(meta.hash===localHash&&topVersion===meta.version)return done({state:'clean',version:meta.version});
 
-  var nextVersion=Math.max(meta.version||0,remoteVersion)+1;
+  /* THE PUSH HAS THE SAME DUTY THE OTHER WAY. Another device that wrote since
+     this one last synced moved the server's version on; if its copy holds a
+     story or a snapshot this side does not, sending this side would erase it
+     from the account, so the push is held and named too. A copy this device
+     itself sent last time is not checked: what it lacks now, this person took
+     out here on purpose. */
+  if(remote&&remoteVersion>(meta.version||0)&&typeof syncAtRisk==='function'){
+   var theirs=syncAtRisk(remote,local);
+   if(syncAtRiskAny(theirs))return done({state:'held',lost:[],mine:{stories:0,snaps:0},theirs:theirs});
+  }
+  var nextVersion=Math.max(meta.version||0,topVersion)+1;
   return profileSyncPush(local,nextVersion).then(function(pr){
-   PROFILE_SYNC_BUSY=false;
-   if(!pr.ok)return {state:'retry',status:pr.status};
-   profileSyncMetaSave({accountId:identity,version:nextVersion,hash:localHash,updated:local.updated||null});
-   return {state:'pushed',version:nextVersion};
+   if(!pr.ok)return done({state:'retry',status:pr.status,why:pr.body&&pr.body.error});
+   profileSyncMetaSave({accountId:identity,profileId:local.id,version:nextVersion,hash:localHash,updated:local.updated||null});
+   return done({state:'pushed',version:nextVersion});
   });
  }).catch(function(){
-  PROFILE_SYNC_BUSY=false;
-  return {state:'retry'};
+  return done({state:'retry'});
  });
 }
+/* WHAT A PASS FOUND, SAID TO THE PERSON. Every pass resolved to a state and
+   nothing read it, so a held pull was held in silence and a refusal from the
+   server looked like a sync that worked. Each state that changes what the
+   person has is said once through status(), the channel every other write in
+   the product reports through, and the Account group reads the same answer
+   (profileSyncLine). A pass that found nothing new says nothing. */
+function profileSyncCount(n,one,many){return n+' '+(n===1?one:many);}
+function profileSyncWhat(x){
+ var a=[];
+ if(x&&x.stories)a.push(profileSyncCount(x.stories,'story','stories'));
+ if(x&&x.snaps)a.push(profileSyncCount(x.snaps,'snapshot','snapshots'));
+ return a.join(' and ');}
+function profileSyncLine(r){
+ r=r||PROFILE_SYNC_LAST;
+ if(!r)return '';
+ if(r.state==='held'){
+  var nm=(r.lost||[]).map(function(k){
+   var m=(typeof MARKS!=='undefined')&&MARKS.filter(function(x){return x.k===k;})[0];
+   return m?m.nm:k;});
+  var why=r.mine&&syncAtRiskAny(r.mine)?'This device has '+profileSyncWhat(r.mine)+' the account copy does not.'
+   :r.theirs&&syncAtRiskAny(r.theirs)?'The account copy has '+profileSyncWhat(r.theirs)+' from another device that this one does not.'
+   :'The account copy would take '+nm.join(', ')+' off this record.';
+  return 'Not synced. '+why+' Nothing was replaced or sent, so both copies are as they were. '
+   +'Export this record, under Privacy, keeps a copy of this one.';}
+ if(r.state==='refused')return 'Not synced. The account copy did not load'
+  +(r.why&&r.why.length?': '+r.why.join('; '):'')+'. This record is as it was.';
+ if(r.state==='retry'&&r.status===413)return 'Not synced. This record is too large for the account copy. It is safe on this device.';
+ if(r.state==='retry'&&r.status&&r.status!==401)return 'Not synced. '
+  +(r.why?authSay(r.why):'The server refused it, with code '+r.status+'.')+' This record is safe on this device.';
+ if(r.state==='retry')return 'Not synced yet. The server could not be reached. This record is safe on this device.';
+ if(r.state==='pulled-first'||r.state==='pulled')return 'Brought your record over from your account.'
+  +(r.beside?' The record that was already on this device is kept under Profiles.':'');
+ if(r.state==='pushed'||r.state==='clean')return 'Synced. The account copy matches this record.';
+ return '';}
+function profileSyncSay(r){
+ if(!r||r.state==='skip')return r;
+ var shown=profileSyncLine(PROFILE_SYNC_LAST);
+ PROFILE_SYNC_LAST=r;
+ var line=profileSyncLine(r);
+ /* clean and pushed are the ordinary pass, every thirty seconds: shown on the
+    Account group, never put on the status line */
+ var loud=r.state!=='clean'&&r.state!=='pushed';
+ if(loud&&line&&line!==PROFILE_SYNC_SAID&&typeof status==='function')
+  status(line,(r.state==='held'||r.state==='refused'||r.state==='retry')?'warn':undefined);
+ PROFILE_SYNC_SAID=loud?line:'';
+ /* redrawn only when the line moved, so a pass every thirty seconds never
+    rebuilds a page somebody is reading */
+ if(line!==shown&&typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS&&typeof renderAccount==='function'
+  &&typeof ACC_OPEN!=='undefined'&&ACC_OPEN==='account')renderAccount();
+ return r;}
+function profileSyncRun(){ return authProfileSync().then(profileSyncSay); }
 function profileSyncStart(){
- /* A dormant adapter is not permission to transfer a profile. This call stays
-    in the auth path so enabling sync later has one owner, but alpha never polls
-    or sends a profile until its privacy and consent design is approved. */
- if(!PROFILE_SYNC_ENABLED){profileSyncStop();return false;}
+ /* the timer runs only with the person's yes for this account; without it a
+    sign in is a sign in and nothing else, as it was before sync existed */
+ if(!PROFILE_SYNC_ENABLED||!authSession()||!syncConsented()){profileSyncStop();return false;}
  if(PROFILE_SYNC_TIMER)clearInterval(PROFILE_SYNC_TIMER);
- PROFILE_SYNC_TIMER=setInterval(function(){authProfileSync();},30000);
- authProfileSync();
+ PROFILE_SYNC_TIMER=setInterval(function(){profileSyncRun();},30000);
+ profileSyncRun();
  return true;
 }
 function profileSyncStop(){
  if(PROFILE_SYNC_TIMER){clearInterval(PROFILE_SYNC_TIMER);PROFILE_SYNC_TIMER=null;}
  PROFILE_SYNC_BUSY=false;
 }
+/* TURN ON. The yes is held first and the first pass runs on it. Resolves
+   {ok, say}, never rejects. */
+function profileSyncOn(){
+ if(!authSession())return Promise.resolve({ok:false, say:'Log in first. The copy is kept under an account.'});
+ if(!syncConsentGive())return Promise.resolve({ok:false,
+  say:'Storage is blocked in this browser, so the yes could not be kept. Nothing was sent.'});
+ PROFILE_SYNC_LAST=null; PROFILE_SYNC_SAID='';
+ if(PROFILE_SYNC_TIMER)clearInterval(PROFILE_SYNC_TIMER);
+ PROFILE_SYNC_TIMER=setInterval(function(){profileSyncRun();},30000);
+ return authProfileSync().then(function(r){
+  profileSyncSay(r);
+  return {ok:true, say:'Kept on your account. '+(profileSyncLine(r)||'')};});}
+/* TURN OFF, AND THE COPY GOES. The words promise "turn this off and the copy
+   on our server is removed", so off is a removal sent to the server and not
+   only a timer stopped. The server keeps only a higher version, so the
+   removal is sent one above the highest it holds. The yes is dropped here
+   whatever the server answers, because off is what the person chose; what
+   the server did is said as it is, and a removal that did not land says how
+   to finish it. */
+function profileSyncOff(){
+ var s=authSession();
+ profileSyncStop();
+ var dropped=syncConsentDrop();
+ PROFILE_SYNC_LAST=null; PROFILE_SYNC_SAID='';
+ if(!s)return Promise.resolve({ok:dropped, say:'Turned off.'});
+ return profileSyncReadRemote().then(function(rr){
+  if(!rr.ok)return {ok:false, say:'Turned off on this device. The server could not be reached, so the account copy is still there. '
+   +'Turn it on and off again once you are online, or Delete this account, to remove it.'};
+  var meta=profileSyncMeta();
+  if(!rr.body){ profileSyncMetaSave({accountId:null,version:0,hash:'',updated:null});
+   return {ok:true, say:'Turned off. There was no account copy to remove.'}; }
+  var v=Math.max(meta.version||0,rr.version||0)+1;
+  return profileSyncPush(null,v,true).then(function(pr){
+   if(!pr.ok)return {ok:false, say:'Turned off on this device. The server did not remove the account copy'
+    +(pr.body&&pr.body.error?': '+authSay(pr.body.error):'.')+' Turn it on and off again, or Delete this account, to remove it.'};
+   profileSyncMetaSave({accountId:null,version:0,hash:'',updated:null});
+   return {ok:true, say:'Turned off. The copy on our server is removed. This record stays on this device.'};});});}
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
@@ -571,13 +783,20 @@ var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on rel
    account has never been seen on this device, read off the same identity
    key profileSyncMeta already keys sync by) rather than guessing from
    whether the profile looks empty, which would be wrong for a returning
-   device with a real, full record. */
+   device with a real, full record.
+   SYNC WENT ON 21 November, behind the person's own yes, so the sentence
+   names the door instead of saying the record cannot come over. With the yes
+   already given for this account it says nothing here: the pass that just
+   started says what it brought (profileSyncSay). */
 function authSyncNote(acc,mail){
- if(PROFILE_SYNC_ENABLED)return '';
+ if(PROFILE_SYNC_ENABLED&&typeof syncConsented==='function'&&syncConsented())return '';
  var identity=(typeof acc.id==='string'&&acc.id)||String(mail||'').toLowerCase();
  var seen=false;
  try{ seen=profileSyncMeta().accountId===identity; }catch(e){}
- return seen?'':' Your story stays on this device; it does not come over from another one yet.';}
+ if(seen)return '';
+ return PROFILE_SYNC_ENABLED
+  ?' Your story stays on this device. To open it on your other devices, turn on Keep my record on my account, under Account.'
+  :' Your story stays on this device; it does not come over from another one yet.';}
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
@@ -741,10 +960,12 @@ function authSignOut(){
    ON A YES the account's session, the first visit's session and the sync
    marker go from this browser, because each names an account that no longer
    exists, and a paid plan on the open record drops to free, because the
-   account that paid is gone. The record itself stays: it was never on the
-   server (the sync does not run, DECISIONS.md, "Profile sync, 9 October"), and
-   deleting a person's record because they closed an account is a second
-   delete they did not ask for. The receipt says where it is and how to remove
+   account that paid is gone. The record on this device stays: the server's
+   copy of it, if the person turned sync on, is one of the rows the Worker's
+   deleteAccount removes ("everything it held under the account", below), and
+   deleting the device's own record because they closed an account is a second
+   delete they did not ask for. The yes to sync goes too, because it was given
+   under an account that no longer exists. The receipt says where it is and how to remove
    it.
 
    ON A NO nothing here moves, so the same press is the retry, except a 401,
@@ -770,6 +991,7 @@ function authGone(b){
  var kept=authForget();
  authFunnelClear();
  try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(PROFILE_SYNC_META_KEY,''); }catch(e){}
+ syncConsentDrop(); PROFILE_SYNC_LAST=null; PROFILE_SYNC_SAID='';
  var dropped=authPlanDrop();
  var lines=[], stopped=(typeof b.stopped==='number')?b.stopped:null;
  if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '

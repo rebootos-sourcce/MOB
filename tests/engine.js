@@ -3890,6 +3890,29 @@ console.log('\n27e · the reminder speaks after a missed day, and a sync keeps t
   ['minutes','done','ground','lines'].forEach(f=>{n++; if(lk[f]<Math.max(la[f],lb[f]))worse++;});
   ['days','best'].forEach(f=>{n++; if(sk[f]<Math.max(sa[f],sb[f]))worse++;});}
  ok(n===1800&&worse===0,'across 300 random pairs no count falls below the higher side, '+worse+' of '+n+' fell');
+
+ /* WHAT NO MARK COUNTS, 21 November. Two different stories on two devices
+    both earn First story, so ladderKeep's lost is empty and only syncAtRisk
+    sees that a pull would erase one of them. Known bad first. */
+ {const {syncAtRisk,syncAtRiskAny}=E;
+  const st=(p,t,x)=>{p.story.entries.push({t:day(t),text:x,imprints:[],bands:[]});return p;};
+  const lap=st(st(mk([2]),2,'the lift at work'),3,'my father'), ph=st(mk([2]),1,'a different day');
+  ok(ladderKeep(lap,ph,NOW).lost.length===0,
+   'known bad: two devices with different stories both hold First story, so ladderKeep sees nothing to hold');
+  const r=syncAtRisk(lap,ph);
+  ok(r.stories===2&&r.snaps===0&&syncAtRiskAny(r),
+   'and syncAtRisk counts the two stories the incoming copy would erase, got '+JSON.stringify(r));
+  ok(syncAtRisk(ph,lap).stories===1,'and the one the other way, so a push is held too');
+  const same=JSON.parse(JSON.stringify(lap)); st(same,0,'one more since');
+  ok(!syncAtRiskAny(syncAtRisk(lap,same)),'a copy that holds every story and more erases nothing');
+  ok(syncAtRisk(same,lap).stories===1,'and the newer one names the one it would lose');
+  const twice=st(st(mk([]),4,'same words'),4,'same words'), once=st(mk([]),4,'same words');
+  ok(syncAtRisk(twice,once).stories===1,'two identical entries on one side are two, so one is counted');
+  const sn=mk([]); sn.history.push({t:day(5),cq:1},{t:day(4),cq:2});
+  const sn2=mk([]); sn2.history.push({t:day(5),cq:1});
+  ok(syncAtRisk(sn,sn2).snaps===1&&syncAtRisk(sn2,sn).snaps===0,'a snapshot only one side holds is counted, by its stamp');
+  ok(!syncAtRiskAny(syncAtRisk(blankProfile('K'),lap)),'a blank device erases nothing, so a first pull goes ahead');
+  ok(JSON.stringify(lap).indexOf('my father')>0&&lap.story.entries.length===2,'and neither side is changed');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');

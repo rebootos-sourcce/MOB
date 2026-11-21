@@ -558,9 +558,10 @@ function remindDue(p,now,shown){
    is not empty. That is the safeguard: a lower incoming record never
    silently overwrites a higher one. It is held instead, and said.
 
-   Pure: neither argument is changed, kept is a copy. Sync is still off
-   (PROFILE_SYNC_ENABLED, ui/auth.js), so nothing calls this on a live
-   device yet; tests/engine.js 27b holds it. */
+   Pure: neither argument is changed, kept is a copy. Sync went on 21
+   November (PROFILE_SYNC_ENABLED, ui/auth.js), behind the person's own yes,
+   and every pull reads this first; tests/engine.js 27e holds it, and
+   syncAtRisk below covers the stories and snapshots it cannot. */
 function ladderRitKey(x){
  return String(x&&x.t)+'|'+((x&&+x.min)||0)+'|'+((x&&Array.isArray(x.steps))?x.steps.join(','):'');}
 /* an entry with no done key predates the field and ledgerRead reads it as
@@ -602,3 +603,35 @@ function ladderKeep(had,came,now){
  var got={}; ladderRead(kept,now).earned.forEach(function(m){got[m.k]=1;});
  Object.keys(was).forEach(function(k){if(!got[k])lost.push(k);});
  return {kept:kept, lost:lost};}
+
+/* ============================================================
+   WHAT A PULL WOULD ERASE THAT NO MARK COUNTS, 21 November, the day sync
+   went on. ladderKeep above holds a pull whose incoming record would cost a
+   mark, and that was the only guard. It is not enough: a laptop with three
+   stories and a phone with two different ones both hold First story, so lost
+   came back empty and the phone's record replaced the laptop's whole, and
+   the laptop's three stories went with it, silently. A story is the record,
+   not a tally, so it cannot be unioned the way a ritual is (its charge is
+   already applied to the axes it was read into, and two sets of axes do not
+   add). What can be done is to see it and say it.
+
+   So this counts the entries the first side holds that the second does not:
+   stories, by their stamp and their words, and snapshots, by their stamp,
+   because those are the two things a person wrote or saved that only ever
+   accumulate. A copy is matched once, so two identical entries on one side
+   are two. The caller does not adopt the second side while either count is
+   above nought, and says what it found, the rule ladderKeep's lost carries.
+   Pure, and neither side is changed. */
+function syncAtRisk(had,came){
+ var lack=function(a,b,k){
+  var seen={};
+  (Array.isArray(b)?b:[]).forEach(function(e){var x=k(e); seen[x]=(seen[x]||0)+1;});
+  var n=0;
+  (Array.isArray(a)?a:[]).forEach(function(e){var x=k(e); if(seen[x])seen[x]--; else n++;});
+  return n;};
+ var said=function(e){return String(e&&e.t)+'|'+String(e&&e.text);};
+ var at=function(e){return String(e&&e.t);};
+ var st=function(p){return (p&&p.story&&p.story.entries)||[];};
+ var hi=function(p){return (p&&p.history)||[];};
+ return {stories:lack(st(had),st(came),said), snaps:lack(hi(had),hi(came),at)};}
+function syncAtRiskAny(r){return !!r&&(r.stories>0||r.snaps>0);}

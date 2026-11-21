@@ -128,14 +128,22 @@ function accAccount(){
     ui/auth.js). The receipt is held in memory for this visit and never
     stored: it names what the account was, and the account is gone. */
  if(ses)ACC_GONE=null;
+ /* whether this account's yes to sync is held on this device, read once: the
+    footer below and the group under it both say what follows from it */
+ var synced=!!(ses&&typeof syncConsented==='function'&&syncConsented());
  var h=(!ses&&ACC_GONE?'<div id="acgone">'+accGroup('Account deleted','',
    ACC_GONE.map(function(l){return '<p>'+esc(l)+'</p>';}).join(''))+'</div>':'')
   +(ses?accGroup('Sign in',
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'})
    +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
-   'Your stories and readings stay on this device. Signing in does not copy them anywhere. '
+   /* TRUE ONLY WITHOUT THE YES, 21 November. Signing in still copies nothing
+      on its own; the group below is the one door that does, and the footer
+      says which of the two is the case on this device now. */
+   (synced?'Your record, without your name, is kept on your account too. '
+    :'Your stories and readings stay on this device. Signing in does not copy them anywhere. ')
    +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.')
+   +accSync()
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
@@ -222,6 +230,36 @@ function accAccount(){
     group, since 30 September, when the state became reachable. Key is not:
     nothing on this side holds one. */
  return h;}
+
+/* ---------- 4.1a the record on the account, 21 November ----------
+   KEEP MY RECORD ON MY ACCOUNT. The consent the owner approved that day as
+   temporary wording, pending a legal pass (SYNC_CONSENT_SAY and its note in
+   ui/auth.js hold the words and the review owed on them). Signed in only,
+   because the copy is kept under an account.
+
+   THE THREE DUTIES OF A CONSEQUENTIAL GRANT, from CLAUDE.md, all in one
+   group. The yes is a press on a switch drawn off, beside every sentence of
+   what it does, so nothing is copied by default and nothing is copied before
+   the words have been on the screen. The state is the switch, and while it is
+   on the last pass's answer is the row under it, so a held sync or a refusal
+   is never only a status line that faded. And the way back is the same
+   switch, whose press removes the server's copy (profileSyncOff). */
+function accSync(){
+ if(typeof PROFILE_SYNC_ENABLED==='undefined'||!PROFILE_SYNC_ENABLED)return '';
+ var on=typeof syncConsented==='function'&&syncConsented();
+ var line=on&&typeof profileSyncLine==='function'?profileSyncLine():'';
+ return accGroup('Your record on other devices',
+   accTog('Keep my record on my account','acsync',on,on?'on':'off')
+   +(on?accRow('Last sync',line||'Checking now.'):''),
+   SYNC_CONSENT_SAY.map(esc).join(' ')+' '+legalLink('privacy')+' says the rest.');}
+function accSyncPress(){
+ if(ACC_BUSY)return false;
+ var on=syncConsented();
+ ACC_BUSY=true; accBusy(true);
+ status(on?'Turning it off and removing the account copy.':'Turning it on.');
+ (on?profileSyncOff():profileSyncOn()).then(function(r){
+  ACC_BUSY=false; renderAccount(); status(r.say,r.ok?'ok':'fail');});
+ return true;}
 
 /* ---------- 4.1b profiles. round JZ ----------
    His words: "build out the profile page. So if I enter my profile, it saves
@@ -482,6 +520,8 @@ var ACC_HELD=[
  ['The snapshots','every saved state of the field'],
  ['The avatar and purpose','what you said you are becoming'],
  ['The plan','the tier word, and nothing about a card']];
+function accSynced(){
+ return !!(typeof authSession==='function'&&authSession()&&typeof syncConsented==='function'&&syncConsented());}
 function accPrivacy(){
  var snaps=(CURP&&CURP.history&&CURP.history.length)||0;
  var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
@@ -490,8 +530,14 @@ function accPrivacy(){
    /* "Held in this browser and nowhere else" was false twice: the plan row is
       read off the server, and the topic picked on a first visit is sent there.
       The name half is DECISIONS.md, "The name never leaves". */
-   'Held in this browser. Your stories are not sent to us, and the name you '
-   +'enter never leaves this device.');
+   /* and since 21 November, a person who turned on Keep my record on my
+      account has a copy of the record on our server, so the first half of
+      this sentence is said only to somebody for whom it is still true. The
+      name half holds either way: the sync never sends it. */
+   (accSynced()?'Held in this browser, and a copy without your name is kept on your account, '
+     +'because you turned that on under Account. The name you enter never leaves this device.'
+    :'Held in this browser. Your stories are not sent to us, and the name you '
+     +'enter never leaves this device.'));
  /* WHAT IS SENT, read off ui/auth.js on 9 October and held by tests/copy.js,
     which also fails on any key the walk sends that its SENDS table does not
     name. authFunnelStart sends the code, authFunnelCheckpoint the topic and
@@ -504,7 +550,8 @@ function accPrivacy(){
    +'you finish the opening, finish your first release, or answer What changed. '
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
-   +'a release, and payment each say what they send where you use them.');
+   +'a release, payment and Keep my record on my account each say what they '
+   +'send where you use them.');
  /* THE FULL PAGES, beside the short version above. A row is the action row
     the community door already is, a link dressed as the button, because a
     press here opens a page and changes nothing on this device. */
@@ -565,7 +612,9 @@ function accPrivacy(){
       button reaches neither. The record itself is not there, because the sync
       in ui/auth.js never runs. */
    'Delete removes this record from this browser now, and it cannot be undone. '
-   +'Our server has no copy of it, so there is no other copy unless you made one. '
+   +(accSynced()?'The copy on your account is not touched by it. Turn off Keep my record '
+     +'on my account, under Account, to remove that one. '
+    :'Our server has no copy of it, so there is no other copy unless you made one. ')
    +'Our server does keep your sign in, if you made one, and what your first '
    +'visit sent. Delete does not reach those. Delete this account, under Account, '
    +'removes the sign in.');
@@ -727,6 +776,7 @@ function accWire(){
  var an=$('acnew'); if(an)an.onclick=function(){ accEnter('signup'); };
  var ao=$('acout'); if(ao)ao.onclick=function(){ accSignOut(); };
  var dz=$('acdelacc'); if(dz)dz.onclick=function(){ accAccountDelete(); };
+ var sy=$('acsync'); if(sy)sy.onclick=function(){ accSyncPress(); };
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();

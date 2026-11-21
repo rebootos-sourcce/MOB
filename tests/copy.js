@@ -23,8 +23,10 @@
      sign in                          the email, the password, and the first
                                       visit's credential, which joins the marks
                                       above to the account
-   The record itself is never sent: the profile sync in ui/auth.js needs a
-   profiles() that is defined nowhere, so it skips on every call.
+   The record itself is never sent on this walk: since 21 November the
+   profile sync in ui/auth.js runs only for a person signed in who turned on
+   Keep my record on my account, and this walk never signs in. tests/sync.js
+   holds what that sends.
 
    WHAT THIS DOES. Opens the built page in a real Chromium at 1600 and 390 and
    reads every tab TABDEF and TABEXTRA name at run time, every Settings section

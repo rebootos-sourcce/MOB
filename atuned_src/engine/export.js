@@ -127,6 +127,7 @@ if(typeof module!=='undefined'&&module.exports){
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
                   remindDue:remindDue, REMIND_GAP:REMIND_GAP, ladderKeep:ladderKeep,
+                  syncAtRisk:syncAtRisk, syncAtRiskAny:syncAtRiskAny,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* the six families' paired opposite, core.js. Reachable as a browser global
      and absent from the contract, so a headless caller had no route to it but

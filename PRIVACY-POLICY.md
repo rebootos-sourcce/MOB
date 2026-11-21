@@ -1,6 +1,6 @@
 # Privacy
 
-Last changed 16 October 2026.
+Last changed 21 November 2026.
 
 ## 1. Who we are
 
@@ -14,6 +14,7 @@ Write to hello@atuned.world about anything on this page.
 
 - What you type in the app is saved in your browser, on your device. That includes your name, your birth details, your stories and your answers.
 - The name you enter never leaves this device.
+- If you log in and turn on **Keep my record on my account**, a copy of your record, without your name, is kept on our server so it opens on your other devices. It is off until you turn it on, and turning it off removes the copy.
 - A first visit sends our server a random code made for this browser and the topic you pick, and later a mark for each step you finish.
 - An account sends our server your email and your password.
 - The voice that reads a release out loud sends each line it speaks to ElevenLabs, a company that turns text into speech. A release is the short set of lines the app reads to help you let go of one pattern, a way of feeling or reacting you have been running on. The voice is on unless you turn it off.
@@ -37,7 +38,7 @@ It holds:
 - the avatar, which is the figure that stands for you in the app, and the purpose you set, which is what you said you are becoming
 - the name of your plan, and never a card
 
-We do not have a copy of any of it. If you clear your browser's data or lose the device, it is gone, unless you copied it with Export this record (section 8).
+We do not have a copy of any of it unless you turn on Keep my record on my account (section 4). Without that, if you clear your browser's data or lose the device, it is gone, unless you copied it with Export this record (section 8).
 
 Nobody else can see it. The app has no way to show your record to anyone yet. If we add one, it will work only after you say yes, it will list who can see what, and one press will take it back.
 
@@ -54,6 +55,7 @@ The app and the pages load no ads, no tracking tools, no outside fonts and no ou
 | You open the app for the first time, and the opening starts | A random code made for this browser. Then the topic you pick under What brought you here, such as grief or money. Then a mark when you finish the opening, finish your first release, or answer What changed. What you answered is not sent. | Our server, which keeps it in a database run by Supabase | So this first visit, and the starter gift that comes with it, can join your account if you make one. The starter gift is a set of free patterns to release. |
 | You make an account or log in | Your email and your password. Then the random code from your first visit, which joins the topic and the marks to your account. | Our server, run by Cloudflare | To open your account and keep you logged in. |
 | You open the app while logged in | Your sign in, which is a long random key our server gave you | Our server | So the app shows your plan. |
+| You turn on Keep my record on my account, under Settings, Account, and then every half minute while you are logged in with it on | A copy of your record: your stories, answers, readings, snapshots, imprints, releases, practices, avatar, purpose, plan and birth details. Not the name you enter: that is taken off first. | Our server, which seals the copy with a key before it stores it, in its database run by Cloudflare | So your record opens on any device you log in on. Nothing is sent until you turn it on. Turn it off and the copy is removed. |
 | You press Forgot your password | Your email | Our server, then Resend, a company that sends email | Resend sends a link to that email. The link works once, for one hour. |
 | The voice reads a release | Each line it speaks. A line names one of your patterns, such as "that I am completely alone and nothing is holding me". If you are not logged in, also a random code for this browser. | Our server, which passes the line on to ElevenLabs | To say the line out loud. ElevenLabs gets the line and nothing that names you: no email, no account and no code. Turn Voice off in the release panel and the line shows on the screen instead. |
 | You press Record to speak a story | The sound of your voice | Your browser's maker, and not us. Chrome sends it to Google and Edge sends it to Microsoft. Other browsers may do the same. | To turn what you say into text. We never get the sound. Type instead and nothing is sent. |
@@ -85,8 +87,9 @@ Each company handles what it gets under its own privacy policy. They are based i
 - **An activity list.** The dates the account signed up, logged in, reset its password, opened billing, paid, asked for a copy and was deleted. It sits under a random account code.
 - **Voice counts.** How many letters the voice spoke each day, for about two days. Not the lines.
 - **An error log.** What broke on our server and where. It holds no story text.
+- **Your record, only if you turned on Keep my record on my account.** The copy section 4 describes, sealed with a key, under your account. It never holds the name you enter. The people who run Atüned hold the key, so they can open it to fix a fault or answer you, and for nothing else.
 
-Our server does not keep your name, your birth details, your stories or your answers. We share nothing for research, and no research sharing is offered. Nobody at Atüned can see what stays on your device. The people who run Atüned can see what our server keeps, so they can fix faults and answer you.
+Our server never keeps your name. Unless you turn on Keep my record on my account, it does not keep your birth details, your stories or your answers either. We share nothing for research, and no research sharing is offered. Nobody at Atüned can see what stays on your device. The people who run Atüned can see what our server keeps, so they can fix faults and answer you.
 
 ## 7. How long we keep it
 
@@ -94,6 +97,7 @@ Our server does not keep your name, your birth details, your stories or your ans
 |---|---|
 | What is on your device | Until you delete it or clear your browser's data |
 | Your account: email, scrambled password and plan | Until you delete the account |
+| Your record's copy, if you turned on Keep my record on my account | Until you turn it off, or delete the account |
 | A sign in | 90 days, or until you sign out |
 | A password reset link | One hour, or until it is used |
 | Counts of failed log in tries | 15 minutes |
@@ -112,9 +116,11 @@ Our server does not keep your name, your birth details, your stories or your ans
 
 **A copy of what our server keeps.** The app has no button for this yet. Write to hello@atuned.world from the email on your account, and we send you one file with everything our server holds under the account, your first visit included.
 
-**Delete what is on your device.** Settings, Privacy, Delete this record. It is gone from this browser at once, and it cannot be undone.
+**Delete what is on your device.** Settings, Privacy, Delete this record. It is gone from this browser at once, and it cannot be undone. It does not touch the copy on your account, if you turned that on.
 
-**Delete your account.** Settings, Account, Delete this account. It first stops any paid plan. Then it deletes from our server your email, your password, your sign ins, your voice counts and your first visit at Supabase. Two things are kept: the activity list (section 7), and Stripe's record of your past payments if you ever paid. If the first visit cannot be deleted at that moment, the app says so and our server tries again every hour until it is gone. Deleting the account does not touch the record on your device. Delete this record does that.
+**Remove the copy on your account.** Settings, Account, turn off Keep my record on my account. The copy is removed from our server, and the record on your device stays.
+
+**Delete your account.** Settings, Account, Delete this account. It first stops any paid plan. Then it deletes from our server your email, your password, your sign ins, your voice counts, your record's copy if you turned that on, and your first visit at Supabase. Two things are kept: the activity list (section 7), and Stripe's record of your past payments if you ever paid. If the first visit cannot be deleted at that moment, the app says so and our server tries again every hour until it is gone. Deleting the account does not touch the record on your device. Delete this record does that.
 
 **Correct.** Change anything you entered, in the app. To change your email, write to us.
 
@@ -141,6 +147,7 @@ Wherever you live, you may ask us what we hold about you, ask for a copy, ask us
 - Everything between your device and our server travels over an encrypted connection.
 - Your password is kept as a slow one way scramble, with a different random value mixed into each account's scramble.
 - Sign ins are kept scrambled. The key itself is never stored.
+- A copy of your record, if you turned that on, is sealed with a key before it is stored, so the database holds it only in sealed form.
 - Ten failed log in tries lock that email, or that connection, for 15 minutes.
 - A reset link works once and ends after one hour. Using it signs you out on every other device.
 
@@ -180,4 +187,28 @@ ops.js). No lawyer has read it. Open for counsel:
   PR 34, migration 0016, would set one and is unmerged).
 - The 90 day restore of a deleted account the owner asked for in round PA is
   not built, so this page does not offer it.
+
+LEGAL REVIEW PENDING, added 21 November 2026. The owner approved the record
+sync wording that day as temporary, his words: "let's approve the privacy copy
+for now. We'll have a lawyer review that later... add a note that needs to be
+reviewed by legal, but that shouldn't stop us from moving forward." Written to
+be complete and true of the code (MOB ui/auth.js PROFILE SYNC IS ON and
+SYNC_CONSENT_SAY; Reboot-OS atuned/server/src/index.js PUT and GET /v1/sync,
+seal.js, deleteAccount), not loosely. Open for counsel:
+- The short bullet in section 2, the sync row in section 4, the record row in
+  sections 6 and 7, the two lines in section 8 and the seal line in section 12,
+  and the in-app consent words, which must say the same thing. When the
+  consent words change, SYNC_CONSENT_V in ui/auth.js is bumped so every person
+  is asked again under the new words.
+- The copy carries stories and birth details, which are health information
+  under section 9 in many places. Whether a press on a switch beside the words
+  is sufficient explicit consent for that in the EU, the UK, Washington and
+  Nevada, and whether the yes must be recorded on the server as well as on the
+  device (today it is held on the device only).
+- "The people who run Atüned hold the key" is the operational fact
+  (RECORDS_KEY, one named holder, DECISIONS.md round PD); whether that needs a
+  named access policy.
+- Retention: the copy is kept until turned off or the account is deleted. The
+  24 month dormant deletion default in DECISIONS.md round PD is not built for
+  this copy either.
 -->

@@ -399,6 +399,7 @@ jobs:
           - { gate: reset, timeout: 20, command: node tests/reset.js }
           - { gate: landing, timeout: 20, command: node tests/landing.js }
           - { gate: quit, timeout: 20, command: node tests/quit.js }
+          - { gate: sync, timeout: 20, command: node tests/sync.js }
           - { gate: sniffpage, timeout: 20, command: node tests/sniffpage.js }
           - { gate: srcchat, timeout: 20, command: node tests/srcchat.js }
           - { gate: practitioner, timeout: 20, command: node tests/practitioner.js }

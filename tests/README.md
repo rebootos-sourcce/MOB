@@ -108,6 +108,24 @@ It first runs on two known bad copies of the app, one that never reads the
 link and one whose importer skips the boundary, and each must fail its check.
 Read the counts off the run.
 
+## The record on the account
+
+Sync went on 21 November, behind the person's own yes, on the owner's approval
+of temporary consent words pending a legal review. One gate, and the engine
+group that holds what a pull may never erase.
+
+    node tests/engine.js                                         group 27e
+    NODE_PATH=/opt/node22/lib/node_modules node tests/sync.js
+
+`tests/sync.js` is the first gate that ever drove `authProfileSync` against a
+server, a stub that keeps the Worker's own higher-version rule. Signed in
+without the yes nothing reaches `/v1/sync`; the yes sends the record without
+the name; a blank second device gets the story with its own name and one
+record under that id after a reload; two devices that each wrote a story the
+other lacks are held, nothing replaced or sent, and the person is told by
+count; a server refusal is said in its own words; off sends a removal above the
+highest version held, and on again writes past it.
+
 ## Quitting
 
 The two ways out of a paid account, the owner's words of 9 October: "If they
