@@ -49,7 +49,7 @@ const REG_MAP=[
  ['registers.charge_routing','ported',['CHARGE_QUADRANT'],'no table here had it'],
  ['registers.derived_measures','ported',['DERIVED_MEASURE'],'no table here had them. The descriptions stay in the vendored file, because one breaks the claims rules for anything that ships'],
  ['registers.astrology_overlay','ported',['ASTRO_OVERLAY'],'no table here had it. Display only, by one of canon.json\'s own locks'],
- ['registers.complexDeep','ported',['CX_DEEP'],'the content CODE_STRUCT left for phase two. Each row takes the code of the complex it deepens, and none of it is canon or a diagnosis by its own reviewStatus'],
+ ['registers.complexDeep','ported',['CX_DEEP'],'the content CODE_STRUCT left for phase two. Each row takes the code of the complex it deepens, and none of it is canon or a diagnosis, by its own review state'],
  ['meta','held',['CODE_SOURCES'],'who issued the file, and its version. CODE_SOURCES cites both, and the gate holds the md5'],
  ['locks','mob',[],'rules, each one held where this repository holds it. Some are contradicted here by the arithmetic or the labels, and the plan lists which'],
  ['formula','mob',['TIERDEF'],'CQ is made another way here, the measured laws summed, with other bands'],

@@ -184,6 +184,14 @@ NOT_COPY = (
     ('DESCENT', ('[]', 'content', 'reviewStatus'),
      'which research passes a record has been through and what is still open: '
      'a status line for whoever reviews it next, not a line a person reads'),
+    ('CX_DEEP', ('[]', 'inferenceBasis'),
+     'why each deep complex record is called source defined or inferred: a '
+     'note about the record, not a line in it, the same shape as DESCENT\'s '
+     'own field of the same name'),
+    ('CX_DEEP', ('[]', 'reviewStatus'),
+     'which research passes a record has been through and what is still open: '
+     'a status line for whoever reviews it next, not a line a person reads, '
+     'the same shape as DESCENT\'s own field of the same name'),
     ('RESEARCHANCHOR', ('[]', 'label'),
      'the citation each research anchor points at, the authors, year and '
      'published title as the source prints them'),
