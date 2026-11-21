@@ -11552,20 +11552,34 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
-.cl-src{cursor:pointer}
-.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
-.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
-.cl-srcl{text-anchor:start!important;font-size:11px}
-.cl-door{cursor:pointer}
-.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
-.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl-door text{fill:var(--ink);font-size:12px}
-.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
-.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
-.cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
-.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
-.cl-av .core{fill:#F2E6C4}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
+.cl-dstep .cl-hit{fill:transparent;stroke:none}
+.cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
+/* THE TWO POLES (clPole). One ring, one arrow, one size, top and bottom, so
+   they read as a pair: Source's in the light the board already gives
+   Source, the descent's in the red the descent already wears. Ring, not
+   fill: the disc behind the arrow is the ground, so the path never shows
+   through it. */
+.cl-pole{cursor:pointer;outline:none}
+.cl-pole .cl-hit{fill:transparent;stroke:none}
+.cl-pole .cl-pr{fill:#101114;stroke-width:1.8}
+.cl-pole .cl-pa path{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-pole-up .cl-pr{stroke:#F2E6C4;stroke-opacity:.8}
+.cl-pole-up .cl-pa path{stroke:#F2E6C4}
+.cl-pole-up.open .cl-pr{stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-pole-dn .cl-pr{stroke:rgba(220,135,125,.85)}
+.cl-pole-dn .cl-pa path{stroke:rgba(230,150,140,1)}
+.cl-pole:hover .cl-pr,.cl-pole:focus-visible .cl-pr{stroke-width:2.8}
+.cl-svg .cl-pn{text-anchor:start;font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cl-svg .cl-ps{text-anchor:start;font-size:11px;fill:var(--mid)}
+/* THE AVATAR'S GLOW IS ITS CQ (clSvg, --g is CQ over 100): the radiance
+   ring's reach and light both scale with it, so a person at 90 glows and a
+   person at 45 barely does */
+.cl-av .rad{fill:none;stroke:#F2E6C4;stroke-width:1.2;stroke-opacity:calc(.15 + .6*var(--g,0));
+ filter:drop-shadow(0 0 calc(2px + 12px*var(--g,0)) rgba(242,230,196,.85));pointer-events:none}
+.cl-av text{pointer-events:none}
+.cl-av .halo{fill:none;stroke:#F2E6C4;stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4;fill-opacity:calc(.55 + .45*var(--g,0))}
 .cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
@@ -11591,4 +11605,38 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
+/* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
+   Insight rail on the right: the figure's second panel is not drawn on the
+   climb, so the page is a rail, the board, a rail. The seats are spread down
+   the height with even space between them, the poles at its two ends. */
+.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
+.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+.cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
+.cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
+.cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
+.cl-rail .fb-orb,.cl-rail .fb-arc{width:34px;height:34px}
+.cl-rail .fb-gl svg{width:16px;height:16px}
+.clr-seat{display:flex;flex-direction:column;gap:1px}
+.clr-hd{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:11px;line-height:1.3;color:var(--dim)}
+.clr-mk{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:var(--ax);stroke-width:1.6}
+.clr-nm{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.clr-rg{margin-left:auto;font-variant-numeric:tabular-nums}
+.clr-hd.sel .clr-nm{text-decoration:underline;text-underline-offset:3px}
+.clr-at{display:block;font-size:11px;line-height:1.3;color:var(--mid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr-lw{color:var(--dim)}
+.clr-paths{display:flex;align-items:center;gap:2px;padding-left:0}
+.clr-paths .cn-tx{padding-left:8px}
+.cl-rail .clr-pt{width:44px;min-width:44px;height:44px;padding:5px;flex:0 0 44px;justify-content:center}
+.clr-paths.shut .cn-or{opacity:.55}
+.clr-paths.shut .cn-or .trk{stroke-dasharray:3 3}
+.cl-rail .cn-tx{min-width:0;flex:1 1 auto}
+.clr-t.shut .cn-or{opacity:.55}
+.clr-t.shut .cn-or .trk{stroke-dasharray:3 3}
+.clr-t.sealed .cn-or .trk{stroke-width:3}
+.clr-pole .cn-nu{color:var(--ink)}
+.clr-pole-up .cn-or{--c:#F2E6C4;color:#F2E6C4}
+.clr-pole-dn .cn-or{--c:rgba(220,135,125,.9);color:rgba(230,150,140,1)}
+.clr-pole .fb-gl svg{stroke-width:2}
+.cn-pan.fb-lt .clr-pole-up .cn-or{--c:#8A7440;color:#8A7440}
 </style></head>
