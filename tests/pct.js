@@ -196,24 +196,29 @@ const READ=`(function(){
     loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.SUMMARY); render();
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const R=compute(), acc=accuracy(R), e=(R.X+R.Y+R.Z)/3, cov=accCover(R);
-    const gl={}; document.querySelectorAll('#sum .s-gl').forEach(b=>{gl[b.getAttribute('data-gl')]=((b.querySelector('.cr .v')||{}).textContent||'').trim();});
     const plate=((document.querySelector('#sum .s-plate .cr[title^="Coherence"] .v')||{}).textContent||'').trim();
     const txt=(document.getElementById('sum')||{}).innerText||'';
-    const rows=Array.from(document.querySelectorAll('#sum .s-row .cr .v,#sum .sg-n .cr .v')).map(e=>e.textContent.trim());
-    return {unread:!!R.unread,gl,plate,complete:!!cov.complete,rows,
-     want:{'coherence':fmtPct('cq',R.CQ),'shadow weight':fmtPct('dq',R.DQ),'carried depth':fmtPct('weight',R.SQm),
-      'pole':fmtPct('pole',R.poleMean),'energy':fmtPct('energy',e),'identification':fmtPct('accuracy',acc.pct)},
+    return {unread:!!R.unread,plate,complete:!!cov.complete,
      plateWant:cov.complete?fmtPct('cq',R.CQ):accCoverWord(cov),
      weightBare:(txt.match(/at a weight of \d+(?:\.\d+)?(?!\d|%)/g)||[]),
      decimal:(txt.match(/\b(?:weight|holding|at|is) \d+\.\d\b/g)||[])};},who);
    ok(!s.unread,'S2: '+tag+'the example reads');
-   for(const k of Object.keys(s.want)){
-    if(s.gl[k]===undefined)continue;
-    ok(s.gl[k]===s.want[k],'S2: '+tag+'the glance tile '+k+' prints the registry\'s form, '+J(s.gl[k])+' against '+J(s.want[k]));}
-   ok(Object.keys(s.gl).length>=4,'S2: '+tag+'the glance row is there to read, '+J(Object.keys(s.gl)));
+   /* THE GLANCE ROW AND THE NINE ARE GONE FROM THIS PAGE, 20 November
+      (cd55089c), his own words: "get rid of everything beneath Psyche...
+      everything beneath your patterns... what's running is moving to the
+      left panel. And then the rest of that looks like it's in analytics."
+      sumGlance(r,true) (the glance tiles, class s-gl) and sumNine() (the
+      nine architecture cells, class sg-n) were both cut from sumRender's
+      centre column outright, confirmed by reading that commit's real diff
+      and by a live render finding 0 of either anywhere in the document,
+      not merely moved under a different selector. The checks that read
+      them here (the glance tile values, the glance row's presence, and
+      the union of .s-row/.sg-n ring values) tested a page this build no
+      longer draws; slice 3 below covers Analytics, where the rest of this
+      content now lives. Retired rather than re-pointed at content that
+      was deliberately removed, not relocated within Summary. */
    ok(s.plate===s.plateWant&&(s.complete?/^\d+%$/.test(s.plate):/^(early|partial)$/.test(s.plate)),
     'S2: '+tag+'the plate prints the word while filling and CQ as a percent once every law is answered, '+J({plate:s.plate,want:s.plateWant,complete:s.complete}));
-   ok(s.rows.length>0&&s.rows.every(v=>/^(\d+%|\u2013)$/.test(v)),'S2: '+tag+'every structure and axis ring prints a percent or the dash, '+J(s.rows.slice(0,8)));
    ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
    ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
   }
