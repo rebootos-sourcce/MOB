@@ -314,6 +314,12 @@ jobs:
           # for the Avatar page's own hero percent (commit 8ec9e4cf). Real
           # Chromium gate, orphaned at first the same way avatarpurpose was.
           - { gate: avatarwhole, timeout: 20, command: node tests/avatarwhole.js }
+          # ADDED 21 November, the Avatar module round: avatarBecoming, the one
+          # read the Avatar page and the Discover card share, the Release and
+          # Become panels, the potential slider, the Source AI corner and the
+          # sniffer behind a Yes. Wired here the day it lands, so it is never
+          # the orphan avatarwhole was.
+          - { gate: dashavatar, timeout: 20, command: node tests/dashavatar.js }
           # ADDED 19 November, the affirmation engine (feature/affirmation-
           # engine): the ritual builder's Affirm door and sheet, real
           # Chromium. Newly orphaned the same way avatarpurpose was.
@@ -331,6 +337,7 @@ jobs:
           - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
           - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
           - { gate: record, timeout: 20, command: node tests/record.js }
+          - { gate: ritweek, timeout: 20, command: node tests/ritweek.js }
           - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
           - { gate: paywall, timeout: 20, command: node tests/paywall.js }
           - { gate: safepage, timeout: 20, command: node tests/safepage.js }

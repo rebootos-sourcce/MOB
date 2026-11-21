@@ -152,6 +152,13 @@ function insColFor(sel,r){
   if(INS_LIST[sel.kind]){var o=insFind(r,sel.kind,sel.nm); return seatCol((leaves(o)[0]||{}).b||'Heart');}
   if(sel.kind==='fet'){var c=CHILD.filter(function(x){return x.nm===sel.nm;})[0]; return c?seatCol(c.seat):'var(--accent)';}
   if(sel.kind==='addr'){var n=BY[sel.i]; return n?seatCol(n.b):'var(--accent)';}
+  /* a mask or an archetype takes its own seat's colour, the same lookup
+     ui/analytics.js already uses to colour its own cell, round
+     <ana-squarified-treemap>: the one number is now the same colour in both
+     places, so a hover receipt between the two reads as the same thing lit
+     twice and not two things that happen to agree */
+  if(sel.kind==='mask'){var m=MASKS.filter(function(x){return x.nm===sel.nm;})[0]; return m?seatCol((m.b||['Heart'])[0]):'var(--accent)';}
+  if(sel.kind==='arch'){var a=ARCH.filter(function(x){return x.nm===sel.nm;})[0]; return a?seatCol(a.b):'var(--accent)';}
  }catch(e){}
  return 'var(--accent)';}
 /* WHAT A BOOK LINE SAYS ON HOVER: where it came from, in words */
@@ -220,10 +227,20 @@ function railInsight(r){
  INS_OUT=out;
  var rel=insightCanRelease(sel,r,ctx);
  var fig=out.id.fig&&out.id.fig!==PCT_DASH?'<span class="ins-fg">'+esc(out.id.fig)+'</span>':'';
+ /* THE RECEIPT. A mask or an archetype reached here from its own cell on the
+    squarified treemap, round <ana-squarified-treemap>, his words on Mockup
+    C: "receipts" cross-linking the reading back to the cell it is about.
+    data-src carries the same key format the treemap cell wears
+    (data-lens + ':' + data-nm), so ui/analytics.js's hover/focus delegate
+    can light the two together without this file knowing a treemap exists.
+    Harmless on every other kind of selection: the key is simply never
+    matched there. */
+ var srcKey=(sel.kind==='mask'||sel.kind==='dom'||sel.kind==='arch')?sel.kind+':'+sel.nm:'';
+ var srcAttr=srcKey?' data-src="'+esc(srcKey)+'"':'';
  host.innerHTML=
   '<div class="ins-id" style="--c:'+insColFor(sel,r)+'">'
    +'<span class="ins-ring" aria-hidden="true">'+svgI('<path d="'+insGlyphFor(sel)+'"/>')+'</span>'
-   +'<span class="ins-idt"><span class="ins-nm">'+esc(out.id.title)+'</span>'
+   +'<span class="ins-idt"'+srcAttr+' style="--lc:'+insColFor(sel,r)+'"><span class="ins-nm">'+esc(out.id.title)+'</span>'
    +'<span class="ins-kd">'+esc(out.id.kindWord)+'</span></span>'+fig+'</div>'
   +'<div class="ins-rd" id="insrd" tabindex="0" role="group" aria-roledescription="carousel"'
    +' aria-label="Source AI\'s reading of '+esc(out.id.title)+'">'

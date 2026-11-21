@@ -3741,6 +3741,60 @@ function bmBuild(host){
  BM.W=0;BM.H=0;BM.ta='';BM.stillKey='';BM.litKey='';
  bmWire();}
 
+/* ---------- the three places carrying the most, card and key ----------
+   ONE DRAWING FOR THE DASHBOARD'S BODY CARD AND THE BODY PAGE'S KEY, 21
+   November. Both read bodyTop3 (engine/compute.js) and both draw through
+   bodyTop3Html, so the card and the page it opens print the same three
+   words and the same three percents from one call each, never two
+   arithmetics that happen to agree today.
+
+   THE FIGURE HAS TO READ AT 16 PIXELS, the height a row gets on the
+   Dashboard card (#stmini6 .st-mini is 88 pixels, shell/head.html, and
+   three rows share what its label leaves). So it is a head, a torso and four
+   strokes, no hands and no feet, and the one place it marks is a ring in the
+   seat's own colour, never a fill (icons are ring, not fill). The other six
+   places are not drawn: at 16 pixels seven dots on a 24 unit figure sit
+   under a pixel apart and read as a smear, which is a picture saying
+   nothing. The y of each place is the body's own order, root at the pelvis
+   to crown at the top of the head, the order OB_PLACES runs in. */
+var BODYFIG_Y={pelvis:16.6,belly:14.4,stomach:12.2,chest:9.9,throat:7.2,forehead:4.6,head:2.5};
+var BODYFIG_PATH='<circle cx="12" cy="4" r="2.6"/>'
+ +'<path d="M9.6 7.6h4.8a1.6 1.6 0 0 1 1.6 1.6v7.4a1.6 1.6 0 0 1-1.6 1.6H9.6A1.6 1.6 0 0 1 8 16.6V9.2a1.6 1.6 0 0 1 1.6-1.6z'
+ +'M8 9.2L6 15.4M16 9.2l2 6.2M10.4 18.2L10 22.6M13.6 18.2l.4 4.4"/>';
+function bodyPlaceCol(seat){
+ var v=(typeof SEATCOL!=='undefined'&&SEATCOL[seat])||'--dim';
+ return 'var('+v+')';}
+function bodyFigSvg(k,col){
+ var y=BODYFIG_Y[k];
+ return '<svg class="bt3-fig" viewBox="0 0 24 24" aria-hidden="true">'
+  +'<g fill="none" stroke="var(--mid)" stroke-opacity=".7" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">'+BODYFIG_PATH+'</g>'
+  +(y==null?'':'<circle cx="12" cy="'+y+'" r="2.1" fill="'+col+'" fill-opacity=".28" stroke="'+col+'" stroke-width="1.7"/>')+'</svg>';}
+/* the words that came off the card's face. The pattern word and the nerve
+   the card printed until today are here, whole, behind the row, so the
+   ruling moved them and did not delete them. */
+function bodyTop3Tip(x){
+ var u=function(k){return typeof unpackOf==='function'?unpackOf(k):'';};
+ var t=x.top, nm=t&&(/_Unnamed$/.test(t.k)?'an address with no name yet':t.k);
+ return ' data-tip-t="'+esc(x.nm+', '+x.pct+'%')+'" data-tip="'+esc(
+  u('charge')+' Your '+x.nm.toLowerCase()+' is '+x.pct+' percent full: the charge its addresses hold against the most they could. '
+  +'It is your '+x.seat+' point. '+u('seat')
+  +(t?' Heaviest here: '+nm+(t.nerve?', at the '+t.nerve+', the nerve it sits on':'')+'. '+u('pattern'):''))+'"';}
+function bodyTop3Html(rows){
+ return rows.map(function(x){
+  var col=bodyPlaceCol(x.seat);
+  return '<div class="bt3-row stmk-t" role="listitem"'+bodyTop3Tip(x)
+   +' aria-label="'+esc(x.nm+', '+x.pct+' percent full'+(x.top?'. Heaviest here: '+x.top.k+(x.top.nerve?', at the '+x.top.nerve:''):''))+'">'
+   +bodyFigSvg(x.k,col)
+   +'<span class="bt3-nm">'+esc(x.nm)+'</span>'
+   +'<span class="bt3-p">'+x.pct+'<small>%</small></span></div>';}).join('');}
+/* THE BODY PAGE'S KEY IS HELD BACK, 21 November. Its first cut was a strip
+   after the well, and that is the defect round LQ took out (the comment on
+   #bmregs above): a strip after the well takes its height out of the well's
+   flex, measured 68 pixels at 1600, and tests/functional.js's "no strip under
+   the figure" check refused it. Where a key can sit inside the well without
+   covering the figures or the shelves is a placement nobody has ruled, so the
+   Dashboard's Body card ships on bodyTop3Html alone and the key waits.
+   .bt3-key in shell/head.html is its styling, kept for that pass. */
 /* ---------- the entry, from renderMap and from the Masks door ----------
    The host is handed in, the way frMount and avBind take theirs: this read
    #emap by id, which is what kept the figure to one door. */

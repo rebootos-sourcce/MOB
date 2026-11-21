@@ -489,10 +489,92 @@ function insParasDom(d,o){
  var pick=o.soulFrom==='default'?'It is the default. You have not picked one yet.':(o.soulFrom==='picked'?'You picked it.':'');
  if(pick)cl1.push(insClause(insSeg(pick,['model:soul'],'mine'),1));
  if(def.c&&insOk(insFirst(def.c)))cl1.push(insClause(insBook('Read clear: ',insFirst(def.c),['DOMDEF.'+key+'.c'],''),1));
- var cl2=[insClause(insSeg('Nothing in your entries is linked to a domain yet. The engine reads it from your blueprint.',['gap:domain'],'gap'),0)];
+ /* HOW IT RUNS WAS ONE GAP LINE FOR EVERY DOMAIN, round ana-treemap: "Nothing
+    in your entries is linked to a domain yet", on every record, while the
+    Selection card beside it (ui/analytics.js anaDomCard) already counted the
+    addresses the domain owns and how many of them are held. The slot rule is
+    that card's own, moved here unchanged, so the two can never disagree about
+    which addresses a domain owns. No domain percent is printed: compute()
+    never measures one, and the rail's headline already leaves it blank for
+    that reason. The gap line stays, last and lowest, because it is still true. */
+ var di=DOMAINS.indexOf(d), own=insBySq(W.filter(function(n){return Math.min(18,Math.floor(n.slot/(108/19)))===di;}));
+ var cl2=[];
+ if(di>=0&&own.length){
+  var heldN=own.filter(function(n){return n.sq>=4;}).length;
+  cl2.push(insClause(insSeg('It owns '+own.length+' address'+(own.length===1?'':'es')+', and '
+   +(heldN?heldN+' of them '+(heldN===1?'is':'are')+' held.':'none of them is held.'),['DOMAINS.'+d.nm+'.nm','model:slot'],'mine'),0));
+  var topD=own.filter(function(n){return insHeld('weight',n.sq);}).slice(0,3);
+  if(topD.length)cl2.push(insClause(insSeg('The heaviest '+(topD.length===1?'is ':'are ')
+   +insAnd(topD.map(function(n){return n.k+' at '+fmtPct('weight',n.sq);}))+'.',
+   topD.map(function(n){return 'NODES.'+n.i+'.k';}),'mine',{fig:topD.map(function(n){return insFig('weight',n.sq);}),place:true}),1));}
+ cl2.push(insClause(insSeg('Nothing in your entries is linked to a domain yet. The engine reads it from your blueprint.',['gap:domain'],'gap'),2));
  var cl3=[];
  if(def.x&&insOk(def.x))cl3.push(insClause(insBook('Read distorted: ',insFirst(def.x),['DOMDEF.'+key+'.x'],''),1));
  cl3.push(insClause(insSeg('A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0));
+ cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+
+/* ---------- an archetype and a mask ----------
+   THESE READ "Source AI has no longer reading of it so far" UNDER A CARD
+   THAT HAD THE NUMBERS, round ana-treemap. A press on an Analytics cell now
+   opens the Insight rail beside the Selection card (anaDrill calls insDoor),
+   and the two sat side by side: the card printing how fully the archetype is
+   expressed, its primary saboteur and whether that saboteur runs, and the
+   rail printing one gap line. Every figure below is one the card already
+   prints off the same record (anaArchCard, anaMaskCard in ui/analytics.js):
+   archExpr, ARCH18's saboteur column, r.maskRing's average and the addresses
+   at the mask's points. Nothing new is measured here, only said.
+
+   NO RELEASE IS OFFERED for either. A release works at an address and
+   insightRelease answers neither kind (tests/insightread.js holds that), so
+   the third paragraph names where a release would start and offers nothing. */
+function insParasArch(sel,r,o){
+ var ai=-1; ARCH.forEach(function(a,i){if(a.nm===sel.nm)ai=i;});
+ if(ai<0)return insParasOther(sel,o);
+ var a=ARCH[ai], ex=archExpr(ai), lead=ai===r.pi, cl1=[], cl2=[], cl3=[];
+ cl1.push(insClause(insSeg(a.nm+' is an archetype, expressed at '+fmtPct('archetype',ex)+'.',
+  ['ARCH.'+a.nm+'.nm','r.aff'],'mine',{fig:[insFig('archetype',ex)]}),0));
+ cl1.push(insClause(insSeg(lead?'It is your primary, how the soul expresses.'
+  :'It is not your primary'+(ARCH[r.pi]?'. '+ARCH[r.pi].nm+' is.':'.'),['r.pi'],'mine'),0));
+ var ln=insLineFor(sel);
+ if(ln&&insOk(ln.t))cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],''),1));
+ /* ARCH names it Rebel and the eighteen name it Outlaw, the card's own join */
+ var a18=(typeof ARCH18!=='undefined')?ARCH18.filter(function(x){return x[0]===a.nm||(a.nm==='Rebel'&&x[0]==='Outlaw');})[0]:null;
+ var sab=a18?a18[1]:'', run=sab?(r.sabs||[]).filter(function(s){return s.nm===sab;})[0]:null;
+ cl2.push(insClause(insSeg('Charge held at its point pulls it down, and a release lifts it. The archetype itself does not change.',
+  ['model:archexpr'],'model'),1));
+ if(sab){
+  var seats=sabSeats(sab);
+  cl2.push(insClause(insSeg('Its primary saboteur is '+sab
+   +(seats.length?', with addresses at the '+insAnd(seats.map(insSeat))+(seats.length===1?' point':' points'):'')+'.',
+   ['model:arch18'],'model',{place:true}),0));
+  if(run)cl2.push(insClause(insSeg(sab+' is running now, at '+fmtPct('chain',run.w)+'.',['r.sabs:'+run.nm+'.w'],'mine',
+   {fig:[insFig('chain',run.w)]}),0));
+  else cl2.push(insClause(insSeg(sab+' is not running now.',['model:arch18'],'mine'),0));}
+ cl3.push(insClause(insSeg(run?'A release works at an address, so open '+sab+' to start one on what bends this.'
+  :'A release works at an address, so pick a pattern or an address to start one.',['model:release'],'model'),0));
+ cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
+ return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
+function insParasMask(sel,r,o){
+ var m=(r.maskRing||[]).filter(function(x){return x.nm===sel.nm;})[0];
+ if(!m)return insParasOther(sel,o);
+ var sb=m.bands||[], cl1=[], cl2=[], cl3=[];
+ var all=insBySq(W.filter(function(n){return sb.indexOf(n.b)>=0;})), held=all.filter(function(n){return n.sq>=4;});
+ cl1.push(insClause(insSeg(m.nm+' is a mask, speaking from the '+insAnd(sb.map(insSeat))+(sb.length===1?' point':' points')
+  +(insHeld('weight',m.w)?', with a load of '+fmtPct('weight',m.w)+'.':', with no load on it yet.'),
+  ['r.maskRing.'+m.nm+'.w'],'mine',{fig:insHeld('weight',m.w)?[insFig('weight',m.w)]:[],place:true}),0));
+ cl1.push(insClause(insSeg('The load is the average charge left across every address at those points.',['model:mask'],'model'),1));
+ var ln=insLineFor(sel);
+ if(ln&&insOk(ln.t))cl1.push(insClause(insBook('The record says: ',ln.t,[ln.src],''),2));
+ cl2.push(insClause(insSeg(all.length+' address'+(all.length===1?' sits':'es sit')+' under it, and '
+  +(held.length?held.length+' of them '+(held.length===1?'is':'are')+' held.':'none of them is held.'),['model:mask'],'mine'),0));
+ var top=all.filter(function(n){return insHeld('weight',n.sq);}).slice(0,3);
+ if(top.length)cl2.push(insClause(insSeg('The heaviest '+(top.length===1?'is ':'are ')
+  +insAnd(top.map(function(n){return n.k+' at '+fmtPct('weight',n.sq);}))+'.',
+  top.map(function(n){return 'NODES.'+n.i+'.k';}),'mine',{fig:top.map(function(n){return insFig('weight',n.sq);}),place:true}),1));
+ cl3.push(insClause(insSeg(top.length?'A release works at an address, so open '+top[0].k+' to start one under this mask.'
+  :'A release works at an address, so pick a pattern or an address to start one.',
+  top.length?['model:release','NODES.'+top[0].i+'.k']:['model:release'],'model',top.length?{place:true}:{}),0));
  cl3.push(insClause(insSeg('Leaving it costs nothing. It is here next time.',['model:door'],'model'),0));
  return [insPack(INS_HEAD[0],cl1,INS_MAX[0]),insPack(INS_HEAD[1],cl2,INS_MAX[1]),insPack(INS_HEAD[2],cl3,INS_MAX[2])];}
 
@@ -553,7 +635,7 @@ function insParas(sel,r,g,o){
  if(sel.kind==='dom'){
   var d=DOMAINS.filter(function(x){return x.nm===sel.nm;})[0]; if(!d)return null;
   var ps=insParasDom(d,o); if(safe)ps[2]=insSafeP3(); return ps;}
- var ps2=insParasOther(sel,o); if(safe)ps2[2]=insSafeP3(); return ps2;}
+ var ps2=sel.kind==='arch'?insParasArch(sel,r,o):sel.kind==='mask'?insParasMask(sel,r,o):insParasOther(sel,o); if(safe)ps2[2]=insSafeP3(); return ps2;}
 function insPageSels(sel,r){
  var out=[], p, up;
  if(INS_LIST[sel.kind]){
@@ -585,6 +667,26 @@ function insightRead(sel,r,g,o){
  else if(sel.kind==='addr'&&BY[sel.i])fig=fmtPct('weight',BY[sel.i].sq);
  else if(sel.kind==='fet')fig=fmtPct('charge',S.charge[sel.nm]||0);
  else if(sel.kind==='law'&&S.law&&S.law[sel.nm]!==undefined)fig=fmtPct('law',S.law[sel.nm]);
+ /* MASK AND ARCHETYPE HAD NO FIGURE HERE, round <ana-squarified-treemap>: the
+    headline carried a figure for a pattern, an address, a fetter and a law,
+    and nothing for the two kinds a squarified cell can now open straight into
+    Insight on. Both numbers already exist and are already printed elsewhere
+    on this same record (ui/analytics.js's anaField call for Masks read
+    fmtPct('weight',m.w) off r.maskRing, and for Archetypes read
+    fmtPct('archetype',archExpr(i))); this only lets the rail's own headline
+    read the same figure instead of staying blank. A domain gets none here on
+    purpose: engine/compute.js never measures a domain's charge, a domain is
+    a selection out of the blueprint, and anaField's own comment for Domains
+    said so by name ("a domain, which is a selection and not a measurement,
+    prints none"). Inventing a domain percent here would be exactly the
+    fabricated figure this file's own validateProfile boundary exists to
+    refuse elsewhere. */
+ else if(sel.kind==='mask'){
+  var mk=(r.maskRing||[]).filter(function(x){return x.nm===sel.nm;})[0];
+  if(mk)fig=fmtPct('weight',mk.w);}
+ else if(sel.kind==='arch'){
+  var ai=-1; ARCH.forEach(function(a,i){if(a.nm===sel.nm)ai=i;});
+  if(ai>=0)fig=fmtPct('archetype',archExpr(ai));}
  var title=insTitle(sel,r);
  var pages=[{key:insSelKey(sel),sel:sel,title:title,rung:'self',
   tip:'Page 1: '+title+', what you picked',paras:paras}];

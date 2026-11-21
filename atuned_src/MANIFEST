@@ -109,12 +109,14 @@ ui/accountability.js
 ui/ritstage.js
 ui/ritcal.js
 ui/ritbank.js
+ui/ritweek.js
 ui/affirmui.js
 ui/cone.js
 ui/tracesummaryui.js
 ui/drills.js
 ui/summarypanel.js
 ui/knowledge.js
+ui/kbtable.js
 ui/record.js
 ui/games.js
 ui/panels.js

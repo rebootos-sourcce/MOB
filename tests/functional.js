@@ -5959,7 +5959,12 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   /* the Active list is Goals' Today, and with a ritual running the centre
      opens on the week since round RB, so the list is asked for by its view */
   setTab(TAB.RITUAL); await wait(400);
-  o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/(^|, )toward Discernment/i.test(t)).length; /* SV24: the line opens on the seat now, "Third eye seat, toward Discernment" */
+  /* the Today list's row is gone, 21 November: what a ritual is toward is
+     said in its block's pop-up, so the ritual is opened there on today */
+  {const st=ritRead(), i=ritWeekDay(st.today,st).findIndex(x=>{const q=x.p||ritSashPlan(x,st.today,st); return q&&q.tc==='PE';});
+   o.row=0; if(i>=0){ritSashOpen(st.today,i);
+    o.row=[...document.querySelectorAll('#sheet-card .rv-shfor')].map(s=>s.textContent).filter(t=>/(^|, )Toward Discernment/.test(t)).length;
+    sheetShut(); RIT.pop=null;}}
   /* a worked example saves nothing, so the panel offers no button. It also
      said so, "is a worked example, so nothing here is saved", and SV19 cut
      that line on his words: "Get rid of Ana is worked example, so nothing is

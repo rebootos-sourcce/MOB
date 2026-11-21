@@ -39,12 +39,50 @@ function smpFind(key){
  return found;}
 function smpTreeRow(o,depth){
  if(!o)return '';
- if(!o.parts)return addrRow(o);
+ if(!o.parts)return '<div class="smp-row smp-addr">'+addrRow(o)+smpAiBtn('addr|'+o.i,o.k)+'</div>';
  var kids=(o.parts||[]).map(function(x){return smpTreeRow(x,depth+1);}).join('');
  return '<div class="smp-row" style="--d:'+depth+'">'
   +'<button type="button" class="smp-rel" data-smprel="'+esc(smpKey(o))+'" title="Release everything under '+esc(o.nm)+'">'
-  +crPat(o,'xs')+'<span class="smp-nm">'+esc(o.nm)+'</span></button></div>'
+  +crPat(o,'xs')+'<span class="smp-nm">'+esc(o.nm)+'</span></button>'+smpAiBtn(o.kind+'|'+o.nm,o.nm)+'</div>'
   +'<div class="smp-kids">'+kids+'</div>';}
+/* SOURCE AI, ON ANY ROW OF THIS PANEL, round ana-treemap, on the go-ahead on
+   file: a person can press anything in the panel and get Source AI active on
+   it. The row's own press already does a job, it releases everything under
+   that rung (smp-rel above, and addrRow's own drill on an address), so the
+   reading is a second, separate press beside it rather than a change to what
+   the first one does. It wears Source AI's one mark (srcMark's ring, ui/
+   storyui.js) and its sentence on hover and tap, never the icon alone.
+
+   THE READING PRINTS HERE, NOT IN THE RAIL. This panel lives on the Story
+   tab, where the Insight rail is hidden by name (shell/head.html, body.tab-
+   story .lsec[data-rail=right]), so a press that only set the rail's
+   selection would have done nothing a person could see. It still sets it,
+   insDoor then insTake, the same two steps rdShell takes, so the rail reads
+   the same thing the moment the person goes to a tab that shows it. The
+   words are insightRead's own first page, the composer the rail uses, in the
+   rail's own paragraph markup (insParaHtml), so the two can never word one
+   selection two ways. */
+/* the reading belongs to the pick it was asked under: a new pin starts
+   with nothing read, so a reading never sits over a tree it is not part of */
+var SMP_AI=null, SMP_AI_PIN='';
+function smpAiBtn(key,nm){
+ var tip='Source AI reads '+nm+' here, from your words and your reading.';
+ return '<button type="button" class="smp-ai'+(SMP_AI===key?' on':'')+'" data-smpai="'+esc(key)+'" aria-pressed="'+(SMP_AI===key)+'"'
+  +' aria-label="'+esc('Source AI on '+nm)+'" data-tip-k="Source AI" data-tip="'+esc(tip)+'">'
+  +'<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+  +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>';}
+function smpAiSel(key){
+ var at=String(key||'').indexOf('|'); if(at<0)return null;
+ var k=key.slice(0,at), v=key.slice(at+1);
+ return k==='addr'?{kind:'addr',i:+v}:{kind:k,nm:v};}
+function smpSayHtml(){
+ if(!SMP_AI||typeof insightRead!=='function')return '';
+ var sel=smpAiSel(SMP_AI), r=computeSeen();
+ var out=sel?insightRead(sel,r,(typeof insGraph==='function')?insGraph():null,(typeof insCtx==='function')?insCtx():{}):null;
+ if(!out||!out.ok)return '';
+ return '<div class="smp-say" id="smpsay" aria-live="polite">'
+  +'<div class="ins-mk">'+srcMark()+'<span>Source AI\'s reading of '+esc(out.id.title)+'</span></div>'
+  +out.pages[0].paras.map(insParaHtml).join('')+'</div>';}
 /* IMPRESSIONS UNDERNEATH, filtered to this node's own addresses. Same
    data impRender already draws from (ST_PARSED.imprints), not a
    second imprint source. */
@@ -75,10 +113,11 @@ function summaryPanelEmptyHtml(){
 function summaryPanelHtml(){
  if(!S.pin)return '';
  var o=S.pin, ids=leaves(o).map(function(n){return n.i;});
+ if(SMP_AI_PIN!==smpKey(o)){SMP_AI=null; SMP_AI_PIN=smpKey(o);}
  return '<div class="smp" id="smppanel" aria-label="Summary, '+esc(o.nm)+'">'
   +'<div class="smp-hd">'+crPat(o,'sm')+'<span class="smp-hdname">'+esc(o.nm)+'</span>'
   +'<button type="button" class="btn pri smp-relall" id="smprelall">Release all '+ids.length+'</button></div>'
-  +'<div class="smp-tree">'+smpTreeRow(o,0)+'</div>'
+  +'<div class="smp-tree">'+smpSayHtml()+smpTreeRow(o,0)+'</div>'
   +'<div class="smp-imphd">Impressions</div>'
   +smpImpressionsHtml(o)
   +'</div>';}
@@ -99,6 +138,18 @@ function summaryPanelWire(h){
  if(all)all.onclick=function(){
   if(!S.pin||typeof relPick!=='function'||refuse(S.pin))return;
   relPick(leaves(S.pin).map(function(n){return n.i;}));};
+ /* a second press on the same mark puts the reading down again */
+ h.querySelectorAll('[data-smpai]').forEach(function(b){b.onclick=function(e){
+  if(e)e.stopPropagation();
+  var key=b.getAttribute('data-smpai'), sel=smpAiSel(key);
+  SMP_AI=(SMP_AI===key)?null:key;
+  if(SMP_AI&&sel&&typeof insDoor==='function'){insDoor(sel.kind,sel.nm,sel.i); if(typeof insTake==='function')insTake();}
+  var tree=h.querySelector('.smp-tree'), was=h.querySelector('#smpsay');
+  if(was)was.remove();
+  if(tree&&SMP_AI){tree.insertAdjacentHTML('afterbegin',smpSayHtml()); tree.scrollTop=0;}
+  h.querySelectorAll('[data-smpai]').forEach(function(x){var on=x.getAttribute('data-smpai')===SMP_AI;
+   x.classList.toggle('on',on); x.setAttribute('aria-pressed',String(on));});
+  if(typeof insRefresh==='function')insRefresh();};});
  h.querySelectorAll('[data-smprel]').forEach(function(b){b.onclick=function(){
   var found=smpFind(b.getAttribute('data-smprel'));
   if(found&&refuse(found))return;

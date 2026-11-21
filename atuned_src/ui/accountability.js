@@ -229,21 +229,20 @@ function acctCubeHtml(X,k,today,empty){
    line down. What the cubes mean rides on it as the one tooltip (ritTell).
    The figures that sat over the cubes went up to the streak strip, and the
    count of days kept with them: the cubes draw those days. */
-function acctLoopHtml(st){
+/* THE THIRTY DAYS WITHOUT THEIR CARD, 21 November: the cubes and their key,
+   drawn inside Success over time (ritSuccessHtml, ui/ritcal.js) when its span
+   is one month, which is this same thirty. One grid for one read: the card
+   that drew them alone, and the second calendar of the same days in the
+   centre, became one card in this rail. */
+function acctCubesHtml(st){
  var Q=acctCubeRead(st);
  var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
- var all=Q.days.concat(Q.ahead), a=ritDateOf(all[0].d), z=ritDateOf(all[all.length-1].d);
- var mo=a.getMonth()===z.getMonth()?a.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
-  :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
- return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
-  +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
-  +'A solid cube is a day you kept a ritual, in the colour of its point; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
-  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
+ return '<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
   +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
   +Q.ahead.map(function(X,i){return acctCubeHtml(X,Q.pad+Q.days.length+i,st.today,empty);}).join('')+'</div>'
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></div>';}
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div>';}
 
 /* ---------------- HISTORY, round QN ----------------
    His words: "I want to be able to track my accountability history. I want my
@@ -346,7 +345,10 @@ function acctRotate(i){
    carries the state, the Practices press's rule (UX rule 2). */
 function acctSideHtml(st,arrive){
  var open=!!RIT.histOpen;
- return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)
+ /* SUCCESS OVER TIME IS UNDER ACCOUNTABILITY NOW, 21 November, merged
+    with the thirty days: one card, its span one dropdown, the cubes at one
+    month and the span's own grid at every other (ritSuccessHtml) */
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+ritSuccessHtml(st)
   /* PUT BACK IS OFFERED WHERE A PERSON CAN SEE IT. A delete from a sash's
      sheet or the Record offers it in the Record (ritRecordHtml), and with
      History shut the Record is not drawn, so the offer would be a status

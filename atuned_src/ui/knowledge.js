@@ -661,8 +661,14 @@ function kbRender(){
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 
+ /* THE TABLE LEADS THE DEFAULT VIEW, 21 November (ui/kbtable.js). Above the
+    seven assemblage points and only when nothing narrows the page, so a deck
+    or a search reads exactly as it did. A repaint is a fresh board: nothing
+    is left open across one, because the open tile's markup has just gone. */
+ if(bySeat){KBT.open=null; KBT.hover=null; kbtCss(); h=kbtHtml()+h;}
  kbpCss(); kbsCss();
  host.innerHTML=h;
+ if(bySeat)kbtWire();
  var qi=document.getElementById('kbq');
  if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
    var e=document.getElementById('kbq'); if(e){e.focus(); try{e.setSelectionRange(e.value.length,e.value.length);}catch(err){}}};}

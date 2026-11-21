@@ -5,7 +5,13 @@
    nothing in the app called it. The owner asked, round QA, why it was never
    finished. This is the screen.
 
-   WHERE IT SITS. The Summary's own side column, the right rail, the way the
+   WHERE IT SITS, SINCE 21 NOVEMBER. The Summary's centre, as its first zone
+   under the name (sumToday, ui/summary.js), on the Summary redesign's brief
+   that the centre opens on a daily snapshot. The host kept its id and this
+   file kept every line of its painting; only the place moved. What follows
+   is where it sat before, kept for the record.
+
+   WHERE IT SAT. The Summary's own side column, the right rail, the way the
    Story's rail became the Imprints page in round GO. The funnel review's
    placement row F24 put it there: "D7 (dlyCompose in its own side column)",
    in the grammar F12 named, the picture in the middle and the words to the
@@ -181,7 +187,12 @@ function sumDayPaint(r){
  var html='';
  try{html=sumDayHtml(r);}catch(e){html=''; if(typeof console!=='undefined')console.error(e);}
  h.innerHTML=html;
- h.closest&&h.closest('.lsec')&&h.closest('.lsec').classList.toggle('dl-empty',!html);
+ /* the section that carries the host, which is the Summary's own Today zone
+    since 21 November and not a rail .lsec any more (sumToday, ui/summary.js).
+    Looking up .lsec alone found nothing there, so an empty day would have
+    left a date standing over an empty card. */
+ var sec=h.closest?h.closest('.sg-today,.lsec'):null;
+ if(sec)sec.classList.toggle('dl-empty',!html);
  dlyWire(h);}
 function sumDayClear(){var h=document.getElementById('sumday'); if(h&&h.innerHTML)h.innerHTML=''; DLY_R=null;}
 

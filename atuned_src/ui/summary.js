@@ -1308,6 +1308,7 @@ function sumFull(r){
     and sumNum sat collapsed in a closed <details> at the foot of the page;
     both read the same way, just no longer hidden. */
  return sumWho(r,B,true)
+  +sumToday()
   /* THE CENTRE IS THE STORY. Ruled. The reading built from a person's own
      words, in the instrument's voice. It stands on the first screen, left of
      the roots, and the phone reads it before them. The drivers card and the
@@ -1339,6 +1340,39 @@ function sumFull(r){
     deleting it here would delete it from the product. The converge() this
     function opened with went too: the Birth comparison fold was its only
     reader on this page. */
+
+/* ============================================================
+   TODAY, IN THE CENTRE, 21 November. The Summary redesign's brief asked for
+   the centre to open on a daily snapshot: today's date and a short read of
+   where the person's record stands today. That read already existed and was
+   already frozen once a day: engine/daily.js composes it and ui/daily.js
+   paints it into #sumday. It sat in the right rail's Today section, so the
+   centre opened on the blueprint, which is the one part of this page that
+   does not change from one day to the next.
+
+   So the host moves, and nothing about what fills it does. #sumday keeps its
+   id, its class and its painter (sumDayPaint, called from sumRender right
+   after this string lands), so the freeze, the aim, its marks and the past
+   days work exactly as they did in the rail. It is a move and not a copy:
+   the rail's section is gone (shell/body.html), because the same frozen
+   sentences printed twice on one screen is the duplicate the daily gate
+   already refuses.
+
+   The date is the engine's own day and word (dlyDay, dlyDayWord), the same
+   day a record freezes under, so the heading and the sentences under it can
+   never be about two different days. It is the only new string here, and it
+   is a label. An empty day takes the whole section with it (dl-empty,
+   sumDayPaint), the way the rail's section went, rather than leaving a date
+   over nothing.
+   ============================================================ */
+function sumToday(){
+ var d=(typeof dlyDay==='function')?dlyDay(Date.now()):null;
+ return '<section class="sg-z sg-today" data-grp="today" aria-labelledby="sg-h-today">'
+  +sgHead('today','Today')
+  +'<div class="sg-card sg-today-c">'
+   +(d?'<p class="sg-date"><time datetime="'+esc(d)+'">'+esc(dlyDayWord(d))+'</time></p>':'')
+   +'<div id="sumday" class="dl"></div>'
+  +'</div></section>';}
 
 /* ============================================================
    WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on

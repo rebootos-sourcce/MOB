@@ -144,7 +144,12 @@
    ============================================================ */
 var AV={sel:null, area:null, arch:null, trace:null, q:null,
  watch:null, sig:'', pc:{}, pp:{}, seat:null, face:'story', tag:null, tagOpen:false, tagQ:'',
- ask:{}, drafts:{}, edit:null, ruleRun:null};
+ ask:{}, drafts:{}, edit:null, ruleRun:null,
+ /* the Source AI corner's answers this session, keyed seat|question, the
+    questions passed over in silence, and the Heard rows a person said No to.
+    None is on the record: a Heard row reaches the record only through its
+    Yes, which is a tag (avTagSet), and the rest is a conversation. */
+ said:{}, quiet:{}, no:{}};
 var AV_KEY='atuned-avatar-side';
 /* the seven areas and their angles are redesign-GG's own, so a satellite sits
    where it sat on the page he approved. The one word names are placeholders
@@ -189,26 +194,26 @@ var AV_CYC='<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>';
    says what to write, and the boxes are empty. */
 var AV_ASK={
  Root:{ask:['Think of the last night you lay awake over money. What did your body do?',
-  'When do you feel safe at home? Who are you on that day?',
+  'Who are you on a day you feel safe at home?',
   'What happens in your body when a bill comes in?']},
- Sacral:{ask:['When did you last stop yourself making something? What did your belly do?',
+ Sacral:{ask:['Think of a day you stopped yourself making something. What did you do?',
   'What would you make if nobody was watching?',
-  'Think of a time you wanted something and said nothing. Where did you feel it?']},
- Solar:{ask:['Think of a hard day at work. Where did the pressure sit in your body?',
+  'Think of a time you wanted something and did not ask. What did your body do?']},
+ Solar:{ask:['Think of a long day at work. What did your body do?',
   'Who are you on a day you get the hard thing done?',
-  'What does your stomach do when someone checks your work?']},
- Heart:{ask:['Think of the last time someone close went quiet on you. What did your chest do?',
+  'What does your body do when someone checks your work?']},
+ Heart:{ask:['Think of a day someone close stopped talking to you. What did your body do?',
   'Who are you with the people you love, on a good day?',
-  'When did you last feel alone in a full room?']},
- Throat:{ask:['Think of the last time you held something back. What did your throat do?',
+  'Think of a full room where you felt on your own. What did you do?']},
+ Throat:{ask:['Think of a day you kept something to yourself. What did your body do?',
   'Who are you when you say the thing out loud in the room?',
-  'When did someone talk over you? What did you do next?']},
+  'Think of a day someone spoke over you. What did you do next?']},
  '3rd Eye':{ask:['Think of a choice you keep putting off. What happens when you go to make it?',
   'Who are you on a day you know which way to go?',
-  'When did you last change your mind three times in an hour?']},
- Crown:{ask:['Finish this out loud: I am the kind of person who… What came out first?',
+  'Think of a plan you changed your mind on. What did you do?']},
+ Crown:{ask:['Say this out loud: I am the kind of person who… What came first?',
   'What would make this year feel worth it?',
-  'When did you last feel that none of it matters? What did your body do?']}};
+  'Think of a day none of it seemed to matter. What did your body do?']}};
 /* THE STORY BEHIND THE SYMBOL, APC's two sentences a seat, is cut, round KH:
    "way too much text all over the screen". The symbol carries the seat, and
    the Knowledge page still carries the prose for anyone who goes looking. */
@@ -372,6 +377,15 @@ function avClosure(row,load0){
  if(row.gap.clear)return 1;
  if(load0==null||load0<=0)return 0;
  return clamp(1-row.gap.load/load0,0,1);}
+/* THE ONE BECOMING READ, from either surface. The Avatar page hands in the
+   rows and side it already holds; the Discover dashboard's card hands in
+   nothing and this reads them, so the two call the engine with the same
+   arguments and cannot disagree (tests/dashavatar.js holds it). */
+function avBecomingNow(rows,side){
+ if(typeof CURP==='undefined'||!CURP)return avatarBecoming(null,[],{});
+ rows=rows||((typeof avRows==='function')?avRows():[]);
+ side=side||avSide();
+ return avatarBecoming(CURP,rows,side.load0||{});}
 
 /* ---------------- what the sniffer hears in a pair ----------------
    WIRED TO THE RECORD, 18 November, his words: "the sniffer needs to be
@@ -652,7 +666,15 @@ function avState(){
     below tier one cannot see */
  var r=computeSeen(), side=avSide();
  var rows=(typeof avRows==='function')?avRows():[];
- rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[x.pair.id]);});
+ /* ONE READ FOR THE PAGE AND THE DASHBOARD CARD, dw-avatar-helper, 21
+    November: avatarBecoming (engine/avatar.js) says which pairs a point's
+    share is read from. A pair it leaves out, no starting weight or written
+    at a point already clear, carries no c here either, so the menu's own
+    percent and the ring's arc cannot count a pair the card leaves out. */
+ var BC=avBecomingNow(rows,side);
+ rows.forEach(function(x,i){x.i=i;
+  var s0=side.load0[x.pair.id];
+  x.c=(!x.gap||x.gap.clear||typeof s0!=='number'||!(s0>0))?null:avClosure(x,s0);});
  /* A STORY SITS AT THE SEAT IT WAS WRITTEN AT, round JP, which is where its
     row and its tick are. The percent it carries is still read at the seat
     the sniffer hears it at, because that is where the load it is measured
@@ -665,7 +687,6 @@ function avState(){
      sniffer placed here only when nothing was written here on purpose */
   var own=mine.filter(function(x){return x.pair.seat===A.b;});
   bySeat[A.b]=(own.length?own:mine).slice(-1)[0]||null;
-  var cs=mine.map(function(x){return x.c;}).filter(function(v){return v!=null;});
   /* WHAT THE SEAT IS DOING NOW, AVS5. His words: "The seven seats here aren't
      really telling, not giving us any information." A ring said only whether
      a story was written there. It now carries what is held at the seat, the
@@ -676,7 +697,7 @@ function avState(){
   var held=st0.r.unread?0:(st0.r.loaded||[]).filter(function(n){return n.b===A.b;}).length;
   var first=st0.r.unread?0:W.filter(function(n){return n.b===A.b&&n.sq>0&&n.cf&&avatarPull(n,st0.M)>0;}).length;
   areas[A.k]={rows:mine, set:mine.length>0, held:held, first:first,
-   pct:cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null};});
+   pct:BC.areas[A.b]?BC.areas[A.b].pct:null};});
  /* THE WHOLE IS WHOLEOF, 21 November. His 18 November ruling, "we're going
     to use the word whole," built the real figure this hero was named for
     (engine/avatar.js wholeOf: 35 released, 35 reframed, 30 practised,
@@ -691,7 +712,7 @@ function avState(){
     ritstage.js's own Math.round(all*100), while the number beneath both is
     finally the real one, the same call feeding the ring and the Ritual
     page's hero (avState().overall, both read it). */
- var W0=wholeOf(CURP), overall=(W0&&W0.reason==='read')?W0.pct/100:null;
+ var overall=BC.pct===null?null:BC.pct/100;
  /* the lead is the heaviest story still carrying. Since round KH nothing on
     the screen is chosen by it; a take off with no row named still reads it. */
  var open=rows.filter(function(x){return x.gap&&!x.gap.clear;})
@@ -1080,7 +1101,7 @@ function avSides(st){
   '<div class="avm-said"><div class="avs-lab"><b>To release</b></div><p class="avs-said">'+avHL(x.pair.notbe)+'</p></div>',
   '<div class="avm-said"><div class="avs-lab"><b>To embody</b></div><p class="avs-said">'+avHL(x.pair.be)+'</p>'
    +(typeof affDoorHtml==='function'?affDoorHtml('avatar','av:'+(x.pair.id||'')):'')+'</div>', ''];
- var d=avDraft(b), ask=AV_ASK[b], i=(AV.ask[b]||0)%ask.ask.length;
+ var d=avDraft(b);
  /* the question turns in place by one press on the arrow beside it. THE
     BUTTON IS ITS OWN FOURTH SLOT, round LV. It used to close the embody
     column, which put one box on the left and a box plus a button on the
@@ -1088,10 +1109,13 @@ function avSides(st){
     seems like it's all over the place". avHero now centres it under the
     ring instead, one action for the whole row rather than a stray one
     hanging off a single side. */
+ /* THE QUESTION MOVED TO THE SOURCE AI CORNER, 21 November
+    (avatar-source-ai-corner). Source AI asks it now, top right, and the
+    person answers it there; the two boxes stay where they were. The first
+    slot is kept, empty, so avHero's shape does not change, and the corner
+    turns the same AV.ask index this cell did (avAiAt). */
  return [
-  '<div class="avs-ask"><p class="avs-q" data-avq="'+b+'">'+esc(ask.ask[i])+'</p>'
-  +'<button type="button" class="avs-cyc" data-avcyc="'+b+'" aria-label="Another question" title="Another question">'
-  +avSvg(AV_CYC)+'</button></div>',
+  '',
   avBox(b,'notbe',d.notbe),
   avBox(b,'be',d.be),
   '<div class="av-act"><button type="button" class="btn pri" data-avadd="'+b+'"'
@@ -1105,6 +1129,7 @@ function avHero(st){
  var b=st.seat, x=st.bySeat[b], form=!x||AV.edit===x.i, S2=avSides(st);
  return '<div class="av-hero avh-row avh-three" style="--c:'+seatCol(b)+'"'+(form?' data-avform="'+b+'"':'')+'>'
   +(S2[0]?'<div class="avh-q">'+S2[0]+'</div>':'')
+  +'<div class="avh-ai">'+avAiHTML(st)+'</div>'
   +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div>'
   +(S2[3]?'<div class="avh-act">'+S2[3]+'</div>':'')+'</div>';}
 /* what a written story keeps in the menu under the ring: the tags, the rule,
@@ -1506,8 +1531,8 @@ var AV_CSS=[
     take the satellite buttons that select a seat under the 44 by 44 touch
     floor the UX skill holds every control to. */
  '#avbody .av-hero.avh-three{grid-template-columns:minmax(240px,1fr) minmax(0,1.08fr) minmax(240px,1fr);'
-  +'grid-template-rows:minmax(0,1fr) auto minmax(0,1fr) auto;'
-  +'grid-template-areas:"q ring ." "l ring r" ". ring ." "act act act";'
+  +'grid-template-rows:auto auto minmax(0,1fr) auto;'
+  +'grid-template-areas:"q ring ai" "l ring r" ". ring ." "act act act";'
   +'align-items:start;row-gap:12px}',
  '.avh-three .avh-q{grid-area:q;align-self:end}',
  '.avh-three .avh-l{grid-area:l}',
@@ -1521,14 +1546,56 @@ var AV_CSS=[
  '.avh-act .av-act{display:flex;gap:10px}',
  '.avh-side{min-width:0;display:flex;flex-direction:column;gap:12px}',
  '.avh-q .avs-ask{margin:0}',
+ '.avh-three .avh-ai{grid-area:ai;min-width:0}',
+ /* THE SOURCE AI CORNER. One card, the mark and the word, which half the
+    question is in, the question in the src-ai treatment, the answer box and
+    two presses. Padding even on all four sides and one gap between every
+    part, the standing symmetry ruling. */
+ '.avai{display:flex;flex-direction:column;gap:12px;padding:16px;margin:0}',
+ '.avai-hd{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid)}',
+ '.avai-hd b{font-weight:600;color:var(--ink)}',
+ '.avai-half{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--dim)}',
+ '.avai-ic svg{width:16px;height:16px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block}',
+ '.avai-q{margin:0;font-size:16px;line-height:1.45}',
+ '.avai-in{width:100%;box-sizing:border-box;min-height:44px;resize:vertical;padding:10px 12px;border-radius:10px;border:1px solid var(--edge-2);background:var(--panel);color:var(--ink);font:inherit;font-size:15px}',
+ '.avai-in:focus{outline:2px solid var(--accent);outline-offset:1px}',
+ '.avai-act{display:flex;gap:10px;margin:0}',
+ /* THE TWO RAIL PANELS, Release and Become, one row shape for both: the
+    name and its point stacked on the left, the press on the right, an even
+    gap between rows, and each row edged in its point colour so the list
+    reads root to crown without a word. */
+ '.avr-grp{display:flex;flex-direction:column;gap:10px;padding:4px 0 14px}',
+ /* the right rail's section bodies carry no inset of their own (Insight
+    draws its own card), so Become takes the same 16 pixels Insight's text
+    sits in at, and nothing in it is pressed against the rail's edge */
+ '#avbec{padding:0 16px}',
+ '.avr-gh{display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.02em;color:var(--dim)}',
+ '.avr-q{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--edge-2);font-size:11px;color:var(--mid);cursor:help}',
+ '.avr-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+ '.avr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;border:1px solid var(--edge-2);border-left:3px solid var(--c);background:var(--panel)}',
+ '.avr-t{display:flex;flex-direction:column;gap:2px;min-width:0}',
+ '.avr-t b{font-size:14px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis}',
+ '.avr-t i{font-style:normal;font-size:12px;color:var(--dim)}',
+ '.avr-yn{display:flex;gap:6px;flex:none}',
+ '.avr-b{min-height:32px;padding:0 12px;font-size:13px;flex:none}',
+ '.avr-none{margin:0;font-size:13px;color:var(--dim);line-height:1.45}',
+ /* THE POTENTIAL SLIDER, the full width of the page under everything, its
+    eleven stops labelled under the track at even spacing. */
+ '.avpot{display:flex;flex-direction:column;gap:10px;padding:16px;margin-top:16px}',
+ '.avpot-hd{display:flex;align-items:center;gap:10px;font-size:14px}',
+ '.avpot-hd b{font-weight:600;color:var(--ink)}',
+ '.avpot-v{color:var(--mid);font-variant-numeric:tabular-nums;margin-right:auto}',
+ '.avpot-in{width:100%;accent-color:var(--accent);min-height:var(--tap,44px);margin:0}',
+ '.avpot-tk{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums;padding:0 2px}',
+ '.av-ring.avpot-on .av-sat{transition:opacity .2s}',
  '.avh-side .avm-said .avs-said{margin:0}',
  '.avh-under{display:flex;justify-content:center}',
  '.avh-under .avm{width:100%;max-width:560px}',
  '@container (max-width:980px){',
  ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;'
-  +'grid-template-areas:"ring ring" "q q" "l r" "act act"}}',
+  +'grid-template-areas:"ring ring" "ai ai" "q q" "l r" "act act"}}',
  '@container (max-width:560px){',
- ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "q" "l" "r" "act"}}',
+ ' #avbody .av-hero.avh-three{grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "ai" "q" "l" "r" "act"}}',
  '#avbody .av-ring,#avbody .av-wheel{max-width:620px}',
  '#avbody .av-ring.avh{max-width:none;width:min(100%,max(340px,calc(100vh - 230px)))}',
  '#avbody .av-archg{grid-template-columns:minmax(0,3fr) minmax(280px,2fr)}',
@@ -1828,7 +1895,7 @@ function renderAvatar(){
  var who=S.who+'|'+(CURP&&CURP.id);
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
   AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
-  AV.idEdit=false; AV.shedEdit=false; AV.side=null;}
+  AV.idEdit=false; AV.shedEdit=false; AV.side=null; AV.said={}; AV.quiet={}; AV.no={};}
  /* a hidden or unknown view is Becoming, AV_ARCH_SHOWN above says why */
  if(!avSubsShown().some(function(s){return s[0]===AV.sub;}))AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
@@ -1847,7 +1914,7 @@ function renderAvatar(){
      own order (tests/becoming.js exercises the real click and the real
      order it produces), so removing it would take away tested, working
      behaviour rather than a superseded one. */
-  h+=avFirstHTML(st)+avPairs(st);}
+  h+=avFirstHTML(st)+avPairs(st)+avPotHTML(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
  else{
@@ -1865,7 +1932,8 @@ function renderAvatar(){
  host.innerHTML=h+'</div>';
  avShowIntake();
  AV.sig=avSig();
- avBind(host,st);}
+ avBind(host,st);
+ avRailPaint(st);}
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a
    half typed pair. A ritual marked done moves the cycles without changing how
@@ -1996,7 +2064,8 @@ function avBind(host,st){
     if(lr)lr.innerHTML=avLive(avHeard(d.notbe),d);
     if(lb)lb.innerHTML=avLiveBe(d.notbe);},200);};
   el.onscroll=function(){var hl=el.parentNode.querySelector('.st-hl'); if(hl)hl.scrollTop=el.scrollTop;};});
- on('[data-avadd]',function(el){avSeatAdd(el.dataset.avadd);});}
+ on('[data-avadd]',function(el){avSeatAdd(el.dataset.avadd);});
+ avAiBind(host,st); avPotBind(host,st);}
 
 /* ============================================================
    WHO THE AVATAR IS, round RB, Becoming slice S2, the document's layer A.
@@ -2387,3 +2456,277 @@ function avRate(n){
  if(!ok)return;
  status(to?'Saved. '+a.nm+' at '+to+'.':'Taken off. '+a.nm+' is not set.');
  renderAvatar();}
+
+/* ============================================================
+   THE SOURCE AI CORNER, 21 November (avatar-source-ai-corner). His words,
+   18 November: "Does I talk to Source AI replace your 10 November rule of
+   no two way chat? Yes. Yes, it does... The sniffer is now sniffing
+   specifically for words in my conversation." So the page's own questions,
+   which sat over the release box as a prompt nobody answered to anyone,
+   are asked by Source AI in the top right corner, root to crown, one at a
+   time, and the person answers there.
+
+   WHO YOU ARE, AND WHO YOU ARE NOT. Each point's three questions split the
+   same way every time: the second asks who you are on a good day there,
+   the other two what the body did when it went the other way. The corner
+   says which half a question is in, in one line, so nobody has to work it
+   out.
+
+   EVERY QUESTION PASSES THE TEN POINTS FIRST. srcVet (engine/qcheck.js) is
+   the gate every question Source AI builds goes through. The twenty one
+   were reworded so all of them pass with no reading behind them, which is
+   the state this corner asks them in; measured before the rewording, 12 of
+   21 failed, two marks in one line, a body part named as where something
+   lands with no claim behind it (point 7), "the last time" saying a
+   pattern, and words the person never said ("alone", "said nothing"). One
+   that fails anyway is skipped and not shown: section 23, say nothing
+   rather than something that fails. tests/dashavatar.js holds all 21.
+
+   It is Source AI's own question, so it wears the one mark and the src-ai
+   treatment, both, never the icon alone, the 15 November ruling.
+   ============================================================ */
+var AV_AI_HALF=['Who you are not','Who you are','Who you are not'];
+function avAiVet(q){
+ if(typeof srcVet!=='function')return true;
+ return srcVet({q:q, family:'body', dim:'body', target:null},{text:'', ledger:null, asked:[]}).ok;}
+/* the next question that passes, from this point's index on, and null once
+   all three here have been asked or none passes */
+function avAiAt(b){
+ var A=AV_ASK[b]; if(!A)return null;
+ for(var i=(AV.ask[b]||0);i<A.ask.length;i++)if(avAiVet(A.ask[i]))return {b:b, i:i, q:A.ask[i]};
+ return null;}
+function avAiNow(st){
+ var start=BANDS.indexOf(st.seat); if(start<0)start=0;
+ for(var j=0;j<BANDS.length;j++){var b=BANDS[(start+j)%BANDS.length], a=avAiAt(b); if(a)return a;}
+ return null;}
+function avAiHTML(st){
+ var a=avAiNow(st), mk=(typeof srcMark==='function')?srcMark('Source AI asks this. It is a question, never a reading.'):'';
+ var head=function(x){return '<div class="avai-hd">'+mk+'<b>Source AI</b>'+(x||'')+'</div>';};
+ if(!a)return '<section class="av-card avai" aria-label="Source AI">'+head()
+  +'<p class="avai-q src-ai">That is every question. What you said is on the left, under Release.</p></section>';
+ var A=AV_OF[a.b];
+ return '<section class="av-card avai" aria-label="Source AI" style="--c:'+seatCol(a.b)+'">'
+  +head('<span class="avai-half"><span class="avai-ic" aria-hidden="true">'+avSvg(AV_IC[A.k])+'</span>'
+  +esc(AV_AI_HALF[a.i]||'')+', at '+esc(A.nm)+'</span>')
+  +'<p class="avai-q src-ai" data-avaiq="'+a.b+'|'+a.i+'">'+esc(a.q)+'</p>'
+  +'<textarea class="avai-in" data-avaiin rows="1" maxlength="400" spellcheck="false" aria-label="Your answer to Source AI"></textarea>'
+  +'<div class="av-act avai-act"><button type="button" class="btn pri" data-avaisay="'+a.b+'|'+a.i+'">Answer</button>'
+  +'<button type="button" class="btn" data-avaiskip="'+a.b+'|'+a.i+'">Pass</button></div></section>';}
+/* an answer, or a pass, moves the corner on: the next question at this
+   point, and after its third the next point up, root to crown, which is
+   also the ring the page selects, so the boxes beside the ring follow */
+function avAiStep(key,said){
+ var bi=key.split('|'), b=bi[0], i=+bi[1];
+ if(!AV_ASK[b])return;
+ if(said)AV.said[key]=said; else{AV.quiet[key]=true; delete AV.said[key];}
+ AV.ask[b]=i+1;
+ if(AV.ask[b]>=AV_ASK[b].ask.length){var nx=BANDS[BANDS.indexOf(b)+1]; if(nx){AV.seat=nx; AV.face='story';}}
+ renderAvatar();}
+function avAiBind(host){
+ host.querySelectorAll('[data-avaisay]').forEach(function(el){el.onclick=function(){
+  var t=host.querySelector('[data-avaiin]'), v=t?String(t.value||'').trim():'';
+  /* an empty Answer is a pass, said as one, so a press can never file
+     nothing as something heard */
+  avAiStep(el.dataset.avaisay,v||null);};});
+ host.querySelectorAll('[data-avaiskip]').forEach(function(el){el.onclick=function(){avAiStep(el.dataset.avaiskip,null);};});}
+
+/* ============================================================
+   THE SNIFFER ON THE ANSWERS, AND THE BANK BEHIND A YES, 21 November
+   (avatar-sniffer-bank). Every answer in the corner is read by parseStory,
+   the same reader a journal entry gets, and every address the person's own
+   words pointed at (an imprint the words named, never a fallback guess,
+   applyStoryAddr's own rule) is offered on the left as Heard. A Heard row
+   is a guess until the person answers it: Yes puts the pattern on the
+   avatar as a tag at its own point (avTagSet, the one writer), which is the
+   instruction every release door already reads (avatarPull), so from that
+   press on it is in the release order; No sets it aside for this session.
+   Nothing is written on a hearing alone.
+
+   SILENCE IS SELF-SILENCING, NEVER LYING. A question passed over with
+   nothing said is offered as Self-Silencing (address 65, Throat: "you see
+   it and you do not say it", engine/data/nodes.js), behind the same Yes.
+   Not Lying (67): staying quiet says nothing false, and a guess that called
+   it a lie would put words in a person's mouth they never said, which is
+   the one thing the ten points exist to stop.
+   ============================================================ */
+var AV_QUIET_K='Self-Silencing';
+function avHeardRows(st){
+ var av=(CURP&&CURP.avatar)||{}, tags=av.tags||{}, out=[], seen={};
+ var tagged=function(n){var t=tags[n.b]; return !!(t&&Array.isArray(t.add)&&t.add.indexOf(n.k)>=0);};
+ var put=function(n,why){
+  if(!n||seen[n.i]||AV.no[n.i]||tagged(n)||/_Unnamed$/.test(n.k))return;
+  seen[n.i]=1; out.push({n:n, why:why});};
+ Object.keys(AV.said).forEach(function(key){
+  var t=AV.said[key]; if(!t)return;
+  var p=parseStory(t);
+  p.imprints.forEach(function(im){if(im.inferred||im.node==null)return;
+   put(BY[im.node],'You said: “'+t+'”');});});
+ if(Object.keys(AV.quiet).length)
+  put(W.filter(function(n){return n.k===AV_QUIET_K;})[0],'You passed over a question and said nothing.');
+ return out;}
+/* the bank, in the order every release door uses: the engine's held list
+   (sq 4 and up with a channel, relBankN's own filter) ranked by avRank, the
+   avatar's pull first and the charge second */
+function avBanked(){
+ return avRank(W.filter(function(n){return n.cf&&n.sq>=4;}));}
+function avRelRail(st){
+ var H=avHeardRows(st), B=avBanked(), out='';
+ var seatNm=function(n){var A=AV_OF[n.b]; return A?A.nm:n.b;};
+ out+='<div class="avr-grp"><div class="avr-gh"><span>Heard</span>'
+  +'<i class="avr-q" tabindex="0" data-tip-t="Heard" data-tip="What Source AI heard in your answers. Nothing joins your bank until you say yes.">?</i></div>';
+ out+=H.length?'<ul class="avr-list">'+H.map(function(h){var n=h.n;
+   return '<li class="avr-row avr-heard" style="--c:'+seatCol(n.b)+'" data-tip-t="'+esc(avTagNm(n.k))+'" data-tip="'+esc(h.why)+'">'
+    +'<span class="avr-t"><b>'+esc(avTagNm(n.k))+'</b><i>'+esc(seatNm(n))+'</i></span>'
+    +(showOnly()?'':'<span class="avr-yn"><button type="button" class="btn avr-b" data-avhyes="'+n.i+'" aria-label="Yes, '+esc(avTagNm(n.k))+' is mine">Yes</button>'
+    +'<button type="button" class="btn avr-b" data-avhno="'+n.i+'" aria-label="No, not '+esc(avTagNm(n.k))+'">No</button></span>')+'</li>';}).join('')+'</ul>'
+  :'<p class="avr-none">Nothing heard yet. Answer Source AI, top right.</p>';
+ out+='</div><div class="avr-grp"><div class="avr-gh"><span>Banked</span>'
+  +'<i class="avr-q" tabindex="0" data-tip-t="Banked" data-tip="Patterns held in your body now, in the order your release runs them. One tap releases one.">?</i></div>';
+ out+=B.length?'<ul class="avr-list">'+B.slice(0,8).map(function(n){
+   return '<li class="avr-row avr-bank" style="--c:'+seatCol(n.b)+'">'
+    +'<span class="avr-t"><b>'+esc(avTagNm(n.k))+'</b><i>'+esc(seatNm(n))+'</i></span>'
+    +(showOnly()?'':'<button type="button" class="btn avr-b" data-avbrel="'+n.i+'" aria-label="Release '+esc(avTagNm(n.k))+'">Release</button>')+'</li>';}).join('')+'</ul>'
+  :'<p class="avr-none">Nothing held.</p>';
+ return out+'</div>';}
+
+/* ============================================================
+   BECOME, THE RIGHT PANEL, 21 November (avatar-become-panel). What to add,
+   from what the person has already said is theirs, and nothing invented:
+     rituals  for each point a confirmed pattern sits at (a tag the person
+              put on, or a story still carrying), the practice ritFor calls
+              there, the same call the Ritual page makes. Add opens the
+              Ritual tab's own builder with that practice in it (ritOpen,
+              ui/ritual.js), the one writer of a ritual.
+     lines    affSources (engine/affirmgen.js) through affGather, the
+              person's own Become words and the replacement state CHILD
+              names as the opposite of each pattern they tagged, confirmed
+              only. Add opens the builder's own affirmation sheet on that
+              line (affOpen, ui/affirmui.js), which is how a line reaches a
+              ritual.
+   ============================================================ */
+function avBecRits(st){
+ var av=(CURP&&CURP.avatar)||{}, tags=av.tags||{}, seats=[], load={};
+ st.rows.forEach(function(x){if(x.gap&&!x.gap.clear&&seats.indexOf(x.gap.seat)<0){seats.push(x.gap.seat); load[x.gap.seat]=x.gap.load;}});
+ BANDS.forEach(function(b){var t=tags[b];
+  if(t&&Array.isArray(t.add)&&t.add.length&&seats.indexOf(b)<0){seats.push(b); load[b]=0;}});
+ seats.sort(function(a,b){return (load[b]||0)-(load[a]||0);});
+ var seen={}, out=[];
+ seats.forEach(function(b){
+  if(typeof ritFor!=='function')return;
+  var c=ritFor({darkB:b, DQ:st.r.DQ}); if(!c||!c.called)return;
+  var k=c.called.k; if(seen[k]){seen[k].at.push(b); return;}
+  out.push(seen[k]={p:c.called, at:[b]});});
+ return out.slice(0,5);}
+function avBecLines(){
+ if(typeof affGather!=='function')return [];
+ return affGather({}).filter(function(x){return x.state==='confirmed'&&x.kind!=='typed';}).slice(0,6);}
+function avBecRail(st){
+ var R=avBecRits(st), L=avBecLines(), out='';
+ out+='<div class="avr-grp"><div class="avr-gh"><span>Rituals</span>'
+  +'<i class="avr-q" tabindex="0" data-tip-t="Rituals" data-tip="A practice for each point a pattern you confirmed sits at. Add opens the ritual builder with it in.">?</i></div>';
+ out+=R.length?'<ul class="avr-list">'+R.map(function(x){var A=AV_OF[x.at[0]];
+   return '<li class="avr-row" style="--c:'+seatCol(x.at[0])+'" data-tip-t="'+esc(x.p.nm)+'" data-tip="'+esc(x.p.d||'')+'">'
+    +'<span class="avr-t"><b>'+esc(x.p.nm)+'</b><i>'+esc(x.at.map(function(b){return AV_OF[b]?AV_OF[b].nm:b;}).join(', '))
+    +', '+x.p.min+' min</i></span>'
+    +(showOnly()?'':'<button type="button" class="btn avr-b" data-avbrit="'+esc(x.p.k)+'" aria-label="Add '+esc(x.p.nm)+' to a ritual">Add</button>')+'</li>';}).join('')+'</ul>'
+  :'<p class="avr-none">Say yes to a pattern on the left, or write a story, and its practice shows here.</p>';
+ out+='</div><div class="avr-grp"><div class="avr-gh"><span>Lines</span>'
+  +'<i class="avr-q" tabindex="0" data-tip-t="Lines" data-tip="Your own words, and the opposite of each pattern you tagged. Add turns one into lines for your ritual.">?</i></div>';
+ out+=L.length?'<ul class="avr-list">'+L.map(function(x){
+   return '<li class="avr-row" style="--c:'+(x.b?seatCol(x.b):'var(--accent)')+'">'
+    +'<span class="avr-t"><b>'+esc(x.text)+'</b><i>'+esc((typeof AFF_KIND!=='undefined'&&AFF_KIND[x.kind])||x.kind)+'</i></span>'
+    +(showOnly()?'':'<button type="button" class="btn avr-b" data-avbline="'+esc(x.key)+'" aria-label="Add '+esc(x.text)+'">Add</button>')+'</li>';}).join('')+'</ul>'
+  :'<p class="avr-none">Name who you are becoming, or tag a pattern, and its opposite shows here.</p>';
+ return out+'</div>';}
+function avRailPaint(st){
+ var L=document.getElementById('avrel'), R=document.getElementById('avbec');
+ if(L){L.innerHTML=avRelRail(st);
+  L.querySelectorAll('[data-avhyes]').forEach(function(el){el.onclick=function(){
+   var n=BY[+el.dataset.avhyes]; if(!n)return;
+   if(n.k===AV_QUIET_K)AV.quiet={};
+   avTagSet(n.b,n.k,true,st);};});
+  L.querySelectorAll('[data-avhno]').forEach(function(el){el.onclick=function(){
+   var i=+el.dataset.avhno; AV.no[i]=true;
+   if(BY[i]&&BY[i].k===AV_QUIET_K)AV.quiet={};
+   renderAvatar();};});
+  L.querySelectorAll('[data-avbrel]').forEach(function(el){el.onclick=function(){
+   var i=+el.dataset.avbrel; if(!BY[i])return; relPick([i]); avWatch(null);};});}
+ if(R){R.innerHTML=avBecRail(st);
+  R.querySelectorAll('[data-avbrit]').forEach(function(el){el.onclick=function(){
+   var k=el.dataset.avbrit;
+   /* the shipped builder is the one writer of a ritual, and opens with this
+      practice in it, the same hand off avRitHTML made before 21 November */
+   ritOpen(); RIT.sel={}; RIT.sel[k]=true; RIT.order=[k]; RIT.all=true; ritRender();};});
+  R.querySelectorAll('[data-avbline]').forEach(function(el){el.onclick=function(){
+   if(typeof affOpen==='function')affOpen({from:'avatar', key:el.dataset.avbline});};});}}
+
+/* ============================================================
+   THE POTENTIAL SLIDER, 21 November (avatar-potential-slider). Along the
+   bottom of the page, eleven stops, 0 to 100 in tens. Held at a stop, the
+   ring above reads what your points would hold with that share of your
+   banked charge released (avatarPotential, engine/avatar.js); let go, it
+   springs back to today. 100 is every banked pattern released: the bank is
+   the engine's own held list, the one the Banked rows on the left read, so
+   at 100 no point is left holding anything.
+
+   A PREVIEW AND NOTHING ELSE. It draws a copy of the page's state with the
+   held counts read off the preview, and writes no charge, no record and no
+   store. Letting go repaints from the real state.
+   ============================================================ */
+function avPotHTML(st){
+ if(st.r.unread)return '';
+ var ticks=AV_POT_STOPS.map(function(v){return '<span>'+v+'</span>';}).join('');
+ return '<section class="av-card avpot" aria-label="Potential">'
+  +'<div class="avpot-hd"><b>Potential</b><span class="avpot-v" data-avpotv aria-live="polite">'+avPotSay(0,avPotHeld(st,0))+'</span>'
+  +'<i class="avr-q" tabindex="0" data-tip-t="Potential" data-tip="Hold the slider to see your points with that share of your banked charge released. Let go and it goes back to today. Nothing is changed.">?</i></div>'
+  +'<input type="range" class="avpot-in" min="0" max="100" step="10" value="0" data-avpot aria-label="Share of banked charge released, as a percent">'
+  +'<div class="avpot-tk" aria-hidden="true">'+ticks+'</div></section>';}
+/* what the label beside the title says: the stop, and how many addresses
+   are still held at it, a count of real addresses and never a share */
+function avPotHeld(st,k){
+ var P=avatarPotential(W.filter(function(n){return n.cf&&n.sq>=4;}),k);
+ return W.filter(function(n){return (n.i in P.sq)?P.sq[n.i]>=4:n.sq>=4;}).length;}
+function avPotSay(k,h){
+ return (k?k+' percent released':'Today')+', '+(h?h+(h===1?' address held':' addresses held'):'nothing held');}
+function avPotState(st,k){
+ var P=avatarPotential(W.filter(function(n){return n.cf&&n.sq>=4;}),k);
+ var M=avMarksNow(), areas={};
+ AV_AREAS.forEach(function(A){var a=st.areas[A.k], o={};
+  for(var key in a)o[key]=a[key];
+  /* held at this point: every address still at 4 or up, the banked ones read
+     off the preview and every other one as it stands */
+  o.held=W.filter(function(n){return n.b===A.b&&((n.i in P.sq)?P.sq[n.i]>=4:n.sq>=4);}).length;
+  o.first=W.filter(function(n){var v=(n.i in P.sq)?P.sq[n.i]:n.sq;
+   return n.b===A.b&&v>0&&n.cf&&avatarPull(n,M)>0;}).length;
+  areas[A.k]=o;});
+ var c={}; for(var key in st)c[key]=st[key];
+ c.areas=areas; return {st:c, P:P};}
+function avPotBind(host,st){
+ var el=host.querySelector('[data-avpot]'); if(!el)return;
+ var lab=host.querySelector('[data-avpotv]'), live=false, tm=null;
+ var show=function(){
+  var k=+el.value||0, ring=host.querySelector('.av-ring.avh');
+  if(!ring)return;
+  var V=avPotState(st,k), tmp=document.createElement('div');
+  tmp.innerHTML=avRing(V.st); var nr=tmp.firstChild;
+  nr.classList.add('avpot-on'); ring.replaceWith(nr);
+  /* a release off the thumb lands wherever the pointer is, so the page
+     listens for it, not the slider alone */
+  if(!live)document.addEventListener('pointerup',back,{once:true});
+  live=true;
+  if(lab)lab.textContent=avPotSay(k,avPotHeld(st,k));};
+  /* back to today: the real page, drawn again from the real state, which is
+     also what rebinds the satellites the preview's copy left unbound */
+ var back=function(){clearTimeout(tm); if(!live)return; live=false;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!(+el.value)){renderAvatar();return;}
+  var v0=+el.value, t0=performance.now();
+  var step=function(t){var f=Math.min(1,(t-t0)/240);
+   el.value=String(Math.round(v0*(1-f)/10)*10);
+   if(f<1)requestAnimationFrame(step); else renderAvatar();};
+  requestAnimationFrame(step);};
+ el.oninput=show;
+ el.addEventListener('pointerup',back);
+ el.addEventListener('touchend',back);
+ el.addEventListener('blur',back);
+ el.addEventListener('keyup',function(){clearTimeout(tm); tm=setTimeout(back,1200);});}

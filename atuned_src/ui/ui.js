@@ -628,7 +628,9 @@ fieldPinch($('frend'),false);
    Energetic summary moved above it from the right rail; both still open
    closed, off the same empty left set below, so the move needed no entry
    here.) */
-var OPENSEC={left:{}, right:{you:1}};
+/* avrel and avbec, the Avatar page's Release and Become panels, stand open
+   on arrival: they are that page's content, not a reading to unfold */
+var OPENSEC={left:{avrel:1}, right:{you:1, avbec:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
 var SEC_SEEDED={};

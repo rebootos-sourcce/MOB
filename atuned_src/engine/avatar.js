@@ -304,6 +304,79 @@ function wholeSay(w){
  return s.charAt(0).toUpperCase()+s.slice(1)+'.';}
 
 /* ============================================================
+   THE BECOMING READ, ONE CALL FOR BOTH SURFACES, 21 November
+   (dw-avatar-helper). Measured on this tip before it was written: the
+   Avatar page drew wholeOf through avState().overall, the Ritual page's
+   card read the same avState, and the Discover dashboard's Avatar card
+   drew neither. Its ring was done over done plus missed (stmkAvatar,
+   ui/storyui.js), so on Diane the page read the dash while the card drew
+   a ring three quarters full, and a missed day pulled the card down,
+   which wholeOf's own header names as the defect it was built to end.
+
+   So both surfaces read this, and it reads two things:
+
+     pct    the one percent, wholeOf's and nothing else. His 18 November
+            ruling made the Whole the Avatar's percent and the 21 November
+            build wired it; this hands it on and adds no second figure,
+            because a second figure under the same word is the disagreement
+            this function exists to end.
+     areas  each point's own share, the pair closure avClosure reads
+            (ui/avatarui.js), with two kinds of pair LEFT OUT rather than
+            counted. A pair with no saved starting weight read 0 there, a
+            nothing done that nothing measured. A pair written at a point
+            that was already clear read 1, a hundred for a point that never
+            carried anything, which is the other half of the defect wholeOf's
+            header names ("reads 100 off a seat that never carried any").
+            Both are counted in left, so a surface can say what it left out
+            instead of hiding it in a mean.
+
+   rows are avRows' shape, {pair:{id,seat}, gap:{seat,load,clear}}, and
+   load0 the record's starting weights by pair id, handed in the way
+   avatarGap is handed its weights. Host free: no store, no page.
+   ============================================================ */
+function avatarBecoming(p,rows,load0,now){
+ var w=wholeOf(p,now), L=(load0&&typeof load0==='object')?load0:{};
+ var by={}, left={nostart:0, clear:0}, used=0;
+ (rows||[]).forEach(function(x){
+  if(!x||!x.gap||!x.pair)return;
+  if(x.gap.clear){left.clear++; return;}
+  var s=L[x.pair.id];
+  if(typeof s!=='number'||!(s>0)){left.nostart++; return;}
+  var c=Math.max(0,Math.min(1,1-x.gap.load/s)), b=x.pair.seat||x.gap.seat;
+  (by[b]=by[b]||[]).push(c); used++;});
+ var areas={};
+ Object.keys(by).forEach(function(b){
+  var a=by[b]; areas[b]={pct:a.reduce(function(t,v){return t+v;},0)/a.length, n:a.length};});
+ return {pct:w.reason==='read'?w.pct:null, whole:w, areas:areas, used:used, left:left};}
+
+/* ============================================================
+   THE POTENTIAL, avatar-potential-slider, 21 November. What the person's
+   held charge would read with a share of it released: the slider under the
+   Avatar page, stops 0 to 100 in tens, springing back to today when let go.
+
+   WHAT IS BANKED IS THE ENGINE'S OWN LIST, never a second one. compute()
+   pushes an address onto loaded at sq 4 and up (engine/compute.js), the line
+   every surface counts held at, and the release can only run an address
+   with a channel (cf), which is relBankN's list in ui/release.js, the
+   Imprints page's Held figure. The UI hands those in; this reads nothing.
+
+   A share of the charge, every banked address scaled by the same fraction,
+   because that is what releasing a share of the bank means and it is the
+   only reading that needs no order: at 100 every banked address reads 0 and
+   none is still held, at 0 the reading is today's to the decimal. It is a
+   preview and writes nothing, so there is no record for it to disagree with.
+   ============================================================ */
+const AV_POT_STOPS=[0,10,20,30,40,50,60,70,80,90,100];
+function avatarPotential(banked,share){
+ var k=Math.max(0,Math.min(100,+share||0)), f=1-k/100, sq={}, held={};
+ (banked||[]).forEach(function(n){
+  if(!n||!n.cf||!(n.sq>=4))return;
+  var v=n.sq*f; sq[n.i]=v;
+  if(v>=4)held[n.b]=(held[n.b]||0)+1;});
+ return {share:k, sq:sq, held:held,
+  heldN:Object.keys(held).reduce(function(t,b){return t+held[b];},0)};}
+
+/* ============================================================
    THE TAG IS AN INSTRUCTION TO THE QUEUE, AVS4, 17 November. His words, 20
    September: "Adding in data so that I can tag and have Source attach what
    I'm tagging to my releases, so that it can prioritise those releases, so I
