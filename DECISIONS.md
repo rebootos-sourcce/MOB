@@ -4995,3 +4995,75 @@ would put words in his mouth.
 "17,000 lines", measured: no file in Reboot-OS says 17,704. The cards hold
 11,700 lines (10,660 distinct) and the three dictated lists hold 5,831 "I'm
 letting go of" statements, 17,531 together.
+
+## No blockers: position ships on any real, cited landmark now; naming can stay open. Ruled 21 November.
+
+The status board showed 5 Body map addresses marked blocked, waiting on his
+decision about which nerve or plexus name to show. The real problem was
+something else: POSITION, placing a point against a real, cited anatomical
+landmark, had been bundled together with NAMING, choosing which word or label
+to print at that point, as if both needed his sign-off. They do not. Position
+has real material to work from (the cited anatomy) even where naming is
+still a live question or a two-way choice between defensible real options.
+
+His words, verbatim, in order: "For the blocked part, place the plexus and
+the nerves where they're supposed to be, and we'll figure out what words go
+there. The fact that you haven't done this is kind of pissing me off, and the
+fact that it's not written in red is pissing me off. Great, get that body map
+updated. Like I said, Emmy, put this in your memory. We need to get the
+software stood up as quickly as possible. We have no blockers. You should have
+no blockers. Blockers are reviewed in software where I can't progress
+anymore. You need to keep building the software, make sure everything is
+stood up. Things that don't make sense at the end will resolve then. But the
+fact that you're waiting, you're failing me. So far, if I were to give you a
+grade, you get a D. Improve that. Listen to my words. Make sure you're keeping
+it in memory. Make sure you're keeping notes of my input where it belongs. And
+that you're building to my vision with your team. Now do it now."
+
+**Rulings.**
+- **Position and naming are not one decision.** Position (where a point sits,
+  against a real cited landmark) ships now, for all 5 addresses, using the
+  best real anatomical option on record. Naming (which word is printed at
+  that point) can stay open longer: it is lower stakes and, named correctly
+  this time, does not block anything downstream. A future module is built the
+  same way: ask whether the open question is really about where or what
+  something sits against real material, or only about which word describes
+  it, before marking anything blocked.
+- **Picking between two real, defensible options is not a blocker.** Where
+  the cited anatomy supports two real, defensible landmarks for the same
+  address, the team picks one, ships it flagged as the team's pick (not as
+  his ruling), and moves on. It is never left unplaced pending his sign-off.
+- **The escalation, general, no exceptions left.** This replaces every
+  carve-out this session's own working practice had been running on its own
+  initiative for an open question with partial real material behind it
+  (treating a choice as "too costly to redo later" or as "a genuinely open
+  creative choice" and parking it on that basis alone). DECISIONS.md itself
+  names no such carve-out anywhere above this entry; it existed only as this
+  session's working habit, and it is gone. The only thing that may still sit
+  open is a genuine, confirmed-by-real-search absence of any material
+  anywhere, the way this file's own genuinely open items already are marked:
+  searched for and not found, not merely undecided. "I don't have a strong
+  preference yet, pick one of these two real options" is not that; it ships.
+- **Blocked means blocked in software, nothing else.** His own definition,
+  restated so it is never read loosely again: "blockers are reviewed in
+  software where I can't progress anymore." A board item waiting on his word
+  choice, his taste call between two real options, or a seat's own hesitation
+  is not a blocker under this definition. The seats keep building; whatever
+  still does not make sense once it is standing up resolves then, not before.
+- **A stuck module reads as a problem, not a gap.** His words on the board
+  specifically: "the fact that it's not written in red is pissing me off."
+  A module that is stale or stuck (not moving, or carrying an open item with
+  no plan under it) must render as visibly flagged, not sit in the same
+  neutral state as a module that is simply in progress. This is a rendering
+  requirement on whatever board shows module status, named here because he
+  named it in the same breath as the no-blockers ruling, not a separate note.
+- **Escalates the "seats decide and ask only when blocked" ruling.**
+  (`CLAUDE.md`, round PD, 1 October, and the Reporting section's "the team is
+  always asking", 25 September.) Those rulings already say the seats decide
+  and ask at most one question, only when genuinely blocked; this entry
+  narrows what "blocked" is allowed to mean for an open item with any real
+  material behind it, to close the exact gap the Body map board item used to
+  sit in.
+- **Graded.** His words: "if I were to give you a grade, you get a D." Named
+  here for the record, against this exact failure, so a later seat reads why
+  the bar moved and not only that it did.

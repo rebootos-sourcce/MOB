@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v393 8613fdc4 2026-11-21 23:09"><head><meta charset="utf-8">
+<html lang="en" data-build="v36 5217233b 2026-11-21 23:35"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5114,6 +5114,77 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* PILLOW EMBOSS, 21 November, his words on the Dashboard's Source AI
+   circle: "I want it to feel like there's a subtle, like it's a pillow emboss
+   with a subtle bevel, making it feel like it's a ring inside of a raised
+   surface with this kind of cloudy pattern around it."
+
+   Three layers, one light, from the upper left, the way every highlight in
+   this product already falls:
+    1. THE RAISED SURFACE, ::before under the face. A disc a band wider than
+       the face (--sf-band), lit on its upper left crown and rolling into
+       shadow on its lower right flank (the two inset shadows), lifted off
+       the well by a cast shadow down and right with a faint lit edge up and
+       left (the two outer shadows). Its fill is nearly clear, so the cloud
+       under it (ui/unicloud.js, mounted in #stjr on the Dashboard) still
+       reads through the band.
+    2. THE FACE, srcface.js's own canvas, untouched except that the box it
+       sits in is held in by --sf-pil, so the raised band fits inside her
+       panel instead of being cut by it. Her circle is sized off that box
+       every frame, so nothing in the drawing moves.
+    3. THE INSET RIM, ::after over the face, exactly its size (--sf-d,
+       written by srcface.js, the only code that knows the circle). The
+       upper left wall of the groove shades the face (inset, offset down
+       right), the lower right lip catches light (inset, offset up left),
+       and outside the groove the pillow's own lip is lit lower right and
+       shaded upper left, which is what makes the face read as pressed into
+       the surface rather than laid on it.
+   Static, so reduced motion has nothing to stop: the end state is the only
+   state. Compositor cost is paint once per resize; box-shadow on a fixed
+   element does not repaint per frame. Pointer events pass through both
+   layers to the canvas, whose click impulse is kept. #stuni's clip is
+   lifted here only so the cast shadow is not cut square at its box, the
+   one thing his 8 November ruling says never to show. */
+body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
+body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
+body.tab-story.st-full #stuni .canvas-wrap #srcface{
+ inset:var(--sf-pil);width:calc(100% - 2*var(--sf-pil));height:calc(100% - 2*var(--sf-pil))}
+body.tab-story.st-full #stuni .canvas-wrap::before,
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
+ transform:translate(-50%,-50%);pointer-events:none}
+body.tab-story.st-full #stuni .canvas-wrap::before{
+ z-index:-1;width:calc(var(--sf-d,0px) + 2*var(--sf-band));
+ background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.055),rgba(255,255,255,.016) 48%,rgba(0,0,0,.12) 100%);
+ box-shadow:
+  inset 2px 3px 3px -1px rgba(255,255,255,.10),
+  inset -3px -5px 9px rgba(0,0,0,.45),
+  -6px -8px 18px -4px rgba(255,255,255,.035),
+  8px 12px 26px -2px rgba(0,0,0,.6)}
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ z-index:1;width:var(--sf-d,0px);
+ box-shadow:
+  inset 3px 5px 8px rgba(0,0,0,.5),
+  inset -1px -2px 2px rgba(255,255,255,.06),
+  0 0 0 1px rgba(0,0,0,.35),
+  1px 2px 3px rgba(255,255,255,.05),
+  -1px -2px 3px rgba(0,0,0,.4)}
+@media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
+/* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
+   Dashboard at z-index -1; isolation keeps that under her words and controls
+   but over the well's own ground, and the mask fades it to nothing well
+   inside the panel so the cloud never meets the panel's square edge. */
+body.tab-story.st-full #stjr{isolation:isolate}
+/* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
+   -1) out from behind the panel's own background, where on the Dashboard it
+   had always been painted and never seen. Measured on the first build of
+   this round: it came up as a pale rounded box with an accent blob in its
+   top left corner behind her circle, the same box he reported on the hero
+   on 10 November. It stays where it always was on this view: unseen. */
+body.tab-story.st-full #stjr .st-glow::before{display:none}
+body.tab-story.st-full #stjr>#unicloud{
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -11473,20 +11544,34 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
-.cl-src{cursor:pointer}
-.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
-.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
-.cl-srcl{text-anchor:start!important;font-size:11px}
-.cl-door{cursor:pointer}
-.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
-.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl-door text{fill:var(--ink);font-size:12px}
-.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
-.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
-.cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
-.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
-.cl-av .core{fill:#F2E6C4}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
+.cl-dstep .cl-hit{fill:transparent;stroke:none}
+.cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
+/* THE TWO POLES (clPole). One ring, one arrow, one size, top and bottom, so
+   they read as a pair: Source's in the light the board already gives
+   Source, the descent's in the red the descent already wears. Ring, not
+   fill: the disc behind the arrow is the ground, so the path never shows
+   through it. */
+.cl-pole{cursor:pointer;outline:none}
+.cl-pole .cl-hit{fill:transparent;stroke:none}
+.cl-pole .cl-pr{fill:#101114;stroke-width:1.8}
+.cl-pole .cl-pa path{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-pole-up .cl-pr{stroke:#F2E6C4;stroke-opacity:.8}
+.cl-pole-up .cl-pa path{stroke:#F2E6C4}
+.cl-pole-up.open .cl-pr{stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-pole-dn .cl-pr{stroke:rgba(220,135,125,.85)}
+.cl-pole-dn .cl-pa path{stroke:rgba(230,150,140,1)}
+.cl-pole:hover .cl-pr,.cl-pole:focus-visible .cl-pr{stroke-width:2.8}
+.cl-svg .cl-pn{text-anchor:start;font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cl-svg .cl-ps{text-anchor:start;font-size:11px;fill:var(--mid)}
+/* THE AVATAR'S GLOW IS ITS CQ (clSvg, --g is CQ over 100): the radiance
+   ring's reach and light both scale with it, so a person at 90 glows and a
+   person at 45 barely does */
+.cl-av .rad{fill:none;stroke:#F2E6C4;stroke-width:1.2;stroke-opacity:calc(.15 + .6*var(--g,0));
+ filter:drop-shadow(0 0 calc(2px + 12px*var(--g,0)) rgba(242,230,196,.85));pointer-events:none}
+.cl-av text{pointer-events:none}
+.cl-av .halo{fill:none;stroke:#F2E6C4;stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4;fill-opacity:calc(.55 + .45*var(--g,0))}
 .cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
@@ -11512,6 +11597,40 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
+/* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
+   Insight rail on the right: the figure's second panel is not drawn on the
+   climb, so the page is a rail, the board, a rail. The seats are spread down
+   the height with even space between them, the poles at its two ends. */
+.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
+.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+.cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
+.cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
+.cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
+.cl-rail .fb-orb,.cl-rail .fb-arc{width:34px;height:34px}
+.cl-rail .fb-gl svg{width:16px;height:16px}
+.clr-seat{display:flex;flex-direction:column;gap:1px}
+.clr-hd{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:11px;line-height:1.3;color:var(--dim)}
+.clr-mk{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:var(--ax);stroke-width:1.6}
+.clr-nm{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.clr-rg{margin-left:auto;font-variant-numeric:tabular-nums}
+.clr-hd.sel .clr-nm{text-decoration:underline;text-underline-offset:3px}
+.clr-at{display:block;font-size:11px;line-height:1.3;color:var(--mid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr-lw{color:var(--dim)}
+.clr-paths{display:flex;align-items:center;gap:2px;padding-left:0}
+.clr-paths .cn-tx{padding-left:8px}
+.cl-rail .clr-pt{width:44px;min-width:44px;height:44px;padding:5px;flex:0 0 44px;justify-content:center}
+.clr-paths.shut .cn-or{opacity:.55}
+.clr-paths.shut .cn-or .trk{stroke-dasharray:3 3}
+.cl-rail .cn-tx{min-width:0;flex:1 1 auto}
+.clr-t.shut .cn-or{opacity:.55}
+.clr-t.shut .cn-or .trk{stroke-dasharray:3 3}
+.clr-t.sealed .cn-or .trk{stroke-width:3}
+.clr-pole .cn-nu{color:var(--ink)}
+.clr-pole-up .cn-or{--c:#F2E6C4;color:#F2E6C4}
+.clr-pole-dn .cn-or{--c:rgba(220,135,125,.9);color:rgba(230,150,140,1)}
+.clr-pole .fb-gl svg{stroke-width:2}
+.cn-pan.fb-lt .clr-pole-up .cn-or{--c:#8A7440;color:#8A7440}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -18605,8 +18724,10 @@ var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws o
 /* THE FILMS, BY THE FILE THAT HOLDS EACH ONE. Read off his Drive folder
    "Atuned Videos" (folder 1jzIHUjxyJ3IGU62npLj4jXmPvExrcobY) on 21 November,
    by listing the folder, not by searching names, and every row below is a
-   file that listing returned. It is a map for the Worker seam to fetch from
-   in a later milestone and nothing more: a film is never embedded in this
+   file that listing returned. It is a map, and it has two readers: the
+   Worker seam may fetch from it in a later milestone, and since 21 November
+   ui/kbtable.js turns each id into a plain link out to the Drive file, which
+   only the person's own press follows. A film is never embedded in this
    file, and nothing here makes a request.
 
    TEN, NOT EIGHT. The brief said eight films and BOOK-ERRATA.md 15 said
@@ -54297,6 +54418,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
      this layout the field anchors and the rim sit inside it, where the pie
      put the anchors outside */
   Rf=Math.max(12,Math.min(W0,H0)/2-2);
+  sizeVar();
   /* the bloom's downsample steps were 4, 8 and 16 pixels against a face 430
      across the window. Kept in proportion to the face, the way every other
      length in the file scales by Rf/430, or a 40 pixel face is smeared to a
@@ -55477,7 +55599,14 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     answered as if done and do nothing; give() ends the loan and the caller
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
- function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false;
+ /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
+    Dashboard's pillow emboss (shell/head.html, PILLOW EMBOSS) draws the
+    raised surface and the inset rim round exactly this circle, and only
+    this file knows it: the circle is the largest the canvas box holds, less
+    two pixels, so its size is min(width, height) of a box CSS cannot take
+    the minimum of. Written on the host, so a move carries it. */
+ function sizeVar(){ const hp=canvas.parentNode; if(hp&&hp.style) hp.style.setProperty('--sf-d',(2*Rf).toFixed(1)+'px'); }
+ function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false; if(moved) sizeVar();
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); }
   else if(moved) refit();
   return true; }
@@ -55567,6 +55696,46 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    soft saturation (exp decay, smoothstep) so the core blends instead of
    plateauing with a sharp rim.
 
+   SEAMS, the third revision, 21 November. His words, on a screenshot
+   with eight red crosses round the circle: "There's a bug in the fluid
+   code. You can see a seam. There should be none. That should be very
+   fluid." Nothing here is drawn in eight wedges; the field is one full
+   screen pass. The seams were the noise's own lattice, measured on the
+   shader rendered to a float target (the field's second derivative,
+   high passed, so smooth curvature cancels and only a crease survives):
+   a warped square grid of crease lines across the whole cloud, and the
+   grid is centred on the circle because uv's origin is the stage centre,
+   so its lines cross the bright halo round her at roughly eight places.
+   Two causes, both in the old value noise. Its cubic fade, f*f*(3-2f),
+   has a second derivative that jumps at every cell edge, which the eye
+   reads as a hard line (a Mach band), and the density curve's contrast
+   sharpened it. And value noise flattens across every cell edge whatever
+   the fade, so even a smoother fade left a grid. Fixed by:
+    - gradient noise (gnoise) with the quintic fade, 6f^5-15f^4+10f^3, the
+      curve Perlin moved to in 2002 for exactly this. Matched to the old
+      field's spread (NGAIN, measured: std 0.218 against 0.177) and its
+      softness (NFREQ, gradient noise carries its energy at a higher
+      frequency on the same lattice).
+    - each octave rotated (OCT) and shifted (LAT), and the lattice moved
+      off her centre, so no residual can stack into a straight line.
+    - every smoothstep edge (ring gate, density, vignette, core glow) on
+      the same quintic curve (sstep2), and a pulse fades out over its last
+      30 percent of life instead of switching off.
+    - integer seeds for the second channel. A fractional seed let the
+      compiler round the same lattice corner two ways from two cells, and
+      the hash turns one bit into a different gradient: a real crack, found
+      in this revision's own first build and fixed before it shipped.
+   Measured: strongest crease 212 times the field's median curvature
+   change before, 65 after; the worst single line 796 before, 118 after.
+   THE PINCH FIX HOLDS. Gradient noise is steeper than value noise at the
+   same spread, which put folds back during a pulse on the first try
+   (0.49 percent of the frame against 0.14). WARP_K scales the warp back
+   to inside the old budget, chosen by measurement across 8 time samples
+   per case: during a pulse at the worst settings, folded area mean 0.05
+   and 0.06 percent against 0.17 and 0.14 before, worst frame 0.33 and
+   0.37 against 0.48 and 0.38. THE BANDING FIX HOLDS: the dither at the
+   final write is untouched.
+
    WHAT THIS IS NOT. This is an overlay, never a replacement. #stage's own
    CSS wash (shell/head.html's #stage::before, "it emanates from her, not
    the room," 10 November) already reads real CQ through CPAL/getPalette/
@@ -55578,9 +55747,13 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    "I want to see it blending" is answered literally: this is paint over
    paint, not a second background competing with the first.
 
-   WHERE IT LIVES. Scoped to the Journal hero only (body.tab-story, not
-   .st-full), the one place "the cloud" concept already exists. The
-   Dashboard's own separate background (#stjr) is untouched. Mounted and
+   WHERE IT LIVES. The Journal, both views: the hero paints it on #stage,
+   and since 21 November the Dashboard paints it in #stjr, the dark well
+   round her circle, masked soft so it never meets the panel's edge, as
+   the cloud round the raised surface he asked for ("a ring inside of a
+   raised surface with this kind of cloudy pattern around it"; see
+   PILLOW EMBOSS in shell/head.html). #stjr's own wash is still under it.
+   Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
 
@@ -55610,11 +55783,19 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
 'use strict';
 if(typeof document==='undefined')return;
 
-var HOST_ID='stage';
+/* THE HOST, 21 November: the hero paints behind everything on #stage; the
+   Dashboard paints inside the dark well that holds her circle, #stjr, so the
+   cloud sits round the raised surface she is set into (shell/head.html,
+   PILLOW EMBOSS). #stjr is rebuilt by every stRender, so frame() re-seats
+   the canvas whenever its host is a new element. */
+function hostEl(){
+ var c=document.body.classList;
+ return document.getElementById(c.contains('st-full')?'stjr':'stage');
+}
 var canvas=null, gl=null, mounted=false, raf=0;
 var prog=null, posLoc=-1, uniforms={};
 var blitProg=null, blitPosLoc=-1, blitUniforms={};
-var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false;
+var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false, sizedW=0, sizedH=0;
 var vbuf=null;
 var compileFailed=false, contextLost=false;
 
@@ -55625,11 +55806,10 @@ var vsSrc=[
  'void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.0,1.0); }'
 ].join('\n');
 
-/* The fragment shader is the fixed demo's own, verbatim: the dither, the
-   pulse strength and gate, the turbulence cap and the soft saturation are
-   all load bearing fixes, measured against real screenshots and a
-   standalone Jacobian check (tools/jacobian.js in the scratchpad, not
-   shipped here), not cosmetic. */
+/* The fragment shader is the fixed demo's own, with the seam revision
+   above: the dither, the pulse strength and gate, the turbulence cap, the
+   soft saturation and the warp scale are all load bearing fixes, measured
+   against real screenshots and a Jacobian check, not cosmetic. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -55649,48 +55829,49 @@ var fsCore=[
  'const float PULSE_WIDTH0 = 0.16;',
  'const float PULSE_LIFE = 2.6;',
  'const float PULSE_STRENGTH = 0.22;',
+ 'const mat2 OCT = mat2(0.8, 0.6, -0.6, 0.8);',
+ 'const vec2 LAT = vec2(0.37, 0.61);',
+ 'const float WARP_K = 0.62;',
+ 'const float NFREQ = 0.75;',
+ 'const float NGAIN = 1.23;',
+ '',
+ 'float sstep2(float a, float b, float x){',
+ '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
+ '  return t*t*t*(t*(t*6.0-15.0)+10.0);',
+ '}',
  '',
  'float hash(vec2 p){',
  '  p = fract(p*vec2(123.34, 456.21));',
  '  p += dot(p, p+45.32);',
  '  return fract(p.x*p.y);',
  '}',
- 'float vnoise(vec2 p){',
+ 'vec2 grad(vec2 i, vec2 s){',
+ '  return vec2(hash(i+s), hash(i+s+vec2(19.0, 73.0)))*2.0 - 1.0;',
+ '}',
+ 'float gnoise(vec2 p, vec2 s){',
  '  vec2 i = floor(p); vec2 f = fract(p);',
- '  float a = hash(i);',
- '  float b = hash(i+vec2(1.0,0.0));',
- '  float c = hash(i+vec2(0.0,1.0));',
- '  float d = hash(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
+ '  float a = dot(grad(i, s), f);',
+ '  float b = dot(grad(i+vec2(1.0,0.0), s), f-vec2(1.0,0.0));',
+ '  float c = dot(grad(i+vec2(0.0,1.0), s), f-vec2(0.0,1.0));',
+ '  float d = dot(grad(i+vec2(1.0,1.0), s), f-vec2(1.0,1.0));',
+ '  vec2 u = f*f*f*(f*(f*6.0-15.0)+10.0);',
  '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
  '}',
+ 'float vnoise(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*gnoise(p, vec2(0.0)); }',
  'float fbm(vec2 p){',
- '  float s = 0.0; float amp = 0.5; float freq = 1.0;',
+ '  float s = 0.0; float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
- 'vec2 hash2(vec2 p){',
- '  p = fract(p*vec2(123.34, 456.21));',
- '  p += dot(p, p+45.32);',
- '  return fract(vec2(p.x*p.y, p.x*p.y*1.618034));',
- '}',
- 'vec2 vnoise2(vec2 p){',
- '  vec2 i = floor(p); vec2 f = fract(p);',
- '  vec2 a = hash2(i);',
- '  vec2 b = hash2(i+vec2(1.0,0.0));',
- '  vec2 c = hash2(i+vec2(0.0,1.0));',
- '  vec2 d = hash2(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
- '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
- '}',
+ 'vec2 vnoise2(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*vec2(gnoise(p, vec2(0.0)), gnoise(p, vec2(41.0, 7.0))); }',
  'vec2 fbm2(vec2 p){',
- '  vec2 s = vec2(0.0); float amp = 0.5; float freq = 1.0;',
+ '  vec2 s = vec2(0.0); float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise2(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise2(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
@@ -55700,7 +55881,7 @@ var fsCore=[
  '',
  '  float cd = length(uv-uCore);',
  '  vec2 dirFromCore = cd>0.0001 ? (uv-uCore)/cd : vec2(0.0,1.0);',
- '  float ringGate = smoothstep(0.0, RING_R, cd);',
+ '  float ringGate = sstep2(0.0, RING_R, cd);',
  '',
  '  float pulseAmt = 0.0;',
  '  for(int i=0;i<4;i++){',
@@ -55712,7 +55893,7 @@ var fsCore=[
  '        float pw = PULSE_WIDTH0 + age*0.10;',
  '        float band = exp(-((cd-pr)*(cd-pr))/(2.0*pw*pw));',
  '        float decay = exp(-age/(PULSE_LIFE*0.55)) / (1.0+age*0.5);',
- '        pulseAmt += band*decay;',
+ '        pulseAmt += band*decay*(1.0 - sstep2(PULSE_LIFE, PULSE_LIFE*1.3, age));',
  '      }',
  '    }',
  '  }',
@@ -55723,19 +55904,19 @@ var fsCore=[
  '  float speed = mix(0.022, 0.095, incoh) + uDQ*0.02;',
  '  float t = uTime*speed;',
  '',
- '  vec2 w1 = fbm2(uv*1.4 + vec2(t*0.5, -t*0.55));',
- '  vec2 warped = uv + (w1-0.5)*turb;',
+ '  vec2 w1 = fbm2(uv*1.4 + LAT + vec2(t*0.5, -t*0.55));',
+ '  vec2 warped = uv + (w1-0.5)*turb*WARP_K;',
  '  warped += pulsePush;',
  '  vec2 w2 = fbm2(warped*1.9 + vec2(-t*0.35, t*0.25));',
- '  vec2 p2 = warped + (w2-0.5)*turb*0.55;',
+ '  vec2 p2 = warped + (w2-0.5)*turb*0.55*WARP_K;',
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = smoothstep(1.05, 0.0, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
- '  float density = smoothstep(0.20, 0.93, n);',
- '  float vign = smoothstep(1.35, 0.1, length(uv));',
+ '  float density = sstep2(0.20, 0.93, n);',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv));',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',
@@ -55833,6 +56014,10 @@ function tryBuildHalfRes(){
 function sizeFBO(w,h){
  if(!usingHalfRes)return;
  lowW=Math.max(1,w); lowH=Math.max(1,h);
+ /* texStorage2D makes a texture immutable: a second call on the same one
+    fails and leaves it at its first size. A new size gets a new texture. */
+ if(fboTex)gl.deleteTexture(fboTex);
+ fboTex=gl.createTexture();
  gl.bindTexture(gl.TEXTURE_2D,fboTex);
  gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA16F,lowW,lowH);
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
@@ -55930,12 +56115,17 @@ function resize(){
  var r=canvas.getBoundingClientRect();
  var dpr=Math.min(window.devicePixelRatio||1,2);
  var w=Math.max(1,Math.round(r.width*dpr)), h=Math.max(1,Math.round(r.height*dpr));
- if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h); }
+ if(w===sizedW&&h===sizedH)return;
+ sizedW=w; sizedH=h;
+ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h);
  if(usingHalfRes)sizeFBO(Math.max(1,Math.round(w/2)),Math.max(1,Math.round(h/2)));
 }
 
 function frame(now){
  if(!mounted||contextLost){ return; }
+ var want=hostEl();
+ if(want&&canvas.parentNode!==want)want.insertBefore(canvas,want.firstChild);
+ resize();
  var still=stillWins();
  var tSec=still?(lastTSec||2.4):(now-startTime)/1000;
  var dt=Math.min(0.05,(now-(lastFrameTime||now))/1000); lastFrameTime=now;
@@ -56005,12 +56195,12 @@ function frame(now){
 function removeCanvas(){
  if(raf){ cancelAnimationFrame(raf); raf=0; }
  if(canvas&&canvas.parentNode)canvas.parentNode.removeChild(canvas);
- canvas=null; gl=null;
+ canvas=null; gl=null; fboTex=null; fbo=null; sizedW=sizedH=0;
 }
 
 function mount(){
  if(mounted||compileFailed)return;
- var host=document.getElementById(HOST_ID);
+ var host=hostEl();
  if(!host)return;
  canvas=document.createElement('canvas');
  canvas.id='unicloud';
@@ -56025,7 +56215,7 @@ function mount(){
  canvas.addEventListener('webglcontextlost',function(e){ e.preventDefault(); contextLost=true; },false);
  canvas.addEventListener('webglcontextrestored',function(){
   contextLost=false;
-  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
+  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); sizedW=sizedH=0; resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
   catch(e){ removeCanvas(); compileFailed=true; }
  },false);
 
@@ -56057,7 +56247,7 @@ function unmount(){
    nothing else in this product needs to know this exists. */
 function syncToTab(){
  var c=document.body.classList;
- var want=c.contains('tab-story')&&!c.contains('st-full');
+ var want=c.contains('tab-story');
  if(want&&!mounted)mount();
  else if(!want&&mounted)unmount();
 }
@@ -58310,7 +58500,17 @@ function drawWheel0(r,L){
     weight/tension tier() machinery built for a thing that compounds. D
     gates it the same way lay() gates everything else: drawn only while
     fetters or their fade is still live. */
- if(D.fetters&&D.addresses){
+ /* AND NOT ON AN UNREAD FIELD, 21 November. Every other bead tier iterates
+    r.sabs, r.cxs, r.hys or r.sups, which compute() leaves empty when nothing
+    has been read, so those tiers fall silent on their own. The fetters iterate
+    CHILD, a fixed table of nine, so on a blank device they drew nine coloured
+    beads and a 0.14 alpha chord from every one of the 108 addresses into them.
+    Lance reported it from a screenshot as data points trying to render with no
+    profile selected, and it was: measured in a real Chromium on a blank
+    profile, unread true, every fetter's charge 0, nine fet targets on the
+    wheel. This gates on r.unread for the reason the law ticks below do: a read
+    field with a fetter at nought is still structure and still draws. */
+ if(D.fetters&&D.addresses&&!r.unread){
   var fetA2=LA.fetters.v;
   CHILD.forEach(function(c){
    var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
@@ -58528,9 +58728,19 @@ function drawWheel0(r,L){
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
+ /* NOT ON AN UNREAD FIELD, 21 November, the follow up to the fetters above.
+    A blank profile carries the schema's default soul, arcs [0,1] and doms
+    [0] (engine/schema.js, from:'default'), and r.aff and DOMAIN are bumps
+    centred on it, so a person who had entered nothing saw the first
+    archetype lit as their lead at 12 o'clock, the second as their second,
+    and the first domain selected. Measured on a blank profile: unread true,
+    pi 0, si 1, aff[0] 1, doms [0]. That says something about them nobody
+    has said, which is what CLAUDE.md's unread ruling exists to stop. Both
+    rings draw at their floor on unread and keep their targets, as the law
+    ticks do, so an arc can still be pressed. */
  lay('archetypes',()=>{for(let j=0;j<12;j++){
-  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
-  const lead=j===r.pi,sec=j===r.si;
+  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.unread?0:r.aff[j],am=(a0+a1)/2;
+  const lead=!r.unread&&j===r.pi,sec=!r.unread&&j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
   /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
@@ -58648,10 +58858,11 @@ function drawWheel0(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
+ /* the default domain is not lit on unread either, see the archetype ring */
  lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
-  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=!r.unread&&S.doms.indexOf(d)>=0,v=r.unread?0:DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
@@ -58777,12 +58988,13 @@ function drawWheel0(r,L){
     unlike a saboteur's own object which compute() rebuilds each call; CHILD
     needs no such rebuild because it carries no per-frame reading of its
     own, only S.charge beside it. Size reads real held charge, same pattern
-    every other bead already scales by its own weight. All nine draw always
-    (there are only nine, and a fetter has nothing to be "not running":
+    every other bead already scales by its own weight. All nine draw on any
+    read field, and none on an unread one (there are only nine, and a fetter has nothing to be "not running":
     trace.js's own words, "carries no address-level content of its own", so
     there is no running/not-running split to draw here the way a saboteur
     has one). */
- lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+ /* the beads go silent on unread with their chords, see FETTER CHORDS above */
+ lay('fetters',()=>{if(r.unread)return;CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
   if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
@@ -93648,7 +93860,12 @@ function coneOpen(inTab){
       is also his standing rule, that the centre column is for hero art.
       Under 900 pixels, or when the stage is too narrow to share, the panels
       go under the figure in two columns (the sheet decides, .cone-fig). */
-   +coneNames('l')
+   /* ON THE CLIMB, ONE RAIL AND NOT TWO PANELS. The two panels are the
+      figure's eight axes, read as a turn of the figure; the climb is read
+      bottom to top, so its rail is the seven seats in that order (clRail)
+      and the right of the page is the Insight rail, where a station's card
+      opens. "The figure" puts both panels back. */
+   +(CONE.climb?'<div class="cn-pan cn-nms-l cl-rail" id="clrail" role="group" aria-label="The climb by seat, Crown at the top and Root at the bottom">'+clRailIn()+'</div>':coneNames('l'))
    /* THE CANVAS, THE OVERLAYS AND THE ZOOM, held together so the corners are
       the canvas's and not the card's, whatever the key under the figure does.
       The overlays take the upper left and how it is drawn the upper right,
@@ -93685,7 +93902,7 @@ function coneOpen(inTab){
       a control that changes nothing is a dead control. */
    +(CONE.side?'':'<div class="cn-zoom" id="cnzoom" role="group" aria-label="Zoom"></div>')
    +'</div>'
-   +coneNames('r')
+   +(CONE.climb?'':coneNames('r'))
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
       information goes right unless it is about the tool. The key is about
       the tool, so it may stay under it. The reading does not, and does not.
@@ -93777,6 +93994,9 @@ function coneOpen(inTab){
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(ch)ch.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g){e.preventDefault(); clPress(g.getAttribute('data-cl'));}});
+ /* the rail's rows are buttons, so a click is the keyboard's press as well */
+ var crl=document.getElementById('clrail'); if(crl)crl.addEventListener('click',function(e){
+  var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
@@ -94124,7 +94344,15 @@ function clStations(){
 function clGeo(W,H,stk){
  var G={W:W,H:H,cx:W/2,stk:stk};
  var gut=stk?40:84;
- G.sum=stk?64:70; G.D=clDsc(W,H,stk); G.dsc=G.D.h;
+ /* THE TWO POLES, 21 November, his words on the first climb: "What I liked
+    about the compass, there was a distinct point on the bottom and a
+    distinct point on top... it's an arrow up, arrow down." The needle's two
+    points (ndlGeo) are a ring and an arrow here, one at each end of the
+    board, the same size, so they read as one pair: pt and pb are their
+    centres, pr their radius, and the room above the Crown and under the
+    descent is made for them rather than taken from the turns. */
+ G.pr=stk?17:20; G.pt=G.pr+12; G.pb=H-G.pr-10;
+ G.sum=G.pt+G.pr+(stk?40:46); G.dsc=stk?236:Math.round(Math.max(176,H*0.21));
  var yBase=H-G.dsc-(stk?24:28), yTop=G.sum+(stk?40:44);
  G.th=(yBase-yTop)/6.4;
  G.hb=W/2-gut; G.ht=G.hb*(stk?0.78:0.62);
@@ -94133,22 +94361,6 @@ function clGeo(W,H,stk){
   var yc=yBase-G.th*0.45-i*G.th, hw=G.hb+(G.ht-G.hb)*i/6;
   G.tiers.push({yc:yc,hw:hw,ry:Math.min(G.th*0.36,hw*0.2)});}
  return G;}
-/* THE DESCENT'S NAMES, FITTED TO THE BOX UNDER THE DOOR. The design round
-   drew eight names there, and DESCENT grew to twenty seven the same day
-   (the shadow roster, 056c7bb6). Sizing the box to all of them was the
-   first cut and it squeezed the climb on a desk card of fixed height until
-   each turn's numbers sat on the names of the turn above. So the box keeps
-   its height, the columns are as many as fit the longest name, measured,
-   with room between them, the names print in DESCENT's own order for as
-   many rows as the box holds, and the last line says how many more are
-   behind the door, which opens every one of them. */
-function clDsc(W,H,stk){
- var h=stk?212:Math.round(Math.max(150,H*0.2)), dw=2*(W/2-(stk?40:84))*(stk?0.98:0.9), wide=0;
- DESCENT.forEach(function(d){wide=Math.max(wide,clTextW(d.nm,9.5,400));});
- var cols=Math.max(1,Math.min(6,Math.floor(dw/(wide+16)))), rh=stk?26:28;
- var rows=Math.max(1,Math.floor((h-44-(stk?30:36)-(stk?24:28)-rh)/rh));
- var shown=Math.min(DESCENT.length,rows*cols);
- return {dw:dw, cols:cols, rh:rh, h:h, shown:shown};}
 function clFront(G,i,u){var t=G.tiers[i];
  return [G.cx-t.hw+2*t.hw*u, t.yc+t.ry*Math.sin(Math.PI*u)];}
 function clBack(G,i,v){
@@ -94242,12 +94454,17 @@ function clSvg(W,H,stk){
  /* the real figure, ghosted: the upper pyramid the path winds round, and the
     lower one the descent sits in, the two the compass draws */
  var t0=G.tiers[0], wy=t0.yc+t0.ry+G.th*0.55;
- o+='<path class="cl-cone" d="M'+(cx-G.hb-14)+','+wy+'L'+(cx-G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.hb+14)+','+wy+'Z"/>';
- o+='<path class="cl-dn" d="M'+(cx-G.hb*0.62)+','+(wy+10)+'L'+cx+','+(H-8)+'L'+(cx+G.hb*0.62)+','+(wy+10)+'Z"/>';
+ /* both pyramids come to a point, and each point ends on its pole's ring:
+    the upper one narrows over the Crown to the ring at the top, the lower
+    one to the ring at the bottom. The first climb cut the upper pyramid off
+    flat under Source and left the lower one's tip bare, which is the "distinct
+    point on top and on the bottom" he said it had lost. */
+ o+='<path class="cl-cone" d="M'+(cx-G.hb-14)+','+wy+'L'+(cx-G.ht*0.5)+','+(G.sum-2)+'L'+cx+','+(G.pt+G.pr+3)+'L'+(cx+G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.hb+14)+','+wy+'Z"/>';
+ o+='<path class="cl-dn" d="M'+(cx-G.hb*0.62)+','+(wy+10)+'L'+cx+','+(G.pb-G.pr-3)+'L'+(cx+G.hb*0.62)+','+(wy+10)+'Z"/>';
  /* the back of each turn, dashed: the way round behind the pyramid */
  for(var i=0;i<7;i++)o+='<path class="cl-back" d="'+clPoly(function(v){return clBack(G,i,v);},40)+'"/>';
- /* the descent's way up, from the door to the trailhead */
- var th0=clFront(G,0,0), dy=wy+44;
+ /* the way up out of the descent, from the floor to the trailhead */
+ var th0=clFront(G,0,0), dy=wy+10;
  o+='<path class="cl-back" d="M'+cx+','+dy+'Q'+(th0[0])+','+(dy)+' '+th0[0].toFixed(1)+','+th0[1].toFixed(1)+'"/>';
  T.forEach(function(t,i){clPlace(G,t,i,stk);});
  var at=clAt(T,cq), hat=clAt(T,hi);
@@ -94259,14 +94476,19 @@ function clSvg(W,H,stk){
   /* the seat, left gutter; its seal, right gutter. Symmetric. */
   var gy=G2.yc+G2.ry*0.3, gl=cx-G.hb-(stk?22:40), gr=cx+G.hb+(stk?22:40);
   var bandOpen=cq!==null&&hi>=t.lo, bandSeal=t.row.filter(function(s){return s.t==='tch';}).every(function(s){return clSealed(done,s.k);});
-  o+='<g class="cl-seat'+(bandOpen?' on':'')+'" data-cl="seat:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+'" style="--c:'+col+'">'
+  /* the names under these two marks moved to the rail beside the board
+     (clRail), which names every seat in the same order, so the board keeps
+     the symbol and the word is on hover and tap: symbol first, header
+     second, body third, ruled 16 November */
+  var lo=Math.round(t.lo), up=i===BANDS.length-1?100:Math.round(t.hi);
+  o+='<g class="cl-seat'+(bandOpen?' on':'')+'" data-cl="seat:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+', coherence '+lo+' to '+up+'"'
+   +' data-tip-k="'+esc(t.b)+'" data-tip="One turn of the climb, coherence '+lo+' to '+up+'. Press for what is on it." style="--c:'+col+'">'
    +'<circle cx="'+gl+'" cy="'+gy+'" r="'+(stk?13:15)+'" class="cl-sr"/>'
-   +'<g class="cl-sg">'+cnSeatMark(i).replace('cx="12" cy="12"','cx="'+gl+'" cy="'+gy+'"').replace(/r="([\d.]+)"/,function(m,r){return 'r="'+(+r*(stk?0.95:1.1)).toFixed(1)+'"';})+'</g>'
-   +(stk?'':'<text x="'+gl+'" y="'+(gy+30)+'" class="cl-sn">'+esc(t.b)+'</text>')+'</g>';
-  o+='<g class="cl-badge'+(bandSeal?' got':'')+'" data-cl="badge:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+' seal" style="--c:'+col+'">'
+   +'<g class="cl-sg">'+cnSeatMark(i).replace('cx="12" cy="12"','cx="'+gl+'" cy="'+gy+'"').replace(/r="([\d.]+)"/,function(m,r){return 'r="'+(+r*(stk?0.95:1.1)).toFixed(1)+'"';})+'</g></g>';
+  o+='<g class="cl-badge'+(bandSeal?' got':'')+'" data-cl="badge:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+' seal"'
+   +' data-tip-k="'+esc(t.b)+' seal" data-tip="Closes when every teacher on this turn is sealed." style="--c:'+col+'">'
    +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?11:13)+'"/>'
-   +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?6:7)+'" class="in"/>'
-   +(stk?'':'<text x="'+gr+'" y="'+(gy+30)+'" class="cl-sn">Seal</text>')+'</g>';
+   +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?6:7)+'" class="in"/></g>';
   t.row.forEach(function(s){
    var y=clFront(G,i,s.u)[1], x=s.x, X=x.toFixed(1), Y=y.toFixed(1);
    var open=cq!==null&&hi>=s.at, sel=CONE.clSel===s.k;
@@ -94296,42 +94518,144 @@ function clSvg(W,H,stk){
      +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+rl+'"/>'
      +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.42:0.5)+'</g>'
      +(stk?'':'<text class="cl-lb sm" x="'+X+'" y="'+(y+rl+13).toFixed(1)+'">'+esc(s.nm)+'</text>')+'</g>';}});});
- /* the summit: Source, at 100 */
- var sx=cx, sy=G.sum-14;
- o+='<g class="cl-src'+(hi>=100?' open':'')+'" data-cl="src" tabindex="0" role="button" aria-label="Source, coherence 100">'
-  +'<circle cx="'+sx+'" cy="'+sy+'" r="'+(stk?16:19)+'"/><circle cx="'+sx+'" cy="'+sy+'" r="'+(stk?7:8)+'" class="in"/>'
-  +'<text x="'+(sx+(stk?24:28))+'" y="'+(sy+4)+'" class="cl-srcl">Source, 100</text></g>';
- /* the descent: a door, and behind it the real steps, dim. Never on the path. */
- var ddy=wy+44;
- o+='<g class="cl-door" data-cl="descent" tabindex="0" role="button" aria-label="The descent, a mirror">'
-  +'<rect x="'+(cx-(stk?62:74))+'" y="'+(ddy-14)+'" width="'+(stk?124:148)+'" height="28" rx="14"/>'
-  +clIcon('M12 4v16M6 14l6 6 6-6',cx-(stk?46:56),ddy,0.6)
-  +'<text x="'+(cx+8)+'" y="'+(ddy+4)+'">The descent</text></g>';
- var dw=G.D.dw;
- DESCENT.slice(0,G.D.shown).forEach(function(d,k){
-  var nc=G.D.cols, row=Math.floor(k/nc), col=k%nc, x=cx-dw/2+dw*(col+0.5)/nc, y=ddy+(stk?30:36)+row*G.D.rh;
-  o+='<g class="cl-dstep"><circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="3.2"/>'
-   +'<text x="'+x.toFixed(1)+'" y="'+(y+14)+'">'+esc(d.nm)+'</text></g>';});
- if(G.D.shown<DESCENT.length)
-  o+='<text class="cl-dmore" x="'+cx+'" y="'+(ddy+(stk?30:36)+Math.ceil(G.D.shown/G.D.cols)*G.D.rh+8)+'">'
-   +(DESCENT.length-G.D.shown)+' more behind the door</text>';
- /* the avatar, at the reading's own CQ */
- if(at){var ap=clFront(G,at.i,at.u);
-  o+='<g class="cl-av" style="--c:'+seatCol(T[at.i].b)+'"><circle cx="'+ap[0].toFixed(1)+'" cy="'+ap[1].toFixed(1)+'" r="'+(stk?9:11)+'" class="halo"/>'
-   +'<circle cx="'+ap[0].toFixed(1)+'" cy="'+ap[1].toFixed(1)+'" r="'+(stk?5:6)+'" class="core"/>'
-   /* centred above the halo: up and to the left, the first cut, printed
-      over the law stone behind the avatar on a phone */
-   +'<text x="'+ap[0].toFixed(1)+'" y="'+(ap[1]-(stk?15:18)).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'</text></g>';}
+ /* THE TOP POLE: Source, at 100. A ring with an arrow pointing up out of it,
+    the up arrow this product already draws in strokes (CL_UP, the descent
+    door's own arrow turned over), at the point of the upper pyramid. */
+ o+=clPole('src',cx,G.pt,G.pr,CL_UP,hi>=100,'Source','coherence 100',
+  'Source, coherence 100, the top of the climb');
+ /* THE BOTTOM POLE: the descent, under 41. The same ring and the same arrow
+    pointing down, at the point of the lower pyramid. It is also the door the
+    first climb drew as a pill: one mark for one place. The descent's steps sit
+    between the floor and this pole, dim, and are never on the path. */
+ o+=clPole('descent',cx,G.pb,G.pr,CL_DN,false,'The descent','under coherence '+CQ_CLIMB_FLOOR,
+  'The descent, under coherence '+CQ_CLIMB_FLOOR+', a mirror');
+ /* THE DESCENT'S ROWS, AS MARKS. The roster grew from eight to every row
+    DESCENT carries (the shadow roster, 21 November), and eight names under
+    the climb fitted where twenty seven print over each other. So each is a
+    dim mark inside the lower pyramid, its name on hover and tap, and the
+    bottom pole's card lists them all with what each one is. The rows narrow
+    with the pyramid, so no mark sits outside it. */
+ var nd=DESCENT.length, gap=stk?20:24, tipY=G.pb-G.pr-3, topY=wy+10, hw0=G.hb*0.62;
+ var dy0=wy+(stk?40:44), span=Math.max(0,(tipY-dy0)*0.62);
+ var rowW=function(y){return Math.min(2*G.hb*0.8,2*hw0*(tipY-y)/(tipY-topY)*0.84);};
+ /* as few rows as hold every mark at gap apart, each row as wide as the
+    pyramid is at its height, the wider rows above taking more */
+ var R=[];
+ for(var nr=1;nr<=10;nr++){R=[];var cap=0;
+  for(var j=0;j<nr;j++){var y=Math.round(dy0+(nr>1?span*j/(nr-1):0)), w=rowW(y), c=Math.max(1,Math.floor(w/gap));
+   R.push({y:y,w:w,c:c}); cap+=c;}
+  if(cap>=nd)break;}
+ var left=nd, k0=0;
+ R.forEach(function(rw,j){
+  var n=Math.min(rw.c,left); rw.n=n; rw.k0=k0; k0+=n; left-=n;});
+ R.forEach(function(rw){for(var i=0;i<rw.n;i++){var d=DESCENT[rw.k0+i]; if(!d)continue;
+  var x=cx-rw.w/2+rw.w*(i+0.5)/rw.n;
+  o+='<g class="cl-dstep" data-tip-k="'+esc(d.nm)+'" data-tip="'+esc(d.d||('Part of the descent, under coherence '+CQ_CLIMB_FLOOR+'.'))+'">'
+   +'<circle class="cl-hit" cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="9"/><circle cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="3.2"/></g>';}});
+ /* THE AVATAR, AT THE READING'S OWN CQ, AND LIT BY IT. Ruled 21 November, his
+    words: "your avatar is simply a circle representing your field and the
+    radiance of that glow determined by your CQ." So CQ and nothing else sets
+    how far the glow reaches and how bright it is: g is CQ over 100, the
+    radiance ring widens with it and its light carries further. Ring, not
+    fill, for the radiance; the field itself is the small core. */
+ var avAt=function(x,y,cls,lab){
+  var g=clamp(cq/100,0,1), rc=(stk?5:6), rr=(stk?9:11)+(stk?8:11)*g;
+  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+' of 100"'
+   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+' of 100.">'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+rr.toFixed(1)+'" class="rad"/>'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+(rc+4)+'" class="halo"/>'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+rc+'" class="core"/>'+lab+'</g>';};
+ if(at){var ap=clFront(G,at.i,at.u), ax=ap[0].toFixed(1), ay=ap[1].toFixed(1);
+  var rr0=(stk?9:11)+(stk?8:11)*clamp(cq/100,0,1);
+  /* centred above the glow: up and to the left, the first cut, printed
+     over the law stone behind the avatar on a phone */
+  o+=avAt(ax,ay,'','<text x="'+ax+'" y="'+(ap[1]-rr0-5).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'</text>');}
  else if(cq!==null){
-  o+='<g class="cl-av below"><circle cx="'+cx+'" cy="'+(ddy-24)+'" r="6" class="core"/>'
-   +'<text x="'+(cx+12)+'" y="'+(ddy-20)+'" class="cl-avq">You, '+Math.round(cq)+'. The climb starts at '+CQ_CLIMB_FLOOR+'</text></g>';}
+  o+=avAt(cx,(wy+22).toFixed(1),' below','<text x="'+(cx+14)+'" y="'+(wy+26).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'. The climb starts at '+CQ_CLIMB_FLOOR+'</text>');}
  return o+'</svg>';}
+/* THE TWO ARROWS. The down arrow is the descent door's own (clCard), and the
+   up arrow is the same stroke turned over, so the pair is one drawing. */
+const CL_UP='M12 20V4M6 10l6-6 6 6';
+const CL_DN='M12 4v16M6 14l6 6 6-6';
+function clPole(k,x,y,r,ic,lit,nm,sub,aria){
+ return '<g class="cl-pole cl-pole-'+(k==='src'?'up':'dn')+(lit?' open':'')+'" data-cl="'+k+'" tabindex="0" role="button" aria-label="'+esc(aria)+'">'
+  +'<circle cx="'+x+'" cy="'+y+'" r="'+(r+8)+'" class="cl-hit"/>'
+  +'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" class="cl-pr"/>'
+  +'<g class="cl-pa">'+clIcon(ic,x,y,r/16)+'</g>'
+  +'<text x="'+(x+r+10)+'" y="'+(y-2)+'" class="cl-pn">'+esc(nm)+'</text>'
+  +'<text x="'+(x+r+10)+'" y="'+(y+12)+'" class="cl-ps">'+esc(sub)+'</text></g>';}
 function clRender(){
  var host=document.getElementById('cnclimb'), c=CONE.cv; if(!host||!c)return;
  var fig=c.closest('.cone-fig'), stk=fig&&fig.classList.contains('stk');
  var W=c.clientWidth, H=c.clientHeight;
  host.style.width=W+'px'; host.style.height=H+'px'; host.style.top=c.offsetTop+'px'; host.style.left=c.offsetLeft+'px';
- host.innerHTML=clSvg(W,H,stk);}
+ host.innerHTML=clSvg(W,H,stk);
+ var rl=document.getElementById('clrail'); if(rl){
+  var ae=document.activeElement, fk=(ae&&rl.contains(ae))?ae.getAttribute('data-cl'):null;
+  rl.innerHTML=clRailIn();
+  if(fk){var nf=rl.querySelector('[data-cl="'+fk+'"]'); if(nf)nf.focus({preventScroll:true});}}}
+/* ============================================================
+   THE RAIL BESIDE THE CLIMB. Plan 2, 20 November, on the board as
+   path-left-rail-chakra-stack: "The left rail groups by chakra seat, root at
+   the bottom to crown at the top." So it reads the way the climb does, the
+   up arrow and Source at its head, the seven seats of BANDS from Crown down
+   to Root, and the down arrow and the descent at its foot: the board's two
+   poles, and its turns, in the same order and the same colours.
+
+   Every entry is read and none typed. The seats and their ranges are
+   compassBandOf's; under each seat are the teachers clStations puts on that
+   turn, highest first, so a seat reads top down the way the climb rises,
+   each with its POLE_UNLOCK number and the laws LAW_TEACHER gives it. That
+   is where Akhenaten's Crown place comes from (CLIMB_SEAT_PICK, the team's
+   pick of 21 November) and why Jesus is on two seats, Grace at the Heart and
+   Transmutation at the Crown: the data has him there, and the rail does not
+   re-derive it. A row is the station: pressing it is pressing the station
+   on the board, the card opens in the Insight rail and the board marks it.
+   ============================================================ */
+function clRailPole(k,ic,nm,sub,lit,sel){
+ return '<button type="button" class="cn-nr clr-pole clr-pole-'+(k==='src'?'up':'dn')+(lit?' open':'')+(sel?' front':'')+'" data-cl="'+k+'"'
+  +' aria-label="'+esc(nm)+', '+esc(sub)+'">'
+  +'<span class="cn-pr"><span class="fb-orb cn-or bare"><svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true"><circle class="trk" cx="20" cy="20" r="18"/></svg>'
+  +'<span class="fb-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+ic+'"/></svg></span></span></span>'
+  +'<span class="cn-tx"><span class="cn-nu">'+esc(nm)+'</span><span class="clr-at">'+esc(sub)+'</span></span></button>';}
+function clRailIn(){
+ var T=clStations(), V=clView(), hi=V.hi, cq=V.cq, done=V.done, h='';
+ h+=clRailPole('src',CL_UP,'Source','Coherence 100, the top',hi>=100,CONE.clSel==='src');
+ T.slice().reverse().forEach(function(t){
+  var i=BANDS.indexOf(t.b), col=seatCol(t.b), lo=Math.round(t.lo), up=i===BANDS.length-1?100:Math.round(t.hi);
+  var on=cq!==null&&hi>=t.lo, cd=/^#[0-9a-f]{6}$/i.test(col)?rgba(hx(col),.72):col;
+  h+='<div class="clr-seat'+(on?' on':'')+'" style="--ax:'+col+';--axd:'+cd+'" role="group" aria-label="'+esc(t.b)+', coherence '+lo+' to '+up+'">'
+   +'<div class="clr-hd'+(CONE.clSel==='seat:'+t.b?' sel':'')+'"><svg class="clr-mk" viewBox="0 0 24 24" aria-hidden="true">'+cnSeatMark(i)+'</svg>'
+   +'<span class="clr-nm">'+esc(t.b)+'</span><span class="clr-rg">'+lo+' to '+up+'</span></div>';
+  var tch=t.row.filter(function(s){return s.t==='tch';}).sort(function(a,b){return b.at-a.at||t.row.indexOf(b)-t.row.indexOf(a);});
+  /* the teachers with a seat, one row each: the name, then when it opens
+     and the laws it is affirmed with. The laws are cut to the rail's width
+     on screen and are whole on hover, on tap and to a screen reader. */
+  tch.filter(function(s){return compassClimbSeat(s.k)!==null;}).forEach(function(s){
+   var open=cq!==null&&hi>=s.at, laws=t.row.filter(function(x){return x.t==='law'&&x.to===s.k;}).map(function(x){return x.nm;});
+   var rc=(typeof recipeOf==='function')?recipeOf(s.k):null;
+   var tip=(rc&&rc.line?rc.line+'. ':'')+(open?'Open, it opened at':'Opens at')+' coherence '+s.at+'.'+(laws.length?' Laws: '+laws.join(', ')+'.':'');
+   h+='<button type="button" class="cn-nr clr-t'+(open?' open':' shut')+(clSealed(done,s.k)?' sealed':'')+(CONE.clSel===s.k?' front':'')+'" data-cl="'+esc(s.k)+'"'
+    +' aria-label="'+esc(s.nm)+'. '+esc(tip)+'" data-tip-k="'+esc(s.nm)+'" data-tip="'+esc(tip)+'">'
+    +'<span class="cn-pr">'+cnOrb(s.ic,false,true)+'</span>'
+    +'<span class="cn-tx"><span class="cn-nu">'+esc(s.nm)+'</span>'
+    +'<span class="clr-at">'+(open?'Open at ':'Opens at ')+s.at+(laws.length?'<span class="clr-lw">, '+esc(laws.join(', '))+'</span>':'')+'</span></span></button>';});
+  /* THE PATHS WITH NO SEAT, ONE ROW. Free Flow, Duty and Non Resistance open
+     together at 42 and stand on no seat (compassClimbSeat is null for them,
+     POLE_UNLOCK's note): three marks on one line, each its own press, and
+     the line says what the three have in common. */
+  var paths=tch.filter(function(s){return compassClimbSeat(s.k)===null;});
+  if(paths.length){
+   var pat=paths[0].at, pop=cq!==null&&hi>=pat;
+   h+='<div class="clr-paths'+(pop?' open':' shut')+'">'+paths.map(function(s){
+     var rc=(typeof recipeOf==='function')?recipeOf(s.k):null;
+     var tip=(rc&&rc.line?rc.line+'. ':'')+'A path on no seat. '+(pop?'Open, it opened at':'Opens at')+' coherence '+s.at+'.';
+     return '<button type="button" class="cn-nr clr-pt'+(CONE.clSel===s.k?' front':'')+'" data-cl="'+esc(s.k)+'" aria-label="'+esc(s.nm)+'. '+esc(tip)+'"'
+      +' data-tip-k="'+esc(s.nm)+'" data-tip="'+esc(tip)+'">'+cnOrb(s.ic,false,true)+'</button>';}).join('')
+    +'<span class="cn-tx"><span class="cn-nu">Paths</span><span class="clr-at">'+(pop?'Open at ':'Opens at ')+pat+'</span></span></div>';}
+  h+='</div>';});
+ h+=clRailPole('descent',CL_DN,'The descent','Under coherence '+CQ_CLIMB_FLOOR+', a mirror',false,CONE.clSel==='descent');
+ return h;}
 function clPress(k){
  CONE.clSel=k; clRender();
  /* the rail lights the axis the station stands on, the real rail's own row */
@@ -94379,10 +94703,10 @@ function clCard(k){
  var H=function(ic,h,sub){return '<div class="cl-hd">'+(ic?'<span class="cl-hic"><svg viewBox="0 0 24 24"><path d="'+ic+'"/></svg></span>':'')
   +'<div><div class="sh-h plain">'+esc(h)+'</div>'+(sub?'<div class="cl-sub">'+sub+'</div>':'')+'</div></div>';};
  if(k==='descent'){
-  return '<div class="cl-card">'+H('M12 4v16M6 14l6 6 6-6','The descent','A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
+  return '<div class="cl-card">'+H(CL_DN,'The descent','A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
    +DESCENT.map(function(d){return '<div class="cl-dsc"><b>'+esc(d.nm)+'</b><p>'+esc(d.d)+'</p></div>';}).join('')
    +'<p class="cl-ref">'+esc(DESCENT_REFER)+'</p></div>';}
- if(k==='src')return '<div class="cl-card">'+H('M12 4a8 8 0 110 16 8 8 0 010-16','Source','Coherence 100. Where every path on this pyramid ends.')+'</div>';
+ if(k==='src')return '<div class="cl-card">'+H(CL_UP,'Source','Coherence 100. Where every path on this pyramid ends.')+'</div>';
  if(k.indexOf('seat:')===0||k.indexOf('badge:')===0){
   var b=k.split(':')[1], bd=compassBandOf(b), T=clStations().filter(function(t){return t.b===b;})[0];
   return '<div class="cl-card">'+H('',b+(k.indexOf('badge:')===0?' seal':''),'Opens at coherence '+Math.round(bd.lo)+'. '
@@ -98221,12 +98545,22 @@ function kbtOne(d){
    dictionary and the Chromium the gates run did not have one, so the first
    cut broke them as "Acceptanc / e", measured at 390. A soft hyphen before a
    common ending is invisible until the line has to break there. */
-var KBT_ENDS=['ability','ation','ance','ence','tion','ment','ness','ual','ity'];
+/* THREE NAMES MATCHED NO ENDING AND BROKE ON A LETTER, 21 November.
+   Correspond printed "Correspon / d" on a phone tile, measured at 390, and
+   Transparency and Compassion had no break point either, read off HARM by
+   listing every name of ten letters or more against this list. "sion" and
+   "ency" cover two. Correspond has no common ending at all, so a word the
+   list misses breaks at its last pair of consonants that leaves four letters
+   on each side, "Corres-pond", rather than wherever the box runs out. */
+var KBT_ENDS=['ability','ation','ance','ence','ency','sion','tion','ment','ness','ual','ity'];
 function kbtName(t){
  return esc(t).split(' ').map(function(w){
   if(w.length<10)return w;
   for(var i=0;i<KBT_ENDS.length;i++){var k=w.toLowerCase().lastIndexOf(KBT_ENDS[i]);
    if(k>=4&&k+KBT_ENDS[i].length===w.length)return w.slice(0,k)+'&shy;'+w.slice(k);}
+  var V=/[aeiouy]/i;
+  for(var j=w.length-4;j>=4;j--)if(/^[a-z]{2}$/i.test(w[j-1]+w[j])&&!V.test(w[j-1])&&!V.test(w[j]))
+   return w.slice(0,j)+'&shy;'+w.slice(j);
   return w;}).join(' ');}
 function kbtFamName(a){return HARM_AX[a]||a;}
 /* the family line, the heading's own words after the name where KB_AXHD has
@@ -98287,12 +98621,17 @@ function kbtTile(e,frame){
  var seat=kbtSeatOf(e), col=seatCol(seat), seen=kbtIsSeen(e.c), un=kbtUnconfirmed(e), sub=kbtSub(e);
  var lbl=e.c+', '+e.t+(sub?', '+sub:'')+', '+kbtFamName(e.a)+(un?', not yet confirmed in the book':'')+(seen?', read':', not read');
  return '<button type="button" class="kbt-t'+(frame?' kbt-fr':'')+(un?' kbt-un':'')+(seen?' kbt-seen':'')+'" data-kbtc="'+esc(e.c)+'" '
-  +'aria-label="'+esc(lbl)+'" style="--c:'+col+'"'
-  +(un?' data-tip-k="'+esc(e.t)+'" data-tip="Not yet confirmed in the book"':'')+'>'
+  +'aria-label="'+esc(lbl)+'" style="--c:'+col+'">'
   +'<span class="kbt-c">'+esc(e.c)+'</span>'
   +kbtRing(kbtIcOf(e),col,seen,48)
   +'<span class="kbt-n" lang="en">'+kbtName(e.t)+'</span>'
-  +(sub?'<span class="kbt-s">'+esc(sub)+'</span>':'')+'</button>';}
+  +(sub?'<span class="kbt-s">'+esc(sub)+'</span>':'')
+  /* THE DASHED OUTLINE SAID WHAT IT MEANT ONLY ON HOVER. The line was a
+     tooltip, so on a phone, where nothing hovers, three tiles were drawn
+     differently and nothing on the screen said why, which is a symbol left
+     unpacked. The line sits on the tile now and the tooltip is gone, so it is
+     said once, in the one place every device reads. */
+  +(un?'<span class="kbt-s kbt-uc">Not yet confirmed in the book</span>':'')+'</button>';}
 /* NO COUNT AGAINST A TOTAL ON THE BOARD, 21 November. The first cut printed
    "0 of 76 read", "0 of 7" for the families and "0 of 13" on each band, and
    tests/functional.js's count gate refused all of them at both widths: a
@@ -98305,14 +98644,42 @@ function kbtScore(t){
  return '<div class="kbt-sc"'+' data-tip-k="The table" data-tip="Each tile is one universal law. Its code, E01 to E'
   +HARM.length+', is its place in the book\'s own table. Open a tile to read it, and its ring closes." tabindex="0">'
   +'<span class="kbt-scn"><b>'+t.n+'</b> read</span></div>'
-  +'<ul class="kbt-tiers">'
-  +'<li class="kbt-tier'+(t.unlocked?' on':'')+'" data-tip-k="Families unlocked" data-tip="A family opens when you read its first law." tabindex="0">'
-  +'<span class="kbt-tl">Families unlocked</span><span class="kbt-tv">'+t.unlocked+'</span></li>'
-  +'<li class="kbt-tier'+(t.done?' on':'')+'" data-tip-k="Families read" data-tip="Every law in the family read. Its heading ring closes." tabindex="0">'
-  +'<span class="kbt-tl">Families read</span><span class="kbt-tv">'+t.done+'</span></li>'
-  +'<li class="kbt-tier'+(t.grand?' on':'')+'" data-tip-k="The formula closed" data-tip="All seven arcs on the formula close when every family is read." tabindex="0">'
-  +'<span class="kbt-tl">The formula closed</span><span class="kbt-tv">'+(t.grand?'Yes':'Not yet')+'</span></li>'
-  +'</ul>';}
+  /* with the waiting tiers gone, a fresh board's card held "0 read" and a
+     box of nothing, measured at 1600. One line says what to do instead,
+     and only until the first law is read */
+  +(t.n?'':'<p class="kbt-hint">Open any tile to read it. Its ring closes.</p>')
+  +kbtTiers(t);}
+/* AN ACHIEVEMENT IS SHOWN WHEN IT IS EARNED, AND NOT BEFORE. The first cut
+   listed all three from the first visit, dimmed, with "0" and "Not yet" in
+   them, which is a locked reward drawn as a tease: the product has no
+   padlocks and no dead states, so a tier nobody has reached is not on the
+   screen at all. A fresh board shows the count and nothing under it. The
+   tooltips stay, because a tier name is a label and its meaning goes with it. */
+function kbtTiers(t){
+ var o='';
+ if(t.unlocked)o+='<li class="kbt-tier on" data-tip-k="Families unlocked" data-tip="A family opens when you read its first law." tabindex="0">'
+  +'<span class="kbt-tl">Families unlocked</span><span class="kbt-tv">'+t.unlocked+'</span></li>';
+ if(t.done)o+='<li class="kbt-tier on" data-tip-k="Families read" data-tip="Every law in the family read. Its heading ring closes." tabindex="0">'
+  +'<span class="kbt-tl">Families read</span><span class="kbt-tv">'+t.done+'</span></li>';
+ if(t.grand)o+='<li class="kbt-tier on" data-tip-k="The formula closed" data-tip="All seven arcs on the formula are closed: every family is read." tabindex="0">'
+  +'<span class="kbt-tl">The formula closed</span></li>';
+ return o?'<ul class="kbt-tiers">'+o+'</ul>':'';}
+/* THE FILM IS A LINK OUT, AND ONLY THAT, 21 November. It said "A film of
+   this law exists. It is not attached yet." over ten films that are real
+   files with real ids in HARM_FILM, which told a person there was something
+   to watch and gave them no way to watch it. The link opens the Drive file
+   in a new tab on the person's own press. Nothing is fetched by this page,
+   nothing is embedded and no player is drawn: the standing rule for this
+   content, and design.js gate 7, which fails on any request the page makes,
+   still hold, because a link that is not followed makes none. Whether the
+   file opens for someone who is not signed in to the owner's Drive is the
+   file's sharing setting, not this page's. */
+function kbtFilm(c){
+ var f=KBT_FILM[c]; if(!f||!f.id)return '';
+ return '<a class="kbt-film" href="https://drive.google.com/file/d/'+encodeURIComponent(f.id)+'/view" target="_blank" rel="noopener noreferrer">'
+  +'<span class="kbt-fi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+  +'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z M10 9.5v5l4-2.5z"/></svg></span>'
+  +'<span class="kbt-flt"><b>Watch the film of this law</b><span>Opens in Google Drive, in a new tab</span></span></a>';}
 /* the detail panel's content for one law, or for the formula when c is 'cq' */
 function kbtDetail(c){
  if(!c||c==='cq'){
@@ -98332,9 +98699,7 @@ function kbtDetail(c){
   +'<div class="kbt-df">'+esc(e.c)+' · '+esc(kbtFamName(e.a))+(line?', '+esc(line):'')+'</div></div></div>'
   +'<p class="kbt-dd">'+esc(kbtOne(e.d))+'</p>'
   +(kbtUnconfirmed(e)?'<p class="kbt-dnote">Not yet confirmed in the book.</p>':'')
-  +(KBT_FILM[c]?'<div class="kbt-film"><span class="kbt-fi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-    +'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z M10 9.5v5l4-2.5z"/></svg></span>'
-    +'<span>A film of this law exists. It is not attached yet.</span></div>':'')
+  +kbtFilm(c)
   +'<div class="kbt-da"><button type="button" class="btn" data-kbtgo="'+esc(c)+'">Open the full card</button>'
   +(KBT.open?'<button type="button" class="btn" data-kbtx>Close</button>':'')+'</div>';}
 function kbtHtml(){
@@ -98437,7 +98802,10 @@ function kbtWire(){
  var b=document.getElementById('kbt'); if(!b)return;
  b.querySelectorAll('[data-kbtc]').forEach(function(el){
   var c=el.getAttribute('data-kbtc');
-  el.onclick=function(){if(KBT.open===c)kbtClose(true); else kbtOpen(c,el);};
+  /* the press is the rail's own, railPick in ui/railmotion.js, after the
+     open so it lands on the tile the person sees; kind 'kb' has no caption */
+  el.onclick=function(){if(KBT.open===c)kbtClose(true); else kbtOpen(c,el);
+   if(typeof railPick==='function')railPick(el,'kb');};
   /* pointing previews in the panel without opening or marking anything */
   var peek=function(){if(KBT.open||KBT.hover===c)return; KBT.hover=c; kbtPanel(c);};
   el.addEventListener('mouseenter',peek); el.addEventListener('focus',peek);});
@@ -98476,6 +98844,7 @@ function kbtCss(){
   '.kbt-tiers{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.kbt-tier{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--dim)}',
   '.kbt-tier.on{color:var(--ink)}',
+  '.kbt-hint{margin:0;font-size:13px;line-height:1.4;color:var(--dim)}',
   '.kbt-tv{font-variant-numeric:tabular-nums}',
   /* the formula, 2 by 2, alone and centred */
   '.kbt-f{all:unset;box-sizing:border-box;cursor:pointer;width:100%;aspect-ratio:1;align-self:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;',
@@ -98495,8 +98864,12 @@ function kbtCss(){
   '.kbt-df{font-size:12.5px;color:var(--dim);margin-top:2px}',
   '.kbt-dd{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}',
   '.kbt-dnote{margin:0;font-size:13px;color:var(--dim)}',
-  '.kbt-film{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);padding:8px 10px;border:1px dashed var(--edge-2);border-radius:var(--r-xs)}',
-  '.kbt-fi{display:inline-flex;width:20px;height:20px}.kbt-fi svg{width:100%;height:100%}',
+  '.kbt-film{display:flex;align-items:center;gap:10px;min-height:var(--tap);box-sizing:border-box;font-size:13px;color:var(--dim);',
+  ' padding:8px 12px;border:1px solid var(--edge-2);border-radius:var(--r-xs);text-decoration:none}',
+  '.kbt-film:hover{border-color:var(--ink)}',
+  '.kbt-film:focus-visible{outline:2px solid var(--ink);outline-offset:2px}',
+  '.kbt-flt{display:flex;flex-direction:column;gap:2px}.kbt-flt b{font-weight:500;color:var(--ink)}',
+  '.kbt-fi{display:inline-flex;flex:0 0 auto;width:20px;height:20px;color:var(--ink)}.kbt-fi svg{width:100%;height:100%}',
   '.kbt-cq{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--dim)}',
   '.kbt-cqv{font-size:22px;font-weight:600;color:var(--ink)}',
   '.kbt-da{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}',
@@ -98526,6 +98899,7 @@ function kbtCss(){
   '.kbt-hf{transition:stroke-dashoffset .4s cubic-bezier(.22,1,.36,1)}',
   '.kbt-n{font-size:13px;line-height:1.15;color:var(--ink);hyphens:manual;overflow-wrap:break-word;max-width:100%}',
   '.kbt-s{font-size:11px;color:var(--dim);line-height:1.1}',
+  '.kbt-uc{line-height:1.2;max-width:100%}',
   /* the frame row is one and a half */
   '.kbt-fr{width:calc(var(--kt)*1.5);max-width:calc((100% - var(--kg)*2)/3);min-height:calc(var(--kt)*1.2)}',
   '.kbt-tbn{cursor:default;justify-content:center;background:transparent;outline:1px dashed var(--edge-2)}',
@@ -107775,7 +108149,12 @@ function rmRailOpen(){var p=document.getElementById('lpanel');
 function railPick(btn,kind){
  if(!btn)return;
  var sel=btn.getAttribute('aria-pressed')==='true'||btn.dataset.r==='2';
- var cap=document.getElementById(kind==='arch'?'capA':'capD');
+ /* every kind that was not arch read capD, which was right while the only
+    callers were the rail's three grids. The wisdom school's table (kind kb,
+    ui/kbtable.js) has no caption, and without this a press on a law there
+    would have faded up the rail's domain caption on the other side of the
+    screen. */
+ var cap=kind==='kb'?null:document.getElementById(kind==='arch'?'capA':'capD');
  if(rbStill()||!btn.animate)return;
  var land='cubic-bezier(.34,1.56,.64,1)';
  if(sel){
@@ -113671,5 +114050,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008309172"></div>
+<div id="eof" hidden data-len="008336067"></div>
 </body></html>

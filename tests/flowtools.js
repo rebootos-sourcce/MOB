@@ -537,7 +537,8 @@ async function flowGate(browser,FILE,ok,booted){
   try{
   const cmp=await pg.evaluate(async()=>{
    const wait=ms=>new Promise(r=>setTimeout(r,ms||250));
-   loadP(0); CURP.rituals=[]; ritPlanPut([]); setTab(TAB.COMPASS); await wait(500);
+   /* the figure's panel row: the tab opens on the climb since 21 November */
+   loadP(0); CURP.rituals=[]; ritPlanPut([]); CONE.climb=false; setTab(TAB.COMPASS); await wait(500);
    const i=MIRROR.findIndex(m=>m.k==='PE');
    const row=document.querySelector('#cone .cn-nr[data-cnax="'+i+'"]'); if(!row)return {noRow:true};
    row.click(); await wait();
