@@ -545,6 +545,24 @@ function stRender(){
     +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">'
     +'<rect x="2" y="5.5" width="20" height="13" rx="2.6"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></svg>'
     +'</button>')
+   /* TEXT MODE, THE DASHBOARD'S OWN DOOR, 21 November, his real spec: "When
+      I'm on my main dashboard, the extended dashboard, I can click into
+      text mode where it's just a text-based journal... bypassing the
+      conversational component of source AI." Dashboard only (STV.dash),
+      never the hero view: the hero's "only two icons" ruling (10 November)
+      is about that screen alone, and the Full Dashboard already carries
+      more controls beside it (Imprints, Release), so a third door here
+      does not touch that rule. Same gate as the keyboard door beside it
+      (voice has to be able to run, no crisis), since text mode is a second
+      way to reach the same box, not a way around the crisis door. */
+   +(STV.dash&&!(STV.novoice||STV.crisis)?'<button type="button" class="st-type" id="sttxtmode" aria-pressed="'+(STV.typed&&STV.textOnly)+'" aria-label="'
+    +(STV.typed&&STV.textOnly?'Close text journal':'Text journal')+'" title="'
+    +(STV.typed&&STV.textOnly?'Close. What you wrote stays in the entry.'
+      :'A plain text journal. Write and send; Source AI only reads it the way it reads anything you say.')+'">'
+    +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">'
+    +'<path d="M6 3.5h9l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z"/>'
+    +'<path d="M15 3.5V7a1 1 0 0 0 1 1h3.5M8.5 12h6M8.5 15h6M8.5 18h4"/></svg>'
+    +'</button>':'')
    +'</div>'
    /* THE DASHBOARD DOOR STANDS ON ITS OWN NOW, round of 29 October, found by
       his own screenshot of the real site: Dashboard sat right beside Talk on
@@ -1232,6 +1250,8 @@ function stRender(){
   mic.addEventListener('pointercancel',holdStop);}
  var ty=document.getElementById('sttype');
  if(ty)ty.onclick=stType;
+ var txm=document.getElementById('sttxtmode');
+ if(txm)txm.onclick=stTextMode;
  /* DASHBOARD TOGGLES, ON THIS SCREEN, round of 29 October. His words: "when
     I land on this page it starts off in simple mode... if I press it
     dashboard icon is lit up." It no longer leaves the Journal for the
@@ -1583,7 +1603,7 @@ function stHeroPlace(){
    THE SORT OPENS ON WEIGHT, 6 November, his words on this exact screen:
    "for imprints, for a sort, just do it by weight." Was Seat. */
 var STV={sort:'weight',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:true,law:false,
- unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false,lastOpen:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false,dash:false,novoice:false,typed:false,lastOpen:false,textOnly:false};
 /* THE IMPRINTS DETECTOR, PORTED TO THE LEFT RAIL, 9 November. His words:
    "the imprints detector, which takes up the top half of that column,
    now moves to the lower left... near the lower left bottom of the left
@@ -1950,7 +1970,13 @@ function stCommit(){
     one starts in the conversation, which is the Journal's own state; only
     the forced box stays (STV.novoice). Not on a refused save above: that
     line says the words are still in the box, so the box stays to hold them. */
- STV.crisis=false; STV.typed=false; STV.chat=!STV.novoice;
+ /* TEXT MODE DOES NOT OUTLIVE ITS OWN ENTRY, 21 November. STV.textOnly
+    only ever means "no conversational line above THIS box, right now";
+    clearing it here with STV.typed means a box that opens next, forced or
+    chosen, decides for itself whether Source AI's line belongs above it,
+    rather than silently inheriting a bypass from the entry that just
+    closed. */
+ STV.crisis=false; STV.typed=false; STV.textOnly=false; STV.chat=!STV.novoice;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -3038,7 +3064,17 @@ function srcPaint(){
     What stays text free is Talk on with the box shut, the state he struck. The
     safe row below is never gated, as before. */
  var boxOpen=STV.typed||!STV.chat;
- o=boxOpen?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
+ /* TEXT MODE BYPASSES THE CONVERSATIONAL COMPONENT ENTIRELY, 21 November,
+    his own real spec: "it will input my text, bypassing the conversational
+    component of source AI... same rules apply" (the sniffer, meaning). The
+    reply above, the aside sentence, the chain line and the correction
+    buttons (srcVerdictHtml, "that fits / not me / not quite") are each
+    Source AI proposing or naming something about a guess, which is the
+    conversational half: a plain journal has none of it. stTextMode below
+    sets this alongside STV.typed, which still opens #sttext and still
+    commits through stCommit unchanged, so the sniffer and everything after
+    it reads this box's words exactly as it reads any other entry's. */
+ o=(boxOpen&&!STV.textOnly)?(reply+(ST_TEXT.trim()?(asideSentence?'<p class="src-aside">'+esc(asideSentence)+'</p>':'')+srcChainLine():'')
   +(turn.move==='safe'?'':srcVerdictHtml())):'';
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
@@ -5297,7 +5333,7 @@ function stVoiceCant(msg){
  /* typed goes because the box is the forced one now: Type instead is not
     drawn beside it, and its Close would hand the person back to a voice
     that cannot run */
- STV.novoice=true; STV.typed=false; STV.chat=false; STV.focus='write'; stRender();
+ STV.novoice=true; STV.typed=false; STV.textOnly=false; STV.chat=false; STV.focus='write'; stRender();
  var ta=document.getElementById('sttext'); if(ta)ta.focus();
  status(msg,'fail');}
 /* TYPE INSTEAD, 4 November, see the ruling at #sttype in stRender. It is the
@@ -5332,12 +5368,38 @@ function stType(){
     closing the box is what makes them one, in a single row covering the
     whole of what was typed, the way tests/typein.js's own item 4 always
     read it. */
- if(STV.typed){ STV.typed=false; srcChatSync(); stRender();
+ if(STV.typed){ STV.typed=false; STV.textOnly=false; srcChatSync(); stRender();
   var b=document.getElementById('sttype'); if(b)b.focus(); return; }
  ST_WANT_LISTEN=false;
  if(ST_REC&&ST_LISTEN){ try{ ST_REC.stop(); }catch(e){} }
  ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
- STV.typed=true; STV.focus='write'; stRender();
+ STV.typed=true; STV.textOnly=false; STV.focus='write'; stRender();
+ var ta=document.getElementById('sttext');
+ if(ta){ ta.focus(); var n=ta.value.length; try{ ta.setSelectionRange(n,n); }catch(e){} }}
+/* TEXT MODE, THE DASHBOARD'S OWN DOOR, 21 November, his real spec for
+   uni-text-layer (board, previously "no spec found anywhere"): "Uni's a
+   chat visual interface. When I'm on my main dashboard, the extended
+   dashboard, I can click into text mode where it's just a text-based
+   journal. I can input information and hit send, and it will input my
+   text, bypassing the conversational component of source AI. The sniffer
+   is still sniffing for the story, the written story now. Same rules
+   apply."
+   BUILT ON THE PROVEN BOX, NOT A SECOND ONE. #sttext, stCommit and the
+   sniffer behind it already take typed words through the exact pipeline a
+   spoken turn uses (STV.typed, this same file); tests/typein.js holds that
+   pipeline already. STV.textOnly is the one further bit this needs: it
+   does not change what Commit does with the words, only what Source AI is
+   allowed to print above them while the box is open (srcPaint, the gate
+   on o above). Toggle, like every other door on this row: pressed again,
+   it closes through stType's own close branch, which now clears
+   STV.textOnly too so a later ordinary "type instead" press never
+   inherits it by accident. */
+function stTextMode(){
+ if(STV.typed&&STV.textOnly){ stType(); return; }
+ ST_WANT_LISTEN=false;
+ if(ST_REC&&ST_LISTEN){ try{ ST_REC.stop(); }catch(e){} }
+ ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
+ STV.typed=true; STV.textOnly=true; STV.focus='write'; stRender();
  var ta=document.getElementById('sttext');
  if(ta){ ta.focus(); var n=ta.value.length; try{ ta.setSelectionRange(n,n); }catch(e){} }}
 function stMic(){
