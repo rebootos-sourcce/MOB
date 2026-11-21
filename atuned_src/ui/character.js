@@ -178,16 +178,28 @@ function chData(r){
    round OR, "don't link the masks to Vitality and Awareness and stuff like
    that". The description is on hover through the one tooltip. */
 function chMaskBtn(m){
- var c=CHC.maskCols(m), R=26, C=2*Math.PI*R, id=m.nm.replace(/\W/g,'');
+ var c=CHC.maskCols(m);
  return '<button type="button" class="chp-mk" data-chmask="'+esc(m.nm)+'" aria-pressed="false" aria-label="'+esc(m.nm)+' mask. '+esc(m.v)+'"'
   +' data-tip-t="'+esc(m.nm)+'" data-tip="'+esc(chSeats(m).charAt(0).toUpperCase()+chSeats(m).slice(1)+'. '+chSentence(m.v))+'" style="--mc1:'+c[0]+';--mc2:'+c[1]+';--c:'+c[0]+'">'
-  +'<svg viewBox="0 0 60 60" aria-hidden="true"><defs>'
-  +'<linearGradient id="chlg'+id+'" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></linearGradient>'
-  +'<radialGradient id="chrg'+id+'" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="'+c[1]+'" stop-opacity=".34"/><stop offset=".6" stop-color="'+c[0]+'" stop-opacity=".16"/><stop offset="1" stop-color="'+c[0]+'" stop-opacity=".05"/></radialGradient></defs>'
-  +'<circle class="wash" cx="30" cy="30" r="27" fill="url(#chrg'+id+')"/>'
-  +'<circle cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#chlg'+id+')" stroke-width="2" opacity=".4"/>'
-  +'<circle class="ld" cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#chlg'+id+')" stroke-width="3" stroke-linecap="round" transform="rotate(-90 30 30)" stroke-dasharray="0 '+C.toFixed(1)+'"/>'
-  +'<g transform="translate(14 14) scale(.875)" fill="none" stroke="url(#chlg'+id+')" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+CHC.glyph(m.nm)+'</g></svg></button>';}
+  +chMaskSvg(m,'ch',0)+'</button>';}
+/* THE MASK'S SIGN, ON ITS OWN, 21 November (avatar-boundary-masks-revived).
+   His words: "we're going to revive the masks, but we're going to move them to
+   the avatar page." The Avatar page draws the same five signs, so the sign is
+   said once here and both pages call it: a second copy of the gradient, the
+   wash and the glyph is a second mask that can drift from the first. pre keeps
+   the two pages' gradient ids apart, because both hosts can be in the document
+   at once and a url(#id) resolves to whichever id came first. ld is the share
+   of the arc lit, 0 to 1; the Character page writes its arc after the paint,
+   so it hands 0 and leaves the dasharray to renderCharacter as before. */
+function chMaskSvg(m,pre,ld){
+ var c=CHC.maskCols(m), R=26, C=2*Math.PI*R, id=m.nm.replace(/\W/g,''), f=Math.max(0,Math.min(1,+ld||0));
+ return '<svg viewBox="0 0 60 60" aria-hidden="true"><defs>'
+  +'<linearGradient id="'+pre+'lg'+id+'" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></linearGradient>'
+  +'<radialGradient id="'+pre+'rg'+id+'" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="'+c[1]+'" stop-opacity=".34"/><stop offset=".6" stop-color="'+c[0]+'" stop-opacity=".16"/><stop offset="1" stop-color="'+c[0]+'" stop-opacity=".05"/></radialGradient></defs>'
+  +'<circle class="wash" cx="30" cy="30" r="27" fill="url(#'+pre+'rg'+id+')"/>'
+  +'<circle cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="2" opacity=".4"/>'
+  +'<circle class="ld" cx="30" cy="30" r="'+R+'" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="3" stroke-linecap="round" transform="rotate(-90 30 30)" stroke-dasharray="'+(f?(C*f).toFixed(1):'0')+' '+C.toFixed(1)+'"/>'
+  +'<g transform="translate(14 14) scale(.875)" fill="none" stroke="url(#'+pre+'lg'+id+')" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+CHC.glyph(m.nm)+'</g></svg>';}
 function chOvBtn(k,nm,d,ic,pressed){
  return '<button type="button" class="chp-ob" data-chov="'+k+'" aria-pressed="'+pressed+'" aria-label="'+esc(nm)+'" data-tip-t="'+esc(nm)+'" data-tip="'+esc(d)+'">'
   +'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
