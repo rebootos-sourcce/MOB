@@ -312,6 +312,82 @@ addresses have no derived coordinate and that the BMPROP ones are estimated
 from standard anatomy, never measured. Still true after it: nothing holds a
 `v:` row to its page.
 
+**Used, 2026-11-21: the gap pages confirmed, 1 position placed, 4 names
+corrected, 1 real block found and named for the owner.** Most of the gap
+this file named, book p.257-346, is delivered and read:
+`Anatomy_Atlas_Lite_Part_2.pdf`, in Lance's Drive alongside the parts
+already logged above, 183 pages, PDF pages 184-366, printed 170-352 (text
+layer confirmed against its own page headers). Downloaded, run through
+`pdftotext -layout`, and searched page by page; every citation below is
+checked against that extracted text, not a snippet. `Anatomy_Atlas_Lite_
+Part_1.pdf` and `Anatomy_Atlas_Lite_Part_3.pdf` also exist in the same
+Drive folder (confirmed by a `search_files` listing only, neither opened
+this session) and are worth reading next: Part 1 likely duplicates the
+already-indexed p.1-183, and Part 3 (6.3MB) likely continues past printed
+p.352, which would close whatever of the p.257-346 gap is not covered by
+Part 2's 170-352. Confirmed real on Part 2: p.279 ("Posterior Mediastinum")
+labels the hepatic plexus and the splenic plexus directly on the same
+schematic as the celiac plexus and the greater splanchnic nerve; p.207 and
+p.214 label the lateral and medial pectoral nerves; p.322 and p.346 show
+the cauda equina's own span, from just below the conus medullaris (already
+address 16, at L1) to the sacral promontory; p.328 ("Kidney: Arteries," a
+schematic) labels the superior mesenteric artery beside the body of the
+first lumbar vertebra.
+
+Address 8 (Cauda Equina) moved from BMPROP into ANAT, `v:[[23,0]]`, the
+midpoint of that real span, cited to p.322 and p.346.
+
+Four names corrected in nodes.js, each matching BMPROP's own prior
+research and the atlas's current term: 47 (was "Vagus-Liver Plexus", no
+such structure) to Hepatic Branches of the Anterior Vagal Trunk, p.327 and
+p.335; 48 (was "Hepatic Nerve") to Hepatic Plexus, p.279; 52 (was "Thoracic
+Plexus", NOSTRUCT's own near candidate) to Thoracic Aortic Plexus; 60 (was
+"Anterior Thoracic Roots", the retired name) to Pectoral Nerves, p.207 and
+p.214. 48 and 60 were not in NOSTRUCT (research.js), since neither names
+"no real structure at all", so a new small list, OLDNAME, was added beside
+it for a real structure under a retired name, the bucket BI3a and BI3c's
+own summary counts already named without listing which rows.
+
+**One real block found, not a guess: address 40 cannot move into ANAT
+without either a false merge or a guessed level.** The superior mesenteric
+plexus (40) is sourced to the same level as 16, L1 on the midline (p.328),
+and `v:` has no front-to-back axis, so the two land on one point and
+`tests/anatomy.js` (group 5) correctly refuses it: 16 and 40 are not one
+structure, so research.js cannot say they share a place, and typing 40 a
+half level off either direction would be exactly the guessed pixel this
+method forbids. Left in BMPROP with the real citation. **This is the
+owner's call named in figure.js and map.js**: give the figure a depth
+axis (the same fix `HEADY`, the known trap above, already needs for the
+head), or rule that two different structures sharing a vertebral level may
+share a point the way a shared plexus already does.
+
+Still not placed, and why, read off `tests/anatomy.js` group 2 and the
+BMPROP comments in `atuned_src/ui/map.js`: 35, 41, 42 (real plexuses, real
+region confirmed on p.279/p.328/p.329, no surface landmark found yet to
+give a lateral fraction); 10, 20 (the thigh, no sourced type reaches
+there); 7, 15, 23, 25, 27, 31, 34, 37, 46, 51, 57, 61, 68, 70, 72, 74
+(bilateral rows needing a real distance from the midline, which `v:`
+cannot take without a typed guess); the 4-address cervical group named
+below needs a calibrated cervical ruler first.
+
+**The spine ruler has no cervical calibration, and extending it by
+extrapolation is not sourcing it.** `ANATSPINE` (figure.js) starts at
+level 11.5 (Heart, T4 to T5); `spine()` will still return a number for any
+lower level by continuing that same slope backward, which is not a
+measurement, it is arithmetic past the end of the ruler. Checked this
+session: `spine(4)` (phrenic nerve, C3 to C5, address 57) returns 21.42,
+below this figure's own neck-base line (19.07, `proto/body-map-spec/gen.js`
+`regionOf`), which would draw a cervical nerve in the upper chest. `map.js`
+already carries a second ruler, `BMSPINE`, with real cervical points (C1,
+C7), used today only for where a pain line enters the spine; `tests/
+anatomy.js` group 9 already holds the two rulers to each other as an
+expected, named-open disagreement, not a bug either ruler report can fix
+alone. This is why 57, 68, 70, 72 and 74 (phrenic, pharyngeal,
+glossopharyngeal, cervical ganglia, nerve to subclavius) stay in BMPROP:
+giving `ANATSPINE` a real cervical point is the same owner's call group 9
+already names, and extending it here without that call would draw a
+guess, not a sourced position.
+
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
 own internal page index, which runs about 14 pages ahead of the printed

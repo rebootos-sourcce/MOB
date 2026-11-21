@@ -4055,6 +4055,17 @@ console.log('\n28 · no title is a truncation');
  const byc=c=>(E.HARM.filter(x=>x.c===c)[0]||{}).t;
  ok(byc('E06')==='Inspired Action','E06 is Inspired Action in full');
  ok(byc('E63')==='Disgust · Acceptance','E63 names the pole in full');
+ /* THE FILM MAP, 21 November. Every film sits on a nature law that exists,
+    the film's number is the folder's (7 and 8 run the other way from the
+    codes, BOOK-ERRATA.md 14), and each names a Drive file by id. Ten, read
+    off the folder listing; this names the set so a row dropped or added is a
+    named change. */
+ {const F=E.HARM_FILM, ks=Object.keys(F);
+  ok(ks.join(',')==='E01,E02,E03,E04,E05,E06,E07,E08,E09,E10','the films sit on E01 to E10: '+ks.join(','));
+  ok(ks.every(k=>(E.HARM.find(x=>x.c===k)||{}).a==='nature'),'and every one is a law of nature');
+  ok(ks.every(k=>/^[A-Za-z0-9_-]{25,}$/.test(F[k].id)&&/\.mp4$/.test(F[k].file)&&F[k].file.indexOf(F[k].n+' ')===0),
+   'and each names a Drive file id and an mp4 whose title starts with its own number');
+  ok(F.E07.n===8&&F.E08.n===7,'Transmutation is film 8 and Cause and Effect film 7, kept by code');}
 }
 
 console.log('\n29 · every archetype is seated');
@@ -5173,14 +5184,31 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(Object.keys(SPEC_POLE).length===9,'the spec pole table covers all nine axes');
   ok(CHARGES.every(c=>SPEC_POLE[c]&&SPEC_POLE[c].pole&&SPEC_POLE[c].addr),
    'and every axis has both an address and a replacement state');
+  /* RULED, 21 November. This block asserted the disagreement (Fear offered
+     Safety by the spec and Trust by CHILD, and Joy at Apathy in one table and
+     at Sad in the other) because it was the reason it had to be ruled. He
+     ruled it the book's way, and the spec already carried the book's words,
+     so the gate now holds the two tables to agreeing on every axis and the
+     sniffer to saying nothing differs. */
   const r=sniffStory('i am afraid');
   const o=r.offer[0];
-  ok(o.poleDiffers&&o.poleDiffers.spec==='Safety / Ground'&&o.poleDiffers.child==='Trust',
-   'and where it disagrees with CHILD the output SAYS so rather than hiding it');
-  /* the collision, asserted, because it is the reason it must be ruled */
-  const apathy=SPEC_POLE.Apathy.pole, sadChild=CHILD.find(c=>c.nm==='Sad').opp;
-  ok(apathy.indexOf(sadChild)>=0,
-   'the spec offers '+sadChild+' at Apathy while CHILD offers it at Sad, which is one word at two addresses');
+  ok(o&&o.axis==='Fear'&&!o.poleDiffers,'the sniffer offers Fear and no longer reports a pole that differs from CHILD');
+  const off=CHILD.filter(c=>SPEC_POLE[c.nm].pole.toLowerCase().indexOf(c.opp.toLowerCase())<0).map(c=>c.nm);
+  ok(off.length===0,'every CHILD opposite is inside its spec pole: '+(off.join(',')||'none differ'));
+  const oppOf=n=>CHILD.find(c=>c.nm===n).opp;
+  ok(oppOf('Fear')==='Safety'&&oppOf('Anger')==='Calm'&&oppOf('Apathy')==='Joy'&&oppOf('Sad')==='Happy',
+   'the four opposites are the book\'s: Safety, Calm, Joy, Happy');
+  ok(new Set(CHILD.map(c=>c.opp)).size===CHILD.length,'and no opposite is shared by two axes');
+  /* THE THREE THAT CARRY NAMED FORMS. Each has one wanted and one unwanted
+     form, each named and each with a line, and the valence word every form
+     carries is defined, because a label never stands alone. */
+  const subs=CHILD.filter(c=>c.sub).map(c=>c.nm).join(',');
+  ok(subs==='Shock,Surprise,Anticipation','the rows with named forms are Shock, Surprise and Anticipation: '+subs);
+  ok(CHILD.filter(c=>c.sub).every(c=>c.sub.length===2&&c.sub.some(f=>f.val==='wanted')&&c.sub.some(f=>f.val==='unwanted')
+   &&c.sub.every(f=>f.nm&&f.d&&!/\u2014/.test(f.d)&&E.CHILD_VAL[f.val])),
+   'each carries one wanted and one unwanted form, named, with a line, and its valence defined');
+  const ant=CHILD.find(c=>c.nm==='Anticipation').sub.map(f=>f.nm+':'+f.val).join(',');
+  ok(ant==='Excitement:wanted,Anxious:unwanted','Anticipation is Excitement and Anxious, his words: '+ant);
  }
  /* ---- AND THE SNIFFER IS STILL THE SNIFFER ---- */
  {
@@ -9743,7 +9771,7 @@ g('SABOP · the saboteur bar\'s one-word opposite is real, grounded in SAB33 and
     has one real opposite to name and a tight pair would have nowhere real
     to draw its second word from -- the row this task's own brief said to
     leave single rather than invent a partner for. */
- ok(SABCARD.innocent.op==='Trust'&&SABCARD.innocent.op.indexOf(',')<0,
+ ok(SABCARD.innocent.op===CHILD.find(c=>c.nm==='Fear').opp&&SABCARD.innocent.op.indexOf(',')<0,
   'Innocent, fear\'s only row, stays one real word: '+SABCARD.innocent.op);
  /* THE SHARED POLES ARE REAL, NOT A COLLISION LEFT UNRESOLVED. Where two
     rows' own SAB33 charges are the exact same set, the canon gives them
@@ -12345,7 +12373,7 @@ g('AE · the affirmation generator, his anchors and his wrapper, read off the R3
   * 3rd Eye: I foresee the next step toward being a father who listens.
   * Crown: I empower myself to be a father who listens.
 # "fear"
-  REFUSE flip: "fear" is what you release. Its opposite is trust. Use trust?
+  REFUSE flip: "fear" is what you release. Its opposite is safety. Use safety?
 # "not anxious"
   REFUSE flip: "anxious" is what you release. Its opposite is calm. Use calm?
 # "I want to stop shouting at the kids"
@@ -12504,7 +12532,7 @@ g('AE · the affirmation generator, his anchors and his wrapper, read off the R3
  const F=affFlips();
  ok(CHILD.every(c=>F[c.nm.toLowerCase()]===c.opp.toLowerCase()),'every CHILD name flips to its own opposite, read off the canon');
  const fr=affCompose('anger');
- ok(!fr.ok&&fr.refuse==='flip'&&fr.offer==='equanimity'&&fr.lines.length===0,'"anger" composes nothing and offers equanimity, '+JSON.stringify(fr.say));
+ ok(!fr.ok&&fr.refuse==='flip'&&fr.offer==='calm'&&fr.lines.length===0,'"anger" composes nothing and offers calm, '+JSON.stringify(fr.say));
  ok(affCompose(fr.offer).ok,'and the offer it makes composes when pressed');
  ok(affShape('clarity').k==='n'&&affShape('clear').k==='adj','a word keeps its part of speech: clarity is a noun, clear is a quality');
 
@@ -12535,12 +12563,16 @@ g('AE · the affirmation generator, his anchors and his wrapper, read off the R3
    {id:'p2',be:'calm',notbe:'y',seat:'Heart'},{id:'p3',be:'Someone who asks for help out loud',notbe:'z',seat:''}],
   tags:{Root:{add:['Fear','Joy','Lumbar plexus'],off:[]}}}};
  const S=affSources(prof,{banked:[{key:'r1',cf:'Shame'}],pathK:'IL',typed:'clarity',seatOf:()=> 'Solar',
-  claims:[{key:'c1',cf:'Anger',state:'confirmed'},{key:'c2',cf:'Surprise',state:'supported'},{key:'c3',cf:'Apathy',state:'inferred'},
+  /* c1 was Anger until 21 November, when anger's opposite became calm, the
+     same text as the av:p2 pair above, and the weave correctly folded the two
+     into one source, so the claim this line tests had nothing left to show.
+     Sad says happy, which nothing else in this fixture says. */
+  claims:[{key:'c1',cf:'Sad',state:'confirmed'},{key:'c2',cf:'Surprise',state:'supported'},{key:'c3',cf:'Apathy',state:'inferred'},
    {key:'c4',cf:'Shock',state:'rejected'},{key:'c5',cf:'Disgust',state:'unknown'},{key:'c6',cf:'Anticipation',state:'corrected',fix:'steady'}]});
  const by=k=>S.filter(x=>x.key===k)[0]||{};
  ok(S[0].kind==='path'&&S[0].text==='grace'&&S[0].b==='Heart','the chosen Path pair comes first, its becoming pole at its point');
  ok(S[1].key==='av:p3'&&S[1].b==='Solar'&&by('av:p1').b==='Throat','Become lines newest first, an unseated one at the seat its Not be line reads');
- ok(by('tg:Root:Fear').text==='trust'&&by('tg:Root:Joy').text==='joy'&&!S.some(x=>/lumbar/i.test(x.text)),
+ ok(by('tg:Root:Fear').text==='safety'&&by('tg:Root:Joy').text==='joy'&&!S.some(x=>/lumbar/i.test(x.text)),
   'a tag says the opposite of a pattern, keeps a state, and an address name is no intention');
  ok(by('bk:r1').text==='worth'&&by('bk:r1').b==='Sacral','a banked release is said as its opposite at its own point, never as the pattern');
  ok(by('cl:c1').state==='confirmed'&&by('cl:c2').state==='heard'&&by('cl:c6').text==='steady','confirmed and corrected claims are confirmed, a supported one is only heard');
@@ -12728,7 +12760,71 @@ g('the wisdom school\'s composed lines, round LY');
   +keys.filter(n=>inf.indexOf(n)<0).join(', '));
  /* the child emotions the book and CHILD agree on are read, not listed */
  const agree=CHILD.filter(c=>HARM.some(h=>h.a==='emotion'&&h.t===c.nm+' · '+c.opp)).map(c=>c.nm);
- ok(agree.length>0&&agree.indexOf('Fear')<0,'the book and CHILD agree on '+agree.join(', ')+', and not on Fear');
+ /* 21 November: CHILD took the book's opposite for Fear, Anger, Apathy and
+    Sad, so the six with a pole in the book now all agree, and the three the
+    book leaves pending carry named forms instead of a quoted entry */
+ ok(agree.join(',')==='Fear,Anger,Shame,Disgust,Apathy,Sad','the book and CHILD agree on all six the book poles: '+agree.join(', '));
+}
+
+g('CMP21 · teachers by coherence, the Crown pair, and laws to teachers, 21 November');
+{
+ /* A first pass, his to move, so nothing here pins a number. What is held is
+    the rule the numbers were made by: every pole on the roster has one, each
+    sits inside its own seat's band near the top, the seats climb in BANDS
+    order, and the floor is the same line circleAt draws. A number he moves
+    stays green while it stays in its band; one moved across a seat fails and
+    says which. */
+ const {POLE_UNLOCK,CQ_CLIMB_FLOOR,compassBandOf,compassClimbSeat,compassUnlockOf,
+  compassPoleOf,compassOffAxis,circleAt,SEAT_FETTER_PAIR,LAW_TEACHER,compassLawsOf,
+  CODE_EMOTION,HOME_POLES}=E;
+ const roster=E.MIRROR.map(m=>m.k).concat(E.PATHS.map(p=>p.k),HOME_POLES.map(p=>p.k));
+ const none=roster.filter(k=>typeof compassUnlockOf(k)!=='number');
+ ok(none.length===0,'every pole on the roster opens at a CQ number, missing '+none.join(', '));
+ ok(Object.keys(POLE_UNLOCK).every(k=>compassPoleOf(k)),'and every number belongs to a pole that exists, '
+  +Object.keys(POLE_UNLOCK).filter(k=>!compassPoleOf(k)).join(', '));
+ ok(circleAt(CQ_CLIMB_FLOOR)===null&&circleAt(CQ_CLIMB_FLOOR-0.01)!==null,
+  'the climb starts on the line where circleAt stops descending, '+CQ_CLIMB_FLOOR);
+ const seated=roster.filter(k=>compassClimbSeat(k));
+ const out=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)), u=compassUnlockOf(k);
+  return !(u>=b.lo&&u<b.hi+(b.seat==='Crown'?1e-9:0));});
+ ok(out.length===0,'each seated teacher opens inside his own seat\'s band, out: '
+  +out.map(k=>k+' '+compassUnlockOf(k)+' at '+compassClimbSeat(k)).join(', '));
+ const low=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)); return compassUnlockOf(k)<b.lo+(b.hi-b.lo)/2;});
+ ok(low.length===0,'and in the top half of it, maxed out as ruled, low: '+low.join(', '));
+ const bySeat=seated.slice().sort((a,b)=>compassUnlockOf(a)-compassUnlockOf(b)).map(k=>E.BANDS.indexOf(compassClimbSeat(k)));
+ ok(bySeat.every((s,i)=>!i||s>=bySeat[i-1]),'ordered by CQ, the teachers climb root to crown, '+bySeat.join(','));
+ const re=compassUnlockOf('RE');
+ ok(seated.every(k=>k==='RE'||compassUnlockOf(k)<re),'and Jesus at the Crown is the very top, '+re);
+ const shared={};
+ seated.forEach(k=>{const s=compassClimbSeat(k),u=compassUnlockOf(k); (shared[s]=shared[s]||[]).push(u);});
+ ok(Object.keys(shared).every(s=>new Set(shared[s]).size===shared[s].length),
+  'where a seat holds more than one teacher, no two share a number, '+JSON.stringify(shared));
+ const paths=compassOffAxis().filter(p=>!p.seat&&!p.home&&!compassClimbSeat(p.k));
+ ok(paths.length>0&&paths.every(p=>compassUnlockOf(p.k)>CQ_CLIMB_FLOOR&&compassUnlockOf(p.k)<compassBandOf('Root').hi),
+  'a path on no seat opens just out of the descent, '+paths.map(p=>p.k+' '+compassUnlockOf(p.k)).join(', '));
+ ok(compassUnlockOf('AW')===compassUnlockOf('PE')&&compassUnlockOf('BO')===compassUnlockOf('IL'),
+  'and a path that is an axis read twice opens with its axis');
+ ok(compassUnlockOf('nobody')===null&&compassBandOf('Field-Above')===null&&compassClimbSeat('nobody')===null,
+  'an unknown pole or seat answers null, never a number');
+
+ /* the Crown pair is recorded at the seat and is not yet a child emotion any
+    address carries; the day it becomes one, this says so */
+ const crown=SEAT_FETTER_PAIR.filter(p=>p.seat==='Crown')[0];
+ ok(crown&&crown.dn==='Separation'&&crown.up==='Union','Separation and Union are the Crown\'s pair, as ruled');
+ ok(SEAT_FETTER_PAIR.every(p=>E.BANDS.indexOf(p.seat)>=0),'and every pair sits at a real seat');
+ ok(CODE_EMOTION.indexOf('Separation')<0&&!W.some(n=>n.cf==='Separation'),
+  'and no address carries Separation as its fetter yet, so no reading moved');
+
+ /* every law to one teacher, at the law's own seat */
+ const miss=SINAMES.filter(l=>!LAW_TEACHER[l]), extra=Object.keys(LAW_TEACHER).filter(l=>SINAMES.indexOf(l)<0);
+ ok(miss.length===0&&extra.length===0,'every law has a teacher and every key is a law, missing '+miss+', extra '+extra);
+ const off=SI.filter(l=>compassClimbSeat(LAW_TEACHER[l.nm])!==l.b);
+ ok(off.length===0,'each law goes to a teacher at the seat SI gives it, off: '
+  +off.map(l=>l.nm+' '+l.b+' to '+LAW_TEACHER[l.nm]).join(', '));
+ const heart=['IL','TR'].map(k=>compassLawsOf(k).length);
+ ok(heart.every(n=>n>0),'the Heart\'s laws are split between Light and Trust, not dumped on one, '+heart);
+ ok(compassLawsOf('TU').indexOf('Truth')>=0&&compassLawsOf('NA').indexOf('Nature')>=0,
+  'and the two home poles keep the law their quality already names');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

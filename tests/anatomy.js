@@ -109,7 +109,10 @@ const ONESIDE={35:'left', 41:'left', 42:'left', 47:'right', 48:'right', 52:'left
    in this file and not a silent edit to a data table. */
 const PINNED={16:'Conus Medullaris', 28:'Lumbosacral Trunk',
  46:'Anterior Cutaneous Branches of Thoraco-abdominal Nerves',
- 56:'Lateral Cutaneous Branches of Intercostal Nerves', 85:'Optic Radiation'};
+ 56:'Lateral Cutaneous Branches of Intercostal Nerves', 85:'Optic Radiation',
+ /* added 21 November, each from a real Rohen 7e page (nodes.js says which) */
+ 47:'Hepatic Branches of the Anterior Vagal Trunk', 48:'Hepatic Plexus',
+ 52:'Thoracic Aortic Plexus', 60:'Pectoral Nerves'};
 /* vertebrae counted C1 as 1 through the tailbone as 30, which is how figure.js
    counts them and how map.js bmLvY reads a level name */
 function lvIndex(lv){const k=lv.charAt(0), n=parseInt(lv.slice(1),10);
@@ -149,7 +152,7 @@ function load(){
  const mc=/^var\s+BMCM\s*=\s*([\d.]+)\s*\/\s*([\d.]+)/m.exec(map);
  if(!mc)throw new Error('tests/anatomy.js cannot find "var BMCM=stature/height" in '+from+'. If it moved, point the gate at it. It must not go blind.');
  D.STATURE=+mc[1]; D.CMUNIT=+mc[1]/+mc[2];
- D.R=JSON.parse(JSON.stringify({NOSTRUCT:RS.NOSTRUCT,SAME:RS.SAME,INSIDE:RS.INSIDE,HEADMAP:RS.HEADMAP,RULER:RS.RULER}));
+ D.R=JSON.parse(JSON.stringify({NOSTRUCT:RS.NOSTRUCT,OLDNAME:RS.OLDNAME,SAME:RS.SAME,INSIDE:RS.INSIDE,HEADMAP:RS.HEADMAP,RULER:RS.RULER}));
  D.CH=JSON.parse(JSON.stringify({FIGS:CH.FIGS,PTS:CH.PTS,MATCH:MA.MATCH}));
  return D;}
 
@@ -225,6 +228,7 @@ function audit(D){
  info.somatic=somatic.length; info.anchors=anchors.length;
  const rel=related(D);
  const nostruct=new Map(D.R.NOSTRUCT.map(r=>[r.i,r]));
+ const oldname=new Map((D.R.OLDNAME||[]).map(r=>[r.i,r]));
 
  /* 2 coverage */
  const ids=somatic.map(n=>n.i).sort((a,b)=>a-b);
@@ -316,7 +320,7 @@ function audit(D){
  pinned.filter(i=>fixed.indexOf(i)<0).forEach(i=>out.names.push('this gate pins a corrected name for address '+i+' and nodes.js records no correction beside it'));
  pinned.forEach(i=>{const n=D.NODES.find(t=>t.i===i);
   if(n&&n.n!==PINNED[i])out.names.push('address '+i+' reads "'+n.n+'" and the corrected name pinned here is "'+PINNED[i]+'"');});
- fixed.filter(i=>!nostruct.has(i)).forEach(i=>out.names.push('nodes.js records a correction beside address '+i+', which research.js NOSTRUCT never listed as naming no structure'));
+ fixed.filter(i=>!nostruct.has(i)&&!oldname.has(i)).forEach(i=>out.names.push('nodes.js records a correction beside address '+i+', which research.js lists in neither NOSTRUCT nor OLDNAME'));
  D.R.NOSTRUCT.filter(r=>!have.has(r.i)).forEach(r=>out.names.push('NOSTRUCT lists address '+r.i+', which is no somatic address'));
  info.nostruct=D.R.NOSTRUCT.map(r=>r.i); info.corrected=fixed;
  info.open=info.nostruct.filter(i=>fixed.indexOf(i)<0);

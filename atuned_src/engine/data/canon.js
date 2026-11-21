@@ -289,17 +289,57 @@ const SEATGLYPH={
    THE NINE POLED AXES. Poles ruled 14 September 2026 for
    Anticipation, Surprise and Shock; the other six follow the same
    binary: a held state and its coherent opposite.
-   ============================================================ */
+
+   FOUR OPPOSITES MOVED TO THE BOOK'S OWN, 21 November. This table and the
+   book's HARM rows (engine/data/kb.js, E60 to E68) named different opposites
+   for four of the nine, so the Wisdom school card printed "toward Trust"
+   beside a book entry titled "Fear · Safety" and had to hide the book's
+   text to avoid contradicting itself (childBookSays, ui/drills.js). His
+   words: "it would be anger, calm, apathy, joy, sad, happy." So Anger is
+   Calm (was Equanimity, which is also E34, a law, one word on two things),
+   Apathy is Joy (was Vitality, which is also the X reading on the rail),
+   and Sad is Happy (was Joy, which now belongs to Apathy, the pairing the
+   book's own E64 and E66 already printed). Fear is Safety (was Trust): he
+   did not name Fear in that sentence, so this one is the team's own
+   extension of his pattern, siding with the book as he did on the other
+   three, and it is his to overturn. SPEC_POLE (engine/sniff.js) already
+   carried all four of the book's words, so it agrees with this table now.
+
+   THE THREE THAT ARE NOT A SIMPLE PAIR. His words, same message: "Shock,
+   surprise, anticipation are different ones, and they actually include
+   sub-behaviors like anticipation or excitement and anxious for
+   anticipation." So those three carry `sub`, the one field added to this
+   table: a list of the named forms the emotion runs as, each with its
+   valence, `wanted` for the adaptive form and `unwanted` for the one that
+   loads the nerve, and one line `d` in this file's voice. Excitement and
+   Anxious are his. The other four (Alert and Frozen for Shock, Delight and
+   Startle for Surprise) are the team's, written to the book's own lines
+   for each: shock floods the skin before the system can process it and its
+   threshold is "frozen or dissociated", surprise is the unexpected arriving
+   before the system has framed it, anticipation is the system leaning
+   toward what is coming, and anxiety is a monitoring loop. Their `opp`
+   stays, the 14 September ruling, because release, the ritual and the
+   affirmations all read an opposite off every row and a row without one
+   would break nine readers to say something he has not said. Additive:
+   every reader that does not know `sub` reads the row exactly as before. */
+const CHILD_VAL={wanted:'The form you want: it passes and leaves the nerve clear.',
+ unwanted:'The form that loads the nerve: it holds, and charge builds at the address.'};
 const CHILD=[
- {nm:'Fear',        opp:'Trust',       addr:'Lumbar plexus',              loc:'lower back, gut',    seat:'Root',   ic:'M12 3l8 14H4z'},
- {nm:'Anger',       opp:'Equanimity',  addr:'Celiac plexus',              loc:'upper abdomen',      seat:'Solar',  ic:'M13 2L4 14h6l-1 8 9-12h-6z'},
+ {nm:'Fear',        opp:'Safety',      addr:'Lumbar plexus',              loc:'lower back, gut',    seat:'Root',   ic:'M12 3l8 14H4z'},
+ {nm:'Anger',       opp:'Calm',        addr:'Celiac plexus',              loc:'upper abdomen',      seat:'Solar',  ic:'M13 2L4 14h6l-1 8 9-12h-6z'},
  {nm:'Shame',       opp:'Worth',       addr:'Pudendal plexus',            loc:'pelvic floor',       seat:'Sacral', ic:'M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6'},
  {nm:'Disgust',     opp:'Acceptance',  addr:'Sacral and dermis',          loc:'lower abdomen, skin',seat:'Sacral', ic:'M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0'},
- {nm:'Apathy',      opp:'Vitality',    addr:'Shoulder girdle and throat', loc:'base of neck',       seat:'Throat', ic:'M4 12h16M4 7h16M4 17h16'},
- {nm:'Shock',       opp:'Groundedness',addr:'Prefrontal and dermis',      loc:'forehead, skin',     seat:'3rd Eye',ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0'},
- {nm:'Sad',         opp:'Joy',         addr:'Cardiac plexus',             loc:'centre chest',       seat:'Heart',  ic:'M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
- {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11'},
- {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12'}];
+ {nm:'Apathy',      opp:'Joy',         addr:'Shoulder girdle and throat', loc:'base of neck',       seat:'Throat', ic:'M4 12h16M4 7h16M4 17h16'},
+ {nm:'Shock',       opp:'Groundedness',addr:'Prefrontal and dermis',      loc:'forehead, skin',     seat:'3rd Eye',ic:'M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0',
+  sub:[{nm:'Alert',  val:'wanted',  d:'The jolt that stops the body and puts every sense on what just happened. It lands, it is felt, and it passes through the skin.'},
+       {nm:'Frozen', val:'unwanted',d:'The flood that outruns the nerve. It scatters into the skin, the body goes still or goes absent, and the charge sits on the surface.'}]},
+ {nm:'Sad',         opp:'Happy',       addr:'Cardiac plexus',             loc:'centre chest',       seat:'Heart',  ic:'M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z'},
+ {nm:'Surprise',    opp:'Readiness',   addr:'Upper chest and back',       loc:'upper torso',        seat:'Heart',  ic:'M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11',
+  sub:[{nm:'Delight',val:'wanted',  d:'The unexpected lands and the chest opens to it. A quick breath in, the eyes widen, then the body settles toward what arrived.'},
+       {nm:'Startle',val:'unwanted',d:'The unexpected lands before it is framed and the body braces first. Shoulders lift, the breath catches, and the brace does not let go.'}]},
+ {nm:'Anticipation',opp:'Presence',    addr:'Below the heart',            loc:'lower sternum',      seat:'Solar',  ic:'M12 4v11M8 11l4 4 4-4M6 20h12',
+  sub:[{nm:'Excitement',val:'wanted',  d:'The lean toward what is coming, with the chest open. Charge rises, the breath stays long, and the body gets ready without bracing.'},
+       {nm:'Anxious',   val:'unwanted',d:'The same lean, braced. The system checks the future again and again, each check adds charge, and the breath goes short and high.'}]}];
 const CHARGES=CHILD.map(c=>c.nm);
 /* Ten of the 33 are Shirzad Chamine's Positive Intelligence saboteurs, the
    Judge and its nine accomplices. They are marked so the product gives the

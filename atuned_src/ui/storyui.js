@@ -220,7 +220,29 @@ function stMiniShell(id,label,inner,goKey){
   +(go?'<span class="st-mini-go" aria-hidden="true">›</span>':'')+'</div>'+inner+'</div>';}
 function stmkTip(t,b){return ' data-tip-t="'+esc(t)+'" data-tip="'+esc(b)+'"';}
 function stmkU(k){return typeof unpackOf==='function'?unpackOf(k):'';}
-function stmkFmt(v){return (Math.round(v*10)/10).toFixed(1);}
+/* STMKFMT IS GONE, 21 November. Body, Field and Superego, the three mini
+   cards still reading a raw 0-10 weight (BY[i].sq and its seat-level kin),
+   printed it through this, a bare "6.1" with no unit, which is exactly the
+   figure his 16 October ruling named by name: "if it says 6.2, then we
+   should change that to percent." Avatar and Masks, built later, already
+   went through pct()/fmtPct(); these three were the two mini cards percent
+   phase 2 never reached (engine/pct.js's own PERCENT-INVENTORY naming this
+   gap). Fixed at the source: both the ring's tooltip and the number inside
+   it now read pct('weight',v) or fmtPct('weight',v), the same 'weight' kind
+   the Field's own glass bar already uses for this exact 0-10 scale
+   (fmtPct('weight',R.SQm), tests/pct.js's own S1). No caller of stmkFmt is
+   left; removed rather than kept unused, since nothing here names a reason
+   to keep a 0-10 decimal around.
+
+   AND NEVER A BARE 0%, same rule, same round: a weight under 0.05 on this
+   scale is still above the zero this card already screens for (its data
+   function returns null, and the card the house dash, at exactly v<=0), so
+   a genuinely tiny but real reading could still round to "0%" if the glyph
+   split the figure from fmtPct's own dash rule. stmkPctText reads fmtPct
+   first and only then splits the percent sign into its own tspan, so a
+   rounds-to-nothing reading still prints the dash, never a zero wearing a
+   percent sign. */
+function stmkPctText(v){var f=fmtPct('weight',v); return f===PCT_DASH?f:(f.slice(0,-1)+'<tspan font-size="13" dx=".5">%</tspan>');}
 /* THE READINGS, ONE PLACE, apart from the drawing, so a card that changes
    its picture again does not also change what it measures. */
 function stmkCompass(r){return r.unread?null:{cq:Math.round(clamp(r.CQ,0,100)),dq:Math.round(clamp(+r.DQ||0,0,100))};}
@@ -283,10 +305,13 @@ function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and
    and never a bare 0%, his ruling against a zero carried as a percent. */
 function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+fmtPct('portion',s.n/PUR_PER_SIDE),
  'Each commitment you write on this side fills it 20 percent.');}
-function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
- 'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' point.');}
+function stmkTipBody(b){return stmkTip(b.nm+', '+fmtPct('weight',b.v),
+ 'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+fmtPct('weight',b.v)+', at your '+b.seat+' point.');}
 /* ONE ROW, NOT ONE CARD, since the redraw: a row's own tip, not the whole
-   picture's, so a seat that is not the heaviest still says what it holds. */
+   picture's, so a seat that is not the heaviest still says what it holds.
+   Kept the field-analytics-21nov branch's two-arg signature over main's
+   single top-only one (merge 21 November): main's version predates this
+   round's seven-row redesign and has no per-row caller left to serve. */
 function stmkTipField(s,hot){return stmkTip(s.seat+', '+s.v,
  stmkU('seat')+' '+s.seat+' is '+(s.p>0?'at '+s.v+' of its own fullness':'carrying nothing yet')
   +(hot?', the heaviest of your seven.':'.'));}
@@ -373,7 +398,7 @@ function stMiniBody(r){
  var b=stmkBody(r); if(!b)return STMK_DASH;
  return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipBody(b)+'>'+stmkRing(60,46,40,b.v/10,b.col,5)
   +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+b.col+'" stroke-width="1.8" stroke-linecap="round">'+STMK_IC.stbody+'</g>'
-  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(b.v)+'</text></g></svg>'
+  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkPctText(b.v)+'</text></g></svg>'
   +'<span class="stmk-cap">'+esc(b.nm)+'</span></div>';}
 /* SEVEN ROWS, CROWN AT TOP TO ROOT AT BOTTOM, DECIDED 21 November. The
    picture this replaces was seven arcs of one circle, every one the same
@@ -441,13 +466,13 @@ function stmkSuperego(r){
  var top=rows.sort(function(a,b){return b.v-a.v;})[0];
  if(!top||!top.v)return null;
  return {nm:top.nm, seat:top.seat, v:top.v, col:'var('+(SEATCOL[top.seat]||'--dim')+')'};}
-function stmkTipSuperego(s){return stmkTip(s.nm+', '+stmkFmt(s.v),
- stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+stmkFmt(s.v)+', at your '+s.seat+' point.');}
+function stmkTipSuperego(s){return stmkTip(s.nm+', '+fmtPct('weight',s.v),
+ stmkU('superego')+' '+s.nm+' holds the most of the four right now, '+fmtPct('weight',s.v)+', at your '+s.seat+' point.');}
 function stMiniSuperego(r){
  var s=stmkSuperego(r); if(!s)return STMK_DASH;
  return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipSuperego(s)+'>'+stmkRing(60,46,40,s.v/10,s.col,5)
   +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+s.col+'" stroke-width="1.8" stroke-linecap="round"><path d="'+(SUPEREGO_IC[s.nm]||'')+'"/></g>'
-  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(s.v)+'</text></g></svg>'
+  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkPctText(s.v)+'</text></g></svg>'
   +'<span class="stmk-cap">'+esc(s.nm)+'</span></div>';}
 
 /* ---- the journal ---- */
