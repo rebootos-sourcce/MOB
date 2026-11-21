@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v372 c9b25ddf 2026-11-21 17:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v373 0e90c4e2 2026-11-21 18:27"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -98099,8 +98099,9 @@ function profileSyncLine(r){
    +'Export this record, under Privacy, keeps a copy of this one.';}
  if(r.state==='refused')return 'Not synced. The account copy did not load'
   +(r.why&&r.why.length?': '+r.why.join('; '):'')+'. This record is as it was.';
+ if(r.state==='retry'&&r.status===401)return 'Not synced. The server has ended this sign in. Log in again from Account.';
  if(r.state==='retry'&&r.status===413)return 'Not synced. This record is too large for the account copy. It is safe on this device.';
- if(r.state==='retry'&&r.status&&r.status!==401)return 'Not synced. '
+ if(r.state==='retry'&&r.status)return 'Not synced. '
   +(r.why?authSay(r.why):'The server refused it, with code '+r.status+'.')+' This record is safe on this device.';
  if(r.state==='retry')return 'Not synced yet. The server could not be reached. This record is safe on this device.';
  if(r.state==='pulled-first'||r.state==='pulled')return 'Brought your record over from your account.'
@@ -110160,5 +110161,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007581534"></div>
+<div id="eof" hidden data-len="007581640"></div>
 </body></html>

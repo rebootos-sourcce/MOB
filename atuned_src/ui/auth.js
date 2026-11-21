@@ -548,8 +548,9 @@ function profileSyncLine(r){
    +'Export this record, under Privacy, keeps a copy of this one.';}
  if(r.state==='refused')return 'Not synced. The account copy did not load'
   +(r.why&&r.why.length?': '+r.why.join('; '):'')+'. This record is as it was.';
+ if(r.state==='retry'&&r.status===401)return 'Not synced. The server has ended this sign in. Log in again from Account.';
  if(r.state==='retry'&&r.status===413)return 'Not synced. This record is too large for the account copy. It is safe on this device.';
- if(r.state==='retry'&&r.status&&r.status!==401)return 'Not synced. '
+ if(r.state==='retry'&&r.status)return 'Not synced. '
   +(r.why?authSay(r.why):'The server refused it, with code '+r.status+'.')+' This record is safe on this device.';
  if(r.state==='retry')return 'Not synced yet. The server could not be reached. This record is safe on this device.';
  if(r.state==='pulled-first'||r.state==='pulled')return 'Brought your record over from your account.'
