@@ -678,6 +678,7 @@ function stRender(){
      UPDATE, same day: the mini view wears the same chip with no word on it
      (stShowChip's io), so the paragraph is gone from this page in both. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
+    +stHelloHtml()
     +stShowChip('story',!STV.dash)+'</div>'
    /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
       reply printed loose under the face: "The text that pops up on the
@@ -711,6 +712,7 @@ function stRender(){
      that would be destroyed and rebuilt on every key. uniMount is called
      once, after this whole panel lands, at the foot of stRender. */
   +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
+  +stHelloHtml()
   +'<div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
@@ -1210,6 +1212,8 @@ function stRender(){
     the typed box before Commit read the entry; the box is gone (see the
     ruling at .st-bar above) and there is nothing left for it to send. */
  if(ap)ap.onclick=stCommit;
+ var hello=document.getElementById('sthello');
+ if(hello)hello.onclick=stHello;
  var mic=document.getElementById('stmic');
  /* ONE ICON CARRIES BOTH DOORS, 10 November. His words, naming the hero
     view's only two icons, the talk bubble and Dashboard: "I do want the
@@ -1349,6 +1353,36 @@ function rowFoldWire(){
    pictures above; stPaintAll has no r of its own at the point it calls
    this (a keystroke, not a full repaint) and reads one fresh, the same
    cost every other keystroke-driven tile on this page already pays. */
+/* THE HELLO CONTROL. Ruled 21 November, his words, on a screenshot of this
+   exact screen with no face showing: "I see the cloud, but I don't see the
+   animation of source... I think I requested a change order to the button
+   instead of keeping the talk button there." His replacement spec, same
+   round: "a button on top of the center of the interface. That's just very
+   benign. When you click on it, it activates it. And when it activates, it
+   comes to life." Mocked up with art, animation and innovation reading his
+   words back first, then sent for his look: "I can't say I really like
+   that button, but let's wire it in and I'll figure it out."
+   A wordless ring, idle until pressed. #stuni already idles with no reading
+   the moment a blank entry opens (uniMount's own comment: "no reading
+   exists that early... the face idles there exactly as it does on an empty
+   Journal"); this control is the one thing missing, a way to ask for her
+   on purpose rather than wait for a keystroke or a stored reading to bring
+   her up. ST_HELLO_ON never turns itself off: stUniSync's own loaded check
+   below reads it the same as typed text or a kept reading, so a press holds
+   her mounted until the entry or the record itself would have anyway. */
+function stHelloHtml(){
+ return '<button class="st-hello" id="sthello" type="button" aria-label="Begin, Source AI">'
+  +'<svg viewBox="0 0 88 88" aria-hidden="true">'
+  +'<circle class="sth-ring2" cx="44" cy="44" r="40"></circle>'
+  +'<circle class="sth-ring" cx="44" cy="44" r="30"></circle>'
+  +'<circle class="sth-dot" cx="44" cy="44" r="3.2"></circle>'
+  +'</svg></button>';}
+function stHello(){
+ if(ST_HELLO_ON)return;
+ ST_HELLO_ON=true;
+ stUniSync();
+ if(window.SrcFace&&typeof window.SrcFace.cue==='function')window.SrcFace.cue();
+ if(typeof stHeroPlaceSoon==='function')stHeroPlaceSoon();}
 function stUniSync(r){
  if(typeof document==='undefined')return;
  /* PARK HER WHEN HER OWN CANVAS LEAVES THE PAGE, 14 November. Found
@@ -1379,7 +1413,9 @@ function stUniSync(r){
     loaded up is exactly what an example is. uniApply writes nothing, so
     showing her here runs nothing on an example's record. */
  var seen=r||(typeof computeSeen==='function'?computeSeen():null);
- var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread);
+ var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread)||ST_HELLO_ON;
+ var hello=document.getElementById('sthello');
+ if(hello)hello.hidden=!!loaded;
  if(loaded){
   if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
@@ -1869,7 +1905,7 @@ function stCommit(){
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
- ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
+ ST_TEXT='';ST_PARSED=null;ST_HELLO_ON=false;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
  /* the line stays where it was once the box empties, see stSafe */
  STV.safeSaid=safe;
  /* the release takes the room on a desktop. On a phone it stays the bar
@@ -1989,7 +2025,7 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
- ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
+ ST_TEXT=''; ST_PARSED=null; ST_HELLO_ON=false; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
  return true;}

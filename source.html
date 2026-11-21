@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v354 6f45ae21 2026-11-21 07:24"><head><meta charset="utf-8">
+<html lang="en" data-build="v355 fa18a513 2026-11-21 07:38"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5347,6 +5347,28 @@ body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-ind
    gets the same absolute escape, parked beside #stmic with the row's own
    8px gap (20+44+8), not under it. */
 body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px;z-index:2}
+/* THE HELLO CONTROL, 21 November, his words: "a button on top of the
+   center of the interface... very benign. When you click on it, it
+   activates it." Sits inside .st-glow (already position:relative, above),
+   pinned to its own top centre so it reads as above the circle rather than
+   fighting it for the same space. Ring, not fill, the house's own icon
+   rule, and no label at all, per spec. .st-glow already carries
+   position:relative (above), so this needs none of its own. */
+.st-hello{position:absolute;top:10px;left:50%;transform:translateX(-50%);
+ width:40px;height:40px;border-radius:50%;background:none;border:0;padding:0;
+ cursor:pointer;z-index:2;outline-offset:6px}
+.st-hello[hidden]{display:none}
+.st-hello svg{width:100%;height:100%;overflow:visible}
+.st-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+ transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
+.st-hello:hover .sth-ring,.st-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.st-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+ transform-origin:50% 50%;transition:opacity .35s ease}
+.st-hello:hover .sth-ring2,.st-hello:focus-visible .sth-ring2{opacity:.4}
+.st-hello .sth-dot{fill:var(--dim);transition:fill .3s ease}
+.st-hello:hover .sth-dot,.st-hello:focus-visible .sth-dot{fill:var(--accent)}
+@keyframes sthBreathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.045);opacity:.7}}
+@media (prefers-reduced-motion:reduce){.st-hello .sth-ring{animation:none}}
 /* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
    past counting: "no two-way chat... just the user's input," and in the
    same round, pointed at a bordered box, "there is no box." storyui.js's
@@ -64865,7 +64887,7 @@ try{window.__at&&window.__at('ui/character.js');}catch(e){}
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false, ST_HELLO_ON=false;
 /* THE WORDS BELONG TO A RECORD, 3 November. ST_TEXT and ST_PARSED are one
    page's variables and CURP moves under them: the picker, an import, a new
    record. Before this nothing said whose words they were, so a profile
@@ -65867,6 +65889,7 @@ function stRender(){
      UPDATE, same day: the mini view wears the same chip with no word on it
      (stShowChip's io), so the paragraph is gone from this page in both. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
+    +stHelloHtml()
     +stShowChip('story',!STV.dash)+'</div>'
    /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
       reply printed loose under the face: "The text that pops up on the
@@ -65900,6 +65923,7 @@ function stRender(){
      that would be destroyed and rebuilt on every key. uniMount is called
      once, after this whole panel lands, at the foot of stRender. */
   +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
+  +stHelloHtml()
   +'<div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
@@ -66399,6 +66423,8 @@ function stRender(){
     the typed box before Commit read the entry; the box is gone (see the
     ruling at .st-bar above) and there is nothing left for it to send. */
  if(ap)ap.onclick=stCommit;
+ var hello=document.getElementById('sthello');
+ if(hello)hello.onclick=stHello;
  var mic=document.getElementById('stmic');
  /* ONE ICON CARRIES BOTH DOORS, 10 November. His words, naming the hero
     view's only two icons, the talk bubble and Dashboard: "I do want the
@@ -66538,6 +66564,36 @@ function rowFoldWire(){
    pictures above; stPaintAll has no r of its own at the point it calls
    this (a keystroke, not a full repaint) and reads one fresh, the same
    cost every other keystroke-driven tile on this page already pays. */
+/* THE HELLO CONTROL. Ruled 21 November, his words, on a screenshot of this
+   exact screen with no face showing: "I see the cloud, but I don't see the
+   animation of source... I think I requested a change order to the button
+   instead of keeping the talk button there." His replacement spec, same
+   round: "a button on top of the center of the interface. That's just very
+   benign. When you click on it, it activates it. And when it activates, it
+   comes to life." Mocked up with art, animation and innovation reading his
+   words back first, then sent for his look: "I can't say I really like
+   that button, but let's wire it in and I'll figure it out."
+   A wordless ring, idle until pressed. #stuni already idles with no reading
+   the moment a blank entry opens (uniMount's own comment: "no reading
+   exists that early... the face idles there exactly as it does on an empty
+   Journal"); this control is the one thing missing, a way to ask for her
+   on purpose rather than wait for a keystroke or a stored reading to bring
+   her up. ST_HELLO_ON never turns itself off: stUniSync's own loaded check
+   below reads it the same as typed text or a kept reading, so a press holds
+   her mounted until the entry or the record itself would have anyway. */
+function stHelloHtml(){
+ return '<button class="st-hello" id="sthello" type="button" aria-label="Begin, Source AI">'
+  +'<svg viewBox="0 0 88 88" aria-hidden="true">'
+  +'<circle class="sth-ring2" cx="44" cy="44" r="40"></circle>'
+  +'<circle class="sth-ring" cx="44" cy="44" r="30"></circle>'
+  +'<circle class="sth-dot" cx="44" cy="44" r="3.2"></circle>'
+  +'</svg></button>';}
+function stHello(){
+ if(ST_HELLO_ON)return;
+ ST_HELLO_ON=true;
+ stUniSync();
+ if(window.SrcFace&&typeof window.SrcFace.cue==='function')window.SrcFace.cue();
+ if(typeof stHeroPlaceSoon==='function')stHeroPlaceSoon();}
 function stUniSync(r){
  if(typeof document==='undefined')return;
  /* PARK HER WHEN HER OWN CANVAS LEAVES THE PAGE, 14 November. Found
@@ -66568,7 +66624,9 @@ function stUniSync(r){
     loaded up is exactly what an example is. uniApply writes nothing, so
     showing her here runs nothing on an example's record. */
  var seen=r||(typeof computeSeen==='function'?computeSeen():null);
- var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread);
+ var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread)||ST_HELLO_ON;
+ var hello=document.getElementById('sthello');
+ if(hello)hello.hidden=!!loaded;
  if(loaded){
   if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
@@ -67058,7 +67116,7 @@ function stCommit(){
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
- ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
+ ST_TEXT='';ST_PARSED=null;ST_HELLO_ON=false;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;STV.lastOpen=!!kept.length;
  /* the line stays where it was once the box empties, see stSafe */
  STV.safeSaid=safe;
  /* the release takes the room on a desktop. On a phone it stays the bar
@@ -67178,7 +67236,7 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
- ST_TEXT=''; ST_PARSED=null; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
+ ST_TEXT=''; ST_PARSED=null; ST_HELLO_ON=false; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
  return true;}
@@ -109635,5 +109693,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007544105"></div>
+<div id="eof" hidden data-len="007547775"></div>
 </body></html>

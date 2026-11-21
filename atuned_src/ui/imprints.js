@@ -4,7 +4,7 @@
    gather as they are found and nothing touches the field until you
    commit.
    ============================================================ */
-var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false;
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false, ST_LIVE='', ST_WANT_LISTEN=false, ST_HELLO_ON=false;
 /* THE WORDS BELONG TO A RECORD, 3 November. ST_TEXT and ST_PARSED are one
    page's variables and CURP moves under them: the picker, an import, a new
    record. Before this nothing said whose words they were, so a profile

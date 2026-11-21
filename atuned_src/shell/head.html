@@ -5347,6 +5347,28 @@ body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-ind
    gets the same absolute escape, parked beside #stmic with the row's own
    8px gap (20+44+8), not under it. */
 body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px;z-index:2}
+/* THE HELLO CONTROL, 21 November, his words: "a button on top of the
+   center of the interface... very benign. When you click on it, it
+   activates it." Sits inside .st-glow (already position:relative, above),
+   pinned to its own top centre so it reads as above the circle rather than
+   fighting it for the same space. Ring, not fill, the house's own icon
+   rule, and no label at all, per spec. .st-glow already carries
+   position:relative (above), so this needs none of its own. */
+.st-hello{position:absolute;top:10px;left:50%;transform:translateX(-50%);
+ width:40px;height:40px;border-radius:50%;background:none;border:0;padding:0;
+ cursor:pointer;z-index:2;outline-offset:6px}
+.st-hello[hidden]{display:none}
+.st-hello svg{width:100%;height:100%;overflow:visible}
+.st-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+ transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
+.st-hello:hover .sth-ring,.st-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.st-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+ transform-origin:50% 50%;transition:opacity .35s ease}
+.st-hello:hover .sth-ring2,.st-hello:focus-visible .sth-ring2{opacity:.4}
+.st-hello .sth-dot{fill:var(--dim);transition:fill .3s ease}
+.st-hello:hover .sth-dot,.st-hello:focus-visible .sth-dot{fill:var(--accent)}
+@keyframes sthBreathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.045);opacity:.7}}
+@media (prefers-reduced-motion:reduce){.st-hello .sth-ring{animation:none}}
 /* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
    past counting: "no two-way chat... just the user's input," and in the
    same round, pointed at a bordered box, "there is no box." storyui.js's
