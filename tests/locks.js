@@ -180,11 +180,18 @@ async function lockGate(browser,FILE,ok,booted){
    cards:document.querySelectorAll('#paywall .pw-c').length,
    came:document.querySelectorAll('#paywall .pw-rg.came[data-k="sab"]').length,
    tip:((document.querySelector('#paywall .pw-c[data-pt="'+(PW.door||'none')+'"] .pw-rg[data-k="sab"]')||{getAttribute:()=>''}).getAttribute('data-tl')),
-   you:((document.querySelector('#paywall .pw-hd .pw-here')||{}).textContent||'').replace(/\s+/g,' ')}));
+   /* FIVE COLUMNS, 21 November (251e6383): Free is its own card now, the
+      same shape as every paid tier, and the header's own quiet "You are
+      here" badge (.pw-hd .pw-here) it used to carry was removed along
+      with it. The same fact now sits on Free's own card, the same spot
+      every other tier's own "You are here" already read from
+      (.pw-act .pw-here), the same fix tests/paywall.js's own worked
+      example needed. */
+   you:((document.querySelector('#paywall .pw-c[data-pt="free"] .pw-act .pw-here')||{}).textContent||'')}));
   ok(landed.open&&landed.field&&landed.k==='sab'&&landed.door===need('sab')&&landed.doorCard,
    tag+'See tiers opens the paywall over the Field, saboteurs pressed, the door on the tier SIGHT names, '+JSON.stringify(landed));
   ok(landed.cards>0&&landed.came===landed.cards,tag+'the pressed ring is marked on every card, '+landed.came+' of '+landed.cards);
-  ok(/You are here\s*Free/.test(landed.you)&&landed.tip==='Opens at '+G.tierNm[need('sab')].toLowerCase(),
+  ok(/You are here/.test(landed.you)&&landed.tip==='Opens at '+G.tierNm[need('sab')].toLowerCase(),
    tag+'and the sheet says which tier the person has and which tier opens what was locked, '+JSON.stringify([landed.you,landed.tip]));
   await pg.evaluate(()=>paywallClose());
 
