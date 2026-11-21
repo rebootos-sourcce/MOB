@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v332 cd55089c 2026-11-21 01:31"><head><meta charset="utf-8">
+<html lang="en" data-build="v319 32264723 2026-11-21 01:10"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -4184,19 +4184,53 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
 .stk-run:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .stk-run.off{visibility:hidden;pointer-events:none}
 /* THE NERVE STATE MARK (ui/insightui.js, stkNsHtml). 16px, the level header's
-   own glyph size, in a 16px column on the row's left, so the row's name lines
-   up under the header's word the way the header's glyph lines up over the
-   mark. Centred on the bar's name line, never on the whole row, because a
-   pair bar is taller and a centred mark would sit between its two lines. The
-   shape carries the state; the colour only follows it: open in --mid, the two
-   impaired rungs in --ink, closed in --alarm, the one colour this product
-   already keeps for a thing that is hot. */
-.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:9px 2px 0 0;display:flex;
+   own glyph size, in a 16px column on the row's left. Lance, 20 November,
+   reviewing a real screenshot: "the open and closed states of the nerve are
+   not on the same horizontal plane. They need to be exactly opposite of each
+   other across from the bar. So set them at the line of the bar, and have
+   their icons on that horizontal line. Have the center point of those icons
+   align with the center point of the bar." This replaces the line above,
+   which centred the mark on the bar's NAME line instead and is why every
+   state sat above the bar rather than on it.
+   There is no single offset that lands on every bar's centre, because the
+   row above the bar is not the same height in every shape this rail draws:
+   a plain amount bar (.stk-am, stkAmount/stkAmpRow) carries one name line,
+   while a two pole bar (.stk-pl, stkPolar, and the plain .stk-b child
+   emotion bar, stkFetBar/fetBar's rb2) carries a pole's name above the bar
+   AND the opposite pole's name below it, each its own text line the bar
+   itself does not have. So the three margins below are not one guess typed
+   three times: each is the real margin-top, in a real Chromium, that put
+   the mark's own centre on the bar's own centre, measured with
+   getBoundingClientRect on both and read as zero pixels of difference
+   (measure.js, this round, at 1600 and 390 wide, Lance 15's loaded profile):
+   .stk-am centres at a 32px margin, .stk-pl (the pole pair with two labels)
+   at 31, plain .stk-b (the child emotion pair, same two labels, tighter
+   button padding) at 33. The shape still carries the state; the colour
+   still only follows it: open in --mid, the two impaired rungs in --ink,
+   closed in --alarm, brightening as the row's own charge climbs the closed
+   band (90 to 100 percent) through --ns-i below, the one rung this product
+   already lets read as a continuous number and not a flat flag. */
+.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:32px 2px 0 0;display:flex;
  align-items:center;justify-content:center;color:var(--ink);border-radius:50%;cursor:help}
+.stk-row:has(.stk-pl) .stk-ns{margin-top:31px}
+.stk-row:has(.stk-b):not(:has(.stk-pl)) .stk-ns{margin-top:33px}
 .stk-ns svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round}
 .stk-ns[data-ns="open"]{color:var(--mid)}
-.stk-ns[data-ns="closed"]{color:var(--alarm)}
+/* THE CLOSED MARK BRIGHTENS WITH THE ROW'S OWN CHARGE, 20 November, his words
+   on this same mark: "the closed icon intent color intensity brightens with
+   the rise of the DQ." DQ is this product's own name for the shadow a
+   person carries (gloss.js: "DQ is your shadow weight: all the charge you
+   carry, on every address, against the most your body could hold"), and a
+   row's own value is that same reading taken at one address or pattern
+   instead of all 112, the figure nerveStateOf already reads to choose this
+   mark's shape. --ns-i is that row's own percent, re-expressed as how far
+   through the closed band (90 to 100) it sits: 0 at the 90 percent floor,
+   1 at 100, written inline by stkNsHtml so the colour and the shape are
+   read from the one number and cannot drift apart. Below the floor it is
+   never set, so every other rung keeps its flat colour; a pair bar's
+   build-colour variables (--lc, --rc, --sc, set by rbPair) are untouched. */
+.stk-ns[data-ns="closed"]{color:color-mix(in srgb,var(--alarm) calc(55% + var(--ns-i,1)*45%),var(--mid))}
 .stk-ns:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .stk-row.dim .stk-ns{color:var(--mid)}
 .stk-more{display:block;width:100%;min-height:var(--tap);margin-top:4px;padding:0 8px;border:0;
@@ -11052,84 +11086,6 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    switch, and by the media query for a page whose script is late */
 .sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
 @media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
-/* ============================================================
-   THE SUMMARY'S LEFT RAIL IS ONE FLAT READING, 20 November, his words: "On
-   the left side panel, I want a person's celestial information down to their
-   archetypes exposed with their percents. So no nested tables, everything's
-   just visible. The elements that they are not are dimmed out... get rid of
-   everything beneath Psyche."
-
-   Scoped to body.tab-summary and nothing else, because this rail is shared
-   by every tab: the Field keeps its folds, its Matrix, Superego and Action,
-   and its own choice of what is open.
-
-   FLAT. Root Energetics, Awareness and What is running stand open with no
-   fold on them, which overrides the EZ ruling that Root Energetics opens
-   closed on this tab only. The four systems' lines all show, so the four
-   system switches that hid them have nothing to switch and go. The folded
-   two line summary (#awsum) goes, because the grids it summarised are open.
-   The archetypes are one grid: #ar1 already marks the primary as pressed and
-   every secondary as data-r 2 (syncSoul, ui/panels.js), so #ar2 printed the
-   same twelve circles a second time to say what the first grid says.
-
-   FOUR LEVELS, FOUR NAMES. Celestial, Root, Domain, Archetype, the order the
-   reading runs from the sky down, on even spacing so no level sits flush on
-   the one above it (CLAUDE.md, "Symmetry in space, everywhere, forever").
-
-   LIT AND DIM (ui/railtiles.js, rlSumPaint). A dim mark keeps its row, its
-   ring size and its gutter, so the grid does not move when a choice does.
-   Nothing is faded with opacity: Sol measured ink at 40 percent on --panel
-   at 3.40, under the floor, where --dim holds 5.30. The ring mixes the seat
-   colour thirty percent into --dim, the mark inside it is --dim, and the
-   seat's dot beside a domain goes; the seat colour never goes on a name. A dim mark does not breathe, because breath on this rail says a
-   circle carries real weight and a dim one is not his.
-   ============================================================ */
-body:not(.tab-summary) #lcol .sum-only,body:not(.tab-summary) #lcol .sum-lvl{display:none}
-body.tab-summary #lcol .lsec[data-sec=matrix],
-body.tab-summary #lcol .lsec[data-sec=superego],
-body.tab-summary #lcol .lsec[data-sec=gates],
-body.tab-summary #lcol .lsec[data-sec=run].sum-empty{display:none}
-/* and on a page with nothing read, What is running is empty and is the only
-   thing under Psyche here, so the heading goes with it rather than stand over
-   nothing */
-body.tab-summary #lcol:has(.lsec[data-sec=run].sum-empty) .rblk[data-blk=psyche]{display:none}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-bd{display:block}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd{
- pointer-events:none;cursor:default;color:var(--ink)}
-body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd i{display:none}
-body.tab-summary #lcol #awsum,
-body.tab-summary #lcol #ar2,
-body.tab-summary #lcol .ar-sec,
-body.tab-summary #lcol #rootlegend,
-body.tab-summary #lcol .lsec[data-sec=soul] .tier1:not(.sum-lvl),
-body.tab-summary #spirit .sp-sys{display:none}
-body.tab-summary #spirit .sp-line[hidden]{display:flex}
-/* with the four switches gone the birth's own mark was left alone at the far
-   end of an empty row; it stands where the tiles under it start, the line
-   mark's 16 and the line's gap of 10 in from the edge */
-body.tab-summary #spirit .sp-born{margin-left:26px}
-body.tab-summary #lcol .sum-lvl{display:block;margin:20px 0 10px;color:var(--dim)}
-body.tab-summary #lcol .lsec-bd>.sum-lvl:first-child{margin-top:4px}
-/* the caption under each grid names what is lit, in ink, and the archetype's
-   figure beside its name, in tabular figures so two of them stand level */
-body.tab-summary #lcol .cap{min-height:0;margin:10px 0 0}
-body.tab-summary #lcol #capD b{color:var(--ink)!important;font-weight:500}
-body.tab-summary #capA .rl-lit{display:inline-flex;align-items:baseline;gap:6px;margin-right:14px}
-body.tab-summary #capA .rl-lit b{color:var(--ink);font-weight:500}
-body.tab-summary #capA .rl-fig{font-style:normal;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-/* dim */
-body.tab-summary #lcol .ib.rl-off{cursor:default}
-body.tab-summary #lcol .ib.rl-off svg:not(.ib-arc){stroke:var(--dim)}
-body.tab-summary #lcol .ib.rl-off .rt{display:none}
-body.tab-summary #lcol .ib.rl-off .ib-arc .val{stroke:color-mix(in srgb,var(--c) 30%,var(--dim));opacity:1}
-body.tab-summary #lcol .ib.rl-off .ib-arc,
-body.tab-summary #lcol .ib.rl-off::after{animation:none}
-body.tab-summary #lcol .rootb.rl-off{color:var(--dim);font-weight:400;cursor:default;
- border-color:var(--edge);background:transparent}
-body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,var(--dim))}
-body.tab-summary #lcol .rootb.rl-off::after{display:none}
-body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
-body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -12118,11 +12074,7 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
         again, so the control's reserved width came back to it. -->
    <div class="lsec" data-sec="energetics">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
-    <!-- the four level names, Celestial, Root, Domain and Archetype, shown
-         on the Summary only, where this rail is one flat reading from the
-         sky down to the archetype (head.html, "THE SUMMARY'S LEFT RAIL IS
-         ONE FLAT READING"). Elsewhere the rail keeps its own labels. -->
-    <div class="lsec-bd"><div class="tier1 sum-lvl">Celestial</div><div id="spirit"></div></div>
+    <div class="lsec-bd"><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
         is the one large circle, "so it's in your face", the four that move
@@ -12220,16 +12172,13 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
-     <div class="tier1 sum-lvl">Root</div>
      <div class="tier1">Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
-     <div class="tier1 sum-lvl">Domain</div>
      <div class="tier1">Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
-     <div class="tier1 sum-lvl">Archetype</div>
      <div class="tier1" style="margin-top:18px">Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub ar-sec">Secondary</div>
@@ -12240,7 +12189,7 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
          chosen, one line each. ui/railtiles.js, awSum. -->
     <div class="aw-sum" id="awsum"></div>
    </div>
-   <h2 class="rblk" data-blk="psyche">Psyche</h2>
+   <h2 class="rblk">Psyche</h2>
    <!-- THE PSYCHE PANEL HOLDS THREE THINGS, 18 November, his words, twice. The
         first: "I asked you to get rid of everything in these two images. I
         asked you that a long time ago... Maybe keep the matrix for now, but
@@ -12268,16 +12217,6 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
         said that is said nowhere else moved to the meaning table
         (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
         18 November, records the earlier asks and why they never landed. -->
-   <!-- WHAT IS RUNNING, ON THE SUMMARY ONLY, 20 November, his words: "get
-        rid of everything beneath Psyche... everything beneath your patterns
-        ... what's running is moving to the left panel." On the Summary the
-        three sections below this one are taken off by head.html and this one
-        stands under the heading in their place; on every other tab it is
-        taken off and they stand as they did. ui/summary.js, sumRunPaint. -->
-   <div class="lsec sum-only" data-sec="run">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
-    <div class="lsec-bd"><div id="sumrun"></div></div>
-   </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
@@ -14752,12 +14691,28 @@ NERVESTATE.forEach(function(s,i){
  var up=i?NERVESTATE[i-1].at-1:100;
  s.range=s.at===0?'no charge':s.at===up?'charge at '+s.at+'%':'charge from '+s.at+'% to '+up+'%';
  s.def=s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+': '+s.say+'. Reads '+s.range+'.';});
-function nerveStateOf(v){
+/* THE WHOLE PERCENT A NERVE STATE AND ITS BRIGHTNESS BOTH READ. Pulled out of
+   nerveStateOf so stkNsHtml (ui/insightui.js) can read the same number for
+   the closed mark's brightness (--ns-i below) without a second rounding
+   that could disagree with the shape it colours. */
+function nervePct(v){
  var x=+v; if(!isFinite(x))x=0;
  /* pct's own expression for a 0 to 10 kind, so the two round alike */
- var p=Math.round(100*x/10); p=p<0?0:p>100?100:p;
+ var p=Math.round(100*x/10); return p<0?0:p>100?100:p;}
+function nerveStateOf(v){
+ var p=nervePct(v);
  for(var i=0;i<NERVESTATE.length;i++) if(p>=NERVESTATE[i].at)return NERVESTATE[i];
  return NERVESTATE[NERVESTATE.length-1];}
+/* HOW FAR THROUGH THE CLOSED BAND, 0 at its 90 percent floor and 1 at 100,
+   for the one rung this product lets read as a continuous brightness and
+   not a flat flag (his words, 20 November: "the closed icon intent color
+   intensity brightens with the rise of the DQ"). Undefined below the floor,
+   so a mark that is not closed never carries the variable. */
+function nerveClosedI(v){
+ var p=nervePct(v), floor=NERVESTATE[0].at;
+ if(p<floor)return undefined;
+ var i=(p-floor)/(100-floor);
+ return i<0?0:i>1?1:i;}
 
 try{window.__at&&window.__at('engine/data/canon.js');}catch(e){}
 /* REVIVED 17 NOVEMBER from the closed voice prototype (PR 163, rejected 8
@@ -18116,206 +18071,6 @@ var HCXCARD={
   inverseDefinition:'An inferred counterpart emphasizing safe contact with present experience, continuity between feeling and action, and paced integration without forcing or denying experience.'}};
 
 try{window.__at&&window.__at('engine/data/hcxcard.js');}catch(e){}
-/* ============================================================
-   KBSAY · what the wisdom school says where the book says nothing.
-
-   Round LY, 20 November, his words: "Change Wisdom School to Lyceum. I want
-   to fill that out." Measured on that page before this file: every one of the
-   108 somatic addresses and all thirteen inferred saboteurs opened on "No
-   meaning on file yet." (KB_NOTE, ui/drills.js), the drill admitting a gap
-   under a name a person had pressed to have explained.
-
-   NONE OF THIS IS THE BOOK. Every line below was composed from the row it
-   sits beside and from nothing else: an address from its own seat, meaning,
-   distortion and nerve in NODES (engine/data/nodes.js), an inferred saboteur
-   from the child emotion and the seat UNNAMED builds it on (engine/core.js).
-   So each one is Source AI's own sentence, and the 15 November ruling holds:
-   wherever it prints it wears srcMark and the src-ai treatment, and it never
-   prints in the style SABDEF's or HARM's quoted book text does. That is why
-   it lives in its own file and not in kb.js, which is the book's library.
-
-   KEYED BY IDENTITY, AND THE NAME RIDES ALONG AS A CHECK. An address is keyed
-   by i, the storage index NODES keeps forever, because its name is not fixed:
-   Root_08_Unnamed is waiting on his ruling and will be renamed. k is carried
-   beside each sentence so tests/engine.js can fail the day a name moves under
-   it, which is the day the sentence has to be read again against the new row.
-   A sentence that silently outlived the row it was written from is the same
-   defect as a count typed into a gate.
-
-   EACH LINE SAYS HOW THE DISTORTION RUNS, NOT WHAT IT IS CALLED. The card
-   already closes on "It shows up as <distortion>." (nodeDrillHtml), and the
-   nerve is already on the line under the name, so no sentence repeats the
-   distortion's own word or names the nerve: a nerve named in a sentence
-   invites a claim about what that nerve does that nobody has checked. The
-   nerve is turned into a place a person can point at instead (low back, inner
-   thigh, voice box), and where a plain word would overstate it (71, 75, 80)
-   the line names no place at all.
-
-   Two lines were cut on that rule by the gate that holds it (tests/engine.js):
-   Victimhood and Projection both close on Blame, and both first drafts said
-   blame, so the card would have said it twice.
-
-   ADDRESS 8 HAS NO NAME AND ITS LINE DOES NOT GIVE IT ONE. Naming it is his.
-   The sentence is built from the row's fields only: the bottom of the cord,
-   privilege, and the count of what is owed.
-
-   Not here, on purpose: the seven child emotions whose opposite the app and
-   the book name differently, or the book marks pending. See
-   childBookSays in ui/drills.js and BOOK-ERRATA.md. And no complex or super
-   complex text, because neither tier has a field to hold one
-   (compute.js builds them from parts and carries no d of its own).
-   ============================================================ */
-const ADDR_SAY=[
- {i:1,k:"Fear",m:"The low back reads a threat before you do, and your feet turn away from it."},
- {i:2,k:"Shame",m:"Worth drops out of the pelvis, and you push your own body away."},
- {i:3,k:"Guilt",m:"A debt sits low in the belly, and you pay it twice over."},
- {i:4,k:"Control",m:"The base of the spine buys safety with force, and you press it onto the people near you."},
- {i:5,k:"Insecurity",m:"Belonging has no footing at the floor of the pelvis, so you lean your weight on someone else."},
- {i:6,k:"Victimhood",m:"Agency drains out at the tailbone, and the cost gets pointed at someone else."},
- {i:7,k:"Scarcity",m:"The hip reads every resource as the last one, and your hands close around it."},
- {i:8,k:"Root_08_Unnamed",m:"At the bottom of the spinal cord, privilege turns into a running count of what is owed."},
- {i:9,k:"Possession",m:"Attachment settles in the muscles of the seat, and you keep a hard grip on the things you own."},
- {i:10,k:"Lethargy",m:"The inner thigh loses its push, and the next step does not come."},
- {i:11,k:"Resistance",m:"The floor of the pelvis clenches against change and holds what it already has."},
- {i:12,k:"Compulsion",m:"Safety runs on a ritual held in the pelvic floor, and you repeat it until it locks."},
- {i:13,k:"Disconnection",m:"Presence switches off at the roots of the sacrum, and the lower body goes numb."},
- {i:14,k:"Escapism",m:"Pain arrives and the long nerve down the leg loads the legs to run."},
- {i:15,k:"Panic",m:"The alarm chain in the low back fires before thought, and you act before you know you did."},
- {i:16,k:"Collapse",m:"The tip of the spinal cord drops its structure, and you let yourself fall with it."},
- {i:17,k:"Addiction",m:"Craving builds in the low pelvis until one want fills the whole frame."},
- {i:18,k:"Lust",m:"Desire heats the groin, and the other person shrinks to a body."},
- {i:19,k:"Envy",m:"Lack sits deep in the pelvis, and another person's joy lands on it like weight on a bruise."},
- {i:20,k:"Jealousy",m:"Possessiveness grips the inner thigh, and every glance away becomes evidence."},
- {i:21,k:"Co-Dependency",m:"Need tips the gut toward another person, and you leave your own post to follow it."},
- {i:22,k:"Shame Of Desire",m:"Want rises in the lower belly and gets pressed back down before it reaches the surface."},
- {i:23,k:"Hypersexuality",m:"Sex becomes the proof you are wanted, and you leave the body while it happens."},
- {i:24,k:"Avoidance Of Pleasure",m:"The pelvis shuts off pleasure, and the body runs with its senses turned down."},
- {i:25,k:"Manipulation Through Emotion",m:"Control works through the pelvis by feeling, and you pull your own hurt like a lever to move someone."},
- {i:26,k:"Oversensitivity",m:"The pain threshold in the low belly sits so low that a light touch lands as an attack."},
- {i:27,k:"Fantasy",m:"The gut trades the day for a story, and the story starts to read as real."},
- {i:28,k:"Infatuation",m:"Desire lands on a picture you built and set over another person."},
- {i:29,k:"Obsession",m:"Focus locks on one thing and will not let go of it."},
- {i:30,k:"Guilt Of Pleasure",m:"Joy arrives and you shut the door on it before it is spent."},
- {i:31,k:"Need For Approval",m:"You take your shape from other people's faces and bend to fit it."},
- {i:32,k:"Excess Emotion",m:"Feeling comes in faster than it can drain, and it spills over everything near it."},
- {i:33,k:"Pride",m:"You stand on a step built of your own importance and look down from it."},
- {i:34,k:"Arrogance",m:"The self swells past its real size and takes up the room."},
- {i:35,k:"Competition",m:"Every person becomes a measure, and measuring splits you from them."},
- {i:36,k:"Anger",m:"Power that should move you forward gets thrown at someone instead."},
- {i:37,k:"Judgment",m:"You draw a line, put people on the far side of it, and hand them what is yours."},
- {i:38,k:"Entitlement",m:"You expect the result as owed and grip until it comes."},
- {i:39,k:"Rebellion",m:"You push against whatever pushes, and lose your own direction doing it."},
- {i:40,k:"Perfectionism",m:"You hold the work to a standard no real thing can meet, and stiffen rather than fall short."},
- {i:41,k:"Force",m:"You push the current instead of steering it, and it breaks where you push."},
- {i:42,k:"Rigidity",m:"Will sets hard, like a joint that no longer bends."},
- {i:43,k:"Resentment (Solar)",m:"Old anger is kept on the stove and heated again each time it cools."},
- {i:44,k:"Unworthiness",m:"You shrink what you did until it weighs nothing."},
- {i:45,k:"Anxiety",m:"The body braces now for a result that has not come."},
- {i:46,k:"Self-Judgment (Solar)",m:"One part of you strikes down what another part does."},
- {i:47,k:"Need To Win",m:"Every exchange is a contest, and you stay in it until someone is under you."},
- {i:48,k:"Superiority",m:"You rank people on a ladder and keep a rung between you and them."},
- {i:49,k:"Hatred",m:"A hurt is held as a debt, and you mean to collect it."},
- {i:50,k:"Resentment (Heart)",m:"Pain is kept close to the chest, and love is held back to guard it."},
- {i:51,k:"Self-Judgment (Heart)",m:"You hand yourself the hard verdict you would spare anyone else."},
- {i:52,k:"Betrayal",m:"Trust broke once, and the body now braces to be left."},
- {i:53,k:"Separation",m:"You wall yourself off from others and live inside the wall."},
- {i:54,k:"Martyrdom",m:"You give until it costs you, because guilt says that is what love is."},
- {i:55,k:"Longing",m:"The chest reaches for someone who is not in the room, and the person who is gets less of you."},
- {i:56,k:"Closed Heart",m:"The skin along your ribs braces like a plate, so nothing gets close enough to land."},
- {i:57,k:"Manipulative Kindness",m:"A gift goes out with the price tag still on it, and your breath holds until it is paid."},
- {i:58,k:"Expectation",m:"Love goes out as a contract, and the lungs stay half full until the other side delivers."},
- {i:59,k:"Blame",m:"What happened gets pushed across the table before your own chest has to carry any of it."},
- {i:60,k:"False Love",m:"You love a picture you painted onto someone, and the front of your chest holds the picture up."},
- {i:61,k:"Rejection",m:"You shut the door on other people before it can be shut on you."},
- {i:62,k:"Avoidance Of Grief",m:"A loss gets pressed down under the breastbone and stays there at full weight, unwept."},
- {i:63,k:"Need To Be Needed",m:"Your worth runs on someone else needing you, so the heart beats hardest when you are useful."},
- {i:64,k:"Deceit",m:"The neck holds two stories at once and hands out whichever one steers the room."},
- {i:65,k:"Self-Silencing",m:"Words climb to the throat and get swallowed back down before anyone hears them."},
- {i:66,k:"People Pleasing",m:"Your voice tunes itself to the pitch the room wants and loses its own."},
- {i:67,k:"Lying",m:"A lie goes out as a shield, and the voice box tightens to keep it in place."},
- {i:68,k:"Interrupting",m:"You speak over the other person before their sentence lands, so their words never get in."},
- {i:69,k:"Comparison",m:"Your head keeps turning to measure your voice against someone else's, and yours goes quiet."},
- {i:70,k:"Excuse",m:"A reason waits at the back of your tongue before anyone asks, ready to move the fault off you."},
- {i:71,k:"Stage Performing",m:"Your voice plays a part for an audience, and the person behind it stops being heard."},
- {i:72,k:"Speaking To Be Right",m:"You talk to win the point, and the neck stays stiff until the other side gives way."},
- {i:73,k:"Manic Expression",m:"Talk pours out fast and loud to burn off pressure, and your shoulders ride up with it."},
- {i:74,k:"Talking To Avoid Feeling",m:"A steady stream of words keeps the feeling under your collarbone from ever reaching you."},
- {i:75,k:"Spiritual Language To Manipulate",m:"Holy words get worn like a costume to earn a place in the group."},
- {i:76,k:"Delusion",m:"Your eyes report a picture the facts do not back, and you trust the picture."},
- {i:77,k:"Cynicism",m:"Your eyes roll away before they finish looking, so anything good gets thrown out unseen."},
- {i:78,k:"Distrust",m:"Your gaze slides sideways looking for the catch, and nothing gets taken at its word."},
- {i:79,k:"Hypervigilance",m:"Every corner of the view gets scanned at once, and the mind runs the same check over and over."},
- {i:80,k:"Dogma",m:"A belief sets like concrete, and anything that does not fit it gets turned away at the door."},
- {i:81,k:"Overanalysis",m:"The mind turns one question over until the jaw locks and no move gets made."},
- {i:82,k:"Projection",m:"What you will not see in yourself gets cast outward, and the other person is made to carry it."},
- {i:83,k:"Paranoia",m:"Fear feeds the eye, and the mind builds a plot out of every glance."},
- {i:84,k:"Distortion",m:"The picture arrives bent, and you act on the bend instead of what is there."},
- {i:85,k:"Doubt",m:"The first signal reaches you clean, and you wave it off before it lands."},
- {i:86,k:"Idealism",m:"You hold up the picture of how it should be and refuse the one in front of you."},
- {i:87,k:"Lack Of Discernment",m:"Everything comes through the same gate unfiltered, so you trust what you never checked."},
- {i:88,k:"Doubt Of God",m:"Faith and reason stop talking across the bridge between them, and each side stands alone."},
- {i:89,k:"Hubris",m:"The steering moves from alignment to you, and you mistake your own will for the higher one."},
- {i:90,k:"Spiritual Pride",m:"An insight you earned becomes a rung you stand on above other people."},
- {i:91,k:"Nihilism",m:"The frame that gave things weight drops out, and nothing seems worth lifting."},
- {i:92,k:"Spiritual Escapism",m:"Practice becomes an exit, and you leave the room the moment it gets heavy."},
- {i:93,k:"False Humility",m:"You lower your head on purpose, and the bow is a lever."},
- {i:94,k:"Seeking Validation",m:"Your weight rests on other people's praise, and you keep going back for more."},
- {i:95,k:"Savior Complex",m:"You take on loads that are not yours and reach past where your hands should stop."},
- {i:96,k:"Condemnation",m:"Mercy is switched off, and every wrong gets a sentence instead of a hearing."},
- {i:97,k:"Need To Be Special",m:"Who you are depends on standing apart, so ordinary feels like being erased."},
- {i:98,k:"Unworthy Of God",m:"You shut the door on the divine because you have decided you do not belong inside."},
- {i:99,k:"Knowing Better Than God",m:"Your will overrides the larger order, and you argue with the current instead of reading it."},
- {i:100,k:"Denial Of Truth",m:"The insight is already in you, and you brace against it to keep it out."},
- {i:101,k:"Rejection Of Spirit",m:"You drop the line to anything larger than you, and you are left holding only yourself."},
- {i:102,k:"Fear Of God",m:"What could hold you as love reads as a threat, and you brace for the blow."},
- {i:103,k:"Anger At God",m:"Trust broke at the top, and you push against everything above you."},
- {i:104,k:"Forgetfulness",m:"You lose the thread of who you are, and each day starts without it."},
- {i:105,k:"Denial Of Light",m:"When something is shown to you, you look away and keep to the dark you know."},
- {i:106,k:"Rejection Of Unity",m:"You cut the wires that join you to everything else and call the silence independence."},
- {i:107,k:"Self-Exclusion",m:"You step outside the circle first, so nobody gets to leave you out."},
- {i:108,k:"Endless Seeking",m:"You keep moving toward an arrival you never let happen, and nothing you find is ever enough."}];
-
-/* THE THIRTEEN INFERRED SABOTEURS, keyed by the name UNNAMED gives them
-   (engine/core.js: the seat and INFER_NOUN's agent noun, or Diffuse and the
-   noun). A cluster's name is built from data, so if NODES moves an address
-   between clusters a name here can stop existing or start meaning other
-   addresses, and tests/engine.js holds both directions: every inferred
-   saboteur has a line and every line has a saboteur.
-
-   The seat is said as a place, the way CHILD's loc says it (Sacral the
-   pelvis, Solar the upper abdomen, Heart the chest), and the Crown, which
-   CHILD gives no loc, as the top of the head. A diffuse cluster has no one
-   seat and its line names none.
-
-   Diffuse Freezer is one address, Possession, because the leftover pass in
-   core.js has no floor of two where the band pass does. Its line does not
-   say several seats, so it stays true either way; whether a single address
-   should count as a saboteur at all is an engine question and is not settled
-   by a sentence.
-
-   Sadness, not Sad, in the two Mourner lines: "Sad in the chest" is not a
-   sentence, and the book itself writes Sadness in E66. */
-const INFER_SAY={
- "Sacral Drifter":"Apathy in the pelvis: appetite keeps moving and the person behind it goes slack.",
- "Sacral Striker":"Anger in the pelvis, pointed at what another person has.",
- "Solar Striker":"Anger in the upper abdomen, pushed outward as the need to win and stand above.",
- "Heart Mourner":"Sadness in the chest, reaching for what is gone and shut against the grief.",
- "Heart Recoiler":"Disgust in the chest: love held at arm's length, and being needed in its place.",
- "Throat Recoiler":"Disgust in the throat: the true sentence is swallowed and a cover story goes out.",
- "Crown Striker":"Anger at the top of the head, aimed up at anything larger than the self.",
- "Crown Mourner":"Sadness at the top of the head, the line to anything larger cut and forgotten.",
- "Diffuse Freezer":"Shock that did not cluster in any seat: the body locks and something else steers.",
- "Diffuse Bracer":"Anticipation across several seats: the body braced forward and unable to set it down.",
- "Diffuse Startler":"Surprise across several seats: each arrival lands as a jolt before it is read.",
- "Diffuse Recoiler":"Disgust across several seats: what is present is refused and another person's weight picked up instead.",
- "Diffuse Hider":"Shame across several seats, measured against others and waiting to be told it passes."};
-/* one address's line by its storage index, '' when none is on file */
-function addrSay(n){
- if(!n)return '';
- for(var j=0;j<ADDR_SAY.length;j++)if(ADDR_SAY[j].i===n.i)return ADDR_SAY[j].m;
- return '';}
-
-try{window.__at&&window.__at('engine/data/kbsay.js');}catch(e){}
 
 /* ============================================================
    THE PATTERN CATALOG. Ported from the owner's own production
@@ -19157,11 +18912,6 @@ var UNPACK_BASE={
     the share of every action read in the person's stories (verpRead, the
     six add to one whole). No sentence here says a count, a percent or a
     score, the contract group PO in tests/engine.js holds. */
- /* THE SUMMARY'S LEFT RAIL, 20 November: one flat reading from the sky down
-    to the archetype, where what is his stands lit and the rest stands dim
-    (ui/railtiles.js, rlSumPaint). His own word for the dim half: "the
-    elements that they are not are dimmed out." */
- 'rail:lit':'Lit is yours, and dim is what you are not.',
  'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
  'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
  'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
@@ -21293,24 +21043,11 @@ function verpRead(){var sh=verpShare();
    the equivalent set, but both run on input that has stripped the
    apostrophe first (lawNorm, srcNegated), so their entries are spelled
    'didnt'; this table's input has not, so these keep theirs. */
-/* AND THE SPELLING WITH NO APOSTROPHE AT ALL, TASKS.md SZA6 reopened 18
-   November. The table above named "wasn't" and nothing else, so "it wasnt
-   my fault", typed on a keyboard that never offers the mark, left 'my
-   fault' unvoided and a denial of fault read as accountability taken.
-   Measured on main at 72a28de before this line. "can't" was missing in
-   both spellings while 'cannot' was in, so "he can't hit me" read as harm
-   confirmed. 'cant' and 'wont' are also nouns, and the cost of that is a
-   phrase voided inside a three word look back, which is the side this
-   table is allowed to err on: an unread cue loses evidence, a misread one
-   inverts it. */
 var LEANNEG={'not':1,'never':1,'no':1,'none':1,'nothing':1,'nobody':1,
  'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1,
  "didn't":1,"don't":1,"doesn't":1,"won't":1,"wasn't":1,"weren't":1,
  "isn't":1,"aren't":1,"haven't":1,"hasn't":1,"hadn't":1,"couldn't":1,
- "wouldn't":1,"shouldn't":1,"can't":1,
- 'didnt':1,'dont':1,'doesnt':1,'wont':1,'wasnt':1,'werent':1,
- 'isnt':1,'arent':1,'havent':1,'hasnt':1,'hadnt':1,'couldnt':1,
- 'wouldnt':1,'shouldnt':1,'cant':1};
+ "wouldn't":1,"shouldn't":1};
 var LEAN_NEG_W=3;        /* words of look back. three is one clause of run up,
                             and wider started voiding phrases whose negator
                             belonged to the sentence before */
@@ -21384,17 +21121,8 @@ function leanKeys(){
    contain, so it stops the look back and also stops a phrase matching
    across two sentences. A comma is left as a space on purpose: it is too
    weak a break to end a negation. */
-/* THE CURLY APOSTROPHE IS FOLDED FIRST. A phone and a Mac both type
-   U+2019 for "wasn't", and the strip below kept only the straight mark, so
-   the curly one became a space: "wasn t my fault", a lone 't' that no
-   table names, and 'my fault' read as accountability taken for a sentence
-   denying it. Same inversion for "he didn't hit me", read as harm
-   confirmed. Measured on main at 72a28de. The left quote, the modifier
-   letter, the prime and the backtick go the same way because each is a
-   keyboard's apostrophe somewhere. */
 function leanNorm(text){
  return ' '+String(text||'').toLowerCase()
-  .replace(/[‘’ʼ′`]/g,"'")
   .replace(/[.!?;:\n\r]+/g,' | ')
   .replace(/[^a-z'| ]+/g,' ').replace(/\s+/g,' ')+' ';}
 
@@ -25139,10 +24867,7 @@ const PLANS=[
     sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
-/* no prototype, so a plan.tier of "constructor" off a record names no tier
-   rather than Object's own function, which the boundary read as a tier and
-   kept (validateProfile, engine/schema.js) */
-const PLAN_BY=Object.create(null); PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
    to tier one" and "unlocked on tier two and above", which is right for a
    numbered rung and wrong for Practitioner: lowercased it reads "Move to
@@ -25333,16 +25058,8 @@ function planLadder(pl){
    that expired is a punishment for a bank's timing. unpaid and canceled do
    not. The names are the processor's so that a record round trips without
    translation, and translation is where access bugs live. */
-/* NO PROTOTYPE, 18 November. The boundary keeps a status it does not know as
-   written, on purpose, and planState reads one as pending so it grants
-   nothing. On a plain object a status of "constructor" or "toString" found
-   Object's own function in PLAN_LIVE instead, and planState answered live:
-   an unknown state opened a door, which validateProfile's plan block says
-   it must never do.
-   Built without a prototype, the tables hold only the processor's words. They
-   serialise the same, so the pay cycle walk's pins on them do not move. */
-const PLAN_LIVE=Object.assign(Object.create(null),{trialing:1, active:1, past_due:1});
-const PLAN_DEAD=Object.assign(Object.create(null),{canceled:1, unpaid:1, incomplete_expired:1, paused:1});
+const PLAN_LIVE={trialing:1, active:1, past_due:1};
+const PLAN_DEAD={canceled:1, unpaid:1, incomplete_expired:1, paused:1};
 /* THE END DATE IS READ, NOT ONLY THE STATUS, 17 October, the pay cycle run
    (step h) and the systems seat: "planState ignores until, so a signed-out
    record stays paid for ever." The status is only as new as the last read of
@@ -29278,17 +28995,9 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  return pPersist(); }
 /* checked before the push, so a history nobody can read does not grow */
-/* AND A REFUSED WRITE TAKES ITS ROW BACK OUT. The row was pushed and left in
-   memory when pPersist failed, so the next save that did land wrote it to disk
-   with a timestamp from a moment the person was told nothing was saved, and a
-   second press after a refusal wrote two. pSaveSnap below already rolled its
-   staged row back; this is the same truncation. */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- var n=CURP.history.length;
- CURP.history.push(snapshot(CURP));
- if(!pPersist()){ CURP.history.length=n; return false; }
- return true; }
+ CURP.history.push(snapshot(CURP)); return pPersist(); }
 /* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
    changes the working state and then snapshots it. Calling pSave followed
    by pSnap wrote twice: the first write could land while the second failed,
@@ -29953,20 +29662,7 @@ function validateProfile(o,ctx){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
   ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed','studio'].forEach(function(k){
-   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});
-  /* THE ONE TEXT PREFERENCE, the Character page's last open mask, written by
-     uiSet('chmask') from ui/character.js, ui/drills.js and ui/storyui.js. The
-     list above is booleans only and never named it, so it was written to disk
-     on every pick and dropped on every load, and the page opened on Child
-     again after each reload: the exact failure the comment on that list
-     describes. It is a mask's name or it is refused by name. The roster is
-     MASKS and not MASKS_READ because ui/drills.js writes from MASKS; a hidden
-     mask is still a real one, and chLast in ui/character.js already opens the
-     first readable mask when the one kept is not shown. */
-  if(o.ui.chmask!==undefined&&o.ui.chmask!==null){
-   if(typeof o.ui.chmask==='string'&&MASKS.some(function(m){return m.nm===o.ui.chmask;}))
-    p.ui.chmask=o.ui.chmask;
-   else errs.push('ui.chmask is not a mask: '+JSON.stringify(o.ui.chmask).slice(0,40));}}
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
@@ -30313,11 +30009,7 @@ function validateProfile(o,ctx){
    var lp='history['+i+'].lawNow';
    if(typeof x.lawNow!=='object'||Array.isArray(x.lawNow))errs.push(lp+' is not an object');
    else{
-    /* no prototype: on a plain object WAS.constructor is Object itself, so a
-       key of "constructor" or "toString" read as an old law name and was kept
-       under the function's text as its key. pImport took it and the next boot
-       loaded it back. A key that names no law is refused by name. */
-    var WAS=Object.create(null); Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
+    var WAS={}; Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
     var lw={};
     Object.keys(x.lawNow).forEach(function(k){
      var nm=SINAMES.indexOf(k)>=0?k:(WAS[k]||null);
@@ -34295,15 +33987,8 @@ try{window.__at&&window.__at('engine/intakemore.js');}catch(e){}
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
    ============================================================ */
-/* NO PROTOTYPE, 18 November. Every seat check in the product is K2BAND[k]
-   with k off a record, and on a plain object a key of "constructor" or
-   "toString" answers with Object's own function, which is truthy. So the
-   boundary took story.entries[i].bands.constructor as a seat (vEntry,
-   engine/schema.js), and the daily reader then pushed that function in as a
-   seat name and the Ritual surface threw reading it back. A table with no
-   prototype holds only the seven keys written here, at every lookup at once. */
-var K2BAND=Object.assign(Object.create(null),{crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
- solar:'Solar',sacral:'Sacral',root:'Root'});
+var K2BAND={crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
+ solar:'Solar',sacral:'Sacral',root:'Root'};
 var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
@@ -34719,35 +34404,11 @@ function maskedSay(runs){
    produced. A comma is left out on purpose, the same ruling leanNorm
    already made: it is too weak a break to end a negation. */
 var SENT_END=/[.!?;:\n\r]/;
-/* THE BOUNDARIES ARE FOUND ONCE PER COPY, NOT ONCE PER HIT, SZA9 of round SZ.
-   clauseFloor walked back from every hit and clauseCeil walked forward, each
-   until it met a sentence end, and dictated speech has none, so each walk
-   crossed the whole entry and the parse grew with the square of its length:
-   16,000 unpunctuated characters took 193 ms where the same words punctuated
-   took 37, most of it in these two walks. The same rule, a space whose raw
-   character ends a clause, is now read in one pass into an ascending list
-   kept on the copy itself, keyed by the text it was read against, and each
-   walk becomes a binary search on that list. The answer is the same index
-   the walk returned, because the walk returned the nearest boundary and the
-   search finds the nearest boundary. */
-function clauseEnds(t,nm){
- if(nm._ends&&nm._endsT===t)return nm._ends;
- var out=[], s=nm.s;
- for(var k=0;k<s.length;k++)
-  if(s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))out.push(k);
- nm._ends=out; nm._endsT=t;
- return out;}
-/* the index of the first entry in a sorted list that is at least v */
-function sortedAtLeast(a,v){
- var lo=0, hi=a.length;
- while(lo<hi){var mid=(lo+hi)>>1; if(a[mid]<v)lo=mid+1; else hi=mid;}
- return lo;}
 function clauseFloor(t,nm,at){
  t=String(t||'');
- var a=clauseEnds(t,nm), top=Math.min(at,nm.s.length-1);
- if(top<0)return -1;
- var i=sortedAtLeast(a,top+1)-1;
- return i>=0?a[i]:-1;}
+ for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
+ return -1;}
 /* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
    copy and by the same rule: a space whose raw character ends a clause opens
    the next one, so a word whose own leading space is that boundary belongs
@@ -34810,12 +34471,6 @@ function wordsOf(t,nm){
    nm.s, so a mark and a list can quote from the no to the word on the letters
    typed. srcNegated is the decision; this only finds which word it saw. */
 var NEG_NOT_DENY=['stop','stops','stopped','help'];
-/* the index of the first word whose at is at least v, wordsOf's list being
-   in order of at */
-function wsAt(ws,v){
- var lo=0, hi=ws.length;
- while(lo<hi){var mid=(lo+hi)>>1; if(ws[mid].at<v)lo=mid+1; else hi=mid;}
- return lo;}
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
@@ -34830,12 +34485,7 @@ function sniffDeny(t,nm,hits){
   var f=clauseFloor(t,nm,h.at);
   cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
   if(!srcNegated(nm.s,h.at,f))return;
-  /* the last two words before the hit and inside its clause. This was a
-     filter over every word in the entry, once per denied hit, the third
-     place SZA9 grew with the square of an entry. ws is in order of at, so
-     the same two are found by a search and a step back. */
-  var lo0=Math.max(f,0), j=wsAt(ws,h.at), win=[];
-  while(j>0&&win.length<SRC_NEG_W&&ws[j-1].at>=lo0)win.unshift(ws[--j]);
+  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 /* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
@@ -34856,39 +34506,19 @@ function sniffDeny(t,nm,hits){
    Both require their full pair, in this order, so "if I'm being honest, I
    was angry" (no would after) and "I'm used to being ignored" (no anymore
    or no longer after) are untouched and stay live, as they should. */
-/* the forward walk, read off the same list clauseFloor reads. A NaN at never
-   entered the old loop and so answered the end of the text, kept here. */
 function clauseCeil(t,nm,at){
  t=String(t||'');
- if(!(at<nm.s.length))return nm.s.length;
- var a=clauseEnds(t,nm), i=sortedAtLeast(a,at);
- return i<a.length?a[i]:nm.s.length;}
-/* WHERE A PHRASE SITS IN THE COPY, every start, found once per copy. The
-   second half of SZA9: sniffTense sliced the whole clause on each side of
-   every hit and searched the slices, and with no sentence end the clause is
-   the whole entry, so this too grew with the square of it.
-   phraseIn(nm,p,lo,hi) says whether p starts at or after lo and ends at or
-   before hi, which is exactly whether the old slice nm.s.slice(lo,hi) with a
-   space put on the end held it: a hit's at is its own leading space, and the
-   clause ceiling is a space or the end of a copy that always closes on one,
-   so the space the old code added was already the next character of nm.s,
-   or, at the very end, sat after a space where no phrase here can use it. */
-function phraseIn(nm,p,lo,hi){
- var c=nm._ph||(nm._ph={}), a=c[p];
- if(!a){a=c[p]=[]; for(var k=nm.s.indexOf(p);k>=0;k=nm.s.indexOf(p,k+1))a.push(k);}
- var i=sortedAtLeast(a,lo);
- return i<a.length&&a[i]+p.length<=hi;}
+ for(var k=at;k<nm.s.length;k++){
+  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
+ return nm.s.length;}
 function sniffTense(t,nm,hits){
- var n=nm.s.length;
  hits.forEach(function(h){
   if(h.neg)return;
   var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
-  /* the old before was nm.s.slice(f,h.at)+' ', the old after
-     nm.s.slice(h.at,c)+' '; see phraseIn for why these bounds are the same */
-  var bEnd=h.at+1, aEnd=Math.min(c+1,n);
-  var pastVoid=phraseIn(nm,' used to ',f,bEnd)&&
-   (phraseIn(nm,' anymore ',h.at,aEnd)||phraseIn(nm,' any more ',h.at,aEnd)||phraseIn(nm,' no longer ',h.at,aEnd));
-  var condVoid=phraseIn(nm,' if ',f,bEnd)&&phraseIn(nm,' would ',h.at,aEnd);
+  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
+  var pastVoid=before.indexOf(' used to ')>=0&&
+   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
+  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
   if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
@@ -34988,20 +34618,7 @@ var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there',
  'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
  'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
  'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
- 'april','may','june','july','august','september','october','november','december',
- 'feel','felt','feeling','was','been','being','got','getting','woke','spent','kind','kinda','sort',
- 'pretty','super','bit','kept','went'];
-/* THE LAST ROW IS THE WRITER WITH THE I LEFT OFF, 18 November, reopening
-   SZA4. "Felt furious all day." read nothing while "felt furious all day."
-   and "I felt furious all day." both read solar: a diary drops its subject,
-   the phone capitalises the verb it starts on, and felt was not a word this
-   reader knew, so whoStartName took it for a name and held the writer's own
-   anger as someone else's. The plural strip SZA4 added cannot reach it,
-   because a past tense is not a plural. These are the words a subjectless
-   sentence about the writer opens on, a verb of feeling or being with no
-   subject, or a hedge (kind of, pretty, a bit) in front of one; feels is
-   reached through the plural strip from feel and is not listed twice.
-   A real name is untouched, because none of these is one. */
+ 'april','may','june','july','august','september','october','november','december'];
 function whoKnown0(w){
  var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
  if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
@@ -36951,24 +36568,9 @@ var SRC_NEG_W=2;
    srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
    boundary, the exact width and word list this was measured against
    stand exactly as they were. */
-/* AND IT READS BACK FROM at, NOT FORWARD FROM f, SZA9 of round SZ. With no
-   sentence end in the text, which is the ordinary shape of dictated speech,
-   f is 0, so every mention sliced and split the whole entry up to itself to
-   keep two words, and the parse grew with the square of the entry: 16,000
-   unpunctuated characters took 193 ms where the same words punctuated took
-   37. The window now starts 32 characters back and doubles until it holds
-   one word more than the run needs, or reaches f. Its first word may be cut
-   in half, and that is why it needs one more: the cut word is never in the
-   run, so the run is the same words the whole slice would have given, and
-   when the window reaches f it is the whole slice. */
 function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
- var s=String(src), w=32, lo, before;
- for(;;){
-  lo=Math.max(f,at-w);
-  before=s.slice(lo,at).trim().split(' ');
-  if(lo===f||before.length>SRC_NEG_W)break;
-  w*=2;}
+ var before=String(src).slice(f,at).trim().split(' ');
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 
@@ -40354,8 +39956,7 @@ try{window.__at&&window.__at('engine/birth.js');}catch(e){}
    22 and 33 survive reduction at every step, including inside a
    single name part, because a master reduced is a master lost.
 
-   KARMIC DEBT is reported off the reduction itself and not inferred:
-   the total and every step it passes through on the way to one digit.
+   KARMIC DEBT is reported off the unreduced total and not inferred.
    13, 14, 16 and 19 are the four, and a 4 that came from 13 is not
    the same 4 as one that came from 22.
 
@@ -40433,18 +40034,7 @@ function numAcross(parts,mode){
  return {each:each, byPart:numReduce(each.reduce(function(a,v){return a+v;},0)),
   flatTotal:flat, flat:numReduce(flat)};}
 
-/* DEBT IS READ OFF EVERY STEP OF THE WAY DOWN, not off the total alone. This
-   compared only the unreduced total against the four, so 85, which reduces
-   85 to 13 to 4, reported no debt while passing straight through 13, and a
-   bare 13 was the only route to one. The walk stops at the first of the four
-   it lands on. It ignores the master stop on purpose: a master reduces to a
-   single digit in one step and so cannot reach a debt number below it. */
-function numDebt(total){
- var v=Math.abs(total|0);
- while(v>9){
-  if(NUM_DEBT.indexOf(v)>=0)return v;
-  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);}
- return null;}
+function numDebt(total){return NUM_DEBT.indexOf(total)>=0?total:null;}
 
 /* what each number does, by the position it is standing in. The same digit is
    not the same statement in the soul as it is in the personality: one is what
@@ -41741,11 +41331,9 @@ var DLY_TPL=[
  {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
  {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
  {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
- {id:'show.seat.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, touched the {1} point.'},
  {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
- {id:'show.cue.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
@@ -42429,21 +42017,11 @@ function dlyComposeIn(p,now,opt){
   var rd=dlyRead(ctx,s.idx,s.seat), ev=dlyStoryEv(s.ids);
   if(s.rung==='windowed')cands.push(dlyCand('show.seat.new','showing',[s.span,s.seat,s.base],ev,'inferred','windowed',{read:rd,dom:s.seat}));
   else if(s.rung==='repeated')cands.push(dlyCand('show.seat','showing',[s.span,s.seat,s.days],ev,'inferred','repeated',{read:rd,dom:s.seat}));
-  /* the rung is once when the entries sit on one day, and that is a count of
-     days, not of entries. Picking the sentence on the rung printed "one entry"
-     over two and three entries logged the same day, so the sentence is picked
-     on s.n, the entries themselves, and the rung stays once either way. */
-  else if(s.n===1)cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));
-  else cands.push(dlyCand('show.seat.day.h','showing',[dlyDayWord(s.last),s.seat,s.n],ev,'inferred','once',{read:rd,dom:s.seat}));});
+  else cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));});
  (by.cue||[]).forEach(function(c){
   var rung=(c.ents>=2&&c.days>=2)?'repeated':'once', ev=dlyStoryEv(c.ids);
   if(rung==='repeated')cands.push(dlyCand('show.cue','showing',[c.span,c.nm,c.total,c.ents],ev,'inferred','repeated'));
-  /* the same defect the seat sentence above had: rung once means the entries
-     share one day, and the sentence was picked on the rung, so two and three
-     entries logged on 9 March with the same cue each read "So far one entry".
-     It is picked on c.ents, the entries that carried the cue, instead. */
-  else if(c.ents===1)cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));
-  else cands.push(dlyCand('show.cue.day.h','showing',[dlyDayWord(c.last),c.nm,c.ents],ev,'inferred','once'));});
+  else cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));});
  (by.opened||[]).forEach(function(o){
   if(o.n===1)cands.push(dlyCand('show.opened.1','showing',[o.span,dlyDayWord(o.latest)],o.ev,'known','once'));
   else cands.push(dlyCand('show.opened','showing',[o.span,o.n,dlyDayWord(o.latest)],o.ev,'known','repeated'));});
@@ -42866,39 +42444,7 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
     X7). aim is the stored word for the daily intention, engine/daily.js. */
  'summaries','summary','mirror','aim','aims'];
 
-/* A QUEUE THAT IS NOT A LIST IS SET ASIDE, NEVER THROWN AT AND NEVER EATEN.
-
-   This returned whatever JSON.parse gave. Measured 18 November on a key
-   holding {}, 7, true or null: obQueue threw a TypeError at q.concat or
-   q.length, so Send on a fresh comment threw, nothing was queued and nothing
-   was said, and the words were gone. A key holding "abc" was worse, because a
-   string has a length and a concat: Send answered queued, 18, and wrote
-   "abc[object Object]" over the key. And a key that did not parse came back
-   as [] in silence, so the first Send after it wrote over the only copy.
-
-   The bytes may be an older build's queue with somebody's words in it, so
-   they get pStore's treatment (storeSetAside, engine/schema.js): copied
-   verbatim under a key of their own carrying the time, read back to prove it
-   landed, and only then is the outbox key cleared so the next read is clean
-   and does not copy them again. Not storeSetAside itself, because that one
-   writes under the profile key and tells the host the profile store could not
-   be read, which would be a lie about the wrong record. If the copy did not
-   land, the key is left alone and obQueue refuses to write over it. */
-var OB_UNREAD=null;
-function obSetAside(txt,why){
- var key=OBKEY+'.unreadable.'+Date.now().toString(36), kept=false;
- try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
- if(kept){ try{ STORE.set(OBKEY,'[]'); }catch(e){} }
- OB_UNREAD={why:why, bytes:txt.length, key:kept?key:null};
- return [];}
-function obStore(){
- var txt, raw;
- OB_UNREAD=null;
- try{ txt=STORE.get(OBKEY); }catch(e){ return []; }
- if(!txt) return [];
- try{ raw=JSON.parse(txt); }catch(e){ return obSetAside(String(txt),'it does not parse'); }
- if(!Array.isArray(raw)) return obSetAside(String(txt),'it is not a list');
- return raw;}
+function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
 function obWrite(q){
  if(!STORE_BOUND) return false;
  try{ STORE.set(OBKEY,JSON.stringify(q)); return true; }catch(e){ return false; } }
@@ -42963,9 +42509,6 @@ function obQueue(e){
  if(!STORE_BOUND) return {ok:false, why:'storage is blocked in this browser, so '
   +'there is nowhere to hold this. Copy it somewhere before you leave the page.'};
  var q=obStore();
- if(OB_UNREAD&&!OB_UNREAD.key) return {ok:false, why:'the outbox on this device '
-  +'could not be read or copied somewhere safe, so nothing was written over it. '
-  +'Copy this somewhere before you leave the page.'};
  if(q.length>=OB_MAX) return {ok:false, why:'there are already '+OB_MAX
   +' waiting to send and nowhere to send them, so this one was not taken.'};
  var next=q.concat([e]);
@@ -43852,7 +43395,7 @@ if(typeof module!=='undefined'&&module.exports){
  module.exports={
   /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
-                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, ADDR_SAY:ADDR_SAY, INFER_SAY:INFER_SAY, addrSay:addrSay, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
                   PATTERN96:PATTERN96, PATTERN96_BY_LAYER:PATTERN96_BY_LAYER, RESEARCHANCHOR:RESEARCHANCHOR,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
@@ -44080,7 +43623,7 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -44707,17 +44250,8 @@ function riseLevers(seat){
  /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
     touched, because a probe in this repository once read shared state left by
     another run and reported a whole lane as empty. */
- /* HELD FOLDS IN S.addr, THE WAY compute.js DOES, 18 November. This copy of
-    the body was written before the named-address layer landed on 26 October
-    and read only ch[n.cf], so for anyone whose stories named a body place
-    every lever here started from a seat lighter than the one seatTrans reads.
-    Measured on a field with 5 on each Heart address: the law lever claimed
-    +0.160 where raising that law and recomputing moved the seat +0.006, and
-    with every law already at 10 it claimed +0.110 for a move that changes
-    nothing. S.addr is read and never copied into the release runs, because a
-    release empties the axis and nothing in ui/release.js drains S.addr. */
  var openOf=function(n,ch,rp,relief){
-  var held=n.cf?Math.max(0,Math.min(10,((ch[n.cf]||0)+(S.addr[n.i]||0))*n.susc*(1-relief*0.42))):0;
+  var held=n.cf?Math.max(0,Math.min(10,(ch[n.cf]||0)*n.susc*(1-relief*0.42))):0;
   var rep=n.cf?Math.max(0,Math.min(10,(rp[n.cf]||0)*(0.72+0.28*relief))):0;
   var sq=Math.max(0,Math.min(10,held-rep*0.86));
   var pole=Math.max(0,Math.min(10,rep-held));
@@ -66254,12 +65788,8 @@ function srcGuessAt(b){return 'My guess is it sits '+srcPlace(b)+'.';}
    person's record and not only from their words: "from your words and your
    reading". One concept, one mark, one tip, on every surface. */
 var SRC_MARK_TIP='Source AI wrote this from your words and your reading. Where it says my guess, it is a guess until you say it fits.';
-/* tip is for a line written from something other than a person's words and
-   reading, round LY: the wisdom school's composed definitions (kbSaid, ui/
-   drills.js). Still one mark and one name; only what it was written from is
-   said truly. Every other caller passes nothing and gets the house tip. */
-function srcMark(tip){
- return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(tip||SRC_MARK_TIP)+'">'
+function srcMark(){
+ return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(SRC_MARK_TIP)+'">'
   +'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
   +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
 /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring
@@ -71061,8 +70591,7 @@ function sumRender(){
  sumWire();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);
- sumRunPaint(r);}
+ if(typeof sumDayPaint==='function')sumDayPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -71381,16 +70910,8 @@ function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
- /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
-    moved to is gone. His words on the live page: "where it says oscillating
-    50%, just get rid of that entirely." That was sumStatus(), the band, its
-    state and "Where it goes", and the gift rode inside it, so deleting the
-    band without moving the gift would have taken the one line tests/gift.js
-    holds on a new person's first screen off the page with it. Under the plate
-    it is above the fold at 390 as well, where inside the side column it sat
-    at 918 on an 844 screen (TASKS.md #137). */
  return sgZone('who','Who this is',
-  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -71399,13 +70920,7 @@ function sumWho(r,B,full){
    so it still finds it here), and sumGift() still writes #sumgift with the
    same id and the same sentence tests/gift.js reads on a brand new person's
    first screen (inView at scroll 0 holds: this column sits above the fold
-   at the widths that gate opens at).
-   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
-   just get rid of that entirely." That is this block, the band's word, its
-   state and Where it goes, so sumFull stopped calling it and the gift moved
-   under the plate (sumWho). Kept rather than deleted on the same footing as
-   sumOutput below: free for a surface that wants the band, and the tier's
-   colour still reads on the plate's own ring. */
+   at the widths that gate opens at). */
 function sumStatus(r,B){
  var t=TIER_BY[r.tier]||null;
  /* no band line at all while CQ is still filling: "N laws to answer" was
@@ -71645,7 +71160,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth();
+ var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -71683,54 +71198,37 @@ function sumFull(r){
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+drv+'</div>'
+   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
- /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
-    beneath your patterns... what's running is moving to the left panel. And
-    then the rest of that looks like it's in analytics." Under it stood the
-    celestial strip (sumMarks), What is running, What it costs, Numerology and
-    the Four lenses and Birth comparison folds. Every one of them is still
-    drawn somewhere a person can reach: the celestial placements and every
-    numerology number are the left rail's Root Energetics, which this tab now
-    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
-    READING"); the blueprint and the archetypes are the rail's own grids; the
-    masks are the rail's new What is running (sumRunPaint below); the nine,
-    the seats, the binds and integrity over time are Analytics. Only the calls
-    went. The functions stay, because Analytics, the unread page and the gates
-    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
-    stays, because Your patterns has had no other home since 14 November and
-    deleting it here would delete it from the product. The converge() this
-    function opened with went too: the Birth comparison fold was its only
-    reader on this page. */
-
-/* ============================================================
-   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
-   the same ruling. The rail's own grids already carry what that card printed
-   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
-   copying sumBlueprint and sumArch across would print each of them twice on
-   one screen. The masks are the one part the rail did not carry, so that is
-   all that moves: the first three as the rows they always were, and the rest
-   one tap down under the fold they always had. sumChain is not carried. He
-   named the chain as junk on 18 November, in the Psyche ruling recorded at
-   shell/body.html, and this is that same chain.
-
-   Painted from sumRender, so it is always the reading this page holds, and
-   emptied on an unread page, where there is nothing running to show and a
-   stale list would be a reading of somebody else.
-   ============================================================ */
-function sumRunPaint(r){
- var h=document.getElementById('sumrun'); if(!h)return;
- var body=r&&!r.unread?sumMasks(r,0,3):'';
- h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
- var sec=h.closest?h.closest('.lsec'):null;
- if(sec)sec.classList.toggle('sum-empty',!body);
- /* the rows keep data-mask, so the one listener the page body uses opens them
-    here too, rather than a second copy of its routing */
- if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
-  h.addEventListener('toggle',sumFoldKeep,true);}}
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
+  +sumMarks(B,r)
+  +'<div class="sg-two sg-even">'
+   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
+    +sumBlueprint()
+    +'<div class="sg-gap">'+sumArch(r)+'</div>'
+    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
+    +'<div class="sg-gap">'+sumChain(r)+'</div>'
+    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
+   +'</section>'
+   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
+    +sumGlance(r,true)
+    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
+    +sgFold('seats','Heaviest points',sumSeats())
+    +sgFold('bind','Binds',sumBind())
+    +sgFold('ig','Integrity over time',sumIg(r))
+   +'</section>'
+  +'</div>'
+  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
+     made, inside a closed <details> at the very bottom; now a card on the
+     page itself, so Path, Expression, Soul urge, Personality, Birthday and
+     Maturity read without a tap. */
+  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
+  +'<div class="sg-folds">'
+   +sgFold('lens','Four lenses',sumLens(r,true))
+   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
+  +'</div>';}
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
@@ -71843,15 +71341,9 @@ function sumWire(){
  /* a fold remembers that it was opened through the next repaint, because
     the surface is rewritten whole whenever a reading changes. toggle does not
     bubble, so it is caught on the way down. */
- h.addEventListener('toggle',sumFoldKeep,true);
- h.addEventListener('click',sumClick);}
-/* NAMED, 20 November, and nothing in them changed. They were the two
-   anonymous handlers above, and What is running moved to the left rail
-   (sumRunPaint) carrying rows whose data-mask this routing already answers,
-   so the rail attaches the same two functions rather than a copy of them. */
-function sumFoldKeep(ev){var d=ev.target;
- if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
-function sumClick(ev){
+ h.addEventListener('toggle',function(ev){var d=ev.target;
+  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
+ h.addEventListener('click',function(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -71892,7 +71384,7 @@ function sumClick(ev){
   if(b.hasAttribute('data-gl'))return runCoreDrill();
   /* an archetype or a mask has no drill of its own yet, so the core reading is
      the honest destination rather than a button that does nothing. */
-  return runCoreDrill();}
+  return runCoreDrill();});}
 
 try{window.__at&&window.__at('ui/summary.js');}catch(e){}
 /* ============================================================
@@ -75450,9 +74942,7 @@ function avSeatAdd(b){
      own commit, because this is a story entry written by a second door */
   CURP.story.entries.push({t:new Date().toISOString(), text:pr.notbe, imprints:k, bands:p.bands,
    lex:LEX_VERSION});
-  /* one write for the entry and its snapshot, the way the Story's own
-     commit makes it (pSaveSnap, engine/schema.js), not two that can half land */
-  pSaveSnap();
+  pSave(); pSnap();
   var sv=(typeof saveState==='function')?saveState():{ok:true};
   msg=sv.ok?(old?'Changed. ':'Added. ')+k+(k===1?' imprint':' imprints')+' written to the field.'
    :'The story is kept, and the journal entry was not saved. Storage is full or blocked.';
@@ -77129,27 +76619,12 @@ function renderIntake(){
   IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
- /* THROUGH profCreate, the account page's door (accProfStart, ui/account.js).
-    This called pNew, which pushes the profile, points CURP at it and ignores
-    what pPersist answered, so a full or blocked store left the person working
-    on a profile that was never written, with nothing said, and gone at the
-    next reload. It also skipped profHold, so the working state of the profile
-    being left was not written back first. profCreate validates the name,
-    holds, loads, saves and rolls the list back on a refused write, and the
-    refusal is said in the account page's own words (accWhy). */
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
-  if(!n)return;
-  if(!profCreate(n)){
-   status('Nothing was started. '+accWhy(),'fail');
-   renderIntake();return;}
-  IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;syncCh();syncLw();syncSoul();renderIntake();render();
-  status(accOpenSay(CURP)+' It starts blank.','ok');};
+  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
  var sb=document.getElementById('iqsave');
  /* The button used to read "Saved" whether or not anything was written. It
     reports what happened now, and the status region carries the detail. */
- /* one write, through pSaveSnap. pSave then pSnap was two: the record could
-    land while its snapshot was refused, and the status read only the second. */
- if(sb)sb.onclick=function(){pSaveSnap();
+ if(sb)sb.onclick=function(){pSave();pSnap();
   var ok=statusSaved();
   sb.textContent=ok?'Saved':'Not saved';
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
@@ -90423,13 +89898,9 @@ function nodeDrillHtml(n,o){
   +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
-  /* no fetter had a meaning on file, only the one word it shows up as, so the
-     wisdom school printed the gap on all 108 (kbGap). Each now has one line
-     composed from its own row (ADDR_SAY, engine/data/kbsay.js), and since it
-     is composed and not the book's it wears the Source AI mark. Still only in
-     the wisdom school, where the gap printed: the Field's rail card is
-     identity only on his 18 November ruling (runFetterDrill, below). */
-  +(anchorSeat(n)?'':kbSaid(addrSay(n),true))
+  /* no fetter has a meaning on file, only the one word it shows up as, so in
+     the wisdom school it says so (kbGap) */
+  +(anchorSeat(n)?'':kbGap())
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
      so it never reaches "It shows up as field." */
@@ -90936,11 +90407,8 @@ function runFetterDrill(c){
      CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
      pending (Shock, Surprise, Anticipation), so it is not printed on a card
      that says "toward Trust".
-     Until that is ruled the card says it has no meaning on file.
-     Where the two already agree, Shame toward Worth and Disgust toward
-     Acceptance, there is nothing to rule, and the card prints the book's
-     own entry, unmarked because it is quoted (childBookSays). */
-  +kbSaid(childBookSays(c),false)
+     Until that is ruled the card says it has no meaning on file. */
+  +kbGap()
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -90982,29 +90450,6 @@ function runSabDrill(s){
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
   +kbSabBlock(s.nm)
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
- rdShell(h);}
-
-/* A HYPER COMPLEX THE READING IS NOT CARRYING, round LY. The six families had
-   their line (HCX_LIB.d) and a whole researched card (HCXCARD, through
-   kbHcxBlock) and no deck to be found from, so the wisdom school could only
-   reach them through a saboteur's "It belongs to the ... family". The deck is
-   kbRowsOf('hcx'); a running one opens runDrill like a running saboteur does,
-   and this is the card for one that is not. Nothing here is new writing:
-   the line is HCX_LIB's own, the card is kbHcxBlock's, and what feeds it is
-   read off ALL_SAB by family name. sub is never printed, the same rule
-   kbSabLinked keeps: it is a diagnostic name. */
-function runHcxDrill(f){
- if(!f)return;
- var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
- var feeds=ALL_SAB.filter(function(s){return s.hcx===f.nm;});
- var h='<div class="pm-eye">Hyper complex, not running</div><div class="ad-nm">'+esc(f.nm)+'</div>'
-  +'<div class="ad-sub">Held at the '+esc(f.b==='3rd Eye'?'3rd eye':String(f.b).toLowerCase())+'</div>'
-  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(cap(f.d))+'.</p>'
-  +'<div class="pm-eye">What it would take</div><p class="ad-p">It forms when two complexes of this '
-  +'family run at once, or one runs hard. Yours are not carrying enough for it to form.</p>'
-  +kbHcxBlock(f.nm)
-  +(feeds.length?'<div class="pm-eye">Fed by '+feeds.length+' saboteurs</div><p class="ad-p">'
-   +feeds.map(function(s){return esc(s.nm);}).join(', ')+'.</p>':'');
  rdShell(h);}
 
 /* THE DOMAIN, read clear and read distorted. The book prints both readings
@@ -91127,17 +90572,9 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book and cannot have one, since
-    the book names 33 and these are built from a seat and a child emotion
-    (UNNAMED, engine/core.js). It printed the gap on all thirteen; each now
-    has one line composed from that pair (INFER_SAY, engine/data/kbsay.js),
-    marked as Source AI's because it is not the book's. kbSaid keeps it to
-    the wisdom school, where the gap was, and a name with no line still
-    prints the gap. No kbSabLinked here: it reads SAB_LIB, which holds no
-    inferred one, and would say the body map is missing for a pattern whose
-    addresses the card already lists under Made of. */
- var def=SABDEF[KB_KEY(nm)];
- if(!def)return INFER_SAY.hasOwnProperty(nm)?kbSaid(INFER_SAY[nm],true):kbGap();
+ /* an inferred saboteur has no entry in the book, so in the wisdom school it
+    says it has no meaning on file rather than printing nothing under a name */
+ var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
  var h=c.h||def.d, n=c.n||def.i;
  return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
@@ -91193,37 +90630,6 @@ var KB_NOTE='No meaning on file yet.';
 function kbGap(){
  return (typeof kbAnsOn==='function'&&kbAnsOn())
   ?'<div class="pm-eye">What it is</div><p class="ad-p">'+KB_NOTE+'</p>':'';}
-/* WHAT IT IS, WHERE THE GAP STOOD, round LY. The same place and the same rule
-   as kbGap: only while a wisdom school answer is open, and the gap itself
-   when t is empty, so a row with nothing on file is never padded. composed
-   says the line is Source AI's and not the book's, and then it wears the one
-   mark and the src-ai treatment, never the icon alone (the 15 November
-   ruling, srcMark in ui/storyui.js). Its tip says what this line was written
-   from: the house tip says "from your words and your reading", and a
-   definition of Scarcity is written from neither, so printing that tip here
-   would be the mark telling a person something false about itself. */
-var KB_SAID_TIP='Source AI wrote this line from what the instrument holds about this one thing. It is not quoted from the book.';
-function kbSaid(t,composed){
- if(!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
- if(!t)return kbGap();
- return '<div class="pm-eye">What it is</div>'
-  +(composed&&typeof srcMark==='function'
-   ?'<p class="ad-p src-ai">'+srcMark(KB_SAID_TIP)+'<span class="src-ai-t">'+esc(t)+'</span></p>'
-   :'<p class="ad-p">'+esc(t)+'</p>');}
-/* THE BOOK'S OWN ENTRY FOR A CHILD EMOTION, only where the book and CHILD
-   name the same opposite. HARM's emotion rows are titled "Shame · Worth", so
-   the two agree when the title is exactly the emotion and CHILD's own opp.
-   Read, not listed: on 20 November that is Shame and Disgust, and the day he
-   rules one of the other seven, whichever table moves, this starts printing
-   it with no change here. Fear, Anger, Apathy and Sad name a different
-   opposite and Shock, Surprise and Anticipation have none yet, so for those
-   this returns '' and the card keeps the gap. BOOK-ERRATA.md holds both
-   wordings for each. */
-function childBookSays(c){
- if(!c||!c.opp)return '';
- var want=c.nm+' · '+c.opp;
- for(var i=0;i<HARM.length;i++)if(HARM[i].a==='emotion'&&HARM[i].t===want)return HARM[i].d||'';
- return '';}
 /* the meaning of one of the 21 laws, read off the universal law of the same
    name. SI and HARM's spirit axis are one set by name (kbRowsOf builds the
    Moral Integrity deck by walking one into the other), so the text is held
@@ -92293,13 +91699,6 @@ function kbRowsOf(sec){
   var fam=kbFind(HCX_LIB,s.hcx), live=kbFind(r.sabs,s.nm);
   out.push(kbRow('sab', s.nm, s.hcx||'unnamed', (fam&&fam.b)||'Heart',
    kbPct(live?live.w:0), (fam&&fam.ic)||null, s));});
- /* the six families. The live weight is the running hyper complex of that
-    name from computeSeen, the same tier read the saboteur deck uses, and an
-    overshoot (over) is a different pattern under FAM_POLE's name, so it is
-    never counted as the family itself. The seat is HCX_LIB's own b. */
- if(sec==='hcx') HCX_LIB.forEach(function(f){
-  var live=r.hys.filter(function(h){return h.nm===f.nm&&!h.over;})[0];
-  out.push(kbRow('hcx', f.nm, f.b, f.b, kbPct(live?live.w:0), f.ic||null, f));});
  /* HIGH IS GOOD HERE AND THE COLOUR MUST NOT SAY OTHERWISE. A law at 90 is a
     law kept, not an alarm, and this product has shipped that defect twice.
     The ring takes the seat colour like every other deck and never the alarm.
@@ -92480,14 +91879,8 @@ function kbRowsOf(sec){
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
  ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
- ['law','Laws of Moral Integrity'],['hcx','Hyper complexes'],['sab','Saboteurs'],
- ['fetter','Child emotions'],['addr','Fetters']];
-/* HYPER COMPLEXES GET A DECK, round LY. The six families were written in
-   full (HCX_LIB and HCXCARD) and had no deck, so the page that lists every
-   thing in the instrument listed the saboteurs and stopped one rung short.
-   It sits directly above Saboteurs because that is the stack's own order,
-   saboteurs compounding up into a family, and the list already runs from
-   the laws down to the body. */
+ ['law','Laws of Moral Integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
+ ['addr','Fetters']];
 
 /* whether nothing has been read, asked once and never typed */
 function kbUnread(){return unreadNow();}
@@ -92498,7 +91891,6 @@ const KB_OF={
  addr:'',
  fetter:'of the axis held',
  sab:'of the pattern at full weight',
- hcx:'of the pattern at full weight',
  law:'of the law kept, where high is the law holding',
  mask:'of the mask at full weight',
  dom:'of your strongest blueprint lobe',
@@ -92529,7 +91921,7 @@ function kbMatch(row,q){
    names and not words the product uses anywhere a person can see. node reads
    Fetter and fetter reads Child emotion, which is the rename: the keys are
    identity and the labels are what a person sees. */
-const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',hcx:'Hyper complex',
+const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
  harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
@@ -92554,7 +91946,6 @@ function kbSubIn(x){
  if(x.k==='mask')return o.v||'';
  if(x.k==='harm')return x.fam||'';
  if(x.k==='law')return '';
- if(x.k==='hcx')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
 /* one row, the markup it always had, so the drills and the gates read it as
@@ -92599,7 +91990,7 @@ function kbSeatLine(b){
  return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
 /* the deck a row came from, by its kind. Four kinds share the cards deck. */
 function kbDeckOf(x){
- return ({node:'addr',fetter:'fetter',sab:'sab',hcx:'hcx',law:'law',mask:'mask',dom:'dom',arch:'arch',
+ return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
   gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
 /* THE COHERENCE FORMULA COMES BEFORE THE LAWS. His words, 18 October: "the
    coherence formula should be before the universal laws." It was nowhere on
@@ -93148,10 +92539,6 @@ function kbOpenIn(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
- if(x.k==='hcx'){
-  var rh=computeSeen(), on=rh.hys.filter(function(h){return h.nm===x.o.nm&&!h.over;})[0];
-  if(on){S.pin=on; runDrill(on); render(); return;}
-  runHcxDrill(x.o); return;}
  /* the real definition, pulled from the book's own Harmonic Table entry for
     this law. Where that extraction found no safe match (E43, Responsibility,
     folded into Ownership/E40 in the current build) it fell back to the
@@ -100607,10 +99994,7 @@ function renderSpirit(){
     the honest glyph for a value nobody read (V19), and the reason in its
     tooltip and in its spoken name */
  function unres(k,x){
-  /* rl-off: on the Summary a placement the record cannot settle is one of
-     the dim marks, ui/railtiles.js rlSumPaint; the class draws nothing
-     anywhere else */
-  return '<div class="sp-row static sp-tile rl-off" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
+  return '<div class="sp-row static sp-tile" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
    +' data-tip="'+esc(x.charAt(0).toUpperCase()+x.slice(1)+'.')+'" aria-label="'+esc(k+', unresolved, '+x+'.')+'">'
    +'<span class="sp-tg sp-tdash" aria-hidden="true">–</span>'
    +'<span class="sp-said"><span class="sp-k">'+k+'</span> <span class="sp-v">unresolved</span> '
@@ -102175,13 +101559,8 @@ function rlArcs(r){
   if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s'); else b.style.removeProperty('--bd');}
  var dm=document.getElementById('doms');
  if(dm)[].forEach.call(dm.children,function(b,i){put(b,r.unread?0:DOMAIN[i]); ph(b,'dom',i);});
- /* on the Summary the archetype's ring is archExpr, the one figure it prints
-    beside its name there (rlSumPaint below), so the ring and the figure are
-    one number; everywhere else it stays r.aff, the share the wheel draws */
- var onSum=rlOnSum(), AX=onSum&&!r.unread&&typeof archExprAll==='function'?archExprAll():null;
  ['ar1','ar2'].forEach(function(id){var e=document.getElementById(id);
-  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(AX?AX[i]:(r.aff||[])[i])); ph(b,'arch',i);});});
- rlSumPaint(r,onSum,AX);
+  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(r.aff||[])[i]); ph(b,'arch',i);});});
  var ro=document.getElementById('roots');
  if(ro)[].forEach.call(ro.children,function(b){if(b.dataset.r)ph(b,'root',b.dataset.r);});
  /* the folded line's circles carry the same two numbers and the same breath */
@@ -102190,93 +101569,6 @@ function rlArcs(r){
   put(b,r.unread?0:(k==='dom'?DOMAIN[i]:(r.aff||[])[i]));
   if(!b._rp){b._rp='1'; var seat=rlCalm()?null:rlSeatOf(k,i);
    if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s');}});}
-
-/* ============================================================
-   LIT IS YOURS, DIM IS WHAT YOU ARE NOT. The Summary only, 20 November, his
-   words: "I want a person's celestial information down to their archetypes
-   exposed with their percents. So no nested tables, everything's just
-   visible. The elements that they are not are dimmed out."
-
-   What is his, level by level, read off what the rail already holds and
-   nothing new: a blueprint domain in S.doms; an archetype in S.arcs, the
-   primary and the secondaries; a root that is the born root (the sun's
-   element through ELEM2ROOT, the same lookup the Reading's "the blueprint you
-   were born on reads fire" uses), a root a chosen domain sits under
-   (rootsLit), or a root he added (S.roots); and a celestial placement the
-   record can settle, where one that reads unresolved is dim.
-
-   A dim mark is not a choice on this page, so it leaves the tab order. It
-   keeps aria-pressed as false rather than losing the attribute, because the
-   same button is the Field's choice a tab away and syncSoul writes that
-   attribute only when a selection changes, so a removed one would come back
-   to the Field missing. It is visual weight and focus that change here,
-   never what the control is.
-
-   ONE FIGURE, AND ONLY WHERE ONE IS COMPUTED. An archetype carries archExpr,
-   how fully it is expressed (engine/archexpr.js), printed once beside its name
-   in the caption under the grid and drawn as its ring. A domain, a root and a
-   placement print no figure, because nothing computes a percent for them and
-   one printed here would be invented.
-
-   Done when the state flips and not on every render: a key of the tab and the
-   selection is kept, so a frame that changes nothing touches nothing.
-   ============================================================ */
-function rlOnSum(){return typeof TAB!=='undefined'&&S&&S.tab===TAB.SUMMARY;}
-var RL_SUMKEY='';
-function rlBornRoot(){
- var p=PEOPLE[S.who]||PEOPLE[0], sp=null;
- try{sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));}catch(e){sp=null;}
- return sp&&sp.sunEl?(ELEM2ROOT[sp.sunEl]||''):'';}
-function rlSumPaint(r,onSum,AX){
- var key=onSum?['s',S.who,(S.doms||[]).join('.'),(S.arcs||[]).join('.'),(S.roots||[]).join('.'),
-   r.unread?'u':'r',AX?AX.map(function(x){return x==null?'-':x.toFixed(3);}).join(','):''].join('|'):'off';
- if(key===RL_SUMKEY)return; RL_SUMKEY=key;
- /* the one meaning of lit and dim, on the first of the level names, from the
-    meaning table and never typed here */
- var lv=document.querySelector('#lcol .sum-lvl');
- if(lv&&!lv.hasAttribute('data-tip')){var say=unpackOf('lit','rail');
-  if(say){lv.setAttribute('tabindex','0'); lv.setAttribute('data-tip-k','Lit and dim'); lv.setAttribute('data-tip',say);}}
- /* a dim mark keeps its name on hover and says the one thing true of it here;
-    its Field title, which tells a person to click or shift-click to choose,
-    is put back as it was the moment the mark is lit or the tab is left */
- function mark(b,off){
-  var dim=onSum&&off;
-  b.classList.toggle('rl-off',dim);
-  if(dim){b.setAttribute('tabindex','-1');
-   if(b.dataset.t0==null)b.dataset.t0=b.title||'';
-   var nm=(b.getAttribute('aria-label')||b.dataset.r||'').split(',')[0];
-   b.title=nm+'. Not in your blueprint.';}
-  else {b.removeAttribute('tabindex');
-   if(b.dataset.t0!=null){b.title=b.dataset.t0; delete b.dataset.t0;}}}
- var dm=document.getElementById('doms');
- if(dm)[].forEach.call(dm.children,function(b,i){mark(b,(S.doms||[]).indexOf(i)<0);});
- var a1=document.getElementById('ar1');
- if(a1)[].forEach.call(a1.children,function(b,i){mark(b,(S.arcs||[]).indexOf(i)<0);});
- var ro=document.getElementById('roots');
- if(ro){var lit=onSum?rootsLit():{}, born=onSum?rlBornRoot():'';
-  [].forEach.call(ro.children,function(b){var rn=b.dataset.r; if(!rn)return;
-   mark(b,!(lit[rn]||rn===born||(S.roots||[]).indexOf(rn)>=0));});}
- /* the caption under the archetypes names what is lit, and on this page
-    carries each one's figure beside its name; capA writes it plain again the
-    moment the tab is left, because it is the Field's caption too */
- var ca=document.getElementById('capA');
- if(!ca)return;
- if(!onSum){if(typeof capA==='function')capA(); return;}
- ca.innerHTML=(S.arcs||[]).map(function(i){var A=ARCH[i]; if(!A)return '';
-  var f=AX&&AX[i]!=null?fmtPct('archetype',AX[i]):'';
-  return '<span class="rl-lit"><b>'+esc(A.nm)+'</b>'+(f&&f!==PCT_DASH?' <i class="rl-fig">'+esc(f)+'</i>':'')+'</span>';})
-  .filter(Boolean).join('');}
-
-/* AND A DIM MARK IS NOT A CHOICE ON THE SUMMARY. The domain, root and
-   archetype buttons choose the blueprint on the Field (ui/panels.js), and a
-   press on a dim one here would have changed it from a page that reads it.
-   Stopped on the way down, at the column, so the Field's own handlers are
-   untouched and a lit mark still answers as it does there. */
-(function(){
- var l=document.getElementById('lcol'); if(!l)return;
- l.addEventListener('click',function(ev){
-  var t=ev.target.closest&&ev.target.closest('.rl-off');
-  if(t&&rlOnSum()){ev.stopPropagation(); ev.preventDefault();}},true);})();
 
 /* AND IT RUNS THE OTHER WAY. A pointer over a domain's arc on the wheel lights
    that domain's tile and its root's chip; over an archetype's arc, that
@@ -105877,8 +105169,9 @@ var STK_NSGLYPH={
  heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',
  closed:chainRing(12,12,STK_NSR)+'M6.9 6.9l10.2 10.2M17.1 6.9L6.9 17.1'};
 function stkNsHtml(v,nm,f){
- var s=nerveStateOf(v);
+ var s=nerveStateOf(v), ci=s.k==='closed'?nerveClosedI(v):undefined;
  return '<span class="stk-ns" data-ns="'+s.k+'" tabindex="0" role="img"'
+  +(ci===undefined?'':' style="--ns-i:'+ci.toFixed(3)+'"')
   +' aria-label="'+esc('Nerve state, '+s.nm+'. '+s.def)+'"'
   +' data-tip-k="'+esc('Nerve state: '+s.nm)+'" data-tip="'+esc(s.def+' '+nm+' is at '+(f===PCT_DASH?'no charge':f)+'.')+'">'
   +svgI('<path d="'+STK_NSGLYPH[s.k]+'"/>')+'</span>';}
@@ -107245,7 +106538,6 @@ function colKey(){
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
- if(S.tab===TAB.SUMMARY)return 'lcolsum';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -107253,15 +106545,7 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- /* AND THE SUMMARY HAS ITS OWN, 20 November, defaulting open, Flow's
-    reason. It shared the Field's 'lcol', which starts shut beside the stage,
-    and on 20 November the Summary's left rail became where a person's
-    celestial placements, root, domains, archetypes and What is running are
-    read, his words: "On the left side panel, I want a person's celestial
-    information down to their archetypes exposed." A reading that lands
-    shut is a reading nobody sees, and a fold made here no longer moves the
-    Field's or the other way round. */
- var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
+ var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated
@@ -108313,5 +107597,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007386309"></div>
+<div id="eof" hidden data-len="007335399"></div>
 </body></html>

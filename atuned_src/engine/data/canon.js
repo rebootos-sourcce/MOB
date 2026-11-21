@@ -1001,9 +1001,25 @@ NERVESTATE.forEach(function(s,i){
  var up=i?NERVESTATE[i-1].at-1:100;
  s.range=s.at===0?'no charge':s.at===up?'charge at '+s.at+'%':'charge from '+s.at+'% to '+up+'%';
  s.def=s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+': '+s.say+'. Reads '+s.range+'.';});
-function nerveStateOf(v){
+/* THE WHOLE PERCENT A NERVE STATE AND ITS BRIGHTNESS BOTH READ. Pulled out of
+   nerveStateOf so stkNsHtml (ui/insightui.js) can read the same number for
+   the closed mark's brightness (--ns-i below) without a second rounding
+   that could disagree with the shape it colours. */
+function nervePct(v){
  var x=+v; if(!isFinite(x))x=0;
  /* pct's own expression for a 0 to 10 kind, so the two round alike */
- var p=Math.round(100*x/10); p=p<0?0:p>100?100:p;
+ var p=Math.round(100*x/10); return p<0?0:p>100?100:p;}
+function nerveStateOf(v){
+ var p=nervePct(v);
  for(var i=0;i<NERVESTATE.length;i++) if(p>=NERVESTATE[i].at)return NERVESTATE[i];
  return NERVESTATE[NERVESTATE.length-1];}
+/* HOW FAR THROUGH THE CLOSED BAND, 0 at its 90 percent floor and 1 at 100,
+   for the one rung this product lets read as a continuous brightness and
+   not a flat flag (his words, 20 November: "the closed icon intent color
+   intensity brightens with the rise of the DQ"). Undefined below the floor,
+   so a mark that is not closed never carries the variable. */
+function nerveClosedI(v){
+ var p=nervePct(v), floor=NERVESTATE[0].at;
+ if(p<floor)return undefined;
+ var i=(p-floor)/(100-floor);
+ return i<0?0:i>1?1:i;}
