@@ -3435,18 +3435,18 @@ console.log('\n=== the bar is the loop\'s four sections over a row of tabs, and 
   /* and 17 November: "change the word compass to path... hide character for
      now... keep avatar there under play, but we're going to move summary,
      intake, and analytics under embody." */
-  '17 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Wisdom school, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
+  '17 November: the journal page alone in Discover, Field, Body, Compass and Avatar in Play, Ritual and Accountability in Flow, Knowledge base, Summary and Intake in Embody, Character and Games held off the bar, Clients in Practitioner, '+JSON.stringify(nav.placed));
  /* OVERRIDDEN, 20 November, his words: "change the title path back to
     compass, I think it's a better title." Only the word moved; the 17
     November placement this block checks did not. */
  ok(nav.play==='Field,Body,Compass,Avatar / Field,Body,Compass,Avatar',
   '20 November: Play reads Field, Body, Compass, Avatar, in the engine and the bar alike, '+nav.play);
- ok(nav.embody==='Wisdom school,Summary,Intake,Analytics / Wisdom school,Summary,Intake,Analytics',
-  '17 November: Embody reads Wisdom school (Knowledge until 18 November), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
+ ok(nav.embody==='Knowledge base,Summary,Intake,Analytics / Knowledge base,Summary,Intake,Analytics',
+  '20 November: Embody reads Knowledge base again (Wisdom school from 18 November, Lyceum briefly on 20 November, reverted the same day), then Summary, Intake and Analytics in the order they stood in Play, in the engine and the bar alike, '+nav.embody);
  ok(nav.discover.def==='0:Discover:section'&&nav.discover.btn==='0:Discover:section'&&nav.discover.home===0,
   '23 October: Discover has one door, the journal page, named Discover and marked as the section\'s own, in the engine and the markup, and it is where the app opens, '+JSON.stringify(nav.discover));
  ok(nav.discover.story.length===0,'and the word Story is on no name, mark or title on the bar: '+JSON.stringify(nav.discover.story));
- ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Wisdom school"}',
+ ok(JSON.stringify(nav.first)==='{"discover":"Discover","play":"Field","flow":"Ritual","embody":"Knowledge base"}',
   'a first visit to each section opens its first tab, Discover the journal page and Play the Field, '+JSON.stringify(nav.first));
  ok(nav.unsectioned.length===0,'every tab sits in a section, unsectioned: '+nav.unsectioned.join(', '));
  ok(nav.misgrouped.length===0,'and every button sits in its own section\'s group, misgrouped: '+nav.misgrouped.join(', '));
@@ -4028,7 +4028,7 @@ const ipg=await page.evaluate(async()=>{
  setTab(TAB.FIELD); render();
  return o;});
 ok(ipg.shown&&ipg.inside&&ipg.laws>=21&&ipg.avatarHidden,'Intake opens its own page with the questions on it, '+JSON.stringify(ipg));
-ok(ipg.btn==='Wisdom school,Summary,Intake,Analytics'&&ipg.pressed==='true','17 November: Embody reads Wisdom school, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
+ok(ipg.btn==='Knowledge base,Summary,Intake,Analytics'&&ipg.pressed==='true','20 November: Embody reads Knowledge base, Summary, Intake, Analytics and the Intake door is pressed, '+ipg.btn);
 ok(ipg.avatarOwns&&ipg.again>=21,'the Avatar still takes its page back and the questions come back to the Intake, '+JSON.stringify({a:ipg.avatarOwns,again:ipg.again}));
 
 console.log('\n=== the profile is a menu, and the glow fills the frame (round OI) ===');

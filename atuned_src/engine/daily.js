@@ -257,7 +257,7 @@ function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the knowledge base: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
  if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
@@ -320,7 +320,7 @@ function dlyStValid(errs,path,x,names){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the knowledge base: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one

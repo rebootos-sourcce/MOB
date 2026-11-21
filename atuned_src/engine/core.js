@@ -400,15 +400,15 @@ const TABDEF=[
     kept the word, unlike Discover/Story, so nothing here renames the tab. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
- /* WISDOM SCHOOL, 18 November. His words: "Change the words knowledge base
-    to wisdom school." The tab is the surface the copy called the knowledge
-    base, so the tab takes the same name: one word per concept. Only the
-    name a person reads moved. TAB.KNOW, integer 6, id 'know', cls
-    'tab-know' and ui/knowledge.js are identity and keep their spelling, and
-    a comment that says Knowledge means this tab. The Knowledge domain, under
-    the Architect root (engine/data/canon.js), is a different thing and
-    keeps its name. */
- {k:TAB.KNOW,    id:'know',  nm:'Wisdom school', cls:'tab-know', sec:'embody'},
+ /* WISDOM SCHOOL, 18 November, then LYCEUM, 20 November, then REVERSED back
+    to KNOWLEDGE BASE, also 20 November, his words: "My apologies, change it
+    back to knowledge base. Not wisdom school or lyceum. I'm not feeling
+    either of those. They're too hoity-toity." Only the name a person reads
+    moved, each time. TAB.KNOW, integer 6, id 'know', cls 'tab-know' and
+    ui/knowledge.js are identity and keep their spelling, and a comment that
+    says Knowledge means this tab. The Knowledge domain, under the Architect
+    root (engine/data/canon.js), is a different thing and keeps its name. */
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge base', cls:'tab-know', sec:'embody'},
  /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
     and in the order they stood in Play. His words: "move summary, intake, and
     analytics under embody." Knowledge stays first so pressing Embody still

@@ -546,7 +546,7 @@ function kbRender(){
   +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search" '
-  +'value="'+esc(KB_Q)+'" aria-label="Search the wisdom school">'
+  +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')
   +'<span class="kb-sw" role="group" aria-label="Order">'
   +'<button type="button" class="kb-swb'+(KB_SORT==='order'?' on':'')+'" data-kbs="order"'
@@ -716,7 +716,7 @@ function kbsCss(){
    rule this repository already carries for anything needing a tab's entry. */
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
- return 'Wisdom school';}
+ return 'Knowledge base';}
 /* ============================================================
    THE POLE ROW. Two rounds of his words, and the second sharpens
    the first.

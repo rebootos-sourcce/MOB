@@ -145,7 +145,7 @@ SUITES.doc=function(E,ok,say){
  const v=E.validateProfile(rec);
  ok(!v.ok&&has(v.errs,'language_confidence')&&has(v.errs,'A reading is not a score'),'and refuses it with the reason: '+J((v.errs||[]).slice(0,1)));
  const cs=E.DLY_CANON.filter(c=>c.t===null).map(c=>c.w);
- say&&say('  canon words with no wisdom school entry yet, content for the copy seat: '+cs.join(', '));};
+ say&&say('  canon words with no knowledge base entry yet, content for the copy seat: '+cs.join(', '));};
 
 SUITES.shape=function(E,ok){
  /* D1: the key, the blank, an older record, and the round trip */
@@ -203,14 +203,14 @@ SUITES.shape=function(E,ok){
  bad(s=>{s.days[0].st[0].rung='0.9';},'.rung is not one of','a rung that is a number');
  bad(s=>{s.days[0].st[0].ev=[{type:'rumour',id:'x'}];},'names no kind of evidence this build holds','a reference to no kind of evidence');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:5}];},'names no kind of evidence this build holds','a reference whose id is not text');
- bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the wisdom school','a wisdom school reference to nothing');
+ bad(s=>{s.days[0].st[0].ev=[{type:'kb',id:'Nonsense'}];},'names no entry in the knowledge base','a knowledge base reference to nothing');
  bad(s=>{s.days[0].st[0].ev=[{type:'law',id:'Spite'}];},'names no law','a law that is not one of the 21');
  /* the chain's four rungs joined the graph's types on 22 October
     (engine/trace.js), and a day still may not cite one: its graph is read
     with no reading and holds no rung. Refused as before, now by name. */
  (E.TRACE_CHAIN||[]).forEach(t=>bad(s=>{s.days[0].st[0].ev=[{type:t,id:'Judge'}];},'names a rung of the chain','a reference to a '+t));
  ok(Array.isArray(E.TRACE_CHAIN)&&E.TRACE_CHAIN.length>0,'the chain is exported, so the check above walked something');
- bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the wisdom school','a link to no glossary term');
+ bad(s=>{s.days[0].st[0].links=['Nonsense'];},'is not a term in the knowledge base','a link to no glossary term');
  bad(s=>{s.days[0].st[0].read=[{addr:5000,band:'Heart'}];},'is not one of the addresses','an address that does not exist');
  bad(s=>{s.days[0].st[0].text=s.days[0].st[0].text+' It was 77.';},'prints 77, which is not one of its arguments','a digit that is not an argument');
  bad(s=>{s.days[0].st[0].a=['Pat'];},'carries the person\'s name','the person\'s own name in an argument');
