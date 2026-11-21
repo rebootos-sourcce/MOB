@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v404 2eb0cfdf 2026-11-21 23:26"><head><meta charset="utf-8">
+<html lang="en" data-build="v129 df2d28e4 2026-11-21 23:29"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11547,20 +11547,34 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
-.cl-src{cursor:pointer}
-.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
-.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
-.cl-srcl{text-anchor:start!important;font-size:11px}
-.cl-door{cursor:pointer}
-.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
-.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl-door text{fill:var(--ink);font-size:12px}
-.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
-.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
-.cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
-.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
-.cl-av .core{fill:#F2E6C4}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
+.cl-dstep .cl-hit{fill:transparent;stroke:none}
+.cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
+/* THE TWO POLES (clPole). One ring, one arrow, one size, top and bottom, so
+   they read as a pair: Source's in the light the board already gives
+   Source, the descent's in the red the descent already wears. Ring, not
+   fill: the disc behind the arrow is the ground, so the path never shows
+   through it. */
+.cl-pole{cursor:pointer;outline:none}
+.cl-pole .cl-hit{fill:transparent;stroke:none}
+.cl-pole .cl-pr{fill:#101114;stroke-width:1.8}
+.cl-pole .cl-pa path{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-pole-up .cl-pr{stroke:#F2E6C4;stroke-opacity:.8}
+.cl-pole-up .cl-pa path{stroke:#F2E6C4}
+.cl-pole-up.open .cl-pr{stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-pole-dn .cl-pr{stroke:rgba(220,135,125,.85)}
+.cl-pole-dn .cl-pa path{stroke:rgba(230,150,140,1)}
+.cl-pole:hover .cl-pr,.cl-pole:focus-visible .cl-pr{stroke-width:2.8}
+.cl-svg .cl-pn{text-anchor:start;font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cl-svg .cl-ps{text-anchor:start;font-size:11px;fill:var(--mid)}
+/* THE AVATAR'S GLOW IS ITS CQ (clSvg, --g is CQ over 100): the radiance
+   ring's reach and light both scale with it, so a person at 90 glows and a
+   person at 45 barely does */
+.cl-av .rad{fill:none;stroke:#F2E6C4;stroke-width:1.2;stroke-opacity:calc(.15 + .6*var(--g,0));
+ filter:drop-shadow(0 0 calc(2px + 12px*var(--g,0)) rgba(242,230,196,.85));pointer-events:none}
+.cl-av text{pointer-events:none}
+.cl-av .halo{fill:none;stroke:#F2E6C4;stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4;fill-opacity:calc(.55 + .45*var(--g,0))}
 .cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
@@ -11586,6 +11600,40 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
+/* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
+   Insight rail on the right: the figure's second panel is not drawn on the
+   climb, so the page is a rail, the board, a rail. The seats are spread down
+   the height with even space between them, the poles at its two ends. */
+.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
+.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+.cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
+.cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
+.cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
+.cl-rail .fb-orb,.cl-rail .fb-arc{width:34px;height:34px}
+.cl-rail .fb-gl svg{width:16px;height:16px}
+.clr-seat{display:flex;flex-direction:column;gap:1px}
+.clr-hd{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:11px;line-height:1.3;color:var(--dim)}
+.clr-mk{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:var(--ax);stroke-width:1.6}
+.clr-nm{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.clr-rg{margin-left:auto;font-variant-numeric:tabular-nums}
+.clr-hd.sel .clr-nm{text-decoration:underline;text-underline-offset:3px}
+.clr-at{display:block;font-size:11px;line-height:1.3;color:var(--mid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr-lw{color:var(--dim)}
+.clr-paths{display:flex;align-items:center;gap:2px;padding-left:0}
+.clr-paths .cn-tx{padding-left:8px}
+.cl-rail .clr-pt{width:44px;min-width:44px;height:44px;padding:5px;flex:0 0 44px;justify-content:center}
+.clr-paths.shut .cn-or{opacity:.55}
+.clr-paths.shut .cn-or .trk{stroke-dasharray:3 3}
+.cl-rail .cn-tx{min-width:0;flex:1 1 auto}
+.clr-t.shut .cn-or{opacity:.55}
+.clr-t.shut .cn-or .trk{stroke-dasharray:3 3}
+.clr-t.sealed .cn-or .trk{stroke-width:3}
+.clr-pole .cn-nu{color:var(--ink)}
+.clr-pole-up .cn-or{--c:#F2E6C4;color:#F2E6C4}
+.clr-pole-dn .cn-or{--c:rgba(220,135,125,.9);color:rgba(230,150,140,1)}
+.clr-pole .fb-gl svg{stroke-width:2}
+.cn-pan.fb-lt .clr-pole-up .cn-or{--c:#8A7440;color:#8A7440}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -93737,7 +93785,12 @@ function coneOpen(inTab){
       is also his standing rule, that the centre column is for hero art.
       Under 900 pixels, or when the stage is too narrow to share, the panels
       go under the figure in two columns (the sheet decides, .cone-fig). */
-   +coneNames('l')
+   /* ON THE CLIMB, ONE RAIL AND NOT TWO PANELS. The two panels are the
+      figure's eight axes, read as a turn of the figure; the climb is read
+      bottom to top, so its rail is the seven seats in that order (clRail)
+      and the right of the page is the Insight rail, where a station's card
+      opens. "The figure" puts both panels back. */
+   +(CONE.climb?'<div class="cn-pan cn-nms-l cl-rail" id="clrail" role="group" aria-label="The climb by seat, Crown at the top and Root at the bottom">'+clRailIn()+'</div>':coneNames('l'))
    /* THE CANVAS, THE OVERLAYS AND THE ZOOM, held together so the corners are
       the canvas's and not the card's, whatever the key under the figure does.
       The overlays take the upper left and how it is drawn the upper right,
@@ -93774,7 +93827,7 @@ function coneOpen(inTab){
       a control that changes nothing is a dead control. */
    +(CONE.side?'':'<div class="cn-zoom" id="cnzoom" role="group" aria-label="Zoom"></div>')
    +'</div>'
-   +coneNames('r')
+   +(CONE.climb?'':coneNames('r'))
    /* THE TOOL SAYS WHAT IT IS, UNDER THE FIGURE. Ruled: the bottom
       information goes right unless it is about the tool. The key is about
       the tool, so it may stay under it. The reading does not, and does not.
@@ -93866,6 +93919,9 @@ function coneOpen(inTab){
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(ch)ch.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;
   var g=e.target.closest&&e.target.closest('[data-cl]'); if(g){e.preventDefault(); clPress(g.getAttribute('data-cl'));}});
+ /* the rail's rows are buttons, so a click is the keyboard's press as well */
+ var crl=document.getElementById('clrail'); if(crl)crl.addEventListener('click',function(e){
+  var g=e.target.closest&&e.target.closest('[data-cl]'); if(g)clPress(g.getAttribute('data-cl'));});
  if(CONE.raf)cancelAnimationFrame(CONE.raf);
  coneLayout(); coneTick();
  var x=document.getElementById('conex'); if(x)x.onclick=coneClose;
@@ -94213,7 +94269,15 @@ function clStations(){
 function clGeo(W,H,stk){
  var G={W:W,H:H,cx:W/2,stk:stk};
  var gut=stk?40:84;
- G.sum=stk?64:70; G.D=clDsc(W,H,stk); G.dsc=G.D.h;
+ /* THE TWO POLES, 21 November, his words on the first climb: "What I liked
+    about the compass, there was a distinct point on the bottom and a
+    distinct point on top... it's an arrow up, arrow down." The needle's two
+    points (ndlGeo) are a ring and an arrow here, one at each end of the
+    board, the same size, so they read as one pair: pt and pb are their
+    centres, pr their radius, and the room above the Crown and under the
+    descent is made for them rather than taken from the turns. */
+ G.pr=stk?17:20; G.pt=G.pr+12; G.pb=H-G.pr-10;
+ G.sum=G.pt+G.pr+(stk?40:46); G.dsc=stk?236:Math.round(Math.max(176,H*0.21));
  var yBase=H-G.dsc-(stk?24:28), yTop=G.sum+(stk?40:44);
  G.th=(yBase-yTop)/6.4;
  G.hb=W/2-gut; G.ht=G.hb*(stk?0.78:0.62);
@@ -94222,22 +94286,6 @@ function clGeo(W,H,stk){
   var yc=yBase-G.th*0.45-i*G.th, hw=G.hb+(G.ht-G.hb)*i/6;
   G.tiers.push({yc:yc,hw:hw,ry:Math.min(G.th*0.36,hw*0.2)});}
  return G;}
-/* THE DESCENT'S NAMES, FITTED TO THE BOX UNDER THE DOOR. The design round
-   drew eight names there, and DESCENT grew to twenty seven the same day
-   (the shadow roster, 056c7bb6). Sizing the box to all of them was the
-   first cut and it squeezed the climb on a desk card of fixed height until
-   each turn's numbers sat on the names of the turn above. So the box keeps
-   its height, the columns are as many as fit the longest name, measured,
-   with room between them, the names print in DESCENT's own order for as
-   many rows as the box holds, and the last line says how many more are
-   behind the door, which opens every one of them. */
-function clDsc(W,H,stk){
- var h=stk?212:Math.round(Math.max(150,H*0.2)), dw=2*(W/2-(stk?40:84))*(stk?0.98:0.9), wide=0;
- DESCENT.forEach(function(d){wide=Math.max(wide,clTextW(d.nm,9.5,400));});
- var cols=Math.max(1,Math.min(6,Math.floor(dw/(wide+16)))), rh=stk?26:28;
- var rows=Math.max(1,Math.floor((h-44-(stk?30:36)-(stk?24:28)-rh)/rh));
- var shown=Math.min(DESCENT.length,rows*cols);
- return {dw:dw, cols:cols, rh:rh, h:h, shown:shown};}
 function clFront(G,i,u){var t=G.tiers[i];
  return [G.cx-t.hw+2*t.hw*u, t.yc+t.ry*Math.sin(Math.PI*u)];}
 function clBack(G,i,v){
@@ -94331,12 +94379,17 @@ function clSvg(W,H,stk){
  /* the real figure, ghosted: the upper pyramid the path winds round, and the
     lower one the descent sits in, the two the compass draws */
  var t0=G.tiers[0], wy=t0.yc+t0.ry+G.th*0.55;
- o+='<path class="cl-cone" d="M'+(cx-G.hb-14)+','+wy+'L'+(cx-G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.hb+14)+','+wy+'Z"/>';
- o+='<path class="cl-dn" d="M'+(cx-G.hb*0.62)+','+(wy+10)+'L'+cx+','+(H-8)+'L'+(cx+G.hb*0.62)+','+(wy+10)+'Z"/>';
+ /* both pyramids come to a point, and each point ends on its pole's ring:
+    the upper one narrows over the Crown to the ring at the top, the lower
+    one to the ring at the bottom. The first climb cut the upper pyramid off
+    flat under Source and left the lower one's tip bare, which is the "distinct
+    point on top and on the bottom" he said it had lost. */
+ o+='<path class="cl-cone" d="M'+(cx-G.hb-14)+','+wy+'L'+(cx-G.ht*0.5)+','+(G.sum-2)+'L'+cx+','+(G.pt+G.pr+3)+'L'+(cx+G.ht*0.5)+','+(G.sum-2)+'L'+(cx+G.hb+14)+','+wy+'Z"/>';
+ o+='<path class="cl-dn" d="M'+(cx-G.hb*0.62)+','+(wy+10)+'L'+cx+','+(G.pb-G.pr-3)+'L'+(cx+G.hb*0.62)+','+(wy+10)+'Z"/>';
  /* the back of each turn, dashed: the way round behind the pyramid */
  for(var i=0;i<7;i++)o+='<path class="cl-back" d="'+clPoly(function(v){return clBack(G,i,v);},40)+'"/>';
- /* the descent's way up, from the door to the trailhead */
- var th0=clFront(G,0,0), dy=wy+44;
+ /* the way up out of the descent, from the floor to the trailhead */
+ var th0=clFront(G,0,0), dy=wy+10;
  o+='<path class="cl-back" d="M'+cx+','+dy+'Q'+(th0[0])+','+(dy)+' '+th0[0].toFixed(1)+','+th0[1].toFixed(1)+'"/>';
  T.forEach(function(t,i){clPlace(G,t,i,stk);});
  var at=clAt(T,cq), hat=clAt(T,hi);
@@ -94348,14 +94401,19 @@ function clSvg(W,H,stk){
   /* the seat, left gutter; its seal, right gutter. Symmetric. */
   var gy=G2.yc+G2.ry*0.3, gl=cx-G.hb-(stk?22:40), gr=cx+G.hb+(stk?22:40);
   var bandOpen=cq!==null&&hi>=t.lo, bandSeal=t.row.filter(function(s){return s.t==='tch';}).every(function(s){return clSealed(done,s.k);});
-  o+='<g class="cl-seat'+(bandOpen?' on':'')+'" data-cl="seat:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+'" style="--c:'+col+'">'
+  /* the names under these two marks moved to the rail beside the board
+     (clRail), which names every seat in the same order, so the board keeps
+     the symbol and the word is on hover and tap: symbol first, header
+     second, body third, ruled 16 November */
+  var lo=Math.round(t.lo), up=i===BANDS.length-1?100:Math.round(t.hi);
+  o+='<g class="cl-seat'+(bandOpen?' on':'')+'" data-cl="seat:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+', coherence '+lo+' to '+up+'"'
+   +' data-tip-k="'+esc(t.b)+'" data-tip="One turn of the climb, coherence '+lo+' to '+up+'. Press for what is on it." style="--c:'+col+'">'
    +'<circle cx="'+gl+'" cy="'+gy+'" r="'+(stk?13:15)+'" class="cl-sr"/>'
-   +'<g class="cl-sg">'+cnSeatMark(i).replace('cx="12" cy="12"','cx="'+gl+'" cy="'+gy+'"').replace(/r="([\d.]+)"/,function(m,r){return 'r="'+(+r*(stk?0.95:1.1)).toFixed(1)+'"';})+'</g>'
-   +(stk?'':'<text x="'+gl+'" y="'+(gy+30)+'" class="cl-sn">'+esc(t.b)+'</text>')+'</g>';
-  o+='<g class="cl-badge'+(bandSeal?' got':'')+'" data-cl="badge:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+' seal" style="--c:'+col+'">'
+   +'<g class="cl-sg">'+cnSeatMark(i).replace('cx="12" cy="12"','cx="'+gl+'" cy="'+gy+'"').replace(/r="([\d.]+)"/,function(m,r){return 'r="'+(+r*(stk?0.95:1.1)).toFixed(1)+'"';})+'</g></g>';
+  o+='<g class="cl-badge'+(bandSeal?' got':'')+'" data-cl="badge:'+t.b+'" tabindex="0" role="button" aria-label="'+esc(t.b)+' seal"'
+   +' data-tip-k="'+esc(t.b)+' seal" data-tip="Closes when every teacher on this turn is sealed." style="--c:'+col+'">'
    +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?11:13)+'"/>'
-   +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?6:7)+'" class="in"/>'
-   +(stk?'':'<text x="'+gr+'" y="'+(gy+30)+'" class="cl-sn">Seal</text>')+'</g>';
+   +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?6:7)+'" class="in"/></g>';
   t.row.forEach(function(s){
    var y=clFront(G,i,s.u)[1], x=s.x, X=x.toFixed(1), Y=y.toFixed(1);
    var open=cq!==null&&hi>=s.at, sel=CONE.clSel===s.k;
@@ -94385,42 +94443,144 @@ function clSvg(W,H,stk){
      +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+rl+'"/>'
      +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.42:0.5)+'</g>'
      +(stk?'':'<text class="cl-lb sm" x="'+X+'" y="'+(y+rl+13).toFixed(1)+'">'+esc(s.nm)+'</text>')+'</g>';}});});
- /* the summit: Source, at 100 */
- var sx=cx, sy=G.sum-14;
- o+='<g class="cl-src'+(hi>=100?' open':'')+'" data-cl="src" tabindex="0" role="button" aria-label="Source, coherence 100">'
-  +'<circle cx="'+sx+'" cy="'+sy+'" r="'+(stk?16:19)+'"/><circle cx="'+sx+'" cy="'+sy+'" r="'+(stk?7:8)+'" class="in"/>'
-  +'<text x="'+(sx+(stk?24:28))+'" y="'+(sy+4)+'" class="cl-srcl">Source, 100</text></g>';
- /* the descent: a door, and behind it the real steps, dim. Never on the path. */
- var ddy=wy+44;
- o+='<g class="cl-door" data-cl="descent" tabindex="0" role="button" aria-label="The descent, a mirror">'
-  +'<rect x="'+(cx-(stk?62:74))+'" y="'+(ddy-14)+'" width="'+(stk?124:148)+'" height="28" rx="14"/>'
-  +clIcon('M12 4v16M6 14l6 6 6-6',cx-(stk?46:56),ddy,0.6)
-  +'<text x="'+(cx+8)+'" y="'+(ddy+4)+'">The descent</text></g>';
- var dw=G.D.dw;
- DESCENT.slice(0,G.D.shown).forEach(function(d,k){
-  var nc=G.D.cols, row=Math.floor(k/nc), col=k%nc, x=cx-dw/2+dw*(col+0.5)/nc, y=ddy+(stk?30:36)+row*G.D.rh;
-  o+='<g class="cl-dstep"><circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="3.2"/>'
-   +'<text x="'+x.toFixed(1)+'" y="'+(y+14)+'">'+esc(d.nm)+'</text></g>';});
- if(G.D.shown<DESCENT.length)
-  o+='<text class="cl-dmore" x="'+cx+'" y="'+(ddy+(stk?30:36)+Math.ceil(G.D.shown/G.D.cols)*G.D.rh+8)+'">'
-   +(DESCENT.length-G.D.shown)+' more behind the door</text>';
- /* the avatar, at the reading's own CQ */
- if(at){var ap=clFront(G,at.i,at.u);
-  o+='<g class="cl-av" style="--c:'+seatCol(T[at.i].b)+'"><circle cx="'+ap[0].toFixed(1)+'" cy="'+ap[1].toFixed(1)+'" r="'+(stk?9:11)+'" class="halo"/>'
-   +'<circle cx="'+ap[0].toFixed(1)+'" cy="'+ap[1].toFixed(1)+'" r="'+(stk?5:6)+'" class="core"/>'
-   /* centred above the halo: up and to the left, the first cut, printed
-      over the law stone behind the avatar on a phone */
-   +'<text x="'+ap[0].toFixed(1)+'" y="'+(ap[1]-(stk?15:18)).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'</text></g>';}
+ /* THE TOP POLE: Source, at 100. A ring with an arrow pointing up out of it,
+    the up arrow this product already draws in strokes (CL_UP, the descent
+    door's own arrow turned over), at the point of the upper pyramid. */
+ o+=clPole('src',cx,G.pt,G.pr,CL_UP,hi>=100,'Source','coherence 100',
+  'Source, coherence 100, the top of the climb');
+ /* THE BOTTOM POLE: the descent, under 41. The same ring and the same arrow
+    pointing down, at the point of the lower pyramid. It is also the door the
+    first climb drew as a pill: one mark for one place. The descent's steps sit
+    between the floor and this pole, dim, and are never on the path. */
+ o+=clPole('descent',cx,G.pb,G.pr,CL_DN,false,'The descent','under coherence '+CQ_CLIMB_FLOOR,
+  'The descent, under coherence '+CQ_CLIMB_FLOOR+', a mirror');
+ /* THE DESCENT'S ROWS, AS MARKS. The roster grew from eight to every row
+    DESCENT carries (the shadow roster, 21 November), and eight names under
+    the climb fitted where twenty seven print over each other. So each is a
+    dim mark inside the lower pyramid, its name on hover and tap, and the
+    bottom pole's card lists them all with what each one is. The rows narrow
+    with the pyramid, so no mark sits outside it. */
+ var nd=DESCENT.length, gap=stk?20:24, tipY=G.pb-G.pr-3, topY=wy+10, hw0=G.hb*0.62;
+ var dy0=wy+(stk?40:44), span=Math.max(0,(tipY-dy0)*0.62);
+ var rowW=function(y){return Math.min(2*G.hb*0.8,2*hw0*(tipY-y)/(tipY-topY)*0.84);};
+ /* as few rows as hold every mark at gap apart, each row as wide as the
+    pyramid is at its height, the wider rows above taking more */
+ var R=[];
+ for(var nr=1;nr<=10;nr++){R=[];var cap=0;
+  for(var j=0;j<nr;j++){var y=Math.round(dy0+(nr>1?span*j/(nr-1):0)), w=rowW(y), c=Math.max(1,Math.floor(w/gap));
+   R.push({y:y,w:w,c:c}); cap+=c;}
+  if(cap>=nd)break;}
+ var left=nd, k0=0;
+ R.forEach(function(rw,j){
+  var n=Math.min(rw.c,left); rw.n=n; rw.k0=k0; k0+=n; left-=n;});
+ R.forEach(function(rw){for(var i=0;i<rw.n;i++){var d=DESCENT[rw.k0+i]; if(!d)continue;
+  var x=cx-rw.w/2+rw.w*(i+0.5)/rw.n;
+  o+='<g class="cl-dstep" data-tip-k="'+esc(d.nm)+'" data-tip="'+esc(d.d||('Part of the descent, under coherence '+CQ_CLIMB_FLOOR+'.'))+'">'
+   +'<circle class="cl-hit" cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="9"/><circle cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="3.2"/></g>';}});
+ /* THE AVATAR, AT THE READING'S OWN CQ, AND LIT BY IT. Ruled 21 November, his
+    words: "your avatar is simply a circle representing your field and the
+    radiance of that glow determined by your CQ." So CQ and nothing else sets
+    how far the glow reaches and how bright it is: g is CQ over 100, the
+    radiance ring widens with it and its light carries further. Ring, not
+    fill, for the radiance; the field itself is the small core. */
+ var avAt=function(x,y,cls,lab){
+  var g=clamp(cq/100,0,1), rc=(stk?5:6), rr=(stk?9:11)+(stk?8:11)*g;
+  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+' of 100"'
+   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+' of 100.">'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+rr.toFixed(1)+'" class="rad"/>'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+(rc+4)+'" class="halo"/>'
+   +'<circle cx="'+x+'" cy="'+y+'" r="'+rc+'" class="core"/>'+lab+'</g>';};
+ if(at){var ap=clFront(G,at.i,at.u), ax=ap[0].toFixed(1), ay=ap[1].toFixed(1);
+  var rr0=(stk?9:11)+(stk?8:11)*clamp(cq/100,0,1);
+  /* centred above the glow: up and to the left, the first cut, printed
+     over the law stone behind the avatar on a phone */
+  o+=avAt(ax,ay,'','<text x="'+ax+'" y="'+(ap[1]-rr0-5).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'</text>');}
  else if(cq!==null){
-  o+='<g class="cl-av below"><circle cx="'+cx+'" cy="'+(ddy-24)+'" r="6" class="core"/>'
-   +'<text x="'+(cx+12)+'" y="'+(ddy-20)+'" class="cl-avq">You, '+Math.round(cq)+'. The climb starts at '+CQ_CLIMB_FLOOR+'</text></g>';}
+  o+=avAt(cx,(wy+22).toFixed(1),' below','<text x="'+(cx+14)+'" y="'+(wy+26).toFixed(1)+'" class="cl-avq">You, '+Math.round(cq)+'. The climb starts at '+CQ_CLIMB_FLOOR+'</text>');}
  return o+'</svg>';}
+/* THE TWO ARROWS. The down arrow is the descent door's own (clCard), and the
+   up arrow is the same stroke turned over, so the pair is one drawing. */
+const CL_UP='M12 20V4M6 10l6-6 6 6';
+const CL_DN='M12 4v16M6 14l6 6 6-6';
+function clPole(k,x,y,r,ic,lit,nm,sub,aria){
+ return '<g class="cl-pole cl-pole-'+(k==='src'?'up':'dn')+(lit?' open':'')+'" data-cl="'+k+'" tabindex="0" role="button" aria-label="'+esc(aria)+'">'
+  +'<circle cx="'+x+'" cy="'+y+'" r="'+(r+8)+'" class="cl-hit"/>'
+  +'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" class="cl-pr"/>'
+  +'<g class="cl-pa">'+clIcon(ic,x,y,r/16)+'</g>'
+  +'<text x="'+(x+r+10)+'" y="'+(y-2)+'" class="cl-pn">'+esc(nm)+'</text>'
+  +'<text x="'+(x+r+10)+'" y="'+(y+12)+'" class="cl-ps">'+esc(sub)+'</text></g>';}
 function clRender(){
  var host=document.getElementById('cnclimb'), c=CONE.cv; if(!host||!c)return;
  var fig=c.closest('.cone-fig'), stk=fig&&fig.classList.contains('stk');
  var W=c.clientWidth, H=c.clientHeight;
  host.style.width=W+'px'; host.style.height=H+'px'; host.style.top=c.offsetTop+'px'; host.style.left=c.offsetLeft+'px';
- host.innerHTML=clSvg(W,H,stk);}
+ host.innerHTML=clSvg(W,H,stk);
+ var rl=document.getElementById('clrail'); if(rl){
+  var ae=document.activeElement, fk=(ae&&rl.contains(ae))?ae.getAttribute('data-cl'):null;
+  rl.innerHTML=clRailIn();
+  if(fk){var nf=rl.querySelector('[data-cl="'+fk+'"]'); if(nf)nf.focus({preventScroll:true});}}}
+/* ============================================================
+   THE RAIL BESIDE THE CLIMB. Plan 2, 20 November, on the board as
+   path-left-rail-chakra-stack: "The left rail groups by chakra seat, root at
+   the bottom to crown at the top." So it reads the way the climb does, the
+   up arrow and Source at its head, the seven seats of BANDS from Crown down
+   to Root, and the down arrow and the descent at its foot: the board's two
+   poles, and its turns, in the same order and the same colours.
+
+   Every entry is read and none typed. The seats and their ranges are
+   compassBandOf's; under each seat are the teachers clStations puts on that
+   turn, highest first, so a seat reads top down the way the climb rises,
+   each with its POLE_UNLOCK number and the laws LAW_TEACHER gives it. That
+   is where Akhenaten's Crown place comes from (CLIMB_SEAT_PICK, the team's
+   pick of 21 November) and why Jesus is on two seats, Grace at the Heart and
+   Transmutation at the Crown: the data has him there, and the rail does not
+   re-derive it. A row is the station: pressing it is pressing the station
+   on the board, the card opens in the Insight rail and the board marks it.
+   ============================================================ */
+function clRailPole(k,ic,nm,sub,lit,sel){
+ return '<button type="button" class="cn-nr clr-pole clr-pole-'+(k==='src'?'up':'dn')+(lit?' open':'')+(sel?' front':'')+'" data-cl="'+k+'"'
+  +' aria-label="'+esc(nm)+', '+esc(sub)+'">'
+  +'<span class="cn-pr"><span class="fb-orb cn-or bare"><svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true"><circle class="trk" cx="20" cy="20" r="18"/></svg>'
+  +'<span class="fb-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+ic+'"/></svg></span></span></span>'
+  +'<span class="cn-tx"><span class="cn-nu">'+esc(nm)+'</span><span class="clr-at">'+esc(sub)+'</span></span></button>';}
+function clRailIn(){
+ var T=clStations(), V=clView(), hi=V.hi, cq=V.cq, done=V.done, h='';
+ h+=clRailPole('src',CL_UP,'Source','Coherence 100, the top',hi>=100,CONE.clSel==='src');
+ T.slice().reverse().forEach(function(t){
+  var i=BANDS.indexOf(t.b), col=seatCol(t.b), lo=Math.round(t.lo), up=i===BANDS.length-1?100:Math.round(t.hi);
+  var on=cq!==null&&hi>=t.lo, cd=/^#[0-9a-f]{6}$/i.test(col)?rgba(hx(col),.72):col;
+  h+='<div class="clr-seat'+(on?' on':'')+'" style="--ax:'+col+';--axd:'+cd+'" role="group" aria-label="'+esc(t.b)+', coherence '+lo+' to '+up+'">'
+   +'<div class="clr-hd'+(CONE.clSel==='seat:'+t.b?' sel':'')+'"><svg class="clr-mk" viewBox="0 0 24 24" aria-hidden="true">'+cnSeatMark(i)+'</svg>'
+   +'<span class="clr-nm">'+esc(t.b)+'</span><span class="clr-rg">'+lo+' to '+up+'</span></div>';
+  var tch=t.row.filter(function(s){return s.t==='tch';}).sort(function(a,b){return b.at-a.at||t.row.indexOf(b)-t.row.indexOf(a);});
+  /* the teachers with a seat, one row each: the name, then when it opens
+     and the laws it is affirmed with. The laws are cut to the rail's width
+     on screen and are whole on hover, on tap and to a screen reader. */
+  tch.filter(function(s){return compassClimbSeat(s.k)!==null;}).forEach(function(s){
+   var open=cq!==null&&hi>=s.at, laws=t.row.filter(function(x){return x.t==='law'&&x.to===s.k;}).map(function(x){return x.nm;});
+   var rc=(typeof recipeOf==='function')?recipeOf(s.k):null;
+   var tip=(rc&&rc.line?rc.line+'. ':'')+(open?'Open, it opened at':'Opens at')+' coherence '+s.at+'.'+(laws.length?' Laws: '+laws.join(', ')+'.':'');
+   h+='<button type="button" class="cn-nr clr-t'+(open?' open':' shut')+(clSealed(done,s.k)?' sealed':'')+(CONE.clSel===s.k?' front':'')+'" data-cl="'+esc(s.k)+'"'
+    +' aria-label="'+esc(s.nm)+'. '+esc(tip)+'" data-tip-k="'+esc(s.nm)+'" data-tip="'+esc(tip)+'">'
+    +'<span class="cn-pr">'+cnOrb(s.ic,false,true)+'</span>'
+    +'<span class="cn-tx"><span class="cn-nu">'+esc(s.nm)+'</span>'
+    +'<span class="clr-at">'+(open?'Open at ':'Opens at ')+s.at+(laws.length?'<span class="clr-lw">, '+esc(laws.join(', '))+'</span>':'')+'</span></span></button>';});
+  /* THE PATHS WITH NO SEAT, ONE ROW. Free Flow, Duty and Non Resistance open
+     together at 42 and stand on no seat (compassClimbSeat is null for them,
+     POLE_UNLOCK's note): three marks on one line, each its own press, and
+     the line says what the three have in common. */
+  var paths=tch.filter(function(s){return compassClimbSeat(s.k)===null;});
+  if(paths.length){
+   var pat=paths[0].at, pop=cq!==null&&hi>=pat;
+   h+='<div class="clr-paths'+(pop?' open':' shut')+'">'+paths.map(function(s){
+     var rc=(typeof recipeOf==='function')?recipeOf(s.k):null;
+     var tip=(rc&&rc.line?rc.line+'. ':'')+'A path on no seat. '+(pop?'Open, it opened at':'Opens at')+' coherence '+s.at+'.';
+     return '<button type="button" class="cn-nr clr-pt'+(CONE.clSel===s.k?' front':'')+'" data-cl="'+esc(s.k)+'" aria-label="'+esc(s.nm)+'. '+esc(tip)+'"'
+      +' data-tip-k="'+esc(s.nm)+'" data-tip="'+esc(tip)+'">'+cnOrb(s.ic,false,true)+'</button>';}).join('')
+    +'<span class="cn-tx"><span class="cn-nu">Paths</span><span class="clr-at">'+(pop?'Open at ':'Opens at ')+pat+'</span></span></div>';}
+  h+='</div>';});
+ h+=clRailPole('descent',CL_DN,'The descent','Under coherence '+CQ_CLIMB_FLOOR+', a mirror',false,CONE.clSel==='descent');
+ return h;}
 function clPress(k){
  CONE.clSel=k; clRender();
  /* the rail lights the axis the station stands on, the real rail's own row */
@@ -94468,10 +94628,10 @@ function clCard(k){
  var H=function(ic,h,sub){return '<div class="cl-hd">'+(ic?'<span class="cl-hic"><svg viewBox="0 0 24 24"><path d="'+ic+'"/></svg></span>':'')
   +'<div><div class="sh-h plain">'+esc(h)+'</div>'+(sub?'<div class="cl-sub">'+sub+'</div>':'')+'</div></div>';};
  if(k==='descent'){
-  return '<div class="cl-card">'+H('M12 4v16M6 14l6 6 6-6','The descent','A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
+  return '<div class="cl-card">'+H(CL_DN,'The descent','A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
    +DESCENT.map(function(d){return '<div class="cl-dsc"><b>'+esc(d.nm)+'</b><p>'+esc(d.d)+'</p></div>';}).join('')
    +'<p class="cl-ref">'+esc(DESCENT_REFER)+'</p></div>';}
- if(k==='src')return '<div class="cl-card">'+H('M12 4a8 8 0 110 16 8 8 0 010-16','Source','Coherence 100. Where every path on this pyramid ends.')+'</div>';
+ if(k==='src')return '<div class="cl-card">'+H(CL_UP,'Source','Coherence 100. Where every path on this pyramid ends.')+'</div>';
  if(k.indexOf('seat:')===0||k.indexOf('badge:')===0){
   var b=k.split(':')[1], bd=compassBandOf(b), T=clStations().filter(function(t){return t.b===b;})[0];
   return '<div class="cl-card">'+H('',b+(k.indexOf('badge:')===0?' seal':''),'Opens at coherence '+Math.round(bd.lo)+'. '
@@ -113815,5 +113975,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008318775"></div>
+<div id="eof" hidden data-len="008330997"></div>
 </body></html>
