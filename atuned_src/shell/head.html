@@ -11428,4 +11428,90 @@ body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,
 body.tab-summary #lcol .rootb.rl-off::after{display:none}
 body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
 body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
+
+/* THE CLIMB (ui/cone.js, clSvg). The board takes the canvas's own box; the
+   canvas keeps its size underneath and is not shown, so "The figure" swaps
+   back without a relayout. */
+.cone-fig.climb .cone-cv{visibility:hidden}
+.cone-fig.climb #cnbar,.cone-fig.climb #cnview,.cone-fig.climb #cnzoom,.cone-fig.climb .cone-key{display:none}
+.cn-climb{position:absolute;z-index:2;overflow:hidden;border-radius:var(--r-s)}
+.cone-fig:not(.climb) .cn-climb{display:none}
+.cl-svg{display:block}
+.cl-svg text{font-family:inherit;fill:var(--mid);font-size:11px;text-anchor:middle}
+.cl-cone{fill:rgba(140,170,200,.035);stroke:rgba(160,190,220,.16);stroke-width:1}
+.cl-dn{fill:rgba(200,90,80,.04);stroke:rgba(200,110,100,.16);stroke-width:1;stroke-dasharray:3 4}
+.cl-back{fill:none;stroke:var(--mid);stroke-opacity:.22;stroke-width:1.2;stroke-dasharray:2 5}
+.cl-row{fill:none;stroke-opacity:.28;stroke-width:5;stroke-linecap:round}
+.cl-lit{fill:none;stroke-opacity:.95;stroke-width:5;stroke-linecap:round}
+.cl-st{cursor:pointer;outline:none}
+.cl-st .cl-n{fill:#101114;stroke:var(--c);stroke-width:1.6}
+.cl-st .cl-ic path{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cl-st.shut .cl-n{stroke:var(--mid);stroke-opacity:.35;stroke-dasharray:2.5 3}
+.cl-st.shut .cl-ic path{stroke:var(--mid);stroke-opacity:.35}
+.cl-st.shut .cl-lb{fill-opacity:.45}
+.cl-arc{fill:none;stroke:var(--c);stroke-opacity:.16;stroke-width:2.2;stroke-linecap:round}
+.cl-st.shut .cl-arc{stroke-opacity:.06}
+.cl-arc.on{stroke-opacity:1}
+.cl-st.sealed .cl-n{stroke-width:2.6}
+.cl-pill rect{fill:#101114;stroke:var(--c);stroke-opacity:.6;stroke-width:1}
+.cl-pill text{font-size:9.5px;font-weight:600;fill:var(--ink)}
+.cl-st.shut .cl-pill rect{stroke:var(--mid);stroke-opacity:.35}
+.cl-st.shut .cl-pill text{fill:var(--mid)}
+.cl-lb{font-size:11.5px;fill:var(--ink)!important;font-weight:500}
+.cl-lb.sm{font-size:10px;fill:var(--mid)!important;font-weight:400}
+.cl-st:hover .cl-n,.cl-st:focus-visible .cl-n,.cl-st.sel .cl-n{stroke-width:2.6;filter:drop-shadow(0 0 6px var(--c))}
+.cl-st.sel .cl-lb{fill:var(--c)!important}
+.cl-l.got .cl-n{stroke-width:2.4}
+/* a station drawn small for room (clPlace): a ring, never a fill, and a hit
+   circle the size of a fingertip around it so the small mark is not a small
+   target */
+.cl-dot .cl-hit{fill:transparent;stroke:none}
+.cl-dot .cl-n{fill:#101114;stroke-width:1.6}
+.cl-dot.cl-l .cl-n{stroke-width:1.2}
+.cl-seat{cursor:pointer}
+.cl-seat .cl-sr{fill:none;stroke:var(--c);stroke-opacity:.3;stroke-width:1.2}
+.cl-seat .cl-sg circle{fill:none;stroke:var(--c);stroke-opacity:.45;stroke-width:1.5}
+.cl-seat.on .cl-sr{stroke-opacity:.9}.cl-seat.on .cl-sg circle{stroke-opacity:1}
+.cl-sn{font-size:10.5px}
+.cl-badge{cursor:pointer}
+.cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
+.cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
+.cl-src{cursor:pointer}
+.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
+.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-srcl{text-anchor:start!important;font-size:11px}
+.cl-door{cursor:pointer}
+.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
+.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cl-door text{fill:var(--ink);font-size:12px}
+.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
+.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
+.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4}
+.cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
+.cl-av.below .cl-avq{text-anchor:start}
+@keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
+@media (prefers-reduced-motion:reduce){.cl-av .halo{animation:none}}
+/* 44 and not the 36 the design round drew: the tap floor (tests/design.js
+   gate 8) holds every control to 44 by 44, and this one failed it */
+.cl-tog{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:22px;
+ background:rgba(16,17,20,.85);border:1px solid var(--edge);color:var(--ink);font:inherit;font-size:12.5px;cursor:pointer}
+.cl-tog svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-tog:hover{border-color:var(--mid)}
+.cl-tog{position:absolute;top:12px;left:12px;z-index:3}
+.cone-fig:not(.climb) .cl-tog{top:auto;bottom:12px}
+.cl-card{display:flex;flex-direction:column;gap:10px}
+.cl-hd{display:flex;gap:12px;align-items:center}
+.cl-hic svg{width:34px;height:34px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cl-sub{font-size:12.5px;color:var(--mid);line-height:1.5;margin-top:2px}
+.cl-line{margin:0;font-size:14px;color:var(--ink);font-weight:500}
+.cl-sec{font-size:11.5px;color:var(--mid);margin-top:6px}
+.cl-ul{margin:0;padding-left:18px;font-size:13px;line-height:1.55;color:var(--ink)}
+.cl-mks{display:flex;gap:8px;flex-wrap:wrap}
+.cl-got{font-size:12.5px;color:var(--ink);padding:6px 10px;border:1px solid var(--mid);border-radius:14px}
+.cl-note{font-size:11px;color:var(--mid);margin:0}
+.cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
+.cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
+.cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
 </style></head>

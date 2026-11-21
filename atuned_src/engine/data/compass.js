@@ -653,8 +653,9 @@ function compassPoleLines(m,end){
    reads what a person did and never a reading of them, and CQ is a reading.
    His ruling above is newer and places teachers by CQ; the Lines reaches in
    6c (Say it, Walk it, Hold it) are untouched and still read only what was
-   done. NOTHING RENDERS THESE YET: no screen reads POLE_UNLOCK at this
-   commit, so the trail that would draw them is the next build, not this one. */
+   done. The climb on the Compass tab (clSvg, ui/cone.js, 21 November) is
+   the screen that reads POLE_UNLOCK: each teacher is a station at its own
+   number there, and the path is lit to the highest CQ a person has stood at. */
 const CQ_CLIMB_FLOOR=41;
 const CLIMB_SEAT_PICK={SA:'Crown'};
 const POLE_UNLOCK={CH:49, DE:57, PO:66, TR:72, IL:74, TU:81, OR:83, PE:91,
