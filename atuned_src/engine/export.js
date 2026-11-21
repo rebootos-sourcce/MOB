@@ -112,8 +112,8 @@ if(typeof module!=='undefined'&&module.exports){
                   CARDSET:CARDSET, CARD_OPEN:CARD_OPEN, CARD_SHUT:CARD_SHUT, CARD_STEP:CARD_STEP,
                   AXCARD:AXCARD, AXC_UN:AXC_UN, CARD_BY:CARD_BY, AXC_BY:AXC_BY,
                   cardLine:cardLine, cardDepth:cardDepth, axLine:axLine, addrLine:addrLine, relLine:relLine, c3Band:c3Band,
-                  HARM_AX:HARM_AX, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
-                  SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHARGES:CHARGES,
+                  HARM_AX:HARM_AX, HARM_FILM:HARM_FILM, KB_RENAME:KB_RENAME, KB_KEY:KB_KEY, INFER_NOUN:INFER_NOUN,
+                  SABAUTH:SABAUTH, ARCH18:ARCH18, CHILD:CHILD, CHILD_VAL:CHILD_VAL, CHARGES:CHARGES,
                   DOMAINS:DOMAINS, ARCH:ARCH, ARCH_CREDIT:ARCH_CREDIT, SI:SI, SINAMES:SINAMES, MASKS:MASKS, MASKS_READ:MASKS_READ,
                   BANDS:BANDS, PAL:PAL, ROOTD:ROOTD, ROOTCOL:ROOTCOL, AFFIN:AFFIN,
                   PRACTICE:PRACTICE, EXPR:EXPR, PMBANDS:PMBANDS, FLOWSEAT:FLOWSEAT, seatHz:seatHz,
@@ -238,6 +238,11 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
+  /* the 21 November rulings: where a teacher opens by CQ, the Crown's fetter
+     pair, and which laws belong to which teacher */
+                  CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
+                  compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
+                  SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,

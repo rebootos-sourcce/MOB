@@ -994,15 +994,14 @@ function runFetterDrill(c){
  var h='<div class="pm-eye">Child emotion</div><div class="ad-nm">'+esc(c.nm)+'</div>'
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   /* the book's entry for each of the nine is on file as a universal law,
-     "Fear · Safety" and the rest. Four name a different opposite from
-     CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
-     pending (Shock, Surprise, Anticipation), so it is not printed on a card
-     that says "toward Trust".
-     Until that is ruled the card says it has no meaning on file.
-     Where the two already agree, Shame toward Worth and Disgust toward
-     Acceptance, there is nothing to rule, and the card prints the book's
-     own entry, unmarked because it is quoted (childBookSays). */
-  +kbSaid(childBookSays(c),false)
+     "Fear · Safety" and the rest, printed unmarked because it is quoted
+     (childBookSays). Six now agree with CHILD, his 21 November ruling.
+     Shock, Surprise and Anticipation have no pole in the book, so for them
+     the card printed the gap; they carry their two named forms instead
+     (childSubHtml), and a card that lists them must not also say it has
+     no meaning on file. */
+  +(childBookSays(c)||!(c.sub&&c.sub.length)?kbSaid(childBookSays(c),false):'')
+  +childSubHtml(c)
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -1275,12 +1274,25 @@ function kbSaid(t,composed){
 /* THE BOOK'S OWN ENTRY FOR A CHILD EMOTION, only where the book and CHILD
    name the same opposite. HARM's emotion rows are titled "Shame · Worth", so
    the two agree when the title is exactly the emotion and CHILD's own opp.
-   Read, not listed: on 20 November that is Shame and Disgust, and the day he
-   rules one of the other seven, whichever table moves, this starts printing
-   it with no change here. Fear, Anger, Apathy and Sad name a different
-   opposite and Shock, Surprise and Anticipation have none yet, so for those
-   this returns '' and the card keeps the gap. BOOK-ERRATA.md holds both
-   wordings for each. */
+   Read, not listed: on 20 November that was Shame and Disgust, and on 21
+   November CHILD moved to the book's opposite for Fear, Anger, Apathy and
+   Sad, so it is six, with no change here. Shock, Surprise and Anticipation
+   have no pole in the book, so for those this returns ''. */
+/* THE NAMED FORMS OF A CHILD EMOTION THAT IS NOT A SIMPLE PAIR, CHILD's
+   `sub` (engine/data/canon.js), his 21 November ruling. Only in the Wisdom
+   school, where the whole card shows, and only for a row that carries them.
+   Each form names its valence in words beside it (CHILD_VAL), because a
+   label never stands alone. Excitement and Anxious are his; the other four
+   are the team's, so the lines wear the Source AI mark the way ADDR_SAY's
+   composed lines do, and the mark is unpacked on hover by its own tip. */
+function childSubHtml(c){
+ if(!(c&&c.sub&&c.sub.length)||!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
+ var mark=typeof srcMark==='function'?srcMark(KB_SAID_TIP):'';
+ return '<div class="pm-eye">Two forms it runs as</div>'
+  +c.sub.map(function(f){
+   return '<p class="ad-p src-ai">'+mark+'<span class="src-ai-t"><b>'+esc(f.nm)+'</b>, '
+    +esc((CHILD_VAL[f.val]||'').charAt(0).toLowerCase()+(CHILD_VAL[f.val]||'').slice(1))
+    +' '+esc(f.d)+'</span></p>';}).join('');}
 function childBookSays(c){
  if(!c||!c.opp)return '';
  var want=c.nm+' · '+c.opp;
