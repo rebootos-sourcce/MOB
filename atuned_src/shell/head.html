@@ -5363,9 +5363,9 @@ body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px
  transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
 .st-hello:hover .sth-ring,.st-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
 .st-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
- transform-origin:50% 50%;transition:opacity .35s ease}
+ transform-origin:50% 50%;transition:opacity var(--t-surface) var(--ease-out)}
 .st-hello:hover .sth-ring2,.st-hello:focus-visible .sth-ring2{opacity:.4}
-.st-hello .sth-dot{fill:var(--dim);transition:fill .3s ease}
+.st-hello .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
 .st-hello:hover .sth-dot,.st-hello:focus-visible .sth-dot{fill:var(--accent)}
 @keyframes sthBreathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.045);opacity:.7}}
 @media (prefers-reduced-motion:reduce){.st-hello .sth-ring{animation:none}}
