@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v393 c1d99a3f 2026-11-21 23:07"><head><meta charset="utf-8">
+<html lang="en" data-build="v406 9d8e7536 2026-11-21 23:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5117,6 +5117,77 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* PILLOW EMBOSS, 21 November, his words on the Dashboard's Source AI
+   circle: "I want it to feel like there's a subtle, like it's a pillow emboss
+   with a subtle bevel, making it feel like it's a ring inside of a raised
+   surface with this kind of cloudy pattern around it."
+
+   Three layers, one light, from the upper left, the way every highlight in
+   this product already falls:
+    1. THE RAISED SURFACE, ::before under the face. A disc a band wider than
+       the face (--sf-band), lit on its upper left crown and rolling into
+       shadow on its lower right flank (the two inset shadows), lifted off
+       the well by a cast shadow down and right with a faint lit edge up and
+       left (the two outer shadows). Its fill is nearly clear, so the cloud
+       under it (ui/unicloud.js, mounted in #stjr on the Dashboard) still
+       reads through the band.
+    2. THE FACE, srcface.js's own canvas, untouched except that the box it
+       sits in is held in by --sf-pil, so the raised band fits inside her
+       panel instead of being cut by it. Her circle is sized off that box
+       every frame, so nothing in the drawing moves.
+    3. THE INSET RIM, ::after over the face, exactly its size (--sf-d,
+       written by srcface.js, the only code that knows the circle). The
+       upper left wall of the groove shades the face (inset, offset down
+       right), the lower right lip catches light (inset, offset up left),
+       and outside the groove the pillow's own lip is lit lower right and
+       shaded upper left, which is what makes the face read as pressed into
+       the surface rather than laid on it.
+   Static, so reduced motion has nothing to stop: the end state is the only
+   state. Compositor cost is paint once per resize; box-shadow on a fixed
+   element does not repaint per frame. Pointer events pass through both
+   layers to the canvas, whose click impulse is kept. #stuni's clip is
+   lifted here only so the cast shadow is not cut square at its box, the
+   one thing his 8 November ruling says never to show. */
+body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
+body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
+body.tab-story.st-full #stuni .canvas-wrap #srcface{
+ inset:var(--sf-pil);width:calc(100% - 2*var(--sf-pil));height:calc(100% - 2*var(--sf-pil))}
+body.tab-story.st-full #stuni .canvas-wrap::before,
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
+ transform:translate(-50%,-50%);pointer-events:none}
+body.tab-story.st-full #stuni .canvas-wrap::before{
+ z-index:-1;width:calc(var(--sf-d,0px) + 2*var(--sf-band));
+ background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.055),rgba(255,255,255,.016) 48%,rgba(0,0,0,.12) 100%);
+ box-shadow:
+  inset 2px 3px 3px -1px rgba(255,255,255,.10),
+  inset -3px -5px 9px rgba(0,0,0,.45),
+  -6px -8px 18px -4px rgba(255,255,255,.035),
+  8px 12px 26px -2px rgba(0,0,0,.6)}
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ z-index:1;width:var(--sf-d,0px);
+ box-shadow:
+  inset 3px 5px 8px rgba(0,0,0,.5),
+  inset -1px -2px 2px rgba(255,255,255,.06),
+  0 0 0 1px rgba(0,0,0,.35),
+  1px 2px 3px rgba(255,255,255,.05),
+  -1px -2px 3px rgba(0,0,0,.4)}
+@media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
+/* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
+   Dashboard at z-index -1; isolation keeps that under her words and controls
+   but over the well's own ground, and the mask fades it to nothing well
+   inside the panel so the cloud never meets the panel's square edge. */
+body.tab-story.st-full #stjr{isolation:isolate}
+/* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
+   -1) out from behind the panel's own background, where on the Dashboard it
+   had always been painted and never seen. Measured on the first build of
+   this round: it came up as a pale rounded box with an accent blob in its
+   top left corner behind her circle, the same box he reported on the hero
+   on 10 November. It stays where it always was on this view: unseen. */
+body.tab-story.st-full #stjr .st-glow::before{display:none}
+body.tab-story.st-full #stjr>#unicloud{
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -54290,6 +54361,7 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
      this layout the field anchors and the rim sit inside it, where the pie
      put the anchors outside */
   Rf=Math.max(12,Math.min(W0,H0)/2-2);
+  sizeVar();
   /* the bloom's downsample steps were 4, 8 and 16 pixels against a face 430
      across the window. Kept in proportion to the face, the way every other
      length in the file scales by Rf/430, or a 40 pixel face is smeared to a
@@ -55470,7 +55542,14 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     answered as if done and do nothing; give() ends the loan and the caller
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
- function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false;
+ /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
+    Dashboard's pillow emboss (shell/head.html, PILLOW EMBOSS) draws the
+    raised surface and the inset rim round exactly this circle, and only
+    this file knows it: the circle is the largest the canvas box holds, less
+    two pixels, so its size is min(width, height) of a box CSS cannot take
+    the minimum of. Written on the host, so a move carries it. */
+ function sizeVar(){ const hp=canvas.parentNode; if(hp&&hp.style) hp.style.setProperty('--sf-d',(2*Rf).toFixed(1)+'px'); }
+ function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false; if(moved) sizeVar();
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); }
   else if(moved) refit();
   return true; }
@@ -55560,6 +55639,46 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    soft saturation (exp decay, smoothstep) so the core blends instead of
    plateauing with a sharp rim.
 
+   SEAMS, the third revision, 21 November. His words, on a screenshot
+   with eight red crosses round the circle: "There's a bug in the fluid
+   code. You can see a seam. There should be none. That should be very
+   fluid." Nothing here is drawn in eight wedges; the field is one full
+   screen pass. The seams were the noise's own lattice, measured on the
+   shader rendered to a float target (the field's second derivative,
+   high passed, so smooth curvature cancels and only a crease survives):
+   a warped square grid of crease lines across the whole cloud, and the
+   grid is centred on the circle because uv's origin is the stage centre,
+   so its lines cross the bright halo round her at roughly eight places.
+   Two causes, both in the old value noise. Its cubic fade, f*f*(3-2f),
+   has a second derivative that jumps at every cell edge, which the eye
+   reads as a hard line (a Mach band), and the density curve's contrast
+   sharpened it. And value noise flattens across every cell edge whatever
+   the fade, so even a smoother fade left a grid. Fixed by:
+    - gradient noise (gnoise) with the quintic fade, 6f^5-15f^4+10f^3, the
+      curve Perlin moved to in 2002 for exactly this. Matched to the old
+      field's spread (NGAIN, measured: std 0.218 against 0.177) and its
+      softness (NFREQ, gradient noise carries its energy at a higher
+      frequency on the same lattice).
+    - each octave rotated (OCT) and shifted (LAT), and the lattice moved
+      off her centre, so no residual can stack into a straight line.
+    - every smoothstep edge (ring gate, density, vignette, core glow) on
+      the same quintic curve (sstep2), and a pulse fades out over its last
+      30 percent of life instead of switching off.
+    - integer seeds for the second channel. A fractional seed let the
+      compiler round the same lattice corner two ways from two cells, and
+      the hash turns one bit into a different gradient: a real crack, found
+      in this revision's own first build and fixed before it shipped.
+   Measured: strongest crease 212 times the field's median curvature
+   change before, 65 after; the worst single line 796 before, 118 after.
+   THE PINCH FIX HOLDS. Gradient noise is steeper than value noise at the
+   same spread, which put folds back during a pulse on the first try
+   (0.49 percent of the frame against 0.14). WARP_K scales the warp back
+   to inside the old budget, chosen by measurement across 8 time samples
+   per case: during a pulse at the worst settings, folded area mean 0.05
+   and 0.06 percent against 0.17 and 0.14 before, worst frame 0.33 and
+   0.37 against 0.48 and 0.38. THE BANDING FIX HOLDS: the dither at the
+   final write is untouched.
+
    WHAT THIS IS NOT. This is an overlay, never a replacement. #stage's own
    CSS wash (shell/head.html's #stage::before, "it emanates from her, not
    the room," 10 November) already reads real CQ through CPAL/getPalette/
@@ -55571,9 +55690,13 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    "I want to see it blending" is answered literally: this is paint over
    paint, not a second background competing with the first.
 
-   WHERE IT LIVES. Scoped to the Journal hero only (body.tab-story, not
-   .st-full), the one place "the cloud" concept already exists. The
-   Dashboard's own separate background (#stjr) is untouched. Mounted and
+   WHERE IT LIVES. The Journal, both views: the hero paints it on #stage,
+   and since 21 November the Dashboard paints it in #stjr, the dark well
+   round her circle, masked soft so it never meets the panel's edge, as
+   the cloud round the raised surface he asked for ("a ring inside of a
+   raised surface with this kind of cloudy pattern around it"; see
+   PILLOW EMBOSS in shell/head.html). #stjr's own wash is still under it.
+   Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
 
@@ -55603,11 +55726,19 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
 'use strict';
 if(typeof document==='undefined')return;
 
-var HOST_ID='stage';
+/* THE HOST, 21 November: the hero paints behind everything on #stage; the
+   Dashboard paints inside the dark well that holds her circle, #stjr, so the
+   cloud sits round the raised surface she is set into (shell/head.html,
+   PILLOW EMBOSS). #stjr is rebuilt by every stRender, so frame() re-seats
+   the canvas whenever its host is a new element. */
+function hostEl(){
+ var c=document.body.classList;
+ return document.getElementById(c.contains('st-full')?'stjr':'stage');
+}
 var canvas=null, gl=null, mounted=false, raf=0;
 var prog=null, posLoc=-1, uniforms={};
 var blitProg=null, blitPosLoc=-1, blitUniforms={};
-var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false;
+var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false, sizedW=0, sizedH=0;
 var vbuf=null;
 var compileFailed=false, contextLost=false;
 
@@ -55618,11 +55749,10 @@ var vsSrc=[
  'void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.0,1.0); }'
 ].join('\n');
 
-/* The fragment shader is the fixed demo's own, verbatim: the dither, the
-   pulse strength and gate, the turbulence cap and the soft saturation are
-   all load bearing fixes, measured against real screenshots and a
-   standalone Jacobian check (tools/jacobian.js in the scratchpad, not
-   shipped here), not cosmetic. */
+/* The fragment shader is the fixed demo's own, with the seam revision
+   above: the dither, the pulse strength and gate, the turbulence cap, the
+   soft saturation and the warp scale are all load bearing fixes, measured
+   against real screenshots and a Jacobian check, not cosmetic. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -55642,48 +55772,49 @@ var fsCore=[
  'const float PULSE_WIDTH0 = 0.16;',
  'const float PULSE_LIFE = 2.6;',
  'const float PULSE_STRENGTH = 0.22;',
+ 'const mat2 OCT = mat2(0.8, 0.6, -0.6, 0.8);',
+ 'const vec2 LAT = vec2(0.37, 0.61);',
+ 'const float WARP_K = 0.62;',
+ 'const float NFREQ = 0.75;',
+ 'const float NGAIN = 1.23;',
+ '',
+ 'float sstep2(float a, float b, float x){',
+ '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
+ '  return t*t*t*(t*(t*6.0-15.0)+10.0);',
+ '}',
  '',
  'float hash(vec2 p){',
  '  p = fract(p*vec2(123.34, 456.21));',
  '  p += dot(p, p+45.32);',
  '  return fract(p.x*p.y);',
  '}',
- 'float vnoise(vec2 p){',
+ 'vec2 grad(vec2 i, vec2 s){',
+ '  return vec2(hash(i+s), hash(i+s+vec2(19.0, 73.0)))*2.0 - 1.0;',
+ '}',
+ 'float gnoise(vec2 p, vec2 s){',
  '  vec2 i = floor(p); vec2 f = fract(p);',
- '  float a = hash(i);',
- '  float b = hash(i+vec2(1.0,0.0));',
- '  float c = hash(i+vec2(0.0,1.0));',
- '  float d = hash(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
+ '  float a = dot(grad(i, s), f);',
+ '  float b = dot(grad(i+vec2(1.0,0.0), s), f-vec2(1.0,0.0));',
+ '  float c = dot(grad(i+vec2(0.0,1.0), s), f-vec2(0.0,1.0));',
+ '  float d = dot(grad(i+vec2(1.0,1.0), s), f-vec2(1.0,1.0));',
+ '  vec2 u = f*f*f*(f*(f*6.0-15.0)+10.0);',
  '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
  '}',
+ 'float vnoise(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*gnoise(p, vec2(0.0)); }',
  'float fbm(vec2 p){',
- '  float s = 0.0; float amp = 0.5; float freq = 1.0;',
+ '  float s = 0.0; float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
- 'vec2 hash2(vec2 p){',
- '  p = fract(p*vec2(123.34, 456.21));',
- '  p += dot(p, p+45.32);',
- '  return fract(vec2(p.x*p.y, p.x*p.y*1.618034));',
- '}',
- 'vec2 vnoise2(vec2 p){',
- '  vec2 i = floor(p); vec2 f = fract(p);',
- '  vec2 a = hash2(i);',
- '  vec2 b = hash2(i+vec2(1.0,0.0));',
- '  vec2 c = hash2(i+vec2(0.0,1.0));',
- '  vec2 d = hash2(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
- '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
- '}',
+ 'vec2 vnoise2(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*vec2(gnoise(p, vec2(0.0)), gnoise(p, vec2(41.0, 7.0))); }',
  'vec2 fbm2(vec2 p){',
- '  vec2 s = vec2(0.0); float amp = 0.5; float freq = 1.0;',
+ '  vec2 s = vec2(0.0); float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise2(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise2(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
@@ -55693,7 +55824,7 @@ var fsCore=[
  '',
  '  float cd = length(uv-uCore);',
  '  vec2 dirFromCore = cd>0.0001 ? (uv-uCore)/cd : vec2(0.0,1.0);',
- '  float ringGate = smoothstep(0.0, RING_R, cd);',
+ '  float ringGate = sstep2(0.0, RING_R, cd);',
  '',
  '  float pulseAmt = 0.0;',
  '  for(int i=0;i<4;i++){',
@@ -55705,7 +55836,7 @@ var fsCore=[
  '        float pw = PULSE_WIDTH0 + age*0.10;',
  '        float band = exp(-((cd-pr)*(cd-pr))/(2.0*pw*pw));',
  '        float decay = exp(-age/(PULSE_LIFE*0.55)) / (1.0+age*0.5);',
- '        pulseAmt += band*decay;',
+ '        pulseAmt += band*decay*(1.0 - sstep2(PULSE_LIFE, PULSE_LIFE*1.3, age));',
  '      }',
  '    }',
  '  }',
@@ -55716,19 +55847,19 @@ var fsCore=[
  '  float speed = mix(0.022, 0.095, incoh) + uDQ*0.02;',
  '  float t = uTime*speed;',
  '',
- '  vec2 w1 = fbm2(uv*1.4 + vec2(t*0.5, -t*0.55));',
- '  vec2 warped = uv + (w1-0.5)*turb;',
+ '  vec2 w1 = fbm2(uv*1.4 + LAT + vec2(t*0.5, -t*0.55));',
+ '  vec2 warped = uv + (w1-0.5)*turb*WARP_K;',
  '  warped += pulsePush;',
  '  vec2 w2 = fbm2(warped*1.9 + vec2(-t*0.35, t*0.25));',
- '  vec2 p2 = warped + (w2-0.5)*turb*0.55;',
+ '  vec2 p2 = warped + (w2-0.5)*turb*0.55*WARP_K;',
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = smoothstep(1.05, 0.0, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
- '  float density = smoothstep(0.20, 0.93, n);',
- '  float vign = smoothstep(1.35, 0.1, length(uv));',
+ '  float density = sstep2(0.20, 0.93, n);',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv));',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',
@@ -55826,6 +55957,10 @@ function tryBuildHalfRes(){
 function sizeFBO(w,h){
  if(!usingHalfRes)return;
  lowW=Math.max(1,w); lowH=Math.max(1,h);
+ /* texStorage2D makes a texture immutable: a second call on the same one
+    fails and leaves it at its first size. A new size gets a new texture. */
+ if(fboTex)gl.deleteTexture(fboTex);
+ fboTex=gl.createTexture();
  gl.bindTexture(gl.TEXTURE_2D,fboTex);
  gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA16F,lowW,lowH);
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
@@ -55923,12 +56058,17 @@ function resize(){
  var r=canvas.getBoundingClientRect();
  var dpr=Math.min(window.devicePixelRatio||1,2);
  var w=Math.max(1,Math.round(r.width*dpr)), h=Math.max(1,Math.round(r.height*dpr));
- if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h); }
+ if(w===sizedW&&h===sizedH)return;
+ sizedW=w; sizedH=h;
+ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h);
  if(usingHalfRes)sizeFBO(Math.max(1,Math.round(w/2)),Math.max(1,Math.round(h/2)));
 }
 
 function frame(now){
  if(!mounted||contextLost){ return; }
+ var want=hostEl();
+ if(want&&canvas.parentNode!==want)want.insertBefore(canvas,want.firstChild);
+ resize();
  var still=stillWins();
  var tSec=still?(lastTSec||2.4):(now-startTime)/1000;
  var dt=Math.min(0.05,(now-(lastFrameTime||now))/1000); lastFrameTime=now;
@@ -55998,12 +56138,12 @@ function frame(now){
 function removeCanvas(){
  if(raf){ cancelAnimationFrame(raf); raf=0; }
  if(canvas&&canvas.parentNode)canvas.parentNode.removeChild(canvas);
- canvas=null; gl=null;
+ canvas=null; gl=null; fboTex=null; fbo=null; sizedW=sizedH=0;
 }
 
 function mount(){
  if(mounted||compileFailed)return;
- var host=document.getElementById(HOST_ID);
+ var host=hostEl();
  if(!host)return;
  canvas=document.createElement('canvas');
  canvas.id='unicloud';
@@ -56018,7 +56158,7 @@ function mount(){
  canvas.addEventListener('webglcontextlost',function(e){ e.preventDefault(); contextLost=true; },false);
  canvas.addEventListener('webglcontextrestored',function(){
   contextLost=false;
-  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
+  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); sizedW=sizedH=0; resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
   catch(e){ removeCanvas(); compileFailed=true; }
  },false);
 
@@ -56050,7 +56190,7 @@ function unmount(){
    nothing else in this product needs to know this exists. */
 function syncToTab(){
  var c=document.body.classList;
- var want=c.contains('tab-story')&&!c.contains('st-full');
+ var want=c.contains('tab-story');
  if(want&&!mounted)mount();
  else if(!want&&mounted)unmount();
 }
@@ -113824,5 +113964,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008321099"></div>
+<div id="eof" hidden data-len="008330143"></div>
 </body></html>
