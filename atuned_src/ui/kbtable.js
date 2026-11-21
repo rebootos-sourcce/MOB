@@ -114,12 +114,22 @@ function kbtOne(d){
    dictionary and the Chromium the gates run did not have one, so the first
    cut broke them as "Acceptanc / e", measured at 390. A soft hyphen before a
    common ending is invisible until the line has to break there. */
-var KBT_ENDS=['ability','ation','ance','ence','tion','ment','ness','ual','ity'];
+/* THREE NAMES MATCHED NO ENDING AND BROKE ON A LETTER, 21 November.
+   Correspond printed "Correspon / d" on a phone tile, measured at 390, and
+   Transparency and Compassion had no break point either, read off HARM by
+   listing every name of ten letters or more against this list. "sion" and
+   "ency" cover two. Correspond has no common ending at all, so a word the
+   list misses breaks at its last pair of consonants that leaves four letters
+   on each side, "Corres-pond", rather than wherever the box runs out. */
+var KBT_ENDS=['ability','ation','ance','ence','ency','sion','tion','ment','ness','ual','ity'];
 function kbtName(t){
  return esc(t).split(' ').map(function(w){
   if(w.length<10)return w;
   for(var i=0;i<KBT_ENDS.length;i++){var k=w.toLowerCase().lastIndexOf(KBT_ENDS[i]);
    if(k>=4&&k+KBT_ENDS[i].length===w.length)return w.slice(0,k)+'&shy;'+w.slice(k);}
+  var V=/[aeiouy]/i;
+  for(var j=w.length-4;j>=4;j--)if(/^[a-z]{2}$/i.test(w[j-1]+w[j])&&!V.test(w[j-1])&&!V.test(w[j]))
+   return w.slice(0,j)+'&shy;'+w.slice(j);
   return w;}).join(' ');}
 function kbtFamName(a){return HARM_AX[a]||a;}
 /* the family line, the heading's own words after the name where KB_AXHD has
@@ -180,12 +190,17 @@ function kbtTile(e,frame){
  var seat=kbtSeatOf(e), col=seatCol(seat), seen=kbtIsSeen(e.c), un=kbtUnconfirmed(e), sub=kbtSub(e);
  var lbl=e.c+', '+e.t+(sub?', '+sub:'')+', '+kbtFamName(e.a)+(un?', not yet confirmed in the book':'')+(seen?', read':', not read');
  return '<button type="button" class="kbt-t'+(frame?' kbt-fr':'')+(un?' kbt-un':'')+(seen?' kbt-seen':'')+'" data-kbtc="'+esc(e.c)+'" '
-  +'aria-label="'+esc(lbl)+'" style="--c:'+col+'"'
-  +(un?' data-tip-k="'+esc(e.t)+'" data-tip="Not yet confirmed in the book"':'')+'>'
+  +'aria-label="'+esc(lbl)+'" style="--c:'+col+'">'
   +'<span class="kbt-c">'+esc(e.c)+'</span>'
   +kbtRing(kbtIcOf(e),col,seen,48)
   +'<span class="kbt-n" lang="en">'+kbtName(e.t)+'</span>'
-  +(sub?'<span class="kbt-s">'+esc(sub)+'</span>':'')+'</button>';}
+  +(sub?'<span class="kbt-s">'+esc(sub)+'</span>':'')
+  /* THE DASHED OUTLINE SAID WHAT IT MEANT ONLY ON HOVER. The line was a
+     tooltip, so on a phone, where nothing hovers, three tiles were drawn
+     differently and nothing on the screen said why, which is a symbol left
+     unpacked. The line sits on the tile now and the tooltip is gone, so it is
+     said once, in the one place every device reads. */
+  +(un?'<span class="kbt-s kbt-uc">Not yet confirmed in the book</span>':'')+'</button>';}
 /* NO COUNT AGAINST A TOTAL ON THE BOARD, 21 November. The first cut printed
    "0 of 76 read", "0 of 7" for the families and "0 of 13" on each band, and
    tests/functional.js's count gate refused all of them at both widths: a
@@ -198,14 +213,42 @@ function kbtScore(t){
  return '<div class="kbt-sc"'+' data-tip-k="The table" data-tip="Each tile is one universal law. Its code, E01 to E'
   +HARM.length+', is its place in the book\'s own table. Open a tile to read it, and its ring closes." tabindex="0">'
   +'<span class="kbt-scn"><b>'+t.n+'</b> read</span></div>'
-  +'<ul class="kbt-tiers">'
-  +'<li class="kbt-tier'+(t.unlocked?' on':'')+'" data-tip-k="Families unlocked" data-tip="A family opens when you read its first law." tabindex="0">'
-  +'<span class="kbt-tl">Families unlocked</span><span class="kbt-tv">'+t.unlocked+'</span></li>'
-  +'<li class="kbt-tier'+(t.done?' on':'')+'" data-tip-k="Families read" data-tip="Every law in the family read. Its heading ring closes." tabindex="0">'
-  +'<span class="kbt-tl">Families read</span><span class="kbt-tv">'+t.done+'</span></li>'
-  +'<li class="kbt-tier'+(t.grand?' on':'')+'" data-tip-k="The formula closed" data-tip="All seven arcs on the formula close when every family is read." tabindex="0">'
-  +'<span class="kbt-tl">The formula closed</span><span class="kbt-tv">'+(t.grand?'Yes':'Not yet')+'</span></li>'
-  +'</ul>';}
+  /* with the waiting tiers gone, a fresh board's card held "0 read" and a
+     box of nothing, measured at 1600. One line says what to do instead,
+     and only until the first law is read */
+  +(t.n?'':'<p class="kbt-hint">Open any tile to read it. Its ring closes.</p>')
+  +kbtTiers(t);}
+/* AN ACHIEVEMENT IS SHOWN WHEN IT IS EARNED, AND NOT BEFORE. The first cut
+   listed all three from the first visit, dimmed, with "0" and "Not yet" in
+   them, which is a locked reward drawn as a tease: the product has no
+   padlocks and no dead states, so a tier nobody has reached is not on the
+   screen at all. A fresh board shows the count and nothing under it. The
+   tooltips stay, because a tier name is a label and its meaning goes with it. */
+function kbtTiers(t){
+ var o='';
+ if(t.unlocked)o+='<li class="kbt-tier on" data-tip-k="Families unlocked" data-tip="A family opens when you read its first law." tabindex="0">'
+  +'<span class="kbt-tl">Families unlocked</span><span class="kbt-tv">'+t.unlocked+'</span></li>';
+ if(t.done)o+='<li class="kbt-tier on" data-tip-k="Families read" data-tip="Every law in the family read. Its heading ring closes." tabindex="0">'
+  +'<span class="kbt-tl">Families read</span><span class="kbt-tv">'+t.done+'</span></li>';
+ if(t.grand)o+='<li class="kbt-tier on" data-tip-k="The formula closed" data-tip="All seven arcs on the formula are closed: every family is read." tabindex="0">'
+  +'<span class="kbt-tl">The formula closed</span></li>';
+ return o?'<ul class="kbt-tiers">'+o+'</ul>':'';}
+/* THE FILM IS A LINK OUT, AND ONLY THAT, 21 November. It said "A film of
+   this law exists. It is not attached yet." over ten films that are real
+   files with real ids in HARM_FILM, which told a person there was something
+   to watch and gave them no way to watch it. The link opens the Drive file
+   in a new tab on the person's own press. Nothing is fetched by this page,
+   nothing is embedded and no player is drawn: the standing rule for this
+   content, and design.js gate 7, which fails on any request the page makes,
+   still hold, because a link that is not followed makes none. Whether the
+   file opens for someone who is not signed in to the owner's Drive is the
+   file's sharing setting, not this page's. */
+function kbtFilm(c){
+ var f=KBT_FILM[c]; if(!f||!f.id)return '';
+ return '<a class="kbt-film" href="https://drive.google.com/file/d/'+encodeURIComponent(f.id)+'/view" target="_blank" rel="noopener noreferrer">'
+  +'<span class="kbt-fi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+  +'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z M10 9.5v5l4-2.5z"/></svg></span>'
+  +'<span class="kbt-flt"><b>Watch the film of this law</b><span>Opens in Google Drive, in a new tab</span></span></a>';}
 /* the detail panel's content for one law, or for the formula when c is 'cq' */
 function kbtDetail(c){
  if(!c||c==='cq'){
@@ -225,9 +268,7 @@ function kbtDetail(c){
   +'<div class="kbt-df">'+esc(e.c)+' · '+esc(kbtFamName(e.a))+(line?', '+esc(line):'')+'</div></div></div>'
   +'<p class="kbt-dd">'+esc(kbtOne(e.d))+'</p>'
   +(kbtUnconfirmed(e)?'<p class="kbt-dnote">Not yet confirmed in the book.</p>':'')
-  +(KBT_FILM[c]?'<div class="kbt-film"><span class="kbt-fi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-    +'stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z M10 9.5v5l4-2.5z"/></svg></span>'
-    +'<span>A film of this law exists. It is not attached yet.</span></div>':'')
+  +kbtFilm(c)
   +'<div class="kbt-da"><button type="button" class="btn" data-kbtgo="'+esc(c)+'">Open the full card</button>'
   +(KBT.open?'<button type="button" class="btn" data-kbtx>Close</button>':'')+'</div>';}
 function kbtHtml(){
@@ -330,7 +371,10 @@ function kbtWire(){
  var b=document.getElementById('kbt'); if(!b)return;
  b.querySelectorAll('[data-kbtc]').forEach(function(el){
   var c=el.getAttribute('data-kbtc');
-  el.onclick=function(){if(KBT.open===c)kbtClose(true); else kbtOpen(c,el);};
+  /* the press is the rail's own, railPick in ui/railmotion.js, after the
+     open so it lands on the tile the person sees; kind 'kb' has no caption */
+  el.onclick=function(){if(KBT.open===c)kbtClose(true); else kbtOpen(c,el);
+   if(typeof railPick==='function')railPick(el,'kb');};
   /* pointing previews in the panel without opening or marking anything */
   var peek=function(){if(KBT.open||KBT.hover===c)return; KBT.hover=c; kbtPanel(c);};
   el.addEventListener('mouseenter',peek); el.addEventListener('focus',peek);});
@@ -369,6 +413,7 @@ function kbtCss(){
   '.kbt-tiers{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.kbt-tier{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--dim)}',
   '.kbt-tier.on{color:var(--ink)}',
+  '.kbt-hint{margin:0;font-size:13px;line-height:1.4;color:var(--dim)}',
   '.kbt-tv{font-variant-numeric:tabular-nums}',
   /* the formula, 2 by 2, alone and centred */
   '.kbt-f{all:unset;box-sizing:border-box;cursor:pointer;width:100%;aspect-ratio:1;align-self:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;',
@@ -388,8 +433,12 @@ function kbtCss(){
   '.kbt-df{font-size:12.5px;color:var(--dim);margin-top:2px}',
   '.kbt-dd{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}',
   '.kbt-dnote{margin:0;font-size:13px;color:var(--dim)}',
-  '.kbt-film{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dim);padding:8px 10px;border:1px dashed var(--edge-2);border-radius:var(--r-xs)}',
-  '.kbt-fi{display:inline-flex;width:20px;height:20px}.kbt-fi svg{width:100%;height:100%}',
+  '.kbt-film{display:flex;align-items:center;gap:10px;min-height:var(--tap);box-sizing:border-box;font-size:13px;color:var(--dim);',
+  ' padding:8px 12px;border:1px solid var(--edge-2);border-radius:var(--r-xs);text-decoration:none}',
+  '.kbt-film:hover{border-color:var(--ink)}',
+  '.kbt-film:focus-visible{outline:2px solid var(--ink);outline-offset:2px}',
+  '.kbt-flt{display:flex;flex-direction:column;gap:2px}.kbt-flt b{font-weight:500;color:var(--ink)}',
+  '.kbt-fi{display:inline-flex;flex:0 0 auto;width:20px;height:20px;color:var(--ink)}.kbt-fi svg{width:100%;height:100%}',
   '.kbt-cq{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--dim)}',
   '.kbt-cqv{font-size:22px;font-weight:600;color:var(--ink)}',
   '.kbt-da{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}',
@@ -419,6 +468,7 @@ function kbtCss(){
   '.kbt-hf{transition:stroke-dashoffset .4s cubic-bezier(.22,1,.36,1)}',
   '.kbt-n{font-size:13px;line-height:1.15;color:var(--ink);hyphens:manual;overflow-wrap:break-word;max-width:100%}',
   '.kbt-s{font-size:11px;color:var(--dim);line-height:1.1}',
+  '.kbt-uc{line-height:1.2;max-width:100%}',
   /* the frame row is one and a half */
   '.kbt-fr{width:calc(var(--kt)*1.5);max-width:calc((100% - var(--kg)*2)/3);min-height:calc(var(--kt)*1.2)}',
   '.kbt-tbn{cursor:default;justify-content:center;background:transparent;outline:1px dashed var(--edge-2)}',
