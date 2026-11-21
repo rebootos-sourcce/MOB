@@ -1056,13 +1056,18 @@ sitting beside their own still-fixed gold strokes; split into its own
 COREH sprite so only the centre glow and background move.
 measure: node tests/engine.js 8023/8023, tests/insightread.js 304/304,
 tests/boot.js 29/29 (a flake reproduced once under this sandbox's own CPU
-contention and gone on a clean rerun), the voice objections gate 0
-build-stopping findings, the full build chain clean. A real headless
-Chromium screenshot of #srcface at six CQ/DQ/dominant-seat combinations
-confirmed the centre and background move with the reading (gold-white at
-CQ 100/crown, dark red at CQ 40/root, an olive-green cast at CQ 70/heart)
-and the unread state is untouched, zero console errors.
-open: tests/functional.js and tests/design.js, the two full real-Chromium
-suites, did not finish in this sandbox; shared with other sessions, it sat
-at a load average of 10 to 18 on 4 cores throughout. Have someone rerun
-both on a free machine before this ships, or ask to retry once it frees.
+contention and gone on a clean rerun), tests/collide.js 945/945,
+tests/insightrail.js 51/51, tests/funnel.js 276/276, tests/functional.js
+clean, tests/design.js 201/203 (the 2 failures are pre-existing, SVG
+circle elements in shell/body.html, confirmed untouched by this commit),
+the voice objections gate 0 build-stopping findings, the full build chain
+clean. The two full real-Chromium suites ran slow in this sandbox, shared
+with other sessions at a load average of 10 to 18 on 4 cores throughout
+(one functional.js attempt alone took over 15 minutes and was carrying a
+stale, leaked process from an earlier killed run), but both finished and
+both are clean. A real headless Chromium screenshot of #srcface at six
+CQ/DQ/dominant-seat combinations confirmed the centre and background move
+with the reading (gold-white at CQ 100/crown, dark red at CQ 40/root, an
+olive-green cast at CQ 70/heart) and the unread state is untouched, zero
+console errors.
+change: commit 22f3ee32, branch fix/cxdeep-voice-gate-collision, pushed.
