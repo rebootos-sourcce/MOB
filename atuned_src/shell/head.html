@@ -5872,29 +5872,40 @@ body.tab-story.st-full #stsrc:empty{display:none}
 .smp-empty{align-items:center;justify-content:center}
 .smp-emptynote{flex:0 0 auto;padding:0 24px;text-align:center;max-width:32em}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-/* the selection as its rings and nothing else, the card's cut. Each ring is
-   a toggle at the tap floor; out of the run it steps back rather than going,
-   so a second tap brings it back. */
-.st-rings{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
-.st-rq{display:inline-flex;align-items:center;justify-content:center;min-width:var(--tap);min-height:var(--tap);
- padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;
- transition:opacity var(--t-element) var(--ease-out)}
-.st-rq[aria-pressed="false"]{opacity:.35}
+/* THE SELECTION AS ONE EVEN LIST, 21 November (panel-redesign, the reason
+   is at stRelPanel in ui/storyui.js). Every row the same height and every
+   gap the same, so four picks read as four equal lines and not three and a
+   stray. The row is the toggle; out of the run it steps back rather than
+   going, so a second tap brings it back, as the rings did. */
+.st-rings{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.st-rq-wrap{display:block;margin:0}
+.st-rq{display:flex;align-items:center;gap:12px;width:100%;min-height:var(--tap);
+ padding:6px 12px 6px 6px;border:1px solid var(--edge);border-radius:var(--r-s);
+ background:color-mix(in srgb,var(--ink) 3%,transparent);color:var(--ink);cursor:pointer;text-align:left;
+ transition:opacity var(--t-element) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.st-rq:hover{border-color:var(--edge-2)}
+.st-rq[aria-pressed="false"]{opacity:.4}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-rq-ring{flex:none;display:inline-flex;position:relative;border-radius:50%}
 /* THE NAME, PRINTED, NOT ONLY A HOVER TITLE, 10 November, CLAUDE.md's own
-   "unpack every symbol" ruling: a ring with no visible word beside it is
-   exactly the failing case that rule names. */
-.st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+   "unpack every symbol" ruling. On one line now, at a size that reads, and
+   WRAPPED, NOT CUT OFF, when a name is longer than the column: a truncated
+   "Self-Silen..." unpacks nothing. */
+.st-rq-t{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+.st-rq-lb{font-size:13.5px;line-height:1.25;font-weight:500;color:var(--ink);overflow-wrap:break-word}
+.st-rq-pt{font-size:11.5px;line-height:1.2}
+/* in the run or out of it, as a ring with a check or an empty ring: icons
+   are ring, never fill */
+.st-rq-ck{flex:none;width:20px;height:20px;fill:none;stroke:var(--mid);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.st-rq[aria-pressed="true"] .st-rq-ck{stroke:var(--glow)}
 /* AVS4, 17 November: an address the avatar put first wears the avatar's own
    dashed ring, the mark the Avatar page's seats wear for the same fact. A
-   pseudo element and not an outline, because the outline is the focus ring. */
-.st-rq-av .st-rq{position:relative}
-.st-rq-av .st-rq::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
-/* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
-   whole point of printing the name is that it can be read. */
-.st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
- overflow-wrap:break-word;max-width:100%}
-.st-rlfoot{margin-top:auto;padding-top:10px}
+   pseudo element and not an outline, because the outline is the focus ring.
+   On the ring and not the button since 21 November: the button is a row. */
+.st-rq-av .st-rq-ring::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
+/* the settings and the press sit under one hairline, so the list above
+   and the controls below read as two halves of one panel */
+.st-rlfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--edge)}
 /* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
    ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
    .rel-sws, which only exists once relCss() has run and carries that
@@ -5923,7 +5934,7 @@ body.tab-story.st-full #stsrc:empty{display:none}
    down to just the switch itself, its name carried in the label's own
    title/aria-label the way the rest of this rail already carries a
    name, never a second copy of text standing in the row. */
-.rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
+.rel-fields.st-fields{flex-wrap:nowrap;gap:10px;justify-content:space-evenly}
 .rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
 .rel-fields.st-fields .st-relsws{flex:0 0 auto}
 /* THE WORD STAYS, OVERRIDDEN THE SAME NIGHT, his words straight after
@@ -5951,6 +5962,11 @@ body.tab-story.st-full #stsrc:empty{display:none}
  transition:filter var(--t-micro) var(--ease-out)}
 .st-go:hover{filter:brightness(1.08)}
 .st-go:disabled{opacity:.4;cursor:default}
+/* the count of addresses this press runs, a figure beside the word */
+.st-go{display:flex;align-items:center;justify-content:center;gap:10px}
+.st-gon{min-width:26px;height:26px;padding:0 7px;border-radius:999px;display:inline-grid;place-items:center;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;
+ border:1.5px solid currentColor}
 /* the negated word, struck, with the negator inside the mark. See stMarks. */
 .st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
  text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
@@ -8678,12 +8694,26 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     the door measured past the row and the tag ran under the name. */
  .st-flow:not([data-focus="read"]) #stpend{visibility:hidden;min-width:0;width:0;overflow:hidden}
  .st-lsb{overflow:visible}
- .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
-  align-items:center;gap:10px;padding:10px 12px}
- .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
- .st-flow:not([data-focus="release"]) .st-rings{margin:0}
- .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0}
- .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px;padding:0 20px;width:auto}
+ /* STACKED ON A PHONE, 21 November (panel-redesign). This was a grid of the
+    rings beside an auto width button, which with rows put the button in a
+    column of its own, centred on the list's height and off its edge. The
+    list over one full width press is the desktop panel folded, not a
+    second layout. The header stays, where the grid hid it: the column's
+    fold control (.zfold) is pinned to the panel's top right, and with the
+    header gone the first row ran under it, measured at 390 with four
+    picks. The header is the row that control sits in at every width.
+    HEIGHT, NOT MIN-HEIGHT, on the phone: with the header back, three rows
+    measured 318 against the 310 floor, so the panel grew by 8 pixels when
+    the last commit's addresses were on it and fell back to 310 when they
+    were not, and tests/stfull.js caught the column moving across a reload.
+    The list scrolls inside the panel instead (.st-rlmid already carries the
+    scroll), so the column is one size whatever it holds. */
+ .st-flow:not([data-focus="release"]) .st-rl{gap:10px;padding:12px;height:310px}
+ .st-flow:not([data-focus="release"]) .st-fields{display:none}
+ .st-flow:not([data-focus="release"]) .zfold{top:6px}
+ .st-flow:not([data-focus="release"]) .st-rings{margin:4px 0 0}
+ .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0;border-top:0}
+ .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px}
  .src-open,.src-q{font-size:18px}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}

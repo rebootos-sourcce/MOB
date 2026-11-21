@@ -4673,12 +4673,37 @@ function stRelPanel(){
     own dashed ring round its node, the mark the Avatar page's seats wear for
     the same fact, and the reason is in its name on hover and to a screen
     reader. "If I don't see it in software, it doesn't exist." */
- else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
+ /* ONE ROW PER ADDRESS, NOT A WRAP OF RINGS, 21 November (release
+    panel-redesign). He ruled there was never a mockup behind this item and
+    that he reviews in software, so this is the team's redesign, built into
+    the real column. What the wrap of rings did wrong, measured on the 1600
+    Dashboard with four picks: three rings on one line and the fourth alone
+    under them, names at 10px wrapped to two lines ("Self- / Silencing"),
+    and some 300 pixels of empty column between the rings and the footer.
+    That is the dead zone and the uneven spacing the standing symmetry
+    ruling (16 November) names, and the 10px name was the unpacked meaning
+    printed too small to read.
+
+    So each address is one full width row, all rows the same height and the
+    same gap: the ring first (the symbol), the name second, its point third
+    in its own seat colour, and on the right a ring that carries a check
+    while the address is in the run and stands empty when a tap has taken it
+    out. The whole row is the toggle, so the tap target is the row and not
+    a 44 pixel ring. The id, data-rq, aria-pressed, the title and the
+    avatar's dashed mark are the ones every gate and the run already read;
+    only their layout moved. The dashed mark sits on the ring now, because
+    on a row the button is no longer round. */
+ else o+='<ul class="st-rings" role="list">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
    var why=(typeof avWhyNow==='function')?avWhyNow(a):null, nm=a.k+', '+a.b+(why?'. '+avWhySay(why):'');
-   return '<div class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
-    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
-    +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
-  +'</div>';
+   return '<li class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
+    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'
+    +'<span class="st-rq-ring">'+crNode(a,'sm',{raw:'',title:''})+'</span>'
+    +'<span class="st-rq-t"><span class="st-rq-lb">'+esc(a.k)+'</span>'
+    +'<span class="st-rq-pt" style="color:'+seatCol(a.b)+'">'+esc(a.b)+'</span></span>'
+    +'<svg class="st-rq-ck" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/>'
+    +(on?'<path d="M6.4 10.2l2.4 2.4 4.8-5"/>':'')+'</svg>'
+    +'</button></li>';}).join('')
+  +'</ul>';
  /* AFFIRM after a commit and never while typing, ui/affirmui.js */
  if(M.fromLast&&!String(ST_TEXT||'').trim()&&!showOnly()&&typeof affDoorHtml==='function')o+=affDoorHtml('story');
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
@@ -4751,7 +4776,14 @@ function stRelPanel(){
    /* RELEASE, not Run release, round of 29 October, his words: "change run
       release to just release." The card's own button (ui/release.js)
       renamed the same way, same reason the fields above stay matched. */
-   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Release</button>')+'</div>';
+   /* THE COUNT RIDES ON THE BUTTON, 21 November (panel-redesign): how many
+      addresses this press runs, so a row tapped out of the run is seen to
+      leave it at the one control that starts it. Named in the title and
+      the label, never a bare figure, the unpack rule. */
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?' aria-label="Release, '+M.sel.length
+     +(M.sel.length===1?' address':' addresses')+'" title="Release the '+M.sel.length
+     +(M.sel.length===1?' address':' addresses')+' ticked above"':' disabled')+'>Release'
+    +(M.sel.length?'<b class="st-gon" aria-hidden="true">'+M.sel.length+'</b>':'')+'</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.

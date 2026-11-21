@@ -177,7 +177,8 @@
     "remind": 32,
     "avatarwhole": 9,
     "ritweek": 86,
-    "dashavatar": 62
+    "dashavatar": 62,
+    "relvoice": 42
   },
   "no_count": {
     "monitor": "all surfaces render"
