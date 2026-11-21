@@ -5502,6 +5502,13 @@ hoverX ${f(hoverX)}   hoverY ${f(hoverY)}`;
     // n: 0-100. DQ -- the real total-shadow score, independent of CQ.
     setDQ(n){ dq = Math.max(0, Math.min(100, +n || 0)); },
     getDQ(){ return dq; },
+    // ADDED to the public object, 21 November, his words: "add this to
+    // Uni system." t01: 0-1 (coherence/100). The real five-stop ladder
+    // above (cr/m1/m2/ed/bg/cl), the same one driving the cloud behind
+    // Uni and Uni's own face, for any other caller that wants to tint
+    // itself off the same CQ reading rather than keep a second copy of
+    // the ladder (srcface.js's own centre glow, first).
+    getPalette(t01){ return getPalette(Math.max(0, Math.min(1, +t01 || 0))); },
     // flag: true when the real caller's own r.unread says nobody has
     // answered anything yet. See the unread declaration above for why
     // this is a third state and not a value on the coherence dial.

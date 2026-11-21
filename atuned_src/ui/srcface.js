@@ -119,6 +119,11 @@
  /* an rgb triple back to the hex sprite() reads, the one direction rgb()
     above never needed before this */
  const toHex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+ /* the lens's own two ground stops, the literals the fill always drew,
+    named so the tinted fill can be held to their brightness */
+ const BGIN=rgb('#0b0a0d'), BGOUT=rgb('#060608');
+ const lumOf=a=>Math.max(a[0],a[1],a[2]);
+ const atLum=(c,L)=>{ const m=lumOf(c)||1; return c.map(v=>v*L/m); };
  /* seeded, so every load drifts the same way and a screenshot can be
     repeated. Two generators where the file had one: the layout's is
     restarted on every read of W, so an address keeps its own phases across
@@ -295,7 +300,7 @@
     colour, cqdqTint() below; neither is a second reading of its own and
     neither draws anything while CQ is null, the same no-reading-no-claim
     gate the arc already stands behind. */
- let DQ=0, DOM=0;
+ let DQ=0, DOM=-1;
  /* a saboteur sits in the seat most of its addresses sit in */
  function seatOf(parts){ const c=[0,0,0,0,0,0,0]; parts.forEach(i=>{ if(byI[i]) c[byI[i].ring]++; }); let best=0; c.forEach((v,k)=>{ if(v>c[best]) best=k; }); return best; }
  function readChain(r){
@@ -323,8 +328,15 @@
      coherence at all and draws no arc and no disorder, as unread does. */
   CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
   DQ=(r&&isFinite(r.DQ))?clamp(+r.DQ,0,100):0;
-  if(r&&Array.isArray(r.seats)&&r.seats.length){
-   let best=-1; r.seats.forEach((s,i)=>{ const w=+s.weight||0; if(w>best){ best=w; DOM=i; } });
+  /* -1 is no dominant seat. The first cut started best at -1, so a reading
+     with every seat at weight 0 (laws answered, no story charge yet, which
+     seatRows returns as seven zeros) crowned the root, index 0, and tinted
+     the centre red for a seat holding nothing; and a reading with no seats
+     at all kept whatever seat the last one had. Only a seat carrying
+     charge can be dominant. */
+  DOM=-1;
+  if(r&&Array.isArray(r.seats)){
+   let best=0; r.seats.forEach((s,i)=>{ const w=+s.weight||0; if(w>best&&i<SEATRGB.length){ best=w; DOM=i; } });
   }
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
@@ -344,10 +356,16 @@
     same sync(r) call: a reading moves its colour and its arc together,
     never one cutting while the other glides */
  let dqFrom=0, dqTo=0, dqv=0;
+ /* and the dominant seat on it too: the first cut swapped SEATRGB[DOM]
+    the instant a new seat led, a 28 percent hue cut under a CQ that was
+    still gliding, and a reading whose only change was its leading seat
+    never restarted the clock at all. The draw blends the from and to
+    seats' tints by the same cp. */
+ let domFrom=-1, domTo=-1;
  const CQ_DUR=1400;
  /* called by uniApply (ui/storyui.js) with the reading it has just taken */
  function sync(r){ readAddrs(); readChain(r||{});
-  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; dqFrom=dqTo=dqv=DQ; cqSeen=true; } else if(CQ!==cqTo||DQ!==dqTo){ cqFrom=cqv; cqTo=CQ; dqFrom=dqv; dqTo=DQ; cqT0=performance.now(); } }
+  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; dqFrom=dqTo=dqv=DQ; domFrom=domTo=DOM; cqSeen=true; } else if(CQ!==cqTo||DQ!==dqTo||DOM!==domTo){ cqFrom=cqv; cqTo=CQ; dqFrom=dqv; dqTo=DQ; domFrom=domTo; domTo=DOM; cqT0=performance.now(); } }
   if(sabIdx>=CH.sabs.length){ sabIdx=0; sabStart=performance.now()+400; lastCyc={}; } }
 
  const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{},hk:{}};
@@ -726,7 +744,7 @@
      needs to match the CQDQ color with dominant chakra color influence."
      Three real signals, none invented here: window.Uni.getPalette(cqv/100),
      the same five-stop ladder the cloud behind Uni and Uni's own face
-     already read; SEATRGB[DOM], the dominant seat's own colour, the same
+     already read; SEATRGB, the dominant seat's own colour (domFrom to domTo), the same
      array already tinting every per-address dot on these rings; and dqv,
      pulled toward the ladder's own oscillation stop (c:0.52, a real named
      stop, not a plain desaturation, which would just read as duller gold
@@ -739,9 +757,20 @@
   if(CQ!=null&&window.Uni&&window.Uni.getPalette){
    const p=window.Uni.getPalette(cqv/100), osc=window.Uni.getPalette(0.52);
    const seatT=0.28, dqT=Math.min(0.35,dqv/100*0.35);
-   coreTint=mixc(mixc(p.cl,SEATRGB[DOM],seatT),osc.cl,dqT);
-   bgCore=mixc(mixc(p.bg,SEATRGB[DOM],seatT*0.6),osc.bg,dqT*0.6);
-   bgEdge=mixc(mixc(p.ed,SEATRGB[DOM],seatT*0.6),osc.ed,dqT*0.6);
+   const withSeat=d=>d<0?p.cl:mixc(p.cl,SEATRGB[d],seatT);
+   coreTint=mixc(mixc(withSeat(domFrom),withSeat(domTo),cp),osc.cl,dqT);
+   /* THE GROUND TAKES THE CAST, NEVER THE LIGHT. The first cut filled
+      the lens with the ladder's bg and ed stops, and ed is the rim LIGHT
+      of the cloud behind Uni, 118,52,0 at full coherence, not a ground:
+      measured on the real canvas, CQ 100 painted the lens an opaque
+      copper disc and CQ 70 an olive one, each brighter at the rim than at
+      the centre, the reverse of the lens this face is (the vignette below
+      darkens toward the rim). The fill keeps the original two stops'
+      exact brightness, the brightest channel of #0b0a0d and of #060608,
+      and only its hue moves, the centre glow's own hue, so the circle
+      reads as one colour and the screenshot he called accurate stays
+      dark. */
+   bgCore=atLum(coreTint,lumOf(BGIN)); bgEdge=atLum(coreTint,lumOf(BGOUT));
   }
   const coreKey=coreTint.join(',');
   if(coreKey!==coreGoldKey){ coreGoldKey=coreKey; COREH=sprite(toHex(coreTint),gauss); }
@@ -909,10 +938,8 @@
   ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf,0,TAU); ctx.clip();
   { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf);
    /* this gradient is already rebuilt fresh every frame regardless, so
-      the computed bgCore/bgEdge above cost nothing extra here; the dark
-      fill itself never brightens, only its cast moves, toward red,
-      amber or gold the way the arc and the centre glow do */
-   fg.addColorStop(0,bgCore?toHex(bgCore):'#0b0a0d'); fg.addColorStop(1,bgEdge?toHex(bgEdge):'#060608');
+      the computed bgCore/bgEdge above cost nothing extra here */
+   fg.addColorStop(0,toHex(bgCore||BGIN)); fg.addColorStop(1,toHex(bgEdge||BGOUT));
    ctx.globalAlpha=lensE; ctx.fillStyle=fg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); ctx.globalAlpha=1; }
   ctx.globalCompositeOperation='lighter';
   for(let k=0;k<7;k++){
