@@ -11052,4 +11052,82 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    switch, and by the media query for a page whose script is late */
 .sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
 @media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
+/* ============================================================
+   THE SUMMARY'S LEFT RAIL IS ONE FLAT READING, 20 November, his words: "On
+   the left side panel, I want a person's celestial information down to their
+   archetypes exposed with their percents. So no nested tables, everything's
+   just visible. The elements that they are not are dimmed out... get rid of
+   everything beneath Psyche."
+
+   Scoped to body.tab-summary and nothing else, because this rail is shared
+   by every tab: the Field keeps its folds, its Matrix, Superego and Action,
+   and its own choice of what is open.
+
+   FLAT. Root Energetics, Awareness and What is running stand open with no
+   fold on them, which overrides the EZ ruling that Root Energetics opens
+   closed on this tab only. The four systems' lines all show, so the four
+   system switches that hid them have nothing to switch and go. The folded
+   two line summary (#awsum) goes, because the grids it summarised are open.
+   The archetypes are one grid: #ar1 already marks the primary as pressed and
+   every secondary as data-r 2 (syncSoul, ui/panels.js), so #ar2 printed the
+   same twelve circles a second time to say what the first grid says.
+
+   FOUR LEVELS, FOUR NAMES. Celestial, Root, Domain, Archetype, the order the
+   reading runs from the sky down, on even spacing so no level sits flush on
+   the one above it (CLAUDE.md, "Symmetry in space, everywhere, forever").
+
+   LIT AND DIM (ui/railtiles.js, rlSumPaint). A dim mark keeps its row, its
+   ring size and its gutter, so the grid does not move when a choice does.
+   Nothing is faded with opacity: Sol measured ink at 40 percent on --panel
+   at 3.40, under the floor, where --dim holds 5.30. The ring mixes the seat
+   colour thirty percent into --dim, the mark inside it is --dim, and the
+   seat's dot beside a domain goes; the seat colour never goes on a name. A dim mark does not breathe, because breath on this rail says a
+   circle carries real weight and a dim one is not his.
+   ============================================================ */
+body:not(.tab-summary) #lcol .sum-only,body:not(.tab-summary) #lcol .sum-lvl{display:none}
+body.tab-summary #lcol .lsec[data-sec=matrix],
+body.tab-summary #lcol .lsec[data-sec=superego],
+body.tab-summary #lcol .lsec[data-sec=gates],
+body.tab-summary #lcol .lsec[data-sec=run].sum-empty{display:none}
+/* and on a page with nothing read, What is running is empty and is the only
+   thing under Psyche here, so the heading goes with it rather than stand over
+   nothing */
+body.tab-summary #lcol:has(.lsec[data-sec=run].sum-empty) .rblk[data-blk=psyche]{display:none}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-bd{display:block}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd{
+ pointer-events:none;cursor:default;color:var(--ink)}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd i{display:none}
+body.tab-summary #lcol #awsum,
+body.tab-summary #lcol #ar2,
+body.tab-summary #lcol .ar-sec,
+body.tab-summary #lcol #rootlegend,
+body.tab-summary #lcol .lsec[data-sec=soul] .tier1:not(.sum-lvl),
+body.tab-summary #spirit .sp-sys{display:none}
+body.tab-summary #spirit .sp-line[hidden]{display:flex}
+/* with the four switches gone the birth's own mark was left alone at the far
+   end of an empty row; it stands where the tiles under it start, the line
+   mark's 16 and the line's gap of 10 in from the edge */
+body.tab-summary #spirit .sp-born{margin-left:26px}
+body.tab-summary #lcol .sum-lvl{display:block;margin:20px 0 10px;color:var(--dim)}
+body.tab-summary #lcol .lsec-bd>.sum-lvl:first-child{margin-top:4px}
+/* the caption under each grid names what is lit, in ink, and the archetype's
+   figure beside its name, in tabular figures so two of them stand level */
+body.tab-summary #lcol .cap{min-height:0;margin:10px 0 0}
+body.tab-summary #lcol #capD b{color:var(--ink)!important;font-weight:500}
+body.tab-summary #capA .rl-lit{display:inline-flex;align-items:baseline;gap:6px;margin-right:14px}
+body.tab-summary #capA .rl-lit b{color:var(--ink);font-weight:500}
+body.tab-summary #capA .rl-fig{font-style:normal;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+/* dim */
+body.tab-summary #lcol .ib.rl-off{cursor:default}
+body.tab-summary #lcol .ib.rl-off svg:not(.ib-arc){stroke:var(--dim)}
+body.tab-summary #lcol .ib.rl-off .rt{display:none}
+body.tab-summary #lcol .ib.rl-off .ib-arc .val{stroke:color-mix(in srgb,var(--c) 30%,var(--dim));opacity:1}
+body.tab-summary #lcol .ib.rl-off .ib-arc,
+body.tab-summary #lcol .ib.rl-off::after{animation:none}
+body.tab-summary #lcol .rootb.rl-off{color:var(--dim);font-weight:400;cursor:default;
+ border-color:var(--edge);background:transparent}
+body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,var(--dim))}
+body.tab-summary #lcol .rootb.rl-off::after{display:none}
+body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
+body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 </style></head>

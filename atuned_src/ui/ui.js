@@ -766,6 +766,7 @@ function colKey(){
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
+ if(S.tab===TAB.SUMMARY)return 'lcolsum';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -773,7 +774,15 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
+ /* AND THE SUMMARY HAS ITS OWN, 20 November, defaulting open, Flow's
+    reason. It shared the Field's 'lcol', which starts shut beside the stage,
+    and on 20 November the Summary's left rail became where a person's
+    celestial placements, root, domains, archetypes and What is running are
+    read, his words: "On the left side panel, I want a person's celestial
+    information down to their archetypes exposed." A reading that lands
+    shut is a reading nobody sees, and a fold made here no longer moves the
+    Field's or the other way round. */
+ var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated

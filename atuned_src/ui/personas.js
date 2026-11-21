@@ -120,7 +120,10 @@ function renderSpirit(){
     the honest glyph for a value nobody read (V19), and the reason in its
     tooltip and in its spoken name */
  function unres(k,x){
-  return '<div class="sp-row static sp-tile" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
+  /* rl-off: on the Summary a placement the record cannot settle is one of
+     the dim marks, ui/railtiles.js rlSumPaint; the class draws nothing
+     anywhere else */
+  return '<div class="sp-row static sp-tile rl-off" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
    +' data-tip="'+esc(x.charAt(0).toUpperCase()+x.slice(1)+'.')+'" aria-label="'+esc(k+', unresolved, '+x+'.')+'">'
    +'<span class="sp-tg sp-tdash" aria-hidden="true">–</span>'
    +'<span class="sp-said"><span class="sp-k">'+k+'</span> <span class="sp-v">unresolved</span> '

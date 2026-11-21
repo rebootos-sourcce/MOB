@@ -485,9 +485,13 @@ function nodeDrillHtml(n,o){
   +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
-  /* no fetter has a meaning on file, only the one word it shows up as, so in
-     the wisdom school it says so (kbGap) */
-  +(anchorSeat(n)?'':kbGap())
+  /* no fetter had a meaning on file, only the one word it shows up as, so the
+     wisdom school printed the gap on all 108 (kbGap). Each now has one line
+     composed from its own row (ADDR_SAY, engine/data/kbsay.js), and since it
+     is composed and not the book's it wears the Source AI mark. Still only in
+     the wisdom school, where the gap printed: the Field's rail card is
+     identity only on his 18 November ruling (runFetterDrill, below). */
+  +(anchorSeat(n)?'':kbSaid(addrSay(n),true))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
      so it never reaches "It shows up as field." */
@@ -994,8 +998,11 @@ function runFetterDrill(c){
      CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
      pending (Shock, Surprise, Anticipation), so it is not printed on a card
      that says "toward Trust".
-     Until that is ruled the card says it has no meaning on file. */
-  +kbGap()
+     Until that is ruled the card says it has no meaning on file.
+     Where the two already agree, Shame toward Worth and Disgust toward
+     Acceptance, there is nothing to rule, and the card prints the book's
+     own entry, unmarked because it is quoted (childBookSays). */
+  +kbSaid(childBookSays(c),false)
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -1037,6 +1044,29 @@ function runSabDrill(s){
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
   +kbSabBlock(s.nm)
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+/* A HYPER COMPLEX THE READING IS NOT CARRYING, round LY. The six families had
+   their line (HCX_LIB.d) and a whole researched card (HCXCARD, through
+   kbHcxBlock) and no deck to be found from, so the wisdom school could only
+   reach them through a saboteur's "It belongs to the ... family". The deck is
+   kbRowsOf('hcx'); a running one opens runDrill like a running saboteur does,
+   and this is the card for one that is not. Nothing here is new writing:
+   the line is HCX_LIB's own, the card is kbHcxBlock's, and what feeds it is
+   read off ALL_SAB by family name. sub is never printed, the same rule
+   kbSabLinked keeps: it is a diagnostic name. */
+function runHcxDrill(f){
+ if(!f)return;
+ var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+ var feeds=ALL_SAB.filter(function(s){return s.hcx===f.nm;});
+ var h='<div class="pm-eye">Hyper complex, not running</div><div class="ad-nm">'+esc(f.nm)+'</div>'
+  +'<div class="ad-sub">Held at the '+esc(f.b==='3rd Eye'?'3rd eye':String(f.b).toLowerCase())+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(cap(f.d))+'.</p>'
+  +'<div class="pm-eye">What it would take</div><p class="ad-p">It forms when two complexes of this '
+  +'family run at once, or one runs hard. Yours are not carrying enough for it to form.</p>'
+  +kbHcxBlock(f.nm)
+  +(feeds.length?'<div class="pm-eye">Fed by '+feeds.length+' saboteurs</div><p class="ad-p">'
+   +feeds.map(function(s){return esc(s.nm);}).join(', ')+'.</p>':'');
  rdShell(h);}
 
 /* THE DOMAIN, read clear and read distorted. The book prints both readings
@@ -1159,9 +1189,17 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book, so in the wisdom school it
-    says it has no meaning on file rather than printing nothing under a name */
- var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
+ /* an inferred saboteur has no entry in the book and cannot have one, since
+    the book names 33 and these are built from a seat and a child emotion
+    (UNNAMED, engine/core.js). It printed the gap on all thirteen; each now
+    has one line composed from that pair (INFER_SAY, engine/data/kbsay.js),
+    marked as Source AI's because it is not the book's. kbSaid keeps it to
+    the wisdom school, where the gap was, and a name with no line still
+    prints the gap. No kbSabLinked here: it reads SAB_LIB, which holds no
+    inferred one, and would say the body map is missing for a pattern whose
+    addresses the card already lists under Made of. */
+ var def=SABDEF[KB_KEY(nm)];
+ if(!def)return INFER_SAY.hasOwnProperty(nm)?kbSaid(INFER_SAY[nm],true):kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
  var h=c.h||def.d, n=c.n||def.i;
  return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
@@ -1217,6 +1255,37 @@ var KB_NOTE='No meaning on file yet.';
 function kbGap(){
  return (typeof kbAnsOn==='function'&&kbAnsOn())
   ?'<div class="pm-eye">What it is</div><p class="ad-p">'+KB_NOTE+'</p>':'';}
+/* WHAT IT IS, WHERE THE GAP STOOD, round LY. The same place and the same rule
+   as kbGap: only while a wisdom school answer is open, and the gap itself
+   when t is empty, so a row with nothing on file is never padded. composed
+   says the line is Source AI's and not the book's, and then it wears the one
+   mark and the src-ai treatment, never the icon alone (the 15 November
+   ruling, srcMark in ui/storyui.js). Its tip says what this line was written
+   from: the house tip says "from your words and your reading", and a
+   definition of Scarcity is written from neither, so printing that tip here
+   would be the mark telling a person something false about itself. */
+var KB_SAID_TIP='Source AI wrote this line from what the instrument holds about this one thing. It is not quoted from the book.';
+function kbSaid(t,composed){
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
+ if(!t)return kbGap();
+ return '<div class="pm-eye">What it is</div>'
+  +(composed&&typeof srcMark==='function'
+   ?'<p class="ad-p src-ai">'+srcMark(KB_SAID_TIP)+'<span class="src-ai-t">'+esc(t)+'</span></p>'
+   :'<p class="ad-p">'+esc(t)+'</p>');}
+/* THE BOOK'S OWN ENTRY FOR A CHILD EMOTION, only where the book and CHILD
+   name the same opposite. HARM's emotion rows are titled "Shame · Worth", so
+   the two agree when the title is exactly the emotion and CHILD's own opp.
+   Read, not listed: on 20 November that is Shame and Disgust, and the day he
+   rules one of the other seven, whichever table moves, this starts printing
+   it with no change here. Fear, Anger, Apathy and Sad name a different
+   opposite and Shock, Surprise and Anticipation have none yet, so for those
+   this returns '' and the card keeps the gap. BOOK-ERRATA.md holds both
+   wordings for each. */
+function childBookSays(c){
+ if(!c||!c.opp)return '';
+ var want=c.nm+' · '+c.opp;
+ for(var i=0;i<HARM.length;i++)if(HARM[i].a==='emotion'&&HARM[i].t===want)return HARM[i].d||'';
+ return '';}
 /* the meaning of one of the 21 laws, read off the universal law of the same
    name. SI and HARM's spirit axis are one set by name (kbRowsOf builds the
    Moral Integrity deck by walking one into the other), so the text is held

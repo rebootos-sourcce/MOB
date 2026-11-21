@@ -1254,7 +1254,7 @@ const kb=await page.evaluate(()=>{
  KB_Q=''; kbRender();
  /* every section renders and every row opens something */
  let opened=0, empty=[], walked=0, marks={};
- ['addr','fetter','sab','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
+ ['addr','fetter','sab','hcx','law','mask','dom','arch','gate','card','seat','harm','gloss'].forEach(k=>{
   KB_SEC=k; kbRender();
   if(!document.querySelectorAll('.kb-row').length){empty.push(k);return;}
   walked++;
@@ -1315,7 +1315,7 @@ const kb=await page.evaluate(()=>{
    matters is that every deck the codex claims to hold is reachable by name.
    The owner asked where the stack and the universal laws were: both were here
    under names that did not say what they held, so those two are named here. */
-{const want=['Fetters','Child emotions','Saboteurs','Laws of Moral Integrity','Masks',
+{const want=['Fetters','Child emotions','Saboteurs','Hyper complexes','Laws of Moral Integrity','Masks',
   'Domains','Archetypes','Laws of Action','The cards','The stack','Universal laws'];
  const miss=want.filter(w=>kb.names.indexOf(w)<0);
  ok(miss.length===0,'every deck is reachable by name'
@@ -1530,22 +1530,45 @@ await page.setViewportSize({width:1600,height:1000});
   const cq=[...body.querySelectorAll('.kbs-cq .kb-row')][0]; if(cq)cq.click();
   const core=document.getElementById('rdrill').textContent;
   rdClose();
-  /* a fetter has no meaning on file, and in the wisdom school it says so
-     rather than printing nothing under a name */
+  /* CHANGED 20 NOVEMBER, round LY. A fetter had no meaning on file and the
+     wisdom school said so; each of the 108 now carries one line composed from
+     its own row, under the Source AI mark. So this asks that the line prints
+     and wears the mark, and the gap moves to a child emotion the book and
+     CHILD still disagree on, Fear, which keeps it until he rules. And the
+     two they agree on print the book's words, unmarked. */
   KB_SEC='addr'; kbRender();
   const fx=kbRows('addr').filter(x=>BANDS.indexOf(x.o.b)>=0)[0]; kbOpen(fx);
+  const fd=document.getElementById('rdrill');
+  const said={t:fd.textContent, want:addrSay(fx.o), mark:!!fd.querySelector('.src-ai .src-mk')}; rdClose();
+  kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Fear')[0]);
   const gap=document.getElementById('rdrill').textContent; rdClose();
+  kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Shame')[0]);
+  const shd=document.getElementById('rdrill');
+  const shame={t:shd.textContent, mark:!!shd.querySelector('.src-ai')}; rdClose();
+  /* an inferred saboteur says its composed line, marked */
+  const inf=kbRows('sab').filter(x=>x.o.unnamed&&!computeSeen().sabs.some(s=>s.nm===x.o.nm))[0];
+  let infs={t:'',want:'',mark:false};
+  if(inf){kbOpen(inf); const d=document.getElementById('rdrill');
+   infs={t:d.textContent,want:INFER_SAY[inf.o.nm]||'',mark:!!d.querySelector('.src-ai .src-mk')}; rdClose();}
+  /* the hyper complex deck opens each family on its own record */
+  const hx=kbRows('hcx'), hopen=hx.map(x=>{kbOpen(x); const t=document.getElementById('rdrill').textContent; rdClose();
+   return t.indexOf(x.o.nm)>=0&&t.length>120;}).filter(Boolean).length;
   KB_SEC='all'; kbRender();
   /* a Body page press on a mask still answers in the rail, never in the layer */
   setTab(TAB.MASKS); render(); kbOpen({k:'mask',o:MASKS[0]});
   const inRail=!!document.getElementById('rdrill').closest('.lsec'); rdClose();
   /* and the page is left as the knowledge block above left it */
   loadP(PERSON('James')); setTab(TAB.KNOW); render();
-  return {panels,hdr,ph,core,gap,inRail,n:SI.length};});
+  return {panels,hdr,ph,core,gap,said,shame,infs,hx:hx.length,hopen,inRail,n:SI.length};});
  ok(o.panels[0]==='cq'&&o.panels.indexOf('Crown')>0,'the coherence formula comes before the seat page that lists the universal laws, '+o.panels.join(','));
  ok(!/codex/i.test(o.hdr+o.ph)&&!/Crown down to root/.test(o.hdr),'the codex label, its search wording and the seat order line are gone, header "'+o.hdr+'", search "'+o.ph+'"');
  ok(new RegExp('The '+o.n+' laws, each read from nothing to ten, added together').test(o.core),'the formula opens the core drill, which states the ruled formula over '+o.n+' laws');
- ok(/No meaning on file yet\./.test(o.gap),'a fetter with no text on file says so in the wisdom school rather than printing nothing');
+ ok(!!o.said.want&&o.said.t.indexOf(o.said.want)>=0&&!/No meaning on file yet\./.test(o.said.t),'a fetter in the wisdom school prints its own composed line, not the gap');
+ ok(o.said.mark,'and that line wears the Source AI mark, because it is not the book');
+ ok(/No meaning on file yet\./.test(o.gap),'a child emotion the book and the app still disagree on, Fear, keeps the gap');
+ ok(/The deepest collapse\./.test(o.shame.t)&&!o.shame.mark,'Shame, where they agree, prints the book\'s own entry and wears no Source AI mark');
+ ok(!!o.infs.want&&o.infs.t.indexOf(o.infs.want)>=0&&o.infs.mark,'an inferred saboteur prints its composed line under the mark');
+ ok(o.hx>0&&o.hopen===o.hx,'every hyper complex in its deck opens on its own record, '+o.hopen+' of '+o.hx);
  ok(o.inRail,'a mask opened from the Body page still answers in the rail');}
 
 const rec=await page.evaluate(()=>{
@@ -2624,36 +2647,47 @@ const sum=await page.evaluate(()=>{
  const q=s=>document.querySelectorAll(s).length;
  const body=document.getElementById('sumbody');
  /* every ring on this surface is the same object: icon, arc, pill */
- const rings=[...document.querySelectorAll('#sumbody .cr')];
+ /* the page and its left rail, which since 20 November carries What is
+    running (#sumrun) and the celestial layer flat (#spirit): his words, "what's
+    running is moving to the left panel" */
+ const rings=[...document.querySelectorAll('#sumbody .cr,#sumrun .cr')];
  const badRing=rings.filter(c=>!c.querySelector('svg.arc')||!c.querySelector('.gl svg'));
  /* a pill that is empty must not paint, or a colour marker grows a chip */
  const emptyPill=rings.filter(c=>{const v=c.querySelector('.v');
   return v&&!v.textContent.trim()&&getComputedStyle(v).display!=='none';});
  return {
-  glance:q('#sumbody .s-gl'),
   storyP:q('#sumbody .s-story .s-p'),
-  structRows:q('#sumbody .s-row'),
-  doms:q('#sumbody .s-dom'),
-  chips:q('#sumbody .s-chip'),
+  structRows:q('#sumrun .s-row'),
+  doms:q('#doms .ib:not(.rl-off)'),
+  chips:q('#spirit .sp-tile'),
   /* no boxes around the spiritual glyphs, on the owner's ruling */
   chipBox:[...document.querySelectorAll('#sumbody .s-chip')]
    .filter(c=>getComputedStyle(c).borderTopWidth!=='0px').length,
-  numRows:q('#sumbody .s-nrow'),
-  numParts:q('#sumbody .s-npart'),
+  numRows:q('#spirit .sp-line[data-sys=N] .sp-tile'),
   rings:rings.length, badRing:badRing.length, emptyPill:emptyPill.length,
   /* nothing may run wider than its own column */
   over:[...body.querySelectorAll('*')].filter(e=>e.scrollWidth>e.clientWidth+2
    &&getComputedStyle(e).overflowX==='visible').length,
   text:(body.textContent||'').replace(/\s+/g,' ')};});
-ok(sum.glance>=5,'the glance strip carries every reading, got '+sum.glance);
+/* RE-POINTED AND RETIRED BY NAME, 20 November, his words: "everything
+   beneath your patterns... what's running is moving to the left panel. And
+   then the rest of that looks like it's in analytics... where it says
+   oscillating 50%, just get rid of that entirely." What moved is read where
+   it went: the masks as What is running in the left rail (#sumrun), the
+   blueprint as the rail's own lit domain, the spiritual layer and the
+   numerology numbers as the rail's flat Root Energetics (#spirit). Two are
+   retired, not moved: the glance strip was the What it costs card and the
+   name parts were the full numerology card, both off this page now, and
+   Analytics carries the readings. Every ring the page and its rail draw is
+   still held to icon, arc and pill; there are fewer of them on the page, so
+   the count asks for one or more, not nine. */
 ok(sum.storyP===3,'the story is three paragraphs, got '+sum.storyP);
-ok(sum.structRows>5,'the structures panel lists what is measured, got '+sum.structRows);
-ok(sum.doms>0,'and draws the blueprint selection, got '+sum.doms);
-ok(sum.chips>=5,'the spiritual layer is a row of glyphs, got '+sum.chips);
+ok(sum.structRows>0,'What is running lists the masks in the left rail, got '+sum.structRows);
+ok(sum.doms>0,'and the rail lights the blueprint selection, got '+sum.doms);
+ok(sum.chips>=5,'the celestial layer is a row of glyphs in the rail, got '+sum.chips);
 ok(sum.chipBox===0,'with no boxes around them, got '+sum.chipBox);
-ok(sum.numRows>=5,'numerology prints its numbers, got '+sum.numRows);
-ok(sum.numParts===3,'and every name on its own, got '+sum.numParts);
-ok(sum.rings>8&&sum.badRing===0,
+ok(sum.numRows>=5,'numerology prints its numbers in the rail, got '+sum.numRows);
+ok(sum.rings>0&&sum.badRing===0,
  sum.rings+' rings and every one is icon, arc and pill, bad '+sum.badRing);
 ok(sum.emptyPill===0,'an empty value paints no pill, got '+sum.emptyPill);
 
@@ -2777,7 +2811,10 @@ const numUI=await page.evaluate(()=>{
   pct75:/convergence[^.]*\d+%/i.test(txt)};});
 ok(numUI.inPage,'the full name is read, not the roster nickname');
 ok(numUI.hasLp,'and the six numbers are on the page');
-ok(numUI.basis,'convergence names the comparisons it rests on');
+/* RETIRED 20 November: the Birth comparison fold left the Summary with
+   everything under Your patterns, on his ruling recorded above at "the
+   summary, the opening screen". sumConverge still exists and its drill is
+   unchanged. */
 ok(numUI.noFrac,'and does not state them as a count against a total');
 ok(!numUI.pct75,'and never a bare percentage with no denominator');
 

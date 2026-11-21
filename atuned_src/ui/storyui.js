@@ -2319,8 +2319,12 @@ function srcGuessAt(b){return 'My guess is it sits '+srcPlace(b)+'.';}
    person's record and not only from their words: "from your words and your
    reading". One concept, one mark, one tip, on every surface. */
 var SRC_MARK_TIP='Source AI wrote this from your words and your reading. Where it says my guess, it is a guess until you say it fits.';
-function srcMark(){
- return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(SRC_MARK_TIP)+'">'
+/* tip is for a line written from something other than a person's words and
+   reading, round LY: the wisdom school's composed definitions (kbSaid, ui/
+   drills.js). Still one mark and one name; only what it was written from is
+   said truly. Every other caller passes nothing and gets the house tip. */
+function srcMark(tip){
+ return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(tip||SRC_MARK_TIP)+'">'
   +'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
   +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
 /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring

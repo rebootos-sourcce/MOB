@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v334 05436029 2026-11-21 01:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v335 20b30f97 2026-11-21 01:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11052,6 +11052,84 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    switch, and by the media query for a page whose script is late */
 .sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
 @media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
+/* ============================================================
+   THE SUMMARY'S LEFT RAIL IS ONE FLAT READING, 20 November, his words: "On
+   the left side panel, I want a person's celestial information down to their
+   archetypes exposed with their percents. So no nested tables, everything's
+   just visible. The elements that they are not are dimmed out... get rid of
+   everything beneath Psyche."
+
+   Scoped to body.tab-summary and nothing else, because this rail is shared
+   by every tab: the Field keeps its folds, its Matrix, Superego and Action,
+   and its own choice of what is open.
+
+   FLAT. Root Energetics, Awareness and What is running stand open with no
+   fold on them, which overrides the EZ ruling that Root Energetics opens
+   closed on this tab only. The four systems' lines all show, so the four
+   system switches that hid them have nothing to switch and go. The folded
+   two line summary (#awsum) goes, because the grids it summarised are open.
+   The archetypes are one grid: #ar1 already marks the primary as pressed and
+   every secondary as data-r 2 (syncSoul, ui/panels.js), so #ar2 printed the
+   same twelve circles a second time to say what the first grid says.
+
+   FOUR LEVELS, FOUR NAMES. Celestial, Root, Domain, Archetype, the order the
+   reading runs from the sky down, on even spacing so no level sits flush on
+   the one above it (CLAUDE.md, "Symmetry in space, everywhere, forever").
+
+   LIT AND DIM (ui/railtiles.js, rlSumPaint). A dim mark keeps its row, its
+   ring size and its gutter, so the grid does not move when a choice does.
+   Nothing is faded with opacity: Sol measured ink at 40 percent on --panel
+   at 3.40, under the floor, where --dim holds 5.30. The ring mixes the seat
+   colour thirty percent into --dim, the mark inside it is --dim, and the
+   seat's dot beside a domain goes; the seat colour never goes on a name. A dim mark does not breathe, because breath on this rail says a
+   circle carries real weight and a dim one is not his.
+   ============================================================ */
+body:not(.tab-summary) #lcol .sum-only,body:not(.tab-summary) #lcol .sum-lvl{display:none}
+body.tab-summary #lcol .lsec[data-sec=matrix],
+body.tab-summary #lcol .lsec[data-sec=superego],
+body.tab-summary #lcol .lsec[data-sec=gates],
+body.tab-summary #lcol .lsec[data-sec=run].sum-empty{display:none}
+/* and on a page with nothing read, What is running is empty and is the only
+   thing under Psyche here, so the heading goes with it rather than stand over
+   nothing */
+body.tab-summary #lcol:has(.lsec[data-sec=run].sum-empty) .rblk[data-blk=psyche]{display:none}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-bd{display:block}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd{
+ pointer-events:none;cursor:default;color:var(--ink)}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd i{display:none}
+body.tab-summary #lcol #awsum,
+body.tab-summary #lcol #ar2,
+body.tab-summary #lcol .ar-sec,
+body.tab-summary #lcol #rootlegend,
+body.tab-summary #lcol .lsec[data-sec=soul] .tier1:not(.sum-lvl),
+body.tab-summary #spirit .sp-sys{display:none}
+body.tab-summary #spirit .sp-line[hidden]{display:flex}
+/* with the four switches gone the birth's own mark was left alone at the far
+   end of an empty row; it stands where the tiles under it start, the line
+   mark's 16 and the line's gap of 10 in from the edge */
+body.tab-summary #spirit .sp-born{margin-left:26px}
+body.tab-summary #lcol .sum-lvl{display:block;margin:20px 0 10px;color:var(--dim)}
+body.tab-summary #lcol .lsec-bd>.sum-lvl:first-child{margin-top:4px}
+/* the caption under each grid names what is lit, in ink, and the archetype's
+   figure beside its name, in tabular figures so two of them stand level */
+body.tab-summary #lcol .cap{min-height:0;margin:10px 0 0}
+body.tab-summary #lcol #capD b{color:var(--ink)!important;font-weight:500}
+body.tab-summary #capA .rl-lit{display:inline-flex;align-items:baseline;gap:6px;margin-right:14px}
+body.tab-summary #capA .rl-lit b{color:var(--ink);font-weight:500}
+body.tab-summary #capA .rl-fig{font-style:normal;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+/* dim */
+body.tab-summary #lcol .ib.rl-off{cursor:default}
+body.tab-summary #lcol .ib.rl-off svg:not(.ib-arc){stroke:var(--dim)}
+body.tab-summary #lcol .ib.rl-off .rt{display:none}
+body.tab-summary #lcol .ib.rl-off .ib-arc .val{stroke:color-mix(in srgb,var(--c) 30%,var(--dim));opacity:1}
+body.tab-summary #lcol .ib.rl-off .ib-arc,
+body.tab-summary #lcol .ib.rl-off::after{animation:none}
+body.tab-summary #lcol .rootb.rl-off{color:var(--dim);font-weight:400;cursor:default;
+ border-color:var(--edge);background:transparent}
+body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,var(--dim))}
+body.tab-summary #lcol .rootb.rl-off::after{display:none}
+body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
+body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -12040,7 +12118,11 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         again, so the control's reserved width came back to it. -->
    <div class="lsec" data-sec="energetics">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
+    <!-- the four level names, Celestial, Root, Domain and Archetype, shown
+         on the Summary only, where this rail is one flat reading from the
+         sky down to the archetype (head.html, "THE SUMMARY'S LEFT RAIL IS
+         ONE FLAT READING"). Elsewhere the rail keeps its own labels. -->
+    <div class="lsec-bd"><div class="tier1 sum-lvl">Celestial</div><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
         is the one large circle, "so it's in your face", the four that move
@@ -12138,13 +12220,16 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
+     <div class="tier1 sum-lvl">Root</div>
      <div class="tier1">Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
+     <div class="tier1 sum-lvl">Domain</div>
      <div class="tier1">Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1 sum-lvl">Archetype</div>
      <div class="tier1" style="margin-top:18px">Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub ar-sec">Secondary</div>
@@ -12155,7 +12240,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          chosen, one line each. ui/railtiles.js, awSum. -->
     <div class="aw-sum" id="awsum"></div>
    </div>
-   <h2 class="rblk">Psyche</h2>
+   <h2 class="rblk" data-blk="psyche">Psyche</h2>
    <!-- THE PSYCHE PANEL HOLDS THREE THINGS, 18 November, his words, twice. The
         first: "I asked you to get rid of everything in these two images. I
         asked you that a long time ago... Maybe keep the matrix for now, but
@@ -12183,6 +12268,16 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         said that is said nowhere else moved to the meaning table
         (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
         18 November, records the earlier asks and why they never landed. -->
+   <!-- WHAT IS RUNNING, ON THE SUMMARY ONLY, 20 November, his words: "get
+        rid of everything beneath Psyche... everything beneath your patterns
+        ... what's running is moving to the left panel." On the Summary the
+        three sections below this one are taken off by head.html and this one
+        stands under the heading in their place; on every other tab it is
+        taken off and they stand as they did. ui/summary.js, sumRunPaint. -->
+   <div class="lsec sum-only" data-sec="run">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
+    <div class="lsec-bd"><div id="sumrun"></div></div>
+   </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
@@ -18021,6 +18116,206 @@ var HCXCARD={
   inverseDefinition:'An inferred counterpart emphasizing safe contact with present experience, continuity between feeling and action, and paced integration without forcing or denying experience.'}};
 
 try{window.__at&&window.__at('engine/data/hcxcard.js');}catch(e){}
+/* ============================================================
+   KBSAY · what the wisdom school says where the book says nothing.
+
+   Round LY, 20 November, his words: "Change Wisdom School to Lyceum. I want
+   to fill that out." Measured on that page before this file: every one of the
+   108 somatic addresses and all thirteen inferred saboteurs opened on "No
+   meaning on file yet." (KB_NOTE, ui/drills.js), the drill admitting a gap
+   under a name a person had pressed to have explained.
+
+   NONE OF THIS IS THE BOOK. Every line below was composed from the row it
+   sits beside and from nothing else: an address from its own seat, meaning,
+   distortion and nerve in NODES (engine/data/nodes.js), an inferred saboteur
+   from the child emotion and the seat UNNAMED builds it on (engine/core.js).
+   So each one is Source AI's own sentence, and the 15 November ruling holds:
+   wherever it prints it wears srcMark and the src-ai treatment, and it never
+   prints in the style SABDEF's or HARM's quoted book text does. That is why
+   it lives in its own file and not in kb.js, which is the book's library.
+
+   KEYED BY IDENTITY, AND THE NAME RIDES ALONG AS A CHECK. An address is keyed
+   by i, the storage index NODES keeps forever, because its name is not fixed:
+   Root_08_Unnamed is waiting on his ruling and will be renamed. k is carried
+   beside each sentence so tests/engine.js can fail the day a name moves under
+   it, which is the day the sentence has to be read again against the new row.
+   A sentence that silently outlived the row it was written from is the same
+   defect as a count typed into a gate.
+
+   EACH LINE SAYS HOW THE DISTORTION RUNS, NOT WHAT IT IS CALLED. The card
+   already closes on "It shows up as <distortion>." (nodeDrillHtml), and the
+   nerve is already on the line under the name, so no sentence repeats the
+   distortion's own word or names the nerve: a nerve named in a sentence
+   invites a claim about what that nerve does that nobody has checked. The
+   nerve is turned into a place a person can point at instead (low back, inner
+   thigh, voice box), and where a plain word would overstate it (71, 75, 80)
+   the line names no place at all.
+
+   Two lines were cut on that rule by the gate that holds it (tests/engine.js):
+   Victimhood and Projection both close on Blame, and both first drafts said
+   blame, so the card would have said it twice.
+
+   ADDRESS 8 HAS NO NAME AND ITS LINE DOES NOT GIVE IT ONE. Naming it is his.
+   The sentence is built from the row's fields only: the bottom of the cord,
+   privilege, and the count of what is owed.
+
+   Not here, on purpose: the seven child emotions whose opposite the app and
+   the book name differently, or the book marks pending. See
+   childBookSays in ui/drills.js and BOOK-ERRATA.md. And no complex or super
+   complex text, because neither tier has a field to hold one
+   (compute.js builds them from parts and carries no d of its own).
+   ============================================================ */
+const ADDR_SAY=[
+ {i:1,k:"Fear",m:"The low back reads a threat before you do, and your feet turn away from it."},
+ {i:2,k:"Shame",m:"Worth drops out of the pelvis, and you push your own body away."},
+ {i:3,k:"Guilt",m:"A debt sits low in the belly, and you pay it twice over."},
+ {i:4,k:"Control",m:"The base of the spine buys safety with force, and you press it onto the people near you."},
+ {i:5,k:"Insecurity",m:"Belonging has no footing at the floor of the pelvis, so you lean your weight on someone else."},
+ {i:6,k:"Victimhood",m:"Agency drains out at the tailbone, and the cost gets pointed at someone else."},
+ {i:7,k:"Scarcity",m:"The hip reads every resource as the last one, and your hands close around it."},
+ {i:8,k:"Root_08_Unnamed",m:"At the bottom of the spinal cord, privilege turns into a running count of what is owed."},
+ {i:9,k:"Possession",m:"Attachment settles in the muscles of the seat, and you keep a hard grip on the things you own."},
+ {i:10,k:"Lethargy",m:"The inner thigh loses its push, and the next step does not come."},
+ {i:11,k:"Resistance",m:"The floor of the pelvis clenches against change and holds what it already has."},
+ {i:12,k:"Compulsion",m:"Safety runs on a ritual held in the pelvic floor, and you repeat it until it locks."},
+ {i:13,k:"Disconnection",m:"Presence switches off at the roots of the sacrum, and the lower body goes numb."},
+ {i:14,k:"Escapism",m:"Pain arrives and the long nerve down the leg loads the legs to run."},
+ {i:15,k:"Panic",m:"The alarm chain in the low back fires before thought, and you act before you know you did."},
+ {i:16,k:"Collapse",m:"The tip of the spinal cord drops its structure, and you let yourself fall with it."},
+ {i:17,k:"Addiction",m:"Craving builds in the low pelvis until one want fills the whole frame."},
+ {i:18,k:"Lust",m:"Desire heats the groin, and the other person shrinks to a body."},
+ {i:19,k:"Envy",m:"Lack sits deep in the pelvis, and another person's joy lands on it like weight on a bruise."},
+ {i:20,k:"Jealousy",m:"Possessiveness grips the inner thigh, and every glance away becomes evidence."},
+ {i:21,k:"Co-Dependency",m:"Need tips the gut toward another person, and you leave your own post to follow it."},
+ {i:22,k:"Shame Of Desire",m:"Want rises in the lower belly and gets pressed back down before it reaches the surface."},
+ {i:23,k:"Hypersexuality",m:"Sex becomes the proof you are wanted, and you leave the body while it happens."},
+ {i:24,k:"Avoidance Of Pleasure",m:"The pelvis shuts off pleasure, and the body runs with its senses turned down."},
+ {i:25,k:"Manipulation Through Emotion",m:"Control works through the pelvis by feeling, and you pull your own hurt like a lever to move someone."},
+ {i:26,k:"Oversensitivity",m:"The pain threshold in the low belly sits so low that a light touch lands as an attack."},
+ {i:27,k:"Fantasy",m:"The gut trades the day for a story, and the story starts to read as real."},
+ {i:28,k:"Infatuation",m:"Desire lands on a picture you built and set over another person."},
+ {i:29,k:"Obsession",m:"Focus locks on one thing and will not let go of it."},
+ {i:30,k:"Guilt Of Pleasure",m:"Joy arrives and you shut the door on it before it is spent."},
+ {i:31,k:"Need For Approval",m:"You take your shape from other people's faces and bend to fit it."},
+ {i:32,k:"Excess Emotion",m:"Feeling comes in faster than it can drain, and it spills over everything near it."},
+ {i:33,k:"Pride",m:"You stand on a step built of your own importance and look down from it."},
+ {i:34,k:"Arrogance",m:"The self swells past its real size and takes up the room."},
+ {i:35,k:"Competition",m:"Every person becomes a measure, and measuring splits you from them."},
+ {i:36,k:"Anger",m:"Power that should move you forward gets thrown at someone instead."},
+ {i:37,k:"Judgment",m:"You draw a line, put people on the far side of it, and hand them what is yours."},
+ {i:38,k:"Entitlement",m:"You expect the result as owed and grip until it comes."},
+ {i:39,k:"Rebellion",m:"You push against whatever pushes, and lose your own direction doing it."},
+ {i:40,k:"Perfectionism",m:"You hold the work to a standard no real thing can meet, and stiffen rather than fall short."},
+ {i:41,k:"Force",m:"You push the current instead of steering it, and it breaks where you push."},
+ {i:42,k:"Rigidity",m:"Will sets hard, like a joint that no longer bends."},
+ {i:43,k:"Resentment (Solar)",m:"Old anger is kept on the stove and heated again each time it cools."},
+ {i:44,k:"Unworthiness",m:"You shrink what you did until it weighs nothing."},
+ {i:45,k:"Anxiety",m:"The body braces now for a result that has not come."},
+ {i:46,k:"Self-Judgment (Solar)",m:"One part of you strikes down what another part does."},
+ {i:47,k:"Need To Win",m:"Every exchange is a contest, and you stay in it until someone is under you."},
+ {i:48,k:"Superiority",m:"You rank people on a ladder and keep a rung between you and them."},
+ {i:49,k:"Hatred",m:"A hurt is held as a debt, and you mean to collect it."},
+ {i:50,k:"Resentment (Heart)",m:"Pain is kept close to the chest, and love is held back to guard it."},
+ {i:51,k:"Self-Judgment (Heart)",m:"You hand yourself the hard verdict you would spare anyone else."},
+ {i:52,k:"Betrayal",m:"Trust broke once, and the body now braces to be left."},
+ {i:53,k:"Separation",m:"You wall yourself off from others and live inside the wall."},
+ {i:54,k:"Martyrdom",m:"You give until it costs you, because guilt says that is what love is."},
+ {i:55,k:"Longing",m:"The chest reaches for someone who is not in the room, and the person who is gets less of you."},
+ {i:56,k:"Closed Heart",m:"The skin along your ribs braces like a plate, so nothing gets close enough to land."},
+ {i:57,k:"Manipulative Kindness",m:"A gift goes out with the price tag still on it, and your breath holds until it is paid."},
+ {i:58,k:"Expectation",m:"Love goes out as a contract, and the lungs stay half full until the other side delivers."},
+ {i:59,k:"Blame",m:"What happened gets pushed across the table before your own chest has to carry any of it."},
+ {i:60,k:"False Love",m:"You love a picture you painted onto someone, and the front of your chest holds the picture up."},
+ {i:61,k:"Rejection",m:"You shut the door on other people before it can be shut on you."},
+ {i:62,k:"Avoidance Of Grief",m:"A loss gets pressed down under the breastbone and stays there at full weight, unwept."},
+ {i:63,k:"Need To Be Needed",m:"Your worth runs on someone else needing you, so the heart beats hardest when you are useful."},
+ {i:64,k:"Deceit",m:"The neck holds two stories at once and hands out whichever one steers the room."},
+ {i:65,k:"Self-Silencing",m:"Words climb to the throat and get swallowed back down before anyone hears them."},
+ {i:66,k:"People Pleasing",m:"Your voice tunes itself to the pitch the room wants and loses its own."},
+ {i:67,k:"Lying",m:"A lie goes out as a shield, and the voice box tightens to keep it in place."},
+ {i:68,k:"Interrupting",m:"You speak over the other person before their sentence lands, so their words never get in."},
+ {i:69,k:"Comparison",m:"Your head keeps turning to measure your voice against someone else's, and yours goes quiet."},
+ {i:70,k:"Excuse",m:"A reason waits at the back of your tongue before anyone asks, ready to move the fault off you."},
+ {i:71,k:"Stage Performing",m:"Your voice plays a part for an audience, and the person behind it stops being heard."},
+ {i:72,k:"Speaking To Be Right",m:"You talk to win the point, and the neck stays stiff until the other side gives way."},
+ {i:73,k:"Manic Expression",m:"Talk pours out fast and loud to burn off pressure, and your shoulders ride up with it."},
+ {i:74,k:"Talking To Avoid Feeling",m:"A steady stream of words keeps the feeling under your collarbone from ever reaching you."},
+ {i:75,k:"Spiritual Language To Manipulate",m:"Holy words get worn like a costume to earn a place in the group."},
+ {i:76,k:"Delusion",m:"Your eyes report a picture the facts do not back, and you trust the picture."},
+ {i:77,k:"Cynicism",m:"Your eyes roll away before they finish looking, so anything good gets thrown out unseen."},
+ {i:78,k:"Distrust",m:"Your gaze slides sideways looking for the catch, and nothing gets taken at its word."},
+ {i:79,k:"Hypervigilance",m:"Every corner of the view gets scanned at once, and the mind runs the same check over and over."},
+ {i:80,k:"Dogma",m:"A belief sets like concrete, and anything that does not fit it gets turned away at the door."},
+ {i:81,k:"Overanalysis",m:"The mind turns one question over until the jaw locks and no move gets made."},
+ {i:82,k:"Projection",m:"What you will not see in yourself gets cast outward, and the other person is made to carry it."},
+ {i:83,k:"Paranoia",m:"Fear feeds the eye, and the mind builds a plot out of every glance."},
+ {i:84,k:"Distortion",m:"The picture arrives bent, and you act on the bend instead of what is there."},
+ {i:85,k:"Doubt",m:"The first signal reaches you clean, and you wave it off before it lands."},
+ {i:86,k:"Idealism",m:"You hold up the picture of how it should be and refuse the one in front of you."},
+ {i:87,k:"Lack Of Discernment",m:"Everything comes through the same gate unfiltered, so you trust what you never checked."},
+ {i:88,k:"Doubt Of God",m:"Faith and reason stop talking across the bridge between them, and each side stands alone."},
+ {i:89,k:"Hubris",m:"The steering moves from alignment to you, and you mistake your own will for the higher one."},
+ {i:90,k:"Spiritual Pride",m:"An insight you earned becomes a rung you stand on above other people."},
+ {i:91,k:"Nihilism",m:"The frame that gave things weight drops out, and nothing seems worth lifting."},
+ {i:92,k:"Spiritual Escapism",m:"Practice becomes an exit, and you leave the room the moment it gets heavy."},
+ {i:93,k:"False Humility",m:"You lower your head on purpose, and the bow is a lever."},
+ {i:94,k:"Seeking Validation",m:"Your weight rests on other people's praise, and you keep going back for more."},
+ {i:95,k:"Savior Complex",m:"You take on loads that are not yours and reach past where your hands should stop."},
+ {i:96,k:"Condemnation",m:"Mercy is switched off, and every wrong gets a sentence instead of a hearing."},
+ {i:97,k:"Need To Be Special",m:"Who you are depends on standing apart, so ordinary feels like being erased."},
+ {i:98,k:"Unworthy Of God",m:"You shut the door on the divine because you have decided you do not belong inside."},
+ {i:99,k:"Knowing Better Than God",m:"Your will overrides the larger order, and you argue with the current instead of reading it."},
+ {i:100,k:"Denial Of Truth",m:"The insight is already in you, and you brace against it to keep it out."},
+ {i:101,k:"Rejection Of Spirit",m:"You drop the line to anything larger than you, and you are left holding only yourself."},
+ {i:102,k:"Fear Of God",m:"What could hold you as love reads as a threat, and you brace for the blow."},
+ {i:103,k:"Anger At God",m:"Trust broke at the top, and you push against everything above you."},
+ {i:104,k:"Forgetfulness",m:"You lose the thread of who you are, and each day starts without it."},
+ {i:105,k:"Denial Of Light",m:"When something is shown to you, you look away and keep to the dark you know."},
+ {i:106,k:"Rejection Of Unity",m:"You cut the wires that join you to everything else and call the silence independence."},
+ {i:107,k:"Self-Exclusion",m:"You step outside the circle first, so nobody gets to leave you out."},
+ {i:108,k:"Endless Seeking",m:"You keep moving toward an arrival you never let happen, and nothing you find is ever enough."}];
+
+/* THE THIRTEEN INFERRED SABOTEURS, keyed by the name UNNAMED gives them
+   (engine/core.js: the seat and INFER_NOUN's agent noun, or Diffuse and the
+   noun). A cluster's name is built from data, so if NODES moves an address
+   between clusters a name here can stop existing or start meaning other
+   addresses, and tests/engine.js holds both directions: every inferred
+   saboteur has a line and every line has a saboteur.
+
+   The seat is said as a place, the way CHILD's loc says it (Sacral the
+   pelvis, Solar the upper abdomen, Heart the chest), and the Crown, which
+   CHILD gives no loc, as the top of the head. A diffuse cluster has no one
+   seat and its line names none.
+
+   Diffuse Freezer is one address, Possession, because the leftover pass in
+   core.js has no floor of two where the band pass does. Its line does not
+   say several seats, so it stays true either way; whether a single address
+   should count as a saboteur at all is an engine question and is not settled
+   by a sentence.
+
+   Sadness, not Sad, in the two Mourner lines: "Sad in the chest" is not a
+   sentence, and the book itself writes Sadness in E66. */
+const INFER_SAY={
+ "Sacral Drifter":"Apathy in the pelvis: appetite keeps moving and the person behind it goes slack.",
+ "Sacral Striker":"Anger in the pelvis, pointed at what another person has.",
+ "Solar Striker":"Anger in the upper abdomen, pushed outward as the need to win and stand above.",
+ "Heart Mourner":"Sadness in the chest, reaching for what is gone and shut against the grief.",
+ "Heart Recoiler":"Disgust in the chest: love held at arm's length, and being needed in its place.",
+ "Throat Recoiler":"Disgust in the throat: the true sentence is swallowed and a cover story goes out.",
+ "Crown Striker":"Anger at the top of the head, aimed up at anything larger than the self.",
+ "Crown Mourner":"Sadness at the top of the head, the line to anything larger cut and forgotten.",
+ "Diffuse Freezer":"Shock that did not cluster in any seat: the body locks and something else steers.",
+ "Diffuse Bracer":"Anticipation across several seats: the body braced forward and unable to set it down.",
+ "Diffuse Startler":"Surprise across several seats: each arrival lands as a jolt before it is read.",
+ "Diffuse Recoiler":"Disgust across several seats: what is present is refused and another person's weight picked up instead.",
+ "Diffuse Hider":"Shame across several seats, measured against others and waiting to be told it passes."};
+/* one address's line by its storage index, '' when none is on file */
+function addrSay(n){
+ if(!n)return '';
+ for(var j=0;j<ADDR_SAY.length;j++)if(ADDR_SAY[j].i===n.i)return ADDR_SAY[j].m;
+ return '';}
+
+try{window.__at&&window.__at('engine/data/kbsay.js');}catch(e){}
 
 /* ============================================================
    THE PATTERN CATALOG. Ported from the owner's own production
@@ -18862,6 +19157,11 @@ var UNPACK_BASE={
     the share of every action read in the person's stories (verpRead, the
     six add to one whole). No sentence here says a count, a percent or a
     score, the contract group PO in tests/engine.js holds. */
+ /* THE SUMMARY'S LEFT RAIL, 20 November: one flat reading from the sky down
+    to the archetype, where what is his stands lit and the rest stands dim
+    (ui/railtiles.js, rlSumPaint). His own word for the dim half: "the
+    elements that they are not are dimmed out." */
+ 'rail:lit':'Lit is yours, and dim is what you are not.',
  'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
  'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
  'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
@@ -43552,7 +43852,7 @@ if(typeof module!=='undefined'&&module.exports){
  module.exports={
   /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH, SUPEREGO_IC:SUPEREGO_IC,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
-                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
+                  SABDEF:SABDEF, SABCARD:SABCARD, HCXCARD:HCXCARD, ADDR_SAY:ADDR_SAY, INFER_SAY:INFER_SAY, addrSay:addrSay, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
                   PATTERN96:PATTERN96, PATTERN96_BY_LAYER:PATTERN96_BY_LAYER, RESEARCHANCHOR:RESEARCHANCHOR,
   /* meter */    meterFirst:meterFirst,
   /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
@@ -65954,8 +66254,12 @@ function srcGuessAt(b){return 'My guess is it sits '+srcPlace(b)+'.';}
    person's record and not only from their words: "from your words and your
    reading". One concept, one mark, one tip, on every surface. */
 var SRC_MARK_TIP='Source AI wrote this from your words and your reading. Where it says my guess, it is a guess until you say it fits.';
-function srcMark(){
- return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(SRC_MARK_TIP)+'">'
+/* tip is for a line written from something other than a person's words and
+   reading, round LY: the wisdom school's composed definitions (kbSaid, ui/
+   drills.js). Still one mark and one name; only what it was written from is
+   said truly. Every other caller passes nothing and gets the house tip. */
+function srcMark(tip){
+ return '<span class="src-mk" role="img" aria-label="Source AI" tabindex="0" data-tip-k="Source AI" data-tip="'+esc(tip||SRC_MARK_TIP)+'">'
   +'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
   +'<circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span>';}
 /* THE REPLY, ON SCREEN AGAIN, 17 November. The owner: "All right, let's bring
@@ -70757,7 +71061,8 @@ function sumRender(){
  sumWire();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);}
+ if(typeof sumDayPaint==='function')sumDayPaint(r);
+ sumRunPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -71076,8 +71381,16 @@ function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
+    moved to is gone. His words on the live page: "where it says oscillating
+    50%, just get rid of that entirely." That was sumStatus(), the band, its
+    state and "Where it goes", and the gift rode inside it, so deleting the
+    band without moving the gift would have taken the one line tests/gift.js
+    holds on a new person's first screen off the page with it. Under the plate
+    it is above the fold at 390 as well, where inside the side column it sat
+    at 918 on an 844 screen (TASKS.md #137). */
  return sgZone('who','Who this is',
-  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -71086,7 +71399,13 @@ function sumWho(r,B,full){
    so it still finds it here), and sumGift() still writes #sumgift with the
    same id and the same sentence tests/gift.js reads on a brand new person's
    first screen (inView at scroll 0 holds: this column sits above the fold
-   at the widths that gate opens at). */
+   at the widths that gate opens at).
+   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
+   just get rid of that entirely." That is this block, the band's word, its
+   state and Where it goes, so sumFull stopped calling it and the gift moved
+   under the plate (sumWho). Kept rather than deleted on the same footing as
+   sumOutput below: free for a surface that wants the band, and the tier's
+   colour still reads on the plate's own ring. */
 function sumStatus(r,B){
  var t=TIER_BY[r.tier]||null;
  /* no band line at all while CQ is still filling: "N laws to answer" was
@@ -71326,7 +71645,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
+ var B=sumBirth();
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -71364,37 +71683,54 @@ function sumFull(r){
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
+   +'<div class="sg-side">'+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
-  +sumMarks(B,r)
-  +'<div class="sg-two sg-even">'
-   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
-    +sumBlueprint()
-    +'<div class="sg-gap">'+sumArch(r)+'</div>'
-    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
-    +'<div class="sg-gap">'+sumChain(r)+'</div>'
-    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
-   +'</section>'
-   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
-    +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest points',sumSeats())
-    +sgFold('bind','Binds',sumBind())
-    +sgFold('ig','Integrity over time',sumIg(r))
-   +'</section>'
-  +'</div>'
-  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
-     made, inside a closed <details> at the very bottom; now a card on the
-     page itself, so Path, Expression, Soul urge, Personality, Birthday and
-     Maturity read without a tap. */
-  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
-  +'<div class="sg-folds">'
-   +sgFold('lens','Four lenses',sumLens(r,true))
-   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-  +'</div>';}
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
+ /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
+    beneath your patterns... what's running is moving to the left panel. And
+    then the rest of that looks like it's in analytics." Under it stood the
+    celestial strip (sumMarks), What is running, What it costs, Numerology and
+    the Four lenses and Birth comparison folds. Every one of them is still
+    drawn somewhere a person can reach: the celestial placements and every
+    numerology number are the left rail's Root Energetics, which this tab now
+    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
+    READING"); the blueprint and the archetypes are the rail's own grids; the
+    masks are the rail's new What is running (sumRunPaint below); the nine,
+    the seats, the binds and integrity over time are Analytics. Only the calls
+    went. The functions stay, because Analytics, the unread page and the gates
+    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
+    stays, because Your patterns has had no other home since 14 November and
+    deleting it here would delete it from the product. The converge() this
+    function opened with went too: the Birth comparison fold was its only
+    reader on this page. */
+
+/* ============================================================
+   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
+   the same ruling. The rail's own grids already carry what that card printed
+   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
+   copying sumBlueprint and sumArch across would print each of them twice on
+   one screen. The masks are the one part the rail did not carry, so that is
+   all that moves: the first three as the rows they always were, and the rest
+   one tap down under the fold they always had. sumChain is not carried. He
+   named the chain as junk on 18 November, in the Psyche ruling recorded at
+   shell/body.html, and this is that same chain.
+
+   Painted from sumRender, so it is always the reading this page holds, and
+   emptied on an unread page, where there is nothing running to show and a
+   stale list would be a reading of somebody else.
+   ============================================================ */
+function sumRunPaint(r){
+ var h=document.getElementById('sumrun'); if(!h)return;
+ var body=r&&!r.unread?sumMasks(r,0,3):'';
+ h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
+ var sec=h.closest?h.closest('.lsec'):null;
+ if(sec)sec.classList.toggle('sum-empty',!body);
+ /* the rows keep data-mask, so the one listener the page body uses opens them
+    here too, rather than a second copy of its routing */
+ if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
+  h.addEventListener('toggle',sumFoldKeep,true);}}
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
@@ -71507,9 +71843,15 @@ function sumWire(){
  /* a fold remembers that it was opened through the next repaint, because
     the surface is rewritten whole whenever a reading changes. toggle does not
     bubble, so it is caught on the way down. */
- h.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
- h.addEventListener('click',function(ev){
+ h.addEventListener('toggle',sumFoldKeep,true);
+ h.addEventListener('click',sumClick);}
+/* NAMED, 20 November, and nothing in them changed. They were the two
+   anonymous handlers above, and What is running moved to the left rail
+   (sumRunPaint) carrying rows whose data-mask this routing already answers,
+   so the rail attaches the same two functions rather than a copy of them. */
+function sumFoldKeep(ev){var d=ev.target;
+ if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
+function sumClick(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -71550,7 +71892,7 @@ function sumWire(){
   if(b.hasAttribute('data-gl'))return runCoreDrill();
   /* an archetype or a mask has no drill of its own yet, so the core reading is
      the honest destination rather than a button that does nothing. */
-  return runCoreDrill();});}
+  return runCoreDrill();}
 
 try{window.__at&&window.__at('ui/summary.js');}catch(e){}
 /* ============================================================
@@ -90085,9 +90427,13 @@ function nodeDrillHtml(n,o){
   +(ampSay?'<p class="ad-p amp-say">'+esc(ampSay)+'</p>':'')
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
-  /* no fetter has a meaning on file, only the one word it shows up as, so in
-     the wisdom school it says so (kbGap) */
-  +(anchorSeat(n)?'':kbGap())
+  /* no fetter had a meaning on file, only the one word it shows up as, so the
+     wisdom school printed the gap on all 108 (kbGap). Each now has one line
+     composed from its own row (ADDR_SAY, engine/data/kbsay.js), and since it
+     is composed and not the book's it wears the Source AI mark. Still only in
+     the wisdom school, where the gap printed: the Field's rail card is
+     identity only on his 18 November ruling (runFetterDrill, below). */
+  +(anchorSeat(n)?'':kbSaid(addrSay(n),true))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* a field anchor's d is the word "field", a category and not a behaviour,
      so it never reaches "It shows up as field." */
@@ -90594,8 +90940,11 @@ function runFetterDrill(c){
      CHILD's (Fear, Anger, Apathy, Sad) and three name none and say it is
      pending (Shock, Surprise, Anticipation), so it is not printed on a card
      that says "toward Trust".
-     Until that is ruled the card says it has no meaning on file. */
-  +kbGap()
+     Until that is ruled the card says it has no meaning on file.
+     Where the two already agree, Shame toward Worth and Disgust toward
+     Acceptance, there is nothing to rule, and the card prints the book's
+     own entry, unmarked because it is quoted (childBookSays). */
+  +kbSaid(childBookSays(c),false)
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
   +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
@@ -90637,6 +90986,29 @@ function runSabDrill(s){
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
   +kbSabBlock(s.nm)
   +'<div class="pm-eye">Made of</div><div class="ad-rows">'+nodes.map(addrRow).join('')+'</div>';
+ rdShell(h);}
+
+/* A HYPER COMPLEX THE READING IS NOT CARRYING, round LY. The six families had
+   their line (HCX_LIB.d) and a whole researched card (HCXCARD, through
+   kbHcxBlock) and no deck to be found from, so the wisdom school could only
+   reach them through a saboteur's "It belongs to the ... family". The deck is
+   kbRowsOf('hcx'); a running one opens runDrill like a running saboteur does,
+   and this is the card for one that is not. Nothing here is new writing:
+   the line is HCX_LIB's own, the card is kbHcxBlock's, and what feeds it is
+   read off ALL_SAB by family name. sub is never printed, the same rule
+   kbSabLinked keeps: it is a diagnostic name. */
+function runHcxDrill(f){
+ if(!f)return;
+ var cap=function(t){return t.charAt(0).toUpperCase()+t.slice(1);};
+ var feeds=ALL_SAB.filter(function(s){return s.hcx===f.nm;});
+ var h='<div class="pm-eye">Hyper complex, not running</div><div class="ad-nm">'+esc(f.nm)+'</div>'
+  +'<div class="ad-sub">Held at the '+esc(f.b==='3rd Eye'?'3rd eye':String(f.b).toLowerCase())+'</div>'
+  +'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(cap(f.d))+'.</p>'
+  +'<div class="pm-eye">What it would take</div><p class="ad-p">It forms when two complexes of this '
+  +'family run at once, or one runs hard. Yours are not carrying enough for it to form.</p>'
+  +kbHcxBlock(f.nm)
+  +(feeds.length?'<div class="pm-eye">Fed by '+feeds.length+' saboteurs</div><p class="ad-p">'
+   +feeds.map(function(s){return esc(s.nm);}).join(', ')+'.</p>':'');
  rdShell(h);}
 
 /* THE DOMAIN, read clear and read distorted. The book prints both readings
@@ -90759,9 +91131,17 @@ function runMaskDrill(m){
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
 function kbSabBlock(nm){
- /* an inferred saboteur has no entry in the book, so in the wisdom school it
-    says it has no meaning on file rather than printing nothing under a name */
- var def=SABDEF[KB_KEY(nm)]; if(!def)return kbGap();
+ /* an inferred saboteur has no entry in the book and cannot have one, since
+    the book names 33 and these are built from a seat and a child emotion
+    (UNNAMED, engine/core.js). It printed the gap on all thirteen; each now
+    has one line composed from that pair (INFER_SAY, engine/data/kbsay.js),
+    marked as Source AI's because it is not the book's. kbSaid keeps it to
+    the wisdom school, where the gap was, and a name with no line still
+    prints the gap. No kbSabLinked here: it reads SAB_LIB, which holds no
+    inferred one, and would say the body map is missing for a pattern whose
+    addresses the card already lists under Made of. */
+ var def=SABDEF[KB_KEY(nm)];
+ if(!def)return INFER_SAY.hasOwnProperty(nm)?kbSaid(INFER_SAY[nm],true):kbGap();
  var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
  var h=c.h||def.d, n=c.n||def.i;
  return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
@@ -90817,6 +91197,37 @@ var KB_NOTE='No meaning on file yet.';
 function kbGap(){
  return (typeof kbAnsOn==='function'&&kbAnsOn())
   ?'<div class="pm-eye">What it is</div><p class="ad-p">'+KB_NOTE+'</p>':'';}
+/* WHAT IT IS, WHERE THE GAP STOOD, round LY. The same place and the same rule
+   as kbGap: only while a wisdom school answer is open, and the gap itself
+   when t is empty, so a row with nothing on file is never padded. composed
+   says the line is Source AI's and not the book's, and then it wears the one
+   mark and the src-ai treatment, never the icon alone (the 15 November
+   ruling, srcMark in ui/storyui.js). Its tip says what this line was written
+   from: the house tip says "from your words and your reading", and a
+   definition of Scarcity is written from neither, so printing that tip here
+   would be the mark telling a person something false about itself. */
+var KB_SAID_TIP='Source AI wrote this line from what the instrument holds about this one thing. It is not quoted from the book.';
+function kbSaid(t,composed){
+ if(!(typeof kbAnsOn==='function'&&kbAnsOn()))return '';
+ if(!t)return kbGap();
+ return '<div class="pm-eye">What it is</div>'
+  +(composed&&typeof srcMark==='function'
+   ?'<p class="ad-p src-ai">'+srcMark(KB_SAID_TIP)+'<span class="src-ai-t">'+esc(t)+'</span></p>'
+   :'<p class="ad-p">'+esc(t)+'</p>');}
+/* THE BOOK'S OWN ENTRY FOR A CHILD EMOTION, only where the book and CHILD
+   name the same opposite. HARM's emotion rows are titled "Shame · Worth", so
+   the two agree when the title is exactly the emotion and CHILD's own opp.
+   Read, not listed: on 20 November that is Shame and Disgust, and the day he
+   rules one of the other seven, whichever table moves, this starts printing
+   it with no change here. Fear, Anger, Apathy and Sad name a different
+   opposite and Shock, Surprise and Anticipation have none yet, so for those
+   this returns '' and the card keeps the gap. BOOK-ERRATA.md holds both
+   wordings for each. */
+function childBookSays(c){
+ if(!c||!c.opp)return '';
+ var want=c.nm+' · '+c.opp;
+ for(var i=0;i<HARM.length;i++)if(HARM[i].a==='emotion'&&HARM[i].t===want)return HARM[i].d||'';
+ return '';}
 /* the meaning of one of the 21 laws, read off the universal law of the same
    name. SI and HARM's spirit axis are one set by name (kbRowsOf builds the
    Moral Integrity deck by walking one into the other), so the text is held
@@ -91886,6 +92297,13 @@ function kbRowsOf(sec){
   var fam=kbFind(HCX_LIB,s.hcx), live=kbFind(r.sabs,s.nm);
   out.push(kbRow('sab', s.nm, s.hcx||'unnamed', (fam&&fam.b)||'Heart',
    kbPct(live?live.w:0), (fam&&fam.ic)||null, s));});
+ /* the six families. The live weight is the running hyper complex of that
+    name from computeSeen, the same tier read the saboteur deck uses, and an
+    overshoot (over) is a different pattern under FAM_POLE's name, so it is
+    never counted as the family itself. The seat is HCX_LIB's own b. */
+ if(sec==='hcx') HCX_LIB.forEach(function(f){
+  var live=r.hys.filter(function(h){return h.nm===f.nm&&!h.over;})[0];
+  out.push(kbRow('hcx', f.nm, f.b, f.b, kbPct(live?live.w:0), f.ic||null, f));});
  /* HIGH IS GOOD HERE AND THE COLOUR MUST NOT SAY OTHERWISE. A law at 90 is a
     law kept, not an alarm, and this product has shipped that defect twice.
     The ring takes the seat colour like every other deck and never the alarm.
@@ -92066,8 +92484,14 @@ function kbRowsOf(sec){
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
  ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
- ['law','Laws of Moral Integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
- ['addr','Fetters']];
+ ['law','Laws of Moral Integrity'],['hcx','Hyper complexes'],['sab','Saboteurs'],
+ ['fetter','Child emotions'],['addr','Fetters']];
+/* HYPER COMPLEXES GET A DECK, round LY. The six families were written in
+   full (HCX_LIB and HCXCARD) and had no deck, so the page that lists every
+   thing in the instrument listed the saboteurs and stopped one rung short.
+   It sits directly above Saboteurs because that is the stack's own order,
+   saboteurs compounding up into a family, and the list already runs from
+   the laws down to the body. */
 
 /* whether nothing has been read, asked once and never typed */
 function kbUnread(){return unreadNow();}
@@ -92078,6 +92502,7 @@ const KB_OF={
  addr:'',
  fetter:'of the axis held',
  sab:'of the pattern at full weight',
+ hcx:'of the pattern at full weight',
  law:'of the law kept, where high is the law holding',
  mask:'of the mask at full weight',
  dom:'of your strongest blueprint lobe',
@@ -92108,7 +92533,7 @@ function kbMatch(row,q){
    names and not words the product uses anywhere a person can see. node reads
    Fetter and fetter reads Child emotion, which is the rename: the keys are
    identity and the labels are what a person sees. */
-const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
+const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',hcx:'Hyper complex',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
  harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
@@ -92133,6 +92558,7 @@ function kbSubIn(x){
  if(x.k==='mask')return o.v||'';
  if(x.k==='harm')return x.fam||'';
  if(x.k==='law')return '';
+ if(x.k==='hcx')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
 /* one row, the markup it always had, so the drills and the gates read it as
@@ -92177,7 +92603,7 @@ function kbSeatLine(b){
  return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
 /* the deck a row came from, by its kind. Four kinds share the cards deck. */
 function kbDeckOf(x){
- return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
+ return ({node:'addr',fetter:'fetter',sab:'sab',hcx:'hcx',law:'law',mask:'mask',dom:'dom',arch:'arch',
   gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
 /* THE COHERENCE FORMULA COMES BEFORE THE LAWS. His words, 18 October: "the
    coherence formula should be before the universal laws." It was nowhere on
@@ -92726,6 +93152,10 @@ function kbOpenIn(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
+ if(x.k==='hcx'){
+  var rh=computeSeen(), on=rh.hys.filter(function(h){return h.nm===x.o.nm&&!h.over;})[0];
+  if(on){S.pin=on; runDrill(on); render(); return;}
+  runHcxDrill(x.o); return;}
  /* the real definition, pulled from the book's own Harmonic Table entry for
     this law. Where that extraction found no safe match (E43, Responsibility,
     folded into Ownership/E40 in the current build) it fell back to the
@@ -100181,7 +100611,10 @@ function renderSpirit(){
     the honest glyph for a value nobody read (V19), and the reason in its
     tooltip and in its spoken name */
  function unres(k,x){
-  return '<div class="sp-row static sp-tile" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
+  /* rl-off: on the Summary a placement the record cannot settle is one of
+     the dim marks, ui/railtiles.js rlSumPaint; the class draws nothing
+     anywhere else */
+  return '<div class="sp-row static sp-tile rl-off" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
    +' data-tip="'+esc(x.charAt(0).toUpperCase()+x.slice(1)+'.')+'" aria-label="'+esc(k+', unresolved, '+x+'.')+'">'
    +'<span class="sp-tg sp-tdash" aria-hidden="true">–</span>'
    +'<span class="sp-said"><span class="sp-k">'+k+'</span> <span class="sp-v">unresolved</span> '
@@ -101746,8 +102179,13 @@ function rlArcs(r){
   if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s'); else b.style.removeProperty('--bd');}
  var dm=document.getElementById('doms');
  if(dm)[].forEach.call(dm.children,function(b,i){put(b,r.unread?0:DOMAIN[i]); ph(b,'dom',i);});
+ /* on the Summary the archetype's ring is archExpr, the one figure it prints
+    beside its name there (rlSumPaint below), so the ring and the figure are
+    one number; everywhere else it stays r.aff, the share the wheel draws */
+ var onSum=rlOnSum(), AX=onSum&&!r.unread&&typeof archExprAll==='function'?archExprAll():null;
  ['ar1','ar2'].forEach(function(id){var e=document.getElementById(id);
-  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(r.aff||[])[i]); ph(b,'arch',i);});});
+  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(AX?AX[i]:(r.aff||[])[i])); ph(b,'arch',i);});});
+ rlSumPaint(r,onSum,AX);
  var ro=document.getElementById('roots');
  if(ro)[].forEach.call(ro.children,function(b){if(b.dataset.r)ph(b,'root',b.dataset.r);});
  /* the folded line's circles carry the same two numbers and the same breath */
@@ -101756,6 +102194,93 @@ function rlArcs(r){
   put(b,r.unread?0:(k==='dom'?DOMAIN[i]:(r.aff||[])[i]));
   if(!b._rp){b._rp='1'; var seat=rlCalm()?null:rlSeatOf(k,i);
    if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s');}});}
+
+/* ============================================================
+   LIT IS YOURS, DIM IS WHAT YOU ARE NOT. The Summary only, 20 November, his
+   words: "I want a person's celestial information down to their archetypes
+   exposed with their percents. So no nested tables, everything's just
+   visible. The elements that they are not are dimmed out."
+
+   What is his, level by level, read off what the rail already holds and
+   nothing new: a blueprint domain in S.doms; an archetype in S.arcs, the
+   primary and the secondaries; a root that is the born root (the sun's
+   element through ELEM2ROOT, the same lookup the Reading's "the blueprint you
+   were born on reads fire" uses), a root a chosen domain sits under
+   (rootsLit), or a root he added (S.roots); and a celestial placement the
+   record can settle, where one that reads unresolved is dim.
+
+   A dim mark is not a choice on this page, so it leaves the tab order. It
+   keeps aria-pressed as false rather than losing the attribute, because the
+   same button is the Field's choice a tab away and syncSoul writes that
+   attribute only when a selection changes, so a removed one would come back
+   to the Field missing. It is visual weight and focus that change here,
+   never what the control is.
+
+   ONE FIGURE, AND ONLY WHERE ONE IS COMPUTED. An archetype carries archExpr,
+   how fully it is expressed (engine/archexpr.js), printed once beside its name
+   in the caption under the grid and drawn as its ring. A domain, a root and a
+   placement print no figure, because nothing computes a percent for them and
+   one printed here would be invented.
+
+   Done when the state flips and not on every render: a key of the tab and the
+   selection is kept, so a frame that changes nothing touches nothing.
+   ============================================================ */
+function rlOnSum(){return typeof TAB!=='undefined'&&S&&S.tab===TAB.SUMMARY;}
+var RL_SUMKEY='';
+function rlBornRoot(){
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=null;
+ try{sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));}catch(e){sp=null;}
+ return sp&&sp.sunEl?(ELEM2ROOT[sp.sunEl]||''):'';}
+function rlSumPaint(r,onSum,AX){
+ var key=onSum?['s',S.who,(S.doms||[]).join('.'),(S.arcs||[]).join('.'),(S.roots||[]).join('.'),
+   r.unread?'u':'r',AX?AX.map(function(x){return x==null?'-':x.toFixed(3);}).join(','):''].join('|'):'off';
+ if(key===RL_SUMKEY)return; RL_SUMKEY=key;
+ /* the one meaning of lit and dim, on the first of the level names, from the
+    meaning table and never typed here */
+ var lv=document.querySelector('#lcol .sum-lvl');
+ if(lv&&!lv.hasAttribute('data-tip')){var say=unpackOf('lit','rail');
+  if(say){lv.setAttribute('tabindex','0'); lv.setAttribute('data-tip-k','Lit and dim'); lv.setAttribute('data-tip',say);}}
+ /* a dim mark keeps its name on hover and says the one thing true of it here;
+    its Field title, which tells a person to click or shift-click to choose,
+    is put back as it was the moment the mark is lit or the tab is left */
+ function mark(b,off){
+  var dim=onSum&&off;
+  b.classList.toggle('rl-off',dim);
+  if(dim){b.setAttribute('tabindex','-1');
+   if(b.dataset.t0==null)b.dataset.t0=b.title||'';
+   var nm=(b.getAttribute('aria-label')||b.dataset.r||'').split(',')[0];
+   b.title=nm+'. Not in your blueprint.';}
+  else {b.removeAttribute('tabindex');
+   if(b.dataset.t0!=null){b.title=b.dataset.t0; delete b.dataset.t0;}}}
+ var dm=document.getElementById('doms');
+ if(dm)[].forEach.call(dm.children,function(b,i){mark(b,(S.doms||[]).indexOf(i)<0);});
+ var a1=document.getElementById('ar1');
+ if(a1)[].forEach.call(a1.children,function(b,i){mark(b,(S.arcs||[]).indexOf(i)<0);});
+ var ro=document.getElementById('roots');
+ if(ro){var lit=onSum?rootsLit():{}, born=onSum?rlBornRoot():'';
+  [].forEach.call(ro.children,function(b){var rn=b.dataset.r; if(!rn)return;
+   mark(b,!(lit[rn]||rn===born||(S.roots||[]).indexOf(rn)>=0));});}
+ /* the caption under the archetypes names what is lit, and on this page
+    carries each one's figure beside its name; capA writes it plain again the
+    moment the tab is left, because it is the Field's caption too */
+ var ca=document.getElementById('capA');
+ if(!ca)return;
+ if(!onSum){if(typeof capA==='function')capA(); return;}
+ ca.innerHTML=(S.arcs||[]).map(function(i){var A=ARCH[i]; if(!A)return '';
+  var f=AX&&AX[i]!=null?fmtPct('archetype',AX[i]):'';
+  return '<span class="rl-lit"><b>'+esc(A.nm)+'</b>'+(f&&f!==PCT_DASH?' <i class="rl-fig">'+esc(f)+'</i>':'')+'</span>';})
+  .filter(Boolean).join('');}
+
+/* AND A DIM MARK IS NOT A CHOICE ON THE SUMMARY. The domain, root and
+   archetype buttons choose the blueprint on the Field (ui/panels.js), and a
+   press on a dim one here would have changed it from a page that reads it.
+   Stopped on the way down, at the column, so the Field's own handlers are
+   untouched and a lit mark still answers as it does there. */
+(function(){
+ var l=document.getElementById('lcol'); if(!l)return;
+ l.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('.rl-off');
+  if(t&&rlOnSum()){ev.stopPropagation(); ev.preventDefault();}},true);})();
 
 /* AND IT RUNS THE OTHER WAY. A pointer over a domain's arc on the wheel lights
    that domain's tile and its root's chip; over an archetype's arc, that
@@ -106724,6 +107249,7 @@ function colKey(){
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
+ if(S.tab===TAB.SUMMARY)return 'lcolsum';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -106731,7 +107257,15 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
+ /* AND THE SUMMARY HAS ITS OWN, 20 November, defaulting open, Flow's
+    reason. It shared the Field's 'lcol', which starts shut beside the stage,
+    and on 20 November the Summary's left rail became where a person's
+    celestial placements, root, domains, archetypes and What is running are
+    read, his words: "On the left side panel, I want a person's celestial
+    information down to their archetypes exposed." A reading that lands
+    shut is a reading nobody sees, and a fold made here no longer moves the
+    Field's or the other way round. */
+ var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated
@@ -107783,5 +108317,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007347229"></div>
+<div id="eof" hidden data-len="007386688"></div>
 </body></html>

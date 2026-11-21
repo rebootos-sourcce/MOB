@@ -986,7 +986,11 @@
         again, so the control's reserved width came back to it. -->
    <div class="lsec" data-sec="energetics">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
+    <!-- the four level names, Celestial, Root, Domain and Archetype, shown
+         on the Summary only, where this rail is one flat reading from the
+         sky down to the archetype (head.html, "THE SUMMARY'S LEFT RAIL IS
+         ONE FLAT READING"). Elsewhere the rail keeps its own labels. -->
+    <div class="lsec-bd"><div class="tier1 sum-lvl">Celestial</div><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
         is the one large circle, "so it's in your face", the four that move
@@ -1084,13 +1088,16 @@
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
+     <div class="tier1 sum-lvl">Root</div>
      <div class="tier1">Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
+     <div class="tier1 sum-lvl">Domain</div>
      <div class="tier1">Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1 sum-lvl">Archetype</div>
      <div class="tier1" style="margin-top:18px">Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub ar-sec">Secondary</div>
@@ -1101,7 +1108,7 @@
          chosen, one line each. ui/railtiles.js, awSum. -->
     <div class="aw-sum" id="awsum"></div>
    </div>
-   <h2 class="rblk">Psyche</h2>
+   <h2 class="rblk" data-blk="psyche">Psyche</h2>
    <!-- THE PSYCHE PANEL HOLDS THREE THINGS, 18 November, his words, twice. The
         first: "I asked you to get rid of everything in these two images. I
         asked you that a long time ago... Maybe keep the matrix for now, but
@@ -1129,6 +1136,16 @@
         said that is said nowhere else moved to the meaning table
         (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
         18 November, records the earlier asks and why they never landed. -->
+   <!-- WHAT IS RUNNING, ON THE SUMMARY ONLY, 20 November, his words: "get
+        rid of everything beneath Psyche... everything beneath your patterns
+        ... what's running is moving to the left panel." On the Summary the
+        three sections below this one are taken off by head.html and this one
+        stands under the heading in their place; on every other tab it is
+        taken off and they stand as they did. ui/summary.js, sumRunPaint. -->
+   <div class="lsec sum-only" data-sec="run">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
+    <div class="lsec-bd"><div id="sumrun"></div></div>
+   </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">

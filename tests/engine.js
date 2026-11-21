@@ -12697,5 +12697,33 @@ g('SZA9 · a parse with no sentence end grows with the entry, not with its squar
  ok(ru/rp<2.5,'no sentence end costs about what the same words punctuated cost, '+ru+' ms against '+rp+' ms');
 }
 
+g('the wisdom school\'s composed lines, round LY');
+{
+ /* ADDR_SAY and INFER_SAY are Source AI's lines, composed from one row each
+    (engine/data/kbsay.js). They are keyed by identity, so what is held here
+    is that the identity still names the row the line was written from. */
+ const {ADDR_SAY,INFER_SAY,addrSay,ALL_SAB,HARM}=E;
+ const somatic=NODES.filter(n=>BANDS.indexOf(n.b)>=0);
+ const said=somatic.filter(n=>addrSay(n));
+ ok(said.length===somatic.length,'every somatic address has a line, '+said.length+' of '+somatic.length);
+ const moved=ADDR_SAY.filter(a=>{const n=NODES.filter(x=>x.i===a.i)[0]; return !n||n.k!==a.k;});
+ ok(moved.length===0,'and every line still sits on the address it was written from, moved: '
+  +moved.map(a=>a.i+' '+a.k).join(', '));
+ ok(new Set(ADDR_SAY.map(a=>a.m)).size===ADDR_SAY.length,'and no two addresses share a line');
+ ok(NODES.filter(n=>BANDS.indexOf(n.b)<0).every(n=>!addrSay(n)),'and the four field anchors carry none, they say their own thing');
+ /* a line that repeats the card's own closing word says the distortion twice */
+ const twice=ADDR_SAY.filter(a=>{const n=NODES.filter(x=>x.i===a.i)[0];
+  return n&&n.d&&a.m.toLowerCase().indexOf(n.d.toLowerCase())>=0;});
+ ok(twice.length===0,'and no line repeats the distortion the card closes on, '+twice.map(a=>a.k).join(', '));
+ const inf=ALL_SAB.filter(s=>s.unnamed).map(s=>s.nm), keys=Object.keys(INFER_SAY);
+ ok(inf.every(n=>keys.indexOf(n)>=0),'every inferred saboteur has a line, missing '
+  +inf.filter(n=>keys.indexOf(n)<0).join(', '));
+ ok(keys.every(n=>inf.indexOf(n)>=0),'and every line has a saboteur, orphans '
+  +keys.filter(n=>inf.indexOf(n)<0).join(', '));
+ /* the child emotions the book and CHILD agree on are read, not listed */
+ const agree=CHILD.filter(c=>HARM.some(h=>h.a==='emotion'&&h.t===c.nm+' · '+c.opp)).map(c=>c.nm);
+ ok(agree.length>0&&agree.indexOf('Fear')<0,'the book and CHILD agree on '+agree.join(', ')+', and not on Fear');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

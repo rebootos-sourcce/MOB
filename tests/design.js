@@ -969,15 +969,22 @@ console.log('\n=== the alarm law ===');
     like that it says I am 88 per cent embodied and the colour is not
     symbolic. We have got our ten tiers now, we should have colours that
     reflect those tiers." */
+ /* RE-POINTED 20 November, off '.s-pband b' and onto the plate's own ring.
+    The band was sumStatus(), the "Oscillating / Searching / Where it goes"
+    block, and he ruled it off the Summary in his words: "where it says
+    oscillating 50%, just get rid of that entirely." The tier's colour did not
+    leave with it: sumPlate draws the Coherence ring in TIERCOL[r.tier]
+    (ui/summary.js), so the ruling this gate holds is held on the one mark
+    on the page that still carries it. Same assertion, same colour. */
  const tc=await page.evaluate(()=>{
   const r=compute();
-  const e=document.querySelector('.s-pband b');
+  const e=document.querySelector('#sumbody .s-plate .cr .arc circle:last-child');
   return {tier:r.tier, want:TIERCOL[r.tier]||null,
-    got:e?getComputedStyle(e).color:null};});
+    got:e?getComputedStyle(e).stroke:null};});
  ok(tc.want!==null,'every tier has a colour, missing for '+tc.tier);
  const hex2rgb=h=>'rgb('+[1,3,5].map(i=>parseInt(h.substr(i,2),16)).join(', ')+')';
  ok(tc.got===hex2rgb(tc.want),
-   'and the band on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
+   'and the ring on the plate wears it, wanted '+hex2rgb(tc.want)+' got '+tc.got);
 }
 
 /* ============================================================
