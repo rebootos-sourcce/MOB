@@ -105,7 +105,7 @@ function kbRows(sec){
    than being put in a seat that would be a guess. */
 function kbSeatsOf(x){
  if(x.k==='mask')return ((x.o&&x.o.b)||[]).filter(function(b){return BANDS.indexOf(b)>=0;});
- if(x.k==='dom'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss')return [];
+ if(x.k==='dom'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss'||x.k==='pattern96')return [];
  if(x.k==='axcard'&&!(x.o&&x.o.ax))return [];
  return BANDS.indexOf(x.seat)>=0?[x.seat]:[];}
 function kbRowsOf(sec){
@@ -312,6 +312,21 @@ function kbRowsOf(sec){
  if(sec==='gloss') GLOSS.forEach(function(g){
   out.push(kbRow('gloss', g.t, 'definition', glossBand(g.t), null,
    glossMark(g.t), g));});
+ /* THE 96-PATTERN SHELF, search only, same reasoning as the glossary just
+    above: DECISIONS.md "The voice prototype's read only layer" names six
+    open questions, and the team's own pick on the first, 21 November, is
+    that this stays a reference shelf Source AI reads from only when it
+    already has a name, never a Source-AI-initiated feature. A search here
+    is a person naming it, which is the same door. No seat ring (the pick
+    on question 2: the library's own three layers, ancestral, generational
+    and parental, read as one word, "family pattern," never the jargon,
+    and none of the 96 carries an address the way a fetter does, so a ring
+    colour would be a guess the port's own README already refused). PATTERN96
+    and GLOSS_IC are the port's own table and the glossary's own open-book
+    mark; no new data, no new icon. */
+ if(sec==='pattern96'&&typeof PATTERN96!=='undefined') PATTERN96.forEach(function(pt){
+  out.push(kbRow('pattern96', pt.name, 'family pattern', 'Heart', null,
+   GLOSS_IC, pt));});
  /* NOTHING READ, SO NO PERCENT ON ANY ROW. The archetype, domain and blueprint
     rows take their share off the blueprint that is selected, so a person who
     had entered nothing read "Warrior 100%" down a whole deck. The dash is the
@@ -533,6 +548,10 @@ function kbRender(){
   per[s[0]]=n; total+=n;});
  /* and the glossary, which is not a deck and answers above the rows */
  var gl=q?rowsOf('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ /* the 96-pattern shelf, the same way: not a deck, answers only a search
+    that already names one. See kbRowsOf's own note on the pick this is
+    built from. */
+ var pt96=q?rowsOf('pattern96').filter(function(x){return kbMatch(x,q);}):[];
  /* the formula leads wherever laws are listed: every seat's page carries some,
     the two law decks are nothing else, and a search shows it, and counts it,
     when it matches */
@@ -589,6 +608,23 @@ function kbRender(){
   gl.slice(0,4).forEach(function(g){
    h+='<div class="kb-g"><div class="kb-gt">'+esc(g.t)+'</div>'
     +'<p class="kb-gd">'+esc(g.o.d)+'</p></div>';});
+  h+='</div>';}
+ /* THE 96-PATTERN SHELF ANSWERS THE SAME WAY, its own card so it never
+    reads as the glossary's own one-line definitions: a family pattern
+    carries a mechanic and a protective move, not a definition, and
+    every card says once, in its own words, what the port's own data
+    already states on every row (scientificStatus): a catalog entry
+    informed by research, never a measurement of the person searching. */
+ if(pt96.length){
+  h+='<div class="kb-gloss kb-pat96">';
+  pt96.slice(0,3).forEach(function(x){
+   var p=x.o;
+   h+='<div class="kb-g"><div class="kb-gt">'+esc(p.name)+'<span class="kb-pat96-tag">family pattern</span></div>'
+    +'<p class="kb-gd">'+esc(p.functionalDefinition||'')+'</p>'
+    +(p.protectiveCountermechanism?'<p class="kb-gd kb-pat96-pm"><b>A protective move:</b> '+esc(p.protectiveCountermechanism)+'</p>':'')
+    +'<p class="kb-pat96-note">A named loop a family can repeat, from a reference shelf: '
+    +'a design category informed by research, not a diagnosis, and not a reading of you or anyone in your story.</p>'
+    +'</div>';});
   h+='</div>';}
 
  /* every row on the page, in the order drawn, so a press finds its row */

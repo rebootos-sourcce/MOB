@@ -3973,6 +3973,60 @@ answered for him.
 **What cannot be said.** Why he rejected PR #163. His words give no reason and
 none is invented here. The layer was not on any screen of the build he judged,
 as far as the code shows, so it cannot be named as the cause.
+
+**FLAGGED: the team's own picks on the six questions above, pending his
+correction. Ruled 21 November**, his words, after the six sat unanswered for
+four days: "Let's keep a note flag for anything that still needs my review.
+In fact, I kind of want to do this for everything. Let's stop the blockers
+from building. We'll review if the blockers break the build in software."
+So the team picked, built the one that was cheap and safe, and is naming
+every pick here rather than burying it in a diff. Nothing below is his word;
+every line is marked as a guess until he reads it.
+
+1. **What are the 96 for.** Picked (b): a reference shelf Source AI reads
+   from only when it already has a name or an id, never a Source-AI-
+   initiated feature. Not his superego list (3 October); nothing built
+   toward that.
+2. **Ancestral and generational.** Picked (a) narrowly: the library keeps its
+   three internal layers (ancestral, generational, parental); if a pattern
+   ever prints on a screen, ancestral and generational read as one combined
+   word there, never the jargon. Nothing to build yet, since nothing prints
+   one.
+3. **What word a pattern shows under, if it ever surfaces.** Picked: the
+   word "pattern" itself, the product's own one-word-per-concept rule
+   outranking a new coinage. Named here so whoever builds the first screen
+   that shows one does not have to guess a second time. The trace graph's
+   own use of "pattern" for an imprint at an address stays exactly as it is;
+   this is only for the day a 96-row pattern needs a word on a screen,
+   which has not arrived.
+4. **Whether Source AI may ever ask a pattern's own question. NOT PICKED,
+   on purpose.** Every other question here had a cheap, reversible default;
+   this one does not. The 96 rows each carry a question meant to be asked
+   of a person, and whether Source AI may ever put one to someone on its
+   own is the kind of call this file's own standing rule still reserves for
+   him (a real behavioural change, not a reversible toggle). Left off. His,
+   not guessed.
+5. **The evidence bus and its three readers.** Picked (a), which turned out
+   to already be the state of the branch: kept, wired into the engine and
+   into `tests/source-evidence-bus.js` and its own gate, called by nothing
+   under `ui/` or `shell/`. Nothing to build; the inert state the port
+   shipped with on 17 November already matches this pick.
+6. **The public quiz page.** Picked (a): left as is, one shared engine file,
+   since splitting a second build target for 200 kilobytes nobody can reach
+   costs more than it saves. Nothing built.
+
+**What was actually wired, from pick 1.** The 96-pattern shelf is reachable
+from a real screen for the first time: the Wisdom school (Knowledge tab,
+`ui/knowledge.js`) carries it as a twelfth, search-only deck. It has no seat
+ring (the rows carry no seat the way an address or a law does, and giving
+one a colour it does not own would be the guess the port's own README
+already refused to make) and no entry in the seven-seat browse; it answers
+only a search that already names a pattern, matching pick 1's own words,
+"when it already has a name." Source AI itself still calls nothing: this is
+a person looking something up, not Source AI drawing on it. `kbRows`/
+`kbMatch` read `PATTERN96` through the same `srcVoiceCanon`/`srcVoicePattern`
+seam the port built and the engine already tests; no new engine logic, no
+new table.
 ## The Avatar's Purpose view loses both rails, and Archetypes is hidden. Ruled 18 November.
 
 His words, verbatim: "Okay, Amy, for the avatar purpose, let's remove the left
