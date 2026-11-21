@@ -116,6 +116,9 @@
  const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
  const GOLDRGB=rgb(GOLD);
  function mixc(c,g,t){ return [Math.round(mix(c[0],g[0],t)),Math.round(mix(c[1],g[1],t)),Math.round(mix(c[2],g[2],t))]; }
+ /* an rgb triple back to the hex sprite() reads, the one direction rgb()
+    above never needed before this */
+ const toHex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
  /* seeded, so every load drifts the same way and a screenshot can be
     repeated. Two generators where the file had one: the layout's is
     restarted on every read of W, so an address keeps its own phases across
@@ -210,6 +213,29 @@
  const CORE=SEATCOL.map(c=>sprite(c,[[0,1,1],[.18,1,.55],[.42,.55,0],[.7,.12,0],[1,0,0]],64));
  const HOT=sprite('#fff4de',[[0,1,0],[.25,.6,0],[.6,.1,0],[1,0,0]],64);
  const GOLDH=sprite(GOLD,gauss);
+ /* THE CENTRE GLOW ONLY IS NOW CQDQ-TINTED, not his own fixed gold, 21
+    November, on the real screenshot: "the color needs to match the CQDQ
+    color with dominant chakra color influence." This is its own sprite,
+    COREH, never GOLDH itself: GOLDH is blitted at the arc's head (the gold
+    CQ arc, below), at the resolution animation's travelling sparks and its
+    settling ring (resFx, further down) and at its node-ping glow, four
+    call sites that sit right beside literal rgba(240,218,170,...) gold
+    strokes drawn in the same frames; mutating GOLDH in place, as a first
+    pass here did, retinted all four along with the centre and left them
+    fighting their own neighbour's still-fixed gold. None of those four
+    are "the circle's colour" the screenshot was read against, so GOLDH
+    stays exactly the fixed gold it always was and only COREH moves.
+    COREH is "built once, a glow costs one blit" per the sprite note
+    above, which a repaint every frame would break (sprite() rebuilds a
+    gradient canvas, the cost that note exists to avoid), so it stays a
+    `let` and is only rebaked when the CQDQ COLOUR block, in the draw loop
+    below, actually lands on a new rounded colour, the same guard uni.js's
+    own ambPaint uses for the cloud behind Uni (ui/uni.js, "only when the
+    rounded rgb triples actually change"). Unread or unmeasured it keeps
+    this exact gold, the same gate the CQ arc already draws under: no
+    reading, no colour claim. */
+ let COREH=sprite(GOLD,gauss), coreGoldKey=GOLDRGB.join(',');
+ const SEATRGB=SEATCOL.map(rgb);
  const WARM=sprite('#f3e2c0',gauss);
  const NEB=SEATCOL.map(c=>sprite(c,[[0,.9,0],[.35,.45,0],[.7,.12,0],[1,0,0]],256));
  const STREAK=(()=>{const c=document.createElement('canvas');c.width=256;c.height=16;const g=c.getContext('2d');
@@ -261,6 +287,15 @@
 
  /* ---- input 2: the chain, read off computeSeen() ---- */
  let CH={sabs:[],cxs:[],hys:[],sups:[]}, LOCKED=new Set(), CQ=null;
+ /* DQ, the real total-shadow score (engine/compute.js, same r this file
+    already reads CQ off), and DOM, the dominant seat: whichever of
+    r.seats (seatRows(), the same real per-seat weight the Field and
+    map.js already read, 0-1, root through crown, the same order SEATCOL
+    is indexed by below) carries the most. Both feed the centre glow's
+    colour, cqdqTint() below; neither is a second reading of its own and
+    neither draws anything while CQ is null, the same no-reading-no-claim
+    gate the arc already stands behind. */
+ let DQ=0, DOM=0;
  /* a saboteur sits in the seat most of its addresses sit in */
  function seatOf(parts){ const c=[0,0,0,0,0,0,0]; parts.forEach(i=>{ if(byI[i]) c[byI[i].ring]++; }); let best=0; c.forEach((v,k)=>{ if(v>c[best]) best=k; }); return best; }
  function readChain(r){
@@ -287,6 +322,10 @@
      the same lawRec read compute() makes, so a 0 there is no reading of
      coherence at all and draws no arc and no disorder, as unread does. */
   CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
+  DQ=(r&&isFinite(r.DQ))?clamp(+r.DQ,0,100):0;
+  if(r&&Array.isArray(r.seats)&&r.seats.length){
+   let best=-1; r.seats.forEach((s,i)=>{ const w=+s.weight||0; if(w>best){ best=w; DOM=i; } });
+  }
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
   const ARC='\nGold arc: coherence, mind, actions and body pointing the same way';
@@ -301,10 +340,14 @@
  /* coherence is eased, the amplified file's 1.4 seconds, so a new reading
     turns the arc and the lock rather than cutting to them */
  let cqFrom=0, cqTo=0, cqT0=-9e9, cqv=0, cqSeen=false;
+ /* DQ eases on the exact same clock, cp below, since both land off the
+    same sync(r) call: a reading moves its colour and its arc together,
+    never one cutting while the other glides */
+ let dqFrom=0, dqTo=0, dqv=0;
  const CQ_DUR=1400;
  /* called by uniApply (ui/storyui.js) with the reading it has just taken */
  function sync(r){ readAddrs(); readChain(r||{});
-  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; cqSeen=true; } else if(CQ!==cqTo){ cqFrom=cqv; cqTo=CQ; cqT0=performance.now(); } }
+  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; dqFrom=dqTo=dqv=DQ; cqSeen=true; } else if(CQ!==cqTo||DQ!==dqTo){ cqFrom=cqv; cqTo=CQ; dqFrom=dqv; dqTo=DQ; cqT0=performance.now(); } }
   if(sabIdx>=CH.sabs.length){ sabIdx=0; sabStart=performance.now()+400; lastCyc={}; } }
 
  const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{},hk:{}};
@@ -677,8 +720,31 @@
   ctx.setTransform(DPR,0,0,DPR,0,0); lx.setTransform(DPR,0,0,DPR,0,0);
 
   /* coherence, eased; the gate itself is hard at 92, and no reading is not a lock */
-  const cp=easeInOut((now-cqT0)/CQ_DUR); cqv=mix(cqFrom,cqTo,cp);
+  const cp=easeInOut((now-cqT0)/CQ_DUR); cqv=mix(cqFrom,cqTo,cp); dqv=mix(dqFrom,dqTo,cp);
   const isHi=CQ!=null&&cqv>=HI_GATE;
+  /* CQDQ COLOUR, 21 November, his words on the real screenshot: "the color
+     needs to match the CQDQ color with dominant chakra color influence."
+     Three real signals, none invented here: window.Uni.getPalette(cqv/100),
+     the same five-stop ladder the cloud behind Uni and Uni's own face
+     already read; SEATRGB[DOM], the dominant seat's own colour, the same
+     array already tinting every per-address dot on these rings; and dqv,
+     pulled toward the ladder's own oscillation stop (c:0.52, a real named
+     stop, not a plain desaturation, which would just read as duller gold
+     and name nothing) rather than toward grey. The seat nudges the hue by
+     up to 0.28, DQ by up to 0.35, both capped so a high CQ reading still
+     reads as itself and neither pull can erase it. No reading, no colour
+     claim: unread or unmeasured keeps the original fixed gold exactly as
+     before, the same gate the arc above stands behind. */
+  let coreTint=GOLDRGB, bgCore=null, bgEdge=null;
+  if(CQ!=null&&window.Uni&&window.Uni.getPalette){
+   const p=window.Uni.getPalette(cqv/100), osc=window.Uni.getPalette(0.52);
+   const seatT=0.28, dqT=Math.min(0.35,dqv/100*0.35);
+   coreTint=mixc(mixc(p.cl,SEATRGB[DOM],seatT),osc.cl,dqT);
+   bgCore=mixc(mixc(p.bg,SEATRGB[DOM],seatT*0.6),osc.bg,dqT*0.6);
+   bgEdge=mixc(mixc(p.ed,SEATRGB[DOM],seatT*0.6),osc.ed,dqT*0.6);
+  }
+  const coreKey=coreTint.join(',');
+  if(coreKey!==coreGoldKey){ coreGoldKey=coreKey; COREH=sprite(toHex(coreTint),gauss); }
   /* the intro locks the rings at IT.lock with no reading behind it: the
      shape it shows is the instrument at rest, not a score, and the CQ arc
      below still draws only the reading's own figure. Once the intro ends
@@ -841,7 +907,12 @@
   ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1;
   ctx.clearRect(0,0,w,h);
   ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf,0,TAU); ctx.clip();
-  { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf); fg.addColorStop(0,'#0b0a0d'); fg.addColorStop(1,'#060608');
+  { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf);
+   /* this gradient is already rebuilt fresh every frame regardless, so
+      the computed bgCore/bgEdge above cost nothing extra here; the dark
+      fill itself never brightens, only its cast moves, toward red,
+      amber or gold the way the arc and the centre glow do */
+   fg.addColorStop(0,bgCore?toHex(bgCore):'#0b0a0d'); fg.addColorStop(1,bgEdge?toHex(bgEdge):'#060608');
    ctx.globalAlpha=lensE; ctx.fillStyle=fg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); ctx.globalAlpha=1; }
   ctx.globalCompositeOperation='lighter';
   for(let k=0;k<7;k++){
@@ -850,7 +921,7 @@
    const lift=litSeats.has(k)?0.05*traceAlpha:0;
    blit(ctx,NEB[k],nx,ny,Rf*(1.3+0.15*Math.sin(t*0.07+k*2)),(0.085+lift+0.035*speakLvl)*(1-0.15*hiE)*(0.75+0.25*Math.sin(t*0.3+k))*(1+0.25*beatE)*clamp(boot/1.2,0,1)*lensE*(1+0.3*brG));
   }
-  blit(ctx,GOLDH,cx,cy,R*(2.4+0.4*hiE)*(1+0.04*brG),(0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE+0.03*brG)*lensE);
+  blit(ctx,COREH,cx,cy,R*(2.4+0.4*hiE)*(1+0.04*brG),(0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE+0.03*brG)*lensE);
   /* spherical depth: the face darkens toward its rim, like a lens */
   ctx.globalCompositeOperation='source-over';
   { const vg=ctx.createRadialGradient(cx,cy,Rf*0.55,cx,cy,Rf); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,'+(0.42*lensE)+')');

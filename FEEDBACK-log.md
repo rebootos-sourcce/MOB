@@ -1025,3 +1025,44 @@ change: TASKS.md DS1 added (and PB1's stale blocked-on note corrected);
 DECISIONS.md carries the full ruling. No code changed by this entry; the
 honest sign-in message that shipped the same night (authSyncNote, commit
 4ef5c88c) is its own, separate fix.
+
+## 2026-11-21 · owner · Source AI's own circle, after the hello button revealed it
+
+said: "This looks accurate. The color needs to match the CQDQ color with
+dominant chakra color influence. It's a note for the team."
+read: on the real screenshot of the circle the new #sthello button reveals
+(bd58471f, the same night), the warm gold at the centre and the dark wash
+behind the rings were a fixed colour, independent of the reading, and he
+wanted both to carry the reading: CQ and DQ (coherence, 0-100, and the real
+total-shadow score, same scale) the way Uni's own cloud already does, plus
+whichever body seat (root through crown) is holding the most charge.
+change: ui/uni.js exposes the existing getPalette(t01) (the same five-stop
+CQ ladder the cloud reads, dead red to white-gold) on window.Uni, for any
+caller that wants to tint off the same CQ reading rather than keep a second
+copy of it. ui/srcface.js reads r.DQ and the dominant seat off r.seats
+(seatRows(), already in the reading object, no engine change) and blends
+window.Uni.getPalette(cqv/100) with the dominant seat's own SEATCOL (up to
+28%) and, for DQ, a pull toward the ladder's own named oscillation stop
+(c:0.52) rather than toward grey, capped at 35%. Only the centre glow
+(a new sprite, COREH) and the background wash move; the gold CQ arc, its
+per-address dots and the resolution animation's own gold accents are
+untouched. unread or unmeasured keeps the exact original fixed gold, the
+same gate the arc already stands behind.
+bug found and fixed in the same round: a first pass mutated the existing
+GOLDH sprite in place to carry the tint, which also retinted four other,
+unrelated call sites that share that one module-level sprite (the gold
+arc's own head glow, and three spots in the resolution animation) each
+sitting beside their own still-fixed gold strokes; split into its own
+COREH sprite so only the centre glow and background move.
+measure: node tests/engine.js 8023/8023, tests/insightread.js 304/304,
+tests/boot.js 29/29 (a flake reproduced once under this sandbox's own CPU
+contention and gone on a clean rerun), the voice objections gate 0
+build-stopping findings, the full build chain clean. A real headless
+Chromium screenshot of #srcface at six CQ/DQ/dominant-seat combinations
+confirmed the centre and background move with the reading (gold-white at
+CQ 100/crown, dark red at CQ 40/root, an olive-green cast at CQ 70/heart)
+and the unread state is untouched, zero console errors.
+open: tests/functional.js and tests/design.js, the two full real-Chromium
+suites, did not finish in this sandbox; shared with other sessions, it sat
+at a load average of 10 to 18 on 4 cores throughout. Have someone rerun
+both on a free machine before this ships, or ask to retry once it frees.
