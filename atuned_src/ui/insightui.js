@@ -369,8 +369,9 @@ var STK_NSGLYPH={
  heavy:chainRing(12,12,STK_NSR)+'M4.8 12h14.4',
  closed:chainRing(12,12,STK_NSR)+'M6.9 6.9l10.2 10.2M17.1 6.9L6.9 17.1'};
 function stkNsHtml(v,nm,f){
- var s=nerveStateOf(v);
+ var s=nerveStateOf(v), ci=s.k==='closed'?nerveClosedI(v):undefined;
  return '<span class="stk-ns" data-ns="'+s.k+'" tabindex="0" role="img"'
+  +(ci===undefined?'':' style="--ns-i:'+ci.toFixed(3)+'"')
   +' aria-label="'+esc('Nerve state, '+s.nm+'. '+s.def)+'"'
   +' data-tip-k="'+esc('Nerve state: '+s.nm)+'" data-tip="'+esc(s.def+' '+nm+' is at '+(f===PCT_DASH?'no charge':f)+'.')+'">'
   +svgI('<path d="'+STK_NSGLYPH[s.k]+'"/>')+'</span>';}
