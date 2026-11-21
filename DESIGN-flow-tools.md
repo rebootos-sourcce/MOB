@@ -360,6 +360,16 @@ Ritual to avatar and Ongoing goal are in the right menu (FT6). The grid keeps
 the class `rv-six`, because the gates, the shot tool and the phone order find
 the stage by it. On a phone it is one column in that order.
 
+DID IT WORK IS CUT AND ONGOING GOAL IS NAMED GOAL, 21 November, his words:
+"The did it work, remove that and the text underneath" and "Change ongoing
+goal to just goal." The centre is five cards now: Week, Today, Goal, Keep or
+delete, Success over time. The two reads Did it work made (a ritual's kept
+and missed days, and the held places before it started against now) are not
+lost: Keep or delete's own row still carries kept days, and Success over
+time's own Held places line still carries the before-and-after read, both
+through the classes Did it work first drew (`ui/ritstage.js`). Only the card
+and its sentence are gone.
+
 Gate: `tests/flowtools.js`, `FT17:`.
 
 ### FT18. Ritual to avatar reads the Avatar page's own cycle and the seats it is feeding.
@@ -392,15 +402,16 @@ unchanged.
 
 Gate: `tests/flowtools.js`, `FT19:`.
 
-### FT20. Did it work and Keep or delete say what happened and offer the decision at the end.
+### FT20. Keep or delete says what is ending and offers the decision at the end.
 
-Did it work lists a ritual from its third day: kept days and missed days off
-the record, and the held places the last reading before it started recorded
-against the field now, or that there was no reading before it. It says the two
-moved together and not that one moved the other. Keep or delete lists a
-ritual in its last three days. Keep runs it a week more through the one
-writer; Delete takes it off with Put back offered in the same card. A ritual
-with no end never comes here.
+Keep or delete lists a ritual in its last three days. Keep runs it a week
+more through the one writer; Delete takes it off with Put back offered in the
+same card. A ritual with no end never comes here.
+
+DID IT WORK IS CUT, 21 November (FT17 above has his words). The card this
+rule used to describe alongside Keep or delete, a ritual's kept and missed
+days from its third day and the held places before it started against the
+field now, is gone; the row it shared a heading with is not.
 
 Gate: `tests/flowtools.js`, `FT20:`.
 

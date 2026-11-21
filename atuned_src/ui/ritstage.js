@@ -324,10 +324,15 @@ function ritAvHtml(st){
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
 
 /* ---------------- the ongoing goal ---------------- */
+/* THE HEADING IS GOAL NOW, 21 November, his words: "Change ongoing goal to
+   just goal." Only the word a person reads moves: the function, the class
+   rv-c-goal and every comment above that names the card by its old name are
+   identity and keep their spelling, the same posture Knowledge kept when the
+   bar renamed it Wisdom school. */
 function ritGoalHtml(st){
  var bc=ritBecoming(), pairs=(CURP&&CURP.avatar&&CURP.avatar.pairs)||[], last=null;
  for(var i=pairs.length-1;i>=0;i--)if(pairs[i]&&pairs[i].be&&String(pairs[i].be).trim()){last=pairs[i];break;}
- var h='<section class="rv-sec rv-c rv-c-goal"><div class="rv-hd"><span class="rv-h">Ongoing goal</span></div>'
+ var h='<section class="rv-sec rv-c rv-c-goal"><div class="rv-hd"><span class="rv-h">Goal</span></div>'
   +'<p class="rv-mean">Who your avatar is becoming, what is held in the way, and the next mark your record can earn.</p>';
  /* each branch opens and closes its own markup, because the build counts the
     divs in the source text and a shared open closed in two branches reads as
@@ -371,10 +376,11 @@ function ritGoalHtml(st){
   +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b></span></div>';
  return h+'</section>';}
 
-/* ---------------- did it work ---------------- */
+/* ---------------- shared reads for a ritual's run ---------------- */
 /* the kept and missed days of one ritual from the day it started, read off the
    same coverage the month draws. Today counts only once it is kept: a day
-   still open is not a miss. */
+   still open is not a miss. Feeds Keep or delete (ritKeepHtml, below) and the
+   sheet a sash opens (ritSashSheet, ui/ritcal.js). */
 function ritRunRead(p,today){
  var s=ritStart0(p), kept=0, missed=0;
  for(var d=s;d<=today;d++){
@@ -382,38 +388,18 @@ function ritRunRead(p,today){
   var e=ritEntryFor(p,d), done=!!(e&&ritIsDone(e.x));
   if(done)kept++; else if(d<today)missed++;}
  return {kept:kept, missed:missed};}
-/* the last reading taken at or before a moment, off the snapshot history */
+/* the last reading taken at or before a moment, off the snapshot history.
+   Feeds a suggestion's own record (ritSugRec, ui/ritcal.js). */
 function ritSnapBefore(iso){
  var t=Date.parse(iso), best=null, bt=-Infinity;
  ((CURP&&CURP.history)||[]).forEach(function(h){
   var ms=h&&Date.parse(h.t); if(!(ms<=t)||ms<bt)return; bt=ms; best=h;});
  return best;}
-function ritOkRead(st){
- var today=st.today, now=(st.r.loaded||[]).length;
- return st.plans.filter(function(p){
-  var s=ritStart0(p); if(today-s<2)return false;
-  if(ritActive(p,today))return true;
-  var end=p.stop?pracDay(p.stop):s+p.days; return today-end<=30;})
-  .sort(function(a,b){return ritStart0(b)-ritStart0(a);}).slice(0,3)
-  .map(function(p){var run=ritRunRead(p,today), h=ritSnapBefore(p.from);
-   return {p:p, kept:run.kept, missed:run.missed, then:h?h.loaded:null, now:now};});}
-function ritOkHtml(st){
- var rows=ritOkRead(st), body;
- if(!rows.length)body='<p class="rv-empty">Nothing has run long enough to read. A ritual shows here from its third day.</p>';
- else body='<ul class="rv-okl">'+rows.map(function(x){
-  var top=Math.max(1,x.then||0,x.now);
-  return '<li class="rv-ok1" style="--c:'+ritCol(x.p)+'"><span class="rv-okn">'+esc(ritName(x.p.steps))+'</span>'
-   +'<span class="rv-okk">Kept '+acctDays(x.kept)+', missed '+x.missed+'.</span>'
-   /* no reading from before it started prints nothing, SV19: the same line
-      under every row of a worked example was the third tier text he struck */
-   +(x.then===null?''
-    :'<span class="rv-okf">Held places: '+x.then+' when it started, '+x.now+' now.</span>'
-     +'<span class="rv-okb" aria-hidden="true"><i class="rv-okb0" style="width:'+(100*x.then/top).toFixed(1)+'%"></i>'
-     +'<i class="rv-okb1" style="width:'+(100*x.now/top).toFixed(1)+'%"></i></span>')+'</li>';}).join('')+'</ul>';
- return '<section class="rv-sec rv-c rv-c-ok"><div class="rv-hd"><span class="rv-h">Did it work</span></div>'
-  +'<p class="rv-mean">Kept and missed come from your record. Held places are the places at four or more, read before the ritual started '
-  +'and now; a reading is taken each time you commit a story or finish a release. The two moved together. That does not say the ritual moved them.</p>'
-  +body+'</section>';}
+/* DID IT WORK IS CUT, 21 November, his words: "The did it work, remove that
+   and the text underneath." The card printed a ritual's kept and missed days
+   and the held places read before it started and now, with a sentence
+   explaining both. The two reads it used stay above, because something else
+   still needs them; only the card and its sentence are gone. */
 
 /* ---------------- keep or delete ---------------- */
 var RIT_KEEP_AT=3;
@@ -483,7 +469,7 @@ function ritLiveHtml(){
    PR says so. It sits under Today: the week, what is due today, then what the
    days are for. Avatar was not named this round and stays in the right menu. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritGoalHtml(st)+ritOkHtml(st)+ritKeepHtml(st)
+ return '<div class="rv-six">'+ritWeekCalHtml(st)+ritTodayCardHtml(st,P)+ritGoalHtml(st)+ritKeepHtml(st)
   +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){
@@ -506,7 +492,7 @@ function ritStageCss(){
   '.rv-six{display:flex;flex-direction:column;gap:var(--rv-gap,14px)}',
   '.rv-six>.rv-sec{margin:0;min-width:0}',
   /* each card takes one hue from the tokens the page already themes */
-  '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)} .rv-c-ok{--k:var(--sec-play)}',
+  '.rv-c-av{--k:var(--sec-embody)} .rv-c-goal{--k:var(--accent)}',
   '.rv-c-keep{--k:var(--sec-flow)} .rv-c-ana{--k:var(--sec-discover)}',
   '.rv-c{border-color:color-mix(in srgb,var(--k) 34%,transparent);background:color-mix(in srgb,var(--k) 5%,var(--panel))}',
   /* the still layer. Behind the cards and never in front of them; the card
@@ -550,9 +536,12 @@ function ritStageCss(){
   '.rv-nxt{display:flex;flex-direction:column;gap:2px;min-width:0}',
   '.rv-nxt b{font-size:15px;font-weight:600;color:var(--ink)}',
   '.rv-nxt>span:last-child{font-size:13.5px;line-height:1.5;color:var(--mid)}',
-  /* did it work, and keep or delete */
-  '.rv-okl,.rv-kpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
-  '.rv-ok1,.rv-kp1{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:var(--panel-2);',
+  /* keep or delete. .rv-okn, .rv-okk and .rv-okf are the Did it work card's
+     own classes, kept, 21 November: this row and Success over time's Held
+     places line still wear them (ritKeepHtml, below; ritSuccessHtml,
+     ui/ritcal.js) though the card that first drew them is gone. */
+  '.rv-kpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
+  '.rv-kp1{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:var(--panel-2);',
   ' border:1px solid var(--edge);box-shadow:inset 3px 0 0 var(--c)}',
   '.rv-kp1{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}',
   '.rv-kpt{display:flex;flex-direction:column;gap:3px;min-width:0}',
@@ -560,10 +549,6 @@ function ritStageCss(){
   '.rv-okn{font-size:15px;font-weight:600;color:var(--ink)}',
   '.rv-okk{font-size:13.5px;color:var(--mid)}',
   '.rv-okf{font-size:13.5px;color:var(--ink)}',
-  '.rv-okb{display:flex;flex-direction:column;gap:3px;margin-top:4px}',
-  '.rv-okb i{display:block;height:6px;border-radius:3px;min-width:2px}',
-  '.rv-okb0{background:color-mix(in srgb,var(--c) 40%,transparent)}',
-  '.rv-okb1{background:var(--c)}',
   /* practice analytics */
   '.rv-c-ana .rv-chain{margin-bottom:14px}',
   '.rv-anag{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}',
@@ -600,10 +585,10 @@ function ritStageCss(){
   '.rv-arrive .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}',
   '.rv-arrive .rv-cy.rv-cur .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both,rvGlow var(--t-breath) var(--ease-breath) 1.2s infinite alternate}',
   '@keyframes rvDraw{from{stroke-dasharray:0 1}to{stroke-dasharray:1 0}}',
-  '.rv-arrive .rv-okb i,.rv-arrive .rv-sbt i{animation:rvGrow .8s cubic-bezier(.22,1,.36,1) both}',
+  '.rv-arrive .rv-sbt i{animation:rvGrow .8s cubic-bezier(.22,1,.36,1) both}',
   '.rv-arrive .rv-wkb i{animation:rvRise .8s cubic-bezier(.22,1,.36,1) both}',
   '@keyframes rvGrow{from{transform:scaleX(0)}} @keyframes rvRise{from{transform:scaleY(0)}}',
-  '.rv-okb i,.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}',
+  '.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}',
   /* ---- ROUND QS: symbol first, the tell on the press ---- */
   /* a ring drawn by cr() or crBadge() takes its colour as an attribute, which
      cannot read a token; the page's own colour is a token (var(--k), the

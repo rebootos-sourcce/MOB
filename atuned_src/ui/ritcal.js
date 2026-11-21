@@ -970,7 +970,7 @@ function ritCalCss(){
      so it wins at equal weight without an important. */
   '.rv .rv-sec,.rvr .rv-sec{border-color:transparent;background:color-mix(in srgb,var(--k) 9%,var(--panel))}',
   '.rv-c-ana .rv-fig,.rv-fig{border-color:transparent;background:color-mix(in srgb,var(--k) 14%,var(--panel))}',
-  '.rv-item,.rv-af1,.rv-ok1,.rv-kp1,.rv-hc,.rv-sv1{border-color:transparent;box-shadow:none;background:color-mix(in srgb,var(--c) 13%,var(--panel-2))}',
+  '.rv-item,.rv-af1,.rv-kp1,.rv-hc,.rv-sv1{border-color:transparent;box-shadow:none;background:color-mix(in srgb,var(--c) 13%,var(--panel-2))}',
   '.rv-item.rv-done,.rv-af1.rv-on{border-color:transparent;background:color-mix(in srgb,var(--c) 24%,var(--panel-2))}',
   '.rv-why,.rv-nxm{border-color:transparent;background:color-mix(in srgb,var(--c) 14%,var(--panel))}',
   '.rv-nxi{border:0;background:color-mix(in srgb,var(--c) 22%,var(--panel))}',

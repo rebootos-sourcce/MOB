@@ -136,9 +136,12 @@ async function flowGate(browser,FILE,ok,booted){
   /* FT17, the centre's cards, measured off the boxes. SV16 put the week first
      and across the stage. SV19, his words: "Ongoing goals should be in the
      center" and, of the side by side pair, "I want these stacked". So the
-     stage is one column of full width cards: Week, Today, Ongoing goal, Did
+     stage was one column of full width cards: Week, Today, Ongoing goal, Did
      it work, Keep or delete only while a ritual is in its last three days,
-     and Success over time. Avatar stays in the right menu (FT6). */
+     and Success over time. DID IT WORK IS CUT and ONGOING GOAL IS GOAL, 21
+     November, his words: "The did it work, remove that and the text
+     underneath" and "Change ongoing goal to just goal." Avatar stays in the
+     right menu (FT6). */
   const six=await pg.evaluate(()=>{
    const w=document.querySelector('#rit .rv-six'), wr=w?w.getBoundingClientRect():null;
    const cards=w?[...w.children].map(e=>{const r=e.getBoundingClientRect();
@@ -146,9 +149,9 @@ async function flowGate(browser,FILE,ok,booted){
    const ends=ritRead().act.some(p=>p.days>0&&ritStart0(p)+p.days-ritToday0()<=RIT_KEEP_AT);
    return {cards, ends, av:!!document.querySelector('#rit .rv-c-av'), w:wr&&{l:Math.round(wr.left),r:Math.round(wr.right)}};});
   const S6=six, names=S6.cards.map(c=>c.h);
-  const wantNames=['Week','Today','Ongoing goal','Did it work'].concat(S6.ends?['Keep or delete']:[]).concat(['Success over time']);
+  const wantNames=['Week','Today','Goal'].concat(S6.ends?['Keep or delete']:[]).concat(['Success over time']);
   ok(!S6.av&&JSON.stringify(names)===JSON.stringify(wantNames),
-   'FT17: '+tag+'the centre is the week, Today, the Ongoing goal, Did it work, Keep or delete only while one ends, then Success over time, and Avatar is not on it, '+JSON.stringify([names,S6.ends]));
+   'FT17: '+tag+'the centre is the week, Today, Goal, Keep or delete only while one ends, then Success over time, and Avatar is not on it, '+JSON.stringify([names,S6.ends]));
   const full=x=>S6.w&&x.l-S6.w.l<=2&&S6.w.r-x.r<=2;
   ok(S6.cards.length>0&&S6.cards.every((x,i,a)=>full(x)&&(i===0||a[i-1].b<=x.t+1)),
    'FT17: '+tag+'every card on the stage is full width and they stack, none side by side, '+JSON.stringify(S6));
@@ -246,10 +249,11 @@ async function flowGate(browser,FILE,ok,booted){
      press it, it shows me the history on my right-hand menu." So at rest the
      column is the thirty days, headed by their month, a History press shut,
      and Avatar. No Done, Missed, Marks or Thirty day loop anywhere in it, and
-     no Ongoing goal, which went to the centre (FT17). */
+     no Goal, which went to the centre (FT17; the card was called Ongoing goal
+     until the 21 November rename). */
   const MONTH=/^[A-Z][a-z]+( to [A-Z][a-z]+)? \d{4}$/;
   ok(open.heads.length===2&&MONTH.test(open.heads[0])&&open.heads[1]==='Avatar'
-    &&!['Thirty day loop','Done','Missed','Marks','History','Record','Ongoing goal','Ritual to avatar','Due today'].some(h=>open.heads.indexOf(h)>=0),
+    &&!['Thirty day loop','Done','Missed','Marks','History','Record','Goal','Ritual to avatar','Due today'].some(h=>open.heads.indexOf(h)>=0),
    'FT6: '+tag+'at rest the right column is the thirty days under their month, then Avatar, and nothing else, '+JSON.stringify(open.heads));
   const hp=await pg.evaluate(async()=>{
    const t=document.querySelector('#flowside [data-act="hist"]'); if(!t)return {none:true};
@@ -405,8 +409,10 @@ async function flowGate(browser,FILE,ok,booted){
      moved to the right menu took their sentences with them. */
   /* SV19: Done and Missed are gone, Ritual to avatar is Avatar, History's
      cards are headed Rituals, and the thirty days are headed by their month */
-  ok(['_month','Rituals','Record','Success over time','Avatar','Ongoing goal'].every(h=>mean[h]>30),
-   'FT14: the thirty days, Rituals, Record, Success over time, Avatar and Ongoing goal each carry a sentence saying what they mean, '+JSON.stringify(mean));
+  /* ONGOING GOAL IS GOAL, 21 November (FT17 has his words): the heading text
+     this check keys on changed, and the sentence under it did not. */
+  ok(['_month','Rituals','Record','Success over time','Avatar','Goal'].every(h=>mean[h]>30),
+   'FT14: the thirty days, Rituals, Record, Success over time, Avatar and Goal each carry a sentence saying what they mean, '+JSON.stringify(mean));
 
   /* FT9: a mark is one press, through the one writer, and it says so. SV17:
      the press that was Due today's ring is the Done ring in today's sash's
@@ -685,15 +691,9 @@ async function flowGate(browser,FILE,ok,booted){
    'FT16: Start for a week writes the plan with its seats as tags, says so, and the card leaves the list, '+JSON.stringify(st1));
 
   /* ---- FT20 ---- */
-  const okc=await pg.evaluate(()=>[...document.querySelectorAll('#rit .rv-c-ok .rv-ok1')].map(x=>({nm:x.querySelector('.rv-okn').textContent,
-   k:x.querySelector('.rv-okk').textContent, f:(x.querySelector('.rv-okf')||{}).textContent||''})));
-  const qa=okc.filter(x=>x.nm==='Noting Meditation')[0], qc=okc.filter(x=>x.nm==='Candle Visualisation')[0];
-  ok(qa&&qa.k==='Kept '+seed.qaKept+' days, missed '+seed.qaMissed+'.'&&qa.f==='Held places: 17 when it started, '+seed.now+' now.',
-   'FT20: Did it work reads kept and missed off the record and the held places off the last reading before the start, '+JSON.stringify(qa));
-  /* SV19: with no reading before the start the row prints nothing, his third
-     tier ruling, rather than the same sentence under every such row */
-  ok(qc&&qc.f===''&&!okc.some(x=>x.nm==='Controlled Breath'),
-   'FT20: with no reading before the start the row says nothing more, and a ritual on its second day is not read yet, '+JSON.stringify(okc));
+  /* DID IT WORK IS CUT, 21 November: the card this group used to read, off
+     .rv-c-ok .rv-ok1, no longer exists, on his words quoted at FT17 above.
+     Keep or delete is what is left of FT20 and is checked below. */
   const kp=await pg.evaluate(async()=>{const rows=()=>[...document.querySelectorAll('#rit .rv-c-keep .rv-kp1')].map(x=>x.querySelector('.rv-okn').textContent);
    const r0=rows(); const b=document.querySelector('#rit .rv-c-keep [data-act="keep"][data-id="qb"]');
    const left0=ritLeft(ritPlans().filter(p=>p.id==='qb')[0],ritToday0());
@@ -785,7 +785,7 @@ async function flowGate(browser,FILE,ok,booted){
      passed. The parts that carry a sentence at rest are listed instead, and
      the thirty days are read by their month heading */
   const tellNames=tell.map(x=>x.h);
-  ok(['Called for','Ongoing goal','Did it work','Success over time','Avatar'].every(h=>tellNames.indexOf(h)>=0)
+  ok(['Called for','Goal','Success over time','Avatar'].every(h=>tellNames.indexOf(h)>=0)
     &&tellNames.some(h=>/^[A-Z][a-z]+( to [A-Z][a-z]+)? \d{4}$/.test(h))&&tell.every(x=>x.tip&&x.focus&&!x.shown),
    'FT26: every part\'s sentence is on its heading\'s press, reachable by keyboard, and folded at rest, '+JSON.stringify(tell));
 
