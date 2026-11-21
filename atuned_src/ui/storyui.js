@@ -1182,6 +1182,7 @@ function stRender(){
  srcLock(h.querySelector('.st-glow'));
  var ta=document.getElementById('sttext');
  if(ta){ta.oninput=function(){ ST_TEXT=ta.value;
+  if(window.UniCloud)window.UniCloud.onStoryText(ST_TEXT);
   /* AN EMPTIED BOX IS A NEW ENTRY, 18 November. Commit and Clear started the
      conversation over and a person who selected all and deleted did not:
      Move on, venting, a no, what had been asked and the subject's start all
