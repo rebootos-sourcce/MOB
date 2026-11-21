@@ -502,7 +502,8 @@ async function page(browser,W,H,o){
    const cl=await pg.evaluate(async()=>{
     setTab(TAB.MASKS); render(); await new Promise(r=>setTimeout(r,120));
     const b=document.querySelector('.tabtop[data-tabk="'+TAB.MASKS+'"]');
-    const el=document.querySelector('.lk-panel .lk-go')||b; if(!el)return null;
+    const vis=[...document.querySelectorAll('.lk-panel .lk-go')].find(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0;});
+    const el=vis||b; if(!el)return null;
     el.focus(); el.click(); await new Promise(r=>setTimeout(r,60));
     const open=paywallIsOpen(); document.getElementById('pwx').click(); await new Promise(r=>setTimeout(r,30));
     return {open,shut:!paywallIsOpen(),back:document.activeElement===el};});
