@@ -310,6 +310,10 @@ jobs:
           # the same way avatarpurpose was.
           - { gate: insightread, timeout: 20, command: node tests/insightread.js }
           - { gate: insightrail, timeout: 20, command: node tests/insightrail.js }
+          # ADDED 21 November, the same pattern: avState() now calls wholeOf()
+          # for the Avatar page's own hero percent (commit 8ec9e4cf). Real
+          # Chromium gate, orphaned at first the same way avatarpurpose was.
+          - { gate: avatarwhole, timeout: 20, command: node tests/avatarwhole.js }
           # ADDED 19 November, the affirmation engine (feature/affirmation-
           # engine): the ritual builder's Affirm door and sheet, real
           # Chromium. Newly orphaned the same way avatarpurpose was.

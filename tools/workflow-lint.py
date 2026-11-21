@@ -124,6 +124,11 @@ BROWSER = {
     'insightread': ('node tests/insightread.js', 20),
     'insightrail': ('node tests/insightrail.js', 20),
     'affirm': ('node tests/affirm.js', 20),
+# avState() calling wholeOf() for the Avatar page's own hero percent, 21
+# November (tests/avatarwhole.js, commit 8ec9e4cf). Real Chromium gate,
+# orphaned at first the same way avatarpurpose was; wired into deploy.yml's
+# gates-browser matrix the same round this registry entry lands.
+    'avatarwhole': ('node tests/avatarwhole.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
