@@ -12766,5 +12766,66 @@ g('the wisdom school\'s composed lines, round LY');
  ok(agree.join(',')==='Fear,Anger,Shame,Disgust,Apathy,Sad','the book and CHILD agree on all six the book poles: '+agree.join(', '));
 }
 
+g('CMP21 · teachers by coherence, the Crown pair, and laws to teachers, 21 November');
+{
+ /* A first pass, his to move, so nothing here pins a number. What is held is
+    the rule the numbers were made by: every pole on the roster has one, each
+    sits inside its own seat's band near the top, the seats climb in BANDS
+    order, and the floor is the same line circleAt draws. A number he moves
+    stays green while it stays in its band; one moved across a seat fails and
+    says which. */
+ const {POLE_UNLOCK,CQ_CLIMB_FLOOR,compassBandOf,compassClimbSeat,compassUnlockOf,
+  compassPoleOf,compassOffAxis,circleAt,SEAT_FETTER_PAIR,LAW_TEACHER,compassLawsOf,
+  CODE_EMOTION,HOME_POLES}=E;
+ const roster=E.MIRROR.map(m=>m.k).concat(E.PATHS.map(p=>p.k),HOME_POLES.map(p=>p.k));
+ const none=roster.filter(k=>typeof compassUnlockOf(k)!=='number');
+ ok(none.length===0,'every pole on the roster opens at a CQ number, missing '+none.join(', '));
+ ok(Object.keys(POLE_UNLOCK).every(k=>compassPoleOf(k)),'and every number belongs to a pole that exists, '
+  +Object.keys(POLE_UNLOCK).filter(k=>!compassPoleOf(k)).join(', '));
+ ok(circleAt(CQ_CLIMB_FLOOR)===null&&circleAt(CQ_CLIMB_FLOOR-0.01)!==null,
+  'the climb starts on the line where circleAt stops descending, '+CQ_CLIMB_FLOOR);
+ const seated=roster.filter(k=>compassClimbSeat(k));
+ const out=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)), u=compassUnlockOf(k);
+  return !(u>=b.lo&&u<b.hi+(b.seat==='Crown'?1e-9:0));});
+ ok(out.length===0,'each seated teacher opens inside his own seat\'s band, out: '
+  +out.map(k=>k+' '+compassUnlockOf(k)+' at '+compassClimbSeat(k)).join(', '));
+ const low=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)); return compassUnlockOf(k)<b.lo+(b.hi-b.lo)/2;});
+ ok(low.length===0,'and in the top half of it, maxed out as ruled, low: '+low.join(', '));
+ const bySeat=seated.slice().sort((a,b)=>compassUnlockOf(a)-compassUnlockOf(b)).map(k=>E.BANDS.indexOf(compassClimbSeat(k)));
+ ok(bySeat.every((s,i)=>!i||s>=bySeat[i-1]),'ordered by CQ, the teachers climb root to crown, '+bySeat.join(','));
+ const re=compassUnlockOf('RE');
+ ok(seated.every(k=>k==='RE'||compassUnlockOf(k)<re),'and Jesus at the Crown is the very top, '+re);
+ const shared={};
+ seated.forEach(k=>{const s=compassClimbSeat(k),u=compassUnlockOf(k); (shared[s]=shared[s]||[]).push(u);});
+ ok(Object.keys(shared).every(s=>new Set(shared[s]).size===shared[s].length),
+  'where a seat holds more than one teacher, no two share a number, '+JSON.stringify(shared));
+ const paths=compassOffAxis().filter(p=>!p.seat&&!p.home&&!compassClimbSeat(p.k));
+ ok(paths.length>0&&paths.every(p=>compassUnlockOf(p.k)>CQ_CLIMB_FLOOR&&compassUnlockOf(p.k)<compassBandOf('Root').hi),
+  'a path on no seat opens just out of the descent, '+paths.map(p=>p.k+' '+compassUnlockOf(p.k)).join(', '));
+ ok(compassUnlockOf('AW')===compassUnlockOf('PE')&&compassUnlockOf('BO')===compassUnlockOf('IL'),
+  'and a path that is an axis read twice opens with its axis');
+ ok(compassUnlockOf('nobody')===null&&compassBandOf('Field-Above')===null&&compassClimbSeat('nobody')===null,
+  'an unknown pole or seat answers null, never a number');
+
+ /* the Crown pair is recorded at the seat and is not yet a child emotion any
+    address carries; the day it becomes one, this says so */
+ const crown=SEAT_FETTER_PAIR.filter(p=>p.seat==='Crown')[0];
+ ok(crown&&crown.dn==='Separation'&&crown.up==='Union','Separation and Union are the Crown\'s pair, as ruled');
+ ok(SEAT_FETTER_PAIR.every(p=>E.BANDS.indexOf(p.seat)>=0),'and every pair sits at a real seat');
+ ok(CODE_EMOTION.indexOf('Separation')<0&&!W.some(n=>n.cf==='Separation'),
+  'and no address carries Separation as its fetter yet, so no reading moved');
+
+ /* every law to one teacher, at the law's own seat */
+ const miss=SINAMES.filter(l=>!LAW_TEACHER[l]), extra=Object.keys(LAW_TEACHER).filter(l=>SINAMES.indexOf(l)<0);
+ ok(miss.length===0&&extra.length===0,'every law has a teacher and every key is a law, missing '+miss+', extra '+extra);
+ const off=SI.filter(l=>compassClimbSeat(LAW_TEACHER[l.nm])!==l.b);
+ ok(off.length===0,'each law goes to a teacher at the seat SI gives it, off: '
+  +off.map(l=>l.nm+' '+l.b+' to '+LAW_TEACHER[l.nm]).join(', '));
+ const heart=['IL','TR'].map(k=>compassLawsOf(k).length);
+ ok(heart.every(n=>n>0),'the Heart\'s laws are split between Light and Trust, not dumped on one, '+heart);
+ ok(compassLawsOf('TU').indexOf('Truth')>=0&&compassLawsOf('NA').indexOf('Nature')>=0,
+  'and the two home poles keep the law their quality already names');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

@@ -2698,6 +2698,153 @@ function compassPoleLines(m,end){
  if(a&&a.length)return a;
  var d=end==='dn'?m.dnd:m.upd;
  return d?[[d,'']]:[];}
+
+/* ---- WHERE EACH TEACHER OPENS, BY COHERENCE. RULED 21 NOVEMBER ----
+   His words, on the open reserved calls: "let's give them numbers. I'm going
+   to have you make this up. You're going to give them numbers according to
+   their chakra, but maxed out... we just don't know how they're spaced out.
+   So I'm going to have you just space them out... and then we'll make the
+   adjustments after we review the software." And on CQ's slow rise, the same
+   day: "we're looking for accuracy, not to feed people's egos." So these are
+   a FIRST PASS, his to move, and nothing below is a calibration.
+
+   THE CLIMB STARTS WHERE THE DESCENT ENDS. circleAt reads a person under CQ
+   41 as somewhere in the nine circles and above it as descending nowhere, so
+   a teacher, who is a coordinate on the upward cone, is met above 41 and
+   never inside a circle. 41 to 100 is cut into seven equal bands, one per
+   seat in BANDS order, Root lowest and Crown highest, each about 8.4 wide.
+   If he rules Limbo a 40 to 60 band (open, the round 3 mockups' question D),
+   CQ_CLIMB_FLOOR moves to 60, every number here is out of its band, and
+   tests/engine.js says which. It is not read by circleAt, whose 41 is its
+   own literal; the gate holds the two equal rather than this pass rewriting
+   circleAt.
+
+   MAXED OUT reads as the top of the band. Each teacher sits on the highest
+   whole number still inside his seat's band, so reaching him takes nearly
+   all of that seat's stretch. Where a seat holds two, the second is two
+   below, and the lower one is the one whose quality the higher one stands
+   on: Trust (felt knowing) before Light (love freely given) at the Heart,
+   Honesty (the true word) before Order (law others stand inside, which a
+   false word cannot hold up) at the Throat, Natural Growth before Jesus at
+   the Crown, because "that would be Jesus at the very top." 99 and not 100,
+   because clamp makes 100 the ceiling of the scale and not a place. The
+   Crown holds three, with Akhenaten below, and steps of two put the third
+   at 95, under the band's midpoint of about 95.8, which is not maxed out:
+   the first cut did exactly that and the gate caught it. So the Crown steps
+   are two and then one, 99, 97, 96, and Jesus keeps the clear step above.
+
+   THE TEAM'S PICKS, EACH HIS TO CORRECT BY ONE NUMBER:
+     Akhenaten (SA) has no seat. The codex puts him at the Sat apex, "maximum
+       Sat", so he is placed in the Crown band between Natural Growth and
+       Jesus, at 97. CLIMB_SEAT_PICK carries that placement so it is read
+       as a pick and not as his seat.
+     The three paths on no axis, Free Flow, Duty and Non Resistance (FL, AL,
+       HO), have no seat and are not stations on a vertical climb: Non
+       Resistance is literally "perpendicular to the vertical axes", and "all
+       five end at the same Source." So they open at 42, the first whole
+       number out of the descent, and are not ranked against each other.
+     The two paths that are an axis read twice (AW, BO) open with their axis.
+     A teacher once reached does not relock on a bad week. That is
+     DESIGN-teachers.md 6d's existing rule, "nothing goes down", and this
+     pass does not change it; the board's relock question stays his.
+
+   ONE RULE THIS REPLACES, named once. DESIGN-teachers.md 6b says an unlock
+   reads what a person did and never a reading of them, and CQ is a reading.
+   His ruling above is newer and places teachers by CQ; the Lines reaches in
+   6c (Say it, Walk it, Hold it) are untouched and still read only what was
+   done. NOTHING RENDERS THESE YET: no screen reads POLE_UNLOCK at this
+   commit, so the trail that would draw them is the next build, not this one. */
+const CQ_CLIMB_FLOOR=41;
+const CLIMB_SEAT_PICK={SA:'Crown'};
+const POLE_UNLOCK={CH:49, DE:57, PO:66, TR:72, IL:74, TU:81, OR:83, PE:91,
+ NA:96, SA:97, RE:99, FL:42, AL:42, HO:42};
+/* the two codex paths read the perception and light axes, the same way
+   POLE_MEANS does above, so a change there is a change here */
+POLE_UNLOCK.AW=POLE_UNLOCK.PE; POLE_UNLOCK.BO=POLE_UNLOCK.IL;
+/* the CQ band a seat's teachers open inside, or null for a seat not in BANDS */
+function compassBandOf(seat){
+ var i=BANDS.indexOf(seat); if(i<0)return null;
+ var w=(100-CQ_CLIMB_FLOOR)/BANDS.length;
+ return {seat:seat, lo:CQ_CLIMB_FLOOR+i*w, hi:CQ_CLIMB_FLOOR+(i+1)*w};}
+/* the seat a pole climbs at: an axis's own seat, a home pole's home, the
+   team's pick for a pole with neither, or null for a path */
+function compassClimbSeat(k){
+ var m=compassPoleOf(k); if(!m)return null;
+ return m.seat||m.home||CLIMB_SEAT_PICK[k]||null;}
+function compassUnlockOf(k){
+ return Object.prototype.hasOwnProperty.call(POLE_UNLOCK,k)?POLE_UNLOCK[k]:null;}
+
+/* ---- SEPARATION AND UNION, AT THE CROWN. RULED 21 NOVEMBER ----
+   His words: "Separation and union, put it at the crown." The pair is from
+   his Drive document "Little Book of Reprogramming SOURCE" and was in no
+   file of this repository until now.
+
+   WHY THIS IS A ROW AND NOT A TENTH CHILD EMOTION. A fetter in this engine is
+   one value per address, n.cf, set once by core.js and read only through
+   codeEmotionOf, out of the nine in CODE_EMOTION; there is no pair shape
+   anywhere, and Crown's Anger, Sad, Disgust, Shame and Apathy are counts of
+   its addresses by that value. Making Separation a tenth value means moving
+   some Crown addresses off the one they carry, which changes every reading
+   with Crown charge, and the nine are enumerated across about two dozen
+   files (the wheel's ring, the codes, the colours). Union is not a fetter at
+   all, it is the end the release moves toward. So the pair is recorded here,
+   at the seat, as data no reading yet consumes, and whether addresses carry
+   it (88 Doubt Of God and 106 Rejection Of Unity already name Separation as
+   their distortion) is the next, separate decision.
+   dn is the fetter end and up the released end, the way MIRROR names its
+   two ends. The Unity law already sits at the Crown, which is the same
+   quality as Union read as a law. */
+const SEAT_FETTER_PAIR=[{seat:'Crown', dn:'Separation', up:'Union',
+ src:'Little Book of Reprogramming SOURCE'}];
+
+/* ---- WHICH LAWS BELONG TO WHICH TEACHER. RULED 21 NOVEMBER ----
+   His words: "I want my agent team to research and review and assign which
+   laws of integrity go to which teachers. It's going to be pretty obvious.
+   And then anything that's incorrect, I'll adjust after I review in
+   software." The laws become the affirmations and their opposites the
+   behaviours to release, so a law here is a teacher's affirmation later.
+
+   THE JOIN IS THE SEAT, and every law goes to a teacher at the seat SI
+   already gives it; tests/engine.js holds that. Four seats hold one
+   teacher and are not a judgement (Root Elijah, Sacral Ramakrishna, Solar
+   Musashi, the third eye Buddha). Three hold two, and those are the TEAM'S
+   JUDGEMENT, read off each law's own words (funnelquiz.js st, intake.js's
+   phrase) against each pole's own lines, not guessed blind:
+     Heart. Light (IL, Grace: "freely given. No transaction") takes
+       Generosity, "give without a ledger", and Forgiveness, "put it down",
+       the debt released without collecting, which is grace by definition.
+       Trust (TR, Communion: "felt knowing. The heart as the instrument")
+       takes Compassion, "feel it without fixing it", and Aesthetic Beauty,
+       which is Rumi's own quality on the master list ("Beauty. The nervous
+       system recognising coherent structure").
+     Throat. Honesty (TU) takes Truth, which this file already gave it (its
+       mark is the Truth law's plumb line, read off SI), and Transparency,
+       "my real reasons... not a version for an audience", the true word not
+       kept back, which is Deception's own opposite. Order (OR, Moses) takes
+       Justice, the beam balance, "law that creates freedom."
+     Crown. Natural Growth (NA) takes Nature, which HOME_POLES already seats
+       there by that quality. Transmutation (RE, Jesus at the Crown) takes
+       Unity, "part of one field", love as what everything reorganises
+       around, and Awareness, which is that pole's own question: "can this
+       person change what they believe when what they live through says
+       otherwise?"
+   TWO THINGS THE SEAT JOIN DOES NOT SETTLE, named for his review: the Duty
+   law sits at the Solar and goes to Musashi, while Duty is also the word
+   printed on Rama's path pole, which has no seat; and Awareness goes to the
+   Crown although the master list calls Buddha "wisdom and awareness" at the
+   third eye. Both follow the seat, as instructed, and each is one key to
+   move. The key is the pole's, which is identity, never a printed name. */
+const LAW_TEACHER={
+ Truth:'TU', Transparency:'TU', Justice:'OR',
+ Unity:'RE', Awareness:'RE', Nature:'NA',
+ Presence:'PE', Humility:'PE', Equanimity:'PE',
+ Compassion:'TR', 'Aesthetic Beauty':'TR', Forgiveness:'IL', Generosity:'IL',
+ Courage:'PO', Duty:'PO', Responsibility:'PO', Accountability:'PO',
+ Temperance:'DE', Detachment:'DE',
+ 'Non-Harm':'CH', Patience:'CH'};
+/* a teacher's laws, by pole key, in SI's own order */
+function compassLawsOf(k){
+ return SINAMES.filter(function(n){return LAW_TEACHER[n]===k;});}
 /* CASCADE HAS NO ICONS AND THAT IS DELIBERATE. Nothing in the build renders
    it, so an icon there would be a path nobody draws, which is the same class
    of dead weight as the release animation that sat in the frame loop for
@@ -31701,6 +31848,11 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
+  /* the 21 November rulings: where a teacher opens by CQ, the Crown's fetter
+     pair, and which laws belong to which teacher */
+                  CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
+                  compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
+                  SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
