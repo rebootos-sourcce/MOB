@@ -33900,7 +33900,7 @@ Named SU and not SQ: SQ1 to SQ5 and SR1 to SR6 are already item numbers earlier 
 
   **What this means for his words.** "That should not have gone away" is correct as a ruling to keep the feature, but as a report of current fact it does not hold up against the live system right now: the relay he actually uses is live, wired, and accepting feedback into his Discord channel today. If he is still not seeing entries, the next real step is not a code fix but asking him directly, with the drawing: which channel he is checking, and whether he has sent anything through the app itself (the profile menu row, not a direct API call) since this was last looked at. **Open for him: is Reboot-OS, the other product, also supposed to have its own Discord feedback relay** (its own channel, its own webhook), separate from Atuned's, given PR #2 lives there and never shipped anything? Nothing was built toward that without his answer. One open item, not acted on: Reboot-OS PR #2 sits open and stale; worth his own call on closing it, since merging it fixes nothing and keeping it open as "the relay" is exactly the mislabeling that likely produced this task.
 - [x] **SV2 closed, 4 November. The five unreviewed Reboot-OS psyche-hierarchy branches, read.** All 5 are drafts or self-described blocked/provisional, none a clean yes to port. Closest to usable: a standalone saboteur-scoring tool (its own tests run 6/6), waiting on one call from him (does a score count on crossing a line, or only fully inside a band). The rest: one nerve-to-body-location branch whose own checks never ran; one plain duplicate of canon already held elsewhere; one written audit report with no code to port. None collide with anything ported this session. Nothing ported; this was a read-only pass.
-- [ ] **SV3. P1, blocked on him. Ruler's domain: Imperium or Power.** His first ruling was Imperium. He then reopened it with a genuine question; a team member wrote "Ruled: Power" on research alone with no closing word from him, which was wrong, corrected in `DECISIONS.md` under "Ruler's domain: Imperium or Power, still his to close, 4 November". Both readings are real and disagree (his own plain-English sense of the words favors Imperium; the book's technical definitions favor Power). PR #177's one open item stays open until he says which. Not landed.
+- [x] **SV3. CLOSED 21 November, his own words: "Ruler is Imperium."** The archetype to domain port from PR #177 lands with Ruler resolved to Imperium; see `DECISIONS.md`, "Ruler's domain is Imperium. Ruled 21 November". What follows is the item as it stood. **SV3. P1, blocked on him. Ruler's domain: Imperium or Power.** His first ruling was Imperium. He then reopened it with a genuine question; a team member wrote "Ruled: Power" on research alone with no closing word from him, which was wrong, corrected in `DECISIONS.md` under "Ruler's domain: Imperium or Power, still his to close, 4 November". Both readings are real and disagree (his own plain-English sense of the words favors Imperium; the book's technical definitions favor Power). PR #177's one open item stays open until he says which. Not landed.
 - [ ] **SV4. Needs design first. Double bind detection.** Recorded in `DECISIONS.md` under "Double bind detection and a hold button for felt versus computed, 4 November". A felt-versus-computed disagreement shown uniquely, with an icon, in the bank and the vault. Not started: needs a seat for where "bank" and "vault" mean in this product's own language, and a visual spec, before any engine work.
 - [ ] **SV5. Needs design first. A hold button for felt versus computed, at release.** Same entry in `DECISIONS.md`. Keeps a detected pattern through a release instead of letting the release clear it, then runs detection again; a pattern that keeps surfacing across runs is the one to trust. Not started: needs the release flow's own seat to decide where the button sits.
 - [x] **SV6 closed, 4 November. Archetype to root, the definitional method: 6 of 12 held, 4 changed, 2 open.** Full table and reasoning in `DECISIONS.md` under "Archetype to root, the definitional method: 6 held, 4 changed, 2 open, 4 November", and on the status board. The old "finish the 30 blueprint" option is withdrawn, his own words, not raised again. His ruling wanted on the 4 that changed (the Outlaw/Rebel, Magician, Ruler, Innocent) and the 2 real ties (Jester, the Orphan/Everyman); the 6 held rows stand as answered.
@@ -34076,7 +34076,8 @@ rail's visual language. SW1, SW2, SW4 and SW6 need scoping before any build.
   before pushing: #178 engine 6879/0, #179 engine 6884/0 (both new SABOP
   and HC test groups intact), #183 engine 6899/0 plus its own flowtools.js
   gate 181/0. products.js clean on all three post-rebuild.
-  **Not merged, on purpose:** #177, Ruler's domain (Imperium or Power) is
+  **Not merged, on purpose:** #177 (closed 21 November: "Ruler is Imperium", ported onto main
+  by hand because main was re-rooted on 11 November and the branch shares no history with it), Ruler's domain (Imperium or Power) was
   still genuinely open, his call, not folded into a blanket merge. #182,
   mid-revision right now (round 3 in flight). #149 and #164 are his.
 
@@ -35327,3 +35328,48 @@ Action as six bars.
   emotions; the field anchor's card says what it is; the entry for the chain
   was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
   any entry the round added that nothing asks for.
+
+## Round DR. The descent roster, 21 November
+
+His words: "for the compass, for compass descent unreachable, there should be
+way more than 8 entries. You should have Charon as whatever its behavior name
+is, Geryon as whatever its behavior name is, Cerberus as whatever its name is,
+etc."
+
+- [x] **DR1. Built: nineteen reference rows on `DESCENT`**, before
+  Psychopathy, which stays last. Each figure on the Pass 1 roster in
+  `reviews/shadow-figure-research-2026-10-30.md` that already has a shipped
+  behaviour word somewhere in this build is shown by that word and by its own
+  existing line, never by the figure's name. The eight circle governors read
+  off `CIRCLES`' `by` field (Gatekeeping, Judgment, Insatiability,
+  Possessiveness, Reactivity, Vengeance, Violence, Fraud), and the rest off the
+  `MIRROR`, `HOME_POLES`, `PATHS` and `BLUEPRINT` words accepted 17 November
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction,
+  Extractive Control, Deception, Sabotage, Forced Growth, Poisoning, Coercive
+  Abduction, Forced Alteration). None has a `fam` or `pair`, the precedent
+  Dysregulation and Dissociation set, so the dark read lists them and never
+  lights one. Codes X35 to X53 in `engine/data/codes.js` exist only because
+  the codes gate needs every DESCENT name to resolve.
+  **This is the team's own best-judgment pick**, under his 21 November
+  ruling to stop the blockers from building, from already researched and
+  already ruled material with no new word. His to correct on the live app.
+- [x] **DR2. A pick named once.** The research file's 31 October narrative
+  review proposed Borrowed light (Lucifer), Bottomless want (Asmodeus),
+  Inside job (Set) and Others pay (Moloch). His 17 November acceptance is
+  later and is what the Compass already prints, so the rows use those words
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction) and a
+  figure never shows under two words. Druj is Deception, his 30 October word
+  (SM13).
+- [ ] **DR3. His: Baal.** Left out on the narrative review's own call, show
+  nothing until an opposite is documented. Its shipped word since 17 November
+  is Manipulation. One row to add if he wants it.
+- [ ] **DR4. Not added, nothing to reuse.** The Harpies, Nimrod and
+  Ephialtes are in no table in the engine. Satan frozen is Lucifer at the
+  ninth circle, carried by Shadow.
+
+## Round XA, 21 November. Ruler is Imperium, and the Let Go list is in
+
+- [x] **XA1. Ruler's domain closed, his words: "Ruler is Imperium."** SV3 closed. PR #177's archetype to domain port (`engine/archdom.js`, `engine/data/archdom.js`, `tools/regen-archetype-domain.cjs`, its 21 engine checks) brought onto main by hand on branch `ruler-imperium-letgo`, because main was re-rooted on 11 November and the PR branch shares no history with it. Snapshot regenerated at Reboot-OS `c58058c` (no row changed against the PR's `5347415`); generator `--check` MATCH, `--self-test` 9 passed, 0 failed.
+- [x] **XA2. The Let Go list, wired.** Cues in the engine (`letgoCues`, on `sniffStory().letgo`, no charge) and sixteen packs in the Wisdom school, each saved as a text file. Bundled, the team's default, recorded in `DECISIONS.md`. 28 engine checks.
+- [ ] **XA3. Open, not built: whether a Let Go match should ever move a reading.** Today it is shown to nothing and weighs nothing. Giving a matched phrase charge at its seat is a ruling on the reading.
+- [ ] **XA4. Open, found in passing: the first press on a fold in the Wisdom school does nothing in Chromium under Playwright; the second opens it.** Measured on the existing "Across every point" fold, which this round does not touch, the same as on the first cut of the packs. Not chased; the packs moved to buttons for another reason (an even grid) and open on the first press.

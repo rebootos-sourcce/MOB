@@ -660,6 +660,9 @@ function kbRender(){
   +'<p class="kb-p">'
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
+ /* and the Let Go list's packs under it, the list's lines read and kept at
+    a person's own pace, where the deck above is the person's own charge */
+ h+=lgPacksHtml();
 
  /* THE TABLE LEADS THE DEFAULT VIEW, 21 November (ui/kbtable.js). Above the
     seven assemblage points and only when nothing narrows the page, so a deck
@@ -685,7 +688,8 @@ function kbRender(){
  var fd=host.querySelector('.kbs-fold');
  if(fd)fd.addEventListener('toggle',function(){KB_ANY=fd.open;});
  var dk=document.getElementById('kbdeck');
- if(dk)dk.onclick=function(){deckDeal();};}
+ if(dk)dk.onclick=function(){deckDeal();};
+ lgPacksWire(host);}
 /* whether the fold of what belongs to no seat was left open, kept through a
    repaint because the page is rewritten whole on every press */
 var KB_ANY=false;
@@ -730,6 +734,128 @@ function kbsCss(){
   ' .kbs-tile .iqa-tn{font-size:11.5px}',
   ' .kbs-pn{padding:6px 8px 10px}',
   ' .kbs-fb{padding:0 8px 10px}}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
+/* ============================================================
+   THE LET GO PACKS, 21 November. The owner: "the 96 patterns, the 17,000
+   lines, let's get that in too." The second of the two jobs named for the
+   list: packs a person can open and take away. ui/letgopacks.js is every
+   distinct written line of the list's cards, filed by the feeling word it
+   opens on (tools/regen-letgo.cjs says how and what was left out).
+
+   ONE TILE PER PACK, AND ONE PANEL UNDER THEM ALL. Sixteen packs sit four
+   across, four rows, even on every side. The first cut opened a pack in
+   place across the full width, which left fifteen tiles and a hole in the
+   last row whenever one was open; the shot at 1600 showed it, and the
+   standing ruling is symmetry in space. So a tile only says which pack is
+   open (aria-pressed) and its lines show in one panel under the grid.
+
+   ITS LINES ARE WRITTEN ONLY WHEN IT OPENS. Fear alone is near two thousand
+   lines and kbRender rewrites the whole page on every key typed into the
+   search, so the panel carries the first few lines of the open pack only,
+   and the whole pack goes into the file. Which one is open is kept through
+   a repaint the way KB_ANY keeps the fold.
+
+   SAVE IS A TEXT FILE, said only once the browser has it, the house rule
+   keepFile (ui/keep.js) already follows: status() reports the name, or that
+   nothing was saved. Nothing is stored and nothing is sent anywhere.
+   ============================================================ */
+var LG_OPEN=null, LG_SHOW=12;
+function lgPacks(){return (typeof LETGO_PACKS!=='undefined'&&LETGO_PACKS&&LETGO_PACKS.packs)||[];}
+function lgPackOf(id){var a=lgPacks();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null;}
+/* what a pack holds, in one sentence, so the name never stands alone */
+function lgPackSay(p){
+ if(!p.lead.length)return 'Lines that open on a feeling none of the other packs take.';
+ var w=p.lead.slice(0,4).map(function(x){return x.charAt(0).toUpperCase()+x.slice(1);});
+ return 'Lines that open on '+w.slice(0,-1).join(', ')+' or '+w[w.length-1]+(p.lead.length>4?', and '+(p.lead.length-4)+' more words like them':'')+'.';}
+/* a ring open on its right side and a stroke leaving through the gap:
+   something held, let go of. Ring, never fill. The first cut opened the ring
+   at the top with a line through the gap, which is the power button's glyph
+   and read as one in the shot at 1600. */
+function lgIc(){
+ return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+  +'<path d="M17.2 7.6A7.5 7.5 0 1 0 17.2 16.4"/><path d="M11 12h10M18 9l3 3-3 3"/></svg>';}
+function lgPacksHtml(){
+ var ps=lgPacks(); if(!ps.length)return '';
+ lgCss();
+ var n=ps.reduce(function(a,p){return a+p.lines.length;},0), op=LG_OPEN?lgPackOf(LG_OPEN):null;
+ return '<section class="kb-deck lg" aria-labelledby="lgh">'
+  +'<div class="lg-hd"><span class="lg-ic" data-tip-k="Let go packs" data-tip="'
+  +esc('The Let Go list is a library of release lines, each one a feeling and what it is about. A pack is every line that opens on one family of feeling. Open one to read it, or save it as a text file.')
+  +'">'+lgIc()+'</span><h3 class="lg-h" id="lgh">Let go packs</h3>'
+  +'<span class="lg-n"><b>'+n.toLocaleString('en-US')+'</b> lines</span></div>'
+  +'<div class="lg-g" role="group" aria-label="Let go packs">'+ps.map(function(p){
+    var on=LG_OPEN===p.id;
+    return '<button type="button" class="lg-p" data-lgp="'+esc(p.id)+'" aria-pressed="'+on+'" aria-controls="lgb">'
+     +'<span class="lg-pn">'+esc(p.nm)+'</span><span class="lg-pc">'+p.lines.length.toLocaleString('en-US')+'</span></button>';}).join('')
+  +'</div>'
+  +'<div class="lg-b" id="lgb" aria-live="polite">'+(op?lgBodyHtml(op):'')+'</div></section>';}
+function lgBodyHtml(p){
+ return '<div class="lg-bh"><span class="lg-bn">'+esc(p.nm)+'</span><span class="lg-say">'+esc(lgPackSay(p))+'</span></div>'
+  +'<ol class="lg-l">'+p.lines.slice(0,LG_SHOW).map(function(l){return '<li>'+esc(l)+'</li>';}).join('')+'</ol>'
+  +'<button type="button" class="btn lg-save" data-lgsave="'+esc(p.id)+'">Save all '
+  +p.lines.length.toLocaleString('en-US')+' lines</button>';}
+/* a press opens a pack, and pressing the open one again closes it, the way
+   a kind on the strip above goes back on a second press. The section is
+   repainted on its own so the rest of the page, and the search box's focus,
+   are left alone. */
+function lgPacksWire(host){
+ var sec=host.querySelector('.kb-deck.lg'); if(!sec)return;
+ sec.querySelectorAll('[data-lgp]').forEach(function(t){t.onclick=function(){
+  var id=t.getAttribute('data-lgp');
+  LG_OPEN=(LG_OPEN===id)?null:id;
+  sec.outerHTML=lgPacksHtml();
+  lgPacksWire(host);
+  var again=host.querySelector('.kb-deck.lg [data-lgp="'+id+'"]'); if(again)again.focus();};});
+ lgSaveWire(sec);}
+function lgSaveWire(el){
+ el.querySelectorAll('[data-lgsave]').forEach(function(b){b.onclick=function(){lgSave(b.getAttribute('data-lgsave'));};});}
+function lgSave(id){
+ var p=lgPackOf(id); if(!p){status('That pack is not in this build. Nothing was saved.','fail'); return false;}
+ var nm='atuned-letgo-'+p.id+'.txt', url=null;
+ try{
+  var txt='Let go pack: '+p.nm+'\n'+lgPackSay(p)+'\n\n'
+   +p.lines.map(function(l,i){return (i+1)+'. '+l;}).join('\n')+'\n';
+  var blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  if(!blob.size)throw new Error('empty');
+  url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download=nm; a.style.display='none';
+  document.body.appendChild(a); a.click(); a.remove();
+ }catch(e){
+  if(url){try{URL.revokeObjectURL(url);}catch(e2){}}
+  status('Could not make the file. Nothing was saved.','fail');
+  return false;}
+ setTimeout(function(){try{URL.revokeObjectURL(url);}catch(e){}},60000);
+ status('Sent to your downloads as '+nm+'.','ok');
+ return true;}
+function lgCss(){
+ if(document.getElementById('lg-css'))return;
+ var st=document.createElement('style'); st.id='lg-css';
+ st.textContent=[
+  '.kb-deck.lg{align-items:stretch;gap:14px}',
+  '.lg-hd{display:flex;align-items:center;gap:10px}',
+  '.lg-ic{display:inline-grid;place-items:center;width:var(--tap,44px);height:var(--tap,44px);margin:-8px 0 -8px -8px;color:var(--accent);cursor:help}',
+  '.lg-h{margin:0;font-size:16px;font-weight:600;color:var(--ink)}',
+  '.lg-n{margin-left:auto;font-size:13px;color:var(--dim)}',
+  '.lg-n b{color:var(--ink);font-weight:600}',
+  '.lg-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:10px}',
+  '.lg-p{display:flex;align-items:center;gap:10px;min-height:var(--tap,44px);padding:8px 14px;text-align:left;cursor:pointer;',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);color:var(--ink);font:inherit}',
+  '.lg-p[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}',
+  '.lg-pn{font-size:14px;font-weight:500;min-width:0;line-height:1.3}',
+  '.lg-pc{margin-left:auto;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}',
+  '.lg-b{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:14px 16px;',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel)}',
+  '.lg-b:empty{display:none}',
+  '.lg-bh{display:flex;flex-direction:column;gap:3px}',
+  '.lg-bn{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.lg-say{font-size:13px;color:var(--dim)}',
+  '.lg-l{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.5;color:var(--mid)}',
+  /* four across or two, never three: sixteen tiles in threes leave one
+     alone on the last row */
+  '@media (max-width:900px){.lg-g{grid-template-columns:repeat(2,minmax(0,1fr))}}'
  ].join('\n');
  document.head.appendChild(st);}
 

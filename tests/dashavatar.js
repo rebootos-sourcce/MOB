@@ -188,6 +188,65 @@ console.log('\n=== the 21 questions, each through the ten points ===');
  ok(ai.quiet.length===1&&ai.quiet[0]==='Self-Silencing','a pass reads as Self-Silencing, '+ai.quiet.join(', '));
  ok(!ai.lying,'and never as Lying');
 
+ /* AVATAR, BOUNDARY AND MASKS, 21 November, his words: "we're going to
+    revive the masks, but we're going to move them to the avatar page. So it'll
+    be avatar, boundary, and masks." Character is held off the bar, so this is
+    the only place the five are drawn. Held here: the pill names, the roster
+    read off MASKS_READ, every arc equal to the Character page's own arc on the
+    same profile, every sign's meaning on hover, the press kept where Character
+    keeps it, the Dashboard card's door, and the tier's lock. Checked against
+    the build before this change first: there is no masks pill there, so every
+    check below the first fails by name. */
+ console.log('\n=== the masks, on the Avatar page ===');
+ const mk=await p.evaluate(async()=>{
+  const w=t=>new Promise(r=>setTimeout(r,t));
+  const had=window.SIGHT_PLAN, o={};
+  const draw=async()=>{setTab(TAB.INTAKE); AV.sub='masks'; AV.sig=''; renderAvatar(); await w(60);};
+  /* below the tier first: the lock's panel and nothing of the masks */
+  window.SIGHT_PLAN={tier:'free',status:'active'}; loadP(2); await draw();
+  o.lowSees=lockSees('mask'); o.lowPanel=!!document.querySelector('#avbody .avmk .lk-panel');
+  o.lowMasks=document.querySelectorAll('#avbody [data-avmask]').length;
+  window.SIGHT_PLAN={tier:'four',status:'active'}; loadP(2); await draw();
+  o.sees=lockSees('mask');
+  o.pills=[...document.querySelectorAll('#avbody .avs-subs [data-avsub]')].map(e=>e.dataset.avsub+'='+e.textContent.trim());
+  const B=()=>[...document.querySelectorAll('#avbody [data-avmask]')];
+  o.names=B().map(e=>e.dataset.avmask).join(); o.roster=MASKS_READ.map(m=>m.nm).join();
+  o.arcs=B().map(e=>e.querySelector('.ld').getAttribute('stroke-dasharray')).join('|');
+  o.lit=B().filter(e=>!/^0 /.test(e.querySelector('.ld').getAttribute('stroke-dasharray'))).length;
+  o.tips=B().map(e=>e.getAttribute('data-tip')||'');
+  o.ids=B().map(e=>e.querySelector('linearGradient').id);
+  /* the Character page's own arcs, the same person, the same moment */
+  setTab(TAB.MASKS); render(); await w(200);
+  o.charArcs=[...document.querySelectorAll('#masksview [data-chmask]')].map(e=>e.querySelector('.ld').getAttribute('stroke-dasharray')).join('|');
+  await draw();
+  /* a build with no masks view fails the checks below by name, never by a throw */
+  const two=B()[2]; if(two){two.click(); await w(60);}
+  o.picked=two?two.dataset.avmask:'(no mask drawn)'; o.pressed=(document.querySelector('#avbody [data-avmask][aria-pressed="true"]')||{dataset:{}}).dataset.avmask;
+  o.kept=CURP.ui&&CURP.ui.chmask; o.head=(document.querySelector('#avbody .avmk-head b')||{}).textContent;
+  /* the first cut's Read this mask wrote into Selection, hidden on this page */
+  o.selHidden=getComputedStyle(document.querySelector('.lsec[data-sec="sel"]')).display==='none';
+  o.readBtn=document.querySelectorAll('#avbody .avmk [data-avmread],#avbody .avmk #chread').length;
+  /* the Dashboard's Masks card, while Character is held */
+  o.held=!tabOnBar(TAB.MASKS);
+  setTab(TAB.STORY); STV.dash=true; stRender(); await w(60);
+  const card=document.querySelector('[data-stgo="stmasks"]'); o.door=!!card;
+  if(card){card.click(); await w(80);}
+  o.landTab=S.tab===TAB.INTAKE; o.landSub=AV.sub; o.landMasks=B().length;
+  window.SIGHT_PLAN=had;
+  return o;});
+ /* his three words, in his order; a fourth pill only if Archetypes is shown again */
+ ok(mk.pills.slice(0,3).join()==='becoming=Avatar,purpose=Boundary,masks=Masks','the pills read Avatar, Boundary, Masks, '+mk.pills.join(', '));
+ ok(!mk.lowSees&&mk.lowPanel&&mk.lowMasks===0,'below the mask tier: the lock\'s panel and no mask drawn, '+JSON.stringify([mk.lowSees,mk.lowPanel,mk.lowMasks]));
+ ok(mk.sees&&mk.names===mk.roster&&mk.names.length>0,'at the tier: every mask MASKS_READ holds, in its order, '+mk.names);
+ ok(mk.arcs===mk.charArcs,'every arc is the Character page\'s own arc on the same person, '+mk.arcs+' against '+mk.charArcs);
+ ok(mk.lit>0,'the arcs are a reading and not all empty, '+mk.lit+' lit');
+ ok(mk.tips.every(t=>/^Worn over the /.test(t)&&/ The arc is the charge it carries: /.test(t)),'every sign says where it is worn and what its arc is, on hover');
+ ok(mk.tips.every(t=>!/\b0%/.test(t)),'no tip carries a zero as a percent');
+ ok(mk.ids.every(i=>/^avmlg/.test(i)),'the Avatar\'s gradients have ids of their own, so the held page cannot shadow them, '+mk.ids[0]);
+ ok(mk.pressed===mk.picked&&mk.kept===mk.picked&&mk.head===mk.picked,'a press picks the mask and keeps it where Character keeps it, '+JSON.stringify([mk.picked,mk.pressed,mk.kept,mk.head]));
+ ok(!mk.selHidden||mk.readBtn===0,'no press on the masks writes into Selection while Selection is hidden here, '+mk.readBtn+' found');
+ ok(mk.held&&mk.door&&mk.landTab&&mk.landSub==='masks'&&mk.landMasks>0,'the Dashboard\'s Masks card opens them on the Avatar while Character is held, '+JSON.stringify([mk.held,mk.door,mk.landTab,mk.landSub,mk.landMasks]));
+
  ok(!errs.length,'no page errors, '+errs.join(' | '));
  await b.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
