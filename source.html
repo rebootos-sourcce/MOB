@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v333 193b3587 2026-11-21 01:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v336 c14b5e79 2026-11-21 01:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11086,6 +11086,84 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    switch, and by the media query for a page whose script is late */
 .sx.sx-still *,.sx.sx-still *::after{transition:none!important;animation:none!important}
 @media (prefers-reduced-motion:reduce){.sx *,.sx *::after{transition:none!important;animation:none!important}}
+/* ============================================================
+   THE SUMMARY'S LEFT RAIL IS ONE FLAT READING, 20 November, his words: "On
+   the left side panel, I want a person's celestial information down to their
+   archetypes exposed with their percents. So no nested tables, everything's
+   just visible. The elements that they are not are dimmed out... get rid of
+   everything beneath Psyche."
+
+   Scoped to body.tab-summary and nothing else, because this rail is shared
+   by every tab: the Field keeps its folds, its Matrix, Superego and Action,
+   and its own choice of what is open.
+
+   FLAT. Root Energetics, Awareness and What is running stand open with no
+   fold on them, which overrides the EZ ruling that Root Energetics opens
+   closed on this tab only. The four systems' lines all show, so the four
+   system switches that hid them have nothing to switch and go. The folded
+   two line summary (#awsum) goes, because the grids it summarised are open.
+   The archetypes are one grid: #ar1 already marks the primary as pressed and
+   every secondary as data-r 2 (syncSoul, ui/panels.js), so #ar2 printed the
+   same twelve circles a second time to say what the first grid says.
+
+   FOUR LEVELS, FOUR NAMES. Celestial, Root, Domain, Archetype, the order the
+   reading runs from the sky down, on even spacing so no level sits flush on
+   the one above it (CLAUDE.md, "Symmetry in space, everywhere, forever").
+
+   LIT AND DIM (ui/railtiles.js, rlSumPaint). A dim mark keeps its row, its
+   ring size and its gutter, so the grid does not move when a choice does.
+   Nothing is faded with opacity: Sol measured ink at 40 percent on --panel
+   at 3.40, under the floor, where --dim holds 5.30. The ring mixes the seat
+   colour thirty percent into --dim, the mark inside it is --dim, and the
+   seat's dot beside a domain goes; the seat colour never goes on a name. A dim mark does not breathe, because breath on this rail says a
+   circle carries real weight and a dim one is not his.
+   ============================================================ */
+body:not(.tab-summary) #lcol .sum-only,body:not(.tab-summary) #lcol .sum-lvl{display:none}
+body.tab-summary #lcol .lsec[data-sec=matrix],
+body.tab-summary #lcol .lsec[data-sec=superego],
+body.tab-summary #lcol .lsec[data-sec=gates],
+body.tab-summary #lcol .lsec[data-sec=run].sum-empty{display:none}
+/* and on a page with nothing read, What is running is empty and is the only
+   thing under Psyche here, so the heading goes with it rather than stand over
+   nothing */
+body.tab-summary #lcol:has(.lsec[data-sec=run].sum-empty) .rblk[data-blk=psyche]{display:none}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-bd{display:block}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd{
+ pointer-events:none;cursor:default;color:var(--ink)}
+body.tab-summary #lcol .lsec:is([data-sec=energetics],[data-sec=soul],[data-sec=run]) .lsec-hd i{display:none}
+body.tab-summary #lcol #awsum,
+body.tab-summary #lcol #ar2,
+body.tab-summary #lcol .ar-sec,
+body.tab-summary #lcol #rootlegend,
+body.tab-summary #lcol .lsec[data-sec=soul] .tier1:not(.sum-lvl),
+body.tab-summary #spirit .sp-sys{display:none}
+body.tab-summary #spirit .sp-line[hidden]{display:flex}
+/* with the four switches gone the birth's own mark was left alone at the far
+   end of an empty row; it stands where the tiles under it start, the line
+   mark's 16 and the line's gap of 10 in from the edge */
+body.tab-summary #spirit .sp-born{margin-left:26px}
+body.tab-summary #lcol .sum-lvl{display:block;margin:20px 0 10px;color:var(--dim)}
+body.tab-summary #lcol .lsec-bd>.sum-lvl:first-child{margin-top:4px}
+/* the caption under each grid names what is lit, in ink, and the archetype's
+   figure beside its name, in tabular figures so two of them stand level */
+body.tab-summary #lcol .cap{min-height:0;margin:10px 0 0}
+body.tab-summary #lcol #capD b{color:var(--ink)!important;font-weight:500}
+body.tab-summary #capA .rl-lit{display:inline-flex;align-items:baseline;gap:6px;margin-right:14px}
+body.tab-summary #capA .rl-lit b{color:var(--ink);font-weight:500}
+body.tab-summary #capA .rl-fig{font-style:normal;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+/* dim */
+body.tab-summary #lcol .ib.rl-off{cursor:default}
+body.tab-summary #lcol .ib.rl-off svg:not(.ib-arc){stroke:var(--dim)}
+body.tab-summary #lcol .ib.rl-off .rt{display:none}
+body.tab-summary #lcol .ib.rl-off .ib-arc .val{stroke:color-mix(in srgb,var(--c) 30%,var(--dim));opacity:1}
+body.tab-summary #lcol .ib.rl-off .ib-arc,
+body.tab-summary #lcol .ib.rl-off::after{animation:none}
+body.tab-summary #lcol .rootb.rl-off{color:var(--dim);font-weight:400;cursor:default;
+ border-color:var(--edge);background:transparent}
+body.tab-summary #lcol .rootb.rl-off svg{stroke:color-mix(in srgb,var(--rc) 30%,var(--dim))}
+body.tab-summary #lcol .rootb.rl-off::after{display:none}
+body.tab-summary #lcol .rootb:not(.rl-off):not([aria-pressed=true]){color:var(--ink);font-weight:500}
+body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 </style></head><body>
 <!-- ============================================================
      WITHOUT SCRIPTS THIS LOOKS BROKEN RATHER THAN BLANK, AND SAID SO
@@ -12074,7 +12152,11 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         again, so the control's reserved width came back to it. -->
    <div class="lsec" data-sec="energetics">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
-    <div class="lsec-bd"><div id="spirit"></div></div>
+    <!-- the four level names, Celestial, Root, Domain and Archetype, shown
+         on the Summary only, where this rail is one flat reading from the
+         sky down to the archetype (head.html, "THE SUMMARY'S LEFT RAIL IS
+         ONE FLAT READING"). Elsewhere the rail keeps its own labels. -->
+    <div class="lsec-bd"><div class="tier1 sum-lvl">Celestial</div><div id="spirit"></div></div>
    </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
         is the one large circle, "so it's in your face", the four that move
@@ -12172,13 +12254,16 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
           a definition sitting permanently under a heading a person reads once,
           and the definition belongs in the tooltip and the drill, where it is
           asked for. What is left is the name and the thing itself. -->
+     <div class="tier1 sum-lvl">Root</div>
      <div class="tier1">Root domains</div>
      <!-- Four root domains would not fit one row, so Witness rendered as Witn
           with no affordance saying there was more. It wraps. Rule 10: never
           hide a control with no affordance. -->
      <div class="rootrow" id="roots"></div>
+     <div class="tier1 sum-lvl">Domain</div>
      <div class="tier1">Blueprint domains</div>
      <div class="gdom" id="doms"></div><div class="cap" id="capD"></div>
+     <div class="tier1 sum-lvl">Archetype</div>
      <div class="tier1" style="margin-top:18px">Primary</div>
      <div class="g6" id="ar1"></div>
      <div class="sub ar-sec">Secondary</div>
@@ -12189,7 +12274,7 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
          chosen, one line each. ui/railtiles.js, awSum. -->
     <div class="aw-sum" id="awsum"></div>
    </div>
-   <h2 class="rblk">Psyche</h2>
+   <h2 class="rblk" data-blk="psyche">Psyche</h2>
    <!-- THE PSYCHE PANEL HOLDS THREE THINGS, 18 November, his words, twice. The
         first: "I asked you to get rid of everything in these two images. I
         asked you that a long time ago... Maybe keep the matrix for now, but
@@ -12217,6 +12302,16 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
         said that is said nowhere else moved to the meaning table
         (engine/data/gloss.js) and shows on hover and tap. DECISIONS.md,
         18 November, records the earlier asks and why they never landed. -->
+   <!-- WHAT IS RUNNING, ON THE SUMMARY ONLY, 20 November, his words: "get
+        rid of everything beneath Psyche... everything beneath your patterns
+        ... what's running is moving to the left panel." On the Summary the
+        three sections below this one are taken off by head.html and this one
+        stands under the heading in their place; on every other tab it is
+        taken off and they stand as they did. ui/summary.js, sumRunPaint. -->
+   <div class="lsec sum-only" data-sec="run">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M8.4 12h7.2M12.8 9l2.8 3-2.8 3"/></svg>What is running</span><i></i></button>
+    <div class="lsec-bd"><div id="sumrun"></div></div>
+   </div>
    <div class="lsec" data-sec="matrix">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9.3 4v16M14.7 4v16M4 9.3h16M4 14.7h16"/></svg>Matrix</span><i></i></button>
     <div class="lsec-bd">
@@ -19112,6 +19207,11 @@ var UNPACK_BASE={
     the share of every action read in the person's stories (verpRead, the
     six add to one whole). No sentence here says a count, a percent or a
     score, the contract group PO in tests/engine.js holds. */
+ /* THE SUMMARY'S LEFT RAIL, 20 November: one flat reading from the sky down
+    to the archetype, where what is his stands lit and the rest stands dim
+    (ui/railtiles.js, rlSumPaint). His own word for the dim half: "the
+    elements that they are not are dimmed out." */
+ 'rail:lit':'Lit is yours, and dim is what you are not.',
  'rail:action':'Action is the move you make when a strong feeling rises, and each of the six either meets the feeling or misses it.',
  'gate:awareness':'Awareness, a right action, is noticing the feeling in your body as it rises, and its figure is its share of every action read in your stories.',
  'gate:detachment':'Detachment, a right action, is feeling it in full and staying out of the story it tells, and its figure is its share of every action read in your stories.',
@@ -71011,7 +71111,8 @@ function sumRender(){
  sumWire();
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
- if(typeof sumDayPaint==='function')sumDayPaint(r);}
+ if(typeof sumDayPaint==='function')sumDayPaint(r);
+ sumRunPaint(r);}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -71330,8 +71431,16 @@ function sumWho(r,B,full){
  /* A NAME IS ENTERED OR IT IS NOT. A blank profile carries the roster word
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
+ /* THE GIFT SITS UNDER THE NAME AGAIN, 20 November, because the column it
+    moved to is gone. His words on the live page: "where it says oscillating
+    50%, just get rid of that entirely." That was sumStatus(), the band, its
+    state and "Where it goes", and the gift rode inside it, so deleting the
+    band without moving the gift would have taken the one line tests/gift.js
+    holds on a new person's first screen off the page with it. Under the plate
+    it is above the fold at 390 as well, where inside the side column it sat
+    at 918 on an 844 screen (TASKS.md #137). */
  return sgZone('who','Who this is',
-  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
 /* THE BAND AND THE GIFT, MOVED OFF THE NAME AND INTO THE INFORMATION COLUMN.
    Read once, at the top of the drivers card (sg-side), next to "What drives
    it" rather than crowding the plate. Both pieces are unchanged, only their
@@ -71340,7 +71449,13 @@ function sumWho(r,B,full){
    so it still finds it here), and sumGift() still writes #sumgift with the
    same id and the same sentence tests/gift.js reads on a brand new person's
    first screen (inView at scroll 0 holds: this column sits above the fold
-   at the widths that gate opens at). */
+   at the widths that gate opens at).
+   NO CALLER SINCE 20 NOVEMBER. His words: "where it says oscillating 50%,
+   just get rid of that entirely." That is this block, the band's word, its
+   state and Where it goes, so sumFull stopped calling it and the gift moved
+   under the plate (sumWho). Kept rather than deleted on the same footing as
+   sumOutput below: free for a surface that wants the band, and the tier's
+   colour still reads on the plate's own ring. */
 function sumStatus(r,B){
  var t=TIER_BY[r.tier]||null;
  /* no band line at all while CQ is still filling: "N laws to answer" was
@@ -71580,7 +71695,7 @@ function sumSaid(x){
  if(!SUM_SAID||!x)return false;
  return SUM_SAID.indexOf(String(x).replace(/\s+/g,' ').trim())>=0;}
 function sumFull(r){
- var B=sumBirth(), C=B.sp?converge(B.p.nm,r,B.sp):null;
+ var B=sumBirth();
  var story=sumStory(r), drv;
  SUM_SAID=sumPlain(story);
  try{drv=sumDrivers(B,r);}finally{SUM_SAID=null;}
@@ -71618,37 +71733,54 @@ function sumFull(r){
     +'<section class="sg-card sg-story" data-grp="story">'
      +'<div class="s-readbox sg-flat">'+story+'</div></section>'
    +'</div>'
-   +'<div class="sg-side">'+sumStatus(r,B)+drv+'</div>'
+   +'<div class="sg-side">'+drv+'</div>'
   +'</div>'
   /* the patterns block follows the lead on every width. On a phone it was
      lifted above the story by an order rule written before it existed. */
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
-  +sumMarks(B,r)
-  +'<div class="sg-two sg-even">'
-   +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
-    +sumBlueprint()
-    +'<div class="sg-gap">'+sumArch(r)+'</div>'
-    +'<div class="sg-gap"><div class="pm-eye">Masks</div>'+sumMasks(r,0,3)+'</div>'
-    +'<div class="sg-gap">'+sumChain(r)+'</div>'
-    +sgFold('masks','All masks',sumMasks(r,3,99)||'')
-   +'</section>'
-   +'<section class="sg-card" data-grp="cost">'+sgHead('cost','What it costs')
-    +sumGlance(r,true)
-    +'<div class="sg-gap"><div class="pm-eye">In the body</div>'+sumNine()+'</div>'
-    +sgFold('seats','Heaviest points',sumSeats())
-    +sgFold('bind','Binds',sumBind())
-    +sgFold('ig','Integrity over time',sumIg(r))
-   +'</section>'
-  +'</div>'
-  /* NUMEROLOGY, EXPOSED, not folded. Same sumNum() call this page already
-     made, inside a closed <details> at the very bottom; now a card on the
-     page itself, so Path, Expression, Soul urge, Personality, Birthday and
-     Maturity read without a tap. */
-  +sgZone('numerology','Numerology',sumNum(r,true),'sg-card')
-  +'<div class="sg-folds">'
-   +sgFold('lens','Four lenses',sumLens(r,true))
-   +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
-  +'</div>';}
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'');}
+ /* AND THE PAGE ENDS AT YOUR PATTERNS, 20 November, his words: "everything
+    beneath your patterns... what's running is moving to the left panel. And
+    then the rest of that looks like it's in analytics." Under it stood the
+    celestial strip (sumMarks), What is running, What it costs, Numerology and
+    the Four lenses and Birth comparison folds. Every one of them is still
+    drawn somewhere a person can reach: the celestial placements and every
+    numerology number are the left rail's Root Energetics, which this tab now
+    shows flat (shell/head.html, "THE SUMMARY'S LEFT RAIL IS ONE FLAT
+    READING"); the blueprint and the archetypes are the rail's own grids; the
+    masks are the rail's new What is running (sumRunPaint below); the nine,
+    the seats, the binds and integrity over time are Analytics. Only the calls
+    went. The functions stay, because Analytics, the unread page and the gates
+    still call sumNum, sumMarks, sumGlance and sumIg by name. sumLoopSlot
+    stays, because Your patterns has had no other home since 14 November and
+    deleting it here would delete it from the product. The converge() this
+    function opened with went too: the Birth comparison fold was its only
+    reader on this page. */
+
+/* ============================================================
+   WHAT IS RUNNING, IN THE LEFT RAIL. Moved off the foot of the Summary on
+   the same ruling. The rail's own grids already carry what that card printed
+   first, the blueprint (#roots, #doms) and the two archetypes (#ar1), so
+   copying sumBlueprint and sumArch across would print each of them twice on
+   one screen. The masks are the one part the rail did not carry, so that is
+   all that moves: the first three as the rows they always were, and the rest
+   one tap down under the fold they always had. sumChain is not carried. He
+   named the chain as junk on 18 November, in the Psyche ruling recorded at
+   shell/body.html, and this is that same chain.
+
+   Painted from sumRender, so it is always the reading this page holds, and
+   emptied on an unread page, where there is nothing running to show and a
+   stale list would be a reading of somebody else.
+   ============================================================ */
+function sumRunPaint(r){
+ var h=document.getElementById('sumrun'); if(!h)return;
+ var body=r&&!r.unread?sumMasks(r,0,3):'';
+ h.innerHTML=body?body+sgFold('masks','All masks',sumMasks(r,3,99)||''):'';
+ var sec=h.closest?h.closest('.lsec'):null;
+ if(sec)sec.classList.toggle('sum-empty',!body);
+ /* the rows keep data-mask, so the one listener the page body uses opens them
+    here too, rather than a second copy of its routing */
+ if(!h.dataset.wired){h.dataset.wired='1'; h.addEventListener('click',sumClick);
+  h.addEventListener('toggle',sumFoldKeep,true);}}
 
 /* ============================================================
    "THE HEAVIEST OF THE NINE IS SAD AT YOUR WEIGHT OF 97" IS GONE. Ruled 3
@@ -71761,9 +71893,15 @@ function sumWire(){
  /* a fold remembers that it was opened through the next repaint, because
     the surface is rewritten whole whenever a reading changes. toggle does not
     bubble, so it is caught on the way down. */
- h.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;},true);
- h.addEventListener('click',function(ev){
+ h.addEventListener('toggle',sumFoldKeep,true);
+ h.addEventListener('click',sumClick);}
+/* NAMED, 20 November, and nothing in them changed. They were the two
+   anonymous handlers above, and What is running moved to the left rail
+   (sumRunPaint) carrying rows whose data-mask this routing already answers,
+   so the rail attaches the same two functions rather than a copy of them. */
+function sumFoldKeep(ev){var d=ev.target;
+ if(d&&d.getAttribute&&d.getAttribute('data-fold'))SUM_OPEN[d.getAttribute('data-fold')]=d.open;}
+function sumClick(ev){
   var b=ev.target.closest?ev.target.closest('[data-sout],[data-sp],[data-num],[data-arch],[data-dom],[data-seat],[data-mask],[data-gl],[data-igspan]'):null;
   if(!b)return;
   /* the integrity chart's own span. It repaints the surface rather than the
@@ -71804,7 +71942,7 @@ function sumWire(){
   if(b.hasAttribute('data-gl'))return runCoreDrill();
   /* an archetype or a mask has no drill of its own yet, so the core reading is
      the honest destination rather than a button that does nothing. */
-  return runCoreDrill();});}
+  return runCoreDrill();}
 
 try{window.__at&&window.__at('ui/summary.js');}catch(e){}
 /* ============================================================
@@ -100519,7 +100657,10 @@ function renderSpirit(){
     the honest glyph for a value nobody read (V19), and the reason in its
     tooltip and in its spoken name */
  function unres(k,x){
-  return '<div class="sp-row static sp-tile" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
+  /* rl-off: on the Summary a placement the record cannot settle is one of
+     the dim marks, ui/railtiles.js rlSumPaint; the class draws nothing
+     anywhere else */
+  return '<div class="sp-row static sp-tile rl-off" tabindex="0" data-tip-k="'+esc(k)+'" data-tip-t="unresolved"'
    +' data-tip="'+esc(x.charAt(0).toUpperCase()+x.slice(1)+'.')+'" aria-label="'+esc(k+', unresolved, '+x+'.')+'">'
    +'<span class="sp-tg sp-tdash" aria-hidden="true">–</span>'
    +'<span class="sp-said"><span class="sp-k">'+k+'</span> <span class="sp-v">unresolved</span> '
@@ -102084,8 +102225,13 @@ function rlArcs(r){
   if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s'); else b.style.removeProperty('--bd');}
  var dm=document.getElementById('doms');
  if(dm)[].forEach.call(dm.children,function(b,i){put(b,r.unread?0:DOMAIN[i]); ph(b,'dom',i);});
+ /* on the Summary the archetype's ring is archExpr, the one figure it prints
+    beside its name there (rlSumPaint below), so the ring and the figure are
+    one number; everywhere else it stays r.aff, the share the wheel draws */
+ var onSum=rlOnSum(), AX=onSum&&!r.unread&&typeof archExprAll==='function'?archExprAll():null;
  ['ar1','ar2'].forEach(function(id){var e=document.getElementById(id);
-  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(r.aff||[])[i]); ph(b,'arch',i);});});
+  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(AX?AX[i]:(r.aff||[])[i])); ph(b,'arch',i);});});
+ rlSumPaint(r,onSum,AX);
  var ro=document.getElementById('roots');
  if(ro)[].forEach.call(ro.children,function(b){if(b.dataset.r)ph(b,'root',b.dataset.r);});
  /* the folded line's circles carry the same two numbers and the same breath */
@@ -102094,6 +102240,93 @@ function rlArcs(r){
   put(b,r.unread?0:(k==='dom'?DOMAIN[i]:(r.aff||[])[i]));
   if(!b._rp){b._rp='1'; var seat=rlCalm()?null:rlSeatOf(k,i);
    if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s');}});}
+
+/* ============================================================
+   LIT IS YOURS, DIM IS WHAT YOU ARE NOT. The Summary only, 20 November, his
+   words: "I want a person's celestial information down to their archetypes
+   exposed with their percents. So no nested tables, everything's just
+   visible. The elements that they are not are dimmed out."
+
+   What is his, level by level, read off what the rail already holds and
+   nothing new: a blueprint domain in S.doms; an archetype in S.arcs, the
+   primary and the secondaries; a root that is the born root (the sun's
+   element through ELEM2ROOT, the same lookup the Reading's "the blueprint you
+   were born on reads fire" uses), a root a chosen domain sits under
+   (rootsLit), or a root he added (S.roots); and a celestial placement the
+   record can settle, where one that reads unresolved is dim.
+
+   A dim mark is not a choice on this page, so it leaves the tab order. It
+   keeps aria-pressed as false rather than losing the attribute, because the
+   same button is the Field's choice a tab away and syncSoul writes that
+   attribute only when a selection changes, so a removed one would come back
+   to the Field missing. It is visual weight and focus that change here,
+   never what the control is.
+
+   ONE FIGURE, AND ONLY WHERE ONE IS COMPUTED. An archetype carries archExpr,
+   how fully it is expressed (engine/archexpr.js), printed once beside its name
+   in the caption under the grid and drawn as its ring. A domain, a root and a
+   placement print no figure, because nothing computes a percent for them and
+   one printed here would be invented.
+
+   Done when the state flips and not on every render: a key of the tab and the
+   selection is kept, so a frame that changes nothing touches nothing.
+   ============================================================ */
+function rlOnSum(){return typeof TAB!=='undefined'&&S&&S.tab===TAB.SUMMARY;}
+var RL_SUMKEY='';
+function rlBornRoot(){
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=null;
+ try{sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));}catch(e){sp=null;}
+ return sp&&sp.sunEl?(ELEM2ROOT[sp.sunEl]||''):'';}
+function rlSumPaint(r,onSum,AX){
+ var key=onSum?['s',S.who,(S.doms||[]).join('.'),(S.arcs||[]).join('.'),(S.roots||[]).join('.'),
+   r.unread?'u':'r',AX?AX.map(function(x){return x==null?'-':x.toFixed(3);}).join(','):''].join('|'):'off';
+ if(key===RL_SUMKEY)return; RL_SUMKEY=key;
+ /* the one meaning of lit and dim, on the first of the level names, from the
+    meaning table and never typed here */
+ var lv=document.querySelector('#lcol .sum-lvl');
+ if(lv&&!lv.hasAttribute('data-tip')){var say=unpackOf('lit','rail');
+  if(say){lv.setAttribute('tabindex','0'); lv.setAttribute('data-tip-k','Lit and dim'); lv.setAttribute('data-tip',say);}}
+ /* a dim mark keeps its name on hover and says the one thing true of it here;
+    its Field title, which tells a person to click or shift-click to choose,
+    is put back as it was the moment the mark is lit or the tab is left */
+ function mark(b,off){
+  var dim=onSum&&off;
+  b.classList.toggle('rl-off',dim);
+  if(dim){b.setAttribute('tabindex','-1');
+   if(b.dataset.t0==null)b.dataset.t0=b.title||'';
+   var nm=(b.getAttribute('aria-label')||b.dataset.r||'').split(',')[0];
+   b.title=nm+'. Not in your blueprint.';}
+  else {b.removeAttribute('tabindex');
+   if(b.dataset.t0!=null){b.title=b.dataset.t0; delete b.dataset.t0;}}}
+ var dm=document.getElementById('doms');
+ if(dm)[].forEach.call(dm.children,function(b,i){mark(b,(S.doms||[]).indexOf(i)<0);});
+ var a1=document.getElementById('ar1');
+ if(a1)[].forEach.call(a1.children,function(b,i){mark(b,(S.arcs||[]).indexOf(i)<0);});
+ var ro=document.getElementById('roots');
+ if(ro){var lit=onSum?rootsLit():{}, born=onSum?rlBornRoot():'';
+  [].forEach.call(ro.children,function(b){var rn=b.dataset.r; if(!rn)return;
+   mark(b,!(lit[rn]||rn===born||(S.roots||[]).indexOf(rn)>=0));});}
+ /* the caption under the archetypes names what is lit, and on this page
+    carries each one's figure beside its name; capA writes it plain again the
+    moment the tab is left, because it is the Field's caption too */
+ var ca=document.getElementById('capA');
+ if(!ca)return;
+ if(!onSum){if(typeof capA==='function')capA(); return;}
+ ca.innerHTML=(S.arcs||[]).map(function(i){var A=ARCH[i]; if(!A)return '';
+  var f=AX&&AX[i]!=null?fmtPct('archetype',AX[i]):'';
+  return '<span class="rl-lit"><b>'+esc(A.nm)+'</b>'+(f&&f!==PCT_DASH?' <i class="rl-fig">'+esc(f)+'</i>':'')+'</span>';})
+  .filter(Boolean).join('');}
+
+/* AND A DIM MARK IS NOT A CHOICE ON THE SUMMARY. The domain, root and
+   archetype buttons choose the blueprint on the Field (ui/panels.js), and a
+   press on a dim one here would have changed it from a page that reads it.
+   Stopped on the way down, at the column, so the Field's own handlers are
+   untouched and a lit mark still answers as it does there. */
+(function(){
+ var l=document.getElementById('lcol'); if(!l)return;
+ l.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('.rl-off');
+  if(t&&rlOnSum()){ev.stopPropagation(); ev.preventDefault();}},true);})();
 
 /* AND IT RUNS THE OTHER WAY. A pointer over a domain's arc on the wheel lights
    that domain's tile and its root's chip; over an archetype's arc, that
@@ -107063,6 +107296,7 @@ function colKey(){
  if(S.tab===TAB.RITUAL)return 'lcolf';
  if(S.tab===TAB.KNOW)return 'lcolk';
  if(S.tab===TAB.STORY)return 'lcols';
+ if(S.tab===TAB.SUMMARY)return 'lcolsum';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
@@ -107070,7 +107304,15 @@ function colShut(){
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
     the menu the surface is for, and shut at every width on Knowledge */
- var dflt=(k==='lcolf'||k==='lcols')?false:(k==='lcolk')?true:beside;
+ /* AND THE SUMMARY HAS ITS OWN, 20 November, defaulting open, Flow's
+    reason. It shared the Field's 'lcol', which starts shut beside the stage,
+    and on 20 November the Summary's left rail became where a person's
+    celestial placements, root, domains, archetypes and What is running are
+    read, his words: "On the left side panel, I want a person's celestial
+    information down to their archetypes exposed." A reading that lands
+    shut is a reading nobody sees, and a fold made here no longer moves the
+    Field's or the other way round. */
+ var dflt=(k==='lcolf'||k==='lcols'||k==='lcolsum')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  /* THE JOURNAL'S OWN RAIL FOLDS AGAIN, 17 November, OVERRIDDEN from the
     10 November ruling kept below for the record: his new annotated
@@ -108122,5 +108364,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007373871"></div>
+<div id="eof" hidden data-len="007389799"></div>
 </body></html>
