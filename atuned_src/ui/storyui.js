@@ -496,58 +496,31 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    /* THE JOURNAL MARK IS GONE FROM THIS HEADER, round of 29 October, his
-      words: "the icon for journal and the text journal remove." Talk takes
-      its place on the left; Dashboard keeps the right. stMark('j',...) is
-      still the Discover door's own name elsewhere (TABDEF, the section
+      words: "the icon for journal and the text journal remove." stMark('j',...)
+      is still the Discover door's own name elsewhere (TABDEF, the section
       itself), only this panel's own repeated word is cut. */
    +'<div class="st-hdbtns">'
-   /* CHAT, THE ONLY CONTROL ON THE LEFT, round of 29 October, name changed a
-      second time the same day: "the talk button, you're going to change to
-      chat," looking at the new text window it opens onto (see the ruling at
-      srcThread). Still the same control that starts or stops the
-      microphone (stMic); the word changed, not the wiring. The clock and
-      the dot are unchanged. */
-   +(show?'':'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" aria-label="'
-   +(ST_LISTEN?'Listening':'Talk')+'" title="'
-   +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
-     :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
-   +'<span class="st-dot"></span>'
-   /* AN ACTUAL TALK BUBBLE, 10 November, his words: "the talk icon is an
-      actual talk bubble icon." The capsule-and-stand microphone glyph
-      that stood here read as a recording control, not as talk, and he
-      had already asked for a bubble once before (9 November, "I want a
-      talk icon on the left"), answered with the mic glyph below it
-      instead: this is the actual shape, not a second pass at the same
-      one. Ring, not fill, the house's own icon rule: a stroked bubble
-      with its tail, no capsule. */
-   +'<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">'
-   +'<path d="M6 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7.6l-3.4 2.8a.6.6 0 0 1-1-.46V15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke-linejoin="round"/></svg>'
-   /* THE WORD AND THE CLOCK ARE BOTH GONE, 9 November, his words on this
-      exact screen: "I want a talk icon on the left. No words... we don't
-      need a timer for how long it's for, get rid of that." The label the
-      button carried ("Talk"/"Listening", 29 October through 9 November,
-      more than once renamed) and the mm:ss clock (round LV, "I want the
-      time showing how long my recording is") both move to aria-label and
-      title above; a screen reader still hears exactly what it did, a
-      sighted eye reads only the icon and the dot. stmicElapsed/stMicFmt
-      stay defined and reachable (stMicTick still ticks #stmictime if that
-      id is ever reintroduced elsewhere), only this button's own two lines
-      are cut. */
-   +'</button>')
-   /* THE DOT IS GONE, round of 29 October, his words: "the chat icon still
-      looks really boring, get rid of the blue dot next to it." .src-live
-      was the live breathing dot beside Chat, tied to Source AI's own
-      hearing state (srcHearing below). Nothing else showed that state, so
-      removing it is a real loss of a signal, not only a cosmetic one, and
-      is his call to make, taken as said. */
-   /* THE KEYBOARD MOVES UP HERE, BESIDE TALK, 14 November. His words, on a
-      screenshot of this exact screen with the keyboard icon circled at the
-      bottom: "Get rid of that keyboard icon at the very bottom, move that
-      to the upper left." It was centred under Uni in .st-bar (10 November
-      ruling, see the now-superseded CSS at #sttype in shell/head.html);
-      now it is the second control in .st-hdbtns, beside Talk, the same
-      upper-left group the Dashboard door's own comment already calls out
-      as the "left" side. The gate is unchanged from .st-bar's own copy of
+   /* TALK LEFT THIS ROW, 21 November (THE HELLO CONTROL, see stHelloHtml
+      below and its own long comment). His replacement spec named the Talk
+      button directly as what a single top-centre control replaces: "a
+      button on top of the center of the interface... very benign. When
+      you click on it, it activates it." The button that used to render
+      here (id stmic, the talk-bubble icon, the live dot, ST_LISTEN's red
+      "on" state, the aria-label/title pair) did not go away; it moved
+      whole into stHelloHtml's ring inside .st-glow, same id, same click
+      wiring (stMic() itself, below), same hold-to-type. Nothing replaces
+      it in this row: the keyboard is this row's only remaining child, and
+      shell/head.html's own corner escape for #stmic moved with it to the
+      dated note at .st-hello there. */
+   /* THE KEYBOARD STANDS ALONE HERE NOW, 14 November, moved again 21
+      November when Talk left. His words, 14 November, on a screenshot of
+      this exact screen with the keyboard icon circled at the bottom: "Get
+      rid of that keyboard icon at the very bottom, move that to the upper
+      left." It was centred under Uni in .st-bar (10 November ruling, see
+      the now-superseded CSS at #sttype in shell/head.html); it moved into
+      .st-hdbtns beside Talk that day, and now sits here by itself, in
+      Talk's old corner (shell/head.html's own escape rule moved with it).
+      The gate is unchanged from .st-bar's own copy of
       it: hidden when voice cannot run, during crisis, or when neither door
       is open (STV.novoice||STV.crisis||!(STV.chat||STV.typed)). The 10 Nov
       "no third icon at rest" ruling still holds, now enforced in CSS on
@@ -606,6 +579,21 @@ function stRender(){
       to aria-label and title, nothing a screen reader hears changes. */
    +'</button>')
    +'</div>'
+  /* TALK'S OWN HOST, OUTSIDE THE TERNARY BELOW ON PURPOSE, 21 November,
+     reproduced before fixing: the merge first put stHelloHtml() only
+     inside the branches that draw .st-glow, which THE GLOW LEAVES
+     ENTIRELY WHILE TYPING (14 November, its own comment just below) also
+     leaves out, so pressing Talk again to close the typing box, or Chat
+     from the open box, found no #stmic at all and timed out, real
+     failures in tests/typein.js and not flakiness (every "from the open
+     box" case, both widths). Talk never left the screen while the box was
+     open before this round, the header icon's whole point ("ONE ICON
+     CARRIES BOTH DOORS" below): a tap still talks no matter which door is
+     open. One host, rendered here once, before the ternary, every time
+     this panel paints, with its own position:relative so .st-hello's
+     absolute top/left (shell/head.html) resolves against it and not
+     against .st-glow, which is not always there to resolve against. */
+  +'<div class="st-talkhost">'+stHelloHtml(show)+'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -679,7 +667,6 @@ function stRender(){
      UPDATE, same day: the mini view wears the same chip with no word on it
      (stShowChip's io), so the paragraph is gone from this page in both. */
   +(show?'<div class="st-glow"><div class="st-uni" id="stuni" aria-hidden="true"></div>'
-    +stHelloHtml()
     +stShowChip('story',!STV.dash)+'</div>'
    /* THE TEXT SCREEN HOLDS SOURCE AI'S LINE, 17 November, his words, on the
       reply printed loose under the face: "The text that pops up on the
@@ -713,7 +700,6 @@ function stRender(){
      that would be destroyed and rebuilt on every key. uniMount is called
      once, after this whole panel lands, at the foot of stRender. */
   +'<div class="st-uni" id="stuni" aria-hidden="true"></div>'
-  +stHelloHtml()
   +'<div class="st-pe" id="stsrc" aria-label="Question"></div>'
   /* WHAT YOU ARE SAYING, WHILE YOU ARE SAYING IT, round of 29 October. His
      words: "I should see my input as I'm talking." Not the reply box, which
@@ -1213,8 +1199,11 @@ function stRender(){
     the typed box before Commit read the entry; the box is gone (see the
     ruling at .st-bar above) and there is nothing left for it to send. */
  if(ap)ap.onclick=stCommit;
- var hello=document.getElementById('sthello');
- if(hello)hello.onclick=stHello;
+ /* THE HELLO CONTROL'S OWN CLICK IS stMic()'S OWN CLICK, 21 November.
+    One element, one id (stmic), one wire: stHello() still exists as its
+    own small function (reveal Uni, cue SrcFace) and stMic() calls it on
+    the way in, so every press of the one control left in this view both
+    reveals her and does what Talk always did. No second button to wire. */
  var mic=document.getElementById('stmic');
  /* ONE ICON CARRIES BOTH DOORS, 10 November. His words, naming the hero
     view's only two icons, the talk bubble and Dashboard: "I do want the
@@ -1371,8 +1360,27 @@ function rowFoldWire(){
    her up. ST_HELLO_ON never turns itself off: stUniSync's own loaded check
    below reads it the same as typed text or a kept reading, so a press holds
    her mounted until the entry or the record itself would have anyway. */
-function stHelloHtml(){
- return '<button class="st-hello" id="sthello" type="button" aria-label="Begin, Source AI">'
+/* AND IT IS TALK NOW, NOT A SECOND CONTROL BESIDE IT, found reading his
+   spec back literally the same round: "replacing the Talk button
+   entirely," not adding one. One element carries both jobs, under Talk's
+   own id (stmic, so every wire, test and corner-escape rule that already
+   looks it up by that id keeps finding it); its class stays st-hello
+   throughout, with .on appended while ST_LISTEN, the same word every
+   other live control on this page already uses for its own active state
+   (shell/head.html's own .st-hello.on rules, beside it). stHello() below
+   stays its own small function; stMic() calls it on the way in, so the
+   one press does both. The hiding this control used to do once a reading
+   was already loaded is gone with the merge: Talk never hid once a
+   conversation started, and this is Talk now (see stUniSync below, which
+   no longer touches it). hideForExample is the one gate Talk always had
+   and this keeps: no recording control on a worked example, which has no
+   person's own words to record. */
+function stHelloHtml(hideForExample){
+ if(hideForExample)return '';
+ return '<button class="st-hello'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" aria-label="'
+  +(ST_LISTEN?'Listening':'Talk')+'" title="'
+  +(ST_LISTEN?'Listening. Press to stop and keep what it heard.'
+    :'Talk by speaking instead of typing. What you say goes to your browser\'s speech service; typing does not leave this device.')+'">'
   +'<svg viewBox="0 0 88 88" aria-hidden="true">'
   +'<circle class="sth-ring2" cx="44" cy="44" r="40"></circle>'
   +'<circle class="sth-ring" cx="44" cy="44" r="30"></circle>'
@@ -1382,7 +1390,19 @@ function stHello(){
  if(ST_HELLO_ON)return;
  ST_HELLO_ON=true;
  stUniSync();
- if(window.SrcFace&&typeof window.SrcFace.cue==='function')window.SrcFace.cue();
+ /* cue() REMOVED HERE, 21 November, reproduced before cutting it: folding
+    this into stMic() (above) means every ordinary first press of Talk now
+    runs this function too, and cue() does more than reveal her, it sets
+    srcface.js's own engaged true, the exact state "no beat fires at all
+    until a story is actually" there (its own comment) says real content
+    earns. tests/talksilence.js's "Talk on and nothing said" case caught
+    it: engagedEver read true for nine seconds of silence after a bare
+    press, where it must read false. Revealing her canvas (stUniSync,
+    above) is itself the coming-to-life his spec means, an empty host to
+    a breathing idle circle; cue()'s own beat is what a real word still
+    earns. Call it directly (window.SrcFace.cue()) if a later round wants
+    the click itself to also beat, with that test's own case re-measured
+    first. */
  if(typeof stHeroPlaceSoon==='function')stHeroPlaceSoon();}
 function stUniSync(r){
  if(typeof document==='undefined')return;
@@ -1415,8 +1435,13 @@ function stUniSync(r){
     showing her here runs nothing on an example's record. */
  var seen=r||(typeof computeSeen==='function'?computeSeen():null);
  var loaded=(typeof ST_TEXT==='string'&&ST_TEXT.trim())||(seen&&!seen.unread)||ST_HELLO_ON;
- var hello=document.getElementById('sthello');
- if(hello)hello.hidden=!!loaded;
+ /* THE HELLO CONTROL NO LONGER HIDES ITSELF ON "loaded", 21 November. It
+    used to (id sthello, its own element, hidden the moment a reading or
+    typed text made it redundant): it was a one-shot way to ask for Uni
+    before anything else would. Now it is Talk (id stmic, stHelloHtml
+    above), and Talk never hid once a conversation started, it is how the
+    conversation keeps going. Hiding it here would remove the only way
+    left to stop or restart listening. */
  if(loaded){
   if(typeof uniMount==='function'){uniMount(un); uniApply(ST_PARSED);
    /* his words, "off... also off of the conversation screens" -- the
@@ -5316,6 +5341,13 @@ function stType(){
  var ta=document.getElementById('sttext');
  if(ta){ ta.focus(); var n=ta.value.length; try{ ta.setSelectionRange(n,n); }catch(e){} }}
 function stMic(){
+ /* THE HELLO CONTROL'S OWN JOB, FOLDED IN, 21 November. One button now
+    (id stmic, see stHelloHtml), so the press that starts or stops
+    listening is also the press that reveals Uni on the way in. stHello()
+    is idempotent (ST_HELLO_ON guards it) and safe to call on every press,
+    including the one that stops listening: calling it again once she is
+    already up costs nothing. */
+ if(typeof stHello==='function')stHello();
  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  /* alert() blocks the page and is not the status region, which is the app's
     one writer for anything that can fail. */

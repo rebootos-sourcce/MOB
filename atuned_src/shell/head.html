@@ -5327,33 +5327,46 @@ body.tab-story:not(.st-full) #stjr .st-glow::before{display:none}
    justify-content (above) has nothing to centre once .st-glow already
    fills all of #stjr's height. */
 body.tab-story:not(.st-full) #stjr .st-glow{justify-content:center}
-/* THE TWO ICONS SIT AT THE STAGE'S OWN CORNERS, never the narrower
-   column's. .st-hd stays a flex row in the markup (nothing moved there),
-   only its two children leave that row's flow; the row itself is left
-   with no height anything needs, since nothing of it still displays. */
-body.tab-story:not(.st-full) #stmic{position:absolute;top:20px;left:20px;z-index:2}
+/* ONE ICON SITS AT THE STAGE'S OWN CORNER NOW, never the narrower column's.
+   Two did, Talk and Dashboard, until 21 November: Talk (#stmic) moved out
+   of this row entirely into the Hello control inside .st-glow (its own
+   rule below, ui/storyui.js's own long comment at stHelloHtml), so only
+   Dashboard is still pinned here. .st-hd stays a flex row in the markup
+   (nothing moved there), only its remaining positioned child leaves that
+   row's flow; the row itself is left with no height anything needs,
+   since nothing of it still displays. */
 body.tab-story:not(.st-full) #stdash{position:absolute;top:20px;right:20px;z-index:2}
-/* THE KEYBOARD NEEDS THE SAME ESCAPE, 14 November, found by CI and not by
-   the testing this round actually ran. #sttype moved into .st-hdbtns
-   beside #stmic (see the long comment at #sttype in ui/storyui.js), which
-   works in the Full Dashboard, where #stmic is still a plain flex child
-   of that row. In THIS view #stmic and #stdash leave the row entirely
-   (the two rules above, 10 November: "these are the only icons on the
-   screen"), so .st-hdbtns collapses to whatever is left in it, #sttype
-   alone, at #stmic's own corner -- and #stmic, still painted on top as a
-   positioned element, covers it. tests/collide.js caught the real
-   overlap (#sttype's own centre landing on #stmic) that every manual
-   check this round ran against the Full Dashboard only missed. #sttype
-   gets the same absolute escape, parked beside #stmic with the row's own
-   8px gap (20+44+8), not under it. */
-body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px;z-index:2}
+/* THE KEYBOARD KEEPS ITS OWN ESCAPE, 14 November, in Talk's old corner
+   since 21 November. #sttype moved into .st-hdbtns beside Talk 14
+   November (see the long comment at #sttype in ui/storyui.js), got this
+   same absolute escape to clear Talk's own positioned element sitting on
+   top of it (tests/collide.js caught the real overlap first), and is the
+   only child left in that row since Talk moved out 21 November: it takes
+   Talk's own corner outright now rather than sitting 72px from a sibling
+   id that is not there to measure from any more. */
+body.tab-story:not(.st-full) #sttype{position:absolute;top:20px;left:20px;z-index:2}
 /* THE HELLO CONTROL, 21 November, his words: "a button on top of the
    center of the interface... very benign. When you click on it, it
-   activates it." Sits inside .st-glow (already position:relative, above),
-   pinned to its own top centre so it reads as above the circle rather than
-   fighting it for the same space. Ring, not fill, the house's own icon
-   rule, and no label at all, per spec. .st-glow already carries
-   position:relative (above), so this needs none of its own. */
+   activates it." Pinned to its own top centre so it reads as above the
+   circle rather than fighting it for the same space. Ring, not fill, the
+   house's own icon rule, and no label at all, per spec.
+   ITS HOST IS NOT .st-glow, reproduced before fixing the same round:
+   .st-glow is cut from the markup entirely while the typing journal is
+   open (ui/storyui.js, "THE GLOW LEAVES ENTIRELY WHILE TYPING"), and Talk
+   living only inside it meant no Talk at all the moment that box was
+   open, a real loss (tests/typein.js caught it, every "from the open
+   box" case). .st-talkhost is its own always-rendered host, a block the
+   width of #stjr's own column (so left:50% below still centres on the
+   same column .st-glow does when it is there), position:relative so this
+   needs no position of its own, height:0 so it adds no space of its own
+   to the column: the button alone paints, escaping upward out of a box
+   with nothing else in it.
+   AND IT IS TALK, 21 November (the same round, read back literally): the
+   element carries id stmic now (see stHelloHtml, ui/storyui.js), and .on
+   means the same thing it always meant on Talk, listening, and gets its
+   own real state below rather than staying the idle ring throughout a
+   recording. */
+.st-talkhost{position:relative;height:0}
 .st-hello{position:absolute;top:10px;left:50%;transform:translateX(-50%);
  width:40px;height:40px;border-radius:50%;background:none;border:0;padding:0;
  cursor:pointer;z-index:2;outline-offset:6px}
@@ -5369,6 +5382,19 @@ body.tab-story:not(.st-full) #stmic~#sttype{position:absolute;top:20px;left:72px
 .st-hello:hover .sth-dot,.st-hello:focus-visible .sth-dot{fill:var(--accent)}
 @keyframes sthBreathe{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.045);opacity:.7}}
 @media (prefers-reduced-motion:reduce){.st-hello .sth-ring{animation:none}}
+/* LISTENING IS ITS OWN STATE, NOT THE IDLE BREATHE SPED UP, 21 November.
+   The old Talk button turned solid alarm red the instant it was on (.st-mic.on,
+   below, kept for the Full Dashboard's own well where that button still
+   lives unmerged); this ring keeps its ring-not-fill shape even while
+   listening; see "Icons are ring, not fill" and alarm red is still the
+   one colour this house keeps off the idle breathing animation, so the
+   faster pulse here only plays while .on, same alarm token, same quiet
+   and reduced-motion escapes as every other live indicator on this page. */
+.st-hello.on .sth-ring{stroke:var(--alarm);opacity:.9;animation:sthBreathe 1.15s ease-in-out infinite}
+.st-hello.on .sth-ring2{opacity:.5;stroke:var(--alarm)}
+.st-hello.on .sth-dot{fill:var(--alarm)}
+body.quiet .st-hello.on .sth-ring,body.rm .st-hello.on .sth-ring{animation:none;opacity:.9}
+@media (prefers-reduced-motion:reduce){.st-hello.on .sth-ring{animation:none;opacity:.9}}
 /* NO BUBBLE, NO BORDER, JUST THE WORDS, 10 November, on the complaint repeated
    past counting: "no two-way chat... just the user's input," and in the
    same round, pointed at a bordered box, "there is no box." storyui.js's
