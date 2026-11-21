@@ -1442,12 +1442,17 @@ function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){re
    That ruling came for 16 on 12 November, the owner's "get ours to alignment
    with the professional", and only where the atlas he sent gives the level
    itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
-   here as well would draw it twice. This heading counted them, 28, and the
+   here as well would draw it twice. 8 moved the same way on 21 November, a
+   real vertebral level the atlas gives, cited in figure.js. 40 is sourced to
+   a real page too, the same day, but stays here: it sits on 16's own point
+   at this figure's resolution, v: has no front-to-back axis to tell them
+   apart, and 16 and 40 are not one structure, so ANAT cannot take it without
+   either a guessed level or a false claim that they share a place. figure.js
+   says so, for the owner's call. This heading counted them, 28, and the
    count is gone for the reason CLAUDE.md gives: BMPROP's length is the
    answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
- {ids:[8],pts:[[50,45.2]],s:"Cauda equina, the L2 to S1 roots in the lumbar cistern"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
  {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
@@ -1457,7 +1462,11 @@ var BMPROP=[
  {ids:[34],pts:[[48,37.6],[52,37.6]],s:"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},
  {ids:[35],pts:[[51,43]],s:"Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3"},
  {ids:[37],pts:[[47.4,39],[52.6,39]],s:"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},
- {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1"},
+ /* Not moved to ANAT, 21 November: see figure.js at address 16. Rohen 7e
+    p.328 ("Kidney: Arteries") labels the superior mesenteric artery's
+    origin beside the body of the first lumbar vertebra, the same level
+    this file already places 16 (Conus Medullaris) at, on the midline. */
+ {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1, Rohen 7e p.328"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
  {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
