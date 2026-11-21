@@ -5947,7 +5947,8 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   o.active=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-act'):null;
   o.goText=(document.querySelector('#rdrill [data-tcxgo]')||{}).textContent||'';
   o.pickKept=document.querySelector('#rdrill .tcx-on')?document.querySelector('#rdrill .tcx-on').getAttribute('data-tcxr'):null; o.pickWas=id;
-  o.saved=((JSON.parse(STORE.get('atuned-ritual-active')||'{}')[CURP.id])||[]).some(x=>x.tc==='PE');
+  /* on the record since 21 November, practice schema 2 */
+  o.saved=((CURP.practice&&CURP.practice.plans)||[]).some(x=>x.tc==='PE');
   /* the inverted end opens the same pair, because it is one pole */
   runTeacherDrill(MIRROR[i],'dn'); await wait(100);
   o.inverted=!!document.querySelector('#rdrill .tcx');
