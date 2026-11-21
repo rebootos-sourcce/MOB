@@ -244,11 +244,22 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. A
-    quiz self report is the one route where a story moves it, through this
-    same seat figure (engine/core.js, affinity). */
+    release. affinity still orders first and second; it prints now too, as
+    archshare below, since the 21 November decision put both readings on the
+    same screen. A quiz self report is the one route where a story moves this
+    one, through the same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
              say:'how fully an archetype is expressed, dragged by the charge at its point'},
+ /* THE OTHER HALF OF THE SAME 21 November DECISION, HIS OWN WORDS: "add an
+    option for both ways, 100% meaning the whole and a percent based off of
+    the individual item." archetype above is the individual item; this is
+    the whole, affinity (engine/core.js) read a second way, each archetype's
+    share of what all twelve add up to rather than of the strongest one,
+    so the twelve numbers sum to 1 and read like a real competition's
+    results. engine/archexpr.js's affinityShare is the one place that sum is
+    taken; nothing here repeats it. */
+ archshare: {lo:0, hi:1, src:'engine/archexpr.js', find:'return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}',
+             say:'an archetype\'s share of all twelve, against each other rather than against the strongest one'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',

@@ -235,11 +235,25 @@ function stmkBody(r){
  if(r.unread||!r.heaviest)return null;
  var h=r.heaviest, nm=/_Unnamed$/.test(h.k)?'An address with no name yet':h.k;
  return {nm:nm, seat:h.b, v:h.sq, col:'var('+(SEATCOL[h.b]||'--dim')+')'};}
+/* REDRAWN, DECIDED 21 November: own fullness, never a share. This used to
+   return one number per seat on the 0-10 scale (v, s.weight*10) that the old
+   picture spent on arc width and opacity alone, with the arcs themselves
+   always the same angular length regardless of value, so the only thing
+   that actually moved with a story was which arc got the hot colour and a
+   bare 0-10 decimal in the centre, never a percent and never the other six
+   rows. p is now that same weight read through the registry (engine/pct.js,
+   kind 'weight', its own 0-10 range), so the picture's percent is the
+   product's one existing weight-to-percent formula and not a second one
+   invented here: Solar at a mean sq of 6.1 out of 10 reads 61%, his own
+   example. v is that formatted string, already the house dash when nothing
+   is held, never a bare 0%. */
 function stmkField(r){
  if(r.unread||!r.seats)return null;
- var rows=r.seats.map(function(s){return {seat:s.seat, v:Math.max(0,Math.min(10,(+s.weight||0)*10)), col:'var('+(SEATCOL[s.seat]||'--dim')+')'};});
- var top=rows.slice().sort(function(a,b){return b.v-a.v;})[0];
- if(!top||top.v<=0)return null;
+ var rows=r.seats.map(function(s){
+  var w10=Math.max(0,Math.min(10,(+s.weight||0)*10));
+  return {seat:s.seat, w:w10, p:pct('weight',w10)||0, v:fmtPct('weight',w10), col:'var('+(SEATCOL[s.seat]||'--dim')+')'};});
+ var top=rows.slice().sort(function(a,b){return b.w-a.w;})[0];
+ if(!top||top.w<=0)return null;
  return {rows:rows, top:top};}
 function stmkAvatar(r){
  var arch=(!r.unread&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
@@ -271,8 +285,11 @@ function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1
  'Each commitment you write on this side fills it 20 percent.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
  'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' point.');}
-function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
- stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+', the heaviest of your seven.');}
+/* ONE ROW, NOT ONE CARD, since the redraw: a row's own tip, not the whole
+   picture's, so a seat that is not the heaviest still says what it holds. */
+function stmkTipField(s,hot){return stmkTip(s.seat+', '+s.v,
+ stmkU('seat')+' '+s.seat+' is '+(s.p>0?'at '+s.v+' of its own fullness':'carrying nothing yet')
+  +(hot?', the heaviest of your seven.':'.'));}
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
 function stmkTipW(a){return stmkTip(a.w+' done',stmkU('practised')+' A win is a ritual you marked done.');}
 function stmkTipL(a){return stmkTip(a.l+' missed','A loss is a ritual that came due and was marked not done.');}
@@ -358,18 +375,36 @@ function stMiniBody(r){
   +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+b.col+'" stroke-width="1.8" stroke-linecap="round">'+STMK_IC.stbody+'</g>'
   +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(b.v)+'</text></g></svg>'
   +'<span class="stmk-cap">'+esc(b.nm)+'</span></div>';}
+/* SEVEN ROWS, CROWN AT TOP TO ROOT AT BOTTOM, DECIDED 21 November. The
+   picture this replaces was seven arcs of one circle, every one the same
+   angular length no matter what it held, with only width and opacity
+   moving and a single bare decimal in the centre for whichever seat came
+   out heaviest: a glance at it never answered "how full is Solar," only
+   "which one is worst this time." Each row now carries its own real
+   reading: a ring outlined in that seat's own colour, the seat's name, a
+   thin bar filled to that seat's own fullness, and that same fullness
+   printed as a whole percent beside it, the formatting fmtPct already
+   gives everything else on this card. The heaviest row stands in full ink;
+   the other six dim rather than disappear, because a seat holding nothing
+   is still one of the seven and still answered, dash and all. */
 function stMiniField(r){
  var f=stmkField(r); if(!f)return STMK_DASH;
- var CX=60, CY=46, R=40, segs='', n=f.rows.length;
- f.rows.forEach(function(s,i){
-  var a0=(i/n)*360-90+4, a1=((i+1)/n)*360-90-4, rad=Math.PI/180;
-  var p0=[CX+R*Math.cos(a0*rad),CY+R*Math.sin(a0*rad)], p1=[CX+R*Math.cos(a1*rad),CY+R*Math.sin(a1*rad)];
-  var hot=s===f.top;
-  segs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+R+' '+R+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" fill="none" stroke="'+s.col+'" '
-   +'stroke-opacity="'+(hot?1:(.22+.5*s.v/10)).toFixed(2)+'" stroke-width="'+(hot?7:4)+'" stroke-linecap="round"/>';});
- return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipField(f)+'>'+segs
-  +'<text x="60" y="55" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(f.top.v)+'</text></g></svg>'
-  +'<span class="stmk-cap"><i class="stmk-dot" style="background:'+f.top.col+'"></i>'+esc(f.top.seat)+'</span></div>';}
+ /* r.seats (seatRows()) walks BANDS, Root to Crown; the card reads the
+    opposite way, so the reversed copy is what gets drawn and nothing else
+    reorders. */
+ var disp=f.rows.slice().reverse(), n=disp.length, rowH=110/n,
+  RX=9, NX=18, BX1=58, BX2=126, PX=150, rows='';
+ disp.forEach(function(s,i){
+  var y=(rowH*i+rowH/2), hot=s===f.top, barW=BX2-BX1, fillW=barW*s.p/100,
+   ink=hot?'var(--ink)':'var(--mid)', wt=hot?600:500, dim=hot?1:.72;
+  rows+='<g class="stmk-t"'+stmkTipField(s,hot)+'>'
+   +'<circle cx="'+RX+'" cy="'+y.toFixed(1)+'" r="4.3" fill="none" stroke="'+s.col+'" stroke-opacity="'+(hot?1:.55)+'" stroke-width="1.6"/>'
+   +'<text x="'+NX+'" y="'+(y+2.9).toFixed(1)+'" font-size="8.2" font-weight="'+wt+'" fill="'+ink+'" opacity="'+dim+'">'+esc(s.seat)+'</text>'
+   +'<line x1="'+BX1+'" y1="'+y.toFixed(1)+'" x2="'+BX2+'" y2="'+y.toFixed(1)+'" stroke="var(--dim)" stroke-opacity=".3" stroke-width="2.2" stroke-linecap="round"/>'
+   +(fillW>0.4?'<line x1="'+BX1+'" y1="'+y.toFixed(1)+'" x2="'+(BX1+fillW).toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+s.col+'" stroke-opacity="'+(hot?1:.6)+'" stroke-width="2.2" stroke-linecap="round"/>':'')
+   +'<text x="'+PX+'" y="'+(y+2.9).toFixed(1)+'" text-anchor="end" font-size="8.2" font-weight="'+wt+'" fill="'+ink+'" opacity="'+dim+'" font-variant-numeric="tabular-nums">'+esc(s.v)+'</text>'
+   +'</g>';});
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 160 110">'+rows+'</svg></div>';}
 function stMiniAvatar(r){
  var a=stmkAvatar(r); if(!a.arch&&!a.w&&!a.l)return STMK_DASH;
  var tot=a.w+a.l, CX=60, CY=46;

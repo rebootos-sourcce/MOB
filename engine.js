@@ -8271,11 +8271,22 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. A
-    quiz self report is the one route where a story moves it, through this
-    same seat figure (engine/core.js, affinity). */
+    release. affinity still orders first and second; it prints now too, as
+    archshare below, since the 21 November decision put both readings on the
+    same screen. A quiz self report is the one route where a story moves this
+    one, through the same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
              say:'how fully an archetype is expressed, dragged by the charge at its point'},
+ /* THE OTHER HALF OF THE SAME 21 November DECISION, HIS OWN WORDS: "add an
+    option for both ways, 100% meaning the whole and a percent based off of
+    the individual item." archetype above is the individual item; this is
+    the whole, affinity (engine/core.js) read a second way, each archetype's
+    share of what all twelve add up to rather than of the strongest one,
+    so the twelve numbers sum to 1 and read like a real competition's
+    results. engine/archexpr.js's affinityShare is the one place that sum is
+    taken; nothing here repeats it. */
+ archshare: {lo:0, hi:1, src:'engine/archexpr.js', find:'return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}',
+             say:'an archetype\'s share of all twelve, against each other rather than against the strongest one'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -32641,8 +32652,36 @@ function archExpr(i){
 /* all twelve in ARCH order, so a renderer asks once per render */
 function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
 
+/* ============================================================
+   AFFINITY, SHARED LIKE A COMPETITION, 21 November. The decision, his own
+   words: "add an option for both ways, 100% meaning the whole and a percent
+   based off of the individual item, and I'll figure out which one I like
+   better." affinity() (engine/core.js) already answers one question, which
+   archetype leads and by how much against it: the leader reads 1 and every
+   other reads its own fraction of that one top value, which is right for
+   naming a first and second place and cannot be added across the twelve,
+   because the top archetype's own 1 already uses the whole of what a sum
+   would have left for the rest.
+
+   This divides the same twelve numbers by what they add up to instead of by
+   their own top, so they sum to 1 and a share this prints can sit beside
+   the other eleven shares the way a real competition's results do: Warrior
+   at 30 percent of the field is also saying the other eleven hold the
+   remaining 70, which affinity()'s own numbers never say. Nothing here is a
+   second measurement; it is the one array affinity() already returns, read
+   a second way.
+
+   affinity() never actually returns twelve zeros on a real build: a
+   blueprint always leaves something under it (engine/core.js, coreAt). The
+   equal-twelfths fallback below only answers a call made before any
+   blueprint exists at all, the same guard affinity() keeps for its own
+   early call. */
+function affinityShare(){
+ var a=affinity(), sum=a.reduce(function(x,y){return x+y;},0);
+ return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}
+
 if(typeof module!=='undefined'&&module.exports){
- Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll, affinityShare:affinityShare});}
 /* ============================================================
    A WORKED EXAMPLE IS SHOW ONLY. Ruled 16 October, his words: "something we
    need to do with those user profiles where the customer who selects any of

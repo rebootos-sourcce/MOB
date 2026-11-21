@@ -7041,6 +7041,18 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-b{cursor:pointer}
 .ab-b:hover circle{opacity:.95}
 .ab-b.on circle{stroke-width:2.8}
+/* THE ARCHETYPE PERCENT TOGGLE, 21 November, his own decision to build
+   both ways and compare them rather than have one picked for him. Two
+   labelled tabs, the record view's own .rv-seg/.rv-sg shape (ui/ritual.js)
+   read again rather than invented a second time, kept to var(--tap) so it
+   is a real press and not a label pretending to be one. */
+.ana-seg{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
+.ana-sg{min-height:var(--tap);padding:0 14px;border-radius:999px;border:1px solid var(--edge-2);
+ background:none;color:var(--mid);font:inherit;font-size:12px;font-weight:600;cursor:pointer;
+ -webkit-tap-highlight-color:transparent}
+.ana-sg:hover{border-color:var(--ink)}
+.ana-sg.ana-on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ana-sg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* THE HEAVIEST LIST, 3 November, his own words on the screenshot: "this is
    terrible layout. Compact this for to maximize space." .ad-rows is shared
    with narrow drill cards elsewhere, where one column per row is right, so

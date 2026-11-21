@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v368 22ce8358 2026-11-21 15:03"><head><meta charset="utf-8">
+<html lang="en" data-build="v369 6c1bc6cf 2026-11-21 16:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -7041,6 +7041,18 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-b{cursor:pointer}
 .ab-b:hover circle{opacity:.95}
 .ab-b.on circle{stroke-width:2.8}
+/* THE ARCHETYPE PERCENT TOGGLE, 21 November, his own decision to build
+   both ways and compare them rather than have one picked for him. Two
+   labelled tabs, the record view's own .rv-seg/.rv-sg shape (ui/ritual.js)
+   read again rather than invented a second time, kept to var(--tap) so it
+   is a real press and not a label pretending to be one. */
+.ana-seg{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
+.ana-sg{min-height:var(--tap);padding:0 14px;border-radius:999px;border:1px solid var(--edge-2);
+ background:none;color:var(--mid);font:inherit;font-size:12px;font-weight:600;cursor:pointer;
+ -webkit-tap-highlight-color:transparent}
+.ana-sg:hover{border-color:var(--ink)}
+.ana-sg.ana-on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ana-sg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* THE HEAVIEST LIST, 3 November, his own words on the screenshot: "this is
    terrible layout. Compact this for to maximize space." .ad-rows is shared
    with narrow drill cards elsewhere, where one column per row is right, so
@@ -21358,11 +21370,22 @@ var PCT_KIND={
     affinity (engine/core.js:403, an archetype against the strongest) and share
     (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
     printed three ways for one archetype, and neither moves with a story or a
-    release. affinity still orders first and second; nothing prints it. A
-    quiz self report is the one route where a story moves it, through this
-    same seat figure (engine/core.js, affinity). */
+    release. affinity still orders first and second; it prints now too, as
+    archshare below, since the 21 November decision put both readings on the
+    same screen. A quiz self report is the one route where a story moves this
+    one, through the same seat figure (engine/core.js, affinity). */
  archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
              say:'how fully an archetype is expressed, dragged by the charge at its point'},
+ /* THE OTHER HALF OF THE SAME 21 November DECISION, HIS OWN WORDS: "add an
+    option for both ways, 100% meaning the whole and a percent based off of
+    the individual item." archetype above is the individual item; this is
+    the whole, affinity (engine/core.js) read a second way, each archetype's
+    share of what all twelve add up to rather than of the strongest one,
+    so the twelve numbers sum to 1 and read like a real competition's
+    results. engine/archexpr.js's affinityShare is the one place that sum is
+    taken; nothing here repeats it. */
+ archshare: {lo:0, hi:1, src:'engine/archexpr.js', find:'return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}',
+             say:'an archetype\'s share of all twelve, against each other rather than against the strongest one'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -45824,8 +45847,36 @@ function archExpr(i){
 /* all twelve in ARCH order, so a renderer asks once per render */
 function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
 
+/* ============================================================
+   AFFINITY, SHARED LIKE A COMPETITION, 21 November. The decision, his own
+   words: "add an option for both ways, 100% meaning the whole and a percent
+   based off of the individual item, and I'll figure out which one I like
+   better." affinity() (engine/core.js) already answers one question, which
+   archetype leads and by how much against it: the leader reads 1 and every
+   other reads its own fraction of that one top value, which is right for
+   naming a first and second place and cannot be added across the twelve,
+   because the top archetype's own 1 already uses the whole of what a sum
+   would have left for the rest.
+
+   This divides the same twelve numbers by what they add up to instead of by
+   their own top, so they sum to 1 and a share this prints can sit beside
+   the other eleven shares the way a real competition's results do: Warrior
+   at 30 percent of the field is also saying the other eleven hold the
+   remaining 70, which affinity()'s own numbers never say. Nothing here is a
+   second measurement; it is the one array affinity() already returns, read
+   a second way.
+
+   affinity() never actually returns twelve zeros on a real build: a
+   blueprint always leaves something under it (engine/core.js, coreAt). The
+   equal-twelfths fallback below only answers a call made before any
+   blueprint exists at all, the same guard affinity() keeps for its own
+   early call. */
+function affinityShare(){
+ var a=affinity(), sum=a.reduce(function(x,y){return x+y;},0);
+ return sum>0?a.map(function(v){return v/sum;}):a.map(function(){return 1/a.length;});}
+
 if(typeof module!=='undefined'&&module.exports){
- Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll, affinityShare:affinityShare});}
 
 try{window.__at&&window.__at('engine/archexpr.js');}catch(e){}
 /* ============================================================
@@ -65551,11 +65602,25 @@ function stmkBody(r){
  if(r.unread||!r.heaviest)return null;
  var h=r.heaviest, nm=/_Unnamed$/.test(h.k)?'An address with no name yet':h.k;
  return {nm:nm, seat:h.b, v:h.sq, col:'var('+(SEATCOL[h.b]||'--dim')+')'};}
+/* REDRAWN, DECIDED 21 November: own fullness, never a share. This used to
+   return one number per seat on the 0-10 scale (v, s.weight*10) that the old
+   picture spent on arc width and opacity alone, with the arcs themselves
+   always the same angular length regardless of value, so the only thing
+   that actually moved with a story was which arc got the hot colour and a
+   bare 0-10 decimal in the centre, never a percent and never the other six
+   rows. p is now that same weight read through the registry (engine/pct.js,
+   kind 'weight', its own 0-10 range), so the picture's percent is the
+   product's one existing weight-to-percent formula and not a second one
+   invented here: Solar at a mean sq of 6.1 out of 10 reads 61%, his own
+   example. v is that formatted string, already the house dash when nothing
+   is held, never a bare 0%. */
 function stmkField(r){
  if(r.unread||!r.seats)return null;
- var rows=r.seats.map(function(s){return {seat:s.seat, v:Math.max(0,Math.min(10,(+s.weight||0)*10)), col:'var('+(SEATCOL[s.seat]||'--dim')+')'};});
- var top=rows.slice().sort(function(a,b){return b.v-a.v;})[0];
- if(!top||top.v<=0)return null;
+ var rows=r.seats.map(function(s){
+  var w10=Math.max(0,Math.min(10,(+s.weight||0)*10));
+  return {seat:s.seat, w:w10, p:pct('weight',w10)||0, v:fmtPct('weight',w10), col:'var('+(SEATCOL[s.seat]||'--dim')+')'};});
+ var top=rows.slice().sort(function(a,b){return b.w-a.w;})[0];
+ if(!top||top.w<=0)return null;
  return {rows:rows, top:top};}
 function stmkAvatar(r){
  var arch=(!r.unread&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
@@ -65587,8 +65652,11 @@ function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1
  'Each commitment you write on this side fills it 20 percent.');}
 function stmkTipBody(b){return stmkTip(b.nm+', '+stmkFmt(b.v),
  'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+stmkFmt(b.v)+', at your '+b.seat+' point.');}
-function stmkTipField(f){return stmkTip(f.top.seat+', '+stmkFmt(f.top.v),
- stmkU('seat')+' '+f.top.seat+' carries '+stmkFmt(f.top.v)+', the heaviest of your seven.');}
+/* ONE ROW, NOT ONE CARD, since the redraw: a row's own tip, not the whole
+   picture's, so a seat that is not the heaviest still says what it holds. */
+function stmkTipField(s,hot){return stmkTip(s.seat+', '+s.v,
+ stmkU('seat')+' '+s.seat+' is '+(s.p>0?'at '+s.v+' of its own fullness':'carrying nothing yet')
+  +(hot?', the heaviest of your seven.':'.'));}
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
 function stmkTipW(a){return stmkTip(a.w+' done',stmkU('practised')+' A win is a ritual you marked done.');}
 function stmkTipL(a){return stmkTip(a.l+' missed','A loss is a ritual that came due and was marked not done.');}
@@ -65674,18 +65742,36 @@ function stMiniBody(r){
   +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+b.col+'" stroke-width="1.8" stroke-linecap="round">'+STMK_IC.stbody+'</g>'
   +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(b.v)+'</text></g></svg>'
   +'<span class="stmk-cap">'+esc(b.nm)+'</span></div>';}
+/* SEVEN ROWS, CROWN AT TOP TO ROOT AT BOTTOM, DECIDED 21 November. The
+   picture this replaces was seven arcs of one circle, every one the same
+   angular length no matter what it held, with only width and opacity
+   moving and a single bare decimal in the centre for whichever seat came
+   out heaviest: a glance at it never answered "how full is Solar," only
+   "which one is worst this time." Each row now carries its own real
+   reading: a ring outlined in that seat's own colour, the seat's name, a
+   thin bar filled to that seat's own fullness, and that same fullness
+   printed as a whole percent beside it, the formatting fmtPct already
+   gives everything else on this card. The heaviest row stands in full ink;
+   the other six dim rather than disappear, because a seat holding nothing
+   is still one of the seven and still answered, dash and all. */
 function stMiniField(r){
  var f=stmkField(r); if(!f)return STMK_DASH;
- var CX=60, CY=46, R=40, segs='', n=f.rows.length;
- f.rows.forEach(function(s,i){
-  var a0=(i/n)*360-90+4, a1=((i+1)/n)*360-90-4, rad=Math.PI/180;
-  var p0=[CX+R*Math.cos(a0*rad),CY+R*Math.sin(a0*rad)], p1=[CX+R*Math.cos(a1*rad),CY+R*Math.sin(a1*rad)];
-  var hot=s===f.top;
-  segs+='<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+'A'+R+' '+R+' 0 0 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" fill="none" stroke="'+s.col+'" '
-   +'stroke-opacity="'+(hot?1:(.22+.5*s.v/10)).toFixed(2)+'" stroke-width="'+(hot?7:4)+'" stroke-linecap="round"/>';});
- return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipField(f)+'>'+segs
-  +'<text x="60" y="55" text-anchor="middle" class="stmk-n" font-size="25">'+stmkFmt(f.top.v)+'</text></g></svg>'
-  +'<span class="stmk-cap"><i class="stmk-dot" style="background:'+f.top.col+'"></i>'+esc(f.top.seat)+'</span></div>';}
+ /* r.seats (seatRows()) walks BANDS, Root to Crown; the card reads the
+    opposite way, so the reversed copy is what gets drawn and nothing else
+    reorders. */
+ var disp=f.rows.slice().reverse(), n=disp.length, rowH=110/n,
+  RX=9, NX=18, BX1=58, BX2=126, PX=150, rows='';
+ disp.forEach(function(s,i){
+  var y=(rowH*i+rowH/2), hot=s===f.top, barW=BX2-BX1, fillW=barW*s.p/100,
+   ink=hot?'var(--ink)':'var(--mid)', wt=hot?600:500, dim=hot?1:.72;
+  rows+='<g class="stmk-t"'+stmkTipField(s,hot)+'>'
+   +'<circle cx="'+RX+'" cy="'+y.toFixed(1)+'" r="4.3" fill="none" stroke="'+s.col+'" stroke-opacity="'+(hot?1:.55)+'" stroke-width="1.6"/>'
+   +'<text x="'+NX+'" y="'+(y+2.9).toFixed(1)+'" font-size="8.2" font-weight="'+wt+'" fill="'+ink+'" opacity="'+dim+'">'+esc(s.seat)+'</text>'
+   +'<line x1="'+BX1+'" y1="'+y.toFixed(1)+'" x2="'+BX2+'" y2="'+y.toFixed(1)+'" stroke="var(--dim)" stroke-opacity=".3" stroke-width="2.2" stroke-linecap="round"/>'
+   +(fillW>0.4?'<line x1="'+BX1+'" y1="'+y.toFixed(1)+'" x2="'+(BX1+fillW).toFixed(1)+'" y2="'+y.toFixed(1)+'" stroke="'+s.col+'" stroke-opacity="'+(hot?1:.6)+'" stroke-width="2.2" stroke-linecap="round"/>':'')
+   +'<text x="'+PX+'" y="'+(y+2.9).toFixed(1)+'" text-anchor="end" font-size="8.2" font-weight="'+wt+'" fill="'+ink+'" opacity="'+dim+'" font-variant-numeric="tabular-nums">'+esc(s.v)+'</text>'
+   +'</g>';});
+ return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 160 110">'+rows+'</svg></div>';}
 function stMiniAvatar(r){
  var a=stmkAvatar(r); if(!a.arch&&!a.w&&!a.l)return STMK_DASH;
  var tot=a.w+a.l, CX=60, CY=46;
@@ -73555,6 +73641,48 @@ try{window.__at&&window.__at('ui/daily.js');}catch(e){}
    like.
    ============================================================ */
 var ANA_PICK=null;
+/* THE TWO WAYS, 21 November, his own words on the decision: "add an option
+   for both ways, 100% meaning the whole and a percent based off of the
+   individual item, and I'll figure out which one I like better." Neither
+   replaces the other; a person switches between them on the archetype
+   circle alone, and the choice lives here for the session, the same way
+   ANA_PICK above does, never in the record (switching how a number is
+   shown is not a thing a person entered). 'expr' is archExpr, the archetype
+   against itself, 100% with nothing held, what this chart already printed.
+   'share' is affinityShare, the twelve against each other instead of
+   against the strongest, so they sum to 100% like a real competition. */
+var ANA_ARCHMODE='expr';
+/* ONE PLACE BUILDS THE TWELVE ITEMS FOR EITHER MODE, so the toggle changes
+   which figure is the headline and never changes which twelve bubbles are
+   drawn or how the heaviest one is picked out in gold. */
+function anaArchItems(r){
+ var aff=r.aff||[], share=(typeof affinityShare==='function')?affinityShare():null;
+ return ARCH.map(function(a,i){
+  var lean=aff[i]||0, ex=archExpr(i), isTop=(i===r.pi), c=isTop?GOLD:PAL['3rd Eye'];
+  if(ANA_ARCHMODE==='share'){
+   var sh=share?share[i]:0;
+   /* sized by the share itself here, so the twelve areas actually read as
+      twelve pieces of one whole, the way the mode's own name promises */
+   return {k:'arch',nm:a.nm,v:Math.max(0.4,sh*10),f:fmtPct('archshare',sh),
+    h:(ex!=null?'expressed '+fmtPct('archetype',ex):''),c:c};}
+  /* 'expr' is exactly what this chart already drew: sized by the lean,
+     which orders them, printing how fully each is expressed */
+  return {k:'arch',nm:a.nm,v:Math.max(0.4,lean*10),f:fmtPct('archetype',ex),c:c};});}
+/* THE TOGGLE ITSELF, two labelled tabs and nothing more: his own "I'll
+   figure out which one I like better" is a request to compare the real
+   thing, not a brief for a finished control. Each carries its own tip, the
+   one sentence that says what it is without the chart's face having to say
+   it in words (16 November, symbol/header/body: a plain word label stands
+   in for the symbol here, there is no icon for "percent model"). */
+var ANA_ARCHTAB=[
+ ['expr','Each archetype','This archetype’s own expression, 100% with nothing held at its point. The twelve do not add up to 100.'],
+ ['share','All twelve','Each archetype’s share of all twelve added together, so the twelve sum to 100%, the way a competition’s results do.']];
+function anaArchTabsHtml(){
+ return '<div class="ana-seg" role="tablist" aria-label="How the archetype percent is read">'
+  +ANA_ARCHTAB.map(function(v){var on=ANA_ARCHMODE===v[0];
+   return '<button type="button" role="tab" aria-selected="'+on+'" class="ana-sg'+(on?' ana-on':'')+'" '
+    +'data-anamode="'+v[0]+'" data-tip-t="'+esc(v[1])+'" data-tip="'+esc(v[2])+'">'+esc(v[1])+'</button>';}).join('')
+  +'</div>';}
 function anaHist(){
  var h=(CURP&&CURP.history)||[];
  return h.slice().sort(function(a,b){return new Date(a.t)-new Date(b.t);});}
@@ -73593,10 +73721,15 @@ function anaPack(items,w,h){
      else{ang+=0.34;rad+=1.1;}}}
    if(!placed)out.push({x:cx,y:cy,r:Math.max(5,rr),it:it});}});
  return out;}
-function anaField(title,sub,items,w,h){
+/* extra, 21 November: an optional block of real controls between the title
+   and the picture itself, for a chart that needs one and none before it
+   did (the archetype percent toggle below). Every existing caller leaves it
+   out and draws exactly as it did before this. */
+function anaField(title,sub,items,w,h,extra){
+ extra=extra||'';
  items=(items||[]).filter(function(x){return x&&x.nm;});
  if(!items.length)
-  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
    +'<div class="ab-none">nothing here</div></div>';
  var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
  /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
@@ -73604,7 +73737,7 @@ function anaField(title,sub,items,w,h){
     The bubbles keep their size, which is the blueprint, and lose the figure.
     Round J13. */
  var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
- var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+ var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
   +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
  P.forEach(function(p){
   var fit=p.r>=26, tiny=p.r<LMIN;
@@ -73621,7 +73754,13 @@ function anaField(title,sub,items,w,h){
       drawn at. Each caller now names the figure, f, the registry's percent
       or a count, and a bubble with no f (a domain, which is a selection and
       not a measurement) prints none. */
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held'))))+'</title>'
+   /* h, 21 November: a second line for the hover alone, for a chart whose
+      headline figure is not the only real number on the item (the
+      archetype circle's own expression, read beside whichever percent is
+      the headline). Left out everywhere else, so no other chart's title
+      changes. */
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held')))
+    +(!UN&&p.it.h?'. '+p.it.h+'.':''))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -73786,11 +73925,7 @@ function anaRender(){
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','',
-  (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
-   /* sized by the lean, which orders them; the figure is how fully each is
-      expressed, ruled 16 October (engine/archexpr.js) */
-   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
+ out+=anaField('Archetypes','',anaArchItems(r),300,210,anaArchTabsHtml());
  out+=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
@@ -74478,6 +74613,15 @@ addEventListener('click',function(e){
   return;}
  var v=t.getAttribute('data-ana'), at=v.indexOf('|');
  anaGo(v.slice(0,at),v.slice(at+1),inPage&&!inDrill);});
+/* THE ARCHETYPE PERCENT TOGGLE, its own small press, never a step in the
+   trail (ANA_PICK, ANA_TRAIL above are untouched by it): it changes how a
+   number already on the page is read, not what the person is looking at,
+   so it redraws the page in place and opens nothing new. */
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('[data-anamode]'):null;
+ if(!t||!t.closest('#ana'))return;
+ var m=t.getAttribute('data-anamode'); if(!m||m===ANA_ARCHMODE)return;
+ ANA_ARCHMODE=m; anaRender();});
 /* a bubble and the identification block are not buttons, so Enter and Space
    press them the way they press a button */
 addEventListener('keydown',function(e){
@@ -109802,5 +109946,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007555033"></div>
+<div id="eof" hidden data-len="007564877"></div>
 </body></html>

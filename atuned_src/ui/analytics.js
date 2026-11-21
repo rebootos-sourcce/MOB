@@ -6,6 +6,48 @@
    like.
    ============================================================ */
 var ANA_PICK=null;
+/* THE TWO WAYS, 21 November, his own words on the decision: "add an option
+   for both ways, 100% meaning the whole and a percent based off of the
+   individual item, and I'll figure out which one I like better." Neither
+   replaces the other; a person switches between them on the archetype
+   circle alone, and the choice lives here for the session, the same way
+   ANA_PICK above does, never in the record (switching how a number is
+   shown is not a thing a person entered). 'expr' is archExpr, the archetype
+   against itself, 100% with nothing held, what this chart already printed.
+   'share' is affinityShare, the twelve against each other instead of
+   against the strongest, so they sum to 100% like a real competition. */
+var ANA_ARCHMODE='expr';
+/* ONE PLACE BUILDS THE TWELVE ITEMS FOR EITHER MODE, so the toggle changes
+   which figure is the headline and never changes which twelve bubbles are
+   drawn or how the heaviest one is picked out in gold. */
+function anaArchItems(r){
+ var aff=r.aff||[], share=(typeof affinityShare==='function')?affinityShare():null;
+ return ARCH.map(function(a,i){
+  var lean=aff[i]||0, ex=archExpr(i), isTop=(i===r.pi), c=isTop?GOLD:PAL['3rd Eye'];
+  if(ANA_ARCHMODE==='share'){
+   var sh=share?share[i]:0;
+   /* sized by the share itself here, so the twelve areas actually read as
+      twelve pieces of one whole, the way the mode's own name promises */
+   return {k:'arch',nm:a.nm,v:Math.max(0.4,sh*10),f:fmtPct('archshare',sh),
+    h:(ex!=null?'expressed '+fmtPct('archetype',ex):''),c:c};}
+  /* 'expr' is exactly what this chart already drew: sized by the lean,
+     which orders them, printing how fully each is expressed */
+  return {k:'arch',nm:a.nm,v:Math.max(0.4,lean*10),f:fmtPct('archetype',ex),c:c};});}
+/* THE TOGGLE ITSELF, two labelled tabs and nothing more: his own "I'll
+   figure out which one I like better" is a request to compare the real
+   thing, not a brief for a finished control. Each carries its own tip, the
+   one sentence that says what it is without the chart's face having to say
+   it in words (16 November, symbol/header/body: a plain word label stands
+   in for the symbol here, there is no icon for "percent model"). */
+var ANA_ARCHTAB=[
+ ['expr','Each archetype','This archetype’s own expression, 100% with nothing held at its point. The twelve do not add up to 100.'],
+ ['share','All twelve','Each archetype’s share of all twelve added together, so the twelve sum to 100%, the way a competition’s results do.']];
+function anaArchTabsHtml(){
+ return '<div class="ana-seg" role="tablist" aria-label="How the archetype percent is read">'
+  +ANA_ARCHTAB.map(function(v){var on=ANA_ARCHMODE===v[0];
+   return '<button type="button" role="tab" aria-selected="'+on+'" class="ana-sg'+(on?' ana-on':'')+'" '
+    +'data-anamode="'+v[0]+'" data-tip-t="'+esc(v[1])+'" data-tip="'+esc(v[2])+'">'+esc(v[1])+'</button>';}).join('')
+  +'</div>';}
 function anaHist(){
  var h=(CURP&&CURP.history)||[];
  return h.slice().sort(function(a,b){return new Date(a.t)-new Date(b.t);});}
@@ -44,10 +86,15 @@ function anaPack(items,w,h){
      else{ang+=0.34;rad+=1.1;}}}
    if(!placed)out.push({x:cx,y:cy,r:Math.max(5,rr),it:it});}});
  return out;}
-function anaField(title,sub,items,w,h){
+/* extra, 21 November: an optional block of real controls between the title
+   and the picture itself, for a chart that needs one and none before it
+   did (the archetype percent toggle below). Every existing caller leaves it
+   out and draws exactly as it did before this. */
+function anaField(title,sub,items,w,h,extra){
+ extra=extra||'';
  items=(items||[]).filter(function(x){return x&&x.nm;});
  if(!items.length)
-  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+  return '<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
    +'<div class="ab-none">nothing here</div></div>';
  var P=anaPack(items,w,h),top=P[0]?P[0].it.v:1, LMIN=13;
  /* NOTHING READ, SO NO FIGURE. The page says so in its first line and the
@@ -55,7 +102,7 @@ function anaField(title,sub,items,w,h){
     The bubbles keep their size, which is the blueprint, and lose the figure.
     Round J13. */
  var UN=false; try{UN=!!computeSeen().unread;}catch(e){}
- var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'
+ var s='<div class="ab-f"><div class="pm-eye">'+title+'</div>'+extra
   +'<svg viewBox="0 0 '+w+' '+h+'" class="ab-svg">';
  P.forEach(function(p){
   var fit=p.r>=26, tiny=p.r<LMIN;
@@ -72,7 +119,13 @@ function anaField(title,sub,items,w,h){
       drawn at. Each caller now names the figure, f, the registry's percent
       or a count, and a bubble with no f (a domain, which is a selection and
       not a measurement) prints none. */
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held'))))+'</title>'
+   /* h, 21 November: a second line for the hover alone, for a chart whose
+      headline figure is not the only real number on the item (the
+      archetype circle's own expression, read beside whichever percent is
+      the headline). Left out everywhere else, so no other chart's title
+      changes. */
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held')))
+    +(!UN&&p.it.h?'. '+p.it.h+'.':''))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -237,11 +290,7 @@ function anaRender(){
   S.doms.map(function(di){var d=DOMAINS[di];return {k:'dom',nm:d.nm,v:9,c:rootPlain(d.r)};})
    .concat(DOMAINS.filter(function(d,i){return S.doms.indexOf(i)<0;}).slice(0,9)
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
- out+=anaField('Archetypes','',
-  (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
-   /* sized by the lean, which orders them; the figure is how fully each is
-      expressed, ruled 16 October (engine/archexpr.js) */
-   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
+ out+=anaField('Archetypes','',anaArchItems(r),300,210,anaArchTabsHtml());
  out+=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
@@ -929,6 +978,15 @@ addEventListener('click',function(e){
   return;}
  var v=t.getAttribute('data-ana'), at=v.indexOf('|');
  anaGo(v.slice(0,at),v.slice(at+1),inPage&&!inDrill);});
+/* THE ARCHETYPE PERCENT TOGGLE, its own small press, never a step in the
+   trail (ANA_PICK, ANA_TRAIL above are untouched by it): it changes how a
+   number already on the page is read, not what the person is looking at,
+   so it redraws the page in place and opens nothing new. */
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('[data-anamode]'):null;
+ if(!t||!t.closest('#ana'))return;
+ var m=t.getAttribute('data-anamode'); if(!m||m===ANA_ARCHMODE)return;
+ ANA_ARCHMODE=m; anaRender();});
 /* a bubble and the identification block are not buttons, so Enter and Space
    press them the way they press a button */
 addEventListener('keydown',function(e){
