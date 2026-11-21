@@ -148,6 +148,27 @@ var ANAT=[
     above it already is: that is the Root seat's own contradiction (TASKS.md
     Q1) drawn where it is, not a placement error. */
  {s:'Conus medullaris, the end of the spinal cord, at L1', ids:[16], v:[[20,0]]},
+ /* Moved from BMPROP on 21 November, the gap batch delivered that day
+    (Anatomy_Atlas_Lite_Part_2.pdf, Rohen 7e book p.322 and p.346, covering
+    the printed range 170-352 that this file's own log had marked
+    undelivered). p.322 (a median section) shows the cauda equina directly
+    below the conus medullaris, the end of the cord this file already places
+    at L1 (16, above). p.346 (a parasagittal section) shows the cauda
+    equina's own lower end beside the disc between L5 and the sacrum, at the
+    sacral promontory. Level 23 is L4, the midpoint of that real span, and
+    the cauda equina sits in the vertebral canal on the midline, so 0 is not
+    a typed offset, it is where the structure is. */
+ {s:'Cauda equina, the lumbar and sacral roots below the conus medullaris', ids:[8], v:[[23,0]]},
+ /* 40 (Superior Mesenteric Plexus) is sourced to this same level, Rohen 7e
+    p.328, and is NOT moved here. At L1 on the midline it lands on the same
+    point as 16, one thousandth of a unit apart (tests/anatomy.js group 5),
+    and 16 and 40 are not one structure, so research.js cannot say they
+    share a place. v: has no front-to-back axis to tell a structure deep in
+    the spinal canal from one on the front of the aorta; giving it any other
+    level would be a typed guess, the thing this method forbids. Left in
+    BMPROP (map.js) with the same citation, for the owner's call: add a
+    depth axis, or rule that a shared level may share a point the way a
+    shared plexus already does. */
  /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
     classical marma chart and a 112 node chart, with "as close as 1:1 as
     possible". Measured before this (proto/anatomy-ref, 26 September): of 48
