@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v383 5d8c784b 2026-11-21 21:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v384 a9b320df 2026-11-21 22:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5958,12 +5958,13 @@ body.tab-story.st-full #stsrc:empty{display:none}
 .rel-fields.st-fields .st-relsws .ac-rl::before{content:"Audio";font-size:11px}
 .rel-fields.st-fields .st-relsws .ac-rl em{display:none}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
+ display:flex;align-items:center;justify-content:center;gap:10px;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
 .st-go:hover{filter:brightness(1.08)}
 .st-go:disabled{opacity:.4;cursor:default}
-/* the count of addresses this press runs, a figure beside the word */
-.st-go{display:flex;align-items:center;justify-content:center;gap:10px}
+/* the count of addresses this press runs, a figure beside the word, which
+   is why .st-go above is a centred flex row */
 .st-gon{min-width:26px;height:26px;padding:0 7px;border-radius:999px;display:inline-grid;place-items:center;
  font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;
  border:1.5px solid currentColor}
@@ -112507,5 +112508,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007742434"></div>
+<div id="eof" hidden data-len="007742480"></div>
 </body></html>
