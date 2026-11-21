@@ -237,6 +237,11 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
+  /* the 21 November rulings: where a teacher opens by CQ, the Crown's fetter
+     pair, and which laws belong to which teacher */
+                  CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
+                  compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
+                  SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
