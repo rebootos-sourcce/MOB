@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v388 0bb60a7a 2026-11-21 22:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v393 8613fdc4 2026-11-21 22:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -11454,11 +11454,15 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-arc.on{stroke-opacity:1}
 .cl-st.sealed .cl-n{stroke-width:2.6}
 .cl-pill rect{fill:#101114;stroke:var(--c);stroke-opacity:.6;stroke-width:1}
-.cl-pill text{font-size:9.5px;font-weight:600;fill:var(--ink)}
+/* every text on the climb is 11px or more, the type floor the rest of the
+   product holds (tests/design.js gate 4). The design round drew the pills,
+   the law names, the seat names and the descent's names at 9.5 to 10.5, and
+   the gate reads CSS on HTML text, so SVG text got past it */
+.cl-pill text{font-size:11px;font-weight:600;fill:var(--ink)}
 .cl-st.shut .cl-pill rect{stroke:var(--mid);stroke-opacity:.35}
 .cl-st.shut .cl-pill text{fill:var(--mid)}
 .cl-lb{font-size:11.5px;fill:var(--ink)!important;font-weight:500}
-.cl-lb.sm{font-size:10px;fill:var(--mid)!important;font-weight:400}
+.cl-lb.sm{font-size:11px;fill:var(--mid)!important;font-weight:400}
 .cl-st:hover .cl-n,.cl-st:focus-visible .cl-n,.cl-st.sel .cl-n{stroke-width:2.6;filter:drop-shadow(0 0 6px var(--c))}
 .cl-st.sel .cl-lb{fill:var(--c)!important}
 .cl-l.got .cl-n{stroke-width:2.4}
@@ -11472,7 +11476,7 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-seat .cl-sr{fill:none;stroke:var(--c);stroke-opacity:.3;stroke-width:1.2}
 .cl-seat .cl-sg circle{fill:none;stroke:var(--c);stroke-opacity:.45;stroke-width:1.5}
 .cl-seat.on .cl-sr{stroke-opacity:.9}.cl-seat.on .cl-sg circle{stroke-opacity:1}
-.cl-sn{font-size:10.5px}
+.cl-sn{font-size:11px}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
@@ -11486,7 +11490,7 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-door text{fill:var(--ink);font-size:12px}
 .cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
 .cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
+.cl-dstep text{font-size:11px;fill:var(--mid);fill-opacity:.55}
 .cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
 .cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
 .cl-av .core{fill:#F2E6C4}
@@ -94069,7 +94073,7 @@ function clGeo(W,H,stk){
    behind the door, which opens every one of them. */
 function clDsc(W,H,stk){
  var h=stk?212:Math.round(Math.max(150,H*0.2)), dw=2*(W/2-(stk?40:84))*(stk?0.98:0.9), wide=0;
- DESCENT.forEach(function(d){wide=Math.max(wide,clTextW(d.nm,9.5,400));});
+ DESCENT.forEach(function(d){wide=Math.max(wide,clTextW(d.nm,11,400));});
  var cols=Math.max(1,Math.min(6,Math.floor(dw/(wide+16)))), rh=stk?26:28;
  var rows=Math.max(1,Math.floor((h-44-(stk?30:36)-(stk?24:28)-rh)/rh));
  var shown=Math.min(DESCENT.length,rows*cols);
@@ -94132,8 +94136,8 @@ function clPlace(G,t,i,stk){
  row.forEach(function(s){
   s.dot=false;
   if(s.t==='tch'){s.r=stk?14:17; s.ln=clLines(s.nm,stk);
-   s.half=Math.max(s.r+5,13,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
-  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,10,400)/2);}});
+   s.half=Math.max(s.r+5,15,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
+  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,11,400)/2);}});
  var free=function(){var w=span; row.forEach(function(s){w-=2*s.half;}); return w;};
  var laws=row.filter(function(s){return s.t==='law';})
   .sort(function(a,b){return b.half-a.half||row.indexOf(b)-row.indexOf(a);});
@@ -94211,8 +94215,8 @@ function clSvg(W,H,stk){
      +arc(d.rel,0)+arc(d.rit,1)+arc(d.aff,2)
      +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+r+'"/>'
      +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.62:0.74)+'</g>'
-     +'<g class="cl-pill"><rect x="'+(x-13).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="26" height="13" rx="6.5"/>'
-     +'<text x="'+X+'" y="'+(y-r-9.4).toFixed(1)+'">'+s.at+'</text></g>'
+     +'<g class="cl-pill"><rect x="'+(x-15).toFixed(1)+'" y="'+(y-r-22).toFixed(1)+'" width="30" height="16" rx="8"/>'
+     +'<text x="'+X+'" y="'+(y-r-10).toFixed(1)+'">'+s.at+'</text></g>'
      +'<text class="cl-lb" x="'+X+'" y="'+(y+r+(stk?14:17)).toFixed(1)+'">'
      +s.ln.map(function(l,j){return '<tspan x="'+X+'"'+(j?' dy="12"':'')+'>'+esc(l)+'</tspan>';}).join('')+'</text></g>';}
    else {
@@ -113596,5 +113600,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008304101"></div>
+<div id="eof" hidden data-len="008304384"></div>
 </body></html>
