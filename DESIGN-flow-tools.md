@@ -778,6 +778,36 @@ affirmations and these days and answers among them.
 
 Gate: `tests/flowtools.js`, `FT37:`.
 
+### FT38. The centre and the rail, 21 November.
+
+His words, 18 November, approved for build on 21 November: "I want the
+actions that the user is supposed to do as blocks under the days of the week,
+sorted by the action color or type ... everything beneath that, where it says
+done, planned, missed, the rituals, the affirmations, that can go away. You
+can move the challenges to the very top above the week, so it's front and
+center. Same with the goal." `ui/ritweek.js` says what each part is.
+
+- The centre is, top to bottom: the Goal and the challenges as one row of
+  equal tiles, the week, Called for as short cards, Keep or delete while one
+  ends. There is no Today card. (FT17, FT30 rewritten.)
+- Every block on the week and every Called for card wears its kind's colour,
+  Affirmation, Action, Meditation or Release, and a day's blocks run in that
+  order. Every practice in the library has a kind, by hand, and a practice
+  added without one fails the gate. (FT27 and FT35 rewritten.)
+- Success over time is in the right rail under Accountability, merged with the
+  thirty day cubes: one card, its ten spans one dropdown. (FT6, FT21, FT26 and
+  FT32 rewritten.)
+- Everything the Today card carried is in the one pop-up: Done, Timer, Stop
+  and Release now on a block's, the said rings on the affirmations', the did
+  ring on a challenge's and on its tile. (FT9, FT25 rewritten.)
+- A Called for card or a block dragged onto a day writes one Once day and
+  opens the same pop-up; dropped anywhere else, nothing is written. A finger
+  drags from the card's kind word or a block; that is built and has not been
+  tried on a real phone.
+
+Gate: `tests/flowtools.js`, `FT38:` (the kind table, read headless), and
+`tests/ritweek.js`, RW1 to RW10, each proven against a planted mutant.
+
 ## 5. Not built, and why
 
 These are in the practice TDD and are not in this change. Each is named so the
@@ -836,6 +866,7 @@ gap is not read as an oversight.
 | Rule | Gate |
 |---|---|
 | FT1 to FT37 | `tests/flowtools.js` |
+| FT38 | `tests/ritweek.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

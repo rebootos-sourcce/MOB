@@ -4066,6 +4066,17 @@ console.log('\n28 · no title is a truncation');
   ok(ks.every(k=>/^[A-Za-z0-9_-]{25,}$/.test(F[k].id)&&/\.mp4$/.test(F[k].file)&&F[k].file.indexOf(F[k].n+' ')===0),
    'and each names a Drive file id and an mp4 whose title starts with its own number');
   ok(F.E07.n===8&&F.E08.n===7,'Transmutation is film 8 and Cause and Effect film 7, kept by code');}
+ /* A STRAY SPACE INSIDE A NAME, 21 November. E75 read "Meta- Awareness", a
+    line break from the book's layout kept as a space, and the table of
+    universal laws (ui/kbtable.js) prints every name on a tile of its own. */
+ ok(E.HARM.every(x=>!/\S- \S/.test(x.t)),'no universal law name carries a space after a hyphen');
+ ok(byc('E75')==='Meta-Awareness','E75 is Meta-Awareness, one word');
+ /* THE THREE THE BOOK HAS NOT CONFIRMED. The table draws a tile dashed and
+    says "Not yet confirmed in the book" off its own text, the words "pending
+    confirmation", never off a list of codes. So the list is held here: the
+    day kb.js confirms one and drops the words, this names which. */
+ const pend=E.HARM.filter(x=>/pending confirmation/i.test(x.d||'')).map(x=>x.c).join(',');
+ ok(pend==='E65,E67,E68','the unconfirmed universal laws are E65, E67 and E68: '+pend);
 }
 
 console.log('\n29 · every archetype is seated');
@@ -12825,6 +12836,33 @@ g('CMP21 · teachers by coherence, the Crown pair, and laws to teachers, 21 Nove
  ok(heart.every(n=>n>0),'the Heart\'s laws are split between Light and Trust, not dumped on one, '+heart);
  ok(compassLawsOf('TU').indexOf('Truth')>=0&&compassLawsOf('NA').indexOf('Nature')>=0,
   'and the two home poles keep the law their quality already names');
+}
+
+g('the three places carrying the most, one function for the Body card and the Body page key');
+{
+ /* bodyTop3 is what the Dashboard's Body card calls (ui/storyui.js
+    stMiniBody, drawn by ui/map.js bodyTop3Html). The Body page key that was
+    to call it too is held back on 21 November, see the note in ui/map.js,
+    so the key's half of this group's name waits for it. Checked against a
+    known case first: a field with every charge at nought reads nothing. */
+ const {bodyTop3,OB_PLACES,pct}=E;
+ ok(bodyTop3(reset(0,0,6)).length===0,'a field carrying nothing names no place, so the card draws the dash and the key hides');
+ ok(bodyTop3({unread:true,seats:[]}).length===0,'an unread reading names no place');
+ const r=reset(5,0,6), t=bodyTop3(r);
+ ok(t.length>0&&t.length<=3,'at most three places, '+t.length);
+ const words=OB_PLACES.map(p=>p.n);
+ ok(t.every(x=>words.indexOf(x.nm)>=0),'every place is one of the product\'s seven words, '+t.map(x=>x.nm).join(', '));
+ ok(t.every((x,i)=>i===0||t[i-1].v>=x.v),'heaviest first, '+t.map(x=>x.nm+' '+x.pct).join(', '));
+ /* each place's own fullness, the ruled default, and not its share of the
+    whole: the percent is the seat's own weight, so three of them need not
+    sum to anything */
+ ok(t.every(x=>{const s=r.seats.filter(q=>q.seat===x.seat)[0]; return s&&x.pct===pct('weight',s.weight*10);}),
+  'each percent is that place\'s own fullness, its seat weight as a whole percent');
+ ok(t.every(x=>Number.isInteger(x.pct)&&x.pct>0&&x.pct<=100),'a whole percent and never a nought, '+t.map(x=>x.pct).join(', '));
+ const heavy=r.seats.slice().sort((a,b)=>b.weight-a.weight)[0];
+ ok(t[0].seat===heavy.seat,'the first place is the heaviest seat, '+t[0].seat+' against '+heavy.seat);
+ ok(t.every(x=>!x.top||(x.top.k&&r.carrying.some(n=>n.i===x.top.i&&n.b===x.seat))),
+  'the pattern and nerve the hover carries are the heaviest address in that same place');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

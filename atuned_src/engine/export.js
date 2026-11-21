@@ -60,6 +60,7 @@ if(typeof module!=='undefined'&&module.exports){
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
                  wholeOf:wholeOf, wholeDays:wholeDays, wholeGround:wholeGround,
+                 avatarBecoming:avatarBecoming, avatarPotential:avatarPotential, AV_POT_STOPS:AV_POT_STOPS,
                  WHOLE_W:WHOLE_W, WHOLE_DAYS:WHOLE_DAYS, WHOLE_OWNER_LINES:WHOLE_OWNER_LINES,
                  WHOLE_OWNER_CLOSED:WHOLE_OWNER_CLOSED, WHOLE_R_LINE:WHOLE_R_LINE,
                  WHOLE_MEANS:WHOLE_MEANS, wholeSay:wholeSay,
@@ -134,7 +135,7 @@ if(typeof module!=='undefined'&&module.exports){
      copy the engine already keeps, not a second one to drift from it. */
                   FAM_POLE:FAM_POLE,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
-  /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
+  /* engine */    compute:compute, bodyTop3:bodyTop3, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
   /* the child pattern, and the reading of it that is assumed. Both exported,
      because a gate that cannot reach the constant cannot tell whether the
      count it read belongs to the reading it thinks it is looking at. */

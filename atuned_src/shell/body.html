@@ -992,6 +992,15 @@
          ONE FLAT READING"). Elsewhere the rail keeps its own labels. -->
     <div class="lsec-bd"><div class="tier1 sum-lvl">Celestial</div><div id="spirit"></div></div>
    </div>
+   <!-- RELEASE, THE AVATAR'S LEFT PANEL, 21 November (avatar-release-panel).
+        On the Avatar page this stands where Root Energetics stands, and only
+        there: head.html hides Root Energetics on body.tab-intake and shows
+        this on that tab alone, so every other page keeps Root Energetics
+        exactly as it was. Filled by avRailPaint, ui/avatarui.js. -->
+   <div class="lsec av-rail open" data-rail="left" data-sec="avrel">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6" stroke-dasharray="2.2 2"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6" stroke-dasharray="2.2 2"/></svg>Release</span><i></i></button>
+    <div class="lsec-bd"><div id="avrel"></div></div>
+   </div>
    <!-- THE READINGS, AS CIRCLES, AT THE HEAD OF THE RAIL. ED in TASKS.md. CQ
         is the one large circle, "so it's in your face", the four that move
         through a person below, and accuracy keeps its word, ruled. The
@@ -1417,16 +1426,14 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><circle cx="12" cy="16" r="3.6"/></svg>Imprints</span><i></i></button>
     <div class="lsec-bd"><div id="imp"></div></div>
    </div>
-   <!-- ON THE SUMMARY, THIS RAIL IS TODAY. The daily summary, ui/daily.js,
-        in the page's own side column, on the funnel review's placement F24:
-        the words go to the side. Shown on the Summary only, and the rail's
-        other sections are hidden there except Selection, which is where every
-        drill on the Summary opens. ui/panels.js empties #sumday on the way
-        out, so a hidden rail never holds a stale day. -->
-   <div class="lsec sum-rail" data-rail="right" data-sec="today">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6v4.6l3 1.8"/></svg>Today</span><i></i></button>
-    <div class="lsec-bd"><div id="sumday" class="dl"></div></div>
-   </div>
+   <!-- TODAY LEFT THIS RAIL FOR THE SUMMARY'S CENTRE, 21 November. The daily
+        summary, ui/daily.js, stood here as the Summary's side column on the
+        funnel review's placement F24, and the Summary redesign's brief moved
+        it to open the centre instead (sumToday, ui/summary.js), with #sumday,
+        its id and its painter unchanged. On the Summary this rail now carries
+        Selection alone, which is where every drill on the page opens; the
+        rail's other sections still step aside there (shell/head.html). -->
+
    <!-- Wheel, Frames and Dial stood here from DY to EY and are the overlay in
         the stage's upper right now, EZ. The coherence ring and its band word
         followed them in round IT, and the Reading is the first thing under
@@ -1482,6 +1489,17 @@
         this rail's copy is gone; Summary's own zone, #sumloop, is a
         different reader of the same block and is untouched. -->
 
+   <!-- BECOME, THE AVATAR'S RIGHT PANEL, 21 November (avatar-become-panel).
+        On the Avatar page only; head.html hides it on every other tab.
+        Filled by avRailPaint. It sits directly ABOVE Selection and never
+        below it: the first cut put it after Selection, which broke the 18
+        November ruling that nothing renders beneath Selection, and the AFTER
+        check in tests/insightrail.js caught it on the integration build
+        (tab 5, after:["avbec"]). Selection stays the rail's last section. -->
+   <div class="lsec av-rail open" data-rail="right" data-sec="avbec">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.5V5.5M6 11l6-6 6 6"/></svg>Become</span><i></i></button>
+    <div class="lsec-bd"><div id="avbec"></div></div>
+   </div>
    <div class="lsec" data-rail="right" data-sec="sel">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8l12 7.4-5.4 1.4 3.2 6.2-2.6 1.4-3.2-6.2L6 18z"/></svg>Selection</span><i></i></button>
     <div class="lsec-bd">

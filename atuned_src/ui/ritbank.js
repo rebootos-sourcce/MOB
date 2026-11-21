@@ -231,15 +231,18 @@ function ritAiHtml(t,tag){
    printed on the card and its meaning is on the word's hover and tap. Only
    practices reach Called for today; an affirmation or a challenge that ever
    does needs its own entry here, and the challenge's colour is his to pick. */
-var RIT_TRACK_SAY={
- Somatic:'Somatic practices work by attention on a place the body is holding.',
- Body:'Body practices work through the breath and the muscles.',
- Energy:'Energy practices work by holding attention on one point.',
- Mind:'Mind practices train attention itself.'};
+/* THE FILL IS THE KIND NOW, 21 November, and no longer the track. His D-4
+   words asked for exactly this, "the background color to define whether
+   something's an affirmation or a challenge", and the track was the nearest
+   table that existed then. The week's blocks are coloured by the four kinds
+   from today (ui/ritweek.js), and one page with colour meaning the kind on the
+   week and the track on the card beside it would be one colour meaning two
+   things. So the card wears its practice's kind, the same mark, word and
+   sentence the week's key carries. PTRACK still colours the builder's tiles,
+   which is a different surface. */
 function ritSugKind(x){
- var tr=x&&x.p&&x.p.track, col=(tr&&PTRACK[tr])||'var(--accent)';
- return {nm:tr||'Practice', col:col,
-  says:'The card\'s colour is its track. '+(RIT_TRACK_SAY[tr]||'A practice from the library.')};}
+ var K=ritKind(ritKindOf(x));
+ return {k:K.k, nm:K.nm, col:ritKindCol(K.k), says:'The card\'s colour is its kind. '+K.says};}
 
 /* ---------------- the card ----------------
    The Called for card's face. Since the D-4 grade of 20 November it is three
@@ -255,29 +258,16 @@ function ritBankCard(x,i,st){
     the browser as a white box on every card until a pop-up has opened */
  ritBankCss();
  var K=ritSugKind(x);
- /* ROUND QX, "add a text description. And the success of what it leads
-    to." The description is the library's own line for the practice. What
-    it leads to is the quality release installs at the place the card is
-    for, a canon word and not a measurement. The success is the person's own
-    record with this practice, because no measure of how well a practice
-    works exists anywhere in the engine and one made up here would be the
-    status lie. ui/ritcal.js says the same at ritSugRec. */
- var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x), recSays=ritSugRecSays(x,R);
- /* the track's word leads the row, and it is also the finger's grip for a
-    drag onto a day: the badge was, and a touch drag needs a part of the card
-    that is not a press and carries touch-action:none */
- var chips='<div class="rv-sgo"><span class="rv-sgk" data-grip="1"'+rvTip(K.nm+' practice',K.says)+'>'+esc(K.nm)+'</span>'
-  +'<span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span>'
-  +(T?'<span class="rv-sgc"'+rvTip('Toward '+T.opp.toLowerCase(),'What it is for: '+T.opp.toLowerCase()
-    +' is the quality release puts back where '+ritCfWord(T.nm)+' was held. You hold '+String(T.k).toLowerCase()+' at '+ritThe(T.b)+'.')+'>'
-    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14 M14 7l5 5-5 5"/></svg>Toward '+esc(T.opp.toLowerCase())+'</span>':'')
-  +'<span class="rv-sgc'+(R.kept?'':' rv-sgc0')+'"'+rvTip('Your record with it',recSays.join(' '))+'>'
-   +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>'
-   +esc(ritSugRecWord(R))+'</span>'
-  +'<span class="rv-sgt">'+x.seats.map(function(sb){
-    return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
-     +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>';
- return '<li class="rv-sg1" style="--c:'+K.col+'" data-drag="sug" data-i="'+i+'">'
+ /* THE CARD IS SHORT, 21 November, his 18 November words: "Simplify them.
+    It just needs to be a little text and the buttons that I need to do ...
+    And if I click on it, then I got a pop-up that tells me information
+    about it." Its second row is the kind and the minutes, and nothing else:
+    Toward, the person's record with it, the seats and the library's line
+    moved into the pop-up the name opens (ritPopSug), nothing cut. The kind's
+    word is still the finger's grip for a drag onto a day. */
+ var chips='<div class="rv-sgo"><span class="rv-sgk" data-grip="1"'+rvTip(K.nm,K.says)+'>'+ritKindIc(K.k)+esc(K.nm)+'</span>'
+  +'<span class="rv-sgm">'+x.p.min+(x.p.min===1?' minute':' minutes')+'</span></div>';
+ return '<li class="rv-sg1" style="--c:'+K.col+'" data-kind="'+K.k+'" data-drag="sug" data-i="'+i+'">'
   /* THE NAME IS THE HEADLINE AND OPENS THE POP-UP. His words, D-4: "The text
      is a headline, like a news headline. It is the thing that calls my
      attention ... If I click the text, then it should give me the pop-up."
@@ -303,12 +293,7 @@ function ritBankCard(x,i,st){
   +'<button type="button" class="rv-no" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'"'
    +' data-tip-t="Dismiss" data-tip="Takes it off Called for. Put back is offered in the same place.">'
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12 M18 6L6 18"/></svg></button></span></div>'
-  +chips
-  /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
-     Round QX made it what the practice is, his "text description". A
-     practice with no line prints no empty paragraph: the Truth Check's was
-     cut, engine/data/practice.js says why */
-  +(x.p.d?'<p class="rv-sgd">'+esc(x.p.d)+'</p>':'')+'</li>';}
+  +chips+'</li>';}
 
 /* ---------------- the schedule rows for affirmations and challenges ---------------- */
 var RIT_SCHED_KEY='atuned-ritual-sched';
@@ -417,14 +402,38 @@ function ritPopShell(col,head,sub,body,acts){
 function ritPopGone(t){return ritPopShell('var(--accent)',t,'','','');}
 function ritFold(nm,body){
  return body?'<details class="rv-pf"><summary>'+esc(nm)+'</summary>'+body+'</details>':'';}
+/* ---------------- what the Today list carried, in the pop-up ----------------
+   21 November. The Today card is gone (ui/ritcal.js lists where each of its
+   controls went), and a ritual that is running keeps its Timer, its Stop and,
+   for a release schedule tied to a place held at four or more, Release now,
+   here: on the block's pop-up (ritSashSheet) and on the Called for pop-up of
+   a practice already on the week. One helper, so the two cannot drift. The
+   presses are data-sh, the sheet's own attribute, and ritBankAct does them. */
+function ritRunActs(p,today){
+ if(!p||!ritActive(p,today))return '';
+ return '<div class="rv-prun" role="group" aria-label="Running">'
+  +ritTimerHtml(p).replace('data-act="timer"','data-sh="ptimer"')
+  +(p.rel!=null&&BY[p.rel]&&BY[p.rel].sq>=4?'<button type="button" class="btn" data-sh="prel" data-n="'+p.rel+'">Release now</button>':'')
+  +'<button type="button" class="btn" data-sh="pstop" data-id="'+p.id+'">Stop</button></div>';}
+/* a said or a did ring in a pop-up, the Today list's own press, today only */
+function ritPopTick(kind,id,line,on,col,ai){
+ return '<li class="rv-ptk'+(on?' rv-on':'')+'" style="--c:'+col+'"><button type="button" class="rv-log" data-sh="'+kind+'" data-id="'+esc(id)+'" aria-pressed="'+on+'" aria-label="'
+  +esc(on?(kind==='said'?'Said today':'Done today')+'. Press to take it off':(kind==='said'?'Mark said today':'Mark done today'))+'">'+ritTickHtml(on,col)+'</button>'
+  +'<span class="rv-ptq'+(ai?' src-ai':'')+'">'+line+'</span></li>';}
 function ritPopSug(st){
  var P=RIT.pop, x=(RIT.sug||[]).filter(function(s){return ritSugKey(s)===P.key;})[0]||P.x;
  if(!x)return ritPopGone('This one is no longer called for.');
  /* the pop-up wears its card's fill, the track, so the two read as one thing */
  var i=(RIT.sug||[]).indexOf(x), col=ritSugKind(x).col;
  var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x);
- var steps=ritSteps({steps:[x.k]});
- var body=(x.p.d?'<p class="rv-pwhat">'+esc(x.p.d)+'</p>':'')
+ var steps=ritSteps({steps:[x.k]}), run=ritPlans().filter(function(p){return ritKey(p.steps)===x.k&&ritActive(p,st.today);})[0];
+ /* what the short card no longer prints: its kind, the seats it is for, and
+    the person's record with it, each a chip carrying its meaning */
+ var chips='<div class="rv-pchips">'+ritKindChip(ritKindOf(x))+x.seats.map(function(b){
+   return '<span class="rv-kch" style="--c:'+seatCol(b)+'"'+rvTip(ritTagNm(b)+' point','The place in your body this is for.')+'><svg viewBox="0 0 24 24" class="rv-kic" aria-hidden="true">'
+    +(SEATGLYPH[b]||SEATGLYPH._)+'</svg><span>'+esc(ritTagNm(b))+'</span></span>';}).join('')
+  +'<span class="rv-kch" style="--c:var(--mid)"'+rvTip('Your record with it',ritSugRecSays(x,R).join(' '))+'><span>'+esc(ritSugRecWord(R))+'</span></span></div>';
+ var body=chips+(x.p.d?'<p class="rv-pwhat">'+esc(x.p.d)+'</p>':'')+ritRunActs(run,st.today)
   +ritFold('Why here','<ul class="rv-pwl">'+x.why.map(function(w){return ritAiHtml(w);}).join('')+'</ul>'
    +(T?'<p class="rv-pp">Toward '+esc(T.opp.toLowerCase())+': the quality release puts back where '+esc(ritCfWord(T.nm))+' was held.</p>':'')
    +ritSugRecSays(x,R).map(function(w){return '<p class="rv-pp">'+esc(w)+'</p>';}).join(''))
@@ -436,12 +445,17 @@ function ritPopSug(st){
  return ritPopShell(col,x.p.nm,x.p.min+(x.p.min===1?' minute':' minutes'),body,acts);}
 function ritPopAff(st){
  var P=RIT.pop, r=ritSchedOf('aff'), A=ritAffirm(st);
- var body='<ul class="rv-pafl">'+A.map(function(a){
-   return '<li class="rv-paf1'+(a.ai?' src-ai':'')+'">'+(a.ai&&typeof srcMark==='function'?srcMark():'')+(a.own?'"'+esc(a.line)+'"':esc(a.line))+'</li>';}).join('')+'</ul>'
+ var M=st._mo=st._mo||ritMore();
+ /* THE SAID RINGS LIVE HERE NOW, 21 November: they were on the Today list's
+    rows, which are gone. The same press through the same writer (ritDayMark),
+    today only, and a line Source AI composed keeps its mark. */
+ var body='<ul class="rv-pticks" aria-label="Said today">'+A.map(function(a){
+   return ritPopTick('said',a.id,(a.ai&&typeof srcMark==='function'?srcMark():'')+(a.own?'"'+esc(a.line)+'"':esc(a.line)),
+    ritDayOn(M.said,st.today,a.id),a.b?seatCol(a.b):ritKindCol('aff'),a.ai);}).join('')+'</ul>'
   +ritWhenHtml(P.W);
  var acts='<button type="button" class="btn pri" data-sh="baff">'+(r?'Change days':'Add to my week')+'</button>'
   +(r?'<button type="button" class="btn" data-sh="bstop">Stop all days</button>':'');
- return ritPopShell('var(--accent)','Affirmations',r?'On your week, '+ritOften(r.on).toLowerCase():'Not on your week yet',body,acts);}
+ return ritPopShell(ritKindCol('aff'),'Affirmations',r?'On your week, '+ritOften(r.on).toLowerCase():'Not on your week yet',body,acts);}
 function ritMissHtml(P,r){
  var k=P.mk||(r&&r.miss&&r.miss.k)||RIT_MISS[0].k, own=P.own!=null?P.own:((r&&r.miss&&r.miss.own)||'');
  return '<div class="rv-pw rv-miss" id="rv-pmiss"><span class="rv-pwh"'+rvTip('If I miss','What you agree to do if '+RIT_MISS_AT
@@ -465,7 +479,9 @@ function ritPopChal(st){
    +'<p class="rv-pp">You agreed: '+(r.miss.k==='own'&&r.miss.own?'"'+esc(r.miss.own)+'"':esc((RIT_MISS.filter(function(m){return m.k===r.miss.k;})[0]||RIT_MISS[0]).nm.toLowerCase()))+'.</p>'
    +'<div class="rv-prow"><button type="button" class="btn pri" data-sh="bwhy">Save my answer</button></div></div>':'';
  var last=r&&r.ans.length?r.ans[r.ans.length-1]:null;
- var body=why+'<p class="rv-pwhat">'+esc(c.act)+'</p>'
+ var M=st._mo=st._mo||ritMore();
+ /* the did ring, which the Today list's row carried, today only */
+ var body=why+'<ul class="rv-pticks" aria-label="Done today">'+ritPopTick('did',c.id,esc(c.act),ritDayOn(M.did,st.today,c.id),col,false)+'</ul>'
   +'<p class="rv-pp"><b>When it applies.</b> '+esc(c.when)+'</p>'
   +ritAiHtml('Who it answers: '+c.who+'.','p')
   +(last?'<p class="rv-pp">Your last answer: "'+esc(last.why)+'"</p>':'')
@@ -473,12 +489,29 @@ function ritPopChal(st){
  var acts='<button type="button" class="btn pri" data-sh="bagree">Agree</button>'
   +(r?'<button type="button" class="btn" data-sh="bstop">Stop all days</button>':'');
  return ritPopShell(col,c.nm,r?'On your week, '+ritOften(r.on).toLowerCase():'Challenge',body,acts);}
+/* THE GOAL'S POP-UP, 21 November. The Goal card left the centre for a tile
+   in the top row (ui/ritweek.js), and its whole markup opens here, with the
+   chain from the story to the work, which left Success over time when that
+   moved to the rail. Its presses are rewritten to the sheet's own attribute,
+   because the sheet is outside the page's listener. */
+function ritPopGoal(st){
+ var bc=ritBecoming();
+ var body=(ritGoalHtml(st)+ritChainHtml(st.c,st.r,st.act)).replace(/data-act="(why|go-story|go-bank)"/g,'data-sh="$1"');
+ return ritPopShell(bc?seatCol(bc.seat):'var(--accent)','Goal',RIT_TOP_SAY.goal,'<div class="rv-pgoal">'+body+'</div>','');}
+/* a block's pop-up is ritSashSheet (ui/ritcal.js), found again on its day by
+   its name after every write, the rule ritSheetWire already keeps, because a
+   planned day marked done moves in the day's list */
+function ritPopBlk(st){
+ var P=RIT.pop, s=ritWeekDay(P.d,st).filter(function(x){return x.nm===P.nm;})[0];
+ return s?ritSashSheet(s,P.d,st):ritPopGone('This is no longer on that day.');}
 function ritBankHtml(){
  var P=RIT.pop; if(!P)return '';
  var st=ritRead();
  if(P.t==='sug')return ritPopSug(st);
  if(P.t==='aff')return ritPopAff(st);
  if(P.t==='chal')return ritPopChal(st);
+ if(P.t==='goal')return ritPopGoal(st);
+ if(P.t==='blk')return ritPopBlk(st);
  return '';}
 /* open a pop-up. sug is a Called for card (x, from RIT.sug or a host's own
    list), aff the affirmation set, chal a challenge by its row id ch:<id>. The
@@ -493,7 +526,7 @@ function ritBankOpen(P){
    P.W=run?ritWhen0(run):ritWhen0(null);}
   else P.W=ritWhen0(ritSchedOf(P.t==='aff'?'aff':P.id));}
  if(P.on){P.W.on=P.on.slice(); P.W.rep=1;}
- RIT.pop=P; ritCalCss(); ritBankCss(); sheetOpen(ritBankHtml()); ritSheetWire(); ritBankWireIn();
+ RIT.pop=P; ritCalCss(); ritBankCss(); if(typeof ritWeekCss==='function')ritWeekCss(); sheetOpen(ritBankHtml()); ritSheetWire(); ritBankWireIn();
  var f=P.at==='why'?document.getElementById('rv-mwhy'):null; if(f)f.focus();
  return true;}
 /* the two text fields write to the pop-up's state on the way past, so a
@@ -513,10 +546,10 @@ function ritBankWireIn(){
    control does and not by where it sits */
 function ritBankRedraw(b){
  var c=document.getElementById('sheet-card'); if(!c)return;
- var key=b?b.getAttribute('data-sh')+'|'+(b.getAttribute('data-d')||''):'';
+ var key=b?b.getAttribute('data-sh')+'|'+(b.getAttribute('data-d')||b.getAttribute('data-id')||''):'';
  c.innerHTML=ritBankHtml(); ritBankWireIn();
  if(key){var f=[].slice.call(c.querySelectorAll('[data-sh]')).filter(function(x){
-   return x.getAttribute('data-sh')+'|'+(x.getAttribute('data-d')||'')===key;})[0]; if(f)f.focus();}}
+   return x.getAttribute('data-sh')+'|'+(x.getAttribute('data-d')||x.getAttribute('data-id')||'')===key;})[0]; if(f)f.focus();}}
 function ritBankShut(){sheetShut(); RIT.pop=null;}
 
 /* ---------------- the writers ---------------- */
@@ -613,6 +646,17 @@ function ritBankAct(a,b){
    var c=ritChallenge(ritRead()).filter(function(y){return 'ch:'+y.id===P.id;})[0];
    if(ritSchedSet(P.id,'chal',W,{k:k, own:k==='own'?own.slice(0,RIT_OWN_MAX):''},'Agreed. '+(c?c.nm:'The challenge')+' is on your week'))ritBankShut(); return;}
   case 'bstop': if(ritSchedStop(P.t==='aff'?'aff':P.id,'Stopped. The days you marked stay on your record.'))ritBankShut(); return;
+  /* what the Today list carried, 21 November. Each goes through the writer
+     it always went through; a write repaints the page under the pop-up, and
+     the pop-up is redrawn from a fresh read below. */
+  case 'said': case 'did': ritDayMark(a,b.getAttribute('data-id')); break;
+  case 'ptimer': ritTimer(b.getAttribute('data-id')); return;
+  case 'pstop': ritBankShut(); ritStop(b.getAttribute('data-id')); return;
+  case 'prel': ritBankShut(); if(typeof relPick==='function')relPick([+b.getAttribute('data-n')]); return;
+  case 'why': {var bc=ritBecoming(); ritBankShut(); if(bc)ritStartFor(bc,+b.getAttribute('data-d')); return;}
+  case 'go-story': ritBankShut(); if(typeof setTab==='function')setTab(TAB.STORY); return;
+  case 'go-bank': ritBankShut(); if(typeof setTab==='function')setTab(TAB.STORY);
+   if(typeof stBank==='function'&&typeof STV!=='undefined'&&!STV.bank)stBank(); return;
   case 'bwhy': {var t=document.getElementById('rv-mwhy'); if(ritMissAnswer(P.id,t?t.value:''))ritBankRedraw(null); return;}
   default: return;}
  ritBankRedraw(b);}

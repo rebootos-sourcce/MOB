@@ -170,17 +170,23 @@ async function width(browser, W, H) {
   await pg.click('#affadd'); await pg.waitForTimeout(400);
   const add = await pg.evaluate(() => {
     const k = JSON.parse(STORE.get('atuned-affirm-kept') || '{}')[CURP.id];
-    const lines = [...document.querySelectorAll('.rv-aff .rv-afq')];
-    return { rows: k && k.rows.length, creator: k && k.creator, tab: S.tab === TAB.RITUAL, shut: document.getElementById('sheet').hidden,
+    /* the Today card is gone, 21 November (ui/ritcal.js): the kept lines are
+       read in the affirmations' pop-up, where their said rings went */
+    const shut = document.getElementById('sheet').hidden;
+    ritBankOpen({ t: 'aff' });
+    const lines = [...document.querySelectorAll('#sheet-card .rv-ptk .rv-ptq')];
+    const out = { rows: k && k.rows.length, creator: k && k.creator, tab: S.tab === TAB.RITUAL, shut,
       shown: lines.map(e => e.textContent), marked: lines.length > 0 && lines.every(e => e.querySelector('.src-mk') && e.classList.contains('src-ai')),
       story: JSON.stringify(k || {}).indexOf('keeps his word') >= 0 && JSON.stringify(k || {}).indexOf('Someone who') >= 0 };
+    sheetShut(); RIT.pop = null; return out;
   });
   ok(add.rows === 7 && add.creator === true && add.shut && add.tab, 'Add keeps the seven pressed lines with the switch as set, shuts the sheet and lands on the Ritual page');
   ok(add.shown.length === 7 && add.shown[0].indexOf('I am the creator of all that is, I am built to keep my word') === 0, 'the Today affirmations say the kept set, ' + JSON.stringify(add.shown[0]));
   ok(add.marked, 'with the Source AI mark on every kept line');
   ok(!add.story, 'and the words the line came from are not stored, only the line and a source key');
   await pg.reload(); await booted(pg); await settle(pg);
-  const back = await pg.evaluate(() => { setTab(TAB.RITUAL); return [...document.querySelectorAll('.rv-aff .rv-afq')].map(e => e.textContent); });
+  const back = await pg.evaluate(() => { setTab(TAB.RITUAL); ritBankOpen({ t: 'aff' });
+    const t = [...document.querySelectorAll('#sheet-card .rv-ptk .rv-ptq')].map(e => e.textContent); sheetShut(); RIT.pop = null; return t; });
   ok(back.length === 7 && back[6].indexOf('I empower myself to keep my word') >= 0, 'and it is still there after a reload, ' + JSON.stringify(back[6]));
   ok(errs.length === 0, 'no page error, ' + JSON.stringify(errs.slice(0, 2)));
   await ctx.close();

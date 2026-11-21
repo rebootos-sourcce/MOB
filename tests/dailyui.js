@@ -9,7 +9,8 @@
    clock so the windows the engine reads are the ones a person would be in.
 
    What it asks, in the order a person meets it:
-     the Summary's side column is Today, and the shared rail steps aside
+     the Summary's centre opens on Today (its side column until 21 November),
+     and the shared rail steps aside
      a record's first open freezes one day, and a repaint never freezes two
      what is on the screen is the frozen day, sentence for sentence
      every term in a sentence carries its meaning (round PO)
@@ -78,7 +79,8 @@ const fresh=async(w,h,ctx)=>{
  await p.goto(FILE); await booted(p); await p.waitForTimeout(300);
  return {c,p,errs};};
 const col=p=>p.evaluate(()=>{
- var h=document.getElementById('sumday'), sec=h&&h.closest('.lsec');
+ /* the Summary's Today zone since 21 November, the rail's .lsec before it */
+ var h=document.getElementById('sumday'), sec=h&&h.closest('.sg-today,.lsec');
  var vis=function(e){if(!e)return false;var s=getComputedStyle(e);if(s.display==='none'||s.visibility==='hidden')return false;
   var r=e.getBoundingClientRect();return r.width>0&&r.height>0;};
  return {there:!!h, shown:vis(sec), text:h?h.innerText.replace(/\s+/g,' ').trim():'',
@@ -104,7 +106,7 @@ await section('a record',async()=>{
  ok(d1.length===1&&d1[0].id===today,'opening the Summary freezes one day, today\'s: '+JSON.stringify(d1.map(x=>x.id)));
  ok(d1.length&&d1[0].st.length>=3,'and it says something about this record, '+(d1[0]?d1[0].st.length:0)+' sentences');
  const k=await col(p);
- ok(k.there&&k.shown,'the Summary\'s side column is Today, and it is shown');
+ ok(k.there&&k.shown,'the Summary\'s centre opens on Today, and it is shown');
  ok(k.shared.length===0,'the shared rail steps aside on the Summary, still showing: '+JSON.stringify(k.shared));
  ok(JSON.stringify(k.st)===JSON.stringify(d1[0].st),'the column prints the frozen day, sentence for sentence, in its order');
  ok(/Written at \d\d:\d\d, the first time you opened this page today\./.test(k.text),'it says when it was written and that it stays until tomorrow');
@@ -124,7 +126,9 @@ await section('a record',async()=>{
  ok(JSON.stringify(await days(p))===JSON.stringify(d1),'a repaint freezes nothing new and changes nothing frozen');
  /* leaving empties it, and coming back shows the same day */
  await p.evaluate(()=>setTab(TAB.FIELD)); await p.waitForTimeout(300);
- ok((await p.evaluate(()=>document.getElementById('sumday').innerHTML))==='','leaving the Summary empties the column');
+ /* the host lives inside #sumbody since 21 November, so leaving takes it
+    with the page; either way nothing of the day is left in the document */
+ ok((await p.evaluate(()=>{var h=document.getElementById('sumday');return h?h.innerHTML:'';}))==='','leaving the Summary empties the column');
  await p.evaluate(()=>setTab(TAB.SUMMARY)); await p.waitForTimeout(300);
  ok(JSON.stringify((await col(p)).st)===JSON.stringify(d1[0].st),'coming back shows the same frozen day');
 
@@ -196,10 +200,43 @@ await section('a worked example',async()=>{
  await p.evaluate(()=>{var d=document.createElement('div');d.id='dl-bad';d.innerText='One two three four five six. Seven eight nine ten. One two three four five six.';document.body.appendChild(d);});
  ok((await dup('#dl-bad')).length===1,'the duplicate probe finds a sentence put in twice, before it is trusted');
  await p.evaluate(()=>document.getElementById('dl-bad').remove());
+ /* TODAY MOVED INSIDE #sumbody, 21 November (sumToday, ui/summary.js), and
+    this probe then read the engine's own day for the first time. Its first
+    run failed on Sofia, whose day says "In the 90 days before that, none
+    did." after two different points: two facts that share a closing clause,
+    composed by engine/daily.js, and printed exactly so in the rail before the
+    move, where this probe never looked. That is the engine's wording and not
+    this page repeating itself, so the page is probed as it always was, with
+    the day left out, and the one thing the move could add is probed on its
+    own: no sentence of the day repeats a sentence of the page around it. */
+ const dupPage=()=>p.evaluate(()=>{
+  var split=function(t){return t.split(/(?<=[.!?])\s+|\n+/).map(function(s){return s.trim();}).filter(function(s){return s.split(/\s+/).length>=5;});};
+  var c=document.getElementById('sumbody').cloneNode(true), d=c.querySelector('#sumday');
+  var day=d?split(document.getElementById('sumday').innerText):[];
+  if(d)d.remove();
+  /* innerText is layout aware and a detached clone has none, so the clone is
+     put in the document, off screen, for the one read */
+  c.style.cssText='position:absolute;left:-99999px;top:0;width:1200px'; document.body.appendChild(c);
+  var ss=split(c.innerText); c.remove();
+  var cnt={}; ss.forEach(function(s){cnt[s]=(cnt[s]||0)+1;});
+  return {twice:Object.keys(cnt).filter(function(s){return cnt[s]>1;}),
+   cross:day.filter(function(s){return cnt[s];})};});
+ /* the known bad case for the new half, before it is trusted: one sentence of
+    the Reading copied into the day */
+ await p.evaluate(()=>{loadP(PEOPLE.findIndex(function(x){return x.nm==='Marcus';}));setTab(TAB.SUMMARY);render();}); await p.waitForTimeout(250);
+ const badX=await p.evaluate(()=>{var r=document.querySelector('#sumbody .s-readbox'), d=document.getElementById('sumday');
+  /* split the way dupPage splits: the box opens on its "Reading" eyebrow, so
+     the first match of a bare sentence pattern carried the eyebrow with it
+     and could never equal a sentence the probe cuts */
+  if(!r||!d)return false; var s=r.innerText.split(/(?<=[.!?])\s+|\n+/).map(function(x){return x.trim();})
+   .filter(function(x){return x.split(/\s+/).length>=5;})[0]||'';
+  var x=document.createElement('p'); x.textContent=s; d.appendChild(x); return s.split(/\s+/).length>=5;});
+ ok(badX&&(await dupPage()).cross.length===1,'the day probe finds a sentence of the page copied into the day, before it is trusted');
  for(const nm of ['Sofia','Diane','Marcus','Angela','Derek','James']){
   await p.evaluate(nm=>{loadP(PEOPLE.findIndex(function(x){return x.nm===nm;}));setTab(TAB.SUMMARY);render();},nm); await p.waitForTimeout(250);
-  const d=await dup('#sumbody');
-  ok(d.length===0,nm+': no sentence is printed twice on the Summary: '+JSON.stringify(d.map(s=>s.slice(0,60))));}
+  const d=await dupPage();
+  ok(d.twice.length===0,nm+': no sentence is printed twice on the Summary: '+JSON.stringify(d.twice.map(s=>s.slice(0,60))));
+  ok(d.cross.length===0,nm+': and no sentence of the day repeats one of the page: '+JSON.stringify(d.cross.map(s=>s.slice(0,60))));}
  /* ONE RECORD'S OPEN ROWS NEVER OPEN ANOTHER'S, 16 October. The check above
     went red on 4c6185d and green again on f7188cb with no fix: it read
     James's Summary after five other records, and whether one of their first

@@ -383,9 +383,9 @@ function setTab(i){
   WANT[TAB.STORY]={right:['simp']};
   /* the Character page's words are the right rail's own section, round PE */
   WANT[TAB.MASKS]={right:['chr']};
-  /* the Summary's rail is today's summary, ui/daily.js, opened the first
-     time the page is reached */
-  WANT[TAB.SUMMARY]={right:['today']};
+  /* the Summary seeded the rail's Today section open here until 21 November,
+     when Today moved into the page's own centre (sumToday, ui/summary.js).
+     A centre zone has no fold to open, so the Summary seeds nothing. */
   var w=WANT[i]; if(!w)return;
   SEC_SEEDED=SEC_SEEDED||{};
   if(SEC_SEEDED[i])return; SEC_SEEDED[i]=1;

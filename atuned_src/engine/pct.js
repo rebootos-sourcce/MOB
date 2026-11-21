@@ -295,9 +295,13 @@ var PCT_KIND={
     area's own closure, never the hero's own figure again. */
  whole:     {lo:0, hi:100, src:'engine/avatar.js', find:'var pct=v===1?100:Math.min(99,Math.max(1,Math.round(100*v)));',
              say:'how much of who you are becoming you have built'},
- /* ui/avatarui.js:668, the mean of one area's own rows' closures, AV_AREAS'
-    own per-seat badge; not the hero's own circle, which is whole above */
- complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var cs=mine.map(function(x){return x.c;}).filter(function(v){return v!=null;});',
+ /* the mean of one area's own rows' closures, AV_AREAS' own per-seat badge;
+    not the hero's own circle, which is whole above. MOVED, 21 November
+    (dw-avatar-helper): the mean is avatarBecoming's now, in engine/avatar.js,
+    the one call the Avatar page and the Discover card both read, and its
+    bound is the clamp on each pair's closure, cited here, so a mean of
+    clamped values cannot leave nought to one either. */
+ complete:  {lo:0, hi:1, src:'engine/avatar.js', find:'var c=Math.max(0,Math.min(1,1-x.gap.load/s)), b=x.pair.seat||x.gap.seat;',
              say:'one seat\'s own mean closure, not the avatar\'s whole figure'},
  /* engine/seed.js seedShare, how much of what the nine axes carry is still
     the stated four letter type, against how far the person has moved it

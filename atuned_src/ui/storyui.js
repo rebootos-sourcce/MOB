@@ -200,9 +200,9 @@ var STMK_IC={
 var STMK_WHAT={
  stcompass:'Your two headline numbers. CQ is what holds, DQ is what you carry.',
  stboundary:'Six sides: the people you keep commitments with. Each side holds five, and each edge climbs to 100 percent as you write them.',
- stbody:'The one address in your body holding the most charge right now.',
+ stbody:'The three places in your body carrying the most charge right now. Each percent is how full that place is.',
  stfield:'The heaviest of your seven assemblage points right now.',
- stavatar:'Your archetype, and your rituals: how many you did and how many you missed.',
+ stavatar:'How whole you are: how far you have come toward who you are becoming, with who you are releasing on the left and who you are becoming on the right.',
  stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
  stsuperego:'The defence holding the most charge right now, of the four the product tracks.'};
 var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
@@ -253,22 +253,13 @@ function stmkBoundary(){
   var n=Math.min(a.length,PUR_PER_SIDE);
   return {nm:s, n:n, pct:Math.round(100*n/PUR_PER_SIDE)};});
  return {sides:sides, filled:bc.filled, of:bc.of, pct:Math.round(100*bc.filled/Math.max(1,bc.of))};}
-function stmkBody(r){
- if(r.unread||!r.heaviest)return null;
- var h=r.heaviest, nm=/_Unnamed$/.test(h.k)?'An address with no name yet':h.k;
- return {nm:nm, seat:h.b, v:h.sq, col:'var('+(SEATCOL[h.b]||'--dim')+')'};}
-/* REDRAWN, DECIDED 21 November: own fullness, never a share. This used to
-   return one number per seat on the 0-10 scale (v, s.weight*10) that the old
-   picture spent on arc width and opacity alone, with the arcs themselves
-   always the same angular length regardless of value, so the only thing
-   that actually moved with a story was which arc got the hot colour and a
-   bare 0-10 decimal in the centre, never a percent and never the other six
-   rows. p is now that same weight read through the registry (engine/pct.js,
-   kind 'weight', its own 0-10 range), so the picture's percent is the
-   product's one existing weight-to-percent formula and not a second one
-   invented here: Solar at a mean sq of 6.1 out of 10 reads 61%, his own
-   example. v is that formatted string, already the house dash when nothing
-   is held, never a bare 0%. */
+/* THE BODY CARD READS bodyTop3 NOW, 21 November, the approved redraw: three
+   places and three percents where it printed one address. stmkBody and its
+   ring are gone rather than kept beside it, because a second reading of
+   "where the body carries" on the same card is the drift bodyTop3 exists to
+   end (engine/compute.js). stmkTipBody, its only caller, goes with it
+   (merge 21 November, field-analytics branch: Field's own seven-row redraw
+   below is untouched by this, only Body's old single-address reading). */
 function stmkField(r){
  if(r.unread||!r.seats)return null;
  var rows=r.seats.map(function(s){
@@ -277,12 +268,21 @@ function stmkField(r){
  var top=rows.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(!top||top.w<=0)return null;
  return {rows:rows, top:top};}
+/* THE AVATAR CARD READS THE ONE BECOMING CALL, dw-avatar-face, 21 November.
+   It read done over done plus missed off CURP.rituals, a third percent that
+   neither the Avatar page nor the Ritual page drew, and a missed day pulled it
+   down. avBecomingNow (ui/avatarui.js) hands the engine the same rows the
+   Avatar page hands it, so the ring here is the page's ring. The done and
+   missed counts left this card: they are the Ritual page's to show. The two
+   people are read off the record's avatar, the names the Avatar page's header
+   edits, and nothing else. */
 function stmkAvatar(r){
- var arch=(!r.unread&&r.pi!=null&&ARCH[r.pi])?ARCH[r.pi]:null;
- var rit=((CURP&&CURP.rituals)||[]).filter(Boolean).slice().sort(function(a,b){return (a.t||0)-(b.t||0);});
- var lost=rit.filter(function(x){return x.done===false;}).length;
- return {arch:arch, col:arch?'var('+(SEATCOL[arch.b]||'--dim')+')':'var(--dim)',
-  w:rit.length-lost, l:lost, last:rit.slice(-7).map(function(x){return x.done!==false;})};}
+ var B=(typeof avBecomingNow==='function')?avBecomingNow():null;
+ var av=(CURP&&CURP.avatar)||{};
+ var tx=function(v){return typeof v==='string'?v.trim():'';};
+ return {pct:B?B.pct:null, say:B&&typeof wholeSay==='function'?wholeSay(B.whole):null,
+  be:{nm:tx(av.name), t:tx(av.title), d:tx(av.description)},
+  shed:{nm:tx(av.shedName), d:tx(av.shedDescription)}};}
 function stmkMasks(r){
  if(r.unread||typeof MASKS_READ==='undefined')return null;
  var bySeat={};
@@ -305,8 +305,6 @@ function stmkTipDQ(v){return stmkTip('DQ '+v,stmkU('dq')+' It runs 0 to 100, and
    and never a bare 0%, his ruling against a zero carried as a percent. */
 function stmkTipSide(s){return stmkTip(s.nm.charAt(0).toUpperCase()+s.nm.slice(1)+', '+fmtPct('portion',s.n/PUR_PER_SIDE),
  'Each commitment you write on this side fills it 20 percent.');}
-function stmkTipBody(b){return stmkTip(b.nm+', '+fmtPct('weight',b.v),
- 'This is where you are holding the most charge. '+stmkU('address')+' '+stmkU('charge')+' This one holds '+fmtPct('weight',b.v)+', at your '+b.seat+' point.');}
 /* ONE ROW, NOT ONE CARD, since the redraw: a row's own tip, not the whole
    picture's, so a seat that is not the heaviest still says what it holds.
    Kept the field-analytics-21nov branch's two-arg signature over main's
@@ -318,6 +316,20 @@ function stmkTipField(s,hot){return stmkTip(s.seat+', '+s.v,
 function stmkTipArch(a){return a.arch?stmkTip(a.arch.nm,'Your archetype: the one your avatar embodies most right now.'):stmkTip('Archetype','No archetype read yet.');}
 function stmkTipW(a){return stmkTip(a.w+' done',stmkU('practised')+' A win is a ritual you marked done.');}
 function stmkTipL(a){return stmkTip(a.l+' missed','A loss is a ritual that came due and was marked not done.');}
+/* the three hovers, each saying what its mark is in one sentence first, the
+   unpack-every-symbol ruling, then the person's own words where there are any */
+function stmkTipWhole(a){
+ return stmkTip(a.pct===null?'Whole':'Whole, '+fmtPct('complete',a.pct/100),
+  (typeof WHOLE_MEANS==='string'?WHOLE_MEANS:'How far you have come toward who you are becoming.')+(a.say?' '+a.say:''));}
+function stmkTipBe(a){
+ var nm=a.be.nm||a.be.t;
+ return stmkTip(nm?'Becoming: '+nm:'Who you are becoming',
+  'The up arrow is the person you are becoming.'+(nm?(a.be.t&&a.be.nm?' '+a.be.t+'.':'')+(a.be.d?' '+a.be.d:'')
+   :' Not named yet. Name them on the Avatar page.'));}
+function stmkTipShed(a){
+ return stmkTip(a.shed.nm?'Releasing: '+a.shed.nm:'Who you are releasing',
+  'The broken figure is the person you are releasing.'+(a.shed.nm?(a.shed.d?' '+a.shed.d:'')
+   :' Not named yet. Name them on the Avatar page.'));}
 function stmkTipMask(s){return stmkTip(s.m.nm+', '+s.p+'%',stmkU('mask')+' '+s.m.nm+' reads '+s.p+' percent of the most it could.');}
 /* THE WORKED EXAMPLE LINE, OFF THE FACE AND INTO ONE MARK. His words: the
    disclaimer near the row goes. The sentence is a standing disclosure
@@ -394,12 +406,15 @@ function stMiniBoundary(){
      (b.pct). The body now only says what the percent means. */
   +'<g class="stmk-t"'+stmkTip('Boundary, '+b.pct+'%','How full all six sides are together.')+'>'
   +'<text x="'+CX+'" y="'+(CY+7)+'" text-anchor="middle" class="stmk-n" font-size="20">'+b.pct+'<tspan font-size="11" dx="1">%</tspan></text></g></svg></div>';}
+/* three even rows, a body with one place lit, the place word, a whole
+   percent. The drawing and the hover are ui/map.js's bodyTop3Html, which the
+   Body page's key will draw with when it lands (held back 21 November, see
+   ui/map.js), so the two cannot disagree. Percent through bodyTop3's own
+   pct('weight'), the same kind stmkPctText reads, 21 November, for the
+   Field and Superego cards, so no card on this row prints a 0 to 10 decimal. */
 function stMiniBody(r){
- var b=stmkBody(r); if(!b)return STMK_DASH;
- return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipBody(b)+'>'+stmkRing(60,46,40,b.v/10,b.col,5)
-  +'<g transform="translate(52 14) scale(.68)" fill="none" stroke="'+b.col+'" stroke-width="1.8" stroke-linecap="round">'+STMK_IC.stbody+'</g>'
-  +'<text x="60" y="62" text-anchor="middle" class="stmk-n" font-size="25">'+stmkPctText(b.v)+'</text></g></svg>'
-  +'<span class="stmk-cap">'+esc(b.nm)+'</span></div>';}
+ var rows=bodyTop3(r); if(!rows.length)return STMK_DASH;
+ return '<div class="st-mini-vis bt3-card" role="list">'+bodyTop3Html(rows)+'</div>';}
 /* SEVEN ROWS, CROWN AT TOP TO ROOT AT BOTTOM, DECIDED 21 November. The
    picture this replaces was seven arcs of one circle, every one the same
    angular length no matter what it held, with only width and opacity
@@ -430,15 +445,29 @@ function stMiniField(r){
    +'<text x="'+PX+'" y="'+(y+2.9).toFixed(1)+'" text-anchor="end" font-size="8.2" font-weight="'+wt+'" fill="'+ink+'" opacity="'+dim+'" font-variant-numeric="tabular-nums">'+esc(s.v)+'</text>'
    +'</g>';});
  return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 160 110">'+rows+'</svg></div>';}
+/* THE CARD, his order for it: the avatar's mark in the middle of a ring
+   filled to the Whole, as one whole percent; the person being released on
+   the left, in the broken figure the Avatar header draws for them (AVI_SHED),
+   and the person being become on the right, an up arrow; both named on
+   hover. No streak, no change since last time, and nothing in red: the ring
+   is the accent and the two marks the quiet ink, so no colour on this card
+   says loss. The marks stand at even distances either side of the ring, the
+   standing symmetry ruling. */
+var STMK_UP='<path d="M12 19.5V5.5M6 11l6-6 6 6"/>';
+var STMK_SHED='<circle cx="12" cy="8" r="3.6" stroke-dasharray="2.2 2"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6" stroke-dasharray="2.2 2"/>';
+var STMK_ME='<circle cx="12" cy="7" r="3.4"/><path d="M4.5 21c0-4.6 3.4-7.8 7.5-7.8s7.5 3.2 7.5 7.8"/>';
 function stMiniAvatar(r){
- var a=stmkAvatar(r); if(!a.arch&&!a.w&&!a.l)return STMK_DASH;
- var tot=a.w+a.l, CX=60, CY=46;
- var ring=stmkRing(CX,CY,40,tot?a.w/tot:0,a.col,5);
- return '<div class="st-mini-vis stmk-col"><svg viewBox="0 0 120 92"><g class="stmk-t"'+stmkTipArch(a)+'>'+ring
-  +(a.arch?'<g transform="translate('+(CX-16.8)+' '+(CY-16.8)+') scale(1.4)" fill="none" stroke="'+a.col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.arch.ic+'"/></g>':'')
-  +'</g></svg>'
-  +'<span class="stmk-wl"><span class="stmk-t"'+stmkTipW(a)+'><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:'+a.col+'"><circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.7 2.6L16 9.6"/></svg><b>'+a.w+'</b></span>'
-  +'<span class="stmk-t"'+stmkTipL(a)+'><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:var(--dim)"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2l5.6 5.6M14.8 9.2l-5.6 5.6"/></svg><b>'+a.l+'</b></span></span></div>';}
+ var a=stmkAvatar(r), CX=60, CY=44, col='var(--accent)';
+ var mk=function(x,y,s,path,stroke){return '<g transform="translate('+(x-12*s)+' '+(y-12*s)+') scale('+s+')" fill="none" stroke="'+stroke
+  +'" stroke-width="'+(1.6/s).toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round">'+path+'</g>';};
+ var hit=function(x,y){return '<circle cx="'+x+'" cy="'+y+'" r="13" fill="transparent"/>';};
+ return '<div class="st-mini-vis stmk-col stmk-av"><svg viewBox="0 0 120 92">'
+  +'<g class="stmk-t stmk-av-shed"'+stmkTipShed(a)+' aria-label="Who you are releasing">'+hit(14,CY)+mk(14,CY,0.78,STMK_SHED,'var(--mid)')+'</g>'
+  +'<g class="stmk-t stmk-av-whole"'+stmkTipWhole(a)+'>'+stmkRing(CX,CY,34,a.pct===null?0:a.pct/100,col,4.5)
+  +mk(CX,CY-9,0.82,STMK_ME,col)
+  +'<text x="'+CX+'" y="'+(CY+19)+'" text-anchor="middle" class="stmk-n" font-size="15">'+(a.pct===null?'\u2013':a.pct+'<tspan font-size="9" dx=".5">%</tspan>')+'</text></g>'
+  +'<g class="stmk-t stmk-av-be"'+stmkTipBe(a)+' aria-label="Who you are becoming">'+hit(106,CY)+mk(106,CY,0.78,STMK_UP,'var(--mid)')+'</g>'
+  +'</svg><span class="stmk-cap">Whole</span></div>';}
 function stMiniMasks(r){
  var ms=stmkMasks(r); if(!ms)return STMK_DASH;
  var cells=ms.map(function(s,i){
