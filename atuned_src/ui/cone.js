@@ -3808,12 +3808,29 @@ function clSvg(W,H,stk){
     between the floor and this pole, dim, and are never on the path. */
  o+=clPole('descent',cx,G.pb,G.pr,CL_DN,false,'The descent','under coherence '+CQ_CLIMB_FLOOR,
   'The descent, under coherence '+CQ_CLIMB_FLOOR+', a mirror');
- var dw=2*G.hb*(stk?0.98:0.8), nc=stk?2:4, nr=Math.ceil(DESCENT.length/nc);
- var dy0=wy+(stk?40:44), dy1=G.pb-G.pr-(stk?24:26), dst=nr>1?(dy1-dy0)/(nr-1):0;
- DESCENT.forEach(function(d,k){
-  var row=Math.floor(k/nc), col=k%nc, x=cx-dw/2+dw*(col+0.5)/nc, y=Math.round(dy0+row*dst);
-  o+='<g class="cl-dstep"><circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="3.2"/>'
-   +'<text x="'+x.toFixed(1)+'" y="'+(y+14)+'">'+esc(d.nm)+'</text></g>';});
+ /* THE DESCENT'S ROWS, AS MARKS. The roster grew from eight to every row
+    DESCENT carries (the shadow roster, 21 November), and eight names under
+    the climb fitted where twenty seven print over each other. So each is a
+    dim mark inside the lower pyramid, its name on hover and tap, and the
+    bottom pole's card lists them all with what each one is. The rows narrow
+    with the pyramid, so no mark sits outside it. */
+ var nd=DESCENT.length, gap=stk?20:24, tipY=G.pb-G.pr-3, topY=wy+10, hw0=G.hb*0.62;
+ var dy0=wy+(stk?40:44), span=Math.max(0,(tipY-dy0)*0.62);
+ var rowW=function(y){return Math.min(2*G.hb*0.8,2*hw0*(tipY-y)/(tipY-topY)*0.84);};
+ /* as few rows as hold every mark at gap apart, each row as wide as the
+    pyramid is at its height, the wider rows above taking more */
+ var R=[];
+ for(var nr=1;nr<=10;nr++){R=[];var cap=0;
+  for(var j=0;j<nr;j++){var y=Math.round(dy0+(nr>1?span*j/(nr-1):0)), w=rowW(y), c=Math.max(1,Math.floor(w/gap));
+   R.push({y:y,w:w,c:c}); cap+=c;}
+  if(cap>=nd)break;}
+ var left=nd, k0=0;
+ R.forEach(function(rw,j){
+  var n=Math.min(rw.c,left); rw.n=n; rw.k0=k0; k0+=n; left-=n;});
+ R.forEach(function(rw){for(var i=0;i<rw.n;i++){var d=DESCENT[rw.k0+i]; if(!d)continue;
+  var x=cx-rw.w/2+rw.w*(i+0.5)/rw.n;
+  o+='<g class="cl-dstep" data-tip-k="'+esc(d.nm)+'" data-tip="'+esc(d.d||('Part of the descent, under coherence '+CQ_CLIMB_FLOOR+'.'))+'">'
+   +'<circle class="cl-hit" cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="9"/><circle cx="'+x.toFixed(1)+'" cy="'+rw.y+'" r="3.2"/></g>';}});
  /* THE AVATAR, AT THE READING'S OWN CQ, AND LIT BY IT. Ruled 21 November, his
     words: "your avatar is simply a circle representing your field and the
     radiance of that glow determined by your CQ." So CQ and nothing else sets

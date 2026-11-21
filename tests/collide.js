@@ -470,6 +470,12 @@ for(const w of [[1600,1000],[390,844]]){
     .filter(e=>!e.closest('.cl-pole'));
    const over=[];own.forEach(a=>other.forEach(c=>{if(hit(bx(a),bx(c)))over.push(nm(a)+' over '+nm(c));}));
    const st=[...document.querySelectorAll('#cnclimb .cl-st .cl-n,#cnclimb .cl-dstep circle')].map(e=>bx(e));
+   /* the descent's marks: the roster grew from eight to twenty seven on 21
+      November and their names printed over each other, so every mark is
+      held apart from every other */
+   const dm=[...document.querySelectorAll('#cnclimb .cl-dstep circle:not(.cl-hit)')].map(e=>bx(e));
+   let dover=0;for(let i=0;i<dm.length;i++)for(let j=i+1;j<dm.length;j++)if(hit(dm[i],dm[j]))dover++;
+   const dtext=document.querySelectorAll('#cnclimb .cl-dstep text').length;
    const up=document.querySelector('#cnclimb .cl-pole-up .cl-pr'), dn=document.querySelector('#cnclimb .cl-pole-dn .cl-pr');
    const ub=up&&bx(up), db=dn&&bx(dn);
    const inside=q=>sb&&q.left>=sb.left-0.5&&q.right<=sb.right+0.5&&q.top>=sb.top-0.5&&q.bottom<=sb.bottom+0.5;
@@ -487,9 +493,9 @@ for(const w of [[1600,1000],[390,844]]){
    const card={k:k,sel:CONE.clSel,bar:bar?bx(bar).bottom:null,title:ttl?bx(ttl).top:null,
     marked:!!document.querySelector('#cnclimb .cl-st.sel[data-cl="'+k+'"]')};
    try{rdClose();}catch(e){}
-   return {poles:poles.length,over:over,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
+   return {poles:poles.length,over:over,dn:dm.length,dover:dover,dtext:dtext,want:DESCENT.length,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
     upTop:!!ub&&st.every(q=>ub.bottom<=q.top+0.5),dnBot:!!db&&st.every(q=>db.top>=q.bottom-0.5),
-    seats:seats,want:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
+    seats:seats,wantSeats:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
     ends:railEnds,card:card};},who);
   const tag=w.join('x')+'/profile '+who;
   ok(r.poles===2,tag+': the climb draws its two poles, saw '+r.poles);
@@ -497,7 +503,8 @@ for(const w of [[1600,1000],[390,844]]){
   ok(r.upIn&&r.dnIn,tag+': a pole runs off the board (up '+r.upIn+', down '+r.dnIn+')');
   ok(r.upTop,tag+': the up arrow is not above every station');
   ok(r.dnBot,tag+': the down arrow is not below every station and descent step');
-  ok(r.seats.join()===r.want.join(),tag+': the rail reads '+r.seats.join(', ')+', want Crown to Root');
+  ok(r.dn===r.want&&r.dover===0&&r.dtext===0,tag+': the descent draws '+r.dn+' of '+r.want+' marks, '+r.dover+' touching, '+r.dtext+' names printed');
+  ok(r.seats.join()===r.wantSeats.join(),tag+': the rail reads '+r.seats.join(', ')+', want Crown to Root');
   ok(r.ends[0]==='src'&&r.ends[r.ends.length-1]==='descent',tag+': the rail does not open on Source and close on the descent: '+r.ends.join());
   ok(r.rover.length===0,tag+': rail entries print over each other: '+r.rover.slice(0,3).join('; '));
   ok(!r.clipped,tag+': the rail runs past its own bottom');
