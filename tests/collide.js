@@ -245,6 +245,10 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
    /* the arrow figure is the side view since round IA; the view from above
       is measured in its own block below */
    CONE.side=true;
+   /* the Compass opens on the climb since 21 November (clSvg, ui/cone.js),
+      which hides the figure and its key; this block measures the figure, so
+      it shows the figure, the way "The figure" does, and puts the view back */
+   const wasClimb=CONE.climb; CONE.climb=false;
    CONE.reg=true;CONE.layers=true;CONE.flat=!tn;CONE.tilt=0.92;coneOpen(true);
    const said=[];const g=CONE.g;const ft=g.fillText;
    g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
@@ -271,7 +275,7 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
     want:typeof coneKey==='function'?CONE_HI.length+CONE_LO.length
      +coneRegLaws().up.length+coneRegLaws().dn.length:-1,
     phoneNames:nmb&&innerWidth<900?nmb.top>=bx.bottom-0.5:null};
-   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;coneOpen(true);
+   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;CONE.climb=wasClimb;coneOpen(true);
    return res;},turned);
   const tag=w.join('x')+(turned?'/turned':'/flat');
   ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
