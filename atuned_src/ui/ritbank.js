@@ -748,10 +748,21 @@ function ritBankCss(){
   '#rit .rv-wd1.rv-nodrop{opacity:.55}',
   '.rv-sg1[data-drag]{cursor:grab}',
   /* THE REPEAT BAND, ritRecurHtml. One shaded band is one setting, the look
-     .rv-pw already gave the pop-up's When. 8 between the parts of the one
-     setting, 44 on every press, and the panels under it fold away whole. */
+     .rv-pw already gave the pop-up's When. 8 between the rows the band
+     stacks (this row, the days, the panels), 44 on every press, and the
+     panels under it fold away whole. */
   '.rv-rc{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--c) 7%,var(--panel-2))}',
-  '.rv-rca{display:flex;align-items:center;gap:8px}',
+  /* THIS ROW ITSELF IS 6 BETWEEN ITS OWN FOUR PARTS, not the 8 above it,
+     found in the same 21 November pass as the timer: Repeat (whose own
+     longest real answer, Weekdays, already measured 110.3 of the 316 a
+     phone gives this row) plus For (whose longest, 2/3/4 weeks, measures
+     97.6) plus two 44 pixel presses needed 319.9 at the old 8, four pixels
+     more than the row had, and the only part of the four with any give
+     (For, the one flex-shrink:1 among them) lost exactly that four,
+     truncating "2 weeks" to "2 we...". At 6 the same four need 313.9, which
+     fits with room left over for Repeat's own flex-grow to take up, so For
+     renders at its full, unshrunk, content width. */
+  '.rv-rca{display:flex;align-items:center;gap:6px}',
   '.rv-rsel{position:relative;display:flex;align-items:center;min-width:0;cursor:pointer}',
   '.rv-rsel select{appearance:none;-webkit-appearance:none;width:100%;min-width:0;min-height:44px;padding:0 28px 0 12px;border-radius:12px;border:1px solid var(--edge);',
   ' background:var(--panel);color:var(--ink);font:inherit;font-size:14px;cursor:pointer;text-overflow:ellipsis}',

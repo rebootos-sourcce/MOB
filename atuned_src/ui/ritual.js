@@ -1338,6 +1338,18 @@ function ritBuildHtml(c,nAct,unread){
     label over it, 123 pixels with How often beside it. They are one row
     now: the timer is a dropdown with its ring and the minutes on its face,
     Timer itself is the tip, and Affirm is its ring alone (affDoorHtml's ic). */
+ /* THE 104 WAS TOO NARROW FOR ITS OWN LONGEST VALUE, found in the 21
+    November independent pass: the timer starts at the sum of the ritual's
+    steps and the library sums to 408, so the dropdown's own real options run
+    "1 min" to "408 min", not a fixed 1 to 2 digits. Measured in a real
+    Chromium, the longest of them ("400 min", the widest at this font) needs
+    120.6 of the 38 the old 104 pixel box left for text once its icon and
+    chevron padding are paid, and every width from 121 up renders every real
+    option with no overflow, checked against each one of them, not the
+    longest alone. 124 is that 121 plus 3 for the hinting slack between
+    render engines. The rit-more button beside it (flex 1 1 auto) carries
+    the give: it measured 56 pixels of slack at 390 before this changed and
+    only loses the 20 this adds, nowhere near its own 96 pixel floor. */
  out+='<div class="rv-tools">'
   +'<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
   +'<span>Rituals</span>'+ritIc('down')+'</button>';
@@ -2113,7 +2125,7 @@ function ritCss(){
   '.rv-new .rv-tools:first-child{margin-top:0}',
   '.rv-new .rv-tools .rit-more{flex:1 1 auto;width:auto;min-width:0;margin:0;display:flex;padding:0 12px;border:1px solid var(--edge);',
   ' border-radius:12px;background:var(--panel);color:var(--ink);font-size:14px}',
-  '.rv-new .rv-tools .rv-tmsel{flex:0 0 104px}',
+  '.rv-new .rv-tools .rv-tmsel{flex:0 0 124px}',
   '.rv-new .rv-tools .aff-door-ic{position:relative;flex:0 0 44px;width:44px;min-width:44px;height:44px;padding:0;justify-content:center;border-radius:12px}',
   '.rv-new .aff-door-ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
   '.rv-new .rv-rc{--c:var(--accent);margin:12px -14px 0;padding:8px 14px}',

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v348 251e6383 2026-11-21 02:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v349 889363d7 2026-11-21 03:44"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -82287,6 +82287,18 @@ function ritBuildHtml(c,nAct,unread){
     label over it, 123 pixels with How often beside it. They are one row
     now: the timer is a dropdown with its ring and the minutes on its face,
     Timer itself is the tip, and Affirm is its ring alone (affDoorHtml's ic). */
+ /* THE 104 WAS TOO NARROW FOR ITS OWN LONGEST VALUE, found in the 21
+    November independent pass: the timer starts at the sum of the ritual's
+    steps and the library sums to 408, so the dropdown's own real options run
+    "1 min" to "408 min", not a fixed 1 to 2 digits. Measured in a real
+    Chromium, the longest of them ("400 min", the widest at this font) needs
+    120.6 of the 38 the old 104 pixel box left for text once its icon and
+    chevron padding are paid, and every width from 121 up renders every real
+    option with no overflow, checked against each one of them, not the
+    longest alone. 124 is that 121 plus 3 for the hinting slack between
+    render engines. The rit-more button beside it (flex 1 1 auto) carries
+    the give: it measured 56 pixels of slack at 390 before this changed and
+    only loses the 20 this adds, nowhere near its own 96 pixel floor. */
  out+='<div class="rv-tools">'
   +'<button type="button" class="rit-more rv-more-t" id="ritall" data-act="all" aria-expanded="'+!!RIT.all+'">'
   +'<span>Rituals</span>'+ritIc('down')+'</button>';
@@ -83062,7 +83074,7 @@ function ritCss(){
   '.rv-new .rv-tools:first-child{margin-top:0}',
   '.rv-new .rv-tools .rit-more{flex:1 1 auto;width:auto;min-width:0;margin:0;display:flex;padding:0 12px;border:1px solid var(--edge);',
   ' border-radius:12px;background:var(--panel);color:var(--ink);font-size:14px}',
-  '.rv-new .rv-tools .rv-tmsel{flex:0 0 104px}',
+  '.rv-new .rv-tools .rv-tmsel{flex:0 0 124px}',
   '.rv-new .rv-tools .aff-door-ic{position:relative;flex:0 0 44px;width:44px;min-width:44px;height:44px;padding:0;justify-content:center;border-radius:12px}',
   '.rv-new .aff-door-ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}',
   '.rv-new .rv-rc{--c:var(--accent);margin:12px -14px 0;padding:8px 14px}',
@@ -85892,10 +85904,21 @@ function ritBankCss(){
   '#rit .rv-wd1.rv-nodrop{opacity:.55}',
   '.rv-sg1[data-drag]{cursor:grab}',
   /* THE REPEAT BAND, ritRecurHtml. One shaded band is one setting, the look
-     .rv-pw already gave the pop-up's When. 8 between the parts of the one
-     setting, 44 on every press, and the panels under it fold away whole. */
+     .rv-pw already gave the pop-up's When. 8 between the rows the band
+     stacks (this row, the days, the panels), 44 on every press, and the
+     panels under it fold away whole. */
   '.rv-rc{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--c) 7%,var(--panel-2))}',
-  '.rv-rca{display:flex;align-items:center;gap:8px}',
+  /* THIS ROW ITSELF IS 6 BETWEEN ITS OWN FOUR PARTS, not the 8 above it,
+     found in the same 21 November pass as the timer: Repeat (whose own
+     longest real answer, Weekdays, already measured 110.3 of the 316 a
+     phone gives this row) plus For (whose longest, 2/3/4 weeks, measures
+     97.6) plus two 44 pixel presses needed 319.9 at the old 8, four pixels
+     more than the row had, and the only part of the four with any give
+     (For, the one flex-shrink:1 among them) lost exactly that four,
+     truncating "2 weeks" to "2 we...". At 6 the same four need 313.9, which
+     fits with room left over for Repeat's own flex-grow to take up, so For
+     renders at its full, unshrunk, content width. */
+  '.rv-rca{display:flex;align-items:center;gap:6px}',
   '.rv-rsel{position:relative;display:flex;align-items:center;min-width:0;cursor:pointer}',
   '.rv-rsel select{appearance:none;-webkit-appearance:none;width:100%;min-width:0;min-height:44px;padding:0 28px 0 12px;border-radius:12px;border:1px solid var(--edge);',
   ' background:var(--panel);color:var(--ink);font:inherit;font-size:14px;cursor:pointer;text-overflow:ellipsis}',
@@ -108348,5 +108371,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="007389045"></div>
+<div id="eof" hidden data-len="007390684"></div>
 </body></html>
