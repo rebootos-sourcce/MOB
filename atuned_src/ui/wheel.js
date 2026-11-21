@@ -1311,7 +1311,17 @@ function drawWheel0(r,L){
     weight/tension tier() machinery built for a thing that compounds. D
     gates it the same way lay() gates everything else: drawn only while
     fetters or their fade is still live. */
- if(D.fetters&&D.addresses){
+ /* AND NOT ON AN UNREAD FIELD, 21 November. Every other bead tier iterates
+    r.sabs, r.cxs, r.hys or r.sups, which compute() leaves empty when nothing
+    has been read, so those tiers fall silent on their own. The fetters iterate
+    CHILD, a fixed table of nine, so on a blank device they drew nine coloured
+    beads and a 0.14 alpha chord from every one of the 108 addresses into them.
+    Lance reported it from a screenshot as data points trying to render with no
+    profile selected, and it was: measured in a real Chromium on a blank
+    profile, unread true, every fetter's charge 0, nine fet targets on the
+    wheel. This gates on r.unread for the reason the law ticks below do: a read
+    field with a fetter at nought is still structure and still draws. */
+ if(D.fetters&&D.addresses&&!r.unread){
   var fetA2=LA.fetters.v;
   CHILD.forEach(function(c){
    var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
@@ -1529,9 +1539,19 @@ function drawWheel0(r,L){
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
+ /* NOT ON AN UNREAD FIELD, 21 November, the follow up to the fetters above.
+    A blank profile carries the schema's default soul, arcs [0,1] and doms
+    [0] (engine/schema.js, from:'default'), and r.aff and DOMAIN are bumps
+    centred on it, so a person who had entered nothing saw the first
+    archetype lit as their lead at 12 o'clock, the second as their second,
+    and the first domain selected. Measured on a blank profile: unread true,
+    pi 0, si 1, aff[0] 1, doms [0]. That says something about them nobody
+    has said, which is what CLAUDE.md's unread ruling exists to stop. Both
+    rings draw at their floor on unread and keep their targets, as the law
+    ticks do, so an arc can still be pressed. */
  lay('archetypes',()=>{for(let j=0;j<12;j++){
-  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
-  const lead=j===r.pi,sec=j===r.si;
+  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.unread?0:r.aff[j],am=(a0+a1)/2;
+  const lead=!r.unread&&j===r.pi,sec=!r.unread&&j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
   /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
@@ -1649,10 +1669,11 @@ function drawWheel0(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
+ /* the default domain is not lit on unread either, see the archetype ring */
  lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
-  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=!r.unread&&S.doms.indexOf(d)>=0,v=r.unread?0:DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
@@ -1778,12 +1799,13 @@ function drawWheel0(r,L){
     unlike a saboteur's own object which compute() rebuilds each call; CHILD
     needs no such rebuild because it carries no per-frame reading of its
     own, only S.charge beside it. Size reads real held charge, same pattern
-    every other bead already scales by its own weight. All nine draw always
-    (there are only nine, and a fetter has nothing to be "not running":
+    every other bead already scales by its own weight. All nine draw on any
+    read field, and none on an unread one (there are only nine, and a fetter has nothing to be "not running":
     trace.js's own words, "carries no address-level content of its own", so
     there is no running/not-running split to draw here the way a saboteur
     has one). */
- lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+ /* the beads go silent on unread with their chords, see FETTER CHORDS above */
+ lay('fetters',()=>{if(r.unread)return;CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
   if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the

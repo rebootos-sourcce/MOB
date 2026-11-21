@@ -5138,8 +5138,10 @@ var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws o
 /* THE FILMS, BY THE FILE THAT HOLDS EACH ONE. Read off his Drive folder
    "Atuned Videos" (folder 1jzIHUjxyJ3IGU62npLj4jXmPvExrcobY) on 21 November,
    by listing the folder, not by searching names, and every row below is a
-   file that listing returned. It is a map for the Worker seam to fetch from
-   in a later milestone and nothing more: a film is never embedded in this
+   file that listing returned. It is a map, and it has two readers: the
+   Worker seam may fetch from it in a later milestone, and since 21 November
+   ui/kbtable.js turns each id into a plain link out to the Drive file, which
+   only the person's own press follows. A film is never embedded in this
    file, and nothing here makes a request.
 
    TEN, NOT EIGHT. The brief said eight films and BOOK-ERRATA.md 15 said

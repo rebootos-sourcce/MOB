@@ -5117,6 +5117,77 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* PILLOW EMBOSS, 21 November, his words on the Dashboard's Source AI
+   circle: "I want it to feel like there's a subtle, like it's a pillow emboss
+   with a subtle bevel, making it feel like it's a ring inside of a raised
+   surface with this kind of cloudy pattern around it."
+
+   Three layers, one light, from the upper left, the way every highlight in
+   this product already falls:
+    1. THE RAISED SURFACE, ::before under the face. A disc a band wider than
+       the face (--sf-band), lit on its upper left crown and rolling into
+       shadow on its lower right flank (the two inset shadows), lifted off
+       the well by a cast shadow down and right with a faint lit edge up and
+       left (the two outer shadows). Its fill is nearly clear, so the cloud
+       under it (ui/unicloud.js, mounted in #stjr on the Dashboard) still
+       reads through the band.
+    2. THE FACE, srcface.js's own canvas, untouched except that the box it
+       sits in is held in by --sf-pil, so the raised band fits inside her
+       panel instead of being cut by it. Her circle is sized off that box
+       every frame, so nothing in the drawing moves.
+    3. THE INSET RIM, ::after over the face, exactly its size (--sf-d,
+       written by srcface.js, the only code that knows the circle). The
+       upper left wall of the groove shades the face (inset, offset down
+       right), the lower right lip catches light (inset, offset up left),
+       and outside the groove the pillow's own lip is lit lower right and
+       shaded upper left, which is what makes the face read as pressed into
+       the surface rather than laid on it.
+   Static, so reduced motion has nothing to stop: the end state is the only
+   state. Compositor cost is paint once per resize; box-shadow on a fixed
+   element does not repaint per frame. Pointer events pass through both
+   layers to the canvas, whose click impulse is kept. #stuni's clip is
+   lifted here only so the cast shadow is not cut square at its box, the
+   one thing his 8 November ruling says never to show. */
+body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
+body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
+body.tab-story.st-full #stuni .canvas-wrap #srcface{
+ inset:var(--sf-pil);width:calc(100% - 2*var(--sf-pil));height:calc(100% - 2*var(--sf-pil))}
+body.tab-story.st-full #stuni .canvas-wrap::before,
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
+ transform:translate(-50%,-50%);pointer-events:none}
+body.tab-story.st-full #stuni .canvas-wrap::before{
+ z-index:-1;width:calc(var(--sf-d,0px) + 2*var(--sf-band));
+ background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.055),rgba(255,255,255,.016) 48%,rgba(0,0,0,.12) 100%);
+ box-shadow:
+  inset 2px 3px 3px -1px rgba(255,255,255,.10),
+  inset -3px -5px 9px rgba(0,0,0,.45),
+  -6px -8px 18px -4px rgba(255,255,255,.035),
+  8px 12px 26px -2px rgba(0,0,0,.6)}
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ z-index:1;width:var(--sf-d,0px);
+ box-shadow:
+  inset 3px 5px 8px rgba(0,0,0,.5),
+  inset -1px -2px 2px rgba(255,255,255,.06),
+  0 0 0 1px rgba(0,0,0,.35),
+  1px 2px 3px rgba(255,255,255,.05),
+  -1px -2px 3px rgba(0,0,0,.4)}
+@media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
+/* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
+   Dashboard at z-index -1; isolation keeps that under her words and controls
+   but over the well's own ground, and the mask fades it to nothing well
+   inside the panel so the cloud never meets the panel's square edge. */
+body.tab-story.st-full #stjr{isolation:isolate}
+/* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
+   -1) out from behind the panel's own background, where on the Dashboard it
+   had always been painted and never seen. Measured on the first build of
+   this round: it came up as a pale rounded box with an accent blob in its
+   top left corner behind her circle, the same box he reported on the hero
+   on 10 November. It stays where it always was on this view: unseen. */
+body.tab-story.st-full #stjr .st-glow::before{display:none}
+body.tab-story.st-full #stjr>#unicloud{
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -11476,20 +11547,34 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
-.cl-src{cursor:pointer}
-.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
-.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
-.cl-srcl{text-anchor:start!important;font-size:11px}
-.cl-door{cursor:pointer}
-.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
-.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl-door text{fill:var(--ink);font-size:12px}
-.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
-.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
-.cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
-.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
-.cl-av .core{fill:#F2E6C4}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
+.cl-dstep .cl-hit{fill:transparent;stroke:none}
+.cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
+/* THE TWO POLES (clPole). One ring, one arrow, one size, top and bottom, so
+   they read as a pair: Source's in the light the board already gives
+   Source, the descent's in the red the descent already wears. Ring, not
+   fill: the disc behind the arrow is the ground, so the path never shows
+   through it. */
+.cl-pole{cursor:pointer;outline:none}
+.cl-pole .cl-hit{fill:transparent;stroke:none}
+.cl-pole .cl-pr{fill:#101114;stroke-width:1.8}
+.cl-pole .cl-pa path{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-pole-up .cl-pr{stroke:#F2E6C4;stroke-opacity:.8}
+.cl-pole-up .cl-pa path{stroke:#F2E6C4}
+.cl-pole-up.open .cl-pr{stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-pole-dn .cl-pr{stroke:rgba(220,135,125,.85)}
+.cl-pole-dn .cl-pa path{stroke:rgba(230,150,140,1)}
+.cl-pole:hover .cl-pr,.cl-pole:focus-visible .cl-pr{stroke-width:2.8}
+.cl-svg .cl-pn{text-anchor:start;font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cl-svg .cl-ps{text-anchor:start;font-size:11px;fill:var(--mid)}
+/* THE AVATAR'S GLOW IS ITS CQ (clSvg, --g is CQ over 100): the radiance
+   ring's reach and light both scale with it, so a person at 90 glows and a
+   person at 45 barely does */
+.cl-av .rad{fill:none;stroke:#F2E6C4;stroke-width:1.2;stroke-opacity:calc(.15 + .6*var(--g,0));
+ filter:drop-shadow(0 0 calc(2px + 12px*var(--g,0)) rgba(242,230,196,.85));pointer-events:none}
+.cl-av text{pointer-events:none}
+.cl-av .halo{fill:none;stroke:#F2E6C4;stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4;fill-opacity:calc(.55 + .45*var(--g,0))}
 .cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
@@ -11515,4 +11600,38 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
+/* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
+   Insight rail on the right: the figure's second panel is not drawn on the
+   climb, so the page is a rail, the board, a rail. The seats are spread down
+   the height with even space between them, the poles at its two ends. */
+.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
+.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+.cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
+.cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
+.cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
+.cl-rail .fb-orb,.cl-rail .fb-arc{width:34px;height:34px}
+.cl-rail .fb-gl svg{width:16px;height:16px}
+.clr-seat{display:flex;flex-direction:column;gap:1px}
+.clr-hd{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:11px;line-height:1.3;color:var(--dim)}
+.clr-mk{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:var(--ax);stroke-width:1.6}
+.clr-nm{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.clr-rg{margin-left:auto;font-variant-numeric:tabular-nums}
+.clr-hd.sel .clr-nm{text-decoration:underline;text-underline-offset:3px}
+.clr-at{display:block;font-size:11px;line-height:1.3;color:var(--mid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr-lw{color:var(--dim)}
+.clr-paths{display:flex;align-items:center;gap:2px;padding-left:0}
+.clr-paths .cn-tx{padding-left:8px}
+.cl-rail .clr-pt{width:44px;min-width:44px;height:44px;padding:5px;flex:0 0 44px;justify-content:center}
+.clr-paths.shut .cn-or{opacity:.55}
+.clr-paths.shut .cn-or .trk{stroke-dasharray:3 3}
+.cl-rail .cn-tx{min-width:0;flex:1 1 auto}
+.clr-t.shut .cn-or{opacity:.55}
+.clr-t.shut .cn-or .trk{stroke-dasharray:3 3}
+.clr-t.sealed .cn-or .trk{stroke-width:3}
+.clr-pole .cn-nu{color:var(--ink)}
+.clr-pole-up .cn-or{--c:#F2E6C4;color:#F2E6C4}
+.clr-pole-dn .cn-or{--c:rgba(220,135,125,.9);color:rgba(230,150,140,1)}
+.clr-pole .fb-gl svg{stroke-width:2}
+.cn-pan.fb-lt .clr-pole-up .cn-or{--c:#8A7440;color:#8A7440}
 </style></head>
