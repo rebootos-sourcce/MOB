@@ -5752,7 +5752,10 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
     finding P09) replaced with a plain percent answered (ixSay, round PU,
     engine/intakemore.js), and this assertion was never moved to match. */
  ok(/%.*answered/.test(ix.pressed.part),'and a half answered block says how much is answered, as a percent and not a fraction, "'+ix.pressed.part+'"');
- ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
+ /* Anger's opposite was Equanimity until the 21 November ruling moved it to
+    the book's own word, Calm (canon.js CHILD, his words: "anger, calm,
+    apathy, joy, sad, happy"); this assertion was never moved to match. */
+ ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Calm: /.test(ix.read),
   'a finished block names its leader with the place and its other end unpacked, "'+ix.read+'"');
  ok(ix.moved===9&&ix.onAnger===1,'a second press on the same question moves the answer and leaves one cell pressed');
  ok(ix.kept,'and the answer survives the boundary on the way back in');
