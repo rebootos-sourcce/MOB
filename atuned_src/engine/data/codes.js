@@ -184,7 +184,32 @@ const CODE_STRUCT=[
     researched entries for them would not resolve without one. A new code,
     never a renamed one, per this file's own rule above. */
  ["X33","Dysregulation","hyper_complex",9,"R"],
- ["X34","Dissociation","hyper_complex",10,"R"]];
+ ["X34","Dissociation","hyper_complex",10,"R"],
+ /* X35 TO X53, ADDED 21 NOVEMBER 2026. DESCENT's reference rows for the
+    rest of the shadow roster (compass.js, "THE REST OF THE ROSTER") would not
+    resolve without a structure code, the same gap X33 and X34 closed. New
+    codes, never renamed ones. Tagged I: the names are shipped and ruled
+    words, but filing them in this register is the gate's need and not a
+    ruling on their tier, which stays his (TASKS.md round SM, SM9, SM16). */
+ ["X35","Gatekeeping","hyper_complex",11,"I"],
+ ["X36","Judgment","hyper_complex",12,"I"],
+ ["X37","Insatiability","hyper_complex",13,"I"],
+ ["X38","Possessiveness","hyper_complex",14,"I"],
+ ["X39","Reactivity","hyper_complex",15,"I"],
+ ["X40","Vengeance","hyper_complex",16,"I"],
+ ["X41","Violence","hyper_complex",17,"I"],
+ ["X42","Fraud","hyper_complex",18,"I"],
+ ["X43","Shadow","hyper_complex",19,"I"],
+ ["X44","Compulsive Craving","hyper_complex",20,"I"],
+ ["X45","Engineered Chaos","hyper_complex",21,"I"],
+ ["X46","Sacrificial Extraction","hyper_complex",22,"I"],
+ ["X47","Extractive Control","hyper_complex",23,"I"],
+ ["X48","Deception","hyper_complex",24,"I"],
+ ["X49","Sabotage","hyper_complex",25,"I"],
+ ["X50","Forced Growth","hyper_complex",26,"I"],
+ ["X51","Poisoning","hyper_complex",27,"I"],
+ ["X52","Coercive Abduction","hyper_complex",28,"I"],
+ ["X53","Forced Alteration","hyper_complex",29,"I"]];
 
 /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO CODES, X02 AND X06. canon.json
    gives both the same two saboteurs, Aggressor and Deflector, and tags both
