@@ -10,21 +10,30 @@
    Icons, I can hover over the icons and get information on what features I
    may be missing."
 
-   WHAT IT IS. A sheet over whatever screen the person is on, four paid cards:
-   tier one, tier two, tier three and Practitioner, Lance's own ruling, 19
-   November ("the paywall needs all 4 tiers"), reversing the second cut's own
-   choice to carry Practitioner as a slim strip under the other three. Each
-   card leads on its patterns a month, then its price, then the six rings a
-   tier can open, solid in the accent where the tier opens that layer and a
-   grey ring where it does not. Solid against outline is a change of shape,
-   so colour is never the only sign, and one colour serves every card: tiers
-   rank by how much is lit and never by hue. Every ring and every number are
-   buttons that open one short card on hover, on keyboard focus and on a tap.
-   Practitioner's own card carries one more: its name is the same kind of
-   button, carrying the ladder's own cohort sentence (PLAN_BY.four.d), since
-   patterns and sight alone say nothing about what actually sets it apart
-   from tier three (nothing: same grant, same sees, the one rung priced on
-   the cohort suite instead).
+   WHAT IT IS. A sheet over whatever screen the person is on, five cards,
+   the whole price ladder in one row: tier zero (Free) and then tier one,
+   tier two, tier three and Practitioner. RULED 21 NOVEMBER, the owner's own
+   words: "we should do 5 columns, right? So tier 0 and then tier 1, 2, 3,
+   4." Free used to sit out of the grid as a quiet badge in the header; it
+   is card one now, the same shape as every paid card, so a person reads the
+   whole ladder at once instead of a badge plus four cards. That reverses
+   only where Free sits, not the 19 November ruling that put Practitioner in
+   the row itself ("the paywall needs all 4 tiers"), reversing the second
+   cut's own choice to carry Practitioner as a slim strip under the other
+   three. Each card leads on its patterns a month, then its price, then the
+   six rings a tier can open, solid in the accent where the tier opens that
+   layer and a grey ring where it does not. Solid against outline is a change
+   of shape, so colour is never the only sign, and one colour serves every
+   card: tiers rank by how much is lit and never by hue. Every ring and every
+   number are buttons that open one short card on hover, on keyboard focus
+   and on a tap. Practitioner's own card carries two more: its name is the
+   same kind of button, carrying the ladder's own cohort sentence
+   (PLAN_BY.four.d), since patterns and sight alone say nothing about what
+   actually sets it apart from tier three (nothing: same grant, same sees,
+   the one rung priced on the cohort suite instead); and, 21 November, a
+   groups icon beside that name, his own words: "their difference is that
+   they get to add groups. So the groups icon needs to be added to this as
+   well."
 
    THE ROUTE, Emmy's recommendation and the change the rest of the design sits
    on. A locked ring anywhere in the app used to send a person to Billing, a
@@ -145,7 +154,8 @@ var PW_W={
  giftTl:'Open on your gift',
  gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; },
  /* the same fact for somebody paying, with no claim about a card */
- giftPaid:'Your gift is not used up yet. Everything is open until it is.'};
+ giftPaid:'Your gift is not used up yet. Everything is open until it is.',
+ groups:'Add groups. Lead other people through their own release.'};
 /* 1,200 and not 1200, the way the tiers page prints it (ptN, ui/plans.js) */
 function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
@@ -171,6 +181,14 @@ var PW_SOON=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
 var PW_HERE=pwSvg('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/>');
 var PW_SEES=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M8.2 12.3l2.6 2.6 5-5.4"/>');
 var PW_X=pwSvg('<circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/>');
+/* THE GROUPS ICON, 21 November, his own words: "their difference is that
+   they get to add groups. So the groups icon needs to be added to this as
+   well." Two rings, not one, same stroke language as every other icon here
+   (ring, not fill). It sits beside Practitioner's own tappable name, which
+   already carries the one fact that card has over tier three (PLAN_BY.four.d,
+   the comment above pwCard explains why); this adds the icon beside it,
+   it does not replace it. */
+var PW_GROUPS=pwSvg('<circle cx="9" cy="12.5" r="5"/><circle cx="15" cy="11.5" r="5"/>');
 function pwLock(){ return pwSvg(typeof LOCK_PATH!=='undefined'?LOCK_PATH:''); }
 
 /* ---- the pieces ---- */
@@ -216,8 +234,10 @@ function pwCard(pl,r,pay){
      focus and tap behaviour every other button on this sheet already has
      is that place now, in the same spot a plain name sat when there were
      only three cards. */
-  +(r.lead?'<button type="button" class="pw-cn pw-cnd" data-pwtip="'+dnid+'" aria-describedby="'+dnid+'"><span class="pw-u">'+esc(r.nm)+'</span></button>'
+  +(r.lead?'<div class="pw-cnr"><button type="button" class="pw-cn pw-cnd" data-pwtip="'+dnid+'" aria-describedby="'+dnid+'"><span class="pw-u">'+esc(r.nm)+'</span></button>'
     +'<span class="pw-vh" id="'+dnid+'">'+esc(r.d)+'</span>'
+    +'<button type="button" class="pw-grp" data-pwtip="'+dnid+'g" aria-describedby="'+dnid+'g" aria-label="'+esc(PW_W.groups)+'">'+PW_GROUPS+'</button>'
+    +'<span class="pw-vh" id="'+dnid+'g">'+esc(PW_W.groups)+'</span></div>'
     :'<div class="pw-cn">'+esc(r.nm)+'</div>')
   +'<button type="button" class="pw-hl" data-pwtip="'+nid+'" aria-describedby="'+nid+'"><span class="pw-big pw-num">'+pwN(r.grant)+'</span>'
   +'<span class="pw-pl">new <span class="pw-u">patterns</span> a '+esc(r.per)+'</span></button>'
@@ -254,19 +274,16 @@ function pwHtml(){
  PW_ID=0;
  var pl=pwPlan(), rows=planLadder(pl), pay=pwPayOpen(), now=planOf(pl);
  if(pwGift())return pwGiftHtml(pl);
- var free=rows.filter(function(r){return r.k==='free';})[0];
- /* ALL FOUR PAID TIERS ARE CARDS, 19 November, Lance's own ruling ("the
-    paywall needs all 4 tiers"). Practitioner (lead:true) used to be split
-    out into its own slim strip under these three; it is just one more row
-    of the same filter now, in PLANS order, so it lands last. */
- var cards=rows.filter(function(r){return r.k!=='free';});
+ /* FIVE COLUMNS, 21 November, his own words: "we should do 5 columns, right?
+    So tier 0 and then tier 1, 2, 3, 4." Free used to be a quiet badge in the
+    header, never a card (see the removed comment this replaces); it is now
+    tier 0, the same card shape as every paid tier, in ladder order, so the
+    whole price ladder reads as one row instead of a badge plus three cards
+    plus a fourth that was already added 19 November. */
+ var cards=rows;
  return '<div class="pw-sheet" role="dialog" aria-modal="true" aria-labelledby="pwt1" tabindex="-1">'
   +'<header class="pw-hd"><button type="button" class="pw-x" id="pwx" aria-label="'+esc(PW_W.close)+'">'+PW_X+'</button>'
   +'<h2 class="pw-t1" id="pwt1">'+esc(PW_W.title)+'</h2>'
-  /* FREE IS A QUIET MARKER, NEVER A CARD. On a paid tier the marker moves onto
-     that tier's own card. */
-  +(now.k==='free'&&free?'<div class="pw-here pw-quiet">'+PW_HERE+'<span><b>'+esc(PW_W.here)+'</b> '
-    +esc(free.nm+', '+free.grant+' patterns a '+free.per)+'</span></div>':'')
   /* a payer inside the gift: the gift's line beside the paying sheet (pwGift) */
   +(pwPaidInGift()?'<div class="pw-here pw-quiet pw-gline"><span>'+esc(PW_W.giftPaid)+'</span></div>':'')
   +'</header>'
@@ -418,13 +435,24 @@ function pwCss(){
   '.pw-here svg{width:20px;height:20px;flex:none}',
   '.pw-here.pw-quiet{background:var(--panel-2);color:var(--mid);font-weight:400}',
   '.pw-here.pw-quiet b{color:var(--ink);font-weight:600}',
-  /* four cards, the height of the sheet. 19 November: was three, Practitioner
-     its own slim strip below them (.pw-prac, since removed); see the header
-     comment. */
-  '.pw-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}',
+  /* FIVE CARDS, 21 November, his own words: "we should do 5 columns, right?
+     So tier 0 and then tier 1, 2, 3, 4." Free used to sit out of the grid as
+     a quiet header badge; it is card one now, same shape as the rest, so the
+     whole ladder reads as one row. Was four (19 November: was three,
+     Practitioner its own slim strip below them, .pw-prac, since removed);
+     see the header comment. */
+  '.pw-cards{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:14px}',
   '.pw-c{background:var(--panel-2);border-radius:var(--r,16px);padding:28px 32px;display:flex;flex-direction:column;',
   ' justify-content:space-between;min-height:0;min-width:0;container-type:inline-size}',
   '.pw-cn{font-size:20px;font-weight:600;color:var(--mid)}',
+  /* the groups icon sits beside Practitioner's own name, not under it; the
+     pair reads as one line at the top of the card like every other card's
+     bare name does */
+  '.pw-cnr{display:flex;align-items:center;gap:6px}',
+  '.pw-grp{background:none;border:0;padding:0;display:flex;align-items:center;justify-content:center;',
+  ' min-height:44px;min-width:44px;cursor:help;color:var(--mid)}',
+  '.pw-grp:hover,.pw-grp.tipped{color:var(--ink)}',
+  '.pw-grp svg{width:22px;height:22px}',
   /* A NAME IS STILL A TARGET. Practitioner's own name doubles as the button
      that opens its card's one extra tooltip (above), and a text-sized
      button alone measured 79 by 24, under the 44 by 44 atuned-ux floor
