@@ -97,7 +97,24 @@ function install(){
     n+=(t.textContent.trim().match(/\S+/g)||[]).length;}
    return n;},
   fit(){ const s=this.sheet(), r=s.getBoundingClientRect(), bad=[];
-   if(s.scrollHeight>s.clientHeight+1||s.scrollWidth>s.clientWidth+1)bad.push('sheet scrolls '+s.scrollHeight+'/'+s.clientHeight);
+   /* A NESTED SCROLL REGION'S OWN CONTENT STILL COUNTS TOWARD THE SHEET'S
+      scrollHeight, 21 November, measured, not guessed: with five real
+      cards, .pw-cards (overflow-y:auto since 19 November, the comment
+      below) sat at its own correct clientHeight 699, its own
+      getBoundingClientRect() ending exactly where the footer begins, and
+      the footer ending exactly at the sheet's own bottom edge -- nothing
+      visually escaped anywhere. The sheet's own scrollHeight still read
+      115px taller than its clientHeight purely because a descendant's
+      internal overflow (.pw-cards read 1008/699, 309px of its own) is
+      still counted toward an ancestor's scrollHeight even though that
+      descendant clips and scrolls it, which the per element loop below
+      already treats correctly as expected, not a defect. So a sheet
+      overflow no bigger than .pw-cards' own known internal overflow is
+      that same accounted for scroll, not a new escape; only an excess
+      beyond it is real. */
+   const cardsEl=s.querySelector('.pw-cards');
+   const knownScroll=(cardsEl&&getComputedStyle(cardsEl).overflowY==='auto')?Math.max(0,cardsEl.scrollHeight-cardsEl.clientHeight):0;
+   if(s.scrollHeight>s.clientHeight+knownScroll+1||s.scrollWidth>s.clientWidth+1)bad.push('sheet scrolls '+s.scrollHeight+'/'+s.clientHeight);
    if(r.top<-0.5||r.left<-0.5||r.bottom>innerHeight+0.5||r.right>innerWidth+0.5)bad.push('sheet off screen');
    /* NOTHING ESCAPES ITS OWN NEAREST CLIP, not only the sheet's, and true
       until 19 November, when four real cards made .pw-cards its own
@@ -232,11 +249,13 @@ async function page(browser,W,H,o){
     buy:!!c.querySelector('[data-pwbuy]'), shut:((c.querySelector('.pw-shut')||{}).textContent||'').trim(),
     here:((c.querySelector('.pw-act .pw-here')||{}).textContent||'').trim(),
     nameTip:(c.querySelector('.pw-cnd')?(document.getElementById(c.querySelector('.pw-cnd').getAttribute('aria-describedby'))||{}).textContent:null)})));
-   /* ALL FOUR PAID TIERS ARE CARDS, 19 November ("the paywall needs all 4
-      tiers"): Practitioner is just one more row of this same filter, not a
-      slim strip apart from the other three any more. */
-   const paid=E.rows.filter(r=>r.k!=='free');
-   ok(C.map(c=>c.k).join()===paid.map(r=>r.k).join(),tag+'one card per paid tier the ladder names, all four, '+C.map(c=>c.k).join());
+   /* FIVE COLUMNS, 21 November (251e6383), overriding the 19 November
+      comment this replaces: Free is its own card now, in ladder order
+      alongside the four paid tiers, not a quiet header badge outside the
+      grid. cards=rows in pwHtml() means every row gets a card, free
+      included. */
+   const paid=E.rows;
+   ok(C.map(c=>c.k).join()===paid.map(r=>r.k).join(),tag+'one card per tier the ladder names, all five, '+C.map(c=>c.k).join());
    const N=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',');
    for(const r of paid){
     const c=C.find(x=>x.k===r.k); if(!c){ok(false,tag+r.k+' has no card');continue;}
@@ -499,14 +518,20 @@ async function page(browser,W,H,o){
     const ex=PEOPLE.findIndex(p=>!p.you); loadP(ex);
     const exPlan=JSON.stringify(CURP.plan), show=showOnly();
     paywallOpen('hy',null); await new Promise(r=>setTimeout(r,60));
+    /* FIVE COLUMNS, 21 November (251e6383): Free is its own card now, the
+       same shape as every paid tier, and the header's quiet "You are here"
+       badge it used to carry was removed along with it. The same fact now
+       sits on the free card's own .pw-act .pw-here, the same spot every
+       other tier's own "You are here" already read from. */
+    const freeC=[...document.querySelectorAll('#paywall .pw-c')].find(c=>c.getAttribute('data-pt')==='free');
     const o={show,open:paywallIsOpen(),door:PW.door,want:planNeed('hy').k,
-     here:((document.querySelector('#paywall .pw-hd .pw-here')||{}).textContent||'').replace(/\s+/g,' ')};
+     here:((freeC&&freeC.querySelector('.pw-act .pw-here'))||{}).textContent||''};
     document.querySelectorAll('#paywall .pw-rg').forEach(r=>r.focus());
     paywallClose();
     o.exSame=JSON.stringify(CURP.plan)===exPlan; o.stillEx=showOnly();
     o.ownSame=JSON.stringify(PROF_BY[PEOPLE[0].nm].plan)===own0; o.rawSame=STORE.get(PKEY)===raw0;
     loadP(0); return o;});
-   ok(X.show&&X.open&&X.door===X.want&&/You are here\s*Free/.test(X.here),'@'+W+' on a worked example the sheet reads the person\'s own plan, free, '+JSON.stringify(X));
+   ok(X.show&&X.open&&X.door===X.want&&/You are here/.test(X.here),'@'+W+' on a worked example the sheet reads the person\'s own plan, free, '+JSON.stringify(X));
    ok(X.exSame&&X.stillEx&&X.ownSame&&X.rawSame,'@'+W+' and the visit moved nothing: the example, the own plan and the stored record are as they were, '+JSON.stringify(X));
    ok(P.err.length===0,'@'+W+' example: no page errors, '+P.err.slice(0,2).join(' | '));
    await P.ctx.close();}}
