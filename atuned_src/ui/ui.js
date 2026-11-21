@@ -1393,10 +1393,12 @@ function render(){
    why). The chain key, the book's levels and the nine sliders went with the
    round and nothing here draws them.
 
-   SUPEREGO IS FOUR SYMBOLS IN ONE ROW. Each is a real address AMPLIFIER maps
-   to, read the way every address on this page is read, BY[i].sq, no new
-   number. The ring is crBadge's (ui/component.js), bare, so the figure sits
-   under the ring where four of them stay even and none hangs off one side,
+   SUPEREGO IS ONE ROW OF SYMBOLS, ONE PER ROW OF AMPLIFIER. Each is a real
+   address AMPLIFIER maps to, read the way every address on this page is
+   read, BY[i].sq, no new number; the row count is AMPLIFIER.length and not
+   written here a second time, on the rule this file has already been bitten
+   by. The ring is crBadge's (ui/component.js), bare, so the figure sits
+   under the ring where they stay even and none hangs off one side,
    and the figure is fmtPct('weight', ...), the registry's own form: a whole
    number and a percent sign, and the dash for nothing held or nothing read.
    The weight used to print as 10.0 beside a ring filled in percent, points
@@ -1408,7 +1410,13 @@ function render(){
    card a press opens is headed with the defence's own name and its one table
    sentence (nodeDrillHtml, ui/drills.js, o.amp), so it never reads as a
    reading of the defence that it is not. */
- var AMP_FOUR=['Justification','Entitlement','Perfectionism','Obsession'];
+ /* AMP_FOUR used to be a hand typed subset of four names, Justification,
+    Entitlement, Perfectionism and Obsession, which silently hid Judgment and
+    Comparison once they rejoined AMPLIFIER as rows five and six: the table
+    grew to six and this list did not. It now reads the real table directly,
+    so a row AMPLIFIER carries is a row this rail shows, with no second count
+    to keep in step. */
+ var AMP_FOUR=AMPLIFIER.map(function(a){return a.nm;});
  function renderAmplifiers(r){
   var h=document.getElementById('amprows'); if(!h)return;
   var unread=!!(r&&r.unread);

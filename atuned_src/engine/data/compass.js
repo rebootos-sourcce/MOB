@@ -386,16 +386,76 @@ PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
    NO CODEX LINE. The codex gives none of the three an upd or a dnd, so none
    is written here; the panel a press opens is the behaviour pair in
-   engine/data/teachers_recipes.js. The opposites are the document's own
-   proposals, marked proposed, each with the text it names to check them
-   against. The keys are identity and are never reused. */
+   engine/data/teachers_recipes.js. The opposites were first the document's
+   own proposals (DESIGN-teachers.md section 2), each marked proposed and
+   each with a text named to check it against, and never checked against
+   that text directly. Below is that checking. The keys are identity and are
+   never reused.
+
+   THE THREE STORIES, CHECKED AND PROMOTED, ROUND 18 NOVEMBER. His words,
+   over the Compass: "For clear conduction, honesty, and natural growth, we
+   need to go get their original names... go out to the internet, do our
+   research. We have rules for our research... do your deep dive 4 times,
+   create your records for your 3-path stories... so you get to the
+   mechanic and the behavior." The same bar PATHS held Kaliya, Ravana and
+   Shu and Hu to (round KE, above): a named figure out of the tradition the
+   teacher himself belongs to, read against the text directly and not
+   invented, the mechanic stated and not only the name. Each of the three
+   below is now read off its text and not off the document's memory of it,
+   so each moves from:'proposed' to from:'research'.
+
+     Sabotage, Akhenaten's own inversion   Apep (Apophis), the serpent of
+     the Duat. Not an outside attacker: every night Ra's barque has to cross
+     the underworld, and Apep works on the crossing itself, drinking down
+     the river ahead of the boat so the water it needs to move on is gone.
+     The gods who ride with the barque, chief among them Set, spear, bind
+     and cut him before the river runs again and the boat can go on. He is
+     never settled: the Amduat's seventh hour and the Book of Gates both
+     tell the same crossing, bound and cut one night and whole again the
+     next, which is why temple practice kept a rite (Papyrus Bremner-Rhind's
+     "Book of Overthrowing Apep") to do the same binding every day rather
+     than once. The behaviour the figure names: stopping a flow from inside
+     the channel it needs, at the root of the crossing, not as a blow from
+     outside it. Amduat, hour seven; Book of Gates, the same voyage.
+     DESIGN-teachers.md section 2 read Apep as "light taken in and nothing
+     handed on," the photo negative of the sun disc whose rays end in open
+     hands on Akhenaten's own mark, and the text checks against that line.
+
+     Deception, Zoroaster's own inversion   Druj, the Lie. Yasna 30.3-6:
+     the twin spirits, at the beginning, in thought and word and deed,
+     chose differently, Spenta Mainyu to Asha (truth, the word Zoroaster's
+     pole already carries) and Angra Mainyu to Druj. Yasna 31 carries the
+     same choice forward as a judgement each person still makes. The
+     mechanic is in the order of that triad: thought first, then word, then
+     deed, so a choice made at the thought is what the word and the deed
+     then carry, which is why Druj reads as a direction taken and lived
+     from rather than one false sentence. DESIGN-teachers.md section 2
+     narrows the figure on purpose, away from Set's structural betrayal
+     (already Moses's, at the same seat, Order) and onto the word itself:
+     the false word spoken, and the true word kept back. Yasna 30.3-6,
+     continued in Yasna 31.
+
+     Forced Growth, Confucius's own inversion   The farmer of Song, unnamed
+     in the text, in Mencius 2A2. Worried his shoots were slow, he went out
+     and pulled on every one to stretch it, came home worn out and told his
+     household "today I helped the sprouts grow." His son went to the field
+     and found them all withered. Mencius sets this beside the opposite
+     fault, the farmer who never weeds at all, to make one argument: a
+     thing that grows does so at its own pace, and force applied to speed
+     it kills it rather than feeding it. Confucius makes the coherent half
+     of the same pair without a word of force at all: "Does Heaven speak?
+     Yet the four seasons run their course and the hundred things are
+     born" (Analects 17.19), nature read off what it does and not off
+     anything it says. The mechanic: the hand meant to help is the hand
+     that breaks the root's hold on the ground. Mencius 2A2; Analects
+     17.19. */
 const HOME_POLES=[
  {k:'SA', q:'Light', up:'Clarity', dn:'Sabotage', home:null,
-  from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
+  from:'research', src:'Amduat, hour seven, and the Book of Gates’ own telling of the same voyage'},
  {k:'TU', q:'Truth', up:'Honesty', dn:'Deception', home:'Throat',
-  from:'proposed', src:'Yasna 30 and 31'},
+  from:'research', src:'Yasna 30.3-6, continued in Yasna 31'},
  {k:'NA', q:'Nature', up:'Natural Growth', dn:'Forced Growth', home:'Crown',
-  from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+  from:'research', src:'Mencius 2A2, and Confucius’ own line at Analects 17.19'}];
 /* the marks. Honesty (Zoroaster's), Confucius and Deception (the Lie's) are
    the design's own, ported from mockups/teachers/imprint.html. Sabotage (Apep)
    and Forced Growth (the farmer) had none anywhere, so they are drawn here,

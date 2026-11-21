@@ -167,6 +167,15 @@ var UNPACK_BASE={
     gains "you grow into" and the point, and GLOSS now opens on the same words.
     tests/unpack.js holds the two places to one sentence. */
  'mask':'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
+ /* THE PAYWALL'S SEVENTH RING HAD NO ENTRY HERE, so pwMean (ui/paywall.js)
+    fell back to SIGHT's own lock sentence (engine/plan.js, the 'reg' row)
+    while the other six rings (saboteur, complex, hyper complex, super
+    complex, mask, and the laws ring built off SI) all resolved through this
+    one table. The sentence below is that same SIGHT sentence, moved here
+    unchanged rather than reworded, so all seven now read one table. Keyed
+    singular: pwMean strips the trailing s off "registers" the same way it
+    strips "masks" down to "mask" above. */
+ 'register':'The registers, your point cloud: where each pattern sits in the compass.',
  /* THE CHILD EMOTIONS' LEVEL OF THE STACK, 18 November. The five-tab row printed
     this sentence as the first tab's tooltip, in ui/ui.js, as a literal that
     stood nowhere else. The tabs are gone ("Let's unnest them") and the sentence
@@ -209,6 +218,8 @@ var UNPACK_BASE={
  'superego:entitlement':'Entitlement is the sense that you are owed, so the pattern feels like your right, and its figure is the charge held at its place in the body.',
  'superego:perfectionism':'Perfectionism is a bar set so high that nothing is ever done, so nothing has to change, and its figure is the charge held at its place in the body.',
  'superego:obsession':'Obsession is a thought that loops back on itself and holds the pattern in place, and its figure is the charge held at its place in the body.',
+ 'superego:judgment':'Judgment is the verdict you pass to make a pattern righteous instead of wrong, and its figure is the charge held at its place in the body.',
+ 'superego:comparison':'Comparison is measuring yourself against someone else to rank the pattern as better or worse, and its figure is the charge held at its place in the body.',
  /* ACTION, the Field's rail and the Journal's, one word for the six moves
     (10 November, his words: "change word laws of actions to action"). The
     six bars each carry their own sentence under gate:, the family prefix, so

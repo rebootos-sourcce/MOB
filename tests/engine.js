@@ -7273,8 +7273,14 @@ g('J14 · the starter recipe for each teacher');
    &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clarity',
    'every master prints the word of the pole he stands on, and keeps his name only as a key');
   ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
-  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
-   'each pole on no axis carries both marks, its words, and the source its opposite is to be checked against');
+  /* round 18 November: his words, "do your deep dive 4 times, create your
+     records for your 3-path stories." The three were from:'proposed', a
+     document's own guess with a text named to check it against; each is
+     now read off that text (the comment above HOME_POLES in this same file
+     carries the reading) and promoted to from:'research', the same mark
+     PATHS carries for Kaliya, Ravana and Shu and Hu. */
+  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='research'&&/[A-Za-z]/.test(p.src)),
+   'each pole on no axis carries both marks, its words, and a researched source its opposite is checked against');
   ok(HOME_POLES.every(p=>p.home===null||BANDS.indexOf(p.home)>=0),'a home seat is a seat this product measures');
   ok(HOME_POLES.every(p=>compassPoleOf(p.k)===p),'compassPoleOf finds each of the three by key');
   ok(compassPoleOf('TU').ic===E.SI.filter(l=>l.nm==='Truth')[0].ic&&compassPoleOf('NA').ic===E.SI.filter(l=>l.nm==='Nature')[0].ic,

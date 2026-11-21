@@ -53,7 +53,11 @@ var STK_CAP=6;
 var STK_PICKING=false, STK_PICK=[], STK_PICK_FOR=null;
 var STK_PICKOFF=chainRing(12,12,8.2);
 var STK_PICKON=chainRing(12,12,8.2)+'M8.2 12.2l2.6 2.6 5-5.4';
-var STK_AMP=['Justification','Entitlement','Perfectionism','Obsession'];
+/* STK_AMP used to be a hand typed subset of four names and silently hid
+   Judgment and Comparison once they rejoined AMPLIFIER as rows five and six.
+   It now reads the real table directly, so a row AMPLIFIER carries is a row
+   this stack shows. */
+var STK_AMP=AMPLIFIER.map(function(a){return a.nm;});
 /* the Superego's own mark: a ring with an arc built round it, the defense
    that stands round a pattern once it is already there. Ring, not fill. */
 var STK_EGOGLYPH=chainRing(12,12,4)+'M12 3.4a8.6 8.6 0 018.6 8.6';
@@ -488,9 +492,10 @@ function railStack(r){
  if(r.unread){e.innerHTML=''; return;}
  if(STK_PICK_FOR!==stkPickWho()){STK_PICK_FOR=stkPickWho(); STK_PICK=[]; STK_PICKING=false;}
  var sel=insSelNow(), L=stkLineage(sel,r), selKey=stkSelKey(sel), ctx=insCtx(), h=stkTrayHtml();
- /* SUPEREGO, the four addresses the left rail's own Superego section reads,
+ /* SUPEREGO, the same addresses the left rail's own Superego section reads,
     from the same table (AMPLIFIER, engine/data/registers.js) and the same
-    weights (BY[i].sq), so the two can never disagree */
+    weights (BY[i].sq), so the two can never disagree. The count is not
+    written here; AMPLIFIER.length is the answer. */
  var amps=STK_AMP.map(function(nm){return AMPLIFIER.filter(function(a){return a.nm===nm;})[0];})
   .filter(Boolean).map(function(a){return {a:a,n:BY[a.i]};}).filter(function(x){return x.n;});
  if(amps.some(function(x){return x.n.sq>=0.05;}))
