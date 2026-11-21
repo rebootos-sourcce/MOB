@@ -623,7 +623,24 @@ async function flowGate(browser,FILE,ok,booted){
   /* the card is in the right menu since SV16, his "move that to the right
      menu"; what it reads and prints is unchanged, so only where it is looked
      for moved */
-  const av=await pg.evaluate(()=>{const c=document.querySelector('#flowside .rv-c-av'); if(!c)return {none:true};
+  /* THE HERO'S OWN RING COUNTS UP, 21 November, found chasing a stray 12%
+     where wholeOf() read 13 both times it was asked. crMotion() (ui/
+     component.js) sweeps every .cr ring's arc AND its .v text from 0 to its
+     real value over ENTER_SPAN ms, staggered by ENTER_STAGGER a ring, the
+     same "I want to see the animations on these" entrance every ring on
+     this page gets -- and the Avatar card's own hero ring is a .cr, not an
+     exception. This check read the DOM mid sweep: a real screenshot of the
+     same moment this failed caught the ring at 0%, its own tooltip already
+     saying Whole|13% from the un-swept data-tip-n attribute crMotion never
+     touches. A second, independent avState() and a direct wholeOf(CURP)
+     call, taken in the same breath as the first, agreed with it exactly
+     (0.13 both times): the figure itself was never wrong, only read before
+     its own entrance finished. Waited for here the same way design.js and
+     functional.js's own other ring checks already do, inside the page where
+     ENTER_SPAN and ENTER_STAGGER (ui/wheel.js) are real globals, not here
+     on the Node side where they are not. */
+  const av=await pg.evaluate(async()=>{const c=document.querySelector('#flowside .rv-c-av'); if(!c)return {none:true};
+   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
    /* ROUND QS: a seat is a tile and what it says is on its press, so the
       seat and the ritual feeding it are read off the carrier */
    const A=avState();
