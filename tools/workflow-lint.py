@@ -199,6 +199,12 @@ BROWSER = {
 # the owner's 17 November report that it repeats itself. Report only until
 # three green runs.
     'srcconvo':      ('node tests/srcconvo.js', 20),
+# the Ritual week redraw, kinds on all 53 practices and the top row, 21
+# November (tests/ritweek.js). Report only until three green runs.
+    'ritweek':       ('node tests/ritweek.js', 20),
+# the Avatar module's Dashboard card, 21 November (tests/dashavatar.js).
+# Report only until three green runs.
+    'dashavatar':    ('node tests/dashavatar.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

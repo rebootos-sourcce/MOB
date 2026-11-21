@@ -176,7 +176,9 @@
     "glassblue": 245,
     "menutip": 69,
     "remind": 32,
-    "avatarwhole": 9
+    "avatarwhole": 9,
+    "ritweek": 86,
+    "dashavatar": 62
   },
   "no_count": {
     "monitor": "all surfaces render"

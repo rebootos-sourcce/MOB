@@ -35329,10 +35329,47 @@ Action as six bars.
   was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
   any entry the round added that nothing asks for.
 
+## Round DR. The descent roster, 21 November
+
+His words: "for the compass, for compass descent unreachable, there should be
+way more than 8 entries. You should have Charon as whatever its behavior name
+is, Geryon as whatever its behavior name is, Cerberus as whatever its name is,
+etc."
+
+- [x] **DR1. Built: nineteen reference rows on `DESCENT`**, before
+  Psychopathy, which stays last. Each figure on the Pass 1 roster in
+  `reviews/shadow-figure-research-2026-10-30.md` that already has a shipped
+  behaviour word somewhere in this build is shown by that word and by its own
+  existing line, never by the figure's name. The eight circle governors read
+  off `CIRCLES`' `by` field (Gatekeeping, Judgment, Insatiability,
+  Possessiveness, Reactivity, Vengeance, Violence, Fraud), and the rest off the
+  `MIRROR`, `HOME_POLES`, `PATHS` and `BLUEPRINT` words accepted 17 November
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction,
+  Extractive Control, Deception, Sabotage, Forced Growth, Poisoning, Coercive
+  Abduction, Forced Alteration). None has a `fam` or `pair`, the precedent
+  Dysregulation and Dissociation set, so the dark read lists them and never
+  lights one. Codes X35 to X53 in `engine/data/codes.js` exist only because
+  the codes gate needs every DESCENT name to resolve.
+  **This is the team's own best-judgment pick**, under his 21 November
+  ruling to stop the blockers from building, from already researched and
+  already ruled material with no new word. His to correct on the live app.
+- [x] **DR2. A pick named once.** The research file's 31 October narrative
+  review proposed Borrowed light (Lucifer), Bottomless want (Asmodeus),
+  Inside job (Set) and Others pay (Moloch). His 17 November acceptance is
+  later and is what the Compass already prints, so the rows use those words
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction) and a
+  figure never shows under two words. Druj is Deception, his 30 October word
+  (SM13).
+- [ ] **DR3. His: Baal.** Left out on the narrative review's own call, show
+  nothing until an opposite is documented. Its shipped word since 17 November
+  is Manipulation. One row to add if he wants it.
+- [ ] **DR4. Not added, nothing to reuse.** The Harpies, Nimrod and
+  Ephialtes are in no table in the engine. Satan frozen is Lucifer at the
+  ninth circle, carried by Shadow.
+
 ## Round XA, 21 November. Ruler is Imperium, and the Let Go list is in
 
 - [x] **XA1. Ruler's domain closed, his words: "Ruler is Imperium."** SV3 closed. PR #177's archetype to domain port (`engine/archdom.js`, `engine/data/archdom.js`, `tools/regen-archetype-domain.cjs`, its 21 engine checks) brought onto main by hand on branch `ruler-imperium-letgo`, because main was re-rooted on 11 November and the PR branch shares no history with it. Snapshot regenerated at Reboot-OS `c58058c` (no row changed against the PR's `5347415`); generator `--check` MATCH, `--self-test` 9 passed, 0 failed.
 - [x] **XA2. The Let Go list, wired.** Cues in the engine (`letgoCues`, on `sniffStory().letgo`, no charge) and sixteen packs in the Wisdom school, each saved as a text file. Bundled, the team's default, recorded in `DECISIONS.md`. 28 engine checks.
 - [ ] **XA3. Open, not built: whether a Let Go match should ever move a reading.** Today it is shown to nothing and weighs nothing. Giving a matched phrase charge at its seat is a ruling on the reading.
 - [ ] **XA4. Open, found in passing: the first press on a fold in the Wisdom school does nothing in Chromium under Playwright; the second opens it.** Measured on the existing "Across every point" fold, which this round does not touch, the same as on the first cut of the packs. Not chased; the packs moved to buttons for another reason (an even grid) and open on the first press.
-
