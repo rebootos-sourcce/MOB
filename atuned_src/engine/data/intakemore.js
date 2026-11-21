@@ -83,7 +83,7 @@ const IX_DRAFT=true;
    partially either. ARCH (engine/data/canon.js) carries nm, v (what it does)
    and b, the seat it is drawn at, and nothing else: no opp field, unlike
    CHILD, the nine emotional axes, which names an explicit opposite for every
-   one of its nine rows (Fear's opp is Trust, and so on). The seat is the only
+   one of its nine rows (Fear's opp is Safety, and so on). The seat is the only
    grouping ARCH has, and it is not a polarity: five seats hold two archetypes
    each (Root: Warrior, Everyman. Crown: Sage, Innocent. Throat: Rebel,
    Jester. Heart: Caregiver, Lover. Sacral: Creator, Explorer) and two seats
@@ -204,7 +204,7 @@ const IX_EO_ASK='Which of these two is closer to what you do?';
 
 /* k is the axis's name in CHILD. means is the held side in one sentence and
    oppMeans is its other end in one, because the page prints the opposite's
-   name (Trust, Equanimity) and a name never stands alone. The place in the
+   name (Safety, Calm) and a name never stands alone. The place in the
    body is not written here: it is CHILD[..].loc and is read from there so the
    two cannot drift. */
 const IX_AXIS=[
