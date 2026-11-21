@@ -35327,3 +35327,41 @@ Action as six bars.
   emotions; the field anchor's card says what it is; the entry for the chain
   was cut because no screen asked for it; `tests/psychepanel.js` (F) fails on
   any entry the round added that nothing asks for.
+
+## Round DR. The descent roster, 21 November
+
+His words: "for the compass, for compass descent unreachable, there should be
+way more than 8 entries. You should have Charon as whatever its behavior name
+is, Geryon as whatever its behavior name is, Cerberus as whatever its name is,
+etc."
+
+- [x] **DR1. Built: nineteen reference rows on `DESCENT`**, before
+  Psychopathy, which stays last. Each figure on the Pass 1 roster in
+  `reviews/shadow-figure-research-2026-10-30.md` that already has a shipped
+  behaviour word somewhere in this build is shown by that word and by its own
+  existing line, never by the figure's name. The eight circle governors read
+  off `CIRCLES`' `by` field (Gatekeeping, Judgment, Insatiability,
+  Possessiveness, Reactivity, Vengeance, Violence, Fraud), and the rest off the
+  `MIRROR`, `HOME_POLES`, `PATHS` and `BLUEPRINT` words accepted 17 November
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction,
+  Extractive Control, Deception, Sabotage, Forced Growth, Poisoning, Coercive
+  Abduction, Forced Alteration). None has a `fam` or `pair`, the precedent
+  Dysregulation and Dissociation set, so the dark read lists them and never
+  lights one. Codes X35 to X53 in `engine/data/codes.js` exist only because
+  the codes gate needs every DESCENT name to resolve.
+  **This is the team's own best-judgment pick**, under his 21 November
+  ruling to stop the blockers from building, from already researched and
+  already ruled material with no new word. His to correct on the live app.
+- [x] **DR2. A pick named once.** The research file's 31 October narrative
+  review proposed Borrowed light (Lucifer), Bottomless want (Asmodeus),
+  Inside job (Set) and Others pay (Moloch). His 17 November acceptance is
+  later and is what the Compass already prints, so the rows use those words
+  (Shadow, Compulsive Craving, Engineered Chaos, Sacrificial Extraction) and a
+  figure never shows under two words. Druj is Deception, his 30 October word
+  (SM13).
+- [ ] **DR3. His: Baal.** Left out on the narrative review's own call, show
+  nothing until an opposite is documented. Its shipped word since 17 November
+  is Manipulation. One row to add if he wants it.
+- [ ] **DR4. Not added, nothing to reuse.** The Harpies, Nimrod and
+  Ephialtes are in no table in the engine. Satan frozen is Lucifer at the
+  ninth circle, carried by Shadow.
