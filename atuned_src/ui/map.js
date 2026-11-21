@@ -1443,44 +1443,33 @@ function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){re
    with the professional", and only where the atlas he sent gives the level
    itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
    here as well would draw it twice. 8 moved the same way on 21 November, a
-   real vertebral level the atlas gives, cited in figure.js. 40 is sourced to
-   a real page too, the same day, but stays here: it sits on 16's own point
-   at this figure's resolution, v: has no front-to-back axis to tell them
-   apart, and 16 and 40 are not one structure, so ANAT cannot take it without
-   either a guessed level or a false claim that they share a place. figure.js
-   says so, for the owner's call. This heading counted them, 28, and the
+   real vertebral level the atlas gives, cited in figure.js. Later that day
+   eight more went, on the owner's ruling that every address with real
+   material is placed and the words come after: 40 onto the aorta's side at
+   L1, the five neck rows (57, 68, 70, 72, 74) once ANATSPINE gained the two
+   neck knots off BMSPINE below, and 23 and 46 at the levels the atlas
+   brackets them by. figure.js cites each. What is left here has no level or
+   landmark on a page read. This heading counted them, 28, and the
    count is gone for the reason CLAUDE.md gives: BMPROP's length is the
    answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
- {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
  {ids:[25],pts:[[48.6,49.6],[51.4,49.6]],s:"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},
  {ids:[27],pts:[[48.4,50.4],[51.6,50.4]],s:"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},
  {ids:[31],pts:[[46.93,52.32],[53.07,52.32]],s:"Ilioinguinal nerve, at the superficial inguinal ring"},
  {ids:[34],pts:[[48,37.6],[52,37.6]],s:"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},
  {ids:[35],pts:[[51,43]],s:"Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3"},
  {ids:[37],pts:[[47.4,39],[52.6,39]],s:"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},
- /* Not moved to ANAT, 21 November: see figure.js at address 16. Rohen 7e
-    p.328 ("Kidney: Arteries") labels the superior mesenteric artery's
-    origin beside the body of the first lumbar vertebra, the same level
-    this file already places 16 (Conus Medullaris) at, on the midline. */
- {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1, Rohen 7e p.328"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
- {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
  {ids:[47],pts:[[45.2,37]],s:"Hepatic branch of the anterior vagal trunk, to the liver"},
  {ids:[48],pts:[[46.6,38.8]],s:"Hepatic plexus, along the hepatic artery"},
  {ids:[51],pts:[[48.8,28.6],[51.2,28.6]],s:"The two vagus nerves in the thorax, beside the oesophagus"},
  {ids:[52],pts:[[51.3,32.4]],s:"Thoracic aortic plexus, on the descending aorta"},
- {ids:[57],pts:[[45.6,30.2],[54.4,30.2]],s:"Phrenic nerves, C3 to C5, down each side of the pericardium"},
  {ids:[60],pts:[[43.5,24.8],[56.5,24.8]],s:"Pectoral nerves, once called the anterior thoracic nerves"},
- {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"},
- {ids:[68],pts:[[48.8,16.4],[51.2,16.4]],s:"Pharyngeal branch of the vagus, level with C2 to C3"},
- {ids:[70],pts:[[47.6,15],[52.4,15]],s:"Glossopharyngeal nerve, below the angle of the jaw"},
- {ids:[72],pts:[[48.1,17.9],[51.9,17.9]],s:"Cervical sympathetic ganglia, beside C2 to C7"},
- {ids:[74],pts:[[44.4,21.4],[55.6,21.4]],s:"Nerve to subclavius, C5 to C6, under the clavicle"}];
+ {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"}];
 /* WHICH SURFACE EACH ADDRESS BELONGS ON, the spec's split (question C, which
    he answered "C, definitely": both, the far one faint). Inside the skull is
    head, drawn on the front. The back is what is reached from behind: the
@@ -2605,10 +2594,13 @@ function bmDraw(dt){
    colour, faint, set in from the band and from the foot so it reads as the
    seam between two views and not as a frame, and nothing at all with one
    figure up. Widened 7 screen pixels past that one pixel, his approval,
-   20 November. */
+   20 November. It stops the same 24 pixels short of the key that it stops
+   short of the band (BM.keyH, bmKey), because the key stands on its foot
+   and the seam ran on through the key's glass as a stripe down its middle,
+   seen on the first close shot of it, 21 November. */
 function bmDivider(g){
  if(bmOne())return;
- var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round(24*BM.dpr);
+ var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round((24+(BM.keyH||0))*BM.dpr);
  if(y1<=y0)return;
  g.setTransform(1,0,0,1,0,0);g.fillStyle=bmRgba(BMC.edge,.12);g.fillRect(x-(d>>1),y0,d,y1-y0);}
 /* both cameras, as one string, for a cache that depends on both */
@@ -3728,7 +3720,10 @@ function bmBuild(host){
      They were a strip after the well, which took its height out of the
      well's flex; inside it they take none, so the fit gets the whole stage.
      Round LQ, bmShBuild. */
-  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>':'')+'</div>';
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>'
+  /* the key: the three places carrying the most, the Dashboard Body card's
+     own three rows, inside the well at its foot. bmKey fills it. */
+  +'<div id="bmkey" class="bt3-key" role="list" aria-label="Where your body carries the most" style="'+BMOVTOK+BMMKTOK+'" hidden></div>':'')+'</div>';
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
@@ -3787,14 +3782,37 @@ function bodyTop3Html(rows){
    +bodyFigSvg(x.k,col)
    +'<span class="bt3-nm">'+esc(x.nm)+'</span>'
    +'<span class="bt3-p">'+x.pct+'<small>%</small></span></div>';}).join('');}
-/* THE BODY PAGE'S KEY IS HELD BACK, 21 November. Its first cut was a strip
-   after the well, and that is the defect round LQ took out (the comment on
-   #bmregs above): a strip after the well takes its height out of the well's
-   flex, measured 68 pixels at 1600, and tests/functional.js's "no strip under
-   the figure" check refused it. Where a key can sit inside the well without
-   covering the figures or the shelves is a placement nobody has ruled, so the
-   Dashboard's Body card ships on bodyTop3Html alone and the key waits.
-   .bt3-key in shell/head.html is its styling, kept for that pass. */
+/* THE BODY PAGE'S KEY, 21 November, the default the board applied: each
+   place's own fullness, the same three rows the Dashboard's Body card draws,
+   so a person who presses the card lands on the same three words and the
+   same three percents, from the same call. Its first cut was a strip after
+   the well, the defect round LQ took out (the comment on #bmregs above): a
+   strip after the well takes its height out of the well's flex, measured 68
+   pixels at 1600, and tests/functional.js's "no strip under the figure"
+   check refused it, so the card shipped alone that morning and the key
+   waited on a placement.
+
+   It stands inside the well now, at its foot and on its middle, which is
+   the one place on the page nothing else is: the two figures are each
+   centred in their own half (bmFitCam) and stand on their feet either side
+   of the divider, so the foot of the divider is the empty middle of the
+   picture, and a key there is symmetrical by construction, the 16 November
+   ruling. Three rows, as on the card, not three cells across: across, it
+   was 400 pixels wide and met both pairs of feet at 1280. Absolute, so it
+   takes no height out of the well and the fit is unchanged. A phone has one
+   figure in the middle and no divider, so there it moves to the lower right
+   corner of the well, beside the feet (shell/head.html). Hidden on a field
+   carrying nothing, the way the card draws its dash. The pattern word and
+   the nerve are behind each row, bodyTop3Tip, never on its face. */
+function bmKey(r){
+ var k=BM.well&&BM.well.querySelector('#bmkey');
+ var rows=k?bodyTop3(r):[], html=rows.length?bodyTop3Html(rows):'';
+ if(k){if(k.innerHTML!==html)k.innerHTML=html; k.hidden=!rows.length;}
+ /* the room the key takes at the foot of the well, its height and the 12
+    pixels under it, read once here and not every frame; the divider stops
+    short of it */
+ var h=(k&&!k.hidden)?k.offsetHeight+12:0;
+ if(h!==(BM.keyH||0)){BM.keyH=h;BM.stillKey='';BM.dirty=true;}}
 /* ---------- the entry, from renderMap and from the Masks door ----------
    The host is handed in, the way frMount and avBind take theirs: this read
    #emap by id, which is what kept the figure to one door. */
@@ -3810,7 +3828,7 @@ function bmRender(r,host){
   BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
- BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r);
+ BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r); bmKey(r);
  var seats=flSeats();
  bmSeats(seats);
  pmLayerBar(r); bmBars(); bmOvPaint(r);

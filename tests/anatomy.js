@@ -101,9 +101,10 @@ const ROUND_TRIP=1e-9;         /* measure.js's own bound for its landmark round 
    place of two points mirrors; a single point off the midline must be on this
    list, with the side the person has it on (their left is the viewer's right).
    Each is a fact of anatomy, and each row's own sentence says so or names the
-   organ: the aorta and the splenic artery run left of centre, the pancreatic
+   organ: the aorta and the splenic artery run left of centre, and 40 (since
+   21 November) leaves the front of that aorta, the pancreatic
    body lies left of centre, the liver is on the right. */
-const ONESIDE={35:'left', 41:'left', 42:'left', 47:'right', 48:'right', 52:'left'};
+const ONESIDE={35:'left', 40:'left', 41:'left', 42:'left', 47:'right', 48:'right', 52:'left'};
 /* The names corrected on 12 and 13 November, each from a page of the atlas the
    owner sent (nodes.js says which). Pinned so a change to one is a named diff
    in this file and not a silent edit to a data table. */
@@ -328,7 +329,10 @@ function audit(D){
  /* 7 rulers */
  const R=D.ANATSPINE, Hd=D.ANATHEAD;
  for(let i=1;i<R.length;i++)if(!(R[i][0]>R[i-1][0]&&R[i][1]>R[i-1][1]))out.ruler.push('the spine ruler does not rise strictly at knot '+i+' ('+JSON.stringify(R[i-1])+' then '+JSON.stringify(R[i])+')');
- R.forEach(k=>{if(!D.PMBANDS.some(b=>Math.abs(b.yp-k[1])<0.005))out.ruler.push('the spine ruler knot at level '+k[0]+' stands at '+k[1]+', which is no seat\'s height in PMBANDS, and the ruler is the one through the seats');});
+ /* a knot stands at a seat, or, in the neck since 21 November, on the back
+    figure's own label for that vertebra (BMSPINE). Either way it is read off
+    something the page already draws, never a free number */
+ R.forEach(k=>{if(!D.PMBANDS.some(b=>Math.abs(b.yp-k[1])<0.005)&&!D.BMSPINE.some(s=>lvIndex(s.lv)===k[0]&&Math.abs(s.y-k[1])<0.005))out.ruler.push('the spine ruler knot at level '+k[0]+' stands at '+k[1]+', which is no seat\'s height in PMBANDS and no BMSPINE label for that level, and the ruler is read off one of the two');});
  if(JSON.stringify(R)!==JSON.stringify(D.R.RULER.map(r=>[r[0],r[1]])))out.ruler.push('ANATSPINE and research.js RULER disagree: '+JSON.stringify(R)+' against '+JSON.stringify(D.R.RULER.map(r=>[r[0],r[1]])));
  const HM=D.R.HEADMAP;
  [['ytop',Hd.ytop,HM.ytop],['year',Hd.year,HM.year],['topZ',Hd.topZ,HM.vertexZ],['earZ',Hd.earZ,HM.earZ]].forEach(t=>{
@@ -409,7 +413,8 @@ say('same vertebra, two heights, figure units (a unit is '+D.CMUNIT.toFixed(2)+'
 I.rulerGaps.forEach(r=>say('  '+r.lv.padEnd(3)+' BMSPINE '+String(r.bm).padStart(5)+'   ANATSPINE '+String(r.anat).padStart(6)+'   apart '+r.gap));
 /* EXPECTED RED, counted. Not a mis-typed number: ANATSPINE is built through the
    four seats whose own text names a level, BMSPINE through the labels on the
-   back figure, and they place T4 at 29.9 and at 24.2. Which is right is the
+   back figure, and they place T4 at 29.9 and at 24.2 (C1 and C7 agree since 21
+   November, when ANATSPINE took its neck knots off BMSPINE). Which is right is the
    owner's and the anatomy's to say, and moving either moves the cardiac,
    celiac, lumbar and coccygeal rows on screen. The gate holds the gap open and
    turns green-to-red the day the two agree, so the item comes off by hand. */
@@ -425,7 +430,10 @@ g('10 · the known bad cases: each check must fail on a damaged copy and name th
 const clone=()=>JSON.parse(JSON.stringify(D));
 const firstOf=(arr,f)=>arr.findIndex(f);
 const bmPair=firstOf(D.BMPROP,r=>r.pts.length===2), bmPair2=D.BMPROP.findIndex((r,i)=>i>bmPair&&r.pts.length===2);
-const bmSingle=firstOf(D.BMPROP,r=>r.pts.length===1&&Math.abs(r.pts[0][0]-50)<=MID);
+/* the case below drops a single point row from a table. It was BMPROP's one
+   midline single, 40, until 40 moved into ANAT on 21 November and BMPROP kept
+   no midline single, so it is now the first spine row in ANAT */
+const anV=firstOf(D.ANAT,r=>r.v);
 const anPairF=firstOf(D.ANAT,r=>r.f&&r.f.length===2), anPairH=firstOf(D.ANAT,r=>r.h&&r.h.length===2);
 const anF1=firstOf(D.ANAT,r=>r.f&&r.f.length===1&&r.c);
 const anRowF=firstOf(D.ANAT,r=>r.f&&r.c);
@@ -443,7 +451,7 @@ const BAD=[
  ['a one sided organ moved to the other side','mirror',d=>{const r=d.BMPROP.find(t=>t.ids.indexOf(47)>=0);r.pts[0][0]=100-r.pts[0][0];},[47]],
  ['an atlas address moved outside the body','outside',d=>{d.ANAT[anPairH].h[0]=[-4000,0];},D.ANAT[anPairH].ids],
  ['a chart address moved outside the body','outside',d=>{d.ANAT[anF1].f[0]=[5,5];},D.ANAT[anF1].ids],
- ['an address in no table','coverage',d=>{d.BMPROP.splice(bmSingle,1);},D.BMPROP[bmSingle].ids],
+ ['an address in no table','coverage',d=>{d.ANAT.splice(anV,1);},D.ANAT[anV].ids],
  ['a chart address dropped from ANAT, so in no table','coverage',d=>{d.ANAT.splice(anF1,1);},D.ANAT[anF1].ids],
  ['an address id duplicated in the node list','coverage',d=>{d.NODES.push(Object.assign({},d.NODES.find(t=>t.i===40)));},[40]],
  ['an address listed twice in one table','coverage',d=>{d.BMPROP[1].ids.push(D.BMPROP[0].ids[0]);},[D.BMPROP[0].ids[0]]],
@@ -457,7 +465,8 @@ const BAD=[
  ['a correction with no record of it','names',d=>{d.fixed=d.fixed.filter(f=>f.i!==56);},[56]],
  ['the filed with none address no longer called a non structure','coverage',d=>{d.R.NOSTRUCT=d.R.NOSTRUCT.filter(r=>r.i!==D.ANAT.find(t=>t.at!==undefined).ids[0]);},D.ANAT.find(t=>t.at!==undefined).ids],
  ['a spine ruler that does not rise','ruler',d=>{d.ANATSPINE[1][1]=d.ANATSPINE[0][1];},[]],
- ['a neck address asking the ruler to extrapolate','ruler',d=>{d.ANAT.push({s:'a neck row',ids:[D.NODES[0].i],v:[[3,0]]});},[D.NODES[0].i]],
+ /* above C1 since the ruler took its neck knots, 21 November: C3 is measured now */
+ ['an address above the ruler asking it to extrapolate','ruler',d=>{d.ANAT.push({s:'a skull row',ids:[D.NODES[0].i],v:[[0.5,0]]});},[D.NODES[0].i]],
  ['a head ruler that left the research','ruler',d=>{d.ANATHEAD.topZ+=1;},[]],
  ['a chart row moved half a unit','chart',d=>{d.ANAT[anRowF].f[0][0]+=0.5;},D.ANAT[anRowF].ids]];
 /* The addresses a finding names are the numbers that follow the word address,
