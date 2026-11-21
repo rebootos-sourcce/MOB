@@ -4184,19 +4184,53 @@ body.quiet .stk-say .stk-say-a,body.rm .stk-say .stk-say-a{animation:none!import
 .stk-run:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .stk-run.off{visibility:hidden;pointer-events:none}
 /* THE NERVE STATE MARK (ui/insightui.js, stkNsHtml). 16px, the level header's
-   own glyph size, in a 16px column on the row's left, so the row's name lines
-   up under the header's word the way the header's glyph lines up over the
-   mark. Centred on the bar's name line, never on the whole row, because a
-   pair bar is taller and a centred mark would sit between its two lines. The
-   shape carries the state; the colour only follows it: open in --mid, the two
-   impaired rungs in --ink, closed in --alarm, the one colour this product
-   already keeps for a thing that is hot. */
-.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:9px 2px 0 0;display:flex;
+   own glyph size, in a 16px column on the row's left. Lance, 20 November,
+   reviewing a real screenshot: "the open and closed states of the nerve are
+   not on the same horizontal plane. They need to be exactly opposite of each
+   other across from the bar. So set them at the line of the bar, and have
+   their icons on that horizontal line. Have the center point of those icons
+   align with the center point of the bar." This replaces the line above,
+   which centred the mark on the bar's NAME line instead and is why every
+   state sat above the bar rather than on it.
+   There is no single offset that lands on every bar's centre, because the
+   row above the bar is not the same height in every shape this rail draws:
+   a plain amount bar (.stk-am, stkAmount/stkAmpRow) carries one name line,
+   while a two pole bar (.stk-pl, stkPolar, and the plain .stk-b child
+   emotion bar, stkFetBar/fetBar's rb2) carries a pole's name above the bar
+   AND the opposite pole's name below it, each its own text line the bar
+   itself does not have. So the three margins below are not one guess typed
+   three times: each is the real margin-top, in a real Chromium, that put
+   the mark's own centre on the bar's own centre, measured with
+   getBoundingClientRect on both and read as zero pixels of difference
+   (measure.js, this round, at 1600 and 390 wide, Lance 15's loaded profile):
+   .stk-am centres at a 32px margin, .stk-pl (the pole pair with two labels)
+   at 31, plain .stk-b (the child emotion pair, same two labels, tighter
+   button padding) at 33. The shape still carries the state; the colour
+   still only follows it: open in --mid, the two impaired rungs in --ink,
+   closed in --alarm, brightening as the row's own charge climbs the closed
+   band (90 to 100 percent) through --ns-i below, the one rung this product
+   already lets read as a continuous number and not a flat flag. */
+.stk-ns{flex:0 0 16px;width:16px;align-self:flex-start;margin:32px 2px 0 0;display:flex;
  align-items:center;justify-content:center;color:var(--ink);border-radius:50%;cursor:help}
+.stk-row:has(.stk-pl) .stk-ns{margin-top:31px}
+.stk-row:has(.stk-b):not(:has(.stk-pl)) .stk-ns{margin-top:33px}
 .stk-ns svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;
  stroke-linecap:round;stroke-linejoin:round}
 .stk-ns[data-ns="open"]{color:var(--mid)}
-.stk-ns[data-ns="closed"]{color:var(--alarm)}
+/* THE CLOSED MARK BRIGHTENS WITH THE ROW'S OWN CHARGE, 20 November, his words
+   on this same mark: "the closed icon intent color intensity brightens with
+   the rise of the DQ." DQ is this product's own name for the shadow a
+   person carries (gloss.js: "DQ is your shadow weight: all the charge you
+   carry, on every address, against the most your body could hold"), and a
+   row's own value is that same reading taken at one address or pattern
+   instead of all 112, the figure nerveStateOf already reads to choose this
+   mark's shape. --ns-i is that row's own percent, re-expressed as how far
+   through the closed band (90 to 100) it sits: 0 at the 90 percent floor,
+   1 at 100, written inline by stkNsHtml so the colour and the shape are
+   read from the one number and cannot drift apart. Below the floor it is
+   never set, so every other rung keeps its flat colour; a pair bar's
+   build-colour variables (--lc, --rc, --sc, set by rbPair) are untouched. */
+.stk-ns[data-ns="closed"]{color:color-mix(in srgb,var(--alarm) calc(55% + var(--ns-i,1)*45%),var(--mid))}
 .stk-ns:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .stk-row.dim .stk-ns{color:var(--mid)}
 .stk-more{display:block;width:100%;min-height:var(--tap);margin-top:4px;padding:0 8px;border:0;
