@@ -129,7 +129,7 @@ const FOLDOF={};
 /* indexed by the TAB integer, not by position, which is the rule this repo
    keeps relearning. 5 is Intake and it is not swept here. */
 /* 0 is the journal page, named Discover since 23 October */
-const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Wisdom school',
+const TABN=['Discover','Summary','Field','Energy','Analytics','Intake','Knowledge base',
  'Games','Compass','Settings','Ritual','Character','Practitioner','Intake page'];
 /* 11 is the Character page, LP, in the host the Masks door had (LE). It sits
    over the same stage as the Body, so the two are the pair most likely to

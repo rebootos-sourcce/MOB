@@ -8057,11 +8057,24 @@ function verpRead(){var sh=verpShare();
    the equivalent set, but both run on input that has stripped the
    apostrophe first (lawNorm, srcNegated), so their entries are spelled
    'didnt'; this table's input has not, so these keep theirs. */
+/* AND THE SPELLING WITH NO APOSTROPHE AT ALL, TASKS.md SZA6 reopened 18
+   November. The table above named "wasn't" and nothing else, so "it wasnt
+   my fault", typed on a keyboard that never offers the mark, left 'my
+   fault' unvoided and a denial of fault read as accountability taken.
+   Measured on main at 72a28de before this line. "can't" was missing in
+   both spellings while 'cannot' was in, so "he can't hit me" read as harm
+   confirmed. 'cant' and 'wont' are also nouns, and the cost of that is a
+   phrase voided inside a three word look back, which is the side this
+   table is allowed to err on: an unread cue loses evidence, a misread one
+   inverts it. */
 var LEANNEG={'not':1,'never':1,'no':1,'none':1,'nothing':1,'nobody':1,
  'cannot':1,'without':1,'hardly':1,'rarely':1,'barely':1,
  "didn't":1,"don't":1,"doesn't":1,"won't":1,"wasn't":1,"weren't":1,
  "isn't":1,"aren't":1,"haven't":1,"hasn't":1,"hadn't":1,"couldn't":1,
- "wouldn't":1,"shouldn't":1};
+ "wouldn't":1,"shouldn't":1,"can't":1,
+ 'didnt':1,'dont':1,'doesnt':1,'wont':1,'wasnt':1,'werent':1,
+ 'isnt':1,'arent':1,'havent':1,'hasnt':1,'hadnt':1,'couldnt':1,
+ 'wouldnt':1,'shouldnt':1,'cant':1};
 var LEAN_NEG_W=3;        /* words of look back. three is one clause of run up,
                             and wider started voiding phrases whose negator
                             belonged to the sentence before */
@@ -8135,8 +8148,17 @@ function leanKeys(){
    contain, so it stops the look back and also stops a phrase matching
    across two sentences. A comma is left as a space on purpose: it is too
    weak a break to end a negation. */
+/* THE CURLY APOSTROPHE IS FOLDED FIRST. A phone and a Mac both type
+   U+2019 for "wasn't", and the strip below kept only the straight mark, so
+   the curly one became a space: "wasn t my fault", a lone 't' that no
+   table names, and 'my fault' read as accountability taken for a sentence
+   denying it. Same inversion for "he didn't hit me", read as harm
+   confirmed. Measured on main at 72a28de. The left quote, the modifier
+   letter, the prime and the backtick go the same way because each is a
+   keyboard's apostrophe somewhere. */
 function leanNorm(text){
  return ' '+String(text||'').toLowerCase()
+  .replace(/[‘’ʼ′`]/g,"'")
   .replace(/[.!?;:\n\r]+/g,' | ')
   .replace(/[^a-z'| ]+/g,' ').replace(/\s+/g,' ')+' ';}
 
@@ -10201,15 +10223,15 @@ const TABDEF=[
     kept the word, unlike Discover/Story, so nothing here renames the tab. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow',  door:'section'},
  /* "Embody is knowledge." */
- /* WISDOM SCHOOL, 18 November. His words: "Change the words knowledge base
-    to wisdom school." The tab is the surface the copy called the knowledge
-    base, so the tab takes the same name: one word per concept. Only the
-    name a person reads moved. TAB.KNOW, integer 6, id 'know', cls
-    'tab-know' and ui/knowledge.js are identity and keep their spelling, and
-    a comment that says Knowledge means this tab. The Knowledge domain, under
-    the Architect root (engine/data/canon.js), is a different thing and
-    keeps its name. */
- {k:TAB.KNOW,    id:'know',  nm:'Wisdom school', cls:'tab-know', sec:'embody'},
+ /* WISDOM SCHOOL, 18 November, then LYCEUM, 20 November, then REVERSED back
+    to KNOWLEDGE BASE, also 20 November, his words: "My apologies, change it
+    back to knowledge base. Not wisdom school or lyceum. I'm not feeling
+    either of those. They're too hoity-toity." Only the name a person reads
+    moved, each time. TAB.KNOW, integer 6, id 'know', cls 'tab-know' and
+    ui/knowledge.js are identity and keep their spelling, and a comment that
+    says Knowledge means this tab. The Knowledge domain, under the Architect
+    root (engine/data/canon.js), is a different thing and keeps its name. */
+ {k:TAB.KNOW,    id:'know',  nm:'Knowledge base', cls:'tab-know', sec:'embody'},
  /* SUMMARY, INTAKE AND ANALYTICS ARE EMBODY'S, 17 November, after Knowledge
     and in the order they stood in Play. His words: "move summary, intake, and
     analytics under embody." Knowledge stays first so pressing Embody still
@@ -11869,7 +11891,10 @@ const PLANS=[
     sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
-const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* no prototype, so a plan.tier of "constructor" off a record names no tier
+   rather than Object's own function, which the boundary read as a tier and
+   kept (validateProfile, engine/schema.js) */
+const PLAN_BY=Object.create(null); PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
    to tier one" and "unlocked on tier two and above", which is right for a
    numbered rung and wrong for Practitioner: lowercased it reads "Move to
@@ -12060,8 +12085,16 @@ function planLadder(pl){
    that expired is a punishment for a bank's timing. unpaid and canceled do
    not. The names are the processor's so that a record round trips without
    translation, and translation is where access bugs live. */
-const PLAN_LIVE={trialing:1, active:1, past_due:1};
-const PLAN_DEAD={canceled:1, unpaid:1, incomplete_expired:1, paused:1};
+/* NO PROTOTYPE, 18 November. The boundary keeps a status it does not know as
+   written, on purpose, and planState reads one as pending so it grants
+   nothing. On a plain object a status of "constructor" or "toString" found
+   Object's own function in PLAN_LIVE instead, and planState answered live:
+   an unknown state opened a door, which validateProfile's plan block says
+   it must never do.
+   Built without a prototype, the tables hold only the processor's words. They
+   serialise the same, so the pay cycle walk's pins on them do not move. */
+const PLAN_LIVE=Object.assign(Object.create(null),{trialing:1, active:1, past_due:1});
+const PLAN_DEAD=Object.assign(Object.create(null),{canceled:1, unpaid:1, incomplete_expired:1, paused:1});
 /* THE END DATE IS READ, NOT ONLY THE STATUS, 17 October, the pay cycle run
    (step h) and the systems seat: "planState ignores until, so a signed-out
    record stays paid for ever." The status is only as new as the last read of
@@ -15987,9 +16020,17 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  return pPersist(); }
 /* checked before the push, so a history nobody can read does not grow */
+/* AND A REFUSED WRITE TAKES ITS ROW BACK OUT. The row was pushed and left in
+   memory when pPersist failed, so the next save that did land wrote it to disk
+   with a timestamp from a moment the person was told nothing was saved, and a
+   second press after a refusal wrote two. pSaveSnap below already rolled its
+   staged row back; this is the same truncation. */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- CURP.history.push(snapshot(CURP)); return pPersist(); }
+ var n=CURP.history.length;
+ CURP.history.push(snapshot(CURP));
+ if(!pPersist()){ CURP.history.length=n; return false; }
+ return true; }
 /* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
    changes the working state and then snapshots it. Calling pSave followed
    by pSnap wrote twice: the first write could land while the second failed,
@@ -16654,7 +16695,20 @@ function validateProfile(o,ctx){
   /* a key missing from this list is dropped on every load, so the switch
      would read on for one session and off after a reload with nothing said */
   ['quiet','model','tone','voice','buzz','practitioner','sfx','sfxoff','onboarded','tutorialSeen','paidWelcomed','studio'].forEach(function(k){
-   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});}
+   if(o.ui[k]!==undefined)p.ui[k]=!!o.ui[k];});
+  /* THE ONE TEXT PREFERENCE, the Character page's last open mask, written by
+     uiSet('chmask') from ui/character.js, ui/drills.js and ui/storyui.js. The
+     list above is booleans only and never named it, so it was written to disk
+     on every pick and dropped on every load, and the page opened on Child
+     again after each reload: the exact failure the comment on that list
+     describes. It is a mask's name or it is refused by name. The roster is
+     MASKS and not MASKS_READ because ui/drills.js writes from MASKS; a hidden
+     mask is still a real one, and chLast in ui/character.js already opens the
+     first readable mask when the one kept is not shown. */
+  if(o.ui.chmask!==undefined&&o.ui.chmask!==null){
+   if(typeof o.ui.chmask==='string'&&MASKS.some(function(m){return m.nm===o.ui.chmask;}))
+    p.ui.chmask=o.ui.chmask;
+   else errs.push('ui.chmask is not a mask: '+JSON.stringify(o.ui.chmask).slice(0,40));}}
  /* the seed is a stated type, so it is one of sixteen or it is nothing. */
  if(o.seed&&typeof o.seed==='object'){
   if(!seedValid(o.seed.type))errs.push('seed type '+o.seed.type+' is not one of the sixteen');
@@ -17001,7 +17055,11 @@ function validateProfile(o,ctx){
    var lp='history['+i+'].lawNow';
    if(typeof x.lawNow!=='object'||Array.isArray(x.lawNow))errs.push(lp+' is not an object');
    else{
-    var WAS={}; Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
+    /* no prototype: on a plain object WAS.constructor is Object itself, so a
+       key of "constructor" or "toString" read as an old law name and was kept
+       under the function's text as its key. pImport took it and the next boot
+       loaded it back. A key that names no law is refused by name. */
+    var WAS=Object.create(null); Object.keys(LAW_WAS).forEach(function(k){WAS[LAW_WAS[k]]=k;});
     var lw={};
     Object.keys(x.lawNow).forEach(function(k){
      var nm=SINAMES.indexOf(k)>=0?k:(WAS[k]||null);
@@ -20959,8 +21017,15 @@ function ixValidate(errs,o,path){
    THE SNIFFER. scanStory finds every hit, parseStory turns tags
    into imprints, applyStory is the only function that mutates.
    ============================================================ */
-var K2BAND={crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
- solar:'Solar',sacral:'Sacral',root:'Root'};
+/* NO PROTOTYPE, 18 November. Every seat check in the product is K2BAND[k]
+   with k off a record, and on a plain object a key of "constructor" or
+   "toString" answers with Object's own function, which is truthy. So the
+   boundary took story.entries[i].bands.constructor as a seat (vEntry,
+   engine/schema.js), and the daily reader then pushed that function in as a
+   seat name and the Ritual surface threw reading it back. A table with no
+   prototype holds only the seven keys written here, at every lookup at once. */
+var K2BAND=Object.assign(Object.create(null),{crown:'Crown',eye:'3rd Eye',throat:'Throat',heart:'Heart',
+ solar:'Solar',sacral:'Sacral',root:'Root'});
 var B2K={Crown:'crown','3rd Eye':'eye',Throat:'throat',Heart:'heart',
  Solar:'solar',Sacral:'sacral',Root:'root'};
 var K2B={};Object.keys(B2K).forEach(function(b){K2B[B2K[b]]=b;});
@@ -21376,11 +21441,35 @@ function maskedSay(runs){
    produced. A comma is left out on purpose, the same ruling leanNorm
    already made: it is too weak a break to end a negation. */
 var SENT_END=/[.!?;:\n\r]/;
+/* THE BOUNDARIES ARE FOUND ONCE PER COPY, NOT ONCE PER HIT, SZA9 of round SZ.
+   clauseFloor walked back from every hit and clauseCeil walked forward, each
+   until it met a sentence end, and dictated speech has none, so each walk
+   crossed the whole entry and the parse grew with the square of its length:
+   16,000 unpunctuated characters took 193 ms where the same words punctuated
+   took 37, most of it in these two walks. The same rule, a space whose raw
+   character ends a clause, is now read in one pass into an ascending list
+   kept on the copy itself, keyed by the text it was read against, and each
+   walk becomes a binary search on that list. The answer is the same index
+   the walk returned, because the walk returned the nearest boundary and the
+   search finds the nearest boundary. */
+function clauseEnds(t,nm){
+ if(nm._ends&&nm._endsT===t)return nm._ends;
+ var out=[], s=nm.s;
+ for(var k=0;k<s.length;k++)
+  if(s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))out.push(k);
+ nm._ends=out; nm._endsT=t;
+ return out;}
+/* the index of the first entry in a sorted list that is at least v */
+function sortedAtLeast(a,v){
+ var lo=0, hi=a.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(a[mid]<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function clauseFloor(t,nm,at){
  t=String(t||'');
- for(var k=Math.min(at,nm.s.length-1);k>=0;k--){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return -1;}
+ var a=clauseEnds(t,nm), top=Math.min(at,nm.s.length-1);
+ if(top<0)return -1;
+ var i=sortedAtLeast(a,top+1)-1;
+ return i>=0?a[i]:-1;}
 /* EVERY WORD, WITH ITS CLAUSE. The forward half of clauseFloor, on the same
    copy and by the same rule: a space whose raw character ends a clause opens
    the next one, so a word whose own leading space is that boundary belongs
@@ -21443,6 +21532,12 @@ function wordsOf(t,nm){
    nm.s, so a mark and a list can quote from the no to the word on the letters
    typed. srcNegated is the decision; this only finds which word it saw. */
 var NEG_NOT_DENY=['stop','stops','stopped','help'];
+/* the index of the first word whose at is at least v, wordsOf's list being
+   in order of at */
+function wsAt(ws,v){
+ var lo=0, hi=ws.length;
+ while(lo<hi){var mid=(lo+hi)>>1; if(ws[mid].at<v)lo=mid+1; else hi=mid;}
+ return lo;}
 function sniffDeny(t,nm,hits){
  var ws=null, cuts=[];
  hits.forEach(function(h){
@@ -21457,7 +21552,12 @@ function sniffDeny(t,nm,hits){
   var f=clauseFloor(t,nm,h.at);
   cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
   if(!srcNegated(nm.s,h.at,f))return;
-  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  /* the last two words before the hit and inside its clause. This was a
+     filter over every word in the entry, once per denied hit, the third
+     place SZA9 grew with the square of an entry. ws is in order of at, so
+     the same two are found by a search and a step back. */
+  var lo0=Math.max(f,0), j=wsAt(ws,h.at), win=[];
+  while(j>0&&win.length<SRC_NEG_W&&ws[j-1].at>=lo0)win.unshift(ws[--j]);
   var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
   h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 /* TENSE AND CONDITIONAL VOID A CANDIDATE TOO, TASKS.md SK9 (package follow
@@ -21478,19 +21578,39 @@ function sniffDeny(t,nm,hits){
    Both require their full pair, in this order, so "if I'm being honest, I
    was angry" (no would after) and "I'm used to being ignored" (no anymore
    or no longer after) are untouched and stay live, as they should. */
+/* the forward walk, read off the same list clauseFloor reads. A NaN at never
+   entered the old loop and so answered the end of the text, kept here. */
 function clauseCeil(t,nm,at){
  t=String(t||'');
- for(var k=at;k<nm.s.length;k++){
-  if(nm.s.charAt(k)===' '&&SENT_END.test(t.charAt(nm.map[k])))return k;}
- return nm.s.length;}
+ if(!(at<nm.s.length))return nm.s.length;
+ var a=clauseEnds(t,nm), i=sortedAtLeast(a,at);
+ return i<a.length?a[i]:nm.s.length;}
+/* WHERE A PHRASE SITS IN THE COPY, every start, found once per copy. The
+   second half of SZA9: sniffTense sliced the whole clause on each side of
+   every hit and searched the slices, and with no sentence end the clause is
+   the whole entry, so this too grew with the square of it.
+   phraseIn(nm,p,lo,hi) says whether p starts at or after lo and ends at or
+   before hi, which is exactly whether the old slice nm.s.slice(lo,hi) with a
+   space put on the end held it: a hit's at is its own leading space, and the
+   clause ceiling is a space or the end of a copy that always closes on one,
+   so the space the old code added was already the next character of nm.s,
+   or, at the very end, sat after a space where no phrase here can use it. */
+function phraseIn(nm,p,lo,hi){
+ var c=nm._ph||(nm._ph={}), a=c[p];
+ if(!a){a=c[p]=[]; for(var k=nm.s.indexOf(p);k>=0;k=nm.s.indexOf(p,k+1))a.push(k);}
+ var i=sortedAtLeast(a,lo);
+ return i<a.length&&a[i]+p.length<=hi;}
 function sniffTense(t,nm,hits){
+ var n=nm.s.length;
  hits.forEach(function(h){
   if(h.neg)return;
   var f=Math.max(clauseFloor(t,nm,h.at),0), c=clauseCeil(t,nm,h.at);
-  var before=nm.s.slice(f,h.at)+' ', after=nm.s.slice(h.at,c)+' ';
-  var pastVoid=before.indexOf(' used to ')>=0&&
-   (after.indexOf(' anymore ')>=0||after.indexOf(' any more ')>=0||after.indexOf(' no longer ')>=0);
-  var condVoid=before.indexOf(' if ')>=0&&after.indexOf(' would ')>=0;
+  /* the old before was nm.s.slice(f,h.at)+' ', the old after
+     nm.s.slice(h.at,c)+' '; see phraseIn for why these bounds are the same */
+  var bEnd=h.at+1, aEnd=Math.min(c+1,n);
+  var pastVoid=phraseIn(nm,' used to ',f,bEnd)&&
+   (phraseIn(nm,' anymore ',h.at,aEnd)||phraseIn(nm,' any more ',h.at,aEnd)||phraseIn(nm,' no longer ',h.at,aEnd));
+  var condVoid=phraseIn(nm,' if ',f,bEnd)&&phraseIn(nm,' would ',h.at,aEnd);
   if(pastVoid||condVoid){h.neg=true; h.negw=pastVoid?'used to':'if'; h.negAt=h.at;}});}
 /* ============================================================
    WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
@@ -21590,7 +21710,20 @@ var WHO_OPENER=['the','a','an','this','that','these','those','it','its','there',
  'perhaps','probably','really','honestly','sometimes','often','always','usually','never','work','life',
  'home','school','things','sleep','money','dinner','lunch','breakfast','traffic','weather','coffee','job',
  'monday','tuesday','wednesday','thursday','friday','saturday','sunday','january','february','march',
- 'april','may','june','july','august','september','october','november','december'];
+ 'april','may','june','july','august','september','october','november','december',
+ 'feel','felt','feeling','was','been','being','got','getting','woke','spent','kind','kinda','sort',
+ 'pretty','super','bit','kept','went'];
+/* THE LAST ROW IS THE WRITER WITH THE I LEFT OFF, 18 November, reopening
+   SZA4. "Felt furious all day." read nothing while "felt furious all day."
+   and "I felt furious all day." both read solar: a diary drops its subject,
+   the phone capitalises the verb it starts on, and felt was not a word this
+   reader knew, so whoStartName took it for a name and held the writer's own
+   anger as someone else's. The plural strip SZA4 added cannot reach it,
+   because a past tense is not a plural. These are the words a subjectless
+   sentence about the writer opens on, a verb of feeling or being with no
+   subject, or a hedge (kind of, pretty, a bit) in front of one; feels is
+   reached through the plural strip from feel and is not listed twice.
+   A real name is untouched, because none of these is one. */
 function whoKnown0(w){
  var own=function(o){return Object.prototype.hasOwnProperty.call(o,w);};
  if(own(LEX)||own(ADJ2CHG)||own(LEXMOD))return true;
@@ -23538,9 +23671,24 @@ var SRC_NEG_W=2;
    srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
    boundary, the exact width and word list this was measured against
    stand exactly as they were. */
+/* AND IT READS BACK FROM at, NOT FORWARD FROM f, SZA9 of round SZ. With no
+   sentence end in the text, which is the ordinary shape of dictated speech,
+   f is 0, so every mention sliced and split the whole entry up to itself to
+   keep two words, and the parse grew with the square of the entry: 16,000
+   unpunctuated characters took 193 ms where the same words punctuated took
+   37. The window now starts 32 characters back and doubles until it holds
+   one word more than the run needs, or reaches f. Its first word may be cut
+   in half, and that is why it needs one more: the cut word is never in the
+   run, so the run is the same words the whole slice would have given, and
+   when the window reaches f it is the whole slice. */
 function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
- var before=String(src).slice(f,at).trim().split(' ');
+ var s=String(src), w=32, lo, before;
+ for(;;){
+  lo=Math.max(f,at-w);
+  before=s.slice(lo,at).trim().split(' ');
+  if(lo===f||before.length>SRC_NEG_W)break;
+  w*=2;}
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 
@@ -26904,7 +27052,8 @@ function converge(name,r,sp){
    22 and 33 survive reduction at every step, including inside a
    single name part, because a master reduced is a master lost.
 
-   KARMIC DEBT is reported off the unreduced total and not inferred.
+   KARMIC DEBT is reported off the reduction itself and not inferred:
+   the total and every step it passes through on the way to one digit.
    13, 14, 16 and 19 are the four, and a 4 that came from 13 is not
    the same 4 as one that came from 22.
 
@@ -26982,7 +27131,18 @@ function numAcross(parts,mode){
  return {each:each, byPart:numReduce(each.reduce(function(a,v){return a+v;},0)),
   flatTotal:flat, flat:numReduce(flat)};}
 
-function numDebt(total){return NUM_DEBT.indexOf(total)>=0?total:null;}
+/* DEBT IS READ OFF EVERY STEP OF THE WAY DOWN, not off the total alone. This
+   compared only the unreduced total against the four, so 85, which reduces
+   85 to 13 to 4, reported no debt while passing straight through 13, and a
+   bare 13 was the only route to one. The walk stops at the first of the four
+   it lands on. It ignores the master stop on purpose: a master reduces to a
+   single digit in one step and so cannot reach a debt number below it. */
+function numDebt(total){
+ var v=Math.abs(total|0);
+ while(v>9){
+  if(NUM_DEBT.indexOf(v)>=0)return v;
+  v=String(v).split('').reduce(function(a,c){return a+ +c;},0);}
+ return null;}
 
 /* what each number does, by the position it is standing in. The same digit is
    not the same statement in the soul as it is in the personality: one is what
@@ -28269,9 +28429,11 @@ var DLY_TPL=[
  {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
  {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
  {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, touched the {1} point.'},
  {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
+ {id:'show.cue.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
@@ -28370,7 +28532,7 @@ function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the knowledge base: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
  if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
@@ -28433,7 +28595,7 @@ function dlyStValid(errs,path,x,names){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the knowledge base: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one
@@ -28955,11 +29117,21 @@ function dlyComposeIn(p,now,opt){
   var rd=dlyRead(ctx,s.idx,s.seat), ev=dlyStoryEv(s.ids);
   if(s.rung==='windowed')cands.push(dlyCand('show.seat.new','showing',[s.span,s.seat,s.base],ev,'inferred','windowed',{read:rd,dom:s.seat}));
   else if(s.rung==='repeated')cands.push(dlyCand('show.seat','showing',[s.span,s.seat,s.days],ev,'inferred','repeated',{read:rd,dom:s.seat}));
-  else cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));});
+  /* the rung is once when the entries sit on one day, and that is a count of
+     days, not of entries. Picking the sentence on the rung printed "one entry"
+     over two and three entries logged the same day, so the sentence is picked
+     on s.n, the entries themselves, and the rung stays once either way. */
+  else if(s.n===1)cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));
+  else cands.push(dlyCand('show.seat.day.h','showing',[dlyDayWord(s.last),s.seat,s.n],ev,'inferred','once',{read:rd,dom:s.seat}));});
  (by.cue||[]).forEach(function(c){
   var rung=(c.ents>=2&&c.days>=2)?'repeated':'once', ev=dlyStoryEv(c.ids);
   if(rung==='repeated')cands.push(dlyCand('show.cue','showing',[c.span,c.nm,c.total,c.ents],ev,'inferred','repeated'));
-  else cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));});
+  /* the same defect the seat sentence above had: rung once means the entries
+     share one day, and the sentence was picked on the rung, so two and three
+     entries logged on 9 March with the same cue each read "So far one entry".
+     It is picked on c.ents, the entries that carried the cue, instead. */
+  else if(c.ents===1)cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));
+  else cands.push(dlyCand('show.cue.day.h','showing',[dlyDayWord(c.last),c.nm,c.ents],ev,'inferred','once'));});
  (by.opened||[]).forEach(function(o){
   if(o.n===1)cands.push(dlyCand('show.opened.1','showing',[o.span,dlyDayWord(o.latest)],o.ev,'known','once'));
   else cands.push(dlyCand('show.opened','showing',[o.span,o.n,dlyDayWord(o.latest)],o.ev,'known','repeated'));});
@@ -29380,7 +29552,39 @@ var OB_NEVER=['name','first','middle','last','email','address','key','rk','rid',
     X7). aim is the stored word for the daily intention, engine/daily.js. */
  'summaries','summary','mirror','aim','aims'];
 
-function obStore(){ try{ return JSON.parse(STORE.get(OBKEY)||'[]'); }catch(e){ return []; } }
+/* A QUEUE THAT IS NOT A LIST IS SET ASIDE, NEVER THROWN AT AND NEVER EATEN.
+
+   This returned whatever JSON.parse gave. Measured 18 November on a key
+   holding {}, 7, true or null: obQueue threw a TypeError at q.concat or
+   q.length, so Send on a fresh comment threw, nothing was queued and nothing
+   was said, and the words were gone. A key holding "abc" was worse, because a
+   string has a length and a concat: Send answered queued, 18, and wrote
+   "abc[object Object]" over the key. And a key that did not parse came back
+   as [] in silence, so the first Send after it wrote over the only copy.
+
+   The bytes may be an older build's queue with somebody's words in it, so
+   they get pStore's treatment (storeSetAside, engine/schema.js): copied
+   verbatim under a key of their own carrying the time, read back to prove it
+   landed, and only then is the outbox key cleared so the next read is clean
+   and does not copy them again. Not storeSetAside itself, because that one
+   writes under the profile key and tells the host the profile store could not
+   be read, which would be a lie about the wrong record. If the copy did not
+   land, the key is left alone and obQueue refuses to write over it. */
+var OB_UNREAD=null;
+function obSetAside(txt,why){
+ var key=OBKEY+'.unreadable.'+Date.now().toString(36), kept=false;
+ try{ STORE.set(key,txt); kept=(STORE.get(key)===txt); }catch(e){}
+ if(kept){ try{ STORE.set(OBKEY,'[]'); }catch(e){} }
+ OB_UNREAD={why:why, bytes:txt.length, key:kept?key:null};
+ return [];}
+function obStore(){
+ var txt, raw;
+ OB_UNREAD=null;
+ try{ txt=STORE.get(OBKEY); }catch(e){ return []; }
+ if(!txt) return [];
+ try{ raw=JSON.parse(txt); }catch(e){ return obSetAside(String(txt),'it does not parse'); }
+ if(!Array.isArray(raw)) return obSetAside(String(txt),'it is not a list');
+ return raw;}
 function obWrite(q){
  if(!STORE_BOUND) return false;
  try{ STORE.set(OBKEY,JSON.stringify(q)); return true; }catch(e){ return false; } }
@@ -29445,6 +29649,9 @@ function obQueue(e){
  if(!STORE_BOUND) return {ok:false, why:'storage is blocked in this browser, so '
   +'there is nowhere to hold this. Copy it somewhere before you leave the page.'};
  var q=obStore();
+ if(OB_UNREAD&&!OB_UNREAD.key) return {ok:false, why:'the outbox on this device '
+  +'could not be read or copied somewhere safe, so nothing was written over it. '
+  +'Copy this somewhere before you leave the page.'};
  if(q.length>=OB_MAX) return {ok:false, why:'there are already '+OB_MAX
   +' waiting to send and nowhere to send them, so this one was not taken.'};
  var next=q.concat([e]);
@@ -30551,7 +30758,7 @@ if(typeof module!=='undefined'&&module.exports){
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -31174,8 +31381,17 @@ function riseLevers(seat){
  /* Both levers are run on LOCAL COPIES of charge and replace. Nothing in S is
     touched, because a probe in this repository once read shared state left by
     another run and reported a whole lane as empty. */
+ /* HELD FOLDS IN S.addr, THE WAY compute.js DOES, 18 November. This copy of
+    the body was written before the named-address layer landed on 26 October
+    and read only ch[n.cf], so for anyone whose stories named a body place
+    every lever here started from a seat lighter than the one seatTrans reads.
+    Measured on a field with 5 on each Heart address: the law lever claimed
+    +0.160 where raising that law and recomputing moved the seat +0.006, and
+    with every law already at 10 it claimed +0.110 for a move that changes
+    nothing. S.addr is read and never copied into the release runs, because a
+    release empties the axis and nothing in ui/release.js drains S.addr. */
  var openOf=function(n,ch,rp,relief){
-  var held=n.cf?Math.max(0,Math.min(10,(ch[n.cf]||0)*n.susc*(1-relief*0.42))):0;
+  var held=n.cf?Math.max(0,Math.min(10,((ch[n.cf]||0)+(S.addr[n.i]||0))*n.susc*(1-relief*0.42))):0;
   var rep=n.cf?Math.max(0,Math.min(10,(rp[n.cf]||0)*(0.72+0.28*relief))):0;
   var sq=Math.max(0,Math.min(10,held-rep*0.86));
   var pole=Math.max(0,Math.min(10,rep-held));

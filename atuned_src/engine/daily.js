@@ -156,9 +156,11 @@ var DLY_TPL=[
  {id:'today.read', src:'known', k:'today', text:'Your latest saved reading is from {0}. The {1} point carried the most weight in it.'},
  {id:'show.seat', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point on {2} separate days.'},
  {id:'show.seat.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, touched the {1} point.'},
+ {id:'show.seat.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, touched the {1} point.'},
  {id:'show.seat.new', src:'inferred', k:'showing', text:'In the last {0} days, entries touched the {1} point. In the {2} days before that, none did.'},
  {id:'show.cue', src:'inferred', k:'showing', text:'Words that read as {1} came up {2} times across {3} entries in the last {0} days. They are counted here and not quoted.'},
  {id:'show.cue.h', src:'inferred', k:'showing', text:'So far one entry, from {0}, carried words that read as {1}. They are counted here and not quoted.'},
+ {id:'show.cue.day.h', src:'inferred', k:'showing', text:'So far {2} entries, all from {0}, carried words that read as {1}. They are counted here and not quoted.'},
  {id:'show.opened', src:'known', k:'showing', text:'{1} addresses were opened for the first time in the last {0} days. The latest was on {2}.'},
  {id:'show.opened.1', src:'known', k:'showing', text:'An address was opened for the first time in the last {0} days, on {1}.'},
  {id:'show.ritual', src:'known', k:'showing', text:'In the last {0} days you set {1} rituals and marked {2} done. Both counts are your own entries.'},
@@ -257,7 +259,7 @@ function dlyRefWhy(type,id){
  if(typeof type!=='string'||typeof id!=='string'||!id.length||id.length>DLY_CAP.id)
   return 'names no kind of evidence this build holds';
  if(/[\u0000-\u001f]/.test(id))return 'carries a control character';
- if(type==='kb')return dlyGloss(id)?null:'names no entry in the wisdom school: '+id;
+ if(type==='kb')return dlyGloss(id)?null:'names no entry in the knowledge base: '+id;
  if(type==='law')return SINAMES.indexOf(id)>=0?null:'names no law: '+id;
  if(type==='avatar')return (BANDS.indexOf(id)>=0||id==='review')?null:'names no point: '+id;
  if(type==='aim')return /^sum:\d{4}-\d{2}-\d{2}$/.test(id)?null:'names no day: '+id;
@@ -320,7 +322,7 @@ function dlyStValid(errs,path,x,names){
   if(!Array.isArray(x.links))errs.push(path+'.links is not a list');
   else if(x.links.length>DLY_CAP.links)errs.push(path+'.links holds '+x.links.length+', more than '+DLY_CAP.links);
   else x.links.forEach(function(t,j){
-   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the wisdom school: '+JSON.stringify(t));
+   if(typeof t!=='string'||!dlyGloss(t))errs.push(path+'.links['+j+'] is not a term in the knowledge base: '+JSON.stringify(t));
    else o.links.push(t);});}
  /* A DIGIT IN A SENTENCE IS A DIGIT IN AN ARGUMENT. A sealed sentence prints a
     number only because a template was handed it, so a number that is not one
@@ -842,11 +844,21 @@ function dlyComposeIn(p,now,opt){
   var rd=dlyRead(ctx,s.idx,s.seat), ev=dlyStoryEv(s.ids);
   if(s.rung==='windowed')cands.push(dlyCand('show.seat.new','showing',[s.span,s.seat,s.base],ev,'inferred','windowed',{read:rd,dom:s.seat}));
   else if(s.rung==='repeated')cands.push(dlyCand('show.seat','showing',[s.span,s.seat,s.days],ev,'inferred','repeated',{read:rd,dom:s.seat}));
-  else cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));});
+  /* the rung is once when the entries sit on one day, and that is a count of
+     days, not of entries. Picking the sentence on the rung printed "one entry"
+     over two and three entries logged the same day, so the sentence is picked
+     on s.n, the entries themselves, and the rung stays once either way. */
+  else if(s.n===1)cands.push(dlyCand('show.seat.h','showing',[dlyDayWord(s.last),s.seat],ev,'inferred','once',{read:rd,dom:s.seat}));
+  else cands.push(dlyCand('show.seat.day.h','showing',[dlyDayWord(s.last),s.seat,s.n],ev,'inferred','once',{read:rd,dom:s.seat}));});
  (by.cue||[]).forEach(function(c){
   var rung=(c.ents>=2&&c.days>=2)?'repeated':'once', ev=dlyStoryEv(c.ids);
   if(rung==='repeated')cands.push(dlyCand('show.cue','showing',[c.span,c.nm,c.total,c.ents],ev,'inferred','repeated'));
-  else cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));});
+  /* the same defect the seat sentence above had: rung once means the entries
+     share one day, and the sentence was picked on the rung, so two and three
+     entries logged on 9 March with the same cue each read "So far one entry".
+     It is picked on c.ents, the entries that carried the cue, instead. */
+  else if(c.ents===1)cands.push(dlyCand('show.cue.h','showing',[dlyDayWord(c.last),c.nm],ev,'inferred','once'));
+  else cands.push(dlyCand('show.cue.day.h','showing',[dlyDayWord(c.last),c.nm,c.ents],ev,'inferred','once'));});
  (by.opened||[]).forEach(function(o){
   if(o.n===1)cands.push(dlyCand('show.opened.1','showing',[o.span,dlyDayWord(o.latest)],o.ev,'known','once'));
   else cands.push(dlyCand('show.opened','showing',[o.span,o.n,dlyDayWord(o.latest)],o.ev,'known','repeated'));});

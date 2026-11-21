@@ -3458,6 +3458,20 @@ g('26 \u00b7 numerology, in full');
  NUM_DEBT.forEach(function(d){ok(numReduce(d)===numReduce(d),'debt '+d+' is a real total');});
  ok(numerology('Aa','1980-01-01').debt===null,'a total that is not one of the four is not a debt');
 
+ /* AND A DEBT PASSED THROUGH IS STILL A DEBT. Only the unreduced total was
+    compared, so a name totalling 85 reduced 85 to 13 to 4 and reported none.
+    Z is 8 and E is 5, so these totals are fixed by the letters and do not
+    lean on any roster. 63 is the control: it goes straight to 9 and touches
+    none of the four, so a fix that reported debt everywhere fails it. */
+ const d85=numerology('Zzzzzzzzzz E','1980-01-01');
+ ok(d85.expressionTotal===85,'the debt probe totals 85, so the check below tests what it says');
+ ok(d85.debt===13,'85 passes through 13 on the way to 4, and reports debt 13');
+ const d63=numerology('Zzzzzzz G','1980-01-01');
+ ok(d63.expressionTotal===63,'the control totals 63');
+ ok(d63.debt===null,'63 reduces straight to 9 and reports no debt');
+ ok(numerology('Zzzzzzz Fe','1980-01-01').debt===13,
+  'a part that halts on the master 11 does not hide the whole name passing 67 to 13');
+
  /* PURE. Same name in, same numbers out, and nothing read from shared state. */
  const a1=numerology('Diane Elizabeth Halloran','1980-11-02');
  S.doms=[5]; buildSoul(); compute();
@@ -4145,6 +4159,40 @@ console.log('\n30 · the outbox, and what may never leave the device');
  ok(f.state==='retry'&&f.n===1,'a host that refuses leaves the entry in the queue');
  ok(E.obCount()===1,'so nothing a person wrote is ever dropped on a failed send');
  E.bindSend(null);
+
+ /* A KEY THAT IS NOT A LIST. Measured 18 November on the old obStore: {}, 7,
+    true and null made Send throw a TypeError and queue nothing, a string made
+    it answer queued and write "abc[object Object]", and bytes that did not
+    parse were written over in silence. Each must read as an empty queue, be
+    copied aside verbatim before anything writes, and leave Send working. */
+ for(const bad of ['{}','7','true','null','"abc"','{"0":{"kind":"comment","body":"x"}}','{not json']){
+  mem={}; mem[E.OBKEY]=bad;
+  let c, q, threw=null;
+  try{ c=E.obCount(); q=E.obQueue(e()); }catch(x){ threw=x.message; }
+  ok(!threw,'an outbox key holding '+bad+' does not throw'+(threw?', '+threw:''));
+  ok(c===0,'and reads as an empty queue, '+c);
+  const aside=Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0);
+  ok(aside.length===1&&mem[aside[0]]===bad,'and its bytes are kept verbatim under a key of their own, '+JSON.stringify(aside));
+  ok(q&&q.ok&&q.queued===1&&Array.isArray(JSON.parse(mem[E.OBKEY]))&&E.obCount()===1,
+   'and a real Send after it is queued as the only entry, '+JSON.stringify(q)+' '+mem[E.OBKEY]);
+  try{ E.obCount(); }catch(x){}
+  ok(Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0).length===1,
+   'and a later read does not copy anything aside again');
+  E.bindSend(()=>true);
+  let s; try{ s=E.obDrain(); }catch(x){ s={threw:x.message}; }
+  ok(s.state==='sent'&&s.n===1&&E.obCount()===0,'and it sends, '+JSON.stringify(s));
+  E.bindSend(null);}
+
+ /* AND IF THE COPY CANNOT LAND, NOTHING IS WRITTEN OVER THE ONLY ONE. */
+ mem={}; mem[E.OBKEY]='{"old":"format"}';
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],
+  (k,v)=>{ if(k!==E.OBKEY) throw new Error('QuotaExceeded'); mem[k]=String(v); });
+ let full;
+ try{ full=E.obQueue(e()); }catch(x){ full={threw:x.message}; }
+ ok(full&&full.ok===false&&/could not be read or copied/.test(full.why||'')&&mem[E.OBKEY]==='{"old":"format"}',
+  'with nowhere to copy the bytes, Send refuses by name and the old bytes stay, '+JSON.stringify(full));
+ E.bindStore(k=>mem[k]===undefined?null:mem[k], (k,v)=>{mem[k]=String(v);});
+ mem={}; mem[E.OBKEY]='[]';
 }
 
 g('31 · the lean, two channels and the frame that gates one of them');
@@ -4272,6 +4320,29 @@ g('31 · the lean, two channels and the frame that gates one of them');
   ok(e.self>=2,'a negator does not reach past a full stop, got self '+e.self);
   const f=scan('he did not hit me');
   ok(f.other===0,'and it voids a frame marker too, got other '+f.other);
+  /* THE CONTRACTED NEGATOR AS A PERSON TYPES IT, SZA6 reopened 18 November.
+     The straight apostrophe was already covered; the curly one a phone or a
+     Mac types, and the spelling with no mark at all, were not, and both
+     INVERTED the reading on main at 72a28de: "it wasn't my fault" read
+     accountability taken and "he didn't hit me" read harm confirmed. The
+     controls go first, so a scanner that reads nothing at all cannot pass
+     the denials by accident. */
+  ok(scan('He hit me.').other===1&&scan('It was my fault.').acc===1,
+   'the controls read: a report of harm and an admission of fault');
+  [['It wasn’t my fault.','curly'],['It wasnt my fault.','no mark'],
+   ["It wasn't my fault.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.acc===0,'a denial of fault, '+how+' apostrophe, is not accountability taken, got acc '+r.acc);});
+  [['He didn’t hit me.','curly'],['He didnt hit me.','no mark'],
+   ["He didn't hit me.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.other===0,'a denial of harm, '+how+' apostrophe, is not harm confirmed, got other '+r.other);});
+  ['He doesnt hit me.','He can’t hit me.','He cant hit me.','He won’t hit me.',
+   'He wont hit me.','He couldnt hit me.','He wouldnt hit me.'
+  ].forEach(t=>{const r=scan(t);
+   ok(r.other===0,JSON.stringify(t)+' voids the harm marker, got other '+r.other);});
+  ['It isnt my fault.','It isn’t my fault.'].forEach(t=>{const r=scan(t);
+   ok(r.acc===0,JSON.stringify(t)+' voids the admission, got acc '+r.acc);});
  }
 
  /* ---- defect 4. the frame gate, which is the whole design ---- */
@@ -5673,6 +5744,31 @@ g('36g · the Kundalini rise, ported from proto/avatar/rise.js, 27 October');
   ok(lv.bigger==='law'||lv.bigger==='release'||lv.bigger==='level','bigger names one of the two levers or a tie, got '+lv.bigger);
  }
 
+ /* THE LAW LEVER IS THE ENGINE'S OWN RECOMPUTE, WITH S.addr IN. riseLevers
+    carried its own copy of the held line and that copy predated the
+    named-address layer, so on a field whose stories named Heart addresses it
+    claimed +0.160 where raising the same law and recomputing moved the seat
+    +0.006. Checked both ways: the lever must equal seatTrans after the real
+    move, and with every law already at 10 the move is a no-op, so the lever
+    must read exactly where seatTrans reads now. reset() does not clear
+    S.addr, so this restores it on the way out. */
+ {
+  const addrWas=S.addr, seat='Heart';
+  const heavy=()=>{S.addr={};W.filter(n=>n.b===seat&&n.cf).forEach(n=>{S.addr[n.i]=5;});compute();};
+  reset(2,0,4); heavy();
+  const now=seatTrans(seat), lv=riseLevers(seat);
+  const wk=lv.law.nm, was=S.law[wk];
+  S.law[wk]=Math.min(10,was+2); compute();
+  const real=seatTrans(seat);
+  S.law[wk]=was; compute();
+  near(lv.law.to,real,1e-12,'with S.addr on the Heart, the law lever lands where seatTrans lands after the same law move');
+  near(lv.now,now,1e-12,'and starts from seatTrans as it reads now');
+  reset(2,0,10); heavy();
+  const full=riseLevers(seat);
+  near(full.law.to,seatTrans(seat),1e-12,'with every law at 10 the law lever is a no-op and reads seatTrans, S.addr included');
+  S.addr=addrWas; compute();
+ }
+
  /* baseline and delta: no change reads d 0, nothing is stored by this file itself */
  const base=riseBase();
  const delta0=riseDelta(rBlocked,base);
@@ -6281,6 +6377,28 @@ g('39 · the sentence is read once, and the marks land on the letters');
   if(c!==' '&&c!==r)wrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
  ok(wrong.length===0,'and each one points at the character it came from, '
   +wrong.length+' do not'+(wrong[0]?': '+wrong[0]:''));
+ /* THE TURKISH CAPITAL I, SZA5, which shipped its fix on 13 November with no
+    row here. U+0130 lower cases to two characters, and before the fold every
+    map entry after it pointed one character short while the copy and the map
+    stayed the same length, so the length row above passes on the broken
+    build and cannot be the guard. The map row and the highlight row are the
+    guard, and both were measured red with the fold taken out. The reading
+    row stays green on that broken build, because hits are found on the copy
+    and only their raw offsets were wrong, so it holds the contract and is
+    not the proof. */
+ const trRaw='İstanbul, İzmir. I am not sad. I am furious and shaking.';
+ const trNm=normMap(trRaw), trWrong=[];
+ for(let i=1;i<trNm.s.length-1;i++){
+  const c=trNm.s.charAt(i), r=trRaw.charAt(trNm.map[i]);
+  if(c!==' '&&!(c===r.toLowerCase()||(r==='İ'&&c==='i')))trWrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
+ ok(trNm.s.length===trNm.map.length&&trNm.map.every(i=>i>=0&&i<=trRaw.length)&&trWrong.length===0,
+  'a dotted capital I keeps every later map entry on its own character, '+trWrong.length+' do not'+(trWrong[0]?': '+trWrong[0]:''));
+ const trPlain=trRaw.replace(/İ/g,'I');
+ ok(JSON.stringify(parseStory(trRaw).bands)===JSON.stringify(parseStory(trPlain).bands)&&parseStory(trRaw).bands.solar>0,
+  'and the charge after it reads what the same story with a plain I reads: '+JSON.stringify(parseStory(trRaw).bands));
+ const trMarks=marksOf(trRaw,parseStory(trRaw)).map(m=>trRaw.slice(m.s,m.e).toLowerCase());
+ ok(trMarks.indexOf('furious')>=0&&trMarks.indexOf('shaking')>=0,
+  'and its highlights land on the words, not one character short: '+JSON.stringify(trMarks));
  /* THE ONE STRING. scanStory reads normMap's output and nothing else, so a hit
     offset slices that hit's own text straight back out of it. This is the row
     that would catch the two copies parting by one. */
@@ -9284,6 +9402,19 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
   .forEach(t=>ok(writer(t),'a common first word is not a name, and the sentence is the writer\'s: '+say(t)));
  ok(E.sniffLaws('Sarah lied to me.').every(l=>l.law!=='Truth'),'and the law reader holds her lie the same way');
  ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
+ /* THE WRITER WITH THE I LEFT OFF, SZA4 reopened 18 November. "Felt furious
+    all day." read nothing, held as a name, while the same sentence lowercase
+    or with "I" read solar. The capitalised form must read exactly what the
+    lowercase one reads, band for band, and a real name in the same shape
+    must still be held, or the fix has only moved the defect. */
+ ["Felt furious all day.","Was furious all day.","Feeling furious all day.","Got furious all day.",
+  "Woke up furious.","Spent the day furious.","Kept crying all day.","Went home furious."]
+  .forEach(t=>{const lo=t.charAt(0).toLowerCase()+t.slice(1);
+   ok(writer(t)&&JSON.stringify(parseStory(t).bands)===JSON.stringify(parseStory(lo).bands),
+    'a subjectless first word is the writer, and reads what its lowercase reads: '+say(t)+' against '+say(lo));});
+ ok(parseStory('Felt furious all day.').bands.solar>0&&JSON.stringify(parseStory('Felt furious all day.').bands)===JSON.stringify(parseStory('I felt furious all day.').bands),
+  'and what "I felt furious" reads, solar: '+say('Felt furious all day.'));
+ ok(held('Sarah felt furious all day.','sarah'),'and a name in front of the same verb is still held: '+say('Sarah felt furious all day.'));
  const ha=parseStory('Her anger scared me.');
  ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
  ok(writer('I saw his face and froze.'),'a possessive after a verb is what was seen, and the freezing is mine: '+say('I saw his face and froze.'));
@@ -12451,6 +12582,119 @@ g('AE · the affirmation generator, his anchors and his wrapper, read off the R3
  be.forEach(t=>{const r=affCompose(t); if(r.ok){rn++; props(r,[]).forEach(x=>rbad.push(t+': '+x));}});
  ok(be.length>0&&rn>=be.length-1,'the roster\'s own Become lines compose, '+rn+' of '+be.length);
  ok(rbad.length===0,'and every roster line keeps every property, '+JSON.stringify(rbad.slice(0,3)));
+}
+
+g('SB18 · the boundary and the saves around it, 18 November');
+/* FOUR DEFECTS AROUND validateProfile AND THE SAVE HELPERS, each reproduced on
+   72a28de before it was fixed, and each check below fails with its own fix
+   taken back out. */
+{
+ const {blankProfile,saveProfile,validateProfile,pImport,importError,profiles,current,
+        bindStore,snapshot,pSnap,pSave,pStore,profCreate,profErr,planState,PLANS,MASKS,PKEY}=E;
+ const fs=require('fs'), path=require('path');
+ const disk={}; let refuse=false;
+ bindStore(k=>disk[k]===undefined?null:disk[k],(k,v)=>{if(refuse)throw new Error('QuotaExceeded');disk[k]=v;});
+ const base=saveProfile(blankProfile('boundary'));
+ base.history=[snapshot(base)];
+ const copy=()=>JSON.parse(JSON.stringify(base));
+
+ /* 1. A KEY OBJECT'S PROTOTYPE ANSWERS FOR IS NOT A KEY. lawNow's old-name
+    table, K2BAND and the plan tables were plain objects, so "constructor"
+    found Object itself and read as a law, a seat or a tier. */
+ ['constructor','toString','hasOwnProperty'].forEach(k=>{
+  const x=copy(); x.history[0].lawNow={}; x.history[0].lawNow[k]=5;
+  const v=validateProfile(x);
+  ok(!v.ok&&(v.errs||[]).some(e=>e.indexOf('lawNow may not carry '+k)>=0),
+   'history[0].lawNow.'+k+' is refused by name: '+JSON.stringify(v.errs));});
+ {const x=copy(); x.history[0].lawNow={constructor:5};
+  const n=profiles().length, c=current();
+  ok(pImport(JSON.stringify(x))===null&&profiles().length===n&&current()===c,
+   'and pImport refuses it and lands nothing: '+importError());}
+ {const x=copy(); x.story={entries:[{t:new Date().toISOString(),text:'x',imprints:0,bands:{constructor:1}}]};
+  const v=validateProfile(x);
+  ok(!v.ok&&/bands names no point: constructor/.test(String(v.errs)),'a story band keyed constructor names no point: '+JSON.stringify(v.errs));}
+ {const x=copy(); x.plan.tier='toString';
+  const v=validateProfile(x);
+  ok(!v.ok&&/plan.tier is not a tier this build knows: toString/.test(String(v.errs)),'a plan.tier of toString is not a tier: '+JSON.stringify(v.errs));}
+ {const t=PLANS.find(q=>q.k!=='free'&&q.k!=='gift').k;
+  ok(planState({tier:t,status:'constructor'})==='pending'&&planState({tier:t,status:'toString'})==='pending',
+   'a status named after an Object method is unknown, so pending, never live');}
+
+ /* 2. THE LAST MASK SURVIVES A RELOAD. ui.chmask was saved and then dropped
+    by the boundary's ui allow list on every load. */
+ {const nm=MASKS[1].nm, x=copy(); x.ui.chmask=nm;
+  const v=validateProfile(JSON.parse(JSON.stringify(x)));
+  ok(v.ok&&v.profile.ui.chmask===nm,'ui.chmask '+nm+' comes back through the boundary, got '+(v.profile&&v.profile.ui.chmask));
+  const y=copy(); y.ui.chmask='Nobody';
+  const w=validateProfile(y);
+  ok(!w.ok&&/ui.chmask is not a mask/.test(String(w.errs)),'a name that is not a mask is refused by name: '+JSON.stringify(w.errs));
+  refuse=false;
+  const p=profCreate('Chmask');
+  ok(!!p,'a profile to carry it is made: '+profErr());
+  p.ui.chmask=nm; ok(pSave(),'and saved');
+  const back=pStore().filter(q=>q.id===p.id)[0];
+  ok(back&&back.ui.chmask===nm,'and the boot read off the store still holds '+nm+', got '+(back&&back.ui.chmask));}
+
+ /* 3. THE INTAKE PANEL'S NEW GOES THROUGH profCreate. The engine half of the
+    door refuses and rolls back; the check on the source holds the handler to
+    it, because it called pNew, which ignores the write. */
+ {refuse=true;
+  const n=profiles().length, c=current();
+  ok(profCreate('Refused')===null&&profiles().length===n&&current()===c&&/could not save/.test(String(profErr())),
+   'a new profile the store refuses is not left open, and says why: '+profErr());
+  refuse=false;
+  const src=fs.readFileSync(path.join(__dirname,'..','atuned_src','ui','intakeui.js'),'utf8');
+  const at=src.indexOf("nb.onclick=function()"), body=at<0?'':src.slice(at,src.indexOf('};',at));
+  ok(at>=0&&/profCreate\(/.test(body)&&!/pNew\(/.test(body),'the #iqnew handler makes the profile with profCreate and not pNew');
+  ok(/if\(!profCreate\(\w+\)\)\{\s*status\([^;]*,'fail'\);/.test(body),'and a refusal is said through status as a failure');}
+
+ /* 4. A REFUSED SNAPSHOT TAKES ITS ROW BACK OUT, so the next good save does
+    not carry a row from a moment the person was told nothing was saved. */
+ {refuse=false;
+  const p=profCreate('Snap'); const n=p.history.length;
+  refuse=true;
+  ok(pSnap()===false,'a snapshot the store refuses reports false');
+  ok(current().history.length===n,'and leaves history at '+n+' rows, got '+current().history.length);
+  refuse=false;
+  ok(pSave(),'the next save lands');
+  const onDisk=JSON.parse(disk[PKEY]).filter(q=>q.id===p.id)[0];
+  ok(onDisk&&onDisk.history.length===n,'and writes no phantom row, '+n+' expected, '+(onDisk&&onDisk.history.length)+' on disk');
+  const ui=f=>fs.readFileSync(path.join(__dirname,'..','atuned_src','ui',f),'utf8');
+  ok(['intakeui.js','avatarui.js'].every(f=>!/pSave\(\);\s*pSnap\(\);/.test(ui(f))),
+   'no surface writes a record and its snapshot as two saves where pSaveSnap is one');}
+}
+
+g('SZA9 · a parse with no sentence end grows with the entry, not with its square');
+{
+ /* THE OLD WALKS, TYPED HERE ON PURPOSE AND NEVER READ OFF THE ENGINE, so the
+    search that replaced them is held to what they returned and not to
+    itself. Every offset of every text, both directions. */
+ const {clauseFloor,clauseCeil,normMap,parseStory}=E, END=/[.!?;:\n\r]/;
+ const walkF=(t,nm,at)=>{for(let k=Math.min(at,nm.s.length-1);k>=0;k--)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return -1;};
+ const walkC=(t,nm,at)=>{for(let k=at;k<nm.s.length;k++)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return nm.s.length;};
+ const texts=['','.','I am not afraid. Afraid now.','i was so angry at him and i never said it',
+  'No. Not angry; not ever!\nUsed to be afraid... not anymore? If he came back I would scream: fine.',
+  '  Mornings were awful,   honestly. I used to dread them, I do not any more.'];
+ let bad=[];
+ texts.forEach(t=>{const nm=normMap(t);for(let at=-2;at<=nm.s.length+2;at++){
+  if(clauseFloor(t,nm,at)!==walkF(t,nm,at))bad.push(['floor',t,at]);
+  if(clauseCeil(t,nm,at)!==walkC(t,nm,at))bad.push(['ceil',t,at]);}});
+ ok(bad.length===0,'the boundary search returns what the walk returned at every offset, '+JSON.stringify(bad.slice(0,3)));
+ /* the words the readers above key on, still read the same way */
+ ok(parseStory('I used to be angry, I am not anymore').denied.length>0,'"used to ... anymore" still sets the word aside');
+ ok(parseStory('If I was furious he would leave').denied.length>0,'"if ... would" still sets the word aside');
+ ok(parseStory('I was not angry').denied.length>0,'a plain no still sets the word aside');
+ /* AND THE GROWTH. Measured on main before this: 16,000 characters with no
+    sentence end took 193 ms and the same words punctuated 37, five times as
+    long for the same words, and the gap widened with the length. The two are
+    timed side by side, best of three, so a busy machine slows both and the
+    ratio holds; before the fix it read about five at this length. */
+ const base='and then i felt my chest go tight and i was so angry at him because he never listens and i just ';
+ let t='';while(t.length<16000)t+=base;
+ const tp=t.replace(/ i /g,'. I ');
+ const best=x=>{let m=1e9;for(let i=0;i<3;i++){const s=Date.now();parseStory(x);m=Math.min(m,Date.now()-s);}return Math.max(m,1);};
+ const ru=best(t), rp=best(tp);
+ ok(ru/rp<2.5,'no sentence end costs about what the same words punctuated cost, '+ru+' ms against '+rp+' ms');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
