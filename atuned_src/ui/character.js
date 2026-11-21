@@ -342,6 +342,34 @@ function chChain(k){
  return out;}
 function chStoryHtml(t){t=String(t||'');return esc(t.length>220?t.slice(0,217)+'...':t);}
 
+/* THE CLIMB ITSELF, 21 November. No screen had ever shown a saboteur or
+   anything above it in its own graph (TASKS.md SM2, SM3): chGraph() above
+   reads only the one story-to-address edge, and the trace card stopped at
+   the address step. The graph it already built (tg.g, the same
+   traceFromRecord this card is already drawn from, through the plan's
+   lock) carries the real chain past it; tsChainUp(g,key), ui/
+   tracesummaryui.js, walks it one real 'supports' edge at a time,
+   address up through saboteur, complex, hyper-complex and, when the
+   reading reaches it, the one named super-complex (Psychopathy,
+   TRACE_NAMED, engine/trace.js), stopping at the chain's own floor or a
+   part that has not compounded further rather than inventing a rung.
+   Each rung reached is rendered with tsPartRow exactly as the drills
+   already do, real content or the honest why it carries none; no row
+   here is Source AI's own composed line, so none needs that mark. Silent
+   when the chain climbs nowhere: a seed still on only its own address
+   prints nothing further rather than an empty "feeds up" box. */
+function chClimbHtml(addrI){
+ var tg=chGraph();
+ if(!tg||!tg.g||typeof tsChainUp!=='function')return '';
+ var levels=tsChainUp(tg.g,'pattern:'+addrI);
+ if(!levels.length)return '';
+ var h='';
+ for(var i=0;i<levels.length;i++){
+  var lv=levels[i], word=tsWord(lv[0].type,lv[0].id), nm=word.charAt(0).toUpperCase()+word.slice(1);
+  h+='<div class="chr-edge">supports</div><div class="chr-step"><div class="chr-k">'+esc(nm)+(lv.length>1?' ('+lv.length+')':'')+'</div>'
+   +'<div class="ts-rows">'+lv.map(tsPartRow).join('')+'</div></div>';}
+ return h;}
+
 /* THE CHARGE TAKES ITS SEAT'S COLOUR. addrRow's right hand word is Heart
    green by default, the colour it carries for a direction elsewhere, so a
    charge on a Root address printed in the Heart's colour: a colour that
@@ -361,7 +389,8 @@ function chTraceCard(r){
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
   h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+fmtPct('weight',ch.addr.sq),ink:PAL[ch.addr.seat]})
-   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' point'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
+   +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' point'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';
+  h+=chClimbHtml(ch.addr.i);}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
   +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' point.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
   +'<p class="chr-why">Supports, not causes. The ring on the field marks where the flow leaves at this point. A story put charge on the address. Nothing on the record says it is the only cause.</p>'

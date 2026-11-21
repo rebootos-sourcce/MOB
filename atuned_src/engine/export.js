@@ -461,6 +461,7 @@ if(typeof module!=='undefined'&&module.exports){
                   CHARGE_LADDER:CHARGE_LADDER, AMPLIFIER:AMPLIFIER, BODY_QUADRANT:BODY_QUADRANT,
                   ORGAN:ORGAN, CHARGE_QUADRANT:CHARGE_QUADRANT, DERIVED_MEASURE:DERIVED_MEASURE,
                   ASTRO_OVERLAY:ASTRO_OVERLAY, REG_MAP:REG_MAP, regDiff:regDiff, ladderPlaces:ladderPlaces,
+                  CX_DEEP:CX_DEEP, CX_DEEP_AMEND:CX_DEEP_AMEND, cxDeep:cxDeep, cxAmend:cxAmend,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
  };
 }
