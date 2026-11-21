@@ -3615,7 +3615,7 @@ function clStations(){
 function clGeo(W,H,stk){
  var G={W:W,H:H,cx:W/2,stk:stk};
  var gut=stk?40:84;
- G.sum=stk?64:70; G.dsc=stk?212:Math.round(Math.max(150,H*0.2));
+ G.sum=stk?64:70; G.D=clDsc(W,H,stk); G.dsc=G.D.h;
  var yBase=H-G.dsc-(stk?24:28), yTop=G.sum+(stk?40:44);
  G.th=(yBase-yTop)/6.4;
  G.hb=W/2-gut; G.ht=G.hb*(stk?0.78:0.62);
@@ -3624,6 +3624,22 @@ function clGeo(W,H,stk){
   var yc=yBase-G.th*0.45-i*G.th, hw=G.hb+(G.ht-G.hb)*i/6;
   G.tiers.push({yc:yc,hw:hw,ry:Math.min(G.th*0.36,hw*0.2)});}
  return G;}
+/* THE DESCENT'S NAMES, FITTED TO THE BOX UNDER THE DOOR. The design round
+   drew eight names there, and DESCENT grew to twenty seven the same day
+   (the shadow roster, 056c7bb6). Sizing the box to all of them was the
+   first cut and it squeezed the climb on a desk card of fixed height until
+   each turn's numbers sat on the names of the turn above. So the box keeps
+   its height, the columns are as many as fit the longest name, measured,
+   with room between them, the names print in DESCENT's own order for as
+   many rows as the box holds, and the last line says how many more are
+   behind the door, which opens every one of them. */
+function clDsc(W,H,stk){
+ var h=stk?212:Math.round(Math.max(150,H*0.2)), dw=2*(W/2-(stk?40:84))*(stk?0.98:0.9), wide=0;
+ DESCENT.forEach(function(d){wide=Math.max(wide,clTextW(d.nm,9.5,400));});
+ var cols=Math.max(1,Math.min(6,Math.floor(dw/(wide+16)))), rh=stk?26:28;
+ var rows=Math.max(1,Math.floor((h-44-(stk?30:36)-(stk?24:28)-rh)/rh));
+ var shown=Math.min(DESCENT.length,rows*cols);
+ return {dw:dw, cols:cols, rh:rh, h:h, shown:shown};}
 function clFront(G,i,u){var t=G.tiers[i];
  return [G.cx-t.hw+2*t.hw*u, t.yc+t.ry*Math.sin(Math.PI*u)];}
 function clBack(G,i,v){
@@ -3782,11 +3798,14 @@ function clSvg(W,H,stk){
   +'<rect x="'+(cx-(stk?62:74))+'" y="'+(ddy-14)+'" width="'+(stk?124:148)+'" height="28" rx="14"/>'
   +clIcon('M12 4v16M6 14l6 6 6-6',cx-(stk?46:56),ddy,0.6)
   +'<text x="'+(cx+8)+'" y="'+(ddy+4)+'">The descent</text></g>';
- var dw=2*G.hb*(stk?0.98:0.8);
- DESCENT.forEach(function(d,k){
-  var nc=stk?2:4, row=Math.floor(k/nc), col=k%nc, x=cx-dw/2+dw*(col+0.5)/nc, y=ddy+(stk?30:36)+row*(stk?30:36);
+ var dw=G.D.dw;
+ DESCENT.slice(0,G.D.shown).forEach(function(d,k){
+  var nc=G.D.cols, row=Math.floor(k/nc), col=k%nc, x=cx-dw/2+dw*(col+0.5)/nc, y=ddy+(stk?30:36)+row*G.D.rh;
   o+='<g class="cl-dstep"><circle cx="'+x.toFixed(1)+'" cy="'+y+'" r="3.2"/>'
    +'<text x="'+x.toFixed(1)+'" y="'+(y+14)+'">'+esc(d.nm)+'</text></g>';});
+ if(G.D.shown<DESCENT.length)
+  o+='<text class="cl-dmore" x="'+cx+'" y="'+(ddy+(stk?30:36)+Math.ceil(G.D.shown/G.D.cols)*G.D.rh+8)+'">'
+   +(DESCENT.length-G.D.shown)+' more behind the door</text>';
  /* the avatar, at the reading's own CQ */
  if(at){var ap=clFront(G,at.i,at.u);
   o+='<g class="cl-av" style="--c:'+seatCol(T[at.i].b)+'"><circle cx="'+ap[0].toFixed(1)+'" cy="'+ap[1].toFixed(1)+'" r="'+(stk?9:11)+'" class="halo"/>'
