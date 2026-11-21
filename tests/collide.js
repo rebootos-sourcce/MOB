@@ -244,7 +244,10 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
    loadP(0);setTab(TAB.COMPASS);render();
    /* the arrow figure is the side view since round IA; the view from above
       is measured in its own block below */
-   CONE.side=true;
+   /* the figure, not the climb the tab opens on since 21 November: this
+      block measures the figure's canvas and key, and the climb is measured
+      in its own block at the end */
+   CONE.side=true;CONE.climb=false;
    CONE.reg=true;CONE.layers=true;CONE.flat=!tn;CONE.tilt=0.92;coneOpen(true);
    const said=[];const g=CONE.g;const ft=g.fillText;
    g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
@@ -271,7 +274,7 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
     want:typeof coneKey==='function'?CONE_HI.length+CONE_LO.length
      +coneRegLaws().up.length+coneRegLaws().dn.length:-1,
     phoneNames:nmb&&innerWidth<900?nmb.top>=bx.bottom-0.5:null};
-   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;coneOpen(true);
+   CONE.reg=false;CONE.layers=false;CONE.flat=true;CONE.tilt=0.60;CONE.side=false;CONE.climb=true;coneOpen(true);
    return res;},turned);
   const tag=w.join('x')+(turned?'/turned':'/flat');
   ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
@@ -300,7 +303,7 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
  await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
  const res=await p.evaluate(()=>{
   loadP(0);setTab(TAB.COMPASS);render();
-  CONE.side=false;CONE.reg=true;CONE.layers=true;coneOpen(true);
+  CONE.side=false;CONE.climb=false;CONE.reg=true;CONE.layers=true;coneOpen(true);
   const said=[],box=[];const g=CONE.g,ft=g.fillText,tx=g.translate,sc=g.scale;let at=null;
   g.fillText=function(s){said.push(String(s));return ft.apply(this,arguments);};
   g.translate=function(x,y){at=[x,y];return tx.apply(this,arguments);};
@@ -312,7 +315,7 @@ for(const w of [[1680,1020],[1280,800],[390,844]]){
   const res={said:said,glyphs:box.length,off:off,W:W,H:H,
    rows:key?key.querySelectorAll('.ck-r').length:0,want:CONE_HI.length+CONE_LO.length,
    axes:MIRROR.length,regBtn:!!document.querySelector('#cone [data-cn="reg"]')};
-  CONE.reg=false;CONE.layers=false;coneOpen(true);
+  CONE.reg=false;CONE.layers=false;CONE.climb=true;coneOpen(true);
   return res;});
  const tag=w.join('x')+'/above';
  ok(res.said.length===0,tag+': words painted on the figure: '+res.said.join(', '));
@@ -441,6 +444,75 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(cons
  ok(r.n>0&&r.bad.length===0,'Discover'+(md==='simple'?'':', '+md+',')+' at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
   +(r.bad.length?': '+r.bad.join('; '):''));}
 await p.evaluate(()=>{if(STV.bank)stBank(); STV.dash=false; stRender();});
+/* ============================================================
+   THE CLIMB, 21 November. The board the Compass tab opens on, its two poles
+   (an up arrow at Source and a down arrow at the descent, restored on his
+   words "a distinct point on the bottom and a distinct point on top... an
+   arrow up, arrow down"), and the rail beside it, seats Crown to Root. Held
+   to the same rule as every surface here, nothing printed over anything,
+   and to the defect the first climb shipped with: a card's title behind the
+   sticky "Back to the compass" bar.
+   ============================================================ */
+console.log('\n=== the climb: two poles clear of everything, the rail in seat order, a card under its bar ===');
+for(const w of [[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(160);
+ for(const who of [0,1]){
+  const r=await p.evaluate(async who=>{
+   const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   loadP(who);setTab(TAB.COMPASS);CONE.climb=true;CONE.clSel=null;coneOpen(true);render();await wait(300);
+   const bx=e=>e.getBoundingClientRect();
+   const hit=(a,c)=>a.left<c.right-0.5&&c.left<a.right-0.5&&a.top<c.bottom-0.5&&c.top<a.bottom-0.5;
+   const nm=e=>(e.textContent||e.getAttribute('class')||'').trim().slice(0,24);
+   const svg=document.querySelector('#cnclimb .cl-svg'), sb=svg&&bx(svg);
+   const poles=[...document.querySelectorAll('#cnclimb .cl-pole')];
+   const own=[...document.querySelectorAll('#cnclimb .cl-pole .cl-pr,#cnclimb .cl-pole text')];
+   const other=[...document.querySelectorAll('#cnclimb text,#cnclimb .cl-n,#cnclimb .cl-dstep circle,#cnclimb .cl-av .core')]
+    .filter(e=>!e.closest('.cl-pole'));
+   const over=[];own.forEach(a=>other.forEach(c=>{if(hit(bx(a),bx(c)))over.push(nm(a)+' over '+nm(c));}));
+   const st=[...document.querySelectorAll('#cnclimb .cl-st .cl-n,#cnclimb .cl-dstep circle')].map(e=>bx(e));
+   /* the descent's marks: the roster grew from eight to twenty seven on 21
+      November and their names printed over each other, so every mark is
+      held apart from every other */
+   const dm=[...document.querySelectorAll('#cnclimb .cl-dstep circle:not(.cl-hit)')].map(e=>bx(e));
+   let dover=0;for(let i=0;i<dm.length;i++)for(let j=i+1;j<dm.length;j++)if(hit(dm[i],dm[j]))dover++;
+   const dtext=document.querySelectorAll('#cnclimb .cl-dstep text').length;
+   const up=document.querySelector('#cnclimb .cl-pole-up .cl-pr'), dn=document.querySelector('#cnclimb .cl-pole-dn .cl-pr');
+   const ub=up&&bx(up), db=dn&&bx(dn);
+   const inside=q=>sb&&q.left>=sb.left-0.5&&q.right<=sb.right+0.5&&q.top>=sb.top-0.5&&q.bottom<=sb.bottom+0.5;
+   const rail=document.getElementById('clrail'), rb=rail&&bx(rail);
+   const seats=[...document.querySelectorAll('#clrail .clr-nm')].map(e=>e.textContent);
+   const parts=[...document.querySelectorAll('#clrail>.clr-pole,#clrail .clr-hd,#clrail .cn-nr')];
+   const rover=[];for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++)
+    if(!parts[i].contains(parts[j])&&hit(bx(parts[i]),bx(parts[j])))rover.push(nm(parts[i])+' / '+nm(parts[j]));
+   const lastB=parts.length?Math.max(...parts.map(e=>bx(e).bottom)):0;
+   const railEnds=[...rail.children].map(e=>e.getAttribute('data-cl')).filter(Boolean);
+   /* a press on the rail opens the station's card, and its title sits under the bar */
+   const row=document.querySelector('#clrail .clr-t');const k=row&&row.getAttribute('data-cl');
+   if(row)row.click();await wait(350);
+   const bar=document.querySelector('.rd-top'), ttl=document.querySelector('.cl-card .sh-h');
+   const card={k:k,sel:CONE.clSel,bar:bar?bx(bar).bottom:null,title:ttl?bx(ttl).top:null,
+    marked:!!document.querySelector('#cnclimb .cl-st.sel[data-cl="'+k+'"]')};
+   try{rdClose();}catch(e){}
+   return {poles:poles.length,over:over,dn:dm.length,dover:dover,dtext:dtext,want:DESCENT.length,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
+    upTop:!!ub&&st.every(q=>ub.bottom<=q.top+0.5),dnBot:!!db&&st.every(q=>db.top>=q.bottom-0.5),
+    seats:seats,wantSeats:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
+    ends:railEnds,card:card};},who);
+  const tag=w.join('x')+'/profile '+who;
+  ok(r.poles===2,tag+': the climb draws its two poles, saw '+r.poles);
+  ok(r.over.length===0,tag+': a pole prints over the board: '+r.over.slice(0,4).join('; '));
+  ok(r.upIn&&r.dnIn,tag+': a pole runs off the board (up '+r.upIn+', down '+r.dnIn+')');
+  ok(r.upTop,tag+': the up arrow is not above every station');
+  ok(r.dnBot,tag+': the down arrow is not below every station and descent step');
+  ok(r.dn===r.want&&r.dover===0&&r.dtext===0,tag+': the descent draws '+r.dn+' of '+r.want+' marks, '+r.dover+' touching, '+r.dtext+' names printed');
+  ok(r.seats.join()===r.wantSeats.join(),tag+': the rail reads '+r.seats.join(', ')+', want Crown to Root');
+  ok(r.ends[0]==='src'&&r.ends[r.ends.length-1]==='descent',tag+': the rail does not open on Source and close on the descent: '+r.ends.join());
+  ok(r.rover.length===0,tag+': rail entries print over each other: '+r.rover.slice(0,3).join('; '));
+  ok(!r.clipped,tag+': the rail runs past its own bottom');
+  ok(r.card.sel===r.card.k&&r.card.marked,tag+': a press on the rail did not select its station on the board ('+r.card.k+')');
+  ok(r.card.bar!==null&&r.card.title!==null&&r.card.title>=r.card.bar-0.5,tag+': the card title sits behind the back bar, title '
+   +r.card.title+' bar '+r.card.bar);
+  console.log('  '+tag+': poles '+r.poles+', '+r.seats.length+' seats on the rail, card '+r.card.k+' title at '
+   +Math.round(r.card.title)+' under the bar at '+Math.round(r.card.bar));}}
 await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
 
 await b.close();

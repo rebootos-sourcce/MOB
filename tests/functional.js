@@ -52,7 +52,12 @@ const booted=async p=>{
     its first second the parts are on their way to where they belong and a
     measurement taken then measures the animation. Waited out rather than
     turned off, because it is real and a person sees it. */
- await ready(p,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');};
+ await ready(p,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');
+ /* AND THE COMPASS IS THE FIGURE HERE. Since 21 November the tab opens on
+    the climb (ui/cone.js, clSvg), and every Compass check in this file is of
+    the figure, its canvas and its two panels. The climb, its poles and its
+    rail are held in tests/collide.js. */
+ await p.evaluate(()=>{if(typeof CONE!=='undefined')CONE.climb=false;});};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});

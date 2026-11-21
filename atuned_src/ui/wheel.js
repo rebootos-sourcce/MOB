@@ -1311,7 +1311,17 @@ function drawWheel0(r,L){
     weight/tension tier() machinery built for a thing that compounds. D
     gates it the same way lay() gates everything else: drawn only while
     fetters or their fade is still live. */
- if(D.fetters&&D.addresses){
+ /* AND NOT ON AN UNREAD FIELD, 21 November. Every other bead tier iterates
+    r.sabs, r.cxs, r.hys or r.sups, which compute() leaves empty when nothing
+    has been read, so those tiers fall silent on their own. The fetters iterate
+    CHILD, a fixed table of nine, so on a blank device they drew nine coloured
+    beads and a 0.14 alpha chord from every one of the 108 addresses into them.
+    Lance reported it from a screenshot as data points trying to render with no
+    profile selected, and it was: measured in a real Chromium on a blank
+    profile, unread true, every fetter's charge 0, nine fet targets on the
+    wheel. This gates on r.unread for the reason the law ticks below do: a read
+    field with a fetter at nought is still structure and still draws. */
+ if(D.fetters&&D.addresses&&!r.unread){
   var fetA2=LA.fetters.v;
   CHILD.forEach(function(c){
    var held=Math.min(1,(S.charge[c.nm]||0)/10), al=(0.14+held*0.34)*fetA2;
@@ -1778,12 +1788,13 @@ function drawWheel0(r,L){
     unlike a saboteur's own object which compute() rebuilds each call; CHILD
     needs no such rebuild because it carries no per-frame reading of its
     own, only S.charge beside it. Size reads real held charge, same pattern
-    every other bead already scales by its own weight. All nine draw always
-    (there are only nine, and a fetter has nothing to be "not running":
+    every other bead already scales by its own weight. All nine draw on any
+    read field, and none on an unread one (there are only nine, and a fetter has nothing to be "not running":
     trace.js's own words, "carries no address-level content of its own", so
     there is no running/not-running split to draw here the way a saboteur
     has one). */
- lay('fetters',()=>{CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
+ /* the beads go silent on unread with their chords, see FETTER CHORDS above */
+ lay('fetters',()=>{if(r.unread)return;CHILD.forEach(c=>bead(c,R.fet,4.2+Math.min(1,(S.charge[c.nm]||0)/10)*2.4,bc(c.seat)));
   if(L===1)CHILD.forEach(c=>nameplate(c,R.fet,bc(c.seat),5.4));});
  lay('saboteurs',()=>{r.sabs.forEach(s=>bead(s,R.sab,5.4,bc(s.parts[0].b)));
   /* B names the saboteurs, because they are the layer. C and D name only the
