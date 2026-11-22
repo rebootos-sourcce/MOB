@@ -859,6 +859,14 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* SCREEN GUIDES, 21 November, his words: "a pop-up tutorial for each
+     screen that the user can deactivate". The one switch for every screen's
+     guide circle, a device setting like the sound row above and drawn in
+     the same switch row style. The writer is guideSwitch, ui/guide.js. */
+  +((typeof guideOn==='function')
+   ?'<button type="button" role="menuitemcheckbox" class="pm-it pm-sfx" data-pmguide="1" aria-checked="'+guideOn()+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+GD_IC.guide+'</svg></span>'
+    +'<span>Screen guides</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
   /* PRACTITIONER MODE, IN THE MENU HE OPENED, round RB. His words: "the
      practitioner page is not present and nor is the practitioner toggle
      present under the user profile." Both were true of this menu and of
@@ -933,6 +941,10 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ var gw=m.querySelector('[data-pmguide]');
+ if(gw)gw.onclick=function(){
+  var want=!guideOn();
+  guideSwitch(want); gw.setAttribute('aria-checked',want?'true':'false');};
  /* the menu is drawn again with the switch, because the Clients row under it
     comes and goes with the mode, and the focus goes back to the switch so a
     keyboard is left where it pressed. What happened is said on the status
