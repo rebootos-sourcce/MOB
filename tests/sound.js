@@ -1106,8 +1106,15 @@ async function atmGate(browser,FILE,ok,booted){
   await fresh();
   const before=await pg.evaluate(sel=>{var e=document.querySelector(sel); return e&&e.offsetParent?e.getAttribute('aria-pressed'):null;},sel);
   if(before===null)return {missing:sel};
-  await pg.click(sel); await pg.waitForTimeout(90);
-  const a=await row(); await pg.waitForTimeout(350); await fresh();
+  /* THE POINTER LEAVES BEFORE EACH PRESS. A tip left open by the press before
+     can sit over the next circle (#tip is reachable, pointer-events auto), and
+     page.click then waits 30 seconds and throws, which took the whole
+     functional run down from the Compass block on, 22 November. This gate
+     measures the sound of the press, not the tip, so the pointer is moved off
+     and the tip let go first, the way a person's hand moves between presses. */
+  const clear=async()=>{ await pg.mouse.move(2,2); await pg.waitForFunction(()=>{var t=document.getElementById('tip'); return !t||!t.classList.contains('on');},null,{timeout:3000}).catch(()=>{}); };
+  await clear(); await fresh(); await pg.click(sel); await pg.waitForTimeout(90);
+  const a=await row(); await pg.waitForTimeout(350); await clear(); await fresh();
   await pg.click(sel); await pg.waitForTimeout(90);
   const b=await row(); await pg.waitForTimeout(350);
   return {before:before, first:a, second:b};};
@@ -1130,7 +1137,11 @@ async function atmGate(browser,FILE,ok,booted){
  ok(b1.first&&b1.second&&b1.first.hz===hz.Sacral&&b1.second.hz===hz.Sacral&&b1.first.k!==b1.second.k,'the Body\'s Flow circle goes both ways at the Sacral\'s tone, '+JSON.stringify(b1));
  const b2=await ov('[data-bmov=addr]');
  ok(b2.first&&b2.second&&b2.first.hz===hz.Root&&b2.first.k!==b2.second.k,'and its Addresses at the Root\'s, the same pitch as the Field\'s Addresses, '+JSON.stringify(b2));
- await pg.evaluate(()=>{ setTab(TAB.COMPASS); }); await pg.waitForTimeout(900);
+ /* THE FIGURE, NOT THE CLIMB. Since d39316eb, 21 November, the tab opens on
+    the climb, and .cone-fig.climb hides #cnbar, so the Gravity well circle is
+    not drawn until "The figure" is chosen. A person reaches it through that
+    toggle, so this does the same, the way collide.js's figure block does. */
+ await pg.evaluate(()=>{ setTab(TAB.COMPASS); CONE.climb=false; CONE.clSel=null; coneOpen(CONE.tab); }); await pg.waitForTimeout(900);
  const c1=await ov('[data-cn=well]');
  ok(c1.first&&c1.second&&c1.first.hz===hz.Root&&c1.first.k!==c1.second.k,'the Compass\'s Gravity well circle goes both ways at the Root\'s tone, '+JSON.stringify(c1));
  /* the Compass's seat shells, each its own seat off BANDS: probe shells, pressed
@@ -1145,7 +1156,7 @@ async function atmGate(browser,FILE,ok,booted){
   cs.push(s); }
  await probe('');
  ok(cs.every(r=>r[1]==='overlay-on'&&r[2]===r[3]),'each Compass seat shell rings the seat it is, '+cs.map(r=>r[0]+' '+r[2]).join(', '));
- await pg.evaluate(()=>{ loadP(0); setTab(TAB.FIELD); }); await pg.waitForTimeout(700);
+ await pg.evaluate(()=>{ CONE.climb=true; CONE.clSel=null; loadP(0); setTab(TAB.FIELD); }); await pg.waitForTimeout(700);
  /* column folds, both ways */
  const fold=async sel=>{ const vis=await pg.evaluate(sel=>{const e=document.querySelector(sel); return !!(e&&e.offsetParent);},sel);
   if(!vis)return ['missing '+sel];

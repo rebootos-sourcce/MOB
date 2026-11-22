@@ -1435,7 +1435,12 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
    row's own glyph svg (.crb-g svg), not the first path in the row: the ring
    arc drawn behind it is also an svg and has no path, which is a second,
    separate bug this same recalibration fixed, see the mark reader above. */
-{const want={law:21, mask:5, sab:6, harm:27, fetter:9};
+{const want={law:21, mask:5, sab:6, fetter:9};
+ /* harm was 27 until 5b672b79, 21 November, his note "every law wears its
+    own mark" (HARM_IC, engine/data/kb.js): the HARM deck now carries one
+    distinct mark per card, so it is held to its own card count, read off
+    the run, rather than to a typed number. */
+ const one={harm:1};
  /* mask was 6, round NE: Professional hidden and not calculated, so the
     deck reads five distinct mask marks now, not a regression. */
  const floor={addr:18};
@@ -1447,7 +1452,9 @@ ok(kb.opened===kb.walked,'every section opens a drill, got '+kb.opened
  Object.keys(kb.marks).forEach(k=>{
   const m=kb.marks[k];
   if(m.blank)bad.push(k+': '+m.blank+' cards with no mark');
-  if(want[k]!==undefined&&m.uniq!==want[k])
+  if(one[k]&&m.uniq!==m.n)
+   bad.push(k+': '+m.uniq+' marks on '+m.n+' cards, expected one each');
+  else if(want[k]!==undefined&&m.uniq!==want[k])
    bad.push(k+': '+m.uniq+' marks, expected '+want[k]);
   else if(want[k]===undefined&&m.n>3&&m.uniq<2)
    bad.push(k+': '+m.n+' cards sharing one mark');});
@@ -1545,8 +1552,13 @@ await page.setViewportSize({width:1600,height:1000});
   const fx=kbRows('addr').filter(x=>BANDS.indexOf(x.o.b)>=0)[0]; kbOpen(fx);
   const fd=document.getElementById('rdrill');
   const said={t:fd.textContent, want:addrSay(fx.o), mark:!!fd.querySelector('.src-ai .src-mk')}; rdClose();
+  /* CHANGED 22 NOVEMBER. 74564639 moved Fear's opposite to Safety, the
+     book's own E60, so the book and CHILD no longer disagree on any child
+     emotion and Fear now prints the book's entry like Shame below. The gap
+     check holds that instead: Fear's line is the book's, unmarked. */
   kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Fear')[0]);
-  const gap=document.getElementById('rdrill').textContent; rdClose();
+  const gd=document.getElementById('rdrill');
+  const gap={t:gd.textContent, mark:!!gd.querySelector('.src-ai')}; rdClose();
   kbOpen(kbRows('fetter').filter(x=>x.o.nm==='Shame')[0]);
   const shd=document.getElementById('rdrill');
   const shame={t:shd.textContent, mark:!!shd.querySelector('.src-ai')}; rdClose();
@@ -1570,7 +1582,7 @@ await page.setViewportSize({width:1600,height:1000});
  ok(new RegExp('The '+o.n+' laws, each read from nothing to ten, added together').test(o.core),'the formula opens the core drill, which states the ruled formula over '+o.n+' laws');
  ok(!!o.said.want&&o.said.t.indexOf(o.said.want)>=0&&!/No meaning on file yet\./.test(o.said.t),'a fetter in the wisdom school prints its own composed line, not the gap');
  ok(o.said.mark,'and that line wears the Source AI mark, because it is not the book');
- ok(/No meaning on file yet\./.test(o.gap),'a child emotion the book and the app still disagree on, Fear, keeps the gap');
+ ok(/The most fundamental contraction\./.test(o.gap.t)&&!/No meaning on file yet\./.test(o.gap.t)&&!o.gap.mark,'Fear, now on the book\'s own opposite, Safety, prints the book\'s entry, no gap and no Source AI mark');
  ok(/The deepest collapse\./.test(o.shame.t)&&!o.shame.mark,'Shame, where they agree, prints the book\'s own entry and wears no Source AI mark');
  ok(!!o.infs.want&&o.infs.t.indexOf(o.infs.want)>=0&&o.infs.mark,'an inferred saboteur prints its composed line under the mark');
  ok(o.hx>0&&o.hopen===o.hx,'every hyper complex in its deck opens on its own record, '+o.hopen+' of '+o.hx);
@@ -5835,7 +5847,9 @@ const kh=await page.evaluate(async()=>{
  o.added=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
  const off=$('[data-avtagoff="Sad"]'); if(off)off.click();
  o.taken=[...host.querySelectorAll('[data-avtag]')].map(x=>x.dataset.avtag);
- const joy=$('[data-avtag="Joy"]'); if(joy)joy.click();
+ /* Sad's replacement state is Happy since 74564639, his 21 November words
+    "sad, happy" (CHILD, engine/data/canon.js); it was Joy before. */
+ const joy=$('[data-avtag="Happy"]'); if(joy)joy.click();
  o.found=host.querySelectorAll('.avt-found .av-jr-row').length;
  $('[data-avface="iq"]').click();
  o.iq=!!document.querySelector('#avqslot #iqbody')&&!document.getElementById('iqbody').hidden;
@@ -5865,7 +5879,7 @@ const kh=await page.evaluate(async()=>{
 ok(kh.lede===undefined,'Becoming carries no lede any more, round LV, got '+kh.lede);
 ok(kh.rings===7&&!kh.prose,'seven rings to select, and no seat prose, got '+kh.rings+' rings, prose '+kh.prose);
 ok(kh.hero>kh.menu,'the ring takes more of the row than either column beside it, '+Math.round(kh.hero)+' against '+Math.round(kh.menu));
-ok(kh.tags.includes('Sad')&&kh.tags.includes('Joy')&&kh.tags.includes('Rejection'),
+ok(kh.tags.includes('Sad')&&kh.tags.includes('Happy')&&kh.tags.includes('Rejection'),
  'the found tags are the fetter, its replacement state and the fetter the words named, got '+JSON.stringify(kh.tags));
 ok(!kh.tags.includes('Martyrdom')&&!kh.tags.includes('Separation'),
  'and never an address the sniffer\'s arithmetic chose, got '+JSON.stringify(kh.tags));
