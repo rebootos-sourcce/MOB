@@ -388,6 +388,39 @@ giving `ANATSPINE` a real cervical point is the same owner's call group 9
 already names, and extending it here without that call would draw a
 guess, not a sourced position.
 
+**Used, later 21 November: the owner ruled, and eight addresses moved into
+ANAT.** His words: "place the plexus and the nerves where they're supposed
+to be, and we'll figure out what words go there... We have no blockers."
+Placement and naming are split from here on: an address with any real
+landmark is placed, and its name stays his call. What moved, each cited in
+figure.js beside its row:
+
+    ANATSPINE   two neck knots read off BMSPINE, C1 at 13 and C7 at 19,
+                prepended. Every level at T4 or below reads the same
+                segment it always did, so nothing already placed moved.
+                tests/anatomy.js group 7 now accepts a knot at a seat
+                height OR on BMSPINE's own label for that level, and
+                research.js RULER carries the two. Group 9's held gap
+                closes at C1 and C7 and stays open below.
+    70          C2, the angle of the jaw (p.31, p.33-34)
+    68          C2 to C3, the pharyngeal plexus (p.165)
+    72          C4.5, the chain from the superior ganglion to the stellate (p.185)
+    74          T1, the first rib where the subclavius rises (p.413; the
+                nerve itself is still unlabelled on every page read)
+    57          T4 to T5, down the sides of the pericardium
+    23          S3, the middle of S2 to S4 (p.470)
+    46          T9, the xiphisternal joint (p.214, p.216, p.217)
+    40          L1, one unit to the person's left, on the aorta (p.328).
+                A team pick open to his correction: the other real option
+                was a false merge onto 16's point.
+
+Every offset from the midline on these rows is BMPROP's own, carried over
+unchanged from the prototype he approved (FW, 27 September), because `v:`
+takes a typed offset and no page read gives one. That is said at each row.
+Still in BMPROP after this, read off group 2: the rows with no level or
+landmark on any page read (the thigh, the visceral plexuses with no
+vertical landmark, the thoracic vagus).
+
 *(Extend this log, don't replace it, as more parts arrive or more pages
 get confirmed. Cite page numbers as PRINTED in the book, not a PDF file's
 own internal page index, which runs about 14 pages ahead of the printed
