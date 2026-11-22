@@ -222,7 +222,9 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  ok(carriers.every(heldOnly),'every dotted carrier on the Summary says only sentences the table holds: '+carriers.filter(s=>!heldOnly(s)).slice(0,3));
 
  /* ---- the Compass: every pole, phrase by phrase ---- */
- await p.evaluate(()=>setTab(TAB.COMPASS)); await p.waitForTimeout(700);
+ /* the figure's panels: the tab opens on the climb since 21 November, and
+    the climb's rail carries the same poles by seat (collide.js holds it) */
+ await p.evaluate(()=>{CONE.climb=false; setTab(TAB.COMPASS);}); await p.waitForTimeout(700);
  /* the axis rows only. Round RB put the poles on no axis on the same panels,
     and they are checked on their own just below */
  const axs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr[data-cnax]'),function(x){
