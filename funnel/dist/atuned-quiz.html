@@ -2449,6 +2449,19 @@ const HCX_LIB=[
    and the code for it is written and correct. A host that has the
    files sets these two and everything downstream works unchanged.
    Nothing is requested until one of them is named.
+
+   AND THE DETAILED FIGURE IS NOT WAITING ON THESE, checked 22 November.
+   A board line read the empty names as "the Body falls back to a plain
+   outline until the detailed front and back art is supplied". It does not.
+   The detailed figure was ruled on 27 September, his words, "lock that in
+   as our kind of starting point": the front and back nervous system man,
+   FW option A, carried as vector data in BMNERVE (ui/map.js) and drawn by
+   the canvas map, which is the only figure the Body page shows. The outline
+   below stands in for a raster only inside the seven layers' renderer,
+   which nothing on the page reaches since round KV. BODY-MAP-SPEC.md
+   section 8 also rules raster display art out of the one file on size, so
+   no supplied picture is pending for display: anything he supplies now is a
+   placement reference (section 6), kept outside the build.
    ============================================================ */
 var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
@@ -7128,8 +7141,13 @@ var HARM_FAM={
  nature:{b:'Crown',ic:'M3 12a4.5 4.5 0 019 0 4.5 4.5 0 009 0'},
  /* two rings, apart and joined. nothing about a person happens alone. */
  human:{b:'Sacral',ic:'M8 9a3 3 0 100 6 3 3 0 100-6 M16 9a3 3 0 110 6 3 3 0 110-6 M11 12h2'},
- /* the axis that wears the law's own mark. see SI. */
- spirit:{b:null,ic:null},
+ /* the axis that wears the law's own mark, see SI, and its colour is the
+    law's own seat. The family itself had no mark, so its band on the table
+    of laws (ui/kbtable.js) was the one heading drawn with a ring round
+    nothing, 21 November. A hull, its mast and its sail: integrity is the
+    hull, the first part of coherence and the part the rest is carried in,
+    which is kb.js's own word for it in GLOSS. */
+ spirit:{b:null,ic:'M3 11h18l-3 7H6z M12 4v7 M12 5l5 4h-5'},
  /* an aperture and what leaves through it. */
  express:{b:'Throat',ic:'M5 10h3l4-4v12l-4-4H5z M16 9a4 4 0 010 6 M19 6a8 8 0 010 12'},
  /* nine cells. the architectures are nine and the grid says nine. */
@@ -7138,6 +7156,133 @@ var HARM_FAM={
  measure:{b:'3rd Eye',ic:'M3 9h18v6H3z M7 9v3 M11 9v3 M15 9v3'},
  /* a frame inside a frame. this is the one that is about the others. */
  meta:{b:'Root',ic:'M3 3h18v18H3z M8 8h8v8H8z'}};
+/* EVERY LAW WEARS ITS OWN MARK, 21 November, his words on the table of laws:
+   "make sure each thing has their symbolic icon." HARM_FAM above gave the
+   fifty five laws outside Moral Integrity their family's one mark, so a band
+   of thirteen printed one wave thirteen times and the tile said nothing the
+   band heading had not. The twenty one Laws of Moral Integrity are not here:
+   they already wear their own, SI in engine/data/canon.js, and a second mark
+   would make two icons for one law.
+
+   Keyed by code, the way HARM_FILM is, so HARM itself is untouched. Every
+   mark is an open stroke in a 24 box, ring and never fill, and keeps to its
+   family's own grammar so a band still reads as one family: nature is
+   curves, human nature is circles, expression is open shapes, the
+   architectures and the instruments are drawn objects and graduated lines,
+   and the frame is drawn inside a square. Each line above a mark says what
+   it is and why it is that law, because a mark nobody can unpack is a
+   decoration. */
+var HARM_IC={
+ /* one ring round one source. one field, read from its centre. */
+ E01:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+ /* two waves at one frequency. nothing is still. */
+ E02:'M3 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0 M3 15c2-3 4-3 6 0s4 3 6 0 4-3 6 0',
+ /* a ring divided by one curve. each half is the shape of the other. */
+ E03:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 4a4 4 0 0 0 0 8a4 4 0 0 1 0 8',
+ /* an arc above a line and its mirror below. as above, so below. */
+ E04:'M6 9a6 6 0 0 1 12 0 M3 12h18 M6 15a6 6 0 0 0 12 0',
+ /* two curves bowed toward each other. like fields draw together. */
+ E05:'M4 5c5 2 5 12 0 14 M20 5c-5 2-5 12 0 14',
+ /* a curve that rises into a direction. the act the field moved first. */
+ E06:'M4 19c7 0 12-5 13-13 M13 6h4v4',
+ /* a spiral, one form turning into the next without a break. */
+ E07:'M12 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0',
+ /* a stone and the rings it sends out. every effect has its point. */
+ E08:'M4.5 6a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0 M6 11a5 5 0 0 0 5-5 M6 16a10 10 0 0 0 10-10 M6 21a15 15 0 0 0 15-15',
+ /* a wave on its line. the crest is paid back by the trough. */
+ E09:'M3 12h18 M3 12c3-7 6-7 9 0s6 7 9 0',
+ /* a sprout in two leaves. everything it will be, folded and waiting. */
+ E10:'M12 21v-8 M12 13c-4.5 0-7-2.5-7-7 4.5 0 7 2.5 7 7 M12 11c0-3.5 2-6 6-6 0 3.5-2 6-6 6',
+ /* two orbits crossing. what you see depends on which one you stand on. */
+ E11:'M3 12a9 4 0 1 0 18 0a9 4 0 1 0-18 0 M12 3a4 9 0 1 0 0 18a4 9 0 1 0 0-18',
+ /* the same arch three times, and the beat under each. */
+ E12:'M3 14a3 3 0 0 1 6 0a3 3 0 0 1 6 0a3 3 0 0 1 6 0 M6 18v1 M12 18v1 M18 18v1',
+ /* two crescents back to back. two principles, each the other's shape. */
+ E13:'M10 4a8 8 0 0 0 0 16a10 10 0 0 1 0-16 M14 4a8 8 0 0 1 0 16a10 10 0 0 0 0-16',
+ /* a head over shoulders. awareness taking a body's shape. */
+ E14:'M9 6.5a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M5 20a7 7 0 0 1 14 0',
+ /* one ring three times. a pattern many people step into. */
+ E15:'M9 6.5a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M3.5 16a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M14.5 16a3 3 0 1 0 6 0a3 3 0 1 0-6 0',
+ /* a person and the field round them, twice over. */
+ E16:'M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M7 6.5a8 8 0 0 0 0 11 M17 6.5a8 8 0 0 1 0 11 M4 4a12 12 0 0 0 0 16 M20 4a12 12 0 0 1 0 16',
+ /* two rings and the one wave between them. two systems on one frequency. */
+ E17:'M2.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M16.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M7.5 12c1.5-3 3-3 4.5 0s3 3 4.5 0',
+ /* an eye. what reaches you is what the eye lets in. */
+ E18:'M2 12c3-5.5 17-5.5 20 0-3 5.5-17 5.5-20 0 M9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+ /* three nodes and the lines between them. intelligence is the connection. */
+ E19:'M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M10 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M8 6h8 M7 7.8l4 8.4 M17 7.8l-4 8.4',
+ /* a plus and a minus, side by side. the two signals a body steers by. */
+ E20:'M2.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M12.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M5 12h4 M7 10v4 M15 12h4',
+ /* three lines through one centre. the three axes every reading sits on. */
+ E21:'M12 3v18 M4.2 7.5l15.6 9 M4.2 16.5l15.6-9 M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0',
+ /* a figure inside a ring. a shape that stands for more than itself. */
+ E22:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 7.5l4.5 8h-9z',
+ /* a whorl, the print that is only yours. */
+ E23:'M4 16a8 8 0 0 1 16 0 M7.5 18v-2a4.5 4.5 0 0 1 9 0v2 M12 15v6',
+ /* one path, two ends. a fork is where the choice is. */
+ E24:'M12 21v-8 M12 13L7 7.5 M12 13l5-5.5 M5 5.5a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M15 5.5a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ /* a hand mirror. the ego is the self you hold up to look at. */
+ E25:'M7 9a5 6 0 1 0 10 0a5 6 0 1 0-10 0 M12 15v6 M9 21h6',
+ /* a target and the line leaving its centre. aimed before it moves. */
+ E26:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0-7 0 M12 12l9-9 M17 3h4v4',
+ /* a ball and the lines it leaves behind. intention, moving. */
+ E27:'M11 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M3 9h5 M2 12h6 M3 15h5',
+ /* now, reaching back to then. two rings and the arc between. */
+ E28:'M3.5 16a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M15.5 16a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M18 13.5a6 6 0 0 0-12 0 M4 11.5l2 2 2-2',
+ /* an open vessel and the still line inside it. */
+ E50:'M8 4.8A8 8 0 1 0 16 4.8 M7 13h10',
+ /* a ball bouncing lower each time. nothing is being won. */
+ E51:'M3 20c1.5-7 4.5-7 6 0c1-4.5 3-4.5 4 0c.7-2.5 1.8-2.5 2.5 0 M17.5 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ /* a question, left open. */
+ E52:'M9 8.5a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.4-1.5 2.4v1 M12 18v.5',
+ /* a spark from an open centre. */
+ E53:'M12 3v5 M12 16v5 M3 12h5 M16 12h5 M5.6 5.6l3 3 M15.4 15.4l3 3 M18.4 5.6l-3 3 M8.6 15.4l-3 3',
+ /* a current that bends and keeps going. */
+ E54:'M3 17c5 0 5-10 10-10 3 0 5 2 8 2 M18 6l3 3-3 3',
+ /* a star, four points. what stops you and opens you. */
+ E55:'M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z',
+ /* each mark in its place, in its turn. */
+ E56:'M9 6h11 M9 12h11 M9 18h11 M4 6h1 M4 12h1 M4 18h1',
+ /* one line that loops through two and never ends. */
+ E57:'M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.5-1-5.5-4',
+ /* an open ring and the line leaving through its gap. */
+ E58:'M15 4.6A8 8 0 1 0 19.4 9 M12 12l8-8 M15 4h5v5',
+ /* a bolt. force with one direction. */
+ E59:'M13 3L6 13h5l-1 8 7-10h-5z',
+ /* a shield. fear asks for it, safety is having it. */
+ E60:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z',
+ /* a flame. the same heat burns or warms. */
+ E61:'M12 3c2 4 6 6.5 6 11a6 6 0 0 1-12 0c0-3 2-5 3.5-6.5.3 2 1.2 3 2.5 3.5-.5-3 0-5.5 0-8z',
+ /* a cut stone. worth is what shame says you lack. */
+ E62:'M7 4h10l4 5-9 11L3 9z M3 9h18 M10 4l-1.5 5L12 20 M14 4l1.5 5L12 20',
+ /* a line taken inside a ring. disgust turns away, acceptance takes in. */
+ E63:'M7 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0 M2 12h10 M9 9l3 3-3 3',
+ /* a sun and its rays. apathy is the light switched off. */
+ E64:'M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M12 3v2 M12 19v2 M3 12h2 M19 12h2 M5.6 5.6l1.4 1.4 M17 17l1.4 1.4 M18.4 5.6L17 7 M7 17l-1.4 1.4',
+ /* a spike in a flat trace. the jolt before the body catches up. */
+ E65:'M2 12h5l2-6 4 12 2-6h7',
+ /* a drop. what falls, and what is left clean after. */
+ E66:'M12 3c3 4.5 6 8 6 11.5a6 6 0 0 1-12 0C6 11 9 7.5 12 3z',
+ /* a burst. the moment the expected breaks open. */
+ E67:'M12 3l2 3.5 4-1-1 4 3.5 2.5-3.5 2.5 1 4-4-1-2 3.5-2-3.5-4 1 1-4L3 12l4-2.5-1-4 4 1z',
+ /* a clock with its hand ahead. the body leaning into what comes. */
+ E68:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 7.5V12l3 2',
+ /* a weight with its plates. the physical measure. */
+ E69:'M4 9v6 M7 7v10 M17 7v10 M20 9v6 M7 12h10',
+ /* a set square and its graduations. the intellectual measure. */
+ E70:'M4 20V4l16 16z M4 8h3 M4 12h2 M4 16h3 M8 16v-4l4 4z',
+ /* a dial and its needle. the emotional measure. */
+ E71:'M4 16a8 8 0 0 1 16 0 M12 16l4-5 M5.5 11.5l1.5 1 M12 8v2 M18.5 11.5l-1.5 1',
+ /* steps, each built on the last. wisdom is what accumulates. */
+ E72:'M4 20h4v-4h4v-4h4V8h4V4',
+ /* a line that falls and climbs past where it fell. the adversity measure. */
+ E73:'M3 20h18 M3 6l5 9 4-4 4 3 5-9',
+ /* graduations rising to one centre. the instrument that reads coherence. */
+ E74:'M3 15h18 M5 15v-3 M8.5 15v-5 M12 15v-7 M15.5 15v-5 M19 15v-3',
+ /* an eye inside the frame. awareness that sees itself seeing. */
+ E75:'M3 3h18v18H3z M6.5 12c2-3.5 9-3.5 11 0-2 3.5-9 3.5-11 0 M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0',
+ /* a square turned true inside the frame, and its centre. the state every law points to. */
+ E76:'M3 3h18v18H3z M12 6l6 6-6 6-6-6z M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0'};
 /* GENERATED by tools/regen-archetype-domain.cjs. Do not edit: regenerate.
  * Reboot-OS c58058c30c146cf0aaf3066144826b44e658d5c8 (origin/main), canon_ARCHDOM, 18 rows, canon.py sha f05965de2f9fdbe3.
  * Blobs: ARCHDOM.json cc2cec977528, manifest.json 9cc010fac9b4, 0001_canon.sql c1dd46a58836, 32_story.js 0dcef8bd85e2, canon.json 227eabd23ae4.

@@ -2947,6 +2947,24 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
    saved fold state returns untouched with Becoming. */
 body.tab-intake:has(#avbody .avp) .mid{grid-template-columns:minmax(0,1fr)}
 body.tab-intake:has(#avbody .avp) .mid>.col{display:none}
+/* THE WISDOM SCHOOL HAS NO SIDE COLUMNS EITHER, 21 November, his words on
+   the table of laws: "Get rid of the left rail. Keep the right rail, but
+   turn that into a summary." Round RB had already ruled both columns shut
+   here, so all the page ever showed of them was two 58 pixel strips with a
+   fold control in each, and the right one opened the Field's Reading and
+   Selection over a page about laws. The left goes. The right rail he keeps
+   is the page's own now, the summary beside the table (#kbtrail,
+   ui/kbtable.js), which answers every press the way the Insight panel does
+   on the Field. The shared columns are therefore not drawn on this tab at
+   all, at any width, and the stage takes the whole row; the fold keys,
+   lcolk and rcolk, are left as they are, so nothing stored is read
+   differently anywhere else. The id in :has outweighs every fold state, the
+   reason the Avatar's rule above carries one. The answer layer the seat
+   browser under the table opens (#kbans, ui/knowledge.js) lifts #rdrill out
+   of the right column into a layer of its own, so it does not need the
+   column drawn. */
+body.tab-know:has(#know) .mid{grid-template-columns:minmax(0,1fr)}
+body.tab-know:has(#know) .mid>.col{display:none}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
