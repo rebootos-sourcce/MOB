@@ -15,3 +15,11 @@ printf 'hostfree self test: %s\n' "$(printf '%s\n' "$st" | tail -n 1)"
 python3 hostfree.py "$OUT"
 
 node -e "var e=require('$OUT');console.log('engine ok, %d exports',Object.keys(e).length)"
+
+# THE QUIZ CARRIES THIS FILE, 21 November. funnel/dist/atuned-quiz.html inlines
+# ../engine.js, so a new engine.js with the old quiz beside it is a committed
+# product its source does not build, and gates-fast fails it. Rebuilt here when
+# the engine went to its committed place, so this script run alone, or after
+# BUILD.sh in either order, never leaves the quiz an engine behind. A build to
+# any other path leaves the funnel alone. ATUNED_NO_FUNNEL=1 skips it.
+if [ "$OUT" = "../engine.js" ] && [ -z "${ATUNED_NO_FUNNEL:-}" ]; then ../funnel/BUILD-single.sh; fi

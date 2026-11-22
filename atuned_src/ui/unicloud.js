@@ -87,8 +87,8 @@
    and since 21 November the Dashboard paints it in #stjr, the dark well
    round her circle, masked soft so it never meets the panel's edge, as
    the cloud round the raised surface he asked for ("a ring inside of a
-   raised surface with this kind of cloudy pattern around it"; see
-   PILLOW EMBOSS in shell/head.html). #stjr's own wash is still under it.
+   raised surface with this kind of cloudy pattern around it", since made
+   a dish; see SET INTO A DISH in shell/head.html). #stjr's own wash is still under it.
    Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
@@ -121,8 +121,8 @@ if(typeof document==='undefined')return;
 
 /* THE HOST, 21 November: the hero paints behind everything on #stage; the
    Dashboard paints inside the dark well that holds her circle, #stjr, so the
-   cloud sits round the raised surface she is set into (shell/head.html,
-   PILLOW EMBOSS). #stjr is rebuilt by every stRender, so frame() re-seats
+   cloud sits round the dish she is set into (shell/head.html, SET INTO A
+   DISH). #stjr is rebuilt by every stRender, so frame() re-seats
    the canvas whenever its host is a new element. */
 function hostEl(){
  var c=document.body.classList;
@@ -146,6 +146,22 @@ var vsSrc=[
    above: the dither, the pulse strength and gate, the turbulence cap, the
    soft saturation and the warp scale are all load bearing fixes, measured
    against real screenshots and a Jacobian check, not cosmetic. */
+/* THE CLOUD'S REACH, 21 November, his words on the seamless build: "Let's
+   expand the cloud width by about 15%. So its radius is 15% bigger."
+   CLOUD_R scales the two falloffs that set how far the cloud reaches, the
+   warm glow round her circle (coreGlow, measured from her centre) and the
+   vignette (vign, from the stage centre), and nothing else. The noise is
+   still sampled on the unscaled uv, so the size of the billows, their gain,
+   the warp budget, the pulse and the dither are the seam round's measured
+   values, untouched. 1.0 is the build he approved the blend on.
+   Why 1.20 and not 1.15: the billows stay fixed in screen space and the
+   density saturates, so the visible edge moves less than the falloff does.
+   Measured on one frozen frame (both builds drawn at t=0, same core) at
+   1600 by 1000, the radius where the cloud's brightness over the ground
+   falls to 50, 20, 10 and 5 percent of its peak: 1.15 grew it +14, +12, +10
+   and +10 percent; 1.20 grows it +18, +15, +13 and +15, which is his 15. At
+   390 the stage is narrower than the cloud already and its outer reach is
+   the stage's own sides either way. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -170,6 +186,7 @@ var fsCore=[
  'const float WARP_K = 0.62;',
  'const float NFREQ = 0.75;',
  'const float NGAIN = 1.23;',
+ 'const float CLOUD_R = 1.20;',
  '',
  'float sstep2(float a, float b, float x){',
  '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
@@ -248,11 +265,11 @@ var fsCore=[
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd/CLOUD_R);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
  '  float density = sstep2(0.20, 0.93, n);',
- '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv));',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv)/CLOUD_R);',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',

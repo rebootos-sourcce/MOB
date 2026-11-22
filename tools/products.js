@@ -87,7 +87,7 @@ const fs = require('fs'), path = require('path'), zlib = require('zlib'), cp = r
 const { packPage } = require('./pack.js');
 
 const ROOT = path.resolve(__dirname, '..');
-const FIX = 'Run ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh, in that order, since BUILD.sh packs and writes funnel/tokens.css and the quiz inlines engine.js, and commit source.html, engine.js, atuned-packed.html, funnel/tokens.css and funnel/dist in the same change as the source.';
+const FIX = 'Run ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh, in that order, since BUILD.sh packs and writes funnel/tokens.css and the quiz inlines engine.js, and commit source.html, engine.js, atuned-packed.html, funnel/tokens.css and funnel/dist in the same change as the source. Since 21 November BUILD.sh and BUILD-engine.sh each run the funnel build last, so either one leaves the funnel current. The data-build stamp is set aside by this check, so a restamp commit never turns it green.';
 
 const stampOf = s => (String(s).match(/data-build="([^"]*)"/) || [])[1];
 /* the two attributes the build writes per run, and nothing else */

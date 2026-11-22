@@ -146,13 +146,15 @@ async function gate(browser,file,ok){
  ok(Object.keys(card).every(k=>/Addresses/.test(card[k])&&/\d+%|toward/.test(card[k])),
   'CARD: it keeps identity, the name, the kind, a figure and the addresses as rows, '+JSON.stringify(card.hy&&card.hy.slice(0,120)));
 
- /* A CHILD EMOTION: the line that used to sit in the card sits in the reading */
+ /* A CHILD EMOTION: the line that used to sit in the card sits in the reading.
+    Apathy's opposite is Joy since 21 November (engine/data/canon.js, the book's
+    own words, 74564639). This asserted Vitality and went red on that ruling. */
  const fe=await pg.evaluate(()=>{S.pin=null;runFetterDrill(CHILD.find(c=>c.nm==='Apathy'));
   const ins=document.getElementById('insight');
   return {name:(ins.querySelector('.ins-nm')||{}).textContent||'',kind:(ins.querySelector('.ins-kd')||{}).textContent||'',
    text:ins.querySelector('.ins-pg[data-on]')?ins.querySelector('.ins-pg[data-on]').innerText.replace(/\s+/g,' '):'',
    card:(document.getElementById('rdrill').innerText||'').replace(/\s+/g,' ')};});
- ok(fe.name==='Apathy'&&fe.kind==='Child emotion'&&/Vitality/.test(fe.text)&&/Apathy is a child emotion/.test(fe.text)&&!/Where it sits|Both halves/.test(fe.card),
+ ok(fe.name==='Apathy'&&fe.kind==='Child emotion'&&/Joy is its opposite/.test(fe.text)&&/Apathy is a child emotion/.test(fe.text)&&!/Where it sits|Both halves/.test(fe.card),
   'BORROWED: "child emotion Apathy", its opposite and where it sits are in the reading and not in the card, '+JSON.stringify({n:fe.name,k:fe.kind}));
 
  /* EVERY DOOR FILLS INSIGHT, and Insight never says nothing while Selection shows a card */

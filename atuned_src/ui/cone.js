@@ -3698,8 +3698,8 @@ function clPlace(G,t,i,stk){
  row.forEach(function(s){
   s.dot=false;
   if(s.t==='tch'){s.r=stk?14:17; s.ln=clLines(s.nm,stk);
-   s.half=Math.max(s.r+5,13,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
-  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,10,400)/2);}});
+   s.half=Math.max(s.r+5,15,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
+  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,11,400)/2);}});
  var free=function(){var w=span; row.forEach(function(s){w-=2*s.half;}); return w;};
  var laws=row.filter(function(s){return s.t==='law';})
   .sort(function(a,b){return b.half-a.half||row.indexOf(b)-row.indexOf(a);});
@@ -3787,8 +3787,11 @@ function clSvg(W,H,stk){
      +arc(d.rel,0)+arc(d.rit,1)+arc(d.aff,2)
      +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+r+'"/>'
      +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.62:0.74)+'</g>'
-     +'<g class="cl-pill"><rect x="'+(x-13).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="26" height="13" rx="6.5"/>'
-     +'<text x="'+X+'" y="'+(y-r-9.4).toFixed(1)+'">'+s.at+'</text></g>'
+     /* the pill holds 11px, the type floor, in 14 tall with its top on the
+        same line as the 9.5px pill's. 16 tall and three higher touched the name of the teacher on the turn above, at the right end
+        of every turn on a desk, where a turn rises to meet the next one */
+     +'<g class="cl-pill"><rect x="'+(x-15).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="30" height="14" rx="7"/>'
+     +'<text x="'+X+'" y="'+(y-r-8.2).toFixed(1)+'">'+s.at+'</text></g>'
      +'<text class="cl-lb" x="'+X+'" y="'+(y+r+(stk?14:17)).toFixed(1)+'">'
      +s.ln.map(function(l,j){return '<tspan x="'+X+'"'+(j?' dy="12"':'')+'>'+esc(l)+'</tspan>';}).join('')+'</text></g>';}
    else {
@@ -3839,8 +3842,8 @@ function clSvg(W,H,stk){
     fill, for the radiance; the field itself is the small core. */
  var avAt=function(x,y,cls,lab){
   var g=clamp(cq/100,0,1), rc=(stk?5:6), rr=(stk?9:11)+(stk?8:11)*g;
-  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+' of 100"'
-   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+' of 100.">'
+  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+'"'
+   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+'.">'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rr.toFixed(1)+'" class="rad"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+(rc+4)+'" class="halo"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rc+'" class="core"/>'+lab+'</g>';};
