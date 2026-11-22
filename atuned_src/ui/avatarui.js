@@ -1333,7 +1333,7 @@ function avThreadHTML(st,a){
    T.sab?'running'+(st.run.written&&T.dir!=='steady'?', '+T.dir:''):'not running', !!T.sab);}
  out+=row(avSvg(AV_OK),seatCol(a.b),'Your story at '+AV_THE[a.b],
   T.story?'written':'not written', !!T.story, 'data-avgo="'+a.b+'" aria-label="Your story at '+AV_THE[a.b]
-  +', '+(T.story?'written':'not written')+'. Open it on Becoming"');
+  +', '+(T.story?'written':'not written')+'. Open it on Avatar"');
  return out+'</div>';}
 function avDetail(st,a){
  var rt=st.side.arch[a.nm]||0, A=AV_OF[a.b], e=!!avArchEmbodied(st.r)[a.i];
@@ -1435,7 +1435,18 @@ function avDilHTML(){
 /* AND A THIRD, round RB, Becoming slice S3: Purpose, the document's layers B
    and C on the one Avatar page, which is the audit's recommendation for Q7
    (a layer of the page, not a fifth section of a four step loop). */
-var AV_SUBS=[['becoming','Becoming'],['purpose','Purpose'],['arch','Archetypes']];
+/* AVATAR, BOUNDARY AND MASKS, 21 November, his words: "we're going to revive
+   the masks, but we're going to move them to the avatar page. So it'll be
+   avatar, boundary, and masks." Only the names a person reads moved, on the
+   rule the Body, Character and Wisdom school renames follow: the keys
+   'becoming' and 'purpose' are identity, read by the Dashboard's doors
+   (STGO in ui/storyui.js), Selection's purpose door (ui/drills.js) and the
+   gates, so they keep their spelling. Boundary is the purpose view because
+   the purpose view is where the boundary is written: its six sides are the
+   hexagon round the two triangles (avpFigure) and its five lines a side are
+   the thirty commitments boundaryCount counts. 'masks' is new, avMasksHTML
+   below. */
+var AV_SUBS=[['becoming','Avatar'],['purpose','Boundary'],['masks','Masks'],['arch','Archetypes']];
 /* ARCHETYPES IS HIDDEN, 18 November, his words: "let's hide the archetype tab
    under avatar. Archetype. I don't know what it's for. I don't know where it
    came from. I don't know what it does." Hidden and not deleted, because his
@@ -1853,6 +1864,22 @@ var AV_CSS=[
  '.avp-sb.av-on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,var(--panel))}',
  '.avp-say{margin:0;font-size:14px;color:var(--mid)}',
  '.avp-say b{color:var(--ink);font-weight:600;margin-right:4px}',
+ /* MASKS, 21 November: the five signs in one row at even gaps, the standing
+    symmetry ruling, and the picked mask under them. The disc is the Character
+    page's own .chp-mk, so it is not restyled here beyond its place in a row. */
+ '.avmk{display:flex;flex-direction:column;align-items:center;gap:24px;margin-top:16px}',
+ '.avmk-row{display:flex;flex-wrap:wrap;justify-content:center;gap:24px}',
+ '.avmk-one{display:flex;flex-direction:column;align-items:center;gap:8px}',
+ '.avmk-mk{flex:0 0 auto}',
+ '.avmk-nm{font-size:14px;color:var(--mid)}',
+ '.avmk-nm.on{color:var(--ink);font-weight:600}',
+ '.avmk-pick{display:flex;flex-direction:column;gap:10px;width:100%;max-width:560px;box-sizing:border-box;padding:16px;border-radius:var(--r-s);background:var(--sunk);border-left:2px solid var(--c,var(--accent))}',
+ '.avmk-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}',
+ '.avmk-head b{font-size:16px;font-weight:600;color:var(--ink)}',
+ '.avmk-head span{font-size:14px;color:var(--dim)}',
+ '.avmk-p{margin:0;font-size:15px;line-height:1.5;color:var(--ink)}',
+ 'body.punch .avmk-pick{border-color:transparent}',
+ '@media (max-width:600px){.avmk-row{gap:16px}}',
  'body.punch .avp-blk,body.punch .avp-read{border-color:transparent}',
  '@media (max-width:1100px){.avp{grid-template-columns:minmax(0,1fr)}.avp-fig{max-width:520px}}',
  '@media (max-width:600px){.avi{justify-content:flex-start}.avi-ed{grid-template-columns:minmax(0,1fr)}.avp-sl{font-size:17px}.avp-vl{font-size:16px}}'].join('\n');
@@ -1917,6 +1944,8 @@ function renderAvatar(){
   h+=avFirstHTML(st)+avPairs(st)+avPotHTML(st);}
  else if(AV.sub==='purpose'){
   h+=avPurposeHTML();}
+ else if(AV.sub==='masks'){
+  h+=avMasksHTML(st);}
  else{
   var W2=avWheel(st);
   /* THE PARAGRAPH EXPLAINING WHAT THIS SECTION IS, AND HOW TO USE THE SCALE,
@@ -2036,7 +2065,7 @@ function avBind(host,st){
  on('[data-avfirst]',function(){var q=st.first; if(!q.length)return;
   relPick(q.map(function(n){return n.i;})); avWatch(null);});
  on('[data-avdil]',function(el){avDilemma(+el.dataset.avdil,+el.dataset.avdv);});
- avIdBind(host); avPurBind(host);
+ avIdBind(host); avPurBind(host); avMasksBind(host);
  /* the boxes. The lit layer takes the text at once, because the textarea's
     own text is transparent and a layer that lagged would be a box that ate
     keystrokes. The reading under it waits for a pause, as the journal's does. */
@@ -2294,6 +2323,74 @@ function avPurBind(host){
     renderAvatar();
     if(k){var n=document.querySelector('[data-avpk="'+k+'"]'); if(n)n.focus();}},0);};
   el.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault(); el.blur();}};});}
+
+/* ============================================================
+   MASKS, ON THE AVATAR PAGE, 21 November (avatar-boundary-masks-revived). His
+   words: "we're going to revive the masks, but we're going to move them to the
+   avatar page. So it'll be avatar, boundary, and masks." On 17 November he
+   held the Character page off the bar (TABEXTRA, engine/core.js), and the five
+   masks went with it, because that page was the only place that drew them.
+
+   RELOCATED, NOT REBUILT. Every piece here is the Character page's own, so the
+   two cannot disagree while both exist:
+     the roster  MASKS_READ (engine/data/canon.js), Professional left out there
+     the sign    chMaskSvg (ui/character.js), the one copy of the glyph, with
+                 its own gradient ids so the held page's host does not shadow it
+     the arc     CHC.maskLoad over S.charge divided by nine, renderCharacter's
+                 own arc to the digit, so a mask lit three quarters there is lit
+                 three quarters here
+     the pick    CURP.ui.chmask through chLast and uiSet, the Character page's
+                 "the user's last open", so either page opens on the same mask
+     the lock    lockSees('mask') and its own panel, ruled 1 October: below the
+                 tier that carries the masks nothing of them is drawn
+   What the section looks like in its new place is his to shape once it is
+   live. This puts it there, wired, and adds no reading of its own.
+
+   NO "READ THIS MASK" HERE, AND WHY. The first cut carried the Character
+   page's button, which calls chDrill, and chDrill writes into #rdrill inside
+   Selection. On this page Become replaces Selection (dashavatar holds it), so
+   the summary was written into a host with display none: measured 21
+   November, a 0 by 0 box holding the whole card. A press that changes nothing
+   a person can see is worse than no press, so it went. Giving that summary a
+   visible place on the Avatar is a layout call, his, with the rest of this
+   section's look.
+   ============================================================ */
+function avMaskPick(){
+ var v=(typeof chLast==='function')?chLast():'';
+ return MASKS_READ.filter(function(m){return m.nm===v;})[0]||MASKS_READ[0];}
+function avMaskLoad(m,unread){
+ if(unread||typeof CHC==='undefined')return 0;
+ var w={}; CHILD.forEach(function(c){w[c.nm]=+S.charge[c.nm]||0;});
+ return Math.max(0,Math.min(1,CHC.maskLoad(m,w)/9));}
+/* the hover, symbol unpacked: where it is worn, what it does, and what the arc
+   round its sign is. A mask carrying nothing says so in words, never as 0%. */
+function avMaskTip(m,ld,unread){
+ var p=pct('portion',ld);
+ return chSentence('Worn over the '+chSeats(m))+' '+chSentence('It '+m.v)
+  +' The arc is the charge it carries: '+(unread?'nothing read yet.':(p?fmtPct('portion',ld)+' of the most it can.':'nothing yet.'));}
+function avMasksHTML(st){
+ if(typeof lockSees==='function'&&!lockSees('mask'))
+  return '<section class="avmk" aria-label="Masks"><div class="lk-page">'+lockPanelHtml('mask')+'</div></section>';
+ if(typeof MASKS_READ==='undefined'||typeof chMaskSvg!=='function')return '';
+ var unread=!!(st.r&&st.r.unread), pick=avMaskPick(), col=CHC.maskCols(pick);
+ var row=MASKS_READ.map(function(m){var on=m.nm===pick.nm, c=CHC.maskCols(m), ld=avMaskLoad(m,unread);
+  return '<div class="avmk-one"><button type="button" class="chp-mk avmk-mk" data-avmask="'+esc(m.nm)+'" aria-pressed="'+on+'"'
+   +' aria-label="'+esc(m.nm)+' mask" data-tip-t="'+esc(m.nm)+'" data-tip="'+esc(avMaskTip(m,ld,unread))+'"'
+   +' style="--mc1:'+c[0]+';--mc2:'+c[1]+';--c:'+c[0]+'">'+chMaskSvg(m,'avm',ld)+'</button>'
+   +'<span class="avmk-nm'+(on?' on':'')+'">'+esc(m.nm)+'</span></div>';}).join('');
+ return '<section class="avmk" aria-label="Masks">'
+  +'<div class="avmk-row" role="group" aria-label="The five masks">'+row+'</div>'
+  +'<div class="avmk-pick" style="--c:'+col[0]+'">'
+  +'<div class="avmk-head"><b>'+esc(pick.nm)+'</b><span>'+esc('worn over the '+chSeats(pick))+'</span></div>'
+  +'<p class="avmk-p">'+esc(chSentence('It '+pick.v))+'</p>'
+  +'</div></section>';}
+function avMasksBind(host){
+ host.querySelectorAll('[data-avmask]').forEach(function(el){el.onclick=function(){
+  var nm=el.dataset.avmask; if(!MASKS_READ.some(function(m){return m.nm===nm;}))return;
+  if(typeof CHV!=='undefined')CHV.pick=nm;
+  if(typeof uiSet==='function')uiSet('chmask',nm);
+  renderAvatar();
+  var b=document.querySelector('#avbody [data-avmask="'+nm+'"]'); if(b)b.focus();};});}
 
 /* ---------------- the writes ----------------
    Each one says what happened through status(), and none of them claims a
@@ -2579,7 +2676,11 @@ function avRelRail(st){
     +'<span class="avr-t"><b>'+esc(avTagNm(n.k))+'</b><i>'+esc(seatNm(n))+'</i></span>'
     +(showOnly()?'':'<span class="avr-yn"><button type="button" class="btn avr-b" data-avhyes="'+n.i+'" aria-label="Yes, '+esc(avTagNm(n.k))+' is mine">Yes</button>'
     +'<button type="button" class="btn avr-b" data-avhno="'+n.i+'" aria-label="No, not '+esc(avTagNm(n.k))+'">No</button></span>')+'</li>';}).join('')+'</ul>'
-  :'<p class="avr-none">Nothing heard yet. Answer Source AI, top right.</p>';
+  /* NO PLACE NAMED. This said "top right", which the corner is only while the
+     page is wider than 980 of its own container; with both rails open at 1600
+     it is under the ring, measured 21 November, so the line pointed at an empty
+     corner on the screen most people see. Source AI's own mark finds it. */
+  :'<p class="avr-none">Nothing heard yet. Answer Source AI\'s question.</p>';
  out+='</div><div class="avr-grp"><div class="avr-gh"><span>Banked</span>'
   +'<i class="avr-q" tabindex="0" data-tip-t="Banked" data-tip="Patterns held in your body now, in the order your release runs them. One tap releases one.">?</i></div>';
  out+=B.length?'<ul class="avr-list">'+B.slice(0,8).map(function(n){

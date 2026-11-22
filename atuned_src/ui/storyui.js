@@ -128,6 +128,12 @@ var STGO={
   setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();},
  stmasks:function(el){var tm=el&&el.querySelector&&el.querySelector('[data-topmask]'), nm=tm&&tm.getAttribute('data-topmask');
   if(nm&&typeof CHV!=='undefined'){CHV.pick=nm; if(typeof uiSet==='function')uiSet('chmask',nm);}
+  /* THE MASKS LIVE ON THE AVATAR PAGE WHILE CHARACTER IS HELD, 21 November,
+     his words: "we're going to move them to the avatar page." The card went
+     doorless on 17 November because its only door was the held page; it opens
+     the Avatar's Masks view now, on the same mask, since both read chmask. */
+  if(!tabOnBar(TAB.MASKS)){if(typeof AV!=='undefined')AV.sub='masks';
+   setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar(); return;}
   setTab(TAB.MASKS); if(typeof render==='function')render();}};
 (function(){
  var go=function(el){var k=el.getAttribute('data-stgo'), fn=k&&STGO[k]; if(fn)fn(el);};
@@ -205,7 +211,9 @@ var STMK_WHAT={
  stavatar:'How whole you are: how far you have come toward who you are becoming, with who you are releasing on the left and who you are becoming on the right.',
  stmasks:'A mask is a way of showing up that you grow into, such as Child or Teen, read from the charge held at the points it speaks from.',
  stsuperego:'The defence holding the most charge right now, of the four the product tracks.'};
-var STGO_LABEL={stboundary:'Avatar, Purpose',stavatar:'Avatar, Becoming',stmasks:'Character'};
+/* where each door lands, in the words the Avatar's pills print since 21
+   November (AV_SUBS, ui/avatarui.js): Avatar, Boundary, Masks */
+var STGO_LABEL={stboundary:'Avatar, Boundary',stavatar:'Avatar',stmasks:'Avatar, Masks'};
 /* THE HEADER ROW: symbol, then the name, then a bare chevron. The words
    "Purpose", "Archetypes" and "Character" that sat beside the chevron are
    where the card goes, not what it says, so they move into the tip and the
@@ -1239,11 +1247,13 @@ function stRender(){
    +'</div>'
    +'<div class="st-mini6-row">'
     +stMiniShell('stavatar','Avatar',stMiniAvatar(r),'stavatar')
-    /* the Masks card stays on the row, which is ruled even and symmetrical,
-       and stops being a link while Character is held off the bar (17
-       November): a card that opened a page with no door would be the hidden
-       page by another way in. tabOnBar is in engine/core.js. */
-    +stMiniShell('stmasks','Masks',stMiniMasks(r),tabOnBar(TAB.MASKS)?'stmasks':null)
+    /* the Masks card stays on the row, which is ruled even and symmetrical.
+       It stopped being a link while Character was held off the bar (17
+       November), because a card that opened a page with no door would be the
+       hidden page by another way in. Since 21 November the masks are on the
+       Avatar page, so the card is a link again and STGO.stmasks sends it there
+       while Character is held, never to the held page. */
+    +stMiniShell('stmasks','Masks',stMiniMasks(r),'stmasks')
     +stMiniShell('stsuperego','Superego',stMiniSuperego(r),null)
    +'</div>'
   +'</div>'

@@ -2556,6 +2556,11 @@ function sniffStory(text){
   /* the working, kept, because a contract that discards its own evidence cannot
      be audited and re-parsing is what makes the atom layer possible. */
   parsed:    p,
+  /* WHICH LINES OF THE LET GO LIST THE TEXT CARRIES, 21 November, beside
+     the evidence and never in it: engine/letgo.js says why a phrase match
+     adds no charge. Guarded like gaps below, so this contract still answers
+     in a build cut without the list. */
+  letgo:     (typeof letgoCues==='function')?letgoCues(text):null,
   /* WHAT THIS READING DOES NOT KNOW. Carried in the output rather than left to
      a reviewer to remember, because every one of these is a place a renderer
      could otherwise print a clean reading over a hole. */

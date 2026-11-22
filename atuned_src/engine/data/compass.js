@@ -653,8 +653,9 @@ function compassPoleLines(m,end){
    reads what a person did and never a reading of them, and CQ is a reading.
    His ruling above is newer and places teachers by CQ; the Lines reaches in
    6c (Say it, Walk it, Hold it) are untouched and still read only what was
-   done. NOTHING RENDERS THESE YET: no screen reads POLE_UNLOCK at this
-   commit, so the trail that would draw them is the next build, not this one. */
+   done. The climb on the Compass tab (clSvg, ui/cone.js, 21 November) is
+   the screen that reads POLE_UNLOCK: each teacher is a station at its own
+   number there, and the path is lit to the highest CQ a person has stood at. */
 const CQ_CLIMB_FLOOR=41;
 const CLIMB_SEAT_PICK={SA:'Crown'};
 const POLE_UNLOCK={CH:49, DE:57, PO:66, TR:72, IL:74, TU:81, OR:83, PE:91,
@@ -1059,6 +1060,147 @@ const DESCENT=[
     finding:'The crosswalk is exact and not invented: HCX_LIB\u2019s Dissociation row is built from the two saboteurs the library itself ties to it, Hyper-Rational and Escapist, and compute() compounds them into the Dissociation hyper complex only when both have formed and their paired weight reaches the same 6.5 gate every hyper complex uses; were this wired into this table it would be read exactly the way Sociopathy already reads Predatory, never a new kind of edge. Because malig in this engine is computed from CQ alone rather than an independent outward-harm measure, the dark gate can fire for this withdrawal-shaped family on low coherence alone, the same as for an outward-pointing family, which the falsification checks above account for. No practitioner-sight machinery for this content exists yet: CLAUDE.md requires explicit consent, a visible list of who has sight, and revocation before any practitioner sees a person\u2019s self report, and engine/practitioner.js\u2019s own header says none of the three is built, so this object is not ship-ready for any screen, practitioner included, until that grant exists; the one piece of this family already reaching a screen, HCX_LIB\u2019s d line, reaches only the person it is about, and the product\u2019s own ruling keeps the clinical correspondence off that same screen by name.'}
   ]
  }},
+ /* THE REST OF THE ROSTER, ADDED 21 NOVEMBER. His words: "for compass
+    descent unreachable, there should be way more than 8 entries. You should
+    have Charon as whatever its behavior name is, Geryon as whatever its
+    behavior name is, Cerberus as whatever its name is, etc."
+
+    Every row below is a figure from the Pass 1 roster in
+    reviews/shadow-figure-research-2026-10-30.md, shown by the behaviour
+    word this product ALREADY prints for it somewhere else (the CIRCLES by
+    field, a MIRROR or HOME_POLES or PATHS dn, a BLUEPRINT nm), never by the
+    figure's name, per the 30 October ruling. No word here is new. The d
+    line is the same figure's own line from the same table.
+
+    THESE ARE REFERENCE ROWS, THE SAME PRECEDENT AS DYSREGULATION AND
+    DISSOCIATION ABOVE. No fam and no pair, so descentHeld() never holds one
+    and darkRead() never chooses one as the step. The dark read lists them
+    and never lights one. Whether any of them is a super complex, a pair of
+    hyper complexes, is his open call (TASKS.md round SM, SM9 and SM16) and
+    nothing here answers it.
+
+    LEFT OUT ON PURPOSE. Manipulation (Baal): the narrative review's own
+    call was to show nothing until an opposite is documented, and that is
+    honoured here. The Harpies, Nimrod and Ephialtes: no table in the engine
+    carries them, so there is no shipped word to reuse. Satan frozen, the
+    ninth governor: it is Lucifer at the ninth circle, so Shadow carries it.
+
+    THE TEAM'S PICK, under his 21 November ruling to stop the blockers from
+    building. His to correct on the live app, by one word per row. */
+ {nm:'Gatekeeping', kind:'circle governor',
+  d:'Threshold paralysis. Cannot cross what cannot be measured. The rational mind forever preparing to arrive.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 1 (Limbo), by:\'Gatekeeping\', and MIRROR TR\'s dn, accepted 17 November (DECISIONS.md). d is TR\'s own dnd. The figure behind it, Charon, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Judgment', kind:'circle governor',
+  d:'Grandiose entitlement. Appointing the self arbiter of all things.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 2 (Lust), by:\'Judgment\', accepted 17 November as a circle governor (DECISIONS.md). d is circle 2\'s own p with its clinical first word and its person word taken out, so it names a pattern and not a person. The figure behind it, Minos, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Insatiability', kind:'circle governor',
+  d:'Consumption as substitution. Appetite replacing connection. Each mouth feeds and none is filled.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 3 (Gluttony), by:\'Insatiability\', accepted 17 November (DECISIONS.md). d is circle 3\'s own p. The figure behind it, Cerberus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Possessiveness', kind:'circle governor',
+  d:'Scarcity identity. Accumulation as self proof. Worth measured in possession.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 4 (Greed), by:\'Possessiveness\', accepted 17 November (DECISIONS.md). d is circle 4\'s own p. The figure behind it, Plutus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Reactivity', kind:'circle governor',
+  d:'Charge split at the root. Outward as rage or inward as paralysis. The same current, no clean exit.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 5 (Wrath and sloth), by:\'Reactivity\', and MIRROR CH\'s dn, accepted 17 November (DECISIONS.md). d is CH\'s own dnd. The figure behind it, Phlegyas, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Vengeance', kind:'circle governor',
+  d:'The map takes the place of the ground, for good. The belief system is guarded against any experience that contradicts it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 6 (Heresy), by:\'Vengeance\', and MIRROR RE\'s dn, accepted 17 November (DECISIONS.md). d is RE\'s own dnd. The figure behind it, The Furies, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Violence', kind:'circle governor',
+  d:'Against others, against the self, against order. The pattern has escaped containment.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 7, by:\'Violence\', accepted 17 November (DECISIONS.md). d is circle 7\'s own p. The figure behind it, the Minotaur, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Fraud', kind:'circle governor',
+  d:'Engineered surface. Beautiful above, serpentine beneath. Perception itself weaponised.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: CIRCLES circle 8, by:\'Fraud\', and MIRROR PE\'s dn. Ruled 30 October, his words "Geryon is fraud" (TASKS.md round SM, SM15). d is PE\'s own dnd. The figure behind it, Geryon, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Shadow', kind:'inversion',
+  d:'Pride as false light. Shine performed for reflection, not generated from Source.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR IL\'s dn and BLUEPRINT\'s Shadow row, the word the vocabulary sweep settled (DECISIONS.md, "Grace against Shadow"), which replaced the 17 November False Light. d is IL\'s own dnd. The figure behind it, Lucifer, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Compulsive Craving', kind:'inversion',
+  d:'Craving without closure. Appetite that cannot satisfy. Having never resolves the wanting.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR DE\'s dn, accepted 17 November (DECISIONS.md). d is DE\'s own dnd. The figure behind it, Asmodeus, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Engineered Chaos', kind:'inversion',
+  d:'Chaos engineered to prevent coherence. Betrayal as systemic strategy. Disruption from inside trusted systems.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR OR\'s dn and BLUEPRINT\'s Engineered Chaos row, accepted 17 November (DECISIONS.md). d is OR\'s own dnd. The figure behind it, Set, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Sacrificial Extraction', kind:'inversion',
+  d:'Power that extracts from others. The machine that must be fed. Discipline that others pay for.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: MIRROR PO\'s dn, accepted 17 November (DECISIONS.md). d is PO\'s own dnd. The figure behind it, Moloch, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Extractive Control', kind:'inversion',
+  d:'Cold, structured adversarial behaviour. Organised extraction. Order in service of control, not governance. The King inverted.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: BLUEPRINT\'s Extractive Control row, accepted 17 November as the word that replaced Malak (DECISIONS.md). d is that row\'s own d. The figure behind it, Malak, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Deception', kind:'inversion',
+  d:'The smaller thing said to keep the room warm. The plumb line broken and turned aside.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES TU\'s dn. Ruled 30 October, his words "is the lie instead of that is deception, more appropriate word, or deceiver" (TASKS.md round SM, SM13, opposite Honesty at SM14). d joins TU\'s own recipe line in teachers_recipes.js and the Lie\'s mark as the narrative review describes it. The figure behind it, Druj, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Sabotage', kind:'inversion',
+  d:'Light taken in and nothing passed on.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES SA\'s dn, accepted 17 November (DECISIONS.md). d is SA\'s own recipe line in teachers_recipes.js, "Take it in and pass nothing on", read as a pattern rather than an instruction. The figure behind it, Apep, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Forced Growth', kind:'inversion',
+  d:'The shoot pulled up to help it grow. The hand meant to help breaks the root.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: HOME_POLES NA\'s dn, accepted 17 November (DECISIONS.md). d is NA\'s own recipe line in teachers_recipes.js and the mechanic in compass.js\'s own note over HOME_POLES. The figure behind it, the farmer of Song, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Poisoning', kind:'inversion',
+  d:'Flow held in one pool until it turns to poison. The river still runs, and nothing downstream can drink from it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS FL\'s dn, accepted 17 November (DECISIONS.md). d is FL\'s own dnd. The figure behind it, Kaliya, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Coercive Abduction', kind:'inversion',
+  d:'Learning and power with no line held. The law is known and crossed, because the wanting outranks it.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS AL\'s dn, accepted 17 November (DECISIONS.md). d is AL\'s own dnd with its person word taken out. The figure behind it, Ravana, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
+ {nm:'Forced Alteration', kind:'inversion',
+  d:'Haste that means well. Openings forced into what was whole, one a day, until it died.',
+  content:{inferred:true,
+   inferenceBasis:'Name-correspondence reference row. The shown word and its d line are already shipped elsewhere in this build: PATHS HO\'s dn, accepted 17 November (DECISIONS.md). d is HO\'s own dnd with its person words taken out. The figure behind it, Shu and Hu, is a trace name from reviews/shadow-figure-research-2026-10-30.md, Pass 1 roster, and is never printed. Added 21 November 2026 as the team’s own pick, from already ruled material with no new word.',
+   crosswalk:'No fam and no pair, the same precedent Dysregulation and Dissociation set: read by name only through descentStep(), never held by descentHeld(), never chosen by darkRead(), so it is listed in the dark read and never lit. No fetter, saboteur or complex parentage is invented. Its code in engine/data/codes.js exists because the codes gate needs every DESCENT name to resolve to a structure, and that filing is not a ruling on its tier.',
+   reviewStatus:'team-pick-21-november; open to the owner on the live app; no research pass of its own, the word and the line are both reused'}},
  /* A SUPER COMPLEX, AND ONE PARTICULAR ONE. The kind stands: he ruled it a
     super complex. What 0e53d037 struck was it standing as a flat kind lit for
     anybody, and pair is the fix: it is held only where compute() finds both

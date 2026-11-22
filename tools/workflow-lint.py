@@ -208,6 +208,9 @@ BROWSER = {
 # hit, keep and not a hit said aloud on the release card, 21 November
 # (tests/relvoice.js). Report only until three green runs.
     'relvoice':      ('node tests/relvoice.js', 20),
+# the table of universal laws on the wisdom school page, 21 November
+# (tests/kbtable.js). Report only until three green runs.
+    'kbtable':       ('node tests/kbtable.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
