@@ -446,9 +446,12 @@ for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]])for(cons
 await p.evaluate(()=>{if(STV.bank)stBank(); STV.dash=false; stRender();});
 /* ============================================================
    THE CLIMB, 21 November. The board the Compass tab opens on, its two poles
-   (an up arrow at Source and a down arrow at the descent, restored on his
-   words "a distinct point on the bottom and a distinct point on top... an
-   arrow up, arrow down"), and the rail beside it, seats Crown to Root. Held
+   (first an up arrow and a down arrow, on his words "a distinct point on
+   the bottom and a distinct point on top... an arrow up, arrow down"; then,
+   the same day, a cloud named Coherence and a flame named Decoherence, on
+   his words "instead of saying source with a little arrow at the top, I'm
+   not sure what that is"), and the rail beside it, seats Crown to Root,
+   which holds the teachers the board no longer draws. Held
    to the same rule as every surface here, nothing printed over anything,
    and to the defect the first climb shipped with: a card's title behind the
    sticky "Back to the compass" bar.
@@ -491,12 +494,22 @@ for(const w of [[1600,1000],[390,844]]){
    if(row)row.click();await wait(350);
    const bar=document.querySelector('.rd-top'), ttl=document.querySelector('.cl-card .sh-h');
    const card={k:k,sel:CONE.clSel,bar:bar?bx(bar).bottom:null,title:ttl?bx(ttl).top:null,
-    marked:!!document.querySelector('#cnclimb .cl-st.sel[data-cl="'+k+'"]')};
+    /* the teachers left the board for the rail (clPlace, 21 November), so
+       a press on a teacher's row marks the row, and its laws on the board */
+    marked:!!document.querySelector('#clrail .front[data-cl="'+k+'"]')
+     &&(LAW_TEACHER&&Object.keys(LAW_TEACHER).some(n=>LAW_TEACHER[n]===k)
+      ?!!document.querySelector('#cnclimb .cl-st.sel'):true),
+    recipes:document.querySelectorAll('.cl-card .cl-rc').length,
+    wantRecipes:(recipeOf(k)||{rituals:[]}).rituals.length};
    try{rdClose();}catch(e){}
    return {poles:poles.length,over:over,dn:dm.length,dover:dover,dtext:dtext,want:DESCENT.length,upIn:!!ub&&inside(ub),dnIn:!!db&&inside(db),
     upTop:!!ub&&st.every(q=>ub.bottom<=q.top+0.5),dnBot:!!db&&st.every(q=>db.top>=q.bottom-0.5),
     seats:seats,wantSeats:BANDS.slice().reverse(),rover:rover,clipped:rail&&innerWidth>=900?lastB>rb.bottom+0.5:false,
-    ends:railEnds,card:card};},who);
+    ends:railEnds,card:card,
+    /* his words, 21 November: the teachers out of the centre into the rail,
+       and the two poles named Coherence and Decoherence */
+    tchOnBoard:document.querySelectorAll('#cnclimb .cl-t').length,
+    poleNames:[...document.querySelectorAll('#cnclimb .cl-pole .cl-pn')].map(e=>e.textContent)};},who);
   const tag=w.join('x')+'/profile '+who;
   ok(r.poles===2,tag+': the climb draws its two poles, saw '+r.poles);
   ok(r.over.length===0,tag+': a pole prints over the board: '+r.over.slice(0,4).join('; '));
@@ -509,6 +522,9 @@ for(const w of [[1600,1000],[390,844]]){
   ok(r.rover.length===0,tag+': rail entries print over each other: '+r.rover.slice(0,3).join('; '));
   ok(!r.clipped,tag+': the rail runs past its own bottom');
   ok(r.card.sel===r.card.k&&r.card.marked,tag+': a press on the rail did not select its station on the board ('+r.card.k+')');
+  ok(r.tchOnBoard===0,tag+': '+r.tchOnBoard+' teachers still drawn on the board, they belong to the rail');
+  ok(r.poleNames.join()==='Coherence,Decoherence',tag+': the poles read '+r.poleNames.join(', ')+', want Coherence, Decoherence');
+  ok(r.card.recipes===r.card.wantRecipes&&r.card.recipes>0,tag+': the card lists '+r.card.recipes+' recipes of '+r.card.wantRecipes+' for '+r.card.k);
   ok(r.card.bar!==null&&r.card.title!==null&&r.card.title>=r.card.bar-0.5,tag+': the card title sits behind the back bar, title '
    +r.card.title+' bar '+r.card.bar);
   console.log('  '+tag+': poles '+r.poles+', '+r.seats.length+' seats on the rail, card '+r.card.k+' title at '

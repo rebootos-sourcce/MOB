@@ -11554,10 +11554,11 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
 .cl-dstep .cl-hit{fill:transparent;stroke:none}
 .cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
-/* THE TWO POLES (clPole). One ring, one arrow, one size, top and bottom, so
-   they read as a pair: Source's in the light the board already gives
-   Source, the descent's in the red the descent already wears. Ring, not
-   fill: the disc behind the arrow is the ground, so the path never shows
+/* THE TWO POLES (clPole). One ring, one mark, one size, top and bottom, so
+   they read as a pair: the cloud of coherence in the light the board
+   already gives the top, the flame of decoherence in the red the descent
+   already wears (CL_CLOUD, ui/cone.js). Ring, not
+   fill: the disc behind the mark is the ground, so the path never shows
    through it. */
 .cl-pole{cursor:pointer;outline:none}
 .cl-pole .cl-hit{fill:transparent;stroke:none}
@@ -11603,6 +11604,20 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-note{font-size:11px;color:var(--mid);margin:0}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
+/* THE RECIPES UNDER A CARD (clRecipes). Set off from the card above by the
+   same rule .cl-ref draws, each row the name, then its minutes and steps,
+   and the press under them on the same left edge. The first cut put the
+   press beside the words, and in a rail this narrow it took half the row
+   and broke a three word name over two lines. The press is 44 tall, the
+   tap floor (tests/design.js gate 8). */
+.cl-rch{border-top:1px solid var(--edge);padding-top:12px;margin-top:8px}
+.cl-rcl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.cl-rc{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--edge);border-radius:12px}
+.cl-rct{min-width:0;display:flex;flex-direction:column;gap:2px}
+.cl-rct b{font-size:13px;color:var(--ink);font-weight:600}
+.cl-rcm{font-size:11.5px;color:var(--mid)}
+.cl-rcs{font-size:12px;line-height:1.45;color:var(--mid)}
+.cl-rcb{flex:none;min-height:44px;white-space:nowrap}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
 /* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
    Insight rail on the right: the figure's second panel is not drawn on the
