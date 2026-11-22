@@ -274,7 +274,8 @@ function dlyRefWhy(type,id){
     October, and the grounding still hands it none, for the reason given
     there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
- if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
+ /* and the rungs above it, 21 November (TRACE_ABOVE), for the same reason */
+ if(TRACE_DERIVED.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
  return 'names no kind of evidence this build holds';}
 function dlyStValid(errs,path,x,names){

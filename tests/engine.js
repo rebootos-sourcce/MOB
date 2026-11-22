@@ -12936,6 +12936,42 @@ g('archetype to domain, ported from Reboot-OS canon_ARCHDOM (engine/archdom.js)'
  ok(resolved.length===12&&agree.arc===0&&agree.lobe===0,'the soul map\'s ring position agrees with ARCHDOM for none of the '+resolved.length+' resolved archetypes, as recorded: '+JSON.stringify(agree));
 }
 
+g('the birth chart suggests, the person confirms (birthSuggest, engine/birth.js, TASKS.md SM1)');
+{
+ /* THE KNOWN CASES FIRST, found by a sweep rather than typed: one birth where
+    the life path's archetype points at a domain under the root the birth
+    element reads, and one where the two disagree. */
+ const BS=E.birthSuggest, days=[];
+ for(let y=1970;y<2000;y++)for(const md of ['01-15','04-20','07-10','10-05'])days.push(y+'-'+md);
+ let agreeSp=null, differSp=null;
+ days.forEach(d=>{const sp=E.spiritualOf({d,t:'12:00',p:'London',z:'Europe/London'});
+  if(!sp||!sp.root)return; const r=BS(sp,{doms:[],arcs:[]});
+  if(r&&r.dom&&!agreeSp)agreeSp=sp; if(r&&r.arch&&!r.dom&&!differSp)differSp=sp;});
+ ok(!!agreeSp&&!!differSp,'the sweep finds a birth that suggests a domain and one that does not');
+ if(agreeSp&&differSp){
+  const a=BS(agreeSp,{doms:[],arcs:[]}), an=E.LP2ARCH[agreeSp.lp], d=E.archDomainOf(an);
+  ok(a.arch.nm===an&&E.ARCH[a.arch.i].nm===an,'the archetype is the life path\'s own, LP2ARCH, got '+a.arch.nm);
+  ok(a.dom.nm===d.nm&&E.DOMAINS[a.dom.i].nm===d.nm&&d.root===agreeSp.root,'the domain is the one that archetype points at, under the root the birth element reads');
+  const b=BS(differSp,{doms:[],arcs:[]});
+  ok(b.dom===null&&b.open.some(x=>/disagree/.test(x)),'where the two disagree nothing is suggested, and it says why');
+  const h=BS(agreeSp,{doms:[a.dom.i],arcs:[a.arch.i]});
+  ok(h.arch.held&&h.dom.held,'a suggestion already picked is marked as the person\'s own');
+  ok(!a.arch.held&&!a.dom.held,'and one not picked is not');}
+ /* it writes nothing: S is exactly as it was after a call */
+ const before=JSON.stringify([E.S.doms,E.S.arcs,E.S.dom,E.S.a1,E.S.a2]);
+ if(agreeSp)BS(agreeSp,{doms:E.S.doms,arcs:E.S.arcs});
+ ok(JSON.stringify([E.S.doms,E.S.arcs,E.S.dom,E.S.a1,E.S.a2])===before,'a suggestion writes nothing to the soul');
+ ok(BS(null,{})===null,'no birth is no suggestion');
+ /* the only writer is the person's press, on the rail, through the same steps
+    as the rail's own pickers */
+ const ui=require('fs').readFileSync(require('path').resolve(__dirname,'../atuned_src/ui/personas.js'),'utf8');
+ const wire=ui.slice(ui.indexOf('function bsWire'),ui.indexOf('function bsWire')+1400);
+ ok(/onclick/.test(wire)&&/notYours/.test(wire)&&/undoPush/.test(wire)&&/saveYou\(\)/.test(wire),
+  'the write happens only on a press, guarded for a worked example, undoable, and saved through saveYou');
+ ok(ui.indexOf('function bsHtml')>=0&&!/S\.(arcs|doms)\s*=/.test(ui.slice(ui.indexOf('function bsHtml'),ui.indexOf('function bsWire'))),
+  'drawing the suggestion writes nothing');
+}
+
 g('the Let Go list: its phrases found in a story (engine/letgo.js) and its packs (ui/letgopacks.js)');
 /* PORTED 21 November by tools/regen-letgo.cjs from Reboot-OS atuned/data/letgo.
    The cues are engine data and are held here against the sniffer's own

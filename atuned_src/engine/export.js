@@ -309,7 +309,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, birthSuggest:birthSuggest, LP2ARCH:LP2ARCH, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -351,7 +351,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the trace graph, engine/trace.js. The vocabularies and the rule table
      are exported so the gate asserts them against the document rather than
      against a copy typed into the test. */
-                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN,
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN, TRACE_ABOVE:TRACE_ABOVE, TRACE_DERIVED:TRACE_DERIVED, TRACE_SHADOW:TRACE_SHADOW,
                   TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,

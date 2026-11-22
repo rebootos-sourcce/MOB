@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v388 0bb60a7a 2026-11-21 22:30"><head><meta charset="utf-8">
+<html lang="en" data-build="v393 8613fdc4 2026-11-21 23:12"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -3208,6 +3208,17 @@ body.snow .rootb[aria-pressed=true],body.glasswhite .rootb[aria-pressed=true]{co
 #spirit .sp-sysrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:4px 0 10px}
 #spirit .sp-line{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--edge)}
 #spirit .sp-line[hidden]{display:none}
+/* WHAT THE BIRTH SUGGESTS, 21 November (bsHtml, ui/personas.js). One row per
+   suggestion, mark first, name second, the press at the end, with even
+   spacing between rows. */
+#spirit .sp-sugs{display:flex;flex-direction:column;gap:8px;padding:10px 0;border-top:1px solid var(--edge)}
+#spirit .sp-sug{display:flex;align-items:center;gap:10px;min-height:var(--tap)}
+#spirit .sp-sug .sp-gi{flex:0 0 20px;width:20px;height:20px;fill:none;stroke:var(--gold);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+#spirit .sp-sug-t{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+#spirit .sp-sug-t em{font-style:normal;color:var(--dim);font-size:12px}
+#spirit .sp-sug-b{flex:0 0 auto;min-height:var(--tap)}
+#spirit .sp-sug-h{flex:0 0 auto;color:var(--dim);font-size:12px}
 #spirit .sp-lm{flex:0 0 16px;width:16px;height:16px;margin-top:14px;fill:none;stroke:var(--dim);stroke-width:1.6;
  stroke-linecap:round;stroke-linejoin:round}
 #spirit .sp-tiles{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;flex:1 1 auto;min-width:0}
@@ -28192,7 +28203,11 @@ var TRACE_V=1;
    is a node (TRACE_NAMED, below), one more rung taken off the same reading
    under the same rules. Neither moves what a day is grounded on, and the
    number is stamped only on days (dlySeal, engine/daily.js), whose range check
-   would refuse a 5 in every build before this one. */
+   would refuse a 5 in every build before this one.
+   Still 4 after 21 November, for the same reason. The rungs above the chain
+   (TRACE_ABOVE) come off a reading handed in, and only the same way the chain
+   does. A day is grounded on a graph read with no reading, so no day holds
+   one. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
@@ -28218,11 +28233,29 @@ var TRACE_ALG=4;
    pattern (tracePatternWhy), and a type of their own would stop every
    stored pattern key resolving. */
 var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
+/* ABOVE THE CHAIN, 21 November, the rest of the owner's settled order (DECISIONS.md,
+   "The full stack, nerve to Character", 23 October): "After the super complex
+   are the masks... Then one up from that is the archetype to the spiritual. And
+   then at the very top is the character." TASKS.md SM5. None of these is a rung
+   compute() pairs, so the arithmetic stays as it is. Each one is read off the
+   same stamped reading as the chain, through a table this codebase already
+   holds: the mask a super complex is worn under by seat (MASKS[].b), the
+   archetype seated under that mask (ARCH[].b), the domain that archetype points
+   at (ARCHDOM, engine/archdom.js), and the character, the one node every climb
+   ends at, keyed by the record. Derived only and refused at every door, the
+   same as the chain (THE CHAIN, below). The comment above saying Character is
+   no type described the build before this change. Character is still the whole
+   person: it is a node because a climb needs a place to end, and nothing about
+   the person is counted on it. */
+var TRACE_ABOVE=['mask','archetype','domain','character'];
+/* every derived-only type, the chain and the rungs above it, for every door
+   that refuses one */
+var TRACE_DERIVED=TRACE_CHAIN.concat(TRACE_ABOVE);
 /* TDD section 16, exactly: its first block, the types that may be added,
    then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
  'ritual','practice_event','observation','evidence','outcome','context',
- 'somatic_state','reframe','release'].concat(TRACE_CHAIN);
+ 'somatic_state','reframe','release'].concat(TRACE_CHAIN).concat(TRACE_ABOVE);
 /* TDD section 17, exactly. There is no related_to. */
 var TRACE_EDGE_TYPES=['causes','associated_with','supports','contradicts','obstructs',
  'reinforces','targets','addresses','requires','implements','executes','produces',
@@ -28311,6 +28344,11 @@ var TRACE_RULES=[
  ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
  ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
  ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
+ /* above the chain, 21 November (TRACE_ABOVE) */
+ ['super_complex','supports','mask','16, above the chain: the mask worn over the seats the super complex sits at'],
+ ['mask','supports','archetype','16, above the chain: the archetype seated under that mask'],
+ ['archetype','supports','domain','16, above the chain: the domain the archetype points at, ARCHDOM'],
+ ['domain','supports','character','16, above the chain: at the very top, the character'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -28428,7 +28466,15 @@ var TRACE_NEEDS={
  hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
   why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
  super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
-  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}],
+ mask:[{dir:'in',edges:['supports'],types:['super_complex'],
+  why:'a mask sits above a super complex, and no super complex sits under this one'}],
+ archetype:[{dir:'in',edges:['supports'],types:['mask'],
+  why:'an archetype sits above a mask, and no mask is worn over this one\'s seat'}],
+ domain:[{dir:'in',edges:['supports'],types:['archetype'],
+  why:'a domain is the one an archetype points at, and no archetype points at this one'}],
+ character:[{dir:'in',edges:['supports'],types:['domain'],
+  why:'the character is the top of the climb, and no domain reaches this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -28501,7 +28547,7 @@ function traceNodeWhy(type,id,src){
  var w=traceIdWhy(type,id); if(w)return w;
  if(TRACE_TABLE.indexOf(type)>=0&&src!=='known')
   return traceKey(type,id)+' is a row of the address table, so it is known, not '+src;
- if(TRACE_CHAIN.indexOf(type)>=0&&src!=='inferred')
+ if(TRACE_DERIVED.indexOf(type)>=0&&src!=='inferred')
   return traceKey(type,id)+' is a rung read off the reading, so it is inferred, not '+src;
  return null;}
 
@@ -28518,7 +28564,9 @@ function traceNodeWhy(type,id,src){
    from an address to a super-complex is a path tracePath can find. Above
    the chain the owner's stack goes on, masks, then archetype through
    domain, then Character, the whole of it (DECISIONS.md, 23 October).
-   None of those is a rung compute() pairs, so none is a type here.
+   None of those is a rung compute() pairs, so none is in this list. Since 21
+   November they are types of their own, TRACE_ABOVE, read through the tables
+   that hold them (traceAboveRead), under every rule this block sets.
 
    DERIVED ONLY. A rung exists because a reading of a field says so, on
    that read, and for no other reason. So nothing but the derivation may
@@ -28563,7 +28611,7 @@ var TRACE_NAMED={type:'super_complex', list:'psychopathy', part:'hyper_complex',
  why:'the reading found this hyper-complex and the one it is named with, which together are the one named super-complex, asked for by name and not paired by rank. A registration, not a cause'};
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
- return TRACE_CHAIN.indexOf(type)>=0
+ return TRACE_DERIVED.indexOf(type)>=0
   ?'a '+type+' is read off the reading on every read, so it is never stored, applied or added by hand':null;}
 function traceChainKeyWhy(key){
  return typeof key==='string'?traceChainWhy(traceSplit(key).type):null;}
@@ -28649,7 +28697,7 @@ function traceEdgeAdd(g,ix,from,edge,to,src,o){
    +', never as '+src+': registration is not causation'};
  /* THE CHAIN, never confirmed (THE CHAIN, above). Checked here, past the
     rule table, so the derivation itself cannot get it wrong. */
- if((TRACE_CHAIN.indexOf(ft)>=0||TRACE_CHAIN.indexOf(tt)>=0)&&src!=='inferred')
+ if((TRACE_DERIVED.indexOf(ft)>=0||TRACE_DERIVED.indexOf(tt)>=0)&&src!=='inferred')
   return {ok:false, why:from+' '+edge+' '+to+' is the reading counting a part toward a rung, so it is inferred, not '+src};
  var e={from:from, to:to, edge:edge, src:src};
  if(o.at!==undefined){
@@ -29110,7 +29158,7 @@ function traceReadingWhy(p,r){
     else if(typeof q.nm!=='string'||!below[q.nm])
      return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
   below=here; of[row.list]=here;}
- return traceNamedWhy(r,of);}
+ return traceNamedWhy(r,of)||traceAboveWhy(r);}
 /* THE NAMED ONE, under the same all or nothing as every rung. Absent is a
    reading from before 26 October, and null is a field that does not hold it or
    a plan that may not see it (sightR, ui/lock.js), and both are no named node.
@@ -29130,13 +29178,151 @@ function traceNamedWhy(r,of){
   if(typeof q.nm!=='string'||!of[TRACE_NAMED.from][q.nm])return at+' '+nm+' counts '+String(q.nm)+', which is not a '+TRACE_NAMED.part+' of this reading';}
  if(x.parts[0].nm===x.parts[1].nm)return at+' '+nm+' counts '+x.parts[0].nm+' twice';
  return null;}
+/* ABOVE THE CHAIN, under the same all or nothing. A reading with no maskRing
+   comes from before 21 November, or was made by hand, and the graph holds no
+   rung above the super complex for it. A reading that has one has every field
+   the climb reads, and they are checked: a mask the table does not name, a
+   seat that is not a seat, or a first or second archetype that is not one of
+   the twelve refuses the whole reading by name. Nothing is left out quietly. */
+function traceAboveWhy(r){
+ var mr=r.maskRing;
+ if(mr===undefined||mr===null)return null;
+ if(!Array.isArray(mr))return 'maskRing is not a list';
+ var names=MASKS.map(function(m){return m.nm;}), here={};
+ for(var i=0;i<mr.length;i++){
+  var m=mr[i], at='maskRing['+i+']';
+  if(!m||typeof m!=='object'||Array.isArray(m))return at+' is not an object';
+  if(typeof m.nm!=='string'||names.indexOf(m.nm)<0)return at+' names '+String(m.nm)+', which is not one of the masks';
+  if(here[m.nm])return at+' names '+m.nm+' a second time';
+  here[m.nm]=1;
+  if(!Array.isArray(m.bands)||!m.bands.length||!m.bands.every(function(b){return BANDS.indexOf(b)>=0;}))
+   return at+' '+m.nm+' is worn over a seat that is not one of the seven';
+  if(typeof m.w!=='number'||!isFinite(m.w))return at+' '+m.nm+' carries no weight';}
+ var arch=function(k){var v=r[k];
+  return (typeof v==='number'&&v%1===0&&v>=0&&ARCH[v])?null:k+' is '+String(v)+', which is not one of the '+ARCH.length+' archetypes';};
+ return arch('pi')||arch('si');}
+/* THE CLIMB ABOVE THE CHAIN, read once the chain is in the graph (TRACE_ABOVE).
+   Each step goes through a table this codebase already holds, so it adds no
+   reading of its own:
+     super complex to mask    the masks compute() reads (r.maskRing) that are
+                              worn over a seat holding one of the super
+                              complex's own addresses. The edge carries the
+                              share of those addresses under the mask
+     mask to archetype        the reading's first and second archetype (r.pi,
+                              r.si), where the mask is worn over the
+                              archetype's seat (ARCH[].b). The archetype also
+                              carries its primary saboteur from ARCH18 and
+                              whether that saboteur is running, as data and
+                              not as an edge. This is the substance of PR #131,
+                              its source-table bridges, ported into this rule
+                              table instead of becoming a second graph. No
+                              rule links a saboteur to an archetype, because
+                              that edge would skip the mask
+     archetype to domain      ARCHDOM, archDomainOf (engine/archdom.js). A table,
+                              the same for everybody, so the domain carries no
+                              weight
+     domain to character      the top, one node keyed by the record
+   Where a step cannot be taken, the climb stops there and g.stops says where
+   and why. That is its own list and not g.gaps: a gap is something on the
+   record the derivation could not place, and loopRead counts those for the
+   person. An archetype seated where no mask is worn is the tables not meeting,
+   which says nothing is missing from the record. */
+function traceAboveRead(p,r,g,ix,node,edge){
+ if(!Array.isArray(r.maskRing))return;
+ var sups=g.nodes.filter(function(n){return n.type==='super_complex';})
+  .map(function(n){return traceKey(n.type,n.id);}).sort();
+ if(!sups.length)return;
+ var worn={};
+ sups.forEach(function(sk){
+  var addrs=traceDescendants(g,sk).filter(function(k){return /^pattern:[0-9]+$/.test(k);})
+   .map(function(k){return BY[+k.slice(8)];}).filter(Boolean);
+  if(!addrs.length)return;
+  r.maskRing.forEach(function(m){
+   var n=addrs.filter(function(a){return m.bands.indexOf(a.b)>=0;}).length;
+   if(!n)return;
+   var mk=node('mask',m.nm,'inferred',{w:Math.round(m.w*10)/10, bands:m.bands.slice()});
+   if(!mk)return;
+   worn[m.nm]=m;
+   edge(sk,'supports',mk,'inferred',{derived:true, w:Math.round(n/addrs.length*100)/100,
+    why:n+' of this super complex\'s '+addrs.length+' addresses sit at a seat the '+m.nm+' mask is worn over. A registration, not a cause'});});});
+ var masks=Object.keys(worn).sort();
+ if(!masks.length)return;
+ var seen={}, tops=[];
+ [[r.pi,'primary'],[r.si,'secondary']].forEach(function(x){
+  var a=ARCH[x[0]]; if(!a||seen[a.nm])return; seen[a.nm]=1;
+  var over=masks.filter(function(nm){return worn[nm].bands.indexOf(a.b)>=0;});
+  if(!over.length){g.stops.push({kind:'unseated', archetype:a.nm,
+   why:'the '+x[1]+' archetype, '+a.nm+', is seated at the '+a.b+' point, and no mask this reading reached is worn there, so the climb stops at the mask'}); return;}
+  /* ARCH18 names Rebel as Outlaw, so the row is found under the name ARCHDOM's
+     own alias reads it as (archDomainOf's upstream) and never under a guess */
+  var d=typeof archDomainOf==='function'?archDomainOf(a.nm):null, up=(d&&d.upstream)||a.nm;
+  var row=(typeof ARCH18!=='undefined'?ARCH18:[]).filter(function(y){return y[0]===up;})[0]||null, sab=row?row[1]:null;
+  var ak=node('archetype',a.nm,'inferred',{rank:x[1], seat:a.b, primarySab:sab,
+   primarySabRunning:!!(sab&&ix.node[traceKey('saboteur',sab)])});
+  if(!ak)return;
+  over.forEach(function(nm){
+   edge(traceKey('mask',nm),'supports',ak,'inferred',{derived:true,
+    why:'the '+a.nm+' archetype is seated at the '+a.b+' point, which the '+nm+' mask is worn over. A registration, not a cause'});});
+  if(!d||!d.nm){g.stops.push({kind:'no_domain', archetype:a.nm,
+   why:'the archetype to domain table does not resolve '+a.nm+(d&&d.open?', which is still open':'')+', so the climb stops at the archetype'}); return;}
+  var dk=node('domain',d.nm,'inferred',{root:d.root||null, how:d.how, word:d.word});
+  if(!dk)return;
+  edge(ak,'supports',dk,'inferred',{derived:true,
+   why:'the archetype to domain table, ARCHDOM, says '+a.nm+' points at '+d.nm+'. The table is the same for everybody, so nothing about this person is carried up it. A registration, not a cause'});
+  if(tops.indexOf(dk)<0)tops.push(dk);});
+ if(!tops.length)return;
+ var ck=node('character',p.id,'inferred',{});
+ if(ck)tops.forEach(function(dk){
+  edge(dk,'supports',ck,'inferred',{derived:true,
+   why:'at the very top is the character, the whole of what sits below it. A registration, not a cause'});});}
 /* what a rung carries beside its key: its weight as compute() wrote it,
    its family, and whether it is the overshoot. Never d, the line a person
    is shown, and never sub, the clinical correspondence compute() calls
    internal: a graph that carried them would be one more place to print
    them from. */
+/* THE DESCENT IS ONE LADDER, AND LUCIFER IS ITS NAME. 21 November, TASKS.md SM16,
+   on the reading the board records as the plan unless the owner corrects it:
+   his "Inferno itself, the nine layers is the descent of no empathy" means
+   Lucifer is not a third two-piece super complex competing for Psychopathy's
+   pair. He names the whole ladder, the DESCENT table (engine/data/compass.js).
+   So a rung the descent ties to compute()'s own chain carries the step it is
+   (descent) and the ladder that step belongs to (ladder), as data. The ties
+   are the ones the descent already holds, read the way descentHeld does: a
+   hyper complex by its family (fam, Sociopathy's Predatory) and the named
+   super complex by its name (Psychopathy, the pair). Nothing is lit by depth,
+   and nothing new is paired. Lucifer is a key here and is never printed: the
+   word a person reads for him is the behaviour word compass.js carries.
+
+   GERYON AND ASMODEUS ARE CHECKED AGAINST THE TWO-PIECE RULE AND NOT WIRED.
+   That rule (SM9, ruled 30 October) is two hyper complexes paired, the one
+   Psychopathy runs on (compute.js, SUP_W). Their nearest pairs are from
+   reviews/shadow-figure-research-2026-10-30.md, section 3.3:
+     Geryon    Grandiosity + Predatory, the same pair Psychopathy owns. The
+               codex's way to tell the two apart (coherence that reads high on
+               a heavily loaded field) is a measure the engine does not have,
+               and a false Geryon on a coherent person costs more than a missed
+               one. No home until that measure exists and is checked.
+     Asmodeus  Dysregulation + Collapse, read off the seat and the line, and
+               rated inferred, low, by the same research. A second reading of
+               the figure would move it toward Predatory.
+   Kept here as data so the next pass reads the result and does not redo the
+   check. None of them is a node, an edge or a rule. */
+var TRACE_SHADOW={
+ Lucifer:{home:'ladder', of:'DESCENT', wired:true},
+ Geryon:{home:'pair', pair:['Grandiosity','Predatory'], wired:false,
+  why:'the same pair Psychopathy already owns, and the engine has no measure to tell the two apart'},
+ Asmodeus:{home:'pair', pair:['Dysregulation','Collapse'], wired:false,
+  why:'the nearest pair is an inference rated low, and a second reading of the figure moves it'}};
+function traceDescentOf(type,x){
+ var D=typeof DESCENT!=='undefined'?DESCENT:[], hit=null;
+ D.forEach(function(d){
+  if(hit)return;
+  if(type==='hyper_complex'&&d.fam&&!x.over&&d.fam===x.nm)hit=d;
+  if(type==='super_complex'&&d.pair&&x.named===d.nm)hit=d;});
+ return hit?{descent:hit.nm, ladder:'Lucifer'}:null;}
 function traceChainAttrs(type,x){
  var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
+ var ds=traceDescentOf(type,x); if(ds){a.descent=ds.descent; a.ladder=ds.ladder;}
  if(type==='super_complex')return a;
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
@@ -29177,7 +29363,7 @@ function traceNamedAttrs(x){
    ============================================================ */
 function traceFromRecord(p,intents,reading){
  var g=traceNew(); g.alg=TRACE_ALG; g.lex=LEX_VERSION;
- g.gaps=[]; g.refused=[]; g.restated=[]; g.unchecked={};
+ g.gaps=[]; g.stops=[]; g.refused=[]; g.restated=[]; g.unchecked={};
  var ix=traceIx(g);
  if(!p||typeof p!=='object'){g.gaps.push({kind:'no_record', why:'there is no record to read'}); return g;}
  var node=function(type,id,src,attrs){
@@ -29360,7 +29546,9 @@ function traceFromRecord(p,intents,reading){
    if(nx){
     var nk=node(TRACE_NAMED.type,nx.named,'inferred',traceNamedAttrs(nx));
     if(nk)nx.parts.forEach(function(q){
-     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}}}
+     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}
+   /* and the rungs above it, once every super complex is a node */
+   traceAboveRead(p,reading,g,ix,node,edge);}}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 
@@ -29575,6 +29763,25 @@ function traceSummaryCard(type,id,attrs){
  if(type==='super_complex')
   return {found:false, label:String(id),
    why:'a super complex has no card of its own; by THE CHAIN it is its own two hyper complexes paired, so its content is exactly its real children\'s, below'};
+ /* ABOVE THE CHAIN, 21 November (TRACE_ABOVE, trace.js). Each one reads the
+    table its node was made from, and the character, which is the whole
+    reading, has no card and says so */
+ if(type==='mask'){
+  var m=MASKS.filter(function(x){return x.nm===id;})[0];
+  if(!m)return {found:false, label:String(id), why:'no mask named '+id+' is on file'};
+  return {found:true, label:m.nm, fields:{does:m.v, worn:m.b.slice()}, source:'MASKS.v and .b for '+m.nm};}
+ if(type==='archetype'){
+  var a=ARCH.filter(function(x){return x.nm===id;})[0];
+  if(!a)return {found:false, label:String(id), why:'no archetype named '+id+' is on file'};
+  return {found:true, label:a.nm, fields:{does:a.v, runs:a.d||null, seat:a.b, primarySab:attrs.primarySab||null},
+   source:'ARCH.v, .d and .b for '+a.nm+(attrs.primarySab?', and ARCH18 for its primary saboteur':'')};}
+ if(type==='domain'){
+  var d=DOMAINS.filter(function(x){return x.nm===id;})[0];
+  if(!d)return {found:false, label:String(id), why:'no domain named '+id+' is on file'};
+  return {found:true, label:d.nm, fields:{means:d.d, root:d.r}, source:'DOMAINS.d and .r for '+d.nm};}
+ if(type==='character')
+  return {found:false, label:'Character',
+   why:'the character is the whole person, everything below it taken together, so it has no card of its own'};
  return {found:false, label:String(id), why:'no content source is wired for node type '+type};}
 
 /* THE CHAIN'S OWN DIRECTION, read off traceNeighbors and nothing else:
@@ -29593,7 +29800,8 @@ function traceSummaryParts(g,key){
 
 /* a type name as a person reads it, never the identifier. */
 var TRACE_SUMMARY_WORD={pattern:'address', saboteur:'saboteur', complex:'complex',
- hyper_complex:'hyper complex', super_complex:'super complex'};
+ hyper_complex:'hyper complex', super_complex:'super complex', mask:'mask',
+ archetype:'archetype', domain:'domain', character:'character'};
 function traceSummaryWord(type,id){
  if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
  return TRACE_SUMMARY_WORD[type]||type;}
@@ -29624,6 +29832,10 @@ function traceSummaryOwnLine(fields){
    lived=fields.livedBehavior!=null?'lived out as "'+fields.livedBehavior+'"':null;
   return [line,lived].filter(function(x){return !!x;}).join('; ');}
  if(fields.familyLine!=null)return 'its family line is "'+fields.familyLine+'"';
+ /* the rungs above the chain, 21 November: a mask and an archetype say what
+    they do, and a domain what it means, each in its own table's words */
+ if(fields.does!=null)return 'it '+fields.does;
+ if(fields.means!=null)return 'it means "'+fields.means+'"';
  return null;}
 
 /* ONE SIDE'S CLAUSE, hedged. Quotes a real field when one side has
@@ -42097,6 +42309,45 @@ function spiritualOf(bt){
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
+/* THE BIRTH CHART SUGGESTS, AND THE PERSON CONFIRMS. TASKS.md SM1, picked 21
+   November from the three options the audit named: the middle one. A mirror
+   that moves nothing was what was built, and feeding the chart straight into
+   the numbers would mean unlocking a table that already failed its own check.
+   So this suggests a first archetype and a domain, and writes nothing. Only the
+   person's own press writes one, through the same path as pressing that
+   archetype or domain in the rail (ui/personas.js, bsWire).
+
+   Each suggestion reads a table this file already compares against:
+     archetype  LP2ARCH, the life path's archetype, the same row converge()
+                checks against the first archetype
+     domain     the domain that archetype points at (ARCHDOM, archDomainOf,
+                engine/archdom.js), and only when that domain sits under the
+                root the birth element reads (ELEM2ROOT). When the two
+                disagree, nothing is suggested and the reason says so, which
+                is converge()'s own rule: where the systems disagree the
+                instrument says so and does not pick a winner.
+   held says the suggestion is already the person's own pick, so a surface
+   shows it as theirs and offers nothing. sp is spiritualOf's reading, soul
+   is {doms, arcs}. Pure: nothing here reads or writes S. */
+function birthSuggest(sp,soul){
+ if(!sp||!sp.lp)return null;
+ var doms=(soul&&Array.isArray(soul.doms))?soul.doms:[], arcs=(soul&&Array.isArray(soul.arcs))?soul.arcs:[];
+ var out={arch:null, dom:null, open:[]};
+ var an=LP2ARCH[sp.lp]||null, ai=-1;
+ ARCH.forEach(function(a,i){if(a.nm===an)ai=i;});
+ if(ai<0){out.open.push('life path '+sp.lp+' has no archetype on the table'); return out;}
+ out.arch={i:ai, nm:an, from:'life path '+sp.lp+' reads '+an, held:arcs[0]===ai};
+ if(!sp.root){out.open.push('the domain, which needs the birth element, and that needs '
+  +(sp.needsTime?'a birth time':sp.needsZone?'a birth time zone':'a time the clocks did not change at')); return out;}
+ var d=typeof archDomainOf==='function'?archDomainOf(an):null;
+ if(!d||!d.nm){out.open.push('the domain, because the archetype to domain table does not resolve '+an); return out;}
+ if(d.root!==sp.root){
+  out.open.push('the domain: '+an+' points at '+d.nm+', under '+d.root+', and the birth element '+sp.sunEl+' reads '+sp.root+', so the two disagree and neither is picked');
+  return out;}
+ var di=-1; DOMAINS.forEach(function(x,i){if(x.nm===d.nm)di=i;});
+ if(di<0){out.open.push('the domain '+d.nm+' is not one of the '+DOMAINS.length); return out;}
+ out.dom={i:di, nm:d.nm, root:d.root, from:'the birth element '+sp.sunEl+' reads '+sp.root+', and '+an+' points at '+d.nm+', which sits under it', held:doms[0]===di};
+ return out;}
 /* CONVERGENCE. where independent systems agree, that is the signal.
    where they disagree the instrument says so rather than picking a winner.
    sp is a reading the caller already holds. Every Summary caller held the
@@ -43693,7 +43944,8 @@ function dlyRefWhy(type,id){
     October, and the grounding still hands it none, for the reason given
     there). Refused by name, so a day citing a rung
     is somebody's decision and not a side effect of a vocabulary growing. */
- if(TRACE_CHAIN.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
+ /* and the rungs above it, 21 November (TRACE_ABOVE), for the same reason */
+ if(TRACE_DERIVED.indexOf(type)>=0)return 'names a rung of the chain, which a day does not cite: '+type;
  if(TRACE_NODE_TYPES.indexOf(type)>=0)return null;
  return 'names no kind of evidence this build holds';}
 function dlyStValid(errs,path,x,names){
@@ -46026,7 +46278,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, birthSuggest:birthSuggest, LP2ARCH:LP2ARCH, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -46068,7 +46320,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the trace graph, engine/trace.js. The vocabularies and the rule table
      are exported so the gate asserts them against the document rather than
      against a copy typed into the test. */
-                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN,
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN, TRACE_ABOVE:TRACE_ABOVE, TRACE_DERIVED:TRACE_DERIVED, TRACE_SHADOW:TRACE_SHADOW,
                   TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
@@ -56826,7 +57078,10 @@ function readSeenSig(r){
  var one=function(x){return x?x.nm+'~'+Math.round((+x.w||0)*10)+'('+(Array.isArray(x.parts)?x.parts:[]).map(function(q){
   return q?(q.i!=null?q.i:q.nm):'';}).join(' ')+')':'';};
  var all=function(l){return (Array.isArray(l)?l:[]).map(one).join(',');};
- return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):''].join('|');}
+ /* and what the climb above the chain reads (engine/trace.js, traceAboveRead):
+    the masks' weights and the first and second archetype */
+ var ring=(Array.isArray(r.maskRing)?r.maskRing:[]).map(function(m){return m?m.nm+'~'+Math.round((+m.w||0)*10):'';}).join(',');
+ return [all(r.sabs),all(r.cxs),all(r.hys),all(r.sups),r.psychopathy?r.psychopathy.named+one(r.psychopathy):'',ring,r.pi+'/'+r.si].join('|');}
 
 /* THE DOORS. A page that is locked has its button in the bar greyed too, so the
    lock is on the way in as well as on the page. Painted on every render and in
@@ -94407,7 +94662,8 @@ function tsWord(type,id){
  if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
  if(type==='pattern')return 'address';
  return {saboteur:'saboteur', complex:'complex', hyper_complex:'hyper-complex',
-  super_complex:'super-complex'}[type]||type;}
+  super_complex:'super-complex', mask:'mask', archetype:'archetype', domain:'domain',
+  character:'character'}[type]||type;}
 
 /* one resolved parent or child, as a row: its name, its kind, and its own
    real content quoted exactly as traceSummaryCard reads it (coherent and
@@ -105970,11 +106226,49 @@ function renderSpirit(){
     say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line')),gnum(sp.hd.design)):unres('Design',noZone))
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?nrow('Gene key',DESIGNFIELD_IC.genekey,gnum(sp.gk),'the gate the sun occupied','gk',
-    gnum(sp.gk),say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone)));
+    gnum(sp.gk),say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone)))
+  +bsHtml(sp);
+ bsWire(el);
  el.querySelectorAll('[data-sp]').forEach(function(btn){
   btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});
  reSelWire(el);
  spNumWire(el);}
+/* WHAT THE BIRTH SUGGESTS, AND THE PRESS THAT TAKES IT. TASKS.md SM1, picked
+   21 November: the chart suggests a first archetype and a domain
+   (birthSuggest, engine/birth.js), and nothing is written until the person
+   presses Use. The press goes through the same steps as pressing that
+   archetype or domain in the rail's own grids (panels.js): the worked example
+   guard, an undo step, buildSoul, syncSoul and saveYou, whose save reports
+   through status(). A suggestion that is already the person's own pick shows
+   as theirs and offers nothing to press. Mark first, name second, and the
+   reason in the tooltip. */
+function bsHtml(sp){
+ var B=birthSuggest(sp,{doms:S.doms,arcs:S.arcs});
+ if(!B||(!B.arch&&!B.dom))return '';
+ function one(k,nm,ic,from,held,i,what){
+  var tip=from+'. '+(held?'This is already your '+what+'.':'Press Use to make it your '+what+'. Nothing changes until you do.');
+  return '<div class="sp-sug" data-tip-t="'+esc(nm)+'" data-tip="'+esc(tip)+'" tabindex="0" aria-label="'+esc('Suggested '+what+', '+nm+'. '+tip)+'">'
+   +'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true"><path d="'+ic+'"/></svg>'
+   +'<span class="sp-sug-t"><b>'+esc(nm)+'</b><em>'+esc(what)+'</em></span>'
+   +(held?'<span class="sp-sug-h">Yours</span>'
+    :'<button type="button" class="btn sp-sug-b" data-bsug="'+k+'" data-bsi="'+i+'">Use</button>')+'</div>';}
+ return '<div class="sp-sugs" data-grp="suggest"><div class="pm-eye plain">Suggested by your birth</div>'
+  +(B.arch?one('arch',B.arch.nm,ARCH[B.arch.i].ic,B.arch.from,B.arch.held,B.arch.i,'first archetype'):'')
+  +(B.dom?one('dom',B.dom.nm,DOMAINS[B.dom.i].ic,B.dom.from,B.dom.held,B.dom.i,'domain'):'')+'</div>';}
+function bsWire(el){
+ el.querySelectorAll('[data-bsug]').forEach(function(btn){
+  btn.onclick=function(){
+   var k=btn.getAttribute('data-bsug'), i=+btn.getAttribute('data-bsi');
+   if(k==='arch'&&ARCH[i]){
+    if(notYours('change the archetype'))return;
+    undoPush('taking the archetype your birth suggests');
+    S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}
+   else if(k==='dom'&&DOMAINS[i]){
+    if(notYours('change the blueprint domain'))return;
+    undoPush('taking the domain your birth suggests');
+    S.doms=[i];}
+   else return;
+   buildSoul();S.pin=null;syncSoul();saveYou();render();};});}
 /* WHICH OF THE FOUR SYSTEMS ARE CHOSEN. Western on arrival, because it is
    the one he named first and a section that opens on nothing chosen is a row
    of four circles and an empty space. Kept in the browser store as a
@@ -113596,5 +113890,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008304101"></div>
+<div id="eof" hidden data-len="008324335"></div>
 </body></html>

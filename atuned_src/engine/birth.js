@@ -282,6 +282,45 @@ function spiritualOf(bt){
   lp:lifePath(bt.d), master:masterNumber(bt), hd:hdOf(bt), gk:geneKey(bt), birth:bt,
   root:sun.el?ELEM2ROOT[sun.el]:null, mode:sun.mode?MODE2NOTE[sun.mode]:null,
   lpMean:LPMEAN[lifePath(bt.d)]||''};}
+/* THE BIRTH CHART SUGGESTS, AND THE PERSON CONFIRMS. TASKS.md SM1, picked 21
+   November from the three options the audit named: the middle one. A mirror
+   that moves nothing was what was built, and feeding the chart straight into
+   the numbers would mean unlocking a table that already failed its own check.
+   So this suggests a first archetype and a domain, and writes nothing. Only the
+   person's own press writes one, through the same path as pressing that
+   archetype or domain in the rail (ui/personas.js, bsWire).
+
+   Each suggestion reads a table this file already compares against:
+     archetype  LP2ARCH, the life path's archetype, the same row converge()
+                checks against the first archetype
+     domain     the domain that archetype points at (ARCHDOM, archDomainOf,
+                engine/archdom.js), and only when that domain sits under the
+                root the birth element reads (ELEM2ROOT). When the two
+                disagree, nothing is suggested and the reason says so, which
+                is converge()'s own rule: where the systems disagree the
+                instrument says so and does not pick a winner.
+   held says the suggestion is already the person's own pick, so a surface
+   shows it as theirs and offers nothing. sp is spiritualOf's reading, soul
+   is {doms, arcs}. Pure: nothing here reads or writes S. */
+function birthSuggest(sp,soul){
+ if(!sp||!sp.lp)return null;
+ var doms=(soul&&Array.isArray(soul.doms))?soul.doms:[], arcs=(soul&&Array.isArray(soul.arcs))?soul.arcs:[];
+ var out={arch:null, dom:null, open:[]};
+ var an=LP2ARCH[sp.lp]||null, ai=-1;
+ ARCH.forEach(function(a,i){if(a.nm===an)ai=i;});
+ if(ai<0){out.open.push('life path '+sp.lp+' has no archetype on the table'); return out;}
+ out.arch={i:ai, nm:an, from:'life path '+sp.lp+' reads '+an, held:arcs[0]===ai};
+ if(!sp.root){out.open.push('the domain, which needs the birth element, and that needs '
+  +(sp.needsTime?'a birth time':sp.needsZone?'a birth time zone':'a time the clocks did not change at')); return out;}
+ var d=typeof archDomainOf==='function'?archDomainOf(an):null;
+ if(!d||!d.nm){out.open.push('the domain, because the archetype to domain table does not resolve '+an); return out;}
+ if(d.root!==sp.root){
+  out.open.push('the domain: '+an+' points at '+d.nm+', under '+d.root+', and the birth element '+sp.sunEl+' reads '+sp.root+', so the two disagree and neither is picked');
+  return out;}
+ var di=-1; DOMAINS.forEach(function(x,i){if(x.nm===d.nm)di=i;});
+ if(di<0){out.open.push('the domain '+d.nm+' is not one of the '+DOMAINS.length); return out;}
+ out.dom={i:di, nm:d.nm, root:d.root, from:'the birth element '+sp.sunEl+' reads '+sp.root+', and '+an+' points at '+d.nm+', which sits under it', held:doms[0]===di};
+ return out;}
 /* CONVERGENCE. where independent systems agree, that is the signal.
    where they disagree the instrument says so rather than picking a winner.
    sp is a reading the caller already holds. Every Summary caller held the
