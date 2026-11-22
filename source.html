@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v36 92440562 2026-11-22 00:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v66 3f3f4f12 2026-11-22 00:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5117,37 +5117,41 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
-/* PILLOW EMBOSS, 21 November, his words on the Dashboard's Source AI
-   circle: "I want it to feel like there's a subtle, like it's a pillow emboss
-   with a subtle bevel, making it feel like it's a ring inside of a raised
-   surface with this kind of cloudy pattern around it."
+/* SET INTO A DISH, 21 November. First his words on the Dashboard's Source AI
+   circle: "a pillow emboss with a subtle bevel, making it feel like it's a
+   ring inside of a raised surface with this kind of cloudy pattern around
+   it." Built as a raised pillow, then turned over the same night on seeing
+   it: "the bevel. I want it concave. So I don't want to see an edge at the
+   bottom of the rim. It should be a smooth transition to the top with a
+   little bevel at the edge."
 
-   Three layers, one light, from the upper left, the way every highlight in
-   this product already falls:
-    1. THE RAISED SURFACE, ::before under the face. A disc a band wider than
-       the face (--sf-band), lit on its upper left crown and rolling into
-       shadow on its lower right flank (the two inset shadows), lifted off
-       the well by a cast shadow down and right with a faint lit edge up and
-       left (the two outer shadows). Its fill is nearly clear, so the cloud
-       under it (ui/unicloud.js, mounted in #stjr on the Dashboard) still
-       reads through the band.
-    2. THE FACE, srcface.js's own canvas, untouched except that the box it
-       sits in is held in by --sf-pil, so the raised band fits inside her
-       panel instead of being cut by it. Her circle is sized off that box
-       every frame, so nothing in the drawing moves.
-    3. THE INSET RIM, ::after over the face, exactly its size (--sf-d,
-       written by srcface.js, the only code that knows the circle). The
-       upper left wall of the groove shades the face (inset, offset down
-       right), the lower right lip catches light (inset, offset up left),
-       and outside the groove the pillow's own lip is lit lower right and
-       shaded upper left, which is what makes the face read as pressed into
-       the surface rather than laid on it.
+   One light, from the upper left, the way every highlight here falls. In a
+   dish that light lands the other way round from a bump: the upper wall
+   faces away from it and sits in its own shade, the lower right wall faces
+   it and catches a little. Softer than a bump in every direction, and the
+   lip, where the dish meets the flat, is flat, so the shading reaches zero
+   there and there is no line anywhere round the bottom.
+    1. THE DISH FLOOR AND LOWER WALL, ::before under the face. A disc a band
+       (--sf-band) wider than the face: a faint shade over the whole floor
+       and a faint catch light low and right. Its mask runs from full at the
+       face's edge to nothing at the lip on an eased curve, so the band
+       dissolves into the surface around it. No box shadow, no cast shadow:
+       the cast shadow was the edge he saw at the bottom.
+    2. THE FACE, srcface.js's own canvas, untouched except that its box is
+       held in by --sf-pil so the band fits inside her panel.
+    3. THE UPPER WALL AND THE BEVEL, ::after over the face, the dish's size.
+       An inset shadow pushed down from the top edge, so it is darkest at the
+       top lip, fades through the band and lays a little shade on the top of
+       the face, and is nothing at all at the bottom because it is pushed
+       down. Outside it, one pixel of light offset upward: the crest of the
+       lip catching the light, a crescent across the top that thins to
+       nothing at the sides. Light crest, dark wall just under it: the small
+       bevel. That is the only line in the whole thing.
    Static, so reduced motion has nothing to stop: the end state is the only
-   state. Compositor cost is paint once per resize; box-shadow on a fixed
-   element does not repaint per frame. Pointer events pass through both
-   layers to the canvas, whose click impulse is kept. #stuni's clip is
-   lifted here only so the cast shadow is not cut square at its box, the
-   one thing his 8 November ruling says never to show. */
+   state. Paint once per resize, no per frame cost. Pointer events pass
+   through both layers to the canvas, whose click impulse is kept. #stuni's
+   clip stays lifted so the cloud behind is never cut square at its box,
+   the one thing his 8 November ruling says never to show. */
 body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
 body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
 body.tab-story.st-full #stuni .canvas-wrap #srcface{
@@ -5155,28 +5159,29 @@ body.tab-story.st-full #stuni .canvas-wrap #srcface{
 body.tab-story.st-full #stuni .canvas-wrap::before,
 body.tab-story.st-full #stuni .canvas-wrap::after{
  content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
- transform:translate(-50%,-50%);pointer-events:none}
+ transform:translate(-50%,-50%);pointer-events:none;
+ width:calc(var(--sf-d,0px) + 2*var(--sf-band))}
 body.tab-story.st-full #stuni .canvas-wrap::before{
- z-index:-1;width:calc(var(--sf-d,0px) + 2*var(--sf-band));
- background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.055),rgba(255,255,255,.016) 48%,rgba(0,0,0,.12) 100%);
- box-shadow:
-  inset 2px 3px 3px -1px rgba(255,255,255,.10),
-  inset -3px -5px 9px rgba(0,0,0,.45),
-  -6px -8px 18px -4px rgba(255,255,255,.035),
-  8px 12px 26px -2px rgba(0,0,0,.6)}
+ z-index:-1;
+ background:
+  radial-gradient(circle at 64% 70%,rgba(255,255,255,.05),rgba(255,255,255,.018) 38%,rgba(255,255,255,0) 62%),
+  rgba(0,0,0,.16);
+ -webkit-mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%);
+ mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%)}
 body.tab-story.st-full #stuni .canvas-wrap::after{
- z-index:1;width:var(--sf-d,0px);
+ z-index:1;
  box-shadow:
-  inset 3px 5px 8px rgba(0,0,0,.5),
-  inset -1px -2px 2px rgba(255,255,255,.06),
-  0 0 0 1px rgba(0,0,0,.35),
-  1px 2px 3px rgba(255,255,255,.05),
-  -1px -2px 3px rgba(0,0,0,.4)}
+  inset 0 calc(var(--sf-band)*.55) calc(var(--sf-band)*1.1) calc(var(--sf-band)*-.3) rgba(0,0,0,.42),
+  inset 0 1px 1px rgba(0,0,0,.28),
+  0 -1px .5px rgba(255,255,255,.075)}
 @media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
 /* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
    Dashboard at z-index -1; isolation keeps that under her words and controls
    but over the well's own ground, and the mask fades it to nothing well
-   inside the panel so the cloud never meets the panel's square edge. */
+   inside the panel so the cloud never meets the panel's square edge. The
+   solid stop moved from 45 to 52 percent, 15 percent further out, with
+   the cloud's wider reach (CLOUD_R in ui/unicloud.js); the fade still ends
+   at the panel, so it still never meets the edge. */
 body.tab-story.st-full #stjr{isolation:isolate}
 /* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
    -1) out from behind the panel's own background, where on the Dashboard it
@@ -5186,8 +5191,8 @@ body.tab-story.st-full #stjr{isolation:isolate}
    on 10 November. It stays where it always was on this view: unseen. */
 body.tab-story.st-full #stjr .st-glow::before{display:none}
 body.tab-story.st-full #stjr>#unicloud{
- -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%);
- mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%)}
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -5943,29 +5948,40 @@ body.tab-story.st-full #stsrc:empty{display:none}
 .smp-empty{align-items:center;justify-content:center}
 .smp-emptynote{flex:0 0 auto;padding:0 24px;text-align:center;max-width:32em}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-/* the selection as its rings and nothing else, the card's cut. Each ring is
-   a toggle at the tap floor; out of the run it steps back rather than going,
-   so a second tap brings it back. */
-.st-rings{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
-.st-rq{display:inline-flex;align-items:center;justify-content:center;min-width:var(--tap);min-height:var(--tap);
- padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;
- transition:opacity var(--t-element) var(--ease-out)}
-.st-rq[aria-pressed="false"]{opacity:.35}
+/* THE SELECTION AS ONE EVEN LIST, 21 November (panel-redesign, the reason
+   is at stRelPanel in ui/storyui.js). Every row the same height and every
+   gap the same, so four picks read as four equal lines and not three and a
+   stray. The row is the toggle; out of the run it steps back rather than
+   going, so a second tap brings it back, as the rings did. */
+.st-rings{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.st-rq-wrap{display:block;margin:0}
+.st-rq{display:flex;align-items:center;gap:12px;width:100%;min-height:var(--tap);
+ padding:6px 12px 6px 6px;border:1px solid var(--edge);border-radius:var(--r-s);
+ background:color-mix(in srgb,var(--ink) 3%,transparent);color:var(--ink);cursor:pointer;text-align:left;
+ transition:opacity var(--t-element) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.st-rq:hover{border-color:var(--edge-2)}
+.st-rq[aria-pressed="false"]{opacity:.4}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-rq-ring{flex:none;display:inline-flex;position:relative;border-radius:50%}
 /* THE NAME, PRINTED, NOT ONLY A HOVER TITLE, 10 November, CLAUDE.md's own
-   "unpack every symbol" ruling: a ring with no visible word beside it is
-   exactly the failing case that rule names. */
-.st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+   "unpack every symbol" ruling. On one line now, at a size that reads, and
+   WRAPPED, NOT CUT OFF, when a name is longer than the column: a truncated
+   "Self-Silen..." unpacks nothing. */
+.st-rq-t{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+.st-rq-lb{font-size:13.5px;line-height:1.25;font-weight:500;color:var(--ink);overflow-wrap:break-word}
+.st-rq-pt{font-size:11.5px;line-height:1.2}
+/* in the run or out of it, as a ring with a check or an empty ring: icons
+   are ring, never fill */
+.st-rq-ck{flex:none;width:20px;height:20px;fill:none;stroke:var(--mid);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.st-rq[aria-pressed="true"] .st-rq-ck{stroke:var(--glow)}
 /* AVS4, 17 November: an address the avatar put first wears the avatar's own
    dashed ring, the mark the Avatar page's seats wear for the same fact. A
-   pseudo element and not an outline, because the outline is the focus ring. */
-.st-rq-av .st-rq{position:relative}
-.st-rq-av .st-rq::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
-/* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
-   whole point of printing the name is that it can be read. */
-.st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
- overflow-wrap:break-word;max-width:100%}
-.st-rlfoot{margin-top:auto;padding-top:10px}
+   pseudo element and not an outline, because the outline is the focus ring.
+   On the ring and not the button since 21 November: the button is a row. */
+.st-rq-av .st-rq-ring::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
+/* the settings and the press sit under one hairline, so the list above
+   and the controls below read as two halves of one panel */
+.st-rlfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--edge)}
 /* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
    ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
    .rel-sws, which only exists once relCss() has run and carries that
@@ -5994,7 +6010,7 @@ body.tab-story.st-full #stsrc:empty{display:none}
    down to just the switch itself, its name carried in the label's own
    title/aria-label the way the rest of this rail already carries a
    name, never a second copy of text standing in the row. */
-.rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
+.rel-fields.st-fields{flex-wrap:nowrap;gap:10px;justify-content:space-evenly}
 .rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
 .rel-fields.st-fields .st-relsws{flex:0 0 auto}
 /* THE WORD STAYS, OVERRIDDEN THE SAME NIGHT, his words straight after
@@ -6018,10 +6034,16 @@ body.tab-story.st-full #stsrc:empty{display:none}
 .rel-fields.st-fields .st-relsws .ac-rl::before{content:"Audio";font-size:11px}
 .rel-fields.st-fields .st-relsws .ac-rl em{display:none}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
+ display:flex;align-items:center;justify-content:center;gap:10px;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
 .st-go:hover{filter:brightness(1.08)}
 .st-go:disabled{opacity:.4;cursor:default}
+/* the count of addresses this press runs, a figure beside the word, which
+   is why .st-go above is a centred flex row */
+.st-gon{min-width:26px;height:26px;padding:0 7px;border-radius:999px;display:inline-grid;place-items:center;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;
+ border:1.5px solid currentColor}
 /* the negated word, struck, with the negator inside the mark. See stMarks. */
 .st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
  text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
@@ -8780,12 +8802,26 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     the door measured past the row and the tag ran under the name. */
  .st-flow:not([data-focus="read"]) #stpend{visibility:hidden;min-width:0;width:0;overflow:hidden}
  .st-lsb{overflow:visible}
- .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
-  align-items:center;gap:10px;padding:10px 12px}
- .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
- .st-flow:not([data-focus="release"]) .st-rings{margin:0}
- .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0}
- .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px;padding:0 20px;width:auto}
+ /* STACKED ON A PHONE, 21 November (panel-redesign). This was a grid of the
+    rings beside an auto width button, which with rows put the button in a
+    column of its own, centred on the list's height and off its edge. The
+    list over one full width press is the desktop panel folded, not a
+    second layout. The header stays, where the grid hid it: the column's
+    fold control (.zfold) is pinned to the panel's top right, and with the
+    header gone the first row ran under it, measured at 390 with four
+    picks. The header is the row that control sits in at every width.
+    HEIGHT, NOT MIN-HEIGHT, on the phone: with the header back, three rows
+    measured 318 against the 310 floor, so the panel grew by 8 pixels when
+    the last commit's addresses were on it and fell back to 310 when they
+    were not, and tests/stfull.js caught the column moving across a reload.
+    The list scrolls inside the panel instead (.st-rlmid already carries the
+    scroll), so the column is one size whatever it holds. */
+ .st-flow:not([data-focus="release"]) .st-rl{gap:10px;padding:12px;height:310px}
+ .st-flow:not([data-focus="release"]) .st-fields{display:none}
+ .st-flow:not([data-focus="release"]) .zfold{top:6px}
+ .st-flow:not([data-focus="release"]) .st-rings{margin:4px 0 0}
+ .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0;border-top:0}
+ .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px}
  .src-open,.src-q{font-size:18px}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
@@ -55591,8 +55627,8 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
  /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
-    Dashboard's pillow emboss (shell/head.html, PILLOW EMBOSS) draws the
-    raised surface and the inset rim round exactly this circle, and only
+    Dashboard's dish (shell/head.html, SET INTO A DISH) draws its floor,
+    wall and bevel round exactly this circle, and only
     this file knows it: the circle is the largest the canvas box holds, less
     two pixels, so its size is min(width, height) of a box CSS cannot take
     the minimum of. Written on the host, so a move carries it. */
@@ -55742,8 +55778,8 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    and since 21 November the Dashboard paints it in #stjr, the dark well
    round her circle, masked soft so it never meets the panel's edge, as
    the cloud round the raised surface he asked for ("a ring inside of a
-   raised surface with this kind of cloudy pattern around it"; see
-   PILLOW EMBOSS in shell/head.html). #stjr's own wash is still under it.
+   raised surface with this kind of cloudy pattern around it", since made
+   a dish; see SET INTO A DISH in shell/head.html). #stjr's own wash is still under it.
    Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
@@ -55776,8 +55812,8 @@ if(typeof document==='undefined')return;
 
 /* THE HOST, 21 November: the hero paints behind everything on #stage; the
    Dashboard paints inside the dark well that holds her circle, #stjr, so the
-   cloud sits round the raised surface she is set into (shell/head.html,
-   PILLOW EMBOSS). #stjr is rebuilt by every stRender, so frame() re-seats
+   cloud sits round the dish she is set into (shell/head.html, SET INTO A
+   DISH). #stjr is rebuilt by every stRender, so frame() re-seats
    the canvas whenever its host is a new element. */
 function hostEl(){
  var c=document.body.classList;
@@ -55801,6 +55837,22 @@ var vsSrc=[
    above: the dither, the pulse strength and gate, the turbulence cap, the
    soft saturation and the warp scale are all load bearing fixes, measured
    against real screenshots and a Jacobian check, not cosmetic. */
+/* THE CLOUD'S REACH, 21 November, his words on the seamless build: "Let's
+   expand the cloud width by about 15%. So its radius is 15% bigger."
+   CLOUD_R scales the two falloffs that set how far the cloud reaches, the
+   warm glow round her circle (coreGlow, measured from her centre) and the
+   vignette (vign, from the stage centre), and nothing else. The noise is
+   still sampled on the unscaled uv, so the size of the billows, their gain,
+   the warp budget, the pulse and the dither are the seam round's measured
+   values, untouched. 1.0 is the build he approved the blend on.
+   Why 1.20 and not 1.15: the billows stay fixed in screen space and the
+   density saturates, so the visible edge moves less than the falloff does.
+   Measured on one frozen frame (both builds drawn at t=0, same core) at
+   1600 by 1000, the radius where the cloud's brightness over the ground
+   falls to 50, 20, 10 and 5 percent of its peak: 1.15 grew it +14, +12, +10
+   and +10 percent; 1.20 grows it +18, +15, +13 and +15, which is his 15. At
+   390 the stage is narrower than the cloud already and its outer reach is
+   the stage's own sides either way. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -55825,6 +55877,7 @@ var fsCore=[
  'const float WARP_K = 0.62;',
  'const float NFREQ = 0.75;',
  'const float NGAIN = 1.23;',
+ 'const float CLOUD_R = 1.20;',
  '',
  'float sstep2(float a, float b, float x){',
  '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
@@ -55903,11 +55956,11 @@ var fsCore=[
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd/CLOUD_R);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
  '  float density = sstep2(0.20, 0.93, n);',
- '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv));',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv)/CLOUD_R);',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',
@@ -71775,12 +71828,37 @@ function stRelPanel(){
     own dashed ring round its node, the mark the Avatar page's seats wear for
     the same fact, and the reason is in its name on hover and to a screen
     reader. "If I don't see it in software, it doesn't exist." */
- else o+='<div class="st-rings">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
+ /* ONE ROW PER ADDRESS, NOT A WRAP OF RINGS, 21 November (release
+    panel-redesign). He ruled there was never a mockup behind this item and
+    that he reviews in software, so this is the team's redesign, built into
+    the real column. What the wrap of rings did wrong, measured on the 1600
+    Dashboard with four picks: three rings on one line and the fourth alone
+    under them, names at 10px wrapped to two lines ("Self- / Silencing"),
+    and some 300 pixels of empty column between the rings and the footer.
+    That is the dead zone and the uneven spacing the standing symmetry
+    ruling (16 November) names, and the 10px name was the unpacked meaning
+    printed too small to read.
+
+    So each address is one full width row, all rows the same height and the
+    same gap: the ring first (the symbol), the name second, its point third
+    in its own seat colour, and on the right a ring that carries a check
+    while the address is in the run and stands empty when a tap has taken it
+    out. The whole row is the toggle, so the tap target is the row and not
+    a 44 pixel ring. The id, data-rq, aria-pressed, the title and the
+    avatar's dashed mark are the ones every gate and the run already read;
+    only their layout moved. The dashed mark sits on the ring now, because
+    on a row the button is no longer round. */
+ else o+='<ul class="st-rings" role="list">'+M.take.map(function(a){var on=ST_OFF[a.i]!==true;
    var why=(typeof avWhyNow==='function')?avWhyNow(a):null, nm=a.k+', '+a.b+(why?'. '+avWhySay(why):'');
-   return '<div class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
-    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>'
-    +'<span class="st-rq-lb">'+esc(a.k)+'</span></div>';}).join('')
-  +'</div>';
+   return '<li class="st-rq-wrap'+(why?' st-rq-av':'')+'"><button type="button" class="st-rq" data-rq="'+a.i+'" aria-pressed="'+on+'" '
+    +'aria-label="'+esc(nm)+'" title="'+esc(nm)+'">'
+    +'<span class="st-rq-ring">'+crNode(a,'sm',{raw:'',title:''})+'</span>'
+    +'<span class="st-rq-t"><span class="st-rq-lb">'+esc(a.k)+'</span>'
+    +'<span class="st-rq-pt" style="color:'+seatCol(a.b)+'">'+esc(a.b)+'</span></span>'
+    +'<svg class="st-rq-ck" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/>'
+    +(on?'<path d="M6.4 10.2l2.4 2.4 4.8-5"/>':'')+'</svg>'
+    +'</button></li>';}).join('')
+  +'</ul>';
  /* AFFIRM after a commit and never while typing, ui/affirmui.js */
  if(M.fromLast&&!String(ST_TEXT||'').trim()&&!showOnly()&&typeof affDoorHtml==='function')o+=affDoorHtml('story');
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
@@ -71853,7 +71931,14 @@ function stRelPanel(){
    /* RELEASE, not Run release, round of 29 October, his words: "change run
       release to just release." The card's own button (ui/release.js)
       renamed the same way, same reason the fields above stay matched. */
-   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Release</button>')+'</div>';
+   /* THE COUNT RIDES ON THE BUTTON, 21 November (panel-redesign): how many
+      addresses this press runs, so a row tapped out of the run is seen to
+      leave it at the one control that starts it. Named in the title and
+      the label, never a bare figure, the unpack rule. */
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?' aria-label="Release, '+M.sel.length
+     +(M.sel.length===1?' address':' addresses')+'" title="Release the '+M.sel.length
+     +(M.sel.length===1?' address':' addresses')+' ticked above"':' disabled')+'>Release'
+    +(M.sel.length?'<b class="st-gon" aria-hidden="true">'+M.sel.length+'</b>':'')+'</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.
@@ -81902,6 +81987,9 @@ function relOpp(n){
    to the next run that is not a mini one, because RUN.dose outlives a run and
    a first release must not leave every later release at one line a block. */
 function relPick(nodeIds,from){
+ /* a new run is a new session: a microphone still listening for the last
+    card's row would mark a pattern this run never presented */
+ relHvStop();
  var mini=!!(from&&from.mini)&&typeof ONB_MINI_DOSE==='number';
  if(mini&&!RUN.mini)RUN.doseHeld=RUN.dose;
  if(!mini&&RUN.mini&&RUN.doseHeld!=null){RUN.dose=RUN.doseHeld; RUN.doseHeld=null;}
@@ -82619,7 +82707,7 @@ function relHitRows(H){
  return '<div class="pm-eye">In this run</div>'
   +(ses?'<div class="rel-sub">Reaching a pattern is not a hit. Mark Hit where you felt this release land. '
    +'Hold keeps it for another pass. Not a hit sets it aside, and your record still keeps it. Only a hit you mark is counted.</div>'
-   +'<div class="rel-sub" id="relhitn" aria-live="polite">'+relHitSay()+'</div>':'')
+   +'<div class="rel-sub" id="relhitn" aria-live="polite">'+relHitSay()+'</div>'+relHvHtml():'')
   +ks.map(function(k){
   return '<div class="rel-ct" style="text-align:left;margin-top:12px">'+NM[k]+'</div>'
    /* no scroll of its own: three lists each scrolling inside a card that
@@ -82639,7 +82727,8 @@ function relHitRows(H){
    +'<div class="rel-log" style="margin:6px 0;max-height:none;overflow:visible">'+H[k].map(function(x){
     var id=(typeof relHitPat==='function')?relHitPat(k,x.nm):null, on=!!(ses&&id&&st[id]);
     var reached=x.reach+' of '+x.of+(x.of===1?' address':' addresses');
-    return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')+'"'
+    return '<div class="rel-row'+(on?' rel-rh':'')+(on&&st[id]==='rejected'?' rel-rh-off':'')
+     +(on&&REL_HV.on&&REL_HV.pat===id?' rel-hv-on':'')+'"'
      +(on?' data-relrow="'+esc(id)+'"':'')+'>'
      +crBadge(x.b,x.reach/Math.max(1,x.of)*100,{size:'sm',raw:String(x.reach),
        glyph:'<path d="'+CHAINGLYPH[k]+'"/>',
@@ -82793,21 +82882,32 @@ function relHitEv(){
  catch(e){}
  return 'rh_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);}
 function relHitPress(pat,cmd,ev){
- if(!CURP||!RUN.saved||!RUN.id||typeof relHitDecide!=='function')return false;
+ if(typeof relHitDecide!=='function')return false;
+ var r=relHitLand(function(){
+  return relHitDecide(CURP,{ev:ev||relHitEv(),sid:RUN.id,pat:pat,cmd:cmd,mode:'control',raw:cmd,conf:null});});
+ if(!r.ok&&!r.unsaved&&r.why&&typeof status==='function')status('That mark was not kept. '+r.why,'fail');
+ return !!r.ok;}
+/* SAVED OR PUT BACK, ONE PATH FOR A PRESS AND A SPOKEN MARK. This body was
+   relHitPress's own until the voice half landed, 21 November. A second copy
+   of the restore for speech would be the second door the engine's header
+   rules out from its side: the day one copy learns a new failure and the
+   other does not, a spoken hit the store refused stays on the log in memory
+   and the next unrelated save persists it. decide is the engine call, run
+   against CURP; the answer is the engine's own, plus unsaved when the store
+   refused it and the record was put back. */
+function relHitLand(decide){
+ if(!CURP||!RUN.saved||!RUN.id)return {ok:false};
  var before=null;
  try{before=CURP.relhit?JSON.stringify(CURP.relhit):null;}catch(e){before=null;}
- var r=relHitDecide(CURP,{ev:ev||relHitEv(),sid:RUN.id,pat:pat,cmd:cmd,mode:'control',raw:cmd,conf:null});
- if(!r.ok){
-  if(typeof status==='function')status('That mark was not kept. '+r.why,'fail');
-  relHitPaint(); return false;}
- if(r.dup||r.noop){relHitPaint(); return true;}
+ var r=decide();
+ if(!r.ok||r.dup||r.noop){relHitPaint(); return r;}
  if(!pSave()){
   if(before===null)delete CURP.relhit; else CURP.relhit=JSON.parse(before);
   if(typeof status==='function')
    status('This browser would not save. Your mark is not on your record.','fail');
-  relHitPaint(); return false;}
+  relHitPaint(); return {ok:false, unsaved:true};}
  relHitPaint();
- return true;}
+ return r;}
 /* every row's three buttons and the count, off the record */
 function relHitPaint(){
  var h=document.getElementById('rel'); if(!h)return;
@@ -82817,7 +82917,131 @@ function relHitPaint(){
   b.setAttribute('aria-pressed',String(RELHIT_CMDS[b.getAttribute('data-relcmd')]===st[b.getAttribute('data-relhit')]));});
  h.querySelectorAll('[data-relrow]').forEach(function(r){
   r.classList.toggle('rel-rh-off',st[r.getAttribute('data-relrow')]==='rejected');});
- var n=document.getElementById('relhitn'); if(n)n.textContent=relHitSay();}
+ var n=document.getElementById('relhitn'); if(n)n.textContent=relHitSay();
+ relHvPaint();}
+
+/* ============================================================
+   HIT, KEEP, NOT A HIT, SAID ALOUD, 21 November. The browser half that
+   engine/relhit.js's header names as a separate item: "This file never
+   listens: the browser half, which opens the microphone and calls
+   relHitVoice, is a separate item and lives in ui/release.js."
+
+   NO SECOND STATE MACHINE. What is heard goes to relHitVoice, which parses
+   it (relHitHear) and hands a clear command to relHitDecide, the door the
+   three buttons use, through relHitLand, the save-or-put-back path they use.
+   So a spoken hit is the same event id guard, the same no op on an item
+   already there and the same one count as a pressed one.
+
+   ONE PATTERN AT A TIME, IN CARD ORDER. A spoken word names a command and
+   not a pattern, so the microphone is always about one row, the first the
+   person has not judged yet, and that row is outlined while it listens. A
+   mark lands and the next unjudged row is the one listened for; when none is
+   left the microphone closes and says so. Held and rejected rows are judged
+   and are skipped: a person changes those with the buttons, which stay.
+
+   RELEASE IS HEARD AND REFUSED, ON THE ENGINE'S RULING AND NOT THIS FILE'S.
+   The addendum lists "RELEASE / HIT" as one action and also warns that
+   "release this pattern" as a session action and "this was a hit" as
+   feedback must not be confusable. RELHIT_VOICE_COLLIDES holds that: the run
+   itself is the release, so release spoken here says why and changes
+   nothing. keep is hold's own alias in RELHIT_VOICE_PHRASES and works.
+
+   THE SAME MICROPHONE AS THE INSIGHT WELL, NOT A SECOND ONE. The recogniser
+   is the browser's, opened the way stkSayListen (ui/stksay.js) opens it:
+   continuous, finals taken by index so a final reported twice is answered
+   once, a browser end restarted while listening, and a sequence number that
+   drops any answer to a listen already stopped. Before it opens, the well's
+   own listen and the Journal's Talk are stopped through their own stop
+   paths (stkSayCut, stkSayJournalOff), so only one recogniser ever holds the
+   microphone. The confidence each final carries goes to the engine
+   unchanged, and below RELHIT_VOICE_FLOOR it moves nothing and says so.
+   ============================================================ */
+var REL_HV={on:false, seq:0, rec:null, pat:'', t:0, say:''};
+/* nothing heard for this long and the microphone closes, quietly: a release
+   card left open must not keep listening to a room */
+var REL_HV_WAIT=20000;
+var REL_HV_MIC='<rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.5"/>';
+function relHvCan(){
+ return typeof stkSayCanHear==='function'&&stkSayCanHear()&&typeof relHitVoice==='function'
+  &&!(typeof showOnly==='function'&&showOnly());}
+/* the first row on the card the person has not judged, or null */
+function relHvNext(){
+ var s=relHitLive(); if(!s)return null;
+ for(var i=0;i<s.items.length;i++)if(s.items[i].state==='shown')return s.items[i];
+ return null;}
+function relHvHtml(){
+ if(!relHvCan())return '';
+ var on=REL_HV.on;
+ return '<div class="rel-hv"><button type="button" class="rel-hv-b" id="relhitv" aria-pressed="'+on+'"'
+  +' aria-label="'+(on?'Stop marking by voice':'Mark by voice')+'"'
+  +' data-tip-t="Mark by voice" data-tip="Say hit, keep or not a hit for the outlined pattern. Each mark lands the way its button does.">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+REL_HV_MIC+'</svg></button>'
+  +'<span class="rel-hv-s" id="relhitvs" aria-live="polite">'+esc(relHvLine())+'</span></div>';}
+function relHvLine(){
+ if(REL_HV.say)return REL_HV.say;
+ if(!REL_HV.on)return 'Mark by voice';
+ var s=relHitLive(), x=s&&s.items.filter(function(y){return y.id===REL_HV.pat;})[0];
+ return x?'Listening for '+x.nm+'. Say hit, keep or not a hit.':'Listening.';}
+/* the button, the line and the outlined row, in place: the cooldown may
+   still be being said and a redraw moves the list under the thumb */
+function relHvPaint(){
+ var b=document.getElementById('relhitv');
+ if(b){b.setAttribute('aria-pressed',String(REL_HV.on));
+  b.setAttribute('aria-label',REL_HV.on?'Stop marking by voice':'Mark by voice');}
+ var s=document.getElementById('relhitvs'); if(s)s.textContent=relHvLine();
+ var h=document.getElementById('rel'); if(!h)return;
+ h.querySelectorAll('[data-relrow]').forEach(function(r){
+  r.classList.toggle('rel-hv-on',REL_HV.on&&r.getAttribute('data-relrow')===REL_HV.pat);});}
+/* STOP EVERYTHING THIS STARTED. The number moves first, so a final still on
+   its way answers a listen that is already over and is dropped */
+function relHvStop(say){
+ REL_HV.seq++; clearTimeout(REL_HV.t);
+ var x=REL_HV.rec; REL_HV.rec=null;
+ if(x){x.onresult=x.onend=x.onerror=null; try{if(typeof x.abort==='function')x.abort(); else x.stop();}catch(e){}}
+ REL_HV.on=false; REL_HV.pat=''; REL_HV.say=say||'';
+ relHvPaint();}
+function relHvToggle(){
+ if(REL_HV.on){relHvStop(); return;}
+ if(!relHvCan()){if(typeof status==='function')status('This browser cannot hear speech here. Use the buttons.','fail'); return;}
+ var x=relHvNext();
+ if(!x){relHvStop('Every pattern here is marked.'); return;}
+ /* one recogniser on the page: the well's listen and the Journal's Talk
+    stop through their own paths before this one opens */
+ if(typeof stkSayCut==='function'&&stkSayCut()&&typeof stkSayPaint==='function')stkSayPaint();
+ if(typeof stkSayJournalOff==='function')stkSayJournalOff();
+ var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec, seq=++REL_HV.seq;
+ try{rec=new SR();}catch(e){relHvStop('The microphone could not start. Use the buttons.'); return;}
+ rec.continuous=true; rec.interimResults=false; rec.lang='en-US';
+ var done={};
+ var wait=function(){clearTimeout(REL_HV.t);
+  REL_HV.t=setTimeout(function(){if(seq===REL_HV.seq)relHvStop();},REL_HV_WAIT);};
+ rec.onresult=function(e){if(seq!==REL_HV.seq)return;
+  for(var i=e.resultIndex;i<e.results.length;i++){
+   if(!e.results[i].isFinal||done[i])continue; done[i]=1;
+   var a=e.results[i][0]; wait(); relHvHeard(a.transcript,a.confidence);
+   if(seq!==REL_HV.seq)return;}};
+ rec.onerror=function(e){if(seq!==REL_HV.seq)return; var code=(e&&e.error)||'unknown';
+  if(code==='no-speech'||code==='aborted')return;
+  relHvStop(code==='not-allowed'?'Marking by voice needs microphone permission. Allow it in the browser, then press the microphone.'
+   :(typeof stMicLine==='function'?stMicLine(code):'The microphone stopped.'));};
+ rec.onend=function(){if(seq!==REL_HV.seq||REL_HV.rec!==rec)return;
+  try{rec.start();}catch(e){relHvStop();}};
+ REL_HV.rec=rec; REL_HV.pat=x.id; REL_HV.say='';
+ try{rec.start();}catch(e){REL_HV.rec=null; relHvStop('The microphone could not start. Use the buttons.'); return;}
+ /* pressed only once the recogniser has really started */
+ REL_HV.on=true; wait(); relHvPaint();}
+/* ONE FINAL, through the one door. A refusal keeps listening for the same
+   row and shows the engine's own sentence for why nothing changed; a mark
+   moves to the next unjudged row, or closes when none is left. */
+function relHvHeard(text,conf){
+ var pat=REL_HV.pat; if(!pat)return;
+ var r=relHitLand(function(){
+  return relHitVoice(CURP,{ev:relHitEv(),sid:RUN.id,pat:pat,heard:text,conf:conf});});
+ if(r.unsaved){relHvStop('This browser would not save. Your mark is not on your record.'); return;}
+ if(!r.ok){REL_HV.say=r.say||('That mark was not kept. '+(r.why||'')); relHvPaint(); return;}
+ var x=relHvNext();
+ if(!x){relHvStop('Marked. Every pattern here is marked.'); return;}
+ REL_HV.pat=x.id; REL_HV.say=''; relHvPaint();}
 function relCoolDown(){
  if(RUN.done)return;
  /* Until the one durable write succeeds, treat every release mutation as
@@ -83103,7 +83327,7 @@ function relCoolDown(){
 function relCancel(){
  relClose();
  status('Release closed. Nothing was started and nothing was charged.');}
-function relClose(){relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
+function relClose(){relHvStop();relHush();relTicker(false);RUN.open=false;RUN.phase='idle';RUN.paused=false;relRender();render();}
 /* ============================================================
    THE SEAT TONE FOLLOWS THE CARD.
 
@@ -83895,6 +84119,15 @@ function relCss(){
      three columns keep their widths at 390 */
   '.rel-row.rel-rh .seg{grid-column:1/-1;justify-self:start}',
   '.rel-row.rel-rh-off>span,.rel-row.rel-rh-off>em{opacity:.55}',
+  /* the row the microphone is listening for, outlined in the accent and
+     never filled, the house rule for a mark that is a state and not a value */
+  '.rel-row.rel-hv-on{outline:1.5px solid var(--accent);outline-offset:3px;border-radius:var(--r-s)}',
+  '.rel-hv{display:flex;align-items:center;gap:12px;margin:0 0 17px}',
+  '.rel-hv-b{flex:none;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;cursor:pointer;',
+  ' background:transparent;border:1.5px solid var(--edge);color:var(--ink)}',
+  '.rel-hv-b svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}',
+  '.rel-hv-b[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}',
+  '.rel-hv-s{font-size:13.5px;color:var(--dim)}',
   /* A MARK EARNED LANDS LAST AND LANDS ONCE: after the headline has settled,
      out of rest with one overshoot, the landing curve. It is shown only when
      the ladder reads a mark it did not read before the run, so it is rare,
@@ -85097,6 +85330,8 @@ function relRender(){
  /* HIT, HOLD, NOT A HIT, one press each, through relHitPress */
  h.querySelectorAll('[data-relhit]').forEach(function(el){el.onclick=function(){
   relHitPress(this.getAttribute('data-relhit'),this.getAttribute('data-relcmd'));};});
+ /* the same three marks, said, through relHitVoice (relHvToggle above) */
+ if((b=document.getElementById('relhitv')))b.onclick=relHvToggle;
  /* a mark changes one attribute and the log entry under it, never the card:
     the cooldown is still being said and a redraw would move the list */
  h.querySelectorAll('[data-relfelt]').forEach(function(el){el.onclick=function(){
@@ -114039,5 +114274,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008335619"></div>
+<div id="eof" hidden data-len="008351646"></div>
 </body></html>
