@@ -6521,8 +6521,39 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
    The same step aside as the Story's: on the Summary the rail carries
    Selection alone. Today stood beside it as .sum-rail until 21 November and
    opens the centre now (sumToday, ui/summary.js), so the rail's other
-   sections still step aside here and nothing on the rail repeats the page. */
-body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]){display:none}
+   sections still step aside here and nothing on the rail repeats the page.
+   AND INSIGHT STANDS ABOVE SELECTION HERE TOO, 21 November, the Summary
+   redesign's last item: "mount the real Insight panel plus a Source AI talk
+   button on the right." The rail held Selection alone, so the page's right
+   third was one header over an empty column on every first look. Insight is
+   the same section the Field shows, its id and its two painters unchanged
+   (railInsight, railStack, ui/insightui.js), which already paint on every
+   tab: this rule hid it, and nothing else had to move. The rest still step
+   aside, because each of them is a page of its own somewhere else. */
+body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]):not([data-sec="you"]){display:none}
+/* THE HELLO, ON THE SUMMARY. The Journal's own control (.st-hello above),
+   drawn the same three circles in the same order so it reads as one control
+   and not a second design for the same act, set in the Insight section's
+   head with its name beside it: symbol first, the name second, and what it
+   does one hover or tap away in its tip. Shown on the Summary only; every
+   other tab with this rail either has the Journal itself or never asked. */
+.sum-hello{display:none}
+body.tab-summary .sum-hello{display:flex;align-items:center;gap:12px;width:100%;
+ margin:0 0 16px;padding:8px 12px;border:1px solid var(--edge);border-radius:12px;
+ background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:500;
+ text-align:left;cursor:pointer;outline-offset:4px;
+ transition:border-color var(--t-surface) var(--ease-out)}
+.sum-hello:hover,.sum-hello:focus-visible{border-color:var(--accent)}
+.sum-hello svg{flex:0 0 auto;width:36px;height:36px;overflow:visible}
+.sum-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+ transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
+.sum-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+ transform-origin:50% 50%;transition:opacity var(--t-surface) var(--ease-out)}
+.sum-hello .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
+.sum-hello:hover .sth-ring,.sum-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.sum-hello:hover .sth-ring2,.sum-hello:focus-visible .sth-ring2{opacity:.4}
+.sum-hello:hover .sth-dot,.sum-hello:focus-visible .sth-dot{fill:var(--accent)}
+@media (prefers-reduced-motion:reduce){.sum-hello .sth-ring{animation:none}}
 /* TODAY, THE CENTRE'S FIRST ZONE. A silent day (nothing read yet, or a
    record the moment before its day is frozen) takes the whole section with
    it, so a date never stands over an empty card. */
