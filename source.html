@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v36 116f9094 2026-11-22 02:41"><head><meta charset="utf-8">
+<html lang="en" data-build="v117 44e54e29 2026-11-22 04:07"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -65424,7 +65424,7 @@ var BMOVL={
     Heat is already the Pain mode's own switch (bmvar) and one word is one
     concept. */
  heat:{nm:'Charge',ic:'M12 3.8a8.2 8.2 0 100 16.4 8.2 8.2 0 100-16.4zM12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 100-6.8z',
-  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, out of 10, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
+  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
@@ -81486,11 +81486,15 @@ function iqArtCss(){
   ' #iqx-arch .iqx-ab{padding:10px 12px;font-size:14px}',
   ' #iqx-arch .iqx-eol{font-size:14px}}',
   '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
-  /* ---- one law: its three framings, each a card with its own icon ---- */
-  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
-  '#iqbody .iqa .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
+  /* ---- one law: its three framings, each a card with its own icon ----
+     .iqw is the second host of iqFramings, the Ritual tab's law of the week
+     in its pop-up (ui/ritlaw.js). It is named beside #iqbody in each rule
+     rather than given rules of its own, so the two scales cannot be drawn
+     two ways. */
+  '#iqbody .iqa .iq-law,.iqw .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
+  '#iqbody .iqa .iq-qc,.iqw .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
   ' background:color-mix(in srgb,var(--c) 6%,var(--sunk))}',
-  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc{border-color:transparent}',
+  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc,body.punch .iqw .iq-qc,body.lumen .iqw .iq-qc{border-color:transparent}',
   '.iqa-fr{display:grid;gap:12px;min-width:0}',
   '.iqa-open .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
   '.iqa-flr{display:flex;align-items:center;gap:8px;margin-bottom:4px}',
@@ -81500,10 +81504,10 @@ function iqArtCss(){
   '.iqa-qt{font-size:16px;line-height:1.5;color:var(--ink)}',
   /* the scale ramps from the sunk ground toward the seat, so the ends read as
      ends before a number is read. Pressed is the seat solid. */
-  '#iqbody .iqa .iq-sl{border-radius:var(--r-xs)}',
-  '#iqbody .iqa .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
-  '#iqbody .iqa .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
-  '#iqbody .iqa .iq-n.on{background:var(--c);color:var(--on-accent)}',
+  '#iqbody .iqa .iq-sl,.iqw .iq-sl{border-radius:var(--r-xs)}',
+  '#iqbody .iqa .iq-n,.iqw .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
+  '#iqbody .iqa .iq-n:hover,.iqw .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
+  '#iqbody .iqa .iq-n.on,.iqw .iq-n.on{background:var(--c);color:var(--on-accent)}',
   '.iqa-gap{display:block;width:100%;height:auto}',
   '.iqa-sub{font-size:13.5px;color:var(--dim)}',
   '.iqa-sub b{font-weight:500;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
@@ -81844,6 +81848,37 @@ function iqFramings(p,Q,li){
     +'aria-pressed="'+(near===n)+'">'+n+'</button>';
   h+='</div></div>';});
  return h;}
+/* ONE ANSWER PRESSED, WHEREVER ITS SCALE IS DRAWN. These lines were the body
+   of the [data-a] press inside renderIntake, and on 22 November a second
+   surface drew iqFramings: the Ritual tab's law of the week (ui/ritlaw.js),
+   which serves one law's three questions in a pop-up. A second copy of the
+   press there would be a second writer for the sixty three answers, and the
+   two would drift the first time one of them learned a rule, so both scales
+   call this. a is the answer's index, v its value. Returns null, having
+   written nothing, when the engine refuses it; otherwise the law and whether
+   the press added an answer rather than changed one.
+   A changed answer is a new reading of that law, so the releases counted
+   against the old one stop counting (engine/compute.js, lawAnswered). Even
+   when the mean of the three lands on the same number: the person has just
+   told us where the law is, and that wins over the model's estimate. */
+function iqPress(a,v){
+ var li=Math.floor(+a/3), was=iqGot(CURP,li);
+ /* the week's law is read BEFORE the write, because once its third answer
+    lands iqNext has already moved on and the law that was this week's can no
+    longer be told from the next one */
+ var wk=(typeof ritLawOf==='function')?ritLawOf(CURP):null;
+ /* the write is the engine's, so a worked example refuses it there and the
+    reporter it bound says what the press would do on the person's own */
+ if(!iqAnswer(CURP,+a,+v))return null;
+ /* the press reports its save like the other intake writes, so a refused
+    write is said and not left for a reload to discover, and the answer
+    stays on screen either way, the same as [data-ixb] in renderIntake */
+ iqApply(CURP); pSave(); var ok=statusSaved(); syncLw();
+ /* the week's law measured here or in its pop-up is the week's ritual done,
+    whichever scale was pressed, so the Ritual tab does not serve a second law
+    the same week to a person who answered the first one on this page */
+ if(ok&&wk&&!wk.done&&wk.li===li&&was<3&&iqGot(CURP,li)>=3&&typeof ritLawMark==='function')ritLawMark(li);
+ return {li:li, fresh:iqGot(CURP,li)>was};}
 /* THE HEADER. Where I am, how far, and how to look. The ring is the page's
    figure: one segment per law, all twenty one, in the seat colours crown to
    root, lit as each reads. CQ sits in the middle of it once a law is measured.
@@ -82574,25 +82609,18 @@ function renderIntake(){
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
-  /* a changed answer is a new reading of that law, so the releases counted
-     against the old one stop counting (engine/compute.js, lawAnswered). Even
-     when the mean of the three lands on the same number: the person has just
-     told us where the law is, and that wins over the model's estimate. */
-  var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
-  /* the write is the engine's, so a worked example refuses it there and the
-     reporter it bound says what the press would do on the person's own */
-  if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
+  /* the write, its save and its report are iqPress, shared with the Ritual
+     tab's law of the week; what follows is this page's own */
+  var pr=iqPress(+el.dataset.a,+el.dataset.v); if(!pr)return;
+  var li=pr.li;
   /* one at a time moves on to the next framing still missing an answer, and to
      the law's reading once all three are in */
   var one=(IQ_VIEW==='one');
   if(one){IQ_OPEN=li; IQ_STEP={li:li,t:iqFrAfter(CURP,li,+el.dataset.a%3)}; IQ_FRESH=false;}
-  /* the press reports its save like the other intake writes, so a refused
-     write is said and not left for a reload to discover, and the answer
-     stays on screen either way, the same as [data-ixb] above. render() runs
-     first: it can repaint this page itself, and the arrival and the focus are
-     read once, so they are set for the draw that comes last. */
-  iqApply(CURP); pSave(); statusSaved(); syncLw(); render();
-  IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
+  /* render() runs first: it can repaint this page itself, and the arrival and
+     the focus are read once, so they are set for the draw that comes last. */
+  render();
+  IQ_PULSE={li:li,a:+el.dataset.a,fresh:pr.fresh};
   if(one){IQ_ANIM={step:1}; IQ_FOCUS=(IQ_STEP.t===3)?'.iqp-ft .btn.pri':'#iqp-qh';}
   renderIntake();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
@@ -88311,6 +88339,9 @@ function ritWire(h,c){
       nothing, so nothing repaints under it */
    case 'bank': {var bx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(bx)ritBankOpen({t:'sug', x:bx}); return;}
    case 'aff-set': ritBankOpen({t:'aff'}); return;
+   /* the law of the week's name, ui/ritlaw.js. The law is pinned on the
+      press, so its third answer does not swap the pop-up to the next law */
+   case 'law-open': ritBankOpen({t:'law', li:+b.getAttribute('data-wlaw'), W:{}}); return;
    case 'chal-set': ritBankOpen({t:'chal', id:id}); return;
    /* the Goal tile's name, ui/ritweek.js */
    case 'pgoal': ritBankOpen({t:'goal'}); return;
@@ -89219,8 +89250,15 @@ function ritSugHtml(st){
     would be untrue */
  /* the affirmations lead the list, ritAffCardHtml (ui/ritweek.js) says why */
  var aff=(typeof ritAffCardHtml==='function')?ritAffCardHtml(st):'';
- if(!list.length&&all.length&&!undo&&!aff)return saved;
- var body=!list.length?(aff?'<ul class="rv-sugl">'+aff+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
+ /* and the law of the week closes the list, ui/ritlaw.js. Like the
+    affirmations' row it is not in RIT.sug, and like it, it keeps the section
+    up when nothing else is called for. With it on the list a blank profile's
+    line is "Nothing else", because "Nothing called for yet" under a card
+    would be the contradiction SV16 took off this list. */
+ var law=(typeof ritLawCardHtml==='function')?ritLawCardHtml(st):'';
+ if(!list.length&&all.length&&!undo&&!aff&&!law)return saved;
+ var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
+   :law?'Nothing else called for yet. Record a story to fill it.':'Nothing called for yet. Record a story to fill it.')+'</p>'
   /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
      Avatar host draws this same card and not its own. This is its only
      caller: measured at D-4, neither page draws one yet. The rulings that
@@ -89231,7 +89269,11 @@ function ritSugHtml(st){
      his three, add, save and dismiss, with an accessible name that keeps the
      span a press sets. The line under the heading said "Its mark is the
      point" until D-4 took the mark off the card, a sentence about nothing. */
-  :'<ul class="rv-sugl">'+aff+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+'</ul>';
+  /* the law card goes LAST, after the practice cards: they are dragged onto
+     the week and sit under it so the drag is a short reach, and it is never
+     dragged. Ahead of them it pushed the first card a row further from the
+     week, which tests/ritweek.js RW8 measured as a drop that never landed. */
+  :'<ul class="rv-sugl">'+aff+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+law+'</ul>';
  /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
     suggested, those are pulled from your ritual selectors. It's the stuff it
     picks up based off your story." True of the code: every card is one of
@@ -89241,7 +89283,9 @@ function ritSugHtml(st){
     story was not true of every card, since the field can carry charge from
     the quiz. Where the cards come from is said in the line under it. */
  return '<div class="rv-sec rv-sug rv-cfw"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
-  +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
+  /* the law card's source is named only while there is one, so the line is
+     never true of a card that is not on the list */
+  +'<p class="rv-mean">Read from your story, your avatar\'s stories'+(law?', the places you hold the most charge and the laws your intake has not measured. ':' and the places you hold the most charge. ')
   +'Each is the practice that point calls for at the charge you carry now. Its colour is its kind. Drag one onto a day to set it once.</p>'+undo+body+foot+'</div>'+saved;}
 /* ---------------- ritual to avatar ----------------
    ROUND QS made this card a picture first. His words: "everything like the
@@ -90394,7 +90438,10 @@ function ritSpanRead(st,R){
     the strip carries Practised and Marks, and a figure computed here for no
     reader is the drawing nothing reads that the same pass deleted */
  var said={}; M.said.forEach(function(x){if(x[0]>=t0&&x[0]<=today)said[x[0]]=1;});
- var did=M.did.filter(function(x){return x[0]>=t0&&x[0]<=today;}).length;
+ /* the law of the week is marked done in this same log (ritLawMark, ui/
+    ritlaw.js) and is not a challenge, so it is left out of the count that
+    prints "Challenges done" */
+ var did=M.did.filter(function(x){return x[0]>=t0&&x[0]<=today&&!RIT_LAW_ID.test(x[1]);}).length;
  var h=ritSnapBefore(new Date(ritDateOf(t0).getTime()-12*3600000).toISOString());
  var bars=BANDS.slice().reverse().concat(['']).filter(function(b){return seat[b];})
   .map(function(b){return {b:b, n:Object.keys(seat[b]).length};});
@@ -91214,6 +91261,8 @@ function ritBankHtml(){
  if(P.t==='chal')return ritPopChal(st);
  if(P.t==='goal')return ritPopGoal(st);
  if(P.t==='blk')return ritPopBlk(st);
+ /* the law of the week, ui/ritlaw.js */
+ if(P.t==='law'&&typeof ritPopLaw==='function')return ritPopLaw(st);
  return '';}
 /* open a pop-up. sug is a Called for card (x, from RIT.sug or a host's own
    list), aff the affirmation set, chal a challenge by its row id ch:<id>. The
@@ -91243,7 +91292,11 @@ function ritBankWireIn(){
  if(c)c.onchange=function(ev){var s=ev.target;
   if(!s||s.tagName!=='SELECT'||!RIT.pop||!RIT.pop.W||!c.contains(s))return;
   var a=s.getAttribute('data-sh'); if(a!=='rc-rep'&&a!=='rc-for')return;
-  ritRecurAct(RIT.pop.W,a,s.value); ritBankRedraw(s);};}
+  ritRecurAct(RIT.pop.W,a,s.value); ritBankRedraw(s);};
+ /* the law of the week's scale carries data-a, the Intake page's attribute,
+    and not data-sh, so the sheet's listener does not see it: it is wired
+    here, after every draw, by ritlaw.js */
+ if(RIT.pop&&RIT.pop.t==='law'&&typeof ritLawWire==='function')ritLawWire(c);}
 /* redraw in place and keep the keyboard where it was, found by what the
    control does and not by where it sits */
 function ritBankRedraw(b){
@@ -91630,8 +91683,19 @@ var RIT_KINDS=[
  {k:'aff', nm:'Affirmation', says:'A line you say out loud.', ic:'<circle cx="11" cy="12" r="7"/><path d="M18 12h4"/>'},
  {k:'act', nm:'Action', says:'You do something with your body or with another person.', ic:'<circle cx="12" cy="12" r="7"/><path d="M7 17L17 7"/>'},
  {k:'med', nm:'Meditation', says:'You hold your attention on one thing, the breath included.', ic:'<circle cx="12" cy="12" r="7"/><path d="M9 12h6"/>'},
- {k:'rel', nm:'Release', says:'You let go of charge a place in your body is holding.', ic:'<circle cx="12" cy="13" r="7"/><path d="M12 13V2"/>'}];
-var RIT_KIND_ORD={aff:0, act:1, med:2, rel:3};
+ {k:'rel', nm:'Release', says:'You let go of charge a place in your body is holding.', ic:'<circle cx="12" cy="13" r="7"/><path d="M12 13V2"/>'},
+ /* A FIFTH KIND, 22 November, for the law of the week (ui/ritlaw.js): three
+    questions about one law on an eleven point scale. Each of the four above
+    is defined by a physical act, and this is none of them. Action's own
+    sentence says the body or another person, and answering how often you
+    stop at enough is neither, so filing it there would print a false
+    sentence on its hover. It is not attention held on one thing either. The
+    word is the Intake page's own: a law with three answers "is measured".
+    Its mark is the ring with a needle, a gauge read once. week:false keeps it
+    out of the week's key, because it is never a block on a day; its card
+    carries its own word and sentence, the unpack rule. */
+ {k:'msr', nm:'Measure', says:'You answer three questions about one law, and the law is measured.', ic:'<circle cx="12" cy="12" r="7"/><path d="M12 12l4-4"/>', week:false}];
+var RIT_KIND_ORD={aff:0, act:1, med:2, rel:3, msr:4};
 /* EVERY PRACTICE'S KIND, BY HAND, read off its own how text in
    engine/data/practice.js, never off its track: a track is a topic and not an
    act. Sitting with the attention held on the breath, a point, a sound or a
@@ -91678,7 +91742,8 @@ function ritKindChip(k){
    Planned, Missed key went on 18 November, and a block's state is on its
    press. Each word is its own carrier. */
 function ritKindKeyHtml(){
- return '<div class="rv-kkey" role="group" aria-label="Kinds">'+RIT_KINDS.map(function(K){return ritKindChip(K.k);}).join('')+'</div>';}
+ return '<div class="rv-kkey" role="group" aria-label="Kinds">'+RIT_KINDS.filter(function(K){return K.week!==false;})
+  .map(function(K){return ritKindChip(K.k);}).join('')+'</div>';}
 /* A DAY'S BLOCKS IN KIND ORDER, Affirmation, Action, Meditation, Release, so
    the colours line up in rows across the week the way he drew them; inside a
    kind a set time comes before any time, then the order they were read. Each
@@ -91771,8 +91836,8 @@ function ritWeekCss(){
  st.textContent=[
   /* the four kinds, dark first, then darker inks for the light lightings,
      each at three to one or more against its ground */
-  ':root{--kd-aff:#D19255;--kd-act:#C4635E;--kd-med:#8296DB;--kd-rel:#6FC5A3}',
-  'body.snow,body.glasswhite,body.lumen #lpanel,body.lumen #rpanel,body.lumen #sheet{--kd-aff:#9A6435;--kd-act:#A4473F;--kd-med:#5A6DB0;--kd-rel:#3F8068}',
+  ':root{--kd-aff:#D19255;--kd-act:#C4635E;--kd-med:#8296DB;--kd-rel:#6FC5A3;--kd-msr:#B08CD0}',
+  'body.snow,body.glasswhite,body.lumen #lpanel,body.lumen #rpanel,body.lumen #sheet{--kd-aff:#9A6435;--kd-act:#A4473F;--kd-med:#5A6DB0;--kd-rel:#3F8068;--kd-msr:#7B5A9F}',
   '.rv-kic{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-kch{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px 0 7px;border-radius:999px;color:var(--ink);font-size:13px;',
   ' background:color-mix(in srgb,var(--c) 16%,transparent);cursor:help}',
@@ -91861,6 +91926,166 @@ function ritWeekCss(){
  document.head.appendChild(st);}
 
 try{window.__at&&window.__at('ui/ritweek.js');}catch(e){}
+/* ============================================================
+   THE LAW OF THE WEEK. 22 November.
+
+   His ask: the Ritual system serves one law a week that is not measured yet,
+   as a ritual practice, so a person is not asked to sit down to all sixty
+   three questions at once.
+
+   NOTHING HERE DECIDES WHICH LAW. The Intake page already has the one answer
+   to "what is next", iqNext (ui/intakeui.js): the first law in body order,
+   crown to root, with a question still unanswered. This file asks it and
+   never walks the order itself, so a law measured on the Intake page is
+   skipped here with nothing to keep in step, and a person doing both is
+   served the next law either has left.
+
+   NOTHING HERE DRAWS OR WRITES A QUESTION. The pop-up draws the law's three
+   framings with iqFramings, the function all three Intake views draw them
+   with, and a press goes through iqPress, the Intake page's own press lifted
+   out of renderIntake for exactly this second caller. So the scale, its
+   rounding of a reference profile's decimals, the save, its report through
+   status() and the worked example's refusal are each one piece of code.
+
+   THE WEEK IS THE CALENDARS' WEEK. Every calendar on the Ritual tab starts on
+   Sunday (SV24, ritWc in ui/ritual.js), so the week's law turns on Sunday
+   too: a week is the Sunday on or before today and the six days after it.
+
+   DONE IS THE DID LOG, the way a challenge is done. When the week's law gets
+   its third answer, from this pop-up or from the Intake page, one entry
+   [day, 'iq:<law index>'] goes into the same log a challenge's tick writes
+   (ritMore, ui/ritcal.js), through its one writer, ritMoreWrite, which
+   refuses a worked example and says so when the store will not take it. The
+   index and not the name, because the index is what the answers are keyed by
+   (answers[li*3+t]) and two laws have been renamed under their answers
+   before. That entry is what holds the card on this law, lit, for the rest
+   of the week: without it the third answer would move iqNext on and the card
+   would serve a second law the same week.
+
+   AND WHEN EVERY LAW IS MEASURED there is nothing to serve, so there is no
+   card. The one exception is the week the last law was measured in, which
+   keeps its lit card until Sunday, the same as any other week's.
+   ============================================================ */
+var RIT_LAW_ID=/^iq:\d+$/;
+/* the Sunday that opens the week a day key falls in */
+function ritLawWeek(day){return day-ritWc(day);}
+/* THIS WEEK'S LAW, or null. {li, done}: li the law's index in SI, done when
+   the did log holds its entry inside this week. A done entry wins over
+   iqNext, which has already moved past it. */
+function ritLawOf(p){
+ if(!p||!p.intake||!p.intake.answers||typeof iqNext!=='function')return null;
+ var today=ritToday0(), w0=ritLawWeek(today), hit=null;
+ if(p===CURP)ritMore().did.forEach(function(x){
+  if(!hit&&x[0]>=w0&&x[0]<=w0+6&&RIT_LAW_ID.test(x[1])&&SI[+x[1].slice(3)])hit=x;});
+ if(hit)return {li:+hit[1].slice(3), done:true};
+ var n=iqNext(p);
+ return n==null?null:{li:n, done:false};}
+/* the week's law measured: one did entry, once a week. Called by iqPress after
+   the third answer's save has landed, never before it. */
+function ritLawMark(li){
+ /* not this person's own record: the answer was already refused or is not
+    theirs to mark, and ritMoreWrite would put a failure over it */
+ if(!SI[li]||!ritOwn())return false;
+ var today=ritToday0(), w0=ritLawWeek(today), nx=iqNext(CURP);
+ return ritMoreWrite(function(m){
+  if(m.did.some(function(x){return x[0]>=w0&&x[0]<=w0+6&&RIT_LAW_ID.test(x[1]);}))return;
+  m.did.push([today,'iq:'+li]);},
+  'Measured. '+SI[li].nm+' was this week\'s law. '
+  +(nx==null?'Every law is measured, so nothing more comes.':'The next law comes on Sunday, when the week turns.'));}
+/* what the law is, for the badge's hover and tap: the verb its questions ask
+   about, the Intake's own phrase (IQ_STEM, engine/intake.js), and what the
+   ring round its mark says */
+function ritLawSays(l){
+ return 'How often you '+IQ_STEM[l.nm]+'. Its three questions each light one part of the ring, and a law with all three answered is measured.';}
+/* how far the week's law is, in what is left and never as a fraction, the
+   Intake header's rule: "1 of 3" is a score */
+function ritLawLeft(W,g){
+ if(W.done)return 'Measured this week';
+ var left=3-g;
+ return g?left+(left===1?' question left':' questions left'):'This week\'s law, 3 questions';}
+
+/* ---------------- the card ----------------
+   Last in Called for, after the practice cards (ritSugHtml says why), in
+   the affirmations' row's shape and classes (ritAffCardHtml, ui/ritweek.js)
+   for the same reasons: it is not a practice to add or dismiss, so it has no green and no red, and it is not
+   in RIT.sug, whose readers take a card's place in that list as its index.
+   Symbol first: the law's own ring from the Intake page (iqLawBadge), its
+   segments lit as its answers land. Its name is the headline and the press,
+   and the second row is the kind and how far, nothing else. Lit once the
+   week's law is measured, the rule the affirmations' row keeps. */
+function ritLawCardHtml(st){
+ var W=ritLawOf(CURP); if(!W)return '';
+ if(typeof iqArtCss==='function')iqArtCss();
+ ritLawCss();
+ var l=SI[W.li], s=iqScore(CURP)[l.nm], g=iqGot(CURP,W.li), K=ritKind('msr');
+ return '<li class="rv-affc rv-lawc'+(W.done?' rv-on':'')+'" style="--c:'+ritKindCol('msr')+'" data-kind="msr">'
+  +'<div class="rv-sgh"><button type="button" class="rv-sgn rv-bko'+(W.done?' rv-on':'')+'" data-act="law-open" data-wlaw="'+W.li+'" aria-label="'
+  +esc('This week\'s law, '+l.nm+'. '+(W.done?'Measured this week. Open':'Answer its questions'))+'">'+esc(l.nm)+'</button>'
+  +'<span class="rv-lawb"'+rvTip(l.nm,ritLawSays(l))+' role="img" aria-label="'+esc(l.nm+'. '+ritLawSays(l))+'">'+iqLawBadge(l,s,g,'md')+'</span></div>'
+  +'<div class="rv-sgo"><span class="rv-sgk"'+rvTip(K.nm,K.says)+'>'+ritKindIc('msr')+esc(K.nm)+'</span>'
+  +'<span class="rv-sgm">'+esc(ritLawLeft(W,g))+'</span></div></li>';}
+
+/* ---------------- the pop-up ----------------
+   The law the card opened, pinned on RIT.pop.li by the press, so the third
+   answer leaves the person looking at what they just measured rather than at
+   the next law, the Intake page's own lesson ("THE LAW IN HAND IS PINNED ON
+   ARRIVAL", renderIntake). Inside the Intake page's grammar, its classes and
+   its seat colour: the law's ring and seat line, the gap between the three
+   answers (iqGap), and the three framings, all the Intake page's functions. */
+function ritPopLaw(st){
+ var P=RIT.pop, li=(P&&P.li!=null&&SI[P.li])?P.li:null;
+ if(li==null){var W0=ritLawOf(CURP); li=W0?W0.li:null;}
+ if(li==null)return ritPopGone('Every law is measured. Nothing is waiting this week.');
+ var p=CURP, l=SI[li], s=iqScore(p)[l.nm], g=iqGot(p,li), W=ritLawOf(p), wk=!!(W&&W.done&&W.li===li);
+ var body='<div class="iqa iqw rv-plaw" style="--c:'+seatCol(l.b)+'">'
+  +'<div class="iqw-hd">'+iqLawBadge(l,s,g,'md')
+  +'<div class="iqw-hx"><div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div>'
+  +'<div class="iqa-sub">'+esc(iqLine(s,g))+'</div></div></div>'
+  +iqGap(p,li,356)
+  +'<div class="iq-law open iqa-inhand">'+iqFramings(p,iqList(),li)+'</div>'
+  +(wk?'<p class="rv-pp">'+(iqNext(p)==null?'Every law is measured, so nothing more comes.':'The next law comes on Sunday, when the week turns.')+'</p>':'')
+  +'</div>';
+ return ritPopShell(ritKindCol('msr'),l.nm,wk?'Measured this week':g>=3?'Measured':ritLawLeft({done:false},g),body,'');}
+/* THE SCALE'S PRESSES. One answer through iqPress, then the page under the
+   sheet and the pop-up are both drawn again from the record, and the
+   keyboard is put back on the cell that was pressed, found by what it is.
+   On a worked example the cells are drawn disabled, the Intake page's rule,
+   so the pop-up reads as a reading and offers no press the engine refuses. */
+function ritLawWire(c){
+ var only=typeof showOnly==='function'&&showOnly();
+ c.querySelectorAll('[data-a]').forEach(function(el){
+  if(only){el.disabled=true; el.setAttribute('aria-disabled','true'); return;}
+  el.onclick=function(){
+   var a=el.getAttribute('data-a'), v=el.getAttribute('data-v');
+   if(!iqPress(+a,+v))return;
+   if(typeof render==='function')render();
+   ritRender();
+   if(!RIT.pop||RIT.pop.t!=='law')return;
+   c.innerHTML=ritBankHtml(); ritBankWireIn();
+   var f=c.querySelector('[data-a="'+a+'"][data-v="'+v+'"]');
+   if(f){f.focus({preventScroll:true}); f.classList.add('iqa-pop');}};});}
+
+/* ---------------- the look ----------------
+   The card is the affirmations' row (ui/ritweek.js) and the framings are the
+   Intake page's (iqArtCss names .iqw beside #iqbody), so this is only what
+   neither has: the badge's place on the headline row, the pop-up's head row,
+   and a wider sheet, because the sheet's 390 gives each of the eleven cells
+   32 pixels and the Intake page gives them 48 at the same scale. */
+function ritLawCss(){
+ if(document.getElementById('ritlaw-css'))return;
+ var st=document.createElement('style'); st.id='ritlaw-css';
+ st.textContent=[
+  '.rv-lawb{display:grid;place-items:center;min-width:44px;min-height:44px;border-radius:999px;cursor:help}',
+  '.rv-lawb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-lawc .rv-sgh{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:12px}',
+  '.sheet-card:has(.rv-plaw){width:min(600px,100%)}',
+  '.rv-plaw{gap:16px}',
+  '.iqw-hd{display:flex;align-items:center;gap:12px}',
+  '.iqw-hx{display:flex;flex-direction:column;gap:2px;min-width:0}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
+try{window.__at&&window.__at('ui/ritlaw.js');}catch(e){}
 /* ============================================================
    AFFIRMATIONS, THE SHEET, 18 November. His words: "This is a small
    affirmation engine utility that I want added to the ritual builder." And
@@ -116247,5 +116472,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008482593"></div>
+<div id="eof" hidden data-len="008497109"></div>
 </body></html>

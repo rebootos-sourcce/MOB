@@ -651,11 +651,15 @@ function iqArtCss(){
   ' #iqx-arch .iqx-ab{padding:10px 12px;font-size:14px}',
   ' #iqx-arch .iqx-eol{font-size:14px}}',
   '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
-  /* ---- one law: its three framings, each a card with its own icon ---- */
-  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
-  '#iqbody .iqa .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
+  /* ---- one law: its three framings, each a card with its own icon ----
+     .iqw is the second host of iqFramings, the Ritual tab's law of the week
+     in its pop-up (ui/ritlaw.js). It is named beside #iqbody in each rule
+     rather than given rules of its own, so the two scales cannot be drawn
+     two ways. */
+  '#iqbody .iqa .iq-law,.iqw .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
+  '#iqbody .iqa .iq-qc,.iqw .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
   ' background:color-mix(in srgb,var(--c) 6%,var(--sunk))}',
-  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc{border-color:transparent}',
+  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc,body.punch .iqw .iq-qc,body.lumen .iqw .iq-qc{border-color:transparent}',
   '.iqa-fr{display:grid;gap:12px;min-width:0}',
   '.iqa-open .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
   '.iqa-flr{display:flex;align-items:center;gap:8px;margin-bottom:4px}',
@@ -665,10 +669,10 @@ function iqArtCss(){
   '.iqa-qt{font-size:16px;line-height:1.5;color:var(--ink)}',
   /* the scale ramps from the sunk ground toward the seat, so the ends read as
      ends before a number is read. Pressed is the seat solid. */
-  '#iqbody .iqa .iq-sl{border-radius:var(--r-xs)}',
-  '#iqbody .iqa .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
-  '#iqbody .iqa .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
-  '#iqbody .iqa .iq-n.on{background:var(--c);color:var(--on-accent)}',
+  '#iqbody .iqa .iq-sl,.iqw .iq-sl{border-radius:var(--r-xs)}',
+  '#iqbody .iqa .iq-n,.iqw .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
+  '#iqbody .iqa .iq-n:hover,.iqw .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
+  '#iqbody .iqa .iq-n.on,.iqw .iq-n.on{background:var(--c);color:var(--on-accent)}',
   '.iqa-gap{display:block;width:100%;height:auto}',
   '.iqa-sub{font-size:13.5px;color:var(--dim)}',
   '.iqa-sub b{font-weight:500;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
@@ -1009,6 +1013,37 @@ function iqFramings(p,Q,li){
     +'aria-pressed="'+(near===n)+'">'+n+'</button>';
   h+='</div></div>';});
  return h;}
+/* ONE ANSWER PRESSED, WHEREVER ITS SCALE IS DRAWN. These lines were the body
+   of the [data-a] press inside renderIntake, and on 22 November a second
+   surface drew iqFramings: the Ritual tab's law of the week (ui/ritlaw.js),
+   which serves one law's three questions in a pop-up. A second copy of the
+   press there would be a second writer for the sixty three answers, and the
+   two would drift the first time one of them learned a rule, so both scales
+   call this. a is the answer's index, v its value. Returns null, having
+   written nothing, when the engine refuses it; otherwise the law and whether
+   the press added an answer rather than changed one.
+   A changed answer is a new reading of that law, so the releases counted
+   against the old one stop counting (engine/compute.js, lawAnswered). Even
+   when the mean of the three lands on the same number: the person has just
+   told us where the law is, and that wins over the model's estimate. */
+function iqPress(a,v){
+ var li=Math.floor(+a/3), was=iqGot(CURP,li);
+ /* the week's law is read BEFORE the write, because once its third answer
+    lands iqNext has already moved on and the law that was this week's can no
+    longer be told from the next one */
+ var wk=(typeof ritLawOf==='function')?ritLawOf(CURP):null;
+ /* the write is the engine's, so a worked example refuses it there and the
+    reporter it bound says what the press would do on the person's own */
+ if(!iqAnswer(CURP,+a,+v))return null;
+ /* the press reports its save like the other intake writes, so a refused
+    write is said and not left for a reload to discover, and the answer
+    stays on screen either way, the same as [data-ixb] in renderIntake */
+ iqApply(CURP); pSave(); var ok=statusSaved(); syncLw();
+ /* the week's law measured here or in its pop-up is the week's ritual done,
+    whichever scale was pressed, so the Ritual tab does not serve a second law
+    the same week to a person who answered the first one on this page */
+ if(ok&&wk&&!wk.done&&wk.li===li&&was<3&&iqGot(CURP,li)>=3&&typeof ritLawMark==='function')ritLawMark(li);
+ return {li:li, fresh:iqGot(CURP,li)>was};}
 /* THE HEADER. Where I am, how far, and how to look. The ring is the page's
    figure: one segment per law, all twenty one, in the seat colours crown to
    root, lit as each reads. CQ sits in the middle of it once a law is measured.
@@ -1739,25 +1774,18 @@ function renderIntake(){
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
-  /* a changed answer is a new reading of that law, so the releases counted
-     against the old one stop counting (engine/compute.js, lawAnswered). Even
-     when the mean of the three lands on the same number: the person has just
-     told us where the law is, and that wins over the model's estimate. */
-  var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
-  /* the write is the engine's, so a worked example refuses it there and the
-     reporter it bound says what the press would do on the person's own */
-  if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
+  /* the write, its save and its report are iqPress, shared with the Ritual
+     tab's law of the week; what follows is this page's own */
+  var pr=iqPress(+el.dataset.a,+el.dataset.v); if(!pr)return;
+  var li=pr.li;
   /* one at a time moves on to the next framing still missing an answer, and to
      the law's reading once all three are in */
   var one=(IQ_VIEW==='one');
   if(one){IQ_OPEN=li; IQ_STEP={li:li,t:iqFrAfter(CURP,li,+el.dataset.a%3)}; IQ_FRESH=false;}
-  /* the press reports its save like the other intake writes, so a refused
-     write is said and not left for a reload to discover, and the answer
-     stays on screen either way, the same as [data-ixb] above. render() runs
-     first: it can repaint this page itself, and the arrival and the focus are
-     read once, so they are set for the draw that comes last. */
-  iqApply(CURP); pSave(); statusSaved(); syncLw(); render();
-  IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
+  /* render() runs first: it can repaint this page itself, and the arrival and
+     the focus are read once, so they are set for the draw that comes last. */
+  render();
+  IQ_PULSE={li:li,a:+el.dataset.a,fresh:pr.fresh};
   if(one){IQ_ANIM={step:1}; IQ_FOCUS=(IQ_STEP.t===3)?'.iqp-ft .btn.pri':'#iqp-qh';}
   renderIntake();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and

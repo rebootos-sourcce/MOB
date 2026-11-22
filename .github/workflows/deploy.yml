@@ -346,6 +346,11 @@ jobs:
           - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
           - { gate: record, timeout: 20, command: node tests/record.js }
           - { gate: ritweek, timeout: 20, command: node tests/ritweek.js }
+          # ADDED 22 November, the law of the week (ui/ritlaw.js): one law the
+          # intake has not measured, served in Called for through iqNext, and
+          # answered in a pop-up through the Intake page's own iqFramings and
+          # iqPress. Wired here the day it lands, so it is never an orphan.
+          - { gate: ritlaw, timeout: 20, command: node tests/ritlaw.js }
           - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
           - { gate: paywall, timeout: 20, command: node tests/paywall.js }
           - { gate: safepage, timeout: 20, command: node tests/safepage.js }

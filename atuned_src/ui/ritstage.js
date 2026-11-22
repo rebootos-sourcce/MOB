@@ -164,8 +164,15 @@ function ritSugHtml(st){
     would be untrue */
  /* the affirmations lead the list, ritAffCardHtml (ui/ritweek.js) says why */
  var aff=(typeof ritAffCardHtml==='function')?ritAffCardHtml(st):'';
- if(!list.length&&all.length&&!undo&&!aff)return saved;
- var body=!list.length?(aff?'<ul class="rv-sugl">'+aff+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.':'Nothing called for yet. Record a story to fill it.')+'</p>'
+ /* and the law of the week closes the list, ui/ritlaw.js. Like the
+    affirmations' row it is not in RIT.sug, and like it, it keeps the section
+    up when nothing else is called for. With it on the list a blank profile's
+    line is "Nothing else", because "Nothing called for yet" under a card
+    would be the contradiction SV16 took off this list. */
+ var law=(typeof ritLawCardHtml==='function')?ritLawCardHtml(st):'';
+ if(!list.length&&all.length&&!undo&&!aff&&!law)return saved;
+ var body=!list.length?(aff||law?'<ul class="rv-sugl">'+aff+law+'</ul>':'')+'<p class="rv-empty">'+(all0.length?'Nothing else called for. Each one is added, saved or dismissed.'
+   :law?'Nothing else called for yet. Record a story to fill it.':'Nothing called for yet. Record a story to fill it.')+'</p>'
   /* THE CARD IS ritBankCard NOW, 20 November (ui/ritbank.js), so a Path or
      Avatar host draws this same card and not its own. This is its only
      caller: measured at D-4, neither page draws one yet. The rulings that
@@ -176,7 +183,11 @@ function ritSugHtml(st){
      his three, add, save and dismiss, with an accessible name that keeps the
      span a press sets. The line under the heading said "Its mark is the
      point" until D-4 took the mark off the card, a sentence about nothing. */
-  :'<ul class="rv-sugl">'+aff+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+'</ul>';
+  /* the law card goes LAST, after the practice cards: they are dragged onto
+     the week and sit under it so the drag is a short reach, and it is never
+     dragged. Ahead of them it pushed the first card a row further from the
+     week, which tests/ritweek.js RW8 measured as a drop that never landed. */
+  :'<ul class="rv-sugl">'+aff+list.map(function(x,i){return ritBankCard(x,i,st);}).join('')+law+'</ul>';
  /* CALLED FOR, NOT SUGGESTED, SV16. His words: "the suggested aren't
     suggested, those are pulled from your ritual selectors. It's the stuff it
     picks up based off your story." True of the code: every card is one of
@@ -186,7 +197,9 @@ function ritSugHtml(st){
     story was not true of every card, since the field can carry charge from
     the quiz. Where the cards come from is said in the line under it. */
  return '<div class="rv-sec rv-sug rv-cfw"><div class="rv-hd"><span class="rv-h">Called for</span></div>'
-  +'<p class="rv-mean">Read from your story, your avatar\'s stories and the places you hold the most charge. '
+  /* the law card's source is named only while there is one, so the line is
+     never true of a card that is not on the list */
+  +'<p class="rv-mean">Read from your story, your avatar\'s stories'+(law?', the places you hold the most charge and the laws your intake has not measured. ':' and the places you hold the most charge. ')
   +'Each is the practice that point calls for at the charge you carry now. Its colour is its kind. Drag one onto a day to set it once.</p>'+undo+body+foot+'</div>'+saved;}
 /* ---------------- ritual to avatar ----------------
    ROUND QS made this card a picture first. His words: "everything like the

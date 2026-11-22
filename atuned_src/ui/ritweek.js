@@ -37,8 +37,19 @@ var RIT_KINDS=[
  {k:'aff', nm:'Affirmation', says:'A line you say out loud.', ic:'<circle cx="11" cy="12" r="7"/><path d="M18 12h4"/>'},
  {k:'act', nm:'Action', says:'You do something with your body or with another person.', ic:'<circle cx="12" cy="12" r="7"/><path d="M7 17L17 7"/>'},
  {k:'med', nm:'Meditation', says:'You hold your attention on one thing, the breath included.', ic:'<circle cx="12" cy="12" r="7"/><path d="M9 12h6"/>'},
- {k:'rel', nm:'Release', says:'You let go of charge a place in your body is holding.', ic:'<circle cx="12" cy="13" r="7"/><path d="M12 13V2"/>'}];
-var RIT_KIND_ORD={aff:0, act:1, med:2, rel:3};
+ {k:'rel', nm:'Release', says:'You let go of charge a place in your body is holding.', ic:'<circle cx="12" cy="13" r="7"/><path d="M12 13V2"/>'},
+ /* A FIFTH KIND, 22 November, for the law of the week (ui/ritlaw.js): three
+    questions about one law on an eleven point scale. Each of the four above
+    is defined by a physical act, and this is none of them. Action's own
+    sentence says the body or another person, and answering how often you
+    stop at enough is neither, so filing it there would print a false
+    sentence on its hover. It is not attention held on one thing either. The
+    word is the Intake page's own: a law with three answers "is measured".
+    Its mark is the ring with a needle, a gauge read once. week:false keeps it
+    out of the week's key, because it is never a block on a day; its card
+    carries its own word and sentence, the unpack rule. */
+ {k:'msr', nm:'Measure', says:'You answer three questions about one law, and the law is measured.', ic:'<circle cx="12" cy="12" r="7"/><path d="M12 12l4-4"/>', week:false}];
+var RIT_KIND_ORD={aff:0, act:1, med:2, rel:3, msr:4};
 /* EVERY PRACTICE'S KIND, BY HAND, read off its own how text in
    engine/data/practice.js, never off its track: a track is a topic and not an
    act. Sitting with the attention held on the breath, a point, a sound or a
@@ -85,7 +96,8 @@ function ritKindChip(k){
    Planned, Missed key went on 18 November, and a block's state is on its
    press. Each word is its own carrier. */
 function ritKindKeyHtml(){
- return '<div class="rv-kkey" role="group" aria-label="Kinds">'+RIT_KINDS.map(function(K){return ritKindChip(K.k);}).join('')+'</div>';}
+ return '<div class="rv-kkey" role="group" aria-label="Kinds">'+RIT_KINDS.filter(function(K){return K.week!==false;})
+  .map(function(K){return ritKindChip(K.k);}).join('')+'</div>';}
 /* A DAY'S BLOCKS IN KIND ORDER, Affirmation, Action, Meditation, Release, so
    the colours line up in rows across the week the way he drew them; inside a
    kind a set time comes before any time, then the order they were read. Each
@@ -178,8 +190,8 @@ function ritWeekCss(){
  st.textContent=[
   /* the four kinds, dark first, then darker inks for the light lightings,
      each at three to one or more against its ground */
-  ':root{--kd-aff:#D19255;--kd-act:#C4635E;--kd-med:#8296DB;--kd-rel:#6FC5A3}',
-  'body.snow,body.glasswhite,body.lumen #lpanel,body.lumen #rpanel,body.lumen #sheet{--kd-aff:#9A6435;--kd-act:#A4473F;--kd-med:#5A6DB0;--kd-rel:#3F8068}',
+  ':root{--kd-aff:#D19255;--kd-act:#C4635E;--kd-med:#8296DB;--kd-rel:#6FC5A3;--kd-msr:#B08CD0}',
+  'body.snow,body.glasswhite,body.lumen #lpanel,body.lumen #rpanel,body.lumen #sheet{--kd-aff:#9A6435;--kd-act:#A4473F;--kd-med:#5A6DB0;--kd-rel:#3F8068;--kd-msr:#7B5A9F}',
   '.rv-kic{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-kch{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px 0 7px;border-radius:999px;color:var(--ink);font-size:13px;',
   ' background:color-mix(in srgb,var(--c) 16%,transparent);cursor:help}',
