@@ -511,6 +511,8 @@ function ritBankHtml(){
  if(P.t==='chal')return ritPopChal(st);
  if(P.t==='goal')return ritPopGoal(st);
  if(P.t==='blk')return ritPopBlk(st);
+ /* the law of the week, ui/ritlaw.js */
+ if(P.t==='law'&&typeof ritPopLaw==='function')return ritPopLaw(st);
  return '';}
 /* open a pop-up. sug is a Called for card (x, from RIT.sug or a host's own
    list), aff the affirmation set, chal a challenge by its row id ch:<id>. The
@@ -540,7 +542,11 @@ function ritBankWireIn(){
  if(c)c.onchange=function(ev){var s=ev.target;
   if(!s||s.tagName!=='SELECT'||!RIT.pop||!RIT.pop.W||!c.contains(s))return;
   var a=s.getAttribute('data-sh'); if(a!=='rc-rep'&&a!=='rc-for')return;
-  ritRecurAct(RIT.pop.W,a,s.value); ritBankRedraw(s);};}
+  ritRecurAct(RIT.pop.W,a,s.value); ritBankRedraw(s);};
+ /* the law of the week's scale carries data-a, the Intake page's attribute,
+    and not data-sh, so the sheet's listener does not see it: it is wired
+    here, after every draw, by ritlaw.js */
+ if(RIT.pop&&RIT.pop.t==='law'&&typeof ritLawWire==='function')ritLawWire(c);}
 /* redraw in place and keep the keyboard where it was, found by what the
    control does and not by where it sits */
 function ritBankRedraw(b){

@@ -114,6 +114,7 @@ ui/ritstage.js
 ui/ritcal.js
 ui/ritbank.js
 ui/ritweek.js
+ui/ritlaw.js
 ui/affirmui.js
 ui/cone.js
 ui/tracesummaryui.js

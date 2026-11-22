@@ -1695,6 +1695,9 @@ function ritWire(h,c){
       nothing, so nothing repaints under it */
    case 'bank': {var bx=(RIT.sug||[])[+b.getAttribute('data-i')]; if(bx)ritBankOpen({t:'sug', x:bx}); return;}
    case 'aff-set': ritBankOpen({t:'aff'}); return;
+   /* the law of the week's name, ui/ritlaw.js. The law is pinned on the
+      press, so its third answer does not swap the pop-up to the next law */
+   case 'law-open': ritBankOpen({t:'law', li:+b.getAttribute('data-wlaw'), W:{}}); return;
    case 'chal-set': ritBankOpen({t:'chal', id:id}); return;
    /* the Goal tile's name, ui/ritweek.js */
    case 'pgoal': ritBankOpen({t:'goal'}); return;

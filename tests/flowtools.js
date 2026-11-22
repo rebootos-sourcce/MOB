@@ -962,10 +962,14 @@ async function flowGate(browser,FILE,ok,booted){
    return {building:document.body.classList.contains('ritbuild'), builder:!!n, sug:!!s,
     head:s?(s.querySelector('.rv-h')||{}).textContent:'', empty:s?(s.querySelector('.rv-empty')||{}).textContent:'',
     cards:[...document.querySelectorAll('#rit .rv-sg1 .rv-sgn')].map(x=>x.textContent), called:called&&called.nm, leftSug:!!L.querySelector('.rv-sug'),
+    law:document.querySelectorAll('#rit .rv-sug .rv-lawc').length,
     tile:t?(t.querySelector('.rv-tn')||{}).textContent:'', tileSays:t?(t.querySelector('.rv-tm')||{}).textContent:'',
     below:!!(s&&wk)&&s.getBoundingClientRect().top>=wk.getBoundingClientRect().bottom-1};});
-  ok(!first.building&&first.builder&&first.sug&&first.head==='Called for'&&first.cards.length===0
-    &&first.empty==='Nothing called for yet. Record a story to fill it.'&&first.tile===first.called&&!/called for/.test(first.tileSays)&&first.below&&!first.leftSug,
+  /* 22 November, intended change: a first visit has measured no law, so the
+     law of the week (ui/ritlaw.js) is the one card, and the line under it
+     says nothing ELSE is called for yet rather than contradicting it */
+  ok(!first.building&&first.builder&&first.sug&&first.head==='Called for'&&first.cards.length===0&&first.law===1
+    &&first.empty==='Nothing else called for yet. Record a story to fill it.'&&first.tile===first.called&&!/called for/.test(first.tileSays)&&first.below&&!first.leftSug,
    'FT24: a first visit with nothing read shows the builder open, the lightest practice as its first tile and not called for, and Called for under the week with nothing in it, '+JSON.stringify(first));
   /* the centre's own New ritual is for a folded left column only: open, the
      left column is the builder itself and carries no press at all */
