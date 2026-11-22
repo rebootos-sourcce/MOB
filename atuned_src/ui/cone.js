@@ -3671,45 +3671,35 @@ function clTextW(s,px,wt){
        its name as measured, and the stations on a turn are laid out with the
        same space between every pair of footprints, half of it at each end,
        which is that rule read literally: even, and nothing flush;
-     where a turn is too short to give every pair clGap's room, the lesser
-       stations draw as a small ring with no number and no name until it is
-       not. Laws go first, the longest name first. Then teachers, the
-       tighter first: the one whose unlock is closest to the teacher before
-       it on the turn, and the later of a tie, so Clarity at 97 gives way
-       before Natural Growth at 96, and Non Resistance and then Free Flow
-       before Duty when all three open at 42;
-     a small station keeps its turn, its number and its card. Its name and
-       number are on hover and on tap, and the tap opens the card like any
-       other station.
+     where a turn is too short to give every pair clGap's room, the laws
+       draw as a small ring with no name, the longest name first, until it
+       is not. The teachers took part in this too, and gave way the same
+       way, until they left the board (below);
+     a small station keeps its turn and its card. Its name is on hover and
+       on tap, and the tap opens the card like any other station.
    Nothing is moved off its turn and no number is changed to make room. */
 function clGap(stk){return stk?8:14;}
-/* a two word name sits on two lines on a phone, split at the space nearest
-   its middle. Free Flow, Non Resistance, Grounded Fire and Natural Growth
-   were the names that collided, and each is two words: on two lines its
-   footprint is its longer word and not the whole name, which is most of the
-   room the narrow turns were short of. */
-function clLines(nm,stk){
- var w=String(nm).split(' '); if(!stk||w.length<2)return [nm];
- var best=1, bd=1e9;
- for(var j=1;j<w.length;j++){var d=Math.abs(w.slice(0,j).join(' ').length-w.slice(j).join(' ').length); if(d<bd){bd=d; best=j;}}
- return [w.slice(0,best).join(' '),w.slice(best).join(' ')];}
+/* THE TEACHERS LEFT THE BOARD, 21 November, his words on the climb as
+   shipped at 7d26b672: "We're moving the teachers out of the center column
+   into the left rail." They were in both: a ring, a number and a name on
+   their turn here, and a row each under their seat in the rail (clRailIn),
+   so every teacher was printed twice on one screen. The rail keeps them and
+   the board keeps the laws, laid out with even room between every pair, the
+   rule above read on what is left. A teacher still has a u on its turn,
+   where its unlock number falls between the turn's two ends, because clAt
+   walks the avatar along those anchors. Nothing is drawn there. Before,
+   the anchors were wherever the teacher's ring had room to sit, so the
+   avatar's place between two numbers moved with the width of a name; now
+   it is in proportion to the numbers, which is what clAt always said. */
 function clPlace(G,t,i,stk){
- var tl=G.tiers[i], row=t.row, n=row.length, span=2*tl.hw*0.92, x0=G.cx-tl.hw*0.92, gap=clGap(stk);
- row.forEach(function(s){
-  s.dot=false;
-  if(s.t==='tch'){s.r=stk?14:17; s.ln=clLines(s.nm,stk);
-   s.half=Math.max(s.r+5,15,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
-  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,11,400)/2);}});
+ var tl=G.tiers[i], row=t.row.filter(function(s){return s.t==='law';}), n=row.length;
+ var span=2*tl.hw*0.92, x0=G.cx-tl.hw*0.92, gap=clGap(stk), rg=(t.hi-t.lo)||1;
+ t.row.forEach(function(s){if(s.t==='tch')s.u=clamp(0.06+0.88*(s.at-t.lo)/rg,0.06,0.94);});
+ row.forEach(function(s){s.dot=false; s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,11,400)/2);});
  var free=function(){var w=span; row.forEach(function(s){w-=2*s.half;}); return w;};
- var laws=row.filter(function(s){return s.t==='law';})
-  .sort(function(a,b){return b.half-a.half||row.indexOf(b)-row.indexOf(a);});
- var prev=t.lo, tch=row.filter(function(s){return s.t==='tch';});
- tch.forEach(function(s){s.dt=s.at-prev; prev=s.at;});
- tch.sort(function(a,b){return a.dt-b.dt||row.indexOf(b)-row.indexOf(a);});
- var order=laws.concat(tch);
- for(var j=0;j<order.length&&free()<gap*n;j++){
-  order[j].dot=true; order[j].half=order[j].t==='tch'?6:4;}
- var g=Math.max(0,free()/n), x=x0+g/2;
+ var order=row.slice().sort(function(a,b){return b.half-a.half||row.indexOf(b)-row.indexOf(a);});
+ for(var j=0;j<order.length&&free()<gap*n;j++){order[j].dot=true; order[j].half=4;}
+ var g=Math.max(0,free()/Math.max(1,n)), x=x0+g/2;
  row.forEach(function(s){x+=s.half; s.x=x; s.u=(x-(G.cx-tl.hw))/(2*tl.hw); x+=s.half+g;});}
 /* where on the path a CQ stands: the turn, then u by the real anchors */
 function clAt(T,cq){
@@ -3769,48 +3759,34 @@ function clSvg(W,H,stk){
    +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?11:13)+'"/>'
    +'<circle cx="'+gr+'" cy="'+gy+'" r="'+(stk?6:7)+'" class="in"/></g>';
   t.row.forEach(function(s){
+   /* the teachers are the rail's (clPlace says why); a teacher pressed
+      there lights its own laws here, so the board still answers the press */
+   if(s.t==='tch')return;
    var y=clFront(G,i,s.u)[1], x=s.x, X=x.toFixed(1), Y=y.toFixed(1);
-   var open=cq!==null&&hi>=s.at, sel=CONE.clSel===s.k;
+   var open=cq!==null&&hi>=s.at, sel=CONE.clSel===s.k||CONE.clSel===s.to;
    var cls=' '+(open?'open':'shut')+(sel?' sel':'');
    if(s.dot){
-    /* drawn small for room: the name and number are on hover and tap */
-    var tip=s.t==='tch'?'Opens at coherence '+s.at+'. Press for its card.':'A law of '+esc(t.b)+'. Press for its card.';
-    o+='<g class="cl-st cl-dot'+(s.t==='tch'?' cl-t':' cl-l')+cls+(s.t==='tch'&&clSealed(done,s.k)?' sealed':'')+'" data-cl="'+esc(s.k)+'" tabindex="0" role="button"'
-     +' data-tip-k="'+esc(s.nm)+'" data-tip="'+tip+'" aria-label="'+esc(s.nm)+(s.t==='tch'?', opens at coherence '+s.at:', a law')+'" style="--c:'+col+'">'
+    /* drawn small for room: the name is on hover and tap */
+    o+='<g class="cl-st cl-dot cl-l'+cls+'" data-cl="'+esc(s.k)+'" tabindex="0" role="button"'
+     +' data-tip-k="'+esc(s.nm)+'" data-tip="A law of '+esc(t.b)+'. Press for its card." aria-label="'+esc(s.nm)+', a law" style="--c:'+col+'">'
      +'<circle class="cl-hit" cx="'+X+'" cy="'+Y+'" r="12"/>'
-     +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+(s.t==='tch'?5:3.5)+'"/></g>';
+     +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="3.5"/></g>';
     return;}
-   if(s.t==='tch'){
-    var r=s.r, d=done[s.k]||{}, C=2*Math.PI*(r+5);
-    var arc=function(on,ix){return '<circle class="cl-arc'+(on?' on':'')+'" cx="'+X+'" cy="'+Y+'" r="'+(r+5)+'" stroke-dasharray="'+(C/3-4).toFixed(1)+' '+(C-C/3+4).toFixed(1)+'" stroke-dashoffset="'+(-(C/3)*ix).toFixed(1)+'" transform="rotate(-90 '+X+' '+Y+')"/>';};
-    o+='<g class="cl-st cl-t'+cls+(clSealed(done,s.k)?' sealed':'')+'" data-cl="'+s.k+'" tabindex="0" role="button" aria-label="'+esc(s.nm)+', opens at coherence '+s.at+'" style="--c:'+col+'">'
-     +arc(d.rel,0)+arc(d.rit,1)+arc(d.aff,2)
-     +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+r+'"/>'
-     +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.62:0.74)+'</g>'
-     /* the pill holds 11px, the type floor, in 14 tall with its top on the
-        same line as the 9.5px pill's. 16 tall and three higher touched the name of the teacher on the turn above, at the right end
-        of every turn on a desk, where a turn rises to meet the next one */
-     +'<g class="cl-pill"><rect x="'+(x-15).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="30" height="14" rx="7"/>'
-     +'<text x="'+X+'" y="'+(y-r-8.2).toFixed(1)+'">'+s.at+'</text></g>'
-     +'<text class="cl-lb" x="'+X+'" y="'+(y+r+(stk?14:17)).toFixed(1)+'">'
-     +s.ln.map(function(l,j){return '<tspan x="'+X+'"'+(j?' dy="12"':'')+'>'+esc(l)+'</tspan>';}).join('')+'</text></g>';}
-   else {
-    var rl=s.r;
-    o+='<g class="cl-st cl-l'+cls+((done[s.to]||{}).aff?' got':'')+'" data-cl="'+esc(s.k)+'" tabindex="0" role="button" aria-label="'+esc(s.nm)+', a law" style="--c:'+col+'">'
-     +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+rl+'"/>'
-     +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.42:0.5)+'</g>'
-     +(stk?'':'<text class="cl-lb sm" x="'+X+'" y="'+(y+rl+13).toFixed(1)+'">'+esc(s.nm)+'</text>')+'</g>';}});});
- /* THE TOP POLE: Source, at 100. A ring with an arrow pointing up out of it,
-    the up arrow this product already draws in strokes (CL_UP, the descent
-    door's own arrow turned over), at the point of the upper pyramid. */
- o+=clPole('src',cx,G.pt,G.pr,CL_UP,hi>=100,'Source','coherence 100',
-  'Source, coherence 100, the top of the climb');
+   o+='<g class="cl-st cl-l'+cls+((done[s.to]||{}).aff?' got':'')+'" data-cl="'+esc(s.k)+'" tabindex="0" role="button" aria-label="'+esc(s.nm)+', a law" style="--c:'+col+'">'
+    +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+s.r+'"/>'
+    +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.42:0.5)+'</g>'
+    +(stk?'':'<text class="cl-lb sm" x="'+X+'" y="'+(y+s.r+13).toFixed(1)+'">'+esc(s.nm)+'</text>')+'</g>';});});
+ /* THE TOP POLE: coherence, at 100. A ring with a cloud in it at the point
+    of the upper pyramid (CL_CLOUD, below, says why a cloud). The key stays
+    src: it is the press's identity and the rail's, not a word anyone reads. */
+ o+=clPole('src',cx,G.pt,G.pr,CL_CLOUD,hi>=100,'Coherence','100, the top of the climb',
+  'Coherence, 100, the top of the climb');
  /* THE BOTTOM POLE: the descent, under 41. The same ring and the same arrow
     pointing down, at the point of the lower pyramid. It is also the door the
     first climb drew as a pill: one mark for one place. The descent's steps sit
     between the floor and this pole, dim, and are never on the path. */
- o+=clPole('descent',cx,G.pb,G.pr,CL_DN,false,'The descent','under coherence '+CQ_CLIMB_FLOOR,
-  'The descent, under coherence '+CQ_CLIMB_FLOOR+', a mirror');
+ o+=clPole('descent',cx,G.pb,G.pr,CL_FIRE,false,'Decoherence','under '+CQ_CLIMB_FLOOR+', the descent',
+  'Decoherence, under coherence '+CQ_CLIMB_FLOOR+', the descent, a mirror');
  /* THE DESCENT'S ROWS, AS MARKS. The roster grew from eight to every row
     DESCENT carries (the shadow roster, 21 November), and eight names under
     the climb fitted where twenty seven print over each other. So each is a
@@ -3857,8 +3833,21 @@ function clSvg(W,H,stk){
  return o+'</svg>';}
 /* THE TWO ARROWS. The down arrow is the descent door's own (clCard), and the
    up arrow is the same stroke turned over, so the pair is one drawing. */
-const CL_UP='M12 20V4M6 10l6-6 6 6';
-const CL_DN='M12 4v16M6 14l6 6 6-6';
+/* A CLOUD OVER, A FIRE UNDER, 21 November, his words on the climb as
+   shipped at 7d26b672: "instead of saying source with a little arrow at the
+   top, I'm not sure what that is. Oh, add coherence, and then at the bottom
+   decoherence. But I like that little fiery design, so maybe at the top add
+   like a little cloud design." The fire he liked is the descent's own red:
+   the bottom ring and the embers of its twenty seven marks under the climb,
+   which stay as they were. So the arrows, which he could not read, give way
+   to a pair that can: a cloud in the light the top already wears, a flame in
+   the red the bottom already wears, both in strokes and no fill, the house
+   rule for icons, and each with its name beside it. The arrows were his own
+   ask of earlier the same day, "arrow up, arrow down"; this is the newer
+   word. The two poles still sit at the two points and press the same way. */
+const CL_CLOUD='M7.5 18.5h9.5a4 4 0 0 0 .4-7.98a5.5 5.5 0 0 0-10.6 1.6A3.2 3.2 0 0 0 7.5 18.5z';
+const CL_FIRE='M12 20c-3.6 0-6-2.5-6-5.8c0-3.6 3-5.5 3.6-9.2c2.1 1.2 3.2 3.4 2.9 5.6c1.2-.5 2-1.7 2.2-3.2c2.1 1.9 3.3 4.2 3.3 6.8c0 3.3-2.4 5.8-6 5.8z'
+ +'M12 20c-1.4 0-2.4-1-2.4-2.4c0-1.6 1.3-2.4 2.4-3.9c1.1 1.5 2.4 2.3 2.4 3.9c0 1.4-1 2.4-2.4 2.4z';
 function clPole(k,x,y,r,ic,lit,nm,sub,aria){
  return '<g class="cl-pole cl-pole-'+(k==='src'?'up':'dn')+(lit?' open':'')+'" data-cl="'+k+'" tabindex="0" role="button" aria-label="'+esc(aria)+'">'
   +'<circle cx="'+x+'" cy="'+y+'" r="'+(r+8)+'" class="cl-hit"/>'
@@ -3880,8 +3869,10 @@ function clRender(){
    THE RAIL BESIDE THE CLIMB. Plan 2, 20 November, on the board as
    path-left-rail-chakra-stack: "The left rail groups by chakra seat, root at
    the bottom to crown at the top." So it reads the way the climb does, the
-   up arrow and Source at its head, the seven seats of BANDS from Crown down
-   to Root, and the down arrow and the descent at its foot: the board's two
+   cloud and Coherence at its head, the seven seats of BANDS from Crown down
+   to Root, and the flame and Decoherence at its foot (CL_CLOUD says why
+   those two words, the words the figure has used since it dropped Source
+   and The blueprint for the same reason, one word per concept): the board's two
    poles, and its turns, in the same order and the same colours.
 
    Every entry is read and none typed. The seats and their ranges are
@@ -3902,7 +3893,7 @@ function clRailPole(k,ic,nm,sub,lit,sel){
   +'<span class="cn-tx"><span class="cn-nu">'+esc(nm)+'</span><span class="clr-at">'+esc(sub)+'</span></span></button>';}
 function clRailIn(){
  var T=clStations(), V=clView(), hi=V.hi, cq=V.cq, done=V.done, h='';
- h+=clRailPole('src',CL_UP,'Source','Coherence 100, the top',hi>=100,CONE.clSel==='src');
+ h+=clRailPole('src',CL_CLOUD,'Coherence','100, the top of the climb',hi>=100,CONE.clSel==='src');
  T.slice().reverse().forEach(function(t){
   var i=BANDS.indexOf(t.b), col=seatCol(t.b), lo=Math.round(t.lo), up=i===BANDS.length-1?100:Math.round(t.hi);
   var on=cq!==null&&hi>=t.lo, cd=/^#[0-9a-f]{6}$/i.test(col)?rgba(hx(col),.72):col;
@@ -3936,7 +3927,7 @@ function clRailIn(){
       +' data-tip-k="'+esc(s.nm)+'" data-tip="'+esc(tip)+'">'+cnOrb(s.ic,false,true)+'</button>';}).join('')
     +'<span class="cn-tx"><span class="cn-nu">Paths</span><span class="clr-at">'+(pop?'Open at ':'Opens at ')+pat+'</span></span></div>';}
   h+='</div>';});
- h+=clRailPole('descent',CL_DN,'The descent','Under coherence '+CQ_CLIMB_FLOOR+', a mirror',false,CONE.clSel==='descent');
+ h+=clRailPole('descent',CL_FIRE,'Decoherence','Under '+CQ_CLIMB_FLOOR+', the descent, a mirror',false,CONE.clSel==='descent');
  return h;}
 function clPress(k){
  CONE.clSel=k; clRender();
@@ -3954,7 +3945,13 @@ function clPress(k){
  document.querySelectorAll('[data-clmk]').forEach(function(b){
   b.onclick=function(){var p=b.getAttribute('data-clmk').split(':'), z=clKept();
    z.done[p[0]]=z.done[p[0]]||{}; z.done[p[0]][p[1]]=true;
-   if(clKeep(z,false))clPress(k);};});}
+   if(clKeep(z,false))clPress(k);};});
+ /* the recipes' presses (clRecipes): Add is the Path card's own writer, and
+    a redraw after it is what turns the row to On your ritual */
+ document.querySelectorAll('[data-clrc]').forEach(function(b){
+  b.onclick=function(){if(ritRecipeAdd(b.getAttribute('data-clrc')))clPress(k);};});
+ document.querySelectorAll('[data-clgo]').forEach(function(b){
+  b.onclick=function(){if(typeof setTab==='function')setTab(TAB.RITUAL);};});}
 /* THE CARD'S TITLE UNDER THE BACK BAR. The rail's "Back to the compass" row
    (.rd-top, ui/drills.js) is sticky at the top of whatever scrolls it, and
    the first cut scrolled the .cl-card itself to the top of that scroller,
@@ -3985,22 +3982,23 @@ function clCard(k){
  var H=function(ic,h,sub){return '<div class="cl-hd">'+(ic?'<span class="cl-hic"><svg viewBox="0 0 24 24"><path d="'+ic+'"/></svg></span>':'')
   +'<div><div class="sh-h plain">'+esc(h)+'</div>'+(sub?'<div class="cl-sub">'+sub+'</div>':'')+'</div></div>';};
  if(k==='descent'){
-  return '<div class="cl-card">'+H(CL_DN,'The descent','A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
+  return '<div class="cl-card">'+H(CL_FIRE,'Decoherence','The descent, under coherence '+CQ_CLIMB_FLOOR+'. A mirror, not a level. This is where each behaviour ends up when nothing turns it round.')
    +DESCENT.map(function(d){return '<div class="cl-dsc"><b>'+esc(d.nm)+'</b><p>'+esc(d.d)+'</p></div>';}).join('')
    +'<p class="cl-ref">'+esc(DESCENT_REFER)+'</p></div>';}
- if(k==='src')return '<div class="cl-card">'+H(CL_UP,'Source','Coherence 100. Where every path on this pyramid ends.')+'</div>';
+ if(k==='src')return '<div class="cl-card">'+H(CL_CLOUD,'Coherence','100, the top of the climb. Where every path on this pyramid ends.')+'</div>';
  if(k.indexOf('seat:')===0||k.indexOf('badge:')===0){
   var b=k.split(':')[1], bd=compassBandOf(b), T=clStations().filter(function(t){return t.b===b;})[0];
   return '<div class="cl-card">'+H('',b+(k.indexOf('badge:')===0?' seal':''),'Opens at coherence '+Math.round(bd.lo)+'. '
    +(k.indexOf('badge:')===0?'The seal closes when every teacher on this turn is sealed: a release made, a ritual done, the laws affirmed.':'One turn of the path round the pyramid.'))
-   +'<div class="cl-sec">On this turn</div>'+clList(T.row.map(function(s){return (s.t==='tch'?s.nm+', opens at '+s.at:s.nm+', a law');}))+'</div>';}
+   +'<div class="cl-sec">On this turn</div>'+clList(T.row.map(function(s){return (s.t==='tch'?s.nm+', opens at '+s.at:s.nm+', a law');}))
+   +clRecipes(T.row.filter(function(s){return s.t==='tch';}).map(function(s){return s.k;}))+'</div>';}
  if(k.indexOf('law:')===0){
   var nm=k.slice(4), s=null; SI.forEach(function(x){if(x.nm===nm)s=x;});
   var tp=compassPoleOf(LAW_TEACHER[nm]);
   return '<div class="cl-card">'+H(s.ic,nm,'A law at the '+esc(s.b)+'. Opens with the turn, at coherence '+Math.round(compassBandOf(s.b).lo)+'.')
-   +'<p class="cl-p">Affirmed at its teacher, <b>'+esc(tp.up)+'</b>. Affirming every law of a teacher closes one third of that teacher\'s seal.</p></div>';}
+   +'<p class="cl-p">Affirmed at its teacher, <b>'+esc(tp.up)+'</b>. Affirming every law of a teacher closes one third of that teacher\'s seal.</p>'
+   +clRecipes([LAW_TEACHER[nm]])+'</div>';}
  var p=compassPoleOf(k), R=recipeOf(k)||{}, at=POLE_UNLOCK[k], open=V.cq!==null&&hi>=at, d=D[k]||{};
- var byK={}; PRACTICE.forEach(function(x){byK[x.k]=x;});
  var laws=compassLawsOf(k);
  var mk=function(part,lab){return d[part]?'<span class="cl-got">'+lab+' done</span>'
   :'<button type="button" class="btn cl-mk" data-clmk="'+k+':'+part+'"'+(open?'':' disabled')+'>'+lab+'</button>';};
@@ -4008,8 +4006,52 @@ function clCard(k){
   +(R.line?'<p class="cl-line">'+esc(R.line)+'</p>':'')
   +'<div class="cl-sec">What runs now, to release</div>'+clList(R.release||[])
   +'<div class="cl-sec">What to install</div>'+clList(R.install||[])
-  +'<div class="cl-sec">Rituals</div><ul class="cl-ul">'+(R.rituals||[]).map(function(r){
-    return '<li><b>'+esc(r.nm)+'</b>. '+esc(r.steps.map(function(s){return byK[s]?byK[s].nm:s;}).join(', then '))+'</li>';}).join('')+'</ul>'
   +(laws.length?'<div class="cl-sec">Laws to affirm</div>'+clList(laws):'')
   +'<div class="cl-sec">The seal, three parts</div><div class="cl-mks">'+mk('rel','Release')+mk('rit','Ritual')+(laws.length?mk('aff','Affirm'):mk('aff','Hold it'))+'</div>'
-  +'<p class="cl-note">You mark each part once it is done. A mark is kept and never taken back.</p></div>';}
+  +'<p class="cl-note">You mark each part once it is done. A mark is kept and never taken back.</p>'
+  +clRecipes([k])+'</div>';}
+/* ============================================================
+   THE RECIPES UNDER THE CARD, 21 November, his words on the climb as
+   shipped at 7d26b672: "On the right hand side is our insight panel for
+   whatever challenge I choose to take. And then underneath that are all the
+   recipes that get added to my ritual." A teacher's card listed its starter
+   rituals as a line of text each, with nothing to press, so the one thing
+   the card was for, putting the work on the person's week, sent them to
+   another page to do it.
+
+   NOTHING HERE IS NEW DATA AND NOTHING HERE IS A NEW WRITER. The rows are
+   recipeOf's own rituals (engine/data/teachers_recipes.js), the table the
+   Path seat's pole card already reads, and Add is ritRecipeAdd (ui/
+   ritual.js), the same press as that card's "Add to my ritual": the same
+   pacing, the same week, the same refusals through status(). A law shows
+   its teacher's recipes, by LAW_TEACHER; a seat or its seal shows the
+   recipes of every teacher on its turn; coherence and decoherence have no
+   recipe in the data, so their cards have no list rather than an invented
+   one.
+
+   NOT ritBankCard. That card is one practice, and its Add writes one step
+   (ritBankAdd, steps:[x.k]); a recipe is two or three steps that are one
+   ritual, and drawing it as single practices would have split it into
+   rituals nobody wrote. Nor is any row here a release: a recipe's release
+   list is behaviours to stop, not a practice, and there is no release
+   writer that takes a teacher. That is said in the report, not faked here.
+   ============================================================ */
+function clRecipes(ks){
+ if(typeof recipeOf!=='function'||typeof ritRecipeAdd!=='function')return '';
+ var seen={}, rows=[];
+ ks.forEach(function(k){var R=recipeOf(k); if(!R||seen[R.k])return; seen[R.k]=1;
+  R.rituals.forEach(function(x){rows.push({x:x, k:k});});});
+ if(!rows.length)return '';
+ var r=compute(), tier=ritFor(r).tier, today=ritToday0(), own=ritOwn(), many=ks.length>1;
+ return '<div class="cl-sec cl-rch">Recipes</div><ul class="cl-rcl">'+rows.map(function(o){
+   var s=recipeSteps(o.x,tier), act=s.steps.length?ritTcxActive(s.steps,today):null;
+   var btn=!own?'':act
+    ?'<button type="button" class="btn cl-rcb" data-clgo="rit" aria-label="'+esc(o.x.nm)+' is on your ritual. Open the Ritual page">On your ritual</button>'
+    :s.steps.length?'<button type="button" class="btn pri cl-rcb" data-clrc="'+esc(o.x.id)+'" aria-label="Add '+esc(o.x.nm)+' to your ritual, each day for a week">Add to ritual</button>':'';
+   return '<li class="cl-rc"><div class="cl-rct"><b>'+esc(o.x.nm)+'</b>'
+    +'<span class="cl-rcm">'+(many?esc(compassPoleOf(o.k).up)+', ':'')+(s.steps.length?ritMin(s.steps)+' min':'waits')+'</span>'
+    +'<span class="cl-rcs">'+esc(ritTcxJoin(ritTcxNames(o.x.steps)))+'</span>'
+    +(s.held.length?'<span class="cl-rcs">'+esc(ritTcxJoin(ritTcxNames(s.held)))+(s.held.length>1?' open':' opens')+' as the charge drops.</span>':'')
+    +'</div>'+btn+'</li>';}).join('')+'</ul>'
+  +(own?'<p class="cl-note">Add puts it on your week, each day for a week. The Ritual page changes the days.</p>'
+   :'<p class="cl-note">'+esc(ritWhose())+' is a worked example, so nothing can be added to it.</p>');}
