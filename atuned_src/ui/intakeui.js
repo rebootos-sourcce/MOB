@@ -324,16 +324,26 @@ function iqEnsure(){
    answer lands in the one handler renderIntake already had. Only the drawing
    changed, so the arithmetic still has exactly one path.
    ============================================================ */
-var IQ_VIEW='list', IQ_FOCUS=null;
+/* ONE AT A TIME IS THE DEFAULT, 21 November. His words, about this page: "that
+   needs to be designed in a completely different way... a complete overhaul in
+   how the questions are displayed." Measured on the build before it, a stranger
+   at 1600 met a header, the birth moment, a scale key and seven tiles before
+   the first law row, at 600 pixels down, and that row was a press away from a
+   question. At 390 the first law row sat at 738 of 844 and the seat row ran off
+   the right edge. No question was on the first screen at either width. So the
+   view that puts one question in front of a person is first, and the list and
+   the wheel stay behind the same toggle for looking across the whole set. The
+   key 'one' is kept, because it is identity in the toggle. */
+var IQ_VIEW='one', IQ_FOCUS=null;
 /* the labels are said to a ten year old, V21: what the picture is, in words
    they already have. The icon is the name and the title says what it shows. */
 var IQ_VIEWS=[
+ ['one','One at a time','One at a time: one question, then the next',
+  'M12 7a5 5 0 1 1 0 10a5 5 0 1 1 0-10M5.5 9l-3 3l3 3M18.5 9l3 3l-3 3'],
  ['list','List','List: every law, from the top of your body to the bottom',
   'M4 6.5h2M9 6.5h11M4 12h2M9 12h11M4 17.5h2M9 17.5h11'],
  ['wheel','Wheel','Wheel: all 21 laws in a circle, your CQ in the middle',
-  'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9a3 3 0 1 1 0 6a3 3 0 1 1 0-6M12 3.5V9M20.5 12H15M12 20.5V15M3.5 12H9'],
- ['one','One at a time','One at a time: one law and its three questions, then the next',
-  'M12 7a5 5 0 1 1 0 10a5 5 0 1 1 0-10M5.5 9l-3 3l3 3M18.5 9l3 3l-3 3']];
+  'M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17M12 9a3 3 0 1 1 0 6a3 3 0 1 1 0-6M12 3.5V9M20.5 12H15M12 20.5V15M3.5 12H9']];
 /* .st-ico is the Story page's own view button, so the three carry the tap
    floor, the pressed ring and the Punch treatment that toggle already has,
    and the two toggles in the product look like one control. */
@@ -641,11 +651,15 @@ function iqArtCss(){
   ' #iqx-arch .iqx-ab{padding:10px 12px;font-size:14px}',
   ' #iqx-arch .iqx-eol{font-size:14px}}',
   '.iqx-note{margin:0;padding:0 10px;font-size:13px;color:var(--dim)}',
-  /* ---- one law: its three framings, each a card with its own icon ---- */
-  '#iqbody .iqa .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
-  '#iqbody .iqa .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
+  /* ---- one law: its three framings, each a card with its own icon ----
+     .iqw is the second host of iqFramings, the Ritual tab's law of the week
+     in its pop-up (ui/ritlaw.js). It is named beside #iqbody in each rule
+     rather than given rules of its own, so the two scales cannot be drawn
+     two ways. */
+  '#iqbody .iqa .iq-law,.iqw .iq-law{border:0;background:none;border-radius:0;overflow:visible}',
+  '#iqbody .iqa .iq-qc,.iqw .iq-qc{border:1px solid var(--edge);border-radius:var(--r-s);padding:14px 16px;',
   ' background:color-mix(in srgb,var(--c) 6%,var(--sunk))}',
-  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc{border-color:transparent}',
+  'body.punch #iqbody .iqa .iq-qc,body.lumen #iqbody .iqa .iq-qc,body.punch .iqw .iq-qc,body.lumen .iqw .iq-qc{border-color:transparent}',
   '.iqa-fr{display:grid;gap:12px;min-width:0}',
   '.iqa-open .iqa-fr{grid-template-columns:minmax(0,1fr) minmax(0,540px);gap:20px;align-items:center}',
   '.iqa-flr{display:flex;align-items:center;gap:8px;margin-bottom:4px}',
@@ -655,10 +669,10 @@ function iqArtCss(){
   '.iqa-qt{font-size:16px;line-height:1.5;color:var(--ink)}',
   /* the scale ramps from the sunk ground toward the seat, so the ends read as
      ends before a number is read. Pressed is the seat solid. */
-  '#iqbody .iqa .iq-sl{border-radius:var(--r-xs)}',
-  '#iqbody .iqa .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
-  '#iqbody .iqa .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
-  '#iqbody .iqa .iq-n.on{background:var(--c);color:var(--on-accent)}',
+  '#iqbody .iqa .iq-sl,.iqw .iq-sl{border-radius:var(--r-xs)}',
+  '#iqbody .iqa .iq-n,.iqw .iq-n{min-height:48px;background:color-mix(in srgb,var(--c) calc(var(--v) * 1.6%),var(--sunk))}',
+  '#iqbody .iqa .iq-n:hover,.iqw .iq-n:hover{background:color-mix(in srgb,var(--c) 34%,var(--sunk));color:var(--ink)}',
+  '#iqbody .iqa .iq-n.on,.iqw .iq-n.on{background:var(--c);color:var(--on-accent)}',
   '.iqa-gap{display:block;width:100%;height:auto}',
   '.iqa-sub{font-size:13.5px;color:var(--dim)}',
   '.iqa-sub b{font-weight:500;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
@@ -682,13 +696,94 @@ function iqArtCss(){
   '.iqa-sb[aria-current="true"]{box-shadow:inset 0 0 0 1.5px var(--accent)}',
   'body.punch .iqa-sb[aria-current="true"]{box-shadow:none;background:var(--panel-2)}',
   '.iqa-bstrip{display:none}',
-  '.iqa-focus{display:grid;grid-template-columns:260px minmax(0,1fr);gap:40px;align-items:start}',
-  '.iqa-hero1{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;min-width:0}',
-  '.iqa-ring{width:220px;height:220px;max-width:100%}',
-  '.iqa-ln{font-size:30px;font-weight:600;line-height:1.15;letter-spacing:-.01em;color:var(--ink)}',
-  '.iqa-hgap{width:100%;max-width:240px}',
-  '.iqa-qs{display:flex;flex-direction:column;gap:20px;max-width:720px;min-width:0}',
-  '.iqa-nav{display:flex;justify-content:space-between;gap:10px}',
+  /* ---- one at a time, the path, round IO. Every gap is on the 8 step and
+     every row is centred on the card's one axis, symmetry in space ---- */
+  '.iqp{display:grid;gap:var(--g3)}',
+  /* the seven stations on one line, the line drawn through their centres */
+  '.iqp-rail{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;padding:12px 16px;',
+  ' border-radius:var(--r);background:var(--sunk);border:1px solid var(--edge)}',
+  '.iqp-rail::before{content:"";position:absolute;left:calc(16px + (100% - 80px) / 14);right:calc(16px + (100% - 80px) / 14);',
+  ' top:36px;height:1px;background:var(--edge-2)}',
+  '.iqp-stn{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:var(--tap);',
+  ' padding:4px 0;border:0;border-radius:var(--r-s);background:none;color:var(--dim);font-family:var(--sans);cursor:pointer;',
+  ' transition:color var(--t-micro) var(--ease-out)}',
+  '.iqp-stn .iqa-rg{border-radius:50%;background:var(--sunk);transition:box-shadow var(--t-micro) var(--ease-out)}',
+  '.iqp-stn:hover{color:var(--ink)}',
+  '.iqp-stn[aria-current="step"]{color:var(--ink)}',
+  '.iqp-stn[aria-current="step"] .iqa-rg{box-shadow:0 0 0 3px var(--sunk),0 0 0 4.5px var(--c)}',
+  '.iqp-stl{font-size:13px;font-weight:500;white-space:nowrap}',
+  /* the card: one raised plane, everything on its centre line */
+  '.iqp-card{display:grid;gap:0;padding:0;overflow:hidden}',
+  '.iqp-in{display:grid;justify-items:center;gap:24px;padding:24px 32px 32px;text-align:center}',
+  '.iqp-hd{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;width:100%;text-align:left}',
+  '.iqp-who{display:flex;align-items:center;gap:16px;min-width:0}',
+  '.iqp-wt{display:flex;flex-direction:column;gap:2px;min-width:0}',
+  '.iqp-ln{font-size:22px;font-weight:600;line-height:1.2;color:var(--ink)}',
+  '.iqp-sl{font-size:14px;color:var(--dim)}',
+  '.iqp-sl b{font-weight:500;color:color-mix(in srgb,var(--c) 62%,var(--ink))}',
+  '.iqp-laws{display:flex;gap:8px}',
+  '.iqp-laws[hidden]{display:none}',
+  '.iqp-lt{display:grid;place-items:center;width:var(--tap);height:var(--tap);padding:0;border-radius:50%;',
+  ' border:1px solid transparent;background:none;cursor:pointer;transition:border-color var(--t-micro) var(--ease-out)}',
+  '.iqp-lt:hover{border-color:var(--edge-2)}',
+  '.iqp-lt[aria-pressed="true"]{border-color:var(--c)}',
+  /* the three framings as three steps on one short path */
+  '.iqp-steps{display:flex;align-items:center;justify-content:center;width:100%}',
+  '.iqp-sep{flex:0 1 40px;min-width:8px;height:1px;background:var(--edge-2)}',
+  '.iqp-sep[data-got="1"]{background:color-mix(in srgb,var(--c) 55%,var(--edge))}',
+  '#iqbody .iqa .iq-qc.iqp-st{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);padding:4px 16px 4px 4px;',
+  ' border-radius:999px;border:1px solid transparent;background:none;color:var(--dim);font-family:var(--sans);cursor:pointer;',
+  ' transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}',
+  '#iqbody .iqa .iq-qc.iqp-st:hover{color:var(--ink)}',
+  '#iqbody .iqa .iq-qc.iqp-st[aria-pressed="true"]{border-color:color-mix(in srgb,var(--c) 60%,var(--edge));color:var(--ink)}',
+  '.iqp-sti{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1.5px dashed var(--edge-2);color:var(--dim)}',
+  '.iqp-st[data-got="1"] .iqp-sti{border-style:solid;border-color:var(--c);color:var(--c)}',
+  '.iqp-st em{font-style:normal;font-size:14px;font-weight:500;white-space:nowrap}',
+  '.iqp-stv{font-family:var(--num);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--c) 70%,var(--ink))}',
+  /* the question: the framing small in its seat colour, the stem large */
+  '.iqp-q{display:grid;justify-items:center;gap:16px;width:100%;max-width:680px}',
+  '.iqp-back{display:inline-flex;align-items:center;gap:8px;margin:0;padding:4px 12px;border-radius:999px;font-size:13px;color:var(--mid);',
+  ' background:color-mix(in srgb,var(--accent) 10%,transparent)}',
+  '.iqp-fq{display:inline-flex;align-items:center;gap:8px;margin:0;font-size:16px;font-weight:500;color:color-mix(in srgb,var(--c) 70%,var(--ink))}',
+  '.iqp-qh{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0;max-width:32ch;outline:none}',
+  '.iqp-hw{font-size:15px;font-weight:400;color:var(--dim)}',
+  '.iqp-vb{font-size:26px;line-height:1.3;font-weight:500;color:var(--ink);text-wrap:balance}',
+  '.iqp-sc{display:grid;gap:8px;width:100%;margin-top:8px}',
+  '#iqbody .iqa .iqp-sc .iq-n{min-height:52px;font-size:15px}',
+  '.iqp-an{display:grid;grid-template-columns:1fr 1fr 1fr;margin:0;font-size:13px;color:var(--dim)}',
+  '.iqp-an span:nth-child(1){text-align:left}',
+  '.iqp-an span:nth-child(2){text-align:center}',
+  '.iqp-an span:nth-child(3){text-align:right}',
+  '.iqp-ex{margin:0;font-size:13px;color:var(--dim)}',
+  '.iqp-gap{width:100%;max-width:320px}',
+  '.iqp-say{margin:0;max-width:44ch;font-size:15px;line-height:1.5;color:var(--mid);text-wrap:balance}',
+  /* the foot: back, the duration, forward, on one rule */
+  '.iqp-ft{display:grid;grid-template-columns:minmax(96px,auto) minmax(0,1fr) minmax(96px,auto);align-items:center;gap:16px;',
+  ' padding:16px 24px;border-top:1px solid var(--edge)}',
+  '.iqp-clk{display:flex;align-items:center;justify-content:center;gap:8px;margin:0;font-size:13px;color:var(--dim);text-align:center}',
+  '.iqa-mid[data-solo="1"]{grid-template-columns:minmax(0,1fr)}',
+  'body.punch .iqp-rail,body.lumen .iqp-rail{border-color:transparent}',
+  'body.punch #iqbody .iqa .iq-qc.iqp-st[aria-pressed="true"]{border-color:transparent;background:color-mix(in srgb,var(--c) 22%,var(--sunk))}',
+  'body.punch .iqp-lt[aria-pressed="true"]{border-color:transparent;background:color-mix(in srgb,var(--c) 26%,var(--sunk))}',
+  '@container (max-width:700px){',
+  ' .iqa .iqp-rail{gap:0;padding:8px}',
+  ' .iqa .iqp-rail::before{left:calc(8px + (100% - 16px) / 14);right:calc(8px + (100% - 16px) / 14);top:32px}',
+  ' .iqa .iqp-stl{display:none}',
+  ' .iqa .iqp-in{gap:16px;padding:16px 12px 24px}',
+  /* the law's glyph is already the pressed ring in the row under its name,
+     so on a phone it is drawn once and the header is one column */
+  ' .iqa .iqp-hd{flex-direction:column;justify-content:center;gap:12px;text-align:center}',
+  ' .iqa .iqp-who{flex-direction:column;gap:8px}',
+  ' .iqa .iqp-who .iqa-rg{display:none}',
+  ' .iqa .iqp-wt{align-items:center}',
+  ' .iqa .iqp-ln{font-size:20px}',
+  ' .iqa .iqp-vb{font-size:21px}',
+  ' .iqa .iqp-sep{flex-basis:12px}',
+  ' #iqbody .iqa .iq-qc.iqp-st{padding:4px}',
+  ' #iqbody .iqa .iq-qc.iqp-st[aria-pressed="true"]{padding-right:12px}',
+  ' .iqa .iqp-st[aria-pressed="false"] em{display:none}',
+  ' .iqa .iqp-ft{grid-template-columns:1fr 1fr;padding:12px}',
+  ' .iqa .iqp-clk{grid-column:1/-1;grid-row:1;font-size:12.5px}}',
   'body.punch .iqa-stage,body.punch .iqa-strip,body.punch .iqa-side,body.punch .iqa-views,',
   'body.lumen .iqa-stage,body.lumen .iqa-strip{border-color:transparent}',
   /* ---- arrival. opacity and transform, once, and held still on request ---- */
@@ -713,9 +808,7 @@ function iqArtCss(){
   ' .iqa .iqa-open{padding-left:6px}}',
   '@container (max-width:900px){',
   ' .iqa .iqa-whob{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"i t v" "c c c";row-gap:10px}',
-  ' .iqa .iqa-wcs{justify-content:space-between;width:100%}',
-  ' .iqa .iqa-focus{grid-template-columns:1fr;gap:18px}',
-  ' .iqa .iqa-ring{width:150px;height:150px}}',
+  ' .iqa .iqa-wcs{justify-content:space-between;width:100%}}',
   '@container (max-width:700px){',
   ' .iqa .iqa-hero{grid-template-columns:auto minmax(0,1fr);padding:12px 14px;gap:10px 14px}',
   ' .iqa .iqa-sc{padding:12px 14px;gap:8px}',
@@ -741,16 +834,11 @@ function iqArtCss(){
   ' .iqa .iqa-lawr .iqa-gw{display:none}',
   ' .iqa .iqa-lawr[aria-expanded="true"] .iqa-gw{display:block;grid-column:1/-1;grid-row:2}',
   ' .iqa .iqa-lt{font-size:16px}',
-  ' .iqa .iqa-focus{grid-template-columns:1fr;gap:18px}',
   /* the wheel's cost, measured in the prototype: at phone width a law on it
      is about 27 pixels to press, under the 44 floor. So on a phone the wheel
      is the figure and C's strip above it is the picker. */
   ' .iqa .iqa-bstrip{display:flex}',
   ' .iqa .iqa-strip{gap:8px}',
-  ' .iqa .iqa-ln{font-size:24px}',
-  /* the ring at full size put the first question under the fold at 390,
-     so on a phone it is the law's mark and not the page's figure */
-  ' .iqa .iqa-ring{width:140px;height:140px}',
   ' .iqa .iqa-side{padding:16px 10px}',
   ' .iqa .iqa-wheel{padding:6px}',
 
@@ -788,7 +876,7 @@ function iqLine(s,g){return s?'answers '+(fmtPct('spread',s.spread)!==PCT_DASH?f
    started is some segments in the seat colour, read is the arc and the figure
    beside it. The size is a name, and the ring is a span, so a press on the row
    that holds it is the row's. */
-var IQ_PX={sm:34,md:44,lg:56};
+var IQ_PX={sm:34,md:44,lg:56,xl:96};
 function iqLawBadge(l,s,g,size){
  var px=IQ_PX[size]||IQ_PX.sm, c=seatCol(l.b), st=s?2:g?1:0;
  var body=s?iqScoreArc(c,s.score/10,24,24,20,3.6)
@@ -925,6 +1013,37 @@ function iqFramings(p,Q,li){
     +'aria-pressed="'+(near===n)+'">'+n+'</button>';
   h+='</div></div>';});
  return h;}
+/* ONE ANSWER PRESSED, WHEREVER ITS SCALE IS DRAWN. These lines were the body
+   of the [data-a] press inside renderIntake, and on 22 November a second
+   surface drew iqFramings: the Ritual tab's law of the week (ui/ritlaw.js),
+   which serves one law's three questions in a pop-up. A second copy of the
+   press there would be a second writer for the sixty three answers, and the
+   two would drift the first time one of them learned a rule, so both scales
+   call this. a is the answer's index, v its value. Returns null, having
+   written nothing, when the engine refuses it; otherwise the law and whether
+   the press added an answer rather than changed one.
+   A changed answer is a new reading of that law, so the releases counted
+   against the old one stop counting (engine/compute.js, lawAnswered). Even
+   when the mean of the three lands on the same number: the person has just
+   told us where the law is, and that wins over the model's estimate. */
+function iqPress(a,v){
+ var li=Math.floor(+a/3), was=iqGot(CURP,li);
+ /* the week's law is read BEFORE the write, because once its third answer
+    lands iqNext has already moved on and the law that was this week's can no
+    longer be told from the next one */
+ var wk=(typeof ritLawOf==='function')?ritLawOf(CURP):null;
+ /* the write is the engine's, so a worked example refuses it there and the
+    reporter it bound says what the press would do on the person's own */
+ if(!iqAnswer(CURP,+a,+v))return null;
+ /* the press reports its save like the other intake writes, so a refused
+    write is said and not left for a reload to discover, and the answer
+    stays on screen either way, the same as [data-ixb] in renderIntake */
+ iqApply(CURP); pSave(); var ok=statusSaved(); syncLw();
+ /* the week's law measured here or in its pop-up is the week's ritual done,
+    whichever scale was pressed, so the Ritual tab does not serve a second law
+    the same week to a person who answered the first one on this page */
+ if(ok&&wk&&!wk.done&&wk.li===li&&was<3&&iqGot(CURP,li)>=3&&typeof ritLawMark==='function')ritLawMark(li);
+ return {li:li, fresh:iqGot(CURP,li)>was};}
 /* THE HEADER. Where I am, how far, and how to look. The ring is the page's
    figure: one segment per law, all twenty one, in the seat colours crown to
    root, lit as each reads. CQ sits in the middle of it once a law is measured.
@@ -1046,7 +1165,17 @@ function iqViewWheel(p,Q,sc,r,scored){
   var L=iqLawsOf(b), c=seatCol(b), d0=start+gapd/2, d1=start+L.length*per-gapd/2; start+=L.length*per;
   var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean);
   var mean=ms.length?ms.reduce(function(a,q){return a+q.score;},0)/ms.length:0;
-  s+='<path d="'+arc(292,d0,d1)+'" fill="none" stroke="'+c+'" stroke-opacity=".16" stroke-width="5" stroke-linecap="round"/>';
+  /* THE TRACK READS AS A RING, NOT A GAP. This drew the untouched span in the
+     seat's own colour at .16, which on a dark stage is close enough to
+     invisible that a seat with little measured on it reads as a hole in the
+     ring rather than a dim one, exactly where the rest of this same page
+     draws every other untouched track: iqSegs above (line 62) and the law
+     badge's own ring (iqLawBadge, iqNestRing) both use the neutral var(--dim)
+     at .26. This track is the one place on the page that did not, so a low
+     scoring seat on the one surface a stranger sees first (a worked example,
+     shown unread) looked like a defect instead of a low reading. Matched to
+     the page's own grammar rather than invented new. */
+  s+='<path d="'+arc(292,d0,d1)+'" fill="none" style="stroke:var(--dim)" stroke-opacity=".26" stroke-width="5" stroke-linecap="round"/>';
   if(mean>0)s+='<path d="'+arc(292,d0,d0+(d1-d0)*mean/10)+'" fill="none" stroke="'+c+'" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>';
   var lp=pt(314,(d0+d1)/2);
   s+='<text x="'+f(lp[0])+'" y="'+f(lp[1]+4)+'" fill="'+c+'" font-size="13" text-anchor="middle">'+esc(b)+'</text>';
@@ -1077,29 +1206,167 @@ function iqViewWheel(p,Q,sc,r,scored){
  return iqStrip(p,sc,ih,' iqa-bstrip')
   +'<div class="iqa-stage"><div class="iqa-wheel">'+s+'</div>'+side+'</div>';}
 
-/* ---------- C. One law at a time ---------- */
+/* ---------- C. One at a time, the path. Round IO, 21 November ----------
+   THE JOB. A person did not open this page to look at a questionnaire. They
+   opened it to say something true about themselves and get it read back, and
+   every pixel between them and the next question is in the way of that. So
+   this view holds four things on the screen and no more, which is what a
+   working memory holds:
+
+     where    the seven seats, crown to root, as stations on one line. Each is
+              the seat's own ring, a segment per law, so the line is the whole
+              sixty three at a glance without a count against a total.
+     which    the law in hand, its glyph and name and its seat, with the other
+              laws of that seat beside it as rings, a press each.
+     framing  the three framings of the law as three steps on a short path,
+              Under cost, Unseen, Ordinary day, each its own icon, lit as its
+              answer lands. All three stay named on the card, which is what
+              keeps the three way design visible (the functional gate reads
+              them), and only one is asked at a time.
+     the ask  one question and one scale.
+
+   THE QUESTION IS SPLIT ON ITS OWN SEAM. Every law question is a framing and a
+   stem ("When it costs you something," then "how often do you put it down?"),
+   so the framing is the small line in the seat's colour beside its icon, and
+   the stem is the large line. Across the three framings of one law the large
+   line barely moves and the small line is what changes, so the eye reads the
+   difference and not the whole sentence three times. The whole sentence is
+   still the scale's own label, so a screen reader hears it unbroken.
+
+   A PRESS ANSWERS AND MOVES ON. The next unanswered framing of the same law
+   comes up at once. When the third lands, the card does not jump to the next
+   law: it shows what was just made, the law's ring closed into its reading and
+   the gap between the three, with Next law as the one primary press. The
+   list view's own note records why: three answers that jump straight on leave
+   the reading unseen.
+
+   PICKING UP. Nothing here is stored but the answers. With no law chosen the
+   law in hand is the first in body order still missing an answer, and the
+   framing is its first unanswered one, so a person who comes back lands on
+   the exact question they stopped before, and the card says so once. */
+var IQ_STEP=null, IQ_FRESH=true;
+/* the framing on the card: the one the person chose, else the first missing,
+   else 3, which is the law's reading. IQ_STEP carries the law it was chosen on,
+   so a law opened any other way never inherits another law's step. */
+function iqFrOpen(p,li){
+ var a=p.intake.answers;
+ if(IQ_STEP&&IQ_STEP.li===li&&(IQ_STEP.t<3||iqGot(p,li)===3))return IQ_STEP.t;
+ for(var t=0;t<3;t++)if(a[li*3+t]==null)return t;
+ return 3;}
+/* after an answer on framing t, the next framing of the same law still missing
+   one, going round, and 3 once all three are in */
+function iqFrAfter(p,li,t){
+ var a=p.intake.answers;
+ for(var k=1;k<=3;k++){var u=(t+k)%3; if(a[li*3+u]==null)return u;}
+ return 3;}
+/* the next law in body order still missing an answer, going round from li */
+function iqNextFrom(p,li){
+ var o=iqBodyOrder(), i=o.indexOf(li);
+ for(var k=1;k<=o.length;k++){var x=o[(i+k)%o.length]; if(iqGot(p,x)<3)return x;}
+ return null;}
+/* the framing and the stem, cut on the seam every Q3 line shares */
+function iqSplitQ(q){
+ var m=/^(.*?),\s*(how often do you)\s+(.*)$/i.exec(q||'');
+ return m?{fr:m[1],how:m[2],stem:m[3]}:{fr:'',how:'',stem:q||''};}
+function iqPathRail(p,sc,ih){
+ var cur=SI[ih].b;
+ return '<nav class="iqp-rail" aria-label="The seven seats, crown to root">'
+  +IQ_SEATS.map(function(b){
+   var t=iqSeatStat(b,p,sc); if(!t.L.length)return '';
+   var on=(b===cur), say=['not started','started','read'][t.st];
+   return '<button type="button" class="iqp-stn" data-pseat="'+esc(b)+'" data-st="'+t.st+'" '
+    +'aria-current="'+(on?'step':'false')+'" aria-label="'+esc(b+', '+IQ_SEATLINE[b]+', '+say)+'" '
+    +'title="'+esc(b+': '+IQ_SEATLINE[b]+', '+say)+'" style="--c:'+seatCol(b)+'">'
+    +iqSeatRing(b,t,p,sc,40)+'<span class="iqp-stl">'+esc(b)+'</span></button>';}).join('')
+  +'</nav>';}
+/* every law of every seat is drawn, a ring a press, and only the seat in hand
+   shows, so the other seats' laws are one press away through their station */
+function iqPathLaws(p,sc,ih){
+ var cur=SI[ih].b;
+ return IQ_SEATS.map(function(b){
+  var L=iqLawsOf(b); if(!L.length)return '';
+  return '<div class="iqp-laws" role="group" aria-label="'+esc('The laws in '+b)+'"'+(b===cur?'':' hidden')+'>'
+   +L.map(function(x){
+    var s=sc[x.l.nm], g=iqGot(p,x.li), on=(x.li===ih);
+    return '<button type="button" class="iqp-lt" data-law="'+x.li+'" aria-pressed="'+on+'" '
+     +'aria-label="'+esc(x.l.nm+', '+iqLine(s,g))+'" title="'+esc(x.l.nm+': '+iqLine(s,g))+'" style="--c:'+seatCol(b)+'">'
+     +iqLawBadge(x.l,s,g,'sm')+'</button>';}).join('')+'</div>';}).join('');}
+/* the three framings as three steps on one short path */
+function iqPathSteps(p,Q,li,fr,c){
+ var a=p.intake.answers;
+ return '<div class="iqp-steps" role="group" aria-label="The three ways this law is asked">'
+  +[0,1,2].map(function(t){
+   var idx=li*3+t, qq=Q[idx], v=a[idx], got=(v!=null);
+   return (t?'<i class="iqp-sep" data-got="'+(got?1:0)+'" aria-hidden="true"></i>':'')
+    +'<button type="button" class="iq-qc iqp-st" data-fr="'+t+'" data-got="'+(got?1:0)+'" aria-pressed="'+(t===fr)+'" '
+    +'aria-label="'+esc((IQ_SIDE[qq.side]||qq.side)+(got?', answered '+v:', not answered'))+'" '
+    +'title="'+esc((IQ_SIDE[qq.side]||qq.side)+(got?': '+v:''))+'" style="--c:'+c+'">'
+    +'<span class="iqp-sti">'+iqSvg(IQ_IC[IQ_SIDEIC[qq.side]||'day'])+'</span>'
+    +'<em>'+esc(IQ_SIDE[qq.side]||qq.side)+'</em>'
+    +(got?'<span class="iqp-stv">'+esc(v)+'</span>':'')+'</button>';}).join('')
+  +'</div>';}
 function iqViewOne(p,Q,sc){
- var ih=iqInHand(p), l=SI[ih], q=sc[l.nm], c=seatCol(l.b), g=iqGot(p,ih);
- var rr=78, Cc=2*Math.PI*rr, frac=q?q.score/10:g/3;
- var ring='<svg class="iqa-ring" viewBox="0 0 200 200" aria-hidden="true">'
-  +'<defs><radialGradient id="iqa-lit" cx="50%" cy="42%" r="60%"><stop offset="0" stop-color="'+c+'" stop-opacity=".18"/>'
-  +'<stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient></defs>'
-  +'<circle cx="100" cy="100" r="96" fill="url(#iqa-lit)"/>'
-  +'<circle cx="100" cy="100" r="'+rr+'" fill="none" stroke="rgba(128,128,128,.2)" stroke-width="6"/>'
-  +'<circle cx="100" cy="100" r="'+rr+'" fill="none" stroke="'+c+'" stroke-width="6" stroke-linecap="round" '
-  +'stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 100 100)"/>'
-  +'<g transform="translate(64 60) scale(3)" fill="none" stroke="'+c+'" stroke-width="1.3" stroke-linecap="round" '
-  +'stroke-linejoin="round"><path d="'+l.ic+'"/></g>'
-  +(q?'<text x="100" y="150" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">'
-   +fmtPct('law',q.score)+'</text>':'')+'</svg>';
- return iqStrip(p,sc,ih,'')
-  +'<div class="iqa-focus" style="--c:'+c+'"><div class="iqa-hero1">'+ring
-  +'<div class="iqa-ln">'+esc(l.nm)+'</div>'
-  +'<div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div>'
-  +'<div class="iqa-hgap">'+iqGap(p,ih,240)+'</div><div class="iqa-sub">'+esc(iqLine(q,g))+'</div></div>'
-  +'<div class="iqa-qs"><div class="iq-law open iqa-inhand">'+iqFramings(p,Q,ih)+'</div>'
-  +'<div class="iqa-nav"><button type="button" class="btn" data-step="-1">Previous law</button>'
-  +'<button type="button" class="btn pri" data-step="1">Next law</button></div></div></div>';}
+ var ih=iqInHand(p), l=SI[ih], c=seatCol(l.b), g=iqGot(p,ih), s=sc[l.nm], fr=iqFrOpen(p,ih);
+ var answered=Q.filter(function(x){return p.intake.answers[x.i]!=null;}).length;
+ var resume=IQ_FRESH&&answered>0&&answered<Q.length;
+ var head='<div class="iqp-hd">'
+  +'<div class="iqp-who">'+iqLawBadge(l,s,g,'lg')
+  +'<div class="iqp-wt"><span class="iqp-ln">'+esc(l.nm)+'</span>'
+  +'<span class="iqp-sl"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</span></div></div>'
+  +iqPathLaws(p,sc,ih)+'</div>';
+ var body, fwd;
+ if(fr<3){
+  var idx=ih*3+fr, qq=Q[idx], v=p.intake.answers[idx], near=(v==null)?null:Math.round(v), sp=iqSplitQ(qq.q);
+  body='<div class="iqp-q" data-fr="'+fr+'">'
+   +(resume?'<p class="iqp-back">'+iqSvg(IQ_IC.time)+'<span>Picking up where you left off</span></p>':'')
+   +(sp.fr?'<p class="iqp-fq">'+iqSvg(IQ_IC[IQ_SIDEIC[qq.side]||'day'])+'<span>'+esc(sp.fr)+'</span></p>':'')
+   +'<h3 class="iqp-qh" id="iqp-qh" tabindex="-1">'
+   +(sp.how?'<span class="iqp-hw">'+esc(sp.how)+'</span>':'')+'<span class="iqp-vb">'+esc(sp.stem)+'</span></h3>'
+   +'<div class="iqp-sc"><div class="iq-sl" role="group" aria-label="'+esc(qq.q)+'">';
+  for(var n=0;n<=10;n++)
+   body+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-a="'+idx+'" data-v="'+n+'" style="--v:'+n+'" '
+    +'aria-pressed="'+(near===n)+'">'+n+'</button>';
+  /* the calibration sits under the cells it calibrates, the owner's ruling on
+     what a ten means, in the place it is pressed */
+  body+='</div><p class="iqp-an" aria-hidden="true"><span>never</span><span>about half the time</span><span>every time</span></p></div>'
+   +(v!=null&&v!==near?'<p class="iqp-ex">On file as '+esc(v)+'</p>':'')+'</div>';
+  fwd='<button type="button" class="btn" data-pstep="1">'+(v==null?'Skip':'Next')+'</button>';}
+ else{
+  /* THE LAW, READ. Its ring closed into its arc, the three answers on one line,
+     and what the line says, then the one press forward. */
+  var nx=iqNextFrom(p,ih);
+  body='<div class="iqp-q">'+iqLawBadge(l,s,g,'xl')
+   +'<h3 class="iqp-qh" id="iqp-qh" tabindex="-1"><span class="iqp-hw">'+esc(l.nm)+' reads</span>'
+   +'<span class="iqp-vb">'+(s?esc(fmtPct('law',s.score)):'')+'</span></h3>'
+   +'<div class="iqp-gap">'+iqGap(p,ih,320)+'</div>'
+   +'<p class="iqp-say">'+esc(iqLine(s,g))+'</p></div>';
+  fwd=nx!=null
+   ?'<button type="button" class="btn pri" data-pstep="1" aria-label="'+esc('Next law, '+SI[nx].nm)+'">Next law</button>'
+   :'<button type="button" class="btn pri" data-pdone="1">See your reading</button>';}
+ return '<div class="iqp">'+iqPathRail(p,sc,ih)
+  +'<section class="iqa-card iqp-card" style="--c:'+c+'"><div class="iq-law open iqp-in">'+head
+  +iqPathSteps(p,Q,ih,fr,c)+body+'</div>'
+  +'<div class="iqp-ft"><button type="button" class="btn" data-pstep="-1">Back</button>'
+  +'<p class="iqp-clk">'+iqSvg(IQ_IC.time)+'<span>About fifteen minutes. Stop whenever and come back.</span></p>'
+  +fwd+'</div></section></div>';}
+/* BACK AND FORWARD WALK THE PATH IN ORDER: framing by framing, the law's
+   reading after its third once all three are in, then the next law. Forward
+   from a reading goes to the next law still missing an answer, because that is
+   what "next" means to somebody working through it. */
+function iqPathStep(p,d){
+ var o=iqBodyOrder(), li=iqInHand(p), fr=iqFrOpen(p,li), i=o.indexOf(li);
+ if(d>0){
+  if(fr<2){IQ_OPEN=li; IQ_STEP={li:li,t:fr+1}; return;}
+  if(fr===2&&iqGot(p,li)===3){IQ_OPEN=li; IQ_STEP={li:li,t:3}; return;}
+  var nx=(fr===3)?iqNextFrom(p,li):null;
+  if(nx==null)nx=o[(i+1)%o.length];
+  IQ_OPEN=nx; IQ_STEP=null;}
+ else{
+  if(fr>0&&fr<3){IQ_OPEN=li; IQ_STEP={li:li,t:fr-1}; return;}
+  if(fr===3){IQ_OPEN=li; IQ_STEP={li:li,t:2}; return;}
+  var pv=o[(i-1+o.length)%o.length];
+  IQ_OPEN=pv; IQ_STEP={li:pv,t:iqGot(p,pv)===3?3:2};}
+ IQ_SEAT=SI[IQ_OPEN].b;}
 
 /* ============================================================
    THE THREE BLOCKS STACKED UNDER THE LAWS. Round PP, his words: "Intake, I
@@ -1388,15 +1655,22 @@ function renderIntake(){
  var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)
   /* show only on a worked example, ruled 16 October: the line under the
      header, and the answers drawn disabled below */
-  +(showOnly()?showNote('intake','iqa-show'):'')+iqMoreHtml(p)
-  +'<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'">'+iqWhoHtml(p)+iqAccuracy()+'</div>';
+  +(showOnly()?showNote('intake','iqa-show'):'')+iqMoreHtml(p);
+ /* ONE AT A TIME PUTS THE QUESTION FIRST. The birth moment is a different job
+    from answering, so in that view its row goes under the question card, and
+    the scale key's card is not drawn at all: the card carries its own
+    calibration under the eleven cells and its own duration line. */
+ var one=(IQ_VIEW==='one');
+ var mid='<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'"'+(one?' data-solo="1"':'')+'>'+iqWhoHtml(p)+(one?'':iqAccuracy())+'</div>';
+ if(!one)h+=mid;
  /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
     fresh on every draw as the first law still missing an answer, so the third
     press on a law finished it and the view jumped to the next one before the
     person had seen what they had just made. Measured by driving it: three
     answers on Unity landed the page on Awareness with Unity's reading unseen. */
  if(IQ_VIEW!=='list'&&IQ_OPEN==null)IQ_OPEN=iqInHand(p);
- h+=(IQ_VIEW==='wheel'?iqViewWheel(p,Q,sc,r,scored):IQ_VIEW==='one'?iqViewOne(p,Q,sc):iqViewList(p,Q,sc));
+ h+=(IQ_VIEW==='wheel'?iqViewWheel(p,Q,sc,r,scored):one?iqViewOne(p,Q,sc):iqViewList(p,Q,sc));
+ if(one)h+=mid;
  h+=iqxHtml(p);
  h+='</div>';
  iqArtCss(); iqDoors();
@@ -1420,7 +1694,8 @@ function renderIntake(){
     that closed pops once, and so does the cell that was pressed. */
  if(an){
   var at=an.who?host.querySelector('.iqa-whop:not([hidden])'):an.more?host.querySelector('.iqa-more:not([hidden])')
-   :an.nest?host.querySelector('[data-nest="'+an.nest+'"]:not([hidden])'):an.law!=null?host.querySelector('.iqa-open'):null;
+   :an.nest?host.querySelector('[data-nest="'+an.nest+'"]:not([hidden])'):an.law!=null?host.querySelector('.iqa-open')
+   :an.step?host.querySelector('.iqp-q'):null;
   if(at)at.classList.add('iqa-in');}
  if(IQ_XPOP){var xe=host.querySelector(IQ_XPOP+'.on'); IQ_XPOP=null; if(xe)xe.classList.add('iqa-pop');}
  if(pu){
@@ -1438,7 +1713,8 @@ function renderIntake(){
      wheel the control is an svg g. A law pressed also holds its seat open. */
   var go=function(){var li=+el.getAttribute('data-law');
    IQ_OPEN=(IQ_VIEW==='list'&&IQ_OPEN===li)?null:li;
-   IQ_SEAT=SI[li].b; IQ_ANIM=(IQ_VIEW==='list'&&IQ_OPEN!=null)?{law:li}:null;
+   IQ_STEP=null; IQ_FRESH=false;
+   IQ_SEAT=SI[li].b; IQ_ANIM=(IQ_VIEW==='list'&&IQ_OPEN!=null)?{law:li}:IQ_VIEW==='one'?{step:1}:null;
    IQ_FOCUS='[data-law="'+li+'"]'; renderIntake();};
   el.onclick=go;
   /* a g is not a button, so Enter and Space are wired by hand */
@@ -1453,11 +1729,26 @@ function renderIntake(){
  iqNestBind(host,'iqarch',function(k){return IQ_ARCH===k;},function(k){IQ_ARCH=k||null;});
  host.querySelectorAll('[data-iqv]').forEach(function(el){el.onclick=function(){
   IQ_VIEW=el.getAttribute('data-iqv'); IQ_FOCUS='[data-iqv="'+IQ_VIEW+'"]'; renderIntake();};});
- /* walks the body order the strip shows, crown to root, not the table order */
- host.querySelectorAll('[data-step]').forEach(function(el){el.onclick=function(){
-  var o=iqBodyOrder(), i=o.indexOf(iqInHand(CURP)), d=+el.getAttribute('data-step');
-  IQ_OPEN=o[(i+d+o.length)%o.length]; IQ_SEAT=SI[IQ_OPEN].b;
-  IQ_FOCUS='[data-step="'+d+'"]'; renderIntake();};});
+ /* ONE AT A TIME. A station opens its seat on the first law there still
+    missing an answer, a step opens that framing, and back and forward walk the
+    path crown to root (iqPathStep). Each lands focus on the question that came
+    up, so a screen reader hears it and the next Tab is its scale. */
+ host.querySelectorAll('[data-pseat]').forEach(function(el){el.onclick=function(){
+  var b=el.getAttribute('data-pseat'), L=iqLawsOf(b); if(!L.length)return;
+  var pick=L.filter(function(x){return iqGot(CURP,x.li)<3;})[0]||L[0];
+  IQ_OPEN=pick.li; IQ_SEAT=b; IQ_STEP=null; IQ_FRESH=false; IQ_ANIM={step:1};
+  IQ_FOCUS='[data-pseat="'+b+'"]'; renderIntake();};});
+ host.querySelectorAll('[data-fr]').forEach(function(el){if(el.tagName.toLowerCase()!=='button')return;
+  el.onclick=function(){
+  var li=iqInHand(CURP), t=+el.getAttribute('data-fr');
+  IQ_OPEN=li; IQ_STEP={li:li,t:t}; IQ_FRESH=false; IQ_ANIM={step:1};
+  IQ_FOCUS='button[data-fr="'+t+'"]'; renderIntake();};});
+ host.querySelectorAll('[data-pstep]').forEach(function(el){el.onclick=function(){
+  var d=+el.getAttribute('data-pstep');
+  iqPathStep(CURP,d); IQ_FRESH=false; IQ_ANIM={step:1};
+  IQ_FOCUS='[data-pstep="'+d+'"]'; renderIntake();};});
+ var pd=host.querySelector('[data-pdone]');
+ if(pd)pd.onclick=function(){setTab(TAB.SUMMARY); render();};
  /* THE PRESS KEEPS ITS PLACE. This renderer writes the whole host, so the
     control a person just pressed is a new element afterwards and focus fell
     to the page. On the wheel that made the keyboard useless: every Enter sent
@@ -1483,19 +1774,20 @@ function renderIntake(){
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
-  /* a changed answer is a new reading of that law, so the releases counted
-     against the old one stop counting (engine/compute.js, lawAnswered). Even
-     when the mean of the three lands on the same number: the person has just
-     told us where the law is, and that wins over the model's estimate. */
-  var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
-  /* the write is the engine's, so a worked example refuses it there and the
-     reporter it bound says what the press would do on the person's own */
-  if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
-  IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
-  /* the press reports its save like the other intake writes, so a refused
-     write is said and not left for a reload to discover, and the answer
-     stays on screen either way, the same as [data-ixb] above */
-  iqApply(CURP); pSave(); statusSaved(); syncLw(); renderIntake(); render();};});
+  /* the write, its save and its report are iqPress, shared with the Ritual
+     tab's law of the week; what follows is this page's own */
+  var pr=iqPress(+el.dataset.a,+el.dataset.v); if(!pr)return;
+  var li=pr.li;
+  /* one at a time moves on to the next framing still missing an answer, and to
+     the law's reading once all three are in */
+  var one=(IQ_VIEW==='one');
+  if(one){IQ_OPEN=li; IQ_STEP={li:li,t:iqFrAfter(CURP,li,+el.dataset.a%3)}; IQ_FRESH=false;}
+  /* render() runs first: it can repaint this page itself, and the arrival and
+     the focus are read once, so they are set for the draw that comes last. */
+  render();
+  IQ_PULSE={li:li,a:+el.dataset.a,fresh:pr.fresh};
+  if(one){IQ_ANIM={step:1}; IQ_FOCUS=(IQ_STEP.t===3)?'.iqp-ft .btn.pri':'#iqp-qh';}
+  renderIntake();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
     both keep their place by the focus rule above. */
  var wb=document.getElementById('iqwho');

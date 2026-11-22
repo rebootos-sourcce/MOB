@@ -71,7 +71,8 @@ function tsWord(type,id){
  if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
  if(type==='pattern')return 'address';
  return {saboteur:'saboteur', complex:'complex', hyper_complex:'hyper-complex',
-  super_complex:'super-complex'}[type]||type;}
+  super_complex:'super-complex', mask:'mask', archetype:'archetype', domain:'domain',
+  character:'character'}[type]||type;}
 
 /* one resolved parent or child, as a row: its name, its kind, and its own
    real content quoted exactly as traceSummaryCard reads it (coherent and

@@ -155,6 +155,25 @@ function traceSummaryCard(type,id,attrs){
  if(type==='super_complex')
   return {found:false, label:String(id),
    why:'a super complex has no card of its own; by THE CHAIN it is its own two hyper complexes paired, so its content is exactly its real children\'s, below'};
+ /* ABOVE THE CHAIN, 21 November (TRACE_ABOVE, trace.js). Each one reads the
+    table its node was made from, and the character, which is the whole
+    reading, has no card and says so */
+ if(type==='mask'){
+  var m=MASKS.filter(function(x){return x.nm===id;})[0];
+  if(!m)return {found:false, label:String(id), why:'no mask named '+id+' is on file'};
+  return {found:true, label:m.nm, fields:{does:m.v, worn:m.b.slice()}, source:'MASKS.v and .b for '+m.nm};}
+ if(type==='archetype'){
+  var a=ARCH.filter(function(x){return x.nm===id;})[0];
+  if(!a)return {found:false, label:String(id), why:'no archetype named '+id+' is on file'};
+  return {found:true, label:a.nm, fields:{does:a.v, runs:a.d||null, seat:a.b, primarySab:attrs.primarySab||null},
+   source:'ARCH.v, .d and .b for '+a.nm+(attrs.primarySab?', and ARCH18 for its primary saboteur':'')};}
+ if(type==='domain'){
+  var d=DOMAINS.filter(function(x){return x.nm===id;})[0];
+  if(!d)return {found:false, label:String(id), why:'no domain named '+id+' is on file'};
+  return {found:true, label:d.nm, fields:{means:d.d, root:d.r}, source:'DOMAINS.d and .r for '+d.nm};}
+ if(type==='character')
+  return {found:false, label:'Character',
+   why:'the character is the whole person, everything below it taken together, so it has no card of its own'};
  return {found:false, label:String(id), why:'no content source is wired for node type '+type};}
 
 /* THE CHAIN'S OWN DIRECTION, read off traceNeighbors and nothing else:
@@ -173,7 +192,8 @@ function traceSummaryParts(g,key){
 
 /* a type name as a person reads it, never the identifier. */
 var TRACE_SUMMARY_WORD={pattern:'address', saboteur:'saboteur', complex:'complex',
- hyper_complex:'hyper complex', super_complex:'super complex'};
+ hyper_complex:'hyper complex', super_complex:'super complex', mask:'mask',
+ archetype:'archetype', domain:'domain', character:'character'};
 function traceSummaryWord(type,id){
  if(type==='pattern'&&/^fetter:/.test(String(id)))return 'fetter';
  return TRACE_SUMMARY_WORD[type]||type;}
@@ -204,6 +224,10 @@ function traceSummaryOwnLine(fields){
    lived=fields.livedBehavior!=null?'lived out as "'+fields.livedBehavior+'"':null;
   return [line,lived].filter(function(x){return !!x;}).join('; ');}
  if(fields.familyLine!=null)return 'its family line is "'+fields.familyLine+'"';
+ /* the rungs above the chain, 21 November: a mask and an archetype say what
+    they do, and a domain what it means, each in its own table's words */
+ if(fields.does!=null)return 'it '+fields.does;
+ if(fields.means!=null)return 'it means "'+fields.means+'"';
  return null;}
 
 /* ONE SIDE'S CLAUSE, hedged. Quotes a real field when one side has

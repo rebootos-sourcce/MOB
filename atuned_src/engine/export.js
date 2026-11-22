@@ -309,7 +309,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
-                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, bornAsBirth:bornAsBirth,
+                  lifePath:lifePath, bornAge:bornAge, exampleAge:exampleAge, exampleWho:exampleWho, exampleRecord:exampleRecord, spiritual:spiritual, converge:converge, birthSuggest:birthSuggest, LP2ARCH:LP2ARCH, bornAsBirth:bornAsBirth,
                   /* the rest of the module. they were reachable as browser
                      globals but absent from the contract, so nothing outside
                      a page could test them. */
@@ -351,7 +351,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* the trace graph, engine/trace.js. The vocabularies and the rule table
      are exported so the gate asserts them against the document rather than
      against a copy typed into the test. */
-                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN,
+                  TRACE_V:TRACE_V, TRACE_ALG:TRACE_ALG, TRACE_NODE_TYPES:TRACE_NODE_TYPES, TRACE_CHAIN:TRACE_CHAIN, TRACE_ABOVE:TRACE_ABOVE, TRACE_DERIVED:TRACE_DERIVED, TRACE_SHADOW:TRACE_SHADOW,
                   TRACE_EDGE_TYPES:TRACE_EDGE_TYPES, TRACE_SRC:TRACE_SRC, TRACE_RULES:TRACE_RULES,
                   TRACE_LOOP:TRACE_LOOP, TRACE_INVERSE:TRACE_INVERSE, TRACE_SYMMETRIC:TRACE_SYMMETRIC,
                   TRACE_CAUSE_SRC:TRACE_CAUSE_SRC, TRACE_PROMOTE:TRACE_PROMOTE, TRACE_TABLE:TRACE_TABLE,
@@ -395,6 +395,8 @@ if(typeof module!=='undefined'&&module.exports){
                   practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
                   practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
                   practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  practicePlanCheck:practicePlanCheck, practiceSchedCheck:practiceSchedCheck,
+                  PR_PLANS_CAP:PR_PLANS_CAP, PR_SCHED_CAP:PR_SCHED_CAP, RIT_MISS:RIT_MISS,
                   PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
                   PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
                   PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,

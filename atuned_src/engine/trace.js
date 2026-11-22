@@ -94,7 +94,11 @@ var TRACE_V=1;
    is a node (TRACE_NAMED, below), one more rung taken off the same reading
    under the same rules. Neither moves what a day is grounded on, and the
    number is stamped only on days (dlySeal, engine/daily.js), whose range check
-   would refuse a 5 in every build before this one. */
+   would refuse a 5 in every build before this one.
+   Still 4 after 21 November, for the same reason. The rungs above the chain
+   (TRACE_ABOVE) come off a reading handed in, and only the same way the chain
+   does. A day is grounded on a graph read with no reading, so no day holds
+   one. */
 var TRACE_ALG=4;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
@@ -120,11 +124,29 @@ var TRACE_ALG=4;
    pattern (tracePatternWhy), and a type of their own would stop every
    stored pattern key resolving. */
 var TRACE_CHAIN=['saboteur','complex','hyper_complex','super_complex'];
+/* ABOVE THE CHAIN, 21 November, the rest of the owner's settled order (DECISIONS.md,
+   "The full stack, nerve to Character", 23 October): "After the super complex
+   are the masks... Then one up from that is the archetype to the spiritual. And
+   then at the very top is the character." TASKS.md SM5. None of these is a rung
+   compute() pairs, so the arithmetic stays as it is. Each one is read off the
+   same stamped reading as the chain, through a table this codebase already
+   holds: the mask a super complex is worn under by seat (MASKS[].b), the
+   archetype seated under that mask (ARCH[].b), the domain that archetype points
+   at (ARCHDOM, engine/archdom.js), and the character, the one node every climb
+   ends at, keyed by the record. Derived only and refused at every door, the
+   same as the chain (THE CHAIN, below). The comment above saying Character is
+   no type described the build before this change. Character is still the whole
+   person: it is a node because a climb needs a place to end, and nothing about
+   the person is counted on it. */
+var TRACE_ABOVE=['mask','archetype','domain','character'];
+/* every derived-only type, the chain and the rungs above it, for every door
+   that refuses one */
+var TRACE_DERIVED=TRACE_CHAIN.concat(TRACE_ABOVE);
 /* TDD section 16, exactly: its first block, the types that may be added,
    then its second, the chain. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
  'ritual','practice_event','observation','evidence','outcome','context',
- 'somatic_state','reframe','release'].concat(TRACE_CHAIN);
+ 'somatic_state','reframe','release'].concat(TRACE_CHAIN).concat(TRACE_ABOVE);
 /* TDD section 17, exactly. There is no related_to. */
 var TRACE_EDGE_TYPES=['causes','associated_with','supports','contradicts','obstructs',
  'reinforces','targets','addresses','requires','implements','executes','produces',
@@ -213,6 +235,11 @@ var TRACE_RULES=[
  ['saboteur','supports','complex','16 and 17, the chain: two saboteurs of one family compounded'],
  ['complex','supports','hyper_complex','16 and 17, the chain: a family\'s complexes compounded'],
  ['hyper_complex','supports','super_complex','16 and 17, the chain: two hyper-complexes paired'],
+ /* above the chain, 21 November (TRACE_ABOVE) */
+ ['super_complex','supports','mask','16, above the chain: the mask worn over the seats the super complex sits at'],
+ ['mask','supports','archetype','16, above the chain: the archetype seated under that mask'],
+ ['archetype','supports','domain','16, above the chain: the domain the archetype points at, ARCHDOM'],
+ ['domain','supports','character','16, above the chain: at the very top, the character'],
  /* section 12 and 13: observation and the somatic state */
  ['practice_event','produces','observation','12, source observation'],
  ['observation','supports','evidence','12, source observation'],
@@ -330,7 +357,15 @@ var TRACE_NEEDS={
  hyper_complex:[{dir:'in',edges:['supports'],types:['complex'],
   why:'a hyper-complex is complexes compounded, and no complex is counted toward this one'}],
  super_complex:[{dir:'in',edges:['supports'],types:['hyper_complex'],
-  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}]};
+  why:'a super-complex is hyper-complexes paired, and no hyper-complex is counted toward this one'}],
+ mask:[{dir:'in',edges:['supports'],types:['super_complex'],
+  why:'a mask sits above a super complex, and no super complex sits under this one'}],
+ archetype:[{dir:'in',edges:['supports'],types:['mask'],
+  why:'an archetype sits above a mask, and no mask is worn over this one\'s seat'}],
+ domain:[{dir:'in',edges:['supports'],types:['archetype'],
+  why:'a domain is the one an archetype points at, and no archetype points at this one'}],
+ character:[{dir:'in',edges:['supports'],types:['domain'],
+  why:'the character is the top of the climb, and no domain reaches this one'}]};
 
 /* ---------- keys ---------- */
 /* A key is type and id. A type never holds a colon, so the first colon
@@ -403,7 +438,7 @@ function traceNodeWhy(type,id,src){
  var w=traceIdWhy(type,id); if(w)return w;
  if(TRACE_TABLE.indexOf(type)>=0&&src!=='known')
   return traceKey(type,id)+' is a row of the address table, so it is known, not '+src;
- if(TRACE_CHAIN.indexOf(type)>=0&&src!=='inferred')
+ if(TRACE_DERIVED.indexOf(type)>=0&&src!=='inferred')
   return traceKey(type,id)+' is a rung read off the reading, so it is inferred, not '+src;
  return null;}
 
@@ -420,7 +455,9 @@ function traceNodeWhy(type,id,src){
    from an address to a super-complex is a path tracePath can find. Above
    the chain the owner's stack goes on, masks, then archetype through
    domain, then Character, the whole of it (DECISIONS.md, 23 October).
-   None of those is a rung compute() pairs, so none is a type here.
+   None of those is a rung compute() pairs, so none is in this list. Since 21
+   November they are types of their own, TRACE_ABOVE, read through the tables
+   that hold them (traceAboveRead), under every rule this block sets.
 
    DERIVED ONLY. A rung exists because a reading of a field says so, on
    that read, and for no other reason. So nothing but the derivation may
@@ -465,7 +502,7 @@ var TRACE_NAMED={type:'super_complex', list:'psychopathy', part:'hyper_complex',
  why:'the reading found this hyper-complex and the one it is named with, which together are the one named super-complex, asked for by name and not paired by rank. A registration, not a cause'};
 /* why a type may not come in through a door, or null */
 function traceChainWhy(type){
- return TRACE_CHAIN.indexOf(type)>=0
+ return TRACE_DERIVED.indexOf(type)>=0
   ?'a '+type+' is read off the reading on every read, so it is never stored, applied or added by hand':null;}
 function traceChainKeyWhy(key){
  return typeof key==='string'?traceChainWhy(traceSplit(key).type):null;}
@@ -551,7 +588,7 @@ function traceEdgeAdd(g,ix,from,edge,to,src,o){
    +', never as '+src+': registration is not causation'};
  /* THE CHAIN, never confirmed (THE CHAIN, above). Checked here, past the
     rule table, so the derivation itself cannot get it wrong. */
- if((TRACE_CHAIN.indexOf(ft)>=0||TRACE_CHAIN.indexOf(tt)>=0)&&src!=='inferred')
+ if((TRACE_DERIVED.indexOf(ft)>=0||TRACE_DERIVED.indexOf(tt)>=0)&&src!=='inferred')
   return {ok:false, why:from+' '+edge+' '+to+' is the reading counting a part toward a rung, so it is inferred, not '+src};
  var e={from:from, to:to, edge:edge, src:src};
  if(o.at!==undefined){
@@ -1012,7 +1049,7 @@ function traceReadingWhy(p,r){
     else if(typeof q.nm!=='string'||!below[q.nm])
      return at+' '+x.nm+' counts '+String(q.nm)+', which is not a '+TRACE_CHAIN_OF[i-1].type+' of this reading';}}
   below=here; of[row.list]=here;}
- return traceNamedWhy(r,of);}
+ return traceNamedWhy(r,of)||traceAboveWhy(r);}
 /* THE NAMED ONE, under the same all or nothing as every rung. Absent is a
    reading from before 26 October, and null is a field that does not hold it or
    a plan that may not see it (sightR, ui/lock.js), and both are no named node.
@@ -1032,13 +1069,151 @@ function traceNamedWhy(r,of){
   if(typeof q.nm!=='string'||!of[TRACE_NAMED.from][q.nm])return at+' '+nm+' counts '+String(q.nm)+', which is not a '+TRACE_NAMED.part+' of this reading';}
  if(x.parts[0].nm===x.parts[1].nm)return at+' '+nm+' counts '+x.parts[0].nm+' twice';
  return null;}
+/* ABOVE THE CHAIN, under the same all or nothing. A reading with no maskRing
+   comes from before 21 November, or was made by hand, and the graph holds no
+   rung above the super complex for it. A reading that has one has every field
+   the climb reads, and they are checked: a mask the table does not name, a
+   seat that is not a seat, or a first or second archetype that is not one of
+   the twelve refuses the whole reading by name. Nothing is left out quietly. */
+function traceAboveWhy(r){
+ var mr=r.maskRing;
+ if(mr===undefined||mr===null)return null;
+ if(!Array.isArray(mr))return 'maskRing is not a list';
+ var names=MASKS.map(function(m){return m.nm;}), here={};
+ for(var i=0;i<mr.length;i++){
+  var m=mr[i], at='maskRing['+i+']';
+  if(!m||typeof m!=='object'||Array.isArray(m))return at+' is not an object';
+  if(typeof m.nm!=='string'||names.indexOf(m.nm)<0)return at+' names '+String(m.nm)+', which is not one of the masks';
+  if(here[m.nm])return at+' names '+m.nm+' a second time';
+  here[m.nm]=1;
+  if(!Array.isArray(m.bands)||!m.bands.length||!m.bands.every(function(b){return BANDS.indexOf(b)>=0;}))
+   return at+' '+m.nm+' is worn over a seat that is not one of the seven';
+  if(typeof m.w!=='number'||!isFinite(m.w))return at+' '+m.nm+' carries no weight';}
+ var arch=function(k){var v=r[k];
+  return (typeof v==='number'&&v%1===0&&v>=0&&ARCH[v])?null:k+' is '+String(v)+', which is not one of the '+ARCH.length+' archetypes';};
+ return arch('pi')||arch('si');}
+/* THE CLIMB ABOVE THE CHAIN, read once the chain is in the graph (TRACE_ABOVE).
+   Each step goes through a table this codebase already holds, so it adds no
+   reading of its own:
+     super complex to mask    the masks compute() reads (r.maskRing) that are
+                              worn over a seat holding one of the super
+                              complex's own addresses. The edge carries the
+                              share of those addresses under the mask
+     mask to archetype        the reading's first and second archetype (r.pi,
+                              r.si), where the mask is worn over the
+                              archetype's seat (ARCH[].b). The archetype also
+                              carries its primary saboteur from ARCH18 and
+                              whether that saboteur is running, as data and
+                              not as an edge. This is the substance of PR #131,
+                              its source-table bridges, ported into this rule
+                              table instead of becoming a second graph. No
+                              rule links a saboteur to an archetype, because
+                              that edge would skip the mask
+     archetype to domain      ARCHDOM, archDomainOf (engine/archdom.js). A table,
+                              the same for everybody, so the domain carries no
+                              weight
+     domain to character      the top, one node keyed by the record
+   Where a step cannot be taken, the climb stops there and g.stops says where
+   and why. That is its own list and not g.gaps: a gap is something on the
+   record the derivation could not place, and loopRead counts those for the
+   person. An archetype seated where no mask is worn is the tables not meeting,
+   which says nothing is missing from the record. */
+function traceAboveRead(p,r,g,ix,node,edge){
+ if(!Array.isArray(r.maskRing))return;
+ var sups=g.nodes.filter(function(n){return n.type==='super_complex';})
+  .map(function(n){return traceKey(n.type,n.id);}).sort();
+ if(!sups.length)return;
+ var worn={};
+ sups.forEach(function(sk){
+  var addrs=traceDescendants(g,sk).filter(function(k){return /^pattern:[0-9]+$/.test(k);})
+   .map(function(k){return BY[+k.slice(8)];}).filter(Boolean);
+  if(!addrs.length)return;
+  r.maskRing.forEach(function(m){
+   var n=addrs.filter(function(a){return m.bands.indexOf(a.b)>=0;}).length;
+   if(!n)return;
+   var mk=node('mask',m.nm,'inferred',{w:Math.round(m.w*10)/10, bands:m.bands.slice()});
+   if(!mk)return;
+   worn[m.nm]=m;
+   edge(sk,'supports',mk,'inferred',{derived:true, w:Math.round(n/addrs.length*100)/100,
+    why:n+' of this super complex\'s '+addrs.length+' addresses sit at a seat the '+m.nm+' mask is worn over. A registration, not a cause'});});});
+ var masks=Object.keys(worn).sort();
+ if(!masks.length)return;
+ var seen={}, tops=[];
+ [[r.pi,'primary'],[r.si,'secondary']].forEach(function(x){
+  var a=ARCH[x[0]]; if(!a||seen[a.nm])return; seen[a.nm]=1;
+  var over=masks.filter(function(nm){return worn[nm].bands.indexOf(a.b)>=0;});
+  if(!over.length){g.stops.push({kind:'unseated', archetype:a.nm,
+   why:'the '+x[1]+' archetype, '+a.nm+', is seated at the '+a.b+' point, and no mask this reading reached is worn there, so the climb stops at the mask'}); return;}
+  /* ARCH18 names Rebel as Outlaw, so the row is found under the name ARCHDOM's
+     own alias reads it as (archDomainOf's upstream) and never under a guess */
+  var d=typeof archDomainOf==='function'?archDomainOf(a.nm):null, up=(d&&d.upstream)||a.nm;
+  var row=(typeof ARCH18!=='undefined'?ARCH18:[]).filter(function(y){return y[0]===up;})[0]||null, sab=row?row[1]:null;
+  var ak=node('archetype',a.nm,'inferred',{rank:x[1], seat:a.b, primarySab:sab,
+   primarySabRunning:!!(sab&&ix.node[traceKey('saboteur',sab)])});
+  if(!ak)return;
+  over.forEach(function(nm){
+   edge(traceKey('mask',nm),'supports',ak,'inferred',{derived:true,
+    why:'the '+a.nm+' archetype is seated at the '+a.b+' point, which the '+nm+' mask is worn over. A registration, not a cause'});});
+  if(!d||!d.nm){g.stops.push({kind:'no_domain', archetype:a.nm,
+   why:'the archetype to domain table does not resolve '+a.nm+(d&&d.open?', which is still open':'')+', so the climb stops at the archetype'}); return;}
+  var dk=node('domain',d.nm,'inferred',{root:d.root||null, how:d.how, word:d.word});
+  if(!dk)return;
+  edge(ak,'supports',dk,'inferred',{derived:true,
+   why:'the archetype to domain table, ARCHDOM, says '+a.nm+' points at '+d.nm+'. The table is the same for everybody, so nothing about this person is carried up it. A registration, not a cause'});
+  if(tops.indexOf(dk)<0)tops.push(dk);});
+ if(!tops.length)return;
+ var ck=node('character',p.id,'inferred',{});
+ if(ck)tops.forEach(function(dk){
+  edge(dk,'supports',ck,'inferred',{derived:true,
+   why:'at the very top is the character, the whole of what sits below it. A registration, not a cause'});});}
 /* what a rung carries beside its key: its weight as compute() wrote it,
    its family, and whether it is the overshoot. Never d, the line a person
    is shown, and never sub, the clinical correspondence compute() calls
    internal: a graph that carried them would be one more place to print
    them from. */
+/* THE DESCENT IS ONE LADDER, AND LUCIFER IS ITS NAME. 21 November, TASKS.md SM16,
+   on the reading the board records as the plan unless the owner corrects it:
+   his "Inferno itself, the nine layers is the descent of no empathy" means
+   Lucifer is not a third two-piece super complex competing for Psychopathy's
+   pair. He names the whole ladder, the DESCENT table (engine/data/compass.js).
+   So a rung the descent ties to compute()'s own chain carries the step it is
+   (descent) and the ladder that step belongs to (ladder), as data. The ties
+   are the ones the descent already holds, read the way descentHeld does: a
+   hyper complex by its family (fam, Sociopathy's Predatory) and the named
+   super complex by its name (Psychopathy, the pair). Nothing is lit by depth,
+   and nothing new is paired. Lucifer is a key here and is never printed: the
+   word a person reads for him is the behaviour word compass.js carries.
+
+   GERYON AND ASMODEUS ARE CHECKED AGAINST THE TWO-PIECE RULE AND NOT WIRED.
+   That rule (SM9, ruled 30 October) is two hyper complexes paired, the one
+   Psychopathy runs on (compute.js, SUP_W). Their nearest pairs are from
+   reviews/shadow-figure-research-2026-10-30.md, section 3.3:
+     Geryon    Grandiosity + Predatory, the same pair Psychopathy owns. The
+               codex's way to tell the two apart (coherence that reads high on
+               a heavily loaded field) is a measure the engine does not have,
+               and a false Geryon on a coherent person costs more than a missed
+               one. No home until that measure exists and is checked.
+     Asmodeus  Dysregulation + Collapse, read off the seat and the line, and
+               rated inferred, low, by the same research. A second reading of
+               the figure would move it toward Predatory.
+   Kept here as data so the next pass reads the result and does not redo the
+   check. None of them is a node, an edge or a rule. */
+var TRACE_SHADOW={
+ Lucifer:{home:'ladder', of:'DESCENT', wired:true},
+ Geryon:{home:'pair', pair:['Grandiosity','Predatory'], wired:false,
+  why:'the same pair Psychopathy already owns, and the engine has no measure to tell the two apart'},
+ Asmodeus:{home:'pair', pair:['Dysregulation','Collapse'], wired:false,
+  why:'the nearest pair is an inference rated low, and a second reading of the figure moves it'}};
+function traceDescentOf(type,x){
+ var D=typeof DESCENT!=='undefined'?DESCENT:[], hit=null;
+ D.forEach(function(d){
+  if(hit)return;
+  if(type==='hyper_complex'&&d.fam&&!x.over&&d.fam===x.nm)hit=d;
+  if(type==='super_complex'&&d.pair&&x.named===d.nm)hit=d;});
+ return hit?{descent:hit.nm, ladder:'Lucifer'}:null;}
 function traceChainAttrs(type,x){
  var a={w:typeof x.w==='number'&&isFinite(x.w)?Math.round(x.w*10)/10:null};
+ var ds=traceDescentOf(type,x); if(ds){a.descent=ds.descent; a.ladder=ds.ladder;}
  if(type==='super_complex')return a;
  a.family=type==='hyper_complex'?x.nm:(typeof x.hcx==='string'?x.hcx:null);
  a.over=!!x.over;
@@ -1079,7 +1254,7 @@ function traceNamedAttrs(x){
    ============================================================ */
 function traceFromRecord(p,intents,reading){
  var g=traceNew(); g.alg=TRACE_ALG; g.lex=LEX_VERSION;
- g.gaps=[]; g.refused=[]; g.restated=[]; g.unchecked={};
+ g.gaps=[]; g.stops=[]; g.refused=[]; g.restated=[]; g.unchecked={};
  var ix=traceIx(g);
  if(!p||typeof p!=='object'){g.gaps.push({kind:'no_record', why:'there is no record to read'}); return g;}
  var node=function(type,id,src,attrs){
@@ -1262,7 +1437,9 @@ function traceFromRecord(p,intents,reading){
    if(nx){
     var nk=node(TRACE_NAMED.type,nx.named,'inferred',traceNamedAttrs(nx));
     if(nk)nx.parts.forEach(function(q){
-     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}}}
+     edge(traceKey(TRACE_NAMED.part,q.nm),'supports',nk,'inferred',{derived:true, why:TRACE_NAMED.why});});}
+   /* and the rungs above it, once every super complex is a node */
+   traceAboveRead(p,reading,g,ix,node,edge);}}
  /* every derived node so far is the record's own */
  g.nodes.forEach(function(n){n.derived=true;});
 

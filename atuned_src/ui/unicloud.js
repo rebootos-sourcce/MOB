@@ -32,6 +32,46 @@
    soft saturation (exp decay, smoothstep) so the core blends instead of
    plateauing with a sharp rim.
 
+   SEAMS, the third revision, 21 November. His words, on a screenshot
+   with eight red crosses round the circle: "There's a bug in the fluid
+   code. You can see a seam. There should be none. That should be very
+   fluid." Nothing here is drawn in eight wedges; the field is one full
+   screen pass. The seams were the noise's own lattice, measured on the
+   shader rendered to a float target (the field's second derivative,
+   high passed, so smooth curvature cancels and only a crease survives):
+   a warped square grid of crease lines across the whole cloud, and the
+   grid is centred on the circle because uv's origin is the stage centre,
+   so its lines cross the bright halo round her at roughly eight places.
+   Two causes, both in the old value noise. Its cubic fade, f*f*(3-2f),
+   has a second derivative that jumps at every cell edge, which the eye
+   reads as a hard line (a Mach band), and the density curve's contrast
+   sharpened it. And value noise flattens across every cell edge whatever
+   the fade, so even a smoother fade left a grid. Fixed by:
+    - gradient noise (gnoise) with the quintic fade, 6f^5-15f^4+10f^3, the
+      curve Perlin moved to in 2002 for exactly this. Matched to the old
+      field's spread (NGAIN, measured: std 0.218 against 0.177) and its
+      softness (NFREQ, gradient noise carries its energy at a higher
+      frequency on the same lattice).
+    - each octave rotated (OCT) and shifted (LAT), and the lattice moved
+      off her centre, so no residual can stack into a straight line.
+    - every smoothstep edge (ring gate, density, vignette, core glow) on
+      the same quintic curve (sstep2), and a pulse fades out over its last
+      30 percent of life instead of switching off.
+    - integer seeds for the second channel. A fractional seed let the
+      compiler round the same lattice corner two ways from two cells, and
+      the hash turns one bit into a different gradient: a real crack, found
+      in this revision's own first build and fixed before it shipped.
+   Measured: strongest crease 212 times the field's median curvature
+   change before, 65 after; the worst single line 796 before, 118 after.
+   THE PINCH FIX HOLDS. Gradient noise is steeper than value noise at the
+   same spread, which put folds back during a pulse on the first try
+   (0.49 percent of the frame against 0.14). WARP_K scales the warp back
+   to inside the old budget, chosen by measurement across 8 time samples
+   per case: during a pulse at the worst settings, folded area mean 0.05
+   and 0.06 percent against 0.17 and 0.14 before, worst frame 0.33 and
+   0.37 against 0.48 and 0.38. THE BANDING FIX HOLDS: the dither at the
+   final write is untouched.
+
    WHAT THIS IS NOT. This is an overlay, never a replacement. #stage's own
    CSS wash (shell/head.html's #stage::before, "it emanates from her, not
    the room," 10 November) already reads real CQ through CPAL/getPalette/
@@ -43,9 +83,13 @@
    "I want to see it blending" is answered literally: this is paint over
    paint, not a second background competing with the first.
 
-   WHERE IT LIVES. Scoped to the Journal hero only (body.tab-story, not
-   .st-full), the one place "the cloud" concept already exists. The
-   Dashboard's own separate background (#stjr) is untouched. Mounted and
+   WHERE IT LIVES. The Journal, both views: the hero paints it on #stage,
+   and since 21 November the Dashboard paints it in #stjr, the dark well
+   round her circle, masked soft so it never meets the panel's edge, as
+   the cloud round the raised surface he asked for ("a ring inside of a
+   raised surface with this kind of cloudy pattern around it", since made
+   a dish; see SET INTO A DISH in shell/head.html). #stjr's own wash is still under it.
+   Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
 
@@ -75,11 +119,19 @@
 'use strict';
 if(typeof document==='undefined')return;
 
-var HOST_ID='stage';
+/* THE HOST, 21 November: the hero paints behind everything on #stage; the
+   Dashboard paints inside the dark well that holds her circle, #stjr, so the
+   cloud sits round the dish she is set into (shell/head.html, SET INTO A
+   DISH). #stjr is rebuilt by every stRender, so frame() re-seats
+   the canvas whenever its host is a new element. */
+function hostEl(){
+ var c=document.body.classList;
+ return document.getElementById(c.contains('st-full')?'stjr':'stage');
+}
 var canvas=null, gl=null, mounted=false, raf=0;
 var prog=null, posLoc=-1, uniforms={};
 var blitProg=null, blitPosLoc=-1, blitUniforms={};
-var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false;
+var fbo=null, fboTex=null, lowW=1, lowH=1, usingHalfRes=false, sizedW=0, sizedH=0;
 var vbuf=null;
 var compileFailed=false, contextLost=false;
 
@@ -90,11 +142,26 @@ var vsSrc=[
  'void main(){ vUv = aPos*0.5+0.5; gl_Position = vec4(aPos,0.0,1.0); }'
 ].join('\n');
 
-/* The fragment shader is the fixed demo's own, verbatim: the dither, the
-   pulse strength and gate, the turbulence cap and the soft saturation are
-   all load bearing fixes, measured against real screenshots and a
-   standalone Jacobian check (tools/jacobian.js in the scratchpad, not
-   shipped here), not cosmetic. */
+/* The fragment shader is the fixed demo's own, with the seam revision
+   above: the dither, the pulse strength and gate, the turbulence cap, the
+   soft saturation and the warp scale are all load bearing fixes, measured
+   against real screenshots and a Jacobian check, not cosmetic. */
+/* THE CLOUD'S REACH, 21 November, his words on the seamless build: "Let's
+   expand the cloud width by about 15%. So its radius is 15% bigger."
+   CLOUD_R scales the two falloffs that set how far the cloud reaches, the
+   warm glow round her circle (coreGlow, measured from her centre) and the
+   vignette (vign, from the stage centre), and nothing else. The noise is
+   still sampled on the unscaled uv, so the size of the billows, their gain,
+   the warp budget, the pulse and the dither are the seam round's measured
+   values, untouched. 1.0 is the build he approved the blend on.
+   Why 1.20 and not 1.15: the billows stay fixed in screen space and the
+   density saturates, so the visible edge moves less than the falloff does.
+   Measured on one frozen frame (both builds drawn at t=0, same core) at
+   1600 by 1000, the radius where the cloud's brightness over the ground
+   falls to 50, 20, 10 and 5 percent of its peak: 1.15 grew it +14, +12, +10
+   and +10 percent; 1.20 grows it +18, +15, +13 and +15, which is his 15. At
+   390 the stage is narrower than the cloud already and its outer reach is
+   the stage's own sides either way. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -114,48 +181,50 @@ var fsCore=[
  'const float PULSE_WIDTH0 = 0.16;',
  'const float PULSE_LIFE = 2.6;',
  'const float PULSE_STRENGTH = 0.22;',
+ 'const mat2 OCT = mat2(0.8, 0.6, -0.6, 0.8);',
+ 'const vec2 LAT = vec2(0.37, 0.61);',
+ 'const float WARP_K = 0.62;',
+ 'const float NFREQ = 0.75;',
+ 'const float NGAIN = 1.23;',
+ 'const float CLOUD_R = 1.20;',
+ '',
+ 'float sstep2(float a, float b, float x){',
+ '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
+ '  return t*t*t*(t*(t*6.0-15.0)+10.0);',
+ '}',
  '',
  'float hash(vec2 p){',
  '  p = fract(p*vec2(123.34, 456.21));',
  '  p += dot(p, p+45.32);',
  '  return fract(p.x*p.y);',
  '}',
- 'float vnoise(vec2 p){',
+ 'vec2 grad(vec2 i, vec2 s){',
+ '  return vec2(hash(i+s), hash(i+s+vec2(19.0, 73.0)))*2.0 - 1.0;',
+ '}',
+ 'float gnoise(vec2 p, vec2 s){',
  '  vec2 i = floor(p); vec2 f = fract(p);',
- '  float a = hash(i);',
- '  float b = hash(i+vec2(1.0,0.0));',
- '  float c = hash(i+vec2(0.0,1.0));',
- '  float d = hash(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
+ '  float a = dot(grad(i, s), f);',
+ '  float b = dot(grad(i+vec2(1.0,0.0), s), f-vec2(1.0,0.0));',
+ '  float c = dot(grad(i+vec2(0.0,1.0), s), f-vec2(0.0,1.0));',
+ '  float d = dot(grad(i+vec2(1.0,1.0), s), f-vec2(1.0,1.0));',
+ '  vec2 u = f*f*f*(f*(f*6.0-15.0)+10.0);',
  '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
  '}',
+ 'float vnoise(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*gnoise(p, vec2(0.0)); }',
  'float fbm(vec2 p){',
- '  float s = 0.0; float amp = 0.5; float freq = 1.0;',
+ '  float s = 0.0; float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
- 'vec2 hash2(vec2 p){',
- '  p = fract(p*vec2(123.34, 456.21));',
- '  p += dot(p, p+45.32);',
- '  return fract(vec2(p.x*p.y, p.x*p.y*1.618034));',
- '}',
- 'vec2 vnoise2(vec2 p){',
- '  vec2 i = floor(p); vec2 f = fract(p);',
- '  vec2 a = hash2(i);',
- '  vec2 b = hash2(i+vec2(1.0,0.0));',
- '  vec2 c = hash2(i+vec2(0.0,1.0));',
- '  vec2 d = hash2(i+vec2(1.0,1.0));',
- '  vec2 u = f*f*(3.0-2.0*f);',
- '  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);',
- '}',
+ 'vec2 vnoise2(vec2 p){ p *= NFREQ; return 0.5 + NGAIN*vec2(gnoise(p, vec2(0.0)), gnoise(p, vec2(41.0, 7.0))); }',
  'vec2 fbm2(vec2 p){',
- '  vec2 s = vec2(0.0); float amp = 0.5; float freq = 1.0;',
+ '  vec2 s = vec2(0.0); float amp = 0.5;',
  '  for(int i=0;i<3;i++){',
- '    s += amp*vnoise2(p*freq);',
- '    freq *= 2.02; amp *= 0.55;',
+ '    s += amp*vnoise2(p);',
+ '    p = OCT*p*2.02 + LAT; amp *= 0.55;',
  '  }',
  '  return s;',
  '}',
@@ -165,7 +234,7 @@ var fsCore=[
  '',
  '  float cd = length(uv-uCore);',
  '  vec2 dirFromCore = cd>0.0001 ? (uv-uCore)/cd : vec2(0.0,1.0);',
- '  float ringGate = smoothstep(0.0, RING_R, cd);',
+ '  float ringGate = sstep2(0.0, RING_R, cd);',
  '',
  '  float pulseAmt = 0.0;',
  '  for(int i=0;i<4;i++){',
@@ -177,7 +246,7 @@ var fsCore=[
  '        float pw = PULSE_WIDTH0 + age*0.10;',
  '        float band = exp(-((cd-pr)*(cd-pr))/(2.0*pw*pw));',
  '        float decay = exp(-age/(PULSE_LIFE*0.55)) / (1.0+age*0.5);',
- '        pulseAmt += band*decay;',
+ '        pulseAmt += band*decay*(1.0 - sstep2(PULSE_LIFE, PULSE_LIFE*1.3, age));',
  '      }',
  '    }',
  '  }',
@@ -188,19 +257,19 @@ var fsCore=[
  '  float speed = mix(0.022, 0.095, incoh) + uDQ*0.02;',
  '  float t = uTime*speed;',
  '',
- '  vec2 w1 = fbm2(uv*1.4 + vec2(t*0.5, -t*0.55));',
- '  vec2 warped = uv + (w1-0.5)*turb;',
+ '  vec2 w1 = fbm2(uv*1.4 + LAT + vec2(t*0.5, -t*0.55));',
+ '  vec2 warped = uv + (w1-0.5)*turb*WARP_K;',
  '  warped += pulsePush;',
  '  vec2 w2 = fbm2(warped*1.9 + vec2(-t*0.35, t*0.25));',
- '  vec2 p2 = warped + (w2-0.5)*turb*0.55;',
+ '  vec2 p2 = warped + (w2-0.5)*turb*0.55*WARP_K;',
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = smoothstep(1.05, 0.0, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd/CLOUD_R);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
- '  float density = smoothstep(0.20, 0.93, n);',
- '  float vign = smoothstep(1.35, 0.1, length(uv));',
+ '  float density = sstep2(0.20, 0.93, n);',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv)/CLOUD_R);',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',
@@ -298,6 +367,10 @@ function tryBuildHalfRes(){
 function sizeFBO(w,h){
  if(!usingHalfRes)return;
  lowW=Math.max(1,w); lowH=Math.max(1,h);
+ /* texStorage2D makes a texture immutable: a second call on the same one
+    fails and leaves it at its first size. A new size gets a new texture. */
+ if(fboTex)gl.deleteTexture(fboTex);
+ fboTex=gl.createTexture();
  gl.bindTexture(gl.TEXTURE_2D,fboTex);
  gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA16F,lowW,lowH);
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
@@ -395,12 +468,17 @@ function resize(){
  var r=canvas.getBoundingClientRect();
  var dpr=Math.min(window.devicePixelRatio||1,2);
  var w=Math.max(1,Math.round(r.width*dpr)), h=Math.max(1,Math.round(r.height*dpr));
- if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h); }
+ if(w===sizedW&&h===sizedH)return;
+ sizedW=w; sizedH=h;
+ canvas.width=w; canvas.height=h; gl.viewport(0,0,w,h);
  if(usingHalfRes)sizeFBO(Math.max(1,Math.round(w/2)),Math.max(1,Math.round(h/2)));
 }
 
 function frame(now){
  if(!mounted||contextLost){ return; }
+ var want=hostEl();
+ if(want&&canvas.parentNode!==want)want.insertBefore(canvas,want.firstChild);
+ resize();
  var still=stillWins();
  var tSec=still?(lastTSec||2.4):(now-startTime)/1000;
  var dt=Math.min(0.05,(now-(lastFrameTime||now))/1000); lastFrameTime=now;
@@ -470,12 +548,12 @@ function frame(now){
 function removeCanvas(){
  if(raf){ cancelAnimationFrame(raf); raf=0; }
  if(canvas&&canvas.parentNode)canvas.parentNode.removeChild(canvas);
- canvas=null; gl=null;
+ canvas=null; gl=null; fboTex=null; fbo=null; sizedW=sizedH=0;
 }
 
 function mount(){
  if(mounted||compileFailed)return;
- var host=document.getElementById(HOST_ID);
+ var host=hostEl();
  if(!host)return;
  canvas=document.createElement('canvas');
  canvas.id='unicloud';
@@ -490,7 +568,7 @@ function mount(){
  canvas.addEventListener('webglcontextlost',function(e){ e.preventDefault(); contextLost=true; },false);
  canvas.addEventListener('webglcontextrestored',function(){
   contextLost=false;
-  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
+  try{ buildProgram(); buildGeo(); tryBuildHalfRes(); sizedW=sizedH=0; resize(); startTime=performance.now()-lastTSec*1000; raf=requestAnimationFrame(frame); }
   catch(e){ removeCanvas(); compileFailed=true; }
  },false);
 
@@ -522,7 +600,7 @@ function unmount(){
    nothing else in this product needs to know this exists. */
 function syncToTab(){
  var c=document.body.classList;
- var want=c.contains('tab-story')&&!c.contains('st-full');
+ var want=c.contains('tab-story');
  if(want&&!mounted)mount();
  else if(!want&&mounted)unmount();
 }

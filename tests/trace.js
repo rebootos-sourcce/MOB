@@ -91,11 +91,15 @@ function suite(T,E,ok,g){
  /* NP is what may be added, CT the chain, derived only, and NT both, in
     the document's order. CR is the chain's rules, section 17's second block. */
  const NP=docBlock(doc,'# 16. Graph Node Types'), CT=docBlock(doc,'# 16. Graph Node Types','## Derived only'),
-       NT=(NP||[]).concat(CT||[]), ET=docBlock(doc,'# 17. Graph Edge Types'),
+       AB=docBlock(doc,'# 16. Graph Node Types','## Derived only: above the chain'),
+       NT=(NP||[]).concat(CT||[]).concat(AB||[]), ET=docBlock(doc,'# 17. Graph Edge Types'),
        CR=docBlock(doc,'# 17. Graph Edge Types','## The chain is held'),
        ST=docBlock(doc,'# 26. AI Handshake','AI must distinguish');
  const safe=f=>{try{return f();}catch(e){return {threw:e&&e.message};}};
- const CH=T.TRACE_CHAIN||[], touches=r=>CH.indexOf(r[0])>=0||CH.indexOf(r[2])>=0;
+ /* DV is every derived-only type: the chain and, since 21 November, the rungs
+    above it (TRACE_ABOVE). touches is any rule with one at either end */
+ const CH=T.TRACE_CHAIN||[], AV=T.TRACE_ABOVE||[], DV=CH.concat(AV),
+  touches=r=>DV.indexOf(r[0])>=0||DV.indexOf(r[2])>=0;
 
  g('TG1 · the vocabularies are the document\'s, exactly');
  ok(NP&&NP.length&&CT&&CT.length&&J(T.TRACE_NODE_TYPES)===J(NT),
@@ -103,8 +107,14 @@ function suite(T,E,ok,g){
  ok(J(CH)===J(CT),'the chain is section 16\'s derived only block, got '+J(CH)+' against '+J(CT));
  ok(Array.isArray(E.PR_NODE)&&CH.length>0&&CH.every(t=>E.PR_NODE.indexOf(t)<0),
   'no rung is in the practice build\'s own vocabulary, so no intent it emits can name one');
- ok(['address','fetter','nerve','character','super complex'].every(t=>T.TRACE_NODE_TYPES.indexOf(t)<0),
-  'the chain renames nothing it should not: an address and a fetter stay a pattern, and character is no type, because Character is the whole reading and not a rung');
+ ok(['address','fetter','nerve','super complex'].every(t=>T.TRACE_NODE_TYPES.indexOf(t)<0),
+  'the chain renames nothing it should not: an address and a fetter stay a pattern');
+ /* ABOVE THE CHAIN, 21 November: the rest of the 23 October order, as its own
+    block of the document, and the top of it is character */
+ ok(AB&&AB.length&&J(AV)===J(AB)&&AV[0]==='mask'&&AV[AV.length-1]==='character',
+  'the rungs above the chain are section 16\'s own block, mask first and character last, got '+J(AV)+' against '+J(AB));
+ ok(Array.isArray(E.PR_NODE)&&AV.length>0&&AV.every(t=>E.PR_NODE.indexOf(t)<0),
+  'no rung above the chain is in the practice build\'s vocabulary either');
  /* THE OWNER'S WORD FOR THE FOURTH RUNG, 23 October: "From fetter to super
     complex... And then at the very top is the character." Held by the
     document's block above as well; this names the ruling. */
@@ -183,10 +193,10 @@ function suite(T,E,ok,g){
  ok(refusedOk===all-RP.length,'every triple outside the table refused by name, '+refusedOk+' of '+(all-RP.length)
   +(badRef.length?', first let through: '+badRef.slice(0,3).join('; '):''));
  const chainLet=[]; let chainAll=0;
- CH.forEach(t=>T.TRACE_SRC.forEach(s=>{chainAll++;
+ DV.forEach(t=>T.TRACE_SRC.forEach(s=>{chainAll++;
   const G=T.traceNew(), r=safe(()=>T.traceAddNode(G,t,t+'A',s));
   if(!(r&&!r.ok&&has(r,'read off the reading')&&G.nodes.length===0))chainLet.push(t+' as '+s);}));
- ok(chainAll>0&&chainAll===CH.length*T.TRACE_SRC.length&&!chainLet.length,
+ ok(chainAll>0&&chainAll===DV.length*T.TRACE_SRC.length&&!chainLet.length,
   'every rung is refused by traceAddNode under every provenance, '+(chainAll-chainLet.length)+' of '+chainAll
   +(chainLet.length?', let through: '+chainLet.join('; '):''));
 
@@ -610,11 +620,13 @@ function suite(T,E,ok,g){
   ok(rungs.length>0&&rungs.every(n=>n.src==='inferred'&&n.derived===true&&n.was===undefined),
    'every rung is inferred and derived, and was never anything else');
   ok(rungs.every(n=>n.d===undefined&&n.sub===undefined),'no rung carries the line a person is shown or the clinical correspondence');
-  const ce=G.edges.filter(e=>isRung(typeOf(e.from))||isRung(typeOf(e.to)));
+  /* the chain's own edges are the ones into a rung of it. An edge out of the
+     super complex goes to a mask, above the chain, and TG11e reads those */
+  const ce=G.edges.filter(e=>isRung(typeOf(e.to)));
   ok(ce.length>0&&ce.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&e.was===undefined&&/not a cause/.test(e.why||'')),
    'every edge of the chain is supports, inferred and derived, and says it is not a cause');
   const used=[...new Set(ce.map(e=>typeOf(e.from)+' '+e.edge+' '+typeOf(e.to)))].sort();
-  ok(J(used)===J(T.TRACE_RULES.filter(touches).map(key).sort()),'the chain uses its four rules and nothing else, got '+J(used));
+  ok(J(used)===J(T.TRACE_RULES.filter(r=>isRung(r[2])).map(key).sort()),'the chain uses its four rules and nothing else, got '+J(used));
   /* every part, once, at the rung that counted it, and nothing else */
   const want=new Set();
   CH.forEach(t=>(RD[LIST[t]]||[]).forEach(x=>x.parts.forEach(q=>
@@ -823,6 +835,112 @@ function suite(T,E,ok,g){
    const L0=E.loopRead(P), L1=E.loopRead(P,E.readHeld(P));
    ok(L0.patterns.length>0&&J(L1)===J(L0),'the loop read handed the reading lists exactly what it listed without one, '+L0.patterns.length+' patterns');}
  }
+ g('TG11f · above the chain: mask, archetype, domain, character (21 November)');
+ tg11f:{
+  /* The rest of the owner's 23 October order, read off the same stamped
+     reading through the tables that hold each step. THE KNOWN CASE FIRST: the
+     loaded record reaches a super complex, and at least one of its two
+     archetypes is seated under a mask that super complex reaches. If either
+     stops being true this says so and stops, rather than proving less than it
+     says. */
+  const P=loadedRec(E);
+  if(!P){ok(false,'the loaded record passes the boundary'); break tg11f;}
+  const RD=E.read(JSON.parse(J(P))).reading;
+  const typeOf=k=>T.traceSplit(k).type, isAb=t=>AV.indexOf(t)>=0;
+  const G=T.traceFromRecord(P,undefined,RD);
+  const ch=G.nodes.find(n=>n.type==='character');
+  ok(!!ch&&ch.id===P.id,'the loaded record climbs to one character node, keyed by the record, got '+J(ch));
+  if(!ch)break tg11f;
+  ok(G.refused.length===0,'every rung above the chain passes the rule table, refused '+J(G.refused).slice(0,240));
+  ok(G.nodes.filter(n=>n.type==='character').length===1,'there is one character and only one');
+  const ab=G.nodes.filter(n=>isAb(n.type));
+  ok(ab.every(n=>n.src==='inferred'&&n.derived===true&&n.was===undefined),'every rung above the chain is inferred and derived');
+  const ae=G.edges.filter(e=>isAb(typeOf(e.to)));
+  ok(ae.length>0&&ae.every(e=>e.edge==='supports'&&e.src==='inferred'&&e.derived===true&&/not a cause/.test(e.why||'')),
+   'every edge into a rung above the chain is supports, inferred, derived, and says it is not a cause');
+  const used=[...new Set(ae.map(e=>typeOf(e.from)+' '+e.edge+' '+typeOf(e.to)))].sort();
+  ok(J(used)===J(T.TRACE_RULES.filter(r=>isAb(r[2])).map(key).sort()),'the climb uses its four rules and nothing else, got '+J(used));
+  /* a mask only where a super complex has an address at a seat it is worn over */
+  const masks=G.nodes.filter(n=>n.type==='mask');
+  ok(masks.length>0&&masks.every(m=>{
+   const ring=RD.maskRing.find(x=>x.nm===m.id);
+   return !!ring&&G.edges.some(e=>e.to==='mask:'+m.id&&typeOf(e.from)==='super_complex'&&e.w>0&&e.w<=1);}),
+   'every mask is one the reading took, under a super complex, with the share of its addresses on the edge');
+  const sups=G.nodes.filter(n=>n.type==='super_complex').map(n=>'super_complex:'+n.id);
+  const seats=new Set();
+  sups.forEach(k=>T.traceDescendants(G,k).filter(x=>/^pattern:[0-9]+$/.test(x)).forEach(x=>seats.add(E.BY[+x.slice(8)].b)));
+  const expectMasks=RD.maskRing.filter(m=>m.bands.some(b=>seats.has(b))).map(m=>m.nm).sort();
+  ok(J(masks.map(m=>m.id).sort())===J(expectMasks),'the masks are exactly the ones worn over a seat the super complexes hold, got '+J(masks.map(m=>m.id))+' against '+J(expectMasks));
+  /* the archetypes are the reading's own two, and only where a mask is worn over the seat */
+  const arcs=G.nodes.filter(n=>n.type==='archetype');
+  const two=[E.ARCH[RD.pi].nm,E.ARCH[RD.si].nm];
+  ok(arcs.length>0&&arcs.every(a=>two.indexOf(a.id)>=0),'every archetype is the reading\'s first or second, got '+J(arcs.map(a=>a.id))+' of '+J(two));
+  two.forEach(nm=>{
+   const A=E.ARCH.find(x=>x.nm===nm), under=masks.filter(m=>m.bands.indexOf(A.b)>=0);
+   const node=arcs.find(a=>a.id===nm), gap=G.stops.find(x=>x.kind==='unseated'&&x.archetype===nm);
+   ok(under.length?(!!node&&!gap):(!node&&!!gap&&/no mask/.test(gap.why)),
+    nm+' is a node exactly when a mask in the graph is worn over its seat, '+A.b+', and a named stop otherwise');});
+  ok(G.gaps.every(x=>x.kind!=='unseated'&&x.kind!=='no_domain'),'where the climb stops is not counted as a gap on the record');
+  arcs.forEach(a=>{
+   const up=(E.archDomainOf(a.id)||{}).upstream||a.id, row=E.ARCH18.find(r=>r[0]===up);
+   ok(a.primarySab===(row?row[1]:null)&&a.primarySabRunning===!!(row&&G.nodes.some(n=>n.type==='saboteur'&&n.id===row[1])),
+    a.id+' carries its ARCH18 primary saboteur, and whether it runs in this reading, as data');});
+  /* the domain is ARCHDOM's answer for each archetype, and carries no weight */
+  arcs.forEach(a=>{
+   const d=E.archDomainOf(a.id);
+   ok(!!d&&!!d.nm&&G.edges.some(e=>e.from==='archetype:'+a.id&&e.to==='domain:'+d.nm),
+    a.id+' points at '+(d&&d.nm)+', the archetype to domain table\'s own answer');});
+  ok(G.nodes.filter(n=>n.type==='domain').every(n=>n.w===undefined),'a domain carries no weight, because nothing about the person is carried up a table');
+  /* NERVE TO CHARACTER as one path, the whole 23 October order */
+  const top=RD.sups[0], addr=top.parts[0].parts[0].parts[0].parts[0].i;
+  const walk=T.tracePath(G,'pattern:'+addr,'character:'+P.id,{edges:['supports']});
+  const kinds=walk?walk.map(s=>typeOf(s.to)):[];
+  ok(!!walk&&J(kinds)===J(CH.concat(AV)),'an address climbs to the character through every rung in order, got '+J(kinds));
+  ok(!T.traceOrphans(G).missing.some(m=>isAb(m.type)),'no rung above the chain is missing what sits under it');
+  /* the doors */
+  ok(!T.traceFromRecord(P).nodes.some(n=>isAb(n.type)),'with no reading there is nothing above the chain');
+  const old=Object.assign({},RD); delete old.maskRing;
+  const Go=T.traceFromRecord(P,undefined,old);
+  ok(Go.refused.length===0&&!Go.nodes.some(n=>isAb(n.type))&&Go.nodes.some(n=>n.type==='super_complex'),
+   'a reading from before the climb keeps its chain and holds nothing above it, refusing nothing');
+  const locked=Object.assign({},RD,{sups:[],psychopathy:null});
+  ok(!T.traceFromRecord(P,undefined,locked).nodes.some(n=>isAb(n.type)),'a plan that cannot see the super complex sees nothing above it');
+  const refusedAs=(f,frag,m)=>{const q=JSON.parse(J(RD)); f(q); const Gq=T.traceFromRecord(P,undefined,q);
+   ok(Gq.refused.some(x=>x.reading&&(x.why||'').indexOf(frag)>=0)&&!Gq.nodes.some(n=>isAb(n.type)||isRung(n.type)),m);};
+  const isRung=t=>CH.indexOf(t)>=0;
+  refusedAs(q=>{q.maskRing='x';},'maskRing is not a list','a maskRing that is not a list refuses the whole reading');
+  refusedAs(q=>{q.maskRing[0].nm='Nobody';},'not one of the masks','a mask the table does not name refuses it');
+  refusedAs(q=>{q.maskRing[1].nm=q.maskRing[0].nm;},'a second time','a mask named twice refuses it');
+  refusedAs(q=>{q.maskRing[0].bands=['Elbow'];},'not one of the seven','a mask worn over a seat that is not one refuses it');
+  refusedAs(q=>{q.maskRing[0].w='heavy';},'carries no weight','a mask with no weight refuses it');
+  refusedAs(q=>{q.pi=99;},'not one of the','a first archetype that is not one of the twelve refuses it');
+  refusedAs(q=>{q.si=-1;},'not one of the','a second archetype that is not one of the twelve refuses it');
+  AV.forEach(t=>{
+   const v=T.validateTrace({v:1,nodes:[{type:t,id:'X',src:'inferred'}],edges:[]});
+   ok(!v.ok&&v.errs.some(x=>/read off the reading/.test(x)),'a stored '+t+' is refused at the boundary by name');});
+  const gs=T.traceNew(); T.traceAddNode(gs,'pattern','12','known');
+  const ap=T.traceApply(gs,[{from:{type:'pattern',id:'12'},to:{type:'archetype',id:'Sage'},edge:'supports',src:'proposed'}],'2026-11-21T00:00:00.000Z');
+  ok(ap.refused.length===1&&/read off the reading/.test(ap.refused[0].why),'an intent naming a rung above the chain is refused by name');
+  /* THE DESCENT IS ONE LADDER (SM16, 21 November). A rung the descent ties to
+     the chain carries its step and the ladder, Lucifer, as data; Geryon and
+     Asmodeus were checked against the two-piece rule and are not wired */
+  const PN=namedRec(E,true);
+  if(PN){
+   const RN=E.read(JSON.parse(J(PN))).reading, GN=T.traceFromRecord(PN,undefined,RN);
+   const D=E.DESCENT||[], tied=D.filter(d=>d.fam||d.pair);
+   const want=GN.nodes.filter(n=>(n.type==='hyper_complex'&&tied.some(d=>d.fam===n.id&&!n.over))||(n.type==='super_complex'&&n.named&&tied.some(d=>d.pair&&d.nm===n.id)));
+   ok(want.length>0&&want.every(n=>n.ladder==='Lucifer'&&tied.some(d=>d.nm===n.descent)),
+    'every rung the descent ties to the chain carries its step and the ladder it is on, got '+J(want.map(n=>[n.type,n.id,n.descent,n.ladder])));
+   ok(GN.nodes.filter(n=>n.ladder).length===want.length,'and no other rung does: nothing is lit by depth');
+   const psy=GN.nodes.find(n=>n.type==='super_complex'&&n.id==='Psychopathy');
+   ok(!!psy&&psy.descent==='Psychopathy'&&psy.ladder==='Lucifer','Psychopathy is a step on the ladder Lucifer names, not a rival to it');}
+  const SH=T.TRACE_SHADOW||{};
+  ok(SH.Lucifer&&SH.Lucifer.home==='ladder'&&SH.Lucifer.wired===true,'Lucifer names the ladder');
+  ok(['Geryon','Asmodeus'].every(k=>SH[k]&&SH[k].home==='pair'&&SH[k].pair.length===2&&SH[k].wired===false&&SH[k].why),
+   'Geryon and Asmodeus each carry the pair they were checked against, and why neither is wired');
+  ok(['Lucifer','Geryon','Asmodeus'].every(k=>T.TRACE_NODE_TYPES.indexOf(k.toLowerCase())<0),'no shadow figure is a node type');
+ }
+
  g('TG12 · same record, same graph, whatever is loaded');
  {
   const P=worked(E); if(!P)return;
@@ -992,6 +1110,11 @@ function mutants(E){
     const q=(r&&typeof r==='object'&&!Array.isArray(r)&&p&&typeof p==='object')?Object.assign({},r,{rec:p.id}):r;
     return E.traceFromRecord(p,i,q);}})],
   ['the reading is ignored', Object.assign({},X,{traceFromRecord:function(p,i){return E.traceFromRecord(p,i);}})],
+  /* above the chain, 21 November: a build that never reads the masks, so the
+     climb stops at the super complex */
+  ['the climb above the chain is never read', Object.assign({},X,{traceFromRecord:function(p,i,r){
+    const q=(r&&typeof r==='object')?Object.assign({},r):r; if(q&&typeof q==='object')delete q.maskRing;
+    return E.traceFromRecord(p,i,q);}})],
   /* the named super complex, 31 October. Each is a plausible way to wire it
      wrong: leave it out, file it under its pair's name, or push it into sups,
      which compute() refuses to do because it would move every count */

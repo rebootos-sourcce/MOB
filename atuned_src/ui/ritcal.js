@@ -654,7 +654,10 @@ function ritSpanRead(st,R){
     the strip carries Practised and Marks, and a figure computed here for no
     reader is the drawing nothing reads that the same pass deleted */
  var said={}; M.said.forEach(function(x){if(x[0]>=t0&&x[0]<=today)said[x[0]]=1;});
- var did=M.did.filter(function(x){return x[0]>=t0&&x[0]<=today;}).length;
+ /* the law of the week is marked done in this same log (ritLawMark, ui/
+    ritlaw.js) and is not a challenge, so it is left out of the count that
+    prints "Challenges done" */
+ var did=M.did.filter(function(x){return x[0]>=t0&&x[0]<=today&&!RIT_LAW_ID.test(x[1]);}).length;
  var h=ritSnapBefore(new Date(ritDateOf(t0).getTime()-12*3600000).toISOString());
  var bars=BANDS.slice().reverse().concat(['']).filter(function(b){return seat[b];})
   .map(function(b){return {b:b, n:Object.keys(seat[b]).length};});

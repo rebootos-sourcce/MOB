@@ -236,11 +236,49 @@ function renderSpirit(){
     say(unpackOf('design gate'),unpackOf('gate'),unpackOf('line')),gnum(sp.hd.design)):unres('Design',noZone))
   /* this printed null.null the moment the engine could return no gate */
   +(sp.gk.gate!=null?nrow('Gene key',DESIGNFIELD_IC.genekey,gnum(sp.gk),'the gate the sun occupied','gk',
-    gnum(sp.gk),say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone)));
+    gnum(sp.gk),say(unpackOf('gene key'),unpackOf('gate'),unpackOf('line'))):unres('Gene key',noZone)))
+  +bsHtml(sp);
+ bsWire(el);
  el.querySelectorAll('[data-sp]').forEach(function(btn){
   btn.onclick=function(){runSpDrill(btn.getAttribute('data-sp'),btn.getAttribute('data-spv'));};});
  reSelWire(el);
  spNumWire(el);}
+/* WHAT THE BIRTH SUGGESTS, AND THE PRESS THAT TAKES IT. TASKS.md SM1, picked
+   21 November: the chart suggests a first archetype and a domain
+   (birthSuggest, engine/birth.js), and nothing is written until the person
+   presses Use. The press goes through the same steps as pressing that
+   archetype or domain in the rail's own grids (panels.js): the worked example
+   guard, an undo step, buildSoul, syncSoul and saveYou, whose save reports
+   through status(). A suggestion that is already the person's own pick shows
+   as theirs and offers nothing to press. Mark first, name second, and the
+   reason in the tooltip. */
+function bsHtml(sp){
+ var B=birthSuggest(sp,{doms:S.doms,arcs:S.arcs});
+ if(!B||(!B.arch&&!B.dom))return '';
+ function one(k,nm,ic,from,held,i,what){
+  var tip=from+'. '+(held?'This is already your '+what+'.':'Press Use to make it your '+what+'. Nothing changes until you do.');
+  return '<div class="sp-sug" data-tip-t="'+esc(nm)+'" data-tip="'+esc(tip)+'" tabindex="0" aria-label="'+esc('Suggested '+what+', '+nm+'. '+tip)+'">'
+   +'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true"><path d="'+ic+'"/></svg>'
+   +'<span class="sp-sug-t"><b>'+esc(nm)+'</b><em>'+esc(what)+'</em></span>'
+   +(held?'<span class="sp-sug-h">Yours</span>'
+    :'<button type="button" class="btn sp-sug-b" data-bsug="'+k+'" data-bsi="'+i+'">Use</button>')+'</div>';}
+ return '<div class="sp-sugs" data-grp="suggest"><div class="pm-eye plain">Suggested by your birth</div>'
+  +(B.arch?one('arch',B.arch.nm,ARCH[B.arch.i].ic,B.arch.from,B.arch.held,B.arch.i,'first archetype'):'')
+  +(B.dom?one('dom',B.dom.nm,DOMAINS[B.dom.i].ic,B.dom.from,B.dom.held,B.dom.i,'domain'):'')+'</div>';}
+function bsWire(el){
+ el.querySelectorAll('[data-bsug]').forEach(function(btn){
+  btn.onclick=function(){
+   var k=btn.getAttribute('data-bsug'), i=+btn.getAttribute('data-bsi');
+   if(k==='arch'&&ARCH[i]){
+    if(notYours('change the archetype'))return;
+    undoPush('taking the archetype your birth suggests');
+    S.arcs=[i].concat(S.arcs.filter(function(x){return x!==i;}).slice(0,3));}
+   else if(k==='dom'&&DOMAINS[i]){
+    if(notYours('change the blueprint domain'))return;
+    undoPush('taking the domain your birth suggests');
+    S.doms=[i];}
+   else return;
+   buildSoul();S.pin=null;syncSoul();saveYou();render();};});}
 /* WHICH OF THE FOUR SYSTEMS ARE CHOSEN. Western on arrival, because it is
    the one he named first and a section that opens on nothing chosen is a row
    of four circles and an empty space. Kept in the browser store as a

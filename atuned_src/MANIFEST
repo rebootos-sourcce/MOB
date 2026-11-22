@@ -16,6 +16,8 @@ engine/data/people.js
 engine/data/zones.js
 engine/data/catalog.js
 engine/data/kb.js
+engine/data/archdom.js
+engine/data/letgo.js
 engine/data/sabcard.js
 engine/data/hcxcard.js
 engine/data/kbsay.js
@@ -76,6 +78,8 @@ engine/charfield.js
 engine/rise.js
 engine/ritex.js
 engine/archexpr.js
+engine/archdom.js
+engine/letgo.js
 engine/showonly.js
 engine/archseed.js
 engine/sabseed.js
@@ -111,6 +115,7 @@ ui/ritstage.js
 ui/ritcal.js
 ui/ritbank.js
 ui/ritweek.js
+ui/ritlaw.js
 ui/affirmui.js
 ui/cone.js
 ui/tracesummaryui.js
@@ -118,6 +123,7 @@ ui/drills.js
 ui/summarypanel.js
 ui/knowledge.js
 ui/kbtable.js
+ui/letgopacks.js
 ui/record.js
 ui/games.js
 ui/panels.js
@@ -127,6 +133,7 @@ ui/plans.js
 ui/account.js
 ui/paywall.js
 ui/practitioner.js
+ui/guide.js
 ui/personas.js
 ui/rootsum.js
 ui/loopread.js

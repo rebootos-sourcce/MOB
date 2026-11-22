@@ -44,7 +44,12 @@ function rmRailOpen(){var p=document.getElementById('lpanel');
 function railPick(btn,kind){
  if(!btn)return;
  var sel=btn.getAttribute('aria-pressed')==='true'||btn.dataset.r==='2';
- var cap=document.getElementById(kind==='arch'?'capA':'capD');
+ /* every kind that was not arch read capD, which was right while the only
+    callers were the rail's three grids. The wisdom school's table (kind kb,
+    ui/kbtable.js) has no caption, and without this a press on a law there
+    would have faded up the rail's domain caption on the other side of the
+    screen. */
+ var cap=kind==='kb'?null:document.getElementById(kind==='arch'?'capA':'capD');
  if(rbStill()||!btn.animate)return;
  var land='cubic-bezier(.34,1.56,.64,1)';
  if(sel){

@@ -320,6 +320,14 @@ jobs:
           # sniffer behind a Yes. Wired here the day it lands, so it is never
           # the orphan avatarwhole was.
           - { gate: dashavatar, timeout: 20, command: node tests/dashavatar.js }
+          # ADDED 21 November: hit, keep and not a hit said aloud on the
+          # release card, through relHitVoice, the one door the buttons use.
+          - { gate: relvoice, timeout: 20, command: node tests/relvoice.js }
+          # ADDED 21 November, the table of universal laws (ui/kbtable.js) on
+          # the wisdom school page: every HARM law a tile, no achievement shown
+          # before it is earned, the film links and no request on opening one.
+          # Wired the day it lands, so it is never an orphan.
+          - { gate: kbtable, timeout: 20, command: node tests/kbtable.js }
           # ADDED 19 November, the affirmation engine (feature/affirmation-
           # engine): the ritual builder's Affirm door and sheet, real
           # Chromium. Newly orphaned the same way avatarpurpose was.
@@ -338,6 +346,11 @@ jobs:
           - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
           - { gate: record, timeout: 20, command: node tests/record.js }
           - { gate: ritweek, timeout: 20, command: node tests/ritweek.js }
+          # ADDED 22 November, the law of the week (ui/ritlaw.js): one law the
+          # intake has not measured, served in Called for through iqNext, and
+          # answered in a pop-up through the Intake page's own iqFramings and
+          # iqPress. Wired here the day it lands, so it is never an orphan.
+          - { gate: ritlaw, timeout: 20, command: node tests/ritlaw.js }
           - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
           - { gate: paywall, timeout: 20, command: node tests/paywall.js }
           - { gate: safepage, timeout: 20, command: node tests/safepage.js }
