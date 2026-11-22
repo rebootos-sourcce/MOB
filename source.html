@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v63 9bd39749 2026-11-22 00:28"><head><meta charset="utf-8">
+<html lang="en" data-build="v74 e686ba03 2026-11-22 00:34"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -6614,8 +6614,39 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
    The same step aside as the Story's: on the Summary the rail carries
    Selection alone. Today stood beside it as .sum-rail until 21 November and
    opens the centre now (sumToday, ui/summary.js), so the rail's other
-   sections still step aside here and nothing on the rail repeats the page. */
-body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]){display:none}
+   sections still step aside here and nothing on the rail repeats the page.
+   AND INSIGHT STANDS ABOVE SELECTION HERE TOO, 21 November, the Summary
+   redesign's last item: "mount the real Insight panel plus a Source AI talk
+   button on the right." The rail held Selection alone, so the page's right
+   third was one header over an empty column on every first look. Insight is
+   the same section the Field shows, its id and its two painters unchanged
+   (railInsight, railStack, ui/insightui.js), which already paint on every
+   tab: this rule hid it, and nothing else had to move. The rest still step
+   aside, because each of them is a page of its own somewhere else. */
+body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]):not([data-sec="you"]){display:none}
+/* THE HELLO, ON THE SUMMARY. The Journal's own control (.st-hello above),
+   drawn the same three circles in the same order so it reads as one control
+   and not a second design for the same act, set in the Insight section's
+   head with its name beside it: symbol first, the name second, and what it
+   does one hover or tap away in its tip. Shown on the Summary only; every
+   other tab with this rail either has the Journal itself or never asked. */
+.sum-hello{display:none}
+body.tab-summary .sum-hello{display:flex;align-items:center;gap:12px;width:100%;
+ margin:0 0 16px;padding:8px 12px;border:1px solid var(--edge);border-radius:12px;
+ background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:500;
+ text-align:left;cursor:pointer;outline-offset:4px;
+ transition:border-color var(--t-surface) var(--ease-out)}
+.sum-hello:hover,.sum-hello:focus-visible{border-color:var(--accent)}
+.sum-hello svg{flex:0 0 auto;width:36px;height:36px;overflow:visible}
+.sum-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+ transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
+.sum-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+ transform-origin:50% 50%;transition:opacity var(--t-surface) var(--ease-out)}
+.sum-hello .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
+.sum-hello:hover .sth-ring,.sum-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.sum-hello:hover .sth-ring2,.sum-hello:focus-visible .sth-ring2{opacity:.4}
+.sum-hello:hover .sth-dot,.sum-hello:focus-visible .sth-dot{fill:var(--accent)}
+@media (prefers-reduced-motion:reduce){.sum-hello .sth-ring{animation:none}}
 /* TODAY, THE CENTRE'S FIRST ZONE. A silent day (nothing read yet, or a
    record the moment before its day is frozen) takes the whole section with
    it, so a date never stands over an empty card. */
@@ -13137,6 +13168,19 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
     <span class="ins-audio" id="insaudio"></span>
     <div class="lsec-bd">
+     <!-- TALK TO SOURCE AI, ON THE SUMMARY ONLY, 21 November. The Summary
+          redesign asked for a talk button beside the Insight panel. There is
+          one conversation in this product and it lives on the Journal, where
+          the microphone, the face and the reply all are, so this does not
+          build a second one in a rail too narrow to hold her: it takes the
+          person there and presses the Journal's own hello (stHello,
+          ui/storyui.js), which is the same act the ring there performs.
+          Wired by sumHelloWire, ui/summary.js. Hidden off the Summary,
+          head.html .sum-hello. -->
+     <button class="sum-hello" id="sumhello" type="button" aria-label="Talk to Source AI"
+      data-tip-k="Talk to Source AI" data-tip="Opens Source AI on Discover, where you speak and she answers.">
+      <svg viewBox="0 0 88 88" aria-hidden="true"><circle class="sth-ring2" cx="44" cy="44" r="40"></circle><circle class="sth-ring" cx="44" cy="44" r="30"></circle><circle class="sth-dot" cx="44" cy="44" r="3.2"></circle></svg>
+      <span>Talk to Source AI</span></button>
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
          is the same as a missing feature. The two ways in are here, and only
@@ -74599,7 +74643,20 @@ function sumRender(){
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
  if(typeof sumDayPaint==='function')sumDayPaint(r);
- sumRunPaint(r);}
+ sumRunPaint(r);
+ sumHelloWire();}
+
+/* THE RAIL'S TALK BUTTON (#sumhello, shell/body.html). It goes to the
+   Journal and presses the hello there, in that order: stHello mounts her into
+   #stuni, which only exists once the Journal has rendered, so pressing it
+   first from here would find no host and park her again (stUniSync's own
+   first branch). setTab renders the surface it lands on before it returns. */
+function sumHelloWire(){
+ var b=document.getElementById('sumhello'); if(!b||b.dataset.wired)return;
+ b.dataset.wired='1';
+ b.addEventListener('click',function(){
+  setTab(TAB.STORY);
+  if(typeof stHello==='function')stHello();});}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
@@ -94943,8 +95000,8 @@ function clSvg(W,H,stk){
     fill, for the radiance; the field itself is the small core. */
  var avAt=function(x,y,cls,lab){
   var g=clamp(cq/100,0,1), rc=(stk?5:6), rr=(stk?9:11)+(stk?8:11)*g;
-  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+' of 100"'
-   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+' of 100.">'
+  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+'"'
+   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+'.">'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rr.toFixed(1)+'" class="rad"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+(rc+4)+'" class="halo"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rc+'" class="core"/>'+lab+'</g>';};
@@ -114436,5 +114493,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008362007"></div>
+<div id="eof" hidden data-len="008366046"></div>
 </body></html>

@@ -87,8 +87,13 @@ const col=p=>p.evaluate(()=>{
   st:h?Array.prototype.map.call(h.querySelectorAll('.dl-blk .dl-st'),function(x){return x.innerText.replace(/\s+/g,' ').trim();}):[],
   tips:h?Array.prototype.map.call(h.querySelectorAll('.dl-blk .tipu'),function(x){return {k:x.textContent,t:x.getAttribute('data-tip')||''};}):[],
   form:!!(h&&h.querySelector('#dlaimin')),
+  /* Insight ('you') stopped stepping aside on 21 November, the Summary
+     redesign's "mount the real Insight panel on the right", so it is out of
+     this list and held positively below by ins, rather than simply allowed:
+     a rule that only tolerated it would pass a page that hid it again. */
   shared:Array.prototype.filter.call(document.querySelectorAll('.lsec[data-rail="right"]'),function(s){
-   return vis(s)&&!s.classList.contains('sum-rail')&&s.dataset.sec!=='sel';}).map(function(s){return s.dataset.sec;})};});
+   return vis(s)&&!s.classList.contains('sum-rail')&&s.dataset.sec!=='sel'&&s.dataset.sec!=='you';}).map(function(s){return s.dataset.sec;}),
+  ins:vis(document.querySelector('.lsec[data-rail="right"][data-sec="you"]'))&&vis(document.getElementById('sumhello'))};});
 /* a section that throws is a failure with its reason, never a crash that
    hides the sections after it: the known bad build has no column to click */
 const section=async(nm,fn)=>{try{await fn();}catch(e){ok(false,nm+' threw: '+String(e&&e.message||e).split('\n')[0]);}};
@@ -108,6 +113,7 @@ await section('a record',async()=>{
  const k=await col(p);
  ok(k.there&&k.shown,'the Summary\'s centre opens on Today, and it is shown');
  ok(k.shared.length===0,'the shared rail steps aside on the Summary, still showing: '+JSON.stringify(k.shared));
+ ok(k.ins,'and Insight stands on the Summary\'s right, with its talk to Source AI button shown');
  ok(JSON.stringify(k.st)===JSON.stringify(d1[0].st),'the column prints the frozen day, sentence for sentence, in its order');
  ok(/Written at \d\d:\d\d, the first time you opened this page today\./.test(k.text),'it says when it was written and that it stays until tomorrow');
  const eye=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#sumday .dl-blk>.pm-eye'),function(e){return e.textContent;}));
