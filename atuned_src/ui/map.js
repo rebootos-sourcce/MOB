@@ -3616,7 +3616,7 @@ var BMOVL={
     Heat is already the Pain mode's own switch (bmvar) and one word is one
     concept. */
  heat:{nm:'Charge',ic:'M12 3.8a8.2 8.2 0 100 16.4 8.2 8.2 0 100-16.4zM12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 100-6.8z',
-  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, out of 10, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
+  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
