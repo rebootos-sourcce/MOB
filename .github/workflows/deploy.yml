@@ -282,7 +282,21 @@ jobs:
           - { gate: boot, timeout: 20, command: node tests/boot.js }
           - { gate: collide, timeout: 20, command: node tests/collide.js }
           - { gate: funnel, timeout: 20, command: node tests/funnel.js }
-          - { gate: functional, timeout: 45, command: node tests/functional.js }
+          # Raised from 45 to 150, 22 November, round three. The 30 November
+          # fix that let the Gravity well click stop throwing after 30s (round
+          # two, 320c311e) did not just fix that one check: before it, every
+          # block scheduled after the sound gate crashed and never ran, so the
+          # 45 minute floor was never tested against the suite's real length,
+          # only its first third. Measured directly, outside CI, with a
+          # timestamp on every line: 8 minutes reached line 2573 of 8697 (the
+          # fast persona loops), the next 40 reached only line 3567 (page
+          # navigation and practitioner mode, far slower per line). 150 is a
+          # provisional ceiling against that worst case with real margin, not
+          # a measured total. The real total is whatever this run reports;
+          # tighten this number once it is read off a clean run, never left at
+          # a guess. If a full run needs longer than this, the real fix is
+          # sharding the suite into parallel CI jobs, not a third timeout bump.
+          - { gate: functional, timeout: 150, command: node tests/functional.js }
           - { gate: design, timeout: 20, command: node tests/design.js }
           - { gate: monitor, timeout: 20, command: node tools/monitor.js }
           - { gate: voice, timeout: 20, command: node tests/voice.js }
