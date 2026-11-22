@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v66 3f3f4f12 2026-11-22 00:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v74 cdd81ab2 2026-11-22 00:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -94784,8 +94784,8 @@ function clSvg(W,H,stk){
     fill, for the radiance; the field itself is the small core. */
  var avAt=function(x,y,cls,lab){
   var g=clamp(cq/100,0,1), rc=(stk?5:6), rr=(stk?9:11)+(stk?8:11)*g;
-  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+' of 100"'
-   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+' of 100.">'
+  return '<g class="cl-av'+cls+'" style="--g:'+g.toFixed(2)+'" role="img" aria-label="Your field, its glow set by your coherence, '+Math.round(cq)+'"'
+   +' data-tip-k="You" data-tip="Your field. How far and how bright it glows is your coherence, '+Math.round(cq)+'.">'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rr.toFixed(1)+'" class="rad"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+(rc+4)+'" class="halo"/>'
    +'<circle cx="'+x+'" cy="'+y+'" r="'+rc+'" class="core"/>'+lab+'</g>';};
@@ -114274,5 +114274,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008351646"></div>
+<div id="eof" hidden data-len="008351632"></div>
 </body></html>
