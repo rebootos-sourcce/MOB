@@ -1461,6 +1461,19 @@
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.6" width="14" height="16.8" rx="2"/><path d="M8.6 8.4h6.8M8.6 12h6.8M8.6 15.6h4"/></svg>Insight</span><i></i></button>
     <span class="ins-audio" id="insaudio"></span>
     <div class="lsec-bd">
+     <!-- TALK TO SOURCE AI, ON THE SUMMARY ONLY, 21 November. The Summary
+          redesign asked for a talk button beside the Insight panel. There is
+          one conversation in this product and it lives on the Journal, where
+          the microphone, the face and the reply all are, so this does not
+          build a second one in a rail too narrow to hold her: it takes the
+          person there and presses the Journal's own hello (stHello,
+          ui/storyui.js), which is the same act the ring there performs.
+          Wired by sumHelloWire, ui/summary.js. Hidden off the Summary,
+          head.html .sum-hello. -->
+     <button class="sum-hello" id="sumhello" type="button" aria-label="Talk to Source AI"
+      data-tip-k="Talk to Source AI" data-tip="Opens Source AI on Discover, where you speak and she answers.">
+      <svg viewBox="0 0 88 88" aria-hidden="true"><circle class="sth-ring2" cx="44" cy="44" r="40"></circle><circle class="sth-ring" cx="44" cy="44" r="30"></circle><circle class="sth-dot" cx="44" cy="44" r="3.2"></circle></svg>
+      <span>Talk to Source AI</span></button>
      <!-- Where to start. A field with nothing in it had a tooltip saying to
          write a story, which is rule 10 broken: a control with no affordance
          is the same as a missing feature. The two ways in are here, and only

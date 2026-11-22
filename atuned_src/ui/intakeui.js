@@ -1130,7 +1130,17 @@ function iqViewWheel(p,Q,sc,r,scored){
   var L=iqLawsOf(b), c=seatCol(b), d0=start+gapd/2, d1=start+L.length*per-gapd/2; start+=L.length*per;
   var ms=L.map(function(x){return sc[x.l.nm];}).filter(Boolean);
   var mean=ms.length?ms.reduce(function(a,q){return a+q.score;},0)/ms.length:0;
-  s+='<path d="'+arc(292,d0,d1)+'" fill="none" stroke="'+c+'" stroke-opacity=".16" stroke-width="5" stroke-linecap="round"/>';
+  /* THE TRACK READS AS A RING, NOT A GAP. This drew the untouched span in the
+     seat's own colour at .16, which on a dark stage is close enough to
+     invisible that a seat with little measured on it reads as a hole in the
+     ring rather than a dim one, exactly where the rest of this same page
+     draws every other untouched track: iqSegs above (line 62) and the law
+     badge's own ring (iqLawBadge, iqNestRing) both use the neutral var(--dim)
+     at .26. This track is the one place on the page that did not, so a low
+     scoring seat on the one surface a stranger sees first (a worked example,
+     shown unread) looked like a defect instead of a low reading. Matched to
+     the page's own grammar rather than invented new. */
+  s+='<path d="'+arc(292,d0,d1)+'" fill="none" style="stroke:var(--dim)" stroke-opacity=".26" stroke-width="5" stroke-linecap="round"/>';
   if(mean>0)s+='<path d="'+arc(292,d0,d0+(d1-d0)*mean/10)+'" fill="none" stroke="'+c+'" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>';
   var lp=pt(314,(d0+d1)/2);
   s+='<text x="'+f(lp[0])+'" y="'+f(lp[1]+4)+'" fill="'+c+'" font-size="13" text-anchor="middle">'+esc(b)+'</text>';

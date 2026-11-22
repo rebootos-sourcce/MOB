@@ -1539,9 +1539,19 @@ function drawWheel0(r,L){
     The tier is coherence said as a word, which was the fourth printing. */
 
  /* --- archetypes, C and D --- */
+ /* NOT ON AN UNREAD FIELD, 21 November, the follow up to the fetters above.
+    A blank profile carries the schema's default soul, arcs [0,1] and doms
+    [0] (engine/schema.js, from:'default'), and r.aff and DOMAIN are bumps
+    centred on it, so a person who had entered nothing saw the first
+    archetype lit as their lead at 12 o'clock, the second as their second,
+    and the first domain selected. Measured on a blank profile: unread true,
+    pi 0, si 1, aff[0] 1, doms [0]. That says something about them nobody
+    has said, which is what CLAUDE.md's unread ruling exists to stop. Both
+    rings draw at their floor on unread and keep their targets, as the law
+    ticks do, so an arc can still be pressed. */
  lay('archetypes',()=>{for(let j=0;j<12;j++){
-  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.aff[j],am=(a0+a1)/2;
-  const lead=j===r.pi,sec=j===r.si;
+  const a0=j*30/360*TAU-Math.PI/2,a1=a0+30/360*TAU,v=r.unread?0:r.aff[j],am=(a0+a1)/2;
+  const lead=!r.unread&&j===r.pi,sec=!r.unread&&j===r.si;
   arcP(R.arch-U*.016,R.arch,a0+.012,a1-.012);
   g.fillStyle=rgba(gc,lead?.55+v*.4:sec?.28+v*.28:.05+v*.1);g.fill();
   /* inward from the ring's own inner edge. Outward from 0.048 inside it, the
@@ -1659,10 +1669,11 @@ function drawWheel0(r,L){
     stage and not on LIGHT(), because on Snow the two disagree and the stage
     is right: the ring sits on #101010 there and already read 5.51, which the
     Snow palette would have taken down. Lumen draws as it shipped. */
+ /* the default domain is not lit on unread either, see the archetype ring */
  lay('domains',()=>{const rootP=S.theme==='lumen'?null:(stageLight()?PAL_LIGHT:PAL);
  for(let d=0;d<19;d++){
   const a0=d*(TAU/19)-Math.PI/2,a1=a0+TAU/19,am=a0+TAU/38,rn=DOMAINS[d].r;
-  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=S.doms.indexOf(d)>=0,v=DOMAIN[d];
+  const c=hx(rootP?rootP[ROOTSEAT[rn]]:ROOTCOL[rn]),sel=!r.unread&&S.doms.indexOf(d)>=0,v=r.unread?0:DOMAIN[d];
   arcP(R.dom-U*.012,R.dom,a0+.008,a1-.008);g.fillStyle=rgba(c,sel?.95:.08+v*.45);g.fill();
   /* round its own nineteenth of the ring, just inside it, for the seat
      names' reason. Radially outward from the ring these were the furthest
