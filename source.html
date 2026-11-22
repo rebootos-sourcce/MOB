@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v64 104dca5a 2026-11-22 00:18"><head><meta charset="utf-8">
+<html lang="en" data-build="v71 4d06449b 2026-11-22 00:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -105029,7 +105029,7 @@ function paywallOpen(k,back){
   document.body.appendChild(PW.el); pwWireOnce();}
  PW.el.hidden=false; PW.open=true;
  document.body.classList.add('pw-on');
- pwDraw();
+ pwDraw(); pwDockRoom();
  /* FOCUS GOES TO THE DIALOG, not to its first button. A screen reader reads
     the title from there, the next Tab reaches Close, and a pointer that opened
     the sheet does not find a focus ring drawn on a control it never touched */
@@ -105051,6 +105051,31 @@ function paywallClose(){
  var b=PW.back; PW.back=null;
  if(b&&b.isConnected&&typeof b.focus==='function'){try{b.focus({preventScroll:true});}catch(e){}}}
 function paywallIsOpen(){ return PW.open; }
+/* ROOM FOR THE MESSAGE DOCK, 21 November. Start pressed while signed out
+   answers "Sign in first" through status(), and status() writes into the
+   one dock, fixed at the bottom centre of the screen at z 94 (component.js,
+   head.html). This sheet's foot, Billing, Sign in, Terms and Privacy, also
+   sits at the bottom centre, under it at z 92, so for the dock's three
+   seconds and its fade the refusal was painted over the very link it names.
+   Measured on a real press, three runs at 1600 and three at 390: every
+   sample with the dock up overlapped Sign in, and at 390 all four links.
+   Not a race and not a z-index slip: the dock's comment lists every fixed
+   thing at the bottom it has to clear, and the paywall was not on it.
+   Raising the dock would only move it onto the Start buttons, so the sheet
+   makes the room instead: while the dock shows, the sheet's bottom padding
+   is the distance from its own bottom edge to the dock's top, plus one 12px
+   step, so the foot rises clear of the message for exactly as long as the
+   message is up. Read off the two real boxes, not a typed height, because
+   the dock wraps to three lines at 390 and two at 1600. A ResizeObserver
+   on the dock calls this when it appears, rewraps and goes (display:none
+   reads as zero), and paywallOpen calls it once for a message already up. */
+function pwDockRoom(){
+ if(!PW.el)return;
+ var d=document.getElementById('msgdock'), s=PW.open&&PW.el.querySelector('.pw-sheet'),
+  r=d&&d.getBoundingClientRect(), room=0;
+ if(s&&r&&r.height>0)room=Math.max(0,Math.ceil(s.getBoundingClientRect().bottom-r.top+12));
+ PW.el.classList.toggle('pw-dock',room>0);
+ PW.el.style.setProperty('--pw-dock',room+'px');}
 
 function pwWireOnce(){
  PW.el.addEventListener('click',function(e){
@@ -105091,7 +105116,10 @@ function pwWireOnce(){
    var i=f.indexOf(document.activeElement);
    if(e.shiftKey&&(i<=0)){e.preventDefault(); f[f.length-1].focus();}
    else if(!e.shiftKey&&(i<0||i===f.length-1)){e.preventDefault(); f[0].focus();}}},true);
- addEventListener('resize',function(){if(PW.open)pwTipHide();});}
+ addEventListener('resize',function(){if(PW.open){pwTipHide(); pwDockRoom();}});
+ var dk=document.getElementById('msgdock');
+ if(dk&&typeof ResizeObserver==='function')
+  new ResizeObserver(function(){if(PW.open)pwDockRoom();}).observe(dk);}
 
 /* ---- the sheet's own rules, injected once, the way plans.js and lock.js
    carry theirs, because the shell stylesheet is held by another seat ---- */
@@ -105105,6 +105133,9 @@ function pwCss(){
      show the screen behind through the cards. */
   '.pw-scrim{position:fixed;inset:0;z-index:92;background:rgba(5,6,9,.78)}',
   '.pw-scrim[hidden]{display:none}',
+  /* the dock's room, pwDockRoom: three classes so it outranks the sheet's
+     own padding at every width, the phone rule included */
+  '.pw-scrim.pw-dock .pw-sheet{padding-bottom:var(--pw-dock,0px)}',
   '.pw-sheet{position:absolute;inset:12px;display:flex;flex-direction:column;padding:16px 28px 4px;',
   ' border-radius:var(--r,16px);color:var(--ink);background:linear-gradient(var(--panel),var(--panel)),var(--bg);overflow:hidden;outline:none}',
   '.pw-ri{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;display:block}',
@@ -114217,5 +114248,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008347593"></div>
+<div id="eof" hidden data-len="008349690"></div>
 </body></html>
