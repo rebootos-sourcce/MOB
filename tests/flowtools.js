@@ -1624,7 +1624,7 @@ async function flowGate(browser,FILE,ok,booted){
      reading names challenges, two avatar lines so the goal card has its held
      pattern sentence, nothing running and nothing set */
   const seed=async()=>pg.evaluate(async()=>{
-   loadP(0); CURP.rituals=[]; ritPlanPut([]);
+   loadP(0); CURP.rituals=[]; ritPlanPut([]); CURP.practice.sched=[];
    try{STORE.set(RIT_SCHED_KEY,'{}'); STORE.set(RIT_MORE_KEY,'{}');}catch(e){}
    if(!(CURP.stories||[]).length)['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
     'I feel worthless and ashamed, I am never enough, I am a failure.',
@@ -1793,7 +1793,8 @@ async function flowGate(browser,FILE,ok,booted){
    const week=[0,1,2,3,4,5,6].map(i=>ritWeekDay(st.today+i,st).some(s=>s.sc&&s.sc.id===id));
    const none0=document.querySelectorAll('#rit [data-act="miss-why"]').length;
    /* nine set days gone unmarked: one offer, never three */
-   const all=JSON.parse(STORE.get(RIT_SCHED_KEY)); all[CURP.id].forEach(r=>{if(r.id===id)r.from=ritDayIso(st.today-9);}); STORE.set(RIT_SCHED_KEY,JSON.stringify(all)); ritRender(); await w();
+   /* the rows are on the record since 21 November (practice schema 2), so the nine days are set back there */
+   CURP.practice.sched.forEach(r=>{if(r.id===id)r.from=ritDayIso(st.today-9);}); pSave(); ritRender(); await w();
    const offers=[...document.querySelectorAll('#rit [data-act="miss-why"]')];
    const col=offers[0]?getComputedStyle(offers[0]):null, red=col?[col.color,col.backgroundColor,col.borderColor].some(v=>{const m=/rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(v); return m&&+m[1]>170&&+m[2]<90&&+m[3]<90;}):false;
    if(offers[0])offers[0].click(); await w();
@@ -1826,9 +1827,10 @@ async function flowGate(browser,FILE,ok,booted){
    'FT37: '+tag+'the affirmations set for weekdays sit on the five weekdays of the week, and their clock is lit, '+JSON.stringify(af));
   /* and a deleted profile takes every key held under its id with it */
   const fg=await pg.evaluate(()=>{const id=CURP.id, has=k=>{try{return Object.prototype.hasOwnProperty.call(JSON.parse(STORE.get(k)||'{}'),id);}catch(e){return null;}};
-   const before=[RIT_SCHED_KEY,RIT_MORE_KEY].map(has); const ok=accForget(id); return {before, after:[RIT_SCHED_KEY,RIT_MORE_KEY,RIT_KEY].map(has), ok};});
-  ok(fg.ok&&fg.before[0]===true&&fg.after.every(v=>v===false),
-   'FT37: '+tag+'deleting a profile removes its affirmation and challenge days, their answers and its ticks from the browser, '+JSON.stringify(fg));
+   const onRec=(CURP.practice.sched||[]).length>0, before=[RIT_SCHED_KEY,RIT_MORE_KEY].map(has); const ok=accForget(id); return {onRec, before, after:[RIT_SCHED_KEY,RIT_MORE_KEY,RIT_KEY].map(has), ok};});
+  /* the affirmation and challenge days and their answers are on the record since 21 November, so they go with the record itself; the old keys must hold nothing of it afterwards */
+  ok(fg.ok&&fg.onRec&&fg.before[0]===false&&fg.after.every(v=>v===false),
+   'FT37: '+tag+'the affirmation and challenge days ride the record, and deleting a profile leaves nothing of it under the old keys, '+JSON.stringify(fg));
   }catch(e){ok(false,'FT37: '+tag+'the group threw, '+String(e.message).split('\n')[0]);}
   ok(err.length===0,'FT37: '+tag+'no page errors, '+err.join(' | '));
   await pg.close();

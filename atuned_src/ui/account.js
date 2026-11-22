@@ -360,10 +360,13 @@ function accProfOpen(id){
  if(!profOpen(id)){status(nm+' was not opened. '+accWhy(),'fail'); renderAccount(); return false;}
  accSwitched();
  status(accOpenSay(CURP),'ok'); return true;}
-/* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings and the active
-   rituals are held beside the record under its id, so a delete that left them
-   would leave part of a deleted profile in this browser. Only that id's entry
-   is removed. False when either key would not take the write. */
+/* THE SIDE KEYS GO WITH THE PROFILE. The avatar ratings are held beside the
+   record under its id, so a delete that left them would leave part of a
+   deleted profile in this browser. Only that id's entry is removed. False
+   when either key would not take the write. The plans and the affirmation and
+   challenge rows are on the record since 21 November (practice schema 2) and
+   go with it; their two old keys stay on this list because a browser that has
+   not opened the Ritual page since may still hold them (ritAdopt). */
 function accForget(id){
  var ok=true;
  /* AND EVERY OTHER KEY HELD UNDER THE PROFILE'S ID, 20 November. This list

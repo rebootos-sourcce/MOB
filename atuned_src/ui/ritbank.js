@@ -18,13 +18,16 @@
    Add here joins, and a day set Once rides the plan's ex list, so a Thursday
    dropped on a weekday plan is that one Thursday and not every Thursday.
 
-   WHAT IS ON THIS DEVICE AND NOT ON THE RECORD. A plan's days and time ride
-   the plan beside the record, as plans always have. Affirmations and
-   challenges are not plans, so they get rows of their own under
-   atuned-ritual-sched, deliberately not inside the ritual more key, whose
-   writer rebuilds its entry from a fixed shape and would erase any field it
-   does not know. None of it travels with an export: moving rituals onto the
-   record is a schema change and his call (TASKS, ritual-move-to-record).
+   WHAT IS ON THE RECORD, 21 November. A plan's days and time ride the plan,
+   and affirmations and challenges are not plans, so they get rows of their
+   own, deliberately not inside the ritual more key, whose writer rebuilds
+   its entry from a fixed shape and would erase any field it does not know.
+   Both were beside the record in this browser until his ruling, "rituals
+   travel with the record, they don't stay on the device", and both are on
+   the practice object now (p.practice.plans and p.practice.sched, practice
+   schema 2, engine/practice.js), so they go with an export and a record
+   link. A row still under atuned-ritual-sched from before is moved onto the
+   record the first time the page reads it (ritAdopt, ui/ritual.js).
 
    IF I MISS, THE FRAME AND NOT THE CONTENT. Ruled 18 November
    (DECISIONS.md, "If I miss"): nothing can be forced, the app can only take
@@ -45,9 +48,9 @@
    purpose: a time picker cannot produce 24:00, so a refusal behind one would
    be a rule nothing could reach, and a typed time is what a phone keyboard
    and a screen reader both give. Nothing reminds anyone of the time yet, the
-   product has no push, and the pop-up says so where the time is set. */
-var RIT_AT_RX=/^([01]\d|2[0-3]):[0-5]\d$/;
-function ritAtOk(s){return typeof s==='string'&&RIT_AT_RX.test(s);}
+   product has no push, and the pop-up says so where the time is set.
+   RIT_AT_RX and ritAtOk are in engine/practice.js since 21 November, because
+   the boundary refuses a plan's time by the same rule the pop-up does. */
 function ritAtNo(s){
  return '"'+String(s).slice(0,12)+'" is not a time of day. Write hours and minutes, 00:00 to 23:59. Nothing changed.';}
 
@@ -296,59 +299,55 @@ function ritBankCard(x,i,st){
   +chips+'</li>';}
 
 /* ---------------- the schedule rows for affirmations and challenges ---------------- */
+/* THE OLD KEY, read once and emptied. The rows are on the record since 21
+   November (p.practice.sched, practice schema 2); this key is kept only so
+   ritAdopt can move what a browser still holds there, and so accForget can
+   clear what is left of a deleted profile. Nothing writes it. RIT_MISS and
+   the three text ceilings are in engine/practice.js, which refuses a row by
+   the same rule this file draws it by. */
 var RIT_SCHED_KEY='atuned-ritual-sched';
-var RIT_WHY_MAX=280, RIT_OWN_MAX=140, RIT_ANS_MAX=60;
-/* IF I MISS, the choices, one table. The team's default is the first, and it
-   is the one he may change: see the head of this file. The person's own is
-   their own sentence, so it is quoted back and never carries the Source AI
-   mark. */
-var RIT_MISS=[
- {k:'why', nm:'Answer why', says:'You answer the one question, what got in the way. Nothing else happens.'},
- {k:'own', nm:'In my words', says:'You write what you will do, and the app takes your word that you did it.'}];
 var RIT_MISS_AT=3;
 function ritSchedAll(){
  if(typeof STORE==='undefined')return {};
  try{var o=JSON.parse(STORE.get(RIT_SCHED_KEY)||'{}');
   return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};}catch(e){return {};}}
-/* a row that is not the shape the writer puts there is left out on the read,
-   the boundary's posture, and a store that cannot be read is an empty one */
-function ritSchedOk(r){
- var str=function(s,n){return typeof s==='string'&&s.length<=n;};
- return !!(r&&typeof r==='object'&&typeof r.id==='string'&&r.id.length<=80
-  &&((r.kind==='aff'&&r.id==='aff')||(r.kind==='chal'&&/^ch:/.test(r.id)))
-  &&typeof r.from==='string'&&pracDay(r.from)!==null
-  &&typeof r.days==='number'&&r.days>=0&&r.days<=3660&&Math.floor(r.days)===r.days
-  &&(r.at==null||r.at===''||ritAtOk(r.at))
-  &&(r.on==null||(Array.isArray(r.on)&&r.on.length>=1&&r.on.length<=7
-   &&r.on.every(function(d,i){return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&r.on.indexOf(d)===i;})))
-  &&(r.ex==null||ritExOk(r.ex))
-  &&(r.miss==null||(typeof r.miss==='object'&&RIT_MISS.some(function(m){return m.k===r.miss.k;})&&str(r.miss.own||'',RIT_OWN_MAX)))
-  &&(r.ack==null||(typeof r.ack==='number'&&Math.floor(r.ack)===r.ack))
-  &&(r.ans==null||(Array.isArray(r.ans)&&r.ans.length<=RIT_ANS_MAX&&r.ans.every(function(a){
-   return a&&typeof a.d==='number'&&Math.floor(a.d)===a.d&&str(a.why,RIT_WHY_MAX);}))));}
+/* the boundary's rule asked whether it found anything, so a row the record
+   would refuse is never drawn and never adopted. One rule, two postures:
+   named on the record, a yes or no here. */
+function ritSchedOk(r){var e=[]; practiceSchedCheck(e,'sched',r); return !e.length;}
+/* the one shape a row is written in, so a row adopted off the device carries
+   nothing the record's closed key set would refuse */
+function ritSchedShape(r){
+ return {id:r.id, kind:r.kind, on:r.on?r.on.slice().sort():null, at:r.at||'', from:r.from, days:r.days,
+  ex:r.ex?r.ex.slice():null, miss:r.miss?{k:r.miss.k, own:r.miss.own||''}:null,
+  ack:(r.ack==null?null:r.ack), ans:(r.ans||[]).map(function(a){return {d:a.d, why:a.why};})};}
 function ritSched(){
  if(!CURP||!CURP.id)return [];
- var a=ritSchedAll()[CURP.id];
+ ritAdopt();
+ var a=CURP.practice&&CURP.practice.sched;
  if(!Array.isArray(a))return [];
- return a.filter(ritSchedOk).map(function(r){
-  return {id:r.id, kind:r.kind, on:r.on?r.on.slice().sort():null, at:r.at||'', from:r.from, days:r.days,
-   ex:r.ex?r.ex.slice():null, miss:r.miss?{k:r.miss.k, own:r.miss.own||''}:null,
-   ack:(r.ack==null?null:r.ack), ans:(r.ans||[]).map(function(a){return {d:a.d, why:a.why};})};});}
+ return a.filter(ritSchedOk).map(ritSchedShape);}
 function ritSchedOf(id){return ritSched().filter(function(r){return r.id===id;})[0]||null;}
-/* ONE WRITER for this key, the ritMoreWrite posture: a worked example is
-   refused by name, and a store that would not take it says so, so a control
-   never claims a save it does not have */
+/* ONE WRITER for the rows, the ritWrite posture: a worked example is refused
+   by name, the rows go onto the record and the record is saved, and a save
+   that did not land puts the rows back and says so, so a control never
+   claims a save it does not have. The message was "Your browser refused the
+   write" and stays so, because a refused pSave is exactly that. */
 function ritSchedWrite(fn,msg){
  if(!ritOwn()){status(ritWhose()+' is a worked example, so nothing was saved to it.','fail');return false;}
- var ok=false;
- if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
-  try{var all=ritSchedAll(), cur=fn(ritSched());
-   if(cur){all[CURP.id]=cur; STORE.set(RIT_SCHED_KEY,JSON.stringify(all));}
-   ok=true;}
-  catch(err){ok=false;}}
- if(!ok){status('Not saved. Your browser refused the write. Nothing changed.','fail'); ritRender(); return false;}
+ var P=CURP.practice||(CURP.practice=practiceBlank()), was=P.sched, ok=false;
+ try{var cur=fn(ritSched());
+  if(cur){P.sched=cur.map(ritSchedShape); ok=ritSchedPutOk(P.sched)&&!!pSave();}
+  else ok=true;}
+ catch(err){ok=false;}
+ if(!ok){P.sched=was; try{pSave();}catch(e){}
+  status('Not saved. Your browser refused the write. Nothing changed.','fail'); ritRender(); return false;}
  if(msg)status(msg);
  ritRender(); return true;}
+/* a list the boundary would refuse is never saved: the next load would set
+   the whole record aside over one row */
+function ritSchedPutOk(list){
+ var e=[]; practicePlansCheck(e,'sched',list,PR_SCHED_CAP,practiceSchedCheck); return !e.length;}
 function ritSchedCovers(r,day){
  return ritCovers({from:r.from, days:r.days, on:r.on, stop:null, ex:r.ex},day);}
 function ritSchedActive(r,today){
