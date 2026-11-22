@@ -4662,9 +4662,18 @@ function stRelModel(){
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||live),
   fromLast:!picked.length&&!!found.length&&found===STV.lastFound};}
+/* the three settings' ring icons, drawn once: a dial, a pass that repeats,
+   and a wave */
+var ST_FLD_IC={speed:'<path d="M4.5 16a7.5 7.5 0 0 1 15 0"/><path d="M12 16l3.6-4.2"/><circle cx="12" cy="16" r="1.3"/>',
+ dose:'<path d="M5 9.5h12.5l-3-3M19 14.5H6.5l3 3"/>',
+ tone:'<path d="M4 12h1.5M8 8.5v7M12 5.5v13M16 9v6M20 11v2"/>'};
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
  var M=stRelModel(), o='';
+ /* THE GRIP, on the top edge, because the panel stands on the column's
+    floor and grows upward: see stRelSize below for why */
+ o+='<div class="st-rlgrip" id="strelgrip" role="separator" aria-orientation="horizontal" tabindex="0" '
+  +'aria-label="Release height. Drag, or use the up and down arrows." title="Drag to make Release taller or shorter"><i></i></div>';
  o+=stMark('r','Release','release','st-rlhd')
   +'<div class="st-rlmid">';
  /* THE SENTENCE IS GONE, round of 29 October, his words: "get rid of the text
@@ -4756,7 +4765,18 @@ function stRelPanel(){
       RUN SPEED READS SPEED, 6 November, his words on this exact screen:
       "get rid of the word run and just put speed." The field's id and
       RUN.pace are untouched, only the label moved again. */
-   +'<label class="rel-field"><span>Speed</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
+   /* SYMBOL FIRST, WORD SECOND, CONTROL THIRD, 22 November, his words on
+      this row: "the speed patterns and audio. Can you give me a slightly
+      cleaner aesthetic for that?" The three were three different shapes: a
+      label pinned left over a 52px box, the same again, and a word centred
+      over a switch by a ::before trick, so no two captions started on the
+      same line and the switch sat lower than the boxes. Each is now one
+      .st-fld cell, the same width (a three column grid in the shell), a
+      ring icon and its word as one header, and the control under it in one
+      40px band, so the row reads as three equal settings. Ids, values and
+      the clamps below are untouched. */
+   +'<label class="rel-field st-fld"><span class="st-fldh"><svg viewBox="0 0 24 24" aria-hidden="true">'+ST_FLD_IC.speed+'</svg>Speed</span>'
+   +'<input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
    /* PATTERNS, round of 29 October, overriding the 17 October ruling below
       kept for the record: his words then were that Times said is the
       card's own word for the allowance's real unit, not Patterns, because
@@ -4766,7 +4786,8 @@ function stRelPanel(){
       (ui/release.js) now read Patterns; a mismatch between the two was
       the thing the earlier rename existed to prevent, so both still
       agree, only on the opposite word. */
-   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
+   +'<label class="rel-field st-fld"><span class="st-fldh"><svg viewBox="0 0 24 24" aria-hidden="true">'+ST_FLD_IC.dose+'</svg>Patterns</span>'
+   +'<input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
    +((typeof accTog==='function'&&typeof bedCan==='function'&&bedCan())
     /* title HERE, ON THE WRAPPER, 10 November: the standing-up switch now
        hides its own visible label (head.html's own rule, same round) to
@@ -4776,7 +4797,9 @@ function stRelPanel(){
        name to a screen reader through its own aria-label; this is the
        mouse's equivalent, since the hidden span can print no native
        tooltip of its own once it is off screen. */
-    ?'<div class="st-relsws" title="Binaural tone">'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
+    /* its header is printed here like the other two now, so accTog's own
+       label is hidden in the shell and the switch's aria-label names it */
+    ?'<div class="st-relsws st-fld" title="Binaural tone"><span class="st-fldh" aria-hidden="true"><svg viewBox="0 0 24 24">'+ST_FLD_IC.tone+'</svg>Audio</span>'+accTog('Binaural tone','strtone',typeof relToneOn==='function'&&relToneOn(),'')+'</div>':'')
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
@@ -4838,7 +4861,108 @@ function stRelPanel(){
      addresses: not a bank pick, not a draft still being typed, not the three
      heaviest held, none of which came from one entry */
   relPick(M.sel.map(function(n){return n.i;}),M.fromLast&&STV.lastT?{story_t:STV.lastT}:null);
-  var begin=document.getElementById('relgo'); if(begin)begin.click();};}
+  var begin=document.getElementById('relgo'); if(begin)begin.click();};
+ stRelSize(e,M.take.length);
+ stRelGripWire(e);}
+
+/* ============================================================
+   RELEASE RISES WITH WHAT IS ADDED, AND A PERSON CAN SET ITS HEIGHT.
+   22 November, his words on the redesigned column: "for the release, have
+   its height slidable, but give more height to the imprints. So as you add
+   stuff from the imprints to the release will kind of naturally rise with
+   it."
+
+   What it replaced. On a desktop .st-rl filled its whole column (flex
+   1 1 auto), so an empty Release and one holding six addresses were the
+   same tall box, and nothing moved when a pick landed. On a phone it was a
+   fixed 310 for the reason the phone rule in shell/head.html records.
+
+   STANDS ON THE FLOOR, GROWS UP. The panel is anchored to the bottom of its
+   column (margin-top:auto in the shell), so its Release press stays level
+   with the Imprints column's Bank press opposite it (the 13 November
+   ruling at #stapply) and what moves is the top edge, which is the rise he
+   described. With nothing set by hand the height is the panel's own
+   content, measured, between the 310 floor (.st-rl's min-height, whose
+   measured reason is in the shell) and the column's own height; past the
+   column, .st-rlmid scrolls as it always has.
+
+   DRAGGED, THEN STILL RISING. A drag stores the height and the number of
+   rows on the panel at that moment, per viewer in STORE (a layout
+   preference, not part of the record, the same place zfold's state
+   lives). A later paint adds or takes away one row's step for every row
+   added or removed since, so a hand-set Release still rises as picks land
+   rather than turning back into the fixed box this replaced. The grip's
+   double press clears it, back to fitting its content.
+
+   NO NEW WIDGET. There was no resize handle anywhere in this product to
+   reuse; the drag is written the way the law track in ui/panels.js
+   numField is, pointer capture on press, arrows on the keyboard, so it is
+   the one idiom this codebase already has for dragging a value.
+   ============================================================ */
+var ST_RLH_KEY='strelh', ST_RLH_STEP=24;
+function stRelHand(){
+ try{var v=JSON.parse(STORE.get(ST_RLH_KEY)||'null');
+  return v&&isFinite(v.h)&&isFinite(v.n)?v:null;}catch(e){return null;}}
+function stRelHandSet(v){
+ try{if(v)STORE.set(ST_RLH_KEY,JSON.stringify(v)); else if(typeof STORE.remove==='function')STORE.remove(ST_RLH_KEY); else STORE.set(ST_RLH_KEY,'');}catch(e){}}
+/* NOT ON A PHONE. There the column stacks under the stage and the panel
+   keeps the fixed 310 the phone rule in shell/head.html carries, for the
+   reason it records: the last commit's rows are on the panel before a
+   reload and gone after it, so a panel sized by its rows moved the column
+   across a reload, and tests/stfull.js's fold gate caught exactly that
+   again on this change (colz 310 then 318). The rows scroll inside it. */
+function stRelPhone(){return !!(window.matchMedia&&window.matchMedia('(max-width:720px)').matches);}
+/* the tallest it may be: the column, which the grid row sizes */
+function stRelMax(e){
+ var col=e.parentElement;
+ return col?col.clientHeight:0;}
+/* one row and the gap under it, read off a real row so a font or a theme
+   that changes the row changes the step with it */
+function stRelStep(e){
+ var r=e.querySelector('.st-rq-wrap'); if(!r)return ST_RLH_STEP+44;
+ var L=r.parentElement, g=L?parseFloat(getComputedStyle(L).rowGap)||0:0;
+ return r.offsetHeight+g;}
+function stRelSize(e,n){
+ if(stRelPhone()){e.style.height=''; if(e.parentElement)e.parentElement.style.removeProperty('--rltop'); return;}
+ var max=stRelMax(e); if(!max||!e.offsetParent)return;
+ var floor=parseFloat(getComputedStyle(e).minHeight)||310, h, hand=stRelHand();
+ if(hand)h=hand.h+(n-hand.n)*stRelStep(e);
+ else{
+  /* the content's own height: free for one measure, then set */
+  e.style.maxHeight='none'; e.style.height='auto';
+  h=e.offsetHeight; e.style.maxHeight='';}
+ h=Math.round(Math.max(floor,Math.min(max,h)));
+ e.style.height=h+'px';
+ /* the column's fold rides the panel's top edge: it was pinned to the
+    column's top, which is empty air now that the panel stands lower */
+ if(e.parentElement)e.parentElement.style.setProperty('--rltop',e.offsetTop+'px');
+ var g=document.getElementById('strelgrip');
+ if(g){g.setAttribute('aria-valuemin',String(Math.round(floor)));g.setAttribute('aria-valuemax',String(max));
+  g.setAttribute('aria-valuenow',String(h));}}
+function stRelGripWire(e){
+ var g=document.getElementById('strelgrip'); if(!g)return;
+ var n=e.querySelectorAll('[data-rq]').length, drag=null;
+ var put=function(h){
+  var floor=parseFloat(getComputedStyle(e).minHeight)||310, max=stRelMax(e);
+  h=Math.round(Math.max(floor,Math.min(max||h,h)));
+  e.style.height=h+'px'; g.setAttribute('aria-valuenow',String(h));
+  if(e.parentElement)e.parentElement.style.setProperty('--rltop',e.offsetTop+'px');
+  stRelHandSet({h:h,n:n});};
+ /* upward is taller: the panel stands on the column's floor */
+ g.addEventListener('pointerdown',function(ev){if(ev.button>0)return;
+  ev.preventDefault(); drag={y:ev.clientY,h:e.offsetHeight};
+  g.classList.add('on'); try{g.setPointerCapture(ev.pointerId);}catch(x){}});
+ g.addEventListener('pointermove',function(ev){if(drag)put(drag.h+(drag.y-ev.clientY));});
+ var end=function(){if(!drag)return; drag=null; g.classList.remove('on');};
+ g.addEventListener('pointerup',end); g.addEventListener('pointercancel',end);
+ g.addEventListener('keydown',function(ev){
+  var d=ev.key==='ArrowUp'?ST_RLH_STEP:ev.key==='ArrowDown'?-ST_RLH_STEP:0;
+  if(!d)return; ev.preventDefault(); put(e.offsetHeight+d);});
+ g.addEventListener('dblclick',function(){stRelHandSet(null); stRelSize(e,n);});
+ /* the column's height moves with the window; one listener for the page */
+ if(!stRelGripWire.on){stRelGripWire.on=1;
+  window.addEventListener('resize',function(){var x=document.getElementById('strel');
+   if(x)stRelSize(x,x.querySelectorAll('[data-rq]').length);});}}
 
 /* ============================================================
    THE ANALYTICS PREVIEW, CLOSED, AT THE FOOT OF THE RELEASE COLUMN.
