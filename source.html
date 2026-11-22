@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v62 1db72729 2026-11-22 01:16"><head><meta charset="utf-8">
+<html lang="en" data-build="v95 ea46437b 2026-11-22 01:49"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -14155,6 +14155,19 @@ try{window.__at&&window.__at('engine/data/nodes.js');}catch(e){}
    and the code for it is written and correct. A host that has the
    files sets these two and everything downstream works unchanged.
    Nothing is requested until one of them is named.
+
+   AND THE DETAILED FIGURE IS NOT WAITING ON THESE, checked 22 November.
+   A board line read the empty names as "the Body falls back to a plain
+   outline until the detailed front and back art is supplied". It does not.
+   The detailed figure was ruled on 27 September, his words, "lock that in
+   as our kind of starting point": the front and back nervous system man,
+   FW option A, carried as vector data in BMNERVE (ui/map.js) and drawn by
+   the canvas map, which is the only figure the Body page shows. The outline
+   below stands in for a raster only inside the seven layers' renderer,
+   which nothing on the page reaches since round KV. BODY-MAP-SPEC.md
+   section 8 also rules raster display art out of the one file on size, so
+   no supplied picture is pending for display: anything he supplies now is a
+   placement reference (section 6), kept outside the build.
    ============================================================ */
 var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
@@ -62935,8 +62948,11 @@ var BM={mode:'pattern',variant:'C',amode:'A4',brush:6,face:'front',
     Pain is not in here, because Pain is BM.mode and has been since the
     prototype; its circle reads and writes that. Session only, the same as
     the paint. The three that open on are the three the figure drew before
-    the bar existed, so the first sight of the page did not change. */
- ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0}},hubs:[]};
+    the bar existed, so the first sight of the page did not change. Heat, the
+    charge as heat, opens on as a fourth, 22 November: the request was to
+    turn the heat map into this map, and a heat map one press away is the
+    unreachable layer over again (bmChargeRebuild). */
+ ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0,heat:1}},hubs:[]};
 
 /* ---------- the figure, built once, the first time the map is shown ----------
    Not at load: the page opens on the Field, and nothing here is wanted until
@@ -62991,6 +63007,12 @@ function bmInit(host){
  G.heat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.mask=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.fieldVer=0;
+ /* the charge's own field, its seat per pixel and its picture: apart from
+    the paint's, because the two readings are never merged (bmChargeRebuild) */
+ G.cfield=[new Float32Array(BMFW*BMFH),new Float32Array(BMFW*BMFH)];
+ G.cseat=[new Uint8Array(BMFW*BMFH),new Uint8Array(BMFW*BMFH)];
+ G.cpal=[];
+ G.cheat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.masks=bmMaskGeo(G);
  bmRoutes(G,host);
  return (BMG=G);}
@@ -63103,6 +63125,64 @@ function bmRegVal(r){var b=r.box,m=0,P=BM.paint[r.v];
  for(var i=0;i<P.length;i++){var v=P[i];if(!v)continue;var x=BMXA+(i%BMCOLS+.5)*BMU,y=BMYA+(((i/BMCOLS)|0)+.5)*BMU;
   if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
 function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
+
+/* ---------- the charge, as heat on the figure ----------
+   THE HEAT MAP WAS ON THE PAGE NOBODY COULD REACH. His words, round GO,
+   BODY-MAP-SPEC.md section 0: "that nerve chakra and this system with a heat
+   map merge as one". The reading's heat (the Nummenmaa treatment in
+   renderMap above, one continuous field per seat, clipped to the skin) lives
+   in the seven layers' renderer, and that renderer has been unreachable since
+   round KV took its row away. The figure that replaced it drew a field only
+   for pain a person paints, so the one map on the page showed where the
+   charge sat as rings and dots and never as heat. This is that heat, on this
+   figure, through the same grid the paint uses, so a press, a paint, an
+   address and the heat land on one set of coordinates (spec 1A, item 3).
+
+   Three things are decided here and each is the team's pick, correctable:
+     the scale   absolute, the engine's own 0 to 10 per address, never
+                 normalised to the person's busiest place. pmHeat normalises
+                 and so the hottest seat always read full, which is question
+                 K's K1; this is K2, the team's lean, so a patch this bright
+                 means the same charge on every profile.
+     the merge   max, never the sum, the rule the paint already holds: two
+                 addresses at six side by side are still a six, and a sum
+                 would report charge nobody carries.
+     the hue     the seat of the heaviest address under the pixel, because
+                 colour means seat everywhere else in the product. The pain
+                 ramp stays pain's own, so the two readings never share a
+                 colour (question K's K3), and this field steps back as the
+                 pain comes up rather than mixing with it.
+   Built only when a charge moves, never for a frame. */
+var BMCH={sig:'',sd:0.85,maxA:.5};
+function bmChargeRebuild(){
+ var G=BMG, sig=[], i;
+ G.places.forEach(function(p){var ch=0;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>ch)ch=q;});sig.push(ch.toFixed(2));});
+ sig=sig.join(',');
+ if(sig===BMCH.sig)return; BMCH.sig=sig;
+ var sd=BMCH.sd*BMF, R=Math.ceil(sd*2.6), two=2*sd*sd;
+ [0,1].forEach(function(v){
+  var Fd=G.cfield[v], Sd=G.cseat[v]; Fd.fill(0);
+  G.places.forEach(function(p){
+   if(!bmSolidOn(p,v))return;
+   var ch=0,seat=null;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>=ch){ch=q;seat=BY[id].b;}});
+   if(ch<0.05)return;
+   var cx=(bmPlaceX(p,v)-BMXA)/BMU*BMF, cy=(p.y-BMYA)/BMU*BMF, si=G.cpal.indexOf(seat);
+   if(si<0){G.cpal.push(seat);si=G.cpal.length-1;}
+   for(var y=Math.max(0,Math.floor(cy-R));y<=Math.min(BMFH-1,Math.ceil(cy+R));y++)
+    for(var x=Math.max(0,Math.floor(cx-R));x<=Math.min(BMFW-1,Math.ceil(cx+R));x++){
+     var dx=x+.5-cx,dy=y+.5-cy,val=ch*Math.exp(-(dx*dx+dy*dy)/two),j=y*BMFW+x;
+     if(val>Fd[j]){Fd[j]=val;Sd[j]=si;}}});
+  var g=G.cheat[v].getContext('2d'),img=g.createImageData(BMFW,BMFH),d=img.data;
+  var cols=G.cpal.map(bmSeatC);
+  for(i=0;i<Fd.length;i++){var val=Fd[i],o=i*4;if(val<0.05){d[o+3]=0;continue;}
+   var c=cols[Sd[i]]||BMC.dim;
+   d[o]=c[0];d[o+1]=c[1];d[o+2]=c[2];d[o+3]=255*BMCH.maxA*Math.pow(val/10,0.8);}
+  g.putImageData(img,0,0);});}
+/* the heaviest single address on the figure, for the circle's ring and pill */
+function bmChargeTop(){
+ var top=null;(BMG&&BMG.places||[]).forEach(function(p){p.ids.forEach(function(id){var n=BY[id];
+  if(n&&(n.sq||0)>0&&(!top||n.sq>top.sq))top=n;});});
+ return top;}
 
 /* ---------- the six masks, as pixels on the figure ----------
    CH in TASKS.md, his words: "the masks are what block the character, and
@@ -63864,6 +63944,12 @@ function bmDraw(dt){
   /* everything of a panel is drawn inside it: a figure opened into a region
      reaches past its panel's edge, and this is what keeps it off the other */
   g.setTransform(1,0,0,1,0,0);g.save();bmClip(g,P);
+  /* 1b. the charge, as heat, clipped to him the same way, and stepping back
+     as the pain comes up, so a painted patch is never read as charge or the
+     other way round (bmChargeRebuild) */
+  if(BM.ov.on.heat&&gain<0.98)vs.forEach(function(v){
+   bmTf(g);g.save();g.clip(G.body[v]);g.globalAlpha=1-gain;g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+   g.drawImage(G.cheat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
   /* 2. the heat, over the nerves, as he asked, and clipped to him */
   if(gain>0.002)vs.forEach(function(v){
    var sat=V.satLead<1?Math.pow(gain,V.satLead):gain;
@@ -64855,12 +64941,18 @@ function bmRegBar(){
 var BMOVTOK='--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--edge-2:rgba(255,255,255,.14);'
  +'--edge:rgba(255,255,255,.09);--fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);'
  +'--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820';
-var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['pain','flow']},
+var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['heat','pain','flow']},
  {k:'networks',nm:'Networks',ls:['sab','cx','hy']}];
 var BMOVL={
  addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
  masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
   tip:'The masks, as dots on the figure that fill in as each one carries weight.'},
+ /* two rings, one inside the other, the way a heat map's contours close on
+    the hottest point. Ring, not fill. Named Charge and not Heat, because
+    Heat is already the Pain mode's own switch (bmvar) and one word is one
+    concept. */
+ heat:{nm:'Charge',ic:'M12 3.8a8.2 8.2 0 100 16.4 8.2 8.2 0 100-16.4zM12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 100-6.8z',
+  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, out of 10, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
@@ -64883,6 +64975,10 @@ function bmOvVals(r){
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
+ var ht=(r&&!r.unread)?bmChargeTop():null;
+ V.heat=ht?{p:ht.sq*10,v:fmtPct('charge',ht.sq),c:bmRgba(bmSeatC(ht.b),1),
+  m:'Ring and number: the hottest address, '+(/_Unnamed$/.test(ht.k)?'an address with no name yet':ht.k)+', at '+fmtPct('charge',ht.sq)+' of the most it could hold.'}
+  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
  var sp=flSpeed();
  V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:fmtPct('flow',sp),c:'var(--accent)',
   m:'Ring and number: flow, the share of charge that passes every point, '+fmtPct('flow',sp)+'.'}
@@ -65151,7 +65247,7 @@ function bmRender(r,host){
   BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
- BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r); bmKey(r);
+ BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r); bmKey(r); bmChargeRebuild();
  var seats=flSeats();
  bmSeats(seats);
  pmLayerBar(r); bmBars(); bmOvPaint(r);
@@ -114650,5 +114746,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008376657"></div>
+<div id="eof" hidden data-len="008383113"></div>
 </body></html>
