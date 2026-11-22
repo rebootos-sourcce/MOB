@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v126 73645021 2026-11-22 13:23"><head><meta charset="utf-8">
+<html lang="en" data-build="v127 2e723b7f 2026-11-22 20:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -56700,6 +56700,7 @@ var fsCore=[
  '}',
  '',
  'float hash(vec2 p){',
+ '  p = mod(p, 157.0);',
  '  p = fract(p*vec2(123.34, 456.21));',
  '  p += dot(p, p+45.32);',
  '  return fract(p.x*p.y);',
@@ -116883,5 +116884,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008524787"></div>
+<div id="eof" hidden data-len="008524812"></div>
 </body></html>
