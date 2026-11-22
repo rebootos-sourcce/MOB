@@ -34,6 +34,18 @@ const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
  const extra=Object.keys(K).filter(k=>!c.__P.some(p=>p.k===k));
  ok(extra.length===0,'RW1: the kind table names no practice the library lacks: '+extra.join(', '));}
 
+/* ---- RW12, headless: the six reframes, one per behaviour the reader sees ---- */
+{const c={console}; vm.createContext(c);
+ vm.runInContext(fs.readFileSync(path.join(ROOT,'engine.js'),'utf8')+';this.__R=SRC_REFRAME;this.__B=SRC_BEHAVE_ORDER;this.__P=PRACTICE;',c);
+ const R=Object.assign({},c.__R); if(MUT==='noreframe')delete R.delay;
+ const lack=c.__B.filter(b=>!R[b]), extra=Object.keys(R).filter(b=>c.__B.indexOf(b)<0);
+ ok(c.__B.length>0&&lack.length===0,'RW12: every behaviour the reader sees ('+c.__B.length+' read) has a reframe, none missing: '+lack.join(', '));
+ ok(extra.length===0,'RW12: no reframe is for a behaviour the reader cannot see: '+extra.join(', '));
+ const noPr=Object.keys(R).filter(b=>!c.__P.some(p=>p.k===R[b].pr));
+ ok(noPr.length===0,'RW12: every reframe names a practice in the library: '+noPr.join(', '));
+ const shape=Object.keys(R).filter(b=>!(typeof R[b].to==='string'&&R[b].to&&typeof R[b].line==='string'&&/^[A-Z].*\.$/.test(R[b].line)&&!/\u2014|\u2013/.test(R[b].to+R[b].line)));
+ ok(shape.length===0,'RW12: every reframe has its name and its line, a sentence with no dash: '+shape.join(', '));}
+
 const MUTANTS={
  /* the week coloured by seat again */
  seatcol:`ritKindCol=function(){return 'var(--accent)';};`,
@@ -52,7 +64,9 @@ const MUTANTS={
  /* the said rings lost on the way into the pop-up */
  nosaid:`ritPopTick=function(){return '';};`,
  /* a drop elsewhere writing anyway */
- dropany:`(function(){var f=ritDayAt; ritDayAt=function(x,y){var d=f(x,y); return d==null?ritToday0()+1:d;};})();`};
+ dropany:`(function(){var f=ritDayAt; ritDayAt=function(x,y){var d=f(x,y); return d==null?ritToday0()+1:d;};})();`,
+ /* the plans left on the device, the state before 21 November */
+ noadopt:`ritAdopt=function(){return false;};`};
 
 if(require.main===module)(async()=>{
  const {chromium}=require('playwright');
@@ -77,7 +91,7 @@ if(require.main===module)(async()=>{
     schedule tied to a place held at four or more. Stored weekdays are Monday
     0, the store's own numbering. */
  const SEED=()=>{
-  loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]);
+  loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CURP.practice.sched=[];
   try{STORE.set('atuned-ritual-sched','{}'); STORE.set('atuned-ritual-more','{}');}catch(e){}
   const DAY=86400000, off=new Date().getTimezoneOffset()*60000;
   const today=Math.floor((Date.now()-off)/DAY);
@@ -268,6 +282,44 @@ if(require.main===module)(async()=>{
 
   ok(err.length===0,'RW10: '+tag+'no page error: '+err.join(' | '));
   }catch(e){ok(false,'RW: '+tag+'threw: '+e.message);}
+  await pg.close();}
+
+ /* ---- RW11: RITUALS TRAVEL WITH THE RECORD, 21 November, his words:
+    "rituals travel with the record, they don't stay on the device." A
+    browser holding plans and rows under the two old keys moves them onto the
+    record the first time the page reads them, empties the old keys for that
+    profile only, leaves a plan the boundary would refuse behind, and the
+    export and a reload both carry what moved. ---- */
+ {const {pg,err}=await open(1600,1000), tag='move ';
+  try{
+  const a=await pg.evaluate(()=>{
+   loadP(0); CURP.practice.plans=[]; CURP.practice.sched=[]; pSave();
+   const iso=new Date(Date.now()-3*86400000).toISOString(), me=CURP.id;
+   const plan={id:'old1',steps:['box'],when:'',where:'',days:0,from:iso,stop:null,band:'Heart',track:'',rel:null,tc:null,tags:['Heart'],on:null,tm:null};
+   const bad=Object.assign({},plan,{id:'old2',steps:['levitation']});
+   const row={id:'aff',kind:'aff',on:[0,1,2,3,4],at:'',from:iso,days:0,ex:null,miss:null,ack:null,ans:[]};
+   const other={['someone-else']:[Object.assign({},plan,{id:'theirs'})]};
+   STORE.set('atuned-ritual-active',JSON.stringify(Object.assign({[me]:[plan,bad]},other)));
+   STORE.set('atuned-ritual-sched',JSON.stringify({[me]:[row]}));
+   const drawn=ritPlans().map(p=>p.id), rows=ritSched().map(r=>r.id);
+   const side=JSON.parse(STORE.get('atuned-ritual-active')||'{}'), sideS=JSON.parse(STORE.get('atuned-ritual-sched')||'{}');
+   const ex=JSON.parse(pExport()||'null');
+   return {drawn, rows, recP:CURP.practice.plans.map(p=>p.id), recS:CURP.practice.sched.map(r=>r.id),
+    sideMine:Object.prototype.hasOwnProperty.call(side,me), sideOther:!!side['someone-else'], sideS:Object.prototype.hasOwnProperty.call(sideS,me),
+    exP:ex&&ex.practice&&ex.practice.plans.map(p=>p.id), exS:ex&&ex.practice&&ex.practice.sched.map(r=>r.id),
+    exV:ex&&ex.practice&&ex.practice.v, V:PRACTICE_SCHEMA_V, me};});
+  ok(a.recP.join()==='old1'&&a.drawn.join()==='old1','RW11: '+tag+'a plan held under the old key is on the record after the first read, and the one the boundary would refuse is left behind: '+JSON.stringify(a.recP));
+  ok(a.recS.join()==='aff'&&a.rows.join()==='aff','RW11: '+tag+'the affirmation row held under the old key is on the record: '+JSON.stringify(a.recS));
+  ok(!a.sideMine&&!a.sideS,'RW11: '+tag+'the old keys no longer hold this profile once the record has saved');
+  ok(a.sideOther,'RW11: '+tag+'another profile\'s plans under the old key are not touched');
+  ok(a.exP&&a.exP.join()==='old1'&&a.exS&&a.exS.join()==='aff'&&a.exV===a.V&&a.V>=2,'RW11: '+tag+'the export carries the plan and the row, at practice schema '+a.exV);
+  await pg.reload({waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(300);
+  const b=await pg.evaluate(()=>{loadP(0); const st=ritRead();
+   return {plans:ritPlans().map(p=>p.id), side:STORE.get('atuned-ritual-active'),
+    week:[0,1,2,3,4,5,6].some(i=>ritWeekDay(st.today+i,st).some(s=>s.nm==='Box Breathing'))};});
+  ok(b.plans.join()==='old1'&&b.week,'RW11: '+tag+'after a reload the plan is read off the record and drawn on the week: '+JSON.stringify(b.plans));
+  ok(err.length===0,'RW11: '+tag+'no page error: '+err.join(' | '));
+  }catch(e){ok(false,'RW11: '+tag+'threw: '+e.message);}
   await pg.close();}
  await browser.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

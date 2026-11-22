@@ -35,8 +35,15 @@
    while the Ritual tab keeps writing the first, which is two truths. The
    cutover is the UI build's, when one writer replaces the other. See
    PRACTICE-AUDIT.md.
+
+   THE PLANS ARE ON THE RECORD NOW, practice schema 2, 21 November. The
+   paragraph above said they lived beside the record under
+   atuned-ritual-active, and that stopped being true here: see
+   practicePlansCheck below for what moved and why.
    ============================================================ */
-var PRACTICE_SCHEMA_V=1;
+/* 2 is the plans and the schedule rows, 21 November. A 1 still loads and
+   reads as a record with neither, which is what a 1 is. */
+var PRACTICE_SCHEMA_V=2;
 
 /* ---------------- the enums, exactly as the TDD writes them ---------------- */
 /* section 26. Never collapsed: a value moves only by a named action. */
@@ -319,9 +326,153 @@ var PR_LOG_SPEC={seq:{t:'num',int:1,lo:1,hi:1e9,req:1}, type:{t:'enum',of:PR_EVE
 
 function practiceBlank(){
  return {v:PRACTICE_SCHEMA_V, goals:[], behavior_objectives:[], protocols:[], protocol_steps:[],
-  rituals:[], practice_events:[], evidence:[], outcomes:[], log:[]};}
+  rituals:[], practice_events:[], evidence:[], outcomes:[], log:[], plans:[], sched:[]};}
 var PR_LISTS=['goals','behavior_objectives','protocols','protocol_steps','rituals',
  'practice_events','evidence','outcomes'];
+
+/* ============================================================
+   THE RITUAL TAB'S PLANS AND ROWS, ON THE RECORD. Practice schema 2, 21
+   November, his words: "rituals travel with the record, they don't stay on
+   the device."
+
+   Until today a plan (what is active, on which days, at what time, until
+   when) lived beside the record under atuned-ritual-active, and the
+   affirmation and challenge rows, with their If I miss cost and their why
+   answers, under atuned-ritual-sched, both keyed by profile id in the
+   browser. So an export, a record link and a second device all carried the
+   day log in p.rituals and none of the plan that wrote it: a person who
+   moved browsers kept every day they had done and lost every ritual they
+   had set. They are two lists on the practice object now, plans and sched,
+   and the UI's one writer for each writes here and saves the record.
+
+   NOT PR_LISTS. Those eight are the TDD's graph objects, with provenance,
+   versions and cross checks (prCross). A plan is the Ritual tab's own shape,
+   kept exactly as ui/ritual.js has always written it, so nothing that reads
+   a plan changes and no plan is translated on the way in.
+
+   THE RULE MOVED HERE AND NOT A SECOND COPY OF IT. ritPlanOk and ritSchedOk
+   in the UI used to hold these conditions as one long boolean, which was the
+   right posture beside the record: a row out of shape was left out on the
+   read. On the record that posture is the lie the boundary exists to stop,
+   so the same conditions are here as named refusals, and the UI's two
+   checks are this function asked whether it found anything. A missing list
+   is an older record and reads as empty; a wrong one is refused by name.
+
+   A CLOSED KEY SET, the posture vKeys takes for the rest of the record. The
+   two writers build every plan and row from these keys and nothing else,
+   and a row adopted off the device is rebuilt from them (ritPlanShape and
+   ritSchedShape, UI) before it lands, so an extra key here is a record
+   somebody else wrote.
+   ============================================================ */
+/* A TIME OF DAY, moved here from ui/ritbank.js, which still says why it is a
+   typed field: HH:MM, 00:00 to 23:59, and 24:00 and 7:5 are refused by name
+   and never rounded. */
+var RIT_AT_RX=/^([01]\d|2[0-3]):[0-5]\d$/;
+function ritAtOk(s){return typeof s==='string'&&RIT_AT_RX.test(s);}
+/* IF I MISS, the choices, one table, moved here from ui/ritbank.js so the
+   boundary and the pop-up read the same list. The team's default is the
+   first, and it is the one he may change: ui/ritbank.js's head says why.
+   The person's own is their own sentence, so it is quoted back and never
+   carries the Source AI mark. */
+var RIT_WHY_MAX=280, RIT_OWN_MAX=140, RIT_ANS_MAX=60;
+var RIT_MISS=[
+ {k:'why', nm:'Answer why', says:'You answer the one question, what got in the way. Nothing else happens.'},
+ {k:'own', nm:'In my words', says:'You write what you will do, and the app takes your word that you did it.'}];
+/* the days set Once on top of a running plan: day keys, whole and distinct,
+   at most a year of them. Moved here from ui/ritual.js. */
+function ritExOk(a){
+ return Array.isArray(a)&&a.length<=366&&a.every(function(d,i){
+  return typeof d==='number'&&Math.floor(d)===d&&d>=0&&a.indexOf(d)===i;});}
+/* How many of each a record holds. A plan is never deleted, only stopped,
+   so the list is every ritual a person has ever set: two thousand is a new
+   one every other day for ten years. A row is one per challenge plus the
+   affirmations. Refused over the ceiling, never truncated. */
+var PR_PLANS_CAP=2000, PR_SCHED_CAP=400;
+var PR_PLAN_KEYS=['id','steps','when','where','days','from','stop','band','track','rel','tc','tags','on','tm','at','ex'];
+var PR_SCHED_KEYS=['id','kind','on','at','from','days','ex','miss','ack','ans'];
+function prKeysOnly(errs,path,x,keys){
+ Object.keys(x).forEach(function(k){if(keys.indexOf(k)<0)errs.push(path+' may not carry '+k);});}
+/* a weekday list: Monday 0 to Sunday 6, whole and distinct, one to seven */
+function prWeekdays(errs,path,on){
+ if(on==null)return;
+ if(!Array.isArray(on)||on.length<1||on.length>7||!on.every(function(d,i){
+  return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&on.indexOf(d)===i;}))
+  errs.push(path+' is not a list of weekdays, 0 to 6, each once: '+JSON.stringify(on));}
+function prDayStr(s){return typeof s==='string'&&pracDay(s)!==null;}
+function prSpan(errs,path,d){
+ if(typeof d!=='number'||d<0||d>3660||Math.floor(d)!==d)
+  errs.push(path+' is '+JSON.stringify(d)+', not a whole number of days from 0 to 3660');}
+function practicePlanCheck(errs,path,p){
+ if(!p||typeof p!=='object'||Array.isArray(p)){errs.push(path+' is not an object'); return;}
+ prKeysOnly(errs,path,p,PR_PLAN_KEYS);
+ if(typeof p.id!=='string'||!p.id||p.id.length>=40)errs.push(path+'.id is not a plan id: '+JSON.stringify(p.id));
+ if(!Array.isArray(p.steps)||!p.steps.length||p.steps.length>PRACTICE.length)
+  errs.push(path+'.steps is not a list of one to '+PRACTICE.length+' practices');
+ else p.steps.forEach(function(k,j){if(!RIT_STEP[k])errs.push(path+'.steps['+j+'] names no practice: '+JSON.stringify(k));});
+ /* the spans are what the chooser offers. What is kept is any whole number
+    of days, because a ritual woken again runs on from where it is. */
+ prSpan(errs,path+'.days',p.days);
+ if(!prDayStr(p.from))errs.push(path+'.from is not a date: '+JSON.stringify(p.from));
+ if(p.stop!=null&&!prDayStr(p.stop))errs.push(path+'.stop is not a date: '+JSON.stringify(p.stop));
+ ['when','where'].forEach(function(k){
+  if(p[k]!=null&&(typeof p[k]!=='string'||p[k].length>RIT_PLAN_MAX))
+   errs.push(path+'.'+k+' is not text of '+RIT_PLAN_MAX+' characters or fewer');});
+ if(p.band&&BANDS.indexOf(p.band)<0)errs.push(path+'.band is not a point: '+JSON.stringify(p.band));
+ if(p.track&&!RIT_TRACK[p.track])errs.push(path+'.track is not a track in the practice library: '+JSON.stringify(p.track));
+ if(p.rel!=null&&(typeof p.rel!=='number'||!BY[p.rel]))errs.push(path+'.rel is not an address: '+JSON.stringify(p.rel));
+ /* tc is the teacher a ritual of becoming was started toward */
+ if(p.tc!=null&&(typeof p.tc!=='string'||!becomingOf(p.tc)))errs.push(path+'.tc names no teacher: '+JSON.stringify(p.tc));
+ /* TAGS ARE A CLOSED SET, TG4: the seven points, each once */
+ if(p.tags!=null&&!(Array.isArray(p.tags)&&p.tags.length<=BANDS.length
+  &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
+  errs.push(path+'.tags is not a list of points, each once: '+JSON.stringify(p.tags));
+ prWeekdays(errs,path+'.on',p.on);
+ /* the longest timer the builder offers is every practice in the library once */
+ if(p.tm!=null&&(typeof p.tm!=='number'||p.tm<1||p.tm>RIT_MIN_MAX||Math.floor(p.tm)!==p.tm))
+  errs.push(path+'.tm is '+JSON.stringify(p.tm)+', not a whole number of minutes from 1 to '+RIT_MIN_MAX);
+ if(p.at!=null&&!ritAtOk(p.at))errs.push(path+'.at is '+JSON.stringify(p.at)+', not a time of day, 00:00 to 23:59');
+ if(p.ex!=null&&!ritExOk(p.ex))errs.push(path+'.ex is not a list of distinct day numbers, a year at most');}
+function practiceSchedCheck(errs,path,r){
+ if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(path+' is not an object'); return;}
+ prKeysOnly(errs,path,r,PR_SCHED_KEYS);
+ var str=function(s,n){return typeof s==='string'&&s.length<=n;};
+ /* the affirmations are one row, aff, and each challenge one row, ch: and its key */
+ if(!(typeof r.id==='string'&&r.id.length<=80&&((r.kind==='aff'&&r.id==='aff')||(r.kind==='chal'&&/^ch:/.test(r.id)))))
+  errs.push(path+' is not an affirmation row (aff) or a challenge row (ch:): '+JSON.stringify([r.id,r.kind]));
+ if(!prDayStr(r.from))errs.push(path+'.from is not a date: '+JSON.stringify(r.from));
+ prSpan(errs,path+'.days',r.days);
+ if(r.at!=null&&r.at!==''&&!ritAtOk(r.at))errs.push(path+'.at is '+JSON.stringify(r.at)+', not a time of day, 00:00 to 23:59');
+ prWeekdays(errs,path+'.on',r.on);
+ if(r.ex!=null&&!ritExOk(r.ex))errs.push(path+'.ex is not a list of distinct day numbers, a year at most');
+ if(r.miss!=null){
+  if(typeof r.miss!=='object'||Array.isArray(r.miss)){errs.push(path+'.miss is not an object');}
+  else {
+   prKeysOnly(errs,path+'.miss',r.miss,['k','own']);
+   if(!RIT_MISS.some(function(m){return m.k===r.miss.k;}))
+    errs.push(path+'.miss.k is not one of '+RIT_MISS.map(function(m){return m.k;}).join(', ')+': '+JSON.stringify(r.miss.k));
+   if(r.miss.own!=null&&!str(r.miss.own,RIT_OWN_MAX))errs.push(path+'.miss.own is not text of '+RIT_OWN_MAX+' characters or fewer');}}
+ if(r.ack!=null&&(typeof r.ack!=='number'||Math.floor(r.ack)!==r.ack))errs.push(path+'.ack is not a day number: '+JSON.stringify(r.ack));
+ if(r.ans!=null){
+  if(!Array.isArray(r.ans)||r.ans.length>RIT_ANS_MAX)errs.push(path+'.ans is not a list of '+RIT_ANS_MAX+' answers or fewer');
+  else r.ans.forEach(function(a,j){
+   var q=path+'.ans['+j+']';
+   if(!a||typeof a!=='object'||Array.isArray(a)){errs.push(q+' is not an object'); return;}
+   prKeysOnly(errs,q,a,['d','why']);
+   if(typeof a.d!=='number'||Math.floor(a.d)!==a.d)errs.push(q+'.d is not a day number');
+   if(!str(a.why,RIT_WHY_MAX))errs.push(q+'.why is not text of '+RIT_WHY_MAX+' characters or fewer');});}}
+/* both lists, for practiceValidate. Returns the list to keep: a copy of
+   what came in when it is whole, empty when it is missing or refused. */
+function practicePlansCheck(errs,path,v,cap,one){
+ if(v===undefined||v===null)return [];
+ if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}
+ if(v.length>cap){errs.push(path+' holds '+v.length+', more than '+cap); return [];}
+ var n=errs.length;
+ v.forEach(function(x,i){one(errs,path+'['+i+']',x);});
+ /* two plans with one id are two rituals the writer cannot tell apart */
+ var ids={};
+ v.forEach(function(x,i){if(x&&typeof x.id==='string'){
+  if(ids[x.id])errs.push(path+'['+i+'].id '+JSON.stringify(x.id)+' is already used'); ids[x.id]=1;}});
+ return errs.length>n?[]:JSON.parse(JSON.stringify(v));}
 
 /* ---------------- one field ---------------- */
 function prBlank(f){
@@ -411,7 +562,10 @@ function practiceValidate(errs,o,base){
  var path=base||'practice', P=practiceBlank();
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return P;}
  Object.keys(o).forEach(function(k){
-  if(k!=='v'&&k!=='log'&&PR_LISTS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+  if(k!=='v'&&k!=='log'&&k!=='plans'&&k!=='sched'&&PR_LISTS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+ /* schema 2's two lists. A 1 has neither and reads as empty, from the blank */
+ P.plans=practicePlansCheck(errs,path+'.plans',o.plans,PR_PLANS_CAP,practicePlanCheck);
+ P.sched=practicePlansCheck(errs,path+'.sched',o.sched,PR_SCHED_CAP,practiceSchedCheck);
  /* a newer practice schema than this build knows is refused rather than
     read with a guess. A missing one is the only version there has been. */
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v>PRACTICE_SCHEMA_V||o.v%1!==0))

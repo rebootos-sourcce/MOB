@@ -39,13 +39,15 @@
      the record   CURP.rituals, the shape the boundary already validates, one
                   entry a day a ritual was set or done. Nothing new is written
                   into it and no field is added. Schema v2 is the owner's call.
-     active       what is active, in what order, until when, beside the record
-                  under its own key in the bound store, keyed by profile id.
-                  It is the posture avatarui.js took for the avatar's own rules
-                  for the same reason: the boundary rebuilds a record from the
-                  fields it names and would drop anything else on the next
-                  load. It survives a reload and does not travel with an
-                  export, and that is named as a cost in the report.
+     active       what is active, in what order, until when. On the record
+                  since 21 November, p.practice.plans, practice schema 2, his
+                  words: "rituals travel with the record, they don't stay on
+                  the device." It sat beside the record under its own key
+                  until then, because the boundary rebuilds a record from the
+                  fields it names and would have dropped it; the boundary
+                  names it now (engine/practice.js), so it goes with an
+                  export and a record link. ritAdopt moves what a browser
+                  still holds under the old key.
    ============================================================ */
 /* THE PAGE IS TWO TOOL SETS NOW, 2 October, his words: "On the flow pages, get
    rid of the left and right menu. Actually, sorry. Move the new ritual to the
@@ -230,51 +232,19 @@ var RIT_KEY='atuned-ritual-active';
 var RIT_SPANS=[{d:1,nm:'Once',say:'a day'},{d:7,nm:'1 week',say:'a week'},{d:14,nm:'2 weeks',say:'two weeks'},
  {d:21,nm:'3 weeks',say:'three weeks'},{d:28,nm:'4 weeks',say:'four weeks'},{d:0,nm:'No end',say:'no end'}];
 var RIT_SPAN_D=RIT_SPANS.map(function(s){return s.d;});
+/* THE OLD KEY, read so ritAdopt can empty it, and kept so accForget can
+   clear what is left of a deleted profile. Nothing writes it any more. */
 function ritSideAll(){
  if(typeof STORE==='undefined')return {};
  try{var o=JSON.parse(STORE.get(RIT_KEY)||'{}');
   return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};}catch(e){return {};}}
-/* anything that is not the shape ritPlanPut writes is left out on the read
-   rather than trusted, the boundary's posture, and a store that cannot be read
-   is an empty one here and never a reason to throw the surface. */
-function ritPlanOk(p){
- var sd=function(s){return typeof s==='string'&&pracDay(s)!==null;};
- var st=function(s){return typeof s==='string'&&s.length<=RIT_PLAN_MAX;};
- return !!(p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length<40
-  &&Array.isArray(p.steps)&&p.steps.length>0&&p.steps.length<=PRACTICE.length
-  &&p.steps.every(function(k){return !!RIT_STEP[k];})
-  /* the four spans are what the chooser offers. What is kept is any whole
-     number of days, because a ritual woken again runs on from where it is. */
-  &&typeof p.days==='number'&&p.days>=0&&p.days<=3660&&Math.floor(p.days)===p.days&&sd(p.from)&&(p.stop==null||sd(p.stop))
-  &&st(p.when||'')&&st(p.where||'')
-  &&(!p.band||BANDS.indexOf(p.band)>=0)&&(!p.track||!!RIT_TRACK[p.track])
-  &&(p.rel==null||(typeof p.rel==='number'&&!!BY[p.rel]))
-  /* tc is the teacher a ritual of becoming was started toward, an axis or
-     path key. It lives here beside the record and not on it, so it is no
-     schema change. */
-  &&(p.tc==null||(typeof p.tc==='string'&&!!becomingOf(p.tc)))
-  /* round LT's three, and TAGS ARE A CLOSED SET, TG4: "no to free text tags
-     on measured grounds, and yes to a closed field validated against a
-     table. Tags set for each major chakra is a closed set of seven." Each of
-     the three is checked by name and by range and a plan carrying any of
-     them out of shape is left out whole, the same posture as every field
-     above: a seat that is not a seat, a weekday eight, or a timer of a
-     thousand minutes is a store somebody else wrote. */
-  &&(p.tags==null||(Array.isArray(p.tags)&&p.tags.length<=BANDS.length
-   &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
-  &&(p.on==null||(Array.isArray(p.on)&&p.on.length>=1&&p.on.length<=7
-   &&p.on.every(function(d,i){return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&p.on.indexOf(d)===i;})))
-  &&(p.tm==null||(typeof p.tm==='number'&&p.tm>=1&&p.tm<=RIT_TM_MAX&&Math.floor(p.tm)===p.tm))
-  /* at and ex, 20 November (ui/ritbank.js). at is the time of day a ritual
-     is set for, HH:MM or nothing, and a plan carrying 24:00 or 7:5 is a store
-     somebody else wrote, left out whole like any other field. ex is the days
-     set Once on top of a running plan, a drop on the week or a Once from the
-     pop-up: day keys, whole and distinct, at most a year of them. */
-  &&(p.at==null||(typeof ritAtOk==='function'&&ritAtOk(p.at)))
-  &&(p.ex==null||ritExOk(p.ex)));}
-function ritExOk(a){
- return Array.isArray(a)&&a.length<=366&&a.every(function(d,i){
-  return typeof d==='number'&&Math.floor(d)===d&&d>=0&&a.indexOf(d)===i;});}
+/* THE BOUNDARY'S RULE, asked whether it found anything. This was the rule
+   itself, one long boolean, until 21 November; the conditions are named
+   refusals in practicePlanCheck (engine/practice.js) now, because a plan on
+   the record that is out of shape has to be refused by name and not quietly
+   left out. Here, where the answer only decides whether a plan is drawn or
+   adopted, the yes or no is enough. ritExOk moved there with it. */
+function ritPlanOk(p){var e=[]; practicePlanCheck(e,'plan',p); return !e.length;}
 /* the longest timer the builder offers is the boundary's own ceiling on a
    ritual's minutes, every practice in the library once, so the two cannot
    disagree and no number is typed here */
@@ -283,26 +253,74 @@ var RIT_TM_MAX=RIT_MIN_MAX;
    Every example opened this page on nothing, because ritPlanPut refuses one
    and so the store never had a list under its id. engine/ritex.js builds each
    example's plans and loadP hands them here, keyed by the scratch record's
-   id. Read only when the store has no list for the record, so a person's own
-   plans can never be shadowed by a demonstration's. */
+   id. Read only when the record has no plans, so a person's own plans can
+   never be shadowed by a demonstration's. */
 var RIT_EX={};
+/* the one shape a plan is written in. A plan adopted off the device is
+   rebuilt through it, so nothing lands on the record that its closed key set
+   would refuse. */
+function ritPlanShape(p){
+ return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
+  days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
+  rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
+  tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm),
+  at:(p.at==null?null:p.at), ex:(p.ex?p.ex.slice().sort(function(a,b){return a-b;}):null)};}
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
- var a=ritSideAll()[CURP.id];
- if(!Array.isArray(a)&&!ritOwn())a=RIT_EX[CURP.id];
+ ritAdopt();
+ var a=CURP.practice&&CURP.practice.plans;
+ if((!Array.isArray(a)||!a.length)&&!ritOwn())a=RIT_EX[CURP.id];
  if(!Array.isArray(a))return [];
- return a.filter(ritPlanOk).map(function(p){
-  return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
-   days:p.days, from:p.from, stop:p.stop||null, band:p.band||'', track:p.track||'',
-   rel:(p.rel==null?null:p.rel), tc:(p.tc==null?null:p.tc),
-   tags:(p.tags||[]).slice(), on:(p.on?p.on.slice().sort():null), tm:(p.tm==null?null:p.tm),
-   at:(p.at==null?null:p.at), ex:(p.ex?p.ex.slice().sort(function(a,b){return a-b;}):null)};});}
-/* true only when the store took it. A store that was never bound, or that
-   throws on quota or on a blocked origin, answers false. */
+ return a.filter(ritPlanOk).map(ritPlanShape);}
+/* The list goes onto the record in memory, and only when the boundary would
+   take it back: a plan the next load refuses would set the whole record
+   aside. ritWrite saves and puts both back on a refusal, so this answers
+   whether the list is fit to save and never claims a save itself. */
 function ritPlanPut(list){
- if(!ritOwn()||typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
- try{var all=ritSideAll(); all[CURP.id]=list; STORE.set(RIT_KEY,JSON.stringify(all)); return true;}
- catch(e){return false;}}
+ if(!ritOwn()||!CURP)return false;
+ var P=CURP.practice||(CURP.practice=practiceBlank());
+ var shaped=(list||[]).map(ritPlanShape), e=[];
+ practicePlansCheck(e,'plans',shaped,PR_PLANS_CAP,practicePlanCheck);
+ if(e.length)return false;
+ P.plans=shaped; return true;}
+
+/* MOVED ONTO THE RECORD, ONCE, 21 November. A browser that held plans under
+   atuned-ritual-active, or affirmation and challenge rows under
+   atuned-ritual-sched, before the ruling still holds them there, keyed by
+   profile id, and the record it opens has none. So the first read for that
+   record moves them across: each one through the boundary's own rule and
+   its one shape, a plan the record already holds by id kept as the record
+   has it, then the record is saved, and only once that save has landed is
+   the id taken out of the old keys. A save that does not land leaves both
+   keys as they were and the plans in memory, so the next write saves them
+   and the next read tries again; nothing is lost either way. Only the
+   person's own record: a worked example never had a list there, and a
+   demonstration is never written. A row out of shape on the old key is left
+   behind, which is what the old read already did with it. */
+function ritAdopt(){
+ if(!ritOwn()||typeof STORE==='undefined'||typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var side=ritSideAll(), rows=(typeof ritSchedAll==='function')?ritSchedAll():{};
+ var hasP=Object.prototype.hasOwnProperty.call(side,CURP.id), hasS=Object.prototype.hasOwnProperty.call(rows,CURP.id);
+ if(!hasP&&!hasS)return false;
+ var P=CURP.practice||(CURP.practice=practiceBlank());
+ var merge=function(have,from,ok,shape,cap,one){
+  var out=(have||[]).slice(), ids={};
+  out.forEach(function(x){ids[x.id]=1;});
+  (Array.isArray(from)?from:[]).forEach(function(x){
+   if(ok(x)&&!ids[x.id]){var y=shape(x); out.push(y); ids[y.id]=1;}});
+  var e=[]; practicePlansCheck(e,'adopt',out,cap,one);
+  return e.length?null:out;};
+ var plans=hasP?merge(P.plans,side[CURP.id],ritPlanOk,ritPlanShape,PR_PLANS_CAP,practicePlanCheck):P.plans;
+ var sched=hasS?merge(P.sched,rows[CURP.id],ritSchedOk,ritSchedShape,PR_SCHED_CAP,practiceSchedCheck):P.sched;
+ /* a merge over the ceiling is left where it is rather than cut */
+ if(!plans||!sched)return false;
+ P.plans=plans; P.sched=sched;
+ if(!pSave())return false;
+ try{
+  if(hasP){delete side[CURP.id]; STORE.set(RIT_KEY,JSON.stringify(side));}
+  if(hasS){delete rows[CURP.id]; STORE.set(RIT_SCHED_KEY,JSON.stringify(rows));}}
+ catch(e){}
+ return true;}
 
 function ritToday0(){return pracDay(Date.now());}
 function ritStart0(p){return pracDay(p.from);}
