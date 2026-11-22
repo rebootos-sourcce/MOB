@@ -294,7 +294,9 @@ function kbRowsOf(sec){
       60%" on a person who had entered nothing. lawIn is the engine's own
       answer to whether a law was entered. Round J13. */
    scored&&S.law[e.t]!=null&&(typeof lawIn!=='function'||lawIn(e.t))?kbPct(S.law[e.t]):null,
-   (si&&si.ic)||fam.ic||null, e);
+   /* a law's own mark first, HARM_IC, 21 November, so a row in this deck
+      and its tile on the table above draw the same one */
+   (si&&si.ic)||HARM_IC[e.c]||fam.ic||null, e);
   /* what the row says when nothing above it names the family */
   row.fam=HARM_AX[e.a]||e.a;
   row.axis=e.a; out.push(row);});
