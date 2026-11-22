@@ -1443,44 +1443,33 @@ function bmNm(nm){return String(nm||'').replace(/^Back of (\w)/,function(m,c){re
    with the professional", and only where the atlas he sent gives the level
    itself: 16 is in ANAT at L1 now, figure.js says on which page, and a row
    here as well would draw it twice. 8 moved the same way on 21 November, a
-   real vertebral level the atlas gives, cited in figure.js. 40 is sourced to
-   a real page too, the same day, but stays here: it sits on 16's own point
-   at this figure's resolution, v: has no front-to-back axis to tell them
-   apart, and 16 and 40 are not one structure, so ANAT cannot take it without
-   either a guessed level or a false claim that they share a place. figure.js
-   says so, for the owner's call. This heading counted them, 28, and the
+   real vertebral level the atlas gives, cited in figure.js. Later that day
+   eight more went, on the owner's ruling that every address with real
+   material is placed and the words come after: 40 onto the aorta's side at
+   L1, the five neck rows (57, 68, 70, 72, 74) once ANATSPINE gained the two
+   neck knots off BMSPINE below, and 23 and 46 at the levels the atlas
+   brackets them by. figure.js cites each. What is left here has no level or
+   landmark on a page read. This heading counted them, 28, and the
    count is gone for the reason CLAUDE.md gives: BMPROP's length is the
    answer. */
 var BMPROP=[
  {ids:[7],pts:[[44.2,47.2],[55.8,47.2]],s:"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},
  {ids:[10,20],pts:[[47,60],[53,60]],s:"Obturator nerve, through the obturator foramen into the inner thigh"},
  {ids:[15],pts:[[48.5,43.4],[51.5,43.4]],s:"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},
- {ids:[23],pts:[[48.2,51.8],[51.8,51.8]],s:"Pudendal plexus, S2 to S4, low in the pelvis"},
  {ids:[25],pts:[[48.6,49.6],[51.4,49.6]],s:"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},
  {ids:[27],pts:[[48.4,50.4],[51.6,50.4]],s:"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},
  {ids:[31],pts:[[46.93,52.32],[53.07,52.32]],s:"Ilioinguinal nerve, at the superficial inguinal ring"},
  {ids:[34],pts:[[48,37.6],[52,37.6]],s:"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},
  {ids:[35],pts:[[51,43]],s:"Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3"},
  {ids:[37],pts:[[47.4,39],[52.6,39]],s:"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},
- /* Not moved to ANAT, 21 November: see figure.js at address 16. Rohen 7e
-    p.328 ("Kidney: Arteries") labels the superior mesenteric artery's
-    origin beside the body of the first lumbar vertebra, the same level
-    this file already places 16 (Conus Medullaris) at, on the midline. */
- {ids:[40],pts:[[50.3,41.3]],s:"Superior mesenteric plexus, round the artery's origin at L1, Rohen 7e p.328"},
  {ids:[41],pts:[[56.8,38.2]],s:"Splenic plexus, along the splenic artery, upper left of the abdomen"},
  {ids:[42],pts:[[52.4,40.2]],s:"Pancreatic plexus, over the body of the pancreas, left of centre"},
- {ids:[46],pts:[[48,35.8],[52,35.8]],s:"Anterior cutaneous branches of the thoraco-abdominal nerves, T7 to T9, under the xiphoid"},
  {ids:[47],pts:[[45.2,37]],s:"Hepatic branch of the anterior vagal trunk, to the liver"},
  {ids:[48],pts:[[46.6,38.8]],s:"Hepatic plexus, along the hepatic artery"},
  {ids:[51],pts:[[48.8,28.6],[51.2,28.6]],s:"The two vagus nerves in the thorax, beside the oesophagus"},
  {ids:[52],pts:[[51.3,32.4]],s:"Thoracic aortic plexus, on the descending aorta"},
- {ids:[57],pts:[[45.6,30.2],[54.4,30.2]],s:"Phrenic nerves, C3 to C5, down each side of the pericardium"},
  {ids:[60],pts:[[43.5,24.8],[56.5,24.8]],s:"Pectoral nerves, once called the anterior thoracic nerves"},
- {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"},
- {ids:[68],pts:[[48.8,16.4],[51.2,16.4]],s:"Pharyngeal branch of the vagus, level with C2 to C3"},
- {ids:[70],pts:[[47.6,15],[52.4,15]],s:"Glossopharyngeal nerve, below the angle of the jaw"},
- {ids:[72],pts:[[48.1,17.9],[51.9,17.9]],s:"Cervical sympathetic ganglia, beside C2 to C7"},
- {ids:[74],pts:[[44.4,21.4],[55.6,21.4]],s:"Nerve to subclavius, C5 to C6, under the clavicle"}];
+ {ids:[61],pts:[[47.4,26.6],[52.6,26.6]],s:"Pulmonary branches of the vagus, at the roots of the lungs"}];
 /* WHICH SURFACE EACH ADDRESS BELONGS ON, the spec's split (question C, which
    he answered "C, definitely": both, the far one faint). Inside the skull is
    head, drawn on the front. The back is what is reached from behind: the
@@ -1623,8 +1612,11 @@ var BM={mode:'pattern',variant:'C',amode:'A4',brush:6,face:'front',
     Pain is not in here, because Pain is BM.mode and has been since the
     prototype; its circle reads and writes that. Session only, the same as
     the paint. The three that open on are the three the figure drew before
-    the bar existed, so the first sight of the page did not change. */
- ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0}},hubs:[]};
+    the bar existed, so the first sight of the page did not change. Heat, the
+    charge as heat, opens on as a fourth, 22 November: the request was to
+    turn the heat map into this map, and a heat map one press away is the
+    unreachable layer over again (bmChargeRebuild). */
+ ov:{on:{addr:1,masks:1,sab:1,cx:0,hy:0,flow:0,heat:1}},hubs:[]};
 
 /* ---------- the figure, built once, the first time the map is shown ----------
    Not at load: the page opens on the Field, and nothing here is wanted until
@@ -1679,6 +1671,12 @@ function bmInit(host){
  G.heat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.mask=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.fieldVer=0;
+ /* the charge's own field, its seat per pixel and its picture: apart from
+    the paint's, because the two readings are never merged (bmChargeRebuild) */
+ G.cfield=[new Float32Array(BMFW*BMFH),new Float32Array(BMFW*BMFH)];
+ G.cseat=[new Uint8Array(BMFW*BMFH),new Uint8Array(BMFW*BMFH)];
+ G.cpal=[];
+ G.cheat=[0,1].map(function(){var c=document.createElement('canvas');c.width=BMFW;c.height=BMFH;return c;});
  G.masks=bmMaskGeo(G);
  bmRoutes(G,host);
  return (BMG=G);}
@@ -1791,6 +1789,64 @@ function bmRegVal(r){var b=r.box,m=0,P=BM.paint[r.v];
  for(var i=0;i<P.length;i++){var v=P[i];if(!v)continue;var x=BMXA+(i%BMCOLS+.5)*BMU,y=BMYA+(((i/BMCOLS)|0)+.5)*BMU;
   if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
 function bmMarkVals(){BMG.reg.forEach(function(r){r.val=bmRegVal(r);});}
+
+/* ---------- the charge, as heat on the figure ----------
+   THE HEAT MAP WAS ON THE PAGE NOBODY COULD REACH. His words, round GO,
+   BODY-MAP-SPEC.md section 0: "that nerve chakra and this system with a heat
+   map merge as one". The reading's heat (the Nummenmaa treatment in
+   renderMap above, one continuous field per seat, clipped to the skin) lives
+   in the seven layers' renderer, and that renderer has been unreachable since
+   round KV took its row away. The figure that replaced it drew a field only
+   for pain a person paints, so the one map on the page showed where the
+   charge sat as rings and dots and never as heat. This is that heat, on this
+   figure, through the same grid the paint uses, so a press, a paint, an
+   address and the heat land on one set of coordinates (spec 1A, item 3).
+
+   Three things are decided here and each is the team's pick, correctable:
+     the scale   absolute, the engine's own 0 to 10 per address, never
+                 normalised to the person's busiest place. pmHeat normalises
+                 and so the hottest seat always read full, which is question
+                 K's K1; this is K2, the team's lean, so a patch this bright
+                 means the same charge on every profile.
+     the merge   max, never the sum, the rule the paint already holds: two
+                 addresses at six side by side are still a six, and a sum
+                 would report charge nobody carries.
+     the hue     the seat of the heaviest address under the pixel, because
+                 colour means seat everywhere else in the product. The pain
+                 ramp stays pain's own, so the two readings never share a
+                 colour (question K's K3), and this field steps back as the
+                 pain comes up rather than mixing with it.
+   Built only when a charge moves, never for a frame. */
+var BMCH={sig:'',sd:0.85,maxA:.5};
+function bmChargeRebuild(){
+ var G=BMG, sig=[], i;
+ G.places.forEach(function(p){var ch=0;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>ch)ch=q;});sig.push(ch.toFixed(2));});
+ sig=sig.join(',');
+ if(sig===BMCH.sig)return; BMCH.sig=sig;
+ var sd=BMCH.sd*BMF, R=Math.ceil(sd*2.6), two=2*sd*sd;
+ [0,1].forEach(function(v){
+  var Fd=G.cfield[v], Sd=G.cseat[v]; Fd.fill(0);
+  G.places.forEach(function(p){
+   if(!bmSolidOn(p,v))return;
+   var ch=0,seat=null;p.ids.forEach(function(id){var q=BY[id].sq||0;if(q>=ch){ch=q;seat=BY[id].b;}});
+   if(ch<0.05)return;
+   var cx=(bmPlaceX(p,v)-BMXA)/BMU*BMF, cy=(p.y-BMYA)/BMU*BMF, si=G.cpal.indexOf(seat);
+   if(si<0){G.cpal.push(seat);si=G.cpal.length-1;}
+   for(var y=Math.max(0,Math.floor(cy-R));y<=Math.min(BMFH-1,Math.ceil(cy+R));y++)
+    for(var x=Math.max(0,Math.floor(cx-R));x<=Math.min(BMFW-1,Math.ceil(cx+R));x++){
+     var dx=x+.5-cx,dy=y+.5-cy,val=ch*Math.exp(-(dx*dx+dy*dy)/two),j=y*BMFW+x;
+     if(val>Fd[j]){Fd[j]=val;Sd[j]=si;}}});
+  var g=G.cheat[v].getContext('2d'),img=g.createImageData(BMFW,BMFH),d=img.data;
+  var cols=G.cpal.map(bmSeatC);
+  for(i=0;i<Fd.length;i++){var val=Fd[i],o=i*4;if(val<0.05){d[o+3]=0;continue;}
+   var c=cols[Sd[i]]||BMC.dim;
+   d[o]=c[0];d[o+1]=c[1];d[o+2]=c[2];d[o+3]=255*BMCH.maxA*Math.pow(val/10,0.8);}
+  g.putImageData(img,0,0);});}
+/* the heaviest single address on the figure, for the circle's ring and pill */
+function bmChargeTop(){
+ var top=null;(BMG&&BMG.places||[]).forEach(function(p){p.ids.forEach(function(id){var n=BY[id];
+  if(n&&(n.sq||0)>0&&(!top||n.sq>top.sq))top=n;});});
+ return top;}
 
 /* ---------- the six masks, as pixels on the figure ----------
    CH in TASKS.md, his words: "the masks are what block the character, and
@@ -2552,6 +2608,12 @@ function bmDraw(dt){
   /* everything of a panel is drawn inside it: a figure opened into a region
      reaches past its panel's edge, and this is what keeps it off the other */
   g.setTransform(1,0,0,1,0,0);g.save();bmClip(g,P);
+  /* 1b. the charge, as heat, clipped to him the same way, and stepping back
+     as the pain comes up, so a painted patch is never read as charge or the
+     other way round (bmChargeRebuild) */
+  if(BM.ov.on.heat&&gain<0.98)vs.forEach(function(v){
+   bmTf(g);g.save();g.clip(G.body[v]);g.globalAlpha=1-gain;g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+   g.drawImage(G.cheat[v],BMXA+bmVX(v),BMYA,BMCOLS*BMU,BMROWS*BMU);g.restore();});
   /* 2. the heat, over the nerves, as he asked, and clipped to him */
   if(gain>0.002)vs.forEach(function(v){
    var sat=V.satLead<1?Math.pow(gain,V.satLead):gain;
@@ -2605,10 +2667,13 @@ function bmDraw(dt){
    colour, faint, set in from the band and from the foot so it reads as the
    seam between two views and not as a frame, and nothing at all with one
    figure up. Widened 7 screen pixels past that one pixel, his approval,
-   20 November. */
+   20 November. It stops the same 24 pixels short of the key that it stops
+   short of the band (BM.keyH, bmKey), because the key stands on its foot
+   and the seam ran on through the key's glass as a stripe down its middle,
+   seen on the first close shot of it, 21 November. */
 function bmDivider(g){
  if(bmOne())return;
- var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round(24*BM.dpr);
+ var x=BM.pan[1].dx0, d=Math.max(1,Math.round(BM.dpr))+Math.round(7*BM.dpr), y0=Math.round((BM.inT||0)*BM.dpr+24*BM.dpr), y1=BM.cv.height-Math.round((24+(BM.keyH||0))*BM.dpr);
  if(y1<=y0)return;
  g.setTransform(1,0,0,1,0,0);g.fillStyle=bmRgba(BMC.edge,.12);g.fillRect(x-(d>>1),y0,d,y1-y0);}
 /* both cameras, as one string, for a cache that depends on both */
@@ -3540,12 +3605,18 @@ function bmRegBar(){
 var BMOVTOK='--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--edge-2:rgba(255,255,255,.14);'
  +'--edge:rgba(255,255,255,.09);--fb-glass:rgba(22,24,32,.74);--fb-glass-on:rgba(40,44,58,.86);'
  +'--fb-shade:rgba(0,0,0,.30);--fb-pillbg:#161820';
-var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['pain','flow']},
+var BMOV=[{k:'nodes',nm:'Nodes',ls:['addr','masks']},{k:'clusters',nm:'Clusters',ls:['heat','pain','flow']},
  {k:'networks',nm:'Networks',ls:['sab','cx','hy']}];
 var BMOVL={
  addr:{nm:FB_BYK.addresses.nm,ic:FB_BYK.addresses.ic,tip:FB_BYK.addresses.tip},
  masks:{nm:'Masks',ic:'M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6',
   tip:'The masks, as dots on the figure that fill in as each one carries weight.'},
+ /* two rings, one inside the other, the way a heat map's contours close on
+    the hottest point. Ring, not fill. Named Charge and not Heat, because
+    Heat is already the Pain mode's own switch (bmvar) and one word is one
+    concept. */
+ heat:{nm:'Charge',ic:'M12 3.8a8.2 8.2 0 100 16.4 8.2 8.2 0 100-16.4zM12 8.6a3.4 3.4 0 100 6.8 3.4 3.4 0 100-6.8z',
+  tip:'Charge, as heat: where your charge sits in the body, as a glow on the figure. Each glow is an address\'s own charge, out of 10, in its point\'s colour, so the same brightness means the same charge on everyone. Pain you paint is a separate reading and is never mixed in.'},
  pain:{nm:'Pain',ic:'M12 3.6c3.4 4.2 5.6 7.3 5.6 10.2a5.6 5.6 0 01-11.2 0c0-2.9 2.2-6 5.6-10.2z',
   tip:'Paint where it hurts, on the figure. Painted pain stays until the profile changes and is not saved.'},
  /* the rail's own Flow mark, so the section and the circle are one mark */
@@ -3568,6 +3639,10 @@ function bmOvVals(r){
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
+ var ht=(r&&!r.unread)?bmChargeTop():null;
+ V.heat=ht?{p:ht.sq*10,v:fmtPct('charge',ht.sq),c:bmRgba(bmSeatC(ht.b),1),
+  m:'Ring and number: the hottest address, '+(/_Unnamed$/.test(ht.k)?'an address with no name yet':ht.k)+', at '+fmtPct('charge',ht.sq)+' of the most it could hold.'}
+  :{p:0,v:dash,c:'var(--accent)',m:'Nothing read yet.'};
  var sp=flSpeed();
  V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:fmtPct('flow',sp),c:'var(--accent)',
   m:'Ring and number: flow, the share of charge that passes every point, '+fmtPct('flow',sp)+'.'}
@@ -3728,7 +3803,10 @@ function bmBuild(host){
      They were a strip after the well, which took its height out of the
      well's flex; inside it they take none, so the fit gets the whole stage.
      Round LQ, bmShBuild. */
-  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>':'')+'</div>';
+  +'<div id="bmregs" class="bm-regs" role="group" aria-label="Side and region" style="'+BMOVTOK+BMMKTOK+'"></div>'
+  /* the key: the three places carrying the most, the Dashboard Body card's
+     own three rows, inside the well at its foot. bmKey fills it. */
+  +'<div id="bmkey" class="bt3-key" role="list" aria-label="Where your body carries the most" style="'+BMOVTOK+BMMKTOK+'" hidden></div>':'')+'</div>';
  /* read inside the host, never off the document: with two hosts, an id is
     only as unique as bmUse keeps it */
  BM.well=host.querySelector('.pm-well'); BM.cv=host.querySelector('#bmcv'); BM.sv=host.querySelector('#bmsv');
@@ -3787,14 +3865,37 @@ function bodyTop3Html(rows){
    +bodyFigSvg(x.k,col)
    +'<span class="bt3-nm">'+esc(x.nm)+'</span>'
    +'<span class="bt3-p">'+x.pct+'<small>%</small></span></div>';}).join('');}
-/* THE BODY PAGE'S KEY IS HELD BACK, 21 November. Its first cut was a strip
-   after the well, and that is the defect round LQ took out (the comment on
-   #bmregs above): a strip after the well takes its height out of the well's
-   flex, measured 68 pixels at 1600, and tests/functional.js's "no strip under
-   the figure" check refused it. Where a key can sit inside the well without
-   covering the figures or the shelves is a placement nobody has ruled, so the
-   Dashboard's Body card ships on bodyTop3Html alone and the key waits.
-   .bt3-key in shell/head.html is its styling, kept for that pass. */
+/* THE BODY PAGE'S KEY, 21 November, the default the board applied: each
+   place's own fullness, the same three rows the Dashboard's Body card draws,
+   so a person who presses the card lands on the same three words and the
+   same three percents, from the same call. Its first cut was a strip after
+   the well, the defect round LQ took out (the comment on #bmregs above): a
+   strip after the well takes its height out of the well's flex, measured 68
+   pixels at 1600, and tests/functional.js's "no strip under the figure"
+   check refused it, so the card shipped alone that morning and the key
+   waited on a placement.
+
+   It stands inside the well now, at its foot and on its middle, which is
+   the one place on the page nothing else is: the two figures are each
+   centred in their own half (bmFitCam) and stand on their feet either side
+   of the divider, so the foot of the divider is the empty middle of the
+   picture, and a key there is symmetrical by construction, the 16 November
+   ruling. Three rows, as on the card, not three cells across: across, it
+   was 400 pixels wide and met both pairs of feet at 1280. Absolute, so it
+   takes no height out of the well and the fit is unchanged. A phone has one
+   figure in the middle and no divider, so there it moves to the lower right
+   corner of the well, beside the feet (shell/head.html). Hidden on a field
+   carrying nothing, the way the card draws its dash. The pattern word and
+   the nerve are behind each row, bodyTop3Tip, never on its face. */
+function bmKey(r){
+ var k=BM.well&&BM.well.querySelector('#bmkey');
+ var rows=k?bodyTop3(r):[], html=rows.length?bodyTop3Html(rows):'';
+ if(k){if(k.innerHTML!==html)k.innerHTML=html; k.hidden=!rows.length;}
+ /* the room the key takes at the foot of the well, its height and the 12
+    pixels under it, read once here and not every frame; the divider stops
+    short of it */
+ var h=(k&&!k.hidden)?k.offsetHeight+12:0;
+ if(h!==(BM.keyH||0)){BM.keyH=h;BM.stillKey='';BM.dirty=true;}}
 /* ---------- the entry, from renderMap and from the Masks door ----------
    The host is handed in, the way frMount and avBind take theirs: this read
    #emap by id, which is what kept the figure to one door. */
@@ -3810,7 +3911,7 @@ function bmRender(r,host){
   BM.who=who;BM.whoI=S.who;bmRebuild(0);bmRebuild(1);
   /* another person's masks are not this one's filling in */
   BMG.masks.forEach(function(k){k.shown=null;});}
- BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r);
+ BM.r=r; bmSabRefresh(r); bmHubRefresh(r); bmMarkVals(); bmMaskHits(r); bmKey(r); bmChargeRebuild();
  var seats=flSeats();
  bmSeats(seats);
  pmLayerBar(r); bmBars(); bmOvPaint(r);

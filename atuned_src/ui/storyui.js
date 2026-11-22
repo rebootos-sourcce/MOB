@@ -416,8 +416,8 @@ function stMiniBoundary(){
   +'<text x="'+CX+'" y="'+(CY+7)+'" text-anchor="middle" class="stmk-n" font-size="20">'+b.pct+'<tspan font-size="11" dx="1">%</tspan></text></g></svg></div>';}
 /* three even rows, a body with one place lit, the place word, a whole
    percent. The drawing and the hover are ui/map.js's bodyTop3Html, which the
-   Body page's key will draw with when it lands (held back 21 November, see
-   ui/map.js), so the two cannot disagree. Percent through bodyTop3's own
+   Body page's key (#bmkey, bmKey in ui/map.js, landed the evening of 21
+   November) draws with too, so the two cannot disagree. Percent through bodyTop3's own
    pct('weight'), the same kind stmkPctText reads, 21 November, for the
    Field and Superego cards, so no card on this row prints a 0 to 10 decimal. */
 function stMiniBody(r){
