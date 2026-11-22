@@ -1380,8 +1380,8 @@
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
  /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
-    Dashboard's pillow emboss (shell/head.html, PILLOW EMBOSS) draws the
-    raised surface and the inset rim round exactly this circle, and only
+    Dashboard's dish (shell/head.html, SET INTO A DISH) draws its floor,
+    wall and bevel round exactly this circle, and only
     this file knows it: the circle is the largest the canvas box holds, less
     two pixels, so its size is min(width, height) of a box CSS cannot take
     the minimum of. Written on the host, so a move carries it. */
