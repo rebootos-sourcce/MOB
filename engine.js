@@ -571,6 +571,19 @@ const HCX_LIB=[
    and the code for it is written and correct. A host that has the
    files sets these two and everything downstream works unchanged.
    Nothing is requested until one of them is named.
+
+   AND THE DETAILED FIGURE IS NOT WAITING ON THESE, checked 22 November.
+   A board line read the empty names as "the Body falls back to a plain
+   outline until the detailed front and back art is supplied". It does not.
+   The detailed figure was ruled on 27 September, his words, "lock that in
+   as our kind of starting point": the front and back nervous system man,
+   FW option A, carried as vector data in BMNERVE (ui/map.js) and drawn by
+   the canvas map, which is the only figure the Body page shows. The outline
+   below stands in for a raster only inside the seven layers' renderer,
+   which nothing on the page reaches since round KV. BODY-MAP-SPEC.md
+   section 8 also rules raster display art out of the one file on size, so
+   no supplied picture is pending for display: anything he supplies now is a
+   placement reference (section 6), kept outside the build.
    ============================================================ */
 var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
@@ -632,8 +645,26 @@ var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C
 var ANATHEAD={ytop:4.2, year:12.0, topZ:100.2, earZ:-48.0};
 /* The spine ruler: vertebral level to figure height, through the four seats
    whose own text names a level. Heart T4 to T5, Solar T12 to L1, Sacral L5,
-   Root the tailbone. */
-var ANATSPINE=[[11.5,30.51],[19.5,40.21],[24,47.02],[30,53.55]];
+   Root the tailbone.
+
+   AND TWO KNOTS IN THE NECK, 21 November, off the back figure's own vertebral
+   labels (map.js BMSPINE, C1 at 13 and C7 at 19). The four seat knots stop at
+   T4, so every address above the upper chest had nothing to stand on: a
+   level there was extrapolated down the Heart to Solar slope, which put C1 at
+   17.78, below the chin, and that is why five neck addresses sat in BMPROP
+   with no derived place. The fifth seat with a level in its text, Throat, is
+   no help: FLOWSEAT gives it C1 to C4 and seats it at the suprasternal notch,
+   which is the Throat seat's own contradiction (TASKS.md BI3a) and would have
+   put the pharynx on the collarbone. The back figure's labels are the one
+   neck calibration this codebase already draws by: C1 level with the ear and
+   C7 at the base of the neck, which is where the atlas has them (Rohen 7e
+   p.237, the suboccipital triangle at C1 under the occiput, and p.226 to 242,
+   the vertebra prominens at the base of the nuchal region). Ruled by the
+   owner the same day: place the nerves where they are, words after. Nothing
+   at T4 or below moves, because every existing level is 11.5 or more and
+   reads the same segment it always did; the gap the anatomy gate holds open
+   between the two rulers closes at C1 and C7 and stays open below. */
+var ANATSPINE=[[1,13],[7,19],[11.5,30.51],[19.5,40.21],[24,47.02],[30,53.55]];
 var ANAT=[
  /* 3rd Eye. The chiasm is the brow line, which is where the seat's own text
     puts it: between the eyebrows. */
@@ -712,16 +743,58 @@ var ANAT=[
     the cauda equina sits in the vertebral canal on the midline, so 0 is not
     a typed offset, it is where the structure is. */
  {s:'Cauda equina, the lumbar and sacral roots below the conus medullaris', ids:[8], v:[[23,0]]},
- /* 40 (Superior Mesenteric Plexus) is sourced to this same level, Rohen 7e
-    p.328, and is NOT moved here. At L1 on the midline it lands on the same
-    point as 16, one thousandth of a unit apart (tests/anatomy.js group 5),
-    and 16 and 40 are not one structure, so research.js cannot say they
-    share a place. v: has no front-to-back axis to tell a structure deep in
-    the spinal canal from one on the front of the aorta; giving it any other
-    level would be a typed guess, the thing this method forbids. Left in
-    BMPROP (map.js) with the same citation, for the owner's call: add a
-    depth axis, or rule that a shared level may share a point the way a
-    shared plexus already does. */
+ /* 40, the superior mesenteric plexus, moved from BMPROP on 21 November, a
+    team pick open to the owner's correction. Rohen 7e p.328 ("Kidney:
+    Arteries") labels the superior mesenteric artery leaving the front of the
+    aorta beside the body of L1, the level 16 stands at. The first cut held it
+    back because at L1 on the midline it landed on 16's own point, one
+    thousandth of a unit apart, and 16 (the end of the cord, in the canal) and
+    40 (on the front of the aorta) are not one structure. The two real
+    options were a false merge onto 16's point or the aorta's own side, and
+    the aorta is the one that is anatomy: the abdominal aorta runs on the left
+    of the vertebral bodies, which this map already draws for 35, the aortic
+    plexus, one unit to the person's left (BMPROP). So 40 stands on the same
+    side at the same one unit, at L1, and tests/anatomy.js lists it one
+    sided. The unit is the table's own aorta offset, not an atlas
+    measurement. */
+ {s:'Superior mesenteric plexus, round the artery\'s origin from the aorta at L1',
+  ids:[40], v:[[20,1]]},
+ /* THE NECK, moved from BMPROP on 21 November on the owner's ruling ("place
+    the plexus and the nerves where they're supposed to be, and we'll figure
+    out what words go there"), on the two neck knots ANATSPINE gained the same
+    day. The names are untouched: they are his, and placement and naming are
+    two calls. Each level is a landmark the atlas draws; each offset from the
+    midline is BMPROP's own, carried over unchanged from the prototype he
+    approved on 27 September (FW), because v: takes a typed offset and no page
+    read gives one. Levels count C1 as 1.
+    70 at C2, the angle of the jaw, where the glossopharyngeal nerve curves
+    forward below it after the jugular foramen (Rohen 7e p.31 and p.33 to 34,
+    the cranial nerves by their exit foramen). 68 at C2 to C3, the middle
+    constrictor, where the vagus's pharyngeal branch joins the pharyngeal
+    plexus (p.165). 72 at C4.5, the middle of the cervical sympathetic chain
+    from the superior ganglion at C2 to the stellate at C7 and T1 (p.185). */
+ {s:'Glossopharyngeal nerve, below the angle of the jaw at C2', ids:[70], v:[[2,-2.4],[2,2.4]]},
+ {s:'Pharyngeal branch of the vagus, at the pharyngeal plexus, C2 to C3', ids:[68], v:[[2.5,-1.2],[2.5,1.2]]},
+ {s:'Cervical sympathetic ganglia, the chain beside C2 to C7', ids:[72], v:[[4.5,-1.9],[4.5,1.9]]},
+ /* 74 at T1, the first rib, which is where the subclavius rises to the
+    clavicle and the nerve to it, off the upper trunk of the brachial plexus,
+    meets it (p.413, the plexus dissected behind the clavicle). The nerve
+    itself is not labelled on any page read, so the landmark is the muscle's
+    and the plexus's, not the nerve's. */
+ {s:'Nerve to subclavius, at the first rib under the clavicle', ids:[74], v:[[8,-5.6],[8,5.6]]},
+ /* 57, the phrenic nerves, C3 to C5 by root but drawn where they run, down
+    each side of the pericardium, so at the cardiac level, T4 to T5, the
+    Heart seat's own knot. */
+ {s:'Phrenic nerves, down each side of the pericardium at T4 to T5', ids:[57], v:[[11.5,-4.4],[11.5,4.4]]},
+ /* 23, the pudendal plexus, S2 to S4 (Rohen 7e p.470, the lumbosacral
+    schematic, which brackets it by those roots). S3 is 27 on this count.
+    Offset BMPROP's. */
+ {s:'Pudendal plexus, S2 to S4, low in the pelvis', ids:[23], v:[[27,-1.8],[27,1.8]]},
+ /* 46, the anterior cutaneous branches of the thoraco-abdominal nerves, T7 to
+    T9 (p.214 and p.216 label them, p.217 the epigastric region they supply).
+    They come through under the xiphoid, and the xiphisternal joint is level
+    with T9, 16 on this count. Offset BMPROP's. */
+ {s:'Anterior cutaneous branches of the thoraco-abdominal nerves, under the xiphoid at T9', ids:[46], v:[[16,-2],[16,2]]},
  /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
     classical marma chart and a 112 node chart, with "as close as 1:1 as
     possible". Measured before this (proto/anatomy-ref, 26 September): of 48

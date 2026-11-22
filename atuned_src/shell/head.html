@@ -4920,34 +4920,31 @@ g.stmk-t{pointer-events:bounding-box}
 .st-mini-vis.bt3-card{flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:0 2px}
 .bt3-card .bt3-fig{width:16px;height:16px}
 .bt3-card .bt3-row{height:16px;line-height:16px}
-/* the key on the Body page: three even cells across under the well, on the
-   bar's own glass so it reads as part of the picture's frame and not a
-   second card. A phone keeps the three across, each one stacked. */
-.bt3-key{flex:0 0 auto;display:flex;align-items:center;gap:16px;margin:10px 12px 12px;padding:10px 16px;
+/* THE KEY ON THE BODY PAGE, ui/map.js bmKey: the card's three rows, inside
+   the well at the foot of its divider, which is the empty middle of the
+   picture between the two figures' feet, so it is symmetrical by where it
+   stands. Absolute, so it takes no height out of the well's flex, the defect
+   round LQ removed from a strip under the figure. On the bar's own glass, so
+   it reads as part of the picture's frame and not a second card. Its three
+   rows are the card's grid, the words starting on one line and the percents
+   ending on one, with even room between them. */
+.bt3-key{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;
+ display:flex;flex-direction:column;gap:8px;min-width:148px;padding:10px 14px;box-sizing:border-box;
  border-radius:14px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .bt3-key[hidden]{display:none}
-.bt3-hd{display:inline-flex;align-items:center;gap:7px;flex:none;font-size:12px;font-weight:600;color:var(--mid);cursor:help}
-.bt3-ic{width:16px;height:16px;fill:none;stroke:var(--mid);stroke-width:1.7}
-.bt3-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;flex:1 1 auto;min-width:0}
-/* each place packed and centred in its own third. Stretched like the card's
-   rows, the percent stood 330 pixels from its word at 1600 and read as the
-   label of the place to its right, "13% Belly", measured on the first
-   screenshot of this key. */
-.bt3-key .bt3-row{grid-template-columns:auto auto auto;justify-content:center}
-.bt3-key .bt3-row+.bt3-row{border-left:1px solid var(--edge-2)}
-.bt3-key .bt3-fig{width:24px;height:24px}
-.bt3-key .bt3-nm{font-size:13px}
-.bt3-key .bt3-p{font-size:14px}
+.bt3-key .bt3-row{cursor:help}
+.bt3-key .bt3-fig{width:20px;height:20px}
+.bt3-key .bt3-nm{font-size:12.5px}
+.bt3-key .bt3-p{font-size:13px;text-align:right}
+/* a phone has one figure on the middle and no divider, so the key goes to
+   the lower right corner of the well, beside the feet, at the same 12
+   pixels from both edges the bars keep from the top and the sides */
 @media (max-width:720px){
- .bt3-key{flex-direction:column;align-items:stretch;gap:8px;margin:10px 0 0;padding:10px 12px}
- .bt3-list{gap:10px}
- /* each place stands as its own small column, figure over word over
-    percent, because across one line "Forehead" and "100%" did not both fit
-    a third of 390 and the word was cut, measured with the two longest of
-    the seven words at a full percent */
- .bt3-key .bt3-row{grid-template-columns:1fr;justify-items:center;row-gap:3px}
- .bt3-key .bt3-fig{width:24px;height:24px}}
+ .bt3-key{left:auto;right:12px;transform:none;min-width:0;padding:8px 10px;gap:6px}
+ .bt3-key .bt3-fig{width:16px;height:16px}
+ .bt3-key .bt3-nm{font-size:11.5px}
+ .bt3-key .bt3-p{font-size:12px}}
 .stmk-wl{display:flex;gap:16px;justify-content:center;align-items:center}
 .stmk-wl>span{display:inline-flex;align-items:center;gap:5px}
 .stmk .stmk-wl svg{width:16px;height:16px;fill:none;stroke-width:1.7;stroke-linecap:round;
