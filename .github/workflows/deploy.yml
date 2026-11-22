@@ -460,6 +460,10 @@ jobs:
           # 19 November: the ritual reminder pop-up, accounts-push
           # (tests/remind.js, ui/remind.js). New, so report only first.
           - { gate: remind, timeout: 20, command: node tests/remind.js }
+          # 22 November: the screen guides (tests/guide.js, ui/guide.js,
+          # 15817657). Landed run by no job, so tools/orphans.js failed
+          # gates-fast. New, so report only first.
+          - { gate: guide, timeout: 20, command: node tests/guide.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

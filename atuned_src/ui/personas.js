@@ -256,7 +256,9 @@ function bsHtml(sp){
  var B=birthSuggest(sp,{doms:S.doms,arcs:S.arcs});
  if(!B||(!B.arch&&!B.dom))return '';
  function one(k,nm,ic,from,held,i,what){
-  var tip=from+'. '+(held?'This is already your '+what+'.':'Press Use to make it your '+what+'. Nothing changes until you do.');
+  /* from opens on birthSuggest's own lower case clause ("life path 1 reads
+     Warrior"); a tooltip opens on a capital, which tests/casing.js holds */
+  var tip=from.charAt(0).toUpperCase()+from.slice(1)+'. '+(held?'This is already your '+what+'.':'Press Use to make it your '+what+'. Nothing changes until you do.');
   return '<div class="sp-sug" data-tip-t="'+esc(nm)+'" data-tip="'+esc(tip)+'" tabindex="0" aria-label="'+esc('Suggested '+what+', '+nm+'. '+tip)+'">'
    +'<svg class="sp-gi" viewBox="0 0 24 24" aria-hidden="true"><path d="'+ic+'"/></svg>'
    +'<span class="sp-sug-t"><b>'+esc(nm)+'</b><em>'+esc(what)+'</em></span>'

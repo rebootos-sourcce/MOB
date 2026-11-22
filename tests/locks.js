@@ -253,7 +253,10 @@ async function lockGate(browser,FILE,ok,booted){
   ok(bd.engine>0&&bd.lines===0&&bd.hubs===0,tag+'the Body draws no saboteur line and no hub while the engine holds '+bd.engine+', lines '+bd.lines+', hubs '+bd.hubs);
 
   /* ---- 6 · THE COMPASS, REGISTERS ---- */
-  await pg.evaluate(()=>{CONE.shells=true;CONE.top=false;setTab(TAB.COMPASS);coneOpen(true);}); await pg.waitForTimeout(700);
+  /* the figure, not the climb the tab opens on since d39316eb: .cone-fig.climb
+     hides #cnbar, so the Registers circle measured 0 by 0 there. Put back to
+     the climb once this block is read. */
+  await pg.evaluate(()=>{CONE.climb=false;CONE.clSel=null;CONE.shells=true;CONE.top=false;setTab(TAB.COMPASS);coneOpen(true);}); await pg.waitForTimeout(700);
   const cn=await pg.evaluate(()=>{const e=document.querySelector('#cone [data-cn="shells"]'),r=e.getBoundingClientRect();
    return {lock:e.getAttribute('data-lock'),dis:e.getAttribute('aria-disabled'),pr:e.getAttribute('aria-pressed'),mark:!!e.querySelector('.lk-mk'),
     w:r.width,h:r.height,tip:e.getAttribute('data-tip')||'',shells:CONE.shells,
@@ -264,6 +267,7 @@ async function lockGate(browser,FILE,ok,booted){
   ok(!cn.top,tag+'Top is not a rung and is not locked');
   await pg.evaluate(()=>{document.querySelector('#cone [data-cn="shells"]').click();}); await pg.waitForTimeout(300);
   ok(await pg.evaluate(()=>CONE.shells===false),tag+'pressing it does not turn Registers on');
+  await pg.evaluate(()=>{CONE.climb=true;});
 
   /* ---- 7 · THE CHARACTER PAGE ---- */
   const ch=await pg.evaluate(()=>{

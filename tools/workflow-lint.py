@@ -215,6 +215,9 @@ BROWSER = {
 # deploy.yml's gates-browser matrix the day it landed and left out of this
 # registry, so R2 failed gates-fast on every run from e6314a24 on.
     'ritlaw':        ('node tests/ritlaw.js', 20),
+# the screen guides, 21 November (tests/guide.js). Report only until three
+# green runs.
+    'guide':         ('node tests/guide.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
