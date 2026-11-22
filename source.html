@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v27 0c7fcbad 2026-11-21 23:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v64 104dca5a 2026-11-22 00:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5117,37 +5117,41 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
-/* PILLOW EMBOSS, 21 November, his words on the Dashboard's Source AI
-   circle: "I want it to feel like there's a subtle, like it's a pillow emboss
-   with a subtle bevel, making it feel like it's a ring inside of a raised
-   surface with this kind of cloudy pattern around it."
+/* SET INTO A DISH, 21 November. First his words on the Dashboard's Source AI
+   circle: "a pillow emboss with a subtle bevel, making it feel like it's a
+   ring inside of a raised surface with this kind of cloudy pattern around
+   it." Built as a raised pillow, then turned over the same night on seeing
+   it: "the bevel. I want it concave. So I don't want to see an edge at the
+   bottom of the rim. It should be a smooth transition to the top with a
+   little bevel at the edge."
 
-   Three layers, one light, from the upper left, the way every highlight in
-   this product already falls:
-    1. THE RAISED SURFACE, ::before under the face. A disc a band wider than
-       the face (--sf-band), lit on its upper left crown and rolling into
-       shadow on its lower right flank (the two inset shadows), lifted off
-       the well by a cast shadow down and right with a faint lit edge up and
-       left (the two outer shadows). Its fill is nearly clear, so the cloud
-       under it (ui/unicloud.js, mounted in #stjr on the Dashboard) still
-       reads through the band.
-    2. THE FACE, srcface.js's own canvas, untouched except that the box it
-       sits in is held in by --sf-pil, so the raised band fits inside her
-       panel instead of being cut by it. Her circle is sized off that box
-       every frame, so nothing in the drawing moves.
-    3. THE INSET RIM, ::after over the face, exactly its size (--sf-d,
-       written by srcface.js, the only code that knows the circle). The
-       upper left wall of the groove shades the face (inset, offset down
-       right), the lower right lip catches light (inset, offset up left),
-       and outside the groove the pillow's own lip is lit lower right and
-       shaded upper left, which is what makes the face read as pressed into
-       the surface rather than laid on it.
+   One light, from the upper left, the way every highlight here falls. In a
+   dish that light lands the other way round from a bump: the upper wall
+   faces away from it and sits in its own shade, the lower right wall faces
+   it and catches a little. Softer than a bump in every direction, and the
+   lip, where the dish meets the flat, is flat, so the shading reaches zero
+   there and there is no line anywhere round the bottom.
+    1. THE DISH FLOOR AND LOWER WALL, ::before under the face. A disc a band
+       (--sf-band) wider than the face: a faint shade over the whole floor
+       and a faint catch light low and right. Its mask runs from full at the
+       face's edge to nothing at the lip on an eased curve, so the band
+       dissolves into the surface around it. No box shadow, no cast shadow:
+       the cast shadow was the edge he saw at the bottom.
+    2. THE FACE, srcface.js's own canvas, untouched except that its box is
+       held in by --sf-pil so the band fits inside her panel.
+    3. THE UPPER WALL AND THE BEVEL, ::after over the face, the dish's size.
+       An inset shadow pushed down from the top edge, so it is darkest at the
+       top lip, fades through the band and lays a little shade on the top of
+       the face, and is nothing at all at the bottom because it is pushed
+       down. Outside it, one pixel of light offset upward: the crest of the
+       lip catching the light, a crescent across the top that thins to
+       nothing at the sides. Light crest, dark wall just under it: the small
+       bevel. That is the only line in the whole thing.
    Static, so reduced motion has nothing to stop: the end state is the only
-   state. Compositor cost is paint once per resize; box-shadow on a fixed
-   element does not repaint per frame. Pointer events pass through both
-   layers to the canvas, whose click impulse is kept. #stuni's clip is
-   lifted here only so the cast shadow is not cut square at its box, the
-   one thing his 8 November ruling says never to show. */
+   state. Paint once per resize, no per frame cost. Pointer events pass
+   through both layers to the canvas, whose click impulse is kept. #stuni's
+   clip stays lifted so the cloud behind is never cut square at its box,
+   the one thing his 8 November ruling says never to show. */
 body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
 body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
 body.tab-story.st-full #stuni .canvas-wrap #srcface{
@@ -5155,28 +5159,29 @@ body.tab-story.st-full #stuni .canvas-wrap #srcface{
 body.tab-story.st-full #stuni .canvas-wrap::before,
 body.tab-story.st-full #stuni .canvas-wrap::after{
  content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
- transform:translate(-50%,-50%);pointer-events:none}
+ transform:translate(-50%,-50%);pointer-events:none;
+ width:calc(var(--sf-d,0px) + 2*var(--sf-band))}
 body.tab-story.st-full #stuni .canvas-wrap::before{
- z-index:-1;width:calc(var(--sf-d,0px) + 2*var(--sf-band));
- background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.055),rgba(255,255,255,.016) 48%,rgba(0,0,0,.12) 100%);
- box-shadow:
-  inset 2px 3px 3px -1px rgba(255,255,255,.10),
-  inset -3px -5px 9px rgba(0,0,0,.45),
-  -6px -8px 18px -4px rgba(255,255,255,.035),
-  8px 12px 26px -2px rgba(0,0,0,.6)}
+ z-index:-1;
+ background:
+  radial-gradient(circle at 64% 70%,rgba(255,255,255,.05),rgba(255,255,255,.018) 38%,rgba(255,255,255,0) 62%),
+  rgba(0,0,0,.16);
+ -webkit-mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%);
+ mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%)}
 body.tab-story.st-full #stuni .canvas-wrap::after{
- z-index:1;width:var(--sf-d,0px);
+ z-index:1;
  box-shadow:
-  inset 3px 5px 8px rgba(0,0,0,.5),
-  inset -1px -2px 2px rgba(255,255,255,.06),
-  0 0 0 1px rgba(0,0,0,.35),
-  1px 2px 3px rgba(255,255,255,.05),
-  -1px -2px 3px rgba(0,0,0,.4)}
+  inset 0 calc(var(--sf-band)*.55) calc(var(--sf-band)*1.1) calc(var(--sf-band)*-.3) rgba(0,0,0,.42),
+  inset 0 1px 1px rgba(0,0,0,.28),
+  0 -1px .5px rgba(255,255,255,.075)}
 @media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
 /* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
    Dashboard at z-index -1; isolation keeps that under her words and controls
    but over the well's own ground, and the mask fades it to nothing well
-   inside the panel so the cloud never meets the panel's square edge. */
+   inside the panel so the cloud never meets the panel's square edge. The
+   solid stop moved from 45 to 52 percent, 15 percent further out, with
+   the cloud's wider reach (CLOUD_R in ui/unicloud.js); the fade still ends
+   at the panel, so it still never meets the edge. */
 body.tab-story.st-full #stjr{isolation:isolate}
 /* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
    -1) out from behind the panel's own background, where on the Dashboard it
@@ -5186,8 +5191,8 @@ body.tab-story.st-full #stjr{isolation:isolate}
    on 10 November. It stays where it always was on this view: unseen. */
 body.tab-story.st-full #stjr .st-glow::before{display:none}
 body.tab-story.st-full #stjr>#unicloud{
- -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%);
- mask-image:radial-gradient(closest-side at 50% 50%,#000 45%,transparent 100%)}
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -11556,11 +11561,15 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-arc.on{stroke-opacity:1}
 .cl-st.sealed .cl-n{stroke-width:2.6}
 .cl-pill rect{fill:#101114;stroke:var(--c);stroke-opacity:.6;stroke-width:1}
-.cl-pill text{font-size:9.5px;font-weight:600;fill:var(--ink)}
+/* every text on the climb is 11px or more, the type floor the rest of the
+   product holds (tests/design.js gate 4). The design round drew the pills,
+   the law names, the seat names and the descent's names at 9.5 to 10.5, and
+   the gate reads CSS on HTML text, so SVG text got past it */
+.cl-pill text{font-size:11px;font-weight:600;fill:var(--ink)}
 .cl-st.shut .cl-pill rect{stroke:var(--mid);stroke-opacity:.35}
 .cl-st.shut .cl-pill text{fill:var(--mid)}
 .cl-lb{font-size:11.5px;fill:var(--ink)!important;font-weight:500}
-.cl-lb.sm{font-size:10px;fill:var(--mid)!important;font-weight:400}
+.cl-lb.sm{font-size:11px;fill:var(--mid)!important;font-weight:400}
 .cl-st:hover .cl-n,.cl-st:focus-visible .cl-n,.cl-st.sel .cl-n{stroke-width:2.6;filter:drop-shadow(0 0 6px var(--c))}
 .cl-st.sel .cl-lb{fill:var(--c)!important}
 .cl-l.got .cl-n{stroke-width:2.4}
@@ -11574,7 +11583,7 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-seat .cl-sr{fill:none;stroke:var(--c);stroke-opacity:.3;stroke-width:1.2}
 .cl-seat .cl-sg circle{fill:none;stroke:var(--c);stroke-opacity:.45;stroke-width:1.5}
 .cl-seat.on .cl-sr{stroke-opacity:.9}.cl-seat.on .cl-sg circle{stroke-opacity:1}
-.cl-sn{font-size:10.5px}
+.cl-sn{font-size:11px}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
@@ -55574,8 +55583,8 @@ try{window.__at&&window.__at('ui/uni.js');}catch(e){}
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
  /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
-    Dashboard's pillow emboss (shell/head.html, PILLOW EMBOSS) draws the
-    raised surface and the inset rim round exactly this circle, and only
+    Dashboard's dish (shell/head.html, SET INTO A DISH) draws its floor,
+    wall and bevel round exactly this circle, and only
     this file knows it: the circle is the largest the canvas box holds, less
     two pixels, so its size is min(width, height) of a box CSS cannot take
     the minimum of. Written on the host, so a move carries it. */
@@ -55725,8 +55734,8 @@ try{window.__at&&window.__at('ui/srcface.js');}catch(e){}
    and since 21 November the Dashboard paints it in #stjr, the dark well
    round her circle, masked soft so it never meets the panel's edge, as
    the cloud round the raised surface he asked for ("a ring inside of a
-   raised surface with this kind of cloudy pattern around it"; see
-   PILLOW EMBOSS in shell/head.html). #stjr's own wash is still under it.
+   raised surface with this kind of cloudy pattern around it", since made
+   a dish; see SET INTO A DISH in shell/head.html). #stjr's own wash is still under it.
    Mounted and
    unmounted by watching body.className, since nothing else in this file
    needs to be told when a tab changes.
@@ -55759,8 +55768,8 @@ if(typeof document==='undefined')return;
 
 /* THE HOST, 21 November: the hero paints behind everything on #stage; the
    Dashboard paints inside the dark well that holds her circle, #stjr, so the
-   cloud sits round the raised surface she is set into (shell/head.html,
-   PILLOW EMBOSS). #stjr is rebuilt by every stRender, so frame() re-seats
+   cloud sits round the dish she is set into (shell/head.html, SET INTO A
+   DISH). #stjr is rebuilt by every stRender, so frame() re-seats
    the canvas whenever its host is a new element. */
 function hostEl(){
  var c=document.body.classList;
@@ -55784,6 +55793,22 @@ var vsSrc=[
    above: the dither, the pulse strength and gate, the turbulence cap, the
    soft saturation and the warp scale are all load bearing fixes, measured
    against real screenshots and a Jacobian check, not cosmetic. */
+/* THE CLOUD'S REACH, 21 November, his words on the seamless build: "Let's
+   expand the cloud width by about 15%. So its radius is 15% bigger."
+   CLOUD_R scales the two falloffs that set how far the cloud reaches, the
+   warm glow round her circle (coreGlow, measured from her centre) and the
+   vignette (vign, from the stage centre), and nothing else. The noise is
+   still sampled on the unscaled uv, so the size of the billows, their gain,
+   the warp budget, the pulse and the dither are the seam round's measured
+   values, untouched. 1.0 is the build he approved the blend on.
+   Why 1.20 and not 1.15: the billows stay fixed in screen space and the
+   density saturates, so the visible edge moves less than the falloff does.
+   Measured on one frozen frame (both builds drawn at t=0, same core) at
+   1600 by 1000, the radius where the cloud's brightness over the ground
+   falls to 50, 20, 10 and 5 percent of its peak: 1.15 grew it +14, +12, +10
+   and +10 percent; 1.20 grows it +18, +15, +13 and +15, which is his 15. At
+   390 the stage is narrower than the cloud already and its outer reach is
+   the stage's own sides either way. */
 var fsCore=[
  'precision highp float;',
  'in vec2 vUv;',
@@ -55808,6 +55833,7 @@ var fsCore=[
  'const float WARP_K = 0.62;',
  'const float NFREQ = 0.75;',
  'const float NGAIN = 1.23;',
+ 'const float CLOUD_R = 1.20;',
  '',
  'float sstep2(float a, float b, float x){',
  '  float t = clamp((x-a)/(b-a), 0.0, 1.0);',
@@ -55886,11 +55912,11 @@ var fsCore=[
  '',
  '  float n = fbm(p2*2.2 + t*0.6);',
  '',
- '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd);',
+ '  float coreGlow = 1.0 - sstep2(0.0, 1.05, cd/CLOUD_R);',
  '  coreGlow = pow(coreGlow, 1.6) * (0.80 + 0.20*sin(uTime*0.4));',
  '',
  '  float density = sstep2(0.20, 0.93, n);',
- '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv));',
+ '  float vign = 1.0 - sstep2(0.1, 1.35, length(uv)/CLOUD_R);',
  '  density *= vign;',
  '  float densityRaw = density + coreGlow*0.5 + pulseAmt*0.12;',
  '  density = 1.0 - exp(-2.2*max(densityRaw, 0.0));',
@@ -94557,8 +94583,8 @@ function clPlace(G,t,i,stk){
  row.forEach(function(s){
   s.dot=false;
   if(s.t==='tch'){s.r=stk?14:17; s.ln=clLines(s.nm,stk);
-   s.half=Math.max(s.r+5,13,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
-  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,10,400)/2);}});
+   s.half=Math.max(s.r+5,15,Math.max.apply(null,s.ln.map(function(l){return clTextW(l,11.5,500);}))/2);}
+  else {s.r=stk?8:10; s.half=Math.max(s.r,stk?0:clTextW(s.nm,11,400)/2);}});
  var free=function(){var w=span; row.forEach(function(s){w-=2*s.half;}); return w;};
  var laws=row.filter(function(s){return s.t==='law';})
   .sort(function(a,b){return b.half-a.half||row.indexOf(b)-row.indexOf(a);});
@@ -94646,8 +94672,11 @@ function clSvg(W,H,stk){
      +arc(d.rel,0)+arc(d.rit,1)+arc(d.aff,2)
      +'<circle class="cl-n" cx="'+X+'" cy="'+Y+'" r="'+r+'"/>'
      +'<g class="cl-ic">'+clIcon(s.ic,x,y,stk?0.62:0.74)+'</g>'
-     +'<g class="cl-pill"><rect x="'+(x-13).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="26" height="13" rx="6.5"/>'
-     +'<text x="'+X+'" y="'+(y-r-9.4).toFixed(1)+'">'+s.at+'</text></g>'
+     /* the pill holds 11px, the type floor, in 14 tall with its top on the
+        same line as the 9.5px pill's. 16 tall and three higher touched the name of the teacher on the turn above, at the right end
+        of every turn on a desk, where a turn rises to meet the next one */
+     +'<g class="cl-pill"><rect x="'+(x-15).toFixed(1)+'" y="'+(y-r-19).toFixed(1)+'" width="30" height="14" rx="7"/>'
+     +'<text x="'+X+'" y="'+(y-r-8.2).toFixed(1)+'">'+s.at+'</text></g>'
      +'<text class="cl-lb" x="'+X+'" y="'+(y+r+(stk?14:17)).toFixed(1)+'">'
      +s.ln.map(function(l,j){return '<tspan x="'+X+'"'+(j?' dy="12"':'')+'>'+esc(l)+'</tspan>';}).join('')+'</text></g>';}
    else {
@@ -114188,5 +114217,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008345046"></div>
+<div id="eof" hidden data-len="008347593"></div>
 </body></html>
