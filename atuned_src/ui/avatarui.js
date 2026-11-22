@@ -1127,8 +1127,14 @@ function avSides(st){
    stylesheet, so a phone still opens on the figure. */
 function avHero(st){
  var b=st.seat, x=st.bySeat[b], form=!x||AV.edit===x.i, S2=avSides(st);
+ /* THE EMPTY CORNER HOLDS THE ENERGY DIALS, 21 November. avSides keeps its
+    first slot empty since the question went to the Source AI corner, which
+    left the top left of the hero dead beside a full top right. The four
+    dials take it (ui/avdials.js says why there), so the row is Energy, the
+    ring, Source AI: one card either side of the figure. */
+ var q0=S2[0]||(typeof avDialsHTML==='function'?avDialsHTML(st.r):'');
  return '<div class="av-hero avh-row avh-three" style="--c:'+seatCol(b)+'"'+(form?' data-avform="'+b+'"':'')+'>'
-  +(S2[0]?'<div class="avh-q">'+S2[0]+'</div>':'')
+  +(q0?'<div class="avh-q'+(S2[0]?'':' avh-en')+'">'+q0+'</div>':'')
   +'<div class="avh-ai">'+avAiHTML(st)+'</div>'
   +'<div class="avh-side avh-l">'+S2[1]+'</div>'+avRing(st)+'<div class="avh-side avh-r">'+S2[2]+'</div>'
   +(S2[3]?'<div class="avh-act">'+S2[3]+'</div>':'')+'</div>';}
@@ -1933,6 +1939,7 @@ function renderAvatar(){
  avShowIntake();
  AV.sig=avSig();
  avBind(host,st);
+ if(typeof avDialsBind==='function')avDialsBind(host,st.r);
  avRailPaint(st);}
 /* repaint only when something the page reads has moved. renderIntake calls
    this on every press of its own, and a press on a law must not throw away a

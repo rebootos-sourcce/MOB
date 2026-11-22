@@ -8050,6 +8050,77 @@ body:not(.tab-know) #know{display:none!important}
 .av-row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
 .av-card{background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r);padding:18px;min-width:0}
 body.punch .av-card{border-color:transparent}
+/* ============================================================
+   THE ENERGY DIALS, 21 November, ui/avdials.js. Two rows of two, his words:
+   "They need to be symmetrical and even on the same horizon line. I don't
+   want three lines. These should fit on two, and they should fit perfectly
+   to the left and right column, with a little breathing space between them
+   all." One gutter, 16 pixels, everywhere: between the two columns, between
+   the two rows, from every tile to the card's edge, and from the header to
+   the first row, the standing symmetry ruling. The columns are two equal
+   fractions, so both tiles in a row are one width, and a row's tiles are
+   one height because the grid stretches them, so the two rings in a row sit
+   on one centre line. Vitality and Awareness on top, Will and Radiance
+   under, the reading order the rail already prints them in, which also
+   puts Radiance, the three together, last.
+
+   The card stands in the hero's top left cell and the Source AI card in its
+   top right, so the two cards share a row. That row is as tall as the
+   taller card, and both are stretched to it, so their tops and bottoms line
+   up across the ring; the answer box takes the Source AI card's spare
+   height, the one part of it that has a use for more. Stacked, under 980
+   wide, each has its own row and nothing is stretched. */
+.avh-three .avh-q.avh-en{align-self:stretch}
+.avh-three:has(.avh-en) .avh-ai{align-self:stretch}
+.avh-three:has(.avh-en) .avh-ai .avai{height:100%;box-sizing:border-box}
+.avh-three:has(.avh-en) .avh-ai .avai-in{flex:1 1 auto}
+.avd-card{display:flex;flex-direction:column;gap:16px;padding:16px;height:100%;box-sizing:border-box;margin:0}
+.avd-hd{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mid)}
+.avd-hd b{font-weight:600;color:var(--ink)}
+.avd-hd svg.rb-ic{width:16px;height:16px;fill:none;stroke:var(--mid);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.avd-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;flex:1 1 auto;align-content:center}
+/* the tile is a button, and a raised one: the light from the top left, a
+   lip of light along the top edge and a shadow under, so a press can sink
+   it. */
+#avbody .avd{--c:var(--accent);position:relative;display:flex;align-items:center;justify-content:center;
+ min-width:0;min-height:var(--tap);margin:0;padding:12px;border-radius:14px;cursor:pointer;color:var(--ink);font:inherit;
+ background:linear-gradient(165deg,color-mix(in srgb,var(--panel-2) 88%,var(--ink)) 0%,var(--panel-2) 55%,var(--panel) 100%);
+ border:1px solid var(--edge);
+ box-shadow:inset 0 1px 0 color-mix(in srgb,var(--ink) 7%,transparent),inset 0 -2px 0 rgba(0,0,0,.3),0 8px 18px rgba(0,0,0,.32),0 2px 4px rgba(0,0,0,.35);
+ transition:transform var(--t-element) var(--ease-land),box-shadow var(--t-element) var(--ease-out),border-color var(--t-micro) var(--ease-out);
+ -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#avbody .avd:hover{background:linear-gradient(165deg,color-mix(in srgb,var(--panel-2) 84%,var(--ink)) 0%,var(--panel-2) 55%,var(--panel) 100%);
+ border-color:color-mix(in srgb,var(--c) 26%,transparent)}
+/* Study 1's press: in fast on an ease out and back on the landing
+   overshoot. The study pressed in at 90ms; the product's motion has four
+   named steps and design.js fails any duration off them, so the press goes
+   in at the micro step, 120ms, and out at the element step, 220ms, the
+   curve on the base rule being the one used on the way out. */
+#avbody .avd.down{transform:translateY(1px) scale(.985);transition-duration:var(--t-micro);transition-timing-function:var(--ease-out);
+ box-shadow:inset 0 3px 10px rgba(0,0,0,.45),inset 0 -1px 0 color-mix(in srgb,var(--ink) 5%,transparent),0 1px 2px rgba(0,0,0,.3)}
+#avbody .avd:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+body.punch #avbody .avd{border-color:transparent}
+.avd-g{position:relative;display:block;width:100%;max-width:172px;aspect-ratio:1}
+.avd-g>svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.avd-f0{stop-color:color-mix(in srgb,var(--panel-2) 90%,var(--ink))}
+.avd-f1{stop-color:var(--sunk,var(--panel))}
+.avd-face{stroke:var(--edge)}
+.avd-trk{stroke:color-mix(in srgb,var(--ink) 8%,transparent)}
+/* the two layers that move at rest are their own svg and their own span, so
+   the compositor moves them: opacity and transform only, no repaint */
+.avd-glow{will-change:opacity,transform;transform-origin:50% 50%;opacity:.55}
+.avd-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;pointer-events:none}
+.avd-mid svg.rb-ic{width:20px;height:20px;color:var(--c);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.avd-nm{font-size:13px;font-weight:500;letter-spacing:.01em;line-height:1}
+.avd-tw{position:absolute;inset:0;pointer-events:none;will-change:transform}
+.avd-v{position:absolute;transform:translate(-50%,-50%);font-size:14px;font-weight:600;letter-spacing:-.01em;line-height:1;
+ font-variant-numeric:tabular-nums;white-space:nowrap;padding:4px 7px;border-radius:999px;background:var(--bg);color:var(--ink);
+ border:1.5px solid var(--tc,var(--c));box-shadow:0 2px 6px rgba(0,0,0,.4);will-change:transform}
+.avd-v small{font-size:11px;font-weight:500;opacity:.65;margin-left:1px}
+/* reduced motion, the floor Study 1 set: end states, no loop, and no
+   transition on the press either */
+body.rm #avbody .avd,body.quiet #avbody .avd,body.rm #avbody .avd.down,body.quiet #avbody .avd.down{transition:none}
+@media (prefers-reduced-motion:reduce){#avbody .avd,#avbody .avd.down{transition:none}}
 /* the ring. The svg draws, the satellites and the core sit over it as html so
    every one of them is a real control with a real tap target. */
 .av-ring,.av-wheel{position:relative;width:100%;aspect-ratio:1/1;max-width:440px;justify-self:center}

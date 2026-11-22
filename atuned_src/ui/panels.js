@@ -698,7 +698,16 @@ function setLighting(k){
  var lb=$('lightbtn');
  if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
   if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
- rebuildSwatches(); render();}
+ rebuildSwatches(); render();
+ /* THE AVATAR PAGE REPAINTS ONLY WHEN ASKED, and render() never asks: it is
+    drawn on setTab and on the intake's own presses (renderIntake, then
+    avRefresh). So a lighting changed while it was open left the ring and
+    the energy dials in the old lighting's seat colours, measured 21
+    November: in Snow the dials still carried Dark's hex and Radiance's
+    icon, drawn in Dark's pale ink, all but vanished on Snow's pale face.
+    avSig already keys on S.theme, so this only asks; it repaints when the
+    lighting moved and does nothing otherwise. */
+ if(S.tab===TAB.INTAKE&&typeof avRefresh==='function')avRefresh();}
 LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
  b.setAttribute('aria-pressed',i===0);

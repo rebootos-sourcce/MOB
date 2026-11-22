@@ -6657,6 +6657,10 @@ var UNPACK_BASE={
  'rail:shadow':'Shadow, on this line, is the part of the laws your answers leave out, which is always 100 less CQ.',
  'rail:where you lean':'Each pair is one reading, where the line down the middle is 50 and 50 and the mark is where you sit.',
  'rail:how much':'Each is one reading, from none of it at the left end to all of it at the right.',
+ /* 21 November, the Avatar page's Energy card (ui/avdials.js). The head of
+    the four dials carries its sentence from here, as the two family heads
+    above do, so the word is never on screen without its meaning. */
+ 'rail:energy':'Energy is four readings, vitality, awareness, will and radiance, which is those three together, and each dial runs from none at its start to all of it at its end.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere

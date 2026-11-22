@@ -101,6 +101,7 @@ ui/stdash.js
 ui/summary.js
 ui/daily.js
 ui/analytics.js
+ui/avdials.js
 ui/avatarui.js
 ui/intakeui.js
 ui/release.js
