@@ -5933,7 +5933,7 @@ body.tab-story.st-full #stsrc:empty{display:none}
     leaves taller windows exactly as they were. #story already scrolls
     (overflow auto), so the widgets row under it is one scroll away rather
     than squeezed, and its own fold still hands row one the whole page. */
- .st-flow:not(.st-simple){grid-template-rows:minmax(780px,1fr) auto}}
+ .st-flow:not(.st-simple){grid-template-rows:minmax(min(780px,calc(100% - 200px)),1fr) auto}}
 /* THE GRIP, the panel's top edge: a short bar on a full width strip, so the
    whole edge takes the drag and only the bar is drawn. A ring of a bar,
    outlined and not filled, the house rule for marks. */
