@@ -494,7 +494,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  ok(mv.hover.off==='\u2013','and leaving the canvas puts the line back, '+mv.hover.off);
  ok(mv.drill.shown&&mv.drill.t.indexOf(mv.drill.pick)>=0&&/Worn over the/.test(mv.drill.t)&&/Carrying the most/.test(mv.drill.t),
   'Read this mask opens '+mv.drill.pick+'\'s summary in Selection, '+mv.drill.t.slice(0,60));
- ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===8&&mv.back.regs&&mv.back.fig&&mv.back.chp,
+ ok(mv.back.on===mv.before.on&&mv.back.mode===mv.before.mode&&mv.back.views==='0,1'&&mv.back.orbs===9&&mv.back.regs&&mv.back.fig&&mv.back.chp,
   'and the Body gets back all it had: '+mv.back.on+', '+mv.back.mode+', views '+mv.back.views+', '+mv.back.orbs+' circles');
  ok(mv.people.same===0&&mv.people.d>2000,'the figure is the person\'s: one mask, James against Derek, '+mv.people.d+' pixels apart, James twice '+mv.people.same);
  console.log('  Character: '+mv.lit+' lit, lead '+mv.lead.want+', trace '+T.seats.join('>')+' address '+T.addr.N+', hover '+mv.hover.name+', people '+mv.people.d);
