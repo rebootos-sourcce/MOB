@@ -18,6 +18,19 @@
    and the code for it is written and correct. A host that has the
    files sets these two and everything downstream works unchanged.
    Nothing is requested until one of them is named.
+
+   AND THE DETAILED FIGURE IS NOT WAITING ON THESE, checked 22 November.
+   A board line read the empty names as "the Body falls back to a plain
+   outline until the detailed front and back art is supplied". It does not.
+   The detailed figure was ruled on 27 September, his words, "lock that in
+   as our kind of starting point": the front and back nervous system man,
+   FW option A, carried as vector data in BMNERVE (ui/map.js) and drawn by
+   the canvas map, which is the only figure the Body page shows. The outline
+   below stands in for a raster only inside the seven layers' renderer,
+   which nothing on the page reaches since round KV. BODY-MAP-SPEC.md
+   section 8 also rules raster display art out of the one file on size, so
+   no supplied picture is pending for display: anything he supplies now is a
+   placement reference (section 6), kept outside the build.
    ============================================================ */
 var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;

@@ -719,10 +719,10 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
    on:[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(','),
    row:document.querySelectorAll('#lbar button').length,
    modeBtns:document.querySelectorAll('#rbar [data-bmmode]').length};});
- ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:pain+flow|Networks:sab+cx+hy',
+ ok(bar.groups.join('|')==='Nodes:addr+masks|Clusters:heat+pain+flow|Networks:sab+cx+hy',
   'three groups, as he named them, '+bar.groups.join(' | '));
- ok(bar.orbs===8&&bar.tips===0,'eight of the Field\'s circles with the burger, every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
- ok(bar.on==='addr,masks,sab','it opens on what the figure drew before the bar, got '+bar.on);
+ ok(bar.orbs===9&&bar.tips===0,'nine of the Field\'s circles with the burger (Charge, the heat, joined Clusters 22 November), every one with a tooltip, '+bar.orbs+' circles, '+bar.tips+' without');
+ ok(bar.on==='addr,masks,heat,sab','it opens on what the figure drew before the bar, and the charge as heat, got '+bar.on);
  ok(bar.row===0&&bar.modeBtns===0,'and there is no row and no Pattern and Pain pair left beside it');
  /* each switch reaches the drawing: the pick, the hits, the hubs */
  const sw=await page.evaluate(()=>{const tap=k=>document.querySelector('#bmov [data-bmov="'+k+'"]').click();
@@ -791,7 +791,7 @@ console.log('\n=== the Body\'s overlays, the Field\'s bar on the map ===');
   t.click(); const shut=vis()+':'+t.getAttribute('aria-expanded');
   t.click(); return shut+' '+vis()+':'+t.getAttribute('aria-expanded')+' '
    +[...b.querySelectorAll('[data-bmov][aria-pressed="true"]')].map(x=>x.getAttribute('data-bmov')).join(',');});
- ok(bg==='0:false 3:true addr,masks,sab','the burger folds all three groups and opens them as they were, '+bg);
+ ok(bg==='0:false 3:true addr,masks,heat,sab','the burger folds all three groups and opens them as they were, '+bg);
  /* LM, his words: "overlay menu ... on the left top across the top, like the
     Field ... the third tier nav that says Mark ... on the upper right opposite
     the overlay, both have buttons that close them. The right one starts
