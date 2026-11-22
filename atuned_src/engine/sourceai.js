@@ -448,6 +448,49 @@ var SRC_JUDGE_STEP=['such','a','an','just','too','being','bit','total','complete
    never"), so it answers belief and leaves "What did you do?" open. */
 var SRC_BEHAVE_DIM={avoidance:'behaviour', withdrawal:'behaviour', inhibited_speech:'behaviour',
  loss_of_control:'behaviour', delay:'behaviour', self_judgement:'belief'};
+/* THE SIX REFRAMES, ONE PER BEHAVIOUR ABOVE, 21 November. The table the
+   ritual week plan (section B5, source 2) held back: "a new table of six rows
+   turns a behaviour you described into its opposite, as a short reframe plus
+   one existing practice. For example, avoidance becomes Make the Call." He
+   corrected the board on it the same day: "you haven't produced them, so I
+   don't know why this is red." So they are produced, here, and his to change.
+
+   ONE ROW PER KIND IN SRC_BEHAVE_ORDER, keyed by it, and never a seventh: a
+   reframe for a behaviour this reader cannot see would be offered on
+   nothing. The practice is the one whose own how text in
+   engine/data/practice.js is the opposite act, read off the text and not off
+   its track, the rule RIT_KIND_OF keeps: avoidance is Make the Call, the call
+   held still done before it is rehearsed; withdrawal is Tell One Person;
+   inhibited speech is The Plain Word; loss of control is Ten Minutes, the
+   room left and come back to; delay is The Small Version, which the practice
+   itself names as the honest part on a day the whole cannot be done; and a
+   verdict on yourself is Name It, a feeling named in one word where the name
+   for yourself went.
+
+   to is the opposite as a short name, the face of a card. line is the
+   reframe, a physical act in the present tense, and it is the name's meaning
+   in the same place, the unpack rule. Each line went through the voice gate
+   one at a time with no hard failure.
+
+   NOT DRAWN YET, AND THAT IS THE PLAN'S ORDER AND NOT A GAP. The plan shows a
+   behaviour card only where the evidence is at least supported, the reading
+   having found it more than once (EV_NAMEABLE, engine/evidence.js), never on
+   one mention, and holds the source back until he has seen the six. Nothing
+   reads this table but tests/ritweek.js RW12, which fails on a behaviour with
+   no row, a row for no behaviour, and a practice the library lacks. */
+var SRC_REFRAME={
+ avoidance:{to:'Go toward it', pr:'fl_call',
+  line:'You do the thing you were going around, before you rehearse it.'},
+ withdrawal:{to:'Stay in reach', pr:'tr_tell',
+  line:'You let one person hear from you today, in two sentences.'},
+ inhibited_speech:{to:'Say it once', pr:'tu_plain',
+  line:'You say the true sentence out loud and stop where it ends.'},
+ loss_of_control:{to:'Leave, then come back', pr:'ch_ten',
+  line:'When the heat rises at somebody, you leave the room for ten minutes and come back.'},
+ delay:{to:'Do the small version', pr:'po_small',
+  line:'You do the smallest honest part of it today, ready or not.'},
+ self_judgement:{to:'Name the feeling', pr:'pe_name',
+  line:'When you start calling yourself a name, you name what you feel in one word.'}};
 /* EVERY BEHAVIOUR IN AN ENTRY, in the order written. Each row is
    {behave, dim, cue, at, s, e, said, who?, unclear?}: at is the leading space
    in normMap's copy, which is what a sniffer hit's at is, s to e the raw

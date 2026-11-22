@@ -395,6 +395,8 @@ if(typeof module!=='undefined'&&module.exports){
                   practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
                   practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
                   practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  practicePlanCheck:practicePlanCheck, practiceSchedCheck:practiceSchedCheck,
+                  PR_PLANS_CAP:PR_PLANS_CAP, PR_SCHED_CAP:PR_SCHED_CAP, RIT_MISS:RIT_MISS,
                   PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
                   PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
                   PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,

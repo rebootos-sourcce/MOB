@@ -140,7 +140,11 @@ const HEAD=[
    and PMBANDS): Heart T4 to T5 at 30.51, Solar T12 to L1 at 40.21, Sacral
    L5 at 47.02, and Root, "the base of the spine", at 53.55. Vertebrae are
    counted C1 = 1 through the tailbone = 30. */
-const RULER=[[11.5,30.51,'T4 to T5','Heart'],[19.5,40.21,'T12 to L1','Solar'],
+/* The two neck knots, 21 November, off the back figure's own vertebral
+   labels (map.js BMSPINE), so the neck addresses have a level to stand on.
+   figure.js ANATSPINE says why the Throat seat could not be the knot. */
+const RULER=[[1,13,'C1','the back figure\'s C1 label'],[7,19,'C7','the back figure\'s C7 label'],
+ [11.5,30.51,'T4 to T5','Heart'],[19.5,40.21,'T12 to L1','Solar'],
  [24,47.02,'L5','Sacral'],[30,53.55,'the tailbone','Root']];
 const TORSO=[
  {ids:[49,55],s:'Cardiac plexus',lv:[11.5,11.5],side:0,

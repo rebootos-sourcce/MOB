@@ -198,6 +198,7 @@
      this layout the field anchors and the rim sit inside it, where the pie
      put the anchors outside */
   Rf=Math.max(12,Math.min(W0,H0)/2-2);
+  sizeVar();
   /* the bloom's downsample steps were 4, 8 and 16 pixels against a face 430
      across the window. Kept in proportion to the face, the way every other
      length in the file scales by Rf/430, or a 40 pixel face is smeared to a
@@ -1378,7 +1379,14 @@
     answered as if done and do nothing; give() ends the loan and the caller
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
- function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false;
+ /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
+    Dashboard's dish (shell/head.html, SET INTO A DISH) draws its floor,
+    wall and bevel round exactly this circle, and only
+    this file knows it: the circle is the largest the canvas box holds, less
+    two pixels, so its size is min(width, height) of a box CSS cannot take
+    the minimum of. Written on the host, so a move carries it. */
+ function sizeVar(){ const hp=canvas.parentNode; if(hp&&hp.style) hp.style.setProperty('--sf-d',(2*Rf).toFixed(1)+'px'); }
+ function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false; if(moved) sizeVar();
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); }
   else if(moved) refit();
   return true; }

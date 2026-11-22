@@ -2947,6 +2947,24 @@ body.rshut .rfold .lf-ch{transform:rotate(180deg)}
    saved fold state returns untouched with Becoming. */
 body.tab-intake:has(#avbody .avp) .mid{grid-template-columns:minmax(0,1fr)}
 body.tab-intake:has(#avbody .avp) .mid>.col{display:none}
+/* THE WISDOM SCHOOL HAS NO SIDE COLUMNS EITHER, 21 November, his words on
+   the table of laws: "Get rid of the left rail. Keep the right rail, but
+   turn that into a summary." Round RB had already ruled both columns shut
+   here, so all the page ever showed of them was two 58 pixel strips with a
+   fold control in each, and the right one opened the Field's Reading and
+   Selection over a page about laws. The left goes. The right rail he keeps
+   is the page's own now, the summary beside the table (#kbtrail,
+   ui/kbtable.js), which answers every press the way the Insight panel does
+   on the Field. The shared columns are therefore not drawn on this tab at
+   all, at any width, and the stage takes the whole row; the fold keys,
+   lcolk and rcolk, are left as they are, so nothing stored is read
+   differently anywhere else. The id in :has outweighs every fold state, the
+   reason the Avatar's rule above carries one. The answer layer the seat
+   browser under the table opens (#kbans, ui/knowledge.js) lifts #rdrill out
+   of the right column into a layer of its own, so it does not need the
+   column drawn. */
+body.tab-know:has(#know) .mid{grid-template-columns:minmax(0,1fr)}
+body.tab-know:has(#know) .mid>.col{display:none}
 /* SPIRIT AND PSYCHE, the rail's two blocks, ruled 26 September. A block is
    one level above a section, so it is set in ink and a size up from the
    section headers under it, and it is not a control: nothing here opens or
@@ -4617,7 +4635,7 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
    the same way #lfold sits over whichever section leads the left rail.
    The icon is copied from .rfold unchanged, so the same mark means the
    same thing, "this folds to the right," everywhere it appears. */
-.zfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
+.zfold{position:absolute;top:calc(var(--rltop,0px) + 16px);right:8px;z-index:2;width:var(--tap);height:var(--tap);
  display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
  background:transparent;color:var(--mid);cursor:pointer;
  transition:background-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
@@ -4913,34 +4931,31 @@ g.stmk-t{pointer-events:bounding-box}
 .st-mini-vis.bt3-card{flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:0 2px}
 .bt3-card .bt3-fig{width:16px;height:16px}
 .bt3-card .bt3-row{height:16px;line-height:16px}
-/* the key on the Body page: three even cells across under the well, on the
-   bar's own glass so it reads as part of the picture's frame and not a
-   second card. A phone keeps the three across, each one stacked. */
-.bt3-key{flex:0 0 auto;display:flex;align-items:center;gap:16px;margin:10px 12px 12px;padding:10px 16px;
+/* THE KEY ON THE BODY PAGE, ui/map.js bmKey: the card's three rows, inside
+   the well at the foot of its divider, which is the empty middle of the
+   picture between the two figures' feet, so it is symmetrical by where it
+   stands. Absolute, so it takes no height out of the well's flex, the defect
+   round LQ removed from a strip under the figure. On the bar's own glass, so
+   it reads as part of the picture's frame and not a second card. Its three
+   rows are the card's grid, the words starting on one line and the percents
+   ending on one, with even room between them. */
+.bt3-key{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:3;
+ display:flex;flex-direction:column;gap:8px;min-width:148px;padding:10px 14px;box-sizing:border-box;
  border-radius:14px;background:var(--fb-glass);border:1px solid var(--edge-2);
  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px var(--fb-shade)}
 .bt3-key[hidden]{display:none}
-.bt3-hd{display:inline-flex;align-items:center;gap:7px;flex:none;font-size:12px;font-weight:600;color:var(--mid);cursor:help}
-.bt3-ic{width:16px;height:16px;fill:none;stroke:var(--mid);stroke-width:1.7}
-.bt3-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;flex:1 1 auto;min-width:0}
-/* each place packed and centred in its own third. Stretched like the card's
-   rows, the percent stood 330 pixels from its word at 1600 and read as the
-   label of the place to its right, "13% Belly", measured on the first
-   screenshot of this key. */
-.bt3-key .bt3-row{grid-template-columns:auto auto auto;justify-content:center}
-.bt3-key .bt3-row+.bt3-row{border-left:1px solid var(--edge-2)}
-.bt3-key .bt3-fig{width:24px;height:24px}
-.bt3-key .bt3-nm{font-size:13px}
-.bt3-key .bt3-p{font-size:14px}
+.bt3-key .bt3-row{cursor:help}
+.bt3-key .bt3-fig{width:20px;height:20px}
+.bt3-key .bt3-nm{font-size:12.5px}
+.bt3-key .bt3-p{font-size:13px;text-align:right}
+/* a phone has one figure on the middle and no divider, so the key goes to
+   the lower right corner of the well, beside the feet, at the same 12
+   pixels from both edges the bars keep from the top and the sides */
 @media (max-width:720px){
- .bt3-key{flex-direction:column;align-items:stretch;gap:8px;margin:10px 0 0;padding:10px 12px}
- .bt3-list{gap:10px}
- /* each place stands as its own small column, figure over word over
-    percent, because across one line "Forehead" and "100%" did not both fit
-    a third of 390 and the word was cut, measured with the two longest of
-    the seven words at a full percent */
- .bt3-key .bt3-row{grid-template-columns:1fr;justify-items:center;row-gap:3px}
- .bt3-key .bt3-fig{width:24px;height:24px}}
+ .bt3-key{left:auto;right:12px;transform:none;min-width:0;padding:8px 10px;gap:6px}
+ .bt3-key .bt3-fig{width:16px;height:16px}
+ .bt3-key .bt3-nm{font-size:11.5px}
+ .bt3-key .bt3-p{font-size:12px}}
 .stmk-wl{display:flex;gap:16px;justify-content:center;align-items:center}
 .stmk-wl>span{display:inline-flex;align-items:center;gap:5px}
 .stmk .stmk-wl svg{width:16px;height:16px;fill:none;stroke-width:1.7;stroke-linecap:round;
@@ -5128,6 +5143,82 @@ body.tab-story.st-full #stjr .st-type[aria-expanded="true"]{color:#fff}
    behaviour (nothing above this breaks), only ever capping her growth
    on a window tall enough to spare it. */
 body.tab-story.st-full .st-chat .st-uni{max-height:min(42vh,380px)}
+/* SET INTO A DISH, 21 November. First his words on the Dashboard's Source AI
+   circle: "a pillow emboss with a subtle bevel, making it feel like it's a
+   ring inside of a raised surface with this kind of cloudy pattern around
+   it." Built as a raised pillow, then turned over the same night on seeing
+   it: "the bevel. I want it concave. So I don't want to see an edge at the
+   bottom of the rim. It should be a smooth transition to the top with a
+   little bevel at the edge."
+
+   One light, from the upper left, the way every highlight here falls. In a
+   dish that light lands the other way round from a bump: the upper wall
+   faces away from it and sits in its own shade, the lower right wall faces
+   it and catches a little. Softer than a bump in every direction, and the
+   lip, where the dish meets the flat, is flat, so the shading reaches zero
+   there and there is no line anywhere round the bottom.
+    1. THE DISH FLOOR AND LOWER WALL, ::before under the face. A disc a band
+       (--sf-band) wider than the face: a faint shade over the whole floor
+       and a faint catch light low and right. Its mask runs from full at the
+       face's edge to nothing at the lip on an eased curve, so the band
+       dissolves into the surface around it. No box shadow, no cast shadow:
+       the cast shadow was the edge he saw at the bottom.
+    2. THE FACE, srcface.js's own canvas, untouched except that its box is
+       held in by --sf-pil so the band fits inside her panel.
+    3. THE UPPER WALL AND THE BEVEL, ::after over the face, the dish's size.
+       An inset shadow pushed down from the top edge, so it is darkest at the
+       top lip, fades through the band and lays a little shade on the top of
+       the face, and is nothing at all at the bottom because it is pushed
+       down. Outside it, one pixel of light offset upward: the crest of the
+       lip catching the light, a crescent across the top that thins to
+       nothing at the sides. Light crest, dark wall just under it: the small
+       bevel. That is the only line in the whole thing.
+   Static, so reduced motion has nothing to stop: the end state is the only
+   state. Paint once per resize, no per frame cost. Pointer events pass
+   through both layers to the canvas, whose click impulse is kept. #stuni's
+   clip stays lifted so the cloud behind is never cut square at its box,
+   the one thing his 8 November ruling says never to show. */
+body.tab-story.st-full #stuni{overflow:visible;--sf-pil:12px;--sf-band:14px}
+body.tab-story.st-full #stuni .canvas-wrap{isolation:isolate}
+body.tab-story.st-full #stuni .canvas-wrap #srcface{
+ inset:var(--sf-pil);width:calc(100% - 2*var(--sf-pil));height:calc(100% - 2*var(--sf-pil))}
+body.tab-story.st-full #stuni .canvas-wrap::before,
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ content:'';position:absolute;left:50%;top:50%;aspect-ratio:1;border-radius:50%;
+ transform:translate(-50%,-50%);pointer-events:none;
+ width:calc(var(--sf-d,0px) + 2*var(--sf-band))}
+body.tab-story.st-full #stuni .canvas-wrap::before{
+ z-index:-1;
+ background:
+  radial-gradient(circle at 64% 70%,rgba(255,255,255,.05),rgba(255,255,255,.018) 38%,rgba(255,255,255,0) 62%),
+  rgba(0,0,0,.16);
+ -webkit-mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%);
+ mask-image:radial-gradient(closest-side,#000 calc(100% - var(--sf-band)),rgba(0,0,0,.62) calc(100% - var(--sf-band)*.6),rgba(0,0,0,.22) calc(100% - var(--sf-band)*.25),transparent 100%)}
+body.tab-story.st-full #stuni .canvas-wrap::after{
+ z-index:1;
+ box-shadow:
+  inset 0 calc(var(--sf-band)*.55) calc(var(--sf-band)*1.1) calc(var(--sf-band)*-.3) rgba(0,0,0,.42),
+  inset 0 1px 1px rgba(0,0,0,.28),
+  0 -1px .5px rgba(255,255,255,.075)}
+@media (max-width:600px){body.tab-story.st-full #stuni{--sf-pil:9px;--sf-band:11px}}
+/* THE CLOUD IN THE WELL, same round. ui/unicloud.js paints into #stjr on the
+   Dashboard at z-index -1; isolation keeps that under her words and controls
+   but over the well's own ground, and the mask fades it to nothing well
+   inside the panel so the cloud never meets the panel's square edge. The
+   solid stop moved from 45 to 52 percent, 15 percent further out, with
+   the cloud's wider reach (CLOUD_R in ui/unicloud.js); the fade still ends
+   at the panel, so it still never meets the edge. */
+body.tab-story.st-full #stjr{isolation:isolate}
+/* Isolating #stjr also lifts .st-glow::before (the Source AI halo, z-index
+   -1) out from behind the panel's own background, where on the Dashboard it
+   had always been painted and never seen. Measured on the first build of
+   this round: it came up as a pale rounded box with an accent blob in its
+   top left corner behind her circle, the same box he reported on the hero
+   on 10 November. It stays where it always was on this view: unseen. */
+body.tab-story.st-full #stjr .st-glow::before{display:none}
+body.tab-story.st-full #stjr>#unicloud{
+ -webkit-mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%);
+ mask-image:radial-gradient(closest-side at 50% 50%,#000 52%,transparent 100%)}
 /* THE TEXT ZONE SITS AT THE BOTTOM OF ITS OWN AREA NOW, 10 November, his
    words the same night the box above was hidden on the mini view: "I do
    need to be able to see the text, so I need the height of that area
@@ -5823,11 +5914,36 @@ body.tab-story.st-full #stsrc:empty{display:none}
    fields, measured at this exact failing width, is nearer 300, so 310
    keeps real margin rather than landing back on the same edge. */
 .st-rl{flex:1 1 auto;display:flex;flex-direction:column;min-height:310px;border-radius:var(--r-s);
- padding:14px 16px;--glow:var(--accent);
+ padding:14px 16px;--glow:var(--accent);position:relative;
  background:radial-gradient(70% 90px at 50% 0,color-mix(in srgb,var(--glow) 30%,transparent),transparent),
   radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--glow) calc(var(--lux,.3) * 50%),transparent),transparent 70%),
   var(--sunk);
  box-shadow:0 0 0 1px color-mix(in srgb,var(--glow) 40%,transparent),0 18px 60px -18px color-mix(in srgb,var(--glow) 50%,transparent)}
+/* STANDS ON THE COLUMN'S FLOOR AND RISES, 22 November. Its own content's
+   height and not the whole column, anchored at the bottom so the top edge
+   is what moves when a pick lands; ui/storyui.js stRelSize sets the height
+   and carries the reason. Not on a phone, where the column stacks and the
+   phone rule below places it. */
+@media (min-width:721px){
+ .st-flow:not(.st-simple) .st-rl{flex:0 0 auto;margin-top:auto;max-height:100%}
+ /* MORE HEIGHT TO THE IMPRINTS, the same words. Row one is the Imprints
+    column and the room Release rises into; it was 1fr and nothing else, so
+    on a 1000 tall window it measured 675 and the Imprints list had the
+    least of any column. A 780 floor gives it about a sixth more there and
+    leaves taller windows exactly as they were. #story already scrolls
+    (overflow auto), so the widgets row under it is one scroll away rather
+    than squeezed, and its own fold still hands row one the whole page. */
+ .st-flow:not(.st-simple){grid-template-rows:minmax(780px,1fr) auto}}
+/* THE GRIP, the panel's top edge: a short bar on a full width strip, so the
+   whole edge takes the drag and only the bar is drawn. A ring of a bar,
+   outlined and not filled, the house rule for marks. */
+.st-rlgrip{position:absolute;left:44px;right:44px;top:0;height:14px;z-index:2;cursor:ns-resize;
+ display:flex;align-items:center;justify-content:center;touch-action:none;border-radius:var(--r-xs)}
+.st-rlgrip i{display:block;width:36px;height:5px;border-radius:999px;border:1px solid var(--edge-2);
+ transition:border-color var(--t-micro) var(--ease-out),width var(--t-micro) var(--ease-out)}
+.st-rlgrip:hover i,.st-rlgrip.on i{border-color:var(--glow);width:48px}
+.st-rlgrip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.st-rlgrip i{transition:none}}
 /* the release's name is the .st-mk lockup above; this class keeps only the
    phone rule that folds it away until the column is in use */
 .st-rlhd{flex:0 0 auto}
@@ -5883,29 +5999,40 @@ body.tab-story.st-full #stsrc:empty{display:none}
 .smp-empty{align-items:center;justify-content:center}
 .smp-emptynote{flex:0 0 auto;padding:0 24px;text-align:center;max-width:32em}
 .st-rlmid{flex:1 1 auto;min-height:0;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--edge-2) transparent}
-/* the selection as its rings and nothing else, the card's cut. Each ring is
-   a toggle at the tap floor; out of the run it steps back rather than going,
-   so a second tap brings it back. */
-.st-rings{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
-.st-rq{display:inline-flex;align-items:center;justify-content:center;min-width:var(--tap);min-height:var(--tap);
- padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;
- transition:opacity var(--t-element) var(--ease-out)}
-.st-rq[aria-pressed="false"]{opacity:.35}
+/* THE SELECTION AS ONE EVEN LIST, 21 November (panel-redesign, the reason
+   is at stRelPanel in ui/storyui.js). Every row the same height and every
+   gap the same, so four picks read as four equal lines and not three and a
+   stray. The row is the toggle; out of the run it steps back rather than
+   going, so a second tap brings it back, as the rings did. */
+.st-rings{display:flex;flex-direction:column;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.st-rq-wrap{display:block;margin:0}
+.st-rq{display:flex;align-items:center;gap:12px;width:100%;min-height:var(--tap);
+ padding:6px 12px 6px 6px;border:1px solid var(--edge);border-radius:var(--r-s);
+ background:color-mix(in srgb,var(--ink) 3%,transparent);color:var(--ink);cursor:pointer;text-align:left;
+ transition:opacity var(--t-element) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.st-rq:hover{border-color:var(--edge-2)}
+.st-rq[aria-pressed="false"]{opacity:.4}
 .st-rq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-rq-ring{flex:none;display:inline-flex;position:relative;border-radius:50%}
 /* THE NAME, PRINTED, NOT ONLY A HOVER TITLE, 10 November, CLAUDE.md's own
-   "unpack every symbol" ruling: a ring with no visible word beside it is
-   exactly the failing case that rule names. */
-.st-rq-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;max-width:64px}
+   "unpack every symbol" ruling. On one line now, at a size that reads, and
+   WRAPPED, NOT CUT OFF, when a name is longer than the column: a truncated
+   "Self-Silen..." unpacks nothing. */
+.st-rq-t{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+.st-rq-lb{font-size:13.5px;line-height:1.25;font-weight:500;color:var(--ink);overflow-wrap:break-word}
+.st-rq-pt{font-size:11.5px;line-height:1.2}
+/* in the run or out of it, as a ring with a check or an empty ring: icons
+   are ring, never fill */
+.st-rq-ck{flex:none;width:20px;height:20px;fill:none;stroke:var(--mid);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.st-rq[aria-pressed="true"] .st-rq-ck{stroke:var(--glow)}
 /* AVS4, 17 November: an address the avatar put first wears the avatar's own
    dashed ring, the mark the Avatar page's seats wear for the same fact. A
-   pseudo element and not an outline, because the outline is the focus ring. */
-.st-rq-av .st-rq{position:relative}
-.st-rq-av .st-rq::after{content:'';position:absolute;inset:0;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
-/* WRAP, NOT CUT OFF. A truncated "Self-Silen..." unpacks nothing; the
-   whole point of printing the name is that it can be read. */
-.st-rq-lb{font-size:10px;line-height:1.2;color:var(--dim);text-align:center;
- overflow-wrap:break-word;max-width:100%}
-.st-rlfoot{margin-top:auto;padding-top:10px}
+   pseudo element and not an outline, because the outline is the focus ring.
+   On the ring and not the button since 21 November: the button is a row. */
+.st-rq-av .st-rq-ring::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px dashed var(--mid);pointer-events:none}
+/* the settings and the press sit under one hairline, so the list above
+   and the controls below read as two halves of one panel */
+.st-rlfoot{margin-top:auto;padding-top:14px;border-top:1px solid var(--edge)}
 /* THE BINAURAL TOGGLE'S OWN ROW, 9 November, see the ruling at
    ui/storyui.js's own stRelPanel. A plain static rule, not release.js's
    .rel-sws, which only exists once relCss() has run and carries that
@@ -5934,9 +6061,31 @@ body.tab-story.st-full #stsrc:empty{display:none}
    down to just the switch itself, its name carried in the label's own
    title/aria-label the way the rest of this rail already carries a
    name, never a second copy of text standing in the row. */
-.rel-fields.st-fields{flex-wrap:nowrap;gap:10px}
+.rel-fields.st-fields{flex-wrap:nowrap;gap:10px;justify-content:space-evenly}
 .rel-fields.st-fields .rel-field input{min-width:0;width:52px;padding:9px 4px}
 .rel-fields.st-fields .st-relsws{flex:0 0 auto}
+/* THREE EQUAL CELLS, 22 November, his words: "the speed patterns and audio.
+   Can you give me a slightly cleaner aesthetic for that?" The reason is at
+   the Speed field in ui/storyui.js stRelPanel. A grid of three equal tracks
+   replaces the evenly spread flex row above, so the cells are the same width
+   whatever their control is; each cell is its ring icon and word as one
+   header over a 40px band holding the control, centred, so the three
+   captions sit on one line and the three controls on another. The boxes
+   lose the number spinners, which drew a second, smaller control inside a
+   52px box, and take the panel's own hairline instead of a filled box. */
+.rel-fields.st-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.st-fld{display:flex;flex-direction:column;align-items:center;gap:8px;margin:0;min-width:0}
+.rel-fields.st-fields .st-fldh{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;
+ letter-spacing:.04em;color:var(--dim);line-height:1;white-space:nowrap}
+.st-fldh svg{width:16px;height:16px;flex:none;fill:none;stroke:var(--mid);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rel-fields.st-fields .st-fld input{width:100%;max-width:72px;min-height:40px;height:40px;padding:0 6px;
+ background:transparent;border:1px solid var(--edge-2);border-radius:var(--r-xs);
+ font-variant-numeric:tabular-nums;font-size:15px;-moz-appearance:textfield;appearance:textfield;
+ transition:border-color var(--t-micro) var(--ease-out)}
+.rel-fields.st-fields .st-fld input::-webkit-inner-spin-button,
+.rel-fields.st-fields .st-fld input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.rel-fields.st-fields .st-fld input:hover{border-color:var(--mid)}
+.rel-fields.st-fields .st-fld input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-color:var(--accent)}
 /* THE WORD STAYS, OVERRIDDEN THE SAME NIGHT, his words straight after
    seeing it hidden: "where's the text that says audio? Or binaural?
    Above the switch." Hiding the label matched this rail's own pill
@@ -5951,17 +6100,25 @@ body.tab-story.st-full #stsrc:empty{display:none}
    called; only the word painted in this one compact spot is shorter,
    the same way "Imprints" and "Archive" already go icon-only elsewhere
    on this card without losing their real name. */
-.rel-fields.st-fields .st-relsws .ac-row{min-height:0;padding:0;border-bottom:0;gap:6px;
- flex-direction:column;align-items:center}
-.rel-fields.st-fields .st-relsws .ac-rl{font-weight:600;letter-spacing:.06em;
- color:var(--dim);font-size:0}
-.rel-fields.st-fields .st-relsws .ac-rl::before{content:"Audio";font-size:11px}
-.rel-fields.st-fields .st-relsws .ac-rl em{display:none}
+/* 22 November: the word is printed in the cell's own header now (.st-fldh,
+   with its icon, the same as Speed and Patterns), so accTog's label is
+   hidden here rather than repainted by a ::before; the switch's aria-label
+   still carries "Binaural tone" in full. The row is the 40px band the two
+   boxes beside it stand in. */
+.rel-fields.st-fields .st-relsws .ac-row{min-height:40px;height:40px;padding:0;border-bottom:0;gap:0;
+ flex-direction:row;align-items:center;justify-content:center}
+.rel-fields.st-fields .st-relsws .ac-rl{display:none}
 .st-go{width:100%;margin-top:12px;min-height:52px;border-radius:var(--r-s);border:0;cursor:pointer;
+ display:flex;align-items:center;justify-content:center;gap:10px;
  font-family:var(--sans);font-size:16px;font-weight:600;background:var(--glow);color:var(--on-accent);
  transition:filter var(--t-micro) var(--ease-out)}
 .st-go:hover{filter:brightness(1.08)}
 .st-go:disabled{opacity:.4;cursor:default}
+/* the count of addresses this press runs, a figure beside the word, which
+   is why .st-go above is a centred flex row */
+.st-gon{min-width:26px;height:26px;padding:0 7px;border-radius:999px;display:inline-grid;place-items:center;
+ font-family:var(--num);font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;
+ border:1.5px solid currentColor}
 /* the negated word, struck, with the negator inside the mark. See stMarks. */
 .st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
  text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
@@ -6532,8 +6689,39 @@ body.snow #stleft,body.glasswhite #stleft{--rail-rest:var(--mid);--rail-rest-op:
    The same step aside as the Story's: on the Summary the rail carries
    Selection alone. Today stood beside it as .sum-rail until 21 November and
    opens the centre now (sumToday, ui/summary.js), so the rail's other
-   sections still step aside here and nothing on the rail repeats the page. */
-body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]){display:none}
+   sections still step aside here and nothing on the rail repeats the page.
+   AND INSIGHT STANDS ABOVE SELECTION HERE TOO, 21 November, the Summary
+   redesign's last item: "mount the real Insight panel plus a Source AI talk
+   button on the right." The rail held Selection alone, so the page's right
+   third was one header over an empty column on every first look. Insight is
+   the same section the Field shows, its id and its two painters unchanged
+   (railInsight, railStack, ui/insightui.js), which already paint on every
+   tab: this rule hid it, and nothing else had to move. The rest still step
+   aside, because each of them is a page of its own somewhere else. */
+body.tab-summary .lsec[data-rail="right"]:not([data-sec="sel"]):not([data-sec="you"]){display:none}
+/* THE HELLO, ON THE SUMMARY. The Journal's own control (.st-hello above),
+   drawn the same three circles in the same order so it reads as one control
+   and not a second design for the same act, set in the Insight section's
+   head with its name beside it: symbol first, the name second, and what it
+   does one hover or tap away in its tip. Shown on the Summary only; every
+   other tab with this rail either has the Journal itself or never asked. */
+.sum-hello{display:none}
+body.tab-summary .sum-hello{display:flex;align-items:center;gap:12px;width:100%;
+ margin:0 0 16px;padding:8px 12px;border:1px solid var(--edge);border-radius:12px;
+ background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:500;
+ text-align:left;cursor:pointer;outline-offset:4px;
+ transition:border-color var(--t-surface) var(--ease-out)}
+.sum-hello:hover,.sum-hello:focus-visible{border-color:var(--accent)}
+.sum-hello svg{flex:0 0 auto;width:36px;height:36px;overflow:visible}
+.sum-hello .sth-ring{fill:none;stroke:var(--dim);stroke-width:1.6;opacity:.55;
+ transform-origin:50% 50%;animation:sthBreathe 5.2s ease-in-out infinite}
+.sum-hello .sth-ring2{fill:none;stroke:var(--accent);stroke-width:1;opacity:0;
+ transform-origin:50% 50%;transition:opacity var(--t-surface) var(--ease-out)}
+.sum-hello .sth-dot{fill:var(--dim);transition:fill var(--t-surface) var(--ease-out)}
+.sum-hello:hover .sth-ring,.sum-hello:focus-visible .sth-ring{stroke:var(--accent);opacity:.85}
+.sum-hello:hover .sth-ring2,.sum-hello:focus-visible .sth-ring2{opacity:.4}
+.sum-hello:hover .sth-dot,.sum-hello:focus-visible .sth-dot{fill:var(--accent)}
+@media (prefers-reduced-motion:reduce){.sum-hello .sth-ring{animation:none}}
 /* TODAY, THE CENTRE'S FIRST ZONE. A silent day (nothing read yet, or a
    record the moment before its day is frozen) takes the whole section with
    it, so a date never stands over an empty card. */
@@ -8689,12 +8877,29 @@ body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
     the door measured past the row and the tag ran under the name. */
  .st-flow:not([data-focus="read"]) #stpend{visibility:hidden;min-width:0;width:0;overflow:hidden}
  .st-lsb{overflow:visible}
- .st-flow:not([data-focus="release"]) .st-rl{display:grid;grid-template-columns:minmax(0,1fr) auto;
-  align-items:center;gap:10px;padding:10px 12px}
- .st-flow:not([data-focus="release"]) .st-rlhd,.st-flow:not([data-focus="release"]) .st-fields{display:none}
- .st-flow:not([data-focus="release"]) .st-rings{margin:0}
- .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0}
- .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px;padding:0 20px;width:auto}
+ /* STACKED ON A PHONE, 21 November (panel-redesign). This was a grid of the
+    rings beside an auto width button, which with rows put the button in a
+    column of its own, centred on the list's height and off its edge. The
+    list over one full width press is the desktop panel folded, not a
+    second layout. The header stays, where the grid hid it: the column's
+    fold control (.zfold) is pinned to the panel's top right, and with the
+    header gone the first row ran under it, measured at 390 with four
+    picks. The header is the row that control sits in at every width.
+    HEIGHT, NOT MIN-HEIGHT, on the phone: with the header back, three rows
+    measured 318 against the 310 floor, so the panel grew by 8 pixels when
+    the last commit's addresses were on it and fell back to 310 when they
+    were not, and tests/stfull.js caught the column moving across a reload.
+    The list scrolls inside the panel instead (.st-rlmid already carries the
+    scroll), so the column is one size whatever it holds. */
+ .st-flow:not([data-focus="release"]) .st-rl{gap:10px;padding:12px;height:310px}
+ /* the grip is the desktop's: here the panel keeps this fixed height,
+    see stRelPhone in ui/storyui.js for why */
+ .st-rlgrip{display:none}
+ .st-flow:not([data-focus="release"]) .st-fields{display:none}
+ .st-flow:not([data-focus="release"]) .zfold{top:6px}
+ .st-flow:not([data-focus="release"]) .st-rings{margin:4px 0 0}
+ .st-flow:not([data-focus="release"]) .st-rlfoot{padding:0;margin:0;border-top:0}
+ .st-flow:not([data-focus="release"]) .st-go{margin:0;min-height:48px}
  .src-open,.src-q{font-size:18px}
  .pm-top{max-width:none;position:static;margin:12px;box-shadow:none}
  .pm-reg{position:static;margin:0 12px 12px;max-width:none}
@@ -11465,11 +11670,15 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-arc.on{stroke-opacity:1}
 .cl-st.sealed .cl-n{stroke-width:2.6}
 .cl-pill rect{fill:#101114;stroke:var(--c);stroke-opacity:.6;stroke-width:1}
-.cl-pill text{font-size:9.5px;font-weight:600;fill:var(--ink)}
+/* every text on the climb is 11px or more, the type floor the rest of the
+   product holds (tests/design.js gate 4). The design round drew the pills,
+   the law names, the seat names and the descent's names at 9.5 to 10.5, and
+   the gate reads CSS on HTML text, so SVG text got past it */
+.cl-pill text{font-size:11px;font-weight:600;fill:var(--ink)}
 .cl-st.shut .cl-pill rect{stroke:var(--mid);stroke-opacity:.35}
 .cl-st.shut .cl-pill text{fill:var(--mid)}
 .cl-lb{font-size:11.5px;fill:var(--ink)!important;font-weight:500}
-.cl-lb.sm{font-size:10px;fill:var(--mid)!important;font-weight:400}
+.cl-lb.sm{font-size:11px;fill:var(--mid)!important;font-weight:400}
 .cl-st:hover .cl-n,.cl-st:focus-visible .cl-n,.cl-st.sel .cl-n{stroke-width:2.6;filter:drop-shadow(0 0 6px var(--c))}
 .cl-st.sel .cl-lb{fill:var(--c)!important}
 .cl-l.got .cl-n{stroke-width:2.4}
@@ -11483,24 +11692,39 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-seat .cl-sr{fill:none;stroke:var(--c);stroke-opacity:.3;stroke-width:1.2}
 .cl-seat .cl-sg circle{fill:none;stroke:var(--c);stroke-opacity:.45;stroke-width:1.5}
 .cl-seat.on .cl-sr{stroke-opacity:.9}.cl-seat.on .cl-sg circle{stroke-opacity:1}
-.cl-sn{font-size:10.5px}
+.cl-sn{font-size:11px}
 .cl-badge{cursor:pointer}
 .cl-badge circle{fill:none;stroke:var(--c);stroke-opacity:.22;stroke-width:1.4;stroke-dasharray:3 3}
 .cl-badge.got circle{stroke-opacity:1;stroke-dasharray:none;stroke-width:2}
-.cl-src{cursor:pointer}
-.cl-src circle{fill:none;stroke:var(--mid);stroke-opacity:.4;stroke-width:1.4}
-.cl-src.open circle{stroke:#F2E6C4;stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
-.cl-srcl{text-anchor:start!important;font-size:11px}
-.cl-door{cursor:pointer}
-.cl-door rect{fill:#101114;stroke:rgba(210,120,110,.55);stroke-width:1.2}
-.cl-door path{fill:none;stroke:rgba(220,140,130,.9);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.cl-door text{fill:var(--ink);font-size:12px}
-.cl-door:hover rect,.cl-door:focus-visible rect{stroke:rgba(230,140,130,1)}
-.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.45);stroke-width:1.2}
-.cl-dstep text{font-size:9.5px;fill:var(--mid);fill-opacity:.55}
-.cl-dmore{font-size:11px;fill:var(--mid)!important;fill-opacity:.7}
-.cl-av .halo{fill:none;stroke:var(--c);stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
-.cl-av .core{fill:#F2E6C4}
+.cl-dstep circle{fill:none;stroke:rgba(210,120,110,.5);stroke-width:1.2}
+.cl-dstep .cl-hit{fill:transparent;stroke:none}
+.cl-dstep:hover circle:not(.cl-hit){stroke:rgba(230,150,140,1)}
+/* THE TWO POLES (clPole). One ring, one mark, one size, top and bottom, so
+   they read as a pair: the cloud of coherence in the light the board
+   already gives the top, the flame of decoherence in the red the descent
+   already wears (CL_CLOUD, ui/cone.js). Ring, not
+   fill: the disc behind the mark is the ground, so the path never shows
+   through it. */
+.cl-pole{cursor:pointer;outline:none}
+.cl-pole .cl-hit{fill:transparent;stroke:none}
+.cl-pole .cl-pr{fill:#101114;stroke-width:1.8}
+.cl-pole .cl-pa path{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cl-pole-up .cl-pr{stroke:#F2E6C4;stroke-opacity:.8}
+.cl-pole-up .cl-pa path{stroke:#F2E6C4}
+.cl-pole-up.open .cl-pr{stroke-opacity:1;filter:drop-shadow(0 0 10px #F2E6C4)}
+.cl-pole-dn .cl-pr{stroke:rgba(220,135,125,.85)}
+.cl-pole-dn .cl-pa path{stroke:rgba(230,150,140,1)}
+.cl-pole:hover .cl-pr,.cl-pole:focus-visible .cl-pr{stroke-width:2.8}
+.cl-svg .cl-pn{text-anchor:start;font-size:12.5px;font-weight:600;fill:var(--ink)}
+.cl-svg .cl-ps{text-anchor:start;font-size:11px;fill:var(--mid)}
+/* THE AVATAR'S GLOW IS ITS CQ (clSvg, --g is CQ over 100): the radiance
+   ring's reach and light both scale with it, so a person at 90 glows and a
+   person at 45 barely does */
+.cl-av .rad{fill:none;stroke:#F2E6C4;stroke-width:1.2;stroke-opacity:calc(.15 + .6*var(--g,0));
+ filter:drop-shadow(0 0 calc(2px + 12px*var(--g,0)) rgba(242,230,196,.85));pointer-events:none}
+.cl-av text{pointer-events:none}
+.cl-av .halo{fill:none;stroke:#F2E6C4;stroke-width:2;animation:clpulse 2.4s ease-in-out infinite}
+.cl-av .core{fill:#F2E6C4;fill-opacity:calc(.55 + .45*var(--g,0))}
 .cl-avq{font-size:11px;font-weight:600;fill:#F2E6C4!important}
 .cl-av.below .cl-avq{text-anchor:start}
 @keyframes clpulse{0%,100%{stroke-opacity:.9}50%{stroke-opacity:.25}}
@@ -11525,5 +11749,53 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
 .cl-note{font-size:11px;color:var(--mid);margin:0}
 .cl-dsc b{font-size:13px;color:var(--ink)}.cl-dsc p{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--mid)}
 .cl-ref{font-size:12px;color:var(--mid);border-top:1px solid var(--edge);padding-top:10px}
+/* THE RECIPES UNDER A CARD (clRecipes). Set off from the card above by the
+   same rule .cl-ref draws, each row the name, then its minutes and steps,
+   and the press under them on the same left edge. The first cut put the
+   press beside the words, and in a rail this narrow it took half the row
+   and broke a three word name over two lines. The press is 44 tall, the
+   tap floor (tests/design.js gate 8). */
+.cl-rch{border-top:1px solid var(--edge);padding-top:12px;margin-top:8px}
+.cl-rcl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.cl-rc{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--edge);border-radius:12px}
+.cl-rct{min-width:0;display:flex;flex-direction:column;gap:2px}
+.cl-rct b{font-size:13px;color:var(--ink);font-weight:600}
+.cl-rcm{font-size:11.5px;color:var(--mid)}
+.cl-rcs{font-size:12px;line-height:1.45;color:var(--mid)}
+.cl-rcb{flex:none;min-height:44px;white-space:nowrap}
 .cl-p{margin:0;font-size:13px;line-height:1.55;color:var(--mid)}
+/* THE RAIL BESIDE THE CLIMB (clRailIn). One rail on the left and the
+   Insight rail on the right: the figure's second panel is not drawn on the
+   climb, so the page is a rail, the board, a rail. The seats are spread down
+   the height with even space between them, the poles at its two ends. */
+.cone-fig.climb{grid-template-columns:minmax(220px,256px) minmax(0,1fr)}
+.cone-fig.climb>.cl-rail{grid-column:1;grid-row:1 / span 2}
+.cl-rail{justify-content:space-between;gap:6px;padding:10px 8px;overflow-y:auto}
+.cone-fig.stk .cl-rail{display:flex;flex-direction:column;justify-content:flex-start;gap:10px;overflow:visible}
+.cl-rail .cn-nr{min-height:44px;padding:4px 6px;gap:10px}
+.cl-rail .fb-orb,.cl-rail .fb-arc{width:34px;height:34px}
+.cl-rail .fb-gl svg{width:16px;height:16px}
+.clr-seat{display:flex;flex-direction:column;gap:1px}
+.clr-hd{display:flex;align-items:center;gap:8px;padding:0 8px;font-size:11px;line-height:1.3;color:var(--dim)}
+.clr-mk{width:16px;height:16px;flex:0 0 16px;fill:none;stroke:var(--ax);stroke-width:1.6}
+.clr-nm{font-size:12px;font-weight:600;color:color-mix(in srgb,var(--ax) var(--tm),var(--ink))}
+.clr-rg{margin-left:auto;font-variant-numeric:tabular-nums}
+.clr-hd.sel .clr-nm{text-decoration:underline;text-underline-offset:3px}
+.clr-at{display:block;font-size:11px;line-height:1.3;color:var(--mid);font-variant-numeric:tabular-nums;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clr-lw{color:var(--dim)}
+.clr-paths{display:flex;align-items:center;gap:2px;padding-left:0}
+.clr-paths .cn-tx{padding-left:8px}
+.cl-rail .clr-pt{width:44px;min-width:44px;height:44px;padding:5px;flex:0 0 44px;justify-content:center}
+.clr-paths.shut .cn-or{opacity:.55}
+.clr-paths.shut .cn-or .trk{stroke-dasharray:3 3}
+.cl-rail .cn-tx{min-width:0;flex:1 1 auto}
+.clr-t.shut .cn-or{opacity:.55}
+.clr-t.shut .cn-or .trk{stroke-dasharray:3 3}
+.clr-t.sealed .cn-or .trk{stroke-width:3}
+.clr-pole .cn-nu{color:var(--ink)}
+.clr-pole-up .cn-or{--c:#F2E6C4;color:#F2E6C4}
+.clr-pole-dn .cn-or{--c:rgba(220,135,125,.9);color:rgba(230,150,140,1)}
+.clr-pole .fb-gl svg{stroke-width:2}
+.cn-pan.fb-lt .clr-pole-up .cn-or{--c:#8A7440;color:#8A7440}
 </style></head>

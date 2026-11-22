@@ -1709,8 +1709,39 @@ function bootUniLand(){
    and on the sheet's end the face is handed home at exactly the size and
    place it already shows. Where the Journal is not what is under the sheet
    (the sign in door is up, or another tab), there is nowhere honest to land,
-   so the face settles where it stands and fades with the card instead. */
-function bootUniFly(st,host){
+   so the face settles where it stands and fades with the card instead.
+
+   THE FLIGHT RUNS ON THE SHEET'S CLOCK, 21 November. His words: "I want to
+   have it line up perfectly with where it starts in the dashboard." It ran
+   720ms of wall time from whichever frame first read 7.20, while the hand
+   home is the sheet's own end at 8.00, so the two raced with 80ms between
+   them. Measured on the build before this change, a frame that read the
+   clock late left the face still at its start box at 7.90 on the sheet's
+   clock, 1058 by 494 against the Journal's 900 by 420 at 1600, and the hand
+   home then cut it 89 pixels down and 17.5 percent smaller in one frame:
+   two things with a cut between them, not one shape landing. Now the
+   flight is pinned to the sheet's timeline and finishes at 7.92, before
+   the hand home, from wherever the clock stands when it starts; a late
+   start flies the same path in less time rather than arriving mid air.
+   And the box is read again on every frame of the flight (bootUniFlyTrack,
+   below), so a Journal that moves while the sheet still covers it is where
+   the last frame lands, not where it stood at 7.20.
+
+   REDUCED MOTION, rbStill (ui/component.js), the media query and the
+   person's own quiet switch alike: no journey. The face is handed home at
+   the settle, under the sheet that still covers it, and the sheet's own
+   fade uncovers it already in place. */
+var BOOT_UNI_LANDED=7.92;
+function bootUniFlyTrack(st){
+ if(!st||!st.fly||st.landed)return;
+ var su=document.getElementById('stuni'); if(!su)return;
+ var b=su.getBoundingClientRect(); if(!(b.width>40&&b.height>40))return;
+ var f=st.fly.style, l=parseFloat(f.left), t=parseFloat(f.top), w=parseFloat(f.width), h=parseFloat(f.height);
+ if(Math.abs(l-b.left)<0.5&&Math.abs(t-b.top)<0.5&&Math.abs(w-b.width)<0.5&&Math.abs(h-b.height)<0.5)return;
+ f.left=b.left+'px'; f.top=b.top+'px'; f.width=b.width+'px'; f.height=b.height+'px';
+ try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}}
+function bootUniFly(st,host,t,fade){
+ if(typeof rbStill==='function'&&rbStill()){ bootUniLand(); return; }
  var dest=null, stuni=document.getElementById('stuni');
  try{
   if(stuni&&typeof S!=='undefined'&&S&&typeof TAB!=='undefined'&&S.tab===TAB.STORY){
@@ -1736,11 +1767,20 @@ function bootUniFly(st,host){
  document.body.appendChild(fly); fly.appendChild(wid);
  try{if(window.SrcFace&&window.SrcFace.refit)window.SrcFace.refit();}catch(e){}
  st.fly=fly;
+ /* what is left of the 720 before 7.92: all of it on time, less on a late
+    frame, never under the 280 a surface move needs to read as a move */
+ var tc=(typeof t==='number'&&isFinite(t))?t:BOOT_UNI_SETTLE;
+ var dur=Math.round(Math.min(720,Math.max(280,(BOOT_UNI_LANDED-tc)*1000)));
  try{
   st.flyAnim=fly.animate([
    {transform:T0,easing:'cubic-bezier(.45,0,.55,1)'},
    {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+(k*0.97).toFixed(4)+')',offset:120/720,easing:'cubic-bezier(.22,1,.36,1)'},
-   {transform:'none'}],{duration:720,fill:'forwards'});
+   {transform:'none'}],{duration:dur,fill:'forwards'});
+  /* pinned to the sheet's own timeline at the clock's reading, so the end
+     falls at 7.92 on that clock however late this frame ran */
+  if(fade&&fade.startTime!=null&&(fade.playbackRate||1)===1){
+   var d0=fade.effect.getComputedTiming().delay;
+   st.flyAnim.startTime=fade.startTime+d0+(tc-BOOT_UNI_FADE_AT)*1000;}
  }catch(e){fly.style.transform='none';}}
 /* THE ENHANCEMENT ITSELF. Mounts the face into #bootuni (shell/body.html) and
    drives it off the boot clock above. Reduced motion is checked first and
@@ -1822,7 +1862,8 @@ function bootUni(){
   var t=clock();
   if(t==null){st.done=true; BOOT_UNI_RAF=0; bootUniLand(); return;}
   if(face){
-   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host);}catch(e){host.classList.add('bx-uni-out');}}
+   if(!st.settled&&t>=BOOT_UNI_SETTLE){st.settled=true; try{bootUniFly(st,host,t,fade);}catch(e){host.classList.add('bx-uni-out');}}
+   else if(st.fly)bootUniFlyTrack(st);
   }else{
    if(!st.g1&&t>=0.80){st.g1=true; try{window.Uni.setGaze(0.6,0);}catch(e){}}
    if(!st.g2&&t>=1.25){st.g2=true; try{window.Uni.setGaze(-0.6,0);}catch(e){}}

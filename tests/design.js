@@ -528,7 +528,7 @@ console.log('\n=== 9 \u00b7 four lightings, each its own ===');
   return {btns:lb?lb.querySelectorAll('button').length:0,shown:lb?getComputedStyle(lb).display!=='none':false};});
  ok(row.btns===0&&!row.shown,'the Body has no layer row, '+JSON.stringify(row));
  for(const [k,label,want] of [['addr','Addresses',null],['masks','Masks',null],['sab','Saboteurs','sabs'],
-   ['cx','Complexes','cxs'],['hy','Hyper complexes','hys'],['flow','Flow',null]]){
+   ['cx','Complexes','cxs'],['hy','Hyper complexes','hys'],['flow','Flow',null],['heat','Charge',null]]){
   const m=await p5.evaluate(([k,want])=>{const r=compute(),b=document.querySelector('#bmov [data-bmov="'+k+'"]');
    return {has:!!b,pill:b&&b.querySelector('.fb-v')?b.querySelector('.fb-v').textContent:null,
     n:want?r[want].length:null,on:b?b.getAttribute('aria-pressed'):null};},[k,want]);

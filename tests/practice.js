@@ -145,8 +145,67 @@ SUITES.schema=function(E,ok){
  /* malformed */
  bad(Q=>{Q.goals[0].title='x'.repeat(201);},'is 201 characters and the cap is 200','a title over its cap, refused and not cut');
  bad(Q=>{Q.goals[0].mood='calm';},'practice.goals[0] may not carry mood','a key nobody declared');
- bad(Q=>{Q.v=2;},'not a practice schema this build reads','a newer practice schema');
- bad(Q=>{Q.goals[0].schema_version=2;},'schema_version is 2, outside 1 to 1','an object at a newer schema version');
+ bad(Q=>{Q.v=E.PRACTICE_SCHEMA_V+1;},'not a practice schema this build reads','a newer practice schema');
+ bad(Q=>{Q.goals[0].schema_version=E.PRACTICE_SCHEMA_V+1;},'schema_version is '+(E.PRACTICE_SCHEMA_V+1)+', outside 1 to '+E.PRACTICE_SCHEMA_V,'an object at a newer schema version');
+
+ /* ---- PRACTICE SCHEMA 2, 21 November: the Ritual tab's plans and its
+    affirmation and challenge rows ride the record. A 1 loads with both
+    empty; every field out of shape is refused by its own path; a whole
+    record with plans goes out through the export and back in unchanged. ---- */
+ ok(E.PRACTICE_SCHEMA_V>=2,'the practice schema is at 2 or later, the version that carries plans and rows');
+ {const v1=clone(W); v1.v=1; delete v1.plans; delete v1.sched;
+  const e1=[], P1=E.practiceValidate(e1,v1,'practice');
+  ok(!e1.length&&J(P1.plans)==='[]'&&J(P1.sched)==='[]','a practice object at version 1 loads, its plans and rows filled empty from the blank: '+J(e1.slice(0,2)));
+  const old=clone(E.saveProfile(E.blankProfile('v1'))); old.practice=clone(v1);
+  const vo=E.validateProfile(old);
+  ok(vo.ok&&J(vo.profile.practice.plans)==='[]'&&J(vo.profile.practice.sched)==='[]','a whole record carrying a version 1 practice object crosses the boundary with empty plans and rows');}
+ const PLAN={id:'r1', steps:['box','noting'], when:'after waking', where:'', days:7, from:T0, stop:null,
+  band:'Heart', track:'', rel:null, tc:null, tags:['Heart'], on:[0,2,4], tm:10, at:'07:30', ex:[20400]};
+ const ROW={id:'ch:abc', kind:'chal', on:null, at:'', from:T0, days:14, ex:null,
+  miss:{k:'own', own:'I walk for ten minutes'}, ack:null, ans:[{d:20400, why:'the train was late'}]};
+ {const Q=clone(W); Q.plans=[clone(PLAN)]; Q.sched=[clone(ROW),{id:'aff', kind:'aff', on:[0,1,2,3,4], at:'21:00', from:T0, days:0, ex:null, miss:null, ack:null, ans:[]}];
+  const e=[], P=E.practiceValidate(e,Q,'practice');
+  ok(!e.length&&J(P.plans)===J(Q.plans)&&J(P.sched)===J(Q.sched),'a plan and two rows in their written shape cross the boundary unchanged: '+J(e.slice(0,2)));
+  const rec=clone(E.saveProfile(E.blankProfile('carry'))); rec.practice=P;
+  const back=E.validateProfile(JSON.parse(JSON.stringify(rec)));
+  ok(back.ok&&J(back.profile.practice.plans)===J(Q.plans)&&J(back.profile.practice.sched)===J(Q.sched),
+   'and a whole record carrying them goes out as text and back in through the boundary with them intact');}
+ const badP=(mut,frag,what)=>{const Q=clone(W); Q.plans=[clone(PLAN)]; Q.sched=[clone(ROW)]; mut(Q);
+  const errs=[]; const P=E.practiceValidate(errs,Q,'practice');
+  ok(errs.join(' | ').indexOf(frag)>=0,what+' is refused by name: '+J(errs.slice(0,2)));};
+ badP(Q=>{Q.plans='r1';},'practice.plans is not a list','plans that are not a list');
+ badP(Q=>{Q.sched={};},'practice.sched is not a list','rows that are not a list');
+ badP(Q=>{Q.plans=Array(E.PR_PLANS_CAP+1).fill(null);},'more than '+E.PR_PLANS_CAP,'plans over their ceiling, refused and not cut');
+ badP(Q=>{Q.plans[0]=7;},'practice.plans[0] is not an object','a plan that is a number');
+ badP(Q=>{Q.plans[0].colour='red';},'practice.plans[0] may not carry colour','a plan key nobody declared');
+ badP(Q=>{Q.plans[0].steps=['levitation'];},'practice.plans[0].steps[0] names no practice','a plan step naming no practice');
+ badP(Q=>{Q.plans[0].steps=[];},'practice.plans[0].steps is not a list','a plan with no steps');
+ badP(Q=>{Q.plans[0].days=9999;},'practice.plans[0].days is 9999, not a whole number of days','a plan length of 9999 days, refused and never clamped');
+ badP(Q=>{Q.plans[0].days='7';},'practice.plans[0].days is "7"','a plan length that is text');
+ badP(Q=>{Q.plans[0].from='Tuesday';},'practice.plans[0].from is not a date','a start that is not a date');
+ badP(Q=>{Q.plans[0].at='24:00';},'practice.plans[0].at is "24:00", not a time of day','24:00, refused and never rounded');
+ badP(Q=>{Q.plans[0].on=[0,0];},'practice.plans[0].on is not a list of weekdays','a weekday twice');
+ badP(Q=>{Q.plans[0].tm=0;},'practice.plans[0].tm is 0','a timer of no minutes');
+ badP(Q=>{Q.plans[0].tags=['Spleen'];},'practice.plans[0].tags is not a list of points','a free text tag (TG4)');
+ badP(Q=>{Q.plans[0].band='Spleen';},'practice.plans[0].band is not a point','a seat that is not a seat');
+ badP(Q=>{Q.plans[0].rel=999999;},'practice.plans[0].rel is not an address','a release tied to no address');
+ badP(Q=>{Q.plans[0].tc='nobody';},'practice.plans[0].tc names no teacher','a becoming toward no teacher');
+ badP(Q=>{Q.plans[0].ex=[3,3];},'practice.plans[0].ex is not a list of distinct day numbers','a day set Once twice');
+ badP(Q=>{Q.plans[0].when='x'.repeat(E.RIT_PLAN_MAX+1);},'practice.plans[0].when is not text of','a when over its cap');
+ badP(Q=>{Q.plans.push(clone(PLAN));},'practice.plans[1].id "r1" is already used','two plans with one id');
+ badP(Q=>{Q.sched[0].id='aff';},'practice.sched[0] is not an affirmation row (aff) or a challenge row','a challenge row wearing the affirmations\' id');
+ badP(Q=>{Q.sched[0].miss={k:'pushups'};},'practice.sched[0].miss.k is not one of why, own','a miss cost that is not one of the two');
+ badP(Q=>{Q.sched[0].miss.own='x'.repeat(141);},'practice.sched[0].miss.own is not text of','a miss cost in the person\'s words over its cap');
+ badP(Q=>{Q.sched[0].miss='push ups';},'practice.sched[0].miss is not an object','a miss cost that is text');
+ badP(Q=>{Q.sched[0].ans=[{d:1.5, why:'x'}];},'practice.sched[0].ans[0].d is not a day number','an answer on half a day');
+ badP(Q=>{Q.sched[0].ans=[{d:1, why:'x', mood:'sad'}];},'practice.sched[0].ans[0] may not carry mood','an answer key nobody declared');
+ badP(Q=>{Q.sched[0].at='7:5';},'practice.sched[0].at is "7:5", not a time of day','a row time of 7:5');
+ badP(Q=>{Q.sched[0].ack='yes';},'practice.sched[0].ack is not a day number','an acknowledgement that is text');
+ badP(Q=>{Q.sched[0].days=-1;},'practice.sched[0].days is -1','a row length below nothing');
+ /* and the gate bites: every refusal above refuses the whole record at the profile boundary, atomically */
+ {const rec=clone(E.saveProfile(E.blankProfile('bad'))); rec.practice=clone(W); rec.practice.plans=[Object.assign(clone(PLAN),{at:'25:00'})];
+  const vb=E.validateProfile(rec);
+  ok(!vb.ok&&(vb.errors||vb.errs||[]).join(' | ').indexOf('practice.plans[0].at')>=0,'a whole record carrying one bad plan is refused, by that plan\'s path: '+J((vb.errors||vb.errs||[]).slice(0,1)));}
  bad(Q=>{Q.goals='g1';},'practice.goals is not a list','a list that is not a list');
  bad(Q=>{Q.goals=Array(E.PR_CAP.goals+1).fill(null);},'more than '+E.PR_CAP.goals,'a list over its cap');
  bad(Q=>{Q.practice_events[0].execution.steps_completed=2;},'is completed with 2 of 3 steps, which is partial','completed with steps missing');

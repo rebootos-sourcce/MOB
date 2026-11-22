@@ -571,6 +571,19 @@ const HCX_LIB=[
    and the code for it is written and correct. A host that has the
    files sets these two and everything downstream works unchanged.
    Nothing is requested until one of them is named.
+
+   AND THE DETAILED FIGURE IS NOT WAITING ON THESE, checked 22 November.
+   A board line read the empty names as "the Body falls back to a plain
+   outline until the detailed front and back art is supplied". It does not.
+   The detailed figure was ruled on 27 September, his words, "lock that in
+   as our kind of starting point": the front and back nervous system man,
+   FW option A, carried as vector data in BMNERVE (ui/map.js) and drawn by
+   the canvas map, which is the only figure the Body page shows. The outline
+   below stands in for a raster only inside the seven layers' renderer,
+   which nothing on the page reaches since round KV. BODY-MAP-SPEC.md
+   section 8 also rules raster display art out of the one file on size, so
+   no supplied picture is pending for display: anything he supplies now is a
+   placement reference (section 6), kept outside the build.
    ============================================================ */
 var FIG_FETTER='', FIG_PAIN='';
 var FIG_FETTER_AR=0.50395, FIG_PAIN_AR=0.47925;
@@ -632,8 +645,26 @@ var BODYPATH='M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C
 var ANATHEAD={ytop:4.2, year:12.0, topZ:100.2, earZ:-48.0};
 /* The spine ruler: vertebral level to figure height, through the four seats
    whose own text names a level. Heart T4 to T5, Solar T12 to L1, Sacral L5,
-   Root the tailbone. */
-var ANATSPINE=[[11.5,30.51],[19.5,40.21],[24,47.02],[30,53.55]];
+   Root the tailbone.
+
+   AND TWO KNOTS IN THE NECK, 21 November, off the back figure's own vertebral
+   labels (map.js BMSPINE, C1 at 13 and C7 at 19). The four seat knots stop at
+   T4, so every address above the upper chest had nothing to stand on: a
+   level there was extrapolated down the Heart to Solar slope, which put C1 at
+   17.78, below the chin, and that is why five neck addresses sat in BMPROP
+   with no derived place. The fifth seat with a level in its text, Throat, is
+   no help: FLOWSEAT gives it C1 to C4 and seats it at the suprasternal notch,
+   which is the Throat seat's own contradiction (TASKS.md BI3a) and would have
+   put the pharynx on the collarbone. The back figure's labels are the one
+   neck calibration this codebase already draws by: C1 level with the ear and
+   C7 at the base of the neck, which is where the atlas has them (Rohen 7e
+   p.237, the suboccipital triangle at C1 under the occiput, and p.226 to 242,
+   the vertebra prominens at the base of the nuchal region). Ruled by the
+   owner the same day: place the nerves where they are, words after. Nothing
+   at T4 or below moves, because every existing level is 11.5 or more and
+   reads the same segment it always did; the gap the anatomy gate holds open
+   between the two rulers closes at C1 and C7 and stays open below. */
+var ANATSPINE=[[1,13],[7,19],[11.5,30.51],[19.5,40.21],[24,47.02],[30,53.55]];
 var ANAT=[
  /* 3rd Eye. The chiasm is the brow line, which is where the seat's own text
     puts it: between the eyebrows. */
@@ -712,16 +743,58 @@ var ANAT=[
     the cauda equina sits in the vertebral canal on the midline, so 0 is not
     a typed offset, it is where the structure is. */
  {s:'Cauda equina, the lumbar and sacral roots below the conus medullaris', ids:[8], v:[[23,0]]},
- /* 40 (Superior Mesenteric Plexus) is sourced to this same level, Rohen 7e
-    p.328, and is NOT moved here. At L1 on the midline it lands on the same
-    point as 16, one thousandth of a unit apart (tests/anatomy.js group 5),
-    and 16 and 40 are not one structure, so research.js cannot say they
-    share a place. v: has no front-to-back axis to tell a structure deep in
-    the spinal canal from one on the front of the aorta; giving it any other
-    level would be a typed guess, the thing this method forbids. Left in
-    BMPROP (map.js) with the same citation, for the owner's call: add a
-    depth axis, or rule that a shared level may share a point the way a
-    shared plexus already does. */
+ /* 40, the superior mesenteric plexus, moved from BMPROP on 21 November, a
+    team pick open to the owner's correction. Rohen 7e p.328 ("Kidney:
+    Arteries") labels the superior mesenteric artery leaving the front of the
+    aorta beside the body of L1, the level 16 stands at. The first cut held it
+    back because at L1 on the midline it landed on 16's own point, one
+    thousandth of a unit apart, and 16 (the end of the cord, in the canal) and
+    40 (on the front of the aorta) are not one structure. The two real
+    options were a false merge onto 16's point or the aorta's own side, and
+    the aorta is the one that is anatomy: the abdominal aorta runs on the left
+    of the vertebral bodies, which this map already draws for 35, the aortic
+    plexus, one unit to the person's left (BMPROP). So 40 stands on the same
+    side at the same one unit, at L1, and tests/anatomy.js lists it one
+    sided. The unit is the table's own aorta offset, not an atlas
+    measurement. */
+ {s:'Superior mesenteric plexus, round the artery\'s origin from the aorta at L1',
+  ids:[40], v:[[20,1]]},
+ /* THE NECK, moved from BMPROP on 21 November on the owner's ruling ("place
+    the plexus and the nerves where they're supposed to be, and we'll figure
+    out what words go there"), on the two neck knots ANATSPINE gained the same
+    day. The names are untouched: they are his, and placement and naming are
+    two calls. Each level is a landmark the atlas draws; each offset from the
+    midline is BMPROP's own, carried over unchanged from the prototype he
+    approved on 27 September (FW), because v: takes a typed offset and no page
+    read gives one. Levels count C1 as 1.
+    70 at C2, the angle of the jaw, where the glossopharyngeal nerve curves
+    forward below it after the jugular foramen (Rohen 7e p.31 and p.33 to 34,
+    the cranial nerves by their exit foramen). 68 at C2 to C3, the middle
+    constrictor, where the vagus's pharyngeal branch joins the pharyngeal
+    plexus (p.165). 72 at C4.5, the middle of the cervical sympathetic chain
+    from the superior ganglion at C2 to the stellate at C7 and T1 (p.185). */
+ {s:'Glossopharyngeal nerve, below the angle of the jaw at C2', ids:[70], v:[[2,-2.4],[2,2.4]]},
+ {s:'Pharyngeal branch of the vagus, at the pharyngeal plexus, C2 to C3', ids:[68], v:[[2.5,-1.2],[2.5,1.2]]},
+ {s:'Cervical sympathetic ganglia, the chain beside C2 to C7', ids:[72], v:[[4.5,-1.9],[4.5,1.9]]},
+ /* 74 at T1, the first rib, which is where the subclavius rises to the
+    clavicle and the nerve to it, off the upper trunk of the brachial plexus,
+    meets it (p.413, the plexus dissected behind the clavicle). The nerve
+    itself is not labelled on any page read, so the landmark is the muscle's
+    and the plexus's, not the nerve's. */
+ {s:'Nerve to subclavius, at the first rib under the clavicle', ids:[74], v:[[8,-5.6],[8,5.6]]},
+ /* 57, the phrenic nerves, C3 to C5 by root but drawn where they run, down
+    each side of the pericardium, so at the cardiac level, T4 to T5, the
+    Heart seat's own knot. */
+ {s:'Phrenic nerves, down each side of the pericardium at T4 to T5', ids:[57], v:[[11.5,-4.4],[11.5,4.4]]},
+ /* 23, the pudendal plexus, S2 to S4 (Rohen 7e p.470, the lumbosacral
+    schematic, which brackets it by those roots). S3 is 27 on this count.
+    Offset BMPROP's. */
+ {s:'Pudendal plexus, S2 to S4, low in the pelvis', ids:[23], v:[[27,-1.8],[27,1.8]]},
+ /* 46, the anterior cutaneous branches of the thoraco-abdominal nerves, T7 to
+    T9 (p.214 and p.216 label them, p.217 the epigastric region they supply).
+    They come through under the xiphoid, and the xiphisternal joint is level
+    with T9, 16 on this count. Offset BMPROP's. */
+ {s:'Anterior cutaneous branches of the thoraco-abdominal nerves, under the xiphoid at T9', ids:[46], v:[[16,-2],[16,2]]},
  /* FROM THE TWO CHARTS. Graded a fail again on 26 September against a
     classical marma chart and a 112 node chart, with "as close as 1:1 as
     possible". Measured before this (proto/anatomy-ref, 26 September): of 48
@@ -5138,8 +5211,10 @@ var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws o
 /* THE FILMS, BY THE FILE THAT HOLDS EACH ONE. Read off his Drive folder
    "Atuned Videos" (folder 1jzIHUjxyJ3IGU62npLj4jXmPvExrcobY) on 21 November,
    by listing the folder, not by searching names, and every row below is a
-   file that listing returned. It is a map for the Worker seam to fetch from
-   in a later milestone and nothing more: a film is never embedded in this
+   file that listing returned. It is a map, and it has two readers: the
+   Worker seam may fetch from it in a later milestone, and since 21 November
+   ui/kbtable.js turns each id into a plain link out to the Drive file, which
+   only the person's own press follows. A film is never embedded in this
    file, and nothing here makes a request.
 
    TEN, NOT EIGHT. The brief said eight films and BOOK-ERRATA.md 15 said
@@ -5188,8 +5263,13 @@ var HARM_FAM={
  nature:{b:'Crown',ic:'M3 12a4.5 4.5 0 019 0 4.5 4.5 0 009 0'},
  /* two rings, apart and joined. nothing about a person happens alone. */
  human:{b:'Sacral',ic:'M8 9a3 3 0 100 6 3 3 0 100-6 M16 9a3 3 0 110 6 3 3 0 110-6 M11 12h2'},
- /* the axis that wears the law's own mark. see SI. */
- spirit:{b:null,ic:null},
+ /* the axis that wears the law's own mark, see SI, and its colour is the
+    law's own seat. The family itself had no mark, so its band on the table
+    of laws (ui/kbtable.js) was the one heading drawn with a ring round
+    nothing, 21 November. A hull, its mast and its sail: integrity is the
+    hull, the first part of coherence and the part the rest is carried in,
+    which is kb.js's own word for it in GLOSS. */
+ spirit:{b:null,ic:'M3 11h18l-3 7H6z M12 4v7 M12 5l5 4h-5'},
  /* an aperture and what leaves through it. */
  express:{b:'Throat',ic:'M5 10h3l4-4v12l-4-4H5z M16 9a4 4 0 010 6 M19 6a8 8 0 010 12'},
  /* nine cells. the architectures are nine and the grid says nine. */
@@ -5198,6 +5278,133 @@ var HARM_FAM={
  measure:{b:'3rd Eye',ic:'M3 9h18v6H3z M7 9v3 M11 9v3 M15 9v3'},
  /* a frame inside a frame. this is the one that is about the others. */
  meta:{b:'Root',ic:'M3 3h18v18H3z M8 8h8v8H8z'}};
+/* EVERY LAW WEARS ITS OWN MARK, 21 November, his words on the table of laws:
+   "make sure each thing has their symbolic icon." HARM_FAM above gave the
+   fifty five laws outside Moral Integrity their family's one mark, so a band
+   of thirteen printed one wave thirteen times and the tile said nothing the
+   band heading had not. The twenty one Laws of Moral Integrity are not here:
+   they already wear their own, SI in engine/data/canon.js, and a second mark
+   would make two icons for one law.
+
+   Keyed by code, the way HARM_FILM is, so HARM itself is untouched. Every
+   mark is an open stroke in a 24 box, ring and never fill, and keeps to its
+   family's own grammar so a band still reads as one family: nature is
+   curves, human nature is circles, expression is open shapes, the
+   architectures and the instruments are drawn objects and graduated lines,
+   and the frame is drawn inside a square. Each line above a mark says what
+   it is and why it is that law, because a mark nobody can unpack is a
+   decoration. */
+var HARM_IC={
+ /* one ring round one source. one field, read from its centre. */
+ E01:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+ /* two waves at one frequency. nothing is still. */
+ E02:'M3 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0 M3 15c2-3 4-3 6 0s4 3 6 0 4-3 6 0',
+ /* a ring divided by one curve. each half is the shape of the other. */
+ E03:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 4a4 4 0 0 0 0 8a4 4 0 0 1 0 8',
+ /* an arc above a line and its mirror below. as above, so below. */
+ E04:'M6 9a6 6 0 0 1 12 0 M3 12h18 M6 15a6 6 0 0 0 12 0',
+ /* two curves bowed toward each other. like fields draw together. */
+ E05:'M4 5c5 2 5 12 0 14 M20 5c-5 2-5 12 0 14',
+ /* a curve that rises into a direction. the act the field moved first. */
+ E06:'M4 19c7 0 12-5 13-13 M13 6h4v4',
+ /* a spiral, one form turning into the next without a break. */
+ E07:'M12 12a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0',
+ /* a stone and the rings it sends out. every effect has its point. */
+ E08:'M4.5 6a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0 M6 11a5 5 0 0 0 5-5 M6 16a10 10 0 0 0 10-10 M6 21a15 15 0 0 0 15-15',
+ /* a wave on its line. the crest is paid back by the trough. */
+ E09:'M3 12h18 M3 12c3-7 6-7 9 0s6 7 9 0',
+ /* a sprout in two leaves. everything it will be, folded and waiting. */
+ E10:'M12 21v-8 M12 13c-4.5 0-7-2.5-7-7 4.5 0 7 2.5 7 7 M12 11c0-3.5 2-6 6-6 0 3.5-2 6-6 6',
+ /* two orbits crossing. what you see depends on which one you stand on. */
+ E11:'M3 12a9 4 0 1 0 18 0a9 4 0 1 0-18 0 M12 3a4 9 0 1 0 0 18a4 9 0 1 0 0-18',
+ /* the same arch three times, and the beat under each. */
+ E12:'M3 14a3 3 0 0 1 6 0a3 3 0 0 1 6 0a3 3 0 0 1 6 0 M6 18v1 M12 18v1 M18 18v1',
+ /* two crescents back to back. two principles, each the other's shape. */
+ E13:'M10 4a8 8 0 0 0 0 16a10 10 0 0 1 0-16 M14 4a8 8 0 0 1 0 16a10 10 0 0 0 0-16',
+ /* a head over shoulders. awareness taking a body's shape. */
+ E14:'M9 6.5a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M5 20a7 7 0 0 1 14 0',
+ /* one ring three times. a pattern many people step into. */
+ E15:'M9 6.5a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M3.5 16a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M14.5 16a3 3 0 1 0 6 0a3 3 0 1 0-6 0',
+ /* a person and the field round them, twice over. */
+ E16:'M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0 M7 6.5a8 8 0 0 0 0 11 M17 6.5a8 8 0 0 1 0 11 M4 4a12 12 0 0 0 0 16 M20 4a12 12 0 0 1 0 16',
+ /* two rings and the one wave between them. two systems on one frequency. */
+ E17:'M2.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M16.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M7.5 12c1.5-3 3-3 4.5 0s3 3 4.5 0',
+ /* an eye. what reaches you is what the eye lets in. */
+ E18:'M2 12c3-5.5 17-5.5 20 0-3 5.5-17 5.5-20 0 M9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0',
+ /* three nodes and the lines between them. intelligence is the connection. */
+ E19:'M4 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M16 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M10 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M8 6h8 M7 7.8l4 8.4 M17 7.8l-4 8.4',
+ /* a plus and a minus, side by side. the two signals a body steers by. */
+ E20:'M2.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M12.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M5 12h4 M7 10v4 M15 12h4',
+ /* three lines through one centre. the three axes every reading sits on. */
+ E21:'M12 3v18 M4.2 7.5l15.6 9 M4.2 16.5l15.6-9 M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0',
+ /* a figure inside a ring. a shape that stands for more than itself. */
+ E22:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 7.5l4.5 8h-9z',
+ /* a whorl, the print that is only yours. */
+ E23:'M4 16a8 8 0 0 1 16 0 M7.5 18v-2a4.5 4.5 0 0 1 9 0v2 M12 15v6',
+ /* one path, two ends. a fork is where the choice is. */
+ E24:'M12 21v-8 M12 13L7 7.5 M12 13l5-5.5 M5 5.5a2 2 0 1 0 4 0a2 2 0 1 0-4 0 M15 5.5a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ /* a hand mirror. the ego is the self you hold up to look at. */
+ E25:'M7 9a5 6 0 1 0 10 0a5 6 0 1 0-10 0 M12 15v6 M9 21h6',
+ /* a target and the line leaving its centre. aimed before it moves. */
+ E26:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0-7 0 M12 12l9-9 M17 3h4v4',
+ /* a ball and the lines it leaves behind. intention, moving. */
+ E27:'M11 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0-9 0 M3 9h5 M2 12h6 M3 15h5',
+ /* now, reaching back to then. two rings and the arc between. */
+ E28:'M3.5 16a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M15.5 16a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0 M18 13.5a6 6 0 0 0-12 0 M4 11.5l2 2 2-2',
+ /* an open vessel and the still line inside it. */
+ E50:'M8 4.8A8 8 0 1 0 16 4.8 M7 13h10',
+ /* a ball bouncing lower each time. nothing is being won. */
+ E51:'M3 20c1.5-7 4.5-7 6 0c1-4.5 3-4.5 4 0c.7-2.5 1.8-2.5 2.5 0 M17.5 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+ /* a question, left open. */
+ E52:'M9 8.5a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.4-1.5 2.4v1 M12 18v.5',
+ /* a spark from an open centre. */
+ E53:'M12 3v5 M12 16v5 M3 12h5 M16 12h5 M5.6 5.6l3 3 M15.4 15.4l3 3 M18.4 5.6l-3 3 M8.6 15.4l-3 3',
+ /* a current that bends and keeps going. */
+ E54:'M3 17c5 0 5-10 10-10 3 0 5 2 8 2 M18 6l3 3-3 3',
+ /* a star, four points. what stops you and opens you. */
+ E55:'M12 3l2 7 7 2-7 2-2 7-2-7-7-2 7-2z',
+ /* each mark in its place, in its turn. */
+ E56:'M9 6h11 M9 12h11 M9 18h11 M4 6h1 M4 12h1 M4 18h1',
+ /* one line that loops through two and never ends. */
+ E57:'M12 12c-2-3-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.5-1 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.5-1-5.5-4',
+ /* an open ring and the line leaving through its gap. */
+ E58:'M15 4.6A8 8 0 1 0 19.4 9 M12 12l8-8 M15 4h5v5',
+ /* a bolt. force with one direction. */
+ E59:'M13 3L6 13h5l-1 8 7-10h-5z',
+ /* a shield. fear asks for it, safety is having it. */
+ E60:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z',
+ /* a flame. the same heat burns or warms. */
+ E61:'M12 3c2 4 6 6.5 6 11a6 6 0 0 1-12 0c0-3 2-5 3.5-6.5.3 2 1.2 3 2.5 3.5-.5-3 0-5.5 0-8z',
+ /* a cut stone. worth is what shame says you lack. */
+ E62:'M7 4h10l4 5-9 11L3 9z M3 9h18 M10 4l-1.5 5L12 20 M14 4l1.5 5L12 20',
+ /* a line taken inside a ring. disgust turns away, acceptance takes in. */
+ E63:'M7 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0 M2 12h10 M9 9l3 3-3 3',
+ /* a sun and its rays. apathy is the light switched off. */
+ E64:'M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0 M12 3v2 M12 19v2 M3 12h2 M19 12h2 M5.6 5.6l1.4 1.4 M17 17l1.4 1.4 M18.4 5.6L17 7 M7 17l-1.4 1.4',
+ /* a spike in a flat trace. the jolt before the body catches up. */
+ E65:'M2 12h5l2-6 4 12 2-6h7',
+ /* a drop. what falls, and what is left clean after. */
+ E66:'M12 3c3 4.5 6 8 6 11.5a6 6 0 0 1-12 0C6 11 9 7.5 12 3z',
+ /* a burst. the moment the expected breaks open. */
+ E67:'M12 3l2 3.5 4-1-1 4 3.5 2.5-3.5 2.5 1 4-4-1-2 3.5-2-3.5-4 1 1-4L3 12l4-2.5-1-4 4 1z',
+ /* a clock with its hand ahead. the body leaning into what comes. */
+ E68:'M4 12a8 8 0 1 0 16 0a8 8 0 1 0-16 0 M12 7.5V12l3 2',
+ /* a weight with its plates. the physical measure. */
+ E69:'M4 9v6 M7 7v10 M17 7v10 M20 9v6 M7 12h10',
+ /* a set square and its graduations. the intellectual measure. */
+ E70:'M4 20V4l16 16z M4 8h3 M4 12h2 M4 16h3 M8 16v-4l4 4z',
+ /* a dial and its needle. the emotional measure. */
+ E71:'M4 16a8 8 0 0 1 16 0 M12 16l4-5 M5.5 11.5l1.5 1 M12 8v2 M18.5 11.5l-1.5 1',
+ /* steps, each built on the last. wisdom is what accumulates. */
+ E72:'M4 20h4v-4h4v-4h4V8h4V4',
+ /* a line that falls and climbs past where it fell. the adversity measure. */
+ E73:'M3 20h18 M3 6l5 9 4-4 4 3 5-9',
+ /* graduations rising to one centre. the instrument that reads coherence. */
+ E74:'M3 15h18 M5 15v-3 M8.5 15v-5 M12 15v-7 M15.5 15v-5 M19 15v-3',
+ /* an eye inside the frame. awareness that sees itself seeing. */
+ E75:'M3 3h18v18H3z M6.5 12c2-3.5 9-3.5 11 0-2 3.5-9 3.5-11 0 M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0',
+ /* a square turned true inside the frame, and its centre. the state every law points to. */
+ E76:'M3 3h18v18H3z M12 6l6 6-6 6-6-6z M10.5 12a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0'};
 /* GENERATED by tools/regen-archetype-domain.cjs. Do not edit: regenerate.
  * Reboot-OS c58058c30c146cf0aaf3066144826b44e658d5c8 (origin/main), canon_ARCHDOM, 18 rows, canon.py sha f05965de2f9fdbe3.
  * Blobs: ARCHDOM.json cc2cec977528, manifest.json 9cc010fac9b4, 0001_canon.sql c1dd46a58836, 32_story.js 0dcef8bd85e2, canon.json 227eabd23ae4.
@@ -20616,8 +20823,15 @@ function relHitCount(p){
    while the Ritual tab keeps writing the first, which is two truths. The
    cutover is the UI build's, when one writer replaces the other. See
    PRACTICE-AUDIT.md.
+
+   THE PLANS ARE ON THE RECORD NOW, practice schema 2, 21 November. The
+   paragraph above said they lived beside the record under
+   atuned-ritual-active, and that stopped being true here: see
+   practicePlansCheck below for what moved and why.
    ============================================================ */
-var PRACTICE_SCHEMA_V=1;
+/* 2 is the plans and the schedule rows, 21 November. A 1 still loads and
+   reads as a record with neither, which is what a 1 is. */
+var PRACTICE_SCHEMA_V=2;
 
 /* ---------------- the enums, exactly as the TDD writes them ---------------- */
 /* section 26. Never collapsed: a value moves only by a named action. */
@@ -20900,9 +21114,153 @@ var PR_LOG_SPEC={seq:{t:'num',int:1,lo:1,hi:1e9,req:1}, type:{t:'enum',of:PR_EVE
 
 function practiceBlank(){
  return {v:PRACTICE_SCHEMA_V, goals:[], behavior_objectives:[], protocols:[], protocol_steps:[],
-  rituals:[], practice_events:[], evidence:[], outcomes:[], log:[]};}
+  rituals:[], practice_events:[], evidence:[], outcomes:[], log:[], plans:[], sched:[]};}
 var PR_LISTS=['goals','behavior_objectives','protocols','protocol_steps','rituals',
  'practice_events','evidence','outcomes'];
+
+/* ============================================================
+   THE RITUAL TAB'S PLANS AND ROWS, ON THE RECORD. Practice schema 2, 21
+   November, his words: "rituals travel with the record, they don't stay on
+   the device."
+
+   Until today a plan (what is active, on which days, at what time, until
+   when) lived beside the record under atuned-ritual-active, and the
+   affirmation and challenge rows, with their If I miss cost and their why
+   answers, under atuned-ritual-sched, both keyed by profile id in the
+   browser. So an export, a record link and a second device all carried the
+   day log in p.rituals and none of the plan that wrote it: a person who
+   moved browsers kept every day they had done and lost every ritual they
+   had set. They are two lists on the practice object now, plans and sched,
+   and the UI's one writer for each writes here and saves the record.
+
+   NOT PR_LISTS. Those eight are the TDD's graph objects, with provenance,
+   versions and cross checks (prCross). A plan is the Ritual tab's own shape,
+   kept exactly as ui/ritual.js has always written it, so nothing that reads
+   a plan changes and no plan is translated on the way in.
+
+   THE RULE MOVED HERE AND NOT A SECOND COPY OF IT. ritPlanOk and ritSchedOk
+   in the UI used to hold these conditions as one long boolean, which was the
+   right posture beside the record: a row out of shape was left out on the
+   read. On the record that posture is the lie the boundary exists to stop,
+   so the same conditions are here as named refusals, and the UI's two
+   checks are this function asked whether it found anything. A missing list
+   is an older record and reads as empty; a wrong one is refused by name.
+
+   A CLOSED KEY SET, the posture vKeys takes for the rest of the record. The
+   two writers build every plan and row from these keys and nothing else,
+   and a row adopted off the device is rebuilt from them (ritPlanShape and
+   ritSchedShape, UI) before it lands, so an extra key here is a record
+   somebody else wrote.
+   ============================================================ */
+/* A TIME OF DAY, moved here from ui/ritbank.js, which still says why it is a
+   typed field: HH:MM, 00:00 to 23:59, and 24:00 and 7:5 are refused by name
+   and never rounded. */
+var RIT_AT_RX=/^([01]\d|2[0-3]):[0-5]\d$/;
+function ritAtOk(s){return typeof s==='string'&&RIT_AT_RX.test(s);}
+/* IF I MISS, the choices, one table, moved here from ui/ritbank.js so the
+   boundary and the pop-up read the same list. The team's default is the
+   first, and it is the one he may change: ui/ritbank.js's head says why.
+   The person's own is their own sentence, so it is quoted back and never
+   carries the Source AI mark. */
+var RIT_WHY_MAX=280, RIT_OWN_MAX=140, RIT_ANS_MAX=60;
+var RIT_MISS=[
+ {k:'why', nm:'Answer why', says:'You answer the one question, what got in the way. Nothing else happens.'},
+ {k:'own', nm:'In my words', says:'You write what you will do, and the app takes your word that you did it.'}];
+/* the days set Once on top of a running plan: day keys, whole and distinct,
+   at most a year of them. Moved here from ui/ritual.js. */
+function ritExOk(a){
+ return Array.isArray(a)&&a.length<=366&&a.every(function(d,i){
+  return typeof d==='number'&&Math.floor(d)===d&&d>=0&&a.indexOf(d)===i;});}
+/* How many of each a record holds. A plan is never deleted, only stopped,
+   so the list is every ritual a person has ever set: two thousand is a new
+   one every other day for ten years. A row is one per challenge plus the
+   affirmations. Refused over the ceiling, never truncated. */
+var PR_PLANS_CAP=2000, PR_SCHED_CAP=400;
+var PR_PLAN_KEYS=['id','steps','when','where','days','from','stop','band','track','rel','tc','tags','on','tm','at','ex'];
+var PR_SCHED_KEYS=['id','kind','on','at','from','days','ex','miss','ack','ans'];
+function prKeysOnly(errs,path,x,keys){
+ Object.keys(x).forEach(function(k){if(keys.indexOf(k)<0)errs.push(path+' may not carry '+k);});}
+/* a weekday list: Monday 0 to Sunday 6, whole and distinct, one to seven */
+function prWeekdays(errs,path,on){
+ if(on==null)return;
+ if(!Array.isArray(on)||on.length<1||on.length>7||!on.every(function(d,i){
+  return typeof d==='number'&&d>=0&&d<=6&&Math.floor(d)===d&&on.indexOf(d)===i;}))
+  errs.push(path+' is not a list of weekdays, 0 to 6, each once: '+JSON.stringify(on));}
+function prDayStr(s){return typeof s==='string'&&pracDay(s)!==null;}
+function prSpan(errs,path,d){
+ if(typeof d!=='number'||d<0||d>3660||Math.floor(d)!==d)
+  errs.push(path+' is '+JSON.stringify(d)+', not a whole number of days from 0 to 3660');}
+function practicePlanCheck(errs,path,p){
+ if(!p||typeof p!=='object'||Array.isArray(p)){errs.push(path+' is not an object'); return;}
+ prKeysOnly(errs,path,p,PR_PLAN_KEYS);
+ if(typeof p.id!=='string'||!p.id||p.id.length>=40)errs.push(path+'.id is not a plan id: '+JSON.stringify(p.id));
+ if(!Array.isArray(p.steps)||!p.steps.length||p.steps.length>PRACTICE.length)
+  errs.push(path+'.steps is not a list of one to '+PRACTICE.length+' practices');
+ else p.steps.forEach(function(k,j){if(!RIT_STEP[k])errs.push(path+'.steps['+j+'] names no practice: '+JSON.stringify(k));});
+ /* the spans are what the chooser offers. What is kept is any whole number
+    of days, because a ritual woken again runs on from where it is. */
+ prSpan(errs,path+'.days',p.days);
+ if(!prDayStr(p.from))errs.push(path+'.from is not a date: '+JSON.stringify(p.from));
+ if(p.stop!=null&&!prDayStr(p.stop))errs.push(path+'.stop is not a date: '+JSON.stringify(p.stop));
+ ['when','where'].forEach(function(k){
+  if(p[k]!=null&&(typeof p[k]!=='string'||p[k].length>RIT_PLAN_MAX))
+   errs.push(path+'.'+k+' is not text of '+RIT_PLAN_MAX+' characters or fewer');});
+ if(p.band&&BANDS.indexOf(p.band)<0)errs.push(path+'.band is not a point: '+JSON.stringify(p.band));
+ if(p.track&&!RIT_TRACK[p.track])errs.push(path+'.track is not a track in the practice library: '+JSON.stringify(p.track));
+ if(p.rel!=null&&(typeof p.rel!=='number'||!BY[p.rel]))errs.push(path+'.rel is not an address: '+JSON.stringify(p.rel));
+ /* tc is the teacher a ritual of becoming was started toward */
+ if(p.tc!=null&&(typeof p.tc!=='string'||!becomingOf(p.tc)))errs.push(path+'.tc names no teacher: '+JSON.stringify(p.tc));
+ /* TAGS ARE A CLOSED SET, TG4: the seven points, each once */
+ if(p.tags!=null&&!(Array.isArray(p.tags)&&p.tags.length<=BANDS.length
+  &&p.tags.every(function(b,i){return BANDS.indexOf(b)>=0&&p.tags.indexOf(b)===i;})))
+  errs.push(path+'.tags is not a list of points, each once: '+JSON.stringify(p.tags));
+ prWeekdays(errs,path+'.on',p.on);
+ /* the longest timer the builder offers is every practice in the library once */
+ if(p.tm!=null&&(typeof p.tm!=='number'||p.tm<1||p.tm>RIT_MIN_MAX||Math.floor(p.tm)!==p.tm))
+  errs.push(path+'.tm is '+JSON.stringify(p.tm)+', not a whole number of minutes from 1 to '+RIT_MIN_MAX);
+ if(p.at!=null&&!ritAtOk(p.at))errs.push(path+'.at is '+JSON.stringify(p.at)+', not a time of day, 00:00 to 23:59');
+ if(p.ex!=null&&!ritExOk(p.ex))errs.push(path+'.ex is not a list of distinct day numbers, a year at most');}
+function practiceSchedCheck(errs,path,r){
+ if(!r||typeof r!=='object'||Array.isArray(r)){errs.push(path+' is not an object'); return;}
+ prKeysOnly(errs,path,r,PR_SCHED_KEYS);
+ var str=function(s,n){return typeof s==='string'&&s.length<=n;};
+ /* the affirmations are one row, aff, and each challenge one row, ch: and its key */
+ if(!(typeof r.id==='string'&&r.id.length<=80&&((r.kind==='aff'&&r.id==='aff')||(r.kind==='chal'&&/^ch:/.test(r.id)))))
+  errs.push(path+' is not an affirmation row (aff) or a challenge row (ch:): '+JSON.stringify([r.id,r.kind]));
+ if(!prDayStr(r.from))errs.push(path+'.from is not a date: '+JSON.stringify(r.from));
+ prSpan(errs,path+'.days',r.days);
+ if(r.at!=null&&r.at!==''&&!ritAtOk(r.at))errs.push(path+'.at is '+JSON.stringify(r.at)+', not a time of day, 00:00 to 23:59');
+ prWeekdays(errs,path+'.on',r.on);
+ if(r.ex!=null&&!ritExOk(r.ex))errs.push(path+'.ex is not a list of distinct day numbers, a year at most');
+ if(r.miss!=null){
+  if(typeof r.miss!=='object'||Array.isArray(r.miss)){errs.push(path+'.miss is not an object');}
+  else {
+   prKeysOnly(errs,path+'.miss',r.miss,['k','own']);
+   if(!RIT_MISS.some(function(m){return m.k===r.miss.k;}))
+    errs.push(path+'.miss.k is not one of '+RIT_MISS.map(function(m){return m.k;}).join(', ')+': '+JSON.stringify(r.miss.k));
+   if(r.miss.own!=null&&!str(r.miss.own,RIT_OWN_MAX))errs.push(path+'.miss.own is not text of '+RIT_OWN_MAX+' characters or fewer');}}
+ if(r.ack!=null&&(typeof r.ack!=='number'||Math.floor(r.ack)!==r.ack))errs.push(path+'.ack is not a day number: '+JSON.stringify(r.ack));
+ if(r.ans!=null){
+  if(!Array.isArray(r.ans)||r.ans.length>RIT_ANS_MAX)errs.push(path+'.ans is not a list of '+RIT_ANS_MAX+' answers or fewer');
+  else r.ans.forEach(function(a,j){
+   var q=path+'.ans['+j+']';
+   if(!a||typeof a!=='object'||Array.isArray(a)){errs.push(q+' is not an object'); return;}
+   prKeysOnly(errs,q,a,['d','why']);
+   if(typeof a.d!=='number'||Math.floor(a.d)!==a.d)errs.push(q+'.d is not a day number');
+   if(!str(a.why,RIT_WHY_MAX))errs.push(q+'.why is not text of '+RIT_WHY_MAX+' characters or fewer');});}}
+/* both lists, for practiceValidate. Returns the list to keep: a copy of
+   what came in when it is whole, empty when it is missing or refused. */
+function practicePlansCheck(errs,path,v,cap,one){
+ if(v===undefined||v===null)return [];
+ if(!Array.isArray(v)){errs.push(path+' is not a list'); return [];}
+ if(v.length>cap){errs.push(path+' holds '+v.length+', more than '+cap); return [];}
+ var n=errs.length;
+ v.forEach(function(x,i){one(errs,path+'['+i+']',x);});
+ /* two plans with one id are two rituals the writer cannot tell apart */
+ var ids={};
+ v.forEach(function(x,i){if(x&&typeof x.id==='string'){
+  if(ids[x.id])errs.push(path+'['+i+'].id '+JSON.stringify(x.id)+' is already used'); ids[x.id]=1;}});
+ return errs.length>n?[]:JSON.parse(JSON.stringify(v));}
 
 /* ---------------- one field ---------------- */
 function prBlank(f){
@@ -20992,7 +21350,10 @@ function practiceValidate(errs,o,base){
  var path=base||'practice', P=practiceBlank();
  if(!o||typeof o!=='object'||Array.isArray(o)){errs.push(path+' is not an object'); return P;}
  Object.keys(o).forEach(function(k){
-  if(k!=='v'&&k!=='log'&&PR_LISTS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+  if(k!=='v'&&k!=='log'&&k!=='plans'&&k!=='sched'&&PR_LISTS.indexOf(k)<0)errs.push(path+' may not carry '+k);});
+ /* schema 2's two lists. A 1 has neither and reads as empty, from the blank */
+ P.plans=practicePlansCheck(errs,path+'.plans',o.plans,PR_PLANS_CAP,practicePlanCheck);
+ P.sched=practicePlansCheck(errs,path+'.sched',o.sched,PR_SCHED_CAP,practiceSchedCheck);
  /* a newer practice schema than this build knows is refused rather than
     read with a guess. A missing one is the only version there has been. */
  if(o.v!==undefined&&(!NUM(o.v)||o.v<1||o.v>PRACTICE_SCHEMA_V||o.v%1!==0))
@@ -25856,6 +26217,49 @@ var SRC_JUDGE_STEP=['such','a','an','just','too','being','bit','total','complete
    never"), so it answers belief and leaves "What did you do?" open. */
 var SRC_BEHAVE_DIM={avoidance:'behaviour', withdrawal:'behaviour', inhibited_speech:'behaviour',
  loss_of_control:'behaviour', delay:'behaviour', self_judgement:'belief'};
+/* THE SIX REFRAMES, ONE PER BEHAVIOUR ABOVE, 21 November. The table the
+   ritual week plan (section B5, source 2) held back: "a new table of six rows
+   turns a behaviour you described into its opposite, as a short reframe plus
+   one existing practice. For example, avoidance becomes Make the Call." He
+   corrected the board on it the same day: "you haven't produced them, so I
+   don't know why this is red." So they are produced, here, and his to change.
+
+   ONE ROW PER KIND IN SRC_BEHAVE_ORDER, keyed by it, and never a seventh: a
+   reframe for a behaviour this reader cannot see would be offered on
+   nothing. The practice is the one whose own how text in
+   engine/data/practice.js is the opposite act, read off the text and not off
+   its track, the rule RIT_KIND_OF keeps: avoidance is Make the Call, the call
+   held still done before it is rehearsed; withdrawal is Tell One Person;
+   inhibited speech is The Plain Word; loss of control is Ten Minutes, the
+   room left and come back to; delay is The Small Version, which the practice
+   itself names as the honest part on a day the whole cannot be done; and a
+   verdict on yourself is Name It, a feeling named in one word where the name
+   for yourself went.
+
+   to is the opposite as a short name, the face of a card. line is the
+   reframe, a physical act in the present tense, and it is the name's meaning
+   in the same place, the unpack rule. Each line went through the voice gate
+   one at a time with no hard failure.
+
+   NOT DRAWN YET, AND THAT IS THE PLAN'S ORDER AND NOT A GAP. The plan shows a
+   behaviour card only where the evidence is at least supported, the reading
+   having found it more than once (EV_NAMEABLE, engine/evidence.js), never on
+   one mention, and holds the source back until he has seen the six. Nothing
+   reads this table but tests/ritweek.js RW12, which fails on a behaviour with
+   no row, a row for no behaviour, and a practice the library lacks. */
+var SRC_REFRAME={
+ avoidance:{to:'Go toward it', pr:'fl_call',
+  line:'You do the thing you were going around, before you rehearse it.'},
+ withdrawal:{to:'Stay in reach', pr:'tr_tell',
+  line:'You let one person hear from you today, in two sentences.'},
+ inhibited_speech:{to:'Say it once', pr:'tu_plain',
+  line:'You say the true sentence out loud and stop where it ends.'},
+ loss_of_control:{to:'Leave, then come back', pr:'ch_ten',
+  line:'When the heat rises at somebody, you leave the room for ten minutes and come back.'},
+ delay:{to:'Do the small version', pr:'po_small',
+  line:'You do the smallest honest part of it today, ready or not.'},
+ self_judgement:{to:'Name the feeling', pr:'pe_name',
+  line:'When you start calling yourself a name, you name what you feel in one word.'}};
 /* EVERY BEHAVIOUR IN AN ENTRY, in the order written. Each row is
    {behave, dim, cue, at, s, e, said, who?, unclear?}: at is the leading space
    in normMap's copy, which is what a sniffer hit's at is, s to e the raw
@@ -32827,6 +33231,8 @@ if(typeof module!=='undefined'&&module.exports){
                   practiceReleasePlan:practiceReleasePlan, practiceReleaseVerify:practiceReleaseVerify,
                   practiceTraceIntents:practiceTraceIntents, practiceIntentOk:practiceIntentOk,
                   practiceFromLegacy:practiceFromLegacy, practicePatternOk:practicePatternOk,
+                  practicePlanCheck:practicePlanCheck, practiceSchedCheck:practiceSchedCheck,
+                  PR_PLANS_CAP:PR_PLANS_CAP, PR_SCHED_CAP:PR_SCHED_CAP, RIT_MISS:RIT_MISS,
                   PR_SRC:PR_SRC, PR_LIFE:PR_LIFE, PR_CLASS:PR_CLASS, PR_STEP:PR_STEP, PR_EV_ST:PR_EV_ST,
                   PR_EVID_SOURCE:PR_EVID_SOURCE, PR_EVID_TYPE:PR_EVID_TYPE, PR_OUT_ST:PR_OUT_ST,
                   PR_MISS:PR_MISS, PR_ADAPT:PR_ADAPT, PR_EVENTS:PR_EVENTS, PR_NODE:PR_NODE, PR_EDGE:PR_EDGE,
