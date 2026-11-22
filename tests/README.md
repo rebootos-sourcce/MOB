@@ -467,6 +467,19 @@ repo root.
 Google Fonts cannot be fetched and the two optional figure rasters are absent.
 Both are environmental. The vector figure is inline and always renders.
 
+## Screen guides
+
+    node tests/guide.js
+
+The per screen guide in `ui/guide.js`, in a real Chromium at 1600 and 390. It
+reads the screen list off `GUIDE` at run time, so a screen whose guide is
+written there is walked with no edit here; a key this gate has no route to
+reach fails by name rather than passing unwalked. For each: the circle shows
+at the tap floor, every row names an element that is on the page, one ring per
+row in view, Escape shuts it. Then the profile menu switch hides the circle on
+every screen, holds across a reload, and comes back; the card's own off line
+does the same; and reduced motion opens it with no transition.
+
 ## The paywall
 
     node tests/paywall.js

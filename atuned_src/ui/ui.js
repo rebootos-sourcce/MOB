@@ -1099,6 +1099,8 @@ function render(){
  document.body.style.setProperty('--seat-w',Math.max(0,Math.min(1,(r.darkV||0)/10)).toFixed(2));
  railTop(r);
  if(typeof glowApply==='function')glowApply(r);
+ /* the screen guide's circle follows the screen on show, ui/guide.js */
+ if(typeof guidePaint==='function')guidePaint();
  /* benign against malignant, as percentages of one field */
  (function(){
   var mal=Math.max(0,Math.min(100,r.malig||0)), ben=100-mal;
