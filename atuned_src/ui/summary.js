@@ -696,7 +696,20 @@ function sumRender(){
  /* and its side column, today's summary, off the same reading. A paint and
     never a write: the day is frozen by sumDayOpen, after this returns. */
  if(typeof sumDayPaint==='function')sumDayPaint(r);
- sumRunPaint(r);}
+ sumRunPaint(r);
+ sumHelloWire();}
+
+/* THE RAIL'S TALK BUTTON (#sumhello, shell/body.html). It goes to the
+   Journal and presses the hello there, in that order: stHello mounts her into
+   #stuni, which only exists once the Journal has rendered, so pressing it
+   first from here would find no host and park her again (stUniSync's own
+   first branch). setTab renders the surface it lands on before it returns. */
+function sumHelloWire(){
+ var b=document.getElementById('sumhello'); if(!b||b.dataset.wired)return;
+ b.dataset.wired='1';
+ b.addEventListener('click',function(){
+  setTab(TAB.STORY);
+  if(typeof stHello==='function')stHello();});}
 
 /* NOTHING READ YET IS ITS OWN PAGE.
 
