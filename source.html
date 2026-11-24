@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v127 2e723b7f 2026-11-22 20:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v2 89450b3 2026-11-24 22:53"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -41648,6 +41648,18 @@ function srcVoiceIntelligence(text,record,opts){
   * No historic raw journal or user identifiers leave this function. */
  var userTurns=Array.isArray(o.turns)?o.turns.slice(-11).filter(function(x){return typeof x==='string';}):[];
  if(userTurns[userTurns.length-1]!==t)userTurns.push(t);
+ /* Explicit catalog pilot. The manuscript relationship remains research-only
+  * outside this test path and provides no evidence about the user's profile. */
+ if(o.knowledgeGraphPilot===true && /\bknowledge domain\b/i.test(t) &&
+    /\b(?:relat\w*|connect\w*|link\w*)\b/i.test(t)){
+  out.knowledgeEvidence=[{
+   from:'domain:01',
+   to:'blueprint:personal-model',
+   relationship:'versioned domain to blueprint model',
+   source:'Mechanics of Being v336, Chapter 12, Somatic Psychology Stack',
+   status:'RESEARCH_PILOT'
+  }];
+ }
  out.narrative=srcVoiceNarrative(userTurns);
  /* The TULA episode reader is a pure report of explicit user turns. A rank
   * refers to the exact source adjective, never to CQ, profile or curve height. */
@@ -70894,6 +70906,14 @@ function srcGauge(top){
    person, with no status-line ring to it. */
 function srcNone(){
  return 'I can’t place this one yet. Tell me what your body did, and where.';}
+function srcKnowledgePilotReply(text){
+ if(new URLSearchParams(location.search).get('sourceKnowledgePilot')!=='1'||
+    typeof srcVoiceIntelligence!=='function')return '';
+ var report=srcVoiceIntelligence(text,null,{knowledgeGraphPilot:true});
+ var evidence=report.intelligence.knowledgeEvidence;
+ if(!evidence||!evidence.length)return '';
+ return 'The research graph links the Knowledge domain to the Personal Blueprint as a structural reference. The source is '+evidence[0].source+'.';
+}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=srcHeardNow();
@@ -71024,7 +71044,15 @@ function srcPaint(){
     defect this gate exists for, and with Talk on speak a reply to each.
     Typed words there become a turn when the next spoken one lands, which
     syncs first (srcTurnCommit), or at Commit. */
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!document.getElementById('sttext'))srcChatSync(); fresh=srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){
+  cur=srcChatCur(turn,heard,q,ask);
+  if(!document.getElementById('sttext')){
+   srcChatSync();
+   var lastUserTurn=SRC_CHAT.slice().reverse().find(function(row){return row.w==='me';});
+   var pilotReply=lastUserTurn&&srcKnowledgePilotReply(lastUserTurn.t);
+   if(pilotReply)cur={w:'src',key:'knowledge|blueprint',q:pilotReply,mv:'listen',rg:0,bd:null};
+  }
+  fresh=srcChatNote(cur);
   /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
      November, his words: "it needs to do speech to speech, text to
      speech. It needs to do them all." The 10 November ruling only ever
@@ -116884,5 +116912,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008524812"></div>
+<div id="eof" hidden data-len="008526104"></div>
 </body></html>
