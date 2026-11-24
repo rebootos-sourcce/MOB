@@ -1940,13 +1940,16 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
+    // A resumed animation can be pending until its first frame. Its floor
+    // must use the resumed clock, even if that frame arrives late.
+    if(fade.pending&&fade.ready){clearTimeout(ft); fade.ready.then(set,function(){floor(5450);}); return;}
     /* the fade's end on the page's own clock. The document timeline and
        performance.now share an origin, and the timeline's time is the last
        frame's, which during a long script is well behind now, so the end is
        taken from the start time and not from the current time */
     var end=fade.effect.getComputedTiming().endTime;
     floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+    };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not

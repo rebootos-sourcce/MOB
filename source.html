@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2 89450b3 2026-11-24 22:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v3 78264f1 2026-11-24 23:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -12093,7 +12093,11 @@ body.tab-summary #spirit .sp-tile.rl-off{color:var(--dim)}
    if(HELDFADE){var h=HELDFADE; HELDFADE=null;
     try{var d=h.f.effect.getComputedTiming().delay;
      if(performance.now()<h.s0+d)h.f.startTime=h.s0;
-     else{h.f.currentTime=d; h.f.play();}}catch(x){}}
+     else{
+      // Resume from the overture side of the boundary so bootOut enters
+      // its active phase on a frame after readiness.
+      h.f.currentTime=Math.max(0,d-1); h.f.play();
+     }}catch(x){}}
    if(ACT&&HELD){var p=HELD; HELD=null; act(p);}
    else{
     /* UNI, ADDED 11 November. A held skip wins: it is acted on above instead,
@@ -103603,13 +103607,16 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
+    // A resumed animation can be pending until its first frame. Its floor
+    // must use the resumed clock, even if that frame arrives late.
+    if(fade.pending&&fade.ready){clearTimeout(ft); fade.ready.then(set,function(){floor(5450);}); return;}
     /* the fade's end on the page's own clock. The document timeline and
        performance.now share an origin, and the timeline's time is the last
        frame's, which during a long script is well behind now, so the end is
        taken from the start time and not from the current time */
     var end=fade.effect.getComputedTiming().endTime;
     floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+    };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
@@ -116912,5 +116919,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008526104"></div>
+<div id="eof" hidden data-len="008526445"></div>
 </body></html>
