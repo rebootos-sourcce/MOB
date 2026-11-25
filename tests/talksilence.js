@@ -254,7 +254,15 @@ async function say(p, t) {
 const lostOk = p => !(p.lost || []).length;
 
 (async () => {
-  const browser = guardBrowser(await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' }));
+  /* Four concurrent test pages are not four foreground tabs. Chromium throttles
+     setInterval on background pages, turning the 50ms movement probe into a
+     sparse sampler that misses even the injected known-bad 150ms jump.
+     Keep each page's timers runnable; DO NOT relax the >500 sample floor,
+     the zero-excursion product assertion, or the known-bad positive control. */
+  const browser = guardBrowser(await chromium.launch({
+    executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+    args: ['--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows']
+  }));
 
   /* ---------- the group on the owner's own screen, 1600 by 1000 ---------- */
   if (ONLY.includes('l1')) {
