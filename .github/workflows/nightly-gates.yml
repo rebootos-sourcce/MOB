@@ -88,7 +88,8 @@ jobs:
         include: ${{ fromJSON(needs.legs.outputs.legs) }}
     steps:
       - uses: actions/checkout@v4
-        with: { ref: ${{ needs.legs.outputs.source_sha }} }
+        with:
+          ref: ${{ needs.legs.outputs.source_sha }}
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - uses: actions/setup-python@v5
@@ -133,7 +134,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with: { ref: ${{ needs.legs.outputs.source_sha || 'main' }} }
+        with:
+          ref: ${{ needs.legs.outputs.source_sha || 'main' }}
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - uses: actions/download-artifact@v4
