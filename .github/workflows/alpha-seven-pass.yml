@@ -1,0 +1,78 @@
+name: alpha seven-pass P0 browser probes
+# Isolated CI evidence for the P0 integration branch; does not publish.
+on:
+  push:
+    branches: [qa/p0-browser-regression-probes-20261125]
+permissions:
+  contents: read
+jobs:
+  seven-pass:
+    name: seven-pass (${{ matrix.gate }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { gate: alpha-journey, command: "ATUNED_ALPHA_QUIZ_ONLY=1 node tests/golden.js" }
+          - { gate: design, command: "node tests/design.js" }
+          - { gate: releasechain, command: "node tests/releasechain.js" }
+          - { gate: talksilence, command: "node tests/talksilence.js" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: install pinned build tools and Chromium
+        run: |
+          npm install --no-audit --no-fund --no-save typescript@5.9.3
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: resolve Playwright Chromium
+        run: |
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome" || { echo "Chromium unavailable: $chrome"; exit 1; }
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: build and check committed artifacts
+        run: |
+          ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+          node tools/products.js --self-test && node tools/products.js
+      - name: seven independent gate+floor runs (all failures count)
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$RUNNER_TEMP/gates" "$RUNNER_TEMP/alpha-seven"
+          passed=0
+          failed=0
+          for pass in 1 2 3 4 5 6 7; do
+            echo "::group::${{ matrix.gate }} pass $pass/7"
+            log="$RUNNER_TEMP/alpha-seven/${{ matrix.gate }}-$pass.log"
+            if bash -o pipefail -c '${{ matrix.command }}' 2>&1 | tee "$log"; then
+              cp "$log" "$RUNNER_TEMP/gates/${{ matrix.gate }}.log"
+              if node tools/floors.js '${{ matrix.gate }}'; then
+                echo "PASS ${{ matrix.gate }} pass $pass"
+                passed=$((passed+1))
+              else
+                echo "FAIL ${{ matrix.gate }} floor pass $pass"
+                failed=$((failed+1))
+              fi
+            else
+              echo "FAIL ${{ matrix.gate }} process pass $pass"
+              failed=$((failed+1))
+            fi
+            echo "::endgroup::"
+          done
+          {
+            echo "| browser gate | passed | failed | total |"
+            echo "|---|---:|---:|---:|"
+            echo "| ${{ matrix.gate }} | $passed | $failed | 7 |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "$passed" -eq 7 && test "$failed" -eq 0
+      - name: preserve all seven run logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seven-pass-${{ matrix.gate }}
+          path: ${{ runner.temp }}/alpha-seven/
+          if-no-files-found: warn
