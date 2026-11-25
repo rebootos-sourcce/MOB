@@ -52,9 +52,15 @@ jobs:
     timeout-minutes: 10
     outputs:
       legs: ${{ steps.list.outputs.legs }}
+      source_sha: ${{ steps.pin.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with: { ref: main }
+      # The first job resolves main once. Every repeated leg must test these
+      # exact bytes, even if another commit lands while the matrix runs.
+      - name: pin the revision used by every repeated gate
+        id: pin
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - uses: actions/setup-python@v5
@@ -82,7 +88,7 @@ jobs:
         include: ${{ fromJSON(needs.legs.outputs.legs) }}
     steps:
       - uses: actions/checkout@v4
-        with: { ref: main }
+        with: { ref: ${{ needs.legs.outputs.source_sha }} }
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - uses: actions/setup-python@v5
@@ -121,13 +127,13 @@ jobs:
           retention-days: 14
 
   table:
-    needs: [repeat]
+    needs: [legs, repeat]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with: { ref: main }
+        with: { ref: ${{ needs.legs.outputs.source_sha || 'main' }} }
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - uses: actions/download-artifact@v4
@@ -136,4 +142,9 @@ jobs:
           merge-multiple: true
           path: ${{ runner.temp }}/results
       - name: every gate, every run, on the run page
+        env:
+          # The report fails closed when an artifact is missing, duplicated
+          # or from a different revision. Both values come from the first job.
+          ATUNED_EXPECTED_LEGS: ${{ needs.legs.outputs.legs }}
+          ATUNED_EXPECTED_SHA: ${{ needs.legs.outputs.source_sha }}
         run: node tools/gates-repeat.js --summary "$RUNNER_TEMP/results"
