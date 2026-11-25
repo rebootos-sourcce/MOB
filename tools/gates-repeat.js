@@ -116,10 +116,33 @@ async function repeat(gate, solo, par, outFile) {
     fs.writeFileSync(outFile, JSON.stringify(res, null, 2) + '\n');
     const fl = failLog(res);
     if (fl) fs.writeFileSync(outFile.replace(/(\.json)?$/, '.fail.log'), fl);
+    const kept = archiveFailedLogs(res, root, outFile);
+    if (kept) console.log('Preserved full gate/step logs for ' + kept + ' failed repetitions beside ' + outFile);
   }
   const bad = runs.filter(r => !r.ok).length;
   console.log('\n===== ' + (runs.length - bad) + ' passed, ' + bad + ' failed ===== ' + gate + ', ' + solo + ' solo and ' + par + ' at once, logs under ' + root);
   return bad ? 1 : 0;
+}
+
+/* Runner-local logs vanish when the matrix worker exits. Preserve raw
+   gate and step output for failed repetitions alongside the JSON artifact.
+   Copy logs only, not environment files (which can contain secret values).
+   The workflow already uploads the entire results directory. */
+function archiveFailedLogs(result, root, outFile) {
+  const failed = (result.runs || []).filter(r => !r.ok);
+  if (!failed.length) return 0;
+  const dest = path.join(path.dirname(outFile), path.basename(outFile, '.json') + '-logs');
+  for (const r of failed) {
+    for (const sub of ['gates', 'steps']) {
+      const from = path.join(root, r.label, sub);
+      const to = path.join(dest, r.label, sub);
+      if (fs.existsSync(from)) {
+        fs.mkdirSync(path.dirname(to), { recursive: true });
+        fs.cpSync(from, to, { recursive: true });
+      }
+    }
+  }
+  return failed.length;
 }
 
 /* THE FAILING CHECKS OF ONE GATE'S RESULT, as `  FAIL  <line>` lines in the
@@ -174,9 +197,51 @@ function findings(L, results) {
   return out;
 }
 
+/* A matrix entry is expected exactly once, with all seven repetitions,
+   and from the revision the first nightly job pinned. A partially downloaded
+   artifact set must never read as a passing night just because some files
+   arrived. Pure so planted missing, stale, and duplicate files can prove it. */
+function inventoryProblems(all, expected, sha) {
+  if (expected === undefined) return []; // local summaries without a nightly matrix
+  const problems = [], names = new Set(), found = new Map();
+  if (!Array.isArray(expected) || !expected.length) {
+    problems.push('the expected gate matrix is empty or unreadable');
+    return problems;
+  }
+  for (const entry of expected) {
+    const name = entry && (typeof entry === 'string' ? entry : entry.gate);
+    if (typeof name !== 'string' || !name) { problems.push('an expected gate has no name'); continue; }
+    if (names.has(name)) problems.push('the expected matrix repeats ' + name);
+    names.add(name);
+  }
+  if (typeof sha !== 'string' || !/^[0-9a-f]{40}$/i.test(sha))
+    problems.push('the pinned source commit is missing or invalid');
+  for (const r of all) {
+    const name = r && r.gate;
+    if (typeof name !== 'string' || !name) { problems.push('a result has no gate name'); continue; }
+    found.set(name, (found.get(name) || 0) + 1);
+    if (r.origin_problem) problems.push(r.origin_problem);
+    if (!names.has(name)) problems.push('unexpected result ' + name);
+    if (r.broken || !Array.isArray(r.runs)) {
+      problems.push(name + ' has no readable run list'); continue;
+    }
+    if (r.runs.length !== 7)
+      problems.push(name + ' has ' + r.runs.length + ' repetitions instead of seven');
+    const labels = r.runs.map(run => run && run.label);
+    const wanted = ['solo-1', 'solo-2', 'solo-3', 'parallel-1', 'parallel-2', 'parallel-3', 'parallel-4'];
+    if (labels.length === 7 && wanted.some((name, i) => labels[i] !== name))
+      problems.push(name + ' has missing, duplicate, or out-of-order repetition labels');
+    if (sha && r.commit !== sha)
+      problems.push(name + ' was tested at ' + String(r.commit || 'no commit') + ', not pinned ' + sha);
+  }
+  for (const name of names) if (!found.has(name)) problems.push('missing result for ' + name);
+  for (const [name, count] of found) if (count !== 1) problems.push(name + ' has ' + count + ' result files');
+  return problems;
+}
+
 /* the run page's markdown and the exit code, from the results and the ledger
    (or why there is none). Pure, so the self test reads it. */
-function buildSummary(all, L, why, run) {
+function buildSummary(all, L, why, run, expected, sha) {
   const out = [];
   out.push('### Nightly gates, every browser leg of deploy.yml repeated', '');
   if (!all.length) out.push('No result file was found. Every leg failed before it wrote one, or none ran.');
@@ -192,7 +257,17 @@ function buildSummary(all, L, why, run) {
     out.push('| ' + r.gate + ' | ' + (r.required ? 'required' : 'report') + ' | ' + labels.map(l => byLabel[l] ? cell(byLabel[l]) : '').join(' | ')
       + ' | ' + r.runs.filter(x => !x.ok).length + ' of ' + r.runs.length + ' | ' + fails.join('; ') + ' |');
   }
-  let code = all.length ? 0 : 1;
+  // A complete inventory is not sufficient: any failed repetition must make
+  // the summary job red, including known flakes and report-only legs.
+  let code = all.length && nb === 0 ? 0 : 1;
+  const integrity = inventoryProblems(all, expected, sha);
+  if (integrity.length) {
+    code = 1;
+    out.push('', '### INCOMPLETE nightly evidence — not a passing smoke result', '');
+    for (const issue of integrity) out.push('- ' + issue);
+  } else if (expected !== undefined) {
+    out.push('', 'Evidence integrity verified: ' + expected.length + ' expected gates, seven repetitions per gate, one pinned commit.');
+  }
   if (nb) {
     out.push('', '### Against the flake ledger (tests/flakes.json)', '');
     if (!L) {
@@ -222,17 +297,48 @@ function buildSummary(all, L, why, run) {
   return { md: out.join('\n') + '\n', code };
 }
 
-function summary(dir, ledgerFile) {
+/* Preserve each downloaded artifact's directory. Merging them into one
+   folder can overwrite duplicate gate.json files before integrity checks
+   get to count them. Flat directories remain supported for local runs. */
+function collectResults(dir) {
   let files = [];
-  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort(); } catch (e) { /* no directory: no leg wrote a result, said below */ }
+  try {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isFile() && e.name.endsWith('.json')) files.push(e.name);
+      if (e.isDirectory() && e.name.startsWith('nightly-')) {
+        for (const f of fs.readdirSync(path.join(dir, e.name), { withFileTypes: true }))
+          if (f.isFile() && f.name.endsWith('.json')) files.push(path.join(e.name, f.name));
+      }
+    }
+  } catch (e) { /* a missing result directory is a failure below */ }
   const all = [];
-  for (const f of files) { try { all.push(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); } catch (e) { all.push({ gate: f, broken: e.message }); } }
+  for (const f of files.sort()) {
+    try {
+      const result = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      const parts = f.split(path.sep);
+      if (parts.length > 1 && (parts[0] !== 'nightly-' + result.gate || parts[1] !== result.gate + '.json'))
+        result.origin_problem = 'result ' + f + ' has mismatched artifact folder, file name or declared gate';
+      all.push(result);
+    } catch (e) { all.push({ gate: f, broken: e.message }); }
+  }
+  return all;
+}
+
+function summary(dir, ledgerFile) {
+  const all = collectResults(dir);
   let L = null, why = '';
   try { L = load(ledgerFile || LEDGER); } catch (e) { why = e.message; }
-  const { md, code } = buildSummary(all, L, why, process.env.GITHUB_RUN_ID);
+  let expected, sha, inventoryError = '';
+  if (Object.prototype.hasOwnProperty.call(process.env, 'ATUNED_EXPECTED_LEGS')) {
+    try { expected = JSON.parse(process.env.ATUNED_EXPECTED_LEGS); }
+    catch (e) { expected = []; inventoryError = 'the expected matrix could not be parsed: ' + e.message; }
+    sha = process.env.ATUNED_EXPECTED_SHA || '';
+  }
+  const result = buildSummary(all, L, why, process.env.GITHUB_RUN_ID, expected, sha);
+  const md = result.md + (inventoryError ? '\n' + inventoryError + '\n' : '');
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md);
   process.stdout.write(md);
-  return code;
+  return inventoryError ? 1 : result.code;
 }
 
 /* ---- --self-test ---- */
@@ -274,6 +380,59 @@ function selfTest() {
       findings(L, [result('boot', [run('a', false, ['the overture clock reads 1ms and 2ms']), run('b', false, ['the overture clock reads 3ms and 4ms'])])])[0].runs === 2);
     t('a result written before failLines existed reads from its keys',
       findings(L, [{ gate: 'boot', runs: [{ label: 'a', ok: false, fails: ['the overture clock reads Nms and Nms'] }] }])[0].word === 'SUSPECTED');
+    // Inventory integrity on the same evidence path CI invokes.
+    const matrix = res.map(r => ({ gate: r.gate }));
+    const pinned = 'a'.repeat(40);
+    const complete = res.map(r => Object.assign({}, r, {
+      runs: Array.from({ length: 7 }, (_, i) => ({
+        label: i < 3 ? 'solo-' + (i + 1) : 'parallel-' + (i - 2),
+        ok: true, steps: [{ name: 'gate', status: 'pass' }]
+      }))
+    }));
+    t('all expected gates, seven labeled runs and one pinned commit pass integrity',
+      inventoryProblems(complete, matrix, pinned).length === 0);
+    t('a missing artifact fails closed, even when another gate is green',
+      inventoryProblems(complete.slice(1), matrix, pinned).some(m => m === 'missing result for boot'));
+    t('duplicate result files fail closed',
+      inventoryProblems(complete.concat([complete[0]]), matrix, pinned).some(m => /boot has 2 result files/.test(m)));
+    t('six repetitions fail closed instead of silently meeting seven',
+      inventoryProblems(complete.map((r,i) => i === 0 ? Object.assign({}, r, { runs: r.runs.slice(0,6) }) : r), matrix, pinned)
+        .some(m => /boot has 6 repetitions/.test(m)));
+    t('wrong commit cannot be reported as a pinned run',
+      inventoryProblems(complete.map((r,i) => i === 0 ? Object.assign({}, r, { commit: 'b'.repeat(40) }) : r), matrix, pinned)
+        .some(m => /boot was tested at/.test(m)));
+    t('missing SHA fails closed instead of accepting mutable main',
+      inventoryProblems(complete, matrix, '').some(m => /pinned source commit/.test(m)));
+    t('missing gate is in the report and makes its exit code red',
+      buildSummary(complete.slice(1), L, '', '777', matrix, pinned).code === 1
+      && /missing result for boot/.test(buildSummary(complete.slice(1), L, '', '777', matrix, pinned).md));
+    t('complete result inventory passes its own status check',
+      buildSummary(complete, L, '', '777', matrix, pinned).code === 0);
+    // The real download-artifact layout keeps one directory per artifact.
+    // A flat merge would erase boot.json before the duplicate detector ran.
+    const artifactDir = path.join(dir, 'artifact-subdirs');
+    const artifact = (folder, file, data) => {
+      const dst = path.join(artifactDir, folder);
+      fs.mkdirSync(dst, { recursive: true });
+      fs.writeFileSync(path.join(dst, file), JSON.stringify(data));
+    };
+    artifact('nightly-boot', 'boot.json', complete[0]);
+    artifact('nightly-boot-copy', 'boot.json', complete[0]);
+    const nested = collectResults(artifactDir);
+    t('separate artifact directories preserve duplicate results for rejection',
+      nested.length === 2 && inventoryProblems(nested, [{ gate: 'boot' }], pinned).some(m => /boot has 2 result files/.test(m)));
+    t('a declared result from the wrong artifact is refused',
+      nested.some(r => r.origin_problem) && inventoryProblems(nested, [{ gate: 'boot' }], pinned).some(m => /mismatched artifact/.test(m)));
+    const singleDir = path.join(dir, 'artifact-one');
+    fs.mkdirSync(path.join(singleDir, 'nightly-boot'), { recursive: true });
+    fs.writeFileSync(path.join(singleDir, 'nightly-boot', 'boot.json'), JSON.stringify(complete[0]));
+    t('a correctly named single artifact passes inventory and commit checks',
+      inventoryProblems(collectResults(singleDir), [{ gate: 'boot' }], pinned).length === 0);
+
+    t('a failed required gate makes the summary red even with complete evidence',
+      buildSummary(complete.map((r,i) => i === 0 ? Object.assign({},r,{runs:r.runs.map((x,k) => k === 0 ? Object.assign({},x,{ok:false,counts:{passed:0,failed:1}}) : x)}) : r), L, '', '777', matrix, pinned).code === 1);
+    t('a failed report-only gate cannot produce a green nightly summary',
+      buildSummary([Object.assign({},complete[0],{required:false,runs:complete[0].runs.map((x,k) => k === 0 ? Object.assign({},x,{ok:false}) : x)})], L, '', '777', [{gate:complete[0].gate}], pinned).code === 1);
     // the run page
     const page = buildSummary(res, L, '', '777');
     t('the page names every verdict and prints the record line for a failed gate',
@@ -291,6 +450,20 @@ function selfTest() {
     const fl = failLog(res[1]);
     t('the fail log is one FAIL line per failing check, as printed', fl === '  FAIL  the ring reads 41%\n  FAIL  a check nobody has seen fail\n');
     t('a green gate writes no fail log', failLog(res[3]) === '');
+    // Keep raw failure evidence without copying runner environment files.
+    const rawRoot = path.join(dir, 'raw'), archive = path.join(dir, 'archive');
+    fs.mkdirSync(path.join(rawRoot, 'solo-1', 'gates'), { recursive: true });
+    fs.mkdirSync(path.join(rawRoot, 'solo-2', 'steps'), { recursive: true });
+    fs.mkdirSync(archive);
+    fs.writeFileSync(path.join(rawRoot, 'solo-1', 'gates', 'boot.log'), 'exact failed assertion');
+    fs.writeFileSync(path.join(rawRoot, 'solo-1', 'github-env'), 'NOT FOR ARTIFACTS');
+    fs.writeFileSync(path.join(rawRoot, 'solo-2', 'steps', 'good.log'), 'passed');
+    t('failed repeat keeps raw gate logs but never runner environment files',
+      archiveFailedLogs(result('boot',[run('solo-1',false,['failed']),run('solo-2',true,[])]),rawRoot,path.join(archive,'boot.json'))===1
+      && fs.readFileSync(path.join(archive,'boot-logs','solo-1','gates','boot.log'),'utf8')==='exact failed assertion'
+      && !fs.existsSync(path.join(archive,'boot-logs','solo-1','github-env'))
+      && !fs.existsSync(path.join(archive,'boot-logs','solo-2')));
+
     const scratch = path.join(dir, 'recorded.json'); fs.writeFileSync(scratch, JSON.stringify(ledger));
     const lg = path.join(dir, 'design.fail.log'); fs.writeFileSync(lg, fl);
     const rec = cp.spawnSync(process.execPath, [path.join(__dirname, 'flakes.js'), 'record', 'design', lg, '--ledger', scratch, '--run', '777', '--commit', 'a'.repeat(40)], { encoding: 'utf8' });
@@ -329,5 +502,5 @@ async function main(argv) {
   return repeat(gate, solo, par, out);
 }
 
-module.exports = { counts, failedChecks, failLog, verdict, findings, buildSummary };
+module.exports = { counts, failedChecks, failLog, verdict, findings, inventoryProblems, buildSummary };
 if (require.main === module) main(process.argv.slice(2)).then(c => process.exit(c), e => { console.log('FAIL gates-repeat.js threw: ' + (e && e.stack || e)); process.exit(1); });
