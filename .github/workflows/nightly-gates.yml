@@ -141,7 +141,9 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: nightly-*
-          merge-multiple: true
+          # Keep artifact directories separate so duplicate result names cannot
+          # overwrite each other before the summary verifies the inventory.
+          merge-multiple: false
           path: ${{ runner.temp }}/results
       - name: every gate, every run, on the run page
         env:

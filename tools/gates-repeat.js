@@ -220,6 +220,7 @@ function inventoryProblems(all, expected, sha) {
     const name = r && r.gate;
     if (typeof name !== 'string' || !name) { problems.push('a result has no gate name'); continue; }
     found.set(name, (found.get(name) || 0) + 1);
+    if (r.origin_problem) problems.push(r.origin_problem);
     if (!names.has(name)) problems.push('unexpected result ' + name);
     if (r.broken || !Array.isArray(r.runs)) {
       problems.push(name + ' has no readable run list'); continue;
@@ -296,11 +297,35 @@ function buildSummary(all, L, why, run, expected, sha) {
   return { md: out.join('\n') + '\n', code };
 }
 
-function summary(dir, ledgerFile) {
+/* Preserve each downloaded artifact's directory. Merging them into one
+   folder can overwrite duplicate gate.json files before integrity checks
+   get to count them. Flat directories remain supported for local runs. */
+function collectResults(dir) {
   let files = [];
-  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort(); } catch (e) { /* no directory: no leg wrote a result, said below */ }
+  try {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isFile() && e.name.endsWith('.json')) files.push(e.name);
+      if (e.isDirectory() && e.name.startsWith('nightly-')) {
+        for (const f of fs.readdirSync(path.join(dir, e.name), { withFileTypes: true }))
+          if (f.isFile() && f.name.endsWith('.json')) files.push(path.join(e.name, f.name));
+      }
+    }
+  } catch (e) { /* a missing result directory is a failure below */ }
   const all = [];
-  for (const f of files) { try { all.push(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); } catch (e) { all.push({ gate: f, broken: e.message }); } }
+  for (const f of files.sort()) {
+    try {
+      const result = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+      const parts = f.split(path.sep);
+      if (parts.length > 1 && (parts[0] !== 'nightly-' + result.gate || parts[1] !== result.gate + '.json'))
+        result.origin_problem = 'result ' + f + ' has mismatched artifact folder, file name or declared gate';
+      all.push(result);
+    } catch (e) { all.push({ gate: f, broken: e.message }); }
+  }
+  return all;
+}
+
+function summary(dir, ledgerFile) {
+  const all = collectResults(dir);
   let L = null, why = '';
   try { L = load(ledgerFile || LEDGER); } catch (e) { why = e.message; }
   let expected, sha, inventoryError = '';
@@ -383,6 +408,27 @@ function selfTest() {
       && /missing result for boot/.test(buildSummary(complete.slice(1), L, '', '777', matrix, pinned).md));
     t('complete result inventory passes its own status check',
       buildSummary(complete, L, '', '777', matrix, pinned).code === 0);
+    // The real download-artifact layout keeps one directory per artifact.
+    // A flat merge would erase boot.json before the duplicate detector ran.
+    const artifactDir = path.join(dir, 'artifact-subdirs');
+    const artifact = (folder, file, data) => {
+      const dst = path.join(artifactDir, folder);
+      fs.mkdirSync(dst, { recursive: true });
+      fs.writeFileSync(path.join(dst, file), JSON.stringify(data));
+    };
+    artifact('nightly-boot', 'boot.json', complete[0]);
+    artifact('nightly-boot-copy', 'boot.json', complete[0]);
+    const nested = collectResults(artifactDir);
+    t('separate artifact directories preserve duplicate results for rejection',
+      nested.length === 2 && inventoryProblems(nested, [{ gate: 'boot' }], pinned).some(m => /boot has 2 result files/.test(m)));
+    t('a declared result from the wrong artifact is refused',
+      nested.some(r => r.origin_problem) && inventoryProblems(nested, [{ gate: 'boot' }], pinned).some(m => /mismatched artifact/.test(m)));
+    const singleDir = path.join(dir, 'artifact-one');
+    fs.mkdirSync(path.join(singleDir, 'nightly-boot'), { recursive: true });
+    fs.writeFileSync(path.join(singleDir, 'nightly-boot', 'boot.json'), JSON.stringify(complete[0]));
+    t('a correctly named single artifact passes inventory and commit checks',
+      inventoryProblems(collectResults(singleDir), [{ gate: 'boot' }], pinned).length === 0);
+
     t('a failed required gate makes the summary red even with complete evidence',
       buildSummary(complete.map((r,i) => i === 0 ? Object.assign({},r,{runs:r.runs.map((x,k) => k === 0 ? Object.assign({},x,{ok:false,counts:{passed:0,failed:1}}) : x)}) : r), L, '', '777', matrix, pinned).code === 1);
     t('a failed report-only gate cannot produce a green nightly summary',
