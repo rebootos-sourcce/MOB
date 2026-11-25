@@ -6,8 +6,11 @@ An open item under a decision is named as open.
 
 ## Tiers and the meter
 
-**The gift.** A new person gets 100 patterns, free, with everything visible.
-They explore the whole app until the gift is spent. Then it reverts.
+**The gift.** A new person gets a free bank of exactly 100 patterns, with everything visible. They explore the whole app until the gift is spent. Then it reverts.
+
+**Gift selection — owner ruling, 12 October 2026.** During onboarding, the user chooses one of six gift natures: anxiety, overwhelm, burnout, depression, grief, or sadness. This choice is separate from the twelve onboarding starting grounds. On account creation/attachment, the selected gift nature resolves to its own deterministic, versioned bank of exactly 100 approved pattern sentences. The selected bank is attached to the person's account; the starting ground must not silently select or replace it. This settles the choice between a universal bank and a category-selected bank.
+
+**Open implementation/content gate.** This ruling does not approve any sentence or pattern ID. Each bank still requires source-grounded sentence review, stable IDs, category membership, channel/side/phase semantics, content and set hashes, and explicit owner approval. The bank remains unavailable for production issuance until the client meter and server snapshot agree and readback is verified.
 
 **Tier zero, free.** 10 patterns a week. Sharing earns 10 more per person who
 joins.

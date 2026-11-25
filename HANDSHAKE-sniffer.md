@@ -1,16 +1,18 @@
 # Sniffer handshake · for any AI or person who touches the sniffer
 
-Written 9 October 2026 from the owner's audit and a probe of `main` at `f28aa36`.
-Read `REVIEW-sniffer-audit-2026-10-09.md` first. It says what is broken, what is in
-alpha and what is not. This file says how to work.
+**Read first:** [ATUNED Master Index in draft PR #69](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md). It owns the current repository map, P0–P3 priority, exact-head evidence and cross-workstream blockers. This file is the sniffer-specific execution contract.
+
+The audit and probe referenced below date to 9 October 2026 and commit `f28aa36`. Treat those findings as historical until rechecked against the current exact head and tests. Do not carry their old gap counts forward as current status without a fresh run.
+
 
 ## 1 · Read, in this order, before any change
 
-1. `REVIEW-sniffer-audit-2026-10-09.md` (scope, rulings, order of work).
-2. `SNIFFER_SPEC.md` section 11 (the guards) and section 10 (the output contract).
-3. `DESIGN-sniffer.md`, the failure table in `TDD-sniffer.md`, and the groups in
+1. The [ATUNED Master Index in draft PR #69](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md), then refresh live repo/PR/run state.
+2. `REVIEW-sniffer-audit-2026-10-09.md` (historical scope, rulings, order of work; refresh its status before using it).
+3. `SNIFFER_SPEC.md` section 11 (the guards) and section 10 (the output contract).
+4. `DESIGN-sniffer.md`, the failure table in `TDD-sniffer.md`, and the groups in
    `tests/engine.js` named `11`, `32`, `33`, `34`, `36d` and `QZ`.
-4. `CLAUDE.md` in the repository root. Its rules bind you.
+5. `CLAUDE.md` in the repository root. Its rules bind you.
 
 ## 2 · The twelve rules (from the audit, section 15, and this repository)
 
