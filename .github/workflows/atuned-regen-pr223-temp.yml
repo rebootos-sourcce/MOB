@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add engine.js source.html atuned-slim.html atuned-packed.html funnel/tokens.css funnel/dist/
+          git add -u -- engine.js source.html atuned-packed.html funnel/tokens.css funnel/dist/
           git rm -f .github/workflows/atuned-regen-pr223-temp.yml
           git diff --cached --stat
           git diff --cached --quiet && exit 1
