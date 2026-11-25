@@ -233,7 +233,9 @@ function buildSummary(all, L, why, run, expected, sha) {
     out.push('| ' + r.gate + ' | ' + (r.required ? 'required' : 'report') + ' | ' + labels.map(l => byLabel[l] ? cell(byLabel[l]) : '').join(' | ')
       + ' | ' + r.runs.filter(x => !x.ok).length + ' of ' + r.runs.length + ' | ' + fails.join('; ') + ' |');
   }
-  let code = all.length ? 0 : 1;
+  // A complete inventory is not sufficient: any failed repetition must make
+  // the summary job red, including known flakes and report-only legs.
+  let code = all.length && nb === 0 ? 0 : 1;
   const integrity = inventoryProblems(all, expected, sha);
   if (integrity.length) {
     code = 1;
@@ -358,6 +360,10 @@ function selfTest() {
       && /missing result for boot/.test(buildSummary(complete.slice(1), L, '', '777', matrix, pinned).md));
     t('complete result inventory passes its own status check',
       buildSummary(complete, L, '', '777', matrix, pinned).code === 0);
+    t('a failed required gate makes the summary red even with complete evidence',
+      buildSummary(complete.map((r,i) => i === 0 ? Object.assign({},r,{runs:r.runs.map((x,k) => k === 0 ? Object.assign({},x,{ok:false,counts:{passed:0,failed:1}}) : x)}) : r), L, '', '777', matrix, pinned).code === 1);
+    t('a failed report-only gate cannot produce a green nightly summary',
+      buildSummary([Object.assign({},complete[0],{required:false,runs:complete[0].runs.map((x,k) => k === 0 ? Object.assign({},x,{ok:false}) : x)})], L, '', '777', [{gate:complete[0].gate}], pinned).code === 1);
     // the run page
     const page = buildSummary(res, L, '', '777');
     t('the page names every verdict and prints the record line for a failed gate',
