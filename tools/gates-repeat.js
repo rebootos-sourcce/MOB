@@ -116,10 +116,33 @@ async function repeat(gate, solo, par, outFile) {
     fs.writeFileSync(outFile, JSON.stringify(res, null, 2) + '\n');
     const fl = failLog(res);
     if (fl) fs.writeFileSync(outFile.replace(/(\.json)?$/, '.fail.log'), fl);
+    const kept = archiveFailedLogs(res, root, outFile);
+    if (kept) console.log('Preserved full gate/step logs for ' + kept + ' failed repetitions beside ' + outFile);
   }
   const bad = runs.filter(r => !r.ok).length;
   console.log('\n===== ' + (runs.length - bad) + ' passed, ' + bad + ' failed ===== ' + gate + ', ' + solo + ' solo and ' + par + ' at once, logs under ' + root);
   return bad ? 1 : 0;
+}
+
+/* Runner-local logs vanish when the matrix worker exits. Preserve raw
+   gate and step output for failed repetitions alongside the JSON artifact.
+   Copy logs only, not environment files (which can contain secret values).
+   The workflow already uploads the entire results directory. */
+function archiveFailedLogs(result, root, outFile) {
+  const failed = (result.runs || []).filter(r => !r.ok);
+  if (!failed.length) return 0;
+  const dest = path.join(path.dirname(outFile), path.basename(outFile, '.json') + '-logs');
+  for (const r of failed) {
+    for (const sub of ['gates', 'steps']) {
+      const from = path.join(root, r.label, sub);
+      const to = path.join(dest, r.label, sub);
+      if (fs.existsSync(from)) {
+        fs.mkdirSync(path.dirname(to), { recursive: true });
+        fs.cpSync(from, to, { recursive: true });
+      }
+    }
+  }
+  return failed.length;
 }
 
 /* THE FAILING CHECKS OF ONE GATE'S RESULT, as `  FAIL  <line>` lines in the
@@ -381,6 +404,20 @@ function selfTest() {
     const fl = failLog(res[1]);
     t('the fail log is one FAIL line per failing check, as printed', fl === '  FAIL  the ring reads 41%\n  FAIL  a check nobody has seen fail\n');
     t('a green gate writes no fail log', failLog(res[3]) === '');
+    // Keep raw failure evidence without copying runner environment files.
+    const rawRoot = path.join(dir, 'raw'), archive = path.join(dir, 'archive');
+    fs.mkdirSync(path.join(rawRoot, 'solo-1', 'gates'), { recursive: true });
+    fs.mkdirSync(path.join(rawRoot, 'solo-2', 'steps'), { recursive: true });
+    fs.mkdirSync(archive);
+    fs.writeFileSync(path.join(rawRoot, 'solo-1', 'gates', 'boot.log'), 'exact failed assertion');
+    fs.writeFileSync(path.join(rawRoot, 'solo-1', 'github-env'), 'NOT FOR ARTIFACTS');
+    fs.writeFileSync(path.join(rawRoot, 'solo-2', 'steps', 'good.log'), 'passed');
+    t('failed repeat keeps raw gate logs but never runner environment files',
+      archiveFailedLogs(result('boot',[run('solo-1',false,['failed']),run('solo-2',true,[])]),rawRoot,path.join(archive,'boot.json'))===1
+      && fs.readFileSync(path.join(archive,'boot-logs','solo-1','gates','boot.log'),'utf8')==='exact failed assertion'
+      && !fs.existsSync(path.join(archive,'boot-logs','solo-1','github-env'))
+      && !fs.existsSync(path.join(archive,'boot-logs','solo-2')));
+
     const scratch = path.join(dir, 'recorded.json'); fs.writeFileSync(scratch, JSON.stringify(ledger));
     const lg = path.join(dir, 'design.fail.log'); fs.writeFileSync(lg, fl);
     const rec = cp.spawnSync(process.execPath, [path.join(__dirname, 'flakes.js'), 'record', 'design', lg, '--ledger', scratch, '--run', '777', '--commit', 'a'.repeat(40)], { encoding: 'utf8' });
