@@ -18,6 +18,7 @@ engine/data/catalog.js
 engine/data/kb.js
 engine/data/archdom.js
 engine/data/letgo.js
+engine/data/deep_psyche.js
 engine/data/sabcard.js
 engine/data/hcxcard.js
 engine/data/kbsay.js
