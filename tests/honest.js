@@ -242,6 +242,7 @@ require('./net.js').guardBrowser(browser);
   const q1 = await open2(); await story(q1);
   await q1.evaluate(v => srcTurnCommit(v), HALF);
   /* A finalized turn must be durable *before* srcTurnCommit returns; do not
+     treat pagehide or the 500ms debounce as proof of durable storage. Do not
      pass by relying on a pagehide flush that may never fire under load. */
   const immediate = (own(await saved(q1)) || {}).story?.draft || null;
   const t0 = Date.now(); await q1.close({ runBeforeUnload: false });
