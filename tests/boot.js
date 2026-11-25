@@ -378,7 +378,7 @@ let BASE='';
          for a fade that ran to its own end, which is the claim. */
       const at=v=>v==null?'never':Math.round(v)+'ms';
       const held=L.ok!=null&&L.start!=null&&L.start>=L.ok&&L.end!=null&&L.end>L.start&&L.gone!=null&&L.gone>=L.end-1;
-      ok(held,'raw, long arrival with no press: the sheet stands until the start up finishes, then its own fade runs to its end:'
+      ok(held,'raw, long arrival with no press: a pending fade must not be cut by its removal watchdog; its own animationstart/end run to completion:'
        +' start up done at '+at(L.ok)+', fade '+at(L.start)+' to '+at(L.end)+', sheet left at '+at(L.gone)
        +(held?'':(L.start!=null&&L.ok!=null&&L.start<L.ok?', and it did not: it faded while nothing of the instrument had run':', and it did not'))); }
      finally{releaseLong(); await ctx.close();}});
