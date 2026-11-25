@@ -353,7 +353,10 @@ let BASE='';
        +(r.okAt==null?'never':Math.round(r.okAt)+'ms')+', its fade began '+(r.fadeAt==null?'never, the skip took it':'at '+Math.round(r.fadeAt)+'ms')
        +', sheet '+(r.gone?'gone':'STILL UP'));}
      finally{releaseLong(); await ctx.close();}});
-    /* and with no press at all, the held sheet still goes, whole and on its
+    /* Regression guard for the pending Web Animations play() clock: the
+       removal watchdog must not cut the sheet while the resumed fade is pending.
+       The event ordering assertion below must remain strict under contention.
+       With no press at all, the held sheet still goes, whole and on its
        own curve, once there is an instrument behind it */
     await block('raw, long arrival with no press',async()=>{const {ctx,p}=await pressPage(b,'/raw-held-long.html');
      try{const a=await arm(p,null), off=Date.now()-a.now, until=ms=>sleep(Math.max(0,ms+off-Date.now()));
