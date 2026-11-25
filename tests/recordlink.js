@@ -270,6 +270,11 @@ require('./net.js').guardBrowser(browser);
     ok(r.st.hash === '' && r.st.href.indexOf('#r=') < 0 && r.st.href.indexOf('?dev=1') > 0,
       '@' + w + ': the record is off the address and the rest of it is kept, ' + r.st.href.split('/').pop());
     ok(JSON.parse(r.st.stored).some(p => p.name === 'Web reading'), '@' + w + ': and it is in the stored record list');
+    /* Record links are untrusted input. Beyond the receipt above, the
+       persisted profile must have no paid visibility or forged allowance. */
+    ok(JSON.parse(r.st.stored).some(p => p.name === 'Web reading' && p.plan
+      && p.plan.tier === 'free' && p.plan.granted === 0 && p.plan.carried === 0),
+      '@' + w + ': link import cannot grant a tier or a free allowance');
     ok(r.reload.names.length === r.st.names.length,
       '@' + w + ': a reload does not load it twice, ' + r.reload.names.length + ' records after the reload');
     ok(r.errs.length === 0, '@' + w + ': the app threw nothing: ' + r.errs.slice(0, 2).join(' | '));
