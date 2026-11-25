@@ -250,7 +250,7 @@ require('./net.js').guardBrowser(browser);
   const q2 = await open2();
   const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.draft : null);
   ok(immediate === HALF && back === HALF,
-    'a turn saves synchronously and survives a page closed ' + gone + ' ms later: '
+    'a finalized turn is durable before unload and survives close ' + gone + ' ms later: '
     + JSON.stringify({ persisted: immediate === HALF, reopened: back === HALF }));
   await story(q2);
   ok((await entryText(q2)) === HALF, 'and it is back in the entry');
