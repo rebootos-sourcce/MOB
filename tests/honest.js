@@ -241,11 +241,16 @@ require('./net.js').guardBrowser(browser);
   };
   const q1 = await open2(); await story(q1);
   await q1.evaluate(v => srcTurnCommit(v), HALF);
+  /* A finalized turn must be durable *before* srcTurnCommit returns; do not
+     pass by relying on a pagehide flush that may never fire under load. */
+  const immediate = (own(await saved(q1)) || {}).story?.draft || null;
   const t0 = Date.now(); await q1.close({ runBeforeUnload: false });
   const gone = Date.now() - t0;
   const q2 = await open2();
   const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.draft : null);
-  ok(back === HALF, 'a page closed ' + gone + ' ms after the last turn keeps the entry\'s draft: ' + JSON.stringify(back));
+  ok(immediate === HALF && back === HALF,
+    'a turn saves synchronously and survives a page closed ' + gone + ' ms later: '
+    + JSON.stringify({ persisted: immediate === HALF, reopened: back === HALF }));
   await story(q2);
   ok((await entryText(q2)) === HALF, 'and it is back in the entry');
   await press(q2, '#stapply'); await q2.close();
