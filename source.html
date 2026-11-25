@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v127 2e723b7f 2026-11-22 20:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v3502 664011d1 2026-11-25 17:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -103575,13 +103575,21 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
-    /* the fade's end on the page's own clock. The document timeline and
-       performance.now share an origin, and the timeline's time is the last
-       frame's, which during a long script is well behind now, so the end is
-       taken from the start time and not from the current time */
+    /* A resumed, previously paused fade has a pending play request. Its
+       startTime can still refer to the original first painted frame while
+       playback is pending; using it here makes the floor fire in 200ms,
+       before the full .24s fade or its animationend can finish. The boot
+       gate's held-long/no-press case caught this on every solo run.
+       Never arm a time derived from that stale clock. Keep a bounded
+       watchdog and replace it after the ready promise updates startTime. */
+    if(fade.pending&&fade.ready){
+     floor(5450);
+     fade.ready.then(set,function(){});
+     return;}
+    /* The end is on the page's own timeline, not a hardcoded duration.
+       Leave 200ms for the terminal animation event before the watchdog. */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
@@ -116884,5 +116892,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008524812"></div>
+<div id="eof" hidden data-len="008525219"></div>
 </body></html>

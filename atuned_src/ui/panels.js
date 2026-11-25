@@ -1940,13 +1940,21 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
-    /* the fade's end on the page's own clock. The document timeline and
-       performance.now share an origin, and the timeline's time is the last
-       frame's, which during a long script is well behind now, so the end is
-       taken from the start time and not from the current time */
+    /* A resumed, previously paused fade has a pending play request. Its
+       startTime can still refer to the original first painted frame while
+       playback is pending; using it here makes the floor fire in 200ms,
+       before the full .24s fade or its animationend can finish. The boot
+       gate's held-long/no-press case caught this on every solo run.
+       Never arm a time derived from that stale clock. Keep a bounded
+       watchdog and replace it after the ready promise updates startTime. */
+    if(fade.pending&&fade.ready){
+     floor(5450);
+     fade.ready.then(set,function(){});
+     return;}
+    /* The end is on the page's own timeline, not a hardcoded duration.
+       Leave 200ms for the terminal animation event before the watchdog. */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    if(fade.pending&&fade.ready)fade.ready.then(set,function(){}); };
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
