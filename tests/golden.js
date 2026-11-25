@@ -809,9 +809,9 @@ async function door(browser, SITE, cut, giftAt) {
   const commitStarted = Date.now();
   const commitVisible = await page.waitForFunction(() => {
     const b = document.getElementById('stapply'); if (!b || b.disabled) return false;
-    const s = getComputedStyle(b), r = b.getBoundingClientRect();
-    return r.width > 0 && r.height > 0 && s.display !== 'none'
-      && s.visibility !== 'hidden' && s.opacity !== '0';
+    const r = b.getBoundingClientRect();
+    return r.width > 0 && r.height > 0
+      && b.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
   }, null, { timeout: 5000 }).then(() => true, () => false);
   const commitWaitMs = Date.now() - commitStarted;
   const commitDiag = commitVisible ? null : await page.evaluate(() => {
