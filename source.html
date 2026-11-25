@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v127 2e723b7f 2026-11-22 20:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v1 a0863bc 2026-11-25 21:54"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5412,6 +5412,9 @@ body.glassblue.tab-story:not(.st-full) #stage::before{
     color-mix(in srgb,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
     color-mix(in srgb,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
     var(--bg) 100%)}
+/* Loaded profiles add a colored WebGL cloud over Discover's ground.
+   Keep that cloud translucent on both light glass themes. */
+body.glasswhite.tab-story:not(.st-full) #stage>#unicloud{opacity:.4}
 /* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
    paints twice: once behind her (above) and once again in the box she
    sits in. */
@@ -116884,5 +116887,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008524812"></div>
+<div id="eof" hidden data-len="008525009"></div>
 </body></html>

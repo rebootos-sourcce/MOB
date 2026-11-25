@@ -5412,6 +5412,9 @@ body.glassblue.tab-story:not(.st-full) #stage::before{
     color-mix(in srgb,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
     color-mix(in srgb,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
     var(--bg) 100%)}
+/* Loaded profiles add a colored WebGL cloud over Discover's ground.
+   Keep that cloud translucent on both light glass themes. */
+body.glasswhite.tab-story:not(.st-full) #stage>#unicloud{opacity:.4}
 /* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
    paints twice: once behind her (above) and once again in the box she
    sits in. */
