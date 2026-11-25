@@ -142,6 +142,15 @@ async function open(browser, w, h, o) {
     return route.fulfill({ status: 200, headers: Object.assign({ 'content-type': 'audio/wav' }, CORS), body: wav(hold.sec) });
   });
   await cx.addInitScript(MIC); await cx.addInitScript(LCOL_SEED); await cx.addInitScript(FULL_SIGHT);
+  if (o.geometrySoak) await cx.addInitScript(() => {
+    // Software WebGL can starve the geometry sampler on CI. The decorative
+    // cloud has a separate browser test. Keep the Talk view and its CSS live.
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
+      if (this.id === 'unicloud' && kind === 'webgl2') return null;
+      return getContext.call(this, kind, ...args);
+    };
+  });
   const p = await cx.newPage();
   p.errs = []; p.on('pageerror', e => p.errs.push(String(e && e.message || e))); p.voice = voice; p.cx = cx; p.hold = hold;
   await p.goto(FILE, { waitUntil: 'load' }); await booted(p);
@@ -471,7 +480,7 @@ const lostOk = p => !(p.lost || []).length;
   /* ---------- Commit does not move ---------- */
   if (ONLY.includes('jump')) {
     console.log('\n=== the round button holds still, sampled every 50 milliseconds for ' + SOAK + ' seconds ===');
-    const open1 = o => openLoaded(browser, o.w, o.h, { silenceMs: o.silence || 0 });
+    const open1 = o => openLoaded(browser, o.w, o.h, { silenceMs: o.silence || 0, geometrySoak: true });
     // Chrome throttles background pages. Give each 50 ms sampler its
     // own foreground interval, with the same soak and sample requirements.
     const observe = async (p, start) => {
@@ -481,7 +490,7 @@ const lostOk = p => !(p.lost || []).length;
       await wait(SOAK * 1000);
       return analyse(await readWatch(p));
     };
-    const D = await open(browser, 1600, 1000);
+    const D = await open(browser, 1600, 1000, { geometrySoak: true });
     await D.evaluate(() => stMic());
     await D.waitForFunction(() => document.getElementById('stapply')?.getBoundingClientRect().width > 0, null, { timeout: 8000 });
     const rd = await observe(D, p => p.evaluate(() => {
