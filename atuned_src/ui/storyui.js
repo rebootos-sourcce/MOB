@@ -1780,18 +1780,22 @@ function stSafe(){
    rule is that such a name is never printed as a finding). The split rides on
    the list so STV.lastFound keeps it once the parse is cleared at commit;
    stRelModel says what losing it cost. */
-function stFound(){
+function stAcceptedParse(){
+ return ST_PARSED&&SRC_VERDICTS.length?parseStory(ST_TEXT,SRC_VERDICTS):ST_PARSED;
+}
+function stFound(parsed){
  /* nothing off an entry srcSafe stops, and not the last entry's either: the
     fall back below put an earlier entry's places in the release column
     beside these words, which is a release offered on them by another door */
  if(stSafe())return [];
+ var draft=arguments.length?parsed:stAcceptedParse();
  var found=[], named=0;
  [false,true].forEach(function(inf){
-  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
+  if(draft)draft.imprints.forEach(function(im){var n=BY[im.node];
    if(!!im.inferred===inf&&n&&n.cf&&found.indexOf(n)<0)found.push(n);});
   if(!inf)named=found.length;});
  found.named=named;
- return found.length?found:STV.lastFound;}
+ return draft?found:STV.lastFound;}
 
 /* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
    so the Day One Tutorial can write a person's first entry through the exact
@@ -1836,7 +1840,9 @@ function stCommit(){
  /* asked of the words, not of the page, so the tutorial's and the first
     run's commits through here are held the same way (stSafe, above) */
  var safe=srcSafe(ST_TEXT);
- var kept=safe?[]:stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ var vkept=SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(ST_TEXT,[],{verdicts:SRC_VERDICTS})):[];
+ var parsed=vkept.length?parseStory(ST_TEXT,vkept):ST_PARSED;
+ var kept=safe?[]:stFound(parsed), k=parsed.imprints.length, bands=parsed.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
     words in the box (below), so the same words pressed again are the same
@@ -1851,10 +1857,13 @@ function stCommit(){
     it here would still move the field on words the sniffer read as nothing
     in particular. The entry is kept; the field is not touched at all, and
     undoPush only runs for the branch that can actually be undone. */
+ if(again){k=last.imprints; bands=last.bands; kept=STV.lastFound;}
  if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
-  applyStory(ST_TEXT); applyStoryAddr(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  applyStory(ST_TEXT,vkept); applyStoryAddr(ST_TEXT,vkept);
+  var counterText=storyTextForCounters(ST_TEXT,vkept);
+  verpApply(counterText); leanApply(counterText);
   /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
      applyStory writes S and pSave writes the record, and neither writes
      PEOPLE[0], which is the table loadP(0) reads the person's field back out
@@ -1875,14 +1884,13 @@ function stCommit(){
      what Source AI asked while it was written, 20.H5: a kind and a seat for
      each, and what the person did next. Never the words of a question. */
   var ent={t:new Date().toISOString(),text:ST_TEXT,
-   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
+   imprints:k,bands:bands,lex:LEX_VERSION};
   var asked=srcAsked(SRC_LOG,ST_TEXT.length);
   if(asked.length)ent.asked=asked;
   /* verdicts, what the person answered in the Journal, SK1: a seat key and
      an answer, read off the ledger the control was drawn from, and never a
      correction's own words (evKept, engine/evidence.js, says why). Missing
      when nothing was answered, the way asked is. */
-  var vkept=evKept(SRC_VERDICTS,srcLedgerNow());
   if(vkept.length)ent.verdicts=vkept;
   CURP.story.entries.push(ent);
   /* the entry's identity, handed back so a release planned off this entry can
@@ -2052,6 +2060,7 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
+ SRC_HISTORY_PROFILE=null; SRC_HISTORY_READ=null;
  ST_TEXT=''; ST_PARSED=null; ST_HELLO_ON=false; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
@@ -2756,6 +2765,26 @@ function srcGauge(top){
    person, with no status-line ring to it. */
 function srcNone(){
  return 'I can’t place this one yet. Tell me what your body did, and where.';}
+/* History is opt-in for the current profile and this page load. Only
+   finalized turns can consult it. Repaints reuse the same lookup. */
+var SRC_HISTORY_PROFILE=null, SRC_HISTORY_READ=null;
+function srcLatestUserTurn(){
+ for(var i=SRC_CHAT.length-1;i>=0;i--){
+  var row=SRC_CHAT[i];
+  if(row.w==='me')return row.b===ST_TEXT.trimEnd().length&&ST_TEXT.slice(row.a,row.b)===row.t?row:null;
+ }
+ return null;
+}
+function srcHistoryLine(row){
+ if(!row||!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly())return '';
+ var verdictKey=JSON.stringify(SRC_VERDICTS);
+ var hit=SRC_HISTORY_READ;
+ if(!hit||hit.row!==row||hit.verdictKey!==verdictKey){
+  var kept=srcConfirmedStoryAddresses(row.t,CURP,{allowProfile:true,verdicts:SRC_VERDICTS});
+  hit=SRC_HISTORY_READ={row:row,verdictKey:verdictKey,connected:kept.length>0};
+ }
+ return hit.connected?' This connects to a pattern you confirmed in an earlier entry.':'';
+}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=srcHeardNow();
@@ -2763,6 +2792,7 @@ function srcPaint(){
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ if(STV.chat&&turn.move!=='safe'&&!document.getElementById('sttext'))srcChatSync();
  /* THE PERSON'S OWN WORDS ABOUT THE CONVERSATION, round SK, the seam
     package's VENT and CORRECT. srcTurn is the engine's and is unchanged;
     the page reads two more things it cannot. A seat the person said does
@@ -2785,6 +2815,12 @@ function srcPaint(){
     no later rule (a rejected seat, venting, talk) can turn it back into a
     question, and the whole turn is replaced, act and all. */
  if(turn.move==='open'&&stSafe())turn={move:'safe'};
+ var latest=STV.chat&&!act&&(turn.move==='listen'||turn.move==='ask')?srcLatestUserTurn():null;
+ var reflection=latest?srcCheckingReflection(latest.t):'';
+ var history=srcHistoryLine(latest);
+ if(reflection||history){
+  turn={move:'listen',reflection:reflection,history:history};
+ }
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -2886,7 +2922,7 @@ function srcPaint(){
     defect this gate exists for, and with Talk on speak a reply to each.
     Typed words there become a turn when the next spoken one lands, which
     syncs first (srcTurnCommit), or at Commit. */
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!document.getElementById('sttext'))srcChatSync(); fresh=srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); fresh=srcChatNote(cur);
   /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
      November, his words: "it needs to do speech to speech, text to
      speech. It needs to do them all." The 10 November ruling only ever
@@ -3044,7 +3080,16 @@ function srcPaint(){
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
+ if(boxOpen&&STV.chat&&CURP&&!showOnly()&&turn.move!=='safe'){
+  o+='<label class="ob-dim"><input id="srchistory" type="checkbox"'
+   +(SRC_HISTORY_PROFILE===CURP?' checked':'')+'> Use confirmed patterns from my past entries</label>';
+ }
  h.innerHTML=o;
+ var historyDoor=h.querySelector('#srchistory');
+ if(historyDoor)historyDoor.onchange=function(){
+  SRC_HISTORY_PROFILE=historyDoor.checked?CURP:null;
+  SRC_HISTORY_READ=null;
+ };
  srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  srcLock(h);
@@ -3280,6 +3325,7 @@ function srcChatCur(turn,heard,q,ask){
   if(keys.some(function(k){return /^pass/.test(k);})){r.key='pass|'; lines=[];} else {r.key='pass'; lines=['Cool.'];}}
  else if(turn.move==='vent'){
   if(keys.some(function(k){return /^vent/.test(k);})){r.key='vent|'; lines=[];} else {r.key='vent'; lines=[SRC_LISTENING];}}
+ else if(turn.reflection){r.key='reflect'; lines=[turn.reflection];}
  else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; lines=[q]; r.mv='asked';}
  /* LISTENING, IT SAYS BACK THE THREAD, round SK. Two changes, both his
     blueprint's. The seat is the ledger's thread, the one with the newest
@@ -3319,6 +3365,7 @@ function srcChatCur(turn,heard,q,ask){
     turn. */
  var hl=srcHeardLines(turn.move==='vent'||turn.move==='pass');
  r.q=srcPick(lines.concat(hl.lines),said);
+ if(turn.history&&r.q)r.q+=turn.history;
  if(hl.sp&&hl.lines[0]===r.q)r.sp=hl.sp;
  r.w='src'; return r;}
 /* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
@@ -3530,7 +3577,7 @@ function srcIntentLand(v){
   if(!SRC_PASSED&&SRC_LOG.length)SRC_LOG[SRC_LOG.length-1].moved=true;
   SRC_PASSED=true;}
  else if(it.intent==='vent')SRC_VENT=true;
- else if(it.intent==='reject'){
+ else if(it.intent==='reject'&&!STV.unsaved){
   /* THE SEAT THE NO IS ABOUT IS THE ONE SOURCE AI LAST SAID OR ASKED, 18
      November: SRC_VET's target is whatever the last question was about and
      is not cleared when the move changes, so "that is not me" after a
@@ -3703,13 +3750,15 @@ function srcMeHtml(from,to){
    -through and set-aside drawing already makes. */
 function srcChainSpan(){
  var best=null;
- STR.marks.forEach(function(m){
+ var marks=SRC_VERDICTS.length?marksOf(ST_TEXT,stAcceptedParse()):STR.marks;
+ marks.forEach(function(m){
   if(m.neg||m.oth)return;
   if(!best||(m.e-m.s)>(best.e-best.s))best=m;});
  return best;}
 function srcChainLine(){
  if(stSafe()||!ST_TEXT.trim())return '';
- var m=srcChainSpan(); if(!m)return '';
+ var accepted=stAcceptedParse(), m=srcChainSpan();
+ if(!m||!accepted||!accepted.imprints.length)return '';
  var o='<p class="src-chain">Your words: “'+esc(ST_TEXT.slice(m.s,m.e))+'”. Kept as an imprint: '
   +esc(unpackOf('imprint'))+'</p>';
  if(stFound().length)o+='<p class="src-chain">Ready to release. '+esc(unpackOf('release'))+'</p>';
@@ -3785,11 +3834,11 @@ function srcVerdictHtml(){
   var a=c.verdict?c.verdict.v:'', st=a&&SRC_VSTAT[a]?vet(SRC_VSTAT[a],seat):'';
   /* fact after a yes or a correction; a guess, with its question, before;
      after a no, nothing about a place at all */
-  var at=EV_PLACEABLE.indexOf(c.state)>=0?vet('It lands '+srcPlace(c.band)+'.',seat)
-   :(a==='no'?'':vet(srcGuessAt(c.band)+' Does that fit?',seat));
+  var at=a==='yes'?vet('It lands '+srcPlace(c.band)+'.',seat)
+   :(a==='no'||a==='fix'?'':vet(srcGuessAt(c.band)+' Does that fit?',seat));
   if(!at&&!a)at=vet('Does that sound like you?',seat);
   var b=function(v,on){return '<button type="button" class="ob-a'+(on?' on':'')+'" aria-pressed="'+!!on
-   +'" data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+SRC_VBTN[v]+'</button>';};
+   +'"'+(STV.unsaved?' disabled':'')+' data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+SRC_VBTN[v]+'</button>';};
   rows+='<div class="ob-row src-vrow" data-srcvrow="'+esc(seat)+'" style="--c:'+seatCol(c.band)+'">'
    +'<p class="ob-p ob-rowp src-ai">'+esc(said)+(at?' '+esc(at):'')+'</p>'
    +'<div class="ob-as" role="group" aria-label="'+esc(said)+'">'
@@ -3806,8 +3855,9 @@ function srcVerdictHtml(){
 /* a press lands through evVerdict and nothing else, then the panel repaints
    and the focus goes back to the control pressed, as obRenderKeep does */
 function srcVerdictWire(h){
- var again=function(sel){srcPaint(); var x=document.querySelector(sel); if(x)x.focus();};
+ var again=function(sel){srcPaint(); stRelPanel(); var x=document.querySelector(sel); if(x)x.focus();};
  h.querySelectorAll('[data-srcv]').forEach(function(btn){btn.onclick=function(){
+  if(STV.unsaved)return;
   var v=btn.getAttribute('data-srcv'), seat=btn.getAttribute('data-seat');
   var sel='[data-srcv="'+v+'"][data-seat="'+seat+'"]';
   if(v==='fix'){SRC_VFIX=SRC_VFIX===seat?'':seat; SRC_VFIXT='';
@@ -3818,6 +3868,7 @@ function srcVerdictWire(h){
  var ta=document.getElementById('srcvfix');
  if(ta)ta.oninput=function(){SRC_VFIXT=ta.value;};
  h.querySelectorAll('[data-srcvread]').forEach(function(btn){btn.onclick=function(){
+  if(STV.unsaved)return;
   var seat=btn.getAttribute('data-srcvread'), t=document.getElementById('srcvfix');
   var r=evVerdict(SRC_VERDICTS,seat,'fix',t?t.value:'');
   /* an empty box is not a correction: evVerdictOk refuses it, and the box
@@ -4968,7 +5019,7 @@ function stAnaWins(){
  ents.forEach(function(e){var at=Date.parse(e&&e.t);
   if(!(at>=now-far*864e5)||typeof e.text!=='string')return;
   var got={};
-  parseStory(e.text).imprints.forEach(function(im){if(im.inferred||!im.fetter)return;
+  parseStoryEntry(e).imprints.forEach(function(im){if(im.inferred||!im.fetter)return;
    got[im.fetter]=(got[im.fetter]||0)+im.amt;});
   read.push({at:at,got:got});});
  var wins=ST_ANA_WIN.map(function(w){var from=now-w[0]*864e5,by={},n=0;

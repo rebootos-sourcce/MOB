@@ -120,8 +120,9 @@ function srcNegated(src,at,floor){
 function srcPrior(entries){
  var out={};
  (entries||[]).forEach(function(e){
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   Object.keys((e&&e.bands)||{}).forEach(function(k){
-   if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
+   if(!declined[k]&&K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
 /* the rung for one seat, from the three counts, and now a fourth: whether
@@ -215,6 +216,20 @@ function srcHear(text,prior,active){
  out.asks=!!(out.top&&out.top.rung>=SRC_ASK);
  out.root=(out.top&&out.top.rung>=SRC_ROOT)?out.top:null;
  return out;}
+
+/* Reflect a checking action and its stated consequence on a finalized turn.
+   Each supported construction contributes only the speaker's own clauses. */
+function srcCheckingReflection(text){
+ var t=String(text||'').trim();
+ if(!t||srcSafe(t))return '';
+ var m=/^If I don['’]t (check [a-z][a-z ’'-]{0,119}), ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ if(m){
+  var action=m[1].replace(/\bmyself\b/gi,'yourself').replace(/\bmy\b/gi,'your');
+  return 'You’re saying that if you don’t '+action+', '+m[2]+'.';
+ }
+ m=/^I keep (checking [a-z][a-z ,’'-]{0,119}) because I (?:think|expect|believe) ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ return m?'You keep '+m[1].replace(/\bmy\b/gi,'your')+'. Your concern is, “'+m[2]+ '.”':'';
+}
 
 /* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
    decide it, never the depth of what was found.

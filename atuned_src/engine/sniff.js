@@ -847,7 +847,7 @@ function originWhole(p){
  var count={parental:0,ancestral:0}, hits=[];
  ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
   if(!e||typeof e.text!=='string'||!e.text.trim())return;
-  var parsed=parseStory(e.text);
+  var parsed=parseStoryEntry(e);
   (parsed.hits||[]).forEach(function(h){
    if(!h.originCat||count[h.originCat]===undefined)return;
    count[h.originCat]++;
@@ -1094,7 +1094,41 @@ function pathOf(hits){
   dwell:dwell, start:on.length?on[0].seat:null, end:on.length?on[on.length-1].seat:null,
   kink:end(kink), floor:end(floor)};}
 
-function parseStory(text){
+/* A verdict applies to this entry's reading. Keep the original text and
+   suppress the seat and its companion hits before assigning charge. */
+function storyDeclinedSeats(verdicts){
+ var declined=Object.create(null);
+ if(Array.isArray(verdicts))verdicts.forEach(function(v){
+  if(v&&K2BAND[v.seat]&&(v.v==='no'||v.v==='fix'))declined[v.seat]=true;
+ });
+ return declined;
+}
+function storyVerdictHits(all,verdicts){
+ var declined=storyDeclinedSeats(verdicts), offsets=Object.create(null);
+ all.forEach(function(h){
+  if(!h.band||h.band==='coherent'||h.neg||h.other)return;
+  if(!declined[h.band])offsets[h.at]=false;
+  else if(offsets[h.at]===undefined)offsets[h.at]=true;
+ });
+ return all.filter(function(h){return !declined[h.band]&&!offsets[h.at];});
+}
+/* Independent story counters read text. Mask only the spans removed by
+   the same verdict filter and preserve the boundaries of neighbouring words. */
+function storyTextForCounters(text,verdicts){
+ if(!Object.keys(storyDeclinedSeats(verdicts)).length)return text;
+ var all=scanStory(text), kept=new Set(storyVerdictHits(all,verdicts));
+ var nm=normMap(text), masked=text.split('');
+ all.forEach(function(h){
+  if(kept.has(h))return;
+  var a=nm.map[h.at+1], b=nm.map[h.at+String(h.t).length];
+  for(var i=a;i<=b;i++)masked[i]='.';
+ });
+ return masked.join('');
+}
+function parseStoryEntry(entry){
+ return parseStory(entry.text||'',entry.verdicts);
+}
+function parseStory(text,verdicts){
  /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
     denied and nowhere else, so it reaches no band, charge, weight, named
     fetter, imprint or path, and every reader of hits below and of this
@@ -1107,6 +1141,7 @@ function parseStory(text){
  var all=srcSafe(text)?[]:scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
  /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
     listed, and counted nowhere. A denied hit is never also in others. */
+ if(verdicts&&verdicts.length)all=storyVerdictHits(all,verdicts);
  all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
@@ -1470,10 +1505,10 @@ function unmarkedOf(t,p){
   cur={s:w.s, e:w.e, c:w.c, words:1}; out.push(cur);});
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
-function applyStory(text){
+function applyStory(text,verdicts){
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});
  /* an adjective sharpens which fetter; repeated mentions weigh more */
@@ -1509,9 +1544,9 @@ function applyStory(text){
    This is additive on top of the spread, never in place of it: an
    address nobody named keeps reading exactly as it does today. Call
    this everywhere applyStory is called, never instead of it. */
-function applyStoryAddr(text){
+function applyStoryAddr(text,verdicts){
  if(showRefuse('story'))return {applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){
   if(im.inferred||im.node==null)return;
   touched[im.node]=(touched[im.node]||0)+im.amt;});
@@ -2129,7 +2164,7 @@ function bindAxes(entries){
  entries.forEach(function(e,ei){
   if(!e||typeof e.text!=='string'||!e.text)return;
   var p,axes;
-  try{p=parseStory(e.text); axes=sniffAxes(p);}catch(err){return;}
+  try{p=parseStoryEntry(e); axes=sniffAxes(p);}catch(err){return;}
   rows.push({ei:ei,t:e.t,axes:axes});});
  var out=[];
  CHARGES.forEach(function(f){

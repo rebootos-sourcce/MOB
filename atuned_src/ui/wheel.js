@@ -235,7 +235,7 @@ function atomIndex(){
  ents.forEach(function(e,ei){
   if(!e||!e.text)return;
   var im;
-  try{im=parseStory(e.text).imprints;}catch(err){return;}
+  try{im=parseStoryEntry(e).imprints;}catch(err){return;}
   im.forEach(function(x){
    (by[x.node]=by[x.node]||[]).push({amt:x.amt,ei:ei,t:e.t,
     text:String(e.text).replace(/\s+/g,' ').trim()});});});

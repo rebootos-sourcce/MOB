@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3534 45553674 2026-11-28 05:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v3536 ebcf8a30 2026-11-28 08:02"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -28924,7 +28924,7 @@ var TRACE_V=1;
    (TRACE_ABOVE) come off a reading handed in, and only the same way the chain
    does. A day is grounded on a graph read with no reading, so no day holds
    one. */
-var TRACE_ALG=4;
+var TRACE_ALG=5;
 
 /* THE CHAIN'S FOUR RUNGS, in the order they stack, TDD section 16's second
    block. Derived only: see THE CHAIN, below. Named as the product names
@@ -30105,16 +30105,17 @@ function traceFromRecord(p,intents,reading){
     was inferred (TRACE_PROMOTE). A Yes on an address today's reading no
     longer reaches, because the lexicon moved since, is still the person's
     word about that story and that address, so it is held as user_confirmed
-    with nothing it was before. A Not me is NOT read here: the graph has no
-    provenance for a refusal, and a declined state is F11 and F16, the
-    owner's. It stays on the entry, where the boundary keeps it.
+    with nothing it was before. A later Journal rejection or correction on
+    the same entry suppresses that seat's support. The verdict stays on
+    the story record.
 
     This is a change of derivation, so TRACE_ALG says so. */
  var yesOf=function(sk,e){
   var yes=(e&&e.ob&&Array.isArray(e.ob.yes))?e.ob.yes:[];
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   var at=(e&&typeof e.t==='string'&&!isNaN(new Date(e.t).getTime()))?e.t:undefined;
   yes.forEach(function(a){
-   if(typeof a!=='number'||!BY[a])return;
+   if(typeof a!=='number'||!BY[a]||declined[B2K[BY[a].b]])return;
    var pk=node('pattern',String(a),'known',tracePatternAttrs(String(a)));
    if(!pk)return;
    var r=traceEdgeAdd(g,ix,sk,'supports',pk,'user_confirmed',{at:at, nocycle:true,
@@ -30128,7 +30129,7 @@ function traceFromRecord(p,intents,reading){
  var reads=traceWithSoul(p,function(){
   return ents.map(function(e){
    if(!e||typeof e.text!=='string')return null;
-   try{return parseStory(e.text).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
+   try{return parseStoryEntry(e).imprints;}catch(err){return {err:(err&&err.message)||'error'};}});});
  ents.forEach(function(e,i){
   var id=sids[i];
   if(/^entry#/.test(id))g.gaps.push({kind:'undated', story:traceKey('story',id),
@@ -37328,7 +37329,7 @@ function exdepthFill(rec,p,now){
   ev.forEach(function(x){
    var at=exdepthAt(now,x.back,EXDEPTH_HOUR[x.k]);
    if(x.k==='e'){
-    var P=parseStory(x.text), k=P.imprints.length;
+    var P=parseStoryEntry(x), k=P.imprints.length;
     if(k){applyStory(x.text); applyStoryAddr(x.text); verpApply(x.text); leanApply(x.text);}
     rec.story.entries.push({t:at, text:x.text, imprints:k, bands:P.bands, lex:LEX_VERSION});
     out.entries++; out.imprints+=k; return;}
@@ -38530,7 +38531,7 @@ function originWhole(p){
  var count={parental:0,ancestral:0}, hits=[];
  ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
   if(!e||typeof e.text!=='string'||!e.text.trim())return;
-  var parsed=parseStory(e.text);
+  var parsed=parseStoryEntry(e);
   (parsed.hits||[]).forEach(function(h){
    if(!h.originCat||count[h.originCat]===undefined)return;
    count[h.originCat]++;
@@ -38777,7 +38778,41 @@ function pathOf(hits){
   dwell:dwell, start:on.length?on[0].seat:null, end:on.length?on[on.length-1].seat:null,
   kink:end(kink), floor:end(floor)};}
 
-function parseStory(text){
+/* A verdict applies to this entry's reading. Keep the original text and
+   suppress the seat and its companion hits before assigning charge. */
+function storyDeclinedSeats(verdicts){
+ var declined=Object.create(null);
+ if(Array.isArray(verdicts))verdicts.forEach(function(v){
+  if(v&&K2BAND[v.seat]&&(v.v==='no'||v.v==='fix'))declined[v.seat]=true;
+ });
+ return declined;
+}
+function storyVerdictHits(all,verdicts){
+ var declined=storyDeclinedSeats(verdicts), offsets=Object.create(null);
+ all.forEach(function(h){
+  if(!h.band||h.band==='coherent'||h.neg||h.other)return;
+  if(!declined[h.band])offsets[h.at]=false;
+  else if(offsets[h.at]===undefined)offsets[h.at]=true;
+ });
+ return all.filter(function(h){return !declined[h.band]&&!offsets[h.at];});
+}
+/* Independent story counters read text. Mask only the spans removed by
+   the same verdict filter and preserve the boundaries of neighbouring words. */
+function storyTextForCounters(text,verdicts){
+ if(!Object.keys(storyDeclinedSeats(verdicts)).length)return text;
+ var all=scanStory(text), kept=new Set(storyVerdictHits(all,verdicts));
+ var nm=normMap(text), masked=text.split('');
+ all.forEach(function(h){
+  if(kept.has(h))return;
+  var a=nm.map[h.at+1], b=nm.map[h.at+String(h.t).length];
+  for(var i=a;i<=b;i++)masked[i]='.';
+ });
+ return masked.join('');
+}
+function parseStoryEntry(entry){
+ return parseStory(entry.text||'',entry.verdicts);
+}
+function parseStory(text,verdicts){
  /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
     denied and nowhere else, so it reaches no band, charge, weight, named
     fetter, imprint or path, and every reader of hits below and of this
@@ -38790,6 +38825,7 @@ function parseStory(text){
  var all=srcSafe(text)?[]:scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
  /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
     listed, and counted nowhere. A denied hit is never also in others. */
+ if(verdicts&&verdicts.length)all=storyVerdictHits(all,verdicts);
  all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
@@ -39153,10 +39189,10 @@ function unmarkedOf(t,p){
   cur={s:w.s, e:w.e, c:w.c, words:1}; out.push(cur);});
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
-function applyStory(text){
+function applyStory(text,verdicts){
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});
  /* an adjective sharpens which fetter; repeated mentions weigh more */
@@ -39192,9 +39228,9 @@ function applyStory(text){
    This is additive on top of the spread, never in place of it: an
    address nobody named keeps reading exactly as it does today. Call
    this everywhere applyStory is called, never instead of it. */
-function applyStoryAddr(text){
+function applyStoryAddr(text,verdicts){
  if(showRefuse('story'))return {applied:{}, refused:'example'};
- var p=parseStory(text), touched={};
+ var p=parseStory(text,verdicts), touched={};
  p.imprints.forEach(function(im){
   if(im.inferred||im.node==null)return;
   touched[im.node]=(touched[im.node]||0)+im.amt;});
@@ -39812,7 +39848,7 @@ function bindAxes(entries){
  entries.forEach(function(e,ei){
   if(!e||typeof e.text!=='string'||!e.text)return;
   var p,axes;
-  try{p=parseStory(e.text); axes=sniffAxes(p);}catch(err){return;}
+  try{p=parseStoryEntry(e); axes=sniffAxes(p);}catch(err){return;}
   rows.push({ei:ei,t:e.t,axes:axes});});
  var out=[];
  CHARGES.forEach(function(f){
@@ -40372,8 +40408,9 @@ function srcNegated(src,at,floor){
 function srcPrior(entries){
  var out={};
  (entries||[]).forEach(function(e){
+  var declined=storyDeclinedSeats(e&&e.verdicts);
   Object.keys((e&&e.bands)||{}).forEach(function(k){
-   if(K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
+   if(!declined[k]&&K2BAND[k]&&(e.bands[k]||0)>0)out[k]=(out[k]||0)+1;});});
  return out;}
 
 /* the rung for one seat, from the three counts, and now a fourth: whether
@@ -40467,6 +40504,20 @@ function srcHear(text,prior,active){
  out.asks=!!(out.top&&out.top.rung>=SRC_ASK);
  out.root=(out.top&&out.top.rung>=SRC_ROOT)?out.top:null;
  return out;}
+
+/* Reflect a checking action and its stated consequence on a finalized turn.
+   Each supported construction contributes only the speaker's own clauses. */
+function srcCheckingReflection(text){
+ var t=String(text||'').trim();
+ if(!t||srcSafe(t))return '';
+ var m=/^If I don['’]t (check [a-z][a-z ’'-]{0,119}), ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ if(m){
+  var action=m[1].replace(/\bmyself\b/gi,'yourself').replace(/\bmy\b/gi,'your');
+  return 'You’re saying that if you don’t '+action+', '+m[2]+'.';
+ }
+ m=/^I keep (checking [a-z][a-z ,’'-]{0,119}) because I (?:think|expect|believe) ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
+ return m?'You keep '+m[1].replace(/\bmy\b/gi,'your')+'. Your concern is, “'+m[2]+ '.”':'';
+}
 
 /* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
    decide it, never the depth of what was found.
@@ -42251,6 +42302,39 @@ function srcVoiceGraph(text,record,opts){
  base.matched=Object.keys(by).sort().map(function(k){return by[k];});
  return {voice:voice,graph:base};
 }
+/* Resolve exact current addresses against past confirmations. An inferred
+   address or shared seat alone cannot establish a returning pattern. */
+function srcConfirmedStoryAddresses(text,record,opts){
+ var o=opts||{};
+ if(o.allowProfile!==true||!record||!String(text||'').trim()||srcSafe(text))return [];
+ var named=Object.create(null);
+ parseStory(text,o.verdicts).imprints.forEach(function(im){
+  if(!im.inferred&&im.node!=null)named[traceKey('pattern',im.node)]=im.node;
+ });
+ if(!Object.keys(named).length)return [];
+ /* Replay only stories whose address confirmations can match this turn. */
+ var stories=(record.story&&Array.isArray(record.story.entries))?record.story.entries:[];
+ var needed=new Set(Object.keys(named)), matching=[];
+ for(var i=stories.length-1;i>=0&&needed.size;i--){
+  var entry=stories[i], yes=entry&&entry.ob&&entry.ob.yes;
+  if(!Array.isArray(yes))continue;
+  var declined=storyDeclinedSeats(entry.verdicts), found=false;
+  yes.forEach(function(addr){
+   var node=BY[addr], key=traceKey('pattern',addr);
+   if(typeof addr!=='number'||!node||declined[B2K[node.b]]||!needed.delete(key))return;
+   found=true;
+  });
+  if(found)matching.push(entry);
+ }
+ if(!matching.length)return [];
+ var g=traceFromRecord({who:record.who,story:{entries:matching.reverse()}}), confirmed=new Set();
+ g.edges.forEach(function(e){
+  if(e.edge==='supports'&&e.src==='user_confirmed'&&e.from.indexOf('story:')===0&&
+     Object.prototype.hasOwnProperty.call(named,e.to))confirmed.add(named[e.to]);
+ });
+ return Array.from(confirmed);
+}
+
 /* Stage 3: actual Source intelligence is a constrained READ of Source's
  * evidence ledger and record graph. The model can decide how to speak but
  * may never promote a read to an independently measured CQ or a diagnosis. */
@@ -45663,7 +45747,7 @@ function dlyReadOf(p,entry,seat,memo){
   /* borrowing the record's soul rebuilds the susceptibilities, which is the
      expensive part, so one read of one entry is kept for the length of one
      composition and one grounding pass */
-  var parse=function(){return parseStory(entry.text||'').imprints;};
+  var parse=function(){return parseStoryEntry(entry).imprints;};
   (memo&&memo.__soul?parse():traceWithSoul(p,parse)).forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]||seen[x.node])return;
    seen[x.node]=1; all.push({addr:x.node, band:x.band});});
@@ -47381,7 +47465,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
-                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -47605,7 +47689,7 @@ if(typeof module!=='undefined'&&module.exports){
                   CQ_CLIMB_FLOOR:CQ_CLIMB_FLOOR, CLIMB_SEAT_PICK:CLIMB_SEAT_PICK, POLE_UNLOCK:POLE_UNLOCK,
                   compassBandOf:compassBandOf, compassClimbSeat:compassClimbSeat, compassUnlockOf:compassUnlockOf,
                   SEAT_FETTER_PAIR:SEAT_FETTER_PAIR, LAW_TEACHER:LAW_TEACHER, compassLawsOf:compassLawsOf,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, clauseCeil:clauseCeil, marksOf:marksOf, parseStory:parseStory, parseStoryEntry:parseStoryEntry, applyStory:applyStory, applyStoryAddr:applyStoryAddr, uniFromParsed:uniFromParsed,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
                   asideOf:asideOf, asideSay:asideSay,
@@ -58944,7 +59028,7 @@ function atomIndex(){
  ents.forEach(function(e,ei){
   if(!e||!e.text)return;
   var im;
-  try{im=parseStory(e.text).imprints;}catch(err){return;}
+  try{im=parseStoryEntry(e).imprints;}catch(err){return;}
   im.forEach(function(x){
    (by[x.node]=by[x.node]||[]).push({amt:x.amt,ei:ei,t:e.t,
     text:String(e.text).replace(/\s+/g,' ').trim()});});});
@@ -70514,18 +70598,22 @@ function stSafe(){
    rule is that such a name is never printed as a finding). The split rides on
    the list so STV.lastFound keeps it once the parse is cleared at commit;
    stRelModel says what losing it cost. */
-function stFound(){
+function stAcceptedParse(){
+ return ST_PARSED&&SRC_VERDICTS.length?parseStory(ST_TEXT,SRC_VERDICTS):ST_PARSED;
+}
+function stFound(parsed){
  /* nothing off an entry srcSafe stops, and not the last entry's either: the
     fall back below put an earlier entry's places in the release column
     beside these words, which is a release offered on them by another door */
  if(stSafe())return [];
+ var draft=arguments.length?parsed:stAcceptedParse();
  var found=[], named=0;
  [false,true].forEach(function(inf){
-  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
+  if(draft)draft.imprints.forEach(function(im){var n=BY[im.node];
    if(!!im.inferred===inf&&n&&n.cf&&found.indexOf(n)<0)found.push(n);});
   if(!inf)named=found.length;});
  found.named=named;
- return found.length?found:STV.lastFound;}
+ return draft?found:STV.lastFound;}
 
 /* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
    so the Day One Tutorial can write a person's first entry through the exact
@@ -70570,7 +70658,9 @@ function stCommit(){
  /* asked of the words, not of the page, so the tutorial's and the first
     run's commits through here are held the same way (stSafe, above) */
  var safe=srcSafe(ST_TEXT);
- var kept=safe?[]:stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ var vkept=SRC_VERDICTS.length?evKept(SRC_VERDICTS,evLedger(ST_TEXT,[],{verdicts:SRC_VERDICTS})):[];
+ var parsed=vkept.length?parseStory(ST_TEXT,vkept):ST_PARSED;
+ var kept=safe?[]:stFound(parsed), k=parsed.imprints.length, bands=parsed.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
     words in the box (below), so the same words pressed again are the same
@@ -70585,10 +70675,13 @@ function stCommit(){
     it here would still move the field on words the sniffer read as nothing
     in particular. The entry is kept; the field is not touched at all, and
     undoPush only runs for the branch that can actually be undone. */
+ if(again){k=last.imprints; bands=last.bands; kept=STV.lastFound;}
  if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
-  applyStory(ST_TEXT); applyStoryAddr(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
+  applyStory(ST_TEXT,vkept); applyStoryAddr(ST_TEXT,vkept);
+  var counterText=storyTextForCounters(ST_TEXT,vkept);
+  verpApply(counterText); leanApply(counterText);
   /* THE CHARGE HAS TO REACH THE MIRROR, OR THE NEXT VISIT TAKES IT BACK OUT.
      applyStory writes S and pSave writes the record, and neither writes
      PEOPLE[0], which is the table loadP(0) reads the person's field back out
@@ -70609,14 +70702,13 @@ function stCommit(){
      what Source AI asked while it was written, 20.H5: a kind and a seat for
      each, and what the person did next. Never the words of a question. */
   var ent={t:new Date().toISOString(),text:ST_TEXT,
-   imprints:ST_PARSED.imprints.length,bands:ST_PARSED.bands,lex:LEX_VERSION};
+   imprints:k,bands:bands,lex:LEX_VERSION};
   var asked=srcAsked(SRC_LOG,ST_TEXT.length);
   if(asked.length)ent.asked=asked;
   /* verdicts, what the person answered in the Journal, SK1: a seat key and
      an answer, read off the ledger the control was drawn from, and never a
      correction's own words (evKept, engine/evidence.js, says why). Missing
      when nothing was answered, the way asked is. */
-  var vkept=evKept(SRC_VERDICTS,srcLedgerNow());
   if(vkept.length)ent.verdicts=vkept;
   CURP.story.entries.push(ent);
   /* the entry's identity, handed back so a release planned off this entry can
@@ -70786,6 +70878,7 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
+ SRC_HISTORY_PROFILE=null; SRC_HISTORY_READ=null;
  ST_TEXT=''; ST_PARSED=null; ST_HELLO_ON=false; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
@@ -71490,6 +71583,26 @@ function srcGauge(top){
    person, with no status-line ring to it. */
 function srcNone(){
  return 'I can’t place this one yet. Tell me what your body did, and where.';}
+/* History is opt-in for the current profile and this page load. Only
+   finalized turns can consult it. Repaints reuse the same lookup. */
+var SRC_HISTORY_PROFILE=null, SRC_HISTORY_READ=null;
+function srcLatestUserTurn(){
+ for(var i=SRC_CHAT.length-1;i>=0;i--){
+  var row=SRC_CHAT[i];
+  if(row.w==='me')return row.b===ST_TEXT.trimEnd().length&&ST_TEXT.slice(row.a,row.b)===row.t?row:null;
+ }
+ return null;
+}
+function srcHistoryLine(row){
+ if(!row||!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly())return '';
+ var verdictKey=JSON.stringify(SRC_VERDICTS);
+ var hit=SRC_HISTORY_READ;
+ if(!hit||hit.row!==row||hit.verdictKey!==verdictKey){
+  var kept=srcConfirmedStoryAddresses(row.t,CURP,{allowProfile:true,verdicts:SRC_VERDICTS});
+  hit=SRC_HISTORY_READ={row:row,verdictKey:verdictKey,connected:kept.length>0};
+ }
+ return hit.connected?' This connects to a pattern you confirmed in an earlier entry.':'';
+}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=srcHeardNow();
@@ -71497,6 +71610,7 @@ function srcPaint(){
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ if(STV.chat&&turn.move!=='safe'&&!document.getElementById('sttext'))srcChatSync();
  /* THE PERSON'S OWN WORDS ABOUT THE CONVERSATION, round SK, the seam
     package's VENT and CORRECT. srcTurn is the engine's and is unchanged;
     the page reads two more things it cannot. A seat the person said does
@@ -71519,6 +71633,12 @@ function srcPaint(){
     no later rule (a rejected seat, venting, talk) can turn it back into a
     question, and the whole turn is replaced, act and all. */
  if(turn.move==='open'&&stSafe())turn={move:'safe'};
+ var latest=STV.chat&&!act&&(turn.move==='listen'||turn.move==='ask')?srcLatestUserTurn():null;
+ var reflection=latest?srcCheckingReflection(latest.t):'';
+ var history=srcHistoryLine(latest);
+ if(reflection||history){
+  turn={move:'listen',reflection:reflection,history:history};
+ }
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -71620,7 +71740,7 @@ function srcPaint(){
     defect this gate exists for, and with Talk on speak a reply to each.
     Typed words there become a turn when the next spoken one lands, which
     syncs first (srcTurnCommit), or at Commit. */
- if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); if(!document.getElementById('sttext'))srcChatSync(); fresh=srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); fresh=srcChatNote(cur);
   /* EVERY REPLY SPOKEN, BOTH WAYS IN. REVERSES 11 November. Ruled 13
      November, his words: "it needs to do speech to speech, text to
      speech. It needs to do them all." The 10 November ruling only ever
@@ -71778,7 +71898,16 @@ function srcPaint(){
  if(turn.move==='safe')
   o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
    +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
+ if(boxOpen&&STV.chat&&CURP&&!showOnly()&&turn.move!=='safe'){
+  o+='<label class="ob-dim"><input id="srchistory" type="checkbox"'
+   +(SRC_HISTORY_PROFILE===CURP?' checked':'')+'> Use confirmed patterns from my past entries</label>';
+ }
  h.innerHTML=o;
+ var historyDoor=h.querySelector('#srchistory');
+ if(historyDoor)historyDoor.onchange=function(){
+  SRC_HISTORY_PROFILE=historyDoor.checked?CURP:null;
+  SRC_HISTORY_READ=null;
+ };
  srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  srcLock(h);
@@ -72014,6 +72143,7 @@ function srcChatCur(turn,heard,q,ask){
   if(keys.some(function(k){return /^pass/.test(k);})){r.key='pass|'; lines=[];} else {r.key='pass'; lines=['Cool.'];}}
  else if(turn.move==='vent'){
   if(keys.some(function(k){return /^vent/.test(k);})){r.key='vent|'; lines=[];} else {r.key='vent'; lines=[SRC_LISTENING];}}
+ else if(turn.reflection){r.key='reflect'; lines=[turn.reflection];}
  else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; lines=[q]; r.mv='asked';}
  /* LISTENING, IT SAYS BACK THE THREAD, round SK. Two changes, both his
     blueprint's. The seat is the ledger's thread, the one with the newest
@@ -72053,6 +72183,7 @@ function srcChatCur(turn,heard,q,ask){
     turn. */
  var hl=srcHeardLines(turn.move==='vent'||turn.move==='pass');
  r.q=srcPick(lines.concat(hl.lines),said);
+ if(turn.history&&r.q)r.q+=turn.history;
  if(hl.sp&&hl.lines[0]===r.q)r.sp=hl.sp;
  r.w='src'; return r;}
 /* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
@@ -72264,7 +72395,7 @@ function srcIntentLand(v){
   if(!SRC_PASSED&&SRC_LOG.length)SRC_LOG[SRC_LOG.length-1].moved=true;
   SRC_PASSED=true;}
  else if(it.intent==='vent')SRC_VENT=true;
- else if(it.intent==='reject'){
+ else if(it.intent==='reject'&&!STV.unsaved){
   /* THE SEAT THE NO IS ABOUT IS THE ONE SOURCE AI LAST SAID OR ASKED, 18
      November: SRC_VET's target is whatever the last question was about and
      is not cleared when the move changes, so "that is not me" after a
@@ -72437,13 +72568,15 @@ function srcMeHtml(from,to){
    -through and set-aside drawing already makes. */
 function srcChainSpan(){
  var best=null;
- STR.marks.forEach(function(m){
+ var marks=SRC_VERDICTS.length?marksOf(ST_TEXT,stAcceptedParse()):STR.marks;
+ marks.forEach(function(m){
   if(m.neg||m.oth)return;
   if(!best||(m.e-m.s)>(best.e-best.s))best=m;});
  return best;}
 function srcChainLine(){
  if(stSafe()||!ST_TEXT.trim())return '';
- var m=srcChainSpan(); if(!m)return '';
+ var accepted=stAcceptedParse(), m=srcChainSpan();
+ if(!m||!accepted||!accepted.imprints.length)return '';
  var o='<p class="src-chain">Your words: “'+esc(ST_TEXT.slice(m.s,m.e))+'”. Kept as an imprint: '
   +esc(unpackOf('imprint'))+'</p>';
  if(stFound().length)o+='<p class="src-chain">Ready to release. '+esc(unpackOf('release'))+'</p>';
@@ -72519,11 +72652,11 @@ function srcVerdictHtml(){
   var a=c.verdict?c.verdict.v:'', st=a&&SRC_VSTAT[a]?vet(SRC_VSTAT[a],seat):'';
   /* fact after a yes or a correction; a guess, with its question, before;
      after a no, nothing about a place at all */
-  var at=EV_PLACEABLE.indexOf(c.state)>=0?vet('It lands '+srcPlace(c.band)+'.',seat)
-   :(a==='no'?'':vet(srcGuessAt(c.band)+' Does that fit?',seat));
+  var at=a==='yes'?vet('It lands '+srcPlace(c.band)+'.',seat)
+   :(a==='no'||a==='fix'?'':vet(srcGuessAt(c.band)+' Does that fit?',seat));
   if(!at&&!a)at=vet('Does that sound like you?',seat);
   var b=function(v,on){return '<button type="button" class="ob-a'+(on?' on':'')+'" aria-pressed="'+!!on
-   +'" data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+SRC_VBTN[v]+'</button>';};
+   +'"'+(STV.unsaved?' disabled':'')+' data-srcv="'+v+'" data-seat="'+esc(seat)+'">'+SRC_VBTN[v]+'</button>';};
   rows+='<div class="ob-row src-vrow" data-srcvrow="'+esc(seat)+'" style="--c:'+seatCol(c.band)+'">'
    +'<p class="ob-p ob-rowp src-ai">'+esc(said)+(at?' '+esc(at):'')+'</p>'
    +'<div class="ob-as" role="group" aria-label="'+esc(said)+'">'
@@ -72540,8 +72673,9 @@ function srcVerdictHtml(){
 /* a press lands through evVerdict and nothing else, then the panel repaints
    and the focus goes back to the control pressed, as obRenderKeep does */
 function srcVerdictWire(h){
- var again=function(sel){srcPaint(); var x=document.querySelector(sel); if(x)x.focus();};
+ var again=function(sel){srcPaint(); stRelPanel(); var x=document.querySelector(sel); if(x)x.focus();};
  h.querySelectorAll('[data-srcv]').forEach(function(btn){btn.onclick=function(){
+  if(STV.unsaved)return;
   var v=btn.getAttribute('data-srcv'), seat=btn.getAttribute('data-seat');
   var sel='[data-srcv="'+v+'"][data-seat="'+seat+'"]';
   if(v==='fix'){SRC_VFIX=SRC_VFIX===seat?'':seat; SRC_VFIXT='';
@@ -72552,6 +72686,7 @@ function srcVerdictWire(h){
  var ta=document.getElementById('srcvfix');
  if(ta)ta.oninput=function(){SRC_VFIXT=ta.value;};
  h.querySelectorAll('[data-srcvread]').forEach(function(btn){btn.onclick=function(){
+  if(STV.unsaved)return;
   var seat=btn.getAttribute('data-srcvread'), t=document.getElementById('srcvfix');
   var r=evVerdict(SRC_VERDICTS,seat,'fix',t?t.value:'');
   /* an empty box is not a correction: evVerdictOk refuses it, and the box
@@ -73702,7 +73837,7 @@ function stAnaWins(){
  ents.forEach(function(e){var at=Date.parse(e&&e.t);
   if(!(at>=now-far*864e5)||typeof e.text!=='string')return;
   var got={};
-  parseStory(e.text).imprints.forEach(function(im){if(im.inferred||!im.fetter)return;
+  parseStoryEntry(e).imprints.forEach(function(im){if(im.inferred||!im.fetter)return;
    got[im.fetter]=(got[im.fetter]||0)+im.amt;});
   read.push({at:at,got:got});});
  var wins=ST_ANA_WIN.map(function(w){var from=now-w[0]*864e5,by={},n=0;
@@ -118252,5 +118387,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008630720"></div>
+<div id="eof" hidden data-len="008637165"></div>
 </body></html>
