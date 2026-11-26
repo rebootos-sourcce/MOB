@@ -1366,6 +1366,11 @@ class Lint:
                     'R2 gates-fast runs npm test outside atuned_funnel_system.')
             self.teed('gates-fast', texts, r'npm test\b', 'funnel-package.log')
         pe = self.teed('gates-fast', texts, r'node tests/engine\.js\b', 'engine.log', built)
+        pr = self.teed('gates-fast', texts, r'node tools/records\.js --gate\b', 'records.log', built)
+        p, _, step = find(texts, r'node tools/records\.js --gate\b')
+        if p is not None:
+            self.ok('if' not in step and 'continue-on-error' not in step,
+                    'R2 the records gate must not be skipped or forgiven.')
         self.ok(find(texts, r'python3 \.claude/skills/atuned-voice/check\.py --objections\b')[0] is not None,
                 'R2 gates-fast does not run the voice check, python3 .claude/skills/atuned-voice/check.py --objections.')
         self.ok(find(texts, r'python3 tools/workflow-lint\.py\b')[0] is not None,
@@ -1399,10 +1404,10 @@ class Lint:
                     'R2 the products step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven products check reads green.' % (s.get('if'), s.get('continue-on-error')))
             self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'products.js')), 'R2 tools/products.js does not exist.')
         fa = self.floors_args(texts)
-        want = ['engine', 'funnel-package']
+        want = ['engine', 'funnel-package', 'records']
         hit = [a for a in fa if all(w in a[1] for w in want)]
-        if self.ok(hit, 'R5 gates-fast does not run node tools/floors.js engine funnel-package.'):
-            self.ok(pe is not None and hit[0][0] > pe, 'R5 gates-fast checks the floors before the gates have run.')
+        if self.ok(hit, 'R5 gates-fast does not run the engine, funnel-package and records floors.'):
+            self.ok(pe is not None and pr is not None and hit[0][0] > max(pe, pr), 'R5 gates-fast checks the floors before the gates have run.')
             self.floors_known('gates-fast', hit[0][1])
         self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'floors.js')), 'R5 tools/floors.js does not exist.')
 
@@ -2335,6 +2340,8 @@ BREAKS = [
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the deploy job builds BUILD.sh first', lambda d: _sub(d, 'deploy', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
+    ('the records gate not teed', lambda d: _sub(d, 'gates-fast', r'tools/records\.js', 'records.log', 'records.txt')),
+    ('the records gate allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/records\.js').__setitem__('continue-on-error', True)),
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
     ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
     ('the chrome-path step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "github.event_name == 'push'")),
