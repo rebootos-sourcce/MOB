@@ -1757,6 +1757,11 @@ step('the stored record',function(){
    is kept where a gate can wait on it. */
 var RECORD_LINK=null;
 step('record from a link',function(){ RECORD_LINK=recordLinkBoot(); });
+/* A PRACTITIONER'S LINK, round PS, ui/praclive.js: read and cleared here the
+   same way, then both connection lists are read and the snapshot published
+   once something is live. The promise is kept where a gate can wait on it. */
+var PRAC_LIVE=null;
+step('practitioner link',function(){ PRAC_LIVE=pracLiveBoot(); });
 /* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which
    reverses the earlier one that opened it on Summary.
 

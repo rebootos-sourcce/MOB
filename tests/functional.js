@@ -3570,7 +3570,11 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
   o.host={w:Math.round(hr.width),h:Math.round(hr.height),len:host.innerHTML.length,
    clients:host.querySelectorAll('.pr-client').length,
    buttons:[...host.querySelectorAll('button')].map(b=>b.id).filter(Boolean),
-   honest:/example/i.test(host.textContent)&&/let a practitioner see/i.test(host.textContent)};
+   /* ROUND PS, 26 November: the sentence this read, "no way yet to let a
+      practitioner see a record on another device", stopped being true when
+      sharing was wired (ui/praclive.js). The honest state signed out, which
+      is how this gate runs, is that the real list fills once signed in. */
+   honest:/example/i.test(host.textContent)&&/fills once you are signed in/i.test(host.textContent)};
   /* round QB: the right rail comes back carrying Selection alone, where a
      press on a client's figure, day, pattern or seat is answered. The left
      rail, the practitioner's own field, stays shut. */

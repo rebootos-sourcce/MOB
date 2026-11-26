@@ -210,6 +210,35 @@ published snapshot all need a server-side relationship store this product
 does not have yet, so the real (not mockup) build is gated on that being
 built first, not on a product decision.
 
+**BUILT, 26 November, round PS: "this practitioner mode is good, let's go
+ahead and wire it in."** The server is reboot-os `atuned/server/src/prac.js`
+and migration 0014; the app side is `engine/pracshare.js` (what may leave the
+device, and the boundary for what comes back) and `ui/praclive.js` (P1 to P5,
+C1 to C4). Six calls the build had to make that no ruling above settles, each
+a team pick, named so a later pass can overrule one by name:
+
+- **A link is one person, one use, fourteen days.** The mockup drew one
+  standing code per practitioner; the design pass's schema made a code
+  one-time. One-time won, because a standing code that leaks connects
+  strangers. "Make a link" makes a new one each press; "New link" and "Turn
+  off" act on one still open.
+- **The rituals a client is running ride with Field, not Summary.** Summary
+  stays the tier word and the seven seats ring, as ruled. A ritual's own when
+  and where are never sent at all: the person types them and they can say
+  anything.
+- **Body shows the addresses, not the body figure.** The figure (`bmRender`,
+  `ui/map.js`) draws the loaded profile's own field from live state, and
+  drawing a second person's from a list of numbers is its own piece of work.
+  The Body tab is the same data as rows by seat. Not yet the canvas.
+- **A practitioner's name for a client is kept on the practitioner's device
+  only.** The server knows a client as the grant's key. The practitioner's own
+  name, as a client reads it, is the practitioner's to give and is sent.
+- **No plan gate on these routes yet.** Practitioner mode is a device switch
+  anyone can turn on today, and tying it to the practitioner tier is a billing
+  call this build does not make.
+- **Not the profile sync.** This seam never reads `PROFILE_SYNC_ENABLED`, which
+  stays false, exactly as the sync ruling above says.
+
 ## The quiz result page
 
 It shows the coherence score. Then what CQ, DQ and SQ mean in relation to it.

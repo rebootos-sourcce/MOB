@@ -36,7 +36,7 @@
 async function anaTrailGate(browser,FILE,ok,booted){
  for(const [w,h] of [[1600,1000],[390,844]]){
   const tag=w+': ';
-  const pg=await browser.newPage({viewport:{width:w,height:h}});
+  const pg=await browser.newPage({viewport:{width:w,height:h},hasTouch:w===390});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE); await booted(pg);
   try{
@@ -166,7 +166,9 @@ async function anaTrailGate(browser,FILE,ok,booted){
   ok(keyIn.k==='axis'&&keyIn.trail===6,'AT4: '+tag+'F follows the focused feeling');
 
   /* ---- AT4: a step goes back ---- */
-  await pg.click('#rdrill [data-anacrumb="2"]'); await pg.waitForTimeout(120);
+  const crumb=pg.locator('#rdrill [data-anacrumb="2"]');
+  if(w===390)await crumb.tap(); else await crumb.click();
+  await pg.waitForTimeout(120);
   const back=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length}));
   ok(back.k==='chain'&&back.trail===2,'AT4: '+tag+'the third step goes back to the hyper-complex and drops the rest, '+JSON.stringify(back));
 
