@@ -157,6 +157,14 @@ async function anaTrailGate(browser,FILE,ok,booted){
    crumbs:document.querySelectorAll('#rdrill [data-anacrumb]').length}));
   ok(ax.k==='axis'&&ax.trail===6&&ax.crumbs===6,'AT3: '+tag+'and the fetter opens its feeling, six steps down, every one in the trail, '+JSON.stringify(ax));
 
+  await pg.keyboard.press('b');
+  const keyBack=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length}));
+  ok(keyBack.k==='addr'&&keyBack.trail===5,'AT4: '+tag+'B returns to the fetter');
+  await pg.locator('#rdrill .ad-r[data-ana^="axis|"]').first().focus();
+  await pg.keyboard.press('f');
+  const keyIn=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length}));
+  ok(keyIn.k==='axis'&&keyIn.trail===6,'AT4: '+tag+'F follows the focused feeling');
+
   /* ---- AT4: a step goes back ---- */
   await pg.click('#rdrill [data-anacrumb="2"]'); await pg.waitForTimeout(120);
   const back=await pg.evaluate(()=>({k:ANA_PICK.k,trail:ANA_TRAIL.length}));

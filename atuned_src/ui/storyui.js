@@ -4854,11 +4854,10 @@ function stRelPanel(){
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
  /* the same never-both-at-once rule release.js's own #reltone keeps: tone
-    on turns voice off, read through the same relVoiceWanted/uiSet pair. */
+    on turns voice off, with both preferences saved together. */
  if((f=document.getElementById('strtone')))f.onclick=function(){
   if(typeof relToneOn!=='function'||typeof uiSet!=='function')return;
-  var on=!relToneOn(); uiSet('tone',on);
-  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
+  uiSet('tone',!relToneOn(),'voice');
   if(typeof relRender==='function')relRender();
   stRelPanel();};
  var go=document.getElementById('strun');

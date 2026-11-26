@@ -10,6 +10,10 @@ sources below are cited by URL and summarised from search results rather than
 quoted from the page. Where a claim matters to a recommendation it is marked as
 needing the paper read before anything is built on it.
 
+## 26 November implementation update
+
+The audit below describes the original Analytics page. The current page uses metric-specific percentage formatting and breadcrumbs through nested cards. Domain sizing is labeled as visual contrast. Archetypes offer individual expression and share of all twelve. CQ uses the fixed 210-point Model 2 law scale. Historical CQ comparisons require a matching model version.
+
 ---
 
 ## 1. What the Analytics tab displays today

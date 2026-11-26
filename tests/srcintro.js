@@ -77,9 +77,14 @@ async function door(page){
    calling srcIntro here reads exactly the same decision the dead chain
    used to. */
 async function openIntro(page){
- await page.waitForSelector('#loginb-go',{timeout:8000});
- await page.evaluate(()=>{loginClose();});
- await page.evaluate(()=>{srcIntro(function(){ if(typeof obOpen==='function')obOpen(false); });});}
+ /* The direct intro path needs a booted app. The login button has its own
+    visibility assertions in door(), independent of this legacy animation. */
+ await page.waitForFunction(()=>document.body.classList.contains('booted')
+  &&typeof srcIntro==='function'&&typeof loginClose==='function',null,{timeout:15000});
+ await page.evaluate(()=>{
+  loginClose();
+  srcIntro(function(){ if(typeof obOpen==='function')obOpen(false); });
+ });}
 /* every caption's arrival, stamped from the intro's own start, by watching
    the class each one gains, so the gate reads the beats the page shows */
 async function watch(page){

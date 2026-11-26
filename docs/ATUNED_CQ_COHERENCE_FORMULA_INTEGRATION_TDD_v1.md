@@ -1,7 +1,9 @@
 # ATÜNED, Canonical Coherence Formula Integration TDD
 Version: 1.0
 Date: 2026-10-22
-Status: **Formula arithmetic is wired; framework-correct Intention source remains unresolved, so CQ is not accepted. Runtime verification pending.**
+Status: **Historical Model 3 branch proposal. Production uses Model 2.**
+
+The 26 November live build (`1bcf352`) and main (`3541a34`) both use Model 2. CQ sums answered law scores, including eligible release lift, divides by 210, and scales to 100. Unanswered laws contribute zero. The engine records the Model 3 revert and its failed all-max and release-monotonicity checks in `atuned_src/engine/compute.js`. The rest of this TDD records the historical experiment. A future formula change needs an agreed Intention source, empty-record behavior, and a new version with comparison rules.
 Branch: `atuned/mvp-alpha-recursive-execution`
 
 ## Goal
