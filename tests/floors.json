@@ -1,5 +1,6 @@
 {
   "about": [
+    "Raised 26 November: funnel 276 to 288 and added records 50, read off successful PR #235 run 45821173266 job 139913498270. The 12 additional quiz assertions hold the 0, 5 and all-but-one completion cases. The record gate checks 402-record ledger parity, not owner approval.",
     "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
     "Read off the full runs on 9 October: engine 5002 with 10 expected red, collide 388, boot 13, funnel 562, design 186, functional 2317, and the guard tests of the alpha work as each printed on b2b7a03 (copy 149, reset 39, storage 120, firstrelease 121, journey2 143, onboarding2 211, sniffpage 71, srcchat 33, practitioner 60, release-screen 145, release-percent 8, unpack 878, recordlink 60, valuefelt 7, claims 107, discordfeedback 59). funnel-package is 44. functional, design and monitor were report only until four green runs on main and are required from 9 October. Alpha quiz-journey starts with a floor of 1 for its first measured clean run; raise it to the observed assertion count before accepting the gate.",
     "Added 16 October with the seven gates no job ran until tools/orphans.js named them, each read off its own green run on f2bb261 plus that day's fixes: plan-selfgrant 5, honest 30, dailyui 61, becoming 36, loopui 56, personas-tier 44, valuefeltui 20.",
@@ -120,7 +121,8 @@
     "funnel-package": 44,
     "boot": 29,
     "collide": 1005,
-    "funnel": 276,
+    "funnel": 288,
+    "records": 50,
     "design": 195,
     "functional": 3221,
     "copy": 165,
