@@ -66,37 +66,61 @@ function nativeNavigationCandidates(r) {
  }
  return out;
 }
-/* Copy-safe delivery projection: the canonical research registry stays unchanged.
- * Count notation such as n=14 belongs in evidence, not in a person's drill.
- * This only changes copy-facing fields, never IDs, sourceRefs, links or
- * relationship evidence. The existing voice objections gate remains strict.
+/* Public read-only projection. Research notes, complete citations and
+ * reviewer commentary remain in the canonical registry, not the app bundle.
+ * The evidence digest binds each projection to the original evidence.
+ * Keep the exact relationship objects and source status. Display wording
+ * is a separate representation, not a change to the underlying claims.
  */
+const crypto=require('node:crypto');
+const registryPath='docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json';
+function evidenceDigest(r){
+ return crypto.createHash('sha256').update(JSON.stringify({
+  sourceRefs:r.sourceRefs||[],sourceClaims:r.sourceClaims||[],
+  relationshipAudit:r.relationshipAudit||null,depthReviewStatus:r.depthReviewStatus||null,
+  status:r.status||null,relationships:r.relationships||[]
+ })).digest('hex');
+}
+function displayRef(value){
+ return value.replace('Chapter 12 Stacking Architecture (#ch17)','Chapter 12 (#ch17)')
+  .replace(/ \(Library file file_[a-z0-9]+\)/g,'');
+}
 function displayCopy(value){
  if(typeof value!=='string')return value;
- return value.replace(/\bn\s*=\s*14\b/g,'fourteen');
+ return value.replace(/\bn\s*=\s*14\b/g,'fourteen')
+  .replace(/Engine \(Dynamics\)/g,'Engine')
+  .replace(/Source-defined structural architecture/g,'Source-defined structure')
+  .replace(/fast cognition/g,'quick thinking')
+  .replace(/information as leverage/g,'using information to gain power over others')
+  .replace(/true utilization of experience/g,'true use of experience')
+  .replace(/psychological construct/g,'psychological concept')
+  .replace(/named source construct/g,'named source concept')
+  .replace(/see source reference and crosswalk for traceability/g,'see the source references')
+  .replace(/future crosswalk row/g,'future mapping row')
+  .replace(/The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling\./g,'The v341 source comparison lists this separately from the eight domains; combining them has not been approved.');
 }
 const out={
- schema:'atuned.deep_psyche.shipped_app.v1',
+ schema:'atuned.deep_psyche.shipped_app.v2',
+ sourceRegistry:registryPath,
  sourceRegistryVersion:registry.version,
  sourceRecordCount:registry.records.length,
  reviewDepth:4,
  records:registry.records.map(r=>({
   id:r.id,kind:r.kind,type:r.recordType,
   name:r.canonicalName||r.nm||r.id,
-  family:r.fam||r.layer||'Deep Psyche',
+  family:displayCopy(r.fam||r.layer||'Deep Psyche'),
   description:displayCopy(r.def||r.definition||''),
   body:displayCopy(r.body||r.definition||r.def||''),
   clear:displayCopy(r.sourceVersionSpecificDescription?.clearExpression||
     (Array.isArray(r.healthyExpression)?r.healthyExpression[0]:null)||null),
   distorted:displayCopy(r.sourceVersionSpecificDescription?.distortedExpression||
     (Array.isArray(r.decoherentExpression)?r.decoherentExpression[0]:null)||null),
-  reviewStatus:r.status||null,
-  sourceRefs:r.sourceRefs||[],
-  sourceClaims:r.sourceClaims||[],
+  sourceStatus:r.status||null,
+  sourceRefs:(r.sourceRefs||[]).map(displayRef),
+  sourceEvidenceDigest:evidenceDigest(r),
   relationships:r.relationships||[],
   nativeNavigationCandidates:nativeNavigationCandidates(r),
-  relationshipAudit:r.relationshipAudit||null,
-  depthReviewStatus:r.depthReviewStatus||null,
+  structuralReviewStatus:r.depthReviewStatus?.structuralStatus||null,
   linkedIds:r.links||[],
   parentId:r.parentId||null,
   displaySlotOnly:!!r.slotOnly,

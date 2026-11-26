@@ -1,0 +1,56 @@
+name: Deep Psyche provenance and copy audit
+on:
+  push:
+    branches: [qa/deep-psyche-provenance-boundary-20261126]
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install pinned compiler
+        run: npm install --no-audit --no-fund --no-save typescript@5.9.3
+      - name: Build the current candidate
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: Audit checked literals by source record
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/deep-psyche-audit"
+          python3 tools/deep-psyche-copy-audit.py > "$RUNNER_TEMP/deep-psyche-audit/findings.json"
+          python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print({k:v for k,v in d.items() if k!="details"})' "$RUNNER_TEMP/deep-psyche-audit/findings.json"
+      - name: Verify graph navigation and source preservation
+        run: node tests/deep-psyche-app.js
+      - name: Enforce unchanged full voice gate
+        shell: bash
+        run: |
+          set -eo pipefail
+          python3 .claude/skills/atuned-voice/check.py --objections 2>&1 | tee "$RUNNER_TEMP/deep-psyche-audit/voice.log"
+      - name: Commit verified generated products on the isolated candidate
+        if: success() && github.ref == 'refs/heads/qa/deep-psyche-provenance-boundary-20261126'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          remote="$(git ls-remote origin "refs/heads/qa/deep-psyche-provenance-boundary-20261126" | cut -f1)"
+          test "$remote" = "$GITHUB_SHA" || { echo "Candidate advanced; refusing stale publication"; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- atuned_src/engine/data/deep_psyche.js engine.js source.html atuned-packed.html funnel/tokens.css funnel/dist/
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: regenerate verified Deep Psyche public projection'
+          fi
+          node tools/products.js --self-test && node tools/products.js
+          git push origin HEAD:refs/heads/qa/deep-psyche-provenance-boundary-20261126
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deep-psyche-field-audit
+          path: ${{ runner.temp }}/deep-psyche-audit/
+          if-no-files-found: error
