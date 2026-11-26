@@ -38,6 +38,11 @@ for(const record of db.records){
   assert(!/\bn\s*=\s*14\b/.test(record[field]||''),
    'Research notation leaked into displayed '+field+': '+record.id);
 }
+/* The known slot-count notation is research geometry, not a domain roster.
+   The canonical text stays literal; only the delivered wording may change. */
+const literalSlotClaim='The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator.';
+const readerSlotClaim='The Psyche Map visualization declares a Blueprint Domains layer with a count of fourteen. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator.';
+let projectedClaims=0;
 for(const original of registry.records){
  const delivered=by.get(original.id);
  assert(delivered,'Shipped app record missing: '+original.id);
@@ -45,12 +50,19 @@ for(const original of registry.records){
   'Typed source relationship provenance lost: '+original.id);
  assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceRefs)),original.sourceRefs,
   'Source citations lost: '+original.id);
- assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceClaims)),original.sourceClaims||[],
-  'Record source claims lost: '+original.id);
+ const expectedClaims=(original.sourceClaims||[]).map(claim=>{
+  if(original.slotOnly&&claim===literalSlotClaim){projectedClaims++;return readerSlotClaim;}
+  return claim;
+ });
+ assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceClaims)),expectedClaims,
+  'Unexpected modification of source claims: '+original.id);
+ assert(!(delivered.sourceClaims||[]).some(claim=>/\bn\s*=\s*14\b/.test(claim)),
+  'Research notation leaked into shipped source claims: '+original.id);
  assert(delivered.reviewStatus===original.status,'Source status mutated: '+original.id);
  assert(delivered.depthReviewStatus?.structuralStatus==='PASS',
   'Depth structural review missing: '+original.id);
 }
+assert.strictEqual(projectedClaims,14,'Exactly fourteen canonical visual-slot claims require projection');
 /* Deliberately remove one pair's evidence while keeping other relationships.
    This must never be accepted as complete provenance. */
 function missingPairProvenance(row,linkedId){
