@@ -803,8 +803,30 @@ async function door(browser, SITE, cut, giftAt) {
      ordinary flow, so the story reaches ST_TEXT through srcTurnCommit, the
      one door a turn lands through whether it is typed or spoken. */
   await page.evaluate(t => { if (typeof srcTurnCommit === 'function') srcTurnCommit(t); }, STORY).catch(() => {});
-  await page.waitForTimeout(500);
-  ok(await Q.click('#stapply'), 'the story is written and Commit is there to press', 'no way to keep a story');
+  /* A fixed 500ms pause inspected half-painted UI under parallel browser
+     load. Require a genuinely visible, enabled control, not just a hidden
+     DOM node, and preserve structural diagnostics without story words. */
+  const commitStarted = Date.now();
+  const commitVisible = await page.waitForFunction(() => {
+    const b = document.getElementById('stapply'); if (!b || b.disabled) return false;
+    const r = b.getBoundingClientRect();
+    return r.width > 0 && r.height > 0
+      && b.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
+  }, null, { timeout: 5000 }).then(() => true, () => false);
+  const commitWaitMs = Date.now() - commitStarted;
+  const commitDiag = commitVisible ? null : await page.evaluate(() => {
+    const b = document.getElementById('stapply');
+    return { exists: !!b, disabled: b ? b.disabled : null,
+      visible: b ? getComputedStyle(b).visibility : null,
+      storyLength: typeof ST_TEXT === 'string' ? ST_TEXT.length : null,
+      parsed: typeof ST_PARSED !== 'undefined' && !!ST_PARSED,
+      dash: typeof STV !== 'undefined' ? !!STV.dash : null,
+      chat: typeof STV !== 'undefined' ? !!STV.chat : null,
+      tab: typeof S !== 'undefined' ? S.tab : null };
+  }).catch(() => ({ inspect: 'page could not be inspected' }));
+  ok(commitVisible && await Q.click('#stapply'),
+    'the story is written and Commit is visibly enabled to press after ' + commitWaitMs + 'ms',
+    'no visible way to keep a story after ' + commitWaitMs + 'ms: ' + J(commitDiag));
   const kept = await Q.waitSaid(/^\|Committed\. \d+ imprints? written to the field\./, 5000);
   ok(!!kept, 'Commit says it kept the story, ' + J(kept));
   await page.evaluate(SHRINK);

@@ -89,6 +89,12 @@ const booted = async p => {
   try { await p.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 20000 }); } catch (e) { }
   try { await p.waitForTimeout(500); await p.evaluate(() => { if (typeof OB !== 'undefined' && OB.open && typeof obClose === 'function') obClose(); }); } catch (e) { }
 };
+// The persisted-record assertions need the new app to finish booting.
+const reloadBooted = async page => {
+  await page.reload({ waitUntil: 'commit' });
+  await page.waitForFunction(() => document.documentElement.getAttribute('data-boot') === 'ok', null, { timeout: 30000 });
+  await booted(page);
+};
 /* a read that throws on a build missing what it reads reports as a failed
    check rather than ending the run, so a known bad build names every miss */
 const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg); } catch (e) { return { err: String(e.message).split('\n')[0] }; } };
@@ -190,7 +196,7 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       ok(listAsked.length > 0 && listAsked.every(b => onScreen.has(b.text)), '4. and every list line the voice was handed was one of them, ' + listAsked.length + ' handed');
       ok(r.fresh === s6.plan && r.unique.length - s6.u0 === s6.plan, '7. the run opened its whole plan on the record: ' + J({ plan: s6.plan, added: r.fresh }));
       await ev(page, () => { var b = document.getElementById('relrest'); if (b) b.click(); var c = document.getElementById('relclose'); if (c) c.click(); });
-      await page.reload({ waitUntil: 'load' }); await booted(page);
+      await reloadBooted(page);
       const back = await ev(page, () => ({ unique: CURP.meter.unique.slice(), vault: relVaultN() }));
       ok(J(back.unique) === J(r.unique) && back.vault === r.vault, '7. and it is still there after a reload: ' + J({ before: [r.unique.length, r.vault], after: [back.unique.length, back.vault] }));
       ok(errs.length === 0, 'no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
@@ -270,7 +276,7 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       const s5 = await ev(page, () => { var r = compute(); return { cq: r.CQ, dq: r.DQ, log: CURP.relhit.log.slice() }; });
       ok(s5.cq === s0.cq && s5.dq === s0.dq, '8. no mark moves CQ or DQ: ' + J({ cq: [s0.cq, s5.cq], dq: [s0.dq, s5.dq] }));
       await ev(page, () => { var c = document.getElementById('relclose'); if (c) c.click(); });
-      await page.reload({ waitUntil: 'load' }); await booted(page);
+      await reloadBooted(page);
       const back = await ev(page, () => ({ hits: relHitCount(CURP).hits, log: CURP.relhit ? CURP.relhit.log : null }));
       ok(back.hits === 1 && J(back.log) === J(s5.log), '8. a reload reads the same one hit and the same log: ' + J({ hits: back.hits, log: back.log && back.log.length, was: s5.log.length }));
       ok(errs.length === 0, '8. no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));

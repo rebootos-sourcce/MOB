@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3 78264f1 2026-11-24 23:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v3500 124787e0 2026-11-26 13:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -5412,6 +5412,9 @@ body.glassblue.tab-story:not(.st-full) #stage::before{
     color-mix(in srgb,rgb(var(--uni-amb-core)) 15%,var(--bg)) 0%,
     color-mix(in srgb,rgb(var(--uni-amb-edge)) 8%,var(--bg)) 60%,
     var(--bg) 100%)}
+/* Loaded profiles add a colored WebGL cloud over Discover's ground.
+   Keep that cloud translucent on both light glass themes. */
+body.glasswhite.tab-story:not(.st-full) #stage>#unicloud{opacity:.4}
 /* AND #stjr GOES QUIET WHERE THE STAGE NOW CARRIES IT, so the wash never
    paints twice: once behind her (above) and once again in the box she
    sits in. */
@@ -33535,6 +33538,15 @@ function pImport(txt,keepId){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A BACKUP IS A RECORD OF WORK, NOT PROOF OF PAYMENT. J11: a pasted
+    plan:{tier:'four',status:'active'} used to open every paid sight layer.
+    A JSON file, URL fragment and sync snapshot are all user-editable; even
+    a syntactically valid plan in them cannot carry billing authority.
+    Start from the engine's canonical free plan. A legitimate signed-in
+    subscription is applied separately by ui/auth.js from /v1/me, and
+    offline imports remain free until the server can verify them.
+    This is a client display boundary, not a substitute for server gates. */
+ v.profile.plan=blankProfile('Imported').plan;
  /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
     onboarding tour exists for a person with nothing read yet; the quiz
     link, a pasted record and a restored file all carry a real story
@@ -71761,6 +71773,14 @@ function srcTurnCommit(v){
     and delete the turn that had just landed */
  var ta=document.getElementById('sttext'); if(ta&&ta.value!==ST_TEXT)ta.value=ST_TEXT;
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
+ /* This is a finished turn, not an in-progress keystroke. The draft is
+    already on CURP.story in memory; make its store write synchronous here,
+    before returning to the mic/chat caller. Page-close and visibilitychange
+    do not always fire in time (honest gate, four-way parallel), and waiting
+    on the 500ms typing debounce can lose a complete spoken sentence.
+    The debounce remains for typing in #sttext. stDraftSave says a refused
+    write once, using the existing error path. */
+ if(STV.draftT)stDraftSave();
  uniApply(ST_PARSED);
  /* the turn alone, not the whole entry, is what the face reads aloud in
     marks: the entry's earlier turns have already been read once */
@@ -102819,7 +102839,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.');};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -102962,7 +102982,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. Nothing else was touched.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
@@ -103607,16 +103627,21 @@ var BOOT_FLOOR_AT=0;
  floor(5450);
  try{ var fade=el.getAnimations().filter(function(a){return a.animationName==='bootOut';})[0];
   if(fade){ var set=function(){ if(gone)return;
-    // A resumed animation can be pending until its first frame. Its floor
-    // must use the resumed clock, even if that frame arrives late.
-    if(fade.pending&&fade.ready){clearTimeout(ft); fade.ready.then(set,function(){floor(5450);}); return;}
-    /* the fade's end on the page's own clock. The document timeline and
-       performance.now share an origin, and the timeline's time is the last
-       frame's, which during a long script is well behind now, so the end is
-       taken from the start time and not from the current time */
+    /* A resumed, previously paused fade has a pending play request. Its
+       startTime can still refer to the original first painted frame while
+       playback is pending; using it here makes the floor fire in 200ms,
+       before the full .24s fade or its animationend can finish. The boot
+       gate's held-long/no-press case caught this on every solo run.
+       Never arm a time derived from that stale clock. Keep a bounded
+       watchdog and replace it after the ready promise updates startTime. */
+    if(fade.pending&&fade.ready){
+     floor(5450);
+     fade.ready.then(set,function(){});
+     return;}
+    /* The end is on the page's own timeline, not a hardcoded duration.
+       Leave 200ms for the terminal animation event before the watchdog. */
     var end=fade.effect.getComputedTiming().endTime;
-    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200);
-    };
+    floor(Math.max(0,(fade.startTime!=null?fade.startTime+end-performance.now():end-(fade.currentTime||0)))+200); };
    set(); retime=set; } }catch(e){}
  /* AND THERE IS A WAY OUT. Anything over 600ms needs one, and this is five
     seconds. It is the overture and it is worth watching, so it is not
@@ -116919,5 +116944,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008526445"></div>
+<div id="eof" hidden data-len="008528138"></div>
 </body></html>

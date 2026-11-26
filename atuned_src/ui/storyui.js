@@ -3680,6 +3680,14 @@ function srcTurnCommit(v){
     and delete the turn that had just landed */
  var ta=document.getElementById('sttext'); if(ta&&ta.value!==ST_TEXT)ta.value=ST_TEXT;
  ST_PARSED=parseStory(ST_TEXT); stRefresh();
+ /* This is a finished turn, not an in-progress keystroke. The draft is
+    already on CURP.story in memory; make its store write synchronous here,
+    before returning to the mic/chat caller. Page-close and visibilitychange
+    do not always fire in time (honest gate, four-way parallel), and waiting
+    on the 500ms typing debounce can lose a complete spoken sentence.
+    The debounce remains for typing in #sttext. stDraftSave says a refused
+    write once, using the existing error path. */
+ if(STV.draftT)stDraftSave();
  uniApply(ST_PARSED);
  /* the turn alone, not the whole entry, is what the face reads aloud in
     marks: the entry's earlier turns have already been read once */
