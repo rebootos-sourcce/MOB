@@ -26049,6 +26049,38 @@ function srcCheckingReflection(text){
  return m?'You keep '+m[1].replace(/\bmy\b/gi,'your')+'. Your concern is, “'+m[2]+ '.”':'';
 }
 
+/* Every applicable check has to pass independently. The result describes
+   the proposed operation and its evidence. */
+function srcIntegrityDecision(checks){
+ var blocked=Object.keys(checks).filter(function(check){return checks[check]!==true;});
+ return {ok:blocked.length===0,blocked:blocked};
+}
+
+/* A second report of checking supports recurrence of the action. The
+   consequences stay distinct unless the person connects them. */
+function srcCheckingHistory(turn,record,allowProfile){
+ if(allowProfile!==true||!record||!srcCheckingReflection(turn))return false;
+ var entries=(record.story&&record.story.entries)||[];
+ return entries.some(function(entry){
+  return entry&&typeof entry.text==='string'&&!srcSafe(entry.text)&&
+   !Object.keys(storyDeclinedSeats(entry.verdicts)).length&&
+   entry.text.split(/\n+/).some(function(text){return text.trim()!==turn.trim()&&!!srcCheckingReflection(text);});
+ });
+}
+
+/* Verify Release against the current story and its verdicts at execution. */
+function srcStoryReleaseIntegrity(entry,ids){
+ var readable=!!entry&&typeof entry.text==='string'&&!!entry.text.trim()&&!srcSafe(entry.text);
+ var imprints=readable?parseStoryEntry(entry).imprints.filter(function(im){return im.node!=null&&BY[im.node]&&BY[im.node].cf;}):[];
+ var named=imprints.filter(function(im){return !im.inferred;});
+ var eligible=new Set((named.length?named:imprints).map(function(im){return im.node;}));
+ return srcIntegrityDecision({
+  nonHarm:readable,
+  responsibility:Array.isArray(ids)&&ids.length>0&&new Set(ids).size===ids.length,
+  truth:Array.isArray(ids)&&ids.every(function(id){return eligible.has(id);})
+ });
+}
+
 /* WHAT SOURCE AI DOES NEXT. One of four moves, and the person's own choices
    decide it, never the depth of what was found.
 
@@ -32952,7 +32984,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
-                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcCheckingHistory:srcCheckingHistory, srcStoryReleaseIntegrity:srcStoryReleaseIntegrity, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
