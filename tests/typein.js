@@ -138,7 +138,18 @@ async function pressType(p,ok,what){
   if(!box){ ok(false,what+': #stmic has no box to press and hold'); return false; }
   await p.mouse.move(box.x+box.width/2,box.y+box.height/2);
   await p.mouse.down();
-  await p.waitForTimeout(780);
+  /* RAISED FROM 780, 21 November: a real elapsed-time probe on this exact
+     wait, run directly against a clean build with nothing of this round's
+     own changes anywhere near it, measured waitForTimeout(780) actually
+     taking 1174 to 1752ms of real wall clock under this CI's own load, a
+     node-side setTimeout delayed by CPU contention and not by anything
+     storyui.js's stHoldMs (700ms, unchanged) does. Even a measured 1.2 to
+     1.8 real seconds of mouse held down still missed the 700ms threshold
+     on some runs, read as a flaky "typed:false" though the box itself had
+     already opened: the margin, not the product, was too thin. Holding
+     longer costs nothing a person would notice in a gate; it costs this
+     gate a false red under load. */
+  await p.waitForTimeout(1500);
   await p.mouse.up();
   return true;
  }catch(e){ ok(false,what+': #stmic could not be pressed and held, '+String(e.message).split('\n')[0]); return false; }}

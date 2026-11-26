@@ -114,6 +114,21 @@ BROWSER = {
     'srcchat':       ('node tests/srcchat.js', 20),
     'practitioner':  ('node tests/practitioner.js', 20),
     'release-screen': ('node tests/release-screen.js', 20),
+# the Avatar Purpose view with its rails removed and Archetype hidden, 18
+# November (tests/avatarpurpose.js). Real Chromium gate, already wired into
+# deploy.yml's gates-browser matrix; this entry is the registry half R2 needs.
+    'avatarpurpose': ('node tests/avatarpurpose.js', 20),
+# a person's own typed birth reaching converge(), 19 November
+# (tests/ownbirth.js). Real Chromium gate, wired the same day it was written.
+    'ownbirth': ('node tests/ownbirth.js', 20),
+    'insightread': ('node tests/insightread.js', 20),
+    'insightrail': ('node tests/insightrail.js', 20),
+    'affirm': ('node tests/affirm.js', 20),
+# avState() calling wholeOf() for the Avatar page's own hero percent, 21
+# November (tests/avatarwhole.js, commit 8ec9e4cf). Real Chromium gate,
+# orphaned at first the same way avatarpurpose was; wired into deploy.yml's
+# gates-browser matrix the same round this registry entry lands.
+    'avatarwhole': ('node tests/avatarwhole.js', 20),
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
@@ -162,9 +177,47 @@ BROWSER = {
 # the layer observatory wired to trace.js's real traversal engine, 8 November
 # (tests/layer-observatory.js). Report only until three green runs.
     'layer-observatory': ('node tests/layer-observatory.js', 20),
-# the Insight well's auto pin, 14 November (tests/wellpin.js). Report only
-# until three green runs, like every gate new to CI.
-    'wellpin':       ('node tests/wellpin.js', 20),
+# wellpin REMOVED 19 November, merge of feature/insight-rail-unnested: the
+# five tabs and the auto pin it tested are gone on the unnested rail.
+# the Field's Psyche panel, Matrix/Superego/Action and nothing else, 18
+# November (tests/psychepanel.js). Report only until three green runs.
+    'psychepanel': ('node tests/psychepanel.js', 20),
+    'talksilence': ('node tests/talksilence.js', 20),
+# a control whose menu is open has no tooltip, 18 November
+# (tests/menutip.js). Report only until three green runs.
+    'menutip': ('node tests/menutip.js', 20),
+# the ritual reminder pop-up, accounts-push, 19 November (tests/remind.js).
+# Report only until three green runs.
+    'remind': ('node tests/remind.js', 20),
+# the lighting menu on top of every surface, 18 November (tests/lightmenu.js).
+# Report only until three green runs, like every gate new to CI.
+    'lightmenu':     ('node tests/lightmenu.js', 20),
+# the eighth lighting, Glass blue, 18 November (tests/glassblue.js). Report only
+# until three green runs.
+    'glassblue':     ('node tests/glassblue.js', 20),
+# Source AI as a conversation, real Chromium, 18 November (tests/srcconvo.js),
+# the owner's 17 November report that it repeats itself. Report only until
+# three green runs.
+    'srcconvo':      ('node tests/srcconvo.js', 20),
+# the Ritual week redraw, kinds on all 53 practices and the top row, 21
+# November (tests/ritweek.js). Report only until three green runs.
+    'ritweek':       ('node tests/ritweek.js', 20),
+# the Avatar module's Dashboard card, 21 November (tests/dashavatar.js).
+# Report only until three green runs.
+    'dashavatar':    ('node tests/dashavatar.js', 20),
+# hit, keep and not a hit said aloud on the release card, 21 November
+# (tests/relvoice.js). Report only until three green runs.
+    'relvoice':      ('node tests/relvoice.js', 20),
+# the table of universal laws on the wisdom school page, 21 November
+# (tests/kbtable.js). Report only until three green runs.
+    'kbtable':       ('node tests/kbtable.js', 20),
+# the law of the week (ui/ritlaw.js), 22 November (tests/ritlaw.js). Wired into
+# deploy.yml's gates-browser matrix the day it landed and left out of this
+# registry, so R2 failed gates-fast on every run from e6314a24 on.
+    'ritlaw':        ('node tests/ritlaw.js', 20),
+# the screen guides, 21 November (tests/guide.js). Report only until three
+# green runs.
+    'guide':         ('node tests/guide.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
@@ -1313,6 +1366,19 @@ class Lint:
                 'R2 gates-fast does not run the voice check, python3 .claude/skills/atuned-voice/check.py --objections.')
         self.ok(find(texts, r'python3 tools/workflow-lint\.py\b')[0] is not None,
                 'R2 gates-fast does not run this lint, python3 tools/workflow-lint.py.')
+        p, _, s = find(texts, r'python3 atuned_src/hostfree\.py --self-test\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run python3 atuned_src/hostfree.py --self-test, so nothing checks the guard that keeps the engine off the host.'):
+            eb = find(texts, r'\./atuned_src/BUILD-engine\.sh\b')[0]
+            self.ok(eb is not None and p < eb, 'R2 gates-fast checks the host guard after the build that relies on it, not before.')
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the host guard step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven self test reads green.' % (s.get('if'), s.get('continue-on-error')))
+            self.ok(os.path.isfile(os.path.join(self.root, 'atuned_src', 'hostfree.py')), 'R2 atuned_src/hostfree.py does not exist.')
+        p, _, s = find(texts, r'node tools/flakes\.js --self-test\b[^\n]*node tools/gates-repeat\.js --self-test\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run node tools/flakes.js --self-test and node tools/gates-repeat.js --self-test, so nothing checks the flake ledger or what the nightly says about a failure.'):
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the flake ledger step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven self test reads green.' % (s.get('if'), s.get('continue-on-error')))
+            for f in ('flakes.js', 'gates-repeat.js'):
+                self.ok(os.path.isfile(os.path.join(self.root, 'tools', f)), 'R2 tools/%s does not exist.' % f)
         p, _, s = find(texts, r'node tests/chrome-path\.js\b')
         if self.ok(p is not None, 'R2 gates-fast does not run node tests/chrome-path.js.'):
             self.ok('if' not in s,
@@ -2259,6 +2325,15 @@ BREAKS = [
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
     ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
     ('the chrome-path step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "github.event_name == 'push'")),
+    ('the host guard self test dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'hostfree\.py --self-test'))),
+    ('the host guard self test skipped on a pull request', lambda d: _step(d, 'gates-fast', r'hostfree\.py --self-test').__setitem__('if', "github.event_name == 'push'")),
+    ('the host guard self test allowed to fail', lambda d: _step(d, 'gates-fast', r'hostfree\.py --self-test').__setitem__('continue-on-error', True)),
+    ('the flake ledger step dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/flakes\.js --self-test'))),
+    ('the flake ledger step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/flakes\.js --self-test').__setitem__('if', "github.event_name == 'push'")),
+    ('the flake ledger step allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/flakes\.js --self-test').__setitem__('continue-on-error', True)),
+    ('the flake ledger step cut to the ledger alone', lambda d: _sub(d, 'gates-fast', r'tools/flakes\.js --self-test', ' && node tools/gates-repeat.js --self-test', '')),
+    ('the host guard self test moved after the build', lambda d: _job(d, 'gates-fast')['steps'].append(_job(d, 'gates-fast')['steps'].pop(
+        _job(d, 'gates-fast')['steps'].index(_step(d, 'gates-fast', r'hostfree\.py --self-test'))))),
     ('the orphans check dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/orphans\.js'))),
     ('the orphans check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('if', "github.event_name == 'push'")),
     ('the orphans check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('continue-on-error', True)),

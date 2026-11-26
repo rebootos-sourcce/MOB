@@ -100,7 +100,7 @@ var PRACTICE=[
   how:'Visualise your parents and grandparents. Identify what you took on from each. For '
    +'every pattern, decide: keep, transform, or release. Then run the release on the ones '
    +'you named.'},
- {k:'chakra', nm:'Individual Chakra Meditation', track:'Energy', min:20, tier:3,
+ {k:'chakra', nm:'Individual Point Meditation', track:'Energy', min:20, tier:3,
   d:'One band at a time. Five minutes of breath, ten of visualisation.',
   how:'Choose the band carrying the most. Five minutes of breath to ground. Then hold a '
    +'coloured sphere at that nerve plexus for ten to fifteen minutes. One band per sitting.'},

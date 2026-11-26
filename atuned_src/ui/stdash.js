@@ -170,11 +170,20 @@ function stDashLeft(){
       +(rn?', back '+rn+' time'+(rn===1?'':'s')+' before':'')):(b+', nothing read yet')};}));
  o+='</section>';
  o+=stDashChildEmotions(p);
- o+=stDashPatterns();
  o+=stDashIntegrity(p);
  o+=stDashVerp(p);
  o+=stDashPsycheStack();
- o+=stDashMasks();
+ /* PATTERNS MOVES UNDER PSYCHE STACK, 18 November, his words on this rail:
+    "Move patterns underneath Psyche Stack." Only the position changed;
+    stDashPatterns reads and draws exactly as it did above Integrity. */
+ o+=stDashPatterns();
+ /* MASKS IS GONE FROM THIS RAIL, 18 November, his words: "get rid of
+    masks. We already have it as a widget in the lower right." Masks had
+    been added here on his own 10 November instruction ("add the masks");
+    this is a later instruction overriding that one, the same way the
+    Boundary/Compass pair was cut from this same rail on 10 November when
+    their work moved to the Dashboard's own mini pictures. stDashMasks
+    stays defined and reachable; only this call is cut. */
  /* THE IMPRINTS DETECTOR'S OWN SLOT, 9 November, his words: "the imprints
     detector... moves to the lower left or near the lower left bottom of
     the left rail." Empty here on purpose: ui/storyui.js's stImpDetMount,
@@ -228,7 +237,7 @@ function stDashChildEmotions(p){
   var n=p?(byChild[c.nm]||0):0, rn=p?(rec[B2K[c.seat]]||0):0;
   return {v:n,b:c.nm,c:seatCol(c.seat),k:'axis',ic:'<path d="'+c.ic+'"/>',str:p?stBright(n/4,rn):0,
     title:p?(c.nm+(n>0?', '+n+' word'+(n===1?'':'s')+' from this story':', nothing from this story')
-     +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
+     +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(c.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -289,7 +298,7 @@ function stDashPatterns(){
    var v=unread?0:n[c[0]], rn=unread?0:(rec[B2K[c[3]]]||0);
    return {v:v,b:c[0],c:c[2],k:'pat',ic:PATIC[c[0]],str:unread?0:stBright(Math.min(1,v/4),rn),
      title:unread?(c[1]+', nothing recorded yet'):(c[1]+(v>0?', '+v+' word'+(v===1?'':'s')+' handed down on this record':', nothing handed down on this record')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':''))};}));
  o+='</section>';
  return o;}
 /* THE PATTERNS DRILL, READ OFF THE WHOLE RECORD, RESCOPED WITH THE TILE
@@ -367,7 +376,7 @@ function stDashIntegrity(p){
    var x=by[l.nm], v=x?x.score:0, rn=p?(rec[B2K[l.b]]||0):0;
    return {v:v,b:l.nm,c:seatCol(l.b),k:'law',ic:'<path d="'+l.ic+'"/>',str:p?stBright(v/10,rn):0,
      title:p?(l.nm+(x?', '+fmtPct('law',v)+' from this story':', nothing from this story')
-      +(rn?', its seat back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
+      +(rn?', its point back '+rn+' time'+(rn===1?'':'s')+' before':'')):(l.nm+', nothing read yet')};}));
  o+='</section>';
  return o;}
 
@@ -434,7 +443,7 @@ function stOpenVerp(k){
    TB's own words: "Psyche Stack (`railStack` in ui/ui.js, pointed at the
    story being written instead of the whole record)." Checked directly
    before building this: railStack's own tree (saboteur to complex to
-   hyper to super complex, ui/ui.js stkGroup/stkFetBar) is built from
+   hyper to super complex, ui/insightui.js stkLevelHtml/stkFetBar) is built from
    compute()'s chain arrays, which are cross-address pattern matching over
    the whole record (SAB33 ranges and the rest, engine/compute.js) -- there
    is no version of that pipeline that runs on one unsent draft's parse,
@@ -464,7 +473,7 @@ function stDashPsycheStack(){
  var TIER={sab:PAL.Throat,cx:PAL.Solar,hy:PAL.Sacral,sup:PAL.Root};
  var KIND=[['sab','Saboteurs',r.sabs],['cx','Complexes',r.cxs],['hy','Hyper complexes',r.hys],['sup','Super complexes',r.sups]];
  var o='<section class="st-en st-ps" id="st-psyche" aria-labelledby="st-psyche-h">'
-  +'<h2 class="rblk" id="st-psyche-h">Psyche stack</h2>';
+  +'<h2 class="rblk" id="st-psyche-h">Psyche</h2>';
  /* ALWAYS THE PILLS, NEVER TEXT, 9 November and again 13 November. This
     used to fall back to a whole sentence the moment every tier was
     empty, which is the one section on this rail that did not hold the
@@ -561,7 +570,7 @@ function stOpenPsyche(kind){
  var LIST={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups};
  var lab=NAME[kind]||kind, list=(LIST[kind]||[]).slice().sort(function(a,b){return (b.w||0)-(a.w||0);});
  var def=stPsyMean(kind);
- var h=anaHead('Psyche stack',lab,def?esc(def):'');
+ var h=anaHead('Psyche',lab,def?esc(def):'');
  h+=list.length?anaPatRows(list,20):'<p class="ad-p">Nothing by this name is running on this record right now.</p>';
  rdShell(h);}
 
@@ -644,7 +653,7 @@ function stDashCompass(){
     28 October ruling retired. unpackOf reads the one table every other CQ
     and DQ tooltip already reads. Not drawn on the rail since 10 November
     (see stDashLeft), kept right for whichever screen calls it next. */
- var o='<section class="st-en st-cps" id="st-compass" aria-label="Path">'
+ var o='<section class="st-en st-cps" id="st-compass" aria-label="Compass">'
   +'<p class="st-cps-top" title="'+esc(unpackOf('cq'))+'">CQ '+(r.unread?PCT_DASH:Math.round(cq))+'</p>'
   +'<svg viewBox="0 0 120 170" class="st-cps-svg" aria-hidden="true">'
   +'<radialGradient id="stcpsg" cx="50%" cy="50%" r="55%">'

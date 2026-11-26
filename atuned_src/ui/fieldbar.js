@@ -136,7 +136,7 @@ const FB_LAYERS=[
  {k:'fetters',g:'run',nm:'Child emotions',ic:CHAINGLYPH.fet,
   tip:'The nine child emotions. Each saboteur is a configuration of these at a given intensity: the floor the chain above it runs on.'},
  {k:'saboteurs',g:'run',nm:'Saboteurs',ic:CHAINGLYPH.sab,
-  tip:'The saboteurs running on the charge, threaded to the addresses that built them.'},
+  tip:'A saboteur is a named habit that runs on the charge held at several addresses at once.'},
  {k:'complexes',g:'run',nm:'Complexes',ic:CHAINGLYPH.cx,
   tip:'Where saboteurs join. Each complex is built from the saboteurs outside it.'},
  {k:'hyper',g:'run',nm:'Hyper complexes',ic:CHAINGLYPH.hy,
@@ -256,7 +256,7 @@ function fbValues(r){
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
  var top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{}, ax=archExpr(top.i);
  V.archetypes={p:pct('archetype',ax)||0,v:fmtPct('archetype',ax),c:seatCol(A.b||'Heart'),
-  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its seat pulls it down; a release lifts it.'};
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its point pulls it down; a release lifts it.'};
  /* the root's colour off the one ladder every other surface reads, rootPlain,
     and not ROOTCOL, which is the Dark values on every lighting */
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];

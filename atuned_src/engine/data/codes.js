@@ -97,11 +97,14 @@
    3d2671d9, the copy reboot-os holds. canon.json is 1.0.1, md5 79951697,
    amended 27 October with The Performer hyper-complex and the Borderline-
    Sociopath open ruling, both read from the book directly, the owner having
-   authorized this addition. 1.0.0 was md5 7e844c0d.
+   authorized this addition. 1.0.0 was md5 7e844c0d. The copy was re-vendored
+   21 November at md5 8961dd1f, reboot-os a18cc55d, which adds
+   registers.complexDeep and changes nothing else in the file, so every row
+   read at 79951697 reads the same here and the version is still 1.0.1.
    ============================================================ */
 const CODE_SOURCES=[
  ['mob','this repository: its own tables, SNIFFER_SPEC.md and DESCENT'],
- ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), md5 79951697, the copy held at vendor/reboot-os/canon.json'],
+ ['canon','reboot-os atuned/data/canon.json, SOURCE OS CANON 1.0.1, issued 8 September by the owner, amended 27 October (The Performer, Borderline-Sociopath), complexDeep added 15 November, md5 8961dd1f, the copy held at vendor/reboot-os/canon.json'],
  ['book','The Mechanics of Being v192, reboot-os atuned/data/corpus/MOB_Complete_v192.txt, md5 3d2671d9'],
  ['app','the reboot-os app tables, atuned/data/canon_tables: SAB33, SABAUTH, HYPER, NODEREG'],
  ['nodes112','reboot-os atuned/data/nodes_112.json'],
@@ -109,7 +112,7 @@ const CODE_SOURCES=[
 
 const CODE_KINDS=[
  ['saboteur','a named saboteur, by its SABDEF code'],
- ['cluster','an inferred saboteur: two or more addresses in one seat carrying one child emotion, or the cross seat leftovers of one emotion'],
+ ['cluster','an inferred saboteur: two or more addresses in one point carrying one child emotion, or the cross point leftovers of one emotion'],
  ['overshot','a saboteur or cluster read past the point where it serves'],
  ['family','a hyper-complex family of HCX_LIB'],
  ['pole','a family done past the point where it helps, from FAM_POLE'],
@@ -181,7 +184,32 @@ const CODE_STRUCT=[
     researched entries for them would not resolve without one. A new code,
     never a renamed one, per this file's own rule above. */
  ["X33","Dysregulation","hyper_complex",9,"R"],
- ["X34","Dissociation","hyper_complex",10,"R"]];
+ ["X34","Dissociation","hyper_complex",10,"R"],
+ /* X35 TO X53, ADDED 21 NOVEMBER 2026. DESCENT's reference rows for the
+    rest of the shadow roster (compass.js, "THE REST OF THE ROSTER") would not
+    resolve without a structure code, the same gap X33 and X34 closed. New
+    codes, never renamed ones. Tagged I: the names are shipped and ruled
+    words, but filing them in this register is the gate's need and not a
+    ruling on their tier, which stays his (TASKS.md round SM, SM9, SM16). */
+ ["X35","Gatekeeping","hyper_complex",11,"I"],
+ ["X36","Judgment","hyper_complex",12,"I"],
+ ["X37","Insatiability","hyper_complex",13,"I"],
+ ["X38","Possessiveness","hyper_complex",14,"I"],
+ ["X39","Reactivity","hyper_complex",15,"I"],
+ ["X40","Vengeance","hyper_complex",16,"I"],
+ ["X41","Violence","hyper_complex",17,"I"],
+ ["X42","Fraud","hyper_complex",18,"I"],
+ ["X43","Shadow","hyper_complex",19,"I"],
+ ["X44","Compulsive Craving","hyper_complex",20,"I"],
+ ["X45","Engineered Chaos","hyper_complex",21,"I"],
+ ["X46","Sacrificial Extraction","hyper_complex",22,"I"],
+ ["X47","Extractive Control","hyper_complex",23,"I"],
+ ["X48","Deception","hyper_complex",24,"I"],
+ ["X49","Sabotage","hyper_complex",25,"I"],
+ ["X50","Forced Growth","hyper_complex",26,"I"],
+ ["X51","Poisoning","hyper_complex",27,"I"],
+ ["X52","Coercive Abduction","hyper_complex",28,"I"],
+ ["X53","Forced Alteration","hyper_complex",29,"I"]];
 
 /* BLAME DISPLACEMENT AND ANTISOCIAL ARE TWO CODES, X02 AND X06. canon.json
    gives both the same two saboteurs, Aggressor and Deflector, and tags both

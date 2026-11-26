@@ -26,9 +26,11 @@ else may.
     ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
     node tests/engine.js               headless, and fast
+    node tests/insightread.js          headless, the Insight reading's traces
     node tests/functional.js           real Chromium
     node tests/collide.js              no overlapping nameplates
     node tests/design.js               the look, held to its floors
+    node tests/insightrail.js          the right rail: Insight, its dots, the stack
     node tools/monitor.js             every surface renders, and it logs
     node tests/funnel.js               the funnel, which nothing gated before
     node tests/boot.js                 the guard, against a real throwing extension
@@ -252,6 +254,27 @@ read moves behind a hover or a tap. This does not repeal "unpack every
 symbol" below. A symbol still carries its meaning, reachable on hover and tap
 per that rule; what changes is that the meaning is not also pasted onto the
 screen as a paragraph nobody asked to read.
+
+**No blockers. Pick the best real answer and ship it.** Ruled 21 November,
+after the status board held 5 Body map addresses marked blocked on his word
+choice for a nerve or plexus name, when the real position already had a
+real, cited landmark to place against; position and naming had been bundled
+as if both needed his sign-off, and only one of them did. His words: "we have
+no blockers. You should have no blockers. Blockers are reviewed in software
+where I can't progress anymore... the fact that you're waiting, you're
+failing me." This escalates "the seats decide and ask at most one question,
+only when blocked" (round PD, 1 October, below) by closing the gap that round
+left open: picking between two real, cited, defensible options is not a
+blocker, even where the choice is costly to redo or genuinely a matter of
+taste. It ships now, flagged as the team's pick, and the only thing that may
+still sit open on a board is a genuine, confirmed absence of any real
+material anywhere, not an undecided preference between two things that are
+both real. He also ruled, same breath, that a board must show this
+difference visually: a module that is stuck or stale reads as a flagged
+problem, never as a plain, neutral row indistinguishable from one that is
+simply in progress ("the fact that it's not written in red is pissing me
+off"). `DECISIONS.md`, "No blockers: position ships on any real, cited
+landmark now; naming can stay open", carries the ruling in full.
 
 ## Voice. These are rulings, not preferences.
 

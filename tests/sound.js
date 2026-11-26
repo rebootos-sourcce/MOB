@@ -342,16 +342,20 @@ async function soundGate(browser,FILE,ok,booted){
  ok(fw.biteStay===true,'and with the arrival rule taken out the same resting move does spark, so the silence above is a reading, '+fw.biteStay);
  await pg.mouse.move(2,2);
  await pg.evaluate(()=>{ setTab(TAB.ENERGY); render(); });
- await pg.waitForFunction(()=>BM.sabs&&BM.sabs.length>0&&!BM.camT,null,{timeout:15000}).catch(()=>{});
+ await pg.waitForFunction(()=>BM.sabs&&BM.sabs.length>0&&!BM.pan.some(p=>p.camT),null,{timeout:15000}).catch(()=>{});
  await pg.waitForTimeout(600);
- const cable=()=>pg.evaluate(()=>{ const r=BM.sv.getBoundingClientRect(); let hit=null, off=null;
-  for(const s of BM.sabs){ for(const v of [0,1]){ const c=s.views[v]; if(!c||!c.samp)continue;
+ /* each figure is its own panel with its own camera now, so "close" is a
+    panel's: the cable is looked for in one panel (only), or in either the
+    first time, and the panel it was found in is reported with it */
+ const cable=only=>pg.evaluate(only=>{ const r=BM.sv.getBoundingClientRect(); let hit=null, off=null;
+  for(const s of BM.sabs){ for(const v of (only==null?[0,1]:[only])){ const c=s.views[v]; if(!c||!c.samp)continue;
     for(let j=Math.floor(c.samp.length/3);j<c.samp.length;j+=3){ const q=bmW2S(c.samp[j][0],c.samp[j][1]);
      if(q[0]<20||q[1]<20||q[0]>r.width-20||q[1]>r.height-20)continue;
-     const pk=bmPick(q[0],q[1]); if(pk.sab&&!pk.place&&!pk.hub){hit={x:r.left+q[0],y:r.top+q[1],w:[c.samp[j][0],c.samp[j][1]]};break;}}
+     const pk=bmPick(q[0],q[1]); if(pk.sab&&!pk.place&&!pk.hub){hit={x:r.left+q[0],y:r.top+q[1],w:[c.samp[j][0],c.samp[j][1]],v:pk.pi};break;}}
     if(hit)break;} if(hit)break;}
   for(let y=30;y<r.height-30&&!off;y+=37)for(let x=30;x<r.width-30;x+=37){ if(!bmPick(x,y).sab){off={x:r.left+x,y:r.top+y};break;}}
-  return {hit:hit,off:off,close:bmClose(),zr:+(BM.cam.z/BM.z0).toFixed(2)};});
+  const pi=hit?hit.v:0, P=BM.pan[pi];
+  return {hit:hit,off:off,close:bmClose(pi),zr:+(P.cam.z/P.z0).toFixed(2)};},only);
  const touchLine=async c=>{ await pg.mouse.move(c.off.x,c.off.y); await pg.waitForTimeout(700);
   const t0=await spk(); await pg.mouse.move(c.hit.x,c.hit.y); await pg.waitForTimeout(120);
   return {spark:(await spk())>t0, on:await pg.evaluate(()=>BM.hoverSab)};};
@@ -363,16 +367,16 @@ async function soundGate(browser,FILE,ok,booted){
   await pg.evaluate(()=>{ window.__bc=window.bmClose; window.bmClose=function(){return true;}; });
   bw.fitBite=(await touchLine(fitC)).spark;
   await pg.evaluate(()=>{ window.bmClose=window.__bc; });
-  await pg.evaluate(w=>bmFlyTo(w[0],w[1],BM.z0*2.5),fitC.hit.w);
-  await pg.waitForFunction(()=>!BM.camT,null,{timeout:20000}).catch(()=>{});
+  await pg.evaluate(w=>bmFlyTo(w[0],w[1],BM.pan[bmPanOf(w[0])].z0*2.5),fitC.hit.w);
+  await pg.waitForFunction(()=>!BM.pan.some(p=>p.camT),null,{timeout:20000}).catch(()=>{});
   await pg.waitForTimeout(400);
-  const cl=await cable(); bw.close={zr:cl.zr,close:cl.close};
+  const cl=await cable(fitC.hit.v); bw.close={zr:cl.zr,close:cl.close};
   if(cl.hit&&cl.off)Object.assign(bw.close,await touchLine(cl));}
  ok(bw.fit&&bw.fit.on&&bw.fit.spark===false&&bw.close&&bw.close.close&&bw.close.on&&bw.close.spark===true,
   'on the Body, arriving on a tension line is silent at the whole body and sparks once zoomed in close, '+JSON.stringify(bw));
  ok(bw.fitBite===true,'and with the close rule taken out the same arrival at the whole body sparks, so that silence is a reading, '+bw.fitBite);
  await pg.mouse.move(2,2);
- await pg.evaluate(w=>{ SIGHT_PLAN=w==='__none'?null:w; if(BM.cv){BM.cam=bmFitCam();BM.camT=null;} setTab(TAB.FIELD); render(); },sightWas);
+ await pg.evaluate(w=>{ SIGHT_PLAN=w==='__none'?null:w; if(BM.cv){BM.pan.forEach((p,i)=>{p.cam=bmFitCam(i);p.camT=null;});} setTab(TAB.FIELD); render(); },sightWas);
  await pg.waitForTimeout(1400);
 
  /* ---------- 2 and 3. the switch, and Quiet ---------- */
@@ -480,6 +484,34 @@ async function soundGate(browser,FILE,ok,booted){
   const ua=await pg.evaluate(b=>({played:SFX_PLAYED-b.p, undo:(SFX_LAST.undo||0)>b.t, depth:undoDepth(),
    line:(document.getElementById('status')||{}).textContent}),ub);
   ok(ua.played===1&&ua.undo&&ua.depth===ub.depth-1,'Ctrl+Z takes it back and sounds undo, '+JSON.stringify(ua));}
+
+ /* AND ON A STORE THAT REFUSES, the chord is heard as the refusal and never
+    as the latch. Both handlers played undo and kept after settle whatever the
+    save answered: the first refused Ctrl+Z played refuse and undo in the same
+    millisecond, and a second inside refuse's gap played undo alone, so the
+    person heard a success on a move a reload brings back. setItem throws the
+    way a full disk does, and is put back before the debounced write fires. */
+ await pg.waitForTimeout(400);
+ await commit('My chest locks when my brother shouts and I go quiet for hours.');
+ await pg.waitForTimeout(1600);
+ const refusedChord=async(key,want)=>{
+  const b=await pg.evaluate(()=>{ if(document.activeElement)document.activeElement.blur();
+   window.__setItem=Storage.prototype.setItem;
+   Storage.prototype.setItem=function(){ throw new DOMException('The quota has been exceeded.','QuotaExceededError'); };
+   return {p:SFX_PLAYED, last:Object.assign({},SFX_LAST), u:undoDepth(), r:redoDepth()}; });
+  await pg.keyboard.press(key); await pg.waitForTimeout(80);
+  return pg.evaluate(b=>{ Storage.prototype.setItem=window.__setItem;
+   return {played:SFX_PLAYED-b.p, which:Object.keys(SFX_LAST).filter(k=>SFX_LAST[k]!==b.last[k]),
+    moved:undoDepth()!==b.u||redoDepth()!==b.r, err:saveState().err,
+    line:(document.getElementById('status')||{}).textContent}; },b);};
+ const ru=await refusedChord('Control+z');
+ ok(ru.moved&&ru.err==='QuotaExceededError'&&ru.played===1&&ru.which.join()==='refuse'&&/Not saved/.test(ru.line),
+  'Ctrl+Z on a store that refuses the write sounds refuse and not undo, '+JSON.stringify(ru));
+ await pg.waitForTimeout(1600);
+ const rr=await refusedChord('Control+y');
+ ok(rr.moved&&rr.err==='QuotaExceededError'&&rr.played===1&&rr.which.join()==='refuse'&&/Not saved/.test(rr.line),
+  'and Ctrl+Y on the same store sounds refuse and not kept, '+JSON.stringify(rr));
+ await pg.evaluate(()=>{ if(typeof pSave==='function')pSave(); });
 
  /* ---------- 6. a silent release stays silent, with the fittings on ---------- */
  await pg.waitForTimeout(1600);
@@ -1074,8 +1106,15 @@ async function atmGate(browser,FILE,ok,booted){
   await fresh();
   const before=await pg.evaluate(sel=>{var e=document.querySelector(sel); return e&&e.offsetParent?e.getAttribute('aria-pressed'):null;},sel);
   if(before===null)return {missing:sel};
-  await pg.click(sel); await pg.waitForTimeout(90);
-  const a=await row(); await pg.waitForTimeout(350); await fresh();
+  /* THE POINTER LEAVES BEFORE EACH PRESS. A tip left open by the press before
+     can sit over the next circle (#tip is reachable, pointer-events auto), and
+     page.click then waits 30 seconds and throws, which took the whole
+     functional run down from the Compass block on, 22 November. This gate
+     measures the sound of the press, not the tip, so the pointer is moved off
+     and the tip let go first, the way a person's hand moves between presses. */
+  const clear=async()=>{ await pg.mouse.move(2,2); await pg.waitForFunction(()=>{var t=document.getElementById('tip'); return !t||!t.classList.contains('on');},null,{timeout:3000}).catch(()=>{}); };
+  await clear(); await fresh(); await pg.click(sel); await pg.waitForTimeout(90);
+  const a=await row(); await pg.waitForTimeout(350); await clear(); await fresh();
   await pg.click(sel); await pg.waitForTimeout(90);
   const b=await row(); await pg.waitForTimeout(350);
   return {before:before, first:a, second:b};};
@@ -1098,7 +1137,11 @@ async function atmGate(browser,FILE,ok,booted){
  ok(b1.first&&b1.second&&b1.first.hz===hz.Sacral&&b1.second.hz===hz.Sacral&&b1.first.k!==b1.second.k,'the Body\'s Flow circle goes both ways at the Sacral\'s tone, '+JSON.stringify(b1));
  const b2=await ov('[data-bmov=addr]');
  ok(b2.first&&b2.second&&b2.first.hz===hz.Root&&b2.first.k!==b2.second.k,'and its Addresses at the Root\'s, the same pitch as the Field\'s Addresses, '+JSON.stringify(b2));
- await pg.evaluate(()=>{ setTab(TAB.COMPASS); }); await pg.waitForTimeout(900);
+ /* THE FIGURE, NOT THE CLIMB. Since d39316eb, 21 November, the tab opens on
+    the climb, and .cone-fig.climb hides #cnbar, so the Gravity well circle is
+    not drawn until "The figure" is chosen. A person reaches it through that
+    toggle, so this does the same, the way collide.js's figure block does. */
+ await pg.evaluate(()=>{ setTab(TAB.COMPASS); CONE.climb=false; CONE.clSel=null; coneOpen(CONE.tab); }); await pg.waitForTimeout(900);
  const c1=await ov('[data-cn=well]');
  ok(c1.first&&c1.second&&c1.first.hz===hz.Root&&c1.first.k!==c1.second.k,'the Compass\'s Gravity well circle goes both ways at the Root\'s tone, '+JSON.stringify(c1));
  /* the Compass's seat shells, each its own seat off BANDS: probe shells, pressed
@@ -1113,7 +1156,7 @@ async function atmGate(browser,FILE,ok,booted){
   cs.push(s); }
  await probe('');
  ok(cs.every(r=>r[1]==='overlay-on'&&r[2]===r[3]),'each Compass seat shell rings the seat it is, '+cs.map(r=>r[0]+' '+r[2]).join(', '));
- await pg.evaluate(()=>{ loadP(0); setTab(TAB.FIELD); }); await pg.waitForTimeout(700);
+ await pg.evaluate(()=>{ CONE.climb=true; CONE.clSel=null; loadP(0); setTab(TAB.FIELD); }); await pg.waitForTimeout(700);
  /* column folds, both ways */
  const fold=async sel=>{ const vis=await pg.evaluate(sel=>{const e=document.querySelector(sel); return !!(e&&e.offsetParent);},sel);
   if(!vis)return ['missing '+sel];

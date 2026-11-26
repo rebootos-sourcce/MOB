@@ -112,8 +112,13 @@ function rlArcs(r){
   if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s'); else b.style.removeProperty('--bd');}
  var dm=document.getElementById('doms');
  if(dm)[].forEach.call(dm.children,function(b,i){put(b,r.unread?0:DOMAIN[i]); ph(b,'dom',i);});
+ /* on the Summary the archetype's ring is archExpr, the one figure it prints
+    beside its name there (rlSumPaint below), so the ring and the figure are
+    one number; everywhere else it stays r.aff, the share the wheel draws */
+ var onSum=rlOnSum(), AX=onSum&&!r.unread&&typeof archExprAll==='function'?archExprAll():null;
  ['ar1','ar2'].forEach(function(id){var e=document.getElementById(id);
-  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(r.aff||[])[i]); ph(b,'arch',i);});});
+  if(e)[].forEach.call(e.children,function(b,i){put(b,r.unread?0:(AX?AX[i]:(r.aff||[])[i])); ph(b,'arch',i);});});
+ rlSumPaint(r,onSum,AX);
  var ro=document.getElementById('roots');
  if(ro)[].forEach.call(ro.children,function(b){if(b.dataset.r)ph(b,'root',b.dataset.r);});
  /* the folded line's circles carry the same two numbers and the same breath */
@@ -122,6 +127,93 @@ function rlArcs(r){
   put(b,r.unread?0:(k==='dom'?DOMAIN[i]:(r.aff||[])[i]));
   if(!b._rp){b._rp='1'; var seat=rlCalm()?null:rlSeatOf(k,i);
    if(seat)b.style.setProperty('--bd',rlPhase(seat).toFixed(3)+'s');}});}
+
+/* ============================================================
+   LIT IS YOURS, DIM IS WHAT YOU ARE NOT. The Summary only, 20 November, his
+   words: "I want a person's celestial information down to their archetypes
+   exposed with their percents. So no nested tables, everything's just
+   visible. The elements that they are not are dimmed out."
+
+   What is his, level by level, read off what the rail already holds and
+   nothing new: a blueprint domain in S.doms; an archetype in S.arcs, the
+   primary and the secondaries; a root that is the born root (the sun's
+   element through ELEM2ROOT, the same lookup the Reading's "the blueprint you
+   were born on reads fire" uses), a root a chosen domain sits under
+   (rootsLit), or a root he added (S.roots); and a celestial placement the
+   record can settle, where one that reads unresolved is dim.
+
+   A dim mark is not a choice on this page, so it leaves the tab order. It
+   keeps aria-pressed as false rather than losing the attribute, because the
+   same button is the Field's choice a tab away and syncSoul writes that
+   attribute only when a selection changes, so a removed one would come back
+   to the Field missing. It is visual weight and focus that change here,
+   never what the control is.
+
+   ONE FIGURE, AND ONLY WHERE ONE IS COMPUTED. An archetype carries archExpr,
+   how fully it is expressed (engine/archexpr.js), printed once beside its name
+   in the caption under the grid and drawn as its ring. A domain, a root and a
+   placement print no figure, because nothing computes a percent for them and
+   one printed here would be invented.
+
+   Done when the state flips and not on every render: a key of the tab and the
+   selection is kept, so a frame that changes nothing touches nothing.
+   ============================================================ */
+function rlOnSum(){return typeof TAB!=='undefined'&&S&&S.tab===TAB.SUMMARY;}
+var RL_SUMKEY='';
+function rlBornRoot(){
+ var p=PEOPLE[S.who]||PEOPLE[0], sp=null;
+ try{sp=spiritual(p.nm)||spiritualOf(bornAsBirth(CURP));}catch(e){sp=null;}
+ return sp&&sp.sunEl?(ELEM2ROOT[sp.sunEl]||''):'';}
+function rlSumPaint(r,onSum,AX){
+ var key=onSum?['s',S.who,(S.doms||[]).join('.'),(S.arcs||[]).join('.'),(S.roots||[]).join('.'),
+   r.unread?'u':'r',AX?AX.map(function(x){return x==null?'-':x.toFixed(3);}).join(','):''].join('|'):'off';
+ if(key===RL_SUMKEY)return; RL_SUMKEY=key;
+ /* the one meaning of lit and dim, on the first of the level names, from the
+    meaning table and never typed here */
+ var lv=document.querySelector('#lcol .sum-lvl');
+ if(lv&&!lv.hasAttribute('data-tip')){var say=unpackOf('lit','rail');
+  if(say){lv.setAttribute('tabindex','0'); lv.setAttribute('data-tip-k','Lit and dim'); lv.setAttribute('data-tip',say);}}
+ /* a dim mark keeps its name on hover and says the one thing true of it here;
+    its Field title, which tells a person to click or shift-click to choose,
+    is put back as it was the moment the mark is lit or the tab is left */
+ function mark(b,off){
+  var dim=onSum&&off;
+  b.classList.toggle('rl-off',dim);
+  if(dim){b.setAttribute('tabindex','-1');
+   if(b.dataset.t0==null)b.dataset.t0=b.title||'';
+   var nm=(b.getAttribute('aria-label')||b.dataset.r||'').split(',')[0];
+   b.title=nm+'. Not in your blueprint.';}
+  else {b.removeAttribute('tabindex');
+   if(b.dataset.t0!=null){b.title=b.dataset.t0; delete b.dataset.t0;}}}
+ var dm=document.getElementById('doms');
+ if(dm)[].forEach.call(dm.children,function(b,i){mark(b,(S.doms||[]).indexOf(i)<0);});
+ var a1=document.getElementById('ar1');
+ if(a1)[].forEach.call(a1.children,function(b,i){mark(b,(S.arcs||[]).indexOf(i)<0);});
+ var ro=document.getElementById('roots');
+ if(ro){var lit=onSum?rootsLit():{}, born=onSum?rlBornRoot():'';
+  [].forEach.call(ro.children,function(b){var rn=b.dataset.r; if(!rn)return;
+   mark(b,!(lit[rn]||rn===born||(S.roots||[]).indexOf(rn)>=0));});}
+ /* the caption under the archetypes names what is lit, and on this page
+    carries each one's figure beside its name; capA writes it plain again the
+    moment the tab is left, because it is the Field's caption too */
+ var ca=document.getElementById('capA');
+ if(!ca)return;
+ if(!onSum){if(typeof capA==='function')capA(); return;}
+ ca.innerHTML=(S.arcs||[]).map(function(i){var A=ARCH[i]; if(!A)return '';
+  var f=AX&&AX[i]!=null?fmtPct('archetype',AX[i]):'';
+  return '<span class="rl-lit"><b>'+esc(A.nm)+'</b>'+(f&&f!==PCT_DASH?' <i class="rl-fig">'+esc(f)+'</i>':'')+'</span>';})
+  .filter(Boolean).join('');}
+
+/* AND A DIM MARK IS NOT A CHOICE ON THE SUMMARY. The domain, root and
+   archetype buttons choose the blueprint on the Field (ui/panels.js), and a
+   press on a dim one here would have changed it from a page that reads it.
+   Stopped on the way down, at the column, so the Field's own handlers are
+   untouched and a lit mark still answers as it does there. */
+(function(){
+ var l=document.getElementById('lcol'); if(!l)return;
+ l.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('.rl-off');
+  if(t&&rlOnSum()){ev.stopPropagation(); ev.preventDefault();}},true);})();
 
 /* AND IT RUNS THE OTHER WAY. A pointer over a domain's arc on the wheel lights
    that domain's tile and its root's chip; over an archetype's arc, that

@@ -116,6 +116,14 @@
  const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
  const GOLDRGB=rgb(GOLD);
  function mixc(c,g,t){ return [Math.round(mix(c[0],g[0],t)),Math.round(mix(c[1],g[1],t)),Math.round(mix(c[2],g[2],t))]; }
+ /* an rgb triple back to the hex sprite() reads, the one direction rgb()
+    above never needed before this */
+ const toHex=a=>'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+ /* the lens's own two ground stops, the literals the fill always drew,
+    named so the tinted fill can be held to their brightness */
+ const BGIN=rgb('#0b0a0d'), BGOUT=rgb('#060608');
+ const lumOf=a=>Math.max(a[0],a[1],a[2]);
+ const atLum=(c,L)=>{ const m=lumOf(c)||1; return c.map(v=>v*L/m); };
  /* seeded, so every load drifts the same way and a screenshot can be
     repeated. Two generators where the file had one: the layout's is
     restarted on every read of W, so an address keeps its own phases across
@@ -129,10 +137,29 @@
  const canvas=document.createElement('canvas');
  canvas.id='srcface';
  canvas.hidden=true;
- canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven seats, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
+ canvas.setAttribute('aria-label',"Source's reading circle. Seven rings are the seven assemblage points, Root at the centre and Crown outside, and each dot on a ring is one body address, brighter where it carries more charge.");
  /* UNPACK EVERY SYMBOL: the amplified file's caption, which named every mark
-    on the face, travels with it as the hover, since the box has no room for
-    a caption of its own */
+    on the face, travelled with it as the hover, since the box has no room for
+    a caption of its own.
+
+    THE HOVER IS OFF, 18 November, his words, looking at the seven line card
+    hung off the right of the circle: "this tooltip isn't working. Let's turn
+    that off for now." The text is kept, as KEY, so turning it back on is one
+    line and the words are still the ruled ones; what is gone is the title
+    attribute, because the tooltip engine (ui/tip.js) takes any title as a
+    hover target and hangs its card off the canvas box, which is 900 by 420
+    in the Journal while the circle is 416 across, so the card stood 250
+    pixels from what it described. The canvas keeps its aria-label above, and
+    SrcFace.key() hands the key to anything that wants to print it. Nothing
+    may set a title or a data-tip on this canvas while the ruling stands.
+
+    THE KEY IS THE SILENCE ROUND'S, NOT THE ONE LINE, integration 18
+    November. Two branches met here: source-ai/natural-conversation cut the
+    hover to one line, fix/talk-silence turned the hover off and kept the
+    ruled key below. His ruling on the integration was that the tooltip is
+    off and no one line tooltip survives from the conversation round, so the
+    key kept for when it is turned back on is this one, and tests/srcconvo.js
+    holds only that nothing hangs a hover on the canvas. */
  /* THE HOVER IS A KEY, ONE MARK A LINE, 17 November, his words, crossing out
     the paragraph that stood here: "This tooltip, it's insane. That text in the
     tooltip needs to be direct." Each line names a mark the canvas really
@@ -149,11 +176,11 @@
     which the tooltip sets (.tip-b, shell/head.html). */
  const TITLE=["Source's reading circle",
   "Dots: the 108 somatic addresses, exact places in your body. Bigger means more charge",
-  "Rings: the seven seats, base of the spine in the centre, top of the head outside",
+  "Rings: the seven assemblage points, base of the spine in the centre, top of the head outside",
   "Light between dots: a saboteur, a habit running on those places",
   "Rim marks: the laws, ways of keeping your integrity",
   "Top and bottom marks: the 4 field anchors, two above the body, two below"].join("\n");
- canvas.title=TITLE;
+ let KEY=TITLE;
  const ctx=canvas.getContext('2d');
  /* the emissive layer and its three bloom copies, the amplified file's */
  const L=document.createElement('canvas'), lx=L.getContext('2d');
@@ -171,6 +198,7 @@
      this layout the field anchors and the rim sit inside it, where the pie
      put the anchors outside */
   Rf=Math.max(12,Math.min(W0,H0)/2-2);
+  sizeVar();
   /* the bloom's downsample steps were 4, 8 and 16 pixels against a face 430
      across the window. Kept in proportion to the face, the way every other
      length in the file scales by Rf/430, or a 40 pixel face is smeared to a
@@ -191,6 +219,29 @@
  const CORE=SEATCOL.map(c=>sprite(c,[[0,1,1],[.18,1,.55],[.42,.55,0],[.7,.12,0],[1,0,0]],64));
  const HOT=sprite('#fff4de',[[0,1,0],[.25,.6,0],[.6,.1,0],[1,0,0]],64);
  const GOLDH=sprite(GOLD,gauss);
+ /* THE CENTRE GLOW ONLY IS NOW CQDQ-TINTED, not his own fixed gold, 21
+    November, on the real screenshot: "the color needs to match the CQDQ
+    color with dominant chakra color influence." This is its own sprite,
+    COREH, never GOLDH itself: GOLDH is blitted at the arc's head (the gold
+    CQ arc, below), at the resolution animation's travelling sparks and its
+    settling ring (resFx, further down) and at its node-ping glow, four
+    call sites that sit right beside literal rgba(240,218,170,...) gold
+    strokes drawn in the same frames; mutating GOLDH in place, as a first
+    pass here did, retinted all four along with the centre and left them
+    fighting their own neighbour's still-fixed gold. None of those four
+    are "the circle's colour" the screenshot was read against, so GOLDH
+    stays exactly the fixed gold it always was and only COREH moves.
+    COREH is "built once, a glow costs one blit" per the sprite note
+    above, which a repaint every frame would break (sprite() rebuilds a
+    gradient canvas, the cost that note exists to avoid), so it stays a
+    `let` and is only rebaked when the CQDQ COLOUR block, in the draw loop
+    below, actually lands on a new rounded colour, the same guard uni.js's
+    own ambPaint uses for the cloud behind Uni (ui/uni.js, "only when the
+    rounded rgb triples actually change"). Unread or unmeasured it keeps
+    this exact gold, the same gate the CQ arc already draws under: no
+    reading, no colour claim. */
+ let COREH=sprite(GOLD,gauss), coreGoldKey=GOLDRGB.join(',');
+ const SEATRGB=SEATCOL.map(rgb);
  const WARM=sprite('#f3e2c0',gauss);
  const NEB=SEATCOL.map(c=>sprite(c,[[0,.9,0],[.35,.45,0],[.7,.12,0],[1,0,0]],256));
  const STREAK=(()=>{const c=document.createElement('canvas');c.width=256;c.height=16;const g=c.getContext('2d');
@@ -242,6 +293,15 @@
 
  /* ---- input 2: the chain, read off computeSeen() ---- */
  let CH={sabs:[],cxs:[],hys:[],sups:[]}, LOCKED=new Set(), CQ=null;
+ /* DQ, the real total-shadow score (engine/compute.js, same r this file
+    already reads CQ off), and DOM, the dominant seat: whichever of
+    r.seats (seatRows(), the same real per-seat weight the Field and
+    map.js already read, 0-1, root through crown, the same order SEATCOL
+    is indexed by below) carries the most. Both feed the centre glow's
+    colour, cqdqTint() below; neither is a second reading of its own and
+    neither draws anything while CQ is null, the same no-reading-no-claim
+    gate the arc already stands behind. */
+ let DQ=0, DOM=-1;
  /* a saboteur sits in the seat most of its addresses sit in */
  function seatOf(parts){ const c=[0,0,0,0,0,0,0]; parts.forEach(i=>{ if(byI[i]) c[byI[i].ring]++; }); let best=0; c.forEach((v,k)=>{ if(v>c[best]) best=k; }); return best; }
  function readChain(r){
@@ -268,10 +328,21 @@
      the same lawRec read compute() makes, so a 0 there is no reading of
      coherence at all and draws no arc and no disorder, as unread does. */
   CQ=(r&&!r.unread&&r.measured>0&&isFinite(r.CQ))?clamp(+r.CQ,0,100):null;
+  DQ=(r&&isFinite(r.DQ))?clamp(+r.DQ,0,100):0;
+  /* -1 is no dominant seat. The first cut started best at -1, so a reading
+     with every seat at weight 0 (laws answered, no story charge yet, which
+     seatRows returns as seven zeros) crowned the root, index 0, and tinted
+     the centre red for a seat holding nothing; and a reading with no seats
+     at all kept whatever seat the last one had. Only a seat carrying
+     charge can be dominant. */
+  DOM=-1;
+  if(r&&Array.isArray(r.seats)){
+   let best=0; r.seats.forEach((s,i)=>{ const w=+s.weight||0; if(w>best&&i<SEATRGB.length){ best=w; DOM=i; } });
+  }
   /* UNPACK EVERY SYMBOL: the arc's number travels with the face's own
      meaning on hover, since the canvas prints no number of its own */
   const ARC='\nGold arc: coherence, mind, actions and body pointing the same way';
-  canvas.title=TITLE+(CQ==null?(r&&!r.unread
+  KEY=TITLE+(CQ==null?(r&&!r.unread
     ?ARC+'. It is drawn once you answer the laws'
     :ARC+'. Not read yet')
    /* a percent, as the Field tile prints the same figure: "of 100" is a
@@ -282,10 +353,20 @@
  /* coherence is eased, the amplified file's 1.4 seconds, so a new reading
     turns the arc and the lock rather than cutting to them */
  let cqFrom=0, cqTo=0, cqT0=-9e9, cqv=0, cqSeen=false;
+ /* DQ eases on the exact same clock, cp below, since both land off the
+    same sync(r) call: a reading moves its colour and its arc together,
+    never one cutting while the other glides */
+ let dqFrom=0, dqTo=0, dqv=0;
+ /* and the dominant seat on it too: the first cut swapped SEATRGB[DOM]
+    the instant a new seat led, a 28 percent hue cut under a CQ that was
+    still gliding, and a reading whose only change was its leading seat
+    never restarted the clock at all. The draw blends the from and to
+    seats' tints by the same cp. */
+ let domFrom=-1, domTo=-1;
  const CQ_DUR=1400;
  /* called by uniApply (ui/storyui.js) with the reading it has just taken */
  function sync(r){ readAddrs(); readChain(r||{});
-  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; cqSeen=true; } else if(CQ!==cqTo){ cqFrom=cqv; cqTo=CQ; cqT0=performance.now(); } }
+  if(CQ!=null){ if(!cqSeen){ cqFrom=cqTo=cqv=CQ; dqFrom=dqTo=dqv=DQ; domFrom=domTo=DOM; cqSeen=true; } else if(CQ!==cqTo||DQ!==dqTo||DOM!==domTo){ cqFrom=cqv; cqTo=CQ; dqFrom=dqv; dqTo=DQ; domFrom=domTo; domTo=DOM; cqT0=performance.now(); } }
   if(sabIdx>=CH.sabs.length){ sabIdx=0; sabStart=performance.now()+400; lastCyc={}; } }
 
  const RD={on:false,seats:{},order:[],closed:false,id:0,imp:{},hk:{}};
@@ -486,7 +567,18 @@
   if(speaking) return;
   RD.on=false; const pn=performance.now();
   for(const k in resFx) if(!resFx[k].rel) resFx[k].rel=pn;
-  setTimeout(()=>{ if(!RD.on&&!speaking) stateWord=IDLE; },2200);
+  /* AND THE FACE GOES BACK TO REST WITH IT, 18 November, his words: "Source
+     AI animation appears broken when I load up the dashboard without saying
+     anything... Animations are automatically playing." engaged was raised by
+     a reading, by the voice and by the intro, and lowered only by the
+     intro's own clear(), so after one reading or one spoken line the centre
+     beat, the springs it throws and the pattern trace ran for the rest of
+     the page's life. Measured: one press of Talk and one greeting, nothing
+     said, and engaged stayed true 30 seconds on, the trace cycling saboteur
+     names with rings lit. Once the reading has been let go, and nothing is
+     being said aloud, it rests again, after the same 2.2 seconds the
+     fading rings take. */
+  setTimeout(()=>{ if(!RD.on&&!speaking){ stateWord=IDLE; engaged=false; } },2200);
  }
  /* the ledger's word clock, kept for the person's own words, which arrive
     whole and carry no timing anywhere in the product (gap a, above) */
@@ -554,7 +646,7 @@
  const SEATWORD={}; Object.keys(K2BAND).forEach(k=>{ SEATWORD[k]=SEATNM.indexOf(K2BAND[k]); });
  function voiceEnd(el){
   if(!VO||VO.el!==el) return; VO=null; speaking=false; lastEvent=performance.now();
-  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on) stateWord=IDLE;
+  if(RD.on&&RD.closed){ stateWord='Holding'; hold(RD.id); } else if(!RD.on){ stateWord=IDLE; engaged=false; }
  }
  function voice(el,text){
   if(!el||typeof el.addEventListener!=='function') return;
@@ -562,7 +654,12 @@
   const gaps=wordGaps(words), tot=gaps.reduce((a,b)=>a+b,0)||1; let acc=0;
   const starts=gaps.map(g=>{ const s=acc/tot; acc+=g; return s; });
   VO={el,raw:words,words:words.map(w=>w.replace(/[^A-Za-z0-9]/g,'').toLowerCase()),starts,idx:-1};
-  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; engaged=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
+  /* THE VOICE DOES NOT ENGAGE THE FACE, 18 November. A line Source AI speaks
+     lifts the face while it plays (speakLvl, the wavefront below) and that is
+     all: the greeting that Talk speaks, with nothing said, used to set
+     engaged and so start the centre beat and the pattern trace for good. A
+     reading is what engages it (startReading), and the intro (cue). */
+  el.addEventListener('playing',()=>{ if(!VO||VO.el!==el) return; speaking=true; lastInput=performance.now(); waves.push({t0:performance.now(),amp:0.8});
    /* a closed reading is answered too. This read !RD.on alone, so a line
       spoken over a reading the face was holding left the centre on
       Holding while the voice talked about it, which is the one moment the
@@ -642,8 +739,42 @@
   ctx.setTransform(DPR,0,0,DPR,0,0); lx.setTransform(DPR,0,0,DPR,0,0);
 
   /* coherence, eased; the gate itself is hard at 92, and no reading is not a lock */
-  const cp=easeInOut((now-cqT0)/CQ_DUR); cqv=mix(cqFrom,cqTo,cp);
+  const cp=easeInOut((now-cqT0)/CQ_DUR); cqv=mix(cqFrom,cqTo,cp); dqv=mix(dqFrom,dqTo,cp);
   const isHi=CQ!=null&&cqv>=HI_GATE;
+  /* CQDQ COLOUR, 21 November, his words on the real screenshot: "the color
+     needs to match the CQDQ color with dominant chakra color influence."
+     Three real signals, none invented here: window.Uni.getPalette(cqv/100),
+     the same five-stop ladder the cloud behind Uni and Uni's own face
+     already read; SEATRGB, the dominant seat's own colour (domFrom to domTo), the same
+     array already tinting every per-address dot on these rings; and dqv,
+     pulled toward the ladder's own oscillation stop (c:0.52, a real named
+     stop, not a plain desaturation, which would just read as duller gold
+     and name nothing) rather than toward grey. The seat nudges the hue by
+     up to 0.28, DQ by up to 0.35, both capped so a high CQ reading still
+     reads as itself and neither pull can erase it. No reading, no colour
+     claim: unread or unmeasured keeps the original fixed gold exactly as
+     before, the same gate the arc above stands behind. */
+  let coreTint=GOLDRGB, bgCore=null, bgEdge=null;
+  if(CQ!=null&&window.Uni&&window.Uni.getPalette){
+   const p=window.Uni.getPalette(cqv/100), osc=window.Uni.getPalette(0.52);
+   const seatT=0.28, dqT=Math.min(0.35,dqv/100*0.35);
+   const withSeat=d=>d<0?p.cl:mixc(p.cl,SEATRGB[d],seatT);
+   coreTint=mixc(mixc(withSeat(domFrom),withSeat(domTo),cp),osc.cl,dqT);
+   /* THE GROUND TAKES THE CAST, NEVER THE LIGHT. The first cut filled
+      the lens with the ladder's bg and ed stops, and ed is the rim LIGHT
+      of the cloud behind Uni, 118,52,0 at full coherence, not a ground:
+      measured on the real canvas, CQ 100 painted the lens an opaque
+      copper disc and CQ 70 an olive one, each brighter at the rim than at
+      the centre, the reverse of the lens this face is (the vignette below
+      darkens toward the rim). The fill keeps the original two stops'
+      exact brightness, the brightest channel of #0b0a0d and of #060608,
+      and only its hue moves, the centre glow's own hue, so the circle
+      reads as one colour and the screenshot he called accurate stays
+      dark. */
+   bgCore=atLum(coreTint,lumOf(BGIN)); bgEdge=atLum(coreTint,lumOf(BGOUT));
+  }
+  const coreKey=coreTint.join(',');
+  if(coreKey!==coreGoldKey){ coreGoldKey=coreKey; COREH=sprite(toHex(coreTint),gauss); }
   /* the intro locks the rings at IT.lock with no reading behind it: the
      shape it shows is the instrument at rest, not a score, and the CQ arc
      below still draws only the reading's own figure. Once the intro ends
@@ -806,7 +937,10 @@
   ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=1;
   ctx.clearRect(0,0,w,h);
   ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf,0,TAU); ctx.clip();
-  { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf); fg.addColorStop(0,'#0b0a0d'); fg.addColorStop(1,'#060608');
+  { const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,Rf);
+   /* this gradient is already rebuilt fresh every frame regardless, so
+      the computed bgCore/bgEdge above cost nothing extra here */
+   fg.addColorStop(0,toHex(bgCore||BGIN)); fg.addColorStop(1,toHex(bgEdge||BGOUT));
    ctx.globalAlpha=lensE; ctx.fillStyle=fg; ctx.fillRect(cx-Rf,cy-Rf,Rf*2,Rf*2); ctx.globalAlpha=1; }
   ctx.globalCompositeOperation='lighter';
   for(let k=0;k<7;k++){
@@ -815,7 +949,7 @@
    const lift=litSeats.has(k)?0.05*traceAlpha:0;
    blit(ctx,NEB[k],nx,ny,Rf*(1.3+0.15*Math.sin(t*0.07+k*2)),(0.085+lift+0.035*speakLvl)*(1-0.15*hiE)*(0.75+0.25*Math.sin(t*0.3+k))*(1+0.25*beatE)*clamp(boot/1.2,0,1)*lensE*(1+0.3*brG));
   }
-  blit(ctx,GOLDH,cx,cy,R*(2.4+0.4*hiE)*(1+0.04*brG),(0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE+0.03*brG)*lensE);
+  blit(ctx,COREH,cx,cy,R*(2.4+0.4*hiE)*(1+0.04*brG),(0.05+0.05*speakLvl+0.05*wordE+0.07*hiE+0.06*beatE+0.03*brG)*lensE);
   /* spherical depth: the face darkens toward its rim, like a lens */
   ctx.globalCompositeOperation='source-over';
   { const vg=ctx.createRadialGradient(cx,cy,Rf*0.55,cx,cy,Rf); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,'+(0.42*lensE)+')');
@@ -1193,13 +1327,11 @@
      inward along its radius, the pie wiring's rule, and on a 390 phone that
      walked "Sacral, Apathy" straight onto the centre word, so the centre
      word's own box is held as placed before any label is */
-  let wordBox=null;
-  ctx.font='500 '+FS+'px '+fs0;
-  const wordW=ctx.measureText(stateWord).width, wordFits=wordW/2+3<ringBase[0]*0.92;
-  if(wordFits&&stateWord) wordBox={x0:cx-wordW/2-3,x1:cx+wordW/2+3,y0:cy-FS*0.8,y1:cy+FS*0.8};
+  /* NO WORD AT THE CENTRE, 18 November: see the end of paint. The box that
+     kept a label off it is gone with it. */
   if(labels.length){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,Rf-4,0,TAU); ctx.clip(); ctx.globalCompositeOperation='source-over';
    const fs=Math.max(FS,Math.round(12*U)); ctx.font='500 '+fs+'px '+fs0; ctx.textBaseline='middle';
-   const placed=wordBox?[wordBox]:[];
+   const placed=[];
    labels.forEach(l=>{ const c0=Math.cos(l.na), s0=Math.sin(l.na); const off=U*16-l.sl; let lxp=l.x+c0*off, lyp=l.y+s0*off;
     const tw=ctx.measureText(l.txt).width; ctx.textAlign=c0>=0?'left':'right';
     const x0=c0>=0?lxp:lxp-tw; const d=Math.hypot(Math.max(Math.abs(x0-cx),Math.abs(x0+tw-cx)),lyp-cy); if(d>Rf-14){ const k2=(Rf-14)/d; lxp=cx+(lxp-cx)*k2; lyp=cy+(lyp-cy)*k2; }
@@ -1227,16 +1359,16 @@
    ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(cx,cy,outR,0,TAU); ctx.arc(cx,cy,Rf*0.97,0,TAU,true); ctx.fill('evenodd'); }
   ctx.globalCompositeOperation='source-over';
 
-  /* the centre word, the one readout the wiring kept, outside the breath so
-     it never swims, and only where it fits inside the Root ring, the
-     innermost seat, so it never sits on an address */
-  ctx.globalAlpha=1; ctx.font='500 '+FS+'px '+fs0; ctx.textAlign='center'; ctx.textBaseline='middle';
-  /* no word over the intro: it has no state to report, and it comes back
-     over 600ms once the face has landed. And never a bare idle word either
-     (stateWord is IDLE, empty, until a story actually starts), which is the
-     "it says waiting and I haven't said anything" fix. */
-  const wA=INT?0:clamp((pn-inEndAt)/600,0,1);
-  if(wordFits&&stateWord&&wA>0){ ctx.fillStyle=`rgba(216,213,204,${(0.5+0.25*speakLvl)*clamp(boot,0,1)*wA})`; ctx.fillText(stateWord,cx,cy); }
+  /* NO WORD AT THE CENTRE, 18 November, his words: "There's text still that
+     says I'm listening that needs to go." The centre drew the face's state in
+     grey, Listening, Found, Weighing, Holding, Answering, from the moment a
+     result landed and for twelve seconds after it, over the glow. Source AI's
+     words are on the text display and the face carries no text at rest
+     (17 November); a state word that appears with every turn is text on the
+     face. stateWord is kept: it is the face's own state, read by the gates
+     and by the intro's captions through state() and the hooks, and it is
+     not drawn. The seat labels are the reading's answer, and stay. */
+  ctx.globalAlpha=1;
  }
 
  /* LENT, THE FACE IS NOT MOVED. The intro borrows the one canvas for its own
@@ -1247,7 +1379,14 @@
     answered as if done and do nothing; give() ends the loan and the caller
     hands the face back through uniHandBack, the boot's own route home. */
  let lent=null;
- function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false;
+ /* THE FACE'S OWN DIAMETER, HANDED TO THE CSS, 21 November. The
+    Dashboard's dish (shell/head.html, SET INTO A DISH) draws its floor,
+    wall and bevel round exactly this circle, and only
+    this file knows it: the circle is the largest the canvas box holds, less
+    two pixels, so its size is min(width, height) of a box CSS cannot take
+    the minimum of. Written on the host, so a move carries it. */
+ function sizeVar(){ const hp=canvas.parentNode; if(hp&&hp.style) hp.style.setProperty('--sf-d',(2*Rf).toFixed(1)+'px'); }
+ function show(host){ const moved=canvas.parentNode!==host; if(moved) host.appendChild(canvas); canvas.hidden=false; if(moved) sizeVar();
   if(!running){ running=true; prevNow=null; raf=requestAnimationFrame(draw); }
   else if(moved) refit();
   return true; }
@@ -1286,6 +1425,7 @@
   readE=0; engaged=speaking; stateWord=speaking?'Answering':IDLE; }
  readAddrs();
  window.SrcFace={mount,pause,sync,read,voice,cue,clear,take,give,intro,refit,
+  key:()=>KEY,
   plan:t=>{ const q=plan(t); return q?{words:q.words.slice(),hits:q.hits.map(h=>Object.assign({},h))}:null; },
   /* what the gates read, the way window.Uni exposes chakraTags */
   state:()=>({word:stateWord,engaged,lis:speakLvl,W:W0,H:H0,running,speaking,cq:CQ,hi:hiE,addrs:addrs.length,

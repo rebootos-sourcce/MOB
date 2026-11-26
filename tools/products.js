@@ -87,7 +87,7 @@ const fs = require('fs'), path = require('path'), zlib = require('zlib'), cp = r
 const { packPage } = require('./pack.js');
 
 const ROOT = path.resolve(__dirname, '..');
-const FIX = 'Run ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh, in that order, since BUILD.sh packs and writes funnel/tokens.css and the quiz inlines engine.js, and commit source.html, engine.js, atuned-packed.html, funnel/tokens.css and funnel/dist in the same change as the source.';
+const FIX = 'Run ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh, in that order, since BUILD.sh packs and writes funnel/tokens.css and the quiz inlines engine.js, and commit source.html, engine.js, atuned-packed.html, funnel/tokens.css and funnel/dist in the same change as the source. Since 21 November BUILD.sh and BUILD-engine.sh each run the funnel build last, so either one leaves the funnel current. The data-build stamp is set aside by this check, so a restamp commit never turns it green.';
 
 const stampOf = s => (String(s).match(/data-build="([^"]*)"/) || [])[1];
 /* the two attributes the build writes per run, and nothing else */
@@ -121,7 +121,14 @@ function judgeExact(name, committed, fresh) {
 function judgeSource(committed, fresh) {
   if (committed === null || fresh === null) return judgeExact('source.html', committed, fresh);
   const f = [];
-  if (!stampOf(committed)) f.push('source.html carries no data-build stamp.');
+  const stamp = stampOf(committed);
+  if (!stamp) f.push('source.html carries no data-build stamp.');
+  /* A release packed from GitHub Actions' default single-commit checkout
+     can pass every source-byte comparison while shipping as v1. ATUNED
+     already had many commits before its Alpha. One reachable commit is a
+     shallow CI workspace, not a trustworthy public build version. */
+  else if (/^v1(?:\s|$)/.test(stamp))
+    f.push('source.html carries build v1 from a shallow checkout. Regenerate release assets with actions/checkout fetch-depth: 0 (filter: blob:none is allowed).');
   if (norm(committed) !== norm(fresh)) f.push('source.html does not match a fresh build of its source, stamp aside, ' + firstDiff(norm(committed), norm(fresh)) + '. ' + FIX);
   return f;
 }
@@ -238,6 +245,7 @@ function selfTest() {
     ['a source that differs only in its stamp and length passes', judgeSource(A, B), true],
     ['a source that differs anywhere else fails', judgeSource(A, B.replace('>x<', '>y<')), false, 'stamp aside'],
     ['a source with no stamp at all fails', judgeSource(A.replace(/ data-build="[^"]*"/, ''), A.replace(/ data-build="[^"]*"/, '')), false, 'no data-build'],
+    ['a source stamped v1 by a shallow release checkout fails', judgeSource(shell('v1 deadbee 2026-11-25 09:00'), shell('v1 deadbee 2026-11-25 09:00')), false, 'shallow checkout'],
     ['a packed file from the same build passes', judgePacked(P, A), true],
     ['a packed file from an older build fails, by both stamps', judgePacked(P, B), false, 'is not this build'],
     ['a packed file cut short fails', judgePacked(P.replace(payload(P), payload(P).slice(0, -8)), A), false, 'so it is cut'],

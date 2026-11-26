@@ -167,6 +167,13 @@ function kbRowsOf(sec){
   var fam=kbFind(HCX_LIB,s.hcx), live=kbFind(r.sabs,s.nm);
   out.push(kbRow('sab', s.nm, s.hcx||'unnamed', (fam&&fam.b)||'Heart',
    kbPct(live?live.w:0), (fam&&fam.ic)||null, s));});
+ /* the six families. The live weight is the running hyper complex of that
+    name from computeSeen, the same tier read the saboteur deck uses, and an
+    overshoot (over) is a different pattern under FAM_POLE's name, so it is
+    never counted as the family itself. The seat is HCX_LIB's own b. */
+ if(sec==='hcx') HCX_LIB.forEach(function(f){
+  var live=r.hys.filter(function(h){return h.nm===f.nm&&!h.over;})[0];
+  out.push(kbRow('hcx', f.nm, f.b, f.b, kbPct(live?live.w:0), f.ic||null, f));});
  /* HIGH IS GOOD HERE AND THE COLOUR MUST NOT SAY OTHERWISE. A law at 90 is a
     law kept, not an alarm, and this product has shipped that defect twice.
     The ring takes the seat colour like every other deck and never the alarm.
@@ -287,7 +294,9 @@ function kbRowsOf(sec){
       60%" on a person who had entered nothing. lawIn is the engine's own
       answer to whether a law was entered. Round J13. */
    scored&&S.law[e.t]!=null&&(typeof lawIn!=='function'||lawIn(e.t))?kbPct(S.law[e.t]):null,
-   (si&&si.ic)||fam.ic||null, e);
+   /* a law's own mark first, HARM_IC, 21 November, so a row in this deck
+      and its tile on the table above draw the same one */
+   (si&&si.ic)||HARM_IC[e.c]||fam.ic||null, e);
   /* what the row says when nothing above it names the family */
   row.fam=HARM_AX[e.a]||e.a;
   row.axis=e.a; out.push(row);});
@@ -347,8 +356,14 @@ function kbRowsOf(sec){
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
  ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
- ['law','Laws of Moral Integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
- ['addr','Fetters']];
+ ['law','Laws of Moral Integrity'],['hcx','Hyper complexes'],['sab','Saboteurs'],
+ ['fetter','Child emotions'],['addr','Fetters']];
+/* HYPER COMPLEXES GET A DECK, round LY. The six families were written in
+   full (HCX_LIB and HCXCARD) and had no deck, so the page that lists every
+   thing in the instrument listed the saboteurs and stopped one rung short.
+   It sits directly above Saboteurs because that is the stack's own order,
+   saboteurs compounding up into a family, and the list already runs from
+   the laws down to the body. */
 
 /* whether nothing has been read, asked once and never typed */
 function kbUnread(){return unreadNow();}
@@ -359,12 +374,13 @@ const KB_OF={
  addr:'',
  fetter:'of the axis held',
  sab:'of the pattern at full weight',
+ hcx:'of the pattern at full weight',
  law:'of the law kept, where high is the law holding',
  mask:'of the mask at full weight',
  dom:'of your strongest blueprint lobe',
  arch:'of your strongest archetype',
  gate:'of every Law of Action read in your story',
- seat:'of the seat’s addresses carrying charge',
+ seat:'of the point’s addresses carrying charge',
  card:'of the axis the card releases, where the card names one',
  harm:'of the law kept, where the intake scores it',
  gloss:''};
@@ -389,9 +405,9 @@ function kbMatch(row,q){
    names and not words the product uses anywhere a person can see. node reads
    Fetter and fetter reads Child emotion, which is the rename: the keys are
    identity and the labels are what a person sees. */
-const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
+const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',hcx:'Hyper complex',
  law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
- harm:'Universal law',gloss:'Term',seat:'Seat',mask:'Mask',card:'Card',
+ harm:'Universal law',gloss:'Term',seat:'Point',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole',cq:'Formula'};
 
 /* in order is the default, because he ruled that the universal laws go in
@@ -414,6 +430,7 @@ function kbSubIn(x){
  if(x.k==='mask')return o.v||'';
  if(x.k==='harm')return x.fam||'';
  if(x.k==='law')return '';
+ if(x.k==='hcx')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
 /* one row, the markup it always had, so the drills and the gates read it as
@@ -458,7 +475,7 @@ function kbSeatLine(b){
  return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
 /* the deck a row came from, by its kind. Four kinds share the cards deck. */
 function kbDeckOf(x){
- return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
+ return ({node:'addr',fetter:'fetter',sab:'sab',hcx:'hcx',law:'law',mask:'mask',dom:'dom',arch:'arch',
   gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
 /* THE COHERENCE FORMULA COMES BEFORE THE LAWS. His words, 18 October: "the
    coherence formula should be before the universal laws." It was nowhere on
@@ -476,10 +493,15 @@ function kbDeckOf(x){
    never a deck: a chip counting it would be a figure nobody asked for. Its
    figure waits until a law is answered, because before that it is a zero
    and not a reading. */
+/* NO FRACTIONS, 18 November (NO-FRACTIONS-AUDIT.md, finding S05): "out of
+   210" named the formula's own denominator, which read as a fraction once
+   joined to the figure Pressed opens (CQ, already a percent). The row says
+   the formula is read as a percent now and drops the number it is read
+   against; the figure itself is unchanged. */
 function kbFormulaRow(){
  var r=compute(), n=SI.length;
  var row=kbRow('cq','The coherence formula',
-  n+' laws, each 0 to 10, added up, out of '+(n*10),'Crown',
+  n+' laws, each 0 to 10, added up and read as a percent of the most they can hold','Crown',
   (!kbUnread()&&r.answered)?pct('cq',r.CQ):null,'M18 5H6l6 7-6 7h12',{},'var(--accent)');
  row.seats=[];
  return row;}
@@ -533,7 +555,7 @@ function kbRender(){
     line described the tiles' order to a person looking at the tiles. A deck's
     own line stays: it says what that deck's percent is a percent of, which
     nothing else on the screen says. */
- var title=q?'Search':deck?kbSecName(deck):'The seven seats';
+ var title=q?'Search':deck?kbSecName(deck):'The seven assemblage points';
  var scale=(!q&&deck&&KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'';
  var h='<div class="kb-top kbs">'
   +'<div class="kb-hdr">'
@@ -541,7 +563,7 @@ function kbRender(){
   +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search" '
-  +'value="'+esc(KB_Q)+'" aria-label="Search the wisdom school">'
+  +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
   +(q?'<span class="kb-found">'+total+' match'+(total===1?'':'es')+'</span>':'')
   +'<span class="kb-sw" role="group" aria-label="Order">'
   +'<button type="button" class="kb-swb'+(KB_SORT==='order'?' on':'')+'" data-kbs="order"'
@@ -550,7 +572,7 @@ function kbRender(){
   +' aria-pressed="'+(KB_SORT==='weight')+'">By weight</button></span></div>'
   /* THE SEVEN SEATS, CROWN DOWN TO ROOT. The Intake page's map, the same
      tile and the same order, so the two pages read as one instrument. */
-  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven seats">'
+  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven assemblage points">'
   +SEATS.map(function(b){var on=bySeat&&KB_SEAT===b;
     return '<button type="button" class="iqa-tile kbs-tile" data-kbseat="'+esc(b)+'" data-st="'+(share[b]?2:0)+'" '
      +'aria-pressed="'+on+'" aria-label="'+esc(b+', '+kbSeatLine(b))+'" style="--c:'+seatCol(b)+'">'
@@ -602,8 +624,8 @@ function kbRender(){
    +'<span class="iqa-shl">'+esc(kbSeatLine(b))+'</span></div>'+inner+'</section>';}
  function across(inner){
   return '<section class="iqa-pn kbs-pn kbs-any" data-kbpn="any">'
-   +'<div class="iqa-ph"><span class="iqa-shn">Across every seat</span>'
-   +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
+   +'<div class="iqa-ph"><span class="iqa-shn">Across every point</span>'
+   +'<span class="iqa-shl">held by no one point</span></div>'+inner+'</section>';}
 
  h+='<div class="kbs-body">';
  if(showCq){
@@ -618,7 +640,7 @@ function kbRender(){
   h+=seatPanel(KB_SEAT,byDeck(mine));
   /* and what belongs to no seat, one press away and named, never dropped */
   var none=pool.filter(function(x){return !x.seats.length;});
-  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every seat</span>'
+  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every point</span>'
    +'<span class="kbs-fs">domains, bands, kinds and poles</span></summary>'
    +'<div class="kbs-fb">'+byDeck(none)+'</div></details>';
  }else{
@@ -640,9 +662,18 @@ function kbRender(){
   +'<p class="kb-p">'
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
+ /* and the Let Go list's packs under it, the list's lines read and kept at
+    a person's own pace, where the deck above is the person's own charge */
+ h+=lgPacksHtml();
 
+ /* THE TABLE LEADS THE DEFAULT VIEW, 21 November (ui/kbtable.js). Above the
+    seven assemblage points and only when nothing narrows the page, so a deck
+    or a search reads exactly as it did. A repaint is a fresh board: nothing
+    is left open across one, because the open tile's markup has just gone. */
+ if(bySeat){KBT.open=null; KBT.hover=null; kbtCss(); h=kbtHtml()+h;}
  kbpCss(); kbsCss();
  host.innerHTML=h;
+ if(bySeat)kbtWire();
  var qi=document.getElementById('kbq');
  if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
    var e=document.getElementById('kbq'); if(e){e.focus(); try{e.setSelectionRange(e.value.length,e.value.length);}catch(err){}}};}
@@ -659,7 +690,8 @@ function kbRender(){
  var fd=host.querySelector('.kbs-fold');
  if(fd)fd.addEventListener('toggle',function(){KB_ANY=fd.open;});
  var dk=document.getElementById('kbdeck');
- if(dk)dk.onclick=function(){deckDeal();};}
+ if(dk)dk.onclick=function(){deckDeal();};
+ lgPacksWire(host);}
 /* whether the fold of what belongs to no seat was left open, kept through a
    repaint because the page is rewritten whole on every press */
 var KB_ANY=false;
@@ -707,11 +739,133 @@ function kbsCss(){
  ].join('\n');
  document.head.appendChild(st);}
 
+/* ============================================================
+   THE LET GO PACKS, 21 November. The owner: "the 96 patterns, the 17,000
+   lines, let's get that in too." The second of the two jobs named for the
+   list: packs a person can open and take away. ui/letgopacks.js is every
+   distinct written line of the list's cards, filed by the feeling word it
+   opens on (tools/regen-letgo.cjs says how and what was left out).
+
+   ONE TILE PER PACK, AND ONE PANEL UNDER THEM ALL. Sixteen packs sit four
+   across, four rows, even on every side. The first cut opened a pack in
+   place across the full width, which left fifteen tiles and a hole in the
+   last row whenever one was open; the shot at 1600 showed it, and the
+   standing ruling is symmetry in space. So a tile only says which pack is
+   open (aria-pressed) and its lines show in one panel under the grid.
+
+   ITS LINES ARE WRITTEN ONLY WHEN IT OPENS. Fear alone is near two thousand
+   lines and kbRender rewrites the whole page on every key typed into the
+   search, so the panel carries the first few lines of the open pack only,
+   and the whole pack goes into the file. Which one is open is kept through
+   a repaint the way KB_ANY keeps the fold.
+
+   SAVE IS A TEXT FILE, said only once the browser has it, the house rule
+   keepFile (ui/keep.js) already follows: status() reports the name, or that
+   nothing was saved. Nothing is stored and nothing is sent anywhere.
+   ============================================================ */
+var LG_OPEN=null, LG_SHOW=12;
+function lgPacks(){return (typeof LETGO_PACKS!=='undefined'&&LETGO_PACKS&&LETGO_PACKS.packs)||[];}
+function lgPackOf(id){var a=lgPacks();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null;}
+/* what a pack holds, in one sentence, so the name never stands alone */
+function lgPackSay(p){
+ if(!p.lead.length)return 'Lines that open on a feeling none of the other packs take.';
+ var w=p.lead.slice(0,4).map(function(x){return x.charAt(0).toUpperCase()+x.slice(1);});
+ return 'Lines that open on '+w.slice(0,-1).join(', ')+' or '+w[w.length-1]+(p.lead.length>4?', and '+(p.lead.length-4)+' more words like them':'')+'.';}
+/* a ring open on its right side and a stroke leaving through the gap:
+   something held, let go of. Ring, never fill. The first cut opened the ring
+   at the top with a line through the gap, which is the power button's glyph
+   and read as one in the shot at 1600. */
+function lgIc(){
+ return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+  +'<path d="M17.2 7.6A7.5 7.5 0 1 0 17.2 16.4"/><path d="M11 12h10M18 9l3 3-3 3"/></svg>';}
+function lgPacksHtml(){
+ var ps=lgPacks(); if(!ps.length)return '';
+ lgCss();
+ var n=ps.reduce(function(a,p){return a+p.lines.length;},0), op=LG_OPEN?lgPackOf(LG_OPEN):null;
+ return '<section class="kb-deck lg" aria-labelledby="lgh">'
+  +'<div class="lg-hd"><span class="lg-ic" data-tip-k="Let go packs" data-tip="'
+  +esc('The Let Go list is a library of release lines, each one a feeling and what it is about. A pack is every line that opens on one family of feeling. Open one to read it, or save it as a text file.')
+  +'">'+lgIc()+'</span><h3 class="lg-h" id="lgh">Let go packs</h3>'
+  +'<span class="lg-n"><b>'+n.toLocaleString('en-US')+'</b> lines</span></div>'
+  +'<div class="lg-g" role="group" aria-label="Let go packs">'+ps.map(function(p){
+    var on=LG_OPEN===p.id;
+    return '<button type="button" class="lg-p" data-lgp="'+esc(p.id)+'" aria-pressed="'+on+'" aria-controls="lgb">'
+     +'<span class="lg-pn">'+esc(p.nm)+'</span><span class="lg-pc">'+p.lines.length.toLocaleString('en-US')+'</span></button>';}).join('')
+  +'</div>'
+  +'<div class="lg-b" id="lgb" aria-live="polite">'+(op?lgBodyHtml(op):'')+'</div></section>';}
+function lgBodyHtml(p){
+ return '<div class="lg-bh"><span class="lg-bn">'+esc(p.nm)+'</span><span class="lg-say">'+esc(lgPackSay(p))+'</span></div>'
+  +'<ol class="lg-l">'+p.lines.slice(0,LG_SHOW).map(function(l){return '<li>'+esc(l)+'</li>';}).join('')+'</ol>'
+  +'<button type="button" class="btn lg-save" data-lgsave="'+esc(p.id)+'">Save all '
+  +p.lines.length.toLocaleString('en-US')+' lines</button>';}
+/* a press opens a pack, and pressing the open one again closes it, the way
+   a kind on the strip above goes back on a second press. The section is
+   repainted on its own so the rest of the page, and the search box's focus,
+   are left alone. */
+function lgPacksWire(host){
+ var sec=host.querySelector('.kb-deck.lg'); if(!sec)return;
+ sec.querySelectorAll('[data-lgp]').forEach(function(t){t.onclick=function(){
+  var id=t.getAttribute('data-lgp');
+  LG_OPEN=(LG_OPEN===id)?null:id;
+  sec.outerHTML=lgPacksHtml();
+  lgPacksWire(host);
+  var again=host.querySelector('.kb-deck.lg [data-lgp="'+id+'"]'); if(again)again.focus();};});
+ lgSaveWire(sec);}
+function lgSaveWire(el){
+ el.querySelectorAll('[data-lgsave]').forEach(function(b){b.onclick=function(){lgSave(b.getAttribute('data-lgsave'));};});}
+function lgSave(id){
+ var p=lgPackOf(id); if(!p){status('That pack is not in this build. Nothing was saved.','fail'); return false;}
+ var nm='atuned-letgo-'+p.id+'.txt', url=null;
+ try{
+  var txt='Let go pack: '+p.nm+'\n'+lgPackSay(p)+'\n\n'
+   +p.lines.map(function(l,i){return (i+1)+'. '+l;}).join('\n')+'\n';
+  var blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  if(!blob.size)throw new Error('empty');
+  url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download=nm; a.style.display='none';
+  document.body.appendChild(a); a.click(); a.remove();
+ }catch(e){
+  if(url){try{URL.revokeObjectURL(url);}catch(e2){}}
+  status('Could not make the file. Nothing was saved.','fail');
+  return false;}
+ setTimeout(function(){try{URL.revokeObjectURL(url);}catch(e){}},60000);
+ status('Sent to your downloads as '+nm+'.','ok');
+ return true;}
+function lgCss(){
+ if(document.getElementById('lg-css'))return;
+ var st=document.createElement('style'); st.id='lg-css';
+ st.textContent=[
+  '.kb-deck.lg{align-items:stretch;gap:14px}',
+  '.lg-hd{display:flex;align-items:center;gap:10px}',
+  '.lg-ic{display:inline-grid;place-items:center;width:var(--tap,44px);height:var(--tap,44px);margin:-8px 0 -8px -8px;color:var(--accent);cursor:help}',
+  '.lg-h{margin:0;font-size:16px;font-weight:600;color:var(--ink)}',
+  '.lg-n{margin-left:auto;font-size:13px;color:var(--dim)}',
+  '.lg-n b{color:var(--ink);font-weight:600}',
+  '.lg-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:10px}',
+  '.lg-p{display:flex;align-items:center;gap:10px;min-height:var(--tap,44px);padding:8px 14px;text-align:left;cursor:pointer;',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel);color:var(--ink);font:inherit}',
+  '.lg-p[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}',
+  '.lg-pn{font-size:14px;font-weight:500;min-width:0;line-height:1.3}',
+  '.lg-pc{margin-left:auto;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}',
+  '.lg-b{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding:14px 16px;',
+  ' border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel)}',
+  '.lg-b:empty{display:none}',
+  '.lg-bh{display:flex;flex-direction:column;gap:3px}',
+  '.lg-bn{font-size:15px;font-weight:600;color:var(--ink)}',
+  '.lg-say{font-size:13px;color:var(--dim)}',
+  '.lg-l{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;line-height:1.5;color:var(--mid)}',
+  /* four across or two, never three: sixteen tiles in threes leave one
+     alone on the last row */
+  '@media (max-width:900px){.lg-g{grid-template-columns:repeat(2,minmax(0,1fr))}}'
+ ].join('\n');
+ document.head.appendChild(st);}
+
 /* the deck's own name, looked up by key and never by position, which is the
    rule this repository already carries for anything needing a tab's entry. */
 function kbSecName(k){
  for(var i=0;i<KB_SECS.length;i++)if(KB_SECS[i][0]===k)return KB_SECS[i][1];
- return 'Wisdom school';}
+ return 'Knowledge base';}
 /* ============================================================
    THE POLE ROW. Two rounds of his words, and the second sharpens
    the first.
@@ -782,19 +936,6 @@ var NODE_STRIKE={
  mo:'<circle cx="12" cy="12" r="7"/><path d="M5 12h7.5"/>',
  he:'<circle cx="12" cy="12" r="7"/><path d="M5 12h11"/>',
  cl:'<circle cx="12" cy="12" r="7"/><path d="M5 12h15"/>'};
-/* RESTORED 30 October, SI8 in TASKS.md. 3cdc18dc moved the deck onto
-   poleTip and poleDualBar and deleted these two with the row code they
-   served, but renderAmplifiers in ui/ui.js, the Field's four amplifier rows,
-   still calls both, so every loadP and every render threw "dualPoleState is
-   not defined" and the boot guard spoke over a page that never drew. Put
-   back verbatim from 82a2c1b5, beside NODE_STRIKE, whose keys they return.
-   Only these two: the deck itself is SI9's. */
-function dualPoleState(p){
- var w=Math.max(0,Math.min(100,+p||0));
- if(w<20)return 'op'; if(w<40)return 'im'; if(w<60)return 'mo'; if(w<80)return 'he';
- return 'cl';}
-function dualPoleStateWord(k){
- return {op:'open',im:'impaired',mo:'moderately impaired',he:'heavily impaired',cl:'blocked'}[k]||'';}
 /* 0 fully collapsed, 50 neutral, 100 fully open, both lp and rp already
    percents 0 to 100. */
 function poleTip(lp,rp){return 50-(lp||0)/2+(rp||0)/2;}
@@ -1015,6 +1156,10 @@ function kbOpenIn(x){
   var r=computeSeen(), live=r.sabs.filter(function(s){return s.nm===x.o.nm;})[0];
   if(live){S.pin=live; runDrill(live); render(); return;}
   runSabDrill(x.o); return;}
+ if(x.k==='hcx'){
+  var rh=computeSeen(), on=rh.hys.filter(function(h){return h.nm===x.o.nm&&!h.over;})[0];
+  if(on){S.pin=on; runDrill(on); render(); return;}
+  runHcxDrill(x.o); return;}
  /* the real definition, pulled from the book's own Harmonic Table entry for
     this law. Where that extraction found no safe match (E43, Responsibility,
     folded into Ownership/E40 in the current build) it fell back to the

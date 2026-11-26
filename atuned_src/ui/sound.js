@@ -132,7 +132,7 @@ function bedCtx(){
  if(!BED_AC){
   try{ BED_AC=new (window.AudioContext||window.webkitAudioContext)(); }
   catch(e){ BED_DEAF=true;
-   if(typeof status==='function')status('No seat tone. This browser would not open an audio channel.','fail');
+   if(typeof status==='function')status('No point tone. This browser would not open an audio channel.','fail');
    return null;}}
  if(BED_AC.state!=='running'){
   try{ var r=BED_AC.resume(); if(r&&r.catch)r.catch(function(){}); }catch(e){}}
@@ -956,7 +956,9 @@ var ATM_SEAT={
     fetHi/fetMean reading colours its ring from. */
  fb:{addresses:'Root', laws:'Crown', gates:'Heart',
   fetters:'Sacral', saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
- bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
+ /* heat, the Body map's Charge circle (52e45537), takes Solar, the seat the
+    Compass's own heat circle already sounds on, so one reading is one tone. */
+ bm:{addr:'Root', masks:'Throat', heat:'Solar', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
  cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};
 /* THE MAP. First row a control matches wins. sel is what it matches, snd is
    the row of ATM it sounds (overlay and air choose their direction from the
@@ -966,8 +968,8 @@ var ATM_SEAT={
 var ATM_MAP=[
  {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
  {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
- {kind:'Path overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
- {kind:'Path seat shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Compass overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
+ {kind:'Compass point shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
  {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
   snd:'air', hover:true},
  {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},
@@ -975,7 +977,7 @@ var ATM_MAP=[
  {kind:'Tab', sel:'[role=tab],.tabtop', snd:'click', hover:true},
  {kind:'Switch, checkbox or radio', sel:'[role=switch],[role=menuitemcheckbox],[role=radio],[role=menuitemradio],input[type=checkbox],input[type=radio]',
   snd:'click', hover:true},
- {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-wkd', snd:'click-light', hover:true},
+ {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-wkd,.rv-rd,.rv-rib', snd:'click-light', hover:true},
  {kind:'List row', sel:'.kb-row,.stk-r', snd:'click-light', hover:true},
  {kind:'Button, link or menu item', sel:'button,[role=button],[role=menuitem],a[href],summary', snd:'click', hover:true},
  {kind:'A press on the Field wheel, Frames or Dial', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},

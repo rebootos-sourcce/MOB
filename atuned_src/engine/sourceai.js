@@ -94,9 +94,24 @@ var SRC_NEG_W=2;
    srcNegated(' i did cry ',6), is unaffected: floor undefined reads as no
    boundary, the exact width and word list this was measured against
    stand exactly as they were. */
+/* AND IT READS BACK FROM at, NOT FORWARD FROM f, SZA9 of round SZ. With no
+   sentence end in the text, which is the ordinary shape of dictated speech,
+   f is 0, so every mention sliced and split the whole entry up to itself to
+   keep two words, and the parse grew with the square of the entry: 16,000
+   unpunctuated characters took 193 ms where the same words punctuated took
+   37. The window now starts 32 characters back and doubles until it holds
+   one word more than the run needs, or reaches f. Its first word may be cut
+   in half, and that is why it needs one more: the cut word is never in the
+   run, so the run is the same words the whole slice would have given, and
+   when the window reaches f it is the whole slice. */
 function srcNegated(src,at,floor){
  var f=(typeof floor==='number'&&floor>=0)?floor+1:0;
- var before=String(src).slice(f,at).trim().split(' ');
+ var s=String(src), w=32, lo, before;
+ for(;;){
+  lo=Math.max(f,at-w);
+  before=s.slice(lo,at).trim().split(' ');
+  if(lo===f||before.length>SRC_NEG_W)break;
+  w*=2;}
  var run=before.slice(Math.max(0,before.length-SRC_NEG_W));
  return run.some(function(w){return SRC_NEG.indexOf(w)>=0;});}
 
@@ -180,7 +195,9 @@ function srcHear(text,prior,active){
      quoted back is what they typed and not the lowercased copy. */
   var a=s.at+1, b=s.at+String(s.word).length;
   var w=(a<nm.map.length&&b<nm.map.length)?t.slice(nm.map[a],nm.map[b]+1):s.word;
-  if(o.words.indexOf(w)<0)o.words.push(w);});
+  /* the same word in two cases is one word said twice, not two words:
+     "Afraid" then "afraid" was quoted back as “Afraid” and “afraid” */
+  if(!o.words.some(function(x){return x.toLowerCase()===String(w).toLowerCase();}))o.words.push(w);});
  var P=prior||{};
  var A=active||{};
  out.seats=Object.keys(by).map(function(k){var o=by[k];
@@ -431,6 +448,49 @@ var SRC_JUDGE_STEP=['such','a','an','just','too','being','bit','total','complete
    never"), so it answers belief and leaves "What did you do?" open. */
 var SRC_BEHAVE_DIM={avoidance:'behaviour', withdrawal:'behaviour', inhibited_speech:'behaviour',
  loss_of_control:'behaviour', delay:'behaviour', self_judgement:'belief'};
+/* THE SIX REFRAMES, ONE PER BEHAVIOUR ABOVE, 21 November. The table the
+   ritual week plan (section B5, source 2) held back: "a new table of six rows
+   turns a behaviour you described into its opposite, as a short reframe plus
+   one existing practice. For example, avoidance becomes Make the Call." He
+   corrected the board on it the same day: "you haven't produced them, so I
+   don't know why this is red." So they are produced, here, and his to change.
+
+   ONE ROW PER KIND IN SRC_BEHAVE_ORDER, keyed by it, and never a seventh: a
+   reframe for a behaviour this reader cannot see would be offered on
+   nothing. The practice is the one whose own how text in
+   engine/data/practice.js is the opposite act, read off the text and not off
+   its track, the rule RIT_KIND_OF keeps: avoidance is Make the Call, the call
+   held still done before it is rehearsed; withdrawal is Tell One Person;
+   inhibited speech is The Plain Word; loss of control is Ten Minutes, the
+   room left and come back to; delay is The Small Version, which the practice
+   itself names as the honest part on a day the whole cannot be done; and a
+   verdict on yourself is Name It, a feeling named in one word where the name
+   for yourself went.
+
+   to is the opposite as a short name, the face of a card. line is the
+   reframe, a physical act in the present tense, and it is the name's meaning
+   in the same place, the unpack rule. Each line went through the voice gate
+   one at a time with no hard failure.
+
+   NOT DRAWN YET, AND THAT IS THE PLAN'S ORDER AND NOT A GAP. The plan shows a
+   behaviour card only where the evidence is at least supported, the reading
+   having found it more than once (EV_NAMEABLE, engine/evidence.js), never on
+   one mention, and holds the source back until he has seen the six. Nothing
+   reads this table but tests/ritweek.js RW12, which fails on a behaviour with
+   no row, a row for no behaviour, and a practice the library lacks. */
+var SRC_REFRAME={
+ avoidance:{to:'Go toward it', pr:'fl_call',
+  line:'You do the thing you were going around, before you rehearse it.'},
+ withdrawal:{to:'Stay in reach', pr:'tr_tell',
+  line:'You let one person hear from you today, in two sentences.'},
+ inhibited_speech:{to:'Say it once', pr:'tu_plain',
+  line:'You say the true sentence out loud and stop where it ends.'},
+ loss_of_control:{to:'Leave, then come back', pr:'ch_ten',
+  line:'When the heat rises at somebody, you leave the room for ten minutes and come back.'},
+ delay:{to:'Do the small version', pr:'po_small',
+  line:'You do the smallest honest part of it today, ready or not.'},
+ self_judgement:{to:'Name the feeling', pr:'pe_name',
+  line:'When you start calling yourself a name, you name what you feel in one word.'}};
 /* EVERY BEHAVIOUR IN AN ENTRY, in the order written. Each row is
    {behave, dim, cue, at, s, e, said, who?, unclear?}: at is the leading space
    in normMap's copy, which is what a sniffer hit's at is, s to e the raw
@@ -559,6 +619,63 @@ function srcDims(text){
  var out={answered:by, open:open, words:ws.filter(Boolean).length};
  if(srcSafe(t))out.safe=true;
  return out;}
+
+/* ============================================================
+   THE ONE THING IT CAN SAY BACK WHEN NO SEAT IS FOUND, 18 November. The
+   owner: "it keeps repeating... it's acting more like an algorithm." A turn
+   that lands on no seat was answered from four fixed lines whatever it said:
+   "my boss gave my idea to someone else" and "I froze" and "my sister
+   called" each got "I'm listening". The engine does hold something in those
+   turns, srcDims reads who was in it and srcBehave reads what the person did,
+   and nothing said it.
+
+   WHAT IT RETURNS. The person's own letters for the first thing of two
+   kinds, in the order they were written, or null: a person in the story, one
+   of a closed list of nouns (boss, sister, mother), with the word that
+   claims them ("my", "his", "their") when one stands before it; and a
+   thing the person did, "I" and a doing verb from SRC_SPOT_DO, "I froze",
+   "I just left". Never a pronoun, because "You said “he”" is a lexicon dump
+   and not a listener, and never one of srcBehave's phrase spans, because
+   "did not say" and "keep thinking about" read as a table being cited.
+   Never a sentence: only words the engine itself recognised, so what comes
+   back is what it read and not a clause the person happened to say, which
+   keeps what is spoken aloud to the same small kind of word it has always
+   been.
+
+   {kind:'who'|'did', words}. Pure, reads only the turn. */
+var SRC_SPOT_WHO=['boss','manager','colleague','coworker','partner','husband','wife','boyfriend','girlfriend',
+ 'mother','father','mum','mom','dad','parents','son','daughter','brother','sister','friend','friends',
+ 'family','kids','child','children','teacher','client','ex','neighbour','neighbor'];
+var SRC_SPOT_OWN=['my','his','her','their','our','your'];
+/* the doing verbs worth saying back: a word that says what happened. "I did",
+   "I said" and "I went" are in SRC_DO because they answer the question what
+   did you do, and said back they are filler. */
+var SRC_SPOT_DO=['left','leave','walked','ran','hid','froze','freeze','stopped','avoided','shouted','yelled',
+ 'screamed','snapped','slammed','cried','quit','ignored','pretended','apologised','apologized','shut','hung'];
+function srcSpot(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, found=[];
+ if(!src.trim()||srcSafe(t))return null;
+ function raw(from,len){return t.slice(nm.map[from+1],nm.map[from+len]+1);}
+ SRC_SPOT_WHO.forEach(function(c){
+  var needle=' '+c+' ', i=src.indexOf(needle);
+  if(i<0)return;
+  var from=i, len=c.length, pw=src.slice(0,i).split(' ').pop();
+  if(SRC_SPOT_OWN.indexOf(pw)>=0){from=i-pw.length-1; len=c.length+pw.length+1;}
+  found.push({at:from, kind:'who', words:raw(from,len)});});
+ var ws=src.trim().split(' '), off=0;
+ ws.forEach(function(w,k){
+  /* off is the leading space of this word in normMap's copy, the position
+     a hit's at is */
+  var at=off; off+=w.length+1;
+  if(w!=='i')return;
+  var n=ws[k+1]; if(n==='just'||n==='then')n=ws[k+2];
+  if(SRC_SPOT_DO.indexOf(n)<0)return;
+  var span=ws[k+1]===n?w+' '+n:w+' '+ws[k+1]+' '+n;
+  found.push({at:at, kind:'did', words:raw(at,span.length)});});
+ found=found.filter(function(f){return f.words&&f.words.trim();});
+ if(!found.length)return null;
+ found.sort(function(a,b){return a.at-b.at;});
+ return {kind:found[0].kind, words:found[0].words.trim()};}
 
 /* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
    result, asked the kinds already asked in this entry in the order they

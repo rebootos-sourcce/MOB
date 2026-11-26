@@ -361,10 +361,11 @@ function pracRead(p){
  CHARGES.forEach(function(c){
   S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
   S.replace[c]=(p.rep&&p.rep[c])||0;});
- if(!PROF_BY[p.nm]){
-  var blank=blankProfile(p.nm);
-  if(p.intakeAnswers)blank.intake.answers=Object.assign({},p.intakeAnswers);
-  PROF_BY[p.nm]=blank;}
+ /* built through the same door as loadP's (exampleRecord, engine/birth.js):
+    this built a blank with the intake answers only, and loadP skips its own
+    seeding when a record exists, so opening Clients first left every
+    client's Avatar birth empty beside a rail that printed the chart */
+ if(!PROF_BY[p.nm])PROF_BY[p.nm]=exampleRecord(p);
  var scratch=PROF_BY[p.nm];
  S.rec=scratch.id||null; LAW_REC=scratch;
  var LS=lawsFor(p);
@@ -691,7 +692,7 @@ function pracRingCard(p){
   +(snap.tierDef?'<p class="ac-lead" style="margin:14px 15px 0">'+esc(snap.tierDef)+'</p>':'')
   +'<p class="ac-lead" style="margin:10px 15px 0">'+sent+'</p>'+heavyRow;
  return accGroup('The reading',body,
-   'One ring, seven seats. A brighter arc holds more charge at that seat. Press a seat to list '
+   'One ring, seven assemblage points. A brighter arc holds more charge at that point. Press a point to list '
    +'its addresses. Read off the structure, never off '+esc(p.nm)+'’s own words, which a '
    +'practitioner never sees without a separate yes of its own.');}
 function pracAddrIdx(n){
@@ -767,7 +768,7 @@ function pracDetail(){
  pracSeenSet(p.nm,pracTierWord(snap));
  var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0">'
   +'<h2 class="kb-h">'+esc(p.nm)+'</h2></div>'
-  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(p.age?', '+esc(String(p.age)):'')
+  +'<p class="ac-lead" style="margin:11px 15px 15px">'+esc(p.role)+(exampleAge(p)!==null?', '+esc(String(exampleAge(p))):'')
   +'. Example person, not a client. The practice history is written for this example and read by the '
   +'same engine a real record goes through.</p></div>';
  /* SILENT ON AN UNREAD FIELD, the rule every surface that prints a reading
@@ -859,7 +860,7 @@ function pracDrillDay(p,R,day){
 function pracChain(p,x,R){
  var st=[], nm=esc(p.nm);
  if(x.stories)st.push(['Written',pracPl(x.stories,'entry','entries')+', '
-  +(x.named?'from '+nm+'’s own words':'placed by the seat the words pointed at')]);
+  +(x.named?'from '+nm+'’s own words':'placed by the point the words pointed at')]);
  var op=[];
  if(x.lines)op.push(pracPl(x.lines,'release line','release lines'));
  if(x.truths)op.push(pracPl(x.truths,'truth line','truth lines'));
@@ -879,7 +880,7 @@ function pracDrillPat(p,R,key){
  var x=null; R.loop.patterns.forEach(function(y){if(y.key===key)x=y;}); if(!x)return;
  var seat=pracPatSeat(x);
  var h=pracEye(p,'one pattern')+'<div class="ad-nm">'+esc(x.name)+'</div>'
-  +(seat?'<div class="ad-sub">'+unp(seat.toLowerCase(),seat+' seat','seat')+'</div>':'')
+  +(seat?'<div class="ad-sub">'+unp(seat.toLowerCase(),seat+' point','seat')+'</div>':'')
   +'<p class="ad-p">'+esc(unpackOf(x.state,'client'))+'</p>';
  if(x.address!==null){
   h+=pracAddrFacts(x.address);
@@ -899,9 +900,9 @@ function pracDrillDec(p,R,id){
 
 function pracDrillSeat(p,b){
  var snap=pracRead(p), list=snap.loaded.filter(function(n){return n.b===b;});
- var h=pracEye(p,'one seat')+'<div class="ad-nm">'+esc(b)+'</div>'
+ var h=pracEye(p,'one point')+'<div class="ad-nm">'+esc(b)+'</div>'
   +'<p class="ad-p">'+esc(unpackOf(b,'seat'))+'</p>';
- if(!list.length)h+='<p class="ad-p">Nothing at this seat is above the line.</p>';
+ if(!list.length)h+='<p class="ad-p">Nothing at this point is above the line.</p>';
  else h+='<p class="ad-p">'+pracPl(list.length,'address is','addresses are')+' carrying here, heaviest first.</p>'
   +list.map(function(n){
    var a=pracAddrIdx(n);
@@ -915,7 +916,7 @@ function pracDrillAddr(p,R,a){
  var n=BY[a]; if(!n)return;
  var pat=R?pracPatOfAddr(R,a):null, sq=pracSqOf(p,a);
  var h=pracEye(p,'one address')+'<div class="ad-nm">'+esc(n.k)+'</div>'
-  +'<div class="ad-sub">'+unp(String(n.b).toLowerCase(),n.b+' seat','seat')+'</div>'
+  +'<div class="ad-sub">'+unp(String(n.b).toLowerCase(),n.b+' point','seat')+'</div>'
   +pracAddrFacts(a)+(sq!==null?pracMeter(sq):'')
   +(pat?'<div class="ad-rows">'+pracRowBtn('pat:'+pat.key,'Read it as a pattern',pat.state==='confirmed'?'Confirmed':'Unanswered')+'</div>'
    :'<p class="ad-p">No practice is aimed here yet.</p>');
@@ -963,7 +964,7 @@ function pracSelNone(open){
  if(!d&&none&&none.parentNode){d=document.createElement('div'); d.id='pr-selnone'; d.className='rel-note';
   none.parentNode.insertBefore(d,none.nextSibling);}
  if(d)d.textContent=open
-  ?'Nothing selected. Press a figure, a day, a pattern or a seat on '+open.nm+'’s page to read it here.'
+  ?'Nothing selected. Press a figure, a day, a pattern or a point on '+open.nm+'’s page to read it here.'
   :'Nothing selected. Open a worked example on the left.';}
 
 function pracWire(host){

@@ -234,6 +234,45 @@ function seatRows(){
   return {seat:b, n:g.length, weight:weight, over:over,
    open:clamp(1-weight,0,1), pull:pull, ig:ig, pass:pass, held:held,
    ex:ig==null?null:ig*(1-pull)};});}
+/* THE THREE PLACES CARRYING THE MOST, ONE FUNCTION FOR TWO SURFACES, 21
+   November. The Dashboard's Body card printed the single heaviest address
+   (r.heaviest), a pattern word and a nerve such as "Pride" at the "Celiac
+   Plexus", and the Body page it opens had no key at all, so the card and the
+   page it lands on could never be checked against each other. The approved
+   redraw names three places in the person's own body words instead, and the
+   card and the page's key both call this, so the numbers a person reads on
+   the card are the numbers waiting on the page, by construction rather than
+   by two renderers happening to agree.
+
+   The places are OB_PLACES, the seven words the first run already asks a
+   person to point with (engine/data/onboarding.js), one per seat, so the
+   word is an engine fact and not a second naming. The percent is the seat's
+   own fullness, seatRows().weight, the mean charge across that seat's
+   addresses as a share of the most they could hold: the ruled default
+   (DECISIONS.md, "Field percent", "each point's own fullness"), never its
+   share of the whole body, which would make three places add up to a figure
+   that means nothing on its own. It goes through pct('weight') because
+   weight times ten is the mean of n.sq, which is exactly that kind's scale.
+
+   A place that rounds to nothing is left out rather than printed as a dash,
+   so a person carrying in two places is shown two and not a third that says
+   nothing. Ties keep the body's own order, root first, so the order never
+   depends on the sort's mood. The heaviest address in each place rides
+   along as top, its pattern word and nerve, because that is what the card
+   used to print and the ruling moves it into the hover, never off the
+   product. */
+function bodyTop3(r){
+ if(!r||r.unread||!r.seats)return [];
+ var carrying=r.carrying||[];
+ return r.seats.map(function(s,i){
+  var pl=OB_PLACES.filter(function(p){return p.b===s.seat;})[0];
+  var top=carrying.filter(function(n){return n.b===s.seat;})[0]||null;
+  return {seat:s.seat, k:pl?pl.k:s.seat, nm:pl?pl.n:s.seat, at:i, v:s.weight,
+   pct:pct('weight',s.weight*10)||0,
+   top:top?{i:top.i, k:top.k, nerve:top.n||null, sq:top.sq}:null};})
+  .filter(function(x){return x.pct>0;})
+  .sort(function(a,b){return b.v-a.v||a.at-b.at;})
+  .slice(0,3);}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 

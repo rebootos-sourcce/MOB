@@ -96,10 +96,14 @@ var ACCT_IC={
  streak:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4.5h-4.5"/>',
  /* a miss is the dashed ring every calendar on this page draws for one */
  miss:'<circle cx="12" cy="12" r="8" stroke-dasharray="3 3.3"/>',
- mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>'};
+ mins:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2 M10 3h4"/>',
+ /* a mark is a ring on a ribbon, ring not fill, 18 November */
+ marks:'<circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 21l4.5-2.5 4.5 2.5-1.5-6.5"/>'};
 function acctStreakHtml(st){
  var L=st.L, s=L.streak||{}, run=s.run||0, best=s.best||0, kept=s.days||0, mins=(L.ledger&&L.ledger.minutes)||0;
  var miss=acctCubeRead(st).days.filter(function(X){return X.st==='miss';}).length;
+ var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{};
+ var marks=(L.earned||[]).filter(function(m){var d=md[m.k]; return d!=null&&d>st.today-ACCT_LOOP&&d<=st.today;}).length;
  /* A ZERO IS A DASH, COPY.md Value, and the unit rides on the figure (V17) */
  var fig=function(k,n,u,nm,tip,fl){
   return '<span class="acs acs-'+k+'"'+rvTip(nm,tip,fl)+' aria-label="'+esc(nm+', '+(n?n+' '+u:'none'))+'">'
@@ -112,7 +116,13 @@ function acctStreakHtml(st){
   +fig('streak',run,run===1?'day':'days','Streak',STREAK_MEANS+' Best is your longest run with no gap. Kept is the days you marked a ritual done.',
     'Best|'+(best?acctDays(best):'\u2013')+';Kept|'+(kept?acctDays(kept):'\u2013'))
   +fig('miss',miss,miss===1?'day':'days','Missed','Days in the last thirty a ritual was due and nothing was marked done: the dashed cubes below.')
-  +fig('mins',mins,'min','Practised','The minutes you have put in.')+'</div>';}
+  +fig('mins',mins,'min','Practised','The minutes you have put in.')
+  /* MARKS, 18 November. His reason for cutting the figures row under
+     Success over time was "you already have that in the upper right-hand
+     panel", and for marks it was not true: this strip had no count of them,
+     so cutting the row would have taken the only one. Earned in the last
+     thirty days, the cubes' own span, off the ladder's own days. */
+  +fig('marks',marks,marks===1?'mark':'marks','Marks','Marks you earned in the last thirty days. A mark is earned by what you do, never bought.')+'</div>';}
 
 /* THE THIRTY DAY LOOP OF ROUND QN, one ring round thirty days, became the
    cubes in round QS, below, and its read, acctLoopRead, went in SV19 with the
@@ -219,21 +229,20 @@ function acctCubeHtml(X,k,today,empty){
    line down. What the cubes mean rides on it as the one tooltip (ritTell).
    The figures that sat over the cubes went up to the streak strip, and the
    count of days kept with them: the cubes draw those days. */
-function acctLoopHtml(st){
+/* THE THIRTY DAYS WITHOUT THEIR CARD, 21 November: the cubes and their key,
+   drawn inside Success over time (ritSuccessHtml, ui/ritcal.js) when its span
+   is one month, which is this same thirty. One grid for one read: the card
+   that drew them alone, and the second calendar of the same days in the
+   centre, became one card in this rail. */
+function acctCubesHtml(st){
  var Q=acctCubeRead(st);
  var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
- var all=Q.days.concat(Q.ahead), a=ritDateOf(all[0].d), z=ritDateOf(all[all.length-1].d);
- var mo=a.getMonth()===z.getMonth()?a.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
-  :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
- return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">'+esc(mo)+'</span></div>'
-  +'<p class="rv-mean">The last thirty days, Sunday to Saturday, with the rest of this week ahead. '
-  +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
-  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
+ return '<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Sunday first">'
   +RIT_WCOL.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+RIT_WD[w]+'</span>';}).join('')
   +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
   +Q.ahead.map(function(X,i){return acctCubeHtml(X,Q.pad+Q.days.length+i,st.today,empty);}).join('')+'</div>'
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
-  +'<span><i class="rv-k-cmiss"></i>Missed</span></div></div>';}
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div>';}
 
 /* ---------------- HISTORY, round QN ----------------
    His words: "I want to be able to track my accountability history. I want my
@@ -304,7 +313,7 @@ function acctRotate(i){
   when:p?p.when:'', where:p?p.where:'', rel:(p&&p.rel!=null&&BY[p.rel])?p.rel:null,
   tc:(p&&p.tc&&typeof becomingOf==='function'&&becomingOf(p.tc))?p.tc:null,
   tags:p?p.tags:null, on:p?p.on:null, tm:p?p.tm:null},
-  'Back in rotation. '+H.nm+(span?', '+sp.nm.toLowerCase()+' from today.':', with no end.'));}
+  'Back in rotation. '+H.nm+(span?', '+sp.say+' from today.':', with no end.'));}
 
 /* THE WHOLE COLUMN, AS ONE STRING, and ritRender writes it. It returns markup
    rather than painting a host of its own, because there is no host of its own
@@ -336,7 +345,10 @@ function acctRotate(i){
    carries the state, the Practices press's rule (UX rule 2). */
 function acctSideHtml(st,arrive){
  var open=!!RIT.histOpen;
- return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+acctLoopHtml(st)
+ /* SUCCESS OVER TIME IS UNDER ACCOUNTABILITY NOW, 21 November, merged
+    with the thirty days: one card, its span one dropdown, the cubes at one
+    month and the span's own grid at every other (ritSuccessHtml) */
+ return '<div class="rvr-wrap'+(arrive?' rv-arrive':'')+'">'+ritSuccessHtml(st)
   /* PUT BACK IS OFFERED WHERE A PERSON CAN SEE IT. A delete from a sash's
      sheet or the Record offers it in the Record (ritRecordHtml), and with
      History shut the Record is not drawn, so the offer would be a status

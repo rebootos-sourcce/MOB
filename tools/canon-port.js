@@ -4,8 +4,8 @@
 
    canon.json is the owner's register file, SOURCE OS CANON, kept in reboot-os
    at atuned/data/canon.json. This repository holds the copy it was last merged
-   against at vendor/reboot-os/canon.json, and the seven registers it had no
-   table for are ported row for row into atuned_src/engine/data/registers.js.
+   against at vendor/reboot-os/canon.json, and the registers it had no table
+   for are ported row for row into atuned_src/engine/data/registers.js.
    When reboot-os issues another canon.json, this is the whole merge:
 
      node tools/canon-port.js check [file]
@@ -14,7 +14,7 @@
      node tools/canon-port.js emit [register] [file]
          the rows in registers.js's own shape, every code kept: a row the
          table already holds keeps its code, a new row takes the next one.
-         Paste over the table it names. With no register, all seven.
+         Paste over the table it names. With no register, every one.
      node tools/canon-port.js map [file]
          every register and section of the file, where this repository holds
          it (REG_MAP in engine/registers.js), and which of the file's own open
@@ -40,7 +40,7 @@ const ROOT = path.join(__dirname, '..');
 const VENDORED = path.join(ROOT, 'vendor', 'reboot-os', 'canon.json');
 const ENGINE = path.join(ROOT, 'engine.js');
 
-/* the seven registers this repository ported, each with the table that holds
+/* the registers this repository ported, each with the table that holds
    it, the code prefix of its rows (or none), and the field its rows are keyed
    by when the codes are kept */
 const PORTED = [
@@ -50,7 +50,11 @@ const PORTED = [
   ['organs', 'ORGAN', 'OG', 'nm'],
   ['charge_routing', 'CHARGE_QUADRANT', null, null],
   ['derived_measures', 'DERIVED_MEASURE', 'DM', 'nm'],
-  ['astrology_overlay', 'ASTRO_OVERLAY', null, null]];
+  ['astrology_overlay', 'ASTRO_OVERLAY', null, null],
+  /* the eighth, 21 November. Its rows take no code of their own: each is the
+     deep record of a complex CODE_STRUCT already codes, so its code is that
+     complex's, found by the row canon.json files it at. */
+  ['complexDeep', 'CX_DEEP', 'X', 'nm']];
 
 function readCanon(file) {
   const raw = fs.readFileSync(file);
@@ -133,6 +137,20 @@ const EMIT = {
       + ' archetype_vectors:' + vec(reg.archetype_vectors) + ',\n'
       + ' load_map:{\n' + wrap(Object.keys(reg.load_map).map(k => k + ':' + q(reg.load_map[k])), '  ', 100) + '},\n'
       + ' dims:' + q(reg.dims) + '};';
+  },
+  /* keyed by the complex's name in canon.json's own order, and each name is a
+     row of registers.complexes. A coder minting the next X would hand out X35
+     for a complex that is already X01, so the code is read off CODE_STRUCT by
+     the row, which is identity, and never by the name, which the owner has
+     already changed once (Rigidity, X09, is Unbending here). Every field is
+     carried in canon.json's order, spelled as it spells them, but for the
+     two words CX_DEEP_AMEND names, which cxAmend applies. */
+  complexDeep: (reg, have, canon, tables) => {
+    const rows = (canon.registers.complexes || []).map(r => r[0]), cs = (tables && tables.CODE_STRUCT) || [];
+    const code = nm => { const r = cs.find(x => x[2] === 'complex' && x[3] === rows.indexOf(nm)); return r ? r[0] : null; };
+    const amend = (c, r) => tables && tables.cxAmend && c ? tables.cxAmend(c, r) : r;
+    return table('CX_DEEP', Object.keys(reg).map(nm => { const c = code(nm), r = amend(c, reg[nm]);
+      return row(['c:' + q(c)].concat(Object.keys(r).map(k => k + ':' + q(r[k])))); }));
   }};
 
 /* one register, or every ported one, in the table's own shape. have is the
@@ -140,7 +158,7 @@ const EMIT = {
 function emit(canon, which, tables) {
   return PORTED.filter(p => !which || p[0] === which).map(p => {
     if (!canon.registers || canon.registers[p[0]] === undefined) return '/* this canon.json has no register ' + p[0] + ' */';
-    return EMIT[p[0]](canon.registers[p[0]], tables ? tables[p[1]] : null);
+    return EMIT[p[0]](canon.registers[p[0]], tables ? tables[p[1]] : null, canon, tables);
   }).join('\n\n');
 }
 

@@ -89,6 +89,12 @@ const booted = async p => {
   try { await p.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 20000 }); } catch (e) { }
   try { await p.waitForTimeout(500); await p.evaluate(() => { if (typeof OB !== 'undefined' && OB.open && typeof obClose === 'function') obClose(); }); } catch (e) { }
 };
+// The persisted-record assertions need the new app to finish booting.
+const reloadBooted = async page => {
+  await page.reload({ waitUntil: 'commit' });
+  await page.waitForFunction(() => document.documentElement.getAttribute('data-boot') === 'ok', null, { timeout: 30000 });
+  await booted(page);
+};
 /* a read that throws on a build missing what it reads reports as a failed
    check rather than ending the run, so a known bad build names every miss */
 const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg); } catch (e) { return { err: String(e.message).split('\n')[0] }; } };
@@ -190,7 +196,7 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       ok(listAsked.length > 0 && listAsked.every(b => onScreen.has(b.text)), '4. and every list line the voice was handed was one of them, ' + listAsked.length + ' handed');
       ok(r.fresh === s6.plan && r.unique.length - s6.u0 === s6.plan, '7. the run opened its whole plan on the record: ' + J({ plan: s6.plan, added: r.fresh }));
       await ev(page, () => { var b = document.getElementById('relrest'); if (b) b.click(); var c = document.getElementById('relclose'); if (c) c.click(); });
-      await page.reload({ waitUntil: 'load' }); await booted(page);
+      await reloadBooted(page);
       const back = await ev(page, () => ({ unique: CURP.meter.unique.slice(), vault: relVaultN() }));
       ok(J(back.unique) === J(r.unique) && back.vault === r.vault, '7. and it is still there after a reload: ' + J({ before: [r.unique.length, r.vault], after: [back.unique.length, back.vault] }));
       ok(errs.length === 0, 'no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
@@ -270,10 +276,91 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       const s5 = await ev(page, () => { var r = compute(); return { cq: r.CQ, dq: r.DQ, log: CURP.relhit.log.slice() }; });
       ok(s5.cq === s0.cq && s5.dq === s0.dq, '8. no mark moves CQ or DQ: ' + J({ cq: [s0.cq, s5.cq], dq: [s0.dq, s5.dq] }));
       await ev(page, () => { var c = document.getElementById('relclose'); if (c) c.click(); });
-      await page.reload({ waitUntil: 'load' }); await booted(page);
+      await reloadBooted(page);
       const back = await ev(page, () => ({ hits: relHitCount(CURP).hits, log: CURP.relhit ? CURP.relhit.log : null }));
       ok(back.hits === 1 && J(back.log) === J(s5.log), '8. a reload reads the same one hit and the same log: ' + J({ hits: back.hits, log: back.log && back.log.length, was: s5.log.length }));
       ok(errs.length === 0, '8. no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
+      await ctx.close();
+    }
+
+    /* 9. SR2 AND SR3, PROOFS OF BEHAVIOUR THAT ALREADY EXISTED. Both were built
+       in round IG and nothing failed when either broke.
+       SR2: pills picked in the imprints bank (IMP_PICK) are what the Story's
+       release column runs (stRelModel), so two picks are two rings and both
+       run, and a build that ignored the picks or kept only one would fail
+       here. tests/becoming.js picks two but holds their order only.
+       SR3: #strpace is a typed number. It is clamped to the card's own 0.5 to 2
+       and carried into the run, and a value that is no number falls back to 1.
+       THE ONE LIMIT: the Story's simple layout hides the release column and the
+       bank (#stflow.st-simple .st-colz is display:none, and the bank is in the
+       rail that is shut at this width), so a pointer press has no target here
+       and the pills and the buttons are pressed with .click(), which runs the
+       same handlers a press does. A typed number is set on the field and
+       change is dispatched, which is what typing then leaving the field does. */
+    console.log('\n=== 9. two picks are two rings and both release, and the speed takes a typed number, at ' + W + ' ===');
+    {
+      const { ctx, page, errs } = await open();
+      const s9 = await ev(page, () => {
+        REL_WORD_S = 0.0004; REL_GAP_S = 0.001; REL_HEAD_S = 0; REL_FRAME_S = 0;
+        CURP.ui.voice = false; CURP.ui.tone = false;
+        CHARGES.forEach(function (c) { S.charge[c] = 7; }); pSave();
+        setTab(TAB.STORY); render();
+        Object.keys(IMP_PICK).forEach(function (k) { delete IMP_PICK[k]; });
+        var o = {}, num = function (a, b) { return a - b; };
+        var ids = [].slice.call(document.querySelectorAll('#imp [data-imp]')).map(function (e) { return +e.dataset.imp; })
+          .filter(function (i) { return BY[i] && BY[i].cf; });
+        /* the first and the last pill the bank offers, so the pair is not the heaviest two */
+        o.bank = ids.length; o.picks = ids.length > 1 ? [ids[0], ids[ids.length - 1]].sort(num) : [];
+        var rings = function () { return [].slice.call(document.querySelectorAll('#strel .st-rq')).map(function (e) { return +e.getAttribute('data-rq'); }).sort(num); };
+        o.r0 = rings().length; o.go0 = document.getElementById('strun').disabled;
+        if (o.picks.length < 2) return o;
+        document.querySelector('#imp [data-imp="' + o.picks[0] + '"]').click(); o.r1 = rings().length;
+        document.querySelector('#imp [data-imp="' + o.picks[1] + '"]').click(); o.r2 = rings(); o.go2 = document.getElementById('strun').disabled;
+        o.sel = stRelModel().sel.map(function (n) { return n.i; }).sort(num);
+        var d = document.getElementById('strdose'); d.value = '1'; d.dispatchEvent(new Event('change'));
+        /* SR3, before the run: the default, then typed values. A field of type
+           number that is given text reads back empty, which is what a person
+           typing letters into it leaves. */
+        var f = document.getElementById('strpace');
+        o.pace0 = [f.value, RUN.pace];
+        o.typed = [['1.5'], ['9'], ['0.3'], ['0'], ['abc']].map(function (c) {
+          f.value = c[0]; f.dispatchEvent(new Event('change')); return [c[0], f.value, RUN.pace]; });
+        f.value = '1.5'; f.dispatchEvent(new Event('change'));
+        o.kept = [f.value, RUN.pace, RUN.speed];
+        return o;
+      });
+      ok(s9 && s9.bank >= 2 && s9.picks && s9.picks.length === 2, '9. the imprints bank offers addresses to pick: ' + J({ bank: s9 && s9.bank, picks: s9 && s9.picks }));
+      if (s9 && s9.picks && s9.picks.length === 2) {
+        ok(s9.r0 === 0 && s9.go0 === true, '9. SR2: with nothing picked there is no ring and Release is off: ' + J({ rings: s9.r0, off: s9.go0 }));
+        ok(s9.r1 === 1, '9. SR2: one pick is one ring: ' + J(s9.r1));
+        ok(J(s9.r2) === J(s9.picks) && s9.go2 === false, '9. SR2: two picks are two rings, the two that were picked, and Release is on: ' + J({ rings: s9.r2, picks: s9.picks, off: s9.go2 }));
+        ok(J(s9.sel) === J(s9.picks), '9. SR2: the release column runs exactly those two: ' + J({ sel: s9.sel, picks: s9.picks }));
+        ok(J(s9.pace0) === J(['1', 1]), '9. SR3: the speed reads 1 and the run is at 1 before anything is typed: ' + J(s9.pace0));
+        const want = [['1.5', '1.5', 1.5], ['9', '2', 2], ['0.3', '0.5', 0.5], ['0', '1', 1], ['abc', '1', 1]];
+        want.forEach((w, i) => {
+          const g = s9.typed && s9.typed[i];
+          ok(g && g[1] === w[1] && g[2] === w[2], '9. SR3: typing ' + J(w[0]) + ' leaves the field at ' + w[1] + ' and the run at ' + w[2] + ': ' + J(g));
+        });
+        ok(s9.kept && s9.kept[0] === '1.5' && s9.kept[1] === 1.5 && Math.abs(s9.kept[2] - 2.2 / 1.5) < 1e-9, '9. SR3: 1.5 is kept, with the card\'s own run speed to match: ' + J(s9.kept));
+        /* the press, and the run it opens, to its end */
+        await ev(page, () => { document.getElementById('strun').click(); });
+        await page.waitForFunction(() => RUN.phase === 'run' || RUN.phase === 'done', null, { timeout: 20000 }).catch(() => { });
+        const r9 = await ev(page, () => ({ pick: RUN.pick.map(function (n) { return n.i; }).sort(function (a, b) { return a - b; }),
+          plan: RUN.plan.slice(), pace: RUN.pace, speed: RUN.speed, phase: RUN.phase }));
+        const reach = id => Array.isArray(r9.plan) && r9.plan.some(k => String(k).split(':')[0] === String(id));
+        ok(J(r9.pick) === J(s9.picks), '9. SR2: the run opened on the two picked addresses: ' + J({ pick: r9.pick, picks: s9.picks }));
+        ok(s9.picks.every(reach), '9. SR2: and its plan reaches both of them: ' + J({ plan: (r9.plan || []).length, picks: s9.picks }));
+        ok(r9.pace === 1.5 && Math.abs(r9.speed - 2.2 / 1.5) < 1e-9, '9. SR3: the typed speed is carried into the run: ' + J({ pace: r9.pace, speed: r9.speed }));
+        /* a press that opened no run is not waited on for three minutes: the
+           checks that follow say so at once */
+        if (r9.phase === 'run' || r9.phase === 'done')
+          await page.waitForFunction(() => RUN.phase === 'done', null, { timeout: 180000 }).catch(() => { });
+        const d9 =await ev(page, () => ({ done: RUN.phase === 'done', lost: RUN.studioLost, unique: CURP.meter.unique.slice() }));
+        const opened = id => (d9.unique || []).filter(k => String(k).split(':')[0] === String(id)).length;
+        ok(d9.done && !d9.lost, '9. SR2: the run went to its end: ' + J({ done: d9.done, lost: d9.lost }));
+        ok(s9.picks.every(id => opened(id) > 0), '9. SR2: and both addresses were released, lines opened on the record at each: ' + J(s9.picks.map(id => [id, opened(id)])));
+      }
+      ok(errs.length === 0, '9. no page error' + (errs.length ? ': ' + errs.slice(0, 2).join(' | ') : ''));
       await ctx.close();
     }
   }

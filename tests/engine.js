@@ -966,7 +966,7 @@ g('15e \u00b7 the two nested bags');
  named(withEnt(Object.assign(ent(),{imprints:-1})),'a negative imprint count','.imprints');
  named(withEnt(Object.assign(ent(),{imprints:'three'})),'an imprint count that is not a number','.imprints');
  named(withEnt(Object.assign(ent(),{bands:'root'})),'a bands that is not an object','.bands');
- named(withEnt(Object.assign(ent(),{bands:{spleen:4}})),'a band naming no seat','names no seat');
+ named(withEnt(Object.assign(ent(),{bands:{spleen:4}})),'a band naming no point','names no point');
  named(withEnt(Object.assign(ent(),{bands:{root:'a lot'}})),'a band weight that is not a number','.bands.root');
  named(withEnt(Object.assign(ent(),{secret:'s'})),'an entry carrying a secret','may not carry secret');
  named(withEnt(Object.assign(ent(),{email:'a@b.c'})),'an entry carrying an email','may not carry email');
@@ -1592,6 +1592,80 @@ g('19 \u00b7 energetics, the birth module');
  ok(c.score>=0&&c.score<=100,'and scores agreement in 0..100, got '+c.score);
  ok(JSON.stringify(converge(PEEPS[0],compute()))===JSON.stringify(c),'and is deterministic');
 
+ /* A PERSON'S OWN BIRTH, ROUTED IN. converge took a name and read only the
+    BIRTH table of reference cases, so a birth typed into Intake was read by
+    the side rail and never compared: every Summary caller got null for
+    anybody real. bornAsBirth is the one translation from a profile's
+    who.born, and converge takes the reading it makes. Fictional births only:
+    a timed one from the gazetteer, a date alone, a date alone on a day the
+    sun changed sign, and a day that does not exist. */
+ const {bornAsBirth}=E;
+ const own=born=>{const p=E.blankProfile('Test Person');Object.assign(p.who.born,born);return p;};
+ const ownC=(born,r)=>{const sp=spiritualOf(bornAsBirth(own(born)));return converge('Nobody At All',r||compute(),sp);};
+ reset(5,0,6);
+ const timed={date:'1988-04-12',time:'07:45',place:'Lisbon, PT',zone:'Europe/Lisbon'};
+ const bt=bornAsBirth(own(timed));
+ ok(bt&&bt.d==='1988-04-12'&&bt.t==='07:45'&&bt.p==='Lisbon, PT'&&bt.z==='Europe/Lisbon',
+  'bornAsBirth carries date, time, place and zone into the shape spiritualOf reads: '+JSON.stringify(bt));
+ ok(bornAsBirth(own({date:'1988-04-12',time:'07:45',timeUnknown:true})).t==='',
+  'a time the person said they do not know is no time, whatever the field still holds');
+ ok(bornAsBirth(E.blankProfile('Test Person'))===null&&bornAsBirth(null)===null&&bornAsBirth({})===null,
+  'no date, no profile and no who are all no birth');
+ const oc=ownC(timed);
+ ok(oc!=null&&oc.agree.length+oc.differ.length===4,
+  'a person\'s own timed birth gives a converge reading of four comparisons, got '
+  +(oc?oc.agree.length+oc.differ.length:'null'));
+ ok(oc&&oc.open.length===1&&/^Human Design type/.test(oc.open[0]),
+  'and only the design type is open on it, '+JSON.stringify(oc&&oc.open));
+ ok(JSON.stringify(ownC(timed))===JSON.stringify(oc),'and the own birth reading is deterministic');
+ const od=ownC({date:'1988-04-12'});
+ ok(od!=null&&od.open.indexOf('the ascendant, which needs a birth time')>=0,
+  'a date alone puts the ascendant in open with its reason, '+JSON.stringify(od&&od.open));
+ ok(od&&od.open.some(s=>/^Human Design type, which needs the full bodygraph$/.test(s)),
+  'and the design type, with its reason');
+ /* nothing absent may print as a value or count against the person */
+ const noNull=x=>x&&[].concat(x.agree,x.differ,x.open).every(s=>!/\bnull\b|undefined|NaN/.test(s));
+ ok(noNull(od),'and no line of a date alone reads null, '+JSON.stringify(od&&[od.agree,od.differ]));
+ const cusp=ownC({date:'1988-03-20'});
+ ok(cusp!=null&&cusp.e.sun===null,'a date alone on the day the sun changed sign reads no sun, '+(cusp&&cusp.e.sun));
+ ok(cusp&&cusp.open.indexOf('the birth element, which needs a birth time')>=0
+  &&cusp.open.indexOf('the birth mode, which needs a birth time')>=0,
+  'and the element and the mode go to open with their reason, not to differ, '+JSON.stringify(cusp&&cusp.open));
+ ok(noNull(cusp),'and no line of it reads null, '+JSON.stringify(cusp&&cusp.differ));
+ ok(cusp&&cusp.differ.length+cusp.agree.length===cusp.of&&cusp.of<=2,
+  'and an unread sun is counted for neither side, of '+(cusp&&cusp.of));
+ /* EVERY ONE OF THE FOUR LANDS SOMEWHERE. A date alone never reads a design
+    line, the day is wider than a line, and the line used to drop out of the
+    count without a word. With the field read, element, path, mode and line
+    are each agree, differ or open, and the type and ascendant are extra. */
+ const lands=x=>x.agree.length+x.differ.length
+  +x.open.filter(s=>!/^Human Design type|^the ascendant/.test(s)).length;
+ const unlanded=[['timed',oc],['date alone',od],['sun cusp',cusp]].filter(([,x])=>!x||lands(x)!==4).map(([n])=>n);
+ ok(unlanded.length===0,'every one of the four comparisons lands in agree, differ or open'
+  +(unlanded.length?'  '+unlanded.join(', '):'')+', the date alone opens '+JSON.stringify(od&&od.open));
+ const rOpen=Object.assign({},compute(),{benign:null});
+ const ofld=ownC(timed,rOpen);
+ ok(ofld&&ofld.open.some(s=>/^the direction of your energy, which needs all \d+ laws answered$/.test(s))
+  &&ofld.agree.length+ofld.differ.length===2,
+  'an unfinished intake puts the energy direction in open and scores neither mode nor line, '+JSON.stringify(ofld&&ofld.open));
+ ok(spiritualOf(bornAsBirth(own({date:'1988-02-30'})))===null&&ownC({date:'1988-02-30'})===null,
+  'a date that is not a day gives no reading and no comparison, and does not throw');
+ /* THE EQUIVALENCE. An explicit reading of a reference birth is the name
+    lookup's own result, field for field, on every reference case, and the
+    same birth through a profile's who.born differs only in the record it
+    carries back, where a profile always has a zone and the table may not. */
+ const rr=compute();
+ const eqBad=PEEPS.filter(k=>JSON.stringify(converge(k,rr))!==JSON.stringify(converge('Nobody At All',rr,spiritualOf(BIRTH[k]))));
+ ok(eqBad.length===0,'an explicit reading is identical to the name lookup on every reference case'
+  +(eqBad.length?'  '+eqBad.join(', '):''));
+ const strip=x=>{const y=JSON.parse(JSON.stringify(x));delete y.e.birth;return JSON.stringify(y);};
+ const viaBad=PEEPS.filter(k=>{const b=BIRTH[k];
+  return strip(converge(k,rr))!==strip(ownC({date:b.d,time:b.t||'',place:b.p||'',zone:b.z||''},rr));});
+ ok(viaBad.length===0,'and the same birth typed into a profile reads the same through bornAsBirth'
+  +(viaBad.length?'  '+viaBad.join(', '):''));
+ ok(converge('Nobody At All',rr)===null&&converge('Nobody At All',rr,null)===null,
+  'the name lookup for a name nobody owns stays null, with or without an empty reading');
+
  /* pure functions of date and time, so the same input is the same answer */
  ok(sunSign('1988-04-12').nm===sunSign('1988-04-12').nm,'sun sign is pure');
  ok(lifePath('1988-04-12')===lifePath('1988-04-12'),'life path is pure');
@@ -1926,6 +2000,28 @@ g('19a \u00b7 the roster covers the scale');
  /* the vocabulary claim itself does not need a persona: a band is ten wide */
  ok(E.tierOf(2).nm===E.tierOf(10).nm,'2 and 10 are the same word: '+E.tierOf(2).nm);
  ok(E.tierOf(92).nm===E.tierOf(98).nm,'92 and 98 are the same word: '+E.tierOf(92).nm);
+ /* NERVE STATE, the four marks on the Insight rail's bars, 20 November. The
+    lines are read off NODESTATE_PROPOSED by name, so they are read here the
+    same way and never typed. Each rung's own floor and the percent under it
+    are checked, and every whole percent on the rail reads the rung its own
+    printed figure falls in, the tierOf lesson. */
+ (function(){
+  const NS=E.NERVESTATE, at=nm=>Math.round(E.NODESTATE_PROPOSED.filter(x=>x.nm===nm)[0].at*10);
+  ok(NS.map(s=>s.nm).join('|')==='closed|heavily impaired|moderately impaired|open','nerve state is his four words, heaviest first: '+NS.map(s=>s.nm).join('|'));
+  ok(NS[0].at===at('blocked')&&NS[1].at===at('heavily impaired')&&NS[2].at===at('impaired')&&NS[3].at===0,
+   'nerve state lines are the node state lines, read by name: '+NS.map(s=>s.at).join(','));
+  ok(E.nerveStateOf(0).k==='open'&&E.nerveStateOf(0.04).k==='open','nothing held, and a charge that prints the dash, read open');
+  ok(E.nerveStateOf(0.05).k==='moderate'&&E.nerveStateOf(3.9).k==='moderate','charge a person entered, even under the line at 4, never reads open (BELOW THE LINE)');
+  NS.slice(0,3).forEach(s=>{
+   ok(E.nerveStateOf(s.at/10).k===s.k,s.nm+' starts at its own line, '+s.at+'%');
+   ok(E.nerveStateOf((s.at-1)/10).k!==s.k,s.nm+' does not reach one percent under it, '+(s.at-1)+'%');});
+  let bad=[];
+  for(let p=0;p<=100;p++){const v=p/10, got=E.nerveStateOf(v), want=NS.filter(s=>E.pct('chain',v)>=s.at)[0];
+   if(got!==want)bad.push(p);}
+  ok(!bad.length,'every printed percent reads the rung its own figure falls in, off: '+bad.join(','));
+  ok(E.nerveStateOf(12).k==='closed'&&E.nerveStateOf(-1).k==='open'&&E.nerveStateOf(NaN).k==='open','out of range clamps to the ends, and nothing a number is open');
+  ok(NS.every(s=>s.def&&/%|no charge/.test(s.def)&&s.def.indexOf(s.nm.charAt(0).toUpperCase()+s.nm.slice(1))===0),
+   'every mark unpacks to its own name and the range it covers: '+NS.map(s=>s.def).join(' / '));})();
  /* the ends must be real fields, not empty ones */
  ok(by.Tomas.loaded.length>60,'the floor case is genuinely loaded, got '+by.Tomas.loaded.length);
  ok(by.Wren.loaded.length>0,'and the ceiling case still carries something, got '+by.Wren.loaded.length);
@@ -2265,7 +2361,8 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     Sacrificial Extraction, light is Grace against Lucifer. Lucifer keeps its
     name because his draft of it was rejected, see the next block. */
  ok(MIRROR.some(m=>m.k==='PO'&&m.up==='Discipline'&&m.dn==='Sacrificial Extraction'),'power is Discipline against Sacrificial Extraction');
- ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='False Light'),'light is Grace against False Light');
+ /* Grace against Shadow, 18 November, his words: "Grace against shadow. So use the word shadow." */
+ok(MIRROR.some(m=>m.k==='IL'&&m.up==='Grace'&&m.dn==='Shadow'),'light is Grace against Shadow');
  /* round KE, his words: "Just change illumination to light." The key stays IL. */
  ok(MIRROR.some(m=>m.k==='IL'&&m.q==='Light')&&!MIRROR.some(m=>/Illumination/.test(m.q)),
   'and the Heart axis is called Light, not Illumination');
@@ -2336,7 +2433,7 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
     coherent word, the inverted word. Three inverted words are not here on
     purpose and are asserted unchanged below. The check reads the words off the
     data, so a later edit to one of them is a named diff and not a silent one. */
- {const want={IL:['Grace','False Light'],DE:['Devotion','Compulsive Craving'],OR:['Liberation','Engineered Chaos'],
+ {const want={IL:['Grace','Shadow'],DE:['Devotion','Compulsive Craving'],OR:['Liberation','Engineered Chaos'],
    PO:['Discipline','Sacrificial Extraction'],PE:['Discernment','Fraud'],TR:['Communion','Gatekeeping'],
    CH:['Grounded Fire','Reactivity'],RE:['Transmutation','Vengeance']};
   const bad=MIRROR.filter(m=>!want[m.k]||m.up!==want[m.k][0]||m.dn!==want[m.k][1]).map(m=>m.k+' '+m.up+'/'+m.dn);
@@ -2348,12 +2445,12 @@ g('21 \u00b7 the compass. two cones, eight axes, a descent');
   const pd={FL:'Poisoning',AL:'Coercive Abduction',HO:'Forced Alteration'}, pe={};
   E.PATHS.forEach(p=>{pe[p.k]=p;});
   ok(Object.keys(pd).every(k=>pe[k].dn===pd[k]),'the three researched inversions are Poisoning, Coercive Abduction and Forced Alteration');
-  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='False Light',
+  ok(pe.AW.up==='Discernment'&&pe.AW.dn==='Fraud'&&pe.BO.up==='Grace'&&pe.BO.dn==='Shadow',
    'and the two paths that are axes read twice follow their axes\' words');
   const gov=CI.map(c=>c.by).join('|');
   ok(gov==='Gatekeeping|Judgment|Insatiability|Possessiveness|Reactivity|Vengeance|Violence|Fraud|Satan frozen',
    'the nine governors are behaviour words, and the ninth is not on his list so it is untouched, saw '+gov);
-  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Manipulation|Engineered Chaos|False Light',
+  ok(BLUEPRINT.map(b=>b.nm).join('|')==='Extractive Control|Manipulation|Engineered Chaos|Shadow',
    'the blueprint carries behaviour words for all four, Baal, Set and Lucifer included, as his 17 November words on the Compass still showing names ruled');
   /* THE THREE FIGURES WITH NO ENTRY ARE NOT INVENTED. Nimrod, the Harpies and
      Ephialtes are on his table and in no table here. A name is only added when
@@ -3361,6 +3458,20 @@ g('26 \u00b7 numerology, in full');
  NUM_DEBT.forEach(function(d){ok(numReduce(d)===numReduce(d),'debt '+d+' is a real total');});
  ok(numerology('Aa','1980-01-01').debt===null,'a total that is not one of the four is not a debt');
 
+ /* AND A DEBT PASSED THROUGH IS STILL A DEBT. Only the unreduced total was
+    compared, so a name totalling 85 reduced 85 to 13 to 4 and reported none.
+    Z is 8 and E is 5, so these totals are fixed by the letters and do not
+    lean on any roster. 63 is the control: it goes straight to 9 and touches
+    none of the four, so a fix that reported debt everywhere fails it. */
+ const d85=numerology('Zzzzzzzzzz E','1980-01-01');
+ ok(d85.expressionTotal===85,'the debt probe totals 85, so the check below tests what it says');
+ ok(d85.debt===13,'85 passes through 13 on the way to 4, and reports debt 13');
+ const d63=numerology('Zzzzzzz G','1980-01-01');
+ ok(d63.expressionTotal===63,'the control totals 63');
+ ok(d63.debt===null,'63 reduces straight to 9 and reports no debt');
+ ok(numerology('Zzzzzzz Fe','1980-01-01').debt===13,
+  'a part that halts on the master 11 does not hide the whole name passing 67 to 13');
+
  /* PURE. Same name in, same numbers out, and nothing read from shared state. */
  const a1=numerology('Diane Elizabeth Halloran','1980-11-02');
  S.doms=[5]; buildSoul(); compute();
@@ -3705,6 +3816,82 @@ console.log('\n27 · the ladder');
   reset();}
 }
 
+console.log('\n27e · the reminder speaks after a missed day, and a sync keeps the higher number');
+{
+ /* accounts-push and accounts-badges, 19 November. Named off E so the block
+    stands alone. NOW is a fixed afternoon, so a run at midnight cannot move
+    a day under the gate. */
+ const {blankProfile,remindDue,ladderKeep,ladderRead,ledgerRead,streakRead,pracDay}=E;
+ const NOW=Date.parse('2026-11-19T15:00:00Z'), TODAY=pracDay(NOW);
+ const day=n=>new Date(NOW-n*86400000).toISOString();
+ const mk=(days,extra)=>{const p=blankProfile('K');
+  days.forEach(d=>p.rituals.push(Object.assign({t:day(d),min:10,steps:[]},extra||{})));return p;};
+
+ /* THE REMINDER. A missed day is a whole day ended with nothing marked done. */
+ ok(remindDue(blankProfile('K'),NOW,null)===null,
+  'a person who has never marked a ritual done is not reminded');
+ ok(remindDue(mk([0]),NOW,null)===null,'a ritual done today is not reminded');
+ ok(remindDue(mk([1]),NOW,null)===null,
+  'a ritual done yesterday is not reminded, because today is not over');
+ const due=remindDue(mk([2,3]),NOW,null);
+ ok(due&&due.gap===2&&due.last===TODAY-2&&due.today===TODAY,
+  'two days since the last ritual done is a missed day, got '+JSON.stringify(due));
+ ok(remindDue(mk([2]),NOW,TODAY)===null,'and it speaks once a day, not on every check');
+ ok(remindDue(mk([2]),NOW,TODAY-1)!==null,'but yesterday\'s showing does not silence today');
+ ok(remindDue(mk([0],{done:false}),NOW,null)===null,
+  'a ritual started and never marked done is not a day practised, so nothing was missed');
+ ok(remindDue(mk([5,0],{done:false}),NOW,null)===null,
+  'and only set-not-done entries still means no practice to miss');
+
+ /* ALWAYS KEEP THE HIGHER NUMBER. The laptop has thirty days and twelve
+    addresses; the phone synced long ago, has two days and one address, and
+    a newer stamp. */
+ const laptop=mk(Array.from({length:30},(_,i)=>i+3));
+ laptop.meter.unique=Array.from({length:12},(_,i)=>'n'+i+':L:1'); laptop.meter.lines=600;
+ const phone=mk([0,1]); phone.meter.unique=['n0:L:1','n99:R:2']; phone.meter.lines=40;
+ phone.updated=new Date(NOW).toISOString();
+ const lapTxt=JSON.stringify(laptop), phTxt=JSON.stringify(phone);
+ /* known bad first: taking the phone whole, which is what authProfileSync
+    did, does cost the laptop its marks, so the test below can fail */
+ const hadK=ladderRead(laptop,NOW).earned.map(m=>m.k);
+ const wholeK=ladderRead(phone,NOW).earned.map(m=>m.k);
+ ok(hadK.includes('month')&&hadK.includes('ten')&&!wholeK.includes('month')&&!wholeK.includes('ten'),
+  'known bad: adopting the newer record whole loses Thirty days and Ten addresses, had '
+  +JSON.stringify(hadK)+', whole '+JSON.stringify(wholeK));
+ const r=ladderKeep(laptop,phone,NOW), keptK=ladderRead(r.kept,NOW).earned.map(m=>m.k);
+ ok(r.lost.length===0,'nothing the laptop earned is lost, got '+JSON.stringify(r.lost));
+ ok(hadK.every(k=>keptK.includes(k)),'every mark the laptop held is held after, '+JSON.stringify(keptK));
+ ok(streakRead(r.kept,NOW).days===32&&r.kept.meter.unique.length===13&&r.kept.meter.lines===600,
+  'the days, the ground and the lines are the union and the larger, got '
+  +streakRead(r.kept,NOW).days+' days, '+r.kept.meter.unique.length+' keys, '+r.kept.meter.lines+' lines');
+ ok(r.kept.updated===phone.updated,'and the rest of the record is the incoming one, untouched');
+ ok(JSON.stringify(laptop)===lapTxt&&JSON.stringify(phone)===phTxt,'and neither side is changed');
+ /* done is the higher number for one entry */
+ {const a=mk([4]), b=mk([4],{done:false});
+  const k=ladderKeep(a,b,NOW).kept;
+  ok(k.rituals.length===1&&k.rituals[0].done!==false,
+   'one entry marked done on one side and not the other is kept done, got '+JSON.stringify(k.rituals));}
+ /* a mark the merge cannot carry is held and named, never silently dropped */
+ {const a=mk([2]); a.story.entries.push({t:day(2),text:'x',imprints:[],bands:[]});
+  const k=ladderKeep(a,mk([1]),NOW);
+  ok(k.lost.length===1&&k.lost[0]==='told',
+   'a story the incoming record lacks is reported lost by key, not erased, got '+JSON.stringify(k.lost));}
+ /* the property, swept: a lower incoming value never overwrites a higher one */
+ let s=7; const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+ let worse=0, n=0;
+ for(let i=0;i<300;i++){
+  const pick=()=>{const ds=[]; for(let j=0,m=Math.floor(rnd()*40);j<m;j++)ds.push(Math.floor(rnd()*120));
+   const p=mk(ds); p.rituals.forEach(x=>{if(rnd()<0.2)x.done=false; x.min=5*(1+Math.floor(rnd()*4));});
+   p.meter.unique=Array.from({length:Math.floor(rnd()*60)},()=>'n'+Math.floor(rnd()*108)+':L:'+Math.floor(rnd()*5));
+   p.meter.lines=Math.floor(rnd()*900); return p;};
+  const a=pick(), b=pick(), k=ladderKeep(a,b,NOW).kept;
+  const la=ledgerRead(a,NOW), lb=ledgerRead(b,NOW), lk=ledgerRead(k,NOW);
+  const sa=streakRead(a,NOW), sb=streakRead(b,NOW), sk=streakRead(k,NOW);
+  ['minutes','done','ground','lines'].forEach(f=>{n++; if(lk[f]<Math.max(la[f],lb[f]))worse++;});
+  ['days','best'].forEach(f=>{n++; if(sk[f]<Math.max(sa[f],sb[f]))worse++;});}
+ ok(n===1800&&worse===0,'across 300 random pairs no count falls below the higher side, '+worse+' of '+n+' fell');
+}
+
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
 {
  let mem={};
@@ -3868,6 +4055,28 @@ console.log('\n28 · no title is a truncation');
  const byc=c=>(E.HARM.filter(x=>x.c===c)[0]||{}).t;
  ok(byc('E06')==='Inspired Action','E06 is Inspired Action in full');
  ok(byc('E63')==='Disgust · Acceptance','E63 names the pole in full');
+ /* THE FILM MAP, 21 November. Every film sits on a nature law that exists,
+    the film's number is the folder's (7 and 8 run the other way from the
+    codes, BOOK-ERRATA.md 14), and each names a Drive file by id. Ten, read
+    off the folder listing; this names the set so a row dropped or added is a
+    named change. */
+ {const F=E.HARM_FILM, ks=Object.keys(F);
+  ok(ks.join(',')==='E01,E02,E03,E04,E05,E06,E07,E08,E09,E10','the films sit on E01 to E10: '+ks.join(','));
+  ok(ks.every(k=>(E.HARM.find(x=>x.c===k)||{}).a==='nature'),'and every one is a law of nature');
+  ok(ks.every(k=>/^[A-Za-z0-9_-]{25,}$/.test(F[k].id)&&/\.mp4$/.test(F[k].file)&&F[k].file.indexOf(F[k].n+' ')===0),
+   'and each names a Drive file id and an mp4 whose title starts with its own number');
+  ok(F.E07.n===8&&F.E08.n===7,'Transmutation is film 8 and Cause and Effect film 7, kept by code');}
+ /* A STRAY SPACE INSIDE A NAME, 21 November. E75 read "Meta- Awareness", a
+    line break from the book's layout kept as a space, and the table of
+    universal laws (ui/kbtable.js) prints every name on a tile of its own. */
+ ok(E.HARM.every(x=>!/\S- \S/.test(x.t)),'no universal law name carries a space after a hyphen');
+ ok(byc('E75')==='Meta-Awareness','E75 is Meta-Awareness, one word');
+ /* THE THREE THE BOOK HAS NOT CONFIRMED. The table draws a tile dashed and
+    says "Not yet confirmed in the book" off its own text, the words "pending
+    confirmation", never off a list of codes. So the list is held here: the
+    day kb.js confirms one and drops the words, this names which. */
+ const pend=E.HARM.filter(x=>/pending confirmation/i.test(x.d||'')).map(x=>x.c).join(',');
+ ok(pend==='E65,E67,E68','the unconfirmed universal laws are E65, E67 and E68: '+pend);
 }
 
 console.log('\n29 · every archetype is seated');
@@ -3972,6 +4181,40 @@ console.log('\n30 · the outbox, and what may never leave the device');
  ok(f.state==='retry'&&f.n===1,'a host that refuses leaves the entry in the queue');
  ok(E.obCount()===1,'so nothing a person wrote is ever dropped on a failed send');
  E.bindSend(null);
+
+ /* A KEY THAT IS NOT A LIST. Measured 18 November on the old obStore: {}, 7,
+    true and null made Send throw a TypeError and queue nothing, a string made
+    it answer queued and write "abc[object Object]", and bytes that did not
+    parse were written over in silence. Each must read as an empty queue, be
+    copied aside verbatim before anything writes, and leave Send working. */
+ for(const bad of ['{}','7','true','null','"abc"','{"0":{"kind":"comment","body":"x"}}','{not json']){
+  mem={}; mem[E.OBKEY]=bad;
+  let c, q, threw=null;
+  try{ c=E.obCount(); q=E.obQueue(e()); }catch(x){ threw=x.message; }
+  ok(!threw,'an outbox key holding '+bad+' does not throw'+(threw?', '+threw:''));
+  ok(c===0,'and reads as an empty queue, '+c);
+  const aside=Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0);
+  ok(aside.length===1&&mem[aside[0]]===bad,'and its bytes are kept verbatim under a key of their own, '+JSON.stringify(aside));
+  ok(q&&q.ok&&q.queued===1&&Array.isArray(JSON.parse(mem[E.OBKEY]))&&E.obCount()===1,
+   'and a real Send after it is queued as the only entry, '+JSON.stringify(q)+' '+mem[E.OBKEY]);
+  try{ E.obCount(); }catch(x){}
+  ok(Object.keys(mem).filter(k=>k.indexOf(E.OBKEY+'.unreadable.')===0).length===1,
+   'and a later read does not copy anything aside again');
+  E.bindSend(()=>true);
+  let s; try{ s=E.obDrain(); }catch(x){ s={threw:x.message}; }
+  ok(s.state==='sent'&&s.n===1&&E.obCount()===0,'and it sends, '+JSON.stringify(s));
+  E.bindSend(null);}
+
+ /* AND IF THE COPY CANNOT LAND, NOTHING IS WRITTEN OVER THE ONLY ONE. */
+ mem={}; mem[E.OBKEY]='{"old":"format"}';
+ E.bindStore(k=>mem[k]===undefined?null:mem[k],
+  (k,v)=>{ if(k!==E.OBKEY) throw new Error('QuotaExceeded'); mem[k]=String(v); });
+ let full;
+ try{ full=E.obQueue(e()); }catch(x){ full={threw:x.message}; }
+ ok(full&&full.ok===false&&/could not be read or copied/.test(full.why||'')&&mem[E.OBKEY]==='{"old":"format"}',
+  'with nowhere to copy the bytes, Send refuses by name and the old bytes stay, '+JSON.stringify(full));
+ E.bindStore(k=>mem[k]===undefined?null:mem[k], (k,v)=>{mem[k]=String(v);});
+ mem={}; mem[E.OBKEY]='[]';
 }
 
 g('31 · the lean, two channels and the frame that gates one of them');
@@ -4099,6 +4342,29 @@ g('31 · the lean, two channels and the frame that gates one of them');
   ok(e.self>=2,'a negator does not reach past a full stop, got self '+e.self);
   const f=scan('he did not hit me');
   ok(f.other===0,'and it voids a frame marker too, got other '+f.other);
+  /* THE CONTRACTED NEGATOR AS A PERSON TYPES IT, SZA6 reopened 18 November.
+     The straight apostrophe was already covered; the curly one a phone or a
+     Mac types, and the spelling with no mark at all, were not, and both
+     INVERTED the reading on main at 72a28de: "it wasn't my fault" read
+     accountability taken and "he didn't hit me" read harm confirmed. The
+     controls go first, so a scanner that reads nothing at all cannot pass
+     the denials by accident. */
+  ok(scan('He hit me.').other===1&&scan('It was my fault.').acc===1,
+   'the controls read: a report of harm and an admission of fault');
+  [['It wasn’t my fault.','curly'],['It wasnt my fault.','no mark'],
+   ["It wasn't my fault.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.acc===0,'a denial of fault, '+how+' apostrophe, is not accountability taken, got acc '+r.acc);});
+  [['He didn’t hit me.','curly'],['He didnt hit me.','no mark'],
+   ["He didn't hit me.",'straight']].forEach(([t,how])=>{
+   const r=scan(t);
+   ok(r.other===0,'a denial of harm, '+how+' apostrophe, is not harm confirmed, got other '+r.other);});
+  ['He doesnt hit me.','He can’t hit me.','He cant hit me.','He won’t hit me.',
+   'He wont hit me.','He couldnt hit me.','He wouldnt hit me.'
+  ].forEach(t=>{const r=scan(t);
+   ok(r.other===0,JSON.stringify(t)+' voids the harm marker, got other '+r.other);});
+  ['It isnt my fault.','It isn’t my fault.'].forEach(t=>{const r=scan(t);
+   ok(r.acc===0,JSON.stringify(t)+' voids the admission, got acc '+r.acc);});
  }
 
  /* ---- defect 4. the frame gate, which is the whole design ---- */
@@ -4929,14 +5195,31 @@ g('33 · the sniffer contract, and the four guards that are testable');
   ok(Object.keys(SPEC_POLE).length===9,'the spec pole table covers all nine axes');
   ok(CHARGES.every(c=>SPEC_POLE[c]&&SPEC_POLE[c].pole&&SPEC_POLE[c].addr),
    'and every axis has both an address and a replacement state');
+  /* RULED, 21 November. This block asserted the disagreement (Fear offered
+     Safety by the spec and Trust by CHILD, and Joy at Apathy in one table and
+     at Sad in the other) because it was the reason it had to be ruled. He
+     ruled it the book's way, and the spec already carried the book's words,
+     so the gate now holds the two tables to agreeing on every axis and the
+     sniffer to saying nothing differs. */
   const r=sniffStory('i am afraid');
   const o=r.offer[0];
-  ok(o.poleDiffers&&o.poleDiffers.spec==='Safety / Ground'&&o.poleDiffers.child==='Trust',
-   'and where it disagrees with CHILD the output SAYS so rather than hiding it');
-  /* the collision, asserted, because it is the reason it must be ruled */
-  const apathy=SPEC_POLE.Apathy.pole, sadChild=CHILD.find(c=>c.nm==='Sad').opp;
-  ok(apathy.indexOf(sadChild)>=0,
-   'the spec offers '+sadChild+' at Apathy while CHILD offers it at Sad, which is one word at two addresses');
+  ok(o&&o.axis==='Fear'&&!o.poleDiffers,'the sniffer offers Fear and no longer reports a pole that differs from CHILD');
+  const off=CHILD.filter(c=>SPEC_POLE[c.nm].pole.toLowerCase().indexOf(c.opp.toLowerCase())<0).map(c=>c.nm);
+  ok(off.length===0,'every CHILD opposite is inside its spec pole: '+(off.join(',')||'none differ'));
+  const oppOf=n=>CHILD.find(c=>c.nm===n).opp;
+  ok(oppOf('Fear')==='Safety'&&oppOf('Anger')==='Calm'&&oppOf('Apathy')==='Joy'&&oppOf('Sad')==='Happy',
+   'the four opposites are the book\'s: Safety, Calm, Joy, Happy');
+  ok(new Set(CHILD.map(c=>c.opp)).size===CHILD.length,'and no opposite is shared by two axes');
+  /* THE THREE THAT CARRY NAMED FORMS. Each has one wanted and one unwanted
+     form, each named and each with a line, and the valence word every form
+     carries is defined, because a label never stands alone. */
+  const subs=CHILD.filter(c=>c.sub).map(c=>c.nm).join(',');
+  ok(subs==='Shock,Surprise,Anticipation','the rows with named forms are Shock, Surprise and Anticipation: '+subs);
+  ok(CHILD.filter(c=>c.sub).every(c=>c.sub.length===2&&c.sub.some(f=>f.val==='wanted')&&c.sub.some(f=>f.val==='unwanted')
+   &&c.sub.every(f=>f.nm&&f.d&&!/\u2014/.test(f.d)&&E.CHILD_VAL[f.val])),
+   'each carries one wanted and one unwanted form, named, with a line, and its valence defined');
+  const ant=CHILD.find(c=>c.nm==='Anticipation').sub.map(f=>f.nm+':'+f.val).join(',');
+  ok(ant==='Excitement:wanted,Anxious:unwanted','Anticipation is Excitement and Anxious, his words: '+ant);
  }
  /* ---- AND THE SNIFFER IS STILL THE SNIFFER ---- */
  {
@@ -6133,6 +6416,28 @@ g('39 · the sentence is read once, and the marks land on the letters');
   if(c!==' '&&c!==r)wrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
  ok(wrong.length===0,'and each one points at the character it came from, '
   +wrong.length+' do not'+(wrong[0]?': '+wrong[0]:''));
+ /* THE TURKISH CAPITAL I, SZA5, which shipped its fix on 13 November with no
+    row here. U+0130 lower cases to two characters, and before the fold every
+    map entry after it pointed one character short while the copy and the map
+    stayed the same length, so the length row above passes on the broken
+    build and cannot be the guard. The map row and the highlight row are the
+    guard, and both were measured red with the fold taken out. The reading
+    row stays green on that broken build, because hits are found on the copy
+    and only their raw offsets were wrong, so it holds the contract and is
+    not the proof. */
+ const trRaw='İstanbul, İzmir. I am not sad. I am furious and shaking.';
+ const trNm=normMap(trRaw), trWrong=[];
+ for(let i=1;i<trNm.s.length-1;i++){
+  const c=trNm.s.charAt(i), r=trRaw.charAt(trNm.map[i]);
+  if(c!==' '&&!(c===r.toLowerCase()||(r==='İ'&&c==='i')))trWrong.push(i+': '+JSON.stringify(c)+' points at '+JSON.stringify(r));}
+ ok(trNm.s.length===trNm.map.length&&trNm.map.every(i=>i>=0&&i<=trRaw.length)&&trWrong.length===0,
+  'a dotted capital I keeps every later map entry on its own character, '+trWrong.length+' do not'+(trWrong[0]?': '+trWrong[0]:''));
+ const trPlain=trRaw.replace(/İ/g,'I');
+ ok(JSON.stringify(parseStory(trRaw).bands)===JSON.stringify(parseStory(trPlain).bands)&&parseStory(trRaw).bands.solar>0,
+  'and the charge after it reads what the same story with a plain I reads: '+JSON.stringify(parseStory(trRaw).bands));
+ const trMarks=marksOf(trRaw,parseStory(trRaw)).map(m=>trRaw.slice(m.s,m.e).toLowerCase());
+ ok(trMarks.indexOf('furious')>=0&&trMarks.indexOf('shaking')>=0,
+  'and its highlights land on the words, not one character short: '+JSON.stringify(trMarks));
  /* THE ONE STRING. scanStory reads normMap's output and nothing else, so a hit
     offset slices that hit's own text straight back out of it. This is the row
     that would catch the two copies parting by one. */
@@ -7004,11 +7309,17 @@ g('J14 · the starter recipe for each teacher');
   /* the master list prints the word and keeps the person as its key, so no
      master is shown by his own name and every one reads the pole he stands on */
   ok(E.MASTERS.every(x=>x.word&&x.word!==x.nm)&&E.MASTERS.filter(x=>x.nm==='Krishna')[0].word==='Free Flow'
-   &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clear Conduction',
+   &&E.MASTERS.filter(x=>x.nm==='Jesus')[0].word==='Grace'&&E.MASTERS.filter(x=>x.nm==='Akhenaten')[0].word==='Clarity',
    'every master prints the word of the pole he stands on, and keeps his name only as a key');
   ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
-  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
-   'each pole on no axis carries both marks, its words, and the source its opposite is to be checked against');
+  /* round 18 November: his words, "do your deep dive 4 times, create your
+     records for your 3-path stories." The three were from:'proposed', a
+     document's own guess with a text named to check it against; each is
+     now read off that text (the comment above HOME_POLES in this same file
+     carries the reading) and promoted to from:'research', the same mark
+     PATHS carries for Kaliya, Ravana and Shu and Hu. */
+  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='research'&&/[A-Za-z]/.test(p.src)),
+   'each pole on no axis carries both marks, its words, and a researched source its opposite is checked against');
   ok(HOME_POLES.every(p=>p.home===null||BANDS.indexOf(p.home)>=0),'a home seat is a seat this product measures');
   ok(HOME_POLES.every(p=>compassPoleOf(p.k)===p),'compassPoleOf finds each of the three by key');
   ok(compassPoleOf('TU').ic===E.SI.filter(l=>l.nm==='Truth')[0].ic&&compassPoleOf('NA').ic===E.SI.filter(l=>l.nm==='Nature')[0].ic,
@@ -7702,7 +8013,7 @@ g('OB6 · 20.H5, what Source AI asked is kept with the entry, as a kind and a se
  refuse('again','.asked is not a list','a record that is not a list');
  refuse([{k:'again',seat:'solar',a:'moved',q:'Why there?'}],'may not carry q','a row carrying the question\'s words');
  refuse([{k:'pity',seat:'solar',a:'moved'}],'is not a question kind','an unknown kind');
- refuse([{k:'again',seat:'spleen',a:'moved'}],'names no seat','an unknown seat');
+ refuse([{k:'again',seat:'spleen',a:'moved'}],'names no point','an unknown seat');
  refuse([{k:'again',seat:'solar',a:'answered'}],'is not an outcome','an outcome the page cannot see');
  refuse(Array(srcAskedMax()+1).fill({k:'again',seat:'solar',a:'moved'}),'more than the','a record longer than every kind at every seat');
 }
@@ -7867,7 +8178,7 @@ g('SK1 · what the person answered in the Journal is kept on the entry, a seat a
   ok(!x.ok&&(x.errs||[]).join(' ').indexOf(frag)>=0,what+' is refused by name: '+(x.errs||[]).join(' ').slice(0,110));};
  refuse({seat:a,v:'no'},'.verdicts is not a list','a record that is not a list');
  refuse(['no'],'.verdicts[0] is not an object','a row that is not an object');
- refuse([{seat:'spleen',v:'no'}],'names no seat','an unknown seat');
+ refuse([{seat:'spleen',v:'no'}],'names no point','an unknown seat');
  refuse([{seat:a,v:'maybe'}],'is not an answer','an answer the ledger does not take');
  refuse([{seat:a,v:'no'},{seat:a,v:'yes'}],'repeats '+a,'a seat twice, which the writer cannot produce');
  refuse([{seat:a,v:'no',text:'x'}],'may not carry text','a key nobody declared');
@@ -8260,7 +8571,10 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
    ok(none.state==='none'&&none.got===0&&none.left===b.rows.length&&ixSay(b.id,none).head==='',b.id+': nothing answered says nothing');
    ixSet(p,b.id,b.rows[0].k,5);
    const part=ixRead(p,b.id);
-   ok(part.state==='part'&&part.got===1&&part.left===b.rows.length-1&&ixSay(b.id,part).head===(b.rows.length-1)+' of '+b.rows.length+' questions left'
+   /* NO FRACTIONS, 18 November: ixSay's part-state head reads a percent
+      answered now, not a count against a total (NO-FRACTIONS-AUDIT.md,
+      finding P09). */
+   ok(part.state==='part'&&part.got===1&&part.left===b.rows.length-1&&ixSay(b.id,part).head===E.fmtPct('portion',1/b.rows.length)+' answered'
     &&part.lead.length===0,b.id+': part answered names no leader and says what is left');
    b.rows.forEach(r=>ixSet(p,b.id,r.k,5));
    const lvl=ixRead(p,b.id);
@@ -8305,7 +8619,9 @@ g('PP1 · the archetype, emotional axis and action axis blocks under the 63, rou
   ok(none.state==='none'&&none.got===0&&none.left===IX_ARCH2.length&&ixSay('arch',none).head==='','arch: nothing answered says nothing');
   ixSet(p,'arch',IX_ARCH2[0].k,5);
   const part=ixRead(p,'arch');
-  ok(part.state==='part'&&part.got===1&&part.left===IX_ARCH2.length-1&&ixSay('arch',part).head===(IX_ARCH2.length-1)+' of '+IX_ARCH2.length+' questions left'&&part.lead.length===0,
+  /* NO FRACTIONS, 18 November: same fix as the axes/acts blocks above
+     (NO-FRACTIONS-AUDIT.md, finding P09). */
+  ok(part.state==='part'&&part.got===1&&part.left===IX_ARCH2.length-1&&ixSay('arch',part).head===E.fmtPct('portion',1/IX_ARCH2.length)+' answered'&&part.lead.length===0,
    'arch: part answered names no leader and says what is left');
 
   /* EVERY ROW AT THE MIDPOINT. Every archetype ties at the same tally, so
@@ -8425,6 +8741,38 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  ok(T['plexus']&&/sound healers/.test(T['seat tone'])&&/nothing in your body is measured/.test(T['seat tone'])&&T['codex page'],
   'the plexus, the seat tone and the codex page each have a sentence, and the tone is said as a choice and not a measurement');
  ok(keys.every(k=>!/vritti/i.test(T[k])),'no sentence in the table uses the word vritti');
+ /* THE PSYCHE PANEL'S WORDS AND MARKS, 18 November. The panel took the book's
+    levels, Child emotions and The chain off the Field's left rail and drew the
+    four defences as symbols and the six gates as bars (DECISIONS.md, "The Psyche
+    panel holds Matrix, Superego and Action"). What each of those said is kept
+    here, one sentence apiece, and the page side is tests/psychepanel.js. */
+ {const FOURD=['Justification','Entitlement','Perfectionism','Obsession'];
+  ok(FOURD.every(n=>E.AMPLIFIER.some(a=>a.nm===n)),'the four symbols are four of the amplifiers the engine carries');
+  ok(FOURD.every(n=>typeof E.SUPEREGO_IC[n]==='string'&&/^[MmLlHhVvCcSsAaZz0-9 .,-]+$/.test(E.SUPEREGO_IC[n]))&&new Set(FOURD.map(n=>E.SUPEREGO_IC[n])).size===4
+   &&Object.keys(E.SUPEREGO_IC).length===4,
+   'each of the four defences has its own mark, plain path data, and no mark stands for a defence the Field does not draw');
+  ok(FOURD.every(n=>/^[A-Z][a-z]+ is /.test(T['superego:'+n.toLowerCase()]||'')&&T['superego:'+n.toLowerCase()].indexOf(n)===0),
+   'each defence has a sentence that opens on its own name');
+  /* the figure under a symbol is the charge held at its place, and the sentence says so and nothing larger */
+  ok(FOURD.every(n=>/the charge held at its place in the body|no story reaches its place in the body yet/.test(T['superego:'+n.toLowerCase()])),
+   'every defence sentence says its figure is the charge at its place in the body, never how much of the defence a person shows');
+  /* an amplifier whose address no child emotion reaches says so, read off the address and never typed */
+  ok(FOURD.every(n=>{const a=E.AMPLIFIER.filter(x=>x.nm===n)[0];
+   return /no story reaches/.test(T['superego:'+n.toLowerCase()])===!E.BY[a.i].cf;}),
+   'the defence whose address holds no child emotion says no story reaches it, and no other one does');
+  ok(E.VERP.every(v=>{const t=T['gate:'+v.nm.toLowerCase()]||'';
+   return t.indexOf(v.nm+', a '+(v.side==='higher'?'right':'wrong')+' action,')===0&&/its share of every action read in your stories/.test(t);}),
+   'each of the six gates has a sentence that names it, says which side of the law it stands on and says what its figure is');
+  ok(/^Action is the move/.test(T['rail:action']||'')&&/nine basic feelings/.test(T['child emotions']||'')
+   &&/two above the head and two below the feet/.test(T['field anchor']||''),
+   'the sentences the removed sections carried that a screen still asks for are in the table: action, child emotions, a field anchor');
+  /* THE CHAIN HAS NO ENTRY, on purpose. The first cut wrote one and nothing on
+     any screen asked for it, which the skeptic found: a sentence no surface can
+     reach is dead data that rots. Each tier keeps its own entry. tests/
+     psychepanel.js holds the other half, that every entry the round added has a
+     caller in the page. */
+  ok(!Object.prototype.hasOwnProperty.call(T,'chain')&&['saboteur','complex','hyper complex','super complex'].every(k=>T[k]),
+   'there is no meaning entry for the chain that no screen asks for, and each of its four tiers keeps its own');}
  /* the two anatomy words among the seat spots carry a sentence that names them */
  ok(E.FLOWSEAT.filter(s=>/notch|sternum/i.test(s.seat)).every(s=>T['spot:'+s.k]&&T['spot:'+s.k].toLowerCase().indexOf(s.seat.replace(/^the /,'').toLowerCase())>=0),
   'every anatomy word among the seat spots has a sentence naming it');
@@ -9099,6 +9447,19 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
   .forEach(t=>ok(writer(t),'a common first word is not a name, and the sentence is the writer\'s: '+say(t)));
  ok(E.sniffLaws('Sarah lied to me.').every(l=>l.law!=='Truth'),'and the law reader holds her lie the same way');
  ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
+ /* THE WRITER WITH THE I LEFT OFF, SZA4 reopened 18 November. "Felt furious
+    all day." read nothing, held as a name, while the same sentence lowercase
+    or with "I" read solar. The capitalised form must read exactly what the
+    lowercase one reads, band for band, and a real name in the same shape
+    must still be held, or the fix has only moved the defect. */
+ ["Felt furious all day.","Was furious all day.","Feeling furious all day.","Got furious all day.",
+  "Woke up furious.","Spent the day furious.","Kept crying all day.","Went home furious."]
+  .forEach(t=>{const lo=t.charAt(0).toLowerCase()+t.slice(1);
+   ok(writer(t)&&JSON.stringify(parseStory(t).bands)===JSON.stringify(parseStory(lo).bands),
+    'a subjectless first word is the writer, and reads what its lowercase reads: '+say(t)+' against '+say(lo));});
+ ok(parseStory('Felt furious all day.').bands.solar>0&&JSON.stringify(parseStory('Felt furious all day.').bands)===JSON.stringify(parseStory('I felt furious all day.').bands),
+  'and what "I felt furious" reads, solar: '+say('Felt furious all day.'));
+ ok(held('Sarah felt furious all day.','sarah'),'and a name in front of the same verb is still held: '+say('Sarah felt furious all day.'));
  const ha=parseStory('Her anger scared me.');
  ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
  ok(writer('I saw his face and froze.'),'a possessive after a verb is what was seen, and the freezing is mine: '+say('I saw his face and froze.'));
@@ -9421,7 +9782,7 @@ g('SABOP · the saboteur bar\'s one-word opposite is real, grounded in SAB33 and
     has one real opposite to name and a tight pair would have nowhere real
     to draw its second word from -- the row this task's own brief said to
     leave single rather than invent a partner for. */
- ok(SABCARD.innocent.op==='Trust'&&SABCARD.innocent.op.indexOf(',')<0,
+ ok(SABCARD.innocent.op===CHILD.find(c=>c.nm==='Fear').opp&&SABCARD.innocent.op.indexOf(',')<0,
   'Innocent, fear\'s only row, stays one real word: '+SABCARD.innocent.op);
  /* THE SHARED POLES ARE REAL, NOT A COLLISION LEFT UNRESOLVED. Where two
     rows' own SAB33 charges are the exact same set, the canon gives them
@@ -9727,7 +10088,7 @@ g('RB · every worked example with a row runs rituals, written in the shapes the
  H.__rb=[{k:'box', b:'Spleen', on:null, n:0, back:2, d:'c'}]; let thr2='';
  try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr2=e.message;}
  delete H.__rb;
- ok(/nosuch names no practice/.test(thr)&&/Spleen is not a seat/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
+ ok(/nosuch names no practice/.test(thr)&&/Spleen is not a point/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
  ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
 }
 
@@ -9758,7 +10119,7 @@ g('Every worked example carries avatar pairs, each landing at the seat it is wri
  A.__av=[{b:'Spleen', be:'x', notbe:'y'}]; let thr='';
  try{E.ritexAvatar({nm:'__av'},NOW);}catch(e){thr=e.message;}
  delete A.__av;
- ok(/Spleen is not a seat/.test(thr),'a pair at no seat is refused by name, '+thr);
+ ok(/Spleen is not a point/.test(thr),'a pair at no seat is refused by name, '+thr);
 }
 
 g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, and the purpose writer\'s caps');
@@ -9844,7 +10205,7 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   ['a rating on no archetype',o=>{o.avatar.arch.Nobody=3;},/not an archetype/],
   ['a weight for a pair not on the record',o=>{o.avatar.load0.zz9=2;},/not on this record/],
   ['a weight past ten',o=>{o.avatar.load0.n1=12;},/not nought to ten/],
-  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a seat/],
+  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a point/],
   ['a tag list that is not words',o=>{o.avatar.tags.Throat.add=[3];},/not a list of words/],
   ['two pairs with one id',o=>{o.avatar.pairs[1].id='n1';},/on two pairs/],
   ['a pair id that is not an id',o=>{o.avatar.pairs[1].id='Not An Id!';},/not a pair id/],
@@ -11198,7 +11559,11 @@ console.log('\nGW · the glossary reaches every tooltip it should, task #80');
     long enough to pass, so it now resolves through its own wording like
     any other GLOSS word and is no longer silent everywhere a tooltip or an
     education line would have named it. */
- const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Integrity','Mask','Plexus','Release','Saboteur'];
+ /* NAMED CHANGE, 18 November: Integrity, Mask and Saboteur left OTHER. Each
+    said one thing in the Wisdom school and another in every tooltip, so the
+    GLOSS row now opens on the table's sentence word for word (kb.js) and the
+    word answers through its own first sentence. */
+ const OTHER=['Address','Archetype','Charge','Coherence','CQ','DQ','Fetter','Plexus','Release'];
  const NONE=['Memory'];
  ok(JSON.stringify(other.slice().sort())===JSON.stringify(OTHER.slice().sort()),
   'the GLOSS words whose tooltip is another table\'s wording are the acknowledged list, got '+JSON.stringify(other));
@@ -11397,6 +11762,1281 @@ g('MS25 · no two masks are read off the same seats');
  const pre=MASKS.find(m=>m.nm==='Preteen');
  ok(pre&&key(pre)==='Solar+Throat','Preteen keeps its seats, so no live reading moved');
  ok(!MASKS_READ.some(m=>m.nm==='Professional'),'Professional stays hidden and not calculated, his ruling at NE');
+}
+
+g('GK WHEEL · the gate wheel sits on its published anchor, gate 41 at 2 degrees Aquarius');
+{
+ /* RULED 18 November, "Apply the gene key wheel anchor in SOURCE". The wheel
+    was laid with gate 25 at 0 degrees Aries, so every gate and line the
+    product printed was read 1.75 degrees off, nearly two lines. Nothing in
+    the old gates could see it: they held that the wheel had 64 gates and
+    that a gate came back, never where a gate begins.
+
+    THE TABLE BELOW IS TYPED, ON PURPOSE, AND NEVER REGENERATED FROM THE
+    ENGINE, which would only prove the engine agrees with itself. Each row
+    is a gate and the sign, degree, minute and second its line 1 begins, in
+    the form published tables print it. It was written from the published
+    order laid from gate 41 at 2 00 Aquarius, by a separate script that
+    reads no engine code, and checked against the published boundaries
+    that could be found: gate 25 from 28 15 Pisces to 3 52 Aries, gate 27
+    from 2 00 Taurus, gate 41 just past 2 Aquarius, and the solar plexus
+    run from about 18 52 Aquarius to 28 15 Pisces. On the old wheel every
+    one of those read 1.75 degrees later. */
+ const PUB=[
+ '1 Sco 13 15 00','2 Tau 13 15 00','3 Ari 26 22 30','4 Leo 18 52 30','5 Sag 11 22 30','6 Vir 22 37 30','7 Leo 13 15 00','8 Tau 24 30 00',
+ '9 Sag 5 45 00','10 Sag 28 15 00','11 Sag 22 37 30','12 Gem 22 37 30','13 Aqu 13 15 00','14 Sco 24 30 00','15 Gem 28 15 00','16 Gem 5 45 00',
+ '17 Ari 3 52 30','18 Lib 3 52 30','19 Aqu 7 37 30','20 Gem 0 07 30','21 Ari 9 30 00','22 Pis 17 00 00','23 Tau 18 52 30','24 Tau 7 37 30',
+ '25 Pis 28 15 00','26 Sag 17 00 00','27 Tau 2 00 00','28 Sco 2 00 00','29 Leo 24 30 00','30 Aqu 24 30 00','31 Leo 2 00 00','32 Lib 20 45 00',
+ '33 Leo 7 37 30','34 Sag 0 07 30','35 Gem 11 22 30','36 Pis 22 37 30','37 Pis 5 45 00','38 Cap 9 30 00','39 Can 9 30 00','40 Vir 5 45 00',
+ '41 Aqu 2 00 00','42 Ari 20 45 00','43 Sco 18 52 30','44 Sco 7 37 30','45 Gem 17 00 00','46 Vir 28 15 00','47 Vir 17 00 00','48 Lib 9 30 00',
+ '49 Aqu 18 52 30','50 Lib 26 22 30','51 Ari 15 07 30','52 Can 3 52 30','53 Can 15 07 30','54 Cap 15 07 30','55 Pis 0 07 30','56 Can 26 22 30',
+ '57 Lib 15 07 30','58 Cap 3 52 30','59 Vir 0 07 30','60 Cap 26 22 30','61 Cap 20 45 00','62 Can 20 45 00','63 Pis 11 22 30','64 Vir 11 22 30'];
+ const SG=['Ari','Tau','Gem','Can','Leo','Vir','Lib','Sco','Sag','Cap','Aqu','Pis'];
+ const start={};
+ PUB.forEach(r=>{const [gt,s,d,m,x]=r.split(' ');start[+gt]=SG.indexOf(s)*30+(+d)+(+m)/60+(+x)/3600;});
+ ok(Object.keys(start).length===64&&Object.values(start).every(v=>v>=0&&v<360),
+  'the published table names all 64 gates once, '+Object.keys(start).length+' read');
+ /* the wheel's own starts, from its anchor and its order, against the table */
+ const off=[];
+ GATE_WHEEL.forEach((gt,i)=>{const L=(((E.GATE_START+i*E.GATE_ARC)%360)+360)%360;
+  if(Math.abs(L-start[gt])>1e-9)off.push(gt+' at '+L+' not '+start[gt]);});
+ ok(!off.length,'every gate on the wheel begins where the published table puts it, off: '+off.slice(0,4).join(', '));
+ ok(E.GATE_ANCHOR===302&&E.GATE_START===358.25,
+  'the anchor is gate 41 at 302 and the wheel starts at 358.25, got '+E.GATE_ANCHOR+' and '+E.GATE_START);
+ /* every gate, at its start and a thousandth of a degree either side: line 1
+    of itself after, line 6 of the gate before it on the wheel before */
+ const byLon=Object.keys(start).map(Number).sort((a,b)=>start[a]-start[b]);
+ const edge=[];
+ byLon.forEach((gt,k)=>{const prev=byLon[(k+63)%64], L=start[gt];
+  const at=E.gateOf(L), up=E.gateOf(L+0.001), dn=E.gateOf(L-0.001);
+  if(at.gate!==gt||at.line!==1)edge.push(gt+' at its start read '+at.gate+'.'+at.line);
+  if(up.gate!==gt||up.line!==1)edge.push(gt+' just after read '+up.gate+'.'+up.line);
+  if(dn.gate!==prev||dn.line!==6)edge.push(gt+' just before read '+dn.gate+'.'+dn.line+' not '+prev+'.6');});
+ ok(!edge.length,'all 64 gates turn over at their published degree, '+edge.slice(0,4).join(', '));
+ /* every line of every gate begins where it should, 384 boundaries */
+ const lineBad=[];
+ byLon.forEach(gt=>{for(let k=0;k<6;k++){const L=start[gt]+k*0.9375, r=E.gateOf(L+1e-6), b=E.gateOf(L-1e-6);
+  if(r.gate!==gt||r.line!==k+1)lineBad.push(gt+'.'+(k+1)+' read '+r.gate+'.'+r.line);
+  if(k&&(b.gate!==gt||b.line!==k))lineBad.push(gt+' below line '+(k+1)+' read '+b.gate+'.'+b.line);}});
+ ok(!lineBad.length,'every line of every gate begins at its published sixth, '+lineBad.slice(0,4).join(', '));
+ /* the named points, and the wrap. 0 Aries is 1.75 degrees into gate 25,
+    which is its second line, and that is the single fact the old wheel
+    could never print */
+ const gl=x=>{const r=E.gateOf(x);return r.gate+'.'+r.line;};
+ ok(gl(302)==='41.1'&&gl(301.999)==='60.6','gate 41 begins at 302, after 60.6, got '+gl(302)+' and '+gl(301.999));
+ ok(gl(358.25)==='25.1'&&gl(358.249)==='36.6','gate 25 begins at 358.25, after 36.6, got '+gl(358.25)+' and '+gl(358.249));
+ ok(gl(0)==='25.2','0 degrees Aries is gate 25 line 2, got '+gl(0));
+ ok(gl(360)===gl(0)&&gl(-0.001)===gl(359.999)&&gl(359.999)==='25.2'&&gl(720.5)===gl(0.5)&&gl(-358.25)===gl(1.75),
+  'the wheel wraps at 360 and below 0 with no seam, got '+[gl(360),gl(-0.001),gl(359.999),gl(720.5)].join(' '));
+ const z=E.gateOf(0);
+ ok(z.lon===0&&Math.abs(z.arc-1.75)<1e-12,'gateOf keeps its shape: lon is the longitude and arc how far into the gate, got '+z.lon+' and '+z.arc);
+
+ /* THREE PUBLIC CHARTS, END TO END. Public figures only, never a person
+    using the product. Birth data as published with its zone, turned to
+    universal time here, so the place table is not in the path; each
+    expected gate and line is the chart as published, sun and design sun,
+    and the profile is the two lines. On the old wheel all three misread:
+    Ra 51.3 over 54.5, Obama 33.4 over 24.6, Jobs 55.5 over 9.1.
+      Ra Uru Hu, 9 April 1948, 00:14 EST, Montreal (the Human Design
+       System's own chart archive prints 05:14 GMT). 5/1, Left Angle Cross
+       of the Clarion, 51/57 over 61/62.
+      Barack Obama, 4 August 1961, 19:24, Honolulu, UTC minus 10, rated AA.
+       6/2 Projector, Left Angle Cross of Refinement, 33/19 over 2/1.
+      Steve Jobs, 24 February 1955, 19:15 PST, San Francisco, rated AA, a
+       birth certificate. 6/3 Generator, Left Angle Cross of Spirit, 55/59
+       over 9/16. His sun sits about a hundredth of a degree inside the end
+       of 55, which is why a three minute rectification of his time is
+       published as a different cross, so he is the margin case here and
+       the first two are the ones that cannot pass by luck. */
+ const PUBC=[['Ra Uru Hu',1948,4,9,5+14/60,'51.5','61.1','5/1'],
+  ['Barack Obama',1961,8,5,5+24/60,'33.6','2.2','6/2'],
+  ['Steve Jobs',1955,2,25,3+15/60,'55.6','9.3','6/3']];
+ PUBC.forEach(([nm,y,mo,d,h,ps,ds,pr])=>{
+  const jd=julianDay(y,mo,d,h), dj=designJD(jd), p=E.gateOf(sunLon(jd)), q=E.gateOf(sunLon(dj));
+  const arc=(((sunLon(jd)-sunLon(dj))%360)+360)%360;
+  ok(p.gate+'.'+p.line===ps,nm+': the personality sun is '+ps+' as published, got '+p.gate+'.'+p.line);
+  ok(q.gate+'.'+q.line===ds,nm+': the design sun is '+ds+' as published, got '+q.gate+'.'+q.line);
+  ok(p.line+'/'+q.line===pr,nm+': the profile is '+pr+' as published, got '+p.line+'/'+q.line);
+  ok(Math.abs(arc-88)<0.01,nm+': and the design sun still lands 88 degrees of solar arc before, got '+arc.toFixed(4));});
+}
+
+/* WHOLE, 18 November: "we're going to use the word whole", and "when a ritual
+   is marked done, it should move the slider." One check per acceptance line
+   of whole-math/SPEC.md, A1 to A16. A17 is hostfree.py on the build and is
+   also asserted here on the functions' own text; A18 needs the call sites
+   switched and belongs to the functional gate of the job that switches them.
+   Every check was run against a mutant of engine.js first and seen to fail:
+   a miss that subtracts, a release that does not move it, a ritual counted
+   twice, a press with no day dedupe, a random term, a decimal percent, 0 for
+   unread, an unbounded sum, the self report cap removed, the backfill rule
+   removed, the clock rule removed and the 100 ceiling removed. The review
+   pass of 18 November added the checks four more survived: an entry with no
+   done or done true dropped, a sort in place, reframes counted only beside a
+   release, and keys outside the ground counted. Profiles are fictional and
+   built here from the blank. */
+g('WHOLE · the Avatar\'s one percent, read from acts');
+{
+ const {wholeOf,wholeDays,wholeGround,WHOLE_W,WHOLE_DAYS,WHOLE_R_LINE,WHOLE_MEANS,
+        WHOLE_OWNER_LINES,WHOLE_OWNER_CLOSED,AV_MONTH,LINES_PER_CH,meterKey,
+        blankProfile,validateProfile,pracDays,fmtPct,PCT_DASH,PCT_KIND,wholeSay}=E;
+ /* local midday, so a day key never sits on a midnight in any zone the gate
+    runs in */
+ const NOW=new Date(2026,10,18,12).getTime();
+ const day=i=>new Date(2026,10,18-i,12).toISOString();
+ const did=(i,stamp)=>({t:day(i), done:stamp===undefined?day(i):stamp});
+ const cf=W.filter(n=>n.cf);
+ const rk=(j,ch)=>meterKey(cf[j%cf.length].i,ch,Math.floor(j/cf.length)%LINES_PER_CH);
+ const mk=()=>{const p=blankProfile('whole'); p.meter.unique=[]; p.rituals=[]; return p;};
+ const V=p=>wholeOf(p,NOW).v;
+ const fn=['wholeOf','wholeDays','wholeGround','wholeSay'].map(k=>String(E[k])).join('\n');
+ ok(typeof wholeOf==='function'&&typeof wholeDays==='function'&&typeof wholeGround==='function',
+  'wholeOf, wholeDays and wholeGround are exported');
+ /* the constants are derived where the spec says derived, never retyped */
+ ok(WHOLE_DAYS===AV_MONTH/86400000,'the practised month is the avatar\'s own month, '+WHOLE_DAYS+' days');
+ ok(wholeGround()===cf.length*LINES_PER_CH*2,'the ground is both sides of every carrying address, read at run time, '+wholeGround());
+ near(Math.pow(1-WHOLE_R_LINE,WHOLE_OWNER_LINES/2),1-WHOLE_OWNER_CLOSED,1e-9,
+  'half the owner\'s lines close his share of the distance on the per line rate');
+ near(WHOLE_W.released+WHOLE_W.reframed+WHOLE_W.practised,1,1e-12,'the three weights make one');
+ ok(PCT_KIND.whole&&PCT_KIND.whole.src==='engine/avatar.js','PCT_KIND carries whole, cited to engine/avatar.js');
+ ok(typeof WHOLE_MEANS==='string'&&WHOLE_MEANS.indexOf('Whole')===0&&!/\u2014/.test(WHOLE_MEANS),'the hover is one string, starts with its word, no em dash');
+ /* the two claims the first draft made that were false: the Whole does fall
+    when a press is taken back or a run undone (A12), and the thirty days
+    are days marked done whenever they fall, not the first thirty on the
+    calendar (A2 below counts day 3 and day 4 of any month) */
+ ok(!/only goes up/i.test(WHOLE_MEANS)&&!/first thirty/i.test(WHOLE_MEANS),'the hover claims neither that it only goes up nor a first thirty days: '+WHOLE_MEANS);
+
+ /* A1 */
+ const b=wholeOf(mk(),NOW);
+ ok(b.pct===null&&b.v===null&&b.reason==='unread'&&b.parts===null,'A1 a blank profile is unread, pct null, '+JSON.stringify(b));
+ ok(fmtPct('whole',b.pct)===PCT_DASH,'A1 and prints the dash, never 0%: '+fmtPct('whole',b.pct));
+ /* A2 */
+ const p2=mk(); p2.rituals.push(did(0)); const w2=wholeOf(p2,NOW);
+ ok(w2.v===0.01&&w2.pct===1&&w2.reason==='read','A2 one ritual done on its own day is exactly 0.01 and 1%, '+w2.v+' '+w2.pct);
+ const p2b=mk(); p2b.meter.unique=[rk(0,'Llimit'),rk(1,'Rtruth')]; p2b.rituals=[did(3)];
+ const v2b=V(p2b); p2b.rituals.push(did(0));
+ near(V(p2b)-v2b,0.01,1e-12,'A2 and one more day is one point on a profile that already has acts');
+ /* entries older than the done field, or written done:true, are days.
+    schema.js leaves done unfilled on purpose ("a person's history is not
+    ours to delete"), and every entry above is written by did() with a stamp,
+    so a refactor that dropped either kind ran green until this: a mutant
+    dropping done undefined and one dropping done true both passed */
+ const p2o=mk(); p2o.rituals=[{t:day(3)},{t:day(4),done:true}];
+ ok(V(p2o)===0.02,'A2 an entry with no done and one with done true are two days, '+V(p2o));
+ /* A3 */
+ const p3=mk(); p3.rituals=[did(0),did(0),{t:day(0),done:true}];
+ ok(V(p3)===w2.v,'A3 three presses on one day read as one day, '+V(p3));
+ /* A4 */
+ const p4=mk(); p4.rituals=[did(10)];
+ const v4=V(p4);
+ for(let i=0;i<10;i++)p4.rituals.push({t:day(i),done:false});
+ ok(V(p4)===v4&&wholeOf(p4,NOW).pct===1,'A4 ten missed days after one done still read 1%, '+V(p4));
+ const p4b=mk(); p4b.meter.unique=[rk(2,'Llimit')]; const v4b=V(p4b);
+ p4b.rituals.push({t:day(0),done:false});
+ ok(V(p4b)===v4b,'A4 a miss added to a profile with a release moves nothing');
+ /* A5 and A6, on one profile with the halves level, so the two moves compare */
+ const p5=mk(); p5.meter.unique=[rk(0,'Llimit'),rk(1,'Rlimit'),rk(0,'Ltruth'),rk(1,'Rtruth')]; p5.rituals=[did(2)];
+ const v5=V(p5);
+ const pr=JSON.parse(JSON.stringify(p5)); pr.meter.unique.push(rk(7,'Llimit'));
+ const pt=JSON.parse(JSON.stringify(p5)); pt.meter.unique.push(rk(7,'Ltruth'));
+ ok(V(pr)>v5,'A5 one new release line raises the Whole, '+v5+' to '+V(pr));
+ ok(V(pt)>v5&&V(pt)-v5===V(pr)-v5,'A6 one new reframe line raises it by the same as one release line, '+(V(pt)-v5)+' and '+(V(pr)-v5));
+ /* A7 */
+ const p7=JSON.parse(JSON.stringify(p5)); p7.meter.unique.push(p7.meter.unique[0],p7.meter.unique[2]);
+ p7.meter.relLines=(p7.meter.relLines||0)+40; p7.meter.truthLines=(p7.meter.truthLines||0)+40; p7.meter.lines=(p7.meter.lines||0)+80;
+ ok(V(p7)===v5,'A7 a duplicate key or a rise in the line counts with no new key moves nothing, '+V(p7));
+ /* A8 */
+ const p8=mk(); for(let i=0;i<1000;i++)p8.rituals.push(did(i));
+ const w8=wholeOf(p8,NOW);
+ ok(w8.pct===30&&w8.parts.practised===1&&w8.n.D===1000,'A8 a thousand days marked done with no lines read 30%, '+w8.pct+' '+w8.parts.practised);
+ /* A9 */
+ /* from two days back: yesterday pressed today is inside the one day of
+    slack the spec's own rule allows, and is checked as such below */
+ const p9=mk(); for(let i=2;i<=31;i++)p9.rituals.push(did(i,day(0)));
+ ok(wholeOf(p9,NOW).pct===null&&wholeDays(p9,NOW).length===0,'A9 thirty past days pressed today buy nothing, '+wholeOf(p9,NOW).pct);
+ ok(pracDays(p9,NOW).length===30,'A9 and the streak still counts them by its own rule, '+pracDays(p9,NOW).length);
+ const p9b=mk(); p9b.rituals=[did(1,day(0))];
+ ok(V(p9b)===0.01,'A9 a press stamped the day after still counts, the slack the streak allows');
+ const p9c=mk(); p9c.rituals=[did(2,day(0)),did(2)];
+ ok(V(p9c)===0.01,'A9 a late press does not hide an honest entry for the same day');
+ /* A10 */
+ const p10=mk(); p10.rituals=[did(-5)];
+ ok(wholeOf(p10,NOW).pct===null,'A10 a ritual dated five days ahead adds nothing');
+ const p10b=mk(); p10b.rituals=[did(-1)];
+ ok(V(p10b)===0.01,'A10 and tomorrow, the one day of clock slack, still counts');
+ /* A11 and A14, a seeded walk. Mulberry32, so the walk is the same on every run */
+ let seed=0x5eed1118; const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+ const p11=mk(); let prev=0, fell=[], outside=[];
+ for(let i=0;i<400;i++){
+  const r=rnd(), j=Math.floor(rnd()*cf.length*LINES_PER_CH), d=Math.floor(rnd()*60)-1;
+  if(r<0.3)p11.meter.unique.push(rk(j,rnd()<0.5?'Llimit':'Rlimit'));
+  else if(r<0.6)p11.meter.unique.push(rk(j,rnd()<0.5?'Ltruth':'Rtruth'));
+  else if(r<0.8)p11.rituals.push(did(d));
+  else p11.rituals.push({t:day(d),done:false});
+  const v=V(p11)||0; if(v<prev)fell.push(i+': '+prev+' to '+v); if(v<0||v>1)outside.push(i+': '+v); prev=v;}
+ ok(fell.length===0,'A11 across 400 random acts the Whole never falls, '+JSON.stringify(fell.slice(0,3)));
+ ok(outside.length===0,'A14 and never leaves nought to one, '+JSON.stringify(outside.slice(0,3)));
+ /* A12 */
+ const p12=JSON.parse(JSON.stringify(p5)); const v12=V(p12);
+ p12.rituals.push(did(0)); const up=V(p12);
+ p12.rituals[p12.rituals.length-1].done=false;
+ ok(up>v12&&V(p12)===v12,'A12 a press taken back returns the Whole exactly to before it, '+v12+' '+up+' '+V(p12));
+ p12.rituals.pop();
+ ok(V(p12)===v12,'A12 and so does a ritual deleted');
+ /* A13 */
+ const s1=wholeOf(p11,NOW), s2=wholeOf(p11,NOW);
+ const sh=JSON.parse(JSON.stringify(p11)), shuf=a=>{for(let i=a.length-1;i>0;i--){const k=Math.floor(rnd()*(i+1));[a[i],a[k]]=[a[k],a[i]];}};
+ shuf(sh.meter.unique); shuf(sh.rituals);
+ ok(JSON.stringify(s1)===JSON.stringify(s2)&&wholeOf(sh,NOW).v===s1.v,'A13 the same record read twice and its acts shuffled read the same, '+s1.v);
+ /* on a record never read before, with its keys out of sorted order. The
+    first cut snapshot p11 after the walk had read it four hundred times, so
+    a write that gives the same result every time (a sort in place) had
+    already happened and the snapshot equalled the after state: a mutant
+    sorting meter.unique inside wholeOf passed it */
+ const p13=mk(); p13.meter.unique=[rk(5,'Rtruth'),rk(1,'Llimit'),rk(3,'Ltruth'),rk(0,'Rlimit')];
+ p13.rituals=[did(2),{t:day(0),done:false},did(1)];
+ const before=JSON.stringify(p13);
+ ok(JSON.stringify(p13.meter.unique)!==JSON.stringify(p13.meter.unique.slice().sort()),'A13 the fresh record\'s keys are out of order, so a sort in place would show');
+ wholeOf(p13,NOW);
+ ok(JSON.stringify(p13)===before,'A13 and reading it once writes nothing back to the record');
+ /* A14 */
+ const G=wholeGround(), pa=mk(), all=[];
+ cf.forEach(n=>['Llimit','Rlimit','Ltruth','Rtruth'].forEach(ch=>{for(let l=0;l<LINES_PER_CH;l++)all.push(meterKey(n.i,ch,l));}));
+ pa.meter.unique=all.slice(); for(let i=0;i<WHOLE_DAYS;i++)pa.rituals.push(did(i));
+ const wa=wholeOf(pa,NOW);
+ ok(wa.v===1&&wa.pct===100&&wa.n.R===G&&wa.n.I===G,'A14 every line and a month of days is exactly one and 100%, '+wa.v);
+ const pb=JSON.parse(JSON.stringify(pa)); pb.meter.unique=pb.meter.unique.filter(k=>k!==all[0]);
+ const wb=wholeOf(pb,NOW);
+ ok(wb.v<1&&Math.round(100*wb.v)===100&&wb.pct===99&&fmtPct('whole',wb.pct)==='99%',
+  'A14 one line short rounds to 100 and is printed 99%, never the top it has not reached, '+wb.v+' '+wb.pct);
+ /* the spec's own 0.996: every reframe line and a month of days, and just
+    enough release lines to land the Whole there. The count is found by
+    walking the release keys, so the check does not lean on the formula. */
+ const lim=all.filter(k=>/limit:/.test(k)), pc=JSON.parse(JSON.stringify(pa));
+ const tru=all.filter(k=>/truth:/.test(k));
+ let lo=0, hi=lim.length;
+ while(lo<hi){const m=(lo+hi)>>1; pc.meter.unique=tru.concat(lim.slice(0,m)); if(V(pc)<0.996)lo=m+1; else hi=m;}
+ pc.meter.unique=tru.concat(lim.slice(0,lo)); const wc=wholeOf(pc,NOW);
+ ok(wc.v>=0.996&&wc.v<0.9961&&wc.pct===99&&fmtPct('whole',wc.pct)==='99%','A14 v = 0.996 prints 99%, '+wc.v+' '+wc.pct);
+ /* A15 */
+ const p15=mk(); p15.meter.unique=[rk(3,'Rlimit')]; const w15=wholeOf(p15,NOW);
+ ok(w15.v>0&&w15.v<0.005&&w15.pct===1&&fmtPct('whole',w15.pct)==='1%','A15 one release line prints 1%, not the dash, '+w15.v);
+ /* the profiles that land between whole numbers, since one that lands on a
+    whole number cannot tell a rounded percent from a decimal one: a mutant
+    printing 100*v passed every other check here */
+ const between=[w2,w8,wa,wb,wc,w15,wholeOf(p2b,NOW),wholeOf(p5,NOW),wholeOf(pr,NOW),wholeOf(p11,NOW)];
+ ok(between.some(w=>!Number.isInteger(100*w.v)),'A15 the set below carries a value between two whole percents');
+ ok(between.every(w=>Number.isInteger(w.pct)&&w.pct>=1&&w.pct<=100),'A15 every printed Whole is a whole number 1 to 100, '+between.map(w=>w.pct).join(' '));
+ /* A16 */
+ const old=mk(); delete old.meter.unique; delete old.rituals; delete old.avatar;
+ const vo=validateProfile(JSON.parse(JSON.stringify(old)));
+ ok(vo.ok&&Array.isArray(vo.profile.meter.unique)&&Array.isArray(vo.profile.rituals)&&vo.profile.avatar&&vo.profile.avatar.built===false,
+  'A16 an older record with no lines, no rituals and no avatar loads, filled from the blank, '+JSON.stringify(vo.errs||[]));
+ ok(vo.ok&&wholeOf(vo.profile,NOW).pct===null&&fmtPct('whole',wholeOf(vo.profile,NOW).pct)===PCT_DASH,'A16 and reads the dash');
+ ok(wholeOf(null,NOW).pct===null&&wholeOf({},NOW).pct===null&&wholeOf({meter:{unique:'x'},rituals:[null,5]},NOW).pct===null,
+  'A16 a missing or malformed record reads unread and does not throw');
+ /* reframes alone. Every profile above with a truth key also had a limit
+    key, so a mutant counting reframes only when a release existed passed */
+ const pro=mk(); pro.meter.unique=[rk(0,'Ltruth')]; const wro=wholeOf(pro,NOW);
+ ok(wro.reason==='read'&&wro.parts.reframed>0&&wro.parts.released===0&&wro.pct===1,
+  'a profile with one reframe line and nothing else reads 1%, reframed '+(wro.parts&&wro.parts.reframed));
+ /* A19, a key the meter could not have written counts nothing. validateProfile
+    keeps any short string in meter.unique, so the boundary passes these and
+    the reading must refuse them: the first cut read 70% off the junk alone */
+ const bad=['999:Llimit:0','3:Llimit:'+LINES_PER_CH,'3:Llimit','3:Xtruth:0','8:Llimit:0',
+  '0'+cf[0].i+':Llimit:0',cf[0].i+':Llimit:00',cf[0].i+':limit:0',' '+cf[0].i+':Ltruth:0'];
+ for(let i=0;i<10700;i++)bad.push('x:limit:'+i,'x:truth:'+i);
+ const p19=mk(); p19.meter.unique=bad.slice();
+ const v19=validateProfile(JSON.parse(JSON.stringify(p19)));
+ ok(v19.ok,'A19 the junk keys pass the boundary today, so only the reading stands between them and the figure');
+ const w19=wholeOf(v19.profile,NOW);
+ ok(w19.reason==='unread'&&w19.n.R===0&&w19.n.I===0,'A19 keys outside the ground count nothing, '+JSON.stringify(w19.n));
+ p19.meter.unique.push(rk(0,'Llimit'),rk(0,'Ltruth'));
+ const w19b=wholeOf(p19,NOW);
+ ok(w19b.n.R===1&&w19b.n.I===1,'A19 and two real keys among them count exactly two, '+JSON.stringify(w19b.n));
+ /* wholeSay, the counts behind the figure, so the release half shows on the
+    hover even when it moves the percent by hundredths */
+ ok(wholeSay(b)===null&&wholeSay(null)===null,'wholeSay of an unread Whole is null, never a line of noughts');
+ ok(wholeSay(wholeOf(p5,NOW))==='Released 2 lines, reframed 2 lines, practised 1 day.','wholeSay names every half with an act: '+wholeSay(wholeOf(p5,NOW)));
+ ok(wholeSay(wro)==='Reframed 1 line.'&&wholeSay(w2)==='Practised 1 day.','wholeSay names only the halves with an act: '+wholeSay(wro)+' '+wholeSay(w2));
+ ok(!/\u2014/.test(wholeSay(wholeOf(p11,NOW))),'wholeSay carries no em dash');
+ /* A17, beside hostfree.py on the build */
+ ok(!/\b(document|window|navigator|localStorage|sessionStorage|fetch)\b/.test(fn),'A17 the Whole touches no host');
+}
+
+g('EX18 · every worked example has a birth, and the sky read off it is right');
+/* His words, 18 November, over the Field with Lance 15 open and Root
+   Energetics reading "No birth data": "Got a bug, Emmy. Have one of your agents
+   wire in root energetics for these profiles, and make sure that these
+   profiles are just up to date with all the changes that we made."
+   The roster is read off PEOPLE every time: a count typed here is the defect
+   CLAUDE.md records a dozen times, the loadP(8) that meant the heaviest person
+   in a roster that then grew among them. Each check below was red on c2bf52a2
+   and on its own mutant before it went green. */
+{
+ const {PEOPLE,BIRTH,LAW_WAS,CODE_RETIRED,spiritual,spiritualOf,exampleWho,exampleAge,exampleRecord,
+        validateProfile,blankProfile,gateOf,birthJD,ascendant,zonePoint}=E;
+ const ex=PEOPLE.filter(p=>!p.you);
+ ok(ex.length>0&&ex.length===PEOPLE.length-PEOPLE.filter(p=>p.you).length,'the examples are read off PEOPLE, '+ex.length+' of them');
+ /* the six readings his screenshot named, on every example */
+ const six=sp=>({sun:sp&&sp.sun, moon:sp&&sp.moon, rising:sp&&sp.rising,
+  year:sp&&sp.chinese&&sp.celem, path:sp&&sp.lp, gene:sp&&sp.gk&&sp.gk.gate&&sp.gk.line});
+ const short=[];
+ ex.forEach(p=>{const sp=spiritual(p.nm), o=six(sp);
+  const miss=Object.keys(o).filter(k=>!o[k]);
+  if(!BIRTH[p.nm]||miss.length)short.push(p.nm+(BIRTH[p.nm]?' lacks '+miss.join(' '):' has no birth'));});
+ ok(short.length===0,'every example reads sun, moon, rising, year animal, life path and gene key'+(short.length?'  '+short.join(' | '):''));
+ /* the same sky off the record as off the table: exampleRecord writes
+    exampleWho onto the scratch record, so the Avatar's birth fields and the rail agree */
+ const split=[], bad=[], drift=[];
+ ex.forEach(p=>{
+  const w=exampleWho(p.nm); if(!w){split.push(p.nm+' has no record birth'); return;}
+  /* the record is built through exampleRecord, the one door loadP and the
+     Clients page both use, so a door that drops the birth fails here: it
+     was built by hand in this test before, and the Clients page's own
+     blank went past it with every client's birth missing */
+  const rec=exampleRecord(p);
+  if(JSON.stringify(rec.who.born)!==JSON.stringify(w.born))split.push(p.nm+' record carries no birth');
+  if(p.intakeAnswers&&JSON.stringify(rec.intake.answers)!==JSON.stringify(p.intakeAnswers))split.push(p.nm+' record lost its intake answers');
+  if(p.purpose&&JSON.stringify(rec.purpose)!==JSON.stringify(p.purpose))split.push(p.nm+' record lost its purpose');
+  const bn=rec.who.born, a=spiritualOf({d:bn.date,t:bn.timeUnknown?'':bn.time,p:bn.place,z:bn.zone}), b=spiritual(p.nm);
+  if(JSON.stringify(six(a))!==JSON.stringify(six(b)))split.push(p.nm);
+  const v=validateProfile(JSON.parse(JSON.stringify(rec)));
+  if(!v.ok){bad.push(p.nm+': '+v.errs.join(', ')); return;}
+  const back=validateProfile(JSON.parse(JSON.stringify(v.profile)));
+  const strip=o=>JSON.stringify(Object.assign({},o,{updated:null}));
+  if(!back.ok||strip(back.profile)!==strip(v.profile)||JSON.stringify(back.profile.who)!==JSON.stringify(rec.who))drift.push(p.nm);});
+ ok(split.length===0,'the record\'s birth reads the same six as the table'+(split.length?'  '+split.join(', '):''));
+ ok(bad.length===0,'every example\'s record, birth on it, passes the boundary'+(bad.length?'  '+bad.join(' | '):''));
+ ok(drift.length===0,'and comes back through it identical, birth and name included'+(drift.length?'  '+drift.join(', '):''));
+ /* the four Lances are one person at four depths: one birth, one sky */
+ const lances=ex.filter(p=>/^Lance /.test(p.nm));
+ ok(lances.length>0&&lances.every(p=>BIRTH[p.nm]===BIRTH[lances[0].nm]),'the Lance rows share one birth object');
+ /* no retired word anywhere an example carries. The list is read off the
+    tables that retire words, never typed: CODE_RETIRED and LAW_WAS's old names */
+ const gone=CODE_RETIRED.map(r=>r[2]).concat(Object.keys(LAW_WAS).map(k=>LAW_WAS[k]));
+ const re=new RegExp('\\b('+gone.join('|')+')\\b');
+ const stale=ex.filter(p=>re.test(JSON.stringify([p,E.LAWSET[p.nm],BIRTH[p.nm],(E.RITEX_AV||{})[p.nm],(E.EXDEPTH_HIST||{})[p.nm]]))).map(p=>p.nm+' '+JSON.stringify([p,E.LAWSET[p.nm],(E.RITEX_AV||{})[p.nm],(E.EXDEPTH_HIST||{})[p.nm]]).match(re)[0]);
+ ok(gone.length>0&&stale.length===0,'no example carries a retired name ('+gone.join(', ')+')'+(stale.length?'  '+stale.join(' | '):''));
+ /* the age is read off the birth, so the calendar cannot walk past it */
+ const ag=nm=>exampleAge(PEOPLE.find(p=>p.nm===nm),'2026-11-18');
+ ok(ag('Wren')===67&&ag('Abraham')===75&&ag('Tomas')===58,'ages come off the birth: Wren '+ag('Wren')+', Abraham '+ag('Abraham')+', Tomas '+ag('Tomas'));
+ ok(exampleAge(PEOPLE.find(p=>p.nm==='Tomas'),'2026-11-22')===59,'and Tomas turns 59 on his birthday without anyone typing it');
+ ok(lances.every(p=>exampleAge(p,'2026-11-18')===54),'the Lances read 54, the age he gave them');
+ const ageOff=ex.filter(p=>exampleAge(p,'2026-11-18')!==p.age).map(p=>p.nm+' '+p.age+' vs '+exampleAge(p,'2026-11-18'));
+ ok(ageOff.length===0,'no typed age disagrees with its birth on 18 November'+(ageOff.length?'  '+ageOff.join(', '):''));
+
+ /* THE WHEEL'S ANCHORS, from the mandala and not from this file. Gate 41
+    opens at 2 degrees Aquarius, 302; gate 25 at 28 degrees 15 minutes of
+    Pisces; gate 1 at 13 degrees 15 minutes of Scorpio. */
+ const at=(lon,g,l)=>{const x=gateOf(lon); return x.gate===g&&(l===undefined||x.line===l);};
+ ok(at(302.01,41,1)&&at(301.99,60,6),'gate 41 line 1 opens at 302 degrees, with 60 line 6 just before it');
+ ok(at(358.26,25,1)&&at(223.26,1,1)&&at(0,25,2),'gate 25 opens at 358.25 and gate 1 at 223.25, so 0 Aries is gate 25 line 2');
+ ok(Math.abs(gateOf(10).lon-10)<1e-9,'a gate still reports the longitude it was given');
+ /* a published chart: Steve Jobs, 1955-02-24 19:15 San Francisco, a 6/3
+    profile in every Human Design source. The wheel from 0 Aries printed 5/1. */
+ const jobs=spiritualOf({d:'1955-02-24',t:'19:15',z:'America/Los_Angeles'});
+ ok(jobs&&jobs.gk.gate===55&&jobs.gk.line===6&&jobs.hd.profile==='6/3','Jobs reads gene key 55.6 and profile 6/3, got '
+  +(jobs&&jobs.gk.gate+'.'+jobs.gk.line+' '+jobs.hd.profile));
+ const gk=x=>{const sp=spiritualOf(x); return sp&&sp.gk.gate+'.'+sp.gk.line;};
+ ok(gk({d:'1879-03-14',t:'11:30',z:'Europe/Berlin'})==='36.1'&&gk({d:'1961-07-01',t:'19:45',z:'Europe/London'})==='39.1',
+  'Einstein reads 36.1 and Diana 39.1, as their published charts do');
+
+ /* AGAINST AN INDEPENDENT EPHEMERIS. PyEphem 4.2.1, run 18 November by the
+    birth auditor, at the published instant of each case; the signs are the
+    published charts (Astrotheme, Halloran). Tolerance: sun 0.02 degrees,
+    moon 0.5, ascendant 0.1 at the given latitude and longitude. The instant
+    the engine reads off date, clock and zone is checked to the minute where
+    the zone's history is the one the published chart used. */
+ const REF=[
+  ['Einstein','1879-03-14','11:30','Europe/Berlin',2407422.951435185,48.4011,9.9876,353.5077,254.5262,101.6492,'Pisces','Sagittarius','Cancer',false],
+  ['Jobs','1955-02-24','19:15','America/Los_Angeles',2435163.6354166665,37.7749,-122.4194,335.7481,7.7473,172.2912,'Pisces','Aries','Virgo',true],
+  ['Elvis','1935-01-08','04:35','America/Chicago',2427810.940972222,34.2576,-88.7034,287.2323,332.0243,252.3670,'Capricorn','Pisces','Sagittarius',true],
+  ['Diana','1961-07-01','19:45','Europe/London',2437482.28125,52.8297,0.5133,99.6629,325.0380,258.4199,'Cancer','Aquarius','Sagittarius',true],
+  ['Obama','1961-08-04','19:24','Pacific/Honolulu',2437516.725,21.3069,-157.8583,132.5478,63.3573,318.0506,'Leo','Gemini','Aquarius',true],
+  ['King','1929-01-15','12:00','America/Chicago',2425627.25,33.749,-84.388,295.1345,349.5867,43.8040,'Capricorn','Pisces','Taurus',true],
+  ['Monroe','1926-06-01','09:30','America/Los_Angeles',2424668.2291666665,34.0522,-118.2437,70.4442,319.0984,133.0745,'Gemini','Aquarius','Leo',true],
+  ['Ledger, south','1979-04-04','06:30','Australia/Perth',2443967.4375,-31.9523,115.8613,13.5717,98.2476,12.8670,'Aries','Cancer','Aries',true],
+  ['midnight','2000-01-01','00:00','Europe/Lisbon',2451544.5,38.722,-9.139,279.8593,217.2932,180.6675,null,null,null,true],
+  ['one minute shy of Aries','1990-03-20','21:00','Europe/London',2447971.375,51.5072,-0.1276,359.9867,284.3690,210.2135,'Pisces',null,null,true],
+  ['south, summer time','1995-01-15','10:00','Australia/Sydney',2449732.4583333335,-33.8688,151.2093,294.3164,92.8656,343.2709,null,null,null,true]];
+ const off=[];
+ const dd=(a,b)=>Math.abs(((a-b+540)%360)-180);
+ REF.forEach(r=>{const [id,d,t,z,jd,lat,lon,su,mo,as,ps,pm,pa,inst]=r;
+  if(dd(E.sunLon(jd),su)>0.02)off.push(id+' sun '+E.sunLon(jd).toFixed(3)+' vs '+su);
+  if(dd(E.moonLon(jd),mo)>0.5)off.push(id+' moon '+E.moonLon(jd).toFixed(3)+' vs '+mo);
+  if(dd(ascendant(jd,lat,lon),as)>0.1)off.push(id+' ascendant '+ascendant(jd,lat,lon).toFixed(3)+' vs '+as);
+  const b=birthJD({d,t,z}); if(inst&&Math.abs(b.jd-jd)*1440>1)off.push(id+' instant '+((b.jd-jd)*1440).toFixed(1)+' minutes out');
+  const sp=spiritualOf({d,t,z});
+  if(ps&&sp.sun!==ps)off.push(id+' sun sign '+sp.sun+' vs '+ps);
+  if(pm&&sp.moon!==pm)off.push(id+' moon sign '+sp.moon+' vs '+pm);
+  /* the engine reads Rising at the zone's own point, not the birthplace, and
+     on these cases the sign is the published one all the same */
+  if(pa&&sp.rising!==pa)off.push(id+' rising '+sp.rising+' vs '+pa);});
+ ok(off.length===0,'the engine agrees with the ephemeris and the published charts on every case'+(off.length?'  '+off.join(' | '):''));
+ /* THE YEAR TURNS AT LI CHUN, about 4 February, and a window across it is no year */
+ const yr=x=>{const sp=spiritualOf(x); return sp&&sp.chinese?sp.celem+' '+sp.chinese:null;};
+ ok(yr({d:'1935-01-08',t:'04:35',z:'America/Chicago'})==='Wood Dog','Elvis, January 1935 before Li Chun, is Wood Dog, got '+yr({d:'1935-01-08',t:'04:35',z:'America/Chicago'}));
+ ok(yr({d:'1929-01-15',t:'12:00',z:'America/Chicago'})==='Earth Dragon','King, January 1929, is Earth Dragon');
+ ok(yr({d:'1985-02-10',t:'12:00',z:'America/New_York'})==='Wood Ox','after Li Chun and before the lunar new year is the new animal, Wood Ox');
+ ok(yr({d:'1985-01-25',z:'America/New_York'})==='Wood Rat','an untimed January birth well before Li Chun is the old one, Wood Rat');
+ ok(yr({d:'2023-02-04',t:'01:00',z:'Europe/London'})==='Water Tiger'&&yr({d:'2023-02-04',t:'04:00',z:'Europe/London'})==='Water Rabbit',
+  'on the Li Chun day the hour decides: 01:00 Tiger, 04:00 Rabbit');
+ const lc=spiritualOf({d:'2023-02-04',z:'Europe/London'});
+ ok(lc&&lc.chinese===null&&lc.celem===null&&lc.sun!==undefined,'and with no hour that day has no animal, rather than the noon guess, got '+(lc&&lc.chinese));
+ /* THE NINE CITIES READ THEIR OFFSET OFF THEIR ZONE, NOT THE HAND RULES */
+ const ofs=x=>{const b=birthJD(x); return b&&b.offset;};
+ ok(ofs(BIRTH.Wren)===-8,'Wren, Portland 1959, is read at -8, got '+ofs(BIRTH.Wren));
+ ok(ofs(BIRTH.Abraham)===-7,'Abraham, Boulder 1951, no daylight saving that year, is read at -7, got '+ofs(BIRTH.Abraham));
+ ok(ofs({d:'1980-04-10',t:'12:00',p:'Boston, MA'})===-5,'Boston on 10 April 1980 is -5: daylight saving began on the last Sunday of April then');
+ ok(ofs({d:'2005-07-01',t:'12:00',p:'Oaxaca, MX'})===-5&&ofs({d:'1993-01-15',t:'12:00',p:'Lisbon, PT'})===1,'Oaxaca kept summer time in 2005 and Lisbon was on +1 in the winter of 1993');
+ ok(Object.keys(E.PLACE).every(k=>E.PLACE[k].z&&E.zoneOffsets(E.PLACE[k].z,2000,1,1,12)!==null),'every city carries a zone this runtime can read');
+ ok(birthJD(BIRTH.Sofia).place===E.PLACE['Asheville, NC']&&spiritual('Sofia').risingFrom==='place','a city keeps its own horizon when its zone sets the clock');
+}
+
+g('AE · the affirmation generator, his anchors and his wrapper, read off the R3 table');
+/* THE TABLE IS THE REFERENCE COMPOSER'S OWN OUTPUT, pasted and not typed:
+   node r3/run.js, two runs, md5 654e454f, SPEC.md section 12.1. The gate
+   composes every row again and compares the whole block byte for byte, so a
+   frame word moved, an anchor recased or a refusal reworded is a named
+   diff here. Fictional themes, and the product's own fictional roster. */
+{
+ const {affCompose,affShape,affSafe,affWeave,affWeaves,affSources,affPlain,affKeptOk,affLineOf,affFlips,
+        AFF_ANCHOR,AFF_PRE,AFF_SUF,AFF_FRAMES,CRISIS_SAY}=E;
+ const AFF_EXPECT=`# "calm"
+  [adj]
+  * Root: I am calm, with both feet on the floor.
+  * Sacral: I magnetize what keeps me calm.
+  * Solar: I command my body to stay calm.
+  * Heart: I receive the day as it comes and stay calm.
+  * Throat: I speak in a calm voice.
+  * 3rd Eye: I foresee myself calm in the room that tests me.
+  * Crown: I empower myself to stay calm among the people I belong to.
+# "clear"
+  [adj]
+  * Root: I am clear, with both feet on the floor.
+  * Sacral: I magnetize what keeps me clear.
+  * Solar: I command my body to stay clear.
+  * Heart: I receive the day as it comes and stay clear.
+  * Throat: I speak in a clear voice.
+  * 3rd Eye: I foresee myself clear in the room that tests me.
+  * Crown: I empower myself to stay clear among the people I belong to.
+# "rested"
+  [adj]
+  * Root: I am rested, with both feet on the floor.
+  * Sacral: I magnetize what keeps me rested.
+  * Solar: I command my body to stay rested.
+  * Heart: I receive the day as it comes and stay rested.
+  * Throat: I speak from a rested body.
+  * 3rd Eye: I foresee myself rested in the room that tests me.
+  * Crown: I empower myself to stay rested among the people I belong to.
+# "clarity"
+  [n]
+  * Root: I am the ground clarity grows from.
+  * Sacral: I magnetize clarity, and I let the want show.
+  * Solar: I command my body toward clarity.
+  * Heart: I receive clarity, and my chest stays open.
+  * Throat: I speak about clarity out loud.
+  * 3rd Eye: I foresee the next step toward clarity, and I take it.
+  * Crown: I empower myself and the people I belong to toward clarity.
+# "money"
+  [n]
+  * Root: I am the ground money grows from.
+  * Sacral: I magnetize money, and I let the want show.
+  * Solar: I command my body toward money.
+  * Heart: I receive money, and my chest stays open.
+  * Throat: I speak about money out loud.
+  * 3rd Eye: I foresee the next step toward money, and I take it.
+  * Crown: I empower myself and the people I belong to toward money.
+# "CLARITY"
+  [n]
+  * Root: I am the ground clarity grows from.
+  * Sacral: I magnetize clarity, and I let the want show.
+  * Solar: I command my body toward clarity.
+  * Heart: I receive clarity, and my chest stays open.
+  * Throat: I speak about clarity out loud.
+  * 3rd Eye: I foresee the next step toward clarity, and I take it.
+  * Crown: I empower myself and the people I belong to toward clarity.
+# "focus,"
+  [n]
+  * Root: I am the ground focus grows from.
+  * Sacral: I magnetize focus, and I let the want show.
+  * Solar: I command my body toward focus.
+  * Heart: I receive focus, and my chest stays open.
+  * Throat: I speak about focus out loud.
+  * 3rd Eye: I foresee the next step toward focus, and I take it.
+  * Crown: I empower myself and the people I belong to toward focus.
+# "focus…"
+  [n]
+  * Root: I am the ground focus grows from.
+  * Sacral: I magnetize focus, and I let the want show.
+  * Solar: I command my body toward focus.
+  * Heart: I receive focus, and my chest stays open.
+  * Throat: I speak about focus out loud.
+  * 3rd Eye: I foresee the next step toward focus, and I take it.
+  * Crown: I empower myself and the people I belong to toward focus.
+# "Someone who asks for help out loud."
+  [vp]
+  * Root: I am built to ask for help out loud.
+  * Sacral: I magnetize what it takes to ask for help out loud.
+  * Solar: I command my body to ask for help out loud.
+  * Heart: I receive what I need to ask for help out loud, and my chest stays open.
+  * Throat: I speak it plainly: I ask for help out loud.
+  * 3rd Eye: I foresee the next step to ask for help out loud, and I take it.
+  * Crown: I empower myself to ask for help out loud.
+# "Someone who keeps his word"
+  [vp]
+  * Root: I am built to keep my word.
+  * Sacral: I magnetize what it takes to keep my word.
+  * Solar: I command my body to keep my word.
+  * Heart: I receive what I need to keep my word, and my chest stays open.
+  * Throat: I speak it out loud: I keep my word.
+  * 3rd Eye: I foresee the next step to keep my word, and I take it.
+  * Crown: I empower myself to keep my word.
+# "Someone who is held as well as holding"
+  [vp]
+  * Root: I am built to be held as well as holding.
+  * Sacral: I magnetize what it takes to be held as well as holding.
+  * Solar: I command my body to be held as well as holding.
+  * Heart: I receive what I need to be held as well as holding, and my chest stays open.
+  * Throat: I speak it out loud: I am held as well as holding.
+  * 3rd Eye: I foresee the next step to be held as well as holding, and I take it.
+  * Crown: I empower myself to be held as well as holding.
+# "Someone who trusts what she already knows"
+  [np]
+  * Root: I am someone who trusts what she already knows.
+  * Sacral: I magnetize what it takes to be someone who trusts what she already knows.
+  * Solar: I command my body to act as someone who trusts what she already knows.
+  * Heart: I receive the room to be someone who trusts what she already knows.
+  * Throat: I speak it out loud: I am someone who trusts what she already knows.
+  * 3rd Eye: I foresee the next step toward being someone who trusts what she already knows.
+  * Crown: I empower myself to be someone who trusts what she already knows.
+# "Someone who calls her mother on Sundays"
+  [np]
+  * Root: I am someone who calls her mother on Sundays.
+  * Sacral: I magnetize what it takes to be someone who calls her mother on Sundays.
+  * Solar: I command my body to act as someone who calls her mother on Sundays.
+  * Heart: I receive the room to be someone who calls her mother on Sundays.
+  * Throat: I speak it out loud: I am someone who calls her mother on Sundays.
+  * 3rd Eye: I foresee the next step toward being someone who calls her mother on Sundays.
+  * Crown: I empower myself to be someone who calls her mother on Sundays.
+# "Someone who rests on a Sunday and lets it show"
+  [np]
+  * Root: I am someone who rests on a Sunday and lets it show.
+  * Sacral: I magnetize what it takes to be someone who rests on a Sunday and lets it show.
+  * Solar: I command my body to act as someone who rests on a Sunday and lets it show.
+  * Heart: I receive the room to be someone who rests on a Sunday and lets it show.
+  * Throat: I speak it out loud: I am someone who rests on a Sunday and lets it show.
+  * 3rd Eye: I foresee the next step toward being someone who rests on a Sunday and lets it show.
+  * Crown: I empower myself to be someone who rests on a Sunday and lets it show.
+# "Someone the team still wants in the room after the review"
+  [np]
+  * Root: I am someone the team still wants in the room after the review.
+  * Sacral: I magnetize what it takes to be someone the team still wants in the room after the review.
+  * Solar: I command my body to act as someone the team still wants in the room after the review.
+  * Heart: I receive the room to be someone the team still wants in the room after the review.
+  * Throat: I speak it out loud: I am someone the team still wants in the room after the review.
+  * 3rd Eye: I foresee the next step toward being someone the team still wants in the room after the review.
+  * Crown: I empower myself to be someone the team still wants in the room after the review.
+# "Someone who stops when the work is good enough"
+  [vp]
+  * Root: I am built to stop when the work is good enough.
+  * Sacral: I magnetize what it takes to stop when the work is good enough.
+  * Solar: I command my body to stop when the work is good enough.
+  * Heart: I receive what I need to stop when the work is good enough, and my chest stays open.
+  * Throat: I speak it out loud: I stop when the work is good enough.
+  * 3rd Eye: I foresee the next step to stop when the work is good enough, and I take it.
+  * Crown: I empower myself to stop when the work is good enough.
+# "to ask for help"
+  [vp]
+  * Root: I am built to ask for help.
+  * Sacral: I magnetize what it takes to ask for help.
+  * Solar: I command my body to ask for help.
+  * Heart: I receive what I need to ask for help, and my chest stays open.
+  * Throat: I speak it out loud: I ask for help.
+  * 3rd Eye: I foresee the next step to ask for help, and I take it.
+  * Crown: I empower myself to ask for help.
+# "I want to sleep through the night"
+  [vp]
+  * Root: I am built to sleep through the night.
+  * Sacral: I magnetize what it takes to sleep through the night.
+  * Solar: I command my body to sleep through the night.
+  * Heart: I receive what I need to sleep through the night, and my chest stays open.
+  * Throat: I speak it out loud: I sleep through the night.
+  * 3rd Eye: I foresee the next step to sleep through the night, and I take it.
+  * Crown: I empower myself to sleep through the night.
+# "I am steady"
+  [adj]
+  * Root: I am steady, with both feet on the floor.
+  * Sacral: I magnetize what keeps me steady.
+  * Solar: I command my body to stay steady.
+  * Heart: I receive the day as it comes and stay steady.
+  * Throat: I speak in a steady voice.
+  * 3rd Eye: I foresee myself steady in the room that tests me.
+  * Crown: I empower myself to stay steady among the people I belong to.
+# "A father who listens"
+  [np]
+  * Root: I am a father who listens.
+  * Sacral: I magnetize what it takes to be a father who listens.
+  * Solar: I command my body to act as a father who listens.
+  * Heart: I receive the room to be a father who listens.
+  * Throat: I speak it out loud: I am a father who listens.
+  * 3rd Eye: I foresee the next step toward being a father who listens.
+  * Crown: I empower myself to be a father who listens.
+# "fear"
+  REFUSE flip: "fear" is what you release. Its opposite is safety. Use safety?
+# "not anxious"
+  REFUSE flip: "anxious" is what you release. Its opposite is calm. Use calm?
+# "I want to stop shouting at the kids"
+  REFUSE toward: Say what you are moving toward.
+# "finishing the boat"
+  REFUSE gerund: Say it as something you do, starting with "to".
+# "abundance, clarity, focus"
+  REFUSE list: One at a time. Pick the one that matters today.
+# "my son"
+  REFUSE person: An affirmation is about you. Name what you bring to your son: patience, time, honesty.
+# "good"
+  REFUSE thin: "good" names nothing your body can check. Name one quality.
+# "..."
+  REFUSE empty: Write who you are becoming, or one word for it.
+# "!!!"
+  REFUSE empty: Write who you are becoming, or one word for it.
+# "I am afraid. I will fail again"
+  REFUSE sentence: Say it as something you do.
+# "I am afraid that I will fail again"
+  REFUSE sentence: Say it as something you do.
+# "my landlord makes me crazy every week and I cannot stand it"
+  REFUSE list: One at a time. Pick the one that matters today.
+# "I want to hurt myself"
+  STOP safety (src): If you want a person now, 988 answers by call or text, any hour.
+# "Someone who no longer wants to die"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "I will never hurt myself again"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "free of wanting to end it"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "not hurting myself"
+  STOP safety (safeOf): If you want a person now, 988 answers by call or text, any hour.
+# "stop cutting"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "finish the shift and end it on time"
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.
+# "spend it on the boat"
+  REFUSE shape: Write who you are becoming, or one word for it.
+# All that is, "calm"
+  * Root: I am the creator of all that is, I am calm across all space, time, and dimensions.
+  * Sacral: I am the creator of all that is, I magnetize what keeps me calm across all space, time, and dimensions.
+  * Solar: I am the creator of all that is, I command my body to stay calm across all space, time, and dimensions.
+  * Heart: I am the creator of all that is, I receive the day as it comes and stay calm across all space, time, and dimensions.
+  * Throat: I am the creator of all that is, I speak in a calm voice across all space, time, and dimensions.
+  * 3rd Eye: I am the creator of all that is, I foresee myself calm in the room that tests me across all space, time, and dimensions.
+  * Crown: I am the creator of all that is, I empower myself to stay calm among the people I belong to across all space, time, and dimensions.
+# All that is, "Someone who keeps his word"
+  * Root: I am the creator of all that is, I am built to keep my word across all space, time, and dimensions.
+  * Sacral: I am the creator of all that is, I magnetize what it takes to keep my word across all space, time, and dimensions.
+  * Solar: I am the creator of all that is, I command my body to keep my word across all space, time, and dimensions.
+  * Heart: I am the creator of all that is, I receive what I need to keep my word across all space, time, and dimensions.
+  * Throat: I am the creator of all that is, I speak it out loud: I keep my word across all space, time, and dimensions.
+  * 3rd Eye: I am the creator of all that is, I foresee the next step to keep my word across all space, time, and dimensions.
+  * Crown: I am the creator of all that is, I empower myself to keep my word across all space, time, and dimensions.
+# Weave: primary "Someone who asks for help out loud" (Throat), "calm" seated at Heart, "trust" heard at Root (excluded)
+  * Root: I am built to ask for help out loud.
+  * Sacral: I magnetize what it takes to ask for help out loud.
+  * Solar: I command my body to ask for help out loud.
+  * Heart: I receive the day as it comes and stay calm.
+  * Throat: I speak it plainly: I ask for help out loud.
+  * 3rd Eye: I foresee the next step to ask for help out loud, and I take it.
+  * Crown: I empower myself to ask for help out loud.
+# Weave with one source that trips the stop
+  STOP safety (lex): If you want a person now, 988 answers by call or text, any hour.`;
+ const ROWS=['calm','clear','rested','clarity','money','CLARITY','focus,','focus…',
+  'Someone who asks for help out loud.','Someone who keeps his word','Someone who is held as well as holding',
+  'Someone who trusts what she already knows','Someone who calls her mother on Sundays',
+  'Someone who rests on a Sunday and lets it show','Someone the team still wants in the room after the review',
+  'Someone who stops when the work is good enough','to ask for help','I want to sleep through the night','I am steady',
+  'A father who listens',
+  'fear','not anxious','I want to stop shouting at the kids','finishing the boat','abundance, clarity, focus','my son','good',
+  '...','!!!','I am afraid. I will fail again','I am afraid that I will fail again',
+  'my landlord makes me crazy every week and I cannot stand it',
+  'I want to hurt myself','Someone who no longer wants to die','I will never hurt myself again','free of wanting to end it',
+  'not hurting myself','stop cutting','finish the shift and end it on time','spend it on the boat'];
+ const pad=s=>s.replace(/^/gm,'  ');
+ const got=[];
+ ROWS.forEach(t=>{const r=affCompose(t); got.push('# '+JSON.stringify(t));
+  if(!r.ok){got.push('  '+(r.stop?'STOP safety ('+r.why+'): ':'REFUSE '+r.refuse+': ')+r.say);return;}
+  got.push('  ['+r.shape+']'); got.push(pad(affPlain(r.lines,false)));});
+ got.push('# All that is, "calm"'); got.push(pad(affPlain(affCompose('calm').lines,true)));
+ got.push('# All that is, "Someone who keeps his word"'); got.push(pad(affPlain(affCompose('Someone who keeps his word').lines,true)));
+ const W=affWeave([{key:'av:1',text:'Someone who asks for help out loud',b:'Throat',state:'confirmed'},
+  {key:'av:2',text:'calm',b:'Heart',state:'confirmed'},{key:'cl:9',text:'trust',b:'Root',state:'heard'}],'av:1');
+ got.push('# Weave: primary "Someone who asks for help out loud" (Throat), "calm" seated at Heart, "trust" heard at Root (excluded)');
+ got.push(pad(affPlain(W.lines,false)));
+ const Ws=affWeave([{key:'av:1',text:'calm',b:'Heart',state:'confirmed'},{key:'av:2',text:'Someone who no longer wants to die',b:'Root',state:'confirmed'}],'av:1');
+ got.push('# Weave with one source that trips the stop'); got.push('  '+(Ws.stop?'STOP safety ('+Ws.why+'): '+Ws.say:'COMPOSED'));
+ const gl=got.join('\n').split('\n'), xl=AFF_EXPECT.split('\n');
+ const first=xl.findIndex((l,i)=>l!==gl[i]);
+ ok(gl.length===xl.length&&first<0,'the whole table matches the reference byte for byte, '+gl.length+' lines of '+xl.length
+  +(first>=0?', first difference at line '+(first+1)+': expected '+JSON.stringify(xl[first])+' got '+JSON.stringify(gl[first]):''));
+
+ /* THE PROPERTIES, on every composed row in both modes. These hold for any
+    theme, so they also run on the roster and on a sweep below. */
+ const LEX=/\b(attract|manifest\w*|limitless|infinite|abundance|prosperity|destiny|into reality|highest vision|aligned|vessel)\b/i;
+ const props=(r,themeWords)=>{const e=[];
+  if(r.lines.length!==7)e.push('seven lines, got '+r.lines.length);
+  r.lines.forEach((l,i)=>{
+   if(l.b!==BANDS[i])e.push('point order '+i+' '+l.b);
+   if(l.composed!==true)e.push('not marked composed '+i);
+   [['plain',l.plain],['wrapped',l.wrapped]].forEach(([m,x])=>{
+    const body=m==='wrapped'?x.slice(AFF_PRE.length):x;
+    if(m==='wrapped'&&x.indexOf(AFF_PRE)!==0)e.push(m+' prefix '+i);
+    if(m==='wrapped'&&!x.endsWith(AFF_SUF))e.push(m+' suffix '+i);
+    if(m==='plain'&&(x.indexOf('creator of all that is')>=0||x.indexOf('all space, time')>=0))e.push('the wrapper on while off '+i);
+    if(body.indexOf(AFF_ANCHOR[i]+' ')!==0)e.push(m+' anchor '+i+': '+body);
+    if(/(^|[^A-Za-z])i([^A-Za-z']|$)/.test(x))e.push(m+' lowercase i '+i);
+    if(/\bI (am|magnetize|command|receive|speak|foresee|empower) I (am|magnetize|command|receive|speak|foresee|empower)\b/.test(x)||/\bI I\b/.test(x))e.push(m+' double subject '+i);
+    /* his package's double subject, the theme's own I am kept inside the frame's: "I am the ground I am steady grows from" */
+    if(m==='plain'&&(x.match(/\bI am\b/g)||[]).length>1)e.push(m+' double subject '+i);
+    if(!/[^.]\.$/.test(x))e.push(m+' one closing period '+i);
+    if(/  /.test(x))e.push(m+' double space '+i);
+    if(/—|–/.test(x))e.push(m+' dash '+i);
+    if(/\*|_{2}|`|^#|\[|\]/.test(x))e.push(m+' markdown '+i);
+    if(/\d/.test(x))e.push(m+' a number '+i);
+    if(/\b(chakra|chakras|seat|seats)\b/i.test(x))e.push(m+' says chakra or seat '+i);
+    let frame=x; (themeWords||[]).forEach(w=>{frame=frame.split(w).join('');});
+    if(LEX.test(frame))e.push(m+' manifestation word in the frame '+i);
+    (themeWords||[]).forEach(w=>{if(x.indexOf(w)<0)e.push(m+' theme lost '+w+' '+i);});});});
+  return e;};
+ const comp=['calm','clear','rested','clarity','money','honest','patience','Someone who keeps his word','to ask for help',
+  'Someone who calls her mother on Sundays','A father who listens','I am steady','I want to sleep through the night',
+  'focus','awake','courage','an even keel'];
+ const bad=[];
+ comp.forEach(t=>{const r=affCompose(t); if(!r.ok){bad.push(t+': did not compose');return;}
+  const tw=(r.shape==='adj'||r.shape==='n')?[t.replace(/^I am /,'').toLowerCase()]:[];
+  props(r,tw).forEach(x=>bad.push(t+': '+x));});
+ ok(bad.length===0,'every composed line keeps its anchor in exact case in both modes, one period, no lowercase i, no double subject, no markdown, no number, no chakra or seat, the wrapper only when on, and the theme in both modes, '+JSON.stringify(bad.slice(0,4)));
+
+ /* HIS PACKAGE IS THE FIRST KNOWN BAD CASE, its own functions copied word for
+    word. The properties above must fail it, or they test nothing. */
+ const PKG=[t=>`I am the grounded foundation for ${t}.`,t=>`I magnetize creative momentum and ${t}.`,t=>`I command aligned action toward ${t}.`,
+  t=>`I receive ${t} with an open and steady heart.`,t=>`I speak ${t} into tangible reality.`,t=>`I foresee clear pathways manifesting ${t}.`,t=>`I empower my highest vision of ${t}.`];
+ const pkg=t=>({lines:PKG.map((f,i)=>{const c=f(t).replace(/\.$/,'');
+  return {b:BANDS[i],composed:true,plain:c+'.',wrapped:AFF_PRE+c.charAt(0).toLowerCase()+c.slice(1)+AFF_SUF};})});
+ ok(props(pkg('calm'),['calm']).length>0,'the package as uploaded fails these properties: '+props(pkg('calm'),['calm']).slice(0,2).join(', '));
+
+ /* SAFETY, and the line it shows. A refusal that says "Say what you are
+    moving toward" to a person who wrote about dying is a fail, so the gate
+    asserts the 988 line and not only that nothing composed. */
+ ['I want to hurt myself','Someone who no longer wants to die','I will never hurt myself again','free of wanting to end it',
+  'not hurting myself','stop cutting','I want to die','Someone who stops cutting'].forEach(t=>{
+  const r=affCompose(t);
+  ok(r.ok===false&&r.stop==='safety'&&r.say===CRISIS_SAY.entryNow&&r.lines.length===0,
+   'a theme about hurting oneself composes nothing and says the 988 line, '+JSON.stringify(t)+' '+JSON.stringify(r.say));});
+ ok(affSafe('calm').ok&&affSafe('Someone who keeps his word').ok&&affSafe('to ask for help').ok,'and the stop does not trip on ordinary themes');
+ ok(affCompose('finish the shift and end it on time').stop==='safety','the over trip is chosen and counted: "end it" trips, one line against seven chanted');
+
+ /* NO DEFAULT SET. His package showed seven money lines on an empty box. */
+ ['','   ','...','!!!','""'].forEach(t=>{const r=affCompose(t);
+  ok(!r.ok&&r.refuse==='empty'&&r.lines.length===0,'an empty theme composes nothing, '+JSON.stringify(t));});
+
+ /* NOTHING IS SWAPPED SILENTLY. A held pattern is refused, and its opposite
+    is offered from CHILD, not from a copied table. */
+ const F=affFlips();
+ ok(CHILD.every(c=>F[c.nm.toLowerCase()]===c.opp.toLowerCase()),'every CHILD name flips to its own opposite, read off the canon');
+ const fr=affCompose('anger');
+ ok(!fr.ok&&fr.refuse==='flip'&&fr.offer==='calm'&&fr.lines.length===0,'"anger" composes nothing and offers calm, '+JSON.stringify(fr.say));
+ ok(affCompose(fr.offer).ok,'and the offer it makes composes when pressed');
+ ok(affShape('clarity').k==='n'&&affShape('clear').k==='adj','a word keeps its part of speech: clarity is a noun, clear is a quality');
+
+ /* DETERMINISTIC. The same theme twice is the same seven lines, and nothing
+    reads the clock or a random number. */
+ const a1=JSON.stringify(comp.map(t=>affCompose(t))), a2=JSON.stringify(comp.map(t=>affCompose(t)));
+ ok(a1===a2,'the same themes compose the same lines twice');
+ const fnText=[affCompose,affShape,affSafe,affWeave,affSources,affLineOf].map(f=>String(f)).join('\n');
+ ok(!/Math\.random|Date\.now|new Date/.test(fnText),'the generator reads no clock and no random number');
+
+ /* lineOf THROWS rather than emit a line off its anchor */
+ const keep=AFF_FRAMES.n[2];
+ AFF_FRAMES.n[2]=s=>['i command my body toward '+s.n,''];
+ let threw=false; try{affCompose('clarity');}catch(e){threw=/does not open on I command/.test(e.message);}
+ AFF_FRAMES.n[2]=keep;
+ ok(threw,'a frame that drops its anchor throws instead of printing');
+
+ /* COPY, his format with the product's point names */
+ const cp=affPlain(affCompose('calm').lines,false);
+ ok(cp.split('\n').length===7&&cp.split('\n').every((l,i)=>l.indexOf('* '+BANDS[i]+': '+AFF_ANCHOR[i]+' ')===0)&&!/\n$/.test(cp),
+  'Copy is seven "* Point: line." rows, no trailing newline');
+ ok(!/Solar Plexus|Third Eye|chakra/i.test(cp),'Copy says Solar and 3rd Eye, the product\'s names, never chakra');
+ const kp=affPlain(affCompose('calm').lines,true,[true,false,true,false,false,false,true]);
+ ok(kp.split('\n').length===3&&kp.split('\n')[1].indexOf('* Solar: '+AFF_PRE+'I command ')===0,'Copy carries only pressed rows, wrapped when the switch is on');
+
+ /* THE SOURCES, and only what the person confirmed */
+ const prof={avatar:{pairs:[{id:'p1',be:'Someone who keeps his word',notbe:'x',seat:'Throat'},
+   {id:'p2',be:'calm',notbe:'y',seat:'Heart'},{id:'p3',be:'Someone who asks for help out loud',notbe:'z',seat:''}],
+  tags:{Root:{add:['Fear','Joy','Lumbar plexus'],off:[]}}}};
+ const S=affSources(prof,{banked:[{key:'r1',cf:'Shame'}],pathK:'IL',typed:'clarity',seatOf:()=> 'Solar',
+  /* c1 was Anger until 21 November, when anger's opposite became calm, the
+     same text as the av:p2 pair above, and the weave correctly folded the two
+     into one source, so the claim this line tests had nothing left to show.
+     Sad says happy, which nothing else in this fixture says. */
+  claims:[{key:'c1',cf:'Sad',state:'confirmed'},{key:'c2',cf:'Surprise',state:'supported'},{key:'c3',cf:'Apathy',state:'inferred'},
+   {key:'c4',cf:'Shock',state:'rejected'},{key:'c5',cf:'Disgust',state:'unknown'},{key:'c6',cf:'Anticipation',state:'corrected',fix:'steady'}]});
+ const by=k=>S.filter(x=>x.key===k)[0]||{};
+ ok(S[0].kind==='path'&&S[0].text==='grace'&&S[0].b==='Heart','the chosen Path pair comes first, its becoming pole at its point');
+ ok(S[1].key==='av:p3'&&S[1].b==='Solar'&&by('av:p1').b==='Throat','Become lines newest first, an unseated one at the seat its Not be line reads');
+ ok(by('tg:Root:Fear').text==='safety'&&by('tg:Root:Joy').text==='joy'&&!S.some(x=>/lumbar/i.test(x.text)),
+  'a tag says the opposite of a pattern, keeps a state, and an address name is no intention');
+ ok(by('bk:r1').text==='worth'&&by('bk:r1').b==='Sacral','a banked release is said as its opposite at its own point, never as the pattern');
+ ok(by('cl:c1').state==='confirmed'&&by('cl:c2').state==='heard'&&by('cl:c6').text==='steady','confirmed and corrected claims are confirmed, a supported one is only heard');
+ ok(!by('cl:c3').key&&!by('cl:c4').key&&!by('cl:c5').key,'inferred, rejected and unknown claims never leave the engine');
+ ok(by('ty').text==='clarity'&&by('ty').b===null,'the typed word is one more source, at no point');
+ ok(affSources(null,{}).length===0&&affSources({avatar:{pairs:'x',tags:7}},{claims:'x'}).length===0,'a missing or malformed record gives no sources and does not throw');
+ ok(affWeaves(S)&&!affWeaves([by('ty')]),'the weave is offered when two confirmed sources are seated, not for one word');
+ const hw=affWeave([{key:'h',text:'trust',b:'Root',state:'heard'}],'h');
+ ok(!hw.ok&&hw.lines.length===0,'a heard only record composes nothing until the person says yes');
+ const wv=affWeave(S.filter(x=>x.kind!=='path'),'av:p1');
+ ok(wv.ok&&wv.lines[3].src==='av:p2'&&wv.lines[3].core==='I receive the day as it comes and stay calm'&&wv.lines.every(l=>l.src!=='cl:c2'),
+  'the weave seats calm at Heart and never composes the heard claim');
+
+ /* THE KEPT STORE'S READ BOUNDARY */
+ const L=affCompose('calm').lines[2];
+ ok(affKeptOk({b:L.b,core:L.core,tail:L.tail,src:'ty',composed:true}),'a written row reads back');
+ ok(![null,{},{b:'Solar',core:'i command x',composed:true},{b:'Chakra',core:'I am x',composed:true},
+  {b:'Root',core:'I am '+'x'.repeat(200),composed:true},{b:'Root',core:'I am x',tail:'y'.repeat(61),composed:true},
+  {b:'Root',core:'I am x',composed:false},{b:'Root',core:'I am x',src:'k'.repeat(41),composed:true}].some(affKeptOk),
+  'a row off its anchor, off a point, too long or not composed is dropped');
+
+ /* THE BRANCHES THE TABLE DID NOT REACH, found by the coverage run's
+    unexecuted list and pinned here with their exact Root and Throat lines */
+ [['Someone who carries the load','I am built to carry the load.','I speak it out loud: I carry the load.'],
+  ['Someone who reaches out first','I am built to reach out first.','I speak it out loud: I reach out first.'],
+  ['I walk the dog every morning','I am built to walk the dog every morning.','I speak it out loud: I walk the dog every morning.']].forEach(([t,root,throat])=>{
+  const r=affCompose(t);
+  ok(r.ok&&r.shape==='vp'&&r.lines[0].plain===root&&r.lines[4].plain===throat,'"'+t+'" reads as a verb phrase, '+JSON.stringify(r.ok?[r.lines[0].plain,r.lines[4].plain]:r.say));});
+ [['Someone who stops trying to fix everyone','toward'],['not money','toward'],
+  ['one two three four five six seven eight nine ten eleven twelve thirteen','long']].forEach(([t,code])=>{
+  const r=affCompose(t); ok(!r.ok&&r.refuse===code&&r.lines.length===0,'"'+t+'" is refused '+code+', '+JSON.stringify(r.say));});
+ const wr=affWeave([{key:'a',text:'good',b:'Root',state:'confirmed'},{key:'b',text:'calm',b:'Heart',state:'confirmed'}],'a');
+ ok(!wr.ok&&wr.refuse==='thin'&&wr.lines.length===0,'a weave whose primary is refused composes nothing and says why');
+ const ns=affSources({avatar:{pairs:[null,{be:7},{be:'  '},{be:'calm',notbe:'x'}]}},{});
+ ok(ns.length===1&&/^av:[a-z0-9]+$/.test(ns[0].key)&&ns[0].b===null,'a pair with no words is skipped, one with no id keys on its words, and with no seat reader it sits at no point');
+ ok(affPlain(null,false)===''&&!affWeaves(null),'Copy of nothing is empty, and nothing weaves from nothing');
+
+ /* THE ROSTER. Every Become line the product's own fictional people carry,
+    read off engine/ritex.js at run time. The share that composes is read
+    off the run, never typed. */
+ const fs=require('fs');
+ const rx=fs.existsSync('atuned_src/engine/ritex.js')?fs.readFileSync('atuned_src/engine/ritex.js','utf8'):'';
+ const be=[...rx.matchAll(/be:'((?:[^'\\]|\\.)*)'/g)].map(m=>m[1].replace(/\\'/g,"'")).filter(x=>/^Someone/.test(x));
+ let rn=0; const rbad=[];
+ be.forEach(t=>{const r=affCompose(t); if(r.ok){rn++; props(r,[]).forEach(x=>rbad.push(t+': '+x));}});
+ ok(be.length>0&&rn>=be.length-1,'the roster\'s own Become lines compose, '+rn+' of '+be.length);
+ ok(rbad.length===0,'and every roster line keeps every property, '+JSON.stringify(rbad.slice(0,3)));
+}
+
+g('SB18 · the boundary and the saves around it, 18 November');
+/* FOUR DEFECTS AROUND validateProfile AND THE SAVE HELPERS, each reproduced on
+   72a28de before it was fixed, and each check below fails with its own fix
+   taken back out. */
+{
+ const {blankProfile,saveProfile,validateProfile,pImport,importError,profiles,current,
+        bindStore,snapshot,pSnap,pSave,pStore,profCreate,profErr,planState,PLANS,MASKS,PKEY}=E;
+ const fs=require('fs'), path=require('path');
+ const disk={}; let refuse=false;
+ bindStore(k=>disk[k]===undefined?null:disk[k],(k,v)=>{if(refuse)throw new Error('QuotaExceeded');disk[k]=v;});
+ const base=saveProfile(blankProfile('boundary'));
+ base.history=[snapshot(base)];
+ const copy=()=>JSON.parse(JSON.stringify(base));
+
+ /* 1. A KEY OBJECT'S PROTOTYPE ANSWERS FOR IS NOT A KEY. lawNow's old-name
+    table, K2BAND and the plan tables were plain objects, so "constructor"
+    found Object itself and read as a law, a seat or a tier. */
+ ['constructor','toString','hasOwnProperty'].forEach(k=>{
+  const x=copy(); x.history[0].lawNow={}; x.history[0].lawNow[k]=5;
+  const v=validateProfile(x);
+  ok(!v.ok&&(v.errs||[]).some(e=>e.indexOf('lawNow may not carry '+k)>=0),
+   'history[0].lawNow.'+k+' is refused by name: '+JSON.stringify(v.errs));});
+ {const x=copy(); x.history[0].lawNow={constructor:5};
+  const n=profiles().length, c=current();
+  ok(pImport(JSON.stringify(x))===null&&profiles().length===n&&current()===c,
+   'and pImport refuses it and lands nothing: '+importError());}
+ {const x=copy(); x.story={entries:[{t:new Date().toISOString(),text:'x',imprints:0,bands:{constructor:1}}]};
+  const v=validateProfile(x);
+  ok(!v.ok&&/bands names no point: constructor/.test(String(v.errs)),'a story band keyed constructor names no point: '+JSON.stringify(v.errs));}
+ {const x=copy(); x.plan.tier='toString';
+  const v=validateProfile(x);
+  ok(!v.ok&&/plan.tier is not a tier this build knows: toString/.test(String(v.errs)),'a plan.tier of toString is not a tier: '+JSON.stringify(v.errs));}
+ {const t=PLANS.find(q=>q.k!=='free'&&q.k!=='gift').k;
+  ok(planState({tier:t,status:'constructor'})==='pending'&&planState({tier:t,status:'toString'})==='pending',
+   'a status named after an Object method is unknown, so pending, never live');}
+
+ /* 2. THE LAST MASK SURVIVES A RELOAD. ui.chmask was saved and then dropped
+    by the boundary's ui allow list on every load. */
+ {const nm=MASKS[1].nm, x=copy(); x.ui.chmask=nm;
+  const v=validateProfile(JSON.parse(JSON.stringify(x)));
+  ok(v.ok&&v.profile.ui.chmask===nm,'ui.chmask '+nm+' comes back through the boundary, got '+(v.profile&&v.profile.ui.chmask));
+  const y=copy(); y.ui.chmask='Nobody';
+  const w=validateProfile(y);
+  ok(!w.ok&&/ui.chmask is not a mask/.test(String(w.errs)),'a name that is not a mask is refused by name: '+JSON.stringify(w.errs));
+  refuse=false;
+  const p=profCreate('Chmask');
+  ok(!!p,'a profile to carry it is made: '+profErr());
+  p.ui.chmask=nm; ok(pSave(),'and saved');
+  const back=pStore().filter(q=>q.id===p.id)[0];
+  ok(back&&back.ui.chmask===nm,'and the boot read off the store still holds '+nm+', got '+(back&&back.ui.chmask));}
+
+ /* 3. THE INTAKE PANEL'S NEW GOES THROUGH profCreate. The engine half of the
+    door refuses and rolls back; the check on the source holds the handler to
+    it, because it called pNew, which ignores the write. */
+ {refuse=true;
+  const n=profiles().length, c=current();
+  ok(profCreate('Refused')===null&&profiles().length===n&&current()===c&&/could not save/.test(String(profErr())),
+   'a new profile the store refuses is not left open, and says why: '+profErr());
+  refuse=false;
+  const src=fs.readFileSync(path.join(__dirname,'..','atuned_src','ui','intakeui.js'),'utf8');
+  const at=src.indexOf("nb.onclick=function()"), body=at<0?'':src.slice(at,src.indexOf('};',at));
+  ok(at>=0&&/profCreate\(/.test(body)&&!/pNew\(/.test(body),'the #iqnew handler makes the profile with profCreate and not pNew');
+  ok(/if\(!profCreate\(\w+\)\)\{\s*status\([^;]*,'fail'\);/.test(body),'and a refusal is said through status as a failure');}
+
+ /* 4. A REFUSED SNAPSHOT TAKES ITS ROW BACK OUT, so the next good save does
+    not carry a row from a moment the person was told nothing was saved. */
+ {refuse=false;
+  const p=profCreate('Snap'); const n=p.history.length;
+  refuse=true;
+  ok(pSnap()===false,'a snapshot the store refuses reports false');
+  ok(current().history.length===n,'and leaves history at '+n+' rows, got '+current().history.length);
+  refuse=false;
+  ok(pSave(),'the next save lands');
+  const onDisk=JSON.parse(disk[PKEY]).filter(q=>q.id===p.id)[0];
+  ok(onDisk&&onDisk.history.length===n,'and writes no phantom row, '+n+' expected, '+(onDisk&&onDisk.history.length)+' on disk');
+  const ui=f=>fs.readFileSync(path.join(__dirname,'..','atuned_src','ui',f),'utf8');
+  ok(['intakeui.js','avatarui.js'].every(f=>!/pSave\(\);\s*pSnap\(\);/.test(ui(f))),
+   'no surface writes a record and its snapshot as two saves where pSaveSnap is one');}
+}
+
+g('SZA9 · a parse with no sentence end grows with the entry, not with its square');
+{
+ /* THE OLD WALKS, TYPED HERE ON PURPOSE AND NEVER READ OFF THE ENGINE, so the
+    search that replaced them is held to what they returned and not to
+    itself. Every offset of every text, both directions. */
+ const {clauseFloor,clauseCeil,normMap,parseStory}=E, END=/[.!?;:\n\r]/;
+ const walkF=(t,nm,at)=>{for(let k=Math.min(at,nm.s.length-1);k>=0;k--)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return -1;};
+ const walkC=(t,nm,at)=>{for(let k=at;k<nm.s.length;k++)if(nm.s.charAt(k)===' '&&END.test(t.charAt(nm.map[k])))return k;return nm.s.length;};
+ const texts=['','.','I am not afraid. Afraid now.','i was so angry at him and i never said it',
+  'No. Not angry; not ever!\nUsed to be afraid... not anymore? If he came back I would scream: fine.',
+  '  Mornings were awful,   honestly. I used to dread them, I do not any more.'];
+ let bad=[];
+ texts.forEach(t=>{const nm=normMap(t);for(let at=-2;at<=nm.s.length+2;at++){
+  if(clauseFloor(t,nm,at)!==walkF(t,nm,at))bad.push(['floor',t,at]);
+  if(clauseCeil(t,nm,at)!==walkC(t,nm,at))bad.push(['ceil',t,at]);}});
+ ok(bad.length===0,'the boundary search returns what the walk returned at every offset, '+JSON.stringify(bad.slice(0,3)));
+ /* the words the readers above key on, still read the same way */
+ ok(parseStory('I used to be angry, I am not anymore').denied.length>0,'"used to ... anymore" still sets the word aside');
+ ok(parseStory('If I was furious he would leave').denied.length>0,'"if ... would" still sets the word aside');
+ ok(parseStory('I was not angry').denied.length>0,'a plain no still sets the word aside');
+ /* AND THE GROWTH. Measured on main before this: 16,000 characters with no
+    sentence end took 193 ms and the same words punctuated 37, five times as
+    long for the same words, and the gap widened with the length. The two are
+    timed side by side, best of three, so a busy machine slows both and the
+    ratio holds; before the fix it read about five at this length. */
+ const base='and then i felt my chest go tight and i was so angry at him because he never listens and i just ';
+ let t='';while(t.length<16000)t+=base;
+ const tp=t.replace(/ i /g,'. I ');
+ const best=x=>{let m=1e9;for(let i=0;i<3;i++){const s=Date.now();parseStory(x);m=Math.min(m,Date.now()-s);}return Math.max(m,1);};
+ const ru=best(t), rp=best(tp);
+ ok(ru/rp<2.5,'no sentence end costs about what the same words punctuated cost, '+ru+' ms against '+rp+' ms');
+}
+
+g('the wisdom school\'s composed lines, round LY');
+{
+ /* ADDR_SAY and INFER_SAY are Source AI's lines, composed from one row each
+    (engine/data/kbsay.js). They are keyed by identity, so what is held here
+    is that the identity still names the row the line was written from. */
+ const {ADDR_SAY,INFER_SAY,addrSay,ALL_SAB,HARM}=E;
+ const somatic=NODES.filter(n=>BANDS.indexOf(n.b)>=0);
+ const said=somatic.filter(n=>addrSay(n));
+ ok(said.length===somatic.length,'every somatic address has a line, '+said.length+' of '+somatic.length);
+ const moved=ADDR_SAY.filter(a=>{const n=NODES.filter(x=>x.i===a.i)[0]; return !n||n.k!==a.k;});
+ ok(moved.length===0,'and every line still sits on the address it was written from, moved: '
+  +moved.map(a=>a.i+' '+a.k).join(', '));
+ ok(new Set(ADDR_SAY.map(a=>a.m)).size===ADDR_SAY.length,'and no two addresses share a line');
+ ok(NODES.filter(n=>BANDS.indexOf(n.b)<0).every(n=>!addrSay(n)),'and the four field anchors carry none, they say their own thing');
+ /* a line that repeats the card's own closing word says the distortion twice */
+ const twice=ADDR_SAY.filter(a=>{const n=NODES.filter(x=>x.i===a.i)[0];
+  return n&&n.d&&a.m.toLowerCase().indexOf(n.d.toLowerCase())>=0;});
+ ok(twice.length===0,'and no line repeats the distortion the card closes on, '+twice.map(a=>a.k).join(', '));
+ const inf=ALL_SAB.filter(s=>s.unnamed).map(s=>s.nm), keys=Object.keys(INFER_SAY);
+ ok(inf.every(n=>keys.indexOf(n)>=0),'every inferred saboteur has a line, missing '
+  +inf.filter(n=>keys.indexOf(n)<0).join(', '));
+ ok(keys.every(n=>inf.indexOf(n)>=0),'and every line has a saboteur, orphans '
+  +keys.filter(n=>inf.indexOf(n)<0).join(', '));
+ /* the child emotions the book and CHILD agree on are read, not listed */
+ const agree=CHILD.filter(c=>HARM.some(h=>h.a==='emotion'&&h.t===c.nm+' · '+c.opp)).map(c=>c.nm);
+ /* 21 November: CHILD took the book's opposite for Fear, Anger, Apathy and
+    Sad, so the six with a pole in the book now all agree, and the three the
+    book leaves pending carry named forms instead of a quoted entry */
+ ok(agree.join(',')==='Fear,Anger,Shame,Disgust,Apathy,Sad','the book and CHILD agree on all six the book poles: '+agree.join(', '));
+}
+
+g('CMP21 · teachers by coherence, the Crown pair, and laws to teachers, 21 November');
+{
+ /* A first pass, his to move, so nothing here pins a number. What is held is
+    the rule the numbers were made by: every pole on the roster has one, each
+    sits inside its own seat's band near the top, the seats climb in BANDS
+    order, and the floor is the same line circleAt draws. A number he moves
+    stays green while it stays in its band; one moved across a seat fails and
+    says which. */
+ const {POLE_UNLOCK,CQ_CLIMB_FLOOR,compassBandOf,compassClimbSeat,compassUnlockOf,
+  compassPoleOf,compassOffAxis,circleAt,SEAT_FETTER_PAIR,LAW_TEACHER,compassLawsOf,
+  CODE_EMOTION,HOME_POLES}=E;
+ const roster=E.MIRROR.map(m=>m.k).concat(E.PATHS.map(p=>p.k),HOME_POLES.map(p=>p.k));
+ const none=roster.filter(k=>typeof compassUnlockOf(k)!=='number');
+ ok(none.length===0,'every pole on the roster opens at a CQ number, missing '+none.join(', '));
+ ok(Object.keys(POLE_UNLOCK).every(k=>compassPoleOf(k)),'and every number belongs to a pole that exists, '
+  +Object.keys(POLE_UNLOCK).filter(k=>!compassPoleOf(k)).join(', '));
+ ok(circleAt(CQ_CLIMB_FLOOR)===null&&circleAt(CQ_CLIMB_FLOOR-0.01)!==null,
+  'the climb starts on the line where circleAt stops descending, '+CQ_CLIMB_FLOOR);
+ const seated=roster.filter(k=>compassClimbSeat(k));
+ const out=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)), u=compassUnlockOf(k);
+  return !(u>=b.lo&&u<b.hi+(b.seat==='Crown'?1e-9:0));});
+ ok(out.length===0,'each seated teacher opens inside his own seat\'s band, out: '
+  +out.map(k=>k+' '+compassUnlockOf(k)+' at '+compassClimbSeat(k)).join(', '));
+ const low=seated.filter(k=>{const b=compassBandOf(compassClimbSeat(k)); return compassUnlockOf(k)<b.lo+(b.hi-b.lo)/2;});
+ ok(low.length===0,'and in the top half of it, maxed out as ruled, low: '+low.join(', '));
+ const bySeat=seated.slice().sort((a,b)=>compassUnlockOf(a)-compassUnlockOf(b)).map(k=>E.BANDS.indexOf(compassClimbSeat(k)));
+ ok(bySeat.every((s,i)=>!i||s>=bySeat[i-1]),'ordered by CQ, the teachers climb root to crown, '+bySeat.join(','));
+ const re=compassUnlockOf('RE');
+ ok(seated.every(k=>k==='RE'||compassUnlockOf(k)<re),'and Jesus at the Crown is the very top, '+re);
+ const shared={};
+ seated.forEach(k=>{const s=compassClimbSeat(k),u=compassUnlockOf(k); (shared[s]=shared[s]||[]).push(u);});
+ ok(Object.keys(shared).every(s=>new Set(shared[s]).size===shared[s].length),
+  'where a seat holds more than one teacher, no two share a number, '+JSON.stringify(shared));
+ const paths=compassOffAxis().filter(p=>!p.seat&&!p.home&&!compassClimbSeat(p.k));
+ ok(paths.length>0&&paths.every(p=>compassUnlockOf(p.k)>CQ_CLIMB_FLOOR&&compassUnlockOf(p.k)<compassBandOf('Root').hi),
+  'a path on no seat opens just out of the descent, '+paths.map(p=>p.k+' '+compassUnlockOf(p.k)).join(', '));
+ ok(compassUnlockOf('AW')===compassUnlockOf('PE')&&compassUnlockOf('BO')===compassUnlockOf('IL'),
+  'and a path that is an axis read twice opens with its axis');
+ ok(compassUnlockOf('nobody')===null&&compassBandOf('Field-Above')===null&&compassClimbSeat('nobody')===null,
+  'an unknown pole or seat answers null, never a number');
+
+ /* the Crown pair is recorded at the seat and is not yet a child emotion any
+    address carries; the day it becomes one, this says so */
+ const crown=SEAT_FETTER_PAIR.filter(p=>p.seat==='Crown')[0];
+ ok(crown&&crown.dn==='Separation'&&crown.up==='Union','Separation and Union are the Crown\'s pair, as ruled');
+ ok(SEAT_FETTER_PAIR.every(p=>E.BANDS.indexOf(p.seat)>=0),'and every pair sits at a real seat');
+ ok(CODE_EMOTION.indexOf('Separation')<0&&!W.some(n=>n.cf==='Separation'),
+  'and no address carries Separation as its fetter yet, so no reading moved');
+
+ /* every law to one teacher, at the law's own seat */
+ const miss=SINAMES.filter(l=>!LAW_TEACHER[l]), extra=Object.keys(LAW_TEACHER).filter(l=>SINAMES.indexOf(l)<0);
+ ok(miss.length===0&&extra.length===0,'every law has a teacher and every key is a law, missing '+miss+', extra '+extra);
+ const off=SI.filter(l=>compassClimbSeat(LAW_TEACHER[l.nm])!==l.b);
+ ok(off.length===0,'each law goes to a teacher at the seat SI gives it, off: '
+  +off.map(l=>l.nm+' '+l.b+' to '+LAW_TEACHER[l.nm]).join(', '));
+ const heart=['IL','TR'].map(k=>compassLawsOf(k).length);
+ ok(heart.every(n=>n>0),'the Heart\'s laws are split between Light and Trust, not dumped on one, '+heart);
+ ok(compassLawsOf('TU').indexOf('Truth')>=0&&compassLawsOf('NA').indexOf('Nature')>=0,
+  'and the two home poles keep the law their quality already names');
+}
+
+g('the three places carrying the most, one function for the Body card and the Body page key');
+{
+ /* bodyTop3 is what the Dashboard's Body card calls (ui/storyui.js
+    stMiniBody, drawn by ui/map.js bodyTop3Html). The Body page key that was
+    to call it too is held back on 21 November, see the note in ui/map.js,
+    so the key's half of this group's name waits for it. Checked against a
+    known case first: a field with every charge at nought reads nothing. */
+ const {bodyTop3,OB_PLACES,pct}=E;
+ ok(bodyTop3(reset(0,0,6)).length===0,'a field carrying nothing names no place, so the card draws the dash and the key hides');
+ ok(bodyTop3({unread:true,seats:[]}).length===0,'an unread reading names no place');
+ const r=reset(5,0,6), t=bodyTop3(r);
+ ok(t.length>0&&t.length<=3,'at most three places, '+t.length);
+ const words=OB_PLACES.map(p=>p.n);
+ ok(t.every(x=>words.indexOf(x.nm)>=0),'every place is one of the product\'s seven words, '+t.map(x=>x.nm).join(', '));
+ ok(t.every((x,i)=>i===0||t[i-1].v>=x.v),'heaviest first, '+t.map(x=>x.nm+' '+x.pct).join(', '));
+ /* each place's own fullness, the ruled default, and not its share of the
+    whole: the percent is the seat's own weight, so three of them need not
+    sum to anything */
+ ok(t.every(x=>{const s=r.seats.filter(q=>q.seat===x.seat)[0]; return s&&x.pct===pct('weight',s.weight*10);}),
+  'each percent is that place\'s own fullness, its seat weight as a whole percent');
+ ok(t.every(x=>Number.isInteger(x.pct)&&x.pct>0&&x.pct<=100),'a whole percent and never a nought, '+t.map(x=>x.pct).join(', '));
+ const heavy=r.seats.slice().sort((a,b)=>b.weight-a.weight)[0];
+ ok(t[0].seat===heavy.seat,'the first place is the heaviest seat, '+t[0].seat+' against '+heavy.seat);
+ ok(t.every(x=>!x.top||(x.top.k&&r.carrying.some(n=>n.i===x.top.i&&n.b===x.seat))),
+  'the pattern and nerve the hover carries are the heaviest address in that same place');
+}
+
+g('archetype to domain, ported from Reboot-OS canon_ARCHDOM (engine/archdom.js)');
+/* A LOOKUP, HELD TO THE TABLES IT POINTS INTO. The snapshot is generated by
+   tools/regen-archetype-domain.cjs, whose --self-test proves its own refusals
+   against planted bad sources. This group needs no Reboot-OS checkout, so CI
+   runs it: archDomFaults is run on the real snapshot (known good) and on six
+   broken copies (known bad), and each break must be caught by name. */
+{
+ const {archDomain,archDomainAll,archDomainOf,archDomFaults,ARCHDOM_SNAPSHOT:SN}=E;
+ ok(typeof archDomain==='function'&&typeof archDomainAll==='function'&&typeof archDomainOf==='function'&&typeof archDomFaults==='function'&&SN,
+  'archDomain, archDomainAll, archDomainOf, archDomFaults and the snapshot are exported');
+ const roster=E.ARCH18.map(a=>a[0]);
+ const faults=s=>archDomFaults(s,ARCH,DOMAINS,E.ROOTD,roster);
+ ok(faults(SN).length===0,'the real snapshot points only into tables that exist, faults: '+JSON.stringify(faults(SN)));
+ const clone=()=>JSON.parse(JSON.stringify(SN));
+ [['a word resolving to a domain DOMAINS lacks',s=>{s.words.Power.nm='Might';},/Might, which is not a DOMAINS name/],
+  ['an archetype recorded open whose word already resolves',s=>{s.open.Ruler={why:'planted',read:[{nm:'Imperium',cite:[]}]};},/Ruler is recorded open and its word resolves to Imperium/],
+  ['an archetype of the roster with no row',s=>{delete s.rows.Healer;},/roster Healer reaches no row/],
+  ['the Rebel alias pointing at no row',s=>{s.alias.Rebel.as='Rebellion';},/alias Rebel points at a row that does not exist/],
+  ['a row naming a word with no route',s=>{s.rows.Sage='Wisdom';},/row Sage names the word Wisdom, which has no route/],
+  ['an em dash in a value',s=>{s.quotes.extra='a'+String.fromCharCode(0x2014)+'b';},/em dash/]]
+ .forEach(([what,f,re])=>{const s=clone();f(s);const r=faults(s);
+  ok(r.some(x=>re.test(x)),'archDomFaults catches '+what+', reported '+JSON.stringify(r));});
+ ok(archDomFaults(null).length===1&&archDomFaults({rows:{}}).length===1,'and a thing that is not a snapshot is one named fault, never a throw');
+
+ /* the twelve, as the port resolves them. Ruler was the one left open; the
+    owner ruled it Imperium 4 November, reopened it with a question, and
+    closed it 21 November: "Ruler is Imperium." So all twelve resolve. */
+ const want={Warrior:'Power',Sage:'Knowledge',Rebel:'Dissolution',Caregiver:'Restoration',Creator:'Creation',
+  Magician:'Mystery',Ruler:'Imperium',Explorer:'Nature',Lover:'Connection',Jester:'Play',Everyman:'Exchange',Innocent:'Nature'};
+ const all=archDomainAll();
+ const off=all.map((r,i)=>[ARCH[i].nm,r&&r.nm]).filter(([n,d])=>!(n in want)||want[n]!==d);
+ ok(all.length===ARCH.length&&off.length===0,'every one of the '+ARCH.length+' archetypes in ARCH reads the domain the port resolved, off: '+JSON.stringify(off));
+ ok(all.every((r,i)=>JSON.stringify(r)===JSON.stringify(archDomain(i))),'archDomain(i) is archDomainAll()[i]');
+ ok(all.filter(r=>r.nm).every(r=>DOMAINS.filter(d=>d.nm===r.nm)[0].r===r.root),'a resolved answer carries the root DOMAINS gives its domain, never one of its own');
+ const ru=archDomainOf('Ruler');
+ ok(ru&&ru.nm==='Imperium'&&ru.root==='Architect'&&ru.open===false&&ru.how==='ruling'&&ru.ruling===true&&!('read' in ru),
+  'Ruler reads Imperium by the owner\'s own ruling, closed 21 November, not the open root any more, '+JSON.stringify(ru));
+ ok(all.filter(r=>r.open).length===0,'and nothing is open');
+ const rb=archDomainOf('Rebel');
+ ok(rb&&rb.upstream==='Outlaw'&&rb.word==='Destruction'&&rb.nm==='Dissolution'&&rb.how==='book'&&rb.n==='VI',
+  'Rebel reaches Reboot-OS\'s Outlaw row by the alias, and its Destruction is the book\'s heading VI, which DOMDEF files as Dissolution');
+ ok(['Caregiver','Lover','Everyman'].every(n=>{const r=archDomainOf(n);return r.how==='codex'&&E.KB_RENAME[r.nm.toLowerCase()]===r.word;}),
+  'Healing, Love and Communication reach their domains through KB_RENAME, so the word Reboot-OS uses is the name kb.js already records beside the engine\'s');
+ ok(Object.keys(SN.rows).length===roster.length&&roster.every(n=>archDomainOf(n)&&archDomainOf(n).upstream===n),
+  'every archetype ARCH18 names has its own Reboot-OS row, all of the records and not only the twelve');
+ ok(archDomain(ARCH.length)===null&&archDomainOf('')===null&&archDomainOf('Nobody')===null&&archDomainOf(undefined)===null,
+  'a name or index with no row answers null');
+
+ /* A LOOKUP DOES NOT MOVE. The same answers on a blank field and a loaded
+    one, and an answer a caller changes is not the next caller's answer. */
+ reset(0); const blank=JSON.stringify(archDomainAll());
+ reset(8,2); const loaded=JSON.stringify(archDomainAll());
+ ok(blank===loaded,'the answers are the same on a blank field and a loaded one');
+ const a1=archDomain(0); a1.nm='Changed'; a1.read=['x'];
+ ok(archDomain(0).nm==='Power'&&SN.words.Power.nm==='Power','an answer a caller edits leaves the next answer and the snapshot as they were');
+ reset();
+
+ /* RECORDED, NOT RULED. buildSoul() and affinity() couple archetypes to
+    domains by position on two rings, and for none of the archetypes this
+    table resolves is the domain under the arc, or under the lobe's centre,
+    the one ARCHDOM names. Recomputed here with core.js's own geometry. This
+    holds the measurement, not a ruling on the soul map: if it goes red the
+    soul map moved, and DECISIONS.md's 4 November entry needs its update. */
+ const DARC=360/19, agree={arc:0,lobe:0}, resolved=all.filter(r=>r.nm);
+ all.forEach((r,j)=>{if(!r.nm)return;
+  let best=-1,bi=-1;DOMAINS.forEach((d,i)=>{const o=Math.max(0,Math.min((i+1)*DARC,j*30+30)-Math.max(i*DARC,j*30));if(o>best){best=o;bi=i;}});
+  if(DOMAINS[bi].nm===r.nm)agree.arc++;
+  if(DOMAINS[Math.round((j/12)*19+19/24)%19].nm===r.nm)agree.lobe++;});
+ ok(resolved.length===12&&agree.arc===0&&agree.lobe===0,'the soul map\'s ring position agrees with ARCHDOM for none of the '+resolved.length+' resolved archetypes, as recorded: '+JSON.stringify(agree));
+}
+
+g('the birth chart suggests, the person confirms (birthSuggest, engine/birth.js, TASKS.md SM1)');
+{
+ /* THE KNOWN CASES FIRST, found by a sweep rather than typed: one birth where
+    the life path's archetype points at a domain under the root the birth
+    element reads, and one where the two disagree. */
+ const BS=E.birthSuggest, days=[];
+ for(let y=1970;y<2000;y++)for(const md of ['01-15','04-20','07-10','10-05'])days.push(y+'-'+md);
+ let agreeSp=null, differSp=null;
+ days.forEach(d=>{const sp=E.spiritualOf({d,t:'12:00',p:'London',z:'Europe/London'});
+  if(!sp||!sp.root)return; const r=BS(sp,{doms:[],arcs:[]});
+  if(r&&r.dom&&!agreeSp)agreeSp=sp; if(r&&r.arch&&!r.dom&&!differSp)differSp=sp;});
+ ok(!!agreeSp&&!!differSp,'the sweep finds a birth that suggests a domain and one that does not');
+ if(agreeSp&&differSp){
+  const a=BS(agreeSp,{doms:[],arcs:[]}), an=E.LP2ARCH[agreeSp.lp], d=E.archDomainOf(an);
+  ok(a.arch.nm===an&&E.ARCH[a.arch.i].nm===an,'the archetype is the life path\'s own, LP2ARCH, got '+a.arch.nm);
+  ok(a.dom.nm===d.nm&&E.DOMAINS[a.dom.i].nm===d.nm&&d.root===agreeSp.root,'the domain is the one that archetype points at, under the root the birth element reads');
+  const b=BS(differSp,{doms:[],arcs:[]});
+  ok(b.dom===null&&b.open.some(x=>/disagree/.test(x)),'where the two disagree nothing is suggested, and it says why');
+  const h=BS(agreeSp,{doms:[a.dom.i],arcs:[a.arch.i]});
+  ok(h.arch.held&&h.dom.held,'a suggestion already picked is marked as the person\'s own');
+  ok(!a.arch.held&&!a.dom.held,'and one not picked is not');}
+ /* it writes nothing: S is exactly as it was after a call */
+ const before=JSON.stringify([E.S.doms,E.S.arcs,E.S.dom,E.S.a1,E.S.a2]);
+ if(agreeSp)BS(agreeSp,{doms:E.S.doms,arcs:E.S.arcs});
+ ok(JSON.stringify([E.S.doms,E.S.arcs,E.S.dom,E.S.a1,E.S.a2])===before,'a suggestion writes nothing to the soul');
+ ok(BS(null,{})===null,'no birth is no suggestion');
+ /* the only writer is the person's press, on the rail, through the same steps
+    as the rail's own pickers */
+ const ui=require('fs').readFileSync(require('path').resolve(__dirname,'../atuned_src/ui/personas.js'),'utf8');
+ const wire=ui.slice(ui.indexOf('function bsWire'),ui.indexOf('function bsWire')+1400);
+ ok(/onclick/.test(wire)&&/notYours/.test(wire)&&/undoPush/.test(wire)&&/saveYou\(\)/.test(wire),
+  'the write happens only on a press, guarded for a worked example, undoable, and saved through saveYou');
+ ok(ui.indexOf('function bsHtml')>=0&&!/S\.(arcs|doms)\s*=/.test(ui.slice(ui.indexOf('function bsHtml'),ui.indexOf('function bsWire'))),
+  'drawing the suggestion writes nothing');
+}
+
+g('the Let Go list: its phrases found in a story (engine/letgo.js) and its packs (ui/letgopacks.js)');
+/* PORTED 21 November by tools/regen-letgo.cjs from Reboot-OS atuned/data/letgo.
+   The cues are engine data and are held here against the sniffer's own
+   normalisation; the packs are a ui data file with no document in it, so
+   they are read here in a VM and held to the rules the generator claims:
+   every line distinct, every line filed by the word it opens on, nothing
+   the build refuses and nothing the safety words trip. */
+{
+ const {letgoCues,letgoCount,LETGO_SNAPSHOT:LS,normMap,srcSafe}=E;
+ ok(typeof letgoCues==='function'&&typeof letgoCount==='function'&&LS&&Array.isArray(LS.cues),
+  'letgoCues, letgoCount and the snapshot are exported');
+ ok(letgoCount()===LS.cues.length&&LS.counts.cues===LS.cues.length&&LS.cues.length>0,
+  'every row of the snapshot is a cue, and the count it records is its own length: '+LS.cues.length);
+ ok(/^[0-9a-f]{40}$/.test(LS.origin.from.commit)&&LS.origin.from.files.every(f=>/^[0-9a-f]{40}$/.test(f.sha)),
+  'the snapshot names the Reboot-OS commit and every blob it was read from');
+ const bad=LS.cues.filter(r=>(normMap(r[0]).s.trim())!==r[0]);
+ ok(bad.length===0,'every cue is written exactly as normMap turns it, so the matcher can find it, off: '+JSON.stringify(bad.slice(0,3)));
+ const seatKeys=['crown','eye','throat','heart','solar','sacral','root'];
+ ok(LS.cues.every(r=>r[1].split(' ').every(k=>seatKeys.indexOf(k)>=0)),'every cue is filed under one or more of the seven seats');
+ ok(LS.cues.every(r=>r[0].split(' ').length>=2),'no cue is one word, which the lexicon already reads');
+ ok(LS.cues.every((r,i)=>i===0||LS.cues[i-1][0].length>=r[0].length),'the cues run longest first, so a longer phrase is claimed before a shorter one inside it');
+
+ const t='I keep giving up on myself. I am afraid of change, and work is hard.';
+ const r=letgoCues(t), cs=r.hits.map(h=>h.cue);
+ ok(cs.indexOf('giving up on myself')>=0&&cs.indexOf('giving up')<0,'"giving up on myself" is one hit and does not also count "giving up", read '+JSON.stringify(cs));
+ ok(cs.indexOf('afraid of change')>=0&&cs.indexOf('work is hard')>=0,'a tail of the dictation is found in ordinary writing, read '+JSON.stringify(cs));
+ ok(r.hits.every(h=>normMap(t.slice(h.at,h.end)).s.trim()===h.cue),'each hit\'s raw offsets cover exactly the person\'s own characters for that phrase');
+ ok(r.hits.every((h,i)=>i===0||r.hits[i-1].at<=h.at),'hits come back in the order they occur');
+ ok(r.hits.every(h=>h.seats.length&&h.seats.every(b=>BANDS.indexOf(b)>=0)),'a hit names its seats by the BANDS names the rest of the engine uses');
+ const tot=Object.keys(r.seats).reduce((a,k)=>a+r.seats[k],0);
+ ok(tot===r.hits.reduce((a,h)=>a+h.seats.length,0),'the per seat tally is the hits\' own seats counted, '+JSON.stringify(r.seats));
+ const ix=r.hits.filter(h=>h.from==='index')[0];
+ ok(ix&&ix.n>0&&typeof ix.channel==='string'&&typeof ix.layer==='string','a hit from the index carries its topic number, channel and layer, '+JSON.stringify(ix));
+ const curly=letgoCues('I don’t love myself');
+ ok(curly.hits.some(h=>h.cue==='dont love myself'),'a phone\'s curly apostrophe matches, as normMap drops it');
+ ok(letgoCues('').hits.length===0&&letgoCues(null).hits.length===0&&letgoCues(undefined).hits.length===0&&letgoCues('ok').hits.length===0,
+  'empty text, null and undefined are no hits and never a throw');
+ ok(letgoCues('upgiving up on myselfish').hits.length===0,'a cue is only found between word boundaries');
+ const a1=letgoCues(t); a1.hits[0].seats.push('Nowhere'); a1.hits[0].cue='changed';
+ ok(JSON.stringify(letgoCues(t))===JSON.stringify(r),'an answer a caller edits leaves the next answer as it was');
+
+ /* ON THE CONTRACT, BESIDE THE EVIDENCE AND NOT IN IT */
+ const sn=E.sniffStory(t);
+ ok(sn.letgo&&JSON.stringify(sn.letgo)===JSON.stringify(r),'sniffStory carries the same matches as letgo');
+ ok(JSON.stringify(E.sniffStory('Nothing here matches the list at all, a plain sentence.').letgo.hits)==='[]','and an entry that carries none says so with an empty list');
+
+ /* THE PACKS */
+ const vm=require('vm'),fs=require('fs'),path=require('path');
+ const cx={};vm.createContext(cx);
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'..','atuned_src','ui','letgopacks.js'),'utf8')+';this.LP=LETGO_PACKS;',cx);
+ const LP=cx.LP, all=[].concat(...LP.packs.map(p=>p.lines));
+ ok(LP.packs.length>1&&all.length===LP.counts.carried,'the packs carry '+all.length+' lines, the count the snapshot records');
+ ok(LP.counts.carried+LP.counts.dropped+LP.counts.held+LP.counts.voice===LP.counts.distinct,'every distinct line of the cards is carried or left out by name: '+JSON.stringify(LP.counts));
+ ok(new Set(all.map(l=>normMap(l).s)).size===all.length,'no line is carried twice, even in two packs');
+ ok(all.every(l=>l.indexOf(String.fromCharCode(0x2014))<0),'no line carries an em dash');
+ const trip=all.filter(l=>srcSafe(l));
+ ok(trip.length===0,'no line carried trips the safety words, so a pack never puts one in front of a person alone: '+JSON.stringify(trip.slice(0,3)));
+ const misfiled=[];LP.packs.forEach(p=>{if(!p.lead.length)return;p.lines.forEach(l=>{const w=normMap(l).s.trim().split(' ');
+  if(p.lead.indexOf(w[0])<0&&!(w[0]==='feeling'&&p.lead.indexOf(w[1])>=0))misfiled.push([p.id,l]);});});
+ ok(misfiled.length===0,'every line is in the pack of the feeling word it opens on, off: '+JSON.stringify(misfiled.slice(0,3)));
+ const leadAll=[].concat(...LP.packs.map(p=>p.lead));
+ const more=LP.packs.filter(p=>!p.lead.length);
+ ok(more.length===1&&more[0].lines.every(l=>{const w=normMap(l).s.trim().split(' ');return leadAll.indexOf(w[0])<0&&!(w[0]==='feeling'&&leadAll.indexOf(w[1])>=0);}),
+  'the one pack with no words of its own takes only lines no other pack would');
+ ok(['anxiety','worry'].every(id=>LP.packs.some(p=>p.id===id&&p.lines.length>0)),'the two packs he named, anxiety and worry, are there and not empty');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
