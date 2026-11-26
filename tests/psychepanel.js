@@ -134,7 +134,7 @@ const SETUP=(idx,mix)=>`(function(){loadP(${idx}); setTab(TAB.FIELD);
 const EVID={aware:3,detach:1,intent:2,ignore:4,attach:2,averse:1};
 
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  require('./net.js').guardBrowser(browser);
  const SEED=require('./seed.js');
  const states=[['blank',0,{}],['loaded',null,EVID]];

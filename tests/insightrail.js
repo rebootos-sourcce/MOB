@@ -58,7 +58,7 @@ const fs=require('fs'), path=require('path'), os=require('os');
 const {chromium}=require('playwright');
 const SEED=require('./seed.js');
 const SRC=process.env.INSIGHT_HTML?path.resolve(process.env.INSIGHT_HTML):path.resolve(__dirname,'..','source.html');
-const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||chromium.executablePath();
 const booted=pg=>pg.waitForFunction(()=>typeof isBooted==='function'&&isBooted(),null,{timeout:30000});
 
 /* PERSON is the test helper every gate injects: a name to a roster index, and a

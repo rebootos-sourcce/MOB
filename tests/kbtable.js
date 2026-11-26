@@ -47,7 +47,7 @@ const booted=async p=>{try{await p.waitForFunction(
   ()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 
 (async()=>{
- const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  for(const [W,H] of [[1600,1000],[390,844]]){
   console.log('\n'+W+' · the table');
   const pg=await browser.newPage({viewport:{width:W,height:H}});

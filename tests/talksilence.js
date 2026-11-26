@@ -265,7 +265,7 @@ const lostOk = p => !(p.lost || []).length;
 (async () => {
   /* Keep 50ms movement sampling faithful when CI places other pages in the background. */
   const browser = guardBrowser(await chromium.launch({
-    executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+    executablePath: process.env.CHROME || chromium.executablePath(),
     args: ['--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows']
   }));
 

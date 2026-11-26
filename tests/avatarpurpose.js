@@ -52,7 +52,7 @@ const LAYOUT=()=>{
   sub:AV.sub, avp:!!document.querySelector('#avbody .avp'), wheel:!!document.querySelector('#avbody .av-arch')};};
 
 (async()=>{
- const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||chromium.executablePath()});
  require('./net.js').guardBrowser(b);
  const errs=[];
  for(const [w,h] of [[1600,1000],[390,844]]){
