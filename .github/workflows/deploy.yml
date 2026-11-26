@@ -551,11 +551,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          legs="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" --paginate \
-            --jq '.jobs[] | select(.name | startswith("gates-report (")) | (.name | ltrimstr("gates-report (") | rtrimstr(")")) + " " + (.conclusion // .status)')" || {
+          # Retry the whole paginated read, not a partially received page.
+          # A transient API stream cancellation must not erase the report.
+          read_ok=false
+          for attempt in 1 2 3; do
+            if legs="$(timeout 30s gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" --paginate \
+            --jq '.jobs[] | select(.name | startswith("gates-report (")) | (.name | ltrimstr("gates-report (") | rtrimstr(")")) + " " + (.conclusion // .status)')"; then
+              read_ok=true
+              break
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Report inventory read failed (attempt $attempt/3); retrying."
+              sleep "$((attempt * 2))"
+            fi
+          done
+          if [ "$read_ok" != true ]; then
             echo "FAIL this run's list of jobs could not be read, so the report only gates cannot be shown."
             exit 1
-          }
+          fi
           if [ -z "$legs" ]; then
             echo "FAIL no gates-report job is in this run's list of jobs."
             exit 1
