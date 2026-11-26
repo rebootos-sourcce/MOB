@@ -56,5 +56,43 @@ delete ordinary.plan;
 const r4=E.pImport(JSON.stringify(ordinary));
 ok(r4&&r4.plan.tier==='free','older imports with no plan stay free');
 
-console.log('\n===== '+P+' passed, '+F+' failed =====');
-process.exit(F?1:0);
+/* Exercise the real auth reader with a delayed, fake Worker response. No
+   credentials, network, checkout or live account are used by this fixture. */
+async function delayedReads(){
+ const fs=require('fs'),vm=require('vm'),path=require('path');
+ const source=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/auth.js'),'utf8');
+ const read=source.slice(source.indexOf('function authPlanRead(){'),source.indexOf('/* A PAGE LEFT OPEN ACROSS A RENEWAL'));
+ const check=source.slice(source.indexOf('function authCheck(){'),source.indexOf('/* THE PAYWALL\'S HALF'));
+ const sessionA={token:'fixture-a',email:'a@example.invalid',accountId:'a'};
+ const sessionB={token:'fixture-b',email:'b@example.invalid',accountId:'b'};
+ const recordA={id:'fixture-record-a'},recordB={id:'fixture-record-b'};
+ let session=sessionA,pending,takes=0,arms=0,keeps=0,forgets=0,boots=0,requests=0;
+ const billing={tier:'two',status:'active'};
+ const ctx={CURP:recordA,AUTH_PLAN_READ_AT:0,authSession:()=>session,
+  authCall:(method,url,body,token)=>{requests++;return new Promise(resolve=>{pending=resolve;});},
+  authPlanTake:b=>{takes++;return b===billing?'live':'unexpected';},
+  authPlanArm:()=>{arms++;},authBillingBack:()=>null,
+  authKeep:()=>{keeps++;},authForget:()=>{forgets++;},
+  authPlanBack:()=>{boots++;},profileSyncStart:()=>{},profileSyncStop:()=>{},status:()=>{}};
+ vm.createContext(ctx);vm.runInContext(read+'\n'+check,ctx);
+ const answer={ok:true,body:{account:{id:'a',email:'a@example.invalid'},billing}};
+ let work=ctx.authPlanRead();pending(answer);let got=await work;
+ ok(got.ok&&got.took==='live'&&takes===1&&arms===1,'same-session same-record server response reaches the plan writer');
+ work=ctx.authPlanRead();session=null;pending(answer);got=await work;
+ ok(!got.ok&&got.took==='stale'&&takes===1&&arms===1,'late paid response after sign out is discarded');
+ session=sessionA;work=ctx.authPlanRead();session=sessionB;pending(answer);got=await work;
+ ok(!got.ok&&got.took==='stale'&&takes===1,'late paid response after account switch is discarded');
+ session=sessionA;work=ctx.authPlanRead();ctx.CURP=recordB;pending(answer);got=await work;
+ ok(!got.ok&&got.took==='stale'&&takes===1,'late paid response cannot write to a different record');
+ session=null;const before=requests;got=await ctx.authPlanRead();
+ ok(!got.ok&&got.took==='signed out'&&requests===before,'signed-out restoration never requests billing');
+ session=sessionA;ctx.CURP=recordA;work=ctx.authCheck();session=sessionB;
+ pending({ok:true,body:{account:{id:'a',email:'changed@example.invalid'},billing}});
+ ok(await work==='stale'&&keeps===0&&boots===0,'late boot success cannot replace the new session');
+ session=sessionA;work=ctx.authCheck();session=sessionB;pending({ok:false,status:401});
+ ok(await work==='stale'&&forgets===0,'late boot 401 cannot sign out a newer session');
+}
+delayedReads().catch(e=>{F++;console.error(e);}).then(()=>{
+ console.log('\n===== '+P+' passed, '+F+' failed =====');
+ process.exit(F?1:0);
+});
