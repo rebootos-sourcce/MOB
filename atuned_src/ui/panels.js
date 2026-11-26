@@ -1138,8 +1138,8 @@ function recordImportHtml(p){
 function recordPlanTail(){
  if(typeof authSession==='function'&&authSession()){
   if(typeof authPlanRead==='function')authPlanRead();
-  return ' The imported plan was reset to Free. Checking your plan with the server.';}
- return ' The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
+  return '. The imported plan was reset to Free. Checking your plan with the server.';}
+ return '. The imported plan was reset to Free. Sign in to check any paid tier with the server.';}
 /* THE IMPORT, WIRED. Every write that can fail reports rather than claiming
    success, which is the standing rule in this product. `after` is called only on
    a load that landed, so a host that draws the record's own name can redraw it
