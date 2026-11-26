@@ -1056,12 +1056,16 @@ function authPlanRead(){
  var s=authSession();
  if(!s)return Promise.resolve({ok:false, took:'signed out'});
  var record=typeof CURP==='undefined'?null:CURP;
+ /* Multiple server reads can finish out of order. Only the newest request
+    may change this record's paid tier; an older paid response is stale even
+    when both requests used the same session and opened record. */
+ var requestId=authPlanRead._requestId=(authPlanRead._requestId||0)+1;
  AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   // The response belongs to this session and the record that requested it.
   // Never grant a late response to a different account or newly opened record.
   var current=authSession();
-  if(!current||current.token!==s.token||(typeof CURP==='undefined'?null:CURP)!==record)
+  if(authPlanRead._requestId!==requestId||!current||current.token!==s.token||(typeof CURP==='undefined'?null:CURP)!==record)
    return {ok:false,took:'stale'};
   if(!r.ok||!r.body)return {ok:false, took:'unread', status:r.status};
   var took=authPlanTake(r.body.billing);
