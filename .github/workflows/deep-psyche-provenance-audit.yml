@@ -3,7 +3,7 @@ on:
   push:
     branches: [qa/deep-psyche-provenance-boundary-20261126]
 permissions:
-  contents: read
+  contents: write
 jobs:
   audit:
     runs-on: ubuntu-24.04
@@ -32,6 +32,22 @@ jobs:
         run: |
           set -eo pipefail
           python3 .claude/skills/atuned-voice/check.py --objections 2>&1 | tee "$RUNNER_TEMP/deep-psyche-audit/voice.log"
+      - name: Commit verified generated products on the isolated candidate
+        if: success() && github.ref == 'refs/heads/qa/deep-psyche-provenance-boundary-20261126'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          remote="$(git ls-remote origin "refs/heads/qa/deep-psyche-provenance-boundary-20261126" | cut -f1)"
+          test "$remote" = "$GITHUB_SHA" || { echo "Candidate advanced; refusing stale publication"; exit 1; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- atuned_src/engine/data/deep_psyche.js engine.js source.html atuned-packed.html funnel/tokens.css funnel/dist/
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: regenerate verified Deep Psyche public projection'
+          fi
+          node tools/products.js --self-test && node tools/products.js
+          git push origin HEAD:refs/heads/qa/deep-psyche-provenance-boundary-20261126
       - uses: actions/upload-artifact@v4
         if: always()
         with:
