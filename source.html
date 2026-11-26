@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3519 3be2b3a8 2026-11-26 23:33"><head><meta charset="utf-8">
+<html lang="en" data-build="v3521 6c59baf 2026-11-26 23:41"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -73077,11 +73077,10 @@ function stRelPanel(){
  if((f=document.getElementById('strdose')))f.onchange=function(){
   RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
  /* the same never-both-at-once rule release.js's own #reltone keeps: tone
-    on turns voice off, read through the same relVoiceWanted/uiSet pair. */
+    on turns voice off, with both preferences saved together. */
  if((f=document.getElementById('strtone')))f.onclick=function(){
   if(typeof relToneOn!=='function'||typeof uiSet!=='function')return;
-  var on=!relToneOn(); uiSet('tone',on);
-  if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
+  uiSet('tone',!relToneOn(),'voice');
   if(typeof relRender==='function')relRender();
   stRelPanel();};
  var go=document.getElementById('strun');
@@ -78140,15 +78139,17 @@ function anaGo(k,nm,fromPage){
 function anaRedraw(inRail){
  var was=RD_INRAIL; RD_INRAIL=!!inRail;
  try{if(S.tab===TAB.ANALYTICS)anaRender(); else anaDrill();}finally{RD_INRAIL=was;}}
+function anaBack(i){
+ if(!ANA_TRAIL[i])return;
+ ANA_PICK=ANA_TRAIL[i]; ANA_TRAIL=ANA_TRAIL.slice(0,i);
+ anaRedraw(true);}
 addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target.closest('[data-ana],[data-anacrumb]'):null;
  if(!t)return;
  var inPage=!!t.closest('#ana'), inDrill=!!t.closest('#rdrill');
  if(!inPage&&!inDrill)return;
  if(t.hasAttribute('data-anacrumb')){
-  var i=+t.getAttribute('data-anacrumb'); if(!ANA_TRAIL[i])return;
-  ANA_PICK=ANA_TRAIL[i]; ANA_TRAIL=ANA_TRAIL.slice(0,i);
-  anaRedraw(true);
+  anaBack(+t.getAttribute('data-anacrumb'));
   return;}
  /* REAL SOUND, SILENT BY DEFAULT: sfx() (ui/sound.js) already is; this is
     the one real user gesture that opens a reading from the treemap, the
@@ -78170,6 +78171,23 @@ addEventListener('click',function(e){
 /* a bubble and the identification block are not buttons, so Enter and Space
    press them the way they press a button */
 addEventListener('keydown',function(e){
+ var key=e.key.toLowerCase(), target=e.target;
+ if(S.tab===TAB.ANALYTICS&&(key==='f'||key==='b')){
+  if(e.repeat||e.ctrlKey||e.altKey||e.metaKey||e.shiftKey
+    ||(target&&target.closest&&target.closest('input,textarea,select,[contenteditable]')))return;
+  if(key==='b'&&ANA_TRAIL.length){
+   e.preventDefault();
+   anaBack(ANA_TRAIL.length-1);
+   return;}
+  if(key!=='f')return;
+  var step=target&&target.closest&&target.closest('#ana [data-ana], #rdrill [data-ana]');
+  if(!step){
+   var hovered=document.querySelectorAll('#ana [data-ana]:hover, #rdrill [data-ana]:hover');
+   step=hovered[hovered.length-1];}
+  if(step){
+   e.preventDefault();
+   step.dispatchEvent(new MouseEvent('click',{bubbles:true}));}
+  return;}
  if(e.key!=='Enter'&&e.key!==' ')return;
  var t=e.target; if(!t||!t.getAttribute||t.tagName==='BUTTON')return;
  if(t.getAttribute('role')!=='button'||!t.hasAttribute('data-ana'))return;
@@ -84053,7 +84071,8 @@ function relMMSS(sec){
    run giving up on the voice after a failure, so one dead server costs one
    line and not one per line. A new run asks again. */
 function relVoiceWanted(){
- return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
+ /* Older records can have both flags set. Honor their explicit tone choice. */
+ return !relToneOn()&&!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
 function relVoiceCan(){
  return typeof studioCan==='function'&&studioCan();}
 function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
@@ -87184,9 +87203,10 @@ function relRender(){
     open; this ships the two-row shape because it is the smaller, additive
     change over what is already drawn. */
  if((b=document.getElementById('reltone')))b.onclick=function(){
-  var on=!relToneOn();uiSet('tone',on);
-  if(on&&relVoiceWanted()){
-   uiSet('voice',false);RUN.studioLost=false;
+  var on=!relToneOn(), wasVoice=relVoiceWanted();
+  uiSet('tone',on,'voice');
+  if(on&&wasVoice){
+   RUN.studioLost=false;
    var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
      ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
    if(live)relStep(); else {speakStop();relRender();}
@@ -87200,8 +87220,7 @@ function relRender(){
     calls relTone, which reads the now-false tone and stops the bed itself,
     so nothing further is needed here for that half. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
-  var on=!relVoiceWanted();uiSet('voice',on);
-  if(on)uiSet('tone',false);
+  var on=!relVoiceWanted();uiSet('voice',on,'tone');
   RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
@@ -106826,10 +106845,12 @@ function accAccountDelete(){
  return true;}
 /* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
    an older profile is filled here rather than at nine call sites. */
-function uiSet(k,v){
+function uiSet(k,v,exclusive){
  if(!CURP)return false;
  if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={};
- CURP.ui[k]=v; pSave();
+ CURP.ui[k]=v;
+ if(v&&exclusive)CURP.ui[exclusive]=false;
+ pSave();
  if(!statusSaved())return false;
  applyUiPrefs(); return true;}
 function applyUiPrefs(){
@@ -117712,5 +117733,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008587744"></div>
+<div id="eof" hidden data-len="008588526"></div>
 </body></html>
