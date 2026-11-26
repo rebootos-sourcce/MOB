@@ -96,7 +96,8 @@ function displayCopy(value){
   .replace(/psychological construct/g,'psychological concept')
   .replace(/named source construct/g,'named source concept')
   .replace(/see source reference and crosswalk for traceability/g,'see the source references')
-  .replace(/future crosswalk row/g,'future mapping row');
+  .replace(/future crosswalk row/g,'future mapping row')
+  .replace(/The v341 crosswalk lists this as a separate related consciousness concept; do not merge it into the eight-domain roster without an explicit ruling\./g,'The v341 source comparison lists this separately from the eight domains; combining them has not been approved.');
 }
 const out={
  schema:'atuned.deep_psyche.shipped_app.v2',
