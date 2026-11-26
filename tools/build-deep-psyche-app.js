@@ -26,12 +26,34 @@ for(const r of registry.records){
   if(!(other.links||[]).includes(r.id))throw Error('Non-reciprocal link '+r.id+' -> '+id);
  }
 }
+const vm=require('node:vm');
+function sourceTable(file,table){
+ const src=fs.readFileSync(path.join(root,'atuned_src/engine/data',file),'utf8');
+ return vm.runInNewContext(src+'\n'+table);
+}
+const ARCHDOM_SNAPSHOT=sourceTable('archdom.js','ARCHDOM_SNAPSHOT');
+const SAB_PI_AS=sourceTable('canon.js','SAB_PI_AS');
 function nativeNavigationCandidates(r) {
  const out=[];
  const add=(kind,name,field)=>{
-  if(typeof name==='string' && name.trim())
-   out.push({kind,name:name.trim(),sourceField:field,
-    evidenceStatus:'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE'});
+  if(typeof name!=='string'||!name.trim())return;
+  name=name.trim();
+  const ref={kind,name,sourceField:field,evidenceStatus:'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE'};
+  if(kind==='dom'){
+   const word=ARCHDOM_SNAPSHOT.rows[r.archetypeName];
+   const route=ARCHDOM_SNAPSHOT.words[word];
+   if(route && word===name && route.nm && route.nm!==name){
+    ref.targetName=route.nm;
+    ref.evidenceStatus='Domain link / '+route.how;
+   }
+  }else if(kind==='arch'){
+   const alias=Object.entries(ARCHDOM_SNAPSHOT.alias).find(([,value])=>value.as===name);
+   if(alias){ref.targetName=alias[0];ref.evidenceStatus='Book alias / provisional';}
+  }else if(kind==='sab' && name==='Controller' && SAB_PI_AS.Micromanager===name){
+   ref.targetName='Micromanager';
+   ref.evidenceStatus='S02 / need for control';
+  }
+  out.push(ref);
  };
  if(r.recordType==='archetype_candidate')add('arch',r.canonicalName,'archetype_candidate.canonicalName');
  if(r.recordType==='mapping_record') {

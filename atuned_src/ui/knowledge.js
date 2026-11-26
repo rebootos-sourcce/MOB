@@ -1159,11 +1159,11 @@ function kbPsycheDrill(d){
  }).join('');
  var nativeButtons=(typeof kbRowsOf==='function'?(d.nativeNavigationCandidates||[]).map(function(ref,i){
   var hit=kbRowsOf(ref.kind).filter(function(x){
-   return String(x.t||'').trim().toLowerCase()===String(ref.name||'').trim().toLowerCase();
+   return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
   })[0];
   if(!hit)return '';
   return '<button type="button" class="btn" data-dp-native="'+esc(d.id)+'" data-dp-native-index="'+i+'">'
-   +esc(ref.name)+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
+   +esc(ref.name)+(ref.targetName&&ref.name!=='Controller'?' → '+esc(ref.targetName):'')+' <span class="ad-sub">'+esc(ref.evidenceStatus)+'</span></button>';
  }):[]).join('');
  rdShell('<div class="pm-eye">Deep Psyche / '+esc(d.type)+'</div>'
   +'<div class="ad-nm">'+esc(d.name)+'</div>'
@@ -1191,7 +1191,7 @@ addEventListener('click',function(e){
  if(!record||!isFinite(index)||index<0||index%1)return;
  var ref=(record.nativeNavigationCandidates||[])[index];if(!ref)return;
  var target=kbRowsOf(ref.kind).filter(function(x){
-  return String(x.t||'').trim().toLowerCase()===String(ref.name||'').trim().toLowerCase();
+  return String(x.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase();
  })[0];
  if(target)kbOpen(target);
 });

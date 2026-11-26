@@ -21,8 +21,14 @@ const nativeCandidates=db.records.flatMap(x=>x.nativeNavigationCandidates||[]);
 assert(nativeCandidates.length===108,'Expected 108 source-derived native navigation candidates');
 assert(nativeCandidates.filter(x=>x.kind==='seat').length===18,
  '18 documented ARCH18 seat pathways missing');
-assert(nativeCandidates.every(x=>x.sourceField&&x.evidenceStatus==='EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE'),
- 'Native drill link used unsupported inferred equivalence');
+const aliases={Controller:'Micromanager',Outlaw:'Rebel',Healing:'Restoration',Love:'Connection',Communication:'Exchange',Destruction:'Dissolution',Architect:'Imperium'};
+const routed=nativeCandidates.filter(x=>x.targetName);
+assert.strictEqual(routed.length,10);
+for(const ref of nativeCandidates){
+ assert(ref.sourceField);
+ if(ref.targetName)assert.strictEqual(ref.targetName,aliases[ref.name]);
+ else assert.strictEqual(ref.evidenceStatus,'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE');
+}
 const by=new Map(db.records.map(x=>[x.id,x]));
 for(const original of registry.records){
  const delivered=by.get(original.id);
@@ -85,6 +91,12 @@ nativeClick({target:{closest:selector=>selector==='[data-dp-native]'?{
  key==='data-dp-native-index'?'2':null
 }:null}});
 assert(nativeOpened?.t==='Solar','ARCH18 native click does not open existing Solar seat drill');
+const s02={k:'sab',t:'Micromanager'};
+drillContext.kbRowsOf=clickScope.kbRowsOf=kind=>kind==='sab'?[s02]:[];
+drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
+assert(rendered.includes('Controller <span') && rendered.includes('S02 / need for control'));
+nativeClick({target:{closest:()=>({getAttribute:key=>key==='data-dp-native'?'mapping:arch18:01':'1'})}});
+assert.strictEqual(nativeOpened,s02);
 const sourceHtml=path.join(ROOT,'source.html');
 if(process.env.CI)assert(fs.existsSync(sourceHtml),'CI acceptance requires a built source.html');
 if(fs.existsSync(sourceHtml)){
