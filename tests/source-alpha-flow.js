@@ -115,8 +115,37 @@ async function main() {
     verify('ok', voice.some(line => line.includes('confirmed in an earlier entry')), JSON.stringify(voice));
     console.log('Opted-in graph lookup and voice reply passed, ' + (Date.now() - voiceStart) + ' ms through test speech');
 
-    const result = await page.evaluate(() => {
+    const revoke = await page.evaluate(async () => {
       stType();
+      const grant = SRC_HISTORY_GRANT;
+      const reply = SRC_CHAT.filter(row => row.w === 'src').at(-1);
+      const line = reply.q;
+      const original = authVoice;
+      let pending, requests = 0;
+      try {
+        authVoice = () => { requests++; return new Promise(resolve => { pending = resolve; }); };
+        const played = new Promise(resolve => stSrcSpeak(line, { historyGrant: grant, onEnd: resolve }));
+        document.getElementById('srchistory').click();
+        pending({ ok: true, blob: new Blob(['test audio']) });
+        const oldPlayed = await played;
+        const histories = SRC_CHAT.filter(row => row.historyGrant || (row.q || '').includes('confirmed in an earlier entry'));
+        const caption = document.getElementById('srcsay').textContent;
+        const oldRead = srcHistoryEntries().length;
+        document.getElementById('srchistory').click();
+        const retryPlayed = await new Promise(resolve => stSrcSpeak(line, { historyGrant: grant, onEnd: resolve }));
+        return { oldPlayed, retryPlayed, requests, caption, rows: histories.length, oldRead,
+          sameGrant: grant === SRC_HISTORY_GRANT };
+      } finally { authVoice = original; }
+    });
+    verify('equal', revoke.oldPlayed, false);
+    verify('equal', revoke.retryPlayed, false);
+    verify('equal', revoke.requests, 1);
+    verify('equal', revoke.rows, 0);
+    verify('equal', revoke.oldRead, 0);
+    verify('equal', revoke.sameGrant, false);
+    verify('ok', !revoke.caption.includes('confirmed in an earlier entry'));
+
+    const result = await page.evaluate(() => {
       const root = document.querySelector('[data-srcv="no"][data-seat="root"]');
       if (!root) throw Error('No Root correction control');
       root.click();
@@ -213,6 +242,18 @@ async function main() {
     verify('equal', await page.locator('#affrows li').count(), 7);
     verify('match', await page.locator('#affrows').textContent(), /ask for a second pair of eyes/);
     verify('deepEqual', await page.evaluate(() => affKept()), keptBefore);
+    await page.evaluate(() => {
+      srcChangeHistory(null);
+      srcChangeHistory(CURP);
+      document.getElementById('affadd').click();
+    });
+    verify('deepEqual', await page.evaluate(() => affKept()), keptBefore);
+    verify('match', await page.locator('#affst').textContent(), /history permission changed/);
+    verify('equal', await page.locator('#affadd').isDisabled(), true);
+    await page.locator('#affx').click();
+    await page.getByRole('button', { name: 'That fits. Draft a reframe' }).click();
+    await page.locator('#afft').fill('I know I can choose when to ask for a second pair of eyes.');
+    await page.locator('#affgo').click();
     await page.locator('#affadd').click();
     const savedReframe = await page.evaluate(() => affKept());
     verify('equal', savedReframe?.rows.length, 7);
