@@ -1316,7 +1316,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordPlanTail()+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link.'+(copied?' Loaded as a second copy, since this record is already on this device.':'')+recordPlanTail()+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
