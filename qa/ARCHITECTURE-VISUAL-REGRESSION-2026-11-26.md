@@ -1,0 +1,3 @@
+# Visual and actionability regression follow-up, 26 November 2026
+
+Base 1bcf352e9292f3c235fd759af4eecd0463a44bf7. No product source changes. After merged #234 and #235, separate #221 and #219 gates reported a missing canvas label (78/1) and failed Commit press (149/1). Evidence: jobs 139935369743 and 139989657264. The tests now require an actual visible, running Dashboard canvas with canonical seat labels and a real locator click, rather than a detached handle or unpaintable surface. These are hypotheses under test, not verified product fixes. Existing assertion counts and negative centre-word and Commit receipt checks remain. Seven complete repeats per gate, with unchanged floors, are required. No deployment.

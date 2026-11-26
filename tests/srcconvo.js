@@ -371,12 +371,29 @@ const fast = p => p.evaluate(() => { SRC_TAIL_MS = 90; });
     const p = await open(browser, 1600, 1000); await fast(p);
     await p.evaluate(() => { window.__ft = []; const o = CanvasRenderingContext2D.prototype.fillText;
       CanvasRenderingContext2D.prototype.fillText = function (t) { if (this.canvas && this.canvas.id === 'srcface') window.__ft.push(String(t)); return o.apply(this, arguments); }; });
+    // The desktop Story hero may mount the face at zero width. Test the
+    // actual visible Dashboard canvas, not an unpaintable host.
+    await p.evaluate(() => { STV.dash = true; stRender(); });
+    const mounted = await p.waitForFunction(() => {
+      const cv = document.getElementById('srcface'), state = SrcFace.state();
+      return cv && !cv.hidden && cv.getBoundingClientRect().width > 100
+        && cv.getBoundingClientRect().height > 100 && state.running;
+    }, null, { timeout: 8000 }).then(() => true, () => false);
     await talk(p);
     await say(p, 'I was afraid all night. I felt so guilty about it.', 330);
+    // Keep observing through the original 3.5s window, and wait for the
+    // actual seat-label positive control within a bounded paint budget.
     await p.waitForTimeout(3500);
+    const drewSeat = await p.waitForFunction(() => window.__ft.some(t =>
+      BANDS.some(b => t === b || t.startsWith(b + ', '))), null,
+      { timeout: 8000 }).then(() => true, () => false);
     const ft = await p.evaluate(() => window.__ft.slice());
     const words = ft.filter(t => /^(Listening|Weighing|Found|Holding|Answering|Waiting)$/.test(t));
-    ok(ft.length > 0, 'the circle drew text at all, its seat labels: ' + JSON.stringify([...new Set(ft)].slice(0, 6)));
+    const diag = await p.evaluate(() => {
+      const cv = document.getElementById('srcface'), st = SrcFace.state();
+      return { w: cv?.clientWidth, h: cv?.clientHeight, running: st.running, reading: st.reading };
+    });
+    ok(mounted && drewSeat, 'the visible circle drew canonical seat labels: ' + JSON.stringify([...new Set(ft)].slice(0, 6)) + ' canvas ' + JSON.stringify(diag));
     ok(words.length === 0, 'and none of it is a state word at the centre: ' + JSON.stringify([...new Set(words)]));
     await p.cx.close();
   }
