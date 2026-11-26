@@ -66,6 +66,15 @@ function nativeNavigationCandidates(r) {
  }
  return out;
 }
+/* Copy-safe delivery projection: the canonical research registry stays unchanged.
+ * Count notation such as n=14 belongs in evidence, not in a person's drill.
+ * This only changes copy-facing fields, never IDs, sourceRefs, links or
+ * relationship evidence. The existing voice objections gate remains strict.
+ */
+function displayCopy(value){
+ if(typeof value!=='string')return value;
+ return value.replace(/\bn\s*=\s*14\b/g,'fourteen');
+}
 const out={
  schema:'atuned.deep_psyche.shipped_app.v1',
  sourceRegistryVersion:registry.version,
@@ -75,12 +84,12 @@ const out={
   id:r.id,kind:r.kind,type:r.recordType,
   name:r.canonicalName||r.nm||r.id,
   family:r.fam||r.layer||'Deep Psyche',
-  description:r.def||r.definition||'',
-  body:r.body||r.definition||r.def||'',
-  clear:r.sourceVersionSpecificDescription?.clearExpression||
-    (Array.isArray(r.healthyExpression)?r.healthyExpression[0]:null)||null,
-  distorted:r.sourceVersionSpecificDescription?.distortedExpression||
-    (Array.isArray(r.decoherentExpression)?r.decoherentExpression[0]:null)||null,
+  description:displayCopy(r.def||r.definition||''),
+  body:displayCopy(r.body||r.definition||r.def||''),
+  clear:displayCopy(r.sourceVersionSpecificDescription?.clearExpression||
+    (Array.isArray(r.healthyExpression)?r.healthyExpression[0]:null)||null),
+  distorted:displayCopy(r.sourceVersionSpecificDescription?.distortedExpression||
+    (Array.isArray(r.decoherentExpression)?r.decoherentExpression[0]:null)||null),
   reviewStatus:r.status||null,
   sourceRefs:r.sourceRefs||[],
   sourceClaims:r.sourceClaims||[],
