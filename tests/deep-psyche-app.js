@@ -30,6 +30,21 @@ for(const ref of nativeCandidates){
  else assert.strictEqual(ref.evidenceStatus,'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE');
 }
 const by=new Map(db.records.map(x=>[x.id,x]));
+const crypto=require('node:crypto');
+assert.strictEqual(db.schema,'atuned.deep_psyche.shipped_app.v2');
+assert.strictEqual(db.sourceRegistry,'docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json');
+assert.strictEqual(db.records.length,by.size,'Duplicate projected identity');
+function expectedRef(value){
+ return value.replace('Chapter 12 Stacking Architecture (#ch17)','Chapter 12 (#ch17)')
+  .replace(/ \(Library file file_[a-z0-9]+\)/g,'');
+}
+function originalEvidenceDigest(r){
+ return crypto.createHash('sha256').update(JSON.stringify({
+  sourceRefs:r.sourceRefs||[],sourceClaims:r.sourceClaims||[],
+  relationshipAudit:r.relationshipAudit||null,depthReviewStatus:r.depthReviewStatus||null,
+  status:r.status||null,relationships:r.relationships||[]
+ })).digest('hex');
+}
 /* The source registry retains literal research notes; the shipped drill
    must not present statistical sample notation as reader-facing copy. */
 const displayFields=['description','body','clear','distorted'];
@@ -43,13 +58,15 @@ for(const original of registry.records){
  assert(delivered,'Shipped app record missing: '+original.id);
  assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.relationships)),original.relationships,
   'Typed source relationship provenance lost: '+original.id);
- assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceRefs)),original.sourceRefs,
-  'Source citations lost: '+original.id);
- assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceClaims)),original.sourceClaims||[],
-  'Record source claims lost: '+original.id);
- assert(delivered.reviewStatus===original.status,'Source status mutated: '+original.id);
- assert(delivered.depthReviewStatus?.structuralStatus==='PASS',
-  'Depth structural review missing: '+original.id);
+ assert.deepStrictEqual(JSON.parse(JSON.stringify(delivered.sourceRefs)),(original.sourceRefs||[]).map(expectedRef),
+  'Projected citation no longer points to the source: '+original.id);
+ assert.strictEqual(delivered.sourceEvidenceDigest,originalEvidenceDigest(original),
+  'Original evidence digest mismatch: '+original.id);
+ for(const field of ['sourceClaims','relationshipAudit','depthReviewStatus'])
+  assert(!Object.hasOwn(delivered,field),'Research-only field shipped: '+field);
+ assert(delivered.sourceStatus===original.status,'Source status mutated: '+original.id);
+ assert(delivered.structuralReviewStatus===original.depthReviewStatus?.structuralStatus &&
+  delivered.structuralReviewStatus==='PASS','Depth structural review missing: '+original.id);
 }
 /* Deliberately remove one pair's evidence while keeping other relationships.
    This must never be accepted as complete provenance. */

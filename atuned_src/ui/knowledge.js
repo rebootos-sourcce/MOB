@@ -1169,8 +1169,8 @@ function kbPsycheDrill(d){
  rdShell('<div class="pm-eye">Deep Psyche / '+esc(d.type)+'</div>'
   +'<div class="ad-nm">'+esc(d.name)+'</div>'
   +'<div class="ad-sub">'+esc(d.family)+'</div>'
-  +'<div class="pm-eye">Source-defined description</div><p class="ad-p">'+esc(detail)+'</p>'
-  +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.reviewStatus||'unclassified')+'</p>'
+  +'<div class="pm-eye">'+(d.displaySlotOnly?'Display position only':'Source-defined description')+'</div><p class="ad-p">'+esc(detail)+'</p>'
+  +'<div class="pm-eye">Source status</div><p class="ad-p">'+esc(d.sourceStatus||'unclassified')+'</p>'
   +((d.sourceRefs||[]).length?'<div class="pm-eye">Source references</div><p class="ad-p">'+esc(d.sourceRefs.join(' / '))+'</p>':'')
   +(relationButtons?'<div class="pm-eye">Connected records, tap to follow</div>'+relationButtons:'')
   +(nativeButtons?'<div class="pm-eye">Source-table links into the instrument</div>'+nativeButtons:''));
