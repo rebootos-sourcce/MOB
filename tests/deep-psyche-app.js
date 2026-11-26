@@ -102,6 +102,18 @@ drillContext.kbRowsOf=kind=>kind==='seat'?[{t:'Solar',k:'seat'}]:[];
 drillContext.kbPsycheDrill(by.get('mapping:arch18:01'));
 assert(rendered.includes('data-dp-native-index')&&rendered.includes('Solar'),
  'ARCH18 source row cannot render a direct native seat drill path');
+/* Missing native destinations must be visible but never actionable.
+   An unresolved relationship is not permission to invent a route. */
+assert(rendered.includes('data-dp-unresolved'),
+ 'Unmatched source candidates silently disappear from the drill');
+const unresolvedCount=(rendered.match(/data-dp-unresolved=/g)||[]).length;
+assert(unresolvedCount>0,'Expected at least one unresolved native candidate');
+const unmatched=by.get('mapping:arch18:01').nativeNavigationCandidates.filter(ref=>
+ !drillContext.kbRowsOf(ref.kind).some(row=>
+  String(row.t||'').trim().toLowerCase()===String(ref.targetName||ref.name||'').trim().toLowerCase()));
+assert.strictEqual(unresolvedCount,unmatched.length,
+ 'Every unmatched native candidate needs a visible noninteractive status');
+
 /* Execute source-backed click routing against the actual generated record. */
 const nativeClickSource=ui.match(/\/\* Exact-label navigation into the native app records\. \*\/[\s\S]*?\n\}\);/);
 assert(nativeClickSource,'Native click event handler missing');
