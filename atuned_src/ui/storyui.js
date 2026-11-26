@@ -1825,7 +1825,7 @@ function stMarks(t,p){
  marks.toks=toks;
  return marks;}
 function stRead(){
- var t=ST_TEXT, ents=(CURP&&CURP.story&&CURP.story.entries)||[];
+ var t=ST_TEXT, ents=srcHistoryEntries();
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents),ST_ACTIVE)};}
@@ -2133,7 +2133,7 @@ function stOwn(){
  if(ST_LISTEN||ST_WANT_LISTEN){ ST_WANT_LISTEN=false; ST_LISTEN=false; ST_LISTEN_T0=null; ST_LIVE='';
   try{ if(ST_REC)ST_REC.stop(); }catch(e){} stMicAnnounce(); }
  ST_OWN=cur;
- SRC_HISTORY_PROFILE=null; SRC_HISTORY_READ=null;
+ srcChangeHistory(null);
  ST_TEXT=''; ST_PARSED=null; ST_HELLO_ON=false; SRC_PASSED=false; SRC_SAFE_UP=false; if(typeof srcFresh==='function')srcFresh();
  STV.lastFound=[]; STV.lastT=null; STV.unsaved=null; STV.safeSaid=false; STV.lastOpen=false;
  stDraftBack();
@@ -2595,10 +2595,9 @@ function srcConvText(){
 function srcHeardNow(){
  if(!SRC_FROM)return STR.heard||srcHear(ST_TEXT,null);
  if(srcSafe(ST_TEXT))return srcHear(ST_TEXT,null);
- var ents=(CURP&&CURP.story&&CURP.story.entries)||[];
- return srcHear(srcConvText(),srcPrior(ents),ST_ACTIVE);}
+ return srcHear(srcConvText(),srcPrior(srcHistoryEntries()),ST_ACTIVE);}
 function srcLedgerNow(){
- var ents=(CURP&&CURP.story&&CURP.story.entries)||[], t=srcConvText();
+ var ents=srcHistoryEntries(), t=srcConvText();
  var asked=SRC_LOG.map(function(r){return r.seat;}).filter(Boolean);
  var k=t+'\u0000'+ents.length+'\u0000'+JSON.stringify(ST_ACTIVE||null)+'\u0000'+JSON.stringify(SRC_VERDICTS)+'\u0000'+asked.join();
  if(!SRC_LEDGER||k!==SRC_LEDGER_K){
@@ -2759,7 +2758,7 @@ function srcDyn(heard,entries,text){
  if(k&&unmarkedOf(t,parseStory(t)).unmarked>0){
   SRC_DK.push(k); srcLog(k,null);
   return srcDimVet(SRC_DIMQ[k]('',null),k,null);}
- var ents=entries||[], pr=srcPrior(ents);
+ var ents=srcHistoryAllowed(SRC_HISTORY_GRANT)?(entries||[]):[], pr=srcPrior(ents);
  var ks=Object.keys(pr).sort(function(a,b){return pr[b]-pr[a]||(a<b?-1:1);});
  if(!ks.length)return '';
  /* the last entry's heaviest seat, then the seats most often landed on */
@@ -2840,7 +2839,32 @@ function srcNone(){
  return 'I can’t place this one yet. Tell me what your body did, and where.';}
 /* History is opt-in for the current profile and this page load. Only
    finalized turns can consult it. Repaints reuse the same lookup. */
-var SRC_HISTORY_PROFILE=null, SRC_HISTORY_READ=null;
+var SRC_HISTORY_PROFILE=null, SRC_HISTORY_READ=null, SRC_HISTORY_GRANT=null;
+function srcHistoryAllowed(grant){
+ return !!grant&&grant===SRC_HISTORY_GRANT&&SRC_HISTORY_PROFILE===CURP&&!showOnly();
+}
+function srcHistoryEntries(){
+ return srcHistoryAllowed(SRC_HISTORY_GRANT)&&CURP.story?CURP.story.entries||[]:[];
+}
+function srcChangeHistory(profile){
+ if(profile===SRC_HISTORY_PROFILE)return;
+ SRC_HISTORY_PROFILE=profile;
+ SRC_HISTORY_GRANT=profile?{}:null;
+ SRC_HISTORY_READ=null;
+ if(SRC_VOICE.pendingHistory||SRC_VOICE.playingHistory)srcVoiceCut();
+ SRC_CHAT.forEach(function(r){
+  if(r.w==='me'){delete r.rg; delete r.bd; return;}
+  if(!r.historyGrant)return;
+  var prior=r.q;
+  r.q=r.withoutHistory;
+  r.historyGrant=null;
+  if(SRC_SHOWN===prior)SRC_SHOWN=r.q;
+ });
+ var reply=document.querySelector('#srcreply .src-ai-t');
+ if(reply)reply.textContent=SRC_SHOWN;
+ var live=document.getElementById('srcsay');
+ if(live&&live.textContent!==SRC_SHOWN)live.textContent=SRC_SHOWN;
+}
 function srcLatestUserTurn(){
  for(var i=SRC_CHAT.length-1;i>=0;i--){
   var row=SRC_CHAT[i];
@@ -2849,7 +2873,7 @@ function srcLatestUserTurn(){
  return null;
 }
 function srcHistoryLine(row){
- if(!row||!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly())return '';
+ if(!row||!srcHistoryAllowed(SRC_HISTORY_GRANT))return '';
  var verdictKey=JSON.stringify(SRC_VERDICTS);
  var hit=SRC_HISTORY_READ;
  if(!hit||hit.row!==row||hit.verdictKey!==verdictKey){
@@ -2896,7 +2920,7 @@ function srcPaint(){
  if(reflection||history){
   var check=srcIntegrityDecision({
    truth:!!latest&&(!reflection||!Object.keys(storyDeclinedSeats(SRC_VERDICTS)).length),
-   transparency:!history||SRC_HISTORY_PROFILE===CURP,
+   transparency:!history||srcHistoryAllowed(SRC_HISTORY_GRANT),
    nonHarm:!srcSafe(ST_TEXT),
    patience:!SRC_PASSED&&!SRC_VENT
   });
@@ -3027,7 +3051,7 @@ function srcPaint(){
      through ST_REC.onresult, one commit per utterance, so fresh flips
      once per thing said; a typed turn lands the moment the keyboard box
      closes and STV.typed goes false again, never on a key before that. */
-  if(fresh&&ST_WANT_LISTEN&&!STV.typed)stSrcSpeak(cur.q);
+  if(fresh&&ST_WANT_LISTEN&&!STV.typed)stSrcSpeak(cur.q,{historyGrant:cur.historyGrant});
   o=srcThread(turn,heard,cur,acts,why);}
  /* SAFE, TALKING: THE PERSON'S OWN WORDS STAY ON THE PAGE, 3 November. The
     conversation became the Journal's only state on 28 October, and the
@@ -3172,8 +3196,8 @@ function srcPaint(){
  h.innerHTML=o;
  var historyDoor=h.querySelector('#srchistory');
  if(historyDoor)historyDoor.onchange=function(){
-  SRC_HISTORY_PROFILE=historyDoor.checked?CURP:null;
-  SRC_HISTORY_READ=null;
+  srcChangeHistory(historyDoor.checked?CURP:null);
+  stRead();
   stRelPanel();
  };
  srcVerdictWire(h);
@@ -3451,7 +3475,12 @@ function srcChatCur(turn,heard,q,ask){
     turn. */
  var hl=srcHeardLines(turn.move==='vent'||turn.move==='pass');
  r.q=srcPick(lines.concat(hl.lines),said);
- if(turn.history&&r.q)r.q+=turn.history;
+ var usedPrior=(heard&&heard.seats||[]).some(function(seat){return seat.earlier>0;});
+ if(r.q&&(turn.history||usedPrior)&&srcHistoryAllowed(SRC_HISTORY_GRANT)){
+  r.historyGrant=SRC_HISTORY_GRANT;
+  r.withoutHistory=usedPrior&&!turn.reflection?SRC_LISTENING:r.q;
+  if(turn.history)r.q+=turn.history;
+ }
  if(hl.sp&&hl.lines[0]===r.q)r.sp=hl.sp;
  r.w='src'; return r;}
 /* "WHAT DO YOU MEAN", ANSWERED, 13 November, TASKS.md SK2. What it restates
@@ -3549,7 +3578,7 @@ function srcChatNote(cur){
  SRC_CHAT.forEach(function(r,i){if(r.w==='src'){li=i; after=false;} else if(li>=0)after=true;});
  var L=li>=0?SRC_CHAT[li]:null;
  if(after){SRC_CHAT.push(cur); return true;}
- if(L&&L.key===cur.key){L.q=cur.q; L.mv=cur.mv; L.rg=cur.rg; L.bd=cur.bd; return false;}
+ if(L&&L.key===cur.key){SRC_CHAT[li]=cur; return false;}
  if(L&&/^(open|q|say)\|/.test(L.key)){SRC_CHAT[li]=cur; return false;}
  SRC_CHAT.push(cur);
  return !/^open\|/.test(cur.key);}
@@ -3963,7 +3992,7 @@ function srcVerdictWire(h){
   SRC_VERDICTS=r.verdicts; SRC_VFIX=''; SRC_VFIXT='';
   again('[data-srcv="fix"][data-seat="'+seat+'"]');};});}
 function srcThread(turn,heard,cur,acts,why){
- var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
+ var ents=srcHistoryEntries(), pr=null, last=-1;
  SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
  var o='<ol class="src-th" aria-label="Conversation">';
  SRC_CHAT.forEach(function(r,i){
@@ -4740,7 +4769,7 @@ var ST_FLD_IC={speed:'<path d="M4.5 16a7.5 7.5 0 0 1 15 0"/><path d="M12 16l3.6-
  dose:'<path d="M5 9.5h12.5l-3-3M19 14.5H6.5l3 3"/>',
  tone:'<path d="M4 12h1.5M8 8.5v7M12 5.5v13M16 9v6M20 11v2"/>'};
 function stReframeDraft(){
- if(!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly()||STV.unsaved||ST_TEXT.trim())return null;
+ if(!srcHistoryAllowed(SRC_HISTORY_GRANT)||STV.unsaved||ST_TEXT.trim())return null;
  return srcCheckingReframe(CURP,STV.lastT,true);
 }
 function stRelPanel(){
@@ -4936,13 +4965,15 @@ function stRelPanel(){
  var reframe=document.getElementById('srcdraftreframe');
  if(reframe)reframe.onclick=function(){
   var current=stReframeDraft();
-  if(current)affOpen({from:'story',draft:current});
-  else stRelPanel();
+  if(!current){stRelPanel(); return;}
+  var grant=SRC_HISTORY_GRANT, storyTime=STV.lastT;
+  affOpen({from:'story',draft:current,canUseDraft:function(){
+   return srcHistoryAllowed(grant)&&srcCheckingReframe(CURP,storyTime,true)===current;
+  }});
  };
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
-  RUN.speed=2.2/(RUN.pace||1);
   /* the entry is named only when the panel is reading the last commit's own
      addresses: not a bank pick, not a draft still being typed, not the three
      heaviest held, none of which came from one entry */
@@ -4956,6 +4987,7 @@ function stRelPanel(){
     return;
    }
   }
+  RUN.speed=2.2/(RUN.pace||1);
   relPick(ids,storyT?{story_t:storyT}:null);
   var begin=document.getElementById('relgo'); if(begin)begin.click();};
  stRelSize(e,M.take.length);
@@ -5867,7 +5899,7 @@ function stMic(){
    stopped (0 while it plays), which is what the microphone door reads to
    tell Source AI's own voice coming back from the person (srcMicDoor). tail
    is the timer that holds the recording a moment after a line ends. */
-var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false, said:'', endAt:0, tail:0};
+var SRC_VOICE={seq:0, el:null, url:'', t:0, muteFail:false, said:'', endAt:0, tail:0, pendingHistory:null, playingHistory:null};
 /* THE HOLD OUTLASTS THE LINE, 18 November. The recording came back the same
    tick the audio ended, and a speaker and a room do not stop that fast: what
    was left of Source AI's own voice was heard as the person's next turn and
@@ -5964,7 +5996,7 @@ function srcVoiceStop(){
  clearTimeout(SRC_VOICE.t);
  try{ if(SRC_VOICE.el){ SRC_VOICE.el.onended=SRC_VOICE.el.onerror=null; SRC_VOICE.el.pause(); } }catch(e){}
  try{ if(SRC_VOICE.url)URL.revokeObjectURL(SRC_VOICE.url); }catch(e){}
- SRC_VOICE.el=null; SRC_VOICE.url='';}
+ SRC_VOICE.el=null; SRC_VOICE.url=''; SRC_VOICE.playingHistory=null;}
 /* QUIET, FOR A LINE NOBODY ASKED FOR. The intro (ui/srcintro.js) speaks one
    line the person did not press anything to hear, in the eleven seconds
    before the first card, and a voice that cannot reach the server there is
@@ -5982,12 +6014,14 @@ function srcVoiceStop(){
    and the recording stays held. The intro's own button press is a person
    moving on mid sentence, so the line stops, a pending one is dropped by
    moving the number, and the hold comes off. */
-function srcVoiceCut(){ SRC_VOICE.seq++; var was=!!SRC_VOICE.el; srcVoiceStop(); if(was)stHush(false); }
+function srcVoiceCut(){ SRC_VOICE.seq++; SRC_VOICE.pendingHistory=null; var was=!!SRC_VOICE.el; srcVoiceStop(); if(was)stHush(false); }
 function stSrcSpeak(line,o){
  o=o||{};
  var quiet=!!o.quiet, ended=false;
  var fin=function(played){ if(ended)return; ended=true; if(typeof o.onEnd==='function')try{o.onEnd(!!played);}catch(e){} };
  var say=function(m){ if(!quiet)status(m,'fail'); };
+ var historyGrant=o.historyGrant||null;
+ if(historyGrant&&!srcHistoryAllowed(historyGrant)){fin(false); return;}
  var text=String(line==null?srcSayNow():line).trim(); if(!text){ fin(false); return; }
  /* a press with no line given speaks what srcSayNow chose: if that was the
     opener and the voice never plays it, the next press may say it again,
@@ -6000,6 +6034,7 @@ function stSrcSpeak(line,o){
  var why=srcVoiceWhyNot();
  if(why){ say(why); fin(false); return; }
  var seq=++SRC_VOICE.seq;
+ SRC_VOICE.pendingHistory=historyGrant;
  /* MUTED, NOT CANCELLED, 12 November, a real bug his own words caught:
     "the voice is not hooked up." A microphone failure used to bump
     SRC_VOICE.seq itself, so this call's own resolution read as stale and
@@ -6023,6 +6058,8 @@ function stSrcSpeak(line,o){
     used, and clears it there. */
  authVoice(text,'frame').then(function(r){
   if(seq!==SRC_VOICE.seq){ fin(false); return; }
+  SRC_VOICE.pendingHistory=null;
+  if(historyGrant&&!srcHistoryAllowed(historyGrant)){fin(false); return;}
   /* the route's own status, kept for whoever has to know why: the Insight
      well's button reads 429 to draw itself at today's limit (ui/stksay.js) */
   SRC_VOICE.fail=r&&r.ok?0:((r&&r.status)||-1);
@@ -6044,7 +6081,7 @@ function stSrcSpeak(line,o){
   srcVoiceStop();
   var url=URL.createObjectURL(r.blob);
   var a=new Audio(url);
-  SRC_VOICE.el=a; SRC_VOICE.url=url;
+  SRC_VOICE.el=a; SRC_VOICE.url=url; SRC_VOICE.playingHistory=historyGrant;
   /* Source's face follows this element, the one voice, and no other: it
      speaks while this plays and holds its reading until this ends
      (ui/srcface.js). Handed before play(), so its first playing event is
@@ -6089,7 +6126,7 @@ function stSrcSpeak(line,o){
   if(pl&&pl.catch)pl.catch(function(){ if(seq!==SRC_VOICE.seq||SRC_VOICE.el!==a)return;
    done(); var muteFail=!!SRC_VOICE.muteFail; SRC_VOICE.muteFail=false;
    if(!muteFail)say('Source AI\'s voice is ready but the browser blocked playing it.');});
- },function(){ fin(false); });}
+ },function(){ if(seq===SRC_VOICE.seq)SRC_VOICE.pendingHistory=null; fin(false); });}
 /* THE RECORDING, HELD WHILE SOURCE AI SPEAKS. ST_HUSH is the hold.
    ST_REC_ON is whether the recogniser is running, which ST_LISTEN is not:
    ST_LISTEN is what the button says, and through a hold the button still
