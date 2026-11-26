@@ -99,6 +99,14 @@ const out={
 if(out.records.some(r=>r.reviewPassCount!==4))throw Error('Every record requires four review passes');
 for(const r of out.records) {
  if(!r.relationships.length)throw Error('Unmapped relationship provenance: '+r.id);
+ // Every navigable pair needs its own typed evidence on this source row.
+ // One unrelated relationship must never make an otherwise unproven link pass.
+ for(const linkedId of r.linkedIds){
+  if(!r.relationships.some(e=>
+   (e.fromId===r.id&&e.toId===linkedId)||
+   (e.toId===r.id&&e.fromId===linkedId)))
+   throw Error('Link missing pair provenance: '+r.id+' -> '+linkedId);
+ }
  for(const e of r.relationships) {
   if(!e.type||!e.fromId||!e.toId||!e.status||!e.sourceRef)
    throw Error('Relationship missing provenance: '+r.id);
