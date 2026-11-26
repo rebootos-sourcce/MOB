@@ -85,7 +85,7 @@ for(const marker of ["['psyche','Deep Psyche']","if(sec==='psyche'","if(x.k==='p
 assert(!ui.includes('const DEEP_PSYCHE='),'App UI contains independent copied registry');
 assert(ui.includes('function kbPsycheDrill(d)')&&ui.includes('data-dp-link'),
  'Deep Psyche drill must support record-to-record click-through');
-assert(ui.includes('data-dp-native-index')&&ui.includes('kbOpen(target)'),
+assert(ui.includes('data-dp-native-index')&&ui.includes('kbOpen(targets[0])'),
  'Native instrument record drill navigation missing');
 const drillSource=ui.match(/function kbPsycheDrill\(d\)\{[\s\S]*?\n\}/);
 assert(drillSource,'Source-qualified graph drill function missing');
