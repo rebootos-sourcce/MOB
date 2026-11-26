@@ -142,6 +142,15 @@ async function open(browser, w, h, o) {
     return route.fulfill({ status: 200, headers: Object.assign({ 'content-type': 'audio/wav' }, CORS), body: wav(hold.sec) });
   });
   await cx.addInitScript(MIC); await cx.addInitScript(LCOL_SEED); await cx.addInitScript(FULL_SIGHT);
+  if (o.geometrySoak) await cx.addInitScript(() => {
+    // Software WebGL can starve the geometry sampler on CI. The decorative
+    // cloud has a separate browser test. Keep the Talk view and its CSS live.
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
+      if (this.id === 'unicloud' && kind === 'webgl2') return null;
+      return getContext.call(this, kind, ...args);
+    };
+  });
   const p = await cx.newPage();
   p.errs = []; p.on('pageerror', e => p.errs.push(String(e && e.message || e))); p.voice = voice; p.cx = cx; p.hold = hold;
   await p.goto(FILE, { waitUntil: 'load' }); await booted(p);
@@ -471,29 +480,58 @@ const lostOk = p => !(p.lost || []).length;
   /* ---------- Commit does not move ---------- */
   if (ONLY.includes('jump')) {
     console.log('\n=== the round button holds still, sampled every 50 milliseconds for ' + SOAK + ' seconds ===');
-    const open1 = o => openLoaded(browser, o.w, o.h, { silenceMs: o.silence || 0 });
-    const [A, B, C, D] = await Promise.all([open1({ w: 1600, h: 1000, silence: 6000 }), open1({ w: 1600, h: 1000 }), open1({ w: 390, h: 844, silence: 6000 }), open(browser, 1600, 1000)]);
-    for (const p of [A, B, C, D]) await p.evaluate(WATCH);
-    /* the known bad case, on a blank page: a jump to the upper left every ten seconds, for 150 milliseconds */
-    await D.evaluate(() => stMic()); await D.waitForFunction(() => document.getElementById('stapply') && document.getElementById('stapply').getBoundingClientRect().width > 0, null, { timeout: 8000 }).catch(() => {});
-    await D.evaluate(() => { window.__inj = 0; setInterval(() => { const e = document.getElementById('stapply'); if (!e) return; window.__inj++; const was = e.style.transform;
-      e.style.transform = 'translate(-1200px,-900px)'; setTimeout(() => { e.style.transform = was; }, 150); }, 10000); });
-    /* Talk on in the two loaded pages that go quiet, Talk left off in the third */
-    const [tA, tC] = await Promise.all([A.evaluate(TEXTS), C.evaluate(TEXTS)]);
-    await Promise.all([pressTalk(A), pressTalk(C)]);
-    await A.waitForTimeout(1500);
-    if (SHOTS) await snap(C, 'talk-pressed-early-390.png');
-    await wait(SOAK * 1000 - 1500);
-    const [wa, wb, wc, wd] = await Promise.all([A, B, C, D].map(readWatch));
-    const [ra, rb, rc, rd] = [wa, wb, wc, wd].map(analyse);
-    const made = await Promise.all([A, C].map(p => p.evaluate(() => ({ starts: window.__micCfg.starts, renders: window.__renders }))));
-    ok(ra.shown > 500 && ra.samples > 500, 'Talk on at 1600: the button was sampled ' + ra.samples + ' times and was on screen for ' + ra.shown);
-    ok(made[0].starts >= 5 && made[0].renders >= 4, 'and the recogniser went quiet and was restarted ' + (made[0].starts - 1) + ' times, rendering the page ' + made[0].renders + ' times, as Chrome\'s does about every ten seconds');
-    ok(ra.excursions === 0 && ra.tr === 0, 'Talk on at 1600: it never left its place, ' + ra.excursions + ' samples away from ' + ra.steady + ', and the browser started ' + ra.tr + ' glides on left or top: ' + JSON.stringify(ra.first));
-    ok(rc.shown > 500 && rc.excursions === 0 && rc.tr === 0 && made[1].starts >= 5, 'Talk on at 390: the same, ' + rc.shown + ' samples on screen, ' + rc.excursions + ' away from ' + rc.steady + ', ' + rc.tr + ' glides, ' + (made[1].starts - 1) + ' restarts: ' + JSON.stringify(rc.first));
-    ok(rb.samples > 500 && rb.excursions === 0 && rb.tr === 0, 'Talk off at 1600: nothing moves, ' + rb.samples + ' samples, ' + rb.excursions + ' excursions, ' + rb.tr + ' glides');
-    ok(rd.shown > 300 && rd.excursions >= 2, 'known bad first: a jump injected every ten seconds is caught, ' + rd.excursions + ' samples away in ' + rd.shown + ', ' + (await D.evaluate(() => window.__inj)) + ' injected: ' + JSON.stringify(rd.first));
+    const open1 = o => openLoaded(browser, o.w, o.h, { silenceMs: o.silence || 0, geometrySoak: true });
+    // Chrome throttles background pages. Give each 50 ms sampler its
+    // own foreground interval, with the same soak and sample requirements.
+    const observe = async (p, start) => {
+      await p.bringToFront();
+      await p.evaluate(WATCH);
+      if (start) await start(p);
+      await wait(SOAK * 1000);
+      return analyse(await readWatch(p));
+    };
+    const D = await open(browser, 1600, 1000, { geometrySoak: true });
+    await D.evaluate(() => stMic());
+    await D.waitForFunction(() => document.getElementById('stapply')?.getBoundingClientRect().width > 0, null, { timeout: 8000 });
+    const rd = await observe(D, p => p.evaluate(() => {
+      window.__inj = 0;
+      setInterval(() => {
+        const e = document.getElementById('stapply');
+        if (!e) return;
+        window.__inj++;
+        const was = e.style.transform;
+        e.style.transform = 'translate(-1200px,-900px)';
+        setTimeout(() => { e.style.transform = was; }, 150);
+      }, 10000);
+    }));
+    const injected = await D.evaluate(() => window.__inj);
+    await D.cx.close();
+    const B = await open1({ w: 1600, h: 1000 });
+    const rb = await observe(B);
+    await B.cx.close();
+    const A = await open1({ w: 1600, h: 1000, silence: 6000 });
+    const tA = await A.evaluate(TEXTS);
+    const ra = await observe(A, pressTalk);
+    const aState = await A.evaluate(() => ({ starts: window.__micCfg.starts, renders: window.__renders }));
+    const xA = addedText(tA, await A.evaluate(TEXTS));
     await shot(A, 'talk-silent-after-soak-1600.png');
+    await A.cx.close();
+    const C = await open1({ w: 390, h: 844, silence: 6000 });
+    const tC = await C.evaluate(TEXTS);
+    const rc = await observe(C, async p => {
+      await pressTalk(p);
+      if (SHOTS) {
+        await p.waitForTimeout(1500);
+        await snap(p, 'talk-pressed-early-390.png');
+      }
+    });
+    const cStarts = await C.evaluate(() => window.__micCfg.starts);
+    ok(ra.shown > 500 && ra.samples > 500, 'Talk on at 1600: the button was sampled ' + ra.samples + ' times and was on screen for ' + ra.shown);
+    ok(aState.starts >= 5 && aState.renders >= 4, 'and the recogniser went quiet and was restarted ' + (aState.starts - 1) + ' times, rendering the page ' + aState.renders + ' times, as Chrome\'s does about every ten seconds');
+    ok(ra.excursions === 0 && ra.tr === 0, 'Talk on at 1600: it never left its place, ' + ra.excursions + ' samples away from ' + ra.steady + ', and the browser started ' + ra.tr + ' glides on left or top: ' + JSON.stringify(ra.first));
+    ok(rc.shown > 500 && rc.excursions === 0 && rc.tr === 0 && cStarts >= 5, 'Talk on at 390: the same, ' + rc.shown + ' samples on screen, ' + rc.excursions + ' away from ' + rc.steady + ', ' + rc.tr + ' glides, ' + (cStarts - 1) + ' restarts: ' + JSON.stringify(rc.first));
+    ok(rb.samples > 500 && rb.excursions === 0 && rb.tr === 0, 'Talk off at 1600: nothing moves, ' + rb.samples + ' samples, ' + rb.excursions + ' excursions, ' + rb.tr + ' glides');
+    ok(rd.shown > 300 && rd.excursions >= 2, 'known bad first: a jump injected every ten seconds is caught, ' + rd.excursions + ' samples away in ' + rd.shown + ', ' + injected + ' injected: ' + JSON.stringify(rd.first));
     await shot(C, 'talk-silent-after-soak-390.png');
 
     /* the same pages are the 390 hover check: the structure, and a tap on the circle that opens nothing */
@@ -504,12 +542,12 @@ const lostOk = p => !(p.lost || []).length;
     ok(!(await tipOn(C)), 'and a tap on the circle at 390 opens no card');
     const seen390 = await C.evaluate(SEEN);
     ok(seen390.length === 0, 'and at 390 there is no visible word Listening or Press again to stop: ' + JSON.stringify(seen390));
-    const [xA, xC] = [addedText(tA, await A.evaluate(TEXTS)), addedText(tC, await C.evaluate(TEXTS))];
+    const xC = addedText(tC, await C.evaluate(TEXTS));
     ok(xA.length === 0 && xC.length === 0, 'forty seconds after Talk, at 1600 and at 390, the page shows no word it did not show before Talk: ' + JSON.stringify({ at1600: xA, at390: xC }));
     await shot(C, 'talk-silent-tap-390.png');
     const errs = [A, B, C, D].map(p => p.errs.join(' | ')).filter(Boolean);
     ok(!errs.length, 'no page errors in any of the four pages: ' + errs.join(' || '));
-    for (const p of [A, B, C, D]) await p.cx.close();
+    await C.cx.close();
   }
 
   await browser.close();
