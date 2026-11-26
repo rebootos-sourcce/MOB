@@ -786,6 +786,10 @@ while i < len(args):
     else:
         ep = a if ep is None else ep
         i += 1
+if os.environ.get('FAKE_GH_FAIL_FIRST') and not os.path.exists(os.path.join(d, 'gh.first-failed')):
+    open(os.path.join(d, 'gh.first-failed'), 'w').close()
+    sys.stderr.write('gh: transient stream cancellation\n')
+    sys.exit(1)
 if os.environ.get('FAKE_GH_FAIL'):
     sys.stderr.write('gh: Server Error (HTTP 502)\n')
     sys.exit(1)
@@ -1512,10 +1516,19 @@ class Lint:
                         'R2 gates-report-summary does not print a line naming %s and its result (%s).' % (g, v))
             self.ok(any('repos/o/r/actions/runs/4242/jobs' in c for c in r.calls['gh']),
                     "R2 gates-report-summary does not read repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs.")
+        r = self.script(job, step, ctx, 'summary recovers after one API failure',
+                        extra={'FAKE_GH_FAIL_FIRST': '1'}, files={'jobs.json': jobs_json(mixed)})
+        self.ok(r.code == 0 and len(r.calls['gh']) == 2,
+                'R2 report must recover after one failed API read, making exactly two calls.')
+        self.ok(all(re.search(r'^\|\s*%s\s*\|\s*%s\s*\|\s*$' % (re.escape(g), v), r.summary, re.M)
+                    for g, v in mixed.items()),
+                'R2 the retried report must contain every result, including failures.')
         for name, extra, files in (('GitHub down', {'FAKE_GH_FAIL': '1'}, {'jobs.json': jobs_json(green)}),
                                    ('a list with no gates-report leg', {}, {'jobs.json': jobs_json(green, False)})):
             r = self.script(job, step, ctx, 'summary ' + name, extra=extra, files=files)
             self.ok(r.code != 0, 'R2 gates-report-summary, given %s, exits 0; a report it could not make must fail loud.' % name)
+            if name == 'GitHub down':
+                self.ok(len(r.calls['gh']) == 3, 'R2 persistent API failure must stop after three attempts.')
 
     # R3, one list of built pages, checked in both places -------------------
     def r3_pages(self):
