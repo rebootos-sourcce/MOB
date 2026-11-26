@@ -124,6 +124,15 @@ Then LOOK at the images. Reading CSS is not reviewing a screen.
 
 ## Rules learned the expensive way
 
+**This section used to only grow by someone remembering to write it down.**
+`.claude/skills/skill-observer/SKILL.md`, built 26 November, is this project's
+own version of a task observer: at the end of a round, or when asked to check
+whether a skill needs updating, it reads for a correction that landed twice,
+a review finding that recurred, or a real confirmed gap no skill covers, and
+drafts a proposed edit to the right file, named here or into the right
+`SKILL.md`, for the owner to approve. It never writes one on its own. Load it
+there; this section stays the place the approved result lands.
+
 **Symmetry in space, everywhere, forever.** Ruled 16 November, his words, as a
 standing instruction for the whole UI/UX team and not one screen: "symmetry in
 space, your spacing should be even, your symmetry should be even at the very
