@@ -165,11 +165,43 @@ submits to add. The person whose data it is gives consent.
 
 A practitioner adding someone as a friend sees partial information: first
 name, last name, date of birth, what has been released, what has not, the
-structure, and the stories.
+structure, and the stories. **SUPERSEDED, already, by the tier-ladder ruling
+near the top of this file (round OK): not the story cloud, a snapshot.** This
+paragraph is the earlier line that one names and overrides; it is kept here
+dated rather than deleted, and a team pass on 26 November read it as live by
+mistake, which is the reason it is marked now instead of only pointed at.
 
 Access is by the person's key, scoped to their tier data.
 
+**RULED, 26 November, round PS.** Asked directly whether a practitioner sees
+the stories, his words: "let's not show the stories. We want to show the
+summary. That should give enough data for the person to work with, and we'll
+figure out what to do after that." Confirms the round OK snapshot ruling
+above by name, in today's voice: a practitioner's view is Summary only, never
+the story cloud, never the name (a key stands in for it, same boundary this
+product already holds for a story's own named entities above). "What to do
+after that" names Body and Field as a real, separate, later question, not
+settled by this sentence: see the practitioner module's own open items.
+
+**RULED, 26 November, round PS, the sync question.** Publishing a computed
+Summary snapshot for a granted practitioner to read needs a seam off the
+device, which the 9 October profile-sync ruling (`PROFILE_SYNC_ENABLED`,
+`ui/auth.js`) otherwise holds closed. Asked directly, his words: "Turn sync
+back on." This is a narrow, named exception, not a reversal of the 9 October
+ruling: it authorizes one new seam, a computed Summary-only snapshot (no
+story text, no name) published only once a client has granted a specific
+practitioner sight, never the general story-pulling sync the 9 October entry
+still gates behind `PROFILE_SYNC_ENABLED=false`. That flag is untouched by
+this ruling.
+
 **Open:** whether a practitioner sees all of it instead of the tier scope.
+Also open, carried from the 26 November design pass and not yet his call:
+whether a practitioner's view ever includes the rise reading (`engine/rise.js`,
+not shown to anyone today, client or practitioner), and the real
+infrastructure gap it surfaced -- the grant, the invite token and the
+published snapshot all need a server-side relationship store this product
+does not have yet, so the real (not mockup) build is gated on that being
+built first, not on a product decision.
 
 ## The quiz result page
 
