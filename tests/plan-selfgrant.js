@@ -92,7 +92,49 @@ async function delayedReads(){
  session=sessionA;work=ctx.authCheck();session=sessionB;pending({ok:false,status:401});
  ok(await work==='stale'&&forgets===0,'late boot 401 cannot sign out a newer session');
 }
-delayedReads().catch(e=>{F++;console.error(e);}).then(()=>{
+/* Test the actual import UI seam without a browser or network. The only
+   accepted source of payment is the authenticated reader, never imported JSON. */
+async function importedPlanReads(){
+ const fs=require('fs'),vm=require('vm'),path=require('path');
+ const source=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/panels.js'),'utf8');
+ const start=source.indexOf('function recordImportPlanReceipt(){');
+ const end=source.indexOf('/* WHAT A LOAD THAT LANDED REDRAWS');
+ if(start<0||end<0)throw Error('Import restoration seam missing');
+ let session=null,accept=true,reads=0,rendered=0;
+ const elements={shimp:{value:'fixture'},shimpgo:{},shimpmsg:{}};
+ const ctx={$:id=>elements[id],pImport:()=>accept?{name:'fixture'}:null,
+  importCopied:()=>false,importError:()=>['refused fixture'],
+  recordLanded:()=>{rendered++;},authSession:()=>session,
+  authPlanRead:()=>{reads++;return Promise.resolve({ok:true,took:'live'});}};
+ vm.createContext(ctx);vm.runInContext(source.slice(start,end),ctx);
+ ctx.recordImportWire('sh');
+ elements.shimpgo.onclick();
+ ok(reads===0&&rendered===1&&/Sign in to check/.test(elements.shimpmsg.textContent),
+  'signed-out import stays free without a billing request');
+ session={token:'fixture'};
+ elements.shimpgo.onclick();
+ ok(reads===1&&rendered===2&&/Checking your signed-in plan/.test(elements.shimpmsg.textContent),
+  'successful signed-in import requests authoritative billing restoration');
+ accept=false;elements.shimpgo.onclick();
+ ok(reads===1&&rendered===2&&/^Not loaded/.test(elements.shimpmsg.textContent),
+  'rejected import never requests a new entitlement');
+ const link=source.slice(source.indexOf('function recordLinkBoot(){'),source.indexOf('function profileSheet(){'));
+ let receipt='';
+ ctx.recordLinkTake=()=>({text:'fixture',cleared:true});
+ ctx.linkUnwrap=()=>[1];ctx.recordLinkInflate=()=>Promise.resolve(accept?{name:'fixture'}:null);
+ ctx.recordLinkSay=s=>{receipt=s;};ctx.tabLandFirst=()=>false;
+ vm.runInContext(link,ctx);
+ accept=true;await ctx.recordLinkBoot();
+ ok(reads===2&&/Checking your signed-in plan/.test(receipt),
+  'signed-in record link uses the same authoritative restoration');
+ accept=false;await ctx.recordLinkBoot();
+ ok(reads===2&&/^Not loaded/.test(receipt)&&/Nothing else was touched/.test(receipt),
+  'rejected link cannot request restoration or claim a reset');
+ session=null;accept=true;await ctx.recordLinkBoot();
+ ok(reads===2&&/Sign in to check/.test(receipt),
+  'signed-out record link makes no billing request');
+}
+delayedReads().then(importedPlanReads).catch(e=>{F++;console.error(e);}).then(()=>{
  console.log('\n===== '+P+' passed, '+F+' failed =====');
  process.exit(F?1:0);
 });
