@@ -1639,9 +1639,12 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   if(!go)return {go:false,setup:setup};
   go.click();
   const t0=Date.now();
-  while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<90000)
+  /* Keep the full-dose completion requirements under concurrent Chromium
+     load. A bounded per-line budget is not a reduction in test coverage. */
+  const limitMs=Math.max(90000,plan.length*dose*450);
+  while(!(RUN.phase==='done'&&RUN.cool>=COOLING.length)&&Date.now()-t0<limitMs)
    await new Promise(r=>setTimeout(r,50));
-  const out={go:true,setup:setup,plan:plan,dose:dose,lpc:LINES_PER_CH,
+  const out={go:true,setup:setup,plan:plan,dose:dose,lpc:LINES_PER_CH,limitMs:limitMs,
    seen:window.__relSeen.slice(),spoken:spoken,opening:OPENING.slice(),cooling:COOLING.slice(),
    stem:C3_STEM,phase:RUN.phase,cool:RUN.cool,ms:Date.now()-t0,
    eye:(document.querySelector('#rel .pm-eye')||{}).textContent||'',
@@ -1680,7 +1683,7 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   ok(head&&head.text.indexOf(q.stem)===0,
    'the first statement opens on the six channels: '+(head?head.text:'none'));
   ok(JSON.stringify(cool)===JSON.stringify(q.cooling),'and the cooldown shows every line: '+cool.join(' / '));
-  ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye);
+  ok(q.phase==='done'&&/Released/.test(q.eye),'the run completes to Released, '+q.phase+' '+q.eye+' ('+q.ms+'ms / '+q.limitMs+'ms budget)');
   ok(q.spent===q.plan.length,'and charges exactly the plan it was shown, '+q.spent+' of '+q.plan.length);
   ok(q.spoken.length===0&&q.bed.ctx==='none','and with the sound off nothing was spoken and no audio channel '
    +'was opened, '+q.spoken.length+' lines, context '+q.bed.ctx);
