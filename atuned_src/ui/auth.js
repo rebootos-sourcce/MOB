@@ -824,11 +824,14 @@ function authCheck(){
      Stripe, and the payment still happened, so it says where the plan is */
   if(back==='done')status('Payment finished. Log in from Account to bring the plan onto this record.','fail');
   return Promise.resolve(null);}
+ /* The boot check may return after the person opens another record.
+    Its paid-plan reply must not apply to the newly selected record. */
+ var record=typeof CURP==='undefined'?null:CURP;
  AUTH_PLAN_READ_AT=Date.now();
  return authCall('GET','/v1/me',null,s.token).then(function(r){
   // A late boot response must not resurrect a signed-out or replaced session.
   var current=authSession();
-  if(!current||current.token!==s.token)return 'stale';
+  if(!current||current.token!==s.token||(typeof CURP==='undefined'?null:CURP)!==record)return 'stale';
   var acc=r.body&&r.body.account;
   var redraw=function(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
