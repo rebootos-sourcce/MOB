@@ -30,6 +30,15 @@ for(const ref of nativeCandidates){
  else assert.strictEqual(ref.evidenceStatus,'EXACT_LABEL_NAVIGATION_NOT_CANONICAL_EQUIVALENCE');
 }
 const by=new Map(db.records.map(x=>[x.id,x]));
+/* The source registry retains literal research notes; the shipped drill
+   must not present statistical sample notation as reader-facing copy. */
+const displaySafe=value=>typeof value==='string'?value.replace(/\bn\s*=\s*14\b/g,'fourteen'):value;
+const displayFields=['description','body','clear','distorted'];
+for(const record of db.records){
+ for(const field of displayFields)
+  assert(!/\bn\s*=\s*14\b/.test(record[field]||''),
+   'Research notation leaked into displayed '+field+': '+record.id);
+}
 for(const original of registry.records){
  const delivered=by.get(original.id);
  assert(delivered,'Shipped app record missing: '+original.id);
