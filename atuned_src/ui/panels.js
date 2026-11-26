@@ -1129,6 +1129,16 @@ function recordImportHtml(p){
    success, which is the standing rule in this product. `after` is called only on
    a load that landed, so a host that draws the record's own name can redraw it
    without having to guess whether anything happened. */
+/* Successful imports begin Free. A held authenticated session can restore
+   its tier through the same server reader as sign-in, never from the backup.
+   The reader captures this record and discards late responses after switches. */
+function recordImportPlanReceipt(){
+ if(typeof authSession==='function'&&authSession()&&typeof authPlanRead==='function'){
+  authPlanRead();
+  return '. The imported plan was reset to Free. Checking your signed-in plan with the server.';
+ }
+ return '. The imported plan was reset to Free. Sign in to check any paid tier with the server.';
+}
 function recordImportWire(p,after){
  p=p||'sh';
  var impSay=function(t,bad){var m=$(p+'impmsg'); if(!m)return;
@@ -1152,7 +1162,7 @@ function recordImportWire(p,after){
      first and the message goes onto whatever element is on the screen when it
      is read, which is what impSay does by looking the id up at call time. */
   if(typeof after==='function')after(np);
-  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.');};
+  impSay('Loaded '+(np.name||'the record')+(copied?' as a second copy, since this record is already on this device':'')+recordImportPlanReceipt());};
  var ig;
  if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
@@ -1295,7 +1305,7 @@ function recordLinkBoot(){
      random journey id, reuses an existing session, and never sends the story
      or name; the app still owns the record and the release itself. */
   if(typeof authFunnelStart==='function')authFunnelStart();
-  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+'. The imported plan was reset to Free. Sign in to check any paid tier with the server.'+still,
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link'+(copied?' as a second copy, since this record is already on this device':'')+recordImportPlanReceipt()+still,
    still?'fail':'');
   return np;});}
 function profileSheet(){
