@@ -33,6 +33,7 @@ function sourceTable(file,table){
 }
 const ARCHDOM_SNAPSHOT=sourceTable('archdom.js','ARCHDOM_SNAPSHOT');
 const SAB_PI_AS=sourceTable('canon.js','SAB_PI_AS');
+const nativeArchNames=new Set(sourceTable('canon.js','ARCH').map(a=>a.nm));
 function nativeNavigationCandidates(r) {
  const out=[];
  const add=(kind,name,field)=>{
@@ -49,6 +50,8 @@ function nativeNavigationCandidates(r) {
   }else if(kind==='arch'){
    const alias=Object.entries(ARCHDOM_SNAPSHOT.alias).find(([,value])=>value.as===name);
    if(alias){ref.targetName=alias[0];ref.evidenceStatus='Book alias / provisional';}
+   // A source archetype outside the scored deck is not a missing alias.
+   if(!nativeArchNames.has(ref.targetName||name))ref.nativeDeckStatus='SOURCE_ONLY_ARCHETYPE';
   }else if(kind==='sab' && name==='Controller' && SAB_PI_AS.Micromanager===name){
    ref.targetName='Micromanager';
    ref.evidenceStatus='S02 / need for control';
