@@ -106,7 +106,8 @@ function affOpen(o){
    front door, so the stop runs ahead of everything, every time. */
 function affRun(){
  var r;
- if(AFF.src==='weave'){
+ if(!affDraftAllowed())r=affDraftRefused();
+ else if(AFF.src==='weave'){
   var prim=AFF.srcs.filter(function(x){return x.kind==='avatar';})[0]||AFF.srcs[0];
   r=affWeave(AFF.srcs,prim?prim.key:null);}
  else if(AFF.src==='typed'){
@@ -186,6 +187,18 @@ function affRedraw(focusId){
    disabled attribute is the look; this is the rule, so a forced click on a
    stopped or refused set writes nothing and copies nothing. */
 function affLive(){return !!(AFF.res&&AFF.res.ok&&AFF.keep&&AFF.keep.some(Boolean));}
+function affDraftAllowed(){
+ var o=AFF.o||{};
+ return !o.draft||(typeof o.canUseDraft==='function'&&o.canUseDraft());
+}
+function affDraftRefused(){
+ return {ok:false,say:'The story or history permission changed. Open a new reframe from Journal.',lines:[]};
+}
+function affCheckAction(){
+ if(affDraftAllowed())return true;
+ AFF.res=affDraftRefused(); AFF.keep=null; affPaint();
+ return false;
+}
 function affWire(){
  var c=document.getElementById('sheet-card'); if(!c)return;
  var sel=document.getElementById('affsrc');
@@ -231,6 +244,7 @@ function affWire(){
    them by hand, and the button's own label never changes: it said "Copy
    Failed" for ever in his package. */
 function affCopy(){
+ if(!affCheckAction())return;
  var t=affPlain(AFF.res.lines,AFF.creator,AFF.keep);
  var said=function(ok){
   if(ok){status('Copied.','ok'); return;}
@@ -275,6 +289,7 @@ function affKeptLines(){
 /* ONE WRITER for the key, the ritMoreWrite posture: a worked example is
    refused by name, and no control says Added before the write came back */
 function affAdd(){
+ if(!affCheckAction())return false;
  if(typeof ritOwn==='function'&&!ritOwn()){
   status(ritWhose()+' is a worked example, so nothing was saved to it.','fail'); return false;}
  var rows=AFF.res.lines.filter(function(l,i){return AFF.keep[i];})
