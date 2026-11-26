@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v3518 826b782 2026-11-26 22:45"><head><meta charset="utf-8">
+<html lang="en" data-build="v3518 6b5bd1c 2026-11-26 22:53"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 108 somatic addresses and 4 field anchors, nine poled axes, twenty-one laws.">
@@ -39891,16 +39891,22 @@ function srcHear(text,prior,active){
 
 /* Reflect a checking action and its stated consequence on a finalized turn.
    Each supported construction contributes only the speaker's own clauses. */
-function srcCheckingReflection(text){
+function srcCheckingAction(text){
  var t=String(text||'').trim();
- if(!t||srcSafe(t))return '';
+ if(!t||srcSafe(t))return null;
  var m=/^If I don['’]t (check [a-z][a-z ’'-]{0,119}), ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
- if(m){
-  var action=m[1].replace(/\bmyself\b/gi,'yourself').replace(/\bmy\b/gi,'your');
-  return 'You’re saying that if you don’t '+action+', '+m[2]+'.';
- }
+ if(m)return {action:m[1],consequence:m[2],conditional:true};
  m=/^I keep (checking [a-z][a-z ,’'-]{0,119}) because I (?:think|expect|believe) ([a-z][a-z ,’'-]{0,119})[.!]?$/i.exec(t);
- return m?'You keep '+m[1].replace(/\bmy\b/gi,'your')+'. Your concern is, “'+m[2]+ '.”':'';
+ return m?{action:m[1].replace(/^checking/i,'check'),reported:m[1],consequence:m[2],conditional:false}:null;
+}
+function srcCheckingReflection(text){
+ var found=srcCheckingAction(text);
+ if(!found)return '';
+ if(found.conditional){
+  var action=found.action.replace(/\bmyself\b/gi,'yourself').replace(/\bmy\b/gi,'your');
+  return 'You’re saying that if you don’t '+action+', '+found.consequence+'.';
+ }
+ return 'You keep '+found.reported.replace(/\bmy\b/gi,'your')+'. Your concern is, “'+found.consequence+'.”';
 }
 
 /* Every applicable check has to pass independently. The result describes
@@ -39912,14 +39918,35 @@ function srcIntegrityDecision(checks){
 
 /* A second report of checking supports recurrence of the action. The
    consequences stay distinct unless the person connects them. */
-function srcCheckingHistory(turn,record,allowProfile){
+function srcCheckingHistory(turn,record,allowProfile,current){
  if(allowProfile!==true||!record||!srcCheckingReflection(turn))return false;
  var entries=(record.story&&record.story.entries)||[];
  return entries.some(function(entry){
-  return entry&&typeof entry.text==='string'&&!srcSafe(entry.text)&&
+  return entry&&entry!==current&&(!current||entry.t!==current.t)&&typeof entry.text==='string'&&!srcSafe(entry.text)&&
    !Object.keys(storyDeclinedSeats(entry.verdicts)).length&&
    entry.text.split(/\n+/).some(function(text){return text.trim()!==turn.trim()&&!!srcCheckingReflection(text);});
  });
+}
+
+/* Offer one direction from a saved story only when another entry gives
+   independent evidence of the action. The person's confirmation opens the
+   editable draft and saving stays with Affirm. */
+function srcCheckingReframe(record,storyTime,allowProfile){
+ if(allowProfile!==true||typeof storyTime!=='string'||!storyTime)return null;
+ var entries=record&&record.story&&record.story.entries;
+ if(!Array.isArray(entries))return null;
+ var entry=entries.find(function(item){return item&&item.t===storyTime;});
+ if(!entry||typeof entry.text!=='string'||srcSafe(entry.text)||
+    Object.keys(storyDeclinedSeats(entry.verdicts)).length)return null;
+ var turns=entry.text.split(/\n+/);
+ for(var i=turns.length-1;i>=0;i--){
+  var turn=turns[i], found=srcCheckingAction(turn);
+  if(!found||!srcCheckingHistory(turn,record,allowProfile,entry))continue;
+  var intention='I can choose when to '+found.action.trim();
+  var draft='I know '+intention+'.';
+  if(draft.length<=80&&affSafe(draft).ok&&!affShape(intention).refuse)return draft;
+ }
+ return null;
 }
 
 /* Verify Release against the current story and its verdicts at execution. */
@@ -46880,7 +46907,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
-                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcCheckingHistory:srcCheckingHistory, srcStoryReleaseIntegrity:srcStoryReleaseIntegrity, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcCheckingHistory:srcCheckingHistory, srcCheckingReframe:srcCheckingReframe, srcStoryReleaseIntegrity:srcStoryReleaseIntegrity, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
@@ -71367,6 +71394,7 @@ function srcPaint(){
  if(historyDoor)historyDoor.onchange=function(){
   SRC_HISTORY_PROFILE=historyDoor.checked?CURP:null;
   SRC_HISTORY_READ=null;
+  stRelPanel();
  };
  srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
@@ -72931,9 +72959,13 @@ function stRelModel(){
 var ST_FLD_IC={speed:'<path d="M4.5 16a7.5 7.5 0 0 1 15 0"/><path d="M12 16l3.6-4.2"/><circle cx="12" cy="16" r="1.3"/>',
  dose:'<path d="M5 9.5h12.5l-3-3M19 14.5H6.5l3 3"/>',
  tone:'<path d="M4 12h1.5M8 8.5v7M12 5.5v13M16 9v6M20 11v2"/>'};
+function stReframeDraft(){
+ if(!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly()||STV.unsaved||ST_TEXT.trim())return null;
+ return srcCheckingReframe(CURP,STV.lastT,true);
+}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
- var M=stRelModel(), o='';
+ var M=stRelModel(), o='', draft=stReframeDraft();
  /* THE GRIP, on the top edge, because the panel stands on the column's
     floor and grows upward: see stRelSize below for why */
  o+='<div class="st-rlgrip" id="strelgrip" role="separator" aria-orientation="horizontal" tabindex="0" '
@@ -72989,6 +73021,10 @@ function stRelPanel(){
   +'</ul>';
  /* AFFIRM after a commit and never while typing, ui/affirmui.js */
  if(M.fromLast&&!String(ST_TEXT||'').trim()&&!showOnly()&&typeof affDoorHtml==='function')o+=affDoorHtml('story');
+ if(draft&&typeof affOpen==='function'){
+  o+='<p class="src-chain">Source noticed checking in two of your entries. Does that fit?</p>'
+   +'<button type="button" class="btn" id="srcdraftreframe">That fits. Draft a reframe</button>';
+ }
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
     binaural audio toggle not on the release?" Only the full run screen
     (ui/release.js's own #rel, relSws) carried it; this reads and sets the
@@ -73117,6 +73153,12 @@ function stRelPanel(){
   if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
   if(typeof relRender==='function')relRender();
   stRelPanel();};
+ var reframe=document.getElementById('srcdraftreframe');
+ if(reframe)reframe.onclick=function(){
+  var current=stReframeDraft();
+  if(current)affOpen({from:'story',draft:current});
+  else stRelPanel();
+ };
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
@@ -92785,8 +92827,10 @@ function affOpen(o){
  affCss();
  AFF.o=o; AFF.typed=''; AFF.res=null; AFF.keep=null; AFF.creator=false;
  AFF.srcs=affGather(o).filter(function(x){return x.state==='confirmed';});
+ var draft=o.from==='story'&&typeof o.draft==='string'?o.draft:'';
  var pick=null;
- if(o.key&&AFF.srcs.some(function(x){return x.key===o.key;}))pick=o.key;
+ if(draft){pick='typed'; AFF.typed=draft;}
+ else if(o.key&&AFF.srcs.some(function(x){return x.key===o.key;}))pick=o.key;
  else if(o.pathK&&AFF.srcs.some(function(x){return x.key==='pa:'+o.pathK;}))pick='pa:'+o.pathK;
  else if(affWeaves(AFF.srcs))pick='weave';
  else if(AFF.srcs.length)pick=AFF.srcs[0].key;
@@ -92805,7 +92849,11 @@ function affRun(){
  if(AFF.src==='weave'){
   var prim=AFF.srcs.filter(function(x){return x.kind==='avatar';})[0]||AFF.srcs[0];
   r=affWeave(AFF.srcs,prim?prim.key:null);}
- else if(AFF.src==='typed')r=affCompose(AFF.typed,'ty');
+ else if(AFF.src==='typed'){
+  var theme=AFF.o&&AFF.o.from==='story'&&AFF.o.draft?
+   AFF.typed.replace(/^I know (?:that )?(?=I can )/i,''):AFF.typed;
+  r=affCompose(theme,'ty');
+ }
  else{var s=AFF.srcs.filter(function(x){return x.key===AFF.src;})[0];
   r=s?affCompose(s.text,s.key):affCompose('');}
  AFF.res=r; AFF.keep=r.ok?r.lines.map(function(){return true;}):null;
@@ -92839,14 +92887,15 @@ function affSelHtml(){
  return '<select id="affsrc" class="aff-sel" aria-label="Where the lines come from">'
   +(affWeaves(AFF.srcs)?opt('weave','Your record'):'')
   +AFF.srcs.map(function(x){return opt(x.key,AFF_KIND[x.kind]+': '+cut(x.text));}).join('')
-  +opt('typed','My own words')+'</select>';}
+  +opt('typed',AFF.o&&AFF.o.draft?'Reframe draft':'My own words')+'</select>';}
 function affHtml(){
  var ok=!!(AFF.res&&AFF.res.ok), stop=!!(AFF.res&&AFF.res.stop);
  return '<div class="aff" aria-labelledby="affh">'
   +'<div class="aff-hd"><span class="aff-ic" data-tip-k="Affirmations" data-tip="'+esc(AFF_HEAD_TIP)+'">'+affIc()+'</span><span class="sh-h plain" id="affh">Affirmations</span>'
   +(typeof srcMark==='function'?srcMark():'')+'</div>'
   +'<div class="aff-src">'+affSelHtml()+'</div>'
-  +(AFF.src==='typed'?'<div class="aff-typed"><label class="aff-lab" for="afft">Who you are becoming</label>'
+  +(AFF.src==='typed'?'<div class="aff-typed"><label class="aff-lab" for="afft">'
+   +(AFF.o&&AFF.o.draft?'Review your reframe':'Who you are becoming')+'</label>'
    +'<div class="aff-in"><input type="text" id="afft" maxlength="80" autocomplete="off" spellcheck="true"'
    +' placeholder="Who you are becoming, or one word for it" value="'+esc(AFF.typed)+'">'
    +'<button type="button" class="btn" id="affgo">Affirm</button></div></div>':'')
@@ -117116,5 +117165,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="008536691"></div>
+<div id="eof" hidden data-len="008539137"></div>
 </body></html>

@@ -3174,6 +3174,7 @@ function srcPaint(){
  if(historyDoor)historyDoor.onchange=function(){
   SRC_HISTORY_PROFILE=historyDoor.checked?CURP:null;
   SRC_HISTORY_READ=null;
+  stRelPanel();
  };
  srcVerdictWire(h);
  SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
@@ -4738,9 +4739,13 @@ function stRelModel(){
 var ST_FLD_IC={speed:'<path d="M4.5 16a7.5 7.5 0 0 1 15 0"/><path d="M12 16l3.6-4.2"/><circle cx="12" cy="16" r="1.3"/>',
  dose:'<path d="M5 9.5h12.5l-3-3M19 14.5H6.5l3 3"/>',
  tone:'<path d="M4 12h1.5M8 8.5v7M12 5.5v13M16 9v6M20 11v2"/>'};
+function stReframeDraft(){
+ if(!CURP||SRC_HISTORY_PROFILE!==CURP||showOnly()||STV.unsaved||ST_TEXT.trim())return null;
+ return srcCheckingReframe(CURP,STV.lastT,true);
+}
 function stRelPanel(){
  var e=document.getElementById('strel'); if(!e)return;
- var M=stRelModel(), o='';
+ var M=stRelModel(), o='', draft=stReframeDraft();
  /* THE GRIP, on the top edge, because the panel stands on the column's
     floor and grows upward: see stRelSize below for why */
  o+='<div class="st-rlgrip" id="strelgrip" role="separator" aria-orientation="horizontal" tabindex="0" '
@@ -4796,6 +4801,10 @@ function stRelPanel(){
   +'</ul>';
  /* AFFIRM after a commit and never while typing, ui/affirmui.js */
  if(M.fromLast&&!String(ST_TEXT||'').trim()&&!showOnly()&&typeof affDoorHtml==='function')o+=affDoorHtml('story');
+ if(draft&&typeof affOpen==='function'){
+  o+='<p class="src-chain">Source noticed checking in two of your entries. Does that fit?</p>'
+   +'<button type="button" class="btn" id="srcdraftreframe">That fits. Draft a reframe</button>';
+ }
  /* THE BINAURAL TOGGLE BELONGS HERE TOO, 9 November, his words: "why is a
     binaural audio toggle not on the release?" Only the full run screen
     (ui/release.js's own #rel, relSws) carried it; this reads and sets the
@@ -4924,6 +4933,12 @@ function stRelPanel(){
   if(on&&typeof relVoiceWanted==='function'&&relVoiceWanted())uiSet('voice',false);
   if(typeof relRender==='function')relRender();
   stRelPanel();};
+ var reframe=document.getElementById('srcdraftreframe');
+ if(reframe)reframe.onclick=function(){
+  var current=stReframeDraft();
+  if(current)affOpen({from:'story',draft:current});
+  else stRelPanel();
+ };
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;

@@ -19,7 +19,7 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHyperSeats:srcHyperSeats,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  srcVoiceSniff:srcVoiceSniff, srcVoiceNarrative:srcVoiceNarrative, srcVoiceChargeCycle:srcVoiceChargeCycle, SRC_TULA_LADDERS:SRC_TULA_LADDERS,
-                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcCheckingHistory:srcCheckingHistory, srcStoryReleaseIntegrity:srcStoryReleaseIntegrity, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
+                 srcVoiceGraph:srcVoiceGraph, srcVoiceIntelligence:srcVoiceIntelligence, srcConfirmedStoryAddresses:srcConfirmedStoryAddresses, srcCheckingReflection:srcCheckingReflection, srcCheckingHistory:srcCheckingHistory, srcCheckingReframe:srcCheckingReframe, srcStoryReleaseIntegrity:srcStoryReleaseIntegrity, srcVoiceCanon:srcVoiceCanon, srcVoicePattern:srcVoicePattern, srcVoiceEvidenceBus:srcVoiceEvidenceBus,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_BEHAVE:SRC_BEHAVE, SRC_BEHAVE_ORDER:SRC_BEHAVE_ORDER, SRC_BEHAVE_DIM:SRC_BEHAVE_DIM,
