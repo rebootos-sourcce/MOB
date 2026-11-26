@@ -55,6 +55,40 @@ const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html');
 const SHOTS=process.env.SHOTS||'';
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
+/* Simulate a loaded browser where the exit timer executes before the
+   first-card timer. The intro must persist for two painted frames after
+   the first-card callback, regardless of timer execution order. */
+const vm=require('vm');
+const introSource=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/srcintro.js'),'utf8');
+const leaveSource=introSource.slice(introSource.lastIndexOf('function srcIntroLeave(){'));
+function verifyHandoffTimerOrder(exitFirst){
+ const pending=[],frames=[],seen=[];
+ const h={classList:{add(){}},parentNode:{removeChild(){seen.push('removed');}}};
+ const state={left:false,t:[],h,still:false,done(){seen.push('card');}};
+ const scope={SX:state,SRC_INTRO_T:{hand:120,out:260},
+  SrcFace:{clear(){seen.push('clear');},give(){seen.push('give');}},
+  uniHandBack(){},srcVoiceCut(){},srcIntroKey(){},clearTimeout(){},
+  removeEventListener(){},requestAnimationFrame:fn=>frames.push(fn),
+  setTimeout:(fn,ms)=>pending.push({fn,ms})};
+ vm.runInNewContext(leaveSource+';srcIntroLeave();',scope,{timeout:5000});
+ assertHandoff(pending.length===2,'Handoff schedules two timers');
+ pending.sort((a,b)=>exitFirst?b.ms-a.ms:a.ms-b.ms);
+ pending[0].fn();
+ assertHandoff(!seen.includes('removed'),'Intro not removed after first timer');
+ pending[1].fn();
+ assertHandoff(seen.includes('card')&&!seen.includes('removed'),
+  'First card exists before intro removal');
+ assertHandoff(frames.length===1,'Handoff starts first rendering frame');
+ frames.shift()();
+ assertHandoff(!seen.includes('removed')&&frames.length===1,
+  'Intro survives first rendering frame');
+ frames.shift()();
+ assertHandoff(seen.includes('removed')&&scope.SX===null,
+  'Intro removed after second rendering frame');
+}
+function assertHandoff(condition,message){ok(condition,'handoff: '+message);}
+verifyHandoffTimerOrder(false);
+verifyHandoffTimerOrder(true);
 const booted=async p=>{try{await p.waitForFunction(
   ()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 const shot=async(p,n)=>{ if(!SHOTS)return; fs.mkdirSync(SHOTS,{recursive:true}); await p.screenshot({path:path.join(SHOTS,n+'.png')}); };
