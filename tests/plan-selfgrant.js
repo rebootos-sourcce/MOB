@@ -91,6 +91,25 @@ async function delayedReads(){
  ok(await work==='stale'&&keeps===0&&boots===0,'late boot success cannot replace the new session');
  session=sessionA;work=ctx.authCheck();session=sessionB;pending({ok:false,status:401});
  ok(await work==='stale'&&forgets===0,'late boot 401 cannot sign out a newer session');
+ /* Two valid reads for the same signed-in account and record can race.
+    Returning the older paid response last must never replay old billing. */
+ session=sessionA;ctx.CURP=recordA;
+ let finishFirst=null,finishLast=null;
+ ctx.authCall=()=>{requests++;return new Promise(resolve=>{
+  if(!finishFirst)finishFirst=resolve;else finishLast=resolve;});};
+ work=ctx.authPlanRead();let newer=ctx.authPlanRead();
+ finishLast(answer);let latest=await newer;
+ finishFirst(answer);let older=await work;
+ ok(latest.ok&&latest.took==='live'&&older.took==='stale'&&takes===2&&arms===2,
+  'out-of-order successful billing reads apply only the newest response');
+ /* Fail closed when the newest response could not be read. The older
+    success cannot silently reinstate a plan with unknown freshness. */
+ finishFirst=null;finishLast=null;
+ work=ctx.authPlanRead();newer=ctx.authPlanRead();
+ finishLast({ok:false,status:503});latest=await newer;
+ finishFirst(answer);older=await work;
+ ok(!latest.ok&&latest.took==='unread'&&older.took==='stale'&&takes===2&&arms===2,
+  'unread newest response cannot be overwritten by an older paid reply');
 }
 /* Test the actual import UI seam without a browser or network. The only
    accepted source of payment is the authenticated reader, never imported JSON. */
